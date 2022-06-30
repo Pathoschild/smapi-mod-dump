@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Name": "Walking Shed",
+  "Description": "An odd shed.",
+  "DrawShadow": false,
+
+  "Size": {
+    "X": 4,
+    "Y": 4
+  },
+  "CollisionMap": "XXXX\nXXXX\nXXXX\nXOOX",
+
+  "IndoorMap": "Shed",
+  "IndoorMapType": "StardewValley.Shed",
+  "AuxiliaryHumanDoors": [
+    {
+      "X": 1,
+      "Y": 3
+    },
+    {
+      "X": 2,
+      "Y": 3
+    }
+  ],
+
+  "BuildCost": 5000,
+  "BuildMaterials": [
+    {
+      "ItemID": 388,
+      "Amount": 100
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12334
+IDs: BlaDe.ExtremeWeather
+update keys: Nexus:12334

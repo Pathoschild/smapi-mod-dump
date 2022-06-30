@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="6" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">
+	<properties>
+		<property name="Warp" value="2 7 Mountain 29 7"/>
+	</properties>
+	<tileset firstgid="1" name="p" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+		<image source="paths" width="64" height="144"/>
+	</tileset>
+	<tileset firstgid="37" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+		<image source="townInterior" width="512" height="1088"/>
+	</tileset>
+	<tileset firstgid="2213" name="z_CustomSheet" tilewidth="16" tileheight="16" tilecount="270" columns="18">
+		<image source="TrawlerCabin" width="288" height="240"/>
+		<tile id="166">
+			<animation>
+				<frame tileid="166" duration="1000"/>
+				<frame tileid="167" duration="500"/>
+			</animation>
+		</tile>
+	</tileset>
+	<layer id="1" name="Back" width="6" height="8">
+		<data encoding="csv">
+			37,0,0,0,0,37,
+			37,0,0,0,0,37,
+			37,0,1127,1128,0,37,
+			37,1158,1191,1191,1191,37,
+			0,1191,1191,1191,1191,0,
+			0,1191,1191,1191,1161,0,
+			37,1190,1191,1192,1193,1191,
+			37,37,1223,37,37,37
+		</data>
+	</layer>
+	<layer id="2" name="Buildings" width="6" height="8">
+		<data encoding="csv">
+			37,1062,1063,1064,1065,37,
+			37,1094,1095,1096,1097,37,
+			37,1126,0,0,1129,37,
+			37,0,0,0,2379,37,
+			37,0,0,0,0,37,
+			37,0,0,0,0,37,
+			37,934,0,0,0,37,
+			37,37,0,37,37,37
+		</data>
+	</layer>
+	<layer id="3" name="Front" width="6" height="8">
+		<data encoding="csv">
+			37,0,0,0,0,37,
+			1093,0,0,0,0,1098,
+			1157,0,0,0,0,1162,
+			1157,0,0,0,0,1162,
+			1157,0,0,0,0,1162,
+			1157,902,0,0,0,1162,
+			1189,1125,0,1130,1160,1194,
+			0,1222,0,1224,0,0
+		</data>
+	</layer>
+	<layer id="4" name="Paths" width="6" height="8">
+		<data encoding="csv">
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0
+		</data>
+	</layer>
+	<objectgroup id="5" name="Back"/>
+	<objectgroup id="6" name="Buildings"/>
+	<objectgroup id="7" name="Front"/>
+	<objectgroup id="8" name="Paths"/>
+</map>

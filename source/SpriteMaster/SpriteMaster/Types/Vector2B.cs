@@ -179,7 +179,7 @@ internal struct Vector2B :
 		Tuple<bool, bool> vector => CompareTo(new Vector2B(vector.Item1, vector.Item2)),
 		ValueTuple<bool, bool> vector => CompareTo(vector),
 		bool boolean => CompareTo(boolean),
-		_ => throw new ArgumentException(Exceptions.BuildArgumentException(nameof(obj), obj))
+		_ => Extensions.Exceptions.ThrowArgumentException<int>(nameof(obj), obj)
 	};
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]

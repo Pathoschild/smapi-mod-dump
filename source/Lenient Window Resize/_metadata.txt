@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley-lenient-window-resize
+   Git: https://gitlab.com/delixx/stardew-valley-lenient-window-resize.git
+
+mods:
+   Lenient Window Resize
+
+latest commit:
+   commit 0a0dc544964cb123b87bdbe247736b325d4e717a
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Fri Jun 3 14:59:08 2022 +0200
+   
+       Initial commit
+   

@@ -19,6 +19,7 @@ namespace FarmCleaner.Framework.Configs
         public bool WeedRemoval { get; set; } = true;
         public bool StoneRemoval { get; set; } = true;
         public bool TwigRemoval { get; set; } = true;
+        public bool ForageRemoval { get; set; } = false;
         public bool StumpRemoval { get; set; } = false;
         public bool LargeLogRemoval { get; set; } = false;
 

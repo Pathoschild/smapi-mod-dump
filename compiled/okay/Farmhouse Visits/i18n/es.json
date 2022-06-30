@@ -1,0 +1,207 @@
+﻿{
+	/* TN: config  (tn = translator note) */
+	"config.CustomChance.name": "Probabilidad",
+	"config.CustomChance.description": "El % de que alguien te visite cada 10 minutos.",
+	"config.MaxVisitsPerDay.name": "Máximo de visitas por día",
+	"config.MaxVisitsPerDay.description": "El máximo de visitas que puedes recibir en un día",
+	"config.StartingHours.name": "Hora de inicio",
+	"config.StartingHours.description": "La hora en la que comenzarás a recibir visitas.",
+	"config.EndingHours.name": "Hora de término",
+	"config.EndingHours.description": "La hora en la que terminarás de recibir visitas.",
+	"config.VisitDuration.name":"Duración",
+	"config.VisitDuration.description":"Cuánto tiempo durará cada visita, en intervalos de 10 minutos (e.j. 3 es 30 minutos).",
+	"config.Verbose.name": "Verbose",
+	"config.Verbose.description": "El mod registrará mucha más información.",
+	"config.Extras":"Extras",
+	"config.Blacklist.name":"Lista negra",
+	"config.Blacklist.description":"Personajes que no quieres que te visiten, separado por espacios (' '). E.j \"Pierre Lewis\"",
+	"config.VisitConfiguration":"Configuración de visita",
+	"config.Debug.name": "Debug",
+	"config.Debug.Explanation":"Opciones de desarrollador.",
+	
+	/*For translators: your in-laws = the family of your spouse.
+	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
+	 *
+	 * Feel free to use your language's equivalent! */
+
+	"config.InLawComments.name":"Comentarios de familiares",
+	"config.InLawComments.description": "Si los familiares de tu pareja visitan, te preguntarán por dicho personaje (y tus bebés, si tienen). Puede afectar sólo familiares vainilla, familiares vainilla y mod, o ninguno.",
+	"config.InLawComments.values.VanillaOnly":"Sólo vainilla",
+	"config.InLawComments.values.VanillaAndMod":"Vainilla y NPCs mod",
+	"config.InLawComments.values.None":"Ninguno",
+	"config.ReplacerCompat.name":"Compatibilidad con \n reemplazadores NPC",
+	"config.ReplacerCompat.description":"Activa esto para compatibilidad con reemplazadores de NPC.",
+
+	/* TN: command errors */
+	"error.WorldNotReady":"No has cargado ninguna partida aún.",
+	"error.InvalidValue":"Valor no válido.",
+	"error.NotInFarmhouse":"No estás en la casa, NPC no podrá entrar.",
+	
+	/* TN: bad schedule (when parsing) */
+	"FromHigherThanTo":"Hora de inicio es mayor que la hora de término. Arregla esto y reinicia el juego.",
+	"NotInSave": "¡NPC no está en la partida actual! (¿Le has desbloqueado ya?)",
+	"CantBe2600":"La visita no puede terminar a las 2am (2600 en tiempo de juego).",
+	"CantBe600":"La visita no puede iniciar a las 6am (600 en tiempo de juego).",
+
+	/* TN: introduction */
+	/* based on social anxiety*/
+	"NPCIntroduce.Outgoing1": "¿@? ¡Voy a entrar!",
+	"NPCIntroduce.Outgoing2": "¿@? ¡Soy yo!",
+	"NPCIntroduce.Outgoing3": "¿@? ¡Abre la puerta!",
+	"NPCIntroduce.Shy1": "@, ¿Estas ahí?",
+	"NPCIntroduce.Shy2": "¿@?",
+	"NPCIntroduce.Shy3": "¿Hola? ¿Hay alguien en casa?",
+	/* based on manners*/
+	"NPCIntroduce.Polite1": "Buenas, ¿se puede?",
+	"NPCIntroduce.Polite2": "Permiso...",
+	"NPCIntroduce.Polite3": "(knock knock)",
+	"NPCIntroduce.Neutral1": "¿Hay alguien ahí?",
+	"NPCIntroduce.Neutral2": "¿Hola? ¿@?",
+	"NPCIntroduce.Neutral3": "@, soy yo.",
+    "NPCIntroduce.Rude1": "@, estoy afuera.",
+    "NPCIntroduce.Rude2": "Hola...¿@?",
+    "NPCIntroduce.Rude3": "Oye...@, ¿estás?",
+
+	/* TN: walk into house */
+	/* based on social anxiety*/
+	"NPCWalkIn.Outgoing1": "¡Hola, {0}!",
+	"NPCWalkIn.Outgoing2": "¡Hey!",
+	"NPCWalkIn.Outgoing3": "¡Hola!",
+	"NPCWalkIn.Shy1": "Hola, {0}.",
+	"NPCWalkIn.Shy2": "Con permiso.",
+	"NPCWalkIn.Shy3": "Hola.",
+	/* based on manners*/
+	"NPCWalkIn.Polite1": "Con permiso.",
+	"NPCWalkIn.Polite2": "Hola, buenas.",
+	"NPCWalkIn.Polite3": "Buenas.",
+	"NPCWalkIn.Neutral1": "Hola, {0}!",
+	"NPCWalkIn.Neutral2": "Permiso.",
+	"NPCWalkIn.Neutral3": "Hola.",
+	"NPCWalkIn.Rude1": "Oye, {0}.",
+	"NPCWalkIn.Rude2": "Voy a pasar.",
+	"NPCWalkIn.Rude3": "Hola.",
+
+	/* TN: greeting player */
+	/* based on social anxiety*/
+	"NPCGreet.Outgoing1": "Hey. ¿Qué tal? Quería pasar a visitarte. Mira, te traje un regalo.[{0}]",
+	"NPCGreet.Outgoing2": "Hola. ¿Cómo va la granja? Vine a ver cómo iba todo.$1#$b#Te traje un regalo.[{0}]",
+	"NPCGreet.Outgoing3": "¡Ey! No te he visto desde hace un tiempo.$1#$b#Te traje un regalo, toma.[{0}]",
+	"NPCGreet.Shy1": "Hola, ¿Cómo has estado?#$b#Parece que la granja %farm ha crecido.#$b#Te traje un regalo.[{0}]",
+	"NPCGreet.Shy2": "Hola, @.#$b#Estaba pasando y decidí visitarte.#$b#Te traje un regalo.[{0}]",
+	"NPCGreet.Shy3": "Hey, @. Me alegro de verte.#$b#Me estaba acordando de ti.#$b#Te traje un regalo, toma. [{0}]",
+	/* based on manners*/
+	"NPCGreet.Polite1": "@, perdona que te interrumpa. Vine a ver cómo estabas.#$b#Te traje algo por las molestias. [{0}]",
+	"NPCGreet.Polite2": "Buenas. Qué alegría verte, @.#$b#Ten, te traje algo por las molestias. [{0}]",
+	"NPCGreet.Polite3": "Con permiso...espero no estar interrumpiendo mucho.$1#$b#Te traje algo por las molestias. [{0}]",
+	"NPCGreet.Neutral1": "Voy a entrar...hola, @.#$b#Ten, me acordé de ti cuando vi esto.[{0}]",
+	"NPCGreet.Neutral2": "Ey, estaba pasando por acá y escuché ruido...#$b#Pasé a ver por si acaso nomás, jeje.$1#$b#Me acordé de ti cuando vi esto.[{0}]",
+	"NPCGreet.Neutral3": "Oye, @. Qué bueno verte.#$b#Me estaba acordando de ti.#$b#Te traje un regalo, toma. [{0}]",
+	"NPCGreet.Rude1": "Ey, @! ¿Me extrañaste?#$b#Mira, te traje algo.[{0}]",
+	"NPCGreet.Rude2": "Hola, @.#$b#Te compré algo en el camino.[{0}]",
+	"NPCGreet.Rude3": "Oye, estaba pasando por aquí y escuché que estabas adentro...vine a visitar.#$b#Te traje algo, toma.[{0}]",
+
+	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
+	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
+     
+     * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
+
+	//generic lines (for any spouse)
+	"InLaw.Generic.1": "¿Está {0} en la casa ahora?",
+	"InLaw.Generic.2": "No he visto a {0} en un tiempo...",
+	"InLaw.Generic.3": "¿Cómo va todo con {0}? ¿Se llevan bien?",
+	"InLaw.Generic.4": "Hey, ¿Está {0} aquí?",
+	"InLaw.Generic.5": "¿Y dónde está {0}, @?$1",
+	"InLaw.Generic.6": "¿Cómo están tú y {0}, @? ¿Todo normal?",
+	"InLaw.Generic.7": "No he visto a {0} en un tiempo...",
+	"InLaw.Generic.8": "Espero que a {0} le guste la granja %farm...",
+	"InLaw.Generic.9": "{0} ¿Se ha estado cuidando?",
+	"InLaw.Generic.10": "@... ¿Cómo está {0}?",
+	"InLaw.Generic.11": "Hey, ¿Y {0}?",
+	"InLaw.Generic.12": "@, ¿Está {0} en la casa?",
+	"InLaw.Generic.13": "¿Estará {0}?",
+	"InLaw.Generic.14": "@...¿Cómo ha estado {0}?",
+	"InLaw.Generic.15": "@, ¿Está {0}? No le he visto hace un tiempo.$1",
+
+	//for vanilla spouses
+	"InLaw.Abigail.1": "Abigail ¿Aún está en esa banda con Sam y Sebastian?",
+	"InLaw.Abigail.2": "¿Todavía le gusta lo oculto a Abby?#$b#Espero que no se ponga en peligro mucho...$2",
+	"InLaw.Abigail.3": "Espero que Abigail se esté cuidando.",
+
+	"InLaw.Alex.1": "La casa está silenciosa desde que Alex se fue.#$b#Pero espero que sea feliz.$1",
+	"InLaw.Alex.2": "¿Cómo está todo con mi nieto?",
+	"InLaw.Alex.3": "A mi nieto ¿Aún le gusta el gridball?",
+
+	"InLaw.Emily.1": "¿Cómo está Emily?#$b#¿Todavía cuida del loro?",
+	"InLaw.Emily.2": "Emily solía estar hasta tarde en el salón...$2#$b#Espero que esté más descansada ahora.",
+	"InLaw.Emily.3": "A Emily le debe encantar vivir aquí contigo, @.",
+
+	"InLaw.Haley.1": "¿Cómo están tu y Haley?$1",
+	"InLaw.Haley.2": "Nunca pensé que a Haley le gustaría la granja...",
+	"InLaw.Haley.3": "@, Haley ¿Todavía toma fotos?",
+
+	"InLaw.Maru.1": "¿Maru todavía hace experimentos?",
+	"InLaw.Maru.2": "¿Está descansando bien Maru?#$b#Trabajar en una granja y clínica debe ser agotador.",
+	"InLaw.Maru.3": "¿Dónde está Maru, @?#$b#Quería ver a mi hija.$1",
+
+	"InLaw.Penny.1": "Penny ¿todavía es profesora?",
+	"InLaw.Penny.2": "@...#$b#¿Podré ver a Penny también?",
+	"InLaw.Penny.3": "@, ¿Qué ha estado haciendo Penny?",
+
+	"InLaw.Sam.1": "Sam ¿Todavía toca la guitarra?#$b#¿Y el skate?",
+	"InLaw.Sam.2": "@, ¿Cómo está mi hijo?",
+	"InLaw.Sam.3": "Me pregunto cómo estará lidiando Sam con el polen...",
+
+	"InLaw.Sebastian.1": "¿Sebastian aún anda en moto?",
+	"InLaw.Sebastian.2": "Nunca imaginé a Sebastian viviendo en una granja...#$b#Espero que sea feliz aquí.",
+	"InLaw.Sebastian.3": "@, ¿Tienen gallinas?#$b#No imagino cómo hará Sebastian con tantos huevos en la casa.",
+
+	"InLaw.Shane.1": "Oye, ¿Y Shane? ¿Qué hay de Charlie?",
+	"InLaw.Shane.2": "Shane ¿Se ha estado cuidando?",
+	"InLaw.Shane.3": "Apuesto a que Shane debe ser feliz viviendo en una granja.",
+	
+	/* TN: ask about your kids, 1 to 5
+	 * if you have kids, this is added right after InLaw. */
+	"ask.singlechild.1":"Ha pasado un tiempo desde que vi a {0}...",
+	"ask.singlechild.2":"@, ¿Está {0} aquí?",
+	"ask.singlechild.3":"No he visto a {0} hace un tiempo...",
+	"ask.singlechild.4":"@, ¿Cómo está {0}?",
+	"ask.singlechild.5":"Apuesto a que {0} ha crecido un montón, desde la última vez que vine.",
+
+	"ask.multiplechild.1":"@, ¿Dónde está {0}?#$b#Y ¿Qué hay de {1}?",
+	"ask.multiplechild.2":"No he visto a {0} ni {1} hace un tiempo.",
+	"ask.multiplechild.3":"¿Qué hay de {1} y {0}? ¿Están aquí?",
+	"ask.multiplechild.4":"{1} y {0} ¿Se llevan bien?",
+	"ask.multiplechild.5":"Están {0} y {1} en casa ahora mismo?",
+
+	/*talk about furniture*/
+	/* based on social anxiety*/
+	"NPCFurniture.Outgoing1":"Tu {0} decora la casa muy bien.",
+	"NPCFurniture.Outgoing2":"Oye, ¿cúando conseguiste tu {0}?",
+	"NPCFurniture.Outgoing3":"@, de casualidad ¿Está a la venta tu {0}?#$b#Es broma.$1",
+	"NPCFurniture.Shy1":"Tu {0}...#$b#Se ve hermoso.",
+	"NPCFurniture.Shy2":"¡No sabía que habías comprado una {0}!$1",
+	"NPCFurniture.Shy3":"Esa {0}... tengo una parecida en mi hogar.",
+	/* based on manners*/
+	"NPCFurniture.Polite1":"Tu {0} se ve muy bien...le da vida a tu hogar.",
+	"NPCFurniture.Polite2":"Se nota que has puesto empeño en decorar, @...",
+	"NPCFurniture.Polite3":"Disculpa, ¿Desde cuándo tienes tu {0}...?#$b#Me gusta mucho.$1",
+	"NPCFurniture.Neutral1":"Qué linda tu {0}.$1",
+	"NPCFurniture.Neutral2":"Se ve súper linda tu casa...",
+	"NPCFurniture.Neutral3":"Me encanta cómo decoraste aquí, @.#$b#Sólo mira esa {0}! Es deslumbrante.$1",
+    "NPCFurniture.Rude1": "Me gusta tu {0}.",
+    "NPCFurniture.Rude2": "¿Desde cuándo tienes {0}?$1",
+    "NPCFurniture.Rude3": "Oye, dónde encontraste esa {0}?",
+
+	/* TN: leaving */
+	/* based on social anxiety*/
+	"NPCRetiring.Outgoing": "Tengo que irme... pero la pasé bien.#$b#¡Te veré luego!$1",
+	"NPCRetiring.Shy": "El tiempo vuela...tengo que irme.#$b#Me alegro de verte.",
+	/* based on manners*/
+	"NPCRetiring.Polite": "@, me tengo que retirar...tengo algunas cosas que hacer.#$b#¡Mucho gusto en verte!$1",
+	"NPCRetiring.Neutral": "Oye, mira la hora... debería haberme ido hace rato.#$b#Te veré otro día!$1",
+    "NPCRetiring.Rude": "Ya, me voy ahora...te he ocupado mucho tiempo ya.#$b#Te veo luego.",
+
+	/* TN: gone while outside */
+	"NPCGoneWhileOutside": "Mientras estabas afuera, {0} se retiró.",
+	"NPCGone_Cellar": "Mientras estabas en la bodega, {0} se retiró."
+}

@@ -18,7 +18,7 @@ namespace ArtifactDigger
         public bool HighlightArfiactSpots { get; set; } = true;
 
         //Whether or not the mod should auto scan or by button press.
-        //public bool AutoArtifactScan { get; set; } = false;
+        public bool AutoArtifactScan { get; set; } = false;
 
         //Button to Scan for artifacts
         public string ArtifactScanKey { get; set; } = "Z";

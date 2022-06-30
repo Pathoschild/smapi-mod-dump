@@ -39,37 +39,6 @@ namespace ItemPipes.Framework.Items
             
         }
 
-        public override bool performToolAction(Tool t, GameLocation location)
-        {
-            if (t is Pickaxe)
-            {
-                var who = t.getLastFarmerToUse();
-                this.performRemoveAction(this.TileLocation, location);
-                Debris deb = new Debris(getOne(), who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-                Game1.currentLocation.debris.Add(deb);
-                DataAccess DataAccess = DataAccess.GetDataAccess();
-                List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                Node node = nodes.Find(n => n.Position.Equals(TileLocation));
-                if (node != null && node is ConnectorPipeNode)
-                {
-                    ConnectorPipeNode pipe = (ConnectorPipeNode)node;
-                    if (pipe.StoredItem != null)
-                    {
-                            
-                        Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] GET OUT");
-                        Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] "+pipe.StoredItem.Stack.ToString());
-                        pipe.Print();
-                        Debris itemDebr = new Debris(pipe.StoredItem, who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-                        Game1.currentLocation.debris.Add(itemDebr);
-                        pipe.Broken = true;
-                    }
-                }
-                Game1.currentLocation.objects.Remove(this.TileLocation);
-                return false;
-            }
-            return false;
-        }
-
         public override bool countsForDrawing(SObject adj)
         {
             if (adj is PipeItem && !(adj is ConnectorPipeItem))

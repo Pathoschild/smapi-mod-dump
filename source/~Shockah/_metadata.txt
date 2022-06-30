@@ -9,14 +9,15 @@ mods:
    Machine Status
    Please Gift Me In Person
    Predictable Retaining Soil
+   Project Fluent
    Safe Lightning Redux
    Stack Size Changer
    XP Display
 
 latest commit:
-   commit 1169e47ac9cb6b22f7598a86d8062012be3cfc66
+   commit 9f6b58060981f4de2c8be6bd63c1c55c553417e3
    Author: Shockah <me@shockah.pl>
-   Date:   Sat Apr 30 21:04:05 2022 +0200
+   Date:   Sun Jun 26 21:57:29 2022 +0200
    
-       StackSizeChanger: New mod, version 1.0.0
+       XPDisplay: Version 1.1.3
    

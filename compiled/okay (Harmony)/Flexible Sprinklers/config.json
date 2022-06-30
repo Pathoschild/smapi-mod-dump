@@ -1,5 +1,6 @@
 {
-  "SprinklerBehavior": "Cluster",
+  "SprinklerBehavior": "ClusterWithoutVanilla",
+  "IgnoreRange": false,
   "TileWaterBalanceMode": "Relaxed",
   "SplitDisconnectedClusters": true,
   "ClusterBehaviorClusterOrdering": "BiggerFirst",
@@ -22,5 +23,7 @@
   "Tier6Power": 120,
   "Tier7Power": 168,
   "Tier8Power": 224,
-  "CompatibilityMode": true
+  "CompatibilityMode": true,
+  "WaterGardenPots": false,
+  "WaterPetBowl": false
 }

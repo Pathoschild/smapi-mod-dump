@@ -21,7 +21,7 @@ namespace EndgameBundles
 		//public static readonly Dictionary<int, bool> bundles;
 		//public static Dictionary<string, string>? bundleData = null!;
 
-		List<EndgameBundleSet> bundleSets = new List<EndgameBundleSet>();
+		private readonly List<EndgameBundleSet> bundleSets = new List<EndgameBundleSet>();
 
 		//Dictionary<string, EndgameBundleSet_Old>? bundlesets = null!;
 

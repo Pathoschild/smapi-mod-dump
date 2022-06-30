@@ -11,7 +11,7 @@
 {
   "Name": "More Fertilizers",
   "Author": "atravita",
-  "Version": "0.1.6",
+  "Version": "0.1.7",
   "Description": "Adds more fertilizers to the game.",
   "UniqueID": "atravita.MoreFertilizers",
   "EntryDll": "MoreFertilizers.dll",

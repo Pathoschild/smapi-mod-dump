@@ -12,29 +12,28 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using DaLion.Common.Extensions;
+using DaLion.Common.Harmony;
+using Extensions;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-
-using DaLion.Common.Extensions;
-using Extensions;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GreenSlimeGetExtraDropItemsPatch : BasePatch
+internal sealed class GreenSlimeGetExtraDropItemsPatch : HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GreenSlimeGetExtraDropItemsPatch()
     {
-        //Original = RequireMethod<GreenSlime>(nameof(GreenSlime.getExtraDropItems));
+        //Target = RequireMethod<GreenSlime>(nameof(GreenSlime.getExtraDropItems));
     }
 
     #region harmony patches
@@ -47,7 +46,7 @@ internal class GreenSlimeGetExtraDropItemsPatch : BasePatch
 
         var slimeCount =
             Game1.getFarm().buildings.Where(b =>
-                    (b.owner.Value.IsAnyOf(pipers.Select(p => p.UniqueMultiplayerID)) ||
+                    (b.owner.Value.IsIn(pipers.Select(p => p.UniqueMultiplayerID)) ||
                      !Context.IsMultiplayer) && b.indoors.Value is SlimeHutch && !b.isUnderConstruction() &&
                     b.indoors.Value.characters.Any())
                 .Sum(b => b.indoors.Value.characters.Count(npc => npc is GreenSlime)) +

@@ -12,9 +12,9 @@ namespace DaLion.Stardew.Tools.Extensions;
 
 #region using directives
 
+using StardewValley;
 using System;
 using System.Linq;
-using StardewValley;
 
 #endregion using directives
 

@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Menus;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BobberBarUpdatePatch : BasePatch
+internal sealed class BobberBarUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal BobberBarUpdatePatch()
     {
-        Original = RequireMethod<BobberBar>(nameof(BobberBar.update));
+        Target = RequireMethod<BobberBar>(nameof(BobberBar.update));
     }
 
     #region harmony patches
 
     /// <summary>Patch to slow-down catching bar decrease for Aquarist.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> BobberBarUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? BobberBarUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -57,7 +57,7 @@ internal class BobberBarUpdatePatch : BasePatch
         //            new CodeInstruction(OpCodes.Ldc_R4, 0.002f)
         //        )
         //        .AddLabels(isNotPrestigedFisher)
-        //        .InsertProfessionCheckForLocalPlayer((int) Profession.Fisher + 100, isNotPrestigedFisher)
+        //        .InsertProfessionCheckForLocalPlayer(Profession.Fisher.Value + 100, isNotPrestigedFisher)
         //        .InsertWithLabels(
         //            new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player))),
         //            new CodeInstruction(OpCodes.Ldarg_0),
@@ -91,7 +91,7 @@ internal class BobberBarUpdatePatch : BasePatch
                 )
                 .Advance()
                 .AddLabels(isNotAquarist)
-                .InsertProfessionCheck((int) Profession.Aquarist)
+                .InsertProfessionCheck(Profession.Aquarist.Value)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotAquarist),
                     new CodeInstruction(OpCodes.Ldarg_0),
@@ -108,7 +108,6 @@ internal class BobberBarUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching Aquarist catching bar loss. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

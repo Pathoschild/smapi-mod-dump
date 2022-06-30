@@ -67,7 +67,8 @@ namespace CustomCaskMod
 
         public static void LoadContentPacksCommand(string command = null, string[] args = null)
         {
-            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+            Dictionary<int, string> objects = DataLoader.Helper.GameContent.Load<Dictionary<int, string>>("Data\\ObjectInformation");
+            AgerController.ClearAgers();
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
                 bool hasFile = false;
@@ -91,19 +92,52 @@ namespace CustomCaskMod
                         if (customAger.Name != "Cask")
                         {
                             customAger.ModUniqueID = contentPack.Manifest.UniqueID;
-                            if (AgerController.GetAger(customAger.Name) is CustomAger currentAger)
+                            if (AgerController.GetAger(customAger.Name) is CustomAger oldAger && oldAger.ModUniqueID != customAger.ModUniqueID)
                             {
-                                if (currentAger.ModUniqueID != customAger.ModUniqueID)
+                                if (oldAger.OverrideMod.Contains(customAger.ModUniqueID) && customAger.OverrideMod.Contains(oldAger.ModUniqueID))
                                 {
-                                    CustomCaskModEntry.ModMonitor.Log($"Both mods '{currentAger.ModUniqueID}' and '{customAger.ModUniqueID}' have data for  '{customAger.Name}'. You should report the problem to these mod's authors. Data from mod '{currentAger.ModUniqueID}' will be used.", LogLevel.Warn);
+                                    CustomCaskModEntry.ModMonitor.Log($"Both mods '{oldAger.ModUniqueID}' and '{customAger.ModUniqueID}' are saying they should override data for  '{customAger.Name}'. You should report the problem to these mod's authors. Data from mod '{oldAger.ModUniqueID}' will be used.", LogLevel.Warn);
+                                    continue;
+                                } 
+                                else if (customAger.OverrideMod.Contains(oldAger.ModUniqueID))
+                                {
+                                    CustomCaskModEntry.ModMonitor.Log($"Mod '{customAger.ModUniqueID}' is overriding mod '{oldAger.ModUniqueID}' data for ager '{customAger.Name}'." , LogLevel.Debug);
+                                }
+                                else if (oldAger.OverrideMod.Contains(customAger.ModUniqueID))
+                                {
+                                    CustomCaskModEntry.ModMonitor.Log($"Mod '{oldAger.ModUniqueID}' is overriding mod '{customAger.ModUniqueID}' data for ager '{oldAger.Name}'." , LogLevel.Debug);
+                                    continue;
+                                }
+                                else if (customAger.MergeIntoMod.Contains(oldAger.ModUniqueID))
+                                {
+                                    if (oldAger.MergeIntoMod.Contains(customAger.ModUniqueID))
+                                    {
+                                        CustomCaskModEntry.ModMonitor.Log($"Both mods '{oldAger.ModUniqueID}' and '{customAger.ModUniqueID}' are saying they should merge data for  '{customAger.Name}'. You should report the problem to these mod's authors. Data from mod '{customAger.ModUniqueID}' will be merge into '{oldAger.ModUniqueID}'.", LogLevel.Warn);
+                                    }
+                                    CustomCaskModEntry.ModMonitor.Log($"Mod '{customAger.ModUniqueID}' is merging with mod '{oldAger.ModUniqueID}' data for ager '{customAger.Name}'.", LogLevel.Debug);
+                                    foreach (var (key, value) in customAger.AgingData)
+                                    {
+                                        oldAger.AgingData[key] = value;
+                                    }
+                                    FillDataIds(objects, oldAger.AgingData, oldAger.AgingDataId);
+                                    continue;
+
+                                }
+                                else if (oldAger.MergeIntoMod.Contains(oldAger.ModUniqueID))
+                                {
+                                    CustomCaskModEntry.ModMonitor.Log($"Mod '{oldAger.ModUniqueID}' is merging with mod '{customAger.ModUniqueID}' data for ager '{customAger.Name}'.", LogLevel.Debug);
+                                    foreach (var (key, value) in oldAger.AgingData)
+                                    {
+                                        customAger.AgingData[key] = value;
+                                    }
+                                }
+                                else
+                                {
+                                    CustomCaskModEntry.ModMonitor.Log($"Mod '{customAger.ModUniqueID}' can't override mod '{oldAger.ModUniqueID}' data for '{customAger.Name}'. This data will be ignored.", LogLevel.Warn);
                                     continue;
                                 }
                             }
-                            customAger.AgingData.ToList().ForEach(d =>
-                            {
-                                int? id = GetId(d.Key, objects);
-                                if (id.HasValue) customAger.AgingDataId[id.Value] = d.Value;
-                            });
+                            FillDataIds(objects, customAger.AgingData, customAger.AgingDataId);
                             AgerController.SetAger(customAger);
                         }
                         else
@@ -118,25 +152,18 @@ namespace CustomCaskMod
                     CustomCaskModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt doesn't have both {CaskDataJson} and {AgersDataJson} files.", LogLevel.Warn);
                 }
             }
-            FillCaskDataIds();
+            FillDataIds(objects, CaskData, CaskDataId);
         }
 
-        public static void FillCaskDataIds()
+        public static void FillDataIds(Dictionary<int, string> objects, Dictionary<object, float> data, Dictionary<int, float> dataIds)
         {
-            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
-            CaskData.ToList().ForEach(c =>
+            data.ToList().ForEach(c =>
             {
-                if (Int32.TryParse(c.Key.ToString(), out int id))
+                var (key, value) = c;
+                int? id = GetId(key, objects);
+                if (id.HasValue)
                 {
-                    CaskDataId[id] = c.Value;
-                }
-                else
-                {
-                    KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(c.Key + "/"));
-                    if (pair.Value != null)
-                    {
-                        CaskDataId[pair.Key] = c.Value;
-                    }
+                    dataIds[id.Value] = value;
                 }
             });
         }

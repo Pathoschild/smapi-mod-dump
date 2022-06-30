@@ -8,13 +8,14 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace SpriteMaster;
 
 internal static partial class ConsoleSupport {
-	private static void InvokeHelp(string? unknownCommand = null) {
+	internal static void InvokeHelp(Dictionary<string, Command> commandMap, string? unknownCommand = null) {
 		var output = new StringBuilder();
 		output.AppendLine();
 		output.AppendLine(Versioning.StringHeader);
@@ -24,9 +25,9 @@ internal static partial class ConsoleSupport {
 		output.AppendLine("Help Command Guide");
 		output.AppendLine();
 
-		int maxKeyLength = CommandMap.Keys.Max(k => k.Length);
+		int maxKeyLength = commandMap.Keys.Max(k => k.Length);
 
-		foreach (var kv in CommandMap) {
+		foreach (var kv in commandMap) {
 			output.AppendLine($"{kv.Key.PadRight(maxKeyLength)} : {kv.Value.Description}");
 		}
 

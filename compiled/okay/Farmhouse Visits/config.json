@@ -1,0 +1,12 @@
+{
+  "CustomChance": 20,
+  "MaxVisitsPerDay": 3,
+  "Blacklist": "",
+  "StartingHours": 800,
+  "EndingHours": 2000,
+  "Duration": 6,
+  "Verbose": false,
+  "Debug": false,
+  "InLawComments": "VanillaOnly",
+  "ReplacerCompat": false
+}

@@ -22,7 +22,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         public GoldExtractorPipeNode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
             Tier = 2;
-            ItemTimer = 300;
+            ItemTimer = 500;
             Flux = 10;
         }
     }

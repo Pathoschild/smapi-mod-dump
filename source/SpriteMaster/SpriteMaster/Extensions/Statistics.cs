@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
 

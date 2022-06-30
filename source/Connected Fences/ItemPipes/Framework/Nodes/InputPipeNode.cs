@@ -47,24 +47,6 @@ namespace ItemPipes.Framework
             return canReceive;
         }
 
-        public bool TryInsertItem(Item item)
-        {
-            bool inserted = false;
-            //Cambiar esto para que use method de container, y
-            //luego override en subclasses
-            if (ConnectedContainer is ChestContainerNode)
-            {
-                ChestContainerNode chest = (ChestContainerNode)ConnectedContainer;
-                chest.InsertItem(item);
-                inserted = true;
-            }
-            else if(ConnectedContainer is ShippingBinContainerNode)
-            {
-
-            }
-            return inserted;
-        }
-
         public bool HasFilter()
         {
             bool hasFilter = false;

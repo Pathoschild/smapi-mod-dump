@@ -50,14 +50,6 @@ internal static class Arrays {
 		Array.Reverse(array);
 		return array;
 	}
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static T[] Reversed<T>(this T[] array) {
-		//Contract.AssertNotNull(array);
-		var result = (T[])array.Clone();
-		Array.Reverse(result);
-		return result;
-	}
 }
 
 internal static class Arrays<T> {

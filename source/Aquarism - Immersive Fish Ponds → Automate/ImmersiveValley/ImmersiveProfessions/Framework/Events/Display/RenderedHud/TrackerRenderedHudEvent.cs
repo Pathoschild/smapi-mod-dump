@@ -12,22 +12,27 @@ namespace DaLion.Stardew.Professions.Framework.Events.Display;
 
 #region using directives
 
-using System.Linq;
+using Common.Events;
+using Extensions;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-
-using Extensions;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class TrackerRenderedHudEvent : RenderedHudEvent
+internal sealed class TrackerRenderedHudEvent : RenderedHudEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal TrackerRenderedHudEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnRenderedHudImpl(object sender, RenderedHudEventArgs e)
+    protected override void OnRenderedHudImpl(object? sender, RenderedHudEventArgs e)
     {
         // reveal on-screen trackable objects
         foreach (var pair in Game1.currentLocation.Objects.Pairs.Where(p => p.Value.ShouldBeTracked()))

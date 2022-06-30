@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ResourceClumpPerformToolAction : BasePatch
+internal sealed class ResourceClumpPerformToolAction : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ResourceClumpPerformToolAction()
     {
-        Original = RequireMethod<ResourceClump>(nameof(ResourceClump.performToolAction));
+        Target = RequireMethod<ResourceClump>(nameof(ResourceClump.performToolAction));
     }
 
     #region harmony patches
 
     /// <summary>Patch to add bonus wood for prestiged Lumberjack.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ResourceClumpPerformToolActionTranspiler(
+    private static IEnumerable<CodeInstruction>? ResourceClumpPerformToolActionTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -57,7 +57,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Lumberjack)
+                .FindProfessionCheck(Profession.Lumberjack.Value)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_S, 10)
                 )
@@ -66,7 +66,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Callvirt, typeof(Tool).RequireMethod(nameof(Tool.getLastFarmerToUse)))
                 )
-                .InsertProfessionCheck((int) Profession.Lumberjack + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Lumberjack.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_I4_S, 11),
@@ -84,7 +84,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Callvirt, typeof(Tool).RequireMethod(nameof(Tool.getLastFarmerToUse)))
                 )
-                .InsertProfessionCheck((int) Profession.Lumberjack + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Lumberjack.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution2)
                 )
@@ -98,7 +98,6 @@ internal class ResourceClumpPerformToolAction : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

@@ -12,50 +12,51 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GenericObjectMachineGenericPullRecipePatch : BasePatch
+internal sealed class GenericObjectMachineGenericPullRecipePatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetSample;
+    private static Func<object, Item>? _GetSample;
 
     /// <summary>Construct an instance.</summary>
     internal GenericObjectMachineGenericPullRecipePatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.GenericObjectMachine`1".ToType()
+            Target = "Pathoschild.Stardew.Automate.Framework.GenericObjectMachine`1".ToType()
                 .MakeGenericType(typeof(SObject))
                 .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
                 .FirstOrDefault(m => m.Name == "GenericPullRecipe" && m.GetParameters().Length == 3);
-            Transpiler.priority = Priority.LowerThanNormal;
         }
         catch
         {
             // ignored
         }
+
+        Transpiler!.priority = Priority.LowerThanNormal;
     }
 
     #region harmony patches
 
     /// <summary>Patch to apply Artisan effects to automated generic machines.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GenericObjectMachineGenericPullRecipeTranspiler(
+    [HarmonyPriority(Priority.LowerThanNormal)]
+    private static IEnumerable<CodeInstruction>? GenericObjectMachineGenericPullRecipeTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -85,7 +86,6 @@ internal class GenericObjectMachineGenericPullRecipePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Artisan behavior to generic Automate machines.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -100,8 +100,9 @@ internal class GenericObjectMachineGenericPullRecipePatch : BasePatch
     {
         if (!machine.IsArtisanMachine() || !machine.heldObject.Value.IsArtisanGood()) return;
 
-        _GetSample ??= consumable.GetType().RequirePropertyGetter("Sample");
-        if (_GetSample.Invoke(consumable, null) is not SObject input) return;
+        _GetSample ??= consumable.GetType().RequirePropertyGetter("Sample")
+            .CompileUnboundDelegate<Func<object, Item>>();
+        if (_GetSample(consumable) is not SObject input) return;
 
         var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
         if (!owner.HasProfession(Profession.Artisan)) return;

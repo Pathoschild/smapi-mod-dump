@@ -12,27 +12,43 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
+using Common.Events;
+using Extensions;
+using JetBrains.Annotations;
+using StardewModdingAPI.Events;
+using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
-using StardewModdingAPI.Enums;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class PrestigeDayEndingEvent : DayEndingEvent
+internal sealed class PrestigeDayEndingEvent : DayEndingEvent
 {
-    public PerScreen<Queue<SkillType>> SkillsToReset { get; } = new(() => new());
+    private static Queue<ISkill> _ToReset => ModEntry.PlayerState.SkillsToReset;
+
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal PrestigeDayEndingEvent(ProfessionEventManager manager)
+        : base(manager) { }
 
     /// <inheritdoc />
-    protected override void OnDayEndingImpl(object sender, DayEndingEventArgs e)
+    protected override void OnDayEndingImpl(object? sender, DayEndingEventArgs e)
     {
-        while (SkillsToReset.Value.Any()) Game1.player.ResetSkill(SkillsToReset.Value.Dequeue());
-        this.Disable();
+        while (_ToReset.Any())
+        {
+            var toReset = _ToReset.Dequeue();
+            switch (toReset)
+            {
+                case Skill skill:
+                    Game1.player.ResetSkill(skill);
+                    break;
+                case CustomSkill customSkill:
+                    Game1.player.ResetCustomSkill(customSkill);
+                    break;
+            }
+        }
+
+        Unhook();
     }
 }

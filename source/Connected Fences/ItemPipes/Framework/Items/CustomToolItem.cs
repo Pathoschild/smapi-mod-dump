@@ -18,6 +18,7 @@ using StardewValley.Tools;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ItemPipes.Framework.Util;
 
 namespace ItemPipes.Framework.Items
 {
@@ -25,12 +26,11 @@ namespace ItemPipes.Framework.Items
     {
         public string IDName { get; set; }
         public string Description { get; set; }
-        [XmlIgnore]
         public Texture2D SpriteTexture { get; set; }
         public string SpriteTexturePath { get; set; }
-        [XmlIgnore]
         public Texture2D ItemTexture { get; set; }
         public string ItemTexturePath { get; set; }
+        public CustomToolItem Value { get; set; }
 
         public CustomToolItem() : base()
         {
@@ -38,12 +38,13 @@ namespace ItemPipes.Framework.Items
             this.Stackable = false;
             this.numAttachmentSlots.Value = 0;
             this.InstantUse = true;
+            Value = this;
         }
         public void Init()
         {
-            IDName = GetType().Name.Substring(0, GetType().Name.Length - 4);
+            IDName = Utilities.GetIDNameFromType(GetType());
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            ItemTexture = DataAccess.Sprites[IDName + "_Item"];
+            ItemTexture = DataAccess.Sprites[IDName + "_item"];
             Name = DataAccess.ItemNames[IDName];
             DisplayName = DataAccess.ItemNames[IDName];
             Description = DataAccess.ItemDescriptions[IDName];

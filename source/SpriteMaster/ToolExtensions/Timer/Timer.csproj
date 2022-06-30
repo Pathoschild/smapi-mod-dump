@@ -34,7 +34,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
-	  <DefineConstants>DEBUG;DEVELOPMENT;TRACE</DefineConstants>
+	  <DefineConstants>DEVELOPMENT;TRACE</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
@@ -51,7 +51,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
-		<PackageReference Include="Pastel" Version="3.0.0" />
+		<PackageReference Include="Pastel" Version="3.0.1" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
 	</ItemGroup>
 	

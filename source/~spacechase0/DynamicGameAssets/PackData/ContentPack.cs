@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using DynamicGameAssets.Framework.ContentPacks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -200,7 +199,7 @@ namespace DynamicGameAssets.PackData
                         this.configIndex.Add(key, d);
                         this.currConfig.Values.Add(key, readConfig.Values.ContainsKey(key) ? readConfig.Values[key] : d.DefaultValue);
 
-                        string[] valid = d.ValidValues?.Split(',')?.Select(s => s.Trim())?.ToArray();
+                        string[] valid = d.ValidValues?.Split(',', StringSplitOptions.TrimEntries);
                         switch (d.ValueType)
                         {
                             case ConfigPackData.ConfigValueType.Boolean:

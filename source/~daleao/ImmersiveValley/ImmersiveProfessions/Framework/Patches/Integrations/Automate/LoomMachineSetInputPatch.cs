@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class LoomMachineSetInputPatch : BasePatch
+internal sealed class LoomMachineSetInputPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetSample;
+    private static Func<object, Item>? _GetSample;
 
     /// <summary>Construct an instance.</summary>
     internal LoomMachineSetInputPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.LoomMachine".ToType().RequireMethod("SetInput");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.LoomMachine".ToType()
+                .RequireMethod("SetInput");
         }
         catch
         {
@@ -50,7 +50,7 @@ internal class LoomMachineSetInputPatch : BasePatch
 
     /// <summary>Patch to apply Artisan effects to automated Loom.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GenericObjectMachineGenericPullRecipeTranspiler(
+    private static IEnumerable<CodeInstruction>? GenericObjectMachineGenericPullRecipeTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -75,7 +75,6 @@ internal class LoomMachineSetInputPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Artisan behavior for automated Loom.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -91,10 +90,10 @@ internal class LoomMachineSetInputPatch : BasePatch
         var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
         if (!owner.HasProfession(Profession.Artisan)) return;
 
-        _GetSample ??= consumable.GetType().RequirePropertyGetter("Sample");
+        _GetSample ??= consumable.GetType().RequirePropertyGetter("Sample")
+            .CompileUnboundDelegate<Func<object, Item>>();
         var output = machine.heldObject.Value;
-        if (_GetSample.Invoke(consumable, null) is SObject input)
-            output.Quality = input.Quality;
+        if (_GetSample(consumable) is SObject input) output.Quality = input.Quality;
 
         if (output.Quality < SObject.bestQuality &&
             new Random(Guid.NewGuid().GetHashCode()).NextDouble() < 0.05)

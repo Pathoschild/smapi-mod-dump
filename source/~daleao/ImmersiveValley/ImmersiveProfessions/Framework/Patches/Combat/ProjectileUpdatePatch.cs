@@ -12,10 +12,10 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Extensions.Xna;
+using DaLion.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
@@ -24,22 +24,22 @@ using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Projectiles;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Extensions.Xna;
-using DaLion.Common.Harmony;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ProjectileUpdatePatch : BasePatch
+internal sealed class ProjectileUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly FieldInfo _DamagesMonsters = typeof(Projectile).RequireField("damagesMonsters")!;
+    private static Func<Projectile, NetBool>? _GetDamagesMonsters;
 
     /// <summary>Construct an instance.</summary>
     internal ProjectileUpdatePatch()
     {
-        Original = RequireMethod<Projectile>(nameof(Projectile.update));
+        Target = RequireMethod<Projectile>(nameof(Projectile.update));
     }
 
     #region harmony patches
@@ -53,7 +53,9 @@ internal class ProjectileUpdatePatch : BasePatch
         if (__instance is not BasicProjectile projectile) return;
 
         // check if damages monsters
-        var damagesMonsters = ((NetBool) _DamagesMonsters.GetValue(__instance)!).Value;
+        _GetDamagesMonsters ??= typeof(Projectile).RequireField("damagesMonsters")
+            .CompileUnboundFieldGetterDelegate<Func<Projectile, NetBool>>();
+        var damagesMonsters = _GetDamagesMonsters(__instance).Value;
         if (!damagesMonsters) return;
 
         // check for overcharge
@@ -68,7 +70,7 @@ internal class ProjectileUpdatePatch : BasePatch
         {
             if (!ModEntry.PlayerState.PiercedBullets.Remove(projectile.GetHashCode())) return;
 
-            projectile.damageToFarmer.Value = (int) (projectile.damageToFarmer.Value * 0.6f);
+            projectile.damageToFarmer.Value = (int)(projectile.damageToFarmer.Value * 0.6f);
             __result = false;
             return;
         }
@@ -84,12 +86,12 @@ internal class ProjectileUpdatePatch : BasePatch
         var isBulletTravelingVertically = Math.Abs(angle) is >= 45 and <= 135;
         if (isBulletTravelingVertically)
         {
-            newHitbox.Inflate((int) (originalHitbox.Width * bulletPower), 0);
+            newHitbox.Inflate((int)(originalHitbox.Width * bulletPower), 0);
             if (newHitbox.Width <= originalHitbox.Width) return;
         }
         else
         {
-            newHitbox.Inflate(0, (int) (originalHitbox.Height * bulletPower));
+            newHitbox.Inflate(0, (int)(originalHitbox.Height * bulletPower));
             if (newHitbox.Height <= originalHitbox.Height) return;
         }
 
@@ -115,14 +117,14 @@ internal class ProjectileUpdatePatch : BasePatch
         var lerpFactor = (actualDistance - (actualBulletRadius + monsterRadius)) /
                          (extendedBulletRadius - actualBulletRadius);
         var multiplier = MathHelper.Lerp(1f, 0f, lerpFactor);
-        var damage = (int) (projectile.damageToFarmer.Value * multiplier);
+        var damage = (int)(projectile.damageToFarmer.Value * multiplier);
         location.damageMonster(monster.GetBoundingBox(), damage, damage + 1, false, multiplier + bulletPower, 0,
             0f, 1f, true, firer);
     }
 
     /// <summary>Patch to detect bounced bullets.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ProjectileUpdateTranspiler(
+    private static IEnumerable<CodeInstruction>? ProjectileUpdateTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -156,7 +158,7 @@ internal class ProjectileUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_0),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(GameLocation).RequireMethod(nameof(GameLocation.doesPositionCollideWithCharacter),
-                            new[] {typeof(Rectangle), typeof(bool)})),
+                            new[] { typeof(Rectangle), typeof(bool) })),
                     new CodeInstruction(OpCodes.Ldnull),
                     new CodeInstruction(OpCodes.Bgt_Un_S, notTrickShot),
                     // add to bounced bullet set
@@ -174,7 +176,6 @@ internal class ProjectileUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching prestiged Rascal trick shot.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

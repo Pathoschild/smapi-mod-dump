@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sophiesalacia/StardewMods
+**
+*************************************************/
+
+{
+  "Morris_BuyMovieTheater": "Ah, unser Lieblingskunde... Ich habe aufregende Neuigkeiten für dich! Die Joja-Zentrale hat den Bau einer neuen Joja-Unterhaltungsmöglichkeit genehmigt, die das nahe gelegene Joja-Lager ersetzen soll. Wir brauchen nur einen Investor, der bereit ist, unsere Vision zu unterstützen! Also wende ich mich natürlich an dich... unser treuestes und großzügigstes Joja-Mitglied.#$b#$q -1 -1#Wir könnten dies für eine kleine Investition von... *hust*... {{buyValue}}g...$h#$r -1 -1 Yes#Ja#$r -1 -1 No#Nein",
+  "Morris_TheaterBought": "{{buyValue}}...!$2#$b#*Ahem*... Ich meine... Ausgezeichnet! Unser Joja Construction Team wird heute Abend mit den Arbeiten am neuen Gebäude beginnen! Vielen Dank, dass du unsere Arbeit unterstützt.",
+  "Morris_WeekendGreeting_MembershipAvailable": "Willkommen im Joja-Markt! Wie läuft dein Wochenende?#$b#Wir vergeben ab sofort Mitgliedschaften! Mit einer Joja-Mitgliedschaft kannst du Verbesserungen in unserer Gemeinschaft mit Hilfe unseres entschlossenen Personals durchführen. Zu einem Preis natürlich...#$b#Oh, und noch was... Bürgermeister Lewis hat uns versprochen, sollte noch irgendjemand beitreten, würde er zustimmen, dass wir dieses alte Gemeinschaftszentrum in eine Joja-Lagerhalle umfunktionieren. Ist das nicht wundervoll?#$q -1 -1#Eine Mitgliedschaft kostet {{membershipCost}} G. Nun, möchtest du uns beitreten?#$r -1 -1 Yes#Ja.#$r -1 -1 No#Nein.",
+  "Morris_FirstGreeting_MembershipAvailable": "Willkommen im Joja-Markt! Wie geht es dir heute?#$b#Wir vergeben ab sofort Mitgliedschaften! Mit einer Joja-Mitgliedschaft kannst du Verbesserungen in unserer Gemeinschaft mit Hilfe unseres entschlossenen Personals durchführen. Zu einem Preis natürlich...#$b#Oh, und noch was... Bürgermeister Lewis hat uns versprochen, sollte noch irgendjemand beitreten, würde er zustimmen, dass wir dieses alte Gemeinschaftszentrum in eine Joja-Lagerhalle umfunktionieren. Ist das nicht wundervoll?#$q -1 -1#Eine Mitgliedschaft kostet {{membershipCost}} G. Nun, möchtest du uns beitreten?#$r -1 -1 Yes#Ja.#$r -1 -1 No#Nein."
+}

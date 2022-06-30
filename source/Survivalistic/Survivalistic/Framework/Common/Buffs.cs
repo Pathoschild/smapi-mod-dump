@@ -57,7 +57,7 @@ namespace Survivalistic.Framework.Common
                 Buff hunger_buff = Game1.buffsDisplay.otherBuffs.Find(i => i.source == "SURV_Hunger");
                 if (hunger_buff == null)
                 {
-                    hunger_buff = new Buff("You're hunger!", 0, "SURV_Hunger", 6)
+                    hunger_buff = new Buff("You're hungry!", 0, "SURV_Hunger", 6)
                     {
                         displaySource = "Hunger"
                     };

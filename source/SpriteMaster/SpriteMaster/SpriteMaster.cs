@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -35,17 +36,23 @@ using System.Threading.Tasks;
 namespace SpriteMaster;
 
 public sealed class SpriteMaster : Mod {
-	internal static SpriteMaster Self { get; private set; } = default!;
 	internal static Assembly Assembly => typeof(SpriteMaster).Assembly;
-	internal static string AssemblyPath => Self.Helper.DirectoryPath;
+	private const string UniqueId = "DigitalCarbide.SpriteMaster";
+	private static string ModDirectory => Self?.Helper?.DirectoryPath ?? Path.GetDirectoryName(Assembly.Location) ?? Assembly.Location;
+
+	internal static SpriteMaster Self { get; private set; } = default!;
 	private const string ConfigName = "config.toml";
 
-	internal readonly MemoryMonitor MemoryMonitor;
+	internal readonly MemoryMonitor.Monitor MemoryMonitor;
+
+	private readonly Lazy<Harmony> HarmonyInstance = new(() => new(UniqueId));
 
 	[UsedImplicitly]
 	public SpriteMaster() {
 		Self.AssertNull();
 		Self = this;
+
+		Initialize();
 
 		Garbage.EnterNonInteractive();
 
@@ -63,7 +70,7 @@ public sealed class SpriteMaster : Mod {
 	}
 
 	private void InitializeConfig() {
-		Config.SetPath(Path.Combine(Helper.DirectoryPath, ConfigName));
+		Config.SetPath(Path.Combine(ModDirectory, ConfigName));
 
 		Config.DefaultConfig = new MemoryStream();
 		Serialize.Save(Config.DefaultConfig, leaveOpen: true);
@@ -175,13 +182,34 @@ public sealed class SpriteMaster : Mod {
 		Helper.Events.Display.MenuChanged += OnMenuChanged;
 	}
 
+	private bool Initialized = false;
+	private void Initialize() {
+		if (Initialized) {
+			ConfigureHarmony(early: false);
+			return;
+		}
+
+		try {
+			Debug.Message(Versioning.StringHeader);
+
+			ConfigureHarmony(early: true);
+
+			InitializeConfig();
+
+			Initialized = true;
+		}
+		catch {
+			// Swallow Exceptions
+		}
+	}
+
 	[UsedImplicitly]
 	public override void Entry(IModHelper help) {
-		Debug.Message(Versioning.StringHeader);
+#if !SHIPPING
+		ModManifest.UniqueID.AssertEqual(UniqueId);
+#endif
 
-		ConfigureHarmony();
-
-		InitializeConfig();
+		Initialize();
 
 		if (Config.ShowIntroMessage && !Config.SkipIntro) {
 			Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
@@ -190,9 +218,9 @@ public sealed class SpriteMaster : Mod {
 
 		Serialize.Save(Config.Path);
 
-		_ = TryAddConsoleCommand("spritemaster", "SpriteMaster Commands", ConsoleSupport.Invoke);
-		// Try to add 'sm' as a shortcut for my own sanity.
-		_ = TryAddConsoleCommand("sm", "SpriteMaster Commands", ConsoleSupport.Invoke);
+		foreach (var prefix in new[] { "spritemaster", "sm" }) {
+			_ = TryAddConsoleCommand(prefix, "SpriteMaster Commands", ConsoleSupport.Invoke);
+		}
 
 		InitializeEvents();
 
@@ -314,6 +342,7 @@ public sealed class SpriteMaster : Mod {
 		}
 	}
 
+	[StructLayout(LayoutKind.Auto)]
 	private readonly struct WaitWrapper : IDisposable {
 		private readonly object Waiter;
 
@@ -334,7 +363,8 @@ public sealed class SpriteMaster : Mod {
 					condition.Wait();
 					break;
 				default:
-					throw new InvalidOperationException(Waiter.GetType().Name);
+					ThrowHelper.ThrowInvalidOperationException(Waiter.GetType().Name);
+					break;
 			}
 		}
 	}
@@ -381,10 +411,19 @@ public sealed class SpriteMaster : Mod {
 		Garbage.Collect(compact: false, blocking: false, background: true);
 	}
 
-	private void ConfigureHarmony() {
-		var instance = new Harmony(ModManifest.UniqueID);
-		instance.ApplyPatches();
+	private void ConfigureHarmony(bool early) {
+		bool wasInitialized = HarmonyInstance.IsValueCreated;
+
+		var instance = HarmonyInstance.Value;
+
+		// If early initialization hadn't already occurred, do it now.
+		if (!early && !wasInitialized) {
+			instance.ApplyPatches(early: true);
+		}
+
+		instance.ApplyPatches(early);
 	}
+
 
 	private static void OnButtonPressed(object? _, ButtonPressedEventArgs args) {
 		if (args.Button == Config.ToggleButton) {

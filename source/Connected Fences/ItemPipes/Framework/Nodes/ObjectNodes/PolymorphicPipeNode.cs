@@ -31,7 +31,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         {
             ConnectedContainer = null;
             Priority = 2;
-            ItemTimer = 500;
+            ItemTimer = 1000;
         }
 
         public override void UpdateFilter()

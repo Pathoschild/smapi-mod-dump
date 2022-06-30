@@ -6,9 +6,9 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit 23ed781bb4f5102eaab86d4514e0b0bb06cada5c
+   commit 6b2ed162169167b1ad022c6831043d7cc8cffe40
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Sun May 1 19:05:40 2022 -0400
+   Date:   Fri Jun 24 09:11:34 2022 -0400
    
-       prepare for release
+       Update README.md
    

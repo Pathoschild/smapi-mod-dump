@@ -27,7 +27,7 @@ automatically pull raw items from the chest and push processed items into it.
 * [Compatibility](#compatibility)
 * [Troubleshooting](#troubleshooting)
   * [In-game overlay](#in-game-overlay)
-  * [Console command](#console-command)
+  * [Console commands](#console-commands)
 * [FAQs](#faqs)
 * [See also](#see-also)
 
@@ -414,7 +414,7 @@ use the default values defined in `assets/data.json`. This works for all automat
 including those added by other mods.
 
 Each entry in `MachineOverrides` is identified by the internal machine type ID (_not_ the machine
-name you see in-game). You can [run the `automate summary` command](#console-command) to see a list
+name you see in-game). You can [run the `automate summary` command](#console-commands) to see a list
 of machines being automated; the names shown in the list are the machine type IDs.
 
 
@@ -462,10 +462,15 @@ automated (red):
 
 > ![](screenshots/connectors.png)
 
-### Console command
+### Console commands
+#### `automate summary`
 Enter `automate summary` directly in the SMAPI console to view a summary of your machine groups:
 
 > ![](screenshots/console-command.png)
+
+#### `automate reset`
+Enter `automate summary` directly in the SMAPI console to reset all cached data and rescan the
+world for machines. Automate normally detects changes automatically, so this isn't usually needed.
 
 ## FAQs
 ### How many machines can I automate at once?

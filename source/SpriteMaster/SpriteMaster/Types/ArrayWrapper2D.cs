@@ -9,9 +9,11 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types;
 
+[StructLayout(LayoutKind.Auto)]
 internal readonly struct ArrayWrapper2D<T> {
 	internal readonly T[] Data;
 	internal readonly uint Width;

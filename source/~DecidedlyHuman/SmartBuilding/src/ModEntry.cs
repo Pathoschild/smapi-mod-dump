@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
+using StardewValley.SDKs;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 
@@ -45,6 +47,13 @@ namespace SmartBuilding
         private Texture2D buildingHud = null!;
         private Texture2D itemBox = null!;
         private int itemBarWidth = 800; // This is the default.
+        
+        // Rectangle drawing.
+        private Vector2? startTile = null;
+        private Vector2? endTile = null;
+        private List<Vector2> rectTiles = new List<Vector2>();
+        
+        private Item rectangleItem;
 
         private bool currentlyDrawing = false;
         private bool currentlyErasing = false;
@@ -78,7 +87,6 @@ namespace SmartBuilding
             set
             {
                 currentlyDrawing = value;
-                HarmonyPatches.Patches.CurrentlyDrawing = value;
             }
         }
 
@@ -88,7 +96,6 @@ namespace SmartBuilding
             set
             {
                 currentlyErasing = value;
-                HarmonyPatches.Patches.CurrentlyErasing = value;
             }
         }
 
@@ -98,7 +105,6 @@ namespace SmartBuilding
             set
             {
                 currentlyPlacing = value;
-                HarmonyPatches.Patches.CurrentlyPlacing = value;
             }
         }
 
@@ -126,7 +132,7 @@ namespace SmartBuilding
             hudPosition = new Vector2(50, 0);
             buildingHud = ModEntry.helper.Content.Load<Texture2D>("Mods/DecidedlyHuman/BuildingHUD", ContentSource.GameContent);
             itemBox = ModEntry.helper.Content.Load<Texture2D>("LooseSprites/tailoring", ContentSource.GameContent);
-            command = new ConsoleCommand(logger, buildingHud);
+            command = new ConsoleCommand(logger, buildingHud, this);
 
             Harmony harmony = new Harmony(ModManifest.UniqueID);
 
@@ -166,12 +172,11 @@ namespace SmartBuilding
                 buildingMode = false;
                 currentlyDrawing = false;
                 HarmonyPatches.Patches.CurrentlyInBuildMode = false;
-                HarmonyPatches.Patches.CurrentlyDrawing = false;
-                HarmonyPatches.Patches.CurrentlyErasing = false;
-                HarmonyPatches.Patches.CurrentlyPlacing = false;
+                HarmonyPatches.Patches.AllowPlacement = false;
             };
 
-            ModEntry.helper.ConsoleCommands.Add("sb_test", I18n.SmartBuilding_Commands_Debug_SbTest(), command.DebugCommand);
+            ModEntry.helper.ConsoleCommands.Add("sb_test", I18n.SmartBuilding_Commands_Debug_SbTest(), command.TestCommand);
+            ModEntry.helper.ConsoleCommands.Add("sb_identify_all_items", I18n.SmartBuilding_Commands_Debug_SbIdentifyItems(), command.IdentifyItemsCommand);
 #if !DEBUG
             ModEntry.helper.ConsoleCommands.Add("sb_binding_ui", "This will open up Smart Building's binding UI.", command.BindingUI);
 #endif
@@ -234,6 +239,14 @@ namespace SmartBuilding
                         logger.Log($"{I18n.SmartBuilding_Message_ProducerBeingIdentified()} {producer.Name}");
                         logger.Log($"{I18n.SmartBuilding_Message_IdentifiedProducerType()}: {type}");
                     }
+                    
+                    foreach (var thing in here.resourceClumps)
+                    {
+                        if (thing.tile.Equals(targetTile))
+                        {
+                                
+                        }
+                    }
                 }
             }
 
@@ -251,14 +264,54 @@ namespace SmartBuilding
                 {
                     // We set our CurrentlyDrawing property to true, which will update the value in our patch.
                     CurrentlyDrawing = true;
-
-                    int inventoryIndex = Game1.player.getIndexOfInventoryItem(Game1.player.CurrentItem);
-                    AddTile(Game1.player.CurrentItem, Game1.currentCursorTile, inventoryIndex);
+                    
+                    AddTile(Game1.player.CurrentItem, Game1.currentCursorTile);
                 }
             }
             else
             {
                 // Otherwise, the key is up, meaning we want to indicate we're not currently drawing.
+                CurrentlyDrawing = false;
+            }
+            
+            if (config.HoldToDrawRectangle.IsDown())
+            {
+                // If we're holding our rectangle modifier, we do things a little differently.
+
+                if (buildingMode)
+                {
+                    CurrentlyDrawing = true;
+                    rectangleItem = Game1.player.CurrentItem;
+
+                    if (startTile == null)
+                    {
+                        // If the start tile hasn't yet been set, then we want to set that.
+                        startTile = Game1.currentCursorTile;
+                    }
+
+                    endTile = Game1.currentCursorTile;
+
+                    rectTiles = CalculateRectangle(startTile.Value, endTile.Value, rectangleItem);
+                }
+            }
+            else
+            {
+                // The rectangle drawing key was released, so we want to calculate the tiles within, and set CurrentlyDrawing to false.
+
+                if (startTile.HasValue && endTile.HasValue)
+                {
+                    List<Vector2> tiles = CalculateRectangle(startTile.Value, endTile.Value, rectangleItem);
+
+                    foreach (Vector2 tile in tiles)
+                    {
+                        AddTile(rectangleItem, tile);
+                    }
+
+                    startTile = null;
+                    endTile = null;
+                    rectTiles.Clear();
+                }
+
                 CurrentlyDrawing = false;
             }
 
@@ -302,7 +355,13 @@ namespace SmartBuilding
                 // The build has been confirmed, so we iterate through our Dictionary, and pass each tile into PlaceObject.
                 foreach (KeyValuePair<Vector2, ItemInfo> v in tilesSelected)
                 {
+                    // We want to allow placement for the duration of this method.
+                    HarmonyPatches.Patches.AllowPlacement = true;
+                    
                     PlaceObject(v);
+                    
+                    // And disallow it afterwards.
+                    HarmonyPatches.Patches.AllowPlacement = false;
                 }
 
                 // Then, we clear the list, because building is done, and all errors are handled internally.
@@ -326,6 +385,42 @@ namespace SmartBuilding
                 if (buildingMode) // If we're in building mode, we demolish the tile, indicating we're dealing with Furniture.
                     DemolishOnTile(Game1.currentCursorTile, TileFeature.Furniture);
             }
+        }
+
+        private List<Vector2> CalculateRectangle(Vector2 cornerOne, Vector2 cornerTwo, Item item)
+        {
+            Vector2 topLeft;
+            Vector2 bottomRight;
+            List<Vector2> tiles = new List<Vector2>();
+            int itemsRemainingInStack = 0;
+
+            if (item != null)
+                itemsRemainingInStack = item.Stack;
+            else
+                itemsRemainingInStack = 0;
+            
+            topLeft = new Vector2(MathF.Min(cornerOne.X, cornerTwo.X), MathF.Min(cornerOne.Y, cornerTwo.Y));
+            bottomRight = new Vector2(MathF.Max(cornerOne.X, cornerTwo.X), MathF.Max(cornerOne.Y, cornerTwo.Y));
+            
+            int rectWidth = (int)bottomRight.X - (int)topLeft.X + 1;
+            int rectHeight = (int)bottomRight.Y - (int)topLeft.Y + 1;
+
+            for (int x = (int)topLeft.X; x < rectWidth + topLeft.X; x++)
+            {
+                for (int y = (int)topLeft.Y; y < rectHeight + topLeft.Y; y++)
+                {
+                    if (itemsRemainingInStack > 0)
+                    {
+                        if (CanBePlacedHere(new Vector2(x, y), item))
+                        {
+                            tiles.Add(new Vector2(x, y));
+                            itemsRemainingInStack--;
+                        }
+                    }
+                }
+            }
+
+            return tiles;
         }
 
         private void GameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -372,6 +467,13 @@ namespace SmartBuilding
                 name: () => I18n.SmartBuilding_Settings_Keybinds_Binds_HoldToDraw(),
                 getValue: () => config.HoldToDraw,
                 setValue: value => config.HoldToDraw = value);
+            
+            configMenuApi.AddKeybindList(
+                mod: ModManifest,
+                name: () => I18n.SmartBuilding_Settings_Keybinds_Binds_HoldToDrawRectangle(),
+                getValue: () => config.HoldToDrawRectangle,
+                setValue: value => config.HoldToDrawRectangle = value
+                );
 
             configMenuApi.AddKeybindList(
                 mod: ModManifest,
@@ -476,6 +578,7 @@ namespace SmartBuilding
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_OptionalToggles_EnableReplacingFences(),
+                tooltip: () => I18n.SmartBuilding_Settings_OptionalToggles_EnableReplacingFences_Tooltip(),
                 getValue: () => config.EnableReplacingFences,
                 setValue: value => config.EnableReplacingFences = value
             );
@@ -494,42 +597,42 @@ namespace SmartBuilding
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_CrabPotsInAnyWaterTile(),
                 getValue: () => config.CrabPotsInAnyWaterTile,
-                setValue: b => config.CrabPotsInAnyWaterTile = b
+                setValue: value => config.CrabPotsInAnyWaterTile = value
             );
 
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_EnablePlantingCrops(),
                 getValue: () => config.EnablePlantingCrops,
-                setValue: b => config.EnablePlantingCrops = b
+                setValue: value => config.EnablePlantingCrops = value
             );
 
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_EnableCropFertilisers(),
                 getValue: () => config.EnableCropFertilizers,
-                setValue: b => config.EnableCropFertilizers = b
+                setValue: value => config.EnableCropFertilizers = value
             );
 
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_EnableTreeFertilisers(),
                 getValue: () => config.EnableTreeFertilizers,
-                setValue: b => config.EnableTreeFertilizers = b
+                setValue: value => config.EnableTreeFertilizers = value
             );
 
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_EnableTreeTappers(),
                 getValue: () => config.EnableTreeTappers,
-                setValue: b => config.EnableTreeTappers = b
+                setValue: value => config.EnableTreeTappers = value
             );
 
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_EnableInsertingItemsIntoMachines(),
                 getValue: () => config.EnableInsertingItemsIntoMachines,
-                setValue: b => config.EnableInsertingItemsIntoMachines = b
+                setValue: value => config.EnableInsertingItemsIntoMachines = value
             );
 
             configMenuApi.AddParagraph(
@@ -546,14 +649,14 @@ namespace SmartBuilding
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_Debug_EnableDebugCommand(),
                 getValue: () => config.EnableDebugCommand,
-                setValue: b => config.EnableDebugCommand = b
+                setValue: value => config.EnableDebugCommand = value
             );
 
             configMenuApi.AddBoolOption(
                 mod: ModManifest,
                 name: () => I18n.SmartBuilding_Settings_Debug_EnableDebugKeybinds(),
                 getValue: () => config.EnableDebugControls,
-                setValue: b => config.EnableDebugControls = b
+                setValue: value => config.EnableDebugControls = value
             );
 
             configMenuApi.AddKeybindList(
@@ -633,12 +736,13 @@ namespace SmartBuilding
         private void RenderedHud(object? sender, RenderedHudEventArgs e)
         {
             if (buildingMode)
-            { // There's absolutely no need to run this while we're not in building mode.
+            { 
+                // There's absolutely no need to run this while we're not in building mode.
                 int windowWidth = Game1.game1.Window.ClientBounds.Width;
 
                 // TODO: Use the newer logic I have to get the toolbar position for this.
                 hudPosition = new Vector2(
-                    (windowWidth / 2) - (itemBarWidth / 2) - buildingHud.Width * 4,
+                    windowWidth / 2 - itemBarWidth / 2 - buildingHud.Width * 4,
                     0);
 
                 e.SpriteBatch.Draw(
@@ -672,7 +776,7 @@ namespace SmartBuilding
 
                     Point playerGlobalPosition = Game1.player.GetBoundingBox().Center;
                     Vector2 playerLocalVector = Game1.GlobalToLocal(globalPosition: new Vector2(playerGlobalPosition.X, playerGlobalPosition.Y), viewport: Game1.viewport);
-                    bool toolbarAtTop = ((playerLocalVector.Y > (float)(Game1.viewport.Height / 2 + 64)) ? true : false);
+                    bool toolbarAtTop = playerLocalVector.Y > (float)(Game1.viewport.Height / 2 + 64) ? true : false;
 
                     #endregion
 
@@ -892,11 +996,39 @@ namespace SmartBuilding
         /// <returns></returns>
         private bool CanBePlacedHere(Vector2 v, Item i)
         {
+            // If the item is a tool, we want to return.
+            if (i is Tool)
+                return false;
+            
             ItemType itemType = IdentifyItemType((SObject)i);
             GameLocation here = Game1.currentLocation;
 
             switch (itemType)
             {
+                case ItemType.NotPlaceable:
+                    return false;
+                case ItemType.Torch:
+                    // We need to figure out whether there's a fence in the placement tile.
+                    if (here.objects.ContainsKey(v))
+                    {
+                        // We know there's an object at these coordinates, so we grab a reference.
+                        SObject o = here.objects[v];
+
+                        // Then we return true if it's a fence, because we want to place the torch on the fence.
+                        if (IsTypeOfObject(o, ItemType.Fence))
+                        {
+                            // It's a type of fence, but we also want to ensure that it isn't a gate.
+
+                            if (o.Name.Equals("Gate"))
+                                return false;
+                            
+                            return true;
+                        }
+                    }
+                    else
+                        goto GenericPlaceable; // Please don't hate me too much. This is temporary until everything gets split out into separate methods eventually.
+
+                    break;
                 case ItemType.CrabPot: // We need to determine if the crab pot is being placed in an appropriate water tile.
                     return CrabPot.IsValidCrabPotLocationTile(here, (int)v.X, (int)v.Y) && HasAdjacentNonWaterTile(v);
                 case ItemType.GrassStarter:
@@ -1115,9 +1247,10 @@ namespace SmartBuilding
                     else
                         return (i as Furniture).canBePlacedHere(here, v);
                 case ItemType.Generic:
+                    GenericPlaceable: // A goto, I know, gross, but... it works, and is fine for now, until I split out detection logic into methods. TODO.
                     if (config.LessRestrictiveObjectPlacement)
                     {
-                        // If the less restrictive object placement setting is enabled, we first want to check if vanilla logic dictates the obect be placeable.
+                        // If the less restrictive object placement setting is enabled, we first want to check if vanilla logic dictates the object be placeable.
                         if (Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v))
                         {
                             // It dictates that it is, so we can simply return true.
@@ -1142,14 +1275,17 @@ namespace SmartBuilding
             return false;
         }
 
-        private ItemType IdentifyItemType(SObject item)
+        public ItemType IdentifyItemType(SObject item) // Making this public for access from the command is awful. TODO: Split this off into its own class.
         {
             // TODO: Make this detection more robust. If possible, don't depend upon it at all.
             string itemName = item.Name;
 
-            // The whole point of this is to determine whether the object being placed requires
-            // special treatment at all, and assist us in determining whether it's a TerrainFeature, or an SObject.
-            if (!item.isPlaceable())
+            // The whole point of this is to determine whether the object being placed requires special treatment.
+            if (item is Tool)
+                return ItemType.NotPlaceable;
+            else if (item.Name.Equals("Torch") && item.Category.Equals(0) && item.Type.Equals("Crafting"))
+                return ItemType.Torch;
+            else if (!item.isPlaceable())
                 return ItemType.NotPlaceable;
             else if (item is FishTankFurniture)
                 return ItemType.FishTankFurniture;
@@ -1166,6 +1302,8 @@ namespace SmartBuilding
             else if (itemName.Contains("Chest") || item is Chest)
                 return ItemType.Chest;
             else if (itemName.Contains("Fence"))
+                return ItemType.Fence;
+            else if (itemName.Equals("Gate") || item.ParentSheetIndex.Equals(325))
                 return ItemType.Fence;
             else if (itemName.Equals("Grass Starter"))
                 return ItemType.GrassStarter;
@@ -1211,7 +1349,7 @@ namespace SmartBuilding
             CanBeInsertedHere(v, item);
         }
 
-        private void AddTile(Item item, Vector2 v, int itemInventoryIndex)
+        private void AddTile(Item item, Vector2 v)
         {
             // If we're not in building mode, we do nothing.
             if (!buildingMode)
@@ -1219,10 +1357,6 @@ namespace SmartBuilding
 
             // If the player isn't holding an item, we do nothing.
             if (Game1.player.CurrentItem == null)
-                return;
-
-            // If the item isn't placeable, we do nothing.
-            if (!item.isPlaceable())
                 return;
 
             // If the item cannot be placed here according to our own rules, we do nothing. This is to allow for slightly custom placement logic.
@@ -1285,6 +1419,20 @@ namespace SmartBuilding
                         item.Key * Game1.tileSize),
                     1f, 1f, 4f, StackDrawType.Hide);
             }
+
+            if (rectTiles != null)
+            {
+                foreach (Vector2 tile in rectTiles)
+                {
+                    // Here, we simply have the Item draw itself in the world.
+                    rectangleItem.drawInMenu
+                    (e.SpriteBatch,
+                        Game1.GlobalToLocal(
+                            Game1.viewport,
+                            tile * Game1.tileSize),
+                        1f, 1f, 4f, StackDrawType.Hide);
+                }
+            }
         }
 
         private void ClearPaintedTiles()
@@ -1297,6 +1445,9 @@ namespace SmartBuilding
 
             // And, finally, clear it.
             tilesSelected.Clear();
+            
+            // We also want to clear the rect tiles. No refunding necessary here, however, as items are only deducted when added to tilesSelected.
+            rectTiles.Clear();
         }
 
         // TODO: Modularise this method more. Right now, it just works. It is not well structured for future maintenance.
@@ -1357,6 +1508,17 @@ namespace SmartBuilding
                     {
                         // We need special handling for fences, since we don't want to pick them up if their health has deteriorated too much.
                         Fence fenceToRemove = (Fence)o;
+                        
+                        // We also need to check to see if the fence has a torch on it so we can remove the light source.
+                        if (o.heldObject.Value != null)
+                        {
+                            // There's an item there, so we can relatively safely assume it's a torch.
+                            
+                            // We remove its light source from the location, and refund the torch.
+                            here.removeLightSource(o.heldObject.Value.lightSource.identifier);
+                            
+                            RefundItem(o.heldObject, "No error. Do not log.", LogLevel.Trace, false);
+                        }
 
                         fenceToRemove.performRemoveAction(tile * 64, here);
                         here.objects.Remove(tile);
@@ -1875,6 +2037,49 @@ namespace SmartBuilding
                     if (furniture != null && !here.furniture.Contains(furniture as Furniture) && !placedSuccessfully)
                         RefundItem(itemToPlace, I18n.SmartBuilding_Error_Furniture_PlacementFailed(), LogLevel.Error);
                 }
+                else if (itemInfo.ItemType == ItemType.Torch)
+                {
+                    // We need to figure out whether there's a fence in the placement tile.
+                    if (here.objects.ContainsKey(targetTile))
+                    {
+                        // We know there's an object at these coordinates, so we grab a reference.
+                        SObject o = here.objects[targetTile];
+
+                        if (IsTypeOfObject(o, ItemType.Fence))
+                        {
+                            // If the object in this tile is a fence, we add the torch to it.
+                            //itemToPlace.placementAction(Game1.currentLocation, (int)item.Key.X * 64, (int)item.Key.Y * 64, Game1.player);
+                            
+                            // We know it's a fence by type, but we need to make sure it isn't a gate, and to ensure it isn't already "holding" anything.
+                            if (!o.Name.Equals("Gate") && o.heldObject != null)
+                            {
+                                // There's something in there, so we need to refund the torch.
+                                RefundItem(item.Value.Item, I18n.SmartBuilding_Error_Torch_PlacementInFenceFailed(), LogLevel.Error);
+                            }
+                            
+                            o.performObjectDropInAction(itemToPlace, false, Game1.player);
+
+                            if (IdentifyItemType(o.heldObject) != ItemType.Torch)
+                            {
+                                // If the fence isn't "holding" a torch, there was a problem, so we should refund.
+                                RefundItem(item.Value.Item, I18n.SmartBuilding_Error_Torch_PlacementInFenceFailed(), LogLevel.Error);
+                            }
+
+                            return;
+                        }
+                        else
+                        {
+                            // If it's not a fence, we want to refund the item.
+                            RefundItem(item.Value.Item, I18n.SmartBuilding_Error_Object_PlacementFailed(), LogLevel.Error);
+                            
+                            return;
+                        }
+                    }
+                    
+                    // There is no object here, so we treat it like a generic placeable.
+                    if (!itemToPlace.placementAction(Game1.currentLocation, (int)item.Key.X * 64, (int)item.Key.Y * 64, Game1.player))
+                        RefundItem(item.Value.Item, I18n.SmartBuilding_Error_Object_PlacementFailed(), LogLevel.Error);
+                }
                 else
                 { // We're dealing with a generic placeable.
                     bool successfullyPlaced = itemToPlace.placementAction(Game1.currentLocation, (int)item.Key.X * 64, (int)item.Key.Y * 64, Game1.player);
@@ -1902,7 +2107,7 @@ namespace SmartBuilding
             Game1.player.addItemByMenuIfNecessary(item.getOne());
 
             if (shouldLog || logLevel == LogLevel.Debug || logLevel == LogLevel.Error || logLevel == LogLevel.Warn || logLevel == LogLevel.Alert)
-                monitor.Log($"{reason}. {I18n.SmartBuilding_Error_Refunding_RefundingItemToPlayerInventory()} {item.Name}", logLevel);
+                monitor.Log($"{reason} {I18n.SmartBuilding_Error_Refunding_RefundingItemToPlayerInventory()} {item.Name}", logLevel);
         }
 
         private int? GetFlooringIdFromName(string itemName)

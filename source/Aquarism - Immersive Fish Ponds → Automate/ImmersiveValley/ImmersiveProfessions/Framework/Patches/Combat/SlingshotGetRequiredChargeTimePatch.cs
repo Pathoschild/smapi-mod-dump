@@ -12,21 +12,20 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Tools;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class SlingshotGetRequiredChargeTimePatch : BasePatch
+internal sealed class SlingshotGetRequiredChargeTimePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal SlingshotGetRequiredChargeTimePatch()
     {
-        Original = RequireMethod<Slingshot>(nameof(Slingshot.GetRequiredChargeTime));
+        Target = RequireMethod<Slingshot>(nameof(Slingshot.GetRequiredChargeTime));
     }
 
     #region harmony patches
@@ -37,7 +36,7 @@ internal class SlingshotGetRequiredChargeTimePatch : BasePatch
     {
         var firer = __instance.getLastFarmerToUse();
         if (!firer.IsLocalPlayer || !firer.HasProfession(Profession.Desperado)) return;
-        
+
         __result *= 0.5f;
     }
 

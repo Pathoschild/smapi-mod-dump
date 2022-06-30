@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/adverserath/QuickGlance
+   Git: https://github.com/adverserath/QuickGlance.git
+
+mods:
+   Quick Glance
+
+latest commit:
+   commit 8cb054c332b3f83a27abfbc139a1eb9baa527506
+   Author: David Rath <adverserath@gmail.com>
+   Date:   Mon May 30 21:03:14 2022 +0100
+   
+       * Remove unused Harmony reference
+   

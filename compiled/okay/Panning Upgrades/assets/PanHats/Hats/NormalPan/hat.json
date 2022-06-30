@@ -1,0 +1,7 @@
+﻿{
+  "Name": "Pan",
+  "Description": "You wear the pan as a hat...",
+  "ShowHair": false,
+  "IgnoreHairstyleOffset": true,
+  "CanPurshase":  false
+}

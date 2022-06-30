@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley.Monsters;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GreenSlimeOnDealContactDamagePatch : BasePatch
+internal sealed class GreenSlimeOnDealContactDamagePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GreenSlimeOnDealContactDamagePatch()
     {
-        Original = RequireMethod<GreenSlime>(nameof(GreenSlime.onDealContactDamage));
+        Target = RequireMethod<GreenSlime>(nameof(GreenSlime.onDealContactDamage));
     }
 
     #region harmony patches
 
     /// <summary>Patch to make Piper immune to slimed debuff.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GreenSlimeOnDealContactDamageTranspiler(
+    private static IEnumerable<CodeInstruction>? GreenSlimeOnDealContactDamageTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -58,12 +58,12 @@ internal class GreenSlimeOnDealContactDamagePatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Piper, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Piper.Value, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
                     new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Piper + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Piper.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, returnLabel)
                 );
@@ -71,7 +71,6 @@ internal class GreenSlimeOnDealContactDamagePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Piper slime debuff immunity.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

@@ -42,6 +42,7 @@ mods:
    Custom Spouse Rooms
    Custom Toolbar
    Custom Tree Tweaks
+   Custom Wallpaper Framework
    Custom Warp Points
    Dialogue Display Framework
    Dialogue New Line
@@ -106,6 +107,7 @@ mods:
    Placeable Mine Shafts
    Plant and Fertilize All
    Planter Trees
+   Prismatic Furniture
    Quick Load
    Quick Responses
    Quotes
@@ -140,9 +142,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 91cd0634afabeea2aed5f8c61ba457ef171e0c4d
+   commit e42becb735e60dc7f13db451b71c956d2dda11a4
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun May 29 01:05:14 2022 -0400
+   Date:   Sun Jun 19 17:01:00 2022 -0400
    
        etc
    

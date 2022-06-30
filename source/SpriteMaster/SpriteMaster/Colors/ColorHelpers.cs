@@ -8,51 +8,65 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Colors;
 
 internal static class ColorHelpers {
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this byte value) => value / 255.0;
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this ushort value) => value / 65_535.0;
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this uint value) => value / 4_294_967_295.0;
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this Fixed8 value) => ValueToScalar(value.Value);
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this Fixed16 value) => ValueToScalar(value.Value);
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static float ValueToScalarF(this byte value) => value / 255.0f;
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static float ValueToScalarF(this ushort value) => value / 65_535.0f;
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static float ValueToScalarF(this uint value) => value / 4_294_967_295.0f;
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static float ValueToScalarF(this Fixed8 value) => ValueToScalarF(value.Value);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static float ValueToScalarF(this Fixed16 value) => ValueToScalarF(value.Value);
+
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte ScalarToValue8(this double scalar) => (byte)((scalar * 255.0) + 0.5);
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte ScalarToValue8(this float scalar) => (byte)((scalar * 255.0f) + 0.5f);
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ushort ScalarToValue16(this double scalar) => (ushort)((scalar * 655_35.0) + 0.5);
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ushort ScalarToValue16(this float scalar) => (ushort)((scalar * 655_35.0f) + 0.5f);
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static uint ScalarToValue32(this double scalar) => (uint)((scalar * 4_294_967_295.0) + 0.5);
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static uint ScalarToValue32(this float scalar) => (uint)((scalar * 4_294_967_295.0f) + 0.5f);
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ushort Color8To16(this byte value) => (ushort)((value << 8) | value);
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte Color16To8Fast(this ushort value) => (byte)((value * 0xFF01U) + 0x800000U >> 24);
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte Color16To8Accurate(this ushort value) => (byte)((value + 128U) / 0x101U);
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte Color16to8(this ushort value) => Color16To8Accurate(value);
 
+	[Pure, MustUseReturnValue]
 	internal static half Color8ToHalf(this byte value) {
 		if (value == 0) {
 			ushort shortValue = 0;
@@ -76,6 +90,7 @@ internal static class ColorHelpers {
 		return result.ReinterpretAs<half>();
 	}
 
+	[Pure, MustUseReturnValue]
 	internal static half Color16ToHalf(this ushort value) {
 		if (value == 0) {
 			return value.ReinterpretAs<half>();
@@ -98,6 +113,7 @@ internal static class ColorHelpers {
 		return result.ReinterpretAs<half>();
 	}
 
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static float Color8ToFloat(this byte value) {
 		if (value == 0) {
 			return 0.0f;
@@ -120,6 +136,7 @@ internal static class ColorHelpers {
 		return result.ReinterpretAs<float>();
 	}
 
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static float Color16ToFloat(this ushort value) {
 		if (value == 0) {
 			return 0.0f;
@@ -142,6 +159,53 @@ internal static class ColorHelpers {
 		return result.ReinterpretAs<float>();
 	}
 
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static double Color8ToDouble(this byte value) {
+		if (value == 0) {
+			return 0.0;
+		}
+		const uint inBits = sizeof(byte) * 8;
+		ulong uValue = value;
+		int leadingZerosWithMsb = value.CountLeadingZeros() + 1;
+		uValue = (byte)(uValue << leadingZerosWithMsb);
+		uint remainingBits = (uint)(inBits - (leadingZerosWithMsb));
+		int shiftRight = (leadingZerosWithMsb) + ((int)remainingBits - (int)Numeric.Float.Double.SignificandBits);
+		if (inBits <= Numeric.Float.Double.SignificandBits || shiftRight < 0) {
+			uValue <<= -shiftRight;
+		}
+		else {
+			uValue >>= shiftRight;
+		}
+		ulong mantissa = uValue;
+		ulong exponent = ((ulong)-(leadingZerosWithMsb + 1)) & (Numeric.Float.Double.ExponentMask >> 1);
+		ulong result = mantissa | exponent << (int)Numeric.Float.Double.SignificandBits;
+		return result.ReinterpretAs<double>();
+	}
+
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static double Color16ToDouble(this ushort value) {
+		if (value == 0) {
+			return 0.0;
+		}
+		const uint inBits = sizeof(ushort) * 8;
+		ulong uValue = value;
+		int leadingZerosWithMsb = value.CountLeadingZeros() + 1;
+		uValue = (byte)(uValue << leadingZerosWithMsb);
+		uint remainingBits = (uint)(inBits - (leadingZerosWithMsb));
+		int shiftRight = (leadingZerosWithMsb) + ((int)remainingBits - (int)Numeric.Float.Double.SignificandBits);
+		if (inBits <= Numeric.Float.Double.SignificandBits || shiftRight < 0) {
+			uValue <<= -shiftRight;
+		}
+		else {
+			uValue >>= shiftRight;
+		}
+		ulong mantissa = uValue;
+		ulong exponent = ((ulong)-(leadingZerosWithMsb + 1)) & (Numeric.Float.Double.ExponentMask >> 1);
+		ulong result = mantissa | exponent << (int)Numeric.Float.Double.SignificandBits;
+		return result.ReinterpretAs<double>();
+	}
+
+	[Pure, MustUseReturnValue]
 	internal static uint RedmeanDifference(this Color8 colorA, Color8 colorB, bool linear, bool alpha = true) {
 		static int Square(int value) => value * value;
 
@@ -205,6 +269,7 @@ internal static class ColorHelpers {
 		}
 	}
 
+	[Pure, MustUseReturnValue]
 	internal static uint RedmeanDifference(this Color16 colorA, Color16 colorB, bool linear, bool alpha = true) {
 		static int Square(int value) => value * value;
 
@@ -268,11 +333,13 @@ internal static class ColorHelpers {
 		}
 	}
 
+	[StructLayout(LayoutKind.Auto)]
 	internal readonly struct YccConfig {
 		internal double LuminanceWeight { get; init; }
 		internal double ChrominanceWeight { get; init; }
 	}
 
+	[Pure, MustUseReturnValue]
 	internal static uint YccDifference(this Color16 colorA, Color16 colorB, in YccConfig config, bool linear, bool alpha = true) {
 		if (colorA == colorB) {
 			return 0;

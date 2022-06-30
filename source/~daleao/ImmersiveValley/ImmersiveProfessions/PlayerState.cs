@@ -12,20 +12,19 @@ namespace DaLion.Stardew.Professions;
 
 #region using directives
 
-using System.Collections.Generic;
-using StardewValley.Monsters;
-
 using Framework;
-using Framework.TreasureHunt;
-using Framework.Ultimate;
+using Framework.TreasureHunts;
+using Framework.Ultimates;
+using StardewValley.Monsters;
+using System.Collections.Generic;
 
 #endregion using directives
 
 internal class PlayerState
 {
-    private Ultimate _registeredUltimate;
+    private Ultimate? _registeredUltimate;
 
-    internal Ultimate RegisteredUltimate
+    internal Ultimate? RegisteredUltimate
     {
         get => _registeredUltimate;
         set
@@ -51,5 +50,5 @@ internal class PlayerState
     internal int SpelunkerLadderStreak { get; set; }
     internal int SlimeContactTimer { get; set; }
     internal bool UsedDogStatueToday { get; set; }
-    internal bool[] RevalidatedLevelThisSession { get; set; } = new bool[6];
+    internal Queue<ISkill> SkillsToReset { get; } = new();
 }

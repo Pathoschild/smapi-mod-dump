@@ -8,7 +8,7 @@ for queries and analysis.**
 
 # Changelog - Recatchable Legendaries
 
-## 1.0.1 - 2022-05-20
+## 1.1.0 - 2022-05-20
 
 ### Added
 

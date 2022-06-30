@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GameLocationBreakStonePatch : BasePatch
+internal sealed class GameLocationBreakStonePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GameLocationBreakStonePatch()
     {
-        Original = RequireMethod<GameLocation>("breakStone");
+        Target = RequireMethod<GameLocation>("breakStone");
     }
 
     #region harmony patches
 
     /// <summary>Patch to remove Geologist extra gem chance + remove Prospector double coal chance.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GameLocationBreakStoneTranspiler(
+    private static IEnumerable<CodeInstruction>? GameLocationBreakStoneTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -50,15 +50,15 @@ internal class GameLocationBreakStonePatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Miner)
+                .FindProfessionCheck(Profession.Miner.Value)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Stloc_1)
                 )
                 .AddLabels(isNotPrestiged)
                 .Insert(
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 4) // arg 4 = Farmer who
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4) // arg 4 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Miner + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Miner.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -68,7 +68,6 @@ internal class GameLocationBreakStonePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Miner extra ores.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -87,13 +86,12 @@ internal class GameLocationBreakStonePatch : BasePatch
                 .Return()
                 .InsertWithLabels( // insert unconditional branch to skip this check and restore backed-up labels to this branch
                     labels,
-                    new CodeInstruction(OpCodes.Br, (Label) isNotGeologist)
+                    new CodeInstruction(OpCodes.Br, (Label)isNotGeologist)
                 );
         }
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -110,13 +108,12 @@ internal class GameLocationBreakStonePatch : BasePatch
                 .GetOperand(out var isNotProspector) // copy destination
                 .Return()
                 .Insert( // insert uncoditional branch to skip this check
-                    new CodeInstruction(OpCodes.Br_S, (Label) isNotProspector)
+                    new CodeInstruction(OpCodes.Br_S, (Label)isNotProspector)
                 );
         }
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

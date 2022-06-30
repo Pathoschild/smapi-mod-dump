@@ -12,21 +12,20 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmerGetProfessionForSkillPatch : BasePatch
+internal sealed class FarmerGetProfessionForSkillPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmerGetProfessionForSkillPatch()
     {
-        Original = RequireMethod<Farmer>(nameof(Farmer.getProfessionForSkill));
+        Target = RequireMethod<Farmer>(nameof(Farmer.getProfessionForSkill));
     }
 
     #region harmony patches
@@ -36,9 +35,10 @@ internal class FarmerGetProfessionForSkillPatch : BasePatch
     private static bool FarmerGetProfessionForSkillPrefix(Farmer __instance, ref int __result, int skillType,
         int skillLevel)
     {
-        if (!ModEntry.Config.EnablePrestige) return true; // run original logic
+        if (!ModEntry.Config.EnablePrestige || skillType == Farmer.luckSkill ||
+            !Skill.TryFromValue(skillType, out var skill)) return true; // run original logic
 
-        var branch = __instance.GetCurrentBranchForSkill(skillType);
+        var branch = __instance.GetCurrentBranchForSkill(skill);
         if (branch < 0)
         {
             __result = -1;
@@ -48,7 +48,7 @@ internal class FarmerGetProfessionForSkillPatch : BasePatch
         __result = skillLevel switch
         {
             5 => branch,
-            10 => __instance.GetCurrentProfessionForBranch(branch),
+            10 => __instance.GetCurrentProfessionForBranch(Profession.FromValue(branch)),
             _ => -1
         };
 

@@ -15,11 +15,10 @@ using SpriteMaster.Hashing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using TeximpNet.Compression;
 
 namespace SpriteMaster.Resample;
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Auto)]
 internal readonly struct TextureFormat {
 
 	[MarshalAs(UnmanagedType.I4)]

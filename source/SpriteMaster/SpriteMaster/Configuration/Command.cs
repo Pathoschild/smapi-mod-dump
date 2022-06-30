@@ -207,7 +207,6 @@ internal static class Command {
 		}
 
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushTextureCache)) {
-			Harmonize.Patches.TextureCache.Flush(reset: true);
 		}
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushSuspendedSpriteCache)) {
 			Caching.SuspendedSpriteCache.Purge();
@@ -217,6 +216,9 @@ internal static class Command {
 		}
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushResidentCache)) {
 			Caching.ResidentCache.Purge();
+		}
+		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushTextureFileCache)) {
+			Caching.TextureFileCache.Purge();
 		}
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.ResetDisplay)) {
 			StardewValley.Game1.graphics.ApplyChanges();

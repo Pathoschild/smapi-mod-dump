@@ -10,6 +10,9 @@
 		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
 	</PropertyGroup>
 	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 	</ItemGroup>
 	<Import Project="..\_CommonWithHarmony\_CommonWithHarmony.projitems" Label="Shared" />

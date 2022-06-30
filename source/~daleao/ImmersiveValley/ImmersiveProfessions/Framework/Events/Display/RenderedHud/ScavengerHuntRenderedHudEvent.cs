@@ -12,19 +12,25 @@ namespace DaLion.Stardew.Professions.Framework.Events.Display;
 
 #region using directives
 
-using System;
+using Common.Events;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ScavengerHuntRenderedHudEvent : RenderedHudEvent
+internal sealed class ScavengerHuntRenderedHudEvent : RenderedHudEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal ScavengerHuntRenderedHudEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnRenderedHudImpl(object sender, RenderedHudEventArgs e)
+    protected override void OnRenderedHudImpl(object? sender, RenderedHudEventArgs e)
     {
         if (!ModEntry.PlayerState.ScavengerHunt.TreasureTile.HasValue) return;
 

@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Types;
 
 internal static class LongHash {
-	internal const ulong Null = HashUtility.Null;
+	internal const ulong Null = HashUtility.Constants.Bits64.Null;
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ulong GetLongHashCode<T>(this T obj) {
@@ -28,17 +28,20 @@ internal static class LongHash {
 	internal static ulong From(int hashCode) => HashUtility.Combine((ulong)hashCode, (ulong)(~hashCode) << 32);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static ulong From(ulong hashCode) => hashCode;
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ulong From(ILongHash obj) => obj.GetLongHashCode();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ulong From<T>(T obj) {
-		if (obj is ILongHash hashable) {
-			return hashable.GetLongHashCode();
-		}
-		if (obj is null) {
-			return Null;
-		}
-		return From(obj.GetHashCode());
+		return obj switch {
+			ILongHash hashable => hashable.GetLongHashCode(),
+			null => Null,
+			int => From(obj.GetHashCode()),
+			uint => From(obj.GetHashCode()),
+			_ => HashUtility.SubHash64(obj)
+		};
 	}
 }
 

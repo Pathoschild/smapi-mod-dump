@@ -21,9 +21,7 @@ namespace SmartBuilding.HarmonyPatches
     public static class Patches
     {
         private static bool currentlyInBuildMode;
-        private static bool currentlyDrawing;
-        private static bool currentlyErasing;
-        private static bool currentlyPlacing;
+        private static bool allowPlacement;
 
         public static bool CurrentlyInBuildMode
         {
@@ -31,56 +29,41 @@ namespace SmartBuilding.HarmonyPatches
             set { currentlyInBuildMode = value; }
         }
 
-        public static bool CurrentlyDrawing
+        public static bool AllowPlacement
         {
-            get { return currentlyDrawing; }
-            set { currentlyDrawing = value; }
+            get { return allowPlacement; }
+            set { allowPlacement = value; }
         }
 
-        public static bool CurrentlyErasing
-        {
-            get { return currentlyErasing; }
-            set { currentlyErasing = value; }
-        }
-
-        public static bool CurrentlyPlacing
-        {
-            get { return currentlyPlacing; }
-            set { currentlyPlacing = value; }
-        }
-
-        private static bool ShouldCancel()
+        private static bool ShouldPerformAction()
         {
             if (currentlyInBuildMode)
             {
-                // Yes, this could be easily simplified, but I prefer the readability.
-                if (currentlyErasing || currentlyDrawing || currentlyPlacing)
-                    return false;
-                else
-                    return true;
+                return allowPlacement;
             }
-
+            
+            // If we're not in build mode, we always want to continue on to the regular methods.
             return true;
         }
 
         public static bool PlacementAction_Prefix(Object __instance, GameLocation location, int x, int y, Farmer who)
         {
-            return ShouldCancel();
+            return ShouldPerformAction();
         }
 
         public static bool Chest_CheckForAction_Prefix(Chest __instance, Farmer who, bool justCheckingForActivity)
         {
-            return ShouldCancel();
+            return ShouldPerformAction();
         }
 
         public static bool FishPond_DoAction_Prefix(FishPond __instance, Vector2 tileLocation, Farmer who)
         {
-            return ShouldCancel();
+            return ShouldPerformAction();
         }
 
         public static bool StorageFurniture_DoAction_Prefix(StorageFurniture __instance, Farmer who, bool justCheckingForActivity)
         {
-            return ShouldCancel();
+            return ShouldPerformAction();
         }
     }
 }

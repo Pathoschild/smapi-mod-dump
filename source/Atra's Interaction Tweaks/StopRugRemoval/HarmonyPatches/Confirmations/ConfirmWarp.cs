@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using System.Reflection;
+using System.Reflection.Emit;
 using AtraBase.Toolkit.Reflection;
 using AtraShared.Menuing;
 using AtraShared.Utils.Extensions;
+using AtraShared.Utils.HarmonyHelper;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -34,7 +37,6 @@ internal static class ConfirmWarp
     /// </summary>
     internal static readonly PerScreen<bool> HaveConfirmed = new(createNewState: () => false);
 
-#pragma warning disable SA1602 // Enumeration items should be documented. Reviewed
     /// <summary>
     /// The location to warp to. IDs are the ParentSheetIndex of the totem.
     /// </summary>
@@ -54,11 +56,22 @@ internal static class ConfirmWarp
         /// Warp to mountain.
         /// </summary>
         Mountain = 689,
+
+        /// <summary>
+        /// Warp to beach.
+        /// </summary>
         Beach = 690,
+
+        /// <summary>
+        /// Warp to desert.
+        /// </summary>
         Desert = 261,
+
+        /// <summary>
+        /// Warp to islandsouth.
+        /// </summary>
         IslandSouth = 886,
     }
-#pragma warning restore SA1602 // Enumeration items should be documented
 
     /// <summary>
     /// Applies the patch to the wand.
@@ -71,6 +84,60 @@ internal static class ConfirmWarp
             original: typeof(Wand).InstanceMethodNamed(nameof(Wand.DoFunction)),
             prefix: new HarmonyMethod(typeof(ConfirmWarp), nameof(PrefixWand)));
     }
+
+    private static void SetHaveConfirmed(bool val) => HaveConfirmed.Value = val;
+
+#pragma warning disable SA1116 // Split parameters should start on line after declaration
+    [HarmonyTranspiler]
+    [HarmonyPatch(typeof(BeachNightMarket), nameof(BeachNightMarket.answerDialogueAction))]
+    private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
+    {
+        try
+        {
+            ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
+            helper.FindNext(new CodeInstructionWrapper[]
+            { // case "WarperQuestion_Yes"
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldstr, "WarperQuestion_Yes"),
+                new(OpCodes.Call),
+                new(OpCodes.Brtrue_S),
+            })
+            .Advance(3)
+            .StoreBranchDest()
+            .AdvanceToStoredLabel()
+            .FindNext(new CodeInstructionWrapper[]
+            { // new SObject(688,1)
+                new(OpCodes.Ldc_I4, 688),
+            })
+            .GetLabels(out var labels)
+            .Insert(new CodeInstruction[]
+            {
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Call, typeof(ConfirmWarp).StaticMethodNamed(nameof(SetHaveConfirmed))),
+            }, withLabels: labels)
+            .FindNext(new CodeInstructionWrapper[]
+            {
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Ret),
+            })
+            .GetLabels(out var secondLabels)
+            .Insert(new CodeInstruction[]
+            {
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Call, typeof(ConfirmWarp).StaticMethodNamed(nameof(SetHaveConfirmed))),
+            }, withLabels: secondLabels);
+
+            // helper.Print();
+            return helper.Render();
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Ran into error transpiling around the night market warp home service.\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
+        }
+        return null;
+    }
+#pragma warning restore SA1116 // Split parameters should start on line after declaration
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(SObject), nameof(SObject.performUseAction))]

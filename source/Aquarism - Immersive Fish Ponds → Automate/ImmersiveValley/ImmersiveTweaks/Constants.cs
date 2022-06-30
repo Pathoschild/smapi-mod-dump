@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Tweaks;
+namespace DaLion.Stardew.Tweex;
 
 internal class Constants
 {

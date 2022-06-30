@@ -1,7 +1,12 @@
 {
-  "AddCampfire": true,
-  "EnableIslands": false,
   "UseBeachMusic": false,
+  "DefaultSpawnMonstersAtNight": false,
+  "AddCampfire": true,
+  "AddFishingPier": false,
+  "EnableIslands": false,
   "ShippingBinPath": true,
-  "DefaultSpawnMonstersAtNight": false
+  "CustomFishingPierPosition": {
+    "X": 0,
+    "Y": 0
+  }
 }

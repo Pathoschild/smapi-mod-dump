@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12510
+IDs: aedenthorn.CustomWallpaperFramework
+update keys: Nexus:12510, GitHub:aedenthorn/StardewValleyMods

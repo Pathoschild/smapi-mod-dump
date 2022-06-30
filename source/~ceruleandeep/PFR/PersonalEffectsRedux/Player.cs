@@ -36,17 +36,9 @@ namespace PersonalEffects
         }
 
         //scaled, minimum possible to maximum possible, 0f to 1f.
-        public static float GetLuckFactorFloat()
+        public static double GetLuckFactorFloat()
         {
-            //Sasha Valeria Edits
-            var r = new Random();
-            //-0.1 to 0.1
-            var l = (float)(((r.NextDouble() * 2) - 1) * 0.1f);
-            l += 0.1f; //0.0 to 0.2
-            l *= 5f; //0.0 to 1.0
-            l = (l / 2f) + (l / 2f * (Game1.player.LuckLevel / 3f)); //lucklevel is 0-3, this applies it as a float multiplier to 50% of your daily luck.
-            l = Math.Max(0f, Math.Min(1f, l));
-            return l;
+            return Game1.random.NextDouble() + Game1.player.DailyLuck;
         }
     }
 }

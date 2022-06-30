@@ -98,4 +98,13 @@ internal static class Range {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool Within(this double value, double min, double max) => WithinInclusive(value, min, max);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool WithinInclusive(this TimeSpan value, TimeSpan min, TimeSpan max) => value >= min && value <= max;
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool WithinExclusive(this TimeSpan value, TimeSpan min, TimeSpan max) => value > min && value < max;
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool Within(this TimeSpan value, TimeSpan min, TimeSpan max) => WithinInclusive(value, min, max);
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12641
+IDs: krutonium.monsterinvasion
+update keys: Nexus:12641

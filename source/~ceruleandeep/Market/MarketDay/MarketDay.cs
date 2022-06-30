@@ -10,10 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using HarmonyLib;
-using MailFrameworkMod;
 using MarketDay.API;
 using MarketDay.Data;
 using MarketDay.ItemPriceAndStock;
@@ -27,8 +26,6 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using xTile.ObjectModel;
-using static MarketDay.MarketDay;
 using SObject = StardewValley.Object;
 
 namespace MarketDay
@@ -50,10 +47,6 @@ namespace MarketDay
         private static bool MapChangesSynced;
         private static List<Vector2> previousShopLayout = new();
         private static List<GrangeShop> previousOpenedShops = new();
-        
-        // set true when hot reload is done 
-        // following a GMCM change to market day
-        private static bool ConfigChangesSynced = true;
         
         internal static ModConfig Config;
         internal static ProgressionModel Progression;
@@ -99,13 +92,16 @@ namespace MarketDay
             Helper.Events.GameLoop.DayStarted += OnDayStarted_MakePlayerShops;
             Helper.Events.GameLoop.DayStarted += OnDayStarted_FlagSyncNeeded;
             Helper.Events.GameLoop.DayStarted += OnDayStarted_SendPrompt;
+            helper.Events.Content.AssetRequested += AddChatStrings;
             Helper.Events.Content.AssetReady += OnAssetReady_FlagSyncNeeded;
+            Helper.Events.Multiplayer.PeerConnected += OnPeerConnected_ReloadMarket;
+            Helper.Events.Multiplayer.PeerDisconnected += OnPeerDisonnected_ReloadMarket;
             Helper.Events.GameLoop.OneSecondUpdateTicking += OnOneSecondUpdateTicking_SyncMapUpdateStockOpenShop;
             Helper.Events.GameLoop.OneSecondUpdateTicking += OnOneSecondUpdateTicking_InteractWithNPCs;
             helper.Events.GameLoop.OneSecondUpdateTicked += Wizard.ConfigureFromWizard;
-
             Helper.Events.GameLoop.TimeChanged += OnTimeChanged_RestockThroughDay;
-            Helper.Events.GameLoop.DayEnding += OnDayEnding_CloseShopsAndDestroyFurniture;
+            Helper.Events.GameLoop.DayEnding += OnDayEnding_CloseShopsSendMailClearVisitorList;
+            Helper.Events.GameLoop.Saving += OnSaving_SetStateForTomorrow;
             Helper.Events.GameLoop.Saving += OnSaving_WriteConfig;
             Helper.Events.GameLoop.Saved += OnSaved_DoNothing;
             Helper.Events.Input.ButtonPressed += OnButtonPressed_ShowShopOrGrangeOrStats;
@@ -130,7 +126,7 @@ namespace MarketDay
         {
             foreach (var (shopKey, grangeShop) in ShopManager.GrangeShops)
             {
-                if (grangeShop.IsPlayerShop()) ShopManager.GrangeShops.Remove(shopKey);
+                if (grangeShop.IsPlayerShop) ShopManager.GrangeShops.Remove(shopKey);
             }
         }
         
@@ -140,18 +136,23 @@ namespace MarketDay
             var multiplayer = farmers.Count > 1;
             foreach (var farmer in farmers)
             {
+                if (ShopManager.GrangeShops.Values.Any(s => s.PlayerID == farmer.UniqueMultiplayerID))
+                    continue;
+
+                var shopKey = $"Farmer:{farmer.Name}";
                 var signText = multiplayer 
                     ? Get("shop-sign", new {Owner=farmer.Name}) 
                     : Get("farm-sign", new {FarmName=Game1.player.farmName.Value});
                 
                 var PlayerShop = new GrangeShop()
                 {
-                    ShopName = $"Farmer:{farmer.Name}",
+                    ShopName = shopKey,
                     Quote = "Farmer store",
                     ItemStocks = Array.Empty<ItemStock>(),
                     PlayerID = farmer.UniqueMultiplayerID,
                     OpenSignText = signText
                 };
+                
                 ShopManager.GrangeShops.Add(PlayerShop.ShopKey, PlayerShop);
                 Log($"Added shop {PlayerShop.ShopKey} ({signText}) for {PlayerShop.ShopName} ({PlayerShop.PlayerID})", LogLevel.Trace);
             }
@@ -162,17 +163,8 @@ namespace MarketDay
         private static void GMCMFieldChanged(string fieldID, object val)
         {
             Log($"GMCMFieldChanged: {fieldID} = {val}", LogLevel.Trace);
-            if (fieldID.StartsWith("fm_")) ConfigChangesSynced = false;
         }
 
-        private static void SyncAfterConfigChanges()
-        {
-            if (!Context.IsMainPlayer) return;
-            if (!Context.IsWorldReady) return;
-            Log($"SyncAfterConfigChanges: does nothing at the moment", LogLevel.Info, true);
-            LogShopPositions("SyncAfterConfigChanges");
-        }
-        
         private static void HotReload(string command=null, string[] args=null)
         {
             if (!Context.IsMainPlayer) return;
@@ -180,7 +172,7 @@ namespace MarketDay
             Log($"HotReload", LogLevel.Info);
 
             Log($"    Closing {MapUtility.ShopAtTile().Values.Count} stores", LogLevel.Debug);
-            OnDayEnding_CloseShopsAndDestroyFurniture(null, null);
+            OnDayEnding_CloseShopsSendMailClearVisitorList(null, null);
 
             // helper.ConsoleCommands.Trigger("patch", new[]{"reload", SMod.ModManifest.UniqueID+".CP"});
             
@@ -214,10 +206,15 @@ namespace MarketDay
         {
             try
             {
+                int dayOfWeek = Game1.dayOfMonth % 7;
+                int week = Game1.dayOfMonth / 7;
+                string season = Game1.currentSeason;
+                
                 var state = new List<string>
                 {
                     $"{SMod.ModManifest.Name} {SMod.ModManifest.Version} state:",
-                    $"Time  {Game1.currentSeason} {Game1.dayOfMonth} {Game1.timeOfDay} {Game1.ticks}"
+                    $"Time  {Game1.currentSeason} {Game1.dayOfMonth} {Game1.timeOfDay} {Game1.ticks}",
+                    $"Day  {dayOfWeek} {week} {season}"
                 };
                 var festival = StardewValley.Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason);
                 state.Add($"Weather  Rain: {Game1.isRaining}  Snow: {Game1.isSnowing}  Festival: {festival}");
@@ -258,8 +255,14 @@ namespace MarketDay
 
                 var ansk = string.Join(", ", AvailableNPCShopKeys);
                 state.Add($"Available NPC shops:  {AvailableNPCShopKeys.Count} shops: {ansk}");
+                
+                var townies = string.Join(", ", Schedule.TownieVisitorsToday.Select(n => n.displayName));
 
                 state.Add($"NPC interactions:");
+                state.Add($"    Townie visitors: {Progression.NumberOfTownieVisitors} requested, {Schedule.TownieVisitorsToday.Count} actual");
+                state.Add($"                   : {townies}");
+                state.Add($"    Random visitors: {Progression.NumberOfRandomVisitors} requested");
+
                 var times = Schedule.NPCInteractions.Keys.ToList();
                 times.Sort();
                 foreach (var time in times)
@@ -380,7 +383,7 @@ namespace MarketDay
             {
                 if (!MapUtility.ShopOwners.TryGetValue(args[0], out var grangeShop))
                 {
-                    var playerShops = string.Join(" ", MapUtility.ShopOwners.Values.Where(s => s.IsPlayerShop()).Select(s => s.Owner()));
+                    var playerShops = string.Join(" ", MapUtility.ShopOwners.Values.Where(s => s.IsPlayerShop).Select(s => s.Owner()));
                     Log($"Could not find shop for {args[0]}, should be one of [{playerShops}]", LogLevel.Error);
                     return;
                 }
@@ -412,6 +415,22 @@ namespace MarketDay
             // SyncAfterConfigChanges();
         }
 
+        /// <summary>Raised after the game is saved</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving_SetStateForTomorrow(object sender, SavingEventArgs e)
+        {
+            Log($"SetStateForTomorrow: {Game1.currentSeason} {Game1.dayOfMonth} {Game1.timeOfDay} {Game1.ticks}", LogLevel.Trace);
+
+            var visitors = IsMarketDay ? Progression.NumberOfRandomVisitors : 0;
+            Game1.getFarm().modData[$"aedenthorn.RandomNPC/Visitors"] = $"{visitors}";
+            Log($"SetStateForTomorrow: {IsMarketDay} {visitors}", LogLevel.Debug);
+            
+            ListShopTiles("", null);
+            Helper.WriteConfig(Config);
+            Log($"SetStateForTomorrow: complete at {Game1.currentSeason} {Game1.dayOfMonth} {Game1.timeOfDay} {Game1.ticks}", LogLevel.Trace);
+        }
+        
         /// <summary>Raised after the game is saved</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -505,7 +524,28 @@ namespace MarketDay
             RemovePlayerShops();
             MakePlayerShops();
         }
-        
+
+        private void AddChatStrings(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Strings/UI"))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, string>().Data;
+                    for (var i = 0; i < 5; i++)
+                    {
+                        var key = $"Chat_11778_connected_{i}";
+                        var val = Get($"chat.connected.{i}");
+                        data[key] = val;
+                        
+                        key = $"Chat_11778_disconnected_{i}";
+                        val = Get($"chat.disconnected.{i}");
+                        data[key] = val;
+                    }
+                });
+            }
+        }
+
         private static void OnAssetReady_FlagSyncNeeded(object sender, AssetReadyEventArgs e)
         {
             if (!Context.IsWorldReady) return;
@@ -519,8 +559,45 @@ namespace MarketDay
 
             LogShopPositions("OnAssetReady_FlagSyncNeeded");
             
-            Log($"OnAssetReady: requesting sync", LogLevel.Info, true);
+            Log($"OnAssetReady: requesting sync", LogLevel.Info, false);
             MapChangesSynced = false;
+        }
+
+        private static void OnPeerConnected_ReloadMarket(object sender, PeerConnectedEventArgs e)
+        {
+            Log($"OnPeerConnected_ReloadMarket: IsWorldReady {Context.IsWorldReady} IsMainPlayer {Context.IsMainPlayer}", LogLevel.Info, false);
+
+            if (!Context.IsWorldReady) return;
+            if (!Context.IsMainPlayer) return;
+            
+            Log($"OnPeerConnected_ReloadMarket: invalidating Maps/Town", LogLevel.Info, false);
+            helper.GameContent.InvalidateCache("Maps/Town");
+            
+            var newFarmer = Game1.getFarmer(e.Peer.PlayerID);
+            var r = Game1.random.Next(5);
+            var multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            var globalChatInfoMessage = helper.Reflection.GetMethod(multiplayer, "globalChatInfoMessage");
+            globalChatInfoMessage.Invoke($"11778_connected_{r}", new[]{newFarmer.Name} );
+            Log($"OnPeerConnected_ReloadMarket: globalChatInfoMessage 11778_connected_{r}", LogLevel.Debug, false);
+        }
+        
+        private static void OnPeerDisonnected_ReloadMarket(object sender, PeerDisconnectedEventArgs e)
+        {
+            Log($"OnPeerDisonnected_ReloadMarket: IsWorldReady {Context.IsWorldReady} IsMainPlayer {Context.IsMainPlayer}", LogLevel.Info, false);
+
+            if (!Context.IsWorldReady) return;
+            if (!Context.IsMainPlayer) return;
+            
+            Log($"OnPeerDisonnected_ReloadMarket: invalidating Maps/Town", LogLevel.Info, false);
+            helper.GameContent.InvalidateCache("Maps/Town");
+            
+            var newFarmer = Game1.getFarmer(e.Peer.PlayerID);
+            if (newFarmer is null) return;
+            var r = Game1.random.Next(5);
+            var multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            var globalChatInfoMessage = helper.Reflection.GetMethod(multiplayer, "globalChatInfoMessage");
+            globalChatInfoMessage.Invoke($"11778_disconnected_{r}", new[]{newFarmer.Name} );
+            Log($"OnPeerDisonnected_ReloadMarket: globalChatInfoMessage 11778_disconnected_{r}", LogLevel.Debug, false);
         }
         
         private static void OnDayStarted_FlagSyncNeeded(object sender, EventArgs e)
@@ -547,7 +624,19 @@ namespace MarketDay
                 shop.CloseShop();
             }
             LogShopPositions("OnOneSecondUpdateTicking_SyncMap checked for invalid shops");
-
+            
+            // at this point it would be wise to check that all player shops have connected players
+            var farmers = Game1.getAllFarmers().Where(f => f.isActive()).Select(f => f.UniqueMultiplayerID).ToList();
+            foreach (var shop in ShopManager.GrangeShops.Values.Where(shop => shop.IsPlayerShop && !farmers.Contains(shop.PlayerID)))
+            {
+                Log($"{shop.ShopName} has disconnected", LogLevel.Trace);
+                shop.CloseShop();
+                ShopManager.GrangeShops.Remove(shop.ShopKey);
+            }
+            
+            // and that all connected players have GrangeShops
+            MakePlayerShops();
+            
             var availableShopCount = AvailableNPCShopKeys.Count + AvailablePlayerShopKeys.Count;            
             var expectedShopCount = IsMarketDay ? ShopPositions().Length : 0;
             var expectedPlayerShopCount = IsMarketDay ? Math.Min(AvailablePlayerShopKeys.Count, expectedShopCount) : 0;
@@ -635,14 +724,17 @@ namespace MarketDay
             Log($"RecalculateSchedules: begins at {Game1.currentSeason} {Game1.dayOfMonth} {Game1.timeOfDay} {Game1.ticks}", LogLevel.Trace);
 
             Schedule.NPCInteractions = new();
+            Schedule.TownieVisitorsToday = new HashSet<NPC>();
 
-            foreach (var npc in StardewValley.Utility.getAllCharacters())
+            var npcs = new List<NPC>();
+            StardewValley.Utility.getAllCharacters(npcs);
+            StardewValley.Utility.Shuffle(Game1.random, npcs);
+            foreach (var npc in npcs.Where(npc => npc is not null).Where(npc => npc.isVillager()))
             {
-                if (npc is null) continue;
-                if (!npc.isVillager()) continue;
+                Log($"RecalculateSchedules:     {npc.Name}", LogLevel.Trace);
                 npc.Schedule = npc.getSchedule(Game1.dayOfMonth);
             }
-
+            
             Log($"RecalculateSchedules: completed at {Game1.currentSeason} {Game1.dayOfMonth} {Game1.timeOfDay} {Game1.ticks}", LogLevel.Trace);
         }
 
@@ -732,7 +824,7 @@ namespace MarketDay
                 var availableShopKeys = new List<string>();
                 foreach (var (ShopKey, shop) in ShopManager.GrangeShops)
                 {
-                    if (shop.IsPlayerShop()) continue;
+                    if (shop.IsPlayerShop) continue;
                     if (Config.ShopsEnabled.TryGetValue(ShopKey, out var enabled) && !enabled) continue;
                     if (shop.When is not null)
                     {
@@ -751,7 +843,7 @@ namespace MarketDay
                 var availableShopKeys = new List<string>();
                 foreach (var (ShopKey, shop) in ShopManager.GrangeShops)
                 {
-                    if (!shop.IsPlayerShop()) continue;
+                    if (!shop.IsPlayerShop) continue;
                     if (Config.ShopsEnabled.TryGetValue(ShopKey, out var enabled) && !enabled) continue;
                     if (shop.When is not null)
                     {
@@ -763,9 +855,10 @@ namespace MarketDay
             }
         }
 
-        private static void OnDayEnding_CloseShopsAndDestroyFurniture(object sender, EventArgs e)
+        private static void OnDayEnding_CloseShopsSendMailClearVisitorList(object sender, EventArgs e)
         {
             CloseShopsRemoveFurnitureSendMail(MapUtility.ShopAtTile().Values);
+            Schedule.TownieVisitorsToday = new HashSet<NPC>();
         }
 
         private static void CloseShopsRemoveFurnitureSendMail(IEnumerable<GrangeShop> shops)
@@ -841,12 +934,11 @@ namespace MarketDay
         {
             if (!Context.IsWorldReady) return;
             if (Game1.activeClickableMenu is not null) return;
-            
-            if (Config.DebugKeybinds) CheckDebugKeybinds(e);
-            
-            string signOwner = null;
-            
             if (Game1.currentLocation is null) return;
+
+            if (Config.DebugKeybinds) CheckDebugKeybinds(e);
+
+            string signOwner = null;
             if (Game1.currentLocation.objects.TryGetValue(e.Cursor.GrabTile, out var objectAt))
             {
                 objectAt.modData.TryGetValue($"{ModManifest.UniqueID}/{GrangeShop.ShopSignKey}", out signOwner);
@@ -953,8 +1045,8 @@ namespace MarketDay
         private void OnLaunched_STFRegistrations(object sender, GameLaunchedEventArgs e)
         {
             APIs.RegisterJsonAssets();
-            if (APIs.JsonAssets != null)
-                APIs.JsonAssets.AddedItemsToShop += JsonAssets_AddedItemsToShop;
+            // if (APIs.JsonAssets != null)
+            //     APIs.JsonAssets.AddedItemsToShop += JsonAssets_AddedItemsToShop;
 
             APIs.RegisterExpandedPreconditionsUtility();
             APIs.RegisterBFAV();
@@ -975,7 +1067,7 @@ namespace MarketDay
             ShopManager.InitializeShops();
             ShopManager.InitializeItemStocks();
 
-            ItemsUtil.RegisterItemsToRemove();
+            // ItemsUtil.RegisterItemsToRemove();
         }
         
         private static void JsonAssets_AddedItemsToShop(object sender, EventArgs e)
@@ -1023,7 +1115,7 @@ namespace MarketDay
                 max: 6,
                 fieldId: "fm_DayOfWeek"
             );
-
+            
             configMenu.AddBoolOption(ModManifest,
                 () => Config.OpenInRain,
                 val => Config.OpenInRain = val,
@@ -1059,14 +1151,6 @@ namespace MarketDay
             );
             
             configMenu.AddBoolOption(ModManifest,
-                () => Config.AlwaysMarketDay,
-                val => Config.AlwaysMarketDay = val,
-                () => Helper.Translation.Get("cfg.always-market-day"),
-                () => Helper.Translation.Get("cfg.always-market-day.msg"),
-                fieldId: "fm_AlwaysMarketDay"
-            );
-            
-            configMenu.AddBoolOption(ModManifest,
                 () => Config.GMMCompat,
                 val => Config.GMMCompat = val,
                 () => Helper.Translation.Get("cfg.gmm-compat"),
@@ -1074,6 +1158,8 @@ namespace MarketDay
                 fieldId: "fm_GMMCompat"
             );
 
+            configMenu.AddPageLink(ModManifest, "Opening", () => Helper.Translation.Get("cfg.show-advanced-opening"));
+            
             configMenu.AddSectionTitle(ModManifest,
                 () => Helper.Translation.Get("cfg.free-play-options"));
             configMenu.AddParagraph(ModManifest,
@@ -1121,14 +1207,141 @@ namespace MarketDay
             );
             
             configMenu.AddBoolOption(ModManifest,
-                () => Config.NPCRescheduling,
-                val => Config.NPCRescheduling = val,
-                () => Helper.Translation.Get("cfg.npc-rescheduling"),
-                () => Helper.Translation.Get("cfg.npc-rescheduling.msg")
+                () => Config.NPCVisitorRescheduling,
+                val => Config.NPCVisitorRescheduling = val,
+                () => Helper.Translation.Get("cfg.npc-visitor-rescheduling"),
+                () => Helper.Translation.Get("cfg.npc-visitor-rescheduling.msg")
+            );
+            
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.NPCOwnerRescheduling,
+                val => Config.NPCOwnerRescheduling = val,
+                () => Helper.Translation.Get("cfg.npc-owner-rescheduling"),
+                () => Helper.Translation.Get("cfg.npc-owner-rescheduling.msg")
+            );
+            
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.NPCScheduleReplacement,
+                val => Config.NPCScheduleReplacement = val,
+                () => Helper.Translation.Get("cfg.npc-schedule-replacement"),
+                () => Helper.Translation.Get("cfg.npc-schedule-replacement.msg")
+            );
+            
+            configMenu.AddNumberOption(ModManifest,
+                () => Config.NumberOfTownieVisitors,
+                val => Config.NumberOfTownieVisitors = val,
+                () => Helper.Translation.Get("cfg.townie-visitors"),
+                () => Helper.Translation.Get("cfg.townie-visitors.msg"),
+                0,
+                100,
+                fieldId: "fm_TownieVisitors"
+            );
+            
+            configMenu.AddNumberOption(ModManifest,
+                () => Config.NumberOfRandomVisitors,
+                val => Config.NumberOfRandomVisitors = val,
+                () => Helper.Translation.Get("cfg.random-visitors"),
+                () => Helper.Translation.Get("cfg.random-visitors.msg"),
+                0,
+                24,
+                fieldId: "fm_RandomVisitors"
+            );
+            
+            configMenu.AddPageLink(ModManifest, "Debug", () => Helper.Translation.Get("cfg.debug-settings")+"...");
+            
+            configMenu.AddPage(ModManifest, "Opening", () => Helper.Translation.Get("cfg.advanced-opening"));
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.UseAdvancedOpeningOptions,
+                val => Config.UseAdvancedOpeningOptions = val,
+                () => Helper.Translation.Get("cfg.use-advanced-opening"),
+                () => Helper.Translation.Get("cfg.use-advanced-opening.msg"),
+                fieldId: "fm_UseAdvancedOpeningOptions");
+
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.AlwaysMarketDay,
+                val => Config.AlwaysMarketDay = val,
+                () => Helper.Translation.Get("cfg.always-market-day"),
+                () => Helper.Translation.Get("cfg.always-market-day.msg"),
+                fieldId: "fm_AlwaysMarketDay"
             );
 
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnSun,
+                val => Config.OpenOnSun = val,
+                () => Helper.Translation.Get("cfg.open-sun"),
+                fieldId: "fm_OpenOnSun");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnMon,
+                val => Config.OpenOnMon = val,
+                () => Helper.Translation.Get("cfg.open-mon"),
+                fieldId: "fm_OpenOnMon");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnTue,
+                val => Config.OpenOnTue = val,
+                () => Helper.Translation.Get("cfg.open-tue"),
+                fieldId: "fm_OpenOnTue");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnWed,
+                val => Config.OpenOnWed = val,
+                () => Helper.Translation.Get("cfg.open-wed"),
+                fieldId: "fm_OpenOnWed");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnThu,
+                val => Config.OpenOnThu = val,
+                () => Helper.Translation.Get("cfg.open-thu"),
+                fieldId: "fm_OpenOnThu");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnFri,
+                val => Config.OpenOnFri = val,
+                () => Helper.Translation.Get("cfg.open-fri"),
+                fieldId: "fm_OpenOnFri");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenOnSat,
+                val => Config.OpenOnSat = val,
+                () => Helper.Translation.Get("cfg.open-sat"),
+                fieldId: "fm_OpenOnSat");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenWeek1,
+                val => Config.OpenWeek1 = val,
+                () => Helper.Translation.Get("cfg.open-week1"),
+                fieldId: "fm_OpenWeek1");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenWeek2,
+                val => Config.OpenWeek2 = val,
+                () => Helper.Translation.Get("cfg.open-week2"),
+                fieldId: "fm_OpenWeek2");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenWeek3,
+                val => Config.OpenWeek3 = val,
+                () => Helper.Translation.Get("cfg.open-week3"),
+                fieldId: "fm_OpenWeek3");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenWeek4,
+                val => Config.OpenWeek4 = val,
+                () => Helper.Translation.Get("cfg.open-week4"),
+                fieldId: "fm_OpenWeek4");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenInSpring,
+                val => Config.OpenInSpring = val,
+                () => Helper.Translation.Get("cfg.open-spring"),
+                fieldId: "fm_OpenInSpring");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenInSummer,
+                val => Config.OpenInSummer = val,
+                () => Helper.Translation.Get("cfg.open-summer"),
+                fieldId: "fm_OpenInSummer");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenInFall,
+                val => Config.OpenInFall = val,
+                () => Helper.Translation.Get("cfg.open-fall"),
+                fieldId: "fm_OpenInFall");
+            configMenu.AddBoolOption(ModManifest,
+                () => Config.OpenInWinter,
+                val => Config.OpenInWinter = val,
+                () => Helper.Translation.Get("cfg.open-winter"),
+                fieldId: "fm_OpenInWinter");
 
-
+            configMenu.AddPage(ModManifest, "Debug", () => Helper.Translation.Get("cfg.debug-settings"));
             configMenu.AddSectionTitle(ModManifest,
                 () => Helper.Translation.Get("cfg.debug-settings"));
 
@@ -1199,18 +1412,72 @@ namespace MarketDay
 
         public static void SaveConfig() {
             helper.WriteConfig(Config);
-            if (! ConfigChangesSynced) SyncAfterConfigChanges();
         }
 
         internal static bool IsMarketDay
         {
             get
             {
-                if (Config.AlwaysMarketDay) return true;
-                var md = Game1.dayOfMonth % 7 == Config.DayOfWeek
-                         && !StardewValley.Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason);
+                var farm = Game1.getFarm();
+                if (farm is null) return false;
+                
+                if (!Context.IsMainPlayer)
+                {
+                    if (farm.modData.TryGetValue($"{SMod.ModManifest.UniqueID}/IsMarketDay", out var md_str))
+                        return md_str == "true";
+                    return false;
+                }
+                
+                var dayOfWeek = Game1.dayOfMonth % 7;
+                var week = Game1.dayOfMonth / 7;
+                var season = Game1.currentSeason;
+                
+                var md = !StardewValley.Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason);
                 md = md && (Config.OpenInRain || !Game1.isRaining);
                 md = md && (Config.OpenInSnow || !Game1.isSnowing);
+
+                if (Config.UseAdvancedOpeningOptions)
+                {
+                    if (Config.AlwaysMarketDay)
+                    {
+                        farm.modData[$"{SMod.ModManifest.UniqueID}/IsMarketDay"] = "true";
+                        return true;
+                    }
+                
+                    md = dayOfWeek switch
+                    {
+                        0 => md && Config.OpenOnSun,
+                        1 => md && Config.OpenOnMon,
+                        2 => md && Config.OpenOnTue,
+                        3 => md && Config.OpenOnWed,
+                        4 => md && Config.OpenOnThu,
+                        5 => md && Config.OpenOnFri,
+                        6 => md && Config.OpenOnSat,
+                        _ => md
+                    };
+                    md = week switch
+                    {
+                        0 => md && Config.OpenWeek1,
+                        1 => md && Config.OpenWeek2,
+                        2 => md && Config.OpenWeek3,
+                        3 => md && Config.OpenWeek4,
+                        _ => md
+                    };
+                    md = season switch
+                    {
+                        "spring" => md && Config.OpenInSpring,
+                        "summer" => md && Config.OpenInSummer,
+                        "fall" => md && Config.OpenInFall,
+                        "winter" => md && Config.OpenInWinter,
+                        _ => md
+                    };
+                }
+                else
+                {
+                    md = md && Game1.dayOfMonth % 7 == Config.DayOfWeek;
+                }
+
+                farm.modData[$"{SMod.ModManifest.UniqueID}/IsMarketDay"] = md ? "true" : "false";
                 return md;
             }
         }
@@ -1248,22 +1515,33 @@ namespace MarketDay
             var shopCount = Progression.NumberOfShops;
             var key = $"{shopCount} Shops";
             if (!ShopLayouts.ContainsKey(key)) key = "6 Shops";
-            if (!ShopLayouts.TryGetValue(key, out var layout)) return null;
-            return layout;
+            return ShopLayouts.TryGetValue(key, out var layout) ? layout : null;
         }
         
         private static string[] ShopPositions()
         {
             if (!Context.IsWorldReady) return null;
-            var layout = ShopPositionsWithoutGMM();
-            if (!Config.GMMCompat || !isGMMDay()) return layout.Select(i => $"Shop{i}").ToArray();
+            var farm = Game1.getFarm();
+            if (farm is null) return null;
+                
+            if (!Context.IsMainPlayer)
+            {
+                return farm.modData.TryGetValue($"{SMod.ModManifest.UniqueID}/ShopPositions", out var positions) 
+                    ? positions.Split(" ") : null;
+            }
             
-            if (GMMPaisleyPresent) layout.Remove(0);
-            if (GMMPaisleyPresent) layout.Remove(5);
-            if (GMMPaisleyPresent) layout.Remove(12);
-            if (GMMPaisleyPresent) layout.Remove(13);
-            if (GMMJosephPresent) layout.Remove(2);
-            if (GMMJosephPresent) layout.Remove(7);
+            var layout = ShopPositionsWithoutGMM();
+            if (Config.GMMCompat && isGMMDay())
+            {
+                if (GMMPaisleyPresent) layout.Remove(0);
+                if (GMMPaisleyPresent) layout.Remove(5);
+                if (GMMPaisleyPresent) layout.Remove(12);
+                if (GMMPaisleyPresent) layout.Remove(13);
+                if (GMMJosephPresent) layout.Remove(2);
+                if (GMMJosephPresent) layout.Remove(7);
+            }
+            
+            farm.modData[$"{SMod.ModManifest.UniqueID}/ShopPositions"] = string.Join(" ", layout.Select(i => $"Shop{i}"));
             return layout.Select(i => $"Shop{i}").ToArray();
         }
 
@@ -1272,7 +1550,7 @@ namespace MarketDay
             return helper.Translation.Get(key);
         }
 
-        private static string Get(string key, object tokens)
+        internal static string Get(string key, object tokens)
         {
             return helper.Translation.Get(key, tokens);
         }

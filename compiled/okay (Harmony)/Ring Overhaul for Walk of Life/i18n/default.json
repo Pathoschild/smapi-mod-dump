@@ -1,0 +1,39 @@
+﻿{
+  /*
+		The first entry before the : is the translation key, leave that one unchanged. Only change the translation in the "" behind it.
+		Every value that you don't translate (or that is missing when I update) will simply take the english translation I wrote.
+		So if you don't want to translate the gmcm config menu, you don't have to.
+		\n means insert a line break (you can see I use line breaks in the gmcm config menu because it doesn't do that automatically).
+  */
+  "IridiumBandTooltip": "Increases critical strike power by 30%\nIncreases Defense by 3\nIncreases other stat values by 10%",
+  "ExplorerRingName": "Explorer Ring",
+  "BerserkerRingName": "Berserker Ring",
+  "PaladinRingName": "Paladin Ring",
+  "GemBandName": "Gem Band", // this one is used when you combined the gem rings at the forge for some reason, instead of crafting an iridium band, so it's almost never seen
+  "ConfigCraftableGemRings": "Craftable Gem Rings",
+  "ConfigCraftableGemRingsTooltip": "Enables the gem ring crafting recipes",
+  "ConfigCraftableGemRingsMetalBar": "Required Metal Bar",
+  "ConfigCraftableGemRingsMetalBarTooltip": "Sets which metal bar to use for gem rings",
+  "ConfigCraftableGemRingsProgressive": "Progressive",
+  "ConfigCraftableGemRingsUnlockLevel": "Unlock Level",
+  "ConfigCraftableGemRingsUnlockLevelTooltip": "Sets the level for unlocking each gem ring.\nOrder is Amethyst, Topaz, Aquamarine, Jade, Emerald, Ruby.",
+  "ConfigCraftableGemRingsCustomSprites": "Custom Sprites",
+  "ConfigCraftableGemRingsCustomSpritesTooltip": "Enable Custom Sprites",
+  "ConfigCraftableGemRingsCustomSpritesBetterRings": "Custom Sprites disabled in favor of 'Better Rings' mod",
+  "ConfigOtherCategory": "Other",
+  "ConfigJukeboxRing": "Jukebox Ring",
+  "ConfigJukeboxRingTooltip": "Enables Jukebox Ring crafting recipe",
+  "ConfigJukeboxRingWorksInRain": "Jukebox Ring Works In Rain",
+  "ConfigJukeboxRingWorksInRainTooltip": "Allows Jukebox Ring to work when it's raining'",
+  "ConfigMinorRingCraftingChanges": "Minor Ring Crafting Changes",
+  "ConfigMinorRingCraftingChangesTooltip": "Enables crafting recipe for Glow Ring and Magnet Ring,\nalso enables changes to the Warrior and Sturdy rings",
+  "ConfigRemoveCITooltip": "Remove Crabshell Ring\nAnd Immunity Band Tooltip\nFrom Combined Ring",
+  "ConfigRemoveCITooltipTooltip": "Shortens combined ring tooltip by hiding the description of Crabshell Ring and Immunity Band",
+  "ConfigRemoveLTooltip": "Remove Lucky Ring Tooltip\nFrom Combined Ring",
+  "ConfigRemoveLTooltipTooltip": "Shortens combined ring tooltip by hiding description of Lucky Ring",
+  "ConfigOldGlowStoneRingRecipe": "Disable Glowstone\nRing Recipe Changes",
+  "ConfigOldGlowStoneRingRecipeTooltip": "Disables changes to Glowstone ring recipe",
+  "ConfigOldIridiumBand": "Disable Iridium Band Changes",
+  "ConfigOldIridiumBandTooltip": "Disable all the Iridium Band changes",
+  "ConfigFeedback": "Everything else about the mod can currently not be configured. Feedback is welcome."
+}

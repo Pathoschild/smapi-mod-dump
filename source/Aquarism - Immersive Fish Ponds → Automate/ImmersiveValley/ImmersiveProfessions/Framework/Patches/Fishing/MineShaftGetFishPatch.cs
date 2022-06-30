@@ -12,34 +12,34 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley.Locations;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class MineShaftGetFishPatch : BasePatch
+internal sealed class MineShaftGetFishPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal MineShaftGetFishPatch()
     {
-        Original = RequireMethod<MineShaft>(nameof(MineShaft.getFish));
+        Target = RequireMethod<MineShaft>(nameof(MineShaft.getFish));
     }
 
     #region harmony patches
 
     /// <summary>Patch for Fisher to reroll reeled fish if first roll resulted in trash.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GameLocationGetFishTranspiler(
+    private static IEnumerable<CodeInstruction>? GameLocationGetFishTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -48,7 +48,7 @@ internal class MineShaftGetFishPatch : BasePatch
         ///	Before each of the three fish rolls
 
         var i = 0;
-        repeat:
+    repeat:
         try
         {
             var isNotFisher = generator.DefineLabel();
@@ -61,7 +61,7 @@ internal class MineShaftGetFishPatch : BasePatch
                 )
                 .Advance()
                 .AddLabels(isNotFisher)
-                .InsertProfessionCheck((int) Profession.Fisher)
+                .InsertProfessionCheck(Profession.Fisher.Value)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotFisher),
                     new CodeInstruction(OpCodes.Ldc_R8, 2.0),
@@ -71,7 +71,6 @@ internal class MineShaftGetFishPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Fisher fish reroll.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

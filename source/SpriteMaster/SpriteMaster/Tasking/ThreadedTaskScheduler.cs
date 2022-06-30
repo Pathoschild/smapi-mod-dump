@@ -31,7 +31,7 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 		private readonly ThreadedTaskScheduler Scheduler;
 
 		public ThreadedTaskSchedulerDebugView(ThreadedTaskScheduler scheduler) {
-			Scheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+			Scheduler = scheduler ?? ThrowHelper.ThrowArgumentNullException<ThreadedTaskScheduler>(nameof(scheduler));
 		}
 
 		public IEnumerable<Task> ScheduledTasks => Scheduler.PendingTasks;
@@ -65,9 +65,7 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 #endif
 			}
 
-			if (concurrencyLevel < 0) {
-				throw new ArgumentOutOfRangeException(nameof(concurrencyLevel));
-			}
+			concurrencyLevel.Value.AssertPositiveOrZero();
 
 			ConcurrencyLevel = concurrencyLevel.Value;
 
@@ -143,7 +141,8 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 		}
 
 		if (DisposeCancellation.IsCancellationRequested) {
-			throw new ObjectDisposedException(GetType().Name);
+			ThrowHelper.ThrowObjectDisposedException(GetType().Name);
+			return;
 		}
 
 		PendingTasks.Add(task);

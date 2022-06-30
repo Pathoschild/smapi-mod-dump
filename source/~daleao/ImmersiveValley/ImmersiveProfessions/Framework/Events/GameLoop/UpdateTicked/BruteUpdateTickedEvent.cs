@@ -12,24 +12,29 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
+using Common.Events;
+using Extensions;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
-
-using Extensions;
-using Framework.Ultimate;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BruteUpdateTickedEvent : UpdateTickedEvent
+internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
 {
     private const int SHEET_INDEX_I = 36;
 
-    private readonly int _buffId = ModEntry.Manifest.UniqueID.GetHashCode() + (int) Profession.Brute;
-    
+    private readonly int _buffId = (ModEntry.Manifest.UniqueID + Profession.Brute).GetHashCode();
+
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal BruteUpdateTickedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
         if (ModEntry.PlayerState.BruteRageCounter <= 0) return;
 
@@ -44,22 +49,22 @@ internal class BruteUpdateTickedEvent : UpdateTickedEvent
 
         if (Game1.player.hasBuff(_buffId)) return;
 
-        var magnitude = (ModEntry.PlayerState.BruteRageCounter * Frenzy.PCT_INCREMENT_PER_RAGE_F).ToString("P");
+        var magnitude = (ModEntry.PlayerState.BruteRageCounter * UndyingFrenzy.PCT_INCREMENT_PER_RAGE_F).ToString("P");
         Game1.buffsDisplay.addOtherBuff(
             new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 1,
                 "Brute",
-                ModEntry.ModHelper.Translation.Get("brute.name." + (Game1.player.IsMale ? "male" : "female")) + " " +
-                ModEntry.ModHelper.Translation.Get("brute.buff"))
+                ModEntry.i18n.Get("brute.name" + (Game1.player.IsMale ? ".male" : ".female")) + " " +
+                ModEntry.i18n.Get("brute.buff"))
             {
                 which = _buffId,
                 sheetIndex = SHEET_INDEX_I,
                 millisecondsDuration = 0,
                 description =
-                    ModEntry.ModHelper.Translation.Get(
+                    ModEntry.i18n.Get(
                         "brute.buffdesc" + (Game1.player.HasProfession(Profession.Brute, true)
                             ? ".prestiged"
-                            : string.Empty), new {magnitude})
+                            : string.Empty), new { magnitude })
             }
         );
     }

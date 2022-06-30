@@ -71,7 +71,8 @@ where T : class? {
 
 	internal ComparableWeakReference(SerializationInfo info, StreamingContext context) {
 		if (info is null) {
-			throw new ArgumentNullException(nameof(info));
+			ThrowHelper.ThrowArgumentNullException(nameof(info));
+			return;
 		}
 		var target = (T?)info.GetValue("TrackedObject", typeof(T));
 		var trackResurrection = info.GetBoolean("TrackResurrection");
@@ -84,7 +85,7 @@ where T : class? {
 
 	public void GetObjectData(SerializationInfo info, StreamingContext context) {
 		if (info is null) {
-			throw new ArgumentNullException(nameof(info));
+			ThrowHelper.ThrowArgumentNullException(nameof(info));
 		}
 		info.AddValue("TrackedObject", Target, typeof(T));
 		info.AddValue("TrackResurrection", IsTrackResurrection());

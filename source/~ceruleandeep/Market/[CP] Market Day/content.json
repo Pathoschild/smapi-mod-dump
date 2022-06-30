@@ -14,6 +14,10 @@
         "Rugs": {
             "AllowValues": "Festive Rugs, Red Ones, Plain Ole Ground",
             "Default": "Festive Rugs"
+        },
+        "Style": {
+            "AllowValues": "Tasteful Rugs Only, Anything Goes",
+            "Default": "Tasteful Rugs Only"
         }
     },
     "DynamicTokens": [
@@ -26,12 +30,14 @@
         {"Name": "Leaves", "Value": "Leaves"},  
         {"Name": "Leaves", "Value": "Plain", "When": {"Rugs": "Plain Ole Ground"}},
         {"Name": "Leaves", "Value": "Bismarck", "When": {"Rugs": "Red Ones"}},
-        {"Name": "Purple", "Value": "Purple"},  
+        {"Name": "Leaves", "Value": "TwoTone", "When": {"Rugs": "Festive Rugs", "Style": "Tasteful Rugs Only"}},
+        {"Name": "Purple", "Value": "Purple"},
         {"Name": "Purple", "Value": "Plain", "When": {"Rugs": "Plain Ole Ground"}},
         {"Name": "Purple", "Value": "Bismarck", "When": {"Rugs": "Red Ones"}},
-        {"Name": "Spots", "Value": "Spots"},  
+        {"Name": "Spots", "Value": "Spots"},
         {"Name": "Spots", "Value": "Plain", "When": {"Rugs": "Plain Ole Ground"}},
         {"Name": "Spots", "Value": "Bismarck", "When": {"Rugs": "Red Ones"}},
+        {"Name": "Spots", "Value": "BurntOrange", "When": {"Rugs": "Festive Rugs", "Style": "Tasteful Rugs Only"}},
         {"Name": "TwoTone", "Value": "TwoTone"},  
         {"Name": "TwoTone", "Value": "Plain", "When": {"Rugs": "Plain Ole Ground"}},
         {"Name": "TwoTone", "Value": "Bismarck", "When": {"Rugs": "Red Ones"}}

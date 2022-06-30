@@ -33,28 +33,53 @@
  * SOFTWARE.
  */
 
+using GenericModConfigMenu;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace ForecasterText {
-    public class ModEntry : Mod {
-        public static IMonitor MONITOR;
-        public static string MOD_ID;
-        public static IModHelper MOD_HELPER;
+    public sealed class ModEntry : Mod {
+        internal readonly TVEvents Events;
+        private readonly ForecasterConfigManager ConfigManager;
         
-        /*
-         * Mod Initializer
-         */
-        public override void Entry(IModHelper helper) {
-            // Initialize the Harmony Override Console
-            ModEntry.MOD_ID = this.ModManifest.UniqueID;
-            ModEntry.MOD_HELPER = this.Helper;
-            ModEntry.MONITOR = this.Monitor;
-            
-            ModEntry.MOD_HELPER.Events.GameLoop.DayStarted += ModEvents.OnDayStart;
+        public string ModID => this.ModManifest.UniqueID;
+        
+        public ModEntry() {
+            this.ConfigManager = new ForecasterConfigManager(this);
+            this.Events = new TVEvents(this.ConfigManager);
         }
         
-        public static bool PlayerHasRecipe(string recipe) => Game1.player.cookingRecipes.ContainsKey(recipe);
-        public static bool PlayerBeenToIsland() => Game1.player.hasOrWillReceiveMail("Visited_Island");
+        /// <summary>
+        /// Mod Initializer
+        /// </summary>
+        public override void Entry(IModHelper helper) {
+            this.Helper.Events.GameLoop.DayStarted += this.Events.OnDayStart;
+            this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        }
+        
+        /// <summary>
+        /// Register with the Config Mod when the game is launched
+        /// </summary>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs args) {
+            if (this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu") is IGenericModConfigMenuApi configMenu)
+                this.ConfigManager.RegisterConfigManager(configMenu);
+        }
+        
+        /// <summary>Check if the main player knows a recipe</summary>
+        public static bool PlayerHasRecipe(string recipe)
+            => ModEntry.PlayerHasRecipe(Game1.player, recipe);
+        
+        /// <summary>Check if a farmer knows a recipe</summary>
+        public static bool PlayerHasRecipe(Farmer farmer, string recipe)
+            => farmer.cookingRecipes.ContainsKey(recipe);
+        
+        /// <summary>Check if the main player has been to ginger island</summary>
+        public static bool PlayerBeenToIsland()
+            => ModEntry.PlayerBeenToIsland(Game1.player);
+        
+        /// <summary>Check if a farmer has been to ginger island</summary>
+        public static bool PlayerBeenToIsland(Farmer farmer)
+            => farmer.hasOrWillReceiveMail("Visited_Island");
     }
 }

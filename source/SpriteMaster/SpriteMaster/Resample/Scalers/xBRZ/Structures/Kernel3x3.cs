@@ -11,19 +11,20 @@
 using SpriteMaster.Types;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ.Structures;
 
 [ImmutableObject(true)]
+[StructLayout(LayoutKind.Sequential, Size = (3 * 3 * sizeof(ulong)))]
 internal unsafe ref struct Kernel3X3 {
-#pragma warning disable CS0649
-	private fixed ulong Data[3 * 3];
-#pragma warning restore CS0649
+	private readonly ulong Offset;
+	private readonly ulong* Data => (ulong*)Unsafe.AsPointer(ref Unsafe.AsRef(Offset));
 
 	internal readonly Color16 this[int index] => (Color16)Data[index];
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal Kernel3X3(Color16 _0, Color16 _1, Color16 _2, Color16 _3, Color16 _4, Color16 _5, Color16 _6, Color16 _7, Color16 _8) {
+	internal Kernel3X3(Color16 _0, Color16 _1, Color16 _2, Color16 _3, Color16 _4, Color16 _5, Color16 _6, Color16 _7, Color16 _8) : this() {
 		Data[0] = _0.AsPacked;
 		Data[1] = _1.AsPacked;
 		Data[2] = _2.AsPacked;

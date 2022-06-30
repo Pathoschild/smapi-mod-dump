@@ -12,31 +12,29 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
-
-using DaLion.Common.Extensions;
-using Extensions;
-
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using SUtility = StardewValley.Utility;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CrabPotDayUpdatePatch : BasePatch
+internal sealed class CrabPotDayUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private const double CHANCE_TO_CATCH_FISH_D = 0.25;
-
     /// <summary>Construct an instance.</summary>
     internal CrabPotDayUpdatePatch()
     {
-        Original = RequireMethod<CrabPot>(nameof(CrabPot.DayUpdate));
+        Target = RequireMethod<CrabPot>(nameof(CrabPot.DayUpdate));
     }
 
     #region harmony patches
@@ -65,7 +63,7 @@ internal class CrabPotDayUpdatePatch : BasePatch
                     {
                         whichFish = __instance.ChoosePirateTreasure(owner, r);
                     }
-                    else if (Game1.random.NextDouble() < CHANCE_TO_CATCH_FISH_D)
+                    else if (Game1.random.NextDouble() < 0.25)
                     {
                         whichFish = __instance.ChooseFish(fishData, location, r);
                         if (whichFish < 0) whichFish = __instance.ChooseTrapFish(fishData, location, r, true);
@@ -90,9 +88,10 @@ internal class CrabPotDayUpdatePatch : BasePatch
                     whichFish = __instance.GetTrash(location, r);
                     if (isConservationist && whichFish.IsTrash())
                     {
-                        owner.IncrementData<uint>(DataField.ConservationistTrashCollectedThisSeason);
-                        if (owner.HasProfession(Profession.Conservationist, true) &&
-                            owner.ReadDataAs<uint>(DataField.ConservationistTrashCollectedThisSeason) %
+                        ModDataIO.IncrementData<uint>(owner,
+                            ModData.ConservationistTrashCollectedThisSeason.ToString());
+                        if (owner.HasProfession(Profession.Conservationist, true) && ModDataIO.ReadDataAs<uint>(owner,
+                                ModData.ConservationistTrashCollectedThisSeason.ToString()) %
                             ModEntry.Config.TrashNeededPerFriendshipPoint == 0)
                             SUtility.improveFriendshipWithEveryoneInRegion(owner, 1, 2);
                     }
@@ -102,7 +101,7 @@ internal class CrabPotDayUpdatePatch : BasePatch
                     return false; // don't run original logic
                 }
             }
-            else if (!whichFish.IsAnyOf(14, 51, 516, 517, 518, 519, 527, 529, 530, 531, 532, 533, 534)) // not ring or weapon
+            else if (!whichFish.IsIn(14, 51, 516, 517, 518, 519, 527, 529, 530, 531, 532, 533, 534)) // not ring or weapon
             {
                 fishQuality = __instance.GetTrapQuality(whichFish, owner, r, isLuremaster);
                 fishQuantity = __instance.GetTrapQuantity(whichFish, owner, r);

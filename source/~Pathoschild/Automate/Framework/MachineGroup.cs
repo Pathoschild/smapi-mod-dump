@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -40,6 +41,9 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <summary>The storage manager for the group.</summary>
         protected readonly StorageManager StorageManager;
 
+        /// <summary>The tiles covered by this machine group.</summary>
+        private readonly HashSet<Vector2> Tiles;
+
 
         /*********
         ** Accessors
@@ -52,9 +56,6 @@ namespace Pathoschild.Stardew.Automate.Framework
 
         /// <inheritdoc />
         public IContainer[] Containers { get; protected set; }
-
-        /// <inheritdoc />
-        public Vector2[] Tiles { get; protected set; }
 
         /// <inheritdoc />
         [MemberNotNullWhen(false, nameof(IMachineGroup.LocationKey))]
@@ -78,10 +79,18 @@ namespace Pathoschild.Stardew.Automate.Framework
             this.LocationKey = locationKey;
             this.Machines = machines.ToArray();
             this.Containers = containers.ToArray();
-            this.Tiles = tiles.ToArray();
+            this.Tiles = new HashSet<Vector2>(tiles);
 
             this.IsJunimoGroup = this.Containers.Any(p => p.IsJunimoChest);
             this.StorageManager = buildStorage(this.Containers);
+        }
+
+        /// <inheritdoc />
+        public virtual IReadOnlySet<Vector2> GetTiles(string locationKey)
+        {
+            return this.LocationKey == locationKey
+                ? this.Tiles
+                : ImmutableHashSet<Vector2>.Empty;
         }
 
         /// <inheritdoc />

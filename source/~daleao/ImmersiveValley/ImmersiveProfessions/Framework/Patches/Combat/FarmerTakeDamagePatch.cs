@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-using Ultimate;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmerTakeDamagePatch : BasePatch
+internal sealed class FarmerTakeDamagePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmerTakeDamagePatch()
     {
-        Original = RequireMethod<Farmer>(nameof(Farmer.takeDamage));
+        Target = RequireMethod<Farmer>(nameof(Farmer.takeDamage));
     }
 
     #region harmony patches
 
     /// <summary>Patch to make Poacher invulnerable in Ambuscade + remove vanilla defense cap + make Brute unkillable in Frenzy + increment Brute rage counter and ultimate meter.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> FarmerTakeDamageTranspiler(
+    private static IEnumerable<CodeInstruction>? FarmerTakeDamageTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -88,7 +88,6 @@ internal class FarmerTakeDamagePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Poacher Ambush untargetability.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -97,7 +96,7 @@ internal class FarmerTakeDamagePatch : BasePatch
         /// Before: GetEffectsOfRingMultiplier(863)
 
         var isNotUndyingButMayHaveDailyRevive = generator.DefineLabel();
-        var frenzy = generator.DeclareLocal(typeof(Frenzy));
+        var frenzy = generator.DeclareLocal(typeof(UndyingFrenzy));
         try
         {
             helper
@@ -125,7 +124,7 @@ internal class FarmerTakeDamagePatch : BasePatch
                         typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.RegisteredUltimate))),
-                    new CodeInstruction(OpCodes.Isinst, typeof(Frenzy)),
+                    new CodeInstruction(OpCodes.Isinst, typeof(UndyingFrenzy)),
                     new CodeInstruction(OpCodes.Stloc_S, frenzy),
                     new CodeInstruction(OpCodes.Ldloc, frenzy),
                     new CodeInstruction(OpCodes.Brfalse_S, isNotUndyingButMayHaveDailyRevive),
@@ -146,7 +145,6 @@ internal class FarmerTakeDamagePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Brute Frenzy immortality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -174,7 +172,7 @@ internal class FarmerTakeDamagePatch : BasePatch
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution2),
                     new CodeInstruction(OpCodes.Ldarg_0)
                 )
-                .InsertProfessionCheck((int)Profession.Brute, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Brute.Value, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution2),
                     // check if damager null
@@ -186,10 +184,10 @@ internal class FarmerTakeDamagePatch : BasePatch
                     new CodeInstruction(OpCodes.Dup), // consumed by getter of BruteRageCounter
                     new CodeInstruction(OpCodes.Dup), // consumed by setter of LastTimeInCombat 
                     new CodeInstruction(OpCodes.Dup), // consumed by getter of RegisteredUltimate
-                    // check for frenzy
+                                                      // check for frenzy
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.RegisteredUltimate))),
-                    new CodeInstruction(OpCodes.Isinst, typeof(Frenzy)),
+                    new CodeInstruction(OpCodes.Isinst, typeof(UndyingFrenzy)),
                     new CodeInstruction(OpCodes.Stloc_S, frenzy),
                     // record last time in combat
                     new CodeInstruction(OpCodes.Ldc_I4_0),
@@ -241,7 +239,6 @@ internal class FarmerTakeDamagePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while incrementing Brute rage counter and ultimate meter.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

@@ -14,7 +14,7 @@ namespace IncreaseAnimalHouseMaxPopulation.Framework
 {
     internal class PlayerData
     {
-        public Dictionary<string, bool> Buildings { get; set; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> Buildings { get; set; } = new();
 
     }
 }

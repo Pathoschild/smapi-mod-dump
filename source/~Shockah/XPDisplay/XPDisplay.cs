@@ -33,7 +33,7 @@ namespace Shockah.XPDisplay
 		private static readonly int[] OrderedSkillIndexes = new[] { 0, 3, 2, 1, 4, 5 };
 		private static readonly string SpaceCoreNewSkillsPageQualifiedName = "SpaceCore.Interface.NewSkillsPage, SpaceCore";
 
-		private static XPDisplay Instance = null!;
+		internal static XPDisplay Instance = null!;
 		internal ModConfig Config { get; private set; } = null!;
 		private bool IsWalkOfLifeInstalled = false;
 		private int[] XPValues = null!;
@@ -331,7 +331,7 @@ namespace Shockah.XPDisplay
 			Orientation orientation = isBigLevel ? Instance.Config.BigBarOrientation : Instance.Config.SmallBarOrientation;
 
 			if (currentLevel >= 10 && Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled())
-				(barTexture, barTextureRectangle) = isBigLevel ? WalkOfLifeBridge.GetExtendedBigBar() : WalkOfLifeBridge.GetExtendedSmallBar();
+				(barTexture, barTextureRectangle) = isBigLevel ? WalkOfLifeBridge.GetExtendedBigBar()!.Value : WalkOfLifeBridge.GetExtendedSmallBar()!.Value;
 
 			Vector2 barPosition;
 			switch (orientation)

@@ -22,6 +22,12 @@ internal partial struct Vector2I {
 	);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public static Vector2I operator ~(Vector2I value) => new(
+		~value.X,
+		~value.Y
+	);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2I operator +(Vector2I value) => value;
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]

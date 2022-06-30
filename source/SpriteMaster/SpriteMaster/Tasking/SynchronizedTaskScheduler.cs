@@ -9,6 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Configuration;
+using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		private readonly SynchronizedTaskScheduler Scheduler;
 
 		public SynchronizedTaskSchedulerDebugView(SynchronizedTaskScheduler scheduler) {
-			Scheduler = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+			Scheduler = scheduler ?? ThrowHelper.ThrowArgumentNullException<SynchronizedTaskScheduler>(nameof(scheduler));
 		}
 
 		public IEnumerable<Task> ScheduledTasks => Scheduler.GetScheduledTasks();
@@ -138,7 +139,7 @@ internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 							var start = watch.Elapsed;
 							InvokeTask(task);
 							var duration = watch.Elapsed - start;
-							Debug.Trace($"Sprite Finished: Est: {estimate.TotalMilliseconds} ms, Act: {duration.TotalMilliseconds} ms  ({task.ActionData.Size} B) (rem: {remainingTime.TotalMilliseconds} ms)");
+							Debug.Trace($"Sprite Finished: ['{task.ActionData.Name}'] Est: {estimate.TotalMilliseconds} ms, Act: {duration.TotalMilliseconds} ms  ({task.ActionData.Size.AsDataSize()}) (rem: {remainingTime.TotalMilliseconds} ms)");
 							TexelAverage.Add(task.ActionData, duration);
 
 							++processed;
@@ -169,7 +170,8 @@ internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		}
 
 		if (DisposeCancellation.IsCancellationRequested) {
-			throw new ObjectDisposedException(GetType().Name);
+			ThrowHelper.ThrowObjectDisposedException(GetType().Name);
+			return;
 		}
 
 		if (task is TextureActionTask actionTask) {

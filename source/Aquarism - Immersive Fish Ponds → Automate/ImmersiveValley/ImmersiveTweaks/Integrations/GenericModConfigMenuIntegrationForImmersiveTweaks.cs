@@ -8,14 +8,13 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Tweaks.Integrations;
+namespace DaLion.Stardew.Tweex.Integrations;
 
 #region using directives
 
-using System;
-using StardewModdingAPI;
-
 using Common.Integrations;
+using StardewModdingAPI;
+using System;
 
 #endregion using directives
 
@@ -31,11 +30,10 @@ internal class GenericModConfigMenuIntegrationForImmersiveTweaks
     /// <param name="getConfig">Get the current config model.</param>
     /// <param name="reset">Reset the config model to the default values.</param>
     /// <param name="saveAndApply">Save and apply the current config model.</param>
-    /// <param name="log">Encapsulates monitoring and logging.</param>
     public GenericModConfigMenuIntegrationForImmersiveTweaks(IModRegistry modRegistry, IManifest manifest,
-        Func<ModConfig> getConfig, Action reset, Action saveAndApply, Action<string, LogLevel> log)
+        Func<ModConfig> getConfig, Action reset, Action saveAndApply)
     {
-        _configMenu = new(modRegistry, manifest, log, getConfig, reset, saveAndApply);
+        _configMenu = new(modRegistry, manifest, getConfig, reset, saveAndApply);
     }
 
     /// <summary>Register the config menu if available.</summary>
@@ -92,12 +90,6 @@ internal class GenericModConfigMenuIntegrationForImmersiveTweaks
                 () => "Gain foraging experience when a tapper is harvested.",
                 config => config.TappersRewardExp,
                 (config, value) => config.TappersRewardExp = value
-            )
-            .AddCheckbox(
-                () => "Kegs Remember Honey Flower",
-                () => "Allows the production of tasty flowery meads.",
-                config => config.KegsRememberHoneyFlower,
-                (config, value) => config.KegsRememberHoneyFlower = value
             )
             .AddCheckbox(
                 () => "Prevent Fruit Tree Growth in Winter",

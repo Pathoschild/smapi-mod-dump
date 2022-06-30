@@ -398,12 +398,19 @@ def update_assembly(project)
 	end
 	hostname = Socket.gethostname&.strip || "unknown"
 
-	assembly = nil
-	File.open(project.assembly.to_s, "r:bom|utf-8") { |file|
-		assembly = file.read
-	}
 
-	lines = assembly.split("\n")
+	assembly = nil
+	retries = 10
+
+	while retries > 0
+		File.open(project.assembly.to_s, "r:bom|utf-8") { |file|
+			assembly = file.read
+		}
+
+		lines = assembly.split("\n")
+		break if !lines.nil? && lines.length != 0
+		retries -= 1
+	end
 
 	new_changelist = "#{cl.strip}:#{tags.strip}"
 	update_attribute = lambda { |name, new|
@@ -412,7 +419,10 @@ def update_assembly(project)
 
 		line_idx = lines.find_index{ |l| l.strip.start_with?(prefix) }
 		if line_idx == -1 || line_idx.nil?
-			raise "Could not find #{name} attribute in assembly file"
+			STDERR.puts("prefix: #{prefix}")
+			STDERR.puts("file:")
+			STDERR.puts lines
+			raise "Could not find #{name} attribute in assembly file '#{project.assembly}'"
 		end
 		current = lines[line_idx][prefix.length...-suffix.length]
 		if current == new

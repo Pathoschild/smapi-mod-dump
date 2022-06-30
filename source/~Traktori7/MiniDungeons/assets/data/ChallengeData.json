@@ -1,0 +1,72 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Traktori7/StardewValleyMods
+**
+*************************************************/
+
+[
+	{
+		"ChallengeName": "FightSlime1",
+		"MonsterWaves": [
+			{
+				"Monsters": [
+					{
+						"MonsterName": "GreenSlime",
+						"SpawnAmount": 1
+					}
+				]
+			},
+			{
+				"Monsters": [
+					{
+						"MonsterName": "GreenSlime",
+						"SpawnAmount": 2
+					}
+				]
+			}
+		],
+		"SpawnPoints": [
+			{
+				"X": 6,
+				"Y": 23
+			},
+			{
+				"X": 7,
+				"Y": 23
+			}
+		],
+		"LootBundles": [
+			{
+				"LootTables": [ "SpringSummerCrops", "SpringForage" ],
+				"Drops": 2
+			},
+			{
+				"LootTables": [ "Fruits", "Flowers" ],
+				"Drops": 1
+			}
+		]
+	},
+	{
+		"ChallengeName": "Collect1",
+		"SpawnPoints": [
+			{
+				"X": 6,
+				"Y": 23
+			},
+			{
+				"X": 7,
+				"Y": 23
+			}
+		],
+		"SpawnedObjects": [
+			{
+				"ObjectID": "Stone",
+				"SpawnedAmount": 2
+			}
+		]
+	}
+]

@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SinZ163/StardewMods
+**
+*************************************************/
+
+{
+    "Format": "1.0",
+    "Entries": [
+        {
+            "Type": "Duration",
+            "TargetType": "StardewValley.GameLocation,Stardew Valley",
+            "TargetMethod": "reloadMap",
+            "Details": {
+                "Type": "Field",
+                "Name": "mapPath"
+            }
+        },
+        {
+            "Type": "Duration",
+            "TargetType": "StardewValley.GameLocation,Stardew Valley",
+            "TargetMethod": "loadObjects",
+            "Details": {
+                "Type": "Field",
+                "Name": "mapPath"
+            }
+        },
+        {
+            "Type": "Duration",
+            "TargetType": "TehPers.FishingOverhaul.Services.FishingApi,TehPers.FishingOverhaul",
+            "TargetMethod": "ReloadIfRequested",
+            "ConditionalMod": "TehPers.FishingOverhaul"
+        }
+    ]
+}

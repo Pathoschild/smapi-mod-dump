@@ -12,13 +12,12 @@ namespace DaLion.Stardew.Professions.Extensions;
 
 #region using directives
 
-using System.Collections.Generic;
-using System.Linq;
+using Common.Extensions;
+using Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-
-using Common.Extensions;
-
+using System.Collections.Generic;
+using System.Linq;
 using ObjectLookups = Framework.Utility.ObjectLookups;
 using SObject = StardewValley.Object;
 
@@ -42,7 +41,7 @@ public static class SObjectExtensions
     /// <summary>Whether a given object is an animal produce or derived artisan good.</summary>
     public static bool IsAnimalProduct(this SObject @object)
     {
-        return @object.Category.IsAnyOf(SObject.EggCategory, SObject.MilkCategory, SObject.meatCategory, SObject.sellAtPierresAndMarnies)
+        return @object.Category.IsIn(SObject.EggCategory, SObject.MilkCategory, SObject.meatCategory, SObject.sellAtPierresAndMarnies)
                || ObjectLookups.AnimalDerivedProductIds.Contains(@object.ParentSheetIndex);
     }
 
@@ -67,13 +66,13 @@ public static class SObjectExtensions
     /// <summary>Whether a given object is a gem or mineral.</summary>
     public static bool IsGemOrMineral(this SObject @object)
     {
-        return @object.Category.IsAnyOf(SObject.GemCategory, SObject.mineralsCategory);
+        return @object.Category.IsIn(SObject.GemCategory, SObject.mineralsCategory);
     }
 
     /// <summary>Whether a given object is a foraged mineral.</summary>
     public static bool IsForagedMineral(this SObject @object)
     {
-        return @object.Name.IsAnyOf("Quartz", "Earth Crystal", "Frozen Tear", "Fire Quartz");
+        return @object.Name.IsIn("Quartz", "Earth Crystal", "Frozen Tear", "Fire Quartz");
     }
 
     /// <summary>Whether a given object is a resource node or foraged mineral.</summary>
@@ -135,10 +134,13 @@ public static class SObjectExtensions
     }
 
     /// <summary>Whether the owner of this instance has the specified profession.</summary>
-    /// <param name="profession">Some profession.</param>
-    public static bool DoesOwnerHaveProfession(this SObject @object, Profession profession, bool prestiged = false)
+    /// <param name="index">A valid profession index.</param>
+    /// <remarks>This extension is only called by emitted ILCode, so we use a simpler <see cref="int"/> interface instead of the standard <see cref="Profession"/>.</remarks>>
+    public static bool DoesOwnerHaveProfession(this SObject @object, int index, bool prestiged = false)
     {
+        if (!Profession.TryFromValue(index, out var profession)) return false;
+
         var owner = Game1.getFarmerMaybeOffline(@object.owner.Value) ?? Game1.MasterPlayer;
-        return owner.professions.Contains((int) profession + (prestiged ? 100 : 0));
+        return owner.HasProfession(profession, prestiged);
     }
 }

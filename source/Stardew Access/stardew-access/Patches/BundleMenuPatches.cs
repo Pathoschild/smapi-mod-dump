@@ -107,7 +107,6 @@ namespace stardew_access.Patches
                     if (currentJunimoArea != areaName)
                     {
                         currentJunimoArea = areaName;
-                        MainClass.DebugLog(areaName);
                         MainClass.ScreenReader.Say($"Area {areaName}, {reward}", true);
                         return;
                     }
@@ -161,7 +160,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    bool isIPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredients
+                    bool isIPressed = MainClass.Config.BundleMenuIngredientsKey.JustPressed(); // For the ingredients
                     bool isCPressed = MainClass.Config.BundleMenuInventoryItemsKey.JustPressed(); // For the items in inventory
                     bool isPPressed = MainClass.Config.BundleMenuPurchaseButtonKey.JustPressed(); // For the Purchase Button
                     bool isVPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredient input slots

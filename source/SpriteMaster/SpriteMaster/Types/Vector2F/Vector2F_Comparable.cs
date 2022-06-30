@@ -44,6 +44,6 @@ internal partial struct Vector2F :
 		XVector2 vec => CompareTo(vec),
 		Tuple<float, float> vector => CompareTo(new Vector2F(vector.Item1, vector.Item2)),
 		ValueTuple<float, float> vector => CompareTo(vector),
-		_ => throw new ArgumentException(Exceptions.BuildArgumentException(nameof(other), other))
+		_ => Extensions.Exceptions.ThrowArgumentException<int>(nameof(other), other)
 	};
 }

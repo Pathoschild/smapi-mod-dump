@@ -12,50 +12,47 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class LevelUpMenuDrawPatch : BasePatch
+internal sealed class LevelUpMenuDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly FieldInfo _CurrentLevel = typeof(LevelUpMenu).RequireField("currentLevel")!;
-    private static readonly FieldInfo _ProfessionsToChoose = typeof(LevelUpMenu).RequireField("professionsToChoose")!;
+    private static Func<LevelUpMenu, List<int>>? _GetProfessionsToChoose;
 
     /// <summary>Construct an instance.</summary>
     internal LevelUpMenuDrawPatch()
     {
-        Original = RequireMethod<LevelUpMenu>(nameof(LevelUpMenu.draw), new[] {typeof(SpriteBatch)});
+        Target = RequireMethod<LevelUpMenu>(nameof(LevelUpMenu.draw), new[] { typeof(SpriteBatch) });
     }
 
     #region harmony patches
 
     /// <summary>Patch to increase the height of Level Up Menu to fit longer profession descriptions.</summary>
     [HarmonyPrefix]
-    private static bool LevelUpMenuDrawPrefix(LevelUpMenu __instance, int ___currentSkill, int ___currentLevel)
+    private static void LevelUpMenuDrawPrefix(LevelUpMenu __instance, int ___currentLevel)
     {
         if (__instance.isProfessionChooser && ___currentLevel == 10)
             __instance.height += 16;
-
-        return true; // run original logic
     }
 
     /// <summary>Patch to draw Prestige tooltip during profession selection.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> LevelUpMenuDrawTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? LevelUpMenuDrawTranspiler(IEnumerable<CodeInstruction> instructions,
         MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -77,6 +74,7 @@ internal class LevelUpMenuDrawPatch : BasePatch
                 )
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldfld, typeof(LevelUpMenu).RequireField("currentLevel")),
                     new CodeInstruction(OpCodes.Call,
                         typeof(LevelUpMenuDrawPatch).RequireMethod(nameof(GetChooseProfessionText)))
                 );
@@ -84,7 +82,6 @@ internal class LevelUpMenuDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching level up menu choose profession text. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -100,10 +97,12 @@ internal class LevelUpMenuDrawPatch : BasePatch
                 )
                 .Advance()
                 .GetOperand(out var isNotProfessionChooser)
-                .FindLabel((Label) isNotProfessionChooser)
+                .FindLabel((Label)isNotProfessionChooser)
                 .Retreat()
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldfld, typeof(LevelUpMenu).RequireField("currentLevel")),
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Call,
                         typeof(LevelUpMenuDrawPatch).RequireMethod(nameof(DrawSubroutine)))
@@ -111,8 +110,7 @@ internal class LevelUpMenuDrawPatch : BasePatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while patching level up menu prestige ribbon draw. Helper returned {ex}");
-            transpilationFailed = true;
+            Log.E($"Failed while patching level up menu prestige tooltip draw. Helper returned {ex}");
             return null;
         }
 
@@ -123,48 +121,49 @@ internal class LevelUpMenuDrawPatch : BasePatch
 
     #region injected subroutines
 
-    private static string GetChooseProfessionText(LevelUpMenu menu)
-    {
-        var currentLevel = (int) _CurrentLevel.GetValue(menu)!;
-        return currentLevel > 10
-            ? ModEntry.ModHelper.Translation.Get("prestige.levelup.prestige")
+    internal static string GetChooseProfessionText(int currentLevel) =>
+        currentLevel > 10
+            ? ModEntry.i18n.Get("prestige.levelup.prestige")
             : Game1.content.LoadString("Strings\\UI:LevelUp_ChooseProfession");
-    }
 
-    private static void DrawSubroutine(LevelUpMenu menu, SpriteBatch b)
+    private static void DrawSubroutine(LevelUpMenu menu, int currentLevel, SpriteBatch b)
     {
-        if (!ModEntry.Config.EnablePrestige || !menu.isProfessionChooser) return;
+        if (!ModEntry.Config.EnablePrestige || !menu.isProfessionChooser || currentLevel > 10) return;
 
-        var currentLevel = (int) _CurrentLevel.GetValue(menu)!;
-        if (currentLevel > 10) return;
+        _GetProfessionsToChoose ??= typeof(LevelUpMenu).RequireField("professionsToChoose")
+            .CompileUnboundFieldGetterDelegate<Func<LevelUpMenu, List<int>>>();
+        var professionsToChoose = _GetProfessionsToChoose(menu);
+        if (!Profession.TryFromValue(professionsToChoose[0], out var leftProfession) ||
+            !Profession.TryFromValue(professionsToChoose[1], out var rightProfession)) return;
 
-        var professionsToChoose = (List<int>) _ProfessionsToChoose.GetValue(menu)!;
-        var leftProfession = professionsToChoose[0];
-        var rightProfession = professionsToChoose[1];
-
-        if (Game1.player.professions.Contains(leftProfession) &&
-            Game1.player.HasAllProfessionsInBranch(leftProfession))
+        Rectangle selectionArea;
+        if (Game1.player.HasProfession(leftProfession) &&
+            Game1.player.HasAllProfessionsBranchingFrom(leftProfession))
         {
-            var selectionArea = new Rectangle(menu.xPositionOnScreen + 32, menu.yPositionOnScreen + 232,
+            selectionArea = new(menu.xPositionOnScreen + 32, menu.yPositionOnScreen + 232,
                 menu.width / 2 - 40, menu.height - 264);
+            b.Draw(Game1.staminaRect, selectionArea, new(Color.Black, 0.3f));
+
             if (selectionArea.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
-                var hoverText = ModEntry.ModHelper.Translation.Get(leftProfession % 6 <= 1
+                var hoverText = ModEntry.i18n.Get(leftProfession % 6 <= 1
                     ? "prestige.levelup.tooltip:5"
                     : "prestige.levelup.tooltip:10");
                 IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
             }
         }
 
-        if (Game1.player.professions.Contains(rightProfession) &&
-            Game1.player.HasAllProfessionsInBranch(rightProfession))
+        if (Game1.player.HasProfession(rightProfession) &&
+            Game1.player.HasAllProfessionsBranchingFrom(rightProfession))
         {
-            var selectionArea = new Rectangle(menu.xPositionOnScreen + menu.width / 2 + 8,
+            selectionArea = new(menu.xPositionOnScreen + menu.width / 2 + 8,
                 menu.yPositionOnScreen + 232,
                 menu.width / 2 - 40, menu.height - 264);
+            b.Draw(Game1.staminaRect, selectionArea, new(Color.Black, 0.3f));
+
             if (selectionArea.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
-                var hoverText = ModEntry.ModHelper.Translation.Get(leftProfession % 6 <= 1
+                var hoverText = ModEntry.i18n.Get(leftProfession % 6 <= 1
                     ? "prestige.levelup.tooltip:5"
                     : "prestige.levelup.tooltip:10");
                 IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);

@@ -12,27 +12,28 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CrabPotMachineGetStatePatch : BasePatch
+internal sealed class CrabPotMachineGetStatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal CrabPotMachineGetStatePatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CrabPotMachine".ToType().RequireMethod("GetState");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CrabPotMachine".ToType()
+                .RequireMethod("GetState");
         }
         catch
         {
@@ -44,7 +45,7 @@ internal class CrabPotMachineGetStatePatch : BasePatch
 
     /// <summary>Patch for conflicting Luremaster and Conservationist automation rules.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> CrabPotMachineGetStateTranspiler(
+    private static IEnumerable<CodeInstruction>? CrabPotMachineGetStateTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -65,7 +66,6 @@ internal class CrabPotMachineGetStatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching bait conditions for automated Crab Pots.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

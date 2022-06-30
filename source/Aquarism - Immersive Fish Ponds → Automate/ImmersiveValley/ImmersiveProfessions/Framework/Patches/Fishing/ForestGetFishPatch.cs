@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley.Locations;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ForestGetFishPatch : BasePatch
+internal sealed class ForestGetFishPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     private const int GLACIERFISH_INDEX_I = 775;
 
     /// <summary>Construct an instance.</summary>
     internal ForestGetFishPatch()
     {
-        Original = RequireMethod<Forest>(nameof(Forest.getFish));
+        Target = RequireMethod<Forest>(nameof(Forest.getFish));
     }
 
     #region harmony patches
 
     /// <summary>Patch for prestiged Angler to recatch Glacierfish.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ForestGetFishTranspiler(
+    private static IEnumerable<CodeInstruction>? ForestGetFishTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -66,7 +66,7 @@ internal class ForestGetFishPatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_S, 4) // arg 4 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Angler + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Angler.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, skipLegendary)
                 );
@@ -74,7 +74,6 @@ internal class ForestGetFishPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Angler legendary fish recatch.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

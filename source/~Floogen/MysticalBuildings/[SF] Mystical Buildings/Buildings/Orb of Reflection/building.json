@@ -1,0 +1,91 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/MysticalBuildings
+**
+*************************************************/
+
+{
+  "Id": "PeacefulEnd.SolidFoundations.MysticalBuildings_OrbofReflection",
+  "Name": "Orb of Reflection",
+  "Description": "A glowing orb which instills thoughts of the past and offers boons for the future.",
+  "DrawShadow": false,
+  "FadeWhenBehind": false,
+
+  "SourceRect": "0 0 16 32",
+  "Size": {
+    "X": 1,
+    "Y": 1
+  },
+  "AdditionalPlacementTiles": [
+    {
+      "Tile": {
+        "X": 0,
+        "Y": 1
+      }
+    }
+  ],
+
+  "Skins": [
+    {
+      "ID": "Gold",
+      "Name": "Gold Stand",
+      "Description": "...",
+      "Texture": "gold_stand"
+    },
+    {
+      "ID": "Silver",
+      "Name": "Silver Stand",
+      "Description": "...",
+      "Texture": "silver_stand"
+    }
+  ],
+
+  "DrawLayers": [
+    {
+      "Texture": "animations",
+      "SourceRect": "0 0 16 32",
+      "DrawPosition": {
+        "X": 0,
+        "Y": 0
+      },
+      "DrawBehindBase": false,
+      "SortTileOffset": 0,
+      "FrameCount": 4,
+      "ModDataFlags": [
+        "!IsNotReady"
+      ]
+    },
+    {
+      "Texture": "overlay",
+      "SourceRect": "0 0 16 32",
+      "DrawPosition": {
+        "X": 0,
+        "Y": 0
+      },
+      "DrawBehindBase": false,
+      "SortTileOffset": 0
+    }
+  ],
+
+  "Builder": "Wizard",
+  "BuildCondition": "CAN_BUILD_FOR_CABINS OrbofReflection",
+  "BuildCost": 5000,
+  "BuildMaterials": [
+    {
+      "ItemID": 566, // Celestine
+      "Amount": 1
+    },
+    {
+      "ItemID": 62, // Aquamarine
+      "Amount": 2
+    },
+    {
+      "ItemID": 390, // Stone
+      "Amount": 200
+    }
+  ]
+}

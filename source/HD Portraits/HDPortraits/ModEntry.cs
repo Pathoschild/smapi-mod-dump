@@ -39,7 +39,13 @@ namespace HDPortraits
             ModID = ModManifest.UniqueID;
             helper.Events.Content.AssetRequested += LoadDefaultAsset;
             helper.Events.Content.AssetsInvalidated += TryReloadAsset;
+            helper.Events.GameLoop.GameLaunched += GameLaunched;
+        }
+        private void GameLaunched(object _, GameLaunchedEventArgs ev)
+        {
             harmony.PatchAll();
+            Patches.STFPatch.Init();
+            ReloadBaseData();
         }
         public override object GetApi() => api;
         private void LoadDefaultAsset(object _, AssetRequestedEventArgs ev)

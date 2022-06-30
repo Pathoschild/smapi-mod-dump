@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-//using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -240,6 +240,24 @@ namespace CombatControlsRedux
             }
         }
 
+        private static bool InOnScreenMenu(ICursorPosition cursor)
+        {
+            bool save = Game1.uiMode;
+            Game1.uiMode = true;
+            Vector2 v = cursor.GetScaledScreenPixels();
+            Game1.uiMode = save;
+            int x = (int)v.X;
+            int y = (int)v.Y;
+            for (int i = 0; i < Game1.onScreenMenus.Count; i++)
+            {
+                if (Game1.onScreenMenus[i].isWithinBounds(x, y))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.
         /// This method implements the facing direction change and Slick moves of the Mod.
         /// </summary>
@@ -254,7 +272,10 @@ namespace CombatControlsRedux
             if (
                 (who.CurrentTool != null) &&
                 (useToolButtonPressed || actionButtonPressed) &&
-                Context.IsPlayerFree
+                Context.IsPlayerFree &&
+                (!who.swimming.Value) &&
+                (!who.bathingClothes.Value) &&
+                (! InOnScreenMenu(e.Cursor))
                )
             {
                 PerScreenData screen = ScreenData.Value;

@@ -66,6 +66,19 @@ namespace AlternativeTextures.Framework.Patches
             return paintBrush;
         }
 
+        internal static GenericTool GetSprayCanTool(bool isRare = false)
+        {
+            var sprayCan = new GenericTool(_helper.Translation.Get("tools.name.spray_can"), _helper.Translation.Get("tools.description.spray_can"), -1, 6, 6);
+            sprayCan.modData[AlternativeTextures.SPRAY_CAN_FLAG] = null;
+
+            if (isRare || Game1.random.Next(100) <= 10)
+            {
+                sprayCan.modData[AlternativeTextures.SPRAY_CAN_RARE] = null;
+            }
+
+            return sprayCan;
+        }
+
         internal static string GetObjectName(Object obj)
         {
             // Perform separate check for DGA objects, before using check for vanilla objects
@@ -386,6 +399,11 @@ namespace AlternativeTextures.Framework.Patches
             return _helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets");
         }
 
+        internal static bool IsSolidFoundationsUsed()
+        {
+            return _helper.ModRegistry.IsLoaded("PeacefulEnd.SolidFoundations");
+        }
+
         internal static bool IsDGAObject(object obj)
         {
             if (IsDGAUsed() && AlternativeTextures.apiManager.GetDynamicGameAssetsApi() is IDynamicGameAssetsApi api && api != null)
@@ -474,11 +492,15 @@ namespace AlternativeTextures.Framework.Patches
             var selectedVariation = Game1.random.Next(-1, textureModel.Variations);
             if (textureModel.ManualVariations.Count() > 0)
             {
-                var weightedSelection = textureModel.ManualVariations.Where(v => v.ChanceWeight >= Game1.random.NextDouble()).ToList();
+                var weightedSelection = textureModel.ManualVariations.Where(v => v.ChanceWeight > Game1.random.NextDouble()).ToList();
                 if (weightedSelection.Count > 0)
                 {
                     var randomWeightedSelection = Game1.random.Next(!textureModel.ManualVariations.Any(v => v.Id == -1) ? -1 : 0, weightedSelection.Count());
                     selectedVariation = randomWeightedSelection == -1 ? -1 : weightedSelection[randomWeightedSelection].Id;
+                }
+                else
+                {
+                    return AssignDefaultModData<T>(type, modelName, trackSeason, trackSheetId);
                 }
             }
 

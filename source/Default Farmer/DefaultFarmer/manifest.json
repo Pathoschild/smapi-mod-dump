@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/DefaultFarmer
+**
+*************************************************/
+
+{
+  "Name": "DefaultFarmer",
+  "Author": "Tyler Gibbs",
+  "Version": "1.1.1",
+  "Description": "Save a default farmer for when you create new saves.",
+  "UniqueID": "tylergibbs2.DefaultFarmer",
+  "EntryDll": "DefaultFarmer.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "GitHub:tylergibbs2/DefaultFarmer" ]
+}

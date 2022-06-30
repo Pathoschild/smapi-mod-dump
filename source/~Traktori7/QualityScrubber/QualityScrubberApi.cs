@@ -16,25 +16,25 @@ namespace QualityScrubber
 {
 	public interface IQualityScrubberApi
 	{
-		QualityScrubberController controller { get; }
-		bool CanProcess(Item inputItem, SObject machine);
+		public QualityScrubberController Controller { get; }
+		public bool CanProcess(Item inputItem, SObject machine);
 	}
 
 
 	public class QualityScrubberApi : IQualityScrubberApi
 	{
-		public QualityScrubberController controller { get; }
+		public QualityScrubberController Controller { get; }
 
 
-		public QualityScrubberApi(QualityScrubberController mod)
+		public QualityScrubberApi(QualityScrubberController controller)
 		{
-			this.controller = mod;
+			this.Controller = controller;
 		}
 
 
 		public bool CanProcess(Item inputItem, SObject machine)
 		{
-			return controller.CanProcess(inputItem, machine);
+			return Controller.CanProcess(inputItem, machine);
 		}
 	}
 }

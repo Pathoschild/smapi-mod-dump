@@ -13,6 +13,7 @@ using StardewValley;
 using System.Collections.Generic;
 using MarketDay.Shop;
 using MarketDay.Utility;
+using StardewValley.Util;
 
 namespace MarketDay.ItemPriceAndStock
 {
@@ -64,9 +65,7 @@ namespace MarketDay.ItemPriceAndStock
             {
                 var priceAndStock = stock.Update();
                 //null is returned if conhditions aren't met, skip adding this stock
-                if (priceAndStock == null) 
-                    continue;
-
+                if (priceAndStock == null) continue;
                 Add(priceAndStock);
             }
 

@@ -191,5 +191,5 @@ internal partial struct Vector2I :
 	public override readonly int GetHashCode() => Packed.GetHashCode();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	ulong ILongHash.GetLongHashCode() => Packed;
+	public readonly ulong GetLongHashCode() => Packed;
 }

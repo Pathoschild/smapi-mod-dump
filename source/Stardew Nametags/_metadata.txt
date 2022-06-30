@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tylergibbs2/StardewNametags
+   Git: https://github.com/tylergibbs2/StardewNametags.git
+
+mods:
+   Stardew Nametags
+
+latest commit:
+   commit 762cfa44723a4e3aa51874f7bd700f35ccf4fb08
+   Author: Tyler <gibbstyler7@gmail.com>
+   Date:   Fri May 27 12:09:30 2022 -0500
+   
+       bump version
+   

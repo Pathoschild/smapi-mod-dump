@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/GreenhouseGatherers
+**
+*************************************************/
+
+{
+  "big-craftable.HarvestStatue.name": "Урожайна статуетка",
+  "big-craftable.HarvestStatue.description": "Наповнена магією статуетка, що приваблює Джунімо. Якщо розмістити її в приміщенні, Джунімо зберуть для вас урожай поблизу неї.",
+
+  "crafting.HarvestStatueRecipe.name": "Урожайна статуетка",
+  "crafting.HarvestStatueRecipe.description": "Створює врожайну статуетку."
+}

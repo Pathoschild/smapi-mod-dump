@@ -12,34 +12,31 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common.Classes;
+using DaLion.Common.Extensions.Reflection;
+using Events.GameLoop;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
-
-using DaLion.Common.Classes;
-using DaLion.Common.Extensions.Reflection;
-using Events.GameLoop;
-using Extensions;
+using System;
 using Utility;
-
 using Multiplayer = StardewValley.Multiplayer;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GameLocationExplodePatch : BasePatch
+internal sealed class GameLocationExplodePatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly FieldInfo _Multiplayer = typeof(Game1).RequireField("multiplayer")!;
+    private static Func<Multiplayer>? _GetMultiplayer;
 
     /// <summary>Construct an instance.</summary>
     internal GameLocationExplodePatch()
     {
-        Original = RequireMethod<GameLocation>(nameof(GameLocation.explode));
+        Target = RequireMethod<GameLocation>(nameof(GameLocation.explode));
     }
 
     #region harmony patches
@@ -47,7 +44,7 @@ internal class GameLocationExplodePatch : BasePatch
     /// <summary>Patch for Blaster double coal chance + Demolitionist speed burst.</summary>
     [HarmonyPrefix]
     private static void GameLocationExplodePrefix(GameLocation __instance, Vector2 tileLocation, int radius,
-        Farmer who)
+        Farmer? who)
     {
         if (who is null) return;
 
@@ -60,11 +57,13 @@ internal class GameLocationExplodePatch : BasePatch
         var chanceModifier = who.DailyLuck / 2.0 + who.LuckLevel * 0.001 + who.MiningLevel * 0.005;
         var r = new Random(Guid.NewGuid().GetHashCode());
         var circle = new CircleTileGrid(tileLocation, radius);
+        _GetMultiplayer ??= typeof(Game1).RequireField("multiplayer")
+            .CompileStaticFieldGetterDelegate<Func<Multiplayer>>();
         foreach (var tile in circle.Tiles)
         {
             if (!__instance.objects.TryGetValue(tile, out var tileObj) || !tileObj.IsStone()) continue;
 
-            int tileX = (int) tile.X, tileY = (int) tile.Y;
+            int tileX = (int)tile.X, tileY = (int)tile.Y;
             if (isBlaster)
             {
                 if (__instance is MineShaft)
@@ -72,7 +71,7 @@ internal class GameLocationExplodePatch : BasePatch
                     // perform check from MineShaft.checkStoneForItems
                     // this method calls GameLocation.breakStone which also produces coal, but only outside which never applies here
                     if (r.NextDouble() < 0.05 * (1.0 + chanceModifier) *
-                        (tileObj.ParentSheetIndex is 40 or 42 ? 1.2 : 0.8)  &&
+                        (tileObj.ParentSheetIndex is 40 or 42 ? 1.2 : 0.8) &&
                         (r.NextDouble() < 0.25 || isPrestigedBlaster && r.NextDouble() < 0.25))
                     {
                         Game1.createObjectDebris(SObject.coal, tileX, tileY, who.UniqueMultiplayerID,
@@ -80,7 +79,7 @@ internal class GameLocationExplodePatch : BasePatch
                         if (isPrestigedBlaster)
                             Game1.createObjectDebris(SObject.coal, tileX, tileY,
                                 who.UniqueMultiplayerID, __instance);
-                        ((Multiplayer)_Multiplayer.GetValue(null))!
+                        _GetMultiplayer()
                             .broadcastSprites(__instance,
                                 new TemporaryAnimatedSprite(25,
                                     new(tile.X * Game1.tileSize, tile.Y * Game1.tileSize), Color.White,
@@ -89,7 +88,7 @@ internal class GameLocationExplodePatch : BasePatch
                     }
 
                     if (!isPrestigedBlaster) continue;
-                    
+
                     // since I'm generous, add a whole third check for prestiged 
                     if (r.NextDouble() < 0.05 * (1.0 + chanceModifier) *
                         (tileObj.ParentSheetIndex is 40 or 42 ? 1.2 : 0.8) &&
@@ -100,7 +99,7 @@ internal class GameLocationExplodePatch : BasePatch
                         if (isPrestigedBlaster)
                             Game1.createObjectDebris(SObject.coal, tileX, tileY,
                                 who.UniqueMultiplayerID, __instance);
-                        ((Multiplayer)_Multiplayer.GetValue(null))!
+                        _GetMultiplayer()
                             .broadcastSprites(__instance,
                                 new TemporaryAnimatedSprite(25,
                                     new(tile.X * Game1.tileSize, tile.Y * Game1.tileSize), Color.White,
@@ -208,7 +207,7 @@ internal class GameLocationExplodePatch : BasePatch
                     Game1.createObjectDebris(74, tileX, tileY,
                         who.UniqueMultiplayerID, __instance);
             }
-            else if(__instance is MineShaft shaft)
+            else if (__instance is MineShaft shaft)
             {
                 // bonus geode
                 if (r.NextDouble() < 0.022 * (1.0 + chanceModifier) || isPrestigedDemolitionist && r.NextDouble() < 0.022 * (1.0 + chanceModifier))
@@ -256,10 +255,10 @@ internal class GameLocationExplodePatch : BasePatch
         if (!who.IsLocalPlayer || !isDemolitionist || !ModEntry.Config.EnableGetExcited) return;
 
         // get excited speed buff
-        var distanceFromEpicenter = (int) (tileLocation - who.getTileLocation()).Length();
+        var distanceFromEpicenter = (int)(tileLocation - who.getTileLocation()).Length();
         if (distanceFromEpicenter < radius * 2 + 1) ModEntry.PlayerState.DemolitionistExcitedness = 4;
         if (distanceFromEpicenter < radius + 1) ModEntry.PlayerState.DemolitionistExcitedness += 2;
-        EventManager.Enable(typeof(DemolitionistUpdateTickedEvent));
+        ModEntry.EventManager.Hook<DemolitionistUpdateTickedEvent>();
     }
 
     #endregion harmony patches

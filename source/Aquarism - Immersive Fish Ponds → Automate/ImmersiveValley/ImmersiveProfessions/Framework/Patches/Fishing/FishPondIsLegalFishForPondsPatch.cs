@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Buildings;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FishPondIsLegalFishForPondsPatch : BasePatch
+internal sealed class FishPondIsLegalFishForPondsPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FishPondIsLegalFishForPondsPatch()
     {
-        Original = RequireMethod<FishPond>("isLegalFishForPonds");
+        Target = RequireMethod<FishPond>("isLegalFishForPonds");
     }
 
     #region harmony patches
 
     /// <summary>Patch for prestiged Aquarist to raise legendary fish.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> FishPondIsLegalFishForPondsTranspiler(
+    private static IEnumerable<CodeInstruction>? FishPondIsLegalFishForPondsTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator ilGenerator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -69,7 +69,6 @@ internal class FishPondIsLegalFishForPondsPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Aquarist permission to raise legendary fish.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

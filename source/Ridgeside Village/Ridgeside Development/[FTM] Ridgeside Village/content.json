@@ -15,7 +15,6 @@
   "MonsterSpawnEnabled": true,
   "Forage_Spawn_Settings": {
     "Areas": [
-      // The Hike - RSV Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -84,8 +83,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridgeside Village - RSV Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -178,8 +175,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // The Ridge - RSV Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -251,8 +246,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Falls - RSV Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -315,8 +308,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - RSV + vanilla forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -573,8 +564,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Treasure items
       {
         "SpringItemIndex": [
           74,
@@ -824,8 +813,6 @@
         },
         "DaysUntilSpawnsExpire": 7
       },
-
-      // Ridge Forest - Mountain Mistbloom
       {
         "SpringItemIndex": [
           "Mountain Mistbloom"
@@ -1055,8 +1042,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Yellow Wood Sculpture
       {
         "SpringItemIndex": [
           "Yellow Wood Sculpture"
@@ -1106,8 +1091,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Silver Fish Bones
       {
         "SpringItemIndex": [
           "Silver Fish Bones"
@@ -1167,8 +1150,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Inked Fossil
       {
         "SpringItemIndex": [
           "Inked Fossil"
@@ -1228,8 +1209,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Nighblack Diamond
       {
         "SpringItemIndex": [
           "Nightblack Diamond"
@@ -1280,8 +1259,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Shell Bracelet
       {
         "SpringItemIndex": [
           "Shell Bracelet"
@@ -1331,8 +1308,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Aguar's cave - Fruit version
       {
         "SpringItemIndex": [
           "Cherry Pluot",
@@ -1431,11 +1406,10 @@
           "EPUPreconditions": [
             "q 751600642/r 0.75"
           ],
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 14
       },
-
-      // Aguar's cave - Flower version
       {
         "SpringItemIndex": [
           "Foxbloom",
@@ -1534,6 +1508,7 @@
           "EPUPreconditions": [
             "q 751600641/r 0.75"
           ],
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 14
       }
@@ -1562,7 +1537,6 @@
   },
   "Large_Object_Spawn_Settings": {
     "Areas": [
-      // Ridge - Log blocking Ridge Forest
       {
         "ObjectTypes": [
           "Log"
@@ -1602,7 +1576,6 @@
         },
         "DaysUntilSpawnsExpire": 0
       },
-      // Summit Farm - initial large debris
       {
         "ObjectTypes": [
           "Log",
@@ -1648,7 +1621,6 @@
   },
   "Ore_Spawn_Settings": {
     "Areas": [
-      // Ridge Forest - Mining areas
       {
         "MiningLevelRequired": null,
         "StartingSpawnChance": null,
@@ -1764,8 +1736,6 @@
   },
   "Monster_Spawn_Settings": {
     "Areas": [
-
-      // Ridge Forest - Ghosts
       {
         "MonsterTypes": [
           {
@@ -1814,8 +1784,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Corrupted Spirits
       {
         "MonsterTypes": [
           {
@@ -1868,8 +1836,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Wraiths
       {
         "MonsterTypes": [
           {
@@ -1923,8 +1889,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Viperials
       {
         "MonsterTypes": [
           {
@@ -2161,9 +2125,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-
-      // Ridge Forest - Extra Viperials
       {
         "MonsterTypes": [
           {
@@ -2402,8 +2363,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Ridge Forest - Serpentine Beasts
       {
         "MonsterTypes": [
           {
@@ -2670,8 +2629,6 @@
         },
         "DaysUntilSpawnsExpire": null
       },
-
-      // Ridge Forest - Wildneress Golems
       {
         "MonsterTypes": [
           {
@@ -2907,8 +2864,6 @@
         },
         "DaysUntilSpawnsExpire": null
       },
-
-      // Spirit Realm - Corrupted Spirits
       {
         "MonsterTypes": [
           {
@@ -2961,8 +2916,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Spirit Realm - Wraiths
       {
         "MonsterTypes": [
           {
@@ -3016,8 +2969,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Spirit Realm - Viperials
       {
         "MonsterTypes": [
           {
@@ -3075,8 +3026,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-
-      // Spirit Realm - Serpentine Beasts
       {
         "MonsterTypes": [
           {

@@ -12,24 +12,22 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class TreeUpdateTapperProductPatch : BasePatch
+internal sealed class TreeUpdateTapperProductPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal TreeUpdateTapperProductPatch()
     {
-        Original = RequireMethod<Tree>(nameof(Tree.UpdateTapperProduct));
+        Target = RequireMethod<Tree>(nameof(Tree.UpdateTapperProduct));
     }
 
     #region harmony patches
@@ -44,7 +42,7 @@ internal class TreeUpdateTapperProductPatch : BasePatch
         if (!owner.HasProfession(Profession.Tapper)) return;
 
         if (tapper_instance.MinutesUntilReady > 0)
-            tapper_instance.MinutesUntilReady = (int) (tapper_instance.MinutesUntilReady *
+            tapper_instance.MinutesUntilReady = (int)(tapper_instance.MinutesUntilReady *
                                                        (owner.HasProfession(Profession.Tapper, true) ? 0.5 : 0.75));
     }
 

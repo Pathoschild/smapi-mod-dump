@@ -12,27 +12,27 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.UiInfoSuite;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ExperieneBarDrawExperienceBarPatch : BasePatch
+internal sealed class ExperieneBarDrawExperienceBarPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ExperieneBarDrawExperienceBarPatch()
     {
         try
         {
-            Original = "UIInfoSuite.UIElements.ExperienceBar".ToType().RequireMethod("DrawExperienceBar");
+            Target = "UIInfoSuite.UIElements.ExperienceBar".ToType().RequireMethod("DrawExperienceBar");
         }
         catch
         {
@@ -44,7 +44,7 @@ internal class ExperieneBarDrawExperienceBarPatch : BasePatch
 
     /// <summary>Patch to move skill icon to the right.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ExperienceBarDrawExperienceBarTranspiler(
+    private static IEnumerable<CodeInstruction>? ExperienceBarDrawExperienceBarTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -62,8 +62,7 @@ internal class ExperieneBarDrawExperienceBarPatch : BasePatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while patching to budge Ui Info Suite experience bar skill icon. Helper returned {ex}");
-            transpilationFailed = true;
+            Log.E($"Failed to budge Ui Info Suite experience bar skill icon. Helper returned {ex}");
             return null;
         }
 

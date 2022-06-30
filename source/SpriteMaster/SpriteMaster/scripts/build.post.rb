@@ -140,13 +140,14 @@ FileUtils.cp_r(LicensesSource, LicensesDest, preserve: true)
 
 puts "Copying prebuilt libraries..."
 PrebuiltPaths.each { |directory|
-	raise "Prebuilt Path '#{directory}' is not a directory" unless directory.directory?
-	directory.glob("**/*") { |f|
-		next if Library.excluded?(f)
-		dest = OutDir + f.relative_path_from(directory)
-		puts "'#{f}' -> '#{dest}'"
-		FileUtils.cp(f, dest, preserve: true)
-	}
+	if directory.directory?
+		directory.glob("**/*") { |f|
+			next if Library.excluded?(f)
+			dest = OutDir + f.relative_path_from(directory)
+			puts "'#{f}' -> '#{dest}'"
+			FileUtils.cp(f, dest, preserve: true)
+		}
+	end
 }
 
 $libraries = []

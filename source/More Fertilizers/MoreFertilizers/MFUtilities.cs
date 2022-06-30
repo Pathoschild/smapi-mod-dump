@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewValley.TerrainFeatures;
+
 namespace MoreFertilizers;
 
 /// <summary>
@@ -35,4 +37,29 @@ internal static class MFUtilities
                 9 => ModEntry.DeluxeFruitTreeFertilizerID,
                 _ => ModEntry.BountifulFertilizerID,
             };
+
+    /// <summary>
+    /// Whether hoedirt contains a crop should be considered a Joja crop for the Joja and Organic fertilizers.
+    /// </summary>
+    /// <param name="dirt">Hoedirt.</param>
+    /// <returns>True if the hoedirt has a joja crop.</returns>
+    internal static bool HasJojaCrop(this HoeDirt dirt)
+        => dirt.crop is not null && dirt.crop.IsJojaCrop();
+
+    /// <summary>
+    /// Whether the crop should be considered a Joja crop for the Joja and Organic fertilizers.
+    /// </summary>
+    /// <param name="crop">crop.</param>
+    /// <returns>True if crop is a joja crop.</returns>
+    internal static bool IsJojaCrop(this Crop crop)
+    {
+        string data = Game1.objectInformation[crop.indexOfHarvest.Value];
+        int index = data.IndexOf('/');
+        if (index >= 0)
+        {
+            ReadOnlySpan<char> span = data.AsSpan(0, index);
+            return span.Contains("Joja", StringComparison.OrdinalIgnoreCase);
+        }
+        return false;
+    }
 }

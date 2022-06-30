@@ -25,21 +25,9 @@ namespace WarpNetwork.api
             getLabel = label;
             this.warp = warp;
         }
-        public bool GetEnabled()
-        {
-            return getEnabled();
-        }
-        public string GetIconName()
-        {
-            return getIconName();
-        }
-        public string GetLabel()
-        {
-            return getLabel();
-        }
-        public void Warp()
-        {
-            warp();
-        }
+        public bool GetEnabled() => getEnabled();
+        public string GetIconName() => getIconName();
+        public string GetLabel() => getLabel();
+        public void Warp() => warp();
     }
 }

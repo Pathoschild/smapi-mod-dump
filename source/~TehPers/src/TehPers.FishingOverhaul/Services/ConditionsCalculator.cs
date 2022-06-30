@@ -19,6 +19,8 @@ namespace TehPers.FishingOverhaul.Services
 {
     internal class ConditionsCalculator
     {
+        private const string contentPatcherId = "Pathoschild.ContentPatcher";
+
         private readonly AvailabilityConditions conditions;
         private readonly IManagedConditions? managedConditions;
 
@@ -43,12 +45,24 @@ namespace TehPers.FishingOverhaul.Services
 
             // Get CP version
             var version =
-                fishingManifest.Dependencies.FirstOrDefault(
-                        dependency => dependency.UniqueID == "Pathoschild.ContentPatcher"
+                owner.Dependencies.FirstOrDefault(
+                        dependency => string.Equals(
+                            dependency.UniqueID,
+                            ConditionsCalculator.contentPatcherId,
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                    )
+                    ?.MinimumVersion
+                ?? fishingManifest.Dependencies.FirstOrDefault(
+                        dependency => string.Equals(
+                            dependency.UniqueID,
+                            ConditionsCalculator.contentPatcherId,
+                            StringComparison.OrdinalIgnoreCase
+                        )
                     )
                     ?.MinimumVersion
                 ?? throw new ArgumentException(
-                    "Fishing overhaul does not depend on Content Patcher",
+                    "TFO does not depend on Content Patcher",
                     nameof(fishingManifest)
                 );
 

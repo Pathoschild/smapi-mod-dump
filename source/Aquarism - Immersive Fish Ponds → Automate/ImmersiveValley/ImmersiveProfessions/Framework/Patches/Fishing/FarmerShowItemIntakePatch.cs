@@ -12,27 +12,26 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-
-using DaLion.Common.Extensions;
-
+using System;
+using System.Reflection;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmerShowItemIntakePatch : BasePatch
+internal sealed class FarmerShowItemIntakePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmerShowItemIntakePatch()
     {
-        Original = RequireMethod<Farmer>(nameof(Farmer.showItemIntake));
+        Target = RequireMethod<Farmer>(nameof(Farmer.showItemIntake));
     }
 
     #region harmony patches
@@ -43,10 +42,10 @@ internal class FarmerShowItemIntakePatch : BasePatch
     {
         try
         {
-            if (!who.mostRecentlyGrabbedItem.ParentSheetIndex.IsAnyOf(14, 51)) return true; // run original logic
+            if (!who.mostRecentlyGrabbedItem.ParentSheetIndex.IsIn(14, 51)) return true; // run original logic
 
-            var toShow = (SObject) who.mostRecentlyGrabbedItem;
-            TemporaryAnimatedSprite tempSprite = who.FacingDirection switch
+            var toShow = (SObject)who.mostRecentlyGrabbedItem;
+            TemporaryAnimatedSprite? tempSprite = who.FacingDirection switch
             {
                 2 => who.FarmerSprite.currentAnimationIndex switch
                 {

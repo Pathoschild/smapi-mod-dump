@@ -39,12 +39,16 @@ namespace ItemPipes.Framework.Recipes
         {
 			DataAccess DataAccess = DataAccess.GetDataAccess();
 			IDName = Utilities.GetIDName(name);
+			if(IDName.Equals("pipo"))
+            {
+				this.bigCraftable = true;
+            }
 			this.DisplayName = DataAccess.ItemNames[IDName];
-			ItemTexture = DataAccess.Sprites[IDName+"_Item"];
+			ItemTexture = DataAccess.Sprites[IDName+"_item"];
 			description = DataAccess.ItemDescriptions[IDName];
 			this.isCookingRecipe = isCookingRecipe;
 			this.name = name;
-			string info = DataAccess.Recipes[name];
+			string info = DataAccess.Recipes[IDName];
 			string[] infoSplit = info.Split('/');
 			string[] ingredientsSplit = infoSplit[0].Split(' ');
 			this.recipeList.Clear();
@@ -103,10 +107,10 @@ namespace ItemPipes.Framework.Recipes
 				Utility.drawWithShadow(b, ItemTexture, new Vector2(x, y), srcRect, Color.White, 0f, Vector2.Zero, 4f, flipped: false, layerDepth);
 			}
 		}
-
+		
 		public override Item createItem()
 		{
-			SObject createdItem = Factories.ItemFactory.CreateItem(IDName);
+			SObject createdItem = ItemFactory.CreateItem(IDName);
 			createdItem.stack.Value = this.numberProducedPerCraft;
 			return createdItem;
 		}
@@ -138,7 +142,7 @@ namespace ItemPipes.Framework.Recipes
 				if (dataAccess.ItemIDNames.Contains(Utilities.GetIDName(ingredient_name_text)))
                 {
 					Rectangle srcRect = new Rectangle(0, 0, 16, 16);
-					Texture2D IngredientTexture = dataAccess.Sprites[ingredient_name_text + "_Item"];
+					Texture2D IngredientTexture = dataAccess.Sprites[ingredient_name_text + "_item"];
 					b.Draw(IngredientTexture, new Vector2(position.X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4)), srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.86f);
 					Utility.drawTinyDigits(this.recipeList.Values.ElementAt(i), b, new Vector2(position.X + 32f - Game1.tinyFont.MeasureString(string.Concat(this.recipeList.Values.ElementAt(i))).X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4) + 21f), 2f, 0.87f, Color.AntiqueWhite);
 					string customName = dataAccess.ItemNames[ingredient_name_text];
@@ -183,10 +187,8 @@ namespace ItemPipes.Framework.Recipes
 			{
 				retString = Game1.objectInformation[index].Split('/')[4];
 			}
-			if(index >= DataAccess.GetDataAccess().ItemIDs["IronPipe"])
+			if(DataAccess.GetDataAccess().ModItemsIDs.Values.Contains(index))
             {
-				/*string IDName = DataAccess.GetDataAccess().ItemIDs.FirstOrDefault(x => x.Value == index).Key;
-				retString = DataAccess.GetDataAccess().ItemNames[IDName];*/
 				retString = DataAccess.GetDataAccess().ItemIDs.FirstOrDefault(x => x.Value == index).Key;
 			}
 			return retString;

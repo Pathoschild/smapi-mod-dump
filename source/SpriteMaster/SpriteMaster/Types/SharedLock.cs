@@ -11,6 +11,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace SpriteMaster;
@@ -20,6 +21,7 @@ using LockType = ReaderWriterLockSlim;
 internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 	private LockType? Lock;
 
+	[StructLayout(LayoutKind.Auto)]
 	internal ref struct ReadCookie {
 		private LockType? Lock = null;
 
@@ -48,6 +50,7 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		public static implicit operator bool(ReadCookie cookie) => cookie.Lock is not null;
 	}
+	[StructLayout(LayoutKind.Auto)]
 	internal ref struct ExclusiveCookie {
 		private LockType? Lock = null;
 
@@ -77,6 +80,7 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 		public static implicit operator bool(ExclusiveCookie cookie) => cookie.Lock is not null;
 	}
 
+	[StructLayout(LayoutKind.Auto)]
 	internal ref struct ReadWriteCookie {
 		private LockType? Lock = null;
 

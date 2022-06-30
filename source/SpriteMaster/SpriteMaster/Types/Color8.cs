@@ -14,46 +14,57 @@ using SpriteMaster.Types.Fixed;
 using SpriteMaster.Types.Spans;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types;
 
 [DebuggerDisplay("[{R.Value}, {G.Value}, {B.Value}, {A.Value}]")]
 [StructLayout(LayoutKind.Sequential, Pack = sizeof(uint), Size = sizeof(uint))]
-internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
+internal readonly partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 	internal static readonly Color8 Zero = new(0U);
 
-	internal uint Packed = 0;
+	internal readonly uint Packed = 0;
 
 	internal readonly uint AsPacked => Packed;
 
-	[StructLayout(LayoutKind.Sequential, Pack = sizeof(uint), Size = sizeof(uint))]
-	private struct PackedWrapper {
-		internal Fixed8 R;
-		internal Fixed8 G;
-		internal Fixed8 B;
-		internal Fixed8 A;
+	internal readonly Fixed8 R {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new((byte)(Packed >> 0));
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		set => Unsafe.AsRef(in Packed) = (Packed & 0xFFFFFF00U) | (((uint)value.Value) << 0);
 	}
 
-	internal Fixed8 R {
-		readonly get => Packed.ReinterpretAs<PackedWrapper>().R;
-		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).R = value;
+	internal readonly Fixed8 G {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new((byte)(Packed >> 8));
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		set => Unsafe.AsRef(in Packed) = (Packed & 0xFFFF00FFU) | (((uint)value.Value) << 8);
 	}
 
-	internal Fixed8 G {
-		readonly get => Packed.ReinterpretAs<PackedWrapper>().G;
-		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).G = value;
+	internal readonly Fixed8 B {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new((byte)(Packed >> 16));
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		set => Unsafe.AsRef(in Packed) = (Packed & 0xFF00FFFFU) | (((uint)value.Value) << 16);
 	}
 
-	internal Fixed8 B {
-		readonly get => Packed.ReinterpretAs<PackedWrapper>().B;
-		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).B = value;
+	internal readonly Fixed8 A {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new((byte)(Packed >> 24));
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		set => Unsafe.AsRef(in Packed) = (Packed & 0x00FFFFFFU) | (((uint)value.Value) << 24);
 	}
 
-	internal Fixed8 A {
-		readonly get => Packed.ReinterpretAs<PackedWrapper>().A;
-		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).A = value;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal readonly void SetRgb(byte r, byte g, byte b) {
+		ref uint packed = ref Unsafe.AsRef(in Packed);
+		packed = (packed & 0xFF_00_00_00U) | (((uint)r) | (((uint)g) << 8) | (((uint)b) << 16));
 	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal readonly void SetRgb(Fixed8 r, Fixed8 g, Fixed8 b) =>
+		SetRgb(r.Value, g.Value, b.Value);
 
 	internal uint ARGB => new PackedUInt(
 		A.Value, R.Value, G.Value, B.Value
@@ -61,6 +72,7 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 
 	internal readonly Color8 NoAlpha => new(R, G, B, 0);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static uint MakeMask(bool r, bool g, bool b, bool a) {
 		// ToSByte returns 0 or 1 for the mask. Negating it will turn that into 0 or -1, and -1 is 0xFF...
 		var rr = (uint)(byte)(-r.ToByte());
@@ -69,8 +81,11 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		var aa = ((uint)(byte)(-a.ToByte())) << 24;
 		return rr | gg | bb | aa;
 	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal readonly Color8 Mask(bool r = true, bool g = true, bool b = true, bool a = true) => new(Packed & MakeMask(r, g, b, a));
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static Color8 From(Color16 color) => new(
 		(Fixed8)color.R,
 		(Fixed8)color.G,
@@ -78,28 +93,35 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		(Fixed8)color.A
 	);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8(uint rgba) : this() {
 		Packed = rgba;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8((byte R, byte G, byte B) color) : this(color.R, color.G, color.B) { }
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8(byte r, byte g, byte b) : this() {
 		R = r;
 		G = g;
 		B = b;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8((Fixed8 R, Fixed8 G, Fixed8 B) color) : this(color.R, color.G, color.B) { }
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8(Fixed8 r, Fixed8 g, Fixed8 b) : this() {
 		R = r;
 		G = g;
 		B = b;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8((byte R, byte G, byte B, byte A) color) : this(color.R, color.G, color.B, color.A) { }
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8(byte r, byte g, byte b, byte a) : this() {
 		R = r;
 		G = g;
@@ -107,8 +129,10 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		A = a;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8((Fixed8 R, Fixed8 G, Fixed8 B, Fixed8 A) color) : this(color.R, color.G, color.B, color.A) { }
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Color8(Fixed8 r, Fixed8 g, Fixed8 b, Fixed8 a) : this() {
 		R = r;
 		G = g;
@@ -116,12 +140,17 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		A = a;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator uint(Color8 value) => value.Packed;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator Color8(uint value) => new(value);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static implicit operator XColor(Color8 value) => new(value.Packed);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static implicit operator Color8(XColor value) => new(value.PackedValue);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public override readonly bool Equals(object? obj) {
 		if (obj is Color8 color) {
 			return this == color;
@@ -132,9 +161,12 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		return false;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal readonly bool Equals(Color8 other) => this == other;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal readonly bool Equals(uint other) => this == (Color8)other;
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal readonly bool Equals(Color8 other, int threshold) {
 		var diffR = Math.Abs(R.Value - other.R.Value);
 		var diffG = Math.Abs(G.Value - other.G.Value);
@@ -143,11 +175,15 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		return diffR <= threshold && diffG <= threshold && diffB <= threshold && diffA <= threshold;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	readonly bool IEquatable<Color8>.Equals(Color8 other) => Equals(other);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	readonly bool IEquatable<uint>.Equals(uint other) => Equals(other);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool operator ==(Color8 lhs, Color8 rhs) => lhs.Packed == rhs.Packed;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool operator !=(Color8 lhs, Color8 rhs) => lhs.Packed != rhs.Packed;
 
 	internal static unsafe void Convert(Color16* source, Color8* destination, int count) {
@@ -178,9 +214,11 @@ internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash
 		return destination;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public override readonly int GetHashCode() => Packed.GetHashCode();
 
-	readonly ulong ILongHash.GetLongHashCode() => HashUtility.Combine(Packed);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public readonly ulong GetLongHashCode() => HashUtility.Combine(Packed);
 
 	static Color8() {
 #if SM_INTERNAL_TESTING

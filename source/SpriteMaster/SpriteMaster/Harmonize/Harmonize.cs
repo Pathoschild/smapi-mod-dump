@@ -136,7 +136,7 @@ internal static class Harmonize {
 					);
 					break;
 				case Generic.Struct:
-					foreach (var structType in StructTypes) {
+					foreach (var structType in attribute.GenericTypes ?? StructTypes) {
 						try {
 							//Debug.Trace($"\tGeneric Type: {structType.FullName}");
 							Patch(
@@ -160,19 +160,27 @@ internal static class Harmonize {
 					}
 					break;
 				case Generic.Class:
-					Patch(
-						@this,
-						instanceType,
-						typeof(object),
-						methodName,
-						pre: (attribute.PatchFixation == Fixation.Prefix) ? method : null,
-						post: (attribute.PatchFixation == Fixation.Postfix) ? method : null,
-						finalizer: (attribute.PatchFixation == Fixation.Finalizer) ? method : null,
-						trans: (attribute.PatchFixation == Fixation.Transpile) ? method : null,
-						reverse: (attribute.PatchFixation == Fixation.Reverse) ? method : null,
-						instanceMethod: attribute.Instance,
-						attribute: attribute
-					);
+					foreach (var objectType in attribute.GenericTypes ?? new[] {typeof(object)}) {
+						try {
+							Patch(
+								@this,
+								instanceType,
+								objectType,
+								methodName,
+								pre: (attribute.PatchFixation == Fixation.Prefix) ? method : null,
+								post: (attribute.PatchFixation == Fixation.Postfix) ? method : null,
+								finalizer: (attribute.PatchFixation == Fixation.Finalizer) ? method : null,
+								trans: (attribute.PatchFixation == Fixation.Transpile) ? method : null,
+								reverse: (attribute.PatchFixation == Fixation.Reverse) ? method : null,
+								instanceMethod: attribute.Instance,
+								attribute: attribute
+							);
+						}
+						catch (Exception ex) {
+							Debug.ConditionalError(attribute.Critical, $"Exception Patching Method {GetFullMethodName(type, method, attribute)}<{objectType.Name}> ({(method?.GetFullName() ?? "[null]")})", ex);
+							wasError = true;
+						}
+					}
 					break;
 				default:
 					throw new NotImplementedException($"Unknown Generic Enum: {attribute.GenericType}");
@@ -187,10 +195,12 @@ internal static class Harmonize {
 		}
 	}
 
-	private static void ApplyPatches(Harmony @this, Type type, MethodInfo method, IEnumerable<HarmonizeAttribute> attributes) {
+	private static void ApplyPatches(Harmony @this, Type type, MethodInfo method, IEnumerable<HarmonizeAttribute> attributes, bool early) {
 		try {
 			Parallel.ForEach(attributes, attribute => {
-				ApplyPatch(@this, type, method, attribute);
+				if (early == (attribute.ForMod is null)) {
+					ApplyPatch(@this, type, method, attribute);
+				}
 			});
 		}
 		catch (Exception ex) {
@@ -198,29 +208,40 @@ internal static class Harmonize {
 		}
 	}
 
-	internal static void ApplyPatches(this Harmony @this) {
+	internal static void ApplyPatches(this Harmony @this, bool early) {
 		@this.AssertNotNull();
-		Debug.Trace("Applying Patches");
+		Debug.Trace($"Applying Patches ({(early ? "early" : "late")})");
 		var assembly = typeof(Harmonize).Assembly;
 		Parallel.ForEach(
 			assembly.GetTypes(), type => {
 				var typeAttributes = type.GetCustomAttributes<HarmonizeFinalizeCatcherFixedAttribute>();
 				Parallel.ForEach(typeAttributes, attribute => {
-					ApplyPatch(
-						@this: @this,
-						type: type,
-						method: attribute.MethodInfo,
-						attribute: attribute
-					);
+					if (early == (attribute.ForMod is null)) {
+						ApplyPatch(
+							@this: @this,
+							type: type,
+							method: attribute.MethodInfo,
+							attribute: attribute
+						);
+					}
 				});
 
 				Parallel.ForEach(type.GetMethods(StaticFlags), method => {
-					ApplyPatches(
-						@this: @this,
-						type: type,
-						method: method,
-						attributes: method.GetCustomAttributes<HarmonizeAttribute>()
-					);
+					var conditionalAttributes = method.GetCustomAttributes<HarmonizeConditionalAttribute>();
+					bool enable = true;
+					foreach (var conditionalAttribute in conditionalAttributes) {
+						enable &= conditionalAttribute.Condition;
+					}
+
+					if (enable) {
+						ApplyPatches(
+							@this: @this,
+							type: type,
+							method: method,
+							attributes: method.GetCustomAttributes<HarmonizeAttribute>(),
+							early: early
+						);
+					}
 				});
 			}
 		);
@@ -516,9 +537,10 @@ internal static class Harmonize {
 				instance: instanceMethod,
 				isFinalizer: referenceMethod == finalizer
 			) ?? throw new ArgumentException($"Method '{name}' in type '{type.FullName}' could not be found");
-			var typeMethodInfo = (MethodInfo)typeMethod;
-			instance.Patch(
-				original: typeMethodInfo.MakeGenericMethod(genericType),
+			var typeMethodInfo = typeMethod as MethodInfo ?? throw new InvalidCastException($"Could not get MethodInfo from '{typeMethod}'");
+			var typeMethodInfoGeneric = typeMethodInfo.MakeGenericMethod(genericType);
+			_ = instance.Patch(
+				original: typeMethodInfoGeneric,
 				prefix: MakeHarmonyMethod(pre),
 				postfix: MakeHarmonyMethod(post),
 				finalizer: MakeHarmonyMethod(finalizer)
@@ -534,9 +556,10 @@ internal static class Harmonize {
 				instance: instanceMethod,
 				isFinalizer: (referenceMethod ?? trans) == finalizer
 			) ?? throw new ArgumentException($"Method '{name}' in type '{type.FullName}' could not be found");
-			var typeMethodInfo = (MethodInfo)typeMethod;
-			instance.Patch(
-				original: typeMethodInfo.MakeGenericMethod(genericType),
+			var typeMethodInfo = typeMethod as MethodInfo ?? throw new InvalidCastException($"Could not get MethodInfo from '{typeMethod}'");
+			var typeMethodInfoGeneric = typeMethodInfo.MakeGenericMethod(genericType);
+			_ = instance.Patch(
+				original: typeMethodInfoGeneric,
 				transpiler: MakeHarmonyMethod(trans)
 			);
 		}
@@ -551,9 +574,10 @@ internal static class Harmonize {
 				instance: instanceMethod,
 				isFinalizer: referenceMethod == finalizer
 			) ?? throw new ArgumentException($"Method '{name}' in type '{type.FullName}' could not be found");
-			var typeMethodInfo = (MethodInfo)typeMethod;
-			instance.CreateReversePatcher(
-				original: typeMethodInfo.MakeGenericMethod(genericType),
+			var typeMethodInfo = typeMethod as MethodInfo ?? throw new InvalidCastException($"Could not get MethodInfo from '{typeMethod}'");
+			var typeMethodInfoGeneric = typeMethodInfo.MakeGenericMethod(genericType);
+			_ = instance.CreateReversePatcher(
+				original: typeMethodInfoGeneric,
 				standin: MakeHarmonyMethod(reverse)
 			).Patch(HarmonyReversePatchType.Original);
 		}

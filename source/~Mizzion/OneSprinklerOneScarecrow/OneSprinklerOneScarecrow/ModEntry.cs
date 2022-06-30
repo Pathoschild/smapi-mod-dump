@@ -12,8 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OneSprinklerOneScarecrow.Framework;
 using OneSprinklerOneScarecrow.Framework.Overrides;
 using StardewModdingAPI;
@@ -30,40 +31,28 @@ namespace OneSprinklerOneScarecrow
     {
         private Config _config;
         private AddCrowsPatch addcrows;
+        
         public override void Entry(IModHelper helper)
         {
             
             //helper.Events.Player.InventoryChanged += InventoryChanged;
             _config = helper.ReadConfig<Config>();
             addcrows = new AddCrowsPatch(Monitor);
-
-            /*
-             *
-             * haxorSprinklerName = translate.Get("haxorsprinkler.name");
-            haxorSprinklerDescription = _translate.Get("haxorsprinkler.description");
-            haxorScarecrowName = translate.Get("haxorscarecrow.name");
-            haxorScarecrowDescription = translate.Get("haxorscarecrow.description");
-             */
-            //Lets get the translations. See if this fixes the bloody issues
-            HaxorSprinkler.TranslatedName = helper.Translation.Get("haxorsprinkler.name");
-            HaxorSprinkler.TranslatedDescription = helper.Translation.Get("haxorsprinkler.description");
-            HaxorScarecrow.TranslatedName = helper.Translation.Get("haxorscarecrow.name");
-            HaxorScarecrow.TranslatedDescription = helper.Translation.Get("haxorscarecrow.description");
+            
             //Lets activate the asset editor
-            helper.Content.AssetEditors.Add(new AssetEditor(helper, Monitor, helper.Translation, _config));
-
+            //helper.Content.AssetEditors.Add(new AssetEditor(helper, Monitor, helper.Translation, _config));
+            helper.Events.Content.AssetRequested += ContentEvent_AssetRequested;
 
             //Events that happen in the game
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
-
-
+            
             //Apply Harmony Patches
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
             Monitor.Log("Patching Farm.addCrows with AddCrowsPatch");
             harmony.Patch(
-                original: AccessTools.Method(typeof(Farm), nameof(Farm.addCrows), new Type[] {  }),
+                original: AccessTools.Method(typeof(Farm), nameof(Farm.addCrows), new Type[] {}),
                 prefix: new HarmonyMethod(typeof(AddCrowsPatch), nameof(AddCrowsPatch.Prefix))
             );
 
@@ -81,6 +70,113 @@ namespace OneSprinklerOneScarecrow
 
         }
 
+        private void ContentEvent_AssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            HaxorSprinkler.TranslatedName = Helper.Translation.Get("haxorsprinkler.name");
+            HaxorSprinkler.TranslatedDescription = Helper.Translation.Get("haxorsprinkler.description");
+            HaxorScarecrow.TranslatedName = Helper.Translation.Get("haxorscarecrow.name");
+            HaxorScarecrow.TranslatedDescription = Helper.Translation.Get("haxorscarecrow.description");
+            
+            //Lets start editing the content files.
+            if (e.NameWithoutLocale.IsEquivalentTo("Maps/springobjects"))
+            {
+                e.Edit(asset =>
+                {
+                    Texture2D sprinkler =
+                        Helper.ModContent.Load<Texture2D>("Assets/HaxorSprinkler.png");
+                    Texture2D oldImage = asset.AsImage().Data;
+
+                    asset.ReplaceWith(new Texture2D(Game1.graphics.GraphicsDevice,
+                        oldImage.Width,
+                        System.Math.Max(oldImage.Height, 1200 / 24 * 16)));
+                    asset.AsImage().PatchImage(oldImage);
+                    asset.AsImage().PatchImage(sprinkler, targetArea: this.GetRectangle(HaxorSprinkler.ParentSheetIndex));
+                });
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("TileSheets/Craftables"))
+            {
+                e.Edit(asset =>
+                {
+                    Texture2D scarecrow = Helper.ModContent.Load<Texture2D>("Assets/HaxorScareCrow.png");
+                    Texture2D oldImage = asset.AsImage().Data;
+
+                    asset.ReplaceWith(new Texture2D(Game1.graphics.GraphicsDevice,
+                        oldImage.Width,
+                        System.Math.Max(oldImage.Height, 1200 / 8 * 32)));
+                    asset.AsImage().PatchImage(oldImage);
+                    asset.AsImage().PatchImage(scarecrow, targetArea: this.GetRectangleCraftables(HaxorScarecrow.ParentSheetIndex));
+                });
+                
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation"))
+            {
+                e.Edit(asset =>
+                {
+                    string ass = $"{HaxorSprinkler.Name}/{HaxorSprinkler.Price}/{HaxorSprinkler.Edibility}/{HaxorSprinkler.Type} {HaxorSprinkler.Category}/{HaxorSprinkler.TranslatedName}/{HaxorSprinkler.TranslatedDescription}";
+                    asset.AsDictionary<int, string>().Data.Add(HaxorSprinkler.ParentSheetIndex, ass);
+                    Monitor.Log($"Added Name: {HaxorSprinkler.Name}({HaxorSprinkler.TranslatedName}) Id: {HaxorSprinkler.ParentSheetIndex}.\r\n {ass}");
+                });
+                
+
+                
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftablesInformation"))
+            {
+                e.Edit(asset =>
+                {
+                    asset.AsDictionary<int, string>().Data.Add(HaxorScarecrow.ParentSheetIndex, $"{HaxorScarecrow.Name}/{HaxorScarecrow.Price}/{HaxorScarecrow.Edibility}/{HaxorScarecrow.Type} {HaxorScarecrow.Category}/{HaxorScarecrow.TranslatedDescription}/true/false/0/{HaxorScarecrow.TranslatedName}");
+                    Monitor.Log($"Added Name: {HaxorScarecrow.Name}({HaxorScarecrow.TranslatedName}). Id: {HaxorScarecrow.ParentSheetIndex}");
+                });
+                
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
+            {
+
+                /*
+                    
+                    Sprinkler
+                    {390, 100}, //Easy Mode = 100 Stone
+                    {386, 10} // Hard Mode = 10 Iridium Ore
+        
+                    Scarecrow
+                    {388, 100}, //Easy Mode = 100 Wood
+                    {337, 10} // Hard Mode = 10 Iridium Bars
+                 
+                 */
+                e.Edit(asset =>
+                {
+                    var curData = asset.AsDictionary<string, string>();
+                    //bool isEn = asset.Locale == "en";
+                    string isEnSprik = asset.Locale != "en" ? $"/{HaxorSprinkler.TranslatedName}" : "";
+                    string isEnScare = asset.Locale != "en" ? $"/{HaxorScarecrow.TranslatedName}" : "";
+                    Monitor.Log("Made it to the else");
+                    string sprinklerIngredientsOut = !_config.ActivateHarderIngredients ? $"390 100/Home/{HaxorSprinkler.ParentSheetIndex}/false/null{isEnSprik}" : $"386 10/Home/{HaxorSprinkler.ParentSheetIndex}/false/null{isEnSprik}";
+                    string scarecrowIngredientsOut = !_config.ActivateHarderIngredients ? $"388 100/Home/{HaxorScarecrow.ParentSheetIndex}/true/null{isEnScare}" : $"337 10/Home/{HaxorScarecrow.ParentSheetIndex}/true/null{isEnScare}";
+
+                    if (curData.Data.ContainsKey("Haxor Sprinkler"))
+                        curData.Data["Haxor Sprinkler"] = sprinklerIngredientsOut;
+                    if (curData.Data.ContainsKey("Haxor Scarecrpw"))
+                        curData.Data["Haxor Scarecrow"] = scarecrowIngredientsOut;
+                    if (!curData.Data.ContainsKey("Haxor Sprinkler") && !curData.Data.ContainsKey("Haxor Scarecrow"))
+                    {
+                        //Didn't find the recipes, now we add them
+                        try
+                        {
+                            curData.Data.Add("Haxor Sprinkler", sprinklerIngredientsOut);
+                            curData.Data.Add("Haxor Scarecrow", scarecrowIngredientsOut);
+                            Monitor.Log($"Added Haxor Sprinkler Recipe: {sprinklerIngredientsOut}");
+                            Monitor.Log($"Added Haxor Scarecrow: {scarecrowIngredientsOut}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"There was an error editing crafting recipes. {ex.ToString()}");
+                        }
+
+                    }
+                });
+                
+            }
+        }
         /// <summary>
         /// Event that gets ran when the game is launched
         /// </summary>
@@ -213,6 +309,17 @@ namespace OneSprinklerOneScarecrow
                     }
                 }
             }
+        }
+
+        //Custom Methods
+        public Rectangle GetRectangle(int id)
+        {
+            return new Rectangle(id % 24 * 16, id / 24 * 16, 16, 16);
+        }
+
+        public Rectangle GetRectangleCraftables(int id)
+        {
+            return new Rectangle(id % 8 * 16, id / 8 * 32, 16, 32);
         }
     }
 }

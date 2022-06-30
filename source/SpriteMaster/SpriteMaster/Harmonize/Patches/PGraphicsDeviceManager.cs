@@ -196,6 +196,14 @@ internal static class PGraphicsDeviceManager {
 
 			DumpedSystemInfo = true;
 		}
+		else {
+			try {
+				SystemInfo.Update(__instance, device);
+			}
+			catch {
+				// ignored
+			}
+		}
 
 		try {
 			static FieldInfo? GetPrivateField(object obj, string name, bool instance = true) {

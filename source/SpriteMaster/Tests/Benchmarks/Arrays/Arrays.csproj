@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\Common.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+    <TargetFramework>net5.0</TargetFramework>
+    <StartupObject>Benchmarks.Arrays.Program</StartupObject>
+		<TieredCompilation>false</TieredCompilation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="pufferchick_xbrz.ico" />
+		
+		<Content Include="libs\*.*">
+			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="libs\Ijwhost.dll" />
+    <Content Remove="libs\libxxhash-cli.deps.json" />
+    <Content Remove="libs\libxxhash-cli.dll" />
+    <Content Remove="libs\libxxhash-cli.pdb" />
+    <Content Remove="libs\libxxhash-cli.runtimeconfig.json" />
+    <Content Remove="libs\libxxhash-exp-cli.deps.json" />
+    <Content Remove="libs\libxxhash-exp-cli.dll" />
+    <Content Remove="libs\libxxhash-exp-cli.pdb" />
+    <Content Remove="libs\libxxhash-exp-cli.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="libs\Ijwhost.dll" />
+    <None Remove="libs\libxxhash-cli.deps.json" />
+    <None Remove="libs\libxxhash-cli.dll" />
+    <None Remove="libs\libxxhash-cli.pdb" />
+    <None Remove="libs\libxxhash-cli.runtimeconfig.json" />
+    <None Remove="libs\libxxhash-exp-cli.deps.json" />
+    <None Remove="libs\libxxhash-exp-cli.dll" />
+    <None Remove="libs\libxxhash-exp-cli.pdb" />
+    <None Remove="libs\libxxhash-exp-cli.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.1" />
+    <PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.5.0" />
+    <PackageReference Include="K4os.Hash.xxHash" Version="1.0.7" />
+    <PackageReference Include="Krafs.Publicizer" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="LinqFasterer" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
+    <PackageReference Include="murmurhash" Version="1.0.3" />
+    <PackageReference Include="SkiaSharp" Version="2.88.0" />
+    <PackageReference Include="System.Data.HashFunction.CityHash" Version="2.0.0" />
+    <PackageReference Include="System.Data.HashFunction.xxHash" Version="2.0.0" />
+    <PackageReference Include="XXHash3.NET" Version="1.2.2" />
+  </ItemGroup>
+
+	<PropertyGroup>
+		<InternalsAssemblyNames>System.Private.CoreLib:System.Marvin.ComputeHash32</InternalsAssemblyNames>
+		<SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+		<AssemblyName>Arrays</AssemblyName>
+		<RootNamespace>Benchmarks.Arrays</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BenchmarkBase\BenchmarkBase.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Publicize Include="System.Provide.CoreLib" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="MonoGame.Framework">
+	    <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\MonoGame.Framework.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Shockah/Stardew-Valley-Mods
+**
+*************************************************/
+
+namespace Shockah.ProjectFluent
+{
+	internal class NoOpFluent: IFluent<string>
+	{
+		public bool ContainsKey(string key)
+			=> false;
+
+		public string Get(string key, object? tokens)
+			=> key;
+	}
+}

@@ -10,9 +10,9 @@ mods:
    TehCore
 
 latest commit:
-   commit 8e1581877eafc5e6a9a32963b274b4509d50119d
+   commit 608c4db39f6c88db8468606a1b78c7419d0d47b4
    Author: TehPers <tehperz@gmail.com>
-   Date:   Mon May 23 08:54:51 2022 -0700
+   Date:   Fri Jun 3 08:04:53 2022 -0700
    
-       Update FishingEffectApplier.cs
+       Update changelogs and manifests
    

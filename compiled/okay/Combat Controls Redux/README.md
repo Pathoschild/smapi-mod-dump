@@ -51,7 +51,7 @@ Like MouseFix but for controller inputs. Can be useful in split screen mode. For
 
 ### Regular Tools fix
 Config Setting = RegularToolsFix.  
-If Mouse or Contrroller fix are enabled then regular tools will get the facing direction fix. You may not be able to hit diagonal tiles with this enabled.
+If Mouse or Controller fix are enabled then regular tools will get the facing direction fix. You may not be able to hit diagonal tiles with this enabled.
 
 ### Auto Swing  
 Config setting = AutoSwing.  
@@ -87,6 +87,12 @@ For swords and clubs.
 > The movement velocity for special attack slick moves. Swords and clubs. Controls the speed and distance of the slide.
 
 ## Changlog
+v1.2.2
+* Fixed a bug where clicking a/the weapon with a supported tool selected/active while swimming or in swim clothes gave you the velocity of the slick moves slide.
+
+v1.2.1
+* Fixed a bug where clicking a/the weapon in the hotbar gave you the velocity of the slick moves slide.
+
 v1.2.0
 * Added a config option to allow the facing direction fix on regular tools. Pickaxe, Hoe, etc.
 

@@ -12,29 +12,30 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CropHarvestPatch : BasePatch
+internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal CropHarvestPatch()
     {
-        Original = RequireMethod<Crop>(nameof(Crop.harvest));
+        Target = RequireMethod<Crop>(nameof(Crop.harvest));
     }
 
     #region harmony patches
@@ -44,7 +45,7 @@ internal class CropHarvestPatch : BasePatch
     ///     for Agriculturist + Harvester bonus crop yield.
     /// </summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> CropHarvestTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? CropHarvestTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -70,7 +71,6 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Ecologist spring onion quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -79,7 +79,7 @@ internal class CropHarvestPatch : BasePatch
         ///	After: Game1.stats.ItemsForaged += @object.Stack;
 
         // this particular method is too edgy for Harmony's AccessTools, so we use some old-fashioned reflection trickery to find this particular overload of FarmerExtensions.IncrementData<T>
-        var mi = typeof(FarmerExtensions)
+        var mi = typeof(ModDataIO)
                      .GetMethods()
                      .FirstOrDefault(mi => mi.Name.Contains("IncrementData") && mi.GetParameters().Length == 3)?
                      .MakeGenericMethod(typeof(uint)) ?? throw new MissingMethodException("Increment method not found.");
@@ -94,7 +94,7 @@ internal class CropHarvestPatch : BasePatch
                 )
                 .Advance()
                 .AddLabels(dontIncreaseEcologistCounter)
-                .InsertProfessionCheck((int) Profession.Ecologist)
+                .InsertProfessionCheck(Profession.Ecologist.Value)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseEcologistCounter),
                     new CodeInstruction(OpCodes.Call, typeof(Game1).RequirePropertyGetter(nameof(Game1.player))),
@@ -108,7 +108,6 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Ecologist counter increment.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -125,7 +124,7 @@ internal class CropHarvestPatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_3),
                     new CodeInstruction(OpCodes.Blt_S)
                 )
-                .InsertProfessionCheck((int) Profession.Agriculturist)
+                .InsertProfessionCheck(Profession.Agriculturist.Value)
                 .Insert(
                     new CodeInstruction(OpCodes.Brtrue_S, isAgriculturist)
                 )
@@ -137,7 +136,6 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Agriculturist crop harvest quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -172,7 +170,7 @@ internal class CropHarvestPatch : BasePatch
                 .AddLabels(dontIncreaseNumToHarvest) // branch here if shouldn't apply Harvester bonus
                 .InsertWithLabels( // insert check if junimoHarvester is null
                     labels,
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 4), // arg 4 = bool junimoHarvester
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4), // arg 4 = bool junimoHarvester
                     new CodeInstruction(OpCodes.Brfalse_S, continueToHarvesterCheck),
                     new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.ModHelper))),
                     new CodeInstruction(OpCodes.Callvirt,
@@ -182,13 +180,13 @@ internal class CropHarvestPatch : BasePatch
                         typeof(IModRegistry).RequireMethod(nameof(IModRegistry.IsLoaded))),
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseNumToHarvest)
                 )
-                .InsertProfessionCheck((int) Profession.Harvester, new[] {continueToHarvesterCheck})
+                .InsertProfessionCheck(Profession.Harvester.Value, new[] { continueToHarvesterCheck })
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseNumToHarvest),
                     new CodeInstruction(OpCodes.Ldloc_S, random2)
                 )
                 .InsertDiceRoll(0.1, forStaticRandom: false)
-                .InsertProfessionCheck((int) Profession.Harvester + 100)
+                .InsertProfessionCheck(Profession.Harvester.Value + 100)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     // double chance if prestiged
@@ -196,7 +194,7 @@ internal class CropHarvestPatch : BasePatch
                     new CodeInstruction(OpCodes.Add)
                 )
                 .InsertWithLabels(
-                    new[] {isNotPrestiged},
+                    new[] { isNotPrestiged },
                     new CodeInstruction(OpCodes.Bge_Un_S, dontIncreaseNumToHarvest)
                 )
                 .Insert(got); // insert numToHarvest++
@@ -204,7 +202,6 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Harvester extra crop yield.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

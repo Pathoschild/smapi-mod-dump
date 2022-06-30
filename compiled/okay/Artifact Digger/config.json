@@ -1,6 +1,7 @@
 {
   "DigRadius": 1,
   "HighlightArfiactSpots": true,
+  "AutoArtifactScan": false,
   "ArtifactScanKey": "Z",
   "ShakeTrees": false,
   "ShakeBushes": false

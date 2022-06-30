@@ -122,7 +122,7 @@ internal static partial class DrawState {
 		}
 
 		if (TriggerCollection.GetAndClear()) {
-			ManagedSpriteInstance.PurgeTextures((Config.Garbage.RequiredFreeMemory * Config.Garbage.RequiredFreeMemoryHysterisis).NearestLong() * 1024 * 1024);
+			ManagedSpriteInstance.PurgeTextures((Config.Garbage.RequiredFreeMemorySoft * Config.Garbage.RequiredFreeMemoryHysteresis).NearestLong());
 			Garbage.Collect(compact: true, blocking: true, background: false);
 		}
 
@@ -148,21 +148,7 @@ internal static partial class DrawState {
 			IsUpdatedThisFrame = false;
 		}
 
-		TransientCollection(++CurrentFrame);
-	}
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	private static void TransientCollection(ulong currentFrame) {
-		var tickCount = Config.Performance.TransientGCTickCount;
-		if (tickCount > 0 && (currentFrame % (ulong)tickCount) == 0) {
-			// No trace message as that would be _incredibly_ annoying.
-			GC.Collect(
-				generation: 1,
-				mode: GCCollectionMode.Forced,
-				blocking: false,
-				compacting: false
-			);
-		}
+		Garbage.EphemeralCollection.Collect(++CurrentFrame);
 	}
 
 	private static readonly WeakReference<xTile.Display.IDisplayDevice> LastMitigatedDevice = new(null!);

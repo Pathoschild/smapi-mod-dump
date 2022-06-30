@@ -12,19 +12,24 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 
 #region using directives
 
+using Common.Events;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
-
-using Framework.TreasureHunt;
+using TreasureHunts;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ScavengerWarpedEvent : WarpedEvent
+internal sealed class ScavengerWarpedEvent : WarpedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal ScavengerWarpedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
         if (e.NewLocation.Equals(e.OldLocation)) return;
 

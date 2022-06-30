@@ -72,6 +72,7 @@ namespace MarketDay.Shop
                 MarketDay.Log(ex.Message+ex.StackTrace, LogLevel.Error);
             }
         }
+        
         /// <summary>
         /// Refreshes the contents of all stores
         /// and sets the flag for if the store has been opened yet today to false

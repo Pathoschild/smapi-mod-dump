@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -18,8 +19,15 @@ internal static class Reinterpret {
 	#region ReinterpretAs
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	private static void AssertSize<T>() =>
+		Marshal.SizeOf<T>().AssertEqual(Unsafe.SizeOf<T>());
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static TTo ReinterpretAs<TFrom, TTo>(this TFrom value) where TFrom : struct where TTo : struct {
-		Marshal.SizeOf<TTo>().AssertLessEqual(Marshal.SizeOf<TFrom>());
+		AssertSize<TFrom>();
+		AssertSize<TTo>();
+		Unsafe.SizeOf<TTo>().AssertLessEqual(Unsafe.SizeOf<TFrom>());
 		return Unsafe.As<TFrom, TTo>(ref Unsafe.AsRef(in value));
 	}
 
@@ -27,6 +35,44 @@ internal static class Reinterpret {
 	internal static unsafe TTo ReinterpretAsUnsafe<TFrom, TTo>(this TFrom value) where TFrom : unmanaged where TTo : unmanaged {
 		sizeof(TTo).AssertLessEqual(sizeof(TFrom));
 		return *(TTo*)&value;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static TTo As<TTo>(this bool value) where TTo : unmanaged {
+		if (typeof(TTo) == typeof(bool)) {
+			return (TTo)(object)value;
+		}
+		if (typeof(TTo) == typeof(byte)) {
+			return (TTo)(object)value.ReinterpretAs<byte>();
+		}
+		if (typeof(TTo) == typeof(sbyte)) {
+			return (TTo)(object)value.ReinterpretAs<sbyte>();
+		}
+		if (typeof(TTo) == typeof(ushort)) {
+			return (TTo)(object)(ushort)value.ReinterpretAs<byte>();
+		}
+		if (typeof(TTo) == typeof(short)) {
+			return (TTo)(object)(short)value.ReinterpretAs<sbyte>();
+		}
+		if (typeof(TTo) == typeof(uint)) {
+			return (TTo)(object)(uint)value.ReinterpretAs<byte>();
+		}
+		if (typeof(TTo) == typeof(int)) {
+			return (TTo)(object)(int)value.ReinterpretAs<sbyte>();
+		}
+		if (typeof(TTo) == typeof(ulong)) {
+			return (TTo)(object)(ulong)value.ReinterpretAs<byte>();
+		}
+		if (typeof(TTo) == typeof(long)) {
+			return (TTo)(object)(long)value.ReinterpretAs<sbyte>();
+		}
+		if (typeof(TTo) == typeof(float)) {
+			return (TTo)(object)(float)value.ReinterpretAs<byte>();
+		}
+		if (typeof(TTo) == typeof(double)) {
+			return (TTo)(object)(double)value.ReinterpretAs<sbyte>();
+		}
+		return ThrowHelper.ThrowInvalidOperationException<TTo>($"Cannot convert bool to {typeof(TTo)}");
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -83,7 +129,9 @@ internal static class Reinterpret {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ref TTo ReinterpretAsRef<TFrom, TTo>(in TFrom value) where TFrom : struct where TTo : struct {
-		Marshal.SizeOf<TTo>().AssertLessEqual(Marshal.SizeOf<TFrom>());
+		AssertSize<TFrom>();
+		AssertSize<TTo>();
+		Unsafe.SizeOf<TTo>().AssertLessEqual(Unsafe.SizeOf<TFrom>());
 		return ref Unsafe.As<TFrom, TTo>(ref Unsafe.AsRef(in value));
 	}
 
@@ -99,8 +147,10 @@ internal static class Reinterpret {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static unsafe Span<TTo> ReinterpretAsSpan<TFrom, TTo>(in TFrom value) where TFrom : struct where TTo : struct {
-		Marshal.SizeOf<TTo>().AssertLessEqual(Marshal.SizeOf<TFrom>());
-		return new(Unsafe.AsPointer(ref Unsafe.AsRef(in value)), Marshal.SizeOf<TFrom>() / Marshal.SizeOf<TTo>());
+		AssertSize<TFrom>();
+		AssertSize<TTo>();
+		Unsafe.SizeOf<TTo>().AssertLessEqual(Unsafe.SizeOf<TFrom>());
+		return new(Unsafe.AsPointer(ref Unsafe.AsRef(in value)), Unsafe.SizeOf<TFrom>() / Unsafe.SizeOf<TTo>());
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]

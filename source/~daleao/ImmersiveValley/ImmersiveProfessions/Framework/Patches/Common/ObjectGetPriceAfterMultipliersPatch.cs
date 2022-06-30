@@ -12,24 +12,24 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using Extensions;
+using System;
+using System.Reflection;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ObjectGetPriceAfterMultipliersPatch : BasePatch
+internal sealed class ObjectGetPriceAfterMultipliersPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ObjectGetPriceAfterMultipliersPatch()
     {
-        Original = RequireMethod<SObject>("getPriceAfterMultipliers");
+        Target = RequireMethod<SObject>("getPriceAfterMultipliers");
     }
 
     #region harmony patches
@@ -77,7 +77,8 @@ internal class ObjectGetPriceAfterMultipliersPatch : BasePatch
                     multiplier *= 5f;
 
                 // tax bonus
-                if (farmer.IsLocalPlayer && farmer.HasProfession(Profession.Conservationist))
+                if (farmer.IsLocalPlayer && farmer.HasProfession(Profession.Conservationist) &&
+                    ModEntry.TaxesConfig is null)
                     multiplier *= farmer.GetConservationistPriceMultiplier();
 
                 saleMultiplier = Math.Max(saleMultiplier, multiplier);

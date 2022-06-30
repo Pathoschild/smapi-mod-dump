@@ -1,0 +1,92 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Traktori7/StardewValleyMods
+**
+*************************************************/
+
+[
+	{
+		"LootTableName": "SpringSummerCrops",
+		"Rewards": [
+			{
+				"ItemID": "Large Milk"
+			},
+			{
+				"ItemID": "Green Bean",
+				"StackMinSize": 2,
+				"Weight": 2
+			},
+			{
+				"StackMinSize": 1,
+				"Weight": 1,
+				"ContextTags": {
+					"And": "", // All of these (ignore option if empty)
+					"Or": "season_spring season_summer", // Atleast one of these
+					"Not": "fish_*" // None of these (fuzzy match)
+				}
+			}
+		]
+	},
+	{
+		"LootTableName": "SpringForage",
+		"Rewards": [
+			{
+				"StackMinSize": 1,
+				"StackMaxSize": 2,
+				"Weight": 1,
+				"ContextTags": {
+					"And": "season_spring forage_item",
+					"Or": "",
+					"Not": ""
+				}
+			}
+		]
+	},
+	{
+		"LootTableName": "Food",
+		"Rewards": [
+			{
+				"StackMinSize": 1,
+				"Weight": 1,
+				"ContextTags": {
+					"And": "food_*",
+					"Or": "",
+					"Not": ""
+				}
+			}
+		]
+	},
+	{
+		"LootTableName": "Fruits",
+		"Rewards": [
+			{
+				"StackMinSize": 1,
+				"StackMaxSize": 2,
+				"Weight": 1,
+				"ContextTags": {
+					"And": "category_fruits", //idea ihan kiva, mut tää lisätään vasta kun esine luodaan, eli en pääse helposti tähän listaan käsiksi
+					"Or": "",
+					"Not": ""
+				}
+			}
+		]
+	},
+	{
+		"LootTableName": "Flowers",
+		"Rewards": [
+			{
+				"StackMinSize": 1,
+				"Weight": 1,
+				"ContextTags": {
+					"And": "category_flowers", //idea ihan kiva, mut tää lisätään vasta kun esine luodaan, eli en pääse helposti tähän listaan käsiksi
+					"Or": "",
+					"Not": ""
+				}
+			}
+		]
+	}
+]

@@ -10,7 +10,29 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Fixed performance impact when many machines have output ready, but the chests they're connected to are all full.
+* Fixed machine scan failing if another mod adds broken furniture or terrain features.
+* Fixed overlay showing Junimo chest tiles from other locations.
+
+## 1.27.2
+Released 18 June 2022 for SMAPI 3.14.0 or later.
+
+* Fixed machines not indexed correctly in 1.27.1.
+
+## 1.27.1
+Released 17 June 2022 for SMAPI 3.14.0 or later.
+
+* Optimized to avoid rescan when a machine is removed from an inactive machine group.
+* Fixed error when placing machines in a building which was upgraded on the same day after 1.27.0.
+* Fixed automation overlay not showing groups connected to a Junimo chest after 1.27.0.
+* Fixed automation overlay empty for farmhands in multiplayer after 1.27.0.
+
+## 1.27.0
+Released 05 June 2022 for SMAPI 3.14.0 or later.
+
+* Rewrote location change tracking to fix lag in some cases.
+* The automation overlay now shows a live view of the actual automation state, instead of rescanning machines.
+* Added `automate reset` console command to force Automate to rescan for machines.
+* Optimized edge case where many machines have output ready but their connected chests are all full.
 
 ## 1.26.1
 Released 27 May 2022 for SMAPI 3.14.0 or later.

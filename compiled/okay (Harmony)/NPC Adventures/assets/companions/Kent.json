@@ -1,0 +1,53 @@
+﻿{
+  "Name": "Kent",
+  "Skills": [
+    {
+      "Name": "shooter",
+      "Damage": 6
+    },
+    {
+      "Name": "fighter",
+      "Strength": 1.2,
+      "DefendRadius": 7,
+      "ExtraStrength": 10,
+      "Speed": 2.0,
+      "IsWarrior": true
+    }
+  ],
+  "UnlockMail": "na_kent_companion", // Unlocked by NA's Kent 5 heart event (it adds this mail flag)
+  "Rules": {
+    // He accepts adventure only if you have at least 2 hearts and 6 combat level
+    "f 500/SkillLevel combat 6": "accept"
+  },
+  "Price": 3000,
+  "Sales": {
+    // Less than 4 hearts = 20% more expensive price
+    "!f Kent 1000": 1.2,
+    // 10 hearts and at least 6 hearts with Jodi = FREE (best friends forever)
+    "f Kent 2500/f Jodi 1500": 0.0,
+    // 10 hearts = 50% sale
+    "f Kent 2500": 0.5,
+    // at least 8 hearts = 20% sale
+    "f Kent 1500": 0.8
+  },
+  "Buffs": {
+    "Attack": 1,
+    "Defense": 2
+  },
+  "BuffsDescription": "[kent.buffs]",
+  "Weapons": {
+    "6": "Ossified Blade",
+    "8": "Dark Sword",
+    "10": "Galaxy Sword"
+  },
+  "IdleBehaviors": [
+    {
+      "Behavior": "Lookaround",
+      "FaceMinSeconds": 2,
+      "FaceMaxSeconds": 5,
+      "Tendency": 2,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    }
+  ]
+}

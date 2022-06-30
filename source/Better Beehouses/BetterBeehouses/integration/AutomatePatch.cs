@@ -37,7 +37,7 @@ namespace BetterBeehouses.integration
                 ModEntry.harmony.Patch(targetClass.MethodNamed("GetOutput"), transpiler: new(typeof(AutomatePatch), "PatchOutput"));
                 ModEntry.harmony.Patch(targetClass.MethodNamed("Reset"), transpiler: new(typeof(AutomatePatch), "PatchReset"));
                 isPatched = true;
-            } else if (isPatched && !ModEntry.config.PatchAutomate)
+            } else
             {
                 ModEntry.harmony.Unpatch(targetClass.MethodNamed("GetState"), HarmonyPatchType.Transpiler, ModEntry.ModID);
                 ModEntry.harmony.Unpatch(targetClass.MethodNamed("GetOutput"), HarmonyPatchType.Transpiler, ModEntry.ModID);

@@ -1,0 +1,10 @@
+{
+  "Name": "Sell Quality",
+  "Author": "DonDorscha",
+  "Version": "1.0.0",
+  "Description": "Allows player to downgrade the quality of an item or stack of items and get paid the difference in value.",
+  "UniqueID": "DonDorscha.SellQuality",
+  "EntryDll": "SellQuality.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

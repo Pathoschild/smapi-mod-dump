@@ -6,9 +6,9 @@ mods:
    Atra's Interaction Tweaks
 
 latest commit:
-   commit 15236cea7d254a81f1695de2786cd5fa0f518db1
+   commit 7cc66cef596a3d65696f9ed2f651506f0c007c5d
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Thu May 19 19:59:41 2022 -0400
+   Date:   Fri Jun 24 09:37:50 2022 -0400
    
-       Prevent broken special orders from crashing the quest menu
+       Update README.md
    

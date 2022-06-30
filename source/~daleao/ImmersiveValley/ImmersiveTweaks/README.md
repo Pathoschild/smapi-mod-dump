@@ -39,7 +39,6 @@ Features currently included:
 (Foraging and Farming-related)
 - Makes Bee House, Mushroom Box and Tapper produce improve quality with age, following the example of Fruit Trees. NEW: Quality also considers skill levels.
 - Makes Mushroom Box, Tappers and Berry Bushes reward foraging experience when harvested.
-- Makes Meads take after the flower type of the input Honey item.
 - Makes large Eggs and Milk double the output stack instead of increasing the quality.
 - Prevents Fruit Trees from growing in winter.
 - Allow Botanist/Ecologist perk to apply to hoed Ginger and Coconuts obtained from shaking palm trees.
@@ -53,7 +52,7 @@ This mod makes use of Harmony to patch several vanilla behaviors. Any SMAPI mods
 
 - [Forage Fantasy](https://www.nexusmods.com/stardewvalley/mods/7554) has several conflicting features﻿, but can be used together with this mod if you pay attention to the configs of both mods.
 - Recommended to pair with [Better Artisan Good Icons](https://www.nexusmods.com/stardewvalley/mods/2080) and [Better Artisan Good Icons - Mead Addon](https://www.nexusmods.com/stardewvalley/mods/11911)
-Should be fully compatible with multiplayer.
+Should be fully compatible with multiplayer. Not compatible with Android.
 
 ## Installation
 
@@ -77,4 +76,4 @@ To uninstall simply delete the mod from your mods folder. This mod is safe to un
 
 ## License
 
-See [LICENSE](../LICENSE) for more information.
+See [LICENSE](../../LICENSE) for more information.

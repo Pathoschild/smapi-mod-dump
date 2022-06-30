@@ -12,29 +12,29 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
-using System.Reflection;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using Extensions;
-
+using System;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CrystalariumMachineGetOutputPatch : BasePatch
+internal sealed class CrystalariumMachineGetOutputPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetMachine;
+    private static Func<object, SObject>? _GetMachine;
 
     /// <summary>Construct an instance.</summary>
     internal CrystalariumMachineGetOutputPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CrystalariumMachine".ToType().RequireMethod("GetOutput");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CrystalariumMachine".ToType()
+                .RequireMethod("GetOutput");
         }
         catch
         {
@@ -48,17 +48,18 @@ internal class CrystalariumMachineGetOutputPatch : BasePatch
     [HarmonyPostfix]
     private static void CrystalariumMachineGetOutputPostfix(object __instance)
     {
-        if (__instance is null || !ModEntry.Config.ShouldCountAutomatedHarvests) return;
+        if (!ModEntry.Config.ShouldCountAutomatedHarvests) return;
 
-        _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine");
-        var machine = (SObject) _GetMachine.Invoke(__instance, null);
-        if (machine?.heldObject.Value is null) return;
+        _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine")
+            .CompileUnboundDelegate<Func<object, SObject>>();
+        var machine = _GetMachine(__instance);
+        if (machine.heldObject.Value is null) return;
 
         var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
         if (!owner.HasProfession(Profession.Gemologist) ||
             !machine.heldObject.Value.IsForagedMineral() && !machine.heldObject.Value.IsGemOrMineral()) return;
 
-        owner.IncrementData<uint>(DataField.GemologistMineralsCollected);
+        ModDataIO.IncrementData<uint>(owner, ModData.GemologistMineralsCollected.ToString());
     }
 
     #endregion harmony patches

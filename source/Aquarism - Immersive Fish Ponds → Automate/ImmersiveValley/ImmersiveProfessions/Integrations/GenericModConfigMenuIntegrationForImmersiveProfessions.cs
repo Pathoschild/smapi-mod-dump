@@ -12,12 +12,9 @@ namespace DaLion.Stardew.Professions.Integrations;
 
 #region using directives
 
-using System;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-
 using Common.Integrations;
-using Framework.Utility;
+using StardewModdingAPI;
+using System;
 
 #endregion using directives
 
@@ -33,12 +30,11 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
     /// <param name="getConfig">Get the current config model.</param>
     /// <param name="reset">Reset the config model to the default values.</param>
     /// <param name="saveAndApply">Save and apply the current config model.</param>
-    /// <param name="log">Encapsulates monitoring and logging.</param>
     public GenericModConfigMenuIntegrationForImmersiveProfessions(IModRegistry modRegistry, IManifest manifest,
-        Action<string, LogLevel> log, Func<ModConfig> getConfig, Action reset, Action saveAndApply)
+        Func<ModConfig> getConfig, Action reset, Action saveAndApply)
     {
         _configMenu =
-            new(modRegistry, manifest, log, getConfig, reset, saveAndApply);
+            new(modRegistry, manifest, getConfig, reset, saveAndApply);
     }
 
     /// <summary>Register the config menu if available.</summary>
@@ -52,23 +48,46 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
         _configMenu
             .Register()
 
-            // general mod settings
-            .AddSectionTitle(() => "General Settings")
+            // controls and ui settings
+            .AddSectionTitle(() => "Controls and UI Settings")
             .AddKeyBinding(
                 () => "Mod Key",
-                () => "The key used by Prospector, Scavenger and Rascal professions.",
+                () => "The key used by Prospector, Scavenger and Rascal professions to enable active effects.",
                 config => config.ModKey,
                 (config, value) => config.ModKey = value
             )
-            .AddCheckbox(
-                () => "Use Vintage UI Elements",
-                () => "Enable this option if using the Vintage Interface v2 mod.",
-                config => config.UseVintageInterface,
+            .AddDropdown(
+                () => "Vintage Interface Style",
+                () => "You generally don't need to change this unless you want to override the automatic setting.",
+                config => config.VintageInterfaceSupport.ToString(),
                 (config, value) =>
                 {
-                    config.UseVintageInterface = value;
-                    Textures.UltimateMeterTx = ModEntry.ModHelper.GameContent.Load<Texture2D>($"{ModEntry.Manifest.UniqueID}/UltimateMeter");
-                    Textures.SkillBarTx = ModEntry.ModHelper.GameContent.Load<Texture2D>($"{ModEntry.Manifest.UniqueID}/SkillBars");
+                    config.VintageInterfaceSupport = Enum.Parse<ModConfig.VintageInterfaceStyle>(value);
+                    ModEntry.ModHelper.GameContent.InvalidateCache($"{ModEntry.Manifest.UniqueID}/SkillBars");
+                    ModEntry.ModHelper.GameContent.InvalidateCache($"{ModEntry.Manifest.UniqueID}/UltimateMeter");
+                },
+                new[] { "Automatic", "Brown", "Pink", "Off" },
+                null
+            )
+            .AddDropdown(
+                () => "Progression Style",
+                () => "Determines the sprite that appears next to skill bars.",
+                config => config.PrestigeProgressionStyle.ToString(),
+                (config, value) =>
+                {
+                    config.PrestigeProgressionStyle = Enum.Parse<ModConfig.ProgressionStyle>(value);
+                    ModEntry.ModHelper.GameContent.InvalidateCache($"{ModEntry.Manifest.UniqueID}/PrestigeProgression");
+                },
+                new[] { "StackedStars", "Gen3Ribbons", "Gen4Ribbons" },
+                value =>
+                {
+                    return value switch
+                    {
+                        "StackedStars" => "Stacked Stars",
+                        "Gen3Ribbons" => "Gen 3 Ribbons",
+                        "Gen4Ribbons" => "Gen 4 Ribbons",
+                        _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
+                    };
                 }
             )
 
@@ -77,16 +96,16 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
             .AddNumberField(
                 () => "Forages Needed for Best Quality",
                 () => "Ecologists must forage this many items to reach iridium quality.",
-                config => (int) config.ForagesNeededForBestQuality,
-                (config, value) => config.ForagesNeededForBestQuality = (uint) value,
+                config => (int)config.ForagesNeededForBestQuality,
+                (config, value) => config.ForagesNeededForBestQuality = (uint)value,
                 0,
                 1000
             )
             .AddNumberField(
                 () => "Minerals Needed for Best Quality",
                 () => "Gemologists must mine this many minerals to reach iridium quality.",
-                config => (int) config.MineralsNeededForBestQuality,
-                (config, value) => config.MineralsNeededForBestQuality = (uint) value,
+                config => (int)config.MineralsNeededForBestQuality,
+                (config, value) => config.MineralsNeededForBestQuality = (uint)value,
                 0,
                 1000
             );
@@ -104,7 +123,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
             .AddNumberField(
                 () => "Chance to Start Treasure Hunt",
                 () => "The chance that your Scavenger or Prospector hunt senses will start tingling.",
-                config => (float) config.ChanceToStartTreasureHunt,
+                config => (float)config.ChanceToStartTreasureHunt,
                 (config, value) => config.ChanceToStartTreasureHunt = value,
                 0f,
                 1f,
@@ -146,8 +165,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
             .AddNumberField(
                 () => "Spelunker Speed Cap",
                 () => "The maximum speed a Spelunker can reach in the mines.",
-                config => (int) config.SpelunkerSpeedCap,
-                (config, value) => config.SpelunkerSpeedCap = (uint) value,
+                config => (int)config.SpelunkerSpeedCap,
+                (config, value) => config.SpelunkerSpeedCap = (uint)value,
                 1,
                 10
             )
@@ -164,35 +183,43 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
                 (config, value) => config.SeaweedIsJunk = value
             )
             .AddNumberField(
-                () => "Angler Multiplier Ceiling",
+                () => "Angler Multiplier Cap",
                 () =>
                     "If multiple new fish mods are installed, you may want to adjust this to a sensible value. Limits the price multiplier for fish sold by Angler.",
-                config => config.AnglerMultiplierCeiling,
-                (config, value) => config.AnglerMultiplierCeiling = value,
+                config => config.AnglerMultiplierCap,
+                (config, value) => config.AnglerMultiplierCap = value,
                 0.5f,
                 2f
             )
             .AddNumberField(
-                () => "Trash Needed Per Tax Level",
+                () => "Legendary Pond Population Cap",
+                () => "The maximum population of Aquarist Fish Ponds with legendary fish.",
+                config => (int)config.LegendaryPondPopulationCap,
+                (config, value) => config.LegendaryPondPopulationCap = (uint)value,
+                1,
+                12
+            )
+            .AddNumberField(
+                () => "Trash Needed Per Tax Bonus Percent",
                 () => "Conservationists must collect this much trash for every 1% tax deduction the following season.",
-                config => (int) config.TrashNeededPerTaxLevel,
-                (config, value) => config.TrashNeededPerTaxLevel = (uint) value,
+                config => (int)config.TrashNeededPerTaxBonusPct,
+                (config, value) => config.TrashNeededPerTaxBonusPct = (uint)value,
                 10,
                 1000
             )
             .AddNumberField(
                 () => "Trash Needed Per Friendship Point",
                 () => "Conservationists must collect this much trash for every 1 friendship point towards villagers.",
-                config => (int) config.TrashNeededPerFriendshipPoint,
-                (config, value) => config.TrashNeededPerFriendshipPoint = (uint) value,
+                config => (int)config.TrashNeededPerFriendshipPoint,
+                (config, value) => config.TrashNeededPerFriendshipPoint = (uint)value,
                 10,
                 1000
             )
             .AddNumberField(
-                () => "Tax Deduction Ceiling",
+                () => "Tax Deduction Cap",
                 () => "The maximum tax deduction allowed by the Ferngill Revenue Service.",
-                config => config.TaxDeductionCeiling,
-                (config, value) => config.TaxDeductionCeiling = value,
+                config => config.ConservationistTaxBonusCeiling,
+                (config, value) => config.ConservationistTaxBonusCeiling = value,
                 0f,
                 1f,
                 0.05f
@@ -200,30 +227,30 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
 
 
             // ultimate
-            .AddSectionTitle(() => "Ultimate Settings")
+            .AddSectionTitle(() => "Special Ability Settings")
             .AddCheckbox(
-                () => "Enable Ultimate",
-                () => "Must be enabled to allow activating Ultimate. Super Stat continues to apply.",
-                config => config.EnableUltimates,
-                (config, value) => config.EnableUltimates = value
+                () => "Enable Special Abilities",
+                () => "Must be enabled to allow activating special abilities.",
+                config => config.EnableSpecials,
+                (config, value) => config.EnableSpecials = value
             )
             .AddKeyBinding(
-                () => "Ultimate key",
-                () => "The key used to activate Ultimate.",
-                config => config.UltimateKey,
-                (config, value) => config.UltimateKey = value
+                () => "Activation Key",
+                () => "The key used to activate the special ability.",
+                config => config.SpecialActivationKey,
+                (config, value) => config.SpecialActivationKey = value
             )
             .AddCheckbox(
                 () => "Hold-To-Activate",
-                () => "If enabled, Ultimate will activate by holding the above key.",
-                config => config.HoldKeyToActivateUltimate,
-                (config, value) => config.HoldKeyToActivateUltimate = value
+                () => "If enabled, the special ability will be activated only after a short delay.",
+                config => config.HoldKeyToActivateSpecial,
+                (config, value) => config.HoldKeyToActivateSpecial = value
             )
             .AddNumberField(
                 () => "Activation Delay",
-                () => "How long the key should be held before activating Ultimate, in seconds.",
-                config => config.UltimateActivationDelay,
-                (config, value) => config.UltimateActivationDelay = value,
+                () => "How long the key should be held before the special ability is activated, in seconds.",
+                config => config.SpecialActivationDelay,
+                (config, value) => config.SpecialActivationDelay = value,
                 0f,
                 3f,
                 0.2f
@@ -232,8 +259,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
                 () => "Gain Factor",
                 () =>
                     "Affects the rate at which one builds the Ultimate gauge. Increase this if you feel the gauge raises too slowly.",
-                config => (float) config.UltimateGainFactor,
-                (config, value) => config.UltimateGainFactor = value,
+                config => (float)config.SpecialGainFactor,
+                (config, value) => config.SpecialGainFactor = value,
                 0.1f,
                 2f
             )
@@ -241,8 +268,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
                 () => "Drain Factor",
                 () =>
                     "Affects the rate at which the Ultimate gauge depletes during Ultimate. Lower numbers make Ultimate last longer.",
-                config => (float) config.UltimateDrainFactor,
-                (config, value) => config.UltimateDrainFactor = value,
+                config => (float)config.SpecialDrainFactor,
+                (config, value) => config.SpecialDrainFactor = value,
                 0.1f,
                 2f
             )
@@ -266,7 +293,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
             )
             .AddCheckbox(
                 () => "Forget Recipes on Skill Reset",
-                () => "Disable this to keep all skill recipes upon reseting.",
+                () => "Disable this to keep all skill recipes upon skill reseting.",
                 config => config.ForgetRecipesOnSkillReset,
                 (config, value) => config.ForgetRecipesOnSkillReset = value
             )
@@ -287,8 +314,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
             .AddNumberField(
                 () => "Required Experience Per Extended Level",
                 () => "How much skill experience is required for each level-up beyond level 10.",
-                config => (int) config.RequiredExpPerExtendedLevel,
-                (config, value) => config.RequiredExpPerExtendedLevel = (uint) value,
+                config => (int)config.RequiredExpPerExtendedLevel,
+                (config, value) => config.RequiredExpPerExtendedLevel = (uint)value,
                 1000,
                 10000,
                 500
@@ -297,8 +324,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
                 () => "Cost of Prestige Respec",
                 () =>
                     "Monetary cost of respecing prestige profession choices for a skill. Set to 0 to respec for free.",
-                config => (int) config.PrestigeRespecCost,
-                (config, value) => config.PrestigeRespecCost = (uint) value,
+                config => (int)config.PrestigeRespecCost,
+                (config, value) => config.PrestigeRespecCost = (uint)value,
                 0,
                 100000,
                 10000
@@ -306,8 +333,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
             .AddNumberField(
                 () => "Cost of Changing Ultimate",
                 () => "Monetary cost of changing the combat Ultimate. Set to 0 to change for free.",
-                config => (int) config.ChangeUltCost,
-                (config, value) => config.ChangeUltCost = (uint) value,
+                config => (int)config.ChangeUltCost,
+                (config, value) => config.ChangeUltCost = (uint)value,
                 0,
                 100000,
                 10000
@@ -378,24 +405,6 @@ internal class GenericModConfigMenuIntegrationForImmersiveProfessions
                 (config, value) => config.MonsterDefenseMultiplier = value,
                 1f,
                 3f
-            );
-
-        if (!ModEntry.ModHelper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP")) return;
-
-        _configMenu
-            // SVE
-            .AddSectionTitle(() => "SVE Settings")
-            .AddCheckbox(
-                () => "Use Galdoran Theme All Times",
-                () => "Replicates SVE's config settings of the same name.",
-                config => config.UseGaldoranThemeAllTimes,
-                (config, value) => config.UseGaldoranThemeAllTimes = value
-            )
-            .AddCheckbox(
-                () => "Disable Galdoran Theme",
-                () => "Replicates SVE's config settings of the same name.",
-                config => config.DisableGaldoranTheme,
-                (config, value) => config.DisableGaldoranTheme = value
             );
     }
 }

@@ -7,9 +7,12 @@ mods:
    Island Gatherers Automate
 
 latest commit:
-   commit 7dae5100f36898a02de52ea47f0e58b75cbb033b
-   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Mon Sep 13 19:57:23 2021 -0500
+   commit b03d2856669d2bed934288961189946b5a29d135
+   Merge: 7dae510 31f76ce
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat Jun 25 15:53:35 2022 -0500
    
-       v2.0.0 released
+       Merge pull request #2 from ChulkyBow/patch-1
+       
+       Add Ukrainian translation for IslandGatherers Mod
    

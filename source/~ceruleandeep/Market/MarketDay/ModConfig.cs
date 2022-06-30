@@ -20,6 +20,22 @@ namespace MarketDay
         public bool OnNextDayIfFestival { get; set; } = true;
 
         public int DayOfWeek { get; set; } = 6;
+        public bool UseAdvancedOpeningOptions { get; set; }
+        public bool OpenOnMon { get; set; }
+        public bool OpenOnTue { get; set; }
+        public bool OpenOnWed { get; set; }
+        public bool OpenOnThu { get; set; }
+        public bool OpenOnFri { get; set; }
+        public bool OpenOnSat { get; set; } = true;
+        public bool OpenOnSun { get; set; }
+        public bool OpenInSpring { get; set; } = true;
+        public bool OpenInSummer { get; set; } = true;
+        public bool OpenInFall { get; set; } = true;
+        public bool OpenInWinter { get; set; } = true;
+        public bool OpenWeek1 { get; set; } = true;
+        public bool OpenWeek2 { get; set; } = true;
+        public bool OpenWeek3 { get; set; } = true;
+        public bool OpenWeek4 { get; set; } = true;
         public int OpeningTime { get; set; } = 8;
         public int ClosingTime { get; set; } = 18;
         public int NumberOfShops { get; set; } = 6;
@@ -35,7 +51,11 @@ namespace MarketDay
         public bool VerboseLogging { get; set; }
         public bool ShowShopPositions { get; set; }
         public bool NPCVisitors { get; set; } = true;
-        public bool NPCRescheduling { get; set; } = true;
+        public bool NPCOwnerRescheduling { get; set; } = true;
+        public bool NPCVisitorRescheduling { get; set; } = true;
+        public bool NPCScheduleReplacement { get; set; } = true;
+        public int NumberOfTownieVisitors { get; set; } = 25;
+        public int NumberOfRandomVisitors { get; set; } = 4;
         public bool AlwaysMarketDay { get; set; }
         public bool DebugKeybinds { get; set; }
         public SButton OpenConfigKeybind { get; set; } = SButton.V;

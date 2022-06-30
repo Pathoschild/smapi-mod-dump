@@ -8,8 +8,11 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Alchemy.Framework.Mixtures;
+namespace DaLion.Stardew.Alchemy.Framework;
 
-internal interface IMixture
+public interface IMixture
 {
+    int[] FormulaCoefficients { get; }
+
+    int Product { get; }
 }

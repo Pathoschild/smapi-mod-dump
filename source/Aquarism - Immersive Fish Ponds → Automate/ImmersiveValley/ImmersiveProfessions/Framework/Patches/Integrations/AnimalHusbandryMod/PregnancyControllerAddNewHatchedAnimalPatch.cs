@@ -12,30 +12,30 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.AnimalHusban
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Buildings;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class PregnancyControllerAddNewHatchedAnimalPatch : BasePatch
+internal sealed class PregnancyControllerAddNewHatchedAnimalPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal PregnancyControllerAddNewHatchedAnimalPatch()
     {
         try
         {
-            Original = "AnimalHusbandryMod.animals.PregnancyController".ToType().RequireMethod("addNewHatchedAnimal");
+            Target = "AnimalHusbandryMod.animals.PregnancyController".ToType().RequireMethod("addNewHatchedAnimal");
         }
         catch
         {
@@ -48,7 +48,7 @@ internal class PregnancyControllerAddNewHatchedAnimalPatch : BasePatch
     /// <summary>Patch for Rancher husbanded animals to have random starting friendship.</summary>
 
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> PregnancyControllerAddNewHatchedAnimalTranspiler(
+    private static IEnumerable<CodeInstruction>? PregnancyControllerAddNewHatchedAnimalTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -75,7 +75,6 @@ internal class PregnancyControllerAddNewHatchedAnimalPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching Rancher husbanded newborn friendship.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

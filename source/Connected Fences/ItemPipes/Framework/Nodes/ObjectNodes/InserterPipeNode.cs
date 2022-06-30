@@ -30,7 +30,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         public InserterPipeNode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
             Priority = 1;
-            ItemTimer = 500;
+            ItemTimer = 1000;
         }
     }
 }

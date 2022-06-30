@@ -11,8 +11,8 @@
 {
   "Name": "Quality Of Life - Immersive Tweaks",
   "Author": "DaLion",
-  "Version": "1.1.8",
-  "Description": "An collection of immersive tweaks to weapons, rings, and misc. vanilla inconsistencies.",
+  "Version": "2.0.1",
+  "Description": "A collection of immersive tweaks to farming, foraging and other vanilla inconsistencies.",
   "UniqueID": "DaLion.ImmersiveTweaks",
   "EntryDll": "ImmersiveTweaks.dll",
   "MinimumApiVersion": "3.14.0",
@@ -25,7 +25,7 @@
     },
     {
       "UniqueID": "DaLion.ImmersiveProfessions",
-      "MinimumVersion": "3.1.16",
+      "MinimumVersion": "5.0.1",
       "IsRequired": false
     }
   ]

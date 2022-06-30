@@ -1,23 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <AssemblyName>FarmCleaner</AssemblyName>
     <RootNamespace>FarmCleaner</RootNamespace>
     <Version>2.0.2</Version>
-    <TargetFramework>net452</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
-
-    <EnableHarmony>false</EnableHarmony>
-
-    <LangVersion>7.2</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
 </Project>

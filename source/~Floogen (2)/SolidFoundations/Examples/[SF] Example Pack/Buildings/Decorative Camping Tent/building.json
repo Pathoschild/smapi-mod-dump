@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Name": "Decorative Camping Tent",
+  "Description": "Another camping tent.",
+  "DrawShadow": false,
+  "SortTileOffset": 1,
+
+  "Size": {
+    "X": 5,
+    "Y": 4
+  },
+  "CollisionMap": "OXXXO\nOXXXO\nXXXXX\nXXOXO",
+
+  "IndoorMap": "CustomTent",
+  "TunnelDoors": [
+    {
+      "X": 2,
+      "Y": 3
+    }
+  ],
+
+  "BuildCost": 1000,
+  "BuildMaterials": [
+    {
+      "ItemID": 428,
+      "Amount": 25
+    },
+    {
+      "ItemID": 388,
+      "Amount": 25
+    }
+  ],
+  "BuildDays": 1,
+  "BuildingToUpgrade": "Camping Tent"
+}

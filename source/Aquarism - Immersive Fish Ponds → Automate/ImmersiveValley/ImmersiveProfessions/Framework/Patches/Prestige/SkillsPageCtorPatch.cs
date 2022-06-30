@@ -17,18 +17,17 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
-
-using Utility;
+using Textures;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class SkillsPageCtorPatch : BasePatch
+internal sealed class SkillsPageCtorPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal SkillsPageCtorPatch()
     {
-        Original = RequireConstructor<SkillsPage>(typeof(int), typeof(int), typeof(int), typeof(int));
+        Target = RequireConstructor<SkillsPage>(typeof(int), typeof(int), typeof(int), typeof(int));
     }
 
     #region harmony patches
@@ -42,7 +41,8 @@ internal class SkillsPageCtorPatch : BasePatch
     {
         if (!ModEntry.Config.EnablePrestige) return;
 
-        __instance.width += 64;
+        __instance.width += 48;
+        if (ModEntry.Config.PrestigeProgressionStyle == ModConfig.ProgressionStyle.StackedStars) __instance.width += 24;
 
         var srcRect = new Rectangle(16, 0, 14, 9);
         foreach (var component in __instance.skillBars)
@@ -63,7 +63,7 @@ internal class SkillsPageCtorPatch : BasePatch
 
                     if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 15)
                     {
-                        component.texture = Textures.SkillBarTx;
+                        component.texture = Textures.BarsTx;
                         component.sourceRect = srcRect;
                     }
 
@@ -82,7 +82,7 @@ internal class SkillsPageCtorPatch : BasePatch
 
                     if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 20)
                     {
-                        component.texture = Textures.SkillBarTx;
+                        component.texture = Textures.BarsTx;
                         component.sourceRect = srcRect;
                     }
 

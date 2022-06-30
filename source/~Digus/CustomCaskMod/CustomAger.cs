@@ -24,5 +24,7 @@ namespace CustomCaskMod
         public bool EnableMoreThanOneQualityIncrementPerDay;
         public Dictionary<object, float> AgingData;
         public Dictionary<int, float> AgingDataId = new Dictionary<int, float>();
+        public List<string> OverrideMod = new List<string>();
+        public List<string> MergeIntoMod = new List<string>();
     }
 }

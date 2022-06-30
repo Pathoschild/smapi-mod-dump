@@ -11,6 +11,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System.Collections.Generic;
 using Survivalistic.Framework.Common;
 using Survivalistic.Framework.Bars;
 using Survivalistic.Framework.Databases;
@@ -29,11 +30,14 @@ namespace Survivalistic.Framework.Networking
             if (Context.IsMainPlayer)
             {
                 Data _data = Helper.Data.ReadSaveData<Data>($"{player_id}") ?? new Data();
+                float[] _multipliers = { ModEntry.config.hunger_multiplier, ModEntry.config.thirst_multiplier };
+                SyncBody _toSend = new SyncBody(_data, Foods.foodDatabase, _multipliers);
+
                 Helper.Data.WriteSaveData($"{player_id}", _data);
 
                 Debugger.Log($"Sending important data to farmhand {player_id}.", "Trace");
                 Helper.Multiplayer.SendMessage(
-                    message: _data,
+                    message: _toSend,
                     messageType: "SaveDataFromHost",
                     modIDs: new[] { Manifest.UniqueID },
                     playerIDs: new[] { player_id }
@@ -49,11 +53,14 @@ namespace Survivalistic.Framework.Networking
                 foreach (Farmer farmer in Game1.getOnlineFarmers())
                 {
                     Data _data = Helper.Data.ReadSaveData<Data>($"{farmer.UniqueMultiplayerID}") ?? new Data();
+                    float[] _multipliers = { ModEntry.config.hunger_multiplier, ModEntry.config.thirst_multiplier };
+                    SyncBody _toSend = new SyncBody(_data, Foods.foodDatabase , _multipliers);
+
                     Helper.Data.WriteSaveData($"{farmer.UniqueMultiplayerID}", _data);
 
                     Debugger.Log($"Sending important data to farmhand {farmer.UniqueMultiplayerID}.", "Trace");
                     Helper.Multiplayer.SendMessage(
-                        message: _data,
+                        message: _toSend,
                         messageType: "SaveDataFromHost",
                         modIDs: new[] { Manifest.UniqueID },
                         playerIDs: new[] { farmer.UniqueMultiplayerID }
@@ -95,8 +102,12 @@ namespace Survivalistic.Framework.Networking
         {
             if (!Context.IsMainPlayer && e.FromModID == Manifest.UniqueID && e.Type == "SaveDataFromHost")
             {
-                ModEntry.data = e.ReadAs<Data>();
-                BarsUpdate.CalculatePercentage();
+                SyncBody _body = e.ReadAs<SyncBody>();
+                ModEntry.data = _body.data;
+                Foods.foodDatabase = _body.dict;
+                BarsDatabase.hunger_velocity = _body.multipliers[0];
+                BarsDatabase.thirst_velocity = _body.multipliers[1];
+
                 Debugger.Log("Received important data from host.", "Trace");
                 BarsUpdate.CalculatePercentage();
             }
@@ -107,6 +118,20 @@ namespace Survivalistic.Framework.Networking
                 Debugger.Log($"Received important data from player {e.FromPlayerID}.", "Trace");
                 Helper.Data.WriteSaveData($"{e.FromPlayerID}", _data);
             }
+        }
+    }
+
+    public class SyncBody
+    {
+        public Data data;
+        public Dictionary<string, string> dict;
+        public float[] multipliers;
+
+        public SyncBody(Data _data, Dictionary<string, string> _dict, float[] _multipliers)
+        {
+            data = _data;
+            dict = _dict;
+            multipliers = _multipliers;
         }
     }
 }

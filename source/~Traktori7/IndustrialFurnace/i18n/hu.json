@@ -11,7 +11,7 @@
 {
 	// Industrial furnace
 	"industrial-furnace.name": "Ipari kemence",
-	"industrial-furnace.description": "Erőteljes és hatékony kemence, amely egyszerre több adagot képes megolvasztani!",
+	"industrial-furnace.description": "Erőteljes és hatékony kemence, mely egyszerre több adagot képes megolvasztani!",
 	// HUD messages
 	"message.furnace-running": "A kemence jelenleg működik!",
 	"message.more-coal": "Az olvasztás megkezdéséhez {{coalAmount}} szénre van szükség.",
@@ -19,13 +19,13 @@
 	"message.cant-smelt-this": "Ezt nem lehet megolvasztani!",
 	"message.need-more-ore": "A megolvasztásához legalább {{oreAmount}} érc szükséges.",
 	// GenericModConfigMenu
-	"gmcm.main-label": "Beállítási lehetőségek az ipari kemencéhez",
+	"gmcm.main-label": "Beállítások az ipari kemencéhez",
 	"gmcm.coal-amount-label": "Szén mennyiség",
 	"gmcm.coal-amount-description": "A kemence beindításához szükséges szénmennyiség.",
 	"gmcm.instant-smelting-label": "Azonnali olvasztás",
 	"gmcm.instant-smelting-description": "Ha engedélyezve van, akkor a kemence azonnal olvaszt.",
-	"gmcm.smoke-label": "Enable the smoke animation",
-	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
-	"gmcm.fire-label": "Enable the fire animation",
-	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
+	"gmcm.smoke-label": "Füst animáció engedélyezése",
+	"gmcm.smoke-description": "Engedélyezi a füst animációt, amikor a kemence működik.",
+	"gmcm.fire-label": "Tűz animáció engedélyezése",
+	"gmcm.fire-description": "Engedélyezi a tűz animációt, amikor a kemence működik."
 }

@@ -12,10 +12,9 @@ namespace DaLion.Stardew.Ponds.Integrations;
 
 #region using directives
 
-using System;
-using StardewModdingAPI;
-
 using Common.Integrations;
+using StardewModdingAPI;
+using System;
 
 #endregion using directives
 
@@ -31,11 +30,10 @@ internal class GenericModConfigMenuIntegrationForImmersivePonds
     /// <param name="getConfig">Get the current config model.</param>
     /// <param name="reset">Reset the config model to the default values.</param>
     /// <param name="saveAndApply">Save and apply the current config model.</param>
-    /// <param name="log">Encapsulates monitoring and logging.</param>
     public GenericModConfigMenuIntegrationForImmersivePonds(IModRegistry modRegistry, IManifest manifest,
-        Func<ModConfig> getConfig, Action reset, Action saveAndApply, Action<string, LogLevel> log)
+        Func<ModConfig> getConfig, Action reset, Action saveAndApply)
     {
-        _configMenu = new(modRegistry, manifest, log, getConfig, reset, saveAndApply);
+        _configMenu = new(modRegistry, manifest, getConfig, reset, saveAndApply);
     }
 
     /// <summary>Register the config menu if available.</summary>

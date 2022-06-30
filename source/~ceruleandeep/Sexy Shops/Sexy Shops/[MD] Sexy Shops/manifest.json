@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+    "Name": "[MD] Sexy Shops",
+    "Author": "ceruleandeep",
+    "Version": "1.0.0",
+    "Description": "Market shops for lovers of arts and crafts",
+    "UniqueID": "ceruleandeep.SexyShops",
+    "UpdateKeys": [
+        "Nexus:12038"
+    ],
+    "MinimumApiVersion": "3.0.0",
+    "ContentPackFor": {
+        "UniqueID": "ceruleandeep.MarketDay",
+        "MinimumVersion": "1.1.2"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "ceruleandeep.FineArt",
+            "MinimumVersion": "1.0.0"
+        }
+    ]
+}

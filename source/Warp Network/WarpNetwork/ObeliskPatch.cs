@@ -35,29 +35,19 @@ namespace WarpNetwork
                     //desert warp patch
 
                     Point point = ObeliskTargets["Desert"];
-                    if (!(WarpHandler.DesertWarp is null))
-                    {
-                        Point to = (Point)WarpHandler.DesertWarp;
-                        WarpHandler.DesertWarp = null;
-                        ev.Player.setTileLocation(new Vector2(to.X, to.Y));
-                    }
+                    Point to = point;
+                    if (WarpHandler.DesertWarp is not null)
+                        to = (Point)WarpHandler.DesertWarp;
                     else if (ModEntry.config.PatchObelisks && point == ev.Player.getTileLocationPoint())
                     {
                         Dictionary<string, WarpLocation> dests = Utils.GetWarpLocations();
-                        if (dests.ContainsKey("desert"))
-                        {
-                            WarpLocation dest = dests["desert"];
-                            if (dest.OverrideMapProperty)
-                            {
-                                WarpHandler.DesertWarp = null;
-                                ev.Player.setTileLocation(new Vector2(dest.X, dest.Y));
-                                return;
-                            }
-                        }
-                        Point to = ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
-                        WarpHandler.DesertWarp = null;
-                        ev.Player.setTileLocation(new Vector2(to.X, to.Y));
+                        if (dests.TryGetValue("desert", out var dest) && dest.OverrideMapProperty)
+                            to = new(dest.X, dest.Y);
+                        else
+                            to = ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
                     }
+                    WarpHandler.DesertWarp = null;
+                    ev.Player.setTileLocation(new Vector2(to.X, to.Y));
                 }
                 else if (ModEntry.config.PatchObelisks)
                 {
@@ -65,23 +55,16 @@ namespace WarpNetwork
                     {
                         Point point = ObeliskTargets[Name];
                         if (Name == "Farm")
-                        {
                             point = Utils.GetActualFarmPoint(point.X, point.Y);
-                        }
                         if (ev.Player.getTileLocationPoint() == point)
                         {
                             Dictionary<string, WarpLocation> dests = Utils.GetWarpLocations();
                             string target = (Name == "IslandSouth") ? "island" : Name;
-                            if (dests.ContainsKey(target))
-                            {
-                                WarpLocation dest = dests[target];
-                                if (dest.OverrideMapProperty)
-                                {
-                                    ev.Player.setTileLocation(new Vector2(dest.X, dest.Y));
-                                    return;
-                                }
-                            }
-                            Point to = ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
+                            Point to;
+                            if (dests.TryGetValue(target, out var dest) && dest.OverrideMapProperty)
+                                to = new(dest.X, dest.Y);
+                            else
+                                to = ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
                             ev.Player.setTileLocation(new Vector2(to.X, to.Y));
                         }
                     }

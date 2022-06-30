@@ -9,6 +9,8 @@ for queries and analysis.**
 Trash Does Not Consume Bait
 =================================
 
+**THIS IS AN ARCHIVE: PLEASE SEE [https://github.com/atravita-mods/StardewMods](https://github.com/atravita-mods/StardewMods) for the updated repo.**
+
 This mod prevents trash from consuming bait. Additionally, it adds automatic replacement of tackles/bait when they run out. When replacing, the code will try to use the same bait/tackle you were using, but if you don't have that particular tackle/bait remaining in your inventory, it can optionally use whatever you have on hand. It will only use bait/tackle in your inventory.
 
 ## Install

@@ -1,3 +1,4 @@
 {
-  "EnableRealTime": false
+  "EnableRealTime": true,
+  "LightConfig": 3
 }

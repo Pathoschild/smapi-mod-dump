@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12457
+IDs: mistyspring.farmhousevisits
+update keys: Nexus:12457, GitHub:misty-spring/FarmhouseVisits

@@ -139,6 +139,10 @@ for queries and analysis.**
   * Crazy placement
   * Functionality (lighting, etc.)
 
+### Furniture catalogue?
+* Does... do bad things? Expect more info to be added later!
+  * Actually seems fine. Leave this here for now just in case, though.
+
 ### Chests — "chests"
 * Chest removal setting **off**
   * Placement
@@ -209,3 +213,14 @@ for queries and analysis.**
 * Item insertion setting **on**
   * Insertion
   * Deduction of inserted items
+
+### Torches — "torches"
+* Placing normally
+* Placing on/in fences
+
+### Rectangle drawing — "rectangle"
+* Refunding correctly when cancelled
+* Deducting correct amount of items for drawing
+* Queue clearing correctly
+  * On screen transition
+  * On build mode being cancelled

@@ -30,6 +30,7 @@ internal sealed class ManagedTexture2D : InternalTexture2D {
 	internal readonly WeakReference<XTexture2D> Reference;
 	internal readonly ManagedSpriteInstance SpriteInstance;
 	internal readonly Vector2I Dimensions;
+	private readonly bool Marked = false;
 	private volatile bool Disposed = false;
 
 	internal static void DumpStats(List<string> output) {
@@ -73,7 +74,10 @@ internal sealed class ManagedTexture2D : InternalTexture2D {
 		Interlocked.Add(ref TotalAllocatedSize, (ulong)this.SizeBytes());
 		Interlocked.Increment(ref TotalManagedTextures);
 
-		Garbage.MarkOwned(format, dimensions.Area);
+		if (Configuration.Config.Garbage.ShouldCollectAccountOwnedTextures) {
+			Garbage.MarkOwned(format, dimensions.Area);
+			Marked = true;
+		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -109,7 +113,10 @@ internal sealed class ManagedTexture2D : InternalTexture2D {
 			reference.Disposing -= OnParentDispose;
 		}
 
-		Garbage.UnmarkOwned(Format, Width * Height);
+		if (Marked) {
+			Garbage.UnmarkOwned(Format, Width * Height);
+		}
+
 		Interlocked.Add(ref TotalAllocatedSize, (ulong)-this.SizeBytes());
 		Interlocked.Decrement(ref TotalManagedTextures);
 	}

@@ -52,6 +52,19 @@ internal static partial class ReflectionExt {
 		Expression memberExp = Expression.Field(objExp, field);
 		return Expression.Lambda<Func<T, U>>(memberExp, objExp).CompileFast();
 	}
+
+	internal static TDelegate? GetFieldGetterDelegate<TDelegate>(this Type type, string name) where TDelegate : Delegate =>
+		GetFieldGetterDelegate<TDelegate>(type, type.GetField(name, InstanceFlags));
+
+	internal static TDelegate? GetFieldGetterDelegate<TDelegate>(this Type type, FieldInfo? field) where TDelegate : Delegate {
+		if (field is null) {
+			return null;
+		}
+
+		var objExp = Expression.Parameter(type, "object");
+		Expression memberExp = Expression.Field(objExp, field);
+		return Expression.Lambda<TDelegate>(memberExp, objExp).CompileFast();
+	}
 	#endregion
 
 	#region GetFieldMeow (static)

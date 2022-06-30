@@ -44,6 +44,22 @@ namespace AlternativeTextures.Framework.Patches.Buildings
         {
             harmony.Patch(AccessTools.Method(_entity, nameof(Building.Update), new[] { typeof(GameTime) }), postfix: new HarmonyMethod(GetType(), nameof(UpdatePostfix)));
             harmony.Patch(AccessTools.Method(_entity, nameof(Building.resetTexture), null), prefix: new HarmonyMethod(GetType(), nameof(ResetTexturePrefix)));
+            if (PatchTemplate.IsSolidFoundationsUsed())
+            {
+                try
+                {
+                    if (Type.GetType("SolidFoundations.Framework.Models.ContentPack.GenericBuilding, SolidFoundations") is Type sfBuildingType && sfBuildingType != null)
+                    {
+                        harmony.Patch(AccessTools.Method(sfBuildingType, "resetTexture", null), prefix: new HarmonyMethod(GetType(), nameof(ResetTexturePrefix)));                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _monitor.Log($"Failed to patch Solid Foundations in {this.GetType().Name}: AT may not be able to override certain Solid Foundation buildings!", LogLevel.Warn);
+                    _monitor.Log($"Patch for Solid Foundations failed in {this.GetType().Name}: {ex}", LogLevel.Trace);
+                }
+            }
+
             harmony.Patch(AccessTools.Constructor(_entity, new[] { typeof(BluePrint), typeof(Vector2) }), postfix: new HarmonyMethod(GetType(), nameof(BuildingPostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_entity, nameof(Building.resetTexture), null), new HarmonyMethod(GetType(), nameof(ResetTextureReversePatch))).Patch();

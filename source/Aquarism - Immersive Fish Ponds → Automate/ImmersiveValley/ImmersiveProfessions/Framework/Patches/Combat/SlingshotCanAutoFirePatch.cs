@@ -12,23 +12,23 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Tools;
-
-using Ultimate;
+using System;
+using System.Reflection;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class SlingshotCanAutoFirePatch : BasePatch
+internal sealed class SlingshotCanAutoFirePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal SlingshotCanAutoFirePatch()
     {
-        Original = RequireMethod<Slingshot>(nameof(Slingshot.CanAutoFire));
+        Target = RequireMethod<Slingshot>(nameof(Slingshot.CanAutoFire));
     }
 
     #region harmony patches
@@ -40,7 +40,7 @@ internal class SlingshotCanAutoFirePatch : BasePatch
         try
         {
             var who = __instance.getLastFarmerToUse();
-            if (who.IsLocalPlayer && ModEntry.PlayerState.RegisteredUltimate is DeathBlossom {IsActive: true})
+            if (who.IsLocalPlayer && ModEntry.PlayerState.RegisteredUltimate is DeathBlossom { IsActive: true })
                 __result = true;
             else
                 __result = false;

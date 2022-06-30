@@ -11,6 +11,7 @@
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using static SpriteMaster.Colors.ColorHelpers;
 

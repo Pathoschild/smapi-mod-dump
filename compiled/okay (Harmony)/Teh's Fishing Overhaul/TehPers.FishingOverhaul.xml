@@ -428,6 +428,12 @@
             <param name="Type">The type of chance to modify.</param>
             <param name="Expression">An expression representing the operation. <c>x</c> represents the chance.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Effects.ModifyChanceEffectEntry.Type">
+            <summary>The type of chance to modify.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Effects.ModifyChanceEffectEntry.Expression">
+            <summary>An expression representing the operation. <c>x</c> represents the chance.</summary>
+        </member>
         <member name="T:TehPers.FishingOverhaul.Effects.ModifyChanceType">
             <summary>
             The type of chance to modify.
@@ -674,6 +680,15 @@
             <param name="Left">The expression on the left side of the operator.</param>
             <param name="Right">The expression on the right side of the operator.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Parsing.BinaryExpr.Operator">
+            <summary>The operator to apply.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Parsing.BinaryExpr.Left">
+            <summary>The expression on the left side of the operator.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Parsing.BinaryExpr.Right">
+            <summary>The expression on the right side of the operator.</summary>
+        </member>
         <member name="T:TehPers.FishingOverhaul.Parsing.BinaryOperator">
             <summary>
             A binary operataor in an expression.
@@ -720,6 +735,9 @@
             A numeric expression.
             </summary>
             <param name="Value">The value of this expression.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Parsing.ConstantExpr`1.Value">
+            <summary>The value of this expression.</summary>
         </member>
         <member name="T:TehPers.FishingOverhaul.Parsing.Expr`1">
             <summary>

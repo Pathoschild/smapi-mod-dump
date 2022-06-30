@@ -12,34 +12,34 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Tools;
-
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FishingRodStartMinigameEndFunctionPatch : BasePatch
+internal sealed class FishingRodStartMinigameEndFunctionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FishingRodStartMinigameEndFunctionPatch()
     {
-        Original = RequireMethod<FishingRod>(nameof(FishingRod.startMinigameEndFunction));
+        Target = RequireMethod<FishingRod>(nameof(FishingRod.startMinigameEndFunction));
     }
 
     #region harmony patches
 
     /// <summary>Patch to remove Pirate bonus treasure chance.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> FishingRodStartMinigameEndFunctionTranspiler(
+    private static IEnumerable<CodeInstruction>? FishingRodStartMinigameEndFunctionTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -58,7 +58,6 @@ internal class FishingRodStartMinigameEndFunctionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Pirate bonus treasure chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

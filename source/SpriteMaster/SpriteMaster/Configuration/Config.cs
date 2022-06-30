@@ -12,6 +12,8 @@ global using SMConfig = SpriteMaster.Configuration.Config;
 using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
+using SpriteMaster.Resample;
+using SpriteMaster.Resample.Encoder;
 using SpriteMaster.Types;
 using StardewModdingAPI;
 using System;
@@ -19,7 +21,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime;
 using System.Text.RegularExpressions;
-using TeximpNet.Compression;
 
 using Root = SpriteMaster;
 
@@ -85,7 +86,7 @@ internal static class Config {
 
 	[Attributes.Comment("Should SpriteMaster be enabled? Unsetting this will disable _all_ SpriteMaster functionality.")]
 	[Attributes.MenuName("Enable SpriteMaster")]
-	[Obsolete("Use IsEnabled")]
+	[Obsolete($"Use {nameof(IsEnabled)}")]
 	internal static bool Enabled = true;
 
 	[Attributes.Ignore]
@@ -165,19 +166,35 @@ internal static class Config {
 		internal static bool CollectAccountUnownedTextures = false;
 		[Attributes.Comment("Should owned textures be marked in the garbage collector's statistics?")]
 		[Attributes.Advanced]
-		internal static bool CollectAccountOwnedTextures = false;
-		[Attributes.Comment("The amount of free memory required by SM after which it triggers recovery operations")]
-		[Attributes.LimitsInt(1, int.MaxValue)]
+		[Obsolete($"Use {nameof(ShouldCollectAccountOwnedTextures)}")]
+		internal static bool? CollectAccountOwnedTextures = null;
+
+#pragma warning disable CS0612
+		internal static bool ShouldCollectAccountOwnedTextures = CollectAccountOwnedTextures ?? SystemInfo.Graphics.IsIntegrated;
+#pragma warning restore CS0612
+
+		[Attributes.Comment("The amount of free memory required by SM after which it triggers hard recovery operations")]
+		[Attributes.LimitsInt(1L, int.MaxValue * (long)SizesExt.MiB)]
 		[Attributes.Advanced]
-		internal static int RequiredFreeMemory = 128;
-		[Attributes.Comment("Hysterisis applied to RequiredFreeMemory")]
+		internal static long RequiredFreeMemoryHard = SizesExt.AsMiB(128L);
+		[Attributes.Comment("The amount of free memory required by SM after which it triggers soft recovery operations")]
+		[Attributes.LimitsInt(1L, int.MaxValue * (long)SizesExt.MiB)]
+		[Attributes.Advanced]
+		internal static long RequiredFreeMemorySoft = SizesExt.AsGiB(1L);
+		[Attributes.Comment("Hysteresis applied to RequiredFreeMemory")]
 		[Attributes.LimitsReal(1.01, 10.0)]
 		[Attributes.Advanced]
-		internal static double RequiredFreeMemoryHysterisis = 1.5;
+		internal static double RequiredFreeMemoryHysteresis = 1.5;
 		[Attributes.Comment("Should sprites containing season names be purged on a seasonal basis?")]
 		internal static bool SeasonalPurge = true;
 		[Attributes.Comment("What runtime garbage collection latency mode should be set?")]
 		internal static GCLatencyMode LatencyMode = GCLatencyMode.SustainedLowLatency;
+		[Attributes.Comment("Perform an ephemeral (Generation 0 and 1) garbage collection pass every N time periods (if <= 0, disabled)")]
+		[Attributes.LimitsTimeSpan(0L, 12_000L * TimeSpan.TicksPerMillisecond)]
+		internal static TimeSpan EphemeralCollectPeriod = TimeSpan.FromMilliseconds(6_000);
+		[Attributes.Comment("What ephemeral collection pause period goal should be used")]
+		[Attributes.LimitsTimeSpan(500L * TimeSpan.TicksPerMillisecond, 2000L * TimeSpan.TicksPerMillisecond)]
+		internal static TimeSpan EphemeralCollectPauseGoal = TimeSpan.FromTicks(500L * TimeSpan.TicksPerMillisecond);
 	}
 
 	[Attributes.Advanced]
@@ -214,7 +231,7 @@ internal static class Config {
 	[Attributes.Advanced]
 	internal static class DrawState {
 		[Attributes.Comment("Enable linear sampling for sprites")]
-		[Obsolete("Use IsSetLinear")]
+		[Obsolete($"Use {nameof(IsSetLinear)}")]
 		internal static bool SetLinear = true;
 
 		[Attributes.Ignore]
@@ -223,7 +240,7 @@ internal static class Config {
 #pragma warning restore CS0618 // Type or member is obsolete
 
 		[Attributes.Comment("Enable linear sampling for sprites")]
-		[Obsolete("Use IsSetLinear")]
+		[Obsolete($"Use {nameof(IsSetLinearUnresampled)}")]
 		internal static bool SetLinearUnresampled = false;
 
 		[Attributes.Ignore]
@@ -250,20 +267,13 @@ internal static class Config {
 		internal static bool HonorHDRSettings = true;
 	}
 
-	[Attributes.Advanced]
-	internal static class Performance {
-		[Attributes.Comment("Perform a Generation 0 and 1 garbage collection pass every N ticks (if <= 0, disabled)")]
-		[Attributes.LimitsInt(0, int.MaxValue)]
-		internal static int TransientGCTickCount = 150;
-	}
-
 	internal readonly record struct TextureRef(string Texture, Bounds Bounds);
 
 	internal static class Resample {
 		[Attributes.Comment("Should resampling be enabled?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.MenuName("Enable Resampling")]
-		[Obsolete("Use IsEnabled")]
+		[Obsolete($"Use {nameof(IsEnabled)}")]
 		internal static bool Enabled = true;
 
 		[Attributes.Ignore]
@@ -324,9 +334,9 @@ internal static class Config {
 		internal static bool PremultiplyAlpha = true;
 		[Attributes.Comment("Low pass value that should be filtered when reversing premultiplied alpha.")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
-		[Attributes.LimitsInt(0, 65_535)]
+		[Attributes.LimitsInt(ushort.MinValue, ushort.MaxValue)]
 		[Attributes.Advanced]
-		internal static int PremultiplicationLowPass = 1024;
+		internal static ushort PremultiplicationLowPass = 1023;
 		[Attributes.Comment("Use redmean algorithm for perceptual color comparisons?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.Advanced]
@@ -493,7 +503,7 @@ internal static class Config {
 			private const bool DevEnabled = true;
 			[Attributes.Comment("What quality level should be used?")]
 			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
-			internal static CompressionQuality Quality = CompressionQuality.Highest;
+			internal static CompressionQuality Quality = CompressionQuality.High;
 			[Attributes.Comment("What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?")]
 			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 			[Attributes.LimitsInt(0, int.MaxValue)]
@@ -654,13 +664,31 @@ internal static class Config {
 	}
 
 	[Attributes.Advanced]
-	internal static class MemoryCache {
-		[Attributes.Comment("Should the memory cache be enabled?")]
+	internal static class ResidentCache {
+		[Attributes.Comment("Should the resident cache be enabled?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushResidentCache)]
 		internal static bool Enabled = DevEnabled && true;
 		private const bool DevEnabled = true;
 		[Attributes.Comment("Should memory cache elements always be flushed upon update?")]
 		internal static bool AlwaysFlush = false;
+		[Attributes.Comment("What is the maximum size of the resident cache?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushResidentCache)]
+		[Attributes.LimitsInt(0, long.MaxValue)]
+		internal static long MaxSize = SizesExt.AsGiB(2);
+		[Attributes.Comment("The preferred compression algorithm for the resident cache")]
+		internal static Compression.Algorithm Compress = Compression.BestAlgorithm;
+	}
+
+	[Attributes.Advanced]
+	internal static class TextureFileCache {
+		[Attributes.Comment("Should the texture memory cache be enabled?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureFileCache)]
+		internal static bool Enabled = DevEnabled && true;
+		private const bool DevEnabled = true;
+		[Attributes.Comment("What is the maximum size of the resident cache?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureFileCache)]
+		[Attributes.LimitsInt(0, long.MaxValue)]
+		internal static long MaxSize = SizesExt.AsGiB(1);
 	}
 
 	[Attributes.Advanced]
@@ -671,7 +699,7 @@ internal static class Config {
 		[Attributes.Comment("What is the maximum size (in bytes) to store in suspended sprite cache?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushSuspendedSpriteCache)]
 		[Attributes.LimitsInt(0, long.MaxValue)]
-		internal static long MaxCacheSize = 0x1000_0000L;
+		internal static long MaxCacheSize = SizesExt.AsGiB(2);
 		[Attributes.Comment("What is the maximum number of sprites to store in suspended sprite cache?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushSuspendedSpriteCache)]
 		[Attributes.LimitsInt(0, int.MaxValue)]
@@ -691,25 +719,49 @@ internal static class Config {
 	[Attributes.Advanced]
 	internal static class Extras {
 		[Attributes.Comment("Should the game have 'fast quitting' enabled?")]
+		[Attributes.Broken]
 		internal static bool FastQuit = false;
+
 		[Attributes.Comment("Should line drawing be smoothed?")]
 		internal static bool SmoothLines = true;
+
 		[Attributes.Comment("Should shadowed text be stroked instead?")]
+		[Attributes.Experimental]
 		internal static bool StrokeShadowedText = false;
+
 		[Attributes.Comment("Should Harmony patches have inlining re-enabled?")]
+		[Attributes.Broken]
 		internal static bool HarmonyInlining = false;
+
 		[Attributes.Comment("Should the game's 'parseMasterSchedule' method be fixed and optimized?")]
 		internal static bool FixMasterSchedule = true;
-		[Attributes.Comment("Should NPC Warp Points code be optimized?")]
-		internal static bool OptimizeWarpPoints = true;
-		[Attributes.Comment("Should NPCs take true shortest paths?")]
-		internal static bool TrueShortestPath = false;
-		[Attributes.Comment("Allow NPCs onto the farm?")]
-		internal static bool AllowNPCsOnFarm = false;
+
+		[Attributes.Advanced]
+		internal static class Pathfinding {
+			[Attributes.Comment("Should NPC Warp Points code be optimized?")]
+			internal static bool OptimizeWarpPoints = true;
+
+			[Attributes.Comment("Should Location objects be locked during concurrent pathfinding?")]
+			[Attributes.Experimental]
+			internal static bool LockLocationObjects = false;
+
+			[Attributes.Comment("Should NPCs take true shortest paths?")]
+			[Attributes.ChangesBehavior]
+			[Attributes.Experimental]
+			internal static bool TrueShortestPath = false;
+
+			[Attributes.Comment("Allow NPCs onto the farm?")]
+			[Attributes.ChangesBehavior]
+			[Attributes.Broken]
+			internal static bool AllowNPCsOnFarm = false;
+		}
+
 		[Attributes.Comment("Should the default batch sort be replaced with a stable sort?")]
 		internal static bool StableSort = true;
+
 		[Attributes.Comment("Should the game be prevented from going 'unresponsive' during loads?")]
 		internal static bool PreventUnresponsive = true;
+
 		[Attributes.Comment("Should the engine's deferred thread task runner be optimized?")]
 		internal static bool OptimizeEngineTaskRunner = true;
 
@@ -722,10 +774,10 @@ internal static class Config {
 			internal static bool Enabled = true;
 			[Attributes.Comment("Minimum Snow Density")]
 			[Attributes.LimitsInt(1, int.MaxValue)]
-			internal static int MinimumDensity = 1024;
+			internal static int MinimumDensity = 64;
 			[Attributes.Comment("Maximum Snow Density")]
 			[Attributes.LimitsInt(1, int.MaxValue)]
-			internal static int MaximumDensity = 3072;
+			internal static int MaximumDensity = 192;
 			[Attributes.Comment("Maximum Snow Rotation Speed")]
 			[Attributes.LimitsReal(0.0f, 1.0f)]
 			internal static float MaximumRotationSpeed = 1.0f / 60.0f;

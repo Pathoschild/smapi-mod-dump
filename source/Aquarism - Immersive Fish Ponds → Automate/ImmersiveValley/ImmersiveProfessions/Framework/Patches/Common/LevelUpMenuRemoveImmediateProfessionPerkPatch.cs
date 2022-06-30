@@ -12,30 +12,30 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-
-using DaLion.Common.Harmony;
-using Extensions;
-using Ultimate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
+internal sealed class LevelUpMenuRemoveImmediateProfessionPerkPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal LevelUpMenuRemoveImmediateProfessionPerkPatch()
     {
-        Original = RequireMethod<LevelUpMenu>(nameof(LevelUpMenu.removeImmediateProfessionPerk));
+        Target = RequireMethod<LevelUpMenu>(nameof(LevelUpMenu.removeImmediateProfessionPerk));
     }
 
     #region harmony patches
@@ -44,9 +44,14 @@ internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
     [HarmonyPostfix]
     private static void LevelUpMenuRemoveImmediateProfessionPerkPostfix(int whichProfession)
     {
-        if (!Enum.IsDefined(typeof(Profession), whichProfession)) return;
+        if (!Profession.TryFromValue(whichProfession, out var profession) ||
+            whichProfession == Farmer.luckSkill) return;
 
-        var profession = (Profession) whichProfession;
+        if ((Skill)profession.Skill == Skill.Combat)
+        {
+            Game1.player.maxHealth -= 5;
+            Game1.player.health = Math.Max(Game1.player.health, Game1.player.maxHealth);
+        }
 
         // remove immediate perks
         if (profession == Profession.Aquarist)
@@ -58,36 +63,36 @@ internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
                 pond.currentOccupants.Value = Math.Min(pond.currentOccupants.Value, pond.maxOccupants.Value);
             }
 
-        // unsubscribe unnecessary events
-        EventManager.DisableAllForProfession(profession);
+        // unhook unnecessary events
+        ModEntry.EventManager.UnhookForProfession(profession);
 
         // unregister Ultimate
-        if (ModEntry.PlayerState.RegisteredUltimate?.Index != (UltimateIndex) whichProfession) return;
+        if (ModEntry.PlayerState.RegisteredUltimate?.Index != (UltimateIndex)whichProfession) return;
 
         if (Game1.player.professions.Any(p => p is >= 26 and < 30))
         {
-            var firstIndex = (UltimateIndex) Game1.player.professions.First(p => p is >= 26 and < 30);
-            Game1.player.WriteData(DataField.UltimateIndex, firstIndex.ToString());
+            var firstIndex = (UltimateIndex)Game1.player.professions.First(p => p is >= 26 and < 30);
+            ModDataIO.WriteData(Game1.player, ModData.UltimateIndex.ToString(), firstIndex.ToString());
 #pragma warning disable CS8509
             ModEntry.PlayerState.RegisteredUltimate = firstIndex switch
 #pragma warning restore CS8509
             {
-                UltimateIndex.Frenzy => new Frenzy(),
-                UltimateIndex.Ambush => new Ambush(),
-                UltimateIndex.Pandemonia => new Pandemonia(),
-                UltimateIndex.Blossom => new DeathBlossom()
+                UltimateIndex.BruteFrenzy => new UndyingFrenzy(),
+                UltimateIndex.PoacherAmbush => new Ambush(),
+                UltimateIndex.PiperPandemic => new Enthrall(),
+                UltimateIndex.DesperadoBlossom => new DeathBlossom()
             };
         }
         else
         {
-            Game1.player.WriteData(DataField.UltimateIndex, null);
+            ModDataIO.WriteData(Game1.player, ModData.UltimateIndex.ToString(), null);
             ModEntry.PlayerState.RegisteredUltimate = null;
         }
     }
 
     /// <summary>Patch to move bonus health from Defender to Brute.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> LevelUpMenuRemoveImmediateProfessionPerkTranspiler(
+    private static IEnumerable<CodeInstruction>? LevelUpMenuRemoveImmediateProfessionPerkTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -101,12 +106,11 @@ internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
                 .FindFirst(
                     new CodeInstruction(OpCodes.Ldc_I4_S, Farmer.defender)
                 )
-                .SetOperand((int) Profession.Brute);
+                .SetOperand(Profession.Brute.Value);
         }
         catch (Exception ex)
         {
             Log.E($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

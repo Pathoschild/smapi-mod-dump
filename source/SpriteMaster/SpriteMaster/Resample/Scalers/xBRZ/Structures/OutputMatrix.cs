@@ -12,10 +12,12 @@ using SpriteMaster.Resample.Scalers.xBRZ.Common;
 using SpriteMaster.Types;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ.Structures;
 
 //access matrix area, top-left at position "out" for image with given width
+[StructLayout(LayoutKind.Auto)]
 internal ref struct OutputMatrix {
 	private readonly Span<Color16> OutSpan;
 	private readonly int Width;

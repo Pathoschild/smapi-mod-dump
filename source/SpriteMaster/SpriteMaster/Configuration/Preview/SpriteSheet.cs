@@ -10,6 +10,8 @@
 
 using SpriteMaster.Types;
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Configuration.Preview;
 
@@ -18,13 +20,18 @@ internal class SpriteSheet : MetaTexture {
 	internal Vector2I RenderedSize => Size * 4;
 	internal readonly Vector2I Dimensions;
 
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowIndexOutOfRangeException<T>(string name, int value, int constraint) =>
+		throw new IndexOutOfRangeException($"Argument '{name}' ({value}) is out of range (< 0 or >= {constraint})");
+
 	internal Drawable this[int x, int y] {
 		get {
 			if (x < 0 || x >= Dimensions.X) {
-				throw new IndexOutOfRangeException($"Argument '{nameof(x)}' ({x}) is out of range (< 0 or >= {Dimensions.X})");
+				return ThrowIndexOutOfRangeException<Drawable>(nameof(x), x, Dimensions.X);
 			}
 			if (y < 0 || y >= Dimensions.Y) {
-				throw new IndexOutOfRangeException($"Argument '{nameof(y)}' ({y}) is out of range (< 0 or >= {Dimensions.Y})");
+				return ThrowIndexOutOfRangeException<Drawable>(nameof(y), y, Dimensions.Y);
 			}
 
 			Bounds bounds = new(Size * (x, y), Size);

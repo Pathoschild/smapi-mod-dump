@@ -60,6 +60,11 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(CoopMenu), nameof(CoopMenu.update), new Type[] { typeof(GameTime) }),
                 postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CoopMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(AdvancedGameOptions), nameof(AdvancedGameOptions.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.AdvancedGameOptionsPatch))
+            );
             #endregion
 
             #region Game Menu Patches
@@ -173,11 +178,6 @@ namespace stardew_access
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(AnimalQueryMenu), nameof(AnimalQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.AnimalQueryMenuPatch))
-            );
-
-            harmony.Patch(
                 original: AccessTools.Method(typeof(ChooseFromListMenu), nameof(ChooseFromListMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ChooseFromListMenuPatch))
             );
@@ -249,6 +249,11 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.draw), new Type[] { typeof(SpriteBatch) }),
                     prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.PurchaseAnimalsMenuPatch))
                 );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(AnimalQueryMenu), nameof(AnimalQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.AnimalQueryMenuPatch))
+            );
 
             #endregion
 

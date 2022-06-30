@@ -12,28 +12,26 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.ProducerFram
 
 #region using directives
 
-using System;
+using DaLion.Common.Extensions.Reflection;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using Extensions;
-
+using System;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ProducerRuleControllerProduceOutputPatch : BasePatch
+internal sealed class ProducerRuleControllerProduceOutputPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ProducerRuleControllerProduceOutputPatch()
     {
         try
         {
-            Original = "ProducerFrameworkMod.Controllers.ProducerRuleController".ToType().RequireMethod("ProduceOutput");
+            Target = "ProducerFrameworkMod.Controllers.ProducerRuleController".ToType().RequireMethod("ProduceOutput");
         }
         catch
         {

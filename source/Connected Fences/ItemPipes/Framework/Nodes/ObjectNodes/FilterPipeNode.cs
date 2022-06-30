@@ -40,7 +40,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
             {
                 Filter = (obj as FilterPipeItem).Filter.items;
             }
-            ItemTimer = 500;
+            ItemTimer = 1000;
         }
 
         public override void UpdateFilter()

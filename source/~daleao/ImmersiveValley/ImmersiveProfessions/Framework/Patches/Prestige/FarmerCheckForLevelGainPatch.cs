@@ -19,14 +19,14 @@ using StardewValley;
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmerCheckForLevelGainPatch : BasePatch
+internal sealed class FarmerCheckForLevelGainPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     private const int PRESTIGE_GATE_I = 15000;
 
     /// <summary>Construct an instance.</summary>
     internal FarmerCheckForLevelGainPatch()
     {
-        Original = RequireMethod<Farmer>(nameof(Farmer.checkForLevelGain));
+        Target = RequireMethod<Farmer>(nameof(Farmer.checkForLevelGain));
     }
 
     #region harmony patches

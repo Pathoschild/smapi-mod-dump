@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Tileman",
   "Author": "SpicyKai",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Provides a challenge: Tiles can be puchased at increasingly high prices.",
   "UniqueID": "SpicyKai.Tileman",
   "EntryDll": "Tileman.dll",

@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
 using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class TreePerformBushDestroy : BasePatch
+internal sealed class TreePerformBushDestroy : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal TreePerformBushDestroy()
     {
-        Original = RequireMethod<Tree>("performBushDestroy");
+        Target = RequireMethod<Tree>("performBushDestroy");
     }
 
     #region harmony patches
 
     /// <summary>Patch to add bonus wood for prestiged Lumberjack.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> TreePerformBushDestroyTranspiler(
+    private static IEnumerable<CodeInstruction>? TreePerformBushDestroyTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -53,11 +53,11 @@ internal class TreePerformBushDestroy : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Lumberjack, true)
+                .FindProfessionCheck(Profession.Lumberjack.Value, true)
                 .Advance()
                 .Insert(
                     new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) Profession.Lumberjack + 100),
+                    new CodeInstruction(OpCodes.Ldc_I4_S, Profession.Lumberjack.Value + 100),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(NetList<int, NetInt>).RequireMethod(nameof(NetList<int, NetInt>.Contains))),
                     new CodeInstruction(OpCodes.Brtrue_S, isPrestiged)
@@ -71,7 +71,7 @@ internal class TreePerformBushDestroy : BasePatch
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
                 )
                 .InsertWithLabels(
-                    new[] {isPrestiged},
+                    new[] { isPrestiged },
                     new CodeInstruction(OpCodes.Pop),
                     new CodeInstruction(OpCodes.Ldc_R8, 1.4)
                 );
@@ -79,7 +79,6 @@ internal class TreePerformBushDestroy : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

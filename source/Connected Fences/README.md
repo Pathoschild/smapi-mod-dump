@@ -15,8 +15,6 @@ This is a repository for all my Stardew Valley Mods
 
 ## Planned Mods:
 - More Junimo Chests
-- CLF (Custom Line Framework)
-- [CLF] Color Lines
 - Shed IO
 - Logic Lines
 
@@ -24,4 +22,4 @@ This is a repository for all my Stardew Valley Mods
 - [Connected Fences](https://github.com/sergiomadd/StardewValleyMods/edit/main/ConnectedFences)
 
 ## See also:
-- [Contact](https://twitter.com/sergio_madd)
+- [Contact](https://twitter.com/madded__)

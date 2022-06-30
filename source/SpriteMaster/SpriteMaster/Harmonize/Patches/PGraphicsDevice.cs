@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using static SpriteMaster.Harmonize.Harmonize;
 
@@ -39,6 +40,90 @@ internal static class PGraphicsDevice {
 	[Harmonize("Reset", fixation: Fixation.Postfix, priority: PriorityLevel.Last)]
 	public static void OnResetPost(GraphicsDevice __instance) {
 		DrawState.OnPresentPost();
+	}
+
+	#endregion
+
+	#region OnPlatformDrawUserIndexedPrimitives
+
+	[Harmonize(
+		"PlatformDrawUserIndexedPrimitives",
+		Fixation.Prefix,
+		PriorityLevel.Last,
+		generic: Generic.Struct
+	)]
+	public static bool OnPlatformDrawUserIndexedPrimitives(
+		GraphicsDevice __instance,
+		PrimitiveType primitiveType,
+		Array vertexData,
+		int vertexOffset,
+		int numVertices,
+		short[] indexData,
+		int indexOffset,
+		int primitiveCount,
+		VertexDeclaration vertexDeclaration
+	) {
+		return true;
+	}
+
+	[Harmonize(
+		"PlatformDrawUserIndexedPrimitives",
+		Fixation.Prefix,
+		PriorityLevel.Last,
+		generic: Generic.Struct
+	)]
+	public static bool OnPlatformDrawUserIndexedPrimitives(
+		GraphicsDevice __instance,
+		PrimitiveType primitiveType,
+		Array vertexData,
+		int vertexOffset,
+		int numVertices,
+		int[] indexData,
+		int indexOffset,
+		int primitiveCount,
+		VertexDeclaration vertexDeclaration
+	) {
+		return true;
+	}
+
+	[Harmonize(
+		"DrawUserIndexedPrimitives",
+		Fixation.Prefix,
+		PriorityLevel.Last,
+		generic: Generic.Struct
+	)]
+	public static bool OnDrawUserIndexedPrimitives(
+		GraphicsDevice __instance,
+		PrimitiveType primitiveType,
+		Array vertexData,
+		int vertexOffset,
+		int numVertices,
+		short[] indexData,
+		int indexOffset,
+		int primitiveCount,
+		VertexDeclaration vertexDeclaration
+	) {
+		return true;
+	}
+
+	[Harmonize(
+		"DrawUserIndexedPrimitives",
+		Fixation.Prefix,
+		PriorityLevel.Last,
+		generic: Generic.Struct
+	)]
+	public static bool OnDrawUserIndexedPrimitives(
+		GraphicsDevice __instance,
+		PrimitiveType primitiveType,
+		Array vertexData,
+		int vertexOffset,
+		int numVertices,
+		int[] indexData,
+		int indexOffset,
+		int primitiveCount,
+		VertexDeclaration vertexDeclaration
+	) {
+		return true;
 	}
 
 	#endregion

@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using System.Runtime.InteropServices;
+
 namespace SpriteMaster;
 
-internal record struct TextureAction(int Size);
+[StructLayout(LayoutKind.Auto)]
+internal record struct TextureAction(string Name, int Size);

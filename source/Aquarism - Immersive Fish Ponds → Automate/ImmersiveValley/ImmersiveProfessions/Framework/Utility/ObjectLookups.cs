@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System.Linq;
+
 namespace DaLion.Stardew.Professions.Framework.Utility;
 
 #region using directives
@@ -22,114 +24,84 @@ internal static class ObjectLookups
     internal static Dictionary<int, int> ResourceFromStoneId { get; } = new()
     {
         // stone
-        {668, 390},
-        {670, 390},
-        {845, 390},
-        {846, 390},
-        {847, 390},
+        { 668, 390 },
+        { 670, 390 },
+        { 845, 390 },
+        { 846, 390 },
+        { 847, 390 },
 
         // ores
-        {751, 378},
-        {849, 378},
-        {290, 380},
-        {850, 380},
-        {764, 384},
-        {765, 386},
-        {95, 909},
+        { 751, 378 },
+        { 849, 378 },
+        { 290, 380 },
+        { 850, 380 },
+        { 764, 384 },
+        { 765, 386 },
+        { 95, 909 },
 
         // geodes
-        {75, 535},
-        {76, 536},
-        {77, 537},
-        {819, 749},
+        { 75, 535 },
+        { 76, 536 },
+        { 77, 537 },
+        { 819, 749 },
 
         // gems
-        {8, 66},
-        {10, 68},
-        {12, 60},
-        {14, 62},
-        {6, 70},
-        {4, 64},
-        {2, 72},
+        { 8, 66 },
+        { 10, 68 },
+        { 12, 60 },
+        { 14, 62 },
+        { 6, 70 },
+        { 4, 64 },
+        { 2, 72 },
 
         // other
-        {25, 719},
-        {816, 881},
-        {817, 881},
-        {818, 330},
-        {843, 848},
-        {844, 848}
+        { 25, 719 },
+        { 816, 881 },
+        { 817, 881 },
+        { 818, 330 },
+        { 843, 848 },
+        { 844, 848 }
     };
 
     /// <summary>Look-up table for trappable treasure items using magnet.</summary>
     internal static Dictionary<int, string[]> TrapperPirateTreasureTable { get; } = new()
     {
-        {14, new[] {"0.003", "1", "1"}}, // neptune's glaive
-        {51, new[] {"0.003", "1", "1"}}, // broken trident
-        {166, new[] {"0.03", "1", "1"}}, // treasure chest
-        {109, new[] {"0.009", "1", "1"}}, // ancient sword
-        {110, new[] {"0.009", "1", "1"}}, // rusty spoon
-        {111, new[] {"0.009", "1", "1"}}, // rusty spur
-        {112, new[] {"0.009", "1", "1"}}, // rusty cog
-        {117, new[] {"0.009", "1", "1"}}, // anchor
-        {378, new[] {"0.39", "1", "24"}}, // copper ore
-        {380, new[] {"0.24", "1", "24"}}, // iron ore
-        {384, new[] {"0.12", "1", "24"}}, // gold ore
-        {386, new[] {"0.065", "1", "2"}}, // iridium ore
-        {516, new[] {"0.024", "1", "1"}}, // small glow ring
-        {517, new[] {"0.009", "1", "1"}}, // glow ring
-        {518, new[] {"0.024", "1", "1"}}, // small magnet ring
-        {519, new[] {"0.009", "1", "1"}}, // magnet ring
-        {527, new[] {"0.005", "1", "1"}}, // iridium band
-        {529, new[] {"0.005", "1", "1"}}, // amethyst ring
-        {530, new[] {"0.005", "1", "1"}}, // topaz ring
-        {531, new[] {"0.005", "1", "1"}}, // aquamarine ring
-        {532, new[] {"0.005", "1", "1"}}, // jade ring
-        {533, new[] {"0.005", "1", "1"}}, // emerald ring
-        {534, new[] {"0.005", "1", "1"}}, // ruby ring
-        {890, new[] {"0.03", "1", "3"}} // qi bean
+        { 14, new[] { "0.003", "1", "1" } }, // neptune's glaive
+        { 51, new[] { "0.003", "1", "1" } }, // broken trident
+        { 166, new[] { "0.03", "1", "1" } }, // treasure chest
+        { 109, new[] { "0.009", "1", "1" } }, // ancient sword
+        { 110, new[] { "0.009", "1", "1" } }, // rusty spoon
+        { 111, new[] { "0.009", "1", "1" } }, // rusty spur
+        { 112, new[] { "0.009", "1", "1" } }, // rusty cog
+        { 117, new[] { "0.009", "1", "1" } }, // anchor
+        { 378, new[] { "0.39", "1", "24" } }, // copper ore
+        { 380, new[] { "0.24", "1", "24" } }, // iron ore
+        { 384, new[] { "0.12", "1", "24" } }, // gold ore
+        { 386, new[] { "0.065", "1", "2" } }, // iridium ore
+        { 516, new[] { "0.024", "1", "1" } }, // small glow ring
+        { 517, new[] { "0.009", "1", "1" } }, // glow ring
+        { 518, new[] { "0.024", "1", "1" } }, // small magnet ring
+        { 519, new[] { "0.009", "1", "1" } }, // magnet ring
+        { 527, new[] { "0.005", "1", "1" } }, // iridium band
+        { 529, new[] { "0.005", "1", "1" } }, // amethyst ring
+        { 530, new[] { "0.005", "1", "1" } }, // topaz ring
+        { 531, new[] { "0.005", "1", "1" } }, // aquamarine ring
+        { 532, new[] { "0.005", "1", "1" } }, // jade ring
+        { 533, new[] { "0.005", "1", "1" } }, // emerald ring
+        { 534, new[] { "0.005", "1", "1" } }, // ruby ring
+        { 890, new[] { "0.03", "1", "3" } } // qi bean
     };
 
     /// <summary>Hash list of artisan machines.</summary>
     internal static readonly IEnumerable<string> ArtisanMachines = new HashSet<string>
     {
-        "Alembic", // artisan valley
-        "Artisanal Soda Maker", // artisanal soda makers
-        "Butter Churn", // artisan valley
-        "Canning Machine", // fresh meat
-        "Carbonator", // artisanal soda makers
-        "Cheese Press", // vanilla
-        "Cola Maker", // artisanal soda makers
-        "Cream Soda Maker", // artisanal soda makers
-        "DNA Synthesizer", // fresh meat
-        "Dehydrator", // artisan valley
-        "Drying Rack", // artisan valley
-        "Espresso Machine", // artisan valley
-        "Extruder", // artisan valley
-        "Foreign Cask", // artisan valley
-        "Glass Jar", // artisan valley
-        "Grinder", // artisan valley
-        "Ice Cream Machine", // artisan valley
-        "Infuser", // artisan valley
-        "Juicer", // artisan valley
-        "Keg", // vanilla
-        "Loom", // vanilla
-        "Marble Soda Machine", // fizzy drinks
-        "Mayonnaise Machine", // vanilla
-        "Meat Press", // fresh meat
-        "Oil Maker", // vanilla
-        "Pepper Blender", // artisan valley
-        "Preserves Jar", // vanilla
-        "Shaved Ice Machine", // shaved ice & frozen treats
-        "Smoker", // artisan valley
-        "Soap Press", // artisan valley
-        "Sorbet Machine", // artisan valley
-        "Still", // artisan valley
-        "Syrup Maker", // artisanal soda makers
-        "Vinegar Cask", // artisan valley
-        "Wax Barrel", // artisan valley
-        "Yogurt Jar" // artisan valley
-    };
+        "Cheese Press",
+        "Keg",
+        "Loom",
+        "Mayonnaise Machine",
+        "Oil Maker",
+        "Preserves Jar"
+    }.Concat(ModEntry.Config.CustomArtisanMachines);
 
     /// <summary>Hash list of ids corresponding to animal produce or derived artisan goods.</summary>
     internal static readonly IEnumerable<int> AnimalDerivedProductIds = new HashSet<int>
@@ -197,5 +169,15 @@ internal static class ObjectLookups
         "Glacierfish Jr.", // qi extended
         "Radioactive Carp", // qi extended
         "Pufferchick" // stardew aquarium
+    };
+
+    /// <summary>Dictionary of extended family pair by legendary fish id.</summary>
+    internal static readonly Dictionary<int, int> ExtendedFamilyPairs = new()
+    {
+        { 898, 159 },
+        { 899, 160 },
+        { 900, 163 },
+        { 901, 682 },
+        { 902, 775 }
     };
 }

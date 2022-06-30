@@ -2,19 +2,32 @@
   // Informational.
   "smart-building.info.build-cancelled": "User left build mode. Refunding items.",
   "smart-building.info.refunded-into-player-inventory": "refunded into player's inventory.",
+  
+  // Tool button tooltips
+  "smart-building.buttons.draw.tooltip": "Draw objects directly in the world.",
+  "smart-building.buttons.erase.tooltip": "Erase/pick up objects from the world.",
+  "smart-building.buttons.filled-rectangle.tooltip": "Draw a filled rectangle in the world.",
+  "smart-building.buttons.empty-rectangle.tooltip": "Draw en empty (edge only) rectangle in the world. CURRENTLY UNIMPLEMENTED.",
+  "smart-building.buttons.insert.tooltip": "Insert items into machines/producers.",
+  "smart-building.buttons.confirm-build.tooltip": "Commit the drawn build to the world.",
+  "smart-building.buttons.clear-build.tooltip": "Clear the drawn (uncommitted) items.",
+  "smart-building.buttons.layer-drawn.tooltip": "Erase drawn (uncommitted) items.",
+  "smart-building.buttons.layer-object.tooltip": "Pick up objects (fences, chests, etc.) from the world.",
+  "smart-building.buttons.layer-terrainfeature.tooltip": "Pick up floors from the world.",
+  "smart-building.buttons.layer-furniture.tooltip": "Pick up furniture from the world.",
 
   // Settings menu text.
   "smart-building.settings.keybinds.title": "Keybinds",
   "smart-building.settings.keybinds.paragraph.gmcm-warning": "GMCM currently doesn't support adding mouse keybinds in its config menus. In the meantime, refer to the second page for advice on editing the config.json file to add them manually.",
   "smart-building.settings.keybinds.binds.enter-build-mode": "Engage build mode",
   "smart-building.settings.keybinds.binds.hold-to-draw": "Hold to draw",
+  "smart-building.settings.keybinds.binds.hold-to-draw-rectangle": "Hold to draw rectangle",
   "smart-building.settings.keybinds.binds.hold-to-erase": "Hold to erase",
   "smart-building.settings.keybinds.binds.hold-to-insert": "Hold to insert item",
   "smart-building.settings.keybinds.binds.confirm-build": "Confirm build",
   "smart-building.settings.keybinds.binds.pick-up-object": "Pick up object",
   "smart-building.settings.keybinds.binds.pick-up-floor": "Pick up floor",
   "smart-building.settings.keybinds.binds.pick-up-furniture": "Pick up furniture",
-
 
   "smart-building.settings.optional-toggles.title": "Optional Toggles",
   "smart-building.settings.optional-toggles.show-build-queue": "Show build queue",
@@ -30,6 +43,7 @@
   "smart-building.settings.optional-toggles-more-lax-object-placement.tooltip": "Allows you to place objects (sprinklers, chests, etc.) where you shouldn't normally be able to. Functionality is not guaranteed!",
   "smart-building.settings.optional-toggles.enable-replacing-floors": "Replaceable floors",
   "smart-building.settings.optional-toggles.enable-replacing-fences": "Replaceable fences",
+  "smart-building.settings.optional-toggles.enable-replacing-fences.tooltip": "Also allows you to replace fences with gates, and vice-versa.",
 
   "smart-building.settings.cheaty-options.title": "The Slightly Cheaty Zone",
   "smart-building.settings.cheaty-options.crab-pots-in-any-water-tile": "Place crab pots in any water tile",
@@ -60,6 +74,7 @@
 
   // Errors/warnings.
   "smart-building.error.object.placement-failed": "There was a problem placing the object in the world. Maybe an object was placed before the build was committed?",
+  "smart-building.error.torch.placement-in-fence-failed": "Couldn't place the torch on the fence. Does the fence maybe already have a torch on it?",
   "smart-building.error.terrain-feature.flooring.could-not-identify-floor-type": "Couldn't figure out the type of floor. This may be a modded floor/path we don't understand.",
   "smart-building.error.terrain-feature.generic.already-present": "There was already a TerrainFeature present. Maybe someone hoed the ground or placed a path before committing the build?",
   "smart-building.error.terrain-feature.generic.unknown-error": "There was something in the way of placing this. Maybe hoed dirt or a path?",
@@ -91,6 +106,7 @@
 
   // Commands
   "smart-building.commands.debug.sb-test": "If you need to read this, it is not for you. Here be dragons.",
+  "smart-building.commands.debug.sb-identify-items": "Identify all items in the player's inventory.",
 
   // Mod integrations
   "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": "This fertiliser position may have been invalid"

@@ -28,11 +28,11 @@ internal struct InterlockedULong :
 	public readonly int CompareTo(object? obj) => obj switch {
 		ulong value => CompareTo(value),
 		InterlockedULong value => CompareTo(value),
-		_ => throw new ArgumentException($"{obj} is neither type {typeof(ulong)} nor {typeof(InterlockedULong)}"),
+		_ => ThrowHelper.ThrowArgumentException<int>($"{obj} is neither type {typeof(ulong)} nor {typeof(InterlockedULong)}", nameof(obj))
 	};
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	public readonly void Set(ulong value) => Interlocked.Exchange(ref Unsafe.AsRef(_Value), value);
+	public readonly void Set(ulong value) => Unsafe.AsRef(_Value) = value;
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly ulong Get() => Interlocked.Read(ref Unsafe.AsRef(_Value));
@@ -50,7 +50,7 @@ internal struct InterlockedULong :
 	public override readonly bool Equals(object? obj) => obj switch {
 		ulong value => Equals(value),
 		InterlockedULong value => Equals(value),
-		_ => throw new ArgumentException($"{obj} is neither type {typeof(ulong)} nor {typeof(InterlockedULong)}"),
+		_ => ThrowHelper.ThrowArgumentException<bool>($"{obj} is neither type {typeof(ulong)} nor {typeof(InterlockedULong)}", nameof(obj))
 	};
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]

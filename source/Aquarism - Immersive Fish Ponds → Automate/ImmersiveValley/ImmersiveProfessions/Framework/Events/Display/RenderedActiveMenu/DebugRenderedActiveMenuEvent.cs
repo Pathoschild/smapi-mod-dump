@@ -8,39 +8,42 @@
 **
 *************************************************/
 
+#if DEBUG
 namespace DaLion.Stardew.Professions.Framework.Events.Display;
 
 #region using directives
 
-using System.Collections.Generic;
+using Common.Events;
+using Common.Extensions.Xna;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-
-using Common.Extensions.Xna;
+using System.Collections.Generic;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
+internal sealed class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
 {
     private readonly Texture2D _pixel;
 
     /// <summary>Construct an instance.</summary>
-    internal DebugRenderedActiveMenuEvent()
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal DebugRenderedActiveMenuEvent(ProfessionEventManager manager)
+        : base(manager)
     {
         _pixel = new(Game1.graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-        _pixel.SetData(new[] {Color.White});
+        _pixel.SetData(new[] { Color.White });
     }
 
     internal static List<ClickableComponent> ClickableComponents { get; } = new();
-    internal static ClickableComponent FocusedComponent { get; set; }
+    internal static ClickableComponent? FocusedComponent { get; set; }
 
     /// <inheritdoc />
-    protected override void OnRenderedActiveMenuImpl(object sender, RenderedActiveMenuEventArgs e)
+    protected override void OnRenderedActiveMenuImpl(object? sender, RenderedActiveMenuEventArgs e)
     {
         if (!ModEntry.Config.DebugKey.IsDown()) return;
 
@@ -58,7 +61,8 @@ internal class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
             if (ModEntry.DebugCursorPosition is null) continue;
 
             var (cursorX, cursorY) = ModEntry.DebugCursorPosition.GetScaledScreenPixels();
-            if (component.containsPoint((int) cursorX, (int) cursorY)) FocusedComponent = component;
+            if (component.containsPoint((int)cursorX, (int)cursorY)) FocusedComponent = component;
         }
     }
 }
+#endif

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/sophiesalacia/StardewMods
+   Git: https://github.com/sophiesalacia/StardewMods.git
+
+mods:
+   Car Warp
+
+latest commit:
+   commit 630d3d97e9db61aa8db454b5b13de40ee0d23ecc
+   Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
+   Date:   Thu Jun 23 23:45:00 2022 -0400
+   
+       Remove accidentally included file.
+   

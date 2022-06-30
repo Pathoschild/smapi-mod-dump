@@ -11,10 +11,10 @@
 {
   "Name": "Increased Artifact Spots",
   "Author": "Mizzion",
-  "Version": "1.2.1",
+  "Version": "1.3.0",
   "Description": "Spawns extra Artifact Spots each Day.",
   "UniqueID": "mizzion.increasedartifactspots",
   "EntryDll": "Increased_Artifact_Spots.dll",
-  "MinimumApiVersion": "2.11",
+  "MinimumApiVersion": "3.15",
   "UpdateKeys": [ "Nexus:3340", "ModDrop:663705" ]
 }

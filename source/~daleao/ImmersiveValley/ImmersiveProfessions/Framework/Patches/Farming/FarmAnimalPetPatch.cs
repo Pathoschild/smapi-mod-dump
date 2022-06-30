@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmAnimalPetPatch : BasePatch
+internal sealed class FarmAnimalPetPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmAnimalPetPatch()
     {
-        Original = RequireMethod<FarmAnimal>(nameof(FarmAnimal.pet));
+        Target = RequireMethod<FarmAnimal>(nameof(FarmAnimal.pet));
     }
 
     #region harmony patches
 
     /// <summary>Patch for Rancher to combine Shepherd and Coopmaster friendship bonus.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> FarmAnimalPetTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? FarmAnimalPetTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -80,7 +80,6 @@ internal class FarmAnimalPetPatch : BasePatch
         {
             Log.E(
                 $"Failed while moving combined vanilla Coopmaster + Shepherd friendship bonuses to Rancher.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -91,7 +90,7 @@ internal class FarmAnimalPetPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Rancher) // go back and find the inserted rancher check
+                .FindProfessionCheck(Profession.Rancher.Value) // go back and find the inserted rancher check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_S, 15),
                     new CodeInstruction(OpCodes.Add)
@@ -101,7 +100,7 @@ internal class FarmAnimalPetPatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Rancher + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Rancher.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_I4_S, 15),
@@ -111,7 +110,6 @@ internal class FarmAnimalPetPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Rancher friendship bonuses.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

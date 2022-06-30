@@ -8,28 +8,33 @@
 **
 *************************************************/
 
+#if DEBUG
 namespace DaLion.Stardew.Professions.Framework.Events.Input;
 
 #region using directives
 
-using System.Linq;
+using Common;
+using Common.Events;
+using Common.Extensions;
+using Display;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-
-using Common.Extensions;
-using Display;
-
-using Multiplayer = Utility.Multiplayer;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class DebugButtonsChangedEvent : ButtonsChangedEvent
+internal sealed class DebugButtonsChangedEvent : ButtonsChangedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal DebugButtonsChangedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override async void OnButtonsChangedImpl(object sender, ButtonsChangedEventArgs e)
+    protected override async void OnButtonsChangedImpl(object? sender, ButtonsChangedEventArgs e)
     {
         if (!ModEntry.Config.DebugKey.IsDown() ||
             !e.Pressed.Any(b => b is SButton.MouseRight or SButton.MouseLeft)) return;
@@ -39,7 +44,7 @@ internal class DebugButtonsChangedEvent : ButtonsChangedEvent
             var component = DebugRenderedActiveMenuEvent.FocusedComponent;
             var name = string.IsNullOrEmpty(component.name) ? "Anon" : component.name;
             var message = $"[{component.myID}]: {name} ({component.GetType().Name})";
-            message = component.GetType().GetFields().Where(f => !f.Name.IsAnyOf("myID", "name")).Aggregate(message,
+            message = component.GetType().GetFields().Where(f => !f.Name.IsIn("myID", "name")).Aggregate(message,
                 (current, field) => current + $"\n\t- {field.Name}: {field.GetValue(component)}");
             Log.D(message);
         }
@@ -48,7 +53,7 @@ internal class DebugButtonsChangedEvent : ButtonsChangedEvent
             if (Game1.currentLocation.Objects.TryGetValue(e.Cursor.Tile, out var o))
             {
                 var message = $"[{o.ParentSheetIndex}]: {o.Name} ({o.GetType().Name})";
-                message = o.GetType().GetFields().Where(f => !f.Name.IsAnyOf("ParentSheetIndex", "Name"))
+                message = o.GetType().GetFields().Where(f => !f.Name.IsIn("ParentSheetIndex", "Name"))
                     .Aggregate(message, (current, field) => current + $"\n\t- {field.Name}: {field.GetValue(o)}");
                 Log.D(message);
             }
@@ -60,7 +65,7 @@ internal class DebugButtonsChangedEvent : ButtonsChangedEvent
                     if (c.getTileLocation() != e.Cursor.Tile) continue;
 
                     var message = string.Empty;
-                    Farmer who = null;
+                    Farmer? who = null;
                     if (c is Farmer farmer)
                     {
                         who = farmer;
@@ -68,7 +73,7 @@ internal class DebugButtonsChangedEvent : ButtonsChangedEvent
                     }
 
                     message += $"{c.Name} ({c.GetType()})";
-                    message = c.GetType().GetFields().Where(f => !f.Name.IsAnyOf("UniqueMultiplayerID", "Name"))
+                    message = c.GetType().GetFields().Where(f => !f.Name.IsIn("UniqueMultiplayerID", "Name"))
                         .Aggregate(message, (m, f) => m + $"\n\t- {f.Name}: {f.GetValue(c)}");
 
                     message +=
@@ -86,27 +91,27 @@ internal class DebugButtonsChangedEvent : ButtonsChangedEvent
                         var events = "";
                         if (who.IsLocalPlayer)
                         {
-                            events = EventManager.GetAllEnabled().Aggregate("",
+                            events = Manager.Hooked.Aggregate("",
                                 (current, next) => current + "\n\t\t- " + next.GetType().Name);
                         }
                         else if (Context.IsMultiplayer && who.isActive())
                         {
                             var peer = ModEntry.ModHelper.Multiplayer.GetConnectedPlayer(who.UniqueMultiplayerID);
-                            if (peer.IsSplitScreen)
+                            if (peer is { IsSplitScreen: true })
                             {
                                 if (peer.ScreenID.HasValue)
-                                    events = EventManager.GetAllEnabledForScreen(peer.ScreenID.Value).Aggregate("",
+                                    events = Manager.GetHookedForScreen(peer.ScreenID.Value).Aggregate("",
                                         (current, next) => current + "\n\t\t- " + next.GetType().Name);
                             }
                             else
                             {
-                                events = await Multiplayer.SendRequestAsync("EventsEnabled", "Debug/Request",
+                                events = await ModEntry.Broadcaster.RequestAsync("EventsHooked", "Debug/Request",
                                     who.UniqueMultiplayerID);
                             }
                         }
 
                         if (!string.IsNullOrEmpty(events)) message += "\n\n\tEvents:" + events;
-                        else message += "\n\nCouldn't read player's enabled events.";
+                        else message += "\n\nCouldn't read player's hooked events.";
                     }
 
                     Log.D(message);
@@ -116,3 +121,4 @@ internal class DebugButtonsChangedEvent : ButtonsChangedEvent
         }
     }
 }
+#endif

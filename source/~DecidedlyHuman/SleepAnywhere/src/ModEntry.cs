@@ -16,6 +16,7 @@ using SleepAnywhere.Helpers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Objects;
 using Patches = SleepAnywhere.HarmonyPatches.Patches;
 using SObject = StardewValley.Object;
@@ -38,6 +39,26 @@ namespace SleepAnywhere
 			harmony.Patch(
 				original: AccessTools.Method(typeof(BedFurniture), nameof(BedFurniture.placementAction)),
 				postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.BedFurniture_PlacementAction_Postfix)));
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Furniture), nameof(Furniture.placementAction)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.Furniture_PlacementAction_Postfix)));
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.placementAction)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.Object_PlacementAction_Postfix)));
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.CanPlaceThisFurnitureHere)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.GameLocation_CanPlaceThisFurnitureHere_Postfix)));
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MineShaft), nameof(MineShaft.CanPlaceThisFurnitureHere)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.MineShaft_CanPlaceThisFurnitureHere_Postfix)));
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(VolcanoDungeon), nameof(VolcanoDungeon.CanPlaceThisFurnitureHere)),
+                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.VolcanoDungeon_CanPlaceThisFurnitureHere_Postfix)));
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.playerCanPlaceItemHere)),

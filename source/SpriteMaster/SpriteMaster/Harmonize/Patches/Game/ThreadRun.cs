@@ -12,19 +12,20 @@ using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
 internal static class ThreadRun {
-	private static readonly Func<List<Action>> ThreadingActionsGet = typeof(XColor).Assembly.
-	GetType("Microsoft.Xna.Framework.Threading")?.
-	GetFieldGetter<List<Action>>("actions") ??
-	throw new NullReferenceException("ThreadingActionsGet");
+	private static readonly Func<List<Action>> ThreadingActionsGet = 
+		typeof(Microsoft.Xna.Framework.Threading).
+		GetFieldGetter<List<Action>>("actions") ??
+			throw new NullReferenceException(nameof(ThreadingActionsGet));
+	
+	// TODO : find a nice, generic way to do this without [ModuleInitializer]
+	private static readonly bool Functional = true;
 
 	[Harmonize(
-		typeof(XColor),
-		"Microsoft.Xna.Framework.Threading",
+		typeof(Microsoft.Xna.Framework.Threading),
 		"Run",
 		Harmonize.Fixation.Prefix,
 		Harmonize.PriorityLevel.Last,
@@ -32,18 +33,14 @@ internal static class ThreadRun {
 		critical: false
 	)]
 	public static bool Run() {
-		if (!Config.IsUnconditionallyEnabled || !Config.Extras.OptimizeEngineTaskRunner) {
+		if (!Functional || !Config.IsUnconditionallyEnabled || !Config.Extras.OptimizeEngineTaskRunner) {
 			return true;
 		}
 
 		var actions = ThreadingActionsGet();
-		Action[] localList;
-		lock (actions) {
-			localList = actions.ToArray();
-			actions.Clear();
-		}
+		var localActions = actions.ExchangeClearLocked();
 
-		foreach (var action in localList) {
+		foreach (var action in localActions) {
 			action();
 		}
 

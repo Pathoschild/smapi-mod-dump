@@ -8,74 +8,55 @@
 **
 *************************************************/
 
-using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Reflection;
+using StardewValley;
 
 namespace Shockah.XPDisplay
 {
 	internal static class WalkOfLifeBridge
 	{
-		private static readonly string WalkOfLifeModEntryQualifiedName = "DaLion.Stardew.Professions.ModEntry, ImmersiveProfessions";
-		private static readonly string WalkOfLifeModConfigQualifiedName = "DaLion.Stardew.Professions.ModConfig, ImmersiveProfessions";
-		private static readonly string WalkOfLifeTexturesQualifiedName = "DaLion.Stardew.Professions.Framework.Utility.Textures, ImmersiveProfessions";
+		private static IImmersiveProfessionsAPI? Api { get; set; }
 
-		private static bool IsReflectionSetup = false;
-		private static Func<object /* ModConfig */> ConfigDelegate = null!;
-		private static Func<object /* ModConfig */, bool> IsPrestigeEnabledDelegate = null!;
-		private static Func<object /* ModConfig */, int> RequiredExpPerExtendedLevelDelegate = null!;
-		private static Func<Texture2D> SkillBarTxDelegate = null!;
-
-		private static void SetupReflectionIfNeeded()
+		private static void SetupIfNeeded()
 		{
-			if (IsReflectionSetup)
+			if (Api is not null)
 				return;
-
-			Type modEntryType = AccessTools.TypeByName(WalkOfLifeModEntryQualifiedName);
-			Type modConfigType = AccessTools.TypeByName(WalkOfLifeModConfigQualifiedName);
-			Type texturesType = AccessTools.TypeByName(WalkOfLifeTexturesQualifiedName);
-
-			MethodInfo configMethod = AccessTools.PropertyGetter(modEntryType, "Config");
-			ConfigDelegate = () => configMethod.Invoke(null, null)!;
-
-			MethodInfo isPrestigeEnabledMethod = AccessTools.PropertyGetter(modConfigType, "EnablePrestige");
-			IsPrestigeEnabledDelegate = (config) => (bool)isPrestigeEnabledMethod.Invoke(config, null)!;
-
-			MethodInfo requiredExpPerExtendedLevelmethod = AccessTools.PropertyGetter(modConfigType, "RequiredExpPerExtendedLevel");
-			RequiredExpPerExtendedLevelDelegate = (config) => (int)(uint)requiredExpPerExtendedLevelmethod.Invoke(config, null)!;
-
-			MethodInfo skillBarTxMethod = AccessTools.PropertyGetter(texturesType, "SkillBarTx");
-			SkillBarTxDelegate = () => (Texture2D)skillBarTxMethod.Invoke(null, null)!;
-
-			IsReflectionSetup = true;
+			if (!XPDisplay.Instance.Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions"))
+				return;
+			Api = XPDisplay.Instance.Helper.ModRegistry.GetApi<IImmersiveProfessionsAPI>("DaLion.ImmersiveProfessions");
 		}
 
 		public static bool IsPrestigeEnabled()
 		{
-			SetupReflectionIfNeeded();
-			object config = ConfigDelegate();
-			return IsPrestigeEnabledDelegate(config);
+			SetupIfNeeded();
+			if (Api is null)
+				return false;
+			return Api.GetConfigs().EnablePrestige;
 		}
 
 		public static int GetRequiredXPPerExtendedLevel()
 		{
-			SetupReflectionIfNeeded();
-			object config = ConfigDelegate();
-			return RequiredExpPerExtendedLevelDelegate(config);
+			SetupIfNeeded();
+			if (Api is null)
+				return int.MaxValue;
+			return (int)Api.GetConfigs().RequiredExpPerExtendedLevel;
 		}
 
-		public static (Texture2D, Rectangle) GetExtendedSmallBar()
+		public static (Texture2D, Rectangle)? GetExtendedSmallBar()
 		{
-			SetupReflectionIfNeeded();
-			return (SkillBarTxDelegate(), new(0, 0, 7, 9));
+			SetupIfNeeded();
+			if (Api is null)
+				return null;
+			return (Game1.content.Load<Texture2D>("DaLion.ImmersiveProfessions/SkillBars"), new(0, 0, 7, 9));
 		}
 
-		public static (Texture2D, Rectangle) GetExtendedBigBar()
+		public static (Texture2D, Rectangle)? GetExtendedBigBar()
 		{
-			SetupReflectionIfNeeded();
-			return (SkillBarTxDelegate(), new(16, 0, 13, 9));
+			SetupIfNeeded();
+			if (Api is null)
+				return null;
+			return (Game1.content.Load<Texture2D>("DaLion.ImmersiveProfessions/SkillBars"), new(16, 0, 13, 9));
 		}
 	}
 }

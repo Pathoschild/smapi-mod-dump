@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class HoeDirtApplySpeedIncreases : BasePatch
+internal sealed class HoeDirtApplySpeedIncreases : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal HoeDirtApplySpeedIncreases()
     {
-        Original = RequireMethod<HoeDirt>("applySpeedIncreases");
+        Target = RequireMethod<HoeDirt>("applySpeedIncreases");
     }
 
     #region harmony patches
 
     /// <summary>Patch to increase prestiged Agriculturist crop growth speed.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> HoeDirtApplySpeedIncreasesTranspiler(
+    private static IEnumerable<CodeInstruction>? HoeDirtApplySpeedIncreasesTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -51,9 +51,9 @@ internal class HoeDirtApplySpeedIncreases : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Agriculturist)
+                .FindProfessionCheck(Profession.Agriculturist.Value)
                 .Advance()
-                .FindProfessionCheck((int) Profession.Agriculturist, true)
+                .FindProfessionCheck(Profession.Agriculturist.Value, true)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 0.1f)
                 )
@@ -61,7 +61,7 @@ internal class HoeDirtApplySpeedIncreases : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_1)
                 )
-                .InsertProfessionCheck((int) Profession.Agriculturist + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Agriculturist.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_R4, 0.2f),
@@ -73,7 +73,6 @@ internal class HoeDirtApplySpeedIncreases : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching prestiged Agriculturist bonus.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

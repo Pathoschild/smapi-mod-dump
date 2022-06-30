@@ -121,6 +121,11 @@ namespace Farmtronics {
 			RunStartupScripts();
 		}
 
+		void FixHostInfo() {
+			if (bot == null) HostInfo.name = "Farmtronics Home Computer";
+			else HostInfo.name = "Farmtronics Bot";
+        }
+
 		void RunStartupScripts() {
 			// load and run the startup script(s)
 			runningInstance = this;
@@ -130,6 +135,7 @@ namespace Farmtronics {
 			string startupScript = sysDisk.ReadText("startup.ms");
 			if (!string.IsNullOrEmpty(startupScript)) {
 				try {
+					FixHostInfo();
 					interpreter.REPL(startupScript);
 				} catch (System.Exception err) {
 					Debug.Log("Error running /sys/startup.ms: " + err.ToString());
@@ -224,6 +230,7 @@ namespace Farmtronics {
 			if (interpreter == null) ModEntry.instance.print("Error: Interpreter null?!?");
 
 			runningInstance = this;
+			FixHostInfo();
 			interpreter.REPL(command, 0.1f);
 		}
 	

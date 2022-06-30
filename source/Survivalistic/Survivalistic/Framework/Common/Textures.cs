@@ -21,9 +21,9 @@ namespace Survivalistic.Framework.Common
 
         public static void LoadTextures()
         {
-            hunger_sprite = ModEntry.instance.Helper.ModContent.Load<Texture2D>("Assets/Bars/Hunger_Sprite.png");
-            thirst_sprite = ModEntry.instance.Helper.ModContent.Load<Texture2D>("Assets/Bars/Thirst_Sprite.png");
-            filler_sprite = ModEntry.instance.Helper.ModContent.Load<Texture2D>("Assets/Bars/Filler_Sprite.png");
+            hunger_sprite = ModEntry.instance.Helper.ModContent.Load<Texture2D>("assets/Bars/Hunger_Sprite.png");
+            thirst_sprite = ModEntry.instance.Helper.ModContent.Load<Texture2D>("assets/Bars/Thirst_Sprite.png");
+            filler_sprite = ModEntry.instance.Helper.ModContent.Load<Texture2D>("assets/Bars/Filler_Sprite.png");
         }
     }
 }

@@ -12,28 +12,29 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BeeHouseMachineResetPatch : BasePatch
+internal sealed class BeeHouseMachineResetPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal BeeHouseMachineResetPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine".ToType().RequireMethod("Reset");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine".ToType()
+                .RequireMethod("Reset");
         }
         catch
         {
@@ -45,7 +46,7 @@ internal class BeeHouseMachineResetPatch : BasePatch
 
     /// <summary>Patch to increase production frequency of Producer Bee House.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ObjectDayUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? ObjectDayUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -97,7 +98,6 @@ internal class BeeHouseMachineResetPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching automated Bee House production speed for Producers.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

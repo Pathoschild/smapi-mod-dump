@@ -1,0 +1,17 @@
+﻿{
+  "options-page.font-header": "Font",
+  "options-page.original-example": "Vanilla",
+  "options-page.custom-example": "Current",
+  "options-page.enable": "Enabled",
+  "options-page.font": "Font Family",
+  "options-page.font.keep-orig": "Keep Original",
+  "options-page.font-size": "Font Size (px)",
+  "options-page.spacing": "Spacing",
+  "options-page.line-spacing": "Line Spacing",
+  "options-ok-button.loading": "Generating",
+  "game-font-type.small-font": "Small Font",
+  "game-font-type.dialogue-font": "Medium Font",
+  "game-font-type.sprite-text": "Dialogue Font",
+  "hud-message.success-set-font": "{{fontType}} set ok!",
+  "hud-message.failed-set-font": "{{fontType}} set failed. See SMAPI console for details."
+}

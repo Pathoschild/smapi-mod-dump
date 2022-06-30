@@ -12,34 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.MushroomProp
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class PropagatorPopExtraHeldMushroomsPatch : BasePatch
+internal sealed class PropagatorPopExtraHeldMushroomsPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly FieldInfo _SourceMushroomQuality =
-        "BlueberryMushroomMachine.Propagator".ToType().RequireField("SourceMushroomQuality")!;
+    private static Func<SObject, int>? _GetSourceMushroomQuality;
 
     /// <summary>Construct an instance.</summary>
     internal PropagatorPopExtraHeldMushroomsPatch()
     {
         try
         {
-            Original = "BlueberryMushroomMachine.Propagator".ToType().RequireMethod("PopExtraHeldMushrooms");
+            Target = "BlueberryMushroomMachine.Propagator".ToType().RequireMethod("PopExtraHeldMushrooms");
         }
         catch
         {
@@ -53,17 +52,15 @@ internal class PropagatorPopExtraHeldMushroomsPatch : BasePatch
     [HarmonyPostfix]
     private static void PropagatorPopExtraHeldMushroomsPostfix(SObject __instance)
     {
-        if (__instance is null) return;
-
         var owner = Game1.getFarmerMaybeOffline(__instance.owner.Value) ?? Game1.MasterPlayer;
         if (!owner.IsLocalPlayer || !owner.HasProfession(Profession.Ecologist)) return;
 
-        Game1.player.IncrementData<uint>(DataField.EcologistItemsForaged);
+        ModDataIO.IncrementData<uint>(Game1.player, ModData.EcologistItemsForaged.ToString());
     }
 
     /// <summary>Patch for Propagator output quality.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> PropagatorPopExtraHeldMushroomsTranspiler(
+    private static IEnumerable<CodeInstruction>? PropagatorPopExtraHeldMushroomsTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -74,7 +71,7 @@ internal class PropagatorPopExtraHeldMushroomsPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Ecologist) // find index of ecologist check
+                .FindProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
                 .Retreat()
                 .GetLabels(out var labels)
                 .RemoveUntil(
@@ -84,14 +81,14 @@ internal class PropagatorPopExtraHeldMushroomsPatch : BasePatch
                     labels,
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(PropagatorPopExtraHeldMushroomsPatch).RequireMethod(nameof(PopExtraHeldMushroomsSubroutine)))
+                        typeof(PropagatorPopExtraHeldMushroomsPatch).RequireMethod(
+                            nameof(PopExtraHeldMushroomsSubroutine)))
                 )
                 .RemoveLabels();
         }
         catch (Exception ex)
         {
             Log.E($"Failed while patching Blueberry's Mushroom Propagator output quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -107,7 +104,10 @@ internal class PropagatorPopExtraHeldMushroomsPatch : BasePatch
         var owner = Game1.getFarmerMaybeOffline(propagator.owner.Value) ?? Game1.MasterPlayer;
         if (owner.IsLocalPlayer && owner.HasProfession(Profession.Ecologist)) return owner.GetEcologistForageQuality();
 
-        var sourceMushroomQuality = (int) _SourceMushroomQuality.GetValue(propagator)!;
+        _GetSourceMushroomQuality ??= "BlueberryMushroomMachine.Propagator".ToType()
+            .RequireField("SourceMushroomQuality")
+            .CompileUnboundFieldGetterDelegate<Func<SObject, int>>();
+        var sourceMushroomQuality = _GetSourceMushroomQuality(propagator);
         return sourceMushroomQuality;
     }
 

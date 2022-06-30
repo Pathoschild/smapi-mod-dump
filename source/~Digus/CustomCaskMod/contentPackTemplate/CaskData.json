@@ -11,7 +11,7 @@
 {
 // Each line is a configuration done with an "identifier" and an "aging rate".
 // Identifiers can be an object's Id, an object's Category or an object's Name.
-// To calculate the amount of days it take to age an object, divide 56 by the aging rate. That's the number of days to age from no quality to iridium quality.
+// To calculate the amount of days it takes to age an object, divide 56 by the aging rate. That's the number of days to age from no quality to iridium quality.
 // Gold quality is half that value, and silver quality is one quarter of that value.
 	"342": 2.67, //Example with Id.
 	"-5": 2.0, //Example with Category. It's always a negative numbers.

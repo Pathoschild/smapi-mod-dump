@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-#nullable enable
 namespace DaLion.Common.Extensions;
 
 #region using directives
@@ -16,6 +15,7 @@ namespace DaLion.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,27 +25,23 @@ using System.Text.RegularExpressions;
 /// <summary>Extensions for the <see cref="string"/> primitive type.</summary>
 public static class StringExtensions
 {
+    private static readonly Regex _sWhitespace = new(@"\s+");
+
     /// <summary>Determine if the string instance contains any of the specified substrings.</summary>
     /// <param name="candidates">A sequence of strings candidates.</param>
-    public static bool ContainsAnyOf(this string s, params string[] candidates)
-    {
-        return candidates.Any(s.Contains);
-    }
+    public static bool ContainsAnyOf(this string s, params string[] candidates) =>
+        candidates.Any(s.Contains);
 
     /// <summary>Determine if the string instance starts with any of the specified substrings.</summary>
     /// <param name="candidates">A sequence of strings candidates.</param>
-    public static bool StartsWithAnyOf(this string s, params string[] candidates)
-    {
-        return candidates.Any(s.StartsWith);
-    }
+    public static bool StartsWithAnyOf(this string s, params string[] candidates) =>
+        candidates.Any(s.StartsWith);
 
     /// <summary>Capitalize the first character in the string instance.</summary>
-    public static string FirstCharToUpper(this string s)
-    {
-        return string.IsNullOrEmpty(s)
+    public static string FirstCharToUpper(this string s) =>
+        string.IsNullOrEmpty(s)
             ? throw new ArgumentException("Argument is null or empty.")
             : s.First().ToString().ToUpper() + s[1..];
-    }
 
     /// <summary>Removes invalid file name or path characters from the string instance.</summary>
     public static string RemoveInvalidChars(this string s)
@@ -55,18 +51,18 @@ public static class StringExtensions
     }
 
     /// <summary>Split a camelCase or PascalCase string into its constituent words.</summary>
-    public static string[] SplitCamelCase(this string s)
-    {
-        return Regex.Split(s, @"([A-Z]+|[A-Z]?[a-z]+)(?=[A-Z]|\b)").Where(r => !string.IsNullOrEmpty(r)).ToArray();
-    }
+    public static string[] SplitCamelCase(this string s) =>
+        Regex.Split(s, @"([A-Z]+|[A-Z]?[a-z]+)(?=[A-Z]|\b)").Where(r => !string.IsNullOrEmpty(r)).ToArray();
+
+    /// <summary>Trim all whitespace from the string.</summary>
+    public static string TrimAll(this string s) =>
+        _sWhitespace.Replace(s, "");
 
     /// <summary>Truncate the string instance to a <paramref name="maxLength" />, ending with ellipses.</summary>
-    public static string Truncate(this string s, int maxLength, string truncationSuffix = "…")
-    {
-        return s.Length > maxLength
+    public static string Truncate(this string s, int maxLength, string truncationSuffix = "…") =>
+        s.Length > maxLength
             ? s[..maxLength] + truncationSuffix
             : s;
-    }
 
     /// <summary>Parse the string instance to a generic type.</summary>
     public static T Parse<T>(this string s)
@@ -75,15 +71,15 @@ public static class StringExtensions
 
         var converter = TypeDescriptor.GetConverter(typeof(T));
         if (converter.CanConvertTo(typeof(T)) && converter.CanConvertFrom(typeof(string)))
-            return (T) converter.ConvertFromString(s) ?? throw new InvalidCastException();
+            return (T)converter.ConvertFromString(s) ?? throw new InvalidCastException();
 
         throw new FormatException();
     }
 
     /// <summary>Try to parse the instance to a generic type.</summary>
     /// <param name="result">Parsed <typeparamref name="T" />-type object if successful, else default.</param>
-    /// <returns>True if parse was successful, otherwise false.</returns>
-    public static bool TryParse<T>(this string s, out T? result)
+    /// <returns><see langword="true"> if parse was successful, otherwise <see langword="false">.</returns>
+    public static bool TryParse<T>(this string s, [NotNullWhen(true)] out T? result)
     {
         result = default;
         if (string.IsNullOrEmpty(s)) return false;
@@ -94,7 +90,7 @@ public static class StringExtensions
 
         try
         {
-            result = (T) converter.ConvertFromString(s);
+            result = (T)converter.ConvertFromString(s);
             return true;
         }
         catch
@@ -128,6 +124,8 @@ public static class StringExtensions
         where T : struct
         where U : struct
     {
+        if (string.IsNullOrEmpty(s)) return new();
+
         var split = s.Split(separator);
         if (split.Length < 2)
             throw new InvalidOperationException("Insufficient elements after string split.");
@@ -145,6 +143,8 @@ public static class StringExtensions
         where U : struct
         where V : struct
     {
+        if (string.IsNullOrEmpty(s)) return new();
+
         var split = s.Split(separator);
         if (split.Length < 3)
             throw new InvalidOperationException("Insufficient elements after string split.");
@@ -163,6 +163,8 @@ public static class StringExtensions
         where V : struct
         where W : struct
     {
+        if (string.IsNullOrEmpty(s)) return new();
+
         var split = s.Split(separator);
         if (split.Length < 4)
             throw new InvalidOperationException("Insufficient elements after string split.");
@@ -177,6 +179,8 @@ public static class StringExtensions
     /// <param name="separator">A string separator.</param>
     public static List<T>? ParseList<T>(this string s, string separator = ",")
     {
+        if (string.IsNullOrEmpty(s)) return new();
+
         var split = s.Split(separator);
         try
         {
@@ -194,11 +198,13 @@ public static class StringExtensions
     public static Dictionary<TKey, TValue> ParseDictionary<TKey, TValue>(this string s, string keyValueSeparator = ",",
         string pairSeparator = ";") where TKey : notnull
     {
+        if (string.IsNullOrEmpty(s)) return new();
+
         if (pairSeparator == keyValueSeparator)
             throw new ArgumentException("Pair separator must be different from key-value separator.");
 
-        var pairs = s.Split(new[] {pairSeparator}, StringSplitOptions.RemoveEmptyEntries);
-        return pairs.Select(p => p.Split(new[] {keyValueSeparator}, StringSplitOptions.RemoveEmptyEntries))
+        var pairs = s.Split(new[] { pairSeparator }, StringSplitOptions.RemoveEmptyEntries);
+        return pairs.Select(p => p.Split(new[] { keyValueSeparator }, StringSplitOptions.RemoveEmptyEntries))
             .ToDictionary(p => p[0].Parse<TKey>(), p => p[1].Parse<TValue>());
     }
 }

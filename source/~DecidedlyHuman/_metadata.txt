@@ -9,9 +9,9 @@ mods:
    Smart Building
 
 latest commit:
-   commit 73db6255ef6cdc6c4703bbf7404d183cae7fb71e
+   commit 9679e3100663597ec1b978a7655aaea21c1508c6
    Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
-   Date:   Mon May 2 12:00:30 2022 +0100
+   Date:   Fri Jun 10 09:43:30 2022 +0100
    
-       Versiom bump for new features.
+       SB: Temporary addition to the checklist in preparation for a bug report.
    

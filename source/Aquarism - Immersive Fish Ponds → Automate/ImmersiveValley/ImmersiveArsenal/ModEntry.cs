@@ -12,24 +12,23 @@ namespace DaLion.Stardew.Arsenal;
 
 #region using directives
 
-using System;
-using System.Reflection;
-using HarmonyLib;
+using Common;
+using Common.Commands;
+using Common.Events;
+using Common.Harmony;
 using StardewModdingAPI;
-
-using Framework.Events;
 
 #endregion using directives
 
 /// <summary>The mod entry point.</summary>
 public class ModEntry : Mod
 {
-    internal static ModEntry Instance { get; private set; }
-    internal static ModConfig Config { get; set; }
+    internal static ModEntry Instance { get; private set; } = null!;
+    internal static ModConfig Config { get; set; } = null!;
 
     internal static IModHelper ModHelper => Instance.Helper;
     internal static IManifest Manifest => Instance.ModManifest;
-    internal static Action<string, LogLevel> Log => Instance.Monitor.Log;
+    internal static ITranslationHelper i18n => ModHelper.Translation;
 
     internal static int QiChallengeFinalQuestId => "TrulyLegendaryGalaxySword".GetHashCode();
 
@@ -39,16 +38,19 @@ public class ModEntry : Mod
     {
         Instance = this;
 
+        // initialize logger
+        Log.Init(Monitor);
+
         // get configs
         Config = helper.ReadConfig<ModConfig>();
 
-        // register events
-        IEvent.HookAll();
+        // hook events
+        new EventManager(helper.Events).HookAll();
 
-        // apply harmony patches
-        new Harmony(ModManifest.UniqueID).PatchAll(Assembly.GetExecutingAssembly());
+        // apply patches
+        new Harmonizer(ModManifest.UniqueID).ApplyAll();
 
-        // add debug commands
-        helper.ConsoleCommands.Register();
+        // register commands
+        new CommandHandler(helper.ConsoleCommands).Register("ars", "Arsenal");
     }
 }

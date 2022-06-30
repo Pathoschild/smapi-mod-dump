@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Floogen/MysticalBuildings
+   Git: https://github.com/Floogen/MysticalBuildings.git
+
+mods:
+   Cave of Memories
+   Mystical Buildings
+
+latest commit:
+   commit 6b7673f301edfeabc5dfe8f6b3c14733ae61944e
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Sun Jun 12 16:21:41 2022 -0500
+   
+       v1.2.0 released
+   

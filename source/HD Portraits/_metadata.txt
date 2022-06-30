@@ -6,9 +6,9 @@ mods:
    HD Portraits
 
 latest commit:
-   commit fbde172434568b358514ed07b65bb5a1dcdb0741
+   commit 415ede4348c79161afa78db9f843165d05da3cb1
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Fri May 27 20:15:22 2022 -0400
+   Date:   Sun Jun 26 23:42:05 2022 -0400
    
-       fix for STF in null checks
+       fixed base data not being initialized
    

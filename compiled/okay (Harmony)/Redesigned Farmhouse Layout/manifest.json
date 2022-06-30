@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Redesigned Farmhouse Layout",
 	"Author": "Aimon111 & DaLion",
-	"Version": "1.1.3", // fixed locally
+	"Version": "1.1.4", // fixed locally
 	"Description": "Adjusts warp positions for the redesigned farmhouse layout.",
 	"UniqueID": "Aimon111.RedisignedFarmHouseLayout.Warps",
 	"EntryDll": "RedisignedFarmHouseLayout.dll",

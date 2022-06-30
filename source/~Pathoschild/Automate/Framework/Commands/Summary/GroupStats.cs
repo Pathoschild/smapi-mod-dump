@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace Pathoschild.Stardew.Automate.Framework.Commands.Summary
 {
@@ -38,9 +39,13 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands.Summary
         /// <param name="machineGroup">The machine group to analyze.</param>
         public GroupStats(IMachineGroup machineGroup)
         {
-            this.Name = machineGroup.IsJunimoGroup
-                ? "Distributed group"
-                : $"Group at ({machineGroup.Tiles[0].X}, {machineGroup.Tiles[0].Y})";
+            if (machineGroup.IsJunimoGroup)
+                this.Name = "Distributed group";
+            else
+            {
+                Vector2 tile = machineGroup.GetTiles(machineGroup.LocationKey).FirstOrDefault();
+                this.Name = $"Group at ({tile.X}, {tile.Y})";
+            }
 
             this.IsJunimoGroup = machineGroup.IsJunimoGroup;
 

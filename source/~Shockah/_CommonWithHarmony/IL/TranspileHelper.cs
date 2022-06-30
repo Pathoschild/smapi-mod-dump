@@ -15,6 +15,18 @@ namespace Shockah.CommonModCode.IL
 {
 	public static class TranspileHelper
 	{
+		private static int? ExtractLocalIndex(object? operand)
+		{
+			if (operand is LocalBuilder local)
+				return local.LocalIndex;
+			else if (operand is int @int)
+				return @int;
+			else if (operand is sbyte @sbyte)
+				return @sbyte;
+			else
+				return null;
+		}
+
 		public static CodeInstruction? ToLoadLocal(this CodeInstruction instruction)
 		{
 			if (instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Stloc_0)
@@ -25,8 +37,8 @@ namespace Shockah.CommonModCode.IL
 				return new CodeInstruction(OpCodes.Ldloc_2);
 			else if (instruction.opcode == OpCodes.Ldloc_3 || instruction.opcode == OpCodes.Stloc_3)
 				return new CodeInstruction(OpCodes.Ldloc_3);
-			else if (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Stloc)
-				return new CodeInstruction(OpCodes.Ldloc, instruction.operand);
+			else if (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Ldloc_S || instruction.opcode == OpCodes.Stloc_S || instruction.opcode == OpCodes.Ldloca || instruction.opcode == OpCodes.Ldloca_S)
+				return new CodeInstruction(OpCodes.Ldloc, ExtractLocalIndex(instruction.operand)!.Value);
 			else
 				return null;
 		}
@@ -41,8 +53,24 @@ namespace Shockah.CommonModCode.IL
 				return new CodeInstruction(OpCodes.Stloc_2);
 			else if (instruction.opcode == OpCodes.Ldloc_3 || instruction.opcode == OpCodes.Stloc_3)
 				return new CodeInstruction(OpCodes.Stloc_3);
-			else if (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Stloc)
-				return new CodeInstruction(OpCodes.Stloc, instruction.operand);
+			else if (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Ldloc_S || instruction.opcode == OpCodes.Stloc_S || instruction.opcode == OpCodes.Ldloca || instruction.opcode == OpCodes.Ldloca_S)
+				return new CodeInstruction(OpCodes.Stloc, ExtractLocalIndex(instruction.operand)!.Value);
+			else
+				return null;
+		}
+
+		public static CodeInstruction? ToLoadLocalAddress(this CodeInstruction instruction)
+		{
+			if (instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Stloc_0)
+				return new CodeInstruction(OpCodes.Ldloca, 0);
+			else if (instruction.opcode == OpCodes.Ldloc_1 || instruction.opcode == OpCodes.Stloc_1)
+				return new CodeInstruction(OpCodes.Ldloca, 1);
+			else if (instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Stloc_2)
+				return new CodeInstruction(OpCodes.Ldloca, 2);
+			else if (instruction.opcode == OpCodes.Ldloc_3 || instruction.opcode == OpCodes.Stloc_3)
+				return new CodeInstruction(OpCodes.Ldloca, 3);
+			else if (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Ldloc_S || instruction.opcode == OpCodes.Stloc_S || instruction.opcode == OpCodes.Ldloca || instruction.opcode == OpCodes.Ldloca_S)
+				return new CodeInstruction(OpCodes.Ldloca, ExtractLocalIndex(instruction.operand)!.Value);
 			else
 				return null;
 		}

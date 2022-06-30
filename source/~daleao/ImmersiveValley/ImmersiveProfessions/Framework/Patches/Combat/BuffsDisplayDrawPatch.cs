@@ -12,26 +12,26 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
+using System.Collections.Generic;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BuffsDisplayDrawPatch : BasePatch
+internal sealed class BuffsDisplayDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly int _buffId = ModEntry.Manifest.UniqueID.GetHashCode() + (int) Profession.Brute;
+    private static readonly int _buffId = (ModEntry.Manifest.UniqueID + Profession.Brute).GetHashCode();
 
     /// <summary>Construct an instance.</summary>
     internal BuffsDisplayDrawPatch()
     {
-        Original = RequireMethod<BuffsDisplay>(nameof(BuffsDisplay.draw), new[] {typeof(SpriteBatch)});
+        Target = RequireMethod<BuffsDisplay>(nameof(BuffsDisplay.draw), new[] { typeof(SpriteBatch) });
     }
 
     /// <summary>Patch to draw Brute Rage buff.</summary>

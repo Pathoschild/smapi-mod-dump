@@ -60,12 +60,12 @@ namespace Shockah.CommonModCode.IL
 			{
 				for (int toFindIndex = instructionsToFind.Count - 1; toFindIndex >= 0; toFindIndex--)
 				{
-					if (!instructionsToFind[toFindIndex](instructions[index + toFindIndex]))
+					if (!instructionsToFind[toFindIndex](instructions[index + toFindIndex - instructionsToFind.Count + 1]))
 						goto continueOuter;
 				}
 
 				if (--occurence == 0)
-					return new TranspileWorker(instructions, index, instructionsToFind.Count);
+					return new TranspileWorker(instructions, index - instructionsToFind.Count + 1, instructionsToFind.Count);
 				continueOuter:;
 			}
 			return null;

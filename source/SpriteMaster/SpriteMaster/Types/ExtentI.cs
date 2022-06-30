@@ -21,12 +21,12 @@ namespace SpriteMaster.Types;
 internal readonly struct ExtentI : IEquatable<ExtentI>, ILongHash {
 	private readonly Vector2I Value;
 
-	internal int Min => Value.X;
-	internal int Max => Value.Y;
+	internal readonly int Min => Value.X;
+	internal readonly int Max => Value.Y;
 
-	internal bool IsValid => Min <= Max;
+	internal readonly bool IsValid => Min <= Max;
 
-	internal int Length => Max - Min;
+	internal readonly int Length => Max - Min;
 
 	internal ExtentI(int min, int max) : this() {
 		min.AssertLessEqual(max);
@@ -37,21 +37,21 @@ internal readonly struct ExtentI : IEquatable<ExtentI>, ILongHash {
 
 	internal ExtentI((int Min, int Max) value) : this(value.Min, value.Max) { }
 
-	internal bool ContainsInclusive(int value) => value.WithinInclusive(Min, Max);
+	internal readonly bool ContainsInclusive(int value) => value.WithinInclusive(Min, Max);
 
-	internal bool ContainsExclusive(int value) => value.WithinExclusive(Min, Max);
+	internal readonly bool ContainsExclusive(int value) => value.WithinExclusive(Min, Max);
 
-	internal bool Contains(int value) => value.Within(Min, Max);
+	internal readonly bool Contains(int value) => value.Within(Min, Max);
 
-	internal bool ContainsInclusive(ExtentI value) => value.Min >= Min && value.Max <= Max;
+	internal readonly bool ContainsInclusive(ExtentI value) => value.Min >= Min && value.Max <= Max;
 
-	internal bool ContainsExclusive(ExtentI value) => value.Min > Min && value.Max < Max;
+	internal readonly bool ContainsExclusive(ExtentI value) => value.Min > Min && value.Max < Max;
 
-	internal bool Contains(ExtentI value) => ContainsInclusive(value);
+	internal readonly bool Contains(ExtentI value) => ContainsInclusive(value);
 
 	public bool Equals(ExtentI other) => Value == other.Value;
 
-	public override bool Equals(object? other) {
+	public override readonly bool Equals(object? other) {
 		switch (other) {
 			case ExtentI value: return Equals(value);
 			case ValueTuple<int, int> value: return Equals(new ExtentI(value));
@@ -59,9 +59,9 @@ internal readonly struct ExtentI : IEquatable<ExtentI>, ILongHash {
 		}
 	}
 
-	public override int GetHashCode() => Value.GetHashCode();
+	public override readonly int GetHashCode() => Value.GetHashCode();
 
-	ulong ILongHash.GetLongHashCode() => Value.GetLongHashCode();
+	public readonly ulong GetLongHashCode() => Value.GetLongHashCode();
 
 	public static bool operator ==(ExtentI left, ExtentI right) => Equals(left, right);
 

@@ -1,12 +1,6 @@
 {
   "EngageBuildMode": "LeftShift + B",
-  "HoldToDraw": "MouseRight",
-  "HoldToErase": "LeftShift",
-  "HoldToInsert": "LeftControl",
-  "ConfirmBuild": "MouseLeft",
-  "PickUpObject": "Delete",
-  "PickUpFloor": "End",
-  "PickUpFurniture": "Home",
+  "HoldToDraw": "MouseLeft",
   "ShowBuildQueue": true,
   "CanDestroyChests": false,
   "CrabPotsInAnyWaterTile": false,

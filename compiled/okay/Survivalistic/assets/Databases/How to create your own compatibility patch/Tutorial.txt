@@ -1,0 +1,5 @@
+How to create your own compatibility patch:
+
+1º: Create a .json file in the "/assets/Databases/" folder with the UniqueID of the mod that you want to make the compatibility file and _edibles in the end of the line, like in the EXAMPLE_edibles.json.
+2º: Modify the values respecting the structure of the example file (Unique Item Name and feed/hydrate values).
+3º: Save and run the game.

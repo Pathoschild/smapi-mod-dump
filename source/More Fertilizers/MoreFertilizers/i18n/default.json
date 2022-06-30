@@ -30,8 +30,17 @@
   "joja.event.1": "Oh, @! Nice to see you here! We've got some samples of our patented fertilizer. Take some!",
   "joja.event.2": "Why welcome to JojaMart! I hope you can find what you're looking for!#$b#Say....would you be interested in a free sample of our patented fertilizer?",
 
-  // Item names and descriptions.
+  // Organic fertilizer special order.
+  "specialorder.organic.name": "Organic Crops Needed!",
+  "specialorder.organic.text": "Organic crops seem to be all the craze these days! Will pay a nice bonus for anyone willing to ship 100 organic vegetables.",
+  "specialorder.organic.gather": "Harvest 100 organic vegetables.",
+  "specialorder.organic.ship": "Ship 100 organic vegetables.",
+  "specialorder.organic.mail.title": "Organic Crops Needed - Thank you!",
+  "specialorder.organic.mail.text": "Ah, much thanks for providing the organic crops! I'm sure they'll fetch a pretty penny in Zuzu City. In thanks, I've attached this little gift I've found in storage...",
+  "specialorder.organic.lewis_inprogress": "Ah, @, just in time! You'll do a good job providing us with excellent crops, I'm sure...",
+  "Lewis":  "Lewis",
 
+  // Item names and descriptions.
   "waterlogged-fertilizer.name": "Waterlogged Fertilizer",
   "waterlogged-fertilizer.description": "Retains water so well, anywhere can be a paddy! (for paddy crops only)",
 

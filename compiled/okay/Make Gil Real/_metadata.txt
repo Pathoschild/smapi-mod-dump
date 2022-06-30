@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7118
+IDs: Wolf.GilSMAPI
+update keys: Nexus:???, Nexus:7118

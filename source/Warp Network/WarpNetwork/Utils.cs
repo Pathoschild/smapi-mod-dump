@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ using xTile;
 
 namespace WarpNetwork
 {
-    class Utils
+    static class Utils
     {
         public static Dictionary<string, IWarpNetHandler> CustomLocs = new(StringComparer.OrdinalIgnoreCase);
         private static readonly string[] VanillaMapNames =
@@ -111,7 +112,7 @@ namespace WarpNetwork
         }
         public static Dictionary<string, WarpLocation> GetWarpLocations()
         {
-            Dictionary<string, WarpLocation> data = ModEntry.helper.Content.Load<Dictionary<string, WarpLocation>>(ModEntry.pathLocData, ContentSource.GameContent);
+            Dictionary<string, WarpLocation> data = ModEntry.helper.GameContent.Load<Dictionary<string, WarpLocation>>(ModEntry.pathLocData);
             Dictionary<string, WarpLocation> ret = new(data, StringComparer.OrdinalIgnoreCase);
             foreach ((string key, IWarpNetHandler value) in CustomLocs)
             {
@@ -129,7 +130,7 @@ namespace WarpNetwork
         }
         public static Dictionary<string, WarpItem> GetWarpItems()
         {
-            return ModEntry.helper.Content.Load<Dictionary<string, WarpItem>>(ModEntry.pathItemData, ContentSource.GameContent);
+            return ModEntry.helper.GameContent.Load<Dictionary<string, WarpItem>>(ModEntry.pathItemData);
         }
         public static T ParseEnum<T>(string str)
         {
@@ -200,7 +201,7 @@ namespace WarpNetwork
             {
                 return false;
             }
-            return Convert.ToInt32(ModEntry.helper.Content.Load<Dictionary<string, string>>("Data/Festivals/" + Game1.currentSeason + Game1.dayOfMonth, ContentSource.GameContent)["conditions"].Split('/')[1].Split(' ')[0]) <= Game1.timeOfDay;
+            return Convert.ToInt32(ModEntry.helper.GameContent.Load<Dictionary<string, string>>("Data/Festivals/" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[1].Split(' ')[0]) <= Game1.timeOfDay;
         }
         public static bool LocationExists(string name)
         {
@@ -259,5 +260,7 @@ namespace WarpNetwork
                 return hash1 + (hash2 * 1566083941);
             }
         }
+        public static string WithoutPath(this string path, string prefix)
+            => PathUtilities.GetSegments(path, PathUtilities.GetSegments(prefix).Length + 1)[^1];
     }
 }

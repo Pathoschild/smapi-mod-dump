@@ -82,6 +82,6 @@ internal partial struct Vector2I :
 		XTileSize vec => CompareTo((Vector2I)vec),
 		Tuple<int, int> vector => CompareTo(new Vector2I(vector.Item1, vector.Item2)),
 		ValueTuple<int, int> vector => CompareTo(vector),
-		_ => throw new ArgumentException(Exceptions.BuildArgumentException(nameof(other), other))
+		_ => Extensions.Exceptions.ThrowArgumentException<int>(nameof(other), other)
 	};
 }

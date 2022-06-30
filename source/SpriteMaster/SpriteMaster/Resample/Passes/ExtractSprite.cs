@@ -56,7 +56,7 @@ internal static class ExtractSprite {
 			int sourceOffset = (textureBounds.Width * inBounds.Top) + inBounds.Left;
 			int destOffset = 0;
 			for (int y = 0; y < inBounds.Height; ++y) {
-				data.Slice(sourceOffset, inBounds.Width).CopyTo(resultData.Slice(destOffset, inBounds.Width));
+				data.SliceUnsafe(sourceOffset, inBounds.Width).CopyToUnsafe(resultData.SliceUnsafe(destOffset, inBounds.Width));
 				destOffset += inBounds.Width;
 				sourceOffset += textureBounds.Width;
 			}

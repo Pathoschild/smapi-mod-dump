@@ -1,10 +1,10 @@
 {
   "Name": "Anniversary on Calendar",
   "Author": "greentodd",
-  "Version": "1.2.2",
+  "Version": "1.2.3",
   "Description": "Adds wedding anniversary & children's birthdays to the game calendar (+ see future months)",
   "UniqueID": "greentodd.CalendarAnniversary",
   "EntryDll": "CalendarAnniversary.dll",
-  "MinimumApiVersion": "3.9.4",
+  "MinimumApiVersion": "3.14.6",
   "UpdateKeys": [ "Nexus: 8351" ]
 }

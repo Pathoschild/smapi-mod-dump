@@ -12,24 +12,24 @@ namespace DaLion.Stardew.Professions.Extensions;
 
 #region using directives
 
-using System.Linq;
-using System.Reflection;
+using Common.Extensions.Reflection;
 using StardewValley.Buildings;
 using StardewValley.GameData.FishPond;
-
-using Common.Extensions.Reflection;
+using System;
+using System.Linq;
 
 #endregion using directives
 
 /// <summary>Extensions for the <see cref="FishPond"/> class.</summary>
 public static class FishPondExtensions
 {
-    private static readonly FieldInfo _FishPondData = typeof(FishPond).RequireField("_fishPondData")!;
+    private static readonly Func<FishPond, FishPondData?> _GetFishPondData = typeof(FishPond).RequireField("_fishPondData")
+        .CompileUnboundFieldGetterDelegate<Func<FishPond, FishPondData?>>();
 
     /// <summary>Whether the instance's population has been fully unlocked.</summary>
     public static bool HasUnlockedFinalPopulationGate(this FishPond pond)
     {
-        var fishPondData = (FishPondData) _FishPondData.GetValue(pond);
+        var fishPondData = _GetFishPondData(pond);
         return fishPondData?.PopulationGates is null ||
                pond.lastUnlockedPopulationGate.Value >= fishPondData.PopulationGates.Keys.Max();
     }

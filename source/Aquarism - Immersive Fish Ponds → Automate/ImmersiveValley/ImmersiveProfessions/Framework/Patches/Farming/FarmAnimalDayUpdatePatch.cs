@@ -12,27 +12,27 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
 using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmAnimalDayUpdatePatch : BasePatch
+internal sealed class FarmAnimalDayUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmAnimalDayUpdatePatch()
     {
-        Original = RequireMethod<FarmAnimal>(nameof(FarmAnimal.dayUpdate));
+        Target = RequireMethod<FarmAnimal>(nameof(FarmAnimal.dayUpdate));
     }
 
     #region harmony patches
@@ -42,7 +42,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
     ///     produce quality boosts.
     /// </summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> FarmAnimalDayUpdateTranspiler(
+    private static IEnumerable<CodeInstruction>? FarmAnimalDayUpdateTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -60,7 +60,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                 .FindFirst( // find index of FarmAnimal.type.Value.Equals("Sheep")
                     new CodeInstruction(OpCodes.Ldstr, "Sheep"),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(string).RequireMethod(nameof(string.Equals), new[] {typeof(string)}))
+                        typeof(string).RequireMethod(nameof(string.Equals), new[] { typeof(string) }))
                 )
                 .RetreatUntil(
                     new CodeInstruction(OpCodes.Ldarg_0)
@@ -107,7 +107,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_3)
                 )
                 .ReplaceWith(
-                    new(OpCodes.Ldc_I4_S, (int) Profession.Producer + 100)
+                    new(OpCodes.Ldc_I4_S, Profession.Producer.Value + 100)
                 )
                 .Return()
                 .Insert(
@@ -121,14 +121,13 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                 .Advance()
                 .Insert(
                     new CodeInstruction(OpCodes.Call,
-                        typeof(Math).RequireMethod(nameof(Math.Round), new[] {typeof(double)})),
+                        typeof(Math).RequireMethod(nameof(Math.Round), new[] { typeof(double) })),
                     new CodeInstruction(OpCodes.Conv_U1)
                 );
         }
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Producer produce frequency.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -148,13 +147,12 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                 .Return()
                 .Retreat()
                 .Insert( // insert unconditional branch to skip this whole section
-                    new CodeInstruction(OpCodes.Br_S, (Label) resumeExecution2)
+                    new CodeInstruction(OpCodes.Br_S, (Label)resumeExecution2)
                 );
         }
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Coopmaster + Shepherd produce quality bonuses.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

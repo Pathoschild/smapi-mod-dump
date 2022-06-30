@@ -6,9 +6,9 @@ mods:
    More Fertilizers
 
 latest commit:
-   commit e394629cea6dea15ac4037f71aa9bf20a3951ce4
+   commit 8e0e12b65773af799a922a231351d16290cc9a8d
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri May 20 10:34:25 2022 -0400
+   Date:   Wed Jun 15 18:05:32 2022 -0400
    
-       Fix issues with invalidations for other languages
+       minor cleanup
    

@@ -12,7 +12,9 @@ using SpriteMaster.Configuration;
 using SpriteMaster.GL;
 using StardewModdingAPI;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Harmonize.Patches.SMAPI;
 
@@ -24,6 +26,21 @@ internal static class PAssetDataForImage {
 		GetField("MinOpacity", BindingFlags.NonPublic | BindingFlags.Static)?.
 		GetValue(null) ?? 5;
 
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowArgumentOutOfRangeException<T>(string name, string message) =>
+		throw new ArgumentOutOfRangeException(name, message);
+
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowNotSameSizeException<T>() =>
+		throw new InvalidOperationException("The source and target areas must be the same size.");
+
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowSourceTextureNullException<T>(string name) =>
+		throw new ArgumentNullException(name, "Can't patch from a null source texture.");
+
 	[Harmonize(
 		typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade),
 		"StardewModdingAPI.Framework.Content.AssetDataForImage",
@@ -32,14 +49,14 @@ internal static class PAssetDataForImage {
 		Harmonize.PriorityLevel.Last,
 		critical: false
 	)]
-	public static bool PatchImage(IAssetDataForImage __instance, XTexture2D source, XRectangle? sourceArea, XRectangle? targetArea, PatchMode patchMode) {
+	public static bool PatchImage(IAssetDataForImage __instance, XTexture2D? source, XRectangle? sourceArea, XRectangle? targetArea, PatchMode patchMode) {
 		if (!Config.SMAPI.ApplyPatchEnabled) {
 			return true;
 		}
 
 		// get texture
 		if (source is null) {
-			throw new ArgumentNullException(nameof(source), "Can't patch from a null source texture.");
+			return ThrowSourceTextureNullException<bool>(nameof(source));
 		}
 
 		XTexture2D target = __instance.Data;
@@ -50,11 +67,11 @@ internal static class PAssetDataForImage {
 
 		// validate
 		if (!source.Bounds.Contains(sourceArea.Value))
-			throw new ArgumentOutOfRangeException(nameof(sourceArea), "The source area is outside the bounds of the source texture.");
+			return ThrowArgumentOutOfRangeException<bool>(nameof(sourceArea), "The source area is outside the bounds of the source texture.");
 		if (!target.Bounds.Contains(targetArea.Value))
-			throw new ArgumentOutOfRangeException(nameof(targetArea), "The target area is outside the bounds of the target texture.");
+			return ThrowArgumentOutOfRangeException<bool>(nameof(targetArea), "The target area is outside the bounds of the target texture.");
 		if (sourceArea.Value.Size != targetArea.Value.Size)
-			throw new InvalidOperationException("The source and target areas must be the same size.");
+			return ThrowNotSameSizeException<bool>();
 
 		if (GL.Texture2DExt.CopyTexture(source, sourceArea.Value, target, targetArea.Value, patchMode)) {
 			return false;

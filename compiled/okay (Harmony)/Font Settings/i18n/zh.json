@@ -1,0 +1,17 @@
+﻿{
+  "options-page.font-header": "字体",
+  "options-page.original-example": "原版",
+  "options-page.custom-example": "当前",
+  "options-page.enable": "启用字体",
+  "options-page.font": "字体",
+  "options-page.font.keep-orig": "保持原版",
+  "options-page.font-size": "大小（px）",
+  "options-page.spacing": "字间距",
+  "options-page.line-spacing": "行间距",
+  "options-ok-button.loading": "正在生成",
+  "game-font-type.small-font": "小字体",
+  "game-font-type.dialogue-font": " 中字体",
+  "game-font-type.sprite-text": " 对话字体",
+  "hud-message.success-set-font": "{{fontType}}设置成功！",
+  "hud-message.failed-set-font": "{{fontType}}设置失败，详见SMAPI窗口。"
+}

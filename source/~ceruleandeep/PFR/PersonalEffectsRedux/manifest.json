@@ -11,7 +11,7 @@
 {
   "Name": "Personal Effects Redux",
   "Author": "ceruleandeep",
-  "Version": "1.6.4",
+  "Version": "1.6.5",
   "Description": "A Stardew Valley mod for certain individuals. <3",
   "EntryDll": "PersonalEffects.dll",
   "MinimumApiVersion": "2.11",

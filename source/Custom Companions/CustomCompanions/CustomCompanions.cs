@@ -421,9 +421,15 @@ namespace CustomCompanions
                             continue;
                         }
 
-                        if (tile.Properties.ContainsKey("CustomCompanions"))
+                        if (tile.Properties.ContainsKey("CustomCompanions") || String.IsNullOrEmpty(location.doesTileHavePropertyNoNull(x, y, "CustomCompanions", "Back")) is false)
                         {
-                            if (String.IsNullOrEmpty(tile.Properties["CustomCompanions"]))
+                            string command = location.doesTileHavePropertyNoNull(x, y, "CustomCompanions", "Back");
+                            if (String.IsNullOrEmpty(command) && tile.Properties.ContainsKey("CustomCompanions"))
+                            {
+                                command = tile.Properties["CustomCompanions"].ToString();
+                            }
+
+                            if (tile.Properties.ContainsKey("CustomCompanions") && String.IsNullOrEmpty(command))
                             {
                                 if (CompanionManager.sceneryCompanions.Any(s => s.Location == location && s.Tile == new Vector2(x, y)))
                                 {
@@ -433,7 +439,6 @@ namespace CustomCompanions
                                 continue;
                             }
 
-                            string command = tile.Properties["CustomCompanions"].ToString();
                             if (command.Split(' ')[0].ToUpper() != "SPAWN")
                             {
                                 if (!String.IsNullOrEmpty(command))

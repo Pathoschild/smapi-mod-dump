@@ -12,22 +12,21 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class TemporaryAnimatedSpriteCtorPatch : BasePatch
+internal sealed class TemporaryAnimatedSpriteCtorPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal TemporaryAnimatedSpriteCtorPatch()
     {
-        Original = RequireConstructor<TemporaryAnimatedSprite>(typeof(int), typeof(float), typeof(int), typeof(int),
+        Target = RequireConstructor<TemporaryAnimatedSprite>(typeof(int), typeof(float), typeof(int), typeof(int),
             typeof(Vector2), typeof(bool), typeof(bool), typeof(GameLocation), typeof(Farmer));
     }
 

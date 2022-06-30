@@ -22,6 +22,20 @@ namespace TehPers.FishingOverhaul.Services
         {
             static IEnumerable<FishingEffectEntry> GenerateEffectData()
             {
+                // Town fountain
+                yield return new ModifyChanceEffectEntry(ModifyChanceType.MaxFish, "0")
+                {
+                    Conditions = new()
+                    {
+                        IncludeLocations = ImmutableArray.Create("Town"),
+                        Position = new()
+                        {
+                            X = new() {LessThan = 30},
+                            Y = new() {LessThan = 30},
+                        },
+                    },
+                };
+
                 // Tide pool golden walnut
                 yield return new ModifyChanceEffectEntry(ModifyChanceType.MaxFish, "0")
                 {

@@ -18,7 +18,7 @@ namespace SmartBuilding
     struct ItemInfo
     {
         /// <summary>
-        /// The item to be placed.
+        /// A reference to the item to be placed.
         /// </summary>
         public Item Item;
 

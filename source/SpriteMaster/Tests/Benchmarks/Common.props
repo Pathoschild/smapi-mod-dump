@@ -8,6 +8,7 @@
 		<IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<TieredCompilation>false</TieredCompilation>
 	</PropertyGroup>
 
   <ItemGroup>

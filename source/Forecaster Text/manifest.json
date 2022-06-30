@@ -11,11 +11,11 @@
 {
 	"Name": "Forecaster Text",
 	"Author": "TheElm",
-	"Version": "1.0.0",
+	"Version": "1.1.0",
 	"Description": "Receive messages from the News station every day",
 	"UniqueID": "TheElm.ForecasterText",
 	"EntryDll": "ForecasterText.dll",
-	"MinimumApiVersion": "3.8.0",
+	"MinimumApiVersion": "3.13.0",
 	"UpdateKeys": [
 		"Nexus:7541"
 	]

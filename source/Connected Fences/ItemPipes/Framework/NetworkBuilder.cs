@@ -17,6 +17,7 @@ using ItemPipes.Framework.Model;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Buildings;
+using StardewValley.Locations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework;
@@ -95,6 +96,13 @@ namespace ItemPipes.Framework
                         }
                     }
                 }
+            }
+            if(location.Name.Equals("FarmHouse"))
+            {
+                FarmHouse farmHouse = (FarmHouse)location;
+                Vector2 position = farmHouse.fridgePosition.ToVector2();
+                KeyValuePair<Vector2, StardewValley.Object> obj = new KeyValuePair<Vector2, StardewValley.Object>(position, farmHouse.fridge.Value);
+                NetworkManager.AddObject(obj, location);
             }
         }
 

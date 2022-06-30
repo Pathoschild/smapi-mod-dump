@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/misty-spring/SpousesIsland
+   Git: https://github.com/misty-spring/SpousesIsland.git
+
+mods:
+   Spouses in Ginger Island
+
+latest commit:
+   commit 0ba033e71377f85e59e7f71475ab433213152422
+   Author: misty-spring <105533011+misty-spring@users.noreply.github.com>
+   Date:   Wed Jun 29 22:14:23 2022 -0400
+   
+       Update and add files
+       
+       Updating (and adding any new) files, since they will be revamped for the next update.
+   

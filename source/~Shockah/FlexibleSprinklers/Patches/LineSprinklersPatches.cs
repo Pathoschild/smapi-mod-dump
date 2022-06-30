@@ -102,7 +102,7 @@ namespace Shockah.FlexibleSprinklers
 			if (FlexibleSprinklers.Instance.Config.CompatibilityMode)
 				return true;
 			var radius = Object_GetBaseRadiusForSprinkler_Result(__instance);
-			if (radius == null)
+			if (radius is null)
 			{
 				return true;
 			}
@@ -118,7 +118,7 @@ namespace Shockah.FlexibleSprinklers
 			if (!FlexibleSprinklers.Instance.Config.CompatibilityMode)
 				return;
 			var radius = Object_GetBaseRadiusForSprinkler_Result(__instance);
-			if (radius != null)
+			if (radius is not null)
 				__result = radius.Value;
 		}
 	}

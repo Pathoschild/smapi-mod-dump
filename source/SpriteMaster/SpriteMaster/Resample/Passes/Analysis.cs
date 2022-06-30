@@ -14,10 +14,12 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Resample.Passes;
 
 internal static class Analysis {
+	[StructLayout(LayoutKind.Auto)]
 	internal readonly struct LegacyResults {
 		internal readonly Vector2B Wrapped;
 		internal readonly Vector2B RepeatX;

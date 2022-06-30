@@ -14,6 +14,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FashionSense.Framework.Interfaces.API;
+using Microsoft.Xna.Framework;
+using StardewValley;
 
 namespace FashionSense.Framework.Models
 {
@@ -39,8 +42,40 @@ namespace FashionSense.Framework.Models
         public string Name { get; set; }
         internal string Id { get; set; }
         internal string PackName { get; set; }
-        internal Texture2D Texture { get; set; }
+        internal Texture2D Texture { get { return _texture; } set { _cachedTexture = value; ResetTexture(); } }
+        private Texture2D _texture;
+        private Texture2D _cachedTexture;
         internal Texture2D ColorMaskTexture { get; set; }
         internal Texture2D SkinMaskTexture { get; set; }
+        internal bool IsTextureDirty { get; set; }
+
+        internal bool ResetTexture()
+        {
+            try
+            {
+                if (_texture is null)
+                {
+                    _texture = new Texture2D(Game1.graphics.GraphicsDevice, _cachedTexture.Width, _cachedTexture.Height);
+                }
+
+                Color[] colors = new Color[_cachedTexture.Width * _cachedTexture.Height];
+                _cachedTexture.GetData(colors);
+                _texture.SetData(colors);
+
+                IsTextureDirty = false;
+            }
+            catch (Exception ex)
+            {
+                FashionSense.monitor.Log($"Failed to restore cached texture: {ex}", StardewModdingAPI.LogLevel.Trace);
+                return false;
+            }
+
+            return true;
+        }
+
+        internal Texture2D GetCachedTexture()
+        {
+            return _cachedTexture;
+        }
     }
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12280
+IDs: drbirbdev.RanchingToolUpgrades
+update keys: Nexus:12280

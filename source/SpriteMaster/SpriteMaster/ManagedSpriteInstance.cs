@@ -18,20 +18,19 @@ using SpriteMaster.Metadata;
 using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using static SpriteMaster.ResourceManager;
-using WeakInstanceList = System.Collections.Generic.LinkedList<System.WeakReference<SpriteMaster.ManagedSpriteInstance>>;
-using WeakInstanceListNode = System.Collections.Generic.LinkedListNode<System.WeakReference<SpriteMaster.ManagedSpriteInstance>>;
+using WeakInstance = System.WeakReference<SpriteMaster.ManagedSpriteInstance>;
 using WeakTexture = System.WeakReference<Microsoft.Xna.Framework.Graphics.Texture2D>;
 
 namespace SpriteMaster;
 
-internal sealed class ManagedSpriteInstance : IDisposable {
-	private static readonly WeakInstanceList RecentAccessList = new();
+internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
+	private static readonly ConcurrentLinkedListSlim<WeakInstance> RecentAccessList = new();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static bool HasLegalFormat(XTexture2D texture) => AllowedFormats.ContainsF(texture.Format);
@@ -156,65 +155,71 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 			return false;
 		}
 
+		bool isText = false;
+		bool isBasicText = false;
+
 		if (!texture.Anonymous()) {
 			foreach (var blacklistPattern in Config.Resample.BlacklistPatterns) {
-				if (blacklistPattern.IsMatch(texture.NormalizedName())) {
-					if (!meta.TracePrinted) {
-						meta.TracePrinted = true;
-						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Blacklisted ({blacklistPattern})");
-					}
-					meta.Validation = false;
-					if (clean) {
-						PurgeInvalidated(texture);
-					}
-					return false;
+				if (!blacklistPattern.IsMatch(texture.NormalizedName())) {
+					continue;
 				}
+
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Blacklisted ({blacklistPattern})");
+				}
+				meta.Validation = false;
+				if (clean) {
+					PurgeInvalidated(texture);
+				}
+				return false;
 			}
 
-			bool isText = texture.NormalizedName().StartsWith(@"Fonts\");
-			bool isBasicText = texture.Format == SurfaceFormat.Dxt3;
+			isText = texture.NormalizedName().StartsWith(@"Fonts\");
+			isBasicText = texture.Format == SurfaceFormat.Dxt3;
 
-			if (!(Configuration.Preview.Override.Instance?.ResampleText ?? Config.Resample.EnabledText)) {
-				if (isText) {
-					if (!meta.TracePrinted) {
-						meta.TracePrinted = true;
-						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Font (and text resampling is disabled)");
-					}
-					meta.Validation = false;
-					if (clean) {
-						PurgeInvalidated(texture);
-					}
-					return false;
+			if (!(Configuration.Preview.Override.Instance?.ResampleText ?? Config.Resample.EnabledText) && isText) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Font (and text resampling is disabled)");
 				}
+				meta.Validation = false;
+				if (clean) {
+					PurgeInvalidated(texture);
+				}
+				return false;
 			}
-			if (!(Configuration.Preview.Override.Instance?.ResampleBasicText ?? Config.Resample.EnabledBasicText)) {
+			if (!(Configuration.Preview.Override.Instance?.ResampleBasicText ?? Config.Resample.EnabledBasicText) && isBasicText) {
 				// The only BC2 texture that I've _ever_ seen is the internal font
-				if (isBasicText) {
-					if (!meta.TracePrinted) {
-						meta.TracePrinted = true;
-						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Basic Font (and basic text resampling is disabled)");
-					}
-					meta.Validation = false;
-					if (clean) {
-						PurgeInvalidated(texture);
-					}
-					return false;
+
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Basic Font (and basic text resampling is disabled)");
 				}
-			}
-			if (!(Configuration.Preview.Override.Instance?.ResampleSprites ?? Config.Resample.EnabledSprites)) {
-				if (!isText && !isBasicText) {
-					if (!meta.TracePrinted) {
-						meta.TracePrinted = true;
-						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Sprite (and sprite resampling is disabled)");
-					}
-					meta.Validation = false;
-					if (clean) {
-						PurgeInvalidated(texture);
-					}
-					return false;
+				meta.Validation = false;
+				if (clean) {
+					PurgeInvalidated(texture);
 				}
+				return false;
 			}
 		}
+
+		if (!(Configuration.Preview.Override.Instance?.ResampleSprites ?? Config.Resample.EnabledSprites) && !isText && !isBasicText) {
+			if (!meta.TracePrinted) {
+				meta.TracePrinted = true;
+				Debug.Trace(
+					$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Sprite (and sprite resampling is disabled)"
+				);
+			}
+
+			meta.Validation = false;
+			if (clean) {
+				PurgeInvalidated(texture);
+			}
+
+			return false;
+		}
+
 
 		if (!texture.Anonymous()) {
 			meta.Validation = true;
@@ -523,7 +528,7 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 	/// Node into the most-recent accessed instance list.
 	/// Should only be <seealso langword="null"/> after the instance is <seealso cref="ManagedSpriteInstance.Dispose">disposed</seealso>
 	/// </summary>
-	internal WeakInstanceListNode? RecentAccessNode = null;
+	internal ConcurrentLinkedListSlim<WeakInstance>.NodeRef RecentAccessNode = default;
 
 	private volatile bool IsDisposedInternal = false;
 
@@ -570,15 +575,15 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 		lock (RecentAccessList) {
 			long totalPurge = 0;
 			while (purgeTotalBytes > 0 && RecentAccessList.Count > 0) {
-				if (RecentAccessList.Last?.Value.TryGet(out var target) ?? false) {
+				var lastInstance = RecentAccessList.RemoveLast();
+				if (lastInstance.TryGet(out var target)) {
 					var textureSize = target.MemorySize;
 					Debug.Trace($"Purging {target.NormalizedName()} ({textureSize.AsDataSize()})");
 					purgeTotalBytes -= textureSize;
 					totalPurge += textureSize;
-					target.RecentAccessNode = null;
+					target.RecentAccessNode = default;
 					target.Dispose(true);
 				}
-				RecentAccessList.RemoveLast();
 			}
 			Debug.Trace($"Total Purged: {totalPurge.AsDataSize()}");
 		}
@@ -634,7 +639,7 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 		source.Disposing += OnParentDispose;
 
 		lock (RecentAccessList) {
-			RecentAccessNode = RecentAccessList.AddFirst(this.MakeWeak());
+			RecentAccessNode = RecentAccessList.AddFront(this.MakeWeak());
 		}
 	}
 
@@ -696,35 +701,26 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 
 		LastReferencedFrame = DrawState.CurrentFrame;
 
-		lock (RecentAccessList) {
-			if (RecentAccessNode is not null) {
-				if (RecentAccessNode.List == RecentAccessList) {
-					try {
-						RecentAccessList.Remove(RecentAccessNode);
-					}
-					catch {
-						// Failure is unimportant.
-					}
-				}
-				RecentAccessList.AddFirst(RecentAccessNode);
-			}
-			else {
-				RecentAccessNode = RecentAccessList.AddFirst(this.MakeWeak());
-			}
+		if (RecentAccessNode.IsValid) {
+			RecentAccessList.MoveToFront(RecentAccessNode);
+		}
+		else {
+			RecentAccessNode = RecentAccessList.AddFront(this.MakeWeak());
 		}
 	}
 
+	[StructLayout(LayoutKind.Auto)]
 	internal readonly struct CleanupData {
 		internal readonly ManagedSpriteInstance? PreviousSpriteInstance;
 		internal readonly WeakReference<XTexture2D> ReferenceTexture;
-		internal readonly LinkedListNode<WeakReference<ManagedSpriteInstance>>? RecentAccessNode;
+		internal readonly ConcurrentLinkedListSlim<WeakInstance>.NodeRef RecentAccessNode;
 		internal readonly ulong MapHash;
 
 		internal CleanupData(ManagedSpriteInstance instance) {
 			PreviousSpriteInstance = instance.PreviousSpriteInstance;
 			ReferenceTexture = instance.Reference;
 			RecentAccessNode = instance.RecentAccessNode;
-			instance.RecentAccessNode = null;
+			instance.RecentAccessNode = default;
 			MapHash = instance.SpriteMapHash;
 		}
 	}
@@ -762,21 +758,14 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 			SpriteMap.Remove(this, reference);
 			reference.Disposing -= OnParentDispose;
 		}
-		if (RecentAccessNode is not null) {
-			lock (RecentAccessList) {
-				try {
-					RecentAccessList.Remove(RecentAccessNode);
-				}
-				catch {
-					// Error is unimportant
-				}
-			}
-			RecentAccessNode = null;
+		if (RecentAccessNode.IsValid) {
+			RecentAccessList.Release(RecentAccessNode);
+			RecentAccessNode = default;
 		}
 		IsDisposed = true;
 
 		if (Suspended) {
-			SuspendedSpriteCache.Remove(this);
+			SuspendedSpriteCache.RemoveFast(this);
 			Suspended = false;
 		}
 
@@ -794,17 +783,8 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 			SpriteMap.Remove(data, reference);
 		}
 
-		if (data.RecentAccessNode is not null) {
-			lock (RecentAccessList) {
-				if (data.RecentAccessNode.List == RecentAccessList) {
-					try {
-						RecentAccessList.Remove(data.RecentAccessNode);
-					}
-					catch {
-						// Error is unimportant
-					}
-				}
-			}
+		if (data.RecentAccessNode.IsValid) {
+			RecentAccessList.Release(data.RecentAccessNode);
 		}
 	}
 
@@ -832,16 +812,9 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 		// TODO : Handle clearing any reference to _this_
 		PreviousSpriteInstance = null;
 
-		if (RecentAccessNode is not null) {
-			lock (RecentAccessList) {
-				try {
-					RecentAccessList.Remove(RecentAccessNode);
-				}
-				catch {
-					// Error is unimportant
-				}
-			}
-			RecentAccessNode = null;
+		if (RecentAccessNode.IsValid) {
+			RecentAccessList.Release(RecentAccessNode);
+			RecentAccessNode = default;
 		}
 		Invalidated = false;
 
@@ -859,16 +832,16 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 		}
 
 		if (IsDisposed || !Suspended) {
-			SuspendedSpriteCache.Remove(this);
+			SuspendedSpriteCache.RemoveFast(this);
 			return false;
 		}
 
 		if (!IsReadyInternal || !Config.SuspendedCache.Enabled) {
-			SuspendedSpriteCache.Remove(this);
+			SuspendedSpriteCache.RemoveFast(this);
 			return false;
 		}
 
-		SuspendedSpriteCache.Remove(this);
+		SuspendedSpriteCache.RemoveFast(this);
 		Suspended = false;
 		Reference.SetTarget(texture);
 
@@ -880,4 +853,6 @@ internal sealed class ManagedSpriteInstance : IDisposable {
 
 		return true;
 	}
+
+	public long SizeBytes => (int)MemorySize;
 }

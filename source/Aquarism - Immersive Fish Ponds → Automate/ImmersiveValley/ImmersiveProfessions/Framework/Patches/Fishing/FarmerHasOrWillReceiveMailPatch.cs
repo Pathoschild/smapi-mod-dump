@@ -12,26 +12,27 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
+using System;
+using System.Reflection;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmerHasOrWillReceiveMailPatch : BasePatch
+internal sealed class FarmerHasOrWillReceiveMailPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmerHasOrWillReceiveMailPatch()
     {
-        Original = RequireMethod<Farmer>(nameof(Farmer.hasOrWillReceiveMail));
+        Target = RequireMethod<Farmer>(nameof(Farmer.hasOrWillReceiveMail));
     }
 
     #region harmony patches
 
-    /// <summary>Patch to allow receiving multiple letters from the FRS and the SWA.</summary>
+    /// <summary>Patch to allow receiving multiple letters from the FRS.</summary>
     [HarmonyPrefix]
     private static bool FarmerHasOrWillReceiveMailPrefix(ref bool __result, string id)
     {

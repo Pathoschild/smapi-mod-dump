@@ -12,46 +12,48 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CheesePressMachineSetInput : BasePatch
+internal sealed class CheesePressMachineSetInput : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetSample;
+    private static Func<object, Item>? _GetSample;
 
     /// <summary>Construct an instance.</summary>
     internal CheesePressMachineSetInput()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CheesePressMachine".ToType().RequireMethod("SetInput");
-            Transpiler.priority = Priority.LowerThanNormal;
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CheesePressMachine".ToType()
+                .RequireMethod("SetInput");
         }
         catch
         {
             // ignored
         }
+
+        Transpiler!.priority = Priority.LowerThanNormal;
     }
 
     #region harmony patches
 
     /// <summary>Patch to apply Artisan effects to automated Cheese Press.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GenericObjectMachineGenericPullRecipeTranspiler(
+    [HarmonyPriority(Priority.LowerThanNormal)]
+    private static IEnumerable<CodeInstruction>? GenericObjectMachineGenericPullRecipeTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -81,7 +83,6 @@ internal class CheesePressMachineSetInput : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Artisan behavior for automated Cheese Press.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -94,8 +95,9 @@ internal class CheesePressMachineSetInput : BasePatch
 
     private static void SetInputSubroutine(SObject machine, object consumable)
     {
-        _GetSample ??= consumable.GetType().RequirePropertyGetter("Sample");
-        if (_GetSample.Invoke(consumable, null) is not SObject input) return;
+        _GetSample ??= consumable.GetType().RequirePropertyGetter("Sample")
+            .CompileUnboundDelegate<Func<object, Item>>();
+        if (_GetSample(consumable) is not SObject input) return;
 
         var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
         if (!owner.HasProfession(Profession.Artisan)) return;

@@ -1,0 +1,18 @@
+﻿{
+  "Owner_Header": "Owner : ",
+  "Lock_Header": "Lock : ",
+  "Access_Header": "Access : ",
+
+  "Has_Access": " (Access)",
+  "No_Access": " (No Access)",
+  "Is_Owner": " (Owner)",
+
+  "Open": "Open",
+  "ViewOnly": "View Only",
+  "Locked": "Locked",
+
+  "Transfer_Dialogue_Title": "Are you sure you want to give this chest to {0}?",
+
+  "No_Access_Dialogue": "Can't change the lock of {0}'s chest",
+  "No_Revoke_Owner": "Can't revoke the owners access to a chest"
+}

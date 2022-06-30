@@ -12,25 +12,25 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Projectiles;
-
-using Extensions;
+using System;
+using System.Reflection;
 
 #endregion using directives
 
 // ReSharper disable PossibleLossOfFraction
 [UsedImplicitly]
-internal class BasicProjectileExplodeOnImpact : BasePatch
+internal sealed class BasicProjectileExplodeOnImpact : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal BasicProjectileExplodeOnImpact()
     {
-        Original = RequireMethod<BasicProjectile>(nameof(BasicProjectile.explodeOnImpact));
+        Target = RequireMethod<BasicProjectile>(nameof(BasicProjectile.explodeOnImpact));
     }
 
     #region harmony patches

@@ -1,0 +1,292 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/MysticalBuildings
+**
+*************************************************/
+
+{
+  // Building Names / Descriptions
+  "Name.CrumblingMineshaft": "Crumbling Mineshaft",
+  "Name.StatueOfGreed": "Statue of Greed",
+  "Name.QuizzicalStatue": "Quizzical Statue",
+  "Name.PhantomClock": "Phantom Clock",
+  "Name.OrbOfReflection": "Orb of Reflection",
+  "Name.ObeliskofWeather": "Obelisk of Weather",
+
+  "Description.CrumblingMineshaft": "A not-so-sturdy mineshaft that mysteriously leads to bountiful and unstable caverns.",
+  "Description.StatueOfGreed": "A very hungry statue that is capable of doubling items, if it doesn't eat them.",
+  "Description.QuizzicalStatue": "An odd statue that seems fond of asking questions.",
+  "Description.PhantomClock": "An almost ethereal clock that is able to loop time, if it is given what it desires.",
+  "Description.OrbOfReflection": "A glowing orb which instills thoughts of the past and offers boons for the future.",
+  "Description.ObeliskofWeather": "An obelisk which can influence tomorrow's weather.",
+
+  // General Responses
+  "General.Response.Confirm": "Yes",
+  "General.Response.Deny": "No",
+
+  // Obelisk of Weather
+  // Questions
+  "Obelisk.Question.PickWeather": "Instruct the obelisk to change tomorrow's weather?",
+
+  // Responses
+  "Obelisk.Response.Sunny": "Sunny",
+  "Obelisk.Response.Rainy": "Rainy",
+  "Obelisk.Response.Stormy": "Stormy",
+  "Obelisk.Response.Random": "Random",
+  "Obelisk.Response.Later": "Not now",
+
+  // Orb of Reflection
+  // Questions
+  "Orb.Question.Confirmation": "Close your eyes and touch the orb?",
+
+  // Crumbling Mines
+  // Questions
+  "Mine.Question.Confirmation": "Would you like to enter the unstable mineshaft?",
+
+  // Phantom Clock
+  // Responses
+  "Clock.Response.Intro": "You can almost hear something amongst the constant ticking sounds...",
+  "Clock.Response.RequestCog": "A Rusty Cog will seize these moving gears and allow the turning back of time.",
+
+  // Questions
+  "Clock.Question.Confirmation": "Would you like to remove the Rusty Cog?",
+
+  // Statue of Greed
+  // Dialogue
+  "Greed.Dialogue.Yawn": "Yawnnnn....",
+  "Greed.Dialogue.Sleepy": "Sleeping sure makes me hungry...",
+  "Greed.Dialogue.Greeting": "Oh didn't notice you there, friend. If you would like your items doubled, just hand them over to me.",
+  "Greed.Dialogue.GreetingOther": "If you would like an item doubled, just hand it over to me.",
+
+  // Questions
+  "Greed.Question.Confirmation": "Are you sure you'd like to give this item to the statue?",
+
+
+  // Quizzical Statue
+  // Responses
+  "Quiz.Response.Start": "Care to take a quiz?",
+  "Quiz.Response.GivenRightAnswer": "That is correct, well done!",
+  "Quiz.Response.GivenWrongAnswer": "Hm, that is not correct. Try your luck later.",
+
+  // Question and answers
+  "Quiz.Question.1": "What does Abigail love?",
+  "Quiz.RightAnswer.1": "Amethyst",
+  "Quiz.WrongAnswer.1": "Sugar",
+  "Quiz.SecondaryWrongAnswer.1": "Quartz",
+
+  "Quiz.Question.2": "What does Abigail hate?",
+  "Quiz.RightAnswer.2": "Holly",
+  "Quiz.WrongAnswer.2": "Sugar",
+  "Quiz.SecondaryWrongAnswer.2": "Amethyst",
+
+  "Quiz.Question.3": "What does Maru love?",
+  "Quiz.RightAnswer.3": "Rhubarb Pie",
+  "Quiz.WrongAnswer.3": "Quartz",
+  "Quiz.SecondaryWrongAnswer.3": "Morel",
+
+  "Quiz.Question.4": "What does Maru hate?",
+  "Quiz.RightAnswer.4": "Honey",
+  "Quiz.WrongAnswer.4": "Quartz",
+  "Quiz.SecondaryWrongAnswer.4": "Strawberry",
+
+  "Quiz.Question.5": "What does Emily love?",
+  "Quiz.RightAnswer.5": "Wool",
+  "Quiz.WrongAnswer.5": "Daffodil",
+  "Quiz.SecondaryWrongAnswer.5": "Ice Cream",
+
+  "Quiz.Question.6": "What does Emily hate?",
+  "Quiz.RightAnswer.6": "Fish Taco",
+  "Quiz.WrongAnswer.6": "Spicy Eel",
+  "Quiz.SecondaryWrongAnswer.6": "Cloth",
+
+  "Quiz.Question.7": "What does Haley love?",
+  "Quiz.RightAnswer.7": "Coconut",
+  "Quiz.WrongAnswer.7": "Prismatic Shard",
+  "Quiz.SecondaryWrongAnswer.7": "Daffodil",
+
+  "Quiz.Question.8": "What does Haley hate?",
+  "Quiz.RightAnswer.8": "Prismatic Shard",
+  "Quiz.WrongAnswer.8": "Holly",
+  "Quiz.SecondaryWrongAnswer.8": "Sunflower",
+
+  "Quiz.Question.9": "What does Leah love?",
+  "Quiz.RightAnswer.9": "Goat Cheese",
+  "Quiz.WrongAnswer.9": "Cookie",
+  "Quiz.SecondaryWrongAnswer.9": "Daffodil",
+
+  "Quiz.Question.10": "What does Leah hate?",
+  "Quiz.RightAnswer.10": "Pizza",
+  "Quiz.WrongAnswer.10": "Wine",
+  "Quiz.SecondaryWrongAnswer.10": "Holly",
+
+  "Quiz.Question.11": "What does Penny love?",
+  "Quiz.RightAnswer.11": "Roots Platter",
+  "Quiz.WrongAnswer.11": "Wool",
+  "Quiz.SecondaryWrongAnswer.11": "Pale Ale",
+
+  "Quiz.Question.12": "What does Penny hate?",
+  "Quiz.RightAnswer.12": "Pale Ale",
+  "Quiz.WrongAnswer.12": "Dandelion",
+  "Quiz.SecondaryWrongAnswer.12": "Poppy",
+
+  "Quiz.Question.13": "What does Alex love?",
+  "Quiz.RightAnswer.13": "Salmon Dinner",
+  "Quiz.WrongAnswer.13": "Wild Horseradish",
+  "Quiz.SecondaryWrongAnswer.13": "Emerald",
+
+  "Quiz.Question.14": "What does Alex hate?",
+  "Quiz.RightAnswer.14": "Quartz",
+  "Quiz.WrongAnswer.14": "Complete Breakfast",
+  "Quiz.SecondaryWrongAnswer.14": "Salmonberry",
+
+  "Quiz.Question.15": "What does Elliott love?",
+  "Quiz.RightAnswer.15": "Squid Ink",
+  "Quiz.WrongAnswer.15": "Sea Cucumber",
+  "Quiz.SecondaryWrongAnswer.15": "Squid",
+
+  "Quiz.Question.16": "What does Elliott hate?",
+  "Quiz.RightAnswer.16": "Amaranth",
+  "Quiz.WrongAnswer.16": "Pizza",
+  "Quiz.SecondaryWrongAnswer.16": "Lobster",
+
+  "Quiz.Question.17": "What does Harvey love?",
+  "Quiz.RightAnswer.17": "Truffle Oil",
+  "Quiz.WrongAnswer.17": "Milk",
+  "Quiz.SecondaryWrongAnswer.17": "Rainbow Shell",
+
+  "Quiz.Question.18": "What does Harvey hate?",
+  "Quiz.RightAnswer.18": "Coral",
+  "Quiz.WrongAnswer.18": "Ice Cream",
+  "Quiz.SecondaryWrongAnswer.18": "Goat Milk",
+
+  "Quiz.Question.19": "What does Sam love?",
+  "Quiz.RightAnswer.19": "Tigerseye",
+  "Quiz.WrongAnswer.19": "Joja Cola",
+  "Quiz.SecondaryWrongAnswer.19": "Gold Bar",
+
+  "Quiz.Question.20": "What does Sam hate?",
+  "Quiz.RightAnswer.20": "Mayonnaise",
+  "Quiz.WrongAnswer.20": "Salmonberry",
+  "Quiz.SecondaryWrongAnswer.20": "Cactus Fruit",
+
+  "Quiz.Question.21": "What does Sebastian love?",
+  "Quiz.RightAnswer.21": "Frozen Tear",
+  "Quiz.WrongAnswer.21": "Flounder",
+  "Quiz.SecondaryWrongAnswer.21": "Morel",
+
+  "Quiz.Question.22": "What does Sebastian hate?",
+  "Quiz.RightAnswer.22": "Omelet",
+  "Quiz.WrongAnswer.22": "Dandelion",
+  "Quiz.SecondaryWrongAnswer.22": "Void Egg",
+
+  "Quiz.Question.23": "What does Shane love?",
+  "Quiz.RightAnswer.23": "Hot Pepper",
+  "Quiz.WrongAnswer.23": "Egg",
+  "Quiz.SecondaryWrongAnswer.23": "Quartz",
+
+  "Quiz.Question.24": "What does Shane hate?",
+  "Quiz.RightAnswer.24": "Pickles",
+  "Quiz.WrongAnswer.24": "Beer",
+  "Quiz.SecondaryWrongAnswer.24": "Maple Syrup",
+
+  // Rewards
+  "Quiz.GiftId.1": "(O)220", // Chocolate cake
+  "Quiz.GiftQuantity.1": "3",
+  "Quiz.GiftQuality.1": "0",
+
+  "Quiz.GiftId.2": "(O)80", // Quartz
+  "Quiz.GiftQuantity.2": "10",
+  "Quiz.GiftQuality.2": "0",
+
+  "Quiz.GiftId.3": "(O)428", // Cloth
+  "Quiz.GiftQuantity.3": "10",
+  "Quiz.GiftQuality.3": "0",
+
+  "Quiz.GiftId.4": "(O)72", // Diamond
+  "Quiz.GiftQuantity.4": "1",
+  "Quiz.GiftQuality.4": "0",
+
+  "Quiz.GiftId.5": "(O)221", // Pink Cake
+  "Quiz.GiftQuantity.5": "3",
+  "Quiz.GiftQuality.5": "0",
+
+  "Quiz.GiftId.6": "(O)64", // Ruby
+  "Quiz.GiftQuantity.6": "1",
+  "Quiz.GiftQuality.6": "0",
+
+  "Quiz.GiftId.7": "(O)430", // Truffle
+  "Quiz.GiftQuantity.7": "2",
+  "Quiz.GiftQuality.7": "0",
+
+  "Quiz.GiftId.8": "(O)281", // Chanterelle
+  "Quiz.GiftQuantity.8": "3",
+  "Quiz.GiftQuality.8": "2",
+
+  "Quiz.GiftId.9": "(O)787", // Battery Pack
+  "Quiz.GiftQuantity.9": "3",
+  "Quiz.GiftQuality.9": "0",
+
+  "Quiz.GiftId.10": "(O)335", // Iron Bar
+  "Quiz.GiftQuantity.10": "10",
+  "Quiz.GiftQuality.10": "0",
+
+  "Quiz.GiftId.11": "(O)376", // Poppy
+  "Quiz.GiftQuantity.11": "10",
+  "Quiz.GiftQuality.11": "2",
+
+  "Quiz.GiftId.12": "(O)651", // Poppyseed Muffin
+  "Quiz.GiftQuantity.12": "3",
+  "Quiz.GiftQuality.12": "0",
+
+  "Quiz.GiftId.13": "(O)201", // Complete Breakfast
+  "Quiz.GiftQuantity.13": "3",
+  "Quiz.GiftQuality.13": "0",
+
+  "Quiz.GiftId.14": "(O)66", // Amethyst
+  "Quiz.GiftQuantity.14": "1",
+  "Quiz.GiftQuality.14": "0",
+
+  "Quiz.GiftId.15": "(O)814", // Squid Ink
+  "Quiz.GiftQuantity.15": "1",
+  "Quiz.GiftQuality.15": "0",
+
+  "Quiz.GiftId.16": "(O)151", // Squid
+  "Quiz.GiftQuantity.16": "5",
+  "Quiz.GiftQuality.16": "2",
+
+  "Quiz.GiftId.17": "(O)395", // Coffee
+  "Quiz.GiftQuantity.17": "8",
+  "Quiz.GiftQuality.17": "0",
+
+  "Quiz.GiftId.18": "(O)436", // Goat Milk
+  "Quiz.GiftQuantity.18": "3",
+  "Quiz.GiftQuality.18": "2",
+
+  "Quiz.GiftId.19": "(O)90", // Cactus Fruit
+  "Quiz.GiftQuantity.19": "3",
+  "Quiz.GiftQuality.19": "2",
+
+  "Quiz.GiftId.20": "(O)167", // Joja Cola
+  "Quiz.GiftQuantity.20": "5",
+  "Quiz.GiftQuality.20": "0",
+
+  "Quiz.GiftId.21": "(O)84", // Frozen Tear
+  "Quiz.GiftQuantity.21": "3",
+  "Quiz.GiftQuality.21": "0",
+
+  "Quiz.GiftId.22": "(O)267", // Flounder
+  "Quiz.GiftQuantity.22": "5",
+  "Quiz.GiftQuality.22": "2",
+
+  "Quiz.GiftId.23": "(O)346", // Beer
+  "Quiz.GiftQuantity.23": "8",
+  "Quiz.GiftQuality.23": "0",
+
+  "Quiz.GiftId.24": "(O)724", // Maple Syrup
+  "Quiz.GiftQuantity.24": "5",
+  "Quiz.GiftQuality.24": "0"
+}

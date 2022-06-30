@@ -35,10 +35,23 @@ internal class ModEntry : Mod
 
     private GiantCropFertilizerIDStorage? storedID;
 
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Field kept near property.")]
+    private static int giantCropFertilizerID = -1;
+
     /// <summary>
     /// Gets the integer ID of the giant crop fertilizer. -1 if not found/not loaded yet.
     /// </summary>
-    internal static int GiantCropFertilizerID => jsonAssets?.GetObjectId("Giant Crop Fertilizer") ?? -1;
+    internal static int GiantCropFertilizerID
+    {
+        get
+        {
+            if (giantCropFertilizerID == -1)
+            {
+                giantCropFertilizerID = jsonAssets?.GetObjectId("Giant Crop Fertilizer") ?? -1;
+            }
+            return giantCropFertilizerID;
+        }
+    }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -65,7 +78,10 @@ internal class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         helper.Events.GameLoop.Saved += this.OnSaved;
+
+        helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
     }
+
 
     private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
         => AssetEditor.HandleAssetRequested(e);
@@ -124,8 +140,6 @@ internal class ModEntry : Mod
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
-
         // JSON ASSETS integration
         {
             IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Warn);
@@ -138,11 +152,12 @@ internal class ModEntry : Mod
             else
             {
                 this.Monitor.Log("Packs could not be loaded! This mod will probably not function.", LogLevel.Error);
+                return;
             }
         }
 
-        // GMCM integration
-        {
+        Task gmcm = Task.Run(() =>
+        { // GMCM integration
             GMCMHelper gmcmHelper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, this.ModManifest);
             if (gmcmHelper.TryGetAPI())
             {
@@ -172,7 +187,10 @@ internal class ModEntry : Mod
                         tooltip: I18n.AllowGiantCropsOffFarm_Description);
                 }
             }
-        }
+        });
+
+        this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
+        gmcm.Wait();
     }
 
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
@@ -203,6 +221,11 @@ internal class ModEntry : Mod
     /*********
      * REGION JSON ASSETS
      * *******/
+
+    // Not quite sure why, but JA drops all IDs when returning to title. We're doing that too.
+    [EventPriority(EventPriority.High)]
+    private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
+        => giantCropFertilizerID = -1;
 
     private void JAIdsFixed(object? sender, EventArgs e)
         => this.FixIds();

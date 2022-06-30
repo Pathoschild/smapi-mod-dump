@@ -35,6 +35,7 @@ internal static class AutomateTranspiler
     {
         try
         {
+            // Patch the generic automate machine.
             Type machine = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.GenericObjectMachine`1")?.MakeGenericType(typeof(SObject))
                 ?? throw new MethodNotFoundException("Automate machine");
             Type storage = AccessTools.TypeByName("Pathoschild.Stardew.Automate.IStorage")
@@ -44,6 +45,8 @@ internal static class AutomateTranspiler
             harmony.Patch(
                 original: machine.InstanceMethodNamed("GenericPullRecipe", new[] { storage, recipe.MakeArrayType(), typeof(Item).MakeByRefType() }),
                 transpiler: new HarmonyMethod(typeof(AutomateTranspiler), nameof(Transpiler)));
+
+            // Patch the bone mill.
         }
         catch (Exception ex)
         {
@@ -51,6 +54,12 @@ internal static class AutomateTranspiler
         }
     }
 
+    /// <summary>
+    /// Given a specific item, mark the output as organic if necessary.
+    /// </summary>
+    /// <param name="obj">The SObject to alter.</param>
+    /// <param name="input">The input.</param>
+    /// <returns>The altered SObject.</returns>
     [MethodImpl(TKConstants.Hot)]
     internal static SObject? MakeOrganic(SObject? obj, Item? input)
     {
@@ -84,18 +93,15 @@ internal static class AutomateTranspiler
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call),
                 new(OpCodes.Box),
-            });
-
-            // Copy them for later.
-            CodeInstruction[]? copy = helper.Codes.GetRange(helper.Pointer, 3).Select((a) => a.Clone()).ToArray();
-
-            helper.FindNext(new CodeInstructionWrapper[]
+            })
+            .Copy(3, out IEnumerable<CodeInstruction>? copy)
+            .FindNext(new CodeInstructionWrapper[]
             {
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Ret),
             })
             .GetLabels(out IList<Label>? labels)
-            .Insert(copy, withLabels: labels)
+            .Insert(copy.ToArray(), withLabels: labels)
             .Insert(new CodeInstruction[]
             {
                 new(OpCodes.Ldfld, typeof(SObject).InstanceFieldNamed(nameof(SObject.heldObject))),

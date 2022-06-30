@@ -1,0 +1,3 @@
+[submodule "Tests/Benchmarks/Hashing/ext/libxxhash3/source"]
+	path = Tests/Benchmarks/Hashing/ext/libxxhash/source
+	url = https://github.com/SpriteMaster-Ext/xxHash.git

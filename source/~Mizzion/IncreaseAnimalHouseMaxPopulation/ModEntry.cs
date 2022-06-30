@@ -45,7 +45,7 @@ namespace IncreaseAnimalHouseMaxPopulation
 
         public int Cost;
 
-        public bool IsTestBuild = false;
+        public bool IsTestBuild = true;
 
         public override void Entry(IModHelper helper)
         {
@@ -388,6 +388,7 @@ namespace IncreaseAnimalHouseMaxPopulation
                 {
                     if (a.Value.fullness.Value != byte.MaxValue && Game1.getFarm().piecesOfHay.Value >= 1)
                     {
+                        //a.Value.
                         a.Value.fullness.Value = byte.MaxValue;
                         a.Value.daysSinceLastFed.Value = 1;
                         Game1.getFarm().piecesOfHay.Value--;

@@ -12,9 +12,9 @@ namespace DaLion.Common.Classes;
 
 #region using directives
 
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Xna.Framework;
 
 #endregion using directives
 
@@ -23,7 +23,7 @@ public class CircleTileGrid
 {
     private readonly Vector2 _origin;
     private readonly int _radius;
-    private bool[,] _outlineBoolArray;
+    private readonly bool[,] _outlineBoolArray;
 
     /// <summary>Construct an instance.</summary>
     /// <param name="origin">The center tile of the circle in the world reference.</param>
@@ -32,7 +32,7 @@ public class CircleTileGrid
     {
         _origin = origin;
         _radius = radius;
-        GetOutline();
+        _outlineBoolArray = GetOutline();
     }
 
     /// <summary>Enumerate all the world tiles within a certain radius from the origin.</summary>
@@ -55,14 +55,14 @@ public class CircleTileGrid
 
             // loop over the first remaining quadrant and mirror matches 3 times
             for (var x = 0; x < _radius; ++x)
-            for (var y = 0; y < _radius; ++y)
-                if (Contains(new(x, y)))
-                {
-                    yield return _origin - center + new Vector2(y, x);
-                    yield return _origin - center + new Vector2(y, 2 * _radius - x);
-                    yield return _origin - center + new Vector2(2 * _radius - y, x);
-                    yield return _origin - center + new Vector2(2 * _radius - y, 2 * _radius - x);
-                }
+                for (var y = 0; y < _radius; ++y)
+                    if (Contains(new(x, y)))
+                    {
+                        yield return _origin - center + new Vector2(y, x);
+                        yield return _origin - center + new Vector2(y, 2 * _radius - x);
+                        yield return _origin - center + new Vector2(2 * _radius - y, x);
+                        yield return _origin - center + new Vector2(2 * _radius - y, 2 * _radius - x);
+                    }
         }
     }
 
@@ -83,14 +83,14 @@ public class CircleTileGrid
 
             // loop over the first remaining quadrant and mirror matches 3 times
             for (var x = 0; x < _radius; ++x)
-            for (var y = 0; y < _radius; ++y)
-                if (_outlineBoolArray[x, y])
-                {
-                    yield return _origin - center + new Vector2(y, x);
-                    yield return _origin - center + new Vector2(y, 2 * _radius - x);
-                    yield return _origin - center + new Vector2(2 * _radius - y, x);
-                    yield return _origin - center + new Vector2(2 * _radius - y, 2 * _radius - x);
-                }
+                for (var y = 0; y < _radius; ++y)
+                    if (_outlineBoolArray[x, y])
+                    {
+                        yield return _origin - center + new Vector2(y, x);
+                        yield return _origin - center + new Vector2(y, 2 * _radius - x);
+                        yield return _origin - center + new Vector2(2 * _radius - y, x);
+                        yield return _origin - center + new Vector2(2 * _radius - y, 2 * _radius - x);
+                    }
         }
     }
 
@@ -164,7 +164,7 @@ public class CircleTileGrid
     #region private methods
 
     /// <summary>Create the circle's outline as a <see cref="bool" /> array.</summary>
-    protected void GetOutline()
+    protected bool[,] GetOutline()
     {
         var outline = new bool[_radius * 2 + 1, _radius * 2 + 1];
         var f = 1 - _radius;
@@ -201,7 +201,7 @@ public class CircleTileGrid
             outline[_radius - y, _radius - x] = true;
         }
 
-        _outlineBoolArray = outline;
+        return outline;
     }
 
     #endregion private methods

@@ -10,8 +10,9 @@
 
 using Microsoft.Toolkit.HighPerformance;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
-namespace Hashing;
+namespace Benchmarks.Hashing;
 
 internal static class Functions {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -221,4 +222,40 @@ internal static class Functions {
 			FNV1a(data) :
 			SpriteMaster.Hashing.HashUtility.HashXx3(data);
 	}
+
+	[DllImport("libxxhash.clang.dll", EntryPoint = "XXH3_64bits", ExactSpelling = true, BestFitMapping = false, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern unsafe ulong XxHash3NativeClang(void* input, ulong length);
+
+	[DllImport("libxxhash.clang.dll", EntryPoint = "XXH32", ExactSpelling = true, BestFitMapping = false, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern unsafe uint XxH32NativeClang(void* input, ulong length, uint seed);
+
+	[DllImport("libxxhash.clang.dll", EntryPoint = "XXH64", ExactSpelling = true, BestFitMapping = false, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern unsafe ulong XxH64NativeClang(void* input, ulong length, uint seed);
+
+	[DllImport("libxxhash.msvc.dll", EntryPoint = "XXH3_64bits", ExactSpelling = true, BestFitMapping = false, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern unsafe ulong XxHash3NativeVC(void* input, ulong length);
+
+	[DllImport("libxxhash.msvc.dll", EntryPoint = "XXH32", ExactSpelling = true, BestFitMapping = false, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern unsafe uint XxH32NativeVC(void* input, ulong length, uint seed);
+
+	[DllImport("libxxhash.msvc.dll", EntryPoint = "XXH64", ExactSpelling = true, BestFitMapping = false, CallingConvention = CallingConvention.Cdecl)]
+	internal static extern unsafe ulong XxH64NativeVC(void* input, ulong length, uint seed);
+
+#if false
+	internal static ulong XxHash3CLI(byte[] input) {
+		return XxHashCLI.XxHash3.Hash64(input);
+	}
+
+	internal static ulong XxHash3CLI(ReadOnlySpan<byte> input) {
+		return XxHashCLI.XxHash3.Hash64(input);
+	}
+
+	internal static ulong XxHash3CLITest(byte[] input) {
+		return XxHash3Experimental.XxHash3Test.Hash64(input);
+	}
+
+	internal static ulong XxHash3CLITest(ReadOnlySpan<byte> input) {
+		return XxHash3Experimental.XxHash3Test.Hash64(input);
+	}
+#endif
 }

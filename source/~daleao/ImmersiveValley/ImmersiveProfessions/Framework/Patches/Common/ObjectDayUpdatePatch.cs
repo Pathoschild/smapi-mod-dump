@@ -12,36 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ObjectDayUpdatePatch : BasePatch
+internal sealed class ObjectDayUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ObjectDayUpdatePatch()
     {
-        Original = RequireMethod<SObject>(nameof(SObject.DayUpdate));
+        Target = RequireMethod<SObject>(nameof(SObject.DayUpdate));
     }
 
     #region harmony patches
 
     /// <summary>Patch to increase production frequency of Producer Bee House.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ObjectDayUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? ObjectDayUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -63,7 +62,7 @@ internal class ObjectDayUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_4),
                     new CodeInstruction(OpCodes.Call,
                         typeof(Utility).RequireMethod(nameof(Utility.CalculateMinutesUntilMorning),
-                            new[] {typeof(int), typeof(int)}))
+                            new[] { typeof(int), typeof(int) }))
                 )
                 .AddLabels(isNotProducer)
                 .Insert(
@@ -93,7 +92,6 @@ internal class ObjectDayUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching Bee House production speed for Producers.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

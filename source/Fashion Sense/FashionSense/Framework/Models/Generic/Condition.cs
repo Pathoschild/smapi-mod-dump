@@ -51,11 +51,14 @@ namespace FashionSense.Framework.Models.Generic
             IsFishing,
             IsNibbling,
             IsReeling,
+            IsPullingFishOutOfWater,
+            ToolChargeLevel,
             IsUsingHeavyTool,
             IsUsingMilkPail,
             IsUsingShears,
             IsUsingPan,
             IsUsingScythe,
+            IsWatering,
             IsUsingMeleeWeapon,
             IsUsingSlingshot,
             IsHarvesting,
@@ -66,7 +69,9 @@ namespace FashionSense.Framework.Models.Generic
             IsSitting,
             IsCarrying,
             IsSwimming,
-            IsInBathingSuit
+            IsInBathingSuit,
+            IsSick,
+            IsPassingOut
         }
 
         public Type Name { get; set; }

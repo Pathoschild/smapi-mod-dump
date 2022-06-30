@@ -9,6 +9,8 @@ for queries and analysis.**
 Giant Crop Fertilizer
 ===========================
 
+**THIS REPO IS AN ARCHIVE, PLEASE SEE THE UPDATED REPO AT [https://github.com/atravita-mods/StardewMods](https://github.com/atravita-mods/StardewMods)**
+
 ![Header image](GiantCropFertilizer/docs/fertilizer.jpg)
 
 This mod adds a fertilizer that greatly boosts the chance of getting a giant crop. Simply apply to the middle of a 9x9 square of giant-crop eligible crops, wait for them to become full grown...

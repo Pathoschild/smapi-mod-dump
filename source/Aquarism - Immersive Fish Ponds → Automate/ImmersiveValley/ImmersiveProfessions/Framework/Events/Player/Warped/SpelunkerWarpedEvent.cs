@@ -12,21 +12,26 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 
 #region using directives
 
-using System;
+using Common.Events;
+using Extensions;
+using GameLoop;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
-
-using GameLoop;
-using Extensions;
+using System;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class SpelunkerWarpedEvent : WarpedEvent
+internal sealed class SpelunkerWarpedEvent : WarpedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal SpelunkerWarpedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
         if (e.NewLocation.Equals(e.OldLocation)) return;
 
@@ -38,16 +43,16 @@ internal class SpelunkerWarpedEvent : WarpedEvent
             if (e.Player.HasProfession(Profession.Spelunker, true))
             {
                 var player = e.Player;
-                player.health = Math.Min(player.health + (int) (player.maxHealth * 0.025f), player.maxHealth);
+                player.health = Math.Min(player.health + (int)(player.maxHealth * 0.025f), player.maxHealth);
                 player.Stamina = Math.Min(player.Stamina + player.MaxStamina * 0.01f, player.MaxStamina);
             }
 
-            EventManager.Enable(typeof(SpelunkerUpdateTickedEvent));
+            Manager.Hook<SpelunkerUpdateTickedEvent>();
         }
         else if (e.NewLocation is not MineShaft && e.OldLocation is MineShaft)
         {
             ModEntry.PlayerState.SpelunkerLadderStreak = 0;
-            EventManager.Disable(typeof(SpelunkerUpdateTickedEvent));
+            Manager.Hook<SpelunkerUpdateTickedEvent>();
         }
     }
 }

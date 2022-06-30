@@ -3,5 +3,6 @@
   "MinutesToHungry": 300,
   "MoveToFoodChance": 0.1,
   "MaxDistanceToEat": 3.0,
-  "PointsMult": 0.5
+  "PointsMult": 0.5,
+  "CountAsFedSpouse": true
 }

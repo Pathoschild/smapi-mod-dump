@@ -1,0 +1,37 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Traktori7/StardewValleyMods
+**
+*************************************************/
+
+[
+	{
+		"DungeonName": "SeedShopDungeon",
+		"SpawnMapName": "SeedShop",
+		"SpawnChance": 1,
+		"PortalX": 8,
+		"PortalY": 26,
+		"DungeonMaps": [
+			{
+				"MapFile": "SeedShop.tmx",
+				"SpawnWeight": 1,
+				"EntryX": 8,
+				"EntryY": 26,
+				"Challenges": [
+					{
+						"Challenge": "FightSlime1",
+						"Weight": 2
+					},
+					{
+						"Challenge": "Collect1",
+						"Weight": 1
+					}
+				]
+			}
+		]
+	}
+]

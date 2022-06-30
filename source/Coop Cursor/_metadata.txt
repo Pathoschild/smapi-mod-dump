@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley-coop-cursor
+   Git: https://gitlab.com/delixx/stardew-valley-coop-cursor.git
+
+mods:
+   Coop Cursor
+
+latest commit:
+   commit 01183831eef12ec03f2a551f24d2f028e6824f3d
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Mon Jun 27 21:42:48 2022 +0200
+   
+       added config to enable/disable
+   

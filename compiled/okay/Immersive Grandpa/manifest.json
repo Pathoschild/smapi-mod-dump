@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Immersive Grandpa",
+  "Author": "mistyspring",
+  "Version": "1.0.0",
+  "Description": "Mod that makes grandpa's skintone fit your own via tokens.",
+  "UniqueID": "mistyspring.immersivegrandpa",
+  "EntryDll": "ImmersiveGrandpa.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [
+    "nexus:12562"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

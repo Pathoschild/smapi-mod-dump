@@ -13,14 +13,16 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Hashing;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types;
 
-internal ref struct DataRef<T> where T : unmanaged {
+[StructLayout(LayoutKind.Auto)]
+internal readonly ref struct DataRef<T> where T : unmanaged {
 	internal static DataRef<T> Null => new(null);
 
 	private readonly ReadOnlySpan<T> DataInternal = default;
-	private T[]? CopiedData = null;
+	private readonly T[]? CopiedData = null;
 	internal readonly int Length => DataInternal.Length;
 
 	internal readonly ReadOnlySpan<T> Data => CopiedData is null ? DataInternal : CopiedData.AsReadOnlySpan();
@@ -28,12 +30,12 @@ internal ref struct DataRef<T> where T : unmanaged {
 	internal readonly T[] DataCopy {
 		 get {
 			if (DataInternal.IsEmpty) {
-				throw new NullReferenceException(nameof(DataCopy));
+				return ThrowHelper.ThrowNullReferenceException<T[]>(nameof(DataCopy));
 			}
 
 			if (CopiedData is null) {
 				Unsafe.AsRef(in CopiedData) = GC.AllocateUninitializedArray<T>(DataInternal.Length);
-				DataInternal.CopyTo(CopiedData.AsSpan());
+				DataInternal.CopyToUnsafe(CopiedData.AsSpan());
 			}
 			return CopiedData!;
 		}

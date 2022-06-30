@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
@@ -23,12 +25,14 @@ internal static class EnumExt {
 	/// </summary>
 	/// <typeparam name="TEnum">Enumerator Type</typeparam>
 	/// <returns>Array of name-value pairs</returns>
+	[Pure, MustUseReturnValue]
 	internal static KeyValuePair<string, TEnum>[] Get<TEnum>() where TEnum : struct, Enum {
 		var names = Enum.GetNames(typeof(TEnum));
 		var result = new KeyValuePair<string, TEnum>[names.Length];
 		for (int i = 0; i < names.Length; ++i) {
 			result[i] = new(names[i], Enum.Parse<TEnum>(names[i]));
 		}
+
 		return result;
 	}
 
@@ -37,15 +41,30 @@ internal static class EnumExt {
 	/// </summary>
 	/// <param name="type">Enumerator Type</param>
 	/// <returns>Array of name-value pairs</returns>
+	[Pure, MustUseReturnValue]
 	internal static KeyValuePair<string, int>[] Get(Type type) {
 		var names = Enum.GetNames(type);
 		var result = new KeyValuePair<string, int>[names.Length];
 		for (int i = 0; i < names.Length; ++i) {
 			result[i] = new(names[i], (int)Enum.Parse(type, names[i]));
 		}
+
 		return result;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static Type GetUnderlyingType<T>() where T : Enum => Enum.GetUnderlyingType(typeof(T));
+
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static T? Parse<T>(Type? enumType, string value) where T : unmanaged {
+		if (enumType is null) {
+			return null;
+		}
+
+		if (Enum.TryParse(enumType, value, out var result)) {
+			return (T)result!;
+		}
+
+		return null;
+	}
 }

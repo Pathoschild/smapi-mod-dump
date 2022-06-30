@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-  "Name": "Arsenal - Immersive Weapons and Footwear",
+  "Name": "Arsenal - Immersive Weapons",
   "Author": "DaLion",
   "Version": "1.0.0",
   "Description": "An immersive rebalance of vanilla weapons.",
@@ -25,7 +25,7 @@
     },
     {
       "UniqueID": "DaLion.ImmersiveProfessions",
-      "MinimumVersion": "3.1.16",
+      "MinimumVersion": "5.0.0",
       "IsRequired": false
     },
     {

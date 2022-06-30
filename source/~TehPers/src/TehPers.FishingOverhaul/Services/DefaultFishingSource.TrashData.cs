@@ -205,7 +205,7 @@ namespace TehPers.FishingOverhaul.Services
                 // 'Lifesaver'
                 yield return new(
                     NamespacedKey.SdvFurniture(2418),
-                    new(0.2) {IncludeLocations = ImmutableArray.Create("Willys Ship")}
+                    new(0.2) {IncludeLocations = ImmutableArray.Create("BoatTunnel")}
                 );
                 // Caroline's necklace
                 yield return new(
@@ -216,7 +216,8 @@ namespace TehPers.FishingOverhaul.Services
                         PriorityTier = DefaultFishingSource.questItemTier,
                         When = new Dictionary<string, string?>
                         {
-                            [$"HasFlag |contains={GameLocation.CAROLINES_NECKLACE_MAIL}"] = "false",
+                            [$"HasFlag |contains={GameLocation.CAROLINES_NECKLACE_MAIL}%&NL&%"] =
+                                "false",
                             [$"TehPers.FishingOverhaul/MissingSecretNotes |contains={GameLocation.NECKLACE_SECRET_NOTE_INDEX}"] =
                                 "false",
                         }.ToImmutableDictionary(),
@@ -261,6 +262,7 @@ namespace TehPers.FishingOverhaul.Services
                     new(0.1)
                     {
                         IncludeLocations = ImmutableArray.Create("Town"),
+                        PriorityTier = DefaultFishingSource.prioritizedTier,
                         Position = new()
                         {
                             X = new() {LessThan = 30},

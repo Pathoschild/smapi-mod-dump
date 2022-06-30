@@ -12,21 +12,22 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
+using System;
+using System.Reflection;
 
 #endregion using directive
 
 [UsedImplicitly]
-internal class GameLocationCanRespecPatch : BasePatch
+internal sealed class GameLocationCanRespecPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GameLocationCanRespecPatch()
     {
-        Original = RequireMethod<GameLocation>(nameof(GameLocation.canRespec));
+        Target = RequireMethod<GameLocation>(nameof(GameLocation.canRespec));
     }
 
     #region harmony patches

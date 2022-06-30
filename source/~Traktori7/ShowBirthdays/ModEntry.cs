@@ -213,7 +213,7 @@ namespace ShowBirthdays
 				}
 
 				// Get a refrence to the list of weddings
-				IReflectedField<Dictionary<ClickableTextureComponent, List<string>>> weddings = this.Helper.Reflection.GetField<Dictionary<ClickableTextureComponent, List<string>>>(billboard, "_upcomingWeddings");
+				IReflectedField<Dictionary<ClickableTextureComponent, List<string>>> weddings = Helper.Reflection.GetField<Dictionary<ClickableTextureComponent, List<string>>>(billboard, "_upcomingWeddings");
 
 				// Wedding text from base game
 				if (weddings.GetValue().ContainsKey(days[i - 1]))
@@ -691,18 +691,17 @@ namespace ShowBirthdays
 			/// </summary>
 			private List<Birthday>? GetListOfBirthdays(string season)
 			{
-				try
+				int index = Utility.getSeasonNumber(season);
+
+				if (index >= 0 && index < birthdays.Length)
 				{
-					int index = Utility.getSeasonNumber(season);
 					return birthdays[index];
 				}
-				catch (Exception ex)
+				else
 				{
-					monitor.Log($"Unknown season {season}", LogLevel.Error);
-					monitor.Log(ex.ToString(), LogLevel.Error);
+					monitor.Log($"Tried to get the list of birthdays for an unknown season {season}.", LogLevel.Error);
 					return null;
 				}
-
 			}
 
 
@@ -781,14 +780,13 @@ namespace ShowBirthdays
 						currentSpriteIndex = 0;
 				}
 
-				try
+				if (currentSpriteIndex < list.Count)
 				{
 					n = list[currentSpriteIndex];
 				}
-				catch (Exception ex)
+				else
 				{
-					monitor.Log("Getting the NPC from the index failed", LogLevel.Error);
-					monitor.Log(ex.ToString(), LogLevel.Error);
+					monitor.Log($"Getting the NPC for the sprite index {currentSpriteIndex} failed", LogLevel.Error);
 					return null;
 				}
 
@@ -797,15 +795,20 @@ namespace ShowBirthdays
 				// How the base game handles getting the sprite
 				try
 				{
-					texture = contentHelper.Load<Texture2D>("Characters\\" + n.getTextureName());
+					texture = contentHelper.Load<Texture2D>($"Characters\\{n.getTextureName()}");
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
+					monitor.Log($"Failed loading the texture for npc {n.getTextureName()}. Trying to use a backup sprite.", LogLevel.Error);
+					monitor.Log(ex.ToString(), LogLevel.Error);
 					texture = n.Sprite.Texture;
 				}
 
 				if (incrementSpriteIndex)
-					monitor.Log($"Sprite changed from {(currentSpriteIndex == 0 ? list[^1].Name : list[currentSpriteIndex - 1].Name)} to {list[currentSpriteIndex].Name}", LogLevel.Trace);
+				{
+					string previousCharacterName = currentSpriteIndex == 0 ? list[^1].Name : list[currentSpriteIndex - 1].Name;
+					monitor.Log($"Sprite changed from {previousCharacterName} to {list[currentSpriteIndex].Name}", LogLevel.Trace);
+				}
 
 				return texture;
 			}

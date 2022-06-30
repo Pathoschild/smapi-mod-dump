@@ -19,5 +19,6 @@ namespace ItemPipes.Framework.Data
     public class RecipeData
     {
         public Dictionary<string, string> recipesData { get; set; }
+        public Dictionary<string, string> fakeRecipesData { get; set; }
     }
 }

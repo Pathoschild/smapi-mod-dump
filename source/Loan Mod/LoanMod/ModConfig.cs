@@ -13,10 +13,10 @@ using StardewModdingAPI;
 namespace LoanMod
 {
     public partial class ModEntry
-    {
+    { 
         internal class ModConfig
         {
-            private int MAX_LOAN_INT = 99999999;
+            private readonly int MAX_LOAN_INT = 99999999;
             private int maxBorrowAmount = 1000000;
 
             public SButton LoanButton { get; set; } = SButton.L;

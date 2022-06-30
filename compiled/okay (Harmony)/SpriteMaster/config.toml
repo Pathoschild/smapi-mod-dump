@@ -1,5 +1,5 @@
 [Config]
-ConfigVersion = "0.14.1.3"
+ConfigVersion = "0.15.0.1"
 # Should SpriteMaster be enabled? Unsetting this will disable _all_ SpriteMaster functionality.
 Enabled = true
 # Button to toggle SpriteMaster
@@ -47,12 +47,9 @@ DataStoreOverride = ""
 	[Config.Garbage]
 	# Should unowned textures be marked in the garbage collector's statistics?
 	CollectAccountUnownedTextures = false
-	# Should owned textures be marked in the garbage collector's statistics?
-	CollectAccountOwnedTextures = false
-	# The amount of free memory required by SM after which it triggers recovery operations
-	RequiredFreeMemory = 128
-	# Hysterisis applied to RequiredFreeMemory
-	RequiredFreeMemoryHysterisis = 1.5
+	ShouldCollectAccountOwnedTextures = true
+	# Hysteresis applied to RequiredFreeMemory
+	RequiredFreeMemoryHysteresis = 1.5
 	# Should sprites containing season names be purged on a seasonal basis?
 	SeasonalPurge = true
 	# What runtime garbage collection latency mode should be set?
@@ -101,10 +98,6 @@ DataStoreOverride = ""
 	# Should the system HDR settings be honored?
 	HonorHDRSettings = true
 
-	[Config.Performance]
-	# Perform a Generation 0 and 1 garbage collection pass every N ticks (if <= 0, disabled)
-	TransientGCTickCount = 150
-
 	[Config.Resample]
 	# Should resampling be enabled?
 	Enabled = true
@@ -143,7 +136,7 @@ DataStoreOverride = ""
 	# Should transparent pixels be premultiplied to prevent a 'halo' effect?
 	PremultiplyAlpha = true
 	# Low pass value that should be filtered when reversing premultiplied alpha.
-	PremultiplicationLowPass = 1024
+	PremultiplicationLowPass = 1023
 	# Use redmean algorithm for perceptual color comparisons?
 	UseRedmean = false
 	# What textures are drawn in 'slices' and thus should be special-cased to be resampled as one texture?
@@ -244,9 +237,9 @@ DataStoreOverride = ""
 		Enabled = true
 		# What quality level should be used?
 		# Legal Values: [
-		#	Fastest, Normal, Production, Highest
+		#	Low, Medium, High
 		# ]
-		Quality = "Highest"
+		Quality = "High"
 		# What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?
 		HardAlphaDeviationThreshold = 7
 
@@ -332,11 +325,20 @@ DataStoreOverride = ""
 	# Should we fetch and load texture data within the same frame?
 	CanFetchAndLoadSameFrame = true
 
-	[Config.MemoryCache]
-	# Should the memory cache be enabled?
+	[Config.ResidentCache]
+	# Should the resident cache be enabled?
 	Enabled = true
 	# Should memory cache elements always be flushed upon update?
 	AlwaysFlush = false
+	# The preferred compression algorithm for the resident cache
+	# Legal Values: [
+	#	None, Compress, Deflate, Zstd/Best
+	# ]
+	Compress = "Zstd"
+
+	[Config.TextureFileCache]
+	# Should the texture memory cache be enabled?
+	Enabled = true
 
 	[Config.SuspendedCache]
 	# Should the suspended sprite cache be enabled?
@@ -363,12 +365,6 @@ DataStoreOverride = ""
 	HarmonyInlining = false
 	# Should the game's 'parseMasterSchedule' method be fixed and optimized?
 	FixMasterSchedule = true
-	# Should NPC Warp Points code be optimized?
-	OptimizeWarpPoints = true
-	# Should NPCs take true shortest paths?
-	TrueShortestPath = false
-	# Allow NPCs onto the farm?
-	AllowNPCsOnFarm = false
 	# Should the default batch sort be replaced with a stable sort?
 	StableSort = true
 	# Should the game be prevented from going 'unresponsive' during loads?
@@ -380,13 +376,23 @@ DataStoreOverride = ""
 	# Should low-level OpenGL optimizations be performed?
 	OptimizeOpenGL = true
 
+		[Config.Extras.Pathfinding]
+		# Should NPC Warp Points code be optimized?
+		OptimizeWarpPoints = true
+		# Should Location objects be locked during concurrent pathfinding?
+		LockLocationObjects = false
+		# Should NPCs take true shortest paths?
+		TrueShortestPath = false
+		# Allow NPCs onto the farm?
+		AllowNPCsOnFarm = false
+
 		[Config.Extras.Snow]
 		# Should custom snowfall be used during snowstorms?
 		Enabled = true
 		# Minimum Snow Density
-		MinimumDensity = 1024
+		MinimumDensity = 64
 		# Maximum Snow Density
-		MaximumDensity = 3072
+		MaximumDensity = 192
 		# Maximum Snow Rotation Speed
 		MaximumRotationSpeed = 0.01666666753590107
 		# Maximum Snow Scale

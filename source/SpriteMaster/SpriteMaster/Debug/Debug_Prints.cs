@@ -23,28 +23,28 @@ internal static partial class Debug {
 	[DebuggerStepThrough, DebuggerHidden]
 	internal static bool CheckLogLevel(LogLevel logLevel) => Config.Debug.Logging.LogLevel <= logLevel;
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
 		DebugWriteStr($"{caller.Format(format)}{message}", LogLevel.Trace);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
 		TraceLn(ParseException(exception), caller: caller);
 	}
 
-	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace<T>(string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
 		TraceLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	private static void TraceLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Trace($"{message}\n", format, caller);
 	}
@@ -75,7 +75,7 @@ internal static partial class Debug {
 		Info($"{message}\n", format, caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden]
+	//[DebuggerStepThrough, DebuggerHidden]
 	internal static void Message(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Info))
 			return;

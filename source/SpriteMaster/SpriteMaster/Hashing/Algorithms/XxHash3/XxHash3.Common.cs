@@ -8,30 +8,38 @@
 **
 *************************************************/
 
+using SpriteMaster.Extensions;
 using System;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 
 namespace SpriteMaster.Hashing.Algorithms;
 
 internal static unsafe partial class XxHash3 {
-	internal const bool UseAVX512 = false;
-	internal static bool UseAVX2 = Extensions.Simd.Support.UseAVX2;
-	internal const bool UseSSE2 = true;
-	internal const bool UseNeon = true;
-	internal static int VectorSize =
+	private const MethodImplOptions Inline =
+		MethodImplOptions.AggressiveInlining;
+	private const MethodImplOptions Hot =
+		(MethodImplOptions)0;
+
+	private const bool UseAVX512 = false;
+	internal static readonly bool UseAVX2 = true && Extensions.Simd.Support.Avx2 && Avx2.IsSupported;
+	internal static readonly bool UseSSE2 = true && Sse2.IsSupported;
+	internal static readonly bool UseNeon = true && AdvSimd.IsSupported;
+
+	private static readonly int VectorSize =
 		UseAVX512 ? 512 :
 		UseAVX2 ? 256 :
 		(UseSSE2 || UseNeon) ? 128 :
 		64;
-	internal const bool UsePrefetch = true;
-	internal const uint UnrollCount = 4u;
-	internal const uint CacheLine = 0x40u;
-	internal const uint PrefetchDistance = CacheLine;
+	private const bool UsePrefetch = true;
+	private const uint CacheLine = 0x40u;
+	private const uint PrefetchDistance = CacheLine;
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal static void PrefetchNext<T>(T* address) where T : unmanaged {
+	[MethodImpl(Inline)]
+	private static void PrefetchNext<T>(T* address) where T : unmanaged {
 		if (!Sse.IsSupported || !UsePrefetch) {
 			return;
 		}
@@ -39,8 +47,8 @@ internal static unsafe partial class XxHash3 {
 		Sse.Prefetch0(((byte*)address) + PrefetchDistance);
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal static void PrefetchNonTemporalNext<T>(T* address) where T : unmanaged {
+	[MethodImpl(Inline)]
+	private static void PrefetchNonTemporalNext<T>(T* address) where T : unmanaged {
 		if (!Sse.IsSupported || !UsePrefetch) {
 			return;
 		}
@@ -48,13 +56,13 @@ internal static unsafe partial class XxHash3 {
 		Sse.PrefetchNonTemporal(((byte*)address) + PrefetchDistance);
 	}
 
-	internal static class Prime32 {
+	private static class Prime32 {
 		internal const uint Prime0 = 0x9E3779B1U;
 		internal const uint Prime1 = 0x85EBCA77U;
 		internal const uint Prime2 = 0xC2B2AE3DU;
 	}
 
-	internal static class Prime64 {
+	private static class Prime64 {
 		internal const ulong Prime0 = 0x9E3779B185EBCA87UL;
 		internal const ulong Prime1 = 0xC2B2AE3D27D4EB4FUL;
 		internal const ulong Prime2 = 0x165667B19E3779F9UL;
@@ -62,18 +70,41 @@ internal static unsafe partial class XxHash3 {
 		internal const ulong Prime4 = 0x27D4EB2F165667C5UL;
 	}
 
-	internal const uint StripeLength = 64;
-	internal const uint AccumulatorBytes = StripeLength / sizeof(ulong);
+	private const uint StripeLength = 64;
+	private const uint AccumulatorBytes = StripeLength / sizeof(ulong);
+	private const uint StripesPerBlock = (SecretLength - StripeLength) / 8U;
+	private const uint BlockLength = StripeLength * StripesPerBlock;
+
+#if !SHIPPING
+	static XxHash3() {
+		StripeLength.AssertEqual(64u);
+		AccumulatorBytes.AssertEqual(8u);
+		StripesPerBlock.AssertEqual(16u);
+		BlockLength.AssertEqual(1024u);
+		SecretSpan.Length.AssertEqual((int)SecretLength);
+	}
+#endif
 
 	// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-	internal const uint SecretLength = 192;
-	[FixedAddressValueType]
+	private const uint SecretLength = 192;
 	// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-	private static readonly byte[] SecretArray;
-	[FixedAddressValueType]
-	internal static readonly byte* Secret;
+	private static ReadOnlySpan<byte> SecretSpan => new byte[] {
+		0xb8, 0xfe, 0x6c, 0x39, 0x23, 0xa4, 0x4b, 0xbe, 0x7c, 0x01, 0x81, 0x2c, 0xf7, 0x21, 0xad, 0x1c,
+		0xde, 0xd4, 0x6d, 0xe9, 0x83, 0x90, 0x97, 0xdb, 0x72, 0x40, 0xa4, 0xa4, 0xb7, 0xb3, 0x67, 0x1f,
+		0xcb, 0x79, 0xe6, 0x4e, 0xcc, 0xc0, 0xe5, 0x78, 0x82, 0x5a, 0xd0, 0x7d, 0xcc, 0xff, 0x72, 0x21,
+		0xb8, 0x08, 0x46, 0x74, 0xf7, 0x43, 0x24, 0x8e, 0xe0, 0x35, 0x90, 0xe6, 0x81, 0x3a, 0x26, 0x4c,
+		0x3c, 0x28, 0x52, 0xbb, 0x91, 0xc3, 0x00, 0xcb, 0x88, 0xd0, 0x65, 0x8b, 0x1b, 0x53, 0x2e, 0xa3,
+		0x71, 0x64, 0x48, 0x97, 0xa2, 0x0d, 0xf9, 0x4e, 0x38, 0x19, 0xef, 0x46, 0xa9, 0xde, 0xac, 0xd8,
+		0xa8, 0xfa, 0x76, 0x3f, 0xe3, 0x9c, 0x34, 0x3f, 0xf9, 0xdc, 0xbb, 0xc7, 0xc7, 0x0b, 0x4f, 0x1d,
+		0x8a, 0x51, 0xe0, 0x4b, 0xcd, 0xb4, 0x59, 0x31, 0xc8, 0x9f, 0x7e, 0xc9, 0xd9, 0x78, 0x73, 0x64,
+		0xea, 0xc5, 0xac, 0x83, 0x34, 0xd3, 0xeb, 0xc3, 0xc5, 0x81, 0xa0, 0xff, 0xfa, 0x13, 0x63, 0xeb,
+		0x17, 0x0d, 0xdd, 0x51, 0xb7, 0xf0, 0xda, 0x49, 0xd3, 0x16, 0x55, 0x26, 0x29, 0xd4, 0x68, 0x9e,
+		0x2b, 0x16, 0xbe, 0x58, 0x7d, 0x47, 0xa1, 0xfc, 0x8f, 0xf8, 0xb8, 0xd1, 0x7a, 0xd0, 0x31, 0xce,
+		0x45, 0xcb, 0x3a, 0x8f, 0x95, 0x16, 0x04, 0x28, 0xaf, 0xd7, 0xfb, 0xca, 0xbb, 0x4b, 0x40, 0x7e,
+	};
+	private static readonly byte* Secret = (byte *)Unsafe.AsPointer(ref Unsafe.AsRef(SecretSpan.GetPinnableReference()));
 
-	internal static class SecretValues64 {
+	private static class SecretValues64 {
 		internal const ulong Secret00 = 0xbe4ba423396cfeb8UL;
 		internal const ulong Secret08 = 0x1cad21f72c81017cUL;
 		internal const ulong Secret10 = 0xdb979083e96dd4deUL;
@@ -103,45 +134,64 @@ internal static unsafe partial class XxHash3 {
 		internal const ulong Secret43 = 0x65D088CB00C391BBUL;
 	}
 
-	internal static class SecretValues32 {
+	private static class SecretValues32 {
 		internal const uint Secret00 = 0x396cfeb8U;
 		internal const uint Secret04 = 0xbe4ba423U;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.RunOnce)]
-	static XxHash3() {
-		SecretArray = GC.AllocateUninitializedArray<byte>(length: (int)SecretLength, pinned: true);
+	private const byte ShuffleDataKey = (0 << 6) | (3 << 4) | (0 << 2) | 1;
+	private const byte ShuffleDataSwap = (1 << 6) | (0 << 4) | (3 << 2) | 2;
 
-		ReadOnlySpan<byte> secret = stackalloc byte[(int)SecretLength] {
-      0xb8, 0xfe, 0x6c, 0x39, 0x23, 0xa4, 0x4b, 0xbe, 0x7c, 0x01, 0x81, 0x2c, 0xf7, 0x21, 0xad, 0x1c,
-      0xde, 0xd4, 0x6d, 0xe9, 0x83, 0x90, 0x97, 0xdb, 0x72, 0x40, 0xa4, 0xa4, 0xb7, 0xb3, 0x67, 0x1f,
-      0xcb, 0x79, 0xe6, 0x4e, 0xcc, 0xc0, 0xe5, 0x78, 0x82, 0x5a, 0xd0, 0x7d, 0xcc, 0xff, 0x72, 0x21,
-      0xb8, 0x08, 0x46, 0x74, 0xf7, 0x43, 0x24, 0x8e, 0xe0, 0x35, 0x90, 0xe6, 0x81, 0x3a, 0x26, 0x4c,
-      0x3c, 0x28, 0x52, 0xbb, 0x91, 0xc3, 0x00, 0xcb, 0x88, 0xd0, 0x65, 0x8b, 0x1b, 0x53, 0x2e, 0xa3,
-      0x71, 0x64, 0x48, 0x97, 0xa2, 0x0d, 0xf9, 0x4e, 0x38, 0x19, 0xef, 0x46, 0xa9, 0xde, 0xac, 0xd8,
-      0xa8, 0xfa, 0x76, 0x3f, 0xe3, 0x9c, 0x34, 0x3f, 0xf9, 0xdc, 0xbb, 0xc7, 0xc7, 0x0b, 0x4f, 0x1d,
-      0x8a, 0x51, 0xe0, 0x4b, 0xcd, 0xb4, 0x59, 0x31, 0xc8, 0x9f, 0x7e, 0xc9, 0xd9, 0x78, 0x73, 0x64,
-      0xea, 0xc5, 0xac, 0x83, 0x34, 0xd3, 0xeb, 0xc3, 0xc5, 0x81, 0xa0, 0xff, 0xfa, 0x13, 0x63, 0xeb,
-      0x17, 0x0d, 0xdd, 0x51, 0xb7, 0xf0, 0xda, 0x49, 0xd3, 0x16, 0x55, 0x26, 0x29, 0xd4, 0x68, 0x9e,
-      0x2b, 0x16, 0xbe, 0x58, 0x7d, 0x47, 0xa1, 0xfc, 0x8f, 0xf8, 0xb8, 0xd1, 0x7a, 0xd0, 0x31, 0xce,
-      0x45, 0xcb, 0x3a, 0x8f, 0x95, 0x16, 0x04, 0x28, 0xaf, 0xd7, 0xfb, 0xca, 0xbb, 0x4b, 0x40, 0x7e,
-    };
-
-    SecretArray = GC.AllocateUninitializedArray<byte>(length: (int)SecretLength, pinned: true);
-    secret.CopyTo(SecretArray);
-
-		fixed (byte* ptr = SecretArray) {
-			Secret = ptr;
-		}
-	}
-	internal const byte ShuffleDataKey = (0 << 6) | (3 << 4) | (0 << 2) | 1;
-	internal const byte ShuffleDataSwap = (1 << 6) | (0 << 4) | (3 << 2) | 2;
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal static uint LoadLittle32<T>(T* data) where T : unmanaged =>
-		BitConverter.IsLittleEndian ? *(uint*)data : BinaryPrimitives.ReverseEndianness(*(uint*)data);
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal static ulong LoadLittle64<T>(T* data) where T : unmanaged =>
+	[Pure]
+	[MethodImpl(Inline)]
+	private static ulong LoadLittle64<T>(T* data) where T : unmanaged =>
 		BitConverter.IsLittleEndian ? *(ulong*)data : BinaryPrimitives.ReverseEndianness(*(ulong*)data);
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static T Read<T>(this ref byte data) where T : unmanaged {
+		return Unsafe.ReadUnaligned<T>(ref data);
+	}
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static T Read<T>(this ref byte data, uint offset) where T : unmanaged {
+		return Unsafe.ReadUnaligned<T>(ref Unsafe.AddByteOffset(ref data, new(offset)));
+	}
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static ref byte Offset(this ref byte data, uint offset) {
+		return ref Unsafe.AddByteOffset(ref data, new(offset));
+	}
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static ref byte AsRef(this ReadOnlySpan<byte> span) =>
+		ref MemoryMarshal.GetReference(span);
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static bool IsAligned(this uint value, uint alignment) =>
+		(value & (alignment - 1U)) == 0U;
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static T* AsPointerUnsafe<T>(this Span<T> span) where T : unmanaged =>
+		(T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(span));
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static T* AsPointerUnsafe<T>(this ReadOnlySpan<T> span) where T : unmanaged =>
+		(T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(span));
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static byte* SlicePointer(this ReadOnlySpan<byte> span, uint offset) =>
+		span.SliceUnsafe((int)offset).AsPointerUnsafe();
+
+	[Pure]
+	[MethodImpl(Inline)]
+	private static byte* SlicePointer(this ReadOnlySpan<byte> span, uint offset, uint length) =>
+		span.SliceUnsafe((int)offset, (int)length).AsPointerUnsafe();
 }

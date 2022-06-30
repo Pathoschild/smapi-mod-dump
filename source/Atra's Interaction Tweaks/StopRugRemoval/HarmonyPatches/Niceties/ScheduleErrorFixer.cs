@@ -71,3 +71,22 @@ internal static class ScheduleErrorFixer
         }
     }
 }
+
+/// <summary>
+/// Prevent characters from being warped to a null location.
+/// </summary>
+[HarmonyPatch(typeof(Game1))]
+internal static class ScheduleNullWarp
+{
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(Game1.warpCharacter), new[] { typeof(NPC), typeof(GameLocation), typeof(Vector2) })]
+    private static bool PrefixCharacterWarp(NPC character, GameLocation? targetLocation)
+    {
+        if (targetLocation is null)
+        {
+            ModEntry.ModMonitor.Log($"Someone has requested {character?.Name} warp to a null location. Surpressing that.", LogLevel.Error);
+            return false;
+        }
+        return true;
+    }
+}

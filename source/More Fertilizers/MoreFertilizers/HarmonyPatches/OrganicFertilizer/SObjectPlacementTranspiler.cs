@@ -67,7 +67,7 @@ internal static class SObjectPlacementTranspiler
             helper.Pop()
             .Insert(codes.ToArray());
 
-            helper.Print();
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)

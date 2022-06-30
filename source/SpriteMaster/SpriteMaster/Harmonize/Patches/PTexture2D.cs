@@ -17,10 +17,13 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Spans;
+using StardewModdingAPI;
+using StardewValley.GameData.HomeRenovations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -48,8 +51,6 @@ internal static class PTexture2D {
 		int elementCount,
 		bool animated
 	) where T : unmanaged {
-		TextureCache.Remove(texture);
-
 		if (!ManagedSpriteInstance.Validate(texture, clean: true)) {
 			return;
 		}
@@ -76,7 +77,7 @@ internal static class PTexture2D {
 #else
 		var byteData = Cacheable(texture) ? data : default;
 
-		var span = byteData.IsEmpty ? default : byteData.Slice(startIndex, elementCount).AsBytes();
+		var span = byteData.IsEmpty ? default : byteData.SliceUnsafe(startIndex, elementCount).AsBytes();
 
 		ManagedSpriteInstance.Purge(
 			reference: texture,
@@ -119,7 +120,7 @@ internal static class PTexture2D {
 				);
 
 				for (int y = 0; y < rect.Height; ++y) {
-					var inSpanRow = inSpan.Slice(inOffset, inRowLength);
+					var inSpanRow = inSpan.SliceUnsafe(inOffset, inRowLength);
 					var cachedSpanRow = cachedSpan.GetRowSpan(y);
 					if (!inSpanRow.SequenceEqual(cachedSpanRow)) {
 						return true;
@@ -207,6 +208,11 @@ internal static class PTexture2D {
 		return true;
 	}
 
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static Span<T> ThrowArgumentOutOfRangeLessThanException<T>(string name, int value, int constraint) =>
+		throw new ArgumentOutOfRangeException(name, $"{value} < {constraint}");
+
 	internal static unsafe Span<T> GetCachedData<T>(
 		XTexture2D __instance,
 		int level,
@@ -232,7 +238,7 @@ internal static class PTexture2D {
 				int numElements = elementCount ?? __instance.Format.SizeBytes(rect.Area) / sizeof(T);
 
 				if (cachedSourceData.Length < numElements * sizeof(T)) {
-					throw new ArgumentException($"{cachedSourceData.Length} < {numElements * sizeof(T)}", nameof(numElements));
+					return ThrowArgumentOutOfRangeLessThanException<T>(nameof(numElements), cachedSourceData.Length, numElements * sizeof(T));
 				}
 
 				if (data.IsEmpty && startIndex == 0) {
@@ -240,13 +246,13 @@ internal static class PTexture2D {
 				}
 
 				if (data.Length < numElements + startIndex) {
-					throw new ArgumentException($"{data.Length} < {numElements + startIndex}", nameof(data));
+					return ThrowArgumentOutOfRangeLessThanException<T>(nameof(data), data.Length, numElements + startIndex);
 				}
 
 				if (rect == __instance.Bounds) {
 					ReadOnlySpan<byte> sourceBytes = cachedSourceData;
 					var source = sourceBytes.Cast<T>();
-					source.CopyTo(data, 0, startIndex, numElements);
+					source.CopyToUnsafe(data, 0, startIndex, numElements);
 
 					return data;
 				}
@@ -259,7 +265,7 @@ internal static class PTexture2D {
 					int sourceOffset = (rect.Top * sourceStride) + rect.Left;
 					int destOffset = startIndex;
 					for (int y = 0; y < rect.Height; ++y) {
-						cachedData.Slice(sourceOffset, destStride).CopyTo(destData.Slice(destOffset, destStride));
+						cachedData.SliceUnsafe(sourceOffset, destStride).CopyToUnsafe(destData.SliceUnsafe(destOffset, destStride));
 						sourceOffset += sourceStride;
 						destOffset += destStride;
 					}
@@ -312,38 +318,8 @@ internal static class PTexture2D {
 		IEnumerable<CodeInstruction> instructions,
 		ILGenerator generator
 	) where T : unmanaged {
-		static bool HasParameters(MethodInfo method) {
-			var parameters = method.GetParameters().Types();
-
-			return
-				parameters.ElementAtOrDefaultF(0)?.RemoveRef() == typeof(XTexture2D) &&
-				parameters.ElementAtOrDefaultF(1)?.RemoveRef() == typeof(int) &&
-				parameters.ElementAtOrDefaultF(2)?.RemoveRef() == typeof(int) &&
-				parameters.ElementAtOrDefaultF(3)?.RemoveRef() == typeof(XRectangle) &&
-				(parameters.ElementAtOrDefaultF(4)?.IsAssignableTo(typeof(Array)) ?? false) &&
-				parameters.ElementAtOrDefaultF(5)?.RemoveRef() == typeof(int) &&
-				parameters.ElementAtOrDefaultF(6)?.RemoveRef() == typeof(int);
-		}
-
-		var preMethod = typeof(PTexture2D).GetMethods(
-			name: "OnPlatformSetDataPre",
-			bindingFlags: BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public
-		).FirstF(HasParameters)?.MakeGenericMethod(typeof(T));
-
-		if (preMethod is null) {
-			Debug.Error("Could not apply PlatformSetData patch: could not find MethodInfo for OnPlatformSetDataPre");
-			return instructions;
-		}
-
-		var postMethod = typeof(PTexture2D).GetMethods(
-			name: "OnPlatformSetDataPost",
-			bindingFlags: BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public
-		).FirstF(HasParameters)?.MakeGenericMethod(typeof(T));
-
-		if (postMethod is null) {
-			Debug.Error("Could not apply PlatformSetData patch: could not find MethodInfo for OnPlatformSetDataPost");
-			return instructions;
-		}
+		var preMethod = ((Func<XTexture2D, int, int, XRectangle, T[], int, int, bool>)OnPlatformSetDataPre).Method;
+		var postMethod = ((Action<XTexture2D, int, int, XRectangle, T[], int, int>)OnPlatformSetDataPost).Method;
 
 		var codeInstructions = instructions as CodeInstruction[] ?? instructions.ToArray();
 
@@ -386,7 +362,7 @@ internal static class PTexture2D {
 			}
 		}
 
-		return ApplyPatch(); ;
+		return ApplyPatch(); 
 	}
 
 	[HarmonizeTranspile(
@@ -400,36 +376,8 @@ internal static class PTexture2D {
 		IEnumerable<CodeInstruction> instructions,
 		ILGenerator generator
 	) where T : unmanaged {
-		static bool HasParameters(MethodInfo method) {
-			var parameters = method.GetParameters().Types();
-
-			return
-				parameters.ElementAtOrDefaultF(0) == typeof(XTexture2D) &&
-				parameters.ElementAtOrDefaultF(1) == typeof(int) &&
-				(parameters.ElementAtOrDefaultF(2)?.IsAssignableTo(typeof(Array)) ?? false) &&
-				parameters.ElementAtOrDefaultF(3) == typeof(int) &&
-				parameters.ElementAtOrDefaultF(4) == typeof(int);
-		}
-
-		var preMethod = typeof(PTexture2D).GetMethods(
-			name: "OnPlatformSetDataPre",
-			bindingFlags: BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public
-		).FirstF(HasParameters)?.MakeGenericMethod(typeof(T));
-
-		if (preMethod is null) {
-			Debug.Error("Could not apply PlatformSetData patch: could not find MethodInfo for OnPlatformSetDataPre");
-			return instructions;
-		}
-
-		var postMethod = typeof(PTexture2D).GetMethods(
-			name: "OnPlatformSetDataPost",
-			bindingFlags: BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public
-		).FirstF(HasParameters)?.MakeGenericMethod(typeof(T));
-
-		if (postMethod is null) {
-			Debug.Error("Could not apply PlatformSetData patch: could not find MethodInfo for OnPlatformSetDataPost");
-			return instructions;
-		}
+		var preMethod = ((Func<XTexture2D, int, T[], int, int, bool>)OnPlatformSetDataPre).Method;
+		var postMethod = ((Action<XTexture2D, int, T[], int, int>)OnPlatformSetDataPost).Method;
 
 		var codeInstructions = instructions as CodeInstruction[] ?? instructions.ToArray();
 
@@ -471,7 +419,7 @@ internal static class PTexture2D {
 		return ApplyPatch();
 	}
 
-	//[Harmonize("PlatformSetData", Fixation.Prefix, PriorityLevel.Last, Generic.Struct, platform: Platform.MonoGame)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static bool OnPlatformSetDataPre<T>(
 		XTexture2D __instance,
 		int level,
@@ -483,7 +431,7 @@ internal static class PTexture2D {
 		return OnPlatformSetDataPre(__instance, level, 0, rect, data, startIndex, elementCount);
 	}
 
-	//[Harmonize("PlatformSetData", Fixation.Prefix, PriorityLevel.Last, Generic.Struct, platform: Platform.MonoGame)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static bool OnPlatformSetDataPre<T>(
 		XTexture2D __instance,
 		int level,
@@ -535,7 +483,7 @@ internal static class PTexture2D {
 		return !TryInternal();
 	}
 
-	//[Harmonize("PlatformSetData", Fixation.Postfix, PriorityLevel.Last, Generic.Struct, platform: Platform.MonoGame)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static void OnPlatformSetDataPost<T>(
 		XTexture2D __instance,
 		int level,
@@ -546,7 +494,7 @@ internal static class PTexture2D {
 		OnPlatformSetDataPost(__instance, level, 0, __instance.Bounds(), data, startIndex, elementCount);
 	}
 
-	//[Harmonize("PlatformSetData", Fixation.Postfix, PriorityLevel.Last, Generic.Struct, platform: Platform.MonoGame)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static void OnPlatformSetDataPost<T>(
 		XTexture2D __instance,
 		int level,

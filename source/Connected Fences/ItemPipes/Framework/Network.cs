@@ -26,22 +26,23 @@ namespace ItemPipes.Framework
 {
     public class Network
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public List<Node> Nodes { get; set; }
         public List<OutputPipeNode> Outputs { get; set; }
         public List<InputPipeNode> Inputs { get; set; }
         public List<ConnectorPipeNode> Connectors { get; set; }
         public bool IsPassable { get; set; }
-        public PPMNode Invis { get; set; }
+        public List<PIPONode> PIPOs { get; set; }
 
         public Network() { }
-        public Network(int id)
+        public Network(long id)
         {
             ID = id;
             Nodes = new List<Node>();
             Outputs = new List<OutputPipeNode>();
             Inputs = new List<InputPipeNode>();
             Connectors = new List<ConnectorPipeNode>();
+            PIPOs = new List<PIPONode>();
             IsPassable = false;
         }
 
@@ -78,6 +79,10 @@ namespace ItemPipes.Framework
             if (node.ParentNetwork == this && !Nodes.Contains(node))
             {
                 added = true;
+                if (IsPassable)
+                {
+                    node.Passable = true;
+                }
                 Nodes.Add(node);
                 if (node is OutputPipeNode && !Outputs.Contains(node))
                 {
@@ -91,14 +96,14 @@ namespace ItemPipes.Framework
                 {
                     Connectors.Add((ConnectorPipeNode)node);
                 }
-                else if (node is PPMNode && Invis == null)
+                else if (node is PIPONode && !PIPOs.Contains(node))
                 {
-                    Invis = (PPMNode)node;
+                    PIPOs.Add((PIPONode)node);
                 }
             }
             else if(node.ParentNetwork != this)
             {
-                //Printer.Info($"Tried to add {node.Print()} to N{ID}, but they dont match.");
+                Printer.Warn($"Tried to add {node.Print()} to N{ID}, but they dont match.");
             }
             return added;
         }
@@ -122,34 +127,16 @@ namespace ItemPipes.Framework
                 {
                     Connectors.Remove((ConnectorPipeNode)node);
                 }
-                else if (node is PPMNode && Invis != null)
+                else if (node is PIPONode && PIPOs != null)
                 {
-                    Invis = null;
+                    PIPOs = null;
                     if(IsPassable)
                     {
-                        Deinvisibilize((PPMNode)node);
+                        Deinvisibilize((PIPONode)node);
                     }
                 }
             }
             return removed;
-        }
-
-        public bool TryConnectNodes(OutputPipeNode output, InputPipeNode input)
-        {
-            bool connected = false;
-            if (output != null && input != null)
-            {
-                if (!output.IsInputConnected(input))
-                {
-                    if (output.CanConnectedWith(input))
-                    {
-                        output.AddConnectedInput(input);
-
-                        connected = true;
-                    }
-                }
-            }
-            return connected;
         }
 
         public bool TryConnectOutput(OutputPipeNode output)
@@ -157,42 +144,42 @@ namespace ItemPipes.Framework
             bool canConnect = false;
             if (output != null)
             {
-                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Trying connecting {output.Print()}"); }
+                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Trying connecting {output.Print()}"); }
                 if(Inputs.Count == 0)
                 {
-                    if (Globals.UltraDebug) { Printer.Info($"[N{ID}] No inputs to connect."); }
+                    if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] No inputs to connect."); }
                 }
                 else
                 {
-                    if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {Inputs.Count} inputs to connect."); }
+                    if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {Inputs.Count} inputs to connect."); }
                     foreach (InputPipeNode input in Inputs)
                     {
                         if (!output.IsInputConnected(input))
                         {
-                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} not already connected"); }
+                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} not already connected"); }
                             if (output.CanConnectedWith(input))
                             {
                                 canConnect = output.AddConnectedInput(input);
-                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Can connect with {input.Print()}? -> {canConnect}"); }
+                                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} connected with {output.Print()}"); }
                             }
                             else
                             {
-                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Cannot connect with {input.Print()}"); }
+                                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Cannot connect with {input.Print()}"); }
                             }
                         }
                         else
                         {
-                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} already connected"); }
-                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Updating path from {output.Print()} to {input.Print()} connected"); }
+                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} already connected"); }
+                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Updating path from {output.Print()} to {input.Print()} connected"); }
                             List<PipeNode> path = output.GetPath(input);
                             if (path.Count > 0 && path.Last().Equals(input))
                             {
                                 output.ConnectedInputs[input] = path;
-                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Path succesfully updated!"); }
+                                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Path succesfully updated!"); }
                             }
                             else
                             {
-                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Error updating path"); }
+                                if (Globals.UltraDebug) { Printer.Warn($"[N{ID}] Error updating path from {output.Print()} to {input.Print()}"); }
                             }
                         }
                         input.UpdateSignal();
@@ -208,20 +195,20 @@ namespace ItemPipes.Framework
             bool canDisconnect = false;
             if (input != null)
             {
-                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Trying disconnecting {input.Print()}"); }
+                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Trying disconnecting {input.Print()}"); }
                 foreach (OutputPipeNode output in Outputs)
                 {
                     if (output.IsInputConnected(input))
                     {
-                        if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} already connected"); }
+                        if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} already connected"); }
                         if (!output.CanConnectedWith(input) || input.ConnectedContainer == null)
                         {
                             canDisconnect = output.RemoveConnectedInput(input);
-                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Can disconnect with {input.Print()}? -> {canDisconnect}"); }
+                            if (Globals.Debug) { Printer.Debug($"[N{ID}] {input.Print()} disconnected"); }
                         }
                         else
                         {
-                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Cannot disconnect with {input.Print()}"); }
+                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Cannot disconnect with {input.Print()}"); }
                         }
                     }
                     output.UpdateSignal();
@@ -248,29 +235,33 @@ namespace ItemPipes.Framework
             }
         }
 
-        public void Invisibilize(PPMNode invis)
+        public void Invisibilize(PIPONode invis)
         {
-            Invis = invis;
-            IsPassable = true;
-            foreach(Node node in Nodes)
+            if(PIPOs.All(p => p.Passable))
             {
-                node.Passable = true;
+                IsPassable = true;
+                foreach (Node node in Nodes)
+                {
+                    node.Passable = true;
+                }
             }
         }
 
-        public void Deinvisibilize(PPMNode invis)
+        public void Deinvisibilize(PIPONode invis)
         {
-            Invis = invis;
-            IsPassable = false;
-            foreach (Node node in Nodes)
+            if(PIPOs.Any(p => !p.Passable))
             {
-                node.Passable = false;
+                IsPassable = false;
+                foreach (Node node in Nodes)
+                {
+                    node.Passable = false;
+                }
             }
         }
 
         public void RemoveAllAdjacents()
         {
-            foreach (Node node in Nodes)
+            foreach (Node node in Nodes.ToList())
             {
                 node.RemoveAllAdjacents();
             }
@@ -304,6 +295,12 @@ namespace ItemPipes.Framework
                 foreach (ConnectorPipeNode conn in Connectors)
                 {
                     graph.Append(conn.Print() + ", ");
+                }
+                graph.Append("\n");
+                graph.Append("PIPOs: \n");
+                foreach (PIPONode pipo in PIPOs)
+                {
+                    graph.Append(pipo.Print() + ", ");
                 }
                 graph.Append("\n");
             }

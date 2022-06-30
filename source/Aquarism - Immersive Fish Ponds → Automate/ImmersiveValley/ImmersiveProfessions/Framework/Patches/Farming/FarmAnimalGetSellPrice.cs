@@ -12,23 +12,23 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using Extensions;
+using System;
+using System.Reflection;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmAnimalGetSellPricePatch : BasePatch
+internal sealed class FarmAnimalGetSellPricePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmAnimalGetSellPricePatch()
     {
-        Original = RequireMethod<FarmAnimal>(nameof(FarmAnimal.getSellPrice));
+        Target = RequireMethod<FarmAnimal>(nameof(FarmAnimal.getSellPrice));
     }
 
     #region harmony patches
@@ -51,7 +51,7 @@ internal class FarmAnimalGetSellPricePatch : BasePatch
             return true; // default to original logic
         }
 
-        __result = (int) (__instance.price.Value * adjustedFriendship);
+        __result = (int)(__instance.price.Value * adjustedFriendship);
         return false; // don't run original logic
     }
 

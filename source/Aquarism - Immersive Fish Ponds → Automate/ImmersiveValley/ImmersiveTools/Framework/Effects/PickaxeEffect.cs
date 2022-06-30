@@ -12,16 +12,14 @@ namespace DaLion.Stardew.Tools.Framework.Effects;
 
 #region using directives
 
-using System.Collections.Generic;
+using Configs;
+using Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-
-using Configs;
-using Extensions;
-
+using System.Collections.Generic;
 using SObject = StardewValley.Object;
 
 #endregion using directives
@@ -46,11 +44,11 @@ internal class PickaxeEffect : IEffect
     };
 
     /// <inheritdoc />
-    public bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Tool tool,
+    public bool Apply(Vector2 tile, SObject? tileObj, TerrainFeature tileFeature, Tool tool,
         GameLocation location, Farmer who)
     {
         // clear debris
-        if (Config.ClearDebris && (tileObj.IsStone() || tileObj.IsWeed()))
+        if (Config.ClearDebris && (tileObj!.IsStone() || tileObj!.IsWeed()))
             return tool.UseOnTile(tile, location, who);
 
         // break mine containers
@@ -93,7 +91,7 @@ internal class PickaxeEffect : IEffect
             var clump = location.GetResourceClumpCoveringTile(tile, who, out var applyTool);
             if (clump is not null &&
                 (!UpgradeLevelsNeededForResource.TryGetValue(clump.parentSheetIndex.Value,
-                    out var requiredUpgradeLevel) || tool.UpgradeLevel >= requiredUpgradeLevel)) return applyTool(tool);
+                    out var requiredUpgradeLevel) || tool.UpgradeLevel >= requiredUpgradeLevel)) return applyTool!(tool);
         }
 
         // harvest spawned mine objects
@@ -115,6 +113,7 @@ internal class PickaxeEffect : IEffect
     /// <param name="tileObj">The object on the tile.</param>
     /// <param name="tool">The tool selected by the player (if any).</param>
     /// <param name="location">The current location.</param>
+    /// <returns><see langword="true"> if the tool did break a container, otherwise <see langword="false">.</returns>
     private static bool TryBreakContainer(Vector2 tile, SObject tileObj, Tool tool, GameLocation location)
     {
         if (tileObj is BreakableContainer)

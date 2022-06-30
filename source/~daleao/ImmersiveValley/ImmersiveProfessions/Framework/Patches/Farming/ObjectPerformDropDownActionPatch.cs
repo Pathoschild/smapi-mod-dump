@@ -12,36 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ObjectPerformDropDownActionPatch : BasePatch
+internal sealed class ObjectPerformDropDownActionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ObjectPerformDropDownActionPatch()
     {
-        Original = RequireMethod<SObject>(nameof(SObject.performDropDownAction));
+        Target = RequireMethod<SObject>(nameof(SObject.performDropDownAction));
     }
 
     #region harmony patches
 
     /// <summary>Patch to increase production frequency of Producer Bee House.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ObjectDayUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? ObjectDayUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -93,7 +92,6 @@ internal class ObjectPerformDropDownActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching bee house production speed for Producers.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

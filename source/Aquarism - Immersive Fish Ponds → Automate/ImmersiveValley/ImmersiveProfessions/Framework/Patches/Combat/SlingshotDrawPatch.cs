@@ -12,25 +12,24 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Tools;
-
-using Extensions;
-using Ultimate;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class SlingshotDrawPatch : BasePatch
+internal sealed class SlingshotDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal SlingshotDrawPatch()
     {
-        Original = RequireMethod<Slingshot>(nameof(Slingshot.draw));
+        Target = RequireMethod<Slingshot>(nameof(Slingshot.draw));
     }
 
     /// <summary>Patch to draw slingshot overcharge meter for Desperado.</summary>
@@ -52,8 +51,8 @@ internal class SlingshotDrawPatch : BasePatch
             new(193, 1868, 47, 12), Color.White, 0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 0.885f);
 
         b.Draw(Game1.staminaRect,
-            new((int) Game1.GlobalToLocal(Game1.viewport, lastUser.Position).X - 36,
-                (int) Game1.GlobalToLocal(Game1.viewport, lastUser.Position).Y - 148, (int) (164f * overcharge), 25),
+            new((int)Game1.GlobalToLocal(Game1.viewport, lastUser.Position).X - 36,
+                (int)Game1.GlobalToLocal(Game1.viewport, lastUser.Position).Y - 148, (int)(164f * overcharge), 25),
             Game1.staminaRect.Bounds, Utility.getRedToGreenLerpColor(overcharge), 0f, Vector2.Zero, SpriteEffects.None,
             0.887f);
     }

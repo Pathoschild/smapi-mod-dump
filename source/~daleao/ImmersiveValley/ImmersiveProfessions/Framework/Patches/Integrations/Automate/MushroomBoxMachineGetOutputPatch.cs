@@ -12,58 +12,59 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using Extensions;
-
+using System;
+using System.Reflection;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class MushroomBoxMachineGetOutputPatch : BasePatch
+internal sealed class MushroomBoxMachineGetOutputPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetMachine;
+    private static Func<object, SObject>? _GetMachine;
 
     /// <summary>Construct an instance.</summary>
     internal MushroomBoxMachineGetOutputPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.MushroomBoxMachine".ToType().RequireMethod("GetOutput");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.MushroomBoxMachine".ToType()
+                .RequireMethod("GetOutput");
         }
         catch
         {
             // ignored
         }
 
-        Prefix.priority = Priority.HigherThanNormal;
+        Prefix!.priority = Priority.HigherThanNormal;
     }
 
     #region harmony patches
 
     /// <summary>Patch for automated Mushroom Box forage increment.</summary>
     [HarmonyPrefix]
+    [HarmonyPriority(Priority.HigherThanNormal)]
     private static void MushroomBoxMachineGetOutputPrefix(object __instance)
     {
         try
         {
-            if (__instance is null) return;
-
-            _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine");
-            var machine = (SObject) _GetMachine.Invoke(__instance, null);
-            if (machine?.heldObject.Value is null) return;
+            _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine")
+                .CompileUnboundDelegate<Func<object, SObject>>();
+            var machine = _GetMachine(__instance);
+            if (machine.heldObject.Value is null) return;
 
             var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
             if (!owner.HasProfession(Profession.Ecologist) || !ModEntry.Config.ShouldCountAutomatedHarvests)
                 return;
 
-            owner.IncrementData<uint>(DataField.EcologistItemsForaged);
+            ModDataIO.IncrementData<uint>(owner, ModData.EcologistItemsForaged.ToString());
         }
         catch (Exception ex)
         {

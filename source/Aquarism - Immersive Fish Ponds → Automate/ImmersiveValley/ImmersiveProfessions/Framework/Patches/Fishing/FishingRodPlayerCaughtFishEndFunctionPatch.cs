@@ -12,34 +12,34 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Tools;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FishingRodPlayerCaughtFishEndFunctionPatch : BasePatch
+internal sealed class FishingRodPlayerCaughtFishEndFunctionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FishingRodPlayerCaughtFishEndFunctionPatch()
     {
-        Original = RequireMethod<FishingRod>(nameof(FishingRod.playerCaughtFishEndFunction));
+        Target = RequireMethod<FishingRod>(nameof(FishingRod.playerCaughtFishEndFunction));
     }
 
     #region harmony patches
 
     /// <summary>Patch for remove annoying repeated message for recatching legendary fish.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> FishingRodPlayerCaughtFishEndFunctionTranspiler(
+    private static IEnumerable<CodeInstruction>? FishingRodPlayerCaughtFishEndFunctionTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -71,7 +71,6 @@ internal class FishingRodPlayerCaughtFishEndFunctionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing annoying legendary fish caught notification.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

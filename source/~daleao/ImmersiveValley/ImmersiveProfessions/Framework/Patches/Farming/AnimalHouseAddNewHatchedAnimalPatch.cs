@@ -12,23 +12,22 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 
 #region using directives
 
-using System;
-using System.Linq;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using Extensions;
+using System;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class AnimalHouseAddNewHatchedAnimalPatch : BasePatch
+internal sealed class AnimalHouseAddNewHatchedAnimalPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal AnimalHouseAddNewHatchedAnimalPatch()
     {
-        Original = RequireMethod<AnimalHouse>(nameof(AnimalHouse.addNewHatchedAnimal));
+        Target = RequireMethod<AnimalHouse>(nameof(AnimalHouse.addNewHatchedAnimal));
     }
 
     #region harmony patches

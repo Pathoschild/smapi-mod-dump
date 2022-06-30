@@ -1,0 +1,80 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/MysticalBuildings
+**
+*************************************************/
+
+{
+  "Id": "PeacefulEnd.SolidFoundations.MysticalBuildings_CrumblingMineshaft",
+  "Name": "Crumbling Mineshaft",
+  "Description": "A not-so-sturdy mineshaft that mysteriously leads to bountiful and unstable caverns.",
+  "DrawShadow": false,
+  "FadeWhenBehind": false,
+
+  "SourceRect": "0 0 80 96",
+  "Size": {
+    "X": 5,
+    "Y": 3
+  },
+  "AdditionalPlacementTiles": [
+    {
+      "Tile": {
+        "X": 1,
+        "Y": 3
+      }
+    },
+    {
+      "Tile": {
+        "X": 2,
+        "Y": 3
+      }
+    },
+    {
+      "Tile": {
+        "X": 3,
+        "Y": 3
+      }
+    }
+  ],
+  "CollisionMap": "XXXXX\nXXXXX\nXXOXX",
+
+
+  "SortTileOffset": 1,
+  "DrawLayers": [
+    {
+      "Texture": "overlay",
+      "SourceRect": "0 0 80 96",
+      "DrawPosition": {
+        "X": 0,
+        "Y": 0
+      },
+      "DrawBehindBase": false,
+      "SortTileOffset": 0,
+      "ModDataFlags": [
+        "!HasEntered"
+      ]
+    }
+  ],
+
+  "Builder": "Wizard",
+  "BuildCondition": "CAN_BUILD_FOR_CABINS CrumblingMineshaft",
+  "BuildCost": 10000,
+  "BuildMaterials": [
+    {
+      "ItemID": 388, // Wood
+      "Amount": 200
+    },
+    {
+      "ItemID": 709, // Hardwood
+      "Amount": 50
+    },
+    {
+      "ItemID": 390, // Stone
+      "Amount": 200
+    }
+  ]
+}

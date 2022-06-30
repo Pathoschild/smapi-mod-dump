@@ -140,17 +140,6 @@ namespace TehPers.FishingOverhaul.Services
             {
                 DepthMultiplier = 0.02 / 4,
                 IncludeLocations = ImmutableArray.Create("Sewer"),
-                FarmerPosition = new()
-                {
-                    X = new()
-                    {
-                        LessThanEq = 14,
-                    },
-                    Y = new()
-                    {
-                        LessThanEq = 42,
-                    },
-                },
                 When = DefaultFishingSource.legendaryBaseConditions.Add(
                     $"HasFlag |contains={DefaultFishingSource.mutantCarpFlag}",
                     "false"

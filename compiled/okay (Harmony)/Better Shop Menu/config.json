@@ -1,3 +1,4 @@
 {
-  "GridLayout": false
+  "GridLayout": true,
+  "QuantityDialog": true
 }

@@ -314,7 +314,7 @@ namespace ItemPipes.Framework.Items.CustomFilter
 				}
 				int containerWidth = 64 * (capacity / rows);
 				this.ItemsToGrabMenu = new InventoryMenu(Game1.uiViewport.Width / 2 - containerWidth / 2, base.yPositionOnScreen, playerInventory: false, inventory, null, Capacity, 1, 0, 0, true);
-				Printer.Info(this.ItemsToGrabMenu.capacity.ToString()); if ((sourceItem as Chest).SpecialChestType == Chest.SpecialChestTypes.MiniShippingBin)
+				if ((sourceItem as Chest).SpecialChestType == Chest.SpecialChestTypes.MiniShippingBin)
 				{
 					base.inventory.moveItemSound = "Ship";
 				}

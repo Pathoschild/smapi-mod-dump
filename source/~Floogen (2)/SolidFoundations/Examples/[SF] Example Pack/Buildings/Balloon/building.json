@@ -1,0 +1,57 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Id": "PeacefulEnd.SolidFoundations.ExamplePack_Balloon",
+  "Name": "Building.Name.Balloon",
+  "Description": "Building.Description.Balloon",
+  "BuildCost": 2500,
+  "DrawShadow": false,
+
+  "SourceRect": "0 0 96 176",
+  "Size": {
+    "X": 6,
+    "Y": 2
+  },
+  "CollisionMap": "OOXXOO\nOXXXXO",
+  "DrawLayers": [
+    {
+      "SourceRect": "0 0 96 176",
+      "DrawPosition": {
+        "X": 0,
+        "Y": 0
+      },
+      "DrawInBackground": false,
+      "HideBaseTexture": true,
+      "SortTileOffset": 0,
+      "FramesPerRow": -1,
+      "Sequences": [
+        {
+          "Frame": 0,
+          "Duration": 250
+        },
+        {
+          "Frame": 2,
+          "Duration": 500
+        },
+        {
+          "Frame": 1,
+          "Duration": 500
+        },
+        {
+          "Frame": 2,
+          "Duration": 250
+        }
+      ],
+      "Condition": "WEATHER Here sunny"
+    }
+  ],
+  "DefaultAction": "Dialogue This is a buildable air balloon. Neat!"
+}

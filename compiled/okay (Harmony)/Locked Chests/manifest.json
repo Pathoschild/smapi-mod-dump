@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Locked Chests",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Lock your chests",
+  "UniqueID": "MindMeltMax.LockedChests",
+  "EntryDll": "Locked Chests.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "nexus:12452" ]
+}

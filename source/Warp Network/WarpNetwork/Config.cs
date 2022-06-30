@@ -29,6 +29,8 @@ namespace WarpNetwork
         public bool AccessFromWand { get; set; }
         public bool PatchObelisks { get; set; }
         public bool MenuEnabled { get; set; }
+        public bool WarpCancelEnabled { get; set; }
+        public bool WandReturnEnabled { get; set; }
 
         public void ResetToDefault()
         {
@@ -38,65 +40,80 @@ namespace WarpNetwork
             AccessFromWand = false;
             PatchObelisks = true;
             MenuEnabled = true;
+            WarpCancelEnabled = false;
+            WandReturnEnabled = true;
         }
-        public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
+        public void RegisterModConfigMenu(IManifest manifest)
         {
-            if (!helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+            if (!ModEntry.helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
                 return;
-            IGMCMAPI api = helper.ModRegistry.GetApi<IGMCMAPI>("spacechase0.GenericModConfigMenu");
-            api.RegisterModConfig(manifest, ResetToDefault, () => helper.WriteConfig(this));
-            api.SetDefaultIngameOptinValue(manifest, true);
+            IGMCMAPI api = ModEntry.helper.ModRegistry.GetApi<IGMCMAPI>("spacechase0.GenericModConfigMenu");
+            api.Register(manifest, ResetToDefault, () => ModEntry.helper.WriteConfig(this));
 
-            api.RegisterLabel(manifest, manifest.Name, manifest.Description);
+            api.AddSectionTitle(manifest, () => manifest.Name, () => manifest.Description);
 
-            api.RegisterChoiceOption(
+            api.AddTextOption(
                 manifest,
-                helper.Translation.Get("cfg-warpsenabled.label"),
-                helper.Translation.Get("cfg-warpsenabled.desc"),
                 () => VanillaWarpsEnabled.ToString(),
                 (string c) => VanillaWarpsEnabled = Utils.ParseEnum<WarpEnabled>(c),
+                () => ModEntry.i18n.Get("cfg-warpsenabled.label"),
+                () => ModEntry.i18n.Get("cfg-warpsenabled.desc"),
                 Enum.GetNames(typeof(WarpEnabled))
             );
-            api.RegisterChoiceOption(
+            api.AddTextOption(
                 manifest,
-                helper.Translation.Get("cfg-farmenabled.label"),
-                helper.Translation.Get("cfg-farmenabled.desc"),
                 () => FarmWarpEnabled.ToString(),
                 (string c) => FarmWarpEnabled = Utils.ParseEnum<WarpEnabled>(c),
+                () => ModEntry.i18n.Get("cfg-farmenabled.label"),
+                () => ModEntry.i18n.Get("cfg-farmenabled.desc"),
                 Enum.GetNames(typeof(WarpEnabled))
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 manifest,
-                helper.Translation.Get("cfg-accessdisabled.label"),
-                helper.Translation.Get("cfg-accessdisabled.desc"),
                 () => AccessFromDisabled,
-                (bool b) => AccessFromDisabled = b
+                (bool b) => AccessFromDisabled = b,
+                () => ModEntry.i18n.Get("cfg-accessdisabled.label"),
+                () => ModEntry.i18n.Get("cfg-accessdisabled.desc")
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 manifest,
-                helper.Translation.Get("cfg-accesswand.label"),
-                helper.Translation.Get("cfg-accesswand.desc"),
                 () => AccessFromWand,
-                (bool b) => AccessFromWand = b
+                (bool b) => AccessFromWand = b,
+                () => ModEntry.i18n.Get("cfg-accesswand.label"),
+                () => ModEntry.i18n.Get("cfg-accesswand.desc")
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 manifest,
-                helper.Translation.Get("cfg-obeliskpatch.label"),
-                helper.Translation.Get("cfg-obeliskpatch.desc"),
                 () => PatchObelisks,
-                (bool b) => PatchObelisks = b
+                (bool b) => PatchObelisks = b,
+                () => ModEntry.i18n.Get("cfg-obeliskpatch.label"),
+                () => ModEntry.i18n.Get("cfg-obeliskpatch.desc")
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 manifest,
-                helper.Translation.Get("cfg-menu.label"),
-                helper.Translation.Get("cfg-menu.desc"),
                 () => MenuEnabled,
-                (bool b) => MenuEnabled = b
+                (bool b) => MenuEnabled = b,
+                () => ModEntry.i18n.Get("cfg-menu.label"),
+                () => ModEntry.i18n.Get("cfg-menu.desc")
+            );
+            api.AddBoolOption(
+                manifest,
+                () => WarpCancelEnabled,
+                (bool b) => WarpCancelEnabled = b,
+                () => ModEntry.i18n.Get("cfg-warpcancel.label"),
+                () => ModEntry.i18n.Get("cfg-warpcancel.desc")
+            );
+            api.AddBoolOption(
+                manifest,
+                () => WandReturnEnabled,
+                (bool b) => WandReturnEnabled = b,
+                () => ModEntry.i18n.Get("cfg-wandreturn.label"),
+                () => ModEntry.i18n.Get("cfg-wandreturn.desc")
             );
         }
         internal string AsText()
         {
-            StringBuilder sb = new StringBuilder(8);
+            StringBuilder sb = new();
             sb.AppendLine().AppendLine("Config:");
             sb.Append("\tVanillaWarpsEnabled: ").AppendLine(VanillaWarpsEnabled.ToString());
             sb.Append("\tFarmWarpEnabled: ").AppendLine(FarmWarpEnabled.ToString());

@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoveOfCookingPatch", "LoveO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EndgameBundles", "EndgameBundles\EndgameBundles.csproj", "{CF1E75C7-311A-40D7-BCD3-A0C615BC2D2A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniDungeons", "MiniDungeons\MiniDungeons.csproj", "{3B445BBE-162C-40CB-8070-B4EE6026C01C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TraktoriShared", "TraktoriShared\TraktoriShared.shproj", "{EEB8CB95-183B-4722-9BA7-B656FBDFB71D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,11 +103,24 @@ Global
 		{CF1E75C7-311A-40D7-BCD3-A0C615BC2D2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF1E75C7-311A-40D7-BCD3-A0C615BC2D2A}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF1E75C7-311A-40D7-BCD3-A0C615BC2D2A}.Release|x86.Build.0 = Release|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B445BBE-162C-40CB-8070-B4EE6026C01C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B200EBE7-E375-4881-AE7B-0D2478E9B0D7}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TraktoriShared\TraktoriShared.projitems*{3b445bbe-162c-40cb-8070-b4ee6026c01c}*SharedItemsImports = 5
+		TraktoriShared\TraktoriShared.projitems*{932ec649-ea73-4ad8-89db-c5e8e56e5cca}*SharedItemsImports = 5
+		TraktoriShared\TraktoriShared.projitems*{eeb8cb95-183b-4722-9ba7-b656fbdfb71d}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

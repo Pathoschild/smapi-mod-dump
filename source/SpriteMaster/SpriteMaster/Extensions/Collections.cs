@@ -8,10 +8,14 @@
 **
 *************************************************/
 
+using Microsoft.Toolkit.HighPerformance;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using static SpriteMaster.Runtime;
 
@@ -71,11 +75,40 @@ internal static class Collections {
 	}
 
 	#region List Conversions
+	// TODO : define me for .NET and .NETfx
+	private static class ListReflectImpl<T> {
+		private const string ItemsFieldName = "_items";
+		private const string SizeFieldName = "_size";
+
+		internal static readonly Action<List<T>, T[]>? SetItems = typeof(List<T>).GetFieldSetter<List<T>, T[]>(ItemsFieldName);
+		internal static readonly Func<List<T>, T[]>? GetItems = typeof(List<T>).GetFieldGetter<List<T>, T[]>(ItemsFieldName);
+		internal static readonly Action<List<T>, int>? SetSize = typeof(List<T>).GetFieldSetter<List<T>, int>(SizeFieldName);
+		internal static readonly Func<List<T>, int>? GetSize = typeof(List<T>).GetFieldGetter<List<T>, int>(SizeFieldName);
+
+		[MemberNotNullWhen(true, nameof(SetItems), nameof(SetSize))]
+		// ReSharper disable once StaticMemberInGenericType
+		internal static bool SetEnabled { get; } =
+			SetItems is not null &&
+			SetSize is not null;
+
+		[MemberNotNullWhen(true, nameof(GetItems), nameof(GetSize))]
+		// ReSharper disable once StaticMemberInGenericType
+		internal static bool GetEnabled { get; } =
+			GetItems is not null &&
+			GetSize is not null;
+
+		[MemberNotNullWhen(true, nameof(GetItems), nameof(GetSize), nameof(SetItems), nameof(SetSize))]
+		// ReSharper disable once StaticMemberInGenericType
+		internal static bool Enabled { get; } =
+			SetEnabled &&
+			GetEnabled;
+	}
+
 	/// <summary>
 	/// Returns a new List that is constructed from the array.
 	/// </summary>
 	internal static List<T> ToList<T>(this T[] array) {
-		if (ListReflectImpl<T>.ListSetItems is null || ListReflectImpl<T>.ListSetSize is null) {
+		if (ListReflectImpl<T>.SetEnabled) {
 			var newList = new List<T>(array.Length);
 			foreach (var item in array) {
 				newList.Add(item);
@@ -87,32 +120,93 @@ internal static class Collections {
 		return newArray.BeList();
 	}
 
-	// TODO : define me for .NET and .NETfx
-	private static class ListReflectImpl<T> {
-		internal static readonly Action<List<T>, T[]>? ListSetItems = typeof(List<T>).GetFieldSetter<List<T>, T[]>("_items");
-		internal static readonly Action<List<T>, int>? ListSetSize = typeof(List<T>).GetFieldSetter<List<T>, int>("_size");
-	}
-
 	/// <summary>
 	/// Returns a new List that contains the same elements as the array.
 	/// <para>Warning: it is not safe to use the array afterwards - the List now owns it.</para>
 	/// </summary>
 	internal static List<T> BeList<T>(this T[] array) {
-		if (ListReflectImpl<T>.ListSetItems is null || ListReflectImpl<T>.ListSetSize is null) {
+		if (!ListReflectImpl<T>.SetEnabled) {
 			return array.ToList();
 		}
 
+
+		// I would use RuntimeHelpers.GetUninitializedObject,
+		// but it would be slower to manually initialize everything in the object
 		var newList = new List<T>();
-		ListReflectImpl<T>.ListSetItems(newList, array);
-		ListReflectImpl<T>.ListSetSize(newList, array.Length);
+		ListReflectImpl<T>.SetItems(newList, array);
+		ListReflectImpl<T>.SetSize(newList, array.Length);
 		return newList;
+	}
+
+	/// <summary>
+	/// Returns a <seealso cref="ReadOnlySpan{T}"/> representing the <paramref name="list"/>'s contents, and clears the <paramref name="list"/>.
+	/// </summary>
+	/// <typeparam name="T">Element type</typeparam>
+	/// <param name="list">List to fetch/clear</param>
+	/// <returns><seealso cref="ReadOnlySpan{T}"/> representing the <paramref name="list"/>'s contents</returns>
+	internal static ReadOnlySpan<T> ExchangeClear<T>(this List<T> list) {
+		T[] result;
+		if (!ListReflectImpl<T>.Enabled) {
+			result = list.ToArray();
+			list.Clear();
+			return result;
+		}
+
+		result = ListReflectImpl<T>.GetItems(list);
+		int count = list.Count;
+		ListReflectImpl<T>.SetItems(list, Array.Empty<T>());
+		ListReflectImpl<T>.SetSize(list, 0);
+		return result.AsReadOnlySpan(0, count);
+	}
+
+	/// <summary>
+	/// Returns a <seealso cref="ReadOnlySpan{T}"/> representing the <paramref name="list"/>'s contents, and clears the <paramref name="list"/>.
+	/// <para>
+	/// The <paramref name="list"/> is <see langword="lock"/>ed during any operations on it.
+	/// </para>
+	/// </summary>
+	/// <typeparam name="T">Element type</typeparam>
+	/// <param name="list">List to fetch/clear</param>
+	/// <returns><seealso cref="ReadOnlySpan{T}"/> representing the <paramref name="list"/>'s contents</returns>
+	internal static ReadOnlySpan<T> ExchangeClearLocked<T>(this List<T> list) {
+		T[] result;
+		if (!ListReflectImpl<T>.Enabled) {
+			lock (list) {
+				if (list.Count == 0) {
+					return default;
+				}
+				result = list.ToArray();
+				list.Clear();
+			}
+
+			return result;
+		}
+
+		int count;
+		lock (list) {
+			count = list.Count;
+			if (count == 0) {
+				return default;
+			}
+			result = ListReflectImpl<T>.GetItems(list);
+			ListReflectImpl<T>.SetItems(list, Array.Empty<T>());
+			ListReflectImpl<T>.SetSize(list, 0);
+		}
+
+		return result.AsReadOnlySpan(0, count);
 	}
 	#endregion
 
 	#region TryAt
+
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowIndexLessThanZeroException<T, U>(string name, int value, out U? item) =>
+		throw new ArgumentOutOfRangeException(name, $"{value} is less than zero");
+
 	internal static bool TryAt<T>(this List<T> list, int index, out T? item) {
 		if (index < 0) {
-			throw new ArgumentOutOfRangeException(nameof(index), $"{index} is less than zero");
+			return ThrowIndexLessThanZeroException<bool, T>(nameof(index), index, out item);
 		}
 		if (index >= list.Count) {
 			item = default(T);
@@ -125,7 +219,7 @@ internal static class Collections {
 
 	internal static bool TryAt<T>(this IReadOnlyList<T> list, int index, out T? item) {
 		if (index < 0) {
-			throw new ArgumentOutOfRangeException(nameof(index), $"{index} is less than zero");
+			return ThrowIndexLessThanZeroException<bool, T>(nameof(index), index, out item); ;
 		}
 		if (index >= list.Count) {
 			item = default(T);
@@ -138,7 +232,7 @@ internal static class Collections {
 
 	internal static bool TryAt<T>(this T[] array, int index, out T? item) {
 		if (index < 0) {
-			throw new ArgumentOutOfRangeException(nameof(index), $"{index} is less than zero");
+			return ThrowIndexLessThanZeroException<bool, T>(nameof(index), index, out item);
 		}
 		if (index >= array.Length) {
 			item = default(T);
@@ -147,28 +241,6 @@ internal static class Collections {
 
 		item = array[index];
 		return true;
-	}
-	#endregion
-
-	#region Ranges
-	internal static class ArrayExt {
-		internal static int[] Range(int start, int count, int change = 1) {
-			var result = new int[count];
-			for (int i = 0; count > 0; --count) {
-				result[i++] = start;
-				start += change;
-			}
-			return result;
-		}
-
-		internal static long[] Range(long start, long count, long change = 1) {
-			var result = new long[count];
-			for (int i = 0; count > 0; --count) {
-				result[i++] = start;
-				start += change;
-			}
-			return result;
-		}
 	}
 	#endregion
 
@@ -247,8 +319,6 @@ internal static class Collections {
 	#endregion
 
 	#region Clone / CopyTo
-	internal static T[] Clone<T>(this T[] array) => (T[])array.Clone();
-
 	internal static T[]? CopyTo<T>(this T[]? source, T[]? destination) {
 		if (source is null) {
 			return null;

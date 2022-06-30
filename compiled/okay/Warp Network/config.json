@@ -4,5 +4,7 @@
   "AccessFromDisabled": false,
   "AccessFromWand": false,
   "PatchObelisks": true,
-  "MenuEnabled": true
+  "MenuEnabled": true,
+  "WarpCancelEnabled": false,
+  "WandReturnEnabled": true
 }

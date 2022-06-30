@@ -1,0 +1,10 @@
+{
+  "Enabled": true,
+  "ToggleKey": "F2",
+  "FarmerHitboxColor": "#32CD32",
+  "CharacterHitboxColor": "#BF40BF",
+  "MonsterHitboxColor": "#FF0000",
+  "WeaponSwingHitboxColor": "#FFA500",
+  "ProjectileHitboxColor": "#FFA500",
+  "HitboxOpacity": 0.6
+}

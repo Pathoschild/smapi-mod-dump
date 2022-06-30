@@ -6,9 +6,9 @@ mods:
    Less Mini Shipping Bin
 
 latest commit:
-   commit cd7b5cc96d170100d59f9b94c66b826c279c1a84
+   commit 3290be2d34e0d346071e689859d69e077866f865
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Mon Mar 28 11:09:29 2022 -0400
+   Date:   Fri Jun 24 00:09:49 2022 -0400
    
-       Cleanup
+       good fucking question
    

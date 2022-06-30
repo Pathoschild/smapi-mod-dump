@@ -11,10 +11,10 @@
 {
 	"Name": "WallPaperRecycler",
 	"Author": "Mizzion",
-	"Version": "1.2.2",
+	"Version": "1.2.4",
 	"Description": "Allows the player to reuse floors and wallpapers",
 	"UniqueID": "mizzion.wallpaperrecycler",
 	"EntryDll": "WallPaperRecycler.dll",
-	"MinimumApiVersion": "2.10.1",
+	"MinimumApiVersion": "3.14.4",
 	"UpdateKeys": [ "Nexus:1905", "ModDrop:661354" ]
 }

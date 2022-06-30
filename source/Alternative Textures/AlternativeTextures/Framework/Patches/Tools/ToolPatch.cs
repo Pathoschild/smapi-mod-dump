@@ -21,6 +21,7 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
 using StardewValley.Locations;
+using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
@@ -72,6 +73,12 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 __result = _helper.Translation.Get("tools.name.paint_brush");
                 return;
             }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.SPRAY_CAN_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.name.spray_can");
+                return;
+            }
         }
 
         private static void GetDescriptionPostfix(Tool __instance, ref string __result)
@@ -93,6 +100,12 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 __result = _helper.Translation.Get("tools.description.paint_brush");
                 return;
             }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.SPRAY_CAN_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.description.spray_can");
+                return;
+            }
         }
 
         private static bool DrawInMenuPrefix(Tool __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
@@ -107,6 +120,13 @@ namespace AlternativeTextures.Framework.Patches.Tools
             if (__instance.modData.ContainsKey(AlternativeTextures.SCISSORS_FLAG))
             {
                 spriteBatch.Draw(AlternativeTextures.assetManager.GetScissorsTexture(), location + new Vector2(32f, 32f), new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f), 4f * scaleSize, SpriteEffects.None, layerDepth);
+
+                return false;
+            }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.SPRAY_CAN_FLAG))
+            {
+                spriteBatch.Draw(AlternativeTextures.assetManager.GetSprayCanTexture(__instance.modData.ContainsKey(AlternativeTextures.SPRAY_CAN_RARE)), location + new Vector2(32f, 32f), new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f), 4f * scaleSize, SpriteEffects.None, layerDepth);
 
                 return false;
             }
@@ -150,6 +170,12 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 return UseScissors(location, x, y, who);
             }
 
+            if (__instance.modData.ContainsKey(AlternativeTextures.SPRAY_CAN_FLAG))
+            {
+                __result = true;
+                return CancelUsing(who);
+            }
+
             if (__instance.modData.ContainsKey(AlternativeTextures.PAINT_BRUSH_FLAG))
             {
                 __result = true;
@@ -159,9 +185,19 @@ namespace AlternativeTextures.Framework.Patches.Tools
             return true;
         }
 
-        private static bool UsePaintBucket(GameLocation location, int x, int y, Farmer who)
+        private static IClickableMenu GetMenu(Object target, Vector2 position, TextureType textureType, string modelName, string uiName, int textureTileWidth = -1, bool isSprayCan = false)
         {
-            if (location is Farm farm)
+            if (isSprayCan)
+            {
+                return new SprayCanMenu(target, position, textureType, modelName, _helper.Translation.Get("tools.name.spray_can"), textureTileWidth: textureTileWidth);
+            }
+
+            return new PaintBucketMenu(target, position, textureType, modelName, uiName, textureTileWidth: textureTileWidth);
+        }
+
+        internal static bool UsePaintBucket(GameLocation location, int x, int y, Farmer who, bool isSprayCan = false)
+        {
+            if (location is Farm farm && isSprayCan is false)
             {
                 var targetedBuilding = farm.getBuildingAt(new Vector2(x / 64, y / 64));
                 if (farm.GetHouseRect().Contains(new Vector2(x / 64, y / 64)))
@@ -229,7 +265,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         TileLocation = new Vector2(targetedBuilding.tileX, targetedBuilding.tileY),
                         modData = targetedBuilding.modData
                     };
-                    Game1.activeClickableMenu = new PaintBucketMenu(buildingObj, buildingObj.TileLocation * 64f, GetTextureType(targetedBuilding), modelName, _helper.Translation.Get("tools.name.paint_bucket"), textureTileWidth: targetedBuilding.tilesWide);
+                    Game1.activeClickableMenu = GetMenu(buildingObj, buildingObj.TileLocation * 64f, GetTextureType(targetedBuilding), modelName, _helper.Translation.Get("tools.name.paint_bucket"), textureTileWidth: targetedBuilding.tilesWide, isSprayCan: isSprayCan);
 
                     return CancelUsing(who);
                 }
@@ -253,12 +289,24 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                 {
-                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
-                    return CancelUsing(who);
+                    var instanceSeasonName = $"{GetTextureType(targetedObject)}_{GetObjectName(targetedObject)}_{Game1.currentSeason}";
+                    AssignDefaultModData(targetedObject, instanceSeasonName, true);
+
+                    modelName = targetedObject.modData["AlternativeTextureName"].Replace($"{targetedObject.modData["AlternativeTextureOwner"]}.", String.Empty);
+                    if (targetedObject.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(targetedObject.modData["AlternativeTextureSeason"]))
+                    {
+                        modelName = modelName.Replace($"_{targetedObject.modData["AlternativeTextureSeason"]}", String.Empty);
+                    }
+
+                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                    {
+                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                        return CancelUsing(who);
+                    }
                 }
 
                 // Display texture menu
-                Game1.activeClickableMenu = new PaintBucketMenu(targetedObject, new Vector2(x, y), GetTextureType(targetedObject), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
+                Game1.activeClickableMenu = GetMenu(targetedObject, new Vector2(x, y), GetTextureType(targetedObject), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
                 return CancelUsing(who);
             }
@@ -328,7 +376,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     TileLocation = targetedTerrain.currentTileLocation,
                     modData = targetedTerrain.modData
                 };
-                Game1.activeClickableMenu = new PaintBucketMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedTerrain), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
+                Game1.activeClickableMenu = GetMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedTerrain), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
                 return CancelUsing(who);
             }
@@ -364,7 +412,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         TileLocation = Utility.PointToVector2(tile),
                         modData = decoratableLocation.modData
                     };
-                    Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
+                    Game1.activeClickableMenu = GetMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
                     return CancelUsing(who);
                 }
@@ -396,7 +444,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         TileLocation = Utility.PointToVector2(tile),
                         modData = decoratableLocation.modData
                     };
-                    Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
+                    Game1.activeClickableMenu = GetMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
 
                     return CancelUsing(who);
                 }

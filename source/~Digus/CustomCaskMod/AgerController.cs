@@ -50,5 +50,10 @@ namespace CustomCaskMod
             }
             return null;
         }
+
+        public static void ClearAgers()
+        {
+            AgerData.Clear();
+        }
     }
 }

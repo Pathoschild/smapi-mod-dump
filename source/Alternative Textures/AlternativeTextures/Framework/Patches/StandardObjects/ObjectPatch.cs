@@ -311,7 +311,11 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             var instanceName = $"{modelType}_{GetObjectName(placedObject)}";
             var instanceSeasonName = $"{instanceName}_{Game1.currentSeason}";
 
-            if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
+            if (HasCachedTextureName(__instance) is true)
+            {
+                return;
+            }
+            else if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
             {
                 var result = Game1.random.Next(2) > 0 ? AssignModData(placedObject, instanceSeasonName, true, placedObject.bigCraftable) : AssignModData(placedObject, instanceName, false, placedObject.bigCraftable);
                 return;

@@ -12,16 +12,15 @@ namespace DaLion.Stardew.Professions.Extensions;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+using Common.Extensions;
+using Common.Extensions.Reflection;
+using Common.Harmony;
 using HarmonyLib;
 using Netcode;
 using StardewValley;
-
-using Common.Extensions;
-using Common.Harmony;
-using Common.Extensions.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
 #endregion using directives
 
@@ -58,7 +57,7 @@ public static class ILHelperExtensions
     /// <param name="professionIndex">The profession id.</param>
     /// <param name="labels">Branch labels to add to the inserted sequence.</param>
     /// <param name="forLocalPlayer">Whether to load the local player.</param>
-    public static ILHelper InsertProfessionCheck(this ILHelper helper, int professionIndex, Label[] labels = null, bool forLocalPlayer = true)
+    public static ILHelper InsertProfessionCheck(this ILHelper helper, int professionIndex, Label[]? labels = null, bool forLocalPlayer = true)
     {
         var toInsert = new List<CodeInstruction>();
         if (forLocalPlayer)
@@ -79,7 +78,7 @@ public static class ILHelperExtensions
     /// <param name="chance">The threshold for a successful roll.</param>
     /// <param name="labels">Branch labels to add to the inserted sequence.</param>
     /// <param name="forStaticRandom">Whether to load the static <see cref="Game1.random"/>.</param>
-    public static ILHelper InsertDiceRoll(this ILHelper helper, double chance, Label[] labels = null, bool forStaticRandom = true)
+    public static ILHelper InsertDiceRoll(this ILHelper helper, double chance, Label[]? labels = null, bool forStaticRandom = true)
     {
         var toInsert = new List<CodeInstruction>();
         if (forStaticRandom)
@@ -99,7 +98,7 @@ public static class ILHelperExtensions
     /// <param name="maxValue">The upper limit, inclusive.</param>
     /// <param name="labels">Branch labels to add to the inserted sequence.</param>
     /// <param name="forStaticRandom">Whether to load the static <see cref="Game1.random"/>.</param>
-    public static ILHelper InsertDiceRoll(this ILHelper helper, int minValue, int maxValue, Label[] labels = null, bool forStaticRandom = true)
+    public static ILHelper InsertDiceRoll(this ILHelper helper, int minValue, int maxValue, Label[]? labels = null, bool forStaticRandom = true)
     {
         var toInsert = new List<CodeInstruction>();
         if (forStaticRandom)

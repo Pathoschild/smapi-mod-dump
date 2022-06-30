@@ -126,9 +126,9 @@ namespace ContentPatcher.Framework.Conditions
                 {
                     string? requiredModId = lexToken.GetProviderModId();
                     if (!string.IsNullOrWhiteSpace(requiredModId) && !context.IsModInstalled(requiredModId))
-                        this.State.AddUnavailableModTokens(requiredModId);
+                        this.State.AddUnavailableModToken(requiredModId);
                     else
-                        this.State.AddInvalidTokens(lexToken.Name);
+                        this.State.AddInvalidToken(lexToken.Name);
 
                     isMutable = true; // can't optimize away the token value if it's invalid
                 }
@@ -301,13 +301,13 @@ namespace ContentPatcher.Framework.Conditions
                         IToken? token = context.GetToken(lexToken.Name, enforceContext: false);
                         if (token == null)
                         {
-                            state.AddInvalidTokens(lexToken.Name);
+                            state.AddInvalidToken(lexToken.Name);
                             text = null;
                             return false;
                         }
                         if (!token.IsReady)
                         {
-                            this.State.AddUnreadyTokens(lexToken.Name);
+                            this.State.AddUnreadyToken(lexToken.Name);
                             text = null;
                             return false;
                         }
@@ -327,7 +327,7 @@ namespace ContentPatcher.Framework.Conditions
                         // validate input
                         if (!token.TryValidateInput(part.InputArgs, out string? error))
                         {
-                            state.AddErrors(error);
+                            state.AddError(error);
                             text = null;
                             return false;
                         }

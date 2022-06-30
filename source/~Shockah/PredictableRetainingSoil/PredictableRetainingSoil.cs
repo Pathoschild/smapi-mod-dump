@@ -11,6 +11,7 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
 using SObject = StardewValley.Object;
@@ -27,13 +28,13 @@ namespace Shockah.PredictableRetainingSoil
 		private static readonly string MultiFertilizerDirtHelperQualifiedName = "MultiFertilizer.Framework.DirtHelper, MultiFertilizer";
 		private static readonly string MultiFertilizerFertilizerDataQualifiedName = "MultiFertilizer.Framework.FertilizerData, MultiFertilizer";
 
-		internal static PredictableRetainingSoil Instance { get; set; }
+		internal static PredictableRetainingSoil Instance { get; private set; } = null!;
+		private ModConfig Config { get; set; } = null!;
+		private IFluent<string> Fluent { get; set; } = null!;
 
-		internal ModConfig Config { get; private set; }
-
-		private bool isMultiFertilizerLoaded = false;
-		private Func<string> multiFertilizerKeyRetain;
-		private Func<HoeDirt, int?> getMultiFertilizerRetainingSoilType;
+		private bool IsMultiFertilizerLoaded { get; set; } = false;
+		private Func<string?> MultiFertilizerKeyRetain { get; set; } = null!;
+		private Func<HoeDirt, int?> GetMultiFertilizerRetainingSoilType { get; set; } = null!;
 
 		private bool isStayingWateredViaRetainingSoil = false;
 
@@ -62,8 +63,12 @@ namespace Shockah.PredictableRetainingSoil
 					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_plant_Postfix))
 				);
 				harmony.Patch(
+					original: AccessTools.Constructor(typeof(CraftingRecipe), new Type[] { typeof(string), typeof(bool) }),
+					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(CraftingRecipe_Constructor_Postfix))
+				);
+				harmony.Patch(
 					original: AccessTools.Method(typeof(SObject), nameof(SObject.getDescription)),
-					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(Object_getDescription_postfix))
+					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(Object_getDescription_Postfix))
 				);
 			}
 			catch (Exception e)
@@ -73,48 +78,49 @@ namespace Shockah.PredictableRetainingSoil
 		}
 
 		public override object GetApi()
-		{
-			return this;
-		}
+			=> this;
 
-		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
+			var fluentApi = Helper.ModRegistry.GetApi<IFluentApi>("Shockah.ProjectFluent")!;
+			Fluent = fluentApi.GetLocalizationsForCurrentLocale(ModManifest);
+
 			if (Helper.ModRegistry.IsLoaded("spacechase0.MultiFertilizer"))
 			{
-				isMultiFertilizerLoaded = true;
+				IsMultiFertilizerLoaded = true;
 
 				var multiFertilizerKeyRetainPropertyGetter = AccessTools.PropertyGetter(Type.GetType(MultiFertilizerModQualifiedName), "KeyRetain");
-				multiFertilizerKeyRetain = () =>
+				MultiFertilizerKeyRetain = () =>
 				{
-					if (!isMultiFertilizerLoaded)
+					if (!IsMultiFertilizerLoaded)
 						return null;
 					
 					try
 					{
-						return (string)multiFertilizerKeyRetainPropertyGetter.Invoke(null, null);
+						return (string?)multiFertilizerKeyRetainPropertyGetter.Invoke(null, null);
 					}
 					catch (Exception e)
 					{
 						Monitor.Log($"There was a problem with MultiFertilizer compatibility.\nReason: {e}", LogLevel.Error);
-						isMultiFertilizerLoaded = false;
+						IsMultiFertilizerLoaded = false;
 						return null;
 					}
 				};
 
-				var tryGetFertilizerMethod = AccessTools.DeclaredMethod(Type.GetType(MultiFertilizerDirtHelperQualifiedName), "TryGetFertilizer", new Type[] { typeof(HoeDirt), typeof(string), Type.GetType(MultiFertilizerFertilizerDataQualifiedName).MakeByRefType() });
+				var tryGetFertilizerMethod = AccessTools.DeclaredMethod(Type.GetType(MultiFertilizerDirtHelperQualifiedName), "TryGetFertilizer", new Type[] { typeof(HoeDirt), typeof(string), Type.GetType(MultiFertilizerFertilizerDataQualifiedName)!.MakeByRefType() });
 				var levelPropertyGetter = AccessTools.PropertyGetter(Type.GetType(MultiFertilizerFertilizerDataQualifiedName), "Level");
-				getMultiFertilizerRetainingSoilType = soil =>
+				GetMultiFertilizerRetainingSoilType = soil =>
 				{
-					if (!isMultiFertilizerLoaded)
+					if (!IsMultiFertilizerLoaded)
 						return null;
 
 					try
 					{
-						var parameters = new object[] { soil, multiFertilizerKeyRetain(), null };
-						if ((bool)tryGetFertilizerMethod.Invoke(null, parameters))
+						var parameters = new object?[] { soil, MultiFertilizerKeyRetain(), null };
+						if ((bool?)tryGetFertilizerMethod.Invoke(null, parameters) is true)
 						{
 							var fertilizerData = parameters[2];
-							var level = (int)levelPropertyGetter.Invoke(fertilizerData, null);
+							var level = (int?)levelPropertyGetter.Invoke(fertilizerData, null);
 							return level switch
 							{
 								1 => BasicRetainingSoilID,
@@ -128,29 +134,22 @@ namespace Shockah.PredictableRetainingSoil
 					catch (Exception e)
 					{
 						Monitor.Log($"There was a problem with MultiFertilizer compatibility.\nReason: {e}", LogLevel.Error);
-						isMultiFertilizerLoaded = false;
+						IsMultiFertilizerLoaded = false;
 						return null;
 					}
 				};
 			}
 			
-			isMultiFertilizerLoaded = Helper.ModRegistry.IsLoaded("spacechase0.MultiFertilizer");
+			IsMultiFertilizerLoaded = Helper.ModRegistry.IsLoaded("spacechase0.MultiFertilizer");
 
-			var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
-			if (sc == null)
-			{
-				Monitor.Log($"Missing SpaceCore dependency. Precitable Retaining Soil probably won't work.", LogLevel.Error);
-			}
-			else
-			{
-				sc.RegisterCustomProperty(
-					typeof(HoeDirt),
-					"RetainingSoilDaysLeft",
-					typeof(int),
-					AccessTools.Method(typeof(HoeDirtExtensions), nameof(HoeDirtExtensions.GetRetainingSoilDaysLeft)),
-					AccessTools.Method(typeof(HoeDirtExtensions), nameof(HoeDirtExtensions.SetRetainingSoilDaysLeft))
-				);
-			}
+			var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore")!;
+			sc.RegisterCustomProperty(
+				typeof(HoeDirt),
+				"RetainingSoilDaysLeft",
+				typeof(int),
+				AccessTools.Method(typeof(HoeDirtExtensions), nameof(HoeDirtExtensions.GetRetainingSoilDaysLeft)),
+				AccessTools.Method(typeof(HoeDirtExtensions), nameof(HoeDirtExtensions.SetRetainingSoilDaysLeft))
+			);
 
 			SetupConfig();
 		}
@@ -167,13 +166,13 @@ namespace Shockah.PredictableRetainingSoil
 
 			configMenu?.AddSectionTitle(
 				mod: ModManifest,
-				text: () => Helper.Translation.Get("config.daysToRetain.section.text"),
-				tooltip: () => Helper.Translation.Get("config.daysToRetain.section.tooltip")
+				text: () => Fluent["config-daysToRetain-section"],
+				tooltip: () => Fluent["config-daysToRetain-section.tooltip"]
 			);
 
 			configMenu?.AddNumberOption(
 				mod: ModManifest,
-				name: () => Helper.Translation.Get("config.daysToRetain.basic.name"),
+				name: () => Fluent["config-daysToRetain-basic"],
 				getValue: () => Config.BasicRetainingSoilDays,
 				setValue: value => Config.BasicRetainingSoilDays = value,
 				min: -1, interval: 1
@@ -181,7 +180,7 @@ namespace Shockah.PredictableRetainingSoil
 
 			configMenu?.AddNumberOption(
 				mod: ModManifest,
-				name: () => Helper.Translation.Get("config.daysToRetain.quality.name"),
+				name: () => Fluent["config-daysToRetain-quality"],
 				getValue: () => Config.QualityRetainingSoilDays,
 				setValue: value => Config.QualityRetainingSoilDays = value,
 				min: -1, interval: 1
@@ -189,7 +188,7 @@ namespace Shockah.PredictableRetainingSoil
 
 			configMenu?.AddNumberOption(
 				mod: ModManifest,
-				name: () => Helper.Translation.Get("config.daysToRetain.deluxe.name"),
+				name: () => Fluent["config-daysToRetain-deluxe"],
 				getValue: () => Config.DeluxeRetainingSoilDays,
 				setValue: value => Config.DeluxeRetainingSoilDays = value,
 				min: -1, interval: 1
@@ -242,47 +241,50 @@ namespace Shockah.PredictableRetainingSoil
 			Instance.RefreshRetainingSoilDaysLeft(__instance);
 		}
 
-		private static void Object_getDescription_postfix(SObject __instance, ref string __result)
+		private static void CraftingRecipe_Constructor_Postfix(CraftingRecipe __instance)
 		{
+			if (Instance.Fluent is null)
+				return;
+
+			if (__instance.bigCraftable)
+				return;
+			var retainingSoilDays = Instance.GetRetainingSoilDays(__instance.itemToProduce[0]);
+			if (retainingSoilDays is null)
+				return;
+
+			__instance.description = Instance.Fluent.Get("retainingSoil-tooltip", new { Days = retainingSoilDays.Value });
+		}
+
+		private static void Object_getDescription_Postfix(SObject __instance, ref string __result)
+		{
+			if (Instance.Fluent is null)
+				return;
+
 			if (__instance.Category != SObject.fertilizerCategory)
 				return;
 			var retainingSoilDays = Instance.GetRetainingSoilDays(__instance.ParentSheetIndex);
-			if (retainingSoilDays == null)
+			if (retainingSoilDays is null)
 				return;
 
-			__result = retainingSoilDays.Value switch
-			{
-				-1 => Instance.Helper.Translation.Get("retainingSoil.tooltip.infinite"),
-				0 => Instance.Helper.Translation.Get("retainingSoil.tooltip.zero"),
-				1 => Instance.Helper.Translation.Get("retainingSoil.tooltip.one"),
-				_ => Instance.Helper.Translation.Get("retainingSoil.tooltip.other", new { Days = retainingSoilDays.Value })
-			};
+			__result = Instance.Fluent.Get("retainingSoil-tooltip", new { Days = retainingSoilDays.Value });
 		}
 
 		#region API
 
 		#region HoeDirt
 		public bool HasRetainingSoil(HoeDirt soil)
-		{
-			return GetRetainingSoilType(soil) != null;
-		}
+			=> GetRetainingSoilType(soil) != null;
 
 		public int? GetRetainingSoilType(HoeDirt soil)
 		{
-			if (isMultiFertilizerLoaded)
-			{
-				return getMultiFertilizerRetainingSoilType(soil);
-			}
+			if (IsMultiFertilizerLoaded)
+				return GetMultiFertilizerRetainingSoilType(soil);
 			else
-			{
 				return soil.fertilizer.Value is BasicRetainingSoilID or QualityRetainingSoilID or DeluxeRetainingSoilID ? soil.fertilizer.Value : null;
-			}
 		}
 
 		public int? GetRetainingSoilDaysLeft(HoeDirt soil)
-		{
-			return HasRetainingSoil(soil) ? soil.GetRetainingSoilDaysLeft() : null;
-		}
+			=> HasRetainingSoil(soil) ? soil.GetRetainingSoilDaysLeft() : null;
 
 		public void SetRetainingSoilDaysLeft(HoeDirt soil, int days)
 		{
@@ -294,20 +296,18 @@ namespace Shockah.PredictableRetainingSoil
 		public void RefreshRetainingSoilDaysLeft(HoeDirt soil)
 		{
 			var retainingSoilType = GetRetainingSoilType(soil);
-			if (retainingSoilType == null)
+			if (retainingSoilType is null)
 				return;
 
 			var retainingSoilDays = GetRetainingSoilDays(retainingSoilType.Value);
-			if (retainingSoilDays != null)
+			if (retainingSoilDays is not null)
 				soil.SetRetainingSoilDaysLeft(retainingSoilDays.Value);
 		}
 		#endregion
 
 		#region Object
 		public bool IsRetainingSoil(int index)
-		{
-			return GetRetainingSoilDays(index) != null;
-		}
+			=> GetRetainingSoilDays(index) != null;
 
 		public int? GetRetainingSoilDays(int index)
 		{

@@ -56,7 +56,17 @@ namespace Shockah.FlexibleSprinklers
 		int GetSprinklerPower(SObject sprinkler);
 
 		/// <summary>Returns a sprinkler's flood fill range (that is, how many tiles away will it look for tiles to water) for a given sprinkler power.</summary>
+		[Obsolete("Sprinkler range now also depends on its unmodified coverage shape. Use `GetSprinklerSpreadRange` instead to achieve the same result as before. This method will be removed in a future update.")]
 		int GetFloodFillSprinklerRange(int power);
+
+		/// <summary>Returns a sprinkler's spread range (that is, how many tiles away will it look for tiles to water) for a given sprinkler power (if evenly spread around it).</summary>
+		int GetSprinklerSpreadRange(int power);
+
+		/// <summary>Returns a sprinkler's focused range (that is, how many tiles away will it look for tiles to water) for a given unmodified coverage (if focused in one direction).</summary>
+		int GetSprinklerFocusedRange(IReadOnlyCollection<Vector2> coverage);
+
+		/// <summary>Returns a sprinkler's max range (that is, how many tiles away will it look for tiles to water) for a given sprinkler (the highest of the spread and focused ranges).</summary>
+		int GetSprinklerMaxRange(SObject sprinkler);
 
 		/// <summary>Get the relative tile coverage by supported sprinkler ID. This API is location/position-agnostic. Note that sprinkler IDs may change after a save is loaded due to Json Assets reallocating IDs.</summary>
 		Vector2[] GetUnmodifiedSprinklerCoverage(SObject sprinkler);
@@ -75,6 +85,9 @@ namespace Shockah.FlexibleSprinklers
 		/// <summary>Returns whether a given tile is in range of specified sprinklers.</summary>
 		/// <exception cref="InvalidOperationException">Thrown when the current sprinkler behavior does not allow independent sprinkler activation.</exception>
 		bool IsTileInRangeOfSprinklers(IEnumerable<SObject> sprinklers, GameLocation location, Vector2 tileLocation);
+
+		/// <summary>Returns all tiles that are currently in range of any sprinkler in the location.</summary>
+		IReadOnlySet<Vector2> GetAllTilesInRangeOfSprinklers(GameLocation location);
 
 		/// <summary>Displays the sprinkler coverage for the specified time.</summary>
 		/// <param name="seconds">The amount of seconds to display the coverage for. Pass `null` to use the value configured by the user.</param>

@@ -19,12 +19,12 @@ using StardewValley;
 #endregion using directives
 
 [UsedImplicitly]
-internal class FarmerEatObjectPatch : BasePatch
+internal sealed class FarmerEatObjectPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FarmerEatObjectPatch()
     {
-        Original = RequireMethod<Farmer>(nameof(Farmer.eatObject));
+        Target = RequireMethod<Farmer>(nameof(Farmer.eatObject));
     }
 
     #region harmony patches
@@ -36,7 +36,7 @@ internal class FarmerEatObjectPatch : BasePatch
         if (ModEntry.PlayerState.RegisteredUltimate?.IsActive != true) return true; // run original logic
 
         Game1.playSound("cancel");
-        Game1.showRedMessage(ModEntry.ModHelper.Translation.Get("ulti.canteat"));
+        Game1.showRedMessage(ModEntry.i18n.Get("ulti.canteat"));
         return false; // don't run original logic
     }
 

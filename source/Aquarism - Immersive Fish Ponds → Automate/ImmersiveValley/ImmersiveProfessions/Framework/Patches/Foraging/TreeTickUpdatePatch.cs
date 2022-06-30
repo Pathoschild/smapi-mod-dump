@@ -12,35 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
 using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class TreeTickUpdatePatch : BasePatch
+internal sealed class TreeTickUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal TreeTickUpdatePatch()
     {
-        Original = RequireMethod<Tree>(nameof(Tree.tickUpdate));
+        Target = RequireMethod<Tree>(nameof(Tree.tickUpdate));
     }
 
     #region harmony patches
 
     /// <summary>Patch to add bonus wood for prestiged Lumberjack.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> TreeTickUpdateTranspiler(
+    private static IEnumerable<CodeInstruction>? TreeTickUpdateTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -49,17 +49,17 @@ internal class TreeTickUpdatePatch : BasePatch
         /// To: Game1.getFarmer(lastPlayerToHit).professions.Contains(100 + <lumberjack_id>) ? 1.4 : Game1.getFarmer(lastPlayerToHit).professions.Contains(12) ? 1.25 : 1.0
 
         var i = 0;
-        repeat1:
+    repeat1:
         try
         {
             var isPrestiged = generator.DefineLabel();
             var resumeExecution = generator.DefineLabel();
             helper
-                .FindProfessionCheck((int) Profession.Lumberjack, true)
+                .FindProfessionCheck(Profession.Lumberjack.Value, true)
                 .Advance()
                 .Insert(
                     new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) Profession.Lumberjack + 100),
+                    new CodeInstruction(OpCodes.Ldc_I4_S, Profession.Lumberjack.Value + 100),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(NetList<int, NetInt>).RequireMethod(nameof(NetList<int, NetInt>.Contains))),
                     new CodeInstruction(OpCodes.Brtrue_S, isPrestiged)
@@ -73,7 +73,7 @@ internal class TreeTickUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
                 )
                 .InsertWithLabels(
-                    new[] {isPrestiged},
+                    new[] { isPrestiged },
                     new CodeInstruction(OpCodes.Pop),
                     new CodeInstruction(OpCodes.Ldc_R8, 1.4)
                 );
@@ -81,7 +81,6 @@ internal class TreeTickUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -93,7 +92,7 @@ internal class TreeTickUpdatePatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Arborist, true)
+                .FindProfessionCheck(Profession.Arborist.Value, true)
                 .RetreatUntil(
                     new CodeInstruction(OpCodes.Ldarg_0)
                 )
@@ -106,13 +105,12 @@ internal class TreeTickUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while getting instructions for Arborist check.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
         // replace Arborist check for prestiged Arborist check
         var checkForPrestigedArboristInstructions = checkForArboristInstructions;
-        checkForPrestigedArboristInstructions[5] = new(OpCodes.Ldc_I4_S, (int) Profession.Arborist + 100);
+        checkForPrestigedArboristInstructions[5] = new(OpCodes.Ldc_I4_S, Profession.Arborist.Value + 100);
 
         /// From: numHardwood++;
         /// To: numHardwood += Game1.getFarmer(lastPlayerToHit).professions.Contains(100 + <arborist_id>) ? 2 : 1;
@@ -122,7 +120,7 @@ internal class TreeTickUpdatePatch : BasePatch
 
         helper.GoTo(0);
         i = 0;
-        repeat2:
+    repeat2:
         try
         {
             var notPrestigedArborist1 = generator.DefineLabel();
@@ -130,7 +128,7 @@ internal class TreeTickUpdatePatch : BasePatch
             var resumeExecution1 = generator.DefineLabel();
             var resumeExecution2 = generator.DefineLabel();
             helper
-                .FindProfessionCheck((int) Profession.Arborist, true)
+                .FindProfessionCheck(Profession.Arborist.Value, true)
                 .RetreatUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_1),
                     new CodeInstruction(OpCodes.Add)
@@ -144,7 +142,7 @@ internal class TreeTickUpdatePatch : BasePatch
                 )
                 .Advance()
                 .AddLabels(resumeExecution1)
-                .FindProfessionCheck((int) Profession.Arborist, true)
+                .FindProfessionCheck(Profession.Arborist.Value, true)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 0.25f),
                     new CodeInstruction(OpCodes.Mul)
@@ -162,7 +160,6 @@ internal class TreeTickUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Arborist bonus hardwood.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

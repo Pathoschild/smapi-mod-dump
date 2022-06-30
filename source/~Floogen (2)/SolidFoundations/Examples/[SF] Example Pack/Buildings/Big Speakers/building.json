@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Name": "Big Speakers",
+  "Description": "Walking past this makes you move faster.",
+  "DrawShadow": false,
+
+  "Size": {
+    "X": 3,
+    "Y": 3
+  },
+  "CollisionMap": "OOO\nOXO\nOOO",
+
+  "SourceRect": "0 0 16 32",
+  "DrawLayers": [
+    {
+      "SourceRect": "0 0 16 32",
+      "DrawPosition": "16, -16",
+      "HideBaseTexture": true,
+      "SortTileOffset": 1,
+      "Sequences": [
+        {
+          "Frame": 0,
+          "Duration": 100
+        },
+        {
+          "Frame": 1,
+          "Duration": 250
+        }
+      ]
+    }
+  ],
+
+  "DefaultSpecialEventAction": {
+    "ModifyBuff": {
+      "Buff": "Speed",
+      "Description": "The music makes your feet move with swiftness.",
+      "Level": 5,
+      "DurationInMilliseconds": 5000,
+      "Glow": {
+        "R": 50,
+        "G": 120,
+        "B": 50
+      },
+      "SubBuffs": [
+        {
+          "Buff": "Attack",
+          "Level": 2
+        }
+      ]
+    }
+  }
+}

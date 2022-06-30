@@ -1,0 +1,66 @@
+﻿{
+  "Name": "Elliott",
+  "Skills": [
+    { "Name": "fisherman" },
+    {
+      "Name": "fighter",
+      "Strength": 0.7,
+      "Speed": 0.7,
+      "MissChance": 0.1
+    }
+  ],
+  "Rules": {
+    // Requires 5 hearts
+    "!f Elliott 1250": "reject",
+
+    /* Marriage */
+
+    // If you are married with him and your hearts are bellow 8, he rejects
+    // Otherwise he ALWAYS accepts adventure with you if you marry him
+    "O Elliot/!f Elliott 2000": "reject companionRejectedBrokenHeart",
+    "O Elliott": "accept",
+
+    /* Regular */
+
+    // If it's raining there is a 20% chance he rejects adventure
+    "w rainy/r 0.2": "reject companionRejected 120",
+
+    // In other cases he accepts adventure anytime
+    "": "accept"
+  },
+  "Buffs": {
+    "Fishing": 3
+  },
+  "BuffsDescription": "[elliott.buffs]",
+  "Weapons": {
+    "0": "Elliott's Pencil", // 1-3
+    "2": "Iron Dirk", // 2-4
+    "3": "Iron Dirk", // 2-4
+    "4": "Crystal Dagger", // 4-10
+    "5": "Burglar's Shank", // 7-12
+    "6": "Forest Sword", // 8-18
+    "7": "Iron Edge", // 12-25
+    "8": "Broken Trident", // 15-26
+    "9": "Wicked Kris", // 24-30
+    "10": "Tempered Broadsword" // 29-44
+  },
+  "IdleBehaviors": [
+    {
+      "Behavior": "Animate",
+      "Animations": [
+        "elliott_read_alt"
+      ],
+      "Tendency": 3,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    },
+    {
+      "Behavior": "Lookaround",
+      "FaceMinSeconds": 4,
+      "FaceMaxSeconds": 8,
+      "Tendency": 3,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    }
+  ]
+}

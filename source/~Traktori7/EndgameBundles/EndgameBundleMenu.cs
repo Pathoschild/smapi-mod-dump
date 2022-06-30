@@ -1646,9 +1646,9 @@ namespace EndgameBundles
 
 			for (int i = 0; i < ingredientListRectangles.Count; i++)
 			{
-				if (Game1.objectInformation.ContainsKey(currentPageBundle.bundle.Ingredients[i].ItemID))
+				if (Game1.objectInformation.TryGetValue(currentPageBundle.bundle.Ingredients[i].ItemID, out string? objectInformation))
 				{
-					ingredientList.Add(new ClickableTextureComponent("", ingredientListRectangles[i], "", Game1.objectInformation[currentPageBundle.bundle.Ingredients[i].ItemID].Split('/')[0], Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, currentPageBundle.bundle.Ingredients[i].ItemID, 16, 16), 4f)
+					ingredientList.Add(new ClickableTextureComponent("", ingredientListRectangles[i], "", objectInformation.Split('/')[0], Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, currentPageBundle.bundle.Ingredients[i].ItemID, 16, 16), 4f)
 					{
 						myID = i + region_ingredientListModifier,
 						item = new SObject(currentPageBundle.bundle.Ingredients[i].ItemID, currentPageBundle.bundle.Ingredients[i].Amount, isRecipe: false, -1, currentPageBundle.bundle.Ingredients[i].Quality),

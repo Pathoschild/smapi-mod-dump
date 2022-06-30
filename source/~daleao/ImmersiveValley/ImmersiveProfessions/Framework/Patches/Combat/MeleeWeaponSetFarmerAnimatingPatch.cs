@@ -12,36 +12,36 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Tools;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-using Ultimate;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class MeleeWeaponSetFarmerAnimatingPatch : BasePatch
+internal sealed class MeleeWeaponSetFarmerAnimatingPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal MeleeWeaponSetFarmerAnimatingPatch()
     {
-        Original = RequireMethod<MeleeWeapon>(nameof(MeleeWeapon.setFarmerAnimating));
+        Target = RequireMethod<MeleeWeapon>(nameof(MeleeWeapon.setFarmerAnimating));
     }
 
     #region harmony patches
 
     /// <summary>Patch to increase prestiged Brute attack speed with rage.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> MeleeWeaponSetFarmerAnimatingTranspiler(
+    private static IEnumerable<CodeInstruction>? MeleeWeaponSetFarmerAnimatingTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -63,7 +63,7 @@ internal class MeleeWeaponSetFarmerAnimatingPatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Brute + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Brute.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, skipRageBonus),
                     new CodeInstruction(OpCodes.Ldarg_0),
@@ -75,7 +75,7 @@ internal class MeleeWeaponSetFarmerAnimatingPatch : BasePatch
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.BruteRageCounter))),
                     new CodeInstruction(OpCodes.Conv_R4),
-                    new CodeInstruction(OpCodes.Ldc_R4, Frenzy.PCT_INCREMENT_PER_RAGE_F / 2f),
+                    new CodeInstruction(OpCodes.Ldc_R4, UndyingFrenzy.PCT_INCREMENT_PER_RAGE_F / 2f),
                     new CodeInstruction(OpCodes.Mul),
                     new CodeInstruction(OpCodes.Sub),
                     new CodeInstruction(OpCodes.Mul),
@@ -85,7 +85,6 @@ internal class MeleeWeaponSetFarmerAnimatingPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed adding attack speed to prestiged Brute.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

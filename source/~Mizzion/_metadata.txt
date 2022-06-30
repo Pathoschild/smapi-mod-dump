@@ -17,11 +17,11 @@ mods:
    Water Pet Bowl
 
 latest commit:
-   commit a065241e5c427a02ed12f6b3ec18c9d84cf6a98b
+   commit a4a2c79318c597be94dcf8cd30782c8009023d33
    Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
-   Date:   Mon Feb 8 10:34:07 2021 -0700
+   Date:   Fri Jun 24 17:57:52 2022 -0600
    
-       Latest Code Update
+       Updated 1.5.6
        
-       Latest Code Update
+       Updated to work with SDV 1.5.6
    

@@ -9,6 +9,7 @@
 *************************************************/
 
 using LinqFasterer;
+using SpriteMaster.Types.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -175,5 +176,73 @@ internal static partial class ReflectionExt {
 	[DynamicallyAccessedMembers(AllMethods)]
 	internal static IList<MethodInfo> GetInstanceMethods<T>(string name) {
 		return typeof(T).GetInstanceMethods(name);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties | AllMethods)]
+	internal static MemberInfo[] GetInstanceMembers<T>(string name) =>
+		GetInstanceMembers(typeof(T), name);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties | AllMethods)]
+	internal static MemberInfo[] GetInstanceMembers(this Type type, string name) =>
+		type.GetMember(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo[] GetInstanceVariables<T>(string name) =>
+		GetInstanceVariables(typeof(T), name);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo[] GetInstanceVariables(this Type type, string name) {
+		var members = type.GetInstanceMembers(name);
+		return members.WhereF(member => member is (FieldInfo or PropertyInfo)).SelectF(VariableInfo.From).ToArrayF();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties | AllMethods)]
+	internal static MemberInfo[] GetStaticMembers<T>(string name) =>
+		GetStaticMembers(typeof(T), name);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties | AllMethods)]
+	internal static MemberInfo[] GetStaticMembers(this Type type, string name) =>
+		type.GetMember(name, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo[] GetStaticVariables<T>(string name) =>
+		GetStaticVariables(typeof(T), name);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo[] GetStaticVariables(this Type type, string name) {
+		var members = type.GetStaticMembers(name);
+		return members.WhereF(member => member is (FieldInfo or PropertyInfo)).SelectF(VariableInfo.From).ToArrayF();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo? GetInstanceVariable<T>(string name) =>
+		GetInstanceVariable(typeof(T), name);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo? GetInstanceVariable(this Type type, string name) {
+		var members = type.GetInstanceMembers(name);
+		return members.WhereF(member => member is (FieldInfo or PropertyInfo)).SelectF(VariableInfo.From).FirstOrDefaultF();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo? GetStaticVariable<T>(string name) =>
+		GetStaticVariable(typeof(T), name);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[DynamicallyAccessedMembers(AllFields | AllProperties)]
+	internal static VariableInfo? GetStaticVariable(this Type type, string name) {
+		var members = type.GetStaticMembers(name);
+		return members.WhereF(member => member is (FieldInfo or PropertyInfo)).SelectF(VariableInfo.From).FirstOrDefaultF();
 	}
 }

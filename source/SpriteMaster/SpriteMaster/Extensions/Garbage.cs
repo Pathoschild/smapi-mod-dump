@@ -8,11 +8,20 @@
 **
 *************************************************/
 
+using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
+using SpriteMaster.Types;
+using SpriteMaster.Types.Interlocking;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace SpriteMaster.Extensions;
 
@@ -135,9 +144,6 @@ internal static class Garbage {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void MarkOwned(SurfaceFormat format, int texels) {
-		if (!Config.Garbage.CollectAccountOwnedTextures) {
-			return;
-		}
 		texels.AssertPositiveOrZero();
 		var size = format.SizeBytesLong(texels);
 		Mark(size);
@@ -145,9 +151,6 @@ internal static class Garbage {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void UnmarkOwned(SurfaceFormat format, int texels) {
-		if (!Config.Garbage.CollectAccountOwnedTextures) {
-			return;
-		}
 		texels.AssertPositiveOrZero();
 		var size = format.SizeBytesLong(texels);
 		Unmark(size);
@@ -172,4 +175,127 @@ internal static class Garbage {
 		var size = format.SizeBytesLong(texels);
 		Unmark(size);
 	}
+
+	#region Ephemeral Collection
+
+	internal static class EphemeralCollection {
+		internal static readonly InterlockedBool ShouldDump = new(false);
+		internal static readonly Stopwatch Stopwatch = Stopwatch.StartNew();
+
+		internal static readonly MemberInfo EphemeralCollectPeriodMember =
+			typeof(Config.Garbage).GetField(
+				nameof(Config.Garbage.EphemeralCollectPeriod),
+				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+			) ?? throw new NullReferenceException(nameof(Config.Garbage.EphemeralCollectPeriod));
+		internal static readonly Limit<TimeSpan> Limits = new() {
+			Min = EphemeralCollectPeriodMember.GetCustomAttribute<Attributes.LimitsTimeSpanAttribute>()?.MinValue ?? TimeSpan.Zero,
+			Max = EphemeralCollectPeriodMember.GetCustomAttribute<Attributes.LimitsTimeSpanAttribute>()?.MaxValue ?? TimeSpan.MaxValue,
+		};
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal static void Collect(ulong currentFrame) {
+			if (Stopwatch.Elapsed < Config.Garbage.EphemeralCollectPeriod) {
+				return;
+			}
+
+			Stopwatch.Restart();
+
+			// No trace message as that would be _incredibly_ annoying.
+			GC.Collect(
+				generation: 1,
+				mode: GCCollectionMode.Forced,
+				blocking: false,
+				compacting: false
+			);
+			AdjustHeuristic();
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		private static void AdjustHeuristic() {
+			var collectionInfo = GC.GetGCMemoryInfo(GCKind.Ephemeral);
+			var pauseDurations = collectionInfo.PauseDurations;
+			var totalPauseDuration = TimeSpan.Zero;
+			foreach (var pauseDuration in pauseDurations) {
+				totalPauseDuration += pauseDuration;
+			}
+
+			if (totalPauseDuration > TimeSpan.Zero) {
+				double timeRatio = Config.Garbage.EphemeralCollectPauseGoal / totalPauseDuration;
+
+				var newTimeSpan = Config.Garbage.EphemeralCollectPeriod * timeRatio;
+				newTimeSpan = Limits.Clamp(newTimeSpan);
+				Config.Garbage.EphemeralCollectPeriod = newTimeSpan;
+			}
+
+			// general stats
+			if (ShouldDump.Exchange(false)) {
+				Dump(collectionInfo);
+			}
+		}
+
+		private static void Dump(in GCMemoryInfo collectionInfo) {
+			var dumpBuilder = new StringBuilder("Ephemeral Collection Stats:");
+
+			var properties = new (string Tag, object Value)[] {
+				("FinalizationPendingCount", collectionInfo.FinalizationPendingCount),
+				("FragmentedBytes", collectionInfo.FragmentedBytes.AsDataSize()),
+				("HeapSizeBytes", collectionInfo.HeapSizeBytes.AsDataSize()),
+				("MemoryLoadBytes", collectionInfo.MemoryLoadBytes.AsDataSize()),
+				("PauseDurations", collectionInfo.PauseDurations.ToArray()),
+				("PinnedObjectsCount", collectionInfo.PinnedObjectsCount),
+				("PromotedBytes", collectionInfo.PromotedBytes.AsDataSize()),
+				("TotalAvailableMemoryBytes", collectionInfo.TotalAvailableMemoryBytes.AsDataSize()),
+				("TotalCommittedBytes", collectionInfo.TotalCommittedBytes.AsDataSize())
+			};
+
+			int maxTagLength = properties.MaxF(p => p.Tag.Length);
+
+			foreach (var property in properties) {
+				if (property.Value is IEnumerable valuesEnumerable) {
+					var values = valuesEnumerable.Cast<object>().ToArray();
+					switch (values.Length) {
+						case 0:
+							dumpBuilder.AppendLine($"  {property.Tag.PadRight(maxTagLength)} : []");
+							break;
+						case 1:
+							dumpBuilder.AppendLine($"  {property.Tag.PadRight(maxTagLength)} : [ {values[0]} ]");
+							break;
+						default: {
+							var emptySpace = "".PadRight(maxTagLength);
+
+							dumpBuilder.AppendLine($"  {property.Tag.PadRight(maxTagLength)} : [");
+							foreach (var value in values) {
+								dumpBuilder.AppendLine($"  {emptySpace}     {value}");
+							}
+
+							dumpBuilder.AppendLine($"  {emptySpace}   ]");
+						}
+							break;
+					}
+				}
+				else {
+					dumpBuilder.AppendLine($"  {property.Tag.PadRight(maxTagLength)} : {property.Value}");
+				}
+			}
+
+			Debug.Info(dumpBuilder.ToString());
+		}
+	}
+
+	#endregion
+
+	#region Console Command
+
+	private static readonly Dictionary<string, ConsoleSupport.Command> CommandMap = new() {
+		{ "help", new((_, _) => ConsoleSupport.InvokeHelp(CommandMap!), "Prints this command guide") },
+		{ "start", new((_, _) => SpriteMaster.Self.MemoryMonitor.TriggerGarbageCollection(), "Trigger full GC") },
+		{ "stats", new((_, _) => { EphemeralCollection.ShouldDump.Value = true; }, "Dump GC stats on next ephemeral collection") }
+	};
+
+	[Command("gc", "Garbage Collection Commands")]
+	public static void OnConsoleCommand(string command, Queue<string> arguments) {
+		ConsoleSupport.Invoke(CommandMap, command, arguments);
+	}
+
+	#endregion
 }

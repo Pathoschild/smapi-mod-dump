@@ -109,9 +109,7 @@ namespace PersonalEffects
         //}
 
         private static int tickUpdateLimiter;
-        private static bool startedEating;
         private static Item eatingItem;
-        private static int eatingQuantity;
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
@@ -119,40 +117,37 @@ namespace PersonalEffects
             if (tickUpdateLimiter < 10) return;
             tickUpdateLimiter = 0;
             if (Game1.player == null) return;
-            if (startedEating)
+            if (eatingItem is not null)
             {
                 if (Game1.player.isEating) return;
+                
+                Modworks.Log.Trace("Dealing with consequences");
+                EatForageItem(eatingItem);
 
-                startedEating = false;
-
-                //make sure we didn't say no
-                if (Game1.player.ActiveObject == null || Game1.player.ActiveObject.Stack < eatingQuantity)
-                {
-                    Events_ItemEaten(eatingItem);
-                }
-
+                Modworks.Log.Trace("*burp*");
                 eatingItem = null;
             }
             else if (Game1.player.isEating && Game1.player.itemToEat is not null)
             {
-                startedEating = true;
+                Modworks.Log.Trace("Eating starts");
                 if (Game1.player.ActiveObject == null) return;
                 eatingItem = Game1.player.itemToEat;
-                eatingQuantity = Game1.player.ActiveObject.Stack;
+                Modworks.Log.Trace($"Eating {Game1.player.ActiveObject.Name}");
             }
         }
 
-        private static void Events_ItemEaten(Item item)
+        private static void EatForageItem(ISalable item)
         {
             var dn = item.DisplayName;
             string npc;
-
+            
+            if (dn is null) return;
             if (dn.EndsWith("'s Panties")) npc = dn[..dn.IndexOf("'s Panties", StringComparison.Ordinal)];
             else if (dn.EndsWith("'s Underwear")) npc = dn[..dn.IndexOf("'s Underwear", StringComparison.Ordinal)];
             else if (dn.EndsWith("'s Delicates")) npc = dn[..dn.IndexOf("'s Delicates", StringComparison.Ordinal)];
             else if (dn.EndsWith("'s Underpants")) npc = dn[..dn.IndexOf("'s Underpants", StringComparison.Ordinal)];
             else return; //not one of ours
-
+            
             if (string.IsNullOrWhiteSpace(npc)) return;
 
             var npcName = NPCConfig.LookupNPC(npc);
@@ -162,6 +157,9 @@ namespace PersonalEffects
             var friendship = Player.GetFriendshipPoints(npcName);
 
             if (friendship == 0) return; //don't reveal identities of unknown NPCs
+            
+            Modworks.Log.Trace($"EatForageItem: friendship {friendship}");
+
             Game1.showGlobalMessage("You feel like this changes your relationship with " + npcConfig.DisplayName + ".");
 
             if (Modworks.RNG.NextDouble() < 0.25f + (Player.GetLuckFactorFloat() * 0.75f))

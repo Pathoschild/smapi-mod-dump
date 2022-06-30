@@ -12,33 +12,35 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BushMachineGetOutputPatch : BasePatch
+internal sealed class BushMachineGetOutputPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetMachine;
+    private static Func<object, Bush>? _GetMachine;
 
     /// <summary>Construct an instance.</summary>
     internal BushMachineGetOutputPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures.BushMachine".ToType().RequireMethod("GetOutput");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.TerrainFeatures.BushMachine".ToType()
+                .RequireMethod("GetOutput");
         }
         catch
         {
@@ -52,20 +54,21 @@ internal class BushMachineGetOutputPatch : BasePatch
     [HarmonyPostfix]
     private static void BushMachineGetOutputPostfix(object __instance)
     {
-        if (__instance is null || !ModEntry.Config.ShouldCountAutomatedHarvests) return;
+        if (!ModEntry.Config.ShouldCountAutomatedHarvests) return;
 
-        _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine");
-        var machine = (Bush) _GetMachine.Invoke(__instance, null);
-        if (machine is null || machine.size.Value >= Bush.greenTeaBush) return;
+        _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine")
+            .CompileUnboundDelegate<Func<object, Bush>>();
+        var machine = _GetMachine(__instance);
+        if (machine.size.Value >= Bush.greenTeaBush) return;
 
         if (!Context.IsMainPlayer || !Game1.player.HasProfession(Profession.Ecologist)) return;
 
-        Game1.player.IncrementData<uint>(DataField.EcologistItemsForaged);
+        ModDataIO.IncrementData<uint>(Game1.player, ModData.EcologistItemsForaged.ToString());
     }
 
     /// <summary>Patch for automated Berry Bush quality.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> BushMachineGetOutputTranspiler(
+    private static IEnumerable<CodeInstruction>? BushMachineGetOutputTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -76,7 +79,7 @@ internal class BushMachineGetOutputPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Ecologist) // find index of ecologist check
+                .FindProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_4) // quality = 4
                 )
@@ -93,7 +96,6 @@ internal class BushMachineGetOutputPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching automated Berry Bush quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

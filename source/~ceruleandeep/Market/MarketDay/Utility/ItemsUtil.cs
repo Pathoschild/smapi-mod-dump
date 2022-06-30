@@ -244,18 +244,6 @@ namespace MarketDay.Utility
             return -1;
         }
 
-        public static void RegisterPacksToRemove(string[] JApacks, string[] recipePacks, string[] itemNames)
-        {
-            if (JApacks != null)
-                PacksToRemove = PacksToRemove.Union(JApacks).ToList();
-
-            if (recipePacks != null)
-                RecipePacksToRemove = RecipePacksToRemove.Union(recipePacks).ToList();
-
-            if (itemNames != null)
-                ItemsToRemove = ItemsToRemove.Union(itemNames).ToList();
-        }
-
         public static void RegisterItemsToRemove()
         {
             if (APIs.JsonAssets == null)

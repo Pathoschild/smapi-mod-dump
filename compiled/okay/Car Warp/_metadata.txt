@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11102
+IDs: sophie.CarWarp
+update keys: Nexus:???, Nexus:11102, GitHub:sophiesalacia/StardewMods

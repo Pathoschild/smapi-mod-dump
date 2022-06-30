@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!-- ModBuildConfig settings. -->
-	<Import Project="..\Build\Latest.targets" />
+	<Import Project="..\Build\SDV-1.5.6_SMAPI-3.14.0.targets" />
 	
 	<PropertyGroup>
-		<Version>1.5.1</Version>
+		<Version>1.6.1</Version>
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.0.31709.430" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0" />
 	</ItemGroup>

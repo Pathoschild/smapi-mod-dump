@@ -12,25 +12,24 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Monsters;
-
-using Extensions;
-using Ultimate;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GreenSlimeCollisionWithFarmerBehaviorPatch : BasePatch
+internal sealed class GreenSlimeCollisionWithFarmerBehaviorPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     private const int FARMER_INVINCIBILITY_FRAMES_I = 72;
 
     /// <summary>Construct an instance.</summary>
     internal GreenSlimeCollisionWithFarmerBehaviorPatch()
     {
-        Original = RequireMethod<GreenSlime>(nameof(GreenSlime.collisionWithFarmerBehavior));
+        Target = RequireMethod<GreenSlime>(nameof(GreenSlime.collisionWithFarmerBehavior));
     }
 
     #region harmony patches
@@ -43,7 +42,7 @@ internal class GreenSlimeCollisionWithFarmerBehaviorPatch : BasePatch
 
         var who = __instance.Player;
         if (!who.IsLocalPlayer ||
-            ModEntry.PlayerState.RegisteredUltimate is not Pandemonia {IsActive: false} pandemonium ||
+            ModEntry.PlayerState.RegisteredUltimate is not Enthrall { IsActive: false } pandemonium ||
             ModEntry.PlayerState.SlimeContactTimer > 0) return;
 
         pandemonium.ChargeValue += Game1.random.Next(1, 4);

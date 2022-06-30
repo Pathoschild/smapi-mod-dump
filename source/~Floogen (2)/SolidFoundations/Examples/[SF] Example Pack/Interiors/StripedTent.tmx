@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="3">
+ <properties>
+  <property name="AmbientLight" value="110 110 110"/>
+  <property name="DayTiles_asdf" value="Buildings 3 1 24 Buildings 9 1 24 Buildings 15 1 24 Buildings 21 1 24 Back 3 3 25 Back 21 3 25"/>
+  <property name="Feed" value="5 2"/>
+  <property name="Light_asdf" value="11 14 6 3 2 6 10 2 6 14 2 6 1 5 4 6 5 4 6 10 4 11 7 4 15 11 4 1 12 4 15 2 6 16 9 4 20 13 4 20 6 4  21 2 6 23 2 4 23 11 4"/>
+  <property name="NightTiles_asdf" value="Buildings 3 1 26 Buildings 9 1 26 Buildings 15 1 26 Buildings 21 1 26 Back 3 3 12 Back 21 3 12"/>
+  <property name="ProduceArea" value="6 4 15 7"/>
+  <property name="Warp" value="4 10 Farm 14 11 5 10 Farm 14 11"/>
+ </properties>
+ <tileset firstgid="1" name="barn" tilewidth="16" tileheight="16" tilecount="84" columns="4">
+  <image source="coopTiles" width="64" height="336"/>
+  <tile id="12">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="Passable" type="int" value="0"/>
+    <property name="Trough" value="T"/>
+   </properties>
+  </tile>
+  <tile id="53">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="54">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="85" name="p" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="121" name="walls_and_floors" tilewidth="16" tileheight="16" tilecount="560" columns="16">
+  <image source="walls_and_floors.png" width="256" height="560"/>
+ </tileset>
+ <tileset firstgid="681" name="townInterior" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior.png" width="512" height="1088"/>
+ </tileset>
+ <layer id="1" name="Back" width="10" height="10">
+  <data encoding="csv">
+0,0,529,530,529,530,529,530,0,0,
+0,546,545,546,545,546,545,546,545,0,
+529,530,529,530,529,530,529,530,529,530,
+545,546,545,546,545,546,545,546,545,546,
+529,530,529,530,529,530,529,530,529,530,
+545,546,545,546,545,546,545,546,545,546,
+529,530,529,530,529,530,529,530,529,530,
+545,546,545,546,545,546,545,546,545,546,
+0,530,529,530,529,530,529,530,529,0,
+0,529,529,529,529,529,529,529,529,0
+</data>
+ </layer>
+ <layer id="2" name="Buildings" width="10" height="10">
+  <data encoding="csv">
+49,682,683,683,683,683,683,683,684,49,
+713,722,0,0,0,0,0,0,724,717,
+745,0,0,0,0,0,0,0,0,749,
+745,0,0,0,0,0,0,0,0,749,
+745,0,0,0,0,0,0,0,0,749,
+745,0,0,0,0,0,0,0,0,749,
+745,0,0,0,0,0,0,0,0,749,
+745,0,0,0,0,0,0,0,0,749,
+745,0,0,0,0,0,0,0,0,749,
+841,842,846,846,0,0,846,846,847,848
+</data>
+ </layer>
+ <layer id="3" name="Front" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="Paths" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="5" name="Back"/>
+ <objectgroup id="6" name="Buildings"/>
+ <objectgroup id="7" name="Front"/>
+ <objectgroup id="8" name="Paths"/>
+</map>

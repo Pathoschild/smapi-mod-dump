@@ -12,34 +12,34 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GreenSlimeDrawPatch : BasePatch
+internal sealed class GreenSlimeDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.<w/ summary>
     internal GreenSlimeDrawPatch()
     {
-        //Original = RequireMethod<GreenSlime>(nameof(GreenSlime.draw), new[] {typeof(SpriteBatch)});
+        //Target = RequireMethod<GreenSlime>(nameof(GreenSlime.draw), new[] {typeof(SpriteBatch)});
     }
 
     #region harmony patches
 
     /// <summary>Patch to fix Green Slime eye and antenna position when inflated.</summary>
-    private static IEnumerable<CodeInstruction> GreenSlimeDrawTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? GreenSlimeDrawTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -91,7 +91,6 @@ internal class GreenSlimeDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching inflated Green Slime sprite.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

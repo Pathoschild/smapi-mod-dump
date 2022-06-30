@@ -12,23 +12,22 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.GameData.FishPond;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class FishPondUpdateMaximumOccupancyPatch : BasePatch
+internal sealed class FishPondUpdateMaximumOccupancyPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FishPondUpdateMaximumOccupancyPatch()
     {
-        Original = RequireMethod<FishPond>(nameof(FishPond.UpdateMaximumOccupancy));
+        Target = RequireMethod<FishPond>(nameof(FishPond.UpdateMaximumOccupancy));
     }
 
     #region harmony patches

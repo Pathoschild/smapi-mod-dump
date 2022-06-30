@@ -30,6 +30,8 @@ namespace AlternativeTextures.Framework.Managers
 
         private Texture2D _paintBucketTexture;
         private Texture2D _scissorsTexture;
+        private Texture2D _sprayCanTexture;
+        private Texture2D _sprayCanTextureRare;
         private Texture2D _paintBrushEmptyTexture;
         private Texture2D _paintBrushFilledTexture;
 
@@ -41,16 +43,20 @@ namespace AlternativeTextures.Framework.Managers
             // Load in the assets
             _paintBucketTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "PaintBucket.png"));
             _scissorsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "Scissors.png"));
+            _sprayCanTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "SprayCan.png"));
+            _sprayCanTextureRare = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "SprayCanRare.png"));
             _paintBrushEmptyTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "PaintBrushEmpty.png"));
             _paintBrushFilledTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "PaintBrushFilled.png"));
 
             // Setup toolNames
             toolNames.Add("PaintBucket", _paintBucketTexture);
             toolNames.Add("Scissors", _scissorsTexture);
+            toolNames.Add("SprayCan", _sprayCanTexture);
             toolNames.Add("PaintBrush_Empty", _paintBrushEmptyTexture);
             toolNames.Add("PaintBrush_Filled", _paintBrushFilledTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}PaintBucket", _paintBucketTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}Scissors", _scissorsTexture);
+            toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}SprayCan", _sprayCanTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}PaintBrush_Empty", _paintBrushEmptyTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}PaintBrush_Filled", _paintBrushFilledTexture);
 
@@ -66,6 +72,11 @@ namespace AlternativeTextures.Framework.Managers
         internal Texture2D GetScissorsTexture()
         {
             return _scissorsTexture;
+        }
+
+        internal Texture2D GetSprayCanTexture(bool getRareTexture = false)
+        {
+            return getRareTexture ? _sprayCanTextureRare : _sprayCanTexture;
         }
 
         internal Texture2D GetPaintBrushEmptyTexture()

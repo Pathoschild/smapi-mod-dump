@@ -21,13 +21,13 @@ using SObject = StardewValley.Object;
 namespace QualityScrubber
 {
 	/// <summary>The mod entry point.</summary>
-	public class ModEntry : StardewModdingAPI.Mod
+	public class ModEntry : Mod
 	{
 		private const string qualityScrubberType = "Quality Scrubber";
 
-		private ModConfig? config;
-
-		private QualityScrubberController? controller;
+		private ModConfig config = null!;
+		private QualityScrubberController controller = null!;
+		private ITranslationHelper i18n = null!;
 
 
 		/*********
@@ -37,23 +37,66 @@ namespace QualityScrubber
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
+			i18n = helper.Translation;
+
 			config = helper.ReadConfig<ModConfig>();
 
 			controller = new QualityScrubberController(Monitor, config);
 
-			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+			helper.Events.Input.ButtonPressed += OnButtonPressed;
 		}
-
 		
+
 		public override object GetApi()
 		{
-			return new QualityScrubberApi(controller!);
+			return new QualityScrubberApi(controller);
 		}
 
 
 		/*********
 		** Private methods
 		*********/
+		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
+		{
+			var GMCMApi = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+
+			if (GMCMApi is null)
+				return;
+
+			GMCMApi.Register(
+				mod: ModManifest,
+				reset: () => config = new ModConfig(),
+				save: () => Helper.WriteConfig(config)
+			);
+
+			GMCMApi.AddSectionTitle(
+				mod: ModManifest,
+				text: () => i18n.Get("gmcm.main-label"),
+				tooltip: null
+			);
+
+			GMCMApi.AddNumberOption(
+				mod: ModManifest,
+				getValue: () => config.Duration,
+				setValue: (int val) => config.Duration = val,
+				name: () => i18n.Get("gmcm.duration-label"),
+				tooltip: () => i18n.Get("gmcm.duration-description"),
+				interval: 10,
+				min: 10,
+				max: 1000
+			);
+
+			GMCMApi.AddBoolOption(
+				mod: ModManifest,
+				getValue: () => config.AllowHoney,
+				setValue: (bool val) => config.AllowHoney = val,
+				name: () => i18n.Get("gmcm.allow-honey-label"),
+				tooltip: () => i18n.Get("gmcm.allow-honey-description")
+			);
+		}
+
+
 		/// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
@@ -72,7 +115,7 @@ namespace QualityScrubber
 				if (machine is not null && machine.Name == qualityScrubberType)
 				{
 					// See if the machine accepts the item, suppress the input to prevent the eating menu from opening
-					if (controller!.CanProcess(Game1.player.ActiveObject, machine))
+					if (controller.CanProcess(Game1.player.ActiveObject, machine))
 					{
 						controller.StartProcessing(Game1.player.ActiveObject, machine, Game1.player);
 						Helper.Input.Suppress(e.Button);

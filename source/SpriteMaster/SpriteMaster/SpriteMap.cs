@@ -42,7 +42,7 @@ internal static class SpriteMap {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ulong SpriteHash(XTexture2D texture, Bounds source, uint expectedScale, bool preview) {
-		return HashUtility.Combine(source.Hash(), expectedScale.GetSafeHash(), preview.GetSafeHash());
+		return HashUtility.Combine(source.Hash(), (ulong)expectedScale.GetSafeHash(), (ulong)preview.GetSafeHash());
 	}
 
 	internal static bool Add(XTexture2D reference, ManagedSpriteInstance instance, out ManagedSpriteInstance? current) {

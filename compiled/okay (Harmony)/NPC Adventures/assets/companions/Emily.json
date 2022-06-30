@@ -1,0 +1,55 @@
+﻿{
+  "Name": "Emily",
+  "Skills": [
+    { "Name": "spiritual" }
+  ],
+  "Rules": {
+    // Requires 3 hearts or more
+    "!f Emily 750": "reject",
+
+    /* Marriage */
+
+    // If you are married with her and you have less than 8 hearts, she always rejects your invite
+    "O Emily/!f Emily 2000": "reject companionRejectedBrokenHeart",
+
+    // Emily works in Monday and Friday in Saloon during night when she's married
+    "O Emily/!d Mon Fri/t 1500 2200": "reject companionRejectedWork",
+
+    // If your relationship is OK, she always accept (and ignores all other rules)
+    "O Emily/": "accept",
+
+    /* Regular */
+
+    // Emily don't go to adventure on Sandy's birthday
+    "!z fall/u 15": "reject companionRejectedSandyBday",
+
+    // She works during the evening and night in Saloon everyday
+    "t 1530 2400": "reject companionRejectedWork",
+
+    // She accepts adventure in all other cases
+    "": "accept"
+  },
+  "Buffs": {
+    "Mining": 2
+  },
+  "BuffsDescription": "[emily.buffs]",
+  "IdleBehaviors": [
+    {
+      "Behavior": "Animate",
+      "Animations": [
+        "emily_exercise"
+      ],
+      "Tendency": 3,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    },
+    {
+      "Behavior": "Lookaround",
+      "FaceMinSeconds": 4,
+      "FaceMaxSeconds": 8,
+      "Tendency": 3,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    }
+  ]
+}

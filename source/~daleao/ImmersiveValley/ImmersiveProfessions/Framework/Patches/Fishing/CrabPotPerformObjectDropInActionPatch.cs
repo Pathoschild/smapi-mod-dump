@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley.Objects;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CrabPotPerformObjectDropInActionPatch : BasePatch
+internal sealed class CrabPotPerformObjectDropInActionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal CrabPotPerformObjectDropInActionPatch()
     {
-        Original = RequireMethod<CrabPot>(nameof(CrabPot.performObjectDropInAction));
+        Target = RequireMethod<CrabPot>(nameof(CrabPot.performObjectDropInAction));
     }
 
     #region harmony patches
 
     /// <summary>Patch to allow Conservationist to place bait.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> CrabPotPerformObjectDropInActionTranspiler(
+    private static IEnumerable<CodeInstruction>? CrabPotPerformObjectDropInActionTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -48,7 +48,7 @@ internal class CrabPotPerformObjectDropInActionPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Conservationist)
+                .FindProfessionCheck(Profession.Conservationist.Value)
                 .RetreatUntil(
                     new CodeInstruction(OpCodes.Ldloc_1)
                 )
@@ -62,7 +62,6 @@ internal class CrabPotPerformObjectDropInActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing Conservationist bait restriction.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

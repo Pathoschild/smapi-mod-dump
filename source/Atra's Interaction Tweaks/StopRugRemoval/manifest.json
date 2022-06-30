@@ -11,7 +11,7 @@
 {
   "Name": "Atra's Interaction Tweaks",
   "Author": "atravita",
-  "Version": "1.0.10",
+  "Version": "1.0.11",
   "Description": "A few interaction tweaks: prevents accidental rug removal, prevents gates from popping off, and some other things.",
   "UniqueID": "atravita.StopRugRemoval",
   "EntryDll": "StopRugRemoval.dll",

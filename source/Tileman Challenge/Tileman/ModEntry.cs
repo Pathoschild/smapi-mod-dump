@@ -38,6 +38,7 @@ namespace Tileman
 
         public double tile_price = 1.0;
         public double tile_price_raise = 0.0008;
+        public double dynamic_tile_price;
 
 
         public int caverns_extra = 0;
@@ -268,7 +269,7 @@ namespace Tileman
 
 
             //Game1.timeOfDay = 900;
-            //Game1.dayOfMonth = 13;
+            //Game1.dayOfMonth = 14;
             //Monitor.Log($"TIME OF DAY SET TO:{Game1.timeOfDay}",LogLevel.Debug);
 
 
@@ -419,6 +420,33 @@ namespace Tileman
 
         }
 
+        private void GetTilePrice()
+        {
+            switch (difficulty_mode)
+            {
+                case 0:
+                    //Slowly increase tile cost over time // Change 0 for initial buffer
+                    if (purchase_count > 0) dynamic_tile_price += tile_price_raise;
+                    break;
+
+                case 1:
+                    //Increase tile cost through milestones
+                    if (purchase_count > 1)      dynamic_tile_price = tile_price * 2;
+                    if (purchase_count > 10)     dynamic_tile_price = tile_price * 4;
+                    if (purchase_count > 100)    dynamic_tile_price = tile_price * 8;
+                    if (purchase_count > 1000)   dynamic_tile_price = tile_price * 16;
+                    if (purchase_count > 10000)  dynamic_tile_price = tile_price * 32;
+                    if (purchase_count > 100000) dynamic_tile_price = tile_price * 64;
+
+                    break;
+
+                case 2:
+                    //Increment tile price with each one purchased
+                    dynamic_tile_price = purchase_count;
+                    break;
+            }
+        }
+
         private void PurchaseTilePreCheck()
         {
 
@@ -451,36 +479,15 @@ namespace Tileman
 
         private void PurchaseTileCheck(KaiTile thisTile)
         {
-            int floor_price = (int)Math.Floor(tile_price);
+            int floor_price = (int)Math.Floor(dynamic_tile_price);
 
             if (Game1.player.Money >= floor_price)
             {
                 
                 Game1.player.Money -= floor_price;
 
-                switch(difficulty_mode)
-                {
-                    case 0: 
-                        //Slowly increase tile cost over time // Change 0 for initial buffer
-                        if (purchase_count > 0) tile_price += tile_price_raise;  
-                        break;
-
-                    case 1:
-                        //Increase tile cost through milestones
-                        if (purchase_count > 1)      tile_price = 2;
-                        if (purchase_count > 10)     tile_price = 4;
-                        if (purchase_count > 100)    tile_price = 8;
-                        if (purchase_count > 1000)   tile_price = 16;
-                        if (purchase_count > 10000)  tile_price = 32;
-                        if (purchase_count > 100000) tile_price = 64;
-
-                        break;
-
-                    case 2:
-                        //Increment tile price with each one purchased
-                        tile_price++;
-                        break;
-                }
+                GetTilePrice();
+                
 
                 tile_count--;
                 purchase_count++;
@@ -672,7 +679,7 @@ namespace Tileman
             {
                 if (Game1.locationRequest.Location != Game1.currentLocation && !location_changed)
                 {
-                    locationDelay = 20;
+                    locationDelay = 35;
                     location_changed = true;
 
                     if (Game1.currentLocation.Name == "Temp") {
@@ -773,7 +780,7 @@ namespace Tileman
                         gameLocation.setTileProperty(t.tileX, t.tileY, "Back", "NoSprinklers", "");
                         gameLocation.setTileProperty(t.tileX, t.tileY, "Back", "Placeable", "");
                     }
-                    if (do_collision) gameLocation.setTileProperty(t.tileX, t.tileY, "Back", "Passable", "");
+                    //if (do_collision) gameLocation.setTileProperty(t.tileX, t.tileY, "Back", "Passable", "");
 
 
 
@@ -889,23 +896,72 @@ namespace Tileman
 
             if (Game1.getLocationFromName(tile.tileIsWhere) == Game1.currentLocation || Game1.currentLocation.Name == "Temp")
             {
+                
 
                 Rectangle tileBox = new(tile.tileX * 64, tile.tileY * 64, tile.tileW, tile.tileH);
                 Rectangle playerBox = Game1.player.GetBoundingBox();
-                if (Game1.currentLocation.Name == "Temp")
+                
+                if (playerBox.Intersects(tileBox))
                 {
-                    if (playerBox.Intersects(tileBox))
+                    if (collisionTick > 120)
                     {
-                        if (collisionTick > 120)
+                        Game1.player.Money += (int)tile_price;
+                        collisionTick = 0;
+                        PurchaseTileCheck(tile);
+
+                    }
+
+                    var xDist  = playerBox.Right  - tileBox.Left;
+                    var xDist2 = tileBox.Right    - playerBox.Left;
+                    var yDist  = playerBox.Bottom - tileBox.Top;
+                    var yDist2 = tileBox.Bottom   - playerBox.Top;
+                    var xOffset = 0;
+
+                    if (Game1.player.movementDirections.Count > 1
+                    && (Game1.player.movementDirections[0] == 3 || Game1.player.movementDirections[1] == 3)) xOffset = 20;
+
+                    if (Math.Abs(xDist - xDist2) >= Math.Abs(yDist - yDist2) + xOffset)
+                    {
+                        if (xDist >= xDist2)
                         {
-                            Game1.player.Money += (int)tile_price;
-                            collisionTick = 0;
-                            PurchaseTileCheck(tile);
+
+                            var newPos = new Vector2(Game1.player.Position.X + xDist2, Game1.player.Position.Y);
+                            Game1.player.Position = newPos;
 
                         }
-                        Game1.player.Position = Game1.player.lastPosition;
-                        collisionTick++;
+                        //Collide from Right
+                        else
+                        {
+
+                            var newPos = new Vector2(Game1.player.Position.X - xDist, Game1.player.Position.Y);
+                            Game1.player.Position = newPos;
+
+                        }
                     }
+                    else {
+                        //Collide from Top
+                        if (yDist >= yDist2)
+                            {
+
+                                var newPos = new Vector2(Game1.player.Position.X, Game1.player.Position.Y + yDist2);
+                                Game1.player.Position = newPos;
+
+                            }
+                            //Collide from Bottom
+                            else
+                            {
+
+                                var newPos = new Vector2(Game1.player.Position.X, Game1.player.Position.Y - yDist);
+                                Game1.player.Position = newPos;
+
+                            }
+                        }
+                                          
+                        
+
+                        
+                            
+                    collisionTick++;
 
                 }
                 if (playerBox.Center == tileBox.Center || playerBox.Intersects(tileBox) && locationDelay > 0)

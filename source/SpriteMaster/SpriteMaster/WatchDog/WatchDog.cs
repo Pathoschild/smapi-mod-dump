@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace SpriteMaster.WatchDog;
@@ -28,6 +29,7 @@ internal static class WatchDog {
 	private static readonly Dictionary<Thread, bool> ThreadWorkingState = new();
 	private static readonly Dictionary<Thread, long> LastTickMap = new();
 
+	[StructLayout(LayoutKind.Auto)]
 	internal ref struct WorkingStateCookie {
 		public WorkingStateCookie() => SetWorkingState(true);
 

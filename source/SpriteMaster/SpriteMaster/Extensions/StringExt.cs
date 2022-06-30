@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using LinqFasterer;
 using Pastel;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -35,12 +33,16 @@ internal static class StringExt {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool IsWhiteBlank([NotNullWhen(false)] this string? str) => string.IsNullOrEmpty(str?.Trim());
 
-	internal static unsafe string Reverse(this string str) {
+	internal static string Reverse(this string str) {
 		str.AssertNotNull();
 
+		int strLength = str.Length;
+		int strEnd = strLength - 1;
+		int strLengthHalf = strLength >> 1;
+
 		var strSpan = str.AsSpan().ToSpanUnsafe();
-		for (int i = 0; i < strSpan.Length / 2; ++i) {
-			int endIndex = (strSpan.Length - i) - 1;
+		for (int i = 0; i < strLengthHalf; ++i) {
+			int endIndex = strEnd - i;
 			var temp = strSpan[endIndex];
 			strSpan[endIndex] = strSpan[i];
 			strSpan[i] = temp;
@@ -65,10 +67,9 @@ internal static class StringExt {
 
 	private static readonly char[] NewlineChars = { '\n', '\r' };
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static IEnumerable<string> Lines(this string str, bool removeEmpty = false) {
-		var strings = str.Split(NewlineChars);
-		var validLines = removeEmpty ? strings.WhereF(l => !l.IsBlank()) : strings;
-		return validLines;
+	internal static string[] Lines(this string str, bool removeEmpty = false) {
+		var strings = str.Split(NewlineChars, removeEmpty ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
+		return strings;
 	}
 
 	#endregion General
@@ -92,4 +93,12 @@ internal static class StringExt {
 	internal static string Colorized(this string str, DrawingColor foregroundColor, DrawingColor backgroundColor) => str.Pastel(foregroundColor).PastelBg(backgroundColor);
 
 	#endregion Color
+
+	#region Experimental Extensions
+
+	internal static class Reflection {
+
+	}
+	
+	#endregion
 }

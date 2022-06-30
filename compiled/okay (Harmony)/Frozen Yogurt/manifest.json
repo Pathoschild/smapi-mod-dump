@@ -1,0 +1,15 @@
+{
+    "Name": "Frozen Yogurt HA",
+    "Author": "Failsplat",
+    "Version": "1.5.0",
+    "Description": "Adds custom behavior for fruit yogurt input into the frozen yogurt machine.",
+    "UniqueID": "Failsplat.FroyoFFHarmony",
+    "UpdateKeys": [],
+    "EntryDll":"FruitFroyoHarmonyPatch.dll",
+    "Dependencies": [
+      {
+        "UniqueID": "Failsplat.FroyoPFM",
+        "IsRequired": false // changed locally
+      }
+    ]
+}

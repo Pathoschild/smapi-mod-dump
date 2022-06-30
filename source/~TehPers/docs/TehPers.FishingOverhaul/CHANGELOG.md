@@ -10,11 +10,30 @@ for queries and analysis.**
 
 Changelog for [Teh's Fishing Overhaul].
 
-## 3.3.1 - 2022-05-22
+## 3.3.2 - 2022-06-03
 
 ### Fixed
 
-- Fix NullReferenceException in FishingEffectApplier
+- Fix mutant carp only being available in certain regions of the sewers.
+- Fix fish swimming in the town fountain when they definitely don't have enough food or space.
+
+## 3.3.1 - 2022-06-02
+
+Special thanks to [Jibb](https://www.nexusmods.com/stardewvalley/users/5639823) for finding the
+causes of many of these bugs.
+
+### Changed
+
+- Content packs now use CP conditions for the CP version that they specify in their dependencies.
+
+### Fixed
+
+- Fix NullReferenceException in FishingEffectApplier.
+- Fix some CP tokens being unavailable when they should be available with no values instead.
+  - Fixes legendary fish not ever being available.
+- Fix 'Lifesaver' not being available in the correct location.
+- Fix decorative trash can not being catchable.
+- Fix ornate necklace always being catchable after finding the secret note even after being caught.
 
 ## 3.3.0 - 2022-05-20
 

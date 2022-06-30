@@ -266,3 +266,43 @@ Checklist
 ### Item insertion — "insertion"
  
 ### Item insertion (modded; PFM)
+
+## 1.6.0 — Rectangle drawing, and torches on fences.
+
+### Interaction blocking
+
+### Misc
+
+### I18n Translations
+
+### Mod Integration
+
+### Known prior bugs. Ensure no regression — "regression"
+
+### Object and producer identification — "identification"
+    *
+### Flooring — "flooring"
+
+### Furniture — "furniture"
+
+### TV Furniture — "tv"
+
+### Storage furniture — "storage"
+
+### Bed furniture — "bed"
+
+### Chests — "chests"
+
+### Trees — "trees"
+
+### Crops — "crops"
+
+### Fences — "fences"
+
+### Modded objects — "modded"
+
+### Item insertion — "insertion"
+
+### Torches — "torches"
+
+### Rectangle drawing — "rectangle"

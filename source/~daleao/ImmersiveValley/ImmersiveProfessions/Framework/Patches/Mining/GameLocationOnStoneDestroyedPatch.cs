@@ -12,33 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GameLocationOnStoneDestroyedPatch : BasePatch
+internal sealed class GameLocationOnStoneDestroyedPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GameLocationOnStoneDestroyedPatch()
     {
-        Original = RequireMethod<GameLocation>(nameof(GameLocation.OnStoneDestroyed));
+        Target = RequireMethod<GameLocation>(nameof(GameLocation.OnStoneDestroyed));
     }
 
     #region harmony patches
 
     /// <summary>Patch to remove Prospector double coal chance.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GameLocationOnStoneDestroyedTranspiler(
+    private static IEnumerable<CodeInstruction>? GameLocationOnStoneDestroyedTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -58,7 +58,6 @@ internal class GameLocationOnStoneDestroyedPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

@@ -9,6 +9,8 @@
 *************************************************/
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Configuration;
 
@@ -44,12 +46,13 @@ internal static class Attributes {
 			FlushSuspendedSpriteCache = 1 << 1,
 			FlushFileCache = 1 << 2,
 			FlushResidentCache = 1 << 3,
-			FlushMetaData = 1 << 4,
-			FlushAllInternalCaches = FlushSuspendedSpriteCache | FlushFileCache | FlushResidentCache | FlushMetaData,
+			FlushTextureFileCache = 1 << 4,
+			FlushMetaData = 1 << 5,
+			FlushAllInternalCaches = FlushSuspendedSpriteCache | FlushFileCache | FlushResidentCache | FlushTextureFileCache | FlushMetaData,
 			FlushAllCaches = FlushTextureCache | FlushAllInternalCaches,
-			GarbageCollect = 1 << 5,
-			ResetDisplay = 1 << 6,
-			RequireRestart = 1 << 7
+			GarbageCollect = 1 << 6,
+			ResetDisplay = 1 << 7,
+			RequireRestart = 1 << 8
 		}
 
 		internal readonly Flag Flags = Flag.None;
@@ -64,6 +67,16 @@ internal static class Attributes {
 
 		internal abstract T? GetMin<T>(Type type) where T : unmanaged;
 		internal abstract T? GetMax<T>(Type type) where T : unmanaged;
+
+		[DoesNotReturn]
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		protected void ThrowIsNotAssignableException<TTo, TFrom>() =>
+			throw new InvalidCastException($"{typeof(TTo)} is not assignable from {typeof(TFrom)}");
+
+		[DoesNotReturn]
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		protected TResult ThrowIsNotAssignableException<TTo, TFrom, TResult>() =>
+			throw new InvalidCastException($"{typeof(TTo)} is not assignable from {typeof(TFrom)}");
 	}
 
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
@@ -170,8 +183,63 @@ internal static class Attributes {
 		}
 	}
 
+	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+	internal sealed class LimitsTimeSpanAttribute : LimitsAttribute {
+		internal readonly TimeSpan MinValue;
+		internal readonly TimeSpan MaxValue;
+
+		internal override T? GetMin<T>() {
+			if (typeof(T).IsAssignableFrom(typeof(TimeSpan))) {
+				return (MinValue == TimeSpan.MinValue) ? null : (T)(object)MinValue;
+			}
+
+			return ThrowIsNotAssignableException<T, TimeSpan, T?>();
+		}
+
+		internal override T? GetMax<T>() {
+			if (typeof(T).IsAssignableFrom(typeof(TimeSpan))) {
+				return (MaxValue == TimeSpan.MaxValue) ? null : (T)(object)MaxValue;
+			}
+
+			return ThrowIsNotAssignableException<T, TimeSpan, T?>();
+		}
+
+		internal override T? GetMin<T>(Type type) {
+			if (typeof(T) == typeof(TimeSpan)) {
+				return (MinValue == TimeSpan.MinValue) ? null : (T)Convert.ChangeType(Convert.ChangeType(MinValue, type), typeof(T));
+			}
+
+			return ThrowIsNotAssignableException<T, TimeSpan, T?>();
+		}
+
+		internal override T? GetMax<T>(Type type) {
+			if (typeof(T) == typeof(TimeSpan)) {
+				return (MaxValue == TimeSpan.MaxValue) ? null : (T)Convert.ChangeType(Convert.ChangeType(MaxValue, type), typeof(T));
+			}
+
+			return ThrowIsNotAssignableException<T, TimeSpan, T?>();
+		}
+
+		internal LimitsTimeSpanAttribute(long min = long.MinValue, long max = long.MaxValue) {
+			MinValue = TimeSpan.FromTicks(min);
+			MaxValue = TimeSpan.FromTicks(max);
+		}
+	}
+
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
 	internal sealed class AdvancedAttribute : ConfigAttribute {
+	}
+
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+	internal class ExperimentalAttribute : ConfigAttribute {
+	}
+
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+	internal sealed class BrokenAttribute : ExperimentalAttribute {
+	}
+
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+	internal sealed class ChangesBehavior : ConfigAttribute {
 	}
 
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]

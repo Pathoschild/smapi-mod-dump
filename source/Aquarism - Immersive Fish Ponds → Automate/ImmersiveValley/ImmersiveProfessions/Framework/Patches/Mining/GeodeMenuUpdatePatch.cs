@@ -12,35 +12,36 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Menus;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GeodeMenuUpdatePatch : BasePatch
+internal sealed class GeodeMenuUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GeodeMenuUpdatePatch()
     {
-        Original = RequireMethod<GeodeMenu>(nameof(GeodeMenu.update));
+        Target = RequireMethod<GeodeMenu>(nameof(GeodeMenu.update));
     }
 
     #region harmony patches
 
     /// <summary>Patch to increment Gemologist counter for geodes cracked at Clint's.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GeodeMenuUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? GeodeMenuUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -58,13 +59,14 @@ internal class GeodeMenuUpdatePatch : BasePatch
                         typeof(Stats).RequirePropertySetter(nameof(Stats.GeodesCracked)))
                 )
                 .Advance()
-                .InsertProfessionCheck((int) Profession.Gemologist)
+                .InsertProfessionCheck(Profession.Gemologist.Value)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseGemologistCounter),
                     new CodeInstruction(OpCodes.Call, typeof(Game1).RequirePropertyGetter(nameof(Game1.player))),
-                    new CodeInstruction(OpCodes.Ldstr, DataField.GemologistMineralsCollected.ToString()),
+                    new CodeInstruction(OpCodes.Ldstr, ModData.GemologistMineralsCollected.ToString()),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(FarmerExtensions).RequireMethod(nameof(FarmerExtensions.IncrementData), new[] {typeof(Farmer), typeof(DataField)})
+                        typeof(ModDataIO)
+                            .RequireMethod(nameof(ModDataIO.IncrementData), new[] { typeof(Farmer), typeof(string) })
                             .MakeGenericMethod(typeof(uint)))
                 )
                 .AddLabels(dontIncreaseGemologistCounter);
@@ -72,7 +74,6 @@ internal class GeodeMenuUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Gemologist counter increment.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

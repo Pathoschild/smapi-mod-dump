@@ -12,35 +12,36 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BushShakePatch : BasePatch
+internal sealed class BushShakePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal BushShakePatch()
     {
-        Original = RequireMethod<Bush>("shake");
+        Target = RequireMethod<Bush>("shake");
     }
 
     #region harmony patches
 
     /// <summary>Patch to nerf Ecologist berry quality and increment forage counter for wild berries.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> BushShakeTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? BushShakeTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -68,7 +69,6 @@ internal class BushShakePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Ecologist wild berry quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -85,13 +85,14 @@ internal class BushShakePatch : BasePatch
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldarg_0)
                 )
-                .InsertProfessionCheck((int) Profession.Ecologist)
+                .InsertProfessionCheck(Profession.Ecologist.Value)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseEcologistCounter),
                     new CodeInstruction(OpCodes.Call, typeof(Game1).RequirePropertyGetter(nameof(Game1.player))),
-                    new CodeInstruction(OpCodes.Ldstr, DataField.EcologistItemsForaged.ToString()),
+                    new CodeInstruction(OpCodes.Ldstr, ModData.EcologistItemsForaged.ToString()),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(FarmerExtensions).RequireMethod(nameof(FarmerExtensions.IncrementData), new[] {typeof(Farmer), typeof(DataField)})
+                        typeof(ModDataIO)
+                            .RequireMethod(nameof(ModDataIO.IncrementData), new[] { typeof(Farmer), typeof(string) })
                             .MakeGenericMethod(typeof(uint)))
                 )
                 .AddLabels(dontIncreaseEcologistCounter);
@@ -99,7 +100,6 @@ internal class BushShakePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Ecologist counter increment.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

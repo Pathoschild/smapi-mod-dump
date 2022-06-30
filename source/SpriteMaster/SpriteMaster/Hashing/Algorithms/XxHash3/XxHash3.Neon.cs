@@ -11,23 +11,22 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
+// ReSharper disable MemberHidesStaticFromOuterClass
+// ReSharper disable AccessToStaticMemberViaDerivedType
 
 namespace SpriteMaster.Hashing.Algorithms;
 
 internal static unsafe partial class XxHash3 {
-	private static class NeonImplementation {
-		[FixedAddressValueType]
-		internal static readonly Vector64<uint> PrimeVector = Vector64.Create(Prime32.Prime0);
-	}
+	private static class NeonImpl {
+		// xxh3_accumulate_512_neon
+		[MethodImpl(Inline)]
+		internal static void Accumulate512(ulong* accumulatorStore, byte* data, byte* secret) {
+			ref var accumulator = ref *(CombinedVector128X512<ulong>*)accumulatorStore;
 
-	// xxh3_accumulate_512_neon
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static void Accumulate512Neon(ref Accumulator accumulator, byte* data, byte* secret) {
-		if (UnrollCount > 2u) {
-			var accumulatorVecLo0 = accumulator.Data128.Data0;
-			var accumulatorVecLo1 = accumulator.Data128.Data1;
-			var accumulatorVecLo2 = accumulator.Data128.Data2;
-			var accumulatorVecLo3 = accumulator.Data128.Data3;
+			var accumulatorVecLo0 = accumulator.Data0;
+			var accumulatorVecLo1 = accumulator.Data1;
+			var accumulatorVecLo2 = accumulator.Data2;
+			var accumulatorVecLo3 = accumulator.Data3;
 
 			var dataVec0 = AdvSimd.LoadVector128((ulong*)(data + 0x00u));
 			var dataVec1 = AdvSimd.LoadVector128((ulong*)(data + 0x10u));
@@ -67,73 +66,23 @@ internal static unsafe partial class XxHash3 {
 			var result2 = AdvSimd.Add(accumulatorVecLo2, accumulatorVecHi2);
 			var result3 = AdvSimd.Add(accumulatorVecLo3, accumulatorVecHi3);
 
-			accumulator.Data128.Data0 = result0;
-			accumulator.Data128.Data1 = result1;
-			accumulator.Data128.Data2 = result2;
-			accumulator.Data128.Data3 = result3;
+			accumulator.Data0 = result0;
+			accumulator.Data1 = result1;
+			accumulator.Data2 = result2;
+			accumulator.Data3 = result3;
 		}
-		else if (UnrollCount == 2u) {
-			for (uint i = 0u; i < StripeLength; i += 0x20u) {
-				var accumulatorVecLo0 = accumulator.Data128.AtOffset(i + 0x00u);
-				var accumulatorVecLo1 = accumulator.Data128.AtOffset(i + 0x10u);
 
-				var dataVec0 = AdvSimd.LoadVector128((ulong*)(data + i + 0x00u));
-				var dataVec1 = AdvSimd.LoadVector128((ulong*)(data + i + 0x10u));
-				var keyVec0 = AdvSimd.LoadVector128((ulong*)(secret + i + 0x00u));
-				var keyVec1 = AdvSimd.LoadVector128((ulong*)(secret + i + 0x10u));
+		// xxh3_scramble_acc_neon
+		[MethodImpl(Inline)]
+		internal static void ScrambleAccumulator(ulong* accumulatorStore, byte* secret) {
+			ref var accumulator = ref *(CombinedVector128X512<ulong>*)accumulatorStore;
 
-				var accumulatorVecHi0 = AdvSimd.ExtractVector128(dataVec0, dataVec0, 1);
-				var accumulatorVecHi1 = AdvSimd.ExtractVector128(dataVec1, dataVec1, 1);
+			var primeVector = Vector64.Create(Prime32.Prime0);
 
-				var dataKey0 = AdvSimd.Xor(dataVec0, keyVec0);
-				var dataKey1 = AdvSimd.Xor(dataVec1, keyVec1);
-
-				var dataKeyLo0 = AdvSimd.ExtractNarrowingLower(dataKey0);
-				var dataKeyLo1 = AdvSimd.ExtractNarrowingLower(dataKey1);
-				var dataKeyHi0 = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey0, 32);
-				var dataKeyHi1 = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey1, 32);
-
-				accumulatorVecHi0 = AdvSimd.MultiplyWideningLowerAndAdd(accumulatorVecHi0, dataKeyLo0, dataKeyHi0);
-				accumulatorVecHi1 = AdvSimd.MultiplyWideningLowerAndAdd(accumulatorVecHi1, dataKeyLo1, dataKeyHi1);
-
-				var result0 = AdvSimd.Add(accumulatorVecLo0, accumulatorVecHi0);
-				var result1 = AdvSimd.Add(accumulatorVecLo1, accumulatorVecHi1);
-
-				accumulator.Data128.AtOffset(i + 0x00u) = result0;
-				accumulator.Data128.AtOffset(i + 0x10u) = result1;
-			}
-		}
-		else {
-			for (uint i = 0u; i < StripeLength; i += 0x10u) {
-				var accumulatorVecLo = accumulator.Data128.AtOffset(i);
-
-				var dataVec = AdvSimd.LoadVector128((ulong*)(data + i));
-				var keyVec = AdvSimd.LoadVector128((ulong*)(secret + i));
-
-				var accumulatorVecHi = AdvSimd.ExtractVector128(dataVec, dataVec, 1);
-
-				var dataKey = AdvSimd.Xor(dataVec, keyVec);
-
-				var dataKeyLo = AdvSimd.ExtractNarrowingLower(dataKey);
-				var dataKeyHi = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey, 32);
-
-				accumulatorVecHi = AdvSimd.MultiplyWideningLowerAndAdd(accumulatorVecHi, dataKeyLo, dataKeyHi);
-
-				var result = AdvSimd.Add(accumulatorVecLo, accumulatorVecHi);
-
-				accumulator.Data128.AtOffset(i) = result;
-			}
-		}
-	}
-
-	// xxh3_scramble_acc_neon
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static void ScrambleAccumulatorNeon(ref Accumulator accumulator, byte* secret) {
-		if (UnrollCount > 2u) {
-			var accumulatorVec0 = accumulator.Data128.Data0;
-			var accumulatorVec1 = accumulator.Data128.Data1;
-			var accumulatorVec2 = accumulator.Data128.Data2;
-			var accumulatorVec3 = accumulator.Data128.Data3;
+			var accumulatorVec0 = accumulator.Data0;
+			var accumulatorVec1 = accumulator.Data1;
+			var accumulatorVec2 = accumulator.Data2;
+			var accumulatorVec3 = accumulator.Data3;
 			var shifted0 = AdvSimd.ShiftRightLogical(accumulatorVec0, 47);
 			var shifted1 = AdvSimd.ShiftRightLogical(accumulatorVec1, 47);
 			var shifted2 = AdvSimd.ShiftRightLogical(accumulatorVec2, 47);
@@ -161,72 +110,23 @@ internal static unsafe partial class XxHash3 {
 			var dataKeyHi2 = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey2, 32);
 			var dataKeyHi3 = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey3, 32);
 
-			var productHi0 = AdvSimd.MultiplyWideningLower(dataKeyHi0, NeonImplementation.PrimeVector);
-			var productHi1 = AdvSimd.MultiplyWideningLower(dataKeyHi1, NeonImplementation.PrimeVector);
-			var productHi2 = AdvSimd.MultiplyWideningLower(dataKeyHi2, NeonImplementation.PrimeVector);
-			var productHi3 = AdvSimd.MultiplyWideningLower(dataKeyHi3, NeonImplementation.PrimeVector);
+			var productHi0 = AdvSimd.MultiplyWideningLower(dataKeyHi0, primeVector);
+			var productHi1 = AdvSimd.MultiplyWideningLower(dataKeyHi1, primeVector);
+			var productHi2 = AdvSimd.MultiplyWideningLower(dataKeyHi2, primeVector);
+			var productHi3 = AdvSimd.MultiplyWideningLower(dataKeyHi3, primeVector);
 			productHi0 = AdvSimd.ShiftLeftLogical(productHi0, 32);
 			productHi1 = AdvSimd.ShiftLeftLogical(productHi1, 32);
 			productHi2 = AdvSimd.ShiftLeftLogical(productHi2, 32);
 			productHi3 = AdvSimd.ShiftLeftLogical(productHi3, 32);
-			var result0 = AdvSimd.MultiplyWideningLowerAndAdd(productHi0, dataKeyLo0, NeonImplementation.PrimeVector);
-			var result1 = AdvSimd.MultiplyWideningLowerAndAdd(productHi1, dataKeyLo1, NeonImplementation.PrimeVector);
-			var result2 = AdvSimd.MultiplyWideningLowerAndAdd(productHi2, dataKeyLo2, NeonImplementation.PrimeVector);
-			var result3 = AdvSimd.MultiplyWideningLowerAndAdd(productHi3, dataKeyLo3, NeonImplementation.PrimeVector);
+			var result0 = AdvSimd.MultiplyWideningLowerAndAdd(productHi0, dataKeyLo0, primeVector);
+			var result1 = AdvSimd.MultiplyWideningLowerAndAdd(productHi1, dataKeyLo1, primeVector);
+			var result2 = AdvSimd.MultiplyWideningLowerAndAdd(productHi2, dataKeyLo2, primeVector);
+			var result3 = AdvSimd.MultiplyWideningLowerAndAdd(productHi3, dataKeyLo3, primeVector);
 
-			accumulator.Data128.Data0 = result0;
-			accumulator.Data128.Data1 = result1;
-			accumulator.Data128.Data2 = result2;
-			accumulator.Data128.Data3 = result3;
-		}
-		else if (UnrollCount == 2u) {
-			for (uint i = 0u; i < StripeLength; i += 0x20u) {
-				var accumulatorVec0 = accumulator.Data128.AtOffset(i + 0x00u);
-				var accumulatorVec1 = accumulator.Data128.AtOffset(i + 0x10u);
-				var shifted0 = AdvSimd.ShiftRightLogical(accumulatorVec0, 47);
-				var shifted1 = AdvSimd.ShiftRightLogical(accumulatorVec1, 47);
-				var dataVec0 = AdvSimd.Xor(accumulatorVec0, shifted0);
-				var dataVec1 = AdvSimd.Xor(accumulatorVec1, shifted1);
-
-				var keyVec0 = AdvSimd.LoadVector128((ulong*)(secret + i + 0x00u));
-				var keyVec1 = AdvSimd.LoadVector128((ulong*)(secret + i + 0x10u));
-				var dataKey0 = AdvSimd.Xor(dataVec0, keyVec0);
-				var dataKey1 = AdvSimd.Xor(dataVec1, keyVec1);
-
-				var dataKeyLo0 = AdvSimd.ExtractNarrowingLower(dataKey0);
-				var dataKeyLo1 = AdvSimd.ExtractNarrowingLower(dataKey1);
-				var dataKeyHi0 = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey0, 32);
-				var dataKeyHi1 = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey1, 32);
-
-				var productHi0 = AdvSimd.MultiplyWideningLower(dataKeyHi0, NeonImplementation.PrimeVector);
-				var productHi1 = AdvSimd.MultiplyWideningLower(dataKeyHi1, NeonImplementation.PrimeVector);
-				productHi0 = AdvSimd.ShiftLeftLogical(productHi0, 32);
-				productHi1 = AdvSimd.ShiftLeftLogical(productHi1, 32);
-				var result0 = AdvSimd.MultiplyWideningLowerAndAdd(productHi0, dataKeyLo0, NeonImplementation.PrimeVector);
-				var result1 = AdvSimd.MultiplyWideningLowerAndAdd(productHi1, dataKeyLo1, NeonImplementation.PrimeVector);
-
-				accumulator.Data128.AtOffset(i + 0x00u) = result0;
-				accumulator.Data128.AtOffset(i + 0x10u) = result1;
-			}
-		}
-		else {
-			for (uint i = 0u; i < StripeLength; i += 0x10u) {
-				var accumulatorVec = accumulator.Data128.AtOffset(i);
-				var shifted = AdvSimd.ShiftRightLogical(accumulatorVec, 47);
-				var dataVec = AdvSimd.Xor(accumulatorVec, shifted);
-
-				var keyVec = AdvSimd.LoadVector128((ulong*)(secret + i));
-				var dataKey = AdvSimd.Xor(dataVec, keyVec);
-
-				var dataKeyLo = AdvSimd.ExtractNarrowingLower(dataKey);
-				var dataKeyHi = AdvSimd.ShiftRightLogicalNarrowingLower(dataKey, 32);
-
-				var productHi = AdvSimd.MultiplyWideningLower(dataKeyHi, NeonImplementation.PrimeVector);
-				productHi = AdvSimd.ShiftLeftLogical(productHi, 32);
-				var result = AdvSimd.MultiplyWideningLowerAndAdd(productHi, dataKeyLo, NeonImplementation.PrimeVector);
-
-				accumulator.Data128.AtOffset(i) = result;
-			}
+			accumulator.Data0 = result0;
+			accumulator.Data1 = result1;
+			accumulator.Data2 = result2;
+			accumulator.Data3 = result3;
 		}
 	}
 }

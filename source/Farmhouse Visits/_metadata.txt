@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/misty-spring/FarmhouseVisits
+   Git: https://github.com/misty-spring/FarmhouseVisits.git
+
+mods:
+   Farmhouse Visits
+
+latest commit:
+   commit 267bb986499976ac54a6621fc1d77f20904b4dde
+   Author: misty-spring <105533011+misty-spring@users.noreply.github.com>
+   Date:   Wed Jun 29 16:37:00 2022 -0400
+   
+       Update CHANGELOG-es.md
+   

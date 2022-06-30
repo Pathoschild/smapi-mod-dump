@@ -12,31 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.SpaceCore;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley.Menus;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
 using Prestige;
+using StardewValley;
+using StardewValley.Menus;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using Textures;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class NewSkillsPageDrawPatch : BasePatch
+internal sealed class NewSkillsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NewSkillsPageDrawPatch()
     {
         try
         {
-            Original = "SpaceCore.Interface.NewSkillsPage".ToType().RequireMethod("draw", new[] {typeof(SpriteBatch)});
+            Target = "SpaceCore.Interface.NewSkillsPage".ToType().RequireMethod("draw", new[] { typeof(SpriteBatch) });
         }
         catch
         {
@@ -48,11 +50,58 @@ internal class NewSkillsPageDrawPatch : BasePatch
 
     /// <summary>Patch to overlay skill bars above skill level 10 + draw prestige ribbons on the skills page.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> NewSkillsPageDrawTranspiler(
+    private static IEnumerable<CodeInstruction>? NewSkillsPageDrawTranspiler(
         IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
+
+        /// Inject: x -= ModEntry.Config.PrestigeProgressionStyle == ProgressionStyle.Stars ? Textures.STARS_WIDTH_I : Textures.RIBBON_WIDTH_I;
+        /// After: x = ...
+
+        var notRibbons = generator.DefineLabel();
+        try
+        {
+            helper
+                .FindFirst(
+                    new CodeInstruction(OpCodes.Call,
+                        typeof(LocalizedContentManager).RequirePropertyGetter(nameof(LocalizedContentManager
+                            .CurrentLanguageCode)))
+                )
+                .AdvanceUntil(
+                    new CodeInstruction(OpCodes.Br_S)
+                )
+                .GetOperand(out var resumeExecution)
+                .AdvanceUntil(
+                    new CodeInstruction(OpCodes.Stloc_0)
+                )
+                .Insert(
+                    new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
+                    new CodeInstruction(OpCodes.Call,
+                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.EnablePrestige))),
+                    new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
+                    new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
+                    new CodeInstruction(OpCodes.Call,
+                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.PrestigeProgressionStyle))),
+                    new CodeInstruction(OpCodes.Ldc_I4_0),
+                    new CodeInstruction(OpCodes.Beq_S, notRibbons),
+                    new CodeInstruction(OpCodes.Ldc_I4_S,
+                        (int)((Textures.RIBBON_WIDTH_I + 5) * Textures.RIBBON_SCALE_F)),
+                    new CodeInstruction(OpCodes.Sub),
+                    new CodeInstruction(OpCodes.Br_S, resumeExecution)
+                )
+                .InsertWithLabels(
+                    new[] { notRibbons },
+                    new CodeInstruction(OpCodes.Ldc_I4_S,
+                        (int)((Textures.STARS_WIDTH_I + 4) * Textures.STARS_SCALE_F)),
+                    new CodeInstruction(OpCodes.Sub)
+                );
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed adjusing localized skill page content position. Helper returned {ex}");
+            return null;
+        }
 
         /// Injected: DrawExtendedLevelBars(levelIndex, skillindex, x, y, addedX, skillLevel, b)
         /// Before: if (i == 9) draw level number ...
@@ -86,7 +135,6 @@ internal class NewSkillsPageDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching to draw SpaceCore skills page extended level bars. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -109,7 +157,7 @@ internal class NewSkillsPageDrawPatch : BasePatch
                 .GetOperand(out var resumeExecution)
                 .Advance()
                 .InsertWithLabels(
-                    new[] {isSkillLevel20},
+                    new[] { isSkillLevel20 },
                     new CodeInstruction(OpCodes.Call, typeof(Color).RequirePropertyGetter(nameof(Color.Cornsilk))),
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
                 );
@@ -117,7 +165,6 @@ internal class NewSkillsPageDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching to draw max skill level with different color. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -144,7 +191,6 @@ internal class NewSkillsPageDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching to draw skills page prestige ribbons. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

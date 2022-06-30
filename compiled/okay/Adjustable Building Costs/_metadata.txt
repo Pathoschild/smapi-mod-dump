@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12446
+IDs: Skalaki.AdjustableBuildingCosts
+update keys: Nexus:12446, GitHub:MiguelLucas/StardewValleyMods

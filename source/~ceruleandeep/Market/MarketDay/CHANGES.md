@@ -8,6 +8,29 @@ for queries and analysis.**
 
 # Changes
 
+1.1.4 RELEASE
+* Add extra shops for farmhands, reset market on connect/disconnect
+* NPC visitors walk in front of shops for 2 tiles
+* Water down the challenge mode goals
+
+1.1.4-beta.7
+* Limit number of NPC visitors per day
+* Improve schedules for rescheduled visitors
+* Add some dialog
+
+1.1.4-beta.6
+* Exclude NPCs from rescheduling if they are excluded from island visits with Custom NPC Exclusions
+* Only a player's "official" spouse can run their shop
+
+1.1.4-beta.5
+* Configurable days/weeks/seasons for market opening
+
+1.1.4-beta.1
+* Allow schedule replacement for characters eligible to visit resort
+* Interoperate with (bundled) Random Visitors to get random visitors
+
+1.1.3 RELEASE
+
 1.1.3-beta.4
 * Ensure that players get shops when the market is shrunk
 

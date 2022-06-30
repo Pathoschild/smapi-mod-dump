@@ -12,24 +12,31 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
-using System.Linq;
+using Common.Data;
+using Common.Events;
+using Extensions;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-
-using Extensions;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class SlimeInflationUpdateTickedEvent : UpdateTickedEvent
+internal sealed class SlimeInflationUpdateTickedEvent : UpdateTickedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal SlimeInflationUpdateTickedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        var uninflated = ModEntry.PlayerState.PipedSlimes.Where(s => !s.ReadDataAs<bool>("DoneInflating")).ToArray();
+        var uninflated = ModEntry.PlayerState.PipedSlimes.Where(c => !ModDataIO.ReadDataAs<bool>(c, "DoneInflating"))
+            .ToArray();
         if (!uninflated.Any())
         {
-            this.Disable();
+            Unhook();
             return;
         }
 

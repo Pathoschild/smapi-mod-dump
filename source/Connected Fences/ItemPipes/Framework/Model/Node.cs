@@ -72,11 +72,11 @@ namespace ItemPipes.Framework.Model
             ParentNetwork = null;
         }
 
+        /*
         public List<Node> TraverseAll()
         {
             List<Node> looked = new List<Node>();
             Reached = false;
-            if (Globals.UltraDebug) { Printer.Info("TRAVERSING"); }
             System.Object[] returns = TraverseAllRecursive(looked, false);
             List<Node> path = (List<Node>)returns[1];
             return path;
@@ -123,6 +123,7 @@ namespace ItemPipes.Framework.Model
             }
             return returns;
         }
+        */
 
         public List<Network> Scan()
         {
@@ -139,7 +140,6 @@ namespace ItemPipes.Framework.Model
 
         public virtual bool AddAdjacent(Side side, Node node)
         {
-            //Printer.Info($"ADDING ADJ: {node.Print()} to {Print()}");
             bool added = false;
             if (Adjacents[side] == null)
             {
@@ -153,19 +153,14 @@ namespace ItemPipes.Framework.Model
                 Adjacents[side].ParentNetwork != null &&
                 Adjacents[side].Adjacents[Sides.GetInverse(side)].ParentNetwork != Adjacents[side].ParentNetwork)
             {
-                //Printer.Info($"ADDING ADJ adj: {Adjacents[side].Adjacents[Sides.GetInverse(side)].Print()} of {Adjacents[side].Print()}");
-                //Printer.Info($"in wrong network of {Adjacents[side].Print()}");
-
                 added = true;
                 Adjacents[side].Adjacents[Sides.GetInverse(side)] = this;
-                //Printer.Info($"ADDING ADJ adj: {Adjacents[side].Adjacents[Sides.GetInverse(side)].Print()} of {Adjacents[side].Print()}");
             }
             return added;
         }
 
         public virtual bool RemoveAdjacent(Side side, Node node)
         {
-            //Printer.Info($"removing ADJ: {node.Print()} from {Print()}");
             bool removed = false;
             if (Adjacents[side] != null)
             {

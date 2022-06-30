@@ -12,25 +12,25 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Data;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Monsters;
-
-using Extensions;
-using Ultimate;
+using System;
+using System.Reflection;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class NPCWithinPlayerThresholdPatch : BasePatch
+internal sealed class NPCWithinPlayerThresholdPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NPCWithinPlayerThresholdPatch()
     {
-        Original = RequireMethod<NPC>(nameof(NPC.withinPlayerThreshold), new[] {typeof(int)});
+        Target = RequireMethod<NPC>(nameof(NPC.withinPlayerThreshold), new[] { typeof(int) });
     }
 
     #region harmony patch
@@ -43,8 +43,8 @@ internal class NPCWithinPlayerThresholdPatch : BasePatch
         {
             if (__instance is not Monster) return true; // run original method
 
-            var player = Game1.getFarmer(__instance.ReadDataAs("Target", Game1.player.UniqueMultiplayerID));
-            if (!player.IsLocalPlayer || ModEntry.PlayerState.RegisteredUltimate is not Ambush {IsActive: true})
+            var player = Game1.getFarmer(ModDataIO.ReadDataAs(__instance, "Target", Game1.player.UniqueMultiplayerID));
+            if (!player.IsLocalPlayer || ModEntry.PlayerState.RegisteredUltimate is not Ambush { IsActive: true })
                 return true; // run original method
 
             __result = false;

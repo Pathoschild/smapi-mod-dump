@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12619
+IDs: PeacefulEnd.CaveOfMemories
+update keys: Nexus:????, Nexus:12619, GitHub:Floogen/MysticalBuildings

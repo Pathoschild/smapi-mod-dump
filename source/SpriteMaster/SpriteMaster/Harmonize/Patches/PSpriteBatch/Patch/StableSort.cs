@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using JetBrains.Annotations;
 using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
@@ -88,6 +89,7 @@ internal static class StableSort {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	public static void ArrayStableSort<T>(T[] array, int index, int length, SpriteSortMode sortMode) where T : IComparable<T> {
 		if (DrawState.CurrentBlendState == BlendState.Additive) {
 			// There is basically no reason to sort when the blend state is additive.
@@ -127,7 +129,6 @@ internal static class StableSort {
 			Debug.Warning("Could not get accessor for SpriteBatchItem 'SortKey' - slower path being used");
 		}
 
-
 		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)?.MakeGenericMethod(SpriteBatchItemType);
 		//var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
 
@@ -153,8 +154,8 @@ internal static class StableSort {
 					continue;
 				}
 
-				yield return new CodeInstruction(OpCodes.Ldarg_1);
-				yield return new CodeInstruction(OpCodes.Call, newMethod);
+				yield return new(OpCodes.Ldarg_1);
+				yield return new(OpCodes.Call, newMethod);
 			}
 		}
 

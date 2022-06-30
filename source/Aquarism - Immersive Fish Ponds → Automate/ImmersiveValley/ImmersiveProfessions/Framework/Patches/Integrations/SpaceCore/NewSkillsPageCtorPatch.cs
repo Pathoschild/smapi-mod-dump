@@ -12,27 +12,27 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.SpaceCore;
 
 #region using directives
 
-using System.Collections.Generic;
+using DaLion.Common.Extensions.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
-
-using DaLion.Common.Extensions.Reflection;
-using Utility;
+using System.Collections.Generic;
+using Textures;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class NewSkillsPageCtorPatch : BasePatch
+internal sealed class NewSkillsPageCtorPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NewSkillsPageCtorPatch()
     {
         try
         {
-            Original = "SpaceCore.Interface.NewSkillsPage".ToType().GetConstructor(new[] {typeof(int), typeof(int), typeof(int), typeof(int)});
+            Target = "SpaceCore.Interface.NewSkillsPage".ToType()
+                .RequireConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
         }
         catch
         {
@@ -51,7 +51,8 @@ internal class NewSkillsPageCtorPatch : BasePatch
     {
         if (!ModEntry.Config.EnablePrestige) return;
 
-        __instance.width += 64;
+        __instance.width += 48;
+        if (ModEntry.Config.PrestigeProgressionStyle == ModConfig.ProgressionStyle.StackedStars) __instance.width += 24;
 
         if (__instance.GetType().RequireField("skillBars")!.GetValue(__instance) is not List<ClickableTextureComponent>
             skillBars) return;
@@ -75,7 +76,7 @@ internal class NewSkillsPageCtorPatch : BasePatch
 
                     if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 15)
                     {
-                        component.texture = Textures.SkillBarTx;
+                        component.texture = Textures.BarsTx;
                         component.sourceRect = srcRect;
                     }
 
@@ -94,7 +95,7 @@ internal class NewSkillsPageCtorPatch : BasePatch
 
                     if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 20)
                     {
-                        component.texture = Textures.SkillBarTx;
+                        component.texture = Textures.BarsTx;
                         component.sourceRect = srcRect;
                     }
 

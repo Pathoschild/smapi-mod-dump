@@ -13,7 +13,7 @@
   "menu.days": "날짜",
   "menu.leave": "나가기",
   "menu.no": "아니오",
-  "menu.repaycustom": "Repay a Custom Amount",
+  "menu.repaycustom": "일부상환",
   "menu.repayfull": "전액환급",
   "menu.showbalance": "잔액표시",
   "menu.yes": "예",
@@ -31,5 +31,5 @@
   "msg.payment.remaining": "당신의 남은 잔액은: {{Balance}}g.이며,{{Duration}}일 남으셨습니다.하루에{{DailyAmount}}g을 지불하고 있습니다.",
   "msg.startborrow-1": "얼마를 대출 할까요?",
   "msg.startborrow-2": "어느정도의 기간으로 대출할까요?",
-  "msg.startrepay": "How much money would you like to repay?"
+  "msg.startrepay": "얼마를 상환 할까요?"
 }

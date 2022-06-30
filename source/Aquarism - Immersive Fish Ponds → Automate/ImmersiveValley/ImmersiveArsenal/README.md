@@ -51,7 +51,7 @@ Not compatible with other rebalance mods.
 
 Compatible with Stardew Valley Expanded.
 
-Should be fully compatible with multiplayer.
+Should be fully compatible with multiplayer. Not compatible with Android.
 
 ## Installation
 

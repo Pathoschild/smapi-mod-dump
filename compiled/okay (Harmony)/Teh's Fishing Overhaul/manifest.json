@@ -2,7 +2,7 @@
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "Teh's Fishing Overhaul",
   "Author": "TehPers",
-  "Version": "3.3.0",
+  "Version": "3.3.2",
   "Description": "Highly customizable overhaul for fishing",
   "UniqueID": "TehPers.FishingOverhaul",
   "EntryDll": "TehPers.FishingOverhaul.dll",

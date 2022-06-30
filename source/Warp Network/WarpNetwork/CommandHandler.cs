@@ -54,37 +54,24 @@ namespace WarpNetwork
             {"menu", WarpMenu},
             {"debug", PrintDebug}
         };
-        public static void Main(string cmd, string[] args)
+        public static void Main(string _, string[] args)
         {
             if (args.Length == 0)
-            {
                 ShowHelp(args);
-                return;
-            }
-            if (Cmds.ContainsKey(args[0]))
-            {
+            else if (Cmds.ContainsKey(args[0]))
                 Cmds[args[0]](args.Skip(1).ToArray());
-            }
             else
-            {
                 print("\nCommand not recognized.\n");
-            }
         }
-        private static void print(object what)
-        {
-            ModEntry.monitor.Log(what.ToString(), LogLevel.Debug);
-        }
+        private static void print(object what) => ModEntry.monitor.Log(what.ToString(), LogLevel.Debug);
         private static void ShowHelp(string[] args)
         {
-            if (args.Length > 0)
+            if (args.Length > 0 && CmdHelp.ContainsKey(args[0]))
             {
-                if (CmdHelp.ContainsKey(args[0]))
-                {
-                    print(args[0] + ":\n\t" + CmdHelp[args[0]]);
-                    return;
-                }
+                print(args[0] + ":\n\t" + CmdHelp[args[0]]);
+                return;
             }
-            StringBuilder builder = new StringBuilder(4 * CmdHelp.Count);
+            StringBuilder builder = new();
             foreach (string key in CmdHelp.Keys)
             {
                 builder.AppendLine();
@@ -97,21 +84,16 @@ namespace WarpNetwork
         private static void TP(string[] args)
         {
             if (Game1.currentLocation is null || Game1.player is null)
-            {
                 print("\nGame not loaded, cannot warp!\n");
-                return;
-            }
-            if (args.Length == 0)
-            {
+            else if (args.Length == 0)
                 print("\nMust specify warp network location\n");
-                return;
-            }
-            WarpHandler.DirectWarp(args[0], true);
+            else
+                WarpHandler.DirectWarp(args[0], true);
         }
         private static void GetLocations(string[] args)
         {
             Dictionary<string, WarpLocation> dict = Utils.GetWarpLocations();
-            StringBuilder builder = new StringBuilder(16 * dict.Count);
+            StringBuilder builder = new();
             foreach ((string key, WarpLocation loc) in dict)
             {
                 builder.AppendLine();
@@ -128,7 +110,7 @@ namespace WarpNetwork
         private static void GetItems(string[] args)
         {
             Dictionary<string, WarpItem> dict = Utils.GetWarpItems();
-            StringBuilder builder = new StringBuilder(10 * dict.Count);
+            StringBuilder builder = new();
             foreach (string key in dict.Keys)
             {
                 WarpItem item = dict[key];
@@ -149,14 +131,14 @@ namespace WarpNetwork
                 print("\nPlayer not loaded!\n");
                 return;
             }
-            StringBuilder builder = new StringBuilder(13);
+            StringBuilder builder = new();
             builder.AppendLine("\"warpid\": {");
             builder.Append("\t\"Location\": \"").Append(loc.Name).AppendLine("\",");
             builder.Append("\t\"X\": ").Append(who.getTileX()).AppendLine(",");
             builder.Append("\t\"Y\": ").Append(who.getTileY()).AppendLine(",");
             builder.AppendLine("\t\"Enabled\": true,");
             builder.AppendLine("\t\"Label\": \"label\"");
-            builder.Append("}");
+            builder.Append('}');
             if (DesktopClipboard.IsAvailable)
             {
                 DesktopClipboard.SetText(builder.ToString());
@@ -171,28 +153,17 @@ namespace WarpNetwork
         private static void GetHeldID(string[] args)
         {
             Farmer who = Game1.player;
-            if (who is null)
-            {
-                print("\nPlayer not loaded!\n");
-                return;
-            }
-            if (who.ActiveObject is null)
-            {
+            if (who?.ActiveObject is null)
                 print("\nHand is empty!\n");
-                return;
-            }
-            print("\nHeld item ID: " + who.ActiveObject.ParentSheetIndex.ToString() + "\n");
+            else
+                print("\nHeld item ID: " + who.ActiveObject.ParentSheetIndex.ToString() + "\n");
         }
         private static void WarpMenu(string[] args)
         {
             if (Game1.player is null || Game1.currentLocation is null)
-            {
                 print("\nGame not loaded, cannot warp\n");
-            }
             else
-            {
                 WarpHandler.ShowWarpMenu((args.Length > 0) ? args[0] : "");
-            }
         }
         private static void PrintDebug(string[] args)
         {
@@ -200,7 +171,7 @@ namespace WarpNetwork
             GetItems(args);
             GetHeldID(args);
             print(ModEntry.config.AsText());
-            StringBuilder sb = new StringBuilder(15);
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine();
             sb.Append("Location: ").AppendLine(Game1.player.currentLocation.Name);
             sb.Append("Position: ").AppendLine(Game1.player.getTileLocationPoint().ToString());

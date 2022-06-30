@@ -12,21 +12,20 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Tools;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class FishingRodCalculateTimeUntilFishingBitePatch : BasePatch
+internal sealed class FishingRodCalculateTimeUntilFishingBitePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FishingRodCalculateTimeUntilFishingBitePatch()
     {
-        Original = RequireMethod<FishingRod>("calculateTimeUntilFishingBite");
+        Target = RequireMethod<FishingRod>("calculateTimeUntilFishingBite");
     }
 
     #region harmony patches

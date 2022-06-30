@@ -20,38 +20,12 @@ using StardewValley.Menus;
 
 namespace FishReminder
 {
-    public class FishReminder : Mod, IAssetEditor//To do Change the fish dictionary to int, string. That wasy I can cross reference based on int.
+    public class FishReminder : Mod//To do Change the fish dictionary to int, string. That wasy I can cross reference based on int.
     {
         //private string fishNeeded;
 
         private FishConfig _config;
-        //Modify the Assets
-        /// <summary>Get whether this instance can edit the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals("Data/mail");
-        }
-
-        /// <summary>Edit a matched asset.</summary>
-        /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("Data/mail"))
-            {
-                var i18n = Helper.Translation;
-                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                data["fishReminderDaily"] = i18n.Get("fishReminderDaily",
-                    new {player = Game1.player.Name, fish = GetNeededFish()});
-
-                data["fishReminderWeekly"] = i18n.Get("fishReminderWeekly",
-                    new {player = Game1.player.Name, fish = GetNeededFish()});
-
-                data["fishReminderMonthly"] = i18n.Get("fishReminderMonthly",
-                    new {player = Game1.player.Name, fish = GetNeededFish()});
-            }
-        }
-
+        
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
         public override void Entry(IModHelper helper)
@@ -61,8 +35,29 @@ namespace FishReminder
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             //helper.Events.GameLoop.Saving += OnSaving;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
+            helper.Events.Content.AssetRequested += AssetRequested;
         }
 
+
+        private void AssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/mail"))
+            {
+                e.Edit(asset =>
+                {
+                    var i18n = Helper.Translation;
+                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                    data["fishReminderDaily"] = i18n.Get("fishReminderDaily",
+                        new { player = Game1.player.Name, fish = GetNeededFish() });
+
+                    data["fishReminderWeekly"] = i18n.Get("fishReminderWeekly",
+                        new { player = Game1.player.Name, fish = GetNeededFish() });
+
+                    data["fishReminderMonthly"] = i18n.Get("fishReminderMonthly",
+                        new { player = Game1.player.Name, fish = GetNeededFish() });
+                });
+            }
+        }
         //Event methods
         /// <summary>Event that fires when a button is pressed</summary>
         /// <param name="sender">The sender</param>
@@ -73,7 +68,12 @@ namespace FishReminder
                 return;
 
             //Process button pressed
-            if (e.IsDown(SButton.F6))
+            if (e.IsDown(SButton.F5))
+            {
+                _config = Helper.ReadConfig<FishConfig>();
+                Monitor.Log("Config file was reloaded.");
+            }
+            else if (e.IsDown(SButton.F6))
             {
                 string fishes = GetNeededFish(true, true);
                 Monitor.Log(fishes);
@@ -135,7 +135,7 @@ namespace FishReminder
             }
             else if (e.IsDown(SButton.F9))
             {
-                var fish = Helper.Content.Load<Dictionary<int, string> > ("Data\\fish", ContentSource.GameContent);
+                var fish = Helper.GameContent.Load<Dictionary<int, string> > ("Data\\fish");
                 //string[] locData = loc.Value.Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
                 foreach (var f in fish)
                 {
@@ -163,7 +163,7 @@ namespace FishReminder
                 case 1:
                     if (_config.SendReminderMailMonthly)
                     {
-                        Helper.Content.InvalidateCache("Data/mail");
+                        Helper.GameContent.InvalidateCache("Data/mail");
                         Game1.player.mailForTomorrow.Add("fishReminderMonthly");
                     }
                     break;
@@ -172,14 +172,14 @@ namespace FishReminder
                 case 22:
                     if (_config.SendReminderMailWeekly)
                     {
-                        Helper.Content.InvalidateCache("Data/mail");
+                        Helper.GameContent.InvalidateCache("Data/mail");
                         Game1.player.mailForTomorrow.Add("fishReminderWeekly");
                     }
                     break;
                 default:
                     if (_config.SendReminderMailDaily)
                     {
-                        Helper.Content.InvalidateCache("Data/mail");
+                        Helper.GameContent.InvalidateCache("Data/mail");
                         Game1.player.mailForTomorrow.Add("fishReminderDaily");
                     }
 

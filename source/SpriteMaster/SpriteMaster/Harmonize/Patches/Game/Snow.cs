@@ -21,6 +21,7 @@ using StardewValley;
 using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
@@ -28,6 +29,7 @@ internal static class Snow {
 	private static Dictionary<Bounds, List<SnowWeatherDebris>> MappedWeatherDebris = new();
 	private static List<WeatherDebris> AllWeatherDebris = new();
 
+	[StructLayout(LayoutKind.Auto)]
 	internal readonly struct SnowState {
 		internal Dictionary<Bounds, List<SnowWeatherDebris>> MappedWeatherDebris { get; init; }
 		internal List<WeatherDebris> AllWeatherDebris { get; init; }
@@ -307,7 +309,7 @@ internal static class Snow {
 		return true;
 	}
 
-	private const int ReferenceScreenArea = 2560 * 1440;
+	private const int ReferenceScreenArea = (2560 * 1440) / 16;
 
 	[Harmonize(
 		typeof(Game1),

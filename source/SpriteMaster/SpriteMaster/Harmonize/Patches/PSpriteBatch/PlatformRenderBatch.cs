@@ -16,6 +16,7 @@ using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using static SpriteMaster.Harmonize.Harmonize;
 using SpriteBatcher = System.Object;
 
@@ -24,6 +25,16 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch;
 [SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
 [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
 internal static class PlatformRenderBatch {
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowModeUnimplementedException<T>(string name, TextureAddressMode addressMode) =>
+		throw new NotImplementedException($"{name} {addressMode} is unimplemented");
+
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowModeUnimplementedException<T>(string name, TextureFilter filter) =>
+		throw new NotImplementedException($"{name} {filter} is unimplemented");
+
 	private static SamplerState GetSamplerState(TextureAddressMode addressMode, TextureFilter filter) {
 		return (addressMode, filter) switch {
 			(TextureAddressMode.Wrap, TextureFilter.Point) => SamplerState.PointWrap,
@@ -38,10 +49,10 @@ internal static class PlatformRenderBatch {
 			(TextureAddressMode.Mirror, TextureFilter.Point) => DrawState.PointMirror.Value,
 			(TextureAddressMode.Mirror, TextureFilter.Linear) => DrawState.LinearMirror.Value,
 			(TextureAddressMode.Mirror, TextureFilter.Anisotropic) => DrawState.AnisotropicMirror.Value,
-			(_, TextureFilter.Point) => throw new NotImplementedException($"{nameof(TextureAddressMode)} {addressMode} is unimplemented"),
-			(_, TextureFilter.Linear) => throw new NotImplementedException($"{nameof(TextureAddressMode)} {addressMode} is unimplemented"),
-			(_, TextureFilter.Anisotropic) => throw new NotImplementedException($"{nameof(TextureAddressMode)} {addressMode} is unimplemented"),
-			_ => throw new NotImplementedException($"{nameof(TextureFilter)} {filter} is unimplemented")
+			(_, TextureFilter.Point) => ThrowModeUnimplementedException<SamplerState>(nameof(TextureAddressMode), addressMode),
+			(_, TextureFilter.Linear) => ThrowModeUnimplementedException<SamplerState>(nameof(TextureAddressMode), addressMode),
+			(_, TextureFilter.Anisotropic) => ThrowModeUnimplementedException<SamplerState>(nameof(TextureAddressMode), addressMode),
+			_ => ThrowModeUnimplementedException<SamplerState>(nameof(TextureFilter), filter),
 		};
 	}
 

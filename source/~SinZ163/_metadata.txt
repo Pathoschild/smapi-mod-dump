@@ -7,9 +7,11 @@ mods:
    Profiler
 
 latest commit:
-   commit 96e5dc7124392ed5cbf69bd002f6f3df0d85b3f8
+   commit a5a5f90202ee3ad6dcf8b8cb4e921791653e1e92
    Author: SinZ <github@361zn.is>
-   Date:   Mon May 23 23:05:49 2022 +1000
+   Date:   Mon Jun 27 12:29:39 2022 +1000
    
-       Release Profiler v1.0
+       Start of Profiler v2
+       
+       Still need to change a few things before it is ready to see the wider world
    

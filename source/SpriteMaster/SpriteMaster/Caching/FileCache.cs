@@ -18,6 +18,7 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Spans;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -51,6 +52,16 @@ internal static class FileCache {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string GetDumpPath(params string[] path) => Path.Combine(DumpPath, Path.Combine(path)).Replace('=', '_');
 
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static void ThrowCorruptCacheFileException() =>
+		throw new IOException("Cache File is corrupted");
+
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static T ThrowCorruptCacheFileException<T>(string path) =>
+		throw new IOException($"Cache File '{path}' is corrupted");
+
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
 	private struct CacheHeader {
 		private readonly ulong Assembly = AssemblyHash;
@@ -77,7 +88,7 @@ internal static class FileCache {
 			var newHeaderSpan = MemoryMarshal.CreateSpan(ref newHeader, 1).Cast<CacheHeader, byte>();
 			var readBytes = reader.Read(newHeaderSpan);
 			if (readBytes != newHeaderSpan.Length) {
-				throw new IOException("Cache File is corrupted");
+				ThrowCorruptCacheFileException();
 			}
 
 			return newHeader;
@@ -90,14 +101,24 @@ internal static class FileCache {
 			writer.Write(headerSpan);
 		}
 
+		[DoesNotReturn]
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void ThrowOutOfDateException(string path) =>
+			throw new IOException($"Texture Cache File out of date '{path}'");
+
+		[DoesNotReturn]
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void ThrowInvalidFormatException(string path) =>
+			throw new InvalidDataException($"Illegal compression format in cached texture '{path}'");
+
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal void Validate(string path) {
 			if (Assembly != AssemblyHash) {
-				throw new IOException($"Texture Cache File out of date '{path}'");
+				ThrowOutOfDateException(path);
 			}
 
 			if (Format == TextureFormat.None) {
-				throw new InvalidDataException($"Illegal compression format in cached texture '{path}'");
+				ThrowInvalidFormatException(path);
 			}
 		}
 	}
@@ -216,7 +237,7 @@ internal static class FileCache {
 						var rawData = reader.ReadBytes((int)dataLength);
 
 						if (rawData.Hash() != dataHash) {
-							throw new IOException($"Cache File '{path}' is corrupted");
+							return ThrowCorruptCacheFileException<bool>(path);
 						}
 
 						data = rawData.Decompress((int)uncompressedDataLength, header.Algorithm);
@@ -291,7 +312,7 @@ internal static class FileCache {
 							}
 							var algorithm = SystemCompression && !Config.FileCache.ForceCompress ? Compression.Algorithm.None : Config.FileCache.Compress;
 
-							ReadOnlySpan<byte> compressedData = data.Compress(algorithm);
+							ReadOnlySpan<byte> compressedData = data.Compress<byte>(algorithm);
 
 							if (compressedData.Length >= data.Length) {
 								compressedData = data;

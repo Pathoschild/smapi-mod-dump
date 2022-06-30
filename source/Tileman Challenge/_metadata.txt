@@ -6,9 +6,14 @@ mods:
    Tileman Challenge
 
 latest commit:
-   commit 9dea68a55932bbaff08e0774478e52b43258f0e3
+   commit 74f6f3972af04a8f00099864373dd8fb7ec7d3a7
    Author: spicykai <65915663+spicykai@users.noreply.github.com>
-   Date:   Sun May 15 06:04:38 2022 -0600
+   Date:   Wed Jun 8 07:00:37 2022 -0600
    
-       removed forcing time
+       1.0.6
+       
+       Changed collision to not interfere with Mobs and NPC's.
+       
+       Increased the time it takes to switch location tiles. This is to fix some cutscene bugs.
+       Fixed elevator bug.
    

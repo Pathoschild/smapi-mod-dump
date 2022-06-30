@@ -12,20 +12,25 @@ namespace DaLion.Stardew.Professions.Framework.Events.Multiplayer;
 
 #region using directives
 
+using Common;
+using Common.Events;
+using GameLoop;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
-using Content;
-using GameLoop;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class RequestGlobalEventModMessageReceivedEvent : ModMessageReceivedEvent
+internal sealed class RequestGlobalEventModMessageReceivedEvent : ModMessageReceivedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal RequestGlobalEventModMessageReceivedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnModMessageReceivedImpl(object sender, ModMessageReceivedEventArgs e)
+    protected override void OnModMessageReceivedImpl(object? sender, ModMessageReceivedEventArgs e)
     {
         if (e.FromModID != ModEntry.Manifest.UniqueID || !e.Type.StartsWith("RequestEvent")) return;
 
@@ -39,21 +44,17 @@ internal class RequestGlobalEventModMessageReceivedEvent : ModMessageReceivedEve
 
         switch (which)
         {
-            case "Aquarist":
-                Log.D($"{who.Name} requested {which} event subscription.");
-                EventManager.Enable(typeof(HostFishPondDataRequestedEvent));
-                break;
             case "Conservationism":
                 Log.D($"{who.Name} requested {which} event subscription.");
-                EventManager.Enable(typeof(HostConservationismDayEndingEvent));
+                Manager.Hook<HostConservationismDayEndingEvent>();
                 break;
             case "HuntIsOn":
                 Log.D($"Prestiged treasure hunter {who.Name} is hunting for treasure.");
-                EventManager.Enable(typeof(HostPrestigeTreasureHuntUpdateTickedEvent));
+                Manager.Hook<HostPrestigeTreasureHuntUpdateTickedEvent>();
                 break;
             case "HuntIsOff":
                 Log.D($"{who.Name}'s hunt has ended.");
-                EventManager.Disable(typeof(HostPrestigeTreasureHuntUpdateTickedEvent));
+                Manager.Unhook<HostPrestigeTreasureHuntUpdateTickedEvent>();
                 break;
         }
     }

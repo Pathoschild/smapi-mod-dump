@@ -11,7 +11,7 @@
 {
   "Name": "Giant Crop Fertilizer",
   "Author": "atravita",
-  "Version": "0.1.4",
+  "Version": "0.1.5",
   "Description": "Adds a fertilizer that forces giant crops.",
   "UniqueID": "atravita.GiantCropFertilizer",
   "EntryDll": "GiantCropFertilizer.dll",

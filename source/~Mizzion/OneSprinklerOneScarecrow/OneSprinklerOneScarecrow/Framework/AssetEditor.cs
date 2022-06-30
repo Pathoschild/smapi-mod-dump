@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+/*
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,11 +40,7 @@ namespace OneSprinklerOneScarecrow.Framework
             _monitor = monitor;
             _translate = translate;
             _config = config;
-            /*
-            haxorSprinklerName = translate.Get("haxorsprinkler.name");
-            haxorSprinklerDescription = _translate.Get("haxorsprinkler.description");
-            haxorScarecrowName = translate.Get("haxorscarecrow.name");
-            haxorScarecrowDescription = translate.Get("haxorscarecrow.description");*/
+           
         }
 
 
@@ -55,6 +52,12 @@ namespace OneSprinklerOneScarecrow.Framework
 
         public void Edit<T>(IAssetData asset)
         {
+            //Lets get the translations. See if this fixes the bloody issues
+            HaxorSprinkler.TranslatedName = _translate.Get("haxorsprinkler.name");
+            HaxorSprinkler.TranslatedDescription = _translate.Get("haxorsprinkler.description");
+            HaxorScarecrow.TranslatedName = _translate.Get("haxorscarecrow.name");
+            HaxorScarecrow.TranslatedDescription = _translate.Get("haxorscarecrow.description");
+
             //Do the edits here. Will be done soon
             if (asset.AssetNameEquals("Maps/springobjects")){
                 Texture2D sprinkler =
@@ -104,6 +107,7 @@ namespace OneSprinklerOneScarecrow.Framework
                     {337, 10} // Hard Mode = 10 Iridium Bars
                  
                  */
+/*
                 var curData = asset.AsDictionary<string, string>();
                 //bool isEn = asset.Locale == "en";
                 string isEnSprik = asset.Locale != "en" ? $"/{HaxorSprinkler.TranslatedName}" : "";
@@ -132,12 +136,6 @@ namespace OneSprinklerOneScarecrow.Framework
                     }
                        
                 }
-               
-                /*
-                 
-                        "Iridium Sprinkler": "336 1 337 1 787 1/Home/645/false/Farming 9",
-                 
-                 */
             }
         }
 
@@ -152,4 +150,4 @@ namespace OneSprinklerOneScarecrow.Framework
             return new Rectangle(id % 8 * 16, id / 8 * 32, 16, 32);
         }
     }
-}
+}*/

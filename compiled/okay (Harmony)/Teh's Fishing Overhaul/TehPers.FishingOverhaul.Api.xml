@@ -258,6 +258,30 @@
             <param name="FromFishPond">Whether this was caught from a fish pond.</param>
             <param name="CaughtDouble">Whether two fish were caught instead of just one.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.FishEntry">
+            <summary>The availability entry for the fish that was caught.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.FishItem">
+            <summary>The fish item that was caught.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.FishSize">
+            <summary>The size of the caught fish.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.IsLegendary">
+            <summary>Whether the fish is legendary.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.FishQuality">
+            <summary>The quality level of the fish.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.FishDifficulty">
+            <summary>The difficulty of the fish.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.State">
+            <summary>The state of the minigame when the fish was caught.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch.CaughtDouble">
+            <summary>Whether two fish were caught instead of just one.</summary>
+        </member>
         <member name="T:TehPers.FishingOverhaul.Api.CatchInfo.TrashCatch">
             <summary>
             Information about a caught trash item.
@@ -275,6 +299,12 @@
             <param name="TrashEntry">The availability entry for the trash that was caught.</param>
             <param name="TrashItem">The trash item that was caught.</param>
             <param name="FromFishPond">Whether this was caught from a fish pond.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.TrashCatch.TrashEntry">
+            <summary>The availability entry for the trash that was caught.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.TrashCatch.TrashItem">
+            <summary>The trash item that was caught.</summary>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions">
             <summary>
@@ -410,6 +440,12 @@
             relative to all available entries.
             </param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.BaseChance">
+            <summary>
+            The base chance this will be caught. This is not a percentage chance, but rather a weight
+            relative to all available entries.
+            </summary>
+        </member>
         <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.PriorityTier">
             <summary>
             The priority tier for this entry. For all available entries, only the entries that
@@ -531,6 +567,9 @@
             <typeparam name="T">The type of availability for this entry.</typeparam>
             <param name="AvailabilityInfo">The availability information.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.Entry`1.AvailabilityInfo">
+            <summary>The availability information.</summary>
+        </member>
         <member name="P:TehPers.FishingOverhaul.Api.Content.Entry`1.OnCatch">
             <summary>
             Actions to perform when this is caught.
@@ -591,6 +630,9 @@
             <param name="FishKey">The item key.</param>
             <param name="AvailabilityInfo">The availability information.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishEntry.FishKey">
+            <summary>The item key.</summary>
+        </member>
         <member name="M:TehPers.FishingOverhaul.Api.Content.FishEntry.TryCreateItem(TehPers.FishingOverhaul.Api.FishingInfo,TehPers.Core.Api.Items.INamespaceRegistry,TehPers.FishingOverhaul.Api.Content.CaughtItem@)">
             <inheritdoc/>
         </member>
@@ -622,6 +664,9 @@
             Content which affects fishing.
             </summary>
             <param name="ModManifest">The manifest of the mod that created this content.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.ModManifest">
+            <summary>The manifest of the mod that created this content.</summary>
         </member>
         <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.SetFishTraits">
             <summary>
@@ -703,6 +748,18 @@
             <param name="MinSize">The minimum size the fish can be.</param>
             <param name="MaxSize">The maximum size the fish can be.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishTraits.DartFrequency">
+            <summary>How often the fish darts in the fishing minigame.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishTraits.DartBehavior">
+            <summary>How the fish moves during the fishing minigame.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishTraits.MinSize">
+            <summary>The minimum size the fish can be.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishTraits.MaxSize">
+            <summary>The maximum size the fish can be.</summary>
+        </member>
         <member name="P:TehPers.FishingOverhaul.Api.Content.FishTraits.IsLegendary">
             <summary>
             Whether the fish is legendary.
@@ -756,6 +813,9 @@
             <param name="ItemKey">The item key.</param>
             <param name="AvailabilityInfo">The availability information.</param>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.TrashEntry.ItemKey">
+            <summary>The item key.</summary>
+        </member>
         <member name="M:TehPers.FishingOverhaul.Api.Content.TrashEntry.TryCreateItem(TehPers.FishingOverhaul.Api.FishingInfo,TehPers.Core.Api.Items.INamespaceRegistry,TehPers.FishingOverhaul.Api.Content.CaughtItem@)">
             <inheritdoc/>
         </member>
@@ -789,6 +849,9 @@
             </summary>
             <param name="AvailabilityInfo">The availability information.</param>
             <param name="ItemKeys">The possible namespaced keys for the loot. The item key is chosen randomly.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.TreasureEntry.ItemKeys">
+            <summary>The possible namespaced keys for the loot. The item key is chosen randomly.</summary>
         </member>
         <member name="P:TehPers.FishingOverhaul.Api.Content.TreasureEntry.MinQuantity">
             <summary>
@@ -877,6 +940,12 @@
             </summary>
             <param name="Name">The name of the effect.</param>
             <param name="EntryType">The entry type (which must extend <see cref="T:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry"/>).</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Effects.FishingEffectRegistration.Name">
+            <summary>The name of the effect.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Effects.FishingEffectRegistration.EntryType">
+            <summary>The entry type (which must extend <see cref="T:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry"/>).</summary>
         </member>
         <member name="M:TehPers.FishingOverhaul.Api.Effects.FishingEffectRegistration.Of``1(System.String)">
             <summary>
@@ -1207,6 +1276,9 @@
              create a new instance of this rather than call the constructor directly.
              </summary>
              <param name="User">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.User">
+            <summary>The <see cref="T:StardewValley.Farmer"/> that is fishing.</summary>
         </member>
         <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.Times">
             <summary>
@@ -1638,6 +1710,12 @@
             </summary>
             <param name="IsPerfect">Whether the current catch is still perfect.</param>
             <param name="Treasure">The state of the treasure in the minigame.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.MinigameState.IsPerfect">
+            <summary>Whether the current catch is still perfect.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.MinigameState.Treasure">
+            <summary>The state of the treasure in the minigame.</summary>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.PossibleCatch">
             <summary>

@@ -6,12 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit d48e4cc1b6fb78fdc65fabb442506a6fa63a71e0
-   Merge: 93c75fc 9f8d427
+   commit 4a1e4f9f4aaca47ec24d55004835e5be07af2340
    Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
-   Date:   Fri May 27 18:11:12 2022 +0530
+   Date:   Fri Jun 10 22:50:06 2022 +0530
    
-       Merge pull request #21 from bradjrenshaw/GingerIslandAdditions
-       
-       Ginger island additions
+       Bug fix
    

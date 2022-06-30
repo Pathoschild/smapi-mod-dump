@@ -8,7 +8,9 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using LinqFasterer;
+using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Extensions;
 using System;
 using System.IO;
@@ -19,7 +21,7 @@ using IOC = System.IO.Compression;
 namespace SpriteMaster.Compressors;
 
 //[HarmonizeFinalizeCatcher<IOC.DeflateStream, DllNotFoundException>(critical: false)]
-internal static class SystemIO {
+internal static class SystemIo {
 
 	private static bool? IsSupportedInternal = null;
 	internal static bool IsSupported {
@@ -52,14 +54,14 @@ internal static class SystemIO {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static int CompressedLengthEstimate(byte[] data) => data.Length >> 1;
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int CompressedLengthEstimate(ReadOnlySpan<byte> data) => data.Length >> 1;
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int DecompressedLengthEstimate(byte[] data) => data.Length << 1;
+
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static long CompressedLengthMax(ReadOnlySpan<byte> data) => 11L + data.Length + (data.Length >> 3) + (data.Length >> 7);
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
 	internal static byte[] CompressTest(byte[] data) {
@@ -77,6 +79,7 @@ internal static class SystemIO {
 		}
 	}
 
+	[Pure, MustUseReturnValue]
 	internal static byte[] Compress(byte[] data) {
 		using var val = new MemoryStream(CompressedLengthEstimate(data));
 		using (var compressor = new IOC.DeflateStream(val, IOC.CompressionLevel.Optimal)) {
@@ -85,7 +88,8 @@ internal static class SystemIO {
 		return val.GetArray();
 	}
 
-	internal static byte[] Compress(ReadOnlySpan<byte> data) {
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static byte[] CompressBytes(ReadOnlySpan<byte> data) {
 		using var val = new MemoryStream(CompressedLengthEstimate(data));
 		using (var compressor = new IOC.DeflateStream(val, IOC.CompressionLevel.Optimal)) {
 			compressor.Write(data);
@@ -93,6 +97,49 @@ internal static class SystemIO {
 		return val.GetArray();
 	}
 
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static unsafe long AlignCount<T>(long size) where T : unmanaged =>
+		(long)(((ulong)size + (ulong)(sizeof(T) - 1)) / (ulong)sizeof(T));
+
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static unsafe int AlignCount<T>(int size) where T : unmanaged =>
+		(int)(((long)size + (sizeof(T) - 1)) / sizeof(T));
+
+	[Pure, MustUseReturnValue]
+	internal static unsafe T[] Compress<T>(ReadOnlySpan<byte> data) where T : unmanaged {
+		if (typeof(T) == typeof(byte)) {
+			return (T[])(object)CompressBytes(data);
+		}
+
+		long requiredSize = CompressedLengthMax(data);
+		long capacity = AlignCount<T>(requiredSize);
+		if (capacity > int.MaxValue) {
+			var resultArray = CompressBytes(data);
+			T[] copiedResult = GC.AllocateUninitializedArray<T>(AlignCount<T>(resultArray.Length));
+			resultArray.AsReadOnlySpan().CopyTo(copiedResult.AsSpan().AsBytes());
+			return copiedResult;
+		}
+
+		T[] result = GC.AllocateUninitializedArray<T>((int)capacity);
+		long resultLength;
+
+		fixed (T* resultPtr = result) {
+			using var resultStream = new UnmanagedMemoryStream((byte*)resultPtr, result.Length * sizeof(T));
+
+			using var compressor = new IOC.DeflateStream(resultStream, IOC.CompressionLevel.Optimal);
+			compressor.Write(data.ToArray(), 0, data.Length);
+			compressor.Flush();
+			resultLength = resultStream.Position;
+		}
+
+		if (result.Length != resultLength) {
+			Array.Resize(ref result, (int)resultLength);
+		}
+
+		return result;
+	}
+
+	[Pure, MustUseReturnValue]
 	internal static byte[] Decompress(byte[] data) {
 		using var dataStream = new MemoryStream(data);
 		using var val = new MemoryStream(DecompressedLengthEstimate(data));
@@ -102,12 +149,30 @@ internal static class SystemIO {
 		return val.GetArray();
 	}
 
+	[Pure, MustUseReturnValue]
 	internal static byte[] Decompress(byte[] data, int size) {
 		using var dataStream = new MemoryStream(data);
 		var output = new byte[size];
 		using var val = new MemoryStream(output);
 		using var compressor = new IOC.DeflateStream(dataStream, IOC.CompressionMode.Decompress);
 		compressor.CopyTo(val);
+		return output;
+	}
+
+	[Pure, MustUseReturnValue]
+	internal static unsafe T[] Decompress<T>(byte[] data, int size) where T : unmanaged{
+		if (typeof(T) == typeof(byte)) {
+			return (T[])(object)Decompress(data, size);
+		}
+
+		using var dataStream = new MemoryStream(data);
+		var output = GC.AllocateUninitializedArray<T>(AlignCount<T>(size));
+		fixed (T* outputPtr = output) {
+			using var val = new UnmanagedMemoryStream((byte*)outputPtr, output.Length * sizeof(T));
+			using var compressor = new IOC.DeflateStream(dataStream, IOC.CompressionMode.Decompress);
+			compressor.CopyTo(val);
+		}
+
 		return output;
 	}
 }

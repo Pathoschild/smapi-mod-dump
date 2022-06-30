@@ -17,4 +17,6 @@
 	<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
 </ItemGroup>
 
+<Import Project="..\TraktoriShared\TraktoriShared.projitems" Label="Shared" />
+
 </Project>

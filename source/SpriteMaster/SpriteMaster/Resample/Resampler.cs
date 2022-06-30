@@ -73,7 +73,7 @@ internal sealed class Resampler {
 		return hash;
 	}
 
-	private static readonly WeakSet<XTexture2D> GarbageMarkSet = Config.Garbage.CollectAccountUnownedTextures ? new() : null!;
+	private static readonly WeakSet<XTexture2D> GarbageMarkSet = new();
 
 	private const int WaterBlock = 4;
 
@@ -306,9 +306,9 @@ internal sealed class Resampler {
 		if (Config.Resample.Recolor.Enabled) {
 			for (int i = 0; i < spriteRawData.Length; ++i) {
 				ref Color16 color = ref spriteRawData[i];
-				float r = Math.Clamp((float)(color.R.Real * Config.Resample.Recolor.RScalar), 0.0f, 1.0f);
-				float g = Math.Clamp((float)(color.G.Real * Config.Resample.Recolor.GScalar), 0.0f, 1.0f);
-				float b = Math.Clamp((float)(color.B.Real * Config.Resample.Recolor.BScalar), 0.0f, 1.0f);
+				float r = Math.Clamp((float)(color.R.RealF * Config.Resample.Recolor.RScalar), 0.0f, 1.0f);
+				float g = Math.Clamp((float)(color.G.RealF * Config.Resample.Recolor.GScalar), 0.0f, 1.0f);
+				float b = Math.Clamp((float)(color.B.RealF * Config.Resample.Recolor.BScalar), 0.0f, 1.0f);
 				color.R = Fixed16.FromReal(r);
 				color.G = Fixed16.FromReal(g);
 				color.B = Fixed16.FromReal(b);
@@ -321,7 +321,7 @@ internal sealed class Resampler {
 
 		if (scalerInfo is not null) {
 			scale *= (uint)blockSize;
-			scale = Math.Min(scale, (uint)scalerInfo.MaxScale);
+			scale = Math.Clamp(scale, (uint)scalerInfo.MinScale, (uint)scalerInfo.MaxScale);
 
 			// Adjust the scale value so that it is within the preferred dimensional limits
 			if (Config.Resample.Scale) {
@@ -825,13 +825,13 @@ internal sealed class Resampler {
 					var fixedData = pinnedBitmapData.Fixed;
 					SynchronizedTaskScheduler.Instance.QueueDeferred(
 						() => SyncCallFixed(fixedData),
-						new(bitmapData.Length)
+						new(input.Reference.NormalizedName(), bitmapData.Length)
 					);
 				}
 				else {
 					SynchronizedTaskScheduler.Instance.QueueDeferred(
 						SyncCallArray,
-						new(bitmapData.Length)
+						new(input.Reference.NormalizedName(), bitmapData.Length)
 					);
 				}
 				return null;

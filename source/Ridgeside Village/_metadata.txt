@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit d6620f7bb6df0b3d1f24fd5b00967da1effea68b
+   commit 032a614aa32d4f351d717a03194b0ff5cff47f0e
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Sat May 28 22:30:34 2022 +0800
+   Date:   Mon Jun 27 13:01:27 2022 +0800
    
-       new sprites for Paula and alissa fixes
+       Update default.json
    

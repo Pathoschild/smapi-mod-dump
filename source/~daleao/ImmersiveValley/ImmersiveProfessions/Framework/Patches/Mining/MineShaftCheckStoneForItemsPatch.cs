@@ -12,28 +12,28 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Locations;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class MineShaftCheckStoneForItemsPatch : BasePatch
+internal sealed class MineShaftCheckStoneForItemsPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal MineShaftCheckStoneForItemsPatch()
     {
-        Original = RequireMethod<MineShaft>(nameof(MineShaft.checkStoneForItems));
+        Target = RequireMethod<MineShaft>(nameof(MineShaft.checkStoneForItems));
     }
 
     #region harmony patches
@@ -43,7 +43,7 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
     ///     geode chance + remove Prospector double coal chance.
     /// </summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> MineShaftCheckStoneForItemsTranspiler(
+    private static IEnumerable<CodeInstruction>? MineShaftCheckStoneForItemsTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -70,9 +70,9 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
                     new CodeInstruction(OpCodes.Callvirt, typeof(Farmer).RequirePropertyGetter(nameof(Farmer.IsLocalPlayer))),
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
                     // prepare profession check
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 4) // arg 4 = Farmer who
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4) // arg 4 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Spelunker, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Spelunker.Value, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
                     new CodeInstruction(OpCodes.Ldloc_3), // local 3 = chanceForLadderDown
@@ -90,14 +90,13 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Spelunker bonus ladder down chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
         /// Skipped: if (who.professions.Contains(<geologist_id>)) ...
 
         var i = 0;
-        repeat1:
+    repeat1:
         try
         {
             helper // find index of geologist check
@@ -111,13 +110,12 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
                 .Return()
                 .InsertWithLabels( // insert unconditional branch to skip this check and restore backed-up labels to this branch
                     labels,
-                    new CodeInstruction(OpCodes.Br_S, (Label) isNotGeologist)
+                    new CodeInstruction(OpCodes.Br_S, (Label)isNotGeologist)
                 );
         }
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Geologist paired gem chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -128,7 +126,7 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         /// To: random.NextDouble() < <value> * (1.0 + chanceModifier)
 
         i = 0;
-        repeat2:
+    repeat2:
         try
         {
             helper // find index of excavator check
@@ -141,7 +139,6 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Excavator double geode chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -163,7 +160,6 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

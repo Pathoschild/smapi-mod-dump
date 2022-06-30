@@ -6,9 +6,9 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit 85c7cb12f5736d284e26d1923f13f94c58f9727b
-   Author: Greg <GStefanowich@users.noreply.github.com>
-   Date:   Wed Jan 6 10:56:03 2021 -0500
+   commit e39ad585eae3bd8581c4ca40477ba4ed0f59d2c0
+   Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
+   Date:   Tue Jun 28 01:31:54 2022 -0400
    
-       Initial Commit For Stardew Valley 1.5
+       Added a missing license to a page
    

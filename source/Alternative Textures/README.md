@@ -27,4 +27,4 @@ Alternative Textures has been generously translated into several languages by th
 * **Russian** - angel4killer
 * **Thai** - ellipszist
 * **Turkish** - KediDili
-* **Ukrainian** - burunduk
+* **Ukrainian** - burunduk, ChulkyBow

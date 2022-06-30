@@ -1,0 +1,59 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "ModItemsIDs": 
+  {
+      "ironpipe": 222560,
+      "goldpipe": 222561,
+      "iridiumpipe": 222562,
+      "extractorpipe": 222563,
+      "goldextractorpipe": 222564,
+      "iridiumextractorpipe": 222565,
+      "inserterpipe": 222566,
+      "polymorphicpipe": 222567,
+      "filterpipe": 222568,
+      "pipo": 222660,
+      "wrench": 222661
+  },
+  "ModItems": [
+      222560,
+      222561,
+      222562,
+      222563,
+      222564,
+      222565,
+      222566,
+      222567,
+      222568,
+      222660,
+      222661,
+      130,
+      248,
+      216,
+      232,
+      256
+  ],
+  "NetworkItems": [
+    222560,
+    222561,
+    222562,
+    222563,
+    222564,
+    222565,
+    222566,
+    222567,
+    222568,
+    222660
+  ],
+  "Buildings": [
+    "Shipping Bin"
+  ]
+}

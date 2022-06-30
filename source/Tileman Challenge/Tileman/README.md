@@ -46,7 +46,7 @@ true -> See the tiles,
 false -> Hide the tiles
 
 TilePrice: 
-How much each tile costs to purchase
+The default price of a tile. Calculations will be done with this to calculate the true price per tile.
 
 TilePriceRaise:
 How much the price of tile incrases with each purchase,

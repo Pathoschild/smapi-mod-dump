@@ -12,33 +12,32 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class Game1DrawHUDPatch : BasePatch
+internal sealed class Game1DrawHUDPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal Game1DrawHUDPatch()
     {
-        Original = RequireMethod<Game1>("drawHUD");
+        Target = RequireMethod<Game1>("drawHUD");
     }
 
     #region harmony patches
@@ -49,20 +48,28 @@ internal class Game1DrawHUDPatch : BasePatch
     {
         // track ladders and shafts as Prospector
         if (Game1.player.HasProfession(Profession.Prospector) && Game1.currentLocation is MineShaft shaft)
+        {
             foreach (var tile in shaft.GetLadderTiles())
                 ModEntry.PlayerState.Pointer.DrawAsTrackingPointer(tile, Color.Lime);
-        
-        // track berry bushes as Scavenger
-        else if (Game1.player.HasProfession(Profession.Scavenger) && Game1.currentLocation is {IsOutdoors: true} outdoors)
+
+        }
+        // track berry bushes + coconut trees as Scavenger
+        else if (Game1.player.HasProfession(Profession.Scavenger) && Game1.currentLocation is { IsOutdoors: true } outdoors)
+        {
             foreach (var bush in outdoors.largeTerrainFeatures.OfType<Bush>().Where(b =>
-                         !b.townBush.Value && b.tileSheetOffset.Value == 1 &&
-                         b.inBloom(Game1.GetSeasonForLocation(outdoors), Game1.dayOfMonth)))
+                      !b.townBush.Value && b.tileSheetOffset.Value == 1 &&
+                      b.inBloom(Game1.GetSeasonForLocation(outdoors), Game1.dayOfMonth)))
                 ModEntry.PlayerState.Pointer.DrawAsTrackingPointer(bush.tilePosition.Value, Color.Yellow);
+
+            foreach (var tree in outdoors.terrainFeatures.Values.OfType<Tree>()
+                         .Where(t => t.hasSeed.Value && t.treeType.Value == Tree.palmTree))
+                ModEntry.PlayerState.Pointer.DrawAsTrackingPointer(tree.currentTileLocation, Color.Yellow);
+        }
     }
 
     /// <summary>Patch for Scavenger and Prospector to track different stuff.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> Game1DrawHUDTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? Game1DrawHUDTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -85,7 +92,7 @@ internal class Game1DrawHUDPatch : BasePatch
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_S)
                 )
-                .SetOperand((int) Profession.Prospector) // change to prospector check
+                .SetOperand(Profession.Prospector.Value) // change to prospector check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Brfalse)
                 )
@@ -104,7 +111,6 @@ internal class Game1DrawHUDPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -137,7 +143,6 @@ internal class Game1DrawHUDPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -156,7 +161,7 @@ internal class Game1DrawHUDPatch : BasePatch
                 )
                 .StripLabels(out var labels)
                 .AddLabels(drawPanningTracker)
-                .InsertProfessionCheck((int) Profession.Prospector, labels)
+                .InsertProfessionCheck(Profession.Prospector.Value, labels)
                 .Insert(
                     new CodeInstruction(OpCodes.Brtrue_S, drawPanningTracker),
                     new CodeInstruction(OpCodes.Ret)
@@ -165,7 +170,6 @@ internal class Game1DrawHUDPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching Prospector restriction for panning tacker. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

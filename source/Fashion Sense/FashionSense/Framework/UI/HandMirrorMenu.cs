@@ -683,6 +683,7 @@ namespace FashionSense.Framework.UI
             Game1.playSound("grassyStep");
 
             FashionSense.SetSpriteDirty();
+            FashionSense.ResetTextureIfNecessary(Game1.player.modData[modDataKey]);
         }
 
         private void selectionClick(string name, int change)
@@ -972,6 +973,7 @@ namespace FashionSense.Framework.UI
                 {
                     Game1.player.modData[modDataKey] = randomContentPack.Id;
                     FashionSense.SetSpriteDirty();
+                    FashionSense.ResetTextureIfNecessary(randomContentPack.Id);
                 }
             }
 

@@ -1,0 +1,63 @@
+﻿{
+  "Name": "Shane",
+  "Skills": [
+    {
+      "Name": "fighter",
+      "Strength": 1.0,
+      "Speed": 0.6,
+      "MissChance": 0.05,
+      "AttackRadius": 1.3,
+      "BackupRadius": 1.0,
+      "DefendRadius": 9.5
+    }
+  ],
+  "Rules": {
+    // Requires 5 hearts or more
+    "!f Shane 1250": "reject",
+
+    // If you have married him he accepts adventure. If you have under 8 hearts he always rejects.
+    "O Shane/!f Shane 2000": "reject",
+    "O Shane": "accept",
+
+    // Shane is in work at Monday - Friday or it's raining today (except 15th winter) - no adventure
+    "k 191393/w rainy/!z winter/!u 15/600 1700": "reject companionRejectedWork",
+    "k 191393/d Sat Sun/!z winter/!u 15/600 1700": "reject companionRejectedWork",
+
+    // Otherwise Shane can accept adventure invitation whole day
+    "t 600 2200": "accept"
+  },
+  "Buffs": {
+    "Farming": 3,
+    "Luck": -1
+  },
+  "BuffsDescription": "[shane.buffs]",
+  "Weapons": {
+    "0": null, // Fists
+    "1": "Wooden Blade", // 3-7
+    "2": "Steel Smallsword", // 4-8
+    "3": "Pirate's Sword", // 8-14
+    "4": "Cutlass", // 9-17
+    "6": "Iron Edge", // 12-25
+    "8": "Templar's Blade" // 22-29
+  },
+  "IdleBehaviors": [
+    {
+      "Behavior": "Animate",
+      "Animations": [
+        "shane_drink",
+        "shane_warmup"
+      ],
+      "Tendency": 7,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    },
+    {
+      "Behavior": "Lookaround",
+      "FaceMinSeconds": 4,
+      "FaceMaxSeconds": 6,
+      "Tendency": 1.5,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    }
+  ]
+}

@@ -79,7 +79,7 @@ internal sealed partial class Scaler {
 		Vector2I targetSize
 	) {
 		if (scaleMultiplier < MinScale || scaleMultiplier > MaxScale) {
-			throw new ArgumentOutOfRangeException(nameof(scaleMultiplier));
+			throw new ArgumentOutOfRangeException(nameof(scaleMultiplier), $"{scaleMultiplier} is not within ({MinScale}, {MaxScale})");
 		}
 		/*
 		if (sourceData is null) {
@@ -90,7 +90,7 @@ internal sealed partial class Scaler {
 		}
 		*/
 		if (sourceSize.X <= 0 || sourceSize.Y <= 0) {
-			throw new ArgumentOutOfRangeException(nameof(sourceSize));
+			throw new ArgumentOutOfRangeException(nameof(sourceSize), $"{nameof(sourceSize)} ({sourceSize}) must not be negative or degenerate");
 		}
 
 		Scalerer = scaleMultiplier.ToIScaler(configuration);
@@ -118,7 +118,7 @@ internal sealed partial class Scaler {
 			y < blockSize;
 			++y, targetOffset += pitch
 		) {
-			target.Slice(targetOffset, blockSize).Fill(color);
+			target.SliceUnsafe(targetOffset, blockSize).Fill(color);
 		}
 	}
 
@@ -182,7 +182,7 @@ internal sealed partial class Scaler {
 				color32.B /= blockSizeSq;
 				color32.A /= blockSizeSq;
 
-				target.Slice(targetOffset, blockSize)[x] = new((ushort)color32.R, (ushort)color32.G, (ushort)color32.B, (ushort)color32.A);
+				target.SliceUnsafe(targetOffset, blockSize)[x] = new((ushort)color32.R, (ushort)color32.G, (ushort)color32.B, (ushort)color32.A);
 			}
 		}
 	}

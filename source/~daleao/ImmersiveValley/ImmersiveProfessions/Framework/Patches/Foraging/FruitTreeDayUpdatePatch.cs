@@ -12,22 +12,21 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class FruitTreeDayUpdatePatch : BasePatch
+internal sealed class FruitTreeDayUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FruitTreeDayUpdatePatch()
     {
-        Original = RequireMethod<FruitTree>(nameof(FruitTree.dayUpdate));
+        Target = RequireMethod<FruitTree>(nameof(FruitTree.dayUpdate));
     }
 
     #region harmony patches

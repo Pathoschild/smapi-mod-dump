@@ -8,7 +8,13 @@ for queries and analysis.**
 
 # Changelog - Recatchable Legendaries
 
-## 1.0.2 - 2022-05-20
+## 1.1.1 - 2022-06-03
+
+### Fixed
+
+- Fix mutant carp only being available in certain regions of the sewers.
+
+## 1.1.0 - 2022-05-20
 
 ### Changed
 

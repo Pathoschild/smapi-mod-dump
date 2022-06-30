@@ -14,7 +14,8 @@ namespace Shockah.FlexibleSprinklers
 	{
 		internal enum SprinklerBehaviorEnum { Cluster, ClusterWithoutVanilla, Flexible, FlexibleWithoutVanilla, Vanilla }
 
-		public SprinklerBehaviorEnum SprinklerBehavior { get; set; } = SprinklerBehaviorEnum.Cluster;
+		public SprinklerBehaviorEnum SprinklerBehavior { get; set; } = SprinklerBehaviorEnum.ClusterWithoutVanilla;
+		public bool IgnoreRange { get; set; } = false;
 		public FlexibleSprinklerBehaviorTileWaterBalanceMode TileWaterBalanceMode { get; set; } = FlexibleSprinklerBehaviorTileWaterBalanceMode.Relaxed;
 		public bool SplitDisconnectedClusters { get; set; } = true;
 		public ClusterSprinklerBehaviorClusterOrdering ClusterBehaviorClusterOrdering { get; set; } = ClusterSprinklerBehaviorClusterOrdering.BiggerFirst;
@@ -38,5 +39,7 @@ namespace Shockah.FlexibleSprinklers
 		public int Tier7Power { get; set; } = 13 * 13 - 1;
 		public int Tier8Power { get; set; } = 15 * 15 - 1;
 		public bool CompatibilityMode { get; set; } = true;
+		public bool WaterGardenPots { get; set; } = false;
+		public bool WaterPetBowl { get; set; } = false;
 	}
 }

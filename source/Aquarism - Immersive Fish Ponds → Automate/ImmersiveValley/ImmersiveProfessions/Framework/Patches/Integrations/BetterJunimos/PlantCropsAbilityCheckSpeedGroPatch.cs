@@ -12,27 +12,27 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.BetterJunimo
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class PlantCropsAbilityCheckSpeedGroPatch : BasePatch
+internal sealed class PlantCropsAbilityCheckSpeedGroPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     internal PlantCropsAbilityCheckSpeedGroPatch()
     {
         try
         {
-            Original = "BetterJunimos.Abilities.PlantCropsAbility".ToType().RequireMethod("CheckSpeedGro");
+            Target = "BetterJunimos.Abilities.PlantCropsAbility".ToType().RequireMethod("CheckSpeedGro");
         }
         catch
         {
@@ -44,7 +44,7 @@ internal class PlantCropsAbilityCheckSpeedGroPatch : BasePatch
 
     /// <summary>Patch to apply prestiged Agriculturist crop growth bonus to Better Junimos.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> PlantCropsAbilityCheckSpeedGroTranspiler(
+    private static IEnumerable<CodeInstruction>? PlantCropsAbilityCheckSpeedGroTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -57,9 +57,9 @@ internal class PlantCropsAbilityCheckSpeedGroPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Agriculturist)
+                .FindProfessionCheck(Profession.Agriculturist.Value)
                 .Advance()
-                .FindProfessionCheck((int) Profession.Agriculturist, true)
+                .FindProfessionCheck(Profession.Agriculturist.Value, true)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 0.1f)
                 )
@@ -67,7 +67,7 @@ internal class PlantCropsAbilityCheckSpeedGroPatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldloc_1)
                 )
-                .InsertProfessionCheck((int) Profession.Agriculturist + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Agriculturist.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_R4, 0.2f),
@@ -79,7 +79,6 @@ internal class PlantCropsAbilityCheckSpeedGroPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching prestiged Agriculturist crop growth bonus to Better Junimos.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

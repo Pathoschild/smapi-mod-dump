@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Quick Glance",
   "Author": "adverserath",
-  "Version": "1.0.4",
+  "Version": "1.0.6",
   "Description": "Press button for zoom out and release to zoom back in",
   "UniqueID": "Adverserath.QuickGlance",
   "EntryDll": "QuickGlance.dll",

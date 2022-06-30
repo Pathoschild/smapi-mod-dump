@@ -11,7 +11,7 @@
 {
 	"Name": "Better Return Scepter",
 	"Author": "DecidedlyHuman",
-	"Version": "1.1.0",
+	"Version": "1.1.1-hotfix",
 	"Description": "Improves the return scepter, allowing you to warp back to where you came from.",
 	"UniqueID": "DecidedlyHuman.BetterReturnScepter",
 	"EntryDll": "BetterReturnScepter.dll",

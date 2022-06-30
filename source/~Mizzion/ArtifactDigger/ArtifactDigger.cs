@@ -30,9 +30,9 @@ namespace ArtifactDigger
         private ModConfig _config;
         private SButton _activateKey;
         private static Texture2D _buildingPlacementTiles;
-        private List<Vector2> _location;
+        private List<Vector2> _location, _digLocation;
 
-        private bool _isDebugging = false;
+        private readonly bool _isDebugging = false;
 
 
         /// <summary>
@@ -51,6 +51,7 @@ namespace ArtifactDigger
             _highlightArtifactSpots = _config.HighlightArfiactSpots;
 
             _location = new List<Vector2>();
+            _digLocation = new List<Vector2>();
 
             //Events
             helper.Events.GameLoop.SaveLoaded += OnSaveLoad;
@@ -73,9 +74,9 @@ namespace ArtifactDigger
                 _activateKey = SButton.Z;
                 Monitor.Log("Keybind was invalid. setting it to Z");
             }
-
-            Game1.player.MagneticRadius = 128;
             _magneticRadius = Game1.player.MagneticRadius;
+            //Game1.player.MagneticRadius = 128;
+            
         }
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace ArtifactDigger
                 _radius = _config.DigRadius;
                 _treeShaker = _config.ShakeTrees;
                 _bushShaker = _config.ShakeBushes;
-                _autoScan = false;//_config.AutoArtifactScan;
+                _autoScan = _config.AutoArtifactScan;//false;//_config.AutoArtifactScan;
                 _highlightArtifactSpots = _config.HighlightArfiactSpots;
                 Monitor.Log($"Mod Config was reloaded: {_config.DigRadius}");
             }
@@ -175,7 +176,8 @@ namespace ArtifactDigger
             if(_isDebugging)
                 Monitor.Log($"Cur Radius: {Game1.player.MagneticRadius}, Old Radius: {_magneticRadius}");
             int sec = 0;
-            foreach (var i in _location)
+            getDigSpots();
+            foreach (var i in _digLocation)
             {
                 currentLocation.Objects.TryGetValue(i, out SObject @object);
 
@@ -186,7 +188,7 @@ namespace ArtifactDigger
             }
             
             //Wait 5 Seconds and reset Magnetic Radius
-            for (int num = 0; num < 0; num++)
+            for (int num = 0; num < 4; num++)
                 sec++;
             if (sec == 5)
                 Game1.player.MagneticRadius = _magneticRadius;
@@ -210,11 +212,29 @@ namespace ArtifactDigger
                 var g = i;
                 currentLocation.Objects.TryGetValue(g, out SObject @object);
 
-                if (@object != null && @object.ParentSheetIndex == 590)
+                if (@object is { ParentSheetIndex: 590 })
                     _location.Add(g);
             }
         }
 
+        private void getDigSpots()
+        {
+            Vector2[] gridRadius = GetTileGrid(Game1.player.getTileLocation(), _radius).ToArray();
+
+            GameLocation currentLocation = Game1.currentLocation;
+
+            //Clear the location list when we start the scan
+            _digLocation.Clear();
+
+            foreach (var i in gridRadius)
+            {
+                var g = i;
+                currentLocation.Objects.TryGetValue(g, out SObject @object);
+
+                if (@object is { ParentSheetIndex: 590 })
+                    _digLocation.Add(g);
+            }
+        }        
         /// <summary>
         /// Method to find and shake bushes
         /// </summary>
@@ -247,10 +267,18 @@ namespace ArtifactDigger
             {
                 currentLocation.terrainFeatures.TryGetValue(i, out TerrainFeature @terrain);
 
-                if (@terrain != null && @terrain is Tree tree)
+                if (@terrain is Tree tree)
                 {
                     if (tree.hasSeed.Value)
                         tree.performUseAction(i, currentLocation);
+                }
+
+                if (@terrain is FruitTree ft)
+                {
+                    if (ft.fruitsOnTree.Value > 0)
+                    {
+                        ft.performUseAction(i, currentLocation);
+                    }
                 }
             }
         }

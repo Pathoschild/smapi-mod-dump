@@ -6,9 +6,12 @@ mods:
    Pick Your Enchantment
 
 latest commit:
-   commit 112307b23665c3f59ff38a770992e26ecc84f9f8
+   commit b9c28cf1a7f7d3f4abdc46de2aa560fb7209e26a
+   Merge: 112307b 0fded56
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Sun May 1 19:32:25 2022 -0400
+   Date:   Mon May 30 18:23:52 2022 -0400
    
-       update manifest as well
+       Merge pull request #1 from c4ttzinhaa/portuguese-translation
+       
+       Portuguese translation
    

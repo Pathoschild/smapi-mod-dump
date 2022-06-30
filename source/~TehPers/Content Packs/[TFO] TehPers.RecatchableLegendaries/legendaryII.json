@@ -104,14 +104,6 @@
         "BaseChance": 0.02,
         "DepthMultiplier": 0.005,
         "IncludeLocations": ["Sewer"],
-        "FarmerPosition": {
-          "X": {
-            "LessThanEq": 14
-          },
-          "Y": {
-            "LessThanEq": 42
-          }
-        },
         "When": {
           // The fish has been caught before
           "HasFlag": "TehPers.FishingOverhaul/radioactiveCarpCaught",

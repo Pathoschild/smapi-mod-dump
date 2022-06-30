@@ -21,11 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit adccf93f0c5039c73509252702c69320d6992647
+   commit f86b4551c87c5e7ad31e927e518c576141bbd16f
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun May 29 01:21:32 2022 -0400
+   Date:   Wed Jun 22 23:21:45 2022 -0400
    
-       update Russian translations for Tractor Mod
-       
-       Thanks to mukers on Nexus!
+       fix overlay showing Junimo chest tiles from other locations
    

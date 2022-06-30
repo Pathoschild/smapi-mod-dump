@@ -1,0 +1,48 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/misty-spring/SpousesIsland
+**
+*************************************************/
+
+{"data":
+    [
+        {
+            "Spousename" : "",
+            "ArrivalPosition" : "",
+            "ArrivalDialogue" : "",
+            "Location1": {
+                "Name": "",
+                "Time": ,
+                "Position": "",
+                "Dialogue": ""
+            },
+            "Location2": {
+                "Name": "",
+                "Time": ,
+                "Position": "",
+                "Dialogue": ""
+            },
+            "Location3": {
+                "Name": "",
+                "Time": ,
+                "Position": "",
+                "Dialogue": ""
+            },
+            //optional- if you want to add translations.
+            //"Key": the language key. e.g "es" for Spanish, "zh" for Chinese, etc.
+            "Translations": [
+                {
+                    "Key":"",
+                    "Arrival":"",
+                    "Location1":"",
+                    "Location2":"",
+                    "Location3":""
+                }
+            ]
+        }
+    ]
+}

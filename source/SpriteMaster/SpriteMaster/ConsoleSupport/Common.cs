@@ -9,19 +9,20 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace SpriteMaster;
 
 internal static partial class ConsoleSupport {
-	private static readonly Dictionary<string, (Action<string, Queue<string>> Action, string Description)> CommandMap = new() {
-		{ "help", ((_, _) => InvokeHelp(null), "Prints this command guide") },
-		{ "all-stats", ((_, _) => Debug.DumpAllStats(), "Dump Statistics") },
-		{ "memory", ((_, _) => Debug.DumpMemory(), "Dump Memory") },
-		{ "gc", ((_, _) => SpriteMaster.Self.MemoryMonitor.TriggerGarbageCollection(), "Trigger full GC") },
-		{ "purge", ((_, _) => SpriteMaster.Self.MemoryMonitor.TriggerPurge(), "Trigger Purge") }
+	internal delegate void CallbackDelegate(string command, Queue<string> arguments);
+	internal readonly record struct Command(CallbackDelegate Action, string Description);
+
+	private static readonly Dictionary<string, Command> CommandMap = new() {
+		{ "help", new((_, _) => InvokeHelp(CommandMap!), "Prints this command guide") },
+		{ "all-stats", new((_, _) => Debug.DumpAllStats(), "Dump Statistics") },
+		{ "memory", new((_, _) => Debug.DumpMemory(), "Dump Memory") },
+		{ "purge", new((_, _) => SpriteMaster.Self.MemoryMonitor.TriggerPurge(), "Trigger Purge") }
 	};
 
 	static ConsoleSupport() {
@@ -48,26 +49,30 @@ internal static partial class ConsoleSupport {
 						continue;
 					}
 
-					CommandMap.Add(command.Name, (method.CreateDelegate<Action<string, Queue<string>>>(), command.Description));
+					CommandMap.Add(command.Name, new(method.CreateDelegate<CallbackDelegate>(), command.Description));
 				}
 			}
 		}
 	}
 
-	internal static void Invoke(string command, string[] arguments) {
-		var argumentQueue = new Queue<string>(arguments);
+	internal static void Invoke(string command, string[] arguments) =>
+		Invoke(CommandMap, command, arguments);
 
-		if (argumentQueue.Count == 0) {
-			InvokeHelp();
+	internal static void Invoke(Dictionary<string, Command> commandMap, string command, string[] arguments) =>
+		Invoke(commandMap, command, new Queue<string>(arguments));
+
+	internal static void Invoke(Dictionary<string, Command> commandMap, string command, Queue<string> arguments) {
+		if (arguments.Count == 0) {
+			InvokeHelp(commandMap);
 			return;
 		}
 
-		var subCommand = argumentQueue.Dequeue().ToLowerInvariant();
-		if (CommandMap.TryGetValue(subCommand, out var commandPair)) {
-			commandPair.Action(subCommand, argumentQueue);
+		var subCommand = arguments.Dequeue().ToLowerInvariant();
+		if (commandMap.TryGetValue(subCommand, out var commandPair)) {
+			commandPair.Action(subCommand, arguments);
 		}
 		else {
-			InvokeHelp(subCommand);
+			InvokeHelp(commandMap, subCommand);
 		}
 	}
 }

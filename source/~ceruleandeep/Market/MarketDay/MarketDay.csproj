@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>1.1.3</Version>
+        <Version>1.1.4-beta.1</Version>
         <TargetFramework>net5.0</TargetFramework>
         <EnableHarmony>true</EnableHarmony>
         <PackageId>MarketDay</PackageId>

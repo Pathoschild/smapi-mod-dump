@@ -17,6 +17,9 @@ using StardewValley.Locations;
 
 namespace MoreFertilizers.HarmonyPatches.FishFood;
 
+/// <summary>
+/// Holds the transpiler against MineShaft's getFish to adjust mine fish chances.
+/// </summary>
 [HarmonyPatch(typeof(MineShaft))]
 internal static class MineShaftGetFishTranspiler
 {

@@ -1,0 +1,65 @@
+﻿{
+  "Name": "Penny",
+  "Skills": [
+    { "Name": "forager" },
+    {
+      "Name": "fighter",
+      "Strength": 0.5
+    }
+  ],
+  "Rules": {
+    // Requires 4 hearts with Penny
+    "!f Penny 1000": "reject",
+
+    // If you are married with her and you have less than 8 hearts, she always rejects your invite
+    // If your relationship is OK, she always accept (and ignores all other rules)
+    "O Penny/!f Penny 2000": "reject companionRejectedBrokenHeart",
+    "O Penny": "accept",
+
+    // NO ADVENRTURE: She teaches Jas and Vincent in Tuesday, Wednesday and Friday 
+    // (except in summer or 9th and 23rd of any season if no married)
+    "!d Tue Wed Fri/!u 9 23/t 830 1830": "reject",
+
+    // Saturdays she's playing with Jas and Vincent
+    "!w rainy/!d Sat": "reject companionRejectedKidsFun",
+
+    // By default she accepts adventure whole day (if she doesn't sleep)
+    "t 600 2200": "accept"
+  },
+  "Buffs": {
+    "Farming": 3
+  },
+  "BuffsDescription": "[penny.buffs]",
+  "Weapons": {
+    "0": "Penny's Fryer", // 1-3
+    "1": "Rusty Sword", // 2-5
+    "2": "Wooden Blade", // 3-7
+    "3": "Crystal Dagger", // 4-10
+    "4": "Femur", // 6-11
+    "5": "Forest Sword", // 8-18
+    "6": "Iron Edge", // 12-25
+    "7": "Neptune's Glaive", // 18-35
+    "8": "Bone Sword", // 20-30
+    "9": "Templar's Blade", // 22-29
+    "10": "Steel Falchion" // 28-46
+  },
+  "IdleBehaviors": [
+    {
+      "Behavior": "Animate",
+      "Animations": [
+        "penny_read"
+      ],
+      "Tendency": 7,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    },
+    {
+      "Behavior": "Lookaround",
+      "FaceMinSeconds": 6,
+      "FaceMaxSeconds": 8,
+      "Tendency": 1.5,
+      "MinDuration": 10,
+      "MaxDuration": 30
+    }
+  ]
+}

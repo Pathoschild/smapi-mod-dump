@@ -176,5 +176,5 @@ internal partial struct Vector2F : ILongHash {
 	public override readonly int GetHashCode() => NumericVector.GetHashCode();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	readonly unsafe ulong ILongHash.GetLongHashCode() => *(ulong *)Unsafe.AsPointer(ref Unsafe.AsRef(in this));
+	public readonly unsafe ulong GetLongHashCode() => *(ulong *)Unsafe.AsPointer(ref Unsafe.AsRef(in this));
 }

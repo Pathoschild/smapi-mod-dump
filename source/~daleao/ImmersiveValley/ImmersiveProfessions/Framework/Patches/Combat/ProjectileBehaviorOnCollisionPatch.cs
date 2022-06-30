@@ -12,27 +12,25 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using DaLion.Common.Extensions;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
 using StardewValley;
 using StardewValley.Network;
 using StardewValley.Projectiles;
-
-using DaLion.Common.Extensions;
-using Extensions;
-
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ProjectileBehaviorOnCollisionPatch : BasePatch
+internal sealed class ProjectileBehaviorOnCollisionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ProjectileBehaviorOnCollisionPatch()
     {
-        Original = RequireMethod<Projectile>("behaviorOnCollision");
+        Target = RequireMethod<Projectile>("behaviorOnCollision");
     }
 
     #region harmony patches
@@ -51,11 +49,11 @@ internal class ProjectileBehaviorOnCollisionPatch : BasePatch
         var firer = ___theOneWhoFiredMe.Get(location) is Farmer farmer ? farmer : Game1.player;
         if (!firer.HasProfession(Profession.Rascal)) return;
 
-        if ((___currentTileSheetIndex.Value - 1).IsAnyOf(SObject.copper, SObject.iron, SObject.gold,
+        if ((___currentTileSheetIndex.Value - 1).IsIn(SObject.copper, SObject.iron, SObject.gold,
                 SObject.iridium, SObject.stone) && Game1.random.NextDouble() < 0.6
             || ___currentTileSheetIndex.Value == SObject.wood + 1 && Game1.random.NextDouble() < 0.3)
             location.debris.Add(new(___currentTileSheetIndex.Value - 1,
-                new((int) ___position.X, (int) ___position.Y), firer.getStandingPosition()));
+                new((int)___position.X, (int)___position.Y), firer.getStandingPosition()));
     }
 
     #endregion harmony patches

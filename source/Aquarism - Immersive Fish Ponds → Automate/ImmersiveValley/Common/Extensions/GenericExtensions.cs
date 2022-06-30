@@ -20,25 +20,29 @@ using System.Linq;
 /// <summary>Extensions for generic objects.</summary>
 public static class GenericExtensions
 {
-    /// <summary>Determine if the instance is equivalent to any of the objects in a sequence.</summary>
-    /// <param name="candidates">A sequence of <typeparamref name="T" /> objects.</param>
-    public static bool IsAnyOf<T>(this T item, params T[] candidates)
-    {
-        return candidates.Contains(item);
-    }
+    /// <summary>Determine if the instance is contained by the collection.</summary>
+    /// <param name="items"><typeparamref name="T" /> objects to check.</param>
+    public static bool IsIn<T>(this T item, params T[] items) =>
+        items.Contains(item);
 
-    /// <summary>Determine if the instance is equivalent to any of the objects in a sequence.</summary>
-    /// <param name="candidates">A sequence of <typeparamref name="T" /> objects.</param>
-    public static bool IsAnyOf<T>(this T item, IEnumerable<T> candidates)
-    {
-        return candidates.Contains(item);
-    }
+    /// <summary>Determine if the instance is contained by the collection.</summary>
+    /// <param name="collection">A sequence of <typeparamref name="T" /> objects to check.</param>
+    public static bool IsIn<T>(this T item, IEnumerable<T> collection) =>
+        collection.Contains(item);
 
     /// <summary>Enumerate this and specified items.</summary>
-    /// <param name="otherItems">Other items to add to the collection.</param>
-    public static IEnumerable<T> Collect<T>(this T item, params T[] otherItems)
+    /// <param name="items"><typeparamref name="T"/> items to add to the collection.</param>
+    public static IEnumerable<T> Collect<T>(this T item, params T[] items)
     {
         yield return item;
-        foreach (var otherItem in otherItems) yield return otherItem;
+        foreach (var next in items) yield return next;
+    }
+
+    /// <summary>Enumerate this and specified <see cref="IEnumerable{T}"/>.</summary>
+    /// <param name="collection">A sequence of <typeparamref name="T"/> items to concatenate to the collection.</param>
+    public static IEnumerable<T> Collect<T>(this T item, IEnumerable<T> collection)
+    {
+        yield return item;
+        foreach (var next in collection) yield return next;
     }
 }

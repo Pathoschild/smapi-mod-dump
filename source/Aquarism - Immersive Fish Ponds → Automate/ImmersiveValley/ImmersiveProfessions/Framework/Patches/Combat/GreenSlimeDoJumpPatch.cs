@@ -12,21 +12,20 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using DaLion.Common.Data;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Monsters;
 
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class GreenSlimeDoJumpPatch : BasePatch
+internal sealed class GreenSlimeDoJumpPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GreenSlimeDoJumpPatch()
     {
-        //Original = RequireMethod<GreenSlime>("doJump");
+        //Target = RequireMethod<GreenSlime>("doJump");
     }
 
     #region harmony patches
@@ -35,7 +34,7 @@ internal class GreenSlimeDoJumpPatch : BasePatch
     [HarmonyPrefix]
     private static bool GreenSlimeDoJumpPrefix(GreenSlime __instance)
     {
-        __instance.WriteData("Jumping", 200.ToString());
+        ModDataIO.WriteData(__instance, "Jumping", 200.ToString());
         return true; // run original logic
     }
 

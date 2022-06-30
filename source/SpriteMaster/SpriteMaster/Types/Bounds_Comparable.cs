@@ -31,7 +31,7 @@ internal partial struct Bounds :
 		DrawingRectangle rect => CompareTo((Bounds)rect),
 		XRectangle rect => CompareTo((Bounds)rect),
 		XTileRectangle rect => CompareTo((Bounds)rect),
-		_ => throw new ArgumentException(Exceptions.BuildArgumentException(nameof(other), other))
+		_ => Extensions.Exceptions.ThrowArgumentException<int>(nameof(other), other)
 	};
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]

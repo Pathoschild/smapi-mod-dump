@@ -104,14 +104,6 @@
         "BaseChance": 0.02,
         "DepthMultiplier": 0.005,
         "IncludeLocations": ["Sewer"],
-        "FarmerPosition": {
-          "X": {
-            "LessThanEq": 14
-          },
-          "Y": {
-            "LessThanEq": 42
-          }
-        },
         "When": {
           // Legendary II fish are not currently (normally) catchable
           "TehPers.FishingOverhaul/SpecialOrderRuleActive |contains=LEGENDARY_FAMILY": "false",

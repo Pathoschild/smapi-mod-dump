@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tylergibbs2/StardewHitboxes
+   Git: https://github.com/tylergibbs2/StardewHitboxes.git
+
+mods:
+   Stardew Hitboxes
+
+latest commit:
+   commit f8a1255f3492f0b6607c7e69ae0dcafa6d08532d
+   Author: Tyler <gibbstyler7@gmail.com>
+   Date:   Wed Jun 1 22:02:07 2022 -0500
+   
+       bump version
+   

@@ -29,5 +29,5 @@ internal static class TextureEncode {
 		bool hasB,
 		out PinnedSpan<byte> result
 	) =>
-		Encoder.TeximpBlockEncoder.Encode(data, ref format, dimensions, hasAlpha, isPunchthroughAlpha, isMasky, hasR, hasG, hasB, out result);
+		Encoder.StbBlockEncoder.Encode(data, ref format, dimensions, hasAlpha, isPunchthroughAlpha, isMasky, hasR, hasG, hasB, out result);
 }

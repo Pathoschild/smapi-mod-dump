@@ -52,6 +52,7 @@ namespace RidgesideVillage
             TileActionHandler.RegisterTileAction("HotelCounter", HandleHotelCounterMenu);
             TileActionHandler.RegisterTileAction("EventHallCounter", HandleEventHallMenu);
             TileActionHandler.RegisterTileAction("RatesCounter", HandleRatesMenu);
+            TileActionHandler.RegisterTileAction("RSVHistoryScroll", HandleHistoryScroll);
             TileActionHandler.RegisterTileAction("BlissBook", HandleBlissBook);
         }
 
@@ -164,6 +165,11 @@ namespace RidgesideVillage
             Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("LogCabinHotel.Rates.Expanded"));
         }
 
+        private static void HandleHistoryScroll(string tileActionString = "")
+        {
+            Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("LogCabinHotel.HistoryScroll"));
+        }
+
         private static void HandleBlissBook(string tileActionString, Vector2 position)
         {
             var responses = new List<Response>
@@ -213,6 +219,11 @@ namespace RidgesideVillage
         private static void HandleRatesMenu(string tileActionString, Vector2 position)
         {
             HandleRatesMenu(tileActionString);
+        }
+
+        private static void HandleHistoryScroll(string tileActionString, Vector2 position)
+        {
+            HandleHistoryScroll(tileActionString);
         }
         private static void HandleHotelCounterMenu(string tileActionString = "")
         {

@@ -59,11 +59,21 @@ namespace FashionSense.Framework.Models
                 return false;
             }
 
-            foreach (Color maskedColor in ColorMasks.Select(c => new Color(c[0], c[1], c[2])))
+            foreach (Color maskedColor in ColorMasks.Select(c => new Color(c[0], c[1], c[2], c.Length > 3 ? c[3] : 255)))
             {
                 if (maskedColor == color)
                 {
                     return true;
+                }
+
+                if (maskedColor.A is not (byte.MinValue or byte.MaxValue))
+                {
+                    // Premultiply the color for the mask, as SMAPI premultiplies the alpha
+                    Color adjustedColor = new Color(maskedColor.R * maskedColor.A / 255, maskedColor.G * maskedColor.A / 255, maskedColor.B * maskedColor.A / 255, maskedColor.A);
+                    if (adjustedColor == color)
+                    {
+                        return true;
+                    }
                 }
             }
 

@@ -1,5 +1,46 @@
 # Full changelog
 
+## Upcoming version
+
+- Added Kent as freelance companion (fighter and shooter)
+- Added shooter skill
+- Haley got assigned a protector skill
+- Added protector skill
+- Tweaked fight parameters for Abigail, Alex, Maru, Harvey, Haley, Elliott, Shane, Sebastian and Sam
+- Added more companion dialogues
+- More immersive adventure acceptance rules for all companions
+- Farmer no longer can ask for an adventure when NPC is already sleeping
+- Added scared animation for Haley
+- Companions having scared skill now can show scared animation frame (optional)
+- Added configurable JSON options for scared skill
+- Improved requests with shift button config option (Disabled, Enabled or Required)
+- Fixed companion hint cursor and their transparency
+- Doctor skill can show remaining medkits on their skill icon
+- Companion HUD was moved to left side of screen and slighly redesigned
+- Redone skill icons
+- Added command `npcadventures.inspect <companion>` to inspect companion disposition data
+- Added command `npcadventures.companions` to list available companions
+- Added command `npcadventures.dumpbag` to immediatelly dump companion bag to farmhouse (for debug)
+- Refactored dumping companion bags (hopefuly this fixes spawn bag packade to inacessible place).
+  0.x dumped bags are no longer revived, but available as standard chest to avoid item loss.
+- Debug commands now uses prefix `npcadventures.` (like `npcadventures.recruit Abigail`)
+- Refractored location based dialogues
+- Maru now has only two medkits (Harvey still has 3 medkits)
+- Added configurable JSON options for doctor skill
+- Warrior skill was merged under fighter skill (enable warrior by setting fighter skill option `IsWarrior` to true)
+- Added configurable JSON options for fighter skill
+- Added freelancers
+- Refactored recruitment dialogue
+- Added support for individual bed-time for each companion
+- Added support for custom adventure accept/reject rules for each companion individually
+- Added Charmer skill (desired for RSV)
+- Lore content was separated into own Content Patcher content pack
+- Added Content Patcher support
+- Changed distribution files structure
+- Dropped old Content Pack loader (pre-1.0 content packs are no longer loaded)
+- Refactored CSM internals
+- New companion disposition and content pack format
+
 ## 0.17.5 "Blackhole"
 
 - Force sword for level 10 when combat level is out of range (higher than 10)

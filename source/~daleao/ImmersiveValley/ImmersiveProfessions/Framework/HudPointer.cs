@@ -12,11 +12,10 @@ namespace DaLion.Stardew.Professions.Framework;
 
 #region using directives
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-
+using System;
 using SUtility = StardewValley.Utility;
 
 #endregion using directives
@@ -29,8 +28,7 @@ internal class HudPointer
     private float _height = -42f, _jerk = 1f, _step;
 
     /// <summary>The texture that will be used to draw the indicator.</summary>
-    public Texture2D Texture { get; } =
-        ModEntry.ModHelper.GameContent.Load<Texture2D>($"{ModEntry.Manifest.UniqueID}/HudPointer");
+    public Texture2D Texture => Textures.Textures.PointerTx;
 
     /// <summary>Draw the indicator at the edge of the screen, pointing to a target off-screen.</summary>
     /// <param name="target">The target tile to point to.</param>
@@ -45,12 +43,12 @@ internal class HudPointer
         if (target.X * 64f > Game1.viewport.MaxCorner.X - 64)
         {
             onScreenPosition.X = vpBounds.Right - 8;
-            rotation = (float) Math.PI / 2f;
+            rotation = (float)Math.PI / 2f;
         }
         else if (target.X * 64f < Game1.viewport.X)
         {
             onScreenPosition.X = 8f;
-            rotation = -(float) Math.PI / 2f;
+            rotation = -(float)Math.PI / 2f;
         }
         else
         {
@@ -60,7 +58,7 @@ internal class HudPointer
         if (target.Y * 64f > Game1.viewport.MaxCorner.Y - 64)
         {
             onScreenPosition.Y = vpBounds.Bottom - 8;
-            rotation = (float) Math.PI;
+            rotation = (float)Math.PI;
         }
         else if (target.Y * 64f < Game1.viewport.Y)
         {
@@ -71,16 +69,16 @@ internal class HudPointer
             onScreenPosition.Y = target.Y * 64f - Game1.viewport.Y;
         }
 
-        if ((int) onScreenPosition.X == 8 && (int) onScreenPosition.Y == 8) rotation += (float) Math.PI / 4f;
+        if ((int)onScreenPosition.X == 8 && (int)onScreenPosition.Y == 8) rotation += (float)Math.PI / 4f;
 
-        if ((int) onScreenPosition.X == 8 && (int) onScreenPosition.Y == vpBounds.Bottom - 8)
-            rotation += (float) Math.PI / 4f;
+        if ((int)onScreenPosition.X == 8 && (int)onScreenPosition.Y == vpBounds.Bottom - 8)
+            rotation += (float)Math.PI / 4f;
 
-        if ((int) onScreenPosition.X == vpBounds.Right - 8 && (int) onScreenPosition.Y == 8)
-            rotation -= (float) Math.PI / 4f;
+        if ((int)onScreenPosition.X == vpBounds.Right - 8 && (int)onScreenPosition.Y == 8)
+            rotation -= (float)Math.PI / 4f;
 
-        if ((int) onScreenPosition.X == vpBounds.Right - 8 && (int) onScreenPosition.Y == vpBounds.Bottom - 8)
-            rotation -= (float) Math.PI / 4f;
+        if ((int)onScreenPosition.X == vpBounds.Right - 8 && (int)onScreenPosition.Y == vpBounds.Bottom - 8)
+            rotation -= (float)Math.PI / 4f;
 
         var srcRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
         var safePos = SUtility.makeSafe(
@@ -89,15 +87,15 @@ internal class HudPointer
         );
 
         Game1.spriteBatch.Draw(
-            Texture,
-            safePos,
-            srcRect,
-            color,
-            rotation,
-            new(2f, 2f),
-            Game1.pixelZoom,
-            SpriteEffects.None,
-            1f
+            texture: Texture,
+            position: safePos,
+            sourceRectangle: srcRect,
+            color: color,
+            rotation: rotation,
+            origin: new(2f, 2f),
+            scale: Game1.pixelZoom,
+            effects: SpriteEffects.None,
+            layerDepth: 1f
         );
     }
 
@@ -115,19 +113,19 @@ internal class HudPointer
         adjustedPixel = SUtility.ModifyCoordinatesForUIScale(adjustedPixel);
 
         Game1.spriteBatch.Draw(
-            Texture,
-            adjustedPixel,
-            srcRect,
-            color,
-            (float) Math.PI,
-            new(2f, 2f),
-            Game1.pixelZoom,
-            SpriteEffects.None,
-            1f
+            texture: Texture,
+            position: adjustedPixel,
+            sourceRectangle: srcRect,
+            color: color,
+            rotation: (float)Math.PI,
+            origin: new(2f, 2f),
+            scale: Game1.pixelZoom,
+            effects: SpriteEffects.None,
+            layerDepth: 1f
         );
     }
 
-    /// <summary>Advance the indicator's vertical offset motion by one step, in a bobbing fashion.</summary>
+    /// <summary>Advance the indicator's bobbing motion one step.</summary>
     public void Update(uint ticks)
     {
         if (ticks % 4 != 0) return;

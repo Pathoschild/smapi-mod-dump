@@ -8,16 +8,14 @@
 **
 *************************************************/
 
-#nullable enable
 namespace DaLion.Common.Harmony;
 
 #region using directives
 
+using Extensions.Reflection;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
-
-using Extensions.Reflection;
 
 #endregion using directives
 

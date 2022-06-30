@@ -95,15 +95,26 @@ namespace Shockah.FlexibleSprinklers
 			if (unwateredTileCount <= 0)
 				goto finish;
 
-			var sprinklerRange = FlexibleSprinklers.Instance.GetFloodFillSprinklerRange(info.Power);
+			int sprinklerRange, sprinkler1dRange;
+			if (FlexibleSprinklers.Instance.Config.IgnoreRange)
+			{
+				sprinklerRange = int.MaxValue;
+				sprinkler1dRange = (int)info.Layout.Max(t => Math.Max(Math.Abs(t.X), Math.Abs(t.Y)));
+			}
+			else
+			{
+				sprinklerRange = FlexibleSprinklers.Instance.GetSprinklerMaxRange(info);
+				sprinkler1dRange = sprinklerRange * 2;
+			}
+
 			var waterableTiles = new HashSet<IntPoint>();
 			ISet<IntPoint> otherSprinklers = new HashSet<IntPoint>();
 			var @checked = new HashSet<IntPoint>();
 			var toCheck = new Queue<IntPoint>();
 			var maxCost = 0;
 
-			var maxDX = Math.Max(wateredTiles.Count > 0 ? wateredTiles.Max(t => Math.Abs(t.X - sprinklerPosition.X)) : 0, sprinklerRange);
-			var maxDY = Math.Max(wateredTiles.Count > 0 ? wateredTiles.Max(t => Math.Abs(t.Y - sprinklerPosition.Y)) : 0, sprinklerRange);
+			var maxDX = Math.Max(wateredTiles.Count > 0 ? wateredTiles.Max(t => Math.Abs(t.X - sprinklerPosition.X)) : 0, sprinkler1dRange);
+			var maxDY = Math.Max(wateredTiles.Count > 0 ? wateredTiles.Max(t => Math.Abs(t.Y - sprinklerPosition.Y)) : 0, sprinkler1dRange);
 
 			var costArray = new int[maxDX * 2 + 1, maxDY * 2 + 1];
 			var costArrayBaseXIndex = maxDX;
@@ -204,8 +215,8 @@ namespace Shockah.FlexibleSprinklers
 
 			var sortedWaterableTiles = waterableTiles
 				.Select(e => {
-					var dx = Math.Abs(e.X - sprinklerPosition.X) * ((horizontalSprinklerDistance ?? 0) * sprinklerRange + 1);
-					var dy = Math.Abs(e.Y - sprinklerPosition.Y) * ((verticalSprinklerDistance ?? 0) * sprinklerRange + 1);
+					var dx = Math.Abs(e.X - sprinklerPosition.X) * ((horizontalSprinklerDistance ?? 0) * sprinkler1dRange + 1);
+					var dy = Math.Abs(e.Y - sprinklerPosition.Y) * ((verticalSprinklerDistance ?? 0) * sprinkler1dRange + 1);
 					return (
 						tilePosition: e,
 						pathLength: GetCost(e),

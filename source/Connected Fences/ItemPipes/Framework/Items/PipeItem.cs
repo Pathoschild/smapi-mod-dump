@@ -27,6 +27,8 @@ using SObject = StardewValley.Object;
 using ItemPipes.Framework.Factories;
 using ItemPipes.Framework.Items;
 using ItemPipes.Framework.Items.Objects;
+using System.Threading;
+
 
 
 
@@ -34,15 +36,10 @@ namespace ItemPipes.Framework
 {
 	public abstract class PipeItem : CustomObjectItem
 	{
-		[XmlIgnore]
 		public Texture2D SpriteTexture { get; set; }
-		[XmlIgnore]
 		public Texture2D DefaultSprite { get; set; }
-		[XmlIgnore]
 		public Texture2D ConnectingSprite { get; set; }
-		[XmlIgnore]
 		public Texture2D ItemMovingSprite { get; set; }
-		[XmlIgnore]
 		public Dictionary<string, int> DrawGuide { get; set; }
 
         public PipeItem() : base()
@@ -62,15 +59,16 @@ namespace ItemPipes.Framework
         public virtual void LoadTextures()
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            DefaultSprite = DataAccess.Sprites[IDName + "_default_Sprite"];
-            ConnectingSprite = DataAccess.Sprites[IDName + "_connecting_Sprite"];
-            ItemMovingSprite = DataAccess.Sprites[IDName + "_item_Sprite"];
+            DefaultSprite = DataAccess.Sprites[IDName + "_default_sprite"];
+            ConnectingSprite = DataAccess.Sprites[IDName + "_connecting_sprite"];
+            ItemMovingSprite = DataAccess.Sprites[IDName + "_item_sprite"];
             SpriteTexture = DefaultSprite;
         }
+
+		//For 1.6
 		//ESTO PARA GUARDAR OVERLOADED ITEMS
 		public override SObject Save()
 		{
-			//For 1.6
 			DataAccess DataAccess = DataAccess.GetDataAccess();
 			if (DataAccess.LocationNodes.ContainsKey(Game1.currentLocation))
 			{
@@ -89,11 +87,12 @@ namespace ItemPipes.Framework
 						*/
 						//Implement with 1.6
 						//Create item with utility method
-		
+
 						//Temp solution:
-		
+
 						//Return to extractor
-						if (Globals.Debug) { Printer.Info("Waiting for clogged pipes to return to output..."); }
+						Printer.Debug("Found pipes with items inside upon trying to save the game");
+						Printer.Debug("Waiting for clogged pipes to return to output..."); 
 						int i = 0;
 						bool sent = false;
 						while (i < pipe.ParentNetwork.Outputs.Count && !sent)
@@ -102,20 +101,19 @@ namespace ItemPipes.Framework
 							{
 								pipe.FlushPipe(pipe.StoredItem, pipe.ParentNetwork.Outputs[i]);
 								sent = true;
-								if (Globals.Debug) { Printer.Info("Pipe unclogged succesfully!"); }
+								Printer.Debug($"Pipe {pipe.Print()} at {pipe.Location.Name} unclogged succesfully!");
 							}
 							i++;
 						}
 						if(!sent)
                         {
-							Printer.Error("Clogged pipe couldn't be emptied at saving. These items will be lost: ");
-							Printer.Error($"In {Name} at {pipe.Position} at {pipe.Location.Name} holding {pipe.StoredItem.Stack} {pipe.StoredItem.Name} were lost.");
+							DataAccess.LostItems.Add(pipe.StoredItem);
+							Printer.Warn("Clogged pipe couldn't be emptied at saving. These items will be lost: ");
+							Printer.Warn($"In {Name} at {pipe.Position} at {pipe.Location.Name} holding {pipe.StoredItem.Stack} {pipe.StoredItem.Name} were lost.");
 						}
 					}
 				}
 			}
-			//Fence fence = new Fence(tileLocation, 1, false);
-			//fence.modData = modData;
 
 			return base.Save();
 		}
@@ -164,7 +162,6 @@ namespace ItemPipes.Framework
 			if (justCheckingForActivity)
 			{
 				return true;
-			
 			}
 			/*
 			DataAccess DataAccess = DataAccess.GetDataAccess();
@@ -196,6 +193,32 @@ namespace ItemPipes.Framework
 			return true;
 		}
 
+		public override bool performToolAction(Tool t, GameLocation location)
+		{
+			if (t is Pickaxe)
+			{
+				var who = t.getLastFarmerToUse();
+				this.performRemoveAction(this.TileLocation, location);
+				Debris deb = new Debris(getOne(), who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
+				Game1.currentLocation.debris.Add(deb);
+				DataAccess DataAccess = DataAccess.GetDataAccess();
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				Node node = nodes.Find(n => n.Position.Equals(TileLocation));
+				if (node != null && node is PipeNode)
+				{
+					PipeNode pipe = (PipeNode)node;
+					if (pipe.StoredItem != null)
+					{
+						Debris itemDebr = new Debris(pipe.StoredItem, who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
+						Game1.currentLocation.debris.Add(itemDebr);
+						pipe.Broken = true;
+					}
+				}
+				Game1.currentLocation.objects.Remove(this.TileLocation);
+				return false;
+			}
+			return false;
+		}
 		public override void drawWhenHeld(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
 		{
 			Rectangle srcRect = new Rectangle(0, 0, 16, 16);
@@ -251,7 +274,6 @@ namespace ItemPipes.Framework
 			if (DataAccess.LocationNodes.ContainsKey(Game1.currentLocation))
 			{
 				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-				//Printer.Info(nodes.Count.ToString());
 				Node node = nodes.Find(n => n.Position.Equals(TileLocation));
 				if (node != null && node is PipeNode)
 				{
@@ -293,12 +315,6 @@ namespace ItemPipes.Framework
 							sourceRectPosition * 16 / SpriteTexture.Bounds.Width * 16,
 							16, 16), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
 					}
-					/*
-					spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)),
-						new Rectangle(sourceRectPosition * Fence.fencePieceWidth % SpriteTexture.Bounds.Width,
-						sourceRectPosition * Fence.fencePieceWidth / SpriteTexture.Bounds.Width * Fence.fencePieceHeight,
-						Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
-					*/
 				}
 			}
 		}
@@ -324,9 +340,9 @@ namespace ItemPipes.Framework
 				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None,
 					((float)(y * 64 + 32) / 10000f) + 0.002f);
 			}
-			else if (item is PPMItem)
+			else if (item is PIPOItem)
             {
-				PPMItem PPM = (PPMItem)item;
+				PIPOItem PPM = (PIPOItem)item;
 				SpriteSheet = PPM.ItemTexture;
 				srcRect = new Rectangle(0, 0, 16, 32);
 				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
@@ -423,7 +439,7 @@ namespace ItemPipes.Framework
 						((float)(y * 64 + 32) / 10000f) + 0.002f);
 				}
 			}
-			else
+			else if(item != null)
 			{
 				SpriteSheet = Game1.objectSpriteSheet;
 				srcRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, item.ParentSheetIndex, 16, 16);
@@ -452,28 +468,28 @@ namespace ItemPipes.Framework
 			Vector2 position = this.TileLocation;
 			position.Y -= 1f;
 			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
-				|| location.objects[position] is PPMItem))
+				|| location.objects[position] is PIPOItem))
 			{
 				key += "N";
 			}
 			position = this.TileLocation;
 			position.Y += 1f;
 			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
-				|| location.objects[position] is PPMItem))
+				|| location.objects[position] is PIPOItem))
 			{
 				key += "S";
 			}
 			position = this.TileLocation;
 			position.X += 1f;
 			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
-				|| location.objects[position] is PPMItem))
+				|| location.objects[position] is PIPOItem))
 			{
 				key += "W";
 			}
 			position = this.TileLocation;
 			position.X -= 1f;
 			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
-				|| location.objects[position] is PPMItem))
+				|| location.objects[position] is PIPOItem))
 			{
 				key += "E";
 			}

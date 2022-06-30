@@ -3,15 +3,19 @@
   "tools.name.paint_bucket": "ถังสี",
   "tools.name.paint_brush": "แปรงทาสี",
   "tools.name.scissors": "กรรไกร",
+  "tools.name.spray_can": "กระป๋องสเปรย์",
 
   "tools.description.paint_bucket": "อนุญาตให้คุณปรับใช้พื้นผิวที่ แตกต่างกันกับวัตถุที่รองรับ",
   "tools.description.paint_brush": "อนุญาตให้คุณคัดลอกพื้นผิว และนำไปใช้กับวัตถุอื่นที่เป็น ประเภทเดียวกัน",
   "tools.description.scissors": "อนุญาตให้คุณปรับเปลี่ยน รูปแบบให้สิ่งของต่างๆ ที่มีอยู่ได้",
+  "tools.description.spray_can": "อนุญาตให้คุณใช้พื้นผิวแบบสุ่ม กับวัตถุภายในรัศมี",
 
   // Messages
   "messages.warning.no_textures_for_season": "{{itemName}} ไม่มีพื้นผิวทางเลือกสำหรับฤดูกาลนี้!",
   "messages.warning.paint_not_placeable": "คุณไม่สามารถทาสีตรงนั้นได้!",
   "messages.warning.brush_is_empty": "ยังไม่มีพื้นผิวที่เลือกไว้! คลิกขวาที่วัตถุที่ต้องการคัดลอก",
+  "messages.warning.spray_can_is_empty": "กระป๋องสเปรย์ไม่มีพื้นผิว! คลิกขวาที่วัตถุเพื่อเลือกพื้นผิวที่จะใช้",
+  "messages.warning.spray_can_not_supported": "สเปรย์ไม่สามารถรองรับวัตถุนี้ได้",
   "messages.warning.brush_not_supported": "ไม่รองรับการคัดลอกพื้นผิวบนวัตถุนี้",
   "messages.warning.invalid_copied_texture": "ไม่สามารถใช้การคัดลอกพื้นผิวจาก {{textureName}} ลงบนวัตถุนี้ได้!",
   "messages.warning.custom_building_not_supported": "({{itemName}}) เป็นสิ่งที่สร้างขึ้นเอง จึงไม่รองรับการปรับเปลี่ยนพื้นผิวอื่นๆ",

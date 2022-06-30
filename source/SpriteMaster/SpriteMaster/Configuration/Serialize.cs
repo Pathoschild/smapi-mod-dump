@@ -18,6 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using Tomlyn;
 using Tomlyn.Syntax;
@@ -81,6 +82,7 @@ internal static class Serialize {
 
 		internal ParentTraverseEnumerable ParentTraverser => new(this);
 
+		[StructLayout(LayoutKind.Auto)]
 		internal readonly struct ParentTraverseEnumerable : IEnumerable<Category> {
 			private readonly Category Current;
 			
@@ -266,7 +268,9 @@ internal static class Serialize {
 							}
 
 							object? fieldValue = field.GetValue(null);
-							switch (fieldValue) {
+							var switchValue = fieldValue ?? Activator.CreateInstance(field.FieldType);
+
+							switch (switchValue) {
 								case string:
 									field.SetValue(null, ((StringValueSyntax?)value.Value)?.Value?.Trim().Intern());
 									break;
@@ -313,7 +317,7 @@ internal static class Serialize {
 									field.SetValue(null, ((BooleanValueSyntax?)value.Value)?.Value);
 									break;
 								default:
-									switch (fieldValue) {
+									switch (switchValue) {
 										case List<string>: {
 												var arrayValue = ((ArraySyntax?)value.Value)?.Items;
 												if (arrayValue is null) {
@@ -398,8 +402,8 @@ internal static class Serialize {
 											}
 											break;
 										case Enum: {
-												var enumNames = fieldValue.GetType().GetEnumNames();
-												var values = fieldValue.GetType().GetEnumValues();
+												var enumNames = switchValue.GetType().GetEnumNames();
+												var values = switchValue.GetType().GetEnumValues();
 
 												var configValue = ((StringValueSyntax?)value.Value)?.Value?.Trim();
 

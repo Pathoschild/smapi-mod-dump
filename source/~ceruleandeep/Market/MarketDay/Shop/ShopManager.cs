@@ -210,7 +210,7 @@ namespace MarketDay.Shop
 
             foreach (var grangeShop in GrangeShops.Values)
             {
-                if (! grangeShop.IsPlayerShop()) grangeShop.UpdateItemPriceAndStock();
+                if (! grangeShop.IsPlayerShop) grangeShop.UpdateItemPriceAndStock();
                 grangeShop.UpdatePortrait();
             }
         }

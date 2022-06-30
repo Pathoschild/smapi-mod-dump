@@ -69,24 +69,24 @@ namespace ItemPipes.Framework.Items.Objects
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
             //Stage 1
-            ItemTexture1 = DataAccess.Sprites[IDName + "_Item1"];
-            DefaultSprite1 = DataAccess.Sprites[IDName + "_default_Sprite1"];
-            ConnectingSprite1 = DataAccess.Sprites[IDName + "_connecting_Sprite1"];
-            ItemMovingSprite1 = DataAccess.Sprites[IDName + "_item_Sprite1"];
+            ItemTexture1 = DataAccess.Sprites[IDName + "_item1"];
+            DefaultSprite1 = DataAccess.Sprites[IDName + "_default_sprite1"];
+            ConnectingSprite1 = DataAccess.Sprites[IDName + "_connecting_sprite1"];
+            ItemMovingSprite1 = DataAccess.Sprites[IDName + "_item_sprite1"];
             SpriteTexture1 = DefaultSprite1;
 
             //Stage 2
-            ItemTexture2 = DataAccess.Sprites[IDName + "_Item2"];
-            DefaultSprite2 = DataAccess.Sprites[IDName + "_default_Sprite2"];
-            ConnectingSprite2 = DataAccess.Sprites[IDName + "_connecting_Sprite2"];
-            ItemMovingSprite2 = DataAccess.Sprites[IDName + "_item_Sprite2"];
+            ItemTexture2 = DataAccess.Sprites[IDName + "_item2"];
+            DefaultSprite2 = DataAccess.Sprites[IDName + "_default_sprite2"];
+            ConnectingSprite2 = DataAccess.Sprites[IDName + "_connecting_sprite2"];
+            ItemMovingSprite2 = DataAccess.Sprites[IDName + "_item_sprite2"];
             SpriteTexture2 = DefaultSprite2;
 
             //Stage 3
-            ItemTexture3 = DataAccess.Sprites[IDName + "_Item3"];
-            DefaultSprite3 = DataAccess.Sprites[IDName + "_default_Sprite3"];
-            ConnectingSprite3 = DataAccess.Sprites[IDName + "_connecting_Sprite3"];
-            ItemMovingSprite3 = DataAccess.Sprites[IDName + "_item_Sprite3"];
+            ItemTexture3 = DataAccess.Sprites[IDName + "_item3"];
+            DefaultSprite3 = DataAccess.Sprites[IDName + "_default_sprite3"];
+            ConnectingSprite3 = DataAccess.Sprites[IDName + "_connecting_sprite3"];
+            ItemMovingSprite3 = DataAccess.Sprites[IDName + "_item_sprite3"];
             SpriteTexture3 = DefaultSprite3;
         }
 

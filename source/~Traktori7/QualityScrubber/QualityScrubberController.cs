@@ -19,6 +19,8 @@ namespace QualityScrubber
 {
 	public class QualityScrubberController
 	{
+		private const int honeyParentSheetIndex = 340;
+
 		private readonly IMonitor monitor;
 		private readonly ModConfig config;
 
@@ -64,9 +66,9 @@ namespace QualityScrubber
 				//Monitor.Log("You can't scrub these yet!", LogLevel.Debug);
 				return false;
 			}
-
+			
 			// Ignore honey...
-			if (!config.AllowHoney && inputObject.ParentSheetIndex == 340)
+			if (!config.AllowHoney && inputObject.ParentSheetIndex == honeyParentSheetIndex)
 			{
 				//Monitor.Log("You can't scrub honey!", LogLevel.Debug);
 				return false;
@@ -87,7 +89,7 @@ namespace QualityScrubber
 				// Handle roe/aged roe
 				if (inputObject is ColoredObject coloredObject)
 				{
-					outputObject = new ColoredObject(inputObject.ParentSheetIndex, 1, coloredObject.color.Value);
+					outputObject = new ColoredObject(coloredObject.ParentSheetIndex, 1, coloredObject.color.Value);
 				}
 				else
 				{
@@ -96,6 +98,8 @@ namespace QualityScrubber
 					// If input is honey, copy honey type
 					if (outputObject.Name.Contains("Honey"))
 					{
+						// TODO: Apparently honeyType isn't used anymore?
+						// There's a savefix SaveGame.SaveFixes.TransferHoneyTypeToPreserves that switches to preservedParentSheetIndex
 						outputObject.honeyType.Value = inputObject.honeyType.Value;
 
 						if (config.TurnHoneyIntoGenericHoney)
@@ -153,6 +157,8 @@ namespace QualityScrubber
 		public void StartProcessing(SObject inputObject, SObject machine, Farmer who)
 		{
 			SObject? outputObject = GetOutputObject(inputObject);
+
+			monitor.Log($"Machine started to scrub input {inputObject.Name} to output {outputObject?.Name}");
 
 			//this.Monitor.Log("Machine starts to scrub the item", LogLevel.Debug);
 			machine.heldObject.Value = outputObject;

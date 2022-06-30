@@ -1,0 +1,10 @@
+{
+  "Name": "Post Wedding Dates",
+  "Author": "Blams",
+  "Version": "4.0.0",
+  "Description": "Adds more variety with your spouse",
+  "UniqueID": "blams.PostWeddingDates",
+  "MinimumApiVersion": "3.0.0",
+  "EntryDll": "PostWeddingDates.dll",
+  "UpdateKeys": [ "Nexus:10708" ]
+}

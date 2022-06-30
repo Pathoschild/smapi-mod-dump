@@ -60,9 +60,12 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit b8ab4c5d523e81aee9fef47038f6d85e15c7701e
-   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sun May 15 19:38:12 2022 -0400
+   commit ef7179b202d8f19d2f4a075d67507ac0f29c3f72
+   Merge: 6dc41cd4 ed6d1f98
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jun 28 17:28:27 2022 -0400
    
-       1.9.1 GMCM
+       Merge pull request #242 from atravita-mods/ShuffleFiddling
+       
+       fix my stupid mistakes
    

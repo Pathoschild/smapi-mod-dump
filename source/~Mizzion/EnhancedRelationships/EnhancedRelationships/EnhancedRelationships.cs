@@ -19,13 +19,15 @@ using SFarmer = StardewValley.Farmer;
 
 namespace EnhancedRelationships
 {
-    internal class EnhancedRelationships : Mod, IAssetEditor
+    internal class EnhancedRelationships : Mod//, IAssetEditor
     {
         private ModConfig Config;        
         private List<NPC> BirthdayMessageQueue = new List<NPC>();
         private IDictionary<string, int> GaveNpcGift = new Dictionary<string, int>();
         private IDictionary<string, string> NpcGifts = new Dictionary<string, string>();
         private bool debugging = true;
+
+        /*
         public bool CanEdit<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals(@"Data\mail");
@@ -42,7 +44,7 @@ namespace EnhancedRelationships
         }
 
         //EndMail Stuff
-
+        */
 
         
 
@@ -54,6 +56,9 @@ namespace EnhancedRelationships
             Helper.Events.GameLoop.DayStarted += this.TimeEvents_AfterDayStarted;
             Helper.Events.GameLoop.Saving += SaveEvents_BeforeSave;
             Helper.Events.Player.InventoryChanged += DoNpcGift;
+
+            //Lets add in the new content events
+            Helper.Events.Content.AssetRequested += this.ContentEvents_AssetRequested;
         }
 
         private void DoNpcGift(object sender, InventoryChangedEventArgs e)
@@ -112,7 +117,6 @@ namespace EnhancedRelationships
             }
            
         }
-       
         private void SaveEvents_BeforeSave(object sender, EventArgs e)
         {
             if (!this.Config.GetMail)
@@ -181,6 +185,25 @@ namespace EnhancedRelationships
                 
             }
         }
+
+        private void ContentEvents_AssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/mail"))
+            {
+                e.Edit(asset =>
+                {
+                    NpcGifts = GetNpcGifts();
+                    var i18n = Helper.Translation;
+                    foreach (var d in NpcGifts)
+                    {
+                        IDictionary<string, string> npc = asset.AsDictionary<string, string>().Data;
+                        npc["birthDayMail" + d.Key] =
+                            i18n.Get("npc_mail", new { npc_name = d.Key, npc_gift = d.Value });
+                    }
+                });
+            }
+        }
+        
         private string PickRandomDialogue()
         {
             var i18n = Helper.Translation;

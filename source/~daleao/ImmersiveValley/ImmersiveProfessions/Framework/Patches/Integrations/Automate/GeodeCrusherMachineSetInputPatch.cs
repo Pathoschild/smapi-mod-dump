@@ -12,29 +12,29 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
-using System.Reflection;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using Extensions;
-
+using System;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GeodeCrusherMachineSetInputPatch : BasePatch
+internal sealed class GeodeCrusherMachineSetInputPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static MethodInfo _GetMachine;
+    private static Func<object, SObject>? _GetMachine;
 
     /// <summary>Construct an instance.</summary>
     internal GeodeCrusherMachineSetInputPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.GeodeCrusherMachine".ToType().RequireMethod("SetInput");
+            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.GeodeCrusherMachine".ToType()
+                .RequireMethod("SetInput");
         }
         catch
         {
@@ -48,11 +48,10 @@ internal class GeodeCrusherMachineSetInputPatch : BasePatch
     [HarmonyPostfix]
     private static void GeodeCrusherMachineSetInputPostfix(object __instance)
     {
-        if (__instance is null) return;
-
-        _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine");
-        var machine = (SObject) _GetMachine.Invoke(__instance, null);
-        if (machine?.heldObject.Value is null) return;
+        _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine")
+            .CompileUnboundDelegate<Func<object, SObject>>();
+        var machine = _GetMachine(__instance);
+        if (machine.heldObject.Value is null) return;
 
         var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
         if (!owner.HasProfession(Profession.Gemologist) ||
@@ -61,7 +60,7 @@ internal class GeodeCrusherMachineSetInputPatch : BasePatch
         machine.heldObject.Value.Quality = owner.GetGemologistMineralQuality();
         if (!ModEntry.Config.ShouldCountAutomatedHarvests) return;
 
-        owner.IncrementData<uint>(DataField.GemologistMineralsCollected);
+        ModDataIO.IncrementData<uint>(owner, ModData.GemologistMineralsCollected.ToString());
     }
 
     #endregion harmony patches

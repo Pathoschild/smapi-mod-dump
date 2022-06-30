@@ -12,31 +12,31 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-using StardewValley.Network;
-
+using DaLion.Common;
+using DaLion.Common.Data;
 using DaLion.Common.Extensions;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
-
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
+using StardewValley.Network;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GameLocationCheckActionPatch : BasePatch
+internal sealed class GameLocationCheckActionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GameLocationCheckActionPatch()
     {
-        Original = RequireMethod<GameLocation>(nameof(GameLocation.checkAction));
+        Target = RequireMethod<GameLocation>(nameof(GameLocation.checkAction));
     }
 
     #region harmony patches
@@ -46,7 +46,7 @@ internal class GameLocationCheckActionPatch : BasePatch
     ///     mod data fields.
     /// </summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GameLocationCheckActionTranspiler(
+    private static IEnumerable<CodeInstruction>? GameLocationCheckActionTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -90,7 +90,6 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Ecologist forage quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -121,12 +120,12 @@ internal class GameLocationCheckActionPatch : BasePatch
                     new CodeInstruction(OpCodes.Br_S)
                 )
                 .Advance()
-                .InsertWithLabels(new[] {gemologistCheck}, got) // insert copy with destination label for branches from previous section
+                .InsertWithLabels(new[] { gemologistCheck }, got) // insert copy with destination label for branches from previous section
                 .Return()
                 .AdvanceUntil( // find repeated botanist check
                     new CodeInstruction(OpCodes.Ldc_I4_S, Farmer.botanist)
                 )
-                .SetOperand((int) Profession.Gemologist) // replace with gemologist check
+                .SetOperand(Profession.Gemologist.Value) // replace with gemologist check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldarg_0)
                 )
@@ -143,7 +142,7 @@ internal class GameLocationCheckActionPatch : BasePatch
                 )
                 .Advance()
                 .ReplaceWith( // remove 'not' and set correct branch destination
-                    new(OpCodes.Brfalse_S, (Label) shouldntSetCustomQuality)
+                    new(OpCodes.Brfalse_S, (Label)shouldntSetCustomQuality)
                 )
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Call,
@@ -157,7 +156,6 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Gemologist foraged mineral quality.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -185,7 +183,6 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Ecologist and Gemologist counter increment.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -197,7 +194,7 @@ internal class GameLocationCheckActionPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Forager)
+                .FindProfessionCheck(Profession.Forager.Value)
                 .Retreat()
                 .GetInstructionsUntil(out got, true, true,
                     new CodeInstruction(OpCodes.Brfalse_S)
@@ -208,9 +205,9 @@ internal class GameLocationCheckActionPatch : BasePatch
                 .AddLabels(isNotPrestiged)
                 .Insert(got)
                 .RetreatUntil(
-                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) Profession.Forager)
+                    new CodeInstruction(OpCodes.Ldc_I4_S, Profession.Forager.Value)
                 )
-                .SetOperand((int) Profession.Forager + 100)
+                .SetOperand(Profession.Forager.Value + 100)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Brfalse_S)
                 )
@@ -226,7 +223,6 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Foraged double forage bonus.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -240,9 +236,9 @@ internal class GameLocationCheckActionPatch : BasePatch
     private static void CheckActionSubroutine(SObject obj, GameLocation location, Farmer who)
     {
         if (who.HasProfession(Profession.Ecologist) && obj.isForage(location) && !obj.IsForagedMineral())
-            who.IncrementData<uint>(DataField.EcologistItemsForaged);
+            ModDataIO.IncrementData<uint>(who, ModData.EcologistItemsForaged.ToString());
         else if (who.HasProfession(Profession.Gemologist) && obj.IsForagedMineral())
-            who.IncrementData<uint>(DataField.GemologistMineralsCollected);
+            ModDataIO.IncrementData<uint>(who, ModData.GemologistMineralsCollected.ToString());
     }
 
     #endregion private methods

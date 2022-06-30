@@ -16,6 +16,7 @@ using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -30,6 +31,11 @@ internal static class Textures {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static Bounds Bounds(this XTexture2D texture) => new(texture);
+
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static ref T ThrowUnhandledFormatException<T>(string name, SurfaceFormat format) =>
+		throw new ArgumentException(format.ToString(), name);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static long SizeBytesLong(this SurfaceFormat format, int texels) {
@@ -82,7 +88,7 @@ internal static class Textures {
 			SurfaceFormat.HalfSingle => 2,
 			SurfaceFormat.HalfVector2 => 4,
 			SurfaceFormat.HalfVector4 => 8,
-			_ => throw new ArgumentException(nameof(format))
+			_ => ThrowUnhandledFormatException<int>(nameof(format), format)
 		};
 
 		return (long)texels * elementSize;
@@ -91,6 +97,18 @@ internal static class Textures {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int SizeBytes(this SurfaceFormat format, int texels) {
 		var result = SizeBytesLong(format, texels);
+		return checked((int)result);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int SizeBytes(this SurfaceFormat format, Vector2I dimensions) {
+		if (format.IsBlock()) {
+			Vector2I edge = format.BlockEdge();
+			Vector2I edgeMinusOne = edge - 1;
+			dimensions = (dimensions + edgeMinusOne) & ~edgeMinusOne;
+		}
+
+		var result = SizeBytesLong(format, dimensions.Area);
 		return checked((int)result);
 	}
 
@@ -335,7 +353,7 @@ internal static class Textures {
 			int sourceOffset = (sourceSize.Width * destBound.Top) + destBound.Left;
 			int destOffset = 0;
 			for (int y = 0; y < destBound.Height; ++y) {
-				sourceSpan.Slice(sourceOffset, destBound.Width).CopyTo(destSpan.Slice(destOffset, destBound.Width));
+				sourceSpan.SliceUnsafe(sourceOffset, destBound.Width).CopyToUnsafe(destSpan.SliceUnsafe(destOffset, destBound.Width));
 				destOffset += destBound.Width;
 				sourceOffset += sourceSize.Width;
 			}

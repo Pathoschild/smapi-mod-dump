@@ -8,14 +8,159 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Colors;
 
+[StructLayout(LayoutKind.Auto)]
+internal readonly struct Converter {
+	private readonly byte[] LinearizeTable8;
+	private readonly byte[] DelinearizeTable8;
+	private readonly ushort[] LinearizeTable16;
+	private readonly ushort[] DelinearizeTable16;
+
+	internal Converter(in ColorSpace colorSpace) {
+		LinearizeTable8 = colorSpace.LinearizeTable8;
+		DelinearizeTable8 = colorSpace.DelinearizeTable8;
+		LinearizeTable16 = colorSpace.LinearizeTable16;
+		DelinearizeTable16 = colorSpace.DelinearizeTable16;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly byte Linearize(byte value) => LinearizeTable8[value];
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly byte Linearize(Fixed8 value) => Linearize(value.Value);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly Color8 Linearize(Color8 color) {
+		color.SetRgb(
+			Linearize(color.R),
+			Linearize(color.G),
+			Linearize(color.B)
+		);
+		return color;
+	}
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly ushort Linearize(ushort value) => LinearizeTable16[value];
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly Fixed16 Linearize(Fixed16 value) => Linearize(value.Value);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly Color16 Linearize(Color16 color) {
+		color.SetRgb(
+			Linearize(color.R),
+			Linearize(color.G),
+			Linearize(color.B)
+		);
+		return color;
+	}
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly byte Delinearize(byte value) => DelinearizeTable8[value];
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly byte Delinearize(Fixed8 value) => Delinearize(value.Value);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly Color8 Delinearize(Color8 color) {
+		color.SetRgb(
+			Delinearize(color.R),
+			Delinearize(color.G),
+			Delinearize(color.B)
+		);
+		return color;
+	}
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly ushort Delinearize(ushort value) => DelinearizeTable16[value];
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly Fixed16 Delinearize(Fixed16 value) => Delinearize(value.Value);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal readonly Color16 Delinearize(Color16 color) {
+		color.SetRgb(
+			Delinearize(color.R),
+			Delinearize(color.G),
+			Delinearize(color.B)
+		);
+		return color;
+	}
+}
+
+internal unsafe class ConverterRef {
+	internal readonly byte[] LinearizeTable8;
+	internal readonly byte[] DelinearizeTable8;
+	internal readonly ushort[] LinearizeTable16;
+	internal readonly ushort[] DelinearizeTable16;
+
+	internal readonly ushort* LinearizeTable16Ptr;
+	internal readonly ushort* DelinearizeTable16Ptr;
+
+	internal ConverterRef(byte[] linearizeTable8, byte[] delinearizeTable8, ushort[] linearizeTable16, ushort[] delinearizeTable16) {
+		LinearizeTable8 = linearizeTable8;
+		DelinearizeTable8 = delinearizeTable8;
+		LinearizeTable16 = linearizeTable16;
+		DelinearizeTable16 = delinearizeTable16;
+
+		LinearizeTable16Ptr = (ushort*)Unsafe.AsPointer(ref MemoryMarshal.GetArrayDataReference(LinearizeTable16));
+		DelinearizeTable16Ptr = (ushort*)Unsafe.AsPointer(ref MemoryMarshal.GetArrayDataReference(DelinearizeTable16));
+	}
+
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal byte Linearize(byte value) => LinearizeTable8[value];
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal byte Linearize(Fixed8 value) => Linearize(value.Value);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Color8 Linearize(Color8 color) {
+		color.SetRgb(
+			Linearize(color.R),
+			Linearize(color.G),
+			Linearize(color.B)
+		);
+		return color;
+	}
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal ushort Linearize(ushort value) => LinearizeTable16[value];
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Fixed16 Linearize(Fixed16 value) => Linearize(value.Value);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Color16 Linearize(Color16 color) {
+		color.SetRgb(
+			Linearize(color.R),
+			Linearize(color.G),
+			Linearize(color.B)
+		);
+		return color;
+	}
+
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal byte Delinearize(byte value) => DelinearizeTable8[value];
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal byte Delinearize(Fixed8 value) => Delinearize(value.Value);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Color8 Delinearize(Color8 color) {
+		color.SetRgb(
+			Delinearize(color.R),
+			Delinearize(color.G),
+			Delinearize(color.B)
+		);
+		return color;
+	}
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal ushort Delinearize(ushort value) => DelinearizeTable16[value];
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Fixed16 Delinearize(Fixed16 value) => Delinearize(value.Value);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Color16 Delinearize(Color16 color) {
+		color.SetRgb(
+			Delinearize(color.R),
+			Delinearize(color.G),
+			Delinearize(color.B)
+		);
+		return color;
+	}
+}
+
+[StructLayout(LayoutKind.Auto)]
 internal readonly struct ColorSpace {
 	internal readonly struct Double3 {
 		internal readonly double R;
@@ -44,14 +189,17 @@ internal readonly struct ColorSpace {
 	internal readonly Double3 LumaCoefficient;
 	internal readonly ScaleDouble LumaScale;
 
-	private readonly byte[] LinearizeTable8;
-	private readonly byte[] DelinearizeTable8;
-	private readonly ushort[] LinearizeTable16;
-	private readonly ushort[] DelinearizeTable16;
+	internal readonly byte[] LinearizeTable8;
+	internal readonly byte[] DelinearizeTable8;
+	internal readonly ushort[] LinearizeTable16;
+	internal readonly ushort[] DelinearizeTable16;
+
+	private readonly ConverterRef ConverterRef;
+
+	internal readonly Converter GetConverter() => new(this);
+	internal readonly ConverterRef GetConverterRef() => ConverterRef;
 
 	internal delegate double CurveDelegateDouble(double scalar);
-	internal readonly CurveDelegateDouble LinearizeScalar;
-	internal readonly CurveDelegateDouble DelinearizeScalar;
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal byte Linearize(byte value) => LinearizeTable8[value];
@@ -59,12 +207,12 @@ internal readonly struct ColorSpace {
 	internal byte Linearize(Fixed8 value) => Linearize(value.Value);
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Color8 Linearize(Color8 color) {
-		return new(
+		color.SetRgb(
 			Linearize(color.R),
 			Linearize(color.G),
-			Linearize(color.B),
-			color.A
+			Linearize(color.B)
 		);
+		return color;
 	}
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal ushort Linearize(ushort value) => LinearizeTable16[value];
@@ -72,12 +220,12 @@ internal readonly struct ColorSpace {
 	internal Fixed16 Linearize(Fixed16 value) => Linearize(value.Value);
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Color16 Linearize(Color16 color) {
-		return new(
+		color.SetRgb(
 			Linearize(color.R),
 			Linearize(color.G),
-			Linearize(color.B),
-			color.A
+			Linearize(color.B)
 		);
+		return color;
 	}
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal byte Delinearize(byte value) => DelinearizeTable8[value];
@@ -85,12 +233,12 @@ internal readonly struct ColorSpace {
 	internal byte Delinearize(Fixed8 value) => Delinearize(value.Value);
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Color8 Delinearize(Color8 color) {
-		return new(
+		color.SetRgb(
 			Delinearize(color.R),
 			Delinearize(color.G),
-			Delinearize(color.B),
-			color.A
+			Delinearize(color.B)
 		);
+		return color;
 	}
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal ushort Delinearize(ushort value) => DelinearizeTable16[value];
@@ -98,12 +246,12 @@ internal readonly struct ColorSpace {
 	internal Fixed16 Delinearize(Fixed16 value) => Delinearize(value.Value);
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Color16 Delinearize(Color16 color) {
-		return new(
+		color.SetRgb(
 			Delinearize(color.R),
 			Delinearize(color.G),
-			Delinearize(color.B),
-			color.A
+			Delinearize(color.B)
 		);
+		return color;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
@@ -127,8 +275,8 @@ internal readonly struct ColorSpace {
 				throw new ArgumentException($"Unknown Table Type: '{typeof(T).Name}'");
 		}
 
-		var linearizeTable = GC.AllocateUninitializedArray<T>(maxValue);
-		var delinearizeTable = GC.AllocateUninitializedArray<T>(maxValue);
+		var linearizeTable = GC.AllocateUninitializedArray<T>(maxValue, pinned: true);
+		var delinearizeTable = GC.AllocateUninitializedArray<T>(maxValue, pinned: true);
 		for (int i = 0; i < maxValue; ++i) {
 			linearizeTable[i] = fromScalar(linearize(toScalar(ConvertTo<int, T>(i))));
 			delinearizeTable[i] = fromScalar(delinearize(toScalar(ConvertTo<int, T>(i))));
@@ -157,11 +305,10 @@ internal readonly struct ColorSpace {
 		LumaCoefficient = new Double3(r, g, b);
 		LumaScale = new ScaleDouble(r, b);
 
-		LinearizeScalar = linearize;
-		DelinearizeScalar = delinearize;
+		(LinearizeTable8, DelinearizeTable8) = InitializeTable<byte>(linearize, delinearize, byte.MaxValue + 1);
+		(LinearizeTable16, DelinearizeTable16) = InitializeTable<ushort>(linearize, delinearize, ushort.MaxValue + 1);
 
-		(LinearizeTable8, DelinearizeTable8) = InitializeTable<byte>(LinearizeScalar, DelinearizeScalar, byte.MaxValue + 1);
-		(LinearizeTable16, DelinearizeTable16) = InitializeTable<ushort>(LinearizeScalar, DelinearizeScalar, ushort.MaxValue + 1);
+		ConverterRef = new(LinearizeTable8, DelinearizeTable8, LinearizeTable16, DelinearizeTable16);
 	}
 
 #if false

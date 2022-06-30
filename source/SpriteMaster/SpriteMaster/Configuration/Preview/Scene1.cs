@@ -12,7 +12,9 @@ using SpriteMaster.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Configuration.Preview;
 
@@ -38,9 +40,14 @@ internal sealed class Scene1 : Scene {
 
 	private static int RandomSeed => Guid.NewGuid().GetHashCode();
 
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static ref T ThrowArrayEmptyException<T>(string name) =>
+		throw new ArgumentException($"{name} is empty");
+
 	private static ref T GetRandomOf<T>(Random rand, T[] array) {
 		if (array.Length == 0) {
-			throw new ArgumentException("array is empty");
+			return ref ThrowArrayEmptyException<T>(nameof(array));
 		}
 
 		return ref array[rand.Next(array.Length)];

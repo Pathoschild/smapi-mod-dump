@@ -11,16 +11,28 @@
 {
   "Name": "Better Beehouses",
   "Author": "Tlitookilakin",
-  "Version": "1.2.4",
+  "Version": "1.2.6",
   "Description": "Improves bee houses",
   "UniqueID": "tlitookilakin.BetterBeehouses",
   "EntryDll": "BetterBeehouses.dll",
-  "MinimumApiVersion": "3.13",
+  "MinimumApiVersion": "3.14",
   "UpdateKeys": [ "GitHub:tlitookilakin/BetterBeehouses", "Nexus:10996", "ModDrop:1105633" ],
   "Dependencies": [
     {
       "UniqueID": "DaLion.ImmersiveProfessions",
       "IsRequired": false
+    },
+    {
+        "UniqueID": "Digus.ProducerFrameworkMod",
+        "IsRequired": false
+    },
+    {
+        "UniqueID": "Digus.PFMAutomate",
+        "IsRequired": false
+    },
+    {
+        "UniqueID": "Pathoschild.Automate",
+        "IsRequired": false
     }
   ]
 }

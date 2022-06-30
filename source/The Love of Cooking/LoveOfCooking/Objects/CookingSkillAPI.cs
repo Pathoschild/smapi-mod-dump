@@ -32,7 +32,7 @@ namespace LoveOfCooking.Objects
 		CookingSkill GetSkill();
 		int GetLevel();
 		int GetMaximumLevel();
-		Dictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L);
+		IReadOnlyDictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L);
 		bool HasProfession(ICookingSkillAPI.Profession profession, long playerID = -1L);
 		bool AddExperienceDirectly(int experience);
 		void AddCookingBuffToItem(string name, int value);
@@ -40,8 +40,8 @@ namespace LoveOfCooking.Objects
 		int GetExperienceRequiredForLevel(int level);
 		int GetTotalExperienceRequiredForLevel(int level);
 		int GetExperienceRemainingUntilLevel(int level);
-		Dictionary<int, List<string>> GetAllLevelUpRecipes();
-		List<string> GetCookingRecipesForLevel(int level);
+		IReadOnlyDictionary<int, IList<string>> GetAllLevelUpRecipes();
+		IReadOnlyList<string> GetCookingRecipesForLevel(int level);
 		int CalculateExperienceGainedFromCookingItem(Item item, int numIngredients, int numCooked, bool applyExperience);
 		bool RollForExtraPortion();
 	}
@@ -80,7 +80,7 @@ namespace LoveOfCooking.Objects
 		}
 
 		/// <returns>A dictionary of all possible Cooking professions and whether each is active.</returns>
-		public Dictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L)
+		public IReadOnlyDictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L)
 		{
 			var dict = new Dictionary<ICookingSkillAPI.Profession, bool>();
 			int count = Enum.GetNames(typeof(ICookingSkillAPI.Profession)).Length;
@@ -165,13 +165,13 @@ namespace LoveOfCooking.Objects
 		}
 
 		/// <returns>Table of recipes learned through leveling Cooking.</returns>
-		public Dictionary<int, List<string>> GetAllLevelUpRecipes()
+		public IReadOnlyDictionary<int, IList<string>> GetAllLevelUpRecipes()
 		{
-			return CookingSkill.CookingSkillLevelUpRecipes;
+			return (IReadOnlyDictionary<int, IList<string>>)CookingSkill.CookingSkillLevelUpRecipes;
 		}
 
 		/// <returns>New recipes learned when reaching this level.</returns>
-		public List<string> GetCookingRecipesForLevel(int level)
+		public IReadOnlyList<string> GetCookingRecipesForLevel(int level)
 		{
 			// Level undefined
 			if (!CookingSkill.CookingSkillLevelUpRecipes.ContainsKey(level))
@@ -183,7 +183,7 @@ namespace LoveOfCooking.Objects
 			{
 				return new List<string>();
 			}
-			return CookingSkill.CookingSkillLevelUpRecipes[level];
+			return (IReadOnlyList<string>)CookingSkill.CookingSkillLevelUpRecipes[level];
 		}
 
 		/// <summary>

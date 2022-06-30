@@ -47,6 +47,7 @@ namespace AlternativeTextures.Framework.Patches
             __result.Add(GetPaintBucketTool(), new int[2] { 500, 1 });
             __result.Add(GetScissorsTool(), new int[2] { 500, 1 });
             __result.Add(GetPaintBrushTool(), new int[2] { 500, 1 });
+            __result.Add(GetSprayCanTool(), new int[2] { 500, 1 });
         }
     }
 }

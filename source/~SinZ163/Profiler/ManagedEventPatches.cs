@@ -11,15 +11,13 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profiler
 {
@@ -28,10 +26,13 @@ namespace Profiler
         public static IMonitor Monitor { get; private set; }
         public static ModConfig Config { get; private set; }
 
-        public static void Initialize(IMonitor monitor, ModConfig config, Harmony harmony)
+        public static ProfilerAPI API { get; private set; }
+
+        public static void Initialize(IMonitor monitor, ModConfig config, ProfilerAPI api, Harmony harmony)
         {
             Monitor = monitor;
             Config = config;
+            API = api;
 
             var targetClass = Type.GetType("StardewModdingAPI.Framework.Events.ManagedEvent`1,StardewModdingAPI").MakeGenericType(typeof(TimeChangedEventArgs));
             var modMetadata = Type.GetType("StardewModdingAPI.Framework.IModMetadata,StardewModdingAPI");
@@ -67,9 +68,11 @@ namespace Profiler
                 // Pushing Mod into HeuristicModsRunningCode stack
                 if (instruction.opcode == OpCodes.Callvirt && (instruction.operand as MethodInfo).Name == "Push")
                 {
-                    // Initialize the inner Stopwatch
+                    // Call StartTimerSmallLoop(this, handler): Stopwatch
                     output.Add(new CodeInstruction(OpCodes.Nop));
-                    output.Add(new CodeInstruction(OpCodes.Call, innerSW.LocalType.GetMethod("StartNew")));
+                    output.Add(new CodeInstruction(OpCodes.Ldarg_0));
+                    output.Add(new CodeInstruction(OpCodes.Ldloc_2));
+                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod("StartTimerSmallLoop")));
                     output.Add(new CodeInstruction(OpCodes.Stloc, innerSW.LocalIndex));
                 }
                 else if (instruction.opcode == OpCodes.Ret)
@@ -96,6 +99,17 @@ namespace Profiler
             }
             return output;
         }
+        public static Stopwatch StartTimerSmallLoop(object instance, object handler)
+        {
+            // For whatever reason, one of the overloads of Raise wraps the local variable in a thing, this grabs both
+            var actualHandler = handler.GetType().GetField("handler")?.GetValue(handler) ?? handler;
+            var property = actualHandler.GetType().GetProperty("SourceMod");
+            var modInfo = property.GetValue(actualHandler) as IModInfo;
+
+            string eventName = (string)instance.GetType().GetProperty("EventName").GetValue(instance);
+            API.Push(new EventDurationMetadata(modInfo.Manifest.UniqueID, eventName, "", -1, new()));
+            return Stopwatch.StartNew();
+        }
         public static void StopTimerSmallLoop(object instance, object handler, Stopwatch sw, List<(IModInfo, Stopwatch)> timers)
         {
             sw.Stop();
@@ -106,11 +120,26 @@ namespace Profiler
             var modInfo = property.GetValue(actualHandler) as IModInfo;
             timers.Add((modInfo, sw));
 
+            string eventName = (string)instance.GetType().GetProperty("EventName").GetValue(instance);
+            var extra = eventName switch
+            {
+                "GameLoop.TimeChanged" => $" ({Game1.timeOfDay:D4})",
+                _ => ""
+            };
+
+            API.Pop(metadata =>
+            {
+                metadata = metadata with { Details = extra };
+                if (metadata is EventDurationMetadata durationMetadata)
+                {
+                    metadata = durationMetadata with { Duration = sw.Elapsed.TotalMilliseconds };
+                }
+                return metadata;
+            });
+
             if (sw.Elapsed.TotalMilliseconds > Config.EventThreshold)
             {
-                var eventName = instance.GetType().GetProperty("EventName").GetValue(instance);
-
-                Monitor.Log($"'{modInfo.Manifest.UniqueID}' took {sw.Elapsed.TotalMilliseconds:N}ms handling {eventName}", LogLevel.Debug);
+                Monitor.Log($"'{modInfo.Manifest.UniqueID}' took {sw.Elapsed.TotalMilliseconds:N}ms handling {eventName}{extra}", LogLevel.Debug);
             }
         }
         public static void StopTimerBigloop(object instance, Stopwatch sw, List<(IModInfo, Stopwatch)> timers)
@@ -120,9 +149,14 @@ namespace Profiler
             if (sw.Elapsed.TotalMilliseconds > Config.BigLoopThreshold)
             {
                 var eventName = instance.GetType().GetProperty("EventName").GetValue(instance);
+                var extra = eventName switch
+                {
+                    "GameLoop.TimeChanged" => $" ({Game1.timeOfDay:D4})",
+                    _ => ""
+                };
                 var slowestMods = timers.OrderByDescending(o => o.Item2.Elapsed.TotalMilliseconds);
                 var msg = string.Join("\n", slowestMods.Select(t => $"\t{t.Item1.Manifest.UniqueID} => {t.Item2.Elapsed.TotalMilliseconds:N}"));
-                Monitor.Log($"[BigLoop] In total, it took {sw.Elapsed.TotalMilliseconds:N}ms handling {eventName}\n{msg}", LogLevel.Debug);
+                Monitor.Log($"[BigLoop] In total, it took {sw.Elapsed.TotalMilliseconds:N}ms handling {eventName}{extra}\n{msg}", LogLevel.Debug);
             }
         }
     }

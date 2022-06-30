@@ -28,10 +28,7 @@ namespace WarpNetwork
                 loc = value;
                 updateLabel();
             }
-            get
-            {
-                return loc;
-            }
+            get => loc;
         }
         public int index = 0;
         private WarpLocation loc;

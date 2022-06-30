@@ -2,6 +2,8 @@
   "ui-fail": "Nothing happens...",
   "ui-label": "Choose Destination",
   "ui-cancel": "Cancel",
+  "ui-usetotem": "Warp to {{Label}}?",
+  "ui-usereturn": "Return to last location?",
   "cfg-warpsenabled.label": "Vanilla Warps Enabled",
   "cfg-warpsenabled.desc": "When to enable the vanilla warps.",
   "cfg-farmenabled.label": "Farm Warp Enabled",
@@ -14,9 +16,14 @@
   "cfg-obeliskpatch.desc": "Override the warps on the vanilla obelisks to work with custom destination coordinates.",
   "cfg-menu.label": "Enable Warp Network Menu",
   "cfg-menu.desc": "Enable the Warp Network menu. When this is disabled, the warp network can't be accessed from any of the statues.",
+  "cfg-warpcancel.label": "Confirm Totem Warping",
+  "cfg-warpcancel.desc": "When using a totem, confirm whether or not you want to use it.",
+  "cfg-wandreturn.label": "Return From Wand",
+  "cfg-wandreturn.desc": "When using the wand, saves your position and allows you to teleport back to it later.",
   "dest-farm": "Farm",
   "dest-mountain": "Mountains",
   "dest-beach": "Beach",
   "dest-island": "Ginger Island",
-  "dest-desert": "Desert"
+  "dest-desert": "Desert",
+  "dest-return": "Return"
 }

@@ -1,5 +1,6 @@
 {
   "EnableMod": true,
+  "SubmergeHarvestable": true,
   "ShowRipples": true,
   "BobberTint": {
     "B": 255,

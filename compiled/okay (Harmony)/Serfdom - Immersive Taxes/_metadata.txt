@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12547
+IDs: DaLion.ImmersiveTaxes
+update keys: Nexus:???, Nexus:12547

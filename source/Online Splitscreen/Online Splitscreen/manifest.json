@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley-online-splitscreen
+**
+*************************************************/
+
+{
+  "Name": "Online Splitscreen",
+  "Author": "DeLiXx",
+  "Version": "1.0.0",
+  "Description": "Makes local Co-Op joinable even as a client to a server, allowing clients to play in splitscreen.",
+  "UniqueID": "DeLiXx.Online_Splitscreen",
+  "EntryDll": "Online Splitscreen.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:12291" ]
+}

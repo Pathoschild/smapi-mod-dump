@@ -146,6 +146,11 @@ namespace LoveOfCooking
 			this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
 		}
 
+		public override object GetApi()
+		{
+			return new CookingSkillAPI(reflection: this.Helper.Reflection);
+		}
+
 		private bool Init()
 		{
 			// Interfaces

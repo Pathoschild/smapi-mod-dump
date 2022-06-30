@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -19,13 +20,11 @@ namespace WallPaperRecycler
 {
     public class WallPaperRecycler : Mod
     {
-        //public static Mod instance;
-        private const int DoNothing = -333000;
+        
 
-        private DecorationFacade _wallPaper;
-        private DecorationFacade _floor;
-        //private int wallPaper;
-        //private int floor;
+        private readonly Dictionary<string, string> _curWallPaper = new();
+
+        private readonly Dictionary<string, string> _currentFloor = new();
 
         //Variable for testing purposes
         public bool Debugging = false;
@@ -37,105 +36,68 @@ namespace WallPaperRecycler
         {
             //Read Config.
             _config = helper.ReadConfig<ModConfig>();
-            helper.Events.Player.InventoryChanged += InventoryChanged;
-            helper.Events.Input.ButtonPressed += ButtonPressed;
-            helper.Events.GameLoop.DayStarted += DayStarted;
+            helper.Events.Player.InventoryChanged += PlayerEvent_InventoryChanged;
+            helper.Events.Input.ButtonPressed += InputEvent_ButtonPressed;
+            helper.Events.GameLoop.DayStarted += GameLoopEvent_DayStarted;
+            helper.Events.Player.Warped += PlayerEvent_Warped;
         }
 
-        //When the day starts. So we can populate the shit.
-        private void DayStarted(object sender, DayStartedEventArgs e)
-        {
-            if (!Context.IsWorldReady)
-                return;
-            //Run population code
-            FarmHouse farm = null;
-            Cabin cabin = null;
-            bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
-            bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
-            if (isFarmHouse)
-            {
-                farm = Game1.player.currentLocation as FarmHouse;
-                DoWallpaperSave(farm);
-            }
-            if (isCabin)
-            {
-                cabin = Game1.player.currentLocation as Cabin;
-                DoWallpaperSave(cabin);
-            }
-
-            DecorationFacade curWall = isFarmHouse ? farm?.wallPaper : cabin?.wallPaper;
-
-            if (curWall != null)
-            {
-                for (int i = 0; i < curWall.Count; i++)
-                {
-                    if (!_wallPaper[i].Equals(curWall[i]))
-                        Monitor.Log($"Current Wallpaper: {curWall[i]}", LogLevel.Alert);
-                }
-            }
-            //Populate flooring
-            DecorationFacade curFloor = isFarmHouse ? farm?.floor : cabin?.floor;
-            if (curFloor != null)
-            {
-                _floor = new DecorationFacade();
-                foreach (int i in curFloor)
-                {
-                    _floor.Add(i);
-                    if (Debugging)
-                        Monitor.Log($"Current Floor: {i}", LogLevel.Alert);
-                }
-            }
-        }
-        //Button Pressed event for debugging
-
-        private void ButtonPressed(object sender, ButtonPressedEventArgs e)
+        /// <summary>
+        /// Event that happens when a button is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InputEvent_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
             if (e.IsDown(SButton.NumPad5))
             {
-                FarmHouse farm = null;
-                Cabin cabin = null;
-                bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
-                bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
-                if (isFarmHouse)
-                {
-                    farm = Game1.player.currentLocation as FarmHouse;
-                    DoWallpaperSave(farm);
-                }
-                if (isCabin)
-                {
-                    cabin = Game1.player.currentLocation as Cabin;
-                    DoWallpaperSave(cabin);
-                }
-
-                DecorationFacade curWall = isFarmHouse ? farm?.wallPaper : cabin?.wallPaper;
-                if (curWall != null)
-                {
-                    for (int i = 0; i < curWall.Count; i++)
-                    {
-                        if (!_wallPaper[i].Equals(curWall[i]))
-                            Monitor.Log($"Current Wallpaper: {curWall[i]}", LogLevel.Alert);
-                    }
-                }
+                //Manually check stuff. For debugging purposes.
             }
         }
-        //Inventory Changed Void. Handles Saving floors and wallpaper if its changed.
-        private void InventoryChanged(object sender, InventoryChangedEventArgs e)
+
+        /// <summary>
+        /// Event that happens when a new day starts, or if the player just logs into the game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GameLoopEvent_DayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!Context.IsWorldReady || Game1.activeClickableMenu != null)
-                return;
-            //Check locations to see if they're farmhouses or cabins
+            GetCurrentWalls();
+            GetCurrentFloors();
+        }
+
+        /// <summary>
+        /// Event that happens when the player warps to a new location.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayerEvent_Warped(object sender, WarpedEventArgs e)
+        {
+            if (e.NewLocation is FarmHouse)
+            {
+                GetCurrentWalls();
+                GetCurrentFloors();
+            }
+            else if (e.NewLocation is Cabin)
+            {
+                GetCurrentWalls();
+                GetCurrentFloors();
+            }
+        }
+        /// <summary>
+        /// Event that happens when the players inventory changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayerEvent_InventoryChanged(object sender, InventoryChangedEventArgs e)
+        {
             FarmHouse farm = null;
             Cabin cabin = null;
             bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
             bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
-            /*
-            if (isFarmHouse)
-                farm = Game1.player.currentLocation as FarmHouse;
-            if (isCabin)
-                cabin = Game1.player.currentLocation as Cabin;
-            */
+            
             if (isFarmHouse)
                 farm = Game1.player.currentLocation as FarmHouse;
             if (isCabin)
@@ -144,206 +106,223 @@ namespace WallPaperRecycler
             if (farm == null && cabin == null)
                 return;
 
-            //Everything seems to have passed. Now we can move on
             Wallpaper removed = RemovePaper(e.Removed);
-            int whatChanged = 0;
-            if (removed == null && Game1.activeClickableMenu == null)
-            {
-                if(Debugging)
-                    Monitor.Log("Removed was null.. Line 55", LogLevel.Alert);
+
+
+            if (removed == null)
                 return;
-            }
-            //Process Cabin
-            if (isCabin)
-            {
-                if (removed != null && removed.isFloor.Value)
-                {
-                    whatChanged = FloorChanged(cabin);
-                    DoFloorSave(cabin);
-                }
-                else
-                {
-                    whatChanged = WallpaperChanged(cabin);
-                    DoWallpaperSave(cabin);
-                }
-            }
-            //Process Farm
+
             if (isFarmHouse)
             {
-                if (removed != null && removed.isFloor.Value)
+                if (removed.isFloor.Value)
                 {
-                    whatChanged = FloorChanged(farm);
-                    DoFloorSave(farm);
+                    DoFloorChange();
                 }
                 else
                 {
-                    whatChanged = WallpaperChanged(farm);
-                    DoWallpaperSave(farm);
+                    DoWallPaperChange();
                 }
             }
-            if (whatChanged != DoNothing && removed != null)
-                ChangeWallFloor(whatChanged, removed.isFloor.Value);
-            /*else
-                Game1.player.addItemToInventory(removed);*/
-        }
-
-        //DoWallpaperSave method for FarmHouse's
-        private void DoWallpaperSave(FarmHouse house)
-        {
-            DecorationFacade curWallpaper = house.wallPaper;
-            _wallPaper = new DecorationFacade();
-            foreach (int i in curWallpaper)
+            if (isCabin)
             {
-                _wallPaper.Add(i);
-                if (Debugging)
-                    Monitor.Log($"Current Wallpaper: {i}", LogLevel.Alert);
+                if (removed.isFloor.Value)
+                {
+                    DoFloorChange(false);
+                }
+                else
+                {
+                    DoWallPaperChange(false);
+                }
             }
         }
-        
-        //DoFloorSave method for FarmHouse's.
-        private void DoFloorSave(FarmHouse house)
+
+        //Custom Methods
+        /// <summary>
+        /// Grabs the current Walls applied inside the house/cabin. That way we can check for changes.
+        /// </summary>
+        private void GetCurrentWalls()
         {
-            DecorationFacade curFloor = house.floor;
-            _floor = new DecorationFacade();
-            foreach (int i in curFloor)
+            bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
+            bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
+            _curWallPaper.Clear();
+
+            if (isFarmHouse)
             {
-                _floor.Add(i);
-                if (Debugging)
-                    Monitor.Log($"Current Floor: {i}", LogLevel.Alert);
+                if (Game1.player.currentLocation is FarmHouse farm)
+                    foreach (var walls in farm.appliedWallpaper.Pairs)
+                    {
+                        _curWallPaper.Add(walls.Key, walls.Value);
+                        if (Debugging)
+                        {
+                            Monitor.Log($"Added Wallpaper ID: {walls.Value} Location: {walls.Key} to curWallPaper.",
+                                LogLevel.Alert);
+                        }
+                    }
+            }
+            else if (isCabin)
+            {
+                if (Game1.player.currentLocation is Cabin cabin)
+                    foreach (var walls in cabin.appliedWallpaper.Pairs)
+                    {
+                        _curWallPaper.Add(walls.Key, walls.Value);
+                        if (Debugging)
+                        {
+                            Monitor.Log($"Added Wallpaper ID: {walls.Value} Location: {walls.Key} to curWallPaper.",
+                                LogLevel.Alert);
+                        }
+                    }
             }
         }
-       
-        //WallpaperChanged method for FarmHouses's
-        private int WallpaperChanged(FarmHouse house)
-        {
-            DecorationFacade curWall = house.wallPaper;
-            int wallId;
 
-            if (curWall == null || curWall.Count == 0 || _wallPaper == null || _wallPaper.Count == 0)
-                wallId = 0;
+        /// <summary>
+        /// Grabs the current Floors applied inside the house/cabin. That way we can check for changes.
+        /// </summary>
+        private void GetCurrentFloors()
+        {
+            bool isFarmHouse = Game1.player.currentLocation.GetType() == typeof(FarmHouse);
+            bool isCabin = Game1.player.currentLocation.GetType() == typeof(Cabin);
+            _currentFloor.Clear();
+
+            if (isFarmHouse)
+            {
+                if (Game1.player.currentLocation is FarmHouse farm)
+                    foreach (var floor in farm.appliedFloor.Pairs)
+                    {
+                        _currentFloor.Add(floor.Key, floor.Value);
+                        if (Debugging)
+                        {
+                            Monitor.Log($"Added Floor ID: {floor.Value} Location: {floor.Key} to currentFloor.",
+                                LogLevel.Alert);
+                        }
+                    }
+            }
+            else if (isCabin)
+            {
+                if (Game1.player.currentLocation is Cabin cabin)
+                    foreach (var floor in cabin.appliedFloor.Pairs)
+                    {
+                        _currentFloor.Add(floor.Key, floor.Value);
+                        if (Debugging)
+                        {
+                            Monitor.Log($"Added Floor ID: {floor.Value} Location: {floor.Key} to currentFloor.",
+                                LogLevel.Alert);
+                        }
+                    }
+            }
+        }
+
+        private void DoWallPaperChange(bool isFarmHouse = true)
+        {
+            if (isFarmHouse)
+            {
+                //Lets scan curWallPaper and see what was changed
+                foreach (var walls in ((FarmHouse)Game1.player.currentLocation).appliedWallpaper.Pairs)
+                {
+                    foreach (var curWalls in _curWallPaper)
+                    {
+                        if (curWalls.Key.Equals(walls.Key))
+                        {
+                            if (curWalls.Value != walls.Value)
+                            {
+                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curWalls.Value));
+                                Game1.player.addItemToInventory(paper);
+                                _curWallPaper[curWalls.Key] = walls.Value;
+                                if (_config.ShowMessages)
+                                {
+                                    HUDMessage hmsg = new HUDMessage($"Added: Wallpaper from: {curWalls.Key}.");
+                                    Game1.addHUDMessage(hmsg);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             else
             {
-                for (int i = 0; i < curWall.Count; i++)
+                //Lets scan curWallPaper and see what was changed
+                foreach (var walls in ((Cabin)Game1.player.currentLocation).appliedWallpaper.Pairs)
                 {
-                    if (!_wallPaper[i].Equals(curWall[i]))
-                        return _wallPaper[i];
+                    foreach (var curWalls in _curWallPaper)
+                    {
+                        if (curWalls.Key.Equals(walls.Key))
+                        {
+                            if (curWalls.Value != walls.Value)
+                            {
+                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curWalls.Value));
+                                Game1.player.addItemToInventory(paper);
+                                _curWallPaper[curWalls.Key] = walls.Value;
+                                if (_config.ShowMessages)
+                                {
+                                    HUDMessage hmsg = new HUDMessage($"Added: Wallpaper from: {curWalls.Key}.");
+                                    Game1.addHUDMessage(hmsg);
+                                }
+                            }
+                        }
+                    }
                 }
-                wallId = DoNothing;
             }
-            return wallId;
+            
         }
-        
-        //FloorChanged method for FarmHouse's
-        private int FloorChanged(FarmHouse house)
+
+        private void DoFloorChange(bool isFarmHouse = true)
         {
-            DecorationFacade curFloor = house.floor;
-            int floorId;
-            if (curFloor == null || curFloor.Count == 0 || _floor == null || _floor.Count == 0)
-                floorId = 0;
+            if (isFarmHouse)
+            {
+                //Lets scan currentFloor and see what was changed
+                foreach (var floor in ((FarmHouse)Game1.player.currentLocation).appliedFloor.Pairs)
+                {
+                    foreach (var curFloor in _currentFloor)
+                    {
+                        if (curFloor.Key.Equals(floor.Key))
+                        {
+                            if (curFloor.Value != floor.Value)
+                            {
+                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curFloor.Value), true);
+                                Game1.player.addItemToInventory(paper);
+                                _currentFloor[curFloor.Key] = floor.Value;
+                                if (_config.ShowMessages)
+                                {
+                                    HUDMessage hmsg = new HUDMessage($"Added: Floor from: {curFloor.Key}.");
+                                    Game1.addHUDMessage(hmsg);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             else
             {
-                for (int i = 0; i < curFloor.Count; i++)
+                //Lets scan currentFloor and see what was changed
+                foreach (var floor in ((Cabin)Game1.player.currentLocation).appliedFloor.Pairs)
                 {
-                    if (!_floor[i].Equals(curFloor[i]))
-                        return _floor[i];
+                    foreach (var curFloor in _currentFloor)
+                    {
+                        if (curFloor.Key.Equals(floor.Key))
+                        {
+                            if (curFloor.Value != floor.Value)
+                            {
+                                Wallpaper paper = new Wallpaper(Convert.ToInt32(curFloor.Value));
+                                Game1.player.addItemToInventory(paper);
+                                _currentFloor[curFloor.Key] = floor.Value;
+                                if (_config.ShowMessages)
+                                {
+                                    HUDMessage hmsg = new HUDMessage($"Added: Floor from: {curFloor.Key}.");
+                                    Game1.addHUDMessage(hmsg);
+                                }
+                            }
+                        }
+                    }
                 }
-                floorId = DoNothing;
             }
-
-            return floorId;
+            
         }
 
-        //DoWallpaperSave method for Cabin's
-        private void DoWallpaperSave(Cabin house)
-        {
-            DecorationFacade curWallpaper = house.wallPaper;
-            _wallPaper = new DecorationFacade();
-            foreach (int i in curWallpaper)
-            {
-                _wallPaper.Add(i);
-                if (Debugging)
-                    Monitor.Log($"Current Wallpaper: {i}", LogLevel.Alert);
-            }
-        }
-        
-        //DoFloorSave method for Cabin's.
-        private void DoFloorSave(Cabin house)
-        {
-            DecorationFacade curFloor = house.floor;
-            _floor = new DecorationFacade();
-            foreach (int i in curFloor)
-            {
-                _floor.Add(i);
-                if (Debugging)
-                    Monitor.Log($"Current Floor: {i}", LogLevel.Alert);
-            }
-        }
-        
-        //WallpaperChanged method for Cabin's
-        private int WallpaperChanged(Cabin house)
-        {
-            DecorationFacade curWall = house.wallPaper;
-            int wallId;
-
-            if (curWall == null || curWall.Count == 0 || _wallPaper == null || _wallPaper.Count == 0)
-                wallId = 0;
-            else
-            {
-                for (int i = 0; i < curWall.Count; i++)
-                {
-                    if (!_wallPaper[i].Equals(curWall[i]))
-                        return _wallPaper[i];
-                }
-                wallId = DoNothing;
-            }
-            return wallId;
-        }
-        
-        //FloorChanged method for Cabin's
-        private int FloorChanged(Cabin house)
-        {
-            DecorationFacade curFloor = house.floor;
-            int floorId;
-            if (curFloor == null || curFloor.Count == 0 || _floor == null || _floor.Count == 0)
-                floorId = 0;
-            else
-            {
-                for (int i = 0; i < curFloor.Count; i++)
-                {
-                    if (!_floor[i].Equals(curFloor[i]))
-                        return _floor[i];
-                }
-                floorId = DoNothing;
-            }
-
-            return floorId;
-        }
-
-        //ChangeWallFloor method
-        private void ChangeWallFloor(int i, bool isFlooring)
-        {
-            Wallpaper paper = new Wallpaper(i, isFlooring);
-            Game1.player.addItemToInventory(paper);
-            string wallFloor = isFlooring ? "Floor" : "Wallpaper";
-
-            if(Debugging)
-                Monitor.Log($"Current {wallFloor} Name: {paper.Name}, ID: {paper.ParentSheetIndex}");
-
-            if (_config.ShowMessages)
-            {
-                HUDMessage hmsg = new HUDMessage($"Added: {wallFloor}");
-                //Game1.addHUDMessage(new HUDMessage("Decor", 1, true, Color.LightGoldenrodYellow, (Item)new StardewValley.Object(paper.ParentSheetIndex, 1, false, -1, 0)));
-                Game1.addHUDMessage(hmsg);
-            }
-        }
-
-        //RemovePaper method
         private Wallpaper RemovePaper(IEnumerable<Item> changedWalls)
         {
             foreach (Item curr in changedWalls)
             {
                 if (curr.GetType() == typeof(Wallpaper))
-                    return (Wallpaper) curr;
+                    return (Wallpaper)curr;
             }
             return null;
         }

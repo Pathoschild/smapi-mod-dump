@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)I18nEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GMCM\IGenericModConfigMenuApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IntPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMAPI\ITranslationSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinqExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectTokens.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReflectionExtensions.cs" />

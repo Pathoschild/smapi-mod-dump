@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley-online-splitscreen
+   Git: https://gitlab.com/delixx/stardew-valley-online-splitscreen.git
+
+mods:
+   Online Splitscreen
+
+latest commit:
+   commit ffd19a7f893acd5766f4fc6a3648b20a68c97786
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Thu Jun 2 20:28:17 2022 +0200
+   
+       Initial commit
+   

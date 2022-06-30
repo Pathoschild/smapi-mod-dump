@@ -12,22 +12,21 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 #region using directives
 
+using DaLion.Common.Extensions;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 
-using DaLion.Common.Extensions;
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class CraftingRecipeCtorPatch : BasePatch
+internal sealed class CraftingRecipeCtorPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal CraftingRecipeCtorPatch()
     {
-        Original = RequireConstructor<CraftingRecipe>(typeof(string), typeof(bool));
+        Target = RequireConstructor<CraftingRecipe>(typeof(string), typeof(bool));
     }
 
     #region harmony patches

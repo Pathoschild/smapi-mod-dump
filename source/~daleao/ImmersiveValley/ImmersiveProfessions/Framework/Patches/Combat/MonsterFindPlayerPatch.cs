@@ -12,40 +12,42 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Linq;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Data;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
-
-using Extensions;
+using System;
+using System.Linq;
+using System.Reflection;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class MonsterFindPlayerPatch : BasePatch
+internal sealed class MonsterFindPlayerPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal MonsterFindPlayerPatch()
     {
-        Original = RequireMethod<Monster>("findPlayer");
-        Prefix.priority = Priority.First;
+        Target = RequireMethod<Monster>("findPlayer");
+        Prefix!.priority = Priority.First;
     }
 
     #region harmony patches
 
     /// <summary>Patch to override monster aggro.</summary>
     [HarmonyPrefix]
-    private static bool MonsterFindPlayerPrefix(Monster __instance, ref Farmer __result)
+    [HarmonyPriority(Priority.First)]
+    private static bool MonsterFindPlayerPrefix(Monster __instance, ref Farmer? __result)
     {
         try
         {
             var location = Game1.currentLocation;
-            Farmer target = null;
-            if (__instance is GreenSlime slime && slime.ReadDataAs<bool>("Piped"))
+            Farmer? target = null;
+            if (__instance is GreenSlime slime && ModDataIO.ReadDataAs<bool>(slime, "Piped"))
             {
                 var aggroee = slime.GetClosestCharacter(out _,
                     location.characters.OfType<Monster>().Where(m => !m.IsSlime()));
@@ -56,15 +58,16 @@ internal class MonsterFindPlayerPatch : BasePatch
                     {
                         fakeFarmer.Position = aggroee.Position;
                         target = fakeFarmer;
-                        slime.WriteData("Aggroee", aggroee.GetHashCode().ToString());
+                        ModDataIO.WriteData(slime, "Aggroee", aggroee.GetHashCode().ToString());
                     }
                 }
             }
-            else if (__instance.ReadDataAs<bool>("Aggroed"))
+            else if (ModDataIO.ReadDataAs<bool>(__instance, "Aggroed"))
             {
                 var fakeFarmerId = __instance.GetHashCode();
                 if (ModEntry.HostState.FakeFarmers.TryGetValue(fakeFarmerId, out var fakeFarmer) &&
-                    location.FindCharacterByHash<GreenSlime>(__instance.ReadDataAs<int>("Aggroer"), out var aggroer))
+                    location.TryGetCharacterByHash<GreenSlime>(ModDataIO.ReadDataAs<int>(__instance, "Aggroer"),
+                        out var aggroer))
                 {
                     fakeFarmer.Position = aggroer.Position;
                     target = fakeFarmer;

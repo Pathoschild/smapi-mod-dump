@@ -15,10 +15,11 @@ using BetterBeehouses.integration;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BetterBeehouses
 {
-    public class ModEntry : Mod, IAssetEditor, IAssetLoader
+    public class ModEntry : Mod
     {
         internal ITranslationHelper i18n => Helper.Translation;
         internal static IMonitor monitor;
@@ -39,6 +40,7 @@ namespace BetterBeehouses
             config = helper.ReadConfig<Config>();
             api = new();
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Content.AssetRequested += AssetRequested;
         }
         private void OnGameLaunched(object sender, GameLaunchedEventArgs ev)
         {
@@ -50,31 +52,19 @@ namespace BetterBeehouses
             harmony.PatchAll();
             PFMPatch.Setup();
             AutomatePatch.Setup();
+            PFMAutomatePatch.Setup();
             config.RegisterModConfigMenu(ModManifest);
         }
         public override object GetApi()
+            => api;
+        private void AssetRequested(object _, AssetRequestedEventArgs ev)
         {
-            return api;
-        }
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return (asset.AssetNameEquals("Mods/aedenthorn.ParticleEffects/dict") && config.Particles) ||
-                asset.AssetNameEquals("Data/ObjectContextTags");
-        }
-        public void Edit<T>(IAssetData asset)
-        {
-            if(asset.AssetNameEquals("Mods/aedenthorn.ParticleEffects/dict"))
-                Utils.AddDictionaryEntry<T>(asset, "tlitookilakin.BetterBeehouses.Bees", "beeParticle.json");
-            else
-                AddTags(asset);
-        }
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals("Mods/BetterBeehouses/Bees");
-        }
-        public T Load<T>(IAssetInfo asset)
-        {
-            return helper.Content.Load<T>("assets/bees.png");
+            if (config.Particles && ev.Name.IsDirectlyUnderPath("Mods/aedenthorn.ParticleEffects/dict"))
+                ev.Edit(data => Utils.AddDictionaryEntry(data, "tlitookilakin.BetterBeehouses.Bees", "beeParticle.json"));
+            else if (ev.Name.IsEquivalentTo("Data/ObjectContextTags"))
+                ev.Edit(AddTags);
+            else if (ev.Name.IsEquivalentTo("Mods/BetterBeehouses/Bees"))
+                ev.LoadFromModFile<Texture2D>("assets/bees.png", AssetLoadPriority.Medium);
         }
         private static void AddTags(IAssetData asset)
         {

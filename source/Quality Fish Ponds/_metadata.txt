@@ -6,12 +6,9 @@ mods:
    Quality Fish Ponds
 
 latest commit:
-   commit 3d197191d24d7134d0a8b99a8dd16a103815a462
+   commit bceef501692445d297689538665ea17e0aed0513
    Author: YTSC <yuriphone01@live.com>
-   Date:   Mon Feb 21 02:04:33 2022 -0300
+   Date:   Sun Jun 26 00:21:50 2022 -0300
    
-       1.1.0
-       -Fixed pond data adding +1 fish
-       -Added config for garanteed Iridium quality
-       -Added compatibility with FishWells
+       Refactoring
    

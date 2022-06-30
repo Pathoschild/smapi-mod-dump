@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Name": "Odd Tree",
+  "Description": "...",
+  "DrawShadow": false,
+
+  "Size": {
+    "X": 7,
+    "Y": 3
+  },
+  "CollisionMap": "OOOOOOO\nOOXXXOO\nOOXXXOO",
+  "ActionTiles": [
+    {
+      "SpecialAction": {
+        "OpenShop": {
+          "Name": "DwarfShop",
+          "Type": "Vanilla"
+        }
+      },
+      "Tile": {
+        "X": 3,
+        "Y": 2
+      }
+    }
+  ]
+}

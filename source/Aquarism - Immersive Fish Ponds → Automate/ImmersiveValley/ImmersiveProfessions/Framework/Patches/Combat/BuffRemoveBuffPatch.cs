@@ -12,23 +12,22 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
+using System;
 
 #endregion using directives
 
-
 [UsedImplicitly]
-internal class BuffRemoveBuffPatch : BasePatch
+internal sealed class BuffRemoveBuffPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly int _which = ModEntry.Manifest.UniqueID.GetHashCode() + (int) Profession.Piper;
+    private static readonly int _piperBuffId = (ModEntry.Manifest.UniqueID + Profession.Piper).GetHashCode();
 
     /// <summary>Construct an instance.</summary>
     internal BuffRemoveBuffPatch()
     {
-        Original = RequireMethod<Buff>(nameof(Buff.removeBuff));
+        Target = RequireMethod<Buff>(nameof(Buff.removeBuff));
     }
 
     #region harmony patches
@@ -36,7 +35,7 @@ internal class BuffRemoveBuffPatch : BasePatch
     [HarmonyPrefix]
     private static void BuffUpdatePrefix(Buff __instance)
     {
-        if (__instance.which == _which && __instance.millisecondsDuration <= 0)
+        if (__instance.which == _piperBuffId && __instance.millisecondsDuration <= 0)
             Array.Clear(ModEntry.PlayerState.AppliedPiperBuffs, 0, 12);
     }
 

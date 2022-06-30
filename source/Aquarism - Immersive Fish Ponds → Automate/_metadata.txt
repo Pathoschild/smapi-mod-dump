@@ -6,9 +6,9 @@ mods:
    Aquarism - Immersive Fish Ponds → Automate
 
 latest commit:
-   commit 2501904ace546f1344f42a99b73318c5f6d98f1e
+   commit 90475d316b8e0c9d24fb5694f6b6ac360845b480
    Author: Mat L <daleao.matheus@gmail.com>
-   Date:   Fri May 6 21:44:02 2022 -0300
+   Date:   Mon Jun 27 21:14:14 2022 -0300
    
-       Better Rings compatibility for Fellowship.
+       Re-add flower meads.
    

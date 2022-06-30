@@ -17,6 +17,5 @@
 </ItemGroup>
 <ItemGroup>
   <Folder Include="assets\Misc\" />
-  <Folder Include="Framework\Items\Misc\" />
 </ItemGroup>
 </Project>

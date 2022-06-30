@@ -16,7 +16,7 @@ namespace LessMiniShippingBin;
 public class ModConfig
 {
     private int minishippingcapacity = 36;
-    private int juminocapcity = 36;
+    private int juminocapcity = 9;
 
     /// <summary>
     /// Gets or sets capacity of the mini shipping bin.

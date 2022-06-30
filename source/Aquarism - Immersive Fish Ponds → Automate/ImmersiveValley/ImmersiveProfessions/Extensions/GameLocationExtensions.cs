@@ -12,18 +12,18 @@ namespace DaLion.Stardew.Professions.Extensions;
 
 #region using directives
 
-using System.Collections.Generic;
-using System.Linq;
+using Common.Extensions;
+using Framework;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using xTile.Dimensions;
-
-using Common.Extensions;
-
 using SUtility = StardewValley.Utility;
 
 #endregion using directives
@@ -32,8 +32,8 @@ using SUtility = StardewValley.Utility;
 public static class GameLocationExtensions
 {
     /// <summary>Whether any farmer in this location has a specific profession.</summary>
-    /// <param name="profession">The profession.</param>
-    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, Profession profession)
+    /// <param name="profession">The <see cref="IProfession"/> to check.</param>
+    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, IProfession profession)
     {
         if (!Context.IsMultiplayer && location.Equals(Game1.currentLocation))
             return Game1.player.HasProfession(profession);
@@ -41,9 +41,9 @@ public static class GameLocationExtensions
     }
 
     /// <summary>Whether any farmer in this location has a specific profession.</summary>
-    /// <param name="profession">The profession.</param>
+    /// <param name="profession">The <see cref="IProfession"/> to check.</param>
     /// <param name="farmers">All the farmer instances in the location with the given profession.</param>
-    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, Profession profession,
+    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, IProfession profession,
         out IList<Farmer> farmers)
     {
         farmers = new List<Farmer>();
@@ -57,10 +57,11 @@ public static class GameLocationExtensions
         return farmers.Any();
     }
 
-    /// <summary>Find a character with the specified hash code.</summary>
+    /// <summary>Find a character with the specified hash code in this location.</summary>
     /// <typeparam name="T">A subtype of <see cref="Character"/>.</typeparam>
     /// <param name="hash">An integer hash code.</param>
-    public static bool FindCharacterByHash<T>(this GameLocation location, int hash, out T character) where T : Character
+    /// <returns><see langword="true"> if a character with the specified hash was found, otherwise <see langword="false">.</returns>
+    public static bool TryGetCharacterByHash<T>(this GameLocation location, int hash, [NotNullWhen(true)] out T? character) where T : Character
     {
         character = location.characters.OfType<T>().FirstOrDefault(c => c.GetHashCode() == hash);
         return character is not null;
@@ -93,8 +94,7 @@ public static class GameLocationExtensions
     /// <summary>Whether this location can is a dungeon.</summary>
     public static bool IsDungeon(this GameLocation location)
     {
-        return location is MineShaft shaft && !shaft.IsTreasureOrSafeRoom() ||
-               location is BugLand or VolcanoDungeon ||
+        return location is MineShaft or BugLand or VolcanoDungeon ||
                location.NameOrUniqueName.ContainsAnyOf("CrimsonBadlands", "DeepWoods", "Highlands", "RidgeForest",
                    "SpiritRealm", "AsteroidsDungeon");
     }
@@ -110,11 +110,11 @@ public static class GameLocationExtensions
     public static bool IsTileValidForTreasure(this GameLocation location, Vector2 tile)
     {
         return (!location.objects.TryGetValue(tile, out var o) || o == null) &&
-               location.doesTileHaveProperty((int) tile.X, (int) tile.Y, "Spawnable", "Back") != null &&
-               !location.doesEitherTileOrTileIndexPropertyEqual((int) tile.X, (int) tile.Y, "Spawnable", "Back", "F") &&
+               location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Spawnable", "Back") != null &&
+               !location.doesEitherTileOrTileIndexPropertyEqual((int)tile.X, (int)tile.Y, "Spawnable", "Back", "F") &&
                location.isTileLocationTotallyClearAndPlaceable(tile) &&
-               location.getTileIndexAt((int) tile.X, (int) tile.Y, "AlwaysFront") == -1 &&
-               location.getTileIndexAt((int) tile.X, (int) tile.Y, "Front") == -1 && !location.isBehindBush(tile) &&
+               location.getTileIndexAt((int)tile.X, (int)tile.Y, "AlwaysFront") == -1 &&
+               location.getTileIndexAt((int)tile.X, (int)tile.Y, "Front") == -1 && !location.isBehindBush(tile) &&
                !location.isBehindTree(tile);
     }
 
@@ -123,9 +123,9 @@ public static class GameLocationExtensions
     public static bool IsTileClearOfDebris(this GameLocation location, Vector2 tile)
     {
         return (from debris in location.debris
-            where debris.item is not null && debris.Chunks.Count > 0
-            select new Vector2((int) (debris.Chunks[0].position.X / Game1.tileSize) + 1,
-                (int) (debris.Chunks[0].position.Y / Game1.tileSize) + 1)).All(debrisTile => debrisTile != tile);
+                where debris.item is not null && debris.Chunks.Count > 0
+                select new Vector2((int)(debris.Chunks[0].position.X / Game1.tileSize) + 1,
+                    (int)(debris.Chunks[0].position.Y / Game1.tileSize) + 1)).All(debrisTile => debrisTile != tile);
     }
 
     /// <summary>Force a tile to be affected by the hoe.</summary>
@@ -133,9 +133,9 @@ public static class GameLocationExtensions
     public static bool MakeTileDiggable(this GameLocation location, Vector2 tile)
     {
         var (x, y) = tile;
-        if (location.doesTileHaveProperty((int) x, (int) y, "Diggable", "Back") is not null) return true;
+        if (location.doesTileHaveProperty((int)x, (int)y, "Diggable", "Back") is not null) return true;
 
-        var digSpot = new Location((int) x * Game1.tileSize, (int) y * Game1.tileSize);
+        var digSpot = new Location((int)x * Game1.tileSize, (int)y * Game1.tileSize);
         location.Map.GetLayer("Back").PickTile(digSpot, Game1.viewport.Size).Properties["Diggable"] = true;
         return false;
     }

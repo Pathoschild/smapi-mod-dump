@@ -12,28 +12,28 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.CJBCheatsMen
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class ProfessionsCheatSetProfessionPatch : BasePatch
+internal sealed class ProfessionsCheatSetProfessionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ProfessionsCheatSetProfessionPatch()
     {
         try
         {
-            Original = "CJBCheatsMenu.Framework.Cheats.Skills.ProfessionsCheat".ToType().RequireMethod("SetProfession");
+            Target = "CJBCheatsMenu.Framework.Cheats.Skills.ProfessionsCheat".ToType().RequireMethod("SetProfession");
         }
         catch
         {
@@ -45,7 +45,7 @@ internal class ProfessionsCheatSetProfessionPatch : BasePatch
 
     /// <summary>Patch to move bonus health from Defender to Brute.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> ProfessionsCheatSetProfessionTranspiler(
+    private static IEnumerable<CodeInstruction>? ProfessionsCheatSetProfessionTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -59,12 +59,11 @@ internal class ProfessionsCheatSetProfessionPatch : BasePatch
                 .FindFirst(
                     new CodeInstruction(OpCodes.Ldc_I4_S, Farmer.defender)
                 )
-                .SetOperand((int) Profession.Brute);
+                .SetOperand(Profession.Brute.Value);
         }
         catch (Exception ex)
         {
             Log.E($"Failed while moving CJB Profession Cheat health bonus from Defender to Brute.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

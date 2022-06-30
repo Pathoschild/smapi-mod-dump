@@ -12,27 +12,33 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 
 #region using directives
 
-using System;
-using System.Linq;
+using Common;
+using Common.Events;
+using Extensions;
+using GameLoop;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-
-using Extensions;
-using GameLoop;
+using System;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class PiperWarpedEvent : WarpedEvent
+internal sealed class PiperWarpedEvent : WarpedEvent
 {
     private readonly Func<int, double> _pipeChance = x => 19f / (x + 18f);
 
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal PiperWarpedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
         if (e.NewLocation.Equals(e.OldLocation)) return;
 
@@ -40,10 +46,10 @@ internal class PiperWarpedEvent : WarpedEvent
         var hasMonsters = e.NewLocation.HasMonsters();
         if (!isDungeon && !hasMonsters)
         {
-            EventManager.Disable(typeof(PiperUpdateTickedEvent));
+            Manager.Hook<PiperUpdateTickedEvent>();
             return;
         }
-        
+
         if (!isDungeon || e.NewLocation is MineShaft shaft1 && shaft1.isLevelSlimeArea())
             return;
 
@@ -77,36 +83,36 @@ internal class PiperWarpedEvent : WarpedEvent
             switch (e.NewLocation)
             {
                 case MineShaft shaft:
-                {
-                    pipedSlime = new(Vector2.Zero, shaft.mineLevel);
-                    if (shaft.GetAdditionalDifficulty() > 0 &&
-                        r.NextDouble() < Math.Min(shaft.GetAdditionalDifficulty() * 0.1f, 0.5f))
-                        pipedSlime.stackedSlimes.Value = r.NextDouble() < 0.0099999997764825821 ? 4 : 2;
-
-                    shaft.BuffMonsterIfNecessary(pipedSlime);
-                    break;
-                }
-                case Woods:
-                {
-                    pipedSlime = Game1.currentSeason switch
                     {
-                        "fall" => new(Vector2.Zero, r.NextDouble() < 0.5 ? 40 : 0),
-                        "winter" => new(Vector2.Zero, 40),
-                        _ => new(Vector2.Zero, 0)
-                    };
-                    break;
-                }
+                        pipedSlime = new(Vector2.Zero, shaft.mineLevel);
+                        if (shaft.GetAdditionalDifficulty() > 0 &&
+                            r.NextDouble() < Math.Min(shaft.GetAdditionalDifficulty() * 0.1f, 0.5f))
+                            pipedSlime.stackedSlimes.Value = r.NextDouble() < 0.0099999997764825821 ? 4 : 2;
+
+                        shaft.BuffMonsterIfNecessary(pipedSlime);
+                        break;
+                    }
+                case Woods:
+                    {
+                        pipedSlime = Game1.currentSeason switch
+                        {
+                            "fall" => new(Vector2.Zero, r.NextDouble() < 0.5 ? 40 : 0),
+                            "winter" => new(Vector2.Zero, 40),
+                            _ => new(Vector2.Zero, 0)
+                        };
+                        break;
+                    }
                 case VolcanoDungeon:
-                {
-                    pipedSlime = new(Vector2.Zero, 0);
-                    pipedSlime.makeTigerSlime();
-                    break;
-                }
+                    {
+                        pipedSlime = new(Vector2.Zero, 0);
+                        pipedSlime.makeTigerSlime();
+                        break;
+                    }
                 default:
-                {
-                    pipedSlime = new(Vector2.Zero, 121);
-                    break;
-                }
+                    {
+                        pipedSlime = new(Vector2.Zero, 121);
+                        break;
+                    }
             }
 
             // adjust color
@@ -116,9 +122,9 @@ internal class PiperWarpedEvent : WarpedEvent
             }
             else
             {
-                pipedSlime.color.R = (byte) (tamedSlime.color.R + r.Next(-20, 21));
-                pipedSlime.color.G = (byte) (tamedSlime.color.G + r.Next(-20, 21));
-                pipedSlime.color.B = (byte) (tamedSlime.color.B + r.Next(-20, 21));
+                pipedSlime.color.R = (byte)(tamedSlime.color.R + r.Next(-20, 21));
+                pipedSlime.color.G = (byte)(tamedSlime.color.G + r.Next(-20, 21));
+                pipedSlime.color.B = (byte)(tamedSlime.color.B + r.Next(-20, 21));
             }
 
             // spawn
@@ -130,6 +136,6 @@ internal class PiperWarpedEvent : WarpedEvent
         Log.D($"Spawned {pipedCount} Slimes after {raisedSlimes.Length} attempts.");
 
         if (pipedCount > 0 || e.NewLocation.characters.Any(npc => npc is GreenSlime))
-            EventManager.Enable(typeof(PiperUpdateTickedEvent));
+            Manager.Hook<PiperUpdateTickedEvent>();
     }
 }

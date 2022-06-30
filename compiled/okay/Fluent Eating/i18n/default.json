@@ -1,0 +1,14 @@
+﻿{
+  "threshold.label": "Threshold",
+  "toggle-enabled.label": "Toggle Enabled",
+  "stamina.label": "Stamina",
+  "health.label": "Health",
+  "auto-eat.description": "If you lose more health/stamina than your current state in one shot, the auto-eat won't be triggered. Instead, You'll pass out as per usual.",
+  "advanced.section": "Advanced",
+  "toggle-buff.label": "Toggle Maintain Buff",
+  "maintain-buff.label": "Maintain buff",
+  "buff.description": "If enabled, player will eat the first buff food and/or drink (from top-left of the backpack) to maintain their buffs. Otherwise, any buff food won't be eaten.",
+  "disable-buff-new-day.label": "Disable Buffing on new day",
+  "skip-eating.label": "Skip Eating Animation",
+  "eating.message": "You consumed {{name}} fluently."
+}

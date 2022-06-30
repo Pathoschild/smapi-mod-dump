@@ -12,29 +12,32 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
-using System;
-using System.Linq;
+using Common;
+using Common.Events;
+using Common.Extensions;
+using Extensions;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-
-using Common.Extensions;
-using Extensions;
+using System;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class StaticSavingEvent : SavingEvent
+internal sealed class StaticSavingEvent : SavingEvent
 {
     /// <summary>Construct an instance.</summary>
-    internal StaticSavingEvent()
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal StaticSavingEvent(ProfessionEventManager manager)
+        : base(manager)
     {
-        this.Enable();
+        AlwaysHooked = true;
     }
 
     /// <inheritdoc />
-    protected override void OnSavingImpl(object sender, SavingEventArgs e)
+    protected override void OnSavingImpl(object? sender, SavingEventArgs e)
     {
         // clean rogue data
         Log.D("[ModData]: Checking for rogue data fields...");
@@ -71,17 +74,15 @@ internal class StaticSavingEvent : SavingEvent
                     continue;
                 }
 
-                if (!Enum.TryParse<DataField>(split[2], out var field))
+                if (!Enum.TryParse<ModData>(split[2], out var field))
                 {
                     data.Remove(key);
                     ++count;
                     continue;
                 }
 
-                if (field >= DataField.ForgottenRecipesDict) continue;
-
-                var profession = Enum.Parse<Profession>(field.ToString().SplitCamelCase()[0]);
-                if (Game1.player.HasProfession(profession)) continue;
+                if (!Profession.TryFromName(field.ToString().SplitCamelCase()[0], out var profession) ||
+                    Game1.player.HasProfession(profession)) continue;
 
                 data.Remove(key);
                 ++count;

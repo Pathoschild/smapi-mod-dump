@@ -33,7 +33,7 @@ namespace MarketDay.Shop
 
         private const int DisplayChestHidingOffsetY = 36;
 
-        public string ShopKey => IsPlayerShop() ? ShopName : $"{ContentPack.Manifest.UniqueID}/{ShopName}";
+        public string ShopKey => IsPlayerShop ? ShopName : $"{ContentPack.Manifest.UniqueID}/{ShopName}";
         public long PlayerID;
 
         public Vector2 Origin
@@ -46,13 +46,7 @@ namespace MarketDay.Shop
             }
         }
 
-        public Vector2 OwnerTile
-        {
-            get
-            {
-                return Origin + new Vector2(3, 2);
-            }
-        }
+        public Vector2 OwnerTile => Origin + new Vector2(3, 2);
 
         public const string GrangeChestKey = "GrangeDisplay";
         private Chest? GrangeChest => FindDisplayChest();
@@ -72,21 +66,36 @@ namespace MarketDay.Shop
 
         private Dictionary<NPC, int> recentlyLooked = new();
         private Dictionary<NPC, int> recentlyTended = new();
-        private List<SalesRecord> Sales = new();
+        internal List<SalesRecord> Sales = new();
 
         public Texture2D? OpenSign;
         public Texture2D? ClosedSign;
 
         // state queries
-        public bool IsPlayerShop()
-        {
-            return PlayerID != 0;
-        }
+
+        public bool IsPlayerShop => PlayerID != 0;
 
         public string? Owner()
         {
-            if (IsPlayerShop()) return ShopName.Replace("Farmer:", "");
+            if (IsPlayerShop) return ShopName.Replace("Farmer:", "");
             return NpcName.Length > 0 ? NpcName : null;
+        }
+
+        private Character? OwnerCharacter
+        {
+            get
+            {
+                if (Owner() is null) return null; 
+                if (IsPlayerShop)
+                {
+                    return Game1.getAllFarmers().FirstOrDefault(f => f.Name == Owner());
+                }
+                foreach (var c in StardewValley.Utility.getAllCharacters())
+                {
+                    if (c.Name == Owner()) return c;
+                }
+                return null;
+            }
         }
 
         private static bool OutsideOpeningHours =>
@@ -110,7 +119,7 @@ namespace MarketDay.Shop
             SetSharedValue(SalesTodayKey, 0);
             SetSharedValue(GoldTodayKey, 0);
 
-            if (!IsPlayerShop())
+            if (!IsPlayerShop)
             {
                 StockChestForTheDay();
                 RestockGrangeFromChest(true);
@@ -142,7 +151,7 @@ namespace MarketDay.Shop
             if (!Context.IsMainPlayer) return;
             if (!IsMarketDay) return;
 
-            if (IsPlayerShop())
+            if (IsPlayerShop)
             {
                 if (MarketDay.Progression.AutoRestock > 0) RestockGrangeFromChest();
             }
@@ -161,9 +170,9 @@ namespace MarketDay.Shop
                 return;
             }
             
-            Log($"    EmptyGrangeAndDestroyFurniture: IsPlayerShop: {IsPlayerShop()}", LogLevel.Trace);
+            Log($"    EmptyGrangeAndDestroyFurniture: IsPlayerShop: {IsPlayerShop}", LogLevel.Trace);
 
-            if (IsPlayerShop())
+            if (IsPlayerShop)
             {
                 MarketDay.IncrementSharedValue(MarketDay.TotalGoldKey, GetSharedValue(GoldTodayKey));
                 SendSalesReport();
@@ -293,6 +302,7 @@ namespace MarketDay.Shop
             StockChest.modData[$"{MarketDay.SMod.ModManifest.UniqueID}/{key}"] = val;
         }
 
+        // ReSharper disable once InconsistentNaming
         internal void InteractWithNearbyNPCs()
         {
             if (!Context.IsMainPlayer) return;
@@ -309,7 +319,7 @@ namespace MarketDay.Shop
                 return;
             }
 
-            if (IsPlayerShop())
+            if (IsPlayerShop)
             {
                 if (PlayerID != Game1.player.UniqueMultiplayerID)
                 {
@@ -333,7 +343,7 @@ namespace MarketDay.Shop
         /// <summary>
         /// Opens the shop if conditions are met. If not, display the closed message
         /// </summary>
-        public void DisplayShop(bool debug = false)
+        public void DisplayShop(bool debug = false) 
         {
             MarketDay.Log($"Attempting to open the shop \"{ShopName}\" at {Game1.timeOfDay}", LogLevel.Debug, true);
 
@@ -417,6 +427,14 @@ namespace MarketDay.Shop
 
         private int[] getSellPriceArrayFromShopStock(Item item)
         {
+            if (StockManager?.ItemPriceAndStock is null)
+            {
+                MarketDay.Log($"getSellPriceArrayFromShopStock: no Stockmanager or no StockManager.ItemPriceAndStock", LogLevel.Warn);
+                return new[]
+                {
+                    StardewValley.Utility.getSellToStorePriceOfItem(item, false)
+                };
+            }
             foreach (var (stockItem, priceAndQty) in StockManager.ItemPriceAndStock)
             {
                 if (!ItemsUtil.Equal(item, stockItem)) continue;
@@ -426,8 +444,7 @@ namespace MarketDay.Shop
             MarketDay.Log($"getSellPriceArrayFromShopStock: returning empty for item {item.Name}", LogLevel.Warn);
             return new[]
             {
-                (int) (StardewValley.Utility.getSellToStorePriceOfItem(item, false) *
-                       SellPriceMultiplier(item, null))
+                StardewValley.Utility.getSellToStorePriceOfItem(item, false)
             };
         }
 
@@ -451,12 +468,7 @@ namespace MarketDay.Shop
 
                 // var price = getSellPriceFromShopStock(stockItem);
 
-                var price = getSellPriceArrayFromShopStock(stockItem)
-                            ?? new[]
-                            {
-                                (int) (StardewValley.Utility.getSellToStorePriceOfItem(stockItem, false) *
-                                       SellPriceMultiplier(stockItem, null))
-                            };
+                var price = getSellPriceArrayFromShopStock(stockItem);
 
                 var sellItem = stockItem.getOne();
                 sellItem.Stack = 1;
@@ -537,17 +549,7 @@ namespace MarketDay.Shop
                 }
 
                 if (MatureContent && NPCUtility.IsChild(npc)) continue;
-
-                // // debug: stock in chest
-                // var itemsInChest = GrangeChest.items.Where(gi => gi is not null)
-                //     .OrderByDescending(a => ItemPreferenceIndex(a, npc));
-                // foreach (var stockItem in itemsInChest)
-                // {
-                //     MarketDay.Log(
-                //         $"    ItemPreferenceIndex({stockItem.Name}, {npc.Name}) = {ItemPreferenceIndex(stockItem, npc)}",
-                //         LogLevel.Debug);
-                // }
-
+                
                 // find what the NPC likes best
                 var best = GrangeChest.items
                     .Where(gi => gi is not null && ItemPreferenceIndex(gi, npc) > 0)
@@ -555,13 +557,30 @@ namespace MarketDay.Shop
                 if (best is null)
                 {
                     // no stock 
+                    if (GrangeChest.items.Where(gi => gi is not null).ToList().Count > 0)
+                    {
+                        // debug: stock in chest
+
+                        MarketDay.Log($"    {ShopName} has stock but {npc.Name} doesn't like any of it", LogLevel.Trace);
+
+                        var itemsInChest = GrangeChest.items
+                            .Where(gi => gi is not null)
+                            .OrderByDescending(a => ItemPreferenceIndex(a, npc));
+                        foreach (var stockItem in itemsInChest)
+                        {
+                            MarketDay.Log(
+                                $"    ItemPreferenceIndex({stockItem.Name}, {npc.Name}) = {ItemPreferenceIndex(stockItem, npc)}",
+                                LogLevel.Trace);
+                        }
+
+                    }
                     IncrementSharedValue(GrumpyVisitorsTodayKey);
                     npc.doEmote(12);
                     return;
                 }
 
                 // buy it
-                if (IsPlayerShop()) AddToPlayerFunds(best, npc);
+                SellToNPC(best, npc);
                 var i = GrangeChest.items.IndexOf(best);
                 GrangeChest.items[i] = null;
 
@@ -605,7 +624,7 @@ namespace MarketDay.Shop
             }
         }
 
-        private void AddToPlayerFunds(Item item, NPC npc)
+        private void SellToNPC(Item item, NPC npc)
         {
             Debug.Assert(Context.IsMainPlayer, "AddToPlayerFunds: only main player can access Sales");
 
@@ -613,6 +632,24 @@ namespace MarketDay.Shop
             var salePrice = StardewValley.Utility.getSellToStorePriceOfItem(item, false);
             salePrice = Convert.ToInt32(salePrice * mult);
 
+            var newSale = new SalesRecord()
+            {
+                item = item,
+                price = salePrice,
+                npc = npc,
+                mult = mult,
+                timeOfDay = Game1.timeOfDay
+            };
+            Sales.Add(newSale);
+
+            if (!IsPlayerShop) return;
+            IncrementSharedValue(SalesTodayKey);
+            IncrementSharedValue(GoldTodayKey, salePrice);
+            AddToPlayerFunds(salePrice);
+        }
+
+        private void AddToPlayerFunds(int salePrice)
+        {
             if (Game1.player.team.useSeparateWallets.Value)
             {
                 try
@@ -632,22 +669,6 @@ namespace MarketDay.Shop
             {
                 Game1.player.Money += salePrice;
             }
-
-            Log($"Item {item.ParentSheetIndex} sold for {salePrice}", LogLevel.Trace);
-
-            var newSale = new SalesRecord()
-            {
-                item = item,
-                price = salePrice,
-                npc = npc,
-                mult = mult,
-                timeOfDay = Game1.timeOfDay
-            };
-
-            IncrementSharedValue(SalesTodayKey);
-            IncrementSharedValue(GoldTodayKey, salePrice);
-
-            Sales.Add(newSale);
         }
 
         public void ShowSummary()
@@ -754,15 +775,12 @@ namespace MarketDay.Shop
             return message;
         }
 
-        private double SellPriceMultiplier(Item item, NPC? npc)
+        private double SellPriceMultiplier(Item item, NPC npc)
         {
             var mult = 1.0;
 
             // * general quality of display
             mult += GetPointsMultiplier(GetGrangeScore());
-
-            // * farmer is nearby
-            if (Game1.player.currentLocation.Name == "Town") mult += 0.2;
 
             // * value of item on sign
             if (ShopSign?.displayItem.Value is Object o)
@@ -771,9 +789,7 @@ namespace MarketDay.Shop
                 signSellPrice = Math.Min(signSellPrice, 1000);
                 mult += signSellPrice / 1000.0 / 10.0;
             }
-
-            if (npc is null) return Math.Min(mult, MarketDay.Progression.SellPriceMultiplierLimit);
-
+            
             // * gift taste
             switch (GetGiftTasteForThisItem(item, npc))
             {
@@ -789,27 +805,50 @@ namespace MarketDay.Shop
             var hearts = Game1.player.getFriendshipHeartLevelForNPC(npc.Name);
             mult += hearts / 100.0;
 
+            mult = Math.Min(mult, MarketDay.Progression.SellPriceMultiplierLimit);
+
             // * talked today;
             if (Game1.player.hasPlayerTalkedToNPC(npc.Name)) mult += 0.1;
+            
+            // * owner or owner's spouse is nearby
+            if (OwnerCharacter?.currentLocation.Name == "Town") mult += 0.2;    
+            else if (OwnerCharacter is Farmer farmer)
+            {
+                if (farmer.getSpouse().currentLocation.Name == "Town") mult += 0.2;
+            }
 
-            return Math.Min(mult, MarketDay.Progression.SellPriceMultiplierLimit);
+            return mult;
         }
 
         private int GetGiftTasteForThisItem(Item item, NPC npc)
         {
-            int taste;
+            int taste = IsPlayerShop ? NPC.gift_taste_dislike : NPC.gift_taste_like;
             try
             {
                 // so many other mods hack up NPCs that we have to wrap this
                 taste = npc.getGiftTasteForThisItem(item);
+                MarketDay.Log($"GetGiftTasteForThisItem: {item.Name} for {npc.Name}: {TasteName(taste)}", LogLevel.Debug, true);
             }
             catch (Exception)
             {
                 // stop players selling rubbish but also stop NPCs hating NPC merch
-                taste = IsPlayerShop() ? NPC.gift_taste_dislike : NPC.gift_taste_like;
+                MarketDay.Log($"GetGiftTasteForThisItem: exception while checking {item.Name} for {npc.Name}", LogLevel.Warn);
             }
 
             return taste;
+        }
+
+        private string TasteName(int taste)
+        {
+            return taste switch
+            {
+                NPC.gift_taste_dislike => "dislike",
+                NPC.gift_taste_hate => "hate",
+                NPC.gift_taste_like => "like",
+                NPC.gift_taste_love => "love",
+                NPC.gift_taste_neutral => "neutral",
+                _ => $"unknown [{taste}]"
+            };
         }
 
         private double ItemPreferenceIndex(Item item, NPC npc)
@@ -840,7 +879,9 @@ namespace MarketDay.Shop
             if (location is null) return new List<NPC>();
 
             var nearby = (from npc in location.characters
-                where npc.getTileX() >= Origin.X && npc.getTileX() <= Origin.X + 2 && npc.getTileY() == Origin.Y + 4
+                where npc.getTileX() >= Origin.X 
+                      && npc.getTileX() <= Origin.X + 3 
+                      && npc.getTileY() == (int)Origin.Y + 4
                 select npc).ToList();
             return nearby;
         }
@@ -852,7 +893,7 @@ namespace MarketDay.Shop
             return Sales.Any(sale => sale.npc == npc && sale.timeOfDay > Game1.timeOfDay - 100);
         }
 
-        internal void MakeFurniture(Vector2 OriginTile)
+        private void MakeFurniture(Vector2 OriginTile)
         {
             Log($"MakeFurniture [{OriginTile}]", LogLevel.Trace);
 
@@ -982,7 +1023,7 @@ namespace MarketDay.Shop
         private void MakeStorageChest(GameLocation location, Vector2 OriginTile)
         {
             var VisibleChestPosition = OriginTile + new Vector2(3, 1);
-            string owner = IsPlayerShop()
+            string owner = IsPlayerShop
                 ? ShopName.Replace("Farmer:", "")
                 : NpcName;
 
@@ -1136,7 +1177,7 @@ namespace MarketDay.Shop
             }
 
             var restockLimitRemaining =
-                IsPlayerShop() ? MarketDay.Progression.AutoRestock : MarketDay.Config.RestockItemsPerHour;
+                IsPlayerShop ? MarketDay.Progression.AutoRestock : MarketDay.Config.RestockItemsPerHour;
 
             for (var j = 0; j < GrangeChest.items.Count; j++)
             {
@@ -1146,7 +1187,7 @@ namespace MarketDay.Shop
                     return;
                 }
 
-                if (restockLimitRemaining <= 0) return;
+                if (!fullRestock && restockLimitRemaining <= 0) return;
                 if (GrangeChest.items[j] != null) continue;
 
                 var stockItem = StockChest.items[Game1.random.Next(StockChest.items.Count)];
@@ -1308,7 +1349,7 @@ namespace MarketDay.Shop
             if (MarketDay.Config.ShowShopPositions)
             {
                 var town = Game1.getLocationFromName("Town");
-                var tileProperty = TileUtility.GetTileProperty(town, "Back", Origin);
+                var tileProperty = MapUtility.GetTileProperty(town, "Back", Origin);
                 if (tileProperty is not null)
                 {
                     if (tileProperty.TryGetValue($"{MarketDay.SMod.ModManifest.UniqueID}.Position",
@@ -1378,8 +1419,8 @@ namespace MarketDay.Shop
 
 
             var signLoc = center - new Vector2(
-                (int) (MarketDay.BlankSign.Width * Game1.pixelZoom / 2),
-                (int) (MarketDay.BlankSign.Height * Game1.pixelZoom / 2));
+                MarketDay.BlankSign.Width * Game1.pixelZoom / 2,
+                MarketDay.BlankSign.Height * Game1.pixelZoom / 2);
 
             spriteBatch.Draw(
                 texture: MarketDay.BlankSign,

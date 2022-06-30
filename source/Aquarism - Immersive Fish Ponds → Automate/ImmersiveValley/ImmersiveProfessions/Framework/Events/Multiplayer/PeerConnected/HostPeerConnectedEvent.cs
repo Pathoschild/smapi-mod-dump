@@ -12,30 +12,32 @@ namespace DaLion.Stardew.Professions.Framework.Events.Multiplayer;
 
 #region using directives
 
+using Common.Events;
+using Extensions;
+using GameLoop;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
-using Content;
-using GameLoop;
-using Extensions;
-
 #endregion using directives
 
 [UsedImplicitly]
-internal class HostPeerConnectedEvent : PeerConnectedEvent
+internal sealed class HostPeerConnectedEvent : PeerConnectedEvent
 {
-    /// <inheritdoc />
-    protected override void OnPeerConnectedImpl(object sender, PeerConnectedEventArgs e)
-    {
-        EventManager.Enable(typeof(ToggledUltimateModMessageReceivedEvent),
-            typeof(RequestGlobalEventModMessageReceivedEvent), typeof(RequestUpdateDataModMessageReceivedEvent),
-            typeof(RequestUpdateHostStateModMessageReceivedEvent));
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal HostPeerConnectedEvent(ProfessionEventManager manager)
+        : base(manager) { }
 
-        if (Game1.getFarmer(e.Peer.PlayerID).HasProfession(Profession.Aquarist))
-            EventManager.Enable(typeof(HostFishPondDataRequestedEvent));
+    /// <inheritdoc />
+    protected override void OnPeerConnectedImpl(object? sender, PeerConnectedEventArgs e)
+    {
+        Manager.Hook<ToggledUltimateModMessageReceivedEvent>();
+        Manager.Hook<RequestGlobalEventModMessageReceivedEvent>();
+        Manager.Hook<RequestUpdateDataModMessageReceivedEvent>();
+        Manager.Hook<RequestUpdateHostStateModMessageReceivedEvent>();
 
         if (Game1.getFarmer(e.Peer.PlayerID).HasProfession(Profession.Conservationist))
-            EventManager.Enable(typeof(HostConservationismDayEndingEvent));
+            Manager.Hook<HostConservationismDayEndingEvent>();
     }
 }

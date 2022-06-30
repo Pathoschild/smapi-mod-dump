@@ -8,13 +8,13 @@
 **
 *************************************************/
 
-#nullable enable
 namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
@@ -22,22 +22,21 @@ using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Projectiles;
-
-using DaLion.Common.Extensions.Reflection;
-using Extensions;
-using Ultimate;
+using System;
+using System.Reflection;
+using Ultimates;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class BasicProjectileBehaviorOnCollisionWithMonsterPatch : BasePatch
+internal sealed class BasicProjectileBehaviorOnCollisionWithMonsterPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly MethodInfo _ExplosionAnimation = typeof(BasicProjectile).RequireMethod("explosionAnimation");
+    private static Action<BasicProjectile, GameLocation>? _ExplosionAnimation;
 
     /// <summary>Construct an instance.</summary>
     internal BasicProjectileBehaviorOnCollisionWithMonsterPatch()
     {
-        Original = RequireMethod<BasicProjectile>(nameof(BasicProjectile.behaviorOnCollisionWithMonster));
+        Target = RequireMethod<BasicProjectile>(nameof(BasicProjectile.behaviorOnCollisionWithMonster));
     }
 
     #region harmony patches
@@ -55,7 +54,7 @@ internal class BasicProjectileBehaviorOnCollisionWithMonsterPatch : BasePatch
             if (n is not Monster monster) return true; // run original logic
 
             var firer = ___theOneWhoFiredMe.Get(location) is Farmer farmer ? farmer : Game1.player;
-            
+
             // get overcharge
             var bulletPower = 1f;
             if (ModEntry.PlayerState.OverchargedBullets.TryGetValue(__instance.GetHashCode(), out var overcharge))
@@ -68,7 +67,9 @@ internal class BasicProjectileBehaviorOnCollisionWithMonsterPatch : BasePatch
             }
             else
             {
-                _ExplosionAnimation.Invoke(__instance, new object?[] {location});
+                _ExplosionAnimation ??= typeof(BasicProjectile).RequireMethod("explosionAnimation")
+                    .CompileUnboundDelegate<Action<BasicProjectile, GameLocation>>();
+                _ExplosionAnimation(__instance, location);
                 ModEntry.PlayerState.OverchargedBullets.Remove(__instance.GetHashCode());
             }
 
@@ -85,7 +86,7 @@ internal class BasicProjectileBehaviorOnCollisionWithMonsterPatch : BasePatch
             }
 
             // increment Desperado ultimate meter
-            if (firer.IsLocalPlayer && ModEntry.PlayerState.RegisteredUltimate is DeathBlossom {IsActive: false})
+            if (firer.IsLocalPlayer && ModEntry.PlayerState.RegisteredUltimate is DeathBlossom { IsActive: false })
                 ModEntry.PlayerState.RegisteredUltimate.ChargeValue += (didStun ? 18 : 12) - 10 * firer.health / firer.maxHealth;
 
             return false; // don't run original logic

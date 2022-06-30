@@ -1,0 +1,218 @@
+{
+  "Buildings": {
+    "Coop": {
+      "GoldCost": 4000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 300
+        },
+        {
+          "ItemID": 390,
+          "Amount": 100
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Big Coop": {
+      "GoldCost": 10000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 400
+        },
+        {
+          "ItemID": 390,
+          "Amount": 150
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Deluxe Coop": {
+      "GoldCost": 20000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 500
+        },
+        {
+          "ItemID": 390,
+          "Amount": 200
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Barn": {
+      "GoldCost": 6000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 350
+        },
+        {
+          "ItemID": 390,
+          "Amount": 150
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Big Barn": {
+      "GoldCost": 12000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 450
+        },
+        {
+          "ItemID": 390,
+          "Amount": 200
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Deluxe Barn": {
+      "GoldCost": 25000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 550
+        },
+        {
+          "ItemID": 390,
+          "Amount": 300
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Shed": {
+      "GoldCost": 15000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 300
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Big Shed": {
+      "GoldCost": 20000,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 550
+        },
+        {
+          "ItemID": 390,
+          "Amount": 300
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Silo": {
+      "GoldCost": 1000,
+      "Items": [
+        {
+          "ItemID": 390,
+          "Amount": 100
+        },
+        {
+          "ItemID": 330,
+          "Amount": 10
+        },
+        {
+          "ItemID": 334,
+          "Amount": 5
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Mill": {
+      "GoldCost": 2500,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 150
+        },
+        {
+          "ItemID": 390,
+          "Amount": 50
+        },
+        {
+          "ItemID": 428,
+          "Amount": 4
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Well": {
+      "GoldCost": 1000,
+      "Items": [
+        {
+          "ItemID": 390,
+          "Amount": 75
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Fish Pond": {
+      "GoldCost": 5000,
+      "Items": [
+        {
+          "ItemID": 390,
+          "Amount": 200
+        },
+        {
+          "ItemID": 152,
+          "Amount": 5
+        },
+        {
+          "ItemID": 153,
+          "Amount": 5
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Stable": {
+      "GoldCost": 10000,
+      "Items": [
+        {
+          "ItemID": 709,
+          "Amount": 100
+        },
+        {
+          "ItemID": 335,
+          "Amount": 5
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Slime Hutch": {
+      "GoldCost": 10000,
+      "Items": [
+        {
+          "ItemID": 390,
+          "Amount": 500
+        },
+        {
+          "ItemID": 338,
+          "Amount": 10
+        },
+        {
+          "ItemID": 337,
+          "Amount": 1
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Shipping Bin": {
+      "GoldCost": 250,
+      "Items": [
+        {
+          "ItemID": 388,
+          "Amount": 150
+        }
+      ],
+      "DaysToBuild": 2
+    }
+  }
+}

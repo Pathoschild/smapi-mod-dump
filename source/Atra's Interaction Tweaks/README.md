@@ -8,6 +8,8 @@ for queries and analysis.**
 
 # StopRugRemoval
 
+**THIS REPOSITORY IS AN ARCHIVE - PLEASE SEE THE UPDATED REPO AT [https://github.com/atravita-mods/StardewMods](https://github.com/atravita-mods/StardewMods)**
+
 A collection of little tweaks: don't pick up rugs if there's something on them! Place grass under things! Confirmation on bomb placement! Right click the butterfly hutch to spawn more butterflies! Gates no longer randomly pop off!
 
 #### Installation

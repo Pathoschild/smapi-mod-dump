@@ -12,36 +12,36 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Data;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Events.GameLoop.DayEnding;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using Microsoft.Xna.Framework;
+using Sounds;
+using StardewValley;
+using StardewValley.Monsters;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using Microsoft.Xna.Framework;
-using StardewValley;
-using StardewValley.Monsters;
-using StardewValley.Tools;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Events.GameLoop.DayEnding;
-using Extensions;
-using Sounds;
-using Ultimate;
-
+using Ultimates;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class GameLocationDamageMonsterPatch : BasePatch
+internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal GameLocationDamageMonsterPatch()
     {
-        Original = RequireMethod<GameLocation>(nameof(GameLocation.damageMonster),
+        Target = RequireMethod<GameLocation>(nameof(GameLocation.damageMonster),
             new[]
             {
                 typeof(Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int),
@@ -56,7 +56,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
     ///     bonus from Desperado to Poacher Ambush + perform Poacher steal and Piper buff actions + increment Piper Ultimate meter.
     /// </summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> GameLocationDamageMonsterTranspiler(
+    private static IEnumerable<CodeInstruction>? GameLocationDamageMonsterTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -69,12 +69,11 @@ internal class GameLocationDamageMonsterPatch : BasePatch
             helper
                 .FindProfessionCheck(Farmer.scout) // find index of scout check
                 .Advance()
-                .SetOperand((int) Profession.Poacher); // replace with Poacher check
+                .SetOperand(Profession.Poacher.Value); // replace with Poacher check
         }
         catch (Exception ex)
         {
             Log.E($"Failed while moving modded bonus crit chance from Scout to Poacher.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -86,16 +85,16 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Fighter,
+                .FindProfessionCheck(Profession.Fighter.Value,
                     true) // find index of brute check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 1.1f) // brute damage multiplier
                 )
                 .AddLabels(isNotPrestiged)
                 .Insert(
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 10) // arg 10 = Farmer who
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)10) // arg 10 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Fighter + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Fighter.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_R4, 1.2f),
@@ -107,7 +106,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching prestiged Fighter bonus damage.\nHelper returned {ex}");
-            transpilationFailed = true;
+
             return null;
         }
 
@@ -117,15 +116,16 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck((int) Profession.Brute,
+                .FindProfessionCheck(Profession.Brute.Value,
                     true) // find index of brute check
                 .Retreat(2)
                 .GetOperand(out var dontBuffDamage)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, dontBuffDamage),
                     // check for local player
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 10), // arg 10 = Farmer who
-                    new CodeInstruction(OpCodes.Callvirt, typeof(Farmer).RequirePropertyGetter(nameof(Farmer.IsLocalPlayer)))
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)10), // arg 10 = Farmer who
+                    new CodeInstruction(OpCodes.Callvirt,
+                        typeof(Farmer).RequirePropertyGetter(nameof(Farmer.IsLocalPlayer)))
                 )
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 1.15f) // brute damage multiplier
@@ -138,7 +138,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.BruteRageCounter))),
                     new CodeInstruction(OpCodes.Conv_R4),
-                    new CodeInstruction(OpCodes.Ldc_R4, Frenzy.PCT_INCREMENT_PER_RAGE_F),
+                    new CodeInstruction(OpCodes.Ldc_R4, UndyingFrenzy.PCT_INCREMENT_PER_RAGE_F),
                     new CodeInstruction(OpCodes.Mul),
                     new CodeInstruction(OpCodes.Add)
                 );
@@ -146,7 +146,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Brute bonus damage.\nHelper returned {ex}");
-            transpilationFailed = true;
+
             return null;
         }
 
@@ -170,11 +170,12 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                 )
                 .Advance()
                 .ReplaceWith(
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 10) // was cgt ; arg 10 = Farmer who
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)10) // was cgt ; arg 10 = Farmer who
                 )
                 .Advance()
                 .Insert(
-                    new CodeInstruction(OpCodes.Callvirt, typeof(Farmer).RequirePropertyGetter(nameof(Farmer.IsLocalPlayer))),
+                    new CodeInstruction(OpCodes.Callvirt,
+                        typeof(Farmer).RequirePropertyGetter(nameof(Farmer.IsLocalPlayer))),
                     new CodeInstruction(OpCodes.Brfalse_S, dontBuffCritPow)
                 )
                 .Advance()
@@ -203,7 +204,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while moving Desperado bonus crit damage to Poacher after-ult.\nHelper returned {ex}");
-            transpilationFailed = true;
+
             return null;
         }
 
@@ -225,21 +226,22 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                 .StripLabels(out var labels) // backup and remove branch labels
                 .InsertWithLabels(
                     labels, // restore backed-up labels
-                    // prepare arguments
+                            // prepare arguments
                     new CodeInstruction(OpCodes.Ldloc_S, damageAmount),
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 4), // arg 4 = bool isBomb
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4), // arg 4 = bool isBomb
                     new CodeInstruction(OpCodes.Ldloc_S, didCrit),
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 8), // arg 8 = float critMultiplier
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)8), // arg 8 = float critMultiplier
                     new CodeInstruction(OpCodes.Ldloc_2), // local 2 = Monster monster
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 10), // arg 10 = Farmer who
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)10), // arg 10 = Farmer who
                     new CodeInstruction(OpCodes.Call,
                         typeof(GameLocationDamageMonsterPatch).RequireMethod(nameof(DamageMonsterSubroutine)))
                 );
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while injecting modded Poacher snatch attempt plus Brute Fury and Poacher Cold Blood gauges.\nHelper returned {ex}");
-            transpilationFailed = true;
+            Log.E(
+                $"Failed while injecting modded Poacher snatch attempt plus Brute Fury and Poacher Cold Blood gauges.\nHelper returned {ex}");
+
             return null;
         }
 
@@ -261,9 +263,9 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         if (who.HasProfession(Profession.Brute))
         {
             ModEntry.PlayerState.SecondsSinceLastCombat = 0;
-            
+
             if (who.CurrentTool is MeleeWeapon weapon &&
-                ModEntry.PlayerState.RegisteredUltimate is Frenzy frenzy && monster.Health <= 0)
+                ModEntry.PlayerState.RegisteredUltimate is UndyingFrenzy frenzy && monster.Health <= 0)
             {
                 if (frenzy.IsActive)
                 {
@@ -289,7 +291,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         {
             if (who.CurrentTool is MeleeWeapon weapon && didCrit)
             {
-                if (!monster.ReadDataAs<bool>("Stolen") &&
+                if (!ModDataIO.ReadDataAs<bool>(monster, "Stolen") &&
                     Game1.random.NextDouble() < 0.15)
                 {
                     var drops = monster.objectsToDrop.Select(o => new SObject(o, 1) as Item)
@@ -298,10 +300,10 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                     if (itemToSteal is not null && !itemToSteal.Name.Contains("Error") &&
                         who.addItemToInventoryBool(itemToSteal))
                     {
-                        monster.WriteData("Stolen", bool.TrueString);
+                        ModDataIO.WriteData(monster, "Stolen", bool.TrueString);
 
                         // play sound effect
-                        SoundBank.Play(SFX.PoacherSteal);
+                        SFX.PoacherSteal.Play();
 
                         // if prestiged, reset cooldown
                         if (who.HasProfession(Profession.Poacher, true))
@@ -347,20 +349,20 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                         break;
                 }
 
-                var buffId = ModEntry.Manifest.UniqueID.GetHashCode() + (int) Profession.Piper;
+                var buffId = (ModEntry.Manifest.UniqueID + Profession.Piper).GetHashCode();
                 Game1.buffsDisplay.removeOtherBuff(buffId);
                 Game1.buffsDisplay.addOtherBuff(new(
                     applied[0], applied[1], applied[2], applied[3], applied[4], applied[5],
                     applied[6], applied[7], applied[8], applied[9],
                     applied[10], applied[11],
-                    5,
+                    3,
                     "Piper",
-                    ModEntry.ModHelper.Translation.Get("piper.name." + (who.IsMale ? "male" : "female")))
+                    ModEntry.i18n.Get("piper.name" + (who.IsMale ? ".male" : ".female")))
                 {
                     which = buffId,
                     sheetIndex = 38,
-                    millisecondsDuration = 300000,
-                    description = ModEntry.ModHelper.Translation.Get("piper.buffdesc", new
+                    millisecondsDuration = 180000,
+                    description = ModEntry.i18n.Get("piper.buffdesc", new
                     {
                         farming = applied[0],
                         fishing = applied[1],
@@ -375,23 +377,23 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                     })
                 });
 
-                EventManager.Enable(typeof(PiperDayEndingEvent));
+                ModEntry.EventManager.Hook<PiperDayEndingEvent>();
             }
         }
-        
+
         // heal if prestiged
         if (who.HasProfession(Profession.Piper, true) && r.NextDouble() < 0.333)
         {
-                var healed = (int) (monster.MaxHealth * 0.025f);
-                who.health = Math.Min(who.health + healed, who.maxHealth);
-                who.currentLocation.debris.Add(new(healed,
-                    new(who.getStandingX() + 8, who.getStandingY()), Color.Lime, 1f, who));
+            var healed = (int)(monster.MaxHealth * 0.025f);
+            who.health = Math.Min(who.health + healed, who.maxHealth);
+            who.currentLocation.debris.Add(new(healed,
+                new(who.getStandingX() + 8, who.getStandingY()), Color.Lime, 1f, who));
 
-                who.Stamina = Math.Min(who.Stamina + who.Stamina * 0.01f, who.MaxStamina);
+            who.Stamina = Math.Min(who.Stamina + who.Stamina * 0.01f, who.MaxStamina);
         }
 
         // increment ultimate meter
-        if (ModEntry.PlayerState.RegisteredUltimate is Pandemonia {IsActive: false} pandemonium)
+        if (ModEntry.PlayerState.RegisteredUltimate is Enthrall { IsActive: false } pandemonium)
         {
 #pragma warning disable CS8509
             var increment = monster switch

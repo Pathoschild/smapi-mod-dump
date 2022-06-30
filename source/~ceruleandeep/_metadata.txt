@@ -10,9 +10,13 @@ mods:
    Warp Snitch
 
 latest commit:
-   commit 70ddea932a2435c2fc5c54db7ca36c9556e77b13
+   commit 866bddc46c39dc33c1dc76195642a9fa2c21a3ea
    Author: ceruleandeep <ceruleandeep>
-   Date:   Tue May 24 19:31:07 2022 +1000
+   Date:   Wed Jun 15 18:46:20 2022 +1000
    
-       Good news DGA haters now it's optional
+       1.1.4 RELEASE
+       
+       * Add extra shops for farmhands
+       * NPC visitors walk in front of shops for 2 tiles
+       * Water down the challenge mode goals
    

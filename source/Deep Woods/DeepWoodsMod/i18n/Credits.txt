@@ -13,6 +13,7 @@ Translations:
 de.json by Deflaktor (https://github.com/Deflaktor)
 es.json by skullSG (https://forums.nexusmods.com/index.php?showuser=55091432)
 fr.json by AresRyu (https://forums.nexusmods.com/index.php?/user/31452340-aresryu/)
+it.json by Giasko (https://github.com/Giasko0)
 hu.json by martin66789 (https://www.nexusmods.com/users/27323031)
 ko.json by S2SKY (https://github.com/S2SKY)
 pt.json by shiro2579 (https://github.com/shiro2579)

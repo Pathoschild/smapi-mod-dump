@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI.Utilities;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 
@@ -21,14 +22,24 @@ namespace MoreFertilizers.HarmonyPatches.Acquisition;
 [HarmonyPatch(typeof(GameLocation))]
 internal static class GameLocationPatches
 {
+    private const int MIN_MONSTER_HEALTH = 40;
+    private const double DEFAULT_DROP_CHANCE = 0.25;
+    private static readonly PerScreen<double> DropChance = new(() => DEFAULT_DROP_CHANCE);
+
+    /// <summary>
+    /// Resets the dropchance, once per day.
+    /// </summary>
+    internal static void Reinitialize() => DropChance.Value = DEFAULT_DROP_CHANCE;
+
     [HarmonyPatch(nameof(GameLocation.monsterDrop))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
     private static void Postfix(GameLocation __instance, Monster monster, int x, int y, Farmer who)
     {
-        if(__instance is not Farm || who is null || Game1.random.NextDouble() > 0.20 || monster.MaxHealth < 25)
+        if(__instance is not Farm || who is null || Game1.random.NextDouble() > DropChance.Value || monster.MaxHealth < MIN_MONSTER_HEALTH)
         {
             return;
         }
+        DropChance.Value *= 0.75;
 
         try
         {
@@ -43,7 +54,7 @@ internal static class GameLocationPatches
                             new Debris(
                                 new SObject(
                                     fertilizerToDrop,
-                                    Game1.random.Next(1, Math.Clamp(monster.MaxHealth / 25, 1, 4))),
+                                    Game1.random.Next(1, Math.Clamp(monster.MaxHealth / MIN_MONSTER_HEALTH, 1, 4))),
                                 new Vector2(x, y),
                                 who.Position)));
                 }

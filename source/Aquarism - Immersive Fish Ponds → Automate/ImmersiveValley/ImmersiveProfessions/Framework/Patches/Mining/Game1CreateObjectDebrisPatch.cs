@@ -12,26 +12,26 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common;
+using DaLion.Common.Data;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-
-using Extensions;
-
+using System;
+using System.Reflection;
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class Game1CreateObjectDebrisPatch : BasePatch
+internal sealed class Game1CreateObjectDebrisPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal Game1CreateObjectDebrisPatch()
     {
-        Original = RequireMethod<Game1>(nameof(Game1.createObjectDebris),
-            new[] {typeof(int), typeof(int), typeof(int), typeof(long), typeof(GameLocation)});
+        Target = RequireMethod<Game1>(nameof(Game1.createObjectDebris),
+            new[] { typeof(int), typeof(int), typeof(int), typeof(long), typeof(GameLocation) });
     }
 
     #region harmony patches
@@ -53,7 +53,7 @@ internal class Game1CreateObjectDebrisPatch : BasePatch
                 itemQuality = who.GetGemologistMineralQuality()
             });
 
-            who.IncrementData<uint>(DataField.GemologistMineralsCollected);
+            ModDataIO.IncrementData<uint>(who, ModData.GemologistMineralsCollected.ToString());
             return false; // don't run original logic
         }
         catch (Exception ex)

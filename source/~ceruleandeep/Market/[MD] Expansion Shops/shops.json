@@ -58,10 +58,10 @@
         {  "ItemType": "Object",  "ItemNames": ["Basic Fertilizer"], "StockPrice": 50, "Stock": 5},
         {  "ItemType": "Object",  "ItemNames": ["Speed-Gro"], "StockPrice": 50, "Stock": 5},
         {  "ItemType": "Object",  "ItemNames": ["Tree Fertilizer"], "StockPrice": 100, "Stock": 50},
-        {  "ItemType": "Object",  "ItemNames": ["Deluxe Fish Food"], "StockPrice": 300, "When": ["HasMod atravita.MoreFertilizers", "n Island_UpgradeTrader", "f Lorenzo 2000"],"Stock": 2},
-        {  "ItemType": "Object",  "ItemNames": ["Joja's Deluxe Fertilizer"], "StockPrice":  300, "When": ["HasMod atravita.MoreFertilizers"],"Stock": 5},
-        {  "ItemType": "Object",  "ItemNames": ["Organic Fertilizer"], "StockPrice":  300, "When": ["HasMod atravita.MoreFertilizers"],"Stock": 5},
-        {  "ItemType": "Object",  "ItemNames": ["Bountiful Fertilizer"], "StockPrice": 300, "When": ["HasMod atravita.MoreFertilizers"],"Stock": 5}
+        {  "ItemType": "Object",  "ItemNames": ["Deluxe Fish Food"], "StockPrice": 300, "When": ["HasMod atravita.MoreFertilizers", "n Island_UpgradeTrader", "f Lorenzo 2000"], "Stock": 2},
+        {  "ItemType": "Object",  "ItemNames": ["Joja's Deluxe Fertilizer"], "StockPrice":  300, "When": ["HasMod atravita.MoreFertilizers"], "Stock": 5},
+        {  "ItemType": "Object",  "ItemNames": ["Organic Fertilizer"], "StockPrice":  300, "When": ["HasMod atravita.MoreFertilizers"], "Stock": 5},
+        {  "ItemType": "Object",  "ItemNames": ["Bountiful Fertilizer"], "StockPrice": 300, "When": ["HasMod atravita.MoreFertilizers"], "Stock": 5}
       ]
     },
     {

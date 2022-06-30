@@ -13,30 +13,27 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
-using System;
-using System.Reflection;
+using DaLion.Common.Extensions;
+using DaLion.Common.Extensions.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Tools;
-
-using DaLion.Common.Extensions;
-using DaLion.Common.Extensions.Reflection;
+using System;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class TrackedItemCtorPatch : BasePatch
+internal sealed class TrackedItemCtorPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static readonly FieldInfo _Item = "Pathoschild.Stardew.Automate.TrackedItem".ToType().RequireField("Item")!;
-
     /// <summary>Construct an instance.</summary>
     internal TrackedItemCtorPatch()
     {
         try
         {
-            Original = "Pathoschild.Stardew.Automate.TrackedItem".ToType().GetConstructor(new[] {typeof(Item), typeof(Action<Item>), typeof(Action<Item>)});
+            Target = "Pathoschild.Stardew.Automate.TrackedItem".ToType()
+                .RequireConstructor(new[] { typeof(Item), typeof(Action<Item>), typeof(Action<Item>) });
         }
         catch
         {
@@ -47,16 +44,17 @@ internal class TrackedItemCtorPatch : BasePatch
     #region harmony patches
 
     /// <summary>Patch to fix collected rings from crab pots.</summary>
-    [HarmonyPostfix]
-    private static void TrackedItemCtorPostfix(object __instance, Item item)
+    [HarmonyPrefix]
+    private static void TrackedItemCtorPrefix(ref Item item)
     {
-        if (!item.ParentSheetIndex.IsAnyOf(14, 51, 516, 517, 518, 519, 527, 529, 530, 531, 532,
+        if (!item.ParentSheetIndex.IsIn(14, 51, 516, 517, 518, 519, 527, 529, 530, 531, 532,
                 533, 534)) return;
 
-        if (item.ParentSheetIndex.IsAnyOf(14, 51))
-            _Item.SetValue(__instance, new MeleeWeapon(item.ParentSheetIndex));
-        else
-            _Item.SetValue(__instance, new Ring(item.ParentSheetIndex));
+        item = item.ParentSheetIndex switch
+        {
+            14 or 51 => new MeleeWeapon(item.ParentSheetIndex),
+            _ => new Ring(item.ParentSheetIndex)
+        };
     }
 
     #endregion harmony patches

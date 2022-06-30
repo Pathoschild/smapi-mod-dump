@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tylergibbs2/DefaultFarmer
+   Git: https://github.com/tylergibbs2/DefaultFarmer.git
+
+mods:
+   Default Farmer
+
+latest commit:
+   commit fb9b1f4b20f33287372866723e286e5bf2a021b9
+   Author: Tyler <gibbstyler7@gmail.com>
+   Date:   Sat Jun 18 22:49:03 2022 -0500
+   
+       bump version
+   

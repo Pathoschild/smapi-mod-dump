@@ -21,7 +21,7 @@ namespace MarketDay.Data
     {
         public string Name { get; set; }
         public int Gold { get; set; }
-        public int GoldForDifficulty => (int)(Gold * Game1.player.difficultyModifier);
+        public int GoldForDifficulty => (int)(Gold * Game1.MasterPlayer.difficultyModifier);
         public int Score { get; set; }
         public string Object { get; set; }
         public string Flavor { get; set; }
@@ -34,8 +34,10 @@ namespace MarketDay.Data
         public int Number { get; set; }
         public string Name { get; set; }
         public int NumberOfShops { get; set; }
+        public int NumberOfTownieVisitors { get; set; }
+        public int NumberOfRandomVisitors { get; set; }
         public int UnlockAtEarnings { get; set; }
-        public int UnlockAtEarningsForDifficulty => (int)(UnlockAtEarnings * Game1.player.difficultyModifier);
+        public int UnlockAtEarningsForDifficulty => (int)(UnlockAtEarnings * Game1.MasterPlayer.difficultyModifier);
         public int AutoRestock { get; set; } = 4;
 
         public int ShopSize { get; set; } = 9;
@@ -94,13 +96,33 @@ namespace MarketDay.Data
         /// Number of shops to open, accounting for challenge mode level
         /// and free play mode configuration
         /// </summary>
-        internal int NumberOfShops =>
-            Math.Max(1, Math.Min(15, 
+        internal int NumberOfShops
+        {
+            get
+            {
+                var farmhands = Game1.getAllFarmers().Count(f => f.isActive()) - 1; 
+                return Math.Max(1, Math.Min(15,
+                    MarketDay.Config.Progression
+                        ? CurrentLevel.NumberOfShops + farmhands
+                        : MarketDay.Config.NumberOfShops
+                ));
+            }
+        }
+
+        internal int NumberOfTownieVisitors =>
+            Math.Max(1, Math.Min(100, 
                 MarketDay.Config.Progression 
-                    ? CurrentLevel.NumberOfShops
-                    : MarketDay.Config.NumberOfShops
+                    ? CurrentLevel.NumberOfTownieVisitors
+                    : MarketDay.Config.NumberOfTownieVisitors
             ));
 
+        internal int NumberOfRandomVisitors =>
+            Math.Max(1, Math.Min(24, 
+                MarketDay.Config.Progression 
+                    ? CurrentLevel.NumberOfRandomVisitors
+                    : MarketDay.Config.NumberOfRandomVisitors
+            ));
+        
         internal double SellPriceMultiplierLimit =>
             Math.Max(1, Math.Min(4, 
                 MarketDay.Config.Progression 

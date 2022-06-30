@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12598
+IDs: atravita.MuseumStore
+update keys: Nexus:12598, GitHub:atravita-mods/MuseumRewardsIn

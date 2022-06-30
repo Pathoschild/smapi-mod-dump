@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/misty-spring/SpousesIsland
+**
+*************************************************/
+
+{
+  "Name": "Spouses' Island",
+  "Author": "mistyspring",
+  "Version": "3.3.0",
+  "Description": "Framework which allows spouses to visit the island. Comes with integrated schedules.",
+  "UniqueID": "mistyspring.spousesisland",
+  "EntryDll": "SpousesIsland.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": ["nexus:11037"],
+  "Dependencies": [
+    { "UniqueID": "MadaraUchiha.NonDestructiveNPCs", "IsRequired": true },
+    { "UniqueID":"Esca.CustomNPCExclusions", "IsRequired":true },
+    { "UniqueID": "Pathoschild.ContentPatcher", "MinimumVersion": "1.25.0" }
+ ]
+}

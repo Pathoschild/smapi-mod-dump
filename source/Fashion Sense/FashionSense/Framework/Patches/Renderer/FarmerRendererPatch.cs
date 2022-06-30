@@ -336,9 +336,17 @@ namespace FashionSense.Framework.Patches.Renderer
                 {
                     passedCheck = condition.IsValid(who.CurrentTool is FishingRod fishingRod && fishingRod.isReeling);
                 }
+                else if (condition.Name is Condition.Type.IsPullingFishOutOfWater)
+                {
+                    passedCheck = condition.IsValid(who.CurrentTool is FishingRod fishingRod && fishingRod.pullingOutOfWater);
+                }
                 else if (condition.Name is Condition.Type.IsUsingHeavyTool)
                 {
                     passedCheck = condition.IsValid(who.UsingTool && (who.CurrentTool is Hoe || who.CurrentTool is Pickaxe || who.CurrentTool is Axe));
+                }
+                else if (condition.Name is Condition.Type.ToolChargeLevel)
+                {
+                    passedCheck = condition.IsValid(who.toolPower) && condition.IsValid(who.UsingTool && (who.CurrentTool is Hoe || who.CurrentTool is Axe || who.CurrentTool is WateringCan));
                 }
                 else if (condition.Name is Condition.Type.IsUsingMilkPail)
                 {
@@ -351,6 +359,10 @@ namespace FashionSense.Framework.Patches.Renderer
                 else if (condition.Name is Condition.Type.IsUsingPan)
                 {
                     passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is Pan);
+                }
+                else if (condition.Name is Condition.Type.IsWatering)
+                {
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is WateringCan);
                 }
                 else if (condition.Name is Condition.Type.IsUsingScythe)
                 {
@@ -399,6 +411,14 @@ namespace FashionSense.Framework.Patches.Renderer
                 else if (condition.Name is Condition.Type.IsInBathingSuit)
                 {
                     passedCheck = condition.IsValid(who.bathingClothes.Value);
+                }
+                else if (condition.Name is Condition.Type.IsSick)
+                {
+                    passedCheck = condition.IsValid(currentSingleAnimation == 104 || currentSingleAnimation == 105);
+                }
+                else if (condition.Name is Condition.Type.IsPassingOut)
+                {
+                    passedCheck = condition.IsValid(who.FarmerSprite.isPassingOut());
                 }
 
                 // If the condition is independent and is true, then skip rest of evaluations
@@ -1223,35 +1243,43 @@ namespace FashionSense.Framework.Patches.Renderer
 
         private static void DrawSleeveColorMask(SpriteBatch b, SleevesContentPack sleevesPack, SleevesModel sleevesModel, ShirtModel shirtModel, Vector2 position, Rectangle sourceRect, Color color, float rotation, Vector2 origin, float scale, float layerDepth)
         {
-            Color[] data = new Color[sleevesPack.Texture.Width * sleevesPack.Texture.Height];
-            sleevesPack.Texture.GetData(data);
-            Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, sleevesPack.Texture.Width, sleevesPack.Texture.Height);
-
-            for (int i = 0; i < data.Length; i++)
+            if (sleevesPack.ColorMaskTexture is null || AreColorMasksPendingRefresh)
             {
-                if (!sleevesModel.IsMaskedColor(data[i]))
+                Color[] data = new Color[sleevesPack.Texture.Width * sleevesPack.Texture.Height];
+                sleevesPack.Texture.GetData(data);
+                Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, sleevesPack.Texture.Width, sleevesPack.Texture.Height);
+
+                var firstSleeveColor = shirtModel.GetSleeveColor(0);
+                var secondSleeveColor = shirtModel.GetSleeveColor(1);
+                var thirdSleeveColor = shirtModel.GetSleeveColor(2);
+
+                for (int i = 0; i < data.Length; i++)
                 {
-                    data[i] = Color.Transparent;
+                    if (!sleevesModel.IsMaskedColor(data[i]))
+                    {
+                        data[i] = Color.Transparent;
+                    }
+                    else if (sleevesModel.ColorMasks is not null)
+                    {
+                        if (sleevesModel.ColorMasks.Count > 0 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[0]) && shirtModel.HasSleeveColorAtLayer(0))
+                        {
+                            data[i] = firstSleeveColor;
+                        }
+                        else if (sleevesModel.ColorMasks.Count > 1 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[1]) && shirtModel.HasSleeveColorAtLayer(1))
+                        {
+                            data[i] = secondSleeveColor;
+                        }
+                        else if (sleevesModel.ColorMasks.Count > 2 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[2]) && shirtModel.HasSleeveColorAtLayer(2))
+                        {
+                            data[i] = thirdSleeveColor;
+                        }
+                    }
                 }
-                else if (sleevesModel.ColorMasks is not null)
-                {
-                    if (sleevesModel.ColorMasks.Count > 0 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[0]) && shirtModel.HasSleeveColorAtLayer(0))
-                    {
-                        data[i] = shirtModel.GetSleeveColor(0);
-                    }
-                    else if (sleevesModel.ColorMasks.Count > 1 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[1]) && shirtModel.HasSleeveColorAtLayer(1))
-                    {
-                        data[i] = shirtModel.GetSleeveColor(1);
-                    }
-                    else if (sleevesModel.ColorMasks.Count > 2 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[2]) && shirtModel.HasSleeveColorAtLayer(2))
-                    {
-                        data[i] = shirtModel.GetSleeveColor(2);
-                    }
-                }
+
+                maskedTexture.SetData(data);
             }
 
-            maskedTexture.SetData(data);
-            b.Draw(maskedTexture, position, sourceRect, Color.White, rotation, origin, scale, sleevesModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
+            b.Draw(sleevesPack.ColorMaskTexture, position, sourceRect, Color.White, rotation, origin, scale, sleevesModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
         }
 
         private static void DrawSkinToneMask(SpriteBatch b, AppearanceContentPack appearancePack, AppearanceModel appearanceModel, SkinToneModel skinTone, Vector2 position, Rectangle sourceRect, Color color, float rotation, Vector2 origin, float scale, float layerDepth)
@@ -1840,6 +1868,9 @@ namespace FashionSense.Framework.Patches.Renderer
                 return true;
             }
 
+            // This is in the vanilla code, which for some reason is always 2 instead of relying on facingDirection's initial value
+            facingDirection = 2;
+
             HairModel hairModel = hairPack.GetHairFromFacingDirection(facingDirection);
             if (hairModel is null)
             {
@@ -1863,9 +1894,6 @@ namespace FashionSense.Framework.Patches.Renderer
 
             // Get hair metadata
             HairStyleMetadata hair_metadata = Farmer.GetHairStyleMetadata(who.hair.Value);
-
-            // This is in the vanilla code, which for some reason is always 2 instead of relying on facingDirection's initial value
-            facingDirection = 2;
 
             // Vanilla logic to determine player's head position (though largely useless as it always executes facingDirection == 2)
             bool flip = false;

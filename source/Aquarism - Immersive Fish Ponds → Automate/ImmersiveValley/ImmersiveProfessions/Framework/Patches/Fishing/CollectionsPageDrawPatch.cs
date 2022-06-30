@@ -12,39 +12,39 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 #region using directives
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
-using Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using Textures;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class CollectionsPageDrawPatch : BasePatch
+internal sealed class CollectionsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal CollectionsPageDrawPatch()
     {
-        Original = RequireMethod<CollectionsPage>(nameof(CollectionsPage.draw), new[] {typeof(SpriteBatch)});
+        Target = RequireMethod<CollectionsPage>(nameof(CollectionsPage.draw), new[] { typeof(SpriteBatch) });
     }
 
     #region harmony patches
 
     /// <summary>Patch to overlay MAX fish size indicator on the Collections page fish tab.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> CollectionsPageDrawTranspiler(IEnumerable<CodeInstruction> instructions,
+    private static IEnumerable<CodeInstruction>? CollectionsPageDrawTranspiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -70,7 +70,6 @@ internal class CollectionsPageDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching to draw collections page MAX icons. Helper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 
@@ -88,9 +87,9 @@ internal class CollectionsPageDrawPatch : BasePatch
 
         var currentPage = page.currentPage;
         foreach (var c in from c in page.collections[currentTab][currentPage]
-                 let index = Convert.ToInt32(c.name.Split(' ')[0])
-                 where Game1.player.HasCaughtMaxSized(index)
-                 select c)
+                          let index = Convert.ToInt32(c.name.Split(' ')[0])
+                          where Game1.player.HasCaughtMaxSized(index)
+                          select c)
         {
             var destRect = new Rectangle(c.bounds.Right - Textures.MaxIconTx.Width * 2,
                 c.bounds.Bottom - Textures.MaxIconTx.Height * 2, Textures.MaxIconTx.Width * 2,

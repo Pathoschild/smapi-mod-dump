@@ -1,11 +1,17 @@
 ﻿{
   "Name": "Combat Controls Redux",
   "Author": "NormanPCN",
-  "Version": "1.2.0",
+  "Version": "1.2.2",
   "Description": "Adjustments to the game controls suitable for combat. Turns the character in the direction of your MouseClick, weapon Auto Swing and slick moves.",
   "UniqueID": "NormanPCN.CombatControlsRedux",
   "EntryDll": "CombatControlsRedux.dll",
   "MinimumApiVersion": "3.13.0",
   "UpdateKeys": ["Nexus:10496"],
-  "Dependencies": []
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.8.0",
+      "IsRequired": false
+    }
+  ]
 }

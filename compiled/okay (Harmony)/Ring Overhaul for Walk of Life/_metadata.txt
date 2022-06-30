@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12171
+IDs: Jibb.RingOverhaulWOL
+update keys: Nexus:12171

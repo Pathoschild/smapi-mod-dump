@@ -6,9 +6,9 @@ mods:
    Giant Crop Fertilizer
 
 latest commit:
-   commit 9f25f83f57d1cba238cd5be037278139ad3e4ace
+   commit 4137af23f12dd0fd58fce60da72c1f16bf5e7164
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Sat May 14 14:16:27 2022 -0400
+   Date:   Fri Jun 24 09:41:55 2022 -0400
    
-       Fix migration errors.
+       Update README.md
    

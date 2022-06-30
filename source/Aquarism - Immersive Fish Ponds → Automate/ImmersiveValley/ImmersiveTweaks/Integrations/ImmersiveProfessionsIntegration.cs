@@ -8,14 +8,12 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Tweaks.Integrations;
+namespace DaLion.Stardew.Tweex.Integrations;
 
 #region using directives
 
-using System;
-using StardewModdingAPI;
-
 using Common.Integrations;
+using StardewModdingAPI;
 
 #endregion using directives
 
@@ -23,9 +21,8 @@ internal class ImmersiveProfessionsIntegration : BaseIntegration<IImmersiveProfe
 {
     /// <summary>Construct an instance.</summary>
     /// <param name="modRegistry">An API for fetching metadata about loaded mods.</param>
-    /// <param name="log">Encapsulates monitoring and logging.</param>
-    public ImmersiveProfessionsIntegration(IModRegistry modRegistry, Action<string, LogLevel> log)
-        : base("Immersive Professions", ModEntry.ProfessionsUniqueID, "3.1.15", modRegistry, log)
+    public ImmersiveProfessionsIntegration(IModRegistry modRegistry)
+        : base("Immersive Professions", "DaLion.ImmersiveProfessions", "4.0.0", modRegistry)
     {
     }
 

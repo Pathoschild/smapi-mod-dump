@@ -6,13 +6,10 @@ mods:
    Connected Fences
 
 latest commit:
-   commit f812d4f68ae8a6bc5a37a9606d43f3c20427a185
+   commit 1cf4a6ea88d5fca1f65e0da257f3ddb2b7edfc0f
+   Merge: 6e1b969 05a4cdc
    Author: sergiomadd <sergiocortmon@gmail.com>
-   Date:   Sun May 22 00:12:42 2022 +0200
+   Date:   Wed Jun 15 22:54:43 2022 +0200
    
-       [IP] beta:
-       - Lots of bug fixing with item sending
-       - Added edge case treatments for pipe clogging
-       - Reworked data file
-       - Added localization logic
+       Merge branch 'main' of https://github.com/sergiomadd/StardewValleyMods
    

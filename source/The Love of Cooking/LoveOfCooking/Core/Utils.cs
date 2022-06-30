@@ -83,7 +83,7 @@ namespace LoveOfCooking
 
 				// Add any missing recipes from the level-up recipe table
 				int level = ModEntry.CookingSkillApi.GetLevel();
-				Dictionary<int, List<string>> recipes = ModEntry.CookingSkillApi.GetAllLevelUpRecipes();
+				IReadOnlyDictionary<int, IList<string>> recipes = ModEntry.CookingSkillApi.GetAllLevelUpRecipes();
 				IEnumerable<string> missingRecipes = recipes
 					// Take all recipe lists up to the current level
 					.TakeWhile(pair => pair.Key < level)
@@ -201,6 +201,7 @@ namespace LoveOfCooking
 				.GetValue();
 			List<CraftingRecipe> cookingRecipes = ModEntry.CookingSkillApi
 				.GetCookingRecipesForLevel(level)
+				.ToList()
 				.ConvertAll(name => new CraftingRecipe(ModEntry.ObjectPrefix + name, true))
 				.Where(recipe => !Game1.player.knowsRecipe(recipe.name))
 				.ToList();

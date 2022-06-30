@@ -8,24 +8,30 @@
 **
 *************************************************/
 
+#if DEBUG
 namespace DaLion.Stardew.Professions.Framework.Events.Multiplayer;
 
 #region using directives
 
-using System.Linq;
+using Common;
+using Common.Events;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
-
-using Multiplayer = Utility.Multiplayer;
+using System.Linq;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class DebugModMessageReceivedEvent : ModMessageReceivedEvent
+internal sealed class DebugModMessageReceivedEvent : ModMessageReceivedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal DebugModMessageReceivedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
     /// <inheritdoc />
-    protected override void OnModMessageReceivedImpl(object sender, ModMessageReceivedEventArgs e)
+    protected override void OnModMessageReceivedImpl(object? sender, ModMessageReceivedEventArgs e)
     {
         if (e.FromModID != ModEntry.Manifest.UniqueID || !e.Type.StartsWith("Debug")) return;
 
@@ -44,12 +50,10 @@ internal class DebugModMessageReceivedEvent : ModMessageReceivedEvent
                 var what = e.ReadAs<string>();
                 switch (what)
                 {
-                    case "EventsEnabled":
-                        var response = EventManager.GetAllEnabled()
-                            .Aggregate("", (current, next) => current + "\n\t- " + next.GetType().Name);
-                        ModEntry.ModHelper.Multiplayer.SendMessage(response, "Debug/Response",
-                            new[] {ModEntry.Manifest.UniqueID},
-                            new[] {e.FromPlayerID});
+                    case "EventsHooked":
+                        var response = Manager.Hooked.Aggregate("",
+                            (current, next) => current + "\n\t- " + next.GetType().Name);
+                        ModEntry.Broadcaster.Message(response, "Debug/Response", e.FromPlayerID);
 
                         break;
                 }
@@ -58,9 +62,10 @@ internal class DebugModMessageReceivedEvent : ModMessageReceivedEvent
 
             case "Response":
                 Log.D($"Player {e.FromPlayerID} responded to {command} debug information.");
-                Multiplayer.ResponseReceived.TrySetResult(e.ReadAs<string>());
+                ModEntry.Broadcaster.ResponseReceived.TrySetResult(e.ReadAs<string>());
 
                 break;
         }
     }
 }
+#endif

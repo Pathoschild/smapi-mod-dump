@@ -17,6 +17,7 @@ internal static class MathExt {
 	#region Min
 	internal static Fixed8 Min(this Fixed8 a, Fixed8 b) => Math.Min(a.Value, b.Value);
 	internal static Fixed16 Min(this Fixed16 a, Fixed16 b) => Math.Min(a.Value, b.Value);
+	internal static TimeSpan Min(this TimeSpan a, TimeSpan b) => TimeSpan.FromTicks(Math.Min(a.Ticks, b.Ticks));
 
 	internal static byte Min(byte a, byte b, byte c) => Math.Min(a, Math.Min(b, c));
 	internal static sbyte Min(sbyte a, sbyte b, sbyte c) => Math.Min(a, Math.Min(b, c));
@@ -35,6 +36,7 @@ internal static class MathExt {
 	#region Max
 	internal static Fixed8 Max(this Fixed8 a, Fixed8 b) => Math.Max(a.Value, b.Value);
 	internal static Fixed16 Max(this Fixed16 a, Fixed16 b) => Math.Max(a.Value, b.Value);
+	internal static TimeSpan Max(this TimeSpan a, TimeSpan b) => TimeSpan.FromTicks(Math.Max(a.Ticks, b.Ticks));
 
 	internal static byte Max(byte a, byte b, byte c) => Math.Max(a, Math.Max(b, c));
 	internal static sbyte Max(sbyte a, sbyte b, sbyte c) => Math.Max(a, Math.Max(b, c));
@@ -53,6 +55,8 @@ internal static class MathExt {
 	#region Clamp
 	internal static Fixed8 Clamp(this Fixed8 v, Fixed8 min, Fixed8 max) => Math.Clamp(v.Value, min.Value, max.Value);
 	internal static Fixed16 Clamp(this Fixed16 v, Fixed16 min, Fixed16 max) => Math.Clamp(v.Value, min.Value, max.Value);
+
+	internal static TimeSpan Clamp(this TimeSpan v, TimeSpan min, TimeSpan max) => TimeSpan.FromTicks(Math.Clamp(v.Ticks, min.Ticks, max.Ticks));
 	#endregion
 
 	#region RoundToInt/Long

@@ -37,9 +37,9 @@ namespace LoveOfCooking.Objects
 		public static float BurnChanceReduction;
 		public static float BurnChanceModifier;
 
-		public static readonly List<string> StartingRecipes = new List<string>();
-		public static readonly Dictionary<int, List<string>> CookingSkillLevelUpRecipes = new Dictionary<int, List<string>>();
-		public static readonly Dictionary<string, int> FoodsThatBuffCookingSkill = new Dictionary<string, int>();
+		public static readonly IList<string> StartingRecipes = new List<string>();
+		public static readonly IDictionary<int, IList<string>> CookingSkillLevelUpRecipes = new Dictionary<int, IList<string>>();
+		public static readonly IDictionary<string, int> FoodsThatBuffCookingSkill = new Dictionary<string, int>();
 
 		public class SkillProfession : SpaceCore.Skills.Skill.Profession
 		{

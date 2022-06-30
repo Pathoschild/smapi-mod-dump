@@ -12,29 +12,29 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.AnimalHusban
 
 #region using directives
 
+using DaLion.Common;
+using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Harmony;
+using Extensions;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-
-using DaLion.Common.Extensions.Reflection;
-using DaLion.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal class FeedingBasketOverridesDoFunctionPatch : BasePatch
+internal sealed class FeedingBasketOverridesDoFunctionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal FeedingBasketOverridesDoFunctionPatch()
     {
         try
         {
-            Original = "AnimalHusbandryMod.tools.FeedingBasketOverrides".ToType().RequireMethod("DoFunction");
+            Target = "AnimalHusbandryMod.tools.FeedingBasketOverrides".ToType().RequireMethod("DoFunction");
         }
         catch
         {
@@ -46,7 +46,7 @@ internal class FeedingBasketOverridesDoFunctionPatch : BasePatch
 
     /// <summary>Patch for Rancher to combine Shepherd and Coopmaster friendship bonus.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> InseminationSyringeOverridesDoFunctionTranspiler(
+    private static IEnumerable<CodeInstruction>? InseminationSyringeOverridesDoFunctionTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
@@ -79,9 +79,9 @@ internal class FeedingBasketOverridesDoFunctionPatch : BasePatch
                     new CodeInstruction(OpCodes.Nop)
                 )
                 .Insert(
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 5) // arg 5 = Farmer who
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)5) // arg 5 = Farmer who
                 )
-                .InsertProfessionCheck((int) Profession.Rancher, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Rancher.Value, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotRancher)
                 )
@@ -90,9 +90,9 @@ internal class FeedingBasketOverridesDoFunctionPatch : BasePatch
                 )
                 .Insert(got)
                 .Insert(
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte) 5)
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)5)
                 )
-                .InsertProfessionCheck((int) Profession.Rancher + 100, forLocalPlayer: false)
+                .InsertProfessionCheck(Profession.Rancher.Value + 100, forLocalPlayer: false)
                 .Insert(
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged)
                 )
@@ -107,7 +107,6 @@ internal class FeedingBasketOverridesDoFunctionPatch : BasePatch
         {
             Log.E(
                 $"Failed while moving combined feeding basket Coopmaster + Shepherd friendship bonuses to Rancher.\nHelper returned {ex}");
-            transpilationFailed = true;
             return null;
         }
 

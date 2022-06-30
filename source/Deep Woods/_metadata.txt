@@ -6,12 +6,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit dca1c77ae84f76d15544f1d4228b655a6c60573a
-   Merge: e8884bd 9209fb4
+   commit abb8a6fc74dd7bd527fef95fb1dc3ad780c208b0
+   Merge: dca1c77 7c43a34
    Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Fri Oct 8 09:17:52 2021 +0200
+   Date:   Tue Jun 7 20:53:48 2022 +0200
    
-       Merge pull request #12 from chibranche/main
+       Merge pull request #13 from Giasko0/patch-1
        
-       fr translation : Finished translation
+       Italian translation
    

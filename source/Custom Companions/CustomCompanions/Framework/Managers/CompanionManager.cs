@@ -258,17 +258,18 @@ namespace CustomCompanions.Framework.Managers
                 }
 
                 var mapTile = targetLayer.Tiles[(int)companionTile.X, (int)companionTile.Y];
-                if (mapTile is null || !mapTile.Properties.ContainsKey("CustomCompanions"))
+
+                string command = location.doesTileHavePropertyNoNull((int)companionTile.X, (int)companionTile.Y, "CustomCompanions", "Back");
+                if (String.IsNullOrEmpty(command) && mapTile.Properties.ContainsKey("CustomCompanions"))
+                {
+                    command = mapTile.Properties["CustomCompanions"].ToString();
+                }
+
+                if (String.IsNullOrEmpty(command))
                 {
                     return true;
                 }
 
-                if (String.IsNullOrEmpty(mapTile.Properties["CustomCompanions"]))
-                {
-                    return true;
-                }
-
-                string command = mapTile.Properties["CustomCompanions"].ToString();
                 if (command.Split(' ')[0].ToUpper() != "SPAWN")
                 {
                     return true;

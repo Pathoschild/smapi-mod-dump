@@ -12,14 +12,14 @@ namespace DaLion.Stardew.Tools.Framework.Effects;
 
 #region using directives
 
-using System.Collections.Generic;
-using System.Linq;
+using Common;
+using Common.Classes;
+using Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
-
-using Common.Classes;
-using Extensions;
+using System.Collections.Generic;
+using System.Linq;
 
 #endregion using directives
 
@@ -55,8 +55,8 @@ internal class Shockwave
             Pickaxe => new PickaxeEffect(ModEntry.Config.PickaxeConfig)
         };
 
-        _epicenter = new((int) (_farmer.GetToolLocation().X / Game1.tileSize),
-            (int) (_farmer.GetToolLocation().Y / Game1.tileSize));
+        _epicenter = new((int)(_farmer.GetToolLocation().X / Game1.tileSize),
+            (int)(_farmer.GetToolLocation().Y / Game1.tileSize));
         _finalRadius = radius;
 
         if (ModEntry.Config.TicksBetweenWaves <= 0)
@@ -88,8 +88,8 @@ internal class Shockwave
         {
             affectedTiles = _tileGrids[0].Tiles;
         }
-        
-        foreach (var tile in affectedTiles.Except(new[] {_epicenter, _farmer.getTileLocation()}))
+
+        foreach (var tile in affectedTiles.Except(new[] { _epicenter, _farmer.getTileLocation() }))
         {
             _farmer.TemporarilyFakeInteraction(() =>
             {

@@ -59,7 +59,7 @@ namespace ItemPipes.Framework.Nodes
 
         public List<PipeNode> GetPath(PipeNode target)
         {
-            if (Globals.UltraDebug) { Printer.Info($"Getting path for {target.Print()}"); }
+            if (Globals.UltraDebug) { Printer.Debug($"Getting path for {target.Print()}"); }
             List<PipeNode> path = new List<PipeNode>();
             path = GetPathRecursive(target, path);
             return path;
@@ -132,9 +132,6 @@ namespace ItemPipes.Framework.Nodes
                     StoredItem = item;
                     PassingItem = true;
                     bool interrupted = false;
-
-                    //Printer.Info((!input.ConnectedContainer.InsertItem(item)).ToString());
-                    //Printer.Info(interrupted.ToString());
                     while (input.ConnectedContainer != null && !input.ConnectedContainer.InsertItem(item) && !interrupted)
                     {
                         try
@@ -145,33 +142,6 @@ namespace ItemPipes.Framework.Nodes
                         }
                         catch (ThreadInterruptedException exception)
                         {
-                            /*
-                            if (Globals.Debug) { Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}]Waiting for {Print()} clogged item to return to output..."); }
-                            int i = 0;
-                            bool sent = false;
-                            while (i < ParentNetwork.Outputs.Count && !sent)
-                            {
-                                if (ParentNetwork.Outputs[i].ConnectedContainer.InsertItem(StoredItem))
-                                {
-                                    //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}]ITEM RETURNED");
-                                    sent = true;
-                                    interrupted = true;
-                                    try
-                                    {
-                                        if (DataAccess.GetDataAccess().Threads.Contains(Thread.CurrentThread))
-                                        {
-                                            //Printer.Info("Removing T" + Thread.CurrentThread.ManagedThreadId);
-                                            DataAccess.GetDataAccess().Threads.Remove(Thread.CurrentThread);
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        DataAccess.GetDataAccess().Threads.Clear();
-                                    }
-                                }
-                                i++;
-                            }
-                            */
                             interrupted = true;
                         }
                     }
@@ -248,25 +218,6 @@ namespace ItemPipes.Framework.Nodes
             return flushed;
         }
 
-        public bool DisplayItem(Item item)
-        {
-            bool canLoad = false;
-            if (StoredItem == null)
-            {
-                StoredItem = item;
-                PassingItem = true;
-                try
-                {
-                    System.Threading.Thread.Sleep(ItemTimer);
-                }
-                catch (ThreadInterruptedException exception)
-                {
-                }
-                StoredItem = null;
-                PassingItem = false;
-            }
-            return canLoad;
-        }
         public void ConnectPipe(PipeNode target)
         {
             List<PipeNode> path = GetPath(target);
