@@ -10,11 +10,12 @@
 
 using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Pastel;
 using SpriteMaster.Resample;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
-
+using SpriteMaster.Types.Spans;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -111,6 +112,34 @@ internal static class Textures {
 		var result = SizeBytesLong(format, dimensions.Area);
 		return checked((int)result);
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static SurfaceFormat ToSRgb(this SurfaceFormat format) => format switch {
+		SurfaceFormat.Color => SurfaceFormat.ColorSRgb,
+		SurfaceFormat.Dxt1 => SurfaceFormat.Dxt1SRgb,
+		SurfaceFormat.Dxt3 => SurfaceFormat.Dxt3SRgb,
+		SurfaceFormat.Dxt5 => SurfaceFormat.Dxt5SRgb,
+		SurfaceFormat.Bgr32 => SurfaceFormat.Bgr32SRgb,
+		SurfaceFormat.Bgra32 => SurfaceFormat.Bgra32SRgb,
+		SurfaceFormat.Rgb8Etc2 => SurfaceFormat.Srgb8Etc2,
+		SurfaceFormat.Rgb8A1Etc2 => SurfaceFormat.Srgb8A1Etc2,
+		SurfaceFormat.Rgba8Etc2 => SurfaceFormat.SRgb8A8Etc2,
+		_ => format
+	};
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static SurfaceFormat ToLinear(this SurfaceFormat format) => format switch {
+		SurfaceFormat.ColorSRgb => SurfaceFormat.Color,
+		SurfaceFormat.Dxt1SRgb => SurfaceFormat.Dxt1,
+		SurfaceFormat.Dxt3SRgb => SurfaceFormat.Dxt3,
+		SurfaceFormat.Dxt5SRgb => SurfaceFormat.Dxt5,
+		SurfaceFormat.Bgr32SRgb => SurfaceFormat.Bgr32,
+		SurfaceFormat.Bgra32SRgb => SurfaceFormat.Bgra32,
+		SurfaceFormat.Srgb8Etc2 => SurfaceFormat.Rgb8Etc2,
+		SurfaceFormat.Srgb8A1Etc2 => SurfaceFormat.Rgb8A1Etc2,
+		SurfaceFormat.SRgb8A8Etc2 => SurfaceFormat.Rgba8Etc2,
+		_ => format
+	};
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool IsCompressed(this SurfaceFormat format) => format switch {
@@ -319,18 +348,18 @@ internal static class Textures {
 		DumpTextureInternal<Color16, ulong, ushort>(path, source, sourceSize, format, adjustGamma, destBounds, swap);
 	}
 
-	private static void DumpTextureInternal<ColorT, RawT, UnderlyingT>(
+	private static void DumpTextureInternal<TColor, TRaw, TUnderlying>(
 		string path,
-		ReadOnlySpan<ColorT> source,
+		ReadOnlySpan<TColor> source,
 		Vector2I sourceSize,
 		SurfaceFormat format,
 		double? adjustGamma = null,
 		Bounds? destBounds = null,
 		(int i0, int i1, int i2, int i3)? swap = null
 	)
-		where ColorT : unmanaged
-		where RawT : unmanaged
-		where UnderlyingT : unmanaged {
+		where TColor : unmanaged
+		where TRaw : unmanaged
+		where TUnderlying : unmanaged {
 		if (format.IsBlock()) {
 			if (destBounds is not null) {
 				throw new ArgumentException($"{nameof(destBounds)} must be null if {nameof(format)} ({format}) is compressed");
@@ -343,28 +372,28 @@ internal static class Textures {
 			}
 		}
 
-		RawT[] subData;
+		TRaw[] subData;
 		Bounds destBound;
 		if (destBounds.HasValue) {
 			destBound = destBounds.Value;
-			subData = GC.AllocateUninitializedArray<RawT>(destBound.Area);
+			subData = GC.AllocateUninitializedArray<TRaw>(destBound.Area);
 			var destSpan = subData.AsSpan();
-			var sourceSpan = source.Cast<ColorT, RawT>();
+			var sourceSpan = source.Cast<TColor, TRaw>();
 			int sourceOffset = (sourceSize.Width * destBound.Top) + destBound.Left;
 			int destOffset = 0;
 			for (int y = 0; y < destBound.Height; ++y) {
-				sourceSpan.SliceUnsafe(sourceOffset, destBound.Width).CopyToUnsafe(destSpan.SliceUnsafe(destOffset, destBound.Width));
+				sourceSpan.SliceUnsafe(sourceOffset, destBound.Width).CopyTo(destSpan.SliceUnsafe(destOffset, destBound.Width));
 				destOffset += destBound.Width;
 				sourceOffset += sourceSize.Width;
 			}
 		}
 		else {
-			subData = source.Cast<ColorT, RawT>().ToArray();
+			subData = source.Cast<TColor, TRaw>().ToArray();
 			destBound = sourceSize;
 		}
 
 		if (swap is not null) {
-			var swapData = subData.AsSpan<RawT, UnderlyingT>();
+			var swapData = subData.AsSpan<TRaw, TUnderlying>();
 			for (int i = 0; i < swapData.Length; i += 4) {
 				var i0 = swapData[i + swap.Value.i0];
 				var i1 = swapData[i + swap.Value.i1];
@@ -379,22 +408,25 @@ internal static class Textures {
 
 		SynchronizedTaskScheduler.Instance.QueueImmediate(() => {
 			try {
-				using var dumpTexture = new DumpTexture2D(
-					StardewValley.Game1.graphics.GraphicsDevice,
-					destBound.Width,
-					destBound.Height,
-					mipmap: false,
-					format: format
-				) {
-					Name = "Dump Texture"
-				};
+				unsafe {
+					fixed (TRaw* subDataPtr = subData) {
+						using var dumpTexture = new DumpTexture2D(
+							new ReadOnlyPinnedSpan<byte>(subData, (byte*)subDataPtr, subData.Length * sizeof(TRaw)).Fixed,
+							StardewValley.Game1.graphics.GraphicsDevice,
+							destBound.Width,
+							destBound.Height,
+							mipmap: false,
+							format: format
+						) {Name = "Dump Texture"};
 
-				dumpTexture.SetData(subData);
-				if (Path.GetDirectoryName(path) is { } directory) {
-					Directory.CreateDirectory(directory);
+						if (Path.GetDirectoryName(path) is { } directory) {
+							Directory.CreateDirectory(directory);
+						}
+
+						using var dumpFile = File.Create(path);
+						dumpTexture.SaveAsPng(dumpFile, destBound.Width, destBound.Height);
+					}
 				}
-				using var dumpFile = File.Create(path);
-				dumpTexture.SaveAsPng(dumpFile, destBound.Width, destBound.Height);
 			}
 			catch (Exception ex) {
 				Debug.Warning(ex);

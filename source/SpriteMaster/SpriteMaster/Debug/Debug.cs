@@ -8,12 +8,10 @@
 **
 *************************************************/
 
-using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using static SpriteMaster.Runtime;
@@ -21,8 +19,6 @@ using static SpriteMaster.Runtime;
 namespace SpriteMaster;
 
 internal static partial class Debug {
-	private static readonly string ModuleName = typeof(Debug).Namespace!;
-
 	private static class Color {
 		internal const ConsoleColor Trace = ConsoleColor.Gray;
 		internal const ConsoleColor Info = ConsoleColor.White;
@@ -31,26 +27,7 @@ internal static partial class Debug {
 		internal const ConsoleColor Fatal = ConsoleColor.Red;
 	}
 
-	private static readonly string LocalLogPath = Path.Combine(Config.LocalRoot, $"{ModuleName}.log");
-	private static readonly StreamWriter? LogFile = null;
-
-	private static readonly object IOLock = new();
-
-	static Debug() {
-		if (Config.Debug.Logging.OwnLogFile) {
-			// For some reason, on Linux it breaks if the log file could not be created?
-			try {
-				Directory.CreateDirectory(Path.GetDirectoryName(LocalLogPath)!);
-				LogFile = new StreamWriter(
-					path: LocalLogPath,
-					append: false
-				);
-			}
-			catch {
-				WarningLn($"Could not create log file at {LocalLogPath}");
-			}
-		}
-	}
+	private static readonly object IoLock = new();
 
 	// Logging Stuff
 

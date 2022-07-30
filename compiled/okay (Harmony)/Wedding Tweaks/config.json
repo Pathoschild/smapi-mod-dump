@@ -2,5 +2,10 @@
   "EnableMod": true,
   "DaysUntilMarriage": 3,
   "AllSpousesJoinWeddings": true,
-  "AllSpousesWearMarriageClothesAtWeddings": true
+  "AllSpousesWearMarriageClothesAtWeddings": true,
+  "AllowWitnesses": true,
+  "WitnessMinHearts": 6,
+  "AllowRandomNPCWitnesses": true,
+  "WitnessAcceptPercent": 50,
+  "WitnessAcceptHeartFactorPercent": 50
 }

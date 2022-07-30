@@ -1,0 +1,17 @@
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore"
+    }
+  ],
+  "EntryDll": "PrismaticClothing.dll",
+  "Name": "Prismatic Clothing",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "The prismatic shard makes clothing prismatic.",
+  "UniqueID": "atravita.PrismaticClothing",
+  "MinimumApiVersion": "3.15",
+  "UpdateKeys": [
+    "Nexus:13051"
+  ]
+}

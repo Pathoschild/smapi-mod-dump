@@ -8,6 +8,11 @@ for queries and analysis.**
 
 ([versión en español aquí](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG-es.md))
 
+## 1.3.1
+- Bug fixes.
+- Mod will recheck friendship lvl every weekend
+  - (rechecking every day would be expensive, so this makes sure values will update if the user goes through many days in a single play)
+
 ## 1.3.0
 - Fixed typos.
 - NPCs in island won't visit.

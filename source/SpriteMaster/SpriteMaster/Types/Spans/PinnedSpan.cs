@@ -12,7 +12,6 @@ using SpriteMaster.Extensions;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -36,24 +35,17 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 	/// <param name="array">The target array.</param>
 	/// <remarks>Returns default when <paramref name="array"/> is null.</remarks>
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal PinnedSpan(T[]? array) :
+	private PinnedSpan(T[]? array) :
 		this(array!, new(array)) {
 	}
 
 	/// <summary>
-	/// Creates a new span over the portion of the target array beginning
-	/// at 'start' index and ending at 'end' index (exclusive).
+	/// Creates a new span with the given length.
 	/// </summary>
-	/// <param name="array">The target array.</param>
-	/// <param name="start">The index at which to begin the read-only span.</param>
-	/// <param name="length">The number of items in the read-only span.</param>
-	/// <remarks>Returns default when <paramref name="array"/> is null.</remarks>
-	/// <exception cref="System.ArgumentOutOfRangeException">
-	/// Thrown when the specified <paramref name="start"/> or end index is not in the range (&lt;0 or &gt;Length).
-	/// </exception>
+	/// <param name="length">The number of items in the span.</param>
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal PinnedSpan(T[] array, int start, int length) :
-		this(array, new(array, start, length)) {
+	internal PinnedSpan(int length) :
+		this(GC.AllocateUninitializedArray<T>(length, pinned: true)) {
 	}
 
 	/// <summary>
@@ -83,6 +75,7 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private PinnedSpan(object refObject, Span<T> span) {
+		PinnedSpanCommon.CheckPinnedWeak(refObject);
 		ReferenceObject = refObject;
 		InnerSpan = span;
 	}
@@ -185,13 +178,6 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 	public override int GetHashCode() => InnerSpan.GetHashCode();
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
-	/// <summary>
-	/// Defines an implicit conversion of an array to a <see cref="PinnedSpan{T}"/>
-	/// </summary>
-	[Pure]
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	public static implicit operator PinnedSpan<T>(T[]? array) => new(array);
-
 	/// <summary>Gets an enumerator for this span.</summary>
 	[Pure]
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -242,24 +228,6 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 	/// </exception>
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void CopyTo(Span<T> destination) => InnerSpan.CopyTo(destination);
-
-	/// <summary>
-	/// Copies the contents of this span into destination span. If the source
-	/// and destinations overlap, this method behaves as if the original values in
-	/// a temporary location before the destination is overwritten.
-	/// </summary>
-	/// <param name="destination">The span to copy items into.</param>
-	/// <exception cref="System.ArgumentException">
-	/// Thrown when the destination Span is shorter than the source Span.
-	/// </exception>
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal void CopyToUnsafe(Span<T> destination) {
-#if !SHIPPING
-		CopyTo(destination);
-#else
-		InnerSpan.CopyToUnsafe(destination);
-#endif
-	}
 
 	/// <summary>
 	/// Copies the contents of this span into destination span. If the source
@@ -372,12 +340,12 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 	[StructLayout(LayoutKind.Auto)]
 	internal unsafe readonly struct FixedSpan {
 		private readonly object ReferenceObject;
-		private readonly void* Pointer;
-		private readonly int Length;
+		internal readonly T* Pointer;
+		internal readonly int Length;
 
 		internal FixedSpan(PinnedSpan<T> span) {
 			ReferenceObject = span.ReferenceObject;
-			Pointer = Unsafe.AsPointer(ref span.GetPinnableReferenceUnsafe());
+			Pointer = (T*)Unsafe.AsPointer(ref span.GetPinnableReferenceUnsafe());
 			Length = span.Length;
 		}
 

@@ -295,7 +295,7 @@ namespace FarmVisitors
             foreach (Furniture f in farmHouse.furniture)
             {
                 //templist.Add(f.DisplayName);
-                templist.Add($"{f.DisplayName.ToLower()}");
+                templist.Add($"\"{f.DisplayName.ToLower()}\"");
             }
             return templist;
         }

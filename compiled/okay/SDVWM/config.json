@@ -3,9 +3,8 @@
   "hotTemp": 70,
   "coldTemp": 40,
   "WindSpeed": 6.0,
-  "HUDMode": "Normal",
-  "EnableLogging": false,
-  "EnableSeasonalConditions": true,
+  "EnableLogging": true,
+  "EnableSeasonAwards": true,
   "EnableExhaustion": true,
-  "ExhaustionTimer": 120
+  "ExhaustionHours": 3.0
 }

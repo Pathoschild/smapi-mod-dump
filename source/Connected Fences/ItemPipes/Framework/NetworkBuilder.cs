@@ -35,7 +35,6 @@ namespace ItemPipes.Framework
             DataAccess DataAccess = DataAccess.GetDataAccess();
             if(location.Name.Equals(Game1.getFarm().Name))
             {
-                if (Globals.UltraDebug) { Printer.Info("LOADING FARM BUILDINGS"); }
                 foreach (Building building in Game1.getFarm().buildings)
                 {
                     if (building != null)
@@ -77,7 +76,6 @@ namespace ItemPipes.Framework
             DataAccess DataAccess = DataAccess.GetDataAccess();
             if (location.Name.Equals(Game1.getFarm().Name))
             {
-                if (Globals.UltraDebug) { Printer.Info("LOADING FARM BUILDINGS"); }
                 foreach (Building building in Game1.getFarm().buildings)
                 {
                     if (building != null)
@@ -175,7 +173,7 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().North, adj);
                                 }
                             }
-                            else if (location.getObjectAtTile(x, y - 1) is Chest || location.getObjectAtTile(x, y - 1) is CustomBigCraftableItem)
+                            else if (location.getObjectAtTile(x, y - 1) is Chest)
                             {
                                 Node adj;
                                 if (nodes.Find(n => n.Position.Equals(north)) == null)
@@ -220,7 +218,7 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().South, adj);
                                 }
                             }
-                            else if (location.getObjectAtTile(x, y + 1) is Chest || location.getObjectAtTile(x, y + 1) is CustomBigCraftableItem)
+                            else if (location.getObjectAtTile(x, y + 1) is Chest)
                             {
                                 Node adj;
                                 if (nodes.Find(n => n.Position.Equals(south)) == null)
@@ -269,7 +267,7 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().East, adj);
                                 }
                             }
-                            else if (location.getObjectAtTile(x + 1, y) is Chest || location.getObjectAtTile(x + 1, y) is CustomBigCraftableItem)
+                            else if (location.getObjectAtTile(x + 1, y) is Chest)
                             {
                                 Node adj;
                                 if (nodes.Find(n => n.Position.Equals(east)) == null)
@@ -318,7 +316,7 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().West, adj);
                                 }
                             }
-                            else if (location.getObjectAtTile(x - 1, y) is Chest || location.getObjectAtTile(x - 1, y) is CustomBigCraftableItem)
+                            else if (location.getObjectAtTile(x - 1, y) is Chest)
                             {
                                 Node adj;
                                 if (nodes.Find(n => n.Position.Equals(west)) == null)

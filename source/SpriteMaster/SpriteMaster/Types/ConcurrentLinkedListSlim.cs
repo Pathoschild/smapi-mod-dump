@@ -8,40 +8,32 @@
 **
 *************************************************/
 
+// #define VALIDATE_CLLSLIM
+
+using JetBrains.Annotations;
+using Microsoft.Toolkit.HighPerformance;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace SpriteMaster.Types;
 
 internal sealed class ConcurrentLinkedListSlim<T> {
 	private const MethodImplOptions Inline = Runtime.MethodImpl.Inline;
 
-	private static class ExceptionMakers {
-		[MethodImpl(MethodImplOptions.NoInlining)]
-		internal static InvalidOperationException EmptyList() {
-			return new("List is empty");
-		}
-
-		[MethodImpl(MethodImplOptions.NoInlining)]
-		internal static ArgumentOutOfRangeException InvalidNodeRef(string nodeRefName, NodeRef value) {
-			return new($"NodeRef {nodeRefName} is invalid ({value.Index})");
-		}
-	}
-
-	[StructLayout(LayoutKind.Auto)]
+	//[StructLayout(LayoutKind.Auto)]
 	internal struct Node {
 		internal T Value = default!;
 		internal NodeRef Previous = default;
 		internal NodeRef Next = default;
 
 		[MethodImpl(Inline)]
-		internal Node(in T value) {
-			Value = value;
-		}
+		public Node() {}
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = sizeof(int), Size = sizeof(int))]
@@ -59,13 +51,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 			IndexInternal = index + 1;
 		}
 
-		/// <summary>
-		/// Sets <see cref="NodeRef.IndexInternal"/> to <c>0</c>
-		/// </summary>
 		[MethodImpl(Inline)]
-		internal readonly void Invalidate() {
-			Unsafe.AsRef(in IndexInternal) = 0;
-		}
+		public static implicit operator bool(NodeRef node) => node.IsValid;
 
 		[MethodImpl(Inline)]
 		public static bool operator ==(NodeRef lhs, NodeRef rhs) => lhs.Index == rhs.Index;
@@ -82,13 +69,45 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 		public override int GetHashCode() => Index;
 	}
 
+	[StructLayout(LayoutKind.Auto)]
+	private ref struct NodePair {
+		private readonly Ref<Node> RefNode;
+		internal ref Node Node => ref RefNode.Value;
+		internal readonly NodeRef Ref;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal NodePair(ref Node node, NodeRef nodeRef) {
+			RefNode = new(ref node);
+			Ref = nodeRef;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static implicit operator NodeRef(in NodePair pair) => pair.Ref;
+	}
+
 	private readonly List<int> NodeFreeList = new();
-	private Node[] NodeList = Array.Empty<Node>();
-	private int NodeListOffset = 0;
+	private Node[] NodeArray = Array.Empty<Node>();
+	private int NodeListOffset = -1;
 
 	internal int Count { get; private set; } = 0;
 	private NodeRef Head = default;
 	private NodeRef Tail = default;
+
+	// Only for debugging purposes
+	private ref Node HeadNode => ref GetNode(Head);
+	private ref Node TailNode => ref GetNode(Tail);
+
+	private int GetListCount() {
+		int count = 0;
+		var current = Head;
+		while (current) {
+			ref var node = ref GetNode(current);
+			current = node.Next;
+			++count;
+		}
+
+		return count;
+	}
 
 	internal Node? Last {
 		[MethodImpl(Inline)]
@@ -98,74 +117,123 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 		}
 	}
 
-	[MethodImpl(Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Inline)]
 	private static int AdjustSize(int neededSize) {
 		var newSize = neededSize + (neededSize >> 1);
 		newSize.AssertGreaterEqual(neededSize);
 		return newSize;
 	}
 
-	[MethodImpl(Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Inline)]
 	private ref Node GetNode(NodeRef nodeRef) {
-		return ref NodeList[nodeRef.Index];
+#if SHIPPING && !CONTRACTS_FULL
+		return ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(NodeArray), nodeRef.Index);
+#else
+		return ref NodeArray[nodeRef.Index];
+#endif
 	}
 
-	[MethodImpl(Inline)]
-	private NodeRef GetNewNode() {
+	[Pure, MustUseReturnValue, MethodImpl(Inline)]
+	private bool TryGetNode(NodeRef nodeRef, out NodePair node) {
+		if (nodeRef) {
+			node = new(ref GetNode(nodeRef), nodeRef);
+			return true;
+		}
+
+		node = default;
+		return false;
+	}
+
+	/// <summary>
+	/// Return a new, clean NodeRef from the array.
+	/// As it can enlarge the array, it must be called _before_ any references are taken internally.
+	/// </summary>
+	[MustUseReturnValue, MethodImpl(Inline)]
+	private NodePair GetNewNode() {
+		// If the NodeFreeList is not empty, then simply pull one out of it.
 		if (NodeFreeList.Count != 0) {
-			int freeIndex = NodeFreeList[^1];
-			NodeFreeList.RemoveAt(NodeFreeList.Count - 1);
-			ref var newNode = ref NodeList[freeIndex];
+			// Pop the last element off of the free list.
+			int lastIndex = NodeFreeList.Count - 1;
+			int freeIndex = NodeFreeList[lastIndex];
+			NodeFreeList.RemoveAt(lastIndex);
+
+			// Get the referenced node at that index.
+			ref var newNode = ref NodeArray[freeIndex];
+			// Clear it out.
 			newNode.Next = default;
 			newNode.Previous = default;
-			return new(freeIndex);
+			return new(ref newNode, new(freeIndex));
 		}
 
-		int offset = NodeListOffset++;
+		// Otherwise, we need a new node.
+		int offset = Interlocked.Increment(ref NodeListOffset);
 
-		if (offset >= NodeList.Length) {
-			Array.Resize(ref NodeList, AdjustSize(NodeListOffset));
+		// If the new offset is larger than the current array, enlarge the array.
+		if (offset >= NodeArray.Length) {
+			Array.Resize(ref NodeArray, AdjustSize(offset + 1));
 		}
 
-		return new(offset);
+		return new(ref NodeArray[offset], new(offset));
 	}
 
+	/// <summary>
+	/// Add a new node representing the provided <paramref name="value"/> to the front of the list.
+	/// </summary>
 	internal NodeRef AddFront(in T value) {
 		lock (this) {
 			ValidateDebug();
 
-			var newNodeRef = GetNewNode();
-			ref Node newNode = ref GetNode(newNodeRef);
-			newNode.Value = value;
+			// Get a new node
+			var newNode = GetNewNode();
+			newNode.Node.Value = value;
 
-			if (Head.IsValid) {
-				ref Node currentHeadNode = ref GetNode(Head);
-				newNode.Next = Head;
-				currentHeadNode.Previous = newNodeRef;
+			// If a head node exists, make the head node the next node to the new node,
+			// and make the previous node to the head node the new node.
+			if (TryGetNode(Head, out var headNode)) {
+				newNode.Node.Next = headNode;
+				headNode.Node.Previous = newNode;
 			}
 
-			Head = newNodeRef;
+			// Make the new node the head node.
+			Head = newNode;
 
-			if (!Tail.IsValid) {
+			// If no tail node exists, then head and tail are the same node.
+			if (!Tail) {
 				Tail = Head;
 			}
 
+			// Increment and validate the current node count.
 			++Count;
 			Count.AssertPositiveOrZero();
+#if !SHIPPING || CONTRACTS_FULL
+			Count.AssertEqual(GetListCount());
+#endif
 
 			ValidateDebug();
 
-			return newNodeRef;
+			return newNode;
 		}
 	}
 
+	/// <summary>
+	/// Moves the given <paramref name="nodeRef">node</paramref> to the front of the list.
+	/// </summary>
 	internal void MoveToFront(NodeRef nodeRef) {
-		if (!nodeRef.IsValid) {
-			throw ExceptionMakers.InvalidNodeRef(nameof(nodeRef), nodeRef);
+		// If the node is invalid, then do nothing.
+		if (!nodeRef) {
+			return;
 		}
 
 		lock (this) {
-			if (nodeRef == Head) {
+			// If the node is invalid, then do nothing.
+			if (!nodeRef) {
+				return;
+			}
+
+			var headRef = Head;
+
+			// If it is already the head node, then there is nothing to do.
+			if (nodeRef == headRef) {
 				return;
 			}
 
@@ -175,54 +243,65 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 
 			ref Node node = ref GetNode(nodeRef);
 
-			if (nodeRef == Tail) {
-				Tail = node.Previous;
+			// Remove the node from the list
+			{
+				// If the node is the Tail node, then move the previous node to the Tail.
+				if (nodeRef == Tail) {
+					Tail = node.Previous;
+				}
+
+				// Update the previous node.
+				if (TryGetNode(node.Previous, out var previous)) {
+					previous.Node.Next = node.Next;
+				}
+
+				// Update the next node.
+				if (TryGetNode(node.Next, out var next)) {
+					next.Node.Previous = node.Previous;
+				}
 			}
 
-			if (node.Previous.IsValid) {
-				ref Node previous = ref GetNode(node.Previous);
-				previous.Next = node.Next;
-			}
-
-			if (node.Next.IsValid) {
-				ref Node next = ref GetNode(node.Next);
-				next.Previous = node.Previous;
-			}
-
-			ref Node headNode = ref GetNode(Head);
-			headNode.Previous = nodeRef;
+			// Insert the node at Head.
+			ref Node head = ref GetNode(headRef);
+			head.Previous = nodeRef;
 			node.Previous = default;
-			node.Next = Head;
+			node.Next = headRef;
 			Head = nodeRef;
 
 			ValidateDebug();
 		}
 	}
 
-	internal T? Release(in NodeRef nodeRef) {
-		if (!nodeRef.IsValid) {
-			throw ExceptionMakers.InvalidNodeRef(nameof(nodeRef), nodeRef);
+	/// <summary>
+	/// Remove the given <paramref name="nodeRef">node</paramref> from the list
+	/// </summary>
+	internal T? Release(ref NodeRef nodeRef) {
+		// If the node is invalid, then do nothing.
+		if (!nodeRef) {
+			return default;
 		}
 
 		lock (this) {
 			NodeRef nodeRefLocal = nodeRef;
 
+			// If the node is invalid, then do nothing
+			if (!nodeRefLocal) {
+				return default;
+			}
+
 			CheckNode(nodeRefLocal);
 
 			ref Node node = ref GetNode(nodeRefLocal);
 
+#if !SHIPPING || CONTRACTS_FULL
+			if (nodeRef != Tail && nodeRef != Head && node.Previous == default && node.Next == default) {
+				ThrowHelper.ThrowInvalidOperationException("Dead Node being released");
+			}
+#endif
+
+			// Cache the current stored value, and clear it out of the node.
 			T value = node.Value;
 			node.Value = default!;
-
-			if (node.Previous.IsValid) {
-				ref Node previous = ref GetNode(node.Previous);
-				previous.Next = node.Next;
-			}
-
-			if (node.Next.IsValid) {
-				ref Node next = ref GetNode(node.Next);
-				next.Previous = node.Previous;
-			}
 
 			if (nodeRefLocal == Head) {
 				Head = node.Next;
@@ -232,10 +311,25 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 				Tail = node.Previous;
 			}
 
+			// Remove the node from the list.
+			if (TryGetNode(node.Previous, out var previous)) {
+				previous.Node.Next = node.Next;
+			}
+
+			if (TryGetNode(node.Next, out var next)) {
+				next.Node.Previous = node.Previous;
+			}
+
+			// Decrement and validate the current node count.
 			--Count;
 			Count.AssertPositiveOrZero();
+#if !SHIPPING || CONTRACTS_FULL
+			Count.AssertEqual(GetListCount());
+#endif
+			// Add the index to the node free list.
 			NodeFreeList.Add(nodeRefLocal.Index);
-			nodeRef.Invalidate();
+			// Clear out the index.
+			nodeRef = default;
 
 			ValidateDebug();
 
@@ -246,18 +340,36 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 	[MethodImpl(Inline)]
 	internal T RemoveLast() {
 		lock (this) {
+			// Not copied by ref as 'Release' will update 'Tail' and we do not want to inadvertently clobber the result.
 			NodeRef tail = Tail;
+
 			CheckNode(tail);
-			
-			if (!tail.IsValid) {
-				throw ExceptionMakers.EmptyList();
+
+			if (!tail) {
+				ThrowHelper.ThrowInvalidOperationException("List is empty");
 			}
 
-			return Release(tail)!;
+			return Release(ref tail)!;
 		}
 	}
 
-	[Conditional("DEBUG")]
+	[MethodImpl(Inline)]
+	internal bool TryRemoveLast([NotNullWhen(true)] out T? value) {
+		lock (this) {
+			// Not copied by ref as 'Release' will update 'Tail' and we do not want to inadvertently clobber the result.
+			NodeRef tail = Tail;
+
+			if (!tail) {
+				value = default;
+				return false;
+			}
+
+			value = Release(ref tail)!;
+			return true;
+		}
+	}
+
+	[Conditional("VALIDATE_CLLSLIM")]
 	private void CheckNode(NodeRef nodeRef) {
 		try {
 			nodeRef.Index.AssertPositiveOrZero(
@@ -270,12 +382,12 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 		}
 	}
 
-	[Conditional("DEBUG")]
+	[Conditional("VALIDATE_CLLSLIM")]
 	private void ValidateDebug() {
 		try {
 			Count.AssertPositiveOrZero();
 
-			int nodeListLength = NodeList.Length;
+			int nodeListLength = NodeArray.Length;
 
 			var indexSet = new HashSet<int>(Count);
 
@@ -353,6 +465,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 		}
 	}
 
+	// Removes all nodes from the list.
+	// All outstanding NodeRefs will need to be cleared as well as they are no longer valid
 	internal void Clear() {
 		lock (this) {
 			ValidateDebug();
@@ -361,16 +475,17 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 				return;
 			}
 
-			int nodeListLength = NodeList.Length;
+			int nodeListLength = NodeArray.Length;
 
 			NodeFreeList.Clear();
 			NodeFreeList.Capacity = Math.Max(NodeFreeList.Capacity, nodeListLength);
 			for (int i = 0; i < nodeListLength; i++) {
 				NodeFreeList.Add(i);
-				NodeList[i].Value = default!;
-#if DEBUG || DEVELOPMENT
-				NodeList[i].Next = default;
-				NodeList[i].Previous = default;
+				ref Node node = ref NodeArray[i];
+				node.Value = default!;
+#if !SHIPPING || CONTRACTS_FULL
+				node.Next = default;
+				node.Previous = default;
 #endif
 			}
 

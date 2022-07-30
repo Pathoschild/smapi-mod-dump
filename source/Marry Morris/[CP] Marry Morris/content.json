@@ -1,0 +1,2058 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+    "Format": "1.27.2",
+    "CustomLocations": [
+        {
+            "Name": "Custom_Yoshimax_MorrisLand",
+            "FromMapFile": "assets/Maps/MorrisLand.tmx"
+        },
+        {
+            "Name": "Custom_Yoshimax_MorrisHome",
+            "FromMapFile": "assets/Maps/MorrisHome.tmx"
+        }
+    ],
+    "Changes": [
+
+
+
+
+        //Dispositions/gift tastes/exclusions edits
+        {
+            //Adds Morris
+            "Action": "EditData",
+            "Target": "Data/NPCDispositions",
+            "Entries": {
+                "MorrisTod": "adult/polite/neutral/positive/male/datable/null/Other/spring 2//Custom_Yoshimax_MorrisHome 15 5/Morris"
+                  }
+        },
+        //Adds Morris gift tastes when SVE not installed and CC not completed (Same as SVE w/ new dialogue)
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "When": {
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false",
+                "HasSeenEvent |contains=191393": "false"
+            },
+            "Entries": {
+                "MorrisTod": "Oh, I love this! This is even better than a promotion!$h/730 727 432 578/Wonderful!$h/72 348 430 428/I'm not a fan of these.$s/346 459 303 -81/Do I look like a trash can? If you still worked at Joja, I'd dock your pay for that.$3/167 -74/Thanks, @./-75 -79 -80/"
+            }
+        },
+        //Adds Morris gift tastes when CC completed (Same as SVE w/ new dialogue)
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "When": {
+                "HasSeenEvent |contains=191393": "true"
+            },
+            "Entries": {
+                "MorrisTod": "Oh, I love this! This is even better than a promotion!$h/730 727 432 578/Wonderful!$h/72 348 430 428/I'm not a fan of these.$s/346 459 303 -81/Do I look like a trash can? I really don't want that...$s/167 -74/Thanks, @./-75 -79 -80/"
+            }
+        },
+        //Changes Morris's exclusions (if SVE installed) or adds them (if SVE not installed)
+        {
+            "Action": "EditData",
+            "Target": "Data/CustomNPCExclusions",
+            "Entries": {
+                "MorrisTod": "ItemDelivery, ShopDialog, IslandVisit"
+            }
+        },
+        //Allows Morris to go to resort after CC complete on any day but Wednesday (can't go when on Joja route as he won't get time off)
+        {
+            "Action": "EditData",
+            "Target": "Data/CustomNPCExclusions",
+            "When": {
+                "HasSeenEvent |contains=191393": "true", "DayOfWeek": "Monday, Tuesday, Thursday, Friday, Saturday, Sunday"
+            },
+            "Entries": {
+                "MorrisTod": "ItemDelivery, ShopDialog"
+            }
+        },
+
+
+
+
+
+
+        //Events
+
+        //Morris 2 heart event when CC not completed
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/SeedShop",
+            "When": {"HasSeenEvent |contains=191393": false, "IsCommunityCenterComplete": "false"},
+            "Entries": {
+                "2061663142/k 191393/f MorrisTod 500/e 3102768/w sunny/F/d Wed/t 1200 1700": "distantBanjo/6 18/Pierre 4 17 2 Morris -100 -100 0/skippable/emote Pierre 28/pause 500/speak Pierre \"Profits are down another 2 percent this week. At this rate, I'll go out of business soon...$s\"/warp Morris 6 29/move Morris 0 -10 0/textAboveHead Pierre \"Oh, it's you.\"/move Morris -2 0 0/pause 500/speak Morris \"Greetings! How are you on this fine day? JojaMart has been full of customers.$h\"/speak Pierre \"Yes, full of my customers.$s\"/speak Morris \"No need to despair. I know we've butted heads in the past, but I've negotiated the perfect solution.$h#$b#Joja has agreed to offer you a position as assistant manager at JojaMart in exchange for closing down your store.$h#$b#It'll come with a hefty salary increase and amazing bonuses!$h\"/showFrame Pierre 16/jump Pierre/pause 500/speak Pierre \"...$4\"/speak Morris \"I know, I'd be speechless too. So when do you wish to start?$h#$b#I'd imagine you'd need a week or two to close things down here, then we can demolish the building and maybe build a Joja warehouse...\"/pause 500/showFrame Pierre 0/speak Pierre \"Absolutely not! I'm not accepting your offer.$3\"/jump Morris/pause 500/speak Morris \"You're not? But why? I spent hours on the phone with corporate working it out.$s\"/speak Pierre \"Because I, unlike you, have a soul, and I don't want to give it to a huge corporation selling low-quality products imported from who-knows-where.$3\"/speak Morris \"You're making a mistake. You're choosing to live in the past. Joja is the future, and I'm sorry you can't see that.$s\"/speak Pierre \"As long as people like me continue the fight, there still could be a future without Joja.$3\"/speak Morris \"I used to think like you, you know. But then I realized the error of my ways. I hope you'll come to the same conclusion someday.\"/speak Pierre \"Don't worry, I won't.\"/pause 2000/globalFade/viewport -9999 -9999/end"
+            }
+        },
+        //Morris 4 heart event when CC not completed
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Saloon",
+            "When": {"HasSeenEvent |contains=191393": false, "IsCommunityCenterComplete": "false"},
+            "Entries": {
+                "772529467/k 191393/f MorrisTod 1000/e 2061663142/F/d Mon Tue Wed Thu Sat Sun/t 2000 2400": "distantBanjo/11 20/farmer 14 24 0 Morris -30 -30 0 Clint 18 22 2 Marnie 9 22 3 Pam 7 18 1 Lewis 8 22 1 Pierre 4 22 2 Demetrius 3 23 1 Gus 14 18 2 Emily 16 18 3/skippable/move farmer 0 -3 3/faceDirection Pierre 1 true/move farmer -4 0 0/faceDirection Pierre 2 true/move farmer 0 -1 0/faceDirection Marnie 0 true/move Emily 2 0 1/faceDirection Marnie 3 true/pause 800/move Emily -2 0 0/pause 1000/faceDirection Clint 3 true/move Emily 2 0 1/warp Morris 14 24/playSound doorClose/pause 500/move Morris 0 -3 3/move Morris -2 0 0/move Morris 0 -1 0/move Gus -2 0 2/speak Gus \"Hi, Morris. I don't see you in here often!$h\"/move Emily -2 0 0/speak Morris \"I'm normally busy with the store so I just microwave something when I get home, but I decided to treat myself to one of your fine meals today!$h\"/speak Gus \"I'd be happy to treat you! What can I get you?\"/speak Morris \"One lobster bisque, please!$h\"/move Emily 2 0 1/speak Gus \"Coming right up!\"/move Gus 0 -1 0/pause 1000/move Gus 0 1 2/pause 500/speak Gus \"Here you go!\"/speak Morris \"Thank you!$h\"/pause 500/faceDirection Morris 1/faceDirection Morris 2/faceDirection Morris 3/textAboveHead Morris \"Hm, where to sit?\"/move Morris 0 1 2/move Morris 1 0 1/move Morris 0 2 3/move Morris -4 0 0/textAboveHead Morris \"Greetings!\"/faceDirection Lewis 2/faceDirection Marnie 2/move Emily -2 0 0/move Gus 3 0 0/move Gus 0 -1 0/textAboveHead Lewis \"This table's full...\"/pause 500/faceDirection Lewis 1/faceDirection Marnie 3/emote Morris 28/pause 500/textAboveHead Morris \"Maybe over here?\"/move Morris 6 0 1/pause 500/textAboveHead Clint \"I'm heading out.\"/move Clint -4 0 2/move Clint 0 2 2/warp Clint -2320 -1949/pause 500/faceDirection Morris 3/faceDirection Pierre 1/textAboveHead Pierre \"Nope.\"/pause 500/faceDirection Pierre 2 true/emote Morris 28/textAboveHead Morris \"Sigh...\"/pause 500/move Emily 2 0 1/move Gus 0 1 3/move Gus -5 0 2/move Morris 0 -1 1/move Morris 2 0 2/question fork1 \"#Sit with Morris.#Leave.\"/fork Leave/move farmer 0 1 2/move farmer 9 0 1/move farmer 0 2 3/pause 500/speak Morris \"Thanks for coming to sit with me, @. Unfortunately, I have few friends here, as you can see.$s#$b#Gus is kind to me, but that's just due to the fact that I'm a well-paying customer. No one else bothers.$s#$b#The townspeople don't understand me or Joja. We're just trying to do what's best for them. I wish they could see that.$3#$b#Pelican Town is stuck in the past, but there's so much opportunity for growth here.#$b#I do enjoy living here. I just wish I had more friends. Sometimes I wonder if I'm going about all of this the wrong way.$s#$b#When I came here, I had hoped that the people would embrace modernization. It would significantly improve their lives. I don't know how to convince them of that though.#$b#I'm glad I met you here, at least. Anyway, I had better start eating! I have a lot more work to do tonight.$h\"/emote Morris 32/emote farmer 32/friendship Morris 50/pause 2000/globalFade/viewport -9999 -9999/end dialogue MorrisTod \"Thanks for sticking up for me at the saloon. It's good to know I have a friend here.$h\"",
+                "Leave": "move farmer 1 0 1/faceDirection Morris 3 true/move farmer 0 1 2/move farmer 3 0 1/move farmer 0 3 2/playSound doorClose/warp farmer -200 -200/faceDirection Morris 2 true/friendship Morris -250/speak Morris \"Even @ left?$s#$b#I really don't have any friends here. What am I doing wrong?$s#$b#I suppose I'll go eat this at my desk. I can start on the mountain of paperwork I have to finish tonight.$s\"/move Morris -1 0 2/jump Morris/playSound slimedead/pause 700/speak Morris \"Oh no, I dropped my food! It's another frozen Joja pizza tonight then.$s\"/pause 200/move Morris -2 0 2/move Morris 0 2 2/playSound doorClose/warp Morris -1000 -1000/globalFade/viewport -9999 -9999/end dialogue MorrisTod \"Sorry @, I'm not really in the mood to talk to you at the moment.$s\""
+            }
+
+        },
+        //Morris 6 heart event when CC not completed
+        {
+            "Action": "Load",
+            "Target": "Data/Events/Custom_Yoshimax_MorrisLand",
+            "When": {"HasSeenEvent |contains=191393": false, "IsCommunityCenterComplete": "false"},
+            "FromFile": "assets/Events/Custom_Yoshimax_MorrisLand.json"
+        },
+        //Morris 8 heart event 
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Town",
+            "Entries": {
+                "436392981/f MorrisTod 2000/F/d Sat Sun/t 600 900": "sadpiano/47 87/Morris 47 88 0 farmer -100 -100 0/skippable/addObject 47 87 458/emote Morris 28/pause 2000/textAboveHead Morris \"*sniff*\"/pause 500/speak Morris \"I don't know how to do all of this without you, Dad.$s#$b#I'm trying to fulfill my dreams like you would have wanted, but it's difficult to stay focused now that you're gone.$s\"/pause 500/warp farmer 47 96/move farmer 0 -5 0/pause 1500/jump farmer/faceDirection Morris 2/jump Morris/textAboveHead \"@!\"/pause 1000/speak Morris \"Oh, @, good morning! I'm, um, just on my way to work!$h#$b#*sniffles*$h\"/question fork1 \"#Ask what's wrong.#Say nothing.\"/fork SayNothing/speak Morris \"I suppose you could tell I've been crying. You'd think someone working in customer service would be better at hiding it.$s#$b#You're my closest friend here, though, so I don't know why I'm trying to put on a front around you.#$b#It's my dad. He passed away recently, and it's been tough. Joja didn't let me off work to go to his funeral, which was difficult for my mom.$s#$b#It had been ages since I'd visited him, and now I never will. This isn't even his gravestone. He's buried back home. I just come here some mornings to grieve.$s\"/move Morris -2 0 3/move farmer 0 -3 0/move farmer 1 0 3/emote farmer 8/pause 500/faceDirection Morris 1/speak Morris \"Do I want to talk about him? Sure, maybe that would help.#$b#He was a pretty normal father, I think. My mom mostly stayed at home with me, while he worked at an entry-level position in a Joja factory.#$b#We had enough to get by, but we weren't rich. As long as my dad got to go fishing every Sunday, he couldn't have cared less how wealthy we were.$h#$b#I was the black sheep of the family. I was full of ambition, even as a kid. I started my first lemonade stand when I was 4.$h#$b#My dad may not have understood me, but he was incredibly supportive, going out of his way to help me with every new endeavor.#$b#He even helped me get my first job with Joja after I graduated! I quickly moved up the ranks, which led to me getting the job here.$h#$b#I still remember how excited he was when I told him about it. Sad I'd be moving away of course, but so happy for me.$h\"/faceDirection Morris 3/emote Morris 28/pause 500/faceDirection Morris 1/pause 500/speak Morris \"And then he got sick. I always knew I should go visit more often, but I kept putting it off. Now it's too late.$s#$b#My mom hasn't been coping well with it all. We write letters back and forth every week, but she's really lonely. I need to go visit soon.$s#$b#She refuses to get a phone or computer so we can talk more easily. She's always been a bit stuck in the past. She's a bit like Pelican Town in that respect, haha!$h#$b#Thanks for listening to me, @. Getting all of that off my chest made me feel a lot lighter.$h#$b#If you ever see me in the graveyard again, feel free to stop by and chat. Thanks for being my friend.$h#$b#I better head off to the store, but it was good seeing you!$h\"/pause 500/emote Morris 32/emote farmer 32/pause 500/move Morris 2 0 1/move Morris 0 11 2/warp Morris -100 -100/globalFade/viewport -9999 -9999/end",
+                "SayNothing": "pause 500/speak Morris \"You're my closest friend here, so I don't know why I'm trying to put on a front around you.#$b#It's my dad. He passed away recently, and it's been tough. Joja didn't let me off work to go to his funeral, which was difficult for my mom.$s#$b#It had been ages since I'd visited him, and now I never will. This isn't even his gravestone. He's buried back home. I just come here some mornings to grieve.$s\"/move Morris -2 0 3/move farmer 0 -3 0/move farmer 1 0 3/emote farmer 8/pause 500/faceDirection Morris 1/speak Morris \"Do I want to talk about him? Sure, maybe that would help.#$b#He was a pretty normal father, I think. My mom mostly stayed at home with me, while he worked at an entry-level position in a Joja factory.#$b#We had enough to get by, but we weren't rich. As long as my dad got to go fishing every Sunday, he couldn't have cared less how wealthy we were.$h#$b#I was the black sheep of the family. I was full of ambition, even as a kid. I started my first lemonade stand when I was 4.$h#$b#My dad may not have understood me, but he was incredibly supportive, going out of his way to help me with every new endeavor.#$b#He even helped me get my first job with Joja after I graduated! I quickly moved up the ranks, which led to me getting the job here.$h#$b#I still remember how excited he was when I told him about it. Sad I'd be moving away of course, but so happy for me.$h\"/faceDirection Morris 3/emote Morris 28/pause 500/faceDirection Morris 1/pause 500/speak Morris \"And then he got sick. I always knew I should go visit more often, but I kept putting it off. Now it's too late.$s#$b#My mom hasn't been coping well with it all. We write letters back and forth every week, but she's really lonely. I need to go visit soon.$s#$b#She refuses to get a phone or computer so we can talk more easily. She's always been a bit stuck in the past. She's a bit like Pelican Town in that respect, haha!$h#$b#Thanks for listening to me, @. Getting all of that off my chest made me feel a lot lighter.$h#$b#If you ever see me in the graveyard again, feel free to stop by and chat. Thanks for being my friend.$h#$b#I better head off to the store, but it was good seeing you!$h\"/pause 500/emote Morris 32/emote farmer 32/pause 500/move Morris 2 0 1/move Morris 0 11 2/warp Morris -100 -100/globalFade/viewport -9999 -9999/end"
+            }
+        },
+        //Morris 10 heart event when CC completed
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Saloon",
+            "When": {"HasSeenEvent |contains=191393": true, "IsCommunityCenterComplete": "true", "Relationship:MorrisTod": "Dating, Married"},
+            "Entries": {
+                "2109498809/f MorrisTod 2500/e 436392981/d Sat/t 1800 2300": "distantBanjo/11 20/farmer -30 -30 0 Morris -100 -100 0 Shane 11 20 0 Marnie 9 22 3 Pam 7 18 1 Lewis 8 22 1 Pierre 4 22 2 Demetrius 3 23 1 Gus 14 18 2 Emily 16 18 3/skippable/move Emily 2 0 1/faceDirection Marnie 3 true/pause 500/warp farmer 14 24/playSound doorClose/faceDirection Pierre 1/faceDirection Pierre 2 true/move farmer 0 -3 0/move farmer -4 0 3/move farmer 0 -1 0/move farmer -5 0 3/move farmer 0 -1 0/move farmer -1 0 2/textAboveHead Lewis \"Hi {{PlayerName}}!\"/pause 500/warp Morris 14 24/playSound doorClose/faceDirection Marnie 1/faceDirection Marnie 3 true/move Morris 0 -3 0/move Morris -4 0 3/move Morris 0 -1 0/move Morris -5 0 3/move Emily -2 0 2/pause 500/textAboveHead Pierre \"Hey Morris!\"/pause 1000/move Emily 2 0 1/textAboveHead Emily \"{{PlayerName}} and Morris!\"/pause 1000/faceDirection Morris 1 true/textAboveHead Morris \"Greetings!\"/pause 1000/faceDirection Morris 3 true/move Emily -2 0 2/speak Morris \"As I was saying, I saw this amazing new TV for sale when I was in the city last weekend! It had a huge screen and an extraordinarily high resolution.$h#$b#I was thinking we could get it for your house. Imagine how much fun movie nights will be with such a large TV!$h\"/pause 500/speak Morris \"Well, true, I mainly watch 'Who Wants to Be a Billionaire', and we probably don't need to see that in high resolution, haha!$h\"/move Emily 0 -1 0/move Emily -11 0 3/move Emily 0 1 2/faceDirection Morris 0 true/faceDirection farmer 1 true/speak Emily \"Hi Morris and @! Out on a date? What would you like?\"/speak Morris \"We are! I'd like a lobster bisque. @, what would you like?$h\"/quickQuestion #Hamburger#Salad(break)speak Emily \"One lobster bisque and hamburger coming right up!\"(break)speak Emily \"One lobster bisque and salad coming right up!\"/faceDirection Morris 3/faceDirection farmer 2/textAboveHead Morris \"I can't wait!\"/move Emily 0 -1 0/move Emily 11 0 0/move Shane -4 0 3/speak Shane \"*hic hic* Why are you in here?$a\"/pause 400/faceDirection Morris 1 true/faceDirection farmer 1/speak Morris \"Oh, hello Shane! @ and I are out on a date. How have you been?$h\"/emote Shane 12/speak Shane \"*hic* Bad. Been drinking a lot. I lost my job thanks to you. Still not sure what I hated more - you or the job.$a\"/speak Morris \"I'm very sorry to hear that.$s#$b#I'd be happy to continue this discussion with you at a later time, but @ and I are having a lovely night right now and-\"/speak Shane \"No, we're talkin' now. I doubt I'll be this brave when I'm sober.$a\"/faceDirection Morris 0/speak Morris \"@, let's go. I can cook up something delicious for you at your place.\"/move farmer 2 0 1/move farmer 0 4 0/move Shane -1 0 3/faceDirection Morris 1/pause 1000/emote Morris 16/speak Shane \"@ can leave, but you and I are still talking.$a\"/pause 500/speak Morris \"Erm, no need to do anything rash. We can talk. What is it you're so upset about?$s\"/speak Shane \"Haha, you kidding? Your poor management style, the poor salary, the fact that you callously laid me off because you suddenly got a conscience.$a#$b#Did you even care about me or was I just another number to you?$s\"/speak Morris \"I'm not going to listen to that sort of nonsense! I--$3\"/pause 500/faceDirection Pam 2 true/faceDirection Pierre 0 true/faceDirection Demetrius 0 true/faceDirection Lewis 3 true/faceDirection Marnie 3 true/faceDirection Gus 3 true/faceDirection farmer 0 true/faceDirection Emily 3 true/pause 1000/textAboveHead Morris \"Erm...\"/pause 1000/faceDirection Morris 0/pause 1000/faceDirection Morris 2/pause 1000/faceDirection Morris 1/pause 1000/emote Morris 28/pause 500/speak Morris \"I'm sorry. I still lose my temper occasionally. Let me start over.$s#$b#My management style had some flaws. I'll agree with that. I should have been kinder to you.$s\"/speak Shane \"Yep. Is that all?$a\"/speak Morris \"You should have been paid more for the amount of work I made you do.$s#$b#Also, I sincerely apologize for the fact that you lost your job. That was never my intention.\"/speak Shane \"Hmph. Well, it's a start.\"/speak Morris \"Shane, I'm sorry. I truly am. I'll keep trying to make it up to you, and I hope we can be friends someday.$s\"/speak Shane \"Heh, I don't know about that. Night.\"/move Shane 6 0 1/move Shane 0 1 2/move Shane 2 0 1/move Shane 0 3 2/playSound doorClose/warp Shane -100 -100/textAboveHead Morris \"*sigh*\"/beginSimultaneousCommand/faceDirection Pam 1/faceDirection Pierre 2/faceDirection Demetrius 1/faceDirection Lewis 1/faceDirection Marnie 3/faceDirection Gus 2/faceDirection farmer 0/faceDirection Emily 0/endSimultaneousCommand/move Morris 1 0 3/move farmer -1 0 0/move farmer 0 -3 1/speak Morris \"Everyone else in town has forgiven me, but I don't know if Shane ever will.$s#$b#I've said this before, but thank you for befriending me when no one else here would. I'd been so bewitched by Joja's propaganda that I truly believed that the work I was doing was the only way to help Pelican Town.$s#$b#And I was a horrible manager at times. I don't have an excuse for that.#$b#Your love has guided me to a better path, though.$h#$b#Through your work on the farm and my work supporting the small businesses here, we'll help Pelican Town grow and thrive without compromising what makes it so special.$h#$b#I love you, @.$10\"/beginSimultaneousCommand/showFrame 101/showFrame Morris 40/endSimultaneousCommand/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 -2/pause 30/positionOffset Morris -1 -2/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/emote Morris 20/emote farmer 20/pause 1000/globalFade/viewport -9999 -9999/end"
+            }
+        },
+        {
+        //Morris 9 and 10 heart event (when CC route not taken and SVE installed)
+            "Action": "EditData",
+            "Target": "Data/Events/Jojamart",
+            "When": {"HasSeenEvent |contains=191393": false, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true", "Relationship:MorrisTod": "Dating, Married"},
+            "Entries": {
+                "1375114563/f MorrisTod 2250/e 177691807/u 5 12 19 26/t 2000 2200":"distantBanjo/23 26/farmer 22 26 1 Morris 24 26 3/skippable/pause 500/speak Morris \"Oh, hello @. I was just starting to close up the store for the day. It's been a long Friday.$h#$b#I've been thinking... Would you like to accompany me to the saloon here for a late-night meal?$h#$b#I thought it might be a nice way for the two of us to start our weekends!$h#$b#Although I'll be back here again tomorrow...$s\"/pause 200/quickQuestion #I'd love to go!#Sorry, I can't...(break)speak Morris \"Wonderful! I've been hoping to get to know you better. It'll be nice to spend some time with you outside of JojaMart, as much as I love my store.$h\"(break)speak Morris \"Ah, never mind, then... I suppose you're busy, after all. $s\"/pause 500/textAboveHead Morris \"*RING! RING!*\"/pause 200/jump Morris/pause 400/speak Morris \"Hello? This is Morris.\"/pause 500/speak Morris \"The store inventory is incorrect? One of my employees must have messed it up...$3\"/pause 600/speak Morris \"Yes, of course I'll stay late tonight to fix it, sir.$s\"/pause 500/speak Morris \"Well, @, it looks like I can't make any plans for tonight after all. I'll be spending my Friday night here.$s#$b#I really did want to go out with you tonight. I've been thinking... Oh, it's nothing.$s#$b#I hope you have a great weekend though.$h\"/pause 500/end",
+                "1697318678/f MorrisTod 2500/e 1375114563/u 6 7 13 14 20 21 27 28/t 2000 2200":"distantBanjo/23 26/farmer 22 26 1 Morris 24 26 3/skippable/pause 500/speak Morris \"You're a sight for sore eyes, @. From angry customers to store renovations, it's been a long day.#$b#I'm sorry that our last date didn't work out. I've really been hoping to spend some time with you, but I'm so busy.$s#$b#I had an idea for how we could have a nice date together even with me being stuck in the office. Gus made some wonderful lobster bisque for the two of us!$h#$b#Here's your plate. Enjoy!\"/pause 500/emote farmer 32/textAboveHead Morris \"Mmm... *CHOMP*\"/pause 200/fade/pause 1000/fade unfade/speak Morris \"What a delicious meal!\"/pause 300/speak Morris \"The company was even better. I'm glad I got to spend this time with you, @.$h\"/pause 300/speak Morris \"I know I'm always extremely dedicated to my job, and I'll readily admit to being a workaholic, but time away from Joja is good for me.$h#$b#...I realize that's ironic, considering we're sitting in JojaMart right now.#$b#I really do work too much. I'm sorry if it ever feels like I'm putting the store first. I don't mean to.$s\"/pause 500/speak Morris \"Before you arrived here, I really didn't know what to do with myself. I doubted myself much more than I let on to anyone.$s#$b#I don't have many friends here. I don't know how I would, considering I only leave JojaMart to sleep.$s#$b#I don't have pets, don't have kids, don't have any close family except my mom. I threw myself into Joja because it was all I had.#$b#But then you came here, and you changed everything for me. Joja's been my life for so long, but ultimately it's just a job.#$b#Yes, I really did just say that. No, I'm not drunk. Well, not THAT drunk.$h#$b#My point is that you mean a lot to me. I'm so glad you're a part of my life, @.$10\"/emote Morris 20/emote farmer 20/pause 500/speak Morris \"Anyway, it's time for me to head home, I suppose. Can't miss out on my 4 hours of sleep!$h#$b#Although, if I was ever to spend the night at your place, I bet I could get more sleep. Or not...$h\"/jump farmer/speak Morris \"You want me to come over tonight? Well, guess we'll see how much sleeping I do then! I'll grab my stuff.\"/pause 300/move farmer 0 2 2/move farmer 2 0 1/beginSimultaneousCommand/move Morris 1 0 3/move farmer 0 -2 1/endSimultaneousCommand/beginSimultaneousCommand/showFrame 101/showFrame Morris 40/endSimultaneousCommand/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 -2/pause 30/positionOffset Morris -1 -2/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 30/positionOffset Morris -1 0/pause 500/end newDay"
+            }
+        },
+        {
+        //Loads Morris 8, and 10 heart events (when CC not completed and SVE not installed)
+            "Action": "Load",
+            "Target": "Data/Events/Jojamart",
+            "When": {"HasSeenEvent |contains=191393": false, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "Relationship:MorrisTod": "Dating, Married"},
+            "FromFile": "assets/Events/jojamart.json"
+        },
+        //Morris 14 heart event - Letter
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Farm",
+            "When": {"HasSeenEvent": "1697318678, 2109498809"},
+            "Entries": {
+                "1437932561/f MorrisTod 3500": "none/-9999 -9999/farmer 0 0 2/mail Morris14Heart/end"
+            }
+        },
+        //Morris letter
+        {
+            "Action": "EditData",
+            "Target": "Data/mail",
+            "Entries": {
+                "Morris14Heart": "Hi {{PlayerName}},^^I've planned out a lovely date for us at the beach. I have something to show you that I know you're going to love.^^Can you meet me there after 6 pm this weekend (as long as it's sunny)?^^Love you!^-Morris"
+            }
+        },
+        //Morris 14 heart event
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Beach",
+            "Entries": {
+                "1437932562/f MorrisTod 3500/d Mon Tue Wed Thu Fri/F/w sunny/t 1800 2300/n Morris14Heart": "starshoot/32 18/Morris 31 17 2 farmer 38 0 2/skippable/move farmer 0 17 2/faceDirection Morris 1/move farmer -5 0 3/emote Morris 32/pause 500/speak Morris \"Looks like you got my letter, @. We haven't been going on dates as often recently, but I thought I'd treat you to something special tonight.$h#$b#I asked Gus to make us both a nice meal to start! Here's his finest lobster bisque.$h#$b#Enjoy! [730]\"/pause 500/textAboveHead Morris \"*SLURP*\"/pause 1000/textAboveHead Morris \"Delicious!\"/pause 2500/emote farmer 32/emote Morris 32/pause 500/speak Morris \"So how have things been going with the farm today?\"/globalFade/viewport -999 -999/ambientLight 200 240 60/warp farmer 45 23 1/warp Morris 46 23 3/faceDirection farmer 1/faceDirection Morris 3/playMusic starshoot/viewport 45 22/pause 1000/speak Morris \"I've really enjoyed spending my evening with you here, @. As I mentioned, I have a surprise I wanted to show you.$h#$b#I have a lot more time nowadays for my hobbies, and I've taken up photography again.#$b#You look absolutely stunning in some of the photos I've gotten of the two of us. Here are some of my favorites.$h\"/pause 1000/globalFade/viewport -999 -999/playMusic 50s/changeToTemporaryMap Custom_Yoshimax_MorrisPhotos/warp farmer 15 16 0/warp Morris 16 16 0/faceDirection farmer 0/faceDirection Morris 0/viewport 15 15/pause 3000/speak Morris \"This was when I took you to that aquarium in the city. We nearly got kicked out for too much PDA, haha!$h\"/pause 1000/globalFade/viewport -999 -999/warp farmer 39 16 0/faceDirection farmer 0/warp Morris 36 16 1/faceDirection Morris 1/viewport 37 15/pause 2000/speak Morris \"Here's when you first asked about my camera, back when I was too busy for photography. I managed to get this picture though!#$b#I love that you were always so curious about me.$h\"/pause 1000/globalFade/viewport -999 -999/warp Morris 60 16 0/warp farmer 60 14 2/showFrame Morris 44/faceDirection farmer 2/viewport 60 15/pause 2000/speak Morris \"This was us at the Flower Dance! I looked ridiculous in that outfit, but I loved getting to dance with you.$h\"/pause 1000/globalFade/viewport -999 -999/warp Morris 79 15 1/faceDirection Morris 1/warp farmer 82 15 3/faceDirection farmer 3/addObject 81 14 458/viewport 80 15/pause 3000/speak Morris \"This was when you came to comfort me that day when I was grieving. Words can't express how much that meant to me.$s#$b#I think that was when I fell in love with you.$h\"/pause 1000/globalFade/viewport -999 -999/warp farmer 102 14 1/warp Morris 103 14 3/faceDirection farmer 1/faceDirection Morris 3/showFrame 101/showFrame Morris 40/positionOffset farmer 10 6/positionOffset Morris -8 -3/viewport 102 15/pause 3000/speak Morris \"And this was us just a few moments ago. Luckily no one's going to kick us out for too much PDA here!$h\"/pause 1000/globalFade/viewport -9999 -9999/speak Morris \"Looking at those photos together made me a bit teary-eyed.$s#$b#I might hang them up at work. I'm sure seeing them every morning would make me even more productive, haha!$h#$b#You really mean the world to me, sweetheart. I can never say that enough. I love you, @.$10\"/pause 3000/end"
+            }
+        },
+        
+        //Morris's modified Community Center event where he stays (no SVE)
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Town",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "Entries": {
+                "191393/Hn ccFishTank/Hn ccBulletin/Hn ccPantry/Hn ccVault/Hn ccBoilerRoom/Hn ccCraftsRoom/Hl jojaFishTank/Hl jojaPantry/Hl jojaVault/Hl jojaBoilerRoom/Hl jojaCraftsRoom/Hl JojaMember/w sunny/H": "junimoStarSong/-1000 -1000/farmer -100 -100 0 Evelyn 56 21 0 Lewis 52 33 0 Morris -2000 -2000 0 Jas 62 16 2 Vincent 46 23 1 Emily -2000 -2000 0 Gus -2000 -2000 0 Caroline -2000 -2000 2 Robin -2000 -2000 2 Demetrius -2000 -2000 0 Clint -2000 -2000 0 Pierre -2000 -2000 1 Jodi -2000 -2000 3 Gunther -2000 -2000 0 Willy -2000 -2000 0 Pam -2000 -2000 3 George -2000 -2000 2/broadcastEvent/addConversationTopic cc_Complete/specificTemporarySprite ccCelebration/animate Jas false true 90 16 17 18 19/animate Evelyn true false 500 17 18 17 19 19 19 19/viewport 53 25 true/viewport move 0 -1 8000/move Vincent 1 0 2/move Vincent 0 1 1/move Lewis 0 -9 0 true/move Vincent 8 0 0 false/pause 1000/skippable/jump Vincent/pause 1000/speed Vincent 4/move Vincent 0 15 0/pause 3000/globalFade/viewport -1000 -1000/warp Lewis 32 22/warp Jas -2000 -2000/warp Evelyn -2000 -2000/warp Vincent -2000 -2000/warp Gunther 24 17/warp Gus 5 5 0/advancedMove Gus true -2 0 4 2000 4 0 4 3000 -2 0 4 2000/warp Pam 8 9/advancedMove Pam true 3 5000 1 0 0 -4 -1 0 4 1000 1 0 0 4 -1 0/warp Emily 16 19/advancedMove Emily true 2 0 2 8000 -2 0 4 3000/warp Pierre 23 10/warp Caroline 24 9/warp Jodi 25 10/warp Willy 40 10/advancedMove Willy true 2 0 4 3000 -3 0 4 3000 1 0 4 3000/warp George 42 18/warp Robin 10 25/advancedMove Robin false 1 0 2 2000 0 -13 16 0 0 -3/warp Clint 46 13/advancedMove Clint false -1 0 4 14000 10 0 0 6 7 0 0 -5/warp Demetrius 47 5/changeLocation CommunityCenter/viewport 7 10 true/viewport move 2 0 21500/pause 6000/move Lewis 0 -12 2/pause 10000/globalFade/viewport -1000 -1000/warp farmer 32 20/move farmer 0 -9 0 true/viewport 32 10 true/pause 5000/speak Lewis \"I'm not sure how you did it, @... but the community center has never looked better!$h#$b#You've done Pelican Town a great service. Everyone in town is pleased.$h\"/pause 800/emote Lewis 32/pause 1000/speak Lewis \"As a way of saying 'Thank You', I'd like to present you with this Town's greatest honor... The Stardew Hero Award. You've earned it!$h\"/pause 1000/awardFestivalPrize hero/null/itemAboveHead hero/null/pause 1000/faceDirection farmer 0/playMusic none/message \"VOICE: Grumble... Grumble...\"/pause 500/textAboveHead Lewis \"Who's that?\"/faceDirection farmer 2 true/move Lewis 1 0 2/move Lewis 0 1 2/pause 500/speak Morris \"Sales have been plummeting! Where have all my customers gone?$u\"/playSound doorClose/warp Morris 32 23/textAboveHead Lewis \"Ah, Morris.\"/move Morris 0 -9 2/pause 500/faceDirection Morris 1/pause 500/playSound dwop/faceDirection Morris 0 true/pause 50/faceDirection Morris 3/pause 500/showFrame Morris 19/shake Morris 1000/textAboveHead Morris \"Waa..?!\"/pause 500/speak Morris \"All my customers... Here?!?$s#$b#This isn't good...$s\"/move Pierre 0 4 1/textAboveHead Pierre \"How does it feel?\"/move Pierre 4 0 1/move Pierre 4 0 1/question fork1 \"#Let's be reasonable.#Let's settle this the old-fashioned way.\"/fork Punch/showFrame Morris 12/textAboveHead Morris \"Hmmph!\"/pause 1000/speak Morris \"It's of no consequence! I'll just run a 75%-off sale and everyone will come running back to the store! You'll see!$h\"/pause 1000/speak Pierre \"No... Not this time...$u\"/faceDirection Pierre 3/textAboveHead Pierre \"Gather 'round, everyone!\"/pause 1500/globalFade/viewport -1000 -1000/stopAdvancedMoves/warp Demetrius 35 14/faceDirection Clint 3/faceDirection Demetrius 3 true/warp Pam 28 15/faceDirection Pam 1 true/warp Gus 28 14/faceDirection Gus 1 true/warp Robin 36 15/faceDirection Robin 3/warp Emily 29 9/faceDirection Emily 2 true/warp Willy 35 16/faceDirection Willy 3 true/warp Jodi 36 9/faceDirection Jodi 2 true/warp Caroline 35 9/faceDirection Caroline 2 true/warp Clint 37 13/faceDirection Clint 3 true/warp Gunther 30 18/warp George 28 16/faceDirection George 1 true/viewport 32 10 true/faceDirection Pierre 2/faceDirection Pierre 3/faceDirection Pierre 0/faceDirection Pierre 3/pause 1000/speak Pierre \"I remember when I first moved to Pelican Town... This building was active and vibrant.#$b#We worked together to make the town a better place. There was a real sense of community.\"/pause 1000/playMusic musicboxsong/move Pierre 0 2 3/speak Pierre \"George, you always used to do the crossword puzzle while sipping coffee in the community kitchen. Remember?\"/pause 500/faceDirection George 2/pause 500/showFrame George 16/textAboveHead George \"The good ol' days.\"/move Pierre 0 -2 0/speak Pierre \"Emily, you wove that custom banner for the Stardew Valley Fair.#$b#I remember you working on that for years!$h\"/pause 1000/speak Emily \"It... It was a lot of fun... $s\"/move Pierre 0 1 1/textAboveHead Pierre \"Willy!\"/pause 500/textAboveHead Willy \"Me?\"/pause 1000/speak Pierre \"Remember when your little crab experiment got out of hand?$h\"/pause 500/speak Willy \"Hehe... That I do. We showed up one morning and the place was crawlin' with 'em.$h\"/faceDirection Pierre 3/speak Pierre \"But Gus saved the day with a brilliant idea... A crab leg feast for the entire valley!\"/speak Gus \"I still dream of that garlic butter.\"/pause 100/textAboveHead Robin \"Mmmmm...\"/faceDirection Pierre 0/playMusic none/speak Pierre \"You see, everyone? Our community is what makes Pelican Town special.#$b#When JojaMart came to town, we lost sight of that.$s#$b#But now, thanks to @, we have a second chance.#$b#I'm asking that you join me in boycotting JojaMart! We have the power to reclaim our old way of life!\"/jump Morris/showFrame Morris 19/pause 1000/textAboveHead Pierre \"Who's with me?\"/pause 3000/showFrame George 0/playMusic springtown/pause 4000/move George 1 0 1/speak George \"I've lived here too long to see this town go to ruin.#$b#You can count me in!$h\"/pause 500/shake Morris 5000/textAboveHead Demetrius \"I'm in.\"/pause 250/textAboveHead Jodi \"Boycott!\"/shake Morris 5000/faceDirection Morris 0 true/jump Morris/pause 500/textAboveHead Gus \"Me too!\"/pause 500/textAboveHead Gunther \"It's about time!\"/textAboveHead Robin \"No More Joja!\"/pause 2000/speak Morris \"I'm done for...$s\"/pause 2000/speed Morris 4/shake Morris 5000/move Morris 0 12 2/playSound doorClose/faceDirection Robin 2 true/faceDirection Demetrius 2 true/pause 20/faceDirection Gunther 2 true/pause 30/faceDirection George 2 true/pause 5000/move Morris 0 -8 0/playMusic none/message \"VOICE: *KNOCK KNOCK* Um, hello... Can I come back in?\"/pause 500/textAboveHead Lewis \"Morris?\"/playSound doorClose/move Morris 0 -4 3/move Pierre 0 0 1/speak Morris \"I wanted to apologize to you all. I've been so caught up in trying to boost my business that I've tried to ruin all of yours.$s\"/shake Pierre 5000/speak Pierre \"I thought that was the point? Ruin our businesses and take over the town?$4\"/speak Morris \"*sigh* I'm sorry. It wasn't. All I've ever wanted since I came here was to improve the town.$s#$b#I'm realizing now that I've been going about that the wrong way.#$b#I've gotten to know this town and its people since I moved here, and I've grown to love it. It's a special place.$h\"/shake Pierre 5000/shake Lewis 5000/speak Pierre \"A special place you'd like to demolish and replace with Joja warehouses!$3\"/jump Morris/pause 600/speak Morris \"In my mind, the best way to ensure that Pelican Town continued to prosper was by bringing it into the future with the aid of Joja.#$b#That meant getting rid of some of the small local businesses. I've been questioning whether that was right for some time, though.#$b#That powerful speech of yours really moved me, and given how I've been acting you were right to boycott my store.$s\"/jump Emily/jump Demetrius/jump Lewis/textAboveHead Emily \"What's he saying?\"/textAboveHead George \"What?\"/textAboveHead Clint \"Wow...\"/pause 700/speak Lewis \"So what are you saying, Morris? Because I'm glad to hear you feel this way, but I doubt Joja will agree.\"/textAboveHead Morris \"*sigh*\"/pause 500/speak Morris \"You're right, they won't. With the decline in business, they're going to view Pelican Town as a loss and shut the store.$s#$b#But I view this as a gain, not a loss. This is a chance for me to finally accomplish my dream of using my business expertise to make a real, positive change in the world.$h\"/jump Pierre/textAboveHead Pierre \"No way!\"/pause 500/speak Pierre \"This sounds like the same corporate nonsense you've always spouted. Go make your positive change in another town.$3\"/shake Morris 2000/speak Morris \"Wait, please let me finish! I'm serious. I want to help!$s#$b#Restoring the Community Center was a good first step, but imagine what else we could do to promote the small businesses here and help them grow!$h#$b#I want to help you with that. I'm good at this. I have a degree in it. Please let me do the right thing for once.\"/pause 2000/textAboveHead Gunther \"He's serious!\"/textAboveHead Willy \"Morris?!\"/textAboveHead Jodi \"Really?\"/pause 500/speak Pierre \"Well... I suppose I'd be alright with it if Mayor Lewis is.#$b#But I'd like to keep an eye on you! I'll give you a job as a consultant working for me at the store, if you'd like.\"/speak Morris \"That sounds wonderful!$h#$b#I've harmed you more than anyone else here, so it's only right that I help you out.$s\"/pause 1000/speak Pierre \"I'd better see a quick improvement in my sales figures! And you'll be working the till!$3\"/jump Morris/speak Morris \"Just you wait - in a few weeks, you'll see sales numbers you've never even dreamed of!$h#$b#If that's okay with Mayor Lewis, of course.$s\"/pause 1500/playMusic springtown/move Lewis 0 1 2/speak Lewis \"Of course it is. You're a part of this community, Morris.$h\"/speak Morris \"Thank you, Mayor.$h\"/emote Lewis 32/emote Morris 32/pause 2000/globalFade/viewport -9999 -9999/pause 4000/message \"Morris submits his resignation to Joja and begins working with Pierre, while Joja immediately closes the store. The future of Pelican Town looks bright.\"/pause 2000/end"
+              }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/CommunityCenter",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "Entries": {
+                 "Punch": "pause 100/move George 0 -3 3 true/showFrame Morris 12/textAboveHead Morris \"Hah!\"/pause 500/speak Morris \"This means nothing. I'll just run a 75%-off sale and everyone will come running back to the store! You'll see!$h\"/shake Pierre 500/pause 1000/move George -5 0 3 true/speak Pierre \"No... Not this time, Morris.$u#$b#I think it's time we settled this once and for all.$u\"/pause 500/speak Morris \"Oh? And how do you propose we do that?\"/playMusic event1/pause 2000/animate Pierre false true 200 20 21/positionOffset Pierre 8 8/pause 1500/speak Morris \"Hah! Primitive...\"/move Morris 0 1 2/speak Pierre \"If you're too scared to fight me then bring one of your co-workers! Or are all Joja employees such cowards?$u\"/faceDirection Morris 1 true/pause 50/faceDirection Morris 0/pause 500/speak Morris \"You should know I used to be a bouncer, so I know how to fight. Don't say I didn't warn you!$3\"/speed Morris 4/move Morris 0 -1 3/showFrame Morris 20/positionOffset Morris -4 -4/animate Morris false true 200 20 21/pause 2000/stopAnimation Morris/showFrame Morris 22/playSound clubhit/stopAnimation Pierre/showFrame Pierre 22/pause 500/jump Caroline/textAboveHead Caroline \"Pierre!\"/speed Caroline 4/move Caroline 0 4 1 true/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 1000/jump Robin/showFrame Robin 19/textAboveHead George \"Ha! Good stuff!\"/pause 1000/jump Lewis/stopAnimation Morris/showFrame Morris 22/playSound clubhit/shake Pierre 200/stopAnimation Pierre/showFrame Pierre 22/pause 500/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 2000/stopAnimation Morris/showFrame Morris 22/playSound clubhit/shake Pierre 200/stopAnimation Pierre/showFrame Pierre 22/pause 500/jump Caroline/speak Morris \"You're even weaker than your fresh produce selection!$u\"/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 2000/speak Pierre \"And the way you throw punches is just like Joja...$u#$b#Quantity over quality!\"/pause 1000/stopAnimation Morris/showFrame Morris 22/playSound clubhit/shake Pierre 200/stopAnimation Pierre/showFrame Pierre 22/pause 500/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 1000/pause 500/textAboveHead George \"Get him!\"/pause 2000/stopAnimation Pierre/stopAnimation Morris/showFrame Pierre 17/showFrame Morris 20/pause 100/showFrame Pierre 18/showFrame Morris 23/playSound clubhit/shake Morris 250/pause 50/showFrame Pierre 17/showFrame Morris 20/pause 1000/showFrame Morris 20/pause 100/showFrame Pierre 18/showFrame Morris 23/playSound clubhit/shake Morris 250/pause 50/showFrame Morris 20/showFrame Pierre 17/pause 1000/showFrame Morris 20/pause 100/showFrame Pierre 18/showFrame Morris 23/playSound clubhit/shake Morris 250/pause 50/showFrame Morris 20/showFrame Pierre 17/pause 1000/shake Pierre 1000/showFrame Morris 19/pause 1000/showFrame Pierre 17/positionOffset Pierre 4 0/pause 100/positionOffset Pierre 4 0/showFrame Pierre 18/pause 100/positionOffset Pierre 4 0/showFrame Pierre 19/playSound clubSmash/warp Morris 34 23/specificTemporarySprite morrisFlying/pause 2000/playSound barrelBreak/showFrame Pierre 4/pause 2000/move Pierre 1 0 0/pause 1000/playSound dwop/faceDirection Pierre 1 true/pause 50/faceDirection Pierre 2/pause 100/showFrame Pierre 23/playSound stoneStep/pause 5000/showFrame Pierre 4/playMusic none/message \"VOICE: *KNOCK KNOCK* Um, hello... Can I come back in?\"/pause 500/textAboveHead Lewis \"Morris?\"/playSound doorClose/move Morris 0 -9 3/move Pierre 0 0 1/speak Morris \"I wanted to apologize to you, Pierre. I've been so caught up in trying to boost my business that I've tried to ruin yours.$s\"/shake Pierre 2000/speak Pierre \"I thought that was the point? Ruin our businesses and take over the town?$4\"/speak Morris \"*sigh* I'm sorry. It wasn't. All I've ever wanted since I came here was to improve the town.$s#$b#I'm realizing now that I've been going about that the wrong way.#$b#I've gotten to know this town and its people since I moved here, and I've grown to love it. It's a special place.$h\"/shake Pierre 2000/shake Lewis 2000/speak Pierre \"A special place you'd like to demolish and replace with Joja warehouses!$3\"/jump Morris/pause 600/speak Morris \"In my mind, the best way to ensure that Pelican Town continued to prosper was by bringing it into the future with the aid of Joja.#$b#That meant getting rid of some of the small local businesses. I've been questioning whether that was right for some time, though.#$b#That powerful right hook of yours was just one thing that made me reconsider.$h\"/jump Robin/jump Gunther/jump Lewis/textAboveHead Robin \"What's he saying?\"/textAboveHead George \"What?\"/textAboveHead Gunther \"Wow...\"/pause 700/speak Lewis \"So what are you saying, Morris? Because I'm glad to hear you feel this way, but I doubt Joja will agree.\"/textAboveHead Morris \"*sigh*\"/pause 500/speak Morris \"You're right, they won't. With the decline in business, they're going to view Pelican Town as a loss and shut the store.$s#$b#But I view this as a gain, not a loss. This is a chance for me to finally accomplish my dream of using my business expertise to make a real, positive change in the world.$h\"/jump Pierre/textAboveHead Pierre \"No way!\"/pause 500/speak Pierre \"This sounds like the same corporate nonsense you've always spouted. Go make your positive change in another town.$3\"/showFrame Pierre 20/shake Morris 2000/pause 1000/speak Morris \"Wait, please don't hit me again! I'm serious. I want to help!$s#$b#Restoring the Community Center was a good first step, but imagine what else we could do to promote the small businesses here and help them grow!$h#$b#I want to help you with that. I'm good at this. I have a degree in it. Please let me do the right thing for once.\"/pause 2000/showFrame Pierre 4/textAboveHead Gunther \"He's serious!\"/textAboveHead Willy \"Morris?!\"/textAboveHead Jodi \"Really?\"/pause 500/speak Pierre \"Well... I suppose I'd be alright with it if Mayor Lewis is.#$b#But I'd like to keep an eye on you! I'll give you a job as a consultant working for me at the store, if you'd like.\"/speak Morris \"That sounds wonderful!$h#$b#I've harmed you more than anyone else here, so it's only right that I help you out.$s\"/pause 1000/speak Pierre \"I'd better see a quick improvement in my sales figures! And you'll be working the till!$3\"/jump Morris/speak Morris \"Just you wait - in a few weeks, you'll see sales numbers you've never even dreamed of!$h#$b#If that's okay with Mayor Lewis, of course.$s\"/pause 1500/playMusic springtown/move Lewis 0 1 2/speak Lewis \"Of course it is. You're a part of this community, Morris.$h\"/speak Morris \"Thank you, Mayor.$h\"/emote Lewis 32/emote Morris 32/pause 2000/globalFade/viewport -9999 -9999/pause 4000/message \"Morris submits his resignation to Joja and begins working with Pierre, while Joja immediately closes the store. The future of Pelican Town looks bright.\"/pause 2000/end position 52 20"
+             }
+        },
+        
+        //Morris's modified Community Center event where he stays (SVE)
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Town",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "Entries": {
+                "191393/Hn ccFishTank/Hn ccBulletin/Hn ccPantry/Hn ccVault/Hn ccBoilerRoom/Hn ccCraftsRoom/Hl jojaFishTank/Hl jojaPantry/Hl jojaVault/Hl jojaBoilerRoom/Hl jojaCraftsRoom/Hl JojaMember/w sunny/H": "junimoStarSong/-1000 -1000/farmer -100 -100 0 Olivia -2000 -2000 1 Andy -2000 -2000 1 Susan -2000 -2000 3 Evelyn 56 21 0 Lewis 52 33 0 Morris -2000 -2000 0 Jas 62 16 2 Vincent 46 23 1 Emily -2000 -2000 0 Gus -2000 -2000 0 Caroline -2000 -2000 3 Robin -2000 -2000 2 Demetrius -2000 -2000 0 Clint -2000 -2000 0 Pierre -2000 -2000 0 Jodi -2000 -2000 2 Gunther -2000 -2000 0 Willy -2000 -2000 0 Pam -2000 -2000 3 George -2000 -2000 0 Evelyn -2000 -2000 0/broadcastEvent/addConversationTopic cc_Complete/specificTemporarySprite ccCelebration/animate Jas false true 90 16 17 18 19/animate Evelyn true false 500 17 18 17 19 19 19 19/viewport 53 25 true/viewport move 0 -1 8000/skippable/move Vincent 1 0 2/move Vincent 0 1 1/move Lewis 0 -9 0 true/move Vincent 8 0 0 false/pause 1000/jump Vincent/pause 1000/speed Vincent 4/move Vincent 0 15 0/pause 3000/globalFade/viewport -1000 -1000/warp Lewis 32 22/warp Jas -2000 -2000/warp Evelyn -2000 -2000/warp Vincent -2000 -2000/warp Gunther 24 17/warp Gus 5 5 0/advancedMove Gus true -2 0 4 2000 4 0 4 3000 -2 0 4 2000/warp Pam 8 9/advancedMove Pam true 3 5000 1 0 0 -4 -1 0 4 1000 1 0 0 4 -1 0/warp Emily 16 19/advancedMove Emily true 2 0 2 8000 -2 0 4 3000/warp Pierre 25 11/warp Caroline 26 10/warp Olivia 24 10/warp Andy 37 16/Warp Susan 39 16/warp Jodi 25 9/warp Willy 40 10/advancedMove Willy true 2 0 4 3000 -3 0 4 3000 1 0 4 3000/warp George 33 10/warp Evelyn 32 10/warp Robin 11 24/advancedMove Robin false 1 0 2 2000 0 -12 16 0 0 -3/warp Clint 46 13/advancedMove Clint false -1 0 4 14000 10 0 0 6 7 0 0 -5/warp Demetrius 47 5/changeLocation CommunityCenter/viewport 7 10 true/viewport move 2 0 21500/pause 6000/move Lewis 0 -10 2/pause 10000/globalFade/viewport -1000 -1000/warp farmer 32 20/move farmer 0 -7 0 true/viewport 32 10 true/pause 5000/speak Lewis \"I'm not sure how you did it, @... but the community center has never looked better!$h#$b#You've done Pelican Town a great service. Everyone in town is pleased.$h\"/pause 800/emote Lewis 32/pause 1000/speak Lewis \"As a way of saying 'Thank You', I'd like to present you with this Town's greatest honor... The Stardew Hero Award. You've earned it!$h\"/pause 1000/awardFestivalPrize hero/null/itemAboveHead hero/null/pause 1000/faceDirection farmer 0/playMusic none/message \"VOICE: Grumble... Grumble...\"/pause 500/textAboveHead Lewis \"Who's that?\"/faceDirection farmer 2 true/move Lewis 1 0 2/move Lewis 0 1 2/pause 500/speak Morris \"Sales have been plummeting! Where have all my customers gone?$3\"/playSound doorClose/warp Morris 32 23/textAboveHead Lewis \"Ah, Morris.\"/move Morris 0 -8 0/pause 900/faceDirection Morris 1/pause 900/faceDirection Morris 0 true/pause 500/faceDirection Morris 3/pause 250/faceDirection Pierre 2/pause 450/playSound dwop/showFrame Morris 19/shake Morris 1000/textAboveHead Morris \"Waa..?!\"/pause 500/speak Morris \"All my customers... Here?!?$3#$b#This isn't good...$2\"/move Pierre 0 3 1/textAboveHead Pierre \"How does it feel?\"/move Pierre 3 0 1/move Pierre 2 0 2/move Pierre 0 1 1/move Pierre 1 0 1/question fork1 \"#Let's be reasonable.#Let's settle this the old-fashioned way.\"/fork Punch/showFrame Morris 12/textAboveHead Morris \"Hmmph!\"/pause 1000/speak Morris \"It's of no consequence! I'll just run a 75%-off sale and everyone will come running back to the store! You'll see!$h\"/pause 1000/speak Pierre \"No... Not this time...$u\"/faceDirection Pierre 3/textAboveHead Pierre \"Gather 'round, everyone!\"/pause 1500/globalFade/viewport -1000 -1000/stopAdvancedMoves/warp Demetrius 37 15/faceDirection Clint 3/faceDirection Demetrius 3 true/warp Evelyn 29 17/warp Olivia 29 12/faceDirection Olivia 2 true/warp Andy 36 14/faceDirection Andy 3 true/warp Susan 36 13/warp Pam 28 14/faceDirection Pam 1 true/warp Gus 28 15/faceDirection Gus 1 true/warp Robin 36 16/faceDirection Robin 3/warp Emily 30 12/faceDirection Emily 2 true/warp Willy 34 17/faceDirection Willy 0 true/warp Jodi 35 12/faceDirection Jodi 2 true/warp Caroline 34 12/faceDirection Caroline 2 true/warp Clint 38 13/faceDirection Clint 3 true/warp Gunther 30 17/warp George 28 16/faceDirection George 1 true/viewport 32 10 true/faceDirection Pierre 2/faceDirection Pierre 3/faceDirection Pierre 0/faceDirection Pierre 3/pause 1000/speak Pierre \"I remember when I first moved to Pelican Town... This building was active and vibrant.#$b#We worked together to make the town a better place. There was a real sense of community.\"/pause 1000/playMusic musicboxsong/move Pierre 0 1 3/speak Pierre \"George, you always used to do the crossword puzzle while sipping coffee in the community kitchen. Remember?\"/pause 500/faceDirection George 2/pause 500/showFrame George 16/textAboveHead George \"The good ol' days.\"/move Pierre 0 -2 0/speak Pierre \"Emily, you wove that custom banner for the Stardew Valley Fair.#$b#I remember you working on that for years!$h\"/pause 1000/speak Emily \"It... It was a lot of fun... $s\"/move Pierre 0 1 1/textAboveHead Pierre \"Willy!\"/pause 400/faceDirection Willy 3 true/pause 400/textAboveHead Willy \"Me?\"/pause 1000/speak Pierre \"Remember when your little crab experiment got out of hand?$h\"/pause 500/speak Willy \"Hehe... That I do. We showed up one morning and the place was crawlin' with 'em.$h\"/faceDirection Pierre 3/speak Pierre \"But Gus saved the day with a brilliant idea... A crab leg feast for the entire valley!\"/speak Gus \"I still dream of that garlic butter.\"/pause 100/textAboveHead Robin \"Mmmmm...\"/faceDirection Pierre 0/playMusic none/speak Pierre \"You see, everyone? Our community is what makes Pelican Town special.#$b#When JojaMart came to town, we lost sight of that.$s#$b#But now, thanks to @, we have a second chance.#$b#I'm asking that you join me in boycotting JojaMart! We have the power to reclaim our old way of life!\"/jump Morris/showFrame Morris 19/pause 1000/textAboveHead Pierre \"Who's with me?\"/pause 3000/showFrame George 0/playMusic springtown/pause 4000/move George 1 0 1/speak George \"I've lived here too long to see this town go to ruin.#$b#You can count me in!$h\"/pause 500/shake Morris 5000/textAboveHead Demetrius \"I'm in.\"/pause 250/textAboveHead Jodi \"Boycott!\"/shake Morris 5000/faceDirection Morris 0 true/jump Morris/pause 500/textAboveHead Gus \"Me too!\"/pause 500/textAboveHead Gunther \"It's about time!\"/textAboveHead Robin \"No More Joja!\"/pause 2000/speak Morris \"No... NO! This wasn't supposed to happen!$3#$b#I'm done for...$s\"/pause 2000/faceDirection Pierre 2/speed Morris 4/shake Morris 5000/move Morris 0 12 2/playSound doorClose/faceDirection Robin 2 true/faceDirection Demetrius 2 true/pause 5000/move Morris 0 -8 0/playMusic none/message \"VOICE: *KNOCK KNOCK* Um, hello... Can I come back in?\"/pause 500/textAboveHead Lewis \"Morris?\"/playSound doorClose/move Morris 0 -4 3/move Pierre 0 0 1/speak Morris \"I wanted to apologize to you all. I've been so caught up in trying to boost my business that I've tried to ruin all of yours.$s\"/shake Pierre 2000/speak Pierre \"I thought that was the point? Ruin our businesses and take over the town?$4\"/speak Morris \"*sigh* I'm sorry. It wasn't. All I've ever wanted since I came here was to improve the town.$s#$b#I'm realizing now that I've been going about that the wrong way.#$b#I've gotten to know this town and its people since I moved here, and I've grown to love it. It's a special place.$h\"/shake Pierre 2000/shake Lewis 2000/speak Pierre \"A special place you'd like to demolish and replace with Joja warehouses!$3\"/jump Morris/pause 600/speak Morris \"In my mind, the best way to ensure that Pelican Town continued to prosper was by bringing it into the future with the aid of Joja.#$b#That meant getting rid of some of the small local businesses. I've been questioning whether that was right for some time, though.#$b#That powerful speech of yours really moved me, and given how I've been acting you were right to boycott my store.$s\"/jump Emily/jump Demetrius/jump Lewis/textAboveHead Emily \"What's he saying?\"/textAboveHead George \"What?\"/textAboveHead Clint \"Wow...\"/pause 700/speak Lewis \"So what are you saying, Morris? Because I'm glad to hear you feel this way, but I doubt Joja will agree.\"/textAboveHead Morris \"*sigh*\"/pause 500/speak Morris \"You're right, they won't. With the decline in business, they're going to view Pelican Town as a loss and shut the store.$s#$b#But I view this as a gain, not a loss. This is a chance for me to finally accomplish my dream of using my business expertise to make a real, positive change in the world.$h\"/jump Pierre/textAboveHead Pierre \"No way!\"/pause 500/speak Pierre \"This sounds like the same corporate nonsense you've always spouted. Go make your positive change in another town.$3\"/shake Morris 2000/speak Morris \"Wait, please let me finish! I'm serious. I want to help!$s#$b#Restoring the Community Center was a good first step, but imagine what else we could do to promote the small businesses here and help them grow!$h#$b#I want to help you with that. I'm good at this. I have a degree in it. Please let me do the right thing for once.\"/pause 2000/textAboveHead Gunther \"He's serious!\"/textAboveHead Willy \"Morris?!\"/textAboveHead Jodi \"Really?\"/pause 500/speak Pierre \"Well... I suppose I'd be alright with it if Mayor Lewis is.#$b#But I'd like to keep an eye on you! I'll give you a job as a consultant working for me at the store, if you'd like.\"/speak Morris \"That sounds wonderful!$h#$b#I've harmed you more than anyone else here, so it's only right that I help you out.$s\"/pause 1000/speak Pierre \"I'd better see a quick improvement in my sales figures! And you'll be working the till!$3\"/jump Morris/speak Morris \"Just you wait - in a few weeks, you'll see sales numbers you've never even dreamed of!$h#$b#If that's okay with Mayor Lewis, of course.$s\"/pause 1500/playMusic springtown/move Lewis 0 1 2/speak Lewis \"Of course it is. You're a part of this community, Morris.$h\"/speak Morris \"Thank you, Mayor.$h\"/emote Lewis 32/emote Morris 32/pause 2000/globalFade/viewport -9999 -9999/pause 4000/message \"Morris submits his resignation to Joja and begins working with Pierre, while Joja immediately closes the store. The future of Pelican Town looks bright.\"/pause 2000/end position 52 20"
+                }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/CommunityCenter",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "Entries": {
+                "Punch": "pause 100/skippable/showFrame Morris 12/textAboveHead Morris \"Hah!\"/pause 500/speak Morris \"This means nothing. I'll just run a 75%-off sale and everyone will come running back to the store! You'll see!$h\"/shake Pierre 500/pause 1000/speak Pierre \"No... Not this time, Morris.$u#$b#I think it's time we settled this once and for all.$u\"/pause 500/speak Morris \"Oh? And how do you propose we do that?$u\"/playMusic event1/pause 2000/animate Pierre false true 200 20 21/positionOffset Pierre 8 8/pause 1500/speak Morris \"Hah! Primitive...\"/move Morris 0 1 2/speak Pierre \"If you're too scared to fight me then bring one of your co-workers! Or are all Joja employees such cowards?$u\"/faceDirection Morris 1 true/pause 50/faceDirection Morris 0/shake Morris 1000/pause 1500/speak Morris \"You should know I used to be a bouncer, so I know how to fight. Don't say I didn't warn you!$3\"/speed Morris 4/move Morris 0 -1 3/showFrame Morris 20/positionOffset Morris -4 -4/animate Morris false true 200 20 21/pause 2000/stopAnimation Morris/showFrame Morris 22/playSound clubhit/stopAnimation Pierre/showFrame Pierre 22/pause 500/jump Caroline/textAboveHead Caroline \"Pierre!\"/speed Caroline 4/move Caroline 0 4 1 true/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 500/faceDirection Andy 3/pause 500/speed Susan 4/move Susan 0 -1 3/speed Susan 4/move Susan -1 0 3 true/pause 200/jump Robin/showFrame Robin 19/pause 400/textAboveHead Andy \"Ha! Good stuff!\"/pause 1000/jump Lewis/stopAnimation Morris/showFrame Morris 22/playSound clubhit/shake Pierre 200/stopAnimation Pierre/showFrame Pierre 22/pause 500/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 2000/stopAnimation Morris/showFrame Morris 22/playSound clubhit/shake Pierre 200/stopAnimation Pierre/showFrame Pierre 22/pause 500/jump Caroline/speak Morris \"You're even weaker than your fresh produce selection!$u\"/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 2000/speak Pierre \"And the way you throw punches is just like Joja...$u#$b#Quantity over quality!\"/pause 1000/stopAnimation Morris/showFrame Morris 22/playSound clubhit/shake Pierre 200/stopAnimation Pierre/showFrame Pierre 22/pause 500/animate Morris false true 200 20 21/animate Pierre false true 200 20 21/pause 1000/pause 500/textAboveHead Susan \"Oh, my!\"/pause 2000/stopAnimation Pierre/stopAnimation Morris/showFrame Pierre 17/showFrame Morris 20/pause 100/showFrame Pierre 18/showFrame Morris 23/playSound clubhit/shake Morris 250/pause 50/showFrame Pierre 17/showFrame Morris 20/pause 1000/showFrame Morris 20/pause 100/showFrame Pierre 18/showFrame Morris 23/playSound clubhit/shake Morris 250/pause 50/showFrame Morris 20/showFrame Pierre 17/pause 1000/showFrame Morris 20/pause 100/showFrame Pierre 18/showFrame Morris 23/playSound clubhit/shake Morris 250/pause 50/showFrame Morris 20/showFrame Pierre 17/pause 1000/shake Pierre 1000/showFrame Morris 19/pause 1000/showFrame Pierre 17/positionOffset Pierre 4 0/pause 100/positionOffset Pierre 4 0/showFrame Pierre 18/pause 100/positionOffset Pierre 4 0/showFrame Pierre 19/playSound clubSmash/warp Morris 34 23/specificTemporarySprite morrisFlying/pause 2000/playSound barrelBreak/showFrame Pierre 4/pause 2000/move Pierre 1 0 0/pause 1000/playSound dwop/faceDirection Pierre 1 true/pause 50/faceDirection Pierre 2/pause 100/showFrame Pierre 23/playSound stoneStep/pause 5000/showFrame Pierre 4/playMusic none/message \"VOICE: *KNOCK KNOCK* Um, hello... Can I come back in?\"/pause 500/textAboveHead Lewis \"Morris?\"/playSound doorClose/move Morris 0 -8 3/move Pierre 0 0 1/speak Morris \"I wanted to apologize to you, Pierre. I've been so caught up in trying to boost my business that I've tried to ruin yours.$s\"/shake Pierre 2000/speak Pierre \"I thought that was the point? Ruin our businesses and take over the town?$4\"/speak Morris \"*sigh* I'm sorry. It wasn't. All I've ever wanted since I came here was to improve the town.$s#$b#I'm realizing now that I've been going about that the wrong way.#$b#I've gotten to know this town and its people since I moved here, and I've grown to love it. It's a special place.$h\"/shake Pierre 2000/shake Lewis 2000/speak Pierre \"A special place you'd like to demolish and replace with Joja warehouses!$3\"/jump Morris/pause 600/speak Morris \"In my mind, the best way to ensure that Pelican Town continued to prosper was by bringing it into the future with the aid of Joja.#$b#That meant getting rid of some of the small local businesses. I've been questioning whether that was right for some time, though.#$b#That powerful right hook of yours was just one thing that made me reconsider.$h\"/jump Emily/jump Demetrius/jump Lewis/textAboveHead Emily \"What's he saying?\"/textAboveHead George \"What?\"/textAboveHead Clint \"Wow...\"/pause 700/speak Lewis \"So what are you saying, Morris? Because I'm glad to hear you feel this way, but I doubt Joja will agree.\"/textAboveHead Morris \"*sigh*\"/pause 500/speak Morris \"You're right, they won't. With the decline in business, they're going to view Pelican Town as a loss and shut the store.$s#$b#But I view this as a gain, not a loss. This is a chance for me to finally accomplish my dream of using my business expertise to make a real, positive change in the world.$h\"/jump Pierre/textAboveHead Pierre \"No way!\"/pause 500/speak Pierre \"This sounds like the same corporate nonsense you've always spouted. Go make your positive change in another town.$3\"/showFrame Pierre 20/shake Morris 2000/pause 1000/speak Morris \"Wait, please don't hit me again! I'm serious. I want to help!$s#$b#Restoring the Community Center was a good first step, but imagine what else we could do to promote the small businesses here and help them grow!$h#$b#I want to help you with that. I'm good at this. I have a degree in it. Please let me do the right thing for once.\"/showFrame Pierre 4/pause 2000/textAboveHead Gunther \"He's serious!\"/textAboveHead Willy \"Morris?!\"/textAboveHead Jodi \"Really?\"/pause 500/speak Pierre \"Well... I suppose I'd be alright with it if Mayor Lewis is.#$b#But I'd like to keep an eye on you! I'll give you a job as a consultant working for me at the store, if you'd like.\"/speak Morris \"That sounds wonderful!$h#$b#I've harmed you more than anyone else here, so it's only right that I help you out.$s\"/pause 1000/speak Pierre \"I'd better see a quick improvement in my sales figures! And you'll be working the till!$3\"/jump Morris/speak Morris \"Just you wait - in a few weeks, you'll see sales numbers you've never even dreamed of!$h#$b#If that's okay with Mayor Lewis, of course.$s\"/pause 1500/playMusic springtown/move Lewis 0 1 2/speak Lewis \"Of course it is. You're a part of this community, Morris.$h\"/speak Morris \"Thank you, Mayor.$h\"/emote Lewis 32/emote Morris 32/pause 2000/globalFade/viewport -9999 -9999/pause 4000/message \"Morris submits his resignation to Joja and begins working with Pierre, while Joja immediately closes the store. The future of Pelican Town looks bright.\"/pause 2000/end position 52 20"	
+                }
+        },
+
+        //Overrides SVE's Morris Townhouse event - adjusts dialogue to account for fact Morris already lives here
+        {
+            "Action": "EditData",
+            "Target": "data/events/JojaMart",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "Entries": {
+            "6663407/e 6663406": "Hospital_Ambient/-500 -500/farmer 18 20 1 Martin 9 25 1 Andy 11 25 3 Sam 26 17 2 Pam 14 16 1 MorrisTod 24 26 3/animate Sam false true 100 40 40 41 41 42 42 41 41/skippable/pause 1250/viewport 23 26 true/move farmer 3 0 2/move farmer 0 3 2/pause 600/playSound stoneStep/pause 400/playSound stoneStep/pause 400/playSound stoneStep/pause 400/speak MorrisTod \"Please, come in!$0\"/pause 750/doAction 21 24/pause 1000/move farmer 0 3 1/move farmer 1 0 1/pause 650/speak MorrisTod \"Thank you for meeting me, @.$4#$b#I have big news to share...$0\"/pause 800/playMusic musicboxsong/pause 200/speak MorrisTod \"I have decided to buy a second house in Stardew Valley!$1\"/pause 400/emote farmer 16/pause 300/speak MorrisTod \"I know. It's quite the announcement!$1#$b#I moved here a few years back and bought a low-budget Joja townhouse, but due to the multiple promotions I've received I can now afford a nicer one.$h#$b#Since I anticipate that Pelican Town will become increasingly popular as I continue to grow and develop it, I thought it wise to invest in a second property here.\"/pause 400/emote farmer 32/pause 200/speak MorrisTod \"I've contracted with a Joja Co. architect who will build my new home, however...$0#$b#There are shortages of iron ingots on the market. He can't start construction until the materials are sourced.$2#$b#I understand you have experience in mining. Would you be willing to assist me? I'll give you a substantial monetary reward!$0\"/pause 500/jump farmer/pause 850/speak MorrisTod \"Excellent! I'm absolutely delighted to hear that.$1#$b#Allow me to go over the specifics with you...$0\"/pause 500/globalFade/viewport -1000 -1000/pause 500/end dialogue MorrisTod \"Joja. Co. has numerous patented modern townhouse designs. Model number 14 is the one I've chosen for myself.$0#$b#It's quite expensive... I had to take out a loan.$2#$b#But I have a good feeling it will all be worth it! Investing in yourself is important, @.$1#$e#When you have those iron ingots, deliver them straight to me!$0\""
+            }
+        },
+
+
+
+
+
+
+        //Dialogue
+
+        //Loads regular dialogue for Morris when SVE isn't installed and CC not completed
+        {
+            "Action": "Load",
+            "Target": "Characters/Dialogue/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "HasSeenEvent |contains=191393": "false"},
+            "FromFile": "{{FirstValidFile: assets/Dialogue/nosvedialogue{{language}}.json, assets/Dialogue/nosvedialogue.json }}"
+        },
+
+        //Loads festival/other dialogue for Morris -- overwrites SVE dialogue because Morris will appear at festivals without becoming mayor
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/MorrisTod, Characters/Dialogue/MarriageDialogueMorrisTod",
+            "Entries": {
+                
+                    "danceRejection": "I don't mean to be rude, but I can't.$s#$b#I try not to get too involved with the locals. It's bad for business.",
+                    "spring_1_2": "Happy new year, @! We have some sales on wine to celebrate!$h",
+                    "spring_12": "Are you ready for the Egg Festival tomorrow? You can buy eggs here if you'd like to decorate!$h",
+                    "spring_23": "Planning to dance with someone special at the Flower Festival tomorrow? I'm certainly looking forward to it!$h#$e#Feel free to purchase flowers here if you'd like to get ahead of the game!",
+                    "spring_28": "I'm not a huge fan of summer, personally. I don't like the heat.$s#$b#But there's plenty of A/C in JojaMart, so I've enjoyed it a lot more since I started working here!",
+                    "summer_1": "Time for summer! Pick up all your beach goods here! We've got surfboards, swimsuits, sunscreen, and more!$h",
+                    "summer_10": "If you're still searching for something to put into the pot for the Luau, a nice Joja baked good always does the trick!$h#$b#I'm not sure why the governor looked so green the last time I put a Joja product in...$s",
+                    "summer_27": "Ready for the moonlight jellies tomorrow? They weird me out slightly, but I'm looking forward to fall!",
+                    "fall_1": "Isn't it amazing how quickly the leaves change?#$b#Putting fall decorations up in the store takes forever, yet the trees do it effortlessly.",
+                    "fall_15": "Still looking for items to display tomorrow? I bet a display full of Joja products would really do well!",
+                    "fall_26": "Don't laugh at me, but I'm not looking forward to tomorrow's festival.#$b#Monsters really aren't for me. I admire the fact that you fight them, though!",
+                    "fall_28": "Unlike Pierre, I don't have to be so concerned about winter. JojaMart has a wide variety of products suitable for every season!",
+                    "winter_1": "Did you see the snowman I built this morning?#$e#Well, it was supposed to be a snowman... Art has never been my strong suit.",
+                    "winter_7": "Ready for the festival tomorrow?#$e#My dad was always into fishing, but I've always found it boring, if I'm being honest.#$e#I'd love to see you win, though!$h",
+                    "winter_24": "Tomorrow's my favorite festival! I hope you're looking forward to it as much as I am, @.$h",
+                    "winter_Mon": "You should watch 'Who Wants to be a Billionaire'! I have some DVDs if you'd like to borrow one.",
+                    "winter_Mon6": "Be careful walking around when it's icy like this. I wouldn't want you to get hurt."
+                    
+            }
+        },
+        {
+            //Dialogue for dating Morris when CC not completed, SVE not installed
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/MorrisTod",
+            "When": {"Relationship:MorrisTod": "Dating", "HasSeenEvent |contains=191393": false, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "Entries": {
+                "divorced": "You're no longer welcome at Joja. Shut the door on your way out.$3",
+                "Mon8": "How lovely to see you again, @.$h#$b#I have a discount code for you, if you want to buy some wine to enjoy together after my shift.",
+                "Mon10": "Today is full of meetings, unfortunately. I won't have as much time for you as I'd like.#$b#Hopefully I can make up for that later in the week.",
+                "Tue8": "I'm still amazed that you feel the same way I do. You've made this Joja manager very happy.$10#$b#I hope you have a great day today.",
+                "Tue10": "Seeing you brightens up even the dullest day, @. Not that life at Joja is dull!$10",
+                "Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "Wed10": "Did you know I used to be a bouncer at a night club in college?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "Thu8": "I'm overloaded with work at the moment so I don't have much time to chat, but feel free to spend the day with me in the store.#$b#Having you around makes even the toughest days better.$10",
+                "Thu10": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.$h#$b#You wouldn't? Wonderful!#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "Fri8": "I really didn't feel like I had a place in the community here until recently. You've changed that, @. I'm happier here.",
+                "Fri10": "Happy Friday, @! I was thinking of installing a TV in the store so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "Sun8": "I hope you're enjoying your Sunday, @.#$b#A customer knocked over nearly 100 cereal boxes earlier, so my day's been spent cleaning that up.$s",
+                "Sun10": "I'm glad the town seems to finally be more accepting of the fact that we're dating.#$b#Pierre hasn't made any rude remarks to me recently, at least.",
+                "summer_Mon8": "Mondays used to be a lot tougher for me before I became a store manager. Now I work 7 days a week so Mondays are meaningless.#$b#Not that I'm complaining! I do love my job. I just wish I could have spent some of my weekend with you.$s",
+                "summer_Mon10": "Today is full of meetings, unfortunately. I won't have as much time for you as I'd like.#$b#Hopefully I can make up for that later in the week.",
+                "summer_Tue8": "Don't tell anyone about this, but if you'd like to eat dinner here tonight, I can get you a 50% discount on frozen dinners.#$b#I know they're not the same as what Gus makes, but they're not THAT bad.#$b#I've eaten nothing but Joja dinners every night since I got this job, so I guess I don't have much to compare them to, though...",
+                "summer_Tue10": "Seeing you brightens up even the dullest day, @. Not that life at Joja is dull!$10",
+                "summer_Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "summer_Wed10": "Did you know I used to be a bouncer at a night club when I was younger?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "summer_Thu8": "My boss told me today that if I keep up the great work, I might earn a promotion someday!$h#$b#Wouldn't that be delightful? I've been waiting to share the good news with you!",
+                "summer_Thu10": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.#$b#You wouldn't? Wonderful!$h#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "summer_Fri8": "I know I work long hours, but let me know if you'd like to go somewhere this weekend when I'm done with work.#$b#I haven't visited the beach here often, but I thought that could be a nice place to go.",
+                "summer_Fri10": "Happy Friday, @! I was thinking of installing a TV in the store so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "summer_Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "summer_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "summer_Sun8": "I hope you're enjoying your Sunday, @.#$b#A customer knocked over nearly 100 cereal boxes earlier, so my day's been spent cleaning that up.$s",
+                "summer_Sun10": "I'm glad the town seems to finally be more accepting of the fact that we're dating.#$b#Pierre hasn't made any rude remarks to me recently, at least.",
+                "fall_Mon8": "How lovely to see you again, @.$h#$b#I have a discount code for you, if you want to buy some wine to enjoy together after my shift.",
+                "fall_Mon10": "Today is full of meetings, unfortunately. I won't have as much time for you as I'd like.#$b#Hopefully I can make up for that later in the week.",
+                "fall_Tue8": "I'm still amazed that you feel the same way I do. You've made this Joja manager very happy.$10#$b#I hope you have a great day today.",
+                "fall_Tue10": "Seeing you brightens up even the dullest day, @. Not that life at Joja is dull!$10",
+                "fall_Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "fall_Wed10": "Did you know I used to be a bouncer at a night club in college?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "fall_Thu8": "I'm overloaded with work at the moment so I don't have much time to chat, but feel free to spend the day with me in the store.#$b#Having you around makes even the toughest days better.$10",
+                "fall_Thu10": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.#$b#You wouldn't? Wonderful!$h#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "fall_Fri8": "I really didn't feel like I had a place in the community here until recently. You've changed that, @. I'm happier here.",
+                "fall_Fri10": "Happy Friday, @! I was thinking of installing a TV in the store so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "fall_Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "fall_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "fall_Sun8": "I hope you're enjoying your Sunday, @.#$b#A customer knocked over nearly 100 cereal boxes earlier, so my day's been spent cleaning that up.$s",
+                "fall_Sun10": "I'm glad the town seems to finally be more accepting of the fact that we're dating.#$b#Pierre hasn't made any rude remarks to me recently, at least.",
+                "winter_Mon8": "Mondays used to be a lot tougher for me before I became a store manager. Now I work 7 days a week so Mondays are meaningless.#$b#Not that I'm complaining! I do love my job. I just wish I could have spent some of my weekend with you.$s",
+                "winter_Mon10": "Today is full of meetings, unfortunately. I won't have as much time for you as I'd like.#$b#Hopefully I can make up for that later in the week.",
+                "winter_Tue8": "Don't tell anyone about this, but if you'd like to eat dinner in my store tonight, I can get you a 50% discount on frozen dinners.#$b#I know they're not the same as what Gus makes, but they're not THAT bad.#$b#I've eaten nothing but Joja dinners every night since I got this job, so I guess I don't have much to compare them to, though...",
+                "winter_Tue10": "Seeing you brightens up even the dullest day, @. Not that life at Joja is dull!$10",
+                "winter_Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "winter_Wed10": "Did you know I used to be a bouncer at a night club when I was younger?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "winter_Thu8": "My boss told me today that if I keep up the great work, I might earn a promotion someday!$h#$b#Wouldn't that be delightful? I've been waiting to share the good news with you!",
+                "winter_Thu10": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.#$b#You wouldn't? Wonderful!$h#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "winter_Fri8": "I know I work long hours, but let me know if you'd like to go somewhere this weekend when I'm done with work.#$b#I haven't visited the beach here often, but I thought that could be a nice place to go.",
+                "winter_Fri10": "Happy Friday, @! I was thinking of installing a TV in the store so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "winter_Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "winter_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "winter_Sun8": "I hope you're enjoying your Sunday, @.#$b#A customer knocked over nearly 100 cereal boxes earlier, so my day's been spent cleaning that up.$s",
+                "winter_Sun10": "I'm glad the town seems to finally be more accepting of the fact that we're dating.#$b#Pierre hasn't made any rude remarks to me recently, at least.",
+                "winter_28": "Are you staying up until midnight tonight to welcome in the new year?#$e#Come by the store and I'd be happy to give you a new year's kiss...$h",
+                "spring_1_2": "Happy new year! I can't wait to spend another year together. Did you make any resolutions?#$e#I did too. I'm hoping the store will do well and that you'll have an amazing year.$h",
+                "spring_12": "Are you looking forward to the egg hunt tomorrow? I loved it as a child. My hometown had a similar festival.",
+                "spring_23": "Tomorrow should be fun. I get to show you off to the whole town!$h",
+                "fall_1": "The seasons pass by so quickly as you get older. You make me feel young again though, @.$10",
+                "winter_24": "I know you won't tell me who you're giving a gift to, but I can't help but wonder.#$e#Admittedly, I'm really hoping that it's me!$h"
+            }
+        },
+        {
+            //Dialogue for dating Morris when CC not completed, SVE installed -- removes some lines so SVE's dialogue is also used
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/MorrisTod",
+            "When": {"Relationship:MorrisTod": "Dating", "HasSeenEvent |contains=191393": false, "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "Entries": {
+                "divorced": "You're no longer welcome at Joja. Shut the door on your way out.$3",
+                "Mon8": "How lovely to see you again, @.$h#$b#I have a discount code for you, if you want to buy some wine to enjoy together after my shift.",
+                "Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "Thu10": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.#$b#You wouldn't? Wonderful!$h#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "Fri8": "Happy Friday, @! I was thinking of installing a TV in the office so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "Sun10": "I'm glad the town seems to finally be more accepting of the fact that we're dating.#$b#Pierre hasn't made any rude remarks to me recently, at least.",
+                "summer_Mon8": "Mondays used to be a lot tougher for me before I became a store manager. Now I work 7 days a week so Mondays are meaningless.#$b#Not that I'm complaining! I do love my job. I just wish I could have spent some of my weekend with you.$s",
+                "summer_Tue8": "Don't tell anyone about this, but if you'd like to eat dinner in my office tonight, I can get you a 50% discount on frozen dinners.$h#$b#I know they're not the same as what Gus makes, but they're not THAT bad.#$b#I've eaten nothing but Joja dinners every night since I got this job, so I suppose I don't have anything to compare them to, though...$s",
+                "summer_Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "summer_Wed10": "Did you know I used to be a bouncer at a night club in college?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "summer_Fri8": "I know I work long hours, but let me know if you'd like to go somewhere this weekend when I'm done with work.#$b#I haven't visited the beach here often, but I thought that could be a nice place to go.",
+                "summer_Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "summer_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "fall_Mon8": "How lovely to see you again, @.$h#$b#I have a discount code for you, if you want to buy some wine to enjoy together after my shift.",
+                "fall_Tue8": "I'm still amazed that you feel the same way I do. You've made this Joja manager very happy.$10#$b#I hope you have a great day today.",
+                "fall_Wed8": "Did you know I used to be a bouncer at a night club when I was younger?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "fall_Thu8": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.#$b#You wouldn't? Wonderful!$h#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "fall_Fri8": "Happy Friday, @! I was thinking of installing a TV in the office so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "fall_Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "fall_Sun10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$b#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$b#Is it wrong that I think I'm happiest at Joja? I know what people say about me, but I really do enjoy running the store.$s#$b#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "winter_Mon8": "Mondays used to be a lot tougher for me before I became a store manager. Now I work 7 days a week so Mondays are meaningless.#$b#Not that I'm complaining! I do love my job. I just wish I could have spent some of my weekend with you.$s",
+                "winter_Tue8": "Don't tell anyone about this, but if you'd like to eat dinner in my office tonight, I can get you a 50% discount on frozen dinners.$h#$b#I know they're not the same as what Gus makes, but they're not THAT bad.#$b#I've eaten nothing but Joja dinners every night since I got this job, so I guess I don't have much to compare them to, though...",
+                "winter_Wed8": "Has Pierre said anything to you about the fact that we're dating?$s#$b#He made a snide comment to me earlier about it... He said he didn't understand why you'd date 'someone like me.'#$b#Why is it even any of his business? He goes out of his way sometimes to be rude to me...#$b#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "winter_Wed10": "Did you know I used to be a bouncer at a night club when I was younger?$h#$b#No, I'm serious! Just thought I'd bring it up. I haven't always worked at Joja, you know.#$b#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "winter_Thu8": "My boss told me today that if I keep up the great work, I might earn a promotion someday!$h#$b#Wouldn't that be delightful? I've been waiting to share the good news with you!",
+                "winter_Mon10": "My back's been hurting all day from walking around telling my employees to put up new displays.#$b#I could really use a massage, @, if you wouldn't mind.#$b#You wouldn't? Wonderful!$h#$b#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "winter_Fri8": "Happy Friday, @! I was thinking of installing a TV in the office so you and I could watch something together over dinner.$h#$b#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "winter_Sat8": "Shane managed to perform even worse this week than the week before. I really don't know what more I can do for him.#$b#For a number of reasons, I wish you'd return to Joja.",
+                "spring_1_2": "Happy new year! I can't wait to spend another year together. Did you make any resolutions?#$e#I did too. I'm hoping the store will do well and that you'll have an amazing year.$h",
+                "spring_12": "Are you looking forward to the egg hunt tomorrow? I loved it as a child. My hometown had a similar festival.",
+                "spring_23": "Tomorrow should be fun. I get to show you off to the whole town!$h",
+                "fall_1": "The seasons pass by so quickly as you get older. You make me feel young again though, @.$10",
+                "winter_24": "I know you won't tell me who you're giving a gift to, but I can't help but wonder.#$e#Admittedly, I'm really hoping that it's me!$h",
+                "winter_28": "Are you staying up until midnight tonight to welcome in the new year?#$e#Come by the store and I'd be happy to give you a new year's kiss...$h"
+            }
+        },
+
+        //Morris rainy dialogue
+        { 
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/rainy",
+            "Entries": {
+            "MorrisTod": "Rain always means fewer customers. Maybe I should start a delivery service."
+            }
+       },
+
+        //Loads regular dialogue for Morris when CC completed and no SVE
+
+        {
+            "Action": "Load",
+            "Target": "Characters/Dialogue/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "HasSeenEvent |contains=191393": "true"},
+            "FromFile": "{{FirstValidFile: assets/Dialogue/ccdialogue{{language}}.json, assets/Dialogue/ccdialogue.json }}"
+        },
+
+        //Edits regular dialogue for Morris when CC completed and SVE installed (to overwrite all Joja lines)
+
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true", "HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+                "Introduction": "Greetings, @! You'll know me as the former JojaMart store manager.$h#$e#Now that Joja has exited the town and terminated their relationship with me, I've reinvented myself as a small business consultant.$h#$e#Stop by Pierre's General Store sometime to say hi! And make sure to buy something!$h",
+                "Mon": "Great to see you, @! Have you noticed the general store's new advertising campaign?$h",
+                "Mon2": "Did you catch 'Who Wants to Be a Billionaire' last night? It's such a good episode!#$e#One of my dreams is to be on the show someday.",
+                "Mon4": "I feel like you and I are becoming fast friends, @. Maybe one day I can let you in on some of my trade secrets.$h#$e#You learn a lot working in business, you know!",
+                "Mon6": "I got an email from Joja today offering me a job with a huge salary.#$e#I turned it down. It's strange, but I think I'm actually happier here.",
+                "Tue": "It's a great day to shop! Of course, every day is a great day to shop!",
+                "Tue2": "My mom's coming to visit this weekend. She's a lovely woman.$h#$e#I bet she'll love what I've done with Pierre's!",
+                "Tue4": "I've never understood why there's a stereotype about Karens. My mom's named Karen, and she's lovely.#$e#Sorry, I know that was random. I just overheard a customer call someone a Karen today and it bugged me.",
+                "Tue8": "I'm supposed to be a consultant, but I spend so much of my time cleaning up the store...$s#$e#Sorry, @, it's just been a long week. And it's only Tuesday.$s#$e#%Morris sighs.",
+                "Wed": "Have the posters for the new campaign been produced yet? No? What's taking so long?#$e#If you don't get your act together, I'll just find another supplier!$3#$e#%Morris is on the phone.",
+                "Wed2": "Greetings, @! No time to talk today, but I hope your day's been pleasant so far.",
+                "Wed4": "Have you ever had an undercooked frozen pizza? Not a pleasant experience. It felt like biting into ice.#$e#I'm glad I usually have time to cook nowadays.",
+                "Wed8": "Sometimes I'm really thankful for my job. In retail, every day is different, and you're always on your feet.#$e#I could never sit at a computer all day like you had to at your old job. I love it here though!",
+                "Thu": "Would you rate your experience at Pierre's a 9 out of 10 or a 10 out of 10? I've been asked to conduct a survey.#$e#Yes, those are the only options.#$e#What's that face for?",
+                "Thu2": "2 bananas, 1 battery, 3 seeds... What could anyone want with that?#$e#Do you have any idea, @? It seems we've had a shoplifter.#$e#Yeah, I'm not sure either.",
+                "Thu4": "Good to see you again, @! I hope the week's treating you well so far.#$e#Me? I'm doing quite well. Thank you for asking!$h#$e#No one else in town ever bothers to ask how I'm doing.$s",
+                "Thu6": "I'm asking as a friend -- please don't ever put items back on the shelves in the wrong place.$3#$e#Just tell me if you don't know where something goes, or ask one of the other employees.$3#$e#Sorry, I'm not mad at you. Someone just rearranged a whole aisle's worth of products earlier. I don't know how they did it.$s",
+                "Fri": "Happy Friday! I hope you have a great weekend. Pierre's will be open all weekend if you need anything!$h",
+                "Fri2": "It's a wonderful day today, @! It's Friday!$h#$e#And now that I'm no longer with Joja, I get Sundays off. I hardly know what to do with myself when I'm not working!",
+                "Fri4": "Before you start your weekend, feel free to load up on essentials at the store!",
+                "Fri6": "I hope your Friday goes well and that you have a great weekend, @!#$e#I'll certainly be enjoying mine!$h",
+                "Sat": "Happy Saturday! It's always been my favorite day of the week, even as a child.#$e#I hope you like Saturdays as much as I do!",
+                "Sat2": "How lovely to see you, @! Now that Joja's no longer around, I get the day off tomorrow.$h#$e#I'm still getting used to having time off. Working on a farm must keep you busy though!",
+                "Sat4": "I'm trying to decide whether to go to the beach or to the mountains tomorrow.#$e#I'm really more of a mountains kind of guy, but I think I need a tan. I'm awfully pale.$s#$e#Maybe I'll just go to both! Problem solved.$h",
+                "Sun": "Greetings, @! It's my day off today, so I'm just taking it easy.",
+                "Sun2": "Have you had a lazy, relaxing Sunday, @?#$e#I have, and it's been quite odd!",
+                "Sun6": "What should I get from the saloon today? That new dish has really looked appetizing, but I'm not made of money these days.#$e#%Morris is deep in thought.",
+                "SeedShop_6_19": "%Morris is giving Pierre some ideas about how he can improve the store. You shouldn't bother him.",
+                "SeedShop_12_28": "Hello, @! I'm busy rearranging some products right now, but it's great to see you!$h#$e#Make sure to buy something while you're here!",
+                "Saloon_20_17": "I really enjoy Gus's cooking. A nice meal and a glass of wine is a wonderful way to end one's day.$h",
+                "SeedShop_4_17": "Hi, @. I'm busy at the till right now, so I can't talk. Be sure to buy some of our wonderful products!",
+                "winter_28": "Are you staying up until midnight tonight to welcome in the new year?#$e#I might watch the fireworks on TV tonight.$h",
+                "spring_1_2": "Happy new year! Did you make any resolutions?#$e#I did too. I'm hoping the store will do well and that the town will have an amazing year.$h",
+                "spring_12": "Are you looking forward to the egg hunt tomorrow? I loved it as a child. My hometown had a similar festival.",
+                "spring_23": "Tomorrow should be fun. Do you have anyone you'll be dancing with?#$e#I have my sights set on someone.#$e#No, I'm not telling!",
+                "summer_10": "I can't wait to see what you've prepared for the soup tomorrow. I bet it'll be delicious!#$e#Pierre and I have something special in mind that the governor should love.",
+                "spring_28": "I enjoy working with Pierre, but the A/C at JojaMart was definitely a lot cooler.#$e#One of the downsides of working for a small business, I suppose!",
+                "fall_15": "I won't be entering a display for the fair tomorrow myself, but I've helped Pierre create one that should definitely win!",
+                "fall_28": "Spirit's Eve was terrifying! I'm glad we're through with it for another year.",
+                "summer_Mon": "Lovely to see you, @! Take a break from the heat and support your local business!$h",
+                "summer_Mon6": "I've really grown to love it here! Being friends with all the townsfolk makes a huge difference.#$e#Well, almost all... Shane still gives me dirty looks.$s",
+                "summer_Tue6": "I make less money helping Pierre, but I'm somehow happier.#$e#I always thought money could buy happiness. I really don't get it.#$e#Don't get me wrong though. I still love money!$h",
+                "summer_Wed": "We have seeds, swimsuits, and everything else you could need on this blistering summer day!",
+                "summer_Thu": "It's a wonderful day to shop at Joja! Wait, sorry, Pierre's!",
+                "summer_Thu8": "I used to think of Joja as my family, but then they discarded me like I was nothing as soon as I was unprofitable.#$e#That's not how you treat family.$3",
+                "summer_Fri": "Looking forward to the weekend, @? I am too, although I'm not sure I'll go outside much with this heat.",
+                "summer_Sat": "Alex's ice cream is really something else! Now that I work for a small business, I make sure to get one every week.#$e#You have to support small businesses!#$e#%Morris has a passionate glare in his eyes.",
+                "summer_Sun": "I'm enjoying my day off today! How about you, @?",
+                "summer_Sun6": "There's nothing like a nice day off to really refresh you. I can't remember the last day I had off at Joja.",
+                "fall_Mon4": "What's your favorite fall dish?#$e#Hm, interesting. I hope you get to eat it this season!",
+                "fall_Mon8": "Did you feel directionless after leaving Joja?$s#$e#Sometimes I really miss it, but then I look at this amazing community and wonder why.",
+                "fall_Tue": "It's a great day to shop! Of course, every day is a great day to shop!",
+                "fall_Wed8": "Gus brought by some excellent food for Pierre and I. I guess you could call me a foodie!",
+                "fall_Thu": "Would you rate your experience at Pierre's a 9 out of 10 or a 10 out of 10? I've been asked to conduct a survey.#$e#Yes, those are the only options.#$e#What's that face for?",
+                "fall_Thu8": "It's been a long day today. I'm really looking forward to relaxing tonight.",
+                "fall_Fri": "Happy Friday! I hope you have a great weekend. Pierre's will be open all weekend if you need anything!$h",
+                "fall_Fri6": "I hope your Friday goes well and that you have a great weekend, @!#$e#I'll certainly be enjoying mine!$h",
+                "fall_Sat6": "I'm trying to decide whether to go to the beach or to the mountains tomorrow.#$e#I've always preferred the mountains, but I think I need a tan. I'm awfully pale.$s#$e#Maybe I'll just go to both! Problem solved.$h",
+                "fall_Sun": "Greetings, @! It's my day off today, so I'm just taking it easy.",
+                "fall_Sun8": "What should I get from the saloon today? That new dish has really looked appetizing, but I'm not made of money these days.#$e#%Morris is deep in thought.",
+                "winter_Wed": "Greetings, @! No time to talk today, but I hope your day's been pleasant and not too chilly so far.",
+                "winter_Thu": "Do you want to build a snowman later in front of the store? It could be good advertising.#$e#Just make sure it's better than mine is.",
+                "winter_Thu6": "Do you ever feel lazier in winter? I know that I do.#$e#I don't spend that much time outside anyway, but the cold makes trips outdoors really unpleasant.",
+                "winter_Sat": "Happy Saturday! Have a lovely day!",
+                "winter_Sun": "What do you do with a day off when it's this cold outside?#$e#%Morris shivers."
+            }
+        },
+
+        //Loads dating dialogue for Morris when CC completed
+
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/MorrisTod",
+            "When": {"Relationship:MorrisTod": "Dating", "HasSeenEvent |contains=191393": true},
+            "Entries": {
+                "divorced": "I have absolutely no desire to talk to you or see you. Goodbye, @.$3",
+                "Mon8": "How lovely to see you again, @.$h#$e#I can give you a discount if you want to buy some wine to enjoy together after my shift.",
+                "Mon10": "I'll be busy planning an outreach campaign for Pierre all day, unfortunately.$s#$e#I won't have as much time for you as I'd like. Hopefully I can make up for that later in the week.",
+                "Tue8": "I'm still amazed that you feel the same way I do. You've made this small business consultant very happy.$10#$e#I hope you have a great day today.$h",
+                "Tue10": "Seeing you brightens up even the dullest day, @. Not that my life is dull!$10",
+                "Wed8": "Do you ever miss Joja? The work I'm doing now helping Pierre feels more meaningful, but I honestly really believed in Joja.#$e#Is that wrong of me? Pierre hates Joja and gets upset when I talk fondly about them.$s#$e#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "Wed10": "Did you know I used to be a bouncer at a night club when I was younger?$h#$e#No, I'm serious! Just thought I'd bring it up.#$e#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "Thu8": "I'm overloaded with work at the moment so I don't have much time to chat, but feel free to spend the day with me.#$e#Having you around makes even the toughest days better.$10",
+                "Thu10": "My back's been hurting all day from putting up displays for our new ad campaign.#$e#I could really use a massage, @, if you wouldn't mind.$h#$e#You wouldn't? Wonderful!#$e#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "Fri8": "I really didn't feel like I had a place in the community here until recently. You've changed that, @. I'm happier here.",
+                "Fri10": "Happy Friday, @! You should come by my place this evening after work.$h#$e#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "Sat8": "Shane is still awkward around me whenever we're in the saloon together, even though I'm not his boss anymore.#$e#He drunkenly yelled at me last night and probably would have punched me if it wasn't for Gus.#$e#Was I really that mean of a manager?$s",
+                "Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$e#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$e#Is it wrong that I think I'm happiest in business? I know what people say about me, but I really do enjoy what I do.$s#$e#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "Sun8": "Are you into gaming, @? If so, I just got the new Joja Kart game for the JojaStation.#$e#I might resent Joja sometimes nowadays, but they definitely make amazing games. Feel free to come by and try it out!$h#$e#I'm pretty good though, so don't expect to win!$h",
+                "Sun10": "I'm glad the town seems to have accepted the fact that we're dating.#$e#Shane hasn't made any rude remarks to me about it recently, at least.",
+                "summer_Mon8": "I honestly don't know how I was able to work so many hours a week for Joja and survive.#$e#It's been a breath of fresh air working for Pierre. I actually get to spend time with you now, and that's a blessing I'll never take for granted.$h",
+                "summer_Mon10": "I'll be busy planning an outreach campaign for Pierre all day, unfortunately.$s#$e#I won't have as much time for you as I'd like. Hopefully I can make up for that later in the week.",
+                "summer_Tue8": "I'm going to stop by the saloon after work for one of Gus's delicious meals. I'd love to see you there!$h",
+                "summer_Tue10": "Seeing you brightens up even the dullest day, @. Not that my life is dull!$10",
+                "summer_Wed8": "Do you ever miss Joja? The work I'm doing now helping Pierre feels more meaningful, but I honestly really believed in Joja.#$e#Is that wrong of me? Pierre hates Joja and gets upset when I talk fondly about them.$s#$e#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "summer_Wed10": "Did you know I used to be a bouncer at a night club in college?$h#$e#No, I'm serious! Just thought I'd bring it up.#$e#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "summer_Thu8": "Today's been tough so far, but it's good to see you, @.#$e#I love when you come by to say hi.$h",
+                "summer_Thu10": "My back's been hurting all day from putting up displays for our new ad campaign.#$e#I could really use a massage, @, if you wouldn't mind.$h#$e#You wouldn't? Wonderful!#$e#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "summer_Fri8": "Let me know if you'd like to go somewhere this weekend when I'm done with work.#$e#I haven't visited the beach here often, but I thought that could be a nice place to go.",
+                "summer_Fri10": "Happy Friday, @! You should come by my place this evening after work.$h#$e#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "summer_Sat8": "Shane is still awkward around me whenever we're in the saloon together, even though I'm not his boss anymore.#$e#He drunkenly yelled at me last night and probably would have punched me if it wasn't for Gus.#$e#Was I really that mean of a manager?$s",
+                "summer_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$e#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$e#Is it wrong that I think I'm happiest in business? I know what people say about me, but I really do enjoy what I do.$s#$e#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "summer_Sun8": "I hope you're enjoying your Sunday, @.#$e#Feel free to spend some of your day with me! I'm not doing anything today.$h",
+                "summer_Sun10": "I'm glad the town seems to have accepted the fact that we're dating.#$e#Shane hasn't made any rude remarks to me about it recently, at least.",
+                "fall_Mon8": "How lovely to see you again, @.$h#$e#I can give you a discount if you want to buy some wine to enjoy together after my shift.",
+                "fall_Mon10": "I'll be busy planning an outreach campaign for Pierre all day, unfortunately.$s#$e#I won't have as much time for you as I'd like. Hopefully I can make up for that later in the week.",
+                "fall_Tue8": "I'm still amazed that you feel the same way I do. You've made this small business consultant very happy.$10#$e#I hope you have a great day today.$h",
+                "fall_Tue10": "Seeing you brightens up even the dullest day, @. Not that my life is dull!$10",
+                "fall_Wed8": "Do you ever miss Joja? The work I'm doing now helping Pierre feels more meaningful, but I honestly really believed in Joja.#$e#Is that wrong of me? Pierre hates Joja and gets upset when I talk fondly about them.$s#$e#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "fall_Wed10": "Did you know I used to be a bouncer at a night club when I was younger?$h#$e#No, I'm serious! Just thought I'd bring it up.#$e#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "fall_Thu8": "I'm overloaded with work at the moment so I don't have much time to chat, but feel free to spend the day with me.#$e#Having you around makes even the toughest days better.$10",
+                "fall_Thu10": "My back's been hurting all day from putting up displays for our new ad campaign.#$e#I could really use a massage, @, if you wouldn't mind.$h#$e#You wouldn't? Wonderful!#$e#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "fall_Fri8": "I really didn't feel like I had a place in the community here until recently. You've changed that, @. I'm happier here.",
+                "fall_Fri10": "Happy Friday, @! You should come by my place this evening after work.$h#$e#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "fall_Sat8": "Shane is still awkward around me whenever we're in the saloon together, even though I'm not his boss anymore.#$e#He drunkenly yelled at me last night and probably would have punched me if it wasn't for Gus.#$e#Was I really that mean of a manager?$s",
+                "fall_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$e#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$e#Is it wrong that I think I'm happiest in business? I know what people say about me, but I really do enjoy what I do.$s#$e#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "fall_Sun8": "Are you into gaming, @? If so, I just got the new Joja Kart game for the JojaStation.#$e#I might resent Joja sometimes nowadays, but they definitely make amazing games. Feel free to come by and try it out!$h#$e#I'm pretty good though, so don't expect to win!$h",
+                "fall_Sun10": "I'm glad the town seems to have accepted the fact that we're dating.#$e#Shane hasn't made any rude remarks to me about it recently, at least.",
+                "winter_Mon8": "I honestly don't know how I was able to work so many hours a week for Joja and survive.#$e#It's been a breath of fresh air working for Pierre. I actually get to spend time with you now, and that's a blessing I'll never take for granted.$h",
+                "winter_Mon10": "I'll be busy planning an outreach campaign for Pierre all day, unfortunately.$s#$e#I won't have as much time for you as I'd like. Hopefully I can make up for that later in the week.",
+                "winter_Tue8": "I'm going to stop by the saloon after work for one of Gus's delicious meals. I'd love to see you there!$h",
+                "winter_Tue10": "Seeing you brightens up even the dullest day, @. Not that my life is dull!$10",
+                "winter_Wed8": "Do you ever miss Joja? The work I'm doing now helping Pierre feels more meaningful, but I honestly really believed in Joja.#$e#Is that wrong of me? Pierre hates Joja and gets upset when I talk fondly about them.$s#$e#Sorry, I'm just not in a great mood today. Seeing you always cheers me up though.",
+                "winter_Wed10": "Did you know I used to be a bouncer at a night club when I was younger?$h#$e#No, I'm serious! Just thought I'd bring it up.#$e#Your face is even more shocked than I was expecting. Is it really that surprising?",
+                "winter_Thu8": "How lovely to see you, @! Pierre and I are planning out some ways to increase foot traffic to the store.#$e#Feel free to contribute if you have any ideas! If not, feel free to hang around anyway.$h",
+                "winter_Thu10": "My back's been hurting all day from putting up displays for our new ad campaign.#$e#I could really use a massage, @, if you wouldn't mind.$h#$e#You wouldn't? Wonderful!#$e#Oh, that feels delightful! I'll have to return the favor someday.$h",
+                "winter_Fri8": "Let me know if you'd like to go somewhere this weekend when I'm done with work.#$e#I haven't visited the beach here often, but I thought that could be a nice place to go.",
+                "winter_Fri10": "Happy Friday, @! You should come by my place this evening after work.$h#$e#My favorite game show, 'Who Wants to Be a Billionaire?', is on tonight!$h",
+                "winter_Sat8": "Shane is still awkward around me whenever we're in the saloon together, even though I'm not his boss anymore.#$e#He drunkenly yelled at me last night and probably would have punched me if it wasn't for Gus.#$e#Was I really that mean of a manager?$s",
+                "winter_Sat10": "Sometimes I wonder what my life would have been like if I'd taken a different path.#$e#I see Elliott working on his novel, or Penny teaching the kids, and it makes me think.#$e#Is it wrong that I think I'm happiest in business? I know what people say about me, but I really do enjoy what I do.$s#$e#Sorry, @, I didn't mean to be so depressing on a Saturday!",
+                "winter_Sun8": "I hope you're enjoying your Sunday, @.#$e#Feel free to spend some of your day with me! I'm not doing anything today.$h",
+                "winter_Sun10": "I'm glad the town seems to have accepted the fact that we're dating.#$e#Shane hasn't made any rude remarks to me about it recently, at least.",
+                "SeedShop_6_19": "%Morris is giving Pierre some ideas about how he can improve the store. You shouldn't bother him.",
+                "SeedShop_12_28": "Hello, @! I'm busy rearranging some products right now, but it's great to see you!$h#$e#Make sure to buy something while you're here!",
+                "Saloon_20_17": "I really enjoy Gus's cooking. A nice meal and a glass of wine is a wonderful way to end one's day.$h",
+                "SeedShop_4_17": "Hi, @. I'm busy at the till right now, so I can't talk. Be sure to buy some of our wonderful products!",
+                
+                //Overriding some Joja-specific SVE lines
+                "winter_28": "Are you staying up until midnight tonight to welcome in the new year?#$e#Come by the store and I'd be happy to give you a new year's kiss...$h",
+                "spring_1_2": "Happy new year! I can't wait to spend another year together. Did you make any resolutions?#$e#I did too. I'm hoping the store will do well and that you'll have an amazing year.$h",
+                "spring_12": "Are you looking forward to the egg hunt tomorrow? I loved it as a child. My hometown had a similar festival.",
+                "spring_23": "Tomorrow should be fun. I get to show you off to the whole town!$h",
+                "summer_10": "I can't wait to see what you've prepared for the soup tomorrow. I bet it'll be delicious!#$e#Pierre and I have something special in mind that the governor should love.",
+                "fall_1": "The seasons pass by so quickly as you get older. You make me feel young again though, @.$10",
+                "winter_24": "I know you won't tell me who you're giving a gift to, but I can't help but wonder.#$e#Admittedly, I'm really hoping that it's me!$h"
+            }
+        },
+
+        //Adds additional Pierre dialogue about Morris
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Pierre",
+            "When": {"HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+                "cc_Complete": "This is a dream-come-true! You can't begin to imagine how much stress JojaMart was causing me.#$e#For a small town like this, one store is enough! There's too much social pressure for me to overcharge, anyway.#$e#Things are really looking up for the store now. Morris has given me some excellent insider tips to help the store succeed.$h#$e#I really didn't use to like him, but he's growing on me a lot. I think we could even be friends someday.",
+                "Fri4": "Morris had a brilliant idea for a new advertising campaign! At this rate we'll become a franchise one day.$h",
+                "Tue8": "I went out for drinks with Morris a few days ago. That man is hilarious when he's drunk!",
+                "Wed": "Morris minds the store on Wednesdays. I always end up helping him out though.#$e#The two of us are both workaholics. I wish we'd become friends sooner!",
+                "Wed6": "I trust Morris more than I ever thought I would, but it still feels strange letting him run the store.#$e#It's like if you were to get someone else to run your farm. It's your baby, you know?#$e#Anyway, maybe I should actually enjoy my day off instead of talking about the store. I don't have much to do, though.",
+                "Fri6": "Morris and I are grabbing drinks after work. Feel free to join us!",
+                "Sun4": "Morris takes Sundays off, but I really wish he was here right now.$s#$e#His dry brand of humor really livens up slow sales days. Not that we have many of those anymore with him around!",
+                "Thu2": "Business has been booming lately. It's incredible!$h#$e#Morris set up email ad campaigns and used these brilliant, somewhat manipulative tactics to get more customers in.#$e#He knows so many marketing techniques. I could learn a lot from him!",
+                "winter_Mon": "Winter used to be a slow sales season, but we've expanded our inventory beyond seeds recently.#$e#Morris suggested selling frozen dinners, but I vetoed that idea. I have to have some standards."
+            }
+        },
+
+        //Morris engagement dialogue
+        {
+            "Action": "EditData",
+            "Target": "Data/EngagementDialogue",
+            "Entries": {
+                "MorrisTod0": "I honestly never would have expected something like this to happen when I first moved here to work for Joja.#$e#I still can't believe it. I'm ecstatic that I get to spend the rest of my life with you.$h",
+                "MorrisTod1": "I picked up some supplies for the wedding! Not from Joja -- I went to an internationally renowned wedding supply store.#$e#You deserve only the best of the best.$10"
+            }
+        },
+
+        //Loads Morris's marriage dialogue file
+        {
+            "Action": "Load",
+            "Target": "Characters/Dialogue/MarriageDialogueMorrisTod",
+            "FromFile": "{{FirstValidFile: assets/Dialogue/marriagedialogue{{language}}.json, assets/Dialogue/marriagedialogue.json }}"
+        },
+
+        //Loads Morris's marriage dialogue when Joja route taken/CC route not taken
+        {
+            "Action": "Include",
+            "When": {"HasSeenEvent |contains=191393": "false"},
+            "FromFile": "{{FirstValidFile: assets/Dialogue/marriagedialoguejoja{{language}}.json, assets/Dialogue/marriagedialoguejoja.json }}"
+        },
+
+        //Loads Morris's marriage dialogue when he's the mayor
+        {
+            "Action": "Include",
+            "When": {"HasSeenEvent |contains=191393": "false", "HasSeenEvent |contains=6665293": "true"},
+            "FromFile": "{{FirstValidFile: assets/Dialogue/marriagedialoguemayor{{language}}.json, assets/Dialogue/marriagedialoguemayor.json }}"
+        },
+
+        //Randomly loads Morris's schedule dialogue
+        {
+            "Action": "Load",
+            "Target": "Strings/schedules/Morris",
+            "FromFile": "{{FirstValidFile: assets/Dialogue/workdialogue{{Random:1, 2, 3, 4, 5}}{{language}}.json, assets/Dialogue/workdialogue{{Random:1, 2, 3, 4, 5}}.json }}"
+        },
+
+        //Changes work Morris dialogue when he's married and has low hearts
+        {
+            "Action": "EditData",
+            "Target": "Strings/schedules/Morris",
+            "When": {"Spouse |contains=MorrisTod": "true", "Hearts:MorrisTod": "{{Range: 0, 8}}"},
+            "Entries": {
+                "Joja": "I have far too much to do today and don't have time to deal with you.$3#$e#Why don't you buy something and go?$3",
+                "Pierre": "I don't have time to talk to you right now, @. Nor do I want to.$3#$e#Why don't you buy something and go?$3",
+                "Saloon": "I'm eating dinner with %rival tonight. I'll see you at home.",
+                "Sunday": "This is one of the only days I get to myself. Let me enjoy it in peace.$3",
+                "Mayor": "I have important mayoral duties to attend to right now that don't involve you.$3"
+            }
+        },
+
+        //Adds movie dialogue
+        {
+            "Action": "EditData",
+            "Target": "Strings/Characters",
+            "Entries": { 
+            "MovieInvite_Spouse_MorrisTod": "A movie night sounds like the perfect date! I'm looking forward to it.$h"
+            }
+        },
+
+        //Concession and gift tastes (all tastes are the same as SVE, but dialogue is changed)
+        {
+            "Action": "EditData",
+            "Target": "Data/ConcessionTastes",
+            "Entries": {
+            "MorrisTod": {
+            "Name": "MorrisTod",
+            "LovedTags": [
+            "Gourmet"
+            ],
+            "LikedTags": [
+            "Healthy", "Salty"
+            ],
+            "DislikedTags": [
+            "Joja"
+            ]
+        }
+        }
+        },
+
+        //Adds Morris movie reactions for Joja route (no SVE)
+        {
+        "Action": "EditData",
+        "Target": "Data/MoviesReactions",
+        "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "HasSeenEvent |contains=191393": "false"},
+        "Entries": {
+        "MorrisTod": {
+            "NPCName": "MorrisTod",
+            "Reactions": [
+            {
+                "Tag": "classic",
+                "Response": "love",
+                "Whitelist": [],
+                "SpecialResponses": {
+                    "BeforeMovie": {
+                        "ResponsePoint": null,
+                        "Script": "",
+                        "Text": "While I'm a proponent of modernization, I must admit that I greatly enjoy the classics."
+                    },
+                    "DuringMovie": {
+                        "ResponsePoint": null,
+                        "Script": "",
+                        "Text": "This movie is excellent so far! I'd heard wonderful things about it.$h"
+                    },
+                    "AfterMovie": {
+                        "ResponsePoint": null,
+                        "Script": "",
+                        "Text": "I really loved that! We'll need to go see it again at some point.$h"
+                    }
+                    },
+                "ID": "reaction_0"
+            },
+            {
+                "Tag": "horror",
+                "Response": "dislike",
+                "Whitelist": [],
+                "SpecialResponses": {
+                    "BeforeMovie": {
+                        "ResponsePoint": null,
+                        "Script": "",
+                        "Text": "I can't say I'm a fan of movies like this, but since you bought me a ticket, I'll give it a try.$s"
+                    },
+                    "DuringMovie": {
+                        "ResponsePoint": null,
+                        "Script": "/jump MorrisTod/pause 500/message \"Morris looks white as a sheet. He grabs your hand.\"",
+                        "Text": "Must we watch the rest of this?$s"
+                    },
+                    "AfterMovie": {
+                        "ResponsePoint": null,
+                        "Script": "",
+                        "Text": "Well, that was certainly an experience. Just not one I'd like to repeat.$s"
+                    }
+                    },
+                "ID": "reaction_1"
+            },
+            {
+                "Tag": "winter_movie_1",
+                "Response": "like",
+                "Whitelist": [],
+                "SpecialResponses": {
+                "BeforeMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "I've heard positive things about this one. I'm interested to see what we think of it!"
+                },
+                "DuringMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "I'm enjoying it so far! What a wonderful production.$h"
+                },
+                "AfterMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "That was a great movie! Thank you for asking me to come with you, @.$h"
+                }
+                },
+                "ID": "reaction_2"
+            },
+            {
+                "Tag": "winter_movie_0",
+                "Response": "like",
+                "Whitelist": [],
+                "SpecialResponses": {
+                "BeforeMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "I've been hoping to see this soon, so I'm glad you asked me to accompany you."
+                },
+                "DuringMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "The characterization and pacing has kept me highly engaged so far. I hope you're enjoying it too!"
+                },
+                "AfterMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "That was certainly a fascinating movie. I took quite a bit away from it. Maybe we can see it again sometime soon!"
+                }
+                },
+                "ID": "reaction_3"
+            },
+            {
+                "Tag": "love",
+                "Response": "like",
+                "Whitelist": [],
+                "SpecialResponses": {
+                "BeforeMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "I'm greatly looking forward to this film!"
+                },
+                "DuringMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "This is absolutely outstanding! I'm on the edge of my seat."
+                },
+                "AfterMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "What a brilliant film! I see why it was so highly recommended to me."
+                }
+                },
+                "ID": "reaction_4"
+            },
+            {
+                "Tag": "like",
+                "Response": "like",
+                "Whitelist": [],
+                "SpecialResponses": {
+                "BeforeMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "The description for this film sounded intriguing, so I'm hoping we both like it."
+                },
+                "DuringMovie": null,
+                "AfterMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "A day out at the movie theater is always an enjoyable experience! Thanks for inviting me out."
+                }
+                },
+                "ID": "reaction_5"
+            },
+            {
+                "Tag": "dislike",
+                "Response": "like",
+                "Whitelist": [],
+                "SpecialResponses": {
+                "BeforeMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "I've seen a few negative reviews of this movie, but let's give it a chance and see what we think!"
+                },
+                "DuringMovie": {
+                    "ResponsePoint": null,
+                    "Script": "/textAboveHead MorrisTod \"*SNORE*\"/message \"Morris appears to have fallen asleep.\"",
+                    "Text": "Huh? Oh, sorry, @. I think I drifted off for a moment there.$s"
+                },
+                "AfterMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "From what little I saw of that movie, it was quite subpar. Let's watch something else next time."
+                }
+                },
+                "ID": "reaction_6"
+            }
+            ]
+            }
+        }
+        },
+
+        //Adds Morris movie reactions for CC route
+        {
+            "Action": "EditData",
+            "Target": "Data/MoviesReactions",
+            "When": {"HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+            "MorrisTod": {
+                "NPCName": "MorrisTod",
+                "Reactions": [
+                    {
+                        "Tag": "classic",
+                        "Response": "love",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                            "BeforeMovie": {
+                                "ResponsePoint": null,
+                                "Script": "",
+                                "Text": "While I'm a proponent of modernization, I must admit that I greatly enjoy the classics."
+                            },
+                            "DuringMovie": {
+                                "ResponsePoint": null,
+                                "Script": "",
+                                "Text": "This movie is excellent so far! I'd heard wonderful things about it.$h"
+                            },
+                            "AfterMovie": {
+                                "ResponsePoint": null,
+                                "Script": "",
+                                "Text": "I really loved that! We'll need to go see it again at some point.$h"
+                            }
+                            },
+                        "ID": "reaction_0"
+                    },
+                    {
+                        "Tag": "horror",
+                        "Response": "dislike",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                            "BeforeMovie": {
+                                "ResponsePoint": null,
+                                "Script": "",
+                                "Text": "I can't say I'm a fan of movies like this, but since you bought me a ticket, I'll give it a try.$s"
+                            },
+                            "DuringMovie": {
+                                "ResponsePoint": null,
+                                "Script": "/jump MorrisTod/pause 500/message \"Morris looks white as a sheet. He grabs your hand.\"",
+                                "Text": "Must we watch the rest of this?$s"
+                            },
+                            "AfterMovie": {
+                                "ResponsePoint": null,
+                                "Script": "",
+                                "Text": "Well, that was certainly an experience. Just not one I'd like to repeat.$s"
+                            }
+                            },
+                        "ID": "reaction_1"
+                    },
+                    {
+                        "Tag": "winter_movie_1",
+                        "Response": "like",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                        "BeforeMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "I've heard positive things about this one. I'm interested to see what we think of it!"
+                        },
+                        "DuringMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "I'm enjoying it so far! What a wonderful production.$h"
+                        },
+                        "AfterMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "That was a great movie! Thank you for asking me to come with you, @.$h"
+                        }
+                        },
+                        "ID": "reaction_2"
+                    },
+                    {
+                        "Tag": "winter_movie_0",
+                        "Response": "like",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                        "BeforeMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "I've been hoping to see this soon, so I'm glad you asked me to accompany you."
+                        },
+                        "DuringMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "The characterization and pacing has kept me highly engaged so far. I hope you're enjoying it too!"
+                        },
+                        "AfterMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "That was certainly a fascinating movie. I took quite a bit away from it. Maybe we can see it again sometime soon!"
+                        }
+                        },
+                        "ID": "reaction_3"
+                    },
+                    {
+                        "Tag": "love",
+                        "Response": "like",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                        "BeforeMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "I'm greatly looking forward to this film!"
+                        },
+                        "DuringMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "This is absolutely outstanding! I'm on the edge of my seat."
+                        },
+                        "AfterMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "What a brilliant film! I see why it was so highly recommended to me."
+                        }
+                        },
+                        "ID": "reaction_4"
+                    },
+                    {
+                        "Tag": "like",
+                        "Response": "like",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                        "BeforeMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "The description for this film sounded intriguing, so I'm hoping we both like it."
+                        },
+                        "DuringMovie": null,
+                        "AfterMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "A day out at the movie theater is always an enjoyable experience! Thanks for inviting me out."
+                        }
+                        },
+                        "ID": "reaction_5"
+                    },
+                    {
+                        "Tag": "dislike",
+                        "Response": "like",
+                        "Whitelist": [],
+                        "SpecialResponses": {
+                        "BeforeMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "I've seen a few negative reviews of this movie, but let's give it a chance and see what we think!"
+                        },
+                        "DuringMovie": {
+                            "ResponsePoint": null,
+                            "Script": "/textAboveHead MorrisTod \"*SNORE*\"/message \"Morris appears to have fallen asleep.\"",
+                            "Text": "Huh? Oh, sorry, @. I think I drifted off for a moment there.$s"
+                        },
+                        "AfterMovie": {
+                            "ResponsePoint": null,
+                            "Script": "",
+                            "Text": "From what little I saw of that movie, it was quite subpar. Let's watch something else next time."
+                        }
+                        },
+                        "ID": "reaction_6"
+                    }
+                ]
+                }
+            }
+            },
+
+            //Adds one-off Morris dialogue lines
+
+            {
+                "Action": "EditData",
+                "Target": "Characters/Dialogue/MorrisTod",
+                "Entries": {
+                    "breakUp": "Wow. I don't know what to say. I really cared for you.$s#$b#Would money convince you to change your mind? I have money.$s#$b#No, never mind, that's just the grief speaking. I need some time, @...$s",
+                    "pamHouseUpgrade": "Like me, you're helping modernize Pelican Town and improve the living conditions of its residents.$h#$b#Wonderful work, @!$h",
+                    "pamHouseUpgradeAnonymous": "Some mysterious investor has helped modernize Pelican Town by demolishing that ghastly old trailer Pam lived in.#$e#I'd like to say it was me, but it unfortunately wasn't! Whoever did it though must have views similar to my own.$h",
+                    "cc_Begin": "I've heard from some of the townsfolk that you're working on repairing the Community Center.#$e#I'm glad you're helping improve Pelican Town, but that building would look much nicer as a Joja warehouse!",
+                    "cc_Complete": "I'm so glad that I've been allowed to stay here. I've spent most of my adult life working with Joja, but it's time for a new start.$h#$e#I'm looking forward to seeing what the future holds for me and for Pelican Town.$h#$e#I've already started working at the store with Pierre. He's much more respectful to me now, which is a welcome change!$h",
+                    "joja_Begin": "It's wonderful that you've chosen to join Joja again! Even if you're no longer working for us, we welcome you as one of our members.$h#$e#Perhaps you'll even choose to return to employment with us someday. I'd be happy to write a recommendation letter for you if you do.$h"
+                }
+            },
+
+            {
+                "Action": "EditData",
+                "Target": "Characters/Dialogue/MorrisTod",
+                "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP":"false"},
+                "Entries": {
+                    "Resort_Entering": "Wonderful, I've been looking forward to spending a day off here!$h",
+                    "Resort_Leaving": "I've had quite a delightful day! I rarely take vacations, so I always try to make the most of them!$h",
+                    "Resort_Shore": "What an excellent location! I'd love to develop it further someday.",
+                    "Resort_Chair": "This would be a lovely place to get a tan. I spend so much time inside that I'm far too pale.",
+                    "Resort_Bar": "The wines here have quite an elegant taste. Would you care for one?#$e#No, I didn't mean I'd purchase one for you, sorry. They're quite expensive!",
+                    "Resort": "I'm looking forward to exploring all that this resort has to offer. It's quite a popular vacation spot amongst the townsfolk!$h#$e#Imagine what else we could add to it to bring even more tourists in from surrounding areas... I have so many ideas!$h"
+                }
+            },
+
+        //Loads Chinese translation
+
+        {
+            "Action": "Include",
+            "FromFile": "assets/Translations/zh.json",
+            "When": {"Language": "zh"}
+        },
+
+
+
+
+
+       //Sprite changes
+
+        //Adds custom kissing, Flower Festival, and wedding sprites for Morris to sprites added by SVE
+        {
+            "Action": "EditImage",
+            "Target": "Characters/MorrisTod",
+            "FromFile": "assets/Portraits/Morris.png",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromArea": {"X": 0, "Y": 322, "Width": 64, "Height": 94},
+            "ToArea": {"X": 0, "Y": 322, "Width": 64, "Height": 94}
+        },
+        //Adds custom kissing, Flower Festival, and wedding sprites for Morris to vanilla sprite
+        {
+            "Action": "EditImage",
+            "Target": "Characters/Morris",
+            "FromFile": "assets/Portraits/Morris.png",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromArea": {"X": 0, "Y": 322, "Width": 64, "Height": 94},
+            "ToArea": {"X": 0, "Y": 322, "Width": 64, "Height": 94}
+        },
+        //Adds regular kissing sprite for Morris when SVE is installed after the wedding (Note: This replaces a frame that's only used in Morris's 8-heart SVE event)
+        {
+            "Action": "EditImage",
+            "Target": "Characters/MorrisTod",
+            "FromFile": "assets/Portraits/Morris.png",
+            "When": {
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+                "Spouse |contains=MorrisTod": "true"
+            },
+            "FromArea": {"X": 1, "Y": 226, "Width": 16, "Height": 30},
+            "ToArea": {"X": 1, "Y": 226, "Width": 16, "Height": 30}
+        },
+
+        //Loads Morris' sprites when SVE isn't installed
+        {
+            "Action": "Load",
+            "Target": "Characters/MorrisTod",
+            "FromFile": "assets/Portraits/Morris.png",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"}
+        },
+        {
+            "Action": "Load",
+            "Target": "Characters/Morris",
+            "FromFile": "assets/Portraits/Morris.png",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"}
+        },
+
+        //Load Morris's portraits when SVE not installed
+        {
+            "Action": "Load",
+            "Target": "Portraits/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "FromFile": "assets/Portraits/MorrisPortrait.png"
+        },
+
+        //Load Morris's portraits when SVE not installed
+        {
+            
+            "Action": "Load",
+            "Target": "Portraits/Morris",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "FromFile": "assets/Portraits/MorrisPortrait.png"
+        },
+        //Adds love and very angry portrait for Morris to SVE portraits
+        {
+            "Action": "EditImage",
+            "Target": "Portraits/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromFile": "assets/Portraits/MorrisExtraPortrait.png",
+            "ToArea": {
+                "X": 0,
+                "Y": 320,
+                "Width": 128,
+                "Height": 64
+            }
+        },
+        {
+            "Action": "EditImage",
+            "Target": "Portraits/Morris",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromFile": "assets/Portraits/MorrisExtraPortrait.png",
+            "ToArea": {
+                "X": 0,
+                "Y": 320,
+                "Width": 128,
+                "Height": 64
+            }
+        },
+        //Loads Morris's resort sprites
+        {
+            "Action": "Load",
+            "Target": "Characters/Morris_Beach",
+            "FromFile": "assets/Portraits/Morris_Beach.png"
+        },
+
+
+
+
+
+
+        //Map changes
+
+        //Adds Morris path to bus stop map
+        {
+            "Action": "EditMap",
+            "Target": "Maps/BusStop",
+            "FromFile": "assets/Maps/BusStopMorris.tmx",
+            "FromArea": {"X": 10, "Y": 0, "Width": 6, "Height": 5},
+            "ToArea": {"X": 10, "Y": 0, "Width": 6, "Height": 5},
+            "AddWarps": [
+                "11 -1 Custom_Yoshimax_MorrisLand 14 24",
+                "12 -1 Custom_Yoshimax_MorrisLand 14 24",
+                "13 -1 Custom_Yoshimax_MorrisLand 14 24",
+                "14 -1 Custom_Yoshimax_MorrisLand 14 24"
+            ]
+
+        },
+        //Adds map messages
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromMaps",
+            "Entries": {
+                "MorrisLand.1": "Morris's prized purple Panther. Be careful not to scratch it!",
+                "MorrisLand.2": "Morris's flower garden. He doesn't usually have much time to water it.",
+                "MorrisLand.3": "The sign reads: 'No solicitors.'",
+                "MorrisLand.4": "This is a Joja model home, painted grey to look more sophisticated.",
+                "MorrisHome.1": "It's locked.",
+                "MorrisHome.2": "A fancy piano. It's covered in a thick layer of dust.",
+                "MorrisHome.3": "It's empty except for a few JojaMart receipts.",
+                "MorrisHome.4": "'Managing Stores for Dummies'",
+                "MorrisHome.5": "There's an expensive camera and lens on top of the shelf. They look unused.",
+                "MorrisHome.6": "Morris's Joja One X. It has a red ring of death.",
+                "MorrisHome.7": "Morris's PC. The screen is covered with sticky notes about the store.",
+                "MorrisHome.8": "Morris's notebook. He's written 'SECRET' on the front, so you shouldn't open it.",
+                "MorrisHome.9": "A gardening magazine from 6 years ago. It looks like it hasn't been read.",
+                "MorrisHome.10": "The fridge is empty, but the freezer is packed with Joja frozen dinners.",
+                "MorrisHome.11": "A beautiful aquarium filled with decorations. It doesn't have any fish in it.",
+                "MorrisHome.12": "A set of nice brushes and a blank canvas. You wonder if Morris has ever painted anything.",
+                "MorrisHome.13": "Hi Mom,^I'm sorry for not writing sooner. I've been so busy with the store that I don't have much time for anything else anymore.^I'm really lonely here. I wish I could go home. No one else in town understands me or even tries to talk to me.^I miss you. I hope you're doing alright without Dad around.^See you soon,^Morris"
+            }
+        },
+        //Modifies map messages when CC completed
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromMaps",
+            "When": {
+                "HasSeenEvent |contains=191393": "true"
+            },
+            "Entries": {
+                "MorrisLand.2": "Morris's flower garden. He takes good care of it and it's full of beautiful flowers.",
+                "MorrisLand.4": "This is a Joja model home, but the Joja markings have been painted over.",
+                "MorrisHome.2": "A fancy piano. It looks like it's been played recently.",
+                "MorrisHome.3": "It's full of old gardening magazines.",
+                "MorrisHome.4": "'How to Make your Small Business a Success!'",
+                "MorrisHome.5": "There's an expensive camera and lens on top of the shelf.",
+                "MorrisHome.9": "A recent gardening magazine. Morris has circled and underlined some of the articles.",
+                "MorrisHome.10": "The fridge is well stocked and has some leftovers from the saloon.",
+                "MorrisHome.11": "A beautiful aquarium filled with decorations and colorful fish.",
+                "MorrisHome.13": "Hi Mom,^It's great to hear that you're doing well. Now that I've left Joja, I have a lot more time to write to you.^I'm a lot happier here nowadays. I don't miss home as much. People are much more friendly to me, and I'm even friends with Pierre.^I still miss you though. I'll be sure to visit soon.^See you soon,^Morris"
+            }
+        },
+        //Adds map messages when married to Morris
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromMaps",
+            "When": {
+                "Spouse |contains=MorrisTod": "true"
+            },
+            "Entries": {
+                "MorrisLand.2": "Morris's flower garden. He doesn't usually have much time to water it since he no longer lives here.",
+                "MorrisHome.8": "Morris's notebook. He's written 'SECRET' on the front. He's told you it's his diary, so you decide not to open it.",
+                "MorrisHome.10": "The fridge is empty, since Morris no longer lives here.",
+                "MorrisHome.11": "A beautiful aquarium filled with decorations. It doesn't have any fish in it since Morris lives on the farm.",
+                "MorrisHome.13": "Hi Mom,^Sorry again that it's taking me so long to get back to you. Like always, Joja is keeping me busy.^I don't hate it here anymore, though. I found {{PlayerName}}, the love of my life, here.^I can get you a decent deal on a Joja phone so we can text/call instead of writing letters. Let me know if you'd like one!^See you soon,^Morris"
+            }
+        },
+        //Modifies letter when married to Morris and CC complete
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromMaps",
+            "When": {
+                "Spouse |contains=MorrisTod": "true",
+                "HasSeenEvent |contains=191393": "true"
+            },
+            "Entries": {
+                "MorrisHome.13": "Hi Mom,^It's great to hear that you're doing well. Now that I've left Joja, I have a lot more time to write to you.^I'm a lot happier here nowadays. People are much more friendly to me, and I've found {{PlayerName}}, the love of my life, here.^I still miss you though. I'll be sure to visit soon.^See you soon,^Morris"
+            }
+        },
+        //Edits map to make Morris accessible when SVE isn't installed
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Jojamart",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "MapTiles": [
+                {
+                   "Position": {"X": 21, "Y": 23},
+                   "Layer": "Front",
+                   "Remove": true
+                },
+                {
+                    "Position": {"X": 21, "Y": 24},
+                    "Layer": "Buildings",
+                    "Remove": true
+                },
+                {
+                   "Position": {"X": 22, "Y": 22},
+                   "Layer": "Front",
+                   "Remove": true
+               },
+               {
+                "Position": {"X": 22, "Y": 23},
+                "Layer": "Buildings",
+                "Remove": true
+                }
+            ]
+        },
+
+        //Allows for Morris to run the shop on Wednesdays during normal opening hours
+        {
+            "Action": "EditMap",
+            "Target": "Maps/SeedShop",
+            "When": {"DayOfWeek": "Wednesday", "Time": "{{Range: 0900, 1700}}", "HasSeenEvent |contains=191393": "true"},
+            "MapTiles": [
+                {
+                   "Position": {"X": 4, "Y": 18},
+                   "Layer": "Buildings",
+                   "SetProperties": {
+                       "Action": "",
+                       "Shop": "Vanilla!PierreShop"
+                   }
+                },
+                {
+                    "Position": {"X": 5, "Y": 18},
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "",
+                        "Shop": "Vanilla!PierreShop"
+                    }
+                }
+            ],
+            "Update": "OnTimeChange"
+        },
+        {
+            "Action": "EditMap",
+            "Target": "Maps/SeedShop",
+            "When": {"DayOfWeek": "Wednesday", "Time": "{{Range: 1700, 2600}}", "HasSeenEvent |contains=191393": "true"},
+            "MapTiles": [
+                {
+                   "Position": {"X": 4, "Y": 18},
+                   "Layer": "Buildings",
+                   "SetProperties": {
+                       "Action": "Buy General",
+                       "Shop": null
+                   }
+                },
+                {
+                    "Position": {"X": 5, "Y": 18},
+                    "Layer": "Buildings",
+                    "SetProperties": {
+                        "Action": "Buy General",
+                        "Shop": null
+                    }
+                }
+            ],
+            "Update": "OnTimeChange"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "When": {"DayOfWeek": "Wednesday", "Time": "{{Range: 0600, 2600}}", "HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+                "GameLocation.cs.8525": "Come back when Morris is tending the shop."
+            }
+        },
+
+        //Removes Joja sign from Morris's house
+        {
+            "Action": "EditMap",
+            "Target": "Maps/Custom_Yoshimax_MorrisHome",
+            "When": {"HasSeenEvent |contains=191393": "true"},
+            "MapTiles": [
+                {
+                    "Position": {"X": 7, "Y": 7},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 8, "Y": 7},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 9, "Y": 7},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 7, "Y": 8},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 8, "Y": 8},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 9, "Y": 8},
+                    "Layer": "Front",
+                    "Remove": true
+                }
+
+            ]
+        },
+        //Adds Morris's spouse room
+        {
+            "Action": "Load",
+            "Target": "Maps/Custom_MorrisRoom",
+            "FromFile": "assets/Maps/MorrisSpouseRoom.tmx"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/SpouseRooms",
+            "Entries": {
+            "MorrisTod": "Custom_MorrisRoom/0"
+            }
+        },
+
+        //Adds Morris's spouse patio
+        {
+            "Action": "EditData",
+            "Target": "Data/SpousePatios",
+            "Entries": {
+                "MorrisTod": "Morris_Spouse_Area/0/0/0 0"
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "Maps/Morris_Spouse_Area",
+            "FromFile": "assets/Maps/morrispatio.tmx"
+        },
+
+        //Removes Morris's letter to Pierre from Pierre's shop since it conflicts with his 2 heart event (vanilla)
+        {
+            "Action": "EditMap",
+            "Target": "Maps/SeedShop",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "MapTiles": [
+                {
+                    "Position": {"X": 40, "Y": 7},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 40, "Y": 8},
+                    "Layer": "Buildings",
+                    "Remove": true
+
+                },
+                {
+                    "Position": {"X": 40, "Y": 8},
+                    "Layer": "Buildings",
+                    "SetIndex": 745,
+                    "SetTilesheet": "1"
+
+                }
+            ]
+        },
+
+        //Removes Morris's letter to Pierre from Pierre's shop since it conflicts with his 2 heart event (SVE)
+        {
+            "Action": "EditMap",
+            "Target": "Maps/SeedShop",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "MapTiles": [
+                {
+                    "Position": {"X": 40, "Y": 7},
+                    "Layer": "Front",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 40, "Y": 7},
+                    "Layer": "Buildings",
+                    "Remove": true
+                },
+                {
+                    "Position": {"X": 40, "Y": 8},
+                    "Layer": "Buildings",
+                    "Remove": true
+
+                },
+                {
+                    "Position": {"X": 40, "Y": 8},
+                    "Layer": "Buildings",
+                    "SetIndex": 864,
+                    "SetTilesheet": "1"
+
+                },
+                {
+                    "Position": {"X": 40, "Y": 7},
+                    "Layer": "Buildings",
+                    "SetIndex": 768,
+                    "SetTilesheet": "1"
+
+                }
+            ]
+        },
+
+        //Adds Morris's house to world map (SVE)
+        {
+            "Action": "EditImage",
+            "Target": "LooseSprites/Map",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromFile": "assets/Maps/{{season}}svemappatch.png",
+            "ToArea": {"X": 129, "Y": 32, "Height": 20, "Width": 22}
+        },
+
+        //Adds Morris's house to world map (No SVE, has NPC Map Locations)
+        {
+            "Action": "EditImage",
+            "Target": "LooseSprites/Map",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "HasMod |contains=Bouhm.NPCMapLocations": "true"},
+            "FromFile": "assets/Maps/{{season}}mappatch.png",
+            "ToArea": {"X": 129, "Y": 32, "Height": 20, "Width": 22}
+        },
+        //Adds Morris's house to world map (No SVE, no NPC Map Locations)
+        {
+            "Action": "EditImage",
+            "Target": "LooseSprites/Map",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "HasMod |contains=Bouhm.NPCMapLocations": "false"},
+            "FromFile": "assets/Maps/springmappatch.png",
+            "ToArea": {"X": 129, "Y": 34, "Height": 20, "Width": 22}
+        },
+
+        //Loads Morris's 14 heart event map
+        {
+            "Action": "Load",
+            "Target": "Maps/Custom_Yoshimax_MorrisPhotos",
+            "FromFile": "assets/Maps/MorrisPhotos.tmx"
+        },
+
+        //Adds house to NPC Map Locations
+
+        {  
+            "Action": "EditData",
+            "Target": "Mods/Bouhm.NPCMapLocations/Locations",
+            "Entries": {
+        
+            "Custom_Yoshimax_MorrisLand": {
+            "MapVectors": [
+                {
+                    "TileX": 0,
+                    "TileY": 0,
+                    "MapX": 531,
+                    "MapY": 149
+                },
+                {
+                    "TileX": 43,
+                    "TileY": 42,
+                    "MapX": 574,
+                    "MapY": 191
+                }
+                ],	
+            "MapTooltip": {
+            "X": 531,
+            "Y": 149,
+            "Width": 43,
+            "Height": 42,
+            "PrimaryText": "1 Morris Lane",
+            "SecondaryText": "Home of Morris"
+            }
+           }
+          }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Mods/Bouhm.NPCMapLocations/NPCs",
+            "When": { "HasSeenEvent": "191393", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true" },
+            "Entries": {
+             "MorrisTod": { "Exclude": false }
+           }
+        },
+
+
+
+
+
+
+
+
+        //Schedules
+        
+        //Loads Morris' schedule when SVE isn't installed 
+        {
+            "Action": "Load",
+            "Target": "Characters/schedules/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "FromFile": "assets/Schedules/morrisschedule.json"
+        },
+
+        //Edits Morris' schedule when SVE is installed and CC not completed/he's not mayor
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true", "HasSeenEvent |contains=191393": "false", "HasSeenEvent |contains=6663408": false, "HasSeenEvent |contains=6665293": "false"},
+            "Entries": {
+                "marriageJob": "700 JojaMart 24 26 3 \"Strings\\schedules\\Morris:Joja\"/1700 Saloon 20 18 3 \"Strings\\schedules\\Morris:Saloon\"/1930 BusStop -1 23 3",
+                "rain":  "800 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "spring": "620 Town 88 51 2/940 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Mon": "620 Town 88 51 2/940 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Tue": "630 Custom_Yoshimax_MorrisLand 7 20 3/800 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Wed": "620 Town 43 59 1 Morris_Coupon/900 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Thu": "620 Town 72 54 2/930 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Fri": "630 Town 93 52 2/940 JojaMart 24 26 3/2200 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Sat": "630 Town 97 63 1/930 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Sun": "630 Town 76 54 2/930 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "3": "610 Town 43 59 1 Morris_Coupon/900 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "10": "610 Town 44 59 1 Morris_Coupon/900 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "17": "610 Town 42 59 1 Morris_Coupon/900 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "24": "610 Town 43 60 1 Morris_Coupon/900 JojaMart 24 26 3/2300 Custom_Yoshimax_MorrisHome 15 5 1"
+            }
+        },
+
+        //Edits Morris' schedule when SVE is installed and CC is completed
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true", "HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+                "marriageJob": "700 SeedShop 5 19 0 \"Strings\\schedules\\Morris:Pierre\"/1700 Saloon 20 18 3 \"Strings\\schedules\\Morris:Saloon\"/1930 BusStop -1 23 3",
+                "marriageJobWed": "700 SeedShop 4 17 2 \"Strings\\schedules\\Morris:Pierre\"/1700 Saloon 20 18 3 \"Strings\\schedules\\Morris:Saloon\"/1930 BusStop -1 23 3",
+                "marriage_Sun": "820 Mountain 28 35 2 \"Strings\\schedules\\Morris:Sunday\"/1200 Beach 45 24 2 \"Strings\\schedules\\Morris:Sunday\"/1700 BusStop -1 23 3",
+                "rain":  "GOTO spring",
+                "spring": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 9 58 2/1000 SeedShop 6 19 0/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Mon": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 9 58 2/1000 SeedShop 6 19 0/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Tue": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 18 59 2/1000 SeedShop 12 28 3/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Wed": "620 Custom_Yoshimax_MorrisLand 5 21 0/730 SeedShop 4 17 2/1700 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Thu": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 47 57 2/1000 SeedShop 12 28 3/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Fri": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 25 36 0/1000 SeedShop 6 19 0/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Sat": "830 SeedShop 6 19 0/1330 Town 9 58 2/1730 Custom_Yoshimax_MorrisLand 17 20 1/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Sun": "620 Custom_Yoshimax_MorrisLand 17 20 1/820 Mountain 28 35 2/1200 Beach 45 24 2/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "3": "GOTO Wed",
+                "10": "GOTO Wed",
+                "17": "GOTO Wed",
+                "24": "GOTO Wed"
+            }
+        },
+        
+        //Edits Morris' schedule when SVE isn't installed and CC is completed
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/MorrisTod",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false", "HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+                "rain":  "GOTO spring",
+                "spring": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 9 58 2/1000 SeedShop 6 19 0/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Mon": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 9 58 2/1000 SeedShop 6 19 0/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Tue": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 18 59 2/1000 SeedShop 12 28 3/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Wed": "620 Custom_Yoshimax_MorrisLand 5 21 0/800 SeedShop 4 17 2/1700 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Thu": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 47 57 2/1000 SeedShop 6 19 0/1800 Saloon 12 28 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Fri": "620 Custom_Yoshimax_MorrisLand 5 21 0/740 Town 25 36 0/1000 SeedShop 6 19 0/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Sat": "830 SeedShop 6 19 0/1330 Town 9 58 2/1730 Custom_Yoshimax_MorrisLand 17 20 1/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "Sun": "620 Custom_Yoshimax_MorrisLand 17 20 1/820 Mountain 28 35 2/1200 Beach 45 24 2/1800 Saloon 20 17 3/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+                "marriageJob": "700 SeedShop 5 19 0 \"Strings\\schedules\\Morris:Pierre\"/1700 Saloon 20 18 3 \"Strings\\schedules\\Morris:Saloon\"/1930 BusStop -1 23 3",
+                "marriageJobWed": "700 SeedShop 4 17 2 \"Strings\\schedules\\Morris:Pierre\"/1700 Saloon 20 18 3 \"Strings\\schedules\\Morris:Saloon\"/1930 BusStop -1 23 3",
+                "marriage_Sun": "820 Mountain 28 35 2 \"Strings\\schedules\\Morris:Sunday\"/1200 Beach 45 24 2 \"Strings\\schedules\\Morris:Sunday\"/1700 BusStop -1 23 3"
+            },
+            "Update": "OnTimeChange"
+        },
+
+        //Edits Pierre's schedule to give him Wednesday off
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/Pierre",
+            "When": {"HasSeenEvent |contains=191393": "true"},
+            "Entries": {
+                "Wed": "610 SeedShop 20 19 3/1200 Mountain 28 35 2/1900 SeedShop 37 5 0/2100 SeedShop 20 5 0/2300 SeedShop 24 4 1 pierre_sleep"
+            }
+        },
+        
+        //When raining on Wednesdays, edits Pierre's and Morris's schedules so Morris still works at the store
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/Pierre",
+            "When": {"DayOfWeek": "Wednesday", "Weather": "Rain, Storm"},
+            "Entries": {
+                "rain": "GOTO Wed"
+            }
+        },
+        
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/MorrisTod",
+            "When": {"DayOfWeek": "Wednesday", "Weather": "Rain, Storm"},
+            "Entries": {
+                "rain": "GOTO Wed"
+
+            }
+        },
+        
+
+        //Edits Morris's schedule when he's the mayor
+        {
+            "Action": "Include",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true", "HasSeenEvent |contains=6665293": "true"},
+            "FromFile": "assets/Schedules/mayorschedule{{DayOfWeek}}.json"
+        },
+
+        //Loads Morris's hardcoded marriage schedules for CC
+        {
+            "Action": "Include",
+            "When": {"Spouse |contains=MorrisTod": "true", "HasSeenEvent |contains=191393": "true"},
+            "FromFile": "assets/Schedules/marriageschedulecc.json"
+        },
+
+        //Loads Morris's hardcoded marriage schedules for Joja (SVE)
+        {
+            "Action": "Include",
+            "When": {"Spouse |contains=MorrisTod": "true", "HasSeenEvent |contains=191393": "false", "HasSeenEvent |contains=6665293": "false", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromFile": "assets/Schedules/marriageschedulejoja.json"
+        },
+
+        //Loads Morris's hardcoded marriage schedules for Joja (No SVE)
+        {
+            "Action": "Include",
+            "When": {"Spouse |contains=MorrisTod": "true", "HasSeenEvent |contains=191393": "false", "HasSeenEvent |contains=6665293": "false", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "FromFile": "assets/Schedules/marriageschedulejojanosve.json"
+        },
+
+        //Loads Morris's hardcoded marriage schedules for mayor
+        {
+            "Action": "Include",
+            "When": {"Spouse |contains=MorrisTod": "true", "HasSeenEvent |contains=191393": "false", "HasSeenEvent |contains=6665293": "true", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "FromFile": "assets/Schedules/marriageschedulemayor.json"
+        },
+
+        //Loads Morris's hardcoded marriage schedules for Joja if mayor event seen but SVE removed
+        {
+            "Action": "Include",
+            "When": {"Spouse |contains=MorrisTod": "true", "HasSeenEvent |contains=191393": "false", "HasSeenEvent |contains=6665293": "true", "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "FromFile": "assets/Schedules/marriageschedulejojanosve.json"
+        },
+
+        //Morris's hospital checkup
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/MorrisTod",
+            "Entries": {
+                "spring_19": "630 Town 18 59 2/1000 Hospital 13 14 0/1330 Hospital 4 6 1 \"Strings\\schedules\\Morris:Hospital\"/1530 Beach 45 24 2/1900 Saloon 20 17 3/2200 Custom_Yoshimax_MorrisHome 15 5 1",
+                "marriage_spring_19": "630 Town 18 59 2/1000 Hospital 13 14 0/1330 Hospital 4 6 1 \"Strings\\schedules\\Morris:HospitalMarriage\"/1530 Beach 45 24 2/1900 BusStop -1 23 3"
+            }
+        },
+
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/MorrisTod",
+            "When": {"HasSeenEvent |contains=6663408": "true"},
+            "Entries": {
+                "spring_19": "0 Custom_MorrisHouse 16 6 2/630 Town 18 59 2/1000 Hospital 13 14 0/1330 Hospital 4 6 1 \"Strings\\schedules\\Morris:Hospital\"/1530 Beach 45 24 2/1900 Saloon 20 17 3/2200 Custom_MorrisHouse 16 6 2",
+                "marriage_spring_19": "630 Town 18 59 2/1000 Hospital 13 14 0/1330 Hospital 4 6 1 \"Strings\\schedules\\Morris:HospitalMarriage\"/1530 Beach 45 24 2/1900 BusStop -1 23 3"
+            }
+        },
+
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/Harvey",
+            "Entries": {
+                "spring_19": "GOTO Tue",
+                "marriage_spring_19": "GOTO Tue"
+            }
+        },
+
+
+
+
+        //Festival changes
+
+        //Adds Morris to festivals when he's not the SVE mayor (uses SVE positions for continuity)
+
+        //Egg Festival
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring13",
+            "When": {"HasSeenEvent |contains=6665293": "false"},
+            "TextOperations": [
+                {
+                    "Operation": "Append",
+                    "Target": [
+                        "Entries",
+                        "Set-Up_additionalCharacters"
+                    ],
+                    "Value": "MorrisTod 44 60 down",
+                    "Delimiter": "/"
+                },
+                {
+                    "Operation": "Append",
+                    "Target": ["Entries", "MainEvent_additionalCharacters"],
+                    "Value": "MorrisTod 22 67 right",
+                    "Delimiter": "/"
+                }
+            ]
+        },
+        { 
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring13",
+            "When": {
+                "Spouse |contains=MorrisTod": "false", "HasSeenEvent |contains=6665293": "false"
+             },
+            "Entries": {
+              "MorrisTod": "We've been selling special painted eggs for the festival. Make sure to check them out after this!$h"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring13",
+            "Entries": {
+              "MorrisTod": "It's always a joy to see you so happy like this, sweetheart.$h#$e#Good luck with the egg hunt!$h"
+            },
+            "When": {
+                "Spouse |contains=MorrisTod": "true"
+            }
+        },
+
+        //Flower Dance
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring24",
+            "When": {"HasSeenEvent |contains=6665293": "false"},
+            "TextOperations": [
+                {
+                        
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 4 25 down",
+                    "Delimiter": "/"
+                },
+                {
+                    "Operation": "Append",
+                    "Target": ["Entries", "MainEvent_additionalCharacters"],
+                    "Value": "MorrisTod 4 25 right",
+                    "Delimiter": "/"
+                }
+            ]
+        },
+        { 
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring24",
+            "When": {
+                "Spouse |contains=MorrisTod": "false"
+            },
+            "Entries": {
+              "MorrisTod": "This festival is one of my favorite times of the year! Flower sales are at an all-time high!$h#$e#I wish I had someone to dance with, though...$s"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring24",
+            "Entries": {
+              "MorrisTod": "What a romantic festival! Pierre might view it as a sales opportunity, but I'd rather spend this time with you.$h#$e#I'd love to dance with you later on!$h"
+            },
+            "When": {
+                "Spouse |contains=MorrisTod": "true"
+            }
+        },
+
+        //Luau
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer11",
+            "When": {"HasSeenEvent |contains=6665293": "false"},
+            "TextOperations": [
+                {    
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 31 4 down",
+                    "Delimiter": "/"
+                    },
+                    {
+                    "Operation": "Append",
+                    "Target": ["Entries", "MainEvent_additionalCharacters"],
+                    "Value": "MorrisTod 34 10 down",
+                    "Delimiter": "/"
+                    }
+            ]
+        },
+        { 
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer11",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false",
+                "HasSeenEvent |contains=191393": "false"
+            },
+            "Entries": {
+              "MorrisTod": "I've put my favorite Joja-brand frozen dinner into the pot. I bet the governor is going to love it!$h#$e#Don't worry, I defrosted it first!"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer11",
+            "When": {
+                "HasSeenEvent |contains=191393": "true"
+            },
+            "Entries": {
+              "MorrisTod": "Pierre and I have worked together to ensure that only our finest-quality local crops go into the pot.$h#$e#I have a feeling the governor will like it more than the Joja frozen dinners I used to contribute...$s"
+            }
+        },
+
+        //Dance of the Moonlight Jellies
+        {   
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer28",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "TextOperations": [
+          {    
+            "Operation": "Append",
+            "Target": ["Entries", "Set-Up_additionalCharacters"],
+            "Value": "MorrisTod 29 34 down",
+            "Delimiter": "/"
+          }
+         ]
+        },
+        { 
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer28",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "Entries": {
+              "MorrisTod": "I hope these docks are sturdy... I've never been a good swimmer.$s"
+            }
+        },
+
+        //Stardew Valley Fair
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall16",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "TextOperations": [
+                {    
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 48 88 down",
+                    "Delimiter": "/"
+                }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall16",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "Entries": {
+                "MorrisTod": "I'm not sure how trustworthy this fortune teller is. She told me business would be bad this year.$s#$e#She must be making it all up!$a"
+            }
+        },
+
+        //Spirit's Eve -- Note: SVE has different maps on even/odd years
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false",
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+                "Year": "1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99"
+            },
+            "TextOperations": [
+                {    
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 23 62 down",
+                    "Delimiter": "/"
+                  }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "When": {
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"
+            },
+            "TextOperations": [
+                {    
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 23 62 down",
+                    "Delimiter": "/"
+                  }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false",
+                "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+                "Year": "2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100"
+            },
+            "TextOperations": [
+                {    
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 29 57 down",
+                    "Delimiter": "/"
+                  }
+            ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "Entries": {
+                "MorrisTod": "How did that wizard construct this maze so quickly? It wasn't here yesterday.#$e#I wonder if he'd like to help put up some displays in the store..."
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "When": {
+                "Relationship:MorrisTod": "Married"
+            },
+            "Entries": {
+                "MorrisTod": "Please don't tell anyone else about this, @, but I'm a bit scared of the maze.#s#$e#Can you go in with me and hold my hand?"
+            }
+        },
+
+        //Festival of Ice
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter8",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "TextOperations": [
+                {    
+                    "Operation": "Append",
+                    "Target": ["Entries", "Set-Up_additionalCharacters"],
+                    "Value": "MorrisTod 74 29 down",
+                    "Delimiter": "/"
+                },
+                {
+                    "Operation": "Append",
+                    "Target": ["Entries", "Main-Event_additionalCharacters"],
+                    "Value": "MorrisTod 70 24 down",
+                    "Delimiter": "/"
+                }
+            ]
+
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter8",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "Entries": {
+                "MorrisTod": "Good luck today! Fishing has never been my strong suit, but I enjoy watching the competition."
+            }
+        },
+
+        //Feast of the Winter Star
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "When": { "HasSeenEvent |contains=191393": true,  "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true"},
+            "TextOperations": [
+          {    
+            "Operation": "Append",
+            "Target": ["Entries", "Set-Up_additionalCharacters"],
+            "Value": "MorrisTod 38 59 down",
+            "Delimiter": "/"
+          }
+         ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "When": {"HasMod |contains=FlashShifter.StardewValleyExpandedCP": "false"},
+            "TextOperations": [
+          {    
+            "Operation": "Append",
+            "Target": ["Entries", "Set-Up_additionalCharacters"],
+            "Value": "MorrisTod 36 59 down",
+            "Delimiter": "/"
+          }
+         ]
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "When": {
+                "HasSeenEvent |contains=6665293": "false"
+            },
+            "Entries": {
+                "MorrisTod": "Wow, that nog sure is something!$h#$e#I'm not sure if I'll make it into work tomorrow, and I never miss work.$s"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "When": {
+                "HasSeenEvent |contains=191393": true
+            },
+            "Entries": {
+                "MorrisTod": "Wow, that nog sure is something!$h#$e#Pierre might have to run the store without me tomorrow...$s"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "When": {
+                "Relationship:MorrisTod": "Married"
+            },
+            "Entries": {
+                "MorrisTod": "This is one of my favorite festivals. I'm thankful for a lot this year, but mostly for you, @.$h"
+            }
+        }
+
+    ]
+}

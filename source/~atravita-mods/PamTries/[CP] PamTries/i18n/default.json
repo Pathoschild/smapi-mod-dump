@@ -1,0 +1,136 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    //Config descriptions for GMCM
+    "config.ScheduleChanges.name": "Schedule Changes",
+    "config.ScheduleChanges.description": "Allows changes to Pam's schedule",
+    "config.ScheduleChanges.values.true": "true",
+    "config.ScheduleChanges.values.false": "false",
+
+    "config.MovieNight.name": "Movie Night",
+    "config.MovieNight.description": "Enables Sunday movie nights with Penny, adjusting Penny's schedule to match.",
+    "config.MovieNight.values.true": "true",
+    "config.MovieNight.values.false": "false",
+
+    "config.BusReliability.name": "Bus Reliability",
+    "config.BusReliability.description": "Forces Pam to always drive the bus, unless she's on vacation.",
+    "config.BusReliability.values.true": "true",
+    "config.BusReliability.values.false": "false",
+
+    "config.GiftChanges.name": "Gift Changes",
+    "config.GiftChanges.description": "Pam will get angry at you for giving her booze, unless it's been a bad day.",
+    "config.GiftChanges.values.true": "true",
+    "config.GiftChanges.values.false": "false",
+
+    "config.FestivalDialogue.name": "Festival Dialogue",
+    "config.FestivalDialogue.description": "Enable this mod's festival dialogue.",
+    "config.FestivalDialogue.values.true": "true",
+    "config.FestivalDialogue.values.false": "false",
+
+    "config.MapChanges.name": "Map Changes",
+    "config.MapChanges.description": "After a certain story beat, small changes to Pam's house. Also adds a computer to the hospital.",
+    "config.MapChanges.values.true": "true",
+    "config.MapChanges.values.false": "false",
+
+    "config.HouseChanges.name": "House Changes",
+    "config.HouseChanges.description": "Removes beer from outside of house after a certain story beat",
+    "config.HouseChanges.values.true": "true",
+    "config.HouseChanges.values.false": "false",
+    
+    "rehab-quest-title": "A Neighborly Gift",
+    "rehab-quest-description": "Any chance you could help Pam pay for rehab?",
+    "rehab-quest-objective": "Bring Harvey {{value}}",
+
+    //Base translations
+    //what Penny addresses Pam as
+    "Mom": "Mom", 
+    //Penny's localized name
+    "Penny": "Penny",
+
+    "Yes": "Yes",
+    "No": "No",
+    "and": "and",
+
+
+    // Special order translations:
+    "atravita.PamApology.Name": "For My Baby Girl",
+    "atravita.PamApology.Text": "Seekin' a few of my daughter's favorite things. Gotta lot of stuff to apologize to her for.",
+    "atravita.PamApology.collect_poppy": "Harvest a dozen gold-star poppies.",
+    "atravita.PamApology.donate_poppy": "Place the poppies into Pam's fridge.",
+    "atravita.PamApology.collect_melon": "Harvest a dozen gold-star melons.",
+    "atravita.PamApology.donate_melon": "Place the melons into Pam's fridge.",
+    "atravita.PamApology.collect_soup": "Cook a fresh Tom Kha Soup.",
+    "atravita.PamApology.deliver_soup": "Deliver the soup to Penny.",
+    "atravita.PamApology.deliver_soup_response": "Oh. Um. Thanks!",
+
+    
+    //Translations for events. Format: last three digits of event#-speaker-line #  (subpart)
+    //Initial rehab event
+    "000-harvey-00": "Pam, we've gotta talk about your drinking habits. You can't keep on like this.",
+    "000-pam-01": "Doc, I'm tryin' to quit, but it's so much harder than what I expected...",
+    "000-harvey-02a": "Sobriety is hard when you don't have help.",
+    "000-harvey-02b": "There's a great program out in Grampleton, and they have an opening right now. It could really help...",
+    "000-pam-03a": "Doc, I've looked into programs, but I haven't the cash for that. 120,000g is a steep fee to pay, and I hardly have any savings because I was unemployed for so long.",
+    "000-pam-03b": "And my insurance doesn't cover things like rehab.",
+    "000-penny-04": "Mom, we'll figure something out. Between your job and mine we could take out a loan...",
+    "000-pam-05": "Penny, I ain't gonna let you mortgage your future for me. We've ain't got more than {{savings}} to our name. Who's gonna be willing to lend us {{request}}?",
+    "000-harvey-06": "I'll see if I can help you raise funds somehow...",
+    "000-harvey-07": "Ah, @, I've been looking for you.",
+    "000-harvey-08": "So, uh. This is awkward but....uh...hate to ask this of you, but could I convince you to help us pay for rehab for Pam?",
+    "000-harvey-09": "It's a program that'll be quite good for her, but there's absolutely no way she can afford it, and while I can contribute some, my clinic isn't exactly making that type of money either.",
+    "000-harvey-10": "Could you please at least give it a thought? Come find me in the hospital in a few days if you've decided...",
+    "000-penny-11a": "{{value}}. How?",
+    "000-penny-11b": "Oh, @...I was just thinking...never mind.",
+
+    //Gives player the choice of paying for Pam's rehab or not.
+    "001-harvey-01a": "Ah, @. Just the person I was looking for.",
+    "001-harvey-01b": "So. Um. I'm not sure how to ask...did you consider my...uh...request...uh...um...",
+    "001-harvey-01c": "It would mean so much to Pam. And Penny. And. Uh.",
+    "001-harvey-02a": "The clinic isn't doing very well financially, otherwise I'd contribute more, but, uh...yeah.",
+    "001-harvey-02b": "Talking about money is awkward.",
+    "001-harvey-02c": "So. Uh. Any chance you contribute the remaining {{value}}?",
+    "001-harvey-ask": "Contribute {{value}} so Pam can go to rehab?",
+    "001-harvey-03a": "Oh, thank you so much! Penny will be so happy!",
+    "001-harvey-03b": "You're doing a great thing, @.",
+    "001-harvey-04": "Oh. Okay. Um. Sorry for making it awkward by asking. Um. Yeah.",
+
+    //Quick event - Pam returns home!
+    "002-pam-01": "Ah! Home sweet home!",
+    "002-pam-02": "Although I don't miss goin' to work every day...",
+    "002-penny-03": "Mom's back from rehab! Have you heard?",
+
+    //Pam apologies to Gus
+
+    //Pam apologies to Penny
+
+    //Pam talks about parents
+
+    //Resolution. Penny accepts that sobriety is hard.
+    "100-penny-01a": "*sigh*. @, I thought...I thought when my mother went to rehab, she'd...I don't know.",
+    "100-penny-01-sigh": "*sigh*",
+    "100-penny-01b": "She is drinking less. And I know, I know it's hard for her, but...I was so hopeful that she could, you know. Stop for good.",
+    "100-penny-ask": "I don't know...I'm not sure what I should do.",
+    "100-ask": "Say something to Penny",
+    "100-reassure": "I'm sure she'll stop drinking sooner or later.",
+        "100-penny-02": "I...I guess. I don't know, @, I think you're more optimistic than I am.",
+        "100-penny-03": "Ma's been drinking for so long. If rehab, medication, and therapy aren't helping, what can?",
+        "100-penny-04": "I don't know. @, she's been drinking more than half my life, and I dunno if she'll ever manage to stop.$s",
+        "100-penny-05": "That's bad for me to say, wasn't it?$11",
+        "100-penny-06a": "Like, she's my mother. I owe so much to her. She's raised me all these years, even through, even through...$11",
+        "100-penny-06b": "Even through her alcoholism. @...I don't know. I want to believe in her, but I'm not sure I can.$11",
+        "100-penny-07": "I still love her so, so much. I just...I just don't know what I can do anymore.",
+        "100-penny-08": "*sigh*. I guess there's not much I can do, other than be supportive and hope.",
+        "100-penny-09": "I've been talking to a therapist lately, too. Felt like the right thing to do.",
+        "100-penny-10": "She's been telling me...telling me that my mother's sobriety isn't...something in my control.",
+    "100-validate": "I get that you feel disappointed in her.",
+        "100-penny-20": "",
+    "100-confront": "She's trying her best, you should appreciate her progress more.",
+}

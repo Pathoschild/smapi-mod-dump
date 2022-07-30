@@ -9,9 +9,9 @@ mods:
    Longer Fence Life
 
 latest commit:
-   commit 489bc1d78ef3a04d98e6c0e1fc8ac44405e1744d
+   commit fe6217e71a0c029d0cf14ad699b95bd70910a8fd
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Sat Jun 11 06:59:57 2022 -0700
+   Date:   Mon Jul 11 10:08:18 2022 -0700
    
-       Fixes for Velocity boost "leaks"
+       Update config text. add German translation.
    

@@ -1,0 +1,133 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "Pam - base Good schedules",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Fishing, location randomized.
+            "GIRemainder": "1800 Trailer 15 4 2 pam_sit_down/2300 Trailer 25 17 2 pam_sleep",
+            "GIRemainder_Fri": "1800 Saloon 16 22 1/2200 Trailer 25 17 2 pam_sleep",
+            "GIRemainder_Sun": "1800 {{PamMovieLocation}}/2200 Trailer 25 17 2 pam_sleep",
+            "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 {{PamFishingLocation}}/2300 Trailer 25 17 2 pam_sleep",
+            "spring_25": "800 Trailer 15 4 2 pam_sit_down/1130 Hospital 4 17 2 pam_sit_down \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.000\"/1330 Hospital 4 6 1 \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.001\"/1600 Seedshop 37 18 0 \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.good\"/2200 Trailer 25 17 2 pam_sleep",
+            //night market
+            "winter_16": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 Beach 54 7 2 \"Strings\\schedules\\Pam:atravita.PamTries.winter_16\"/2200 Trailer 25 17 2 pam_sleep"
+        }
+    },
+    {
+        "LogName": "Pam - teletherapy schedules",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "When": {"HasSeenEvent": "99210002", "BusReliability": "false"},
+        "Entries": {
+            "6": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/a1600 Hospital 19 5 0 \"Strings\\schedules\\Pam:atravita.PamTries.therapy\"/1900 Trailer 9 7 0/2300 Trailer 25 17 2 pam_sleep",
+            "16": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/a1430 Hospital 9 15 3 \"Strings\\schedules\\Pam:atravita.PamTries.medications\"/a1600 Hospital 19 5 0 \"Strings\\schedules\\Pam:atravita.PamTries.therapy\"/1900 Trailer 9 7 0/2300 Trailer 25 17 2 pam_sleep"
+        }
+    },
+    {
+        "LogName": "Pam - Mondays",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Late night shopping at Pierre's
+            "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 SeedShop 2 24 3 \"Strings\\schedules\\Pam:atravita.PamTries.seedshop_late\"/2100 Trailer 15 4 2 pam_sit_down/2400 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"DayofWeek": "Monday"}
+    },
+    {
+        "LogName": "Pam - Tuesdays",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Fishes with Willy.
+            "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Beach 26 36 2 {{PamFishing}}/2200 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"DayofWeek": "Tuesday"}
+    },
+    {
+        "LogName": "Pam - Wednesdays",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Goes to church.
+            "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 SeedShop 37 18 0 \"Strings\\schedules\\Pam:atravita.PamTries.praying\"/2200 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"DayofWeek": "Wednesday"}
+    },
+    {
+        "LogName": "Pam - Thursday",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Goes fishing, location varies
+            "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 {{PamFishingLocation}}/2300 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"DayofWeek": "Thursday"}
+    },
+    {
+        "LogName": "Pam - Friday",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Saloon with Willy and Clint
+            "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 Saloon 16 22 1/2200 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"DayofWeek": "Friday"}
+    },
+    {
+        "LogName": "Pam - Saturday",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//attempts to cook....
+            "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Trailer 9 7 0/2300 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"DayOfWeek": "Saturday"}
+    },
+    {
+        "LogName": "Pam - Sunday",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Movies with Penny!
+            "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 {{PamMovieLocation}}/2200 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {
+            "DayofWeek": "Sunday",
+            "HasFlag": "ccMovieTheater",
+            "MovieNight": "true"
+        }
+    },
+    {//todo - figure out a different schedule for Pam is penny is married...may need a custom token here.
+        "LogName": "Penny - Sundays at the movies",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Penny",
+        "Entries": {
+            "summer_Sun": "700 Town 76 17 1/1200 ScienceHouse 21 18 3/1500 ScienceHouse 5 17 0/1630 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "spring_Sun": "800 Town 35 89 2 penny_read/1230 Trailer 12 6 0 penny_dishes/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "fall_Sun": "GOTO spring_Sun",
+            "winter_Sun": "900 Trailer 1 8 0/1030 CommunityCenter 23 17 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "marriage_Sun": "900 Trailer 1 8 0/1030 CommunityCenter 23 17 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
+        },
+        "When": {
+            "HasFlag": "ccMovieTheater",
+            "MovieNight": "true"
+        }
+    },
+    {
+        "LogName": "Penny Movie Sundays in Rain",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Penny",
+        "Entries": {
+            "rain": "900 Trailer 5 5 0/1100 Trailer 9 7 0/1300 Trailer 12 6 0 penny_dishes/1500 Trailer 14 4 2 penny_sit_down/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "rain2": "810 Town 104 89 2 \"Strings\\schedules\\Penny:rain2.000\"/1200 ArchaeologyHouse 20 5 0/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
+        },
+        "When": {
+            "HasFlag": "ccMovieTheater",
+            "DayofWeek": "Sunday",
+            "MovieNight": "true"
+        }
+    }
+]}

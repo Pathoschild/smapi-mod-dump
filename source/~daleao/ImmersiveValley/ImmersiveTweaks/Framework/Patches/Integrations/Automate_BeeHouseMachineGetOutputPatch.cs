@@ -29,6 +29,8 @@ using SObject = StardewValley.Object;
 [UsedImplicitly]
 internal sealed class BeeHouseMachineGetOutputPatch : Common.Harmony.HarmonyPatch
 {
+    private static Func<object, SObject>? _GetMachine;
+
     /// <summary>Construct an instance.</summary>
     internal BeeHouseMachineGetOutputPatch()
     {
@@ -46,25 +48,33 @@ internal sealed class BeeHouseMachineGetOutputPatch : Common.Harmony.HarmonyPatc
     #region harmony patches
 
     /// <summary>Adds aging quality to automated bee houses.</summary>
+    [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? BeeHouseMachineGetOutputTranspiler(
-        IEnumerable<CodeInstruction> instructions, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
-        /// Injected: @object.Quality = @object.GetQualityFromAge();
-        /// After: @object.preservedParentSheetIndex.Value = flowerId;
+        /// Injected: if (ModEntry.Config.AgeImprovesBeeHouses) object.Quality = @object.GetQualityFromAge();
+        /// Before: StardewValley.Object result = @object;
 
+        var resumeExecution = generator.DefineLabel();
         try
         {
             helper
                 .FindLast(
                     new CodeInstruction(OpCodes.Stloc_S, helper.Locals[4])
                 )
+                .AddLabels(resumeExecution)
                 .Insert(
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Dup),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(SObjectExtensions).RequireMethod(nameof(SObjectExtensions.GetQualityFromAge))),
+                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
+                    new CodeInstruction(OpCodes.Call,
+                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.AgeImprovesBeeHouses))),
+                    new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
+                    new CodeInstruction(OpCodes.Dup),
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Call,
+                        typeof(BeeHouseMachineGetOutputPatch).RequireMethod(nameof(GetOutputSubroutine))),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(SObject).RequirePropertySetter(nameof(SObject.Quality)))
                 );
@@ -79,4 +89,14 @@ internal sealed class BeeHouseMachineGetOutputPatch : Common.Harmony.HarmonyPatc
     }
 
     #endregion harmony patches
+
+    #region injected subroutines
+
+    private static int GetOutputSubroutine(object instance)
+    {
+        _GetMachine ??= instance.GetType().RequirePropertyGetter("Machine").CompileUnboundDelegate<Func<object, SObject>>();
+        return _GetMachine(instance).GetQualityFromAge();
+    }
+
+    #endregion injected subroutines
 }

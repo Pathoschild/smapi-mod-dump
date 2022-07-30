@@ -1,10 +1,11 @@
 ﻿<div class="message_board_title_flex">Expansion Details</div>
 <div class="message_paper_board_flex base_font_flex">
     <table class="stardew_table">
-        <tr><td class="stardew_label">Name</td><td class="stardew_data"><div id="expname">#ID#</div></td><td class="stardew_label">Display Name</td><td class="stardew_data">#NAME#</td></tr>
+        <tr><td class="stardew_label">Name</td><td class="stardew_data"><div id="expname"><a href="/Utils/map?id=#ID#">#ID#</a></div></td><td class="stardew_label">Display Name</td><td class="stardew_data">#NAME#</td></tr>
         <tr><td class="stardew_label">Description</td><td colspan="3" class="stardew_data">#DESC#</td></tr>
         <tr><td class="stardew_label">Active</td><td class="stardew_data">#ACTIVE#</td><td class="stardew_label">For Sale</td><td class="stardew_data">#FORSALE#</td></tr>
         <tr><td class="stardew_label">Cost</td><td class="stardew_data">#COST#</td><td class="stardew_label">Requirements</td><td class="stardew_data">#REQS#</td></tr>
+        <tr><td class="stardew_label">Seasonal Override</td><td class="stardew_data"><input id="SEASON" type="text" value="#SEASON#" /></td><td class="stardew_label"></td><td class="stardew_data"></td></tr>
     </table>
 </div>
 <div class="message_board_title_flex">Expansion Parameters</div>
@@ -20,7 +21,7 @@
             <tr><td class="stardew_data"><textarea id="FAFORAGERAW" rows="2" cols="60">#FAFORAGERAW#</textarea></td></tr>
             <tr><td class="stardew_label" rowspan="2">Winter</td><td class="stardew_data">#WIFORAGE#</td></tr>
             <tr><td class="stardew_data"><textarea id="WIFORAGERAW" rows="2" cols="60">#WIFORAGERAW#</textarea></td></tr>
-            <tr><td colspan="2" class="stardew_header">Fishing</td></tr>
+            <tr><td colspan="2" class="stardew_header">Fishing <input type="checkbox" id="STOCKED" name="stocked" #STOCKED#/> Stocked Ponds</td></tr>
             <tr><td class="stardew_label" rowspan="2">Spring</td><td class="stardew_data">#SPFISHING#</td></tr>
             <tr><td class="stardew_data"><textarea id="SPFISHINGRAW" rows="2" cols="60">#SPFISHINGRAW#</textarea></td></tr>
             <tr><td class="stardew_label" rowspan="2">Summer</td><td class="stardew_data">#SUFISHING#</td></tr>

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MindMeltMax/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "Name": "Sounds Patcher",
+    "Author": "MindMeltMax",
+    "Version": "2.0.0",
+    "Description": "Allows you to disable sounds",
+    "UniqueID": "MindMeltMax.SoundsPatcher",
+    "EntryDll": "Sounds Patcher.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:7465"]
+}

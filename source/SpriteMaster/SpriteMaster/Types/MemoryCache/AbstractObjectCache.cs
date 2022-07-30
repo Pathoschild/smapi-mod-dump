@@ -10,73 +10,52 @@
 
 using JetBrains.Annotations;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types.Interlocking;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace SpriteMaster.Types.MemoryCache;
 
-internal enum EvictionReason {
-	None,
-	/// <summary>Manually</summary>
-	Removed,
-	/// <summary>Overwritten</summary>
-	Replaced,
-	/// <summary>Timed out</summary>
-	Expired,
-	/// <summary>Event</summary>
-	TokenExpired,
-	/// <summary>Overflow</summary>
-	Capacity,
-}
+internal abstract class AbstractObjectCache<TKey, TValue> :
+	SpriteMasterObject, IObjectCache<TKey, TValue>
+	where TKey : notnull where TValue : notnull {
+	protected readonly RemovalCallbackDelegate<TKey, TValue>? RemovalCallback = null;
 
-internal abstract class AbstractObjectCache<TKey, TValue> : SpriteMasterObject, IDisposable, IAsyncDisposable, ICache where TKey : notnull where TValue : notnull {
-	internal delegate void RemovalCallbackDelegate(EvictionReason reason, TKey key, TValue element);
-
-	protected readonly RemovalCallbackDelegate? RemovalCallback = null;
-
-	protected readonly InterlockedBool Purging = false;
+	public string Name { get; }
 	protected readonly long MaxSize;
 	protected readonly long MaxSizeHysteresis;
 	protected long CurrentSize = 0L;
+
+	protected readonly object PurgingLock = new();
 	protected readonly InterlockedBool Disposed = false;
 
-	internal long TotalSize => Interlocked.Read(ref CurrentSize);
+	protected TryLock TryPurgingLock => new(PurgingLock);
+
+	public long TotalSize => Interlocked.Read(ref CurrentSize);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	protected void OnEntryRemoved(TKey key, in TValue value, EvictionReason reason) {
-		if (RemovalCallback is not null) {
-			RemovalCallback!(reason, key, value);
-		}
+		Contract.Assert(value is not null);
+		RemovalCallback?.Invoke(reason, key, value);
 	}
 
-	[DoesNotReturn]
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	private static void ThrowValueTypeException() =>
-		throw new Exceptions.InvalidTypeParameterException<TValue>(
-			$"Type '{typeof(TValue).FullName}' cannot have its size fetched by '{typeof(AbstractObjectCache<TKey, TValue>).Name}'"
-		);
-
-	[DoesNotReturn]
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	private static TReturn ThrowValueTypeException<TReturn>() =>
-		throw new Exceptions.InvalidTypeParameterException<TValue>(
-			$"Type '{typeof(TValue).FullName}' cannot have its size fetched by '{typeof(AbstractObjectCache<TKey, TValue>).Name}'"
-		);
-
-	[System.Diagnostics.Contracts.Pure]
-	[MethodImpl(Runtime.MethodImpl.Inline)]
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	protected static long GetSizeBytes(TValue value) {
 		var size = value switch {
 			byte[] bytes => bytes.LongLength,
 			IList<byte> bytes => bytes.Count,
 			Array array => array.LongLength * typeof(TValue).GetElementType()!.Size(),
 			IByteSize byteSizeInterface => byteSizeInterface.SizeBytes,
-			_ => ThrowValueTypeException<long>()
+			_ => ThrowHelper.ThrowInvalidTypeParameterException<long>(
+				$"Type cannot have its size fetched by '{typeof(AbstractObjectCache<TKey, TValue>).GetTypeName()}'",
+				typeof(TValue)
+			)
 		};
 
 		size.AssertPositiveOrZero();
@@ -84,61 +63,58 @@ internal abstract class AbstractObjectCache<TKey, TValue> : SpriteMasterObject, 
 		return size;
 	}
 
-	internal AbstractObjectCache(string name, long maxSize, RemovalCallbackDelegate? removalAction = null) {
+	internal AbstractObjectCache(string name, long maxSize, RemovalCallbackDelegate<TKey, TValue>? removalAction = null) {
+		Name = name.Intern();
 		RemovalCallback = removalAction;
 		MaxSize = maxSize;
 		MaxSizeHysteresis = (maxSize >> 2) + (maxSize >> 1);
 	}
 
-	internal abstract int Count { get; }
+	[Pure]
+	public abstract int Count { get; }
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract TValue? Get(TKey key);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract TValue? Get(TKey key);
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract bool TryGet(TKey key, [NotNullWhen(true)] out TValue? value);
-
-	internal abstract TValue Set(TKey key, TValue value);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract TValue? Update(TKey key, TValue value);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract TValue? Remove(TKey key);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract void RemoveFast(TKey key);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract void Trim(int count);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract void TrimTo(int count);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract void Clear();
-
-	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal abstract (ulong Count, ulong Size) ClearWithCount();
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract bool TryGet(TKey key, [NotNullWhen(true)] out TValue? value);
 
 	[MustUseReturnValue]
-	protected bool OnDispose() {
-		if (Disposed.CompareExchange(true, false)) {
-			return false;
-		}
+	public abstract TValue Set(TKey key, TValue value);
 
-		return true;
+	public abstract void SetFast(TKey key, TValue value);
+
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract TValue? Update(TKey key, TValue value);
+
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract TValue? Remove(TKey key);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract void RemoveFast(TKey key);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract void Trim(int count);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract void TrimTo(int count);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract void Clear();
+
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public abstract (ulong Count, ulong Size) ClearWithCount();
+
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	protected bool OnDispose() {
+		return !Disposed.CompareExchange(true, false);
 	}
 
 	public ValueTask DisposeAsync() {
-		if (Disposed) {
-			return ValueTask.CompletedTask;
-		}
-
-		return new(Task.Run(Dispose));
+		return Disposed ? ValueTask.CompletedTask : new(Task.Run(Dispose));
 	}
 
-	[System.Diagnostics.Contracts.Pure]
+	[Pure]
 	public long SizeBytes => TotalSize;
 
 	public abstract ulong? OnPurgeHard(IPurgeable.Target target, CancellationToken cancellationToken = default);

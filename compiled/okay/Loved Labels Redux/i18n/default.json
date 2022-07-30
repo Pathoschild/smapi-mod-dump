@@ -1,0 +1,14 @@
+{
+  "keybinds.title.name": "Keybinds:",
+  "keybinds.title.description": "All the keybinds that can be added or changed.",
+  "keybinds.ToggleUIKey.name": "Toggle UI Key",
+  "keybinds.ToggleUIKey.description": "The keybind that toggles the UI in-game.",
+  "others.title.name": "Others:",
+  "others.title.description": "All the other options that you can change.",
+  "others.ToggleUICurrentState.name": "Toggle UI Current State",
+  "others.ToggleUICurrentState.description": "If true shows the UI, if false hides it.",
+  "others.AlreadyPettedMessage.name": "Already petted message",
+  "others.AlreadyPettedMessage.description": "Message already petted",
+  "others.NeedsPettingMessage.name": "Needs petting message",
+  "others.NeedsPettingMessage.description": "Message not petted",
+}

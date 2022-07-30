@@ -13,6 +13,7 @@ using JetBrains.Annotations;
 using LinqFasterer;
 using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;

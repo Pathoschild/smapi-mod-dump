@@ -7,5 +7,6 @@
   "switch_key": "RightControl",
   "show_bottom_bar": true,
   "show_speech_bubbles": true,
-  "know_all_tastes": true
+  "know_all_tastes": true,
+  "show_finished_quests": true
 }

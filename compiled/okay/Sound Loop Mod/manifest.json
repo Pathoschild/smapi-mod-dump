@@ -1,0 +1,10 @@
+{
+  "Name": "SoundLoop Mod",
+  "Author": "strelkasaur",
+  "Version": "1.0.1",
+  "Description": "Loops the in-game music",
+  "UniqueID": "com.strelkasaurus.sm.soundloop",
+  "EntryDll": "SoundLoopMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:13099"]
+}

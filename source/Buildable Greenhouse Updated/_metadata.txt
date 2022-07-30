@@ -6,12 +6,9 @@ mods:
    Buildable Greenhouse Updated
 
 latest commit:
-   commit 577fa6ebc5316a1c72f44338f8822fed671fa874
-   Merge: 5efbca5 edb8e40
+   commit e59d49bb406098c8a474fc7d9c6904f546bb5e58
    Author: Yariazen <35210313+Yariazen@users.noreply.github.com>
-   Date:   Tue May 10 18:12:41 2022 -0700
+   Date:   Fri Jul 22 10:20:23 2022 -0700
    
-       Merge pull request #6 from Yariazen/0.7.2
-       
-       0.7.2
+       Space Factorissimo added as submodule
    

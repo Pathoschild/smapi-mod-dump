@@ -619,38 +619,7 @@
         //"zh": "PLACEHOLDER",
     	},
 	"ItemStocks": [
-		//Food
-		{
-			"ItemType": "Object",
-			"ItemNames": [
-				"Ridgeside Shaketini",
-				"Autumn Dew Drop Juice",
-				"Cherry Berry Shakey",
-				"Snowball Slurpee",
-				"Omelet",
-				"Arugula Roll",
-				"Fried Fish a la Ridge",
-				"Fried Mountain Greens",
-				"Highland Ice Cream",
-				"Honey Glazed Salad",
-				"Ridge Fruity Plate",
-				"Snow Bowl Surprise",
-				"Zesty Tuna",
-				"Spaghetti",
-				"Lucky Lunch",
-				"Pumpkin Soup",
-				"Blackberry Cobbler",
-				"Salad",
-				"Pepper Poppers",
-				"Bean Hotpot",
-				"Tom Kha Soup",
-				"Stir Fry",
-				"Coleslaw",
-				"Fish Taco",
-				"Farmer's Lunch",
-				],
-			"Stock": 1,
-		},
+    // Seasonal recipes
     {
 			"ItemType": "Object",
 			"ItemNames": [
@@ -682,6 +651,40 @@
 				],
 			"Stock": 1,
 			"When": [ "!z winter/n RSV.PikaWinter" ]
+		},
+		//Normal Food
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Arugula Roll",
+        "Autumn Dew Drop Juice",
+        "Bean Hotpot",
+        "Blackberry Cobbler",
+        "Cherry Berry Shakey",
+        "Coleslaw",
+        "Farmer's Lunch",
+        "Fish Taco",
+				"Fried Fish a la Ridge",
+				"Fried Mountain Greens",
+        "Ginger Arugula Fried Rice",
+				"Highland Ice Cream",
+        "Honey Ginger Whitefish",
+				"Honey Glazed Salad",
+        "Lucky Lunch",
+        "Omelet",
+        "Pepper Poppers",
+        "Pumpkin Soup",
+				"Ridge Fruity Plate",
+        "Ridgeside Shaketini",
+        "Salad",
+				"Snow Bowl Surprise",
+        "Snowball Slurpee",
+        "Spaghetti",
+        "Stir Fry",
+        "Tom Kha Soup",
+				"Zesty Tuna",
+				],
+			"Stock": 1,
 		},
 	],
 	},
@@ -729,26 +732,7 @@
         //"zh": "PLACEHOLDER",
     	},
 	"ItemStocks": [
-		//Food
-		{
-			"ItemType": "Object",
-			"IsRecipe": true,
-			"ItemNames": [
-				"Summit Iced Tea",
-				"Ridgeside Shaketini",
-				"Autumn Dew Drop Juice",
-				"Cherry Berry Shakey",
-				"Snowball Slurpee",
-				"Arugula Roll",
-				"Fried Fish a la Ridge",
-				"Fried Mountain Greens",
-				"Highland Ice Cream",
-				"Honey Glazed Salad",
-				"Ridge Fruity Plate",
-				"Snow Bowl Surprise",
-				"Zesty Tuna",
-				],
-		},
+    // Seasonal recipes
     {
 			"ItemType": "Object",
       "IsRecipe": true,
@@ -780,6 +764,28 @@
 				"Winter Night Feast",
 				],
 			"When": [ "!z winter/n RSV.PikaWinter" ]
+		},
+		//Normal food
+		{
+			"ItemType": "Object",
+			"IsRecipe": true,
+			"ItemNames": [
+        "Arugula Roll",
+        "Autumn Dew Drop Juice",
+        "Cherry Berry Shakey",
+        "Fried Fish a la Ridge",
+				"Fried Mountain Greens",
+        "Ginger Arugula Fried Rice",
+				"Highland Ice Cream",
+        "Honey Ginger Whitefish",
+				"Honey Glazed Salad",
+        "Ridge Fruity Plate",
+				"Ridgeside Shaketini",
+        "Snow Bowl Surprise",
+				"Snowball Slurpee",
+        "Summit Iced Tea",
+				"Zesty Tuna",
+				],
 		},
 	],
 	},
@@ -1156,12 +1162,12 @@
 
 	"ItemStocks": [
 		//Weapons
-		{
+    {
 			"ItemType": "Weapon",
-			"ItemNames": [ "Cute but Deadly Knife", ],
+			"ItemNames": [ "Bladebane", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
-			"When": [ "e 75160180/f Kiwi 2500" ],
+			"When": [ "e 75160077/f Freddie 2500" ],
 		},
     {
 			"ItemType": "Weapon",
@@ -1170,12 +1176,12 @@
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160064/f Aguar 2500" ],
 		},
-		{
+    {
 			"ItemType": "Weapon",
-			"ItemNames": [ "Bladebane", ],
+			"ItemNames": [ "Cute but Deadly Knife", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
-			"When": [ "e 75160077/f Freddie 2500" ],
+			"When": [ "e 75160180/f Kiwi 2500" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1204,6 +1210,13 @@
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160200/f Jio 2500" ],
+		},
+    {
+			"ItemType": "Weapon",
+			"ItemNames": [ "Ridgeback Hardshell", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 100,
+			"When": [ "e 75160286/f Torts 2500" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1687,6 +1700,7 @@
 				"Fluffy Apple Crumble",
 				"Forage Souffle",
 				"Forest Halva",
+        "Ginger Rangpur Meringue",
 				"Highland Blueberry Pie",
 				"Highland Revani",
 				"Holiday Ice",
@@ -1720,22 +1734,66 @@
       "Stock": 3,
       "When": [ "n OlgaSOLetter" ],
 		},
+	],
+	},
+
+	//------------
+	//MalayaRecipes
+	//------------
+	{
+	"ShopName": "RSVMalayaRecipes",
+	"StoreCurrency": "Money",
+	"CategoriesToSellHere": [ -5,-6,-79 ],
+	"Quote": "Malaya's Weekend Recipes!",
+	"ClosedMessage": "Recipes available during weekends!",
+	"ShopPrice": -1,
+	"DefaultSellPriceMultiplier": 0.7,
+	"When": ["d Mon Tue Wed Thu Fri"],
+	"LocalizedQuote": {
+    	//remove the "//" from your language
+        //"es": "PLACEHOLDER",
+        //"ko": "PLACEHOLDER",
+        //"de": "PLACEHOLDER",
+        //"fr": "PLACEHOLDER",
+        //"hu": "PLACEHOLDER",
+        //"it": "PLACEHOLDER",
+        //"ja": "PLACEHOLDER",
+        //"pt": "PLACEHOLDER",
+        //"ru": "PLACEHOLDER",
+        //"tr": "PLACEHOLDER",
+        //"zh": "PLACEHOLDER",
+    	},
+	"LocalizedClosedMessage": {
+    	//remove the "//" from your language
+        //"es": "PLACEHOLDER",
+        //"ko": "PLACEHOLDER",
+        //"de": "PLACEHOLDER",
+        //"fr": "PLACEHOLDER",
+        //"hu": "PLACEHOLDER",
+        //"it": "PLACEHOLDER",
+        //"ja": "PLACEHOLDER",
+        //"pt": "PLACEHOLDER",
+        //"ru": "PLACEHOLDER",
+        //"tr": "PLACEHOLDER",
+        //"zh": "PLACEHOLDER",
+    	},
+	"ItemStocks": [
 		//Pastry Recipes
 		{
 			"ItemType": "Object",
 			"IsRecipe": true,
 			"ItemNames": [
+        "Apricot Juice",
+				"Clementine Juice",
+				"Wild Apple Juice",
+        "Ginger Rangpur Meringue",
+        "Hundred Flavor Doughnut",
 				"Kedi Delight",
 				"Kek's Style Shortcake",
 				"Kek's Small Dream",
 				"Pillowsoft Cheezy Sandwich",
 				"Pink Frosted Sprinkled Doughnut",
-				"Hundred Flavor Doughnut",
-				"Apricot Juice",
-				"Clementine Juice",
-				"Wild Apple Juice"
 				],
-			"When": [ "y 2" ],
 		},
 	],
 	},
@@ -2162,6 +2220,48 @@
 			"StockPrice": 5000,
 			"Stock": 1,
       "When": [ "n RSV.FayePastel" ]
+		},
+	],
+	},
+
+	//------------
+	//EggFestKeahiTrinnie
+	//------------
+	{
+	"ShopName": "RSVEggFestKeahiTrinnie",
+	"StoreCurrency": "Money",
+	"Quote": "Keahi and Trinnie's Egg Kitchen!",
+	"LocalizedQuote": {
+    	//remove the "//" from your language
+        //"es": "PLACEHOLDER",
+        //"ko": "PLACEHOLDER",
+        //"de": "PLACEHOLDER",
+        //"fr": "PLACEHOLDER",
+        //"hu": "PLACEHOLDER",
+        //"it": "PLACEHOLDER",
+        //"ja": "PLACEHOLDER",
+        //"pt": "PLACEHOLDER",
+        //"ru": "PLACEHOLDER",
+        //"tr": "PLACEHOLDER",
+        //"zh": "PLACEHOLDER",
+    	},
+	"ShopPrice": -1,
+	"DefaultSellPriceMultiplier": 1.0,
+
+	"ItemStocks": [
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Egg",
+			],
+			"StockPrice": 35,
+		},
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Fried Egg",
+				"Omelet"
+			],
 		},
 	],
 	},

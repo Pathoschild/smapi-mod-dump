@@ -1,0 +1,6 @@
+<Project>
+    <PropertyGroup>
+		<GamePath>C:\Development\Stardew Valley\Decompiled Game\1.5.6-hotfix3-SMAPI-3.14.x\Code\Stardew Valley\bin\Release</GamePath>
+		<ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
+    </PropertyGroup>	
+</Project>

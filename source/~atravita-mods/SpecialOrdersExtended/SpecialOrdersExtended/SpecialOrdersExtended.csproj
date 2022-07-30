@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\csproj_common" />
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Name>Special Orders Tags Extended</Name>
+    <Description>Extends the number of tags available for special orders</Description>
+    <UpdateKeys>Nexus:9855, ModDrop:1086743</UpdateKeys>
+    <Version>1.1.0</Version>
+    <BaseManifest>..\..\cp_dependencies.json</BaseManifest>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AtraCore\AtraCore.csproj" private="false" />
+    <ProjectReference Include="..\..\Pintail\Pintail\Pintail.csproj" private="false" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Using Include="StardewValley" />
+    <Using Include="StardewModdingAPI" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Alias="NotNullAttribute" Include="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    <Using Alias="Object" Include="System.Object" />
+    <Using Alias="SObject" Include="StardewValley.Object" />
+  </ItemGroup>
+</Project>

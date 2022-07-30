@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12763
+IDs: ytsc.EnhancedSlingshots
+update keys: Nexus:12763, GitHub:YTSC/StardewValleyMods

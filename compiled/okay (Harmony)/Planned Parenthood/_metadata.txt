@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12869
+IDs: aedenthorn.PlannedParenthood
+update keys: Nexus:12869, GitHub:aedenthorn/StardewValleyMods

@@ -49,6 +49,7 @@ namespace CustomCompanions.Framework.Models.Companion
         public PortraitModel Portrait { get; set; }
         public string PortraitSheetPath { get; set; }
         public string InspectionDialogue { get; set; }
+        public List<DialogueModel> DialogueSequence { get; set; } = new List<DialogueModel>();
         public int OverheadTextCheckInterval { get; set; } = 5000;
         public float OverheadTextChance { get; set; } = 0.5f;
         public List<OverheadTextModel> OverheadTexts { get; set; } = new List<OverheadTextModel>();
@@ -163,7 +164,7 @@ namespace CustomCompanions.Framework.Models.Companion
                 $"\tDirectionChangeChanceWhileMoving: {DirectionChangeChanceWhileMoving} | DirectionChangeChanceWhileMoving: {DirectionChangeChanceWhileIdle}\n" +
                 $"\tChanceForHalting: {ChanceForHalting} | MinHaltTime: {MinHaltTime} | MaxHaltTime: {MaxHaltTime}\n" +
                 $"\tInspectionDialogue: {InspectionDialogue} | HasTranslation: {this.Translations is not null}\n" +
-                $"\tMaxIdleDistance: {MaxIdleDistance} | MaxDistanceBeforeTeleport: {MaxDistanceBeforeTeleport} | IdleBehavior: {IdleBehavior} | IdleArguments: { (IdleArguments is null ? null : IdleArguments) }\n" +
+                $"\tMaxIdleDistance: {MaxIdleDistance} | MaxDistanceBeforeTeleport: {MaxDistanceBeforeTeleport} | IdleBehavior: {IdleBehavior} | IdleArguments: {(IdleArguments is null ? null : IdleArguments)}\n" +
                 $"\tColors: {string.Join(",", Colors.Select(c => "[" + string.Join(",", c) + "]"))} | IsPrismatic: {IsPrismatic}\n" +
                 $"\tLight: {(Light is null ? null : Light)}\n" +
                 $"\tSounds: {string.Join(",", Sounds)}\n" +

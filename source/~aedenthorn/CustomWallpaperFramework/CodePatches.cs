@@ -29,10 +29,6 @@ namespace CustomWallpaperFramework
         {
             public static void Postfix(DecoratableLocation __instance, string wallpaper_id)
             {
-                if (__instance.appliedWallpaper.ContainsKey(wallpaper_id))
-                {
-                    SMonitor.Log($"pattern id: {__instance.appliedWallpaper[wallpaper_id]}");
-                }
                 if (!Config.EnableMod || !__instance.appliedWallpaper.ContainsKey(wallpaper_id) || !__instance.wallpaperTiles.ContainsKey(wallpaper_id))
                     return;
 
@@ -46,7 +42,7 @@ namespace CustomWallpaperFramework
 
                 string wallpaperKey = __instance.appliedWallpaper[wallpaper_id].Split(':')[0];
 
-                SMonitor.Log($"Updatating custom-sized wallpaper {wallpaperKey} in area {wallpaper_id}");
+                //SMonitor.Log($"Updatating custom-sized wallpaper {wallpaperKey} in area {wallpaper_id}");
 
                 if (!locationDataDict.ContainsKey(__instance))
                     locationDataDict.Add(__instance, new Dictionary<string, WallPaperTileData>());

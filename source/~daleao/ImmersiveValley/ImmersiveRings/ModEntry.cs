@@ -40,6 +40,9 @@ public class ModEntry : Mod
         // initialize logger
         Log.Init(Monitor);
 
+        // check for Better Rings mod
+        HasLoadedBetterRings = helper.ModRegistry.IsLoaded("BBR.BetterRings");
+
         // get configs
         Config = helper.ReadConfig<ModConfig>();
 
@@ -48,8 +51,5 @@ public class ModEntry : Mod
 
         // apply patches
         new Harmonizer(ModManifest.UniqueID).ApplyAll();
-
-        // check for Better Rings mod
-        HasLoadedBetterRings = helper.ModRegistry.IsLoaded("BBR.BetterRings");
     }
 }

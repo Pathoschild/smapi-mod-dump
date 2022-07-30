@@ -9,9 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEnvironment", "TestEnvironment\TestEnvironment.csproj", "{BAACE619-B3D9-4783-BF5B-3A5DF290F08F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEnvironment", "TestEnvironment\TestEnvironment.csproj", "{BAACE619-B3D9-4783-BF5B-3A5DF290F08F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarWarp", "CarWarp\CarWarp.csproj", "{EDB72800-2302-4C2A-8CF1-9ADECA4C84B9}"
 EndProject
@@ -22,6 +23,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplashText", "SplashText\SplashText.csproj", "{FF41B0DE-9BF0-4095-A90A-EAD98FAD2D17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SturdySaplings", "SturdySaplings\SturdySaplings.csproj", "{D4F2AAFA-7BEE-4551-9A96-5522F5CA5A48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectTemplate", "ProjectTemplate\ProjectTemplate.csproj", "{E3485620-70BA-45FD-AEB5-3068280488BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryRandomizer", "InventoryRandomizer\InventoryRandomizer.csproj", "{BAB2A90C-7B66-4364-9C78-31051EF347F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreTokens", "MoreTokens\MoreTokens.csproj", "{3777F7AF-3D1E-4A51-8517-70A43D81FC73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurableLuck", "ConfigurableLuck\ConfigurableLuck.csproj", "{3060B5A0-EBA6-4B03-86D2-16709D94C59B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +62,22 @@ Global
 		{D4F2AAFA-7BEE-4551-9A96-5522F5CA5A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4F2AAFA-7BEE-4551-9A96-5522F5CA5A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4F2AAFA-7BEE-4551-9A96-5522F5CA5A48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3485620-70BA-45FD-AEB5-3068280488BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3485620-70BA-45FD-AEB5-3068280488BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3485620-70BA-45FD-AEB5-3068280488BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3485620-70BA-45FD-AEB5-3068280488BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAB2A90C-7B66-4364-9C78-31051EF347F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB2A90C-7B66-4364-9C78-31051EF347F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB2A90C-7B66-4364-9C78-31051EF347F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB2A90C-7B66-4364-9C78-31051EF347F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3777F7AF-3D1E-4A51-8517-70A43D81FC73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3777F7AF-3D1E-4A51-8517-70A43D81FC73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3777F7AF-3D1E-4A51-8517-70A43D81FC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3777F7AF-3D1E-4A51-8517-70A43D81FC73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3060B5A0-EBA6-4B03-86D2-16709D94C59B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3060B5A0-EBA6-4B03-86D2-16709D94C59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3060B5A0-EBA6-4B03-86D2-16709D94C59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3060B5A0-EBA6-4B03-86D2-16709D94C59B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

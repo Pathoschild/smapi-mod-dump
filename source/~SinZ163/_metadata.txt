@@ -7,11 +7,11 @@ mods:
    Profiler
 
 latest commit:
-   commit a5a5f90202ee3ad6dcf8b8cb4e921791653e1e92
+   commit c347fdfed87fe2ee0419d82fb60beef72309af41
    Author: SinZ <github@361zn.is>
-   Date:   Mon Jun 27 12:29:39 2022 +1000
+   Date:   Fri Jul 1 13:38:29 2022 +1000
    
-       Start of Profiler v2
+       Switch to a TimeElapsed model of tracking OccuredAt to save on filesize
        
-       Still need to change a few things before it is ready to see the wider world
+       Also change config to be able to throttle inner and outer logs, removing the hardcoded filter on certain event types
    

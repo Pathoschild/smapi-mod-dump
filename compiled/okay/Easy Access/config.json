@@ -1,16 +1,12 @@
 {
-  "Configurator": true,
+  "CollectOutputDistance": 15,
   "ControlScheme": {
     "CollectItems": "Delete",
     "DispenseItems": "Insert"
   },
-  "DefaultProducer": {
-    "CollectOutputDistance": 15,
-    "CollectOutputItems": [],
-    "CollectOutputs": "Location",
-    "DispenseInputDistance": 15,
-    "DispenseInputItems": [],
-    "DispenseInputPriority": 0,
-    "DispenseInputs": "Location"
-  }
+  "DispenseInputDistance": 15,
+  "DoDigSpots": true,
+  "DoForage": true,
+  "DoMachines": true,
+  "DoTerrain": true
 }

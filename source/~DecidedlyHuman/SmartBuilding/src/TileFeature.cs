@@ -31,5 +31,15 @@ namespace SmartBuilding
         /// A <see cref="StardewValley.Objects.Furniture"/>
         /// </summary>
         Furniture,
+        
+        /// <summary>
+        /// This is isn't a tile feature in the world, but a virtual drawn tile before being built.
+        /// </summary>
+        Drawn,
+        
+        /// <summary>
+        /// In place of null.
+        /// </summary>
+        None
     }
 }

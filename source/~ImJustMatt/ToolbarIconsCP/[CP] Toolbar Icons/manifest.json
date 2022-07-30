@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "[CP] Toolbar Icons",
+  "Author": "furyx639",
+  "Version": "2.2.1",
+  "Description": "Adds toolbar icons as shortcuts to other popular mods.",
+  "UniqueID": "furyx639.ToolbarIconsCP",
+  "UpdateKeys": [
+    "Nexus:11026@CP"
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "furyx639.ToolbarIcons",
+      "IsRequired": true,
+      "MinimumVersion": "2.3.0"
+    }
+  ]
+}

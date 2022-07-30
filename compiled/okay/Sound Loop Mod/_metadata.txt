@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13099
+IDs: com.strelkasaurus.sm.soundloop
+update keys: Nexus:13099

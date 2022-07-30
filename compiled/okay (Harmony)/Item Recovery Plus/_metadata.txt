@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13026
+IDs: Lunardiver.ItemRecoveryPlus
+update keys: Nexus:13026, GitHub:LunarDiver/StardewValley.ItemRecoveryPlus

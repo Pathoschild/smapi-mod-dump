@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+"Joja": "Sometimes I really love retail, but sometimes it's frustrating. In a regular job, I'd probably have more time to talk with you.#$e#Although talking isn't what I have in mind at the moment...$10#$e#Sorry, my mind hasn't been too focused on work today.$h",
+"Saloon": "I should really learn to cook so I can make some of these delicious meals for you at home.#$e#Sorry I never come home for dinner. It's just quicker to grab something here.",
+"Pierre": "Sometimes I really love retail, but sometimes it's frustrating. In a regular job, I'd probably have more time to talk with you.#$e#Although talking isn't what I have in mind at the moment...$10#$e#Sorry, my mind hasn't been too focused on work today.$h",
+"Sunday": "Do you ever just want to run off into nature and never come back? Sometimes I used to feel that way before meeting you.#$e#I've never told anyone but you about that. I know people see me as a mindless capitalist.$s#$e#I do love business. It's full of highs and lows and never-ending challenges. I'm more than just a corporate slave, though.#$e#I admire Linus, in a way. He's odd, but he actually took the plunge and left society.",
+"Mayor": "I'm talking to the townspeople right now and seeing how they're doing. It's an important duty as mayor.#$e#You're more important to me, though. I'd love if you stayed and accompanied me today.$h",
+"Hospital": "Yes, it itches sometimes when I-$s#$b#Oh, @! What are you doing here?!$3#$b#Harvey and I were just discussing, um... Important business details, yes.$s#$e#Sorry, would you mind leaving? It was a private conversation.$3",
+"HospitalMarriage": "Oh, hi sweetheart. I'm just here for my annual checkup, so there's no need to worry about me. Harvey agrees that I'm in tip-top shape!$h#$e#I don't mind you staying, but I think Harvey would like you to leave. I'll see you at home, though!$h"
+}

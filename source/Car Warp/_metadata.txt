@@ -6,9 +6,9 @@ mods:
    Car Warp
 
 latest commit:
-   commit 630d3d97e9db61aa8db454b5b13de40ee0d23ecc
+   commit f0851c9ada8fda3340be2b32928f0b77ee49e477
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Thu Jun 23 23:45:00 2022 -0400
+   Date:   Tue Jul 19 12:03:27 2022 -0400
    
-       Remove accidentally included file.
+       Fix incorrect minimum SMAPI version.
    

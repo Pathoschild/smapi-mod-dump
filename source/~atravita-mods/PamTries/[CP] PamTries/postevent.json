@@ -1,0 +1,136 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "Action": "Include",
+        "LogName": "Schedule changes",
+        "FromFile": "assets/schedules/{{PamMood}}.json",
+        "When": {"ScheduleChanges": "true"}
+    },
+    {
+        "Action": "Include",
+        "LogName": "Gift changes",
+        "FromFile": "assets/gifts.json",
+        "When": {"GiftChanges": "true"} //todo: do this more precisely in code.
+    },
+    {
+        "Action": "Include",
+        "LogName": "Gift Changes - mood-based dialogue",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/{{PamMood}}/gifts.json, assets/default/{{PamMood}}/gifts.json, assets/default/neutral/gifts.json}}",
+        "When": {"GiftChanges": "true", "HasMod": "PurrplingCat.CustomGiftDialogue"}
+    },
+    {
+        "Action": "Include",
+        "LogName": "Custom Dialogue -- Pam likes Penny's Favorites",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/pennyfavgiftdialogue.json, assets/default/pennyfavgiftdialogue.json}}",
+        "When": {"GiftChanges": "true", "HasMod": "PurrplingCat.CustomGiftDialogue"}
+    },
+    {
+        "Action": "Include",
+        "LogName": "Base Dialogue Changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/base/dialogue.json, assets/default/base/dialogue.json}}"
+    },
+    {
+        "Action": "Include",
+        "LogName": "Base Festival Changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/base/festivals.json, assets/default/base/festivals.json}}",
+        "When": {
+            "FestivalDialogue" : "true"
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Dialogue Changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/{{PamMood}}/dialogue.json, assets/default/{{PamMood}}/dialogue.json, assets/default/neutral/dialogue.json}}"
+    },
+    {//load default
+        "Action": "Include",
+        "LogName": "Dialogue Changes - subfiles",
+        "FromFile": "assets/default/{{PamMood}}/dialogue/{{PamRandomToken}}.json",
+        "When": {
+            "HasFile:{{FromFile}}": true,
+            "HasFile:assets/{{language}}/{{PamMood}}/dialogue/{{PamRandomToken}}.json": false
+        }
+    },
+    {//load language-specific
+        "Action": "Include",
+        "LogName": "Dialogue Changes - subfiles",
+        "FromFile": "assets/{{language}}/{{PamMood}}/dialogue/{{PamRandomToken}}.json",
+        "When": {
+            "HasFile:{{FromFile}}": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Relationship Dialogue Changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/base/dialogue_always.json, assets/default/base/dialogue_always.json}}"
+    },
+    {
+        "Action": "Include",
+        "LogName": "Base string changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/strings.json, assets/default/strings.json}}"
+    },
+    {
+        "Action": "Include",
+        "LogName": "Base mail changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/quests_mail.json, assets/default/mail.json}}"
+    },
+    {
+        "Action": "Include",
+        "LogName": "Event changes",
+        "FromFile": "assets/events.json"
+    },
+    {
+        "Action": "Include",
+        "LogName": "Map changes - remove beer from trailer",
+        "FromFile": "assets/map.json",
+        "When": {"HasSeenEvent": "99210001", "MapChanges": "true"} //Pam to rehab
+    },
+    {
+        "Action": "Include",
+        "LogName": "Map text changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/mapstrings.json, assets/default/mapstrings.json}}",
+        "When": {"MapChanges": "true"}
+    },
+    {
+        "Action": "EditImage",
+        "Target": "Maps/{{season}}_town",
+        "FromFile": "assets/tilesheet/{{season}}_town.png",
+        "ToArea": {"X":424, "Y": 755, "Width":35, "Height":23},
+        "PatchMode": "Replace",
+        "When": {"HasSeenEvent": "99210001", "HouseChanges": "true"} //Pam to rehab
+    },
+    { // Prevent Pam from going on vacation on her therapy days.
+      // For GIMA's exclusion system
+        "Action": "EditData",
+        "Target": "Mods/atravita_Ginger_Island_Adjustments_exclusions",
+        "Entries": {
+            "Pam": "6,16"
+        },
+        "When":{
+            "HasMod": "atravita.GingerIslandMainlandAdjustments",
+            "HasSeenEvent": "99210002"
+        }
+    },
+    { // Prevent Pam from going on vacation on her therapy days.
+      // For CustomNPCExclusions
+        "Action": "EditData",
+        "Target": "Data/CustomNPCExclusions",
+        "Entries": {
+           "Pam": "IslandVisit"
+        },
+        "When": {
+            "HasMod": "Esca.CustomNPCExclusions",
+            "Day": "6,16",
+            "HasSeenEvent": "99210002"
+        }
+     }
+]}

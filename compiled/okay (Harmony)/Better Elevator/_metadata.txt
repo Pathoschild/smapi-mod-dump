@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12802
+IDs: aedenthorn.BetterElevator
+update keys: Nexus:12802, GitHub:aedenthorn/StardewValleyMods

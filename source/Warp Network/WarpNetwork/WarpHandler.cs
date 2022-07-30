@@ -24,7 +24,7 @@ namespace WarpNetwork
 {
     class WarpHandler
     {
-        internal static Point? DesertWarp = null;
+        internal static readonly PerScreen<Point?> DesertWarp = new();
         internal static readonly PerScreen<string> wandLocation = new();
         internal static readonly PerScreen<Point> wandTile = new();
         private static readonly WarpNetHandler returnHandler = new(() => wandLocation.Value is not null, () => "RETURN", () => ModEntry.i18n.Get("dest-return"), ReturnToPrev);
@@ -218,11 +218,11 @@ namespace WarpNetwork
                 //desert has bus scene hardcoded. Must warp to hardcoded spot, then use obelisk patch to move the player afterwards.
                 if (!where.OverrideMapProperty)
                 {
-                    DesertWarp = Game1.getLocationFromName("Desert").GetMapPropertyPosition("WarpNetworkEntry", where.X, where.Y);
+                    DesertWarp.Value = Game1.getLocationFromName("Desert").GetMapPropertyPosition("WarpNetworkEntry", where.X, where.Y);
                 }
                 else
                 {
-                    DesertWarp = new Point(where.X, where.Y);
+                    DesertWarp.Value = new Point(where.X, where.Y);
                 }
                 DoWarpEffects(() => Game1.warpFarmer("Desert", 35, 43, false));
             }

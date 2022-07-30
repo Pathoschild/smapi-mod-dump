@@ -39,20 +39,21 @@ internal sealed class ObjectDayUpdatePatch : Common.Harmony.HarmonyPatch
     [HarmonyPriority(Priority.LowerThanNormal)]
     private static void ObjectDayUpdatePostfix(SObject __instance)
     {
-        if (__instance.IsBeeHouse() && ModEntry.Config.AgeBeeHouses)
+        if (__instance.IsBeeHouse() && ModEntry.Config.AgeImprovesBeeHouses)
         {
-            ModDataIO.IncrementData<int>(__instance, "Age");
+            ModDataIO.Increment<int>(__instance, "Age");
         }
-        else if (__instance.IsMushroomBox())
+        else if (__instance.IsMushroomBox() && ModEntry.Config.AgeImprovesMushroomBoxes)
         {
-            if (ModEntry.Config.AgeMushroomBoxes) ModDataIO.IncrementData<int>(__instance, "Age");
-
+            ModDataIO.Increment<int>(__instance, "Age");
             if (__instance.heldObject.Value is null) return;
 
             __instance.heldObject.Value.Quality = ModEntry.ProfessionsAPI is null
-                ? __instance.GetQualityFromAge()
+                ? Game1.player.professions.Contains(Farmer.botanist)
+                    ? SObject.bestQuality
+                    : __instance.GetQualityFromAge()
                 : Math.Max(ModEntry.ProfessionsAPI.GetEcologistForageQuality(Game1.player),
-                    __instance.heldObject.Value.Quality);
+                    __instance.GetQualityFromAge());
         }
     }
 

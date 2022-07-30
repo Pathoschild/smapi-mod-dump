@@ -1,0 +1,59 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName" :"Neutral dialogue, set charlie",
+        "Entries": {
+            "Mon8": "Wonder how hard it'd be to start a garden. You and Caroline seem pretty good at it...",
+            "Tue8": "Some chick I knew in high school randomly called me yesterday.#$e#Was hopin' she'd be apologizin' for being a jerk to everyone. Nah. She just wanted to sell lotion.#$e#Ain't gonna get into those MLM schemes, no sirree.$u",
+            "Thu8": "Gettin' old is just feeling tired and achy all the time.$s#$e#My days of partyin' all night are definitely over.",
+            "Fri8": "Argh. I'm too old to be fallin' asleep on the couch.#$e#Everything hurts.$s",
+            "Sat8": "My feet ache.$s",
+            "springBusStop_Tue": "#$c .5#Got nothin' to do but listen to the radio on this bus while I wait for passengers...#The news is always so depressing, @. Ain't nothin' good happening in the world right now.",
+            "fallBusStop_Tue": "#$c .5#Just drivin' this bus, day in, day out.#So, what's new with you? Ain't never anything new with me, I just drive this bus.#",
+            "winterTown_Tue": "Gah. Nothing I own fits.#$e#Maybe going to aerobics wouldn't be that bad of an idea...#$e#Don't wanna let anyone see me like this, though.",
+            "Trailer_Big_Wed": "Blergh. I'm tired. Leave me alone.",
+            "spring_Tue10": "Blregh. Campaign season sucks. Politician ads all over the place, blaming each other for everything wrong with this country.$u#$e#I just wanna watch something fun after work.$s",
+            "spring_Wed10": "#$c .5#Why vote? All those pols are the same anyways.#Let me tell you, kiddo, them politicians only listen to the rich.#",
+            "spring_Thu8": "$d joja#The fresh food at Joja really isn't that cheap compared to Pierre's, but the frozen food is so much cheaper...|Pierre doesn't carry as many different types of chips as Joja did.$s#",
+            "spring_Fri10": "#$c .5#Haven't been paying attention to the election, honestly. All them pols are the same, anyways.#I keep on gettin' robocalled by those politicans. Wish the government would do something about all these spam calls...#",
+            "summer_Mon8": "Wish I could afford more fresh fruit.#$b#$c 0.5#Them oranges look real nice around this time of year.#Saw some tasty-looking blueberries at Pierre's the other day.#",
+            "summer_Wed10": "Did ya hear about that girl who's gone missing?#$e#Jeeze the crime rate in this country has gone insane.$s",
+            "summer_Fri10": "#$c .5#Some hash browns would be great right about now. Hash browns with hot sauce.#Kiddo, have you ever had a funnel cake? We used to have them at the fair.#",
+            "summer_Sun10": "#$c .5#Been thinkin' about getting a pet. A cat, maybe. Think I'd get along with a cat.#Got nothin' for dinner other than tinned soup. I hate tinned soup.#",
+            "fall_Tue8": "#$c .5#Ma loved her soaps. We used to watch them together, while she cooked.#My ma was a great cook. She tried teachin' me time after time, but I never managed anything good.#",
+            "fall_Wed10": "#$c .5#Seen the new Accel windmills they're putting up just south of Grampleton? They're huge!#Accel's power cables sparked a new fire last week. When is the government gonna make them bury those?$u#",
+            "fall_Thu10": "#$c .5#Bought some pumpkin pie from Gus the other day. Best part of the season, if you ask me.$h#Pappy used to make the best apple hand pies. Wish I managed to the learn the recipe before he died...$s#",
+            "fall_Fri10": "#$c .5#Not lookin' forward to pumpkin spice everything.#My husband walked out on us. Just went out for a gallon of milk and never came home again.#",
+            "fall_Sat10": "#$c .5#There's nothin' good on TV anymore.#Why do they cancel all the good shows?#",
+            "fall_Sun10": "Penny was a daddy's girl until my husband up and left.#$e#I was drivin' long-haul back then so I was never home.#$e#He never had job, so he took care of her. Then he walked off on us.",
+            "winter_Mon8": "Doc says I should try swimmin' more. Says the bathhouse is actually a pretty good swimming spot. The water is warmed in winter.",
+            "winter_Wed10": "I miss eggnog.#$e#Pa would make it for me and Ma. Only drink I was allowed when I was a kid.#$e#Maybe there was a good reason for that....",
+            "winter_Fri10": "Ma worked as a waitress all her life. It's not an easy job. Too many jerks.",
+            "winter_Sat10": "#$c 0.5#This cold's no good for my poor bones.#@, I wonder if I should get a dog?#"
+        },
+    },
+    {
+        "LogName":"Neutral dialogue, set charlie, post-rehab",
+        "Target": "Characters/Dialogue/Pam",
+        "Action": "EditData",
+        "Entries": {
+            "spring_Tue10": "My therapist says I should try being nicer to Penny. Work on managin' my temper a little better...#$b#I know I get angry too easily and take it out on her...she doesn't deserve that.$s",
+            "summerBeach": "A least the breeze helps cut the heat a little...",
+            "winter_Thu10": "#$c .5#I've been tryin' to eat better. It's not easy...#Penny's been gettin' on my case about eating better. Fresh food's just so expensive though...",
+        },
+        "When": {
+            "HasSeenEvent": "99210002" //Post-rehab event
+        }
+    }
+]}

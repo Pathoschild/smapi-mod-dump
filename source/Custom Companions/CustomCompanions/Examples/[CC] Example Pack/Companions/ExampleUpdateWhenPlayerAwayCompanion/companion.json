@@ -15,7 +15,7 @@
   "SpawnOffsetX": 0, // X offset (from player) of where to spawn | Note: Negative values will spawn to left of player, positive will spawn to right of player
   "SpawnOffsetY": 0, // Y offset (from player) of where to spawn | Note: Negative values will spawn above player head, positive will spawn below player head
   "IdleBehavior": "Nothing", // Optional parameter, determines how the companion acts while idle | Options: [Nothing, Hover, Wander]
-
+  "EnableEventAppearance": true,
   "FrameSizeWidth": 16, // Width of each frame / tile in pixels | Default is 16
   "FrameSizeHeight": 32, // Height of each frame / tile in pixels | Default is 16
 
@@ -66,6 +66,7 @@
     "IdleBehavior": "Nothing", // Optional parameter, determines how the companion acts while idle | Options: [Nothing, Hover, Wander]
     "MinTilesForAway": 3,
     "ResetWhenPlayerAway": true,
+    "EnableEventAppearance": true,
 
     "FrameSizeWidth": 16, // Width of each frame / tile in pixels | Default is 16
     "FrameSizeHeight": 32, // Height of each frame / tile in pixels | Default is 16

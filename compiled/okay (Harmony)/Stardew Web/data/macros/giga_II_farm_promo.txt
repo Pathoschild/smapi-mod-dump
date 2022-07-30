@@ -1,0 +1,82 @@
+﻿//
+//	Writes text on empty fields
+//
+
+verbose
+warpto GigaFarmII 43,27
+location GigaFarmII
+
+clearall
+
+//
+//	coop details
+//
+
+build Deluxe9Coop 10,27 White9Chicken 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Coop 18,27 White9Chicken 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Coop 26,27 White9Chicken 12
+buildingadd (BO)165 11,8
+
+addstring BIG 8,30 null (O)745 false
+addstring COOP 5,40 null (O)745 false
+addstring AREA 5,50 null (O)745 false
+
+//
+//	barn area
+//
+build Deluxe9Barn 43,27 White9Cow 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Barn 53,27 White9Cow 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Barn 63,27 White9Cow 12
+buildingadd (BO)165 11,8
+
+addstring BIG 46,31 (O)477 (O)745 false
+addstring BARN 43,40 (O)477 (O)745 false
+addstring AREA 43,49 (O)477 (O)745 false
+
+//
+//	shed area
+//
+addstring LARGE 101,10 (O)477 (O)474 false
+addstring SHED 101,20 (O)477 (O)474 false
+addstring AREA 101,30 (O)477 (O)474 false
+
+//
+//	feed lot
+//
+addstring BIG 8,70 null (O)745 true
+addstring FEED 5,80 null (O)745 true
+addstring LOT 8,90 null (O)745 true
+
+
+//
+//	junimo hut area
+//
+addstring JU 43,70 null (O)745 false
+addstring NI 63,70 null (O)745 false
+addstring MO 81,70 null (O)745 false
+addstring _H 102,70 null (O)745 false
+addstring UT 118,70 null (O)745 false
+
+addstring GR 63,80 null (O)745 false
+addstring OW 81,80 null (O)745 false
+addstring IN 100,80 null (O)745 false
+addstring G 118,80 null (O)745 false
+
+addstring AR 81,90 null (O)745 false
+addstring EA 100,90 null (O)745 false
+
+matureall
+
+//
+//	jump in and out to update screen capture
+//
+warpto Farm 10,24
+warpto GigaFarmII 44,70

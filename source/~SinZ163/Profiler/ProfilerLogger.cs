@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Profiler
 {
-    internal record ProfileLoggerRow(DateTimeOffset OccuredAt, object Metadata);
+    internal record ProfileLoggerRow(double OccuredAt, object Metadata);
 
     public class ProfilerLogger : IDisposable
     {
@@ -28,7 +28,7 @@ namespace Profiler
         private readonly StreamWriter File;
 
 
-        public ConcurrentStack<EventMetadata> EventMetadata { get; private set; }
+        internal ConcurrentStack<EventEntry> EventMetadata { get; private set; }
 
         internal ProfilerLogger(string path)
         {

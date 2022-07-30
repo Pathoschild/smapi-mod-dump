@@ -12,23 +12,19 @@ using MachineAugmentors.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using PyTK.CustomElementHandler;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Network;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Object = StardewValley.Object;
 using Size = xTile.Dimensions.Size;
 
 namespace MachineAugmentors.Items
 {
+    [XmlType("Mods_MachineAugmentors_Augmentor")]
     [XmlRoot(ElementName = "Augmentor", Namespace = "")]
     [KnownType(typeof(OutputAugmentor))]
     [KnownType(typeof(SpeedAugmentor))]
@@ -42,7 +38,7 @@ namespace MachineAugmentors.Items
     [XmlInclude(typeof(QualityAugmentor))]
     [XmlInclude(typeof(ProductionAugmentor))]
     [XmlInclude(typeof(DuplicationAugmentor))]
-    public abstract class Augmentor : Object, ISaveElement
+    public abstract class Augmentor : Object
     {
         public UserConfig UserConfig { get { return MachineAugmentorsMod.UserConfig; } }
         public AugmentorConfig AugmentorConfig { get { return UserConfig.GetConfig(AugmentorType); } }
@@ -77,24 +73,6 @@ namespace MachineAugmentors.Items
             : base(22763 + (int)Type, 1, false, -1, 0)
         {
             this.AugmentorType = Type;
-        }
-
-        public object getReplacement()
-        {
-            Object Replacement = new Object(92, 1, false, -1, 0);
-            return Replacement;
-        }
-
-        public Dictionary<string, string> getAdditionalSaveData()
-        {
-            Dictionary<string, string> Data = new Dictionary<string, string>();
-            Data.Add("Qty", Stack.ToString());
-            return Data;
-        }
-
-        public void rebuild(Dictionary<string, string> additionalSaveData, object replacement)
-        {
-            this.Stack = int.Parse(additionalSaveData["Qty"]);
         }
 
         //other possible icons: 
@@ -233,7 +211,7 @@ namespace MachineAugmentors.Items
 
         protected bool BaseIsAugmentable(Object Item)
         {
-            if (Item == null || !Item.bigCraftable || !Item.isPlaceable())
+            if (Item == null || !Item.bigCraftable.Value || !Item.isPlaceable())
             {
                 return false;
             }

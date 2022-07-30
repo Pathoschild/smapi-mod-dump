@@ -10,6 +10,11 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Improved translations. Thanks to LeecanIt (updated Italian)!
+
+## 1.37.3
+Released 04 July 2022 for SMAPI 3.14.0 or later.
+
 * Fixed lookup error when a child's `daysOld` field indicates they were born before the game started.
 
 ## 1.37.2

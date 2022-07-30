@@ -96,7 +96,7 @@ internal class MasterSchedulePatch {
 		critical: false
 	)]
 	public static bool GetSchedulePre(NPC __instance, ref MasterSchedule? __result, int dayOfMonth) {
-		if (!Config.IsUnconditionallyEnabled || !Config.Extras.FixMasterSchedule) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.FixGetSchedule) {
 			return true;
 		}
 

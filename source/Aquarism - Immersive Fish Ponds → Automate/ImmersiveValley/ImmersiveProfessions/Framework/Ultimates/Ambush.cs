@@ -13,6 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Ultimates;
 
 #region using directives
 
+using Events.GameLoop;
 using Microsoft.Xna.Framework;
 using Netcode;
 using Sounds;
@@ -28,9 +29,7 @@ internal sealed class Ambush : Ultimate
 {
     /// <summary>Construct an instance.</summary>
     internal Ambush()
-    : base(Color.MediumPurple, Color.MidnightBlue)
-    {
-    }
+    : base(Color.MediumPurple, Color.MidnightBlue) { }
 
     #region public properties
 
@@ -50,6 +49,10 @@ internal sealed class Ambush : Ultimate
     /// <inheritdoc />
     internal override Color GlowColor => Color.MediumPurple;
 
+    /// <summary>Whether the double crit. power buff is active.</summary>
+    internal bool IsGrantingCritBuff =>
+        IsActive || Game1.buffsDisplay.otherBuffs.Any(b => b.which == BuffId - 4);
+
     #endregion internal properties
 
     #region internal methods
@@ -59,6 +62,7 @@ internal sealed class Ambush : Ultimate
     {
         base.Activate();
 
+        ModEntry.PlayerState.SecondsOutOfAmbush = 0d;
         foreach (var monster in Game1.currentLocation.characters.OfType<Monster>()
                      .Where(m => m.Player.IsLocalPlayer))
         {
@@ -85,8 +89,12 @@ internal sealed class Ambush : Ultimate
             }
         }
 
-        Game1.player.addedSpeed -= 3;
+        var critBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.which == BuffId - 4);
+        var duration = critBuff?.millisecondsDuration ??
+                       (int) (15000 * ((double) MaxValue / BASE_MAX_VALUE_I) / ModEntry.Config.SpecialDrainFactor);
+        Game1.buffsDisplay.removeOtherBuff(BuffId - 4);
         Game1.buffsDisplay.removeOtherBuff(BuffId);
+        Game1.player.addedSpeed -= 2;
         Game1.buffsDisplay.addOtherBuff(
             new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 1,
@@ -96,7 +104,7 @@ internal sealed class Ambush : Ultimate
                 which = BuffId,
                 sheetIndex = 49,
                 glow = GlowColor,
-                millisecondsDuration = (int)(30000 * ((double)MaxValue / BASE_MAX_VALUE_I) / ModEntry.Config.SpecialDrainFactor),
+                millisecondsDuration = duration,
                 description = ModEntry.i18n.Get("poacher.ultidesc.hidden")
             }
         );
@@ -104,7 +112,7 @@ internal sealed class Ambush : Ultimate
         if (Context.IsMainPlayer)
             ModEntry.HostState.PoachersInAmbush.Add(Game1.player.UniqueMultiplayerID);
         else
-            ModEntry.Broadcaster.Message("ActivatedAmbush", "RequestUpdateHostState", Game1.MasterPlayer.UniqueMultiplayerID);
+            ModEntry.Broadcaster.Message("ActivatedAmbush", "UpdateHostState", Game1.MasterPlayer.UniqueMultiplayerID);
     }
 
     /// <inheritdoc />
@@ -115,29 +123,31 @@ internal sealed class Ambush : Ultimate
         var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.which == BuffId);
         var timeLeft = buff?.millisecondsDuration ?? 0;
         Game1.buffsDisplay.removeOtherBuff(BuffId);
-
-        Game1.player.addedSpeed += 3;
-
-        var buffId = BuffId - 4;
-        Game1.buffsDisplay.removeOtherBuff(buffId);
-        Game1.buffsDisplay.addOtherBuff(
-            new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                1,
-                GetType().Name,
-                ModEntry.i18n.Get("poacher.ulti"))
-            {
-                which = buffId,
-                sheetIndex = 37,
-                millisecondsDuration = 2 * timeLeft,
-                description = ModEntry.i18n.Get("poacher.ultidesc.revealed")
-            }
-        );
+        Game1.player.addedSpeed += 2;
+        if (timeLeft > 0)
+        {
+            var buffId = BuffId - 4;
+            Game1.buffsDisplay.removeOtherBuff(buffId);
+            Game1.buffsDisplay.addOtherBuff(
+                new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    1,
+                    GetType().Name,
+                    ModEntry.i18n.Get("poacher.ulti"))
+                {
+                    which = buffId,
+                    sheetIndex = 37,
+                    millisecondsDuration = timeLeft * 2,
+                    description = ModEntry.i18n.Get("poacher.ultidesc.revealed")
+                }
+            );
+        }
 
         if (Context.IsMainPlayer)
             ModEntry.HostState.PoachersInAmbush.Remove(Game1.player.UniqueMultiplayerID);
         else
-            ModEntry.Broadcaster.Message("DeactivatedAmbush", "RequestUpdateHostState", Game1.MasterPlayer.UniqueMultiplayerID);
+            ModEntry.Broadcaster.Message("DeactivatedAmbush", "UpdateHostState", Game1.MasterPlayer.UniqueMultiplayerID);
 
+        ModEntry.EventManager.Hook<PoacherUpdateTickedEvent>();
     }
 
     /// <inheritdoc />
@@ -145,10 +155,6 @@ internal sealed class Ambush : Ultimate
     {
         ChargeValue -= elapsed * 0.06 / 18.0;
     }
-
-    /// <summary>Whether the double crit. power buff is active.</summary>
-    internal bool ShouldBuffCritPower() =>
-        IsActive || Game1.buffsDisplay.otherBuffs.Any(b => b.which == BuffId - 4);
 
     #endregion internal methods
 }

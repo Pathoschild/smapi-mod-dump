@@ -14,16 +14,14 @@ using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
-using SpriteMaster.Types.Spans;
-using StardewModdingAPI;
-using StardewValley.GameData.HomeRenovations;
+using SpriteMaster.Types.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -135,9 +133,12 @@ internal static class PTexture2D {
 		return true;
 	}
 
-	internal static readonly Action<XTexture2D, int, int, bool, SurfaceFormat, SurfaceType, bool>? PlatformConstruct =
-		typeof(XTexture2D).GetInstanceMethod("PlatformConstruct")
-			?.CreateDelegate<Action<XTexture2D, int, int, bool, SurfaceFormat, SurfaceType, bool>>();
+	internal delegate void PlatformConstructDelegate(
+		XTexture2D instance, int width, int height, bool mipmap, SurfaceFormat format,
+		SurfaceType type, bool shared
+	);
+
+	internal static readonly PlatformConstructDelegate? PlatformConstruct = typeof(XTexture2D).GetInstanceDelegate<PlatformConstructDelegate>("PlatformConstruct");
 
 	[Harmonize(".ctor", Fixation.Prefix, PriorityLevel.Last)]
 	public static void OnConstructTexture2D(
@@ -202,10 +203,10 @@ internal static class PTexture2D {
 		}
 
 		if (data.Length != 0 && !GetCachedData<T>(__instance, level, arraySlice, rect, data, startIndex, elementCount).IsEmpty) {
-			return true;
+			return false;
 		}
-
-		return true;
+		
+		return !(arraySlice == 0 && GL.Texture2DExt.GetDataInternal(__instance, level, rect, data.AsSpan())); ;
 	}
 
 	[DoesNotReturn]
@@ -229,16 +230,29 @@ internal static class PTexture2D {
 			return default;
 		}
 
-		try {
-			if (
-				level == 0 &&
-				arraySlice == 0 &&
-				__instance.TryMeta(out var sourceMeta) && sourceMeta.CachedData is { } cachedSourceData
-			) {
-				int numElements = elementCount ?? __instance.Format.SizeBytes(rect.Area) / sizeof(T);
+		if (level != 0 || arraySlice != 0) {
+			return default;
+		}
 
-				if (cachedSourceData.Length < numElements * sizeof(T)) {
-					return ThrowArgumentOutOfRangeLessThanException<T>(nameof(numElements), cachedSourceData.Length, numElements * sizeof(T));
+		try {
+			if (__instance.TryMeta(out var sourceMeta) && sourceMeta.HasCachedData && sourceMeta.CachedData is { } cachedSourceData) {
+				int numElements;
+				int byteSize;
+				if (elementCount.HasValue) {
+					numElements = elementCount.Value;
+					byteSize = numElements * sizeof(T);
+				}
+				else {
+					byteSize = __instance.Format.SizeBytes(rect.Area);
+					numElements = byteSize / sizeof(T);
+				}
+
+				if (numElements == 0) {
+					return default;
+				}
+
+				if (cachedSourceData.Length < byteSize) {
+					return ThrowArgumentOutOfRangeLessThanException<T>(nameof(numElements), cachedSourceData.Length, byteSize);
 				}
 
 				if (data.IsEmpty && startIndex == 0) {
@@ -252,20 +266,20 @@ internal static class PTexture2D {
 				if (rect == __instance.Bounds) {
 					ReadOnlySpan<byte> sourceBytes = cachedSourceData;
 					var source = sourceBytes.Cast<T>();
-					source.CopyToUnsafe(data, 0, startIndex, numElements);
+					source.CopyTo(data, 0, startIndex, numElements);
 
 					return data;
 				}
 				if (__instance.Bounds.Contains(rect)) {
 					// We need a subcopy
-					var cachedData = cachedSourceData.AsReadOnlySpan<T>();
-					var destData = data;
+					var cachedData = cachedSourceData.AsReadOnlySpan<T>().Cast<T, uint>();
+					var destData = data.Cast<T, uint>();
 					int sourceStride = __instance.Width;
 					int destStride = rect.Width;
 					int sourceOffset = (rect.Top * sourceStride) + rect.Left;
 					int destOffset = startIndex;
 					for (int y = 0; y < rect.Height; ++y) {
-						cachedData.SliceUnsafe(sourceOffset, destStride).CopyToUnsafe(destData.SliceUnsafe(destOffset, destStride));
+						cachedData.SliceUnsafe(sourceOffset, destStride).CopyTo(destData.SliceUnsafe(destOffset, destStride));
 						sourceOffset += sourceStride;
 						destOffset += destStride;
 					}
@@ -283,9 +297,34 @@ internal static class PTexture2D {
 
 	#endregion
 
-	private static readonly Assembly? CpaAssembly = AppDomain.CurrentDomain.GetAssemblies().
-		SingleOrDefaultF(assembly => assembly.GetName().Name == "ContentPatcherAnimations");
+	private static readonly Assembly? CpaAssembly = AssemblyExt.GetAssembly("ContentPatcherAnimations");
 
+	private static readonly VariableAccessor<StackTrace, StackFrame[]?>? GetStackFramesDelegate =
+		typeof(StackTrace).GetInstanceVariable("_stackFrames")?.GetAccessor<StackTrace, StackFrame[]?>();
+	private static readonly VariableAccessor<StackTrace, int>? GetNumFramesDelegate =
+		typeof(StackTrace).GetInstanceVariable("_numOfFrames")?.GetAccessor<StackTrace, int>();
+
+	[MemberNotNullWhen(true, "GetStackFramesDelegate", "GetNumFramesDelegate")]
+	private static bool HasStackTraceDelegates { get; } =
+		(GetStackFramesDelegate?.HasGetter ?? false) &&
+		(GetNumFramesDelegate?.HasGetter ?? false);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static ReadOnlySpan<StackFrame> GetStackFrames(int skipFrames) {
+		var trace = new StackTrace(skipFrames: skipFrames, fNeedFileInfo: false);
+
+		if (HasStackTraceDelegates) {
+			ReadOnlySpan<StackFrame> stackFrames = GetStackFramesDelegate.Get(trace) ?? default;
+			if (!stackFrames.IsEmpty) {
+				int numFrames = GetNumFramesDelegate.Get(trace);
+				return stackFrames.Slice(skipFrames, numFrames);
+			}
+		}
+
+		return trace.GetFrames();
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static bool IsFromContentPatcherAnimations(XTexture2D instance, Bounds bounds) {
 		if (CpaAssembly is null) {
 			return false;
@@ -295,16 +334,16 @@ internal static class PTexture2D {
 			return true;
 		}
 
-		var stackTrace = new StackTrace(skipFrames: 2, fNeedFileInfo: false);
-		foreach (var frame in stackTrace.GetFrames()) {
-			if (frame.GetMethod() is { } method && method.DeclaringType?.Assembly == CpaAssembly) {
+		var stackFrames = GetStackFrames(skipFrames: 2);
+
+		foreach (var frame in stackFrames) {
+			if (ReferenceEquals(frame.GetMethod()?.DeclaringType?.Assembly, CpaAssembly)) {
 				return true;
 			}
 		}
 
 		return false;
 	}
-
 
 	// XTexture2D __instance, int level, int arraySlice, ref XRectangle rect, T[] data, int startIndex, int elementCount
 	[HarmonizeTranspile(
@@ -441,46 +480,31 @@ internal static class PTexture2D {
 		int startIndex,
 		int elementCount
 	) where T : unmanaged {
-		var rectVal = rect;
-
-		unsafe bool TryInternal() {
-			if (arraySlice == 0) {
-				fixed (T* dataPtr = data) {
-					ReadOnlyPinnedSpan<T> span = new(data, dataPtr + startIndex, elementCount);
-					if (GL.Texture2DExt.SetDataInternal(__instance, level, rectVal, span)) {
-						return true;
+		if (__instance is not (ManagedTexture2D or InternalTexture2D)) {
+			if (__instance.Format.IsBlock()) {
+				__instance.Meta().IncrementRevision();
+			}
+			else {
+				try {
+					if (!CheckIsDataChanged(__instance, level, arraySlice, rect, data, startIndex, elementCount)) {
+						Debug.Trace(
+							$"SetData for '{__instance.NormalizedName()}' skipped; data unchanged ({rect})".Colorized(
+								DrawingColor.LightGreen
+							)
+						);
+						return false;
 					}
 				}
-			}
+				catch (Exception ex) {
+					Debug.Warning($"Exception while processing SetData for '{__instance.NormalizedName()}'", ex);
+				}
 
-			return false;
-		}
-
-		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
-			return !TryInternal();
-		}
-
-		if (__instance.Format.IsBlock()) {
-			__instance.Meta().IncrementRevision();
-			return !TryInternal();
-		}
-
-		try {
-			if (!CheckIsDataChanged(__instance, level, arraySlice, rect, data, startIndex, elementCount)) {
-				Debug.Trace(
-					$"SetData for '{__instance.NormalizedName()}' skipped; data unchanged ({rect})".Colorized(
-						DrawingColor.LightGreen
-					)
-				);
-				return false;
+				__instance.Meta().IncrementRevision();
 			}
 		}
-		catch (Exception ex) {
-			Debug.Warning($"Exception while processing SetData for '{__instance.NormalizedName()}'", ex);
-		}
 
-		__instance.Meta().IncrementRevision();
-		return !TryInternal();
+		var span = data.AsReadOnlySpan().Slice(startIndex, elementCount);
+		return !(arraySlice == 0 && GL.Texture2DExt.SetDataInternal(__instance, level, rect, span));
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -507,6 +531,7 @@ internal static class PTexture2D {
 		OnPlatformSetDataPostInternal(__instance, level, arraySlice, rect, data.AsReadOnlySpan(), startIndex, elementCount);
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static unsafe void OnPlatformSetDataPostInternal<T>(
 		XTexture2D __instance,
 		int level,

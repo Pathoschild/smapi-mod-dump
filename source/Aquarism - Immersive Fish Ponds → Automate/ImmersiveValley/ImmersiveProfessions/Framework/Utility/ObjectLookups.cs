@@ -8,13 +8,12 @@
 **
 *************************************************/
 
-using System.Linq;
-
 namespace DaLion.Stardew.Professions.Framework.Utility;
 
 #region using directives
 
 using System.Collections.Generic;
+using System.Linq;
 
 #endregion using directives
 

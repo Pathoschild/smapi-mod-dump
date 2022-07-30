@@ -25,13 +25,12 @@ namespace SpriteMaster.Tasking;
 [DebuggerDisplay("Id={Id}, ScheduledTasks = {DebugTaskCount}")]
 internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 	internal static readonly ThreadedTaskScheduler Instance = new(useBackgroundThreads: true);
-	internal static readonly TaskFactory TaskFactory = new(Instance);
 
 	private class ThreadedTaskSchedulerDebugView {
 		private readonly ThreadedTaskScheduler Scheduler;
 
 		public ThreadedTaskSchedulerDebugView(ThreadedTaskScheduler scheduler) {
-			Scheduler = scheduler ?? ThrowHelper.ThrowArgumentNullException<ThreadedTaskScheduler>(nameof(scheduler));
+			Scheduler = scheduler;
 		}
 
 		public IEnumerable<Task> ScheduledTasks => Scheduler.PendingTasks;
@@ -41,9 +40,8 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 	public int ConcurrencyLevel { get; }
 
 	[ThreadStatic]
-	private static bool IsTaskProcessingThread = false;
+	private static bool IsTaskProcessingThread;
 
-	private readonly Thread[] Threads;
 	private readonly BlockingCollection<Task> PendingTasks = new();
 
 	private int DebugTaskCount => PendingTasks.Count;
@@ -69,25 +67,22 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 
 			ConcurrencyLevel = concurrencyLevel.Value;
 
-			Threads = new Thread[ConcurrencyLevel];
-			for (int i = 0; i < Threads.Length; ++i) {
-				Threads[i] = new(index => DispatchLoop((int)index!, onThreadInit, onThreadFinally)) {
+			for (int i = 0; i < ConcurrencyLevel; ++i) {
+				var thread = new Thread(index => DispatchLoop((int)index!, onThreadInit, onThreadFinally)) {
 					Priority = threadPriority,
 					IsBackground = useBackgroundThreads,
 					Name = threadNameFunction is null ? $"ThreadedTaskScheduler Thread {i}" : threadNameFunction(i),
 				};
 				if (Runtime.IsWindows) {
 					try {
-						Threads[i].SetApartmentState(ApartmentState.MTA);
+						thread.SetApartmentState(ApartmentState.MTA);
 					}
 					catch (PlatformNotSupportedException) {
 						/* do nothing */
 					}
 				}
-			}
 
-			for (int i = 0; i < Threads.Length; ++i) {
-				Threads[i].Start(i);
+				thread.Start(i);
 			}
 		}
 		catch (Exception ex) {
@@ -102,27 +97,27 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 			var thread = Thread.CurrentThread;
 			onInit?.Invoke(thread, index);
 			try {
-				try {
-					while (!Config.ForcedDisable) {
-						try {
-							foreach (var task in PendingTasks.GetConsumingEnumerable(DisposeCancellation.Token)) {
-								using var workingState = WatchDog.WatchDog.ScopedWorkingState;
-								if (TryExecuteTask(task) || task.IsCompleted) {
-									task.Dispose();
-								}
+				while (!Config.ForcedDisable) {
+					try {
+						foreach (var task in PendingTasks.GetConsumingEnumerable(DisposeCancellation.Token)) {
+							using var workingState = WatchDog.WatchDog.ScopedWorkingState;
+							if (TryExecuteTask(task) || task.IsCompleted) {
+								task.Dispose();
 							}
-						}
-						catch (ThreadAbortException) {
-							if (!Environment.HasShutdownStarted && !AppDomain.CurrentDomain.IsFinalizingForUnload()) {
-								Thread.ResetAbort();
-							}
-						}
-						catch (ThreadInterruptedException) {
-							// Thread was interrupted by watchdog
 						}
 					}
+					catch (ThreadAbortException) {
+						if (!Environment.HasShutdownStarted && !AppDomain.CurrentDomain.IsFinalizingForUnload()) {
+							Thread.ResetAbort();
+						}
+					}
+					catch (ThreadInterruptedException) {
+						// Thread was interrupted by watchdog
+					}
 				}
-				catch (OperationCanceledException) { /* do nothing */ }
+			}
+			catch (OperationCanceledException) {
+				/* do nothing */
 			}
 			finally {
 				onFinally?.Invoke(thread, index);
@@ -150,7 +145,7 @@ internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 
 	protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued) => IsTaskProcessingThread && TryExecuteTask(task);
 
-	protected override IEnumerable<Task> GetScheduledTasks() => PendingTasks;
+	protected override IEnumerable<Task> GetScheduledTasks() => PendingTasks.ToArray();
 
 	public void Dispose() => DisposeCancellation.Cancel();
 }

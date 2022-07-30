@@ -16,49 +16,30 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.SuperXBR;
 
-internal sealed partial class Scaler {
+internal sealed partial class Scaler : AbstractScaler<Config, Scaler.ValueScale> {
 	private const uint MinScale = 2;
 	private const uint MaxScale = Config.MaxScale;
+
+	internal readonly struct ValueScale : IScale {
+		public readonly uint Minimum => MinScale;
+		public readonly uint Maximum => MaxScale;
+	}
 
 	private static uint ClampScale(uint scale) => 2;// Math.Clamp((uint)MathExt.RoundToInt(Math.Pow(Math.Ceiling(Math.Log2(scale)), 2)), MinScale, MaxScale);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static Span<Color16> Apply(
-		Config? config,
+		Config config,
 		uint scaleMultiplier,
 		ReadOnlySpan<Color16> sourceData,
 		Vector2I sourceSize,
 		Span<Color16> targetData,
 		Vector2I targetSize
 	) {
-		if (config is null) {
-			throw new ArgumentNullException(nameof(config));
-		}
-
-		if (scaleMultiplier < MinScale || scaleMultiplier > MaxScale || !NumericsExt.IsPow2(scaleMultiplier)) {
-			throw new ArgumentOutOfRangeException(nameof(scaleMultiplier));
-		}
-
-		if (sourceSize.X * sourceSize.Y > sourceData.Length) {
-			throw new ArgumentOutOfRangeException(nameof(sourceData));
-		}
-
-		var targetSizeCalculated = sourceSize * scaleMultiplier;
-		if (targetSize != targetSizeCalculated) {
-			throw new ArgumentOutOfRangeException(nameof(targetSize));
-		}
-
-		if (targetData.IsEmpty) {
-			targetData = SpanExt.MakePinned<Color16>(targetSize.Area);
-		}
-		else {
-			if (targetSize.Area > targetData.Length) {
-				throw new ArgumentOutOfRangeException(nameof(targetData));
-			}
-		}
+		Common.ApplyValidate(config, scaleMultiplier, sourceData, sourceSize, ref targetData, targetSize);
 
 		var scalerInstance = new Scaler(
-			configuration: in config,
+			configuration: config,
 			scaleMultiplier: scaleMultiplier,
 			sourceSize: sourceSize,
 			targetSize: targetSize
@@ -70,34 +51,12 @@ internal sealed partial class Scaler {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private Scaler(
-		in Config configuration,
+		Config configuration,
 		uint scaleMultiplier,
 		Vector2I sourceSize,
 		Vector2I targetSize
-	) {
-		/*
-		if (sourceData is null) {
-			throw new ArgumentNullException(nameof(sourceData));
-		}
-		if (targetData is null) {
-			throw new ArgumentNullException(nameof(targetData));
-		}
-		*/
-		if (sourceSize.X <= 0 || sourceSize.Y <= 0) {
-			throw new ArgumentOutOfRangeException(nameof(sourceSize));
-		}
-
-		ScaleMultiplier = scaleMultiplier;
-		Configuration = configuration;
-		SourceSize = sourceSize;
-		TargetSize = targetSize;
+	) : base(configuration, scaleMultiplier, sourceSize, targetSize) {
 	}
-
-	private readonly Config Configuration;
-
-	private readonly uint ScaleMultiplier;
-	private readonly Vector2I SourceSize;
-	private readonly Vector2I TargetSize;
 
 	private void Scale(ReadOnlySpan<Color16> source, Span<Color16> target) {
 		if (ScaleMultiplier == 1) {

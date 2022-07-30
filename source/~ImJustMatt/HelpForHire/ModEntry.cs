@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace HelpForHire;
 
 using Chores;

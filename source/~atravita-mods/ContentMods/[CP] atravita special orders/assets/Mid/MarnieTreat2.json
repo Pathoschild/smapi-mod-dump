@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "MarnieTreat2 - Special Order Dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Marnie",
+        "Entries":{
+            "atravita.MarnieTreat2_InProgress": "{{i18n:atravita.marnie_treat_2_inprogress}}$h",
+            "atravita.MarnieTreat2_Completed": "{{i18n:atravita.marnie_treat_2_completed}}"
+        }
+    },
+    {
+        "LogName": "MarnieTreat2 - Special Order",
+        "Action": "EditData",
+        "Target": "Data/SpecialOrders",
+        "Entries": {
+            "atravita.MarnieTreat2": {
+                "Name": "{{i18n:atravita.marnie_treat_2.name}}",
+                "Requester": "Marnie",
+                "Duration": "TwoWeeks",
+                "Repeatable": "{{Repeatability}}",
+                "RequiredTags": "mail_atravita_MarnieTreat_Reward, season_fall",
+                "OrderType": "",
+                "SpecialRule": "",
+                "ItemToRemoveOnEnd": null,
+                "MailToRemoveOnEnd": null,
+                "Text": "{{i18n:atravita.marnie_treat_2.text}}",
+                "RandomizedElements": null,
+                "Objectives": [
+                    {
+                        "Type": "Collect",
+                        "Text": "{{i18n:atravita.marnie_treat_2.gather}}",
+                        "RequiredCount": "250",
+                        "Data": {
+                            "AcceptedContextTags": "item_amaranth"
+                        }
+                    },
+                    {
+                        "Type": "Ship",
+                        "Text": "[atravita.MarnieTreat2.ship]",
+                        "RequiredCount": "250",
+                        "Data": {
+                            "AcceptedContextTags": "item_amaranth"
+                        }
+                    }
+                ],
+                "Rewards": [
+                    {
+                        "Type": "Money",
+                        "Data": {"Amount": "3000"}
+                    },
+                    {
+                        "Type": "Mail",
+                        "Data": {
+                            "MailReceived": "atravita_MarnieTreat2_Reward",
+                            "NoLetter": "false"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+    ]
+}

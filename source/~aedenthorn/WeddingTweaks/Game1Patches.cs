@@ -47,7 +47,7 @@ namespace WeddingTweaks
         }
         public static void getCharacterFromName_Prefix(string name)
         {
-            if (EventPatches.startingLoadActors)
+            if (ModEntry.startingLoadActors)
                 lastGotCharacter = name;
         }
     }

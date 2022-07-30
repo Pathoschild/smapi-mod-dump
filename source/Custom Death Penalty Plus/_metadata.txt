@@ -6,9 +6,9 @@ mods:
    Custom Death Penalty Plus
 
 latest commit:
-   commit ed692ee1cc469c558c4c8132f0b9baaa9093273b
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Sat Dec 4 16:13:12 2021 +1100
+   commit 0334bf0fcefa068464b5b227eeb81f847c368fd0
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Tue Jul 5 10:52:22 2022 +1000
    
-       updated for smapi 3.13
+       Update README.md
    

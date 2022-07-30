@@ -6,11 +6,13 @@ mods:
    Recurring Reminders
 
 latest commit:
-   commit 43a59b0f5b5e2a97f2d004c996c0dfa2e2b2f250
+   commit fcbceac03efddbdb0bdaae5a34d5754cef6dc614
    Author: Nithish Kumar <nithssh@protonmail.com>
-   Date:   Tue May 17 21:02:46 2022 +0530
+   Date:   Sat Jul 16 21:21:38 2022 +0530
    
-       Allow wider time range for reminders (#18)
-       Also:
-       - Remove depreciated calls for SMAPI 4.0
+       Release for 2.2.0
+       - Fix issues with multiplayer
+       - Allowed setting reminders till 2AM (previously till 12AM)
+       - Fix issue with 12AM and 12PM being mixed up
+       - Added Chinese translations
    

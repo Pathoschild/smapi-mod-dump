@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Salal Berry",
+	"Price": 75,
+	"Description": "A sweet berry filled with antioxidants.",
+	"Category": "Fruit",
+	"Edibility": 28,
+	"GiftTastes":
+	{
+	    "Love": [ "Leah" ],
+		"Like": [ "Harvey", "Andy", "Lance", "Demetrius", "Evelyn", "George" ],
+		"Neutral": [ "MarlonFay", "Wizard", "Krobus", "Morgan", "Scarlett", "Sophia", "Dwarf", "Leo", "Apples", "GuntherSilvian", "Olivia", "Martin", "Victor", "Claire", "Susan", "MorrisTod", "Alex", "Elliott", "Sam", "Sebastian", "Shane", "Emily", "Penny", "Caroline", "Clint", "Gus", "Jodi", "Kent", "Lewis", "Linus", "Marnie", "Pam", "Pierre", "Robin", "Sandy", "Willy" ],
+	    "Dislike": [ "Haley", "Abigail", "Jas", "Vincent", "Maru" ]
+	},
+	"TranslationKey": "object.salal-berry",
+}

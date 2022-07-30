@@ -11,7 +11,7 @@
 {
   "Name": "Harvest Seeds",
   "Author": "aedenthorn",
-  "Version": "0.2.1",
+  "Version": "0.2.2",
   "Description": "Harvest Seeds.",
   "UniqueID": "aedenthorn.HarvestSeeds",
   "EntryDll": "HarvestSeeds.dll",

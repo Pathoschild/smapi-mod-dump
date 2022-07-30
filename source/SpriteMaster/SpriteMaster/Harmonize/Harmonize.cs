@@ -13,6 +13,7 @@ using LinqFasterer;
 using Microsoft.Xna.Framework;
 using Pastel;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
@@ -34,7 +35,8 @@ internal static class Harmonize {
 		Postfix,
 		Finalizer,
 		Transpile,
-		Reverse
+		Reverse,
+		ReversePatched
 	}
 
 	internal enum Generic {
@@ -131,6 +133,7 @@ internal static class Harmonize {
 						finalizer: (attribute.PatchFixation == Fixation.Finalizer) ? method : null,
 						trans: (attribute.PatchFixation == Fixation.Transpile) ? method : null,
 						reverse: (attribute.PatchFixation == Fixation.Reverse) ? method : null,
+						reversePatched: (attribute.PatchFixation == Fixation.ReversePatched) ? method : null,
 						instanceMethod: attribute.Instance,
 						attribute: attribute
 					);
@@ -149,6 +152,7 @@ internal static class Harmonize {
 								finalizer: (attribute.PatchFixation == Fixation.Finalizer) ? method : null,
 								trans: (attribute.PatchFixation == Fixation.Transpile) ? method : null,
 								reverse: (attribute.PatchFixation == Fixation.Reverse) ? method : null,
+								reversePatched: (attribute.PatchFixation == Fixation.ReversePatched) ? method : null,
 								instanceMethod: attribute.Instance,
 								attribute: attribute
 							);
@@ -172,6 +176,7 @@ internal static class Harmonize {
 								finalizer: (attribute.PatchFixation == Fixation.Finalizer) ? method : null,
 								trans: (attribute.PatchFixation == Fixation.Transpile) ? method : null,
 								reverse: (attribute.PatchFixation == Fixation.Reverse) ? method : null,
+								reversePatched: (attribute.PatchFixation == Fixation.ReversePatched) ? method : null,
 								instanceMethod: attribute.Instance,
 								attribute: attribute
 							);
@@ -450,6 +455,7 @@ internal static class Harmonize {
 		MethodInfo? finalizer = null,
 		MethodInfo? trans = null,
 		MethodInfo? reverse = null,
+		MethodInfo? reversePatched = null,
 		int priority = Priority.Last,
 		bool instanceMethod = true
 	) {
@@ -505,6 +511,30 @@ internal static class Harmonize {
 				standin: MakeHarmonyMethod(reverse)
 			).Patch(HarmonyReversePatchType.Original);
 		}
+		if (reversePatched is not null) {
+			priority = Priority.Normal;
+
+			var typeMethod = GetPatchMethod(
+				type: type,
+				name: name,
+				method: referenceMethod ?? reversePatched,
+				attribute: attribute,
+				instance: instanceMethod,
+				isFinalizer: referenceMethod == finalizer
+			) ?? throw new ArgumentException($"Method '{name}' in type '{type.FullName}' could not be found");
+
+			var patchInfo = Harmony.GetPatchInfo(typeMethod);
+			bool isPatched =
+				(patchInfo?.Finalizers.Count ?? 0) != 0 ||
+				(patchInfo?.Postfixes.Count ?? 0) != 0 ||
+				(patchInfo?.Prefixes.Count ?? 0) != 0 ||
+				(patchInfo?.Transpilers.Count ?? 0) != 0;
+
+			instance.CreateReversePatcher(
+				original: typeMethod,
+				standin: MakeHarmonyMethod(reversePatched)
+			).Patch(isPatched ? HarmonyReversePatchType.Snapshot : HarmonyReversePatchType.Original);
+		}
 	}
 
 	internal static void Patch(
@@ -518,6 +548,7 @@ internal static class Harmonize {
 		MethodInfo? finalizer = null,
 		MethodInfo? trans = null,
 		MethodInfo? reverse = null,
+		MethodInfo? reversePatched = null,
 		int priority = Priority.Last,
 		bool instanceMethod = true
 	) {
@@ -580,6 +611,24 @@ internal static class Harmonize {
 				original: typeMethodInfoGeneric,
 				standin: MakeHarmonyMethod(reverse)
 			).Patch(HarmonyReversePatchType.Original);
+		}
+		if (reversePatched is not null) {
+			priority = Priority.Normal;
+
+			var typeMethod = GetPatchMethod(
+				type: type,
+				name: name,
+				method: referenceMethod ?? reversePatched,
+				attribute: attribute,
+				instance: instanceMethod,
+				isFinalizer: referenceMethod == finalizer
+			) ?? throw new ArgumentException($"Method '{name}' in type '{type.FullName}' could not be found");
+			var typeMethodInfo = typeMethod as MethodInfo ?? throw new InvalidCastException($"Could not get MethodInfo from '{typeMethod}'");
+			var typeMethodInfoGeneric = typeMethodInfo.MakeGenericMethod(genericType);
+			_ = instance.CreateReversePatcher(
+				original: typeMethodInfoGeneric,
+				standin: MakeHarmonyMethod(reversePatched)
+			).Patch(HarmonyReversePatchType.Snapshot);
 		}
 	}
 }

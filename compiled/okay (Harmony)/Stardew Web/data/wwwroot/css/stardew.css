@@ -24,6 +24,14 @@ body {
     background-size: cover;
 }
 
+.crop_writer_label {
+    font-weight:900;
+}
+.crop_writer_help {
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+    border-bottom: 1px dashed red
+}
 .stardew_container {
     width: 90%;
     padding-right: 15px;
@@ -32,6 +40,9 @@ body {
     margin-left: auto;
 }
 
+.planning_late {
+    background-color: #f0b1b1;
+}
 .friend_td {
     padding: 5px;
     background-color: rgba(255, 255, 255, 0.58);
@@ -40,6 +51,11 @@ body {
     background-clip: padding-box;
 }
 
+.building_button{
+    margin:1px;
+    font-family:Tahoma;
+    font-size:14pt;
+}
 .taste_div {
     height: 120px;
     width: 100%;
@@ -216,8 +232,14 @@ a.navbar_link {
 }
 
 
+.tombstone_label{
+    text-decoration:underline;
+    text-align:right;
+}
 
+.tombstone_data{
 
+}
 .no_border {
     border: none !important;
 }
@@ -679,7 +701,7 @@ a.navbar_link {
 }
 
 .showpop {
-    visibility: visible;
+    visibility: visible!important;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s
 }
@@ -691,7 +713,7 @@ a.navbar_link {
 }
 
 .showlookup {
-    visibility: visible;
+    visibility: visible !important;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s
 }
@@ -736,7 +758,10 @@ a.navbar_link {
     }
 }
 
-
+.exp_map_thumb{
+    width:200px;
+    height:200px;
+}
 .config_table_details {
     border: 2px solid black;
     padding: 3px;
@@ -1308,4 +1333,9 @@ a.quest_link {
 .dragging {
     border: 4px dashed black;
     background-color:white;
+}
+
+.modern_col_header {
+    background-color: white !important;
+    border-bottom: 2px solid black !important;
 }

@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11809
-IDs: ribeena.busspriteadjuster
-update keys: Nexus:11809

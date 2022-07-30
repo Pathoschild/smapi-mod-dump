@@ -24,7 +24,7 @@ namespace BetterBeehouses.integration
             if (!ModEntry.helper.ModRegistry.IsLoaded("Digus.PFMAutomate"))
                 return false;
 
-            ModEntry.monitor.Log($"PFMAutomate integration {(isPatched ? "Disabling" : "Enabling")}.", LogLevel.Trace);
+            ModEntry.monitor.Log($"PFMAutomate integration {(ModEntry.config.PatchPFM && ModEntry.config.PatchAutomate ? "Enabling" : "Disabling")}.");
 
             var target = AccessTools.TypeByName("PFMAutomate.AutomateOverrides").MethodNamed("GetFor");
 
@@ -33,7 +33,7 @@ namespace BetterBeehouses.integration
                 ModEntry.harmony.Patch(target, prefix: new(typeof(PFMAutomatePatch),nameof(Prefix)));
                 isPatched = true;
             }
-            else
+            else if(isPatched && !(ModEntry.config.PatchPFM && ModEntry.config.PatchAutomate))
             {
                 ModEntry.harmony.Unpatch(target, HarmonyPatchType.Prefix, ModEntry.ModID);
                 isPatched = false;

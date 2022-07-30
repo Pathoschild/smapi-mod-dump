@@ -6,6 +6,7 @@
                 <tr>
                     <th class="color_header_bg fixed_header">Id</th>
                     <th class="color_header_bg fixed_header">Name</th>
+                    <th class="color_header_bg fixed_header">Vanilla</th>
                     <th class="color_header_bg fixed_header">NPC</th>
                     <th class="color_header_bg fixed_header">Location</th>
                     <th class="color_header_bg fixed_header">Results</th>
@@ -20,15 +21,20 @@
 <div class="message_board_title_flex">Un-Seen Events</div>
 <div class="message_paper_board_flex base_font_flex">
     <div style="max-height:300px;width:100%; overflow:auto;">
-        <div class="container">
-            <div class="row">
-                <div class="col-2 m-1 color_header_bg stardew_round_border">Id</div>
-                <div class="col-3 m-1 color_header_bg stardew_round_border">Name</div>
-                <div class="col-2 m-1 color_header_bg stardew_round_border">NPC</div>
-                <div class="col-2 m-1 color_header_bg stardew_round_border">Location</div>
-                <div class="col-2 m-1 color_header_bg stardew_round_border">Seen</div>
-            </div>
-            #ROWS#
-        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="color_header_bg fixed_header">Id</th>
+                    <th class="color_header_bg fixed_header">Name</th>
+                    <th class="color_header_bg fixed_header">Vanilla</th>
+                    <th class="color_header_bg fixed_header">NPC</th>
+                    <th class="color_header_bg fixed_header">Location</th>
+                    <th class="color_header_bg fixed_header">Seen</th>
+                </tr>
+            </thead>
+            <tbody>
+                #ROWS#
+            </tbody>
+        </table>
     </div>
 </div>

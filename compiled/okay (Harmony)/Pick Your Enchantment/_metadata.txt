@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/11376
 IDs: atravita.ForgeMenuChoice
-update keys: Nexus:11376, GitHub:atravita-mods/ForgeMenuChoice, ModDrop:1125882
+update keys: Nexus:11376, ModDrop:1125882, GitHub:atravita-mods/StardewMods

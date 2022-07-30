@@ -8,12 +8,19 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SmartBuilding.APIs;
+using DecidedlyShared.Logging;
 using SmartBuilding.UI;
 using SmartBuilding.Utilities;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 using xTile.Dimensions;
 
 namespace SmartBuilding
@@ -22,27 +29,16 @@ namespace SmartBuilding
     {
         private Logger logger;
         private bool commandRunOnce = false;
-        private Texture2D texture;
         private ModEntry mod;
+        private IDynamicGameAssetsApi dgaApi;
+        private IdentificationUtils identificationUtils;
 
-        public ConsoleCommand(Logger logger, Texture2D texture, ModEntry mod)
+        public ConsoleCommand(Logger logger, ModEntry mod, IDynamicGameAssetsApi dgaApi, IdentificationUtils identificationUtils)
         {
             this.logger = logger;
-            this.texture = texture;
             this.mod = mod; // This is a terrible way to access the item identification, but it'll do for now.
-        }
-
-        /// <summary>
-        /// Both arguments are ignored.
-        /// </summary>
-        /// <param name="command">Ignored.</param>
-        /// <param name="args">Ignored.</param>
-        public void BindingUI(string command, string[] args)
-        {
-            Rectangle viewport = Game1.uiViewport;
-            BindingUi binding = new BindingUi(viewport.X, viewport.Y, viewport.Width, viewport.Height, texture, true);
-
-            Game1.activeClickableMenu = binding;
+            this.dgaApi = dgaApi; // This is also terrible.
+            this.identificationUtils = identificationUtils;
         }
 
         public void IdentifyItemsCommand(string command, string[] args)
@@ -55,8 +51,75 @@ namespace SmartBuilding
                 {
                     if (item != null)
                     {
-                        ItemType type = mod.IdentifyItemType(item as StardewValley.Object);
-                        logger.Log($"ItemType of {item.Name}: {type}.", LogLevel.Info);
+                        try
+                        {
+                            ItemType type = identificationUtils.IdentifyItemType(item as StardewValley.Object);
+                            logger.Log($"ItemType of {item.Name}: {type}.", LogLevel.Info);
+
+                            if (dgaApi?.GetDGAItemId(item) != null)
+                            {
+                                // This did not return null, so we know this is a DGA item.
+                                logger.Log($"{item.Name} is a DGA item.");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            logger.Log($"{e.Message}");
+                        }
+                    }
+                }
+            }
+        }
+
+        public void IdentifyCursorTarget(string command, string[] args)
+        {
+            GameLocation here = Game1.currentLocation;
+            Vector2 targetTile = Game1.currentCursorTile;
+
+            if (here.objects.ContainsKey(targetTile))
+            {
+                var obj = here.objects[targetTile];
+                logger.Log($"Object under cursor's name: {obj.Name}");
+                logger.Log($"Object under cursor's display name: {obj.DisplayName}");
+                logger.Log($"Object under cursor's ParentSheetIndex: {obj.ParentSheetIndex}");
+                logger.Log($"Object under cursor's Type: {obj.Type}");
+                logger.Log($"Object under cursor's Category: {obj.Category}");
+                logger.Log($"Object under cursor's Fragility: {obj.Fragility}");
+                logger.Log($"Object under cursor's isSpawnedObject: {obj.isSpawnedObject}");
+                logger.Log($"Object under cursor's canBeGrabbed: {obj.CanBeGrabbed}");
+
+                if (obj is Chest newChest)
+                {
+                    logger.Log($"Object is giftBox: {newChest.giftbox}");
+                }
+
+                foreach (var data in obj.modData)
+                {
+                    foreach (var key in data.Keys)
+                    {
+                        foreach (var value in data.Values)
+                        {
+                            logger.Log($"Key: {key}, {value}");
+                        }
+                    }
+                }
+            }
+
+            if (here.terrainFeatures.ContainsKey(targetTile))
+            {
+                TerrainFeature feature = here.terrainFeatures[targetTile];
+                logger.Log($"TerrainFeature under cursor's modData: {feature.modData}");
+                logger.Log($"TerrainFeature under cursor's isPassable: {feature.isPassable()}");
+                logger.Log($"TerrainFeature under cursor's isActionable: {feature.isActionable()}");
+                
+                foreach (var data in feature.modData)
+                {
+                    foreach (var key in data.Keys)
+                    {
+                        foreach (var value in data.Values)
+                        {
+                            logger.Log($"Key: {key}, {value}");
+                        }
                     }
                 }
             }
@@ -337,6 +400,7 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Mahogany Seed", 10),
                         Utility.fuzzyItemSearch("Tapper", 10),
                         Utility.fuzzyItemSearch("Heavy Tapper", 10),
+                        Utility.fuzzyItemSearch("Tree Fertilizer", 100),
                     };
 
                     foreach (Item item in items)

@@ -1,6 +1,7 @@
 {
 	// Option Headers
 	"headerRanges": "範囲の設定",
+	"headerRangedSwings": "振り物の設定",
 	"headerUseOnTile": "使用の設定",
 	"headerFaceClick": "クリックへ向かう",
 	"headerMisc": "他の設定",
@@ -17,6 +18,10 @@
 	"hoeForRangeTooltip": "クワの",
 	"wateringCanForRangeName": "ジュウロの",
 	"wateringCanForRangeTooltip": "ジュウロの",
+	"scytheForRangeName": "鎌の",
+	"scytheForRangeTooltip": "鎌の",
+	"weaponsForRangeName": "ブキの",
+	"weaponsForRangeTooltip": "ブキの",
 	"seedsForRangeName": "タネの",
 	"seedsForRangeTooltip": "タネを植える、肥料をまける",
 	"objectsForRangeName": "置物の置く",
@@ -25,6 +30,12 @@
 	"rangeUnlimited": "無限",
 	"rangeDefault": "1マス（普通）",
 	"rangeExtended": "{{tiles}}マス",
+	
+	// Ranged Swings
+	"optionScytheSwingOriginName": "鎌振りの原点がカーソル",
+	"optionScytheSwingOriginTooltip": "鎌を振る時、原点がプレイヤーじゃなくてカーソル位置になる。",
+	"optionWeaponSwingOriginName": "ブキ振りの原点がカーソル",
+	"optionWeaponSwingOriginTooltip": "ブキを振る時、原点がプレイヤーじゃなくてカーソル位置になる。",
 	
 	// Usability
 	"optionSelfUsabilityName": "{{tool}}が自分のタイルにも使用",
@@ -52,8 +63,14 @@
 	"locationLogicNew": "カスタム範囲表示（おススメ）",
 	"locationLogicCombined": "どっちも表示",
 	
+	"optionHalfTilePositionsName": "半マスの範囲算出方法",
+	"optionHalfTilePositionsTooltip": "範囲算出の変更で、プレイヤーがマスとマスの間にいる時にも、どの方向でも範囲が同じくらいになる。",
+	
 	"optionAllowRangedChargeName": "遠くチャージ使用",
 	"optionAllowRangedChargeTooltip": "普通より遠く距離でもツールのチャージ行動が使える。この場合、プレイヤーじゃなくてカーソル位置から出ます。",
+	
+	"optionAttacksIgnoreObstaclesName": "攻撃は支障無視",
+	"optionAttacksIgnoreObstaclesTooltip": "邪魔があってもモンスターをどこでも攻撃できるようになる。",
 	
 	"optionOnClickOnlyName": "範囲設定はクリック時のみ",
 	"optionOnClickOnlyTooltip": "オン時、カスタム範囲設定はクリックのみで有効。オフ時、どんなどうぐ使用ボタンでも有効。",

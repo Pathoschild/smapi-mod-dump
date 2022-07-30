@@ -9,21 +9,31 @@
 *************************************************/
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SpriteMaster.Types.MemoryCache;
 
-internal abstract class AbstractMemoryCache<TKey, TValue> : AbstractObjectCache<TKey, TValue[]> where TKey : notnull where TValue : unmanaged {
-	internal AbstractMemoryCache(string name, long maxSize, RemovalCallbackDelegate? removalAction = null) :
-		base(name, maxSize, removalAction) {
+internal abstract class AbstractMemoryCache<TKey, TValue> :
+	IMemoryCache<TKey, TValue>
+	where TKey : notnull where TValue : unmanaged {
+
+	protected readonly RemovalCallbackDelegate<TKey, TValue[]>? RemovalCallback = null;
+	public string Name { get; }
+
+	internal AbstractMemoryCache(string name, RemovalCallbackDelegate<TKey, TValue[]>? removalAction = null) {
+		RemovalCallback = removalAction;
+		Name = name;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal virtual ReadOnlySpan<TValue> GetSpan(TKey key) =>
+	public virtual ReadOnlySpan<TValue> GetSpan(TKey key) =>
 		Get(key);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal virtual bool TryGetSpan(TKey key, out ReadOnlySpan<TValue> value) {
+	public virtual bool TryGetSpan(TKey key, out ReadOnlySpan<TValue> value) {
 		if (TryGet(key, out var val)) {
 			value = val;
 			return true;
@@ -33,14 +43,14 @@ internal abstract class AbstractMemoryCache<TKey, TValue> : AbstractObjectCache<
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal virtual ReadOnlySpan<TValue> UpdateSpan(TKey key, TValue[] value) =>
+	public virtual ReadOnlySpan<TValue> UpdateSpan(TKey key, TValue[] value) =>
 		Update(key, value);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal virtual ReadOnlySpan<TValue> RemoveSpan(TKey key) =>
+	public virtual ReadOnlySpan<TValue> RemoveSpan(TKey key) =>
 		Remove(key);
 
-	internal static AbstractMemoryCache<TKey, TValue> Create(string name, RemovalCallbackDelegate? removalAction = null, long? maxSize = null, long? maxCount = null, bool compressed = false) {
+	internal static IMemoryCache<TKey, TValue> Create(string name, RemovalCallbackDelegate<TKey, TValue[]>? removalAction = null, long? maxSize = null, long? maxCount = null, bool compressed = false) {
 		if (compressed) {
 			return new CompressedMemoryCache<TKey, TValue>(name, maxSize, removalAction);
 		}
@@ -48,4 +58,23 @@ internal abstract class AbstractMemoryCache<TKey, TValue> : AbstractObjectCache<
 			return new MemoryCache<TKey, TValue>(name, maxSize, removalAction);
 		}
 	}
+
+	public abstract void Dispose();
+	public abstract ValueTask DisposeAsync();
+	public abstract ulong? OnPurgeHard(IPurgeable.Target target, CancellationToken cancellationToken = default);
+	public abstract ulong? OnPurgeSoft(IPurgeable.Target target, CancellationToken cancellationToken = default);
+	public abstract long SizeBytes { get; }
+	public abstract long TotalSize { get; }
+	public abstract int Count { get; }
+	public abstract TValue[]? Get(TKey key);
+	public abstract bool TryGet(TKey key, [NotNullWhen(true)] out TValue[]? value);
+	public abstract TValue[] Set(TKey key, TValue[] value);
+	public abstract void SetFast(TKey key, TValue[] value);
+	public abstract TValue[]? Update(TKey key, TValue[] value);
+	public abstract TValue[]? Remove(TKey key);
+	public abstract void RemoveFast(TKey key);
+	public abstract void Trim(int count);
+	public abstract void TrimTo(int count);
+	public abstract void Clear();
+	public abstract (ulong Count, ulong Size) ClearWithCount();
 }

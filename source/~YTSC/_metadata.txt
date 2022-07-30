@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/YTSC/StardewValleyMods
+   Git: https://github.com/YTSC/StardewValleyMods.git
+
+mods:
+   Enhanced Slingshots
+   Quality Fish Ponds
+
+latest commit:
+   commit 33505157bb072baa0a68bb0ebf4c575a3497c10f
+   Author: YTSC <yuriphone01@live.com>
+   Date:   Fri Jul 8 00:07:19 2022 -0300
+   
+       1.1.0
+   

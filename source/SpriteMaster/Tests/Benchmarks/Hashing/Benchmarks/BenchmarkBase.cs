@@ -23,7 +23,6 @@ public abstract class BenchmarkBaseHashing<TDataType, TBase> : BenchmarkBaseImpl
 	[GlobalSetup]
 	public virtual void AlwaysRunBefore() {
 		RuntimeHelpers.RunClassConstructor(typeof(XxHash3).TypeHandle);
-		RuntimeHelpers.RunClassConstructor(typeof(XxHash3Exp).TypeHandle);
 	}
 
 	private static class Impl {
@@ -80,18 +79,6 @@ public abstract class BenchmarkBaseHashing<TDataType, TBase> : BenchmarkBaseImpl
 			[Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public ulong Hash(byte[] value) {
 				return SpriteMaster.Hashing.Algorithms.XxHash3.Hash64(value);
-			}
-		}
-
-		internal struct XxHash3ExpImpl : IHashImpl<ulong> {
-			[Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public ulong Hash(string value) {
-				return SpriteMaster.Hashing.Algorithms.XxHash3Exp.Hash64(value);
-			}
-
-			[Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public ulong Hash(byte[] value) {
-				return SpriteMaster.Hashing.Algorithms.XxHash3Exp.Hash64(value);
 			}
 		}
 
@@ -317,16 +304,6 @@ public abstract class BenchmarkBaseHashing<TDataType, TBase> : BenchmarkBaseImpl
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
 	public ulong XxHash3(TDataType dataSet) {
 		return Impl.Hash<ulong, Impl.XxHash3Impl>(dataSet);
-	}
-
-	#endregion
-
-	#region xxHash3 .NET (Experimental)
-
-	[Benchmark(Description = "xxHash3 (Experimental)")]
-	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong XxHash3Experimental(TDataType dataSet) {
-		return Impl.Hash<ulong, Impl.XxHash3ExpImpl>(dataSet);
 	}
 
 	#endregion

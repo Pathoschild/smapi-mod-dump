@@ -13,6 +13,7 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 #region using directives
 
 using Common.Extensions.Reflection;
+using Enchantments;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
@@ -33,7 +34,7 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatch : Common.Harm
 
     #region harmony patches
 
-    /// <summary>Allow applying magic/sunburst enchant.</summary>
+    /// <summary>Allow applying new enchants.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> BaseEnchantmentGetAvailableEnchantmentsTranspiler(
         IEnumerable<CodeInstruction> instructions)
@@ -41,9 +42,15 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatch : Common.Harm
         var l = instructions.ToList();
         l.InsertRange(l.Count - 2, new List<CodeInstruction>
         {
+            // add magic / sunburst enchant
             new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
             new(OpCodes.Newobj, typeof(MagicEnchantment).RequireConstructor()),
-            new(OpCodes.Callvirt, typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add)))
+            new(OpCodes.Callvirt, typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
+
+            // add looter enchant
+            new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
+            new(OpCodes.Newobj, typeof(CarvingEnchantment).RequireConstructor()),
+            new(OpCodes.Callvirt, typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
         });
 
         return l.AsEnumerable();

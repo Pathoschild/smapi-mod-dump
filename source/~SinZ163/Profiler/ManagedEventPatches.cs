@@ -28,6 +28,7 @@ namespace Profiler
 
         public static ProfilerAPI API { get; private set; }
 
+
         public static void Initialize(IMonitor monitor, ModConfig config, ProfilerAPI api, Harmony harmony)
         {
             Monitor = monitor;
@@ -101,13 +102,8 @@ namespace Profiler
         }
         public static Stopwatch StartTimerSmallLoop(object instance, object handler)
         {
-            // For whatever reason, one of the overloads of Raise wraps the local variable in a thing, this grabs both
-            var actualHandler = handler.GetType().GetField("handler")?.GetValue(handler) ?? handler;
-            var property = actualHandler.GetType().GetProperty("SourceMod");
-            var modInfo = property.GetValue(actualHandler) as IModInfo;
-
-            string eventName = (string)instance.GetType().GetProperty("EventName").GetValue(instance);
-            API.Push(new EventDurationMetadata(modInfo.Manifest.UniqueID, eventName, "", -1, new()));
+            // intentionally not setting modId and eventType to save on reflection calls
+            API.Push(new EventDurationMetadata("", "", "", -1, new()));
             return Stopwatch.StartNew();
         }
         public static void StopTimerSmallLoop(object instance, object handler, Stopwatch sw, List<(IModInfo, Stopwatch)> timers)
@@ -129,7 +125,11 @@ namespace Profiler
 
             API.Pop(metadata =>
             {
-                metadata = metadata with { Details = extra };
+                metadata = metadata with { 
+                    ModId = modInfo.Manifest.UniqueID,
+                    EventType = eventName,
+                    Details = extra
+                };
                 if (metadata is EventDurationMetadata durationMetadata)
                 {
                     metadata = durationMetadata with { Duration = sw.Elapsed.TotalMilliseconds };

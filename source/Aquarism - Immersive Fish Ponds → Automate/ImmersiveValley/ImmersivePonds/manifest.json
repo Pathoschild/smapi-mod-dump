@@ -11,7 +11,7 @@
 {
   "Name": "Aquarism - Immersive Fish Ponds",
   "Author": "DaLion",
-  "Version": "3.0.1",
+  "Version": "3.0.2",
   "Description": "Make your Fish Ponds immersive and actually useful.",
   "UniqueID": "DaLion.ImmersivePonds",
   "EntryDll": "ImmersivePonds.dll",
@@ -25,7 +25,7 @@
     },
     {
       "UniqueID": "DaLion.ImmersiveProfessions",
-      "MinimumVersion": "5.0.1",
+      "MinimumVersion": "5.0.2",
       "IsRequired": false
     },
     {

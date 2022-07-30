@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Snatcher Worm",
+	"Description": "Its large jaws are powerful enough to crush rocks.",
+	"Category": "Fish",
+	"Edibility": 13,
+	"EdibleIsDrink": false,
+	"Price": 570,
+	"GiftTastes":
+	{
+		"Dislike": [ "Wizard", "Lance", "Martin", "Elliott", "Willy", "Harvey", "Demetrius", "Sebastian", "Abigail", "Vincent", "Morgan", "Scarlett", "George", "Kent", "Jodi", "Claire", "Olivia", "Shane", "Haley", "Maru", "Pam", "Clint", "Jas", "Andy", "Gus" ]
+	},
+	"TranslationKey": "object.snatcher-worm",
+}

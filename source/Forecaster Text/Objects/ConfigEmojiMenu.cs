@@ -116,7 +116,8 @@ namespace ForecasterText.Objects {
                 int offset = index + this.PageIndex;
                 
                 // Get the emoji
-                ClickableComponent emoji = this.Emojis[index];
+                if (this.Emojis[index] is not ClickableComponent emoji || !this.WithinBounds(offset))
+                    continue;
                 
                 // Update the scale of the icon
                 bool selected = this.Value == offset;
@@ -149,12 +150,16 @@ namespace ForecasterText.Objects {
                 
                 this.PageIndex = Math.Max(0, this.PageIndex - ConfigEmojiMenu.SHIFT);
                 this.UpArrow.scale = 0.75f;
+                
+                this.ResetIcons();
             } else if (mouse.IsIn(increase)) {
-                if (this.PageIndex != this.TotalEmojis - ConfigEmojiMenu.SHIFT)
+                if (this.PageIndex < this.TotalEmojis - ConfigEmojiMenu.SHIFT)
                     Game1.playSound("Cowboy_Footstep");
                 
-                this.PageIndex = Math.Min(this.TotalEmojis - ConfigEmojiMenu.SHIFT, this.PageIndex + ConfigEmojiMenu.SHIFT);
+                this.PageIndex = Math.Min(this.PageIndex + ConfigEmojiMenu.SHIFT, ConfigEmojiMenu.SHIFT * (int)(Math.Floor((double)this.TotalEmojis / ConfigEmojiMenu.SHIFT)));
                 this.DownArrow.scale = 0.75f;
+                
+                this.ResetIcons();
             } else {
                 Vector2I relative = mouse - bounds;
                 
@@ -164,14 +169,18 @@ namespace ForecasterText.Objects {
                 if (top >= 0.0f && left >= 0.0f) {
                     uint column = (uint)Math.Floor(left);
                     uint row = (uint)Math.Floor(top);
+                    int emote = (int)((row * ConfigEmojiMenu.PER_ROW) + column + this.PageIndex);
                     
-                    if (column <= ConfigEmojiMenu.PER_ROW && row <= ConfigEmojiMenu.ROWS) {
-                        this.Value = (uint)((row * ConfigEmojiMenu.PER_ROW) + column + this.PageIndex);
+                    if (column < ConfigEmojiMenu.PER_ROW && row < ConfigEmojiMenu.ROWS && this.WithinBounds(emote)) {
+                        this.Value = (uint)emote;
                         Game1.playSound("coin");
                     }
                 }
             }
         }
+        
+        public bool WithinBounds(int emote)
+            => emote >= 0 && emote < this.TotalEmojis;
         
         public void ResetView() {
             this.PageIndex = 0;
@@ -179,6 +188,16 @@ namespace ForecasterText.Objects {
             // Make sure we scroll the current emoji into view by default
             while (this.Value > this.PageIndex + ConfigEmojiMenu.SHIFT)
                 this.PageIndex += ConfigEmojiMenu.SHIFT;
+            
+            this.ResetIcons();
+        }
+        
+        public void ResetIcons() {
+            // Reset the emoji scale
+            this.Emojis.ForEach(icon => icon.scale = 1.0f);
+            
+            // Reset the pulse
+            this.Blinking.Reset();
         }
     }
 }

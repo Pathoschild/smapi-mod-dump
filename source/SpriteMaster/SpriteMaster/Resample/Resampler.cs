@@ -9,6 +9,7 @@
 *************************************************/
 
 using LinqFasterer;
+using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Caching;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
@@ -20,8 +21,10 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using SpriteMaster.Types.Spans;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SpriteMaster.Resample;
@@ -216,6 +219,7 @@ internal sealed class Resampler {
 			);
 		}
 
+		/*
 		if (Config.Debug.Sprite.DumpReference) {
 			Textures.DumpTexture(
 				source: spriteRawData8,
@@ -224,6 +228,7 @@ internal sealed class Resampler {
 				path: MakeDumpPath(modifiers: new[] { "reference", "reduced" })
 			);
 		}
+		*/
 
 		// At this point, rawData includes just the sprite's raw data.
 
@@ -236,8 +241,28 @@ internal sealed class Resampler {
 
 		isGradient = analysis.MaxChannelShades >= Config.Resample.Analysis.MinimumGradientShades && (analysis.GradientDiagonal.Any || analysis.GradientAxial.Any);
 
+		bool fullPremultiplyAlpha = true;
+		bool premultiplyAlpha = Config.Resample.PremultiplyAlpha;
+		bool gammaCorrect = Config.Resample.AssumeGammaCorrected;
+
+		double opaqueProportion = (double)analysis.OpaqueCount / spriteRawExtent.Area;
+		if (!isGradient) {
+			if (opaqueProportion <= Config.Resample.Analysis.MinimumPremultipliedOpaqueProportion) {
+				fullPremultiplyAlpha = false;
+				// TODO : I want to remove this line, but it's causing a single-line artifact in wet HoeDirt that I haven't resolved yet.
+				//premultiplyAlpha = false;
+				//gammaCorrect = false;
+			}
+		}
+		else {
+			if (opaqueProportion >= Config.Resample.Analysis.MaximumGradientOpaqueProportion) {
+				isGradient = false;
+			}
+		}
+
 		if (isGradient) {
-			foreach (var blacklistPattern in Config.Resample.GradientBlacklistPatterns) {
+			var blacklist = Config.Resample.GradientBlacklistPatterns;
+			foreach (var blacklistPattern in blacklist) {
 				if (blacklistPattern.IsMatch(input.Reference.NormalizedName())) {
 					isGradient = false;
 					break;
@@ -304,11 +329,15 @@ internal sealed class Resampler {
 
 		// Apply recolor
 		if (Config.Resample.Recolor.Enabled) {
+			float rScalar = (float)Config.Resample.Recolor.RScalar;
+			float gScalar = (float)Config.Resample.Recolor.GScalar;
+			float bScalar = (float)Config.Resample.Recolor.BScalar;
+
 			for (int i = 0; i < spriteRawData.Length; ++i) {
 				ref Color16 color = ref spriteRawData[i];
-				float r = Math.Clamp((float)(color.R.RealF * Config.Resample.Recolor.RScalar), 0.0f, 1.0f);
-				float g = Math.Clamp((float)(color.G.RealF * Config.Resample.Recolor.GScalar), 0.0f, 1.0f);
-				float b = Math.Clamp((float)(color.B.RealF * Config.Resample.Recolor.BScalar), 0.0f, 1.0f);
+				float r = Math.Clamp(color.R.RealF * rScalar, 0.0f, 1.0f);
+				float g = Math.Clamp(color.G.RealF * gScalar, 0.0f, 1.0f);
+				float b = Math.Clamp(color.B.RealF * bScalar, 0.0f, 1.0f);
 				color.R = Fixed16.FromReal(r);
 				color.G = Fixed16.FromReal(g);
 				color.B = Fixed16.FromReal(b);
@@ -325,19 +354,20 @@ internal sealed class Resampler {
 
 			// Adjust the scale value so that it is within the preferred dimensional limits
 			if (Config.Resample.Scale) {
+				int preferredMaxDimension = Config.PreferredMaxTextureDimension;
 				var originalScale = scale;
 				scale = 2;
 				for (uint s = originalScale; s > 2U; --s) {
 					var newDimensions = spriteRawExtent * s;
-					if (newDimensions.MaxOf <= Config.PreferredMaxTextureDimension) {
+					if (newDimensions.MaxOf <= preferredMaxDimension) {
 						scale = s;
 						break;
 					}
 				}
 			}
 
-			bool premultiplyAlpha = Config.Resample.PremultiplyAlpha && scalerInfo.PremultiplyAlpha;
-			bool gammaCorrect = Config.Resample.AssumeGammaCorrected && scalerInfo.GammaCorrect; // There is no reason to perform this pass with EPX, as EPX does not blend.
+			premultiplyAlpha = premultiplyAlpha && scalerInfo.PremultiplyAlpha;
+			gammaCorrect = gammaCorrect && scalerInfo.GammaCorrect; // There is no reason to perform this pass with EPX, as EPX does not blend.
 
 			bool handlePadding = !directImage;
 
@@ -375,7 +405,7 @@ internal sealed class Resampler {
 				}
 
 				if (premultiplyAlpha) {
-					PremultipliedAlpha.Reverse(spriteRawData, spriteRawExtent);
+					PremultipliedAlpha.Reverse(spriteRawData, spriteRawExtent, fullPremultiplyAlpha);
 				}
 
 				if (Config.Resample.Deposterization.PreEnabled) {
@@ -417,7 +447,7 @@ internal sealed class Resampler {
 				}
 
 				if (premultiplyAlpha) {
-					PremultipliedAlpha.Apply(bitmapDataWide, scaledSize);
+					PremultipliedAlpha.Apply(bitmapDataWide, scaledSize, fullPremultiplyAlpha);
 				}
 
 				if (gammaCorrect && currentGammaState == GammaState.Linear) {
@@ -475,6 +505,7 @@ internal sealed class Resampler {
 		var bitmapData = Color8.ConvertPinned(bitmapDataWide);
 		var resultData = bitmapData.AsBytes();
 
+		/*
 		if (Config.Debug.Sprite.DumpResample) {
 			Textures.DumpTexture(
 				source: bitmapData,
@@ -483,16 +514,10 @@ internal sealed class Resampler {
 				path: MakeDumpPath(analysis: analysis, padding: padding, modifiers: new[] { "resample", "narrowed" })
 			);
 		}
-
-		bool doRecompress = true;
-
-		// if the texture was originally compressed, do not recompress it for now. There seems to be a bug in the compressor in these cases.
-		//if (input.Reference.Format.IsCompressed()) {
-		//	doRecompress = false;
-		//}
+		*/
 
 		// TODO : For some reason, block compression gives incorrect results with EPX. I need to investigate this at some point.
-		if (Config.Resample.BlockCompression.Enabled && doRecompress && scaledSizeClamped.MinOf >= 4 && (scalerInfo?.BlockCompress ?? true)) {
+		if (Config.Resample.BlockCompression.Enabled && scaledSizeClamped.MinOf >= 4 && (scalerInfo?.BlockCompress ?? true)) {
 			// TODO : We can technically allocate the block padding before the scaling phase, and pass it a stride
 			// so it will just ignore the padding areas. That would be more efficient than this.
 
@@ -506,17 +531,15 @@ internal sealed class Resampler {
 			{
 				const int maxShades = byte.MaxValue + 1;
 
-				Span<int> alpha = stackalloc int[maxShades];
-				Span<int> blue = stackalloc int[maxShades];
-				Span<int> green = stackalloc int[maxShades];
-				Span<int> red = stackalloc int[maxShades];
-				for (int i = 0; i < maxShades; ++i) {
-					alpha[i] = 0;
-					blue[i] = 0;
-					green[i] = 0;
-					red[i] = 0;
-				}
-				
+				int* alpha = stackalloc int[maxShades];
+				Unsafe.InitBlockUnaligned(alpha, 0, sizeof(int) * maxShades);
+				int* blue = stackalloc int[maxShades];
+				Unsafe.InitBlockUnaligned(blue, 0, sizeof(int) * maxShades);
+				int* green = stackalloc int[maxShades];
+				Unsafe.InitBlockUnaligned(green, 0, sizeof(int) * maxShades);
+				int* red = stackalloc int[maxShades];
+				Unsafe.InitBlockUnaligned(red, 0, sizeof(int) * maxShades);
+
 				for (int i = 0; i < bitmapData.Length; ++i) {
 					var color = bitmapData[i];
 					alpha[color.A.Value]++;
@@ -554,30 +577,36 @@ internal sealed class Resampler {
 				for (y = 0; y < scaledSizeClamped.Y; ++y) {
 					var newBufferOffset = y * blockPaddedSize.X;
 					var bitmapOffset = y * scaledSizeClamped.X;
-					int x;
-					for (x = 0; x < scaledSizeClamped.X; ++x) {
-						spanDst[newBufferOffset + x] = spanSrc[bitmapOffset + x];
-					}
-					// Extent X across
-					int lastX = x - 1;
-					for (; x < blockPaddedSize.X; ++x) {
-						spanDst[newBufferOffset + x] = spanSrc[bitmapOffset + lastX];
-					}
+
+					int rowSize = scaledSizeClamped.X;
+
+					spanSrc.SliceUnsafe(bitmapOffset, rowSize).CopyTo(
+						spanDst.SliceUnsafe(newBufferOffset, rowSize)
+					);
+
+					// Extend X across
+					spanDst.SliceUnsafe(newBufferOffset + rowSize, blockPaddedSize.X - rowSize).Fill(
+						spanSrc[bitmapOffset + rowSize - 1]
+					);
 				}
 				// Extend existing data
 				var lastY = y - 1;
 				var sourceOffset = lastY * blockPaddedSize.X;
 				for (; y < blockPaddedSize.Y; ++y) {
 					int newBufferOffset = y * blockPaddedSize.X;
-					for (int x = 0; x < blockPaddedSize.X; ++x) {
-						spanDst[newBufferOffset + x] = spanDst[sourceOffset + x];
-					}
+
+					int padSize = blockPaddedSize.X;
+
+					spanDst.SliceUnsafe(sourceOffset, padSize).CopyTo(
+						spanDst.SliceUnsafe(newBufferOffset, padSize)
+					);
 				}
 
 				uncompressedBitmapData = spanDst;
 				blockPadding += blockPaddedSize - scaledSizeClamped;
 				scaledSizeClamped = blockPaddedSize;
 
+				/*
 				if (Config.Debug.Sprite.DumpResample) {
 					Textures.DumpTexture(
 						source: uncompressedBitmapData,
@@ -586,6 +615,7 @@ internal sealed class Resampler {
 						path: MakeDumpPath(analysis: analysis, padding: padding, modifiers: new[] { "resample", "blockpadded" })
 					);
 				}
+				*/
 			}
 
 			if (!TextureEncode.Encode(
@@ -652,11 +682,6 @@ internal sealed class Resampler {
 		spriteInstance.Texture = null;
 		return null;
 	}
-
-	internal static readonly Action<XTexture2D, int, byte[], int, int>? PlatformSetData = typeof(XTexture2D).GetMethods(
-		BindingFlags.Instance | BindingFlags.NonPublic
-	).SingleF(m => m.Name == "PlatformSetData" && m.GetParameters().Length == 4).MakeGenericMethod(typeof(byte))
-		.CreateDelegate<Action<XTexture2D, int, byte[], int, int>>();
 
 	private static ManagedTexture2D? UpscaleInternal(ManagedSpriteInstance spriteInstance, ref uint scale, SpriteInfo input, ulong hash, ref Vector2B wrapped, bool async, out ResampleStatus result) {
 		var spriteFormat = TextureFormat.Color;
@@ -760,7 +785,7 @@ internal sealed class Resampler {
 			spriteInstance.UnpaddedSize = newSize - (spriteInstance.Padding.Sum + spriteInstance.BlockPadding);
 			spriteInstance.InnerRatio = (Vector2F)newSize / (Vector2F)spriteInstance.UnpaddedSize;
 
-			ManagedTexture2D? CreateTexture(ReadOnlyPinnedSpan<byte>.FixedSpan data) {
+			static ManagedTexture2D? CreateTexture(SpriteInfo input, ManagedSpriteInstance spriteInstance, Vector2I newSize, TextureFormat spriteFormat, ReadOnlyPinnedSpan<byte>.FixedSpan data) {
 				if (input.Reference.GraphicsDevice.IsDisposed) {
 					return null;
 				}
@@ -785,7 +810,14 @@ internal sealed class Resampler {
 					bitmapDataArray = bitmapData.ToArray();
 				}
 
-				void SyncCallFixed(ReadOnlyPinnedSpan<byte>.FixedSpan data) {
+				static void SyncCallFixed(
+					SpriteInfo input,
+					Vector2I newSize,
+					TextureFormat spriteFormat,
+					Texture2D reference,
+					ManagedSpriteInstance spriteInstance,
+					ReadOnlyPinnedSpan<byte>.FixedSpan data
+				) {
 					if (reference.IsDisposed) {
 						return;
 					}
@@ -794,7 +826,7 @@ internal sealed class Resampler {
 					}
 					ManagedTexture2D? newTexture = null;
 					try {
-						newTexture = CreateTexture(data);
+						newTexture = CreateTexture(input, spriteInstance, newSize, spriteFormat, data);
 						spriteInstance.Texture = newTexture;
 						spriteInstance.Finish();
 					}
@@ -805,7 +837,14 @@ internal sealed class Resampler {
 					}
 				}
 
-				void SyncCallArray() {
+				static void SyncCallArray(
+					SpriteInfo input,
+					Vector2I newSize,
+					TextureFormat spriteFormat,
+					Texture2D reference,
+					ManagedSpriteInstance spriteInstance,
+					byte[] array
+				) {
 					if (reference.IsDisposed) {
 						return;
 					}
@@ -814,9 +853,9 @@ internal sealed class Resampler {
 					}
 
 					unsafe {
-						fixed (byte* ptr = bitmapDataArray) {
-							var pinnedSpan = new ReadOnlyPinnedSpan<byte>(bitmapDataArray, ptr, bitmapDataArray.Length);
-							SyncCallFixed(pinnedSpan.Fixed);
+						fixed (byte* ptr = array) {
+							var pinnedSpan = new ReadOnlyPinnedSpan<byte>(array, ptr, array.Length);
+							SyncCallFixed(input, newSize, spriteFormat, reference, spriteInstance, pinnedSpan.Fixed);
 						}
 					}
 				}
@@ -824,13 +863,13 @@ internal sealed class Resampler {
 				if (bitmapDataArray is null) {
 					var fixedData = pinnedBitmapData.Fixed;
 					SynchronizedTaskScheduler.Instance.QueueDeferred(
-						() => SyncCallFixed(fixedData),
+						() => SyncCallFixed(input, newSize, spriteFormat, reference, spriteInstance, fixedData),
 						new(input.Reference.NormalizedName(), bitmapData.Length)
 					);
 				}
 				else {
 					SynchronizedTaskScheduler.Instance.QueueDeferred(
-						SyncCallArray,
+						() => SyncCallArray(input, newSize, spriteFormat, reference, spriteInstance, bitmapDataArray),
 						new(input.Reference.NormalizedName(), bitmapData.Length)
 					);
 				}
@@ -845,14 +884,14 @@ internal sealed class Resampler {
 						unsafe {
 							fixed (byte* ptr = asArray) {
 								var pinnedSpan = new ReadOnlyPinnedSpan<byte>(asArray, ptr, asArray.Length);
-								newTexture = CreateTexture(pinnedSpan.Fixed);
+								newTexture = CreateTexture(input, spriteInstance, newSize, spriteFormat, pinnedSpan.Fixed);
 							}
 						}
 					}
 					else {
-
+						newTexture = CreateTexture(input, spriteInstance, newSize, spriteFormat, pinnedBitmapData.Fixed);
 					}
-					newTexture = CreateTexture(pinnedBitmapData.Fixed);
+
 					if (!isAsync) {
 						return newTexture;
 					}

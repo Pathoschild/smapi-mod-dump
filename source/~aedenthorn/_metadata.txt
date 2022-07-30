@@ -12,9 +12,11 @@ mods:
    Another Jump Mod
    April Bug Fix Suite
    Bed Tweaks
+   Better Elevator
    Better Lightning Rods
    Boss Creatures
    Bulk Animal Purchase
+   Catalogue Filter
    Chess Boards
    Coin Collector
    Connected Garden Pots
@@ -74,6 +76,7 @@ mods:
    Here Fishy
    Hugs and Kisses
    Instant Growth Powder
+   Krobus Roommate Shop
    Livestock Choices
    Log Spam Filter
    Longer Seasons
@@ -105,8 +108,11 @@ mods:
    Persistent Grange Display
    Pipe Irrigation
    Placeable Mine Shafts
+   Planned Parenthood
    Plant and Fertilize All
    Planter Trees
+   Play Prairie King With NPCs
+   Prismatic Fire
    Prismatic Furniture
    Quick Load
    Quick Responses
@@ -119,6 +125,7 @@ mods:
    Show Players Behind Buildings
    Simple Screenshots
    Sixty-Nine Shirt
+   Skateboard
    Social Page Order Button
    Sound Effect Replacement
    Stardew RPG
@@ -142,9 +149,12 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit e42becb735e60dc7f13db451b71c956d2dda11a4
+   commit 00627d77dec5140cf29a48a5957dcca5690ad442
+   Merge: d138d87 d0d3a31
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun Jun 19 17:01:00 2022 -0400
+   Date:   Fri Jul 29 08:42:59 2022 -0400
    
-       etc
+       Merge pull request #20 from mycroftjr/patch-2
+       
+       fix possible infinite loop in MeteorDefence
    

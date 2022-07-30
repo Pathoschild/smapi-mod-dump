@@ -59,10 +59,11 @@ namespace Profiler
             Logger = new ProfilerLogger(path);
 
             var harmony = new HarmonyLib.Harmony(this.ModManifest.UniqueID);
-            ProfilerAPI = new ProfilerAPI(Logger, Config, harmony, Monitor);
+            ProfilerAPI = new ProfilerAPI(Logger, Config, harmony, timer, Monitor);
             PublicPatches.Initialize(ProfilerAPI, harmony);
             ManagedEventPatches.Initialize(Monitor, this.Config, ProfilerAPI, harmony);
             this.timer.Restart();
+            ProfilerAPI.Write(new EventMetadata(this.ModManifest.UniqueID, String.Join(separator: '/', this.ModManifest.UniqueID, "Init"), DateTimeOffset.Now.ToString("o", System.Globalization.CultureInfo.InvariantCulture), new()));
         }
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)

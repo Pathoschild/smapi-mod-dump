@@ -1,4 +1,26 @@
 [
+  { // soda machine
+    "ProducerName": "Soda Machine",
+    "OutputIdentifier": "167"
+  },
+  { // mill - rice
+    "ProducerName": "Mill",
+    "InputIdentifier": "271",
+    "InputStack": 1,
+    "OutputIdentifier": "423"
+  },
+  { // mill - beet
+    "ProducerName": "Mill",
+    "InputIdentifier": "284",
+    "InputStack": 1,
+    "OutputIdentifier": "245"
+  },
+  { // mill - wheat
+    "ProducerName": "Mill",
+    "InputIdentifier": "262",
+    "InputStack": 1,
+    "OutputIdentifier": "246"
+  },
   { // tiger Slime
     "ProducerName": "Slime Incubator",
     "InputIdentifier": "857",
@@ -106,17 +128,23 @@
     "FuelStack": 1,
     "OutputIdentifier": "910"
   },
-  { // mayonnaise
+  { // white egg mayonnaise
     "ProducerName": "Mayonnaise Machine",
     "InputIdentifier": "176",
     "InputStack": 1,
     "OutputIdentifier": "306"
   },
-  { // mayonnaise
+  { // brown egg mayonnaise
     "ProducerName": "Mayonnaise Machine",
     "InputIdentifier": "180",
     "InputStack": 1,
     "OutputIdentifier": "306"
+  },
+  { // void mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "305",
+    "InputStack": 1,
+    "OutputIdentifier": "308"
   },
   { // mayonnaise
     "ProducerName": "Mayonnaise Machine",
@@ -166,11 +194,39 @@
     "InputStack": 5,
     "OutputIdentifier": "395"
   },
+  { // aged pale ale
+    "ProducerName": "Cask",
+    "InputIdentifier": "303",
+    "InputStack": 1,
+    "OutputIdentifier": "303",
+    "OutputQuality": 4
+  },
+  { // aged mead
+    "ProducerName": "Cask",
+    "InputIdentifier": "459",
+    "InputStack": 1,
+    "OutputIdentifier": "459",
+    "OutputQuality": 4
+  },
+  { // aged beer
+    "ProducerName": "Cask",
+    "InputIdentifier": "346",
+    "InputStack": 1,
+    "OutputIdentifier": "346",
+    "OutputQuality": 4
+  },
   { // aged cheese
     "ProducerName": "Cask",
     "InputIdentifier": "424",
     "InputStack": 1,
     "OutputIdentifier": "424",
+    "OutputQuality": 4
+  },
+  { // aged goat cheese
+    "ProducerName": "Cask",
+    "InputIdentifier": "426",
+    "InputStack": 1,
+    "OutputIdentifier": "426",
     "OutputQuality": 4
   },
   { // aged wine
@@ -191,7 +247,7 @@
     "InputIdentifier": "186",
     "InputStack": 1,
     "OutputIdentifier": "424",
-    "OutputQuality": 3
+    "OutputQuality": 2
   },
   { // goat cheese
     "ProducerName": "Cheese Press",
@@ -204,7 +260,7 @@
     "InputIdentifier": "438",
     "InputStack": 1,
     "OutputIdentifier": "426",
-    "OutputQuality": 3
+    "OutputQuality": 2
   },
   { // duck mayonnaise
     "ProducerName": "Mayonnaise Machine",
@@ -429,10 +485,6 @@
   { //  Ostrich egg
     "ProducerName": "Ostrich",
     "OutputIdentifier": "289"
-  },
-  { //  joja cola
-    "ProducerName": "Sode Machine",
-    "OutputIdentifier": "167"
   },
   { //  bone mill
     "ProducerName": "Bone Mill",

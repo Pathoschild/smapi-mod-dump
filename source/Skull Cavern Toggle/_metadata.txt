@@ -6,9 +6,9 @@ mods:
    Skull Cavern Toggle
 
 latest commit:
-   commit ee0a9df57057bfa252c1e9afb9705f6b13585a84
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Tue May 3 15:27:46 2022 +1000
+   commit 4ace47dcc9af4e3b68ae20e53fab07800d21076d
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Tue Jul 5 10:54:14 2022 +1000
    
-       update for smapi 3.14
+       Update README.md
    

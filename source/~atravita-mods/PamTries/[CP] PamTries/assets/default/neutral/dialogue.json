@@ -1,0 +1,75 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "Log": "Base Neutral Dialogue",
+        "Entries":
+        {
+            "movieTheater": "Seems like we're got a theater. You know, kiddo, I used to love watching movies. Maybe I should go sometime...",
+            "winter_Thu": null,
+            "Mon8": "*sigh*#$b#$c .5#Why am I always short money, kiddo?#Wish I wasn't broke all the bloody time...#",
+            "Thu": "Heya @. You better treat my dear girl right.",
+            "Thu10_inlaw_Harvey": "Tell your hubby to lay off me, will you? I'm trying my best.",
+            "Fri6": "Half of town goes to the Saloon on Fridays. It's hard to have a social life if you don't go.#$e#*sigh*. Does not drinking ever get any easier?$s",
+            "spring_Sat4": "Really could do with a nice crisp parsnip right about now...%revealtastePam24",
+            "summer_Thu4": "Wish there was more to do in town.$s#$e#I miss drivin' all around the valley. Gotta see a lot of places.#$e#Now I mostly just go to the desert and back.",
+            "summer_Thu6": "Now Doc's tellin' me I watch too much TV.#$e#Jeeze. What else do I need to change?",
+            "summer_Thu8": "Town used to be a lot bigger, when the mines were still producing. A lot of people moved away when it closed.#$e#$1 PamTriesNewbies#We've been getting more new people recently - you, Leah...#$e#Your farm's really helping the local economy, though.",
+            "fall_Sat8": "Don't get why the newsperson always reports on the stock market. I couldn't care less. I've got no stocks, I haven't the money.$s",
+            "winter_Sat": "Blregh. There's nothing good on TV anymore.$s",
+            "Resort_Approach": "I'm gonna be goin' to Ginger Island today. I'm lookin' forward to a vacation!$h",
+            "winterResort_Approach": "I'm gonna be goin' to Ginger Island today. Lookin' forward to gettin' out of this cold...$h",
+            "Resort_Left": "Ah, nothin' like a nice relaxing vacation...",
+            "Resort_Bar": "Really wish I could have a little something right about now. Guess I'll have to settle for seltzer.#$b#Argh. No one likes seltzer.",
+            "Resort_Wander": "Wonder what else I can do on this island?$h",
+            "Resort_Bar_2": "Maybe just one drink? I'm on vacation...",
+            "Resort_Umbrella": "I think I'm startin' to burn?",
+            "Saloon_Entry": null,
+            "Saloon_Mon": null,
+            "Saloon_Tue": null,
+            "Saloon_Wed": null,
+            "Saloon_Thu": null,
+            "Saloon_Fri": null,
+            "Saloon_Sat": null,
+            "Saloon_Sun": null,
+            "spring_17_2": "@, you think I should get a popcorn machine?",
+            "summer_10_2": "Saw the news, kiddo? Yet another oil spill.#$e#$c 0.5#Betcha Accel ain't maintaining those ocean rigs proper.#Accel's probably cutting corners again, and the rest of us'll pay to clean this up.#",
+            "summer_28_2": "Summer's over. School year's about to start again.#$e#I ain't gonna miss these high temps, kiddo.$h",
+            "fall_23_2": "%Pam is humming to herself. It sounds like an infomercial jingle.#$e#Argh. Fell asleep to the TV, and now this stupid jingle is stuck in my head.",
+            "winter_12_2": "My microwave broke. They don't make things like they used to.#$e#Managed to pay for a new one, but wow they're much more expensive than what I remember.$s"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "LogName": "Bad Dialogue, rain",
+        "Entries": {
+            "Pam": "{{Random: Howdy, kid. Stayin' dry?++Wish I had a nice warm beverage to warm my hands. Or maybe some parsnip soup...++Heya, kiddo, how're you doing on a dreary day like this?|inputSeparator=++}}"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Dialogue Referencing Two Kids",
+        "Entries": {
+            "spring_7_2": "Say, @, how're your kids doing today?#$e#This lil town really is a great place to raise kids...",
+            "summer_Mon10": "Penny used to ride with me in the summers. We'd travel all over the country.#$b#But it wasn't like we saw anything that wasn't just the highways.#$e#She'd usually read the whole time.",
+            "fall_Thu8": "@, what did you want to do when you were a kid?",
+            "winter_Tue8": "Kids grow up so fast, don't they? Could've sworn %kid2 was just born yesterday...$h",
+            "winter_Tue8_inlaw_Penny": "#$c 0.5#How are my grandkids doing?$h#I still have difficulty believing I'm a grandma...$h#"
+        },
+        "When": {
+            "HasValue:{{ChildNames | valueAt=1}}": true
+        }
+    }
+]}

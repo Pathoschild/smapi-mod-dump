@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace Common.Integrations.ProducerFrameworkMod;
+namespace StardewMods.Common.Integrations.ProducerFrameworkMod;
 
 using StardewModdingAPI;
 

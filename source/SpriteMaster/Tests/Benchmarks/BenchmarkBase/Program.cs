@@ -21,6 +21,7 @@ using BenchmarkDotNet.Running;
 using JetBrains.Annotations;
 using LinqFasterer;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;

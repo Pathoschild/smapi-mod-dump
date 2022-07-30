@@ -63,7 +63,7 @@ namespace CustomCompanions.Framework.Patches
             if (CompanionManager.IsCustomCompanion(character))
             {
                 Companion companion = character as Companion;
-                if (companion.owner is null && companion.model != null && !String.IsNullOrEmpty(companion.model.InspectionDialogue))
+                if (companion.owner is null && companion.model != null && String.IsNullOrEmpty(companion.GetDialogue(probe: true).Text) is false)
                 {
                     Game1.mouseCursor = 4;
                     Game1.mouseCursorTransparency = Utility.tileWithinRadiusOfPlayer((int)tileLocation.X, (int)tileLocation.Y, 1, who) ? 1f : 0.5f;

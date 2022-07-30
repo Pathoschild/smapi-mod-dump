@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 032a614aa32d4f351d717a03194b0ff5cff47f0e
+   commit ce14c48ef4579fcf2ac12f406c5d134b4775ef14
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Mon Jun 27 13:01:27 2022 +0800
+   Date:   Sat Jul 30 12:44:16 2022 +0800
    
-       Update default.json
+       RSV Minecart repair made a bit easier
    

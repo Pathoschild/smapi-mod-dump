@@ -8,24 +8,22 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using MachineAugmentors.Harmony;
 using MachineAugmentors.Helpers;
 using MachineAugmentors.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Object = StardewValley.Object;
 
 namespace MachineAugmentors
@@ -103,6 +101,8 @@ namespace MachineAugmentors
 
             MachineInfo.IsPrismaticToolsModInstalled = helper.ModRegistry.IsLoaded("stokastic.PrismaticTools");
 
+            LegacyDataMigrator.OnModEntry(Helper);
+            Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             Helper.Events.Display.RenderedWorld += Display_RenderedWorld;
             Helper.Events.GameLoop.Saving += GameLoop_Saving;
             Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
@@ -113,10 +113,10 @@ namespace MachineAugmentors
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
 
 #region Game Patches
-            HarmonyInstance Harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new HarmonyLib.Harmony(this.ModManifest.UniqueID);
 
             //  Patch Object.performObjectDropInAction, so that we can detect when items are put into a machine, and then modify the output based on attached augmentors
-            Harmony.Patch(
+            harmony.Patch(
                original: AccessTools.Method(typeof(Object), nameof(Object.performObjectDropInAction)),
                prefix: new HarmonyMethod(typeof(GamePatches), nameof(GamePatches.PerformObjectDropInAction_Prefix)),
                postfix: new HarmonyMethod(typeof(GamePatches), nameof(GamePatches.PerformObjectDropInAction_Postfix))
@@ -124,20 +124,20 @@ namespace MachineAugmentors
 
             //  Patch Object.checkForAction, so that we can detect when processed items are collected from machines that don't require input,
             //  and then we can modify the new processed items based on attached augmentors
-            Harmony.Patch(
+            harmony.Patch(
                original: AccessTools.Method(typeof(Object), nameof(Object.checkForAction)),
                prefix: new HarmonyMethod(typeof(GamePatches), nameof(GamePatches.CheckForAction_Prefix)),
                postfix: new HarmonyMethod(typeof(GamePatches), nameof(GamePatches.CheckForAction_Postfix))
             );
 
             //  Patch Object.draw, so that we can draw icons of the attached augmentors after the object is drawn to a tile of the game world
-            Harmony.Patch(
+            harmony.Patch(
                 original: AccessTools.Method(typeof(Object), nameof(Object.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
                 postfix: new HarmonyMethod(typeof(GamePatches), nameof(GamePatches.Draw_Postfix))
             );
 
             //  Patch GameLocation.monsterDrop, so that we can give a small chance of making monsters also drop augmentors
-            Harmony.Patch(
+            harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.monsterDrop)),
                 postfix: new HarmonyMethod(typeof(GamePatches), nameof(GamePatches.MonsterDrop_Postfix))
             );
@@ -202,6 +202,18 @@ namespace MachineAugmentors
             }
             GlobalUserConfig.AfterLoaded();
             UserConfig = GlobalUserConfig;
+        }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // setup spacecore
+            ISpaceCoreAPI spacecoreAPI = Helper.ModRegistry.GetApi<ISpaceCoreAPI>("spacechase0.SpaceCore");
+            if (spacecoreAPI is null)
+            {
+                // Skip patcher mod behaviours if we fail to load the objects
+                ModInstance.Monitor.Log($"Couldn't access mod-provided API for SpaceCore. " + ModUniqueId + " will not be available, and no changes will be made.", LogLevel.Error);
+            }
+            spacecoreAPI.RegisterSerializerType(typeof(Augmentor));
         }
 
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)

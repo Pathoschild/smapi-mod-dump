@@ -23,7 +23,7 @@ namespace BetterBeehouses.integration
             if (!ModEntry.helper.ModRegistry.IsLoaded("Digus.ProducerFrameworkMod"))
                 return false;
 
-            ModEntry.monitor.Log("PFM Integration " + (isPatched ? "Disabling" : "Enabling"));
+            ModEntry.monitor.Log("PFM Integration " + (ModEntry.config.PatchPFM ? "Enabling" : "Disabling"));
             var type = AccessTools.TypeByName("ProducerFrameworkMod.ObjectOverrides");
 
             if (!isPatched && ModEntry.config.PatchPFM)
@@ -31,7 +31,7 @@ namespace BetterBeehouses.integration
                 for(int i = 0; i < patchesToPatch.Length; i++)
                     ModEntry.harmony.Patch(type.MethodNamed(patchesToPatch[i]), prefix: new(typeof(PFMPatch), nameof(Prefix)));
                 isPatched = true;
-            } else
+            } else if (isPatched && !ModEntry.config.PatchPFM)
             {
                 for(int i = 0; i < patchesToPatch.Length; i++)
                     ModEntry.harmony.Unpatch(type.MethodNamed(patchesToPatch[i]), HarmonyPatchType.Prefix, ModEntry.ModID);
@@ -41,6 +41,6 @@ namespace BetterBeehouses.integration
             return true;
         }
         private static bool Prefix(StardewValley.Object __0, ref bool __result)
-            => !(__result = __0.Name.Normalize() == "beehouse");
+            => !(__result = __0.Name.Uniformize() == "beehouse");
     }
 }

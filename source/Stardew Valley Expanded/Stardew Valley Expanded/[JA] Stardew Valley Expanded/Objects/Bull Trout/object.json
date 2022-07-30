@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Bull Trout",
+	"Description": "Prefers cold rivers and lakes with gravel beds.",
+	"Category": "Fish",
+	"Edibility": 10,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 185,
+	"IsColored": false,
+	"GiftTastes":
+	{
+		"Like": ["Willy"],
+		"Dislike": [ "Jodi", "Claire", "Olivia", "Pierre", "Evelyn", "Leah", "Robin", "Elliott", "Andy", "Gus", "Victor", "Kent", "Lance" ],
+		"Hate": ["George", "Shane", "Sebastian", "Abigail", "Haley", "Maru", "Pam", "Clint", "Jas", "Vincent" ]
+	},
+	"TranslationKey": "object.bull-trout",
+}

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using SpriteMaster.Types;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -17,22 +18,26 @@ namespace SpriteMaster.Resample.Scalers.xBRZ.Structures;
 
 [ImmutableObject(true)]
 [StructLayout(LayoutKind.Sequential, Size = (3 * 3 * sizeof(ulong)))]
-internal unsafe ref struct Kernel3X3 {
-	private readonly ulong Offset;
-	private readonly ulong* Data => (ulong*)Unsafe.AsPointer(ref Unsafe.AsRef(Offset));
+internal ref struct Kernel3X3 {
+	[UsedImplicitly]
+	private readonly ulong A, B, C;
+	[UsedImplicitly]
+	private readonly ulong E, F, G;
+	[UsedImplicitly]
+	private readonly ulong I, J, K;
 
-	internal readonly Color16 this[int index] => (Color16)Data[index];
+	internal readonly Color16 this[int index] => (Color16)Unsafe.Add(ref Unsafe.AsRef(A), index);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Kernel3X3(Color16 _0, Color16 _1, Color16 _2, Color16 _3, Color16 _4, Color16 _5, Color16 _6, Color16 _7, Color16 _8) : this() {
-		Data[0] = _0.AsPacked;
-		Data[1] = _1.AsPacked;
-		Data[2] = _2.AsPacked;
-		Data[3] = _3.AsPacked;
-		Data[4] = _4.AsPacked;
-		Data[5] = _5.AsPacked;
-		Data[6] = _6.AsPacked;
-		Data[7] = _7.AsPacked;
-		Data[8] = _8.AsPacked;
+		A = _0.AsPacked;
+		B = _1.AsPacked;
+		C = _2.AsPacked;
+		E = _3.AsPacked;
+		F = _4.AsPacked;
+		G = _5.AsPacked;
+		I = _6.AsPacked;
+		J = _7.AsPacked;
+		K = _8.AsPacked;
 	}
 }

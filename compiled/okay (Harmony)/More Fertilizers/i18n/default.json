@@ -5,6 +5,8 @@
   "MillProducesOrganic.description": "Organic goods fed into the mill will produce organic products.",
   "WaterOverlayColor.title": "Water Overlay Color",
   "WaterOverlayColor.description": "The color used to tint the water after fish food has been applied to it.",
+  "RecolorFruitTrees.title": "Recolor Fruit Trees",
+  "RecolorFruitTrees.description": "Whether or not fruit trees should be tinted to show that they've been fertilized",
 
   // For GMCM
   "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
@@ -28,7 +30,7 @@
   "specialorder.organic.mail.title": "Organic Crops Needed - Thank you!",
   "specialorder.organic.mail.text": "Ah, much thanks for providing the organic crops! I'm sure they'll fetch a pretty penny in Zuzu City. In thanks, I've attached this little gift I've found in storage...",
   "specialorder.organic.lewis_inprogress": "Ah, @, just in time! You'll do a good job providing us with excellent crops, I'm sure...",
-  "Lewis":  "Lewis",
+  "Lewis": "Lewis",
 
   // Item names and descriptions.
   "waterlogged-fertilizer.name": "Waterlogged Fertilizer",

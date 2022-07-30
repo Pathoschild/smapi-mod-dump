@@ -1,14 +1,18 @@
 {
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore"
+    }
+  ],
+  "EntryDll": "ForgeMenuChoice.dll",
   "Name": "Pick Your Enchantment",
   "Author": "atravita",
-  "Version": "1.0.4",
+  "Version": "1.1.0",
   "Description": "Allows you to pick which enchantment you get.",
   "UniqueID": "atravita.ForgeMenuChoice",
-  "EntryDll": "ForgeMenuChoice.dll",
+  "MinimumApiVersion": "3.15",
   "UpdateKeys": [
     "Nexus:11376",
-    "GitHub:atravita-mods/ForgeMenuChoice",
     "ModDrop:1125882"
-  ],
-  "MinimumApiVersion": "3.13"
+  ]
 }

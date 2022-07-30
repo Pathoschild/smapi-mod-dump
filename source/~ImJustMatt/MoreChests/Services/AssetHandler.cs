@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace StardewMods.MoreChests.Services;
 
 using System.Collections.Generic;

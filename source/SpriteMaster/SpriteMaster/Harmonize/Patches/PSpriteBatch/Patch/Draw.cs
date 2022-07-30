@@ -13,6 +13,7 @@ using SpriteMaster.Configuration;
 using SpriteMaster.Core;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
 
@@ -33,6 +34,9 @@ internal static class Draw {
 	 * 
 	 */
 
+	// This is here because the M1 seems to have issues with reverse patches.
+	internal static readonly ThreadLocal<bool> IsReverse = new(false);
+
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
 	public static bool OnDrawFirst(
 		XSpriteBatch __instance,
@@ -47,6 +51,10 @@ internal static class Draw {
 		ref ManagedTexture2D? __state
 	) {
 		if (!Config.IsEnabled) {
+			return true;
+		}
+
+		if (IsReverse.Value) {
 			return true;
 		}
 
@@ -80,6 +88,10 @@ internal static class Draw {
 			return true;
 		}
 
+		if (IsReverse.Value) {
+			return true;
+		}
+
 		return __instance.OnDraw(
 			texture: ref texture,
 			destination: ref destinationRectangle,
@@ -92,6 +104,7 @@ internal static class Draw {
 			__state: ref __state
 		);
 	}
+
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static bool ForwardDraw(
 		XSpriteBatch @this,
@@ -105,6 +118,10 @@ internal static class Draw {
 		float layerDepth = 0f
 	) {
 		if (!Config.IsEnabled) {
+			return true;
+		}
+
+		if (IsReverse.Value) {
 			return true;
 		}
 
@@ -160,6 +177,10 @@ internal static class Draw {
 			return true;
 		}
 
+		if (IsReverse.Value) {
+			return true;
+		}
+
 		@this.Draw(
 			texture: texture,
 			position: position,
@@ -178,6 +199,10 @@ internal static class Draw {
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.Last)]
 	public static bool OnDraw(XSpriteBatch __instance, ref XTexture2D? texture, ref XVector2 position, ref XRectangle? sourceRectangle, ref XColor color, float rotation, ref XVector2 origin, ref XVector2 scale, SpriteEffects effects, float layerDepth) {
 		if (!Config.IsEnabled) {
+			return true;
+		}
+
+		if (IsReverse.Value) {
 			return true;
 		}
 

@@ -17,10 +17,10 @@ sealed class ScalerInfo : IScalerInfo {
 	public Resample.Scaler Scaler => Resample.Scaler.SuperXBR;
 	public int MinScale => 1;
 	public int MaxScale => Config.MaxScale;
-	public XGraphics.TextureFilter Filter => XGraphics.TextureFilter.Linear;
-	public bool PremultiplyAlpha => true;
-	public bool GammaCorrect => true;
-	public bool BlockCompress => true;
+	public XGraphics.TextureFilter Filter => XGraphics.TextureFilter.Point;
+	public bool PremultiplyAlpha => false;
+	public bool GammaCorrect => false;
+	public bool BlockCompress => false;
 
 	public IScaler Interface => SuperXBR.Scaler.ScalerInterface.Instance;
 

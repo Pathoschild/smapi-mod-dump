@@ -10,7 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -24,11 +25,9 @@ namespace AutoShaker
 	/// </summary>
 	public class ModEntry : Mod
 	{
-		private const int SingleTileDistance = 64;
-
 		private ModConfig _config;
 
-		private readonly List<Bush> _shakenBushes = new List<Bush>();
+		private readonly HashSet<Bush> _shakenBushes = new();
 
 		private int _treesShaken;
 		private int _fruitTressShaken;
@@ -39,122 +38,105 @@ namespace AutoShaker
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
+			I18n.Init(helper.Translation);
 			_config = helper.ReadConfig<ModConfig>();
 
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.GameLoop.DayEnding += OnDayEnding;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
-			helper.Events.GameLoop.GameLaunched += (_,__) => _config.RegisterModConfigMenu(helper, ModManifest);
+			helper.Events.GameLoop.GameLaunched += (_,_) => _config.RegisterModConfigMenu(helper, ModManifest);
 		}
 
 		private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
-			if (!Game1.game1?.IsActive ?? true) return;
-			if (Game1.gameMode.Equals(Game1.loadingMode)) return;
-			if (!Game1.hasLoadedGame) return;
+			if (!Context.IsWorldReady) return;
 			if (!_config.IsShakerActive || (!_config.ShakeRegularTrees && !_config.ShakeFruitTrees && !_config.ShakeBushes)) return;
 			if (Game1.currentLocation == null || Game1.player == null) return;
 			if (Game1.CurrentEvent != null && (!Game1.CurrentEvent.playerControlSequence || !Game1.CurrentEvent.canPlayerUseTool())) return;
-			if (Game1.player.currentLocation.terrainFeatures.ToList().Count == 0 &&
-				Game1.player.currentLocation.largeTerrainFeatures.ToList().Count == 0) return;
+			if (Game1.player.currentLocation.terrainFeatures.Count() == 0 &&
+				Game1.player.currentLocation.largeTerrainFeatures.Count == 0) return;
 
 			var playerTileLocationPoint = Game1.player.getTileLocationPoint();
 			var playerMagnetism = Game1.player.GetAppliedMagneticRadius();
 
-			if (_config.ShakeRegularTrees || _config.ShakeFruitTrees)
+			var radius = _config.UsePlayerMagnetism ? playerMagnetism / Game1.tileSize : _config.ShakeDistance;
+
+			if (Game1.player.currentLocation.terrainFeatures.Count() > 0)
 			{
-				var terrainFeatures = Game1.player.currentLocation.terrainFeatures.Pairs
-					.Select(p => p.Value)
-					.Where(v => v is Tree || v is FruitTree || v is Bush);
-
-				foreach (var feature in terrainFeatures)
+				foreach (Vector2 vec in GetTilesToCheck(playerTileLocationPoint, radius))
 				{
-					var featureTileLocation = feature.currentTileLocation;
-
-					if (!IsInShakeRange(playerTileLocationPoint, featureTileLocation, playerMagnetism)) continue;
-
-					switch (feature)
+					if (Game1.currentLocation.terrainFeatures.TryGetValue(vec, out var feature)
+						&& feature is Tree or FruitTree or Bush)
 					{
-						// Tree cases
-						case Tree _ when !_config.ShakeRegularTrees:
-							continue;
-						case Tree treeFeature when treeFeature.stump.Value:
-							continue;
-						case Tree treeFeature when !treeFeature.hasSeed.Value:
-							continue;
-						case Tree treeFeature when !treeFeature.isActionable():
-							continue;
-						case Tree _ when Game1.player.ForagingLevel < 1:
-							continue;
-						case Tree treeFeature:
-							treeFeature.performUseAction(featureTileLocation, Game1.player.currentLocation);
-							_treesShaken += 1;
-							break;
+						var featureTileLocation = feature.currentTileLocation;
 
-						// Fruit Tree cases
-						case FruitTree _ when !_config.ShakeFruitTrees:
-							continue;
-						case FruitTree fruitTree when fruitTree.stump.Value:
-							continue;
-						case FruitTree fruitTree when fruitTree.fruitsOnTree.Value < _config.FruitsReadyToShake:
-							continue;
-						case FruitTree fruitTree when !fruitTree.isActionable():
-							continue;
-						case FruitTree fruitTree:
-							fruitTree.performUseAction(featureTileLocation, Game1.player.currentLocation);
-							_fruitTressShaken += 1;
-							break;
+						switch (feature)
+						{
+							// Tree cases
+							case Tree _ when !_config.ShakeRegularTrees:
+								continue;
+							case Tree treeFeature when treeFeature.stump.Value:
+								continue;
+							case Tree treeFeature when !treeFeature.hasSeed.Value:
+								continue;
+							case Tree treeFeature when !treeFeature.isActionable():
+								continue;
+							case Tree _ when Game1.player.ForagingLevel < 1:
+								continue;
+							case Tree treeFeature:
+								treeFeature.performUseAction(featureTileLocation, Game1.player.currentLocation);
+								_treesShaken += 1;
+								break;
 
-						case Bush _ when !_config.ShakeTeaBushes:
-							continue;
-						case Bush bushFeature when bushFeature.townBush.Value:
-							continue;
-						case Bush bushFeature when !bushFeature.isActionable():
-							continue;
-						case Bush bushFeature when !bushFeature.inBloom(Game1.currentSeason, Game1.dayOfMonth):
-							continue;
-						case Bush bushFeature:
-							bushFeature.performUseAction(featureTileLocation, Game1.player.currentLocation);
-							_shakenBushes.Add(bushFeature);
-							break;
+							// Fruit Tree cases
+							case FruitTree _ when !_config.ShakeFruitTrees:
+								continue;
+							case FruitTree fruitTree when fruitTree.stump.Value:
+								continue;
+							case FruitTree fruitTree when fruitTree.fruitsOnTree.Value < _config.FruitsReadyToShake:
+								continue;
+							case FruitTree fruitTree when !fruitTree.isActionable():
+								continue;
+							case FruitTree fruitTree:
+								fruitTree.performUseAction(featureTileLocation, Game1.player.currentLocation);
+								_fruitTressShaken += 1;
+								break;
 
-						// This should never happen
-						default:
-							Monitor.Log("I am an unknown terrain feature, ignore me I guess...", LogLevel.Debug);
-							break;
+							case Bush _ when !_config.ShakeTeaBushes:
+								continue;
+							case Bush bushFeature when bushFeature.townBush.Value:
+								continue;
+							case Bush bushFeature when !bushFeature.isActionable():
+								continue;
+							case Bush bushFeature when !bushFeature.inBloom(Game1.currentSeason, Game1.dayOfMonth):
+								continue;
+							case Bush bushFeature:
+								bushFeature.performUseAction(featureTileLocation, Game1.player.currentLocation);
+								_shakenBushes.Add(bushFeature);
+								break;
+
+							// This should never happen
+							default:
+								Monitor.Log("I am an unknown terrain feature, ignore me I guess...", LogLevel.Debug);
+								break;
+						}
 					}
 				}
 			}
 
 			if (_config.ShakeBushes)
 			{
-				var largeBushes = Game1.player.currentLocation.largeTerrainFeatures.Where(feature => feature is Bush);
-
-				foreach (var bush in largeBushes)
+				foreach (var feature in Game1.player.currentLocation.largeTerrainFeatures)
 				{
+					if (feature is not Bush bush) continue;
 					var location = bush.tilePosition;
 
-					if (!IsInShakeRange(playerTileLocationPoint, location, playerMagnetism)) continue;
-					if (_shakenBushes.Contains(bush)) continue;
+					if (!IsInShakeRange(playerTileLocationPoint, location, radius) || _shakenBushes.Contains(bush)) continue;
 
-					switch (bush)
+					if (!bush.townBush.Value && bush.isActionable() && bush.inBloom(Game1.currentSeason, Game1.dayOfMonth))
 					{
-						// Large Bush cases
-						case Bush bushFeature when bushFeature.townBush.Value:
-							continue;
-						case Bush bushFeature when !bushFeature.isActionable():
-							continue;
-						case Bush bushFeature when !bushFeature.inBloom(Game1.currentSeason, Game1.dayOfMonth):
-							continue;
-						case Bush bushFeature:
-							bushFeature.performUseAction(location, Game1.player.currentLocation);
-							_shakenBushes.Add(bushFeature);
-							break;
-
-						// This should never happen
-						default:
-							Monitor.Log("I am an unknown large terrain feature, ignore me I guess...", LogLevel.Debug);
-							break;
+						bush.performUseAction(location, Game1.currentLocation);
+						_shakenBushes.Add(bush);
 					}
 				}
 			}
@@ -164,21 +146,19 @@ namespace AutoShaker
 		{
 			if (_config.IsShakerActive)
 			{
-				var statMessage = $"{Utility.getDateString()}: ";
+				StringBuilder statMessage = new(Utility.getDateString());
+				statMessage.Append(':');
 
 				if (_treesShaken == 0 && _fruitTressShaken == 0 && _shakenBushes.Count == 0)
 				{
-					statMessage += "Nothing shaken today.";
+					statMessage.Append("Nothing shaken today.");
 				}
 				else
 				{
-					var stats = new List<string>();
 
-					if (_config.ShakeRegularTrees) stats.Add($"[{_treesShaken}] Trees shaken");
-					if (_config.ShakeFruitTrees) stats.Add($"[{_fruitTressShaken}] Fruit Trees shaken");
-					if (_config.ShakeBushes) stats.Add($"[{_shakenBushes.Count}] Bushes shaken");
-
-					if (stats.Count > 0) statMessage += String.Join("; ", stats);
+					if (_config.ShakeRegularTrees) statMessage.Append($"\n\t[{_treesShaken}] Trees shaken");
+					if (_config.ShakeFruitTrees) statMessage.Append($"\n\t[{_fruitTressShaken}] Fruit Trees shaken");
+					if (_config.ShakeBushes) statMessage.Append($"\n\t[{_shakenBushes.Count}] Bushes shaken");
 
 					Monitor.Log("Resetting daily counts...");
 					_shakenBushes.Clear();
@@ -186,7 +166,7 @@ namespace AutoShaker
 					_fruitTressShaken = 0;
 				}
 
-				Monitor.Log(statMessage, LogLevel.Info);
+				Monitor.Log(statMessage.ToString(), LogLevel.Info);
 			}
 			else
 			{
@@ -201,7 +181,10 @@ namespace AutoShaker
 				if (_config.ToggleShaker.JustPressed())
 				{
 					_config.IsShakerActive = !_config.IsShakerActive;
-					Helper.WriteConfig(_config);
+					Task.Run(() => Helper.WriteConfig(_config)).ContinueWith((t) =>
+						this.Monitor.Log(t.Status == TaskStatus.RanToCompletion
+							? "Config saved successfully!"
+							: $"Saving config unsuccessful {t.Status}"));
 
 					var message = "AutoShaker has been " + (_config.IsShakerActive ? "ACTIVATED" : "DEACTIVATED");
 
@@ -211,19 +194,16 @@ namespace AutoShaker
 			}
 		}
 
-		private bool IsInShakeRange(Point playerLocation, Vector2 bushLocation, int playerMagnetism)
+		private static bool IsInShakeRange(Point playerLocation, Vector2 bushLocation, int radius)
+			=> Math.Abs(bushLocation.X - playerLocation.X) <= radius && Math.Abs(bushLocation.Y - playerLocation.Y) <= radius;
+
+		private static IEnumerable<Vector2> GetTilesToCheck(Point playerLocation, int radius)
 		{
-			var pickUpDistance = _config.ShakeDistance;
+			for (int x = Math.Max(playerLocation.X - radius, 0); x <= playerLocation.X + radius; x++)
+				for (int y = Math.Max(playerLocation.Y - radius, 0); y <= playerLocation.Y + radius; y++)
+					yield return new Vector2(x, y);
 
-			if (_config.UsePlayerMagnetism)
-			{
-				pickUpDistance = (int)Math.Floor(playerMagnetism / (double)SingleTileDistance);
-			}
-
-			var inRange = Math.Abs(bushLocation.X - playerLocation.X) <= pickUpDistance &&
-							Math.Abs(bushLocation.Y - playerLocation.Y) <= pickUpDistance;
-
-			return inRange;
+			yield break;
 		}
 	}
 }

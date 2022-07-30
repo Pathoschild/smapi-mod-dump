@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "Action": "EditData",
+        "LogName": "Rehab quest",
+        "Target": "Data/Quests",
+        "Entries": {
+            "992100": "Basic/{{i18n:rehab-quest-title}}/{{i18n:rehab-quest-description}}/{{i18n:rehab-quest-objective|value=100,000g}}/-1/-1/0/-1/true"
+        }
+    },
+    {
+        "Action":"EditData",
+        "LogName": "Rehab quest events",
+        "Target": "Data/Events/Hospital",
+        "Entries": {
+            "99210000/f Penny 1750 Pam 2500/d Sat Sun/t 800 1700/Hn pamNewChannel/m 4000000/H": "Hospital_Ambient/-100 -100/farmer -10000 -10000 0 Harvey 5 5 2 Pam 4 6 1 Penny -1000 -1000 0/broadcastEvent/viewport 5 6 true/addConversationTopic PamTriesRehabDelay 1/pause 750/speak Harvey \"{{i18n:000-harvey-00}}$s\"/emote Pam 28/faceDirection Pam 0/pause 150/faceDirection Pam 1/warp Penny 10 20/move Penny 0 -6 0/pause 250/doAction 10 13/advancedMove Penny false 0 -4 -5 0 0 -3/speak Pam \"{{i18n:000-pam-01}}\"/pause 250/speak Harvey \"{{i18n:000-harvey-02a}}#$b#{{i18n:000-harvey-02b}}\"/pause 250/speak Pam \"{{i18n:000-pam-03a}}$s#$b#{{i18n:000-pam-03b}}$s\"/faceDirection Penny 0/pause 100/speak Penny \"{{i18n:000-penny-04}}\"/pause 250/emote Pam 20/speak Pam \"{{i18n:000-pam-05|savings=20,000g|request=100,000g}}\"/jump Penny/speak Penny \"{{i18n:Mom}}!$a\"/emote Penny 28/textAboveHead Pam \"{{i18n:Penny}}...\"/pause 500/emote Harvey 40/speak Harvey \"{{i18n:000-harvey-06}}\"/fade/viewport -100 -100/warp Penny -1000 -1000/warp Pam -1000 -1100/warp farmer 5 12/faceDirection farmer 0/viewport 5 6 true/move farmer 0 -5 0/speak Harvey \"{{i18n:000-harvey-07}}\"/faceDirection Harvey 1/faceDirection Harvey 3/faceDirection Harvey 2/speak Harvey \"{{i18n:000-harvey-08}}\"/emote Harvey 28/pause 500/speak Harvey \"{{i18n:000-harvey-09}}\"/pause 250/faceDirection Harvey 1/faceDirection Harvey 2/speak Harvey \"{{i18n:000-harvey-10}}\"/addQuest 992100/fade/viewport -100 -100/pause 500/end dialogue Penny \"{{i18n:000-penny-11a|value=120,000g}}#$b#$s{{i18n:000-penny-11b}}\"",
+            "99210001/M 100000/e 99210000/A PamTriesRehabDelay": "Hospital_Ambient/-100 -100/farmer 10 19 0 Harvey 10 9 2/doAction 10 13/viewport 10 12 true/move farmer 0 -8 0/pause 250/speak Harvey \"{{i18n:001-harvey-01a}}#$b#{{i18n:001-harvey-01b}}#$b#{{i18n:001-harvey-01c}}\"/emote farmer 40/pause 250/emote Harvey 60/faceDirection Harvey 1/faceDirection Harvey 3/faceDirection Harvey 2/speak Harvey \"{{i18n:001-harvey-02a}}#$b#{{i18n:001-harvey-02b}}#$b#{{i18n:001-harvey-02c|value=100,000g}}\"/quickQuestion {{i18n: 001-harvey-ask|value=100,000g}}#{{i18n:Yes}}#{{i18n:No}}(break)addConversationTopic PamTriesRehab 14\\playSound purchase\\money -100000\\friendship Pam 250\\friendship Harvey 250\\friendship Penny 500\\mail atravita_PamTries_PennyThanks\\speak Harvey \"{{i18n:001-harvey-03a}}$h#$b#{{i18n:001-harvey-03b}}\"(break)speak Harvey \"{{i18n:001-harvey-04}}\"/removeQuest 992100/fade/viewport -100 -100/end" //Pam to rehab
+        }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "Rehab return",
+        "Target": "Data/Events/BusStop",
+        "Entries": {
+            "99210002/e 99210001/A PamTriesRehab/n atravita_PamTries_PennyThanks": "continue/-100 -100/farmer -1000 -1000 0 Pam 12 10 2/addConversationTopic PamTriesRehabDelay2 14/addConversationTopic PamTriesRehabHoneymoon 14/mail atravita_PamTries_PamThanks/skippable/viewport 13 10/speak Pam \"{{i18n:002-pam-01}}\"/advancedMove Pam false 0 13 20 0/beginSimultaneousCommand/viewport move 2 1 3500/speak Pam \"{{i18n:002-pam-02}}\"/endSimultaneousCommand/pause 250/end dialogue Penny \"{{i18n:002-penny-03}}\"" //Pam returns from rehab.
+        }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "resolution - Trailer variant",
+        "Target": "Data/Events/Trailer_Big",
+        "Entries": {
+            "99210100/o Penny": "sadpiano/-1000 -1000/farmer 13 15 0 Penny 13 7 1/skippable/viewport 13 10 true/advancedMove Penny false 4 0 -4 0 0 2/move farmer 0 -4 0/pause 800/speak Penny \"{{i18n:100-penny-01a}}$s\"/halt/pause 500/faceDirection Penny 1/faceDirection Penny 3/faceDirection Penny 2/pause 500/textAboveHead Penny \"{{i18n:100-penny-01-sigh}}\"/speak Penny \"{{i18n:100-penny-01b}}$s\"/halt/emote Penny 28/speak Penny \"{{i18n:100-penny-ask}}\"/quickQuestion {{i18n:100-ask}}#{{i18n:100-reassure}}#{{i18n:100-validate}}#{{i18n:100-confront}}(break)friendship Penny 250\\emote Penny 28\\speak Penny \"{{i18n:100-penny-02}}\"\\faceDirection Penny 1\\faceDirection Penny 2\\speak Penny \"{{i18n:100-penny-03}}\"\\pause 500\\faceDirection Penny 3\\pause 250\\faceDirection Penny 2\\speak Penny \"{{i18n:100-penny-04}}\"\\emote Penny 5 true\\jump Penny\\speak Penny \"{{i18n:100-penny-05}}\"\\pause 250\\textAboveHead Penny \"{{i18n:100-penny-01-sigh}}\"\\speak Penny \"{{i18n:100-penny-06a}}#$b#{{i18n:100-penny-06b}}\"\\pause 250\\advancedMove Penny false 2 0 -4 0 2 0 0 1\\speak Penny \"{{i18n:100-penny-07}}\"\\faceDirection Penny 2\\speak Penny \"{{i18n:100-penny-08}}\"\\pause 500\\speak Penny \"{{i18n:100-penny-09}}\"(break)friendship Penny 250(break)friendship Penny -1000\\emote Penny 4/end"
+        }
+    }
+]}

@@ -33,7 +33,7 @@ namespace Farmtronics {
 	public static class M1API  {
 
 		static bool initialized;
-	
+
 		public static Shell shell;		// these should be assigned whenever a shell is accessed
 		public static Console console;	// (usually by calling Init)
 
@@ -54,7 +54,7 @@ namespace Farmtronics {
 			// language host info
 
 			HostInfo.name = "Farmtronics";
-			HostInfo.version = 1.10;
+			HostInfo.version = 1.20;
 			HostInfo.info = "https://github.com/JoeStrout/Farmtronics/";
 		
 			Intrinsic f;
@@ -305,7 +305,6 @@ namespace Farmtronics {
 			throw new RuntimeException("Assignment to protected map");
 		}
 
-
 		static ValMap botModule;
 		static HashSet<string> botProtectedKeys;
 		public static ValMap BotModule() {
@@ -408,12 +407,23 @@ namespace Farmtronics {
 			botModule["right"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
+			// ToDo: accept a count of items to place.
+			// For now, we'll just always place as many as possible.
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
-				sh.bot.PlaceItem();
-				return Intrinsic.Result.Null;
+				int itemsPlaced = sh.bot.PlaceItem();
+				return new Intrinsic.Result(itemsPlaced);
 			};
 			botModule["placeItem"] = f.GetFunc();
+
+			f = Intrinsic.Create("");
+			f.AddParam("slot", -1);
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
+				bool result = sh.bot.TakeItem(context.GetLocalInt("slot"));
+				return result ? Intrinsic.Result.True : Intrinsic.Result.False;
+			};
+			botModule["takeItem"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
@@ -1699,7 +1709,7 @@ namespace Farmtronics {
 			{
 				var loc = (Farm)Game1.getLocationFromName("Farm");
 				var weather = Game1.netWorldState.Value.GetWeatherForLocation(loc.GetLocationContext());
-				string result = "Sunny";
+				string result = "sunny";
 				if (weather.isLightning) result = "stormy";
 				else if (weather.isRaining) result = "raining";
 				else if (weather.isSnowing) result = "snowing";

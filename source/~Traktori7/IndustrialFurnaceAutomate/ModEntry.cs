@@ -28,7 +28,7 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
-			helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 		}
 
 

@@ -1,0 +1,49 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+    "Changes": [
+    {
+    "Action": "EditData",
+    "Target": "Characters/Schedules/MorrisTod",
+    "Entries": {
+        
+        "marriage_spring_1": "",
+        "marriage_spring_2": "",
+        "marriage_spring_3": "",
+        "marriage_spring_4": "",
+        "marriage_spring_5": "",
+        "marriage_spring_6": "",
+        "marriage_spring_7": "",
+        "marriage_spring_8": "",
+        "marriage_spring_9": "",
+        "marriage_spring_10": "",
+        "marriage_spring_11": "",
+        "marriage_spring_12": "",
+        "marriage_spring_13": "",
+        "marriage_spring_14": "",
+        "marriage_spring_15": "",
+        "marriage_spring_16": "",
+        "marriage_spring_17": "",
+        "marriage_spring_18": "",
+        "marriage_spring_19": "",
+        "marriage_spring_20": "",
+        "marriage_spring_21": "",
+        "marriage_spring_22": "",
+        "marriage_spring_23": "",
+        "marriage_spring_24": "",
+        "marriage_spring_25": "",
+        "marriage_spring_26": "",
+        "marriage_spring_27": "",
+        "marriage_spring_28": ""
+    }
+    }
+    ]
+}

@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Yariazen/BuildableGreenhouse
+**
+*************************************************/
+
+{
+    "BuildableGreenhouse.StartWithGreenhouse.Name": "Start With Greenhouse",
+    "BuildableGreenhouse.StartWithGreenhouse.Tooltip": "true: Greenhouse is buildable from start\nfalse: The greenhouse is buildable once it is unlocked",
+
+    "BuildableGreenhouse.BuildCost.Name": "Build Cost",
+    "BuildableGreenhouse.BuildCost.Tooltip": "This is the cost to construct a greenhouse",
+
+    "BuildableGreenhouse.BuildDays.Name": "Build Days",
+    "BuildableGreenhouse.BuildDays.Tooltip": "This is the number of days required for a greenhouse to finish construction",
+
+    "BuildableGreenhouse.BuildingDifficulty.Name": "Building Difficulty",
+    "BuildableGreenhouse.BuildingDifficulty.Tooltip": "0: Greenhouse requires no materials\n1: Stone 500, Wood 100, Ironbars 5\n2: Stone 500, Hardwood 100, Iridiumbars 5"
+
+}

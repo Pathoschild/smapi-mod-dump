@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Floogen/DynamicReflections
+   Git: https://github.com/Floogen/DynamicReflections.git
+
+mods:
+   Dynamic Reflections
+
+latest commit:
+   commit 5d7abf632a224e2c7796b5e3b66a4050975cb144
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat Jul 23 15:17:01 2022 -0500
+   
+       v1.3.7 released
+   

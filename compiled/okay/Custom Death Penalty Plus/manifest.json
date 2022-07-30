@@ -1,10 +1,10 @@
 ﻿{
 	"Name":"Custom Death Penalty Plus",
 	"Author":"TheMightyAmondee",
-	"Version":"1.4.1",
+	"Version":"1.4.2",
 	"Description":"Fully customisable penalty for dying and passing out.",
 	"UniqueID": "TheMightyAmondee.CustomDeathPenaltyPlus",
 	"EntryDll":"CustomDeathPenaltyPlus.dll",
-	"MinimumApiVersion":"3.8.0",
+	"MinimumApiVersion":"3.14.0",
 	"UpdateKeys":["Nexus:7069", "ModDrop:853913"]
 }

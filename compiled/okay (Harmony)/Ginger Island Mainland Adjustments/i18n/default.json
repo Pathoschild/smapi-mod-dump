@@ -17,6 +17,7 @@
   "Evelyn_Resort_IslandNorth": "My dear, isn't this place so pretty?$h",
   "Willy_Resort": "Ah, nothing like a day spent under the sun and by the sea....",
   "Willy_Resort_IslandNorth": "Be careful out there! Try not to get hurt in that volcano.",
+  "Wizard_Resort":  "Ah...a vacation does the soul good....$h",
 
   "GILeave_Default_Happy": "Heya, {{endearment}}, I'll be off to Ginger Island today! Will you consider joining me?$h",
   "GIReturn_Default_Happy": "Oh, {{endearment}}, I had a great day at Ginger Island today!$h",
@@ -124,12 +125,14 @@
   "config.gus_day.description": "Day of week Gus is more likely to go to Ginger Island.",
   "config.gus_chance.title": "Gus's Ginger Island Chances",
   "config.gus_chance.description": "Chance that Gus will go to Ginger Island on his assigned day.",
-  "config.allow_willy.title": "Allow Willy",
-  "config.allow_willy.description": "If enabled, allows Willy to attend the resort. (His shop will remain available).",
-  "config.allow_sandy.title": "Allow Sandy",
-  "config.allow_sandy.description": "If enabled, allows Sandy to go to the resort. (Her store will remain available).",
-  "config.allow_george_and_evelyn.title": "Allow George and Evelyn",
-  "config.allow_george_and_evelyn.description": "If enabled, allows George and Evelyn access to the resort.",
+  "AllowWilly.title": "Allow Willy",
+  "AllowWilly.description": "If enabled, allows Willy to attend the resort. (His shop will remain available).",
+  "AllowSandy.title": "Allow Sandy",
+  "AllowSandy.description": "If enabled, allows Sandy to go to the resort. (Her store will remain available).",
+  "AllowGeorgeAndEvelyn.title": "Allow George and Evelyn",
+  "AllowGeorgeAndEvelyn.description": "If enabled, allows George and Evelyn access to the resort.",
+  "AllowWizard.title": "Allow the Wizard",
+  "AllowWizard.description": "If enabled, allows the wizard access to the resort.",
 
   // Game doesn't have translations for full days of the week.
   "config.DayOfWeek.None": "None", // for no dedicated Gus-to-GI day.
@@ -145,6 +148,10 @@
   "config.WearIslandClothing.Default": "Default",
   "config.WearIslandClothing.All": "All",
   "config.WearIslandClothing.None": "None",
+
+  "config.VillagerExclusionOverride.Yes": "Yes",
+  "config.VillagerExclusionOverride.No": "No",
+  "config.VillagerExclusionOverride.IfMarried": "If Married",
 
   //MidDayScheduleEditor messages
   "middayScheduleEditor.npc-found-for-adjustment": "NPC {{name}} with Island Schedule, will set up for schedule alternation",

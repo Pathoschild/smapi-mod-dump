@@ -51,23 +51,10 @@ namespace CustomWallpaperFramework
 
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
 
             var harmony = new Harmony(ModManifest.UniqueID);
             harmony.PatchAll();
 
-        }
-
-        private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
-        {
-            if(e.Button == SButton.Y)
-            {
-                List<ModWallpaperOrFlooring> list = Game1.content.Load<List<ModWallpaperOrFlooring>>("Data\\AdditionalWallpaperFlooring");
-                foreach(ModWallpaperOrFlooring wallpaper in list)
-                {
-                    Monitor.Log($"modded wallpaper {wallpaper.ID}");
-                }
-            }
         }
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
@@ -78,6 +65,13 @@ namespace CustomWallpaperFramework
                 data.texture = Game1.content.Load<Texture2D>(data.texturePath);
             }
             Monitor.Log($"Loaded {wallpaperDataDict.Count} wallpapers");
+            foreach (var loc in Game1.locations)
+            {
+                if (loc is DecoratableLocation)
+                {
+                    (loc as DecoratableLocation).setWallpapers();
+                }
+            }
         }
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)

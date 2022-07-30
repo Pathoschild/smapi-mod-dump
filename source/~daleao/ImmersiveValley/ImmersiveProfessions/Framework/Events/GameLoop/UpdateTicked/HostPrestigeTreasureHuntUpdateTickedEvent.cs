@@ -16,7 +16,6 @@ using Common.Events;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System.Linq;
 
 #endregion using directives
 
@@ -32,6 +31,6 @@ internal sealed class HostPrestigeTreasureHuntUpdateTickedEvent : UpdateTickedEv
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
         Game1.gameTimeInterval = 0;
-        if (!ModEntry.HostState.PlayersHuntingTreasure.Any()) Unhook();
+        if (ModEntry.HostState.PlayersHuntingTreasure.Count <= 0) Unhook();
     }
 }

@@ -6,9 +6,11 @@ mods:
    AutoShaker
 
 latest commit:
-   commit cd169b55fd63086d90f2f36fda54c63675292f76
-   Author: Jag <jag3dagster@gmail.com>
-   Date:   Mon May 16 21:12:35 2022 -0700
+   commit 0ba4ff3291d1cbe6d0cb3893c186804bfd5a4d65
+   Author: Jag <77469789+jag3dagster@users.noreply.github.com>
+   Date:   Mon Jul 11 09:23:23 2022 -0700
    
        Update README.md
+       
+       Update to reflect release 1.5.0
    

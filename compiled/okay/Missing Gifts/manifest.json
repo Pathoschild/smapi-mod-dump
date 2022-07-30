@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Missing Gifts",
   "Author": "ChiroxT",
-  "Version": "1.6.1",
+  "Version": "1.7",
   "Description": "Shows, who still needs to be given gifts this week and how he likes, what is in your hand.",
   "UniqueID": "treinke.missinggifts",
   "EntryDll": "MissingGifts.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:11363"]
+  "UpdateKeys": [ "Nexus:11363" ]
 }

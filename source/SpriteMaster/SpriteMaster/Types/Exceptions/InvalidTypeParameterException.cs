@@ -10,8 +10,6 @@
 
 using SpriteMaster.Extensions;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Types.Exceptions;
 
@@ -19,32 +17,53 @@ namespace SpriteMaster.Types.Exceptions;
 /// Indicates that the generic type parameter is invalid or does not match the required constraints.
 /// </summary>
 internal class InvalidTypeParameterException : InvalidOperationException {
-	private const string DefaultMessage = "Type Parameter is invalid";
+	internal readonly Type? Type = null;
 
 	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException" /> <see langword="class"/>.</summary>
 	internal InvalidTypeParameterException()
-		: this(DefaultMessage) {
+		: this("Type Parameter is invalid") {
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException" /> <see langword="class"/>.</summary>
+	/// <param name="type">The invalid <seealso cref="Type"/>.</param>
+	internal InvalidTypeParameterException(Type type)
+		: this($"Type Parameter '{type.GetTypeName()}' is invalid") {
+		Type = type;
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException" /> <see langword="class"/> with a specified <paramref name="message">error message</paramref>.</summary>
 	/// <param name="message">The message that describes the error.</param>
-	internal InvalidTypeParameterException(string? message)
-		: base(message ?? DefaultMessage) {
-		this.HResult = -2146233079;
+	internal InvalidTypeParameterException(string message)
+		: base(message) {
+		HResult = -2146233079;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException" /> <see langword="class"/> with a specified <paramref name="message">error message</paramref>.</summary>
+	/// <param name="message">The message that describes the error.</param>
+	/// <param name="type">The invalid <seealso cref="Type"/>.</param>
+	internal InvalidTypeParameterException(string message, Type type)
+		: base(message) {
+		HResult = -2146233079;
+		Type = type;
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException" /> <see langword="class"/> with a specified <paramref name="message">error message</paramref> and a reference to the <paramref name="innerException">inner exception</paramref> that is the cause of this <see cref="Exception" />.</summary>
 	/// <param name="message">The error message that explains the reason for the exception.</param>
-	/// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not a <see langword="null" /> reference (<see langword="Nothing" /> in Visual Basic), the current exception is raised in a <see langword="catch" /> block that handles the inner exception.</param>
-	internal InvalidTypeParameterException(string? message, Exception? innerException)
-		: base(message ?? DefaultMessage, innerException) {
-		this.HResult = -2146233079;
+	/// <param name="innerException">The exception that is the cause of the current exception.</param>
+	internal InvalidTypeParameterException(string message, Exception innerException)
+		: base(message, innerException) {
+		HResult = -2146233079;
 	}
 
-	[DoesNotReturn]
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	internal void Throw() =>
-		throw new InvalidTypeParameterException();
+	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException" /> <see langword="class"/> with a specified <paramref name="message">error message</paramref> and a reference to the <paramref name="innerException">inner exception</paramref> that is the cause of this <see cref="Exception" />.</summary>
+	/// <param name="message">The error message that explains the reason for the exception.</param>
+	/// <param name="type">The invalid <seealso cref="Type"/>.</param>
+	/// <param name="innerException">The exception that is the cause of the current exception.</param>
+	internal InvalidTypeParameterException(string message, Type type, Exception innerException)
+		: base(message, innerException) {
+		HResult = -2146233079;
+		Type = type;
+	}
 }
 
 /// <summary>
@@ -60,21 +79,16 @@ internal class InvalidTypeParameterException<TParameter> : InvalidTypeParameterE
 
 	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException{TParameter}" /> <see langword="class"/> with a specified <paramref name="message">error message</paramref>.</summary>
 	/// <param name="message">The message that describes the error.</param>
-	internal InvalidTypeParameterException(string? message)
-		: base(message ?? DefaultMessage) {
+	internal InvalidTypeParameterException(string message)
+		: base(message ?? DefaultMessage, typeof(TParameter)) {
 		this.HResult = -2146233079;
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="InvalidTypeParameterException{TParameter}" /> <see langword="class"/> with a specified <paramref name="message">error message</paramref> and a reference to the <paramref name="innerException">inner exception</paramref> that is the cause of this <see cref="Exception" />.</summary>
 	/// <param name="message">The error message that explains the reason for the exception.</param>
-	/// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not a <see langword="null" /> reference (<see langword="Nothing" /> in Visual Basic), the current exception is raised in a <see langword="catch" /> block that handles the inner exception.</param>
-	internal InvalidTypeParameterException(string? message, Exception? innerException)
-		: base(message ?? DefaultMessage, innerException) {
+	/// <param name="innerException">The exception that is the cause of the current exception.</param>
+	internal InvalidTypeParameterException(string message, Exception innerException)
+		: base(message ?? DefaultMessage, typeof(TParameter), innerException) {
 		this.HResult = -2146233079;
 	}
-
-	[DoesNotReturn]
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	internal new void Throw() =>
-		throw new InvalidTypeParameterException();
 }

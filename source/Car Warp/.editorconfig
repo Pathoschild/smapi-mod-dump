@@ -1,5 +1,5 @@
+root = true
 # topmost editorconfig
-root: true
 
 ##########
 ## General formatting
@@ -44,6 +44,12 @@ dotnet_style_qualification_for_field = false:error
 dotnet_style_qualification_for_property = false:error
 dotnet_style_qualification_for_method = false:error
 dotnet_style_qualification_for_event = false:error
+
+# Microsoft .NET properties
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# ReSharper properties
+resharper_braces_for_ifelse = required_for_multiline
 
 [*.{csproj,nuspec,targets}]
 indent_size = 2
@@ -92,8 +98,8 @@ csharp_style_conditional_delegate_call = true:suggestion
 csharp_prefer_simple_default_expression = true:suggestion
 
 # prefer method block bodies
-csharp_style_expression_bodied_methods = false:suggestion
-csharp_style_expression_bodied_constructors = false:suggestion
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_constructors = when_on_single_line:suggestion
 
 # prefer property expression bodies
 csharp_style_expression_bodied_properties = true:suggestion
@@ -107,10 +113,10 @@ csharp_style_inlined_variable_declaration = true:warning
 csharp_prefer_braces = true:silent
 
 # apply .NET naming conventions
-dotnet_naming_style.pascal_case_style.capitalization=pascal_case
-dotnet_naming_symbols.pascal_types.applicable_kinds=namespace, class, struct, interface, enum, property, method, field, event, delegate, type_parameter, local_function
-dotnet_naming_symbols.pascal_types.applicable_accessibilities=*
-dotnet_naming_rule.most_identifiers_should_be_pascal_case.symbols=pascal_types
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+dotnet_naming_symbols.pascal_types.applicable_kinds = namespace, class, struct, interface, enum, property, method, field, event, delegate, type_parameter, local_function
+dotnet_naming_symbols.pascal_types.applicable_accessibilities = *
+dotnet_naming_rule.most_identifiers_should_be_pascal_case.symbols = pascal_types
 dotnet_naming_rule.most_identifiers_should_be_pascal_case.style = pascal_case_style
 dotnet_naming_rule.most_identifiers_should_be_pascal_case.severity = suggestion
 csharp_indent_labels = one_less_than_current

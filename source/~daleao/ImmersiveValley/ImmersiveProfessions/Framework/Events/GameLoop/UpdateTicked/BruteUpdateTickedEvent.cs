@@ -24,7 +24,7 @@ using Ultimates;
 [UsedImplicitly]
 internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
 {
-    private const int SHEET_INDEX_I = 36;
+    private const int BUFF_SHEET_INDEX_I = 36;
 
     private readonly int _buffId = (ModEntry.Manifest.UniqueID + Profession.Brute).GetHashCode();
 
@@ -41,9 +41,9 @@ internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
         if (Game1.game1.IsActive && Game1.shouldTimePass() && ModEntry.PlayerState.BruteRageCounter > 0 &&
             e.IsOneSecond)
         {
-            ++ModEntry.PlayerState.SecondsSinceLastCombat;
+            ++ModEntry.PlayerState.SecondsOutOfCombat;
             // decay counter every 5 seconds after 30 seconds out of combat
-            if (ModEntry.PlayerState.SecondsSinceLastCombat > 30 && e.IsMultipleOf(300))
+            if (ModEntry.PlayerState.SecondsOutOfCombat > 30 && e.IsMultipleOf(300))
                 --ModEntry.PlayerState.BruteRageCounter;
         }
 
@@ -58,7 +58,7 @@ internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
                 ModEntry.i18n.Get("brute.buff"))
             {
                 which = _buffId,
-                sheetIndex = SHEET_INDEX_I,
+                sheetIndex = BUFF_SHEET_INDEX_I,
                 millisecondsDuration = 0,
                 description =
                     ModEntry.i18n.Get(

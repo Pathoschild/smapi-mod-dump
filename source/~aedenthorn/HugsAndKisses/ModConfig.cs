@@ -17,6 +17,7 @@ namespace HugsAndKisses
 
         public bool RoommateKisses { get; set; } = false;
         public int MinHeartsForMarriageKiss { get; set; } = 9;
+        public int MinHeartsForDatingKiss { get; set; } = 6;
         public int HeartsForFriendship { get; set; } = 5;
         public bool UnlimitedDailyKisses { get; set; } = true;
         public bool DatingKisses { get; set; } = true;

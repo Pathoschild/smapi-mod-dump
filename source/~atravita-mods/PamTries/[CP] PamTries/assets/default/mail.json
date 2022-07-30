@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "Action": "EditData",
+        "LogName": "Mail changes",
+        "Target": "Data/Mail",
+        "Entries": {
+             "Pam": "Hey. ^I found this in a drawer somewhere. Thought you could use it.   ^   -Pam %item object 351 1 349 1 787 1 %%[#]A Gift From Pam", //replaces beer gift with muscle remedy
+             "atravita_PamTries_PamThanks": "Hey, @.^^Thank you so much for helping pay for my trip to rehab. You have no clue how much it means to this old lady. Not just the money - thank you so much for believin' in me.^^    -Pam[#]Many thanks! - Pam",
+             "atravita_PamTries_PennyThanks": "@,^^You've done so much for my family, I couldn't ever thank you enough! Not only paying for rehab for my mother, but also the house! There's absolutely no way I could ever repay your kindness...^^    -Penny[#]Much thanks! - Penny",
+             "atravita_PamTries_BusNotice": "Effective immediately, the bus will temporarily not be available for the next two weeks. We apologize for the inconvenience.[#]Bus Notice",
+             "atravita_PamApology_Reward": "@! ^Much thanks for helping me set up a good day for my Penny. As thanks, I'm sending you these. Found them in the back of a drawer. Hopefully I won't need them in the future...^^   -Pam%item object 349 5 %%[#]Pam Apology thank-you note"
+        }
+    }
+]}

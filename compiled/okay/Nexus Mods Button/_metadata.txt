@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12969
+IDs: Pickysaurus.NexusModsButton
+update keys: Nexus:12969, GitHub:Dphill10827/StardewMods

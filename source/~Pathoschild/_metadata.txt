@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit f86b4551c87c5e7ad31e927e518c576141bbd16f
+   commit d5c90661a7bdad138cbcf616da16b23815c0241c
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Jun 22 23:21:45 2022 -0400
+   Date:   Sat Jul 23 22:42:07 2022 -0400
    
-       fix overlay showing Junimo chest tiles from other locations
+       update release notes
    

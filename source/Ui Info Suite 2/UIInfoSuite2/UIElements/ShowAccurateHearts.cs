@@ -16,9 +16,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace UIInfoSuite.UIElements
+namespace UIInfoSuite2.UIElements
 {
-    class ShowAccurateHearts : IDisposable
+    internal class ShowAccurateHearts : IDisposable
     {
         #region Properties
         private string[] _friendNames;

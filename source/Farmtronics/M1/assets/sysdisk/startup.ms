@@ -390,6 +390,8 @@ toDo = function
 end function
 todo = @toDo	// (allow mistyping just this one time, because newbies)
 
+mkdir = @file.makedir  // (handy and expected alias)
+
 if bot then
 	// Additional bot functions
 	here = function
@@ -406,13 +408,13 @@ if bot then
 	end function
 	
 	bot.select = function(toolNameOrIndex)
+		inv = bot.inventory
 		if toolNameOrIndex isa number then
 			bot.currentToolIndex = toolNameOrIndex
 			print "Using " + inv[toolNameOrIndex].name + " (index " + toolNameOrIndex + ")"
 			return
 		end if
 		toolName = str(toolNameOrIndex).lower
-		inv = bot.inventory
 		for i in inv.indexes
 			if inv[i] and inv[i].name.lower == toolName then
 				bot.currentToolIndex = i

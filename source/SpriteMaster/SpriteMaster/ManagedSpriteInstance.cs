@@ -17,6 +17,7 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Resample;
 using SpriteMaster.Types;
+using SpriteMaster.Types.Interlocking;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -33,7 +34,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	private static readonly ConcurrentLinkedListSlim<WeakInstance> RecentAccessList = new();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	private static bool HasLegalFormat(XTexture2D texture) => AllowedFormats.ContainsF(texture.Format);
+	private static bool HasLegalFormat(XTexture2D texture) => AllowedFormats.ContainsFast(texture.Format);
 
 	private static void PurgeInvalidated(XTexture2D texture) {
 		// If somehow it passed validation earlier (like a SetData before a name) make sure no cached data
@@ -516,7 +517,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	private readonly uint ReferenceScale;
 	internal ManagedSpriteInstance? PreviousSpriteInstance = null;
 	internal volatile bool Invalidated = false;
-	internal volatile bool Suspended = false;
+	internal readonly InterlockedBool Suspended = false;
 	internal bool NoResample = false;
 	internal readonly bool IsPreview = false;
 
@@ -530,12 +531,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	/// </summary>
 	internal ConcurrentLinkedListSlim<WeakInstance>.NodeRef RecentAccessNode = default;
 
-	private volatile bool IsDisposedInternal = false;
-
-	internal bool IsDisposed {
-		get => IsDisposedInternal;
-		private set => IsDisposedInternal = value;
-	}
+	internal readonly InterlockedBool IsDisposed = false;
 
 	internal static long TotalMemoryUsage = 0U;
 
@@ -574,8 +570,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 		lock (RecentAccessList) {
 			long totalPurge = 0;
-			while (purgeTotalBytes > 0 && RecentAccessList.Count > 0) {
-				var lastInstance = RecentAccessList.RemoveLast();
+			while (purgeTotalBytes > 0 && RecentAccessList.TryRemoveLast(out var lastInstance)) {
 				if (lastInstance.TryGet(out var target)) {
 					var textureSize = target.MemorySize;
 					Debug.Trace($"Purging {target.NormalizedName()} ({textureSize.AsDataSize()})");
@@ -745,7 +740,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	}
 
 	public void Dispose() {
-		if (IsDisposed) {
+		if (IsDisposed.CompareExchange(true, false) == true) {
 			return;
 		}
 
@@ -758,15 +753,14 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			SpriteMap.Remove(this, reference);
 			reference.Disposing -= OnParentDispose;
 		}
+
 		if (RecentAccessNode.IsValid) {
-			RecentAccessList.Release(RecentAccessNode);
+			RecentAccessList.Release(ref RecentAccessNode);
 			RecentAccessNode = default;
 		}
-		IsDisposed = true;
 
-		if (Suspended) {
+		if (Suspended.CompareExchange(false, true) == true) {
 			SuspendedSpriteCache.RemoveFast(this);
-			Suspended = false;
 		}
 
 		GC.SuppressFinalize(this);
@@ -774,7 +768,6 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 	internal static void Cleanup(in CleanupData data) {
 		Debug.Trace("Cleaning up finalized ManagedSpriteInstance");
-
 		if (data.PreviousSpriteInstance is not null) {
 			data.PreviousSpriteInstance.Suspend(true);
 		}
@@ -784,7 +777,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 
 		if (data.RecentAccessNode.IsValid) {
-			RecentAccessList.Release(data.RecentAccessNode);
+			RecentAccessList.Release(ref Unsafe.AsRef(data.RecentAccessNode));
 		}
 	}
 
@@ -796,7 +789,11 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	}
 
 	internal void Suspend(bool clearChildrenIfDispose = false) {
-		if (IsDisposed || Suspended) {
+		if (IsDisposed) {
+			return;
+		}
+
+		if (Suspended.CompareExchange(true, false) == true) {
 			return;
 		}
 
@@ -813,14 +810,14 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		PreviousSpriteInstance = null;
 
 		if (RecentAccessNode.IsValid) {
-			RecentAccessList.Release(RecentAccessNode);
+			RecentAccessList.Release(ref RecentAccessNode);
 			RecentAccessNode = default;
 		}
+
 		Invalidated = false;
 
 		Reference.SetTarget(null!);
 
-		Suspended = true;
 		SuspendedSpriteCache.Add(this);
 
 		Debug.Trace($"Sprite Instance '{Name}' {"Suspended".Pastel(DrawingColor.LightGoldenrodYellow)}");
@@ -831,7 +828,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			return false;
 		}
 
-		if (IsDisposed || !Suspended) {
+		if (IsDisposed || Suspended.CompareExchange(false, true) != true) {
 			SuspendedSpriteCache.RemoveFast(this);
 			return false;
 		}
@@ -842,7 +839,6 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 
 		SuspendedSpriteCache.RemoveFast(this);
-		Suspended = false;
 		Reference.SetTarget(texture);
 
 		SpriteMapHash = spriteMapHash;

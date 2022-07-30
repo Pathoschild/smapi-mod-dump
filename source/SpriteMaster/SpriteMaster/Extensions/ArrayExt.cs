@@ -11,6 +11,7 @@
 using JetBrains.Annotations;
 using Microsoft.Toolkit.HighPerformance;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -26,9 +27,9 @@ internal static class ArrayExt {
 
 	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static unsafe ref ArrayHeader GetHeaderRef<T>(T[] array) where T : unmanaged {
-		ref T element = ref MemoryMarshal.GetArrayDataReference(array);
-		ref T headerOffset = ref Unsafe.SubtractByteOffset(ref element, (IntPtr)sizeof(ArrayHeader));
-		return ref Unsafe.As<T, ArrayHeader>(ref headerOffset);
+		ref ArrayHeader element = ref Unsafe.As<T, ArrayHeader>(ref MemoryMarshal.GetArrayDataReference(array));
+		ref ArrayHeader header = ref Unsafe.Subtract(ref element, 1);
+		return ref header;
 	}
 
 	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,8 +156,23 @@ internal static class ArrayExt {
 	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static T[] CloneFast<T>(this T[] array) where T : unmanaged {
 		var temp = GC.AllocateUninitializedArray<T>(array.Length);
-		Unsafe.CopyBlock(ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(temp)), ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(array)), (uint)(array.LongLength * Unsafe.SizeOf<T>()));
+		Unsafe.CopyBlock(
+			ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(temp)), 
+			ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(array)),
+			(uint)(array.LongLength * Unsafe.SizeOf<T>())
+		);
 		return temp;
+	}
+
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static List<T> CloneFast<T>(this List<T> list) where T : unmanaged {
+		var temp = GC.AllocateUninitializedArray<T>(list.Count);
+		Unsafe.CopyBlock(
+			ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(temp)),
+			ref Unsafe.As<T, byte>(ref MemoryMarshal.GetReference(list.AsSpan())),
+			(uint)(list.Count * Unsafe.SizeOf<T>())
+		);
+		return temp.BeList();
 	}
 
 	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -180,5 +196,27 @@ internal static class ArrayExt {
 			start += change;
 		}
 		return result;
+	}
+
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveOptimization)]
+	internal static bool ContainsFast<T>(this T[] array, T element) {
+		foreach (var item in array) {
+			if (EqualityComparer<T>.Default.Equals(item, element)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveOptimization)]
+	internal static bool ContainsFast<T, TComparer>(this T[] array, T element, TComparer comparer) where TComparer : IEqualityComparer<T> {
+		foreach (var item in array) {
+			if (comparer.Equals(item, element)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

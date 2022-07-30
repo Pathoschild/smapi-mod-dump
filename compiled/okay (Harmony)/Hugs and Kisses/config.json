@@ -2,6 +2,7 @@
   "EnableMod": true,
   "RoommateKisses": false,
   "MinHeartsForMarriageKiss": 9,
+  "MinHeartsForDatingKiss": 6,
   "HeartsForFriendship": 5,
   "UnlimitedDailyKisses": true,
   "DatingKisses": true,
@@ -16,5 +17,6 @@
   "AllowNPCRelativesToHug": true,
   "AllowNPCSpousesToKiss": true,
   "AllowRelativesToKiss": false,
-  "AllowNonDateableNPCsToHugAndKiss": false
+  "AllowNonDateableNPCsToHugAndKiss": false,
+  "UseNonDateableNPCsKissFrames": false
 }

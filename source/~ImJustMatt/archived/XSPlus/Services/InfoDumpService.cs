@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace XSPlus.Services;
 
 using System.Linq;

@@ -4,7 +4,7 @@
     #HEAD#
 
 </head>
-<body onload="SubPageLoaded('Catalogue','#TABNAME#');">
+<body onload="SubPageLoaded('Catalogue','catindex');">
     #MENUBAR#
 
     <div class="stardew_container top_margin_50 med_bottom_pad">
@@ -12,7 +12,15 @@
             <div class="message_board_title_flex">Stardew Valley - #PAGETITLE#</div>
             <div class="container p-2" style="background-color:white;">
                 <div class="row">
-                    #CONTENT#
+                    <div class="col-2" style="position: fixed;">
+                        <ul style="list-style-type: none; padding: 0; margin: 0;">
+                            #CATEGORIES#
+                        </ul>
+                    </div>
+                    <div class="col-10" style="padding-left:150px;">
+
+                        #CONTENT#
+                    </div>
                 </div>
             </div>
         </div>

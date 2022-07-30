@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace XSAutomate
 {
     using Microsoft.Xna.Framework;

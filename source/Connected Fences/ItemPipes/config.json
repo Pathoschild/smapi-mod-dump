@@ -9,8 +9,8 @@
 *************************************************/
 
 {
-  "DebugMode": true,
-  "UltraDebugMode": false,
+  "DebugMode": false,
   "ItemSending": true,
-  "IOPipeStatePopup": true
+  "IOPipeStatePopup": true,
+  "IOPipeStateSignals": true
 }

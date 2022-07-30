@@ -62,4 +62,6 @@ Current options allow configuration for:
 
 1.4.0 - Mod data now saved to save file instead of the mod folder, added more config options, removed most debug commands (better to edit config manually, more error checking is in place) only configinfo remains
 
+1.4.1 - Updated for new content api in SMAPI 3.14.0
+
 

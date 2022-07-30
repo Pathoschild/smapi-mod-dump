@@ -52,7 +52,7 @@ internal static class Runtime {
 
 #if SUPPORT_DIFFERENT_FRAMEWORKS
 		// Check for Mono
-		if (Type.GetType("Mono.Runtime") is not null) {
+		if (ReflectionExt.GetTypeExt("Mono.Runtime") is not null) {
 			Framework = FrameworkType.Mono;
 		}
 		else {
@@ -87,7 +87,7 @@ internal static class Runtime {
 		}
 		else {
 			try {
-				var gameAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleF(assembly => assembly.GetName().Name == "MonoGame.Framework");
+				var gameAssembly = AssemblyExt.GetAssembly("MonoGame.Framework");
 				var shaderType = gameAssembly.GetType("Microsoft.Xna.Framework.Graphics.Shader");
 				if (shaderType is null) {
 					throw new NullReferenceException(nameof(shaderType));

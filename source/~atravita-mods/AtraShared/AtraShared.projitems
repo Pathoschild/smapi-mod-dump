@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>7119b285-0356-4ce5-adca-cc008e9315da</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AtraShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\ItemTypeEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\Seasons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomExceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\ErrorMessageConsts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMDefaultColorAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMDefaultIgnoreAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMFormatAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMIntervalAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMRangeAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMSectionAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IAutomatable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IAutomateAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IAutomationFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IConsumable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IMachine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IRecipe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\IStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\ItemType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\ITrackedStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\MachineState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Fluent\IFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Fluent\IFluentAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Fluent\IFluentEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Fluent\IGameLocale.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IDynamicGameAssetsAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\ISaveAnywhereAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\ISolidFoundationsAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IWearMoreRingsAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menuing\MenuingExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Niceties\Records.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Niceties\SoundBankWrapperHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\VanillaMachinesEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\DateHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IBetterSprinklersAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IContentPatcherAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IFlexibleSprinklerAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IGenericModConfigMenuAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\IntegrationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IGMCMOptionsAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IJsonAssetsAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\ILineSprinklersAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IProducerFrameworkModAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\ISimplifiedFishingAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\ISpaceCoreAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ItemManagement\ItemUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menuing\DialogueAndAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MigrationManager\MigrationDataClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MigrationManager\MigrationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedules\DataModels\SchedulePoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedules\ScheduleUtilityFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ColorHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\FarmerExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\GameContentHelperExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\GameLocationExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\HarmonyExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\LogExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\ModDataExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\NetFieldDictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\NPCExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\ScheduleExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\SMAPIHelperExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\SObjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\TranslationHelperExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\Vector2Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\GameLocationUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HarmonyHelper\AdditionalCodeInstructionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HarmonyHelper\CodeInstructionWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HarmonyHelper\ILHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HarmonyHelper\ILHelperExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\InputUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Shims\DynamicGameAssetsShims.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Shims\SolidFoundationShims.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\StringUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Automate\README.TXT" />
+    <Content Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\Fluent\README.TXT" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)README.MD" />
+  </ItemGroup>
+</Project>

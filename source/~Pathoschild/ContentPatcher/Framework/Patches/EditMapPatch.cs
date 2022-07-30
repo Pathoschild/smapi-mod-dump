@@ -15,6 +15,7 @@ using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
 using ContentPatcher.Framework.Constants;
+using ContentPatcher.Framework.TextOperations;
 using ContentPatcher.Framework.Tokens;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common.Utilities;
@@ -56,7 +57,7 @@ namespace ContentPatcher.Framework.Patches
         public readonly IManagedTokenString[] AddWarps;
 
         /// <summary>The text operations to apply to existing values.</summary>
-        private readonly TextOperation[] TextOperations;
+        private readonly ITextOperation[] TextOperations;
 
         /// <summary>Whether the patch applies a map patch.</summary>
         private bool AppliesMapPatch => this.RawFromAsset != null;
@@ -86,7 +87,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="parentPatch">The parent patch for which this patch was loaded, if any.</param>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="parseAssetName">Parse an asset name.</param>
-        public EditMapPatch(int[] indexPath, LogPathBuilder path, IManagedTokenString assetName, IEnumerable<Condition> conditions, IManagedTokenString? fromAsset, TokenRectangle? fromArea, TokenRectangle? toArea, PatchMapMode patchMode, IEnumerable<EditMapPatchProperty>? mapProperties, IEnumerable<EditMapPatchTile>? mapTiles, IEnumerable<IManagedTokenString>? addWarps, IEnumerable<TextOperation>? textOperations, UpdateRate updateRate, IContentPack contentPack, IPatch? parentPatch, IMonitor monitor, Func<string, IAssetName> parseAssetName)
+        public EditMapPatch(int[] indexPath, LogPathBuilder path, IManagedTokenString assetName, IEnumerable<Condition> conditions, IManagedTokenString? fromAsset, TokenRectangle? fromArea, TokenRectangle? toArea, PatchMapMode patchMode, IEnumerable<EditMapPatchProperty>? mapProperties, IEnumerable<EditMapPatchTile>? mapTiles, IEnumerable<IManagedTokenString>? addWarps, IEnumerable<ITextOperation>? textOperations, UpdateRate updateRate, IContentPack contentPack, IPatch? parentPatch, IMonitor monitor, Func<string, IAssetName> parseAssetName)
             : base(
                 indexPath: indexPath,
                 path: path,
@@ -106,7 +107,7 @@ namespace ContentPatcher.Framework.Patches
             this.MapProperties = mapProperties?.ToArray() ?? Array.Empty<EditMapPatchProperty>();
             this.MapTiles = mapTiles?.ToArray() ?? Array.Empty<EditMapPatchTile>();
             this.AddWarps = addWarps?.Reverse().ToArray() ?? Array.Empty<IManagedTokenString>(); // reversing the warps allows later ones to 'overwrite' earlier ones, since the game checks them in the listed order
-            this.TextOperations = textOperations?.ToArray() ?? Array.Empty<TextOperation>();
+            this.TextOperations = textOperations?.ToArray() ?? Array.Empty<ITextOperation>();
             this.Monitor = monitor;
 
             this.Contextuals
@@ -358,7 +359,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="operation">The text operation to apply.</param>
         /// <param name="error">An error indicating why applying the operation failed, if applicable.</param>
         /// <returns>Returns whether applying the operation succeeded.</returns>
-        private bool TryApplyTextOperation(Map target, TextOperation operation, [NotNullWhen(false)] out string? error)
+        private bool TryApplyTextOperation(Map target, ITextOperation operation, [NotNullWhen(false)] out string? error)
         {
             var targetRoot = operation.GetTargetRoot();
             switch (targetRoot)

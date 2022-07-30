@@ -1,6 +1,7 @@
 {
 	// Option Headers
 	"headerRanges": "Ranges",
+	"headerRangedSwings": "Ranged Swings",
 	"headerUseOnTile": "Usability",
 	"headerFaceClick": "Turn Toward Click",
 	"headerMisc": "Miscellaneous",
@@ -17,6 +18,10 @@
 	"hoeForRangeTooltip": "the Hoe",
 	"wateringCanForRangeName": "Watering Can",
 	"wateringCanForRangeTooltip": "the Watering Can",
+	"scytheForRangeName": "Scythe",
+	"scytheForRangeTooltip": "the Scythe",
+	"weaponsForRangeName": "Weapons",
+	"weaponsForRangeTooltip": "melee weapons",
 	"seedsForRangeName": "Seed",
 	"seedsForRangeTooltip": "placing seeds/fertilizer",
 	"objectsForRangeName": "Object Place",
@@ -25,6 +30,12 @@
 	"rangeUnlimited": "Unlimited",
 	"rangeDefault": "1 tile (normal)",
 	"rangeExtended": "{{tiles}} tiles",
+	
+	// Ranged Swings
+	"optionScytheSwingOriginName": "Center Scythe on Cursor",
+	"optionScytheSwingOriginTooltip": "Centers area of effect for scythe swings on cursor rather than player.",
+	"optionWeaponSwingOriginName": "Center Weapons on Cursor",
+	"optionWeaponSwingOriginTooltip": "Centers area of effect for melee weapons on cursor rather than player.",
 	
 	// Usability
 	"optionSelfUsabilityName": "{{tool}} Usable on Player Tile",
@@ -52,8 +63,14 @@
 	"locationLogicNew": "New Logic (default)",
 	"locationLogicCombined": "Combination",
 	
+	"optionHalfTilePositionsName": "Use Half-Tile Positions",
+	"optionHalfTilePositionsTooltip": "Alters range calculation so that when player is standing \"between\" tile units, range feels more equal on all sides.",
+	
 	"optionAllowRangedChargeName": "Allow Ranged Charge Effects",
 	"optionAllowRangedChargeTooltip": "Allows charged tool actions at extended ranges, which will originate from the cursor position instead of the player.",
+	
+	"optionAttacksIgnoreObstaclesName": "Attacks Ignore Obstacles",
+	"optionAttacksIgnoreObstaclesTooltip": "Allows attacks to hit monsters even if there are obstacles in the way.",
 	
 	"optionOnClickOnlyName": "Custom Range on Click Only",
 	"optionOnClickOnlyTooltip": "If enabled, extended ranges only apply when using tools by clicking. If disabled, they will apply for all forms of tool use.",

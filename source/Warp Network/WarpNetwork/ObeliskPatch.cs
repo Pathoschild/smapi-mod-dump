@@ -35,18 +35,18 @@ namespace WarpNetwork
                     //desert warp patch
 
                     Point point = ObeliskTargets["Desert"];
+                    if (point != ev.Player.getTileLocationPoint())
+                        return;
+
                     Point to = point;
-                    if (WarpHandler.DesertWarp is not null)
-                        to = (Point)WarpHandler.DesertWarp;
-                    else if (ModEntry.config.PatchObelisks && point == ev.Player.getTileLocationPoint())
-                    {
-                        Dictionary<string, WarpLocation> dests = Utils.GetWarpLocations();
-                        if (dests.TryGetValue("desert", out var dest) && dest.OverrideMapProperty)
+                    if (WarpHandler.DesertWarp.Value is not null)
+                        to = (Point)WarpHandler.DesertWarp.Value;
+                    else if (ModEntry.config.PatchObelisks)
+                        if (Utils.GetWarpLocations().TryGetValue("desert", out var dest) && dest.OverrideMapProperty)
                             to = new(dest.X, dest.Y);
                         else
                             to = ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
-                    }
-                    WarpHandler.DesertWarp = null;
+                    WarpHandler.DesertWarp.Value = null;
                     ev.Player.setTileLocation(new Vector2(to.X, to.Y));
                 }
                 else if (ModEntry.config.PatchObelisks)
@@ -60,11 +60,8 @@ namespace WarpNetwork
                         {
                             Dictionary<string, WarpLocation> dests = Utils.GetWarpLocations();
                             string target = (Name == "IslandSouth") ? "island" : Name;
-                            Point to;
-                            if (dests.TryGetValue(target, out var dest) && dest.OverrideMapProperty)
-                                to = new(dest.X, dest.Y);
-                            else
-                                to = ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
+                            Point to = (dests.TryGetValue(target, out var dest) && dest.OverrideMapProperty) ?
+                                new(dest.X, dest.Y) : ev.NewLocation.GetMapPropertyPosition("WarpNetworkEntry", point.X, point.Y);
                             ev.Player.setTileLocation(new Vector2(to.X, to.Y));
                         }
                     }

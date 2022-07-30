@@ -34,6 +34,10 @@
                     <td class="config_value" colspan="3"><input type="checkbox" name="useRT" #USERT# /></td>
                 </tr>
                 <tr>
+                    <td class="config_setting">Show Remote Controle</td>
+                    <td class="config_value" colspan="3"><input type="checkbox" name="useRemote" #USEREMOTE# /></td>
+                </tr>
+                <tr>
                     <td class="config_setting">Theme</td>
                     <td class="config_value" colspan="3"><input type="text" name="template" id="TEMPLATE" value="#TEMPVALUE#" /></td>
                 </tr>
@@ -190,9 +194,20 @@
                 <tr>
                     <td class="config_setting config_width">Show Train Schedule</td>
                     <td class="config_value config_width center"><input type="checkbox" id="showtrain" name="showtrain" #SHOWTRAIN# /></td>
-                    <td class="config_setting config_width"></td>
-                    <td class="config_value config_width center"></td>
+                    <td class="config_setting config_width">Show Fill Hay Button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="fillhay" name="fillhay" #FILLHAY# /></td>
                 </tr>
+                <tr>
+                    <td class="config_setting config_width">Show 'Cook' button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="showcook" name="showcook" #SHOWCOOK# /></td>
+                    <td class="config_setting config_width">Show 'Harvest' button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="showharvest" name="showharvest" #SHOWHARVEST# /></td>
+                </tr>
+                <!--Integrations-->
+
+                <tr><td colspan="4" class="config_section_head"><img src="/images/banners/integrations.png" class="center_table" /></td></tr>
+                #VGIRLS#
+
 
                 <!-- Daily Task Parameters-->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/daily-task-report-options.png" class="center_table" /></td></tr>
@@ -261,6 +276,12 @@
                     <td class="config_value config_width center"><input type="checkbox" name="pondwant" #PONDWANT# /></td>
                     <td class="config_setting config_width">Minimum Silo Hay Level</td>
                     <td class="config_value config_width center"><input type="text" size="4" name="silomin" id="silomin" value="#SILOMIN#" /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Animals That Need Water</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="needwater" #NEEDWATER# /></td>
+                    <td class="config_setting config_width"></td>
+                    <td class="config_value config_width center"></td>
                 </tr>
                 <!-- machine and product details-->
                 <tr><td colspan="2" class="config_section_head"><img src="/images/banners/animal-products.png" class="center_table" /></td><td colspan="2" class="config_section_head"><img src="/images/banners/machines.png" class="center_table" /></td></tr>

@@ -1,0 +1,132 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    "Changes": [
+    {
+        "LogName": "Vanilla eight-heart (no kids)",
+        "Action": "EditData",
+        "Target": "Data/Events/Forest",
+        "Entries": {
+            "181928/f Penny 2000/t 900 1600": null
+        },
+        "When": {"Weather|contains=Rain, Storm": true}
+    },
+    {
+        "LogName": "Eight-heart event, with one kid",
+        "Action": "EditData",
+        "Target": "Data/Events/Forest",
+        "Fields": {
+            "fieldTripEnd": {
+                "23": "speak Penny \"$q -1 null#{{i18n:not-married-question-onekid}}#$r -1 0 event_speaker_kids1#{{i18n:onekid-best}}#$r -1 20 event_speaker_kids2#{{i18n:onekid-bigfamily}}#$r -1 20 event_speaker_kids3#{{i18n:onekid-everyone}}#$r -1 10 event_speaker_kids4#{{i18n:onekid-moredifficult}}#$r -1 -10 event_speaker_kids5#{{i18n:onekid-regrets}}.#$r -1 -10 event_speaker_kids6#{{i18n:onekid-tieddown}}\""
+            }
+        },
+        "When": {
+            "HasValue: {{ChildGenders}}": true,
+            "HasValue: {{ChildGenders|valueAt=1}}": false,
+            "Relationship:Penny|contains=Married": false
+        }
+    },
+    {	// both one kid and multiple kids are handled.
+        "LogName": "Eight-heart event, with at least one kid. Not married to Penny. Penny Dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Penny",
+        "Entries": {
+            "event_speaker_kids1": "{{i18n:nokidsyet_event_speaker_kids1}}$h",
+            "event_speaker_kids2": "{{i18n:nokidsyet_event_speaker_kids2}}",
+            "event_speaker_kids3": "{{i18n:nokidsyet_event_speaker_kids3}}",
+            "event_speaker_kids4": "{{i18n:nokidsyet_event_speaker_kids4}}",
+            "event_speaker_kids5": "{{i18n:nokidsyet_event_speaker_kids5}}$s",
+            "event_speaker_kids6": "{{i18n:nokidsyet_event_speaker_kids6}}$s"
+        },
+        "When": {
+            "HasValue: {{ChildGenders}}": "true",
+            "Relationship:Penny|contains=Married": false,
+        }
+    },
+    {
+        "LogName": "Eight-heart event, with at least one kid. Penny not married to player. Penny dialogue.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Penny",
+        "Entries": {
+            "event_speaker_kids2": "{{i18n: pennymarried_event_speaker_kids2}}",
+            "event_speaker_kids3": "{{i18n: pennymarried_event_speaker_kids3}}",
+        }
+    },
+    {
+        "LogName": "Eight heart event, Penny is married",
+        "Action": "EditData",
+        "Target": "Data/Events/Forest",
+        "Fields": {
+            "choseFarming": {
+                "10": "speak Vincent \"{{i18n:choseFarming000}}#$b#{{i18n:choseFarming001}}$h\"",
+                "17": "speak Penny \"{{i18n:choseFarming002}}$a\""
+            }
+        },
+        "When": {
+            "Weather|contains=Rain, Storm": false,
+            "Spouse:AnyPlayer|contains=Penny": true,
+        }
+    },
+    {
+        "LogName": "Eight heart event, married to Penny",
+        "Action": "EditData",
+        "Target": "Data/Events/Forest",
+        "Fields": {
+            "181928/f Penny 2000/t 900 1600":{
+                "14": "speak Penny \"{{i18n:ask-speaker1}}#$b#{{i18n:ask-speaker2}}$h\""
+            },
+        },
+        "When": {
+            "Weather|contains=Rain, Storm": false,
+            "Relationship:Penny|contains=Married": true,
+        }
+    },
+    {
+        "LogName": "Eight-heart event, married to Penny, one kid ",
+        "Action": "EditData",
+        "Target": "Data/Events/Forest",
+        "Fields": {
+            "fieldTripEnd": {
+                "23": "speak Penny \"$q -1 null#{{i18n:married-question-onekid|kid={{ChildNames |valueAt=0 }} }}#$r -1 125 event_speaker_kids1#{{i18n:married-onekid-best|kid={{ChildNames |valueAt=0 }} }}#$r -1 250 event_speaker_kids2#{{i18n:married-onekid-bigfamily}}#$r -1 250 event_speaker_kids3#{{i18n:married-onekid-everyone}}#$r -1 125 event_speaker_kids4#{{i18n:married-onekid-moredifficult|kid={{ChildNames |valueAt=0 }} }}#$r -1 -250 event_speaker_kids5#{{i18n:married-onekid-regrets|kid={{ChildNames |valueAt=0 }} }}.#$r -1 -250 event_speaker_kids6#{{i18n:married-onekid-tieddown}}\"",
+            },
+        },
+        "When": {
+            "HasValue: {{ChildGenders}}": true,
+            "HasValue: {{ChildGenders|valueAt=1}}": false,
+            "Relationship:Penny|contains=Married": true,
+        }
+    },
+    {
+        "LogName": "Eight-heart event, with at least one kid, married to Penny dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Penny",
+        "Entries": {
+            "event_speaker_kids1": "{{i18n:married_event_speaker_kids1_onekid|kid={{ChildNames |valueAt=0 }} }}$h",
+            "event_speaker_kids2": "{{i18n:married_event_speaker_kids2_onekid}}$h#$b#{{i18n:married_event_speaker_kids2_onekid_2}}$l",
+            "event_speaker_kids3": "{{i18n:married_event_speaker_kids3_onekid}}$s#$b#{{i18n:married_event_speaker_kids3_onekid_2}}",
+            "event_speaker_kids4": "{{i18n:married_event_speaker_kids4_onekid}}$s#$b#{{i18n:married_event_speaker_kids4_onekid_2}}",
+            "event_speaker_kids5": "{{i18n:married_event_speaker_kids5_onekid}}$s#$b#{{i18n:married_event_speaker_kids5_onekid_2}}",
+            "event_speaker_kids6": "{{i18n:married_event_speaker_kids6_onekid}}$a#$b#{{i18n:married_event_speaker_kids6_onekid_2}}",
+        },
+        "When": {
+            "HasValue: {{ChildGenders}}": true,
+            "Relationship:Penny|contains=Married": true,
+        }
+    },
+    { // this is on a separate file to prevent issues when there's no children..
+        "Action": "Include",
+        "FromFile": "kids.json",
+        "When": {
+            "HasValue: {{ChildGenders}}": "true"
+        }
+    }
+  ]
+}

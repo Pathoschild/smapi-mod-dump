@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Version>1.3.7</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="releases\**" />
+		<EmbeddedResource Remove="releases\**" />
+		<None Remove="releases\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Examples\[SF] Example Pack\manifest.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Shaders\mask.mgfx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Shaders\opacity.mgfx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Shaders\wavy.mgfx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Textures\night_sky_sheet.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Textures\puddles_sheet.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Textures\sky_effects_sheet.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\de.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\default.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\ja.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\ko.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\th.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\zh.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PostBuildEventDependsOn>
+			$(PostBuildEventDependsOn);
+			PostBuildMacros;
+		</PostBuildEventDependsOn>
+		<PostBuildEvent>
+			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
+
+			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\releases\latest\DynamicReflections"' -Recurse -Force
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\releases\latest\DynamicReflections"
+			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\releases\DynamicReflections-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\releases\latest\DynamicReflections"
+
+			powershell Remove-Item -Path '$(GameModsPath)\DynamicReflections' -Recurse -Force
+			powershell Remove-Item -Path '$(GameModsPath)\Dynamic Reflections Examples' -Recurse -Force
+
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\releases\latest\DynamicReflections" "$(GameModsPath)\DynamicReflections"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\DynamicReflections\DynamicReflections\Examples\*" "$(GameModsPath)\Dynamic Reflections Examples"
+		</PostBuildEvent>
+	</PropertyGroup>
+</Project>

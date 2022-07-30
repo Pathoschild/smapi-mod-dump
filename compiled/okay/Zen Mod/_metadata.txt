@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12899
+IDs: PositiveVegan.ZenMod
+update keys: Nexus:12899

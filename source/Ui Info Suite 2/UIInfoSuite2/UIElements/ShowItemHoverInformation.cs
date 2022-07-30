@@ -21,16 +21,16 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UIInfoSuite.Infrastructure;
-using UIInfoSuite.Infrastructure.Extensions;
+using UIInfoSuite2.Infrastructure;
+using UIInfoSuite2.Infrastructure.Extensions;
 
-namespace UIInfoSuite.UIElements
+namespace UIInfoSuite2.UIElements
 {
-    class ShowItemHoverInformation : IDisposable
+    internal class ShowItemHoverInformation : IDisposable
     {
-        private readonly Dictionary<string, List<KeyValuePair<int, int>>> _prunedRequiredBundles = new Dictionary<string, List<KeyValuePair<int, int>>>();
+        private readonly Dictionary<string, List<KeyValuePair<int, int>>> _prunedRequiredBundles = new();
         private readonly ClickableTextureComponent _bundleIcon =
-            new ClickableTextureComponent(
+            new(
                 "",
                 new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
                 "",
@@ -39,7 +39,7 @@ namespace UIInfoSuite.UIElements
                 new Rectangle(331, 374, 15, 14),
                 Game1.pixelZoom);
         private readonly ClickableTextureComponent _museumIcon =
-            new ClickableTextureComponent(
+            new(
                 "",
                 new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
                 "",
@@ -48,7 +48,7 @@ namespace UIInfoSuite.UIElements
                 Game1.getCharacterFromName("Gunther").GetHeadShot(),
                 Game1.pixelZoom);
         private readonly ClickableTextureComponent _shippingBottomIcon =
-            new ClickableTextureComponent(
+            new(
                 "",
                 new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
                 "",
@@ -57,7 +57,7 @@ namespace UIInfoSuite.UIElements
                 new Rectangle(526, 218, 30, 22),
                 Game1.pixelZoom);
         private readonly ClickableTextureComponent _shippingTopIcon =
-            new ClickableTextureComponent(
+            new(
                 "",
                 new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
                 "",
@@ -66,10 +66,11 @@ namespace UIInfoSuite.UIElements
                 new Rectangle(134, 236, 30, 15),
                 Game1.pixelZoom);
 
-        private readonly PerScreen<Item> _hoverItem = new PerScreen<Item>();
+        private readonly PerScreen<Item> _hoverItem = new();
         private CommunityCenter _communityCenter;
-        private Dictionary<string, string> _bundleData;
         private LibraryMuseum _libraryMuseum;
+
+        private Dictionary<string, string> _bundleNameOverrides;
 
         private readonly IModHelper _helper;
 
@@ -80,6 +81,7 @@ namespace UIInfoSuite.UIElements
 
         public void ToggleOption(bool showItemHoverInformation)
         {
+            _helper.Events.GameLoop.DayStarted -= OnDayStarted;
             _helper.Events.Player.InventoryChanged -= OnInventoryChanged;
             _helper.Events.Display.Rendered -= OnRendered;
             _helper.Events.Display.RenderedHud -= OnRenderedHud;
@@ -88,11 +90,10 @@ namespace UIInfoSuite.UIElements
             if (showItemHoverInformation)
             {
                 _communityCenter = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
-                _bundleData = Game1.netWorldState.Value.BundleData;
-                PopulateRequiredBundles();
 
                 _libraryMuseum = Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum;
 
+                _helper.Events.GameLoop.DayStarted += OnDayStarted;
                 _helper.Events.Player.InventoryChanged += OnInventoryChanged;
                 _helper.Events.Display.Rendered += OnRendered;
                 _helper.Events.Display.RenderedHud += OnRenderedHud;
@@ -103,6 +104,17 @@ namespace UIInfoSuite.UIElements
         public void Dispose()
         {
             ToggleOption(false);
+        }
+
+        // [EventPriority(EventPriority.Low)]
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            // NB The Custom Community Center mod is only ready at this point
+            if (_helper.GameContent.CurrentLocaleConstant == LocalizedContentManager.LanguageCode.en && _helper.ModRegistry.IsLoaded("blueberry.CustomCommunityCentre"))
+                _bundleNameOverrides = GetEnglishNamesForCustomCommunityCenterBundles();
+            else
+                _bundleNameOverrides = null;
+            PopulateRequiredBundles();
         }
 
         /// <summary>Raised before the game draws anything to the screen in a draw tick, as soon as the sprite batch is opened.</summary>
@@ -144,34 +156,46 @@ namespace UIInfoSuite.UIElements
                 this.PopulateRequiredBundles();
         }
 
+        /// Retrieve English bundle names for Custom Community Center bundles as the bundle id is not the bundle's English name.
+        /// For example, the bundle id is "Custom_blueberry_Kitchen_Area0_Bundle0" but the name is "Baker's"
+        private Dictionary<string, string> GetEnglishNamesForCustomCommunityCenterBundles()
+        {
+            try
+            {
+                Dictionary<string, string> englishNames = new();
+                var bundleNamesAsset = _helper.GameContent.Load<Dictionary<string, string>>(@"Strings\BundleNames");
+                foreach (var namePair in bundleNamesAsset)
+                {
+                    if (namePair.Key != namePair.Value)
+                        englishNames[namePair.Key] = namePair.Value;
+                }
+                return englishNames;
+            }
+            catch (Exception e)
+            {
+                ModEntry.MonitorObject.LogOnce("Failed to retrieve English names for Custom Community Center bundles. Custom bundle names may be displayed incorrectly.", LogLevel.Warn);
+                ModEntry.MonitorObject.Log(e.ToString());
+                return null;
+            }
+        }
+
         private void PopulateRequiredBundles()
         {
             _prunedRequiredBundles.Clear();
             if (!Game1.player.mailReceived.Contains("JojaMember"))
             {
-                foreach (var bundle in _bundleData)
+
+                foreach (var bundle in Game1.netWorldState.Value.BundleData)
                 {
                     string[] bundleRoomInfo = bundle.Key.Split('/');
                     string bundleRoom = bundleRoomInfo[0];
-                    int roomNum;
+                    int areaNum = CommunityCenter.getAreaNumberFromName(bundleRoom);
 
-                    switch (bundleRoom)
-                    {
-                        case "Pantry": roomNum = 0; break;
-                        case "Crafts Room": roomNum = 1; break;
-                        case "Fish Tank": roomNum = 2; break;
-                        case "Boiler Room": roomNum = 3; break;
-                        case "Vault": roomNum = 4; break;
-                        case "Bulletin Board": roomNum = 5; break;
-                        case "Abandoned Joja Mart": roomNum = 6; break;
-                        default: continue;
-                    }
-
-                    if (_communityCenter.shouldNoteAppearInArea(roomNum))
+                    if (_communityCenter.shouldNoteAppearInArea(areaNum))
                     {
                         int bundleNumber = bundleRoomInfo[1].SafeParseInt32();
                         string[] bundleInfo = bundle.Value.Split('/');
-                        string bundleName = _helper.Content.CurrentLocaleConstant == LocalizedContentManager.LanguageCode.en || int.TryParse(bundleInfo[^1], out _)
+                        string bundleName = _helper.GameContent.CurrentLocaleConstant == LocalizedContentManager.LanguageCode.en || int.TryParse(bundleInfo[^1], out _)
                             ? bundleInfo[0]
                             : bundleInfo[^1];
                         string[] bundleValues = bundleInfo[2].Split(' ');
@@ -189,7 +213,11 @@ namespace UIInfoSuite.UIElements
                         }
 
                         if (source.Count > 0)
+                        {
+                            if (_bundleNameOverrides != null && _bundleNameOverrides.TryGetValue(bundleName, out string value))
+                                bundleName = value;
                             _prunedRequiredBundles.Add(bundleName, source);
+                        }
                     }
                 }
             }
@@ -243,17 +271,16 @@ namespace UIInfoSuite.UIElements
                     cropPrice = itemObject.Price;
                 }
 
-                foreach (var requiredBundle in _prunedRequiredBundles)
+                // Bundle items must be "small" objects. This avoids marking other kinds of objects as needed, such as Chest (id 130), Recycling Machine (id 20), etc...
+                if (_hoverItem.Value is StardewValley.Object hoveredObject && !hoveredObject.bigCraftable.Value && hoveredObject is not Furniture)
                 {
-                    int quality = _hoverItem.Value is StardewValley.Object ? ((StardewValley.Object)_hoverItem.Value).Quality : 0;
-                    if (requiredBundle.Value.Any(itemQuality => itemQuality.Key == _hoverItem.Value.ParentSheetIndex && quality >= itemQuality.Value)
-                        && !_hoverItem.Value.Name.Contains("arecrow")
-                        && _hoverItem.Value.Name != "Chest"
-                        && _hoverItem.Value.Name != "Recycling Machine"
-                        && _hoverItem.Value.Name != "Solid Gold Lewis")
+                    foreach (var requiredBundle in _prunedRequiredBundles)
                     {
-                        requiredBundleName = requiredBundle.Key;
-                        break;
+                        if (requiredBundle.Value.Any(itemQuality => itemQuality.Key == hoveredObject.ParentSheetIndex && hoveredObject.Quality >= itemQuality.Value))
+                        {
+                            requiredBundleName = requiredBundle.Key;
+                            break;
+                        }
                     }
                 }
 
@@ -499,7 +526,7 @@ namespace UIInfoSuite.UIElements
 
         private static Vector2 DrawHoverText(SpriteBatch batch, string text, SpriteFont font, int xOffset = 0, int yOffset = 0, int moneyAmountToDisplayAtBottom = -1, string boldTitleText = null, int healAmountToDisplay = -1, string[] buffIconsToDisplay = null, Item hoveredItem = null)
         {
-            Vector2 result = Vector2.Zero;
+            Vector2 result;
 
             if (string.IsNullOrEmpty(text))
             {
@@ -731,7 +758,7 @@ namespace UIInfoSuite.UIElements
                         Game1.textColor);
                     yPos += (int)font.MeasureString(Game1.parseText(meleeWeapon.Description, Game1.smallFont, Game1.tileSize * 4 + Game1.tileSize / 4)).Y;
 
-                    if ((meleeWeapon as Tool).IndexOfMenuItemView != 47)
+                    if (meleeWeapon.IndexOfMenuItemView != 47)
                     {
                         Utility.drawWithShadow(
                             batch,

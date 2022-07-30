@@ -1,0 +1,12 @@
+{
+	"Name": "Into the Game (Save Loaded Notifier)",
+	"Author": "DecidedlyHuman",
+	"Version": "1.0.2",
+	"Description": "Ever missed that Stardew Valley has finished loading into your world because it takes too long? Well, this mod will whistle at you when it's done loading!",
+	"UniqueID": "DecidedlyHuman.SaveLoadedNotifier",
+	"EntryDll": "SaveLoadedNotifier.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:12826"
+	]
+}

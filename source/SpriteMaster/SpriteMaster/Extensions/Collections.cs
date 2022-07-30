@@ -8,20 +8,35 @@
 **
 *************************************************/
 
-using Microsoft.Toolkit.HighPerformance;
+using SpriteMaster.Extensions.Reflection;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using static SpriteMaster.Runtime;
 
 namespace SpriteMaster.Extensions;
 
 internal static class Collections {
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static TValue? GetValueOrDefault<TKey, TValue>(
+		this Dictionary<TKey, TValue> dictionary,
+		TKey key,
+		TValue? defaultValue = default
+	) where TKey : notnull {
+		if (dictionary.TryGetValue(key, out var value)) {
+			return value;
+		}
+
+		return defaultValue;
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static T[] AsArray<T>(this IEnumerable<T> enumerable) =>
+		enumerable as T[] ?? enumerable.ToArray();
+
 	#region IsBlank
 	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsBlank<T>(this IEnumerable<T>? enumerable) => enumerable is null || !enumerable.Any();
@@ -65,7 +80,7 @@ internal static class Collections {
 	#endregion
 
 	[MethodImpl(MethodImpl.Inline)]
-	internal static V GetOrAddDefault<K, V>(this Dictionary<K, V> dictionary, K key, Func<V> defaultGetter) where K : notnull {
+	internal static TValue GetOrAddDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> defaultGetter) where TKey : notnull {
 		if (dictionary.TryGetValue(key, out var value)) {
 			return value;
 		}
@@ -104,11 +119,27 @@ internal static class Collections {
 			GetEnabled;
 	}
 
+	internal static T[] GetInnerArray<T>(this List<T> list) {
+		if (!ListReflectImpl<T>.GetEnabled) {
+			return list.ToArray();
+		}
+
+		return ListReflectImpl<T>.GetItems(list);
+	}
+
+	internal static T[]? GetInnerArrayUnsafe<T>(this List<T> list) {
+		if (!ListReflectImpl<T>.GetEnabled) {
+			return null;
+		}
+
+		return ListReflectImpl<T>.GetItems(list);
+	}
+
 	/// <summary>
 	/// Returns a new List that is constructed from the array.
 	/// </summary>
 	internal static List<T> ToList<T>(this T[] array) {
-		if (ListReflectImpl<T>.SetEnabled) {
+		if (!ListReflectImpl<T>.SetEnabled) {
 			var newList = new List<T>(array.Length);
 			foreach (var item in array) {
 				newList.Add(item);
@@ -201,7 +232,7 @@ internal static class Collections {
 
 	[DoesNotReturn]
 	[MethodImpl(MethodImplOptions.NoInlining)]
-	private static T ThrowIndexLessThanZeroException<T, U>(string name, int value, out U? item) =>
+	private static TResult ThrowIndexLessThanZeroException<TResult, TValue>(string name, int value, out TValue? item) =>
 		throw new ArgumentOutOfRangeException(name, $"{value} is less than zero");
 
 	internal static bool TryAt<T>(this List<T> list, int index, out T? item) {

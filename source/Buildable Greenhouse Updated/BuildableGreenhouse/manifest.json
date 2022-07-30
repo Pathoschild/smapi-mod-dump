@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Yariazen/BuildableGreenhouse
+**
+*************************************************/
+
+{
+    "Name": "Buildable Greenhouse Updated",
+    "Author": "Yariazen",
+    "Version": "1.1.0",
+    "Description": "Makes the Greenhouse buildable after unlocking it",
+    "UniqueID": "Yariazen.BuildableGreenhouse",
+    "EntryDll": "BuildableGreenhouse.dll",
+    "MinimumApiVersion": "3.14.0",
+    "UpdateKeys": [ "Nexus:11831" ],
+    "Dependencies": [
+        {
+            "UniqueID": "PeacefulEnd.SolidFoundations",
+            "IsRequired": true
+        }
+    ]
+}

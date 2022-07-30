@@ -1,0 +1,50 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "LogName": "Gifts - Bad Day",
+        "Target": "Data/NPCGiftTastes",
+        "When": {"PamMood": "bad"},
+        "Fields": {
+            "Pam": {
+                "1": "24 90 199 208 219 239 240 242 368",
+                "3": "-6 -75 -79 18 227 228 231 232 233 234 235 236 238 376 402 418 651 {{AlcoholItems}}"
+            }
+        }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "Gifts - Neutral Day",
+        "Target": "Data/NPCGiftTastes",
+        "When": {"PamMood": "neutral"},
+        "Fields": {
+            "Pam": {
+                "1": "24 90 199 208 219 239 240 242",
+                "3": "-6 -75 -79 18 227 228 231 232 233 234 235 236 238 376 651 402 418 368",
+                "7": "149 151 {{AlcoholItems}}"
+            }
+        }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "Gifts - Good day",
+        "Target": "Data/NPCGiftTastes",
+        "When": {"PamMood": "good"},
+        "Fields": {
+            "Pam": {
+                "1": "24 90 199 208 219 239 240 242",
+                "3": "-6 -75 -79 18 227 228 231 232 233 234 235 236 238 376 651 402 418 36",
+                "5": "-5 16 80 330 {{AlcoholItems}}"
+            }
+        }
+    }
+]}

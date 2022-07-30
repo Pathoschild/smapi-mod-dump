@@ -18,7 +18,6 @@ internal enum Scaler : int {
 #endif
 	EPX,
 	ScaleX = EPX,
-#if !SHIPPING
-	Bilinear
-#endif
+	EPXLegacy,
+	xBREPX
 }

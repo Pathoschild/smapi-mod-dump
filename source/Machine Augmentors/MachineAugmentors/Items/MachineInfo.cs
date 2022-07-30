@@ -8,14 +8,11 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewModdingAPI;
-using StardewValley;
 using Object = StardewValley.Object;
 
 namespace MachineAugmentors.Items
@@ -167,7 +164,7 @@ namespace MachineAugmentors.Items
 
         public static bool IsDestructible(Object Machine)
         {
-            return Machine != null && Machine.bigCraftable && Machine.CanBeSetDown && Machine.isPlaceable() && !IndestructibleMachineIds.Contains(Machine.ParentSheetIndex);
+            return Machine != null && Machine.bigCraftable.Value && Machine.CanBeSetDown && Machine.isPlaceable() && !IndestructibleMachineIds.Contains(Machine.ParentSheetIndex);
         }
     }
 }

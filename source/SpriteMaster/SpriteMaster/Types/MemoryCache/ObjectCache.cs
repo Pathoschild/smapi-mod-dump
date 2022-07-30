@@ -14,32 +14,40 @@ using SpriteMaster.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace SpriteMaster.Types.MemoryCache;
 
-internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> where TKey : notnull where TValue : notnull {
+internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue>
+	where TKey : notnull where TValue : notnull {
+
 	[StructLayout(LayoutKind.Auto)]
-	private readonly struct CacheEntry {
+	private struct CacheEntry {
 		internal readonly TValue Value;
-		internal readonly ConcurrentLinkedListSlim<TKey>.NodeRef Node;
+		internal ConcurrentLinkedListSlim<TKey>.NodeRef Node;
 		internal readonly long Size;
 
 		internal readonly bool IsValid => Node.IsValid;
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
-		internal CacheEntry(TValue value, ConcurrentLinkedListSlim<TKey>.NodeRef node, long size) {
+		internal CacheEntry(in TValue value, ConcurrentLinkedListSlim<TKey>.NodeRef node, long size) {
+			Contract.Assert(value is not null);
+			Contract.Assert(node.IsValid);
+
 			Value = value;
 			Node = node;
 			Size = size;
 		}
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
-		internal readonly void UpdateValue(TValue value, long size) {
+		internal readonly void UpdateValue(in TValue value, long size) {
+			Contract.Assert(value is not null);
+			Contract.Assert(size >= 0);
+
 			Unsafe.AsRef(in Value) = value;
 			Unsafe.AsRef(in Size) = size;
 		}
@@ -51,44 +59,47 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 	private readonly SharedLock CacheLock = new();
 
 	private readonly CancellationTokenSource ThreadCancelSource = new();
-	private readonly Condition TrimEvent = new();
+	private readonly AutoResetEvent TrimEvent = new(false);
 	private readonly Thread TrimThread;
 
 	private void CacheTrimLoop(in CancellationToken cancellationToken) {
 		while (!cancellationToken.IsCancellationRequested) {
-			TrimEvent.Wait();
-
-			if (cancellationToken.IsCancellationRequested) {
-				return;
+			if (!TrimEvent.WaitOne()) {
+				continue;
 			}
 
-			if (!Purging) {
+			if (cancellationToken.IsCancellationRequested) {
+				break;
+			}
+
+			using (var l = TryPurgingLock) if (l) {
 				TrimToSize(MaxSizeHysteresis);
 			}
 		}
 	}
 
-	internal ObjectCache(string name, long? maxSize, RemovalCallbackDelegate? removalAction = null) :
+	internal ObjectCache(string name, long? maxSize, RemovalCallbackDelegate<TKey, TValue>? removalAction = null) :
 		base(name, maxSize ?? long.MaxValue, removalAction) {
-		TrimThread = ThreadExt.Run(() => CacheTrimLoop(ThreadCancelSource.Token), background: true, name: $"Cache '{name}' Trim Thread");
+		TrimThread = ThreadExt.Run(
+			() => CacheTrimLoop(ThreadCancelSource.Token),
+			background: true, 
+			name: $"Cache '{name}' Trim Thread"
+		);
 	}
 
-	internal override int Count => Cache.Count;
+	public override int Count => Cache.Count;
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue? Get(TKey key) {
-		using (CacheLock.Read) {
-			var entry = Cache.GetValueOrDefault(key);
-			if (entry.IsValid) {
-				RecentAccessList.MoveToFront(entry.Node);
-			}
-
-			return default;
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue? Get(TKey key) {
+		if (TryGet(key, out var value)) {
+			return value;
 		}
+
+		return default;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override bool TryGet(TKey key, [NotNullWhen(true)] out TValue? value) {
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override bool TryGet(TKey key, [NotNullWhen(true)] out TValue? value) {
 		using (CacheLock.Read) {
 			if (Cache.TryGetValue(key, out var entry)) {
 				RecentAccessList.MoveToFront(entry.Node);
@@ -101,18 +112,23 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 		return false;
 	}
 
-	internal override TValue Set(TKey key, TValue value) {
-		TValue? original = default;
+	[MustUseReturnValue]
+	public override TValue Set(TKey key, TValue value) {
+		Contract.Assert(value is not null);
+
+		Optional<TValue> original = default;
 		var size = GetSizeBytes(value);
 		long sizeDelta;
 
 		using (CacheLock.Write) {
 			if (Cache.TryGetValue(key, out var entry)) {
 				RecentAccessList.MoveToFront(entry.Node);
-				original = entry.Value;
-				if (ReferenceEquals(original, value)) {
-					return original;
+				var originalValue = entry.Value;
+				if (ReferenceEquals(originalValue, value)) {
+					return originalValue;
 				}
+
+				original = originalValue;
 
 				var originalSize = entry.Size;
 				sizeDelta = size - originalSize;
@@ -133,94 +149,131 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 			}
 		}
 
-		if (original is not null) {
+
+		if (original.HasValue) {
 			OnEntryRemoved(key, original, EvictionReason.Replaced);
 		}
 
 		return value;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue? Update(TKey key, TValue value) {
-		TValue? original = default;
+	public override void SetFast(TKey key, TValue value) {
+		_ = Set(key, value);
+	}
+
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue? Update(TKey key, TValue value) {
+		Contract.Assert(value is not null);
+
+		Optional<TValue> original = default;
 		var size = GetSizeBytes(value);
 		long sizeDelta;
 
 		using (CacheLock.ReadWrite) {
-			var entry = Cache.GetValueOrDefault(key, default);
-			using (CacheLock.Write) {
-				if (entry.IsValid) {
-					RecentAccessList.MoveToFront(entry.Node);
-					original = entry.Value;
-					if (ReferenceEquals(original, value)) {
-						return original;
-					}
+			bool found = Cache.TryGetValue(key, out var entry);
+			if (found) {
+				RecentAccessList.MoveToFront(entry.Node);
+				var originalValue = entry.Value;
+				if (ReferenceEquals(originalValue, value)) {
+					return originalValue;
+				}
 
-					var originalSize = entry.Size;
-					sizeDelta = size - originalSize;
+				original = originalValue;
+
+				var originalSize = entry.Size;
+				sizeDelta = size - originalSize;
+
+				using (CacheLock.Write) {
 					entry.UpdateValue(value, size);
 					Cache[key] = entry;
 				}
-				else {
+			}
+			else {
+				using (CacheLock.Write) {
 					Cache.Add(key, new(value, RecentAccessList.AddFront(key), size));
 					sizeDelta = size;
 				}
-
-				Interlocked.Add(ref CurrentSize, sizeDelta);
 			}
+
+			Interlocked.Add(ref CurrentSize, sizeDelta);
 		}
 
-		if (sizeDelta != 0L) {
-			if (Interlocked.Read(ref CurrentSize) > MaxSize) {
-				TrimEvent.Set();
-			}
+		if (sizeDelta != 0L && Interlocked.Read(ref CurrentSize) > MaxSize) {
+			TrimEvent.Set();
 		}
 
-		if (original is not null) {
+		if (original.HasValue) {
 			OnEntryRemoved(key, original, EvictionReason.Replaced);
 		}
 
 		return original;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue? Remove(TKey key) {
-		TValue? result = default;
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue? Remove(TKey key) {
+		Optional<TValue> result = default;
 
 		using (CacheLock.Write) {
 			if (Cache.Remove(key, out var entry)) {
 				result = entry.Value;
 				Interlocked.Add(ref CurrentSize, -entry.Size);
-				RecentAccessList.Release(entry.Node);
+				RecentAccessList.Release(ref entry.Node);
+				entry.Node = default;
 			}
 		}
 
-		if (result is not null) {
+		if (result.HasValue) {
 			OnEntryRemoved(key, result, EvictionReason.Removed);
+			return result;
 		}
 
-		return result;
+		return default;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void RemoveFast(TKey key) {
-		TValue? result = default;
+	public override void RemoveFast(TKey key) {
+		Optional<TValue> result = default;
 
 		using (CacheLock.Write) {
 			if (Cache.Remove(key, out var entry)) {
 				result = entry.Value;
 				Interlocked.Add(ref CurrentSize, -entry.Size);
-				RecentAccessList.Release(entry.Node);
+				RecentAccessList.Release(ref entry.Node);
+				entry.Node = default;
 			}
 		}
 
-		if (result is not null) {
+		if (result.HasValue) {
 			OnEntryRemoved(key, result, EvictionReason.Removed);
 		}
 	}
 
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	private bool TryPopKey([NotNullWhen(true)] out TKey? key) {
+#if SHIPPING && !CONTRACTS_FULL
+		if (RecentAccessList.Count != 0) {
+			key = RecentAccessList.RemoveLast();
+			Contract.Assert(key is not null);
+			return true;
+		}
+		if (Cache.Count != 0) {
+			key = Cache.Last().Key;
+			Contract.Assert(key is not null);
+			return true;
+		}
+
+		key = default;
+		return false;
+#else
+		Contract.Assert(RecentAccessList.Count > 0);
+		key = RecentAccessList.RemoveLast();
+		Contract.Assert(key is not null);
+		return true;
+#endif
+	}
+
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void Trim(int count) {
+	public override void Trim(int count) {
 		count.AssertPositiveOrZero();
 
 		if (count == 0) {
@@ -240,18 +293,11 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 
 			int i = 0;
 			for (; i < count; i++) {
-				TKey? removeKey;
-				if (RecentAccessList.Count != 0) {
-					removeKey = RecentAccessList.RemoveLast();
-				}
-				else if (Cache.Count != 0) {
-					removeKey = Cache.Last().Key;
-				}
-				else {
+				if (!TryPopKey(out var removeKey)) {
 					break;
 				}
-				var result = Cache.Remove(removeKey, out var entry);
-				result.AssertTrue();
+				var removed = Cache.Remove(removeKey, out var entry);
+				removed.AssertTrue();
 				Interlocked.Add(ref CurrentSize, -entry.Size);
 				trimArray[i] = new(removeKey, entry.Value);
 			}
@@ -263,7 +309,7 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void TrimTo(int count) {
+	public override void TrimTo(int count) {
 		count.AssertPositiveOrZero();
 
 		Trim(Cache.Count - count);
@@ -283,18 +329,11 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 				var currentSize = Interlocked.Read(ref CurrentSize);
 
 				while (currentSize >= size) {
-					TKey? removeKey;
-					if (RecentAccessList.Count != 0) {
-						removeKey = RecentAccessList.RemoveLast();
-					}
-					else if (Cache.Count != 0) {
-						removeKey = Cache.Last().Key;
-					}
-					else {
+					if (!TryPopKey(out var removeKey)) {
 						break;
 					}
-					var result = Cache.Remove(removeKey, out var entry);
-					result.AssertTrue();
+					var removed = Cache.Remove(removeKey, out var entry);
+					removed.AssertTrue();
 					currentSize -= entry.Size;
 					trimmed.Add(new(removeKey, entry.Value));
 				}
@@ -315,11 +354,11 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void Clear() =>
+	public override void Clear() =>
 		_ = ClearWithCount();
 
 	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override (ulong Count, ulong Size) ClearWithCount() {
+	public override (ulong Count, ulong Size) ClearWithCount() {
 		int removedCount;
 		var removedPairs = GC.AllocateUninitializedArray<KeyValuePair<TKey, TValue>>(Count);
 
@@ -359,15 +398,11 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 		ThreadCancelSource.Cancel();
 		TrimEvent.Set();
 
-		using (CacheLock.Write) {
-			Clear();
-		}
+		Clear();
 
 		TrimThread.Join();
 
-		using (CacheLock.Write) {
-			Clear();
-		}
+		Clear();
 		CacheLock.Dispose();
 
 		ThreadCancelSource.Dispose();
@@ -379,15 +414,8 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 			return null;
 		}
 
-		if (Purging.CompareExchange(true, false)) {
-			return null;
-		}
-
-		try {
+		lock (PurgingLock) {
 			return ClearWithCount().Size;
-		}
-		finally {
-			Purging.Value = false;
 		}
 	}
 
@@ -400,11 +428,7 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 			return 0UL;
 		}
 
-		if (Purging.CompareExchange(true, false)) {
-			return null;
-		}
-
-		try {
+		lock (PurgingLock) {
 			long startSize = TotalSize;
 			long purgeSize = Math.Min(startSize, (long)target.Difference);
 			long purgeTo = Math.Max(0L, startSize - purgeSize);
@@ -420,9 +444,6 @@ internal class ObjectCache<TKey, TValue> : AbstractObjectCache<TKey, TValue> whe
 				long purged = Math.Max(0L, TotalSize - startSize);
 				return (ulong)purged;
 			}
-		}
-		finally {
-			Purging.Value = false;
 		}
 	}
 }

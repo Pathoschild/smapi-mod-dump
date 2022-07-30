@@ -131,20 +131,36 @@
       ]
     },
     {
-      "Action": "EditData",
-      "Target": "{{PeacefulEnd.CustomCompanions/Companions:ExampleAuthor.ExamplePack.ExamplePortraitCompanion}}",
-      "Entries": {
-        "Companion": {
-          "InspectionDialogue": "{{Time}}",
-          "Portrait": {
-            "PortraitDisplayName": "Murphy",
-            "FrameSizeWidth": 64, // Width of each frame / tile in pixels | Default is 16
-            "FrameSizeHeight": 64, // Height of each frame / tile in pixels | Default is 16
-            "FrameIndex": "{{Random:0, 1, 2, 3 |key={{Time}} }}"
+      "Action": "EditMap",
+      "Target": "Maps/Beach-Jellies",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 32,
+            "Y": 13
+          },
+          "Layer": "Back",
+          "SetProperties": {
+            "CustomCompanions": "Spawn 1 ExampleAuthor.ExamplePack.ExampleAlternativeWanderWalkingCow"
           }
         }
-      },
-      "Update": "OnLocationChange, OnTimeChange"
+      ]
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Beach-Jellies",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 28,
+            "Y": 13
+          },
+          "Layer": "Back",
+          "SetProperties": {
+            "CustomCompanions": "Spawn 1 ExampleAuthor.ExamplePack.ExamplePortraitCompanion"
+          }
+        }
+      ]
     }
   ]
 }

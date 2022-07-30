@@ -11,11 +11,6 @@
 	<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 </ItemGroup>
 <ItemGroup>
-  <Reference Include="SpaceCore">
-    <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\SpaceCore\SpaceCore.dll</HintPath>
-  </Reference>
-</ItemGroup>
-<ItemGroup>
   <Folder Include="assets\Misc\" />
 </ItemGroup>
 </Project>

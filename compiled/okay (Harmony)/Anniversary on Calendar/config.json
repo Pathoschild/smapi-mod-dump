@@ -5,5 +5,7 @@
   "ShowPlayerBirthdaysOnCal": false,
   "PlayerBirthdaySeason": "spring",
   "PlayerBirthdayDay": 1,
-  "FutureCalOn": true
+  "FutureCalOn": true,
+  "PlatonicKrobus": true,
+  "MultiplayerRing": true
 }

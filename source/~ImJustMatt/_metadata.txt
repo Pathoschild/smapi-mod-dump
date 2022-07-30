@@ -13,37 +13,12 @@ mods:
    FuryCore
    Garbage Day
    Too Many Animals
+   Toolbar Icons
 
 latest commit:
-   commit d83149cb5399f492cb340cb18bf4650884361591
-   Author: Matthew <ImJustMatt@users.noreply.github.com>
-   Date:   Mon May 23 16:32:21 2022 -0700
+   commit 80e0c0d6f9c4820c3cbad3dba0c9b4aa26951abf
+   Author: Matthew <justmatt@outlook.com>
+   Date:   Fri Jul 15 11:20:05 2022 -0700
    
-       Better crafting integration (#45)
-       
-       * Update reference
-       
-       * Placeholder
-       
-       * Added support for ModManifestBuilder
-       
-       * Added Hungarian translation
-       
-       * Updated for SMAPI 3.1.4.0
-       
-       * Added support for matching localized name
-       
-       * Updated to correct wiki links
-       
-       * Updated support for Better Crafting
-       
-       * Additional prepare for release
-       
-       * Create zh.json (#42) (#44)
-       
-       Added Chinese translation file.
-       
-       Co-authored-by: Andycc <103167501+Andyc66@users.noreply.github.com>
-       
-       Co-authored-by: Andycc <103167501+Andyc66@users.noreply.github.com>
+       Updated CHANGELOG
    

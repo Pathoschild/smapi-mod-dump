@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-namespace Common.Integrations.BetterCrafting;
+namespace StardewMods.Common.Integrations.BetterCrafting;
 
-#nullable enable
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;

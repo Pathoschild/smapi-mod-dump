@@ -12,6 +12,8 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Text;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -129,6 +131,7 @@ namespace CustomDeathPenaltyPlus
             helper.Events.GameLoop.DayStarted += this.DayStarted;
             helper.Events.GameLoop.DayEnding += this.DayEnding;
             helper.Events.Multiplayer.ModMessageReceived += this.MessageReceived;
+            helper.Events.Content.AssetRequested += this.AssetRequested;
 
             // Read the mod config for values and create one if one does not currently exist
             this.config = this.Helper.ReadConfig<ModConfig>();
@@ -139,6 +142,62 @@ namespace CustomDeathPenaltyPlus
             // Allow other classes to use the ModConfig
             PlayerStateRestorer.SetConfig(this.config);
             AssetEditor.SetConfig(this.config, this.ModManifest);
+        }
+
+        private void AssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data\\mail"))
+            {
+                e.Edit(asset =>
+                {
+                    AssetEditor.MailDataFixes.EditEvent(asset);
+                });
+            }
+
+            if (e.NameWithoutLocale.IsEquivalentTo("Strings\\StringsFromCSFiles") && PlayerStateRestorer.statedeathps.Value != null)
+            {
+                e.Edit(asset =>
+                {
+                    AssetEditor.StringsFromCSFilesFixes.EditEvent(asset);
+                });
+            }
+
+            if (this.config.OtherPenalties.WakeupNextDayinClinic == true || this.config.OtherPenalties.HarveyFriendshipChange != 0)
+            {
+                if (e.NameWithoutLocale.IsEquivalentTo("Data\\Events\\Mine"))
+                {
+                    e.Edit(asset => 
+                    {
+                        AssetEditor.MineEventFixes.EditEvent(asset, this.Helper);
+                    });
+                }
+                else if (e.NameWithoutLocale.IsEquivalentTo("Data\\Events\\IslandSouth"))
+                {
+                    e.Edit(asset =>
+                    {
+                        AssetEditor.IslandSouthEventFixes.EditEvent(asset, this.Helper);
+                    });
+                }
+                else if (e.NameWithoutLocale.IsEquivalentTo("Data\\Events\\Hospital"))
+                {
+                    e.Edit(asset =>
+                    {
+                        AssetEditor.HospitalEventFixes.EditEvent(asset, this.Helper);
+                    });
+
+                }
+            }
+            else if (this.config.OtherPenalties.MoreRealisticWarps == true)
+            {
+                if (e.NameWithoutLocale.IsEquivalentTo("Data\\Events\\Hospital"))
+                {
+                    e.Edit(asset =>
+                    {
+                        AssetEditor.HospitalEventFixes.EditEvent(asset, this.Helper);
+                    });
+
+                }
+            }
         }
 
         /// <summary>Raised after the game is launched, right before the first game tick</summary>
@@ -155,35 +214,6 @@ namespace CustomDeathPenaltyPlus
                 this.config.OtherPenalties.MoreRealisticWarps = false;
                 this.Monitor.Log("WakeupNextDayinClinic and MoreRealisticWarps cannot both be true as they can conflict.\nSetting MoreRealisticWarps to false...", LogLevel.Warn);
             }
-
-            // Is WakeupNextDayinClinic true or is FriendshipPenalty greater than 0?
-            if (this.config.OtherPenalties.WakeupNextDayinClinic == true || this.config.OtherPenalties.HarveyFriendshipChange != 0)
-            {
-                // Yes, edit some events
-
-                //Edit MineEvents
-                this.Helper.Content.AssetEditors.Add(new AssetEditor.MineEventFixes(Helper));
-                //Edit IslandSouthEvents
-                this.Helper.Content.AssetEditors.Add(new AssetEditor.IslandSouthEventFixes(Helper));
-                //Edit HospitalEvents
-                this.Helper.Content.AssetEditors.Add(new AssetEditor.HospitalEventFixes(Helper));
-            }
-
-            // Is MoreRealisticWarps true?
-            else if (this.config.OtherPenalties.MoreRealisticWarps == true)
-            {
-                // Yes, edit an event
-
-                //Edit HospitalEvents
-                this.Helper.Content.AssetEditors.Add(new AssetEditor.HospitalEventFixes(Helper));
-            }
-
-            // Edit strings
-            this.Helper.Content.AssetEditors.Add(new AssetEditor.StringsFromCSFilesFixes(Helper));
-
-            // Edit mail
-            this.Helper.Content.AssetEditors.Add(new AssetEditor.MailDataFixes(Helper));
-
         }
 
         /// <summary>Raised after the game state is updated</summary>
@@ -205,7 +235,7 @@ namespace CustomDeathPenaltyPlus
                 // Save location of death
                 location = Game1.currentLocation.NameOrUniqueName;
                 // Reload events
-                this.Helper.Content.InvalidateCache("Data\\Events\\Hospital");
+                this.Helper.GameContent.InvalidateCache("Data\\Events\\Hospital");
             }
 
             // Check if player died each half second
@@ -221,7 +251,7 @@ namespace CustomDeathPenaltyPlus
                     PlayerStateRestorer.SaveStateDeath();
 
                     // Reload asset upon death to reflect amount lost
-                    this.Helper.Content.InvalidateCache("Strings\\StringsFromCSFiles");
+                    this.Helper.GameContent.InvalidateCache("Strings\\StringsFromCSFiles");
 
                     // Will a new day be loaded in multiplayer after death?
                     if (true
@@ -306,7 +336,7 @@ namespace CustomDeathPenaltyPlus
                         {
                             int tileX = 12;
                             int tileY = 18;
-                            switch (Game1.player.houseUpgradeLevel)
+                            switch (Game1.player.HouseUpgradeLevel)
                             {
                                 case 0:
                                     tileX = 3;
@@ -425,7 +455,7 @@ namespace CustomDeathPenaltyPlus
             {
                 // Load state and fix stamina
                 PlayerStateRestorer.LoadStatePassout();
-                Game1.player.stamina = (int)(Game1.player.maxStamina * this.config.PassOutPenalty.EnergytoRestorePercentage);
+                Game1.player.stamina = (int)(Game1.player.MaxStamina * this.config.PassOutPenalty.EnergytoRestorePercentage);
 
                 // Reset state
                 PlayerStateRestorer.statepassoutps.Value = null;
@@ -512,6 +542,7 @@ namespace CustomDeathPenaltyPlus
         /// <param name="e">The event data.</param>
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
+
             if (!Game1.player.modData.ContainsKey($"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"))
             {
                 Game1.player.modData.Add($"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday", "false");
@@ -533,10 +564,10 @@ namespace CustomDeathPenaltyPlus
                 // Yes, fix player state
 
                 // Change stamina to the amount restored by the config values
-                Game1.player.stamina = (int)(Game1.player.maxStamina * this.config.PassOutPenalty.EnergytoRestorePercentage);
+                Game1.player.stamina = (int)(Game1.player.MaxStamina * this.config.PassOutPenalty.EnergytoRestorePercentage);
 
                 // Invalidate cached mail data, this allows it to reload with correct values
-                Helper.Content.InvalidateCache("Data\\mail");
+                this.Helper.GameContent.InvalidateCache("Data\\mail");
             }
 
             // Did player wake up in clinic?
@@ -551,7 +582,7 @@ namespace CustomDeathPenaltyPlus
                 }
 
                 // Change health and stamina to the amount restored by the config values
-                Game1.player.stamina = (int)(Game1.player.maxStamina * this.config.DeathPenalty.EnergytoRestorePercentage);
+                Game1.player.stamina = (int)(Game1.player.MaxStamina * this.config.DeathPenalty.EnergytoRestorePercentage);
                 Game1.player.health = Math.Max((int)(Game1.player.maxHealth * this.config.DeathPenalty.HealthtoRestorePercentage), 1);
             }
         }
@@ -601,6 +632,42 @@ namespace CustomDeathPenaltyPlus
             {
                 this.Monitor.Log("Incorrect command format used.\nRequired format: configinfo", LogLevel.Error);
             }
+        }
+
+
+        /// <summary>
+        /// Builds a response string based on config values
+        /// </summary>
+        /// <param name="person">The person who found the player if they died in the mine, else Someone</param>
+        /// <param name="location">Response based on where the player died</param>
+        /// <returns>The built string</returns>
+        private string ResponseBuilder(string person, string location)
+        {
+            // Create new string to build on
+            StringBuilder response = new StringBuilder($"speak Harvey \"{person} found you unconscious {location}... I had to perform an emergency surgery on you!#$b#Be a little more careful next time, okay?$s\"");
+
+            // Is WakeupNextDayinClinic true?
+            if (config.OtherPenalties.WakeupNextDayinClinic == true)
+            {
+                // Yes, build string accordingly
+
+                response.Insert(14, "Good you're finally awake. ");
+            }
+
+            // Is FriendshipPenalty greater than 0?
+            if (config.OtherPenalties.HarveyFriendshipChange < 0)
+            {
+                // Yes, build string accordingly
+
+                response.Replace("Be a little more careful next time, okay?", "You really need to be more careful, I don't like having to patch you up after you do something dangerous.");
+            }
+            else if (config.OtherPenalties.HarveyFriendshipChange > 0)
+            {
+                response.Replace("Be a little more careful next time, okay?$s", "While it's nice to see you, I hate having to patch you up...#$b#Please be a little more careful next time, okay?$s");
+            }
+
+            // Return the built string
+            return response.ToString();
         }
     }
 }

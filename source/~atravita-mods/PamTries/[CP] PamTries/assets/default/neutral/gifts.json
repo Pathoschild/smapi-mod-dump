@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "Action": "EditData",
+        "LogName": "Custom Gift Dialogue",
+        "Target": "Characters/Dialogue/Pam",
+        "Entries": {
+            "GiftReaction_Beer": "*sigh* Kiddo. Stop messing with me. I'm trying to quit.$u",
+            "GiftReaction_Pale_Ale": "This wasn't necessary. I'm trying to quit, kiddo.",
+            "GiftReaction_Pale_Ale~1": "Are you playing a joke on me, kid? I'm trying to quit.$u", 
+            "GiftReaction_Piña_Colada": "Kiddo...*sigh*. I'm trying to quit. Why are you doing this to me?",
+            "GiftReaction_Wine": "Kiddo, why are you doing this to me? I'm trying to quit.",
+            "GiftReaction_Mead": "I'm trying to quit. Why are you doing this to me?$u"
+        }
+    }
+]}

@@ -10,16 +10,13 @@
 
 using MachineAugmentors.Items;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using StardewValley.Monsters;
-using StardewValley;
 using StardewValley.Locations;
+using System.Collections.Generic;
+using System;
+using StardewValley;
 using System.IO;
 
 namespace MachineAugmentors
@@ -421,9 +418,9 @@ namespace MachineAugmentors
 
             //  Compute bonuses based on where the monster was killed
             double LocationBonus;
-            if (SlainMonster.mineMonster && Location is MineShaft Mine)
+            if (SlainMonster.mineMonster.Value && Location is MineShaft Mine)
             {
-                bool IsQuarry = Mine.mapImageSource != null && Mine.mapImageSource.Value != null && Path.GetFileName(Mine.mapImageSource.Value).Equals("mine_quarryshaft", StringComparison.CurrentCultureIgnoreCase);
+                bool IsQuarry = Mine.mapImageSource.Value != null && Mine.mapImageSource.Value != null && Path.GetFileName(Mine.mapImageSource.Value).Equals("mine_quarryshaft", StringComparison.CurrentCultureIgnoreCase);
                 if (IsQuarry)
                     LocationBonus = QuarryLocationBonus;
                 else

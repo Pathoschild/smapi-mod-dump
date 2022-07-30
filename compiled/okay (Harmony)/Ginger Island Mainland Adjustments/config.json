@@ -7,8 +7,10 @@
   "ExplorerChance": 0.05,
   "GusDay": "Tuesday",
   "GusChance": 0.5,
-  "AllowWilly": true,
-  "AllowSandy": true,
+  "AllowWilly": "Yes",
+  "AllowSandy": "Yes",
   "AllowGeorgeAndEvelyn": true,
+  "AllowWizard": "IfMarried",
+  "ScheduleStrictness": {},
   "DebugMode": false
 }

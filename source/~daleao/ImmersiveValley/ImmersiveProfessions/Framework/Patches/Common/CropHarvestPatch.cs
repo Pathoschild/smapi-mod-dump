@@ -19,8 +19,8 @@ using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +81,7 @@ internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
         // this particular method is too edgy for Harmony's AccessTools, so we use some old-fashioned reflection trickery to find this particular overload of FarmerExtensions.IncrementData<T>
         var mi = typeof(ModDataIO)
                      .GetMethods()
-                     .FirstOrDefault(mi => mi.Name.Contains("IncrementData") && mi.GetParameters().Length == 3)?
+                     .FirstOrDefault(mi => mi.Name.Contains(nameof(ModDataIO.Increment)) && mi.GetParameters().Length == 3)?
                      .MakeGenericMethod(typeof(uint)) ?? throw new MissingMethodException("Increment method not found.");
 
         var dontIncreaseEcologistCounter = generator.DefineLabel();
@@ -139,14 +139,11 @@ internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
             return null;
         }
 
-        /// Injected: if ((junimoHarvester is null || ModEntry.ModHelper.ModRegistry.IsLoaded("BetterJunimos")) && Game1.player.professions.Contains(<harvester_id>) &&
-        ///     r.NextDouble() < 0.1 + (Game1.player.professions.Contains(100 + <harverster_id>) ? 0.1 : 0))
-        ///		numToHarvest++
+        /// Injected: if (ShouldIncreaseHarvestYield(junimoHarvester, random2) numToHarvest++;
+        /// After: numToHarvest++;
 
         var numToHarvest = helper.Locals[6];
-        var continueToHarvesterCheck = generator.DefineLabel();
         var dontIncreaseNumToHarvest = generator.DefineLabel();
-        var isNotPrestiged = generator.DefineLabel();
         try
         {
             helper
@@ -168,34 +165,12 @@ internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
                 )
                 .StripLabels(out var labels) // copy existing labels
                 .AddLabels(dontIncreaseNumToHarvest) // branch here if shouldn't apply Harvester bonus
-                .InsertWithLabels( // insert check if junimoHarvester is null
-                    labels,
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4), // arg 4 = bool junimoHarvester
-                    new CodeInstruction(OpCodes.Brfalse_S, continueToHarvesterCheck),
-                    new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.ModHelper))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(IModHelper).RequirePropertyGetter(nameof(IModHelper.ModRegistry))),
-                    new CodeInstruction(OpCodes.Ldstr, "hawkfalcon.BetterJunimos"),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(IModRegistry).RequireMethod(nameof(IModRegistry.IsLoaded))),
-                    new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseNumToHarvest)
-                )
-                .InsertProfessionCheck(Profession.Harvester.Value, new[] { continueToHarvesterCheck })
-                .Insert(
-                    new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseNumToHarvest),
-                    new CodeInstruction(OpCodes.Ldloc_S, random2)
-                )
-                .InsertDiceRoll(0.1, forStaticRandom: false)
-                .InsertProfessionCheck(Profession.Harvester.Value + 100)
-                .Insert(
-                    new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
-                    // double chance if prestiged
-                    new CodeInstruction(OpCodes.Ldc_R8, 0.1),
-                    new CodeInstruction(OpCodes.Add)
-                )
                 .InsertWithLabels(
-                    new[] { isNotPrestiged },
-                    new CodeInstruction(OpCodes.Bge_Un_S, dontIncreaseNumToHarvest)
+                    labels,
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4), // arg 4 = JunimoHarvester junimoHarvester
+                    new CodeInstruction(OpCodes.Ldloc_S, random2),
+                    new CodeInstruction(OpCodes.Call, typeof(CropHarvestPatch).RequireMethod(nameof(ShouldIncreaseHarvestYield))),
+                    new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseNumToHarvest)
                 )
                 .Insert(got); // insert numToHarvest++
         }
@@ -209,4 +184,15 @@ internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
     }
 
     #endregion harmony patches
+
+    #region injected subroutines
+
+    private static bool ShouldIncreaseHarvestYield(JunimoHarvester? junimoHarvester, Random r)
+    {
+        var harvester = junimoHarvester is null ? Game1.player : junimoHarvester.GetOwner();
+        return harvester.HasProfession(Profession.Harvester) &&
+               r.NextDouble() < (harvester.HasProfession(Profession.Harvester, true) ? 0.2 : 0.1);
+    }
+
+    #endregion injected subroutines
 }

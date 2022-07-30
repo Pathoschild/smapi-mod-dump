@@ -10,12 +10,10 @@
 
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
-using SpriteMaster.Types;
 using SpriteMaster.Types.MemoryCache;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Threading;
 
 namespace SpriteMaster.Caching;
 
@@ -26,49 +24,10 @@ internal static class SuspendedSpriteCache {
 		maxSize: Config.SuspendedCache.MaxCacheSize,
 		removalAction: OnEntryRemoved
 	);
-	private static readonly Condition TrimEvent = new();
-	private static readonly Thread CacheTrimThread = ThreadExt.Run(CacheTrimLoop, background: true, name: "SuspendedSpriteCache Trim Thread");
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	private static int Percent75(int value) {
-		return (value >> 1) + (value >> 2);
-	}
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	private static long Percent75(long value) {
-		return (value >> 1) + (value >> 2);
-	}
-
-	private static void TrimCount() {
-		if (Config.SuspendedCache.MaxCacheCount is <= 0 or int.MaxValue) {
-			return;
-		}
-
-		int currentCacheCount = Cache.Count;
-
-		if (currentCacheCount <= Config.SuspendedCache.MaxCacheCount) {
-			return;
-		}
-
-		var goal = Percent75(Config.SuspendedCache.MaxCacheCount);
-
-		Debug.Trace($"Trimming (Count) SuspendedSpriteCache: {currentCacheCount} -> {goal}");
-		Cache.TrimTo(goal);
-	}
-
-	[DoesNotReturn]
-	private static void CacheTrimLoop() {
-		while (true) {
-			TrimEvent.Wait();
-
-			TrimCount();
-		}
-		// ReSharper disable once FunctionNeverReturns
-	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static void OnEntryRemoved(EvictionReason reason, ulong key, ManagedSpriteInstance element) {
-		element.Dispose();
+		element?.Dispose();
 	}
 
 	internal static void Add(ManagedSpriteInstance instance) {
@@ -79,10 +38,6 @@ internal static class SuspendedSpriteCache {
 
 		Cache.Set(instance.Hash, instance);
 		Debug.Trace($"SuspendedSpriteCache Size: {Cache.Count.ToString(DrawingColor.LightCoral)}");
-
-		if (Cache.Count > Config.SuspendedCache.MaxCacheCount) {
-			TrimEvent.Set();
-		}
 	}
 
 	internal static ManagedSpriteInstance? Fetch(ulong hash) {

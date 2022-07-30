@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\Common.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+		<RootNamespace>SpriteMaster.Tools.Preview</RootNamespace>
+    <StartupObject>SpriteMaster.Tools.Preview.Program</StartupObject>
+    <ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Configurations>Debug;Release;Shipping</Configurations>
+		<LangVersion>Preview</LangVersion>
+		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="pufferchick_xbrz.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+  </ItemGroup>
+</Project>

@@ -9,6 +9,15 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Improved translations. Thanks to LeecanIt (updated Italian)!
+
+## 4.15.5
+Released 04 July 2022 for SMAPI 3.14.0 or later.
+
+* Added compatibility warning when Harvest With Scythe is installed.
+* Fixed error when using a tool on a custom terrain feature from Farm Type Manager if you haven't used the tool manually yet.
+
 ## 4.15.4
 Released 17 June 2022 for SMAPI 3.14.0 or later.
 

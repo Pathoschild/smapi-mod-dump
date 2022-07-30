@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Nodes;
-using ItemPipes.Framework.Util;
+using ItemPipes.Framework.Items.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -26,14 +26,15 @@ using StardewValley.Network;
 using SObject = StardewValley.Object;
 using ItemPipes.Framework.Factories;
 using ItemPipes.Framework.Nodes.ObjectNodes;
+using ItemPipes.Framework.Util;
 
 
 namespace ItemPipes.Framework.Items.Objects
 {
 
-	public class PIPOItem : CustomBigCraftableItem
+	public class PIPOItem : PipeBigCraftableItem
 	{
-        public bool ToolCall { get; set; }
+		public Texture2D SignalTexture { get; set; }
 		public Texture2D OnTextureR { get; set; }
 		public Texture2D OnTextureL { get; set; }
 		public Texture2D OnTextureC { get; set; }
@@ -45,68 +46,55 @@ namespace ItemPipes.Framework.Items.Objects
 		{
 			State = "off";
 			DataAccess DataAccess = DataAccess.GetDataAccess();
-			OnTextureR = DataAccess.Sprites[IDName + "_onR"];
-			OnTextureL = DataAccess.Sprites[IDName + "_onL"];
-			OnTextureC = DataAccess.Sprites[IDName + "_onC"];
-			OffTextureR = DataAccess.Sprites[IDName + "_offR"];
-			OffTextureL = DataAccess.Sprites[IDName + "_offL"];
-			OffTextureC = DataAccess.Sprites[IDName + "_offC"];
-			ItemTexture = OffTextureC;
-			ToolCall = false;
+			OffTextureC = DataAccess.Sprites[IDName + "_signal_offC"];
+			OffTextureL = DataAccess.Sprites[IDName + "_signal_offL"];
+			OffTextureR = DataAccess.Sprites[IDName + "_signal_offR"];
+			OnTextureC = DataAccess.Sprites[IDName + "_signal_onC"];
+			OnTextureL = DataAccess.Sprites[IDName + "_signal_onL"];
+			OnTextureR = DataAccess.Sprites[IDName + "_signal_onR"];
+			SignalTexture = OffTextureC;
 		}
 
 		public PIPOItem(Vector2 position) : base(position)
 		{
 			State = "off";
 			DataAccess DataAccess = DataAccess.GetDataAccess();
-			OnTextureR = DataAccess.Sprites[IDName + "_onR"];
-			OnTextureL = DataAccess.Sprites[IDName + "_onL"];
-			OnTextureC = DataAccess.Sprites[IDName + "_onC"];
-			OffTextureR = DataAccess.Sprites[IDName + "_offR"];
-			OffTextureL = DataAccess.Sprites[IDName + "_offL"];
-			OffTextureC = DataAccess.Sprites[IDName + "_offC"];
-			ItemTexture = OffTextureC;
-			ToolCall = false;
+			OffTextureC = DataAccess.Sprites[IDName + "_signal_offC"];
+			OffTextureL = DataAccess.Sprites[IDName + "_signal_offL"];
+			OffTextureR = DataAccess.Sprites[IDName + "_signal_offR"];
+			OnTextureC = DataAccess.Sprites[IDName + "_signal_onC"];
+			OnTextureL = DataAccess.Sprites[IDName + "_signal_onL"];
+			OnTextureR = DataAccess.Sprites[IDName + "_signal_onR"];
+			SignalTexture = OffTextureC;
 		}
 
-		public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
+		public override void Load(ModDataDictionary data)
 		{
-			bool result = false;
-			if (justCheckingForActivity)
+			base.Load(data);
+			State = modData["State"];
+			if (State.Equals("on"))
 			{
-				result = true;
+				Passable = true;
 			}
-			DataAccess DataAccess = DataAccess.GetDataAccess();
-			if (Game1.didPlayerJustRightClick(ignoreNonMouseHeldInput: true))
+			else
 			{
-				//When right clicking using a tool
-				//it calls checkforaction 2 times, dont know why.
-				if(!ToolCall)
-                {
-					List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-					Node node = nodes.Find(n => n.Position.Equals(TileLocation));
-					if (node != null && node is PIPONode)
-					{
-						PIPONode invis = (PIPONode)node;
-						if (invis.ChangeState())
-						{
-							Passable = true;
-						}
-						else
-						{
-							Passable = false;
-						}
-						result = false;
-					}
-				}
-				if (who.CurrentTool != null && !ToolCall)
-				{
-					ToolCall = true;
-					result = true;
-				}
+				Passable = false;
+			}
+		}
 
+		public void ChangeSignal()
+        {
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+			PIPONode pipo = (PIPONode)nodes.Find(n => n.Position.Equals(this.TileLocation));
+			if (pipo.ChangeState())
+			{
+				Passable = true;
 			}
-			return result;
+			else
+			{
+				Passable = false;
+			}
 		}
 
 		public override void drawWhenHeld(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
@@ -158,8 +146,7 @@ namespace ItemPipes.Framework.Items.Objects
 
 		public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
 		{
-			ToolCall = false;
-
+			base.draw(spriteBatch, x, y);
 			DataAccess DataAccess = DataAccess.GetDataAccess();
 			List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
 			Node node = nodes.Find(n => n.Position.Equals(TileLocation));
@@ -168,49 +155,47 @@ namespace ItemPipes.Framework.Items.Objects
 				PIPONode invis = (PIPONode)node;
 				State = invis.State;
 				float transparency = 1f;
-				//Printer.Info($"PIPO: {TileLocation.X} |  Player: {Game1.player.Position.X} ");
-
 				if (State.Equals("on"))
                 {
 					//Look right
 					if (TileLocation.X < Game1.player.getTileLocation().X)
 					{
-						ItemTexture = OnTextureR;
+						SignalTexture = OnTextureR;
 					}
 					//look left
 					else if (TileLocation.X > Game1.player.getTileLocation().X)
 					{
-						ItemTexture = OnTextureL;
+						SignalTexture = OnTextureL;
 					}
 					//center
 					else if (TileLocation.X == Game1.player.getTileLocation().X)
 					{
-						ItemTexture = OnTextureC;
+						SignalTexture = OnTextureC;
 					}
 					transparency = 0.5f;
 					Rectangle srcRect = new Rectangle(0, 0, 16, 32);
-					spriteBatch.Draw(ItemTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+					spriteBatch.Draw(SignalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.002f);
 				}
 				else if(State.Equals("off"))
                 {
 					//Look right
 					if (TileLocation.X < Game1.player.getTileLocation().X)
 					{
-						ItemTexture = OffTextureR;
+						SignalTexture = OffTextureR;
 					}
 					//look left
 					else if (TileLocation.X > Game1.player.getTileLocation().X)
 					{
-						ItemTexture = OffTextureL;
+						SignalTexture = OffTextureL;
 					}
 					//center
 					else if (TileLocation.X == Game1.player.getTileLocation().X)
 					{
-						ItemTexture = OffTextureC;
+						SignalTexture = OffTextureC;
 					}
 					transparency = 1f;
 					Rectangle srcRect = new Rectangle(0, 0, 16, 32);
-					spriteBatch.Draw(ItemTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+					spriteBatch.Draw(SignalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.002f);
 				}
 			}
 		}

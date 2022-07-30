@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\csproj_common" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>True</EnableHarmony>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Name>Atra's Interaction Tweaks.</Name>
+    <Description>A few interaction tweaks: prevents accidental rug removal, prevents gates from popping off, and some other things.</Description>
+    <Version>1.1.0</Version>
+    <UpdateKeys> Nexus:10192, ModDrop:1068101</UpdateKeys>
+    <BaseManifest>..\..\base_dependencies.json</BaseManifest>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AtraCore\AtraCore.csproj" private="false" />
+    <ProjectReference Include="..\..\Pintail\Pintail\Pintail.csproj" private="false" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="StardewValley" />
+    <Using Include="StardewModdingAPI" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Alias="NotNullAttribute" Include="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    <Using Alias="Object" Include="System.Object" />
+    <Using Alias="SObject" Include="StardewValley.Object" />
+  </ItemGroup>
+
+</Project>

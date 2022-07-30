@@ -70,13 +70,15 @@ namespace WarpNetwork
                         dict[key].Label = label;
                 }
 
-            if (ModEntry.config.FarmWarpEnabled == WarpEnabled.Never && ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Never)
+            if (ModEntry.config.FarmWarpEnabled == WarpEnabled.Never && 
+                ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Never)
                 return;
 
-            if (ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Always && ModEntry.config.FarmWarpEnabled != WarpEnabled.AfterObelisk)
+            if (!ModEntry.config.ObeliskCheckRequired())
             {
                 for(int i = 0; i < DefaultDests.Length; i++)
-                    EnableLocation(dict, DefaultDests[i]);
+                    if(DefaultDests[i] != "farm" || ModEntry.config.FarmWarpEnabled == WarpEnabled.Always)
+                        EnableLocation(dict, DefaultDests[i]);
             }
             else
             {
@@ -94,24 +96,15 @@ namespace WarpNetwork
                     //dependency loop when editing farm map leaves farm as null
                     foreach (Building building in farm.buildings)
                     {
-                        switch (building.buildingType.ToString())
+                        if (building.buildingType.Value.Contains("Obelisk"))
+                            AnyObelisk = true;
+
+                        switch (building.buildingType.Value)
                         {
-                            case "Water Obelisk":
-                                AnyObelisk = true;
-                                ObeliskWater = true;
-                                break;
-                            case "Earth Obelisk":
-                                AnyObelisk = true;
-                                ObeliskEarth = true;
-                                break;
-                            case "Desert Obelisk":
-                                AnyObelisk = true;
-                                ObeliskDesert = true;
-                                break;
-                            case "Island Obelisk":
-                                AnyObelisk = true;
-                                ObeliskIsland = true;
-                                break;
+                            case "Water Obelisk": ObeliskWater = true; break;
+                            case "Earth Obelisk": ObeliskEarth = true; break;
+                            case "Desert Obelisk": ObeliskDesert = true; break;
+                            case "Island Obelisk": ObeliskIsland = true; break;
                         }
                     }
                 }

@@ -11,6 +11,7 @@
 {
 	// Option Headers	
 	"headerRanges": "Діапазони дії",
+	"headerRangedSwings": "Ranged Swings", // todo
 	"headerUseOnTile": "Придатність",
 	"headerFaceClick": "Повернення в бік натискання",
 	"headerMisc": "Різне",
@@ -27,6 +28,10 @@
 	"hoeForRangeTooltip": "дії мотики",
 	"wateringCanForRangeName": "дії лійки",
 	"wateringCanForRangeTooltip": "дії лійки",
+	"scytheForRangeName": "Scythe", // todo
+	"scytheForRangeTooltip": "the Scythe", // todo
+	"weaponsForRangeName": "Weapons", // todo
+	"weaponsForRangeTooltip": "melee weapons", // todo
 	"seedsForRangeName": "саджання насіння",
 	"seedsForRangeTooltip": "саджання насіння/добрива",
 	"objectsForRangeName": "розміщення об'єктів",
@@ -35,6 +40,12 @@
 	"rangeUnlimited": "необмежений",
 	"rangeDefault": "1 клітинка (стандарт.)",
 	"rangeExtended": "{{tiles}} кл.",
+	
+	// Ranged Swings
+	"optionScytheSwingOriginName": "Center Scythe on Cursor", // todo
+	"optionScytheSwingOriginTooltip": "Centers area of effect for scythe swings on cursor rather than player.", // todo
+	"optionWeaponSwingOriginName": "Center Weapons on Cursor", // todo
+	"optionWeaponSwingOriginTooltip": "Centers area of effect for melee weapons on cursor rather than player.", // todo
 	
 	// Usability
 	"optionSelfUsabilityName": "Викор. {{tool}} на кл. гравця",
@@ -62,8 +73,14 @@
 	"locationLogicNew": "Нова логіка (за замовч.)",
 	"locationLogicCombined": "Комбінація",
 	
+	"optionHalfTilePositionsName": "Use Half-Tile Positions", // todo
+	"optionHalfTilePositionsTooltip": "Alters range calculation so that when player is standing \"between\" tile units, range feels more equal on all sides.", // todo
+	
 	"optionAllowRangedChargeName": "Дозволити розширення діапазонів",
 	"optionAllowRangedChargeTooltip": "Дозволяє розширювати діапазони дії інструмента, які виникатимуть із позиції курсора, а не від гравця.",
+	
+	"optionAttacksIgnoreObstaclesName": "Attacks Ignore Obstacles", // todo
+	"optionAttacksIgnoreObstaclesTooltip": "Allows attacks to hit monsters even if there are obstacles in the way.", // todo
 	
 	"optionOnClickOnlyName": "Користувацький діапазон при натисканні",
 	"optionOnClickOnlyTooltip": "Якщо ввімкнено, розширені діапазони застосовуються лише під час використання інструментів за допомогою натискання. Якщо вимкнено, вони застосовуватимуться для всіх типів використання інструментів.",

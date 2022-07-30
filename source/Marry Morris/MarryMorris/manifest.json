@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+  "Name": "Marry Morris",
+  "Author": "Yoshimax",
+  "Version": "1.2.1",
+  "Description": "This mod allows you to marry Morris.",
+  "UniqueID": "Yoshimax.MarryMorrisCode",
+  "EntryDll": "MarryMorris.dll",
+  "MinimumApiVersion":  "3.0.0",
+  "UpdateKeys": ["Nexus:12824"],
+  "Dependencies": [
+    {
+      "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Digus.CustomKissingMod",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "MabelSyrup.ResetTerrainFeatures",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "aedenthorn.ExtraMapLayers",
+      "IsRequired": true
+    }
+
+  ]
+}

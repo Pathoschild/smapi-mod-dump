@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{   
+	"Name": "Salal Shrub",
+	"Product": "Salal Berry",
+	"SeedName": "Shrub Seed",
+	"SeedDescription": "Plant these in the beginning of spring. Takes 14 days to mature, and continues to produce until the end of summer.",
+	"Type": "Fruit",
+	"CropType": "Normal",
+	"Seasons": ["spring", "summer" ],
+	"Phases": [2,2,3,3,3],
+	"RegrowthPhase": 4,
+	"HarvestWithScythe": false,
+	"TrellisCrop": false,
+	"Bonus": {
+		"MinimumPerHarvest": 2,
+		"MaximumPerHarvest": 4,
+		"MaxIncreasePerFarmLevel": 2,
+		"ExtraChance": 0.03,
+	},
+	"TranslationKey": "crop.salal-shrub",
+	"SeedTranslationKey": "crop.shrub-seed",
+}

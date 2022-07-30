@@ -1,7 +1,7 @@
 {
   "Name": "WastelessWatering",
   "Author": "GrumpyCrouton",
-  "Version": "1.0.2",
+  "Version": "1.1.1",
   "Description": "Makes it so you are extremely careful with your watering can, so you never waste any water.",
   "UniqueID": "GrumpyCrouton.WastelessWatering",
   "EntryDll": "WastelessWatering.dll",

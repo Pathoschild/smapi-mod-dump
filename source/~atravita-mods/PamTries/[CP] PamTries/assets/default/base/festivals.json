@@ -1,0 +1,129 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[    //Remove lines related to drinking in events. Also, give Pam some extra festival lines.
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/spring13",
+        "LogName": "Egg Festival",
+        "Entries": {
+            "Pam": "$y 'Nothing like fresh eggs. What's your favorite?_Soft boiled_I can never get the timing down to make soft boiled eggs myself..._Over easy_Yum. Thinking of those crispy edges_Sunny side up_Crispy buttered toast in that fresh, runny yolk, yeah?'",
+            "Pam_y3": "Penny was pretty good at the egg hunt, back in the day.#$b#She doesn't compete anymore, though. Thinks she's too old for things like this.#$e#You're not too old when you can still run for those eggs, I think.$h",
+            "Pam_y4": "We've been holding egg hunts in town for as long as I can remember...#$b#Kiddo, don't ask me how old I am!",
+            "Leah": "The punch seems like it's missing something...$s"
+        },
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/spring24",
+        "LogName": "Flower Dance",
+        "Entries": {
+            "Pam": "Spring's almost over, kiddo. It's really gonna start getting hot soon...$s",
+            "Pam_y2": "I hope Penny gets to dance with someone who deserves her.",
+            "Pam_y3": "Believe it or not, I used to be real good lookin' back in the day.#$e#This festival's been around for as long as I can remember. Of course I had to dance in it.#$e#I'm no good at dancing. Two left feet.",
+            "Pam_y4": "George and Evelyn were the flower king and queen of their generation.#$e#Mine? This snobby chick named Ashley and whomever her boyfriend of the day was.#$e#She moved away as soon as she could.#$e#Last I hear she's selling leggings through some company or another now."
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/summer11",
+        "LogName": "Luau",
+        "Entries": {
+            "Pam_y2": "Soup's usually odd, but usually quite good. You should try some, kiddo.",
+            "Pam_y3": "Wonder what Linus is cookin' up?",
+            "Pam_y4": "All this effort and plannin' just to get the Governor to like us.#$e#Guess we have to, though. Politics.#$e#Not that I had to do anything for the Luau....",
+            "Pam_y5": "Did you bring anything for the soup? I brought a nice anchovy. Natural MSG.$h"
+        },
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/summer28",
+        "LogName": "Moonlight Jellies",
+        "Entries":{
+            "Pam_y2": "Should've ate before I came. I'm starvin'!",
+            "Pam_y3": "Had jellyfish at a resturant once. Oddly crunchy. Not sure I liked it.",
+            "Pam_y4": "Not gonna miss these high temps, kiddo. Or the high electric bills..."
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "LogName": "Valley Fair",
+        "Entries": {
+            "Pam_y2": "Pappy entered a giant pumpkin into the fair one year. Came in second.#$e#That was a long time ago.",
+            "Pam_y3": "Think we've been doing this fair for the last hundred years. It's one of Stardew's longest traditions....",
+            "Pam_y4": "You've gotten a burger or two yet? Gus's cooking them in the field just north of town.#$b#There's always somethin' special about the fair burgers....",
+            "Pam_y5": "@, do you think I should enter some of the fish I've been catchin'?#$b#They're nowhere as good as Willy's catches, though, and Mayor Lewis hates fish.$s"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall27",
+        "LogName": "Spirit's Eve",
+        "Entries": {
+            "Pam_y2": "Pappy used to tell me tall tales about all the weird creepy crawlies he'd encounter in the mines.#$e#Things like walking skeletons and giant flyin' snakes.",
+            "Pam_y3": "I wish I could have some pumpkin ale...$s",
+            "Pam_y4": "It's gonna be winter soon. I'm not built for that type of weather."
+        },
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter8",
+        "LogName": "Ice Festival",
+        "Entries": {
+            "Pam": "Hope I can give you a run for your money in the fishing competition this year. Heh.",
+            "Pam_y2": "Maybe this year I'll manage to beat both you and Willy!",
+            "Pam_y3": "Don't ya wish we could keep the fish after the festival? They'd sell for a pretty penny..."
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter8",
+        "LogName": "Ice Festival, post rehab",
+        "Entries": {
+            "Pam_y4": "My therapist says that it'd be good for me to find a few more hobbies...$s#$e#I dunno, fishin' is pretty relaxin'. Maybe I'll actually win sometime..."
+        },
+        "When": {"HasSeenEvent": "99210002"}
+    },
+    {
+        "Action" :"EditData",
+        "Target": "Data/Festivals/winter25",
+        "LogName": "Winter Star",
+        "Entries": {
+            "Pam_y2": "We could never really afford Winter Star gifts while I was growing up...",
+            "Pam_y3": "Got something nice for Penny from the Night Market. Hope she likes it...",
+            "Pam_y4": "Another year, almost over. I'm not gettin' any younger, kiddo."
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter28",
+        "LogName": "Ember of Resolutions (Ridgeside)",
+        "Entries":{
+            "Pam": "Ah, yet another year has passed...and I ain't getting any younger, kid",
+            "Pam_y2": "Yet another year's passed...you know what, kiddo? I thought I'd know what I'd want to do with my life by now...#$e#Maybe next year will be better?",
+            "Pam_y3": "Kid, I wish I could come up here to go skiing more often...but I can't afford it...$s"
+        },
+        "When": {"HasMod":"Rafseazz.RSVCP"}
+    },
+    {
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter28",
+        "LogName": "Ember of Resolutions (Ridgeside) with two children",
+        "Entries": {
+            "Pam_y4": "Don't let the kids get too close to the bonfire...",
+            "Pam_y5": "One year ends and another begins...Hope Penny is enjoyin' this..."
+        },
+        "When": {
+            "HasValue:{{ChildNames | valueAt=1}}": true,
+            "HasMod":"Rafseazz.RSVCP"
+        }
+    }
+]}

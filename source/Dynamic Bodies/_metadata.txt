@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ribeena/StardewValleyMods
+   Git: https://github.com/ribeena/StardewValleyMods.git
+
+mods:
+   Dynamic Bodies
+
+latest commit:
+   commit ab768f44227c3c12f9bceb2c7caad4b1c0558948
+   Author: USER-PC\ribeena <ribeena_@hotmail.com>
+   Date:   Mon Jul 25 18:37:39 2022 +0930
+   
+       Initial commit and creation of Willy's Boat sprite adjuster (makes it render a longer boat, adds a water bobbing effect, moves where will stands and the plank is positions, smoke and bubble positions too).
+   

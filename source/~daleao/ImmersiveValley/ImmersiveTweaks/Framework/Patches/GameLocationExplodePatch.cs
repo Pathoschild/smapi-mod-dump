@@ -17,6 +17,7 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using System;
 using System.Linq;
 
 #endregion using directives
@@ -39,8 +40,9 @@ internal sealed class GameLocationExplodePatch : Common.Harmony.HarmonyPatch
         if (!ModEntry.Config.ExplosionTriggeredBombs) return;
 
         var circle = new CircleTileGrid(tileLocation, radius * 2);
-        foreach (var sprite in __instance.TemporarySprites.Where(sprite => sprite.bombRadius > 0 && circle.Tiles.Contains(sprite.Position / 64f)))
-            sprite.currentNumberOfLoops = sprite.totalNumberOfLoops;
+        foreach (var sprite in __instance.TemporarySprites.Where(sprite =>
+                     sprite.bombRadius > 0 && circle.Tiles.Contains(sprite.Position / 64f)))
+            sprite.currentNumberOfLoops = Math.Max(sprite.totalNumberOfLoops - 1, sprite.currentNumberOfLoops);
     }
 
     #endregion harmony patches

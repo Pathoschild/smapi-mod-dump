@@ -94,7 +94,7 @@ internal sealed class Monitor {
 		lock (CollectLock) {
 			ulong targetMegabytes = target / SizesExt<ulong>.MiB;
 
-			targetMegabytes = Math.Min(targetMegabytes, int.MaxValue);
+			targetMegabytes = Math.Clamp(targetMegabytes, 1, int.MaxValue);
 
 			try {
 				using var _ = new MemoryFailPoint((int)targetMegabytes);
@@ -138,26 +138,35 @@ internal sealed class Monitor {
 
 	private void GarbageCheckLoop() {
 		try {
-			for (; ; ) {
-				GC.RegisterForFullGCNotification(10, 10);
-				GC.WaitForFullGCApproach();
-				if (Garbage.ManualCollection) {
-					Thread.Sleep(128);
-					continue;
-				}
-				lock (CollectLock) {
+			while (true) {
+				try {
+					GC.RegisterForFullGCNotification(10, 10);
+					GC.WaitForFullGCApproach();
+					if (Garbage.ManualCollection) {
+						Thread.Sleep(128);
+						continue;
+					}
+
 					if (DrawState.TriggerCollection && DrawState.TriggerCollection.Wait()) {
 						continue;
 					}
 
-					ResidentCache.Purge();
-					DrawState.TriggerCollection.Set(true);
-					// TODO : Do other cleanup attempts here.
+					lock (CollectLock) {
+						ResidentCache.Purge();
+						DrawState.TriggerCollection.Set(true);
+						// TODO : Do other cleanup attempts here.
+					}
+				}
+				catch (ThreadInterruptedException) {
+					break;
+				}
+				catch {
+					// Ignore Exceptions
 				}
 			}
 		}
 		catch {
-			// ignored
+			// Ignore Exceptions
 		}
 	}
 }

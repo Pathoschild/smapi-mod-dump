@@ -9,6 +9,10 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Internal changes to support Toolbar Icons.
+* Improved translations. Thanks to LeecanIt (added Italian)!
+
 ## 1.1.15
 Released 09 May 2022 for SMAPI 3.14.0 or later.
 

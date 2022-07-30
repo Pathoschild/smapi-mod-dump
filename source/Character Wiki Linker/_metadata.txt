@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JudeRV/SDV_WikiLinker
+   Git: https://github.com/JudeRV/SDV_WikiLinker.git
+
+mods:
+   Character Wiki Linker
+
+latest commit:
+   commit ec4dd6da1c869cd35ef3acc1c92e06d97bf3c922
+   Author: Jude Vargas <judevargas22@gmail.com>
+   Date:   Wed Jul 20 15:23:40 2022 -0400
+   
+       Create README.md
+   

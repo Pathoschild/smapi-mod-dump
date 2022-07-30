@@ -6,9 +6,9 @@ mods:
    Stash Items
 
 latest commit:
-   commit f0327637785b4ee3ee79c3553f4dff3d0036deac
+   commit c4058a3e5601aba398ac669d1f2bfaa4b92da723
    Author: Zack Hill <zackary.t.hill@gmail.com>
-   Date:   Sun Sep 12 22:58:27 2021 -0400
+   Date:   Sun Jul 10 21:12:05 2022 -0400
    
-       Add NexusMods update key
+       Update .gitignore
    

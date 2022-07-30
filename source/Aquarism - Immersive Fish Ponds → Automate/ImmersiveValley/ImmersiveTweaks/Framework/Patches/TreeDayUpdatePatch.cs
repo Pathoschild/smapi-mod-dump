@@ -36,7 +36,7 @@ internal sealed class TreeDayUpdatePatch : Common.Harmony.HarmonyPatch
     private static void TreeDayUpdatePostfix(Tree __instance)
     {
         if (__instance.growthStage.Value >= Tree.treeStage && __instance.CanBeTapped() &&
-            ModEntry.Config.AgeSapTrees) ModDataIO.IncrementData<int>(__instance, "Age");
+            ModEntry.Config.AgeImprovesTreeSap) ModDataIO.Increment<int>(__instance, "Age");
     }
 
     #endregion harmony patches

@@ -8,6 +8,11 @@ for queries and analysis.**
 
 ([english version here](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG.md))
 
+## 1.3.1
+- Se arreglaron problemas.
+- Mod actualizará nivel de amistad cada domingo
+  - (revisar cada día sería costoso, esto asegura que los valores se actualicen si el usuario juega varios días seguidos)
+
 ## 1.3.0
 - Corrección de gramática (en inglés).
 - NPCs que estén en la isla no visitarán.

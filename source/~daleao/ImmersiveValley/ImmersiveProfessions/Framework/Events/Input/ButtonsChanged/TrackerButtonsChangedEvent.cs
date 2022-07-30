@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.Input;
 #region using directives
 
 using Common.Events;
-using Display;
 using GameLoop;
 using JetBrains.Annotations;
 using StardewModdingAPI;
@@ -33,15 +32,9 @@ internal sealed class TrackerButtonsChangedEvent : ButtonsChangedEvent
     protected override void OnButtonsChangedImpl(object? sender, ButtonsChangedEventArgs e)
     {
         if (ModEntry.Config.ModKey.JustPressed())
-        {
             Manager.Hook<PointerUpdateTickedEvent>();
-            Manager.Hook<TrackerRenderedHudEvent>();
-        }
-        else if (ModEntry.Config.ModKey.GetState() == SButtonState.Released)
-        {
-            Manager.Unhook<TrackerRenderedHudEvent>();
-            if (!ModEntry.PlayerState.ProspectorHunt.IsActive && !ModEntry.PlayerState.ScavengerHunt.IsActive)
-                Manager.Unhook<PointerUpdateTickedEvent>();
-        }
+        else if (ModEntry.Config.ModKey.GetState() == SButtonState.Released &&
+                 !ModEntry.PlayerState.ProspectorHunt.IsActive && !ModEntry.PlayerState.ScavengerHunt.IsActive)
+            Manager.Unhook<PointerUpdateTickedEvent>();
     }
 }

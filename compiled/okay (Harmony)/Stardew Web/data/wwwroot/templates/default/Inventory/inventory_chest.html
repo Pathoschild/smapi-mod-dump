@@ -5,6 +5,8 @@
 
     <script>
         var bPageLoaded = #PAGELOADED#;
+        var upperChestId = "";
+        var lowerChestId = "";
         //var sTemplate = '<div class="" role="tooltip"><div class=""></div><div class="tooltip-inner bs_tooltip_div"></div></div>';
 
         function LocalPageLoaded() {
@@ -20,9 +22,94 @@
             bPageLoaded = true;
         }
 
+        function MoveAll(moveUp) {
+
+            var sUpperCat = document.getElementById("topCategory").value;
+            var sUpperName;
+
+            if (sUpperCat == "--sbin--") {
+                sUpperName = ["sbin", "", ""];
+            }
+            else if (sUpperCat == "--bp--") {
+                sUpperName = ["bp", "", ""];
+            } else {
+                sUpperName = document.getElementById('topName').value.split(divPartSepartor);
+            }
+
+            var sLowerCat = document.getElementById("bCategory").value;
+            var sLowerName;
+            if (sLowerCat == "--sbin--") {
+                sLowerName = ["sbin", "", ""];
+            }
+            else if (sLowerCat == "--bp--") {
+                sLowerName = ["bp", "", ""];
+            } else {
+                sLowerName = document.getElementById('bName').value.split(divPartSepartor);
+            }
+
+            var sUrl = '/Inventory/moveall/';
+            if (moveUp) {
+                sUrl += sLowerName[0] + "/" + sLowerName[1] + "/" + sLowerName[2] + "/" + sUpperName[0] + "/" + sUpperName[1] + "/" + sUpperName[2];
+            }
+            else {
+                sUrl += sUpperName[0] + "/" + sUpperName[1] + "/" + sUpperName[2] + "/" + sLowerName[0] + "/" + sLowerName[1] + "/" + sLowerName[2];
+            }
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        MoveComplete();
+                        response.json().then(data => {
+                            //document.getElementById('topbox').innerHTML = data.ChestContents;
+                            //document.getElementById('Name').innerHTML = data.Name;
+                            //document.getElementById('Category').innerHTML = data.Category;
+                        });
+                    } //else //document.getElementById('topbox').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error => {
+                    MoveComplete();
+                    var x = 1;
+                    //document.getElementById('topbox').innerHTML = 'Fetch error: ' + error
+                }
+                );
+        }
+        function CloseRuleAdd() {
+            document.getElementById('newrule').style.display = 'none';
+        }
+        function ShowAddRule() {
+            document.getElementById('newrule').style.display = 'block';
+
+        }
+        function CloseRulesEditor() {
+            document.getElementById('rules').style.display = 'none';
+        }
+
+        function GetRules(sChestId) {
+            //
+            //  get workflow rules for chest
+            //
+            var rules = document.getElementById('rules');
+            rules.style.display = "block";
+
+            var sUrl = '/Inventory/rule/' + sChestId;
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            document.getElementById('ruledetails').innerHTML = data.Details;
+                        });
+                    } else document.getElementById('ruledetails').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error => {
+                    document.getElementById('ruledetails').innerHTML = 'Fetch error: ' + error;
+                    upperChestId = "";
+                }
+                );
+
+        }
 
         function LoadTopChest(sChestId) {
 
+            upperChestId = sChestId;
             var sUrl = '/Inventory?cfetch=' + sChestId;
             fetch(sUrl)
                 .then(response => {
@@ -34,15 +121,18 @@
                         });
                     } else document.getElementById('topbox').innerHTML = 'Network response was not ok.';
                 })
-                .catch(error =>
-                    document.getElementById('topbox').innerHTML = 'Fetch error: ' + error
+                .catch(error => {
+                    document.getElementById('topbox').innerHTML = 'Fetch error: ' + error;
+                    upperChestId = "";
+                }
                 );
         }
 
         function LoadTopChestByName(sChestName) {
 
+            upperChestId = sChestName;
             var sUrl = '/Inventory?cname=' + encodeURIComponent(sChestName);
-
+            document.getElementById('topbox').innerHTML = "<img src='/images/loading-4.gif'>";
             fetch(sUrl)
                 .then(response => {
                     if (response.ok) {
@@ -75,9 +165,14 @@
                 );
         }
 
+        function GetChestLoadingGif() {
+
+            return "<img src='/images/loading-4.gif'  width='200px' height='150px'>";
+        }
 
         function TopCategorySelected() {
             if (bPageLoaded) {
+                document.getElementById('topbox').innerHTML = GetChestLoadingGif();
 
                 var sCat = document.getElementById("topCategory").value;
                 removeOptions(document.getElementById('topName'));
@@ -105,6 +200,7 @@
 
         function BCategorySelected() {
             if (bPageLoaded) {
+                document.getElementById('bbox').innerHTML = GetChestLoadingGif();
 
                 var sCat = document.getElementById("bCategory").value;
                 removeOptions(document.getElementById('bName'));
@@ -135,7 +231,11 @@
                 var sCat = document.getElementById("bCategory").value.replaceAll("--", "");
                 var sName = document.getElementById("bName").value;
                 //
-                LoadBChestByName(sCat + "!" + sName);
+                if (sName == null || sName == "") {
+                    sName = sCat;
+                }
+                //LoadBChestByName(sCat + divPartSepartor + sName);
+                LoadBChestByName(sName);
             }
         }
 
@@ -145,7 +245,11 @@
                 var sCat = document.getElementById("topCategory").value.replaceAll("--", "");
                 var sName = document.getElementById("topName").value;
                 //
-                LoadTopChestByName(sCat + "!" + sName);
+                //LoadTopChestByName(sCat + divPartSepartor + sName);
+                if (sName == null || sName == "") {
+                    sName = sCat;
+                }
+                LoadTopChestByName(sName);
             }
         }
     </script>
@@ -158,6 +262,10 @@
             #CONTENT#
         </div>
     </div>
-
+    <div id="rules" class="" style="padding:10px; display:none;background-color:lemonchiffon; height:600px;width:800px;position:absolute;top: 160px;left:30px; border: 2px solid #808080">
+        <h1>Workflow Rules</h1><br />
+    <div style="width:100%; height: 450px; padding:20px; overflow:auto;" id="ruledetails"></div>
+    <button onclick="CloseRulesEditor();">Cancel</button> <button>Save</button>
+    </div>
 </body>
 </html>

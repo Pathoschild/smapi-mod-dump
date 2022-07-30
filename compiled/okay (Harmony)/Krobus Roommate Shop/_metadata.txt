@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13131
+IDs: aedenthorn.KrobusRoommateStore
+update keys: Nexus:13131, GitHub:aedenthorn/StardewValleyMods

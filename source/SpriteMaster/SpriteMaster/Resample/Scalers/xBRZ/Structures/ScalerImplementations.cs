@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-//#define XBRZ_WIDE_BLEND
-
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System.Runtime.CompilerServices;
@@ -40,35 +38,19 @@ internal abstract class AbstractScaler {
 
 		//this works because 8 upper bits are free
 		var dst = dstRef;
-		var a = BlendComponent(n, m, dst.A, color.A);
-		var r = BlendComponent(n, m, dst.R, color.R);
-		var g = BlendComponent(n, m, dst.G, color.G);
-		var b = BlendComponent(n, m, dst.B, color.B);
+		int mn = m - n;
+		var r = BlendComponent(n, m, mn, dst.R, color.R);
+		var g = BlendComponent(n, m, mn, dst.G, color.G);
+		var b = BlendComponent(n, m, mn, dst.B, color.B);
+		var a = BlendComponent(n, m, mn, dst.A, color.A);
 		dstRef = new(r, g, b, a);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	private static Fixed16 BlendComponent(int n, int m, Fixed16 inComponent, Fixed16 setComponent) {
-#if XBRZ_WIDE_BLEND
-		var blend = setComponent.Value.asSigned() * n + inComponent.Value.asSigned() * (m - n);
-
-		var outChan = (blend / m).asUnsigned() & 0xFFFF;
-
-		// Value is now in the range of 0 to 0xFFFF
-
-		return (Fixed16)outChan;
-#else // XBRZ_WIDE_BLEND
-		/*
-		var inChan = (int)((((uint)inPixel) >> shift) & 0xFF);
-		var setChan = (int)((((uint)setPixel) >> shift) & 0xFF);
-		var blend = setChan * n + inChan * (m - n);
-		var component = (((uint)(blend / m)) & 0xFF) << shift;
-		return component;
-		*/
-		var blend = (long)setComponent.Value * n + (long)inComponent.Value * (m - n);
+	private static Fixed16 BlendComponent(int n, int m, int mn, Fixed16 inComponent, Fixed16 setComponent) {
+		var blend = (long)setComponent.Value * n + (long)inComponent.Value * mn;
 		var component = (Fixed16)(blend / m);
 		return component;
-#endif // XBRZ_WIDE_BLEND
 	}
 }
 

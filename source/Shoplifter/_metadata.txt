@@ -6,11 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit df487f0cb85b978041656cd95d5cc05cac099a38
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Apr 20 14:13:15 2022 +1000
+   commit d8cb8acbe772bdac7453162a1d085b6dbe9bbb0d
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Mon Jul 11 11:22:12 2022 +1000
    
-       Revert "some tidying"
-       
-       This reverts commit 3777785dd9cacc92b6032a733e1581e5928e543a.
+       Update README.md
    

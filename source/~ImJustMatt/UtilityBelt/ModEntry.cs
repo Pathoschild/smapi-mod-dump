@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace UtilityBelt;
 
 using StardewModdingAPI;

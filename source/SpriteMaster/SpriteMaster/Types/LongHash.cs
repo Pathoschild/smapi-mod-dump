@@ -9,12 +9,25 @@
 *************************************************/
 
 using SpriteMaster.Hashing;
+using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace SpriteMaster.Types;
 
 internal static class LongHash {
 	internal const ulong Null = HashUtility.Constants.Bits64.Null;
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static ulong GetLongHashCode(this string str) {
+		return str.AsSpan().Hash();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static ulong GetLongHashCode(this StringBuilder str) {
+		// TODO : need a proper streaming hash for this.
+		return str.ToString().GetLongHashCode();
+	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ulong GetLongHashCode<T>(this T obj) {

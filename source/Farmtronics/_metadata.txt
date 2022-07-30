@@ -6,9 +6,9 @@ mods:
    Farmtronics
 
 latest commit:
-   commit 594c054df205978646de57db9a8b7b148beb15fe
+   commit 14ede219ec0bd89dbf8b5a068d4d750264468299
    Author: Joe Strout <joe@strout.net>
-   Date:   Thu Jun 23 13:34:31 2022 -0700
+   Date:   Mon Jul 25 19:48:30 2022 -0700
    
-       Added world.chat and world.chatMessages.
+       Updated version to 1.2.0.
    

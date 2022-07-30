@@ -1,10 +1,21 @@
 ﻿{
-  "Name": "Power Tools",
+  "Name": "Tooth & Nail - Immersive Tools",
   "Author": "DaLion",
-  "Version": "3.0.3",
-  "Description": "Charge your Axe and Pickaxe or customize your Hoe and Watering Can area of effect.",
+  "Version": "4.0.2",
+  "Description": "Charge your Axe and Pickaxe, customize your Hoe and Watering Can area of effect, enable new tool enchantments.",
   "UniqueID": "DaLion.ImmersiveTools",
   "EntryDll": "ImmersiveTools.dll",
-  "MinimumApiVersion": "3.13.0",
-  "UpdateKeys": [ "Nexus:7965" ]
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:7965" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.8.0",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.MoonMisadventures",
+      "IsRequired": false
+    }
+  ] 
 }

@@ -11,6 +11,14 @@ for queries and analysis.**
 
 # x.x.x — Changes
 
+### UI
+* Test opening/closing UI.
+* Test moving UI.
+* Test resizing window with UI close to out of bounds.
+* Test UI interaction with game menus.
+* Test UI interaction with festivals/events.
+* Test UI button states.
+
 ### Interaction blocking
 * Placement
 * Chest opening
@@ -184,6 +192,7 @@ for queries and analysis.**
 * Crop planting setting **on**, and fertiliser placement setting **on**
   * Planting seeds
   * Planting fertilisers
+* DGA crops
 
 ### Fences — "fences"
 * Replacement setting **off**

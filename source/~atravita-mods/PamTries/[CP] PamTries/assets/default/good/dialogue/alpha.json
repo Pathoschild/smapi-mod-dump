@@ -1,0 +1,90 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Good dialogue, set alpha",
+        "Entries": {
+            "summer_10_2": "#$c .5#You looking forward to tomorrow? The soup...might be odd, but it's usually pretty good!#Am I going to the Luau? Of course I am, there's free food!$h",	
+            "spring_Mon10": "#$c .7#Aren't you glad winter's over? My old bones are.$h#Enjoy this weather while it lasts; it gets too hot in the summer.#",
+            "spring_Tue8": "So....have you read any good books lately?#$b#I've got some spare cash, so I've been thinkin' about picking up a new book for Penny next time I'm in the city.#$b#Any recommendations?",
+            "spring_Tue8_inlaw_Maru": "Has Maru read anything interesting lately?#$b#Been thinkin' that I should get Penny a new book or two, and do either of you have any recs?",
+            "spring_Thu8": "Penny's father? He didn't want no children, so he walked out on us when Penny was four.#$e#$c .5#It's okay. He wasn't a good dad anyways.#I'm glad Penny turned out so well, with her dad gone and me...you know.#",
+            "spring_Fri8": "Ahh, there's nothing like the fresh spring air in this valley.$h",
+            "spring_Sat8": "Willy says catfish come out in the rain.#$b#$c .5#Have you caught any yet?#They're hard to catch, though.",
+            "spring_Sun10": "Thank Yoba we've got your farm. Local economy really cratered after the mines closed.#$e#We used to have three seperate resturants. Now we have to go to the city to get a haircut.",
+            "summer_Tue10": "War doesn't seem to be goin' well. Saw it on the news yesterday.#$e#Guess there isn't much I can do about that, though.$s#$e#Vote? Nah, that doesn't do anything.#$e#Them politicians don't listen to poor folk anyways.",
+            "summer_Thu10": "#$c .7#Are you growing any melons on that farm of yours? Penny loves them.%revealtastePenny254#Gus says fresh ingredients really help make a dish taste better. If only I could afford them...",
+            "summer_Fri10": "#$c .7#Been makin' a little extra money by selling fish; it's nice having a little extra walkin' around cash.$h#Nearly caught a tuna a few days ago! Those fish are big.#",
+            "summer_Sat8": "Anything you miss about the city, @?#$e#I've driven through before, but dunno if I ever wanna live somewhere like that. Too many people.#$e#Miss the food, though. So many options...",
+            "summer_Sun10": "#$c .5#Any film you're lookin' forward to seeing?$h#You go to the theater often? It's nice havin' more entertainment options in this little town.$h#",
+            "fall_Mon10": "Pappy used to take me out shootin' when he was sober. I was a crack shot back in the day.",
+            "fall_Tue10": "Really missing pumpkin ale right about now....$s#$e#I know, I know. I won't.",
+            "fall_Thu10": "#$c .3#My dryer's on its last legs. Not sure how I'm going to afford a replacement. Wonder if there's anyone I could ask about getting it fixed?#Miss drivin' all around the country hauling goods; sure it's fewer hours driving the bus but I kinda need the cash.#",
+            "fall_Fri10": "This town used to be bustlin', back before the mines shut down and got overrun by monsters.#$e#I hauled coal and ore from here to Zuzu city for years. Paid well.#$e#Driving the bus doesn't pay nearly as well, unfortunately.",
+            "winter_Mon8": "Ugh. More fresh veggies would be nice, but I can't afford it.#$e#$c .5#Say, @, do you have a greenhouse on that farm of yours?#Wonder if I can plant something indoors?",
+            "winter_Tue10": "*yawns*. Stayed up way too late last night watching infomercials.#$e#Don't worry, I'm fine to drive.#$e#I've never gotten a ticket, kiddo. Promise.",
+            "winter_Thu10": "#$c .7#Hooked a sturgeon the other day. Damn that fish fights!$h#*yawns* Spent way too long on hold with the electric company last night. Customer service, what customer service?$u#",
+            "winter_Sat10": "#$c .5#Wish I could go on vacation right now...I feel chilled all the way down to my bones...#A nice hot coffee would be nice right about now...or maybe some soup. Or anything warm, really.#",
+            "winter_Sun10": "#$c .7#What do ya do for cash in winter, when you can't plant stuff?#It's funny how silly the people in infomercials are. Like, seriously, do they not know how to use a blanket?#",
+            "winter_26_2": "#$c .5#Penny got me a voucher to a massage place in Grampleton!$h#Penny got me a gift certificate to a spa in Zuzu city!#$b#Definitely looking forward to this!",
+            "summerMountain_58_25": "I'm greatly enjoying the breeze on this island.$h"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Good dialogue - Immersive Shane compat - alpha",
+        "Entries": {
+            "Wed6": "Heya, farmer, whatcha growin' right now?",
+            "Wed8": "Heya, @. How are you doing today?",
+            "Wed10": "Shane gave me the name of his therapist. Guess I should make an appointment.#$e#Maybe later. Therapy's expensive.",
+            "summer_Wed10": null,
+            "fall_Wed10": null,
+            "winter_Wed10": null,
+            "spring_Wed10": null,
+            "Thu10_inlaw_Shane": "How's Shane, doing, by the way? Still on the wagon?#$e#He seems so much better at this than I am...",
+            "fall_Tue10": "#$c .5#Tried one of those little seltzer waters Shane drinks. Blregh.#Gotta say, I still can't stand seltzer water. Doesn't taste like anything. Even the stuff labeled as 'flavored'.#"
+        },
+        "When": {
+            "HasMod": "tenthousandcats.ImmersiveCShane",
+            "HasSeenEvent": "3910975" //Shane's six heart event.
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Good dialogue - alpha post-rehab",
+        "Entries": {
+            "Wed10": "To be honest, talkin' with a therapist has been more useful than I thought it'd be...",
+            "spring_Wed10": "Wonder if I could get my therapist to help me lose weight or something...#$e#Betcha she's got a worksheet for that, too.",
+            "summer_Wed10": "Not going to lie, @, when I first started this therapy thing I thought it was entirely too corny.#$b#But I think it's really starting to help.$h#$e#My therapist says I'm doing a great job developing 'alternative coping strategies'.$h",
+            "fall_Wed10": "My husband walked out on me 'round this time of year...#$e#To be honest, @, I'm kinda glad he's gone. He wasn't a good husband anyways.#$e#Penny and I do well enough on our own.",
+            "fall_Wed10_inlaw_Penny": "My husband walked out on me 'round this time of year...#$e#To be honest, @, I'm kinda glad he's gone. He wasn't a good husband anyways.#$e#You and Penny are the only family I need.",
+            "winter_Fri10": "@, what are you grateful for this year?",
+            "Saloon_Fri": "My therapist says I should be tryin' to gettin' out of the house some more.#$b#She thinks I should be tryin' to make more friends."
+        },
+        "When": {
+            "HasSeenEvent": "99210002" //Post-rehab event
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target":"Characters/Dialogue/Pam",
+        "LogName": "Good dialogue - alpha post-apology",
+        "When": {"HasFlag:HostPlayer": "atravita_PamApology_Reward"},
+        "Entries": {
+            "fall_Sat10": "Feel more optimistic about this town than I ever have.It's certainly coming back!#$b#Maybe we'll get some more people movin' in, and this town'll be able to support more businesses!",
+            "winter_Wed10": "#$c 0.5#Almost a new year! I'm almost lookin' forward to it. May next year hold good things for you!#I've been talkin' to Penny more often. I wish I was there for her more often when she was growin' up...$s#"
+        }
+    }
+]}

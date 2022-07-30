@@ -36,6 +36,35 @@
                             <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('fullcc','popup');">Complete</button></td>
                         </tr>
                         <tr>
+                            <td class="mechanics_cell">Pantry Bundles</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle pantry','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Crafts Room</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle craftsroom','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Fish Tank</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle fishtank','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Boiler Room</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle boilerroom','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Vault</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle vault','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Bulletin Board</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle bulletin','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Missing</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('bundle missing','popup');">Complete</button></td>
+                        </tr>
+
+                        <tr>
                             <td class="mechanics_cell">Complete JoJa</td>
                             <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('fulljoja','popup');">Complete</button></td>
                         </tr>
@@ -60,6 +89,14 @@
                         <tr><td class="wallet_items"><input type="checkbox" id="key_town" #key_town# onclick="ToggleKey(this);" /></td><td class="wallet_items">Key To The Town</td></tr>
                     </table>
                 </div>
+                <br />
+                <div style="border:2px solid black; border-radius: 10px;padding: 5px; background: tan;">
+                    <table style="padding: 5px; width:100%;">
+                        <tr><td colspan="2" class="center">Vegas Wedding</td></tr>
+                        <tr><td>Spouse </td><td><select id="spouse">#SPOUSES#</select></td></tr>
+                        <tr><td colspan="2" class="center"><button onclick="MarryNPC();">Marry</button></td></tr>
+                    </table>
+                </div>
             </td>
             <td style="width:40px;">&nbsp;</td>
             <td class="top">
@@ -68,7 +105,7 @@
                         <tr><td colspan="3" class="center">Skill Level</td></tr>
                         <tr>
                             <td class="wallet_items" style="width:40px;">Farming</td>
-                            <td class="wallet_items" style="width:36px;"><input type="text" size="2" id="lv_farming" value="#LV_FARMING#"  /></td>
+                            <td class="wallet_items" style="width:36px;"><input type="text" size="2" id="lv_farming" value="#LV_FARMING#" /></td>
                             <td class="wallet_items" style="width:140px;">
                                 <button onclick="SetLevel('lv_farming','Farming');" class="cheat_skill_button">Set</button>
                                 <button onclick="DecreaseSkillLevel('lv_farming','Farming');" class="cheat_skill_button">-</button>
@@ -77,7 +114,7 @@
                         </tr>
                         <tr>
                             <td class="wallet_items">Mining</td>
-                            <td class="wallet_items"><input type="text" size="2" id="lv_mining" value="#LV_MINING#"  /></td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_mining" value="#LV_MINING#" /></td>
                             <td class="wallet_items">
                                 <button onclick="SetLevel('lv_mining','Mining');" class="cheat_skill_button">Set</button>
                                 <button onclick="DecreaseSkillLevel('lv_mining','Mining');" class="cheat_skill_button">-</button>
@@ -86,7 +123,7 @@
                         </tr>
                         <tr>
                             <td class="wallet_items">Foraging</td>
-                            <td class="wallet_items"><input type="text" size="2" id="lv_forage" value="#LV_FORAGE#"  /></td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_forage" value="#LV_FORAGE#" /></td>
                             <td class="wallet_items">
                                 <button onclick="SetLevel('lv_forage','Foraging');" class="cheat_skill_button">Set</button>
                                 <button onclick="DecreaseSkillLevel('lv_forage','Foraging');" class="cheat_skill_button">-</button>
@@ -95,7 +132,7 @@
                         </tr>
                         <tr>
                             <td class="wallet_items">Fishing</td>
-                            <td class="wallet_items"><input type="text" size="2" id="lv_fishing" value="#LV_FISHING#"  /></td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_fishing" value="#LV_FISHING#" /></td>
                             <td class="wallet_items">
                                 <button onclick="SetLevel('lv_fishing','Fishing');" class="cheat_skill_button">Set</button>
                                 <button onclick="DecreaseSkillLevel('lv_fishing','Fishing');" class="cheat_skill_button">-</button>
@@ -104,7 +141,7 @@
                         </tr>
                         <tr>
                             <td class="wallet_items">Combat</td>
-                            <td class="wallet_items"><input type="text" size="2" id="lv_combat" value="#LV_COMBAT#"  /></td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_combat" value="#LV_COMBAT#" /></td>
                             <td class="wallet_items">
                                 <button onclick="SetLevel('lv_combat','Combat');" class="cheat_skill_button">Set</button>
                                 <button onclick="DecreaseSkillLevel('lv_combat','Combat');" class="cheat_skill_button">-</button>

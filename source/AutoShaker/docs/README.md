@@ -61,7 +61,7 @@ NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 ### Compatibility
 * Compatible with...
     - Stardew Valley 1.5 or later
-    - SMAPI 3.9.0 or later
+    - SMAPI 3.15.0 or later
 * No known mod conflicts
     - If you find one please feel free to notify me here or on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
 
@@ -72,6 +72,11 @@ NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/jag3dagster/AutoShaker/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+### 1.5.0
+* Simplify calculations per game tick
+* Add translation language support
+* Back-end versioning updates
+* Thanks to @atravita-mods for this update
 ### 1.4.0
 * Added the ability to shake Tea Bushes for their Tea Leaves
 ### 1.3.2

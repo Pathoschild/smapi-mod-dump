@@ -6,9 +6,10 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit e39ad585eae3bd8581c4ca40477ba4ed0f59d2c0
+   commit dfbd1bb90633c0f3b5432fb1b7b86a7e6fec5ee7
    Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Tue Jun 28 01:31:54 2022 -0400
+   Date:   Sun Jul 3 21:07:53 2022 -0400
    
-       Added a missing license to a page
+       Added the option to show Birthday reminders (Disabled by default)
+       Changed some message formatting
    

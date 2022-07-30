@@ -26,7 +26,7 @@ If you prefer the original approach (using a hotkey to toggle the difficulty), t
 
 **Some things to note:**
 
-- This mod requires SMAPI 3.9 or above to be installed
+- This mod requires SMAPI 3.14 or above to be installed. Older versions will work with SMAPI 3.9 or above.
 
 - The change is immediate (usually, see note below), and applies to everyone in multiplayer
 

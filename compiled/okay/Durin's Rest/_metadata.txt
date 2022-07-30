@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12345
+IDs: NoFogBob.DurinsRest_CSharp
+update keys: Nexus:12345

@@ -9,6 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;

@@ -1,0 +1,10 @@
+{
+  "Name": "More for Leo",
+  "Author": "Blams",
+  "Version": "1.0.0",
+  "Description": "Adds coded elements",
+  "UniqueID": "blams.MoreForLeo",
+  "MinimumApiVersion": "3.0.0",
+  "EntryDll":  "MoreForLeo.dll",
+  "UpdateKeys": ["Nexus:12710"]
+}

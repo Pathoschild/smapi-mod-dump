@@ -1,0 +1,209 @@
+﻿//basegigaiifarm_spring
+//
+verbose
+
+warpto GigaFarmII 136,107
+location GigaFarmII
+//
+//	clear terrain
+//
+clearall
+
+//
+// top left patch
+//
+grass 4,7 33,58
+
+build Deluxe9Coop 5,10 Duck 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 5,23 Blue9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 16,23 White9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 24,23 Void9Chicken 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Coop 5,30 Dinosaur 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 16,30 Golden9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 24,30 Rabbit 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Coop 5,37 White9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 16,37 Golden9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 24,37 Rabbit 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Coop 5,44 Blue9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 16,44 Golden9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 24,44 Rabbit 12
+buildingadd (BO)165 11,8
+
+build Deluxe9Coop 5,51 Rooster 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 16,51 White9Chicken 12
+buildingadd (BO)165 11,8
+build Deluxe9Coop 24,51 Void9Chicken 12
+buildingadd (BO)165 11,8
+
+//
+//	add field of rice
+//
+hoedirt 5,72 33,108 273
+
+//
+//	top middle
+//
+grass 41,8 74,58
+
+build Deluxe9Barn 48,9 White9Cow 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 58,9 White9Cow 12
+buildingadd (BO)165 15,13
+//build Deluxe9Barn 68,9 Brown9Cow 12
+//buildingadd (BO)165 15,13
+
+
+build Deluxe9Barn 48,16 Brown9Cow 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 58,16 Ostrich 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 68,16 Goat 12
+buildingadd (BO)165 15,13
+
+build Deluxe9Barn 48,23 Sheep 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 68,23 Pig 12
+buildingadd (BO)165 15,13
+
+build Deluxe9Barn 48,30 White9Cow 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 58,30 Brown9Cow 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 68,30 Goat 12
+buildingadd (BO)165 15,13
+
+build Deluxe9Barn 48,37 Alpaca 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 58,37 Rex9Gold 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 68,37 Rex9Gold 12
+buildingadd (BO)165 15,13
+
+build Deluxe9Barn 48,44 Alpaca 12
+buildingadd (BO)165 15,13
+build Deluxe9Barn 58,44 Rex9Gold 12
+buildingadd (BO)165 15,13
+
+//
+//	right side
+//
+
+build Fish9Pond 84,22 698 10
+build Fish9Pond 95,14 775 10
+build Fish9Pond 110,15 798 10
+build Fish9Pond 121,15 128 10
+build Fish9Pond 132,15 128 10
+
+addpath 100,17 110,18 7
+addpath 111,17 121,18 7
+addpath 126,17 132,18 7
+addpath 89,23 98,24 7
+addpath 97,19 98,23 7
+addpath 134,11 135,15 7
+addobject (BO)232 134,10
+
+
+build Winery 102,26
+build Winery 111,26
+build Winery 120,26
+build Winery 129,26
+
+build Fromagerie 126,33
+build Fromagerie 117,33
+build Fromagerie 108,33
+build Fromagerie 99,33
+build Fromagerie 90,33
+
+build Big9Shed 90,40
+build Big9Shed 100,40
+build Big9Shed 110,40
+buildingadd (BO)24 1,4 16,12
+buildingaddchest 9,13 Machines Mayo
+build Big9Shed 120,40
+buildingadd (BO)24 1,4 16,12
+buildingaddchest 9,13 Machines Mayo2
+
+build Big9Shed 100,47
+buildingadd (BO)12 1,4 16,12
+buildingaddchest 9,13 Machines Kegs
+build Big9Shed 110,47
+buildingadd (BO)19 1,4 16,12
+buildingaddchest 9,13 Machines OilMaker
+build Big9Shed 120,47
+buildingadd (BO)15 1,4 16,12
+buildingaddchest 9,13 Machines Preserves
+//
+//	add silos
+//
+build Silo 4,67
+build Silo 8,67
+build Silo 12,67
+build Silo 16,67
+build Silo 24,67
+build Silo 28,67
+build Silo 32,67
+fillsilos
+
+//
+//	add junimo packs
+//
+junimopack 41,66 474
+junimopack 41,85 433
+junimopack 60,66 473
+junimopack 60,85 745
+junimopack 79,66 478
+junimopack 79,85 472
+junimopack 98,66 475
+junimopack 98,85 477
+junimopack 117,66 476
+junimopack 117,85 499
+
+
+
+//
+//	add flowers
+//
+hoedirt 42,104 58,108 427
+hoedirt 61,104 77,108 427
+hoedirt 80,104 96,108 427
+hoedirt 99,104 115,108 427
+hoedirt 118,104 134,108 427
+
+hoedirt 137,67 144,108 429
+
+//
+//	add animal gates
+//
+ironfence 57,59
+gate 58,59
+gate 59,59
+ironfence 60,59
+
+ironfence 35,55
+gate 35,56
+gate 35,57
+ironfence 35,58 35,59
+
+ironfence 40,14
+gate 40,15
+gate 40,16
+ironfence 40,17
+
+activatesprinklers
+petall

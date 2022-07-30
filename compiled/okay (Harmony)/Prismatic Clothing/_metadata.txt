@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13051
+IDs: atravita.PrismaticClothing
+update keys: Nexus:13051, GitHub:atravita-mods/StardewMods

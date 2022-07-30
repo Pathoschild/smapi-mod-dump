@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using MachineAugmentors.Items;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -17,8 +17,6 @@ using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Object = StardewValley.Object;
 
 namespace MachineAugmentors.Harmony
@@ -34,12 +32,12 @@ namespace MachineAugmentors.Harmony
             public Object Machine { get; }
 
             public Object PreviousHeldObject { get; }
-            public Object CurrentHeldObject { get { return Machine?.heldObject; } }
+            public Object CurrentHeldObject { get { return Machine?.heldObject.Value; } }
             public int PreviousHeldObjectQuantity { get; }
             public int CurrentHeldObjectQuantity { get { return CurrentHeldObject == null ? 0 : CurrentHeldObject.Stack; } }
 
             public bool PreviousIsReadyForHarvest { get; }
-            public bool CurrentIsReadyForHarvest { get { return Machine.readyForHarvest; } }
+            public bool CurrentIsReadyForHarvest { get { return Machine.readyForHarvest.Value; } }
             public int PreviousMinutesUntilReady { get; }
             public int CurrentMinutesUntilReady { get { return Machine.MinutesUntilReady; } }
 
@@ -55,7 +53,7 @@ namespace MachineAugmentors.Harmony
                 this.Farmer = Farmer;
                 this.Machine = Machine;
 
-                this.PreviousHeldObject = Machine.heldObject;
+                this.PreviousHeldObject = Machine.heldObject.Value;
                 this.PreviousHeldObjectQuantity = PreviousHeldObject != null ? PreviousHeldObject.Stack : 0;
                 this.PreviousIsReadyForHarvest = Machine.readyForHarvest.Value;
                 this.PreviousMinutesUntilReady = Machine.MinutesUntilReady;
@@ -120,12 +118,12 @@ namespace MachineAugmentors.Harmony
             public Object Machine { get; }
 
             public Object PreviousHeldObject { get; }
-            public Object CurrentHeldObject { get { return Machine?.heldObject; } }
+            public Object CurrentHeldObject { get { return Machine?.heldObject.Value; } }
             public int PreviousHeldObjectQuantity { get; }
             public int CurrentHeldObjectQuantity { get { return CurrentHeldObject == null ? 0 : CurrentHeldObject.Stack; } }
 
             public bool PreviousIsReadyForHarvest { get; }
-            public bool CurrentIsReadyForHarvest { get { return Machine.readyForHarvest; } }
+            public bool CurrentIsReadyForHarvest { get { return Machine.readyForHarvest.Value; } }
             public int PreviousMinutesUntilReady { get; }
             public int CurrentMinutesUntilReady { get { return Machine.MinutesUntilReady; } }
 
@@ -134,7 +132,7 @@ namespace MachineAugmentors.Harmony
                 this.Farmer = Farmer;
                 this.Machine = Machine;
 
-                this.PreviousHeldObject = Machine.heldObject;
+                this.PreviousHeldObject = Machine.heldObject.Value;
                 this.PreviousHeldObjectQuantity = PreviousHeldObject != null ? PreviousHeldObject.Stack : 0;
                 this.PreviousIsReadyForHarvest = Machine.readyForHarvest.Value;
                 this.PreviousMinutesUntilReady = Machine.MinutesUntilReady;

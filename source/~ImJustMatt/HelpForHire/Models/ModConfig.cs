@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace HelpForHire.Models;
 
 internal class ModConfig

@@ -1,0 +1,17 @@
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore"
+    }
+  ],
+  "EntryDll": "MuseumRewardsIn.dll",
+  "Name": "Museum Store",
+  "Author": "atravita",
+  "Version": "0.2.0",
+  "Description": "Adds museum rewards to a store.",
+  "UniqueID": "atravita.MuseumRewardsIn",
+  "MinimumApiVersion": "3.15",
+  "UpdateKeys": [
+    "Nexus:12598"
+  ]
+}

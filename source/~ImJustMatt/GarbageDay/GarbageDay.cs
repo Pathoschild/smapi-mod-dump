@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace GarbageDay;
 
 using System;

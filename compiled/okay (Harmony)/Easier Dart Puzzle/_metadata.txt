@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13049
+IDs: atravita.EasierDartPuzzle
+update keys: Nexus:13049, GitHub:atravita-mods/StardewMods

@@ -44,7 +44,7 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
     /// <inheritdoc />
     public override void Callback(string[] args)
     {
-        if (!args.Any())
+        if (args.Length <= 0)
         {
             Log.W("You must specify at least one profession." + GetUsage());
             return;
@@ -121,7 +121,7 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
 
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} [--prestige] <profession1> <profession2> ... <professionN>";
+        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} [--prestige / -p] <profession1> <profession2> ... <professionN>";
         result += "\n\nParameters:";
         result += "\n\t- <profession>\t- a valid profession name, or `all`";
         result += "\n\nOptional flags:";

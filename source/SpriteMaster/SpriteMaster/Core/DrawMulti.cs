@@ -11,29 +11,54 @@
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Harmonize;
+using SpriteMaster.Harmonize.Patches.Game;
 using SpriteMaster.Types;
+using SpriteMaster.Types.Exceptions;
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using static SpriteMaster.Harmonize.Harmonize;
 
 namespace SpriteMaster.Core;
 
 internal static partial class OnDrawImpl {
 
+	[StructLayout(LayoutKind.Auto)]
 	internal struct DrawInstance {
 		internal readonly Vector2F Position { get; init; }
 		internal readonly float Scale { get; init; }
 		internal readonly float Rotation { get; init; }
-		internal uint ExpectedScale;
+		internal uint ExpectedScale = 0U;
+
+		internal DrawInstance(Snow.SnowWeatherDebris debris) {
+			Position = debris.position;
+			Scale = debris.Scale;
+			Rotation = debris.Rotation;
+		}
 	}
 
+	[MethodImpl(MethodImplOptions.NoInlining)]
 	[Harmonize(typeof(XSpriteBatch), "Draw", fixation: Fixation.Reverse)]
 	public static void RawDraw(XSpriteBatch __instance, XTexture2D texture, XVector2 position, XRectangle? sourceRectangle, XColor color, float rotation, XVector2 origin, float scale, SpriteEffects effects, float layerDepth) {
-		throw new NotImplementedException($"{nameof(RawDraw)} is a reverse patch");
+		Harmonize.Patches.PSpriteBatch.Patch.Draw.IsReverse.Value = true;
+		try {
+			__instance.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+		}
+		finally {
+			Harmonize.Patches.PSpriteBatch.Patch.Draw.IsReverse.Value = false;
+		}
 	}
 
+	[MethodImpl(MethodImplOptions.NoInlining)]
 	[Harmonize(typeof(XSpriteBatch), "Draw", fixation: Fixation.Reverse)]
 	public static void RawDraw(XSpriteBatch __instance, XTexture2D texture, XVector2 position, XRectangle? sourceRectangle, XColor color, float rotation, XVector2 origin, XVector2 scale, SpriteEffects effects, float layerDepth) {
-		throw new NotImplementedException($"{nameof(RawDraw)} is a reverse patch");
+		Harmonize.Patches.PSpriteBatch.Patch.Draw.IsReverse.Value = true;
+		try {
+			__instance.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+		}
+		finally {
+			Harmonize.Patches.PSpriteBatch.Patch.Draw.IsReverse.Value = false;
+		}
 	}
 
 	internal static void DrawMulti(

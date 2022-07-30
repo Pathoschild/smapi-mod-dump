@@ -16,6 +16,7 @@
 // which you may well find on a tile.
 
 using System;
+using System.Collections.Generic;
 using Miniscript;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -26,6 +27,7 @@ using StardewValley.Menus;
 using StardewValley.BellsAndWhistles;
 using StardewValley.TerrainFeatures;
 using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace Farmtronics {
 	public static class TileInfo {
@@ -62,6 +64,17 @@ namespace Farmtronics {
 			result["minutesTillReady"] = new ValNumber(obj.MinutesUntilReady);
 			result["value"] = new ValNumber(obj.sellToStorePrice());
 			result["description"] = new ValString(obj.getDescription());
+
+			IList<Item> inventory = null;
+			if (obj is Chest chest) inventory = chest.items;
+			else if(obj is Bot bot) inventory = bot.inventory;
+			if (inventory != null) {
+				var list = new ValList();
+				result["inventory"] = list;
+				foreach (var item in inventory) {
+					list.values.Add(TileInfo.ToMap(item));
+				}
+			}
 			return result;
 		}
 

@@ -6,12 +6,10 @@ mods:
    Joys of Efficiency
 
 latest commit:
-   commit b1b8023cf16c5bd11e1e9fed4eca66d9bcbeb4af
-   Merge: 36167da 1e358d5
-   Author: pomepome <punyoon03@gmail.com>
-   Date:   Mon Mar 29 16:25:46 2021 +0900
+   commit 153584360579aeda50cedac8bf7d9345dd00e052
+   Merge: 6eb92f4 fa2b168
+   Author: yinam-research <17aj022@ymklab.net>
+   Date:   Mon Jul 18 12:11:45 2022 +0900
    
-       Merge pull request #48 from jdknezek/island
-       
-       Some Ginger Island support
+       Merge branch 'develop' of https://github.com/pomepome/JoysOfEfficiency into develop
    

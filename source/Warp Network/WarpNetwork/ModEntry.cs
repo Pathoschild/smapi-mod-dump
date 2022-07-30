@@ -44,9 +44,16 @@ namespace WarpNetwork
             helper.Events.Content.AssetRequested += DataPatcher.AssetRequested;
             helper.Events.Content.AssetRequested += LoadAssets;
             helper.Events.GameLoop.GameLaunched += GameLaunched;
+            helper.Events.GameLoop.DayStarted += (s, e) => helper.GameContent.InvalidateCache(pathLocData);
             helper.Events.Input.ButtonPressed += ItemHandler.ButtonPressed;
             helper.Events.Player.Warped += ObeliskPatch.MoveAfterWarp;
             SpaceEvents.ActionActivated += WarpHandler.HandleAction;
+            helper.Events.World.BuildingListChanged += updateBuildingList;
+        }
+        public void updateBuildingList(object sender, BuildingListChangedEventArgs ev)
+        {
+            if (config.ObeliskCheckRequired())
+                helper.GameContent.InvalidateCache(pathLocData);
         }
         public void GameLaunched(object sender, GameLaunchedEventArgs ev)
         {
@@ -58,13 +65,13 @@ namespace WarpNetwork
         public override object GetApi() => api;
         private void LoadAssets(object _, AssetRequestedEventArgs ev)
         {
-            if (ev.Name.IsEquivalentTo(pathLocData))
+            if (ev.NameWithoutLocale.IsEquivalentTo(pathLocData))
                 ev.LoadFromModFile<Dictionary<string, WarpLocation>>("assets/Destinations.json", AssetLoadPriority.Medium);
-            else if (ev.Name.IsEquivalentTo(pathItemData))
+            else if (ev.NameWithoutLocale.IsEquivalentTo(pathItemData))
                 ev.LoadFromModFile<Dictionary<string, WarpItem>>("assets/WarpItems.json", AssetLoadPriority.Medium);
             else if (ev.Name.StartsWith(pathIcons))
             {
-                var name = ev.Name.ToString().WithoutPath(pathIcons);
+                var name = ev.NameWithoutLocale.ToString().WithoutPath(pathIcons);
                 if (knownIcons.Contains(name))
                     ev.LoadFromModFile<Texture2D>($"assets/icons/{name}.png", AssetLoadPriority.Low);
                 else

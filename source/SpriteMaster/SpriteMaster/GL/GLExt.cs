@@ -8,22 +8,29 @@
 **
 *************************************************/
 
+//#define GL_DEBUG
+
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.OpenGL;
-using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security;
 
 // Defined with a 32-bit depth
 using GLEnum = System.UInt32;
 
 namespace SpriteMaster.GL;
 
-internal static class GLExt {
+internal static unsafe class GLExt {
 	// ReSharper disable UnusedMember.Global
+
+	internal enum ObjectId : uint {
+		None = 0
+	};
 
 	internal enum ErrorCode : GLEnum {
 		NoError = 0x0000,
@@ -52,24 +59,121 @@ internal static class GLExt {
 	}
 	// ReSharper restore UnusedMember.Global
 
-
-
-
-	[Conditional("DEBUG")]
-	[DebuggerHidden]
-	internal static void CheckError() {
-		var error = (ErrorCode)MonoGame.OpenGL.GL.GetError();
-		if (error == ErrorCode.NoError) {
-			return;
-		}
-
+	[DebuggerHidden, DoesNotReturn]
+	private static void HandleError(ErrorCode error, string expression) {
 		var errorList = new List<ErrorCode> { error };
 
 		while ((error = (ErrorCode)MonoGame.OpenGL.GL.GetError()) != ErrorCode.NoError) {
 			errorList.Add(error);
 		}
 
-		throw new MonoGameGLException($"GL.GetError() returned '{string.Join(", ", errorList)}'");
+		string errorMessage = $"GL.GetError() returned '{string.Join(", ", errorList)}': {expression}";
+		System.Diagnostics.Debug.WriteLine(errorMessage);
+		Debugger.Break();
+		throw new MonoGameGLException(errorMessage);
+	}
+
+	[Conditional("GL_DEBUG"), Conditional("CONTRACTS_FULL"), Conditional("DEBUG")]
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void CheckError(string? expression = null, [CallerMemberName] string member = "") {
+		AlwaysCheckError(expression, member);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysCheckError(string? expression = null, [CallerMemberName] string member = "") {
+		var error = (ErrorCode)MonoGame.OpenGL.GL.GetError();
+		if (error == ErrorCode.NoError) {
+			return;
+		}
+
+		HandleError(error, expression ?? member);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysSwallowErrors() {
+		while ((ErrorCode)MonoGame.OpenGL.GL.GetError() != ErrorCode.NoError) {
+			// Do Nothing
+		}
+	}
+
+	[Conditional("GL_DEBUG"), Conditional("CONTRACTS_FULL"), Conditional("DEBUG")]
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void SwallowErrors() {
+		while ((ErrorCode)MonoGame.OpenGL.GL.GetError() != ErrorCode.NoError) {
+			// Do Nothing
+		}
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void Checked(Action action, [CallerArgumentExpression("action")] string expression = "") {
+		action();
+		CheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void Checked<T0>(Action<T0> action, T0 param0, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0);
+		CheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void Checked<T0, T1>(Action<T0, T1> action, T0 param0, T1 param1, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1);
+		CheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void Checked<T0, T1, T2>(Action<T0, T1, T2> action, T0 param0, T1 param1, T2 param2, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1, param2);
+		CheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void Checked<T0, T1, T2, T3>(Action<T0, T1, T2, T3> action, T0 param0, T1 param1, T2 param2, T3 param3, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1, param2, param3);
+		CheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void Checked<T0, T1, T2, T3, T4>(Action<T0, T1, T2, T3, T4> action, T0 param0, T1 param1, T2 param2, T3 param3, T4 param4, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1, param2, param3, param4);
+		CheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysChecked(Action action, [CallerArgumentExpression("action")] string expression = "") {
+		action();
+		AlwaysCheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysChecked<T0>(Action<T0> action, T0 param0, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0);
+		AlwaysCheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysChecked<T0, T1>(Action<T0, T1> action, T0 param0, T1 param1, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1);
+		AlwaysCheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysChecked<T0, T1, T2>(Action<T0, T1, T2> action, T0 param0, T1 param1, T2 param2, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1, param2);
+		AlwaysCheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysChecked<T0, T1, T2, T3>(Action<T0, T1, T2, T3> action, T0 param0, T1 param1, T2 param2, T3 param3, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1, param2, param3);
+		AlwaysCheckError(expression);
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void AlwaysChecked<T0, T1, T2, T3, T4>(Action<T0, T1, T2, T3, T4> action, T0 param0, T1 param1, T2 param2, T3 param3, T4 param4, [CallerArgumentExpression("action")] string expression = "") {
+		action(param0, param1, param2, param3, param4);
+		AlwaysCheckError(expression);
 	}
 
 	// ReSharper disable MemberHidesStaticFromOuterClass
@@ -77,15 +181,47 @@ internal static class GLExt {
 		internal static class Generic<T> where T : class? {
 			internal delegate T? LoadFunctionDelegate(string function, bool throwIfNotFound = false);
 
-			internal static readonly LoadFunctionDelegate LoadFunction =
+			internal static readonly LoadFunctionDelegate LoadFunctionDelegator =
 				typeof(MonoGame.OpenGL.GL).GetStaticMethod("LoadFunction")?.MakeGenericMethod(typeof(T))
 					.CreateDelegate<LoadFunctionDelegate>() ??
 					((_, _) => null);
+
+			internal static T? LoadFunction(string function, bool throwIfNotFound = false) {
+				return LoadFunctionDelegator(function, throwIfNotFound);
+			}
 		}
 
-		[SuppressUnmanagedCodeSecurity]
+#if false
+		internal static class Sdl {
+			internal static readonly Type? SdlType = ReflectionExt.GetTypeExt("Sdl");
+			internal static readonly Type? SdlGlType = SdlType?.GetNestedType("GL");
+
+			internal static class Generic<T> {
+				internal delegate T? LoadFunctionDelegate(IntPtr library, string function, bool throwIfNotFound = false);
+
+				internal static readonly LoadFunctionDelegate? LoadFunction =
+					ReflectionExt.GetTypeExt("MonoGame.Framework.Utilities.FuncLoader")?.GetStaticMethod("LoadFunction")?.MakeGenericMethod(typeof(T))
+						.CreateDelegate<LoadFunctionDelegate>();
+			}
+
+			internal static readonly nint NativeLibrary = (IntPtr?)SdlType?.GetStaticField("NativeLibrary")?.GetValue(null) ?? (nint)0;
+
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			internal delegate nint GetProcAddressDelegate(string proc);
+
+			internal static readonly GetProcAddressDelegate? GetProcAddress = Generic<GetProcAddressDelegate>.LoadFunction?.Invoke(NativeLibrary, "SDL_GL_GetProcAddress");
+		}
+
+		internal static nint LoadFunctionPtr(string function, bool throwIfNotFound = false) {
+			var result = Sdl.GetProcAddress?.Invoke(function) ?? 0;
+			if (result is 0) {
+				return 0;
+			}
+			return result;
+		}
+#endif
+
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		[MonoNativeFunctionWrapper]
 		internal delegate void TexStorage2D(
 			TextureTarget target,
 			int levels,
@@ -94,17 +230,42 @@ internal static class GLExt {
 			int height
 		);
 
-		[SuppressUnmanagedCodeSecurity]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		[MonoNativeFunctionWrapper]
+		internal delegate void TextureStorage2D(
+			ObjectId target,
+			int levels,
+			SizedInternalFormat internalFormat,
+			int width,
+			int height
+		);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		internal delegate void TexStorage2DExt(
+			TextureTarget target,
+			int levels,
+			SizedInternalFormat internalFormat,
+			int width,
+			int height
+		);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		internal delegate void TextureStorage2DExt(
+			ObjectId target,
+			int levels,
+			SizedInternalFormat internalFormat,
+			int width,
+			int height
+		);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		internal delegate void CopyImageSubData(
-			uint srcName,
+			ObjectId srcName,
 			TextureTarget srcTarget,
 			int srcLevel,
 			int srcX,
 			int srcY,
 			int srcZ,
-			uint dstName,
+			ObjectId dstName,
 			TextureTarget dstTarget,
 			int dstLevel,
 			int dstX,
@@ -115,41 +276,85 @@ internal static class GLExt {
 			uint srcDepth
 		);
 
-		[SuppressUnmanagedCodeSecurity]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		[MonoNativeFunctionWrapper]
-		public unsafe delegate void GetInteger64Delegate(
+		internal unsafe delegate void GetInteger64Delegate(
 			int param,
 			[Out] long* data
+		);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		internal delegate void GetTexImageDelegate(TextureTarget target, int level, PixelFormat format, PixelType type, [Out] nint pixels);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		internal delegate void GetTextureSubImageDelegate(
+			ObjectId target,
+			int level,
+			int xOffset,
+			int yOffset,
+			int zOffset,
+			uint width,
+			uint height,
+			uint depth,
+			PixelFormat format,
+			PixelType type,
+			uint bufferSize,
+			[Out] nint pixels
+		);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		internal delegate void GetCompressedTexImageDelegate(TextureTarget target, int level, [Out] nint pixels);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		internal delegate void GetCompressedTextureSubImageDelegate(
+			ObjectId target,
+			int level,
+			int xOffset,
+			int yOffset,
+			int zOffset,
+			uint width,
+			uint height,
+			uint depth,
+			uint bufferSize,
+			[Out] nint pixels
 		);
 	}
 	// ReSharper restore MemberHidesStaticFromOuterClass
 
 	private static bool DebuggingEnabled = false;
 
-	[UnmanagedFunctionPointer(CallingConvention.StdCall)]
-	private delegate void DebugMessageCallbackProc(int source, int type, int id, int severity, int length, IntPtr message, IntPtr userParam);
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	private delegate void DebugMessageCallbackProc(int source, int type, int id, int severity, int length, nint message, nint userParam);
 
 	private static readonly DebugMessageCallbackProc DebugProc = DebugMessageCallbackHandler;
-	[System.Security.SuppressUnmanagedCodeSecurity]
-	[MonoNativeFunctionWrapper]
-	delegate void DebugMessageCallbackDelegate(DebugMessageCallbackProc callback, IntPtr userParam);
+	delegate void DebugMessageCallbackDelegate(DebugMessageCallbackProc callback, nint userParam);
 	static readonly DebugMessageCallbackDelegate DebugMessageCallback =
 		Delegates.Generic<DebugMessageCallbackDelegate>.LoadFunction("glDebugMessageCallback")!;
 
-	private static void DebugMessageCallbackHandler(int source, int type, int id, int severity, int length, IntPtr message, IntPtr userParam) {
-#if DEBUG
+	[DebuggerHidden]
+	private static void DebugMessageCallbackHandler(int source, int type, int id, int severity, int length, nint message, nint userParam) {
+#if GL_DEBUG || DEBUG || CONTRACTS_FULL
 		switch (id) {
 			case 131218: // "Program/shader state performance warning: Vertex shader in program 1 is being recompiled based on GL state."
 				return;
 		}
 
-		var errorMessage = Marshal.PtrToStringAnsi(message);
+		var errorMessage = Marshal.PtrToStringAnsi(message) ?? "unknown";
+		var stackTrace = Environment.StackTrace;
 		System.Diagnostics.Debug.WriteLine(errorMessage);
+		System.Diagnostics.Debug.WriteLine(stackTrace);
+
+		try {
+			throw new MonoGameGLException(errorMessage);
+		}
+		catch (MonoGameGLException ex) {
+			Debug.Error(errorMessage, ex);
+		}
+
+		Debugger.Break();
 #endif
 	}
 
-	[Conditional("DEBUG")]
+	[Conditional("GL_DEBUG"), Conditional("CONTRACTS_FULL"), Conditional("DEBUG")]
 	internal static void EnableDebugging() {
 		if (DebuggingEnabled) {
 			return;
@@ -157,17 +362,68 @@ internal static class GLExt {
 
 		DebuggingEnabled = true;
 
-		DebugMessageCallback(DebugProc, IntPtr.Zero);
+		DebugMessageCallback(DebugProc, 0);
 		MonoGame.OpenGL.GL.Enable(EnableCap.DebugOutput);
 		MonoGame.OpenGL.GL.Enable(EnableCap.DebugOutputSynchronous);
 	}
 
-	internal static readonly Delegates.TexStorage2D? TexStorage2D =
-		Delegates.Generic<Delegates.TexStorage2D>.LoadFunction("glTexStorage2D");
+	internal interface IToggledDelegate {
+		bool Enabled { get; }
+		void Disable();
+	}
 
-	internal static readonly Delegates.CopyImageSubData? CopyImageSubData =
-		Delegates.Generic<Delegates.CopyImageSubData>.LoadFunction("glCopyImageSubData");
+	internal interface IToggledDelegate<TDelegate> : IToggledDelegate where TDelegate : Delegate {
+		[MemberNotNullWhen(true, "Function")]
+		new bool Enabled { get; }
 
-	internal static readonly Delegates.GetInteger64Delegate? GetInteger64v =
-		Delegates.Generic<Delegates.GetInteger64Delegate>.LoadFunction("glGetInteger64v");
+		TDelegate? Function { get; }
+	}
+
+	[StructLayout(LayoutKind.Auto)]
+	internal readonly struct ToggledDelegate<TDelegate> : IToggledDelegate<TDelegate> where TDelegate : Delegate {
+		private readonly bool _enabled;
+		internal readonly TDelegate? Function;
+
+		[MemberNotNullWhen(true, "Function")]
+		internal readonly bool Enabled => _enabled;
+
+		readonly TDelegate? IToggledDelegate<TDelegate>.Function => Function;
+		[MemberNotNullWhen(true, "Function")]
+		readonly bool IToggledDelegate.Enabled => Enabled;
+		[MemberNotNullWhen(true, "Function")]
+		readonly bool IToggledDelegate<TDelegate>.Enabled => Enabled;
+
+		private ToggledDelegate(TDelegate? function) {
+			Function = function;
+			_enabled = function is not null;
+		}
+
+		internal ToggledDelegate(string name) : this(Delegates.Generic<TDelegate>.LoadFunction(name)) {
+		}
+
+		public readonly void Disable() => Unsafe.AsRef(in _enabled) = false;
+
+//[MemberNotNullWhen(true, "Function")]
+//public static implicit operator bool(ToggledDelegate<TDelegate> toggledDelegate) => toggledDelegate.Enabled;
+	}
+
+#if false
+	internal static readonly delegate* unmanaged<TextureTarget, int, PixelInternalFormat, int, int, void> TexStorage2DPtr =
+		(delegate* unmanaged<TextureTarget, int, PixelInternalFormat, int, int, void>)(void*)Delegates.LoadFunctionPtr("glTexStorage2D");
+#endif
+	internal static readonly ToggledDelegate<Delegates.TexStorage2D> TexStorage2D = new("glTexStorage2D");
+	internal static readonly ToggledDelegate<Delegates.TextureStorage2D> TextureStorage2D = new("glTextureStorage2D");
+
+	internal static readonly ToggledDelegate<Delegates.TexStorage2DExt> TexStorage2DExt = new("glTexStorage2DEXT");
+	internal static readonly ToggledDelegate<Delegates.TextureStorage2DExt> TextureStorage2DExt = new("glTextureStorage2DEXT");
+
+	internal static readonly ToggledDelegate<Delegates.CopyImageSubData> CopyImageSubData = new("glCopyImageSubData");
+
+	internal static readonly ToggledDelegate<Delegates.GetInteger64Delegate> GetInteger64v = new("glGetInteger64v");
+
+	internal static readonly ToggledDelegate<Delegates.GetTexImageDelegate> GetTexImage = new("glGetTexImage");
+
+	internal static readonly ToggledDelegate<Delegates.GetTextureSubImageDelegate> GetTextureSubImage = new("glGetTextureSubImage");
+	internal static readonly ToggledDelegate<Delegates.GetCompressedTexImageDelegate> GetCompressedTexImage = new("glGetCompressedTexImage");
+	internal static readonly ToggledDelegate<Delegates.GetCompressedTextureSubImageDelegate> GetCompressedTextureSubImage = new("glGetCompressedTextureSubImage");
 }

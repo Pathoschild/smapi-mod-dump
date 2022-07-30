@@ -3,10 +3,13 @@
 		<AssemblyName>CarWarp</AssemblyName>
 		<RootNamespace>CarWarp</RootNamespace>
 		<GamePath>D:\Games\SteamLibrary\steamapps\common\Stardew Valley</GamePath>
+    <GameModsPath>$(GamePath)\Mods\Car Warp</GameModsPath>
 		<Version>0.1.0</Version>
 		<TargetFramework>net5.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
 		<LangVersion>latest</LangVersion>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<AnalysisLevel>5.0-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,7 +23,7 @@
 	  </Reference>
 	  <Reference Include="SolidFoundations">
 	    <HintPath>D:\Games\SteamLibrary\steamapps\common\Stardew Valley\Mods\SolidFoundations\SolidFoundations.dll</HintPath>
-	    <Private>false</Private>
+	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
 </Project>

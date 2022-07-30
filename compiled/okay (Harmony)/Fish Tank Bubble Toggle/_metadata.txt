@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13076
+IDs: StarAmy.bubbletoggle
+update keys: Nexus:13076

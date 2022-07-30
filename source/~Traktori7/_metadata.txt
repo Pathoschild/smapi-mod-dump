@@ -11,9 +11,9 @@ mods:
    Show Birthdays
 
 latest commit:
-   commit bee4384e3ba7f1ea2fba01340cbf5b0e963757d2
+   commit cfc31678161ed22ea291db14b55d98531371886a
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Wed Jun 29 21:53:38 2022 +0300
+   Date:   Mon Jul 4 23:48:45 2022 +0300
    
-       Generic clean up commit before switching brances.
+       Trying to fing out why the save data gets reset sometimes.
    

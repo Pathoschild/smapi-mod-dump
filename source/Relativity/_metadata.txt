@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/adroslice/sdv-relativity-mirror
+   Git: https://github.com/adroslice/sdv-relativity-mirror.git
+
+mods:
+   Relativity
+
+latest commit:
+   commit f4c9868f6ad7a04714c4e22fdee6965527a95562
+   Author: adro <a.schlett@gmx.de>
+   Date:   Sat Jul 23 12:22:56 2022 +0200
+   
+       Version Bump missing from last commit
+   

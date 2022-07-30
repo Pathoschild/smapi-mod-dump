@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Types;
 using StardewValley;
 using System;
@@ -270,7 +271,6 @@ internal sealed class Scene1 : Scene {
 	private const string ReferenceUtilityText = "It was the best of times, it was the blurst of times.";
 	private XGraphics.SpriteFont UtilityTextFont => Game1.smallFont;
 
-	private static readonly Vector2I[] ShadowedStringOffsets = { (-1, -1), (1, -1), (-1, 1), (1, 1) };
 	private void DrawStringStroked(
 		XSpriteBatch batch,
 		XGraphics.SpriteFont font,
@@ -278,20 +278,22 @@ internal sealed class Scene1 : Scene {
 		Vector2I position,
 		XColor color
 	) {
-		var shadowColor = new XColor(
+		var strokeColor = new XColor(
 			~color.R,
 			~color.G,
 			~color.B,
 			color.A
 		);
 
-		foreach (var offset in ShadowedStringOffsets) {
-			batch.DrawString(
-				font,
-				text,
-				position + offset,
-				shadowColor
-			);
+		for (int y = -1; y <= 1; ++y) {
+			for (int x = -1; x <= 1; ++x) {
+				batch.DrawString(
+					font,
+					text,
+					position + (x, y),
+					strokeColor
+				);
+			}
 		}
 
 		batch.DrawString(

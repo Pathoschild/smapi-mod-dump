@@ -6,7 +6,25 @@ for queries and analysis.**
 
 ----
 
-## [unreleased] - ????-??-??
+## [1.13.0] - 2022-07-24
+
+### Added
+
+- Chinese simplified translations (thanks to Becks723)
+
+### Improvements
+
+- Display values for the optional [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (thanks to Becks723)
+
+### Fixed
+
+- Some text typos (thanks to Becks723)
+
+## [1.12.0] - 2022-07-20
+
+### Added
+
+- Support for translations
 
 ### Improvements
 
@@ -139,7 +157,8 @@ for queries and analysis.**
 
 - Initial release
 
-[unreleasedTabThatIMightUseLater]: https://github.com/thespbgamer/ZoomLevel/compare/v1.12.0...HEAD
+[unreleasedTabThatIMightUseLater]: https://github.com/thespbgamer/ZoomLevel/compare/v1.13.0...HEAD
+[1.13.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.13.0
 [1.12.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.12.0
 [1.11.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.11.0
 [1.10.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.10.0

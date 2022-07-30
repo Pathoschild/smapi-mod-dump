@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Model;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ItemPipes.Framework.Nodes
 {
@@ -32,6 +33,11 @@ namespace ItemPipes.Framework.Nodes
         public bool PassingItem { get; set; }
         public bool Connecting { get; set; }
         public bool Broken { get; set; }
+        public Queue<double> StartTimeQ { get; set; }
+        public Queue<double> EndTimeQ { get; set; }
+        public Queue<Item> ItemQ { get; set; }
+        public Queue<Tuple<IOPipeNode, IOPipeNode>> InOutQ { get; set; }
+        public bool ItemStuck { get; set; }
 
         public PipeNode() : base()
         {
@@ -44,6 +50,12 @@ namespace ItemPipes.Framework.Nodes
             PassingItem = false;
             Connecting = false;
             Broken = false;
+            ItemStuck = false;
+
+            StartTimeQ = new Queue<double>();
+            EndTimeQ = new Queue<double>();
+            ItemQ = new Queue<Item>();
+            InOutQ = new Queue<Tuple<IOPipeNode, IOPipeNode>>();
         }
 
         public bool CanConnectedWith(PipeNode target)
@@ -59,7 +71,6 @@ namespace ItemPipes.Framework.Nodes
 
         public List<PipeNode> GetPath(PipeNode target)
         {
-            if (Globals.UltraDebug) { Printer.Debug($"Getting path for {target.Print()}"); }
             List<PipeNode> path = new List<PipeNode>();
             path = GetPathRecursive(target, path);
             return path;
@@ -67,7 +78,6 @@ namespace ItemPipes.Framework.Nodes
 
         public List<PipeNode> GetPathRecursive(PipeNode target, List<PipeNode> path)
         {
-            //if (Globals.UltraDebug) { Printer.Info(Print()); }
             Node adj;
             if (path.Contains(target))
             {
@@ -108,166 +118,139 @@ namespace ItemPipes.Framework.Nodes
             }
         }
 
-        public PipeNode SendItem(Item item, IOPipeNode input)
+        public bool ReadyForAnimation()
         {
-            List<PipeNode> path = GetPath(input);
-            /*
-            Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] PATH---------------");
-            foreach (Node node in path)
+            if(StartTimeQ.Count > 0 && EndTimeQ.Count > 0)
             {
-                Printer.Info(node.Print());
+                return true;
             }
-            Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] PATH---------------");
-            */
-            return MoveItemRecursive(item, input, path, 0);
+            else
+            {
+                return false;
+            }
         }
 
-        public PipeNode MoveItemRecursive(Item item, IOPipeNode input, List<PipeNode> path, int index)
+        public void StartItemMovementAnimation(double current, IOPipeNode target, IOPipeNode source, Item item)
         {
-            //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}]Current node: {Print()}");
-            if (this.Equals(input))
+            StartTimeQ.Enqueue(current);
+            EndTimeQ.Enqueue(current + ItemTimer);
+            ItemQ.Enqueue(item);
+            InOutQ.Enqueue(new Tuple<IOPipeNode, IOPipeNode>(target, source));
+        }
+        public void StartConnectionAnimation(double current, double endTime)
+        {
+            StartTimeQ.Enqueue(current);
+            EndTimeQ.Enqueue(endTime);
+        }
+
+        public void EndAnimation()
+        {
+            if (StartTimeQ.Count > 0 && EndTimeQ.Count > 0)
             {
-                if(input.ConnectedContainer != null)
+                StartTimeQ.Dequeue();
+                EndTimeQ.Dequeue();
+                if(ItemQ.Count > 0 && InOutQ.Count > 0 && PassingItem)
                 {
-                    StoredItem = item;
-                    PassingItem = true;
-                    bool interrupted = false;
-                    while (input.ConnectedContainer != null && !input.ConnectedContainer.InsertItem(item) && !interrupted)
+                    Item item = ItemQ.Dequeue();
+                    Tuple<IOPipeNode, IOPipeNode> inout = InOutQ.Dequeue();
+                    if (this.Equals(inout.Item1))
                     {
-                        try
+                        if(inout.Item1.ConnectedContainer != null )
                         {
-                            StoredItem = item;
-                            PassingItem = true;
-                            System.Threading.Thread.Sleep(ItemTimer);
+                            if(inout.Item1.ConnectedContainer.InsertItem(item))
+                            {
+                                if (ModEntry.config.DebugMode) { Printer.Debug($"[N{ID}] Inserted {item.Name}({item.Stack}) to {inout.Item1.Print()}"); }
+                                StoredItem = null;
+                            }
+                            else
+                            {
+                                Printer.Warn($"[N{ID}] Coudn't insert {item.Name}({item.Stack}) to {inout.Item1.Print()}");
+                                if (this is OutputPipeNode)
+                                {
+                                    Utilities.DropItem(item, Position, Location);
+                                    Game1.addHUDMessage(new HUDMessage($"Dropped {item.Stack} {item.Name} at {Position} {Location.Name}", 3));
+                                    Game1.addHUDMessage(new HUDMessage(DataAccess.GetDataAccess().Warnings["outputFull"], 3));
+                                    Printer.Error($"{DataAccess.GetDataAccess().Warnings["outputFull"]} at: {Position} {Location.Name} dropped {item.Stack} {item.Name}");
+
+                                }
+                                else
+                                {
+                                    List<PipeNode> reversePath = GetPath(inout.Item2);
+                                    Animator.AnimateItemMovement(reversePath, inout.Item2, null, item);
+                                    Game1.addHUDMessage(new HUDMessage($" At: {Position} {Location.Name}", 3));
+                                    Game1.addHUDMessage(new HUDMessage(DataAccess.GetDataAccess().Warnings["inputFull"], 3));
+                                    Printer.Warn($"{DataAccess.GetDataAccess().Warnings["inputFull"]} at: {Position} {Location.Name}");
+                                }
+                            }
                         }
-                        catch (ThreadInterruptedException exception)
+                        else
                         {
-                            interrupted = true;
+
                         }
-                    }
-                    try
-                    {
-                        System.Threading.Thread.Sleep(ItemTimer);
-                    }
-                    catch (ThreadInterruptedException exception)
-                    {
-                    }
-                    if(interrupted)
-                    {
-                        StoredItem = item;
-                        PassingItem = true;
                     }
                     else
                     {
                         StoredItem = null;
-                        PassingItem = false;
                     }
-                    return this;
                 }
-                else
-                {
-                    return null;
-                }
+  
             }
-            else 
-            {
-                if (index < path.Count - 1 && path[index + 1] != null)
-                {
-                    StoredItem = item;
-                    PassingItem = true;
-                    while (path[index + 1] != null && path[index + 1].StoredItem != null)
-                    {
-                        StoredItem = item;
-                        PassingItem = true;
-                    }
-                    try
-                    {
-                        System.Threading.Thread.Sleep(ItemTimer);
-                    }
-                    catch (ThreadInterruptedException exception) { }
-                    StoredItem = null;
-                    PassingItem = false;
-                    index++;
-                    return path[index].MoveItemRecursive(item, input, path, index);
-                }
-            }
-            return this;
         }
 
-        public bool FlushPipe(Item item, IOPipeNode input)
+        public void FlushPipe()
         {
-            bool flushed = false;
-            if (input.ConnectedContainer != null)
+            if (StartTimeQ.Count > 0 && EndTimeQ.Count > 0 && ItemQ.Count > 0 && InOutQ.Count > 0)
             {
-                StoredItem = item;
-                PassingItem = true;
-                bool interrupted = false;
-                while (input.ConnectedContainer != null && !input.ConnectedContainer.InsertItem(item) && !interrupted)
+                int i = 0;
+                int itemCount = ItemQ.Count;
+                int inoutCount = InOutQ.Count;
+                StartTimeQ.Clear();
+                EndTimeQ.Clear();
+                while (i < itemCount && i < inoutCount)
                 {
-                    try
+                    Item item = ItemQ.Dequeue();
+                    Tuple<IOPipeNode, IOPipeNode> inout = InOutQ.Dequeue();                    
+                    if (this.Equals(inout.Item1))
                     {
-                        StoredItem = item;
-                        PassingItem = true;
-                    }
-                    catch (ThreadInterruptedException exception)
-                    {
-                        interrupted = true;
-                    }
-                }
-            }
-            return flushed;
-        }
+                        if (inout.Item1.ConnectedContainer != null)
+                        {
+                            if (inout.Item1.ConnectedContainer.InsertItem(item))
+                            {
+                                StoredItem = null;
+                            }
+                            else
+                            {
+                                if (this is OutputPipeNode)
+                                {
+                                    Utilities.DropItem(item, Position, Location);
+                                    Game1.addHUDMessage(new HUDMessage($"Dropped {item.Stack} {item.Name} at {Position} {Location.Name}", 3));
+                                    Game1.addHUDMessage(new HUDMessage(DataAccess.GetDataAccess().Warnings["outputFull"], 3));
+                                    Printer.Error($"{DataAccess.GetDataAccess().Warnings["outputFull"]} at: {Position} {Location.Name} dropped {item.Stack} {item.Name}");
 
-        public void ConnectPipe(PipeNode target)
-        {
-            List<PipeNode> path = GetPath(target);
-            /*
-            Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] PATH---------------");
-            foreach (Node node in path)
-            {
-                Printer.Info(node.Print());
-            }
-            Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] PATH---------------");
-            */
-            ConnectPipeRecursive(target, path, 0);
-            foreach (PipeNode pipe in path)
-            {
-                pipe.Connecting = false;
-                try
-                {
-                    System.Threading.Thread.Sleep(20);
-                }
-                catch (ThreadInterruptedException exception) { }
-            }
-        }
-        public PipeNode ConnectPipeRecursive(PipeNode target, List<PipeNode> path, int index)
-        {
-            PipeNode node = null;
-            if (this.Equals(target))
-            {
-                Connecting = true;
-                try
-                {
-                    System.Threading.Thread.Sleep(60);
-                }
-                catch (ThreadInterruptedException exception) { }
-                return target;
-            }
-            else
-            {
-                if (index < path.Count - 1 && path[index + 1] != null)
-                {
-                    Connecting = true;
-                    try
-                    {
-                        System.Threading.Thread.Sleep(60);
+                                }
+                                else
+                                {
+                                    List<PipeNode> reversePath = GetPath(inout.Item2);
+                                    Animator.AnimateItemMovement(reversePath, inout.Item2, null, item);
+                                    //Game1.addHUDMessage(new HUDMessage($" At: {Position} {Location.Name}", 3));
+                                    //Game1.addHUDMessage(new HUDMessage(DataAccess.GetDataAccess().Warnings["inputFull"], 3));
+                                    Printer.Warn($"{DataAccess.GetDataAccess().Warnings["inputFull"]} at: {Position} {Location.Name}");
+                                    inout.Item2.FlushPipe();
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                        }
                     }
-                    catch (ThreadInterruptedException exception) { }
-                    index++;
-                    path[index].ConnectPipeRecursive(target, path, index);
+                    else
+                    {
+                        StoredItem = null;
+                    }
+                    i++;
                 }
             }
-            return node;
         }
     }
 }

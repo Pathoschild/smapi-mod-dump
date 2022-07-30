@@ -12,11 +12,19 @@ using System;
 using System.Linq;
 using StardewValley;
 using SObject = StardewValley.Object;
+using Microsoft.Xna.Framework;
 
 namespace ItemPipes.Framework.Util
 {
     public static class Utilities
     {
+		public static void DropItem(Item item, Vector2 position, GameLocation location)
+        {
+            Vector2 convertedPosition = new Vector2(position.X * 64, position.Y * 64);
+            Debris itemDebr = new Debris(item, convertedPosition);
+            location.debris.Add(itemDebr);
+        }
+
         public static string GetIDName(string name)
         {
             string trimmed = "";

@@ -1,9 +1,13 @@
 {
-  "CarryChestLimit": 0,
-  "CarryChestSlow": 0,
-  "CategorizeChest": true,
+  "AdvancedConfig": false,
+  "BetterShippingBin": true,
+  "CarryChestLimit": 1,
+  "CarryChestSlowAmount": 1,
+  "ChestFinder": true,
   "Configurator": true,
   "ControlScheme": {
+    "Configure": "End",
+    "FindChest": "LeftControl + F, RightControl + F",
     "LockSlot": "LeftAlt",
     "NextTab": "DPadRight",
     "OpenCrafting": "K",
@@ -14,11 +18,13 @@
   },
   "CustomColorPickerArea": "Right",
   "DefaultChest": {
-    "AutoOrganize": "Disabled",
+    "AutoOrganize": "Default",
     "CarryChest": "Enabled",
+    "CarryChestSlow": "Enabled",
+    "ChestLabel": "",
     "ChestMenuTabs": "Enabled",
     "ChestMenuTabSet": [],
-    "CollectItems": "Enabled",
+    "CollectItems": "Default",
     "CraftFromChest": "Location",
     "CraftFromChestDisableLocations": [],
     "CraftFromChestDistance": -1,
@@ -26,7 +32,7 @@
     "FilterItems": "Enabled",
     "FilterItemsList": [],
     "OpenHeldChest": "Enabled",
-    "OrganizeChest": "Disabled",
+    "OrganizeChest": "Default",
     "OrganizeChestGroupBy": "Default",
     "OrganizeChestSortBy": "Default",
     "ResizeChest": "Enabled",
@@ -38,10 +44,12 @@
     "StashToChestDisableLocations": [],
     "StashToChestDistance": -1,
     "StashToChestPriority": 0,
-    "StashToChestStacks": "Enabled",
-    "UnloadChest": "Enabled"
+    "StashToChestStacks": "Default",
+    "UnloadChest": "Default"
   },
+  "LabelChest": true,
   "SearchTagSymbol": "#",
   "SlotLock": true,
-  "SlotLockHold": true
+  "SlotLockHold": true,
+  "VanillaStorages": {}
 }

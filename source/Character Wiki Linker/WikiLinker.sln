@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32428.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiLinker", "WikiLinker\WikiLinker.csproj", "{FB96F010-762C-4CFA-951E-38A1FDD56006}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB96F010-762C-4CFA-951E-38A1FDD56006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB96F010-762C-4CFA-951E-38A1FDD56006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB96F010-762C-4CFA-951E-38A1FDD56006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB96F010-762C-4CFA-951E-38A1FDD56006}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {432FBF3E-75CB-497B-A663-11C1C67C910C}
+	EndGlobalSection
+EndGlobal

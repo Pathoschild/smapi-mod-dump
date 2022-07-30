@@ -82,6 +82,7 @@ namespace CustomFishing
                 
                 //DrawTextBox(5, inCave ? 100 : 5, Game1.smallFont, fishName);
                 DrawTextBox(5, (Game1.viewport.Height - 200), Game1.dialogueFont, _fishingMsg);
+                Dra
             }
         }
         private void AfterLoad(object sender, SaveLoadedEventArgs e)

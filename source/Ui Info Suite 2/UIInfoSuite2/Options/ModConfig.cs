@@ -11,9 +11,9 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
-namespace UIInfoSuite.Options
+namespace UIInfoSuite2.Options
 {
-    class ModConfig
+    internal class ModConfig
     {
         public bool ShowOptionsTabInMenu { get; set; } = true;
         public string ApplyDefaultSettingsFromThisSave { get; set; } = "JohnDoe_123456789";

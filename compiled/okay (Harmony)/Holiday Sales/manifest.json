@@ -1,0 +1,17 @@
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore"
+    }
+  ],
+  "EntryDll": "HolidaySales.dll",
+  "Name": "Holiday Sales",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "Makes merchants stay open on festival days, if the festival's out of town. (Configurable!)",
+  "UniqueID": "atravita.HolidaySales",
+  "MinimumApiVersion": "3.15",
+  "UpdateKeys": [
+    "Nexus:13050"
+  ]
+}

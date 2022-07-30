@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -18,22 +18,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperAardvark.AntiSocial
 {
     /// <summary>
     /// This class can be copied into any mod to provide ad-hoc AntiSocial functionality.  Just call AntiSocialManager.DoSetupIfNecessary in your mod's Entry method.
     /// </summary>
-    public class AntiSocialManager : IAssetLoader
+    public class AntiSocialManager
     {
         public const string AssetName = "Data/AntiSocialNPCs";
         public const string OriginModId = "SuperAardvark.AntiSocial";
 
         private static Mod modInstance;
-        private static HarmonyInstance harmonyInstance;
         private static bool adHoc = false;
+
+        private static IAssetName asset = null!;
+
+        private static Lazy<HashSet<string>> antisocials = new(GetAntiSocials);
 
         public static AntiSocialManager Instance { get; private set; }
 
@@ -53,7 +54,7 @@ namespace SuperAardvark.AntiSocial
             {
                 modInstance.Monitor.Log("AntiSocial Mod loaded.  Skipping ad hoc setup.", LogLevel.Debug);
             }
-            else if (AntiSocialManager.modInstance != null)
+            else if (AntiSocialManager.modInstance is not null)
             {
                 modInstance.Monitor.Log("AntiSocial setup was already completed.", LogLevel.Debug);
             }
@@ -64,6 +65,9 @@ namespace SuperAardvark.AntiSocial
                 DoSetup(modInstance);
             }
         }
+
+        private static HashSet<string> GetAntiSocials()
+            => Game1.content.Load<Dictionary<string, string>>(AssetName).Select((kvp) => kvp.Key).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Sets up AntiSocial.
@@ -79,42 +83,62 @@ namespace SuperAardvark.AntiSocial
 
             Instance = new AntiSocialManager();
             AntiSocialManager.modInstance = modInstance;
-            modInstance.Helper.Content.AssetLoaders.Add(Instance);
 
-            harmonyInstance = HarmonyInstance.Create(OriginModId);
-            harmonyInstance.Patch(original: AccessTools.Method(typeof(NPC), "get_CanSocialize"), 
+            asset = modInstance.Helper.GameContent.ParseAssetName(AssetName);
+
+            modInstance.Helper.Events.Content.AssetRequested += OnAssetRequested;
+            modInstance.Helper.Events.Content.AssetsInvalidated += OnAssetInvalidated;
+
+            Harmony harmony = new(OriginModId);
+            harmony.Patch(original: AccessTools.DeclaredPropertyGetter(typeof(NPC), "CanSocialize"), 
                                   postfix: new HarmonyMethod(typeof(AntiSocialManager), "get_CanSocialize_Postfix"));
-            harmonyInstance.Patch(original: AccessTools.Method(typeof(Utility), "getRandomTownNPC", new Type[] { typeof(Random) }),
+            harmony.Patch(original: AccessTools.Method(typeof(Utility), "getRandomTownNPC", new Type[] { typeof(Random) }),
                                   transpiler: new HarmonyMethod(typeof(AntiSocialManager), "getRandomTownNPC_Transpiler"));
-            harmonyInstance.Patch(original: AccessTools.Method(typeof(SocializeQuest), "loadQuestInfo"),
+            harmony.Patch(original: AccessTools.Method(typeof(SocializeQuest), "loadQuestInfo"),
                                   transpiler: new HarmonyMethod(typeof(AntiSocialManager), "loadQuestInfo_Transpiler"));
 
         }
 
-        public static bool get_CanSocialize_Postfix(
-            bool originalReturnValue,
+        /// <summary>
+        /// Listen for asset invalidations, refresh the static cache of antisocial npcs.
+        /// </summary>
+        /// <param name="sender">SMAPI.</param>
+        /// <param name="e">event args.</param>
+        private static void OnAssetInvalidated(object sender, AssetsInvalidatedEventArgs e)
+        {
+            if (antisocials.IsValueCreated && e.NamesWithoutLocale.Contains(asset))
+            {
+                antisocials = new(GetAntiSocials);
+            }
+        }
+
+        private static void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo(AssetName))
+            {
+                e.LoadFrom(() => new Dictionary<string, string>(), AssetLoadPriority.Low);
+            }
+        }
+
+        private static void get_CanSocialize_Postfix(
+            ref bool __result,
             NPC __instance)
         {
             try
             {
-                if (originalReturnValue && Game1.content.Load<Dictionary<string, string>>(AssetName).ContainsKey(__instance.Name))
+                if (__result && antisocials.Value.Contains(__instance.Name))
                 {
-                    Log($"Overriding CanSocialize for {__instance.Name}", LogLevel.Trace);
-                    return false;
-                }
-                else
-                {
-                    return originalReturnValue;
+                    // Log($"Overriding CanSocialize for {__instance.Name}");
+                    __result = false;
                 }
             }
             catch (Exception ex)
             {
                 Log($"Error in get_CanSocialize postfix patch: {ex}", LogLevel.Error);
-                return originalReturnValue;
             }
         }
 
-        public static IEnumerable<CodeInstruction> getRandomTownNPC_Transpiler(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction>? getRandomTownNPC_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             try 
             { 
@@ -124,11 +148,11 @@ namespace SuperAardvark.AntiSocial
             catch (Exception ex)
             {
                 Log($"Error in getRandomTownNPC transpiler patch: {ex}", LogLevel.Error);
-                return instructions;
+                return null;
             }
         }
 
-        public static IEnumerable<CodeInstruction> loadQuestInfo_Transpiler(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction>? loadQuestInfo_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             try
             {
@@ -138,7 +162,7 @@ namespace SuperAardvark.AntiSocial
             catch (Exception ex)
             {
                 Log($"Error in loadQuestInfo transpiler patch: {ex}", LogLevel.Error);
-                return instructions;
+                return null;
             }
         }
 
@@ -155,42 +179,32 @@ namespace SuperAardvark.AntiSocial
                     if (prevInstr.opcode == OpCodes.Ldstr && prevInstr.operand.Equals("Data\\NPCDispositions"))
                     {
                         Log($"Adding call to RemoveAntiSocialNPCs at index {i + 1}");
-                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AntiSocialManager), "RemoveAntiSocialNPCs")));
+                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AntiSocialManager), nameof(RemoveAntiSocialNPCs))));
                     }
                 }
             }
             return codes;
         }
 
-        public static Dictionary<string, string> RemoveAntiSocialNPCs(Dictionary<string, string> dict)
+        private static Dictionary<string, string> RemoveAntiSocialNPCs(Dictionary<string, string> dict)
         {
             try
             {
-                Dictionary<string, string> antiSocial = Game1.content.Load<Dictionary<string, string>>(AssetName);
-                Dictionary<string, string> result = dict.Where(kvp => !antiSocial.ContainsKey(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                Log($"Initially {dict.Count} NPCs, removed {antiSocial.Count} anti-social ones, returning {result.Count}");
-                if (result.Count == 0)
+                Dictionary<string, string> copy = dict.Where((kvp) => !antisocials.Value.Contains(kvp.Key)).ToDictionary((kvp) => kvp.Key, (kvp) => kvp.Value);
+
+                Log($"Initially {dict.Count} NPCs, removed anti-social ones, returning {copy.Count}");
+                if (copy.Count == 0)
                 {
                     Log($"No social NPCs found", LogLevel.Warn);
-                    result = dict;
+                    return dict;
                 }
-                return result;
+                return copy;
             }
             catch (Exception ex)
             {
                 Log($"Error in RemoveAntiSocialNPCs: {ex}", LogLevel.Error);
-                return dict;
             }
-        }
-
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals(AntiSocialManager.AssetName);
-        }
-
-        public T Load<T>(IAssetInfo asset)
-        {
-            return (T)(object)new Dictionary<string, string>();
+            return dict;
         }
 
         private static void Log(String message, LogLevel level = LogLevel.Trace)

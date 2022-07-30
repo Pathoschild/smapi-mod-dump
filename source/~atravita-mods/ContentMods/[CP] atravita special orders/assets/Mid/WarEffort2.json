@@ -1,0 +1,101 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "War Effort 2 - Special Order",
+            "Action": "EditData",
+            "Target": "Data/SpecialOrders",
+            "Entries": {
+                "atravita.warEffort2": {
+                    "Name": "{{i18n:atravita.war_effort_2.name}}",
+                    "Requester": "Lewis",
+                    "Duration": "Week",
+                    "Repeatable": "{{Repeatability}}",
+                    //because of the way Special Orders are coded, using CP's "When" field is fragile.
+                    //using mail flags to delay these quests
+                    "RequiredTags": "!season_spring, mail_atravita_warEffort_reward",
+                    "OrderType": "",
+                    "SpecialRule": "",
+                    "ItemToRemoveOnEnd": null,
+                    "MailToRemoveOnEnd": null,
+                    "Text": "{{i18n:atravita.war_effort_2.text}}",
+                    "RandomizedElements": null,
+                    "Objectives": [
+                        {
+                            "Type": "Collect",
+                            "Text": "{{i18n:atravita.war_effort_2.gather_gold}}",
+                            "RequiredCount": "150",
+                            "Data": {
+                                "AcceptedContextTags": "item_gold_ore"
+                            }
+                        },
+                        {
+                            "Type": "Ship",
+                            "Text": "{{i18n:atravita.war_effort_2.ship_gold}}",
+                            "RequiredCount": "150",
+                            "Data": {
+                                "AcceptedContextTags": "item_gold_ore"
+                            }
+                        },
+                        {
+                            "Type": "Collect",
+                            "Text": "{{i18n:atravita.war_effort_2.gather_void}}",
+                            "RequiredCount": "50",
+                            "Data": {
+                                "AcceptedContextTags": "item_void_essence"
+                            }
+                        },
+                        {
+                            "Type": "Ship",
+                            "Text": "{{i18n:atravita.war_effort_2.ship_void}}",
+                            "RequiredCount": "50",
+                            "Data": {
+                                "AcceptedContextTags": "item_void_essence"
+                            }
+                        },
+                        {
+                            "Type": "Collect",
+                            "Text": "{{i18n:atravita.war_effort_2.gather_solar}}",
+                            "RequiredCount": "50",
+                            "Data": {
+                                "AcceptedContextTags": "item_solar_essence"
+                            }
+                        },
+                        {
+                            "Type": "Ship",
+                            "Text": "{{i18n:atravita.war_effort_2.ship_solar}}",
+                            "RequiredCount": "50",
+                            "Data": {
+                                "AcceptedContextTags": "item_solar_essence"
+                            }
+                        }
+                    ],
+                    "Rewards": [
+                        {
+                            "Type": "Money",
+                            "Data": {
+                                "Amount": "6000"
+                            }
+                        },
+                        {
+                            "Type": "Mail",
+                            "Data": {
+                                "MailReceived": "atravita_warEffort2_reward",
+                                "NoLetter": "false"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

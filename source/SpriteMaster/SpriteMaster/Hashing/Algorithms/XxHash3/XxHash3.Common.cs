@@ -24,15 +24,15 @@ internal static unsafe partial class XxHash3 {
 	private const MethodImplOptions Hot =
 		(MethodImplOptions)0;
 
-	private const bool UseAVX512 = false;
-	internal static readonly bool UseAVX2 = true && Extensions.Simd.Support.Avx2 && Avx2.IsSupported;
-	internal static readonly bool UseSSE2 = true && Sse2.IsSupported;
-	internal static readonly bool UseNeon = true && AdvSimd.IsSupported;
+	private const bool UseAvx512 = Extensions.Simd.Support.Avx512;
+	internal static readonly bool UseAvx2 = true && Extensions.Simd.Support.Avx2;
+	internal static readonly bool UseSse2 = Extensions.Simd.Support.Enabled && Sse2.IsSupported;
+	internal static readonly bool UseNeon = Extensions.Simd.Support.Enabled && AdvSimd.IsSupported;
 
 	private static readonly int VectorSize =
-		UseAVX512 ? 512 :
-		UseAVX2 ? 256 :
-		(UseSSE2 || UseNeon) ? 128 :
+		UseAvx512 ? 512 :
+		UseAvx2 ? 256 :
+		(UseSse2 || UseNeon) ? 128 :
 		64;
 	private const bool UsePrefetch = true;
 	private const uint CacheLine = 0x40u;
@@ -40,20 +40,24 @@ internal static unsafe partial class XxHash3 {
 
 	[MethodImpl(Inline)]
 	private static void PrefetchNext<T>(T* address) where T : unmanaged {
-		if (!Sse.IsSupported || !UsePrefetch) {
+		if (!UsePrefetch) {
 			return;
 		}
 
-		Sse.Prefetch0(((byte*)address) + PrefetchDistance);
+		if (Sse.IsSupported) {
+			Sse.Prefetch0(((byte*)address) + PrefetchDistance);
+		}
 	}
 
 	[MethodImpl(Inline)]
 	private static void PrefetchNonTemporalNext<T>(T* address) where T : unmanaged {
-		if (!Sse.IsSupported || !UsePrefetch) {
+		if (!UsePrefetch) {
 			return;
 		}
 
-		Sse.PrefetchNonTemporal(((byte*)address) + PrefetchDistance);
+		if (Sse.IsSupported) {
+			Sse.PrefetchNonTemporal(((byte*)address) + PrefetchDistance);
+		}
 	}
 
 	private static class Prime32 {

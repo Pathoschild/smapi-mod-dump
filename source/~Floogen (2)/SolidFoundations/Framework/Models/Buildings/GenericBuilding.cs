@@ -1491,7 +1491,7 @@ namespace SolidFoundations.Framework.Models.ContentPack
             if (interior is not null && this.Model is not null)
             {
                 var targetLocation = FlexibleLocationFinder.GetBuildableLocationByName("Farm");
-                var targetName = this.buildingLocation.Value is null ? targetLocation.Name : this.buildingLocation.Value.Name;
+                var targetName = this.buildingLocation.Value is null ? targetLocation.NameOrUniqueName : this.buildingLocation.Value.NameOrUniqueName;
                 var baseX = Model.HumanDoor.X;
                 var baseY = Model.HumanDoor.Y;
 
@@ -1519,8 +1519,29 @@ namespace SolidFoundations.Framework.Models.ContentPack
         // Preserve this override when updated to SDV v1.6, but call the base dayUpdate method if ExtendedBuildingModel
         public override void dayUpdate(int dayOfMonth)
         {
-            var targetLocation = FlexibleLocationFinder.GetBuildableLocationByName("Farm");
-            if ((int)this.daysUntilUpgrade.Value - 1 <= 0 && !Utility.isFestivalDay(dayOfMonth, Game1.currentSeason))
+            var targetLocation = this.buildingLocation.Value is BuildableGameLocation buildableGameLocation && buildableGameLocation is not null ? buildableGameLocation : FlexibleLocationFinder.GetBuildableLocationByName("Farm");
+            if ((int)this.daysOfConstructionLeft.Value > 0 && !Utility.isFestivalDay(dayOfMonth, Game1.currentSeason))
+            {
+                this.daysOfConstructionLeft.Value--;
+                if ((int)this.daysOfConstructionLeft.Value > 0)
+                {
+                    return;
+                }
+                Game1.player.checkForQuestComplete(null, -1, -1, null, this.buildingType, 8);
+                if (this.buildingType.Equals("Slime Hutch") && this.indoors.Value != null)
+                {
+                    this.indoors.Value.objects.Add(new Vector2(1f, 4f), new Object(new Vector2(1f, 4f), 156)
+                    {
+                        Fragility = 2
+                    });
+                    if (!Game1.player.mailReceived.Contains("slimeHutchBuilt"))
+                    {
+                        Game1.player.mailReceived.Add("slimeHutchBuilt");
+                    }
+                }
+            }
+
+            if ((int)this.daysUntilUpgrade.Value > 0 && !Utility.isFestivalDay(dayOfMonth, Game1.currentSeason))
             {
                 this.daysUntilUpgrade.Value--;
                 if ((int)this.daysUntilUpgrade.Value <= 0)
@@ -1551,7 +1572,6 @@ namespace SolidFoundations.Framework.Models.ContentPack
                     targetLocation.buildings.Add(this);
                 }
             }
-            base.dayUpdate(dayOfMonth);
 
             this.ProcessItemConversions(0, true);
         }
@@ -1562,6 +1582,23 @@ namespace SolidFoundations.Framework.Models.ContentPack
 
             // Update building item conversions
             this.ProcessItemConversions(timeElapsed, false);
+
+            // Handle any sub-buildings
+            if (this.indoors.Value is BuildableGameLocation buildableGameLocation && buildableGameLocation is not null)
+            {
+                foreach (var building in buildableGameLocation.buildings)
+                {
+                    building.performTenMinuteAction(timeElapsed);
+                    if (building.indoors.Value != null && !Game1.locations.Contains(building.indoors.Value) && timeElapsed >= 10)
+                    {
+                        building.indoors.Value.performTenMinuteUpdate(Game1.timeOfDay);
+                        if (timeElapsed > 10)
+                        {
+                            building.indoors.Value.passTimeForObjects(timeElapsed - 10);
+                        }
+                    }
+                }
+            }
         }
 
         // Preserve this override when updated to SDV v1.6, but call the base draw method if ExtendedBuildingModel.

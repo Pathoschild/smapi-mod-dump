@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Lewis dialogue",
+        "Target": "Characters/Dialogue/Lewis",
+        "Action": "EditData",
+        "Entries": {
+            "atravita.WarEffort_IsAvailable": "{{i18n:atravita.war_effort_isavailable}}",
+            "atravita.WarEffort_InProgress": "{{i18n:atravita.war_effort_inprogress}}",
+            "atravita.WarEffort_Completed": "{{i18n:atravita.war_effort_completed}}",
+            "atravita.warEffort2_InProgress": "{{i18n:atravita.war_effort_2_inprogress}}",
+            "atravita.warEffort2_IsAvailable": "{{i18n:atravita.war_effort_2_isavailable}}",
+            "atravita.warEffort2_Completed": "{{i18n:atravita.war_effort_2_completed.000}}#$b#{{i18n:atravita.war_effort_2_completed.001}}",
+            "atravita.warEffort3_IsAvailable": "{{i18n:atravita.war_effort_3_isavailable}}",
+            "atravita.ValleyVintage_IsAvailable": "{{i18n:atravita.valley_vintage_isavailable}}",
+            "atravita.ValleyVintage_InProgress": "{{i18n:atravita.valley_vintage_inprogress}}",
+            "atravita.ValleyVintage_InProgress4": "{{i18n:atravita.valley_vintage_inprogress4}}",
+            "atravita.ValleyVintage_Completed": "{{i18n:atravita.valley_vintage_completed}}",
+
+            "atravita.SalmonberrySeason_IsAvailable": "{{i18n:atravita.salmonberry_season_isavailable}}$h",
+            "atravita.BlackberrySeason_IsAvailable": "{{i18n:atravita.blackberry_season_isavailable}}"
+        }
+    }
+]}

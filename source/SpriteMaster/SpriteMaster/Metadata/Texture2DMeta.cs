@@ -41,7 +41,8 @@ internal sealed class Texture2DMeta : IDisposable {
 
 	[Flags]
 	internal enum TextureFlag : uint {
-		None = 0U,
+		None				= 0U,
+		Populated		= 1U << 0,
 	}
 
 	// Class and not a struct because we want to avoid a plethora of dictionary accesses to mutate them.
@@ -220,7 +221,7 @@ internal sealed class Texture2DMeta : IDisposable {
 			}
 
 			using (Lock.Read) {
-				return CachedDataInternal.TryGetTarget(out _);
+				return Flags.HasFlag(TextureFlag.Populated) && CachedDataInternal.TryGetTarget(out _);
 			}
 		}
 	}
@@ -303,6 +304,7 @@ internal sealed class Texture2DMeta : IDisposable {
 
 					if (data.HasData) {
 						CachedRawData = data.DataCopy;
+						Flags |= TextureFlag.Populated;
 					}
 					else {
 						if (hasCachedData) {
@@ -311,43 +313,65 @@ internal sealed class Texture2DMeta : IDisposable {
 						forcePurge = true;
 					}
 				}
-				else if (!IsCompressed && CachedRawData is { } currentData) {
+				else if (!IsCompressed) {
 					Debug.Trace($"{(hasCachedData ? "Updating" : "Setting")} '{reference.NormalizedName(DrawingColor.LightYellow)}' Cache in Purge: {bounds.HasValue}");
 
-					if (data.HasData) {
-						if (bounds.HasValue) {
-							int elementSize = Format.GetSize();
+					if (CachedRawData is { } currentData) {
+						if (data.HasData) {
+							if (bounds.HasValue && (bounds.Value.Extent != Vector2I.Zero || bounds.Value.Size != Size)) {
+								if (!Flags.HasFlag(TextureFlag.Populated)) {
+									return;
+								}
 
-							//int referenceStride = reference.Width * elementSize;
-							int boundsStride = bounds.Value.Width * elementSize;
+								int elementSize = Format.GetSize();
 
-							var source = data.Data;
-							var dest = currentData.AsSpan();
-							int sourceOffset = 0;
-							for (int y = bounds.Value.Top; y < bounds.Value.Bottom; ++y) {
-								int destOffset = (y * reference.Width) + bounds.Value.Left;
-								var sourceSlice = source.SliceUnsafe(sourceOffset * elementSize, boundsStride);
-								var destSlice = dest.SliceUnsafe(destOffset * elementSize, boundsStride);
-								sourceSlice.CopyToUnsafe(destSlice);
-								sourceOffset += bounds.Value.Width;
+								//int referenceStride = reference.Width * elementSize;
+								int boundsStride = bounds.Value.Width * elementSize;
+
+								var source = data.Data;
+								var dest = currentData.AsSpan();
+								int sourceOffset = 0;
+								for (int y = bounds.Value.Top; y < bounds.Value.Bottom; ++y) {
+									int destOffset = (y * reference.Width) + bounds.Value.Left;
+									var sourceSlice = source.SliceUnsafe(sourceOffset * elementSize, boundsStride);
+									var destSlice = dest.SliceUnsafe(destOffset * elementSize, boundsStride);
+									sourceSlice.CopyTo(destSlice);
+									sourceOffset += bounds.Value.Width;
+								}
 							}
+							else {
+								//var source = data.Data;
+								//var length = Math.Min(currentData.Length - data.Offset, data.Length);
+								//source.CopyTo(currentData.AsSpan(data.Offset, length));
+
+								data.Data.CopyTo(currentData);
+								Flags |= TextureFlag.Populated;
+							}
+
+							Hash = 0;
+							CachedRawData = currentData; // Force it to update the global cache.
 						}
 						else {
-							//var source = data.Data;
-							//var length = Math.Min(currentData.Length - data.Offset, data.Length);
-							//source.CopyToUnsafe(currentData.AsSpan(data.Offset, length));
+							if (hasCachedData) {
+								Debug.Trace($"Forcing full '{reference.NormalizedName(DrawingColor.LightYellow)}' Purge");
+							}
 
-							data.Data.CopyToUnsafe(currentData);
+							forcePurge = true;
 						}
-
-						Hash = 0;
-						CachedRawData = currentData; // Force it to update the global cache.
 					}
 					else {
-						if (hasCachedData) {
-							Debug.Trace($"Forcing full '{reference.NormalizedName(DrawingColor.LightYellow)}' Purge");
+						if (!bounds.HasValue || (bounds.Value.Extent == Vector2I.Zero && bounds.Value.Size == Size)) {
+							var newCachedData = data.DataCopy;
+							Hash = 0;
+							CachedRawData = newCachedData; // Force it to update the global cache.
+							Flags |= TextureFlag.Populated;
 						}
-						forcePurge = true;
+						else {
+							if (hasCachedData) {
+								Debug.Trace($"Forcing full '{reference.NormalizedName(DrawingColor.LightYellow)}' Purge");
+							}
+							forcePurge = true;
+						}
 					}
 				}
 				else {
@@ -362,8 +386,11 @@ internal sealed class Texture2DMeta : IDisposable {
 				forcePurge = true;
 			}
 
-			if (forcePurge && hasCachedData) {
-				CachedRawData = null;
+			if (forcePurge) {
+				Flags &= ~TextureFlag.Populated;
+				if (hasCachedData) {
+					CachedRawData = null;
+				}
 			}
 		}
 	}
@@ -416,6 +443,7 @@ internal sealed class Texture2DMeta : IDisposable {
 						CachedRawDataInternal.SetTarget(null!);
 						CachedDataInternal.SetTarget(null!);
 						ResidentCache.RemoveFast(MetaId);
+						Flags &= ~TextureFlag.Populated;
 					}
 				}
 				else {

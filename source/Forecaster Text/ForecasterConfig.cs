@@ -48,21 +48,19 @@ namespace ForecasterText {
         /// <summary>When to show the weather for Ginger Island</summary>
         public WeatherDisplay GingerIslandWeather { get; set; } = WeatherDisplay.ALWAYS;
         
+        public uint SunWeatherEmoji { get; set; } = 99u;
+        public uint RainWeatherEmoji { get; set; } = 100u;
+        public uint ThunderWeatherEmoji { get; set; } = 102u;
+        public uint SnowWeatherEmoji { get; set; } = 103u;
+        public uint FestivalWeatherEmoji { get; set; } = 151u;
+        public uint WeddingWeatherEmoji { get; set; } = 46u;
+        
         #endregion
         #region Luck Emoji
         
         public bool ShowGoodLuck { get; set; } = true;
         public bool ShowNeutralLuck { get; set; } = true;
         public bool ShowBadLuck { get; set; } = true;
-        
-        #endregion
-        #region Recipe Emoji
-        
-        public bool ShowNewRecipes { get; set; } = true;
-        public bool ShowExistingRecipes { get; set; } = false;
-        
-        #endregion
-        #region Spirits Emoji
         
         public uint SpiritsEmoji { get; set; } = 119u;
         public uint VeryHappySpiritEmoji { get; set; } = 43u;
@@ -75,18 +73,18 @@ namespace ForecasterText {
         #endregion
         #region Recipe Emoji
         
+        public bool ShowNewRecipes { get; set; } = true;
         public uint NewRecipeEmoji { get; set; } = 132u;
+        
+        public bool ShowExistingRecipes { get; set; } = false;
         public uint KnownRecipeEmoji { get; set; } = 135u;
         
         #endregion
-        #region Weather Emoji
+        #region Birthdays
         
-        public uint SunWeatherEmoji { get; set; } = 99u;
-        public uint RainWeatherEmoji { get; set; } = 100u;
-        public uint ThunderWeatherEmoji { get; set; } = 102u;
-        public uint SnowWeatherEmoji { get; set; } = 103u;
-        public uint FestivalWeatherEmoji { get; set; } = 151u;
-        public uint WeddingWeatherEmoji { get; set; } = 46u;
+        public bool ShowBirthdays { get; set; } = false;
+        public bool UseVillagerNames { get; set; } = false;
+        public uint BirthdayEmoji { get; set; } = 152u;
         
         #endregion
     }

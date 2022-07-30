@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12706
+IDs: spacechase0.DimensionalPockets
+update keys: Nexus:12706, GitHub:spacechase0/StardewValleyMods

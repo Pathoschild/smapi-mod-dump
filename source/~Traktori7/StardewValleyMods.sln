@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniDungeons", "MiniDungeon
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TraktoriShared", "TraktoriShared\TraktoriShared.shproj", "{EEB8CB95-183B-4722-9BA7-B656FBDFB71D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abandoned", "Abandoned", "{6C518544-B331-475F-845D-3A1B0452D2AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E1855F5-9C58-4E37-8E68-8A2B3CF5704C} = {6C518544-B331-475F-845D-3A1B0452D2AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B200EBE7-E375-4881-AE7B-0D2478E9B0D7}

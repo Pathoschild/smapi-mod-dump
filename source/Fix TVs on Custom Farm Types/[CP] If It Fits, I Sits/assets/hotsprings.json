@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/notevenamouse/StardewMods
+**
+*************************************************/
+
+{
+   "Changes": [
+   {
+      "Action": "EditData",
+      "Target": "Data/ChairTiles",
+      "Entries": {
+        "HSCave/15/14": "1/1/down/stool/-1/-1/false",
+        "hotspringcave/10/0": "1/1/down/chair/-1/-1/false",
+      }
+    }
+  ]
+}

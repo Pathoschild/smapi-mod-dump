@@ -10,142 +10,110 @@
 
 namespace StardewMods.BetterChests.Features;
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Collections.Generic;
 using HarmonyLib;
 using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
-using StardewMods.BetterChests.Enums;
-using StardewMods.BetterChests.Interfaces.Config;
-using StardewMods.BetterChests.Interfaces.ManagedObjects;
-using StardewMods.FuryCore.Enums;
-using StardewMods.FuryCore.Interfaces;
-using StardewMods.FuryCore.Interfaces.CustomEvents;
+using StardewModdingAPI.Events;
+using StardewMods.BetterChests.Helpers;
+using StardewMods.Common.Enums;
+using StardewMods.CommonHarmony.Enums;
+using StardewMods.CommonHarmony.Helpers;
+using StardewMods.CommonHarmony.Models;
 using StardewValley;
 using StardewValley.Menus;
-using SObject = StardewValley.Object;
 
-/// <inheritdoc />
-internal class OrganizeChest : Feature
+/// <summary>
+///     Sort items in a chest using a customized criteria.
+/// </summary>
+internal class OrganizeChest : IFeature
 {
-    private readonly PerScreen<IManagedStorage> _currentStorage = new();
-    private readonly Lazy<IHarmonyHelper> _harmony;
+    private const string Id = "furyx639.BetterChests/OrganizeChest";
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="OrganizeChest" /> class.
-    /// </summary>
-    /// <param name="config">Data for player configured mod options.</param>
-    /// <param name="helper">SMAPI helper for events, input, and content.</param>
-    /// <param name="services">Provides access to internal and external services.</param>
-    public OrganizeChest(IConfigModel config, IModHelper helper, IModServices services)
-        : base(config, helper, services)
+    private OrganizeChest(IModHelper helper)
     {
-        OrganizeChest.Instance = this;
-        this._harmony = services.Lazy<IHarmonyHelper>(
-            harmony =>
+        this.Helper = helper;
+        HarmonyHelper.AddPatches(
+            OrganizeChest.Id,
+            new SavedPatch[]
             {
-                harmony.AddPatch(
-                    this.Id,
+                new(
                     AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.organizeItemsInList)),
                     typeof(OrganizeChest),
-                    nameof(OrganizeChest.ItemGrabMenu_organizeItemsInList_postfix),
-                    PatchType.Postfix);
+                    nameof(OrganizeChest.ItemGrabMenu_organizeItemsInList_prefix),
+                    PatchType.Prefix),
             });
     }
 
-    private static OrganizeChest Instance { get; set; }
+    private static OrganizeChest? Instance { get; set; }
 
-    private IManagedStorage CurrentStorage
-    {
-        get => this._currentStorage.Value;
-        set => this._currentStorage.Value = value;
-    }
+    private IModHelper Helper { get; }
 
-    private IHarmonyHelper Harmony
-    {
-        get => this._harmony.Value;
-    }
+    private bool IsActivated { get; set; }
 
     /// <summary>
-    ///     Organizes items in a storage.
+    ///     Initializes <see cref="OrganizeChest" />.
     /// </summary>
-    /// <param name="storage">The storage to organize.</param>
-    /// <param name="forceAscending">Forces ascending order.</param>
-    public void OrganizeItems(IManagedStorage storage, bool forceAscending = false)
+    /// <param name="helper">SMAPI helper for events, input, and content.</param>
+    /// <returns>Returns an instance of the <see cref="OrganizeChest" /> class.</returns>
+    public static OrganizeChest Init(IModHelper helper)
     {
-        string OrderBy(Item item)
-        {
-            return storage.OrganizeChestGroupBy switch
-            {
-                GroupBy.Category => item.GetContextTags().FirstOrDefault(tag => tag.StartsWith("category_")),
-                GroupBy.Color => item.GetContextTags().FirstOrDefault(tag => tag.StartsWith("color_")),
-                GroupBy.Name => item.DisplayName,
-                GroupBy.Default or _ => string.Empty,
-            };
-        }
+        return OrganizeChest.Instance ??= new(helper);
+    }
 
-        int ThenBy(Item item)
+    /// <inheritdoc />
+    public void Activate()
+    {
+        if (!this.IsActivated)
         {
-            return storage.OrganizeChestSortBy switch
-            {
-                SortBy.Quality when item is SObject obj => obj.Quality,
-                SortBy.Quantity => item.Stack,
-                SortBy.Type => item.Category,
-                SortBy.Default or _ => 0,
-            };
-        }
-
-        var items = storage.OrganizeChestOrderByDescending && !forceAscending
-            ? storage.Items
-                     .OrderByDescending(OrderBy)
-                     .ThenByDescending(ThenBy)
-                     .ToList()
-            : storage.Items
-                     .OrderBy(OrderBy)
-                     .ThenBy(ThenBy)
-                     .ToList();
-        if (!forceAscending)
-        {
-            storage.OrganizeChestOrderByDescending = !storage.OrganizeChestOrderByDescending;
-        }
-
-        storage.Items.Clear();
-        foreach (var item in items)
-        {
-            storage.Items.Add(item);
+            this.IsActivated = true;
+            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
     }
 
     /// <inheritdoc />
-    protected override void Activate()
+    public void Deactivate()
     {
-        this.CustomEvents.ClickableMenuChanged += this.OnClickableMenuChanged;
-        this.Harmony.ApplyPatches(this.Id);
-    }
-
-    /// <inheritdoc />
-    protected override void Deactivate()
-    {
-        this.CustomEvents.ClickableMenuChanged -= this.OnClickableMenuChanged;
-        this.Harmony.UnapplyPatches(this.Id);
-    }
-
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
-    [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Naming is determined by Harmony.")]
-    private static void ItemGrabMenu_organizeItemsInList_postfix()
-    {
-        if (OrganizeChest.Instance.CurrentStorage is not null)
+        if (this.IsActivated)
         {
-            OrganizeChest.Instance.OrganizeItems(OrganizeChest.Instance.CurrentStorage);
+            this.IsActivated = false;
+            this.Helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
         }
     }
 
-    private void OnClickableMenuChanged(object sender, IClickableMenuChangedEventArgs e)
+    private static bool ItemGrabMenu_organizeItemsInList_prefix(IList<Item> items)
     {
-        this.CurrentStorage = e.Menu is ItemGrabMenu && e.Context is not null && this.ManagedObjects.TryGetManagedStorage(e.Context, out var managedStorage) && managedStorage.OrganizeChest == FeatureOption.Enabled
-            ? managedStorage
-            : null;
+        if (Game1.activeClickableMenu is not ItemGrabMenu { context: Item context } itemGrabMenu
+            || !ReferenceEquals(itemGrabMenu.ItemsToGrabMenu.actualInventory, items)
+            || !StorageHelper.TryGetOne(context, out var storage)
+            || storage.OrganizeChest == FeatureOption.Disabled)
+        {
+            return true;
+        }
+
+        storage.OrganizeItems();
+        BetterItemGrabMenu.RefreshItemsToGrabMenu = true;
+        return false;
+    }
+
+    private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+    {
+        if (e.Button is not SButton.MouseRight
+            || Game1.activeClickableMenu is not ItemGrabMenu { context: Item context } itemGrabMenu
+            || !StorageHelper.TryGetOne(context, out var storage)
+            || storage.OrganizeChest == FeatureOption.Disabled)
+        {
+            return;
+        }
+
+        var (x, y) = Game1.getMousePosition(true);
+        if (itemGrabMenu.organizeButton?.containsPoint(x, y) != true)
+        {
+            return;
+        }
+
+        storage.OrganizeItems(true);
+        this.Helper.Input.Suppress(e.Button);
+        BetterItemGrabMenu.RefreshItemsToGrabMenu = true;
+        Game1.playSound("Ship");
     }
 }

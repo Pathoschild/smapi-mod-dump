@@ -31,7 +31,7 @@ internal sealed class RequestUpdateHostStateModMessageReceivedEvent : ModMessage
     /// <inheritdoc />
     protected override void OnModMessageReceivedImpl(object? sender, ModMessageReceivedEventArgs e)
     {
-        if (e.FromModID != ModEntry.Manifest.UniqueID || !e.Type.StartsWith("RequestUpdateHostState")) return;
+        if (e.FromModID != ModEntry.Manifest.UniqueID || !e.Type.StartsWith("UpdateHostState")) return;
 
         var who = Game1.getFarmer(e.FromPlayerID);
         if (who is null)

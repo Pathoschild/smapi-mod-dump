@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+  "Name": "Statue Of Treasure",
+  "Price": 10000,
+  "ProvidesLight": false,
+  "Description": "It's embedded with many beautiful gems.",
+  "CanPurchase": false,
+  "TranslationKey": "big-craftables.statue-of-treasure",
+}

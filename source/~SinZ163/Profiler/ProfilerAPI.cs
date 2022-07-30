@@ -12,6 +12,7 @@ using HarmonyLib;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,6 +21,7 @@ using System.Threading.Tasks;
 namespace Profiler
 {
     public record EventMetadata(string ModId, string EventType, string Details, List<object> InnerDetails);
+    internal record EventEntry(double At, EventMetadata Entry);
     public record EventDurationMetadata(string ModId, string EventType, string Details, double Duration, List<object> InnerDetails) : EventMetadata(ModId, EventType, Details, InnerDetails);
 
     public interface IProfilerAPI
@@ -36,47 +38,58 @@ namespace Profiler
         private ModConfig Config { get; }
         public Harmony Harmony { get; }
         public IMonitor Monitor { get; }
+        public Stopwatch Timer { get; }
 
-        internal ProfilerAPI(ProfilerLogger logger, ModConfig config, Harmony harmony, IMonitor monitor)
+        internal ProfilerAPI(ProfilerLogger logger, ModConfig config, Harmony harmony, Stopwatch timer, IMonitor monitor)
         {
             Logger = logger;
             Config = config;
             Harmony = harmony;
             Monitor = monitor;
+            Timer = timer;
+        }
+
+        public void Write(EventMetadata eventDetails)
+        {
+            Write(Timer.Elapsed.TotalMilliseconds, eventDetails);
+        }
+        private void Write(double at, EventMetadata eventDetails)
+        {
+            // Finally back to the root event, log
+            if (Logger.EventMetadata.IsEmpty)
+            {
+                if (eventDetails is EventDurationMetadata durationMetadata && durationMetadata.Duration < Config.LoggerDurationOuterThreshold)
+                {
+                    return;
+                }
+                Logger.AddRow(new ProfileLoggerRow(at, eventDetails));
+            }
+            else
+            {
+                if (Logger.EventMetadata.TryPeek(out var outerMetadata))
+                {
+                    // AssetRequested as a nested event is *way* too noisy, removing all together
+                    //if (metadata.EventType != "Content.AssetRequested" && metadata.EventType != "Content.AssetReady" && metadata.EventType != "Content.AssetsInvalidated")
+                    if (eventDetails is EventDurationMetadata durationMetadata && durationMetadata.Duration < Config.LoggerDurationInnerThreshold)
+                    {
+                        return;
+                    }
+                    outerMetadata.Entry.InnerDetails.Add(new ProfileLoggerRow(at, eventDetails));
+                }
+            }
         }
 
         public void Push(EventMetadata eventDetails)
         {
-            Logger.EventMetadata.Push(eventDetails);
+            Logger.EventMetadata.Push(new(Timer.Elapsed.TotalMilliseconds, eventDetails));
         }
 
         public void Pop(Func<EventMetadata, EventMetadata> modifier)
         {
-            if (Logger.EventMetadata.TryPop(out var metadata))
+            if (Logger.EventMetadata.TryPop(out var metadataPair))
             {
-                metadata = modifier(metadata);
-                // Finally back to the root event, log
-                if (Logger.EventMetadata.IsEmpty)
-                {
-                    if (metadata is EventDurationMetadata durationMetadata)
-                    {
-                        if (durationMetadata.Duration > Config.LoggerDurationThreshold)
-                        {
-                            Logger.AddRow(new ProfileLoggerRow(DateTimeOffset.Now, metadata));
-                        }
-                    }
-                }
-                else
-                {
-                    if (Logger.EventMetadata.TryPeek(out var outerMetadata))
-                    {
-                        // AssetRequested as a nested event is *way* too noisy, removing all together
-                        if (metadata.EventType != "Content.AssetRequested" && metadata.EventType != "Content.AssetReady" && metadata.EventType != "Content.AssetsInvalidated")
-                        {
-                            outerMetadata.InnerDetails.Add(metadata);
-                        }
-                    }
-                }
+                var metadata = modifier(metadataPair.Entry);
+                Write(metadataPair.At, metadata);
             }
         }
 

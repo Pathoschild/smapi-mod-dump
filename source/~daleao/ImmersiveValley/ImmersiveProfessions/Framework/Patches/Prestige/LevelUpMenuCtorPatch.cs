@@ -66,7 +66,7 @@ internal sealed class LevelUpMenuCtorPatch : DaLion.Common.Harmony.HarmonyPatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while patching profession choices above level 10. Helper returned {ex}");
+            Log.E($"Failed while patching profession choices above level 10.\nHelper returned {ex}");
             return null;
         }
 

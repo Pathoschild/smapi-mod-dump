@@ -21,7 +21,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
 using System.Threading;
 
 namespace SpriteMaster.Caching;
@@ -48,7 +47,7 @@ internal static partial class TextureFileCache {
 		}
 	}
 
-	private static readonly AbstractMemoryCache<string, XColor> Cache =
+	private static readonly IMemoryCache<string, XColor> Cache =
 		AbstractMemoryCache<string, XColor>.Create(name: "File Cache", maxSize: SMConfig.TextureFileCache.MaxSize, compressed: true);
 
 	private static readonly ConcurrentDictionary<string, Vector2I> TextureInfoCache = new();
@@ -88,7 +87,8 @@ internal static partial class TextureFileCache {
 			var colorData = data.AsSpan<Color8>();
 
 			ProcessTexture(colorData);
-				
+
+			// TODO : Horribly unsafe
 			XColor[] resultData = data.Convert<byte, XColor>();
 
 			Vector2I resultSize = imageResult.Size;
@@ -111,10 +111,10 @@ internal static partial class TextureFileCache {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static void ProcessTexture(Span<Color8> data) {
-		if (Avx2.IsSupported && UseAVX2) {
+		if (UseAvx2) {
 			ProcessTextureAvx2(data);
 		}
-		else if (Sse2.IsSupported && UseSSE2) {
+		else if (UseSse2) {
 			ProcessTextureSse2Unrolled(data);
 		}
 		else {
@@ -126,6 +126,6 @@ internal static partial class TextureFileCache {
 		var newCache = AbstractMemoryCache<string, XColor>.Create(name: "File Cache", maxSize: SMConfig.TextureFileCache.MaxSize, compressed: true);
 		var oldCache = Interlocked.Exchange(ref Unsafe.AsRef(Cache), newCache);
 		TextureInfoCache.Clear();
-		oldCache?.DisposeAsync();
+		oldCache?.Dispose();
 	}
 }

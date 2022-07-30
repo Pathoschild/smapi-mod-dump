@@ -21,17 +21,17 @@ using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UIInfoSuite.Infrastructure;
-using UIInfoSuite.Infrastructure.Extensions;
+using UIInfoSuite2.Infrastructure;
+using UIInfoSuite2.Infrastructure.Extensions;
 
-namespace UIInfoSuite.UIElements
+namespace UIInfoSuite2.UIElements
 {
-    class ShowCropAndBarrelTime : IDisposable
+    internal class ShowCropAndBarrelTime : IDisposable
     {
-        private readonly Dictionary<int, string> _indexOfCropNames = new Dictionary<int, string>();
-        private readonly PerScreen<StardewValley.Object> _currentTile = new PerScreen<StardewValley.Object>();
-        private readonly PerScreen<TerrainFeature> _terrain = new PerScreen<TerrainFeature>();
-        private readonly PerScreen<Building> _currentTileBuilding = new PerScreen<Building>();
+        private readonly Dictionary<int, string> _indexOfCropNames = new();
+        private readonly PerScreen<StardewValley.Object> _currentTile = new();
+        private readonly PerScreen<TerrainFeature> _terrain = new();
+        private readonly PerScreen<Building> _currentTileBuilding = new();
         private readonly IModHelper _helper;
 
         public ShowCropAndBarrelTime(IModHelper helper)
@@ -59,7 +59,7 @@ namespace UIInfoSuite.UIElements
             if (!e.IsMultipleOf(4))
                 return;
 
-            var gamepadTile = Game1.player.CurrentTool != null ? Utility.snapToInt(Game1.player.GetToolLocation()/Game1.tileSize) : Utility.snapToInt(Game1.player.GetGrabTile());
+            var gamepadTile = Game1.player.CurrentTool != null ? Utility.snapToInt(Game1.player.GetToolLocation() / Game1.tileSize) : Utility.snapToInt(Game1.player.GetGrabTile());
             var mouseTile = Game1.currentCursorTile;
 
             var tile = (Game1.options.gamepadControls && Game1.timerUntilMouseFade <= 0) ? gamepadTile : mouseTile;
@@ -149,7 +149,7 @@ namespace UIInfoSuite.UIElements
                         overrideX = (int)(tilePosition.X + Utility.ModifyCoordinateForUIScale(32));
                         overrideY = (int)(tilePosition.Y + Utility.ModifyCoordinateForUIScale(32));
                     }
-                    
+
                     IClickableMenu.drawHoverText(
                         Game1.spriteBatch,
                         builder.ToString(),
@@ -168,7 +168,7 @@ namespace UIInfoSuite.UIElements
                     StringBuilder hoverText = new StringBuilder();
 
                     hoverText.AppendLine(currentTile.heldObject.Value.DisplayName);
-                    
+
                     if (currentTile is Cask)
                     {
                         Cask currentCask = currentTile as Cask;
@@ -258,11 +258,12 @@ namespace UIInfoSuite.UIElements
 
                         if (hoeDirt.crop.indexOfHarvest.Value > 0)
                         {
-                            string hoverText = _indexOfCropNames.SafeGet(hoeDirt.crop.indexOfHarvest.Value);
+                            int itemId = hoeDirt.crop.isWildSeedCrop() ? hoeDirt.crop.whichForageCrop.Value : hoeDirt.crop.indexOfHarvest.Value;
+                            string hoverText = _indexOfCropNames.SafeGet(itemId);
                             if (string.IsNullOrEmpty(hoverText))
                             {
-                                hoverText = new StardewValley.Object(new Debris(hoeDirt.crop.indexOfHarvest.Value, Vector2.Zero, Vector2.Zero).chunkType.Value, 1).DisplayName;
-                                _indexOfCropNames.Add(hoeDirt.crop.indexOfHarvest.Value, hoverText);
+                                hoverText = new StardewValley.Object(itemId, 1).DisplayName;
+                                _indexOfCropNames.Add(itemId, hoverText);
                             }
 
                             StringBuilder finalHoverText = new StringBuilder();

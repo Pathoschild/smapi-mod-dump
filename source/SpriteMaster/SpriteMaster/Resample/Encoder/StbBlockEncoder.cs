@@ -366,7 +366,7 @@ internal static class StbBlockEncoder {
 			vB = LumaCoefficients.Blue;
 		}
 		else {
-			if (Sse2.IsSupported) {
+			if (Extensions.Simd.Support.Enabled && Sse2.IsSupported) {
 				var vec = Vector128.Create(vfR, vfG, vfB, 0);
 				var mag = Vector128.Create(512.0f / magnitude);
 				var res = Sse2.Multiply(vec, mag);
@@ -582,7 +582,7 @@ internal static class StbBlockEncoder {
 		// find min/max color
 		uint mn = byte.MaxValue;
 		uint mx = byte.MinValue;
-		if (Sse41.IsSupported && Sse2.IsSupported && Ssse3.IsSupported) {
+		if (Sse2.IsSupported && Extensions.Simd.Support.Enabled && Extensions.Simd.Support.Sse41 && Extensions.Simd.Support.Ssse3) {
 			var vec0 = Sse2.LoadVector128(src + (0 * 16));
 			var vec1 = Sse2.LoadVector128(src + (1 * 16));
 			var vec2 = Sse2.LoadVector128(src + (2 * 16));
@@ -713,7 +713,7 @@ internal static class StbBlockEncoder {
 		dest += 8;
 		// make a new copy of the data in which alpha is opaque,
 		// because code uses a fast test for color constancy
-		if (Avx2.IsSupported && Extensions.Simd.Support.Avx2) {
+		if (Extensions.Simd.Support.Avx2) {
 			var mask = Vector256.Create(0xFF00_0000U);
 
 			var vec0 = Avx2.LoadVector256((uint*)(src + 0x00));
@@ -725,7 +725,7 @@ internal static class StbBlockEncoder {
 			Avx2.Store((uint*)(tempBlock + 0x00), vec0);
 			Avx2.Store((uint*)(tempBlock + 0x20), vec1);
 		}
-		else if (Sse2.IsSupported) {
+		else if (Extensions.Simd.Support.Enabled && Sse2.IsSupported) {
 			var mask = Vector128.Create(0xFF00_0000U);
 
 			var vec0 = Sse2.LoadVector128((uint*)(src + 0x00));

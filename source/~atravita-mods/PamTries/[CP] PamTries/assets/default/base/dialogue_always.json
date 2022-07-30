@@ -1,0 +1,71 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Anniversary!",
+        "Entries": {
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}_2": "It's your anniversary, ain't it? Planning on doing something special?",
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}_2_inlaw_Penny": "It's your anniversary, ain't it? You better treat my dear Penny right.$h"
+        },
+        "When": {
+            "HasMod": "TheMightyAmondee.CustomTokens",
+            "Query: {{TheMightyAmondee.CustomTokens/YearsMarried}} >= 1": true
+        }
+    },
+    //Dialogue dependent on Penny's heart levels if married?
+    {
+        "LogName": "Base dialogue - inlaw, good marriage",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "When": 
+        {
+            "Hearts:Penny": "11,12,13,14", 
+            "Relationship:Penny": "Married"
+        },
+        "Entries": {
+            "spring_Thu10_inlaw_Penny": "Never would have expected my Penny to marry a farmer.#$e#Living on the farm is good for her, though.",
+            "fall_Thu10_inlaw_Penny": "Never seen Penny so happy! Farm life is good for her.$h#$e#So are you, I guess."
+        }
+    },
+    {
+        "LogName": "Base dialogue - inlaw, bad marriage",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "When":
+        {
+            "Hearts:Penny": "0,1,2,3,4,5,6", 
+            "Relationship:Penny": "Married"
+        },
+        "Entries":
+        {
+            "Mon4_inlaw_Penny": "@, you promised you'd treat my Penny right. What happened?$u",
+            "Thu4_inlaw_Penny": "Why don't ya just divorce my dear Penny already, if you're not going treat her right.$u",
+            "Fri4_inlaw_Penny": "Go away, @. I ain't interested in talkin' to you no more.$u",
+            "Sat4_inlaw_Penny": "@, the only thing I ever wanted was for Penny to be happy.$u"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Anniversary!",
+        "Entries": {
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}_2_inlaw_Penny": "It's your anniversary, ain't it? You better treat my dear Penny right. Do something nice for her for once...$s#$b#$b, when you married my Penny, you promised to treat her well. What happened?"
+        },
+        "When": {
+            "HasMod": "TheMightyAmondee.CustomTokens",
+            "Query: {{TheMightyAmondee.CustomTokens/YearsMarried}} >= 1": true,
+            "Hearts:Penny": "0,1,2,3,4,5,6",
+            "Relationship:Penny": "Married"
+        }
+    }
+]}

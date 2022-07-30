@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace XSPlus.Models;
 
 using System.Collections.Generic;

@@ -15,7 +15,6 @@ namespace DaLion.Stardew.Professions.Commands;
 using Common;
 using Common.Commands;
 using JetBrains.Annotations;
-using System.Linq;
 
 #endregion using directives
 
@@ -42,7 +41,7 @@ internal sealed class SetUltimateChargeCommand : ConsoleCommand
             return;
         }
 
-        if (!args.Any())
+        if (args.Length <= 0)
         {
             ModEntry.PlayerState.RegisteredUltimate.ChargeValue = ModEntry.PlayerState.RegisteredUltimate.MaxValue;
             return;

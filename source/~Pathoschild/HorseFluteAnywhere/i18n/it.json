@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.require-flute.name": "Flauto equino richiesto",
+    "config.require-flute.description": "Scegli se è necessario l'oggetto flauto equino nell'inventario per evocare un cavallo. Predefinito falso.",
+
+    "config.summon-horse-button.name": "Pulsante Evoca cavallo",
+    "config.summon-horse-button.description": "Il pulsante da premere per suonare il flauto ed evocare un cavallo. Predefinito {{defaultValue}}."
+}

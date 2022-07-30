@@ -1,0 +1,132 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditMap",
+        "Target": "Maps/Trailer_big",
+        "LogName": "Trailer - remove beer, add more flavortext.",
+        "MapTiles": [
+        {//replace with chair
+            "Position": {"X": 22, "Y": 17},
+            "Layer": "Buildings",
+            "SetIndex": 553
+        },
+        {//replace with dresser
+            "Position": {"X": 28, "Y": 17},
+            "Layer": "Buildings",
+            "SetIndex": 681
+        },
+        {
+            "Position": {"X": 28, "Y": 17},
+            "Layer": "Front", 
+            "SetIndex": 681,
+            "SetTilesheet": "1"
+        },
+        {
+            "Position": {"X": 28, "Y": 18},
+            "Layer": "Buildings",
+            "SetIndex": 713
+        },
+        {
+            "Position": {"X": 28, "Y": 19},
+            "Layer": "Buildings",
+            "SetIndex": 745,
+            "SetTilesheet": "1"
+        },
+        {//replace with chair
+            "Position": {"X": 28, "Y": 20},
+            "Layer": "Buildings",
+            "SetIndex": 553
+        },
+        {//Add more strings.
+            "Position": {"X": 18, "Y": 8},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Coffee"}
+        },
+        {
+            "Position": {"X": 19, "Y": 8},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Soup"}
+        },
+        {
+            "Position": {"X": 21, "Y": 8},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Eggs"}
+        },
+        {
+            "Position": {"X": 7, "Y": 19},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Textbooks"}
+        },
+        {
+            "Position": {"X": 9, "Y": 19},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Comics"}
+        },
+        {
+            "Position": {"X": "17", "Y": "19"},
+            "Layer": "Buildings",
+            "SetIndex": 1979,
+            "SetTilesheet": "1",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Picture.000"}
+        },
+        {
+            "Position": {"X": "18", "Y": "19"},
+            "Layer": "Buildings",
+            "SetIndex": 1979,
+            "SetTilesheet": "1",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.Picture.001"}
+        },
+        {
+            "Position": {"X": "15", "Y": "11"},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.TV"}
+        }
+        ]
+    },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/Hospital",
+        "LogName": "Add patient computer to hospital.",
+        "MapTiles": [
+        {//Adds a computer to Harvey's for telemedicine purposes
+            "Position": {"X":19, "Y":3},
+            "Layer": "Front",
+            "SetIndex": 875,
+            "SetTilesheet": "1"
+        },
+        {
+            "Position": {"X":19, "Y":3},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Hospital.atravita.PamTries.PatientComputer"}
+        }
+        ]
+    },
+    {
+        "Action": "EditMap",
+        "Target": "Maps/Trailer_big",
+        "LogName": "Add Pam's gratitude journal.",
+        "When": {"HasSeenEvent": "99210002"},
+        "MapTiles":[
+        {//adds Pam's gratitude journal.
+            "Position": {"X": 28,"Y":18},
+            "Layer": "Front",
+            "SetIndex": 833,
+            "SetTilesheet": "1"
+        },
+        {
+            "Position": {"X": 28,"Y":18},
+            "Layer": "Buildings",
+            "SetProperties": {"Action": "Message Trailer.atravita.PamTries.PamJournal"}
+        }
+        ]
+    }
+]}

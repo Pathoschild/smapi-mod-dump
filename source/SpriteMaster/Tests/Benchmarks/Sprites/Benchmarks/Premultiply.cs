@@ -96,14 +96,6 @@ public class Premultiply : Textures8 {
 		}
 	}
 
-	[Benchmark(Description = "SSE2")]
-	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public void Sse2(in SpriteDataSet dataSet) {
-		foreach (var data in dataSet.Data) {
-			SpriteMaster.Caching.TextureFileCache.ProcessTextureSse2(data.Span.Cast<byte, Color8>());
-		}
-	}
-
 	[Benchmark(Description = "SSE2 (Unrolled)")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
 	public void Sse2Unrolled(in SpriteDataSet dataSet) {
@@ -117,14 +109,6 @@ public class Premultiply : Textures8 {
 	public void Avx2(in SpriteDataSet dataSet) {
 		foreach (var data in dataSet.Data) {
 			SpriteMaster.Caching.TextureFileCache.ProcessTextureAvx2(data.Span.Cast<byte, Color8>());
-		}
-	}
-
-	[Benchmark(Description = "AVX2 (Unrolled)")]
-	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public void Avx2Unrolled(in SpriteDataSet dataSet) {
-		foreach (var data in dataSet.Data) {
-			SpriteMaster.Caching.TextureFileCache.ProcessTextureAvx2Unrolled(data.Span.Cast<byte, Color8>());
 		}
 	}
 }

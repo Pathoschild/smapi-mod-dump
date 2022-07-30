@@ -74,7 +74,7 @@ namespace CustomDeathPenaltyPlus
         /// <summary>
         /// Edits content in Strings/StringsFromCSFiles
         /// </summary>
-        public class StringsFromCSFilesFixes : IAssetEditor
+        public class StringsFromCSFilesFixes 
         {
             private IModHelper modHelper;
 
@@ -82,23 +82,15 @@ namespace CustomDeathPenaltyPlus
             {
                 modHelper = helper;
             }
-
-            // Allow asset to be edited if name matches and any object references exist
-            public bool CanEdit<T>(IAssetInfo asset)
-            {
-                return asset.AssetNameEquals("Strings\\StringsFromCSFiles") && PlayerStateRestorer.statedeathps.Value != null;
-            }
-
-            // Edit asset
-            public void Edit<T>(IAssetData asset)
+            public static void EditEvent(IAssetData asset)
             {
                 var stringeditor = asset.AsDictionary<string, string>().Data;
 
-                if (config.OtherPenalties.MoreRealisticWarps == true 
-                    && (ModEntry.location.StartsWith("Farm") == true 
-                    || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null 
+                if (config.OtherPenalties.MoreRealisticWarps == true
+                    && (ModEntry.location.StartsWith("Farm") == true
+                    || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null
                     || ModEntry.location.StartsWith("UndergroundMine") == true
-                    || ModEntry.location == "SkullCave") 
+                    || ModEntry.location == "SkullCave")
                     && ModEntry.location.StartsWith("IslandFarm") == false)
                 {
                     if (config.DeathPenalty.MoneyLossCap == 0 || config.DeathPenalty.MoneytoRestorePercentage == 1)
@@ -132,7 +124,7 @@ namespace CustomDeathPenaltyPlus
                         stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
                     }
                 }
-               
+
                 // Is RestoreItems true?
                 if (config.DeathPenalty.RestoreItems == true)
                 {
@@ -148,7 +140,7 @@ namespace CustomDeathPenaltyPlus
         /// <summary>
         /// Edits content in Data/mail
         /// </summary>
-        public class MailDataFixes : IAssetEditor
+        public class MailDataFixes 
         {
             private IModHelper modHelper;
 
@@ -157,25 +149,11 @@ namespace CustomDeathPenaltyPlus
                 modHelper = helper;
             }
 
-            // Allow asset to be editted if name matches
-            public bool CanEdit<T>(IAssetInfo asset)
-            {
-                if (Context.IsWorldReady == false)
-                {
-                    return false;
-                }
-
-                var data = Game1.player.modData;
-
-                return asset.AssetNameEquals("Data\\mail") && data != null && data.ContainsKey($"{manifest.UniqueID}.MoneyLostLastPassOut");
-            }
-
-            // Edit asset
-            public void Edit<T>(IAssetData asset)
+            public static void EditEvent(IAssetData asset)
             {
                 var maileditor = asset.AsDictionary<string, string>().Data;
 
-                var data = Game1.player.modData;               
+                var data = Game1.player.modData;
 
                 // Has player not lost any money?
                 if (data[$"{manifest.UniqueID}.MoneyLostLastPassOut"] == "0")
@@ -183,7 +161,7 @@ namespace CustomDeathPenaltyPlus
                     // Yes, edit strings to show this special case
                     maileditor["passedOut1_Billed_Male"] = maileditor["passedOut1_Billed_Male"].Replace("You've been billed {0}g for this service", "Be thankful you haven't been billed for this service");
                     maileditor["passedOut1_Billed_Female"] = maileditor["passedOut1_Billed_Female"].Replace("You've been billed {0}g for this service", "Be thankful you haven't been billed for this service");
-                    maileditor["passedOut3_Billed"] = maileditor["passedOut3_Billed"].Replace("I've billed you {0}g to cover your medical expenses.", "I haven't billed you for your medical expenses this time.");                  
+                    maileditor["passedOut3_Billed"] = maileditor["passedOut3_Billed"].Replace("I've billed you {0}g to cover your medical expenses.", "I haven't billed you for your medical expenses this time.");
                 }
 
                 else
@@ -199,32 +177,25 @@ namespace CustomDeathPenaltyPlus
         /// <summary>
         /// Edits content in Data/Events/Mine
         /// </summary>
-        public class MineEventFixes : IAssetEditor
+        public class MineEventFixes
         {
-            private IModHelper modHelper;
+            private static IModHelper modHelper;
 
             public MineEventFixes(IModHelper helper)
             {
                 modHelper = helper;
             }
 
-            // Allow asset to be edited if name matches
-            public bool CanEdit<T>(IAssetInfo asset)
-            {
-                return asset.AssetNameEquals("Data\\Events\\Mine");
-            }
-
-            // Edit asset
-            public void Edit<T>(IAssetData asset)
+            public static void EditEvent(IAssetData asset, IModHelper modHelper)
             {
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
-                IDictionary<string, string> events = modHelper.Content.Load<Dictionary<string, string>>("assets\\Events.json", ContentSource.ModFolder);
+                IDictionary<string, string> events = modHelper.ModContent.Load<Dictionary<string, string>>("assets\\Events.json");
                 // Is WakeupNextDayinClinic true?
                 if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
                     eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledMine"], Game1.player.Name, ResponseBuilder("{0}", "in the mine"));
-                        //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "in the mine")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
+                    //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "in the mine")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
 
                 }
             }
@@ -233,27 +204,20 @@ namespace CustomDeathPenaltyPlus
         /// <summary>
         /// Edits content in Data/Events/IslandSouth
         /// </summary>
-        public class IslandSouthEventFixes : IAssetEditor
+        public class IslandSouthEventFixes
         {
-            private IModHelper modHelper;
+            private static IModHelper modHelper;
 
             public IslandSouthEventFixes(IModHelper helper)
             {
                 modHelper = helper;
             }
 
-            // Allow asset to be edited if name matches
-            public bool CanEdit<T>(IAssetInfo asset)
-            {
-                return asset.AssetNameEquals("Data\\Events\\IslandSouth");
-            }
-
-            // Edit asset
-            public void Edit<T>(IAssetData asset)
+            public static void EditEvent(IAssetData asset, IModHelper modHelper)
             {
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
-                IDictionary<string, string> events = modHelper.Content.Load<Dictionary<string, string>>("assets\\Events.json", ContentSource.ModFolder);
+                IDictionary<string, string> events = modHelper.ModContent.Load<Dictionary<string, string>>("assets\\Events.json");
 
                 // Is WakeupNextDayinClinic true?
                 if (config.OtherPenalties.WakeupNextDayinClinic == true)
@@ -267,33 +231,26 @@ namespace CustomDeathPenaltyPlus
         /// <summary>
         /// Edits content in Data/Events/Hospital
         /// </summary>
-        public class HospitalEventFixes : IAssetEditor
+        public class HospitalEventFixes
         {
-            private IModHelper modHelper;
+            private static IModHelper modHelper;
 
             public HospitalEventFixes(IModHelper helper)
             {
                 modHelper = helper;
             }
 
-            // Allow asset to be edited if name matches
-            public bool CanEdit<T>(IAssetInfo asset)
-            {
-                return asset.AssetNameEquals("Data\\Events\\Hospital");
-            }
-
-            // Edit asset
-            public void Edit<T>(IAssetData asset)
+            public static void EditEvent(IAssetData asset, IModHelper modHelper)
             {
                 var eventedits = asset.AsDictionary<string, string>().Data;
 
-                IDictionary<string, string> events = modHelper.Content.Load<Dictionary<string, string>>("assets\\Events.json", ContentSource.ModFolder);
+                IDictionary<string, string> events = modHelper.ModContent.Load<Dictionary<string, string>>("assets\\Events.json");
 
                 eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledHospital"], Game1.player.Name, ResponseBuilder("Someone", "and battered"));
                 //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("Someone", "and battered")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
 
-                if (ModEntry.location != null 
-                    && (ModEntry.location.StartsWith("UndergroundMine") == true 
+                if (ModEntry.location != null
+                    && (ModEntry.location.StartsWith("UndergroundMine") == true
                     || ModEntry.location == "SkullCave")
                     && config.OtherPenalties.MoreRealisticWarps == true)
                 {
@@ -301,17 +258,17 @@ namespace CustomDeathPenaltyPlus
                     //$"none/-100 -100/farmer 3 5 2 MrQi 4 4 2/changeLocation SkullCave/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Hey, kid! You okay?\"/viewport 3 5 true/pause 1000/speak MrQi \"I found you battered and unconscious down there, kid... I hope you weren't doing something stupid.$1#$b#Just be more careful in the caverns next time, okay. There's still lots of potential in you, kid!\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
 
                 }
-                else if (ModEntry.location != null 
-                    && (ModEntry.location.StartsWith("Farm") 
-                    || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null) 
-                    && config.OtherPenalties.MoreRealisticWarps == true 
+                else if (ModEntry.location != null
+                    && (ModEntry.location.StartsWith("Farm")
+                    || Game1.getLocationFromName(ModEntry.location) as FarmHouse != null)
+                    && config.OtherPenalties.MoreRealisticWarps == true
                     && ModEntry.location.StartsWith("IslandFarm") == false)
                 {
                     var cabin = (Context.IsMainPlayer ? "FarmHouse" : Game1.player.homeLocation.Value) ?? "FarmHouse";
                     // Get tile where player should spawn, same as (doorX, doorY - 2) position  
                     int tileX = 12;
                     int tileY = 18;
-                    switch (Game1.player.houseUpgradeLevel)
+                    switch (Game1.player.HouseUpgradeLevel)
                     {
                         case 0:
                             tileX = 3;

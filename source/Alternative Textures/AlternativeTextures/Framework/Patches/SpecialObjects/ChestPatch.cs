@@ -77,23 +77,29 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 var xTileOffset = 0;
                 if (textureModel.HasAnimation(textureVariation))
                 {
-                    if (!__instance.modData.ContainsKey("AlternativeTextureCurrentFrame") || !__instance.modData.ContainsKey("AlternativeTextureFrameDuration") || !__instance.modData.ContainsKey("AlternativeTextureElapsedDuration"))
+                    if (!__instance.modData.ContainsKey("AlternativeTextureCurrentFrame") || !__instance.modData.ContainsKey("AlternativeTextureFrameIndex") || !__instance.modData.ContainsKey("AlternativeTextureFrameDuration") || !__instance.modData.ContainsKey("AlternativeTextureElapsedDuration"))
                     {
                         __instance.modData["AlternativeTextureCurrentFrame"] = "0";
+                        __instance.modData["AlternativeTextureFrameIndex"] = "0";
                         __instance.modData["AlternativeTextureFrameDuration"] = textureModel.GetAnimationDataAtIndex(textureVariation, 0).Duration.ToString();// Animation.ElementAt(0).Duration.ToString();
                         __instance.modData["AlternativeTextureElapsedDuration"] = "0";
                     }
 
                     var currentFrame = Int32.Parse(__instance.modData["AlternativeTextureCurrentFrame"]);
+                    var frameIndex = Int32.Parse(__instance.modData["AlternativeTextureFrameIndex"]);
                     var frameDuration = Int32.Parse(__instance.modData["AlternativeTextureFrameDuration"]);
                     var elapsedDuration = Int32.Parse(__instance.modData["AlternativeTextureElapsedDuration"]);
 
                     if (elapsedDuration >= frameDuration)
                     {
-                        currentFrame = currentFrame + 1 >= textureModel.GetAnimationData(textureVariation).Count() ? 0 : currentFrame + 1;
+                        frameIndex = frameIndex + 1 >= textureModel.GetAnimationData(textureVariation).Count() ? 0 : frameIndex + 1;
+
+                        var animationData = textureModel.GetAnimationDataAtIndex(textureVariation, frameIndex);
+                        currentFrame = animationData.Frame;
 
                         __instance.modData["AlternativeTextureCurrentFrame"] = currentFrame.ToString();
-                        __instance.modData["AlternativeTextureFrameDuration"] = textureModel.GetAnimationDataAtIndex(textureVariation, currentFrame).Duration.ToString();
+                        __instance.modData["AlternativeTextureFrameIndex"] = frameIndex.ToString();
+                        __instance.modData["AlternativeTextureFrameDuration"] = animationData.Duration.ToString();
                         __instance.modData["AlternativeTextureElapsedDuration"] = "0";
                     }
                     else

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace XSPlus.Features;
 
 using System;

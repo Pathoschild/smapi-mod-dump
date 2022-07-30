@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Dynamic Bodies",
+  "Author": "ribeena",
+  "Version": "0.0.2",
+  "Description": "Make per Farmer changes to your body's appearance.",
+  "UniqueID": "ribeena.dynamicbodies",
+  "EntryDll": "DynamicBodies.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "TheMightyAmondee.GoodbyeAmericanEnglish",
+      "IsRequired": false
+    },
+  ],
+}

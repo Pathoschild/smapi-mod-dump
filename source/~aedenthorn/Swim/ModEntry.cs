@@ -51,11 +51,11 @@ namespace Swim
         public static Dictionary<string, DiveMap> diveMaps = new Dictionary<string, DiveMap>();
 
         public static Dictionary<string,bool> changeLocations = new Dictionary<string, bool> {
-            {"UnderwaterMountain", false },
+            {"Custom_UnderwaterMountain", false },
             {"Mountain", false },
             {"Town", false },
             {"Forest", false },
-            {"UnderwaterBeach", false },
+            {"Custom_UnderwaterBeach", false },
             {"Beach", false },
         };
 
@@ -65,11 +65,11 @@ namespace Swim
             "Beach",
             "Forest",
             "Mountain",
-            "UnderwaterBeach",
-            "UnderwaterMountain",
-            "ScubaCave",
-            "ScubaAbigailCave",
-            "ScubaCrystalCave",
+            "Custom_UnderwaterBeach",
+            "Custom_UnderwaterMountain",
+            "Custom_ScubaCave",
+            "Custom_ScubaAbigailCave",
+            "Custom_ScubaCrystalCave",
         };
 
         public override void Entry(IModHelper helper)
@@ -94,6 +94,7 @@ namespace Swim
             helper.Events.GameLoop.DayStarted += SwimHelperEvents.GameLoop_DayStarted;
             helper.Events.GameLoop.GameLaunched += SwimHelperEvents.GameLoop_GameLaunched;
             helper.Events.GameLoop.SaveLoaded += SwimHelperEvents.GameLoop_SaveLoaded;
+            helper.Events.GameLoop.Saving += SwimHelperEvents.GameLoop_Saving;
             helper.Events.Display.RenderedHud += SwimHelperEvents.Display_RenderedHud;
             helper.Events.Display.RenderedWorld += SwimHelperEvents.Display_RenderedWorld;
             helper.Events.Player.InventoryChanged += SwimHelperEvents.Player_InventoryChanged;
@@ -206,13 +207,6 @@ namespace Swim
                 return true;
             }
 
-            string name = asset.AssetName.Replace("/", "\\");
-
-            if (name.Equals("Maps\\CrystalCave") || name.Equals("Maps\\CrystalCaveDark"))
-            {
-                return true;
-            }
-
 
             return false;
         }
@@ -223,15 +217,6 @@ namespace Swim
         {
             Monitor.Log($"loading asset for {asset.AssetName}");
 
-
-            string name = asset.AssetName.Replace("/", "\\");
-
-            if (name.Equals("Maps\\CrystalCave") || name.Equals("Maps\\CrystalCaveDark"))
-            {
-                return (T)(object)Helper.Content.Load<Map>($"assets/tmx-pack/assets/{name.Substring(5)}.tbin");
-            }
-
-             
             if (asset.AssetName.StartsWith("Fishies"))
             {
                 return (T)(object)Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}.png");
@@ -243,13 +228,14 @@ namespace Swim
         /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanEdit<T>(IAssetInfo asset)
         {
+            return false;
             if (!config.EnableMod)
                 return false;
 
             foreach(string key in changeLocations.Keys)
             {
                 if (asset.AssetNameEquals($"Maps/{key}"))
-                    return false;
+                    return true;
 
             }
 
@@ -274,7 +260,7 @@ namespace Swim
                         if (SwimUtils.doesTileHaveProperty(map.Data, x, y, "Water", "Back") != null)
                         {
                             Tile tile = map.Data.GetLayer("Back").PickTile(new Location(x, y) * Game1.tileSize, Game1.viewport.Size);
-                            if (tile != null && (((mapName == "Beach" || mapName == "UnderwaterBeach") && x > 58 && x < 61 && y > 11 && y < 15) || mapName != "Beach"))
+                            if (tile != null && (((mapName == "Beach" || mapName == "Custom_UnderwaterBeach") && x > 58 && x < 61 && y > 11 && y < 15) || mapName != "Beach"))
                             {
                                 if (tile.TileIndexProperties.ContainsKey("Passable"))
                                 {
@@ -304,8 +290,8 @@ namespace Swim
                             if (tile != null)
                             {
                                 if (
-                                    ((mapName == "Beach" || mapName == "UnderwaterBeach") && x > 58 && x < 61 && y > 11 && y < 15) ||
-                                    (mapName != "Beach" && mapName != "UnderwaterBeach"
+                                    ((mapName == "Beach" || mapName == "Custom_UnderwaterBeach") && x > 58 && x < 61 && y > 11 && y < 15) ||
+                                    (mapName != "Beach" && mapName != "Custom_UnderwaterBeach"
                                         && ((tile.TileIndex > 1292 && tile.TileIndex < 1297) || (tile.TileIndex > 1317 && tile.TileIndex < 1322)
                                             || (tile.TileIndex % 25 > 17 && tile.TileIndex / 25 < 53 && tile.TileIndex / 25 > 48)
                                             || (tile.TileIndex % 25 > 1 && tile.TileIndex % 25 < 7 && tile.TileIndex / 25 < 53 && tile.TileIndex / 25 > 48)

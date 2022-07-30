@@ -1,22 +1,24 @@
 {
-  "Name": "Giant Crop Fertilizer",
-  "Author": "atravita",
-  "Version": "0.1.5",
-  "Description": "Adds a fertilizer that forces giant crops.",
-  "UniqueID": "atravita.GiantCropFertilizer",
-  "EntryDll": "GiantCropFertilizer.dll",
-  "UpdateKeys": [
-    "Nexus:11620",
-    "GitHub:atravita-mods/GiantCropFertilizer"
-  ],
-  "MinimumApiVersion": "3.14",
   "Dependencies": [
     {
       "UniqueID": "spacechase0.JsonAssets",
-      "MinimumVersion": "1.10.3"
+      "MinimumVersion": "1.10.6"
     },
     {
       "UniqueID": "spacechase0.SpaceCore"
+    },
+    {
+      "UniqueID": "atravita.AtraCore"
     }
+  ],
+  "EntryDll": "GiantCropFertilizer.dll",
+  "Name": "Giant Crop Fertilizer",
+  "Author": "atravita",
+  "Version": "0.2.0",
+  "Description": "Adds a fertilizer that forces giant crops.",
+  "UniqueID": "atravita.GiantCropFertilizer",
+  "MinimumApiVersion": "3.15",
+  "UpdateKeys": [
+    "Nexus:11620"
   ]
 }

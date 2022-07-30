@@ -47,6 +47,9 @@ public class ModEntry : Mod
         // initialize logger
         Log.Init(Monitor);
 
+        // check for Moon Misadventures before verifying configs
+        HasLoadedMoonMisadventures = helper.ModRegistry.IsLoaded("spacechase0.MoonMisadventures");
+        
         // get and verify configs
         Config = Helper.ReadConfig<ToolConfig>();
         VerifyConfigs();
@@ -59,9 +62,6 @@ public class ModEntry : Mod
 
         // register commands
         new CommandHandler(helper.ConsoleCommands).Register("itools", "Power Tools");
-
-        // check for Moon Misadventures mod then verify configs
-        HasLoadedMoonMisadventures = helper.ModRegistry.IsLoaded("spacechase0.MoonMisadventures");
     }
 
     #region private methods

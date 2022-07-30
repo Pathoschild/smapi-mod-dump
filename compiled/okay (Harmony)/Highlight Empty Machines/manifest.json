@@ -1,19 +1,17 @@
 {
-  "Name": "Highlight Empty Machines",
-  "Author": "atravita",
-  "Version": "0.1.1",
-  "Description": "Highlights empty machines to make them a little more obvious.",
-  "UniqueID": "atravita.HighlightEmptyMachines",
-  "EntryDll": "HighlightEmptyMachines.dll",
-  "UpdateKeys": [
-    "Nexus:11664",
-    "GitHub:atravita-mods/HighlightEmptyMachines"
-  ],
-  "MinimumApiVersion": "3.14",
   "Dependencies": [
     {
-      "UniqueID": "Digus.ProducerFrameworkMod",
-      "IsRequired": false
+      "UniqueID": "atravita.AtraCore"
     }
+  ],
+  "EntryDll": "HighlightEmptyMachines.dll",
+  "Name": "Highlight Empty Machines",
+  "Author": "atravita",
+  "Version": "0.2.0",
+  "Description": "Highlights empty machines to make them a little more obvious.",
+  "UniqueID": "atravita.HighlightEmptyMachines",
+  "MinimumApiVersion": "3.15",
+  "UpdateKeys": [
+    "Nexus:11664"
   ]
 }

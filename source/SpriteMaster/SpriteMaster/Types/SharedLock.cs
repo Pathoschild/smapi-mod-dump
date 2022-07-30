@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
@@ -28,13 +29,13 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		private ReadCookie(LockType rwlock) => Lock = rwlock;
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static ReadCookie Create(LockType rwlock) {
 			rwlock.EnterReadLock();
 			return new(rwlock);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static ReadCookie TryCreate(LockType rwlock) => rwlock.TryEnterReadLock(0) ? new(rwlock) : new();
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -47,7 +48,7 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 			Lock = null;
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		public static implicit operator bool(ReadCookie cookie) => cookie.Lock is not null;
 	}
 	[StructLayout(LayoutKind.Auto)]
@@ -57,13 +58,13 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		private ExclusiveCookie(LockType rwlock) => Lock = rwlock;
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static ExclusiveCookie Create(LockType rwlock) {
 			rwlock.EnterWriteLock();
 			return new(rwlock);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static ExclusiveCookie TryCreate(LockType rwlock) => rwlock.TryEnterWriteLock(0) ? new(rwlock) : new();
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -76,7 +77,7 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 			Lock = null;
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		public static implicit operator bool(ExclusiveCookie cookie) => cookie.Lock is not null;
 	}
 
@@ -89,13 +90,13 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 			Lock = rwlock;
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static ReadWriteCookie Create(LockType rwlock) {
 			rwlock.EnterUpgradeableReadLock();
 			return new(rwlock);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static ReadWriteCookie TryCreate(LockType rwlock) => rwlock.TryEnterUpgradeableReadLock(0) ? new(rwlock) : new();
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -108,7 +109,7 @@ internal sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 			Lock = null;
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Inline)]
+		[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 		public static implicit operator bool(ReadWriteCookie cookie) => cookie.Lock is not null;
 	}
 

@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using SpriteMaster.Extensions;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace SpriteMaster.Types;
@@ -20,22 +22,43 @@ internal sealed class Condition : IDisposable {
 
 	internal Condition(bool initialState = false) => State = initialState.ToInt();
 
+	[Pure, MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static implicit operator bool(Condition condition) => condition.State.ToBool();
 
 	// This isn't quite thread-safe, but the granularity of this in our codebase is really loose to begin with. It doesn't need to be entirely thread-safe.
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal bool Wait() {
 		Event!.WaitOne();
 		return State.ToBool();
 	}
 
+	// This isn't quite thread-safe, but the granularity of this in our codebase is really loose to begin with. It doesn't need to be entirely thread-safe.
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal bool WaitClear() {
+		var result = Wait();
+		Clear();
+		return result;
+	}
+
+	// This isn't quite thread-safe, but the granularity of this in our codebase is really loose to begin with. It doesn't need to be entirely thread-safe.
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal bool WaitSet(bool state) {
+		var result = Wait();
+		State = state.ToInt();
+		return result;
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal void Set(bool state = true) {
 		State = state.ToInt();
 		Event!.Set();
 	}
 
 	// This clears the state without triggering the event.
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal void Clear() => State = 0;
 
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal bool GetAndClear() => Interlocked.Exchange(ref State, 0).ToBool();
 
 	~Condition() => Dispose();

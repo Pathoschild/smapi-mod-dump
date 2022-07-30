@@ -1,0 +1,10 @@
+{
+  "Name": "Fix TVs on Custom Farm Types",
+  "Author": "mouse",
+  "Version": "1.0.0",
+  "Description": "Makes TVs spawned by map property work like TVs instead of dressers.",
+  "UniqueID": "mouse.FixTVsOnCustomFarmTypes",
+  "EntryDll": "FixTVsOnCustomFarmTypes.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:12717"]
+}

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace MoreChests.Services;
 
 using System.Collections.Generic;

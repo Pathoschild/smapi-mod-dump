@@ -51,13 +51,13 @@ namespace PersonalAnvil
             Game1.currentLocation.Objects.TryGetValue(tile, out var obj);
             if (obj == null || !obj.bigCraftable.Value) return;
             if (obj.ParentSheetIndex.Equals(_anvilId))
-                Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper.Content);
+                Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper.ModContent);
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             _jsonAssets = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-            _jsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
+            _jsonAssets?.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
         }
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -66,12 +66,12 @@ namespace PersonalAnvil
             if (!e.IsMultipleOf(4) || !Helper.Input.IsDown(SButton.MouseLeft) ||
                 !(Game1.activeClickableMenu is WorkbenchGeodeMenu menu))
                 return;
-            var clintNotBusy = menu.heldItem != null && Utility.IsGeode(menu.heldItem) && menu.GeodeAnimationTimer <= 0;
+            var clintNotBusy = menu.heldItem != null && Utility.IsGeode(menu.heldItem) && menu.geodeAnimationTimer <= 0;
 
             var playerHasRoom = Game1.player.freeSpotsInInventory() > 1 || Game1.player.freeSpotsInInventory() == 1 &&
                 menu.heldItem != null && menu.heldItem.Stack == 1;
 
-            if (clintNotBusy && playerHasRoom && menu.GeodeSpot.containsPoint(_leftClickXPos, _leftClickYPos))
+            if (clintNotBusy && playerHasRoom && menu.geodeSpot.containsPoint(_leftClickXPos, _leftClickYPos))
             {
                 menu.receiveLeftClick(_leftClickXPos, _leftClickYPos, false);
             }

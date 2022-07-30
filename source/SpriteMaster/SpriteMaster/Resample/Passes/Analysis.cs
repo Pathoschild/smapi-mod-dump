@@ -28,6 +28,7 @@ internal static class Analysis {
 		internal readonly Vector2B EdgeY;
 		internal readonly Vector2B GradientAxial;
 		internal readonly Vector2B GradientDiagonal;
+		internal readonly int OpaqueCount;
 		internal readonly int MaxChannelShades;
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -39,6 +40,7 @@ internal static class Analysis {
 			Vector2B edgeY,
 			Vector2B gradientAxial,
 			Vector2B gradientDiagonal,
+			int opaqueCount,
 			int maxChannelShades
 		) {
 			Wrapped = wrapped;
@@ -48,6 +50,7 @@ internal static class Analysis {
 			EdgeY = edgeY;
 			GradientAxial = gradientAxial;
 			GradientDiagonal = gradientDiagonal;
+			OpaqueCount = opaqueCount;
 			MaxChannelShades = maxChannelShades;
 		}
 	}
@@ -164,7 +167,6 @@ internal static class Analysis {
 				for (int x = 1; x < bounds.Width; ++x) {
 					var currColor = data[offset + x];
 
-					//if (Config.Resample.Analysis.UseRedmean)
 					var difference = prevColor.RedmeanDifference(currColor, linear: false, alpha: true);
 
 					if (difference >= Config.Resample.Analysis.MaxGradientColorDifference) {
@@ -183,7 +185,6 @@ internal static class Analysis {
 			for (int y = 1; gradientAxial.Y && y < bounds.Height; ++y) {
 				for (int x = 0; x < bounds.Width; ++x) {
 					var currColor = data[offset + (y * bounds.Width) + x];
-					//if (Config.Resample.Analysis.UseRedmean)
 					var difference = prevColor.RedmeanDifference(currColor, linear: false, alpha: true);
 
 					if (difference >= Config.Resample.Analysis.MaxGradientColorDifference) {
@@ -245,6 +246,7 @@ internal static class Analysis {
 			edgeY: Vector2B.False,
 			gradientAxial: gradientAxial,
 			gradientDiagonal: gradientDiagonal,
+			opaqueCount: shadesA[255],
 			maxChannelShades: maxNumShades
 		);
 	}

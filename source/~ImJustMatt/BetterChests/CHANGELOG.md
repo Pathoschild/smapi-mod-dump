@@ -8,7 +8,81 @@ for queries and analysis.**
 
 # Better Chests Change Log
 
-## 1.7.3 (Unreleased)
+## 2.2.1 (Unreleased)
+
+* Added localization support for storage names/tooltips.
+* Require GMCM for Configurator feature.
+
+## 2.2.0 (July 15, 2022)
+
+* Added config options for each vanilla chest type.
+
+## 2.1.3 (July 13, 2022)
+
+* Added support for matching modded interface colors.
+* CarryChest will not activate if holding a tool.
+
+## 2.1.2 (July 12, 2022)
+
+* Added an extra indicator for when you're in a tab.
+* Updated tabs/search so they only fade items instead of hide them.
+* Moved config icon back to top of side buttons.
+* Fixed color changing everytime items are moved to/from a chest.
+
+## 2.1.1 (July 11, 2022)
+
+* Fixed ChestMenuTabs appearing over some hover elements.
+* Fixed Configure button not having background.
+* Fixed Island Shipping Bin not launching correctly.
+* Fixed cursor moving around on the Shipping Bin.
+* Fixed AutoOrganize crash before saving.
+
+## 2.1.0 (July 9, 2022)
+
+* Added Chest Finder.
+* Added localized tags for search and categorization.
+* Configure chest now happens from the chest inventory menu.
+* Fixed Shipping Bin not detected when launched by Chests Anywhere.
+* Fixed items not updating when you add or remove items from a chest.
+* Fixed AutoOrganize ignoring priority when moving items.
+* Improved integration with BetterCrafting for multiplayer.
+
+## 2.0.3 (July 5, 2022)
+
+* Added alert if FuryCore is installed.
+* Added additional logging of config.
+* Added additional logging of AutoOrganize.
+* Fixed displayed items turning invisible in chests.
+
+## 2.0.2 (July 2, 2022)
+
+* Fixed CraftFromChest and StashToChest not working with Sheds/Fridges.
+* Fixed wall of red text occurring when leaving farm.
+* Fixed items not being in sync after organizing.
+* Fixed error when opening up chests from ChestsAnywhere hotkey.
+
+## 2.0.1 (July 1, 2022)
+
+* Fixed Configure button being placed over community center.
+
+## 2.0.0 (July 1, 2022)
+
+* Added LabelChest feature.
+* Fixed integration with BetterCrafting.
+* Fixed crash when installed with BetterShippingBin.
+* Updated to SMAPI 3.15.0.
+* Removed dependency on FuryCore.
+
+### Changed
+
+* Added Chinese Translation
+* Added support for ModManifestBuilder.
+
+### Fixed
+
+* Updated BetterCrafting integration for v1.1.0+.
+
+## 1.7.3 (March 25, 2022)
 
 ### Changed
 

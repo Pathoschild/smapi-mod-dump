@@ -1,0 +1,8 @@
+{
+  // Keybind
+  "carry-your-pet.keybind.hold-to-carry": "Hold to Carry Pet",
+  "carry-your-pet.keybind.hold-to-carry.tooltip": "Hold this hotkey while interacting with your pet to carry it!",
+  
+  // Messages
+  "carry-your-pet.message.gmcm-not-installed": "GMCM is not installed. This is not an error."
+}

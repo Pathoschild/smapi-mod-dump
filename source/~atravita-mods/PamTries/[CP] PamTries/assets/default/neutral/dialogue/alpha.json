@@ -1,0 +1,48 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Neutral dialogue, set alpha",
+        "Entries": {
+            "Mon8": "My old man? He wasn't too present either. Spent most of his time lookin' into the bottom of a whiskey glass.#$e#Guess I took after him, huh.$s",
+            "Tue8": "#$c .5#Me? I grew up here, back when this was a little mining town. Feels like that was a long time ago.#Your gramps? He'd come into the Saloon every now and then for a beer, but he mostly kept to himself.#",
+            "Wed8": "Penny prefers livin' in a small town like this, I think.#$e#Tutorin' those kids is good for her.",
+            "Thu8": "#$c .5#Doncha wish you were born wealthy? Then again, your Gramps left you that giant plot of land...#Gotta say, it's hard getting ahead when you're poor.$s#",
+            "Sat8": "Mopping is the worst chore. At least for laundry, there's a machine that makes it easier.",
+            "28_2": "Blergh. Time to balance the checkbook, again. Hopefully I've got savings this month...$s",
+            "spring_Mon8": "Gus says I need to be eatin' better. Less microwave meals, more home cookin'.#$e#I'm no good at cookin', though.",
+            "spring_Tue8": "It's spring cleanin' season, I guess. Argh. Housework never ends.#$e#Go to work, come home, do housework, sleep. Day in, day out.#$e#I guess this is just how life is.$s",
+            "spring_Wed8": "@, what's it like living in the city?",
+            "spring_Fri10": "Yoba, I do not want to give up bread.$s#$e#Doc says I need to. My 'A1c' isn't great, whatever that is.",
+            "spring_Sun10": "Ma used to bring me leftovers after she was done with work.#$e#She used to work as a waitress. Little breakfast place. It folded after the mines closed.#$e#No one made pancakes like that place. No, not even Gus.",
+            "spring_11_2": "Penny's father? His parents were divorced; he was only in town with his pa in summers.#$e#His pa was a miner, just like mine.",
+            "summer_Mon10": "#$c .5#Gus made me try his new spaghetti recipe. It's even better than his previous one.$h#Gus offered me a Lucky Lunch. Not sure I wanna eat a sea cucumber, though.#",
+            "summer_Wed10": "#$c .5#What do ya do all day on that farm of yours?#Whatcha growin' on that farm of yours?#",
+            "summer_Thu8": "#$c .5#Why is it so hard to lose weight?$s#Kiddo, it's no fun getting old.$s",
+            "summer_Sun10": "Hard to tell how clothing is gunna look on you when none of the models in the catalogues look like you.$s#$e#Wish I knew how to sew. Pa did, but he never had the time to teach me.",
+            "summer_3_2": "Argh. I have to vacuum. Again.#$e#I swear the dust bunnies multiply by themselves...#$e#Maybe I'll buy one of those little vaccuum robots....",
+            "fall_Mon10": "#$c .5#Argh. Why is there always more laundry to do?#You wouldn't think microwave meals would cause so many dishes...",
+            "fall_Wed10": "The trailer? My ma left it to me. She always wanted to explore the world.#$b#She never got to. Had to raise me, and then she had to help me raise Penny.#$e#She died seven or so years ago. Never got the chance.",
+            "fall_Sat10": "#$c .5#Wish I had the money to send Penny to college. She deserves a better future than what I can give her.$s#Penny prefers the small-town life, but sometimes I wonder where'd she be if I had the cash to send her to college. She's a smart girl.#",
+            "fall_Sun10": "#$c .5#Doc says I should exercise more. What counts as 'low-impact exercise'?#Been walkin' around a little more. Doc says that's good exercise.#",
+            "winter_Mon10": "#$c .5#We used to have a vendor come down to the fair and showcase fancy beers. Some of them were pretty nice. Others, not so much.#Gus gets up absurdly early in the mornin' to make bread for the Saloon. Then he stays up until midnight tendin' bar. When does the man sleep?#",
+            "winter_Tue10": "#$c .5#When did the Community Center fall into disrepair? Huh, I dunno. Probably around the same time as the mine closed.#Joja bought the rights to the mine some time back. They thought they could drain out a little more profit from it.#",
+            "winter_Wed10": "#$c .5#Maybe I should go fishing? Nah, not today. Not feelin' it.#Not sure what I should do with my life...$s#",
+            "winter_Fri10": "Pappy worked in the mines when he did work.#$e#He was a blaster. Always knew the best places to put an explosive...",
+            "winter_Sat10": "Ma died around this time of year. I miss her so much.$s#$e#She loved winters, loved the snow. Pa used to gather crocus for her.",
+            "winter_Sun10": "#$c .5#Wonder if I can convince Lewis to get the library to carry movies?#Thinkin' of ordering a movie or two. Say, @, seen anything interesting recently?#",
+            "winter_14_2": "Electric price are goin' up again. Glad this house has gas heating.",
+            "winter_24_2": "@, are you looking forward to the Feast of the Winter Star? I certainly am! The food will be excellent!"
+        }
+    }
+]}

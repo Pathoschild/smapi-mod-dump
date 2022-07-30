@@ -34,9 +34,9 @@ internal sealed class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object? sender, DayStartedEventArgs e)
     {
-        var forgottenRecipes = ModDataIO.ReadData(Game1.player, ModData.ForgottenRecipesDict.ToString())
+        var forgottenRecipes = ModDataIO.ReadFrom(Game1.player, "ForgottenRecipesDict")
             .ParseDictionary<string, int>();
-        if (!forgottenRecipes.Any())
+        if (forgottenRecipes.Count <= 0)
         {
             Unhook();
             return;
@@ -57,7 +57,7 @@ internal sealed class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
             }
         }
 
-        ModDataIO.WriteData(Game1.player, ModData.ForgottenRecipesDict.ToString(), forgottenRecipes.Any()
+        ModDataIO.WriteTo(Game1.player, "ForgottenRecipesDict", forgottenRecipes.Count > 0
             ? forgottenRecipes.Stringify()
             : null);
         Unhook();

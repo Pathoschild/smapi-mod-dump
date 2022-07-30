@@ -14,16 +14,16 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using UIInfoSuite.Infrastructure;
-using UIInfoSuite.Infrastructure.Extensions;
+using UIInfoSuite2.Infrastructure;
+using UIInfoSuite2.Infrastructure.Extensions;
 
-namespace UIInfoSuite.UIElements
+namespace UIInfoSuite2.UIElements
 {
-    class ShowSeasonalBerry : IDisposable
+    internal class ShowSeasonalBerry : IDisposable
     {
         #region Properties
 
-        Rectangle? _berrySpriteLocation;
+        private Rectangle? _berrySpriteLocation;
         private float _spriteScale = 8 / 3f;
         private string _hoverText;
         private ClickableTextureComponent _berryIcon;
@@ -129,7 +129,7 @@ namespace UIInfoSuite.UIElements
                     _hoverText = _helper.SafeGetString(LanguageKeys.CanFindBlackberry);
                     _spriteScale = 5 / 2f;
                     break;
-                case "fall" when day >= 14 && ShowHazelnut:
+                case "fall" when day >= 15 && ShowHazelnut:
                     _berrySpriteLocation = new Rectangle(1, 274, 14, 14);
                     _hoverText = _helper.SafeGetString(LanguageKeys.CanFindHazelnut);
                     _spriteScale = 20 / 7f;

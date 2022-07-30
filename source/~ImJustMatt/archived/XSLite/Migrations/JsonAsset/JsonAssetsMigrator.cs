@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace XSLite.Migrations.JsonAsset;
 
 using System.Collections.Generic;

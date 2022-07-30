@@ -8,16 +8,14 @@
 **
 *************************************************/
 
-using StardewValley;
-using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Object = StardewValley.Object;
 using static MachineAugmentors.Harmony.GamePatches;
+using StardewValley;
+using System.Collections.Generic;
+using System;
+using StardewModdingAPI;
+using System.Linq;
 
 namespace MachineAugmentors.Items
 {
@@ -249,7 +247,7 @@ namespace MachineAugmentors.Items
         public bool TryFindAugmentedTile(Object Machine, int TileX, int TileY, out AugmentedTile Result)
         {
             Result = null;
-            if (Machine == null || !Machine.bigCraftable || !Machine.isPlaceable())
+            if (Machine == null || !Machine.bigCraftable.Value || !Machine.isPlaceable())
                 return false;
 
             string Key = AugmentedLocation.EncodeTileToString(TileX, TileY);
@@ -539,12 +537,12 @@ namespace MachineAugmentors.Items
         public Object Machine { get; }
 
         public Object PreviousHeldObject { get; }
-        public Object CurrentHeldObject { get { return Machine?.heldObject; } }
+        public Object CurrentHeldObject { get { return Machine?.heldObject.Value; } }
         public int PreviousHeldObjectQuantity { get; }
         public int CurrentHeldObjectQuantity { get { return CurrentHeldObject == null ? 0 : CurrentHeldObject.Stack; } }
 
         public bool PreviousIsReadyForHarvest { get; }
-        public bool CurrentIsReadyForHarvest { get { return Machine.readyForHarvest; } }
+        public bool CurrentIsReadyForHarvest { get { return Machine.readyForHarvest.Value; } }
         public int PreviousMinutesUntilReady { get; }
         public int CurrentMinutesUntilReady { get { return Machine.MinutesUntilReady; } }
 
@@ -552,7 +550,7 @@ namespace MachineAugmentors.Items
         {
             this.Machine = Machine;
 
-            this.PreviousHeldObject = Machine.heldObject;
+            this.PreviousHeldObject = Machine.heldObject.Value;
             this.PreviousHeldObjectQuantity = PreviousHeldObject == null ? 0 : PreviousHeldObject.Stack;
             this.PreviousIsReadyForHarvest = Machine.readyForHarvest.Value;
             this.PreviousMinutesUntilReady = Machine.MinutesUntilReady;

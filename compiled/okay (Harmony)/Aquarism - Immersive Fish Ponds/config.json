@@ -1,3 +1,4 @@
 {
-  "RoeProductionChanceMultiplier": 1.0
+  "RoeProductionChanceMultiplier": 1.0,
+  "DaysUntilAlgaeSpawn": 2
 }

@@ -1,0 +1,29 @@
+﻿{
+  "Name": "Marry Morris",
+  "Author": "Yoshimax",
+  "Version": "1.2.2",
+  "Description": "This mod allows you to marry Morris.",
+  "UniqueID": "Yoshimax.MarryMorrisCode",
+  "EntryDll": "MarryMorris.dll",
+  "MinimumApiVersion":  "3.0.0",
+  "UpdateKeys": ["Nexus:12824"],
+  "Dependencies": [
+    {
+      "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Digus.CustomKissingMod",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "MabelSyrup.ResetTerrainFeatures",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "aedenthorn.ExtraMapLayers",
+      "IsRequired": true
+    }
+
+  ]
+}

@@ -32,7 +32,7 @@ internal static class Line {
 	private static LineDrawOutputData PreviousOutputData = new();
 
 	[Harmonize(
-		typeof(Utility),
+		typeof(StardewValley.Utility),
 		"drawLineWithScreenCoordinates",
 		Harmonize.Fixation.Prefix,
 		Harmonize.PriorityLevel.Last,

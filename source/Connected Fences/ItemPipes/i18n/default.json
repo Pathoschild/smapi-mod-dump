@@ -54,6 +54,10 @@
 
   //Warnings
   "warning.cloggedItems_1": "[Item Pipes] Check mail for recovery, or read the smapi log if not found",
-  "warning.cloggedItems_2": "[Item Pipes] Some pipes where clogged with items when saving and they were removed"
+  "warning.cloggedItems_2": "[Item Pipes] Some pipes where clogged with items when saving and they were removed",
+  "warning.inputFull": "[Item Pipes] An input pipe couldn't insert an item because its container is full. Item sent back to output.",
+  "warning.outputFull": "[Item Pipes] An output pipe couldn't insert an item back because its container is full. Item dropped."
+
+
 
 }

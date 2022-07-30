@@ -14,14 +14,14 @@
 	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include ="StardewValley.Object" Alias="SObject"/>
-		<Using Include ="StardewValley"/>
-		<Using Include ="StardewModdingAPI"/>
-		<Using Include ="StardewModdingAPI.Events"/>
-		<Using Include ="SullySDVcore"/>
+		<Using Include="StardewValley.Object" Alias="SObject" />
+		<Using Include="StardewValley" />
+		<Using Include="StardewModdingAPI" />
+		<Using Include="StardewModdingAPI.Events" />
+		<Using Include="SullySDVcore" />
 	</ItemGroup>
 </Project>

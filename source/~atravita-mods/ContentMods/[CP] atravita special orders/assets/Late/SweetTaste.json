@@ -1,0 +1,104 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "Sweet Taste - Strings",
+        "Action": "EditData",
+        "Target": "Strings/SpecialOrderStrings",
+        "Entries": {
+            "atravita.SweetTaste.Text": "{Greeting} {{i18n:atravita.sweet_taste.text}}"
+        }
+    },
+    {
+        "LogName": "Sweet Taste - Special Order",
+        "Action": "EditData",
+        "Target": "Data/SpecialOrders",
+        "Entries": {
+            "atravita.SweetTaste": {
+                "Name": "{{i18n:atravita.sweet_taste.name}}",
+                "Requester": "Lewis",
+                "Duration": "Month",
+                "Repeatable": "{{Repeatability}}",
+                //because of the way Special Orders are coded, using CP's "When" field is fragile.
+                //using mail flags to delay these quests
+                "RequiredTags": "season_fall, mail_MSB_Pierre, mail_winter_19_2",
+                "OrderType": "",
+                "SpecialRule": "",
+                "ItemToRemoveOnEnd": null,
+                "MailToRemoveOnEnd": null,
+                "Text": "[atravita.SweetTaste.Text]",
+                "RandomizedElements": [
+                    {
+                        "Name": "Greeting",
+                        "Values": [
+                            {
+                                "RequiredTags": "!mail_atravita_SweetTaste_Reward",
+                                "Value": "{{i18n:atravita.sweet_taste.greeting_initial}}"
+                            },
+                            {
+                                "RequiredTags": "mail_atravita_SweetTaste_Reward",
+                                "Value": "{{i18n:atravita.sweet_taste.greeting_repeat}}"
+                            }
+                        ]
+                    }
+                ],
+                "Objectives": [
+                    {
+                        "Type": "Collect",
+                        "Text": "{{i18n:atravita.sweet_taste.collect_beets}}",
+                        "RequiredCount": "250",
+                        "Data": {
+                            "AcceptedContextTags": "item_beet"
+                        }
+                    },
+                    {
+                        "Type": "Ship",
+                        "Text": "{{i18n:atravita.sweet_taste.ship_beets}}",
+                        "RequiredCount": "250",
+                        "Data": {
+                            "AcceptedContextTags": "item_beet"
+                        }
+                    },
+                    {
+                        "Type": "Collect",
+                        "Text": "{{i18n:atravita.sweet_taste.collect_honey}}",
+                        "RequiredCount": "100",
+                        "Data": {
+                            "AcceptedContextTags": "honey_item"
+                        }
+                    },
+                    {
+                        "Type": "Ship",
+                        "Text": "{{i18n:atravita.sweet_taste.ship_honey}}",
+                        "RequiredCount": "100",
+                        "Data": {
+                            "AcceptedContextTags": "honey_item"
+                        }
+                    }
+                ],
+                "Rewards": [
+                    {
+                        "Type": "Money",
+                        "Data": {"Amount": "2500"}
+                    },
+                    {
+                        "Type": "Mail",
+                        "Data": {
+                            "MailReceived": "atravita_SweetTaste_Reward",
+                            "NoLetter": "false"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+    ]
+}

@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/YTSC/StardewValleyMods
+**
+*************************************************/
+
+{
+  "InfinitySlingshotName": "Estilingue do Infinito",
+  "InfinitySlingshotDescription": "A verdadeira forma do Estilingue da Galáxia",
+  "AutomatedEnchantment": "Automático",
+  "ExpertEnchantment": "Especialista",
+  "HunterEnchantment": "Caçador",
+  "PreservingEnchantment": "Preservante",
+  "MinerEnchantment": "Minerador",
+  "BugKillerEnchantment": "Matador de Insetos",
+  "PreciseEnchantment": "Preciso",
+  "SwiftEnchantment": "Rápido",
+  "VampiricEnchantment": "Vampírico",
+  "MagneticEnchantment": "Magnético",
+  "GeminiEnchantment": "Gêmeos"
+}

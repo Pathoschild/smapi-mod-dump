@@ -65,7 +65,7 @@ namespace BetterBeehouses
             var entry = ModEntry.helper.ModContent.Load<v>($"assets/{path}");
             model.Add(key, entry);
         }
-        public static string Normalize(this string str)
+        public static string Uniformize(this string str)
         {
             var s = str.AsSpan();
             var r = new Span<char>(new char[s.Length]);
@@ -76,19 +76,19 @@ namespace BetterBeehouses
                 if (!char.IsWhiteSpace(s[i]))
                     continue;
 
-                if (i - last <= 0)
+                if (i - last <= 1)
                 {
-                    last = i;
+                    last = i + 1;
                     continue;
                 }
 
                 s[last..i].CopyTo(r[len..]);
-                len += last - i;
+                len += i - last;
                 last = i + 1;
             }
             if (last < s.Length)
             {
-                s[last..s.Length].CopyTo(r[len..]);
+                s[last..].CopyTo(r[len..]);
                 len += s.Length - last;
             }
             return new string(r[..len]).ToLowerInvariant();

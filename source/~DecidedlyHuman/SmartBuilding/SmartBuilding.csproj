@@ -1,25 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<!-- ModBuildConfig settings. -->
-	<Import Project="..\Build\SDV-1.5.6_SMAPI-3.14.0.targets" />
-	
-	<PropertyGroup>
-		<Version>1.6.1</Version>
-		<TargetFramework>net5.0</TargetFramework>
-	</PropertyGroup>
+	<Import Project="..\Build\SDV-1.5.6_SMAPI-3.15.x.targets" />
+	<Import Project="..\Build\Common.csproj" />
+	<Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
 
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0" />
-	</ItemGroup>
+	<PropertyGroup>
+		<Name>Smart Building</Name>
+		<Description>Allows you to build fences/walls/paths, etc. in a much more streamlined way.</Description>
+		<MinimumApiVersion>3.15.0</MinimumApiVersion>
+		<UpdateKeys>Nexus:11158</UpdateKeys>
+		<Version>1.7.4</Version>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<EnableHarmony>true</EnableHarmony>
-		<IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
-		<Nullable>enable</Nullable>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Folder Include="assets" />
-	</ItemGroup>
 
 </Project>

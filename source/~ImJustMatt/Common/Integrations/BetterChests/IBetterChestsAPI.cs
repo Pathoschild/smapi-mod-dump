@@ -8,9 +8,9 @@
 **
 *************************************************/
 
-namespace Common.Integrations.BetterChests;
+namespace StardewMods.Common.Integrations.BetterChests;
 
-using System.Collections.Generic;
+using System;
 using StardewModdingAPI;
 
 /// <summary>
@@ -19,22 +19,16 @@ using StardewModdingAPI;
 public interface IBetterChestsApi
 {
     /// <summary>
-    ///     Adds GMCM options for storage data.
+    ///     Adds all applicable config options to an existing GMCM for this storage data.
     /// </summary>
-    /// <param name="manifest">The mod's manifest.</param>
-    /// <param name="data">A dictionary of key/value strings representing storage data.</param>
-    public void AddChestOptions(IManifest manifest, IDictionary<string, string> data);
+    /// <param name="manifest">A manifest to describe the mod.</param>
+    /// <param name="storage">The storage to configure for.</param>
+    public void AddConfigOptions(IManifest manifest, IStorageData storage);
 
     /// <summary>
-    ///     Registers an Item as a storage based on its name.
+    ///     Registers a chest type based on any object containing the mod data key-value pair.
     /// </summary>
-    /// <param name="name">The name of the storage to register.</param>
-    /// <returns>True if the data was successfully saved.</returns>
-    public bool RegisterChest(string name);
-
-    /// <summary>
-    ///     Registers a mod data key to use to find the storage name.
-    /// </summary>
-    /// <param name="key">The mod data key to register.</param>
-    public void RegisterModDataKey(string key);
+    /// <param name="predicate">A function which returns true for valid storages.</param>
+    /// <param name="storage">The storage data.</param>
+    public void RegisterChest(Func<object, bool> predicate, IStorageData storage);
 }

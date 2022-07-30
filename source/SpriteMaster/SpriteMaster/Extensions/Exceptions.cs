@@ -20,19 +20,19 @@ namespace SpriteMaster.Extensions;
 internal static class Exceptions {
 	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
-	internal static void PrintTrace<T>(this T exception, [CallerMemberName] string caller = null!) where T : Exception => Debug.Trace(exception: exception, caller: caller);
+	internal static void PrintTrace<T>(this T exception, [CallerMemberName] string caller = "") where T : Exception => Debug.Trace(exception: exception, caller: caller);
 
 	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
-	internal static void PrintInfo<T>(this T exception, [CallerMemberName] string caller = null!) where T : Exception => Debug.Info(exception: exception, caller: caller);
+	internal static void PrintInfo<T>(this T exception, [CallerMemberName] string caller = "") where T : Exception => Debug.Info(exception: exception, caller: caller);
 
 	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
-	internal static void PrintWarning<T>(this T exception, [CallerMemberName] string caller = null!) where T : Exception => Debug.Warning(exception: exception, caller: caller);
+	internal static void PrintWarning<T>(this T exception, [CallerMemberName] string caller = "") where T : Exception => Debug.Warning(exception: exception, caller: caller);
 
 	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
-	internal static void PrintError<T>(this T exception, [CallerMemberName] string caller = null!) where T : Exception => Debug.Error(exception: exception, caller: caller);
+	internal static void PrintError<T>(this T exception, [CallerMemberName] string caller = "") where T : Exception => Debug.Error(exception: exception, caller: caller);
 
 	[DoesNotReturn]
 	[MethodImpl(MethodImpl.ErrorPath)]

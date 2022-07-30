@@ -21,7 +21,7 @@ internal class EventHookManager
     /// </summary>
     internal static void InitializeEventHooks()
     {
-        Globals.EventHelper.Content.AssetRequested += AssetHandler.LoadOrEditAssets;
+        Globals.EventHelper.Content.AssetRequested += AssetManager.LoadOrEditAssets;
         Globals.EventHelper.GameLoop.SaveLoaded += (_, _) => BundleManager.CheckBundleData();
         Globals.EventHelper.GameLoop.SaveCreated += (_, _) => BundleManager.CheckBundleData();
         Globals.EventHelper.GameLoop.GameLaunched += InitializeGmcmMenu;

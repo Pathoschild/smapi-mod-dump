@@ -1,0 +1,8 @@
+﻿{
+  "mod.description": "A centralized location for some of atra's helper code.",
+  // For GMCM
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled."
+}

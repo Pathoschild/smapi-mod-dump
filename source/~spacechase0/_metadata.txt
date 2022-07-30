@@ -15,10 +15,12 @@ mods:
    Console Code
    Content Code
    Content Patcher Animations
+   Controller Radial Keybindings
    Cooking Skill
    Custom Critters
    Custom NPC Fixes
    Customize Exterior
+   Dimensional Pockets
    Displays
    Dynamic Game Assets
    Dynamic Game Assets → DGA Automate
@@ -27,6 +29,7 @@ mods:
    Flower Color Picker
    Flower Rain
    Generic Mod Config Menu
+   Gradient Hair Colors
    Hybrid Crop Engine
    Json Assets
    Jump Over
@@ -60,12 +63,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit ef7179b202d8f19d2f4a075d67507ac0f29c3f72
-   Merge: 6dc41cd4 ed6d1f98
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jun 28 17:28:27 2022 -0400
+   commit 5a718ad51b6655b75c858f35d91da5837c763ae5
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Wed Jul 6 20:20:40 2022 -0400
    
-       Merge pull request #242 from atravita-mods/ShuffleFiddling
-       
-       fix my stupid mistakes
+       New mod and misc changes
    

@@ -79,7 +79,7 @@ internal abstract class Scene : IDisposable {
 		get {
 			var offsetRegion = ReferenceRegion.OffsetBy((0, RegionVerticalOffset));
 
-			if (GMCM.Setup.LockPreview) {
+			if (ConfigMenu.Setup.LockPreview) {
 				var baseScissor = SMDrawState.Device.ScissorRectangle;
 				if (offsetRegion.Y < baseScissor.Y) {
 					offsetRegion.Y = baseScissor.Y;

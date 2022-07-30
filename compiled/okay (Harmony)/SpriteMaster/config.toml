@@ -1,5 +1,5 @@
 [Config]
-ConfigVersion = "0.15.0.1"
+ConfigVersion = "0.15.0.101"
 # Should SpriteMaster be enabled? Unsetting this will disable _all_ SpriteMaster functionality.
 Enabled = true
 # Button to toggle SpriteMaster
@@ -48,6 +48,10 @@ DataStoreOverride = ""
 	# Should unowned textures be marked in the garbage collector's statistics?
 	CollectAccountUnownedTextures = false
 	ShouldCollectAccountOwnedTextures = true
+	# The amount of free memory required by SM after which it triggers hard recovery operations
+	RequiredFreeMemoryHard = 134217728
+	# The amount of free memory required by SM after which it triggers soft recovery operations
+	RequiredFreeMemorySoft = 1073741824
 	# Hysteresis applied to RequiredFreeMemory
 	RequiredFreeMemoryHysteresis = 1.5
 	# Should sprites containing season names be purged on a seasonal basis?
@@ -70,7 +74,7 @@ DataStoreOverride = ""
 	# Enable linear sampling for sprites
 	SetLinearUnresampled = false
 	# How many MSAA samples should be used?
-	MSAASamples = 1
+	AntialiasingSamples = 1
 	# Disable the depth buffer (unused in this game)
 	DisableDepthBuffer = false
 	# The default backbuffer format to request
@@ -111,12 +115,12 @@ DataStoreOverride = ""
 	Scale = true
 	# What scaling algorithm should be used by default?
 	# Legal Values: [
-	#	xBRZ, EPX/ScaleX, None
+	#	xBRZ, EPX/ScaleX, EPXLegacy, xBREPX, None
 	# ]
 	Scaler = "xBRZ"
 	# What scaling algorithm should be used for gradient sprites?
 	# Legal Values: [
-	#	xBRZ, EPX/ScaleX, None
+	#	xBRZ, EPX/ScaleX, EPXLegacy, xBREPX, None
 	# ]
 	ScalerGradient = "None"
 	# Should dynamic scaling be used (scaling based upon apparent sprite size)
@@ -222,8 +226,10 @@ DataStoreOverride = ""
 		MaxGradientColorDifference = 38
 		# Minimum different shades required (per channel) for a sprite to be a gradient?
 		MinimumGradientShades = 2
-		# Use redmean algorithm for perceptual color comparisons?
-		UseRedmean = true
+		# Maximum proportion of opaque texels for a sprite to be a gradient?
+		MaximumGradientOpaqueProportion = 0.95
+		# Minimum proportion of opaque texels for a sprite to be premultiplied?
+		MinimumPremultipliedOpaqueProportion = 0.05
 		# Experimental resample-based recolor support
 		[Config.Resample.Recolor]
 		# Should (experimental) resample-based recoloring be enabled?
@@ -324,12 +330,16 @@ DataStoreOverride = ""
 	ThrottledSynchronousLoads = true
 	# Should we fetch and load texture data within the same frame?
 	CanFetchAndLoadSameFrame = true
+	# What is the minimum number of texels in a sprite to be considered for asynchronous scaling?
+	MinimumSizeTexels = 0
 
 	[Config.ResidentCache]
 	# Should the resident cache be enabled?
 	Enabled = true
 	# Should memory cache elements always be flushed upon update?
 	AlwaysFlush = false
+	# What is the maximum size of the resident cache?
+	MaxSize = 2147483648
 	# The preferred compression algorithm for the resident cache
 	# Legal Values: [
 	#	None, Compress, Deflate, Zstd/Best
@@ -339,18 +349,18 @@ DataStoreOverride = ""
 	[Config.TextureFileCache]
 	# Should the texture memory cache be enabled?
 	Enabled = true
+	# What is the maximum size of the resident cache?
+	MaxSize = 2147483648
 
 	[Config.SuspendedCache]
 	# Should the suspended sprite cache be enabled?
 	Enabled = true
-	# What is the maximum number of sprites to store in suspended sprite cache?
-	MaxCacheCount = 2000
+	# What is the maximum size (in bytes) to store in suspended sprite cache?
+	MaxCacheSize = 4294967296
 
 	[Config.SMAPI]
 	# Should the ApplyPatch method be patched?
 	ApplyPatchEnabled = true
-	# Should ApplyPatch pin temporary memory?
-	ApplyPatchPinMemory = false
 	# Should 'GetData' be patched to use SM caches?
 	ApplyGetDataPatch = true
 
@@ -361,10 +371,10 @@ DataStoreOverride = ""
 	SmoothLines = true
 	# Should shadowed text be stroked instead?
 	StrokeShadowedText = false
-	# Should Harmony patches have inlining re-enabled?
-	HarmonyInlining = false
 	# Should the game's 'parseMasterSchedule' method be fixed and optimized?
 	FixMasterSchedule = true
+	# Should the game's 'getSchedule' method be fixed and optimized?
+	FixGetSchedule = true
 	# Should the default batch sort be replaced with a stable sort?
 	StableSort = true
 	# Should the game be prevented from going 'unresponsive' during loads?
@@ -375,16 +385,18 @@ DataStoreOverride = ""
 	EnableDirtDrawOptimizations = false
 	# Should low-level OpenGL optimizations be performed?
 	OptimizeOpenGL = true
+	# Should Texture2D.SetData be optimized?
+	OptimizeTexture2DSetData = true
+	# Should Texture2D.GetData be optimized?
+	OptimizeTexture2DGetData = true
+	# Should glCopyTexture by used?
+	UseCopyTexture = true
 
 		[Config.Extras.Pathfinding]
 		# Should NPC Warp Points code be optimized?
 		OptimizeWarpPoints = true
-		# Should Location objects be locked during concurrent pathfinding?
-		LockLocationObjects = false
-		# Should NPCs take true shortest paths?
-		TrueShortestPath = false
-		# Allow NPCs onto the farm?
-		AllowNPCsOnFarm = false
+		# Should gender-locked locations be honored?
+		HonorGenderLocking = false
 
 		[Config.Extras.Snow]
 		# Should custom snowfall be used during snowstorms?
@@ -405,15 +417,6 @@ DataStoreOverride = ""
 		PatchCustomNPCFixes = false
 		# Disable unnecessary PyTK mitigation for SpriteMaster?
 		DisablePyTKMitigation = true
-
-	[Config.TextureCache]
-	# Should the experimental SMAPI texture cache patch be enabled?
-	Enabled = true
-	# Should the PMA texture cache be enabled?
-	PMAEnabled = true
-	# Should the experimental SMAPI texture cache have high memory usage enabled?
-	# Unrecommended: This results in the game's texture being retained (and thus loaded faster) but doesn't suspend the resampled sprite instances.
-	HighMemoryEnabled = false
 
 	[Config.FileCache]
 	# Should the file cache be enabled?

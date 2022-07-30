@@ -43,7 +43,7 @@ internal sealed class ResetSkillLevelsCommand : ConsoleCommand
     /// <inheritdoc />
     public override void Callback(string[] args)
     {
-        if (!args.Any())
+        if (args.Length <= 0)
         {
             Game1.player.farmingLevel.Value = 0;
             Game1.player.fishingLevel.Value = 0;

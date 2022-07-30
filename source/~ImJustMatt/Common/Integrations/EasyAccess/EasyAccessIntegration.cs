@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace Common.Integrations.EasyAccess;
+namespace StardewMods.Common.Integrations.EasyAccess;
 
 using StardewModdingAPI;
 

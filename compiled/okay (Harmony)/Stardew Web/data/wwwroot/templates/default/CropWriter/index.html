@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    #HEAD#
+    <script>
+        function ClearFile() {
+            document.getElementById("myFile").value = null;
+        }
+        function WritText() {
+            var sUrl = "/Utils/writecrop";
+            var sText = document.getElementById("texttowrite").value;
+            var fillId = document.getElementById("fill").value;
+            var strokeId = document.getElementById("stroke").value;
+            var hoeDirt = document.getElementById("dirt").checked;
+            var mature = document.getElementById("mature").checked;
+            var font = document.getElementById("font").value;
+            var imagedata = null;
+
+            if (document.getElementById("myFile").files != null && document.getElementById("myFile").files.lenngth > 0) {
+                imagedata = URL.createObjectURL(document.getElementById("myFile").files[0]);
+            }
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Text: sText, FillId: fillId, StrokeId: strokeId, HoeDirt: hoeDirt, MatureCrop: mature, FontName: font, ImageData: imagedata })
+            };
+            if (document.getElementById("myFile").files[0]) {
+
+                var fr = new FileReader();
+                fr.onload = function () {
+                    var base64 = fr.result;
+
+                    const requestOptions1 = {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ Text: sText, FillId: fillId, StrokeId: strokeId, HoeDirt: hoeDirt, MatureCrop: mature, FontName: font, ImageData: base64 })
+                    };
+                    fetch(sUrl, requestOptions1)
+                        .then(response => response.json())
+                        .then(data => { });
+                };
+
+                fr.readAsDataURL(document.getElementById("myFile").files[0]);
+
+
+
+            }
+            else {
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Text: sText, FillId: fillId, StrokeId: strokeId, HoeDirt: hoeDirt, MatureCrop: mature, FontName: font, Image: null })
+                };
+
+                fetch(sUrl, requestOptions)
+                    .then(response => response.json())
+                    .then(data => { });
+            }
+        }
+    </script>
+</head>
+<body onload="SubPageLoaded('Utilities','CropWriter');">
+    #MENUBAR#
+
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+
+        #CONTENT#
+    </div>
+
+</body>
+</html>

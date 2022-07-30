@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "prismatic-slime-ring.name": "Prismatic Slime Ring",
+  "prismatic-slime-ring.description": "It feels...oddly cool in your hands. You're mesmerized by the colors.",
+
+  "prismatic-slime-egg.name": "Prismatic Slime Egg",
+  "prismatic-slime-egg.description": "Hatches into a prismatic slime. Are you sure this was a good idea?"
+}

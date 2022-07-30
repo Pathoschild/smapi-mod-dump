@@ -45,7 +45,14 @@
                             <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('rain',null);">Toggle Rain</button></td>
                         </tr>
                     </table>
-                    </div>
+                </div>
+                <br />
+                <div style="border:2px solid black; border-radius: 10px;padding: 5px; background: tan;margin-left:10px;">
+                    <table style="width:100%;">
+                        <tr><td class="center">Farm House</td></tr>
+                        <tr><td class="center"><button onclick="RunDebugCommand('upgradehouse', 'popup');">Upgrade</button></td></tr>
+                    </table>
+                </div>
             </td>
             <td style="width:40px;">&nbsp;</td>
             <td>
@@ -55,46 +62,33 @@
                         <tr><td class="mechanics_cell right"><button onclick="ClearBuildings();">Clear Buildings</button></td><td class="mechanics_cell">Clears all Buildings and the animals in them from the Farm.</td></tr>
                         <tr>
                             <td class="mechanics_cell right">
-                                <button onclick="Build();">Build</button>
                                 <select id="BUILDING">
-                                    <option value="Barn">Barn</option>
-                                    <option value="Coop">Coop</option>
-                                    <option value="Silo">Silo</option>
-                                    <option value="Shed">Shed</option>
-                                    <option value="Fish9Pond">Pond</option>
-                                    <option value="Greenhouse">Greenhouse</option>
+                                    #OPTIONS#
                                 </select>
+                                <button onclick="Build();">Build</button>
                             </td>
                             <td class="mechanics_cell">Builds the selected building where the Farmer is currently located.</td>
                         </tr>
                         <tr>
                             <td class="mechanics_cell right" style="width:230px;">
-                                <button onclick="SetupFarm();">Build</button>
                                 <select id="FARMTYPE">
                                     <option value="Small">Small Farm</option>
                                     <option value="Fish">Fish Farm</option>
                                     <option value="BigFarm">Big Farm</option>
                                 </select>
+                                <button onclick="SetupFarm();">Build</button>
                             </td>
                             <td class="mechanics_cell">Clears everything on the Farm and setups a new Farm.</td>
                         </tr>
                         <tr>
                             <td class="mechanics_cell right" style="width:230px;">
-                                <button onclick="AddAnimal();">Add</button>
                                 <select id="ANIMALTYPE">
-                                    <option value="Chicken">Chicken</option>
-                                    <option value="Cow">Cow</option>
-                                    <option value="Dinosaur">Dinosaur</option>
-                                    <option value="Duck">Duck</option>
-                                    <option value="Goat">Goat</option>
-                                    <option value="Pig">Pig</option>
-                                    <option value="Rabbit">Rabbit</option>
-                                    <option value="Sheep">Sheep</option>
-                                    <option value="Void Chicken">Void Chicken</option>
-                                    <option value="Ostrich">Ostrich</option>
+                                    #ANIMALS#
+
                                 </select>
+                                <button onclick="AddAnimal();">Add</button>
                             </td>
-                            <td class="mechanics_cell">Adds the selected Animal to the Farm and assigns it to a Building of the required type and has capacity.</td>
+                            <td class="mechanics_cell">Adds the selected Animal to the Aniamlhouse the Farmer is currently in.</td>
                         </tr>
                         <tr>
                             <td class="mechanics_cell right top"><button onclick="RunDebugCommand('matureall', 'popup');">Mature All Crops</button></td>
@@ -112,11 +106,11 @@
                         <tr>
                             <td class="mechanics_cell right top"><button onclick="RunDebugCommand('petall', 'popup');">Pet Animals</button></td>
                             <td class="mechanics_cell">
-                               Pets all of the livestock on the Farm.
+                                Pets all of the livestock on the Farm.
                             </td>
                         </tr>
                     </table>
-                    </div>
+                </div>
             </td>
         </tr>
     </table>

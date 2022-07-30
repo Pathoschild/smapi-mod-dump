@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
-using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,76 +27,79 @@ internal static class StableSort {
 	private static readonly Type? SpriteBatchItemType = typeof(XSpriteBatch).Assembly.GetType("Microsoft.Xna.Framework.Graphics.SpriteBatchItem");
 	private static readonly Func<object?, float>? GetSortKeyImpl = SpriteBatchItemType?.GetFieldGetter<object?, float>("SortKey");
 
-	internal static class BySortKey {
-		[MethodImpl(Runtime.MethodImpl.Inline)]
-		private static float GetSortKey(object? obj) => obj is null ? float.MinValue : GetSortKeyImpl!(obj);
+	private readonly record struct KeyType<TKey>(TKey Key, int Index) where TKey : IComparable<TKey>;
 
-		private readonly record struct KeyType(float Key, int Index);
-
-		private sealed class KeyTypeComparerClass : IComparer<KeyType> {
-			public int Compare(KeyType x, KeyType y) {
-				int result = x.Key.CompareTo(y.Key);
-				if (result != 0) {
-					return result;
-				}
-				return x.Index.CompareTo(y.Index);
+	private readonly struct KeyTypeComparer<TKey> : IComparer<KeyType<TKey>> where TKey : IComparable<TKey> {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public int Compare(KeyType<TKey> x, KeyType<TKey> y) {
+			int result = x.Key.CompareTo(y.Key);
+			if (result != 0) {
+				return result;
 			}
+			return x.Index.CompareTo(y.Index);
 		}
-		private static readonly KeyTypeComparerClass KeyTypeComparer = new();
+	}
 
-		private static KeyType[] KeyList = Array.Empty<KeyType>();
+	private interface ISortKeyGetter<TObject, TKey> where TKey : IComparable<TKey> {
+		TKey Invoke(TObject obj);
+	}
 
+	private static class TypedImpl<TKey> where TKey : IComparable<TKey> {
+		private static KeyType<TKey>[] KeyList = Array.Empty<KeyType<TKey>>();
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static KeyType<TKey>[] Get(int length) {
+			if (KeyList.Length < length) {
+				KeyList = GC.AllocateUninitializedArray<KeyType<TKey>>(length);
+			}
+
+			return KeyList;
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static void StableSortImpl<TObject, TKey, TSortKeyGetter>(TObject[] array, int index, int length, TSortKeyGetter sortKeyGetter)
+		where TKey : IComparable<TKey>
+		where TSortKeyGetter : ISortKeyGetter<TObject, TKey> {
+		int requiredLength = length + index;
+		var keyList = TypedImpl<TKey>.Get(requiredLength);
+
+		for (int i = index; i < keyList.Length; ++i) {
+			keyList[i] = new(Key: sortKeyGetter.Invoke(array[i]), Index: i);
+		}
+
+		Array.Sort(keyList, array, index, length, default(KeyTypeComparer<TKey>));
+	}
+
+	internal static class BySortKey {
+		internal readonly struct SortKeyGetter<T> : ISortKeyGetter<T, float> {
+			[MethodImpl(Runtime.MethodImpl.Inline)]
+			public readonly float Invoke(T? obj) => obj is null ? float.MinValue : GetSortKeyImpl!(obj);
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static void StableSort<T>(T[] array, int index, int length) where T : IComparable<T> {
-			int requiredLength = length + index;
-			if (requiredLength > KeyList.Length) {
-				KeyList = GC.AllocateUninitializedArray<KeyType>(requiredLength);
-			}
-			for (int i = index; i < requiredLength; ++i) {
-				KeyList[i] = new(Key: GetSortKey(array[i]), Index: i);
-			}
-
-			Array.Sort(KeyList, array, index, length, KeyTypeComparer);
+			StableSortImpl<T, float, SortKeyGetter<T>>(array, index, length, default);
 		}
 	}
 
 	internal static class ByInterface<T> where T : IComparable<T> {
-		private readonly record struct KeyType(T Key, int Index);
-
-		private sealed class KeyTypeComparerClass : IComparer<KeyType> {
-			public int Compare(KeyType x, KeyType y) {
-				int result = x.Key.CompareTo(y.Key);
-				if (result != 0) {
-					return result;
-				}
-				return x.Index.CompareTo(y.Index);
-			}
+		internal readonly struct SortKeyGetter : ISortKeyGetter<T, T> {
+			[MethodImpl(Runtime.MethodImpl.Inline)]
+			public readonly T Invoke(T obj) => obj;
 		}
-		private static readonly KeyTypeComparerClass KeyTypeComparer = new();
 
-		private static KeyType[] KeyList = Array.Empty<KeyType>();
-
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static void StableSort(T[] array, int index, int length) {
-			int requiredLength = length + index;
-			if (requiredLength > KeyList.Length) {
-				KeyList = GC.AllocateUninitializedArray<KeyType>(requiredLength);
-			}
-			for (int i = index; i < requiredLength; ++i) {
-				KeyList[i] = new(Key: array[i], Index: i);
-			}
-
-			Array.Sort(KeyList, array, index, length, KeyTypeComparer);
+			StableSortImpl<T, T, SortKeyGetter>(array, index, length, default);
 		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 	public static void ArrayStableSort<T>(T[] array, int index, int length, SpriteSortMode sortMode) where T : IComparable<T> {
-		if (DrawState.CurrentBlendState == BlendState.Additive) {
+		if (DrawState.CurrentBlendState == BlendState.Additive && sortMode != SpriteSortMode.Texture) {
 			// There is basically no reason to sort when the blend state is additive.
-			return;
-		}
-
-		if (sortMode != SpriteSortMode.FrontToBack) {
 			return;
 		}
 
@@ -129,8 +132,7 @@ internal static class StableSort {
 			Debug.Warning("Could not get accessor for SpriteBatchItem 'SortKey' - slower path being used");
 		}
 
-		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)?.MakeGenericMethod(SpriteBatchItemType);
-		//var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
+		var newMethod = typeof(StableSort).GetStaticMethod("ArrayStableSort")?.MakeGenericMethod(SpriteBatchItemType);
 
 		if (newMethod is null) {
 			Debug.Error("Could not apply SpriteBatcher stable sorting patch: could not find MethodInfo for ArrayStableSort");
@@ -138,6 +140,8 @@ internal static class StableSort {
 		}
 
 		var codeInstructions = instructions as CodeInstruction[] ?? instructions.ToArray();
+
+		bool applied = false;
 
 		IEnumerable<CodeInstruction> ApplyPatch() {
 			foreach (var instruction in codeInstructions) {
@@ -156,12 +160,13 @@ internal static class StableSort {
 
 				yield return new(OpCodes.Ldarg_1);
 				yield return new(OpCodes.Call, newMethod);
+				applied = true;
 			}
 		}
 
-		var result = ApplyPatch();
+		var result = ApplyPatch().ToArray();
 
-		if (result.SequenceEqual(codeInstructions)) {
+		if (!applied) {
 			Debug.Error("Could not apply SpriteBatcher stable sorting patch: Sort call could not be found in IL");
 		}
 

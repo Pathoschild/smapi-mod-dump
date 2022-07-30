@@ -9,8 +9,6 @@
 *************************************************/
 
 using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
@@ -30,12 +28,7 @@ namespace AutoShaker
 		public int FruitsReadyToShake
 		{
 			get => _fruitsReadyToShake;
-			set => _fruitsReadyToShake = 
-				value <= MinFruitsReady
-					? MinFruitsReady
-					: value >= MaxFruitsReady
-						? MaxFruitsReady
-						: value;
+			set => _fruitsReadyToShake = Math.Clamp(value, MinFruitsReady, MaxFruitsReady);
 		}
 		public bool ShakeTeaBushes { get; set; }
 		public bool ShakeBushes { get; set; }
@@ -70,110 +63,143 @@ namespace AutoShaker
 
 			var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>("spacechase0.GenericModConfigMenu");
 
-			gmcmApi.RegisterModConfig(manifest, ResetToDefault, () => helper.WriteConfig(this));
+			gmcmApi.Register(manifest, ResetToDefault, () => helper.WriteConfig(this));
 
 			// IsShakerActive
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Shaker Is Active",
-				"Whether or not the AutoShaker mod is active.",
-				() => IsShakerActive,
-				val => IsShakerActive = val);
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.IsShakerActive_Name,
+				tooltip: I18n.IsShakerActive_Description,
+				getValue: () => IsShakerActive,
+				setValue: val => IsShakerActive = val);
 
 			// ToggleShaker
-			{
-				//gmcmApi.RegisterSimpleOption(
-				//	manifest,
-				//	"Toggle Shaker Keybind",
-				//	"Keybinding to toggle the AutoShaker on and off.",
-				//	() => ToggleShaker,
-				//	val => ToggleShaker = val);
-
-				gmcmApi.RegisterLabel(
-					manifest,
-					"ToggleShaker Keybind Currently Unavailable",
-					"Changing the ToggleShaker keybind is currently only possible via the config.json file directly due to recent changes. This should be temporary.");
-			}
+			gmcmApi.AddKeybindList(
+				mod: manifest,
+				name: I18n.ToggleShaker_Name,
+				tooltip: I18n.ToggleShaker_Description ,
+				getValue: () => ToggleShaker,
+				setValue: val => ToggleShaker = val);
 
 			// ShakeRegularTrees
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Shake Regular Trees?",
-				"Whether or not the AutoShaker will shake regular trees that you walk by for seeds.",
-				() => ShakeRegularTrees,
-				val => ShakeRegularTrees = val);
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.ShakeRegularTrees_Name,
+				tooltip: I18n.ShakeRegularTrees_Description,
+				getValue: () => ShakeRegularTrees,
+				setValue: val => ShakeRegularTrees = val);
 
 			// ShakeFruitTrees
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Shake Fruit Trees?",
-				"Whether or not the AutoShaker will shake fruit trees that you walk by for fruit.",
-				() => ShakeFruitTrees,
-				val => ShakeFruitTrees = val);
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.ShakeFruitTrees_Name,
+				tooltip: I18n.ShakeFruitTrees_Description,
+				getValue: () => ShakeFruitTrees,
+				setValue: val => ShakeFruitTrees = val);
 
 			// FruitsReadyToShake
-			gmcmApi.RegisterClampedOption(
-				manifest,
-				"Minimum Fruits Ready to Shake",
-				"Minimum amount of fruits a Fruit Tree should have ready before the AutoShaker shakes the tree.",
-				() => FruitsReadyToShake,
-				val => FruitsReadyToShake = val,
-				MinFruitsReady,
-				MaxFruitsReady);
+			gmcmApi.AddNumberOption(
+				mod: manifest,
+				name: I18n.FruitsReadyToShake_Name,
+				tooltip: I18n.FruitsReadyToShake_Description,
+				getValue: () => FruitsReadyToShake,
+				setValue: val => FruitsReadyToShake = val,
+				min: MinFruitsReady,
+				max: MaxFruitsReady);
 
 			// ShakeTeaBushes
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Shake Tea Bushes?",
-				"Whether or not the AutoShaker will shake tea bushes that you walk by for tea leaves.",
-				() => ShakeTeaBushes,
-				val => ShakeTeaBushes = val);
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.ShakeTeaBushes_Name,
+				tooltip: I18n.ShakeTeaBushes_Description,
+				getValue: () => ShakeTeaBushes,
+				setValue: val => ShakeTeaBushes = val);
 
 			// ShakeBushes
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Shake Bushes?",
-				"Whether or not the AutoShaker will shake bushes that you walk by.",
-				() => ShakeBushes,
-				val => ShakeBushes = val);
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.ShakeBushes_Name,
+				tooltip: I18n.ShakeBushes_Description,
+				getValue: () => ShakeBushes,
+				setValue: val => ShakeBushes = val);
 
 			// UsePlayerMagnetism
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Use Player Magnetism Distance?",
-				"Whether or not the AutoShaker will shake bushes at the same distance players can pick up items. Note: Overrides 'Shake Distance'",
-				() => UsePlayerMagnetism,
-				val => UsePlayerMagnetism = val);
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.UsePlayerMagnetism_Name,
+				tooltip: I18n.UsePlayerMagnetism_Description,
+				getValue: () => UsePlayerMagnetism,
+				setValue: val => UsePlayerMagnetism = val);
 
 			// ShakeDistance
-			gmcmApi.RegisterSimpleOption(
-				manifest,
-				"Shake Distance",
-				"Distance to shake bushes when not using 'Player Magnetism.'",
-				() => ShakeDistance,
-				val => ShakeDistance = val);
+			gmcmApi.AddNumberOption(
+				mod: manifest,
+				name: I18n.ShakeDistance_Name,
+				tooltip: I18n.ShakeDistance_Description,
+				getValue: () => ShakeDistance,
+				setValue: val => ShakeDistance = val);
 		}
 	}
 
 	public interface IGenericModConfigMenu
 	{
-		void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
+		/*********
+		** Methods
+		*********/
 
-		void RegisterLabel(IManifest mod, string labelName, string labelDesc);
-		void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
-		void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
-		void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet);
-		void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet);
-		void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<SButton> optionGet, Action<SButton> optionSet);
+		/// <summary>Register a mod whose config can be edited through the UI.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="reset">Reset the mod's config to its default values.</param>
+		/// <param name="save">Save the mod's current config to the <c>config.json</c> file.</param>
+		/// <param name="titleScreenOnly">Whether the options can only be edited from the title screen.</param>
+		/// <remarks>Each mod can only be registered once, unless it's deleted via <see cref="Unregister"/> before calling this again.</remarks>
+		void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
-		void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
-		void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max);
+		/****
+		** Basic options
+		****/
 
-		void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
+		/// <summary>Add a section title at the current position in the form.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="text">The title text shown in the form.</param>
+		/// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
+		void AddSectionTitle(IManifest mod, Func<string> text, Func<string>? tooltip = null);
 
-		void RegisterComplexOption(IManifest mod, string optionName, string optionDesc,
-			Func<Vector2, object, object> widgetUpdate,
-			Func<SpriteBatch, Vector2, object, object> widgetDraw,
-			Action<object> onSave);
+		/// <summary>Add a paragraph of text at the current position in the form.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="text">The paragraph text to display.</param>
+		void AddParagraph(IManifest mod, Func<string> text);
+
+		/// <summary>Add a boolean option at the current position in the form.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="getValue">Get the current value from the mod config.</param>
+		/// <param name="setValue">Set a new value in the mod config.</param>
+		/// <param name="name">The label text to show in the form.</param>
+		/// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+		/// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
+		void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
+
+		/// <summary>Add an integer option at the current position in the form.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="getValue">Get the current value from the mod config.</param>
+		/// <param name="setValue">Set a new value in the mod config.</param>
+		/// <param name="name">The label text to show in the form.</param>
+		/// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+		/// <param name="min">The minimum allowed value, or <c>null</c> to allow any.</param>
+		/// <param name="max">The maximum allowed value, or <c>null</c> to allow any.</param>
+		/// <param name="interval">The interval of values that can be selected.</param>
+		/// <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
+		/// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
+		void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string>? tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string>? formatValue = null, string? fieldId = null);
+
+
+		/// <summary>Add a key binding list at the current position in the form.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="getValue">Get the current value from the mod config.</param>
+		/// <param name="setValue">Set a new value in the mod config.</param>
+		/// <param name="name">The label text to show in the form.</param>
+		/// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+		/// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
+		void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
 	}
 }

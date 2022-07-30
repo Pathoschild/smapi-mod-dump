@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/misty-spring/DynamicDialogues
+   Git: https://github.com/misty-spring/DynamicDialogues.git
+
+mods:
+   Dynamic Dialogues Framework
+
+latest commit:
+   commit 0a28121655da1a5373a8b2ae8086697103490876
+   Author: misty-spring <105533011+misty-spring@users.noreply.github.com>
+   Date:   Tue Jul 26 23:35:16 2022 -0400
+   
+       Update README.md
+   

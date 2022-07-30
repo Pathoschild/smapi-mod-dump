@@ -175,7 +175,7 @@ namespace WarpNetwork
             sb.AppendLine();
             sb.Append("Location: ").AppendLine(Game1.player.currentLocation.Name);
             sb.Append("Position: ").AppendLine(Game1.player.getTileLocationPoint().ToString());
-            sb.Append("DesertWarp: ").AppendLine(WarpHandler.DesertWarp.ToString());
+            sb.Append("DesertWarp: ").AppendLine(WarpHandler.DesertWarp.Value.ToString());
             sb.Append("WarpNetworkEntry: ").AppendLine(Game1.player.currentLocation.getMapProperty("WarpNetworkEntry"));
             sb.Append("Is Multiplayer: ").AppendLine(Game1.IsMultiplayer.ToString());
             sb.Append("Is Host: ").AppendLine(Game1.IsMasterGame.ToString());

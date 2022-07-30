@@ -12,13 +12,13 @@
   //Pipes
   //Iron Pipe
   "item.ironpipe.name": "Tubería de Hierro",
-  "item.ironpipe.description": "Tipo: Tubería de conexión\nLa tubería basica para conectar entradas con salidas.\nRatio: 1 stack/1 segundo.",
+  "item.ironpipe.description": "Tipo: Tubería de Conexión\nLa tubería basica para conectar entradas con salidas.\nRatio: 1 stack/1 segundo.",
   //Gold Pipe
   "item.goldpipe.name": "Tubería de Oro",
-  "item.goldpipe.description": "Tipo: Tubería de conexión\nUna tubería brillante para conectar entradas con salidas.\nRatio: 1 stack/0.5 segundos.",
+  "item.goldpipe.description": "Tipo: Tubería de Conexión\nUna tubería brillante para conectar entradas con salidas.\nRatio: 1 stack/0.5 segundos.",
   //Iridium Pipe
   "item.iridiumpipe.name": "Tubería de Iridio",
-  "item.iridiumpipe.description": "Tipo: Tubería de conexión\nForjada con iridio, es capaz de mover objectos a velocidades extremas.\nRatio: 1 stack/0.25 segundos.",
+  "item.iridiumpipe.description": "Tipo: Tubería de Conexión\nForjada con iridio, es capaz de mover objectos a velocidades extremas.\nRatio: 1 stack/0.25 segundos.",
   //Extractor Pipe
   "item.extractorpipe.name": "Tubería de Extracción",
   "item.extractorpipe.description": "Tipo: Tubería de Salida\nExtrae objectos del contenedor adjacente, y las envia por la red de tuberias.\nRatio: 1 objecto/1 segundo.",
@@ -54,6 +54,7 @@
 
   //Warnings
   "warning.cloggedItems_1": "[Item Pipes] Mira el correo para recuperar tus objetos, o lee el log de smapi",
-  "warning.cloggedItems_2": "[Item Pipes] Algunas tuberias tenian objetos cuando se guardo el juego y los objetos han sido eliminados"
-
+  "warning.cloggedItems_2": "[Item Pipes] Algunas tuberias tenian objetos cuando se guardo el juego y los objetos han sido eliminados",
+  "warning.inputFull": "[Item Pipes] Una tubería de entrada no puedo meter un objecto en su contenedor por que esta lleno. El objecto se ha enviado de vuelta a su origen.",
+  "warning.outputFull": "[Item Pipes] Una tubería de salida no puedo meter un objecto en su contenedor por que esta lleno. Objeto soltado."
 }

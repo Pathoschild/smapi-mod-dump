@@ -9,24 +9,21 @@
 *************************************************/
 
 using SpriteMaster.Configuration;
-using SpriteMaster.Types;
 using SpriteMaster.Types.MemoryCache;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Security;
 
 namespace SpriteMaster.Caching;
 
 /// <summary>
 /// Used to cache original texture data so it doesn't need to perform blocking fetches as often
 /// </summary>
-[SuppressUnmanagedCodeSecurity]
 internal static class ResidentCache {
 	internal static bool Enabled => Config.ResidentCache.Enabled;
 
-	private static readonly AbstractMemoryCache<ulong, byte> Cache = CreateCache();
+	private static readonly IMemoryCache<ulong, byte> Cache = CreateCache();
 
-	private static AbstractMemoryCache<ulong, byte> CreateCache() => AbstractMemoryCache<ulong, byte>.Create(
+	private static IMemoryCache<ulong, byte> CreateCache() => AbstractMemoryCache<ulong, byte>.Create(
 		name: "ResidentCache",
 		maxSize: Config.ResidentCache.MaxSize,
 		compressed: true

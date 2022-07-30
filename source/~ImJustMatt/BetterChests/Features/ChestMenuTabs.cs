@@ -10,265 +10,274 @@
 
 namespace StardewMods.BetterChests.Features;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
-using StardewMods.BetterChests.Enums;
-using StardewMods.BetterChests.Interfaces.Config;
-using StardewMods.BetterChests.Services;
-using StardewMods.BetterChests.UI;
-using StardewMods.FuryCore.Attributes;
-using StardewMods.FuryCore.Helpers;
-using StardewMods.FuryCore.Interfaces;
-using StardewMods.FuryCore.Interfaces.CustomEvents;
-using StardewMods.FuryCore.Interfaces.GameObjects;
-using StardewMods.FuryCore.Models.CustomEvents;
-using StardewMods.FuryCore.UI;
+using StardewMods.BetterChests.Helpers;
+using StardewMods.BetterChests.Models;
+using StardewMods.Common.Enums;
+using StardewMods.Common.Helpers;
+using StardewMods.Common.Integrations.BetterChests;
 using StardewValley;
 using StardewValley.Menus;
 
-/// <inheritdoc />
-internal class ChestMenuTabs : Feature
+/// <summary>
+///     Adds tabs to the <see cref="ItemGrabMenu" /> to filter the displayed items.
+/// </summary>
+internal class ChestMenuTabs : IFeature
 {
-    private readonly Lazy<AssetHandler> _assetHandler;
-    private readonly PerScreen<IStorageContainer> _context = new();
-    private readonly PerScreen<ItemMatcher> _itemMatcher = new(() => new(true));
-    private readonly PerScreen<ItemGrabMenu> _menu = new();
-    private readonly Lazy<IMenuComponents> _menuComponents;
-    private readonly Lazy<IMenuItems> _menuItems;
+    private static Dictionary<string, ClickableTextureComponent>? CachedTabs;
+
+    private readonly PerScreen<ItemGrabMenu?> _currentMenu = new();
+    private readonly PerScreen<IItemMatcher> _itemMatcher = new(() => new ItemMatcher(true));
     private readonly PerScreen<int> _tabIndex = new(() => -1);
-    private readonly PerScreen<IList<TabComponent>> _tabs = new();
+    private readonly PerScreen<List<ClickableTextureComponent>?> _tabs = new();
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="ChestMenuTabs" /> class.
-    /// </summary>
-    /// <param name="config">Data for player configured mod options.</param>
-    /// <param name="helper">SMAPI helper for events, input, and content.</param>
-    /// <param name="services">Provides access to internal and external services.</param>
-    public ChestMenuTabs(IConfigModel config, IModHelper helper, IModServices services)
-        : base(config, helper, services)
+    private ChestMenuTabs(IModHelper helper, ModConfig config)
     {
-        this._assetHandler = services.Lazy<AssetHandler>();
-        this._menuComponents = services.Lazy<IMenuComponents>();
-        this._menuItems = services.Lazy<IMenuItems>();
+        this.Helper = helper;
+        this.Config = config;
     }
 
-    private AssetHandler Assets
+    private static ChestMenuTabs? Instance { get; set; }
+
+    private Dictionary<string, ClickableTextureComponent> AllTabs
     {
-        get => this._assetHandler.Value;
+        get
+        {
+            if (ChestMenuTabs.CachedTabs is not null)
+            {
+                return ChestMenuTabs.CachedTabs;
+            }
+
+            var tabs = this.Helper.GameContent.Load<Dictionary<string, string>>("furyx639.BetterChests/Tabs");
+            return ChestMenuTabs.CachedTabs ??= (
+                    from tab in
+                        from tab in tabs
+                        select (tab.Key, Value: tab.Value.Split('/'))
+                    select (tab.Key, Value: new ClickableTextureComponent(
+                        tab.Value[3],
+                        new(0, 0, 16 * Game1.pixelZoom, 16 * Game1.pixelZoom),
+                        string.Empty,
+                        tab.Value[0],
+                        this.Helper.GameContent.Load<Texture2D>(tab.Value[1]),
+                        new(16 * int.Parse(tab.Value[2]), 4, 16, 12),
+                        Game1.pixelZoom)))
+                .ToDictionary(tab => tab.Key, tab => tab.Value);
+        }
     }
 
-    private IStorageContainer Context
+    private List<ClickableTextureComponent>? Components
     {
-        get => this._context.Value;
-        set => this._context.Value = value;
+        get => this._tabs.Value;
+        set => this._tabs.Value = value;
     }
+
+    private ModConfig Config { get; }
+
+    private ItemGrabMenu? CurrentMenu
+    {
+        get => this._currentMenu.Value;
+        set => this._currentMenu.Value = value;
+    }
+
+    private IModHelper Helper { get; }
 
     private int Index
     {
         get => this._tabIndex.Value;
-        set => this._tabIndex.Value = value;
+        set
+        {
+            this._tabIndex.Value = value;
+            this.ItemMatcher.Clear();
+            if (value == -1 || this.Components is null || !this.Components.Any())
+            {
+                Log.Trace("Switching tab to None");
+                BetterItemGrabMenu.RefreshItemsToGrabMenu = true;
+                return;
+            }
+
+            var tab = this.Components[value];
+            var tags = tab.name.Split(' ');
+            foreach (var tag in tags)
+            {
+                this.ItemMatcher.Add(tag);
+            }
+
+            Log.Trace($"Switching tab to {tab.hoverText}");
+            BetterItemGrabMenu.RefreshItemsToGrabMenu = true;
+        }
     }
 
-    private ItemMatcher ItemMatcher
+    private bool IsActivated { get; set; }
+
+    private IItemMatcher ItemMatcher
     {
         get => this._itemMatcher.Value;
     }
 
-    private ItemGrabMenu Menu
+    private Dictionary<string, string> Tabs
     {
-        get => this._menu.Value;
-        set => this._menu.Value = value;
-    }
-
-    private IMenuComponents MenuComponents
-    {
-        get => this._menuComponents.Value;
-    }
-
-    private IMenuItems MenuItems
-    {
-        get => this._menuItems.Value;
-    }
-
-    private IList<TabComponent> Tabs
-    {
-        get => this._tabs.Value ??= (
-                from tab in this.Assets.TabData
-                select new TabComponent(
-                    new(
-                        new(0, 0, 16 * Game1.pixelZoom, 16 * Game1.pixelZoom),
-                        this.Helper.GameContent.Load<Texture2D>(tab.Value[1]),
-                        new(16 * int.Parse(tab.Value[2]), 0, 16, 16),
-                        Game1.pixelZoom)
+        get
+        {
+            var tabs = this.Helper.Data.ReadJsonFile<Dictionary<string, string>>("assets/tabs.json");
+            if (tabs is null || !tabs.Any())
+            {
+                tabs = new()
+                {
                     {
-                        hoverText = tab.Value[0],
-                        name = tab.Key,
+                        "Clothing",
+                        "/furyx639.BetterChests\\Tabs\\Texture/0/category_clothing category_boots category_hat"
                     },
-                    tab.Value[3].Split(' ')))
-            .ToList();
+                    {
+                        "Cooking",
+                        "/furyx639.BetterChests\\Tabs\\Texture/1/category_syrup category_artisan_goods category_ingredients category_sell_at_pierres_and_marnies category_sell_at_pierres category_meat category_cooking category_milk category_egg"
+                    },
+                    {
+                        "Crops",
+                        "/furyx639.BetterChests\\Tabs\\Texture/2/category_greens category_flowers category_fruits category_vegetable"
+                    },
+                    {
+                        "Equipment",
+                        "/furyx639.BetterChests\\Tabs\\Texture/3/category_equipment category_ring category_tool category_weapon"
+                    },
+                    {
+                        "Fishing",
+                        "/furyx639.BetterChests\\Tabs\\Texture/4/category_bait category_fish category_tackle category_sell_at_fish_shop"
+                    },
+                    {
+                        "Materials",
+                        "/furyx639.BetterChests\\Tabs\\Texture/5/category_monster_loot category_metal_resources category_building_resources category_minerals category_crafting category_gem"
+                    },
+                    {
+                        "Misc",
+                        "/furyx639.BetterChests\\Tabs\\Texture/6/category_big_craftable category_furniture category_junk"
+                    },
+                    {
+                        "Seeds",
+                        "/furyx639.BetterChests\\Tabs\\Texture/7/category_seeds category_fertilizer"
+                    },
+                };
+
+                this.Helper.Data.WriteJsonFile("assets/tabs.json", tabs);
+            }
+
+            return tabs;
+        }
+    }
+
+    /// <summary>
+    ///     Initializes <see cref="ChestMenuTabs" /> class.
+    /// </summary>
+    /// <param name="helper">SMAPI helper for events, input, and content.</param>
+    /// <param name="config">Mod config data.</param>
+    /// <returns>Returns an instance of the <see cref="ChestMenuTabs" /> class.</returns>
+    public static ChestMenuTabs Init(IModHelper helper, ModConfig config)
+    {
+        return ChestMenuTabs.Instance ??= new(helper, config);
     }
 
     /// <inheritdoc />
-    protected override void Activate()
+    public void Activate()
     {
-        this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-        this.Helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
-        this.Helper.Events.Input.MouseWheelScrolled += this.OnMouseWheelScrolled;
-        this.CustomEvents.ClickableMenuChanged += this.OnClickableMenuChanged;
-        this.MenuComponents.MenuComponentsLoading += this.OnMenuComponentsLoading;
-        this.MenuComponents.MenuComponentPressed += this.OnMenuComponentPressed;
-        this.MenuItems.MenuItemsChanged += this.OnMenuItemsChanged;
+        if (!this.IsActivated)
+        {
+            this.IsActivated = true;
+            this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
+            this.Helper.Events.Display.RenderedActiveMenu += this.OnRenderedActiveMenu;
+            this.Helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            this.Helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
+            this.Helper.Events.Input.MouseWheelScrolled += this.OnMouseWheelScrolled;
+        }
     }
 
     /// <inheritdoc />
-    protected override void Deactivate()
+    public void Deactivate()
     {
-        this.Helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
-        this.Helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
-        this.Helper.Events.Input.MouseWheelScrolled -= this.OnMouseWheelScrolled;
-        this.CustomEvents.ClickableMenuChanged -= this.OnClickableMenuChanged;
-        this.MenuComponents.MenuComponentsLoading -= this.OnMenuComponentsLoading;
-        this.MenuComponents.MenuComponentPressed -= this.OnMenuComponentPressed;
-        this.MenuItems.MenuItemsChanged -= this.OnMenuItemsChanged;
+        if (this.IsActivated)
+        {
+            this.IsActivated = false;
+            this.Helper.Events.Content.AssetRequested -= this.OnAssetRequested;
+            this.Helper.Events.Display.RenderedActiveMenu += this.OnRenderedActiveMenu;
+            this.Helper.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
+            this.Helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
+            this.Helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
+            this.Helper.Events.Input.MouseWheelScrolled -= this.OnMouseWheelScrolled;
+        }
     }
 
-    [EventPriority(EventPriority.High + 10)]
-    private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+    private IEnumerable<Item> FilterByTab(IEnumerable<Item> items)
     {
-        if (this.Menu is not ItemSelectionMenu itemSelectionMenu || e.Button != SButton.MouseRight)
+        return this.ItemMatcher.Any() ? items.OrderBy(item => this.ItemMatcher.Matches(item) ? 0 : 1) : items;
+    }
+
+    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
+    {
+        if (e.Name.IsEquivalentTo("furyx639.BetterChests/Tabs"))
+        {
+            e.LoadFrom(() => this.Tabs, AssetLoadPriority.Exclusive);
+        }
+    }
+
+    private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+    {
+        if (this.CurrentMenu is null || this.Components is null)
         {
             return;
         }
 
         var (x, y) = Game1.getMousePosition(true);
-        var tab = this.Tabs.SingleOrDefault(tab => tab.Component.containsPoint(x, y));
-        if (tab is null || !itemSelectionMenu.AddTagMenu(tab.Tags, x, y))
+        var tab = this.Components.FirstOrDefault(tab => tab.containsPoint(x, y));
+        var index = tab is not null ? this.Components.IndexOf(tab) : -1;
+        switch (e.Button)
         {
-            return;
+            case SButton.MouseLeft when index != -1:
+                this.Index = this.Index == index ? -1 : index;
+                break;
+            case SButton.MouseRight when index != -1:
+                this.Index = this.Index == index ? -1 : index;
+                break;
+            default:
+                return;
         }
 
         this.Helper.Input.Suppress(e.Button);
     }
 
-    private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+    private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (this.Menu is null || Game1.activeClickableMenu != this.Menu)
+        if (this.CurrentMenu is null || this.Components is null)
         {
-            return;
-        }
-
-        if (this.Config.ControlScheme.NextTab.JustPressed())
-        {
-            this.SetTab(this.Index == this.Tabs.Count - 1 ? -1 : this.Index + 1);
-            this.Helper.Input.SuppressActiveKeybinds(this.Config.ControlScheme.NextTab);
             return;
         }
 
         if (this.Config.ControlScheme.PreviousTab.JustPressed())
         {
-            this.SetTab(this.Index == -1 ? this.Tabs.Count - 1 : this.Index - 1);
+            this.Index = this.Index == -1 ? this.Components.Count - 1 : this.Index - 1;
             this.Helper.Input.SuppressActiveKeybinds(this.Config.ControlScheme.PreviousTab);
         }
-    }
 
-    private void OnClickableMenuChanged(object sender, IClickableMenuChangedEventArgs e)
-    {
-        this.Menu = e.Menu switch
+        if (this.Config.ControlScheme.NextTab.JustPressed())
         {
-            ItemSelectionMenu itemSelectionMenu when this.Config.DefaultChest.ChestMenuTabs == FeatureOption.Enabled => itemSelectionMenu,
-            ItemGrabMenu itemGrabMenu when e.Context is not null && this.ManagedObjects.TryGetManagedStorage(e.Context, out var managedStorage) && managedStorage.ChestMenuTabs == FeatureOption.Enabled => itemGrabMenu,
-            _ => null,
-        };
-    }
-
-    [SortedEventPriority(EventPriority.Low)]
-    private void OnMenuComponentPressed(object sender, ClickableComponentPressedEventArgs e)
-    {
-        if (e.Component is not TabComponent tab || e.IsSuppressed())
-        {
-            return;
-        }
-
-        var index = this.Tabs.IndexOf(tab);
-        if (index == -1)
-        {
-            return;
-        }
-
-        if (e.Button is SButton.MouseLeft || e.Button.IsActionButton())
-        {
-            this.SetTab(this.Index == index ? -1 : index);
-        }
-
-        e.SuppressInput();
-    }
-
-    private void OnMenuComponentsLoading(object sender, IMenuComponentsLoadingEventArgs e)
-    {
-        IStorageData storageData;
-        var resetTab = false;
-        switch (e.Menu)
-        {
-            case ItemSelectionMenu when this.Config.DefaultChest.ChestMenuTabs == FeatureOption.Enabled:
-                storageData = this.Config.DefaultChest;
-                break;
-
-            case ItemGrabMenu when e.Context is not null && this.ManagedObjects.TryGetManagedStorage(e.Context, out var managedStorage) && managedStorage.ChestMenuTabs == FeatureOption.Enabled:
-                storageData = managedStorage;
-                if (!ReferenceEquals(e.Context, this.Context))
-                {
-                    this.Context = e.Context;
-                    resetTab = true;
-                }
-
-                break;
-
-            default:
-                return;
-        }
-
-        var tabs = (
-            from tabSet in storageData.ChestMenuTabSet.Select((name, index) => (name, index))
-            join tabData in this.Tabs on tabSet.name equals tabData.Name
-            orderby tabSet.index
-            select tabData).ToList();
-        foreach (var tab in tabs.Any() ? tabs : this.Tabs)
-        {
-            e.AddComponent(tab);
-        }
-
-        if (resetTab)
-        {
-            this.SetTab(-1);
+            this.Index = this.Index == this.Components.Count - 1 ? -1 : this.Index + 1;
+            this.Helper.Input.SuppressActiveKeybinds(this.Config.ControlScheme.NextTab);
         }
     }
 
-    private void OnMenuItemsChanged(object sender, IMenuItemsChangedEventArgs e)
+    private void OnMouseWheelScrolled(object? sender, MouseWheelScrolledEventArgs e)
     {
-        switch (e.Menu)
-        {
-            case ItemSelectionMenu when this.Config.DefaultChest.ChestMenuTabs == FeatureOption.Enabled:
-            case not null when e.Context is not null && this.ManagedObjects.TryGetManagedStorage(e.Context, out var managedStorage) && managedStorage.ChestMenuTabs == FeatureOption.Enabled:
-                e.AddFilter(this.ItemMatcher);
-                break;
-        }
-    }
-
-    private void OnMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
-    {
-        if (this.Menu is null)
+        if (this.CurrentMenu is null || this.Components is null)
         {
             return;
         }
 
         var (x, y) = Game1.getMousePosition(true);
-        if (!this.Tabs.Any(tab => tab.Component.containsPoint(x, y)))
+        if (!this.Components.Any(tab => tab.containsPoint(x, y)))
         {
             return;
         }
@@ -276,37 +285,142 @@ internal class ChestMenuTabs : Feature
         switch (e.Delta)
         {
             case > 0:
-                this.SetTab(this.Index == -1 ? this.Tabs.Count - 1 : this.Index - 1);
+                this.Index = this.Index == -1 ? this.Components.Count - 1 : this.Index - 1;
                 break;
             case < 0:
-                this.SetTab(this.Index == this.Tabs.Count - 1 ? -1 : this.Index + 1);
+                this.Index = this.Index == this.Components.Count - 1 ? -1 : this.Index + 1;
                 break;
             default:
                 return;
         }
     }
 
-    private void SetTab(int index)
+    [EventPriority(EventPriority.High)]
+    private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
     {
-        if (this.Index != -1)
+        if (this.CurrentMenu is null || this.Components is null)
         {
-            this.Tabs[this.Index].Selected = false;
+            return;
         }
 
-        this.Index = index;
-        if (this.Index != -1)
+        ClickableTextureComponent? tab;
+        for (var index = 0; index < this.Components.Count; index++)
         {
-            Log.Trace($"Switching to Tab {this.Tabs[this.Index].Name}.");
-            this.Tabs[this.Index].Selected = true;
-        }
-
-        this.ItemMatcher.Clear();
-        if (index != -1)
-        {
-            foreach (var tag in this.Tabs[this.Index].Tags)
+            tab = this.Components[index];
+            tab.sourceRect.Y = 4;
+            tab.sourceRect.Height = 12;
+            if (index == this.Index)
             {
-                this.ItemMatcher.Add(tag);
+                tab.sourceRect.Y = 3;
+                tab.sourceRect.Height = 13;
+                e.SpriteBatch.Draw(
+                    tab.texture,
+                    new(tab.bounds.X, tab.bounds.Y),
+                    new(128, tab.sourceRect.Y, 16, tab.sourceRect.Height),
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    Game1.pixelZoom,
+                    SpriteEffects.None,
+                    0.86f);
+                tab.draw(e.SpriteBatch, Color.White, 0.86f + tab.bounds.Y / 20000f);
+
+                // draw texture
+                var bounds = Game1.smallFont.MeasureString(tab.hoverText).ToPoint();
+                IClickableMenu.drawTextureBox(
+                    e.SpriteBatch,
+                    Game1.menuTexture,
+                    new(0, 256, 60, 60),
+                    this.CurrentMenu.xPositionOnScreen + this.CurrentMenu.width - bounds.X - Game1.tileSize - 8,
+                    tab.bounds.Y - 16,
+                    bounds.X + 32,
+                    bounds.Y + Game1.tileSize / 3,
+                    Color.White,
+                    drawShadow: false);
+
+                Utility.drawTextWithShadow(
+                    e.SpriteBatch,
+                    tab.hoverText,
+                    Game1.smallFont,
+                    new(this.CurrentMenu.xPositionOnScreen + this.CurrentMenu.width - bounds.X - Game1.tileSize + 8, tab.bounds.Y - 4),
+                    Game1.textColor);
+                continue;
             }
+
+            e.SpriteBatch.Draw(
+                tab.texture,
+                new(tab.bounds.X, tab.bounds.Y),
+                new(128, tab.sourceRect.Y, 16, tab.sourceRect.Height),
+                Color.Gray,
+                0f,
+                Vector2.Zero,
+                Game1.pixelZoom,
+                SpriteEffects.None,
+                0.86f);
+            tab.draw(e.SpriteBatch, Color.Gray, 0.86f + tab.bounds.Y / 20000f);
+        }
+
+        var (x, y) = Game1.getMousePosition(true);
+        tab = this.Components.FirstOrDefault(t => t.containsPoint(x, y));
+        if (tab is not null && !string.IsNullOrWhiteSpace(tab.hoverText))
+        {
+            IClickableMenu.drawHoverText(e.SpriteBatch, tab.hoverText, Game1.smallFont);
+        }
+    }
+
+    private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        var menu = Game1.activeClickableMenu switch
+        {
+            ItemGrabMenu itemGrabMenu => itemGrabMenu,
+            { } clickableMenu when clickableMenu.GetChildMenu() is ItemGrabMenu itemGrabMenu => itemGrabMenu,
+            _ => null,
+        };
+
+        if (!ReferenceEquals(menu, this.CurrentMenu))
+        {
+            this.CurrentMenu = menu;
+            if (this.CurrentMenu is not { context: { } context }
+                || !StorageHelper.TryGetOne(context, out var storage)
+                || storage.ChestMenuTabs == FeatureOption.Disabled)
+            {
+                this.Components = null;
+                return;
+            }
+
+            var tabs = storage.ChestMenuTabSet.Any()
+                ? this.AllTabs.Where(tab => storage.ChestMenuTabSet.Contains(tab.Key))
+                : this.AllTabs;
+
+            this.Components = tabs
+                              .Select(tab =>
+                              {
+                                  if (string.IsNullOrWhiteSpace(tab.Value.hoverText))
+                                  {
+                                      tab.Value.hoverText = this.Helper.Translation.Get($"tab.{tab.Key}.Name").Default(tab.Key);
+                                  }
+
+                                  return tab.Value;
+                              })
+                              .OrderBy(tab => tab.hoverText)
+                              .ToList();
+
+            ClickableTextureComponent? prevTab = null;
+            foreach (var tab in this.Components)
+            {
+                if (prevTab is not null)
+                {
+                    prevTab.rightNeighborID = tab.myID;
+                    tab.leftNeighborID = prevTab.myID;
+                }
+
+                tab.bounds.X = prevTab?.bounds.Right ?? this.CurrentMenu.ItemsToGrabMenu.inventory[0].bounds.Left;
+                tab.bounds.Y = this.CurrentMenu.ItemsToGrabMenu.yPositionOnScreen + Game1.tileSize * this.CurrentMenu.ItemsToGrabMenu.rows + IClickableMenu.borderWidth;
+                prevTab = tab;
+            }
+
+            BetterItemGrabMenu.ItemsToGrabMenu?.AddTransformer(this.FilterByTab);
+            BetterItemGrabMenu.ItemsToGrabMenu?.AddHighlighter(this.ItemMatcher);
         }
     }
 }

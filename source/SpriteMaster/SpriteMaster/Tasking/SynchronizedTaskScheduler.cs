@@ -14,8 +14,6 @@ using SpriteMaster.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,14 +24,8 @@ namespace SpriteMaster.Tasking;
 [DebuggerDisplay("Id={Id}, ScheduledTasks = {DebugTaskCount}")]
 internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 	internal static readonly SynchronizedTaskScheduler Instance = new();
-	internal static readonly TaskFactory TaskFactory = new(Instance);
 
-	internal static readonly Func<bool>? IsUiThread = typeof(XTexture2D).Assembly.GetType(
-		"Microsoft.Xna.Framework.Threading"
-	)?.GetMethod(
-		"IsOnUIThread",
-		BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static
-	)?.CreateDelegate<Func<bool>>();
+	private static bool IsMainThread => ThreadingExt.IsMainThread;
 
 	internal sealed class TextureActionTask : Task {
 		internal readonly TextureAction ActionData;
@@ -47,7 +39,7 @@ internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		private readonly SynchronizedTaskScheduler Scheduler;
 
 		public SynchronizedTaskSchedulerDebugView(SynchronizedTaskScheduler scheduler) {
-			Scheduler = scheduler ?? ThrowHelper.ThrowArgumentNullException<SynchronizedTaskScheduler>(nameof(scheduler));
+			Scheduler = scheduler;
 		}
 
 		public IEnumerable<Task> ScheduledTasks => Scheduler.GetScheduledTasks();
@@ -117,50 +109,52 @@ internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 			}
 		}
 
-		if (Config.AsyncScaling.Enabled) {
-			var pendingLoads = PendingDeferred.Current;
-			bool invoke;
-			lock (pendingLoads) {
-				invoke = pendingLoads.Count != 0;
+		if (!Config.AsyncScaling.Enabled) {
+			// ReSharper disable once HeuristicUnreachableCode
+			return;
+		}
+
+		var pendingLoads = PendingDeferred.Current;
+		lock (pendingLoads) {
+			if (pendingLoads.Count == 0) {
+				return;
 			}
+		}
 
-			if (invoke) {
-				PendingDeferred.Swap();
-				lock (pendingLoads) {
-					if (Config.AsyncScaling.ThrottledSynchronousLoads && !GameState.IsLoading) {
-						int processed = 0;
-						foreach (var task in pendingLoads) {
-							var estimate = TexelAverage.Estimate(task.ActionData);
-							if (DrawState.PushedUpdateWithin(0) && watch.Elapsed + estimate > remainingTime) {
-								break;
-							}
-
-							DrawState.IsUpdatedThisFrame = true;
-							var start = watch.Elapsed;
-							InvokeTask(task);
-							var duration = watch.Elapsed - start;
-							Debug.Trace($"Sprite Finished: ['{task.ActionData.Name}'] Est: {estimate.TotalMilliseconds} ms, Act: {duration.TotalMilliseconds} ms  ({task.ActionData.Size.AsDataSize()}) (rem: {remainingTime.TotalMilliseconds} ms)");
-							TexelAverage.Add(task.ActionData, duration);
-
-							++processed;
-						}
-
-						// TODO : I'm not sure if this is necessary. The next frame, it'll probably come back around again to this buffer.
-						if (processed < pendingLoads.Count) {
-							var current = PendingDeferred.Current;
-							lock (current) {
-								current.AddRange(pendingLoads.GetRange(processed, pendingLoads.Count - processed));
-							}
-						}
+		PendingDeferred.Swap();
+		lock (pendingLoads) {
+			if (Config.AsyncScaling.ThrottledSynchronousLoads && !GameState.IsLoading) {
+				int processed = 0;
+				foreach (var task in pendingLoads) {
+					var estimate = TexelAverage.Estimate(task.ActionData);
+					if (DrawState.PushedUpdateWithin(0) && watch.Elapsed + estimate > remainingTime) {
+						break;
 					}
-					else {
-						foreach (var task in pendingLoads) {
-							InvokeTask(task);
-						}
+
+					DrawState.IsUpdatedThisFrame = true;
+					var start = watch.Elapsed;
+					InvokeTask(task);
+					var duration = watch.Elapsed - start;
+					Debug.Trace($"Sprite Finished: ['{task.ActionData.Name}'] Est: {estimate.TotalMilliseconds} ms, Act: {duration.TotalMilliseconds} ms  ({task.ActionData.Size.AsDataSize()}) (rem: {remainingTime.TotalMilliseconds} ms)");
+					TexelAverage.Add(task.ActionData, duration);
+
+					++processed;
+				}
+
+				// TODO : I'm not sure if this is necessary. The next frame, it'll probably come back around again to this buffer.
+				if (processed < pendingLoads.Count) {
+					var current = PendingDeferred.Current;
+					lock (current) {
+						current.AddRange(pendingLoads.GetRange(processed, pendingLoads.Count - processed));
 					}
-					pendingLoads.Clear();
 				}
 			}
+			else {
+				foreach (var task in pendingLoads) {
+					InvokeTask(task);
+				}
+			}
+			pendingLoads.Clear();
 		}
 	}
 
@@ -208,17 +202,19 @@ internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		task.Start(this);
 	}
 
-	protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued) => (IsUiThread?.Invoke() ?? false) && TryExecuteTask(task);
+	protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued) => IsMainThread && TryExecuteTask(task);
 
 	protected override IEnumerable<Task> GetScheduledTasks() {
 		var immediate = PendingImmediate.Both;
 		var deferred = PendingDeferred.Both;
+
 		lock (immediate.Item1) lock (immediate.Item2) lock (deferred.Item1) lock (deferred.Item2) {
-			IEnumerable<Task> enumerable = immediate.Item1;
-			enumerable = enumerable.Concat(immediate.Item2);
-			enumerable = enumerable.Concat(deferred.Item1);
-			enumerable = enumerable.Concat(deferred.Item2);
-			return enumerable;
+			List<Task> tasks = new(immediate.Item1.Count + immediate.Item2.Count + deferred.Item1.Count + deferred.Item2.Count);
+			tasks.AddRange(immediate.Item1);
+			tasks.AddRange(immediate.Item2);
+			tasks.AddRange(deferred.Item1);
+			tasks.AddRange(deferred.Item2);
+			return tasks;
 		}
 	}
 

@@ -15,10 +15,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 using Common;
 using Common.Data;
 using Common.Events;
+using Common.Extensions.Collections;
 using Extensions;
 using JetBrains.Annotations;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Buildings;
 using System.Linq;
 using Ultimates;
 
@@ -44,13 +47,14 @@ internal sealed class StaticSaveLoadedEvent : SaveLoadedEvent
         // load and initialize Ultimate index
         Log.T("Initializing Ultimate...");
 
-        var superModeIndex = ModDataIO.ReadDataAs(Game1.player, ModData.UltimateIndex.ToString(), UltimateIndex.None);
+        var superModeIndex = ModDataIO.ReadFrom(Game1.player, "UltimateIndex", UltimateIndex.None);
         switch (superModeIndex)
         {
             case UltimateIndex.None when Game1.player.professions.Any(p => p is >= 26 and < 30):
-                Log.W("Player eligible for Ultimate but not currently registered to any. Setting to a default value.");
+                Log.W($"{Game1.player.Name} is eligible for an Ultimate but is not currently registered to any. A default one will be chosen.");
                 superModeIndex = (UltimateIndex)Game1.player.professions.First(p => p is >= 26 and < 30);
-                ModDataIO.WriteData(Game1.player, ModData.UltimateIndex.ToString(), superModeIndex.ToString());
+                ModDataIO.WriteTo(Game1.player, "UltimateIndex", superModeIndex.ToString());
+                Log.W($"{Game1.player.Name}'s Ultimate was set to {superModeIndex}.");
 
                 break;
 
@@ -59,12 +63,12 @@ internal sealed class StaticSaveLoadedEvent : SaveLoadedEvent
                 if (Game1.player.professions.Any(p => p is >= 26 and < 30))
                 {
                     superModeIndex = (UltimateIndex)Game1.player.professions.First(p => p is >= 26 and < 30);
-                    ModDataIO.WriteData(Game1.player, ModData.UltimateIndex.ToString(), superModeIndex.ToString());
+                    ModDataIO.WriteTo(Game1.player, "UltimateIndex", superModeIndex.ToString());
                 }
                 else
                 {
                     superModeIndex = UltimateIndex.None;
-                    ModDataIO.WriteData(Game1.player, ModData.UltimateIndex.ToString(), null);
+                    ModDataIO.WriteTo(Game1.player, "UltimateIndex", null);
                 }
 
                 break;
@@ -78,13 +82,18 @@ internal sealed class StaticSaveLoadedEvent : SaveLoadedEvent
             {
                 UltimateIndex.BruteFrenzy => new UndyingFrenzy(),
                 UltimateIndex.PoacherAmbush => new Ambush(),
-                UltimateIndex.PiperPandemic => new Enthrall(),
+                UltimateIndex.PiperPandemic => new Pandemic(),
                 UltimateIndex.DesperadoBlossom => new DeathBlossom()
             };
         }
 
         // revalidate levels
         Game1.player.RevalidateLevels();
+
+        // revalidate fish pond populations
+        Game1.getFarm().buildings.OfType<FishPond>()
+            .Where(p => (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
+                        !p.isUnderConstruction()).ForEach(p => p.UpdateMaximumOccupancy());
 
         // prepare to check for prestige achievement
         Manager.Hook<PrestigeAchievementOneSecondUpdateTickedEvent>();

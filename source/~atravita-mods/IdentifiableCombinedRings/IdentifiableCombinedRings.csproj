@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\csproj_common" />
+  <PropertyGroup>
+    <Name>Identifiable Combined Rings</Name>
+    <Description>Makes it easier to identify the rings within a combined ring.</Description>
+    <BaseManifest>..\base_dependencies.json</BaseManifest>
+    <Version>0.1.0</Version>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UpdateKeys>-1</UpdateKeys>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AtraCore\AtraCore.csproj" Private="false" />
+    <ProjectReference Include="..\Pintail\Pintail\Pintail.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="StardewValley" />
+    <Using Include="StardewModdingAPI" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Alias="NotNullAttribute" Include="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    <Using Alias="Object" Include="System.Object" />
+    <Using Alias="SObject" Include="StardewValley.Object" />
+  </ItemGroup>
+
+</Project>

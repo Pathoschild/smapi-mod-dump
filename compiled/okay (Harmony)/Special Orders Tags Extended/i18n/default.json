@@ -4,6 +4,9 @@
   "cp-not-installed": "Content Patcher not installed, tokens will not be available.",
   "IllFormatedConfig": "Config file seems ill-formated, using default.",
 
+  "SurpressUnnecessaryBoardUpdates.name": "Surpress Unnecessary Board Updates",
+  "SurpressUnnecessaryBoardUpdates.description": "Prevents the game from trying to reload the special order data before the board is even open.",
+
   //Documentation for console commands
   "special_order_pool.description": "Lists the current special orders. If order is not available, explains why.",
   "check_tag.description": "Checks the current value of one or many tags.",

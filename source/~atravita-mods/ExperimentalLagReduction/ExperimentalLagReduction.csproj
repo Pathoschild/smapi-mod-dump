@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\csproj_common" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>True</EnableHarmony>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BaseManifest>..\base_dependencies.json</BaseManifest>
+    <Name>Experimental Lag Reduction</Name>
+    <Description>This is an experiment.</Description>
+    <Version>0.1.0</Version>
+    <UpdateKeys>-1</UpdateKeys>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AtraCore\AtraCore.csproj" private="false" />
+    <ProjectReference Include="..\Pintail\Pintail\Pintail.csproj" private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="StardewValley" />
+    <Using Include="StardewModdingAPI" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Alias="NotNullAttribute" Include="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    <Using Alias="Object" Include="System.Object" />
+    <Using Alias="SObject" Include="StardewValley.Object" />
+  </ItemGroup>
+
+</Project>

@@ -23,7 +23,7 @@ internal static class Contracts {
 
 	internal delegate bool ClosedPredicate();
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static void CheckExceptionType(string paramName, Type? type) {
 		if (type is not null && !type.IsExceptionType()) {
 			ThrowHelper.ThrowArgumentOutOfRangeException(paramName, type, "Provided assert exception type is not a subclass of Exception");
@@ -35,152 +35,153 @@ internal static class Contracts {
 		return $"{message} ({expression})";
 	}
 
-	[Conditional("DEBUG"), DoesNotReturn, DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.NoInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DoesNotReturn, DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.NoInlining)]
 	private static void ThrowException(Type? exceptionType, string message) {
 		throw Activator.CreateInstance(exceptionType ?? typeof(ArgumentOutOfRangeException), Arrays.Singleton<object>(message)) as Exception ?? new ArgumentOutOfRangeException(message);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertDefault<T>(this T value, string message = "Variable is not default", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(EqualityComparer<T>.Default.Equals(value, default), message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertNotDefault<T>(this T value, string message = "Variable is default", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(!EqualityComparer<T>.Default.Equals(value, default), message, exception ?? typeof(NullReferenceException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertNull<T>(this T value, string message = "Variable is not null", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(value is null, message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertNotNull<T>(this T value, string message = "Variable is null", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(value is not null, message, exception ?? typeof(NullReferenceException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertTrue(this bool value, string message = "Variable is not true", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(value, message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertTrue<T>(this T value, string message = "Variable is not true", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IConvertible {
 		Assert(Convert.ToBoolean(value), message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertFalse(this bool value, string message = "Variable is not false", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(value == false, message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AssertFalse<T>(this T value, string message = "Variable is not false", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IConvertible {
 		Assert(Convert.ToBoolean(value) == false, message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void Assert(bool predicate, string message = "Variable's value is invalid", Type? exception = null, [CallerArgumentExpression("predicate")] string predicateExpression = "") {
 		CheckExceptionType(nameof(exception), exception);
 		if (!predicate) {
+			Debugger.Break();
 			ThrowException(exception ?? typeof(ArgumentException), AppendMessage(message, predicateExpression));
 		}
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void Assert(ClosedPredicate predicate, string message = "Variable failed predicated assertion", Type? exception = null, [CallerArgumentExpression("predicate")] string predicateExpression = "") {
 		Assert(predicate.Invoke(), message, exception ?? typeof(ArgumentOutOfRangeException), predicateExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void Assert<T>(in T value, Predicate<T> predicate, string message = "Variable failed predicated assertion", Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		Assert(predicate.Invoke(value), message, exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
 	[DebuggerStepThrough, DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static bool EqualityPredicate<T, U>(this T value, U reference)
-		where T : IComparable, IComparable<U>, IEquatable<U>
-		where U : IComparable, IComparable<T>, IEquatable<T> {
+	private static bool EqualityPredicate<TFirst, TSecond>(this TFirst value, TSecond reference)
+		where TFirst : IComparable, IComparable<TSecond>, IEquatable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst>, IEquatable<TFirst> {
 		return true switch {
-			_ when typeof(T) == typeof(string) && typeof(U) == typeof(string) =>
+			_ when typeof(TFirst) == typeof(string) && typeof(TSecond) == typeof(string) =>
 				(string)(object)value == (string)(object)reference,
-			_ when typeof(T) == typeof(U) =>
-				EqualityComparer<T>.Default.Equals(value, (T)(object)reference),
-			_ when typeof(T).IsAssignableFrom(typeof(T)) =>
-				EqualityComparer<T>.Default.Equals(value, (T)(object)reference),
-			_ when typeof(T).IsAssignableTo(typeof(T)) =>
-				EqualityComparer<U>.Default.Equals((U)(object)value, reference),
-			_ when typeof(T).IsSubclassOf(typeof(IEquatable<U>)) =>
+			_ when typeof(TFirst) == typeof(TSecond) =>
+				EqualityComparer<TFirst>.Default.Equals(value, (TFirst)(object)reference),
+			_ when typeof(TFirst).IsAssignableFrom(typeof(TFirst)) =>
+				EqualityComparer<TFirst>.Default.Equals(value, (TFirst)(object)reference),
+			_ when typeof(TFirst).IsAssignableTo(typeof(TFirst)) =>
+				EqualityComparer<TSecond>.Default.Equals((TSecond)(object)value, reference),
+			_ when typeof(TFirst).IsSubclassOf(typeof(IEquatable<TSecond>)) =>
 				value.Equals(reference),
-			_ when typeof(U).IsSubclassOf(typeof(IEquatable<T>)) =>
+			_ when typeof(TSecond).IsSubclassOf(typeof(IEquatable<TFirst>)) =>
 				reference.Equals(value),
 			_ =>
 				value.CompareTo(reference) == 0
 		};
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
-	internal static void AssertEqual<T, U>(this T value, U reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
-		where T : IComparable, IComparable<U>, IEquatable<U>
-		where U : IComparable, IComparable<T>, IEquatable<T> {
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	internal static void AssertEqual<TFirst, TSecond>(this TFirst value, TSecond reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
+		where TFirst : IComparable, IComparable<TSecond>, IEquatable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst>, IEquatable<TFirst> {
 		Assert(EqualityPredicate(value, reference), message ?? $"Variable '{value}' is not equal to '{reference}'", exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
-	internal static void AssertNotEqual<T, U>(this T value, U reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
-		where T : IComparable, IComparable<U>, IEquatable<U>
-		where U : IComparable, IComparable<T>, IEquatable<T> {
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	internal static void AssertNotEqual<TFirst, TSecond>(this TFirst value, TSecond reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
+		where TFirst : IComparable, IComparable<TSecond>, IEquatable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst>, IEquatable<TFirst> {
 		Assert(!EqualityPredicate(value, reference), message ?? $"Variable '{value}' is equal to '{reference}'", exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
-	internal static void AssertGreater<T, U>(this T value, U reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
-		where T : IComparable, IComparable<U>
-		where U : IComparable, IComparable<T> {
-		static bool Predicate(T value, U reference) {
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	internal static void AssertGreater<TFirst, TSecond>(this TFirst value, TSecond reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
+		where TFirst : IComparable, IComparable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst> {
+		static bool Predicate(TFirst value, TSecond reference) {
 			return value.CompareTo(reference) > 0;
 		}
 
 		Assert(Predicate(value, reference), message ?? $"Variable '{value}' is less than or equal to '{reference}'", exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
-	internal static void AssertGreaterEqual<T, U>(this T value, U reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
-		where T : IComparable, IComparable<U>
-		where U : IComparable, IComparable<T> {
-		static bool Predicate(T value, U reference) {
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	internal static void AssertGreaterEqual<TFirst, TSecond>(this TFirst value, TSecond reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
+		where TFirst : IComparable, IComparable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst> {
+		static bool Predicate(TFirst value, TSecond reference) {
 			return value.CompareTo(reference) >= 0;
 		}
 
 		Assert(Predicate(value, reference), message ?? $"Variable '{value}' is less than to '{reference}'", exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
-	internal static void AssertLess<T, U>(this T value, U reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
-		where T : IComparable, IComparable<U>
-		where U : IComparable, IComparable<T> {
-		static bool Predicate(T value, U reference) {
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	internal static void AssertLess<TFirst, TSecond>(this TFirst value, TSecond reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
+		where TFirst : IComparable, IComparable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst> {
+		static bool Predicate(TFirst value, TSecond reference) {
 			return value.CompareTo(reference) < 0;
 		}
 
 		Assert(Predicate(value, reference), message ?? $"Variable '{value}' is greater than or equal to '{reference}'", exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
-	internal static void AssertLessEqual<T, U>(this T value, U reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
-		where T : IComparable, IComparable<U>
-		where U : IComparable, IComparable<T> {
-		static bool Predicate(T value, U reference) {
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	internal static void AssertLessEqual<TFirst, TSecond>(this TFirst value, TSecond reference, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
+		where TFirst : IComparable, IComparable<TSecond>
+		where TSecond : IComparable, IComparable<TFirst> {
+		static bool Predicate(TFirst value, TSecond reference) {
 			return value.CompareTo(reference) <= 0;
 		}
 
 		Assert(Predicate(value, reference), message ?? $"Variable '{value}' is greater than '{reference}'", exception ?? typeof(ArgumentOutOfRangeException), valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this nuint value, nuint alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -190,7 +191,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this nint value, nint alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -200,7 +201,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this byte value, byte alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -210,7 +211,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this sbyte value, sbyte alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -220,7 +221,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this short value, short alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -230,7 +231,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this ushort value, ushort alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -240,7 +241,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this int value, int alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -250,7 +251,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this uint value, uint alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -260,7 +261,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this long value, long alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -270,7 +271,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertAligned(this ulong value, ulong alignment, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertZero(
 			value % alignment,
@@ -280,7 +281,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertZero(this nuint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertEqual(
 			value,
@@ -291,7 +292,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertZero(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertEqual(
 			value,
@@ -302,7 +303,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertZero<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertEqual(
@@ -314,7 +315,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotZero(this nuint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertNotEqual(
 			value,
@@ -325,7 +326,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotZero(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertNotEqual(
 			value,
@@ -336,7 +337,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotZero<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertNotEqual(
@@ -348,7 +349,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertPositive(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertGreater(
 			value,
@@ -359,7 +360,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertPositive<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertGreater(
@@ -371,7 +372,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertPositiveOrZero(this nuint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertGreaterEqual(
 			value,
@@ -382,7 +383,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertPositiveOrZero(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertGreaterEqual(
 			value,
@@ -393,7 +394,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertPositiveOrZero<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertGreaterEqual(
@@ -405,23 +406,23 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotNegative(this nuint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertPositiveOrZero(value, message, exception, valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotNegative(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertPositiveOrZero(value, message, exception, valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotNegative<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertPositiveOrZero(value, message, exception, valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNegative(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertLess(
 			value,
@@ -432,7 +433,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNegative<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertLess(
@@ -444,7 +445,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNegativeOrZero(this nuint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertLessEqual(
 			value,
@@ -455,7 +456,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNegativeOrZero(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertLessEqual(
 			value,
@@ -466,7 +467,7 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNegativeOrZero<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertLessEqual(
@@ -478,17 +479,17 @@ internal static class Contracts {
 		);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotPositive(this nuint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertNegativeOrZero(value, message, exception, valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotPositive(this nint value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "") {
 		AssertNegativeOrZero(value, message, exception, valueExpression);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
+	[Conditional("CONTRACTS_FULL"), Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void AssertNotPositive<T>(this T value, string? message = null, Type? exception = null, [CallerArgumentExpression("value")] string valueExpression = "")
 		where T : IComparable, IComparable<T>, IEquatable<T>, IConvertible {
 		AssertNegativeOrZero(value, message, exception, valueExpression);

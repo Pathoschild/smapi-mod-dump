@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
@@ -51,17 +52,23 @@ internal static partial class DrawState {
 	}
 
 	private static SamplerState MakeSamplerState(SamplerState reference, TextureAddressMode addressMode) {
-		var state = SamplerStateClone(reference);
+		if (reference.AddressU == addressMode && reference.AddressV == addressMode) {
+			return reference;
+		}
+
+		var state = reference.Clone();
 		state.AddressU = state.AddressV = addressMode;
 		return state;
 	}
 
-	internal static readonly Lazy<SamplerState> AnisotropicBorder = new(() => MakeSamplerState(SamplerState.AnisotropicClamp, TextureAddressMode.Border));
-	internal static readonly Lazy<SamplerState> LinearBorder = new(() => MakeSamplerState(SamplerState.LinearClamp, TextureAddressMode.Border));
-	internal static readonly Lazy<SamplerState> PointBorder = new(() => MakeSamplerState(SamplerState.PointClamp, TextureAddressMode.Border));
-	internal static readonly Lazy<SamplerState> AnisotropicMirror = new(() => MakeSamplerState(SamplerState.AnisotropicClamp, TextureAddressMode.Mirror));
-	internal static readonly Lazy<SamplerState> LinearMirror = new(() => MakeSamplerState(SamplerState.LinearClamp, TextureAddressMode.Mirror));
-	internal static readonly Lazy<SamplerState> PointMirror = new(() => MakeSamplerState(SamplerState.PointClamp, TextureAddressMode.Mirror));
+	internal static class SamplerStateExt {
+		internal static readonly Lazy<SamplerState> AnisotropicBorder = new(() => MakeSamplerState(SamplerState.AnisotropicClamp, TextureAddressMode.Border));
+		internal static readonly Lazy<SamplerState> LinearBorder = new(() => MakeSamplerState(SamplerState.LinearClamp, TextureAddressMode.Border));
+		internal static readonly Lazy<SamplerState> PointBorder = new(() => MakeSamplerState(SamplerState.PointClamp, TextureAddressMode.Border));
+		internal static readonly Lazy<SamplerState> AnisotropicMirror = new(() => MakeSamplerState(SamplerState.AnisotropicClamp, TextureAddressMode.Mirror));
+		internal static readonly Lazy<SamplerState> LinearMirror = new(() => MakeSamplerState(SamplerState.LinearClamp, TextureAddressMode.Mirror));
+		internal static readonly Lazy<SamplerState> PointMirror = new(() => MakeSamplerState(SamplerState.PointClamp, TextureAddressMode.Mirror));
+	}
 
 	internal static SamplerState CurrentSamplerState = Defaults.SamplerState;
 	internal static BlendState CurrentBlendState = Defaults.BlendState;

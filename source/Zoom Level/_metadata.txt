@@ -6,9 +6,9 @@ mods:
    Zoom Level
 
 latest commit:
-   commit 00969f3a4f50fe3e883e1092e64c1103451e2db5
-   Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Wed Feb 23 21:12:18 2022 +0000
+   commit 02eaa32a95f04f796e8fa98edb14434cc013f42e
+   Author: SamuelPiresBritoIPL <30112696+thespbgamer@users.noreply.github.com>
+   Date:   Sun Jul 24 15:56:56 2022 +0100
    
-       changed variable names
+       Update CHANGELOG.md
    

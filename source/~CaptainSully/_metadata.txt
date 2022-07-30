@@ -4,12 +4,13 @@ urls:
 
 mods:
    Better Tappers
+   Infinite Watering Cans
    Start With Greenhouse
 
 latest commit:
-   commit c5fd4db64acc9a03a238ddc1a600963e8627d2be
+   commit a97d948bcf32f933644dc8e6bf91ac435ba98448
    Author: CaptainSully <sully.kylej@gmail.com>
-   Date:   Wed Jun 29 23:56:59 2022 -0400
+   Date:   Sat Jul 2 10:35:50 2022 -0400
    
-       camcel minecarts
+       Infinite watering cans 1.0
    

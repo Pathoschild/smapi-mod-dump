@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+    "Changes": [
+    {  
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueMorrisTod",
+        "Entries": {
+            
+                //Location/destination specific dialogue
+                "funLeave_MorrisTod": "我今天要去调研镇子里的情况，并和其中一些居民进行谈话！",
+
+                //Outdoor dialogue (shows when on farm)
+                "Outdoor_4": "今天在鹈鹕镇度过了美好的一天。这样的一天让身为镇长的我很高兴。#$e#这真是个特别的小镇，更特别的是让我在这里遇见了你！$h",
+            
+                //Child dialogue
+                "OneKid_4": "你觉得%kid1会成长为像我一样的商人吗？#$e#既然我现在是镇长，也许有一天孩子会对政治感兴趣并成为总统！$h",
+            
+                //Good dialogue
+                "Good_8": "很高兴能看到最近的小镇是那么的成功。$h#$e#我一直都很喜欢地方政府，所以我想竞选政务官。#$e#你怎么想，@？我知道只要有你在我身边，我什么事都可以做好。$h",
+                "Good_9": "镇长的责任有时可能会显得有些沉重，但我清楚我是在为家人创造一个更宜居的小镇，这才是最重要的事情。$h",
+            
+                //Neutral dialogue
+                "Neutral_8": "最近小镇生活有点让人感到无聊了。我想策划一些活动来改善一下。",
+                "Neutral_9": "我很抱歉，@。成为一名镇长对我而言会有很多事情要做，我现在真的没有时间聊天。",
+            
+                //Bad dialogue
+                "Bad_9": "我没有足够的时间经营Joja，管理鹈鹕镇，以及扮演你的丈夫。总有一天我要做出选择。#$e#我现在对你的感觉，无法让我在将来坚定地选择你。$s",
+            
+                //Day-specific dialogue
+                "summer_10": "我知道你肯定为明天的百乐汤准备了最美味的东西！$h#$e#对于我这个镇长而言，这个活动给我的压力还不小。但是，我相信你会让鹈鹕镇有良好的表现。",
+                "spring_1_2": "新年快乐！这对于鹈鹕镇和我们而言又会是绝佳的一年。#$e#*亲吻*这是你的新年之吻。晚点还会有更多。$10",
+                "spring_12": "明天是我最喜欢的节日之一。没有什么比孩子们的笑脸更能振奋人心了！$h#$e#尽管大多数参赛者都是成年人，也包括你。$s",
+                "fall_15": "我等不及要看你明天的展览了！$h#$e#在我选出决胜者之前，我可不能给你任何提示。$h"
+        }
+    }
+]}

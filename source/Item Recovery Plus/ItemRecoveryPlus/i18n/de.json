@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LunarDiver/StardewValley.ItemRecoveryPlus
+**
+*************************************************/
+
+{
+  "Marlon.RecoveryInfo": "Du möchtest, dass ich dir deine Items wiederbeschaffe? Kann ich machen. Du hast aber nur diese eine Chance um den Preis zu zahlen.",
+  "Question.Confirm": "Bist du damit einverstanden?"
+}

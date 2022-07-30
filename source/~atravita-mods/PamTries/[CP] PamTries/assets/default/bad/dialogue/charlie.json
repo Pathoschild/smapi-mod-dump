@@ -1,0 +1,64 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Bad dialogue, set charlie",
+        "Entries": {
+            "fallTrailer_Big": "#$c .5#Why ya talkin' to me? Go away.#@, I don't wanna talk right now. Go away.",
+            "winterTrailer_Big": "#$c .5#Wish I could go back to sleep...$s#Wish I could get a day to sleep in...$s#",
+            "fallSaloon_Mon": "Heya, *hic*, @. You seen any good movies lately?",
+            "fallSaloon_Tue": "@, you got anything interestin' going on in your life?#$b#Me? I'm just goin' around in circles, as always.",
+            "fallSaloon_Sun": "A nice pale ale seems like it'd be nice right about now...",
+            "winterSaloon_Tue": "Mmmm. I've missed eggnog. It's not somethin' you have every day....$h",
+            "winterSaloon_Thu": "My back's achin' something fierce.$s",
+            "spring_Mon8": "#$c .3#@, I'm so tired. I'm so tired of being so tired all the time.$s#$c .6#Gotta spare cup of coffee for ole Pam? Could really do with one right about now....#Heard on the grapevine that Accel's looking into that mine in the desert. Think they concluded that it was too dangerous to develop.#",
+            "spring_Tue10": "@, I'm so tired. Maybe a nightcap will help me sleep?",
+            "spring_Thu10": "#$1 PamTriesAccelSettlement#Did you see, @? Accel's payin' a multi-billion settlement for hiding the cancer their chemicals cause. 'Course, when it's split across all their employees, it ain't much, but still!$h#$e#Ma thought Pappy died 'cuz he worked for Accel. I'm still not sure, but, hey, if the courts think so...#$e#Of course, I can't collect, since Pappy died...",
+            "spring_Fri10": "#$c 0.5#@, don't you ever feel tired? I feel tired just watching you.#@, I think my hair's falling out.#",
+            "spring_Sat10": "Ma was a great cook. She made a mean roast. Pity she rarely had the time to cook, never mind teach me...$s#$e#I still miss her, every day.$s",
+            "spring_16_2": "#$c 0.5#What's being a farmer like, @? If you could start your life over, would you do anything else?#It's a cruel world out there, @.",
+            "summer_Mon10": "#$c 0.5#*sigh*. There ain't no point to diet ice cream, why did I spend so much money on some.#Pierre seems more interested in stockin' organic foods. Doc might like that but my wallet doesn't.$s#",
+            "summer_Tue10": "#$c 0.5#Really cravin' some french fries...but they're not allowed in this diet I'm on.#This heat makes it hard for me to get to sleep at night...#",
+            "summer_Sun10": "Wonder if there's any interestin' movies comin' out soon...or if it's just gonna be more sequels in the same franchises.",
+            "fall_Tue10": "Think all I left in the freezer is frozen pizza or those terrible, tiny diet TV dinners...$s#$e#Maybe I should go get something from Gus's?",
+            "fall_Thu10": "#$1 PamTriesAccelBank#If a normal person tried what Accel's tryin', they'd get slapped down by a judge so fast. But a big company can make a little shell company to take liability and go bankrupt...#$e#Ain't no fairness in this cruel world, @. Big companies get to play games and the courts let them.",
+            "fall_Sun10" :"Between you and I, sometimes I wish I could've continued my schoolin'. Don't know if I was bright enough but I think I would have liked to try...#$b#What am I goin' on about, there's no changin' things now...",
+            "winter_Wed10": "Think the only thing I've got to eat at home right now is tinned soup.$s#$e#Guess I'm gonna have to stop by the store when I get paid.",
+            "winter_Fri10": "Wish I had the money to send Penny to college. She's certainly smart enough..."
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Bad dialogue, set charlie, post-rehab",
+        "When": {
+            "HasSeenEvent": "99210002" //Post-rehab event
+        },
+        "Entries": {
+            "spring_Mon10": "My therapist says I needs more structure in my life. @, how am I supposed to do that?",
+            "summer_Tue10": "Felt like everyone else at rehab had a reason for being the way they were. I've...got no excuse, kid.$s",
+            "summer_Thu10": "#$c .5#Doc says if I don't start eatin' right and exercisin' more, I'm gonna develop diabetes.#Doc says my lipids aren't pretty and he's gonna have to put me on cholesterol meds. Not sure how I'm supposed to afford that.#",
+            "fall_Fri10": "%Pam is muttering to herself.#$b#Yoba, give me the serenity...#$e#Heya, @, I'm not really up for chattin' today, if that's okay with you.",
+            "winter_Mon10": "It's so easy to fall back into a bad rut.#$e#Maybe it'd be better to move out of here, start over somewhere new.#$e#But I ain't got that type of money, and, besides, Penny likes this place.#$b#She grew up here. She's not known nothin' different.",
+            "winter_Tue10": "I just...I don't know what I want out of my life.$s#$b#I'm not sure I've got enough time left to make a change, anyways.$s",
+            "winter_Thu10": "The bus company's late with my check. I'm not sure what I should do. I've been tryin' to call them but they're not answerin'.#$b#Been doin' a little more fishin' but it's not like my savin's will last forever...$s#$b#Penny say it's not legal for them to be late like this but it's not like I've got the money to hire a lawyer either...$s",
+            "Saloon_Mon": "Just havin' one beer. That's okay, right?#$b#Promise ya I'm just havin' one.",
+            "Saloon_Sun": "@, you wanna go watch a movie sometime? I'd go, but I'm not sure I can afford it.#$b#Why those movie tickets gotta be so expensive?$s",
+            "springSaloon_Mon": "New year, eh? Anythin' new with you this year? Me, nothing's changed.#$e#Just livin' my life, one day at a time...",
+            "summerSaloon_Mon": "I'm lookin' for something nice, crisp, and cool...wonder what I should get?",
+            "fallSaloon_Thu": "Just havin' one pumpkin ale. It's a seasonal beer. This one's excellent!",
+            "winterSaloon_Sun": "It's a special occasion, and I'm just havin' one...",
+            "17_2": "You'd think the pharmacy'd screw up less, given how much I'm payin' them.#$e#Doc gave me some samples to tide over, but I'm thinkin' I'm gonna have to start stashin' pills if the pharmacy keeps bein' late."
+        }
+    }
+]}

@@ -58,11 +58,15 @@ namespace ItemPipes.Framework
                 TryConnectOutput(output);
                 output.UpdateSignal();
             }
+            if (PIPOs.Count == 0)
+            {
+                Deinvisibilize(null);
+            }
         }
 
         public void ProcessExchanges(int tier)
         {
-            Update();
+            //Update();
             foreach (OutputPipeNode output in Outputs)
             {
                 if (output.Tier == tier)
@@ -79,7 +83,7 @@ namespace ItemPipes.Framework
             if (node.ParentNetwork == this && !Nodes.Contains(node))
             {
                 added = true;
-                if (IsPassable)
+                if (IsPassable && node is not PIPONode)
                 {
                     node.Passable = true;
                 }
@@ -99,6 +103,14 @@ namespace ItemPipes.Framework
                 else if (node is PIPONode && !PIPOs.Contains(node))
                 {
                     PIPOs.Add((PIPONode)node);
+                    if (!IsPassable && (node as PIPONode).State == "on")
+                    {
+                        Invisibilize((PIPONode)node);
+                    }
+                    else if (IsPassable && (node as PIPONode).State == "off")
+                    {
+                        Deinvisibilize((PIPONode)node);
+                    }
                 }
             }
             else if(node.ParentNetwork != this)
@@ -129,8 +141,12 @@ namespace ItemPipes.Framework
                 }
                 else if (node is PIPONode && PIPOs != null)
                 {
-                    PIPOs = null;
-                    if(IsPassable)
+                    PIPOs.Remove((PIPONode)node);
+                    if (!IsPassable && (node as PIPONode).State == "on")
+                    {
+                        Invisibilize((PIPONode)node);
+                    }
+                    else if (IsPassable && (node as PIPONode).State == "off")
                     {
                         Deinvisibilize((PIPONode)node);
                     }
@@ -144,42 +160,28 @@ namespace ItemPipes.Framework
             bool canConnect = false;
             if (output != null)
             {
-                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Trying connecting {output.Print()}"); }
-                if(Inputs.Count == 0)
+                if(Inputs.Count > 0)
                 {
-                    if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] No inputs to connect."); }
-                }
-                else
-                {
-                    if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {Inputs.Count} inputs to connect."); }
                     foreach (InputPipeNode input in Inputs)
                     {
                         if (!output.IsInputConnected(input))
                         {
-                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} not already connected"); }
                             if (output.CanConnectedWith(input))
                             {
                                 canConnect = output.AddConnectedInput(input);
-                                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} connected with {output.Print()}"); }
-                            }
-                            else
-                            {
-                                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Cannot connect with {input.Print()}"); }
+                                if (ModEntry.config.DebugMode) { Printer.Debug($"[N{ID}] {input.Print()} connected with {output.Print()}"); }
                             }
                         }
                         else
                         {
-                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} already connected"); }
-                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Updating path from {output.Print()} to {input.Print()} connected"); }
                             List<PipeNode> path = output.GetPath(input);
                             if (path.Count > 0 && path.Last().Equals(input))
                             {
                                 output.ConnectedInputs[input] = path;
-                                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Path succesfully updated!"); }
                             }
                             else
                             {
-                                if (Globals.UltraDebug) { Printer.Warn($"[N{ID}] Error updating path from {output.Print()} to {input.Print()}"); }
+                                if (ModEntry.config.DebugMode) { Printer.Warn($"[N{ID}] Error updating path from {output.Print()} to {input.Print()}"); }
                             }
                         }
                         input.UpdateSignal();
@@ -195,20 +197,14 @@ namespace ItemPipes.Framework
             bool canDisconnect = false;
             if (input != null)
             {
-                if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Trying disconnecting {input.Print()}"); }
                 foreach (OutputPipeNode output in Outputs)
                 {
                     if (output.IsInputConnected(input))
                     {
-                        if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] {input.Print()} already connected"); }
                         if (!output.CanConnectedWith(input) || input.ConnectedContainer == null)
                         {
                             canDisconnect = output.RemoveConnectedInput(input);
-                            if (Globals.Debug) { Printer.Debug($"[N{ID}] {input.Print()} disconnected"); }
-                        }
-                        else
-                        {
-                            if (Globals.UltraDebug) { Printer.Debug($"[N{ID}] Cannot disconnect with {input.Print()}"); }
+                            if (ModEntry.config.DebugMode) { Printer.Debug($"[N{ID}] {input.Print()} disconnected"); }
                         }
                     }
                     output.UpdateSignal();
@@ -237,24 +233,41 @@ namespace ItemPipes.Framework
 
         public void Invisibilize(PIPONode invis)
         {
-            if(PIPOs.All(p => p.Passable))
+            if (PIPOs.All(p => p.Passable))
             {
                 IsPassable = true;
                 foreach (Node node in Nodes)
                 {
-                    node.Passable = true;
+                    if (node is not PIPONode)
+                    {
+                        node.Passable = true;
+                    }
                 }
             }
         }
 
         public void Deinvisibilize(PIPONode invis)
         {
-            if(PIPOs.Any(p => !p.Passable))
+            if(PIPOs.Count == 0)
             {
                 IsPassable = false;
                 foreach (Node node in Nodes)
                 {
-                    node.Passable = false;
+                    if (node is not PIPONode)
+                    {
+                        node.Passable = false;
+                    }
+                }
+            }
+            else if (PIPOs.Any(p => !p.Passable))
+            {
+                IsPassable = false;
+                foreach (Node node in Nodes)
+                {
+                    if(node is not PIPONode)
+                    {
+                        node.Passable = false;
+                    }
                 }
             }
         }
@@ -284,9 +297,9 @@ namespace ItemPipes.Framework
                 foreach (OutputPipeNode output in Outputs)
                 {
                     graph.Append(output.Print() + ", \n");
+                    graph.Append("Output Connected Inputs: \n");
                     foreach (InputPipeNode input in output.ConnectedInputs.Keys)
                     {
-                        graph.Append("Output Connected Inputs: \n");
                         graph.Append(input.Print() + " | ");
                     }
                     graph.Append("\n");
@@ -300,13 +313,64 @@ namespace ItemPipes.Framework
                 graph.Append("PIPOs: \n");
                 foreach (PIPONode pipo in PIPOs)
                 {
-                    graph.Append(pipo.Print() + ", ");
+                    graph.Append(pipo.Print() + $" {pipo.State} {pipo.Passable} " + ", ");
                 }
                 graph.Append("\n");
             }
             else
             {
                 graph.Append($"Network {ID} is only chests.");
+            }
+            return graph.ToString();
+        }
+
+        public string PrintGraph()
+        {
+            int minWidth = (int)Math.Round(Nodes.Min(n => n.Position.X))-1;
+            int minHeight = (int)Math.Round(Nodes.Min(n => n.Position.Y))-1;
+            int maxWidth = (int)Math.Round(Nodes.Max(n => n.Position.X))+2;
+            int maxHeight = (int)Math.Round(Nodes.Max(n => n.Position.Y))+2;
+
+            PipeNode[,] matrix = new PipeNode[maxWidth, maxHeight];
+
+            StringBuilder graph = new StringBuilder();
+            graph.AppendLine($"Network {ID} graph: ");
+            graph.Append($"   ");
+            for (int j = minWidth; j < maxWidth; j++)
+            {
+                graph.Append($" {j} ");
+            }
+            for (int i = minHeight; i < maxHeight; i++)
+            {
+                graph.Append("\n");
+                graph.Append($" {i} ");
+                for (int j = minWidth; j < maxWidth; j++)
+                {
+                    Node node = Nodes.Find(n => n.Position.X == j && n.Position.Y == i);
+                    if (node != null)
+                    {
+                        if(node is ConnectorPipeNode)
+                        {
+                            graph.Append($" C ");
+                        }
+                        else if(node is OutputPipeNode)
+                        {
+                            graph.Append($" O ");
+                        }
+                        else if (node is InputPipeNode)
+                        {
+                            graph.Append($" I ");
+                        }
+                        else
+                        {
+                            graph.Append($" X ");
+                        }
+                    }
+                    else
+                    {
+                        graph.Append($"   ");
+                    }
+                }
             }
             return graph.ToString();
         }

@@ -6,9 +6,9 @@ mods:
    Aquarism - Immersive Fish Ponds → Automate
 
 latest commit:
-   commit 90475d316b8e0c9d24fb5694f6b6ac360845b480
-   Author: Mat L <daleao.matheus@gmail.com>
-   Date:   Mon Jun 27 21:14:14 2022 -0300
+   commit b1b9be926526799e35b868e94a6bc9b2d4c74630
+   Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
+   Date:   Wed Jul 20 21:09:32 2022 +0000
    
-       Re-add flower meads.
+       Delete BaseEvent.cs
    

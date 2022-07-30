@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"$schema": "https://smapi.io/schemas/manifest.json",
+   "Name": "[CP] Penny 8 Heart Event Adjusted",
+   "Author": "atravita",
+   "Version": "1.0.4",
+   "Description": "Adjusts Penny's 8 heart event to take into account whether or not you have kids",
+   "UniqueID": "atravita.PennyEventAdjusted",
+   "UpdateKeys": ["Nexus:9865", "ModDrop:1068201"],
+   "MinimumApiVersion": "3.15",
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.27.0"
+	}
+}

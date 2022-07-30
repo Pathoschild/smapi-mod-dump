@@ -69,7 +69,9 @@ internal sealed class Manager {
 	}
 
 	internal static ulong HardPurge(ulong currentUsage, ulong targetUsage) {
-		return Purge(currentUsage, targetUsage, (obj, target) => obj.OnPurgeHard(target));
+		var result = Purge(currentUsage, targetUsage, (obj, target) => obj.OnPurgeHard(target));
+		Metadata.Metadata.Purge();
+		return result;
 	}
 
 	internal static ulong SoftPurge(ulong currentUsage, ulong targetUsage) {

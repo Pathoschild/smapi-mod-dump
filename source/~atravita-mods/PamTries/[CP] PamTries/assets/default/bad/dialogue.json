@@ -1,0 +1,62 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Pam",
+            "LogName": "Bad Dialogue, base",
+            "Entries": {
+                "Resort_Approach": "Got some vacation time from the bus company, so I'm headed off to the island for today!$h",
+                "Resort_Bar_2": "Have you tried the mango wine? It's excellent!$h",
+                "Resort_Bar_3": "It's a special occasion, @. I'm gonna allow myself one...maybe two...",
+                "Resort_Chair_2": "This chair's so comfy I could almost fall asleep!",
+                "Resort_Left": "Glad I got a day off, I guess...",
+                "winterResort_Left": "Brr. Town sure feels cold after being at the Resort all day....",
+                "Resort_Umbrella": "It's a little cooler under this umbrella...",
+                "Resort_Umbrella_2": "Why do I sunburn so easily?$s",
+                "Resort_Wander": "Anything else interestin' to do on this island?",
+                "Resort_Wander_2": "This warm air is good for my stiff legs.$h",
+                "spring_19_2": "@, my brain hurts. Been tryin' to balance my budget, and everything seems so complicated...#$e#Wish I made more money, it'd make all this so much easier...",
+                "spring_22_2": "I hate tax season. Not only do *I* have to pay the government, filin' taxes is a pain.$u#$e#@, they want me to fax them some forms. Where do I find a fax machine in this town?",
+                "summer_18_2": "I think I'm developin' a cavity. Not sure I can afford dental work right now, I don't get dental insurance.$s",
+                "fall_3_2": "@, it's no fun gettin' old. Feel like this body of mine is just slowly fallin' apart.#$e#Some joint of mine or another is always out of sorts..."
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/rainy",
+            "LogName": "Bad Dialogue, rain",
+            "Entries": {
+                "Pam": "{{Random: Argh. Do you think I could get the city to build me a little lean-to at the bus stop?$s#$e#I don't like gettin' rained on all day.++@, the weather is right miserable today. I hate gettin' rained on something fierce.#$e#Hands down the worst part of my job.$s| inputSeparator=++}}"
+            }
+        },
+        {
+            "LogName": "Bad Dialogue, post-rehab",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Pam",
+            "Entries": {
+                "fallResort_Left": "I guess that vacation was kinda okay? A little break was nice.#$b#$c .5#I dunno. I wish I could have done somethin' more interestin'...$s#Should've brought my fishin' rod. Some of those fish looked interestin'.#"
+            }
+        },
+        {
+            "LogName": "Bad Dialogue, with kids",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Pam",
+            "Entries": {
+                "summerResort_Left": "@, have you ever taken your kids to Ginger Island?"
+            },
+            "When": {
+                "HasValue: {{ChildNames |valueAt=1 }}": true
+            }
+        }
+    ]
+}

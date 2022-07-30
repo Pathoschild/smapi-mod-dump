@@ -35,7 +35,7 @@ internal readonly ref struct DataRef<T> where T : unmanaged {
 
 			if (CopiedData is null) {
 				Unsafe.AsRef(in CopiedData) = GC.AllocateUninitializedArray<T>(DataInternal.Length);
-				DataInternal.CopyToUnsafe(CopiedData.AsSpan());
+				DataInternal.CopyTo(CopiedData.AsSpan());
 			}
 			return CopiedData!;
 		}

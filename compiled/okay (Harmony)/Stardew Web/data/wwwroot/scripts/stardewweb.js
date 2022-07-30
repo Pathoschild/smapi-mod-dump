@@ -12,6 +12,8 @@ var iMaxHistory = 10;
 var bPopupVisible = false;
 var bLookupVisible = false;
 var bUseRT = #USERT#;
+var divIdSeparator = "~!";
+var divPartSepartor = "!~";
 
 function PageLoaded(selectedMenu) {
 
@@ -75,12 +77,22 @@ function WarpTo(LocationName, XPoint, YPoint) {
 
 }
 
+function WarpToMine(mineLevel) {
+    RunDebugCommand('minelevel ' + mineLevel);
+
+}
+
 function AddGold(sElementName) {
     var sQuantity = document.getElementById(sElementName).value;
 
     RunDebugCommand("money " + sQuantity, "popup");
 }
 
+function ToggleRemote() {
+
+    var remote = document.getElementById("remote");
+    remote.classList.toggle("showlookup");
+}
 function ShowLookup() {
     var popup = document.getElementById("myLookup");
     var pText = document.getElementById("lookuptext");
@@ -153,6 +165,98 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
+
+function WarpStudio(iMode, oParam) {
+
+    switch (iMode) {
+        case 0:
+            var iNMode = GetRadioButtonValue("npcwarp");
+            var e = document.getElementById("npcs");
+
+            if (iNMode !== null) {
+                switch (iNMode) {
+                    case "wntm":  // warp npc to me
+                        RunDebugCommand('wctm ' + e.value);
+                        break;
+                    case "wmtn":    // warp me to npc
+                        RunDebugCommand('wtc ' + e.value);
+                        break;
+                    case "wnt":
+                        var loc = document.getElementById("locs").value;
+                        var locx = document.getElementById("xloc").value;
+                        var locy = document.getElementById("yloc").value;
+                        RunDebugCommand('wct ' + e.value + ' ' + loc + ' ' + locx + ' ' + locy + ' 1');
+                        break;
+                }
+            }
+
+            break;
+        case 1:
+            RunDebugCommand('ws ' + oParam);
+            break;
+        case 2:
+            var ploc = document.getElementById("plocs").value;
+            var plocx = document.getElementById("xploc").value;
+            var plocy = document.getElementById("yploc").value;
+            WarpTo(ploc, plocx, plocy);
+            break;
+        case 3:
+            var pMode = GetRadioButtonValue("playerwarp");
+            switch (pMode) {
+                case "mts":
+                    //RunDebugCommand('mts');
+                    break;
+                case "stm":
+                    RunDebugCommand('pstm');
+                    break;
+                case "mtnpc": //me to NPC;
+                    var ePlayerNPC = document.getElementById("playernpcs");
+                    RunDebugCommand('wtc ' + ePlayerNPC.value);
+                    break;
+                case "mtloc": //me to location
+                    var ploc = document.getElementById("plocs").value;
+                    var plocx = document.getElementById("xploc").value;
+                    var plocy = document.getElementById("yploc").value;
+                    WarpTo(ploc, plocx, plocy);
+                    break;
+                case "mwarp":
+                    var minelevel = document.getElementById("mlevel").value;
+                    RunDebugCommand('minelevel ' + minelevel);
+                    break;
+            }
+            break;
+        case 4:
+            switch (oParam) {
+                case "u":
+                    RunDebugCommand('moveup');
+                    break;
+                case "r":
+                    RunDebugCommand('moveright');
+                    break;
+                case "d":
+                    RunDebugCommand('movedown');
+                    break;
+                case "l":
+                    RunDebugCommand('moveleft');
+                    break;
+
+            }
+
+    }
+
+
+}
+
+function GetRadioButtonValue(sGroupName) {
+    var ele = document.getElementsByName(sGroupName);
+
+    for (i = 0; i < ele.length; i++) {
+        if (ele[i].checked)
+            return ele[i].value;
+    }
+
+    return null;
+}
 function RunDebugCommand(sCommand, sElement, callback) {
     var sURL = '/dcom?comm=' + encodeURIComponent(sCommand);
 
@@ -241,6 +345,18 @@ function QueryForItem() {
     ExecuteQueryForItem(sQuery);
 }
 
+function AddAutoGrabber(location, x, y) {
+
+    RunDebugCommand("addgrabber " + location + " " + x + " " + y);
+    document.getElementById("grabber").innerHTML = "Yes";
+}
+
+function AddHeater(location, x, y) {
+
+    RunDebugCommand("addheater " + location + " " + x + " " + y);
+    document.getElementById("heater").innerHTML = "Yes";
+}
+
 function ExecuteQueryForItem(sQuery) {
 
     document.getElementById("waitgif").style.display = "block";
@@ -251,7 +367,9 @@ function ExecuteQueryForItem(sQuery) {
     }).then(function (string) {
         AddPageHistory(string);
         document.getElementById("lookuptext").innerHTML = string;
+        document.getElementById("lookuptext").scrollTop = 0;
         document.getElementById("waitgif").style.display = "none";
+
     }).catch(function (err) {
         document.getElementById("waitgif").style.display = "none";
         document.getElementById("lookuptext").innerHTML = 'Error: ' + err;
@@ -261,7 +379,7 @@ function PopAndSearch(sId) {
     ShowLookup();
     ExecuteQueryForItem(sId);
 }
-function PopAndSearch(sId, sCat) {
+function PopAndSearchWithCat(sId, sCat) {
     ShowLookup();
     LookupId(sId, sCat);
 }
@@ -281,7 +399,9 @@ function LookupId(sId, sCat) {
     }).then(function (string) {
         AddPageHistory(string);
         document.getElementById("waitgif").style.display = "none";
-        document.getElementById("lookuptext").innerHTML = string;
+        var myDiv = document.getElementById('lookuptext');
+        myDiv.innerHTML = string;
+        myDiv.scrollTop = 0;
     }).catch(function (err) {
         document.getElementById("lookuptext").innerHTML = 'Error: ' + err;
         document.getElementById("waitgif").style.display = "none";
@@ -298,7 +418,9 @@ function LookupMetaId(sMetaId) {
     }).then(function (string) {
         AddPageHistory(string);
         document.getElementById("waitgif").style.display = "none";
-        document.getElementById("lookuptext").innerHTML = string;
+        var myDiv = document.getElementById('lookuptext');
+        myDiv.innerHTML = string;
+        myDiv.scrollTop = 0;
     }).catch(function (err) {
         document.getElementById("lookuptext").innerHTML = 'Error: ' + err;
         document.getElementById("waitgif").style.display = "none";
@@ -337,6 +459,8 @@ function SetCheats(bState) {
     document.getElementById("showcrops").checked = bState;
     document.getElementById("towncheat").checked = bState;
     document.getElementById("showtrain").checked = bState;
+    document.getElementById("fillhay").checked = bState;
+    document.getElementById("showcook").checked = bState;
 }
 
 function ClearCache() {
@@ -354,6 +478,57 @@ function ClearCache() {
 
 }
 
+function GetBuilding() {
+    var buidling = document.getElementById("buildings").value;
+    var split1 = buidling.split('!!');
+    var split2 = split1[1].split('.');
+
+
+    var sUrl = "/Production/buildingdetails/" + split1[0] + "/" + split2[0] + "/" + split2[1];
+
+
+    fetch(sUrl).then(function (response) {
+        return response.text();
+    }).then(function (string) {
+        document.getElementById("building_details").innerHTML = string;
+    }).catch(function (err) {
+        document.getElementById("building_details").innerHTML = 'Error: ' + err;
+
+    });
+}
+
+function FillHaySlots(location, posx, posy) {
+
+    var sUrl = "/Utils/fillhay/" + location + "/" + posx + "/" + posy;
+
+
+    fetch(sUrl).then(function (response) {
+        return response.text();
+    }).then(function (string) {
+        document.getElementById("hay").innerHTML=string;
+    }).catch(function (err) {
+        //document.getElementById("building_details").innerHTML = 'Error: ' + err;
+    });
+}
+
+function ToogleBuildingDoor(location, posx, posy) {
+
+    var sUrl = "/Utils/doortoggle/" + location + "/" + posx + "/" + posy;
+
+
+    fetch(sUrl).then(function (response) {
+        return response.text();
+    }).then(function (string) {
+        var door = document.getElementById("animaldoor");
+        if (door.innerHTML == "Open") {
+            door.innerHTML = "Closed";
+        } else {
+            door.innerHTML = "Open";
+        }
+    }).catch(function (err) {
+        //document.getElementById("building_details").innerHTML = 'Error: ' + err;
+    });
+}
 function ToggleTime() {
 
     RunDebugCommand("pausetime");
@@ -428,7 +603,7 @@ function shippingbindrop(ev) {
     var data = ev.dataTransfer.getData("text").split("^^^");
     console.debug("Source ID:" + data[1]);
 
-    RunDebugCommand("moveitem " + data[0].replaceAll(" ", "+") + " sbin.100", null, MoveComplete);
+    RunDebugCommand("moveitem " + data[0].replaceAll(" ", "+") + " sbin~!100", null, MoveComplete);
 
     document.getElementById(data[0]).innerText = "Empty";
 }
@@ -466,20 +641,25 @@ function drop(ev, el) {
 
     //var sTargetId = ev.originalTarget.id;
     var sTargetId = el.id;
-    RunDebugCommand("moveitem " + data[0].replaceAll(" ", "+") + " " + sTargetId.replaceAll(" ", "+"), null, MoveComplete);
+    var sourceChest = data[0].split('#')[0];
 
-    var oMoveElment = document.getElementById(data[1]);
+    if (data[0] != sTargetId && ((data[0].split('#')[0] != sTargetId.split('#')[0]) || data[0].substring(0, 3) == "bp:")) {
+        RunDebugCommand("moveitem " + data[0].replaceAll(" ", "+") + " " + sTargetId.replaceAll(" ", "+"), null, MoveComplete);
 
-    //ev.target.innerText = "";
-    //ev.target.appendChild(oMoveElment);
-    //ev.target.classList.remove('dragging');
-    console.debug("drop el id ='" + el.id + "', ev id='" + ev.id + "'");
+        var oMoveElment = document.getElementById(data[1]);
 
-    el.innerText = "";
-    el.appendChild(oMoveElment);
+        //ev.target.innerText = "";
+        //ev.target.appendChild(oMoveElment);
+        //ev.target.classList.remove('dragging');
+        console.debug("drop el id ='" + el.id + "', ev id='" + ev.id + "'");
+
+        el.innerText = "";
+        el.appendChild(oMoveElment);
+        document.getElementById(data[0]).innerText = "Empty";
+    }
     el.classList.remove('dragging');
 
-    document.getElementById(data[0]).innerText = "Empty";
+
 }
 
 function MoveComplete() {
@@ -706,8 +886,7 @@ function SaveCustomLocParameters() {
     //
     //  add artifact data
     //
-    sURL += document.getElementById("ARTIFACTRAW").value;
-
+    sURL += document.getElementById("ARTIFACTRAW").value + "/";
 
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
@@ -718,6 +897,6 @@ function SaveCustomLocParameters() {
     }
 
     var expname = document.getElementById('expname').innerText;
-    xmlHttp.open("GET", "/ModInfo/save/" + expname + "!" + sURL, true);
+    xmlHttp.open("GET", "/ModInfo/save/" + expname + "!" + document.getElementById("STOCKED").checked + "!" + document.getElementById("SEASON").value + "!" + sURL, true);
     xmlHttp.send(null);
 }

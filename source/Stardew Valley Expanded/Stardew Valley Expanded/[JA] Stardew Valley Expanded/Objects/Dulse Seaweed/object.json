@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Dulse Seaweed",
+	"Price": 35,
+	"Description": "One of the fastest naturally growing sources of protein.",
+	"Category": "Fish",
+	"CategoryTextOverride": "",
+	"Edibility": 15,
+	"GiftTastes":
+	{
+		"Dislike": [ "Leah", "Shane", "Sam", "Marnie" ],
+		"Hate": [ "Willy", "Andy", "Gus", "Victor", "Kent", "Penny", "Lance", "Jodi", "Claire", "Olivia", "Pierre", "Evelyn", "Robin", "Elliott", "George", "Sebastian", "Abigail", "Haley", "Maru", "Pam", "Clint", "Jas", "Vincent"]
+	},
+	"TranslationKey": "object.dulse-seaweed",
+}

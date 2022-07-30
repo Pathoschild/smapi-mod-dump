@@ -10,7 +10,7 @@
 
 using FastExpressionCompiler.LightExpression;
 using Microsoft.Xna.Framework.Graphics;
-using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types;
 using System;
 using System.Reflection;

@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Strings/StringsFromMaps",
+        "Entries": {
+            "Hospital.atravita.PamTries.PatientComputer": "FOR PATIENT USE ONLY. PASSWORD: PASSWORD.",
+            "Trailer.atravita.PamTries.PamJournal": "Appears to be Pam's gratitude journal. You should probably leave that alone.",
+            "Trailer.atravita.PamTries.Coffee": "A half-finished cup of coffee. It's cold.",
+            "Trailer.atravita.PamTries.Soup": "A bowl of parsnip soup, half-finished. Seems to have been here for quite a while, though.",
+            "Trailer.atravita.PamTries.Eggs": "Eggs. Looks rubbery.",
+            "Trailer.atravita.PamTries.Comics": "A pile of visual novels, quite well worn.",
+            "Trailer.atravita.PamTries.Textbooks": "A bunch of old textbooks.",
+            "Trailer.atravita.PamTries.Picture.000": "A picture of Penny and her grandparents at the beach. Looks like it was taken a long time ago.",
+            "Trailer.atravita.PamTries.Picture.001": "A picture of a young Pam and her parents, dressed in their Sunday best.",
+            "Trailer.atravita.PamTries.TV": "It's set to a {{Random:cooking, game show, history, news, home improvement}} channel."
+        }
+    }
+]}

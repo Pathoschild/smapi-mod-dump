@@ -21,13 +21,14 @@ namespace SpriteMaster.Types.MemoryCache;
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
-internal class CompressedMemoryCache<TKey, TValue> : AbstractMemoryCache<TKey, TValue>, ICompressedMemoryCache where TKey : notnull where TValue : unmanaged {
+internal class CompressedMemoryCache<TKey, TValue> :
+	AbstractMemoryCache<TKey, TValue>, ICompressedMemoryCache
+	where TKey : notnull where TValue : unmanaged {
 	private readonly ObjectCache<TKey, ValueEntry> UnderlyingCache;
 	private readonly Compression.Algorithm CurrentAlgorithm = Compression.GetPreferredAlgorithm(SMConfig.ResidentCache.Compress);
 
 	private sealed class ValueEntry : IByteSize, IDisposable {
 		private readonly WeakReference<TValue[]> UncompressedInternal;
-		private readonly WeakReference<TValue[]> UncompressedInternal2 = new(null!);
 		internal ReadOnlySpan<TValue> Uncompressed => GetUncompressed();
 		private byte[]? Compressed = null;
 		private readonly Task CompressionTask;
@@ -73,49 +74,53 @@ internal class CompressedMemoryCache<TKey, TValue> : AbstractMemoryCache<TKey, T
 				return uncompressed;
 			}
 
-			if (UncompressedInternal2.TryGetTarget(out uncompressed)) {
-				return uncompressed;
-			}
-
 			CompressionTask.Wait();
 			Compressed.AssertNotNull();
 
-			var uncompressedData = Compressed!.Decompress<TValue>((int)Size, Algorithm);
-			UncompressedInternal2.SetTarget(uncompressedData);
-			return uncompressedData;
+			lock (this) {
+				if (UncompressedInternal.TryGetTarget(out uncompressed)) {
+					return uncompressed;
+				}
+
+				var uncompressedData = Compressed!.Decompress<TValue>((int)Size, Algorithm);
+				UncompressedInternal.SetTarget(uncompressedData);
+				return uncompressedData;
+			}
 		}
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		public void Dispose() {
-			CompressionTask.Dispose();
-			Compressed = null;
-			UncompressedInternal.SetTarget(null!);
-			UncompressedInternal2.SetTarget(null!);
+			lock (this) {
+				CompressionTask.Dispose();
+				Compressed = null;
+				UncompressedInternal.SetTarget(null!);
+			}
 		}
 	}
 
-	internal override int Count => UnderlyingCache.Count;
+	public override long TotalSize => UnderlyingCache.TotalSize;
+	public override int Count => UnderlyingCache.Count;
 
-	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue[]? Get(TKey key) {
-		var entry = UnderlyingCache.Get(key);
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue[]? Get(TKey key) {
+		if (UnderlyingCache.TryGet(key, out var entry)) {
+			return entry.UncompressedArray;
+		}
 
-		return entry?.UncompressedArray;
+		return null;
 	}
 
-	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override ReadOnlySpan<TValue> GetSpan(TKey key) {
-		var entry = UnderlyingCache.Get(key);
-
-		if (entry is not null) {
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override ReadOnlySpan<TValue> GetSpan(TKey key) {
+		if (UnderlyingCache.TryGet(key, out var entry)) {
 			return entry.Uncompressed;
 		}
 
 		return default;
 	}
 
-	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override bool TryGet(TKey key, [NotNullWhen(true)] out TValue[]? value) {
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override bool TryGet(TKey key, [NotNullWhen(true)] out TValue[]? value) {
 		if (UnderlyingCache.TryGet(key, out var entry)) {
 			value = entry.UncompressedArray;
 			return true;
@@ -125,8 +130,8 @@ internal class CompressedMemoryCache<TKey, TValue> : AbstractMemoryCache<TKey, T
 		return false;
 	}
 
-	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override bool TryGetSpan(TKey key, out ReadOnlySpan<TValue> value) {
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override bool TryGetSpan(TKey key, out ReadOnlySpan<TValue> value) {
 		if (UnderlyingCache.TryGet(key, out var entry)) {
 			value = entry.Uncompressed;
 			return true;
@@ -136,36 +141,41 @@ internal class CompressedMemoryCache<TKey, TValue> : AbstractMemoryCache<TKey, T
 		return false;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue[] Set(TKey key, TValue[] value) {
-		UnderlyingCache.Set(key, new(value, CurrentAlgorithm));
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue[] Set(TKey key, TValue[] value) {
+		UnderlyingCache.SetFast(key, new(value, CurrentAlgorithm));
 		return value;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue[]? Update(TKey key, TValue[] value) {
+	public override void SetFast(TKey key, TValue[] value) {
+		UnderlyingCache.SetFast(key, new(value, CurrentAlgorithm));
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue[]? Update(TKey key, TValue[] value) {
 		var entry = UnderlyingCache.Update(key, new(value, CurrentAlgorithm));
 		return entry?.UncompressedArray;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override ReadOnlySpan<TValue> UpdateSpan(TKey key, TValue[] value) {
+	public override ReadOnlySpan<TValue> UpdateSpan(TKey key, TValue[] value) {
 		var entry = UnderlyingCache.Update(key, new(value, CurrentAlgorithm));
 		return entry is not null ? entry.Uncompressed : default;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override TValue[]? Remove(TKey key) {
+	public override TValue[]? Remove(TKey key) {
 		return UnderlyingCache.Remove(key)?.UncompressedArray;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void RemoveFast(TKey key) {
+	public override void RemoveFast(TKey key) {
 		UnderlyingCache.RemoveFast(key);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override ReadOnlySpan<TValue> RemoveSpan(TKey key) {
+	public override ReadOnlySpan<TValue> RemoveSpan(TKey key) {
 		var entry = UnderlyingCache.Remove(key);
 		if (entry is not null) {
 			return entry.Uncompressed;
@@ -175,33 +185,31 @@ internal class CompressedMemoryCache<TKey, TValue> : AbstractMemoryCache<TKey, T
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void Trim(int count) {
+	public override void Trim(int count) {
 		UnderlyingCache.Trim(count);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void TrimTo(int count) {
+	public override void TrimTo(int count) {
 		UnderlyingCache.TrimTo(count);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override void Clear() {
+	public override void Clear() {
 		UnderlyingCache.Clear();
 	}
 
 	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal override (ulong Count, ulong Size) ClearWithCount() =>
+	public override  (ulong Count, ulong Size) ClearWithCount() =>
 		UnderlyingCache.ClearWithCount();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override void Dispose() {
-		if (!OnDispose()) {
-			return;
-		}
-
-		base.Dispose();
-
 		UnderlyingCache.Dispose();
+	}
+
+	public override ValueTask DisposeAsync() {
+		return UnderlyingCache.DisposeAsync();
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -209,42 +217,18 @@ internal class CompressedMemoryCache<TKey, TValue> : AbstractMemoryCache<TKey, T
 		RemovalCallback?.Invoke(reason, key, null!);
 	}
 
-	internal CompressedMemoryCache(string name, long? maxSize, RemovalCallbackDelegate? removalAction = null) :
-		base(name, maxSize ?? long.MaxValue, removalAction) {
-		UnderlyingCache = new($"{name} (Underlying)", maxSize, OnRemove);
+	internal CompressedMemoryCache(string name, long? maxSize, RemovalCallbackDelegate<TKey, TValue[]>? removalAction = null) :
+		base(name, removalAction) {
+		UnderlyingCache = new(name, maxSize, OnRemove);
 	}
 
 	public override ulong? OnPurgeHard(IPurgeable.Target target, CancellationToken cancellationToken = default) {
-		if (Disposed) {
-			return null;
-		}
-
-		if (Purging.CompareExchange(true, false)) {
-			return null;
-		}
-
-		try {
-			return UnderlyingCache.OnPurgeHard(target, cancellationToken);
-		}
-		finally {
-			Purging.Value = false;
-		}
+		return UnderlyingCache.OnPurgeHard(target, cancellationToken);
 	}
 
 	public override ulong? OnPurgeSoft(IPurgeable.Target target, CancellationToken cancellationToken = default) {
-		if (Disposed) {
-			return null;
-		}
-
-		if (Purging.CompareExchange(true, false)) {
-			return null;
-		}
-
-		try {
-			return UnderlyingCache.OnPurgeSoft(target, cancellationToken);
-		}
-		finally {
-			Purging.Value = false;
-		}
+		return UnderlyingCache.OnPurgeSoft(target, cancellationToken);
 	}
+
+	public override long SizeBytes => UnderlyingCache.SizeBytes;
 }

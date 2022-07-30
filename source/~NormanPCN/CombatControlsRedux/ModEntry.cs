@@ -292,7 +292,8 @@ namespace CombatControlsRedux
                 bool controller = (e.Button == SButton.ControllerX) || (e.Button == SButton.ControllerA);
                 if (
                     ((Config.MouseFix && !controller) || (controller && Config.ControllerFix)) &&
-                    ((tool != null) || Config.RegularToolsFix)
+                    ((tool != null) || Config.RegularToolsFix) &&
+                    ((who.CurrentTool is not FishingRod) || !(who.CurrentTool as FishingRod).isFishing)
                    )
                 {
                     bool scythe = tool?.isScythe() == true;

@@ -40,11 +40,11 @@ Note: By default, the shorter the loan is the higher the interest rate will be, 
 ### Languages Translated
 | Language   | Credit                  | Link |
 | :--------- | :------------           | :--- |
-| Korean     | Credit to [jooarose](https://www.nexusmods.com/users/56707037)    | [X](../translations/ko/LoanMod/i18n/ko.json) |
-| Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  | [X](../translations/th/LoanMod/i18n/th.json) |
-| Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](../translations/zh/LoanMod/i18n/zh.json) |
-| German    | Credit to [legovader09](https://github.com/legovader09)   | [X](../translations/de/LoanMod/i18n/de.json) |
-| Russian    | Credit to [Sharaj](https://steamcommunity.com/id/Sharaj/myworkshopfiles)   | [X](../translations/ru/LoanMod/i18n/ru.json) |
+| Korean     | Credits to [jooarose](https://www.nexusmods.com/users/56707037), [SNP0301](https://github.com/SNP0301)   | [X](LoanMod/i18n/ko.json) |
+| Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  | [X](LoanMod/i18n/th.json) |
+| Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](LoanMod/i18n/zh.json) |
+| German    | Credit to [legovader09](https://github.com/legovader09)   | [X](LoanMod/i18n/de.json) |
+| Russian    | Credit to [Sharaj](https://steamcommunity.com/id/Sharaj/myworkshopfiles)   | [X](LoanMod/i18n/ru.json) |
 
 ### Contributing
 - If you would like to contribute with language translations, please follow the steps below:

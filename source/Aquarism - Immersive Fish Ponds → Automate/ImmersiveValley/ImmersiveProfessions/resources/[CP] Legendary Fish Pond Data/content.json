@@ -52,7 +52,7 @@
 					],
 					"PopulationGates": null
 				},
-				"item_ice_pip": {
+				"item_glacierfish": {
 					"RequiredTags": [
 					  "item_glacierfish"
 					],
@@ -220,6 +220,13 @@
 					  },
 					  {
 						"RequiredPopulation": 0,
+						"Chance": 1.0,
+						"ItemID": 812,
+						"MinQuantity": 1,
+						"MaxQuantity": 1
+					  },
+					  {
+						"RequiredPopulation": 0,
 						"Chance": 0.8,
 						"ItemID": 812,
 						"MinQuantity": 1,
@@ -228,13 +235,17 @@
 					],
 					"PopulationGates": null
 				}
-            },
+            }
+		},
+		{
+			"Action": "EditData",
+            "Target": "Data/FishPondData",
 			"MoveEntries": [
-				{ "ID": "item_angler", "BeforeID": "category_fish"},
-				{ "ID": "item_glacierfish", "BeforeID": "category_fish"},
-				{ "ID": "item_crimsonfish", "BeforeID": "category_fish"},
-				{ "ID": "item_legend", "BeforeID": "category_fish"},
-				{ "ID": "item_mutant_carp", "BeforeID": "category_fish"},
+				{ "ID": "item_angler", "BeforeID": "category_fish" },
+				{ "ID": "item_glacierfish", "BeforeID": "category_fish" },
+				{ "ID": "item_crimsonfish", "BeforeID": "category_fish" },
+				{ "ID": "item_legend", "BeforeID": "category_fish" },
+				{ "ID": "item_mutant_carp", "BeforeID": "category_fish" },
 			]
         }
     ]

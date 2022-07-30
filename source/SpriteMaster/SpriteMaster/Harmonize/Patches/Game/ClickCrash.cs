@@ -10,6 +10,7 @@
 
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -26,7 +27,6 @@ internal static class ClickCrash {
 
 	private static readonly Stopwatch SdlUpdate = Stopwatch.StartNew();
 	private static readonly Action? SdlLoopMethod;
-	private static readonly Func<bool>? IsOnUIThread;
 	private static readonly bool IsRunnable = false;
 
 	static ClickCrash() {
@@ -40,16 +40,12 @@ internal static class ClickCrash {
 				sdlGamePlatformType?.
 				GetMethod("SdlRunLoop", BindingFlags.Instance | AllMethods);
 			SdlLoopMethod = sdlLoopMethodInfo?.CreateDelegate<Action>(platform) ?? throw new NullReferenceException(nameof(SdlLoopMethod));
-			var isOnUIThreadMethodInfo = typeof(XColor).Assembly.
-				GetType("Microsoft.Xna.Framework.Threading")?.
-				GetMethod("IsOnUIThread", BindingFlags.Static | AllMethods);
-			IsOnUIThread = isOnUIThreadMethodInfo?.CreateDelegate<Func<bool>>() ?? throw new NullReferenceException(nameof(IsOnUIThread));
 		}
 		catch (Exception ex) {
 			Debug.Error("Failed to configure SDL ticker", ex);
 		}
 
-		IsRunnable = SdlLoopMethod is not null && IsOnUIThread is not null;
+		IsRunnable = SdlLoopMethod is not null;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
@@ -66,7 +62,7 @@ internal static class ClickCrash {
 		critical: false
 	)]
 	public static void SdlRunLoopPost(object __instance) {
-		if (!Config.IsEnabled) {
+		if (!Config.IsEnabled || !Config.Extras.PreventUnresponsive) {
 			return;
 		}
 
@@ -81,7 +77,7 @@ internal static class ClickCrash {
 			return;
 		}
 
-		if (!IsOnUIThread!()) {
+		if (!ThreadingExt.IsMainThread) {
 			return;
 		}
 
@@ -99,7 +95,7 @@ internal static class ClickCrash {
 		critical: false
 	)]
 	public static void StartTaskPre(object __instance, Task task, string id) {
-		if (!Config.IsEnabled) {
+		if (!Config.IsEnabled || !Config.Extras.PreventUnresponsive) {
 			return;
 		}
 
@@ -116,7 +112,7 @@ internal static class ClickCrash {
 		critical: false
 	)]
 	public static void StartTaskPre<T>(T __instance, Task<T> task, string id) {
-		if (!Config.IsEnabled) {
+		if (!Config.IsEnabled || !Config.Extras.PreventUnresponsive) {
 			return;
 		}
 

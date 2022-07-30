@@ -13,6 +13,7 @@ using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Passes;
 
@@ -48,7 +49,9 @@ internal static class Padding {
 			hasPaddingY = Vector2B.True;
 		}
 
-		if ((hasPaddingX.Any || hasPaddingY.Any) && (spriteSize.X <= Config.Resample.Padding.MinimumSizeTexels && spriteSize.Y <= Config.Resample.Padding.MinimumSizeTexels)) {
+		int minTexels = Config.Resample.Padding.MinimumSizeTexels;
+
+		if ((hasPaddingX.Any || hasPaddingY.Any) && (spriteSize.X <= minTexels && spriteSize.Y <= minTexels)) {
 			hasPaddingX = Vector2B.False;
 			hasPaddingY = Vector2B.False;
 		}
@@ -72,8 +75,10 @@ internal static class Padding {
 
 		var expectedPadding = (int)Math.Max(1U, scale / 2);
 
+		int clampDimension = Config.ClampDimension;
+
 		if (hasPaddingX.X) {
-			if ((paddedSpriteSize.X + expectedPadding) * scale > Config.ClampDimension) {
+			if ((paddedSpriteSize.X + expectedPadding) * scale > clampDimension) {
 				hasPaddingX.X = false;
 			}
 			else {
@@ -82,7 +87,7 @@ internal static class Padding {
 		}
 
 		if (hasPaddingX.Y) {
-			if ((paddedSpriteSize.X + expectedPadding) * scale > Config.ClampDimension) {
+			if ((paddedSpriteSize.X + expectedPadding) * scale > clampDimension) {
 				hasPaddingX.Y = false;
 			}
 			else {
@@ -91,7 +96,7 @@ internal static class Padding {
 		}
 
 		if (hasPaddingY.X) {
-			if ((paddedSpriteSize.Y + expectedPadding) * scale > Config.ClampDimension) {
+			if ((paddedSpriteSize.Y + expectedPadding) * scale > clampDimension) {
 				hasPaddingY.X = false;
 			}
 			else {
@@ -100,7 +105,7 @@ internal static class Padding {
 		}
 
 		if (hasPaddingY.Y) {
-			if ((paddedSpriteSize.Y + expectedPadding) * scale > Config.ClampDimension) {
+			if ((paddedSpriteSize.Y + expectedPadding) * scale > clampDimension) {
 				hasPaddingY.Y = false;
 			}
 			else {
@@ -145,19 +150,21 @@ internal static class Padding {
 		{
 			int y = 0;
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			void WritePaddingY(Span<Color16> data) {
 				for (int i = 0; i < expectedPadding; ++i) {
 					var strideOffset = y * paddedSpriteSize.Width;
 					for (int x = 0; x < paddedSpriteSize.Width; ++x) {
-						data[strideOffset + x] = PadConstant;
+						data.At(strideOffset + x) = PadConstant;
 					}
 					++y;
 				}
 			}
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			void WritePaddingX(Span<Color16> data, ref int xOffset) {
 				for (int x = 0; x < expectedPadding; ++x) {
-					data[xOffset++] = PadConstant;
+					data.At(xOffset++) = PadConstant;
 				}
 			}
 
@@ -172,7 +179,7 @@ internal static class Padding {
 				if (hasPaddingX.X) {
 					WritePaddingX(paddedData, ref xOffset);
 				}
-				data.CopyToUnsafe(paddedData, i * spriteSize.Width, xOffset, spriteSize.Width);
+				data.CopyTo(paddedData, i * spriteSize.Width, xOffset, spriteSize.Width);
 				xOffset += spriteSize.Width;
 				if (hasPaddingX.Y) {
 					WritePaddingX(paddedData, ref xOffset);
@@ -193,9 +200,9 @@ internal static class Padding {
 			for (int y = 0; y < spriteSize.Height; ++y) {
 				int yOffset = (y + startingYOffset) * paddedSpriteSize.Width;
 
-				var src = paddedData[yOffset + startingXOffset];
+				var src = paddedData.At(yOffset + startingXOffset);
 				src.A = 128;
-				paddedData[yOffset + startingXOffset - 1] = src;
+				paddedData.At(yOffset + startingXOffset - 1) = src;
 			}
 		}
 		if (parameters.HasPaddingX.Y && parameters.SolidEdgeX.Y) {
@@ -204,9 +211,9 @@ internal static class Padding {
 
 				int xSrcOffset = startingXOffset + spriteSize.Width - 1;
 
-				var src = paddedData[yOffset + xSrcOffset];
+				var src = paddedData.At(yOffset + xSrcOffset);
 				src.A = 128;
-				paddedData[yOffset + xSrcOffset + 1] = src;
+				paddedData.At(yOffset + xSrcOffset + 1) = src;
 			}
 		}
 
@@ -220,9 +227,9 @@ internal static class Padding {
 			int widthAdd = withXPadding.All ? 2 : withXPadding.Any ? 1 : 0;
 
 			for (int x = 0; x < spriteSize.Width + widthAdd; ++x) {
-				var src = paddedData[ySrcOffset + startingXOffset + xOffset + x];
+				var src = paddedData.At(ySrcOffset + startingXOffset + xOffset + x);
 				src.A = 128;
-				paddedData[yDstOffset + startingXOffset + xOffset + x] = src;
+				paddedData.At(yDstOffset + startingXOffset + xOffset + x) = src;
 			}
 		}
 
@@ -236,9 +243,9 @@ internal static class Padding {
 			int widthAdd = withXPadding.All ? 2 : withXPadding.Any ? 1 : 0;
 
 			for (int x = 0; x < spriteSize.Width + widthAdd; ++x) {
-				var src = paddedData[ySrcOffset + startingXOffset + xOffset + x];
+				var src = paddedData.At(ySrcOffset + startingXOffset + xOffset + x);
 				src.A = 128;
-				paddedData[yDstOffset + startingXOffset + xOffset + x] = src;
+				paddedData.At(yDstOffset + startingXOffset + xOffset + x) = src;
 			}
 		}
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12836
+IDs: mistyspring.dynamicdialogues
+update keys: Nexus:12836, GitHub:misty-spring/DynamicDialogues

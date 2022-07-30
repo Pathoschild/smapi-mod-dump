@@ -88,7 +88,7 @@ namespace ForecasterText.Objects {
                         b.DrawString(ChatBox.messageFont(this.Language), this.Snippets[index].message, new Vector2((float) vector.X + num1, (float) vector.Y + num2), this.Color * this.Alpha, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
                 }
                 num1 += this.Snippets[index].myLength;
-                if ((double) num1 >= 888.0) {
+                if ((double) num1 >= 888.0d) {
                     num1 = 0.0f;
                     num2 += ChatBox.messageFont(this.Language).MeasureString("(").Y;
                     if (this.Snippets.Count > index + 1 && this.Snippets[index + 1].message != null && this.Snippets[index + 1].message.Equals(Environment.NewLine))
@@ -101,6 +101,7 @@ namespace ForecasterText.Objects {
             try {
                 // Clear the snippets
                 this.Snippets.Clear();
+                this.Snippets.Add(new ChatSnippet("> ", this.Language));
                 if (this.Setter is {} renderer && renderer(this) is {} ienumerable)
                     this.Snippets.AddRange(ienumerable);
             } finally {

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace HelpForHire.Chores;
 
 using System.Collections.Generic;

@@ -1,0 +1,71 @@
+﻿<div class="message_board_title_lg">Macro Console</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="message_board_flex">
+                <div class="container message_board_flex_inside">
+                    <div class="row">
+                        <div class="col-6" style="padding-bottom: 10px;">
+                            
+                            <select id="macros" onchange="GetMacroDetails();">#MACROS#</select> <button onclick="DeleteMacro();">Delete</button> <input type="text" id="newMacro" width="30" /> <button onclick="AddMacro();">Add</button>
+                        </div>
+                        <div class="col-4" style="padding-left:35px;">Macro Output</div>
+                        <div class="col-2 right"><a href="/Custom/StardewWeb/macros.html">Help</a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" style="font-family:Tahoma;font-size:12pt;">
+                            <textarea rows="20" cols="65" id="macrotext" name="macrotext"></textarea>
+                        </div>
+                        <div class="col-6">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div style="width:100%;height:130px;overflow:auto; border: 1px solid black;background-color:white;" id="macroout"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col" style="padding-top:10px;">
+                                        <button onclick="RunMacro();">Run</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">Quick Reference</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col" style="background-color:white; border:1px solid black; font-family:Tahoma; font-size:12pt; height: 210px;overflow:auto;">
+                                        <table class="table">
+                                            <tr><td>activatesprinklers</td><td>Activates all sprinklers in the current location.</td></tr>
+                                            <tr><td>addobject objectId x,y</td><td>Adds the object ojbectId to the current location at x,y.</td></tr>
+                                            <tr><td>addpath x,y x1,y1 typeType</td><td>Fills the defined square with tiles of type tileType.</td></tr>
+                                            <tr><td>addstring text x,y bgId strokeId</td><td>Writes text at location x,y using bgId for the background and strokeId for the stroke.</td></tr>
+                                            <tr><td>build building x,y animal qty</td><td>Adds the building to the current location at x,y and adds qty animals.</td></tr>
+                                            <tr><td>buildingadd objectId x,y</td><td>Adds the object objectId to the last building added at location x,y.</td></tr>
+                                            <tr><td>buildingaddchest x,y category name</td><td>Adds a chest to the last building built at x,y and assigns the ChestsAnywhere names.</td></tr>
+                                            <tr><td>clearall</td><td>Removes everything from the location.</td></tr>
+                                            <tr><td>fillsilos</td><td>Fills all silos in the current location.</td></tr>
+                                            <tr><td>gate x,y</td><td>adds a gate at x,y.</td></tr>
+                                            <tr><td>grass x,y x1,y1</td><td>Fills the defined square with grass.</td></tr>
+                                            <tr><td>hoedirt x,y x1,y1 cropId</td><td>Hoes the defined square and adds the crop cropId.</td></tr>
+                                            <tr><td>ironfence x,y</td><td>adds an iron fence at x,y</td></tr>
+                                            <tr><td>junimopack x,y cropId</td><td>Adds a Junimo hut with 8 fields with crop cropId.</td></tr>
+                                            <tr><td>location location</td><td>Sets the macro location context to location.</td></tr>
+                                            <tr><td>petall</td><td>Pets all animals in the current location.</td></tr>
+                                            <tr><td>verbose</td><td>Show macro steps in console window.</td></tr>
+                                            <tr><td>warpto location x,y</td><td>Warp the Farmer to location at x,y.</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-4">
+                            <button onclick="SaveMacro();">Save</button> <button onclick="ClearMacro();">Clear</button>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

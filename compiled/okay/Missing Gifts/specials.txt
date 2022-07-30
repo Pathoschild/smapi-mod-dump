@@ -5,3 +5,4 @@ Alex;388;3;Wood
 Haley;192;3;Potato
 Krobus;378;4;Copper Ore
 Jodi;28;4;Daffodil
+Flor;223;2;Cookie

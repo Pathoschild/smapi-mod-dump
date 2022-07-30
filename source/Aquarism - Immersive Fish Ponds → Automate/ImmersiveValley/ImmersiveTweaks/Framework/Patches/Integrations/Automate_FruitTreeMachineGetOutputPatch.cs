@@ -45,6 +45,7 @@ internal sealed class FruitTreeMachineGetOutputPatch : Common.Harmony.HarmonyPat
     #region harmony patches
 
     /// <summary>Adds custom aging quality to automated fruit tree.</summary>
+    [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? FruitTreeMachineGetOutputTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {

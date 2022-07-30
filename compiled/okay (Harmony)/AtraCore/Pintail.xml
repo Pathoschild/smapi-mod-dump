@@ -1,0 +1,491 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pintail</name>
+    </assembly>
+    <members>
+        <member name="M:Nanoray.Pintail.InterfaceOrDelegateProxyFactory`1.ObtainProxy(Nanoray.Pintail.IProxyManager{`0},System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.InterfaceOrDelegateProxyFactory`1.TryUnproxy(Nanoray.Pintail.IProxyManager{`0},System.Object,System.Object@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nanoray.Pintail.IProxyFactory`1">
+            <summary>
+            Represents a type responsible for proxying/mapping a specific type back and forth.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="P:Nanoray.Pintail.IProxyFactory`1.ProxyInfo">
+            <summary>
+            The proxy information describing this specific <see cref="T:Nanoray.Pintail.IProxyFactory`1"/>.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.IProxyFactory`1.ObtainProxy(Nanoray.Pintail.IProxyManager{`0},System.Object)">
+            <summary>
+            Returns a proxy instance for a given instance.
+            </summary>
+            <param name="manager">The <see cref="T:Nanoray.Pintail.IProxyManager`1"/> managing this <see cref="T:Nanoray.Pintail.IProxyFactory`1"/>.</param>
+            <param name="targetInstance">The instance to create a proxy for.</param>
+            <returns>A proxy of the given instance.</returns>
+        </member>
+        <member name="M:Nanoray.Pintail.IProxyFactory`1.TryUnproxy(Nanoray.Pintail.IProxyManager{`0},System.Object,System.Object@)">
+            <summary>
+            Tries to unproxy a given instance.
+            </summary>
+            <param name="manager">The <see cref="T:Nanoray.Pintail.IProxyManager`1"/> managing this <see cref="T:Nanoray.Pintail.IProxyFactory`1"/>.</param>
+            <param name="potentialProxyInstance">The instance to unproxy.</param>
+            <param name="targetInstance">The unproxied instance, if the unproxying succeeds.</param>
+            <returns>`true` if the unproxying succeeds, `false` otherwise.</returns>
+        </member>
+        <member name="T:Nanoray.Pintail.IProxyManager`1">
+            <summary>
+            Represents a type responsible for creating and returning <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> instances.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="M:Nanoray.Pintail.IProxyManager`1.GetProxyFactory(Nanoray.Pintail.ProxyInfo{`0})">
+            <summary>
+            Returns an existing <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> instance for the given proxy info.
+            </summary>
+            <param name="proxyInfo">Proxy info describing the <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> to return.</param>
+            <returns>An existing <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> instance for the given proxy info, or `null` if one does not exist.</returns>
+        </member>
+        <member name="M:Nanoray.Pintail.IProxyManager`1.ObtainProxyFactory(Nanoray.Pintail.ProxyInfo{`0})">
+            <summary>
+            Returns an existing <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> instance for the given proxy info or creates and returns a new one.
+            </summary>
+            <param name="proxyInfo">Proxy info describing the <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> to return.</param>
+            <returns>A <see cref="T:Nanoray.Pintail.IProxyFactory`1"/> instance for the given proxy info.</returns>
+        </member>
+        <member name="T:Nanoray.Pintail.IProxyManagerExtensions">
+            <summary>
+            Declares some extensions to make it easier to use <see cref="T:Nanoray.Pintail.IProxyManager`1"/>.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.IProxyManagerExtensions.ObtainProxy``2(Nanoray.Pintail.IProxyManager{``0},System.Object,``0,``0)">
+            <summary>
+            Returns a proxy instance for a given instance.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+            <typeparam name="TProxy">The interface type to proxy the instance to.</typeparam>
+            <param name="self">Target of the extension method.</param>
+            <param name="instance">The instance to create a proxy for.</param>
+            <param name="targetContext">The context of the target instance.</param>
+            <param name="proxyContext">The context of the proxy instance.</param>
+            <returns>A proxy of the given instance.</returns>
+        </member>
+        <member name="M:Nanoray.Pintail.IProxyManagerExtensions.TryProxy``2(Nanoray.Pintail.IProxyManager{``0},System.Object,``0,``0,``1@)">
+            <summary>
+            Tries to return a proxy instance for a given instance (or unproxy it if it's already a proxy and the type would be accessible when doing so).
+            </summary>
+            <typeparam name="Context"></typeparam>
+            <typeparam name="TProxy"></typeparam>
+            <param name="self">Target of the extension method.</param>
+            <param name="toProxy">The instance to create a proxy for (or to unproxy).</param>
+            <param name="targetContext">The context of the target instance.</param>
+            <param name="proxyContext">The context of the proxy instance.</param>
+            <param name="proxy">The resulting proxy instance (or unproxied instance), if the (un)proxying succeeds.</param>
+            <returns>`true` if the (un)proxying succeeds, `false` otherwise.</returns>
+        </member>
+        <member name="T:Nanoray.Pintail.NothingProxyManagerExtensions">
+            <summary>
+            Declares some extensions to make it easier to use <see cref="T:Nanoray.Pintail.IProxyManager`1"/> with a <see cref="T:Nanoray.Pintail.Nothing"/> `Context`.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.NothingProxyManagerExtensions.ObtainProxy``1(Nanoray.Pintail.IProxyManager{Nanoray.Pintail.Nothing},System.Object)">
+            <summary>
+            Returns a proxy instance for a given instance.
+            </summary>
+            <typeparam name="TProxy">The interface type to proxy the instance to.</typeparam>
+            <param name="self">Target of the extension method.</param>
+            <param name="instance">The instance to create a proxy for.</param>
+            <returns>A proxy of the given instance.</returns>
+        </member>
+        <member name="M:Nanoray.Pintail.NothingProxyManagerExtensions.TryProxy``1(Nanoray.Pintail.IProxyManager{Nanoray.Pintail.Nothing},System.Object,``0@)">
+            <summary>
+            Tries to return a proxy instance for a given instance (or unproxy it if it's already a proxy and the type would be accessible when doing so).
+            </summary>
+            <typeparam name="TProxy"></typeparam>
+            <param name="self">Target of the extension method.</param>
+            <param name="toProxy">The instance to create a proxy for (or to unproxy).</param>
+            <param name="proxy">The resulting proxy instance (or unproxied instance), if the (un)proxying succeeds.</param>
+            <returns>`true` if the (un)proxying succeeds, `false` otherwise.</returns>
+        </member>
+        <member name="T:Nanoray.Pintail.IProxyObject">
+            <summary>
+            A marker interface for all proxy instances.
+            </summary>
+        </member>
+        <member name="T:Nanoray.Pintail.IProxyObject.IWithProxyTargetInstanceProperty">
+            <summary>
+            A marker interface for all proxy instances, which also allows you to easily retrieve the underlying proxied instance.
+            </summary>
+        </member>
+        <member name="P:Nanoray.Pintail.IProxyObject.IWithProxyTargetInstanceProperty.ProxyTargetInstance">
+            <summary>
+            The proxied instance.
+            </summary>
+        </member>
+        <member name="T:Nanoray.Pintail.Nothing">
+            <summary>
+            A type to be used in generic declarations, when no specific type is required.
+            </summary>
+        </member>
+        <member name="P:Nanoray.Pintail.Nothing.AtAll">
+            <summary>
+            The only possible value of the <see cref="T:Nanoray.Pintail.Nothing"/> type.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.Nothing.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.Nothing.Equals(Nanoray.Pintail.Nothing)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.Nothing.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.Nothing.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.Nothing.op_Equality(Nanoray.Pintail.Nothing,Nanoray.Pintail.Nothing)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.Nothing.op_Inequality(Nanoray.Pintail.Nothing,Nanoray.Pintail.Nothing)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyGlue`1">
+            <summary>
+            A "glue" worker instance used by proxy instances to do any proxying-related tasks.
+            </summary>
+            <remarks>This type is not meant to be used directly, but due to the nature of the proxy objects it has to be `public`.</remarks>
+            <typeparam name="Context"></typeparam>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyInfo`1">
+            <summary>
+            Describes the specific proxy conversion.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyInfo`1.Target">
+            <summary>
+            The context of the target instance.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyInfo`1.Proxy">
+            <summary>
+            The context of the proxy instance.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.#ctor(Nanoray.Pintail.TypeInfo{`0},Nanoray.Pintail.TypeInfo{`0})">
+            <summary>
+            Creates a new <see cref="T:Nanoray.Pintail.ProxyInfo`1"/>.
+            </summary>
+            <param name="target">The context of the target instance.</param>
+            <param name="proxy">The context of the proxy instance.</param>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.Copy(System.Type,System.Type)">
+            <summary>
+            Creates a copy of this <see cref="T:Nanoray.Pintail.ProxyInfo`1"/> with a different set of target and/or proxy types.
+            </summary>
+            <param name="targetType">The new target type.</param>
+            <param name="proxyType">The new proxy type.</param>
+            <returns>A copy with specified properties.</returns>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.Reversed">
+            <summary>
+            Creates a copy of this <see cref="T:Nanoray.Pintail.ProxyInfo`1"/> that is a reverse of its target and proxy types.
+            </summary>
+            <returns>A copy with reversed target and proxy types.</returns>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.GetNameSuitableForProxyTypeName(System.Func{System.Type,System.String})">
+            <summary>
+            Get a name suitable for use as part of a proxy type name.
+            </summary>
+            <param name="typeNameProvider">A delegate providing type names.</param>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.Equals(Nanoray.Pintail.ProxyInfo{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.op_Equality(Nanoray.Pintail.ProxyInfo{`0},Nanoray.Pintail.ProxyInfo{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyInfo`1.op_Inequality(Nanoray.Pintail.ProxyInfo{`0},Nanoray.Pintail.ProxyInfo{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nanoray.Pintail.TypeInfo`1">
+            <summary>
+            Describes one side of a specified proxy conversion.
+            </summary>
+            <typeparam name="C">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="F:Nanoray.Pintail.TypeInfo`1.Context">
+            <summary>
+            The context type used to describe the current proxy process.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.TypeInfo`1.Type">
+            <summary>
+            The type to proxy from/to.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.#ctor(`0,System.Type)">
+            <summary>
+            Creates a new <see cref="T:Nanoray.Pintail.TypeInfo`1"/>.
+            </summary>
+            <param name="context">The context type used to describe the current proxy process.</param>
+            <param name="type">The type to proxy from/to.</param>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.GetNameSuitableForProxyTypeName(System.Func{System.Type,System.String})">
+            <summary>
+            Get a name suitable for use as part of a proxy type name.
+            </summary>
+            <param name="typeNameProvider">A delegate providing type names.</param>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.Equals(Nanoray.Pintail.TypeInfo{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.op_Equality(System.Nullable{Nanoray.Pintail.TypeInfo{`0}},System.Nullable{Nanoray.Pintail.TypeInfo{`0}})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeInfo`1.op_Inequality(System.Nullable{Nanoray.Pintail.TypeInfo{`0}},System.Nullable{Nanoray.Pintail.TypeInfo{`0}})">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManagerTypeNameProvider`1">
+            <summary>
+            A type which provides type names for proxies created by the <see cref="T:Nanoray.Pintail.ProxyManager`1"/>.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManagerNoMatchingMethodHandler`1">
+            <summary>
+            A type which defines the behavior to use if a given proxy method could not be implemented when using <see cref="T:Nanoray.Pintail.ProxyManager`1"/>.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManagerProxyPrepareBehavior">
+            <summary>
+            Defines when proxy factories for interfaces and delegates should be created and prepared.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerProxyPrepareBehavior.Eager">
+            <summary>
+            Create and prepare proxy factories the first time they are seen.
+            </summary>
+            <remarks>Generic types using generic method arguments are unknown at that time, so they will still be created lazily.</remarks>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerProxyPrepareBehavior.Lazy">
+            <summary>
+            Create and prepare proxy factories when they are actually needed (when a method using one is first called).
+            </summary>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManagerEnumMappingBehavior">
+            <summary>
+            Defines the behavior to use when mapping <see cref="T:System.Enum"/> arguments while matching methods to proxy.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerEnumMappingBehavior.Strict">
+            <summary>
+            Only allow 1:1 mappings; don't match otherwise.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerEnumMappingBehavior.AllowAdditive">
+            <summary>
+            Allow mappings where the proxy <see cref="T:System.Enum"/> has extra values not found in the target <see cref="T:System.Enum"/>.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerEnumMappingBehavior.ThrowAtRuntime">
+            <summary>
+            Allow all mappings; throw <see cref="T:System.ArgumentException"/> if it couldn't be mapped at runtime.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerEnumMappingBehavior.Allow">
+            <summary>
+            Allow all mappings, as long as the backing fields match. "Extra" values are simply allowed.
+            </summary>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManagerMismatchedArrayMappingBehavior">
+            <summary>
+            Defines the behavior to use when mapping mismatched <see cref="T:System.Array"/> elements back and forth.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerMismatchedArrayMappingBehavior.Throw">
+            <summary>
+            Throw <see cref="T:System.ArgumentException"/> when passing in an array that cannot exactly be proxied back.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerMismatchedArrayMappingBehavior.AllowAndDontMapBack">
+            <summary>
+            Allow mismatched array types; do not map array elements back.
+            </summary>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManagerConfiguration`1">
+            <summary>
+            Defines a configuration for <see cref="T:Nanoray.Pintail.ProxyManager`1"/>.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.FullNameTypeNameProvider">
+            <summary>
+            A <see cref="T:Nanoray.Pintail.ProxyManagerTypeNameProvider`1"/> implementation using full (qualified) type names.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ShortNameTypeNameProvider">
+            <summary>
+            A <see cref="T:Nanoray.Pintail.ProxyManagerTypeNameProvider`1"/> implementation using short type names.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.Md5TypeNameProvider">
+            <summary>
+            A <see cref="T:Nanoray.Pintail.ProxyManagerTypeNameProvider`1"/> implementation using MD5 hashes.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ShortNameIDGeneratingTypeNameProvider">
+            <summary>
+            A <see cref="T:Nanoray.Pintail.ProxyManagerTypeNameProvider`1"/> implementation using short type names with appended generated IDs to avoid conflicts.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ThrowExceptionNoMatchingMethodHandler">
+            <summary>
+            The default <see cref="T:Nanoray.Pintail.ProxyManagerNoMatchingMethodHandler`1"/> implementation.<br/>
+            If a method cannot be implemented, <see cref="T:System.ArgumentException"/> will be thrown right away.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ThrowingImplementationNoMatchingMethodHandler">
+            <summary>
+            If a method cannot be implemented, a blank implementation will be created instead, which will throw <see cref="T:System.NotImplementedException"/> when called.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.TypeNameProvider">
+            <summary>
+            The type name provider to use.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.NoMatchingMethodHandler">
+            <summary>
+            The behavior to use if no matching method to proxy is found.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ProxyPrepareBehavior">
+            <summary>
+            When exactly proxy factories for interfaces and delegates should be created and prepared.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.EnumMappingBehavior">
+            <summary>
+            The behavior to use when mapping <see cref="T:System.Enum"/> arguments while matching methods to proxy.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.MismatchedArrayMappingBehavior">
+            <summary>
+            The behavior to use when mapping mismatched <see cref="T:System.Array"/> elements back and forth.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ProxyObjectInterfaceMarking">
+            <summary>
+            Whether proxy types should implement any marker interfaces.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyManagerConfiguration`1.#ctor(Nanoray.Pintail.ProxyManagerTypeNameProvider{`0},Nanoray.Pintail.ProxyManagerNoMatchingMethodHandler{`0},Nanoray.Pintail.ProxyManagerProxyPrepareBehavior,Nanoray.Pintail.ProxyManagerEnumMappingBehavior,Nanoray.Pintail.ProxyManagerMismatchedArrayMappingBehavior,Nanoray.Pintail.ProxyObjectInterfaceMarking)">
+            <summary>
+            Creates a new configuration for <see cref="T:Nanoray.Pintail.ProxyManager`1"/>.
+            </summary>
+            <param name="typeNameProvider">The type name provider to use.<br/>Defaults to <see cref="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ShortNameIDGeneratingTypeNameProvider"/>.</param>
+            <param name="noMatchingMethodHandler">The behavior to use if no matching method to proxy is found.<br/>Defaults to <see cref="F:Nanoray.Pintail.ProxyManagerConfiguration`1.ThrowExceptionNoMatchingMethodHandler"/>.</param>
+            <param name="proxyPrepareBehavior">When exactly proxy factories for interfaces and delegates should be created and prepared.<br/>Defaults to <see cref="F:Nanoray.Pintail.ProxyManagerProxyPrepareBehavior.Lazy"/>.</param>
+            <param name="enumMappingBehavior">The behavior to use when mapping <see cref="T:System.Enum"/> arguments while matching methods to proxy.<br/>Defaults to <see cref="F:Nanoray.Pintail.ProxyManagerEnumMappingBehavior.ThrowAtRuntime"/>.</param>
+            <param name="mismatchedArrayMappingBehavior">The behavior to use when mapping mismatched <see cref="T:System.Array"/> elements back and forth.<br/>Defaults to <see cref="F:Nanoray.Pintail.ProxyManagerMismatchedArrayMappingBehavior.Throw"/>.</param>
+            <param name="proxyObjectInterfaceMarking">Whether proxy types should implement any marker interfaces.<br/>Defaults to <see cref="F:Nanoray.Pintail.ProxyObjectInterfaceMarking.Marker"/>.</param>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyManager`1">
+            <summary>
+            The default <see cref="T:Nanoray.Pintail.IProxyManager`1"/> implementation.
+            </summary>
+            <typeparam name="Context">The context type used to describe the current proxy process. Use <see cref="T:Nanoray.Pintail.Nothing"/> if not needed.</typeparam>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyManager`1.#ctor(System.Reflection.Emit.ModuleBuilder,Nanoray.Pintail.ProxyManagerConfiguration{`0})">
+            <summary>
+            Constructs a <see cref="T:Nanoray.Pintail.ProxyManager`1"/>.
+            </summary>
+            <param name="moduleBuilder">The <see cref="T:System.Reflection.Emit.ModuleBuilder"/> to use for creating the proxy types in.</param>
+            <param name="configuration">Configuration to use for this <see cref="T:Nanoray.Pintail.ProxyManager`1"/>. Defaults to `null`, which means that the default configuration will be used.</param>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyManager`1.GetProxyFactory(Nanoray.Pintail.ProxyInfo{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Nanoray.Pintail.ProxyManager`1.ObtainProxyFactory(Nanoray.Pintail.ProxyInfo{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nanoray.Pintail.ProxyObjectInterfaceMarking">
+            <summary>
+            Defines whether a proxy type should implement any marker interfaces.<br/>
+            See also: <seealso cref="T:Nanoray.Pintail.IProxyObject"/>, <seealso cref="T:Nanoray.Pintail.IProxyObject.IWithProxyTargetInstanceProperty"/>.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyObjectInterfaceMarking.Disabled">
+            <summary>
+            Do not implement any marker interfaces.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyObjectInterfaceMarking.Marker">
+            <summary>
+            Implement the <see cref="T:Nanoray.Pintail.IProxyObject"/> interface.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.ProxyObjectInterfaceMarking.MarkerWithProperty">
+            <summary>
+            Implement the <see cref="T:Nanoray.Pintail.IProxyObject.IWithProxyTargetInstanceProperty"/> interface.
+            </summary>
+        </member>
+        <member name="T:Nanoray.Pintail.TypeUtilities.MethodTypeAssignability">
+            <summary>
+            Controls how the target interface should compare to the proxy interface.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.TypeUtilities.MethodTypeAssignability.AssignTo">
+            <summary>
+            It is sufficient if the target typed can be assigned to the proxy type.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.TypeUtilities.MethodTypeAssignability.AssignFrom">
+            <summary>
+            It is sufficient if the target type can be assigned from the proxy type.
+            </summary>
+        </member>
+        <member name="F:Nanoray.Pintail.TypeUtilities.MethodTypeAssignability.Exact">
+            <summary>
+            This type should exactly match the other type. Assigning to/from is not appropriate.
+            </summary>
+        </member>
+        <member name="M:Nanoray.Pintail.TypeUtilities.CompareTwoMethods(System.Reflection.MethodInfo,System.Reflection.MethodInfo)">
+            <summary>
+            Compares two methods to see which is the "better" overload.
+            </summary>
+            <param name="methodA">First method</param>
+            <param name="methodB">Second method.</param>
+            <returns>-1 if the first is better, 1 if the second is better.</returns>
+            <exception cref="T:System.Reflection.AmbiguousMatchException">It is not possible to resolve the two.</exception>
+            <remarks>A method is considered better if all of its parameters' types can be assigned to
+            the other method's params and there's at least one param that's "better".</remarks>
+        </member>
+    </members>
+</doc>

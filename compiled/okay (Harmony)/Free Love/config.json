@@ -10,6 +10,7 @@
   "ComplexDivorce": true,
   "RoommateRomance": false,
   "RomanceAllVillagers": false,
+  "GayPregnancies": false,
   "ShowParentNames": false,
   "SpouseSleepOrder": "",
   "PercentChanceForSpouseInBed": 25,

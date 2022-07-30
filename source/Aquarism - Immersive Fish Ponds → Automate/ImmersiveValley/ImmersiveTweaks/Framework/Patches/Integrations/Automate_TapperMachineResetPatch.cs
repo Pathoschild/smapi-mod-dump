@@ -13,7 +13,7 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 #region using directives
 
 using Common.Extensions.Reflection;
-using Common.Harmony;
+using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using System;
@@ -22,7 +22,7 @@ using SObject = StardewValley.Object;
 #endregion using directives
 
 [UsedImplicitly]
-internal sealed class TapperMachineResetPatch : HarmonyPatch
+internal sealed class TapperMachineResetPatch : Common.Harmony.HarmonyPatch
 {
     private static Func<object, SObject>? _GetMachine;
 
@@ -43,6 +43,7 @@ internal sealed class TapperMachineResetPatch : HarmonyPatch
     #region harmony patches
 
     /// <summary>Adds foraging experience for automated tappers.</summary>
+    [HarmonyPostfix]
     private static void TapperMachineResetPostfix(object __instance)
     {
         if (!ModEntry.Config.TappersRewardExp) return;

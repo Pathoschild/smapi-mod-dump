@@ -27,6 +27,11 @@ namespace SmartBuilding
         /// This means we need to handle the removal of items ourselves.
         /// </summary>
         ManualRemoval,
+        
+        /// <summary>
+        /// This is purely for Prismatic Fire integration.
+        /// </summary>
+        TechnicallyNotAProducerButIsATorch,
 
         /// <summary>
         /// This is not a producer.

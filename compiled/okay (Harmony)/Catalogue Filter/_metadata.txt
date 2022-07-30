@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13137
+IDs: aedenthorn.CatalogueFilter
+update keys: Nexus:13137, GitHub:aedenthorn/StardewValleyMods

@@ -24,7 +24,7 @@ internal class AnimatedTexture : MetaTexture {
 			int maxTicks = SpriteOffsets.Length * TicksPerFrame;
 			uint normalizedTick = CurrentTick % (uint)maxTicks;
 			int offset = (int)normalizedTick / TicksPerFrame;
-			return new Bounds(SpriteOffsets[offset], Size);
+			return new(SpriteOffsets[offset], Size);
 		}
 	}
 

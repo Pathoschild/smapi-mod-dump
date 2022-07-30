@@ -203,24 +203,29 @@ namespace CustomCompanions.Framework.Companions
 
         public override bool checkAction(Farmer who, GameLocation l)
         {
-            if (this.owner is null && !String.IsNullOrEmpty(this.model.InspectionDialogue))
+            if (this.owner is not null)
             {
-                string dialogueText = this.model.InspectionDialogue;
-                if (this.model.Translations.GetTranslations().Any(t => t.Key == dialogueText))
-                {
-                    dialogueText = this.model.Translations.Get(this.model.InspectionDialogue);
-                }
+                return false;
+            }
 
+            var dialogueModel = GetDialogue();
+            if (String.IsNullOrEmpty(dialogueModel.Text) is false)
+            {
                 // Check if displaying a portrait is required
                 if (this.Portrait != null)
                 {
                     string currentEmotion = int.TryParse(this.model.Portrait.FrameIndex.ToString(), out _) ? $"${this.model.Portrait.FrameIndex}" : this.model.Portrait.FrameIndex.ToString();
-                    this.CurrentDialogue.Push(new Dialogue(dialogueText, this) { CurrentEmotion = currentEmotion });
+                    if (dialogueModel.PortraitIndex >= 0)
+                    {
+                        currentEmotion = $"${dialogueModel.PortraitIndex}";
+                    }
+
+                    this.CurrentDialogue.Push(new Dialogue(dialogueModel.Text, this) { CurrentEmotion = currentEmotion });
                     Game1.drawDialogue(this);
                 }
                 else
                 {
-                    Game1.drawObjectDialogue(dialogueText);
+                    Game1.drawObjectDialogue(dialogueModel.Text);
                 }
 
                 return true;
@@ -846,6 +851,50 @@ namespace CustomCompanions.Framework.Companions
             }
 
             return v;
+        }
+
+        internal DialogueModel GetDialogue(bool probe = false)
+        {
+            if (this.owner is not null)
+            {
+                return new DialogueModel();
+            }
+
+            var selectedDialogue = new DialogueModel();
+            if (this.model.DialogueSequence.Count > 0)
+            {
+                if (this.model.DialogueSequence.Count(d => d.HasBeenDisplayed is false) == 0)
+                {
+                    foreach (var dialogue in this.model.DialogueSequence.Where(d => d.HasBeenDisplayed is true && d.DisplayOnce is false))
+                    {
+                        dialogue.HasBeenDisplayed = false;
+                    }
+                }
+
+                foreach (var dialogue in this.model.DialogueSequence.Where(d => d.HasBeenDisplayed is false))
+                {
+                    if (probe is false)
+                    {
+                        dialogue.HasBeenDisplayed = true;
+                    }
+
+                    selectedDialogue.Text = dialogue.Text;
+                    selectedDialogue.PortraitIndex = dialogue.PortraitIndex;
+                    break;
+                }
+            }
+
+            if (String.IsNullOrEmpty(selectedDialogue.Text) is true)
+            {
+                selectedDialogue.Text = this.model.InspectionDialogue;
+            }
+
+            if (String.IsNullOrEmpty(selectedDialogue.Text) is false && this.model.Translations.GetTranslations().Any(t => t.Key == selectedDialogue.Text))
+            {
+                selectedDialogue.Text = this.model.Translations.Get(selectedDialogue.Text);
+            }
+
+            return selectedDialogue;
         }
 
         internal bool IsHovering()

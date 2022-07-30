@@ -10,6 +10,7 @@
 
 using LinqFasterer;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -20,6 +21,12 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Types.Reflection;
 internal abstract class VariableInfo : MemberInfo, ILongHash {
 	protected abstract MemberInfo Value { get; }
+
+	internal abstract VariableAccessor<TObject, TResult> GetAccessor<TObject, TResult>();
+
+	internal abstract VariableStaticAccessor<TResult> GetAccessor<TResult>(object target);
+
+	internal abstract VariableStaticAccessor<TResult> GetStaticAccessor<TResult>();
 
 	public abstract VariableAttributes Attributes { get; }
 
@@ -134,7 +141,11 @@ internal abstract class VariableInfo : MemberInfo, ILongHash {
 	internal static VariableInfo From(PropertyInfo property) =>
 		new PropertyVariableInfo(property);
 
-	internal static VariableInfo From(MemberInfo member) {
+	[return: NotNullIfNotNull("member")]
+	internal static VariableInfo? From(MemberInfo? member) {
+		if (member is null) {
+			return null;
+		}
 		return member switch {
 			FieldInfo field => From(field),
 			PropertyInfo property => From(property),
@@ -150,13 +161,44 @@ internal sealed class FieldVariableInfo : VariableInfo {
 	protected override MemberInfo Value => Field;
 	internal override FieldInfo Field { get; }
 
+	[Obsolete("Field does not have Property")]
+	private static new PropertyInfo? Property => null;
+
+	internal override VariableAccessor<TObject, TResult> GetAccessor<TObject, TResult>() {
+		return new(
+			this,
+			typeof(TObject).GetFieldGetter<TObject, TResult>(Field),
+			typeof(TObject).GetFieldSetter<TObject, TResult>(Field)
+		);
+	}
+
+	internal override VariableStaticAccessor<TResult> GetAccessor<TResult>(object target) {
+		if (Field.DeclaringType is not { } type) {
+			return ThrowHelper.ThrowInvalidOperationException<VariableStaticAccessor<TResult>>($"Field '{Field}' lacks a declaring type");
+		}
+
+		return new(
+			this,
+			type.GetFieldGetter<object, TResult>(Field, target),
+			type.GetFieldSetter<object, TResult>(Field, target)
+		);
+	}
+
+	internal override VariableStaticAccessor<TResult> GetStaticAccessor<TResult>() {
+		return new(
+			this,
+			Field.GetGetter<TResult>(),
+			Field.GetSetter<TResult>()
+		);
+	}
+
 	public override VariableAttributes Attributes { get; }
 
 	[NotNull]
 	public override FieldAttributes? FieldAttributes => Field.Attributes;
 
-	private readonly Lazy<MethodInfo> GetAccessor;
-	private readonly Lazy<MethodInfo> SetAccessor;
+	private readonly Lazy<MethodInfo> AccessorGet;
+	private readonly Lazy<MethodInfo> AccessorSet;
 	private readonly Lazy<MethodInfo[]> Accessors;
 
 	public override MemberTypes MemberType => MemberTypes.Field;
@@ -164,12 +206,12 @@ internal sealed class FieldVariableInfo : VariableInfo {
 	internal FieldVariableInfo(FieldInfo field) {
 		Field = field;
 
-		GetAccessor = new(Field.IsStatic ? new Func<object?>(GetValueStatic).Method : new Func<object?, object?>(GetValue).Method);
-		SetAccessor = new(Field.IsStatic ? new Action<object?>(SetValueStatic).Method : new Action<object?, object?>(SetValue).Method);
+		AccessorGet = new(Field.IsStatic ? new Func<object?>(GetValueStatic).Method : new Func<object?, object?>(GetValue).Method);
+		AccessorSet = new(Field.IsStatic ? new Action<object?>(SetValueStatic).Method : new Action<object?, object?>(SetValue).Method);
 
 		Accessors = new(new[] {
-			GetAccessor.Value,
-			SetAccessor.Value,
+			AccessorGet.Value,
+			AccessorSet.Value,
 		});
 
 		Attributes = VariableAttributesExt.GetVariableAttributes(null, null, Field.Attributes);
@@ -229,9 +271,9 @@ internal sealed class FieldVariableInfo : VariableInfo {
 
 	public override MethodInfo[] GetAccessors(bool nonPublic) => Accessors.Value;
 
-	public override MethodInfo GetGetMethod(bool nonPublic) => GetAccessor.Value;
+	public override MethodInfo GetGetMethod(bool nonPublic) => AccessorGet.Value;
 
-	public override MethodInfo GetSetMethod(bool nonPublic) => SetAccessor.Value;
+	public override MethodInfo GetSetMethod(bool nonPublic) => AccessorSet.Value;
 
 	[CLSCompliant(false)]
 	public override void SetValueDirect(TypedReference obj, object value) => Field.SetValueDirect(obj, value);
@@ -251,6 +293,37 @@ internal sealed class FieldVariableInfo : VariableInfo {
 internal sealed class PropertyVariableInfo : VariableInfo {
 	protected override MemberInfo Value => Property;
 	internal override PropertyInfo Property { get; }
+
+	[Obsolete("Property does not have Field")]
+	private static new FieldInfo? Field => null;
+
+	internal override VariableAccessor<TObject, TResult> GetAccessor<TObject, TResult>() {
+		return new(
+			this,
+			typeof(TObject).GetPropertyGetter<TObject, TResult>(Property),
+			typeof(TObject).GetPropertySetter<TObject, TResult>(Property)
+		);
+	}
+
+	internal override VariableStaticAccessor<TResult> GetAccessor<TResult>(object target) {
+		if (Property.DeclaringType is not { } type) {
+			return ThrowHelper.ThrowInvalidOperationException<VariableStaticAccessor<TResult>>($"Property '{Property}' lacks a declaring type");
+		}
+
+		return new(
+			this,
+			type.GetPropertyGetter<object, TResult>(Property, target),
+			type.GetPropertySetter<object, TResult>(Property, target)
+		);
+	}
+
+	internal override VariableStaticAccessor<TResult> GetStaticAccessor<TResult>() {
+		return new(
+			this,
+			Property.GetGetter<TResult>(),
+			Property.GetSetter<TResult>()
+		);
+	}
 
 	private readonly Lazy<VariableAttributes> AttributesLazy;
 	public override VariableAttributes Attributes => AttributesLazy.Value;
@@ -322,7 +395,7 @@ internal sealed class PropertyVariableInfo : VariableInfo {
 	public override bool IsSecurityCritical => ReferenceMethodInfo.Value?.IsSecurityCritical ?? false;
 	public override bool IsSecuritySafeCritical => ReferenceMethodInfo.Value?.IsSecuritySafeCritical ?? false;
 	public override bool IsSecurityTransparent => ReferenceMethodInfo.Value?.IsSecurityTransparent ?? false;
-	public override RuntimeFieldHandle? FieldHandle => GetBackingField().FieldHandle;
+	public override RuntimeFieldHandle? FieldHandle => GetBackingField()?.FieldHandle;
 	public override bool Equals(object? obj) {
 		return obj switch {
 			PropertyVariableInfo propertyVarInfo => Property.Equals(propertyVarInfo.Property),

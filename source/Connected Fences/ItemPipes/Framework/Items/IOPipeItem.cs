@@ -26,12 +26,14 @@ using ItemPipes.Framework.Items.Tools;
 using ItemPipes.Framework.Nodes;
 using System.Xml.Serialization;
 using StardewValley.Buildings;
+using SObject = StardewValley.Object;
 
 
 namespace ItemPipes.Framework.Items
 {
     public abstract class IOPipeItem : PipeItem
     {
+        public string Signal { get; set; }
         public Texture2D SignalTexture { get; set; }
         public Texture2D OnSignal { get; set; }
         public Texture2D OffSignal { get; set; }
@@ -52,6 +54,23 @@ namespace ItemPipes.Framework.Items
             PopulateDrawGuide();
         }
 
+        public override SObject Save()
+        {    
+            Fence fence = (Fence)base.Save();
+            if (!fence.modData.ContainsKey("signal")) { fence.modData.Add("signal", Signal); }
+            else { fence.modData["signal"] = Signal; }
+            return fence;
+        }
+
+        public override void Load(ModDataDictionary data)
+        {
+            modData = data;
+            stack.Value = Int32.Parse(modData["Stack"]);
+            Signal = modData["signal"];
+            //Signal loaded to node on node contruction
+            //Here nodes arent made still
+        }
+
         public void LoadSignals()
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
@@ -60,64 +79,8 @@ namespace ItemPipes.Framework.Items
             UnconnectedSignal = DataAccess.Sprites["signal_unconnected"];
             NoChestSignal = DataAccess.Sprites["signal_nochest"];
             SignalTexture = UnconnectedSignal;
+            Signal = "unconnected";
         }
-
-        public override bool performToolAction(Tool t, GameLocation location)
-        {
-            if (t is Pickaxe)
-            {
-                var who = t.getLastFarmerToUse();
-                this.performRemoveAction(this.TileLocation, location);
-                Debris deb = new Debris(this.getOne(), who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-                Game1.currentLocation.debris.Add(deb);
-                DataAccess DataAccess = DataAccess.GetDataAccess();
-                List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                Node node = nodes.Find(n => n.Position.Equals(TileLocation));
-                if (node != null && node is PipeNode)
-                {
-                    PipeNode pipe = (PipeNode)node;
-                    if (pipe.StoredItem != null)
-                    {
-                        Debris itemDebr = new Debris(pipe.StoredItem, who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-                        Game1.currentLocation.debris.Add(itemDebr);
-                        pipe.Broken = true;
-                    }
-                }
-                Game1.currentLocation.objects.Remove(this.TileLocation);
-                return false;
-            }
-            if (t is WrenchItem)
-            {
-                ChangeSignal();
-                return false;
-            }
-            return false;
-        }
-
-        /*
-        public override bool clicked(Farmer who)
-        {
-            if(who.CurrentTool == null)
-            {
-                DataAccess DataAccess = DataAccess.GetDataAccess();
-                if (DataAccess.IOPipeNames.Contains(this.Name))
-                {
-                    List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                    Node node = nodes.Find(n => n.Position.Equals(this.TileLocation));
-                    if(node is IOPipeNode)
-                    {
-                        IOPipeNode pipe = (IOPipeNode)node;
-                        if (pipe != null)
-                        {
-                            Printer.Info($"{Name} is {pipe.Signal}");
-
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-        */
 
         public void ChangeSignal()
         {
@@ -130,6 +93,7 @@ namespace ItemPipes.Framework.Items
 
         public void UpdateSignal(string signal)
         {
+            Signal = signal;
             switch (signal)
             {
                 case "on":
@@ -147,6 +111,17 @@ namespace ItemPipes.Framework.Items
             }
         }
 
+
+        public override bool performToolAction(Tool t, GameLocation location)
+        {
+            if (t is WrenchItem)
+            {
+                ChangeSignal();
+                return false;
+            }
+            return base.performToolAction(t, location);
+        }
+
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
             base.draw(spriteBatch, x, y);
@@ -158,24 +133,25 @@ namespace ItemPipes.Framework.Items
                 if (node != null && node is IOPipeNode)
                 {
                     IOPipeNode IONode = (IOPipeNode)node;
-                    if (IONode.Signal != null && !IONode.PassingItem)
+                    float transparency = 1f;
+                    if (IONode.Passable)
+                    {
+                        Passable = true;
+                        transparency = 0.5f;
+                    }
+                    else
+                    {
+                        Passable = false;
+                        transparency = 1f;
+                    }
+                    if (ModEntry.config.IOPipeStateSignals && IONode.Signal != null && !IONode.PassingItem)
                     {
                         UpdateSignal(IONode.Signal);
-                        float transparency = 1f;
-                        if (IONode.Passable)
-                        {
-                            Passable = true;
-                            transparency = 0.5f;
-                        }
-                        else
-                        {
-                            Passable = false;
-                            transparency = 1f;
-                        }
                         Rectangle srcRect = new Rectangle(0, 0, 16, 16);
                         spriteBatch.Draw(SignalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.002f);
                     }
-                    if (Globals.IOPipeStatePopup && IONode.Signal != null)
+
+                    if (ModEntry.config.IOPipeStatePopup && IONode.Signal != null)
                     {
                         if(IONode.Signal.Equals("nochest"))
                         {

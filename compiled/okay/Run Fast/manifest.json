@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "Sprint",
+  "Name": "Run Fast",
   "Author": "Krutonium",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Run Faster!",
   "UniqueID": "krutonium.sprint",
   "EntryDll": "Sprint.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:12701" ]
 }

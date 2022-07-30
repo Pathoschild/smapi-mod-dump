@@ -6,12 +6,9 @@ mods:
    SpriteMaster
 
 latest commit:
-   commit 59fb45fec9b8bfaff6ef2acd682cc9afd69cce0f
+   commit 489af0a29ae6b7ed777efac9ae6edd48b5ffba95
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Tue Jun 28 04:24:26 2022 -0500
+   Date:   Sat Jul 23 18:30:40 2022 -0500
    
-       Added new benchmarks.
-       Further optimizations.
-       Temporarily fix for Linked List issue causing concurrency crashes.
-       Split initialization into two-phase initialization.
+       Updating to 0.15.0-Beta.1
    

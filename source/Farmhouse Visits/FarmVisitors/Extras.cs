@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -20,9 +18,10 @@ using System.Linq;
 namespace FarmVisitors
 {
     /* Extras *
-     * (e.g user-customizable schedules, GMCM titles, etc) */
+     * extra methods that are important, yet don't fit into specific categories (e.g titles, assetloading, booleans) */
     internal class Extras
     {
+        /* GMCM related */
         public static string ExtrasTL()
         {
             string result = ModEntry.Help.Translation.Get("config.Extras");
@@ -49,12 +48,15 @@ namespace FarmVisitors
             return result;
         }
 
+        /* Related to custom visits*/
         internal static void AssetRequest(object sender, AssetRequestedEventArgs e)
         {
-            if (e.Name.Equals("mistyspring.farmhousevisits/Schedules"))
+            if (e.NameWithoutLocale.IsEquivalentTo("mistyspring.farmhousevisits/Schedules", true))
             {
-                e.LoadFromModFile<Dictionary<string, ScheduleData>>("empty.json", AssetLoadPriority.Medium);
-                //e.Edit(asset => new Dictionary<string, ScheduleData>());
+                e.LoadFrom(
+                () => new Dictionary<string, ScheduleData>(),
+                AssetLoadPriority.Medium
+            );
             }
         }
         internal static bool IsScheduleValid(KeyValuePair<string, ScheduleData> pair)
@@ -80,6 +82,44 @@ namespace FarmVisitors
                 return false;
             }
             return true;
+        }
+
+        /* in the future, see if using these
+         * instead of using .Any()  
+         * (as of now, they make the whole mod fail, though).
+         */
+        internal static bool AnyInList(List<string> list)
+        {
+            try
+            {
+                return list.Count != 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        internal static bool AnySchedule()
+        {
+            try
+            {
+                return ModEntry.SchedulesParsed.Count != 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        internal static bool AnySchedule(Dictionary<string, ScheduleData> sch)
+        {
+            try
+            {
+                return sch.Count != 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 
@@ -308,7 +348,7 @@ namespace FarmVisitors
         //get name of spouse the NPC is related to
         public static string GetRelativeName(string who)
         {
-            if (ModEntry.InLaws is null)
+            if (!ModEntry.InLaws.Any())
             {
                 return null;
             }

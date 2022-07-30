@@ -1,5 +1,6 @@
 {
   "ModKey": "LeftShift, LeftShoulder",
+  "ShouldJunimosInheritProfessions": false,
   "CustomArtisanMachines": [
     "Alembic",
     "Artisanal Soda Maker",
@@ -35,6 +36,9 @@
   "ForagesNeededForBestQuality": 500,
   "MineralsNeededForBestQuality": 500,
   "ShouldCountAutomatedHarvests": false,
+  "TrackPointerScale": 1.0,
+  "TrackPointerBobbingRate": 1.0,
+  "DisableAlwaysTrack": false,
   "ChanceToStartTreasureHunt": 0.1,
   "AllowScavengerHuntsOnFarm": false,
   "ScavengerHuntHandicap": 1.0,
@@ -45,6 +49,7 @@
   "SeaweedIsJunk": true,
   "FishNeededForInstantCatch": 500,
   "AnglerMultiplierCap": 1.0,
+  "ShowFishCollectionMaxIcon": true,
   "LegendaryPondPopulationCap": 6,
   "TrashNeededPerTaxBonusPct": 100,
   "TrashNeededPerFriendshipPoint": 100,

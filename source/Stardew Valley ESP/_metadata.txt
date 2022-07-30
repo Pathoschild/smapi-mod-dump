@@ -6,10 +6,9 @@ mods:
    Stardew Valley ESP
 
 latest commit:
-   commit ce790f7af931c7b824b00c0e9eff057dcd95bc1b
-   Author: rei2hu <r2hkri@gmail.com>
-   Date:   Sat Aug 17 22:17:56 2019 -0500
+   commit d890b77ebcfbe38a227489ae561a9754d07a1a2c
+   Author: reimu <11600812+rei2hu@users.noreply.github.com>
+   Date:   Sat Jul 16 19:46:08 2022 -0500
    
-       Add crop detection
-       Also use enum instead of string for detector factory
+       update deps for latest smapi
    

@@ -1,0 +1,101 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "Schedules - fixed (bad).",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {
+            "GIRemainder": "1800 Saloon 7 18 1/2300 Trailer 25 17 2 pam_sleep",
+            "spring_25": "800 Trailer 15 4 2 pam_sit_down/1130 Hospital 4 17 2 pam_sit_down \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.000\"/1330 Hospital 4 6 1 \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.001\"/1600 Saloon 7 18 1 \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.bad\"/2000 Trailer 10 9 2 pam_drink/2200 Trailer 25 17 2 pam_sleep",
+            "fall_15": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Saloon 7 18 1/2000 Trailer 10 9 2 pam_drink/2400 Trailer 25 17 2 pam_sleep" //consistent schedule on Sandy's bday
+        }
+    },
+    {
+        "LogName": "Default bad schedule after rehab",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {
+            "bus": "800 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Saloon 7 18 1/2100 Trailer 15 4 2 pam_sit_down/2400 Trailer 15 4 2 pam_sleep"
+        },
+        "When": {"HasSeenEvent": "99210002"}
+    },
+    {
+        "LogName": "Pam - teletherapy schedules",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "When": {"HasSeenEvent": "99210002", "BusReliability": "false"},
+        "Entries": {
+            "6": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/a1600 Hospital 19 5 0 \"Strings\\schedules\\Pam:atravita.PamTries.therapy\"/1800 Trailer 25 17 2 pam_sleep",
+            "16": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/a1430 Hospital 9 15 3 \"Strings\\schedules\\Pam:medications\"/a1600 Hospital 19 5 0 \"Strings\\schedules\\Pam:atravita.PamTries.therapy\"/1800 Trailer 25 17 2 pam_sleep"
+        }
+    },
+    {
+        "LogName": "Schedule alpha",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "When": {
+            "PamScheduleToken": "alpha",
+            "BusReliability": "false"
+            },
+        "Entries": {//Joja then saloon
+            "bus": "800 Trailer 15 4 2 pam_sit_down/1200 JojaMart 6 19 1/1700 Saloon 7 18 1/2400 Trailer 25 17 2 pam_sleep"
+        }
+    },
+    {
+        "LogName": "Schedule bravo",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "When": {
+            "PamScheduleToken": "bravo",
+            "BusReliability": "false"
+        },
+        "Entries": {//Gets drunk at home, gets drunk at the Saloon?
+            "bus": "630 Trailer 15 4 2 pam_sit_down/800 Trailer 10 9 2 pam_drink/1000 Trailer 15 4 2 pam_sit_down/1200 Saloon 7 18 1/1800 Town 75 70 2 pam_drink \"Strings\\schedules\\Pam:atravita.PamTries.kickedout\"/2000 Trailer 10 9 2 pam_drink \"Strings\\schedules\\Pam:atravita.PamTries.homebooze\"/2400 Trailer 25 17 2 pam_sleep"
+        }
+    },
+    {
+        "LogName": "schedule charlie",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//attempts to cook....
+            "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Trailer 9 7 0/2300 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"PamScheduleToken": "charlie"}
+    },
+    {
+        "LogName": "schedule delta",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries": {//Goes to sleep early
+            "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Trailer 25 17 2 pam_sleep"
+        },
+        "When": {"PamScheduleToken": "delta"}
+    },
+    {
+        "LogName": "schedule echo",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries":{//Basically normal schedule, except for getting kicked from the Saloon
+            "bus": "800 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Saloon 7 18 1/2100 Town 75 70 2 pam_drink \"Strings\\schedules\\Pam:atravita.PamTries.kickedout\"/2400 Trailer 15 4 2 pam_sleep"
+        },
+        "When": {"PamScheduleToken": "echo"}
+    },
+    {
+        "LogName": "schedule foxtrot",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Pam",
+        "Entries":{//Watch TV instead
+            "bus": "800 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Trailer 15 4 2 pam_sit_down/2400 Trailer 15 4 2 pam_sleep"
+        },
+        "When": {"PamScheduleToken": "foxtrot", "HasSeenEvent": "99210002"}
+    }
+]}

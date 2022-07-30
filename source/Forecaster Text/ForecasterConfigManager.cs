@@ -35,10 +35,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using ForecasterText.Objects;
 using ForecasterText.Objects.Enums;
 using GenericModConfigMenu;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace ForecasterText {
     public sealed class ForecasterConfigManager {
@@ -79,8 +81,8 @@ namespace ForecasterText {
             this.AddWeatherDropdown(
                 () => this.ModConfig.StardewValleyWeather,
                 display => this.ModConfig.StardewValleyWeather = display,
-                "Stardew Valley",
-                "When to show the weather for Stardew Valley"
+                "Pelican Town",
+                "When to show the weather for Pelican Town"
             );
             
             this.AddWeatherDropdown(
@@ -88,6 +90,27 @@ namespace ForecasterText {
                 display => this.ModConfig.GingerIslandWeather = display,
                 "Ginger Island",
                 "When to show the weather for Ginger Island"
+            );
+            
+            // When to display birthdays
+            this.AddSectionTitle(
+                "Show Birthdays",
+                "When to show birthday messages"
+            );
+            this.AddBoolOption(
+                () => this.ModConfig.ShowBirthdays,
+                value => this.ModConfig.ShowBirthdays = value,
+                "Show Birthdays",
+                "If birthdays are shown"
+            );
+            this.AddBoolOption(
+                () => this.ModConfig.UseVillagerNames,
+                value => {
+                    this.ModConfig.UseVillagerNames = value;
+                    this.Examples.ForEach(message => message.Dirty = true);
+                },
+                "Use Names",
+                "Shows names of villagers instead of their face icon"
             );
             
             // When to display luck
@@ -195,6 +218,17 @@ namespace ForecasterText {
                 message => this.RecipeExampleMessage(message, true)
             );
             
+            // Emoji for birthdays
+            this.AddSectionTitle(
+                "Birthday Icons",
+                "The icons used for birthdays"
+            );
+            this.AddEmojiSelector("Birthday Today", null,
+                () => this.ModConfig.BirthdayEmoji,
+                i => this.ModConfig.BirthdayEmoji = i,
+                message => this.BirthdayExampleMessage(message, new [] { "Shane", "Abigail" })
+            );
+            
             // Emojis for weather
             this.AddSectionTitle(
                 "Weather Icons",
@@ -257,8 +291,8 @@ namespace ForecasterText {
             // Unlike other types check if the config exists before constructing types
             if (this.ConfigMenu is {} config) {
                 ConfigEmojiMenu menu = new(this.Mod, text, tooltip, get, i => {
-                    this.Examples.ForEach(message => message.Dirty = true);
                     set?.Invoke(i);
+                    this.Examples.ForEach(message => message.Dirty = true);
                 });
                 
                 if (parser is not null) {
@@ -295,7 +329,7 @@ namespace ForecasterText {
         #endregion
         #region Getters
         
-        public uint GetEmoji(WeatherIcons icon) => icon switch {
+        public uint? GetEmoji(WeatherIcons icon) => icon switch {
             WeatherIcons.SUN => this.ModConfig.SunWeatherEmoji,
             WeatherIcons.RAIN => this.ModConfig.RainWeatherEmoji,
             WeatherIcons.LIGHTNING => this.ModConfig.ThunderWeatherEmoji,
@@ -304,7 +338,7 @@ namespace ForecasterText {
             WeatherIcons.WEDDING => this.ModConfig.WeddingWeatherEmoji,
             _ => 0u
         };
-        public uint GetEmoji(SpiritMoods icon) => icon switch {
+        public uint? GetEmoji(SpiritMoods icon) => icon switch {
             SpiritMoods.VERY_HAPPY => this.ModConfig.VeryHappySpiritEmoji,
             SpiritMoods.GOOD_HUMOR => this.ModConfig.GoodHumorSpiritEmoji,
             SpiritMoods.NEUTRAL => this.ModConfig.NeutralSpiritEmoji,
@@ -313,18 +347,63 @@ namespace ForecasterText {
             SpiritMoods.VERY_DISPLEASED => this.ModConfig.VeryDispleasedSpiritEmoji,
             _ => 0u
         };
+        public uint? GetEmoji(Character character) => character switch {
+            NPC npc => this.GetNpcEmoji(npc.getName()),
+            _ => null
+        };
+        public uint? GetNpcEmoji(string name) => name.ToLower(CultureInfo.InvariantCulture) switch {
+            "abigail" => 154u,
+            "penny" => 155u,
+            "maru" => 156u,
+            "leah" => 157u,
+            "haley" => 158u,
+            "emily" => 159u,
+            "alex" => 160u,
+            "shane" => 161u,
+            "sebastian" => 162u,
+            "sam" => 163u,
+            "harvey" => 164u,
+            "elliot" => 165u,
+            "sandy" => 166u,
+            "evelyn" => 167u,
+            "marnie" => 168u,
+            "caroline" => 169u,
+            "robin" => 170u,
+            "pierre" => 171u,
+            "pam" => 172u,
+            "jodi" => 173u,
+            "lewis" => 174u,
+            "linus" => 175u,
+            "marlon" => 176u,
+            "willy" => 177u,
+            "wizard" => 178u,
+            "morris" => 179u,
+            "jas" => 180u,
+            "vincent" => 181u,
+            "krobus" => 182u,
+            "dwarf" => 183u,
+            "gus" => 184u,
+            "gunther" => 185u,
+            "george" => 186u,
+            "demestrius" => 187u,
+            "clint" => 188u,
+            _ => null
+        };
         
         #endregion
         #region Examples
         
         internal string SpiritExampleMessage(ConfigEmojiMessage message, SpiritMoods mood)
-            => this.Mod.Events.GetDailyLuck(mood);
-        
-        internal string WeatherExampleMessage(ConfigEmojiMessage message, WeatherIcons weatherDisplay)
-            => this.Mod.Events.GetTownForecast((int)weatherDisplay);
+            => this.Mod.Events.GetDailyLuck(mood)?.ToString();
         
         internal string RecipeExampleMessage(ConfigEmojiMessage message, bool hasRecipe)
-            => this.Mod.Events.GetQueenOfSauce("Trout Soup", hasRecipe);
+            => this.Mod.Events.GetQueenOfSauce("Trout Soup", hasRecipe)?.ToString();
+        
+        internal string BirthdayExampleMessage(ConfigEmojiMessage message, IEnumerable<string> names)
+            => this.Mod.Events.GetBirthdays(names)?.ToString();
+        
+        internal string WeatherExampleMessage(ConfigEmojiMessage message, WeatherIcons weatherDisplay)
+            => this.Mod.Events.GetTownForecast((int)weatherDisplay)?.ToString();
         
         #endregion
     }

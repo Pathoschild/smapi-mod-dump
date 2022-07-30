@@ -19,7 +19,7 @@ using System;
 #endregion using directives
 
 /// <summary>Constructs the GenericModConfigMenu integration for Immersive Tweaks.</summary>
-internal class GenericModConfigMenuIntegrationForImmersiveTweaks
+internal sealed class GenericModConfigMenuIntegrationForImmersiveTweaks
 {
     /// <summary>The Generic Mod Config Menu integration.</summary>
     private readonly GenericModConfigMenuIntegration<ModConfig> _configMenu;
@@ -49,14 +49,14 @@ internal class GenericModConfigMenuIntegrationForImmersiveTweaks
             .AddCheckbox(
                 () => "Age Tapper Trees",
                 () => "Allows regular trees to age and improve their syrup quality every year.",
-                config => config.AgeSapTrees,
-                (config, value) => config.AgeSapTrees = value
+                config => config.AgeImprovesTreeSap,
+                (config, value) => config.AgeImprovesTreeSap = value
             )
             .AddCheckbox(
                 () => "Age Bee Houses",
                 () => "Allows bee houses to age and improve their honey quality every year.",
-                config => config.AgeBeeHouses,
-                (config, value) => config.AgeBeeHouses = value
+                config => config.AgeImprovesBeeHouses,
+                (config, value) => config.AgeImprovesBeeHouses = value
             )
             .
             AddNumberField(
@@ -110,6 +110,12 @@ internal class GenericModConfigMenuIntegrationForImmersiveTweaks
                     "Extends the perks from Botanist/Ecologist profession to dug-up Ginger and shaken-off Coconuts in Ginger Island.",
                 config => config.ProfessionalForagingInGingerIsland,
                 (config, value) => config.ProfessionalForagingInGingerIsland = value
+            )
+            .AddCheckbox(
+                () => "Kegs Remember Honey Flower",
+                () => "Allows Kegs to produce Flower Meads.",
+                config => config.KegsRememberHoneyFlower,
+                (config, value) => config.KegsRememberHoneyFlower = value
             )
             .AddCheckbox(
                 () => "Explosion Triggered Bombs",

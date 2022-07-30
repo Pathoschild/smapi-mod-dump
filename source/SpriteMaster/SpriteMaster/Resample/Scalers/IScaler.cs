@@ -56,10 +56,9 @@ internal interface IScaler {
 #if !SHIPPING
 		Resample.Scaler.SuperXBR => Resample.Scalers.SuperXBR.ScalerInfo.Instance,
 #endif
-		Scaler.EPX =>EPX.ScalerInfo.Instance,
-#if !SHIPPING
-		Resample.Scaler.Bilinear => ThrowBilinearNotImplementedException<IScalerInfo>(),
-#endif
+		Scaler.EPX => EPX.ScalerInfo.Instance,
+		Scaler.EPXLegacy => EPX.ScalerInfo.InstanceLegacy,
+		Scaler.xBREPX => xBREPX.ScalerInfo.Instance,
 		Scaler.None => null,
 		_ => ThrowUnknownScalerTypeException<IScalerInfo>()
 	};
@@ -72,9 +71,8 @@ internal interface IScaler {
 		Resample.Scaler.SuperXBR => Resample.Scalers.SuperXBR.Scaler.ScalerInterface.Instance,
 #endif
 		Scaler.EPX => EPX.Scaler.ScalerInterface.Instance,
-#if !SHIPPING
-		Resample.Scaler.Bilinear => ThrowBilinearNotImplementedException<IScaler>(),
-#endif
+		Scaler.EPXLegacy => EPX.Scaler.ScalerInterface.InstanceLegacy,
+		Scaler.xBREPX => xBREPX.Scaler.ScalerInterface.Instance,
 		Scaler.None => null,
 		_ => ThrowUnknownScalerTypeException<IScaler>()
 	};

@@ -17,16 +17,29 @@ namespace SmartBuilding
 {
     public class ModConfig
     {
-        // TODO: Add an "instantly build" toggle.
         public KeybindList EngageBuildMode = KeybindList.Parse("LeftShift+B");
-        public KeybindList HoldToDraw = KeybindList.Parse("MouseRight");
-        public KeybindList HoldToDrawRectangle = KeybindList.Parse("LeftAlt");
-        public KeybindList HoldToErase = KeybindList.Parse("LeftShift");
-        public KeybindList HoldToInsert = KeybindList.Parse("LeftControl");
-        public KeybindList ConfirmBuild = KeybindList.Parse("MouseLeft");
-        public KeybindList PickUpObject = KeybindList.Parse("Delete");
-        public KeybindList PickUpFloor = KeybindList.Parse("End");
-        public KeybindList PickUpFurniture = KeybindList.Parse("Home");
+        public KeybindList HoldToDraw = KeybindList.Parse("MouseLeft");
+        public KeybindList HoldToMoveMenu = KeybindList.Parse("MouseMiddle");
+        // Optional tool hotkeys
+        public KeybindList DrawTool = KeybindList.Parse("");
+        public KeybindList EraseTool = KeybindList.Parse("");
+        public KeybindList FilledRectangleTool = KeybindList.Parse("");
+        public KeybindList InsertTool = KeybindList.Parse("");
+        public KeybindList CommitBuild = KeybindList.Parse("");
+        public KeybindList CancelBuild = KeybindList.Parse("");
+        // Optional layer hotkeys
+        public KeybindList DrawnLayer = KeybindList.Parse("");
+        public KeybindList ObjectLayer = KeybindList.Parse("");
+        public KeybindList FloorLayer = KeybindList.Parse("");
+        public KeybindList FurnitureLayer = KeybindList.Parse("");
+        // public KeybindList HoldToDrawRectangle = KeybindList.Parse("LeftAlt");
+        // public KeybindList HoldToErase = KeybindList.Parse("LeftShift");
+        // public KeybindList HoldToInsert = KeybindList.Parse("LeftControl");
+        // public KeybindList ConfirmBuild = KeybindList.Parse("Enter");
+        // public KeybindList PickUpObject = KeybindList.Parse("Delete");
+        // public KeybindList PickUpFloor = KeybindList.Parse("End");
+        // public KeybindList PickUpFurniture = KeybindList.Parse("Home");
+        public bool InstantlyBuild = false;
         public bool ShowBuildQueue = true;
         public bool CanDestroyChests = false;
         public bool CrabPotsInAnyWaterTile = false;
@@ -40,8 +53,7 @@ namespace SmartBuilding
         public bool EnablePlacingStorageFurniture = false;
         // The cheesy zone.
         public bool EnablePlantingCrops = false;
-        public bool EnableCropFertilizers = false;
-        public bool EnableTreeFertilizers = false;
+        public bool EnableFertilizers = false;
         public bool EnableTreeTappers = false;
         public bool EnableInsertingItemsIntoMachines = false;
 		// Debug zone.

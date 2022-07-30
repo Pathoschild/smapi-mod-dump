@@ -9,25 +9,12 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
 
 namespace SpriteMaster.Resample;
 
 internal static class TextureDecode {
-	private static class Internal {
-		internal static Span<byte> Decode(XTexture2D texture, ReadOnlySpan<byte> data) => Decoder.InternalBlockDecoder.Decode(data, texture.Extent(), texture.Format);
-	}
-
-	private static class Graphics {
-		internal static Span<byte> Decode(XTexture2D texture, ReadOnlySpan<byte> data) => Decoder.GraphicsBlockDecoder.Decode(data, texture.Extent(), texture.Format);
-	}
-
-	private static class MonoXNA {
-		internal static Span<byte> Decode(XTexture2D texture, ReadOnlySpan<byte> data) => Decoder.MonoBlockDecoder.Decode(data, texture.Extent(), texture.Format);
-	}
-
 	private static readonly DecodeDelegate[] PreferredDecoders = new DecodeDelegate[] {
 		Decoder.MonoBlockDecoder.Decode,
 		//Decoder.GraphicsBlockDecoder.Decode,

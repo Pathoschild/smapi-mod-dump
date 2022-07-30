@@ -10,7 +10,7 @@
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
 		<NoWarn>0162;7035</NoWarn>
 		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), \.dll\.config$, ILMerge, runtimes, net452, net450, net45</IgnoreModFilePatterns>
-		<Configurations>Debug;Release;Development;Shipping</Configurations>
+		<Configurations>Debug;Release;Development;Shipping;ReleaseUntraced;ShippingAsserts</Configurations>
 		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<PackageProjectUrl>https://github.com/ameisen/SV-SpriteMaster</PackageProjectUrl>
@@ -23,17 +23,27 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-	  <DefineConstants>TRACE</DefineConstants>
+	  <DefineConstants>TRACE;CONTRACTS_FULL</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseUntraced|x64'">
+	  <DefineConstants>RELEASE;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
-	  <DefineConstants>TRACE;SHIPPING</DefineConstants>
+	  <DefineConstants>SHIPPING</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ShippingAsserts|x64'">
+	  <DefineConstants>SHIPPING;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
-	  <DefineConstants>DEVELOPMENT;TRACE</DefineConstants>
+	  <DefineConstants>DEVELOPMENT;TRACE;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
@@ -59,11 +69,10 @@
 		</PackageReference>
 		<PackageReference Include="LinqFasterer" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
-		<PackageReference Include="Nito.Collections.Deque" Version="1.1.1" />
 		<PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
 		<PackageReference Include="Pastel" Version="3.0.1" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
-		<PackageReference Include="Tomlyn" Version="0.14.4" />
+		<PackageReference Include="Tomlyn" Version="0.15.0" />
 		<PackageReference Include="ZstdNet" Version="1.4.5" />
 	</ItemGroup>
 	
@@ -116,7 +125,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Hashing\Algorithms\XxHash3Exp\" />
+	  <Folder Include="Resample\Scalers\xBREPX\" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

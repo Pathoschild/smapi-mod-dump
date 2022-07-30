@@ -16,7 +16,6 @@ using Common;
 using Enums;
 using StardewModdingAPI;
 using System.Collections.Generic;
-using System.Linq;
 
 #endregion using directives
 
@@ -190,7 +189,7 @@ internal static class SubstanceManager
                 Bases[name] = (type, purity);
         }
 
-        if (!Ingredients.Any())
+        if (Ingredients.Count <= 0)
             Log.W(
                 "There were no ingredients loaded! You won't be able to create mixtures until you download some content packs.");
     }

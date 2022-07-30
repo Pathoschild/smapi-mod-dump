@@ -1,10 +1,16 @@
 ﻿{
   "Name": "字体设置",
   "Author": "Becks723",
-  "Version": "0.2.1",
+  "Version": "0.4.0",
   "Description": "设置游戏字体。",
   "UniqueID": "Becks723.FontSettings",
   "MinimumApiVersion": "3.14.0",
   "EntryDll": "FontSettings.dll",
-  "UpdateKeys": [ "Nexus:12467" ]
+  "UpdateKeys": [ "Nexus:12467" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
 }

@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using System.Xml.Serialization;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ItemPipes.Framework.Items.Objects
 {

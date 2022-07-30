@@ -1,0 +1,67 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Good dialogue, set charlie",
+        "Entries": {
+            "Saloon_Fri": "@! Join us. Can I buy you a drink?#$e#I've saved up some money that I'm not drinkin' nearly as often...",
+            "springForest": "#$c 0.5#Nothin' like the fresh air of spring.$h#All this walkin' around has been good for me!#",
+            "fallBusStop_Mon": "Abby comes around, sometimes, to play her flute.#$e#She's decently good",
+            "fallBusStop_Mon_inlaw_Abigail": "How's Abby doin'? She's enjoying the farm life?#$e#You know, I never expected that girl to settle down...especially in this little town...",
+            "summerMountain": "#$c 0.5#So much cooler, up here in the mountains.$h#Ah, it's nice to escape the heat a little. Fishing's been great, too!#",
+            "summerBeach": "%Pam is singing to herself.#$ 0.5#Got this song stuck in my head. It's been playin' on the radio all day.#Hey, @, what do ya think about the new album by %name?",
+            "winterTown_Tue": "Penny's been getting on my case about joining Caroline's Tuesday aerobics class. You think I should?#$b#$c 0.5#Feel like I should get in better shape before I join...$s#Feel like I'd just embarass myself, given how out of shape I am...$s#$b#@, what do you think?",
+            "Trailer_Big_Thu": "#$c 0.5#Will not drinking get any easier?#How am I supposed to maintain a distance from alcohol when it's *everywhere*?$s#",
+            "spring_Mon10": "Gas prices are up again. What are the politicians of ours doing?#$e#When gas prices go up, prices of everything go up. And I can barely afford to scrape by as is.",
+            "spring_Tue10": "#$c 0.7#I'm so glad winter is over. Weather's gotten so nice!#Town used to be so much bigger, back when the mines were active. But it seems to be growin' again now.$h#",
+            "spring_Fri8": "#$c 0.5#Ma used to make the best poppyseed muffins. Penny loved them.#Ma used to bring us home leftover pancakes from work. Actually, a lot of what she fed us was leftovers from work...#",
+            "summer_Mon8": "#$c 0.5#Pierre ran out of my favorite frozen omelets.$s#You think I should buy an air fryer?#",
+            "summer_Wed8": "#$c .8#Pappy loved ice cream, but we couldn't afford the good stuff very often.#Bought Joja ice cream once. It's not very good. What a waste of money.$s#",
+            "summer_Fri10": "Miss drivin' all over the valley. Used to bring Penny with me durin' the summers.#$b#We'd stop at this one tiny diner that had the best Tom Kha Soup.#$e#What was it called? It doesn't matter, it closed when the mines did.",
+            "summer_Sun10": "#$c 0.7#Seen any good movies lately?#Man, what happened to that mail-order movie rental business? Used to watch so many movies on my breaks...#",
+            "fall_Mon10": "#$c 0.7#Wildfires all over the news last night. Argh. This country is going to hell, ain't it...$s#Welp. The capital is flooding again. Of course it is. No one wants to maintain those levees.#",
+            "fall_Tue10": "Pierre started stocking this excellent frozen quiche.#$b#It's expensive, but it's quite good! Also, the box claims it's made from organic ingredients.",
+            "fall_Wed10": "#$c 0.7#@, seems to be good hikin' season. Got a few more hikers on the bus today, headed out to the desert.#Got some hikers comin' down off the mountains today. They said they started in Greensville! I can't imagine hikin' *that* far.#$e#Their packs were bigger than they were!",
+            "fall_Fri10": "Pappy used to love gardenin'. He used to surround the house with flowers.#$e#$c 0.5#But he didn't do that much after he started drinkin'.$s#He adored his poppies. Always had fresh flowers on the table in summer.$h#",
+            "fall_Sat10": "I wish it was easier to make new friends. Or meet new people. I've got you, and Gus, and Willy, but...#$b#I ain't gettin' any younger and I don't know how to, you know, uh, meet people.#$c 0.5#Penny thinks I should get on a datin' site. I'm...not so sure.#I guess this is one of the downsides of livin' in a town the size of this one.$s#",
+            "winter_Mon8": "#$c 0.5#Brr. Whys it gotta be so cold out here.#Your farm looks real pretty in the snow. Wish I could get my place to look as good.#",
+            "winter_Wed10": "Pappy made most of my clothing when I was growin' up.#$e#He learned how to sew in the army.",
+            "winter_Thu10": "Whatdya wanna be when you were a kid?#$e#Me, I wanted to be a hairdresser.",
+            "winter_Fri10": "I used to be real good lookin', back in the day.#$e#Fat lot of good that ever did me...$s#$e#None of the guys I ever dated were any good, and that includes Penny's daddy.#$e#Ma always told me it was better to have no man than a bad man.",
+            "winter_Sat10": "Heatin' bill has gone up much less than what I expected; guess the new house is much better insulated.#$e#$c 0.7#Robin does good work.$h#Amazed at how good Robin's work is!$h#"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Good dialogue - charlie post-rehab",
+        "Entries": {
+            "summmer_Tue10": "Being seein' advertisements for DNA test kits. Wonder if I should do one.#$b#Always wondered if, you know, I had the gene for alcoholism or something."
+        },
+        "When": {
+            "HasSeenEvent": "99210002" //Post-rehab event
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "LogName": "Good dialogue - charlie post-apology",
+        "Entries": {
+            "fall_Thu10": "#$c 0.5#Best job I'd ever had? Hauling coal for Accel. They're an aggressive company, yeah, but at least they're a union shop.#Took Penny to a dumpling place in Zuzu last week. Think we should do that more often...#",
+            "winter_Sun10": "#$c 0.5#@, whatcha do for fun? Or do you just run this big ole farm every day?#@, you'd be interested in watchin' a movie with Penny and me?"
+        },
+        "When": {
+            "HasFlag:hostPlayer": "atravita_PamApology_Reward"
+        }
+    }
+]}

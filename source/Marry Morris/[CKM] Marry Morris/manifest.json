@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+	"Name": "[CKM] Marry Morris",
+	"Author": "Yoshimax",
+	"Version": "1.2.1",
+	"Description": "Adds custom kissing configuration for Morris.",
+	"UniqueID": "Yoshimax.MarryMorrisCKM",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": ["Nexus:12824"],
+	"Dependencies": [
+		{
+			"UniqueID": "Yoshimax.MarryMorris"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "Digus.CustomKissingMod"
+	}
+}

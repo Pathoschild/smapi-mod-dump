@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace Common.Integrations.BetterCrafting;
+namespace StardewMods.Common.Integrations.BetterCrafting;
 
 using StardewModdingAPI;
 

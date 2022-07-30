@@ -306,3 +306,52 @@ Checklist
 ### Torches — "torches"
 
 ### Rectangle drawing — "rectangle"
+
+# 1.7.0 — UI update, and massive refactoring
+
+### UI
+
+### Interaction blocking
+
+### Misc
+* Leftover debug gubbins
+* Version bump
+
+### I18n Translations
+* Ensure other languages (zh right now) function correctly
+
+### Mod Integration
+
+### Known prior bugs. Ensure no regression — "regression"
+
+### Object and producer identification — "identification"
+
+### Flooring — "flooring"
+
+### Furniture — "furniture"
+
+### TV Furniture — "tv"
+
+### Storage furniture — "storage"
+
+### Bed furniture — "bed"
+
+### Furniture catalogue?
+
+### Chests — "chests"
+
+### Trees — "trees"
+
+### Crops — "crops"
+
+### Fences — "fences"
+
+### Modded objects — "modded"
+
+### Item insertion — "insertion"
+
+### Item insertion (modded; PFM)
+
+### Torches — "torches"
+
+### Rectangle drawing — "rectangle"

@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+  "SeasonalEdits": "true",
+  "ReplaceDefaultFences": "true",
+  "ReplaceHardwoodFences": "false",
+  "ImmersiveShadows": "true",
+  "MistEffects": "true",
+  "OriginalMinesEntrance": "false",
+  "AlternativeCraftables": "false",
+  "RemoveObjectsFromGrandpasShed": "false",
+  "RemoveSouthernCactusesFromDesert": "false",
+  "DisableSVEJojaMartShop": "false",
+  "BalancedCrafting": "false",
+  "HarderBuildingConstruction": "false",
+  "StrongerMonsters": "false",
+  "OlderSophiaPortraits": "false",
+  "VanillaSandyPortraits": "false",
+  "MatureEvents": "false",
+  "ShorterPathToBlueMoonVineyard": "false",
+  "UseGaldoranThemeAllTimes": "false",
+  "DisableGaldoranTheme": "false"
+}

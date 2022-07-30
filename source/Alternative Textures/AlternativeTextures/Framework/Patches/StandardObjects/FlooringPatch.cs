@@ -177,10 +177,17 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         private static void SeasonUpdatePostfix(Flooring __instance, bool onLoad)
         {
-            if (__instance.modData.ContainsKey("AlternativeTextureName") && __instance.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]))
+            if (__instance is null || __instance.modData.ContainsKey("AlternativeTextureOwner") is false || __instance.modData.ContainsKey("AlternativeTextureName") is false)
             {
-                __instance.modData["AlternativeTextureSeason"] = Game1.GetSeasonForLocation(__instance.currentLocation);
-                __instance.modData["AlternativeTextureName"] = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Flooring}_{GetFlooringName(__instance)}_{__instance.modData["AlternativeTextureSeason"]}");
+                return;
+            }
+
+            var season = Game1.GetSeasonForLocation(__instance.currentLocation);
+            var seasonalName = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Flooring}_{GetFlooringName(__instance)}_{season}");
+            if ((__instance.modData.ContainsKey("AlternativeTextureName") && __instance.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]) && !String.Equals(__instance.modData["AlternativeTextureSeason"], season, StringComparison.OrdinalIgnoreCase)) || AlternativeTextures.textureManager.DoesObjectHaveAlternativeTextureById(seasonalName))
+            {
+                __instance.modData["AlternativeTextureSeason"] = season;
+                __instance.modData["AlternativeTextureName"] = seasonalName;
             }
         }
     }

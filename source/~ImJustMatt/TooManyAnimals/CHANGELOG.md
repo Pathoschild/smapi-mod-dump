@@ -8,7 +8,21 @@ for queries and analysis.**
 
 # Too Many Animals Change Log
 
-## 1.2.2 (Unreleased)
+## 2.0.1 (July 9, 2022)
+
+* Added alert if FuryCore is installed.
+* Log config options for debugging.
+
+## 2.0.0 (July 1, 2022)
+
+* Updated to SMAPI 3.15.0.
+* Removed dependency on FuryCore.
+
+### Changed
+
+* Added support for ModManifestBuilder.
+
+## 1.2.2 (March 25, 2022)
 
 * Updated to FuryCore 1.6.3.
 

@@ -1404,7 +1404,7 @@
           "WeatherTomorrow": [],
           "CPConditions": {},
           "EPUPreconditions": [
-            "q 751600642/r 0.75"
+            "q 751600642/r 0.67"
           ],
           "LimitedNumberOfSpawns": null
         },
@@ -1506,7 +1506,7 @@
           "WeatherTomorrow": [],
           "CPConditions": {},
           "EPUPreconditions": [
-            "q 751600641/r 0.75"
+            "q 751600641/r 0.67"
           ],
           "LimitedNumberOfSpawns": null
         },

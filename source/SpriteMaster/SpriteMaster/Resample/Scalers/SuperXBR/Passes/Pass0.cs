@@ -34,7 +34,7 @@ sealed class Pass0 : Pass {
                               P2
 	*/
 
-	private static readonly float[] _PixelWeights = new float[] { 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f };
+	private static readonly float[] _PixelWeights = { 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f };
 	protected override float[] PixelWeights => _PixelWeights;
 
 	//           X   Y   Z   W
@@ -43,7 +43,7 @@ sealed class Pass0 : Pass {
 	// VAR.t3 = -1,  0,  2,  1
 	// VAR.t4 =  0,  0,  1,  1
 
-	private static readonly Float4[] UV = new Float4[] {
+	private static readonly Float4[] UV = {
 		(-1.0f, -1.0f,  2.0f,  2.0f),
 		( 0.0f, -1.0f,  1.0f,  2.0f),
 		(-1.0f,  0.0f,  2.0f,  1.0f),

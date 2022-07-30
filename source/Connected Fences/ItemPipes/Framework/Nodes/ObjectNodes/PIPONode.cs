@@ -14,23 +14,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ItemPipes.Framework.Model;
-using ItemPipes.Framework.Nodes.ObjectNodes;
+using ItemPipes.Framework.Items.Objects;
 using ItemPipes.Framework.Util;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
+using SObject = StardewValley.Object;
 
 
 namespace ItemPipes.Framework.Nodes.ObjectNodes
 {
-    public class PIPONode : Node
+    public class PIPONode : PipeNode
     {
-        public List<Network> AdjNetworks { get; set; }
         public PIPONode() { }
         public PIPONode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
+            ItemTimer = 100;
             State = "off";
-            AdjNetworks = new List<Network>();
+            LoadState();
+        }
+
+        
+
+        public void LoadState()
+        {
+            SObject item;
+            if (Location.objects.TryGetValue(Position, out item))
+            {
+                PIPOItem pipo = (PIPOItem)item;
+                State = pipo.State;
+            }
+            if (State.Equals("on"))
+            {
+                Passable = true;
+            }
+            else
+            {
+                Passable = false;
+            }
         }
 
         public bool ChangeState()
@@ -49,6 +70,48 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
                 ParentNetwork.Invisibilize(this);
                 return true;
             }
+        }
+
+        public void UpdateItemTimer()
+        {
+            List<Node> nonNullAdj = Adjacents.Values.Where(a => a != null && a is PipeNode).ToList();
+            if (nonNullAdj.Count > 0)
+            {
+                ItemTimer = (nonNullAdj.OrderBy(a => (a as PipeNode).ItemTimer).ToList()[0] as PipeNode).ItemTimer;
+            }
+            else
+            {
+                ItemTimer = 1000;
+            }
+        }
+
+        public override bool AddAdjacent(Side side, Node node)
+        {
+            bool added = base.AddAdjacent(side, node);
+            UpdateItemTimer();
+            return added;
+        }
+
+        public override bool RemoveAdjacent(Side side, Node node)
+        {
+            bool removed = base.RemoveAdjacent(side, node);
+            UpdateItemTimer();
+            return removed;
+        }
+
+
+        public override bool RemoveAllAdjacents()
+        {
+            bool removed = false;
+            foreach (KeyValuePair<Side, Node> adj in Adjacents.ToList())
+            {
+                if (adj.Value != null)
+                {
+                    removed = true;
+                    RemoveAdjacent(adj.Key, adj.Value);
+                }
+            }
+            return removed;
         }
     }
 }

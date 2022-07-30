@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+    "rain":  "630 Custom_Yoshimax_MorrisHome 4 17 0/700 JojaMart 14 29 0/900 JojaMart 21 24 2/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+    "spring": "630 Custom_Yoshimax_MorrisHome 4 17 0/700 JojaMart 14 29 0/900 JojaMart 21 24 2/2300 Custom_Yoshimax_MorrisHome 15 5 1",
+    "marriageJob": "700 JojaMart 21 24 2 \"Strings\\schedules\\Morris:Joja\"/1700 Saloon 20 18 3 \"Strings\\schedules\\Morris:Saloon\"/1930 BusStop -1 23 3"
+}

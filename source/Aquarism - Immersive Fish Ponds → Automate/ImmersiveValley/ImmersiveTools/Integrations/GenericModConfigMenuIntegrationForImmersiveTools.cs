@@ -172,7 +172,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
 
         _configMenu
             .AddNumberField(
-                () => "Enchanted Radius",
+                () => "Reaching Radius",
                 () => "The radius of affected tiles for the Axe with Reaching Enchantment.",
                 config => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4],
                 (config, value) => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4] = value,
@@ -263,6 +263,12 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 config => config.AxeConfig.AllowReachingEnchantment,
                 (config, value) => config.AxeConfig.AllowReachingEnchantment = value
             )
+            .AddCheckbox(
+                () => "Allow Master Enchantment",
+                () => "Whether the Axe can be enchanted with Master.",
+                config => config.AxeConfig.AllowMasterEnchantment,
+                (config, value) => config.AxeConfig.AllowMasterEnchantment = value
+            )
 
             // pickaxe settings
             .AddPage("pickaxe", () => "Pickaxe Settings")
@@ -335,10 +341,10 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
 
         _configMenu
             .AddNumberField(
-                () => "Enchanted Radius",
+                () => "Reaching Radius",
                 () => "The radius of affected tiles for the Pickaxe with Reaching Enchantment.",
-                config => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4],
-                (config, value) => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4] = value,
+                config => config.PickaxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4],
+                (config, value) => config.PickaxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4] = value,
                 1,
                 10
             )
@@ -413,6 +419,12 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 () => "Whether the Pickaxe can be enchanted with Reaching.",
                 config => config.PickaxeConfig.AllowReachingEnchantment,
                 (config, value) => config.PickaxeConfig.AllowReachingEnchantment = value
+            )
+            .AddCheckbox(
+                () => "Allow Master Enchantment",
+                () => "Whether the Pickaxe can be enchanted with Master.",
+                config => config.PickaxeConfig.AllowMasterEnchantment,
+                (config, value) => config.PickaxeConfig.AllowMasterEnchantment = value
             )
 
             // hoe settings
@@ -502,7 +514,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                         15
                     )
                     .AddNumberField(
-                        () => "Enchanted Radius",
+                        () => "Reaching Radius",
                         () => "The radius of affected tiles to either side of the farmer for the Hoe when Reaching Enchantment is applied.",
                         config => config.HoeConfig.AffectedTiles[4][1],
                         (config, value) => config.HoeConfig.AffectedTiles[4][1] = value,
@@ -553,7 +565,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                         15
                     )
                     .AddNumberField(
-                        () => "Enchanted Radius",
+                        () => "Reaching Radius",
                         () => "The radius of affected tiles to either side of the farmer for the Hoe when Reaching Enchantment is applied.",
                         config => config.HoeConfig.AffectedTiles[6][1],
                         (config, value) => config.HoeConfig.AffectedTiles[6][1] = value,
@@ -564,6 +576,13 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
         }
 
         _configMenu
+            .AddCheckbox(
+                () => "Allow Master Enchantment",
+                () => "Whether the Hoe can be enchanted with Master.",
+                config => config.HoeConfig.AllowMasterEnchantment,
+                (config, value) => config.HoeConfig.AllowMasterEnchantment = value
+            )
+
             // can settings
             .AddPage("can", () => "Watering Can Settings")
             .AddPageLink(string.Empty, () => "Back to Main Page")
@@ -651,7 +670,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                         15
                     )
                     .AddNumberField(
-                        () => "Enchanted Radius",
+                        () => "Reaching Radius",
                         () => "The radius of affected tiles to either side of the farmer for the Watering Can when Reaching Enchantment is applied.",
                         config => config.WateringCanConfig.AffectedTiles[4][1],
                         (config, value) => config.WateringCanConfig.AffectedTiles[4][1] = value,
@@ -702,7 +721,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                         15
                     )
                     .AddNumberField(
-                        () => "Enchanted Radius",
+                        () => "Reaching Radius",
                         () => "The radius of affected tiles to either side of the farmer for the Watering Can when Reaching Enchantment is applied.",
                         config => config.WateringCanConfig.AffectedTiles[6][1],
                         (config, value) => config.WateringCanConfig.AffectedTiles[6][1] = value,
@@ -711,5 +730,19 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                     );
                 break;
         }
+
+        _configMenu
+            .AddCheckbox(
+                () => "Allow Master Enchantment",
+                () => "Whether the Watering Can can be enchanted with Master.",
+                config => config.WateringCanConfig.AllowMasterEnchantment,
+                (config, value) => config.WateringCanConfig.AllowMasterEnchantment = value
+            )
+            .AddCheckbox(
+                () => "Allow Swift Enchantment",
+                () => "Whether the Watering Can can be enchanted with Swift.",
+                config => config.WateringCanConfig.AllowSwiftEnchantment,
+                (config, value) => config.WateringCanConfig.AllowSwiftEnchantment = value
+            );
     }
 }

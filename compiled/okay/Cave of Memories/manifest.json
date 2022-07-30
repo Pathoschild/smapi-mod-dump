@@ -1,7 +1,7 @@
 {
   "Name": "Cave of Memories",
   "Author": "PeacefulEnd",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Enables replaying of heart events.",
   "UniqueID": "PeacefulEnd.CaveOfMemories",
   "EntryDll": "CaveOfMemories.dll",
@@ -10,6 +10,10 @@
   "Dependencies": [
     {
       "UniqueID": "PeacefulEnd.SolidFoundations",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "PeacefulEnd.DynamicReflections",
       "IsRequired": true
     }
   ]

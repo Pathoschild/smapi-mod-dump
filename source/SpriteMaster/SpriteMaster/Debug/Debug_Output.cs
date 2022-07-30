@@ -9,7 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
-using SpriteMaster.Types;
+using SpriteMaster.Extensions.Reflection;
 using StardewModdingAPI;
 using System;
 using System.Diagnostics;
@@ -33,22 +33,6 @@ internal static partial class Debug {
 
 	[DebuggerStepThrough, DebuggerHidden]
 	private static void DebugWrite(LogLevel level, string str) {
-		if (LogFile is not null) {
-			try {
-				var prefix = level switch {
-					LogLevel.Debug => 'T',
-					LogLevel.Info => 'I',
-					LogLevel.Warn => 'W',
-					LogLevel.Error => 'E',
-					LogLevel.Alert => 'F',
-					_ => '?',
-				};
-
-				LogFile.Write($"[{prefix}] {str}");
-			}
-			catch { /* ignore errors */ }
-		}
-
 		var originalColor = Console.ForegroundColor;
 		Console.ForegroundColor = level.GetColor();
 		try {
@@ -59,29 +43,29 @@ internal static partial class Debug {
 		}
 	}
 
-	private static readonly ObjectPool<StringBuilder> StringBuilderPool = new(1);
-
 	private static IMonitor? GetTemporaryMonitor() {
 		object? sCoreInstance = null;
 
-		if (Type.GetType("StardewModdingAPI.Framework.Score")?.GetStaticVariable("Instance") is not {} instanceInfo) {
+		if (ReflectionExt.GetTypeExt("StardewModdingAPI.Framework.SCore")?.GetStaticVariable("Instance") is not {} instanceInfo) {
 			return null;
 		}
 		sCoreInstance = instanceInfo.GetValue(null);
 
-		if (Type.GetType("StardewModdingAPI.Framework.Logging.LogManager") is not {} logManagerType) {
+		if (ReflectionExt.GetTypeExt("StardewModdingAPI.Framework.Logging.LogManager") is not {} logManagerType) {
 			return null;
 		}
 
 		if (logManagerType.GetMethod(
 			"GetMonitor",
-			BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy, null,
-			new Type[] {typeof(string)}, null
+			BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy,
+			null,
+			new [] {typeof(string)},
+			null
 		) is not { } getMonitorInfo) {
 			return null;
 		}
 
-		if (sCoreInstance is null || Type.GetType("StardewModdingAPI.Framework.Score")?.GetInstanceVariable("LogManager") is not {} logManagerInfo) {
+		if (sCoreInstance is null || ReflectionExt.GetTypeExt("StardewModdingAPI.Framework.SCore")?.GetInstanceVariable("LogManager") is not {} logManagerInfo) {
 			return null;
 		}
 
@@ -101,7 +85,7 @@ internal static partial class Debug {
 	//[DebuggerStepThrough, DebuggerHidden]
 	private static void DebugWriteStr(string str, LogLevel level) {
 		if (str.Contains("\n\n")) {
-			using var builder = StringBuilderPool.GetSafe();
+			using var builder = ObjectPoolExt.Take<StringBuilder>(builder => builder.Clear());
 
 			builder.Value.EnsureCapacity(str.Length);
 
@@ -119,7 +103,7 @@ internal static partial class Debug {
 			str = builder.Value.ToString();
 		}
 
-		lock (IOLock) {
+		lock (IoLock) {
 			if (SpriteMaster.Self.Monitor is not {} monitor) {
 				if (TemporaryMonitor is not { } tempMonitor) {
 					tempMonitor = GetTemporaryMonitor();

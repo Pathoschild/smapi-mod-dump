@@ -23,6 +23,8 @@ Version 1.4.0 introduced the ability to change the display names of any concessi
 
 You can safely delete this file if you don't want to change any names. If you want to replace names but have deleted the file, simply create a new JSON file with the name "NameReplacer"
 
+In Version 1.4.1, the NameReplacer.json will generate once the mod is run. Just ignore the file if you don't want to use it.
+
 Input name replacements for objects are in the form "ObjectID":"O/Name/NameToReplaceWith" (first field is a capital O) e.g "272":"O/Eggplant/Aubergine". See https://stardewcommunitywiki.com/Modding:Object_data for object IDs
 
 Input name replacements for concession snacks are in the form "SnackID":"C/Name/NameToReplaceWith" (first field is a capital C) e.g "0":"C/Cotton Candy/Fairy Floss"

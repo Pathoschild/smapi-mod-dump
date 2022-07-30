@@ -1,0 +1,10 @@
+{
+  "Name": "Rummage",
+  "Author": "ApryllForever",
+  "Version": "1.0.1",
+  "Description": "Loot around places and find things!!!",
+  "UniqueID": "ApryllForever.RestStop.Rummage",
+  "EntryDll": "Rummage.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:12764"]
+}

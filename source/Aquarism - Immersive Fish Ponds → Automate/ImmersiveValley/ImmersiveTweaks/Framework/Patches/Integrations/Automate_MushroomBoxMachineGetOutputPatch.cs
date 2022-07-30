@@ -14,8 +14,8 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 
 using Common;
 using Common.Extensions.Reflection;
-using Common.Harmony;
 using Extensions;
+using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using System;
@@ -25,7 +25,7 @@ using SObject = StardewValley.Object;
 #endregion using directives
 
 [UsedImplicitly]
-internal sealed class MushroomBoxMachineGetOutputPatch : HarmonyPatch
+internal sealed class MushroomBoxMachineGetOutputPatch : Common.Harmony.HarmonyPatch
 {
     private static Func<object, SObject>? _GetMachine;
 
@@ -46,11 +46,12 @@ internal sealed class MushroomBoxMachineGetOutputPatch : HarmonyPatch
     #region harmony patches
 
     /// <summary>Patch for automated Mushroom Box quality.</summary>
+    [HarmonyPrefix]
     private static void MushroomBoxMachineGetOutputPrefix(object __instance)
     {
         try
         {
-            if (!ModEntry.Config.AgeMushroomBoxes) return;
+            if (!ModEntry.Config.AgeImprovesMushroomBoxes) return;
 
             _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine")
                 .CompileUnboundDelegate<Func<object, SObject>>();
@@ -58,12 +59,15 @@ internal sealed class MushroomBoxMachineGetOutputPatch : HarmonyPatch
             if (machine.heldObject.Value is not { } held) return;
 
             var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
-            if (!owner.professions.Contains(Farmer.botanist))
+            if (!owner.professions.Contains(Farmer.botanist) && ModEntry.Config.AgeImprovesMushroomBoxes)
                 held.Quality = held.GetQualityFromAge();
             else if (ModEntry.ProfessionsAPI is not null)
                 held.Quality = Math.Max(ModEntry.ProfessionsAPI.GetEcologistForageQuality(owner), held.Quality);
             else
                 held.Quality = SObject.bestQuality;
+
+            if (ModEntry.Config.MushroomBoxesRewardExp)
+                Game1.player.gainExperience(Farmer.foragingSkill, 1);
         }
         catch (Exception ex)
         {

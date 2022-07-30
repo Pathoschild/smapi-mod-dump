@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12801
+IDs: spacechase0.ControllerRadialKeybindings
+update keys: Nexus:12801, GitHub:spacechase0/StardewValleyMods

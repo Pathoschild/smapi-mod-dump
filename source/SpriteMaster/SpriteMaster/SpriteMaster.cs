@@ -15,6 +15,7 @@ using SpriteMaster.Caching;
 using SpriteMaster.Configuration;
 using SpriteMaster.Experimental;
 using SpriteMaster.Extensions;
+using SpriteMaster.GL;
 using SpriteMaster.Harmonize;
 using SpriteMaster.Harmonize.Patches.Game;
 using SpriteMaster.Metadata;
@@ -51,6 +52,12 @@ public sealed class SpriteMaster : Mod {
 	public SpriteMaster() {
 		Self.AssertNull();
 		Self = this;
+
+		_ = ThreadingExt.IsMainThread;
+
+		DirectoryCleanup.Cleanup();
+
+		GLExt.EnableDebugging();
 
 		Initialize();
 
@@ -260,7 +267,7 @@ public sealed class SpriteMaster : Mod {
 			return;
 		}
 
-		Configuration.GMCM.Setup.ForceOpen();
+		Configuration.ConfigMenu.Setup.ForceOpen();
 
 		Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 	}
@@ -372,9 +379,8 @@ public sealed class SpriteMaster : Mod {
 	private void OnGameLaunched() {
 		var waiters = new WaitWrapper[] {
 			new(Task.Run(CheckMods)),
-			new(Task.Run(Inlining.Reenable)),
 			new(FileCache.Initialized),
-			new(Task.Run(Configuration.GMCM.Setup.Initialize))
+			new(Task.Run(Configuration.ConfigMenu.Setup.Initialize))
 		};
 
 		foreach (var waiter in waiters) {
@@ -422,10 +428,13 @@ public sealed class SpriteMaster : Mod {
 		}
 
 		instance.ApplyPatches(early);
+
+		Inlining.Reenable();
 	}
 
 
 	private static void OnButtonPressed(object? _, ButtonPressedEventArgs args) {
+
 		if (args.Button == Config.ToggleButton) {
 			Config.ToggledEnable = !Config.ToggledEnable;
 		}

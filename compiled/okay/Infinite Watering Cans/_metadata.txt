@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12739
+IDs: CaptainSully.InfiniteWateringCan
+update keys: Nexus:12739, GitHub:CaptainSully/StardewMods

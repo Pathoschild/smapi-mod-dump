@@ -1,0 +1,36 @@
+urls:
+   web: https://github.com/atravita-mods/StardewMods
+   Git: https://github.com/atravita-mods/StardewMods.git
+
+mods:
+   Atra's Interaction Tweaks
+   AtraCore
+   Avoid Losing Scepter
+   Draw Fish Ponds Over Grass
+   Easier Cave Puzzle
+   Easier Dart Puzzle
+   Farm Cave Spawns More Tree Fruit
+   Farm Combat Grants XP Too
+   Giant Crop Fertilizer
+   Ginger Island Mainland Adjustments
+   Highlight Empty Machines
+   Holiday Sales
+   Less Mini Shipping Bin
+   More Fertilizers
+   Museum Store
+   Pick Your Enchantment
+   Prismatic Clothing
+   Special Orders Tags Extended
+   Tap Giant Crops
+   Trash Does Not Consume Bait
+
+latest commit:
+   commit f450bd2fe72a884e89ca6a06c187605bdb79fa3d
+   Merge: aa9b13d 352f830
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Mon Jul 25 13:13:23 2022 -0400
+   
+       Merge pull request #4 from atravita-mods/dev
+       
+       merge dev into main
+   

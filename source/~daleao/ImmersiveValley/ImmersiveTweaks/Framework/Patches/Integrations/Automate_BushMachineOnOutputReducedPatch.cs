@@ -13,7 +13,7 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 #region using directives
 
 using Common.Extensions.Reflection;
-using Common.Harmony;
+using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
@@ -22,7 +22,7 @@ using System;
 #endregion using directives
 
 [UsedImplicitly]
-internal sealed class BushMachineOnOutputReducedPatch : HarmonyPatch
+internal sealed class BushMachineOnOutputReducedPatch : Common.Harmony.HarmonyPatch
 {
     private static Func<object, Bush>? _GetMachine;
 
@@ -43,6 +43,7 @@ internal sealed class BushMachineOnOutputReducedPatch : HarmonyPatch
     #region harmony patches
 
     /// <summary>Adds foraging experience for automated berry bushes.</summary>
+    [HarmonyPostfix]
     private static void BushMachineOnOutputReducedPostfix(object __instance)
     {
         if (!ModEntry.Config.BerryBushesRewardExp) return;
@@ -52,7 +53,7 @@ internal sealed class BushMachineOnOutputReducedPatch : HarmonyPatch
         var machine = _GetMachine(__instance);
         if (machine.size.Value >= Bush.greenTeaBush) return;
 
-        Game1.MasterPlayer.gainExperience(Farmer.foragingSkill, 3);
+        Game1.MasterPlayer.gainExperience(Farmer.foragingSkill, 5);
     }
 
     #endregion harmony patches

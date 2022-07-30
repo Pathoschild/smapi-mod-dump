@@ -1,10 +1,17 @@
-﻿{
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore"
+    }
+  ],
+  "EntryDll": "LessMiniShippingBin.dll",
   "Name": "Less Mini Shipping Bin",
   "Author": "atravita",
-  "Version": "0.2.0",
+  "Version": "0.3.0",
   "Description": "Lets you make the mini shipping bin bigger.",
   "UniqueID": "atravita.LessMiniShippingBin",
-  "EntryDll": "LessMiniShippingBin.dll",
-  "UpdateKeys": [ "Nexus:10959", "Github:atravita-mods/LessMiniShippingBin" ],
-  "MinimumApiVersion": "3.0"
+  "MinimumApiVersion": "3.15",
+  "UpdateKeys": [
+    "Nexus:10959"
+  ]
 }

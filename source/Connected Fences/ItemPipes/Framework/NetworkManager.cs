@@ -33,11 +33,17 @@ namespace ItemPipes.Framework
         public static void UpdateLocationNetworks(GameLocation location)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
+            if(location.name == "Farm")
+            {
+                //Printer.Info(DataAccess.LocationNetworks[location].Count.ToString());
+            }
             List<Network> networkList = DataAccess.LocationNetworks[location];
+            
             foreach (Network network in networkList)
             {
                 if(network != null)
                 {
+                    //Printer.Info("Updating: "+location.name);
                     network.Update();
                 }
             }
@@ -61,10 +67,10 @@ namespace ItemPipes.Framework
         public static void AddObject(KeyValuePair<Vector2, StardewValley.Object> obj, GameLocation location)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            if (Globals.UltraDebug) { Printer.Debug("Adding new object: " + obj.Key.ToString() + obj.Value.Name); }
+            if (ModEntry.config.DebugMode) { Printer.Debug("Adding new object: " + obj.Key.ToString() + obj.Value.Name); }
             List<Node> nodes = DataAccess.LocationNodes[location];
             Node newNode = NodeFactory.CreateElement(obj.Key, location, obj.Value);
-            if (Globals.UltraDebug) { Printer.Debug("New node created: " + newNode.Print()); }
+            if (ModEntry.config.DebugMode) { Printer.Debug("New node created: " + newNode.Print()); }
             int x = (int)newNode.Position.X;
             int y = (int)newNode.Position.Y;
 
@@ -93,11 +99,10 @@ namespace ItemPipes.Framework
             {
                 newNode.AddAdjacent(SideStruct.GetSides().West, westNode);
             }
-            if (Globals.UltraDebug) { newNode.Print(); }
-
+            if (ModEntry.config.DebugMode) { newNode.Print(); }
             if (obj.Value is CustomObjectItem)
             {
-                if (Globals.UltraDebug) { Printer.Debug("Assigning network to new node"); }
+                if (ModEntry.config.DebugMode) { Printer.Debug("Assigning network to new node"); }
                 List<Network> uncheckedAdjNetworks = newNode.Scan();
                 List<Network> adjNetworks = new List<Network>();
                 foreach (Network network in uncheckedAdjNetworks)
@@ -107,26 +112,26 @@ namespace ItemPipes.Framework
                         adjNetworks.Add(network);
                     }
                 }
-                if (Globals.UltraDebug) { Printer.Debug("Adjacent network amount: " + adjNetworks.Count.ToString()); }
+                if (ModEntry.config.DebugMode) { Printer.Debug("Adjacent network amount: " + adjNetworks.Count.ToString()); }
                 if (adjNetworks.Count == 0)
                 {
-                    if (Globals.UltraDebug) { Printer.Debug("No adjacent networks, creating new one... "); }
+                    if (ModEntry.config.DebugMode) { Printer.Debug("No adjacent networks, creating new one... "); }
                     Network network = CreateLocationNetwork(location);
                     AddNewElement(newNode, network);
                 }
                 else
                 {
                     List<Network> orderedAdjNetworks = adjNetworks.OrderByDescending(s => s.Nodes.Count).ToList();
-                    if (Globals.UltraDebug) { Printer.Debug($"Biggest network ID = {orderedAdjNetworks[0].ID}"); }
+                    if (ModEntry.config.DebugMode) { Printer.Debug($"Biggest network ID = {orderedAdjNetworks[0].ID}"); }
                     foreach(Network network in orderedAdjNetworks)
                     {
-                        if (Globals.UltraDebug) { Printer.Debug(network.Print()); }
+                        if (ModEntry.config.DebugMode) { Printer.Debug(network.Print()); }
                     }
                     newNode.ParentNetwork = orderedAdjNetworks[0];
                     AddNewElement(newNode, orderedAdjNetworks[0]);
                     MergeNetworks(orderedAdjNetworks, location);
                 }
-                if (Globals.UltraDebug) {Printer.Debug($"Assigned network: [N{newNode.ParentNetwork.ID}]");}
+                if (ModEntry.config.DebugMode) {Printer.Debug($"Assigned network: [N{newNode.ParentNetwork.ID}]");}
                 //Another check for missmatching networks
                 north = new Vector2(x, y - 1);
                 northNode = nodes.Find(n => n.Position.Equals(north));
@@ -163,11 +168,11 @@ namespace ItemPipes.Framework
 
         private static void MergeNetworks(List<Network> network, GameLocation location)
         {
-            if (Globals.UltraDebug) { Printer.Debug("Merging networks... "); }
+            if (ModEntry.config.DebugMode) { Printer.Debug("Merging networks... "); }
             DataAccess DataAccess = DataAccess.GetDataAccess();
             for (int i = 1; i < network.Count; i++)
             {
-                if (Globals.UltraDebug) { Printer.Debug($"Network [{network[i].ID}] size: " + network[i].Nodes.Count.ToString()); }
+                if (ModEntry.config.DebugMode) { Printer.Debug($"Network [{network[i].ID}] size: " + network[i].Nodes.Count.ToString()); }
                 foreach (Node elem in network[i].Nodes.ToList())
                 {
                     elem.ParentNetwork = network[0];
@@ -180,13 +185,12 @@ namespace ItemPipes.Framework
         public static void RemoveObject(KeyValuePair<Vector2, StardewValley.Object> obj, GameLocation location)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            if (Globals.UltraDebug) { Printer.Trace("Removing object: " + obj.Key.ToString() + obj.Value.Name); }
+            if (ModEntry.config.DebugMode) { Printer.Debug("Removing object: " + obj.Key.ToString() + obj.Value.Name); }
             List<Node> nodes = DataAccess.LocationNodes[location];
             Node node = nodes.Find(n => n.Position.Equals(obj.Key));
             if(node != null)
             {
                 nodes.Remove(node);
-
                 if (node is IOPipeNode)
                 {
                     IOPipeNode IOPipeNode = (IOPipeNode)node;
@@ -214,10 +218,11 @@ namespace ItemPipes.Framework
         public static void RemakeNetwork(Node node, GameLocation location)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            if (Globals.UltraDebug) { Printer.Trace("Remaking networks..."); }
+            if (ModEntry.config.DebugMode) { Printer.Debug("Remaking networks..."); }
             List<Node> dict = node.Adjacents.Values.ToList();
             node.ParentNetwork.RemoveAllAdjacents();
             node.ParentNetwork.Delete();
+            DataAccess.LocationNetworks[location].Remove(node.ParentNetwork);
             node.ParentNetwork = null;
             foreach (Node adj in dict)
             {
@@ -255,8 +260,12 @@ namespace ItemPipes.Framework
             {
                 if(network != null)
                 {
-                    if (Globals.UltraDebug) {Printer.Debug(network.Print());}
+                    if (ModEntry.config.DebugMode) {Printer.Debug(network.Print());}
                 }
+            }
+            if(networkList.Count == 0)
+            {
+                Printer.Info($"No networks to display for {location.Name}");
             }
         }
     }

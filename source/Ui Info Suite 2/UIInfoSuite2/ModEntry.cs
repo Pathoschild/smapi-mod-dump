@@ -8,17 +8,17 @@
 **
 *************************************************/
 
-using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-using UIInfoSuite.AdditionalFeatures;
-using UIInfoSuite.Compatibility;
-using UIInfoSuite.Infrastructure;
-using UIInfoSuite.Options;
+using System;
+using UIInfoSuite2.AdditionalFeatures;
+using UIInfoSuite2.Compatibility;
+using UIInfoSuite2.Infrastructure;
+using UIInfoSuite2.Options;
 
-namespace UIInfoSuite
+namespace UIInfoSuite2
 {
     public class ModEntry : Mod
     {
@@ -119,6 +119,14 @@ namespace UIInfoSuite
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             // get Generic Mod Config Menu's API (if it's installed)
+            var modVersion = Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu")?.Manifest?.Version;
+            var minModVersion = "1.6.0";
+            if (modVersion?.IsOlderThan(minModVersion) == true)
+            {
+                Monitor.Log($"Detected Generic Mod Config Menu {modVersion} but expected {minModVersion} or newer. Disabling integration with that mod.", LogLevel.Warn);
+                return;
+            }
+
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
                 return;

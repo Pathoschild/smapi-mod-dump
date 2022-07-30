@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "Alcohol Order - Gus dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "Entries": {
+            "atravita.AlcoholOrder_IsAvailable": "{{i18n:atravita.alcohol_order_isavailable}}",
+            "atravita.AlcoholOrder_InProgress": "{{i18n:atravita.alcohol_order_inprogress.000}}#$b#{{i18n:atravita.alcohol_order_inprogress.001}}",
+            "atravita.AlcoholOrder_Completed": "{{i18n:atravita.alcohol_order_completed}}$h",
+            "atravita.AlcoholOrder_RepeatOrder": "{{i18n:atravita.alcohol_order_repeatorder8.000}}$s#$b#{{i18n:atravita.alcohol_order_repeatorder8.001}}"
+        }
+    }
+]}

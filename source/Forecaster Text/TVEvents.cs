@@ -35,7 +35,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using ForecasterText.Objects;
 using ForecasterText.Objects.Enums;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -63,35 +65,35 @@ namespace ForecasterText {
                 this.GetTownForecast(),
                 this.GetIslandForecast(),
                 this.GetDailyLuck(player),
-                this.GetQueenOfSauce(player)
+                this.GetQueenOfSauce(player),
+                this.GetBirthdays(player)
             });
         }
         
         #region Show messages in chat
         
-        private void SendChatMessage( IEnumerable<string> messages ) {
-            foreach (string message in messages)
-                this.SendChatMessage(message);
+        private void SendChatMessage(IEnumerable<MessageSource> messages) {
+            foreach (MessageSource message in messages)
+                this.SendChatMessage(message?.ToString());
         }
-        private void SendChatMessage( string message ) {
-            if (message != null)
-                Game1.chatBox.addInfoMessage($"TV: {message}");
+        private void SendChatMessage(string message) {
+            if (message is not null)
+                Game1.chatBox.addInfoMessage(message);
         }
         
         #endregion
         #region Weather
         
-        private string GetTownForecast() {
+        private MessageSource GetTownForecast() {
             WorldDate date = new(Game1.Date);
             ++date.TotalDays;
             return this.GetTownForecast(!Game1.IsMasterGame ? Game1.getWeatherModificationsForDate(date, Game1.netWorldState.Value.WeatherForTomorrow) : Game1.getWeatherModificationsForDate(date, Game1.weatherForTomorrow));
         }
         
-        public string GetTownForecast(int weather) {
-            return this.GetWeatherInformation(this.Config.StardewValleyWeather, "Pelican Town forecast", weather);
-        }
+        public MessageSource GetTownForecast(int weather)
+            => this.GetWeatherInformation(this.Config.StardewValleyWeather, "Pelican Town forecast", weather);
         
-        private string GetIslandForecast() {
+        private MessageSource GetIslandForecast() {
             if (!ModEntry.PlayerBeenToIsland())
                 return null;
             return this.GetIslandForecast(Game1.netWorldState.Value.GetWeatherForLocation(
@@ -99,15 +101,14 @@ namespace ForecasterText {
             ).weatherForTomorrow.Value);
         }
         
-        public string GetIslandForecast(int weather) {
-            return this.GetWeatherInformation(this.Config.GingerIslandWeather, "Ginger Island forecast", weather);
-        }
+        public MessageSource GetIslandForecast(int weather)
+            => this.GetWeatherInformation(this.Config.GingerIslandWeather, "Ginger Island forecast", weather);
         
-        private string GetWeatherInformation(WeatherDisplay config, string prefix, int weather) {
+        private MessageSource GetWeatherInformation(WeatherDisplay config, string prefix, int weather) {
             if (!this.ShowWeather(config, weather))
                 return null;
             
-            uint[] emojis = weather switch {
+            uint?[] emojis = weather switch {
                 Game1.weather_sunny
                     => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SUN) },
                 Game1.weather_festival
@@ -132,10 +133,11 @@ namespace ForecasterText {
                 return null;
             
             StringBuilder builder = new($"{prefix} ");
-            foreach (uint emoji in emojis)
-                builder.Append($"[{emoji}]");
+            foreach (uint? raw in emojis)
+                if (raw is uint emoji)
+                    builder.Append($"[{emoji}]");
             
-            return builder.ToString();
+            return MessageSource.TV(builder.ToString());
         }
         
         private bool ShowWeather(WeatherDisplay display, int weather) {
@@ -158,7 +160,7 @@ namespace ForecasterText {
         #endregion
         #region Luck
         
-        private string GetDailyLuck(Farmer who) {
+        private MessageSource GetDailyLuck(Farmer who) {
             SpiritMoods mood = this.GetSpiritMood(who);
             
             if ( // If any of the "Show Luck" options is turned off
@@ -170,8 +172,10 @@ namespace ForecasterText {
             return this.GetDailyLuck(mood);
         }
         
-        public string GetDailyLuck(SpiritMoods mood)
-            => $"[{this.Config.SpiritsEmoji}]spirits are[{this.ConfigManager.GetEmoji(mood)}]today";
+        public MessageSource GetDailyLuck(SpiritMoods mood) {
+            string str = this.ConfigManager.GetEmoji(mood) is uint u ? $"[{u}]" : " ??? ";
+            return MessageSource.TV($"[{this.Config.SpiritsEmoji}]are{str}today");
+        }
         
         private SpiritMoods GetSpiritMood(Farmer who) {
             if (who.team.sharedDailyLuck.Value == -0.12)
@@ -199,7 +203,7 @@ namespace ForecasterText {
         #endregion
         #region Recipes
         
-        private string GetQueenOfSauce(Farmer farmer) {
+        private MessageSource GetQueenOfSauce(Farmer farmer) {
             int num = (int)(Game1.stats.DaysPlayed % 224U / 7U);
             if (Game1.stats.DaysPlayed % 224U == 0U)
                 num = 32;
@@ -235,8 +239,42 @@ namespace ForecasterText {
             return this.GetQueenOfSauce(recipeName, hasRecipe);
         }
         
-        public string GetQueenOfSauce(string recipe, bool hasRecipe)
-            => $"[{(hasRecipe ? this.Config.KnownRecipeEmoji : this.Config.NewRecipeEmoji)}]Learn to make \"{recipe}\"";
+        public MessageSource GetQueenOfSauce(string recipe, bool hasRecipe)
+            => MessageSource.TV($"[{(hasRecipe ? this.Config.KnownRecipeEmoji : this.Config.NewRecipeEmoji)}]Learn to make \"{recipe}\"");
+        
+        #endregion
+        #region Birthdays
+        
+        private MessageSource GetBirthdays(Farmer farmer) {
+            // If not showing birthdays
+            if (!this.Config.ShowBirthdays)
+                return null;
+            
+            // Get a list of todays birthdays
+            return this.GetBirthdays(farmer.friendshipData.FieldDict.Keys.Where(name
+                => Game1.getCharacterFromName(name, true) is NPC npc && npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth)
+            ));
+        }
+        public MessageSource GetBirthdays(IEnumerable<string> names) {
+            StringBuilder builder = null;
+            
+            foreach (string name in names) {
+                // Create the build if it doesn't exist
+                builder ??= new StringBuilder($"[{this.Config.BirthdayEmoji}]");
+                
+                if (!this.Config.UseVillagerNames && this.ConfigManager.GetNpcEmoji(name) is uint u)
+                    builder.Append($"[{u}]");
+                else {
+                    // Add a space between names
+                    if (builder.Length > 0 && builder[builder.Length - 1] is not ']')
+                        builder.Append(' ');
+                    
+                    builder.Append(name);
+                }
+            }
+            
+            return MessageSource.Calendar(builder?.ToString());
+        }
         
         #endregion
     }

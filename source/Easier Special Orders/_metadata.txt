@@ -6,10 +6,9 @@ mods:
    Easier Special Orders
 
 latest commit:
-   commit 6fa000ef6551fb705b9a59e4947cbdfdf8b5392d
-   Merge: 10b24a6 d00cc51
+   commit 6120d61cc1f3aff216997c4439f2cfcb5cea264e
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Tue May 3 14:52:09 2022 +1000
+   Date:   Tue Jul 5 10:03:49 2022 +1000
    
-       Merge branch 'master' of https://github.com/TheMightyAmondee/EasierSpecialOrders
+       update manifest
    

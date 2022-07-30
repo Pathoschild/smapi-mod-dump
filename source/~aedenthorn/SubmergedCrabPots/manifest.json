@@ -11,7 +11,7 @@
 {
   "Name": "Submerged Crab Pots",
   "Author": "aedenthorn",
-  "Version": "0.1.1",
+  "Version": "0.2.1",
   "Description": "Submerged Crab Pots.",
   "UniqueID": "aedenthorn.SubmergedCrabPots",
   "EntryDll": "SubmergedCrabPots.dll",

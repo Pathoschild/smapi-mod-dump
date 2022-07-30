@@ -1,0 +1,22 @@
+urls:
+   web: https://github.com/MindMeltMax/Stardew-Valley-Mods
+   Git: https://github.com/MindMeltMax/Stardew-Valley-Mods.git
+
+mods:
+   Better Shipping Bin
+   Chest Displays
+   Joja's Hauntings
+   Locked Chests
+   Multi-User Chests
+   Piggy Bank Mod
+   Single-Player Regen
+   Sounds Patcher
+   Unbreakable Tackles
+
+latest commit:
+   commit d2d1b58d61e8079c03e0b2a96cd0bb0c7962601c
+   Author: MindMeltMax <mindmeltmax695@gmail.com>
+   Date:   Fri Jul 1 16:08:27 2022 +0200
+   
+       Added ManyEnchantments Patch
+   

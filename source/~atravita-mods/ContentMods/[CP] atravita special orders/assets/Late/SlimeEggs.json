@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "SlimeEggs - Special Order",
+        "Action": "EditData",
+        "Target": "Data/SpecialOrders",
+        "Entries": {
+            "atravita.SlimeEggs": {
+                "Name": "{{i18n:atravita.slime_eggs.name}}",
+                "Requester": "Marlon",
+                "Duration": "TwoWeeks",
+                "Repeatable": "{{Repeatability}}",
+                //because of the way Special Orders are coded, using CP's "When" field is fragile.
+                //using mail flags to delay these quests
+                "RequiredTags": "mail_slimeHutchBuilt, mail_fall_19_2",
+                "OrderType": "",
+                "SpecialRule": "",
+                "ItemToRemoveOnEnd": null,
+                "MailToRemoveOnEnd": null,
+                "Text": "{{i18n:atravita.slime_eggs.text}}",
+                "RandomizedElements": null,
+                "Objectives": [
+                    {
+                        "Type": "Collect",
+                        "Text": "{{i18n:atravita.slime_eggs.gather}}",
+                        "RequiredCount": "20",
+                        "Data": {
+                            "AcceptedContextTags": "slime_egg_item"
+                        }
+                    },
+                    {
+                        "Type": "Ship",
+                        "Text": "{{i18n:atravita.slime_eggs.ship}}",
+                        "RequiredCount": "20",
+                        "Data": {
+                            "AcceptedContextTags": "slime_egg_item"
+                        }
+                    }
+                ],
+                "Rewards": [
+                    {
+                        "Type": "Money",
+                        "Data": {"Amount": "1000"}
+                    },
+                    {
+                        "Type": "Mail",
+                        "Data": {
+                            "MailReceived": "atravita_SlimeEggs_Reward",
+                            "NoLetter": "false"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+    ]
+}

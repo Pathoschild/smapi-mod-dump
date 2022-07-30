@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace XSAlternativeTextures;
 
 using System.Collections.Generic;

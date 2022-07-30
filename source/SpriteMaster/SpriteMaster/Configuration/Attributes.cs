@@ -138,37 +138,93 @@ internal static class Attributes {
 
 		internal override T? GetMin<T>() {
 			if (typeof(T) == typeof(float)) {
-				return (MinValue == float.MinValue) ? null : (T)Convert.ChangeType(MinValue, typeof(T));
+				switch (MinValue) {
+					case float.MinValue:
+						return null;
+					case double.MinValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(MinValue, typeof(T));
+				}
 			}
 			else {
-				return (MinValue == double.MinValue) ? null : (T)Convert.ChangeType(MinValue, typeof(T));
+				switch (MinValue) {
+					case float.MinValue:
+						return null;
+					case double.MinValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(MinValue, typeof(T));
+				}
 			}
 		}
 
 		internal override T? GetMax<T>() {
 			if (typeof(T) == typeof(float)) {
-				return (MaxValue == float.MaxValue) ? null : (T)Convert.ChangeType(MaxValue, typeof(T));
+				switch (MaxValue) {
+					case float.MaxValue:
+						return null;
+					case double.MaxValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(MaxValue, typeof(T));
+				}
 			}
 			else {
-				return (MaxValue == double.MaxValue) ? null : (T)Convert.ChangeType(MaxValue, typeof(T));
+				switch (MaxValue) {
+					case float.MaxValue:
+						return null;
+					case double.MaxValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(MaxValue, typeof(T));
+				}
 			}
 		}
 
 		internal override T? GetMin<T>(Type type) {
 			if (typeof(T) == typeof(float)) {
-				return (MinValue == float.MinValue) ? null : (T)Convert.ChangeType(Convert.ChangeType(MinValue, type), typeof(T));
+				switch (MinValue) {
+					case float.MinValue:
+						return null;
+					case double.MinValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(Convert.ChangeType(Math.Clamp(MinValue, (double)float.MinValue, (double)float.MaxValue), type), typeof(T));
+				}
 			}
 			else {
-				return (MinValue == double.MinValue) ? null : (T)Convert.ChangeType(Convert.ChangeType(MinValue, type), typeof(T));
+				switch (MinValue) {
+					case float.MinValue:
+						return null;
+					case double.MinValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(Convert.ChangeType(MinValue, type), typeof(T));
+				}
 			}
 		}
 
 		internal override T? GetMax<T>(Type type) {
 			if (typeof(T) == typeof(float)) {
-				return (MaxValue == float.MaxValue) ? null : (T)Convert.ChangeType(Convert.ChangeType(MaxValue, type), typeof(T));
+				switch (MaxValue) {
+					case float.MaxValue:
+						return null;
+					case double.MaxValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(Convert.ChangeType(Math.Clamp(MaxValue, (double)float.MinValue, (double)float.MaxValue), type), typeof(T));
+				}
 			}
 			else {
-				return (MaxValue == double.MaxValue) ? null : (T)Convert.ChangeType(Convert.ChangeType(MaxValue, type), typeof(T));
+				switch (MaxValue) {
+					case float.MaxValue:
+						return null;
+					case double.MaxValue:
+						return null;
+					default:
+						return (T)Convert.ChangeType(Convert.ChangeType(MaxValue, type), typeof(T));
+				}
 			}
 		}
 

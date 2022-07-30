@@ -1,0 +1,39 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--common project properties-->
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Author>atravita</Author>
+    <MinimumApiVersion>3.15</MinimumApiVersion>
+    <UniqueId>$(Author).$(AssemblyName)</UniqueId>
+    <EntryDll>$(AssemblyName).dll</EntryDll>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IgnoreModFilePatterns>\.xcf$</IgnoreModFilePatterns>
+    <EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
+  </PropertyGroup>
+
+  <!--common packages everyone uses-->
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3" />
+
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="README.bbcode" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>
+</Project>

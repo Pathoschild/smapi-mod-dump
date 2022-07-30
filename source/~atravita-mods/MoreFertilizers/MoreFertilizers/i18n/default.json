@@ -1,0 +1,78 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "mod.description": "Adds a bunch of new fertilizers!",
+
+  "MillProducesOrganic.title": "Mill Produces Organic",
+  "MillProducesOrganic.description": "Organic goods fed into the mill will produce organic products.",
+  "WaterOverlayColor.title": "Water Overlay Color",
+  "WaterOverlayColor.description": "The color used to tint the water after fish food has been applied to it.",
+  "RecolorFruitTrees.title": "Recolor Fruit Trees",
+  "RecolorFruitTrees.description": "Whether or not fruit trees should be tinted to show that they've been fertilized",
+
+  // For GMCM
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  // Appended to the name of organic objects.
+  "organic": "(Organic)",
+
+  // Joja free sample dialogue.
+  "joja.event.0": "Welcome to JojaMart, @! May I interest you in some of our patented fertilizer? Here, have some!",
+  "joja.event.1": "Oh, @! Nice to see you here! We've got some samples of our patented fertilizer. Take some!",
+  "joja.event.2": "Why welcome to JojaMart! I hope you can find what you're looking for!#$b#Say....would you be interested in a free sample of our patented fertilizer?",
+
+  // Organic fertilizer special order.
+  "specialorder.organic.name": "Organic Crops Needed!",
+  "specialorder.organic.text": "Organic crops seem to be all the craze these days! Will pay a nice bonus for anyone willing to ship 100 organic vegetables.",
+  "specialorder.organic.gather": "Harvest 100 organic vegetables.",
+  "specialorder.organic.ship": "Ship 100 organic vegetables.",
+  "specialorder.organic.mail.title": "Organic Crops Needed - Thank you!",
+  "specialorder.organic.mail.text": "Ah, much thanks for providing the organic crops! I'm sure they'll fetch a pretty penny in Zuzu City. In thanks, I've attached this little gift I've found in storage...",
+  "specialorder.organic.lewis_inprogress": "Ah, @, just in time! You'll do a good job providing us with excellent crops, I'm sure...",
+  "Lewis": "Lewis",
+
+  // Item names and descriptions.
+  "waterlogged-fertilizer.name": "Waterlogged Fertilizer",
+  "waterlogged-fertilizer.description": "Retains water so well, anywhere can be a paddy! (for paddy crops only)",
+
+  "fruit-tree-fertilizer.name": "Fruit Tree Fertilizer",
+  "fruit-tree-fertilizer.description": "Makes fruit trees grow faster. Best not ask too many questions.",
+
+  "deluxe-fruit-tree-fertilizer.name": "Deluxe Fruit Tree Fertilizer",
+  "deluxe-fruit-tree-fertilizer.description": "Guarenteed to make your fruit trees grow rapidly!",
+
+  "bountiful-fertilizer.name": "Bountiful Fertilizer",
+  "bountiful-fertilizer.description": "Use may double the number of crops received at harvest.",
+
+  "organic-fertilizer.name": "Organic Fertilizer",
+  "organic-fertilizer.description": "You're not quite sure what it does, but organic crops always sell for higher prices...",
+
+  "joja-fertilizer.name": "Joja's Patented Fertilizer.",
+  "joja-fertilizer.description": "100% guaranteed to produce better produce!",
+
+  "joja-fertilizer-deluxe.name": "Joja's Deluxe Fertilizer",
+  "joja-fertilizer-deluxe.description": "Significantly more expensive than the Patented Fertilizer and even more guaranteed.",
+
+  "good-luck-fertilizer.name": "Maeby's Good-Luck Fertilizer.",
+  "good-luck-fertilizer.description": "Proudly in production for 50+ years! Promises to keep your crops safe from crows and lighting.",
+
+  "fish-food.name": "Fish Food",
+  "fish-food.description": "Apparently fish like this? Attracts fish when tossed in the water.",
+
+  "deluxe-fish-food.name": "Deluxe Fish Food",
+  "deluxe-fish-food.description": "Quite good at attracting fish. Lasts for a few days. Toss into water",
+
+  "domesticated-fish-food.name": "Domesticated Fish Food",
+  "domesticated-fish-food.description": "Makes your domesticated fish grow faster!"
+}

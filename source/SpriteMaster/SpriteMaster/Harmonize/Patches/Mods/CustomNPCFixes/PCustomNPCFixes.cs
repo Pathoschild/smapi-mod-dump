@@ -13,14 +13,12 @@ using StardewValley;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace SpriteMaster.Harmonize.Patches.Mods.CustomNPCFixes;
 
 internal static class PCustomNPCFixes {
 	[Harmonize(
-		"CustomNPCFixes",
 		"CustomNPCFixes.Mod",
 		"FixSchedules",
 		fixation: Harmonize.Fixation.Prefix,
@@ -37,10 +35,7 @@ internal static class PCustomNPCFixes {
 		var processedSet = new ConcurrentDictionary<NPC, byte>();
 
 		Parallel.ForEach(allCharacters, npc => {
-			if (npc is null) {
-				return;
-			}
-			if (npc.Schedule is not null) {
+			if (npc is null || npc.Schedule is not null) {
 				return;
 			}
 
@@ -49,8 +44,7 @@ internal static class PCustomNPCFixes {
 			}
 
 			try {
-				var schedule = npc.getSchedule(Game1.dayOfMonth);
-				npc.Schedule = schedule;
+				npc.Schedule = npc.getSchedule(Game1.dayOfMonth);
 				npc.checkSchedule(Game1.timeOfDay);
 			}
 			catch (Exception ex) {

@@ -15,7 +15,7 @@ Only basic items that are currently available to your character can be shoplifte
 Ready for a spree of petty crime? Just don't get caught...
 
 By default:
-Any villager within 7 tiles of you when you shoplift will lose 2 hearts of friendship. If the villager also happens to be the shopkeeper or their family/employee they will also fine you the value of your current funds up to 1000g.
+Any villager within 5 tiles of you when you shoplift will lose 2 hearts of friendship. If the villager also happens to be the shopkeeper or their family/employee they will also fine you the value of your current funds up to 1000g.
 
 If you get caught by the shopkeeper or their family/employee three times within a 28 day period, you'll receive a three day ban from entering the shop, this excludes the Icecream Stand. You're given a clean slate 28 days after the first time shoplifting, a second shoplift won't carry over. Lucky you!
 
@@ -28,6 +28,7 @@ Version 1.1.0 added a config so shoplifting preferences can be changed, includin
 - How many days you are banned for, set to 0 if you don't want to be banned
 - Maximum fine amount
 - Maximum friendship penalty
+- Maximum distance a villager must be to catch the player, default is 5.
 
 When changing the config, ensure only positive whole numbers or zero are entered so the config can be parsed. The mod will use the default values if it can't parse the config.
 
@@ -63,9 +64,11 @@ Shoplifter fully supports translation! Currently available in:
 - French, thanks to Breeis!
 - Portuguese, thanks to Kadomine!
 - German, thanks to NotErikWasTaken!
+- Spanish, thanks to viridian-fog!
+- Turkish, thanks to zenura!
 
 New translations always welcome! The best place to reach me is on the Shoplifter [mod page](https://www.nexusmods.com/stardewvalley/mods/8569).
-Translations are released seperately to the main files until a sufficient number of translations are received for a full release. 1.1.3 was the last translation full release.
+Translations are released seperately to the main files until a sufficient number of translations are received for a full release. 1.1.3 was the last translation full release. The release included Chinese, Korean, Italian, French, Portuguese and German.
 
 ## Versions ##
 1.0.0 - Initial release

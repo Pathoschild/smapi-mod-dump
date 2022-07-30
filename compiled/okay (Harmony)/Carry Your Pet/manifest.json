@@ -1,0 +1,12 @@
+{
+	"Name": "Carry Your Pet",
+	"Author": "DecidedlyHuman",
+	"Version": "1.0.0",
+	"Description": "Allows you to carry your pet around.",
+	"UniqueID": "DecidedlyHuman.CarryYourPet",
+	"EntryDll": "CarryYourPet.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:00000"
+	]
+}

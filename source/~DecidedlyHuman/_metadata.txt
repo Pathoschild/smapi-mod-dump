@@ -5,13 +5,15 @@ urls:
 mods:
    Better Crystalariums
    Better Return Scepter
+   Carry Your Pet
    Default Window Size
+   Into the Game (Save Loaded Notifier)
    Smart Building
 
 latest commit:
-   commit 9679e3100663597ec1b978a7655aaea21c1508c6
+   commit 00256ff3956b8871ae31e625455259cea3a7f626
    Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
-   Date:   Fri Jun 10 09:43:30 2022 +0100
+   Date:   Mon Jul 25 14:52:00 2022 +0100
    
-       SB: Temporary addition to the checklist in preparation for a bug report.
+       SB: Unscrewed some indentation.
    

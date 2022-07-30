@@ -1,7 +1,7 @@
 {
-  "AgeBeeHouses": true,
-  "AgeMushroomBoxes": true,
-  "AgeSapTrees": true,
+  "AgeImprovesBeeHouses": true,
+  "AgeImprovesMushroomBoxes": true,
+  "AgeImprovesTreeSap": true,
   "AgeImproveQualityFactor": 1.0,
   "DeterministicAgeQuality": true,
   "BerryBushesRewardExp": true,
@@ -10,5 +10,6 @@
   "PreventFruitTreeGrowthInWinter": true,
   "LargeProducsYieldQuantityOverQuality": true,
   "ProfessionalForagingInGingerIsland": true,
+  "KegsRememberHoneyFlower": true,
   "ExplosionTriggeredBombs": true
 }

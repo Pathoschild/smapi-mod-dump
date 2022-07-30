@@ -95,9 +95,6 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         public override bool CanRecieveItem(Item item)
         {
             bool canReceive = false;
-            //Printer.Info($"T[{Thread.CurrentThread.ManagedThreadId}][?]"+CanRecieveItems().ToString());
-            //Printer.Info($"T[{Thread.CurrentThread.ManagedThreadId}][?]"+CanStackItem(item).ToString());
-
             if (CanRecieveItems() || CanStackItem(item))
             {
                 canReceive = true;
@@ -125,12 +122,10 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
                 int index = itemList.Count - 1;
                 while (index >= 0 && item == null)
                 {
-                    if (Globals.UltraDebug) { Printer.Info($"T[{Thread.CurrentThread.ManagedThreadId}][?] Trying to send: " + itemList[index].Name); }
                     if (itemList[index] != null)
                     {
                         if (input.HasFilter())
                         {
-                            if (Globals.UltraDebug) { Printer.Info($"T[{Thread.CurrentThread.ManagedThreadId}][?] Input has filter" + input.Filter.Count.ToString()); }
                             if (input.Filter.Any(i => i.Name.Equals(itemList[index].Name)))
                             {
                                 item = TryExtractItem(input.ConnectedContainer, itemList, index, flux);
@@ -138,7 +133,6 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
                         }
                         else
                         {
-
                             item = TryExtractItem(input.ConnectedContainer, itemList, index, flux);
                         }
                     }
@@ -150,7 +144,6 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
 
         public Item TryExtractItem(ContainerNode input, NetObjectList<Item> itemList, int index, int flux)
         {
-            //Exception for multiple thread collisions
             Item source = itemList[index];
             Item tosend = null;
             if (source is SObject)
@@ -226,7 +219,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
             NetObjectList<Item> itemList;
             if (Chest.SpecialChestType == Chest.SpecialChestTypes.MiniShippingBin || Chest.SpecialChestType == Chest.SpecialChestTypes.JunimoChest)
             {
-                itemList = Chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID);
+                itemList = Chest.GetItemsForPlayer(Game1.MasterPlayer.UniqueMultiplayerID);
             }
             else
             {

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/DynamicReflections
+**
+*************************************************/
+
+{
+  "furniture.Leaning Mirror.name": "Leaning Mirror",
+  "furniture.Leaning Mirror.description": "...",
+  "furniture.Double Leaning Mirror.name": "Double Leaning Mirror",
+  "furniture.Double Leaning Mirror.description": "...",
+  "furniture.Enchanted Mirror.name": "Enchanted Mirror",
+  "furniture.Enchanted Mirror.description": "...",
+  "furniture.Table Mirror.name": "Table Mirror",
+  "furniture.Table Mirror.description": "..."
+}

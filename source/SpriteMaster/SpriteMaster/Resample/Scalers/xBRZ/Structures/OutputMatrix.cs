@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Extensions;
 using SpriteMaster.Resample.Scalers.xBRZ.Common;
 using SpriteMaster.Types;
 using System;
@@ -49,10 +50,10 @@ internal ref struct OutputMatrix {
 		return Index + rot.J + rot.I * Width;
 	}
 
-	internal readonly ref Color16 this[int i, int j] => ref OutSpan[GetIndex(i, j)];
+	internal readonly ref Color16 this[int i, int j] => ref OutSpan.At(GetIndex(i, j));
 
 	//calculate input matrix coordinates after rotation at program startup
-	private static readonly IntPair[] MatrixRotation = new IntPair[(MaxScale - 1) * MaxScaleSquared * Rotator.MaxRotations];
+	private static readonly FixedArray<IntPair> MatrixRotation = new((MaxScale - 1) * MaxScaleSquared * Rotator.MaxRotations);
 
 	static OutputMatrix() {
 		for (var n = 2; n < MaxScale + 1; n++) {

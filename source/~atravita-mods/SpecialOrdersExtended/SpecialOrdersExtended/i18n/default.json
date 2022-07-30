@@ -1,0 +1,68 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/i18n.json",
+  //Warnings
+  "cp-not-installed": "Content Patcher not installed, tokens will not be available.",
+  "IllFormatedConfig": "Config file seems ill-formated, using default.",
+
+  "SurpressUnnecessaryBoardUpdates.name": "Surpress Unnecessary Board Updates",
+  "SurpressUnnecessaryBoardUpdates.description": "Prevents the game from trying to reload the special order data before the board is even open.",
+
+  //Documentation for console commands
+  "special_order_pool.description": "Lists the current special orders. If order is not available, explains why.",
+  "check_tag.description": "Checks the current value of one or many tags.",
+  "list_available_stats.description": "List the stats available. Includes both stats listed as properties in Stats.cs and stats added to Stats.stats_dictionary, including stats added by other mods",
+  "special_orders_dialogue.description": "Add, delete, or check for whether or not a specific special order dialogue key has been said yet",
+  "special_orders_dialogue.usage": "Usage: special_orders_dialogue <add/remove/hasseen> <dialogue key> <one or more character names>",
+  "special_orders_dialogue.example": "ie: special_orders_dialogue hasseen atravita.PamApology_InProgress Penny Pam",
+  "special_orders_dialogue.save": "Additionally, special_orders_dialogue save will save the current dialogue logs.",
+
+  //Text used in console commands
+  "load-save-first": "Load save first.",
+  "true": "True",
+  "false": "False",
+
+  "number-found": "{{count}} individual special orders found.",
+  "valid-keys": "{{count}} valid keys",
+  "unseen-keys": "{{count}} unseen keys",
+  "analyzing": "Analyzing",
+  "parsable": "seems parsable",
+  "unparsable": "has errors in parsing",
+  "nonrepeatable": "Nonrepeatable",
+  "repeatable-seen": "Repeatable, seen before",
+  "month-long-late": "Month long quest, not available after the {{cutoff}}th",
+  "has-invalid-tags": "Has invalid tags",
+  "tag-failed": "Tag failed",
+  "active": "Currently active",
+
+  "dialogue.console-error": "{{command}} requires at least a desired action, a key, and at least one NPC name.",
+  "dialogue.console-action-invalid": "{{action}} is not a valid action (add/remove/hasseen)",
+  "dialogue.console-add-success": "{{key}}: added {{name}}.",
+  "dialogue.console-add-failure": "{{key}}: could not add {{name}}; already in list.",
+  "dialogue.console-remove-success": "{{key}}: successfully removed {{name}}.",
+  "dialogue.console-remove-failure": "{{key}}: {{name}} not found, could not remove.",
+  "dialogue.console-does-contain": "{{key}} has character {{name}}.",
+  "dialogue.console-does-not-contain": "{{key}} does NOT have character {{name}}",
+
+  "dialogue.found-key": "Found key {{dialoguekey}}",
+  "dialogue.no-key": "Did not find dialogue key for special order {{baseKey}} for NPC {{Name}}",
+  "dialogue.error-in-patched-function": "Failed in checking for Special Order dialogue for NPC {{Name}}",
+
+  "current-keys-found": "Current Keys Found: ",
+  "hardcoded": "Hardcoded: ",
+  "dictionary": "In dictionary: ",
+
+  "stat-not-found": "{{key}} not found in `stats.cs`. Is it provided by a mod that's not currently loaded?'",
+  "stat-cache-fail": "Failure to use {{key}}, please take this log to {{atra}}.",
+
+  "skill-not-found": "${{profession}} for {{skill}} not found; perhaps it's from a mod not installed?"
+}

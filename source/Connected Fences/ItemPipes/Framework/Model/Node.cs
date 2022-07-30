@@ -52,10 +52,10 @@ namespace ItemPipes.Framework.Model
 
         public Node(Vector2 position, GameLocation location, StardewValley.Object obj)
         {
-            if (obj != null) 
-            { 
-                Name = obj.name; 
-                ID = obj.ParentSheetIndex; 
+            if (obj != null)
+            {
+                Name = obj.name;
+                ID = obj.ParentSheetIndex;
             }
             Position = position;
             Location = location;
@@ -214,11 +214,11 @@ namespace ItemPipes.Framework.Model
         {
             if (ParentNetwork != null)
             {
-                return $"'[T{Thread.CurrentThread.ManagedThreadId}][N{ParentNetwork.ID}]{Name}({Position.X},{Position.Y}){GetHashCode()}'";
+                return $"'[N{ParentNetwork.ID}]{Name}({Position.X},{Position.Y}){GetHashCode()}'";
             }
             else
             {
-                return $"'[T{Thread.CurrentThread.ManagedThreadId}][N?]{Name}({Position.X},{Position.Y}){GetHashCode()}'";
+                return $"'[N?]{Name}({Position.X},{Position.Y}){GetHashCode()}'";
             }
         }
     }

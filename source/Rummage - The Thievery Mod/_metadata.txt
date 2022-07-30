@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ApryllForever/Rummage
+   Git: https://github.com/ApryllForever/Rummage.git
+
+mods:
+   Rummage - The Thievery Mod
+
+latest commit:
+   commit add39b34b9c33b09727d084a9037cac9d7789336
+   Author: ApryllForever <101156981+ApryllForever@users.noreply.github.com>
+   Date:   Mon Jul 4 22:07:00 2022 -0700
+   
+       Update README.md
+   

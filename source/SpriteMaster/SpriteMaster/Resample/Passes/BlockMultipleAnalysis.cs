@@ -9,6 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Configuration;
+using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
 
@@ -21,8 +22,9 @@ internal static class BlockMultipleAnalysis {
 			return false;
 		}
 
-		// determine reference texel
+		int equalityThreshold = Config.Resample.BlockMultipleAnalysis.EqualityThreshold;
 
+		// determine reference texel
 
 		var initialOffset = spriteBounds.Top * stride + spriteBounds.Left;
 		for (int y = 0; y < spriteBounds.Height; y += block) {
@@ -30,19 +32,19 @@ internal static class BlockMultipleAnalysis {
 			for (int x = 0; x < spriteBounds.Width; x += block) {
 				for (int subY = 0; subY < block; ++subY) {
 					var yOffset = yBaseOffset + (stride * subY);
-					var rowReferenceColor = data[yOffset + x];
+					var rowReferenceColor = data.At(yOffset + x);
 					for (int subX = 1; subX < block; ++subX) {
 						var xOffset = yOffset + x + subX;
-						if (!data[xOffset].Equals(rowReferenceColor, Config.Resample.BlockMultipleAnalysis.EqualityThreshold)) {
+						if (!data.At(xOffset).Equals(rowReferenceColor, equalityThreshold)) {
 							return false;
 						}
 					}
 				}
-				var columnReferenceColor = data[yBaseOffset];
+				var columnReferenceColor = data.At(yBaseOffset);
 				// If each row passes, compare the first element of each row against one another
 				for (int subY = 1; subY < block; ++subY) {
 					var yOffset = yBaseOffset + (stride * subY);
-					if (!data[yOffset].Equals(columnReferenceColor, Config.Resample.BlockMultipleAnalysis.EqualityThreshold)) {
+					if (!data.At(yOffset).Equals(columnReferenceColor, equalityThreshold)) {
 						return false;
 					}
 				}
@@ -53,6 +55,8 @@ internal static class BlockMultipleAnalysis {
 	}
 
 	private static int QuickBlockTest(ReadOnlySpan<Color8> data, Bounds textureBounds, Bounds spriteBounds, int stride) {
+		int equalityThreshold = Config.Resample.BlockMultipleAnalysis.EqualityThreshold;
+
 		// Scan row by row, just seeing what the largest sequential sequence of texels is. Return the smallest.
 		int minimumBlock = Math.Min(spriteBounds.Width, spriteBounds.Height);
 
@@ -61,12 +65,12 @@ internal static class BlockMultipleAnalysis {
 			var yBaseOffset = initialOffset + y * stride;
 
 			int currentContiguousSpan = 1;
-			var lastColor = data[yBaseOffset];
+			var lastColor = data.At(yBaseOffset);
 			for (int x = 1; x < spriteBounds.Width; ++x) {
 				int offset = yBaseOffset + x;
-				var currentColor = data[offset];
+				var currentColor = data.At(offset);
 
-				if (currentColor.Equals(lastColor, Config.Resample.BlockMultipleAnalysis.EqualityThreshold)) {
+				if (currentColor.Equals(lastColor, equalityThreshold)) {
 					++currentContiguousSpan;
 				}
 				else {

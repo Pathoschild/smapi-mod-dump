@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Yariazen/BuildableGreenhouse
+**
+*************************************************/
+
+{
+    "Name": "NamePlaceholder",
+    "Description": "DescriptionPlaceholder",
+    "Size": {
+        "X": 7,
+        "Y": 6
+    },
+    "Id": "BuildableGreenhouse.Greenhouse",
+    "SourceRect": "0 160 112 160",
+    "DrawShadow": true,
+    "HumanDoor": {
+        "X": 3,
+        "Y": 5
+    },
+    "IndoorMap": "GreenhouseMap"
+}

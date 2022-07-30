@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "FlowerPower - Special Order",
+        "Action": "EditData",
+        "Target": "Data/SpecialOrders",
+        "Entries": {
+            "atravita.FlowerPower": {
+                "Name": "{{i18n:atravita.flower_power.name}}",
+                "Requester": "Lewis",
+                "Duration": "Month",
+                "Repeatable": "False",
+                //because of the way Special Orders are coded, using CP's "When" field is fragile.
+                //using mail flags to delay these quests
+                "RequiredTags": "mail_pierreQualityCrops, mail_atravita_EvelynTulips_Reward, mail_winter_13_2, !season_winter",
+                "OrderType": "",
+                "SpecialRule": "",
+                "ItemToRemoveOnEnd": null,
+                "MailToRemoveOnEnd": null,
+                "Text": "{{i18n:atravita.flower_power.text}}",
+                "RandomizedElements": null,
+                "Objectives": [
+                    {
+                        "Type": "Collect",
+                        "Text": "{{i18n:atravita.flower_power.gather}}",
+                        "RequiredCount": "250",
+                        "Data": {
+                            "AcceptedContextTags": "flower_item"
+                        }
+                    },
+                    {
+                        "Type": "Ship",
+                        "Text": "{{i18n:atravita.flower_power.ship}}",
+                        "RequiredCount": "250",
+                        "Data": {
+                            "AcceptedContextTags": "flower_item"
+                        }
+                    }
+                ],
+                "Rewards": [
+                    {
+                        "Type": "Money",
+                        "Data": {"Amount": "10000"}
+                    },
+                    {
+                        "Type": "Mail",
+                        "Data": {
+                            "MailReceived": "atravita_FlowerPower_Reward",
+                            "NoLetter": "false"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+    ]
+}

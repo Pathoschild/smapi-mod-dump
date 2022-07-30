@@ -26,10 +26,10 @@ internal class BundleManager
     {
         try
         {
-            // dump and reload the asset to force AssetHandler.BundleData to update
+            // dump and reload the asset to force AssetManager.BundleData to update
             Globals.GameContent.InvalidateCache("Data/Bundles");
             Globals.GameContent.Load<Dictionary<string, string>>("Data/Bundles");
-            Game1.netWorldState?.Value?.SetBundleData(AssetHandler.BundleData);
+            Game1.netWorldState?.Value?.SetBundleData(AssetManager.BundleData);
         }
         catch (Exception ex)
         {

@@ -22,7 +22,8 @@
     "ClearDeadCrops": true,
     "ClearDebris": true,
     "PlayShockwaveAnimation": true,
-    "AllowReachingEnchantment": true
+    "AllowReachingEnchantment": true,
+    "AllowMasterEnchantment": true
   },
   "PickaxeConfig": {
     "EnableCharging": true,
@@ -45,7 +46,8 @@
     "ClearDeadCrops": true,
     "ClearDebris": true,
     "PlayShockwaveAnimation": true,
-    "AllowReachingEnchantment": true
+    "AllowReachingEnchantment": true,
+    "AllowMasterEnchantment": true
   },
   "HoeConfig": {
     "AffectedTiles": [
@@ -70,7 +72,8 @@
         2
       ]
     ],
-    "OverrideAffectedTiles": false
+    "OverrideAffectedTiles": false,
+    "AllowMasterEnchantment": true
   },
   "WateringCanConfig": {
     "AffectedTiles": [
@@ -95,7 +98,9 @@
         2
       ]
     ],
-    "OverrideAffectedTiles": false
+    "AllowSwiftEnchantment": true,
+    "OverrideAffectedTiles": false,
+    "AllowMasterEnchantment": true
   },
   "RequireModkey": true,
   "Modkey": "LeftShift, LeftShoulder",

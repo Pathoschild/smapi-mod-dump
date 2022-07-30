@@ -19,6 +19,8 @@ using SpaceCore.Events;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Locations;
 
 namespace SpaceCore.Patches
 {

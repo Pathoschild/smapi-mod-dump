@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using SolidFoundations.Framework.Models.ContentPack;
 using SolidFoundations.Framework.Models.ContentPack.Actions;
 using SolidFoundations.Framework.Utilities;
 using StardewValley;
@@ -33,12 +34,28 @@ namespace SolidFoundations.Framework.Interfaces.Internal
         }
 
         event EventHandler<BroadcastEventArgs> BroadcastSpecialActionTriggered;
-        event EventHandler BeforeBuildingSerialization; // TODO: Make this obsolete with SDV v1.6
-        event EventHandler AfterBuildingRestoration; // TODO: Make this obsolete with SDV v1.6
+        event EventHandler BeforeBuildingSerialization; // TODO: Mark this obsolete with SDV v1.6
+        event EventHandler AfterBuildingRestoration; // TODO: Mark this obsolete with SDV v1.6
 
         public void AddBuildingFlags(Building building, List<string> flags, bool isTemporary = true);
         public void RemoveBuildingFlags(Building building, List<string> flags);
         public bool DoesBuildingHaveFlag(Building building, string flag);
+        public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(Building building);
+        public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(string modelId);
+        public bool UpdateModel(ExtendedBuildingModel buildingModel);
+
+        /*
+         * Example usage (modifies the "Crumbling Mineshaft" model from the Mystical Buildings SF pack)
+         * 
+         * var api = apiManager.GetSolidFoundationsApi();
+         * var responseToModel = api.GetBuildingModel("PeacefulEnd.SolidFoundations.MysticalBuildings_CrumblingMineshaft");
+         * if (responseToModel.Key is true)
+         * {
+         *   responseToModel.Value.BuildCost = 100;
+         *   responseToModel.Value.BuildCondition = null;
+         *   Monitor.Log($"Was model update successful: {api.UpdateModel(responseToModel.Value)}", LogLevel.Warn);
+         * }
+         */
     }
 
     public class Api : IApi
@@ -96,6 +113,36 @@ namespace SolidFoundations.Framework.Interfaces.Internal
         {
             var flagKey = String.Concat(ModDataKeys.FLAG_BASE, ".", flag.ToLower());
             return building.modData.Keys.Any(k => k.Equals(flagKey, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(Building building)
+        {
+            if (building is null || building is not GenericBuilding genericBuilding)
+            {
+                return new KeyValuePair<bool, ExtendedBuildingModel>(false, null);
+            }
+
+            return new KeyValuePair<bool, ExtendedBuildingModel>(true, genericBuilding.Model);
+        }
+
+        public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(string modelIdCaseSensitive)
+        {
+            if (String.IsNullOrEmpty(modelIdCaseSensitive) || SolidFoundations.buildingManager.DoesBuildingModelExist(modelIdCaseSensitive) is false)
+            {
+                return new KeyValuePair<bool, ExtendedBuildingModel>(false, null);
+            }
+
+            return new KeyValuePair<bool, ExtendedBuildingModel>(true, SolidFoundations.buildingManager.GetSpecificBuildingModel(modelIdCaseSensitive));
+        }
+
+        public bool UpdateModel(ExtendedBuildingModel buildingModel)
+        {
+            if (buildingModel is null || SolidFoundations.buildingManager.DoesBuildingModelExist(buildingModel.ID) is false)
+            {
+                return false;
+            }
+
+            return SolidFoundations.buildingManager.UpdateModel(buildingModel);
         }
     }
 }

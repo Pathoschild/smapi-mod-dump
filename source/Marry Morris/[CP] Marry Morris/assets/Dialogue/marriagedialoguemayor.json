@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/yoshimax2/MarryMorris
+**
+*************************************************/
+
+{
+    "Changes": [
+    {  
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueMorrisTod",
+        "Entries": {
+            
+                //Location/destination specific dialogue
+                "funLeave_MorrisTod": "I'm heading out today to survey the state of the town and talk to some of the residents!",
+
+                //Outdoor dialogue (shows when on farm)
+                "Outdoor_4": "It's a beautiful day in Pelican Town today. Days like this make me glad I'm the mayor.#$e#This really is a special town. Even more so because I met you in it!$h",
+            
+                //Child dialogue
+                "OneKid_4": "Do you think %kid1 will grow up to be a businessman like me?#$e#Since I'm the mayor now, maybe they'll take an interest in politics and be president one day!$h",
+            
+                //Good dialogue
+                "Good_8": "The town has been so successful recently. It's been great to see.$h#$e#I've been enjoying local government so much that I'm thinking about running for political office.#$e#What do you think, @? I think I'd do well with you at my side.$h",
+                "Good_9": "My mayoral duties may be taxing sometimes, but I know I'm making the town a better place for my family, and that's what matters.$h",
+            
+                //Neutral dialogue
+                "Neutral_8": "Town life has felt a bit boring, recently. I'd like to plan something to spruce things up.",
+                "Neutral_9": "I'm sorry, @. Being mayor means I have a lot on my plate, and I really don't have the time to talk right now.",
+            
+                //Bad dialogue
+                "Bad_9": "I don't have time to run Joja, run Pelican Town, and be your husband. One day, I'll have to make a choice.#$e#With how I'm feeling right now about you, I don't know if I'll be choosing you.$s",
+            
+                //Day-specific dialogue
+                "summer_10": "I know you'll have something tasty to contribute to the soup tomorrow!$h#$e#This event is stressful for me as the mayor, but I trust that you'll represent Pelican Town well.",
+                "spring_1_2": "Happy new year! This will be an excellent year for Pelican Town and for us.#$e#*SMOOCH* That was your New Year's kiss. There's more where that came from later.$10",
+                "spring_12": "Tomorrow's one of my favorite festivals to run. There's nothing like kids' smiling faces to cheer you up!$h#$e#Although most of the participants are adults, including you.$s",
+                "fall_15": "I can't wait to see what you'll include in your display tomorrow!$h#$e#I can't give you any tips though since I'll be choosing the winners.$h"
+        }
+    }
+]}

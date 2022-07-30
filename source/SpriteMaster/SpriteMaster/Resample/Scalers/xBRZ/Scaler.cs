@@ -16,52 +16,36 @@ using SpriteMaster.Resample.Scalers.xBRZ.Scalers;
 using SpriteMaster.Resample.Scalers.xBRZ.Structures;
 using SpriteMaster.Types;
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ;
 
 using PreprocessType = Byte;
 
-internal sealed partial class Scaler {
+internal sealed partial class Scaler : AbstractScaler<Config, Scaler.ValueScale> {
 	private const uint MinScale = 2;
 	private const uint MaxScale = Config.MaxScale;
+
+	internal readonly struct ValueScale : IScale {
+		public readonly uint Minimum => MinScale;
+		public readonly uint Maximum => MaxScale;
+	}
 
 	private static uint ClampScale(uint scale) => Math.Clamp(scale, MinScale, MaxScale);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static Span<Color16> Apply(
-		Config? config,
+		Config config,
 		uint scaleMultiplier,
 		ReadOnlySpan<Color16> sourceData,
 		Vector2I sourceSize,
 		Span<Color16> targetData,
 		Vector2I targetSize
 	) {
-		if (config is null) {
-			throw new ArgumentNullException(nameof(config));
-		}
-
-		if (sourceSize.X * sourceSize.Y > sourceData.Length) {
-			throw new ArgumentOutOfRangeException(nameof(sourceData));
-		}
-
-		var targetSizeCalculated = sourceSize * scaleMultiplier;
-		if (targetSize != targetSizeCalculated) {
-			throw new ArgumentOutOfRangeException(nameof(targetSize));
-		}
-
-		if (targetData.IsEmpty) {
-			targetData = SpanExt.Make<Color16>(targetSize.Area);
-		}
-		else {
-			if (targetSize.Area > targetData.Length) {
-				throw new ArgumentOutOfRangeException(nameof(targetData));
-			}
-		}
+		Resample.Scalers.Common.ApplyValidate(config, scaleMultiplier, sourceData, sourceSize, ref targetData, targetSize);
 
 		var scalerInstance = new Scaler(
-			configuration: in config,
+			configuration: config,
 			scaleMultiplier: scaleMultiplier,
 			sourceSize: sourceSize,
 			targetSize: targetSize
@@ -73,42 +57,18 @@ internal sealed partial class Scaler {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private Scaler(
-		in Config configuration,
+		Config configuration,
 		uint scaleMultiplier,
 		Vector2I sourceSize,
 		Vector2I targetSize
-	) {
-		if (scaleMultiplier < MinScale || scaleMultiplier > MaxScale) {
-			throw new ArgumentOutOfRangeException(nameof(scaleMultiplier), $"{scaleMultiplier} is not within ({MinScale}, {MaxScale})");
-		}
-		/*
-		if (sourceData is null) {
-			throw new ArgumentNullException(nameof(sourceData));
-		}
-		if (targetData is null) {
-			throw new ArgumentNullException(nameof(targetData));
-		}
-		*/
-		if (sourceSize.X <= 0 || sourceSize.Y <= 0) {
-			throw new ArgumentOutOfRangeException(nameof(sourceSize), $"{nameof(sourceSize)} ({sourceSize}) must not be negative or degenerate");
-		}
-
+	) : base(configuration, scaleMultiplier, sourceSize, targetSize) {
 		Scalerer = scaleMultiplier.ToIScaler(configuration);
-		Configuration = configuration;
-		ColorDistance = new(Configuration);
-		ColorEqualizer = new(Configuration);
-		SourceSize = sourceSize;
-		TargetSize = targetSize;
+		Comparer = new(Configuration);
 	}
 
-	private readonly Config Configuration;
 	private readonly AbstractScaler Scalerer;
 
-	private readonly ColorDist ColorDistance;
-	private readonly ColorEq ColorEqualizer;
-
-	private readonly Vector2I SourceSize;
-	private readonly Vector2I TargetSize;
+	private readonly ColorComparer Comparer;
 
 	//fill block with the given color
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -196,20 +156,20 @@ internal sealed partial class Scaler {
 			return result;
 		}
 
-		var dist = ColorDistance;
+		var comparer = Comparer;
 
 		var jg =
-			dist.ColorDistance(ker.I, ker.F) +
-			dist.ColorDistance(ker.F, ker.C) +
-			dist.ColorDistance(ker.N, ker.K) +
-			dist.ColorDistance(ker.K, ker.H) +
-			(Configuration.CenterDirectionBias * dist.ColorDistance(ker.J, ker.G)).RoundToInt();
+			comparer.ColorDistance(ker.I, ker.F) +
+			comparer.ColorDistance(ker.F, ker.C) +
+			comparer.ColorDistance(ker.N, ker.K) +
+			comparer.ColorDistance(ker.K, ker.H) +
+			(Configuration.CenterDirectionBias * comparer.ColorDistance(ker.J, ker.G)).RoundToInt();
 		var fk =
-			dist.ColorDistance(ker.E, ker.J) +
-			dist.ColorDistance(ker.J, ker.O) +
-			dist.ColorDistance(ker.B, ker.G) +
-			dist.ColorDistance(ker.G, ker.L) +
-			(Configuration.CenterDirectionBias * dist.ColorDistance(ker.F, ker.K)).RoundToInt();
+			comparer.ColorDistance(ker.E, ker.J) +
+			comparer.ColorDistance(ker.J, ker.O) +
+			comparer.ColorDistance(ker.B, ker.G) +
+			comparer.ColorDistance(ker.G, ker.L) +
+			(Configuration.CenterDirectionBias * comparer.ColorDistance(ker.F, ker.K)).RoundToInt();
 
 		if (jg < fk) {
 			var dominantGradient = (Configuration.DominantDirectionThreshold * jg).RoundToInt() < fk ? BlendType.Dominant : BlendType.Normal;
@@ -261,8 +221,7 @@ internal sealed partial class Scaler {
 		var h = ker[Rotator.Get((7 << 2) + (int)rotDeg)];
 		var i = ker[Rotator.Get((8 << 2) + (int)rotDeg)];
 
-		var eq = ColorEqualizer;
-		var dist = ColorDistance;
+		var comparer = Comparer;
 
 		bool doLineBlend;
 
@@ -272,14 +231,14 @@ internal sealed partial class Scaler {
 		//make sure there is no second blending in an adjacent
 		//rotation for this pixel: handles insular pixels, mario eyes
 		//but support double-blending for 90° corners
-		else if (blend.GetTopR() != BlendType.None && !eq.IsColorEqual(e, g)) {
+		else if (blend.GetTopR() != BlendType.None && !comparer.IsColorEqual(e, g)) {
 			doLineBlend = false;
 		}
-		else if (blend.GetBottomL() != BlendType.None && !eq.IsColorEqual(e, c)) {
+		else if (blend.GetBottomL() != BlendType.None && !comparer.IsColorEqual(e, c)) {
 			doLineBlend = false;
 		}
 		//no full blending for L-shapes; blend corner only (handles "mario mushroom eyes")
-		else if (eq.IsColorEqual(g, h) && eq.IsColorEqual(h, i) && eq.IsColorEqual(i, f) && eq.IsColorEqual(f, c) && !eq.IsColorEqual(e, i)) {
+		else if (comparer.IsColorEqual(g, h) && comparer.IsColorEqual(h, i) && comparer.IsColorEqual(i, f) && comparer.IsColorEqual(f, c) && !comparer.IsColorEqual(e, i)) {
 			doLineBlend = false;
 		}
 		else {
@@ -287,7 +246,7 @@ internal sealed partial class Scaler {
 		}
 
 		//choose most similar color
-		var px = dist.ColorDistance(e, f) <= dist.ColorDistance(e, h) ? f : h;
+		var px = comparer.ColorDistance(e, f) <= comparer.ColorDistance(e, h) ? f : h;
 
 		outputMatrix.Move(rotDeg, targetIndex);
 
@@ -298,8 +257,8 @@ internal sealed partial class Scaler {
 
 		//test sample: 70% of values max(fg, hc) / min(fg, hc)
 		//are between 1.1 and 3.7 with median being 1.9
-		var fg = dist.ColorDistance(f, g);
-		var hc = dist.ColorDistance(h, c);
+		var fg = comparer.ColorDistance(f, g);
+		var hc = comparer.ColorDistance(h, c);
 
 		var haveShallowLine = (Configuration.SteepDirectionThreshold * fg).RoundToInt() <= hc && e != g && d != g;
 		var haveSteepLine = (Configuration.SteepDirectionThreshold * hc).RoundToInt() <= fg && e != c && b != c;
@@ -370,12 +329,12 @@ internal sealed partial class Scaler {
 
 			if (stride < 0) {
 				Debug.Warning($"xBRZ GetPixel out of range: stride: {stride}, value clamped");
-				stride = Math.Max(0, stride);
+				stride = 0;
 			}
 
 			if (offset < 0) {
 				Debug.Warning($"xBRZ GetPixel out of range: offset: {offset}, value clamped");
-				offset = Math.Max(0, offset);
+				offset = 0;
 			}
 
 			return src[stride + offset];

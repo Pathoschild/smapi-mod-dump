@@ -1,6 +1,7 @@
 {
   "gameloaded": "Game is loaded.",
   "gamenotloaded": "Game is not loaded.",
+  "librarynotloaded": "Internal library has not finished loading.",
   //
   //  nav bar captions
   //
@@ -97,6 +98,8 @@
   "wm.sold.at": "Recipe sold at {{shop}} for {{details}}g.",
   "wm.error.fetching": "An error occurred fetching your request.  Check the <a href='/Logs'>logs</a> for details.",
   "wm.defnces.up": "Defense (+{{strength}})",
+  "wm.achieve.havecooked": "You have cooked this.",
+  "wm.achieve.notcooked": "You have not cooked this.",
   //
   //  preconditions
   //

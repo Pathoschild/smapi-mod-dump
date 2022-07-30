@@ -28,29 +28,35 @@ using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Patches;
 using ItemPipes.Framework.Factories;
 using ItemPipes.Framework.Items;
+using ItemPipes.Framework.Nodes;
 using ItemPipes.Framework.Data;
 using ItemPipes.Framework.Items.Tools;
 using HarmonyLib;
 using System.Diagnostics;
 using System.Threading;
-
+using ItemPipes.Framework.APIs;
 
 namespace ItemPipes
 {
     class ModEntry : Mod
     {
         public static IModHelper helper;
+        public static ModConfig config;
         public DataAccess DataAccess { get; set; }
+        public bool NetworksInitialized { get; set; }
 
         public override void Entry(IModHelper helper)
         {
             ModEntry.helper = helper;
             Printer.SetMonitor(this.Monitor);
-            DataAccess = DataAccess.GetDataAccess();
-            DataAccess.LoadConfig();
             ModHelper.SetHelper(helper.ModContent);
+            DataAccess = DataAccess.GetDataAccess();
+            config = DataAccess.LoadConfig();
 
             ApplyPatches();
+            CheckImcompatibilities();
+
+            NetworksInitialized = false;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
@@ -61,6 +67,9 @@ namespace ItemPipes
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.World.BuildingListChanged += this.OnBuildingListChanged;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
+
         }
 
         private void ApplyPatches()
@@ -88,6 +97,27 @@ namespace ItemPipes
             }
         }
 
+        private void CheckImcompatibilities()
+        {
+            if (this.Helper.ModRegistry.IsLoaded("Aredjay.SaveAnywhere1.5"))
+            {
+                IModInfo itemSpawner = helper.ModRegistry.Get("Aredjay.SaveAnywhere1.5");
+                if (itemSpawner != null)
+                {
+                    Printer.Error("Found SaveAnywhere mod in your folder.");
+                    Printer.Error("SaveAnywhere is imcompatible with ItemPipes. You must not save the game using it or the game will crash!");
+                }
+            }
+            if (this.Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
+            {
+                IModInfo itemSpawner = helper.ModRegistry.Get("Omegasis.SaveAnywhere");
+                if (itemSpawner != null)
+                {
+                    Printer.Error("Found SaveAnywhere mod in your folder.");
+                    Printer.Error("SaveAnywhere is imcompatible with ItemPipes. You must not save the game using it or the game will crash!");
+                }
+            }
+        }
         private void OnBuildingListChanged(object sender, BuildingListChangedEventArgs e)
         {
             NetworkBuilder.BuildLocationNetworksTEMP(e.Location);
@@ -95,7 +125,7 @@ namespace ItemPipes
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-
+            config.RegisterModConfigMenu(helper, this.ModManifest);
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -142,19 +172,29 @@ namespace ItemPipes
         {
             if (Context.IsMainPlayer)
             {
-                DataAccess.LostItems.Clear();
-                if (Globals.Debug) { Printer.Debug("Waiting for all items to arrive at inputs..."); }
-                foreach (Thread thread in DataAccess.Threads.ToList())
+                //DataAccess.LostItems.Clear();
+                if (ModEntry.config.DebugMode) { Printer.Debug("Waiting for all items to arrive at inputs..."); }
+                foreach (GameLocation location in Game1.locations)
                 {
-                    if (thread != null && thread.IsAlive)
+                    foreach(KeyValuePair<Vector2, SObject> pair in location.objects.Pairs)
                     {
-                        thread.Interrupt();
+                        if(pair.Value is PipeItem)
+                        {
+                            DataAccess DataAccess = DataAccess.GetDataAccess();
+                            List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+                            Node node = nodes.Find(n => n.Position.Equals(pair.Value.TileLocation));
+                            if (node != null && node is PipeNode)
+                            {
+                                PipeNode pipe = (PipeNode)node;
+                                pipe.FlushPipe();
+                            }
+                        }
                     }
                 }
-                if (Globals.Debug) { Printer.Debug("Saving modded items...!"); }
+                if (ModEntry.config.DebugMode) { Printer.Debug("Saving modded items...!"); }
                 ConvertToVanillaMap();
                 ConvertToVanillaPlayer();
-                if (Globals.Debug) { Printer.Debug("All modded items saved!"); }
+                if (ModEntry.config.DebugMode) { Printer.Debug("All modded items saved!"); }
             }
         }
 
@@ -173,9 +213,9 @@ namespace ItemPipes
                 }
 
                 ConvertFromVanillaMap();
-                ConvertFromVanillaPlayer(); 
-                
-                if (Globals.Debug) { Printer.Debug("Location networks loaded!"); }
+                ConvertFromVanillaPlayer();
+
+                if (ModEntry.config.DebugMode) { Printer.Debug("Location networks loaded!"); }
             }
         }
 
@@ -199,18 +239,13 @@ namespace ItemPipes
 
                 ConvertFromVanillaMap();
                 ConvertFromVanillaPlayer();
-                
-                foreach (GameLocation location in Game1.locations)
-                {
-                    NetworkManager.UpdateLocationNetworks(location);
-                }
             }
-            if (Globals.Debug) { Printer.Debug("Location networks loaded!"); }
+            if (ModEntry.config.DebugMode) { Printer.Debug("Location networks loaded!"); }
         }
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (Globals.ItemSending)
+            if (ModEntry.config.ItemSending)
             {
                 if (Context.IsWorldReady)
                 {
@@ -227,6 +262,7 @@ namespace ItemPipes
                                     if (network != null && network.Outputs.Count > 0)
                                     {
                                         network.ProcessExchanges(1);
+                                        
                                     }
                                 }
                             }
@@ -273,6 +309,11 @@ namespace ItemPipes
             }
         }
 
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
+        {
+
+        }
+
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             List<KeyValuePair<Vector2, StardewValley.Object>> addedObjects = e.Added.ToList();
@@ -295,20 +336,30 @@ namespace ItemPipes
                     NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
                 }
             }
+            
+            foreach (GameLocation location in Game1.locations)
+            {
+                NetworkManager.UpdateLocationNetworks(location);
+            }
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            
             if (Game1.player.craftingRecipes.ContainsKey("IronPipe") && Game1.player.craftingRecipes["IronPipe"] > 0 && !Game1.player.mailReceived.Contains("ItemPipes_SendWrench"))
             {
                 Game1.player.mailbox.Add("itempipes_sendwrench");
             }
-            if(DataAccess.LostItems.Count > 0)
+        }
+
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            SButton graphKey = SButton.L;
+            if (e.Button == graphKey)
             {
-                Game1.addHUDMessage(new HUDMessage(DataAccess.Warnings["cloggedItems_1"], 3));
-                Game1.addHUDMessage(new HUDMessage(DataAccess.Warnings["cloggedItems_2"], 3));
-                Game1.player.mailbox.Add("itempipes_itemslost");
+                foreach (Network network in DataAccess.LocationNetworks[Game1.currentLocation])
+                {
+                    Printer.Info(network.PrintGraph());
+                }
             }
         }
 

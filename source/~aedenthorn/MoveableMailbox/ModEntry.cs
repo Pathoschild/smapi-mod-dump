@@ -47,7 +47,6 @@ namespace MoveableMailbox
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             
             Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-            Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
 
             var harmony = new Harmony(ModManifest.UniqueID);
 

@@ -92,7 +92,7 @@ internal sealed class SkillsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed adjusing localized skill page content position. Helper returned {ex}");
+            Log.E($"Failed adjusing localized skill page content position.\nHelper returned {ex}");
             return null;
         }
 
@@ -125,7 +125,7 @@ internal sealed class SkillsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while patching to draw skills page extended level bars. Helper returned {ex}");
+            Log.E($"Failed while patching to draw skills page extended level bars.\nHelper returned {ex}");
             return null;
         }
 
@@ -155,7 +155,7 @@ internal sealed class SkillsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while patching to draw max skill level with different color. Helper returned {ex}");
+            Log.E($"Failed while patching to draw max skill level with different color.\nHelper returned {ex}");
             return null;
         }
 
@@ -181,7 +181,7 @@ internal sealed class SkillsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
         }
         catch (Exception ex)
         {
-            Log.E($"Failed while patching to draw skills page prestige ribbons. Helper returned {ex}");
+            Log.E($"Failed while patching to draw skills page prestige ribbons.\nHelper returned {ex}");
             return null;
         }
 

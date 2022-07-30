@@ -10,6 +10,7 @@
 
 using StardewModdingAPI;
 using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using WarpNetwork.api;
 
@@ -43,12 +44,20 @@ namespace WarpNetwork
             WarpCancelEnabled = false;
             WandReturnEnabled = true;
         }
+        public void ApplyConfig()
+        {
+            ModEntry.helper.WriteConfig(this);
+            ModEntry.helper.GameContent.InvalidateCache(ModEntry.pathLocData);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ObeliskCheckRequired()
+            => VanillaWarpsEnabled == WarpEnabled.AfterObelisk || FarmWarpEnabled == WarpEnabled.AfterObelisk;
         public void RegisterModConfigMenu(IManifest manifest)
         {
             if (!ModEntry.helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
                 return;
             IGMCMAPI api = ModEntry.helper.ModRegistry.GetApi<IGMCMAPI>("spacechase0.GenericModConfigMenu");
-            api.Register(manifest, ResetToDefault, () => ModEntry.helper.WriteConfig(this));
+            api.Register(manifest, ResetToDefault, ApplyConfig);
 
             api.AddSectionTitle(manifest, () => manifest.Name, () => manifest.Description);
 

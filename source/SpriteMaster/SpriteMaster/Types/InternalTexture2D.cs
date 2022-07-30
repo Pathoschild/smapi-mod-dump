@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.GL;
 
 namespace SpriteMaster.Types;
 
@@ -17,6 +18,18 @@ namespace SpriteMaster.Types;
 /// </summary>
 internal class InternalTexture2D : XTexture2D {
 	private const string DefaultName = "Texture (Internal)";
+
+	private Texture2DExt.Texture2DOpenGlMeta? InnerGlMeta;
+
+	internal Texture2DExt.Texture2DOpenGlMeta GlMeta {
+		get {
+			if (InnerGlMeta is not {} meta) {
+				InnerGlMeta = meta = Texture2DExt.Texture2DOpenGlMeta.Get(this);
+			}
+
+			return meta;
+		}
+	}
 
 	internal InternalTexture2D(GraphicsDevice graphicsDevice, int width, int height) : base(graphicsDevice, width, height) {
 		Name = DefaultName;
