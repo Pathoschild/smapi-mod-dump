@@ -15,9 +15,6 @@ namespace DaLion.Stardew.Professions.Commands;
 using Common;
 using Common.Commands;
 using Framework;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 using System.Linq;
 
 #endregion using directives
@@ -31,10 +28,11 @@ internal sealed class MaxAnimalFriendshipCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "max_animal_friendship";
+    public override string[] Triggers { get; } = { "max_animal_friendship", "max_friendship", "friendly_animals", "friendly" };
 
     /// <inheritdoc />
-    public override string Documentation => $"Max-out the friendship of all owned animals. Relevant for {Profession.Breeder}s";
+    public override string Documentation =>
+        $"Max-out the friendship of all owned animals. Relevant for {Profession.Breeder.Name}s.";
 
     /// <inheritdoc />
     public override void Callback(string[] args)

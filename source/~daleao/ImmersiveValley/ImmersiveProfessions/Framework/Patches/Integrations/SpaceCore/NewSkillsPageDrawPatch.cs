@@ -13,14 +13,13 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.SpaceCore;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Prestige;
-using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -30,20 +29,13 @@ using Textures;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("spacechase0.SpaceCore")]
 internal sealed class NewSkillsPageDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NewSkillsPageDrawPatch()
     {
-        try
-        {
-            Target = "SpaceCore.Interface.NewSkillsPage".ToType().RequireMethod("draw", new[] { typeof(SpriteBatch) });
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "SpaceCore.Interface.NewSkillsPage".ToType().RequireMethod("draw", new[] { typeof(SpriteBatch) });
     }
 
     #region harmony patches

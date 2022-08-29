@@ -1,0 +1,10 @@
+﻿{
+  "Name": "I Got Friendship",
+  "Author": "ChiroxT",
+  "Version": "1.0.0",
+  "Description": "Adds a visual on your Farmer, when you get Friendship",
+  "UniqueID": "treinke.igotfriendship",
+  "EntryDll": "IGotFriendship.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:13290" ]
+}

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CJB.Common;
 using CJBShowItemSellPrice.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,7 +20,6 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using SObject = StardewValley.Object;
 
 namespace CJBShowItemSellPrice
 {
@@ -243,24 +243,7 @@ namespace CJBShowItemSellPrice
         /// <returns>Returns the sell price, or <c>null</c> if it can't be sold.</returns>
         private int? GetSellPrice(Item item)
         {
-            // skip unsellable item
-            if (!this.CanBeSold(item))
-                return null;
-
-            // get price
-            int price = Utility.getSellToStorePriceOfItem(item, countStack: false);
-            return price >= 0
-                ? price
-                : null;
-        }
-
-        /// <summary>Get whether an item can be sold.</summary>
-        /// <param name="item">The item to check.</param>
-        private bool CanBeSold(Item item)
-        {
-            return
-                (item is SObject obj && obj.canBeShipped())
-                || this.Data.ForceSellable.Contains(item.Category);
+            return CommonHelper.GetSellPrice(item, this.Data.ForceSellable);
         }
     }
 }

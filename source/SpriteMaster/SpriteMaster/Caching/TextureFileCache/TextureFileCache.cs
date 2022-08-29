@@ -128,4 +128,6 @@ internal static partial class TextureFileCache {
 		TextureInfoCache.Clear();
 		oldCache?.Dispose();
 	}
+
+	internal static long Size => Cache.SizeBytes;
 }

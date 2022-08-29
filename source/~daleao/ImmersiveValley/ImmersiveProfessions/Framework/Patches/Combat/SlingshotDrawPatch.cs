@@ -14,12 +14,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Tools;
 using Ultimates;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -36,12 +35,9 @@ internal sealed class SlingshotDrawPatch : DaLion.Common.Harmony.HarmonyPatch
     [HarmonyPostfix]
     internal static void SlingshotDrawPostfix(Slingshot __instance, SpriteBatch b)
     {
-        if (__instance.attachments[0] is null) return;
-
         var lastUser = __instance.getLastFarmerToUse();
         if (!lastUser.usingSlingshot || !lastUser.IsLocalPlayer || !lastUser.HasProfession(Profession.Desperado) ||
-            ModEntry.PlayerState.RegisteredUltimate is DeathBlossom { IsActive: true })
-            return;
+            lastUser.get_Ultimate() is DeathBlossom { IsActive: true }) return;
 
         var overcharge = __instance.GetDesperadoOvercharge(Game1.player);
         if (overcharge <= 0f) return;
@@ -53,7 +49,7 @@ internal sealed class SlingshotDrawPatch : DaLion.Common.Harmony.HarmonyPatch
         b.Draw(Game1.staminaRect,
             new((int)Game1.GlobalToLocal(Game1.viewport, lastUser.Position).X - 36,
                 (int)Game1.GlobalToLocal(Game1.viewport, lastUser.Position).Y - 148, (int)(164f * overcharge), 25),
-            Game1.staminaRect.Bounds, Utility.getRedToGreenLerpColor(overcharge), 0f, Vector2.Zero, SpriteEffects.None,
+            Game1.staminaRect.Bounds, StardewValley.Utility.getRedToGreenLerpColor(overcharge), 0f, Vector2.Zero, SpriteEffects.None,
             0.887f);
     }
 }

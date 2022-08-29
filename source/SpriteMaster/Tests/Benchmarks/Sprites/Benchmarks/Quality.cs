@@ -117,7 +117,7 @@ public sealed class Quality {
 
 		ConcurrentDictionary<MethodInfo, ConcurrentBag<Result>> results = new();
 
-		foreach (var dataSet in Textures8.DataSets) {
+		foreach (var dataSet in Textures8.DefaultDataSetsStatic) {
 			foreach (var data in dataSet.Data) {
 				foreach (var method in methods) {
 					var resultList = results.GetOrAdd(method, _ => new());

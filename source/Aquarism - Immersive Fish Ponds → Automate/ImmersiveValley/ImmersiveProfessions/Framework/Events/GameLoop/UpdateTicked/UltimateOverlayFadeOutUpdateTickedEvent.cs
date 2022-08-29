@@ -13,12 +13,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
+using Ultimates;
+using VirtualProperties;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, UltimateEvent]
 internal sealed class UltimateOverlayFadeOutUpdateTickedEvent : UpdateTickedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,6 +30,6 @@ internal sealed class UltimateOverlayFadeOutUpdateTickedEvent : UpdateTickedEven
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        ModEntry.PlayerState.RegisteredUltimate!.Overlay.FadeOut();
+        Game1.player.get_Ultimate()!.Overlay.FadeOut();
     }
 }

@@ -25,7 +25,7 @@ internal static partial class ConsoleSupport {
 		{ "help", new((_, _) => InvokeHelp(CommandMap!), "Prints this command guide") },
 		{ "all-stats", new((_, _) => Debug.DumpAllStats(), "Dump Statistics") },
 		{ "memory", new((_, _) => Debug.DumpMemory(), "Dump Memory") },
-		{ "purge", new((_, _) => SpriteMaster.Self.MemoryMonitor.TriggerPurge(), "Trigger Purge") }
+		{ "purge", new(SpriteMaster.Self.MemoryMonitor.TriggerPurge, "Trigger Purge") }
 	};
 
 	static ConsoleSupport() {

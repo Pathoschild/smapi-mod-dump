@@ -60,13 +60,13 @@ public class ModConfig
     };
 
     /// <summary>You must forage this many items before your forage becomes iridium-quality.</summary>
-    public uint ForagesNeededForBestQuality { get; set; } = 500;
+    public uint ForagesNeededForBestQuality { get; set; } = 100;
 
     /// <summary>You must mine this many minerals before your mined minerals become iridium-quality.</summary>
-    public uint MineralsNeededForBestQuality { get; set; } = 500;
+    public uint MineralsNeededForBestQuality { get; set; } = 100;
 
-    /// <summary>If enabled, Automated machines will contribute toward EcologistItemsForaged and GemologistMineralsCollected.</summary>
-    public bool ShouldCountAutomatedHarvests { get; set; } = false;
+    /// <summary>If enabled, machine and building ownership will be ignored when determining whether to apply profession bonuses.</summary>
+    public bool LaxOwnershipRequirements { get; set; } = false;
 
     /// <summary>Changes the size of the pointer used to track objects by Prospector and Scavenger professions.</summary>
     public float TrackPointerScale { get; set; } = 1f;
@@ -99,7 +99,7 @@ public class ModConfig
     public bool EnableGetExcited { get; set; } = true;
 
     /// <summary>Whether Seaweed and Algae are considered junk for fishing purposes.</summary>
-    public bool SeaweedIsJunk { get; set; } = true;
+    public bool SeaweedIsTrash { get; set; } = true;
 
     /// <summary>You must catch this many fish of a given species to achieve instant catch.</summary>
     /// <remarks>Unused.</remarks>
@@ -139,10 +139,10 @@ public class ModConfig
     public float SpecialActivationDelay { get; set; } = 1f;
 
     /// <summary>Affects the rate at which one builds the Ultimate meter. Increase this if you feel the gauge raises too slowly.</summary>
-    public double SpecialGainFactor { get; set; } = 1.0;
+    public double SpecialGainFactor { get; set; } = 1d;
 
     /// <summary>Affects the rate at which the Ultimate meter depletes during Ultimate. Decrease this to make Ultimate last longer.</summary>
-    public double SpecialDrainFactor { get; set; } = 1.0;
+    public double SpecialDrainFactor { get; set; } = 1d;
 
     /// <summary>Required to apply prestige changes.</summary>
     public bool EnablePrestige { get; set; } = true;
@@ -172,22 +172,13 @@ public class ModConfig
     /// <remarks>The order is Farming, Fishing, Foraging, Mining, Combat.</remarks>
     public float[] BaseSkillExpMultiplierPerSkill { get; set; } = { 1f, 1f, 1f, 1f, 1f, 1f };
 
-    /// <summary>Increases the health of all monsters.</summary>
-    public float MonsterHealthMultiplier { get; set; } = 1f;
-
-    /// <summary>Increases the damage dealt by all monsters.</summary>
-    public float MonsterDamageMultiplier { get; set; } = 1f;
-
-    /// <summary>Increases the resistance of all monsters.</summary>
-    public float MonsterDefenseMultiplier { get; set; } = 1f;
-
     /// <summary>Enable if using the Vintage Interface v2 mod. Accepted values: "Brown", "Pink", "Off", "Automatic".</summary>
     public VintageInterfaceStyle VintageInterfaceSupport { get; set; } = VintageInterfaceStyle.Automatic;
 
     /// <summary>Determines the sprite that appears next to skill bars. Accepted values: "StackedStars", "Gen3Ribbons", "Gen4Ribbons".</summary>
     public ProgressionStyle PrestigeProgressionStyle { get; set; } = ProgressionStyle.StackedStars;
 
-    /// <summary>Key used by trigger UI debugging events.</summary>
+    /// <summary>Key used to trigger debug events.</summary>
     public KeybindList DebugKey { get; set; } = KeybindList.Parse("LeftControl");
 
     #region dropdown enums

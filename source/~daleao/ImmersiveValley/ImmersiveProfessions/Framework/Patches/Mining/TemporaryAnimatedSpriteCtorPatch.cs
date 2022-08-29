@@ -15,9 +15,7 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 using Events.GameLoop;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 
 #endregion using directives
 
@@ -45,7 +43,7 @@ internal sealed class TemporaryAnimatedSpriteCtorPatch : DaLion.Common.Harmony.H
         if (!ModEntry.Config.ModKey.IsDown()) return;
 
         __instance.totalNumberOfLoops = int.MaxValue;
-        ModEntry.EventManager.Hook<ManualDetonationUpdateTickedEvent>();
+        ModEntry.Events.Enable<ManualDetonationUpdateTickedEvent>();
     }
 
     #endregion harmony patches

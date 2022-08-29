@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Community Center Helper",
   "Author": "vgperson",
-  "Version": "1.3.6",
+  "Version": "1.3.7",
   "Description": "Adds tips for where to find things when hovering over required items for bundles.",
   "UniqueID": "vgperson.CommunityCenterHelper",
   "EntryDll": "CommunityCenterHelper.dll",

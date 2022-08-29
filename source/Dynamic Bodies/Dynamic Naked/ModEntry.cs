@@ -32,6 +32,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 using DynamicBodies.Data;
 using DynamicBodies.Patches;
+using DynamicBodies.Framework;
 
 namespace DynamicBodies
 {
@@ -65,15 +66,22 @@ namespace DynamicBodies
         //Content pack options
         public static List<ContentPackOption> bodyOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> faceOptions = new List<ContentPackOption>();
+        public static List<ContentPackOption> eyesOptions = new List<ContentPackOption>();
+        public static List<ContentPackOption> earsOptions = new List<ContentPackOption>();
+        public static List<ContentPackOption> noseOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> armOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> bodyHairOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> beardOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> nudeLOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> nudeUOptions = new List<ContentPackOption>();
+        public static List<ContentPackOption> hairOptions = new List<ContentPackOption>();
         public static Dictionary<string, ContentPackOption> shoeOverrides = new Dictionary<string, ContentPackOption>();
         public static List<ShirtOverlay> shirtOverlays = new List<ShirtOverlay>();
 
         public const string sleeveSetting = "DB.sleeveOverride";
+
+        public static Effect paletteSwap;
+        public static Effect hairRamp;
 
         /*********
         ** Public methods
@@ -104,6 +112,7 @@ namespace DynamicBodies
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
+            
             //Fix up rendering of the farmer
             farmerRendererPatcher = new FarmerRendererPatched(harmony);
 
@@ -145,16 +154,45 @@ namespace DynamicBodies
 
             helper.ConsoleCommands.Add("db_layer_get", "gets layer", delegate { context.Monitor.Log($"OK, layer is {hairlayer}.", LogLevel.Debug); });
             helper.ConsoleCommands.Add("db_layer_set", "sets layer", delegate (string command, string[] args) { hairlayer = float.Parse(args[0]); });
-            helper.ConsoleCommands.Add("db_save_png", "Saves a png of the player in mod folder.", delegate (string command, string[] args) {
+            helper.ConsoleCommands.Add("db_gen_png", "Saves a png of the player in mod folder.", delegate (string command, string[] args) {
+                if (!File.Exists($"{context.Helper.DirectoryPath}\\farmer_sprite.png"))
+                {
+                    Stream stream = File.Create($"{context.Helper.DirectoryPath}\\farmer_sprite.png");
+                    Farmer who = Game1.player;
+                    FarmerRendererPatched.GetFarmerBaseSprite(who).SaveAsPng(stream, 288, 672);
+                    context.Monitor.Log($"OK, saved {context.Helper.DirectoryPath}\\farmer_sprite.png.", LogLevel.Debug);
+                } else
+                {
+                    context.Monitor.Log($"Sorry, please delete {context.Helper.DirectoryPath}\\farmer_sprite.png.", LogLevel.Debug);
+                }
+            });
+
+            helper.ConsoleCommands.Add("db_cache_png", "Saves a png of the cached player in mod folder.", delegate (string command, string[] args) {
                 if (!File.Exists($"{context.Helper.DirectoryPath}\\debug_sprite.png"))
                 {
                     Stream stream = File.Create($"{context.Helper.DirectoryPath}\\debug_sprite.png");
                     Farmer who = Game1.player;
-                    GetFarmerBaseSprite(who, "Characters\\Farmer\\farmer_base").SaveAsPng(stream, 288, 672);
+                    PlayerBaseExtended.Get(who).cacheImage.SaveAsPng(stream, 288, 672);
                     context.Monitor.Log($"OK, saved {context.Helper.DirectoryPath}\\debug_sprite.png.", LogLevel.Debug);
-                } else
+                }
+                else
                 {
                     context.Monitor.Log($"Sorry, please delete {context.Helper.DirectoryPath}\\debug_sprite.png.", LogLevel.Debug);
+                }
+            });
+
+            helper.ConsoleCommands.Add("db_bh", "Saves a png of the cached bodyhair in mod folder.", delegate (string command, string[] args) {
+                if (!File.Exists($"{context.Helper.DirectoryPath}\\debug_bh.png"))
+                {
+                    Stream stream = File.Create($"{context.Helper.DirectoryPath}\\debug_bh.png");
+                    Farmer who = Game1.player;
+                    PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
+                    pbe.bodyHair.texture.SaveAsPng(stream, pbe.bodyHair.texture.Width, pbe.bodyHair.texture.Height);
+                    context.Monitor.Log($"OK, saved {context.Helper.DirectoryPath}\\debug_bh.png.", LogLevel.Debug);
+                }
+                else
+                {
+                    context.Monitor.Log($"Sorry, please delete {context.Helper.DirectoryPath}\\debug_bh.png.", LogLevel.Debug);
                 }
             });
 
@@ -210,9 +248,14 @@ namespace DynamicBodies
             }
 
             //Allow other mods to edit the UI with content patcher
-            if (args.Name.StartsWith("Mods/ribeena.dynamicbodies/assets/"))
+            if (args.Name.StartsWith("Mods/ribeena.dynamicbodies/assets/") && args.DataType == typeof(Texture2D))
             {
-                args.LoadFromModFile<Texture2D>(args.Name.ToString().Substring("Mods/ribeena.dynamicbodies/".Length), AssetLoadPriority.Low);
+                args.LoadFromModFile<Texture2D> (args.Name.ToString().Substring("Mods/ribeena.dynamicbodies/".Length), AssetLoadPriority.Low);
+            }
+
+            if (args.Name.StartsWith("Mods/ribeena.dynamicbodies/assets/") && args.DataType == typeof(IRawTextureData))
+            {
+                args.LoadFromModFile<IRawTextureData>(args.Name.ToString().Substring("Mods/ribeena.dynamicbodies/".Length), AssetLoadPriority.Low);
             }
 
             if (args.Name.IsEquivalentTo("Maps\\townInterior")
@@ -353,23 +396,19 @@ namespace DynamicBodies
             // monitor.Log($"Performed action {action}", LogLevel.Debug);
             if (action == "DynamicBodies:Doctors")
             {
-                //Open the mod
-                //configMenu.OpenModMenu(context.ModManifest);
-
-                Game1.activeClickableMenu = new BodyModifier(BodyModifier.Source.Doctors);
-
+                Game1.activeClickableMenu = new DoctorModifier();
                 return true;
             }
 
             if (action == "DynamicBodies:Leah")
             {
-                Game1.activeClickableMenu = new BodyModifier(BodyModifier.Source.Leahs);
+                Game1.activeClickableMenu = new FullColourModifier();
                 return true;
             }
 
             if (action == "DynamicBodies:Pam")
             {
-                Game1.activeClickableMenu = new BodyModifier(BodyModifier.Source.Pams);
+                Game1.activeClickableMenu = new SimpleColourModifier();
                 return true;
             }
 
@@ -426,146 +465,7 @@ namespace DynamicBodies
             return true;
         }
 
-        public static Texture2D GetFarmerBaseSprite(Farmer who, string texture)
-        {
-            Texture2D bodyText2D = null;
-            //Fix up the farmer base with options
-            if (texture.Length > 0 && texture.StartsWith("Characters\\Farmer\\farmer_"))
-            {
-
-                string gender = "";
-                if (texture.StartsWith("Characters\\Farmer\\farmer_girl")) { gender = "f_"; }
-
-                //monitor.Log($"Edit [{pbeKeyPair.Key}] {pbeKeyPair.Value.baseStyle} image through Edit<t>", LogLevel.Debug);
-                PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
-                if (pbe == null)
-                {
-                    pbe = new PlayerBaseExtended(who, texture);
-                    SetModDataDefaults(who);
-                    pbe.dirty = true;
-
-                    if (who.accessory.Value < 6 && who.accessory.Value > 0)
-                    {
-                        who.modData["DB.beard"] = "Vanilla's Accessory " + (who.accessory.Value + 1).ToString();
-                        who.accessory.Set(0);
-                    }
-                }
-
-                //Needs redrawing
-                if (pbe.cacheImage == null)
-                {
-                    string bald = "";
-                    if (pbe.vanilla.file.EndsWith("_bald"))
-                    {
-                        bald = "_bald";
-                    }
-
-                    //Load the base texture from this mod
-                    if (pbe.body.option == "Default")
-                    {
-                        bodyText2D = context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\{gender}{pbe.vanilla.file[..^bald.Length]}.png");
-                    }
-                    else
-                    {
-                        
-                        //Otherwise load it from a content pack
-                        bodyText2D = pbe.body.provider.ModContent.Load<Texture2D>($"assets\\bodies\\{gender}{pbe.body.file}.png");
-                    }
-
-                    var editor = context.Helper.ModContent.GetPatchHelper(bodyText2D).AsImage();
-
-                    Texture2D faceText2D;
-                    if (pbe.face.option == "Default")
-                    {
-                        faceText2D = context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\{gender}face{bald}.png");
-                    }
-                    else
-                    {
-                        faceText2D = pbe.face.provider.ModContent.Load<Texture2D>($"assets\\faces\\{pbe.face.file}{bald}.png");
-                    }
-                    editor.PatchImage(faceText2D, new Rectangle(0, 0, faceText2D.Width, faceText2D.Height), targetArea: new Rectangle(0, 0, faceText2D.Width, faceText2D.Height), PatchMode.Overlay);
-
-
-                    Texture2D armsText2D;
-                    if (pbe.arm.option == "Default")
-                    {
-                        armsText2D = context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\{gender}arm_{pbe.sleeveLength}.png");
-                    }
-                    else
-                    {
-                        armsText2D = pbe.arm.provider.ModContent.Load<Texture2D>($"assets\\arms\\{pbe.arm.file}_{pbe.sleeveLength}.png");
-                    }
-                    editor.PatchImage(armsText2D, new Rectangle(0, 0, armsText2D.Width, armsText2D.Height), targetArea: new Rectangle(96, 0, armsText2D.Width, armsText2D.Height), PatchMode.Replace);
-
-                    //Top arms
-                    //editor.PatchImage(armsText2D, new Rectangle(0, 0, armsText2D.Width, armsText2D.Height-96), targetArea: new Rectangle(96, 0, armsText2D.Width, armsText2D.Height-96), PatchMode.Replace);
-                    //Bottom arms
-                    //editor.PatchImage(armsText2D, new Rectangle(48, 576, armsText2D.Width-48, 96), targetArea: new Rectangle(144, 576, armsText2D.Width-48, 96), PatchMode.Replace);
-                    //Bath overlay
-                    //editor.PatchImage(armsText2D, new Rectangle(0, 576, 48, 96), targetArea: new Rectangle(0, 576, 48, 96), PatchMode.Overlay);
-
-
-                    //monitor.Log($"Edit sleeve image through Edit<t>", LogLevel.Debug);
-
-                    Texture2D shoes;
-                    if (pbe.shoeStyle == "None")
-                    {
-                        shoes = context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\feet.png");
-                        debugmsg($"Drawing feet.", LogLevel.Debug);
-                    } else
-                    {
-                        Boots equippedBoots = (Boots)who.boots;
-                        if (equippedBoots == null)
-                        {
-                            shoes = context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\feet.png");
-                            debugmsg($"Default feet as nothing equipped found.", LogLevel.Debug);
-                        }
-                        else
-                        {
-                            if (shoeOverrides.ContainsKey(equippedBoots.Name))
-                            {
-                                shoes = shoeOverrides[equippedBoots.Name].contentPack.ModContent.Load<Texture2D>(shoeOverrides[equippedBoots.Name].file);
-                                debugmsg($"Override specific shoe for [{equippedBoots.Name}].", LogLevel.Debug);
-                            }
-                            else
-                            {
-                                List<string> roughMatches = shoeOverrides.Keys.Where(key => equippedBoots.Name.StartsWith(key)).ToList();
-                                if (roughMatches.Count > 0)
-                                {
-                                    shoes = shoeOverrides[roughMatches[0]].contentPack.ModContent.Load<Texture2D>(shoeOverrides[roughMatches[0]].file);
-                                    debugmsg($"Override shoes group for [{equippedBoots.Name}].", LogLevel.Debug);
-                                }
-                                else
-                                {
-                                    shoes = context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\shoes_Normal.png");
-                                    debugmsg($"Default shoes for [{equippedBoots.Name}].", LogLevel.Debug);
-                                }
-                            }
-                        }
-
-                    }
-
-                    editor.PatchImage(shoes, new Rectangle(0, 0, shoes.Width, shoes.Height), targetArea: new Rectangle(0, 0, shoes.Width, shoes.Height), PatchMode.Overlay);
-
-                    //Store the updated version
-                    pbe.cacheImage = null;
-
-                    pbe.cacheImage = new Texture2D(Game1.graphics.GraphicsDevice, bodyText2D.Width, bodyText2D.Height);
-                    Color[] data = new Color[bodyText2D.Width * bodyText2D.Height];
-                    bodyText2D.GetData(data, 0, data.Length);
-                    pbe.cacheImage.SetData(data);
-
-                    //Render any extended colours on the base
-                    pbe.cacheImage = PlayerBaseExtended.ApplyExtendedSkinColor(who.skin.Value, pbe.cacheImage);
-
-                    pbe.dirty = false;
-                } 
-
-                //Return the cached image
-                return pbe.cacheImage;
-            }
-            return bodyText2D;
-        }
+        
 
         public static void MakePlayerDirty()
         {
@@ -651,8 +551,17 @@ namespace DynamicBodies
 
         }
 
-        
 
+        public static string[] getContentPackOptions(List<ContentPackOption> options)
+        {
+            List<string> toReturn = new List<string>();
+            
+            foreach (ContentPackOption option in options)
+            {
+                toReturn.Add(option.author + "'s " + option.name);   
+            }
+            return toReturn.ToArray();
+        }
         public static string[] getContentPackOptions(List<ContentPackOption> options, bool male = true)
         {
             List<string> toReturn = new List<string>();
@@ -671,13 +580,14 @@ namespace DynamicBodies
             return toReturn.ToArray();
         }
 
-        public static ContentPackOption getContentPack(List<ContentPackOption> options, string find)
+        public static ContentPackOption getContentPack(List<ContentPackOption> options, string find, bool isMale)
         {
             foreach (ContentPackOption option in options)
             {
                 if(option.author+"'s "+option.name == find)
                 {
-                    return option;
+                    if (option.male == isMale) return option;
+                    if (option.female != isMale) return option;
                 }
             }
             return null;
@@ -685,6 +595,16 @@ namespace DynamicBodies
 
         public void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            //Try using a palette swapping shader
+            // Compile via the command: mgfxc paletteSwap.fx paletteSwap.mgfx
+            paletteSwap = new Effect(Game1.graphics.GraphicsDevice, File.ReadAllBytes(Path.Combine(modHelper.DirectoryPath, "Effects", "paletteSwap.mgfx")));
+
+            //Set the default palette to test for
+            ModEntry.paletteSwap.Parameters["xSourcePalette"].SetValue(PlayerBaseExtended.GetBasePalette());
+
+            hairRamp = new Effect(Game1.graphics.GraphicsDevice, File.ReadAllBytes(Path.Combine(modHelper.DirectoryPath, "Effects", "greyRamp.mgfx")));
+
+
             //Add vanilla options to the beards
             beardOptions.Add(new ContentPackOption("Accessory 1", "0", "Vanilla", null));
             beardOptions.Add(new ContentPackOption("Accessory 2", "1", "Vanilla", null));
@@ -692,6 +612,11 @@ namespace DynamicBodies
             beardOptions.Add(new ContentPackOption("Accessory 4", "3", "Vanilla", null));
             beardOptions.Add(new ContentPackOption("Accessory 5", "4", "Vanilla", null));
             beardOptions.Add(new ContentPackOption("Accessory 6", "5", "Vanilla", null));
+
+            //Add vanilla options to the hair
+            hairOptions = ExtendedHair.GetDefaultHairStyles();
+            //Make a temporary list of new hairstyles to add at the end
+            List<ContentPackOption> newHair = new List<ContentPackOption>();
 
             debugmsg($"Checking content packs for {context.Helper.ContentPacks.ModID}, {context.Helper.ContentPacks.GetOwned().Count()}", LogLevel.Debug);
 
@@ -707,11 +632,24 @@ namespace DynamicBodies
                     ContentPack data = contentPack.ReadJsonFile<ContentPack>("content.json");
                     bodyOptions.AddRange(data.GetOptions(contentPack, "bodyStyles"));
                     faceOptions.AddRange(data.GetOptions(contentPack, "faces"));
+                    eyesOptions.AddRange(data.GetOptions(contentPack, "eyes"));
+                    earsOptions.AddRange(data.GetOptions(contentPack, "ears"));
+                    noseOptions.AddRange(data.GetOptions(contentPack, "nose"));
                     armOptions.AddRange(data.GetOptions(contentPack, "arms"));
                     bodyHairOptions.AddRange(data.GetOptions(contentPack, "bodyHair"));
                     beardOptions.AddRange(data.GetOptions(contentPack, "beards"));
                     nudeLOptions.AddRange(data.GetOptions(contentPack, "nakedLowers"));
                     nudeUOptions.AddRange(data.GetOptions(contentPack, "nakedUppers"));
+                }
+
+                //Animated hair styles
+                if (contentPack.HasFile("Hair\\hair.json"))
+                {
+                    debugmsg($"Loading new hair and overrides pack: {contentPack.Manifest.Name}", LogLevel.Debug);
+
+                    ExtendedHair data = contentPack.ReadJsonFile<ExtendedHair>("Hair\\hair.json");
+                    data.OverrideDefaultHairStyles(ref hairOptions, contentPack);
+                    newHair.AddRange(data.GetNewHairStyles(contentPack));
                 }
 
                 //Animated boot styles
@@ -748,6 +686,11 @@ namespace DynamicBodies
                     shirtOverlays.Add(data);
                 }
             }
+            //Add the new hairstyles
+            if(newHair.Count > 0)
+            {
+                hairOptions.AddRange(newHair);
+            }
 
             //Check for British spelling
             british_spelling = Helper.ModRegistry.IsLoaded("TheMightyAmondee.GoodbyeAmericanEnglish");
@@ -780,15 +723,6 @@ namespace DynamicBodies
             );
         }
 
-    }
-
-    public class MultiplayerMessage
-    {
-        public string message { get; set; }
-        public MultiplayerMessage(string msg)
-        {
-            message = msg;
-        }
     }
 
     public class ContentPackOption

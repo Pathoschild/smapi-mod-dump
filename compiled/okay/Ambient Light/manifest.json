@@ -1,7 +1,7 @@
 ﻿{
    "Name": "SDVWM_AmbientLight",
    "Author": "SixthTitan",
-   "Version": "2022.6.25",
+   "Version": "2022.7.31",
    "Description": "Light Up your World",
    "UniqueID": "SixthTitan.SDVWM_AmbientLight",
    "EntryDll": "SDVWM_AmbientLight.dll",

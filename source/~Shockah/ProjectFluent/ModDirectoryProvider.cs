@@ -20,7 +20,7 @@ namespace Shockah.ProjectFluent
 		string GetModDirectoryPath(IManifest mod);
 	}
 
-	internal class ModDirectoryProvider: IModDirectoryProvider
+	internal class ModDirectoryProvider : IModDirectoryProvider
 	{
 		private IModRegistry ModRegistry { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>6.4.2</Version>
+		<Version>6.4.3</Version>
 		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
@@ -39,6 +39,9 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Framework\Assets\SprayCanRare.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\de.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="i18n\default.json">

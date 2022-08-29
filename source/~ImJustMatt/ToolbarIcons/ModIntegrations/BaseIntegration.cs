@@ -12,9 +12,7 @@ namespace StardewMods.ToolbarIcons.ModIntegrations;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using StardewModdingAPI;
 using StardewMods.Common.Integrations.ToolbarIcons;
 
 /// <summary>
@@ -71,9 +69,7 @@ internal abstract class BaseIntegration
     /// <param name="modId">The unique id of the mod.</param>
     /// <param name="mod">The mod instance.</param>
     /// <returns>Returns true if the mod instance could be obtained.</returns>
-    protected bool TryGetMod(
-        string modId,
-        [NotNullWhen(true)] out IMod? mod)
+    protected bool TryGetMod(string modId, [NotNullWhen(true)] out IMod? mod)
     {
         if (!this.Helper.ModRegistry.IsLoaded(modId))
         {

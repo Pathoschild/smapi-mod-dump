@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -18,22 +19,60 @@ namespace Quick_Sell
     {
         public static Mod Instance;
 
-        public static IModHelper Helper;
-
         public static ModConfig Config;
 
         public override void Entry(IModHelper helper)
         {
             Instance = this;
 
-            Helper = helper;
-
             Config = Helper.ReadConfig<ModConfig>();
 
-            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
         }
 
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // Get Generic Mod Config Menu's API (if it's installed)
+            var genericModConfigMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+
+            if (genericModConfigMenu is null)
+                return;
+
+            // Register mod
+            genericModConfigMenu.Register(
+                mod: ModManifest,
+                reset: () => Config = new ModConfig(),
+                save: () => Helper.WriteConfig(Config)
+            );
+
+            // Add some config options
+            genericModConfigMenu.AddKeybindList(
+                mod: this.ModManifest,
+                name: () => Helper.Translation.Get("config.qs_SellKey_name"),
+                tooltip: () => Helper.Translation.Get("config.qs_SellKey_tooltip"),
+                getValue: () => Config.SellKey,
+                setValue: value => Config.SellKey = value
+            );
+
+            genericModConfigMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => Helper.Translation.Get("config.qs_CheckIfItemsCanBeShipped_name"),
+                tooltip: () => Helper.Translation.Get("config.qs_CheckIfItemsCanBeShipped_tooltip"),
+                getValue: () => Config.CheckIfItemsCanBeShipped,
+                setValue: value => Config.CheckIfItemsCanBeShipped = value
+            );
+
+            genericModConfigMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => Helper.Translation.Get("config.qs_EnableHUDMessages_name"),
+                tooltip: () => Helper.Translation.Get("config.qs_EnableHUDMessages_tooltip"),
+                getValue: () => Config.EnableHUDMessages,
+                setValue: value => Config.EnableHUDMessages = value
+            );
+        }
+
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
@@ -48,7 +87,7 @@ namespace Quick_Sell
                 OnSellButtonPressed(sender, e);
         }
 
-        private void OnSellButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnSellButtonPressed(object sender, ButtonsChangedEventArgs e)
         {
             Item item = ModPlayer.GetHoveredItem();
 
@@ -58,7 +97,7 @@ namespace Quick_Sell
                 return;
             }
 
-            ModLogger.Trace($"{Game1.player.Name} pressed {e.Button} and has selected {item}.");
+            ModLogger.Trace($"{Game1.player.Name} pressed {e.ToString()} and has selected {item}.");
 
             if (Config.CheckIfItemsCanBeShipped == true && ModPlayer.CheckIfItemCanBeShipped(item) == false)
             {
@@ -66,13 +105,10 @@ namespace Quick_Sell
                 return;
             }
 
-            ModPlayer.AddItemToShippingBin(item);
+            // Ship item
+            Game1.getFarm().shipItem(item, Game1.player);
 
-            ModPlayer.OrganizeShippingBin();
-
-            ModPlayer.RemoveItemFromPlayerInventory(item);
-
-            ModUtils.SendHUDMessage($"Sent {item.Stack} {item.DisplayName} to the Shipping Bin!");
+            ModUtils.SendHUDMessageRespectingConfig(Helper.Translation.Get("messages.qs_ItemShipped", new { itemStack = item.Stack, itemName = item.DisplayName }));
 
             Game1.playSound("Ship");
         }

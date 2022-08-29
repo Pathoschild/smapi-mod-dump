@@ -16,7 +16,6 @@ using Common.Extensions;
 using Common.Extensions.Xna;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley.Buildings;
 
@@ -37,7 +36,7 @@ internal sealed class FishPondDoFishSpecificWaterColoringPatch : Common.Harmony.
     [HarmonyPostfix]
     private static void FishPondDoFishSpecificWaterColoringPostfix(FishPond __instance)
     {
-        if (__instance.fishType.Value.IsAlgae())
+        if (__instance.fishType.Value.IsAlgaeIndex())
         {
             var shift = -5 - 3 * __instance.FishCount;
             __instance.overrideWaterColor.Value = new Color(60, 126, 150).ShiftHue(shift);

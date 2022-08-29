@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace Shockah.ProjectFluent
 {
-	public class FluentApi: IFluentApi
+	public class FluentApi : IFluentApi
 	{
 		private IFluentProvider FluentProvider { get; set; }
 		private IFluentFunctionManager FluentFunctionManager { get; set; }

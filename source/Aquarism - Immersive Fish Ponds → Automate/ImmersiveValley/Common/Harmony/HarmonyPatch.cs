@@ -57,13 +57,11 @@ internal abstract class HarmonyPatch : IHarmonyPatch
     /// <inheritdoc cref="IHarmonyPatch.Apply"/>
     protected virtual void ApplyImpl(Harmony harmony)
     {
-        if (Target is null) throw new MissingMethodException("Patch target not defined.");
+        if (Target is null) ThrowHelper.ThrowMissingMethodException("Patch target not defined.");
+
+        if (Reverse is not null) harmony.CreateReversePatcher(Target, Reverse).Patch();
 
         harmony.Patch(Target, Prefix, Postfix, Transpiler, Finalizer);
-        if (Reverse is null) return;
-
-        var patcher = harmony.CreateReversePatcher(Target, Reverse);
-        patcher.Patch();
     }
 
     /// <summary>Get a method and assert that it was found.</summary>

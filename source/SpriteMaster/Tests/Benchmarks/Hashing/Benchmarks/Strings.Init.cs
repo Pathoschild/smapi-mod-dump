@@ -36,7 +36,7 @@ public partial class Strings {
 		var random = new Random(RandSeed);
 
 		void AddSet(in DataSet<string> dataSet) {
-			DataSets.Add(dataSet);
+			DefaultDataSetsStatic.Add(dataSet);
 		}
 
 		long min = MinSize;
@@ -56,7 +56,7 @@ public partial class Strings {
 			AddSet(new(sb.ToString()));
 		}
 
-		if (DataSets.Last().Data.Length != MaxSize) {
+		if (DefaultDataSetsStatic.Last().Data.Length != MaxSize) {
 			var sb = new StringBuilder();
 			for (int j = 0; j < MaxSize; ++j) {
 				sb.Append(RandomChar(random));

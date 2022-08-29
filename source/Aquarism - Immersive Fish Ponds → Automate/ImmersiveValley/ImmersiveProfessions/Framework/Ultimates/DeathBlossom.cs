@@ -14,24 +14,20 @@ namespace DaLion.Stardew.Professions.Framework.Ultimates;
 
 using Microsoft.Xna.Framework;
 using Sounds;
-using StardewValley;
 
 #endregion using directives
 
 /// <summary>Handles Desperado ultimate activation.</summary>
-internal sealed class DeathBlossom : Ultimate
+public sealed class DeathBlossom : Ultimate
 {
     /// <summary>Construct an instance.</summary>
     internal DeathBlossom()
-    : base(Color.DarkGoldenrod, Color.SandyBrown) { }
+    : base(UltimateIndex.DesperadoBlossom, Color.DarkGoldenrod, Color.SandyBrown) { }
 
     #region public properties
 
     /// <summary>The ID of the buff that displays while Death Blossom is active.</summary>
     public static int BuffId { get; } = (ModEntry.Manifest.UniqueID + (int)UltimateIndex.DesperadoBlossom + 4).GetHashCode();
-
-    /// <inheritdoc />
-    public override UltimateIndex Index => UltimateIndex.DesperadoBlossom;
 
     #endregion public properties
 
@@ -57,13 +53,13 @@ internal sealed class DeathBlossom : Ultimate
             new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 1,
                 GetType().Name,
-                ModEntry.i18n.Get("desperado.ulti"))
+                ModEntry.i18n.Get("desperado.ulti.name"))
             {
                 which = BuffId,
                 sheetIndex = 51,
                 glow = GlowColor,
                 millisecondsDuration = (int)(15000 * ((double)MaxValue / BASE_MAX_VALUE_I) / ModEntry.Config.SpecialDrainFactor),
-                description = ModEntry.i18n.Get("desperado.ultidesc")
+                description = ModEntry.i18n.Get("desperado.ulti.desc")
             }
         );
     }
@@ -71,7 +67,7 @@ internal sealed class DeathBlossom : Ultimate
     /// <inheritdoc />
     internal override void Countdown(double elapsed)
     {
-        ChargeValue -= elapsed * 0.12 / 18.0;
+        ChargeValue -= elapsed * 0.02 / 3.0; // lasts 15s
     }
 
     #endregion internal methods

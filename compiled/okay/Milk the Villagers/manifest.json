@@ -1,10 +1,10 @@
 {
 	"Name": "MilkVillagers",
 	"Author": "Trunip190",
-	"Version": "1.0.8",
+	"Version": "1.1.0",
 	"Description": "Lets you milk the villagers",
 	"UniqueID": "Trunip190.MilkVillagers",
 	"EntryDll": "MilkVillagers.dll",
-	"MinimumApiVersion": "2.10.0",
+	"MinimumApiVersion": "3.13.4",
 	"UpdateKeys": [ "Nexus:5948" ],
 }

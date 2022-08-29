@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 using DaLion.Common;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Reflection;
 

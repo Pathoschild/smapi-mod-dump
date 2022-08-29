@@ -17,7 +17,6 @@ using Events.Display;
 using Events.GameLoop;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using System;
 using Textures;
 
@@ -59,7 +58,7 @@ internal class UltimateHUD
     internal static Texture2D Texture => Textures.MeterTx;
 
     /// <summary>Whether the gauge is being drawn.</summary>
-    internal bool IsVisible => ModEntry.EventManager.IsHooked<UltimateMeterRenderingHudEvent>();
+    internal bool IsVisible => ModEntry.Events.IsEnabled<UltimateMeterRenderingHudEvent>();
 
     #endregion properties
 
@@ -230,11 +229,11 @@ internal class UltimateHUD
         if (_fadeOutTimer >= FADE_OUT_DURATION_I) return;
 
         var ratio = (float)_fadeOutTimer / FADE_OUT_DURATION_I;
-        _opacity = (float)(-1.0 / (1.0 + Math.Exp(12.0 * ratio - 6.0)) + 1.0);
+        _opacity = (float)(-1d / (1d + Math.Exp(12d * ratio - 6d)) + 1d);
         if (_fadeOutTimer > 0) return;
 
-        ModEntry.EventManager.Unhook<UltimateGaugeFadeOutUpdateTickedEvent>();
-        ModEntry.EventManager.Unhook<UltimateMeterRenderingHudEvent>();
+        ModEntry.Events.Disable<UltimateGaugeFadeOutUpdateTickedEvent>();
+        ModEntry.Events.Disable<UltimateMeterRenderingHudEvent>();
         _fadeOutTimer = FADE_OUT_DELAY_I + FADE_OUT_DURATION_I;
         _opacity = 1f;
     }

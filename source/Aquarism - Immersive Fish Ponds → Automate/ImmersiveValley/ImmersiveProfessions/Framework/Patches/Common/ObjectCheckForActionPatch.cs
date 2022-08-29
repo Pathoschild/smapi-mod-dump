@@ -13,18 +13,15 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 #region using directives
 
 using DaLion.Common;
-using DaLion.Common.Data;
 using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Extensions.Stardew;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -41,6 +38,7 @@ internal sealed class ObjectCheckForActionPatch : DaLion.Common.Harmony.HarmonyP
 
     /// <summary>Patch to remember object state.</summary>
     [HarmonyPrefix]
+    // ReSharper disable once RedundantAssignment
     private static bool ObjectCheckForActionPrefix(SObject __instance, ref bool __state)
     {
         __state = __instance.heldObject.Value is not null;
@@ -53,55 +51,15 @@ internal sealed class ObjectCheckForActionPatch : DaLion.Common.Harmony.HarmonyP
     {
         if (__state && __instance.heldObject.Value is null && __instance.IsMushroomBox() &&
             who.HasProfession(Profession.Ecologist))
-            ModDataIO.Increment<uint>(Game1.player, "EcologistItemsForaged");
+            Game1.player.Increment("EcologistItemsForaged");
     }
 
-    /// <summary>Patch to increment Gemologist counter for gems collected from Crystalarium + increase Honey quality with age + increase production frequency of Producer Bee House.</summary>
+    /// <summary>Patch to increase production frequency of Producer Bee House.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? ObjectCheckForActionTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
-
-        /// Injected: if (who.professions.Contains(<gemologist_id>) && name.Equals("Crystalarium"))
-        ///		ModDataIO.IncrementField<uint>(who, "GemologistMineralsCollected")
-        ///	Before: switch (name)
-
-        var dontIncreaseGemologistCounter = generator.DefineLabel();
-        try
-        {
-            helper
-                .FindLast(
-                    new CodeInstruction(OpCodes.Ldstr, "coin")
-                )
-                .Advance(2)
-                .Insert(
-                    // prepare profession check
-                    new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
-                )
-                .InsertProfessionCheck(Profession.Gemologist.Value, forLocalPlayer: false)
-                .Insert(
-                    new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseGemologistCounter),
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(SObject).RequirePropertyGetter(nameof(SObject.name))),
-                    new CodeInstruction(OpCodes.Ldstr, "Crystalarium"),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(string).RequireMethod(nameof(string.Equals), new[] { typeof(string) })),
-                    new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseGemologistCounter),
-                    new CodeInstruction(OpCodes.Ldarg_1),
-                    new CodeInstruction(OpCodes.Ldstr, "GemologistMineralsCollected"),
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModDataIO).RequireMethod(nameof(ModDataIO.Increment), new[] { typeof(Farmer), typeof(string) })
-                            .MakeGenericMethod(typeof(uint)))
-                )
-                .AddLabels(dontIncreaseGemologistCounter);
-        }
-        catch (Exception ex)
-        {
-            Log.E($"Failed while adding Gemologist counter increment.\nHelper returned {ex}");
-            return null;
-        }
 
         /// From: minutesUntilReady.Value = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, 4);
         /// To: minutesUntilReady.Value = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, this.DoesOwnerHaveProfession(<producer_id>)
@@ -119,7 +77,7 @@ internal sealed class ObjectCheckForActionPatch : DaLion.Common.Harmony.HarmonyP
                 .FindNext(
                     new CodeInstruction(OpCodes.Ldc_I4_4),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(Utility).RequireMethod(nameof(Utility.CalculateMinutesUntilMorning),
+                        typeof(StardewValley.Utility).RequireMethod(nameof(StardewValley.Utility.CalculateMinutesUntilMorning),
                             new[] { typeof(int), typeof(int) }))
                 )
                 .AddLabels(isNotProducer)
@@ -128,13 +86,13 @@ internal sealed class ObjectCheckForActionPatch : DaLion.Common.Harmony.HarmonyP
                     new CodeInstruction(OpCodes.Ldc_I4_3), // 3 = Profession.Producer
                     new CodeInstruction(OpCodes.Ldc_I4_0), // false for not prestiged
                     new CodeInstruction(OpCodes.Call,
-                        typeof(SObjectExtensions).RequireMethod(nameof(SObjectExtensions.DoesOwnerHaveProfession))),
+                        typeof(Extensions.SObjectExtensions).RequireMethod(nameof(Extensions.SObjectExtensions.DoesOwnerHaveProfession))),
                     new CodeInstruction(OpCodes.Brfalse_S, isNotProducer),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldc_I4_3),
                     new CodeInstruction(OpCodes.Ldc_I4_1), // true for prestiged
                     new CodeInstruction(OpCodes.Call,
-                        typeof(SObjectExtensions).RequireMethod(nameof(SObjectExtensions.DoesOwnerHaveProfession))),
+                        typeof(Extensions.SObjectExtensions).RequireMethod(nameof(Extensions.SObjectExtensions.DoesOwnerHaveProfession))),
                     new CodeInstruction(OpCodes.Brfalse_S, isNotPrestiged),
                     new CodeInstruction(OpCodes.Ldc_I4_1),
                     new CodeInstruction(OpCodes.Br_S, resumeExecution),

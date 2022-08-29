@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 
 #endregion region using directives
 
-/// <summary>Wrapper for <see cref="IWorldEvents.NpcListChanged"/> allowing dynamic hooking / unhooking.</summary>
+/// <summary>Wrapper for <see cref="IWorldEvents.NpcListChanged"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class NpcListChangedEvent : ManagedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,7 +29,7 @@ internal abstract class NpcListChangedEvent : ManagedEvent
     /// <param name="e">The event arguments.</param>
     internal void OnNpcListChanged(object? sender, NpcListChangedEventArgs e)
     {
-        if (IsHooked) OnNpcListChangedImpl(sender, e);
+        if (IsEnabled) OnNpcListChangedImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnNpcListChanged" />

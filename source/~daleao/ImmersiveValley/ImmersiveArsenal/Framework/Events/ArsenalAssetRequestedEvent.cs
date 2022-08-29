@@ -13,8 +13,8 @@ namespace DaLion.Stardew.Arsenal.Framework.Events;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
-using StardewModdingAPI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
@@ -48,6 +48,8 @@ internal sealed class ArsenalAssetRequestedEvent : AssetRequestedEvent
     internal ArsenalAssetRequestedEvent(EventManager manager)
         : base(manager)
     {
+        AlwaysEnabled = true;
+
         //AssetEditors["Data/Boots"] = (callback: DataBootsEditor, priority: AssetEditPriority.Default);
         AssetEditors["Data/ObjectInformation"] =
             (callback: EditDataObjectInformation, priority: AssetEditPriority.Default);
@@ -55,6 +57,10 @@ internal sealed class ArsenalAssetRequestedEvent : AssetRequestedEvent
         AssetEditors["Strings/Locations"] = (callback: EditLocationsStrings, priority: AssetEditPriority.Default);
         AssetEditors["Strings/StringsFromCSFiles"] =
             (callback: EditStringsFromCSFilesStrings, priority: AssetEditPriority.Default);
+        AssetEditors["TileSheets/animations"] =
+            (callback: EditAnimationsTileSheet, priority: AssetEditPriority.Default);
+        AssetEditors["TileSheets/BuffsIcons"] =
+            (callback: EditBuffsIconsTileSheet, priority: AssetEditPriority.Default);
     }
 
     /// <inheritdoc />
@@ -125,10 +131,12 @@ internal sealed class ArsenalAssetRequestedEvent : AssetRequestedEvent
     /// <summary>Edits galaxy soul description.</summary>
     private static void EditDataObjectInformation(IAssetData asset)
     {
+        if (!ModEntry.Config.InfinityPlusOneWeapons) return;
+
         var data = asset.AsDictionary<int, string>().Data;
 
         // edit galaxy soul description
-        var fields = data[Arsenal.Constants.GALAXY_SOUL_INDEX_I].Split('/');
+        var fields = data[Constants.GALAXY_SOUL_INDEX_I].Split('/');
         fields[5] = ModEntry.i18n.Get("galaxysoul.desc");
         data[Arsenal.Constants.GALAXY_SOUL_INDEX_I] = string.Join('/', fields);
     }
@@ -757,6 +765,30 @@ internal sealed class ArsenalAssetRequestedEvent : AssetRequestedEvent
 
         var data = asset.AsDictionary<string, string>().Data;
         data["MeleeWeapon.cs.14122"] = ModEntry.i18n.Get("fromcsfiles.MeleeWeapon.cs.14122");
+    }
+
+    /// <summary>Patches animations with snowball collision.</summary>
+    private static void EditAnimationsTileSheet(IAssetData asset)
+    {
+        var editor = asset.AsImage();
+        editor.ExtendImage(640, 3392);
+        var srcArea = new Rectangle(0, 0, 640, 64);
+        var targetArea = new Rectangle(0, 3328, 640, 64);
+
+        editor.PatchImage(ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/animations/snowball.png"), srcArea,
+            targetArea);
+    }
+
+    /// <summary>Patches buffs icons with energized buff icon.</summary>
+    private static void EditBuffsIconsTileSheet(IAssetData asset)
+    {
+        var editor = asset.AsImage();
+        editor.ExtendImage(192, 64);
+        var srcArea = new Rectangle(0, 0, 16, 16);
+        var targetArea = new Rectangle(96, 48, 16, 16);
+
+        editor.PatchImage(ModEntry.ModHelper.ModContent.Load<Texture2D>("assets/sprites/thunderlord.png"), srcArea,
+            targetArea);
     }
 
     #endregion editor callbacks

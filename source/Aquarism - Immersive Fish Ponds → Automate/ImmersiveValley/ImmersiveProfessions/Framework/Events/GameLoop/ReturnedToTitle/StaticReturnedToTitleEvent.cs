@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -26,16 +25,22 @@ internal sealed class StaticReturnedToTitleEvent : ReturnedToTitleEvent
     internal StaticReturnedToTitleEvent(ProfessionEventManager manager)
         : base(manager)
     {
-        AlwaysHooked = true;
+        AlwaysEnabled = true;
     }
+
+    /// <inheritdoc />
+    public override bool Enable() => false;
+
+    /// <inheritdoc />
+    public override bool Disable() => false;
 
     /// <inheritdoc />
     protected override void OnReturnedToTitleImpl(object? sender, ReturnedToTitleEventArgs e)
     {
-        // unhook events
-        Manager.UnhookFromLocalPlayer();
+        // disable events
+        Manager.ResetAllScreens();
 
         // reset mod state
-        ModEntry.PlayerState = new();
+        ModEntry.State = new();
     }
 }

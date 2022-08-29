@@ -32,19 +32,19 @@ internal static class BlockMultipleAnalysis {
 			for (int x = 0; x < spriteBounds.Width; x += block) {
 				for (int subY = 0; subY < block; ++subY) {
 					var yOffset = yBaseOffset + (stride * subY);
-					var rowReferenceColor = data.At(yOffset + x);
+					var rowReferenceColor = data[yOffset + x];
 					for (int subX = 1; subX < block; ++subX) {
 						var xOffset = yOffset + x + subX;
-						if (!data.At(xOffset).Equals(rowReferenceColor, equalityThreshold)) {
+						if (!data[xOffset].Equals(rowReferenceColor, equalityThreshold)) {
 							return false;
 						}
 					}
 				}
-				var columnReferenceColor = data.At(yBaseOffset);
+				var columnReferenceColor = data[yBaseOffset];
 				// If each row passes, compare the first element of each row against one another
 				for (int subY = 1; subY < block; ++subY) {
 					var yOffset = yBaseOffset + (stride * subY);
-					if (!data.At(yOffset).Equals(columnReferenceColor, equalityThreshold)) {
+					if (!data[yOffset].Equals(columnReferenceColor, equalityThreshold)) {
 						return false;
 					}
 				}
@@ -65,10 +65,10 @@ internal static class BlockMultipleAnalysis {
 			var yBaseOffset = initialOffset + y * stride;
 
 			int currentContiguousSpan = 1;
-			var lastColor = data.At(yBaseOffset);
+			var lastColor = data[yBaseOffset];
 			for (int x = 1; x < spriteBounds.Width; ++x) {
 				int offset = yBaseOffset + x;
-				var currentColor = data.At(offset);
+				var currentColor = data[offset];
 
 				if (currentColor.Equals(lastColor, equalityThreshold)) {
 					++currentContiguousSpan;

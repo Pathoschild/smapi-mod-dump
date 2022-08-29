@@ -13,11 +13,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.AnimalHusban
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -25,20 +25,13 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("DIGUS.ANIMALHUSBANDRYMOD")]
 internal sealed class InseminationSyringeOverridesDoFunctionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal InseminationSyringeOverridesDoFunctionPatch()
     {
-        try
-        {
-            Target = "AnimalHusbandryMod.tools.InseminationSyringeOverrides".ToType().RequireMethod("DoFunction");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "AnimalHusbandryMod.tools.InseminationSyringeOverrides".ToType().RequireMethod("DoFunction");
     }
 
     #region harmony patches

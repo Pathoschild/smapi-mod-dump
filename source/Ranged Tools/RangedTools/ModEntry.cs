@@ -405,6 +405,14 @@ namespace RangedTools
                 
                 configMenu.AddBoolOption(
                     mod: ModManifest,
+                    name: () => str.Get("optionDontCutGrassName"),
+                    tooltip: () => str.Get("optionDontCutGrassTooltip"),
+                    getValue: () => Config.DontCutGrassPastNormalRange,
+                    setValue: value => Config.DontCutGrassPastNormalRange = value
+                );
+                
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
                     name: () => str.Get("optionOnClickOnlyName"),
                     tooltip: () => str.Get("optionOnClickOnlyTooltip"),
                     getValue: () => Config.CustomRangeOnClickOnly,
@@ -890,7 +898,7 @@ namespace RangedTools
             }
         }
         
-        /// <summary>Postfix to MeleeWeapon.getAreaOfEffect that alters effect area of scythes/melee weapons.</summary>
+        /// <summary>Postfix to MeleeWeapon.getAreaOfEffect that shifts effect area of scythes/melee weapons to cursor if enabled.</summary>
         /// <param name="__result">Rectangle for the area of effect.</param>
         /// <param name="x">Farmer X position.</param>
         /// <param name="y">Farmer Y position.</param>
@@ -902,25 +910,11 @@ namespace RangedTools
         public static void Postfix_getAreaOfEffect(MeleeWeapon __instance, ref Rectangle __result, int x, int y, int facingDirection,
             ref Vector2 tileLocation1, ref Vector2 tileLocation2, Rectangle wielderBoundingBox, int indexInCurrentAnimation)
         {
-            int myRange = __instance.isScythe()? Config.ScytheRange : Config.WeaponRange;
             bool centerOnCursor = __instance.isScythe()? Config.CenterScytheOnCursor : Config.CenterWeaponOnCursor;
-            
-            if (myRange < 0) // Infinite
-            {
-                __result.X = 0;
-                __result.Y = 0;
-                __result.Width = Game1.currentLocation.map.DisplayWidth;
-                __result.Height = Game1.currentLocation.map.DisplayHeight;
-                return;
-            }
-            
-            if (myRange > 1)
-                __result.Inflate((myRange - 1) * 64, (myRange - 1) * 64);
-            
             if (centerOnCursor)
             {
                 Vector2 mousePosition = Utility.PointToVector2(Game1.getMousePosition()) 
-                                        + new Vector2((float)Game1.viewport.X, (float)Game1.viewport.Y);
+                                      + new Vector2((float)Game1.viewport.X, (float)Game1.viewport.Y);
                 __result.X = (int)mousePosition.X - __result.Width / 2;
                 __result.Y = (int)mousePosition.Y - __result.Height / 2;
             }
@@ -943,29 +937,51 @@ namespace RangedTools
             if (!who.IsLocalPlayer)
                 return;
             
+            // After DoDamage has acted on normal area of effect, take that area and expand it.
             Rectangle areaOfEffect = __instance.mostRecentArea;
+            
+            if (myRange < 0) // Infinite
+            {
+                areaOfEffect.X = 0;
+                areaOfEffect.Y = 0;
+                areaOfEffect.Width = Game1.currentLocation.map.DisplayWidth;
+                areaOfEffect.Height = Game1.currentLocation.map.DisplayHeight;
+            }
+            else if (myRange > 1)
+                areaOfEffect.Inflate((myRange - 1) * 64, (myRange - 1) * 64);
             
             string cueName = "";
             
             foreach (Vector2 terrainKey in location.terrainFeatures.Keys)
             {
-                if (myRange > 1 && !areaOfEffect.Contains(Vector2.Multiply(terrainKey, 64))) // Must be in effect range, unless range is infinite
+                // Terrain must be in effect range, or range must be infinite.
+                if (myRange > 1 && !areaOfEffect.Contains(Vector2.Multiply(terrainKey, 64)))
                     continue;
-                if (location.terrainFeatures[terrainKey].performToolAction((Tool)__instance, 0, terrainKey, location))
+                
+                // Grass option keeps grass from being cut beyond normal range.
+                if (Config.DontCutGrassPastNormalRange && location.terrainFeatures[terrainKey] is Grass)
+                    continue;
+                
+                // Perform tool action on terrain.
+                if (location.terrainFeatures[terrainKey].performToolAction(__instance, 0, terrainKey, location))
                     location.terrainFeatures.Remove(terrainKey);
             }
             
             foreach (Vector2 objectKey in location.objects.Keys)
             {
-                if (myRange > 1 && !areaOfEffect.Contains(Vector2.Multiply(objectKey, 64))) // Must be in effect range, unless range is infinite
+                // Terrain must be in effect range, or range must be infinite.
+                if (myRange > 1 && !areaOfEffect.Contains(Vector2.Multiply(objectKey, 64)))
                     continue;
-                if (location.objects[objectKey].performToolAction((Tool)__instance, location))
+                
+                // Perform tool action on object.
+                if (location.objects[objectKey].performToolAction(__instance, location))
                     location.objects.Remove(objectKey);
             }
             
+            // Perform tool action on every tile in range for miscellaneous actions.
             for (int tileX = areaOfEffect.Left; tileX < areaOfEffect.Right; tileX += 64)
                 for (int tileY = areaOfEffect.Top; tileY < areaOfEffect.Bottom; tileY += 64)
-                    location.performToolAction((Tool)__instance, tileX / 64, tileY / 64);
+                    location.performToolAction(__instance, tileX / 64, tileY / 64);
             
             if (!cueName.Equals(""))
                 Game1.playSound(cueName);

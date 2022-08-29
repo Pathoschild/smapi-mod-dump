@@ -14,22 +14,18 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 #region using directives
 
 using Common;
-using Common.Data;
 using Common.Extensions;
 using Common.Extensions.Reflection;
+using Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
-using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.GameData.FishPond;
 using StardewValley.Menus;
 using System;
 using System.Reflection;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -39,17 +35,16 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
     private delegate void DrawHorizontalPartitionDelegate(IClickableMenu instance, SpriteBatch b, int yPosition,
         bool small = false, int red = -1, int green = -1, int blue = -1);
 
-    private static readonly Func<PondQueryMenu, string> _GetDisplayedText = typeof(PondQueryMenu)
-        .RequireMethod("getDisplayedText").CompileUnboundDelegate<Func<PondQueryMenu, string>>();
+    private static readonly Lazy<Func<PondQueryMenu, string>> _GetDisplayedText = new(() =>
+        typeof(PondQueryMenu).RequireMethod("getDisplayedText").CompileUnboundDelegate<Func<PondQueryMenu, string>>());
 
-    private static readonly Func<PondQueryMenu, string, int> _MeasureExtraTextHeight = typeof(PondQueryMenu)
-        .RequireMethod("measureExtraTextHeight").CompileUnboundDelegate<Func<PondQueryMenu, string, int>>();
+    private static readonly Lazy<Func<PondQueryMenu, string, int>> _MeasureExtraTextHeight = new(() =>
+        typeof(PondQueryMenu).RequireMethod("measureExtraTextHeight")
+            .CompileUnboundDelegate<Func<PondQueryMenu, string, int>>());
 
-    private static readonly DrawHorizontalPartitionDelegate _DrawHorizontalPartition = typeof(PondQueryMenu)
-        .RequireMethod("drawHorizontalPartition").CompileUnboundDelegate<DrawHorizontalPartitionDelegate>();
-
-    private static readonly Func<FishPond, FishPondData?> _GetFishPondData = typeof(FishPond).RequireField("_fishPondData")
-        .CompileUnboundFieldGetterDelegate<Func<FishPond, FishPondData?>>();
+    private static readonly Lazy<DrawHorizontalPartitionDelegate> _DrawHorizontalPartition = new(() =>
+        typeof(PondQueryMenu).RequireMethod("drawHorizontalPartition")
+            .CompileUnboundDelegate<DrawHorizontalPartitionDelegate>());
 
     /// <summary>Construct an instance.</summary>
     internal PondQueryMenuDrawPatch()
@@ -92,7 +87,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
                 x: (int)(Game1.uiViewport.Width / 2 - (textSize.X + 64f) * 0.5f),
                 y: __instance.yPositionOnScreen - 4 + 128, (int)(textSize.X + 64f), 64
             );
-            Utility.drawTextWithShadow(
+            StardewValley.Utility.drawTextWithShadow(
                 b: b,
                 text: pondNameText,
                 font: Game1.smallFont,
@@ -100,11 +95,11 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
                     x: Game1.uiViewport.Width / 2 - textSize.X * 0.5f,
                     y: __instance.yPositionOnScreen - 4 + 160f - textSize.Y * 0.5f), Color.Black
             );
-            var displayedText = _GetDisplayedText(__instance);
+            var displayedText = _GetDisplayedText.Value(__instance);
             var extraHeight = 0;
             if (hasUnresolvedNeeds) extraHeight += 116;
 
-            var extraTextHeight = _MeasureExtraTextHeight(__instance, displayedText);
+            var extraTextHeight = _MeasureExtraTextHeight.Value(__instance, displayedText);
             Game1.drawDialogueBox(
                 x: __instance.xPositionOnScreen,
                 y: __instance.yPositionOnScreen + 128,
@@ -117,7 +112,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
                 PathUtilities.NormalizeAssetName("Strings/UI:PondQuery_Population"),
                 string.Concat(____pond.FishCount), ____pond.maxOccupants.Value);
             textSize = Game1.smallFont.MeasureString(populationText);
-            Utility.drawTextWithShadow(
+            StardewValley.Utility.drawTextWithShadow(
                 b: b, populationText,
                 font: Game1.smallFont,
                 position: new(
@@ -144,13 +139,13 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
             SObject? itemToDraw = null;
             if (isAlgaePond)
             {
-                seaweedCount = ModDataIO.ReadFrom<int>(____pond, "SeaweedLivingHere");
-                greenAlgaeCount = ModDataIO.ReadFrom<int>(____pond, "GreenAlgaeLivingHere");
-                whiteAlgaeCount = ModDataIO.ReadFrom<int>(____pond, "WhiteAlgaeLivingHere");
+                seaweedCount = ____pond.Read<int>("SeaweedLivingHere");
+                greenAlgaeCount = ____pond.Read<int>("GreenAlgaeLivingHere");
+                whiteAlgaeCount = ____pond.Read<int>("WhiteAlgaeLivingHere");
             }
             else if (isLegendaryPond)
             {
-                familyCount = ModDataIO.ReadFrom<int>(____pond, "FamilyLivingHere");
+                familyCount = ____pond.Read<int>("FamilyLivingHere");
                 itemToDraw = ____fishItem;
             }
             else
@@ -209,7 +204,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
             if (!isAlgaePond)
             {
                 var (_, numMedQuality, numHighQuality, numBestQuality) =
-                    ModDataIO.ReadFrom(____pond, "FishQualities", $"{____pond.FishCount - familyCount},0,0,0")
+                    ____pond.Read("FishQualities", $"{____pond.FishCount - familyCount},0,0,0")
                         .ParseTuple<int, int, int, int>()!.Value;
                 if (numBestQuality + numHighQuality + numMedQuality > 0)
                 {
@@ -270,7 +265,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
                 if (familyCount > 0)
                 {
                     var (_, numMedFamilyQuality, numHighFamilyQuality, numBestFamilyQuality) =
-                        ModDataIO.ReadFrom(____pond, "FamilyQualities", $"{familyCount},0,0,0").ParseTuple<int, int, int, int>()!.Value;
+                        ____pond.Read("FamilyQualities", $"{familyCount},0,0,0").ParseTuple<int, int, int, int>()!.Value;
                     if (numBestFamilyQuality + numHighFamilyQuality + numMedFamilyQuality > 0)
                     {
                         for (var i = ____pond.FishCount - familyCount; i < ____pond.FishCount; ++i)
@@ -322,7 +317,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
 
             // draw more stuff
             textSize = Game1.smallFont.MeasureString(displayedText);
-            Utility.drawTextWithShadow(
+            StardewValley.Utility.drawTextWithShadow(
                 b: b,
                 text: displayedText,
                 font: Game1.smallFont,
@@ -335,8 +330,8 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
 
             if (hasUnresolvedNeeds)
             {
-                _DrawHorizontalPartition(__instance, b, (int)(__instance.yPositionOnScreen + PondQueryMenu.height + extraTextHeight - 48f));
-                Utility.drawWithShadow(
+                _DrawHorizontalPartition.Value(__instance, b, (int)(__instance.yPositionOnScreen + PondQueryMenu.height + extraTextHeight - 48f));
+                StardewValley.Utility.drawWithShadow(
                     b: b,
                     texture: Game1.mouseCursors,
                     position: new(
@@ -366,7 +361,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
                     textX = leftX + 76;
                 }
 
-                Utility.drawTextWithShadow(
+                StardewValley.Utility.drawTextWithShadow(
                     b: b,
                     text: bringText,
                     font: Game1.smallFont,
@@ -415,7 +410,7 @@ internal sealed class PondQueryMenuDrawPatch : Common.Harmony.HarmonyPatch
                 );
 
                 if (____pond.neededItemCount.Value > 1)
-                    Utility.drawTinyDigits(
+                    StardewValley.Utility.drawTinyDigits(
                         toDraw: ____pond.neededItemCount.Value,
                         b: b,
                         position: new(

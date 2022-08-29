@@ -25,12 +25,12 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit f450bd2fe72a884e89ca6a06c187605bdb79fa3d
-   Merge: aa9b13d 352f830
+   commit e9871683cfdcc3e32811c6cd9afb4754696bc455
+   Merge: f450bd2 5d5d325
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Mon Jul 25 13:13:23 2022 -0400
+   Date:   Fri Aug 26 20:43:27 2022 -0400
    
-       Merge pull request #4 from atravita-mods/dev
+       Merge pull request #10 from atravita-mods/dependabot/nuget/BenchmarkDotNet-0.13.2
        
-       merge dev into main
+       Bump BenchmarkDotNet from 0.13.1 to 0.13.2
    

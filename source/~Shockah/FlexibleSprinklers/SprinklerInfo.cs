@@ -14,15 +14,15 @@ using System.Collections.Generic;
 
 namespace Shockah.FlexibleSprinklers
 {
-	public struct SprinklerInfo: IEquatable<SprinklerInfo>
+	public readonly struct SprinklerInfo : IEquatable<SprinklerInfo>
 	{
-		public ISet<Vector2> Layout { get; set; }
+		public readonly IReadOnlySet<Vector2> Layout { get; init; }
 
-		public int Power { get; set; }
+		public readonly int Power { get; init; }
 
-		public SprinklerInfo(ISet<Vector2> layout): this(layout, layout.Count) { }
+		public SprinklerInfo(IReadOnlySet<Vector2> layout) : this(layout, layout.Count) { }
 
-		public SprinklerInfo(ISet<Vector2> layout, int power)
+		public SprinklerInfo(IReadOnlySet<Vector2> layout, int power)
 		{
 			this.Layout = layout;
 			this.Power = power;

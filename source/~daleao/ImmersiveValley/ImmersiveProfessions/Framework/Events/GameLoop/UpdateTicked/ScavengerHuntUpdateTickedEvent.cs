@@ -14,15 +14,16 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 using Common.Events;
 using Extensions;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
+using TreasureHunts;
 
 #endregion using directives
 
 [UsedImplicitly]
 internal sealed class ScavengerHuntUpdateTickedEvent : UpdateTickedEvent
 {
+    private ScavengerHunt? Hunt;
+
     /// <summary>Construct an instance.</summary>
     /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
     internal ScavengerHuntUpdateTickedEvent(ProfessionEventManager manager)
@@ -31,7 +32,8 @@ internal sealed class ScavengerHuntUpdateTickedEvent : UpdateTickedEvent
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        ModEntry.PlayerState.ScavengerHunt.Update(e.Ticks);
+        Hunt ??= (ScavengerHunt)ModEntry.State.ScavengerHunt.Value;
+        Hunt.Update(e.Ticks);
         if (Game1.player.HasProfession(Profession.Scavenger, true)) Game1.gameTimeInterval = 0;
     }
 }

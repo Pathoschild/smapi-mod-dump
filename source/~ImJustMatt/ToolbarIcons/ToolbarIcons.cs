@@ -16,7 +16,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewMods.Common.Enums;
@@ -24,7 +23,6 @@ using StardewMods.Common.Helpers;
 using StardewMods.Common.Integrations.GenericModConfigMenu;
 using StardewMods.ToolbarIcons.ModIntegrations;
 using StardewMods.ToolbarIcons.UI;
-using StardewValley;
 using StardewValley.Menus;
 
 /// <inheritdoc />
@@ -35,6 +33,7 @@ public class ToolbarIcons : Mod
     private const string CJBItemSpawnerId = "CJBok.ItemSpawner";
     private const string DynamicGameAssetsId = "spacechase0.DynamicGameAssets";
     private const string GenericModConfigMenuId = "spacechase0.GenericModConfigMenu";
+    private const string MagicId = "spacechase0.Magic";
     private const string StardewAquariumId = "Cherry.StardewAquarium";
 
     private readonly PerScreen<ToolbarIconsApi?> _api = new();
@@ -45,10 +44,7 @@ public class ToolbarIcons : Mod
 
     private ModConfig? _config;
 
-    private ToolbarIconsApi Api
-    {
-        get => this._api.Value ??= new(this.Helper, this.Config.Icons, this.Components);
-    }
+    private ToolbarIconsApi Api => this._api.Value ??= new(this.Helper, this.Config.Icons, this.Components);
 
     private ComponentArea Area
     {
@@ -66,15 +62,15 @@ public class ToolbarIcons : Mod
                 return this._button.Value;
             }
 
-            if (toolbar is not null)
+            if (toolbar is null)
             {
-                this.Toolbar = toolbar;
-                var buttons = this.Helper.Reflection.GetField<List<ClickableComponent>>(toolbar, "buttons").GetValue();
-                this._button.Value = buttons.First();
-                return this._button.Value;
+                return null;
             }
 
-            return null;
+            this.Toolbar = toolbar;
+            var buttons = this.Helper.Reflection.GetField<List<ClickableComponent>>(toolbar, "buttons").GetValue();
+            this._button.Value = buttons.First();
+            return this._button.Value;
         }
     }
 
@@ -115,6 +111,12 @@ public class ToolbarIcons : Mod
 
     private bool Loaded { get; set; }
 
+    private bool ShowToolbar => this.Loaded
+                             && Game1.displayHUD
+                             && Context.IsPlayerFree
+                             && Game1.activeClickableMenu is null
+                             && Game1.onScreenMenus.OfType<Toolbar>().Any();
+
     private SimpleIntegration? SimpleIntegration { get; set; }
 
     private Toolbar? Toolbar
@@ -127,13 +129,8 @@ public class ToolbarIcons : Mod
     public override void Entry(IModHelper helper)
     {
         Log.Monitor = this.Monitor;
-        I18n.Init(helper.Translation);
+        I18n.Init(this.Helper.Translation);
         ThemeHelper.Init(this.Helper, "furyx639.ToolbarIcons/Icons", "furyx639.ToolbarIcons/Arrows");
-
-        if (this.Helper.ModRegistry.IsLoaded("furyx639.FuryCore"))
-        {
-            Log.Alert("Remove FuryCore, it is no longer needed by this mod!");
-        }
 
         // Events
         this.Helper.Events.Content.AssetRequested += ToolbarIcons.OnAssetRequested;
@@ -179,7 +176,9 @@ public class ToolbarIcons : Mod
         if (Game1.activeClickableMenu.GetChildMenu() is null)
         {
             var point = Game1.getMousePosition();
-            if (Game1.oldMouseState.LeftButton == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed && bounds.Contains(point))
+            if (Game1.oldMouseState.LeftButton == ButtonState.Released
+             && Mouse.GetState().LeftButton == ButtonState.Pressed
+             && bounds.Contains(point))
             {
                 Game1.activeClickableMenu.SetChildMenu(new ToolbarIconsMenu(this.Config.Icons, this.Components));
                 return;
@@ -213,29 +212,33 @@ public class ToolbarIcons : Mod
 
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
-        if (!Game1.displayHUD || Game1.activeClickableMenu is not null || !Game1.onScreenMenus.OfType<Toolbar>().Any())
+        if (!this.ShowToolbar || this.Helper.Input.IsSuppressed(e.Button))
         {
             return;
         }
 
-        if (e.Button is not SButton.MouseLeft or SButton.MouseRight)
+        if (e.Button is not SButton.MouseLeft or SButton.MouseRight
+         && !(e.Button.IsActionButton() || e.Button.IsUseToolButton()))
         {
             return;
         }
 
         var (x, y) = Game1.getMousePosition(true);
-        var component = this.Components.Values.FirstOrDefault(component => component.visible && component.containsPoint(x, y));
-        if (component is not null)
+        var component =
+            this.Components.Values.FirstOrDefault(component => component.visible && component.containsPoint(x, y));
+        if (component is null)
         {
-            Game1.playSound("drumkit6");
-            this.Api.Invoke(component.name);
-            this.Helper.Input.Suppress(e.Button);
+            return;
         }
+
+        Game1.playSound("drumkit6");
+        this.Api.Invoke(component.name);
+        this.Helper.Input.Suppress(e.Button);
     }
 
     private void OnCursorMoved(object? sender, CursorMovedEventArgs e)
     {
-        if (!Game1.displayHUD || Game1.activeClickableMenu is not null || !Game1.onScreenMenus.OfType<Toolbar>().Any())
+        if (!this.ShowToolbar)
         {
             return;
         }
@@ -258,10 +261,33 @@ public class ToolbarIcons : Mod
         this.ComplexIntegration = ComplexIntegration.Init(this.Helper, this.Api);
 
         // Integrations
-        this.ComplexIntegration.AddMethodWithParams(ToolbarIcons.StardewAquariumId, 1, I18n.Button_StardewAquarium(), "OpenAquariumCollectionMenu", "aquariumprogress", Array.Empty<string>());
-        this.ComplexIntegration.AddMethodWithParams(ToolbarIcons.CJBCheatsMenuId, 4, I18n.Button_CheatsMenu(), "OpenCheatsMenu", 0, true);
-        this.ComplexIntegration.AddMethodWithParams(ToolbarIcons.DynamicGameAssetsId, 6, I18n.Button_DynamicGameAssets(), "OnStoreCommand", "dga_store", Array.Empty<string>());
-        this.ComplexIntegration.AddMethodWithParams(ToolbarIcons.GenericModConfigMenuId, 13, I18n.Button_GenericModConfigMenu(), "OpenListMenu", 0);
+        this.ComplexIntegration.AddMethodWithParams(
+            ToolbarIcons.StardewAquariumId,
+            1,
+            I18n.Button_StardewAquarium(),
+            "OpenAquariumCollectionMenu",
+            "aquariumprogress",
+            Array.Empty<string>());
+        this.ComplexIntegration.AddMethodWithParams(
+            ToolbarIcons.CJBCheatsMenuId,
+            4,
+            I18n.Button_CheatsMenu(),
+            "OpenCheatsMenu",
+            0,
+            true);
+        this.ComplexIntegration.AddMethodWithParams(
+            ToolbarIcons.DynamicGameAssetsId,
+            6,
+            I18n.Button_DynamicGameAssets(),
+            "OnStoreCommand",
+            "dga_store",
+            Array.Empty<string>());
+        this.ComplexIntegration.AddMethodWithParams(
+            ToolbarIcons.GenericModConfigMenuId,
+            13,
+            I18n.Button_GenericModConfigMenu(),
+            "OpenListMenu",
+            0);
         this.ComplexIntegration.AddCustomAction(
             ToolbarIcons.CJBItemSpawnerId,
             5,
@@ -304,11 +330,31 @@ public class ToolbarIcons : Mod
                     }
                 };
             });
+        this.ComplexIntegration.AddCustomAction(
+            ToolbarIcons.MagicId,
+            14,
+            I18n.Button_MagicMenu(),
+            _ =>
+            {
+                var magicMenu = ReflectionHelper.GetAssemblyByName("Magic")
+                                                ?.GetType("Magic.Framework.Game.Interface.MagicMenu")
+                                                ?.GetConstructor(Array.Empty<Type>());
+                return () =>
+                {
+                    if (magicMenu is null)
+                    {
+                        return;
+                    }
+
+                    var menu = magicMenu.Invoke(Array.Empty<object>());
+                    Game1.activeClickableMenu = (IClickableMenu)menu;
+                };
+            });
     }
 
     private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-        if (!this.Loaded || !Game1.displayHUD || Game1.activeClickableMenu is not null || !Game1.onScreenMenus.OfType<Toolbar>().Any())
+        if (!this.ShowToolbar)
         {
             return;
         }
@@ -321,7 +367,7 @@ public class ToolbarIcons : Mod
 
     private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
     {
-        if (!Game1.displayHUD || Game1.activeClickableMenu is not null)
+        if (!this.ShowToolbar)
         {
             return;
         }
@@ -349,8 +395,9 @@ public class ToolbarIcons : Mod
     {
         if (!this.Loaded)
         {
-            this.Loaded = true;
-            foreach (var (key, data) in this.Helper.GameContent.Load<IDictionary<string, string>>("furyx639.ToolbarIcons/Toolbar"))
+            var toolbarData =
+                this.Helper.GameContent.Load<IDictionary<string, string>>("furyx639.ToolbarIcons/Toolbar");
+            foreach (var (key, data) in toolbarData)
             {
                 var info = data.Split('/');
                 var modId = key.Split('/')[0];
@@ -368,23 +415,23 @@ public class ToolbarIcons : Mod
         }
 
         this.ReorientComponents();
+        this.Loaded = true;
 
         var gmcm = new GenericModConfigMenuIntegration(this.Helper.ModRegistry);
-        if (gmcm.IsLoaded)
+        if (!gmcm.IsLoaded)
         {
-            // Register mod configuration
-            gmcm.Register(
-                this.ModManifest,
-                () => this._config = new(),
-                this.SaveConfig);
-
-            gmcm.API.AddComplexOption(
-                this.ModManifest,
-                I18n.Config_CustomizeToolbar_Name,
-                this.DrawButton,
-                I18n.Config_CustomizeToolbar_Tooltip,
-                height: () => Game1.tileSize);
+            return;
         }
+
+        // Register mod configuration
+        gmcm.Register(this.ModManifest, () => this._config = new(), this.SaveConfig);
+
+        gmcm.API.AddComplexOption(
+            this.ModManifest,
+            I18n.Config_CustomizeToolbar_Name,
+            this.DrawButton,
+            I18n.Config_CustomizeToolbar_Tooltip,
+            height: () => Game1.tileSize);
     }
 
     private void ReorientComponents()

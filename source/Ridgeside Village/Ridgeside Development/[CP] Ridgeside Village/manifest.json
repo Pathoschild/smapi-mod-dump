@@ -22,7 +22,7 @@
 	/*********
 	** Current Version
 	*********/
-	"Version": "2.2.0",
+	"Version": "2.2.2",
 
 	/*********
 	** Content Pack Description
@@ -97,7 +97,7 @@
       *********/
       {
         "UniqueID": "Rafseazz.RSVQF",
-        "IsRequired": true,
+        "IsRequired": false,
       },
 
       /*********
@@ -205,7 +205,7 @@
 			*********/
   		{
     		"UniqueID": "PurrplingCat.QuestFramework",
-    		"IsRequired": true,
+    		"IsRequired": false,
   		},
 
 			/*********
@@ -332,6 +332,14 @@
   		 	"UniqueID": "grapeponta.VibrantPastoralSVE",
   		 	"IsRequired": false,
   		},
+
+			/*********
+			** Walk to the Desert - Redux
+			*********/
+  		{
+				"UniqueID": "Tarniyar.CP.WalkToDesert",
+				"IsRequired": false,
+			},
 
 			/*********
 			** Warp Network

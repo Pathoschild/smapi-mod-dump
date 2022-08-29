@@ -27,40 +27,39 @@ namespace DynamicBodies.UI
 {
 	internal class BodyModifier : IClickableMenu
 	{
-		public enum Source
-		{
-			Doctors,
-			Leahs,
-			Pams
-		}
-
-		private const int doctor_cost = 250;
-		private const int leah_cost = 100;
-		private const int pam_cost = 25;
-		private int cost = 0;
+		public bool isPage = false;
+		public int cost = 0;
 		private bool isWizardSubmenu = false;
+
+		public int eyeToggleState = 0;
 
 		public const int region_okbutton = 505, region_backbutton = 81114, region_accLeft = 516, region_accRight = 517, region_directionLeft = 520, region_directionRight = 521;
 		public const int region_hairLeft = 514, region_hairRight = 515, region_bodyLeft = 516, region_bodyRight = 517, region_faceLeft = 416, region_faceRight = 417;
+		public const int region_eyesLeft = 418, region_eyesRight = 419, region_earsLeft = 420, region_earsRight = 421, region_noseLeft = 422, region_noseRight = 423;
 		public const int region_armLeft = 518, region_armRight = 519, region_beardLeft = 520, region_beardRight = 521;
 		public const int region_bodyHairLeft = 531, region_bodyHairRight = 532, region_nakedLeft = 533, region_nakedRight = 534, region_nakedLeftU = 535, region_nakedRightU = 536;
 
-		public const int region_colorPicker1 = 522, region_colorPicker2 = 523, region_colorPicker3 = 524;
-		public const int region_colorPicker4 = 525, region_colorPicker5 = 526, region_colorPicker6 = 527;
-		public const int region_colorPicker7 = 528, region_colorPicker8 = 529, region_colorPicker9 = 530;
+		public const int region_colorPicker1 = 522, region_colorPicker2 = 523, region_colorPicker3 = 524;//eye
+		public const int region_colorPicker4 = 525, region_colorPicker5 = 526, region_colorPicker6 = 527;//hair
+		public const int region_colorPicker7 = 528, region_colorPicker8 = 529, region_colorPicker9 = 530;//dark hair
+
+		public const int region_colorPicker10 = 650, region_colorPicker11 = 651, region_colorPicker12 = 652;//lashes
+		public const int region_colorPicker13 = 653, region_colorPicker14 = 654, region_colorPicker15 = 655;//sclera
+
+		public const int region_eyeToggle = 600;
 
 		public const int region_eyeSwatch1 = 701, region_eyeSwatch2 = 702, region_eyeSwatch3 = 703, region_eyeSwatch4 = 704;
 		public const int region_hairSwatch1 = 705, region_hairSwatch2 = 706, region_hairSwatch3 = 707, region_hairSwatch4 = 708;
 		public const int region_hairDarkSwatch1 = 709, region_hairDarkSwatch2 = 710, region_hairDarkSwatch3 = 711, region_hairDarkSwatch4 = 712;
+		public const int region_lashSwatch1 = 713, region_lashSwatch2 = 714, region_lashSwatch3 = 715, region_lashSwatch4 = 716;
 
 		public const int region_nameBox = 536;
 
 		public const int swatchsize = 40;
 
-		private Farmer who;
+		public Farmer who;
 
 		private PlayerBaseExtended pbe;
-		public Source source;
 
 		private string hoverText;
 		private string hoverTitle;
@@ -70,6 +69,8 @@ namespace DynamicBodies.UI
 		public ClickableComponent shirtButton;
 		public ClickableComponent pantsButton;
 		public ClickableComponent shoesButton;
+
+		public ClickableComponent eyeToggleButton;
 
 		public List<ClickableComponent> labels = new List<ClickableComponent>();
 		public List<ClickableComponent> swatches = new List<ClickableComponent>();
@@ -81,25 +82,23 @@ namespace DynamicBodies.UI
 		public ClickableTextureComponent backButton;
 		private ClickableComponent costLabel;
 
-		private ClickableComponent hairLabel;
-		private ClickableComponent accLabel;
-		private List<int> accessoryOptions;
-		private ClickableComponent bodyLabel;
-		private ClickableComponent faceLabel;
-		private ClickableComponent armLabel;
-		private ClickableComponent beardLabel;
-		private ClickableComponent bodyHairLabel;
-		private ClickableComponent nakedLabel;
-		private ClickableComponent nakedULabel;
+		public ClickableComponent hairLabel;
+		public ClickableComponent accLabel;
+		public List<int> accessoryOptions;
+		public ClickableComponent bodyLabel;
+		public ClickableComponent faceLabel;
+		public ClickableComponent eyesLabel;
+		public ClickableComponent earsLabel;
+		public ClickableComponent noseLabel;
+		public ClickableComponent armLabel;
+		public ClickableComponent beardLabel;
+		public ClickableComponent bodyHairLabel;
+		public ClickableComponent nakedLabel;
+		public ClickableComponent nakedULabel;
 
 		private Dictionary<string, string> settingsBefore = new Dictionary<string, string>();
 
-		private static Dictionary<Source, int> windowHeight = new Dictionary<Source, int>()
-        {
-            { Source.Doctors, 648},
-            { Source.Pams, 378 },
-            { Source.Leahs, 528 }
-        };
+		public Rectangle CharacterBackgroundRect;
 
 		public List<ClickableComponent> colorPickerCCs = new List<ClickableComponent>();
 		public ColorPicker hairColorPicker;
@@ -107,6 +106,10 @@ namespace DynamicBodies.UI
 		private readonly Action _recolorHairAction;
 		public ColorPicker eyeColorPicker;
 		private readonly Action _recolorEyesAction;
+		public ColorPicker lashColorPicker;
+		private readonly Action _recolorLashAction;
+		public ColorPicker scleraColorPicker;
+		private readonly Action _recolorScleraAction;
 		private int colorPickerTimer;
 		private ColorPicker _sliderOpTarget;
 		private ColorPicker lastHeldColorPicker;
@@ -120,17 +123,19 @@ namespace DynamicBodies.UI
 		protected Farmer _displayFarmer;
 		public Rectangle portraitBox;
 
-		Texture2D UItexture;
+		protected Texture2D UItexture;
 		private int eyeSwatch = 0;
-		Color[] eyeSwatchColors;
+		public Color[] eyeSwatchColors;
 		private int hairSwatch = 0;
-		Color[] hairSwatchColors;
+		public Color[] hairSwatchColors;
 		private int hairDarkSwatch = 0;
-		Color[] hairDarkSwatchColors;
+		public Color[] hairDarkSwatchColors;
+		private int lashSwatch = 0;
+		public Color[] lashSwatchColors;
 
 
-		public BodyModifier(Source source, bool wizardSub = false)
-		: base(Game1.uiViewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.uiViewport.Height / 2 - (windowHeight[source] + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, windowHeight[source] + IClickableMenu.borderWidth * 2 + 64)
+		public BodyModifier(int windowHeight, bool wizardSub = false)
+		: base(Game1.uiViewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.uiViewport.Height / 2 - (windowHeight + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, windowHeight + IClickableMenu.borderWidth * 2 + 64)
 		{
 			who = Game1.player;
 
@@ -142,12 +147,13 @@ namespace DynamicBodies.UI
 			}
 			//Store settings for resetting
 			initEyeColor = who.newEyeColor.Value;
-			initHairColor = new Color((uint)who.hairColor);
+			initHairColor = who.hairstyleColor.Value;
 			settingsBefore["acc"] = who.accessory.ToString();
 			settingsBefore["DB." + pbe.body.name] = pbe.body.GetOptionModData(who);
 			settingsBefore["DB." + pbe.arm.name] = pbe.arm.GetOptionModData(who);
 			settingsBefore["DB." + pbe.beard.name] = pbe.beard.GetOptionModData(who);
-			
+			settingsBefore["DB." + pbe.hairStyle.name] = pbe.hairStyle.GetOptionModData(who);
+
 			settingsBefore["DB." + pbe.bodyHair.name] = pbe.bodyHair.GetOptionModData(who);
 			settingsBefore["DB." + pbe.nakedLower.name] = pbe.nakedLower.GetOptionModData(who);
 			settingsBefore["DB." + pbe.nakedUpper.name] = pbe.nakedUpper.GetOptionModData(who);
@@ -160,74 +166,62 @@ namespace DynamicBodies.UI
 				settingsBefore["DB.darkHair"] = new Color(57, 57, 57).PackedValue.ToString();
 			}
 
+			if (who.modData.ContainsKey("DB.eyeColorR"))
+			{
+				settingsBefore["DB.eyeColorR"] = who.modData["DB.eyeColorR"];
+			} else
+            {
+				settingsBefore["DB.eyeColorR"] = who.newEyeColor.Value.PackedValue.ToString();
+				who.modData["DB.eyeColorR"] = settingsBefore["DB.eyeColorR"];
+			}
+
+			if (who.modData.ContainsKey("DB.lash"))
+			{
+				settingsBefore["DB.lash"] = who.modData["DB.lash"];
+			}
+			else
+			{
+				settingsBefore["DB.lash"] = new Color(15, 10, 8).PackedValue.ToString();
+			}
+
+			eyeToggleState = 0;
+
 			this.accessoryOptions = new List<int> { 0, 1, 2, 3, 4, 5 };
-			this.source = source;
 			this.UItexture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/ui.png");
-
-			Texture2D eye_texture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/eyeColors.png");
-			eyeSwatchColors = new Color[eye_texture.Width * eye_texture.Height];
-			eye_texture.GetData(eyeSwatchColors, 0, eyeSwatchColors.Length);
-
-			if (source == Source.Doctors)
-			{
-				Texture2D hair_texture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/doctor_hairColors.png");
-				hairSwatchColors = new Color[hair_texture.Width * hair_texture.Height];
-				hair_texture.GetData(hairSwatchColors, 0, hairSwatchColors.Length);
-
-				Texture2D haird_texture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/doctor_hairDarkColors.png");
-				hairDarkSwatchColors = new Color[haird_texture.Width * haird_texture.Height];
-				haird_texture.GetData(hairDarkSwatchColors, 0, hairDarkSwatchColors.Length);
-			}
-
-			if (source == Source.Pams)
-			{
-				Texture2D hair_texture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/pam_hairColors.png");
-				hairSwatchColors = new Color[hair_texture.Width * hair_texture.Height];
-				hair_texture.GetData(hairSwatchColors, 0, hairSwatchColors.Length);
-
-				Texture2D haird_texture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/pam_hairDarkColors.png");
-				hairDarkSwatchColors = new Color[haird_texture.Width * haird_texture.Height];
-				haird_texture.GetData(hairDarkSwatchColors, 0, hairDarkSwatchColors.Length);
-			}
 
 			clothingToggles["hat"] = new ClothingToggle() { offset = 16 };
 			clothingToggles["hat"].active = clothingToggles["hat"].showing = who.hat.Value != null;
 			clothingToggles["shirt"] = new ClothingToggle() { offset = 32 };
-			clothingToggles["shirt"].active = clothingToggles["shirt"].showing = who.shirtItem.Get() != null;
+			clothingToggles["shirt"].active = clothingToggles["shirt"].showing = who.shirtItem.Value != null;
 			clothingToggles["pants"] = new ClothingToggle() { offset = 48 };
-			clothingToggles["pants"].active = clothingToggles["pants"].showing = who.GetPantsIndex() != 14;
+			clothingToggles["pants"].active = clothingToggles["pants"].showing = who.pantsItem.Value != null;
 			clothingToggles["shoes"] = new ClothingToggle() { offset = 64 };
-			clothingToggles["shoes"].active = clothingToggles["shoes"].showing = who.shoes.Value != 12;
+			clothingToggles["shoes"].active = clothingToggles["shoes"].showing = who.boots.Value != null;
 
-			switch (source) {
-				case Source.Doctors:
-					cost = isWizardSubmenu ? 0 : doctor_cost;
-					if (ModEntry.Config.freecustomisation) cost = 0;
-					setUpPositionsDoctor();
-					break;
-				case Source.Leahs:
-					cost = isWizardSubmenu ? 0 : leah_cost;
-					if (ModEntry.Config.freecustomisation) cost = 0;
-					setUpPositionsLeah();
-					break;
-				case Source.Pams:
-					cost = isWizardSubmenu ? 0 : pam_cost;
-					if (ModEntry.Config.freecustomisation) cost = 0;
-					setUpPositionsPam();
-					break;
-			}
-
-			
-            
 			this._recolorEyesAction = delegate
 			{
-				who.changeEyeColor(this.eyeColorPicker.getSelectedColor());
+				if(eyeToggleState == 0 || eyeToggleState == 2)
+                {
+					pbe.SetModData(who, "DB.eyeColorR", this.eyeColorPicker.getSelectedColor().PackedValue.ToString());
+				}
+				if (eyeToggleState == 0 || eyeToggleState == 1)
+				{
+					who.changeEyeColor(this.eyeColorPicker.getSelectedColor());
+				}
 			};
 			this._recolorHairAction = delegate
 			{
 				who.changeHairColor(this.hairColorPicker.getSelectedColor());
 				who.modData["DB.darkHair"] = this.hairDarkColorPicker.getSelectedColor().PackedValue.ToString();
 				ModEntry.MakePlayerDirty();
+			};
+			this._recolorLashAction = delegate
+			{
+				pbe.SetModData(who, "DB.lash", this.lashColorPicker.getSelectedColor().PackedValue.ToString());
+			};
+			this._recolorScleraAction = delegate
+			{
+				pbe.SetModData(who, "DB.eyeColorS", this.scleraColorPicker.getSelectedColor().PackedValue.ToString());
 			};
 			this._displayFarmer = this.GetOrCreateDisplayFarmer();
 
@@ -244,6 +238,22 @@ namespace DynamicBodies.UI
 		public override void update(GameTime time)
 		{
 			base.update(time);
+
+			if (this._sliderOpTarget != null)
+			{
+				Color col = this._sliderOpTarget.getSelectedColor();
+				if (this._sliderOpTarget.Dirty && this._sliderOpTarget.LastColor == col)
+				{
+					this._sliderAction();
+					this._sliderOpTarget.LastColor = this._sliderOpTarget.getSelectedColor();
+					this._sliderOpTarget.Dirty = false;
+					this._sliderOpTarget = null;
+				}
+				else
+				{
+					this._sliderOpTarget.LastColor = col;
+				}
+			}
 		}
 		//farmer for rendering
 		public Farmer GetOrCreateDisplayFarmer()
@@ -256,7 +266,7 @@ namespace DynamicBodies.UI
 			}
 			return this._displayFarmer;
 		}
-		private void setupGeneralPositions(string title)
+		public void setupGeneralPositions(string title)
 		{
 			int arrow_size = 64;
 
@@ -346,710 +356,12 @@ namespace DynamicBodies.UI
 				}
 			}
 		}
-		//Layout the menu
-		private void setUpPositionsLeah()
-		{
-			setupGeneralPositions(T("color_specialist")+": ");
-			this.colorPickerCCs.Clear();
 
-			int leftPadding = 64 + 4;
-			int yOffset = 32;
-			int label_col1_width = 42 * 4;
-			int arrow_size = 64;
+		public virtual void setUpPositions()
+        {
+			//Override how this
+        }
 
-			int leftSelectionXOffset = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ru || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.es || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.pt) ? (-20) : 0);
-			int label_col2_position = portraitBox.X + portraitBox.Width + 12 * 4;
-			int label_col2_width = 40 * 4;
-
-			//Items next to portrait box
-
-			//Line below 
-			yOffset += 32;
-			Point top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			//Eye colour picker
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_EyeColor")));
-			
-			this.eyeColorPicker = new ColorPicker("Eyes", top.X, top.Y);
-			this.eyeColorPicker.setColor(who.newEyeColor.Value);
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y, 128, 20), "")
-			{
-				myID = region_colorPicker1,
-				downNeighborID = -99998,
-				upNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 20, 128, 20), "")
-			{
-				myID = region_colorPicker2,
-				upNeighborID = -99998,
-				downNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 40, 128, 20), "")
-			{
-				myID = region_colorPicker3,
-				upNeighborID = -99998,
-				downNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			//Next line
-			yOffset += 68;
-			top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-			
-			//Hair Colour
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_HairColor")));
-
-			this.hairColorPicker = new ColorPicker("Hair", top.X, top.Y);
-			this.hairColorPicker.setColor(who.hairstyleColor.Value);
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y, 128, 20), "")
-			{
-				myID = region_colorPicker4,
-				downNeighborID = -99998,
-				upNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 20, 128, 20), "")
-			{
-				myID = region_colorPicker5,
-				upNeighborID = -99998,
-				downNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 40, 128, 20), "")
-			{
-				myID = region_colorPicker6,
-				upNeighborID = -99998,
-				downNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-
-			//Next line
-			yOffset += 68;
-			top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			//Dark hair
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("hair_dark")+":"));
-			this.hairDarkColorPicker = new ColorPicker("HairDark", top.X, top.Y);
-
-			if (who.modData.ContainsKey("DB.darkHair"))
-			{
-				this.hairDarkColorPicker.setColor(new Color(uint.Parse(who.modData["DB.darkHair"])));
-			}
-			else
-			{
-				//57 grey is often the darket colour of a hair style
-				this.hairDarkColorPicker.setColor(new Color(57, 57, 57));
-			}
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y, 128, 20), "")
-			{
-				myID = region_colorPicker7,
-				downNeighborID = -99998,
-				upNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 20, 128, 20), "")
-			{
-				myID = region_colorPicker8,
-				upNeighborID = -99998,
-				downNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-			this.colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 40, 128, 20), "")
-			{
-				myID = region_colorPicker9,
-				upNeighborID = -99998,
-				downNeighborID = -99998,
-				leftNeighborImmutable = true,
-				rightNeighborImmutable = true
-			});
-
-			//Next line
-			yOffset += 68;
-
-			//After portraitbox
-			//yOffset = 128;
-			//label_col2_position = base.xPositionOnScreen + leftPadding + label_col1_width + arrow_size / 2 + (12 * 4);
-
-			//Wider selections
-			label_col1_width += 48;
-			label_col2_position = base.xPositionOnScreen + leftPadding + label_col1_width + arrow_size / 2 + (12 * 4);
-
-			//Hair Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Hair", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, arrow_size, arrow_size), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_hairLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.hairLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_Hair"));
-			this.labels.Add(this.hairLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Hair", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_hairRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 68;
-
-			//Beard Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Beard", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_beardLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.beardLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("beard"));
-			this.labels.Add(this.beardLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Beard", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_beardRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//BodyHair Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("BodyHair", new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_bodyHairLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.bodyHairLabel = new ClickableComponent(new Rectangle(label_col2_position + arrow_size / 2 + label_col1_width / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("body_hair"));
-			this.labels.Add(this.bodyHairLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("BodyHair", new Rectangle(label_col2_position + label_col1_width + arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_bodyHairRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			if (Game1.options.snappyMenus && Game1.options.gamepadControls)
-			{
-				base.populateClickableComponentList();
-				this.snapToDefaultClickableComponent();
-			}
-		}
-		private void setUpPositionsDoctor()
-		{
-			setupGeneralPositions(T("cosmetic_patient") +": ");
-			bool allow_accessory_changes = true;
-
-			this.swatches.Clear();
-
-
-			int leftPadding = 64 + 4;
-			int yOffset = 32;
-			int label_col1_width = 42 * 4;
-			int arrow_size = 64;
-
-			int leftSelectionXOffset = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ru || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.es || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.pt) ? (-20) : 0);
-
-
-			int label_col2_position = portraitBox.X + portraitBox.Width + 12 * 4;
-			int label_col2_width = 40 * 4;
-
-
-			//Items next to portrait box
-
-			//Next line
-			yOffset += 32;
-			Point top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			//Eye colour
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_EyeColor")));
-			swatches.Add(new ClickableComponent(new Rectangle(top.X, top.Y+12, swatchsize, swatchsize), "EyeSwatchLeft")
-			{
-				myID = region_eyeSwatch1,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X +swatchsize+4, top.Y + 12, swatchsize, swatchsize), "EyeSwatch0")
-			{
-				myID = region_eyeSwatch2,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize*2+8, top.Y + 12, swatchsize, swatchsize), "EyeSwatch1")
-			{
-				myID = region_eyeSwatch2,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 3+12, top.Y + 12, swatchsize, swatchsize), "EyeSwatch2")
-			{
-				myID = region_eyeSwatch4,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 58;
-
-
-			top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			//Hair Colour
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_HairColor")));
-
-			swatches.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 12, swatchsize, swatchsize), "HairSwatchLeft")
-			{
-				myID = region_hairSwatch1,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize + 4, top.Y + 12, swatchsize, swatchsize), "HairSwatch0")
-			{
-				myID = region_hairSwatch2,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 2 + 8, top.Y + 12, swatchsize, swatchsize), "HairSwatch1")
-			{
-				myID = region_hairSwatch3,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 3 + 12, top.Y + 12, swatchsize, swatchsize), "HairSwatch2")
-			{
-				myID = region_hairSwatch4,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 58;
-
-			
-			//Hair Dark Colour
-			top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("hair_dark")+":"));
-			swatches.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatchLeft")
-			{
-				myID = region_hairDarkSwatch1,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize + 4, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatch0")
-			{
-				myID = region_hairDarkSwatch2,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 2 + 8, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatch1")
-			{
-				myID = region_hairDarkSwatch3,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 3 + 12, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatch2")
-			{
-				myID = region_hairDarkSwatch4,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 58;
-
-
-			//After portraitbox
-
-			//Wider selections
-			label_col1_width += 48;
-			label_col2_position = base.xPositionOnScreen + leftPadding + label_col1_width + arrow_size / 2 + (12 * 4);
-
-
-			label_col2_position = base.xPositionOnScreen + leftPadding + label_col1_width + arrow_size / 2 + (12 * 4);
-
-			
-
-
-			//Hair Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Hair", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, arrow_size, arrow_size), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_hairLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.hairLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_Hair"));
-			this.labels.Add(this.hairLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Hair", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_hairRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Face", new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_faceLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.labels.Add(this.faceLabel = new ClickableComponent(new Rectangle(label_col2_position + arrow_size / 2 + label_col1_width / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("face_style")));
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Face", new Rectangle(label_col2_position + label_col1_width + arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_faceRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			
-
-			//Next line
-			yOffset += 68;
-
-			//Body Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Body", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_bodyLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.bodyLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("body_style"));
-			this.labels.Add(this.bodyLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Body", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_bodyRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Arm Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Arm", new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_armLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.armLabel = new ClickableComponent(new Rectangle(label_col2_position + arrow_size / 2 + label_col1_width / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("arm_style"));
-			this.labels.Add(this.armLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Arm", new Rectangle(label_col2_position + label_col1_width + arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_armRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 68;
-
-			//Beard Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Beard", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_beardLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.beardLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("beard"));
-			this.labels.Add(this.beardLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Beard", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_beardRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//BodyHair Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("BodyHair", new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_bodyHairLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.bodyHairLabel = new ClickableComponent(new Rectangle(label_col2_position + arrow_size / 2 + label_col1_width / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("body_hair"));
-			this.labels.Add(this.bodyHairLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("BodyHair", new Rectangle(label_col2_position + label_col1_width + arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_bodyHairRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 68;
-
-			//Naked Lower Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Naked", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_nakedLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.nakedLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("naked_lower"));
-			this.labels.Add(this.nakedLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Naked", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_nakedRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Naked Upper Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("NakedU", new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_nakedLeftU,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.nakedULabel = new ClickableComponent(new Rectangle(label_col2_position + arrow_size / 2 + label_col1_width / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), T("naked_upper"));
-			this.labels.Add(this.nakedULabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("NakedU", new Rectangle(label_col2_position + label_col1_width + arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_nakedRightU,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			if (Game1.options.snappyMenus && Game1.options.gamepadControls)
-			{
-				base.populateClickableComponentList();
-				this.snapToDefaultClickableComponent();
-			}
-		}
-
-
-		private void setUpPositionsPam()
-		{
-			setupGeneralPositions(T("box_dye_user")+": ");
-			bool allow_accessory_changes = true;
-
-			this.swatches.Clear();
-
-
-			int leftPadding = 64 + 4;
-			int yOffset = 32;
-			int label_col1_width = 42 * 4;
-			int arrow_size = 64;
-
-			int leftSelectionXOffset = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ru || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.es || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.pt) ? (-20) : 0);
-
-
-			int label_col2_position = portraitBox.X + portraitBox.Width + 12 * 4;
-			int label_col2_width = 40 * 4;
-
-			//Items next to portrait box
-
-			//Next line
-			yOffset += 32;
-			Point top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-
-			top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			//Hair Colour
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_HairColor")));
-
-			swatches.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 12, swatchsize, swatchsize), "HairSwatchLeft")
-			{
-				myID = region_hairSwatch1,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize + 4, top.Y + 12, swatchsize, swatchsize), "HairSwatch0")
-			{
-				myID = region_hairSwatch2,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 2 + 8, top.Y + 12, swatchsize, swatchsize), "HairSwatch1")
-			{
-				myID = region_hairSwatch3,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 3 + 12, top.Y + 12, swatchsize, swatchsize), "HairSwatch2")
-			{
-				myID = region_hairSwatch4,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			//Next line
-			yOffset += 58;
-
-
-			//Hair Dark Colour
-			top = new Point(label_col2_position + label_col2_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset);
-
-			this.labels.Add(new ClickableComponent(new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), "Hair Dark:"));
-			swatches.Add(new ClickableComponent(new Rectangle(top.X, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatchLeft")
-			{
-				myID = region_hairDarkSwatch1,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize + 4, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatch0")
-			{
-				myID = region_hairDarkSwatch2,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 2 + 8, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatch1")
-			{
-				myID = region_hairDarkSwatch3,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			swatches.Add(new ClickableComponent(new Rectangle(top.X + swatchsize * 3 + 12, top.Y + 12, swatchsize, swatchsize), "DarkHairSwatch2")
-			{
-				myID = region_hairDarkSwatch4,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-
-			//After portraitbox
-			yOffset = 176;
-
-			//Wider selections
-			label_col1_width += 48;
-			label_col2_position = base.xPositionOnScreen + leftPadding + label_col1_width + arrow_size / 2 + (12 * 4);
-
-			//Hair Style
-			this.leftSelectionButtons.Add(new ClickableTextureComponent("Hair", new Rectangle(base.xPositionOnScreen + leftPadding + leftSelectionXOffset - arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, arrow_size, arrow_size), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-			{
-				myID = region_hairLeft,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-			this.hairLabel = new ClickableComponent(new Rectangle(base.xPositionOnScreen + leftPadding + (label_col1_width / 2) + (leftSelectionXOffset / 2), base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_Hair"));
-			this.labels.Add(this.hairLabel);
-			this.rightSelectionButtons.Add(new ClickableTextureComponent("Hair", new Rectangle(base.xPositionOnScreen + leftPadding + label_col1_width, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-			{
-				myID = region_hairRight,
-				upNeighborID = -99998,
-				leftNeighborID = -99998,
-				rightNeighborID = -99998,
-				downNeighborID = -99998
-			});
-
-			if (allow_accessory_changes)
-			{
-				this.leftSelectionButtons.Add(new ClickableTextureComponent("Acc", new Rectangle(label_col2_position, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f)
-				{
-					myID = region_accLeft,
-					upNeighborID = -99998,
-					leftNeighborID = -99998,
-					rightNeighborID = -99998,
-					downNeighborID = -99998
-				});
-				this.labels.Add(this.accLabel = new ClickableComponent(new Rectangle(label_col2_position + arrow_size / 2 + label_col1_width / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset + 16, 1, 1), Game1.content.LoadString("Strings\\UI:Character_Accessory")));
-				this.rightSelectionButtons.Add(new ClickableTextureComponent("Acc", new Rectangle(label_col2_position + label_col1_width + arrow_size / 2, base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + yOffset, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
-				{
-					myID = region_accRight,
-					upNeighborID = -99998,
-					leftNeighborID = -99998,
-					rightNeighborID = -99998,
-					downNeighborID = -99998
-				});
-			}
-
-
-			if (Game1.options.snappyMenus && Game1.options.gamepadControls)
-			{
-				base.populateClickableComponentList();
-				this.snapToDefaultClickableComponent();
-			}
-		}
 		//Close the window
 		public override bool readyToClose()
 		{
@@ -1069,31 +381,26 @@ namespace DynamicBodies.UI
 			who.modData["DB." + pbe.body.name] = settingsBefore["DB." + pbe.body.name];
 			who.modData["DB." + pbe.arm.name] = settingsBefore["DB." + pbe.arm.name];
 			who.modData["DB." + pbe.beard.name] = settingsBefore["DB." + pbe.beard.name];
+			who.modData["DB." + pbe.hairStyle.name] = settingsBefore["DB." + pbe.hairStyle.name];
 			who.modData["DB." + pbe.bodyHair.name] = settingsBefore["DB." + pbe.bodyHair.name];
 			who.modData["DB." + pbe.nakedLower.name] = settingsBefore["DB." + pbe.nakedLower.name];
 			who.modData["DB." + pbe.nakedUpper.name] = settingsBefore["DB." + pbe.nakedUpper.name];
+			who.modData["DB.eyeColorR"] = settingsBefore["DB.eyeColorR"];
 			pbe.dirty = true;
 		}
 
-		private void RevertClothing()
+		public void RevertClothing()
         {
 			if (!clothingToggles["pants"].showing)
 			{
-				if (clothingToggles["pants"].storeItem != null)
-				{
-					who.pantsItem.Set(clothingToggles["pants"].storeItem as Clothing);
-				} else
-                {
-					who.changePantStyle(clothingToggles["pants"].store);
-				}
+				who.pantsItem.Set(clothingToggles["pants"].storeItem as Clothing);
+
 				clothingToggles["pants"].showing = true;
 			}
 
 			if (!clothingToggles["shoes"].showing)
 			{
-
-				who.shoes.Set(clothingToggles["shoes"].store);
-				Game1.playSound("pickUpItem");
+				who.boots.Set(clothingToggles["shoes"].storeItem as Boots);
 
 				clothingToggles["shoes"].showing = true;
 			}
@@ -1103,15 +410,13 @@ namespace DynamicBodies.UI
 				who.shirtItem.Set(clothingToggles["shirt"].storeItem as Clothing);
 
 				clothingToggles["shirt"].showing = true;
-
 			}
 
 			if (!clothingToggles["hat"].showing)
 			{
-
 				who.hat.Set(clothingToggles["hat"].storeItem as Hat);
-				clothingToggles["hat"].showing = true;
 
+				clothingToggles["hat"].showing = true;
 			}
 		}
 		public override void emergencyShutDown()
@@ -1151,7 +456,14 @@ namespace DynamicBodies.UI
 			}
 			else
 			{
-				this.exitThisMenu(false);
+				if (isPage)
+				{
+					Game1.exitActiveMenu();
+				}
+				else
+				{
+					this.exitThisMenu(false);
+				}
 				Game1.playSound("cancel");
 			}
 		}
@@ -1184,7 +496,14 @@ namespace DynamicBodies.UI
 						else
 						{
 							who.Money -= cost;
-							this.exitThisMenu(false);
+							if (isPage)
+							{
+								Game1.exitActiveMenu();
+							}
+							else
+							{
+								this.exitThisMenu(false);
+							}
 							Game1.playSound("purchase");
 						}
 						break;
@@ -1206,8 +525,8 @@ namespace DynamicBodies.UI
 			{
 				case "Hair":
 					{
-						List<int> all_hairs = Farmer.GetAllHairstyleIndices();
-						int current_index = all_hairs.IndexOf(who.hair.Value);
+						List<string> all_hairs = ModEntry.getContentPackOptions(ModEntry.hairOptions).ToList();
+						int current_index = all_hairs.IndexOf((who.modData.ContainsKey("DB.hairStyle")) ? who.modData["DB.hairStyle"] : "Default");
 						current_index += change;
 						if (current_index >= all_hairs.Count)
 						{
@@ -1217,9 +536,25 @@ namespace DynamicBodies.UI
 						{
 							current_index = all_hairs.Count() - 1;
 						}
-						who.changeHairStyle(all_hairs[current_index]);
-						//Update the base file recording as needed
-						pbe.SetVanillaFile(who.getTexture());
+						pbe.SetModData(who, "DB.hairStyle", all_hairs[current_index]);
+                        if (pbe.hairStyle.option.StartsWith("Vanilla"))
+                        {
+							who.changeHairStyle(int.Parse(pbe.hairStyle.file));
+							//Update the base file recording as needed
+							pbe.SetVanillaFile(who.getTexture());
+						} else
+                        {
+							ExtendedHair.ContentPackHairOption option = ModEntry.hairOptions[current_index] as ExtendedHair.ContentPackHairOption;
+							if (option.settings.isBaldStyle)
+							{
+								pbe.SetVanillaFile("farmer_base_bald");
+							}
+							else
+							{
+								pbe.SetVanillaFile("farmer_base");
+							}
+						}
+						
 						ModEntry.MakePlayerDirty();
 						Game1.playSound("grassyStep");
 						break;
@@ -1256,6 +591,60 @@ namespace DynamicBodies.UI
 							current_index = all_faces.Count() - 1;
 						}
 						pbe.SetModData(who, "DB.face", all_faces[current_index]);
+
+						Game1.playSound("grassyStep");
+						break;
+					}
+				case "Eyes":
+					{
+						List<string> all_eyes = ModEntry.getContentPackOptions(ModEntry.eyesOptions, who.IsMale).ToList();
+						int current_index = all_eyes.IndexOf((who.modData.ContainsKey("DB.eyes")) ? who.modData["DB.eyes"] : "Default");
+						current_index += change;
+						if (current_index >= all_eyes.Count)
+						{
+							current_index = 0;
+						}
+						else if (current_index < 0)
+						{
+							current_index = all_eyes.Count() - 1;
+						}
+						pbe.SetModData(who, "DB.eyes", all_eyes[current_index]);
+
+						Game1.playSound("grassyStep");
+						break;
+					}
+				case "Nose":
+					{
+						List<string> all_noses = ModEntry.getContentPackOptions(ModEntry.noseOptions, who.IsMale).ToList();
+						int current_index = all_noses.IndexOf((who.modData.ContainsKey("DB.nose")) ? who.modData["DB.nose"] : "Default");
+						current_index += change;
+						if (current_index >= all_noses.Count)
+						{
+							current_index = 0;
+						}
+						else if (current_index < 0)
+						{
+							current_index = all_noses.Count() - 1;
+						}
+						pbe.SetModData(who, "DB.nose", all_noses[current_index]);
+
+						Game1.playSound("grassyStep");
+						break;
+					}
+				case "Ears":
+					{
+						List<string> all_ears = ModEntry.getContentPackOptions(ModEntry.earsOptions, who.IsMale).ToList();
+						int current_index = all_ears.IndexOf((who.modData.ContainsKey("DB.ears")) ? who.modData["DB.ears"] : "Default");
+						current_index += change;
+						if (current_index >= all_ears.Count)
+						{
+							current_index = 0;
+						}
+						else if (current_index < 0)
+						{
+							current_index = all_ears.Count() - 1;
+						}
+						pbe.SetModData(who, "DB.ears", all_ears[current_index]);
 
 						Game1.playSound("grassyStep");
 						break;
@@ -1309,6 +698,7 @@ namespace DynamicBodies.UI
 						{
 							current_index = all_bh.Count() - 1;
 						}
+						ModEntry.debugmsg("Change bodyhair", LogLevel.Debug);
 						pbe.SetModData(who, "DB.bodyHair", all_bh[current_index]);
 						
 						Game1.playSound("grassyStep");
@@ -1381,79 +771,152 @@ namespace DynamicBodies.UI
 		{
 			int change = 0;
             if (name.EndsWith("Left")) { change = -1; } else { 
-				change = name[name.Length-1] - '0';
+				change = int.Parse(name[^1..]);
 			}
 
-			if (name.StartsWith("Eye"))
+			if (change != 0)
 			{
-				//cycle through 3 swatches
-				eyeSwatch += change;
-				if (eyeSwatch > eyeSwatchColors.Length)
+				if (name.StartsWith("Eye"))
 				{
-					eyeSwatch -= eyeSwatchColors.Length;
-				}
-				if (eyeSwatch < 0)
-				{
-					eyeSwatch += eyeSwatchColors.Length;
-				}
-				if (eyeSwatch != 0)
-				{
-					who.changeEyeColor(eyeSwatchColors[eyeSwatch - 1]);
-				} else
-                {
-					who.changeEyeColor(initEyeColor);
-                }
-				
-				Game1.playSound("purchase");
-			}
+					//cycle through 3 swatches
 
-			if (name.StartsWith("Hair"))
-			{
-				//cycle through 3 swatches
-				hairSwatch += change;
-				if (hairSwatch > hairSwatchColors.Length)
-				{
-					hairSwatch -= hairSwatchColors.Length;
-				}
-				if (hairSwatch < 0)
-				{
-					hairSwatch += hairSwatchColors.Length;
-				}
-				if (hairSwatch != 0)
-				{
-					who.changeHairColor(hairSwatchColors[hairSwatch - 1]);
-					ModEntry.MakePlayerDirty();
-				}
-				else
-				{
-					who.changeHairColor(initHairColor);
-				}
+					//Special cases
+					if (eyeSwatch == 0 && change < 0)
+					{
+						eyeSwatch = eyeSwatchColors.Length;
+						change = 0;
+					}
 
-				Game1.playSound("purchase");
-			}
+					if (eyeSwatch == eyeSwatchColors.Length && change > 0)
+					{
+						eyeSwatch = change - 1;
+						change = 0;
+					}
 
-			if (name.StartsWith("DarkHair"))
-			{
-				//cycle through 3 swatches
-				hairDarkSwatch += change;
-				if (hairDarkSwatch > hairDarkSwatchColors.Length)
-				{
-					hairDarkSwatch -= hairDarkSwatchColors.Length;
-				}
-				if (hairDarkSwatch < 0)
-				{
-					hairDarkSwatch += hairDarkSwatchColors.Length;
-				}
-				if (hairDarkSwatch != 0)
-				{
-					pbe.SetModData(who, "DB.darkHair", hairDarkSwatchColors[hairDarkSwatch - 1].PackedValue.ToString());
-				}
-				else
-				{
-					pbe.SetModData(who, "DB.darkHair", settingsBefore["DB.darkHair"]);
+					//Other cases
+					eyeSwatch += change;
+
+					if (eyeSwatch != 0)
+					{
+						if (eyeToggleState == 0 || eyeToggleState == 2)
+						{
+							pbe.SetModData(who, "DB.eyeColorR", eyeSwatchColors[eyeSwatch - 1].PackedValue.ToString());
+						}
+						if (eyeToggleState == 0 || eyeToggleState == 1)
+						{
+							who.changeEyeColor(eyeSwatchColors[eyeSwatch - 1]);
+						}
+
+						
+					}
+					else
+					{
+						if (eyeToggleState == 0 || eyeToggleState == 2)
+						{
+							pbe.SetModData(who, "DB.eyeColorR", settingsBefore["DB.eyeColorR"]);
+						}
+						if (eyeToggleState == 0 || eyeToggleState == 1)
+						{
+							who.changeEyeColor(initEyeColor);
+						}
+
+						
+					}
+
+					Game1.playSound("purchase");
 				}
 
-				Game1.playSound("purchase");
+				if (name.StartsWith("Hair"))
+				{
+					//Special cases
+					if (hairSwatch == 0 && change < 0)
+					{
+						hairSwatch = hairSwatchColors.Length;
+						change = 0;
+					}
+
+					if (hairSwatch == hairSwatchColors.Length && change > 0)
+					{
+						hairSwatch = change - 1;
+						change = 0;
+					}
+
+					//Other cases
+					hairSwatch += change;
+
+					if (hairSwatch != 0)
+					{
+						who.changeHairColor(hairSwatchColors[hairSwatch - 1]);
+						pbe.CheckHairTextures(who);
+					}
+					else
+					{
+						who.changeHairColor(initHairColor);
+						pbe.CheckHairTextures(who);
+					}
+
+					Game1.playSound("purchase");
+				}
+
+				if (name.StartsWith("DarkHair"))
+				{
+					//Special cases
+					if (hairDarkSwatch == 0 && change < 0)
+					{
+						hairDarkSwatch = hairDarkSwatchColors.Length;
+						change = 0;
+					}
+
+					if (hairDarkSwatch == hairDarkSwatchColors.Length && change > 0)
+					{
+						hairDarkSwatch = change - 1;
+						change = 0;
+					}
+
+					//Other cases
+					hairDarkSwatch += change;
+
+					if (hairDarkSwatch != 0)
+					{
+						pbe.SetModData(who, "DB.darkHair", hairDarkSwatchColors[hairDarkSwatch - 1].PackedValue.ToString());
+					}
+					else
+					{
+						pbe.SetModData(who, "DB.darkHair", settingsBefore["DB.darkHair"]);
+					}
+
+					Game1.playSound("purchase");
+				}
+
+				if (name.StartsWith("Lash"))
+				{
+					//Special cases
+					if (lashSwatch == 0 && change < 0)
+					{
+						lashSwatch = lashSwatchColors.Length;
+						change = 0;
+					}
+
+					if (lashSwatch == lashSwatchColors.Length && change > 0)
+					{
+						lashSwatch = change - 1;
+						change = 0;
+					}
+
+					//Other cases
+					lashSwatch += change;
+
+					if (lashSwatch != 0)
+					{
+						pbe.SetModData(who, "DB.lash", lashSwatchColors[lashSwatch - 1].PackedValue.ToString());
+					}
+					else
+					{
+						pbe.SetModData(who, "DB.lash", settingsBefore["DB.lash"]);
+					}
+
+					Game1.playSound("purchase");
+				}
 			}
 		}
 		//Handle gamepad pressed
@@ -1533,6 +996,48 @@ namespace DynamicBodies.UI
 							this._sliderOpTarget = this.hairDarkColorPicker;
 							this._sliderAction = this._recolorHairAction;
 							break;
+						case region_colorPicker10:
+							this.lashColorPicker.LastColor = this.lashColorPicker.getSelectedColor();
+							this.lashColorPicker.changeHue(1);
+							this.lashColorPicker.Dirty = true;
+							this._sliderOpTarget = this.lashColorPicker;
+							this._sliderAction = this._recolorLashAction;
+							break;
+						case region_colorPicker11:
+							this.lashColorPicker.LastColor = this.lashColorPicker.getSelectedColor();
+							this.lashColorPicker.changeSaturation(1);
+							this.lashColorPicker.Dirty = true;
+							this._sliderOpTarget = this.lashColorPicker;
+							this._sliderAction = this._recolorLashAction;
+							break;
+						case region_colorPicker12:
+							this.lashColorPicker.LastColor = this.lashColorPicker.getSelectedColor();
+							this.lashColorPicker.changeValue(1);
+							this.lashColorPicker.Dirty = true;
+							this._sliderOpTarget = this.lashColorPicker;
+							this._sliderAction = this._recolorLashAction;
+							break;
+						case region_colorPicker13:
+							this.scleraColorPicker.LastColor = this.scleraColorPicker.getSelectedColor();
+							this.scleraColorPicker.changeHue(1);
+							this.scleraColorPicker.Dirty = true;
+							this._sliderOpTarget = this.scleraColorPicker;
+							this._sliderAction = this._recolorScleraAction;
+							break;
+						case region_colorPicker14:
+							this.scleraColorPicker.LastColor = this.scleraColorPicker.getSelectedColor();
+							this.scleraColorPicker.changeSaturation(1);
+							this.scleraColorPicker.Dirty = true;
+							this._sliderOpTarget = this.scleraColorPicker;
+							this._sliderAction = this._recolorScleraAction;
+							break;
+						case region_colorPicker15:
+							this.scleraColorPicker.LastColor = this.scleraColorPicker.getSelectedColor();
+							this.scleraColorPicker.changeValue(1);
+							this.scleraColorPicker.Dirty = true;
+							this._sliderOpTarget = this.scleraColorPicker;
+							this._sliderAction = this._recolorScleraAction;
+							break;
 					}
 					break;
 				case Buttons.DPadLeft:
@@ -1601,6 +1106,48 @@ namespace DynamicBodies.UI
 							this.hairDarkColorPicker.Dirty = true;
 							this._sliderOpTarget = this.hairDarkColorPicker;
 							this._sliderAction = this._recolorHairAction;
+							break;
+						case region_colorPicker10:
+							this.lashColorPicker.LastColor = this.lashColorPicker.getSelectedColor();
+							this.lashColorPicker.changeHue(-1);
+							this.lashColorPicker.Dirty = true;
+							this._sliderOpTarget = this.lashColorPicker;
+							this._sliderAction = this._recolorLashAction;
+							break;
+						case region_colorPicker11:
+							this.lashColorPicker.LastColor = this.lashColorPicker.getSelectedColor();
+							this.lashColorPicker.changeSaturation(-1);
+							this.lashColorPicker.Dirty = true;
+							this._sliderOpTarget = this.lashColorPicker;
+							this._sliderAction = this._recolorLashAction;
+							break;
+						case region_colorPicker12:
+							this.lashColorPicker.LastColor = this.lashColorPicker.getSelectedColor();
+							this.lashColorPicker.changeValue(-1);
+							this.lashColorPicker.Dirty = true;
+							this._sliderOpTarget = this.lashColorPicker;
+							this._sliderAction = this._recolorLashAction;
+							break;
+						case region_colorPicker13:
+							this.scleraColorPicker.LastColor = this.scleraColorPicker.getSelectedColor();
+							this.scleraColorPicker.changeHue(-1);
+							this.scleraColorPicker.Dirty = true;
+							this._sliderOpTarget = this.scleraColorPicker;
+							this._sliderAction = this._recolorScleraAction;
+							break;
+						case region_colorPicker14:
+							this.scleraColorPicker.LastColor = this.scleraColorPicker.getSelectedColor();
+							this.scleraColorPicker.changeSaturation(-1);
+							this.scleraColorPicker.Dirty = true;
+							this._sliderOpTarget = this.scleraColorPicker;
+							this._sliderAction = this._recolorScleraAction;
+							break;
+						case region_colorPicker15:
+							this.scleraColorPicker.LastColor = this.scleraColorPicker.getSelectedColor();
+							this.scleraColorPicker.changeValue(-1);
+							this.scleraColorPicker.Dirty = true;
+							this._sliderOpTarget = this.scleraColorPicker;
+							this._sliderAction = this._recolorScleraAction;
 							break;
 					}
 					break;
@@ -1694,12 +1241,36 @@ namespace DynamicBodies.UI
 					if (c.containsPoint(x, y))
 					{
 						this.swatchClick(c.name);
-						if (c.scale != 0f)
+						if (!c.name.EndsWith("0"))
 						{
-							c.scale -= 0.25f;
-							c.scale = Math.Max(0.75f, c.scale);
+							if (c.scale != 0f)
+							{
+								c.scale -= 0.25f;
+								c.scale = Math.Max(0.75f, c.scale);
+							}
 						}
 					}
+				}
+			}
+
+			if (eyeToggleButton != null)
+			{
+				if (this.eyeToggleButton.containsPoint(x, y))
+				{
+					Game1.playSound("slimeHit");
+					eyeToggleState = (eyeToggleState + 1) % 3;
+					if(eyeColorPicker != null)
+                    {
+						if(eyeToggleState == 0 || eyeToggleState == 1)
+                        {
+							eyeColorPicker.setColor(who.newEyeColor.Value);
+						} else
+                        {
+							eyeColorPicker.setColor(new Color(uint.Parse(who.modData["DB.eyeColorR"])));
+                        }
+                    }
+					this.eyeToggleButton.scale -= 0.25f;
+					this.eyeToggleButton.scale = Math.Max(0.75f, this.eyeToggleButton.scale);
 				}
 			}
 
@@ -1729,36 +1300,41 @@ namespace DynamicBodies.UI
 				this.lastHeldColorPicker = this.hairDarkColorPicker;
 			} else if (this.eyeColorPicker != null && this.eyeColorPicker.containsPoint(x, y))
 			{
-				who.changeEyeColor(this.eyeColorPicker.click(x, y));
+				if (eyeToggleState == 0 || eyeToggleState == 2)
+				{
+					pbe.SetModData(who, "DB.eyeColorR", this.eyeColorPicker.click(x, y).PackedValue.ToString());
+				}
+				if (eyeToggleState == 0 || eyeToggleState == 1)
+				{
+					who.changeEyeColor(this.eyeColorPicker.click(x, y));
+				}
+
 				this.lastHeldColorPicker = this.eyeColorPicker;
+			}
+			else if (this.lashColorPicker != null && this.lashColorPicker.containsPoint(x, y))
+			{
+				Color color2 = this.lashColorPicker.click(x, y);
+				pbe.SetModData(who, "DB.lash", color2.PackedValue.ToString());
+				this.lastHeldColorPicker = this.lashColorPicker;
+			}
+			else if (this.scleraColorPicker != null && this.scleraColorPicker.containsPoint(x, y))
+			{
+				Color color2 = this.scleraColorPicker.click(x, y);
+				pbe.SetModData(who, "DB.eyeColorS", color2.PackedValue.ToString());
+				this.lastHeldColorPicker = this.scleraColorPicker;
 			}
 
 			if (clothingToggles["pants"].active && clothingToggles["pants"].clickable.containsPoint(x, y))
 			{
                 if (clothingToggles["pants"].showing)
                 {
-					if (who.pantsItem.Value != null)
-					{
-						clothingToggles["pants"].storeItem = who.pantsItem.Value as Item;
-						who.pantsItem.Set(null);
-					}
-					else
-					{
-						clothingToggles["pants"].store = who.GetPantsIndex();
-						who.changePantStyle(14, false);
-					}
+					clothingToggles["pants"].storeItem = who.pantsItem.Value as Item;
+					who.pantsItem.Set(null);
 					Game1.playSound("scissors");
 				}
                 else
                 {
-					if (clothingToggles["pants"].storeItem != null)
-					{
-						who.pantsItem.Set(clothingToggles["pants"].storeItem as Clothing);
-					}
-					else
-					{
-						who.changePantStyle(clothingToggles["pants"].store);
-					}
+					who.pantsItem.Set(clothingToggles["pants"].storeItem as Clothing);
 					Game1.playSound("pickUpItem");
 				}
 				clothingToggles["pants"].showing = !clothingToggles["pants"].showing;
@@ -1769,14 +1345,14 @@ namespace DynamicBodies.UI
 			{
 				if (clothingToggles["shoes"].showing)
 				{
-					clothingToggles["shoes"].store = who.shoes.Get();
-					who.shoes.Set(12);
+					clothingToggles["shoes"].storeItem = who.boots.Get() as Item;
+					who.boots.Set(null);
 			
 					Game1.playSound("scissors");
 				}
 				else
 				{
-					who.shoes.Set(clothingToggles["shoes"].store);
+					who.boots.Set(clothingToggles["shoes"].storeItem as Boots);
 					Game1.playSound("pickUpItem");
 				}
 				clothingToggles["shoes"].showing = !clothingToggles["shoes"].showing;
@@ -1847,7 +1423,26 @@ namespace DynamicBodies.UI
 
 				if (this.lastHeldColorPicker.Equals(this.eyeColorPicker))
 				{
-					who.changeEyeColor(this.eyeColorPicker.clickHeld(x, y));
+					if (eyeToggleState == 0 || eyeToggleState == 2)
+					{
+						pbe.SetModData(who, "DB.eyeColorR", this.eyeColorPicker.click(x, y).PackedValue.ToString());
+					}
+					if (eyeToggleState == 0 || eyeToggleState == 1)
+					{
+						who.changeEyeColor(this.eyeColorPicker.click(x, y));
+					}
+				}
+
+				if (this.lastHeldColorPicker.Equals(this.lashColorPicker))
+				{
+					Color color2 = this.lashColorPicker.clickHeld(x, y);
+					pbe.SetModData(who, "DB.lash", color2.PackedValue.ToString());
+				}
+
+				if (this.lastHeldColorPicker.Equals(this.scleraColorPicker))
+				{
+					Color color2 = this.scleraColorPicker.clickHeld(x, y);
+					pbe.SetModData(who, "DB.eyeColorS", color2.PackedValue.ToString());
 				}
 			}
 			this.colorPickerTimer = 100;
@@ -1870,6 +1465,16 @@ namespace DynamicBodies.UI
 			{
 				this.eyeColorPicker.releaseClick();
 			}
+
+			if (this.lashColorPicker != null)
+			{
+				this.lashColorPicker.releaseClick();
+			}
+
+			if (this.scleraColorPicker != null)
+			{
+				this.scleraColorPicker.releaseClick();
+			}
 			this.lastHeldColorPicker = null;
 		}
 
@@ -1881,13 +1486,16 @@ namespace DynamicBodies.UI
 
 			foreach (ClickableComponent swatch in this.swatches)
 			{
-				if (swatch.containsPoint(x, y))
+				if (!swatch.name.EndsWith("0"))
 				{
-					swatch.scale = Math.Min(swatch.scale + 0.02f, 1f + 0.1f);
-				}
-				else
-				{
-					swatch.scale = Math.Max(swatch.scale - 0.02f, 1f);
+					if (swatch.containsPoint(x, y))
+					{
+						swatch.scale = Math.Min(swatch.scale + 0.02f, 1f + 0.1f);
+					}
+					else
+					{
+						swatch.scale = Math.Max(swatch.scale - 0.02f, 1f);
+					}
 				}
 			}
 
@@ -1915,6 +1523,18 @@ namespace DynamicBodies.UI
 				}
 			}
 
+			if (eyeToggleButton != null)
+			{
+				if (this.eyeToggleButton.containsPoint(x, y))
+				{
+					this.eyeToggleButton.scale = Math.Min(this.eyeToggleButton.scale + 0.02f, 1.1f);
+				}
+				else
+				{
+					this.eyeToggleButton.scale = Math.Max(this.eyeToggleButton.scale - 0.02f, 1f);
+				}
+			}
+
 			if (this.okButton.containsPoint(x, y) && this.canPay())
 			{
 				this.okButton.scale = Math.Min(this.okButton.scale + 0.02f, this.okButton.baseScale + 0.1f);
@@ -1935,7 +1555,9 @@ namespace DynamicBodies.UI
 
 			if ((this.hairColorPicker != null && this.hairColorPicker.containsPoint(x, y))
 				|| (this.hairDarkColorPicker != null && this.hairDarkColorPicker.containsPoint(x, y))
-				|| (this.eyeColorPicker != null && this.eyeColorPicker.containsPoint(x, y)))
+				|| (this.eyeColorPicker != null && this.eyeColorPicker.containsPoint(x, y))
+				|| (this.scleraColorPicker != null && this.scleraColorPicker.containsPoint(x, y))
+				|| (this.lashColorPicker != null && this.lashColorPicker.containsPoint(x, y)))
 			{
 				Game1.SetFreeCursorDrag();
 			}
@@ -1959,24 +1581,14 @@ namespace DynamicBodies.UI
 		//Draw the menu and its various buttons
 		public override void draw(SpriteBatch b)
 		{
-			bool ignoreTitleSafe = true;
-			Game1.drawDialogueBox(base.xPositionOnScreen, base.yPositionOnScreen, base.width, base.height, speaker: false, drawOnlyBox: true, null, objectDialogueWithPortrait: false, ignoreTitleSafe);
-			//b.Draw(Game1.daybg, new Vector2(this.portraitBox.X, this.portraitBox.Y), Color.White);
-			if(source == Source.Doctors)
-            {
-				//Draw hospital back
-				b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), new Rectangle(32, 32, 32, 48), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
-			}
-			if (source == Source.Leahs)
+			if (!isPage)
 			{
-				//Draw Leah house
-				b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), new Rectangle(64, 32, 32, 48), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
+				bool ignoreTitleSafe = true;
+				Game1.drawDialogueBox(base.xPositionOnScreen, base.yPositionOnScreen, base.width, base.height, speaker: false, drawOnlyBox: true, null, objectDialogueWithPortrait: false, ignoreTitleSafe);
+				//b.Draw(Game1.daybg, new Vector2(this.portraitBox.X, this.portraitBox.Y), Color.White);
 			}
-			if (source == Source.Pams)
-			{
-				//Draw Leah house
-				b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), new Rectangle(96, 32, 32, 48), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
-			}
+			//Draw hospital back
+			b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), CharacterBackgroundRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
 			//Draw frame over
 			b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), new Rectangle(0, 32, 32, 48), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
 
@@ -2028,18 +1640,30 @@ namespace DynamicBodies.UI
 					cswatches = hairDarkSwatchColors;
 					toDraw = hairDarkSwatch;
 				}
+				if (swatch.name.StartsWith("Lash"))
+				{
+					cswatches = lashSwatchColors;
+					toDraw = lashSwatch;
+				}
 
 				if (swatch.name.EndsWith("Left"))
 				{
 					toDraw--;
-					if (toDraw < 0) { toDraw = cswatches.Length; }
 				}
 				else
 				{
-                    
-					toDraw += swatch.name[swatch.name.Length - 1] - '0';
-					if (toDraw > cswatches.Length) { toDraw -= cswatches.Length; }
+					if (toDraw == cswatches.Length)
+					{
+						toDraw = int.Parse(swatch.name[^1..]) - 1;
+					}
+					else
+					{
+						toDraw += int.Parse(swatch.name[^1..]);
+					}
 				}
+				if (toDraw > cswatches.Length) { toDraw -= cswatches.Length; }
+				if (toDraw < 0) { toDraw = cswatches.Length; }
+
 				if (toDraw > 0)
 				{
 
@@ -2077,10 +1701,7 @@ namespace DynamicBodies.UI
 				if (c3 == this.hairLabel)
 				{
 					offset = 21f - Game1.smallFont.MeasureString(c3.name).X / 2f;
-					if (c3 == this.hairLabel)
-					{
-						sub = (Farmer.GetAllHairstyleIndices().IndexOf(who.hair.Value) + 1).ToString() ?? "";
-					}
+					tiny_sub = (who.modData.ContainsKey("DB.hairStyle")) ? who.modData["DB.hairStyle"] : "Default";
 				}
 				else if (c3 == this.accLabel)
 				{
@@ -2100,6 +1721,21 @@ namespace DynamicBodies.UI
 				{
 					offset = 21f - Game1.smallFont.MeasureString(c3.name).X / 2f;
 					tiny_sub = (who.modData.ContainsKey("DB.face")) ? who.modData["DB.face"] : "Default";
+				}
+				else if (c3 == this.eyesLabel)
+				{
+					offset = 21f - Game1.smallFont.MeasureString(c3.name).X / 2f;
+					tiny_sub = (who.modData.ContainsKey("DB.eyes")) ? who.modData["DB.eyes"] : "Default";
+				}
+				else if (c3 == this.earsLabel)
+				{
+					offset = 21f - Game1.smallFont.MeasureString(c3.name).X / 2f;
+					tiny_sub = (who.modData.ContainsKey("DB.ears")) ? who.modData["DB.ears"] : "Default";
+				}
+				else if (c3 == this.noseLabel)
+				{
+					offset = 21f - Game1.smallFont.MeasureString(c3.name).X / 2f;
+					tiny_sub = (who.modData.ContainsKey("DB.nose")) ? who.modData["DB.nose"] : "Default";
 				}
 				else if (c3 == this.armLabel)
 				{
@@ -2180,6 +1816,26 @@ namespace DynamicBodies.UI
 			if (this.eyeColorPicker != null)
 			{
 				this.eyeColorPicker.draw(b);
+			}
+
+			if (this.lashColorPicker != null)
+			{
+				this.lashColorPicker.draw(b);
+			}
+
+			if (this.scleraColorPicker != null)
+			{
+				this.scleraColorPicker.draw(b);
+			}
+
+
+			if (this.eyeToggleButton != null)
+			{
+				b.Draw(UItexture, new Vector2(eyeToggleButton.bounds.X + 16*(1f - eyeToggleButton.scale), eyeToggleButton.bounds.Y + 16*(1f - eyeToggleButton.scale)), new Rectangle(0, 0, 16, 16), Color.White, 0f, Vector2.Zero, 2f*eyeToggleButton.scale, SpriteEffects.None, 1f);
+
+				if(eyeToggleState == 0 || eyeToggleState == 1)	b.Draw(UItexture, new Vector2(eyeToggleButton.bounds.X, eyeToggleButton.bounds.Y), new Rectangle(80, 0, 16, 16), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+				if (eyeToggleState == 0 || eyeToggleState == 2) b.Draw(UItexture, new Vector2(eyeToggleButton.bounds.X, eyeToggleButton.bounds.Y), new Rectangle(80, 16, 16, 16), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+
 			}
 
 			b.End();

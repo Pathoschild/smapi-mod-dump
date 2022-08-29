@@ -12,13 +12,13 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.UiInfoSuite;
 
 #region using directives
 
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using HarmonyLib;
-using JetBrains.Annotations;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Annosz.UiInfoSuite2")]
 internal sealed class ExperienceBarGetExperienceRequiredToLevelPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     private const int EXP_AT_LEVEL_TEN_I = 15000;
@@ -26,14 +26,7 @@ internal sealed class ExperienceBarGetExperienceRequiredToLevelPatch : DaLion.Co
     /// <summary>Construct an instance.</summary>
     internal ExperienceBarGetExperienceRequiredToLevelPatch()
     {
-        try
-        {
-            Target = "UIInfoSuite.UIElements.ExperienceBar".ToType().RequireMethod("GetExperienceRequiredToLevel");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "UIInfoSuite.UIElements.ExperienceBar".ToType().RequireMethod("GetExperienceRequiredToLevel");
     }
 
     #region harmony patches

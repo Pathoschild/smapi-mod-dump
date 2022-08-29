@@ -91,6 +91,30 @@ namespace BetterMixedSeeds
         /// <inheritdoc/>
         public override object GetApi() => Api;
 
+        /// <summary>Calculates seeds that are enabled and set <see cref="Seeds"/>.</summary>
+        public void LoadEnabledSeeds()
+        {
+            this.Monitor.Log($"Loading seeds...");
+
+            // get the enabled seeds
+            Seeds = GetAllEnabledSeeds();
+
+            // remove any seeds that mods have forcibly excluded
+            for (int i = 0; i < Seeds.Count; i++)
+            {
+                var seed = Seeds[i];
+                if (CropsToExclude.Any(cropToExclude => cropToExclude.ToLower() == seed.CropName.ToLower()))
+                {
+                    this.Monitor.Log($"Forcibly removed seed: {seed}");
+                    Seeds.RemoveAt(i--);
+                }
+            }
+
+            // log current seeds
+            foreach (var seed in Seeds)
+                this.Monitor.Log($"Loaded seed: {seed}");
+        }
+
 
         /*********
         ** Private Methods
@@ -157,23 +181,8 @@ namespace BetterMixedSeeds
             // save config
             this.Helper.WriteConfig(Config);
 
-            // get the enabled seeds
-            Seeds = GetAllEnabledSeeds();
-
-            // remove any seeds that mods have foricbly excluded
-            for (int i = 0; i < Seeds.Count; i++)
-            {
-                var seed = Seeds[i];
-                if (CropsToExclude.Any(cropToExclude => cropToExclude.ToLower() == seed.CropName.ToLower()))
-                {
-                    this.Monitor.Log($"Forcibly removed seed: {seed}");
-                    Seeds.RemoveAt(i--);
-                }
-            }
-
-            // log current seeds
-            foreach (var seed in Seeds)
-                this.Monitor.Log($"Added seed: {seed}");
+            // load the seeds
+            LoadEnabledSeeds();
 
             // add harmony patches
             ApplyHarmonyPatches();

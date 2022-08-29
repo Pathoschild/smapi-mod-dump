@@ -10,13 +10,18 @@
 
 //#define VALIDATE_ROUTES
 
+using HarmonyLib;
 using LinqFasterer;
+using Microsoft.Toolkit.HighPerformance.Helpers;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions.Reflection;
+using SpriteMaster.Types.Exceptions;
 using SpriteMaster.Types.Reflection;
 using StardewValley;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace SpriteMaster.Harmonize.Patches.Game.Pathfinding;
@@ -104,6 +109,10 @@ internal static partial class Pathfinding {
 
 		Dictionary<(string Start, string End), List<string>> calculatedRoutesMap = new(calculatedRoutes.Count);
 		foreach (var route in calculatedRoutes) {
+			if (route.ContainsF("BathHouse_MensLocker") || route.ContainsF("BathHouse_WomensLocker")) {
+				continue;
+			}
+
 			if (!calculatedRoutesMap.TryAdd((route.FirstF(), route.LastF()), route)) {
 				duplicateRoutes.Add((route.FirstF(), route.LastF()));
 			}
@@ -113,37 +122,47 @@ internal static partial class Pathfinding {
 			Debug.Error($"Route Counts mismatch");
 		}
 		foreach (var routePair in referenceRoutesMap) {
+			if (routePair.Value.ContainsF("BathHouse_MensLocker") || routePair.Value.ContainsF("BathHouse_WomensLocker")) {
+				continue;
+			}
+
 			if (!calculatedRoutesMap.TryGetValue(routePair.Key, out var calculatedRoute)) {
 				Debug.Error($"Calculated Routes Map missing '{routePair.Key}'");
 				continue;
 			}
 
 			if (!routePair.Value.SequenceEqualF(calculatedRoute)) {
-				mismatchedRoutes.Add(routePair.Key, (routePair.Value, calculatedRoute));
+				mismatchedRoutes.TryAdd(routePair.Key, (routePair.Value, calculatedRoute));
 			}
 		}
 		foreach (var routePair in calculatedRoutesMap) {
+			if (routePair.Value.ContainsF("BathHouse_MensLocker") || routePair.Value.ContainsF("BathHouse_WomensLocker")) {
+				continue;
+			}
+
 			if (!referenceRoutesMap.TryGetValue(routePair.Key, out var referenceRoute)) {
 				Debug.Error($"Reference Routes Map missing '{routePair.Key}'");
 				continue;
 			}
 
 			if (!routePair.Value.SequenceEqualF(referenceRoute)) {
-				mismatchedRoutes.Add(routePair.Key, (referenceRoute, routePair.Value));
+				mismatchedRoutes.TryAdd(routePair.Key, (referenceRoute, routePair.Value));
 			}
 		}
 
+		/*
 		if (duplicateRoutes.Count != 0) {
 			Debug.Error("Duplicate Routes:");
 			foreach (var route in duplicateRoutes) {
 				Debug.Error($"Duplicate Route {(route.Start, route.End)}");
 			}
 		}
+		*/
 
 		if (mismatchedRoutes.Count != 0) {
 			Debug.Error("Mismatched Routes:");
 			foreach (var (key, routes) in mismatchedRoutes) {
-				Debug.Error($"Route '{key}' mismatch:\n  {string.Join(':', routes.Reference)}\n  {string.Join(':', routes.Calculated)}");
+				Debug.Error($"Route '{key}' mismatch:\n  ref: {string.Join(" : ", routes.Reference)}\n  clc: {string.Join(" : ", routes.Calculated)}");
 			}
 		}
 	}
@@ -262,6 +281,12 @@ internal static partial class Pathfinding {
 		if (!Config.IsUnconditionallyEnabled || !Config.Extras.Pathfinding.OptimizeWarpPoints) {
 			return;
 		}
+
+#if VALIDATE_ROUTES
+		if (RealPopulate) {
+			return;
+		}
+#endif
 
 		UpdateWarpPointsReverse(l);
 		route.Clear();

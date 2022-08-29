@@ -1,0 +1,10 @@
+{
+    "Name": "Tool Upgrade Reminder",
+    "Author": "Wracketeer",
+    "Version": "1.0.0",
+    "Description": "Shows the HUD notification for tool upgrades every time you enter a new location.",
+    "UniqueID": "Wracketeer.ToolUpgradeReminder",
+    "EntryDll": "ToolUpgradeReminder.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+  }

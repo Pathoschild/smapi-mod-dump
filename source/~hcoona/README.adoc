@@ -2,6 +2,8 @@
 
 This project holds mods for game link:http://stardewvalley.net/[Stardew Valley] with the help of link:https://github.com/Pathoschild/SMAPI[SMAPI].
 
+*I've no time to maintain these mods.*
+
 == FishingAdjustMod ==
 
 This mod helps to adjust fishing difficulty, override the appearance probability of king fishes.

@@ -8,7 +8,12 @@
 **
 *************************************************/
 
-{
+{  
+  "bank.menu.bankinfo": "Bank Info",
+  "bank.menu.deposit" : "Deposit",
+  "bank.menu.withdraw" : "Withdraw",
+  "bank.menu.takeloan": "Get A Loan",
+  "bank.menu.payloan": "Pay A Loan",
   "bank.notEnoughMoneyInBank" : "You don't have {{amt}} in the bank.",
   "bank.notEnoughMoneyOnPlayer" : "You don't have {{amt}}G on your character",
   "bank.nonNumeric" : "You entered non-numeric characters.", 
@@ -42,5 +47,6 @@
   "bank.events.stockRose" : "Dear {{player_name}},^We are writing you to let you know that the stock you recently bought increased in value. We went ahead and cashed it out, you got {{gain_amt}}G. It's been added to your bank account.",
   "bank.events.customerAppreciation" : "Dear {{player_name}},^As a valued member of our bank. We have decided to gift you {{gift_amt}}G. It's been added to your bank account.",
   "bank.events.accountHacked" : "Dear {{player_name}},^We are writing you, to let you know that your bank account was hacked. You lost 75% of your bank balance.",
-  "bank.events.debtPaid" : "Dear {{player_name}},^An anonymous donor has decided to pay off your debt. Congratulations."
+  "bank.events.debtPaid" : "Dear {{player_name}},^An anonymous donor has decided to pay off your debt. Congratulations.",
+  "bank.hardmode.cantdeposit": "You have hard mod enabled, you can't make a deposit until your debt is paid off."
 }

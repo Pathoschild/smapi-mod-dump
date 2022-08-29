@@ -15,7 +15,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 using Common.Events;
 using Extensions;
 using GameLoop;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -31,16 +30,14 @@ internal sealed class BruteWarpedEvent : WarpedEvent
     /// <inheritdoc />
     protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
-        if (e.NewLocation.Equals(e.OldLocation)) return;
-
         if (e.NewLocation.IsDungeon() || e.NewLocation.HasMonsters())
         {
-            Manager.Hook<BruteUpdateTickedEvent>();
+            Manager.Enable<BruteUpdateTickedEvent>();
         }
         else
         {
-            ModEntry.PlayerState.BruteRageCounter = 0;
-            Manager.Hook<BruteUpdateTickedEvent>();
+            ModEntry.State.BruteRageCounter = 0;
+            Manager.Enable<BruteUpdateTickedEvent>();
         }
     }
 }

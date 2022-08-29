@@ -12,11 +12,9 @@ namespace DaLion.Stardew.Taxes.Framework.Events;
 
 #region using directives
 
-using Common.Data;
 using Common.Events;
-using JetBrains.Annotations;
+using Common.Extensions.Stardew;
 using StardewModdingAPI.Events;
-using StardewValley;
 using static System.FormattableString;
 
 #endregion using directives
@@ -27,7 +25,10 @@ internal sealed class TaxAssetRequestedEvent : AssetRequestedEvent
     /// <summary>Construct an instance.</summary>
     /// <param name="manager">The <see cref="EventManager"/> instance that manages this event.</param>
     internal TaxAssetRequestedEvent(EventManager manager)
-        : base(manager) { }
+        : base(manager)
+    {
+        AlwaysEnabled = true;
+    }
 
     /// <inheritdoc />
     protected override void OnAssetRequestedImpl(object? sender, AssetRequestedEventArgs e)
@@ -40,8 +41,8 @@ internal sealed class TaxAssetRequestedEvent : AssetRequestedEvent
             var data = asset.AsDictionary<string, string>().Data;
 
             var due = ModEntry.LatestAmountDue.Value.ToString();
-            var deductible = ModDataIO.ReadFrom<float>(Game1.player, "DeductionPct");
-            var outstanding = ModDataIO.ReadFrom<int>(Game1.player, "DebtOutstanding").ToString();
+            var deductible = Game1.player.Read<float>("DeductionPct");
+            var outstanding = Game1.player.Read("DebtOutstanding");
             var honorific = ModEntry.i18n.Get("honorific" + (Game1.player.IsMale ? ".male" : ".female"));
             var farm = Game1.getFarm().Name;
             var interest = CurrentCulture($"{ModEntry.Config.AnnualInterest:p0}");
@@ -51,13 +52,12 @@ internal sealed class TaxAssetRequestedEvent : AssetRequestedEvent
             data[$"{ModEntry.Manifest.UniqueID}/TaxNotice"] = ModEntry.i18n.Get("tax.notice", new { honorific, due });
             data[$"{ModEntry.Manifest.UniqueID}/TaxOutstanding"] =
                 ModEntry.i18n.Get("tax.outstanding", new { honorific, due, outstanding, farm, interest, });
-#pragma warning disable CS8509
             data[$"{ModEntry.Manifest.UniqueID}/TaxDeduction"] = deductible switch
-#pragma warning restore CS8509
             {
                 >= 1f => ModEntry.i18n.Get("tax.deduction.max", new { honorific }),
                 >= 0f => ModEntry.i18n.Get("tax.deduction",
-                    new { honorific, deductible = CurrentCulture($"{deductible:p0}") })
+                    new { honorific, deductible = CurrentCulture($"{deductible:p0}") }),
+                _ => string.Empty
             };
         });
     }

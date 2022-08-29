@@ -117,7 +117,7 @@ namespace PlatoTK.UI
         public List<Texture2D> LoadFontPages(FontFile fontFile, string assetName)
         {
             //return fontFile.Pages.Select(p => Plato.ModHelper.Content.Load<Texture2D>(p.File,StardewModdingAPI.ContentSource.GameContent)).ToList();
-            return fontFile.Pages.Select(p => Plato.ModHelper.Content.Load<Texture2D>(Path.Combine(Path.GetDirectoryName(assetName), p.File))).ToList();
+            return fontFile.Pages.Select(p => Plato.ModHelper.ModContent.Load<Texture2D>($"{Path.GetDirectoryName(assetName)}/{p.File}")).ToList();
         }
 
         public FontFile LoadFontFile(string assetName)
@@ -134,8 +134,8 @@ namespace PlatoTK.UI
         public SpriteFont LoadSpriteFont(string assetName)
         {
             //return Plato.ModHelper.Content.Load<SpriteFont>(assetName);
-            Texture2D texture = Plato.ModHelper.Content.Load<Texture2D>(Path.Combine(Path.GetDirectoryName(assetName), Path.GetFileNameWithoutExtension(assetName) + ".png"));
-            SpriteFontData data = Plato.ModHelper.Content.Load<SpriteFontData>(assetName);
+            Texture2D texture = Plato.ModHelper.ModContent.Load<Texture2D>($"{Path.GetDirectoryName(assetName)}/{Path.GetFileNameWithoutExtension(assetName)}.png");
+            SpriteFontData data = Plato.ModHelper.ModContent.Load<SpriteFontData>(assetName);
             object[] parameter = new object[]{
                     texture,
                     data.Glyphs.Values

@@ -12,7 +12,6 @@ namespace StardewMods.Common.Integrations.GenericModConfigMenu;
 
 using System;
 using System.Collections.Generic;
-using StardewModdingAPI;
 
 /// <inheritdoc />
 internal class GenericModConfigMenuIntegration : ModIntegration<IGenericModConfigMenuApi>
@@ -26,6 +25,7 @@ internal class GenericModConfigMenuIntegration : ModIntegration<IGenericModConfi
     public GenericModConfigMenuIntegration(IModRegistry modRegistry)
         : base(modRegistry, GenericModConfigMenuIntegration.ModUniqueId)
     {
+        // Nothing
     }
 
     private HashSet<string> Registered { get; } = new();
@@ -50,7 +50,7 @@ internal class GenericModConfigMenuIntegration : ModIntegration<IGenericModConfi
     public void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false)
     {
         this.Unregister(mod);
-        this.API.Register(mod, reset, save, titleScreenOnly);
+        this.API?.Register(mod, reset, save, titleScreenOnly);
         this.Registered.Add(mod.UniqueID);
     }
 
@@ -60,10 +60,12 @@ internal class GenericModConfigMenuIntegration : ModIntegration<IGenericModConfi
     /// <param name="mod">The mod's manifest.</param>
     public void Unregister(IManifest mod)
     {
-        if (this.Registered.Contains(mod.UniqueID))
+        if (!this.Registered.Contains(mod.UniqueID))
         {
-            this.API.Unregister(mod);
-            this.Registered.Remove(mod.UniqueID);
+            return;
         }
+
+        this.API?.Unregister(mod);
+        this.Registered.Remove(mod.UniqueID);
     }
 }

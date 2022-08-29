@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Prismatic Fire",
   "Author": "aedenthorn",
-  "Version": "0.3.0",
+  "Version": "0.4.0",
   "Description": "Prismatic Fire.",
   "UniqueID": "aedenthorn.PrismaticFire",
   "EntryDll": "PrismaticFire.dll",

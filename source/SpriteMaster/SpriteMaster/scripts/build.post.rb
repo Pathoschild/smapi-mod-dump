@@ -90,6 +90,9 @@ default_const(:TempAssembly, "SpriteMaster.merged.dll")
 default_const(:DotNetRuntime, File.join("C:", "Program Files", "dotnet", "packs", "Microsoft.NETCore.App.Ref", "5.0.0", "ref", "net5.0"))
 default_const(:IgnoreModFilePatterns, [])
 
+set_const(:Copy32, false)
+set_const(:Copy64, false)
+
 IsDebug = OutDir.to_s.include?("Debug")
 
 FileIgnorePatterns = IgnoreModFilePatterns.split(',').map(&:strip).map(&Regexp.method(:new))

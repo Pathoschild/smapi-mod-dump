@@ -15,14 +15,11 @@ namespace DaLion.Stardew.Professions.Extensions;
 using Framework;
 using Framework.Utility;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SObject = StardewValley.Object;
-using SUtility = StardewValley.Utility;
 
 #endregion using directives
 
@@ -67,7 +64,7 @@ public static class CrabPotExtensions
         var rawFishDataWithLocation = GetRawFishDataWithLocation(rawFishData);
 
         var keys = rawFishDataWithLocation.Keys.ToArray();
-        SUtility.Shuffle(r, keys);
+        Utility.Shuffle(r, keys);
         var counter = 0;
         foreach (var key in keys)
         {
@@ -84,7 +81,7 @@ public static class CrabPotExtensions
             if (r.NextDouble() > Convert.ToDouble(specificFishDataFields[10])) continue;
 
             var whichFish = Convert.ToInt32(key);
-            if (!whichFish.IsAlgae()) return whichFish; // if isn't algae
+            if (!whichFish.IsAlgaeIndex()) return whichFish; // if isn't algae
 
             if (counter != 0) return -1; // if already rerolled
             ++counter;
@@ -133,7 +130,7 @@ public static class CrabPotExtensions
     public static int ChoosePirateTreasure(this CrabPot crabpot, Farmer owner, Random r)
     {
         var keys = ObjectLookups.TrapperPirateTreasureTable.Keys.ToArray();
-        SUtility.Shuffle(r, keys);
+        Utility.Shuffle(r, keys);
         foreach (var key in keys)
         {
             if (key == 14 && owner.specialItems.Contains(14) || key == 51 && owner.specialItems.Contains(51) ||
@@ -156,14 +153,14 @@ public static class CrabPotExtensions
         if (isLuremaster && crabpot.HasMagicBait()) return SObject.bestQuality;
 
         var fish = new SObject(whichFish, 1);
-        if (owner is null || !owner.HasProfession(Profession.Trapper) || fish.IsPirateTreasure() || fish.IsAlgae())
+        if (!owner.HasProfession(Profession.Trapper) || fish.IsPirateTreasure() || fish.IsAlgae())
             return SObject.lowQuality;
 
-        return owner.HasProfession(Profession.Trapper, true) && r.NextDouble() < owner.FishingLevel / 60.0
+        return owner.HasProfession(Profession.Trapper, true) && r.NextDouble() < owner.FishingLevel / 60d
             ? SObject.bestQuality
-            : r.NextDouble() < owner.FishingLevel / 30.0
+            : r.NextDouble() < owner.FishingLevel / 30d
                 ? SObject.highQuality
-                : r.NextDouble() < owner.FishingLevel / 15.0
+                : r.NextDouble() < owner.FishingLevel / 15d
                     ? SObject.medQuality
                     : SObject.lowQuality;
     }
@@ -173,23 +170,19 @@ public static class CrabPotExtensions
     /// <param name="whichFish">The chosen fish</param>
     /// <param name="owner">The player.</param>
     /// <param name="r">Random number generator.</param>
-    public static int GetTrapQuantity(this CrabPot crabpot, int whichFish, Farmer owner, Random r)
-    {
-        if (owner is null) return 1;
-
-        return crabpot.HasWildBait() && r.NextDouble() < 0.25 + owner.DailyLuck / 2.0
+    public static int GetTrapQuantity(this CrabPot crabpot, int whichFish, Farmer owner, Random r) =>
+        crabpot.HasWildBait() && r.NextDouble() < 0.25 + owner.DailyLuck / 2.0
             ? 2
             : ObjectLookups.TrapperPirateTreasureTable.TryGetValue(whichFish, out var treasureData)
                 ? r.Next(Convert.ToInt32(treasureData[1]), Convert.ToInt32(treasureData[2]) + 1)
                 : 1;
-    }
 
     /// <summary>Get random trash.</summary>
     /// <param name="r">Random number generator.</param>
     /// <param name="location">The game location of the crab pot.</param>
     public static int GetTrash(this CrabPot crabpot, GameLocation location, Random r)
     {
-        if (r.NextDouble() > 0.5) return r.Next(167, 173);
+        if (ModEntry.Config.SeaweedIsTrash && r.NextDouble() > 0.5) return r.Next(167, 173);
 
         int trash;
         switch (location)

@@ -40,8 +40,6 @@ namespace RidgesideVillage
                 //actually dropbox, not a warp
                 return;
             }
-            if (Helper.ModRegistry.IsLoaded("jibb.minecarts"))
-                return;
             var choices = new List<Response>();
             var selectionActions = new List<Action>();
             if (!tileActionString.Contains("1"))
@@ -87,6 +85,15 @@ namespace RidgesideVillage
                 {
                     Game1.playSound("stairsdown");
                     Game1.warpFarmer("Custom_Ridgeside_SummitFarm", 77, 48, false);
+                });
+            }
+            if (!tileActionString.Contains("6") && Game1.player.eventsSeen.Contains(75160263))
+            {
+                choices.Add(new Response("loc5", Helper.Translation.Get("MinecartLocation.6")));
+                selectionActions.Add(delegate
+                {
+                    Game1.playSound("stairsdown");
+                    Game1.warpFarmer("Custom_Ridgeside_SummitFarm", 22, 41, false);
                 });
             }
 

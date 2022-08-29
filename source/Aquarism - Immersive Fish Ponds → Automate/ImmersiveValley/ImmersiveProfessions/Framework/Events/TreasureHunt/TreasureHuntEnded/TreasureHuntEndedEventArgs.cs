@@ -12,7 +12,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.TreasureHunt;
 
 #region using directives
 
-using StardewValley;
 using System;
 using TreasureHunts;
 

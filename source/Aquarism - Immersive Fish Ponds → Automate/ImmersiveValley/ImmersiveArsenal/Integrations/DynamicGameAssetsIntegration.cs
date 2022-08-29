@@ -13,8 +13,7 @@ namespace DaLion.Stardew.Arsenal.Integrations;
 #region using directives
 
 using Common.Integrations;
-using StardewModdingAPI;
-using System.IO;
+using Common.Integrations.DynamicGameAssets;
 
 #endregion using directives
 
@@ -30,6 +29,6 @@ internal sealed class DynamicGameAssetsIntegration : BaseIntegration<IDynamicGam
     {
         AssertLoaded();
         ModEntry.DynamicGameAssetsApi = ModApi;
-        ModApi.AddEmbeddedPack(ModEntry.Manifest, Path.Combine(ModEntry.ModHelper.DirectoryPath, "assets", "dga"));
+        //ModApi.AddEmbeddedPack(ModEntry.Manifest, Path.Combine(ModEntry.ModHelper.DirectoryPath, "assets", "dga"));
     }
 }

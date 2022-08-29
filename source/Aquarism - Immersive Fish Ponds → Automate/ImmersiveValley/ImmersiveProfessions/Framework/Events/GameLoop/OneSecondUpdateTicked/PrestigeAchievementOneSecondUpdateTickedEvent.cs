@@ -15,9 +15,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 using Common.Events;
 using Common.Extensions;
 using Extensions;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 #endregion using directives
 
@@ -42,9 +40,9 @@ internal sealed class PrestigeAchievementOneSecondUpdateTickedEvent : OneSecondU
                 ModEntry.i18n.Get("prestige.achievement.name" +
                                   (Game1.player.IsMale ? ".male" : ".female"));
             if (!Game1.player.achievements.Contains(name.GetDeterministicHashCode()))
-                Manager.Hook<AchievementUnlockedDayStartedEvent>();
+                Manager.Enable<AchievementUnlockedDayStartedEvent>();
         }
 
-        Unhook();
+        Disable();
     }
 }

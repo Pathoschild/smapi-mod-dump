@@ -8,13 +8,11 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Arsenal.Framework.Patches.Combat;
+namespace DaLion.Stardew.Arsenal.Framework.Patches;
 
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 
 #endregion using directives
@@ -26,17 +24,17 @@ internal sealed class SlingshotGetRequiredChargeTimePatch : Common.Harmony.Harmo
     internal SlingshotGetRequiredChargeTimePatch()
     {
         Target = RequireMethod<Slingshot>(nameof(Slingshot.GetRequiredChargeTime));
-        Postfix!.before = new[] { "DaLion.ImmersiveProfessions" };
+        Postfix!.before = new[] { "DaLion.ImmersiveProfessions", "DaLion.ImmersiveRings" };
     }
 
     #region harmony patches
 
     /// <summary>Apply Emerald Enchantment to Slingshot.</summary>
     [HarmonyPostfix]
-    [HarmonyBefore("DaLion.ImmersiveProfessions")]
+    [HarmonyBefore("DaLion.ImmersiveProfessions", "DaLion.ImmersiveRings")]
     private static void SlingshotGetRequiredChargeTimePostfix(Slingshot __instance, ref float __result)
     {
-        __result *= 1f - __instance.GetEnchantmentLevel<EmeraldEnchantment>();
+        __result *= 1f - __instance.GetEnchantmentLevel<EmeraldEnchantment>() * 0.1f;
     }
 
     #endregion harmony patches

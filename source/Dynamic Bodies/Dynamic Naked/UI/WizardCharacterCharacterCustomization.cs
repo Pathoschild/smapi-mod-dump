@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
 
 using DynamicBodies.Data;
@@ -35,6 +36,7 @@ namespace DynamicBodies.UI
         private Texture2D UItexture;
         public WizardCharacterCharacterCustomization() : base(CharacterCustomization.Source.Wizard)
         {
+            
             UItexture = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Interface/ui.png");
             //will setup positions
             setUpPositions();
@@ -42,6 +44,24 @@ namespace DynamicBodies.UI
 
         private void setUpPositions()
         {
+
+            //Move some displays
+            if (this.petPortraitBox.HasValue)
+            {
+                Pet pet = Game1.getCharacterFromName<Pet>(Game1.player.getPetName(), mustBeVillager: false);
+
+                Rectangle petPortraitBoxRect = this.petPortraitBox.Value;
+                petPortraitBoxRect.Y -= 80;
+                this.petPortraitBox = petPortraitBoxRect;
+                int leftID = leftSelectionButtons.FindIndex(x => x.myID == 511);
+                leftSelectionButtons[leftID].bounds.Y -= 80;
+                int rightID = rightSelectionButtons.FindIndex(x => x.myID == 510);
+                rightSelectionButtons[rightID].bounds.Y -= 80;
+                int labelID = labels.FindIndex(x => x.name == pet.Name);
+                labels[labelID].bounds.Y -= 80;
+            }
+
+            //Add new points
             Point basePoint = new Point(base.xPositionOnScreen + base.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 128, base.yPositionOnScreen + base.height - IClickableMenu.borderWidth - IClickableMenu.spaceToClearTopBorder + 16 - 76);
 
             doctorsButton = new ClickableTextureComponent("Surgery", new Rectangle(basePoint.X, basePoint.Y, 128, 64), null, null, UItexture, new Rectangle(128, 32, 32, 16), 4f)
@@ -86,21 +106,21 @@ namespace DynamicBodies.UI
         {
             if (doctorsButton.containsPoint(x, y))
             {
-                Game1.activeClickableMenu = new BodyModifier(BodyModifier.Source.Doctors, true);
+                Game1.activeClickableMenu = new DoctorModifier(true);
                 doctorsButton.scale -= 0.25f;
                 doctorsButton.scale = Math.Max(0.75f*doctorsButton.baseScale, doctorsButton.scale);
                 Game1.playSound("shwip");
             }
             if (leahsButton.containsPoint(x, y))
             {
-                Game1.activeClickableMenu = new BodyModifier(BodyModifier.Source.Leahs, true);
+                Game1.activeClickableMenu = new FullColourModifier(true);
                 leahsButton.scale -= 0.25f;
                 leahsButton.scale = Math.Max(0.75f * doctorsButton.baseScale, leahsButton.scale);
                 Game1.playSound("shwip");
             }
             if (pamsButton.containsPoint(x, y))
             {
-                Game1.activeClickableMenu = new BodyModifier(BodyModifier.Source.Pams, true);
+                Game1.activeClickableMenu = new SimpleColourModifier(true);
                 pamsButton.scale -= 0.25f;
                 pamsButton.scale = Math.Max(0.75f * doctorsButton.baseScale, pamsButton.scale);
                 Game1.playSound("shwip");

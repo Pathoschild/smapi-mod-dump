@@ -188,7 +188,7 @@ namespace SolidFoundations.Framework.Patches.Buildings
 
         private static void CarpenterMenuPostfix(CarpenterMenu __instance, ref List<BluePrint> ___blueprints, ref ClickableTextureComponent ___upgradeIcon, bool magicalConstruction = false)
         {
-            string builder = "Carpenter";
+            string builder = "Robin";
             if (magicalConstruction)
             {
                 builder = "Wizard";

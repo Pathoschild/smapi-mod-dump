@@ -59,9 +59,9 @@ namespace Shockah.ProjectFluent.ContentPatcher
 			if (!input.Contains("|"))
 				return new Args(input);
 
-			var key = input[0 ..^ input.IndexOf('|')];
+			var key = input[0..^input.IndexOf('|')];
 			var named = new Dictionary<string, string>();
-			var argSplit = input[input.IndexOf('|') ..].Split('|').Select(s => s.Trim());
+			var argSplit = input[input.IndexOf('|')..].Split('|').Select(s => s.Trim());
 			foreach (var wholeArg in argSplit)
 			{
 				var split = wholeArg.Split('=');
@@ -109,7 +109,7 @@ namespace Shockah.ProjectFluent.ContentPatcher
 			internal string Key;
 			internal Dictionary<string, string> Named;
 
-			public Args(string key): this(key, new Dictionary<string, string>()) { }
+			public Args(string key) : this(key, new Dictionary<string, string>()) { }
 
 			public Args(string key, Dictionary<string, string> named)
 			{

@@ -15,11 +15,7 @@ using System.Linq;
 
 namespace Shockah.FlexibleSprinklers
 {
-	internal enum ClusterSprinklerBehaviorClusterOrdering { SmallerFirst, BiggerFirst, Equally }
-	internal enum ClusterSprinklerBehaviorBetweenClusterBalanceMode { Relaxed, Restrictive }
-	internal enum ClusterSprinklerBehaviorInClusterBalanceMode { Relaxed, Exact, Restrictive }
-
-	internal class ClusterSprinklerBehavior: ISprinklerBehavior
+	internal class ClusterSprinklerBehavior : ISprinklerBehavior
 	{
 		private class Cluster
 		{
@@ -39,8 +35,7 @@ namespace Shockah.FlexibleSprinklers
 		private readonly ClusterSprinklerBehaviorInClusterBalanceMode InClusterBalanceMode;
 		private readonly ISprinklerBehavior.Independent? PriorityBehavior;
 
-		private readonly IDictionary<IMap, (ISet<(IntPoint position, SprinklerInfo info)> sprinklers, IList<(ISet<IntPoint>, float)> tilesToWater)> Cache
-			= new Dictionary<IMap, (ISet<(IntPoint position, SprinklerInfo info)> sprinklers, IList<(ISet<IntPoint>, float)> tilesToWater)>();
+		private readonly Dictionary<IMap, (IReadOnlySet<(IntPoint position, SprinklerInfo info)> sprinklers, IReadOnlyList<(IReadOnlySet<IntPoint>, float)> tilesToWater)> Cache = new();
 
 		public ClusterSprinklerBehavior(
 			ClusterSprinklerBehaviorClusterOrdering clusterOrdering,
@@ -65,7 +60,7 @@ namespace Shockah.FlexibleSprinklers
 			Cache.Remove(map);
 		}
 
-		public IList<(ISet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map)
+		public IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map)
 		{
 			var sprinklersSet = map.GetAllSprinklers().ToHashSet();
 			if (!Cache.TryGetValue(map, out var cachedInfo))
@@ -75,7 +70,7 @@ namespace Shockah.FlexibleSprinklers
 			return cachedInfo.tilesToWater;
 		}
 
-		private IList<(ISet<IntPoint>, float)> GetUncachedSprinklerTilesWithSteps(IMap map, ISet<(IntPoint position, SprinklerInfo info)> sprinklers)
+		private IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetUncachedSprinklerTilesWithSteps(IMap map, IReadOnlySet<(IntPoint position, SprinklerInfo info)> sprinklers)
 		{
 			IMap cachingMap;
 			if (map is IMap.WithKnownSize mapWithKnownSize)
@@ -313,10 +308,10 @@ namespace Shockah.FlexibleSprinklers
 			}
 
 			var clusters = GetClusters();
-			IList<(ISet<IntPoint>, float)> priorityTilesToWaterSteps = new List<(ISet<IntPoint>, float)>();
-			IList<ISet<IntPoint>> tilesToWaterSteps = new List<ISet<IntPoint>>();
-			ISet<IntPoint> currentTilesToWater = new HashSet<IntPoint>();
-			ISet<IntPoint> tilesToWater = new HashSet<IntPoint>();
+			List<(IReadOnlySet<IntPoint>, float)> priorityTilesToWaterSteps = new();
+			List<IReadOnlySet<IntPoint>> tilesToWaterSteps = new();
+			HashSet<IntPoint> currentTilesToWater = new();
+			HashSet<IntPoint> tilesToWater = new();
 
 			void WaterTile(IntPoint tilePosition)
 			{
@@ -324,7 +319,7 @@ namespace Shockah.FlexibleSprinklers
 				currentTilesToWater.Add(tilePosition);
 			}
 
-			IDictionary<Cluster, IDictionary<IntPoint, int>> sprinklerTileCountToWaterPerCluster = new Dictionary<Cluster, IDictionary<IntPoint, int>>();
+			Dictionary<Cluster, IDictionary<IntPoint, int>> sprinklerTileCountToWaterPerCluster = new();
 			foreach (var (sprinklerPosition, info) in sprinklers)
 			{
 				int tileCountToWaterLeft = info.Power;
@@ -392,7 +387,7 @@ namespace Shockah.FlexibleSprinklers
 			var results = priorityTilesToWaterSteps.ToList();
 			foreach (var cluster in clusters)
 			{
-				IList<ISet<IntPoint>> clusterSteps = new List<ISet<IntPoint>>();
+				List<IReadOnlySet<IntPoint>> clusterSteps = new();
 
 				void FinishClusterWateringStep()
 				{

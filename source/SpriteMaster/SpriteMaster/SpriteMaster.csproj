@@ -17,37 +17,40 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/ameisen/SV-SpriteMaster</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<IsPublishable>False</IsPublishable>
 		<Nullable>enable</Nullable>
-		<Platforms>x64</Platforms>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>embedded</DebugType>
+		<EmbedAllSources>false</EmbedAllSources>
+		
+		<RestoreAdditionalProjectSources>$(RestoreSources);$(SolutionDir)Ext\SMAPI\src\SMAPI.ModBuildConfig\bin\Release;https://api.nuget.org/v3/index.json</RestoreAdditionalProjectSources>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <DefineConstants>TRACE;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseUntraced|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseUntraced|AnyCPU'">
 	  <DefineConstants>RELEASE;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|AnyCPU'">
 	  <DefineConstants>SHIPPING</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ShippingAsserts|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ShippingAsserts|AnyCPU'">
 	  <DefineConstants>SHIPPING;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
 	  <DefineConstants>DEVELOPMENT;TRACE;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <DefineConstants>DEBUG;TRACE</DefineConstants>
 	</PropertyGroup>
 
@@ -59,29 +62,41 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.2" />
-		<PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.5.0" />
-		<PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" ExcludeAssets="all" />
-		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
-		<PackageReference Include="Krafs.Publicizer" Version="1.0.2">
+		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
+		<PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.5.1" />
+		<!--<PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" ExcludeAssets="all" />-->
+		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0">
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+		<!--
+		<PackageReference Include="Krafs.Publicizer" Version="1.0.3">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		-->
 		<PackageReference Include="LinqFasterer" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
 		<PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
 		<PackageReference Include="Pastel" Version="3.0.1" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1-sm2" />
 		<PackageReference Include="Tomlyn" Version="0.15.0" />
-		<PackageReference Include="ZstdNet" Version="1.4.5" />
+		<PackageReference Include="ZstdNet" Version="1.4.5" GeneratePathProperty="true">
+			<ExcludeAssets>all</ExcludeAssets>
+		</PackageReference>
+		
+		<Reference Include="$(PkgZstdNet)\lib\netstandard2.1\ZstdNet.dll">
+			<Private>true</Private>
+		</Reference>
 	</ItemGroup>
 	
 	<PropertyGroup>
 		<InternalsAssemblyNames>MonoGame.Framework</InternalsAssemblyNames>
+		<InternalsAssemblyUseEmptyMethodBodies>false</InternalsAssemblyUseEmptyMethodBodies>
 	</PropertyGroup>
+
 	
+	<!--
 	<PropertyGroup>
-		<!--<Publicize>$(Publicize);MonoGame.Framework</Publicize>-->
 		<Publicize>$(Publicize);MonoGame.Framework:Microsoft.Xna.Framework.Graphics.Texture.glTarget</Publicize>
 		<Publicize>$(Publicize);MonoGame.Framework:Microsoft.Xna.Framework.Graphics.Texture.glInternalFormat</Publicize>
 		<Publicize>$(Publicize);MonoGame.Framework:Microsoft.Xna.Framework.Graphics.Texture.glFormat</Publicize>
@@ -113,6 +128,7 @@
 		<Publicize Include="$(Publicize)" />
 		<DoNotPublicize Include="$(DoNotPublicize)" />
 	</ItemGroup>
+	-->
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="$(ProjectDir)scripts\build.post.rb 'OutDir=$(OutDir)' 'SolutionDir=$(SolutionDir)' 'ILRepack=$(PkgILRepack)' 'ILStrip=$(PkgBrokenevent_ILStrip_CLI)' 'IgnoreModFilePatterns=$(IgnoreModFilePatterns)'" />
@@ -132,4 +148,12 @@
 	  <Exec Command="$(SolutionDir)SetVersion.rb -q" WorkingDirectory="$(SolutionDir)" />
 	</Target>
 
+	<ItemGroup>
+	  <None Remove="C:\Users\mike\.nuget\packages\zstdnet\1.4.5\build\x64\libzstd.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="C:\Users\mike\.nuget\packages\zstdnet\1.4.5\build\x86\libzstd.dll" />
+	</ItemGroup>
+	
 </Project>

@@ -15,11 +15,11 @@ namespace SpriteMaster.Types;
 
 [DebuggerDisplay("[{X}, {Y}]")]
 [StructLayout(LayoutKind.Sequential, Pack = Vector2I.Alignment * 2, Size = Vector2I.ByteSize * 2)]
-internal readonly struct PaddingQuad {
+internal struct PaddingQuad {
 	internal static readonly PaddingQuad Zero = new(Vector2I.Zero, Vector2I.Zero);
 
-	internal readonly Vector2I X;
-	internal readonly Vector2I Y;
+	internal Vector2I X;
+	internal Vector2I Y;
 
 	internal Vector2I Offset => (X.X, Y.X);
 

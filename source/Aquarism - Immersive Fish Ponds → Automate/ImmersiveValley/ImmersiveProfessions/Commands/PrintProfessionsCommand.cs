@@ -15,8 +15,6 @@ namespace DaLion.Stardew.Professions.Commands;
 using Common;
 using Common.Commands;
 using Framework;
-using JetBrains.Annotations;
-using StardewValley;
 using static System.String;
 
 #endregion using directives
@@ -30,7 +28,7 @@ internal sealed class PrintProfessionsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "professions";
+    public override string[] Triggers { get; } = { "print_professions", "print_profs", "professions", "profs" };
 
     /// <inheritdoc />
     public override string Documentation => "List the player's current professions.";

@@ -18,5 +18,6 @@
   "UseHalfTilePositions": true,
   "AllowRangedChargeEffects": false,
   "AttacksIgnoreObstacles": false,
+  "DontCutGrassPastNormalRange": false,
   "CustomRangeOnClickOnly": true
 }

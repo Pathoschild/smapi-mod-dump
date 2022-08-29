@@ -1,7 +1,7 @@
 {
   "Name": "NexusModsButton",
   "Author": "Pickysaurus",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Adds a button to the main menu which opens the Nexus Mods website.",
   "UniqueID": "Pickysaurus.NexusModsButton",
   "EntryDll": "NexusModsButton.dll",

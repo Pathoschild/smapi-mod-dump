@@ -38,7 +38,7 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For narrating animal details
+                bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed(); // For narrating animal details
                 bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
                 string toSpeak = " ", details = " ";
 
@@ -57,7 +57,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (isCPressed & !isNarratingAnimalInfo)
+                    if (isPrimaryInfoKeyPressed & !isNarratingAnimalInfo)
                     {
                         string name = ___animal.displayName;
                         string type = ___animal.displayType;
@@ -215,7 +215,7 @@ namespace stardew_access.Patches
                         return;
 
                     int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                    bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
+                    bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                     string ingredients = "";
                     string name = currentBluprint.displayName;
                     string upgradeName = currentBluprint.nameOfBuildingToUpgrade;
@@ -252,7 +252,7 @@ namespace stardew_access.Patches
 
                     blueprintInfo = $"{name}, Price: {price}, Ingredients: {ingredients}, Dimensions: {width} width and {height} height, Description: {description}";
 
-                    if (isCPressed && !isSayingBlueprintInfo)
+                    if (isPrimaryInfoKeyPressed && !isSayingBlueprintInfo)
                     {
                         SayBlueprintInfo(blueprintInfo);
                     }

@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Tools.Extensions;
 #region using directives
 
 using StardewValley.Objects;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

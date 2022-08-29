@@ -15,9 +15,6 @@ namespace DaLion.Stardew.Professions.Commands;
 using Common;
 using Common.Commands;
 using Common.Extensions.Collections;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Buildings;
 using System.Linq;
 
@@ -32,7 +29,7 @@ internal sealed class UpdateMaxOccupancyCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "update_pond_occupancy";
+    public override string[] Triggers { get; } = { "update_pond_occupancy", "update_occupancy", "update", "occupancy" };
 
     /// <inheritdoc />
     public override string Documentation => "Update the maximum population of all owned fish ponds.";

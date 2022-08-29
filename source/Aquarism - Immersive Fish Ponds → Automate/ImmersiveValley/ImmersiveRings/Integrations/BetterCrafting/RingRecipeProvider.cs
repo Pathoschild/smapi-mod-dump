@@ -12,8 +12,7 @@ namespace DaLion.Stardew.Rings.Integrations;
 
 #region using directives
 
-using Common.Integrations;
-using StardewValley;
+using Common.Integrations.BetterCrafting;
 using StardewValley.Objects;
 using System.Collections.Generic;
 

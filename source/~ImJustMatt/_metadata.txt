@@ -12,13 +12,16 @@ mods:
    Expanded Storage → XSAutomate
    FuryCore
    Garbage Day
+   Ordinary Capsule
+   Portable Holes
+   Smack Dat Scarecrow
    Too Many Animals
    Toolbar Icons
 
 latest commit:
-   commit 80e0c0d6f9c4820c3cbad3dba0c9b4aa26951abf
-   Author: Matthew <justmatt@outlook.com>
-   Date:   Fri Jul 15 11:20:05 2022 -0700
+   commit 7250766bf0a2f2cc8fd4d25c2513b34635032870
+   Author: Matthew Lucas <justmatt@outlook.com>
+   Date:   Sun Aug 28 12:34:11 2022 -0700
    
-       Updated CHANGELOG
+       Disallow any Chest from being automatically stashed into another chest.
    

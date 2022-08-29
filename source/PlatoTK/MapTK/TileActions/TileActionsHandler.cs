@@ -143,7 +143,7 @@ namespace MapTK.TileActions
                         }
                         else
                         {
-                            var npc = new NPC(null, Vector2.Zero, "Town", 0, shop.ShopKeeper.Split('.')[0], false, null, Plato.ModHelper.Content.Load<Texture2D>(Path.Combine(ShopPortraitsToken.ShopPortraitsPrefix,shop.ShopKeeper), ContentSource.GameContent));
+                            var npc = new NPC(null, Vector2.Zero, "Town", 0, shop.ShopKeeper.Split('.')[0], false, null, Plato.ModHelper.GameContent.Load<Texture2D>($"{ShopPortraitsToken.ShopPortraitsPrefix}/{shop.ShopKeeper}"));
                             shopMenu.portraitPerson = npc;
                             Game1.removeThisCharacterFromAllLocations(npc);
                         }
@@ -257,7 +257,7 @@ namespace MapTK.TileActions
             }
             else
             {
-                code = Plato.ModHelper.Content.Load<Dictionary<string, string>>(LuaScriptRepository, ContentSource.GameContent)[codeId];
+                code = Plato.ModHelper.GameContent.Load<Dictionary<string, string>>(LuaScriptRepository)[codeId];
                 if (parameter.Length > 1)
                     function = parameter[1];
             }

@@ -6,5 +6,7 @@
   "MonsterHitboxColor": "#FF0000",
   "WeaponSwingHitboxColor": "#FFA500",
   "ProjectileHitboxColor": "#FFA500",
+  "TerrainFeatureHitboxColor": "#3432A8",
+  "ObjectsHitboxColor": "#3432A8",
   "HitboxOpacity": 0.6
 }

@@ -1,0 +1,10 @@
+{
+    "messages.qs_ItemShipped": "¡Enviado {{itemStack}} {{itemName}} al contenedor de envío!",
+
+    "config.qs_SellKey_name": "Tecla de envío",
+    "config.qs_SellKey_tooltip": "Qué tecla(s) utilizar para enviar artículos al contenedor de envío.",
+    "config.qs_CheckIfItemsCanBeShipped_name": "Comprobar artículos",
+    "config.qs_CheckIfItemsCanBeShipped_tooltip": "Impide el envío de artículos no enviables al contenedor de envío.",
+    "config.qs_EnableHUDMessages_name": "Mensajes de HUD",
+    "config.qs_EnableHUDMessages_tooltip": "Mostrar mensajes de HUD, por ejemplo, cada vez que se envía un artículo."
+}

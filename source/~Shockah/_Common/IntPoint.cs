@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Shockah.CommonModCode
 {
-	public struct IntPoint: IEquatable<IntPoint>
+	public readonly struct IntPoint : IEquatable<IntPoint>
 	{
 		public static readonly IntPoint Zero = new(0, 0);
 		public static readonly IntPoint One = new(1, 1);
@@ -28,8 +28,8 @@ namespace Shockah.CommonModCode
 		public static IEnumerable<IntPoint> NeighborOffsets
 			=> NeighborOffsetsArray;
 
-		public int X { get; set; }
-		public int Y { get; set; }
+		public readonly int X { get; init; }
+		public readonly int Y { get; init; }
 
 		[JsonIgnore]
 		public IEnumerable<IntPoint> Neighbors
@@ -47,7 +47,7 @@ namespace Shockah.CommonModCode
 			this.Y = y;
 		}
 
-		public IntPoint(int v): this(v, v)
+		public IntPoint(int v) : this(v, v)
 		{
 		}
 

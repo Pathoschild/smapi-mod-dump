@@ -2,9 +2,24 @@
   "EnableMod": true,
   "UseSaveSpecificEdits": true,
   "IncludeGlobalEdits": true,
-  "ExistsColor": "255, 0, 0, 255",
-  "ActiveColor": "0, 0, 255, 255",
-  "CopiedColor": "0, 255, 0, 255",
+  "ExistsColor": {
+    "B": 0,
+    "G": 0,
+    "R": 255,
+    "A": 255
+  },
+  "ActiveColor": {
+    "B": 255,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  },
+  "CopiedColor": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  },
   "BorderThickness": 4,
   "ToggleButton": "F10",
   "RefreshButton": "F5",

@@ -27,6 +27,8 @@ namespace MapTK.MapExtras
 {
     internal class MapExtrasHandler
     {
+        private readonly MapMergerIAssetEditor AssetEditor;
+
         internal static readonly Dictionary<Layer, List<Layer>> DrawBeforeCache = new Dictionary<Layer, List<Layer>>();
         internal static readonly Dictionary<Layer, List<Layer>> DrawAfterCache = new Dictionary<Layer, List<Layer>>();
         internal static readonly Dictionary<Layer, Vector2> ScrollModifier = new Dictionary<Layer, Vector2>();
@@ -39,11 +41,13 @@ namespace MapTK.MapExtras
         internal static IPlatoHelper Plato { get; set; }
         public MapExtrasHandler(IModHelper helper)
         {
+            AssetEditor = new MapMergerIAssetEditor(helper);
             Plato = helper.GetPlatoHelper();
             helper.Events.GameLoop.SaveLoaded += InitializeExtraLayers;
             helper.Events.GameLoop.SaveCreated += InitializeExtraLayers;
             helper.Events.Player.Warped += SetExtraLayersOnWarp;
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.DayStarted += InvalidateMerges;
             helper.Events.GameLoop.SaveLoaded += InvalidateMerges;
             helper.Events.GameLoop.SaveCreated += InvalidateMerges;
@@ -53,16 +57,14 @@ namespace MapTK.MapExtras
 
         private void InvalidateMerges(object sender, EventArgs e)
         {
-            Plato.ModHelper.Content.InvalidateCache(MapMergeDirectory);
-            MapMergerIAssetEditor.MapMergeDataSet = Plato.ModHelper.Content.Load<Dictionary<string, MapMergeData>>(MapMergeDirectory, ContentSource.GameContent);
-            var mm = Plato.ModHelper.Content.Load<Dictionary<string, MapMergeData>>(MapMergeDirectory, ContentSource.GameContent);
-            mm.Select(s => s.Value).ToList().ForEach(m => Plato.ModHelper.Content.InvalidateCache(m.Target));
+            Plato.ModHelper.GameContent.InvalidateCache(MapMergeDirectory);
+            MapMergerIAssetEditor.MapMergeDataSet = Plato.ModHelper.GameContent.Load<Dictionary<string, MapMergeData>>(MapMergeDirectory);
+            var mm = Plato.ModHelper.GameContent.Load<Dictionary<string, MapMergeData>>(MapMergeDirectory);
+            mm.Select(s => s.Value).ToList().ForEach(m => Plato.ModHelper.GameContent.InvalidateCache(m.Target));
         }
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            Plato.ModHelper.Content.AssetLoaders.Add(new MapMergerIAssetEditor(Plato.ModHelper));
-            Plato.ModHelper.Content.AssetEditors.Add(new MapMergerIAssetEditor(Plato.ModHelper));
             LastViewport = Game1.viewportCenter;
             if (xTile.Format.FormatManager.Instance.GetMapFormatByExtension("tmx") is TMXFormat tmxf)
                 tmxf.DrawImageLayer = DrawImageLayer;
@@ -71,6 +73,11 @@ namespace MapTK.MapExtras
             api.RegisterToken(Plato.ModHelper.ModRegistry.Get(Plato.ModHelper.ModRegistry.ModID).Manifest, "Merge", new MapMergeToken());
 
             SetMapDisplayDevice();
+        }
+
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            AssetEditor.OnAssetRequested(e);
         }
 
         private void SetMapDisplayDevice()

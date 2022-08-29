@@ -1,0 +1,296 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/misty-spring/FarmhouseVisits
+**
+*************************************************/
+
+{
+	/* TN: config  (tn = translator note) */
+	"config.CustomChance.name": "Özel şans",
+	"config.CustomChance.description": "Her 10 dakikada bir sizi ziyaret eden bir köylünün yüzdesi.",
+	"config.MaxVisitsPerDay.name": "Günlük maksimum ziyaret",
+	"config.MaxVisitsPerDay.description": "Bir günde kaç ziyaret alabilirsin.",
+	"config.StartingHours.name": "başlangıç ​​saati",
+	"config.StartingHours.description": "Köylülerin ziyarete başlayacağı saat.",
+	"config.EndingHours.name": "bitiş saati",
+	"config.EndingHours.description": "Köylülerin ziyaret etmeyi bırakacağı saat.",
+	"config.VisitDuration.name":"Süre",
+	"config.VisitDuration.description":"Her ziyaretin 10 dakikalık aralıklarla ne kadar sürmesi gerektiği (ör. 3, 30 dakikadır).",
+	"config.Verbose.name": "Ayrıntılı günlük kaydı",
+	"config.Verbose.description": "Mod çok daha fazla bilgiyi günlüğe kaydeder.",
+	"config.Extras":"Ekstralar",
+	"config.Blacklist.name":"kara liste",
+	"config.Blacklist.description":"Sizi ziyaret etmesini istemediğiniz karakterler. Boşluklarla (' ') ayrılmış. Örn: \"Pierre Lewis\"",
+	"config.VisitConfiguration": "Yapılandırmayı ziyaret edin",
+	"config.Debug.name": "hata ayıklama",
+	"config.Debug.Explanation": "Geliştirici Seçenekleri.",
+
+	/*For translators: your in-laws = the family of your spouse.
+	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
+	 *
+	 * Feel free to use your language's equivalent! */
+
+	"config.InLawComments.name": "kayınvalide yorumları",
+	"config.InLawComments.description": "Eşinizin akrabaları ziyarete gelirse, söz konusu eş (ve varsa çocuklarınız) hakkında sorular sorarlar. Bu, vanilya yasalarını, vanilyayı ve mod yasalarını etkileyebilir veya hiçbirini etkileyebilir.",
+	"config.InLawComments.values.VanillaOnly": "sadece vanilya",
+	"config.InLawComments.values.VanillaAndMod": "Vanilya ve mod NPC'leri",
+	"config.InLawComments.values.None": "Hiçbiri",
+	"config.ReplacerCompat.name": "Değiştirici \n uyumluluğu",
+	"config.ReplacerCompat.description": "NPC ikameleriyle uyumluluk için bunu açın.",
+
+	//new content
+	"config.AskForConfirmation.name": "Ask for confirmation?",
+	"config.AskForConfirmation.description": "NPCs will need permission to enter (via a question dialogue).",
+	"config.RejectionDialogues.name": "Rejection dialogues",
+	"config.RejectionDialogues.description": "If rejected, NPCs will comment on it.",
+	"config.ReceiveGifts.name": "Receive gifts?",
+	"config.ReceiveGifts.description": "If enabled, visits will bring you a gift.",
+	"Visit.AllowOrNot": "{0} is at the door. Open it?",
+	"Visit.Yes": "Yes",
+	"Visit.No": "No",
+
+	/* TN: command errors */
+	"error.WorldNotReady":"Bu komutu kullanmak için bir kaydetme yüklemeniz gerekiyor.",
+	"error.InvalidValue":"geçersiz değer.",
+	"error.NotInFarmhouse":"Çiftlik evinde değilsin, NPC'ler içeri giremeyecek.",
+
+	/* TN: bad schedule (when the user adds one via ContentPatcher) */
+	"FromHigherThanTo":"Başlangıç ​​saatleri, bitiş saatlerinden daha yüksek. Oyunu düzeltin ve yeniden başlatın.",
+	"NotInSave": "NPC şu anda kayıtlı değil (onların kilidini açmadınız mı?)",
+	"CantBe2600":"Ziyaret 2600 'de bitemez.",
+	"CantBe600":"Ziyaret 600 'de başlayamaz.",
+
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "Oops. I'll come another day.",
+	"NPCRejected.Outgoing2": "No one's home?",
+	"NPCRejected.Outgoing3": "Silence...#$b#Well, that's too bad.$1",
+	"NPCRejected.Shy1": "Maybe no one's home...",
+	"NPCRejected.Shy2": "Are you there?#$b#...Maybe i came at a wrong time?",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "I must have come at a wrong time.",
+	"NPCRejected.Polite2": "...#$b#Hopefully @ is doing fine.",
+	"NPCRejected.Polite3": "...It seems no one's home at this time.",
+	"NPCRejected.Neutral1": "knock knock...#$b#Well, i'll have to leave.",
+	"NPCRejected.Neutral2": "Hmm?#$b#I swear i thought @ was home.",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "And @ isn't here...?#$b#Damn it. Just my luck.$2",
+	"NPCRejected.Rude2": "Hey, anyone?",
+	"NPCRejected.Rude3": "Oh, come on. No one's home..? $2",
+
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "Thanks. The weather outside was really rough.",
+	"NPCThanking.Outgoing2": "Your house looks different from the last time i came.#$b#Did you change something?",
+	"NPCThanking.Outgoing3": "%farm farm looks like a lot of work.",
+	"NPCThanking.Shy1": "Hope i'm not intruding.",
+	"NPCThanking.Shy2": "Thanks for letting me in.",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "The walk here was really nice.",
+	"NPCThanking.Polite2": "Sorry for coming uninvited.",
+	"NPCThanking.Polite3": "Thanks, @.",
+	"NPCThanking.Neutral1": "So, do you like surprise visits?",
+	"NPCThanking.Neutral2": "Your farm outside looked good.",
+	"NPCThanking.Neutral3": "I like this place.",
+	"NPCThanking.Rude1": "Yeah, that's more like it.",
+	"NPCThanking.Rude2": "Finally...my feet were starting to hurt.",
+	"NPCThanking.Rude3": "It took so long to walk here.",
+
+	/* TN: introduction */
+	//by social anxiety
+	"NPCIntroduce.Outgoing1": "@? geliyorum!",
+	"NPCIntroduce.Outgoing2": "@? Benim!",
+	"NPCIntroduce.Outgoing3": "@? Kapıyı aç!",
+	"NPCIntroduce.Shy1": "@, orada mısın?",
+	"NPCIntroduce.Shy2": "@?",
+	"NPCIntroduce.Shy3": "Merhaba? Evde birisi var mı?",
+	//by manners
+	"NPCIntroduce.Polite1": "Merhaba, içeri girebilir miyim?",
+	"NPCIntroduce.Polite2": "Affedersiniz...",
+	"NPCIntroduce.Polite3": "(Tak tak!)",
+	"NPCIntroduce.Neutral1": "Orada biri var mı?",
+	"NPCIntroduce.Neutral2": "Merhaba? @?",
+	"NPCIntroduce.Neutral3": "@, benim.",
+	"NPCIntroduce.Rude1": "@, Dışardayım.",
+	"NPCIntroduce.Rude2": "Merhaba..? @..?",
+	"NPCIntroduce.Rude3": "Hey...@, Orada mısın?",
+
+	/* TN: walk into house */
+	//by social anxiety
+	"NPCWalkIn.Outgoing1": "Selam, {0}!",
+	"NPCWalkIn.Outgoing2": "Hey!",
+	"NPCWalkIn.Outgoing3": "Merhaba!",
+	"NPCWalkIn.Shy1": "Selam, {0}",
+	"NPCWalkIn.Shy2": "Affedersiniz.",
+	"NPCWalkIn.Shy3": "Merhaba",
+	//by manners
+	"NPCWalkIn.Polite1": "Affedersin.",
+	"NPCWalkIn.Polite2": "Merhaba, selamlar.",
+	"NPCWalkIn.Polite3": "Selamlar.",
+	"NPCWalkIn.Neutral1": "Selam, {0}!",
+	"NPCWalkIn.Neutral2": "Geliyorum.",
+	"NPCWalkIn.Neutral3": "Merhaba.",
+	"NPCWalkIn.Rude1": "Hey, {0}.",
+	"NPCWalkIn.Rude2": "içeri giriyorum",
+	"NPCWalkIn.Rude3": "Selam.",
+
+	/* TN: greeting player */
+	//by social anxiety
+	"NPCGreet.Outgoing1": "Hey. Nasıl gidiyor? Bir uğrayıp seni ziyaret edeyim dedim.$1",
+	"NPCGreet.Outgoing2": "Merhaba. Çiftliğin nasıl gidiyor? Gelip kendim kontrol edeyim dedim.$1",
+	"NPCGreet.Outgoing3": "Merhaba! Seni bir süredir görmedim.$1",
+	"NPCGreet.Shy1": "Merhaba, @. Nasılsın?#$b#Görünüşe göre %farm çiftliği büyüyor.",
+	"NPCGreet.Shy2": "Merhaba @.#$b#Geçiyordum ve ziyaret etmeye karar verdim.",
+	"NPCGreet.Shy3": "Hey, @. Seni görmek güzel.#$b#Nasıl olduğunu merak ediyordum.",
+	//by manners
+	"NPCGreet.Polite1": "@, Davetsiz geldiğim için üzgünüm. Seni kontrol etmek istedim.",
+	"NPCGreet.Polite2": "Greetings. I'm glad to see you, @.",
+	"NPCGreet.Polite3": "Özür dilerim... umarım hiçbir şeyi bölmüyorumdur.$1",
+	"NPCGreet.Neutral1": "I'm going to walk in...hi, @.",
+	"NPCGreet.Neutral2": "Hey, i was passing by and heard noise...#$b#Had to come check just to be safe, hehe.$1",
+	"NPCGreet.Neutral3": "Merhaba, @. Seni görmek ne güzel.#$b#Sana sürpriz bir ziyaret yapmaya karar verdim.",
+	"NPCGreet.Rude1": "Hey, @! Beni özledin mi?",
+	"NPCGreet.Rude2": "Merhaba, @.",
+	"NPCGreet.Rude3": "Hey, geçiyordum ve içeride olduğunu gördüm...geçmek istedim.",
+
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key. (and some new ones)
+	 * I moved them on my own, but translators can make any changes they deem necessary. */
+	"NPCGift.Normal1": "Sana bir hediye getirdim.[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "İşte, sana bir hediye getirdim.[{0}]", //outgoing3
+	"NPCGift.Normal3": "Zahmetler için sana bir hediye getirdim.[{0}]", //shy3
+	"NPCGift.Normal4": "Here, i thought of you when i saw this.[{0}]", //neutral1
+	"NPCGift.Normal5": "Hey, this seemed like a 'you' item. So i got it for you. [{0}]", //original
+	"NPCGift.Kind1": "Ve sıkıntılar için sana bir şey getirdim. [{0}]", //polite1
+	"NPCGift.Kind2": "Here, i brought you something for the troubles. [{0}]", //polite2
+	"NPCGift.Kind3": "Zahmetlerim için sana bir şey getirdim. [{0}]", //polite3
+	"NPCGift.Kind4": "Bunu görünce aklıma geldin. [{0}]", //neutral2
+	"NPCGift.Kind5": "This seemed like something you'd like.[{0}]", //original
+	"NPCGift.Lax1": "Hey, take this.[{0}]", //original
+	"NPCGift.Lax2": "Bak, sana bir şey aldım.[{0}]", //rude1
+	"NPCGift.Lax3": "Sana bir şey aldım, al.[{0}]", //rude3
+	"NPCGift.Lax4": "Here. I had some spares around. [{0}]", //original
+	"NPCGift.Lax5": "Gelirken sana bir şey getirdim.[{0}]", //rude2
+
+	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
+	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
+     
+     * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
+
+	 //generic lines (for any spouse)
+	"InLaw.Generic.1": "{0} şu anda evde mi?",
+	"InLaw.Generic.2": "{0}'i uzun zamandır görmedim...",
+	"InLaw.Generic.3": "{0} ile nasıl gidiyor? Siz ikiniz iyi anlaşıyor musunuz?",
+	"InLaw.Generic.4": "Hey, is {0} here?",
+	"InLaw.Generic.5": "@ {0},  nerede?",
+	"InLaw.Generic.6": "Sen ve {0}, @ nasılsınız? Her şey yolunda mı?",
+	"InLaw.Generic.7": "{0}'i bir süredir görmüyorum...",
+	"InLaw.Generic.8": "Umarım {0}, %farm çiftliğinde iyidir...",
+	"InLaw.Generic.9": "Is {0} taking care?",
+	"InLaw.Generic.10": "@... {0} ile nasıl gidiyor?",
+	"InLaw.Generic.11": "Merhaba, {0} nerede?",
+	"InLaw.Generic.12": "@, {0} evde mi?",
+	"InLaw.Generic.13": "{0} bugün burada mı?",
+	"InLaw.Generic.14": "@...{0} nasıl oldu?",
+	"InLaw.Generic.15": "@ {0}, buralarda mı? Uzun zaman oldu.$1",
+
+	//for vanilla spouses
+	"InLaw.Abigail.1": "Abigail hala arkadaşlarıyla birlikte o grupta mı?",
+	"InLaw.Abigail.2": "Abby hâlâ esrarengiz şeylerden hoşlanıyor mu?#$b#Umarım fazla tehlikeye atılmaz...$2",
+	"InLaw.Abigail.3": "Umarım Abigail ilgileniyordur.",
+
+	"InLaw.Alex.1": "Alex buraya taşındığından beri ev sessiz.#$b#Ama umarım mutludur.$1",
+	"InLaw.Alex.2": "Torunumla işler nasıl?",
+	"InLaw.Alex.3": "Torunum hala ağ topu oynuyor mu?",
+	
+	"InLaw.Emily.1": "Emily nasıl?#$b#Hala papağanla ilgileniyor mu?",
+	"InLaw.Emily.2": "Emily eskiden her gün Salon'la çok meşguldü...$2#$b#Umarım şimdi daha çok dinleniyordur.",
+	"InLaw.Emily.3": "Emily'nin seninle bir çiftlikte yaşamayı sevdiğine eminim, @.",
+	
+	"InLaw.Haley.1": "Sen ve Haley nasılsınız?$1",
+	"InLaw.Haley.2": "Haley'nin çiftliği bu kadar seveceğini hiç düşünmemiştim...",
+	"InLaw.Haley.3": "@, Haley hala fotoğraf çekiyor mu?",
+	
+	"InLaw.Maru.1": "Maru hâlâ deney yapıyor mu?",
+	"InLaw.Maru.2": "Maru yeterince dinlendi mi?#$b#Bir çiftlikte ve klinikte çalışmak çok fazla olmalı.",
+	"InLaw.Maru.3": "Maru nerede, @?#$b#Kızımı görmek istiyorum.$1",
+	
+	"InLaw.Penny.1": "Penny hala çocuklara ders mi veriyor?",
+	"InLaw.Penny.2": "@...#$b#Penny'i de görebileceğimi düşünüyor musun?",
+	"InLaw.Penny.3": "@, Penny ne yapıyor?",
+	
+	"InLaw.Sam.1": "Sam hala gitar çalıyor mu?#$b#Ya paten kaymaya ne dersin?",
+	"InLaw.Sam.2": "@, oğlum iyi mi?",
+	"InLaw.Sam.3": "Sam'in polenle iyi geçinip geçinmediğini merak ediyorum...",
+	
+	"InLaw.Sebastian.1": "Sebastian'ın motosikleti hâlâ duruyor mu?",
+	"InLaw.Sebastian.2": "Sebastian'ın bir çiftlikte yaşadığını hiç hayal etmemiştim...#$b#Umarım burada mutludur.",
+	"InLaw.Sebastian.3": "@, tavukların var mı?#$b#Sebastian'ın yumurta dolu bir evde ne yaptığını merak ediyorum.$1",
+	
+	"InLaw.Shane.1": "Hey, and Shane? What about Charlie?",
+	"InLaw.Shane.2": "Shane iyi mi?",
+	"InLaw.Shane.3": "Bahse girerim Shane bir çiftlikte yaşadığı için mutludur.",
+
+	/* ask about your kids, 1 to 5
+	* if you have kids, this is added right after InLaw. */
+	"ask.singlechild.1": "{0}'i son gördüğümden bu yana epey zaman geçti...",
+	"ask.singlechild.2": "@, {0} burada mı?",
+	"ask.singlechild.3": "{0}'i bir süredir görmüyorum...",
+	"ask.singlechild.4": "@, {0} iyi gidiyor mu?",
+	"ask.singlechild.5": "Bahse girerim {0} buraya son geldiğimden beri çok büyümüştür.",
+
+	"ask.multiplechild.1": "@, {0} nerede?#$b#Peki ya {1}?",
+	"ask.multiplechild.2": "Bir süredir {0} veya {1} görmedim.",
+	"ask.multiplechild.3": "{1} ve {0} ne olacak? Çocuklarınız burada mı?",
+	"ask.multiplechild.4": "{1} ve {0} anlaşıyor mu?",
+	"ask.multiplechild.5": "{0} ve {1} şu anda evde mi?",
+
+	/*talk about furniture*/
+	//by social
+	"NPCFurniture.Outgoing1":"Bu {0}, çiftlik evinde gerçekten iyi görünüyor.",
+	"NPCFurniture.Outgoing2":"Hey, {0} onu ne zaman aldın?",
+	"NPCFurniture.Outgoing3":"@, Bu {0} satılık mı?#$b#Şaka yapıyorum.$1.",
+	"NPCFurniture.Shy1":"Yani, bu {0}...#$b#Çok güzel.",
+	"NPCFurniture.Shy2":"{0} sahibi olduğunu bilmiyordum!$1",
+	"NPCFurniture.Shy3":"Senin {0}... bana eve döndüğümü hatırlatıyor.",
+
+	//by manners
+	"NPCFurniture.Polite1": "@, senin bu {0}...bu eve hayat veriyor.",
+	"NPCFurniture.Polite2": "Burayı dekore etmek için çok emek vermişsin @...$1",
+	"NPCFurniture.Polite3": "Pardon, ne zamandan beri bu {0} sahipsin...?#$b#Bunu çok beğendim.$1",
+	"NPCFurniture.Neutral1": "Bu güzel görünüyor.$1",
+	"NPCFurniture.Neutral2": "Evin nefes kesici... {0} ile çok daha fazlası.",
+	"NPCFurniture.Neutral3": "Burayı seviyorum, @.#$b#Şuna bak {0}! bu muhteşem.$1",
+	"NPCFurniture.Rude1": "Bu {0} hoşuma gitti.",
+	"NPCFurniture.Rude2": "Ne zamandan beri {0} sahibisin?$1",
+	"NPCFurniture.Rude3": "Bu {0} nereden buldun?",
+	
+	/* TN: leaving */
+	//by social
+	"NPCRetiring.Outgoing1": "Eğlenceliydi ama gitmem gerek. Sonra görüşürüz!",
+	"NPCRetiring.Outgoing2": "It's been a while now, so i'll get going.",
+	"NPCRetiring.Outgoing3": "See you later, @.",
+	"NPCRetiring.Shy1": "Geç oluyor...Şimdi gideceğim. Seni görmek güzeldi.",
+	"NPCRetiring.Shy2": "I have some things to do, but i had fun.#$b#Thank you, @.$1",
+	"NPCRetiring.Shy3": "Sorry, @. I'll have to leave now.#$b#Thank you for your time.",
+	//by manners
+	"NPCRetiring.Polite1": "@, gitmem gerekecek...bazı şeyler yapmam gerek.#$b#Seni gördüğüme sevindim!$1",
+	"NPCRetiring.Polite2": "I've been here a while...i'll take my leave.#$b#See you next time, @.",
+	"NPCRetiring.Polite3": "@, it was fun to see you.#$b#Hope your day goes well.",
+	"NPCRetiring.Neutral1": "Hey, saate bak... bir süre önce ayrılmalıydım.#$b#Başka bir gün görüşürüz!$1",
+	"NPCRetiring.Neutral2": "I'll leave now, before it gets darker outside.#$b#See you, @.",
+	"NPCRetiring.Neutral3": "You must have things to do, so i'll take my leave.#$b#I had fun.$1",
+	"NPCRetiring.Rude1": "Gideceğim...seni meşgul ediyor olmalıyım.#$b#Sonra görüşürüz.",
+	"NPCRetiring.Rude2": "I've been here too long... i'll be going.#$b#See you, @.",
+	"NPCRetiring.Rude3": "It's pretty late already. I'll see you another day.",
+
+	/* TN: gone while outside */
+	"NPCGoneWhileOutside": "Sen dışarıdayken, {0} izin aldı.",
+	"NPCGone_Cellar": "Siz mahzendeyken, {0} ayrıldı."
+}

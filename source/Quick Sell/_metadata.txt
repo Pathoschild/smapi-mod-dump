@@ -6,9 +6,10 @@ mods:
    Quick Sell
 
 latest commit:
-   commit 6dd5261a17000bf58ef5a350c74c76202b741f99
-   Author: Alejandro Akbal <37181533+VoidlessSeven7@users.noreply.github.com>
-   Date:   Tue Feb 2 11:29:58 2021 +0100
+   commit ceeb6f6babbffdac9874eb596d951fb9fb8ba367
+   Merge: 6d25206 bf45537
+   Author: Alejandro Akbal <37181533+AlejandroAkbal@users.noreply.github.com>
+   Date:   Fri Aug 12 15:22:38 2022 +0200
    
-       docs: add keybindings explanation
+       Merge branch 'main' of https://github.com/AlejandroAkbal/Stardew-Valley-Quick-Sell-Mod
    

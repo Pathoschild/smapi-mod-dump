@@ -382,7 +382,7 @@ internal static class Textures {
 			int sourceOffset = (sourceSize.Width * destBound.Top) + destBound.Left;
 			int destOffset = 0;
 			for (int y = 0; y < destBound.Height; ++y) {
-				sourceSpan.SliceUnsafe(sourceOffset, destBound.Width).CopyTo(destSpan.SliceUnsafe(destOffset, destBound.Width));
+				sourceSpan.Slice(sourceOffset, destBound.Width).CopyTo(destSpan.Slice(destOffset, destBound.Width));
 				destOffset += destBound.Width;
 				sourceOffset += sourceSize.Width;
 			}

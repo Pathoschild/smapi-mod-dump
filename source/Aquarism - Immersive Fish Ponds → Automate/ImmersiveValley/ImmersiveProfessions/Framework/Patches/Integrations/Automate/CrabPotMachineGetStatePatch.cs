@@ -13,10 +13,10 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -24,21 +24,14 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Pathoschild.Automate")]
 internal sealed class CrabPotMachineGetStatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal CrabPotMachineGetStatePatch()
     {
-        try
-        {
-            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CrabPotMachine".ToType()
-                .RequireMethod("GetState");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.CrabPotMachine".ToType()
+            .RequireMethod("GetState");
     }
 
     #region harmony patches

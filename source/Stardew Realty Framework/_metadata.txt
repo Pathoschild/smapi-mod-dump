@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/Prism-99/FarmExpansion
+   Git: https://github.com/Prism-99/FarmExpansion.git
+
+mods:
+   Stardew Realty Framework
+
+latest commit:
+   commit f2e336f8cceed61ec9035e4db07525a736aa31dc
+   Author: Prism-99 <prism_99@outlook.com>
+   Date:   Thu Aug 12 21:30:50 2021 -0400
+   
+       Test sync
+       
+       Testing the circle
+   

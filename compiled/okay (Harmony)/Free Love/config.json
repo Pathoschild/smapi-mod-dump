@@ -11,6 +11,7 @@
   "RoommateRomance": false,
   "RomanceAllVillagers": false,
   "GayPregnancies": false,
+  "MaxChildren": 2,
   "ShowParentNames": false,
   "SpouseSleepOrder": "",
   "PercentChanceForSpouseInBed": 25,

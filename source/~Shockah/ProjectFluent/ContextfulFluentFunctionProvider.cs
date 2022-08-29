@@ -25,7 +25,7 @@ namespace Shockah.ProjectFluent
 		IReadOnlyDictionary<string, IFluentFunctionValue> namedArguments
 	);
 
-	internal class ContextfulFluentFunctionProvider: IContextfulFluentFunctionProvider
+	internal class ContextfulFluentFunctionProvider : IContextfulFluentFunctionProvider
 	{
 		private IManifest ProjectFluentMod { get; set; }
 		private IFluentFunctionProvider FluentFunctionProvider { get; set; }

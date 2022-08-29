@@ -73,7 +73,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/spring13",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160249", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -97,7 +97,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/spring13",
         "When": {
-            "HasSeenEvent": 75160251, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160251", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -147,7 +147,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/spring13",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160254", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -269,7 +269,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/summer11",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160249", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -293,7 +293,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/summer11",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160254", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -434,7 +434,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/fall27",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160249", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -451,7 +451,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/fall27",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160254", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -537,7 +537,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/winter25",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160249", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -572,7 +572,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/winter25",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true
+            "HasSeenEvent: hostPlayer": "75160254", "RSVNPCSAttendFestivals": true
         },
         "TextOperations": [
             {
@@ -734,8 +734,95 @@
     "Value": "Aguar 38 84 up/Alissa 29 55 down/Bert 27 54 down/Corine 34 79 left/Ezekiel 36 71 left/Flor 26 57 down/Freddie 33 72 up/Ian 16 52 down/Jeric 32 76 down/Keahi 12 59 right/Kenneth 20 74 right/Lenny 24 69 right/Lola 32 72 up/Maddie 31 78 right/Olga 26 54 down/Philip 18 78 right/Pika 30 57 down/Richard 34 74 up/Shiro 19 79 up/Trinnie 12 60 right/Ysabelle 32 79 down/Yuuma 20 78 left",
     "Delimiter": "/"
    },
-
-]
+    ]
 },
+
+
+//SV Fair
+{
+        //The squad
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "When": {
+            "RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Aguar 50 58 left/Alissa 33 66 right/Bert 14 53 up/Corine 18 65 right/Ezekiel 24 56 right/Flor 27 76 left/Freddie 21 35 down/Ian 17 73 down/Jeric 51 79 left/Keahi 34 77 left/Kenneth 24 57 right/Lenny 27 53 down/Lola 22 35 down/Maddie 27 38 up/Olga 27 61 right/Philip 24 65 up/Pika 32 34 up/Richard 23 53 down/Shiro 23 65 up/Trinnie 15 53 up/Ysabelle 19 64 down/Yuuma 25 71 left/Kimpoi 37 35 down/Malaya 36 35 down/Sonny 42 78 down/Louie 56 69 right/Maive 43 78 right/Ariah 44 78 left/Lorenzo 39 37 left/Shanice 39 36 left/Anton 65 65 down/Kiarra 36 31 down/Paula 66 65 down/Carmen 35 37 right/Blair 20 66 up/Sean 21 66 up/Faye 19 66 up/Irene 39 32 left",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
+    {
+        //Naomi Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "When": {
+            "HasSeenEvent: hostPlayer": "75160249", "RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Naomi 35 35 down",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
+    {
+        //Daia Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "When": {
+            "HasSeenEvent: hostPlayer": "75160254", "RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Daia 32 73 up",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
+        {
+        //Jio and Kiwi
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "When": {
+                        "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false,
+                        "HasSeenEvent: anyPlayer|contains=75160377, 75160187": true,
+                        "HasSeenEvent: anyPlayer|contains=75160188": true,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Jio 91 19 down/Kiwi 69 88 down",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
+    //Torts
+    {
+      "LogName": "Torts SDV Fair Location",
+      "Action": "EditData",
+      "Target": "Data/Festivals/fall16",
+      "When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "RSVNPCSAttendFestivals": true },
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters"],
+          "Value": "Torts 37 84 0",
+          "Delimiter": "/"
+        },
+      ]
+    }
 ]
 }

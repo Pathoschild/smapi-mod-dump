@@ -7,12 +7,15 @@
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <EnableModZip Condition="'$(Configuration)' == 'Debug'">False</EnableModZip>
         <ModZipPath>$(SolutionDir)\releases</ModZipPath>
         <Nullable>enable</Nullable>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1"/>
         <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3"/>
+        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0"/>
         <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta04"/>
     </ItemGroup>
     <ItemGroup>
@@ -20,5 +23,12 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Using Include="StardewValley"/>
+        <Using Include="StardewModdingAPI"/>
+        <Using Include="System.Diagnostics.CodeAnalysis"/>
+        <Using Alias="Object" Include="System.Object"/>
+        <Using Alias="SObject" Include="StardewValley.Object"/>
     </ItemGroup>
 </Project>

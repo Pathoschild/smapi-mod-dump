@@ -6,9 +6,10 @@ mods:
    Get Glam
 
 latest commit:
-   commit 9591e43be8fa4c2d7a89f9a5dc07ac4f81f68eb4
+   commit 1f7125295a2cc919267e0085195a6c82f4b89531
+   Merge: 981473a 26c4fbb
    Author: Chris <csgephardt@gmail.com>
-   Date:   Fri Jan 29 22:34:27 2021 -0500
+   Date:   Thu Aug 4 10:44:11 2022 -0400
    
-       Bump Version to 1.2.0
+       Merge branch 'master' of https://github.com/MartyrPher/GetGlam
    

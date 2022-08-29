@@ -95,6 +95,7 @@ internal static partial class OnDrawImpl {
 
 			if ((destinationBounds.Invert.X || destinationBounds.Invert.Y) && DrawState.CurrentRasterizerState.CullMode == CullMode.CullCounterClockwiseFace) {
 				// Winding order is invalid
+				//Debug.Trace("Winding Order Error");
 				return Stop;
 			}
 			if (destinationBounds.Invert.X) {
@@ -119,6 +120,7 @@ internal static partial class OnDrawImpl {
 			);
 			return Stop;
 		}
+		
 		__state = resampledTexture;
 		return Continue;
 	}
@@ -166,6 +168,11 @@ internal static partial class OnDrawImpl {
 				return Continue;
 			}
 
+			if (!spriteInstance.Padding.IsZero) {
+				ResetLastDrawCache();
+				return Continue;
+			}
+
 			if (spriteInstance.TexType == TextureType.SlicedImage) {
 				sourceRectangle = source ?? spriteInstance.Texture!.Bounds;
 			}
@@ -177,6 +184,11 @@ internal static partial class OnDrawImpl {
 		else {
 			resampledTexture = __state;
 			spriteInstance = resampledTexture.SpriteInstance;
+
+			if (!spriteInstance.Padding.IsZero) {
+				Debug.Trace($"Non-padded Draw Implementation path taken for padded sprite! ({nameof(__state)} is not null)");
+			}
+
 			sourceRectangle = resampledTexture.Dimensions;
 			if (spriteInstance.TexType == TextureType.SlicedImage) {
 				sourceRectangle = source ?? resampledTexture.Bounds;

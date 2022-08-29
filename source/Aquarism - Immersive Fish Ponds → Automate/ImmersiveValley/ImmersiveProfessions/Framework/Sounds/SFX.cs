@@ -13,12 +13,13 @@ namespace DaLion.Stardew.Professions.Framework.Sounds;
 #region using directives
 
 using Ardalis.SmartEnum;
+using Common.Exceptions;
 using Microsoft.Xna.Framework.Audio;
-using StardewValley;
 using System.IO;
 
 #endregion using directives
 
+/// <summary>A custom <see cref="SoundEffect"/> that can be played through the game's <see cref="SoundBank"/>.</summary>
 public sealed class SFX : SmartEnum<SFX>
 {
     #region enum entries
@@ -26,7 +27,7 @@ public sealed class SFX : SmartEnum<SFX>
     public static readonly SFX BruteRage = new("BruteRage", 0);
     public static readonly SFX PoacherAmbush = new("PoacherCloak", 1);
     public static readonly SFX PoacherSteal = new("PoacherSteal", 2);
-    public static readonly SFX PiperEnthrall = new("PiperProvoke", 3);
+    public static readonly SFX PiperConcerto = new("PiperProvoke", 3);
     public static readonly SFX DesperadoBlossom = new("DesperadoGunCock", 4);
     public static readonly SFX DogStatuePrestige = new("DogStatuePrestige", 5);
 
@@ -35,14 +36,14 @@ public sealed class SFX : SmartEnum<SFX>
     public static ICue? SinWave { get; internal set; } = Game1.soundBank?.GetCue("SinWave");
 
     /// <summary>Construct an instance.</summary>
-    /// <param name="name">The profession name.</param>
-    /// <param name="value">The profession index.</param>
+    /// <param name="name">The sound effect name.</param>
+    /// <param name="value">The sound effect enum index.</param>
     public SFX(string name, int value) : base(name, value)
     {
         var path = Path.Combine(ModEntry.ModHelper.DirectoryPath, "assets", "sfx", name + ".wav");
         using var fs = new FileStream(path, FileMode.Open);
         var soundEffect = SoundEffect.FromStream(fs);
-        if (soundEffect is null) throw new FileLoadException($"Failed to load audio at {path}.");
+        if (soundEffect is null) ThrowHelperExtensions.ThrowFileLoadException($"Failed to load audio at {path}.");
 
         CueDefinition cueDefinition = new()
         {
@@ -59,5 +60,12 @@ public sealed class SFX : SmartEnum<SFX>
     public void Play()
     {
         Game1.playSound(Name);
+    }
+
+    /// <summary>Play the corresponding <see cref="SoundEffect"/> after the specified delay.</summary>
+    /// <param name="delay">The delay in milliseconds.</param>
+    public void PlayAfterDelay(int delay)
+    {
+        DelayedAction.playSoundAfterDelay(Name, delay);
     }
 }

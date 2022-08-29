@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Taxes.Framework.Events;
 
 using Common.Events;
 using Integrations;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -30,8 +29,10 @@ internal sealed class TaxGameLaunchedEvent : GameLaunchedEvent
     /// <inheritdoc />
     protected override void OnGameLaunchedImpl(object? sender, GameLaunchedEventArgs e)
     {
+        var registry = ModEntry.ModHelper.ModRegistry;
+
         // add Generic Mod Config Menu integration
-        if (ModEntry.ModHelper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+        if (registry.IsLoaded("spacechase0.GenericModConfigMenu"))
             new GenericModConfigMenuIntegrationForImmersiveTaxes(
                 getConfig: () => ModEntry.Config,
                 reset: () =>
@@ -40,12 +41,12 @@ internal sealed class TaxGameLaunchedEvent : GameLaunchedEvent
                     ModEntry.ModHelper.WriteConfig(ModEntry.Config);
                 },
                 saveAndApply: () => { ModEntry.ModHelper.WriteConfig(ModEntry.Config); },
-                modRegistry: ModEntry.ModHelper.ModRegistry,
+                modRegistry: registry,
                 manifest: ModEntry.Manifest
             ).Register();
 
         // add Immersive Professions integration
-        if (ModEntry.ModHelper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions"))
-            new ImmersiveProfessionsIntegration(ModEntry.ModHelper.ModRegistry).Register();
+        if (registry.IsLoaded("DaLion.ImmersiveProfessions"))
+            new ImmersiveProfessionsIntegration(registry).Register();
     }
 }

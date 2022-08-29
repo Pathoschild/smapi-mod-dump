@@ -1,3 +1,7 @@
 [submodule "Tests/Benchmarks/Hashing/ext/libxxhash3/source"]
 	path = Tests/Benchmarks/Hashing/ext/libxxhash/source
 	url = https://github.com/SpriteMaster-Ext/xxHash.git
+[submodule "Ext/SMAPI"]
+	path = Ext/SMAPI
+	url = https://github.com/SpriteMaster-Ext/SMAPI.git
+	branch = SM0.15.0-beta.2

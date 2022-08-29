@@ -66,13 +66,13 @@ internal static partial class Texture2DExt {
 		GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrap));
 		GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrap));
 
-		if (!usingStorage) {
+		//if (!usingStorage) {
 			GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0));
 
 			if (@this.GraphicsDevice.GraphicsCapabilities.SupportsTextureMaxLevel) {
 				GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, SamplerState.TextureParameterNameTextureMaxLevel, (@this.LevelCount > 0) ? @this.LevelCount - 1 : 1000));
 			}
-		}
+		//}
 
 		return texture;
 	}

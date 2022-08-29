@@ -58,7 +58,7 @@ namespace FarmVisitors
         public Vector2 Position { get; set; }
         public int Facing { get; set; }
         public Stack<Dialogue> CurrentPreVisit { get; set; }
-        public Dictionary<string, string> AllPreVisit { get; }
+        //public Dictionary<string, string> AllPreVisit { get; } this would get ALL dialogues for said npc. which we don't use (just the day's dialogue)- and would also cause lag if left up.
 
         public TempNPC()
         {
@@ -77,7 +77,7 @@ namespace FarmVisitors
             Facing = n.Facing;
 
             CurrentPreVisit = n.CurrentPreVisit;
-            AllPreVisit = n.AllPreVisit;
+            //AllPreVisit = n.AllPreVisit;
         }
 
         public TempNPC(NPC visit)
@@ -92,7 +92,7 @@ namespace FarmVisitors
             Facing = visit.facingDirection.Value;
             
             CurrentPreVisit = visit.CurrentDialogue;
-            AllPreVisit = visit.Dialogue;
+            //AllPreVisit = visit.Dialogue;
         }
     }
 }

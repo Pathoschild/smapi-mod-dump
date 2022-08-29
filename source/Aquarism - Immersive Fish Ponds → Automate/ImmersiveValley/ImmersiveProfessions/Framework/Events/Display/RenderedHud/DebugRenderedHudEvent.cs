@@ -8,20 +8,18 @@
 **
 *************************************************/
 
-#if DEBUG
 namespace DaLion.Stardew.Professions.Framework.Events.Display;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Events;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, DebugOnly]
 internal sealed class DebugRenderedHudEvent : RenderedHudEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -51,4 +49,3 @@ internal sealed class DebugRenderedHudEvent : RenderedHudEvent
         e.SpriteBatch.DrawString(Game1.dialogueFont, $"Location: {Game1.player.currentLocation.NameOrUniqueName}", new(32f, 166f), Color.White);
     }
 }
-#endif

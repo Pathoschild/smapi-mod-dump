@@ -13,14 +13,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 #region using directives
 
 using DaLion.Common;
-using DaLion.Common.Data;
+using DaLion.Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Reflection;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -53,7 +50,7 @@ internal sealed class Game1CreateObjectDebrisPatch : DaLion.Common.Harmony.Harmo
                 itemQuality = who.GetGemologistMineralQuality()
             });
 
-            ModDataIO.Increment<uint>(who, "GemologistMineralsCollected");
+            who.Increment("GemologistMineralsCollected");
             return false; // don't run original logic
         }
         catch (Exception ex)

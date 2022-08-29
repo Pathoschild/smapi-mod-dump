@@ -100,7 +100,7 @@ internal static partial class XxHash3 {
 				uint copyLength = Math.Min(length, Width - rowOffset);
 
 				var rowSpan = GetAtOffset(startRow, rowOffset, copyLength);
-				rowSpan.CopyTo(destination.SliceUnsafe(0, (int)copyLength));
+				rowSpan.CopyTo(destination.Slice(0, (int)copyLength));
 
 				currentWriteOffset += copyLength;
 				++startRow;
@@ -110,7 +110,7 @@ internal static partial class XxHash3 {
 				uint copyLength = Math.Min(length - currentWriteOffset, Width);
 
 				var rowSpan = GetAtOffset(row, 0, copyLength);
-				rowSpan.CopyTo(destination.SliceUnsafe((int)currentWriteOffset, (int)copyLength));
+				rowSpan.CopyTo(destination.Slice((int)currentWriteOffset, (int)copyLength));
 
 				currentWriteOffset += copyLength;
 			}

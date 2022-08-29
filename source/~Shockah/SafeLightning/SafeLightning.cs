@@ -24,9 +24,14 @@ using System.Reflection.Emit;
 
 namespace Shockah.SafeLightning
 {
-	public class SafeLightning: Mod
+	public class SafeLightning : Mod
 	{
-		private enum StrikeTargetType { LightningRod, Tile, FruitTree }
+		private enum StrikeTargetType
+		{
+			LightningRod,
+			Tile,
+			FruitTree
+		}
 
 		private static SafeLightning Instance = null!;
 		internal ModConfig Config { get; private set; } = null!;

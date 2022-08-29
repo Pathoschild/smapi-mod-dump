@@ -146,7 +146,14 @@ namespace stardew_access.Patches
                         if (__instance.inventory.actualInventory[i] == null)
                             toSpeak = "Empty slot";
                         else
+                        {
                             toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                            {
+                                toSpeak = $"{toSpeak} not usable here";
+                            }
+                        }
 
                         if (forgeMenuQuery != $"{toSpeak}:{i}")
                         {
@@ -179,7 +186,7 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
-                bool isCPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
+                bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
                 string toSpeak = " ", extra = "";
 
                 if (___confirmingEmpty)
@@ -191,7 +198,7 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    if (isCPressed && !isNarratingPondInfo)
+                    if (isPrimaryInfoKeyPressed && !isNarratingPondInfo)
                     {
                         string pond_name_text = Game1.content.LoadString("Strings\\UI:PondQuery_Name", ____fishItem.DisplayName);
                         string population_text = Game1.content.LoadString("Strings\\UI:PondQuery_Population", string.Concat(____pond.FishCount), ____pond.maxOccupants.Value);
@@ -306,7 +313,14 @@ namespace stardew_access.Patches
                         if (__instance.inventory.actualInventory[i] == null)
                             toSpeak = "Empty slot";
                         else
+                        {
                             toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                            if (!__instance.inventory.highlightMethod(__instance.inventory.actualInventory[i]))
+                            {
+                                toSpeak = $"{toSpeak} not usable here";
+                            }
+                        }
 
                         if (tailoringMenuQuery != $"{toSpeak}:{i}")
                         {

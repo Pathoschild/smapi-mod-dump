@@ -41,11 +41,11 @@ public class ToolConfig
     public bool HideAffectedTiles { get; set; } = false;
 
     /// <summary>How much stamina the shockwave should consume.</summary>
-    public float StaminaCostMultiplier { get; set; } = 3.0f;
+    public float StaminaCostMultiplier { get; set; } = 1f;
 
     /// <summary>Affects the shockwave travel speed. Lower is faster. Set to 0 for instant.</summary>
     public uint TicksBetweenWaves { get; set; } = 4;
 
-    /// <summary>Whether to enable debugging features.</summary>
-    public bool EnableDebug { get; set; } = false;
+    /// <summary>Face the current cursor position before swinging your tools.</summary>
+    public bool FaceMouseCursor { get; set; } = true;
 }

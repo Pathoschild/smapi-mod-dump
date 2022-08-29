@@ -20,7 +20,7 @@ namespace Shockah.ProjectFluent
 		ITranslationHelper? GetModTranslations(IManifest mod);
 	}
 
-	internal class ModTranslationsProvider: IModTranslationsProvider
+	internal class ModTranslationsProvider : IModTranslationsProvider
 	{
 		private IModRegistry ModRegistry { get; set; }
 

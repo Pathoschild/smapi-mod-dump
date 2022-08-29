@@ -36,6 +36,7 @@ namespace RangedTools
         public bool UseHalfTilePositions { get; set; } = true;
         public bool AllowRangedChargeEffects { get; set; } = false;
         public bool AttacksIgnoreObstacles { get; set; } = false;
+        public bool DontCutGrassPastNormalRange { get; set; } = false;
         public bool CustomRangeOnClickOnly { get; set; } = true;
     }
 }

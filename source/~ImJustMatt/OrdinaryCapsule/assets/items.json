@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "category_egg": 1440,
+  "category_milk": 1440,
+  "category_meat": 1440,
+  "category_monster_loot": 1440,
+  "item_truffle": 1440
+}

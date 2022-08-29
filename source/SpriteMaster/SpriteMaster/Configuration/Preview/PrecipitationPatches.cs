@@ -66,7 +66,19 @@ internal static class PrecipitationPatches {
 		critical: false
 	)]
 	public static bool IsSnowingHere(ref bool __result, GameLocation? location) {
-		return IsReverse.Value;
+		if (IsReverse.Value) {
+			return true;
+		}
+
+		if (!SMConfig.IsEnabled || !SMConfig.Extras.Snow.IsEnabled) {
+			if (Precipitation == PrecipitationType.Snow) {
+				__result = true;
+				return false;
+			}
+
+			return true;
+		}
+		return false;
 	}
 
 	[SMHarmonize.Harmonize(

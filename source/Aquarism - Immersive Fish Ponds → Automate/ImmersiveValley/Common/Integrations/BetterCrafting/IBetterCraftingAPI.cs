@@ -8,13 +8,12 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.BetterCrafting;
 
 #region using directives
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 

@@ -96,6 +96,7 @@ mods:
    Multiple Floor Farmhouse
    Multiple Spouses
    Murdercrows
+   Musical Paths
    Night Event Chance Tweak
    Non-Random Prairie King
    Object Import Map
@@ -149,12 +150,12 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 00627d77dec5140cf29a48a5957dcca5690ad442
-   Merge: d138d87 d0d3a31
+   commit 4f9fe81bfb028c9d09482cf673c2da352d30ad2e
+   Merge: 4df094b 6c98784
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Jul 29 08:42:59 2022 -0400
+   Date:   Tue Aug 23 13:14:17 2022 -0400
    
-       Merge pull request #20 from mycroftjr/patch-2
+       Merge pull request #29 from Locked15/MobilePhoneUpdate
        
-       fix possible infinite loop in MeteorDefence
+       Mobile Phone, 'NPC Adventures' Compatibility Update
    

@@ -1,0 +1,10 @@
+{
+    "messages.qs_ItemShipped": "Sent {{itemStack}} {{itemName}} to the Shipping Bin!",
+
+    "config.qs_SellKey_name": "Sell key",
+    "config.qs_SellKey_tooltip": "Which key(s) to use to send items to the Shipping Bin.",
+    "config.qs_CheckIfItemsCanBeShipped_name": "Check if items can be shipped",
+    "config.qs_CheckIfItemsCanBeShipped_tooltip": "Prevent sending non-shippable items to the Shipping Bin.",
+    "config.qs_EnableHUDMessages_name": "Enable HUD messages",
+    "config.qs_EnableHUDMessages_tooltip": "Show HUD notifications, for example, every time an item is shipped."
+}

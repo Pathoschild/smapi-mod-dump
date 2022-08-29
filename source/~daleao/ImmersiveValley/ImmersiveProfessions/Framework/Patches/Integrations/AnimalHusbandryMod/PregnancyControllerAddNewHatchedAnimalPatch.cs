@@ -13,12 +13,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.AnimalHusban
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;
@@ -27,20 +26,13 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("DIGUS.ANIMALHUSBANDRYMOD")]
 internal sealed class PregnancyControllerAddNewHatchedAnimalPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal PregnancyControllerAddNewHatchedAnimalPatch()
     {
-        try
-        {
-            Target = "AnimalHusbandryMod.animals.PregnancyController".ToType().RequireMethod("addNewHatchedAnimal");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "AnimalHusbandryMod.animals.PregnancyController".ToType().RequireMethod("addNewHatchedAnimal");
     }
 
     #region harmony patches

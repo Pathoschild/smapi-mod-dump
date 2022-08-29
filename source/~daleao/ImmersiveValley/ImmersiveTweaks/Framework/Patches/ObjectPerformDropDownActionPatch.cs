@@ -12,11 +12,9 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 
 #region using directives
 
-using Common.Data;
+using Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -36,7 +34,7 @@ internal sealed class ObjectPerformDropDownActionPatch : Common.Harmony.HarmonyP
     private static void ObjectPerformDropDownActionPostfix(SObject __instance)
     {
         if (__instance.IsBeeHouse() || __instance.IsMushroomBox())
-            ModDataIO.WriteTo(__instance, "Age", null);
+            __instance.Write("Age", null);
     }
 
     #endregion harmony patches

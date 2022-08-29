@@ -14,10 +14,8 @@ namespace DaLion.Stardew.Professions.Commands;
 
 using Common;
 using Common.Commands;
-using Common.Integrations;
+using Common.Integrations.SpaceCore;
 using Framework;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Linq;
 
@@ -32,10 +30,11 @@ internal sealed class ClearNewLevelsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "clear_new_levels";
+    public override string[] Triggers { get; } = { "clear_new_levels" };
 
     /// <inheritdoc />
-    public override string Documentation => "Clear the player's cache of new levels for te specified skills.";
+    public override string Documentation =>
+        "Clear the player's cache of new levels for the specified skills, or all vanilla skills if none are specified.";
 
     /// <inheritdoc />
     public override void Callback(string[] args)
@@ -49,18 +48,19 @@ internal sealed class ClearNewLevelsCommand : ConsoleCommand
                 {
                     Game1.player.newLevels.Set(Game1.player.newLevels.Where(p => p.X != skill).ToList());
                 }
-                else if (ModEntry.CustomSkills.Values.Any(s =>
-                             string.Equals(s.DisplayName, arg, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    var customSkill = ModEntry.CustomSkills.Values.Single(s =>
-                        string.Equals(s.DisplayName, arg, StringComparison.CurrentCultureIgnoreCase));
-                    var newLevels = ExtendedSpaceCoreAPI.GetCustomSkillNewLevels();
-                    ExtendedSpaceCoreAPI.SetCustomSkillNewLevels(newLevels
-                        .Where(pair => pair.Key != customSkill.StringId).ToList());
-                }
                 else
                 {
-                    Log.W($"Ignoring unknown skill {arg}.");
+                    var customSkill = ModEntry.CustomSkills.Values.FirstOrDefault(s =>
+                        string.Equals(s.DisplayName, arg, StringComparison.CurrentCultureIgnoreCase));
+                    if (customSkill is null)
+                    {
+                        Log.W($"Ignoring unknown skill {arg}.");
+                        continue;
+                    }
+
+                    var newLevels = ExtendedSpaceCoreAPI.GetCustomSkillNewLevels.Value();
+                    ExtendedSpaceCoreAPI.SetCustomSkillNewLevels.Value(newLevels
+                        .Where(pair => pair.Key != customSkill.StringId).ToList());
                 }
             }
     }

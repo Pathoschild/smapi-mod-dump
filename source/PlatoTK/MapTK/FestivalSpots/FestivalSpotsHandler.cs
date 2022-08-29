@@ -46,7 +46,7 @@ namespace MapTK.FestivalSpots
         {
             if(e.Trigger.ToLower() == "loadactors")
             {
-                Dictionary<string, FestivalNPCData> npcData = Helper.Content.Load<Dictionary<string, FestivalNPCData>>(FestivalPlacementDataAsset, ContentSource.GameContent);
+                Dictionary<string, FestivalNPCData> npcData = Helper.GameContent.Load<Dictionary<string, FestivalNPCData>>(FestivalPlacementDataAsset);
 
                 npcData.Keys
                     .ToList()

@@ -22,10 +22,8 @@ internal static class Analysis {
 	[StructLayout(LayoutKind.Auto)]
 	internal readonly struct LegacyResults {
 		internal readonly Vector2B Wrapped;
-		internal readonly Vector2B RepeatX;
-		internal readonly Vector2B RepeatY;
-		internal readonly Vector2B EdgeX;
-		internal readonly Vector2B EdgeY;
+		internal readonly QuadB Repeat;
+		internal readonly QuadB Edge;
 		internal readonly Vector2B GradientAxial;
 		internal readonly Vector2B GradientDiagonal;
 		internal readonly int OpaqueCount;
@@ -34,20 +32,16 @@ internal static class Analysis {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal LegacyResults(
 			Vector2B wrapped,
-			Vector2B repeatX,
-			Vector2B repeatY,
-			Vector2B edgeX,
-			Vector2B edgeY,
+			QuadB repeat,
+			QuadB edge,
 			Vector2B gradientAxial,
 			Vector2B gradientDiagonal,
 			int opaqueCount,
 			int maxChannelShades
 		) {
 			Wrapped = wrapped;
-			RepeatX = repeatX;
-			RepeatY = repeatY;
-			EdgeX = edgeX;
-			EdgeY = edgeY;
+			Repeat = repeat;
+			Edge = edge;
 			GradientAxial = gradientAxial;
 			GradientDiagonal = gradientDiagonal;
 			OpaqueCount = opaqueCount;
@@ -76,8 +70,7 @@ internal static class Analysis {
 		}
 
 		var wrappedXY = wrapped;
-		var repeatX = Vector2B.False;
-		var repeatY = Vector2B.False;
+		QuadB repeat = QuadB.False;
 
 		if (Config.WrapDetection.Enabled) {
 			long numSamples = 0;
@@ -111,12 +104,12 @@ internal static class Analysis {
 					}
 				}
 				int threshold = (bounds.Height * edgeThreshold).NearestInt();
-				var aboveThreshold = Vector2B.From(samples[0] >= threshold, samples[1] >= threshold);
+				var aboveThreshold = new Vector2B(samples[0] >= threshold, samples[1] >= threshold);
 				if (aboveThreshold.All) {
 					wrappedXY.X = true;
 				}
 				else {
-					repeatX = aboveThreshold;
+					repeat.Horizontal = aboveThreshold;
 				}
 			}
 			if (!wrappedXY.Y) {
@@ -135,12 +128,12 @@ internal static class Analysis {
 					sampler++;
 				}
 				int threshold = (bounds.Width * edgeThreshold).NearestInt();
-				var aboveThreshold = Vector2B.From(samples[0] >= threshold, samples[1] >= threshold);
+				var aboveThreshold = new Vector2B(samples[0] >= threshold, samples[1] >= threshold);
 				if (aboveThreshold.All) {
 					wrappedXY.Y = true;
 				}
 				else {
-					repeatY = aboveThreshold;
+					repeat.Vertical = aboveThreshold;
 				}
 			}
 		}
@@ -240,10 +233,8 @@ internal static class Analysis {
 		// TODO : Should we flip these values based upon boundsInverted?
 		return new(
 			wrapped: wrappedXY,
-			repeatX: repeatX,
-			repeatY: repeatY,
-			edgeX: Vector2B.False,
-			edgeY: Vector2B.False,
+			repeat: repeat,
+			edge: QuadB.False,
 			gradientAxial: gradientAxial,
 			gradientDiagonal: gradientDiagonal,
 			opaqueCount: shadesA[255],

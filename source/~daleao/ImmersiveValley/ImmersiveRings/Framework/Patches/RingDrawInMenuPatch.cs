@@ -12,13 +12,11 @@ namespace DaLion.Stardew.Rings.Framework.Patches;
 
 #region using directives
 
+using Common.Exceptions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Objects;
-using System;
 
 #endregion using directives
 
@@ -37,14 +35,14 @@ internal sealed class RingDrawInMenuPatch : Common.Harmony.HarmonyPatch
 
     #region harmony patches
 
-    /// <summary>Stub for base Ring.drawInMenu</summary>
+    /// <summary>Stub for base <see cref="Ring.drawInMenu"/>.</summary>
     [HarmonyReversePatch]
     internal static void RingDrawInMenuReverse(object instance, SpriteBatch spriteBatch, Vector2 location,
         float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color,
         bool drawShadow)
     {
         // its a stub so it has no initial content
-        throw new NotImplementedException("It's a stub.");
+        ThrowHelperExtensions.ThrowNotImplementedException("It's a stub.");
     }
 
     #endregion harmony patches

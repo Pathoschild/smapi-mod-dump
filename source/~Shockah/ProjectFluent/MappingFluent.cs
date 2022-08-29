@@ -12,7 +12,7 @@ using System;
 
 namespace Shockah.ProjectFluent
 {
-	internal class MappingFluent<Input, Output>: IFluent<Input>
+	internal class MappingFluent<Input, Output> : IFluent<Input>
 	{
 		private IFluent<Output> Wrapped { get; set; }
 		private Func<Input, Output> Mapper { get; set; }

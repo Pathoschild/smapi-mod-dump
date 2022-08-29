@@ -8,13 +8,13 @@
 **
 *************************************************/
 
+using DaLion.Stardew.Arsenal.Framework.Enchantments;
+
 namespace DaLion.Stardew.Arsenal.Framework.Patches;
 
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 
 #endregion using directives
@@ -35,11 +35,17 @@ internal sealed class BaseWeaponEnchantmentCanApplyToPatch : Common.Harmony.Harm
     private static void BaseWeaponEnchantmentCanApplyToPostfix(BaseWeaponEnchantment __instance, ref bool __result,
         Item item)
     {
+        if (__instance is CarvingEnchantment or CleavingEnchantment or EnergizedEnchantment or TributeEnchantment)
+        {
+            __result = ModEntry.Config.NewWeaponEnchants;
+            return;
+        }
+
         if (item is not Slingshot || __instance.IsSecondaryEnchantment()) return;
 
-        __result = __instance.IsForge() && ModEntry.Config.AllowSlingshotForges ||
-                   __instance is not (ArtfulEnchantment or HaymakerEnchantment) &&
-                   ModEntry.Config.AllowSlingshotEnchants;
+        __result = __instance.IsForge() && ModEntry.Config.EnableSlingshotForges ||
+                   __instance is BugKillerEnchantment or CrusaderEnchantment &&
+                   ModEntry.Config.EnableSlingshotEnchants;
     }
 
     #endregion harmony patches

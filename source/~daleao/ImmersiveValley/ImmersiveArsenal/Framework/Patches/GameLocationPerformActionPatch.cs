@@ -12,11 +12,9 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 
 #region using directives
 
-using Common.Data;
+using Common.Extensions.Stardew;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 
@@ -39,14 +37,14 @@ internal sealed class GameLocationPerformActionPatch : Common.Harmony.HarmonyPat
     {
         if (!ModEntry.Config.InfinityPlusOneWeapons || action?.StartsWith("Yoba") != true || !who.IsLocalPlayer ||
             who.CurrentTool is not MeleeWeapon { InitialParentTileIndex: Constants.DARK_SWORD_INDEX_I } darkSword ||
-            ModDataIO.ReadFrom<int>(darkSword, "EnemiesSlain") < ModEntry.Config.RequiredKillCountToPurifyDarkSword ||
+            darkSword.Read<int>("EnemiesSlain") < ModEntry.Config.RequiredKillCountToPurifyDarkSword ||
             who.mailReceived.Contains("holyBlade")) return true; // run original logic
 
         who.Halt();
         who.faceDirection(2);
         who.showCarrying();
         who.jitterStrength = 1f;
-        Game1.pauseThenDoFunction(3000, Utils.GetHolyBlade);
+        Game1.pauseThenDoFunction(3000, Extensions.FarmerExtensions.GetHolyBlade);
         Game1.changeMusicTrack("none", false, Game1.MusicContext.Event);
         __instance.playSound("crit");
         Game1.screenGlowOnce(Color.Transparent, true, 0.01f, 0.999f);

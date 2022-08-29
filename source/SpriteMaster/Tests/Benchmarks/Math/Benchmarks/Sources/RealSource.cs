@@ -31,6 +31,6 @@ public abstract class RealSource : BenchmarkBase<DataSet<RealSource.RealData[]>,
 			var real = set[i];
 			newData[i] = new(real);
 		}
-		DataSets.Add(new(newData));
+		DefaultDataSetsStatic.Add(new(newData));
 	}
 }

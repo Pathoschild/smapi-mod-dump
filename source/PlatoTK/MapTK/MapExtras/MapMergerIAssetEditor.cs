@@ -9,19 +9,17 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using PlatoTK;
 using StardewModdingAPI;
-using StardewValley;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI.Events;
 using xTile;
 using xTile.ObjectModel;
 
 namespace MapTK.MapExtras
 {
-    internal class MapMergerIAssetEditor : IAssetEditor, IAssetLoader
+    internal class MapMergerIAssetEditor
     {
         internal readonly IPlatoHelper Plato;
         internal static Dictionary<string, MapMergeData> MapMergeDataSet = new Dictionary<string, MapMergeData>();
@@ -36,33 +34,27 @@ namespace MapTK.MapExtras
             return MapMergeDataSet.Select(k => k.Value);
         }
 
-        public bool CanEdit<T>(IAssetInfo asset)
+        public void OnAssetRequested(AssetRequestedEventArgs e)
         {
-            return GetMapMerges().Any(m => asset.AssetNameEquals(m.Target));
-        }
+            if (e.DataType == typeof(Map)
+                && GetMapMerges().FirstOrDefault(m => e.NameWithoutLocale.IsEquivalentTo(m.Target)) is MapMergeData merge
+                && Plato.ModHelper.GameContent.Load<Map>(merge.Source) is Map patch) {
+                e.Edit(asset =>
+                {
+                    var editor = asset.AsMap();
 
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.DataType == typeof(Map)
-                && GetMapMerges().FirstOrDefault(m => asset.AssetNameEquals(m.Target)) is MapMergeData merge
-                && Plato.ModHelper.Content.Load<Map>(merge.Source, ContentSource.GameContent) is Map patch) {
-                Map patched = Plato.Content.Maps.PatchMapArea(asset.AsMap().Data, patch, new Point(merge.ToArea.X,merge.ToArea.Y), merge.FromArea, merge.PatchMapProperties,merge.RemoveEmpty);
-                asset.AsMap().PatchMap(patched, merge.ToArea, merge.ToArea);
+                    Map patched = Plato.Content.Maps.PatchMapArea(editor.Data, patch, new Point(merge.ToArea.X, merge.ToArea.Y), merge.FromArea, merge.PatchMapProperties, merge.RemoveEmpty);
+                    editor.PatchMap(patched, merge.ToArea, merge.ToArea);
 
-                if (merge.PatchMapProperties)
-                    foreach (KeyValuePair<string, PropertyValue> p in patched.Properties)
-                        asset.AsMap().Data.Properties[p.Key] = p.Value;
+                    if (merge.PatchMapProperties)
+                    {
+                        foreach (KeyValuePair<string, PropertyValue> p in patched.Properties)
+                            editor.Data.Properties[p.Key] = p.Value;
+                    }
+                });
             }
-        }
-
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-           return asset.AssetNameEquals(MapExtrasHandler.MapMergeDirectory);
-        }
-
-        public T Load<T>(IAssetInfo asset)
-        {
-            return (T)(object)MapMergeDataSet;
+            else if (e.Name.IsEquivalentTo(MapExtrasHandler.MapMergeDirectory))
+                e.LoadFrom(() => MapMergeDataSet, AssetLoadPriority.Medium);
         }
     }
 }

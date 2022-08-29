@@ -10,5 +10,9 @@
 
 namespace Shockah.CommonModCode.UI
 {
-	public enum Orientation { Horizontal, Vertical }
+	public enum Orientation
+	{
+		Horizontal,
+		Vertical
+	}
 }

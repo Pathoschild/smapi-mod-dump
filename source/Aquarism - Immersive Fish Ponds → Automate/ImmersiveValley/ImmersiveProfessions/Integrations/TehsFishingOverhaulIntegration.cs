@@ -13,12 +13,11 @@ namespace DaLion.Stardew.Professions.Integrations;
 #region using directives
 
 using Common.Integrations;
+using Common.Integrations.TehsFishingOverhaul;
 using Extensions;
 using Framework;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -115,7 +114,7 @@ internal sealed class TehsFishingOverhaulIntegration : BaseIntegration<ISimplifi
             (who, chance) => who.CurrentTool is FishingRod rod &&
                              rod.getBaitAttachmentIndex() != 703 // magnet
                              && who.HasProfession(Profession.Fisher)
-                ? 1 - Math.Pow(1 - chance, 2.0)
+                ? 1 - Math.Pow(1 - chance, 2d)
                 : chance);
 
         // remove Pirate perks

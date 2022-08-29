@@ -31,9 +31,13 @@ namespace Shockah.PleaseGiftMeInPerson
 		Loves = 6
 	}
 
-	internal enum GiftMethod { InPerson, ByMail }
-	
-	internal struct GiftEntry: IEquatable<GiftEntry>
+	internal enum GiftMethod
+	{
+		InPerson,
+		ByMail
+	}
+
+	internal struct GiftEntry : IEquatable<GiftEntry>
 	{
 		public int Year { get; set; }
 		public int SeasonIndex { get; set; }

@@ -14,11 +14,10 @@ namespace DaLion.Stardew.Tweex;
 
 using Common;
 using Common.Commands;
-using Common.Data;
 using Common.Events;
 using Common.Harmony;
-using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.WalkOfLife;
+using Common.ModData;
 
 #endregion using directives
 
@@ -27,11 +26,12 @@ public class ModEntry : Mod
 {
     internal static ModEntry Instance { get; private set; } = null!;
     internal static ModConfig Config { get; set; } = null!;
+    internal static EventManager Events { get; private set; } = null!;
 
     internal static IModHelper ModHelper => Instance.Helper;
     internal static IManifest Manifest => Instance.ModManifest;
 
-    internal static IImmersiveProfessionsAPI? ProfessionsAPI { get; set; }
+    internal static IImmersiveProfessionsAPI? ProfessionsApi { get; set; }
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -48,11 +48,11 @@ public class ModEntry : Mod
         // get configs
         Config = helper.ReadConfig<ModConfig>();
 
-        // hook events
-        new EventManager(helper.Events).HookAll();
+        // enable events
+        Events = new(helper.Events);
 
         // apply patches
-        new Harmonizer(ModManifest.UniqueID).ApplyAll();
+        new Harmonizer(helper.ModRegistry, ModManifest.UniqueID).ApplyAll();
 
         // register commands
         new CommandHandler(helper.ConsoleCommands).Register("qol", "Quality Of Life");

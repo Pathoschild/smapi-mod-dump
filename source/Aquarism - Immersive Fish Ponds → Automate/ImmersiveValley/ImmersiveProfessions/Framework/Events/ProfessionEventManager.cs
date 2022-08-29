@@ -8,40 +8,34 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework;
+namespace DaLion.Stardew.Professions.Framework.Events;
 
 #region using directives
 
 using Common;
 using Common.Events;
-using Events.Display;
-using Events.GameLoop;
-using Events.Input;
-using Events.Multiplayer;
-using Events.Player;
-using Events.TreasureHunt;
-using Events.Ultimate;
+using Display;
+using GameLoop;
+using Input;
+using Player;
 using Extensions;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TreasureHunts;
-using Ultimates;
+using TreasureHunt;
+using Ultimate;
 
 #endregion using directives
 
-/// <summary>Manages dynamic hooking and unhooking of profession events.</summary>
+/// <summary>Manages dynamic enabling and disabling of profession events.</summary>
 internal class ProfessionEventManager : EventManager
 {
     /// <summary>Look-up of event types required by each profession.</summary>
-    private readonly Dictionary<Profession, List<Type>> EventsByProfession = new()
+    private readonly Dictionary<Profession, List<Type>> _EventsByProfession = new()
     {
         { Profession.Brute, new() { typeof(BruteWarpedEvent) } },
-        { Profession.Conservationist, new() { typeof(HostConservationismDayEndingEvent) } },
-        { Profession.Desperado, new() { typeof(DesperadoUpdateTickedEvent) } },
+        { Profession.Conservationist, new() { typeof(ConservationismDayEndingEvent) } },
         { Profession.Piper, new() { typeof(PiperWarpedEvent) } },
         { Profession.Prospector, new() { typeof(ProspectorHuntDayStartedEvent), typeof(ProspectorRenderedHudEvent), typeof(ProspectorWarpedEvent), typeof(TrackerButtonsChangedEvent) } },
         { Profession.Scavenger, new() { typeof(ScavengerHuntDayStartedEvent), typeof(ScavengerRenderedHudEvent), typeof(ScavengerWarpedEvent), typeof(TrackerButtonsChangedEvent) } },
@@ -57,81 +51,69 @@ internal class ProfessionEventManager : EventManager
         #region hookers
 
         foreach (var @event in ManagedEvents.OfType<UltimateActivatedEvent>())
-            Ultimate.Activated += @event.OnActivated;
+            Ultimates.Ultimate.Activated += @event.OnActivated;
 
         foreach (var @event in ManagedEvents.OfType<UltimateChargeIncreasedEvent>())
-            Ultimate.ChargeIncreased += @event.OnChargeIncreased;
+            Ultimates.Ultimate.ChargeIncreased += @event.OnChargeIncreased;
 
         foreach (var @event in ManagedEvents.OfType<UltimateChargeInitiatedEvent>())
-            Ultimate.ChargeInitiated += @event.OnChargeInitiated;
+            Ultimates.Ultimate.ChargeInitiated += @event.OnChargeInitiated;
 
         foreach (var @event in ManagedEvents.OfType<UltimateDeactivatedEvent>())
-            Ultimate.Deactivated += @event.OnDeactivated;
+            Ultimates.Ultimate.Deactivated += @event.OnDeactivated;
 
         foreach (var @event in ManagedEvents.OfType<UltimateEmptiedEvent>())
-            Ultimate.Emptied += @event.OnEmptied;
+            Ultimates.Ultimate.Emptied += @event.OnEmptied;
 
         foreach (var @event in ManagedEvents.OfType<UltimateFullyChargedEvent>())
-            Ultimate.FullyCharged += @event.OnFullyCharged;
-
+            Ultimates.Ultimate.FullyCharged += @event.OnFullyCharged;
 
         foreach (var @event in ManagedEvents.OfType<TreasureHuntEndedEvent>())
-            TreasureHunt.Ended += @event.OnEnded;
+            TreasureHunts.TreasureHunt.Ended += @event.OnEnded;
 
         foreach (var @event in ManagedEvents.OfType<TreasureHuntStartedEvent>())
-            TreasureHunt.Started += @event.OnStarted;
+            TreasureHunts.TreasureHunt.Started += @event.OnStarted;
 
         Log.D("[EventManager]: Initialization of Profession Mod events completed.");
 
         #endregion hookers
     }
 
-    /// <inheritdoc />
-    internal override void HookForLocalPlayer()
+    /// <summary>Enable events for the local player's professions.</summary>
+    internal void EnableForLocalPlayer()
     {
-        Log.D($"[EventManager]: Hooking profession events for {Game1.player.Name}...");
+        Log.D($"[EventManager]: Enabling profession events for {Game1.player.Name}...");
         foreach (var pid in Game1.player.professions)
             try
             {
                 if (Profession.TryFromValue(pid, out var profession))
-                    HookForProfession(profession);
+                    EnableForProfession(profession);
             }
             catch (IndexOutOfRangeException)
             {
                 Log.D($"[EventManager]: Unexpected profession index {pid} will be ignored.");
             }
 
-        if (Context.IsMultiplayer)
-        {
-            Log.D("[EventManager]: Hooking multiplayer events...");
-            Hook<ToggledUltimateModMessageReceivedEvent>();
-            if (Context.IsMainPlayer)
-            {
-                Hook<HostPeerConnectedEvent>();
-                Hook<HostPeerDisconnectedEvent>();
-            }
-        }
-
-        Log.D($"[EventManager]: Done hooking event for {Game1.player.Name}.");
+        Log.D($"[EventManager]: Done enabling event for {Game1.player.Name}.");
     }
 
-    /// <summary>Hook all events required by the specified profession.</summary>
+    /// <summary>Enable all events required by the specified profession.</summary>
     /// <param name="profession">A profession.</param>
-    internal void HookForProfession(Profession profession)
+    internal void EnableForProfession(Profession profession)
     {
         if (profession == Profession.Conservationist && !Context.IsMainPlayer ||
-            !EventsByProfession.TryGetValue(profession, out var events)) return;
+            !_EventsByProfession.TryGetValue(profession, out var events)) return;
 
-        Log.D($"[EventManager]: Hooking events for {profession}...");
-        Hook(events.ToArray());
+        Log.D($"[EventManager]: Enabling events for {profession}...");
+        Enable(events.ToArray());
     }
 
-    /// <summary>Unhook all events related to the specified profession.</summary>
+    /// <summary>Disable all events related to the specified profession.</summary>
     /// <param name="profession">A profession.</param>
-    internal void UnhookForProfession(Profession profession)
+    internal void DisableForProfession(Profession profession)
     {
         if (profession == Profession.Conservationist && Game1.game1.DoesAnyPlayerHaveProfession(Profession.Conservationist, out _)
-            || !EventsByProfession.TryGetValue(profession, out var events)) return;
+            || !_EventsByProfession.TryGetValue(profession, out var events)) return;
 
         if (profession == Profession.Spelunker) events.Add(typeof(SpelunkerUpdateTickedEvent));
 
@@ -140,7 +122,7 @@ internal class ProfessionEventManager : EventManager
             profession == Profession.Scavenger && Game1.player.HasProfession(Profession.Prospector))
             except.Add(typeof(TrackerButtonsChangedEvent));
 
-        Log.D($"[EventManager]: Unhooking {profession} events...");
-        Unhook(events.Except(except).ToArray());
+        Log.D($"[EventManager]: Disabling {profession} events...");
+        Disable(events.Except(except).ToArray());
     }
 }

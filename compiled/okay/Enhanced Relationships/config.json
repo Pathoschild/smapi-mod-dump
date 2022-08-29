@@ -1,4 +1,5 @@
 {
+  "EnableDetailedLogging": false,
   "GetMail": true,
   "AmtOfGiftsToKeepNpcHappy": 1,
   "BasicAmount": 10,

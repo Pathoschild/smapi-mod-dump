@@ -13,7 +13,7 @@ namespace DaLion.Stardew.Ponds.Integrations;
 #region using directives
 
 using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.WalkOfLife;
 
 #endregion using directives
 
@@ -25,10 +25,10 @@ internal sealed class ImmersiveProfessionsIntegration : BaseIntegration<IImmersi
     public ImmersiveProfessionsIntegration(IModRegistry modRegistry)
         : base("Immersive Professions", "DaLion.ImmersiveProfessions", "4.0.0", modRegistry) { }
 
-    /// <summary>Register the ring recipe provider.</summary>
+    /// <summary>Cache the immersive professions api.</summary>
     public void Register()
     {
         AssertLoaded();
-        ModEntry.ProfessionsAPI = ModApi;
+        ModEntry.ProfessionsApi = ModApi;
     }
 }

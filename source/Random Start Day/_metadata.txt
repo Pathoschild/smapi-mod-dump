@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/idermailer/RandomStartDay
+   Git: https://github.com/idermailer/RandomStartDay.git
+
+mods:
+   Random Start Day
+
+latest commit:
+   commit 45ccee89bcb8535a412e96886d301a6a221eb163
+   Author: IN <IN@DESKTOP-94LCCCD>
+   Date:   Tue Aug 2 21:29:31 2022 +0900
+   
+       ì´ˆê¸° ì»¤ë°‹.
+   

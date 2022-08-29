@@ -8,5 +8,8 @@
   "Verbose": false,
   "Debug": false,
   "InLawComments": "VanillaOnly",
-  "ReplacerCompat": false
+  "ReplacerCompat": false,
+  "NeedsConfirmation": false,
+  "RejectionDialogue": true,
+  "Gifts": true
 }

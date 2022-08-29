@@ -1,0 +1,7 @@
+{
+  "ModEnabled": true,
+  "ModKey": "LeftAlt",
+  "ConsumeBlock": true,
+  "ShowBlockOutLine": true,
+  "BlockOutLineOpacity": 0.5
+}

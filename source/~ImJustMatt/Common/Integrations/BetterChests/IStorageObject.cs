@@ -12,7 +12,6 @@ namespace StardewMods.Common.Integrations.BetterChests;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Network;
 
@@ -52,12 +51,6 @@ public interface IStorageObject : IStorageData, IEqualityComparer<IStorageObject
     public int MenuCapacity { get; }
 
     /// <summary>
-    ///     Gets the extra vertical space needed for the <see cref="InventoryMenu" /> based on
-    ///     <see cref="IStorageData.ResizeChestMenuRows" />.
-    /// </summary>
-    public int MenuExtraSpace { get; }
-
-    /// <summary>
     ///     Gets the number of rows to display on the <see cref="InventoryMenu" /> based on
     ///     <see cref="IStorageData.ResizeChestMenuRows" />.
     /// </summary>
@@ -74,19 +67,14 @@ public interface IStorageObject : IStorageData, IEqualityComparer<IStorageObject
     public NetMutex? Mutex { get; }
 
     /// <summary>
-    ///     Gets the parent context where this storage is contained.
-    /// </summary>
-    public object? Parent { get; }
-
-    /// <summary>
     ///     Gets the coordinate of this object.
     /// </summary>
     public Vector2 Position { get; }
 
     /// <summary>
-    ///     Gets or sets the storage data for this type of storage.
+    ///     Gets the source context where this storage is contained.
     /// </summary>
-    public IStorageData Type { get; set; }
+    public object? Source { get; }
 
     /// <summary>
     ///     Attempts to add an item into the storage.

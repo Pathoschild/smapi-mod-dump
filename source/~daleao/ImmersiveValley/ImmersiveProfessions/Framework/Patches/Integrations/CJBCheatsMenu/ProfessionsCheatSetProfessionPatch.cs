@@ -13,11 +13,10 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.CJBCheatsMen
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -25,20 +24,13 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("CJBok.CheatsMenu")]
 internal sealed class ProfessionsCheatSetProfessionPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ProfessionsCheatSetProfessionPatch()
     {
-        try
-        {
-            Target = "CJBCheatsMenu.Framework.Cheats.Skills.ProfessionsCheat".ToType().RequireMethod("SetProfession");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "CJBCheatsMenu.Framework.Cheats.Skills.ProfessionsCheat".ToType().RequireMethod("SetProfession");
     }
 
     #region harmony patches

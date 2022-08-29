@@ -21,6 +21,8 @@
 		<Nullable>enable</Nullable>
 		<Platforms>x64</Platforms>
 		<ModFolderName>SpriteMaster.Timer</ModFolderName>
+		
+		<RestoreAdditionalProjectSources>$(RestoreSources);$(SolutionDir)Ext\SMAPI\src\SMAPI.ModBuildConfig\bin\Release;https://api.nuget.org/v3/index.json</RestoreAdditionalProjectSources>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -52,7 +54,7 @@
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
 		<PackageReference Include="Pastel" Version="3.0.1" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1-sm2" />
 	</ItemGroup>
 	
 	<PropertyGroup>

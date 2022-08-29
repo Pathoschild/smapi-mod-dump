@@ -11,7 +11,7 @@
 {
   "Name": "Farmer Helper",
   "Author": "aedenthorn",
-  "Version": "0.3.3",
+  "Version": "0.3.4",
   "Description": "Farmer Helper.",
   "UniqueID": "aedenthorn.FarmerHelper",
   "EntryDll": "FarmerHelper.dll",

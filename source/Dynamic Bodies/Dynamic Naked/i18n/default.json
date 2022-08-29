@@ -11,6 +11,13 @@
 {
 	"color_specialist":"Color Specialist",
 	"cosmetic_patient":"Cosmetic Patient",
+	"body": "Body",
+	"face": "Face",
+	"lash_color":"Lash color",
+	"sclera_color":"Sclera color",
+	"eyes_style": "Eyes Style",
+	"ears_style": "Ears Style",
+	"nose_style": "Nose Style",
 	"box_dye_user":"Box Dye User",
 	"cost":"Cost",
 	"free":"free",

@@ -13,7 +13,7 @@ namespace DaLion.Stardew.Professions.Integrations;
 #region using directives
 
 using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.LoveOfCooking;
 
 #endregion using directives
 

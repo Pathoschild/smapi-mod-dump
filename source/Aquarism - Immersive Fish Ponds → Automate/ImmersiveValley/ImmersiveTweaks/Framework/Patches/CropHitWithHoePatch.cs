@@ -16,13 +16,10 @@ using Common;
 using Common.Extensions.Reflection;
 using Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -75,9 +72,9 @@ internal sealed class CropHitWithHoePatch : Common.Harmony.HarmonyPatch
     {
         if (!ModEntry.Config.ProfessionalForagingInGingerIsland || !Game1.player.professions.Contains(Farmer.botanist)) return ginger;
 
-        ginger.Quality = ModEntry.ProfessionsAPI is null
+        ginger.Quality = ModEntry.ProfessionsApi is null
             ? SObject.bestQuality
-            : ModEntry.ProfessionsAPI.GetEcologistForageQuality(Game1.player);
+            : ModEntry.ProfessionsApi.GetEcologistForageQuality(Game1.player);
         return ginger;
     }
 

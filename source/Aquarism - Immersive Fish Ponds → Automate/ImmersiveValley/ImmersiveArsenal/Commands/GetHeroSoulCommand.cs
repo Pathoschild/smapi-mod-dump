@@ -14,9 +14,6 @@ namespace DaLion.Stardew.Arsenal.Commands;
 
 using Common;
 using Common.Commands;
-using JetBrains.Annotations;
-using StardewValley;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -29,7 +26,7 @@ internal sealed class GetHeroSoulCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "hero_soul";
+    public override string[] Triggers { get; } = { "get_hero_soul", "get_soul", "hero_soul", "soul" };
 
     /// <inheritdoc />
     public override string Documentation => "Add the specified amount of Hero Soul to the local player's inventory.";
@@ -46,6 +43,6 @@ internal sealed class GetHeroSoulCommand : ConsoleCommand
 
         var heroSoul = (SObject)ModEntry.DynamicGameAssetsApi!.SpawnDGAItem(ModEntry.Manifest.UniqueID + "/Hero Soul");
         heroSoul.Stack = stack;
-        Utility.CollectOrDrop(heroSoul);
+        StardewValley.Utility.CollectOrDrop(heroSoul);
     }
 }

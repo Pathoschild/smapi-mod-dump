@@ -11,7 +11,7 @@
 {
   "Name": "Walk Of Life - Immersive Professions",
   "Author": "DaLion",
-  "Version": "5.0.4",
+  "Version": "5.1.0",
   "Description": "An immersive overhaul of Stardew professions.",
   "UniqueID": "DaLion.ImmersiveProfessions",
   "EntryDll": "ImmersiveProfessions.dll",

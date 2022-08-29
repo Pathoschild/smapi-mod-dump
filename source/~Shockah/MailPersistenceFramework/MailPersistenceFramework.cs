@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Shockah.MailPersistenceFramework
 {
-	public class MailPersistenceFramework: Mod, IMailPersistenceFrameworkApi
+	public class MailPersistenceFramework : Mod, IMailPersistenceFrameworkApi
 	{
 		private static readonly string PersistedMailsSaveDataKey = "PersistedMails";
 		private static readonly string NewMailMessage = "NewMail";
@@ -29,7 +29,7 @@ namespace Shockah.MailPersistenceFramework
 
 		private readonly IList<MailData<Item>> Mails = new List<MailData<Item>>();
 		private readonly IList<ModOverrideEntry> Overrides = new List<ModOverrideEntry>();
-		
+
 		public override void Entry(IModHelper helper)
 		{
 			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;

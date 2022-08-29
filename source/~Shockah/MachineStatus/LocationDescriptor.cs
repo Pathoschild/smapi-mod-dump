@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace Shockah.MachineStatus
 {
-	internal readonly struct LocationDescriptor: IEquatable<LocationDescriptor>
+	internal readonly struct LocationDescriptor : IEquatable<LocationDescriptor>
 	{
 		public readonly string Name { get; }
 		public readonly string TypeName { get; }

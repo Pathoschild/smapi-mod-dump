@@ -25,21 +25,14 @@ namespace stardew_access
             if (helper == null)
                 return;
 
+            #region Read Tile
             helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string commmand, string[] args) =>
-            {
-                MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
-                helper.WriteConfig(MainClass.Config);
+                        {
+                            MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
+                            helper.WriteConfig(MainClass.Config);
 
-                MainClass.DebugLog("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
-            });
-
-            helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string commmand, string[] args) =>
-            {
-                MainClass.Config.SnapMouse = !MainClass.Config.SnapMouse;
-                helper.WriteConfig(MainClass.Config);
-
-                MainClass.DebugLog("Snap Mouse is " + (MainClass.Config.SnapMouse ? "on" : "off"));
-            });
+                            MainClass.DebugLog("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
+                        });
 
             helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string commmand, string[] args) =>
             {
@@ -49,6 +42,16 @@ namespace stardew_access
                 MainClass.DebugLog("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
             });
 
+            helper.ConsoleCommands.Add("watered", "Toggle speaking watered or unwatered for crops.", (string commmand, string[] args) =>
+            {
+                MainClass.Config.WateredToggle = !MainClass.Config.WateredToggle;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("Watered toggle is " + (MainClass.Config.WateredToggle ? "on" : "off"));
+            });
+            #endregion
+
+            #region Radar Feature
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.Config.Radar = !MainClass.Config.Radar;
@@ -57,7 +60,6 @@ namespace stardew_access
                 MainClass.DebugLog("Radar " + (MainClass.Config.Radar ? "on" : "off"));
             });
 
-            #region Radar Feature
             helper.ConsoleCommands.Add("rdebug", "Toggle debugging in radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.radarDebug = !MainClass.radarDebug;
@@ -484,12 +486,13 @@ namespace stardew_access
             });
             #endregion
 
+            #region Other
             helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string commmand, string[] args) =>
-            {
-                MainClass.ScreenReader.InitializeScreenReader();
+                        {
+                            MainClass.ScreenReader.InitializeScreenReader();
 
-                MainClass.DebugLog("Screen Reader refreshed!");
-            });
+                            MainClass.DebugLog("Screen Reader refreshed!");
+                        });
 
             helper.ConsoleCommands.Add("refmc", "Refresh mod config", (string commmand, string[] args) =>
             {
@@ -504,6 +507,31 @@ namespace stardew_access
 
                 MainClass.DebugLog("Static tiles refreshed!");
             });
+
+            helper.ConsoleCommands.Add("hnspercent", "Toggle between speaking in percentage or full health and stamina.", (string commmand, string[] args) =>
+            {
+                MainClass.Config.HealthNStaminaInPercentage = !MainClass.Config.HealthNStaminaInPercentage;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("Speaking in percentage is " + (MainClass.Config.HealthNStaminaInPercentage ? "on" : "off"));
+            });
+
+            helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string commmand, string[] args) =>
+            {
+                MainClass.Config.SnapMouse = !MainClass.Config.SnapMouse;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("Snap Mouse is " + (MainClass.Config.SnapMouse ? "on" : "off"));
+            });
+
+            helper.ConsoleCommands.Add("warning", "Toggle warnings feature.", (string commmand, string[] args) =>
+            {
+                MainClass.Config.Warning = !MainClass.Config.Warning;
+                helper.WriteConfig(MainClass.Config);
+
+                MainClass.DebugLog("Warnings is " + (MainClass.Config.Warning ? "on" : "off"));
+            });
+            #endregion
         }
     }
 }

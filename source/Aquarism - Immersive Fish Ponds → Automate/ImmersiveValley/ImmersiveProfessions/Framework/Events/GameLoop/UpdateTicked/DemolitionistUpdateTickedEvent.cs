@@ -13,9 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 using System;
 using System.Linq;
 
@@ -39,7 +37,7 @@ internal sealed class DemolitionistUpdateTickedEvent : UpdateTickedEvent
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        if (ModEntry.PlayerState.DemolitionistExcitedness <= 0) Unhook();
+        if (ModEntry.State.DemolitionistExcitedness <= 0) Disable();
 
         var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == _buffId);
         if (buff is not null) return;
@@ -54,7 +52,7 @@ internal sealed class DemolitionistUpdateTickedEvent : UpdateTickedEvent
                 0,
                 0,
                 0,
-                ModEntry.PlayerState.DemolitionistExcitedness,
+                ModEntry.State.DemolitionistExcitedness,
                 0,
                 0,
                 1,
@@ -65,12 +63,12 @@ internal sealed class DemolitionistUpdateTickedEvent : UpdateTickedEvent
                 which = _buffId,
                 sheetIndex = BUFF_SHEET_INDEX_I,
                 millisecondsDuration = 555,
-                description = ModEntry.i18n.Get("demolitionist.buffdesc")
+                description = ModEntry.i18n.Get("demolitionist.buff.desc")
             }
         );
 
-        var buffDecay = ModEntry.PlayerState.DemolitionistExcitedness >= 4 ? 2 : 1;
-        ModEntry.PlayerState.DemolitionistExcitedness =
-            Math.Max(0, ModEntry.PlayerState.DemolitionistExcitedness - buffDecay);
+        var buffDecay = ModEntry.State.DemolitionistExcitedness >= 4 ? 2 : 1;
+        ModEntry.State.DemolitionistExcitedness =
+            Math.Max(0, ModEntry.State.DemolitionistExcitedness - buffDecay);
     }
 }

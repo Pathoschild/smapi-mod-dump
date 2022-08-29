@@ -12,9 +12,8 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 
 #region using directives
 
-using Common.Data;
+using Common.Extensions.Stardew;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Buildings;
 
 #endregion using directives
@@ -36,15 +35,15 @@ internal sealed class FishPondOnFishTypeChangedPatch : Common.Harmony.HarmonyPat
     {
         if (__instance.fishType.Value > 0) return;
 
-        ModDataIO.WriteTo(__instance, "FishQualities", null);
-        ModDataIO.WriteTo(__instance, "FamilyQualities", null);
-        ModDataIO.WriteTo(__instance, "FamilyLivingHere", null);
-        ModDataIO.WriteTo(__instance, "DaysEmpty", 0.ToString());
-        ModDataIO.WriteTo(__instance, "SeaweedLivingHere", null);
-        ModDataIO.WriteTo(__instance, "GreenAlgaeLivingHere", null);
-        ModDataIO.WriteTo(__instance, "WhiteAlgaeLivingHere", null);
-        ModDataIO.WriteTo(__instance, "CheckedToday", null);
-        ModDataIO.WriteTo(__instance, "ItemsHeld", null);
+        __instance.Write("FishQualities", null);
+        __instance.Write("FamilyQualities", null);
+        __instance.Write("FamilyLivingHere", null);
+        __instance.Write("DaysEmpty", 0.ToString());
+        __instance.Write("SeaweedLivingHere", null);
+        __instance.Write("GreenAlgaeLivingHere", null);
+        __instance.Write("WhiteAlgaeLivingHere", null);
+        __instance.Write("CheckedToday", null);
+        __instance.Write("ItemsHeld", null);
     }
 
     #endregion harmony patches

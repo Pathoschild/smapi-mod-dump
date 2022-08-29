@@ -13,9 +13,7 @@ namespace DaLion.Stardew.Tools.Framework.Effects;
 #region using directives
 
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.TerrainFeatures;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

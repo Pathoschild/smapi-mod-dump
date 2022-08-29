@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using MobilePhone.Api;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -125,11 +126,14 @@ namespace MobilePhone
             List<Response> answers = new List<Response>();
             if (npc.CurrentDialogue != null && npc.CurrentDialogue.Count > 0)
                 answers.Add(new Response("PhoneApp_InCall_Chat", Helper.Translation.Get("chat")));
-            
-            if (npc.currentLocation is not null && (npc.currentLocation.Name == npc.DefaultMap || Helper.Translation.Get($"npc-in-{npc.currentLocation.Name}").HasValue()))
+            string normilizedLocationValue = npc.currentLocation.Name.Replace("Custom_", string.Empty);
+            Translation npcLocationResponse = Helper.Translation.Get($"location-{normilizedLocationValue}");
+
+            if (npc.currentLocation is not null && (npc.currentLocation.Name == npc.DefaultMap || npcLocationResponse.HasValue()))
             {
                 answers.Add(new Response("PhoneApp_InCall_Locate", Helper.Translation.Get("locate")));
             }
+
             if (inCallReminiscence == null)
             {
                 Reminiscence r = Helper.Data.ReadJsonFile<Reminiscence>(Path.Combine("assets", "events", $"{npc.Name}.json")) ?? new Reminiscence();
@@ -157,10 +161,23 @@ namespace MobilePhone
                     }
                 }
             }
-            if (ModEntry.npcAdventureModApi != null && ModEntry.npcAdventureModApi.IsPossibleCompanion(npc) && ModEntry.npcAdventureModApi.CanAskToFollow(npc) && !npc.isSleeping.Value)
+
+            // !Updated Code.
+            /* Changes:
+             * 1. Added variables, to more comfortable debugging (in byte-code there is no difference btw);
+             * 2. Updated function calls to new 'NPC Adventures API' version;
+             * 2.1. I'm not sure, but added standalone check to NPC is not recruited yet, to prevent re-recruiting same characters
+             *      (Earlier, as I think, it was part of function 'CarRecruit()').
+             */
+
+            var api = ModEntry.npcAdventureModApi;
+
+            if (CheckToRecruit(api, npc))
             {
                 answers.Add(new Response("PhoneApp_InCall_Recruit", Helper.Translation.Get("recruit")));
             }
+            // Update end.
+
             if (npc.Name == "Robin" && Game1.player.daysUntilHouseUpgrade.Value < 0 && !Game1.getFarm().isThereABuildingUnderConstruction())
             {
                 if (Game1.player.HouseUpgradeLevel < 3)
@@ -173,6 +190,43 @@ namespace MobilePhone
             Game1.objectDialoguePortraitPerson = npc;
         }
 
+        /// <summary>
+        /// !Updated code. New function. <br />
+        /// Make complex check to current NPC to recruit ability.
+        /// </summary>
+        /// <param name="api">NPC Adventure api instance.</param>
+        /// <param name="npc">NPC to check.</param>
+        /// <returns>
+        /// If NPC can be recruited — true. <br />
+        /// In all other cases — false;
+        /// </returns>
+        private static bool CheckToRecruit(INpcAdventureModApi api, NPC npc)
+        {
+            switch (api)
+            {
+                case null:
+                    return false;
+
+                default:
+                    if (!api.CanRecruitCompanions())
+                        return false;
+
+                    else if (!api.IsPossibleCompanion(npc))
+                        return false;
+
+                    else if (!api.CanRecruit(Game1.player, npc))
+                        return false;
+
+                    else if (npc.isSleeping.Value)
+                        return false;
+
+                    else if (api.IsRecruited(npc))
+                        return false;
+                    break;
+            }
+
+            return true;
+        }
 
         private static async void ChatOnPhone(NPC npc)
         {
@@ -238,11 +292,13 @@ namespace MobilePhone
                 return;
             }
             var dialogueDic = Game1.content.Load<Dictionary<string, string>>($"Characters/Dialogue/{npc.Name}");
-            string key = npc.currentLocation == Game1.player.currentLocation ? $"location-here" : npc.currentLocation.Name == npc.DefaultMap ? $"location-home" : $"location-{npc.currentLocation.Name}";
+            string normalizedLocation = npc.currentLocation.Name.Replace("Custom_", string.Empty);
+            string key = npc.currentLocation == Game1.player.currentLocation ? $"location-here" : npc.currentLocation.Name == npc.DefaultMap ? $"location-home" : $"location-{normalizedLocation}";
             if (dialogueDic == null || !dialogueDic.TryGetValue($"MobilePhone_{key}", out string message))
             {
                 message = Helper.Translation.Get(key);
             }
+
             Game1.afterDialogues = (Game1.afterFadeFunction)Delegate.Combine(Game1.afterDialogues, new Game1.afterFadeFunction(delegate ()
             {
                 ShowMainCallDialogue(npc);
@@ -288,7 +344,7 @@ namespace MobilePhone
                 new Response("PhoneApp_InCall_Recruit_Yes", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes")),
                 new Response("PhoneApp_InCall_No", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No"))
             };
-            Game1.player.currentLocation.createQuestionDialogue(ModEntry.npcAdventureModApi.LoadString("Strings/Strings:askToFollow", npc.Name), responses, CallDialogueAnswer);
+            Game1.player.currentLocation.createQuestionDialogue(string.Format(Helper.Translation.Get("ask-x-to-follow"), npc.displayName), responses, CallDialogueAnswer);
         }
         private static void BuildOnPhone()
         {
@@ -459,7 +515,7 @@ namespace MobilePhone
 
             if (ModEntry.npcAdventureModApi.CanRecruit(Game1.player, npc))
             {
-                Game1.drawDialogue(npc, ModEntry.npcAdventureModApi.LoadString($"Dialogue/{npc.Name}:companionAccepted"));
+                Game1.drawDialogue(npc, Helper.Translation.Get("recruit-success"));
                 Game1.afterDialogues = delegate ()
                 {
                     DoRecruit(npc);
@@ -467,7 +523,7 @@ namespace MobilePhone
             }
             else
             {
-                Game1.drawDialogue(npc, ModEntry.npcAdventureModApi.LoadString($"Dialogue/{npc.Name}:" + (Game1.timeOfDay >= 2200 ? "companionRejectedNight" : "companionRejected")));
+                Game1.drawDialogue(npc, Helper.Translation.Get("recruit-fail"));
                 Game1.afterDialogues = delegate ()
                 {
                     ShowMainCallDialogue(npc);

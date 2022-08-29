@@ -13,23 +13,20 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 #region using directives
 
 using Common;
-using Common.Data;
 using Common.Extensions;
 using Common.Extensions.Collections;
 using Common.Extensions.Reflection;
+using Common.Extensions.Stardew;
 using Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Netcode;
-using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -39,7 +36,9 @@ internal sealed class FishPondDoActionPatch : Common.Harmony.HarmonyPatch
     private delegate void ShowObjectThrownIntoPondAnimationDelegate(FishPond instance, Farmer who, SObject whichObject,
         DelayedAction.delayedBehavior? callback = null);
 
-    private static ShowObjectThrownIntoPondAnimationDelegate? _ShowObjectThrownIntoPondAnimation;
+    private static readonly Lazy<ShowObjectThrownIntoPondAnimationDelegate> _ShowObjectThrownIntoPondAnimation =
+        new(() => typeof(FishPond).RequireMethod("showObjectThrownIntoPondAnimation")
+            .CompileUnboundDelegate<ShowObjectThrownIntoPondAnimationDelegate>());
 
     /// <summary>Construct an instance.</summary>
     internal FishPondDoActionPatch()
@@ -118,7 +117,7 @@ internal sealed class FishPondDoActionPatch : Common.Harmony.HarmonyPatch
                 .Retreat()
                 .Insert(
                     new CodeInstruction(OpCodes.Call,
-                        typeof(Framework.Utils).RequireMethod(nameof(Framework.Utils.IsExtendedFamilyMember)))
+                        typeof(Utils).RequireMethod(nameof(Utils.IsExtendedFamilyMember)))
                 )
                 .SetOpCode(OpCodes.Brtrue_S);
         }
@@ -172,12 +171,11 @@ internal sealed class FishPondDoActionPatch : Common.Harmony.HarmonyPatch
             !pond.HasRadioactiveFish()) return false;
 
         var heldMinerals =
-            ModDataIO.ReadFrom(pond, "MetalsHeld")
-                .ParseList<string>(";")?
-                .Select(li => li.ParseTuple<int, int>())
+            pond.Read("MetalsHeld")
+                .ParseList<string>(";")
+                .Select(li => li?.ParseTuple<int, int>())
                 .WhereNotNull()
-                .ToList()
-            ?? new List<(int, int)>();
+                .ToList();
         var count = heldMinerals.Sum(m => new SObject(m.Item1, 1).IsNonRadioactiveIngot() ? 5 : 1);
         if (count >= 20)
         {
@@ -189,11 +187,9 @@ internal sealed class FishPondDoActionPatch : Common.Harmony.HarmonyPatch
         if (days == 0) return false;
 
         heldMinerals.Add((metallic.ParentSheetIndex, days));
-        ModDataIO.WriteTo(pond, "MetalsHeld",
+        pond.Write("MetalsHeld",
             string.Join(';', heldMinerals.Select(m => string.Join(',', m.Item1, m.Item2))));
-        _ShowObjectThrownIntoPondAnimation ??= typeof(FishPond).RequireMethod("showObjectThrownIntoPondAnimation")
-            .CompileUnboundDelegate<ShowObjectThrownIntoPondAnimationDelegate>();
-        _ShowObjectThrownIntoPondAnimation(pond, who, who.ActiveObject);
+        _ShowObjectThrownIntoPondAnimation.Value(pond, who, who.ActiveObject);
         who.reduceActiveItemByOne();
         return true;
     }

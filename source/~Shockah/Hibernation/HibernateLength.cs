@@ -14,7 +14,14 @@ using System.Text.RegularExpressions;
 
 namespace Shockah.Hibernation
 {
-	public enum HibernateLengthUnit { Nights, Weeks, Seasons, Years, Forever }
+	public enum HibernateLengthUnit
+	{
+		Nights,
+		Weeks,
+		Seasons,
+		Years,
+		Forever
+	}
 
 	public readonly struct HibernateLength
 	{

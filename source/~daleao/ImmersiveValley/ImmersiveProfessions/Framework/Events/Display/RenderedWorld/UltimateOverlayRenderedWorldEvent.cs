@@ -13,12 +13,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.Display;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
+using Ultimates;
+using VirtualProperties;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, UltimateEvent]
 internal sealed class UltimateOverlayRenderedWorldEvent : RenderedWorldEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,12 +30,13 @@ internal sealed class UltimateOverlayRenderedWorldEvent : RenderedWorldEvent
     /// <inheritdoc />
     protected override void OnRenderedWorldImpl(object? sender, RenderedWorldEventArgs e)
     {
-        if (ModEntry.PlayerState.RegisteredUltimate is null)
+        var ultimate = Game1.player.get_Ultimate();
+        if (ultimate is null)
         {
-            Unhook();
+            Disable();
             return;
         }
 
-        ModEntry.PlayerState.RegisteredUltimate.Overlay.Draw(e.SpriteBatch);
+        ultimate.Overlay.Draw(e.SpriteBatch);
     }
 }

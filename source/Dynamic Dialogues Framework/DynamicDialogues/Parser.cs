@@ -42,7 +42,6 @@ namespace DynamicDialogues
         }
         internal static bool InRequiredLocation(NPC who, string place)
         {
-
             if (who.currentLocation.Name == place)
             {
                 return true;
@@ -93,17 +92,23 @@ namespace DynamicDialogues
                     return false;
                 }
 
-                //if array time is greater than 0 and location is any, return false
-                if (time <= 0 && data.Location == "any")
+                if (time > 0)
                 {
-                    ModEntry.Mon.Log($"You must either set an hour or a location.");
-                    return false;
-                }
+                    if (time <= 600 || time >= 2600)
+                    {
+                        ModEntry.Mon.Log($"Addition has a faulty hour!", LogLevel.Warn);
+                        return false;
+                    }
 
-                //if time is greater than 0 but not allowed value, return false
-                else if (time > 0 && (time <= 600 || time >= 2600))
+                    if (data.From is not 600 || data.To is not 2600)
+                    {
+                        ModEntry.Mon.Log($"'From/To' and 'Time' are mutually exclusive.", LogLevel.Warn);
+                        return false;
+                    }
+                }
+                else if (data.From is 600 && data.To is 2600 && data.Location == "any") //if time isnt set, and from-to is empty + no location
                 {
-                    ModEntry.Mon.Log($"Addition has a faulty hour!", LogLevel.Warn);
+                    ModEntry.Mon.Log($"You must either set a specific Time, a From-To range, or a Location.");
                     return false;
                 }
 
@@ -137,6 +142,49 @@ namespace DynamicDialogues
                 ModEntry.Mon.Log($"Error found in contentpack: {ex}", LogLevel.Error);
                 return false;
             }
+        }
+
+        internal static bool InTimeRange(int newTime, int patchTime, int from, int to, NPC who)
+        {
+            var MapWithNPC = who.currentLocation.Name;
+
+            if (patchTime > 0)
+            {
+                if(ModEntry.Debug)
+                {
+                    ModEntry.Mon.Log($"'Time' = {patchTime}. Returning whether it equals e.NewTime...");
+                }
+
+                return patchTime.Equals(newTime);
+            }
+            else
+            {
+                if (who.isMovingOnPathFindPath.Value) // to make sure its not patched when NPC is moving
+                {
+                    ModEntry.Mon.Log($"Character {who.Name} is moving, patch won't be applied yet");
+                    return false;
+                }
+
+                if (!(Game1.player.currentLocation.Name == MapWithNPC))
+                {
+                    if (ModEntry.Debug)
+                    {
+                        ModEntry.Mon.Log("Player isnt in NPC location. Returning false.");
+                    }
+                    return false;
+                }
+
+                if(newTime >= from && newTime <= to)
+                {
+                    if (ModEntry.Debug)
+                    {
+                        ModEntry.Mon.Log("NewTime is bigger than 'from' and lesser than 'to'. Returning true.");
+                    }
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

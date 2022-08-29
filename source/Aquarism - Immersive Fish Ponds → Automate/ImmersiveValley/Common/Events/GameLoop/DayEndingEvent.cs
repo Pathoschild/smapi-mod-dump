@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 
 #endregion using directives
 
-/// <summary>Wrapper for <see cref="IGameLoopEvents.DayEnding"/> allowing dynamic hooking / unhooking.</summary>
+/// <summary>Wrapper for <see cref="IGameLoopEvents.DayEnding"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class DayEndingEvent : ManagedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,7 +29,7 @@ internal abstract class DayEndingEvent : ManagedEvent
     /// <param name="e">The event arguments.</param>
     internal void OnDayEnding(object? sender, DayEndingEventArgs e)
     {
-        if (IsHooked) OnDayEndingImpl(sender, e);
+        if (IsEnabled) OnDayEndingImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnDayEnding" />

@@ -3,6 +3,7 @@
   "ReadyToSwim": true,
   "SwimSuitAlways": false,
   "NoAutoSwimSuit": false,
+  "ShowOxygenBar": true,
   "JumpTimeInMilliseconds": 500,
   "SwimKey": "J",
   "SwimSuitKey": "K",
@@ -29,5 +30,5 @@
   "MinOceanChests": 0,
   "MaxOceanChests": 3,
   "SwimRestoresVitals": false,
-  "ManualJumpButton": "MouseLeft"
+  "ManualJumpButton": "MouseRight"
 }

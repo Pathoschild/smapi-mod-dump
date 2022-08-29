@@ -18,7 +18,7 @@ namespace Shockah.ProjectFluent
 		IEnumerable<string> GetFilePathCandidates(IGameLocale locale, string directory, string? file);
 	}
 
-	internal class FluentPathProvider: IFluentPathProvider
+	internal class FluentPathProvider : IFluentPathProvider
 	{
 		public IEnumerable<string> GetFilePathCandidates(IGameLocale locale, string directory, string? file)
 		{

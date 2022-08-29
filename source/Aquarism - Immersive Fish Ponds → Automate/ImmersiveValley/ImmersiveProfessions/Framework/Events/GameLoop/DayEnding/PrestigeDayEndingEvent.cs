@@ -14,9 +14,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 using Common.Events;
 using Extensions;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 using System.Collections.Generic;
 
 #endregion using directives
@@ -24,7 +22,7 @@ using System.Collections.Generic;
 [UsedImplicitly]
 internal sealed class PrestigeDayEndingEvent : DayEndingEvent
 {
-    private static Queue<ISkill> _ToReset => ModEntry.PlayerState.SkillsToReset;
+    private static Queue<ISkill> _ToReset => ModEntry.State.SkillsToReset;
 
     /// <summary>Construct an instance.</summary>
     /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
@@ -48,6 +46,6 @@ internal sealed class PrestigeDayEndingEvent : DayEndingEvent
             }
         }
 
-        Unhook();
+        Disable();
     }
 }

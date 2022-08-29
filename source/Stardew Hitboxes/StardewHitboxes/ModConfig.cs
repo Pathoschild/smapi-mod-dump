@@ -28,6 +28,10 @@ namespace StardewHitboxes
 
         public string ProjectileHitboxColor { get; set; } = "#FFA500";
 
+        public string TerrainFeatureHitboxColor { get; set; } = "#3432A8";
+
+        public string ObjectsHitboxColor { get; set; } = "#3432A8";
+
         public float HitboxOpacity { get; set; } = 0.6f;
     }
 }

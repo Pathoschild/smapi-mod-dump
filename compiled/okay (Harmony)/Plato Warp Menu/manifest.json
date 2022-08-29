@@ -1,10 +1,20 @@
 {
   "Name": "Plato Warp Menu",
   "Author": "Platonymous",
-  "Version": "1.10.0",
+  "Version": "1.10.1",
   "Description": "Platonymous Warp Menu",
   "UniqueID": "Platonymous.PlatoWarpMenu",
   "EntryDll": "PlatoWarpMenu.dll",
-  "MinimumApiVersion": "3.2.0",
-  "UpdateKeys": [ "Nexus:5384" ]
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:5384" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.PlatoTK",
+      "MinimumVersion": "1.8.0"
+    },
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "IsRequired": false
+    }
+  ]
 }

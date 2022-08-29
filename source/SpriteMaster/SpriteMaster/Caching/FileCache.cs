@@ -203,7 +203,7 @@ internal static class FileCache {
 
 			while (retries-- > 0) {
 				if (SavingMap.TryGetValue(path, out var state) && state != SaveState.Saved) {
-					Thread.Sleep(Config.FileCache.LockSleepMS);
+					Thread.Sleep(Config.FileCache.LockSleepMilliseconds);
 					continue;
 				}
 
@@ -264,7 +264,7 @@ internal static class FileCache {
 							return false;
 						case IOException iox when WasLocked(iox):
 							Debug.Trace($"File was locked when trying to load cache file '{path}': {ex} - {ex.Message} [{retries} retries]");
-							Thread.Sleep(Config.FileCache.LockSleepMS);
+							Thread.Sleep(Config.FileCache.LockSleepMilliseconds);
 							break;
 					}
 				}

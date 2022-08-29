@@ -27,7 +27,7 @@ using System.Reflection.Emit;
 
 namespace Shockah.Hibernation
 {
-	public class Hibernation: Mod
+	public class Hibernation : Mod
 	{
 		internal static Hibernation Instance { get; private set; } = null!;
 		internal ModConfig Config { get; private set; } = null!;

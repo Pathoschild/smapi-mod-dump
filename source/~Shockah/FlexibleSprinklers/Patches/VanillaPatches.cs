@@ -87,13 +87,16 @@ namespace Shockah.FlexibleSprinklers
 			done:;
 		}
 
-		private static GameLocation? RetrieveGameLocationForObject(SObject @object)
+		private static GameLocation? FindGameLocationForObject(SObject @object)
 		{
-			var location = FlexibleSprinklers.Instance.RetrieveGameLocationForObject(@object, CurrentLocation);
-			if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
-				FlexibleSprinklers.Instance.Monitor.LogOnce("Could not find the location the sprinkler is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
-			else
-				FlexibleSprinklers.Instance.Monitor.Log("Could not find the location the sprinkler is in.", LogLevel.Error);
+			var location = @object.FindGameLocation(CurrentLocation);
+			if (location is null)
+			{
+				if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
+					FlexibleSprinklers.Instance.Monitor.LogOnce("Could not find the location the sprinkler is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
+				else
+					FlexibleSprinklers.Instance.Monitor.Log("Could not find the location the sprinkler is in.", LogLevel.Error);
+			}
 			return location;
 		}
 
@@ -106,7 +109,7 @@ namespace Shockah.FlexibleSprinklers
 				return result;
 			}
 
-			var location = RetrieveGameLocationForObject(__instance);
+			var location = FindGameLocationForObject(__instance);
 			if (location is null)
 				return new List<Vector2>();
 
@@ -151,7 +154,7 @@ namespace Shockah.FlexibleSprinklers
 
 		private static bool Object_IsInSprinklerRangeBroadphase_Result(SObject __instance, Vector2 target)
 		{
-			var location = RetrieveGameLocationForObject(__instance);
+			var location = FindGameLocationForObject(__instance);
 			if (location is null)
 				return true;
 

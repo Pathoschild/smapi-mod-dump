@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Professions.Extensions;
 
 using Common.Extensions;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 
 #endregion using directives

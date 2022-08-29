@@ -281,23 +281,6 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 	internal PinnedSpan<T> Slice(int start) => new(ReferenceObject, InnerSpan.Slice(start));
 
 	/// <summary>
-	/// Forms a slice out of the given span, beginning at 'start'.
-	/// </summary>
-	/// <param name="start">The index at which to begin this slice.</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
-	/// Thrown when the specified <paramref name="start"/> index is not in range (&lt;0 or &gt;Length).
-	/// </exception>
-	[Pure]
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal PinnedSpan<T> SliceUnsafe(int start) {
-#if !SHIPPING
-		return Slice(start);
-#else
-		return new(ReferenceObject, InnerSpan.SliceUnsafe(start));
-#endif
-	}
-
-	/// <summary>
 	/// Forms a slice out of the given span, beginning at 'start', of given length
 	/// </summary>
 	/// <param name="start">The index at which to begin this slice.</param>
@@ -308,24 +291,6 @@ internal readonly ref struct PinnedSpan<T> where T : unmanaged {
 	[Pure]
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal PinnedSpan<T> Slice(int start, int length) => new(ReferenceObject, InnerSpan.Slice(start, length));
-
-	/// <summary>
-	/// Forms a slice out of the given span, beginning at 'start', of given length
-	/// </summary>
-	/// <param name="start">The index at which to begin this slice.</param>
-	/// <param name="length">The desired length for the slice (exclusive).</param>
-	/// <exception cref="System.ArgumentOutOfRangeException">
-	/// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
-	/// </exception>
-	[Pure]
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal PinnedSpan<T> SliceUnsafe(int start, int length) {
-#if !SHIPPING
-		return Slice(start, length);
-#else
-		return new(ReferenceObject, InnerSpan.SliceUnsafe(start, length));
-#endif
-	}
 
 	/// <summary>
 	/// Copies the contents of this span into a new array.  This heap

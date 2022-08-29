@@ -366,7 +366,9 @@ internal abstract class Scene : IDisposable {
 		}
 	}
 
-	internal void Tick() {
+	internal void Tick(in Override overrideState) {
+		using var tempOverrideState = new TempValue<Override>(ref Override.Instance, overrideState);
+
 		using var savedWeatherState = WeatherState.Backup();
 		CurrentWeatherState.Restore();
 		using var currentScope = new CurrentScope(this);

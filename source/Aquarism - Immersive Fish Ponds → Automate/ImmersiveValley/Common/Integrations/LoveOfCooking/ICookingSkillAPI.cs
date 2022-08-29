@@ -8,11 +8,10 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.LoveOfCooking;
 
 #region using directives
 
-using StardewValley;
 using System.Collections.Generic;
 
 #endregion using directives

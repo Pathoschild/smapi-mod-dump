@@ -14,6 +14,7 @@ using SpriteMaster.Types.MemoryCache;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace SpriteMaster.Caching;
 
@@ -25,9 +26,16 @@ internal static class SuspendedSpriteCache {
 		removalAction: OnEntryRemoved
 	);
 
+	internal static long Size => Cache.SizeBytes;
+
+	private static readonly ThreadLocal<bool> Resurrecting = new(false);
+
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static void OnEntryRemoved(EvictionReason reason, ulong key, ManagedSpriteInstance element) {
-		element?.Dispose();
+		if (!Resurrecting.Value) {
+
+			element?.DisposeSuspended();
+		}
 	}
 
 	internal static void Add(ManagedSpriteInstance instance) {
@@ -62,9 +70,32 @@ internal static class SuspendedSpriteCache {
 		Cache.RemoveFast(hash);
 	}
 
+	internal static bool Resurrect(ulong hash) {
+		Resurrecting.Value = true;
+		try {
+			var element = Cache.Remove(hash);
+			return element is not null;
+		}
+		finally {
+			Resurrecting.Value = false;
+		}
+	}
+
+	internal static void ResurrectFast(ulong hash) {
+		Resurrecting.Value = true;
+		try {
+			Cache.RemoveFast(hash);
+		}
+		finally {
+			Resurrecting.Value = false;
+		}
+	}
+
 	internal static bool Remove(ManagedSpriteInstance instance) => Remove(instance.Hash);
 
 	internal static void RemoveFast(ManagedSpriteInstance instance) => RemoveFast(instance.Hash);
+
+	internal static void Resurrect(ManagedSpriteInstance instance) => ResurrectFast(instance.Hash); 
 
 	internal static void Purge() {
 		Cache.Clear();

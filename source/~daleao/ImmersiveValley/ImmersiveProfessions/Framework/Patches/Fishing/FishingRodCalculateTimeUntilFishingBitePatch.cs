@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Tools;
 
 #endregion using directives

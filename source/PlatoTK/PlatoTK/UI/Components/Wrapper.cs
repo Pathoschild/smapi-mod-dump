@@ -109,7 +109,9 @@ namespace PlatoTK.UI.Components
                 if (content)
                     value = value.Substring("content>".Length);
 
-                texture = Helper.ModHelper.Content.Load<Texture2D>(value, content ? StardewModdingAPI.ContentSource.GameContent : StardewModdingAPI.ContentSource.ModFolder);
+                texture = content
+                    ? Helper.ModHelper.GameContent.Load<Texture2D>(value)
+                    : Helper.ModHelper.ModContent.Load<Texture2D>(value);
             }
 
             return texture is Texture;

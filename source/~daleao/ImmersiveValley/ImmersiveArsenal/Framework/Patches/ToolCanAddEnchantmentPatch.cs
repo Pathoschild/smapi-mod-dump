@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 
 using Enchantments;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 
 #endregion using directives

@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Shockah.ProjectFluent
 {
-	internal class FileFluent: IFluent<string>
+	internal class FileFluent : IFluent<string>
 	{
 		private IFluent<string> Wrapped { get; set; }
 

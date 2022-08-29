@@ -28,7 +28,7 @@ namespace Shockah.ProjectFluent
 		IEnumerable<ContentPackContent> GetContentPackContents();
 	}
 
-	internal class SerialContentPackProvider: IContentPackProvider, IDisposable
+	internal class SerialContentPackProvider : IContentPackProvider, IDisposable
 	{
 		public event Action<IContentPackProvider>? ContentPacksContentsChanged;
 
@@ -60,7 +60,7 @@ namespace Shockah.ProjectFluent
 			=> ContentPacksContentsChanged?.Invoke(this);
 	}
 
-	internal class AssetContentPackProvider: IContentPackProvider, IDisposable
+	internal class AssetContentPackProvider : IContentPackProvider, IDisposable
 	{
 		// asset of type `List<Dictionary<string, object>>`, the inner dictionary is actually the same model as `RawContentPackContent`
 		private static readonly string AssetPath = "Shockah.ProjectFluent/ContentPacks";

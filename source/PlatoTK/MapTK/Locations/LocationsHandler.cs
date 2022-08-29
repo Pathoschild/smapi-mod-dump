@@ -106,8 +106,8 @@ namespace MapTK.Locations
 
         internal static void SetLocationsBeforeRoutes()
         {
-            Helper.Content.InvalidateCache(LocationsDictionary);
-            var locations = Helper.Content.Load<Dictionary<string, LocationData>>(LocationsDictionary, ContentSource.GameContent);
+            Helper.GameContent.InvalidateCache(LocationsDictionary);
+            var locations = Helper.GameContent.Load<Dictionary<string, LocationData>>(LocationsDictionary);
             var result = new List<GameLocation>();
             locations.Values
                 .Where(l => !Game1.locations.Any(g => g.Name == l.Name))
@@ -129,8 +129,8 @@ namespace MapTK.Locations
 
         private static List<GameLocation> InitializeNewLocations()
         {
-            Helper.Content.InvalidateCache(LocationsDictionary);
-            var locations = Helper.Content.Load<Dictionary<string, LocationData>>(LocationsDictionary, ContentSource.GameContent);
+            Helper.GameContent.InvalidateCache(LocationsDictionary);
+            var locations = Helper.GameContent.Load<Dictionary<string, LocationData>>(LocationsDictionary);
             var result = new List<GameLocation>();
             locations.Values
                 .Where(l => !Game1.locations.Any(g => g.Name == l.Name) || l.Save)
@@ -233,8 +233,8 @@ namespace MapTK.Locations
         {
             locationStore.Clear();
             var locationDataStore = new LocationSaveData();
-            var locations = Helper.Content.Load<Dictionary<string, LocationData>>(LocationsDictionary, ContentSource.GameContent);
-            Helper.Content.Load<Dictionary<string, LocationData>>(LocationsDictionary, ContentSource.GameContent)
+            var locations = Helper.GameContent.Load<Dictionary<string, LocationData>>(LocationsDictionary);
+            Helper.GameContent.Load<Dictionary<string, LocationData>>(LocationsDictionary)
                 .Where(l => l.Value.Save && Game1.getLocationFromName(l.Value.Name) is GameLocation)
                 .Select(l => Game1.getLocationFromName(l.Value.Name))
                 .ToList()

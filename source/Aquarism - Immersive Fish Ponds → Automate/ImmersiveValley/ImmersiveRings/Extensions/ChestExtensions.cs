@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Rings.Extensions;
 
 using StardewValley.Objects;
 
-using SObject = StardewValley.Object;
-
 #endregion using directives
 
 /// <summary>Extensions for the <see cref="Chest"/> class.</summary>

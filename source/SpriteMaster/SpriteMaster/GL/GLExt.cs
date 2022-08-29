@@ -90,6 +90,15 @@ internal static unsafe class GLExt {
 	}
 
 	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static void SwallowOrReportErrors() {
+#if GL_DEBUG || CONTRACTS_FULL || DEBUG
+		CheckError();
+#else
+		AlwaysSwallowErrors();
+#endif
+	}
+
+	[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static void AlwaysSwallowErrors() {
 		while ((ErrorCode)MonoGame.OpenGL.GL.GetError() != ErrorCode.NoError) {
 			// Do Nothing
@@ -330,12 +339,26 @@ internal static unsafe class GLExt {
 	static readonly DebugMessageCallbackDelegate DebugMessageCallback =
 		Delegates.Generic<DebugMessageCallbackDelegate>.LoadFunction("glDebugMessageCallback")!;
 
+	private enum CallbackSeverity : int {
+		High = 0x9146,
+		Medium = 0x9147,
+		Low = 0x9148,
+		Notification = 0x826B
+	}
+
 	[DebuggerHidden]
-	private static void DebugMessageCallbackHandler(int source, int type, int id, int severity, int length, nint message, nint userParam) {
+	private static void DebugMessageCallbackHandler(int source, int type, int id, int severityValue, int length, nint message, nint userParam) {
 #if GL_DEBUG || DEBUG || CONTRACTS_FULL
+		var severity = (CallbackSeverity)severityValue;
+
+		if (severity == CallbackSeverity.Notification) {
+			return;
+		}
+
 		switch (id) {
 			case 131218: // "Program/shader state performance warning: Vertex shader in program 1 is being recompiled based on GL state."
-				return;
+			//case 131185: // "Buffer detailed info: Buffer object 1 (bound to GL_ELEMENT_ARRAY_BUFFER_ARB, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations."
+			return;
 		}
 
 		var errorMessage = Marshal.PtrToStringAnsi(message) ?? "unknown";

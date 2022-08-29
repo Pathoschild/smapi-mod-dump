@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Linq;
 

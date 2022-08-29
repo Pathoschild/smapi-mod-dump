@@ -48,5 +48,6 @@
   "Omegasis.HappyBirthday_DatingSebastian_BirthdayPartyInvitation": "Hey @. ^ Could you come by my place later? My family and I decided to have a birthday party for you to celebrate. ^^      -Sebastian",
   "Omegasis.HappyBirthday_DatingShane_BirthdayPartyInvitation": "Hey @. ^Could you come by my house sometime today? I thought I'd have a little get together for you.^^      -Shane",
   "Omegasis.HappyBirthday_Junimos": "Please come to the community center. ^ Sincerly,^      -The Junimos",
-  "Omegasis.HappyBirthday_Mom": "Dear @,^  Happy birthday sweetheart. It's been amazing watching you grow into the kind, hard working person that I've always dreamed that you would become. I hope you continue to make many more fond memories with the ones you love. ^  Love, Mom ^ P.S. Here's a little something that I made for you. {0}"
+  "Omegasis.HappyBirthday_Mom": "Dear @,^  Happy birthday sweetheart. It's been amazing watching you grow into the kind, hard working person that I've always dreamed that you would become. I hope you continue to make many more fond memories with the ones you love. ^  Love, Mom ^ P.S. Here's a little something that I made for you. {0}",
+  "Omegasis.HappyBirthday_BelatedBirthdayWish_Generic_Fallback_Npc_Message": "Happy belated birthday, @! ^I Hope you had a wonderful day yesterday.^^ - {1} {0}"
 }

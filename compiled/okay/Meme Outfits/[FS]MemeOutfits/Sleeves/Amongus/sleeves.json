@@ -1,0 +1,145 @@
+{
+  "Name": "Amongus Backpack",
+  "FrontSleeves": {
+    "ColorMasks": [
+      [ 212, 208, 197 ]
+    ],
+    "UseShirtColors": true,
+    "SkinToneMasks": {
+      "LightTone": [ 144, 144, 144 ],
+      "MediumTone": [ 121, 121, 121 ],
+      "DarkTone": [ 73, 73, 73 ]
+    },
+    "DisableSkinGrayscale": true,
+    "SkinToneMasks": {
+      "LightTone": [ 249, 174, 137 ],
+      "MediumTone": [ 224, 107, 101 ],
+      "DarkTone": [ 107, 0, 58 ]
+    },
+    "StartingPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": -16
+    },
+    "SleevesSize": {
+      "Width": 16,
+      "Length": 32
+    },
+    "IdleAnimation": [
+      {
+        "Frame": 0}
+    ]
+  },
+  "BackSleeves": {
+    "DrawBeforeHair": true,
+    "ColorMasks": [
+      [ 212, 208, 197 ]
+    ],
+    "UseShirtColors": true,
+    "SkinToneMasks": {
+      "LightTone": [ 144, 144, 144 ],
+      "MediumTone": [ 121, 121, 121 ],
+      "DarkTone": [ 73, 73, 73 ]
+    },
+    "DisableSkinGrayscale": true,
+    "SkinToneMasks": {
+      "LightTone": [ 249, 174, 137 ],
+      "MediumTone": [ 224, 107, 101 ],
+      "DarkTone": [ 107, 0, 58 ]
+    },
+    "StartingPosition": {
+      "X": 0,
+      "Y": 64
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": 1
+    },
+    "SleevesSize": {
+      "Width": 16,
+      "Length": 32
+    },
+    "IdleAnimation": [
+      {
+        "Frame": 0,
+        "Duration": 125
+      }
+    ]
+  },
+  "RightSleeves": {
+    "ColorMasks": [
+      [ 212, 208, 197 ]
+    ],
+    "UseShirtColors": true,
+    "SkinToneMasks": {
+      "LightTone": [ 144, 144, 144 ],
+      "MediumTone": [ 121, 121, 121 ],
+      "DarkTone": [ 73, 73, 73 ]
+    },
+    "Flipped": true,
+    "DisableSkinGrayscale": true,
+    "SkinToneMasks": {
+      "LightTone": [ 249, 174, 137 ],
+      "MediumTone": [ 224, 107, 101 ],
+      "DarkTone": [ 107, 0, 58 ]
+    },
+    "StartingPosition": {
+      "X": 0,
+      "Y": 32
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": 2
+    },
+    "SleevesSize": {
+      "Width": 16,
+      "Length": 36
+    },
+    "IdleAnimation": [
+      {
+        "Frame": 0,
+        "Duration": 125
+      }
+    ]
+  },
+  "LeftSleeves": {
+    "Flipped": true,
+    "ColorMasks": [
+      [ 212, 208, 197 ]
+    ],
+    "UseShirtColors": true,
+    "SkinToneMasks": {
+      "LightTone": [ 144, 144, 144 ],
+      "MediumTone": [ 121, 121, 121 ],
+      "DarkTone": [ 73, 73, 73 ]
+    },
+    "Flipped": false,
+    "DisableSkinGrayscale": true,
+    "SkinToneMasks": {
+      "LightTone": [ 249, 174, 137 ],
+      "MediumTone": [ 224, 107, 101 ],
+      "DarkTone": [ 107, 0, 58 ]
+    },
+    "StartingPosition": {
+      "X": 0,
+      "Y": 32
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": 2
+    },
+    "SleevesSize": {
+      "Width": 16,
+      "Length": 32
+    },
+    "IdleAnimation": [
+      {
+        "Frame": 0,
+        "Duration": 125
+      }
+    ]
+  }
+}

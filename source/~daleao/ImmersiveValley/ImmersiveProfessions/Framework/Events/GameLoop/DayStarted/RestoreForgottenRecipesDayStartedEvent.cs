@@ -12,13 +12,11 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
-using Common.Data;
 using Common.Events;
 using Common.Extensions;
 using Common.Extensions.Collections;
-using JetBrains.Annotations;
+using Common.Extensions.Stardew;
 using StardewModdingAPI.Events;
-using StardewValley;
 using System.Linq;
 
 #endregion using directives
@@ -34,11 +32,11 @@ internal sealed class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object? sender, DayStartedEventArgs e)
     {
-        var forgottenRecipes = ModDataIO.ReadFrom(Game1.player, "ForgottenRecipesDict")
+        var forgottenRecipes = Game1.player.Read("ForgottenRecipesDict")
             .ParseDictionary<string, int>();
         if (forgottenRecipes.Count <= 0)
         {
-            Unhook();
+            Disable();
             return;
         }
 
@@ -57,9 +55,9 @@ internal sealed class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
             }
         }
 
-        ModDataIO.WriteTo(Game1.player, "ForgottenRecipesDict", forgottenRecipes.Count > 0
+        Game1.player.Write("ForgottenRecipesDict", forgottenRecipes.Count > 0
             ? forgottenRecipes.Stringify()
             : null);
-        Unhook();
+        Disable();
     }
 }

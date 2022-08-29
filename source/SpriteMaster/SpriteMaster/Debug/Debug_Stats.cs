@@ -40,7 +40,13 @@ internal partial class Debug {
 		ManagedTexture2D.DumpStats(lines);
 
 		foreach (var line in lines) {
-			Info(line);
+			Message(line);
 		}
+
+		Message("");
+
+		Message($"TextureFileCache: {TextureFileCache.Size.AsDataSize()}");
+		Message($"ResidentCache: {ResidentCache.Size.AsDataSize()}");
+		Message($"SuspendedSpriteCache: {SuspendedSpriteCache.Size.AsDataSize()}");
 	}
 }

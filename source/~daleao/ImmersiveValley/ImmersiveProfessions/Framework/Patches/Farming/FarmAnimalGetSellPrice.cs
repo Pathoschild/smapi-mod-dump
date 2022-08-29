@@ -13,10 +13,9 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Reflection;
 
@@ -40,8 +39,7 @@ internal sealed class FarmAnimalGetSellPricePatch : DaLion.Common.Harmony.Harmon
         double adjustedFriendship;
         try
         {
-            var owner = Game1.getFarmerMaybeOffline(__instance.ownerID.Value) ?? Game1.MasterPlayer;
-            if (!owner.HasProfession(Profession.Breeder)) return true; // run original logic
+            if (!__instance.GetOwner().HasProfession(Profession.Breeder)) return true; // run original logic
 
             adjustedFriendship = __instance.GetProducerAdjustedFriendship();
         }

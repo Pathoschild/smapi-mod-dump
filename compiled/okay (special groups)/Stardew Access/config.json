@@ -9,6 +9,7 @@
   "ReadTileKey": "J",
   "ReadStandingTileKey": "LeftAlt + J",
   "ReadFlooring": false,
+  "WateredToggle": true,
   "TileCursorUpKey": "Up",
   "TileCursorRightKey": "Right",
   "TileCursorDownKey": "Down",
@@ -35,10 +36,12 @@
   "SnapToFirstSecondaryInventorySlotKey": "LeftShift + I",
   "CraftingMenuCycleThroughRecipiesKey": "C",
   "HealthNStaminaKey": "H",
+  "HealthNStaminaInPercentage": true,
   "PositionKey": "K",
   "LocationKey": "LeftAlt + K",
   "MoneyKey": "R",
   "TimeNSeasonKey": "Q",
   "VerboseCoordinates": true,
-  "SnapMouse": true
+  "SnapMouse": true,
+  "Warning": true
 }

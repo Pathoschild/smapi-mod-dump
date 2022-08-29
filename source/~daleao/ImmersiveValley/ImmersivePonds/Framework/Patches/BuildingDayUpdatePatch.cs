@@ -12,10 +12,9 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 
 #region using directives
 
+using Common.Exceptions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Buildings;
-using System;
 
 #endregion using directives
 
@@ -31,13 +30,13 @@ internal sealed class BuildingDayUpdatePatch : Common.Harmony.HarmonyPatch
     #region harmony patches
 
 #if DEBUG
-    /// <summary>Stub for base FishPond.dayUpdate</summary>
+    /// <summary>Stub for base <see cref="FishPond.dayUpdate">.</summary>
     /// <remarks>Required by DayUpdate prefix.</remarks>
     [HarmonyReversePatch]
     internal static void BuildingDayUpdateReverse(object instance, int dayOfMonth)
     {
         // its a stub so it has no initial content
-        throw new NotImplementedException("It's a stub.");
+        ThrowHelperExtensions.ThrowNotImplementedException("It's a stub.");
     }
 #endif
 

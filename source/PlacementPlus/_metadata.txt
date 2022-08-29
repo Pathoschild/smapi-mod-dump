@@ -6,9 +6,11 @@ mods:
    PlacementPlus
 
 latest commit:
-   commit ee048d1565b63f9d5f1652124f12169c6feb4e48
+   commit 869fa6334734b738809ea9dd0ce58201471db3f8
    Author: 2Retr0 <18603664+2Retr0@users.noreply.github.com>
-   Date:   Fri Jun 4 18:20:33 2021 -0700
+   Date:   Thu Aug 25 17:54:22 2022 -0700
    
-       Update README.md
+       Simplify and fix logic.
+       
+       * Additionally move common functionality to functions in Utility.cs.
    

@@ -19,7 +19,7 @@
 		"uniqueID": "Pathoschild.SMAPI",
 		"author": "Pathoschild",
 		"name": "SMAPI",
-		"minVersion": "3.14.1",
+		"minVersion": "3.16.0",
 		"required": true,
 		"url": "https://www.nexusmods.com/stardewvalley/mods/2400"
 	},
@@ -29,7 +29,7 @@
 		"uniqueID": "Pathoschild.ContentPatcher",
 		"author": "Pathoschild",
 		"name": "Content Patcher",
-		"minVersion": "1.25.0",
+		"minVersion": "1.28.0",
 		"required": true,
 		"url": "https://www.nexusmods.com/stardewvalley/mods/1915",
 		"parents": "SMAPI"
@@ -49,7 +49,7 @@
 		"uniqueID": "spacechase0.SpaceCore",
 		"author": "spacechase0",
 		"name": "SpaceCore",
-		"minVersion": "1.8.0",
+		"minVersion": "1.9.2",
 		"required": true,
 		"url": "https://www.nexusmods.com/stardewvalley/mods/1348"
 	},
@@ -63,19 +63,9 @@
 		"uniqueID": "PeacefulEnd.CustomCompanions",
 		"author": "PeacefulEnd",
 		"name": "Custom Companions",
-		"minVersion": "2.3.0",
+		"minVersion": "2.5.0",
 		"required": true,
 		"url": "https://www.nexusmods.com/stardewvalley/mods/8626",
-		"parents": "SMAPI"
-	},
-
-	// Custom NPC Fixes
-	"CustomNPCFixes": {
-		"uniqueID": "spacechase0.CustomNPCFixes",
-		"author": "spacechase0",
-		"name": "Custom NPC Fixes",
-		"required": true,
-		"url": "https://www.nexusmods.com/stardewvalley/mods/3849",
 		"parents": "SMAPI"
 	},
 
@@ -107,16 +97,6 @@
 		"required": true,
 		"url": "https://www.nexusmods.com/stardewvalley/mods/1720",
 		"parents": "SpaceCore, Expanded Preconditions Utility"
-	},
-
-	// Quest Framework (QF)
-	"QF": {
-		"uniqueID": "PurrplingCat.QuestFramework",
-		"author": "PurrplingCat",
-		"name": "Quest Framework",
-		"required": true,
-		"url": "https://www.nexusmods.com/stardewvalley/mods/6414",
-		"parents": "SMAPI"
 	},
 
 	// Shop Tile Framework (STF)
@@ -175,7 +155,7 @@
 	***************************************/
 
 	// Event Limiter (EL)
-	"QF": {
+	"EL": {
 		"uniqueID": "TheMightyAmondee.EventLimiter",
 		"author": "MightyAmondee",
 		"name": "Event Limiter",

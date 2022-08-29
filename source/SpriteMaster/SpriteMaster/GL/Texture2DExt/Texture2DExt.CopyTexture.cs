@@ -25,7 +25,7 @@ internal static partial class Texture2DExt {
 		Bounds targetArea,
 		PatchMode patchMode
 	) {
-		if (!Configuration.Config.Extras.OptimizeOpenGL || !Configuration.Config.Extras.UseCopyTexture) {
+		if (!Configuration.Config.Extras.OpenGL.Enabled || !SMConfig.Extras.OpenGL.UseCopyTexture) {
 			return false;
 		}
 
@@ -34,6 +34,13 @@ internal static partial class Texture2DExt {
 		}
 
 		if (patchMode != PatchMode.Replace) {
+			return false;
+		}
+
+		if (
+			target.glFormat is PixelFormat.CompressedTextureFormats ||
+			source.glFormat is PixelFormat.CompressedTextureFormats
+		) {
 			return false;
 		}
 
@@ -68,7 +75,9 @@ internal static partial class Texture2DExt {
 			() => {
 				using var reboundTexture = new TextureBinder(0);
 
-				GLExt.AlwaysCheckError();
+				// Flush errors
+				GLExt.SwallowOrReportErrors();
+
 				try {
 					GLExt.AlwaysChecked(
 						() => GLExt.CopyImageSubData.Function(

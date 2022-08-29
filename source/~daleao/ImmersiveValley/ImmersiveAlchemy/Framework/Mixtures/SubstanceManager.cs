@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Alchemy.Framework;
 
 using Common;
 using Enums;
-using StardewModdingAPI;
 using System.Collections.Generic;
 
 #endregion using directives

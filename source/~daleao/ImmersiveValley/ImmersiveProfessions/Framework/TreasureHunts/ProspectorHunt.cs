@@ -12,19 +12,18 @@ namespace DaLion.Stardew.Professions.Framework.TreasureHunts;
 
 #region using directives
 
-using Common.Data;
+using Common.Extensions.Stardew;
 using Common.Multiplayer;
 using Events.Display;
 using Events.GameLoop;
 using Extensions;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -52,9 +51,9 @@ internal sealed class ProspectorHunt : TreasureHunt
         huntLocation = location;
         timeLimit = (uint)(location.Objects.Count() * ModEntry.Config.ProspectorHuntHandicap);
         elapsed = 0;
-        ModEntry.EventManager.Hook<PointerUpdateTickedEvent>();
-        ModEntry.EventManager.Hook<ProspectorHuntRenderedHudEvent>();
-        ModEntry.EventManager.Hook<ProspectorHuntUpdateTickedEvent>();
+        ModEntry.Events.Enable<PointerUpdateTickedEvent>();
+        ModEntry.Events.Enable<ProspectorHuntRenderedHudEvent>();
+        ModEntry.Events.Enable<ProspectorHuntUpdateTickedEvent>();
         Game1.addHUDMessage(new HuntNotification(huntStartedMessage, iconSourceRect));
         if (Context.IsMultiplayer)
         {
@@ -62,10 +61,11 @@ internal sealed class ProspectorHunt : TreasureHunt
 
             if (Game1.player.HasProfession(Profession.Prospector, true))
             {
+                Game1.player.get_IsHuntingTreasure().Value = true;
                 if (!Context.IsMainPlayer)
                     ModEntry.Broadcaster.Message("HuntIsOn", "RequestEvent", Game1.MasterPlayer.UniqueMultiplayerID);
                 else
-                    ModEntry.EventManager.Hook<HostPrestigeTreasureHuntUpdateTickedEvent>();
+                    ModEntry.Events.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
             }
         }
 
@@ -82,9 +82,9 @@ internal sealed class ProspectorHunt : TreasureHunt
         huntLocation = location;
         timeLimit = (uint)(location.Objects.Count() * ModEntry.Config.ProspectorHuntHandicap);
         elapsed = 0;
-        ModEntry.EventManager.Hook<PointerUpdateTickedEvent>();
-        ModEntry.EventManager.Hook<ProspectorHuntRenderedHudEvent>();
-        ModEntry.EventManager.Hook<ProspectorHuntUpdateTickedEvent>();
+        ModEntry.Events.Enable<PointerUpdateTickedEvent>();
+        ModEntry.Events.Enable<ProspectorHuntRenderedHudEvent>();
+        ModEntry.Events.Enable<ProspectorHuntUpdateTickedEvent>();
         Game1.addHUDMessage(new HuntNotification(huntStartedMessage, iconSourceRect));
         if (Context.IsMultiplayer)
         {
@@ -92,15 +92,11 @@ internal sealed class ProspectorHunt : TreasureHunt
 
             if (Game1.player.HasProfession(Profession.Prospector, true))
             {
+                Game1.player.get_IsHuntingTreasure().Value = true;
                 if (!Context.IsMainPlayer)
-                {
                     ModEntry.Broadcaster.Message("HuntIsOn", "RequestEvent", Game1.MasterPlayer.UniqueMultiplayerID);
-                }
                 else
-                {
-                    ModEntry.EventManager.Hook<HostPrestigeTreasureHuntUpdateTickedEvent>();
-                    ModEntry.HostState.PlayersHuntingTreasure.Add(Game1.player.UniqueMultiplayerID);
-                }
+                    ModEntry.Events.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
             }
         }
 
@@ -111,7 +107,7 @@ internal sealed class ProspectorHunt : TreasureHunt
     public override void Fail()
     {
         Game1.addHUDMessage(new HuntNotification(huntFailedMessage));
-        ModDataIO.WriteTo(Game1.player, "ProspectorHuntStreak", "0");
+        Game1.player.Write("ProspectorHuntStreak", "0");
         End(false);
     }
 
@@ -146,15 +142,16 @@ internal sealed class ProspectorHunt : TreasureHunt
         if (shaft.shouldCreateLadderOnThisLevel() && !shaft.GetLadderTiles().Any())
             shaft.createLadderDown((int)TreasureTile!.Value.X, (int)TreasureTile!.Value.Y);
 
-        ModDataIO.Increment<uint>(Game1.player, "ProspectorHuntStreak");
+        Game1.player.Increment("ProspectorHuntStreak");
         End(true);
     }
 
     /// <inheritdoc />
     protected override void End(bool found)
     {
-        ModEntry.EventManager.Unhook<ProspectorHuntRenderedHudEvent>();
-        ModEntry.EventManager.Unhook<ProspectorHuntUpdateTickedEvent>();
+        Game1.player.get_IsHuntingTreasure().Value = false;
+        ModEntry.Events.Disable<ProspectorHuntRenderedHudEvent>();
+        ModEntry.Events.Disable<ProspectorHuntUpdateTickedEvent>();
         TreasureTile = null;
         if (!Context.IsMultiplayer || Context.IsMainPlayer ||
             !Game1.player.HasProfession(Profession.Prospector, true)) return;
@@ -283,7 +280,7 @@ internal sealed class ProspectorHunt : TreasureHunt
 
                         case 2: // special items
                             var luckModifier = Math.Max(0, 1.0 + Game1.player.DailyLuck * mineLevel / 4);
-                            var streak = ModDataIO.ReadFrom<uint>(Game1.player, "ProspectorHuntStreak");
+                            var streak = Game1.player.Read<uint>("ProspectorHuntStreak");
                             if (random.NextDouble() < 0.025 * luckModifier && !Game1.player.specialItems.Contains(31))
                                 treasuresAndQuantities.Add(-1, 1); // femur
 

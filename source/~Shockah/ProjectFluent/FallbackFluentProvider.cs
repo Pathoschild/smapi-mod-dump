@@ -17,7 +17,7 @@ namespace Shockah.ProjectFluent
 		IFluent<string> GetFallbackFluent(IManifest mod);
 	}
 
-	internal class FallbackFluentProvider: IFallbackFluentProvider
+	internal class FallbackFluentProvider : IFallbackFluentProvider
 	{
 		private IModTranslationsProvider ModTranslationsProvider { get; set; }
 

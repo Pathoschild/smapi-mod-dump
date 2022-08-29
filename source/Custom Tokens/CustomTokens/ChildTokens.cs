@@ -192,7 +192,7 @@ namespace CustomTokens
                     found = true;
 
                     // Calculate birthday date based on child age
-                    var birthday = SDate.Now().AddDays(-child.daysOld) ?? SDate.Now();
+                    var birthday = SDate.Now().AddDays(-child.daysOld.Value) ?? SDate.Now();
 
                     // Change string value based on input argument at index 2
                     switch (token)

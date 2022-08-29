@@ -12,15 +12,13 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 
 #region using directives
 
-using Common.Data;
 using Common.Extensions.Collections;
+using Common.Extensions.Stardew;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -44,7 +42,7 @@ internal sealed class ItemGrabMenuReadyToClosePatch : Common.Harmony.HarmonyPatc
         var inventory = __instance.ItemsToGrabMenu?.actualInventory.WhereNotNull().ToList();
         if (inventory?.Count is not > 0)
         {
-            ModDataIO.WriteTo(pond, "ItemsHeld", null);
+            pond.Write("ItemsHeld", null);
             pond.output.Value = null;
             return;
         }
@@ -57,11 +55,11 @@ internal sealed class ItemGrabMenuReadyToClosePatch : Common.Harmony.HarmonyPatc
         if (inventory.Count > 0)
         {
             var serialized = inventory.Select(i => $"{i.ParentSheetIndex},{i.Stack},{((SObject)i).Quality}");
-            ModDataIO.WriteTo(pond, "ItemsHeld", string.Join(';', serialized));
+            pond.Write("ItemsHeld", string.Join(';', serialized));
         }
         else
         {
-            ModDataIO.WriteTo(pond, "ItemsHeld", null);
+            pond.Write("ItemsHeld", null);
         }
 
         pond.output.Value = output;

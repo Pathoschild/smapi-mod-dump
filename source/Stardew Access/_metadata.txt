@@ -6,9 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 4a1e4f9f4aaca47ec24d55004835e5be07af2340
-   Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
-   Date:   Fri Jun 10 22:50:06 2022 +0530
+   commit 589ec8eff851852567beb2c5e69dbe52ee469500
+   Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
+   Date:   Tue Aug 23 08:58:50 2022 +0530
    
        Bug fix
    

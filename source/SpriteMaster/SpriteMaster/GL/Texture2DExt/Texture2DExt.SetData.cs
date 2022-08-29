@@ -68,7 +68,7 @@ internal static partial class Texture2DExt {
 		bool initialized = false,
 		bool isSet = false
 	) where T : unmanaged {
-		if (!SMConfig.Extras.OptimizeTexture2DSetData) {
+		if (!SMConfig.Extras.OpenGL.OptimizeTexture2DSetData) {
 			return false;
 		}
 
@@ -80,7 +80,9 @@ internal static partial class Texture2DExt {
 		ThreadingExt.ExecuteOnMainThread(
 			() => {
 				try {
-					GLExt.CheckError("SetDataInternal Entry");
+					// Flush errors
+					GLExt.SwallowOrReportErrors();
+
 
 					Texture2DOpenGlMeta? glMeta = null;
 					if (!initialized) {

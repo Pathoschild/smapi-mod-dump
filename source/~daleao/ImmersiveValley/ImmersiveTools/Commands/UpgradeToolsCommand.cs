@@ -14,10 +14,9 @@ namespace DaLion.Stardew.Tools.Commands;
 
 using Common;
 using Common.Commands;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 using System;
+using System.Linq;
 
 #endregion using directives
 
@@ -30,10 +29,11 @@ internal sealed class UpgradeToolsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "set_upgrade";
+    public override string[] Triggers { get; } = { "upgrade_tools", "set_upgrade", "set", "upgrade" };
 
     /// <inheritdoc />
-    public override string Documentation => "Set the upgrade level of all upgradeable tools in the inventory." + GetUsage();
+    public override string Documentation =>
+        "Set the upgrade level of all upgradeable tools in the inventory." + GetUsage();
 
     /// <inheritdoc />
     public override void Callback(string[] args)
@@ -56,7 +56,7 @@ internal sealed class UpgradeToolsCommand : ConsoleCommand
             return;
         }
 
-        if (upgradeLevel > Framework.UpgradeLevel.Iridium && !ModEntry.HasLoadedMoonMisadventures)
+        if (upgradeLevel > Framework.UpgradeLevel.Iridium && !ModEntry.IsMoonMisadventuresLoaded)
         {
             Log.W("You must have `Moon Misadventures` mod installed to set this upgrade level.");
             return;
@@ -70,14 +70,14 @@ internal sealed class UpgradeToolsCommand : ConsoleCommand
     /// <summary>Tell the dummies how to use the console command.</summary>
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} <level>";
+        var result = $"\n\nUsage: {Handler.EntryCommand} {Triggers.First()} <level>";
         result += "\n\nParameters:";
         result += "\n\t- <level>: one of 'copper', 'steel', 'gold', 'iridium'";
-        if (ModEntry.HasLoadedMoonMisadventures)
+        if (ModEntry.IsMoonMisadventuresLoaded)
             result += ", 'radioactive', 'mythicite'";
 
         result += "\n\nExample:";
-        result += $"\n\t- {Handler.EntryCommand} {Trigger} iridium";
+        result += $"\n\t- {Handler.EntryCommand} {Triggers.First()} iridium";
         return result;
     }
 }

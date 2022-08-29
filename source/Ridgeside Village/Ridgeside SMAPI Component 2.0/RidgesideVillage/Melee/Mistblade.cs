@@ -26,7 +26,6 @@ namespace RidgesideVillage
     internal static class Mistblade
     {
         const string MISTBLADENAME = "Mountain Mistblade";
-        public static Random myRand;
 
         static IModHelper Helper;
         static IMonitor Monitor;

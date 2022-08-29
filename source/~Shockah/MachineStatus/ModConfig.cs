@@ -21,7 +21,7 @@ namespace Shockah.MachineStatus
 	internal class ModConfig
 	{
 		public bool IgnoreUnknownItems { get; set; } = true;
-		
+
 		public UIAnchorSide ScreenAnchorSide { get; set; } = UIAnchorSide.BottomLeft;
 		public float AnchorInset { get; set; } = 16f;
 		public float AnchorOffsetX { get; set; } = 0f;

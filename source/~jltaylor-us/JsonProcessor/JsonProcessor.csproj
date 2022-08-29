@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IgnoreModFilePatterns>Newtonsoft\.Json\.dll</IgnoreModFilePatterns>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pathoschild.Stardew.ModBuildConfig" />
+    <None Remove="Framework\" />
+    <None Remove="Framework\Transformers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Link>LICENSE</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Framework\" />
+    <Folder Include="Framework\Transformers\" />
+  </ItemGroup>
+</Project>

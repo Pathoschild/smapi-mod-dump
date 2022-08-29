@@ -15,7 +15,7 @@ namespace SmartBuilding.Constants
 {
     public class Directions
     {
-        public static List<Vector2> vector2 = new List<Vector2>()
+        public static List<Vector2> vector2 = new()
         {
             new Vector2(0, 0), // Centre
             new Vector2(-1, 0), // Left

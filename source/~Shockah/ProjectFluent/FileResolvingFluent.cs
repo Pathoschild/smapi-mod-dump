@@ -15,10 +15,10 @@ using System.Linq;
 
 namespace Shockah.ProjectFluent
 {
-	internal class FileResolvingFluent: IFluent<string>
+	internal class FileResolvingFluent : IFluent<string>
 	{
 		private IList<IFluent<string>> Wrapped { get; set; }
-		
+
 		public FileResolvingFluent(IEnumerable<(string name, ContextfulFluentFunction function)> functions, IMonitor monitor, IGameLocale locale, IEnumerable<string> filePathCandidates, IFluent<string> fallback)
 		{
 			Wrapped = filePathCandidates

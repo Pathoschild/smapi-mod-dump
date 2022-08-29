@@ -6,9 +6,9 @@ mods:
    Stash Items
 
 latest commit:
-   commit c4058a3e5601aba398ac669d1f2bfaa4b92da723
+   commit 8ae78859de1fd44b714bcb28a73189dab352b2b5
    Author: Zack Hill <zackary.t.hill@gmail.com>
-   Date:   Sun Jul 10 21:12:05 2022 -0400
+   Date:   Sat Jul 30 16:27:25 2022 -0400
    
-       Update .gitignore
+       Add Panstorm mod
    

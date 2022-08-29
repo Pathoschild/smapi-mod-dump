@@ -9,19 +9,17 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Characters;
 
 namespace DecidedlyShared.Logging
 {
     public class Logger
     {
-        private IMonitor monitor;
+        private readonly IMonitor monitor;
         private ITranslationHelper translationHelper;
         //private HashSet<> messageQueue;
-        
+
         public Logger(IMonitor monitor, ITranslationHelper translationHelper)
         {
             this.monitor = monitor;
@@ -30,12 +28,12 @@ namespace DecidedlyShared.Logging
 
         public void Log(string logMessage, LogLevel logLevel = LogLevel.Info, bool shouldAlwaysDisplayInHud = false)
         {
-            monitor.Log(logMessage, logLevel);
+            this.monitor.Log(logMessage, logLevel);
 
             // If it's a high priority LogLevel or it's marked as should be displayed, we display it on the screen.
             if (logLevel >= LogLevel.Warn || shouldAlwaysDisplayInHud)
             {
-                HUDMessage message = new HUDMessage(logMessage, 2);
+                HUDMessage message = new(logMessage, 2);
 
                 if (!Game1.doesHUDMessageExist(logMessage))
                     Game1.addHUDMessage(message);
@@ -44,8 +42,8 @@ namespace DecidedlyShared.Logging
 
         public void Exception(Exception e)
         {
-            monitor.Log($"Exception: {e.Message}", LogLevel.Error);
-            monitor.Log($"Full exception data: \n{e.Data}", LogLevel.Error);
+            this.monitor.Log($"Exception: {e.Message}", LogLevel.Error);
+            this.monitor.Log($"Full exception data: \n{e.Data}", LogLevel.Error);
         }
     }
 }

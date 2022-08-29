@@ -13,12 +13,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.Input;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
+using Ultimates;
+using VirtualProperties;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, UltimateEvent]
 internal sealed class UltimateButtonsChangedEvent : ButtonsChangedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,6 +30,6 @@ internal sealed class UltimateButtonsChangedEvent : ButtonsChangedEvent
     /// <inheritdoc />
     protected override void OnButtonsChangedImpl(object? sender, ButtonsChangedEventArgs e)
     {
-        ModEntry.PlayerState.RegisteredUltimate!.CheckForActivation();
+        Game1.player.get_Ultimate()!.CheckForActivation();
     }
 }

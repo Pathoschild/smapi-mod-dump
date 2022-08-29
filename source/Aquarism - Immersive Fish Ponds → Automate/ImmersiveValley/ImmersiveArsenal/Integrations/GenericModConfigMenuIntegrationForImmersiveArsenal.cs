@@ -12,8 +12,8 @@ namespace DaLion.Stardew.Arsenal.Integrations;
 
 #region using directives
 
-using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.GenericModConfigMenu;
+using Framework.Events;
 using System;
 
 #endregion using directives
@@ -46,47 +46,50 @@ internal sealed class GenericModConfigMenuIntegrationForImmersiveArsenal
         // register
         _configMenu
             .Register()
+
+            .AddSectionTitle(() => "Control Settings")
+            .AddCheckbox(
+                () => "Face Towards Mouse Cursor",
+                () =>
+                    "If using mouse and keyboard, turn to face towards the current cursor position before swinging your tools.",
+                config => config.FaceMouseCursor,
+                (config, value) =>
+                {
+                    config.FaceMouseCursor = value;
+                    if (value) ModEntry.Events.Enable<ArsenalButtonPressedEvent>();
+                    else ModEntry.Events.Disable<ArsenalButtonPressedEvent>();
+                }
+            )
+
+            .AddSectionTitle(() => "Melee Weapon Settings")
             .AddCheckbox(
                 () => "Rebalanced Weapons",
                 () => "Make weapons more unique and useful.",
                 config => config.RebalancedWeapons,
-                (config, value) => config.RebalancedWeapons = value
+                (config, value) =>
+                {
+                    config.RebalancedWeapons = value;
+                    ModEntry.ModHelper.GameContent.InvalidateCache("Data/weapons");
+                }
             )
             .AddCheckbox(
-                () => "Rebalanced Enchants",
-                () => "Improves certain underwhelming enchantments.",
-                config => config.RebalancedEnchants,
-                (config, value) => config.RebalancedEnchants = value
+                () => "Immersive Club Smash",
+                () => "A club smash AoE will inflict guaranteed critical damage on burrowing enemies, but completely miss flying enemies.",
+                config => config.BringBackStabbySwords,
+                (config, value) => config.BringBackStabbySwords = value
             )
             .AddCheckbox(
-                () => "Allow Slingshot Crit",
-                () => "Allows Slingshot to deal critical damage and be affected by critical modifiers.",
-                config => config.AllowSlingshotCrit,
-                (config, value) => config.AllowSlingshotCrit = value
+                () => "DefenseImprovesParryDamage",
+                () => "Improve sword parrying and defensive builds by increasing the reflected damage by 10% per defense point.",
+                config => config.BringBackStabbySwords,
+                (config, value) => config.BringBackStabbySwords = value
             )
             .AddCheckbox(
-                () => "Allow Slingshot Enchants",
-                () => "Allow Slingshot to be enchanted with weapon enchantments (Prismatic Shard) at the Forge.",
-                config => config.AllowSlingshotEnchants,
-                (config, value) => config.AllowSlingshotEnchants = value
-            )
-            .AddCheckbox(
-                () => "Allow Slingshot Forges",
-                () => "Allow Slingshot to be enchanted with weapon forges (gemstones) at the Forge.",
-                config => config.AllowSlingshotForges,
-                (config, value) => config.AllowSlingshotForges = value
-            )
-            .AddCheckbox(
-                () => "Remove Slingshot Grace Period",
-                () => "Projectiles should not be useless for the first 100ms.",
-                config => config.RemoveSlingshotGracePeriod,
-                (config, value) => config.RemoveSlingshotGracePeriod = value
-            )
-            .AddCheckbox(
-                () => "Remove Defense Soft Cap",
-                () => "Damage mitigation should not be soft-capped at 50%.",
-                config => config.RemoveDefenseSoftCap,
-                (config, value) => config.RemoveDefenseSoftCap = value
+                () => "Bring Back Stabby Swords",
+                () =>
+                    "Replace the defensive special move of some swords with an offensive lunge move.\nAFTER DISABLING THIS SETTING YOU MUST TRASH ALL OWNED STABBING SWORDS.",
+                config => config.BringBackStabbySwords,
+                (config, value) => config.BringBackStabbySwords = value
             )
             .AddCheckbox(
                 () => "Woody Replaces Rusty",
@@ -95,10 +98,117 @@ internal sealed class GenericModConfigMenuIntegrationForImmersiveArsenal
                 (config, value) => config.WoodyReplacesRusty = value
             )
             .AddCheckbox(
-                () => "Infinity Plus One Sword",
+                () => "Infinity-Plus-One Weapons",
                 () => "Replace lame Galaxy and Infinity weapons with something truly legendary.",
                 config => config.InfinityPlusOneWeapons,
-                (config, value) => config.InfinityPlusOneWeapons = value
+                (config, value) =>
+                {
+                    config.InfinityPlusOneWeapons = value;
+                    ModEntry.ModHelper.GameContent.InvalidateCache("Data/ObjectInformation");
+                    ModEntry.ModHelper.GameContent.InvalidateCache("Strings/Locations");
+                    ModEntry.ModHelper.GameContent.InvalidateCache("Strings/StringsFromCSFiles");
+                }
+            )
+            .AddNumberField(
+                () => "Dark Sword Purification Requirement",
+                () => "The Dark Sword must slay this many enemies before it can be purified.",
+                config => config.RequiredKillCountToPurifyDarkSword,
+                (config, value) => config.RequiredKillCountToPurifyDarkSword = value,
+                0,
+                1000
+            )
+
+            .AddSectionTitle(() => "Slingshot Settings")
+            .AddCheckbox(
+                () => "Allow Slingshot Crit",
+                () => "Allows Slingshot to deal critical damage and be affected by critical modifiers.",
+                config => config.EnableSlingshotCrits,
+                (config, value) => config.EnableSlingshotCrits = value
+            )
+            .AddCheckbox(
+                () => "Allow Slingshot Enchants",
+                () => "Allow Slingshot to be enchanted with weapon enchantments (Prismatic Shard) at the Forge.",
+                config => config.EnableSlingshotEnchants,
+                (config, value) => config.EnableSlingshotEnchants = value
+            )
+            .AddCheckbox(
+                () => "Allow Slingshot Forges",
+                () => "Allow Slingshot to be enchanted with weapon forges (gemstones) at the Forge.",
+                config => config.EnableSlingshotForges,
+                (config, value) => config.EnableSlingshotForges = value
+            )
+            .AddCheckbox(
+                () => "Allow Slingshot Special Move",
+                () => "Add a new stunning smack special move for slingshots.",
+                config => config.EnableSlingshotSpecialMove,
+                (config, value) => config.EnableSlingshotSpecialMove = value
+            )
+            .AddCheckbox(
+                () => "Remove Slingshot Grace Period",
+                () => "Projectiles should not be useless for the first 100ms.",
+                config => config.DisableSlingshotGracePeriod,
+                (config, value) => config.DisableSlingshotGracePeriod = value
+            )
+
+            .AddSectionTitle(() => "Enchantment Settings")
+            .AddCheckbox(
+                () => "Rebalanced Enchants",
+                () => "Improves certain underwhelming enchantments.",
+                config => config.RebalancedForges,
+                (config, value) => config.RebalancedForges = value
+            )
+
+            .AddSectionTitle(() => "Player Settings")
+            .AddCheckbox(
+                () => "Remove Defense Soft Cap",
+                () => "Damage mitigation should not be soft-capped at 50%.",
+                config => config.RemoveFarmerDefenseSoftCap,
+                (config, value) => config.RemoveFarmerDefenseSoftCap = value
+            )
+            
+
+            .AddSectionTitle(() => "Monster Settings")
+            .AddNumberField(
+                () => "Monster Health Multiplier",
+                () => "Increases the health of all enemies.",
+                config => config.MonsterHealthMultiplier,
+                (config, value) => config.MonsterHealthMultiplier = value,
+                1f,
+                3f
+            )
+            .AddNumberField(
+                () => "Monster Damage Multiplier",
+                () => "Increases the damage dealt by all enemies.",
+                config => config.MonsterDamageMultiplier,
+                (config, value) => config.MonsterDamageMultiplier = value,
+                1f,
+                3f
+            )
+            .AddNumberField(
+                () => "Monster Defense Multiplier",
+                () => "Increases the damage resistance of all enemies.",
+                config => config.MonsterDefenseMultiplier,
+                (config, value) => config.MonsterDefenseMultiplier = value,
+                1f,
+                3f
+            )
+            .AddCheckbox(
+                () => "Improve Enemy Defense",
+                () => "Effectively squares the defense of enemy monsters.",
+                config => config.ImprovedEnemyDefense,
+                (config, value) => config.ImprovedEnemyDefense = value
+            )
+            .AddCheckbox(
+                () => "Crits Ignore Defense",
+                () => "Damage mitigation is skipped for critical hits.",
+                config => config.CritsIgnoreDefense,
+                (config, value) => config.CritsIgnoreDefense = value
+            )
+            .AddCheckbox(
+                () => "Varied Monster Stats",
+                () => "Randomizes monster stats, subject to daily luck bias, to add variability to monster encounters.",
+                config => config.VariedMonsterStats,
+                (config, value) => config.VariedMonsterStats = value
             );
     }
 }

@@ -578,12 +578,6 @@ namespace AlternativeTextures
                 }
                 else
                 {
-                    if (terrainFeature != null)
-                    {
-                        Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.spray_can_not_supported"), 3) { timeLeft = 2000 });
-                        return false;
-                    }
-
                     if (Game1.currentLocation is Farm farm)
                     {
                         var targetedBuilding = farm.getBuildingAt(new Vector2(xTile / 64, yTile / 64));
@@ -592,6 +586,11 @@ namespace AlternativeTextures
                             Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.spray_can_not_supported"), 3) { timeLeft = 2000 });
                             return false;
                         }
+                    }
+                    else
+                    {
+                        Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.spray_can_not_supported"), 3) { timeLeft = 2000 });
+                        return false;
                     }
                 }
             }

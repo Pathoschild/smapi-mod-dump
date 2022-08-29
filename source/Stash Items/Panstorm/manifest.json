@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/zack-hill/stardew-valley-stash-items
+**
+*************************************************/
+
+{
+	"Name": "Panstorm",
+	"Author": "ZackHill",
+	"Version": "1.0.0",
+	"Description": "Plays an audio queue when a panning spot is on the map and provides directions to its location.",
+	"UniqueID": "ZackHill.Panstorm",
+	"EntryDll": "Panstorm.dll",
+	"MinimumApiVersion": "3.12.6",
+	"UpdateKeys": [ "" ]
+}

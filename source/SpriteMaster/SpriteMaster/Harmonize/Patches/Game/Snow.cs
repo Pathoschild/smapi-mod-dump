@@ -26,11 +26,15 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
 internal static class Snow {
 	private static readonly XColor SnowColor = new(255, 250, 250);
+	private const float MinScale = 0.65f;
+	private const float MaxScale = 1.0f;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static Bounds GetSourceRect<TWeatherDebris>(this TWeatherDebris debris) where TWeatherDebris : WeatherDebris =>
@@ -180,7 +184,7 @@ internal static class Snow {
 	public static bool DrawWeatherPre(Game1 __instance, GameTime time, RenderTarget2D target_screen, ref DrawWeatherState __state) {
 		__state = new(Ran: false);
 
-		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
+		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return true;
 		}
 
@@ -342,7 +346,7 @@ internal static class Snow {
 	public static bool UpdateWeatherPre(GameTime time, ref bool __state) {
 		__state = true;
 
-		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
+		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return true;
 		}
 
@@ -405,7 +409,7 @@ internal static class Snow {
 		critical: false
 	)]
 	public static bool UpdateRainDropPositionForPlayerMovement(int direction, bool overrideConstraints, float speed) {
-		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
+		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return true;
 		}
 
@@ -445,7 +449,7 @@ internal static class Snow {
 		critical: false
 	)]
 	public static bool PopulateDebrisWeatherArray() {
-		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
+		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return true;
 		}
 
@@ -458,8 +462,24 @@ internal static class Snow {
 		return true;
 	}
 
+	private static float GetRandomFloat(Random random) {
+		return (float)random.NextDouble();
+	}
+
+	private static float GetRandomFloat(Random random, float min, float max) {
+		double difference = (double)max - min;
+		var value = random.NextDouble();
+		value *= difference;
+		value += min;
+		return (float)value;
+	}
+
+	private const float DirectionMultiplier = 1.0f / 50f;
+
+	private static readonly ThreadLocal<Random> ThreadRandom = new(() => new());
+
 	internal static void PopulateWeather(Vector2I screenSize) {
-		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
+		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return;
 		}
 
@@ -472,24 +492,42 @@ internal static class Snow {
 		debrisToMake = (debrisToMake * ratio).RoundToInt();
 		MappedWeatherDebris.Clear();
 		AllWeatherDebris.Clear();
-		for (int i = 0; i < debrisToMake; i++) {
-			var debris = new SnowWeatherDebris(
-				position: new XVector2(Game1.random.Next(0, screenSize.Width), Game1.random.Next(0, screenSize.Height)),
-				which: 3,
-				rotationVelocity: 0.0f,
-				dx: Game1.random.Next(-10, 0) / 50f,
-				dy: Game1.random.Next(10) / 50f,
-				rotation: (float)(Game1.random.NextDouble() * 2.0 * Math.PI),
-				rotationRate: (float)(((Game1.random.NextDouble() * 2.0) - 1.0) * Config.Extras.Snow.MaximumRotationSpeed),
-				scale: (float)Math.Sqrt((Game1.random.NextDouble() * 0.75) + 0.25) * Config.Extras.Snow.MaximumScale
-			);
+		Parallel.For(
+			0, debrisToMake, i => {
+				var random = ThreadRandom.Value!;
 
-			if (!MappedWeatherDebris.Map.TryGetValue(debris.ReferenceSourceRect, out var mappedList)) {
-				MappedWeatherDebris.Map.Add(debris.ReferenceSourceRect, mappedList = new List<SnowWeatherDebris>());
+				var debris = new SnowWeatherDebris(
+					position: new(
+						random.Next(0, screenSize.Width),
+						random.Next(0, screenSize.Height)
+					),
+					which: 3,
+					rotationVelocity: 0.0f,
+					dx: random.Next(-10, 0) * DirectionMultiplier,
+					dy: random.Next(10) * DirectionMultiplier,
+					rotation: GetRandomFloat(random, 0.0f, 2.0f * MathF.PI),
+					rotationRate: GetRandomFloat(random, -1.0f, 1.0f) * Config.Extras.Snow.MaximumRotationSpeed,
+					scale: MathF.Sqrt(GetRandomFloat(random, MinScale, MaxScale)) * Config.Extras.Snow.MaximumScale
+				);
+
+				List<SnowWeatherDebris>? mappedList;
+
+				lock (MappedWeatherDebris) {
+					if (!MappedWeatherDebris.Map.TryGetValue(debris.ReferenceSourceRect, out mappedList)) {
+						MappedWeatherDebris.Map.Add(debris.ReferenceSourceRect, mappedList = new());
+					}
+				}
+
+				lock (mappedList) {
+					mappedList.Add(debris);
+				}
+
+				lock (AllWeatherDebris) {
+					AllWeatherDebris.Add(debris);
+				}
 			}
-			mappedList.Add(debris);
-			AllWeatherDebris.Add(debris);
-		}
+		);
+
 		AllWeatherDebris.Sort((d1, d2) => {
 			var sourceDiff = GetSourceRect(d1).GetHashCode() - GetSourceRect(d2).GetHashCode();
 			if (sourceDiff != 0) {
@@ -508,7 +546,7 @@ internal static class Snow {
 	}
 
 	internal static void OnWindowResized(Vector2I size) {
-		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
+		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return;
 		}
 

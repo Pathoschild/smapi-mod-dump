@@ -279,7 +279,7 @@ namespace FreeLove
                                 Dictionary<string, string> marriageDialogues = null;
                                 try
                                 {
-                                    marriageDialogues = ModEntry.SHelper.Content.Load<Dictionary<string, string>>("Characters\\Dialogue\\MarriageDialogue" + __instance.Name, ContentSource.GameContent);
+                                    marriageDialogues = ModEntry.SHelper.GameContent.Load<Dictionary<string, string>>("Characters\\Dialogue\\MarriageDialogue" + __instance.Name);
                                 }
                                 catch (Exception)
                                 {
@@ -308,7 +308,7 @@ namespace FreeLove
                                 Dictionary<string, string> marriageDialogues = null;
                                 try
                                 {
-                                    marriageDialogues = ModEntry.SHelper.Content.Load<Dictionary<string, string>>("Characters\\Dialogue\\MarriageDialogue" + __instance.Name, ContentSource.GameContent);
+                                    marriageDialogues = ModEntry.SHelper.GameContent.Load<Dictionary<string, string>>("Characters\\Dialogue\\MarriageDialogue" + __instance.Name);
                                 }
                                 catch (Exception)
                                 {
@@ -338,7 +338,7 @@ namespace FreeLove
                                 Dictionary<string, string> marriageDialogues = null;
                                 try
                                 {
-                                    marriageDialogues = ModEntry.SHelper.Content.Load<Dictionary<string, string>>("Characters\\Dialogue\\MarriageDialogue" + __instance.Name, ContentSource.GameContent);
+                                    marriageDialogues = ModEntry.SHelper.GameContent.Load<Dictionary<string, string>>("Characters\\Dialogue\\MarriageDialogue" + __instance.Name);
                                 }
                                 catch (Exception)
                                 {

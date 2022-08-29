@@ -12,13 +12,10 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 
 #region using directives
 
-using Common.Data;
+using Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -41,18 +38,18 @@ internal sealed class ObjectDayUpdatePatch : Common.Harmony.HarmonyPatch
     {
         if (__instance.IsBeeHouse() && ModEntry.Config.AgeImprovesBeeHouses)
         {
-            ModDataIO.Increment<int>(__instance, "Age");
+            __instance.Increment("Age");
         }
         else if (__instance.IsMushroomBox() && ModEntry.Config.AgeImprovesMushroomBoxes)
         {
-            ModDataIO.Increment<int>(__instance, "Age");
+            __instance.Increment("Age");
             if (__instance.heldObject.Value is null) return;
 
-            __instance.heldObject.Value.Quality = ModEntry.ProfessionsAPI is null
+            __instance.heldObject.Value.Quality = ModEntry.ProfessionsApi is null
                 ? Game1.player.professions.Contains(Farmer.botanist)
                     ? SObject.bestQuality
                     : __instance.GetQualityFromAge()
-                : Math.Max(ModEntry.ProfessionsAPI.GetEcologistForageQuality(Game1.player),
+                : Math.Max(ModEntry.ProfessionsApi.GetEcologistForageQuality(Game1.player),
                     __instance.GetQualityFromAge());
         }
     }

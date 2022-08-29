@@ -584,7 +584,7 @@
 	"Quote": "Welcome to Pika's!",
 	"ClosedMessage": "Sorry, we're closed!",
 	"ShopPrice": -1,
-	"MaxNumItemsSoldInStore": 5,
+	"MaxNumItemsSoldInStore": 8,
 	"DefaultSellPriceMultiplier": 0.7,
 	"PriceMultiplierWhen": {
 		"0.6": ["f Pika 2000"]
@@ -935,7 +935,7 @@
 			"ItemNames": [ "Ark Blade", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 100,
-			"When": [ "f Anton 2500" ],
+			"When": [ "f Anton 2500/!q 75163042" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -943,13 +943,6 @@
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 100,
 			"When": [ "f Ariah 2500" ],
-		},
-		{
-			"ItemType": "Weapon",
-			"ItemNames": [ "Death's Daughter", ],
-			"StockItemCurrency": "Spiritual Essence",
-			"StockCurrencyStack": 100,
-			"When": [ "f Blair 2500" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1005,7 +998,7 @@
 			"ItemNames": [ "Military Saber", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 100,
-			"When": [ "f Paula 2500" ],
+			"When": [ "f Paula 2500/!q 75163521" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1050,6 +1043,13 @@
 
 	"ItemStocks": [
 		//Weapons
+    { //Anton
+			"ItemType": "Weapon",
+			"ItemNames": [ "Ark Blade", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 100,
+			"When": [ "e 75160392" ],
+		},
     { //Kenneth
 			"ItemType": "Weapon",
 			"ItemNames": [ "Battery-Powered Battle Hammer", ],
@@ -1070,6 +1070,13 @@
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160368" ],
+		},
+    { //Blair
+			"ItemType": "Weapon",
+			"ItemNames": [ "Death's Daughter", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 100,
+			"When": [ "f Blair 2500" ],
 		},
     { //Kiarra
 			"ItemType": "Weapon",
@@ -1098,6 +1105,13 @@
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160150" ],
+		},
+    { //Paula
+			"ItemType": "Weapon",
+			"ItemNames": [ "Military Saber", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 100,
+			"When": [ "e 75160390" ],
 		},
 		{ //Flor
 			"ItemType": "Weapon",
@@ -1224,14 +1238,6 @@
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 100,
 			"When": [ "f Malaya 2500" ],
-		},
-		{
-			"ItemType": "Object",
-			"ItemNames": [ "Old Lucky Foxtail Charm", ],
-			"StockItemCurrency": "Spiritual Essence",
-			"StockCurrencyStack": 1,
-      "Stock": 1,
-			"When": [ "e 75160333" ], //Lorenzo 1 heart event
 		},
 	],
 	},
@@ -1880,34 +1886,31 @@
 	"ShopName": "RSVHeapsStore",
 	"StoreCurrency": "Money",
 	"CategoriesToSellHere": [
-    -81,
-    -75,
-		-4,
-		-5,
-		-6,
-		-7,
-    -8,
-    -9,
-    -79,
-    -74,
-    -80,
-    -16,
+		-4, //fish
+		-5, //eggs
+		-6, //milk
+		-7, //cooking
+    -8, //crafting
+    -9, //bigCraftables
+    -16, //building resources
     -17, //sellAtPierres
     -18, //sellAtPierresAndMarnies
-    -19,
-    -21,
-    -22,
+    -19, //fertilizer
+    -21, //bait
+    -22, //tackle
     -23, //sellAtFishShop
-    -24,
-    -25,
-    -26,
-    -27,
-    -29,
-    -94,
-    -95,
-    -96,
-    -99,
-    -100,
+    -24, //furniture
+    -25, //ingredients
+    -26, //artisan goods
+    -27, //syrup
+    -29, //equipment
+    -74, //seeds
+    -75, //vegetables
+    -79, //fruits
+    -80, //flowers
+    -81, //greens
+    -95, //hats
+    -96, //rings
 	],
 	"PortraitPath": "assets/HeapsShop.png",
 	"Quote": "Welcome! You can sell almost anything here too!",
@@ -1981,6 +1984,33 @@
 			"Stock": 1,
 			"StockPrice": 500,
 			"When": [ "r .1" ]
+		},
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Sprinkler",
+			],
+			"Stock": 3,
+			"StockPrice": 500,
+			"When": [ "q 75163581" ]
+		},
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Cherry Bomb",
+			],
+			"Stock": 12,
+			"StockPrice": 250,
+			"When": [ "q 75163582" ]
+		},
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Speed-Gro",
+			],
+			"Stock": 9,
+			"StockPrice": 50,
+			"When": [ "q 75163583" ]
 		},
 		{
 			"ItemType": "Object",
@@ -2165,7 +2195,7 @@
 	{
 	"ShopName": "RSVFayeShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSellHere": [ -94,-95,-96,-97,-100 ],
+	"CategoriesToSellHere": [],
 	"Quote": "Place your order! Designs change everyday!",
 	"MaxNumItemsSoldInStore": 2,
 	"LocalizedQuote": {
@@ -2254,7 +2284,7 @@
 			"ItemNames": [
 				"Egg",
 			],
-			"StockPrice": 35,
+			"StockPrice": 50,
 		},
 		{
 			"ItemType": "Object",

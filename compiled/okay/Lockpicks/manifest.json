@@ -1,0 +1,16 @@
+{
+  "Name": "Lockpicks",
+  "Author": "bwdy",
+  "Version": "3.2.0",
+  "Description": "A Stardew Valley mod for criminals. Visiting hours are merely suggestions.",
+  "EntryDll": "Lockpicks.dll",
+  "MinimumApiVersion": "3.15.1",
+  "UniqueID": "bwdy.lockpicks",
+  "UpdateKeys": [ "Nexus:3521" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "MinimumVersion": "1.10.7"
+    }
+  ]
+}

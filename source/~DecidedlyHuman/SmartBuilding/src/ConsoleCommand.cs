@@ -10,30 +10,26 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using SmartBuilding.APIs;
 using DecidedlyShared.Logging;
-using SmartBuilding.UI;
+using SmartBuilding.APIs;
 using SmartBuilding.Utilities;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using xTile.Dimensions;
+using Object = StardewValley.Object;
 
 namespace SmartBuilding
 {
     public class ConsoleCommand
     {
-        private Logger logger;
-        private bool commandRunOnce = false;
+        private readonly IDynamicGameAssetsApi dgaApi;
+        private readonly IdentificationUtils identificationUtils;
+        private readonly Logger logger;
+        private bool commandRunOnce;
         private ModEntry mod;
-        private IDynamicGameAssetsApi dgaApi;
-        private IdentificationUtils identificationUtils;
 
-        public ConsoleCommand(Logger logger, ModEntry mod, IDynamicGameAssetsApi dgaApi, IdentificationUtils identificationUtils)
+        public ConsoleCommand(Logger logger, ModEntry mod, IDynamicGameAssetsApi dgaApi,
+                              IdentificationUtils identificationUtils)
         {
             this.logger = logger;
             this.mod = mod; // This is a terrible way to access the item identification, but it'll do for now.
@@ -47,92 +43,72 @@ namespace SmartBuilding
             {
                 IList<Item> items = Game1.player.Items;
 
-                foreach (Item item in items)
-                {
+                foreach (var item in items)
                     if (item != null)
-                    {
                         try
                         {
-                            ItemType type = identificationUtils.IdentifyItemType(item as StardewValley.Object);
-                            logger.Log($"ItemType of {item.Name}: {type}.", LogLevel.Info);
+                            var type = this.identificationUtils.IdentifyItemType(item as Object);
+                            this.logger.Log($"ItemType of {item.Name}: {type}.");
 
-                            if (dgaApi?.GetDGAItemId(item) != null)
-                            {
+                            if (this.dgaApi?.GetDGAItemId(item) != null)
                                 // This did not return null, so we know this is a DGA item.
-                                logger.Log($"{item.Name} is a DGA item.");
-                            }
+                                this.logger.Log($"{item.Name} is a DGA item.");
                         }
                         catch (Exception e)
                         {
-                            logger.Log($"{e.Message}");
+                            this.logger.Log($"{e.Message}");
                         }
-                    }
-                }
             }
         }
 
         public void IdentifyCursorTarget(string command, string[] args)
         {
-            GameLocation here = Game1.currentLocation;
-            Vector2 targetTile = Game1.currentCursorTile;
+            var here = Game1.currentLocation;
+            var targetTile = Game1.currentCursorTile;
 
             if (here.objects.ContainsKey(targetTile))
             {
                 var obj = here.objects[targetTile];
-                logger.Log($"Object under cursor's name: {obj.Name}");
-                logger.Log($"Object under cursor's display name: {obj.DisplayName}");
-                logger.Log($"Object under cursor's ParentSheetIndex: {obj.ParentSheetIndex}");
-                logger.Log($"Object under cursor's Type: {obj.Type}");
-                logger.Log($"Object under cursor's Category: {obj.Category}");
-                logger.Log($"Object under cursor's Fragility: {obj.Fragility}");
-                logger.Log($"Object under cursor's isSpawnedObject: {obj.isSpawnedObject}");
-                logger.Log($"Object under cursor's canBeGrabbed: {obj.CanBeGrabbed}");
+                this.logger.Log($"Object under cursor's name: {obj.Name}");
+                this.logger.Log($"Object under cursor's display name: {obj.DisplayName}");
+                this.logger.Log($"Object under cursor's ParentSheetIndex: {obj.ParentSheetIndex}");
+                this.logger.Log($"Object under cursor's Type: {obj.Type}");
+                this.logger.Log($"Object under cursor's Category: {obj.Category}");
+                this.logger.Log($"Object under cursor's Fragility: {obj.Fragility}");
+                this.logger.Log($"Object under cursor's isSpawnedObject: {obj.isSpawnedObject}");
+                this.logger.Log($"Object under cursor's canBeGrabbed: {obj.CanBeGrabbed}");
 
-                if (obj is Chest newChest)
-                {
-                    logger.Log($"Object is giftBox: {newChest.giftbox}");
-                }
+                if (obj is Chest newChest) this.logger.Log($"Object is giftBox: {newChest.giftbox}");
 
-                foreach (var data in obj.modData)
-                {
-                    foreach (var key in data.Keys)
-                    {
-                        foreach (var value in data.Values)
-                        {
-                            logger.Log($"Key: {key}, {value}");
-                        }
-                    }
-                }
+                foreach (SerializableDictionary<string, string>? data in obj.modData)
+                foreach (string? key in data.Keys)
+                foreach (string? value in data.Values)
+                    this.logger.Log($"Key: {key}, {value}");
             }
 
             if (here.terrainFeatures.ContainsKey(targetTile))
             {
-                TerrainFeature feature = here.terrainFeatures[targetTile];
-                logger.Log($"TerrainFeature under cursor's modData: {feature.modData}");
-                logger.Log($"TerrainFeature under cursor's isPassable: {feature.isPassable()}");
-                logger.Log($"TerrainFeature under cursor's isActionable: {feature.isActionable()}");
-                
-                foreach (var data in feature.modData)
-                {
-                    foreach (var key in data.Keys)
-                    {
-                        foreach (var value in data.Values)
-                        {
-                            logger.Log($"Key: {key}, {value}");
-                        }
-                    }
-                }
+                var feature = here.terrainFeatures[targetTile];
+                this.logger.Log($"TerrainFeature under cursor's modData: {feature.modData}");
+                this.logger.Log($"TerrainFeature under cursor's isPassable: {feature.isPassable()}");
+                this.logger.Log($"TerrainFeature under cursor's isActionable: {feature.isActionable()}");
+
+                foreach (SerializableDictionary<string, string>? data in feature.modData)
+                foreach (string? key in data.Keys)
+                foreach (string? value in data.Values)
+                    this.logger.Log($"Key: {key}, {value}");
             }
         }
 
         public void TestCommand(string command, string[] args)
         {
-            if (!commandRunOnce)
+            if (!this.commandRunOnce)
             {
-                logger.Log("THIS IS YOUR ONE AND ONLY WARNING. This command is purely for testing, may wipe your player inventory, the farm, " +
-                            "spawn buildings on the farm, and perform other acts of chaos. After this warning, you will be able to use " +
-                            "the command.", LogLevel.Alert);
-                commandRunOnce = true;
+                this.logger.Log(
+                    "THIS IS YOUR ONE AND ONLY WARNING. This command is purely for testing, may wipe your player inventory, the farm, " +
+                    "spawn buildings on the farm, and perform other acts of chaos. After this warning, you will be able to use " +
+                    "the command.", LogLevel.Alert);
+                this.commandRunOnce = true;
 
                 return;
             }
@@ -141,12 +117,12 @@ namespace SmartBuilding
 
             if (args.Length <= 0)
             {
-                logger.Log("You forgot an argument.");
+                this.logger.Log("You forgot an argument.");
 
                 return;
             }
 
-            Farmer player = Game1.player;
+            var player = Game1.player;
 
             // We only care about the first argument, and can ignore the rest.
             subCommand = args[0];
@@ -169,14 +145,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Stone", 100),
                         Utility.fuzzyItemSearch("Wood", 100),
                         Utility.fuzzyItemSearch("Spaghetti", 100),
-                        Utility.fuzzyItemSearch("Legend", 100),
+                        Utility.fuzzyItemSearch("Legend", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "torches":
@@ -189,11 +163,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Torch", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "rectangle":
@@ -203,7 +175,7 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Stone Fence", 100),
                         Utility.fuzzyItemSearch("Iron Fence", 100),
                         Utility.fuzzyItemSearch("Hardwood Fence", 100),
-                        Utility.fuzzyItemSearch("Weathered Floor", 1),
+                        Utility.fuzzyItemSearch("Weathered Floor"),
                         Utility.fuzzyItemSearch("Straw Floor", 4),
                         Utility.fuzzyItemSearch("Brick Floor", 9),
                         Utility.fuzzyItemSearch("Stone Floor", 16),
@@ -211,15 +183,13 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Stone Walkway Floor", 36),
                         Utility.fuzzyItemSearch("Gravel Path", 49),
                         Utility.fuzzyItemSearch("Wood Path", 64),
-                        
+
                         Utility.fuzzyItemSearch("Torch", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "morefertilizers":
@@ -237,11 +207,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Orange Sapling", 20)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     Game1.game1.parseDebugInput("build Fish9Pond");
 
@@ -252,11 +220,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Auto-Grabber")
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "identification":
@@ -284,11 +250,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Wood", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "flooring":
@@ -297,14 +261,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Weathered Floor", 100),
                         Utility.fuzzyItemSearch("Straw Floor", 100),
                         Utility.fuzzyItemSearch("Brick Floor", 100),
-                        Utility.fuzzyItemSearch("Stone Floor", 100),
+                        Utility.fuzzyItemSearch("Stone Floor", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "furniture":
@@ -315,11 +277,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Chair")
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "tv":
@@ -328,14 +288,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Floor TV"),
                         Utility.fuzzyItemSearch("Budget TV"),
                         Utility.fuzzyItemSearch("Plasma TV"),
-                        Utility.fuzzyItemSearch("Tropical TV"),
+                        Utility.fuzzyItemSearch("Tropical TV")
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "storage":
@@ -344,14 +302,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Birch Dresser"),
                         Utility.fuzzyItemSearch("Oak Dresser"),
                         Utility.fuzzyItemSearch("Walnut Dresser"),
-                        Utility.fuzzyItemSearch("Mahogany Dresser"),
+                        Utility.fuzzyItemSearch("Mahogany Dresser")
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "bed":
@@ -360,14 +316,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Single Bed"),
                         Utility.fuzzyItemSearch("Double Bed"),
                         Utility.fuzzyItemSearch("Fisher Double Bed"),
-                        Utility.fuzzyItemSearch("Wild Double Bed"),
+                        Utility.fuzzyItemSearch("Wild Double Bed")
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "chests":
@@ -379,11 +333,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Junimo Chest", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "tree":
@@ -400,14 +352,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Mahogany Seed", 10),
                         Utility.fuzzyItemSearch("Tapper", 10),
                         Utility.fuzzyItemSearch("Heavy Tapper", 10),
-                        Utility.fuzzyItemSearch("Tree Fertilizer", 100),
+                        Utility.fuzzyItemSearch("Tree Fertilizer", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "crop":
@@ -418,14 +368,12 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Parsnip Seed", 100),
                         Utility.fuzzyItemSearch("Bison Seed", 100),
                         Utility.fuzzyItemSearch("Cactus Flower Seed", 100),
-                        Utility.fuzzyItemSearch("Cabbage Seed", 100),
+                        Utility.fuzzyItemSearch("Cabbage Seed", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "fence":
@@ -438,11 +386,9 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Hardwood Fence", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "modded":
@@ -450,14 +396,12 @@ namespace SmartBuilding
                     {
                         Utility.fuzzyItemSearch("Cream Soda Maker", 100),
                         Utility.fuzzyItemSearch("Artisanal Soda Maker", 100),
-                        Utility.fuzzyItemSearch("Alembic", 100),
+                        Utility.fuzzyItemSearch("Alembic", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
                 case "insertion":
@@ -466,33 +410,28 @@ namespace SmartBuilding
                         Utility.fuzzyItemSearch("Furnace", 100),
                         Utility.fuzzyItemSearch("Copper Ore", 100),
                         Utility.fuzzyItemSearch("Coal", 999),
-                        
+
                         Utility.fuzzyItemSearch("Keg", 100),
                         Utility.fuzzyItemSearch("Hops", 100),
 
                         Utility.fuzzyItemSearch("Cream Soda Maker", 100),
                         Utility.fuzzyItemSearch("Artisanal Soda Maker", 100),
                         Utility.fuzzyItemSearch("Carbonator", 100),
-                        
+
                         Utility.fuzzyItemSearch("Alembic", 100),
                         Utility.fuzzyItemSearch("Vanilla", 100),
 
                         Utility.fuzzyItemSearch("Strawberry", 100),
                         Utility.fuzzyItemSearch("Sugar", 100),
                         Utility.fuzzyItemSearch("Fresh Water", 100),
-                        Utility.fuzzyItemSearch("Sparkling Water", 100),
+                        Utility.fuzzyItemSearch("Sparkling Water", 100)
                     };
 
-                    foreach (Item item in items)
-                    {
+                    foreach (var item in items)
                         if (item != null)
                             player.addItemToInventory(item);
-                    }
 
                     break;
-                default:
-                    break;
-
             }
         }
     }

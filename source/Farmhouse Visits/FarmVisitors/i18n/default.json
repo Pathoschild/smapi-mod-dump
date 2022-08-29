@@ -18,41 +18,90 @@
 	"config.StartingHours.description": "The hour villagers will begin visiting at.",
 	"config.EndingHours.name": "Ending hours",
 	"config.EndingHours.description": "The hour villagers will stop visiting at.",
-	"config.VisitDuration.name":"Duration",
-	"config.VisitDuration.description":"How long each visit should last, in 10 minute intervals (e.g 3 is 30 minutes).",
+	"config.VisitDuration.name": "Duration",
+	"config.VisitDuration.description": "How long each visit should last, in 10 minute intervals (e.g 3 is 30 minutes).",
 	"config.Verbose.name": "Verbose logging",
 	"config.Verbose.description": "The mod will log way more info.",
-	"config.Extras":"Extras",
-	"config.Blacklist.name":"Blacklist",
-	"config.Blacklist.description":"Characters you don't want to visit you. Separated by spaces (' '). E.g: \"Pierre Lewis\"",
-	"config.VisitConfiguration":"Visit configuration",
+	"config.Extras": "Extras",
+	"config.Blacklist.name": "Blacklist",
+	"config.Blacklist.description": "Characters you don't want to visit you. Separated by spaces (' '). E.g: \"Pierre Lewis\"",
+	"config.VisitConfiguration": "Visit configuration",
 	"config.Debug.name": "Debug",
-	"config.Debug.Explanation":"Developer options.",
-
+	"config.Debug.Explanation": "Developer options.",
+	
 	/*For translators: your in-laws = the family of your spouse.
 	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
 	 *
 	 * Feel free to use your language's equivalent! */
 
-	"config.InLawComments.name":"In-law comments",
+	"config.InLawComments.name": "In-law comments",
 	"config.InLawComments.description": "If your spouse's relatives visit, they'll ask about said spouse (and your kids, if any). This can affect vanilla in-laws, vanilla and mod in-laws, or neither.",
-	"config.InLawComments.values.VanillaOnly":"Vanilla only",
-	"config.InLawComments.values.VanillaAndMod":"Vanilla and mod NPCs",
-	"config.InLawComments.values.None":"None",
-	"config.ReplacerCompat.name":"Replacer compatibility",
-	"config.ReplacerCompat.description":"Turn this on for compatibility with NPC replacers.",
+	"config.InLawComments.values.VanillaOnly": "Vanilla only",
+	"config.InLawComments.values.VanillaAndMod": "Vanilla and mod NPCs",
+	"config.InLawComments.values.None": "None",
+	"config.ReplacerCompat.name": "Replacer \n compatibility",
+	"config.ReplacerCompat.description": "Turn this on for compatibility with NPC replacers.",
+	
+	//new content
+	"config.AskForConfirmation.name": "Ask for confirmation?",
+	"config.AskForConfirmation.description": "NPCs will need permission to enter (via a question dialogue).",
+	"config.RejectionDialogues.name": "Rejection dialogues",
+	"config.RejectionDialogues.description": "If rejected, NPCs will comment on it.",
+	"config.ReceiveGifts.name": "Receive gifts?",
+	"config.ReceiveGifts.description": "If enabled, visits will bring you a gift.",
+	"Visit.AllowOrNot": "{0} is at the door. Open it?",
+	"Visit.Yes": "Yes",
+	"Visit.No": "No",
 
 	/* TN: command errors */
-	"error.WorldNotReady":"You need to load a save to use this command.",
-	"error.InvalidValue":"Invalid value.",
-	"error.NotInFarmhouse":"You're not in the farmhouse, NPCs won't be able to come in.",
-
-	/* TN: bad schedule (when the user adds one via ContentPatcher) */
-	"FromHigherThanTo":"Start hours is higher than end hours. Fix and restart the game.",
-	"NotInSave": "NPC is not currently in save (have you unlocked them yet?)",
-	"CantBe2600":"Visit can't end at 2600.",
-	"CantBe600":"Visit can't start at 600.",
+	"error.WorldNotReady": "You need to load a save to use this command.",
+	"error.InvalidValue": "Invalid value.",
+	"error.NotInFarmhouse": "You're not in the farmhouse, NPCs won't be able to come in.",
 	
+	/* TN: bad schedule (when the user adds one via ContentPatcher) */
+	"FromHigherThanTo": "Start hours is higher than end hours. Fix and restart the game.",
+	"NotInSave": "NPC is not currently in save (have you unlocked them yet?)",
+	"CantBe2600": "Visit can't end at 2600.",
+	"CantBe600": "Visit can't start at 600.",
+	
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "Oops. I'll come another day.",
+	"NPCRejected.Outgoing2": "No one's home?",
+	"NPCRejected.Outgoing3": "Silence...#$b#Well, that's too bad.$1",
+	"NPCRejected.Shy1": "Maybe no one's home...",
+	"NPCRejected.Shy2": "Are you there?#$b#...Maybe i came at a wrong time?",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "I must have come at a wrong time.",
+	"NPCRejected.Polite2": "...#$b#Hopefully @ is doing fine.",
+	"NPCRejected.Polite3": "...It seems no one's home at this time.",
+	"NPCRejected.Neutral1": "knock knock...#$b#Well, i'll have to leave.",
+	"NPCRejected.Neutral2": "Hmm?#$b#I swear i thought @ was home.",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "And @ isn't here...?#$b#Damn it. Just my luck.$2",
+	"NPCRejected.Rude2": "Hey, anyone?",
+	"NPCRejected.Rude3": "Oh, come on. No one's home..? $2",
+	
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "Thanks. The weather outside was really rough.",
+	"NPCThanking.Outgoing2": "Your house looks different from the last time i came.#$b#Did you change something?",
+	"NPCThanking.Outgoing3": "%farm farm looks like a lot of work.",
+	"NPCThanking.Shy1": "Hope i'm not intruding.",
+	"NPCThanking.Shy2": "Thanks for letting me in.",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "The walk here was really nice.",
+	"NPCThanking.Polite2": "Sorry for coming uninvited.",
+	"NPCThanking.Polite3": "Thanks, @.",
+	"NPCThanking.Neutral1": "So, do you like surprise visits?",
+	"NPCThanking.Neutral2": "Your farm outside looked good.",
+	"NPCThanking.Neutral3": "I like this place.",
+	"NPCThanking.Rude1": "Yeah, that's more like it.",
+	"NPCThanking.Rude2": "Finally...my feet were starting to hurt.",
+	"NPCThanking.Rude3": "It took so long to walk here.",
+
 	/* TN: introduction */
 	//by social
 	"NPCIntroduce.Outgoing1": "@? I'm coming in!",
@@ -62,16 +111,16 @@
 	"NPCIntroduce.Shy2": "@?",
 	"NPCIntroduce.Shy3": "Hello? Is anyone home?",
 	//by manners
-	"NPCIntroduce.Polite1": "Hello, may i come in?",
+	"NPCIntroduce.Polite1": "Hello, may I come in?",
 	"NPCIntroduce.Polite2": "Excuse me...",
 	"NPCIntroduce.Polite3": "(knock knock)",
 	"NPCIntroduce.Neutral1": "Is someone there?",
 	"NPCIntroduce.Neutral2": "Hello? @?",
 	"NPCIntroduce.Neutral3": "@, it's me.",
-	"NPCIntroduce.Rude1": "@, i'm outside.",
+	"NPCIntroduce.Rude1": "@, I'm outside.",
 	"NPCIntroduce.Rude2": "Hello..? @..?",
 	"NPCIntroduce.Rude3": "Hey...@, You're there?",
-
+	
 	/* TN: walk into house */
 	//by social
 	"NPCWalkIn.Outgoing1": "Hi, {0}!",
@@ -90,32 +139,51 @@
 	"NPCWalkIn.Rude1": "Hey, {0}.",
 	"NPCWalkIn.Rude2": "I'm gonna walk in",
 	"NPCWalkIn.Rude3": "Hi.",
-
+	
 	/* TN: greeting player */
 	//by social
-	"NPCGreet.Outgoing1": "Hey. How's it going? Thought i'd pass by and give you a visit.$1#$b#I brought you a gift.[{0}]",
-	"NPCGreet.Outgoing2": "Hi. How's your farm coming along? Thought i'd come check myself.$1#$b#I brought you a gift.[{0}]",
-	"NPCGreet.Outgoing3": "Hello! I haven't seen you in a while.$1#$b#Here, I brought you a gift.[{0}]",
-	"NPCGreet.Shy1": "Hi, @. How have you been?#$b#Seems the %farm farm has been growing.#$b#I brought you a gift.[{0}]",
-	"NPCGreet.Shy2": "Hello, @.#$b#I was passing by and decided to visit.#$b#I brought you a gift.[{0}]",
-	"NPCGreet.Shy3": "Hey, @. It's nice to see you.#$b#I was wondering how you were doing.#$b#I brought you a gift for the troubles.[{0}]",
+	"NPCGreet.Outgoing1": "Hey. How's it going? Thought I'd pass by and give you a visit.$1",
+	"NPCGreet.Outgoing2": "Hi. How's your farm coming along? Thought I'd come check myself.$1",
+	"NPCGreet.Outgoing3": "Hello! I haven't seen you in a while.$1",
+	"NPCGreet.Shy1": "Hi, @. How have you been?#$b#Seems the %farm farm has been growing.",
+	"NPCGreet.Shy2": "Hello, @.#$b#I was passing by and decided to visit.",
+	"NPCGreet.Shy3": "Hey, @. It's nice to see you.#$b#I was wondering how you were doing.",
 	//by manners
-	"NPCGreet.Polite1": "@, i'm sorry for walking uninvited. I wanted to check on you.#$b#And i brought you something for the troubles. [{0}]",
-	"NPCGreet.Polite2": "Greetings. I'm glad to see you, @.#$b#Here, i brought you something for the troubles. [{0}]",
-	"NPCGreet.Polite3": "Excuse me...hope i'm not interrupting anything.$1#$b#I brought you something for the troubles. [{0}]",
-	"NPCGreet.Neutral1": "I'm going to walk in...hi, @.#$b#Here, i thought of you when i saw this.[{0}]",
-	"NPCGreet.Neutral2": "Hey, i was passing by and heard noise...#$b#Had to come check just to be safe, hehe.$1#$b#I thought of you when i saw this.[{0}]",
-	"NPCGreet.Neutral3": "Hi, @. How good to see you.#$b#I decided to give you a surprise visit.#$b#Thought of you when i saw this. [{0}]",
-	"NPCGreet.Rude1": "Hey, @! Did you miss me?#$b#Look, i got you something.[{0}]",
-	"NPCGreet.Rude2": "Hi, @.#$b#I got you something on the way here.[{0}]",
-	"NPCGreet.Rude3": "Hey, i was passing by and saw you were inside...i wanted to pass by.#$b#I got you something, take it.[{0}]",
-
+	"NPCGreet.Polite1": "@, I'm sorry for walking uninvited. I wanted to check on you.",
+	"NPCGreet.Polite2": "Greetings. I'm glad to see you, @.",
+	"NPCGreet.Polite3": "Excuse me...hope I'm not interrupting anything.$1",
+	"NPCGreet.Neutral1": "I'm going to walk in...hi, @.",
+	"NPCGreet.Neutral2": "Hey, I was passing by and heard noise...#$b#Had to come check just to be safe, hehe.$1",
+	"NPCGreet.Neutral3": "Hi, @. How good to see you.#$b#I decided to give you a surprise visit.",
+	"NPCGreet.Rude1": "Hey, @! Did you miss me?",
+	"NPCGreet.Rude2": "Hi, @.",
+	"NPCGreet.Rude3": "Hey, I was passing by and saw you were inside...I wanted to pass by.",
+	
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key.
+	 * (and some extra ones as new content) */
+	"NPCGift.Normal1": "I brought you a gift.[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "Here, I brought you a gift.[{0}]", //outgoing3
+	"NPCGift.Normal3": "I brought you a gift for the troubles.[{0}]", //shy3
+	"NPCGift.Normal4": "Here, I thought of you when I saw this.[{0}]", //neutral1
+	"NPCGift.Normal5": "Hey, this seemed like a 'you' item. So i got it for you. [{0}]", //original
+	"NPCGift.Kind1": "And i brought you something for the troubles. [{0}]", //polite1
+	"NPCGift.Kind2": "Here, I brought you something for the troubles. [{0}]", //polite2
+	"NPCGift.Kind3": "I brought you something for the troubles. [{0}]", //polite3
+	"NPCGift.Kind4": "I thought of you when i saw this.[{0}]", //neutral2
+	"NPCGift.Kind5": "This seemed like something you'd like.[{0}]", //original
+	"NPCGift.Lax1": "Hey, take this.[{0}]", //original
+	"NPCGift.Lax2": "Look, I got you something.[{0}]", //rude1
+	"NPCGift.Lax3": "I got you something, take it.[{0}]", //rude3
+	"NPCGift.Lax4": "Here. I had some spares around. [{0}]", //original
+	"NPCGift.Lax5": "I got you something on the way here.[{0}]", //rude2
+	
 	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
 	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
      
      * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
-
-	 //generic lines (for any spouse)
+	
+	//generic lines (for any spouse)
 	"InLaw.Generic.1": "Is {0} in the house right now?",
 	"InLaw.Generic.2": "I haven't seen {0} in so long...",
 	"InLaw.Generic.3": "How are things with {0}? Do you two get along well?",
@@ -123,7 +191,7 @@
 	"InLaw.Generic.5": "And where's {0}, @?",
 	"InLaw.Generic.6": "How are you and {0}, @? Is everything good?",
 	"InLaw.Generic.7": "I haven't seen {0} in a while...",
-	"InLaw.Generic.8": "I hope {0} enjoys the %farm farm..." ,
+	"InLaw.Generic.8": "I hope {0} enjoys the %farm farm...",
 	"InLaw.Generic.9": "Is {0} taking care?",
 	"InLaw.Generic.10": "@... how is {0} doing?",
 	"InLaw.Generic.11": "Hey, where's {0}?",
@@ -131,58 +199,58 @@
 	"InLaw.Generic.13": "Is {0} here today?",
 	"InLaw.Generic.14": "@...how has {0} been?",
 	"InLaw.Generic.15": "Is {0} around, @? It's been a while.$1",
-
+	
 	//for vanilla spouses
 	"InLaw.Abigail.1": "Is Abigail still in that band with her friends?",
 	"InLaw.Abigail.2": "Does Abby still like the occult?#$b#I hope she doesn't get in too much danger...$2",
 	"InLaw.Abigail.3": "I hope Abigail has been taking care.",
-
+	
 	"InLaw.Alex.1": "The house's been quiet since Alex moved here.#$b#But i hope he's happy.$1",
 	"InLaw.Alex.2": "How are things with my grandson?",
 	"InLaw.Alex.3": "Does my grandson still play gridball?",
-
+	
 	"InLaw.Emily.1": "How is Emily?#$b#Is she still taking care of the parrot?",
 	"InLaw.Emily.2": "Emily used to be so busy with the Saloon every day...$2#$b#I hope she's resting more now.",
 	"InLaw.Emily.3": "I'm sure Emily loves living in a farm with you, @.",
-
+	
 	"InLaw.Haley.1": "How are you and Haley doing?$1",
 	"InLaw.Haley.2": "I never thought Haley would love the farm so much...",
 	"InLaw.Haley.3": "@, does Haley still take photos?",
-
+	
 	"InLaw.Maru.1": "Is Maru still making experiments?",
 	"InLaw.Maru.2": "Has Maru been resting enough?#$b#Working on a farm and a clinic must be a lot.",
 	"InLaw.Maru.3": "Where is Maru, @?#$b#I'd like to see my daughter.$1",
-
+	
 	"InLaw.Penny.1": "Is Penny still teaching kids?",
 	"InLaw.Penny.2": "@...#$b#Do you think i could see Penny too?",
 	"InLaw.Penny.3": "@, what has been Penny doing?",
-
-	"InLaw.Sam.1": "Does sam still play the guitar?#$b#What about skating?",
+	
+	"InLaw.Sam.1": "Does Sam still play the guitar?#$b#What about skating?",
 	"InLaw.Sam.2": "@, is my son doing well?",
 	"InLaw.Sam.3": "I wonder if Sam has been dealing well with pollen...",
-
+	
 	"InLaw.Sebastian.1": "Does Sebastian still have the motorbike?",
 	"InLaw.Sebastian.2": "I never imagined Sebastian living in a farm...#$b#I hope he's happy here.",
 	"InLaw.Sebastian.3": "@, do you have chickens?#$b#I wonder how Sebastian is doing with a house full of eggs.$1",
-
+	
 	"InLaw.Shane.1": "Hey, and Shane? What about Charlie?",
 	"InLaw.Shane.2": "Is Shane taking care?",
 	"InLaw.Shane.3": "I bet Shane must be happy living in a farm.",
-
+	
 	/* TN: ask about your kids, 1 to 5
 	 * if you have kids, this is added right after InLaw. */
-	"ask.singlechild.1":"I's been a while since i last saw {0}...",
-	"ask.singlechild.2":"@, is {0} here?",
-	"ask.singlechild.3":"I haven't seen {0} in a while...",
-	"ask.singlechild.4":"@, is {0} doing well?",
-	"ask.singlechild.5":"I bet {0} has grown a lot since i last came here.",
-
-	"ask.multiplechild.1":"@, where is {0}?#$b#And what about {1}?",
-	"ask.multiplechild.2":"I haven't seen {0} or {1} in a while.",
-	"ask.multiplechild.3":"What about {1} and {0}? Are your kids here?",
-	"ask.multiplechild.4":"Do {1} and {0} get along?",
-	"ask.multiplechild.5":"Are {0} and {1} home right now?",
-
+	"ask.singlechild.1": "I's been a while since I last saw {0}...",
+	"ask.singlechild.2": "@, is {0} here?",
+	"ask.singlechild.3": "I haven't seen {0} in a while...",
+	"ask.singlechild.4": "@, is {0} doing well?",
+	"ask.singlechild.5": "I bet {0} has grown a lot since I last came here.",
+	
+	"ask.multiplechild.1": "@, where is {0}?#$b#And what about {1}?",
+	"ask.multiplechild.2": "I haven't seen {0} or {1} in a while.",
+	"ask.multiplechild.3": "What about {1} and {0}? Are your kids here?",
+	"ask.multiplechild.4": "Do {1} and {0} get along?",
+	"ask.multiplechild.5": "Are {0} and {1} home right now?",
+	
 	/*talk about furniture*/
 	//by social
 	"NPCFurniture.Outgoing1": "This {0} looks really good in your farmhouse.",
@@ -190,7 +258,7 @@
 	"NPCFurniture.Outgoing3": "@, Is that {0} for sale?#$b#I'm kidding.$1.",
 	"NPCFurniture.Shy1": "So, that {0}...#$b#It's very pretty.",
 	"NPCFurniture.Shy2": "I didn't know you had a {0}!$1",
-	"NPCFurniture.Shy3": "Your {0}... reminds me of the one i have back home.",
+	"NPCFurniture.Shy3": "Your {0}... reminds me of the one I have back home.",
 	//by manners
 	"NPCFurniture.Polite1": "@, your {0}...it gives life to this house.",
 	"NPCFurniture.Polite2": "You've put a lot of effort in decorating this place, @...$1",
@@ -204,13 +272,23 @@
 	
 	/* TN: leaving */
 	//by social
-	"NPCRetiring.Outgoing": "It's been fun, but I have to go. I'll see you later!",
-	"NPCRetiring.Shy": "It's getting late...I'll be going now. It was nice seeing you.",
+	"NPCRetiring.Outgoing1": "It's been fun, but I have to go. I'll see you later!",
+	"NPCRetiring.Outgoing2": "It's been a while now, so i'll get going.",
+	"NPCRetiring.Outgoing3": "See you later, @.",
+	"NPCRetiring.Shy1": "It's getting late...I'll be going now. It was nice seeing you.",
+	"NPCRetiring.Shy2": "I have some things to do, but i had fun.#$b#Thank you, @.$1",
+	"NPCRetiring.Shy3": "Sorry, @. I'll have to leave now.#$b#Thank you for your time.",
 	//by manners
-	"NPCRetiring.Polite": "@, i'll have to leave...i need to do some things.#$b#I'm glad i got to see you!$1",
-	"NPCRetiring.Neutral": "Hey, look at the time...i should have gone away a while ago.#$b#I'll see you another day!$1",
-	"NPCRetiring.Rude": "I'll be going...i must be keeping you busy.#$b#I'll see you later.",
-
+	"NPCRetiring.Polite1": "@, I'll have to leave...I need to do some things.#$b#I'm glad I got to see you!$1",
+	"NPCRetiring.Polite2": "I've been here a while...i'll take my leave.#$b#See you next time, @.",
+	"NPCRetiring.Polite3": "@, it was fun to see you.#$b#Hope your day goes well.",
+	"NPCRetiring.Neutral1": "Hey, look at the time...I should have gone away a while ago.#$b#I'll see you another day!$1",
+	"NPCRetiring.Neutral2": "I'll leave now, before it gets darker outside.#$b#See you, @.",
+	"NPCRetiring.Neutral3": "You must have things to do, so i'll take my leave.#$b#I had fun.$1",
+	"NPCRetiring.Rude1": "I'll be going...I must be keeping you busy.#$b#I'll see you later.",
+	"NPCRetiring.Rude2": "I've been here too long... i'll be going.#$b#See you, @.",
+	"NPCRetiring.Rude3": "It's pretty late already. I'll see you another day.",
+	
 	/* TN: gone while outside */
 	"NPCGoneWhileOutside": "While you were outside, {0} took their leave.",
 	"NPCGone_Cellar": "While you were in the cellar, {0} took their leave."

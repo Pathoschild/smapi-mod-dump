@@ -1,0 +1,18 @@
+{
+  "Name": "Candle",
+  "Description": "The most powerful candle ever obviously",
+  "MinimumDamage": 9999,
+  "MaximumDamage": 9999,
+  "Knockback": 1,
+  "Speed": 100,
+  "Accurary": 100,
+  "Defense": 100,
+  "CritChance": 100,
+  "CritMultiplier": 2.5,
+  "MineDropVar": -1,
+  "MineDropMinimumLevel": 9999,
+  "CanPurchase": false,
+  "PurchaseFrom": "Marlon",
+  "PurchasePrice": 99999999,
+  "Recipe": null,
+}

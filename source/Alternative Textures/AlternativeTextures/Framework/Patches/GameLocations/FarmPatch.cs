@@ -171,6 +171,7 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
 
             return true;
         }
+
         public static void BaseDrawReversePatch(BuildableGameLocation __instance, SpriteBatch b)
         {
             new NotImplementedException("It's a stub!");

@@ -227,9 +227,17 @@ namespace TimeSpeed
             if (!Context.IsWorldReady || !Context.IsMainPlayer)
                 return false;
 
-            // only handle keys if the player is free, or currently watching an event
-            if (forInput && !Context.IsPlayerFree)
-                return false;
+            // check restrictions for input
+            if (forInput)
+            {
+                // don't handle input when player isn't free (except in events)
+                if (!Context.IsPlayerFree && !Game1.eventUp)
+                    return false;
+
+                // ignore input if a textbox is active
+                if (Game1.keyboardDispatcher.Subscriber is not null)
+                    return false;
+            }
 
             return true;
         }

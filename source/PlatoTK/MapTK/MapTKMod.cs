@@ -15,11 +15,14 @@ using MapTK.MapExtras;
 using MapTK.FestivalSpots;
 using System.Collections.Generic;
 using MapTK.TileActions;
+using StardewModdingAPI.Events;
 
 namespace MapTK
 {
     public class MapTKMod : Mod
     {
+        private GameAssetLoader GameAssetLoader;
+
         internal static LocationsHandler LocationsHandler;
         internal static MapExtrasHandler MapExtrasHandler;
         internal static SpouseRoomHandler SpouseRoomHandler;
@@ -30,12 +33,18 @@ namespace MapTK
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.GameLaunched += SetCompatOptions;
+            helper.Events.Content.AssetRequested += OnAssetRequested;
+            GameAssetLoader = new GameAssetLoader(helper);
             LocationsHandler = new LocationsHandler(helper);
             MapExtrasHandler = new MapExtrasHandler(helper);
             SpouseRoomHandler = new SpouseRoomHandler(helper);
             FestivalSpotsHandler = new FestivalSpotsHandler(helper);
             TileActionsHandler = new TileActionsHandler(helper);
-            helper.Content.AssetLoaders.Add(new GameAssetLoader(helper));
+        }
+
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            GameAssetLoader.OnAssetRequested(e);
         }
 
         private void SetCompatOptions(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)

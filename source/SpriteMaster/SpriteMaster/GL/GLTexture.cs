@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if false
 using FastExpressionCompiler.LightExpression;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions.Reflection;
@@ -125,3 +126,4 @@ internal static class GLTexture {
 		return newObj;
 	}
 }
+#endif

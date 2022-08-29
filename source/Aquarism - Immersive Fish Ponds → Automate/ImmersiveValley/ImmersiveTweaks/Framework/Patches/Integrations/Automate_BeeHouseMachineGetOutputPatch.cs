@@ -13,36 +13,26 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 #region using directives
 
 using Common;
+using Common.Attributes;
 using Common.Extensions.Reflection;
 using Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Pathoschild.Automate")]
 internal sealed class BeeHouseMachineGetOutputPatch : Common.Harmony.HarmonyPatch
 {
-    private static Func<object, SObject>? _GetMachine;
-
     /// <summary>Construct an instance.</summary>
     internal BeeHouseMachineGetOutputPatch()
     {
-        try
-        {
-            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine".ToType()
-                .RequireMethod("GetOutput");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine".ToType()
+            .RequireMethod("GetOutput");
     }
 
     #region harmony patches
@@ -74,7 +64,10 @@ internal sealed class BeeHouseMachineGetOutputPatch : Common.Harmony.HarmonyPatc
                     new CodeInstruction(OpCodes.Dup),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(BeeHouseMachineGetOutputPatch).RequireMethod(nameof(GetOutputSubroutine))),
+                        "Pathoschild.Stardew.Automate.Framework.BaseMachine`1".ToType().MakeGenericType(typeof(SObject))
+                            .RequirePropertyGetter("Machine")),
+                    new CodeInstruction(OpCodes.Call,
+                        typeof(SObjectExtensions).RequireMethod(nameof(SObjectExtensions.GetQualityFromAge))),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(SObject).RequirePropertySetter(nameof(SObject.Quality)))
                 );
@@ -89,14 +82,4 @@ internal sealed class BeeHouseMachineGetOutputPatch : Common.Harmony.HarmonyPatc
     }
 
     #endregion harmony patches
-
-    #region injected subroutines
-
-    private static int GetOutputSubroutine(object instance)
-    {
-        _GetMachine ??= instance.GetType().RequirePropertyGetter("Machine").CompileUnboundDelegate<Func<object, SObject>>();
-        return _GetMachine(instance).GetQualityFromAge();
-    }
-
-    #endregion injected subroutines
 }

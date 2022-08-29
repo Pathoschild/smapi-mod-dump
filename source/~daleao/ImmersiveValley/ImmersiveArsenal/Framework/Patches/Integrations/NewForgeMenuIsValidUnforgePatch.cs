@@ -12,29 +12,22 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Extensions.Reflection;
+using Common.Integrations.SpaceCore;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Menus;
 using StardewValley.Tools;
-using System;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("spacechase0.SpaceCore")]
 internal sealed class NewForgeMenuIsValidUnforgePatch : Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NewForgeMenuIsValidUnforgePatch()
     {
-        try
-        {
-            Target = "SpaceCore.Interface.NewForgeMenu".ToType().RequireMethod("IsValidUnforge");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "SpaceCore.Interface.NewForgeMenu".ToType().RequireMethod("IsValidUnforge");
     }
 
     #region harmony patches
@@ -43,9 +36,7 @@ internal sealed class NewForgeMenuIsValidUnforgePatch : Common.Harmony.HarmonyPa
     [HarmonyPostfix]
     private static void NewForgeMenuIsValidUnforgePostfix(IClickableMenu __instance, ref bool __result)
     {
-        SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot ??= "SpaceCore.Interface.NewForgeMenu".ToType().RequireField("leftIngredientSpot")
-            .CompileUnboundFieldGetterDelegate<Func<IClickableMenu, ClickableTextureComponent>>();
-        var item = SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot(__instance).item;
+        var item = ExtendedSpaceCoreAPI.GetNewForgeMenuLeftIngredientSpot.Value(__instance).item;
         __result = item switch
         {
             Slingshot slingshot when slingshot.GetTotalForgeLevels() > 0 => true,

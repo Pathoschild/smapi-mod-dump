@@ -13,14 +13,13 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.SpaceCore;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -29,24 +28,21 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("spacechase0.SpaceCore")]
 internal sealed class SkillLevelUpMenuDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static Func<IClickableMenu, bool>? _GetIsProfessionChooser;
+    private static readonly Lazy<Func<IClickableMenu, bool>> _GetIsProfessionChooser = new(() =>
+        "SpaceCore.Interface.SkillLevelUpMenu".ToType().RequireField("isProfessionChooser")
+            .CompileUnboundFieldGetterDelegate<IClickableMenu, bool>());
 
-    private static Func<IClickableMenu, List<int>>? _GetProfessionsToChoose;
+    private static readonly Lazy<Func<IClickableMenu, List<int>>> _GetProfessionsToChoose = new(() =>
+        "SpaceCore.Interface.SkillLevelUpMenu".ToType().RequireField("professionsToChoose")
+            .CompileUnboundFieldGetterDelegate<IClickableMenu, List<int>>());
 
     /// <summary>Construct an instance.</summary>
     internal SkillLevelUpMenuDrawPatch()
     {
-        try
-        {
-            Target = "SpaceCore.Interface.SkillLevelUpMenu".ToType().RequireMethod("draw", new[] { typeof(SpriteBatch) });
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "SpaceCore.Interface.SkillLevelUpMenu".ToType().RequireMethod("draw", new[] { typeof(SpriteBatch) });
     }
 
     #region harmony patches
@@ -96,14 +92,10 @@ internal sealed class SkillLevelUpMenuDrawPatch : DaLion.Common.Harmony.HarmonyP
 
     private static void DrawSubroutine(IClickableMenu menu, int currentLevel, SpriteBatch b)
     {
-        _GetIsProfessionChooser ??= "SpaceCore.Interface.SkillLevelUpMenu".ToType().RequireField("isProfessionChooser")
-            .CompileUnboundFieldGetterDelegate<Func<IClickableMenu, bool>>();
-        if (!ModEntry.Config.EnablePrestige || !_GetIsProfessionChooser(menu) ||
+        if (!ModEntry.Config.EnablePrestige || !_GetIsProfessionChooser.Value(menu) ||
             currentLevel > 10) return;
 
-        _GetProfessionsToChoose ??= "SpaceCore.Interface.SkillLevelUpMenu".ToType().RequireField("professionsToChoose")
-            .CompileUnboundFieldGetterDelegate<Func<IClickableMenu, List<int>>>();
-        var professionsToChoose = _GetProfessionsToChoose(menu);
+        var professionsToChoose = _GetProfessionsToChoose.Value(menu);
         if (!ModEntry.CustomProfessions.TryGetValue(professionsToChoose[0], out var leftProfession) ||
             !ModEntry.CustomProfessions.TryGetValue(professionsToChoose[1], out var rightProfession)) return;
 

@@ -16,6 +16,7 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Hashing;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
+using SpriteMaster.Types.Pooling;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -117,35 +118,48 @@ internal static class SpriteMap {
 		var meta = texture.Meta();
 		var spriteTable = meta.GetSpriteInstanceTable();
 
-		var instanceDisposeList = new List<ManagedSpriteInstance>();
+		DefaultPooledObject<List<ManagedSpriteInstance>>? instanceDisposeList = null;
 
-		using (meta.Lock.ReadWrite) {
-			if (spriteTable.TryGetValue(rectangleHash, out var spriteInstance)) {
-				if (spriteInstance.Texture?.IsDisposed == true) {
-					var removeList = new List<ulong>();
-					using (meta.Lock.Write) {
-						foreach (var skv in spriteTable) {
-							if (skv.Value.Texture?.IsDisposed ?? false) {
-								removeList.Add(skv.Key);
+		try {
+			using (meta.Lock.ReadWrite) {
+				if (spriteTable.TryGetValue(rectangleHash, out var spriteInstance)) {
+					if (spriteInstance.Texture?.IsDisposed == true) {
+						instanceDisposeList = ObjectPoolExt.Take<List<ManagedSpriteInstance>>(list => list.Clear());
+						using var removeListValue = ObjectPoolExt.Take<List<ulong>>(list => list.Clear());
+						var removeList = removeListValue.Value;
+
+						using (meta.Lock.Write) {
+							foreach (var skv in spriteTable) {
+								if (skv.Value.Texture?.IsDisposed ?? false) {
+									removeList.Add(skv.Key);
+								}
 							}
-						}
-						foreach (var key in removeList) {
-							meta.RemoveFromSpriteInstanceTable(key, dispose: false, out var instance);
-							if (instance is not null) {
-								instanceDisposeList.Add(instance);
+
+							foreach (var key in removeList) {
+								meta.RemoveFromSpriteInstanceTable(key, dispose: false, out var instance);
+								if (instance is not null) {
+									instanceDisposeList.Value.Value.Add(instance);
+								}
 							}
 						}
 					}
+					else {
+						result = spriteInstance;
+						return true;
+					}
 				}
-				else {
-					result = spriteInstance;
-					return true;
+			}
+
+			if (instanceDisposeList is {} disposeList) {
+				foreach (var instance in disposeList.Value) {
+					instance.Dispose();
 				}
 			}
 		}
-
-		foreach (var instance in instanceDisposeList) {
-			instance.Suspend();
+		finally {
+			if (instanceDisposeList is {} disposeList) {
+				using var disposeListDispose = disposeList;
+			}
 		}
 
 		result = null;

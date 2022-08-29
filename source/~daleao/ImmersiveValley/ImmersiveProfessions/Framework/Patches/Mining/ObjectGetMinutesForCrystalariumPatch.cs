@@ -12,11 +12,9 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 
 #region using directives
 
+using DaLion.Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -35,7 +33,7 @@ internal sealed class ObjectGetMinutesForCrystalariumPatch : DaLion.Common.Harmo
     [HarmonyPostfix]
     private static void ObjectGetMinutesForCrystalariumPostfix(SObject __instance, ref int __result)
     {
-        var owner = Game1.getFarmerMaybeOffline(__instance.owner.Value) ?? Game1.MasterPlayer;
+        var owner = ModEntry.Config.LaxOwnershipRequirements ? Game1.player : __instance.GetOwner();
         if (owner.HasProfession(Profession.Gemologist))
             __result = (int)(__result * (owner.HasProfession(Profession.Gemologist, true) ? 0.5 : 0.75));
     }

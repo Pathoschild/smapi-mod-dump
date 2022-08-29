@@ -26,7 +26,7 @@ using System.Reflection.Emit;
 
 namespace Shockah.XPDisplay
 {
-	public class XPDisplay: Mod
+	public class XPDisplay : Mod
 	{
 		private static readonly Rectangle SmallObtainedLevelCursorsRectangle = new(137, 338, 7, 9);
 		private static readonly Rectangle BigObtainedLevelCursorsRectangle = new(159, 338, 13, 9);

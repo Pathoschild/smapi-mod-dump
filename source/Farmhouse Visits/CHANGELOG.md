@@ -8,6 +8,17 @@ for queries and analysis.**
 
 ([versión en español aquí](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG-es.md))
 
+## 1.5.0
+- Gifts can now be toggled off.
+- Visits can now ask for permission to enter (and have optional rejection dialogue).
+- Fixed bugs in custom visits.
+- Renamed "NPC" to its equivalent "PNJ" in spanish.
+- A lot of refactoring.
+- New dialogues when NPCs leave.
+
+## 1.4.0
+- Added chinese translation (by SHIZHI01420142)
+
 ## 1.3.1
 - Bug fixes.
 - Mod will recheck friendship lvl every weekend

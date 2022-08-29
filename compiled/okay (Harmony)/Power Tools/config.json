@@ -41,7 +41,6 @@
     "ClearObjects": false,
     "ClearFlooring": false,
     "ClearDirt": true,
-    "ClearBushes": true,
     "ClearLiveCrops": false,
     "ClearDeadCrops": true,
     "ClearDebris": true,
@@ -105,7 +104,7 @@
   "RequireModkey": true,
   "Modkey": "LeftShift, LeftShoulder",
   "HideAffectedTiles": false,
-  "StaminaCostMultiplier": 3.0,
+  "StaminaCostMultiplier": 1.0,
   "TicksBetweenWaves": 4,
-  "EnableDebug": false
+  "FaceMouseCursor": true
 }

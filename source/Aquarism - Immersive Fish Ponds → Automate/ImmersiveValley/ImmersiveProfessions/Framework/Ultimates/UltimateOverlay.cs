@@ -18,7 +18,6 @@ using Events.Display;
 using Events.GameLoop;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 
 #endregion using directives
 
@@ -51,7 +50,7 @@ internal class UltimateOverlay
     {
         if (_opacity < MAX_OPACITY_F) _opacity += 0.01f;
         if (_opacity >= MAX_OPACITY_F)
-            ModEntry.EventManager.Unhook<UltimateOverlayFadeInUpdateTickedEvent>();
+            ModEntry.Events.Disable<UltimateOverlayFadeInUpdateTickedEvent>();
     }
 
     /// <summary>Gradually decrease the overlay's opacity.</summary>
@@ -59,7 +58,7 @@ internal class UltimateOverlay
     {
         if (_opacity > 0) _opacity -= 0.01f;
         if (!(_opacity <= 0)) return;
-        ModEntry.EventManager.Unhook<UltimateOverlayFadeOutUpdateTickedEvent>();
-        ModEntry.EventManager.Unhook<UltimateOverlayRenderedWorldEvent>();
+        ModEntry.Events.Disable<UltimateOverlayFadeOutUpdateTickedEvent>();
+        ModEntry.Events.Disable<UltimateOverlayRenderedWorldEvent>();
     }
 }

@@ -1,7 +1,7 @@
 {
     "Name": "Frozen Yogurt HA",
     "Author": "Failsplat",
-    "Version": "1.6.1",
+    "Version": "1.6.2",
     "Description": "Adds custom behavior for fruit yogurt input into the frozen yogurt machine.",
     "UniqueID": "Failsplat.FroyoFFHarmony",
     "UpdateKeys": [],

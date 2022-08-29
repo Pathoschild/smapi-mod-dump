@@ -56,6 +56,8 @@ public abstract class Options {
 
 	public HashSet<string> Runners { get; } = new(StringComparer.InvariantCultureIgnoreCase);
 
+	public HashSet<string> DataSet { get; } = new(StringComparer.InvariantCultureIgnoreCase);
+
 	[Option("clear", "Clear Screen")]
 	public bool Clear { get; set; } = false;
 
@@ -214,11 +216,25 @@ public abstract class Options {
 			if ((int)equals != -1 || (int)colon != -1) {
 				uint offset = Math.Min(equals, colon);
 
-				arg = flag[((int)offset + 1)..];
+				if (offset != flag.Length - 1) {
+					arg = flag[((int)offset + 1)..];
+				}
 				flag = flag[..(int)offset];
 			}
 
 			switch (flag) {
+				case null:
+				case var _ when flag.Length == 0:
+					FatalError($"Empty flag: '{flag}'");
+					break;
+				case "?":
+				case "help": {
+					Console.WriteLine("--list-runners");
+					Console.WriteLine("--list-sets");
+					Console.WriteLine("--run");
+					Environment.Exit(0);
+					break;
+				}
 				case "list-runners": {
 					Console.WriteLine("Valid Runners:");
 					foreach (var runner in ValidRunners) {
@@ -254,6 +270,17 @@ public abstract class Options {
 							break;
 						}
 					}
+
+					break;
+				}
+				case "dataset": {
+					if (arg is null) {
+						FatalError($"'dataset' requires an argument");
+						break;
+					}
+
+					var localDataSets = arg.Split(',', StringSplitOptions.RemoveEmptyEntries);
+					result.DataSet.AddRange(localDataSets);
 
 					break;
 				}

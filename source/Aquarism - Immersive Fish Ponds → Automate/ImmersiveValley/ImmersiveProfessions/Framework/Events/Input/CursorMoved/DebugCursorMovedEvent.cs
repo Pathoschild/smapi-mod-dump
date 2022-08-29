@@ -8,18 +8,17 @@
 **
 *************************************************/
 
-#if DEBUG
 namespace DaLion.Stardew.Professions.Framework.Events.Input;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, DebugOnly]
 internal sealed class DebugCursorMovedEvent : CursorMovedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -33,4 +32,3 @@ internal sealed class DebugCursorMovedEvent : CursorMovedEvent
         ModEntry.DebugCursorPosition = e.NewPosition;
     }
 }
-#endif

@@ -22,7 +22,7 @@ namespace Shockah.ProjectFluent
 		void UnregisterFunction(IManifest mod, string name);
 	}
 
-	internal class FluentFunctionManager: IFluentFunctionManager, IFluentFunctionProvider
+	internal class FluentFunctionManager : IFluentFunctionManager, IFluentFunctionProvider
 	{
 		private IList<(IManifest mod, string name, FluentFunction function)> Functions { get; set; } = new List<(IManifest mod, string name, FluentFunction function)>();
 

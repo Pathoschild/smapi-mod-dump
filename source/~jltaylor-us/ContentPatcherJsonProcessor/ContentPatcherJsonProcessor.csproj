@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <EnableHarmony>true</EnableHarmony>
+    <IgnoreModFilePatterns>Newtonsoft\.Json\.dll</IgnoreModFilePatterns>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="StardewModdingAPI" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Link>LICENSE</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

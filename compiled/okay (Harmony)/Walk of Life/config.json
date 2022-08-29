@@ -33,9 +33,9 @@
     "Wax Barrel",
     "Yogurt Jar"
   ],
-  "ForagesNeededForBestQuality": 500,
-  "MineralsNeededForBestQuality": 500,
-  "ShouldCountAutomatedHarvests": false,
+  "ForagesNeededForBestQuality": 100,
+  "MineralsNeededForBestQuality": 100,
+  "LaxOwnershipRequirements": false,
   "TrackPointerScale": 1.0,
   "TrackPointerBobbingRate": 1.0,
   "DisableAlwaysTrack": false,
@@ -46,7 +46,7 @@
   "TreasureDetectionDistance": 3.0,
   "SpelunkerSpeedCap": 10,
   "EnableGetExcited": true,
-  "SeaweedIsJunk": true,
+  "SeaweedIsTrash": true,
   "FishNeededForInstantCatch": 500,
   "AnglerMultiplierCap": 1.0,
   "ShowFishCollectionMaxIcon": true,
@@ -77,9 +77,6 @@
     1.0,
     1.0
   ],
-  "MonsterHealthMultiplier": 1.0,
-  "MonsterDamageMultiplier": 1.0,
-  "MonsterDefenseMultiplier": 1.0,
   "VintageInterfaceSupport": "Automatic",
   "PrestigeProgressionStyle": "StackedStars",
   "DebugKey": "LeftControl"

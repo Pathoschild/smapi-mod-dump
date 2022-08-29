@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit ce14c48ef4579fcf2ac12f406c5d134b4775ef14
-   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Sat Jul 30 12:44:16 2022 +0800
+   commit b781136c5333f49051fbf2cc324c144e8b2de068
+   Author: Clare <ccathanlon@gmail.com>
+   Date:   Sun Aug 28 00:46:52 2022 -0400
    
-       RSV Minecart repair made a bit easier
+       made non-drinking version of paula's 14 heart event
    

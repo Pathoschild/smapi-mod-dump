@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 
 using Common.Events;
 using GameLoop;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -30,6 +29,6 @@ internal sealed class PrestigeLevelChangedEvent : LevelChangedEvent
     /// <inheritdoc />
     protected override void OnLevelChangedImpl(object? sender, LevelChangedEventArgs e)
     {
-        Manager.Hook<RestoreForgottenRecipesDayStartedEvent>();
+        Manager.Enable<RestoreForgottenRecipesDayStartedEvent>();
     }
 }

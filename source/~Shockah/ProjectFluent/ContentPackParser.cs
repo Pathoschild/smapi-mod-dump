@@ -35,7 +35,7 @@ namespace Shockah.ProjectFluent
 		}
 	}
 
-	internal class ContentPackParser: IContentPackParser
+	internal class ContentPackParser : IContentPackParser
 	{
 		private ISemanticVersion ProjectFluentVersion { get; set; }
 		private IModRegistry ModRegistry { get; set; }

@@ -10,7 +10,6 @@
 
 namespace StardewMods.EasyAccess;
 
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
 /// <summary>

@@ -68,7 +68,7 @@ internal static partial class Texture2DExt {
 		else {
 			int sourceBlockRowOffsetLength = format.SizeBytes((sourceSize.Width, block.Y));
 			int destBlockRowOffsetLength = format.SizeBytes((destBounds.Width, block.Y));
-			int startReadOffset = (sourceBlockRowOffsetLength * (destBounds.Y / block.Y)) + destBlockRowOffsetLength;
+			int startReadOffset = (sourceBlockRowOffsetLength * (destBounds.Y / block.Y)) + format.SizeBytes((destBounds.Left, block.Y));
 			source = source[startReadOffset..];
 
 			int sourceOffset = 0;
@@ -86,30 +86,33 @@ internal static partial class Texture2DExt {
 	}
 
 	private static void CopyRaw<TDest>(ReadOnlySpan<byte> source, Span<TDest> destination, SurfaceFormat format, Vector2I sourceSize, Bounds destBounds) where TDest : unmanaged {
+		var destBytes = destination.AsBytes();
+
 		// If the rect is width-aligned, the copy is much simpler
 		if (sourceSize.Width == destBounds.Width) {
-			int sourceOffset = format.SizeBytes((destBounds.Width, destBounds.Y));
+			int sourceOffset = format.SizeBytes((sourceSize.Width, destBounds.Offset.Y));
 			int length = format.SizeBytes(destBounds.Size);
 
 			source = source.Slice(sourceOffset, length);
-			source.CopyTo(destination.AsBytes());
+			source.CopyTo(destBytes);
 		}
 		else {
-			int sourceBlockRowOffsetLength = format.SizeBytes(sourceSize.Width);
-			int destBlockRowOffsetLength = format.SizeBytes(destBounds.Width);
-			int startReadOffset = (sourceBlockRowOffsetLength * destBounds.Y) + destBlockRowOffsetLength;
+			int sourceRowOffsetLength = format.SizeBytes(sourceSize.Width);
+			int destRowOffsetLength = format.SizeBytes(destBounds.Width);
+
+			int startReadOffset = (sourceRowOffsetLength * destBounds.Offset.Y) + format.SizeBytes(destBounds.Left);
 			source = source[startReadOffset..];
 
 			int sourceOffset = 0;
 			int destOffset = 0;
 			for (int y = 0; y < destBounds.Height; ++y) {
-				var innerSource = source.Slice(sourceOffset, destBlockRowOffsetLength);
-				var dest = destination.AsBytes().Slice(destOffset, destBlockRowOffsetLength);
+				var innerSource = source.Slice(sourceOffset, destRowOffsetLength);
+				var dest = destBytes.Slice(destOffset, destRowOffsetLength);
 
 				innerSource.CopyTo(dest);
 
-				sourceOffset += sourceBlockRowOffsetLength;
-				destOffset += destBlockRowOffsetLength;
+				sourceOffset += sourceRowOffsetLength;
+				destOffset += destRowOffsetLength;
 			}
 		}
 	}
@@ -122,7 +125,7 @@ internal static partial class Texture2DExt {
 	) where T : unmanaged {
 		ThreadingExt.EnsureMainThread();
 
-		if (!SMConfig.Extras.OptimizeTexture2DGetData) {
+		if (!SMConfig.Extras.OpenGL.OptimizeTexture2DGetData) {
 			return false;
 		}
 
@@ -208,14 +211,15 @@ internal static partial class Texture2DExt {
 
 		bool usedStorage = @this.GetGlMeta().Flags.HasFlag(Texture2DOpenGlMeta.Flag.Storage);
 
-
-
 		try {
+			// Flush errors
+			GLExt.SwallowOrReportErrors();
+
 			GLExt.Checked(() => OGL.BindTexture(TextureTarget.Texture2D, @this.glTexture));
 			GLExt.Checked(() => OGL.PixelStore(PixelStoreParameter.PackAlignment, Math.Min(sizeof(T), 8)));
 
 			if (@this.glFormat == PixelFormat.CompressedTextureFormats) {
-				if (!usedStorage && GLExt.GetCompressedTextureSubImage.Enabled) {
+				if (GLExt.GetCompressedTextureSubImage.Enabled) {
 					GLExt.Checked(() => GLExt.GetCompressedTextureSubImage.Function(
 						(GLExt.ObjectId)@this.glTexture,
 						level,
@@ -235,7 +239,7 @@ internal static partial class Texture2DExt {
 				}
 			}
 			else {
-				if (!usedStorage && GLExt.GetTextureSubImage.Enabled) {
+				if (GLExt.GetTextureSubImage.Enabled) {
 					GLExt.Checked(() => GLExt.GetTextureSubImage.Function(
 						(GLExt.ObjectId)@this.glTexture,
 						level,

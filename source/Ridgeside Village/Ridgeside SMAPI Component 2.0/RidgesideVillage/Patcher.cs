@@ -34,7 +34,7 @@ namespace RidgesideVillage
             ClothingDonation.ApplyPatch(harmony, Helper);
             Dateables.ApplyPatch(harmony, Helper);
             EventDetection.ApplyPatch(harmony, Helper);
-            EventMessage.ApplyPatch(harmony, Helper);
+            EventPatches.ApplyPatch(harmony, Helper);
             Fish.ApplyPatch(harmony, Helper);
             Obelisk.ApplyPatch(harmony, Helper);
             Projectiles.ApplyPatch(harmony, Helper);
@@ -48,6 +48,7 @@ namespace RidgesideVillage
             UntimedSO.ApplyPatch(harmony, Helper);
             WalletItem.ApplyPatch(harmony, Helper);
             WeddingPatches.ApplyPatch(harmony, Helper);
+            QuestPatches.ApplyPatch(harmony, Helper);
         }
-    }        
+    }
 }

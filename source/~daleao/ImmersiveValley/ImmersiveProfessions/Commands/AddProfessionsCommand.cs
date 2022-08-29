@@ -17,8 +17,6 @@ using Common.Commands;
 using Common.Extensions;
 using Extensions;
 using Framework;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -35,7 +33,7 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "add_professions";
+    public override string[] Triggers { get; } = { "add_professions", "add_profs", "add" };
 
     /// <inheritdoc />
     public override string Documentation =>
@@ -50,8 +48,8 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
             return;
         }
 
-        var prestige = args.Any(a => a is "-p" or "--prestiged");
-        if (prestige) args = args.Except(new[] { "-p", "--prestiged" }).ToArray();
+        var prestige = args.Any(a => a is "-p" or "-prestiged");
+        if (prestige) args = args.Except(new[] { "-p", "-prestiged" }).ToArray();
 
         List<int> professionsToAdd = new();
         foreach (var arg in args)
@@ -83,7 +81,7 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
             }
             else
             {
-                var customProfession = ModEntry.CustomProfessions.Values.SingleOrDefault(p =>
+                var customProfession = ModEntry.CustomProfessions.Values.FirstOrDefault(p =>
                     string.Equals(arg, p.StringId.TrimAll(), StringComparison.InvariantCultureIgnoreCase) ||
                     string.Equals(arg, p.GetDisplayName().TrimAll(), StringComparison.InvariantCultureIgnoreCase));
                 if (customProfession is null)
@@ -121,15 +119,15 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
 
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} [--prestige / -p] <profession1> <profession2> ... <professionN>";
+        var result = $"\n\nUsage: {Handler.EntryCommand} {Triggers.First()} [--prestige / -p] <profession1> <profession2> ... <professionN>";
         result += "\n\nParameters:";
         result += "\n\t- <profession>\t- a valid profession name, or `all`";
         result += "\n\nOptional flags:";
         result +=
-            "\n\t--prestige, -p\t- add the prestiged versions of the specified professions (will automatically add the base versions as well)";
+            "\n\t-prestige, -p\t- add the prestiged versions of the specified professions (base versions will be added automatically if needed)";
         result += "\n\nExamples:";
-        result += $"\n\t- {Handler.EntryCommand} {Trigger} artisan brute";
-        result += $"\n\t- {Handler.EntryCommand} {Trigger} -p all";
+        result += $"\n\t- {Handler.EntryCommand} {Triggers.First()} artisan brute";
+        result += $"\n\t- {Handler.EntryCommand} {Triggers.First()} -p all";
         return result;
     }
 }

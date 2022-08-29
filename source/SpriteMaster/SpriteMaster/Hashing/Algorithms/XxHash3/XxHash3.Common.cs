@@ -192,10 +192,10 @@ internal static unsafe partial class XxHash3 {
 	[Pure]
 	[MethodImpl(Inline)]
 	private static byte* SlicePointer(this ReadOnlySpan<byte> span, uint offset) =>
-		span.SliceUnsafe((int)offset).AsPointerUnsafe();
+		span.Slice((int)offset).AsPointerUnsafe();
 
 	[Pure]
 	[MethodImpl(Inline)]
 	private static byte* SlicePointer(this ReadOnlySpan<byte> span, uint offset, uint length) =>
-		span.SliceUnsafe((int)offset, (int)length).AsPointerUnsafe();
+		span.Slice((int)offset, (int)length).AsPointerUnsafe();
 }

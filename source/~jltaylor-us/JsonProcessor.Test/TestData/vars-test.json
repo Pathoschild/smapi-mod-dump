@@ -1,0 +1,135 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewJsonProcessor
+**
+*************************************************/
+
+{
+  "unbound": [
+    { "$var": "unbound" }
+  ],
+  "defines": [
+    1,
+    {
+      "$define": {
+        "a": 2,
+        "b": 3
+      }
+    }
+  ],
+  "defines long-form": [
+    1,
+    {
+      "$transform": "define",
+      "bindings": {}
+    }
+  ],
+  "defines results": [ 1 ],
+  "defines in obj": {
+    "a": 1,
+    "ignore": {
+      "$transform": "define",
+      "bindings": {}
+    },
+    "b": 2
+  },
+  "defines in obj results": {
+    "a": 1,
+    "b": 2
+  },
+  "define not obj": [
+    { "$define": 3 }
+  ],
+  "var not string": [
+    { "$var": 3 }
+  ],
+  "var simple": [
+    {
+      "$define": { "x": 42 }
+    },
+    { "$var": "x" }
+  ],
+  "var simple results": [ 42 ],
+  "var 2step": [
+    {
+      "$define": {
+        "x": 42,
+        "y": { "$var": "x" }
+      }
+    },
+    { "$var": "y" }
+  ],
+  "var 2step results": [ 42 ],
+  "var self-rec": [
+    { "$define": { "x": [ { "$var": "x" } ] } },
+    { "$var": "x" }
+  ],
+  "var self-rec results": [
+    [ { "$var": "x" } ]
+  ],
+  "var co-rec": [
+    {
+      "$transform": "let",
+      "bindings": {
+        "x": [ { "$var": "y" } ],
+        "y": [ { "$var": "x" } ]
+      },
+      "body": { "$var": "x" }
+    }
+  ],
+  "var co-rec results": [
+    [ [ { "$var": "x" } ] ]
+  ],
+  "let simple shadow": [
+    {
+      "$define": { "x": 42 }
+    },
+    {
+      "$transform": "let",
+      "bindings": {
+        "x": 5
+      },
+      "body": { "$var": "x" }
+    }
+  ],
+  "let simple shadow results": [ 5 ],
+  "let as dynamic scope": [
+    {
+      "$define": { "x": [ { "$var": "y" } ] }
+    },
+    {
+      "$transform": "let",
+      "bindings": {
+        "y": 7
+      },
+      "body": { "$var": "x" }
+    }
+  ],
+  "let as dynamic scope results": [ [ 7 ] ],
+  "let missing bindings": [
+    {
+      "$transform": "let",
+      "body": { "$var": "y" }
+    }
+  ],
+  "let missing body": [
+    {
+      "$transform": "let",
+      "bindings": {
+        "y": 7
+      },
+    }
+  ],
+  "let bad bindings": [
+    {
+      "$transform": "let",
+      "bindings": 3,
+      "body": { "$var": "y" }
+    }
+  ]
+
+}

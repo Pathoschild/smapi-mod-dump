@@ -58,7 +58,7 @@
 		"ExpandedFestivalMaps": {
 			"AllowValues": "true, false",
 			"Default": "true",
-			"Description": "Enables the expanded festival maps."
+			"Description": "Enables the expanded festival maps. If false will use the old placements that may conflict with other mods."
 		},
 
 		"EasyIntroduction": {
@@ -89,6 +89,12 @@
 			"AllowValues": "true, false",
 			"Default": "true",
 			"Description": "Enable/Disable the decoration tourist NPCs in the hotel."
+		},
+
+		"EnableWTDRCompat": {
+			"AllowValues": "true, false",
+			"Default": "false",
+			"Description": "EXPERIMENTAL! Establishes better compat with Walk to Desert Redux."
 		}
 
 /*		"EnableVanillaEdits": {
@@ -139,7 +145,19 @@
 			"Value": "{{PossibleCableCarNPCs}}, Leilani",
 			"When": {
 				"EnableOtherNPCsInCableCar": true,
-				"HasMod |contains=ZoeDoll.NPCLeilani": true
+				"HasMod |contains=ZoeDoll.NPCLeilani": true,
+				"Season": "Summer"
+			}
+		},
+
+		// June
+		{
+			"Name": "PossibleCableCarNPCs",
+			"Value": "{{PossibleCableCarNPCs}}, June",
+			"When": {
+				"EnableOtherNPCsInCableCar": true,
+				"HasMod |contains=ch20youk.JuneNPC": true,
+				"Season": "Fall, Winter"
 			}
 		},
 
@@ -1007,7 +1025,14 @@
 			"Name": "Custom_Ridgeside_RSVSummitHouse",
 			"FromMapFile": "Assets/Maps/IndoorMaps/RSVSummitHouse.tmx",
 		},
-
+		{
+			"Name": "Custom_Ridgeside_RSVSummitHouseNew",
+			"FromMapFile": "Assets/Maps/IndoorMaps/RSVSummitHouse_redone.tmx",
+		},
+		{
+			"Name": "Custom_Ridgeside_RSVSummitShed",
+			"FromMapFile": "Assets/Maps/IndoorMaps/RSVShed.tmx",
+		},
 
 		/*********
 		** QuestMaps
@@ -1142,7 +1167,7 @@
 	{
 		"Action": "Include",
 		"FromFile": "Data/DependencyData/CustomCompanionsTourists.json",
-		"When": 
+		"When":
 		{
 			"EnableTouristNPCs": "true"
 		}
@@ -1220,12 +1245,12 @@
 
 	//Includes Extras
 	/*
-		Includes all data that concerns Extras, that includes: Obelisks,
+		Includes all data that concerns Extras
 	*/
 	{
 		"LogName": "Include Obelisk",
    		"Action": "Include",
-   		"FromFile": "Data/Extras/Obelisks.json",
+   		"FromFile": "Data/Extras/Buildings.json",
   },
   {
 		"LogName": "Include RSVMap",
@@ -1283,7 +1308,12 @@
   		"LogName": "Include Special Orders",
 		"Action": "Include",
 		"FromFile": "Data/SpecialOrders/SpecialOrders.json, Data/SpecialOrders/SOStrings.json",
-  	}
+  	},
+	{
+		"LogName": "Include Quest Files",
+		"Action":"Include",
+		"FromFile": "Data/Quests/Quests.json",
+	}
 
 ],
 

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "ZenMod",
   "Author": "PositiveVegan",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "This mod aims to make Stardew Valley more relaxing by making it so that time does not pass when you are doing nothing. Simply stand still for three seconds and time will stop. Any action or movement command will make time continue.",
   "UniqueID": "PositiveVegan.ZenMod",
   "EntryDll": "ZenMod.dll",

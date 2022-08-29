@@ -23,6 +23,8 @@ internal static class ResidentCache {
 
 	private static readonly IMemoryCache<ulong, byte> Cache = CreateCache();
 
+	internal static long Size => Cache.SizeBytes;
+
 	private static IMemoryCache<ulong, byte> CreateCache() => AbstractMemoryCache<ulong, byte>.Create(
 		name: "ResidentCache",
 		maxSize: Config.ResidentCache.MaxSize,

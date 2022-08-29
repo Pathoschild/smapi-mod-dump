@@ -2,5 +2,6 @@
   "EnableMod": true,
   "AllowDiagonal": true,
   "ModButton": "LeftShift",
-  "StraightModButton": "LeftControl"
+  "StraightModButton": "LeftControl",
+  "SprinklerModButton": "LeftAlt"
 }

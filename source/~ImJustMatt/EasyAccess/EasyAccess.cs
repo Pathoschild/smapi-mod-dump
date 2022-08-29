@@ -13,12 +13,10 @@ namespace StardewMods.EasyAccess;
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewMods.Common.Helpers;
 using StardewMods.Common.Integrations.GenericModConfigMenu;
 using StardewMods.Common.Integrations.ToolbarIcons;
-using StardewValley;
 
 /// <inheritdoc />
 public class EasyAccess : Mod
@@ -53,13 +51,8 @@ public class EasyAccess : Mod
     /// <inheritdoc />
     public override void Entry(IModHelper helper)
     {
-        I18n.Init(helper.Translation);
+        I18n.Init(this.Helper.Translation);
         Log.Monitor = this.Monitor;
-
-        if (this.Helper.ModRegistry.IsLoaded("furyx639.FuryCore"))
-        {
-            Log.Alert("Remove FuryCore, it is no longer needed by this mod!");
-        }
 
         // Events
         this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
@@ -70,9 +63,13 @@ public class EasyAccess : Mod
     private void CollectItems()
     {
         var (pX, pY) = Game1.player.getTileLocation();
-        for (var tY = (int)(pY - this.Config.CollectOutputDistance); tY <= (int)(pY + this.Config.CollectOutputDistance); tY++)
+        for (var tY = (int)(pY - this.Config.CollectOutputDistance);
+             tY <= (int)(pY + this.Config.CollectOutputDistance);
+             tY++)
         {
-            for (var tX = (int)(pX - this.Config.CollectOutputDistance); tX <= (int)(pX + this.Config.CollectOutputDistance); tX++)
+            for (var tX = (int)(pX - this.Config.CollectOutputDistance);
+                 tX <= (int)(pX + this.Config.CollectOutputDistance);
+                 tX++)
             {
                 if (Math.Abs(tX - pX) + Math.Abs(tY - pY) > this.Config.CollectOutputDistance)
                 {
@@ -100,7 +97,11 @@ public class EasyAccess : Mod
                     if (this.Config.DoForage && obj.IsSpawnedObject && obj.isForage(Game1.currentLocation))
                     {
                         // Vanilla Logic
-                        var r = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)pos.X + (int)pos.Y * 777);
+                        var r = new Random(
+                            (int)Game1.uniqueIDForThisGame / 2
+                          + (int)Game1.stats.DaysPlayed
+                          + (int)pos.X
+                          + (int)pos.Y * 777);
                         if (Game1.player.professions.Contains(16))
                         {
                             obj.Quality = 4;
@@ -124,7 +125,19 @@ public class EasyAccess : Mod
                             Game1.player.gainExperience(2, 7);
                         }
 
-                        Game1.createItemDebris(obj, Game1.tileSize * pos, tY < pY ? 0 : tX > pX ? 1 : tY > pY ? 2 : tX < pX ? 3 : -1, Game1.currentLocation);
+                        Game1.createItemDebris(
+                            obj,
+                            Game1.tileSize * pos,
+                            tY < pY
+                                ? 0
+                                : tX > pX
+                                    ? 1
+                                    : tY > pY
+                                        ? 2
+                                        : tX < pX
+                                            ? 3
+                                            : -1,
+                            Game1.currentLocation);
                         Game1.currentLocation.Objects.Remove(pos);
                         Log.Info($"Dropped {obj.DisplayName} from forage.");
                         continue;
@@ -166,9 +179,13 @@ public class EasyAccess : Mod
         }
 
         var (pX, pY) = Game1.player.getTileLocation();
-        for (var tY = (int)(pY - this.Config.DispenseInputDistance); tY <= (int)(pY + this.Config.DispenseInputDistance); tY++)
+        for (var tY = (int)(pY - this.Config.DispenseInputDistance);
+             tY <= (int)(pY + this.Config.DispenseInputDistance);
+             tY++)
         {
-            for (var tX = (int)(pX - this.Config.DispenseInputDistance); tX <= (int)(pX + this.Config.DispenseInputDistance); tX++)
+            for (var tX = (int)(pX - this.Config.DispenseInputDistance);
+                 tX <= (int)(pX + this.Config.DispenseInputDistance);
+                 tX++)
             {
                 if (Math.Abs(tX - pX) + Math.Abs(tY - pY) > this.Config.CollectOutputDistance)
                 {
@@ -179,8 +196,8 @@ public class EasyAccess : Mod
 
                 // Big Craftables
                 if (Game1.currentLocation.Objects.TryGetValue(pos, out var obj)
-                    && (obj.Type?.Equals("Crafting") == true || obj.Type?.Equals("interactive") == true)
-                    && obj.performObjectDropInAction(Game1.player.CurrentItem, false, Game1.player))
+                 && (obj.Type?.Equals("Crafting") == true || obj.Type?.Equals("interactive") == true)
+                 && obj.performObjectDropInAction(Game1.player.CurrentItem, false, Game1.player))
                 {
                     Game1.player.reduceActiveItemByOne();
                     Log.Trace($"Dispensed {Game1.player.CurrentItem.DisplayName} into producer {obj.DisplayName}.");
@@ -199,6 +216,11 @@ public class EasyAccess : Mod
 
     private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
+        if (!Context.IsPlayerFree)
+        {
+            return;
+        }
+
         if (this.Config.ControlScheme.CollectItems.JustPressed())
         {
             this.CollectItems();
@@ -221,10 +243,7 @@ public class EasyAccess : Mod
         if (gmcm.IsLoaded)
         {
             // Register mod configuration
-            gmcm.Register(
-                this.ModManifest,
-                () => this._config = new(),
-                () => this.Helper.WriteConfig(this.Config));
+            gmcm.Register(this.ModManifest, () => this._config = new(), () => this.Helper.WriteConfig(this.Config));
 
             // Collect Items
             gmcm.API.AddKeybindList(

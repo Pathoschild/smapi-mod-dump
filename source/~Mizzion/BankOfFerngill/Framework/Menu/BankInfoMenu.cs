@@ -8,9 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using BankOfFerngill.Framework.Configs;
 using BankOfFerngill.Framework.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -40,7 +37,7 @@ namespace BankOfFerngill.Framework.Menu
 
         public BankInfoMenu(IMonitor monitor, ITranslationHelper i18N, BankData bankData)
         {
-            base.initialize(_xPos, _yPos, UiWidth, UiHeight);
+            initialize(_xPos, _yPos, UiWidth, UiHeight);
             
             _monitor = monitor;
             _i18N = i18N; 

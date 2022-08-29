@@ -18,9 +18,7 @@ using Common.Extensions;
 using Extensions;
 using Framework;
 using Framework.Utility;
-using JetBrains.Annotations;
 using StardewModdingAPI.Utilities;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,10 +35,11 @@ internal sealed class PrintFishingAuditCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "fishingdex";
+    public override string[] Triggers { get; } = { "print_fishdex", "fishdex" };
 
     /// <inheritdoc />
-    public override string Documentation => $"Check how many fish have been caught at max-size. Relevant for {Profession.Angler}s";
+    public override string Documentation =>
+        $"Check how many fish have been caught at max-size. Relevant for {Profession.Angler.Name}s.";
 
     /// <inheritdoc />
     public override void Callback(string[] args)

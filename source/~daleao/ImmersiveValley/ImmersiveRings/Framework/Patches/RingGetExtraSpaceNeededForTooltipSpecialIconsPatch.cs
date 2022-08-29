@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Rings.Framework.Patches;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Objects;

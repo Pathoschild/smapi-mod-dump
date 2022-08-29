@@ -1,10 +1,10 @@
 {
   "Name": "EnhancedRelationships",
   "Author": "Mizzion",
-  "Version": "1.2.5",
+  "Version": "1.2.7",
   "Description": "A mod that makes keeping friends harder.",
   "UniqueID": "mizzion.enhancedrelationships",
   "EntryDll": "EnhancedRelationships.dll",
-  "MinimumApiVersion": "3.14.4",
+  "MinimumApiVersion": "3.15.1",
   "UpdateKeys": [ "Nexus:1927", "ModDrop:661356" ]
 }

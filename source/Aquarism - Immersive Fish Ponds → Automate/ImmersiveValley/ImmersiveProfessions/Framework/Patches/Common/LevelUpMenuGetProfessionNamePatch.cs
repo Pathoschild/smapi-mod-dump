@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 using DaLion.Common;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Menus;
 using System;
 using System.Reflection;

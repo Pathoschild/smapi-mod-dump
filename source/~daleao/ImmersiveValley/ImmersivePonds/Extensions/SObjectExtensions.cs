@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Ponds.Extensions;
 #region using directives
 
 using Common.Extensions;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

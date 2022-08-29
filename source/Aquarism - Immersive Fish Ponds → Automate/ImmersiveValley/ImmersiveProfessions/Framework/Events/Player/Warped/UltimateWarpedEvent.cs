@@ -15,12 +15,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 using Common.Events;
 using Display;
 using Extensions;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
+using Ultimates;
+using VirtualProperties;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, UltimateEvent]
 internal sealed class UltimateWarpedEvent : WarpedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -31,16 +32,16 @@ internal sealed class UltimateWarpedEvent : WarpedEvent
     /// <inheritdoc />
     protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
-        if (e.NewLocation.Equals(e.OldLocation) || e.NewLocation.GetType() == e.OldLocation.GetType()) return;
+        if (e.NewLocation.GetType() == e.OldLocation.GetType()) return;
 
         if (e.NewLocation.IsDungeon())
         {
-            Manager.Hook<UltimateMeterRenderingHudEvent>();
+            Manager.Enable<UltimateMeterRenderingHudEvent>();
         }
         else
         {
-            ModEntry.PlayerState.RegisteredUltimate!.ChargeValue = 0.0;
-            Manager.Unhook<UltimateMeterRenderingHudEvent>();
+            e.Player.get_Ultimate()!.ChargeValue = 0.0;
+            Manager.Disable<UltimateMeterRenderingHudEvent>();
         }
     }
 }

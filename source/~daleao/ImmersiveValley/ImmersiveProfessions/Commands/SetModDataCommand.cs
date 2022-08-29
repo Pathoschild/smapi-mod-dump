@@ -14,12 +14,10 @@ namespace DaLion.Stardew.Professions.Commands;
 
 using Common;
 using Common.Commands;
-using Common.Data;
+using Common.Extensions.Stardew;
 using Extensions;
 using Framework;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
+using System.Linq;
 
 #endregion using directives
 
@@ -32,7 +30,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "set_data";
+    public override string[] Triggers { get; } = { "set_data" };
 
     /// <inheritdoc />
     public override string Documentation => "Set a new value for the specified mod data field." + GetUsage();
@@ -40,7 +38,25 @@ internal sealed class SetModDataCommand : ConsoleCommand
     /// <inheritdoc />
     public override void Callback(string[] args)
     {
-        if (args.Length != 2)
+        if (args.Length <= 0)
+        {
+            Log.W("You must specify a data field and value." + GetUsage());
+            return;
+        }
+
+        var reset = args.Any(a => a is "clear" or "reset");
+        if (reset)
+        {
+            SetEcologistItemsForaged(null);
+            SetGemologistMineralsCollected(null);
+            SetProspectorHuntStreak(null);
+            SetScavengerHuntStreak(null);
+            SetConservationistTrashCollectedThisSeason(null);
+            Log.I("All data fields were reset.");
+            return;
+        }
+
+        if (args.Length % 2 != 0)
         {
             Log.W("You must specify a data field and value." + GetUsage());
             return;
@@ -104,13 +120,13 @@ internal sealed class SetModDataCommand : ConsoleCommand
 
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} <field> <value>";
+        var result = $"\n\nUsage: {Handler.EntryCommand} {Triggers.First()} <field> <value>";
         result += "\n\nParameters:";
         result += "\n\t<field>\t- the name of the field";
         result += "\\n\t<value>\t- the desired new value";
         result += "\n\nExamples:";
-        result += $"\n\t{Handler.EntryCommand} {Trigger} EcologistItemsForaged 100";
-        result += $"\n\t{Handler.EntryCommand} {Trigger} trash 500";
+        result += $"\n\t{Handler.EntryCommand} {Triggers.First()} EcologistItemsForaged 100";
+        result += $"\n\t{Handler.EntryCommand} {Triggers.First()} trash 500";
         result += "\n\nAvailable data fields:";
         result += $"\n\t- EcologistItemsForaged (shortcut 'forages')";
         result += $"\n\t- GemologistMineralsCollected (shortcut 'minerals')";
@@ -134,7 +150,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
 
     #region data setters
 
-    private static void SetEcologistItemsForaged(int value)
+    private static void SetEcologistItemsForaged(int? value)
     {
         if (!Game1.player.HasProfession(Profession.Ecologist))
         {
@@ -142,11 +158,11 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        ModDataIO.WriteTo(Game1.player, "EcologistItemsForaged", value.ToString());
-        Log.I($"Items foraged as Ecologist was set to {value}.");
+        Game1.player.Write("EcologistItemsForaged", value?.ToString());
+        if (value.HasValue) Log.I($"Items foraged as Ecologist was set to {value}.");
     }
 
-    private static void SetGemologistMineralsCollected(int value)
+    private static void SetGemologistMineralsCollected(int? value)
     {
         if (!Game1.player.HasProfession(Profession.Gemologist))
         {
@@ -154,11 +170,11 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        ModDataIO.WriteTo(Game1.player, "GemologistMineralsCollected", value.ToString());
-        Log.I($"Minerals collected as Gemologist was set to {value}.");
+        Game1.player.Write("GemologistMineralsCollected", value?.ToString());
+        if (value.HasValue) Log.I($"Minerals collected as Gemologist was set to {value}.");
     }
 
-    private static void SetProspectorHuntStreak(int value)
+    private static void SetProspectorHuntStreak(int? value)
     {
         if (!Game1.player.HasProfession(Profession.Prospector))
         {
@@ -166,11 +182,11 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        ModDataIO.WriteTo(Game1.player, "ProspectorHuntStreak", value.ToString());
-        Log.I($"Prospector Hunt was streak set to {value}.");
+        Game1.player.Write("ProspectorHuntStreak", value?.ToString());
+        if (value.HasValue) Log.I($"Prospector Hunt was streak set to {value}.");
     }
 
-    private static void SetScavengerHuntStreak(int value)
+    private static void SetScavengerHuntStreak(int? value)
     {
         if (!Game1.player.HasProfession(Profession.Scavenger))
         {
@@ -178,11 +194,11 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        ModDataIO.WriteTo(Game1.player, "ScavengerHuntStreak", value.ToString());
-        Log.I($"Scavenger Hunt streak was set to {value}.");
+        Game1.player.Write("ScavengerHuntStreak", value?.ToString());
+        if (value.HasValue) Log.I($"Scavenger Hunt streak was set to {value}.");
     }
 
-    private static void SetConservationistTrashCollectedThisSeason(int value)
+    private static void SetConservationistTrashCollectedThisSeason(int? value)
     {
         if (!Game1.player.HasProfession(Profession.Conservationist))
         {
@@ -190,8 +206,8 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        ModDataIO.WriteTo(Game1.player, "ConservationistTrashCollectedThisSeason", value.ToString());
-        Log.I($"Conservationist trash collected in the current season was set to {value}.");
+        Game1.player.Write("ConservationistTrashCollectedThisSeason", value?.ToString());
+        if (value.HasValue) Log.I($"Conservationist trash collected in the current season was set to {value}.");
     }
 
     #endregion data setters

@@ -13,11 +13,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -25,21 +25,14 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Pathoschild.Automate")]
 internal sealed class BeeHouseMachineResetPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal BeeHouseMachineResetPatch()
     {
-        try
-        {
-            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine".ToType()
-                .RequireMethod("Reset");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine".ToType()
+            .RequireMethod("Reset");
     }
 
     #region harmony patches

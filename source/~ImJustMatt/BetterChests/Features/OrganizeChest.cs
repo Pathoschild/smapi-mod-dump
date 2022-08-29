@@ -12,14 +12,11 @@ namespace StardewMods.BetterChests.Features;
 
 using System.Collections.Generic;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewMods.BetterChests.Helpers;
 using StardewMods.Common.Enums;
 using StardewMods.CommonHarmony.Enums;
 using StardewMods.CommonHarmony.Helpers;
 using StardewMods.CommonHarmony.Models;
-using StardewValley;
 using StardewValley.Menus;
 
 /// <summary>
@@ -29,9 +26,15 @@ internal class OrganizeChest : IFeature
 {
     private const string Id = "furyx639.BetterChests/OrganizeChest";
 
+    private static OrganizeChest? Instance;
+
+    private readonly IModHelper _helper;
+
+    private bool _isActivated;
+
     private OrganizeChest(IModHelper helper)
     {
-        this.Helper = helper;
+        this._helper = helper;
         HarmonyHelper.AddPatches(
             OrganizeChest.Id,
             new SavedPatch[]
@@ -43,12 +46,6 @@ internal class OrganizeChest : IFeature
                     PatchType.Prefix),
             });
     }
-
-    private static OrganizeChest? Instance { get; set; }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
 
     /// <summary>
     ///     Initializes <see cref="OrganizeChest" />.
@@ -63,34 +60,38 @@ internal class OrganizeChest : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            return;
         }
+
+        this._isActivated = true;
+        this._helper.Events.Input.ButtonPressed += this.OnButtonPressed;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            this.Helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
+            return;
         }
+
+        this._isActivated = false;
+        this._helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
     }
 
-    private static bool ItemGrabMenu_organizeItemsInList_prefix(IList<Item> items)
+    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
+    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
+    private static bool ItemGrabMenu_organizeItemsInList_prefix(ItemGrabMenu __instance, IList<Item> items)
     {
-        if (Game1.activeClickableMenu is not ItemGrabMenu { context: Item context } itemGrabMenu
-            || !ReferenceEquals(itemGrabMenu.ItemsToGrabMenu.actualInventory, items)
-            || !StorageHelper.TryGetOne(context, out var storage)
-            || storage.OrganizeChest == FeatureOption.Disabled)
+        if (!ReferenceEquals(__instance.ItemsToGrabMenu.actualInventory, items)
+         || BetterItemGrabMenu.Context?.OrganizeChest is not FeatureOption.Enabled)
         {
             return true;
         }
 
-        storage.OrganizeItems();
+        BetterItemGrabMenu.Context.OrganizeItems();
         BetterItemGrabMenu.RefreshItemsToGrabMenu = true;
         return false;
     }
@@ -98,9 +99,8 @@ internal class OrganizeChest : IFeature
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         if (e.Button is not SButton.MouseRight
-            || Game1.activeClickableMenu is not ItemGrabMenu { context: Item context } itemGrabMenu
-            || !StorageHelper.TryGetOne(context, out var storage)
-            || storage.OrganizeChest == FeatureOption.Disabled)
+         || Game1.activeClickableMenu is not ItemGrabMenu itemGrabMenu
+         || BetterItemGrabMenu.Context?.OrganizeChest is not FeatureOption.Enabled)
         {
             return;
         }
@@ -111,8 +111,8 @@ internal class OrganizeChest : IFeature
             return;
         }
 
-        storage.OrganizeItems(true);
-        this.Helper.Input.Suppress(e.Button);
+        BetterItemGrabMenu.Context.OrganizeItems(true);
+        this._helper.Input.Suppress(e.Button);
         BetterItemGrabMenu.RefreshItemsToGrabMenu = true;
         Game1.playSound("Ship");
     }

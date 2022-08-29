@@ -1,0 +1,7 @@
+{
+  "UseParallel": true,
+  "enableCrows": true,
+  "useBackwoodsEntrance": false,
+  "AlwaysShowMagicMenu": true,
+  "WarpRoomKey": "Z + LeftControl, Z + RightControl"
+}

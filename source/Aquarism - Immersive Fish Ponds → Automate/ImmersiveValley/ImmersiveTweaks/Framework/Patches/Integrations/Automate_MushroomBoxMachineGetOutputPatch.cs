@@ -13,18 +13,17 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 #region using directives
 
 using Common;
+using Common.Attributes;
 using Common.Extensions.Reflection;
+using Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Reflection;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Pathoschild.Automate")]
 internal sealed class MushroomBoxMachineGetOutputPatch : Common.Harmony.HarmonyPatch
 {
     private static Func<object, SObject>? _GetMachine;
@@ -32,15 +31,8 @@ internal sealed class MushroomBoxMachineGetOutputPatch : Common.Harmony.HarmonyP
     /// <summary>Construct an instance.</summary>
     internal MushroomBoxMachineGetOutputPatch()
     {
-        try
-        {
-            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.MushroomBoxMachine".ToType()
-                .RequireMethod("GetOutput");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.MushroomBoxMachine".ToType()
+            .RequireMethod("GetOutput");
     }
 
     #region harmony patches
@@ -58,11 +50,13 @@ internal sealed class MushroomBoxMachineGetOutputPatch : Common.Harmony.HarmonyP
             var machine = _GetMachine(__instance);
             if (machine.heldObject.Value is not { } held) return;
 
-            var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
+            var owner = ModEntry.ProfessionsApi?.GetConfigs().LaxOwnershipRequirements == false
+                ? machine.GetOwner()
+                : Game1.player;
             if (!owner.professions.Contains(Farmer.botanist) && ModEntry.Config.AgeImprovesMushroomBoxes)
                 held.Quality = held.GetQualityFromAge();
-            else if (ModEntry.ProfessionsAPI is not null)
-                held.Quality = Math.Max(ModEntry.ProfessionsAPI.GetEcologistForageQuality(owner), held.Quality);
+            else if (ModEntry.ProfessionsApi is not null)
+                held.Quality = Math.Max(ModEntry.ProfessionsApi.GetEcologistForageQuality(owner), held.Quality);
             else
                 held.Quality = SObject.bestQuality;
 

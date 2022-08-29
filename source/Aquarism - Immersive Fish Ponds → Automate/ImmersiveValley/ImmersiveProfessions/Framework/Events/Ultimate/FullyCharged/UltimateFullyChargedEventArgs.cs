@@ -12,7 +12,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.Ultimate;
 
 #region using directives
 
-using StardewValley;
 using System;
 
 #endregion using directives

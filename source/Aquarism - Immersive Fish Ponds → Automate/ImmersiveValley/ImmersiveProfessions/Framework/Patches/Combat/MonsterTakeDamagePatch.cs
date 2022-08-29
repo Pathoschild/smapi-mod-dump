@@ -12,12 +12,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using DaLion.Common.Data;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Monsters;
 using System.Linq;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -37,16 +36,12 @@ internal sealed class MonsterTakeDamagePatch : DaLion.Common.Harmony.HarmonyPatc
     [HarmonyPostfix]
     private static void MonsterTakeDamagePostfix(Monster __instance)
     {
-        if (__instance is not GreenSlime slime || !ModDataIO.ReadFrom<bool>(slime, "Piped") ||
+        if (__instance is not GreenSlime slime || slime.get_Piper() is null ||
             slime.Health > 0) return;
 
         foreach (var monster in slime.currentLocation.characters.OfType<Monster>()
-                     .Where(m => !m.IsSlime() && ModDataIO.ReadFrom<bool>(m, "Aggroed") &&
-                                 ModDataIO.ReadFrom<int>(m, "Aggroer") == slime.GetHashCode()))
-        {
-            ModDataIO.WriteTo(monster, "Aggroed", false.ToString());
-            ModDataIO.WriteTo(monster, "Aggroer", null);
-        }
+                     .Where(m => !m.IsSlime() && m.get_Taunter().Get(m.currentLocation) == slime))
+            monster.set_Taunter(null);
     }
 
     #endregion harmony patches

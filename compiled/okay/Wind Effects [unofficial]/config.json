@@ -1,3 +1,7 @@
 {
-  "WindyDayChance": 0.5
+  "WindyDayChance": 0.5,
+  "ShakeBushes": true,
+  "ShakeCrops": true,
+  "ShakeGrass": true,
+  "ShakeTrees": true
 }

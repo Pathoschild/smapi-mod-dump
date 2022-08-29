@@ -69,7 +69,7 @@ namespace CustomTokens
                 // Yes, update tracker with new data
 
                 // Display trace information in SMAPI log
-                if (VolcanoShaft.level != 5)
+                if (VolcanoShaft.level.Value != 5)
                 {
                     monitor.Log($"{Game1.player.Name} is on volcano floor {VolcanoShaft.level}.");
                 }
@@ -79,7 +79,7 @@ namespace CustomTokens
                 }
 
                 // Update tracker
-                data.Value.CurrentVolcanoFloor = VolcanoShaft.level;
+                data.Value.CurrentVolcanoFloor = VolcanoShaft.level.Value;
             }
 
             else

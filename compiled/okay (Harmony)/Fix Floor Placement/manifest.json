@@ -1,0 +1,10 @@
+﻿{
+  "Name": "楼梯修复",
+  "Author": "Becks723",
+  "Version": "1.0.0",
+  "Description": "修复矿井部分地皮无法放置楼梯的问题。",
+  "UniqueID": "Becks723.FixFloorPlacement",
+  "MinimumApiVersion": "3.14.0",
+  "EntryDll": "FixFloorPlacement.dll",
+  "UpdateKeys": [ "Nexus:13381" ]
+}

@@ -142,6 +142,31 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
                     }
                 }
             }
+
+            if (__instance is Farm houseFarm && __instance.modData.ContainsKey("AlternativeTextureOwner") is true && __instance.modData.ContainsKey("AlternativeTextureName") is true)
+            {
+                var buildingType = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel}";
+                if (!__instance.modData["AlternativeTextureName"].Contains(buildingType))
+                {
+                    return;
+                }
+
+                var instanceName = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Building}_{buildingType}");
+                var instanceSeasonName = $"{instanceName}_{Game1.currentSeason}";
+
+                if (!String.Equals(__instance.modData["AlternativeTextureName"], instanceName, StringComparison.OrdinalIgnoreCase) && !String.Equals(__instance.modData["AlternativeTextureName"], instanceSeasonName, StringComparison.OrdinalIgnoreCase))
+                {                    
+                    __instance.modData["AlternativeTextureName"] = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Building}_{buildingType}");
+                    if (__instance.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]))
+                    {
+                        __instance.modData["AlternativeTextureSeason"] = Game1.currentSeason;
+                        __instance.modData["AlternativeTextureName"] = String.Concat(__instance.modData["AlternativeTextureName"], "_", __instance.modData["AlternativeTextureSeason"]);
+
+                        houseFarm.houseSource.Value = new Rectangle(0, 144 * (((int)Game1.MasterPlayer.houseUpgradeLevel == 3) ? 2 : ((int)Game1.MasterPlayer.houseUpgradeLevel)), 160, 144);
+                        houseFarm.ApplyHousePaint();
+                    }
+                }
+            }
         }
     }
 }

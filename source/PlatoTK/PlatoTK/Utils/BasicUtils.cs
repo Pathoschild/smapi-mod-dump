@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -62,7 +61,7 @@ namespace PlatoTK.Utils
         public void ReloadMap(GameLocation location)
         {
             GameLocation l = (location ?? Game1.currentLocation);
-            Plato.ModHelper.Content.InvalidateCache(l.mapPath.Value);
+            Plato.ModHelper.GameContent.InvalidateCache(l.mapPath.Value);
             l?.reloadMap();
             l?.resetForPlayerEntry();
         }
@@ -186,28 +185,28 @@ namespace PlatoTK.Utils
                 if (index != -1)
                     item = new Hat(index);
                 else if (name != "none")
-                    item = new Hat(GetIndexByName(Plato.ModHelper.Content.Load<Dictionary<int, string>>(@"Data/hats", ContentSource.GameContent), name));
+                    item = new Hat(GetIndexByName(Plato.ModHelper.GameContent.Load<Dictionary<int, string>>(@"Data/hats"), name));
             }
             else if (type == "Boots")
             {
                 if (index != -1)
                     item = new Boots(index);
                 else if (name != "none")
-                    item = new Boots(GetIndexByName(Plato.ModHelper.Content.Load<Dictionary<int, string>>(@"Data/Boots", ContentSource.GameContent), name));
+                    item = new Boots(GetIndexByName(Plato.ModHelper.GameContent.Load<Dictionary<int, string>>(@"Data/Boots"), name));
             }
             else if (type == "Clothing")
             {
                 if (index != -1)
                     item = new Clothing(index);
                 else if (name != "none")
-                    item = new Clothing(GetIndexByName(Plato.ModHelper.Content.Load<Dictionary<int, string>>(@"Data/ClothingInformation", ContentSource.GameContent), name));
+                    item = new Clothing(GetIndexByName(Plato.ModHelper.GameContent.Load<Dictionary<int, string>>(@"Data/ClothingInformation"), name));
             }
             else if (type == "TV")
             {
                 if (index != -1)
                     item = new StardewValley.Objects.TV(index, Vector2.Zero);
                 else if (name != "none")
-                    item = new TV(GetIndexByName(Plato.ModHelper.Content.Load<Dictionary<int, string>>(@"Data/Furniture", ContentSource.GameContent), name), Vector2.Zero);
+                    item = new TV(GetIndexByName(Plato.ModHelper.GameContent.Load<Dictionary<int, string>>(@"Data/Furniture"), name), Vector2.Zero);
             }
             else if (type == "IndoorPot")
                 item = new StardewValley.Objects.IndoorPot(Vector2.Zero);
@@ -224,7 +223,7 @@ namespace PlatoTK.Utils
                 if (index != -1)
                     item = new StardewValley.Objects.Furniture(index, Vector2.Zero);
                 else if (name != "none")
-                    item = new Furniture(GetIndexByName(Plato.ModHelper.Content.Load<Dictionary<int, string>>(@"Data/Furniture", ContentSource.GameContent), name), Vector2.Zero);
+                    item = new Furniture(GetIndexByName(Plato.ModHelper.GameContent.Load<Dictionary<int, string>>(@"Data/Furniture"), name), Vector2.Zero);
             }
             else if (type == "Sign")
                 item = new StardewValley.Objects.Sign(Vector2.Zero, index);
@@ -237,7 +236,7 @@ namespace PlatoTK.Utils
                 if (index != -1)
                     item = new MeleeWeapon(index);
                 else if (name != "none")
-                    item = new MeleeWeapon(GetIndexByName(Plato.ModHelper.Content.Load<Dictionary<int, string>>(@"Data/weapons", ContentSource.GameContent), name));
+                    item = new MeleeWeapon(GetIndexByName(Plato.ModHelper.GameContent.Load<Dictionary<int, string>>(@"Data/weapons"), name));
 
             }
             else if (type == "SDVType")

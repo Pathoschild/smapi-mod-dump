@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace BankOfFerngill
@@ -27,6 +28,7 @@ namespace BankOfFerngill
     {
         private BoFConfig _config;
         private ITranslationHelper _i18N;
+        
         private IModEvents _events;
         private MobilePhoneApi _mobileApi;
         private IGenericModConfigMenuApi _cfgMenu;
@@ -100,8 +102,7 @@ namespace BankOfFerngill
             
             //Load Events
             _events = helper.Events;
-            
-            
+
             //Events
             _events.Input.ButtonPressed += OnButtonPressed; //Event that triggers when a button is pressed.
             _events.GameLoop.SaveLoaded += OnSaveLoaded; //Event that triggers when a Save is loaded.
@@ -195,6 +196,34 @@ namespace BankOfFerngill
                 setValue: value => _config.LoanSettings.EnableUnlimitedLoansAtOnce = value,
                 name: () => "Unlimited Loans",
                 tooltip:() => "If enabled you will be able to have any number of loans at once."
+            );
+            
+            _cfgMenu.AddSectionTitle(
+                mod: ModManifest,
+                text: () => "Hard Mode Settings",
+                tooltip: null
+                );
+            
+            _cfgMenu.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => _config.HardModSettings.EnableHarderMode,
+                setValue: value => _config.HardModSettings.EnableHarderMode = value,
+                name: () => "Enable Hard Mode",
+                tooltip:() => "If enabled you will have debt that needs to be paid back before you can deposit any money."
+            );
+            _cfgMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Starting Debt",
+                tooltip: () => "How much debt to start with.",
+                getValue: () => _config.HardModSettings.HowFarInDebtAtStart,
+                setValue: value => _config.HardModSettings.HowFarInDebtAtStart = value
+            );
+            _cfgMenu.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => _config.HardModSettings.BypassHavingToRepayDebtFirst,
+                setValue: value => _config.HardModSettings.BypassHavingToRepayDebtFirst = value,
+                name: () => "Bypass Repaying Debt First",
+                tooltip:() => "If enabled you can deposit without first repaying your debt."
             );
             #endregion
             
@@ -292,6 +321,11 @@ namespace BankOfFerngill
                 Monitor.Log($"StockTanked: {stockTanked}, StockRose: {stockRose}, CustomerAppreciation: {customerAppreciation}, AccountHacked: {accountHacked}, DebtPaid: {debtPaid}, NothingDone: {nothingDone}", LogLevel.Warn);
                 Monitor.Log($"Lets check CalculatePercentage 10. {CalculatePercentage(10)}, 25. {CalculatePercentage(25)}, 50. {CalculatePercentage(50)} , 75. {CalculatePercentage(75)}");
             }
+
+            if (e.IsDown(SButton.NumPad3) && _debugging)
+            {
+                Game1.activeClickableMenu = new BankTabbedMenu(MenuTab.BankInfo, Monitor, _i18N, _bankData, false);
+            }
             if(e.IsDown(SButton.Escape) && Game1.activeClickableMenu is BankMenu or BankInfoMenu)
             {
                 Game1.exitActiveMenu();
@@ -309,6 +343,14 @@ namespace BankOfFerngill
         private void OnSaveCreated(object sender, SaveCreatedEventArgs e)
         {
             _bankData = new BankData();
+            
+            //Lets see if we should add debt.
+            if (_config.HardModSettings.EnableHarderMode)
+            {
+                _bankData.LoanedMoney += _config.HardModSettings.HowFarInDebtAtStart;
+                _bankData.TotalNumberOfLoans++;
+                _bankData.WasHardModeDebtAdded = true;
+            }
         }
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
@@ -320,6 +362,12 @@ namespace BankOfFerngill
             _loanOwed = 0;
             _maxLoan = 0;
             
+            //Check to see if hardmode is enabled. If it is, add the debt.
+            if (_config.HardModSettings.EnableHarderMode && !_bankData.WasHardModeDebtAdded)
+            {
+                _bankData.LoanedMoney += _config.HardModSettings.HowFarInDebtAtStart;
+                _bankData.WasHardModeDebtAdded = true;
+            }
             //Enable or disable Debugging Based on FarmerName
             _debugging = Game1.player.Name.Contains("Vrillion");
         }
@@ -403,7 +451,14 @@ namespace BankOfFerngill
             {
                 mainResponses.Add(new Response("Withdraw", "Make a Withdraw"));
             }
-            mainResponses.Add(new Response("Deposit", "Make a Deposit"));
+
+            if (!_config.HardModSettings.EnableHarderMode || 
+                (_config.HardModSettings.EnableHarderMode && _config.HardModSettings.BypassHavingToRepayDebtFirst) || 
+                (_config.HardModSettings.EnableHarderMode && _bankData.LoanedMoney == 0 && !_config.HardModSettings.BypassHavingToRepayDebtFirst))
+            {
+                mainResponses.Add(new Response("Deposit", "Make a Deposit"));
+            }
+            
             if (_bankData.LoanedMoney == 0 || _config.LoanSettings.EnableUnlimitedLoansAtOnce)
             {
                 mainResponses.Add(new Response("GetLoan", "Get a Loan"));
@@ -413,7 +468,8 @@ namespace BankOfFerngill
             {
                 mainResponses.Add(new Response("PayBackLoan", "Make a Loan Payment"));
             }
-                
+
+            mainResponses.Add(new Response("", "Nothing Now")); 
             //Now we create the dialogue
             Game1.currentLocation.createQuestionDialogue("Choose an Option from below.", mainResponses.ToArray(),
                 delegate(Farmer _, string whichAnswer)
@@ -561,6 +617,13 @@ namespace BankOfFerngill
                     Game1.showGlobalMessage(_i18N.Get("bank.notEnoughMoneyOnPlayer", new { amt = FormatNumber(depositAmt) }));
                     return;
                 }
+
+                if (_config.HardModSettings.EnableHarderMode && (_bankData.LoanedMoney - _bankData.MoneyPaidBack) > 0 && !_config.HardModSettings.BypassHavingToRepayDebtFirst)
+                {
+                    Game1.showGlobalMessage(_i18N.Get("bank.hardmode.cantdeposit"));
+                    return;
+                }
+                
                 if (depositAmt > 0)
                 {
                     _bankData.MoneyInBank += depositAmt;
@@ -597,7 +660,7 @@ namespace BankOfFerngill
                 }
                 else
                 {
-                    _bankData.LoanedMoney = ModEntry.CalculateInterest(loanAmt, _bankData.LoanInterest) + loanAmt;
+                    _bankData.LoanedMoney = CalculateInterest(loanAmt, _bankData.LoanInterest) + loanAmt;
                     _bankData.TotalNumberOfLoans++;
                     Game1.player.Money += loanAmt;
                     Game1.exitActiveMenu();
@@ -638,7 +701,10 @@ namespace BankOfFerngill
                         _bankData.LoanedMoney = 0;
                         _bankData.MoneyPaidBack = 0;
                         _bankData.NumberOfLoansPaidBack++;
-                        _bankData.TotalNumberOfLoans--;
+                        if (_bankData.TotalNumberOfLoans > 0)
+                            _bankData.TotalNumberOfLoans--;
+                        else
+                            _bankData.TotalNumberOfLoans = 0;
                     }
                     string s = _bankData.LoanedMoney > 0 ? _i18N.Get("bank.payLoan.payTowards", new { amt = FormatNumber(amtLoanPay), loan_balance = _bankData.LoanedMoney - _bankData.MoneyPaidBack}) : _i18N.Get("bank.payLoan.paidOff");
                     Game1.exitActiveMenu();

@@ -14,9 +14,7 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Tools;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

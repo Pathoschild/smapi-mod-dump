@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/daleao/smapi-mods
+**
+*************************************************/
+
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
+using Common.Events;
+using StardewModdingAPI.Events;
+using Ultimates;
+using VirtualProperties;
+
+#endregion using directives
+
+[UsedImplicitly]
+internal sealed class AmbushUpdateTickedEvent : UpdateTickedEvent
+{
+    /// <summary>Construct an instance.</summary>
+    /// <param name="manager">The <see cref="ProfessionEventManager"/> instance that manages this event.</param>
+    internal AmbushUpdateTickedEvent(ProfessionEventManager manager)
+        : base(manager) { }
+
+    /// <inheritdoc />
+    protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
+    {
+        if (!Game1.game1.IsActiveNoOverlay && Game1.options.pauseWhenOutOfFocus || !Game1.shouldTimePass()) return;
+
+        var ambush = Game1.player.get_Ultimate() as Ambush;
+        if (ambush!.IsActive)
+        {
+            Game1.player.temporarilyInvincible = true;
+        }
+        else
+        {
+            ambush.SecondsOutOfAmbush += 1d / 60d;
+            if (ambush.SecondsOutOfAmbush > 1.5d) Disable();
+        }
+    }
+}

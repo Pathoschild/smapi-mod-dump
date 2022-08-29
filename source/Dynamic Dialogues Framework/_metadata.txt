@@ -6,9 +6,9 @@ mods:
    Dynamic Dialogues Framework
 
 latest commit:
-   commit 0a28121655da1a5373a8b2ae8086697103490876
+   commit da3883f4163255bc4932438b859ae633b0fb9608
    Author: misty-spring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Tue Jul 26 23:35:16 2022 -0400
+   Date:   Thu Aug 11 21:04:30 2022 -0400
    
        Update README.md
    

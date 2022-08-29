@@ -12,16 +12,15 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Extensions.Reflection;
+using Common.Extensions.Stardew;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Pathoschild.Automate")]
 internal sealed class TapperMachineResetPatch : Common.Harmony.HarmonyPatch
 {
     private static Func<object, SObject>? _GetMachine;
@@ -29,15 +28,8 @@ internal sealed class TapperMachineResetPatch : Common.Harmony.HarmonyPatch
     /// <summary>Construct an instance.</summary>
     internal TapperMachineResetPatch()
     {
-        try
-        {
-            Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.TapperMachine".ToType()
-                .RequireMethod("Reset");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "Pathoschild.Stardew.Automate.Framework.Machines.Objects.TapperMachine".ToType()
+            .RequireMethod("Reset");
     }
 
     #region harmony patches
@@ -50,9 +42,7 @@ internal sealed class TapperMachineResetPatch : Common.Harmony.HarmonyPatch
 
         _GetMachine ??= __instance.GetType().RequirePropertyGetter("Machine")
             .CompileUnboundDelegate<Func<object, SObject>>();
-        var machine = _GetMachine(__instance);
-        var owner = Game1.getFarmerMaybeOffline(machine.owner.Value) ?? Game1.MasterPlayer;
-        owner.gainExperience(Farmer.foragingSkill, 5);
+        _GetMachine(__instance).GetOwner().gainExperience(Farmer.foragingSkill, 5);
     }
 
     #endregion harmony patches

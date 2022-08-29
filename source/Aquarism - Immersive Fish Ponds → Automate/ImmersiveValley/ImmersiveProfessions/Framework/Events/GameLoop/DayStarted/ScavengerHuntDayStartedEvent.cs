@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -29,7 +28,6 @@ internal sealed class ScavengerHuntDayStartedEvent : DayStartedEvent
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object? sender, DayStartedEventArgs e)
     {
-        if (ModEntry.PlayerState.ScavengerHunt is not null)
-            ModEntry.PlayerState.ScavengerHunt.ResetChanceAccumulator();
+        ModEntry.State.ScavengerHunt.Value.ResetChanceAccumulator();
     }
 }

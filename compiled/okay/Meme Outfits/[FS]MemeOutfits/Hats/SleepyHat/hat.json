@@ -1,0 +1,75 @@
+{
+  "Name": "Sleepy Man Hat",
+  "FrontHat": {
+    "HideHair": true,
+    "ColorMasks": [
+      [ 191, 183, 181 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  },
+  "RightHat": {
+    "HideHair": true,
+    "ColorMasks": [
+      [ 191, 183, 181 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 16
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  },
+  "LeftHat": {
+    "HideHair": true,
+    "ColorMasks": [
+      [ 191, 183, 181 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 32
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  },
+  "BackHat": {
+    "HideHair": true,
+    "ColorMasks": [
+      [ 191, 183, 181 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 48
+    },
+    "HeadPosition": {
+      "X": -2,
+      "Y": 0
+    },
+    "HatSize": {
+      "Width": 16,
+      "Length": 16
+    }
+  }
+}

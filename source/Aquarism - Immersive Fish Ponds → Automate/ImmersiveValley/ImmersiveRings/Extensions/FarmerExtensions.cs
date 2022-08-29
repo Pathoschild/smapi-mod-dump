@@ -12,11 +12,9 @@ namespace DaLion.Stardew.Rings.Extensions;
 
 #region using directives
 
-using StardewValley;
 using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

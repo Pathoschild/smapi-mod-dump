@@ -28,6 +28,9 @@ namespace DynamicBodies
         {
             public Dictionary<string, string> arms { get; set; }
             public Dictionary<string, string> faces { get; set; }
+            public Dictionary<string, string> eyes { get; set; }
+            public Dictionary<string, string> ears { get; set; }
+            public Dictionary<string, string> nose { get; set; }
             public Dictionary<string, string> hairBacks { get; set; }
             public Dictionary<string, string> hairFronts { get; set; }
             public Dictionary<string, additionalSettings> nakedUppers { get; set; }
@@ -54,6 +57,12 @@ namespace DynamicBodies
                     return GetOptions_arms(contentPack);
                 case "faces":
                     return GetOptions_faces(contentPack);
+                case "eyes":
+                    return GetOptions_eyes(contentPack);
+                case "ears":
+                    return GetOptions_ears(contentPack);
+                case "nose":
+                    return GetOptions_nose(contentPack);
                 case "bodyHair":
                     return GetOptions_bodyHair(contentPack);
                 case "beards":
@@ -113,6 +122,159 @@ namespace DynamicBodies
                     else
                     {
                         ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a female face file for '{dataKeyPair.Value}'", LogLevel.Debug);
+                    }
+                }
+            }
+
+            return options;
+        }
+
+        private List<ContentPackOption> GetOptions_eyes(IContentPack contentPack)
+        {
+            List<ContentPackOption> options = new List<ContentPackOption>();
+
+            //Due to the custom nature of each frame - this only supports male/female
+
+            if (male.eyes != null && male.eyes.Count > 0)
+            {
+                //record all the body options
+                foreach (var dataKeyPair in male.eyes)
+                {
+                    if (contentPack.HasFile($"assets\\eyes\\{dataKeyPair.Value}.png"))
+                    {
+                        //TODO check the images are right size
+                        //Texture2D image = contentPack.LoadAsset<Texture2D>("image.png");
+                        ContentPackOption eyesOption = new ContentPackOption(dataKeyPair.Key, dataKeyPair.Value, contentPack.Manifest.Author, contentPack, true);
+                        options.Add(eyesOption);
+                        ModEntry.debugmsg($"{contentPack.Manifest.Name} added male eyes file for '{dataKeyPair.Value}'", LogLevel.Debug);
+
+                    }
+                    else
+                    {
+                        ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a eyes file for '{dataKeyPair.Value}'", LogLevel.Debug);
+                    }
+                }
+            }
+
+            if (female.eyes != null && female.eyes.Count > 0)
+            {
+                //record all the body options
+                foreach (var dataKeyPair in female.eyes)
+                {
+                    if (contentPack.HasFile($"assets\\eyes\\{dataKeyPair.Value}.png"))
+                    {
+                        //TODO check the images are right size
+                        //Texture2D image = contentPack.LoadAsset<Texture2D>("image.png");
+                        ContentPackOption eyesOption = new ContentPackOption(dataKeyPair.Key, dataKeyPair.Value, contentPack.Manifest.Author, contentPack, false);
+                        options.Add(eyesOption);
+                        ModEntry.debugmsg($"{contentPack.Manifest.Name} added female eyes file for '{dataKeyPair.Value}'", LogLevel.Debug);
+
+                    }
+                    else
+                    {
+                        ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a female eyes file for '{dataKeyPair.Value}'", LogLevel.Debug);
+                    }
+                }
+            }
+
+            return options;
+        }
+
+        private List<ContentPackOption> GetOptions_nose(IContentPack contentPack)
+        {
+            List<ContentPackOption> options = new List<ContentPackOption>();
+
+            //Due to the custom nature of each frame - this only supports male/female
+
+            if (male.nose != null && male.nose.Count > 0)
+            {
+                //record all the body options
+                foreach (var dataKeyPair in male.nose)
+                {
+                    if (contentPack.HasFile($"assets\\nose\\{dataKeyPair.Value}.png"))
+                    {
+                        //TODO check the images are right size
+                        //Texture2D image = contentPack.LoadAsset<Texture2D>("image.png");
+                        ContentPackOption noseOption = new ContentPackOption(dataKeyPair.Key, dataKeyPair.Value, contentPack.Manifest.Author, contentPack, true);
+                        options.Add(noseOption);
+                        ModEntry.debugmsg($"{contentPack.Manifest.Name} added male nose file for '{dataKeyPair.Value}'", LogLevel.Debug);
+
+                    }
+                    else
+                    {
+                        ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a nose file for '{dataKeyPair.Value}'", LogLevel.Debug);
+                    }
+                }
+            }
+
+            if (female.nose != null && female.nose.Count > 0)
+            {
+                //record all the body options
+                foreach (var dataKeyPair in female.nose)
+                {
+                    if (contentPack.HasFile($"assets\\nose\\{dataKeyPair.Value}.png"))
+                    {
+                        //TODO check the images are right size
+                        //Texture2D image = contentPack.LoadAsset<Texture2D>("image.png");
+                        ContentPackOption noseOption = new ContentPackOption(dataKeyPair.Key, dataKeyPair.Value, contentPack.Manifest.Author, contentPack, false);
+                        options.Add(noseOption);
+                        ModEntry.debugmsg($"{contentPack.Manifest.Name} added female nose file for '{dataKeyPair.Value}'", LogLevel.Debug);
+
+                    }
+                    else
+                    {
+                        ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a female nose file for '{dataKeyPair.Value}'", LogLevel.Debug);
+                    }
+                }
+            }
+
+            return options;
+        }
+
+        private List<ContentPackOption> GetOptions_ears(IContentPack contentPack)
+        {
+            List<ContentPackOption> options = new List<ContentPackOption>();
+
+            //Due to the custom nature of each frame - this only supports male/female
+
+            if (male.ears != null && male.ears.Count > 0)
+            {
+                //record all the body options
+                foreach (var dataKeyPair in male.ears)
+                {
+                    if (contentPack.HasFile($"assets\\ears\\{dataKeyPair.Value}.png"))
+                    {
+                        //TODO check the images are right size
+                        //Texture2D image = contentPack.LoadAsset<Texture2D>("image.png");
+                        ContentPackOption earsOption = new ContentPackOption(dataKeyPair.Key, dataKeyPair.Value, contentPack.Manifest.Author, contentPack, true);
+                        options.Add(earsOption);
+                        ModEntry.debugmsg($"{contentPack.Manifest.Name} added male ears file for '{dataKeyPair.Value}'", LogLevel.Debug);
+
+                    }
+                    else
+                    {
+                        ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a ears file for '{dataKeyPair.Value}'", LogLevel.Debug);
+                    }
+                }
+            }
+
+            if (female.ears != null && female.ears.Count > 0)
+            {
+                //record all the body options
+                foreach (var dataKeyPair in female.ears)
+                {
+                    if (contentPack.HasFile($"assets\\ears\\{dataKeyPair.Value}.png"))
+                    {
+                        //TODO check the images are right size
+                        //Texture2D image = contentPack.LoadAsset<Texture2D>("image.png");
+                        ContentPackOption earsOption = new ContentPackOption(dataKeyPair.Key, dataKeyPair.Value, contentPack.Manifest.Author, contentPack, false);
+                        options.Add(earsOption);
+                        ModEntry.debugmsg($"{contentPack.Manifest.Name} added female ears file for '{dataKeyPair.Value}'", LogLevel.Debug);
+
+                    }
+                    else
+                    {
+                        ModEntry.monitor.Log($"{contentPack.Manifest.Name} is missing a female ears file for '{dataKeyPair.Value}'", LogLevel.Debug);
                     }
                 }
             }

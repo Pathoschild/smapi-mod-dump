@@ -68,13 +68,17 @@ internal static partial class OnDrawImpl {
 		spriteInstance = reference.FetchScaledTexture(
 			expectedScale: expectedScale,
 			source: ref source,
+			allowCache: out bool allowCache,
 			create: create
 		);
 		source.Invert = invert;
 
 		if (spriteInstance is not null) {
-			LastDrawParams = new(reference, expectedScale, originalSource, source);
-			LastDrawSpriteInstance = spriteInstance;
+			if (allowCache) {
+				LastDrawParams = new(reference, expectedScale, originalSource, source);
+				LastDrawSpriteInstance = spriteInstance;
+			}
+
 			return true;
 		}
 
@@ -85,9 +89,12 @@ internal static partial class OnDrawImpl {
 		this XTexture2D reference,
 		uint expectedScale,
 		ref Bounds source,
+		out bool allowCache,
 		bool create = false
 	) {
 		var clampedSource = source;
+
+		allowCache = false;
 
 		try {
 			if (reference is InternalTexture2D) {
@@ -115,8 +122,10 @@ internal static partial class OnDrawImpl {
 				isSliced = true;
 			}
 
+			allowCache = true;
+
 			var spriteInstance = create ?
-				ManagedSpriteInstance.FetchOrCreate(texture: reference, source: clampedSource, expectedScale: expectedScale, sliced: isSliced) :
+				ManagedSpriteInstance.FetchOrCreate(texture: reference, source: clampedSource, expectedScale: expectedScale, sliced: isSliced, allowCache: out allowCache) :
 				ManagedSpriteInstance.Fetch(texture: reference, source: clampedSource, expectedScale: expectedScale);
 
 			if (spriteInstance is null || !spriteInstance.IsReady) {

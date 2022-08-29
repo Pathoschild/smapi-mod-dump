@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewMods.Common.Helpers;
 using StardewMods.CommonHarmony.Enums;
 using StardewMods.CommonHarmony.Models;
@@ -27,7 +26,9 @@ using StardewMods.CommonHarmony.Models;
 internal static class HarmonyHelper
 {
     private static readonly IDictionary<string, Harmony> Instances = new Dictionary<string, Harmony>();
-    private static readonly IDictionary<string, List<SavedPatch>> SavedPatches = new Dictionary<string, List<SavedPatch>>();
+
+    private static readonly IDictionary<string, List<SavedPatch>> SavedPatches =
+        new Dictionary<string, List<SavedPatch>>();
 
     /// <summary>
     ///     Adds a <see cref="SavedPatch" /> to an id.
@@ -40,14 +41,14 @@ internal static class HarmonyHelper
     /// <param name="type">The patch class/type.</param>
     /// <param name="name">The patch method name.</param>
     /// <param name="patchType">One of postfix, prefix, or transpiler.</param>
-    public static void AddPatch(string id, MethodBase original, Type type, string name, PatchType patchType = PatchType.Prefix)
+    public static void AddPatch(
+        string id,
+        MethodBase original,
+        Type type,
+        string name,
+        PatchType patchType = PatchType.Prefix)
     {
-        HarmonyHelper.AddPatches(
-            id,
-            new[]
-            {
-                new SavedPatch(original, type, name, patchType),
-            });
+        HarmonyHelper.AddPatches(id, new[] { new SavedPatch(original, type, name, patchType) });
     }
 
     /// <summary>
@@ -100,6 +101,10 @@ internal static class HarmonyHelper
                         break;
                     case PatchType.Transpiler:
                         harmony.Patch(patch.Original, transpiler: patch.Patch);
+                        break;
+                    case PatchType.Reverse:
+                        harmony.CreateReversePatcher(patch.Original, patch.Patch)
+                               .Patch(HarmonyReversePatchType.Snapshot);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Failed to patch {nameof(patch.Type)}.{patch.Name}");

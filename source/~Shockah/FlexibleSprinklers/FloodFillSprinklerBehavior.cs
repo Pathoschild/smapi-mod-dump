@@ -16,15 +16,12 @@ using System.Linq;
 
 namespace Shockah.FlexibleSprinklers
 {
-	internal enum FlexibleSprinklerBehaviorTileWaterBalanceMode { Relaxed, Exact, Restrictive }
-
-	internal class FloodFillSprinklerBehavior: ISprinklerBehavior.Independent
+	internal class FloodFillSprinklerBehavior : ISprinklerBehavior.Independent
 	{
 		private readonly FlexibleSprinklerBehaviorTileWaterBalanceMode TileWaterBalanceMode;
 		private readonly ISprinklerBehavior.Independent? PriorityBehavior;
 
-		private readonly IDictionary<IMap, IDictionary<(IntPoint position, SprinklerInfo info), IList<(ISet<IntPoint>, float)>>> Cache
-			= new Dictionary<IMap, IDictionary<(IntPoint position, SprinklerInfo info), IList<(ISet<IntPoint>, float)>>>();
+		private readonly Dictionary<IMap, Dictionary<(IntPoint position, SprinklerInfo info), IReadOnlyList<(IReadOnlySet<IntPoint>, float)>>> Cache = new();
 
 		public FloodFillSprinklerBehavior(FlexibleSprinklerBehaviorTileWaterBalanceMode tileWaterBalanceMode, ISprinklerBehavior.Independent? priorityBehavior)
 		{
@@ -42,7 +39,7 @@ namespace Shockah.FlexibleSprinklers
 			Cache.Remove(map);
 		}
 
-		public IList<(ISet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
+		public IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
 		{
 			if (!Cache.TryGetValue(map, out var sprinklerCache))
 				return GetUncachedSprinklerTilesWithSteps(map, sprinklerPosition, info);
@@ -51,12 +48,12 @@ namespace Shockah.FlexibleSprinklers
 			return cachedTiles;
 		}
 
-		private IList<(ISet<IntPoint>, float)> GetUncachedSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
+		private IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetUncachedSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
 		{
-			IList<(ISet<IntPoint>, float)> priorityWateredTilesSteps = new List<(ISet<IntPoint>, float)>();
-			IList<ISet<IntPoint>> wateredTilesSteps = new List<ISet<IntPoint>>();
-			ISet<IntPoint> currentWateredTiles = new HashSet<IntPoint>();
-			ISet<IntPoint> wateredTiles = new HashSet<IntPoint>();
+			List<(IReadOnlySet<IntPoint>, float)> priorityWateredTilesSteps = new();
+			List<IReadOnlySet<IntPoint>> wateredTilesSteps = new();
+			HashSet<IntPoint> currentWateredTiles = new();
+			HashSet<IntPoint> wateredTiles = new();
 			var unwateredTileCount = info.Power;
 
 			void FinishWateringStep()
@@ -107,10 +104,10 @@ namespace Shockah.FlexibleSprinklers
 				sprinkler1dRange = sprinklerRange * 2;
 			}
 
-			var waterableTiles = new HashSet<IntPoint>();
-			ISet<IntPoint> otherSprinklers = new HashSet<IntPoint>();
-			var @checked = new HashSet<IntPoint>();
-			var toCheck = new Queue<IntPoint>();
+			HashSet<IntPoint> waterableTiles = new();
+			HashSet<IntPoint> otherSprinklers = new();
+			HashSet<IntPoint> @checked = new();
+			Queue<IntPoint> toCheck = new();
 			var maxCost = 0;
 
 			var maxDX = Math.Max(wateredTiles.Count > 0 ? wateredTiles.Max(t => Math.Abs(t.X - sprinklerPosition.X)) : 0, sprinkler1dRange);
@@ -188,7 +185,7 @@ namespace Shockah.FlexibleSprinklers
 			IEnumerable<IntPoint> DetectSprinklers(IntPoint singleDirection)
 			{
 				int[] directions = { -1, 1 };
-				
+
 				for (int i = 1; i <= otherSprinklerDetectionRange; i++)
 				{
 					foreach (var direction in directions)
@@ -290,7 +287,7 @@ namespace Shockah.FlexibleSprinklers
 			finish:;
 			if (!Cache.TryGetValue(map, out var sprinklerCache))
 			{
-				sprinklerCache = new Dictionary<(IntPoint position, SprinklerInfo info), IList<(ISet<IntPoint>, float)>>();
+				sprinklerCache = new();
 				Cache[map] = sprinklerCache;
 			}
 

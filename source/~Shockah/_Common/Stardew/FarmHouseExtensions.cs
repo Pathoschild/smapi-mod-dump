@@ -17,16 +17,12 @@ namespace Shockah.CommonModCode.Stardew
 	public static class FarmHouseExtensions
 	{
 		public static Cellar? GetCellar(this FarmHouse farmhouse)
-		{
-			return Game1.getLocationFromName(farmhouse.GetCellarName()) as Cellar;
-		}
+			=> Game1.getLocationFromName(farmhouse.GetCellarName()) as Cellar;
 	}
 
 	public static class CellarExtensions
 	{
 		public static FarmHouse? GetFarmHouse(this Cellar cellar)
-		{
-			return GameExt.GetAllLocations().OfType<FarmHouse>().FirstOrDefault(fh => fh.GetCellarName() == cellar.Name);
-		}
+			=> GameExt.GetAllLocations().OfType<FarmHouse>().FirstOrDefault(fh => fh.GetCellarName() == cellar.Name);
 	}
 }

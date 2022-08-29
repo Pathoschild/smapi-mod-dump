@@ -10,16 +10,18 @@
 
 using HarmonyLib;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using xTile;
 
 namespace CustomSpouseRooms
 {
     /// <summary>The mod entry point.</summary>
-    public partial class ModEntry : Mod, IAssetLoader
+    public partial class ModEntry : Mod
     {
 
         public static IMonitor SMonitor;
@@ -100,6 +102,13 @@ namespace CustomSpouseRooms
 
             SHelper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             SHelper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            SHelper.Events.Content.AssetRequested += Content_AssetRequested;
+        }
+
+        private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        {
+            if(e.NameWithoutLocale.BaseName.Contains("custom_spouse_room_"))
+                e.LoadFromModFile<Map>(e.NameWithoutLocale.BaseName + ".tmx", StardewModdingAPI.Events.AssetLoadPriority.Exclusive);
         }
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
@@ -129,27 +138,6 @@ namespace CustomSpouseRooms
             return new CustomSpouseRoomsAPI();
         }
 
-        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            if (!Config.EnableMod)
-                return false;
 
-            if (asset.AssetName.Contains("custom_spouse_room_"))
-            {
-                SMonitor.Log($"can load map {asset.AssetName}");
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>Load a matched asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public T Load<T>(IAssetInfo asset)
-        {
-            return SHelper.Content.Load<T>(asset.AssetName + ".tmx");
-        }
     }
 }

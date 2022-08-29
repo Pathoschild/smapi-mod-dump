@@ -6,11 +6,11 @@ mods:
    Walk Through Trellis
 
 latest commit:
-   commit 1510e207fe5858d742b27af3e45377025148ae56
+   commit c2542d7cfe2ef6ed4bdd250dfc3c87973d0abb9e
    Author: TheOfficialTab <OfficialTabArtist@gmail.com>
-   Date:   Sun Jan 10 14:00:44 2021 -0500
+   Date:   Sat Aug 27 13:03:53 2022 -0400
    
-       These are the new files from the 1.0.6 update.
+       Oops
        
-       Rebuilt the existing code for the newest version of SMAPI to be compatible with the latest version of Stardew Valley.
+       Must have thrown this in without much thought. This is just the mod within the mod.
    

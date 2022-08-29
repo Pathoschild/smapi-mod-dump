@@ -51,19 +51,19 @@ internal static class SpanExt {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void CopyTo<T>(this Span<T> inSpan, Span<T> outSpan, int inOffset, int outOffset, int count) where T : unmanaged =>
-		inSpan.SliceUnsafe(inOffset, count).CopyTo(outSpan.SliceUnsafe(outOffset, count));
+		inSpan.Slice(inOffset, count).CopyTo(outSpan.Slice(outOffset, count));
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void CopyTo<T>(this ReadOnlySpan<T> inSpan, Span<T> outSpan, int inOffset, int outOffset, int count) where T : unmanaged =>
-		inSpan.SliceUnsafe(inOffset, count).CopyTo(outSpan.SliceUnsafe(outOffset, count));
+		inSpan.Slice(inOffset, count).CopyTo(outSpan.Slice(outOffset, count));
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void CopyTo<T>(this PinnedSpan<T> inSpan, Span<T> outSpan, int inOffset, int outOffset, int count) where T : unmanaged =>
-		inSpan.SliceUnsafe(inOffset, count).CopyTo(outSpan.SliceUnsafe(outOffset, count));
+		inSpan.Slice(inOffset, count).CopyTo(outSpan.Slice(outOffset, count));
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void CopyTo<T>(this ReadOnlyPinnedSpan<T> inSpan, Span<T> outSpan, int inOffset, int outOffset, int count) where T : unmanaged =>
-		inSpan.SliceUnsafe(inOffset, count).CopyTo(outSpan.SliceUnsafe(outOffset, count));
+		inSpan.Slice(inOffset, count).CopyTo(outSpan.Slice(outOffset, count));
 
 	[Pure]
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -267,114 +267,6 @@ internal static class SpanExt {
 	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ReadOnlyPinnedSpan<byte> AsBytes<T>(this ReadOnlyPinnedSpan<T> span) where T : unmanaged =>
 		span.Cast<T, byte>();
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Span<T> SliceUnsafe<T>(this Span<T> span, uint offset) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice((int)offset);
-#else
-		return MemoryMarshal.CreateSpan(ref span.DangerousGetReferenceAt((int)offset), (int)(span.Length - offset));
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Span<T> SliceUnsafe<T>(this Span<T> span, int offset) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice(offset);
-#else
-		return MemoryMarshal.CreateSpan(ref span.DangerousGetReferenceAt(offset), span.Length - offset);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Span<T> SliceUnsafe<T>(this Span<T> span, uint offset, uint length) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice((int)offset, (int)length);
-#else
-		return MemoryMarshal.CreateSpan(ref span.DangerousGetReferenceAt((int)offset), (int)length);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Span<T> SliceUnsafe<T>(this Span<T> span, int offset, int length) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice(offset, length);
-#else
-		return MemoryMarshal.CreateSpan(ref span.DangerousGetReferenceAt(offset), length);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static ReadOnlySpan<T> SliceUnsafe<T>(this ReadOnlySpan<T> span, uint offset) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice((int)offset);
-#else
-		return MemoryMarshal.CreateReadOnlySpan(ref span.DangerousGetReferenceAt((int)offset), (int)(span.Length - offset));
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static ReadOnlySpan<T> SliceUnsafe<T>(this ReadOnlySpan<T> span, int offset) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice(offset);
-#else
-		return MemoryMarshal.CreateReadOnlySpan(ref span.DangerousGetReferenceAt(offset), span.Length - offset);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static ReadOnlySpan<T> SliceUnsafe<T>(this ReadOnlySpan<T> span, uint offset, uint length) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice((int)offset, (int)length);
-#else
-		return MemoryMarshal.CreateReadOnlySpan(ref span.DangerousGetReferenceAt((int)offset), (int)length);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static ReadOnlySpan<T> SliceUnsafe<T>(this ReadOnlySpan<T> span, int offset, int length) where T : unmanaged {
-#if !SHIPPING
-		return span.Slice(offset, length);
-#else
-		return MemoryMarshal.CreateReadOnlySpan(ref span.DangerousGetReferenceAt(offset), length);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static ref T At<T>(this Span<T> span, uint offset) where T : unmanaged {
-#if !SHIPPING
-		return ref span[(int)offset];
-#else
-		return ref Unsafe.Add(ref MemoryMarshal.GetReference(span), (int)offset);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static ref T At<T>(this Span<T> span, int offset) where T : unmanaged {
-#if !SHIPPING
-		return ref span[offset];
-#else
-		return ref Unsafe.Add(ref MemoryMarshal.GetReference(span), offset);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static T At<T>(this ReadOnlySpan<T> span, uint offset) where T : unmanaged {
-#if !SHIPPING
-		return span[(int)offset];
-#else
-		return Unsafe.Add(ref MemoryMarshal.GetReference(span), (int)offset);
-#endif
-	}
-
-	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static T At<T>(this ReadOnlySpan<T> span, int offset) where T : unmanaged {
-#if !SHIPPING
-		return span[offset];
-#else
-		return Unsafe.Add(ref MemoryMarshal.GetReference(span), offset);
-#endif
-	}
 
 #if !SHIPPING
 	internal static Span<float> Elements(this Span<Float4> span) => span.Cast<Float4, float>();

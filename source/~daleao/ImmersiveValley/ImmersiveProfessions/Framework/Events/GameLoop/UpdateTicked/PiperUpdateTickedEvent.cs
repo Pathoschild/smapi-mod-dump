@@ -13,9 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 #endregion using directives
 
@@ -31,7 +29,7 @@ internal sealed class PiperUpdateTickedEvent : UpdateTickedEvent
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
         // countdown contact timer
-        if (ModEntry.PlayerState.SlimeContactTimer > 0 && Game1.game1.IsActive && Game1.shouldTimePass())
-            --ModEntry.PlayerState.SlimeContactTimer;
+        if (ModEntry.State.SlimeContactTimer > 0 && (Game1.game1.IsActiveNoOverlay || !Game1.options.pauseWhenOutOfFocus) && Game1.shouldTimePass())
+            --ModEntry.State.SlimeContactTimer;
     }
 }

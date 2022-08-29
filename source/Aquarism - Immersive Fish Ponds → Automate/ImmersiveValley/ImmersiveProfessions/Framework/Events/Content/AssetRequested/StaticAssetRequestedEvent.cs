@@ -12,16 +12,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.Content;
 
 #region using directives
 
-using Common.Data;
 using Common.Events;
 using Common.Extensions;
 using Common.Extensions.Collections;
-using JetBrains.Annotations;
+using Common.Extensions.Stardew;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.GameData.FishPond;
 using System;
 using System.Collections.Generic;
@@ -43,7 +40,7 @@ internal sealed class StaticAssetRequestedEvent : AssetRequestedEvent
     internal StaticAssetRequestedEvent(ProfessionEventManager manager)
         : base(manager)
     {
-        AlwaysHooked = true;
+        AlwaysEnabled = true;
 
         AssetEditors["Data/achievements"] = (edit: EditAchievementsData, priority: AssetEditPriority.Default);
         AssetEditors["Data/FishPondData"] = (edit: EditFishPondDataData, priority: AssetEditPriority.Late);
@@ -60,12 +57,18 @@ internal sealed class StaticAssetRequestedEvent : AssetRequestedEvent
     }
 
     /// <inheritdoc />
+    public override bool Enable() => false;
+
+    /// <inheritdoc />
+    public override bool Disable() => false;
+
+    /// <inheritdoc />
     protected override void OnAssetRequestedImpl(object? sender, AssetRequestedEventArgs e)
     {
         if (AssetEditors.TryGetValue(e.NameWithoutLocale.Name, out var editor))
             e.Edit(editor.edit, editor.priority);
         else if (AssetProviders.TryGetValue(e.NameWithoutLocale.Name, out var provider))
-            e.LoadFromModFile<Texture2D>(provider.provide.Invoke(), provider.priority);
+            e.LoadFromModFile<Texture2D>(provider.provide(), provider.priority);
     }
 
     #region editor callback
@@ -122,7 +125,7 @@ internal sealed class StaticAssetRequestedEvent : AssetRequestedEvent
     {
         var data = asset.AsDictionary<string, string>().Data;
         var taxBonus =
-            ModDataIO.ReadFrom<float>(Game1.player, "ConservationistActiveTaxBonusPct");
+            Game1.player.Read<float>("ConservationistActiveTaxBonusPct");
         var key = taxBonus >= ModEntry.Config.ConservationistTaxBonusCeiling
             ? "conservationist.mail.max"
             : "conservationist.mail";

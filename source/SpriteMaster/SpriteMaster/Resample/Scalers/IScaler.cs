@@ -29,7 +29,7 @@ internal interface IScaler {
 	uint ClampScale(uint scale);
 
 	Span<Color16> Apply(
-		in Config configuration,
+		Config configuration,
 		uint scaleMultiplier,
 		ReadOnlySpan<Color16> sourceData,
 		Vector2I sourceSize,

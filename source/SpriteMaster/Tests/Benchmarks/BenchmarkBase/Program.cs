@@ -30,7 +30,12 @@ using ZstdNet;
 namespace Benchmarks.BenchmarkBase;
 
 [PublicAPI]
-public abstract class ProgramBase<TOptions> where TOptions : Options, new() {
+public abstract class ProgramBase {
+	public static Options? CurrentOptions = null;
+}
+
+[PublicAPI]
+public abstract class ProgramBase<TOptions> : ProgramBase where TOptions : Options, new() {
 	private const string ArgsEnvVar = @"BENCHIE_ARGS";
 	private static TOptions? CurrentOptionsImpl = null!;
 
@@ -129,6 +134,7 @@ public abstract class ProgramBase<TOptions> where TOptions : Options, new() {
 				string[] args = ParsePackedArgs(Environment.GetEnvironmentVariable(ArgsEnvVar));
 
 				options = CurrentOptionsImpl = Options.From<TOptions>(args);
+				ProgramBase.CurrentOptions = options;
 			}
 
 			return options;
@@ -252,6 +258,7 @@ public abstract class ProgramBase<TOptions> where TOptions : Options, new() {
 	public static int MainBase(Type rootType, string[] args, Func<Regex, Action<Regex>?>? execCallback = null) {
 		var options = Options.From<TOptions>(args);
 		CurrentOptionsImpl = options;
+		ProgramBase.CurrentOptions = options;
 
 		//options.GCTypes.Add(GCType.Workstation);
 		//options.Runtimes.Remove(CoreRtRuntime.CoreRt50);

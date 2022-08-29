@@ -16,6 +16,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Projectiles;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -33,7 +34,7 @@ namespace StardewHitboxes
 
         private static ModConfig Config;
 
-        private static Dictionary<Rectangle, int> weaponHitboxesToRender = new();
+        private static readonly Dictionary<Rectangle, int> weaponHitboxesToRender = new();
 
         public ModEntry()
         {
@@ -47,29 +48,24 @@ namespace StardewHitboxes
             hitboxTexture = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
             hitboxTexture.SetData(new[] { Color.White });
 
-            helper.Events.GameLoop.SaveLoaded += (o, e) =>
-            {
-                if (Config.Enabled)
-                {
-                    AllowToggle = true;
-                    ShowHitboxes = true;
-                }
-                else
-                {
-                    AllowToggle = false;
-                    ShowHitboxes = false;
-                }
-            };
-
-            helper.Events.Input.ButtonPressed += (o, e) =>
-            {
-                if (Config.ToggleKey.JustPressed() && AllowToggle)
-                    ShowHitboxes = !ShowHitboxes;
-            };
-
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.GameLaunched += SetupGMCM;
 
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+
             helper.Events.Display.RenderedWorld += RenderedWorld;
+        }
+
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            ShowHitboxes = false;
+            AllowToggle = Config.Enabled;
+        }
+
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (Config.ToggleKey.JustPressed() && Context.IsWorldReady && AllowToggle)
+                ShowHitboxes = !ShowHitboxes;
         }
 
         private void SetupGMCM(object sender, GameLaunchedEventArgs e)
@@ -87,13 +83,9 @@ namespace StardewHitboxes
             configMenu.OnFieldChanged(ModManifest, (o, e) =>
             {
                 Config = Helper.ReadConfig<ModConfig>();
-                if (Config.Enabled)
-                    AllowToggle = true;
-                else
-                {
-                    AllowToggle = false;
+                AllowToggle = Config.Enabled;
+                if (!Config.Enabled)
                     ShowHitboxes = false;
-                }
             });
 
             configMenu.AddBoolOption(
@@ -110,6 +102,14 @@ namespace StardewHitboxes
                 tooltip: () => "The key used to toggle hitboxes",
                 getValue: () => Config.ToggleKey,
                 setValue: value => Config.ToggleKey = value
+            );
+
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Hitbox Opacity",
+                tooltip: () => "The opacity for hitboxes",
+                getValue: () => Config.HitboxOpacity,
+                setValue: value => Config.HitboxOpacity = value
             );
 
             configMenu.AddTextOption(
@@ -152,19 +152,26 @@ namespace StardewHitboxes
                 setValue: value => Config.ProjectileHitboxColor = value.ToUpper()
             );
 
-            configMenu.AddNumberOption(
+            configMenu.AddTextOption(
                 mod: ModManifest,
-                name: () => "Hitbox Opacity",
-                tooltip: () => "The opacity for hitboxes",
-                getValue: () => Config.HitboxOpacity,
-                setValue: value => Config.HitboxOpacity = value
+                name: () => "Terrain Feature Hitbox Color",
+                tooltip: () => "The hexadecimal color of the hitbox for terrain features",
+                getValue: () => Config.TerrainFeatureHitboxColor.ToUpper(),
+                setValue: value => Config.TerrainFeatureHitboxColor = value.ToUpper()
+            );
+
+            configMenu.AddTextOption(
+                mod: ModManifest,
+                name: () => "Objects Hitbox Color",
+                tooltip: () => "The hexadecimal color of the hitbox for objects",
+                getValue: () => Config.ObjectsHitboxColor.ToUpper(),
+                setValue: value => Config.ObjectsHitboxColor = value.ToUpper()
             );
         }
 
         public static void RenderedWorld(object sender, RenderedWorldEventArgs e)
         {
             Color color = ConvertFromHex(Config.WeaponSwingHitboxColor);
-            List<Rectangle> toRemove = new();
 
             foreach (Rectangle rect in weaponHitboxesToRender.Keys)
             {
@@ -172,11 +179,8 @@ namespace StardewHitboxes
 
                 weaponHitboxesToRender[rect]--;
                 if (weaponHitboxesToRender[rect] <= 0)
-                    toRemove.Add(rect);
+                    weaponHitboxesToRender.Remove(rect);
             }
-
-            foreach (Rectangle rect in toRemove)
-                weaponHitboxesToRender.Remove(rect);
         }
 
         private static Color ConvertFromHex(string s)
@@ -215,6 +219,18 @@ namespace StardewHitboxes
         {
             Color color = GetHitboxColorForCharacter(character);
             DrawHitbox(b, character.GetBoundingBox(), color);
+        }
+
+        public static void DrawHitbox(SpriteBatch b, TerrainFeature terrainFeature, Vector2 tileLocation)
+        {
+            Color color = ConvertFromHex(Config.TerrainFeatureHitboxColor);
+            DrawHitbox(b, terrainFeature.getBoundingBox(tileLocation), color);
+        }
+
+        public static void DrawHitbox(SpriteBatch b, StardewValley.Object stardewObject, Vector2 tileLocation)
+        {
+            Color color = ConvertFromHex(Config.ObjectsHitboxColor);
+            DrawHitbox(b, stardewObject.getBoundingBox(tileLocation), color);
         }
 
         public static void DrawHitbox(SpriteBatch b, Rectangle rect, Color color)

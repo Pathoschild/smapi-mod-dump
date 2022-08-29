@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FashionSense
+**
+*************************************************/
+
+{
+  "IsDarkOutAndWalking": [
+    {
+      "Name": "IsDarkOut",
+      "Value": true
+    },
+    {
+      "Name": "IsWalking",
+      "Value": true
+    }
+  ],
+  "IsEatingOrDrinking": [
+    {
+      "Name": "IsDrinking",
+      "Value": true,
+      "Independent": true
+    },
+    {
+      "Name": "IsEating",
+      "Value": true,
+      "Independent": true
+    }
+  ],
+  "IsIdle": [
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 0,
+      "Independent": true
+    },
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 6,
+      "Independent": true
+    },
+    {
+      "Name": "CurrentFarmerFrame",
+      "Value": 12,
+      "Independent": true
+    }
+  ]
+}

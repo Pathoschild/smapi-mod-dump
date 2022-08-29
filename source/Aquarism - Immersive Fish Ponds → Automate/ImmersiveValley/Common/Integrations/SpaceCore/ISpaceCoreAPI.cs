@@ -8,11 +8,10 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.SpaceCore;
 
 #region using directives
 
-using StardewValley;
 using System;
 using System.Reflection;
 

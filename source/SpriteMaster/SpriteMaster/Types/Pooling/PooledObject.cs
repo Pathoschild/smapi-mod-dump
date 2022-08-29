@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -41,6 +40,9 @@ internal interface ISealedPooledObject<T, TPooledObject> : IPooledObject<T> wher
 
 		OnDispose(value);
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public string? ToString() => Value.ToString();
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -72,6 +74,9 @@ internal readonly struct PooledObject<T, TPool> : ISealedPooledObject<T, PooledO
 			Unsafe.AsRef(Value) = null!;
 #endif
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override readonly string? ToString() => Value.ToString();
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -102,5 +107,8 @@ internal readonly struct DefaultPooledObject<T> : ISealedPooledObject<T, Default
 			Unsafe.AsRef(Value) = null!;
 #endif
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override readonly string? ToString() => Value.ToString();
 }
 

@@ -6,12 +6,9 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit a1c63e218189fcaa8a3855f10b5ef75cfe718eee
-   Merge: 11e83d1 a9509da
-   Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Wed Jul 20 22:09:44 2022 +0200
+   commit e38a54a4db68cde8661df2206feb29ab2657ac59
+   Author: Annosz <tadamleanyfalu@gmail.com>
+   Date:   Sat Aug 13 19:11:36 2022 +0200
    
-       Merge pull request #223 from RaiSTliNThEOnE/patch-2
-       
-       Update tr.json
+       Update version for release
    

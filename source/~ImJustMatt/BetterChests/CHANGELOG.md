@@ -8,28 +8,170 @@ for queries and analysis.**
 
 # Better Chests Change Log
 
-## 2.2.1 (Unreleased)
+## 2.6.0 (Unreleased)
 
+### Added
+
+* Added configurable SaddleBag type when Horse Overhaul is installed.
+
+### Changed
+
+* Disallow any Chest from being automatically stashed into another chest.
+
+## 2.5.5 (August 27, 2022)
+
+### Fixed
+
+* Fixed Unlimited Chests freezing the game.
+
+## 2.5.4 (August 27, 2022)
+
+### Changed
+
+* Moved menu ChestLabel to not overlap with the vanilla Color Picker.
+
+### Fixed
+
+* Fixed ResizeChest and ResizeChestMenu not being Disabled.
+* Fixed ChestLabel not supporting Zoom levels.
+* Fixed TransferItems not saving config from GMCM menu.
+* Fixed LabelChest not saving config from GMCM menu.
+* Fixed config options not applying to Junimo Chests.
+
+## 2.5.3 (August 21, 2022)
+
+### Changed
+
+* Added sound on picking up chests.
+* Added sound on combining chests.
+* Chests picked up from broken can be opened while held.
+
+### Fixed
+
+* Fixed vanilla color picker rendering under menu.
+* Fixed AutoGrabber inventory menu overlapping with backpack inventory.
+
+## 2.5.2 (August 16, 2022)
+
+### Fixed
+
+* Fixed CustomColorPicker being drawn over other menus.
+* Fixed StashToChest not working for currently opened chest.
+
+## 2.5.1 (August 15, 2022)
+
+### Changed
+
+* Assign actual values to default config options.
+
+## 2.5.0 (August 14, 2022)
+
+### Added
+
+* Added multiple options for the Configure Menu.
+    * Simple (Default) only shows Chest Label, Categorize, and Stash to Chest Priority/Stacks.
+    * Categorize will load the Categorize Menu directly.
+    * Full will show all the config options.
+    * Advanced is full, and some options will be open text fields.
+
+### Fixed
+
+* Fixed CustomColorPicker drawing even when disabled.
+
+### Changed
+
+* Disabled features are now hidden from the configure menu.
+
+## 2.4.0 (August 13, 2022)
+
+### Added
+
+* Added back context tag extensions.
+    * category_artifact
+    * category_furniture
+    * donate_bundle
+    * donate_museum
+* UnloadChestCombine adds held chest capacity to target chest.
+
+### Fixed
+
+* Fixed features not being disabled when BetterShippingBin is disabled.
+* Fixed tabs using non-localized hover text.
+* Fixed CarryChestSlow debuff activating for empty chests.
+
+### Changed
+
+* Default Storage options are now part of the main config.
+* The following features are now configurable individually or by type:
+    * Configurator
+    * HideItems
+    * LabelChest
+    * TransferItems
+* Improved controller support.
+
+## 2.3.1 (August 11, 2022)
+
+### Added
+
+* Added Chest preview to Color Picker.
+
+### Fixed
+
+* Fixed graphical glitches in menus.
+
+## 2.3.0 (August 7, 2022)
+
+### Added
+
+* Added TransferItems feature to transfer items in/out of a chest.
+* Added option to hide items instead of fading them out.
+* Added negate search for categorizing items (hold shift).
+
+### Fixed
+
+* Fixed tabs being drawn over hover text.
+
+### Changed
+
+* Improvements to the Color Picker for reliability.
 * Added localization support for storage names/tooltips.
 * Require GMCM for Configurator feature.
+* Optimizations for performance.
 
 ## 2.2.0 (July 15, 2022)
+
+### Added
 
 * Added config options for each vanilla chest type.
 
 ## 2.1.3 (July 13, 2022)
 
+### Added
+
 * Added support for matching modded interface colors.
+
+### Changed
+
 * CarryChest will not activate if holding a tool.
 
 ## 2.1.2 (July 12, 2022)
 
+### Added
+
 * Added an extra indicator for when you're in a tab.
-* Updated tabs/search so they only fade items instead of hide them.
-* Moved config icon back to top of side buttons.
+
+### Fixed
+
 * Fixed color changing everytime items are moved to/from a chest.
 
+### Changed
+
+* Updated tabs/search so they only fade items instead of hide them.
+* Moved config icon back to top of side buttons.
+
 ## 2.1.1 (July 11, 2022)
+
+### Fixed
 
 * Fixed ChestMenuTabs appearing over some hover elements.
 * Fixed Configure button not having background.
@@ -39,22 +181,37 @@ for queries and analysis.**
 
 ## 2.1.0 (July 9, 2022)
 
+### Added
+
 * Added Chest Finder.
 * Added localized tags for search and categorization.
-* Configure chest now happens from the chest inventory menu.
+
+### Fixed
+
 * Fixed Shipping Bin not detected when launched by Chests Anywhere.
 * Fixed items not updating when you add or remove items from a chest.
 * Fixed AutoOrganize ignoring priority when moving items.
+
+### Changed
+
+* Configure chest now happens from the chest inventory menu.
 * Improved integration with BetterCrafting for multiplayer.
 
 ## 2.0.3 (July 5, 2022)
 
+### Added
+
 * Added alert if FuryCore is installed.
 * Added additional logging of config.
 * Added additional logging of AutoOrganize.
+
+### Fixed
+
 * Fixed displayed items turning invisible in chests.
 
 ## 2.0.2 (July 2, 2022)
+
+### Fixed
 
 * Fixed CraftFromChest and StashToChest not working with Sheds/Fridges.
 * Fixed wall of red text occurring when leaving farm.
@@ -63,13 +220,23 @@ for queries and analysis.**
 
 ## 2.0.1 (July 1, 2022)
 
+### Fixed
+
 * Fixed Configure button being placed over community center.
 
 ## 2.0.0 (July 1, 2022)
 
+### Added
+
 * Added LabelChest feature.
+
+### Fixed
+
 * Fixed integration with BetterCrafting.
 * Fixed crash when installed with BetterShippingBin.
+
+### Changed
+
 * Updated to SMAPI 3.15.0.
 * Removed dependency on FuryCore.
 

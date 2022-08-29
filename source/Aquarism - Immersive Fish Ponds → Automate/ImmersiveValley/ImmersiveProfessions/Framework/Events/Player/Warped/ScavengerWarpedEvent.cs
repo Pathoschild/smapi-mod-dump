@@ -13,10 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
-using TreasureHunts;
 
 #endregion using directives
 
@@ -31,12 +28,9 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
     /// <inheritdoc />
     protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
-        if (e.NewLocation.Equals(e.OldLocation)) return;
-
-        ModEntry.PlayerState.ScavengerHunt ??= new ScavengerHunt();
-        if (ModEntry.PlayerState.ScavengerHunt.IsActive) ModEntry.PlayerState.ScavengerHunt.Fail();
+        if (ModEntry.State.ScavengerHunt.Value.IsActive) ModEntry.State.ScavengerHunt.Value.Fail();
         if (!Game1.eventUp && e.NewLocation.IsOutdoors &&
             (ModEntry.Config.AllowScavengerHuntsOnFarm || !e.NewLocation.IsFarm))
-            ModEntry.PlayerState.ScavengerHunt.TryStart(e.NewLocation);
+            ModEntry.State.ScavengerHunt.Value.TryStart(e.NewLocation);
     }
 }

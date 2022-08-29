@@ -17,8 +17,6 @@ using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
@@ -77,9 +75,9 @@ internal sealed class MineShaftCheckStoneForItemsPatch : DaLion.Common.Harmony.H
                     new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
                     new CodeInstruction(OpCodes.Ldloc_3), // local 3 = chanceForLadderDown
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.PlayerState))),
+                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.State))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.SpelunkerLadderStreak))),
+                        typeof(ModState).RequirePropertyGetter(nameof(ModState.SpelunkerLadderStreak))),
                     new CodeInstruction(OpCodes.Conv_R8),
                     new CodeInstruction(OpCodes.Ldc_R8, 0.005),
                     new CodeInstruction(OpCodes.Mul),

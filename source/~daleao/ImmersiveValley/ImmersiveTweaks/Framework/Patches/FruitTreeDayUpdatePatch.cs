@@ -13,8 +13,6 @@ namespace DaLion.Stardew.Tweex.Framework.Patches;
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 
 #endregion using directives

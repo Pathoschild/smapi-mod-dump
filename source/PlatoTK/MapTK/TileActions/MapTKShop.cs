@@ -58,7 +58,7 @@ namespace MapTK.TileActions
 
         internal static MapTKShop GetShop(IModHelper helper, string id)
         {
-            var dict = helper.Content.Load<Dictionary<string, MapTKShop>>(ShopDataAsset, ContentSource.GameContent);
+            var dict = helper.GameContent.Load<Dictionary<string, MapTKShop>>(ShopDataAsset);
 
             if(dict.TryGetValue(id, out MapTKShop shop))
                 return shop;

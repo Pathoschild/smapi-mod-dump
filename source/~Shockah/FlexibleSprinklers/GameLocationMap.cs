@@ -21,7 +21,7 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.FlexibleSprinklers
 {
-	internal class GameLocationMap: IMap.WithKnownSize
+	internal class GameLocationMap : IMap.WithKnownSize
 	{
 		private readonly GameLocation Location;
 		private readonly IEnumerable<Func<GameLocation, Vector2, bool?>> CustomWaterableTileProviders;

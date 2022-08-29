@@ -22,7 +22,7 @@ namespace Shockah.ProjectFluent
 		void RegisterContentPack(IContentPack pack);
 	}
 
-	internal class ContentPackManager: IContentPackManager, IContentPackProvider
+	internal class ContentPackManager : IContentPackManager, IContentPackProvider
 	{
 		public event Action<IContentPackProvider>? ContentPacksContentsChanged;
 

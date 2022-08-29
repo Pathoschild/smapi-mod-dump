@@ -751,9 +751,9 @@ internal static class StbBlockEncoder {
 				var sourceSpan = new ReadOnlySpan<byte>(src, 64).Cast<uint>();
 				var dataSpan = new Span<byte>(tempBlock, 64).Cast<uint>();
 				for (int i = 0; i < elementCount; i += Vector<uint>.Count) {
-					var sourceVector = new Vector<uint>(sourceSpan.SliceUnsafe(i));
+					var sourceVector = new Vector<uint>(sourceSpan.Slice(i));
 					var resultVector = Vector.BitwiseOr(sourceVector, orMask);
-					resultVector.CopyTo(dataSpan.SliceUnsafe(i));
+					resultVector.CopyTo(dataSpan.Slice(i));
 				}
 			}
 			else {

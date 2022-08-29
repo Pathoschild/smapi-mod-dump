@@ -30,7 +30,7 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.PleaseGiftMeInPerson
 {
-	public class PleaseGiftMeInPerson: Mod
+	public class PleaseGiftMeInPerson : Mod
 	{
 		private static readonly string MailServicesMod_GiftShipmentController_QualifiedName = "MailServicesMod.GiftShipmentController, MailServicesMod";
 
@@ -601,7 +601,7 @@ namespace Shockah.PleaseGiftMeInPerson
 		{
 			if (Instance.CurrentGiftingPlayer is null || Instance.CurrentGiftMethod is null)
 				return;
-			
+
 			Instance.OriginalGiftTaste = GiftTasteExt.From(__result);
 			__result = Instance.OriginalGiftTaste
 				.GetModified((int)Instance.GetGiftTasteModifier(Instance.CurrentGiftingPlayer, __instance.Name, Instance.CurrentGiftMethod.Value))
@@ -613,7 +613,7 @@ namespace Shockah.PleaseGiftMeInPerson
 		{
 			if (Instance.CurrentGiftMethod is null)
 				return;
-			
+
 			Instance.RecordGiftEntryForNPC(
 				giver,
 				__instance.Name,

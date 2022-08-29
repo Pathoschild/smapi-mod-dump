@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{ 
+  // Einstellungen 
+  "settings.keybinds.title": "Tastenkombinationen", 
+  "settings.keybinds.hold-to-activate": "Halten zum Aktivieren", 
+  "settings.toggles.title": "Optionale Umschalter", 
+  "settings.toggles.allow-targeting-baby-trees": "Jungbäume anvisieren", 
+  "settings.toggles.allow-targeting-baby-trees.tooltip": "Erlaubt dem schlauen Mauszeiger das Anvisieren nicht voll ausgewachsener Bäume.", 
+  "settings.toggles.allow-targeting-tapped-trees": "Angezapfte Bäume anvisieren", 
+  "settings.toggles.allow-targeting-tapped-trees.tooltip": "Erlaubt dem schlauen Mauszeiger das Anvisieren von Bäumen mit angebrachtem Zapfhahn.", 
+  "settings.toggles.allow-targeting-giant-crops": "Riesennutzpflanzen anvisieren", 
+  "settings.toggles.allow-targeting-giant-crops.tooltip": "Erlaubt dem schlauen Mauszeiger das Anvisieren von Riesennutzpflanzen.", 
+  
+  // Meldungen
+  "messages.gmcm-not-installed": "GMCM ist nicht installiert. Nicht erforderlich, aber wärmstens empfohlen."
+}

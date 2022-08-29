@@ -13,23 +13,21 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 #region using directives
 
 using Common;
-using Common.Data;
+using Common.Attributes;
 using Common.Extensions;
 using Common.Extensions.Reflection;
+using Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.IO;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("TehPers.FishingOverhau")]
 internal sealed class FishingRodPatcherCatchItemPatch : Common.Harmony.HarmonyPatch
 {
     private static Func<object, bool>? _GetFromFishPond;
@@ -41,14 +39,7 @@ internal sealed class FishingRodPatcherCatchItemPatch : Common.Harmony.HarmonyPa
     /// <summary>Construct an instance.</summary>
     internal FishingRodPatcherCatchItemPatch()
     {
-        try
-        {
-            Target = "TehPers.FishingOverhaul.Services.Setup.FishingRodPatcher".ToType().RequireMethod("CatchItem");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "TehPers.FishingOverhaul.Services.Setup.FishingRodPatcher".ToType().RequireMethod("CatchItem");
     }
 
     #region harmony patches
@@ -78,25 +69,25 @@ internal sealed class FishingRodPatcherCatchItemPatch : Common.Harmony.HarmonyPa
                 y > p.tileY.Value && y < p.tileY.Value + p.tilesHigh.Value - 1);
             if (pond is null) return;
 
-            var fishQualities = ModDataIO.ReadFrom(pond, "FishQualities",
-                $"{pond.FishCount - ModDataIO.ReadFrom<int>(pond, "FamilyLivingHere") + 1},0,0,0").ParseList<int>()!; // already reduced at this point, so consider + 1
+            var fishQualities = pond.Read("FishQualities",
+                $"{pond.FishCount - pond.Read<int>("FamilyLivingHere") + 1},0,0,0").ParseList<int>(); // already reduced at this point, so consider + 1
             if (fishQualities.Count != 4 || fishQualities.Any(q => 0 > q || q > pond.FishCount + 1))
-                throw new InvalidDataException("FishQualities data had incorrect number of values.");
+                ThrowHelper.ThrowInvalidDataException("FishQualities data had incorrect number of values.");
 
             var lowestFish = fishQualities.FindIndex(i => i > 0);
             _SetFishItem ??= info.GetType().RequirePropertySetter("FishItem").CompileUnboundDelegate<Action<object, object>>();
             _SetFishQuality ??= info.GetType().RequirePropertySetter("FishQuality").CompileUnboundDelegate<Action<object, object>>();
             if (pond.HasLegendaryFish())
             {
-                var familyCount = ModDataIO.ReadFrom<int>(pond, "FamilyLivingHere");
+                var familyCount = pond.Read<int>("FamilyLivingHere");
                 if (fishQualities.Sum() + familyCount != pond.FishCount + 1)
-                    throw new InvalidDataException("FamilyLivingHere data is invalid.");
+                    ThrowHelper.ThrowInvalidDataException("FamilyLivingHere data is invalid.");
 
                 if (familyCount > 0)
                 {
-                    var familyQualities = ModDataIO.ReadFrom(pond, "FamilyQualities", $"{familyCount},0,0,0").ParseList<int>()!;
+                    var familyQualities = pond.Read("FamilyQualities", $"{familyCount},0,0,0").ParseList<int>();
                     if (familyQualities.Count != 4 || familyQualities.Sum() != familyCount)
-                        throw new InvalidDataException("FamilyQualities data had incorrect number of values.");
+                        ThrowHelper.ThrowInvalidDataException("FamilyQualities data had incorrect number of values.");
 
                     var lowestFamily = familyQualities.FindIndex(i => i > 0);
                     if (lowestFamily < lowestFish)
@@ -105,8 +96,8 @@ internal sealed class FishingRodPatcherCatchItemPatch : Common.Harmony.HarmonyPa
                         _SetFishItem(info, new SObject(whichFish, 1, quality: lowestFamily == 3 ? 4 : lowestFamily));
                         _SetFishQuality(info, lowestFamily == 3 ? 4 : lowestFamily);
                         --familyQualities[lowestFamily];
-                        ModDataIO.WriteTo(pond, "FamilyQualities", string.Join(",", familyQualities));
-                        ModDataIO.Increment(pond, "FamilyLivingHere", -1);
+                        pond.Write("FamilyQualities", string.Join(",", familyQualities));
+                        pond.Increment("FamilyLivingHere", -1);
                     }
                     else
                     {
@@ -114,7 +105,7 @@ internal sealed class FishingRodPatcherCatchItemPatch : Common.Harmony.HarmonyPa
                             new SObject(pond.fishType.Value, 1, quality: lowestFamily == 3 ? 4 : lowestFamily));
                         _SetFishQuality(info, lowestFish == 3 ? 4 : lowestFish);
                         --fishQualities[lowestFish];
-                        ModDataIO.WriteTo(pond, "FishQualities", string.Join(",", fishQualities));
+                        pond.Write("FishQualities", string.Join(",", fishQualities));
                     }
                 }
                 else
@@ -123,26 +114,26 @@ internal sealed class FishingRodPatcherCatchItemPatch : Common.Harmony.HarmonyPa
                         new SObject(pond.fishType.Value, 1, quality: lowestFish == 3 ? 4 : lowestFish));
                     _SetFishQuality(info, lowestFish == 3 ? 4 : lowestFish);
                     --fishQualities[lowestFish];
-                    ModDataIO.WriteTo(pond, "FishQualities", string.Join(",", fishQualities));
+                    pond.Write("FishQualities", string.Join(",", fishQualities));
                 }
             }
             else
             {
                 if (fishQualities.Sum() != pond.FishCount + 1)
-                    throw new InvalidDataException("FishQualities data had incorrect number of values.");
+                    ThrowHelper.ThrowInvalidDataException("FishQualities data had incorrect number of values.");
 
                 _SetFishItem(info, new SObject(pond.fishType.Value, 1, quality: lowestFish == 3 ? 4 : lowestFish));
                 _SetFishQuality(info, lowestFish == 3 ? 4 : lowestFish);
                 --fishQualities[lowestFish];
-                ModDataIO.WriteTo(pond, "FishQualities", string.Join(",", fishQualities));
+                pond.Write("FishQualities", string.Join(",", fishQualities));
             }
         }
         catch (InvalidDataException ex) when (pond is not null)
         {
             Log.W($"{ex}\nThe data will be reset.");
-            ModDataIO.WriteTo(pond, "FishQualities", $"{pond.FishCount},0,0,0");
-            ModDataIO.WriteTo(pond, "FamilyQualities", null);
-            ModDataIO.WriteTo(pond, "FamilyLivingHere", null);
+            pond.Write("FishQualities", $"{pond.FishCount},0,0,0");
+            pond.Write("FamilyQualities", null);
+            pond.Write("FamilyLivingHere", null);
         }
     }
 

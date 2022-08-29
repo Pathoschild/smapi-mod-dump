@@ -7,9 +7,9 @@ mods:
    Move Faster
 
 latest commit:
-   commit 8e993a56d32082bf24d6b3db965379fad6dfb5b4
+   commit acae45bd24ca95b4b43f58b1300ec9a0d754cf88
    Author: Shuai Zhang <zhangshuai.ustc@gmail.com>
-   Date:   Tue Aug 1 14:28:57 2017 +0800
+   Date:   Wed Aug 17 17:22:43 2022 +0800
    
-       [MSBuildExtensions] Create folder before generate files.
+       Update README.adoc
    

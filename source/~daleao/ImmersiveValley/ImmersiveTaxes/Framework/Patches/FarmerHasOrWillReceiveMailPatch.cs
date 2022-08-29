@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Taxes.Framework.Patches;
 
 using Common;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Reflection;
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13197
+IDs: aedenthorn.MusicalPaths
+update keys: Nexus:13197, GitHub:aedenthorn/StardewValleyMods

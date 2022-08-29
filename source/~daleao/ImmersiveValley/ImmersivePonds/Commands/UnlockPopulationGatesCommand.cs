@@ -15,9 +15,6 @@ namespace DaLion.Stardew.Ponds.Commands;
 using Common;
 using Common.Commands;
 using Extensions;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Buildings;
 using System.Linq;
 
@@ -32,7 +29,7 @@ internal sealed class UnlockPopulationGatesCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "unlock_gates";
+    public override string[] Triggers { get; } = { "unlock_gates", "unlock", "gates" };
 
     /// <inheritdoc />
     public override string Documentation =>

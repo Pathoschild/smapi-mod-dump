@@ -30,6 +30,10 @@ namespace DynamicBodies
 {
     internal class AdjustedVanillaMethods
     {
+        public static int ClampShirt(int index)
+        {
+            return (index > StardewValley.Objects.Clothing.GetMaxShirtValue() || index < 0) ? 0 : index;
+        }  
         /// <summary>
         /// Optimised from source code to be just the shirt
         /// </summary>
@@ -53,7 +57,7 @@ namespace DynamicBodies
             if (shirtIndex < 0)
             {
                 //load from the item 
-                clamped_shirt_index = (who.GetShirtIndex() > StardewValley.Objects.Clothing.GetMaxShirtValue() || who.GetShirtIndex() < 0) ? 0 : who.GetShirtIndex();
+                clamped_shirt_index = ClampShirt(who.GetShirtIndex());
             }
 
             Rectangle shirtSourceRect = new Rectangle(clamped_shirt_index * 8 % 128, clamped_shirt_index * 8 / 128 * 32, 8, 8);
@@ -264,12 +268,17 @@ namespace DynamicBodies
 		}
 		public static void drawEyes(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
 		{
-			sourceRect.Offset(288, 0);
-			if (who.currentEyes != 0 && facingDirection != 0 && (Game1.timeOfDay < 2600 || (who.isInBed.Value && who.timeWentToBed.Value != 0)) && ((!who.FarmerSprite.PauseForSingleAnimation && !who.UsingTool) || (who.UsingTool && who.CurrentTool is FishingRod)) && (!who.UsingTool || !(who.CurrentTool is FishingRod fishing_rod) || fishing_rod.isFishing))
+            //sourceRect.Offset(288, 0); //Source rect isn't used
+			if ((who.currentEyes != 0 || facingDirection == 3) && //dont draw over when open or do when open but looking left
+                facingDirection != 0 && //looking up
+                (Game1.timeOfDay < 2600 || (who.isInBed.Value && who.timeWentToBed.Value != 0)) &&//2am pass out
+                ((!who.FarmerSprite.PauseForSingleAnimation && !who.UsingTool) || (who.UsingTool && who.CurrentTool is FishingRod)) && //Fishing is ignored?
+                (!who.UsingTool || !(who.CurrentTool is FishingRod fishing_rod) || fishing_rod.isFishing))
 			{
-				int x_adjustment = 5;
+				int x_adjustment = 4;//5 pixel in from the left of the frame originally
+                //adjustments for a single eye
 				x_adjustment = (animationFrame.flip ? (x_adjustment - FarmerRenderer.featureXOffsetPerFrame[currentFrame]) : (x_adjustment + FarmerRenderer.featureXOffsetPerFrame[currentFrame]));
-				switch (facingDirection)
+                switch (facingDirection)
 				{
 					case 1:
 						x_adjustment += 3;
@@ -278,9 +287,41 @@ namespace DynamicBodies
 						x_adjustment++;
 						break;
 				}
+                //scale to pixel size
 				x_adjustment *= 4;
-				b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && who.FacingDirection != 2) ? 36 : 40)), new Rectangle(5, 16, (facingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
-				b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.FacingDirection == 1 || who.FacingDirection == 3) ? 40 : 44)), new Rectangle(264 + ((facingDirection == 3) ? 4 : 0), 2 + (who.currentEyes - 1) * 2, (facingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 1.2E-07f);
+                //Drawing from the top left frame (0) - not sure what this part is for..? A hacky draw over eyes with skin color?
+                //b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && who.FacingDirection != 2) ? 36 : 40)),
+                //    new Rectangle(5, 16, (facingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
+                if (who.currentEyes != 0)
+                {
+                    //Draw over eyes with skin colour, new frame location
+                    b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && who.FacingDirection != 2) ? 36 : 44) - 8),
+                        new Rectangle(256, 2, (facingDirection == 2) ? 8 : 4, 4), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
+                }
+                //Drawing from the animation frames
+                Vector2 offsetFrame = new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 44);
+                offsetFrame.Y -= 4;//for larger eye animations
+                if(facingDirection == 1 || facingDirection == 3)
+                {
+                    offsetFrame.Y -= 4;//side views are up one pixel
+                }
+                if(who.IsMale)
+                {
+                    offsetFrame.Y -= 4;//males eyes are a bit higher
+                } else
+                {
+                    offsetFrame.Y += 4;//female eyes are a bit lower
+                }
+
+                int pixel_y = 2 + (who.currentEyes - 1) * 4;
+
+                if (facingDirection == 3 && who.currentEyes == 0)
+                {
+                    pixel_y = 10;//open eye
+                }
+
+                b.Draw(_baseTexture, position + origin + _positionOffset + offsetFrame,
+                    new Rectangle(264 + ((facingDirection == 3) ? 4 : 0), pixel_y, (facingDirection == 2) ? 8 : 4, 4), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 1.2E-07f);
 			}
 		}
 

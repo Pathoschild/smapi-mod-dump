@@ -12,28 +12,20 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Extensions.Reflection;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("spacechase0.SpaceCore")]
 internal sealed class NewForgeMenuIsValidCraftIngredient : Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NewForgeMenuIsValidCraftIngredient()
     {
-        try
-        {
-            Target = "SpaceCore.Interface.NewForgeMenu".ToType().RequireMethod("IsValidCraftIngredient");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "SpaceCore.Interface.NewForgeMenu".ToType().RequireMethod("IsValidCraftIngredient");
     }
 
     #region harmony patches

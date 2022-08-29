@@ -1,0 +1,10 @@
+{
+    "Name" : "Lockpick",
+    "Price" : "15",
+    "Description" : "Lets you lock pick a locked door.",
+    "Category" : "Junk",
+    "Edibility" : "-300",
+    "PurchasePrice" : "500",
+    "PurchaseFrom" : "Pierre",
+    "CanPurchase" : true
+}

@@ -18,5 +18,7 @@ namespace BankOfFerngill.Framework.Configs
 
         public bool EnableVaultRoomDeskActivation { get; set; } = false;
         public LoanConfig LoanSettings { get; set; } = new();
+
+        public HarderModeConfig HardModSettings { get; set; } = new();
     }
 }

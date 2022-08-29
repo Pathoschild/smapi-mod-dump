@@ -8,24 +8,22 @@
 **
 *************************************************/
 
-#if DEBUG
 namespace DaLion.Stardew.Professions.Framework.Events.Display;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Events;
 using Common.Extensions.Xna;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Menus;
 using System.Collections.Generic;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, DebugOnly]
 internal sealed class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
 {
     private readonly Texture2D _pixel;
@@ -63,4 +61,3 @@ internal sealed class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
         }
     }
 }
-#endif

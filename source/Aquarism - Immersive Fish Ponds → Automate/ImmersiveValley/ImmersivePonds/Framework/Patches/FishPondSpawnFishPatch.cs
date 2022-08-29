@@ -13,17 +13,14 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 #region using directives
 
 using Common;
-using Common.Data;
 using Common.Extensions;
+using Common.Extensions.Stardew;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.IO;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -46,23 +43,48 @@ internal sealed class FishPondSpawnFishPatch : Common.Harmony.HarmonyPatch
             !__instance.hasSpawnedFish.Value) return;
 
         var r = new Random(Guid.NewGuid().GetHashCode());
-        if (__instance.fishType.Value.IsAlgae())
+        try
         {
-            var spawned = Utils.ChooseAlgae(__instance.fishType.Value, r);
-            switch (spawned)
+            if (__instance.fishType.Value.IsAlgaeIndex())
             {
-                case Constants.SEAWEED_INDEX_I:
-                    ModDataIO.Increment<int>(__instance, "SeaweedLivingHere");
-                    break;
-                case Constants.GREEN_ALGAE_INDEX_I:
-                    ModDataIO.Increment<int>(__instance, "GreenAlgaeLivingHere");
-                    break;
-                case Constants.WHITE_ALGAE_INDEX_I:
-                    ModDataIO.Increment<int>(__instance, "WhiteAlgaeLivingHere");
-                    break;
-            }
+                var spawned = Utils.ChooseAlgae(__instance.fishType.Value, r);
+                switch (spawned)
+                {
+                    case Constants.SEAWEED_INDEX_I:
+                        __instance.Increment("SeaweedLivingHere");
+                        break;
+                    case Constants.GREEN_ALGAE_INDEX_I:
+                        __instance.Increment("GreenAlgaeLivingHere");
+                        break;
+                    case Constants.WHITE_ALGAE_INDEX_I:
+                        __instance.Increment("WhiteAlgaeLivingHere");
+                        break;
+                }
 
-            return;
+                var total = __instance.Read<int>("SeaweedLivingHere") +
+                            __instance.Read<int>("GreenAlgaeLivingHere") +
+                            __instance.Read<int>("WhiteAlgaeLivingHere");
+                if (total != __instance.FishCount)
+                    ThrowHelper.ThrowInvalidDataException("Mismatch between algae population data and actual population.");
+
+                return;
+            }
+        }
+        catch (InvalidDataException ex)
+        {
+            Log.W($"{ex}\nThe data will be reset.");
+            __instance.Write("SeaweedLivingHere", null);
+            __instance.Write("GreenAlgaeLivingHere", null);
+            __instance.Write("WhiteAlgaeLivingHere", null);
+            var field = __instance.fishType.Value switch
+            {
+                Constants.SEAWEED_INDEX_I => "SeaweedLivingHere",
+                Constants.GREEN_ALGAE_INDEX_I => "GreenAlgaeLivingHere",
+                Constants.WHITE_ALGAE_INDEX_I => "WhiteAlgaeLivingHere",
+                _ => string.Empty
+            };
+
+            __instance.Write(field, __instance.FishCount.ToString());
         }
 
         try
@@ -71,9 +93,10 @@ internal sealed class FishPondSpawnFishPatch : Common.Harmony.HarmonyPatch
             var familyCount = 0;
             if (__instance.HasLegendaryFish())
             {
-                familyCount = ModDataIO.ReadFrom<int>(__instance, "FamilyLivingHere");
+                familyCount = __instance.Read<int>("FamilyLivingHere");
                 if (0 > familyCount || familyCount > __instance.FishCount)
-                    throw new InvalidDataException("FamilyLivingHere data is invalid.");
+                    ThrowHelper.ThrowInvalidDataException(
+                        "FamilyLivingHere data is negative or greater than actual population.");
 
                 if (familyCount > 0 &&
                     Game1.random.NextDouble() <
@@ -86,16 +109,17 @@ internal sealed class FishPondSpawnFishPatch : Common.Harmony.HarmonyPatch
             var @default = forFamily
                 ? $"{familyCount},0,0,0"
                 : $"{__instance.FishCount - familyCount - 1},0,0,0";
-            var qualities = ModDataIO.ReadFrom(__instance, forFamily ? "FamilyQualities" : "FishQualities", @default)
-                .ParseList<int>()!;
+            var qualities = __instance
+                .Read(forFamily ? "FamilyQualities" : "FishQualities", @default)
+                .ParseList<int>();
             if (qualities.Count != 4 ||
                 qualities.Sum() != (forFamily ? familyCount : __instance.FishCount - familyCount - 1))
-                throw new InvalidDataException("FishQualities data had incorrect number of values.");
+                ThrowHelper.ThrowInvalidDataException("Mismatch between FishQualities data and actual population.");
 
             if (qualities.Sum() == 0)
             {
                 ++qualities[0];
-                ModDataIO.WriteTo(__instance, forFamily ? "FamilyQualities" : "FishQualities",
+                __instance.Write(forFamily ? "FamilyQualities" : "FishQualities",
                     string.Join(',', qualities));
                 return;
             }
@@ -110,14 +134,15 @@ internal sealed class FishPondSpawnFishPatch : Common.Harmony.HarmonyPatch
                         : SObject.lowQuality;
 
             ++qualities[fishlingQuality == 4 ? 3 : fishlingQuality];
-            ModDataIO.WriteTo(__instance, forFamily ? "FamilyQualities" : "FishQualities", string.Join(',', qualities));
+            __instance.Write(forFamily ? "FamilyQualities" : "FishQualities",
+                string.Join(',', qualities));
         }
         catch (InvalidDataException ex)
         {
             Log.W($"{ex}\nThe data will be reset.");
-            ModDataIO.WriteTo(__instance, "FishQualities", $"{__instance.FishCount},0,0,0");
-            ModDataIO.WriteTo(__instance, "FamilyQualities", null);
-            ModDataIO.WriteTo(__instance, "FamilyLivingHere", null);
+            __instance.Write("FishQualities", $"{__instance.FishCount},0,0,0");
+            __instance.Write("FamilyQualities", null);
+            __instance.Write("FamilyLivingHere", null);
         }
     }
 

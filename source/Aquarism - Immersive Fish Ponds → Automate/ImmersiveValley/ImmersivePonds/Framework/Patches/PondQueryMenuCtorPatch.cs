@@ -13,10 +13,9 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 #region using directives
 
 using Common;
-using Common.Data;
 using Common.Extensions;
+using Common.Extensions.Stardew;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using System;
@@ -40,26 +39,26 @@ internal sealed class PondQueryMenuCtorPatch : Common.Harmony.HarmonyPatch
     {
         try
         {
-            ModDataIO.ReadFrom(fish_pond, "FishQualities").ParseTuple<int, int, int, int>();
+            fish_pond.Read("FishQualities").ParseTuple<int, int, int, int>();
         }
         catch (InvalidOperationException ex)
         {
             Log.W($"FishQualities data is invalid. {ex}\nThe data will be reset");
-            ModDataIO.WriteTo(fish_pond, "FishQualities", $"{fish_pond.FishCount},0,0,0");
-            ModDataIO.WriteTo(fish_pond, "FamilyQualities", null);
-            ModDataIO.WriteTo(fish_pond, "FamilyLivingHere", null);
+            fish_pond.Write("FishQualities", $"{fish_pond.FishCount},0,0,0");
+            fish_pond.Write("FamilyQualities", null);
+            fish_pond.Write("FamilyLivingHere", null);
         }
 
         try
         {
-            ModDataIO.ReadFrom(fish_pond, "FamilyQualities").ParseTuple<int, int, int, int>();
+            fish_pond.Read("FamilyQualities").ParseTuple<int, int, int, int>();
         }
         catch (InvalidOperationException ex)
         {
             Log.W($"FamilyQuality data is invalid. {ex}\nThe data will be reset");
-            ModDataIO.WriteTo(fish_pond, "FishQualities", $"{fish_pond.FishCount},0,0,0");
-            ModDataIO.WriteTo(fish_pond, "FamilyQualities", null);
-            ModDataIO.WriteTo(fish_pond, "FamilyLivingHere", null);
+            fish_pond.Write("FishQualities", $"{fish_pond.FishCount},0,0,0");
+            fish_pond.Write("FamilyQualities", null);
+            fish_pond.Write("FamilyLivingHere", null);
         }
     }
 

@@ -9,6 +9,12 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 2.7.3
+Released 20 August 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Re-enabled keybinds when viewing a cutscene, except when a textbox is accepting input.
+* Improved translations. Thanks to Puffeeydii (updated Chinese) and tqdv (added French)!
+
 ## 2.7.2
 Released 25 May 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

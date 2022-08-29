@@ -11,7 +11,7 @@
 {
   "Name": "StardewHitboxes",
   "Author": "tylergibbs2",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Hitboxes for characters.",
   "UniqueID": "tylergibbs2.StardewHitboxes",
   "EntryDll": "StardewHitboxes.dll",

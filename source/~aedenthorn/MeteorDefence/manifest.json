@@ -11,7 +11,7 @@
 {
   "Name": "Meteor Defence",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.1.1",
   "Description": "Meteor Defence.",
   "UniqueID": "aedenthorn.MeteorDefence",
   "EntryDll": "MeteorDefence.dll",

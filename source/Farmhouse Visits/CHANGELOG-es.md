@@ -7,6 +7,16 @@ for queries and analysis.**
 ----
 
 ([english version here](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG.md))
+## 1.5.0
+- Los regalos se pueden desactivar.
+- Las visitas pueden pedir permiso para entrar (y tienen diálogo opcional si se les rechaza).
+- Se arreglaron errores en visitas mod.
+- Se renombró "NPC" a su equivalente "PNJ" en español.
+- Optimizaciones y cambios al código.
+- Nuevos diálogos cuando los PNJ se van.
+
+## 1.4.0
+- Agregada traducción al Chino (por SHIZHI01420142)
 
 ## 1.3.1
 - Se arreglaron problemas.

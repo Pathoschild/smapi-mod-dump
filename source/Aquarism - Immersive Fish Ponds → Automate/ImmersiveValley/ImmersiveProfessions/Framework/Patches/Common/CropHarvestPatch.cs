@@ -13,13 +13,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 #region using directives
 
 using DaLion.Common;
-using DaLion.Common.Data;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
+using DaLion.Common.ModData;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
@@ -82,7 +80,7 @@ internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
         var mi = typeof(ModDataIO)
                      .GetMethods()
                      .FirstOrDefault(mi => mi.Name.Contains(nameof(ModDataIO.Increment)) && mi.GetParameters().Length == 3)?
-                     .MakeGenericMethod(typeof(uint)) ?? throw new MissingMethodException("Increment method not found.");
+                     .MakeGenericMethod(typeof(uint)) ?? ThrowHelper.ThrowMissingMethodException<MethodInfo>("Increment method not found.");
 
         var dontIncreaseEcologistCounter = generator.DefineLabel();
         try
@@ -189,8 +187,9 @@ internal sealed class CropHarvestPatch : DaLion.Common.Harmony.HarmonyPatch
 
     private static bool ShouldIncreaseHarvestYield(JunimoHarvester? junimoHarvester, Random r)
     {
-        var harvester = junimoHarvester is null ? Game1.player : junimoHarvester.GetOwner();
-        return harvester.HasProfession(Profession.Harvester) &&
+        var harvester = junimoHarvester is null ? Game1.player :
+            ModEntry.Config.ShouldJunimosInheritProfessions ? junimoHarvester.GetOwner() : null;
+        return harvester?.HasProfession(Profession.Harvester) == true &&
                r.NextDouble() < (harvester.HasProfession(Profession.Harvester, true) ? 0.2 : 0.1);
     }
 

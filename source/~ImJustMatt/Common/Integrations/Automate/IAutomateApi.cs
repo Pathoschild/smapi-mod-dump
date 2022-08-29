@@ -12,7 +12,6 @@ namespace StardewMods.Common.Integrations.Automate;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using StardewValley;
 
 /// <summary>
 ///     API for Automate.

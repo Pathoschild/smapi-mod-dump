@@ -1,4 +1,5 @@
 {
   "ShowMenuKey": "I",
-  "AllowProblematicItems": false
+  "AllowProblematicItems": false,
+  "ReclaimPriceInMenuTrashCan": true
 }

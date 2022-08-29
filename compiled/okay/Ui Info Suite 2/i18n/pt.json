@@ -23,6 +23,10 @@
   "ToolIsFinishedBeingUpgraded": "{0} está pronto!",
   "NpcBirthday": "Aniversariante do dia: {0}",
   "RobinBuildingStatus": "Robin terminará sua construção em {0} dia(s)",
+  // Display icons - Foragables
+  "CanFindSalmonberry": "Você pode encontrar amoras-silvestres hoje",
+  "CanFindBlackberry": "Você pode encontrar amoras hoje",
+  "CanFindHazelnut": "Você pode encontrar avelãs nas árvores hoje",
   //Display icons - Luck
   "DailyLuckValue": "Seu número da sorte é {0}",
   "FeelingLucky": "Os espíritos estão muito felizes!",
@@ -62,6 +66,8 @@
   "ShowRobinBuildingStatusIcon": "Exibir ícone de construções da Robin",
   "ShowLuckIcon": "Exibir ícone de sorte",
   "ShowExactValue": "Mostra o valor exato",
+  "ShowSeasonalBerry": "Mostrar coletáveis sazonais",
+  "ShowSeasonalBerryHazelnut": "Mostrar avelãs nas árvores",
   //Others
   "LevelUp": "Level Up"
 }

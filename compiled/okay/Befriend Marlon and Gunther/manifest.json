@@ -1,7 +1,7 @@
 {
     "Name": "Befriend Marlon and Gunther",
     "Author": "Yoshimax",
-    "Version": "1.0.8",
+    "Version": "1.0.9",
     "Description": "Adds Marlon and Gunther as befriendable characters",
     "UniqueID": "Yoshimax.BefriendMarlon",
     "UpdateKeys": ["Nexus:2569"],

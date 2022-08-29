@@ -12,9 +12,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IGenericModConfigMenuApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ISpaceCoreApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ITapGiantCropsApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APIs\IToolbarIconsApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\BreakableType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Directions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\ToolToBreak.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Translations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Alignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Orientation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\UiElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Drawing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Locations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Maps.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Placement.cs" />
   </ItemGroup>

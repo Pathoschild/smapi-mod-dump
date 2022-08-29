@@ -22,6 +22,7 @@ using System.Runtime;
 using System.Text.RegularExpressions;
 
 using Root = SpriteMaster;
+// ReSharper disable MemberHidesStaticFromOuterClass
 
 namespace SpriteMaster.Configuration;
 
@@ -76,7 +77,7 @@ internal static class Config {
 	[Attributes.GMCMHidden] internal static string ConfigVersion = "";
 
 	[Attributes.Ignore]
-	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 15, 0, 0, BuildType.Alpha, 4);
+	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 15, 0, 0, BuildType.Beta, 4);
 
 	[Attributes.Ignore] internal static bool ForcedDisable = false;
 
@@ -179,9 +180,9 @@ internal static class Config {
 		[Obsolete($"Use {nameof(ShouldCollectAccountOwnedTextures)}")]
 		internal static bool? CollectAccountOwnedTextures = null;
 
-#pragma warning disable CS0612
+#pragma warning disable CS0618
 		internal static bool ShouldCollectAccountOwnedTextures = CollectAccountOwnedTextures ?? SystemInfo.Graphics.IsIntegrated;
-#pragma warning restore CS0612
+#pragma warning restore CS0618
 
 		[Attributes.Comment("The amount of free memory required by SM after which it triggers hard recovery operations")]
 		[Attributes.LimitsInt(1L, int.MaxValue * (long)SizesExt.MiB)]
@@ -279,6 +280,9 @@ internal static class Config {
 	internal readonly record struct TextureRef(string Texture, Bounds Bounds);
 
 	internal static class Resample {
+		[Attributes.Ignore]
+		internal static bool ToggledEnable = true;
+
 		[Attributes.Comment("Should resampling be enabled?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.MenuName("Enable Resampling")]
@@ -287,7 +291,7 @@ internal static class Config {
 
 		[Attributes.Ignore]
 #pragma warning disable CS0618 // Type or member is obsolete
-		internal static bool IsEnabled => Preview.Override.Instance?.ResampleEnabled ?? Enabled;
+		internal static bool IsEnabled => Preview.Override.Instance?.ResampleEnabled ?? (Enabled && ToggledEnable);
 #pragma warning restore CS0618 // Type or member is obsolete
 
 		[Attributes.Comment("Should resampling be enabled for normal sprites?")]
@@ -313,6 +317,11 @@ internal static class Config {
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.Advanced]
 		internal static bool EnableDynamicScale = true;
+
+		[Attributes.Comment("Should excess transparent rows/colums be trimmed?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.Advanced]
+		internal static bool TrimExcessTransparency = true;
 		[Attributes.Comment("Should we assume that input sprites are gamma corrected?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.Advanced]
@@ -355,6 +364,7 @@ internal static class Config {
 		[Attributes.GMCMHidden]
 		internal static List<string> SlicedTextures = new() {
 			@"LooseSprites\Cursors::0,2000:640,256",
+			@"Maps\Mines\volcano_dungeon::0,320:160,64",
 			@"LooseSprites\Cloudy_Ocean_BG",
 			@"LooseSprites\Cloudy_Ocean_BG_Night",
 			@"LooseSprites\stardewPanorama",
@@ -673,6 +683,8 @@ internal static class Config {
 		[Attributes.Comment("What is the minimum number of texels in a sprite to be considered for asynchronous scaling?")]
 		[Attributes.LimitsInt(0, AbsoluteMaxTextureDimension * AbsoluteMaxTextureDimension)]
 		internal static long MinimumSizeTexels = 0;
+		[Attributes.Comment("Should the Synchronized Task Scheduler be flushed during warps?")]
+		internal static bool FlushSynchronizedTasksOnWarp = true;
 	}
 
 	[Attributes.Advanced]
@@ -747,7 +759,7 @@ internal static class Config {
 			internal static bool OptimizeWarpPoints = true;
 
 			[Attributes.Comment("Should gender-locked locations be honored?")]
-			internal static bool HonorGenderLocking = false;
+			internal static bool HonorGenderLocking = true;
 		}
 
 		[Attributes.Comment("Should the default batch sort be replaced with a stable sort?")]
@@ -761,25 +773,46 @@ internal static class Config {
 
 		[Attributes.Comment("Should dirt drawing optimizations be enabled?")]
 		internal static bool EnableDirtDrawOptimizations = false;
-		[Attributes.Comment("Should low-level OpenGL optimizations be performed?")]
-		internal static bool OptimizeOpenGL = true;
-		[Attributes.Comment("Should Texture2D.SetData be optimized?")]
-		internal static bool OptimizeTexture2DSetData = true;
-		[Attributes.Comment("Should Texture2D.GetData be optimized?")]
-		internal static bool OptimizeTexture2DGetData = true;
-		[Attributes.Comment("Should glCopyTexture by used?")]
-		internal static bool UseCopyTexture = true;
-		[Attributes.Comment("Should glTexStorage be used?")]
-		internal const bool UseTexStorage = true;
+
+		// ReSharper disable once InconsistentNaming
+		internal static class OpenGL {
+			[Attributes.Comment("Should low-level OpenGL optimizations be performed?")]
+			internal static bool Enabled = true;
+
+			[Attributes.Comment("Should Texture2D.SetData be optimized?")]
+			internal static bool OptimizeTexture2DSetData = true;
+
+			[Attributes.Comment("Should Texture2D.GetData be optimized?")]
+			internal static bool OptimizeTexture2DGetData = true;
+
+			[Attributes.Comment("Should DrawUserIndexedPrimitives be optimized?")]
+			internal const bool OptimizeDrawUserIndexedPrimitives = true;
+
+			[Attributes.Comment("Should glCopyTexture by used?")]
+			internal static bool UseCopyTexture = true;
+
+			[Attributes.Comment("Should glTexStorage be used?")]
+			internal const bool UseTexStorage = true;
+		}
+
 		internal static class Snow {
+			[Attributes.Ignore]
+			internal static bool ToggledEnable => Resample.ToggledEnable;
+
+			[Attributes.Ignore]
+#pragma warning disable CS0618 // Type or member is obsolete
+			internal static bool IsEnabled => Preview.Override.Instance?.ResampleEnabled ?? (Enabled && ToggledEnable);
+#pragma warning restore CS0618 // Type or member is obsolete
+
 			[Attributes.Comment("Should custom snowfall be used during snowstorms?")]
+			[Obsolete($"Use {nameof(IsEnabled)}")]
 			internal static bool Enabled = true;
 			[Attributes.Comment("Minimum Snow Density")]
 			[Attributes.LimitsInt(1, int.MaxValue)]
-			internal static int MinimumDensity = 64;
+			internal static int MinimumDensity = 48;
 			[Attributes.Comment("Maximum Snow Density")]
 			[Attributes.LimitsInt(1, int.MaxValue)]
-			internal static int MaximumDensity = 192;
+			internal static int MaximumDensity = 144;
 			[Attributes.Comment("Maximum Snow Rotation Speed")]
 			[Attributes.LimitsReal(0.0f, 1.0f)]
 			internal static float MaximumRotationSpeed = 1.0f / 60.0f;
@@ -792,7 +825,7 @@ internal static class Config {
 		}
 		internal static class ModPatches {
 			[Attributes.Comment("Patch CustomNPCFixes in order to improve load times?")]
-			internal static bool PatchCustomNPCFixes = false;
+			internal static bool PatchCustomNPCFixes = true;
 			[Attributes.Comment("Disable unnecessary PyTK mitigation for SpriteMaster?")]
 			[Attributes.MenuName("Disable PyTK Mitigation")]
 			internal static bool DisablePyTKMitigation = true;
@@ -807,7 +840,7 @@ internal static class Config {
 		internal static bool Enabled = DevEnabled && true;
 		private const bool DevEnabled = true;
 		internal const int LockRetries = 32;
-		internal const int LockSleepMS = 32;
+		internal const int LockSleepMilliseconds = 32;
 		[Attributes.Comment("What compression algorithm should be used?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushFileCache)]
 		internal static Compression.Algorithm Compress = Compression.BestAlgorithm;

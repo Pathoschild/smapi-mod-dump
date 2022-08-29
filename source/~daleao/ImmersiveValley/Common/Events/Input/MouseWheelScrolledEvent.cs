@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 
 #endregion using directives
 
-/// <summary>Wrapper for <see cref="IInputEvents.MouseWheelScrolled"/> allowing dynamic hooking / unhooking.</summary>
+/// <summary>Wrapper for <see cref="IInputEvents.MouseWheelScrolled"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class MouseWheelScrolledEvent : ManagedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,7 +29,7 @@ internal abstract class MouseWheelScrolledEvent : ManagedEvent
     /// <param name="e">The event arguments.</param>
     internal void OnMouseWheelScrolled(object? sender, MouseWheelScrolledEventArgs e)
     {
-        if (IsHooked) OnMouseWheelScrolledImpl(sender, e);
+        if (IsEnabled) OnMouseWheelScrolledImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnMouseWheelScrolled" />

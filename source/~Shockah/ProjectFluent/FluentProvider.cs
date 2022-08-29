@@ -20,7 +20,7 @@ namespace Shockah.ProjectFluent
 		IFluent<string> GetFluent(IGameLocale locale, IManifest mod, string? file = null);
 	}
 
-	internal class FluentProvider: IFluentProvider, IDisposable
+	internal class FluentProvider : IFluentProvider, IDisposable
 	{
 		private IMonitor Monitor { get; init; }
 		private IFallbackFluentProvider FallbackFluentProvider { get; init; }
@@ -78,7 +78,7 @@ namespace Shockah.ProjectFluent
 			return fluent;
 		}
 
-		private class Fluent: IFluent<string>
+		private class Fluent : IFluent<string>
 		{
 			internal IGameLocale Locale { get; private init; }
 			internal IManifest Mod { get; private init; }

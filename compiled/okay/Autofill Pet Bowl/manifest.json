@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Autofill Pet Bowl",
+  "Author": "maephie",
+  "Version": "1.0.0",
+  "Description": "Automatically fills your pet's bowl, no matter the weather.",
+  "UniqueID": "maephie.AutofillPetBowl",
+  "EntryDll": "AutofillPetBowl.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus: 13296" ]
+}

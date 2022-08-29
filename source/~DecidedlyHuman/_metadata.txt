@@ -9,11 +9,15 @@ mods:
    Default Window Size
    Into the Game (Save Loaded Notifier)
    Smart Building
+   Smart Cursor
 
 latest commit:
-   commit 00256ff3956b8871ae31e625455259cea3a7f626
-   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
-   Date:   Mon Jul 25 14:52:00 2022 +0100
+   commit f78d0aecb432daebf4a7c224ffd83d8aa2f843ec
+   Merge: b5026be 134ee9a
+   Author: Alan <contact@decidedlyhuman.co.uk>
+   Date:   Sat Aug 6 09:30:01 2022 +0100
    
-       SB: Unscrewed some indentation.
+       Merge pull request #11 from NightFright2k19/master
+       
+       [Smart Cursor] DE translation
    

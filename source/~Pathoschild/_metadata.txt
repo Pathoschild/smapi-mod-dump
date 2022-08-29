@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit d5c90661a7bdad138cbcf616da16b23815c0241c
+   commit e95c7e37f8f90d1132147879f13c6019ad031d5c
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jul 23 22:42:07 2022 -0400
+   Date:   Wed Aug 24 20:47:20 2022 -0400
    
-       update release notes
+       fix 'needed for' not handling category bundle ingredients
    

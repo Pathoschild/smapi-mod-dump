@@ -12,9 +12,8 @@ namespace DaLion.Stardew.Rings.Framework.Patches;
 
 #region using directives
 
+using Common.Extensions.Stardew;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Objects;
 
 #endregion using directives
@@ -43,7 +42,7 @@ internal sealed class RingOnUnequipPatch : Common.Harmony.HarmonyPatch
 
         switch (__instance.indexInTileSheet.Value)
         {
-            case Constants.TOPAZ_RING_INDEX_I: // topaz to give +3 defense
+            case Constants.TOPAZ_RING_INDEX_I: // topaz to give defense or cdr
                 who.resilience -= 3;
                 return false; // don't run original logic
             case Constants.JADE_RING_INDEX_I: // jade ring to give +30% crit. power
@@ -53,7 +52,11 @@ internal sealed class RingOnUnequipPatch : Common.Harmony.HarmonyPatch
                 who.resilience -= 10;
                 return false; // don't run original logic
             default:
-                return true; // run original logic
+                if (__instance.ParentSheetIndex != ModEntry.GarnetRingIndex) return true; // run original logic
+
+                // garnet ring to give +10% cdr
+                who.Increment("CooldownReduction", -0.1f);
+                return false; // don't run original logic
         }
     }
 

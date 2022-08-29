@@ -14,24 +14,21 @@ namespace DaLion.Stardew.Professions.Extensions;
 #region using directives
 
 using Common;
-using Common.Data;
 using Common.Extensions;
 using Common.Extensions.Collections;
+using Common.Extensions.Stardew;
 using Framework;
 using Framework.Ultimates;
 using Framework.Utility;
+using Framework.VirtualProperties;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
-using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -40,7 +37,7 @@ public static class FarmerExtensions
 {
     /// <summary>Whether the farmer has a particular profession.</summary>
     /// <param name="profession">The <see cref="IProfession"/> to check.</param>
-    /// <param name="prestiged">Whether to check for the regular or prestiged variant.</param>
+    /// <param name="prestiged">Whether to check for the prestiged variant.</param>
     public static bool HasProfession(this Farmer farmer, IProfession profession, bool prestiged = false)
     {
         if (prestiged && !profession.Id.IsIn(Profession.GetRange())) return false;
@@ -58,9 +55,12 @@ public static class FarmerExtensions
         skill.ProfessionIds.All(farmer.professions.Contains);
 
     /// <summary>Whether the farmer has all available professions (vanilla + modded).</summary>
-    public static bool HasAllProfessions(this Farmer farmer) =>
-        Enumerable.Range(0, 30).Concat(ModEntry.CustomProfessions.Values.Select(p => p.Id))
-            .All(farmer.professions.Contains);
+    public static bool HasAllProfessions(this Farmer farmer, bool includeCustom = false)
+    {
+        var allProfessions = Enumerable.Range(0, 30);
+        if (includeCustom) allProfessions = allProfessions.Concat(ModEntry.CustomProfessions.Values.Select(p => p.Id));
+        return allProfessions.All(farmer.professions.Contains);
+    }
 
     /// <summary>Get the last 1st-tier profession acquired by the farmer in the specified skill.</summary>
     /// <param name="skill">The <see cref="ISkill"/> to check.</param>
@@ -137,7 +137,7 @@ public static class FarmerExtensions
             return false;
         }
 
-        var alreadyResetThisSkill = ModEntry.PlayerState.SkillsToReset.Contains(skill);
+        var alreadyResetThisSkill = ModEntry.State.SkillsToReset.Contains(skill);
         if (alreadyResetThisSkill)
         {
             Log.D($"{skill.StringId} has already been marked for reset tonight.");
@@ -337,7 +337,7 @@ public static class FarmerExtensions
     /// <param name="addToRecoveryDict">Whether to store crafted quantities for later recovery.</param>
     public static void ForgetRecipesForSkill(this Farmer farmer, Skill skill, bool addToRecoveryDict = false)
     {
-        var forgottenRecipesDict = ModDataIO.ReadFrom(farmer, "ForgottenRecipesDict")
+        var forgottenRecipesDict = farmer.Read("ForgottenRecipesDict")
             .ParseDictionary<string, int>();
 
         // remove associated crafting recipes
@@ -373,7 +373,7 @@ public static class FarmerExtensions
         }
 
         if (addToRecoveryDict)
-            ModDataIO.WriteTo(farmer, "ForgottenRecipesDict", forgottenRecipesDict.Stringify());
+            farmer.Write("ForgottenRecipesDict", forgottenRecipesDict.Stringify());
     }
 
     /// <summary>Remove all recipes associated with the specified skill from the farmer.</summary>
@@ -381,13 +381,11 @@ public static class FarmerExtensions
     /// <param name="addToRecoveryDict">Whether to store crafted quantities for later recovery.</param>
     public static void ForgetRecipesForLoveOfCookingSkill(this Farmer farmer, bool addToRecoveryDict = false)
     {
-        Debug.Assert(ModEntry.CookingSkillApi is not null);
-
-        var forgottenRecipesDict = ModDataIO.ReadFrom(farmer, "ForgottenRecipesDict")
+        var forgottenRecipesDict = farmer.Read("ForgottenRecipesDict")
             .ParseDictionary<string, int>();
 
         // remove associated cooking recipes
-        var cookingRecipes = ModEntry.CookingSkillApi
+        var cookingRecipes = ModEntry.CookingSkillApi!
             .GetAllLevelUpRecipes().Values
             .SelectMany(r => r)
             .Select(r => "blueberry.cac." + r)
@@ -403,15 +401,14 @@ public static class FarmerExtensions
             farmer.cookingRecipes.Remove(key);
         }
 
-
         if (addToRecoveryDict)
-            ModDataIO.WriteTo(farmer, "ForgottenRecipesDict", forgottenRecipesDict.Stringify());
+            farmer.Write("ForgottenRecipesDict", forgottenRecipesDict.Stringify());
     }
 
     /// <summary>Get all available Ultimate's not currently registered.</summary>
     public static IEnumerable<UltimateIndex> GetUnchosenUltimates(this Farmer farmer) =>
         farmer.professions.Where(p => Enum.IsDefined(typeof(UltimateIndex), p)).Cast<UltimateIndex>()
-            .Except(new[] { ModEntry.PlayerState.RegisteredUltimate!.Index, UltimateIndex.None });
+            .Except(new[] { Game1.player.get_Ultimate()!.Index, UltimateIndex.None });
 
     /// <summary>Whether the farmer has caught the specified fish at max size.</summary>
     /// <param name="index">The fish's index.</param>
@@ -449,7 +446,7 @@ public static class FarmerExtensions
     public static float GetAnglerPriceBonus(this Farmer farmer)
     {
         var fishData = Game1.content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
-            .Where(p => !p.Key.IsAlgae() && !p.Value.Contains("trap"))
+            .Where(p => !p.Key.IsAlgaeIndex() && !p.Value.Contains("trap"))
             .ToDictionary(p => p.Key, p => p.Value);
 
         var bonus = 0f;
@@ -481,12 +478,12 @@ public static class FarmerExtensions
 
     /// <summary>The price bonus applied to all items sold by Conservationist.</summary>
     public static float GetConservationistPriceMultiplier(this Farmer farmer) =>
-        1f + ModDataIO.ReadFrom<float>(farmer, "ConservationistActiveTaxBonusPct");
+        1f + farmer.Read<float>("ConservationistActiveTaxBonusPct");
 
     /// <summary>The quality of items foraged by Ecologist.</summary>
     public static int GetEcologistForageQuality(this Farmer farmer)
     {
-        var itemsForaged = ModDataIO.ReadFrom<uint>(farmer, "EcologistItemsForaged");
+        var itemsForaged = farmer.Read<uint>("EcologistItemsForaged");
         return itemsForaged < ModEntry.Config.ForagesNeededForBestQuality
             ? itemsForaged < ModEntry.Config.ForagesNeededForBestQuality / 2
                 ? SObject.medQuality
@@ -497,7 +494,7 @@ public static class FarmerExtensions
     /// <summary>The quality of minerals collected by Gemologist.</summary>
     public static int GetGemologistMineralQuality(this Farmer farmer)
     {
-        var mineralsCollected = ModDataIO.ReadFrom<uint>(farmer, "GemologistMineralsCollected");
+        var mineralsCollected = farmer.Read<uint>("GemologistMineralsCollected");
         return mineralsCollected < ModEntry.Config.MineralsNeededForBestQuality
             ? mineralsCollected < ModEntry.Config.MineralsNeededForBestQuality / 2
                 ? SObject.medQuality
@@ -511,4 +508,12 @@ public static class FarmerExtensions
             .Where(b => (b.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer) &&
                         b.indoors.Value is SlimeHutch && !b.isUnderConstruction())
             .SelectMany(b => b.indoors.Value.characters.OfType<GreenSlime>());
+
+    /// <summary>Whether this farmer is currently using the Poacher Ultimate.</summary>
+    public static bool IsInAmbush(this Farmer farmer) =>
+        farmer.get_UltimateIndex() == (int)UltimateIndex.PoacherAmbush && farmer.get_IsUltimateActive().Value;
+
+    /// <summary>Whether this farmer is a Desperado currently using the Slingshot.</summary>
+    public static bool IsDesperadoCharging(this Farmer farmer) =>
+        farmer.HasProfession(Profession.Desperado) && farmer.usingSlingshot;
 }

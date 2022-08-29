@@ -154,7 +154,7 @@ internal static class Reinterpret {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static unsafe Span<TTo> ReinterpretAsSpanUnsafe<TFrom, TTo>(in TFrom value) where TFrom : unmanaged where TTo : unmanaged {
+	internal static unsafe Span<TTo> ReinterpretAsSpanUnsafe<TFrom, TTo>(scoped in TFrom value) where TFrom : unmanaged where TTo : unmanaged {
 		sizeof(TTo).AssertLessEqual(sizeof(TFrom));
 		return new(Unsafe.AsPointer(ref Unsafe.AsRef(in value)), sizeof(TFrom) / sizeof(TTo));
 	}

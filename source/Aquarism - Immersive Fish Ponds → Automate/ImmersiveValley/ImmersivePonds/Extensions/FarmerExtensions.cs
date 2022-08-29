@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Ponds.Extensions;
 #region using directives
 
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;

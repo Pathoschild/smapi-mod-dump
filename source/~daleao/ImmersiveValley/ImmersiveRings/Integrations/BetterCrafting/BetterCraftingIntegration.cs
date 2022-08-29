@@ -13,7 +13,7 @@ namespace DaLion.Stardew.Rings.Integrations;
 #region using directives
 
 using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.BetterCrafting;
 using System.Collections.Generic;
 
 #endregion using directives

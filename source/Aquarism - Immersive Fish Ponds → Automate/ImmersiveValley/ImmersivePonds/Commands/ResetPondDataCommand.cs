@@ -14,11 +14,8 @@ namespace DaLion.Stardew.Ponds.Commands;
 
 using Common;
 using Common.Commands;
-using Common.Data;
+using Common.Extensions.Stardew;
 using Extensions;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Buildings;
 using System.Linq;
 
@@ -33,7 +30,7 @@ internal sealed class ResetPondDataCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "reset_data";
+    public override string[] Triggers { get; } = { "reset_data", "clear_data", "reset", "clear" };
 
     /// <inheritdoc />
     public override string Documentation => "Reset custom mod data of nearest pond.";
@@ -64,14 +61,14 @@ internal sealed class ResetPondDataCommand : ConsoleCommand
             return;
         }
 
-        ModDataIO.WriteTo(nearest, "FishQualities", null);
-        ModDataIO.WriteTo(nearest, "FamilyQualities", null);
-        ModDataIO.WriteTo(nearest, "FamilyLivingHere", null);
-        ModDataIO.WriteTo(nearest, "DaysEmpty", 0.ToString());
-        ModDataIO.WriteTo(nearest, "SeaweedLivingHere", null);
-        ModDataIO.WriteTo(nearest, "GreenAlgaeLivingHere", null);
-        ModDataIO.WriteTo(nearest, "WhiteAlgaeLivingHere", null);
-        ModDataIO.WriteTo(nearest, "CheckedToday", null);
-        ModDataIO.WriteTo(nearest, "ItemsHeld", null);
+        nearest.Write("FishQualities", null);
+        nearest.Write("FamilyQualities", null);
+        nearest.Write("FamilyLivingHere", null);
+        nearest.Write("DaysEmpty", 0.ToString());
+        nearest.Write("SeaweedLivingHere", null);
+        nearest.Write("GreenAlgaeLivingHere", null);
+        nearest.Write("WhiteAlgaeLivingHere", null);
+        nearest.Write("CheckedToday", null);
+        nearest.Write("ItemsHeld", null);
     }
 }

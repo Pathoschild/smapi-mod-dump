@@ -6,9 +6,12 @@ mods:
    Warp Network
 
 latest commit:
-   commit 70108ebfce5fb94d82ad60b15e453d82ad504430
-   Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Mon Jul 11 19:41:43 2022 -0400
+   commit 426da3115c040ff14eac0c83ebf678160f1feca7
+   Merge: 70108eb dc44c87
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Wed Aug 17 15:31:57 2022 -0400
    
-       -
+       Merge pull request #4 from sizau/master
+       
+       Chinese supported
    

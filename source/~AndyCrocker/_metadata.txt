@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit ec674a02cc5cca711eeeafbf85ef37a2e6415936
+   commit f054754134bb9aa7f5a350f004c1fca3f1cc0df2
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Thu Jan 20 04:47:34 2022 +0000
+   Date:   Fri Aug 19 00:54:14 2022 +0100
    
-       [MoreGrass] Fix bug causing a crash
+       [BetterMixedSeeds] Add ability to reinclude excluded crops, update to .net5
    

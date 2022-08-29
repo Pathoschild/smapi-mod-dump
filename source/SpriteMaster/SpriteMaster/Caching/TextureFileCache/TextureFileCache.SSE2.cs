@@ -162,7 +162,7 @@ internal static partial class TextureFileCache {
 
 		// This is unlikely to happen, but handle when there are still elements left (the texture size isn't aligned to 4)
 		if (offset < data.Length) {
-			ProcessTextureScalar(data.SliceUnsafe(offset));
+			ProcessTextureScalar(data.Slice((int)offset));
 		}
 	}
 }

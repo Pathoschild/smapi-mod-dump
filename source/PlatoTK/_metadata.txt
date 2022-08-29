@@ -6,12 +6,12 @@ mods:
    PlatoTK
 
 latest commit:
-   commit 488b9558c718f55b1d0e88d0bf140d57f712895f
-   Merge: 95c81a4 f151294
+   commit c82de19961964c7c62f0281b1db68d3f04d647e3
+   Merge: 488b955 a7108fe
    Author: David <david@millionideas.de>
-   Date:   Sat Feb 5 15:15:34 2022 +0100
+   Date:   Thu Aug 25 00:23:27 2022 +0200
    
-       Merge pull request #2 from Pathoschild/update-code
+       Merge pull request #3 from Pathoschild/update-code
        
-       Update for Stardew Valley 1.5.5 beta
+       Update for SMAPI 3.14.0
    

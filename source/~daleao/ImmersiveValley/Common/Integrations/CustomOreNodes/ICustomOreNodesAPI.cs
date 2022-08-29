@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.CustomOreNodes;
 
 #region using directives
 

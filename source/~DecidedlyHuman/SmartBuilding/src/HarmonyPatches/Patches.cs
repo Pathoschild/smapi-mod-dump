@@ -9,39 +9,24 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
-using xTile.Dimensions;
+
 // ReSharper disable InconsistentNaming
 
 namespace SmartBuilding.HarmonyPatches
 {
     public static class Patches
     {
-        private static bool currentlyInBuildMode;
-        private static bool allowPlacement;
+        public static bool CurrentlyInBuildMode { get; set; }
 
-        public static bool CurrentlyInBuildMode
-        {
-            get { return currentlyInBuildMode; }
-            set { currentlyInBuildMode = value; }
-        }
-
-        public static bool AllowPlacement
-        {
-            get { return allowPlacement; }
-            set { allowPlacement = value; }
-        }
+        public static bool AllowPlacement { get; set; }
 
         private static bool ShouldPerformAction()
         {
-            if (currentlyInBuildMode)
-            {
-                return allowPlacement;
-            }
-            
+            if (CurrentlyInBuildMode) return AllowPlacement;
+
             // If we're not in build mode, we always want to continue on to the regular methods.
             return true;
         }
@@ -61,7 +46,8 @@ namespace SmartBuilding.HarmonyPatches
             return ShouldPerformAction();
         }
 
-        public static bool StorageFurniture_DoAction_Prefix(StorageFurniture __instance, Farmer who, bool justCheckingForActivity)
+        public static bool StorageFurniture_DoAction_Prefix(StorageFurniture __instance, Farmer who,
+                                                            bool justCheckingForActivity)
         {
             return ShouldPerformAction();
         }

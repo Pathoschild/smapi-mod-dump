@@ -11,12 +11,13 @@ mods:
    Piggy Bank Mod
    Single-Player Regen
    Sounds Patcher
+   Trading
    Unbreakable Tackles
 
 latest commit:
-   commit d2d1b58d61e8079c03e0b2a96cd0bb0c7962601c
+   commit 38dd02e886e14774b759719d90cdf06bb1195c16
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Fri Jul 1 16:08:27 2022 +0200
+   Date:   Sun Aug 7 21:31:54 2022 +0200
    
-       Added ManyEnchantments Patch
+       Added source code for trading mod
    

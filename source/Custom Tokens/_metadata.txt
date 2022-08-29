@@ -6,9 +6,9 @@ mods:
    Custom Tokens
 
 latest commit:
-   commit 1c03f3989c69e6be906032e0eb5a3e93e9cbeb6a
+   commit d75821e12ca13d8f390f3800093a7bd82ba9e469
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Sat Dec 4 16:19:14 2021 +1100
+   Date:   Tue Aug 2 14:33:12 2022 +1000
    
-       updated for smapi 3.13
+       removed net fields, added some compatibility with one of my personal mods.
    

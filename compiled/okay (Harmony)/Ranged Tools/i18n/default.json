@@ -72,6 +72,9 @@
 	"optionAttacksIgnoreObstaclesName": "Attacks Ignore Obstacles",
 	"optionAttacksIgnoreObstaclesTooltip": "Allows attacks to hit monsters even if there are obstacles in the way.",
 	
+	"optionDontCutGrassName": "Don't Cut Grass At Range",
+	"optionDontCutGrassTooltip": "Prevents scythes and weapons from cutting grass beyond the normal range (but still cutting weeds and such).",
+	
 	"optionOnClickOnlyName": "Custom Range on Click Only",
 	"optionOnClickOnlyTooltip": "If enabled, extended ranges only apply when using tools by clicking. If disabled, they will apply for all forms of tool use.",
 }

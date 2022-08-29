@@ -14,11 +14,10 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 using DaLion.Common;
 using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Extensions.Stardew;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;
@@ -62,7 +61,7 @@ internal sealed class FishPondIsLegalFishForPondsPatch : DaLion.Common.Harmony.H
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(FishPondIsLegalFishForPondsPatch).RequireMethod(nameof(IsLegalFishForPondsSubroutine))),
+                        typeof(FishPondIsLegalFishForPondsPatch).RequireMethod(nameof(CanRaiseLegendaryFish))),
                     new CodeInstruction(OpCodes.Brtrue_S, resumeExecution)
                 );
         }
@@ -79,11 +78,9 @@ internal sealed class FishPondIsLegalFishForPondsPatch : DaLion.Common.Harmony.H
 
     #region injected subroutines
 
-    private static bool IsLegalFishForPondsSubroutine(FishPond pond)
-    {
-        var owner = Game1.getFarmerMaybeOffline(pond.owner.Value) ?? Game1.MasterPlayer;
-        return owner.HasProfession(Profession.Aquarist, true);
-    }
+    private static bool CanRaiseLegendaryFish(FishPond pond) =>
+        pond.GetOwner().HasProfession(Profession.Aquarist, true) || ModEntry.Config.LaxOwnershipRequirements &&
+        Game1.game1.DoesAnyPlayerHaveProfession(Profession.Aquarist, out _);
 
     #endregion injected subroutines
 }

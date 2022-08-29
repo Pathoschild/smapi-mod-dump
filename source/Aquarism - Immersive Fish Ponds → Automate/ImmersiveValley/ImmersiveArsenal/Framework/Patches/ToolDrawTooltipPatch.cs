@@ -13,11 +13,10 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 #region using directives
 
 using Common.Extensions.Reflection;
+using Enchantments;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Linq;
@@ -27,7 +26,8 @@ using System.Linq;
 [UsedImplicitly]
 internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
 {
-    private static Func<Item, int>? _GetDescriptionWidth;
+    private static readonly Lazy<Func<Item, int>> _GetDescriptionWidth = new(() =>
+        typeof(Item).RequireMethod("getDescriptionWidth").CompileUnboundDelegate<Func<Item, int>>());
 
     /// <summary>Construct an instance.</summary>
     internal ToolDrawTooltipPatch()
@@ -42,21 +42,17 @@ internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
     private static bool ToolDrawTooltipPrefix(Tool __instance, SpriteBatch spriteBatch, ref int x, ref int y,
         SpriteFont font, float alpha)
     {
-        if (__instance is not Slingshot slingshot || slingshot.GetTotalForgeLevels() <= 0)
+        if (__instance is not Slingshot slingshot || slingshot.enchantments.Count <= 0)
             return true; // run original logic
 
         // write description
-        _GetDescriptionWidth ??=
-            typeof(Item).RequireMethod("getDescriptionWidth").CompileUnboundDelegate<Func<Item, int>>();
-
-        var descriptionWidth = _GetDescriptionWidth(__instance);
+        var descriptionWidth = _GetDescriptionWidth.Value(__instance);
         Utility.drawTextWithShadow(spriteBatch,
             Game1.parseText(__instance.description, Game1.smallFont, descriptionWidth), font, new(x + 16, y + 20),
             Game1.textColor);
         y += (int)font.MeasureString(Game1.parseText(__instance.description, Game1.smallFont, descriptionWidth)).Y;
 
         Color co;
-        var hasForge = false;
         // write bonus damage
         if (__instance.hasEnchantmentOfType<RubyEnchantment>())
         {
@@ -67,49 +63,6 @@ internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
             Utility.drawTextWithShadow(spriteBatch, ModEntry.i18n.Get("ui.itemhover.damage", new { amount }), font,
                 new(x + 68, y + 28), co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
-        }
-
-        // write bonus crit rate
-        if (__instance.hasEnchantmentOfType<AquamarineEnchantment>())
-        {
-            var amount = $"{__instance.GetEnchantmentLevel<AquamarineEnchantment>() * 0.046f:p1}";
-            co = new(0, 120, 120);
-            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(40, 428, 10, 10),
-                Color.White, 0f, Vector2.Zero, 4f, false, 1f);
-            Utility.drawTextWithShadow(spriteBatch,
-                Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", amount), font, new(x + 68, y + 28),
-                co * 0.9f * alpha);
-            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
-        }
-
-        // write crit power
-        if (__instance.hasEnchantmentOfType<JadeEnchantment>())
-        {
-            var amount =
-                $"{__instance.GetEnchantmentLevel<JadeEnchantment>() * (ModEntry.Config.RebalancedEnchants ? 0.5f : 0.1f):p0}";
-            co = new(0, 120, 120);
-            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 16, y + 16 + 4),
-                new Rectangle(160, 428, 10, 10), Color.White, 0f, Vector2.Zero, 4f, false, 1f);
-            Utility.drawTextWithShadow(spriteBatch,
-                Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", amount), font,
-                new(x + 16 + 44, y + 16 + 12), co * 0.9f * alpha);
-            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
-        }
-
-        // write bonus charge speed
-        if (__instance.hasEnchantmentOfType<EmeraldEnchantment>())
-        {
-            var amount = $"+{__instance.GetEnchantmentLevel<EmeraldEnchantment>() * 0.1f:p0}";
-            co = new(0, 120, 120);
-            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(130, 428, 10, 10),
-                Color.White, 0f, Vector2.Zero, 4f, false, 1f);
-            Utility.drawTextWithShadow(spriteBatch, Game1.content.LoadString("Strings\\UI:ItemHover_Speed", amount),
-                font, new(x + 68, y + 28), co * 0.9f * alpha);
-            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
         }
 
         // write bonus knockback
@@ -123,14 +76,65 @@ internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
             Utility.drawTextWithShadow(spriteBatch, Game1.content.LoadString("Strings\\UI:ItemHover_Weight", amount),
                 font, new(x + 68, y + 28), co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
+        }
+
+        // write bonus crit rate
+        if (__instance.hasEnchantmentOfType<AquamarineEnchantment>())
+        {
+            var amount = $"{__instance.GetEnchantmentLevel<AquamarineEnchantment>() * 0.046f:p1}";
+            co = new(0, 120, 120);
+            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(40, 428, 10, 10),
+                Color.White, 0f, Vector2.Zero, 4f, false, 1f);
+            Utility.drawTextWithShadow(spriteBatch,
+                Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", amount), font, new(x + 68, y + 28),
+                co * 0.9f * alpha);
+            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+        }
+
+        // write crit power
+        if (__instance.hasEnchantmentOfType<JadeEnchantment>())
+        {
+            var amount =
+                $"{__instance.GetEnchantmentLevel<JadeEnchantment>() * (ModEntry.Config.RebalancedForges ? 0.5f : 0.1f):p0}";
+            co = new(0, 120, 120);
+            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 16, y + 16 + 4),
+                new Rectangle(160, 428, 10, 10), Color.White, 0f, Vector2.Zero, 4f, false, 1f);
+            Utility.drawTextWithShadow(spriteBatch,
+                Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", amount), font,
+                new(x + 16 + 44, y + 16 + 12), co * 0.9f * alpha);
+            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+        }
+
+        // write bonus charge speed
+        if (__instance.hasEnchantmentOfType<EmeraldEnchantment>())
+        {
+            var amount = $"+{__instance.GetEnchantmentLevel<EmeraldEnchantment>() * 0.1f:p0}";
+            co = new(0, 120, 120);
+            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(130, 428, 10, 10),
+                Color.White, 0f, Vector2.Zero, 4f, false, 1f);
+            Utility.drawTextWithShadow(spriteBatch, Game1.content.LoadString("Strings\\UI:ItemHover_Speed", amount),
+                font, new(x + 68, y + 28), co * 0.9f * alpha);
+            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+        }
+
+        // write bonus cooldown reduction
+        if (__instance.hasEnchantmentOfType<GarnetEnchantment>())
+        {
+            var amount =
+                $"{__instance.GetEnchantmentLevel<GarnetEnchantment>() * 0.1f:p0}";
+            co = new(0, 120, 120);
+            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(150, 428, 10, 10),
+                Color.White, 0f, Vector2.Zero, 4f, false, 1f);
+            Utility.drawTextWithShadow(spriteBatch, ModEntry.i18n.Get("ui.itemhover.damage", new {amount}), font,
+                new(x + 68, y + 28), co * 0.9f * alpha);
+            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
         }
 
         // write bonus defense
         if (__instance.hasEnchantmentOfType<TopazEnchantment>())
         {
             var amount =
-                $"+{__instance.GetEnchantmentLevel<TopazEnchantment>() * (ModEntry.Config.RebalancedEnchants ? 5 : 1)}";
+                $"+{__instance.GetEnchantmentLevel<TopazEnchantment>() * (ModEntry.Config.RebalancedForges ? 5 : 1)}";
             co = new(0, 120, 120);
             Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(110, 428, 10, 10),
                 Color.White, 0f, Vector2.Zero, 4f, false, 1f);
@@ -138,7 +142,6 @@ internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
                 Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", amount), font, new(x + 68, y + 28),
                 co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
         }
 
         // write bonus random forge
@@ -151,7 +154,6 @@ internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
                 : Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Singular", randomForges);
             Utility.drawTextWithShadow(spriteBatch, randomForgeString, font, new(x + 16, y + 28), co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-            hasForge = true;
         }
 
         // write other enchantments
@@ -167,7 +169,7 @@ internal sealed class ToolDrawTooltipPatch : Common.Harmony.HarmonyPatch
         }
 
         // extra height to compensate `Forged` text
-        if (hasForge) y += (int)Math.Max(font.MeasureString("TT").Y, 48f) / 2;
+        if (__instance.enchantments.Count > 0) y += (int)Math.Max(font.MeasureString("TT").Y, 48f) / 4;
 
         return false; // don't run original logic
     }

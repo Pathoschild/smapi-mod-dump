@@ -9,9 +9,10 @@
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Copyright>mkuklinski</Copyright>
 
-		<Version>0.15.0-beta.1</Version>
+		<EnableModZip>false</EnableModZip>
+		<Version>0.15.0-beta.4</Version>
 		<AssemblyVersion>0.15.0.*</AssemblyVersion>
-		<FileVersion>0.15.0.101</FileVersion>
+		<FileVersion>0.15.0.104</FileVersion>
 		
 		<TargetFramework>net5.0</TargetFramework>
 		<FileAlignment>512</FileAlignment>
@@ -23,18 +24,14 @@
 		<ErrorReport>prompt</ErrorReport>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-		<ApplicationIcon>$(SolutionDir)pufferchick_xbrz.ico</ApplicationIcon>
+		<!--<ApplicationIcon>$(SolutionDir)pufferchick_xbrz.ico</ApplicationIcon>-->
 		<DebugSymbols>true</DebugSymbols>
-		<DebugType>portable</DebugType>
+		<DebugType>embedded</DebugType>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
-		<BaseAddress>285736960</BaseAddress>
 		<Deterministic>false</Deterministic>
 		<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-		<!--<Deterministic>True</Deterministic>-->
-		<PublishTrimmed>true</PublishTrimmed>
-		<TrimMode>CopyUsed</TrimMode>
 		
 		<BundleExtraAssemblies>System, ThirdParty</BundleExtraAssemblies>
 		<IgnoreModFilePatterns Condition="'$(IgnoreModFilePatterns)'!=''">$(IgnoreModFilePatterns), _§ENTINEL¶_</IgnoreModFilePatterns>

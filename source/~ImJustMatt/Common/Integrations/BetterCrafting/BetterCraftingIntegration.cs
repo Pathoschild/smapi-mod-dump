@@ -10,8 +10,6 @@
 
 namespace StardewMods.Common.Integrations.BetterCrafting;
 
-using StardewModdingAPI;
-
 /// <inheritdoc />
 internal class BetterCraftingIntegration : ModIntegration<IBetterCraftingApi>
 {
@@ -24,5 +22,6 @@ internal class BetterCraftingIntegration : ModIntegration<IBetterCraftingApi>
     public BetterCraftingIntegration(IModRegistry modRegistry)
         : base(modRegistry, BetterCraftingIntegration.ModUniqueId)
     {
+        // Nothing
     }
 }

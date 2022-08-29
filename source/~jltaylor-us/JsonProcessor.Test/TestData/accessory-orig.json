@@ -1,0 +1,1372 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewJsonProcessor
+**
+*************************************************/
+
+{ // This file Copyright(c) 2022, Elizabeth (github user elizabethcd)
+  // Used by permission
+  "Name": "Rainbow Fan",
+  "FrontAccessory": {
+    "DisableGrayscale": true,
+    "DrawAfterSleeves": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": -8,
+      "Y": -8
+    },
+    "AccessorySize": {
+      "Width": 16,
+      "Length": 16
+    },
+    "UniformAnimation": [
+      {
+        "Frame": 6,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": true
+          },
+          {
+            "Name": "IsCasting",
+            "Value": true
+          },
+          {
+            "Name": "IsFishing",
+            "Value": true
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": true
+          },
+          {
+            "Name": "IsReeling",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": true
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": true
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": true
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": true
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": true
+          }
+        ]
+      },
+      {
+        "Frame": 0,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 1,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 2,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 3,
+        "Duration": 300,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 5,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      }
+    ]
+  },
+  "RightAccessory": {
+    "DisableGrayscale": true,
+    "DrawAfterSleeves": true,
+    "Flipped": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 16
+    },
+    "HeadPosition": {
+      "X": -6,
+      "Y": -8
+    },
+    "AccessorySize": {
+      "Width": 16,
+      "Length": 16
+    },
+    "UniformAnimation": [
+      {
+        "Frame": 6,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": true
+          },
+          {
+            "Name": "IsCasting",
+            "Value": true
+          },
+          {
+            "Name": "IsFishing",
+            "Value": true
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": true
+          },
+          {
+            "Name": "IsReeling",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": true
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": true
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": true
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": true
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": true
+          }
+        ]
+      },
+      {
+        "Frame": 0,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 1,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 2,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 3,
+        "Duration": 300,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 5,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      }
+    ]
+  },
+  "LeftAccessory": {
+    "DisableGrayscale": true,
+    "DrawAfterSleeves": true,
+    "Flipped": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 32
+    },
+    "HeadPosition": {
+      "X": 6,
+      "Y": -8
+    },
+    "AccessorySize": {
+      "Width": 16,
+      "Length": 16
+    },
+    "UniformAnimation": [
+      {
+        "Frame": 6,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": true
+          },
+          {
+            "Name": "IsCasting",
+            "Value": true
+          },
+          {
+            "Name": "IsFishing",
+            "Value": true
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": true
+          },
+          {
+            "Name": "IsReeling",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": true
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": true
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": true
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": true
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": true
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": true
+          }
+        ]
+      },
+      {
+        "Frame": 0,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 1,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 2,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 3,
+        "Duration": 300,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 4,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      },
+      {
+        "Frame": 5,
+        "Duration": 150,
+        "Conditions": [
+          {
+            "Name": "IsDrinking",
+            "Value": false
+          },
+          {
+            "Name": "IsCasting",
+            "Value": false
+          },
+          {
+            "Name": "IsFishing",
+            "Value": false
+          },
+          {
+            "Name": "IsNibbling",
+            "Value": false
+          },
+          {
+            "Name": "IsReeling",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingHeavyTool",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingMilkPail",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingShears",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingPan",
+            "Value": false
+          },
+          {
+            "Name": "IsUsingSlingshot",
+            "Value": false
+          },
+          {
+            "Name": "IsHarvesting",
+            "Value": false
+          },
+          {
+            "Name": "IsCarrying",
+            "Value": false
+          },
+          {
+            "Name": "IsSwimming",
+            "Value": false
+          },
+          {
+            "Name": "IsInBathingSuit",
+            "Value": false
+          }
+        ]
+      }
+    ]
+  }
+}

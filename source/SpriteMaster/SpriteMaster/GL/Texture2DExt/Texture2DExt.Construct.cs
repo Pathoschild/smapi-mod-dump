@@ -153,7 +153,7 @@ internal static partial class Texture2DExt {
 		SurfaceType type,
 		bool shared
 	) where T : unmanaged {
-		if (!Configuration.Config.Extras.OptimizeOpenGL) {
+		if (!Configuration.Config.Extras.OpenGL.Enabled) {
 			return false;
 		}
 
@@ -171,7 +171,7 @@ internal static partial class Texture2DExt {
 			bool useStorage =
 				StorageEnabled &&
 				(GLExt.TexStorage2D.Enabled || GLExt.TextureStorage2D.Enabled || GLExt.TexStorage2DExt.Enabled || GLExt.TextureStorage2DExt.Enabled) &&
-				Configuration.Config.Extras.UseTexStorage;
+				SMConfig.Extras.OpenGL.UseTexStorage;
 			bool buildLayers = !dataIn.IsEmpty || !useStorage;
 
 			// Calculate the number of texture levels
@@ -252,11 +252,11 @@ internal static partial class Texture2DExt {
 							StorageEnabled = false;
 							buildLayers = !dataIn.IsEmpty;
 
-							GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0));
+							//GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0));
 
-							if (@this.GraphicsDevice.GraphicsCapabilities.SupportsTextureMaxLevel) {
-								GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, SamplerState.TextureParameterNameTextureMaxLevel, (@this.LevelCount > 0) ? @this.LevelCount - 1 : 1000));
-							}
+							//if (@this.GraphicsDevice.GraphicsCapabilities.SupportsTextureMaxLevel) {
+							//	GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, SamplerState.TextureParameterNameTextureMaxLevel, (@this.LevelCount > 0) ? @this.LevelCount - 1 : 1000));
+							//}
 						}
 					}
 
@@ -280,7 +280,7 @@ internal static partial class Texture2DExt {
 								@this: @this,
 								level: level++,
 								rect: null,
-								data: data.IsEmpty ? default : data.SliceUnsafe(currentOffset, levelSize),
+								data: data.IsEmpty ? default : data.Slice(currentOffset, levelSize),
 								initialized: useStorage,
 								isSet: true
 							)) {

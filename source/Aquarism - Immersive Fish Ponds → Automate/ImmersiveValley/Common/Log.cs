@@ -12,7 +12,6 @@ namespace DaLion.Common;
 
 #region using directives
 
-using StardewModdingAPI;
 using System.Diagnostics;
 
 #endregion using directives

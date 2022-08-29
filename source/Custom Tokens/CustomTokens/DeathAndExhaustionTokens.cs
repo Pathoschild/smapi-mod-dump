@@ -16,20 +16,16 @@ namespace CustomTokens
 {
     public class DeathAndExhaustionTokens
     {
-        public bool updatedeath = false;
-
-        public bool updatepassout = false;
-
-        internal void UpdateDeathAndExhaustionTokens(IModHelper helper, IMonitor monitor, PerScreen<PlayerData> data, ModConfig config)
+        internal void UpdateDeathAndExhaustionTokens(IModHelper helper, IMonitor monitor, PerScreen<PlayerData> data, ModConfig config, Update update)
         {
             // Update tracker if player died, is married and tracker should update
-            if (Game1.killScreen == true && Game1.player.isMarried() == true && updatedeath == true)
+            if (Game1.killScreen == true && Game1.player.isMarried() == true && update.updatedeath == true)
             {
                 // Increment tracker
                 data.Value.DeathCountMarried++;
 
                 // Already updated, ensures tracker won't repeatedly increment
-                updatedeath = false;
+                update.updatedeath = false;
 
                 // Display trace information in SMAPI log
                 if (config.ResetDeathCountMarriedWhenDivorced == true)
@@ -42,21 +38,21 @@ namespace CustomTokens
                 }
             }
 
-            else if (Game1.killScreen == false && updatedeath == false)
+            else if (Game1.killScreen == false && update.updatedeath == false)
             {
                 // Tracker should be updated next death
-                updatedeath = true;
+                update.updatedeath = true;
             }
 
             // Has player passed out?
-            else if (updatepassout == true && (Game1.timeOfDay == 2600 || Game1.player.stamina <= -15))
+            else if (update.updatepassout == true && (Game1.timeOfDay == 2600 || Game1.player.stamina <= -15))
             {
                 // Yes, update tracker
 
                 // Increment tracker
                 data.Value.PassOutCount++;
                 // Already updated, ensures tracker won't repeatedly increment
-                updatepassout = false;
+                update.updatepassout = false;
 
                 // Display trace information in SMAPI log
                 if (data.Value.PassOutCount > 20)
@@ -70,12 +66,12 @@ namespace CustomTokens
 
             }
 
-            else if (Game1.timeOfDay == 2610 && updatepassout == false)
+            else if (Game1.timeOfDay == 2610 && update.updatepassout == false)
             {
                 // Decrement tracker, player can stay up later
                 data.Value.PassOutCount--;
                 // Already updated, ensures tracker won't repeatedly decrement
-                updatepassout = true;
+                update.updatepassout = true;
                 // Display trace information in SMAPI log
                 monitor.Log($"Nevermind, {Game1.player.Name} has actually passed out {data.Value.PassOutCount} time(s). Aren't you getting tired?");
             }

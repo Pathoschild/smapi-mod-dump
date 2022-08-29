@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://github.com/Yariazen/BuildableGreenhouse
+** Source repository: https://github.com/Yariazen/YariazenMods
 **
 *************************************************/
 

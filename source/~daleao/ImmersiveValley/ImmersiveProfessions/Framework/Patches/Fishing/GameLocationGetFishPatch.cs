@@ -17,16 +17,12 @@ using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
-using SUtility = StardewValley.Utility;
 
 #endregion using directives
 
@@ -56,10 +52,10 @@ internal sealed class GameLocationGetFishPatch : DaLion.Common.Harmony.HarmonyPa
         var startOfFishRoll = generator.DefineLabel();
         var shouldntReroll = generator.DefineLabel();
         var hasRerolled = generator.DeclareLocal(typeof(bool));
-        var shuffleMethod = typeof(SUtility).GetMethods().Where(mi => mi.Name == "Shuffle").ElementAtOrDefault(1);
+        var shuffleMethod = typeof(StardewValley.Utility).GetMethods().Where(mi => mi.Name == "Shuffle").ElementAtOrDefault(1);
         if (shuffleMethod is null)
         {
-            Log.E($"Failed to acquire {typeof(SUtility)}::Shuffle method.");
+            Log.E($"Failed to acquire {typeof(StardewValley.Utility)}::Shuffle method.");
             return null;
         }
 
@@ -110,7 +106,7 @@ internal sealed class GameLocationGetFishPatch : DaLion.Common.Harmony.HarmonyPa
     #region private methods
 
     private static bool ShouldRerollFish(Farmer who, int currentFish, bool hasRerolled) =>
-        (currentFish is > 166 and < 173 || ModEntry.Config.SeaweedIsJunk && currentFish.IsAlgae())
+        (currentFish is > 166 and < 173 || ModEntry.Config.SeaweedIsTrash && currentFish.IsAlgaeIndex())
                && who.CurrentTool is FishingRod rod
                && rod.getBaitAttachmentIndex() != MAGNET_INDEX_I
                && who.HasProfession(Profession.Fisher) && !hasRerolled;

@@ -1,0 +1,13 @@
+{
+  "Name": "Meme outfits",
+  "Author": "Mehidden",
+  "Version": "1.2.1",
+  "Description": "This adds some meeme outfits.",
+  "UniqueID": "Mehidden.MemeOutfits",
+  "UpdateKeys": [ "Nexus:13213" ],
+  "Dependencies": [],
+  "ContentPackFor": {
+    "UniqueID": "PeacefulEnd.FashionSense",
+    "MinimumVersion": "4.5.1"
+  }
+}

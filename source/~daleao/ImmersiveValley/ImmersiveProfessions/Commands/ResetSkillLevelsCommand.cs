@@ -14,11 +14,9 @@ namespace DaLion.Stardew.Professions.Commands;
 
 using Common;
 using Common.Commands;
-using Common.Integrations;
+using Common.Integrations.SpaceCore;
 using Extensions;
 using Framework;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Linq;
@@ -34,7 +32,7 @@ internal sealed class ResetSkillLevelsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "reset_levels";
+    public override string[] Triggers { get; } = { "reset_levels", "reset_skills" };
 
     /// <inheritdoc />
     public override string Documentation =>
@@ -102,25 +100,26 @@ internal sealed class ResetSkillLevelsCommand : ConsoleCommand
                     if (ModEntry.Config.ForgetRecipesOnSkillReset && skill < Skill.Luck)
                         Game1.player.ForgetRecipesForSkill(skill);
                 }
-                else if (ModEntry.CustomSkills.Values.Any(s =>
-                             string.Equals(s.DisplayName, arg, StringComparison.CurrentCultureIgnoreCase)))
+                else
                 {
-                    var customSkill = ModEntry.CustomSkills.Values.Single(s =>
+                    var customSkill = ModEntry.CustomSkills.Values.FirstOrDefault(s =>
                         string.Equals(s.DisplayName, arg, StringComparison.CurrentCultureIgnoreCase));
+                    if (customSkill is null)
+                    {
+                        Log.W($"Ignoring unknown skill {arg}.");
+                        continue;
+                    }
+
                     ModEntry.SpaceCoreApi!.AddExperienceForCustomSkill(Game1.player, customSkill.StringId,
                         -customSkill.CurrentExp);
 
-                    var newLevels = ExtendedSpaceCoreAPI.GetCustomSkillNewLevels();
-                    ExtendedSpaceCoreAPI.SetCustomSkillNewLevels(newLevels
+                    var newLevels = ExtendedSpaceCoreAPI.GetCustomSkillNewLevels.Value();
+                    ExtendedSpaceCoreAPI.SetCustomSkillNewLevels.Value(newLevels
                         .Where(pair => pair.Key != customSkill.StringId).ToList());
 
                     if (ModEntry.Config.ForgetRecipesOnSkillReset &&
                         customSkill.StringId == "blueberry.LoveOfCooking.CookingSkill")
                         Game1.player.ForgetRecipesForLoveOfCookingSkill();
-                }
-                else
-                {
-                    Log.W($"Ignoring unknown skill {arg}.");
                 }
         }
     }

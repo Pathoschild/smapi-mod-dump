@@ -1,0 +1,10 @@
+{
+    "messages.qs_ItemShipped": "{{itemStack}} {{itemName}} in den Versandbehälter geschickt!",
+
+    "config.qs_SellKey_name": "Verkaufs-Taste",
+    "config.qs_SellKey_tooltip": "Welche(s) Tasten verwendet werden sollen, um Gegenstände zum Versandbehälter zu transferieren.",
+    "config.qs_CheckIfItemsCanBeShipped_name": "Prüfen, ob Gegenstände verschickt werden können",
+    "config.qs_CheckIfItemsCanBeShipped_tooltip": "Verhindert Versuche, nicht verschickbare Gegenstände zum Versandbehälter zu transferieren.",
+    "config.qs_EnableHUDMessages_name": "HUD-Meldungen aktivieren",
+    "config.qs_EnableHUDMessages_tooltip": "Jedes Mal eine Meldung anzeigen, wenn ein Gegenstand verschickt wird."
+}

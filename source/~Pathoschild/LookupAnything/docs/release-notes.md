@@ -10,6 +10,14 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed item lookup 'needed for' not listing bundles which use categories.
+* Fixed item lookup error if a mod added broken building data.
+* Internal optimizations.
+
+## 1.37.4
+Released 18 August 2022 for SMAPI 3.14.0 or later.
+
+* Fixed child birthday calculation (thanks to iBug!).
 * Improved translations. Thanks to LeecanIt (updated Italian)!
 
 ## 1.37.3

@@ -13,7 +13,18 @@ using System;
 
 namespace Shockah.CommonModCode.UI
 {
-	public enum UIAnchorSide { TopLeft, Top, TopRight, Left, Center, Right, BottomLeft, Bottom, BottomRight }
+	public enum UIAnchorSide
+	{
+		TopLeft,
+		Top,
+		TopRight,
+		Left,
+		Center,
+		Right,
+		BottomLeft,
+		Bottom,
+		BottomRight
+	}
 
 	public readonly struct UIAnchor
 	{

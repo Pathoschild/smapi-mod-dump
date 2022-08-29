@@ -11,7 +11,6 @@
 namespace StardewMods.Common.Integrations.EasyAccess;
 
 using System.Collections.Generic;
-using StardewModdingAPI;
 
 /// <summary>
 ///     API for Easy Access.

@@ -13,7 +13,8 @@ using System;
 
 namespace Shockah.CommonModCode.Stardew
 {
-	public enum GiftTaste {
+	public enum GiftTaste
+	{
 		Hate = -2,
 		Dislike = -1,
 		Neutral = 0,

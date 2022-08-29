@@ -50,13 +50,14 @@ namespace RidgesideVillage
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             SpaceEvents.OnEventFinished += OnEventFinished;
-            SpaceEvents.OnItemEaten += OnItemEaten;
+            //SpaceEvents.OnItemEaten += OnItemEaten;
 
             helper.Events.Content.AssetRequested += OnAssetRequested;
 
             BgUtils.Initialize(this);
 
             TortsBackground.Initialize(this);
+            SummitRenovateMenu.Initialize(this);
 
             BloomProjectile.Initialize(this);
             MistProjectile.Initialize(this);
@@ -73,6 +74,8 @@ namespace RidgesideVillage
 
             SpecialOrders.Initialize(this);
 
+            Questing.QuestController.Initialize(this);
+
             IanShop.Initialize(this);
 
             Elves.Initialize(this);
@@ -81,7 +84,7 @@ namespace RidgesideVillage
 
             Loan.Initialize(this);
 
-            //SummitHouse.Initialize(this);
+            SummitHouse.Initialize(this);
 
             WarpTotem.Initialize(this);
 
@@ -94,6 +97,7 @@ namespace RidgesideVillage
             NinjaBooks.Initialize(this);
 
             Foxbloom.Initialize(this);
+
 
             //not done (yet?)
             //new CliffBackground();
@@ -239,27 +243,12 @@ namespace RidgesideVillage
             }
             catch (Exception e)
             {
-                Log.Debug($"Failed to load config settings. Will use default settings instead. Error: {e}");
+                Log.Debug($"RSV: Failed to load config settings. Will use default settings instead. Error details:\n{e}");
                 Config = new ModConfig();
             }
 
 
             SpiritShrine = new SpiritShrine(this);
-
-
-            //mark greenhouses as greenhouses, so trees can be planted
-            List<string> locationsNames = new List<string>() { "Custom_Ridgeside_AguarCaveTemporary", "Custom_Ridgeside_RSVGreenhouse1", "Custom_Ridgeside_RSVGreenhouse2" };
-            foreach (var name in locationsNames)
-            {
-                GameLocation location = Game1.getLocationFromName(name);
-                if (location == null)
-                {
-                    Log.Trace($"{name} is null");
-                    continue;
-                }
-                location.isGreenhouse.Value = true;
-                Log.Trace($"{name} set to greenhouse");
-            }
 
             //remove corrupted Fire SO if the player shouldnt have it
             var team = Game1.player.team;

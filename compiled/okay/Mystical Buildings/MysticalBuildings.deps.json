@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "MysticalBuildings/1.2.0": {
+      "MysticalBuildings/1.2.1": {
         "dependencies": {
           "Pathoschild.Stardew.ModBuildConfig": "4.0.1"
         },
@@ -18,7 +18,7 @@
     }
   },
   "libraries": {
-    "MysticalBuildings/1.2.0": {
+    "MysticalBuildings/1.2.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

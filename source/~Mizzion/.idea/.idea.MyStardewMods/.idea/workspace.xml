@@ -58,9 +58,20 @@
     <projectFile>FerngillHelper/FerngillHelper.csproj</projectFile>
     <projectFile>FerngillCommunityKeepers/FerngillCommunityKeepers.csproj</projectFile>
     <projectFile>BankOfFerngill/BankOfFerngill.csproj</projectFile>
+    <projectFile>CropReviver/CropReviver.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67c047ae-a02a-4eda-b158-c149f3b99db7" name="Changes" comment="" />
+    <list default="true" id="67c047ae-a02a-4eda-b158-c149f3b99db7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MyStardewMods/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MyStardewMods/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankOfFerngill/Framework/Menu/BankTabbedMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BankOfFerngill/Framework/Menu/BankTabbedMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankOfFerngill/Framework/Menu/Pages/BankInfoPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BankOfFerngill/Framework/Menu/Pages/BankInfoPage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankOfFerngill/Framework/Menu/Pages/DepositPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BankOfFerngill/Framework/Menu/Pages/DepositPage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/EnhancedRelationships.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/EnhancedRelationships.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/ModConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/ModConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/Properties/AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EnhancedRelationships/EnhancedRelationships/packages.config" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,6 +83,10 @@
         <option value="JSON File" />
       </list>
     </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/BankOfFerngill/ModEntry.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BankOfFerngill/i18n/default.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -282,6 +297,24 @@
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
       <option name="PROJECT_PATH" value="$PROJECT_DIR$/Configure-Machine-Outputs/ConfigureMachineOutputs/ConfigureMachineOutputs.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="Console" />
+      <option name="PROJECT_TFM" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="CropReviver" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/CropReviver/CropReviver.csproj" />
       <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
       <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
       <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
@@ -950,7 +983,16 @@
       <updated>1658191870954</updated>
       <workItem from="1658191954367" duration="35801000" />
       <workItem from="1658405709784" duration="20000" />
-      <workItem from="1658405782316" duration="105743000" />
+      <workItem from="1658405782316" duration="119879000" />
+      <workItem from="1659009493122" duration="7398000" />
+      <workItem from="1659054603674" duration="768000" />
+      <workItem from="1659055617749" duration="4262000" />
+      <workItem from="1659093414231" duration="18621000" />
+      <workItem from="1659139150347" duration="10127000" />
+      <workItem from="1659227779672" duration="470000" />
+      <workItem from="1659261159023" duration="6186000" />
+      <workItem from="1659306122610" duration="12412000" />
+      <workItem from="1659346593062" duration="12133000" />
     </task>
     <servers />
   </component>
@@ -959,6 +1001,17 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

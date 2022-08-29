@@ -8,13 +8,9 @@
 **
 *************************************************/
 
-using System;
 using System.Diagnostics;
 using DecidedlyShared.Logging;
-using Microsoft.Xna.Framework;
-using Netcode;
 using SmartBuilding.APIs;
-using DecidedlyShared.Logging;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -25,14 +21,15 @@ namespace SmartBuilding.Utilities
 {
     public class IdentificationUtils
     {
-        private IModHelper helper;
-        private Logger logger;
+        private readonly IDynamicGameAssetsApi? dgaApi;
+        private readonly IModHelper helper;
+        private readonly Logger logger;
         private ModConfig config;
-        private IDynamicGameAssetsApi? dgaApi;
         private IMoreFertilizersAPI? moreFertilizersApi;
         private PlacementUtils placementUtils;
-        
-        public IdentificationUtils(IModHelper helper, Logger logger, ModConfig config, IDynamicGameAssetsApi? dgaApi, IMoreFertilizersAPI? moreFertilizersApi, PlacementUtils placementUtils)
+
+        public IdentificationUtils(IModHelper helper, Logger logger, ModConfig config, IDynamicGameAssetsApi? dgaApi,
+                                   IMoreFertilizersAPI? moreFertilizersApi, PlacementUtils placementUtils)
         {
             this.helper = helper;
             this.logger = logger;
@@ -65,45 +62,34 @@ namespace SmartBuilding.Utilities
 
         public ProducerType IdentifyProducer(SObject o)
         {
-            ProducerType type = ProducerType.NotAProducer;
+            var type = ProducerType.NotAProducer;
 
             // If aedenthorn's Prismatic Fire mod is installed, we want to check for the presence of a torch.
-            if (helper.ModRegistry.IsLoaded("aedenthorn.PrismaticFire"))
-            {
+            if (this.helper.ModRegistry.IsLoaded("aedenthorn.PrismaticFire"))
                 if (o is Torch || o is Fence)
                 {
                     // It's a torch or a fence, so we need to determine, firstly, if it's a torch.
                     if (o is Fence)
                     {
                         // It's a fence, so we grab a reference to it.
-                        Fence fence = (Fence)o;
+                        var fence = (Fence)o;
 
                         if (fence.heldObject.Value != null)
-                        {
                             if (fence.heldObject.Value is Torch)
-                            {
-
                                 // It's a torch, so we return appropriately.
-
                                 return ProducerType.TechnicallyNotAProducerButIsATorch;
-                            }
-                        }
                     }
                     else
-                    {
                         // We know it isn't a fence, but that it is a torch, so we simply need to return appropriately.
-
                         return ProducerType.TechnicallyNotAProducerButIsATorch;
-                    }
 
                     return ProducerType.NotAProducer;
                 }
-            }
 
             if (o.Category == -9 && o.Type.Equals("Crafting"))
             {
                 // We know this matches the two things all producers (both vanilla and PFM) have in common, so now we can move on to figuring out exactly what type of producer we're looking at.
-                string producerName = o.Name;
+                string? producerName = o.Name;
 
                 // Now, the most efficient thing to do will be to attempt to find only the vanilla machines which do not deduct automatically, as everything else, vanilla and PFM, deducts automatically.
                 switch (producerName)
@@ -162,53 +148,38 @@ namespace SmartBuilding.Utilities
         public bool DoesObjectContainModData(SObject obj, string search)
         {
             if (obj != null && obj.modData != null)
-            {
-                foreach (var modData in obj.modData)
-                {
-                    foreach (var key in modData.Keys)
-                    {
-                        foreach (var value in modData.Values)
-                        {
-                            if (key.Contains(search) || value.Contains(search))
-                                return true;
-                        }
-                    }
-                }
-            }
-            
+                foreach (SerializableDictionary<string, string>? modData in obj.modData)
+                foreach (string? key in modData.Keys)
+                foreach (string? value in modData.Values)
+                    if (key.Contains(search) || value.Contains(search))
+                        return true;
+
             return false;
         }
-        
+
         public bool DoesTerrainFeatureContainModData(TerrainFeature tf, string search)
         {
-            Stopwatch timer = new Stopwatch();
-            
+            var timer = new Stopwatch();
+
             timer.Start();
             if (tf != null && tf.modData != null)
-            {
-                foreach (var modData in tf.modData)
-                {
-                    foreach (var key in modData.Keys)
-                    {
-                        foreach (var value in modData.Values)
-                        {
-                            if (key.Contains(search) || value.Contains(search))
-                                return true;
-                        }
-                    }
-                }
-            }
+                foreach (SerializableDictionary<string, string>? modData in tf.modData)
+                foreach (string? key in modData.Keys)
+                foreach (string? value in modData.Values)
+                    if (key.Contains(search) || value.Contains(search))
+                        return true;
+
             timer.Stop();
-            
-            logger.Log($"Took {timer.ElapsedMilliseconds}ms to search modData.", LogLevel.Trace);
-            
+
+            this.logger.Log($"Took {timer.ElapsedMilliseconds}ms to search modData.", LogLevel.Trace);
+
             return false;
         }
 
         public bool IsTypeOfObject(SObject o, ItemType type)
         {
             // We try to identify what kind of object we've been passed.
-            ItemType oType = IdentifyItemType(o);
+            var oType = this.IdentifyItemType(o);
 
             return oType == type;
         }
@@ -217,7 +188,7 @@ namespace SmartBuilding.Utilities
         {
             if (item == null)
                 return ItemType.NotPlaceable;
-            
+
             // Tools do not have a .Name property.
             if (item is Tool)
                 return ItemType.NotPlaceable;
@@ -226,39 +197,40 @@ namespace SmartBuilding.Utilities
             // seed packet, and picking that up with Smart Building is bad.
             if (item.Category == 0 && item.Name.Equals("Chest"))
                 return ItemType.NotPlaceable;
-            
-            string itemName = item.Name;
+
+            string? itemName = item.Name;
 
             // The whole point of this is to determine whether the object being placed requires special treatment.
             if (item.Name.Equals("Torch") && item.Category.Equals(0) && item.Type.Equals("Crafting"))
                 return ItemType.Torch;
-            else if (!item.isPlaceable())
+            if (!item.isPlaceable())
                 return ItemType.NotPlaceable;
-            else if (item is FishTankFurniture)
+            if (item is FishTankFurniture)
                 return ItemType.FishTankFurniture;
-            else if (item is StorageFurniture)
+            if (item is StorageFurniture)
                 return ItemType.StorageFurniture;
-            else if (item is BedFurniture)
+            if (item is BedFurniture)
                 return ItemType.BedFurniture;
-            else if (item is TV)
+            if (item is TV)
                 return ItemType.TvFurniture;
-            else if (item is Furniture)
+            if (item is Furniture)
                 return ItemType.GenericFurniture;
-            else if (itemName.Contains("Floor") || itemName.Contains("Path") && item.Category == -24)
+            if (itemName.Contains("Floor") || (itemName.Contains("Path") && item.Category == -24))
                 return ItemType.Floor;
-            else if (itemName.Contains("Chest") || item is Chest)
+            if (itemName.Contains("Chest") || item is Chest)
                 return ItemType.Chest;
-            else if (itemName.Contains("Fence"))
+            if (itemName.Contains("Fence"))
                 return ItemType.Fence;
-            else if (itemName.Equals("Gate") || item.ParentSheetIndex.Equals(325))
+            if (itemName.Equals("Gate") || item.ParentSheetIndex.Equals(325))
                 return ItemType.Fence;
-            else if (itemName.Equals("Grass Starter"))
+            if (itemName.Equals("Grass Starter"))
                 return ItemType.GrassStarter;
-            else if (itemName.Equals("Crab Pot"))
+            if (itemName.Equals("Crab Pot"))
                 return ItemType.CrabPot;
-            else if (item.Type == "Seeds" || item.Category == -74)
+            if (item.Type == "Seeds" || item.Category == -74)
             {
-                if (!item.Name.Contains("Sapling") && !item.Name.Equals("Acorn") && !item.Name.Equals("Maple Seed") && !item.Name.Equals("Pine Cone") && !item.Name.Equals("Mahogany Seed"))
+                if (!item.Name.Contains("Sapling") && !item.Name.Equals("Acorn") && !item.Name.Equals("Maple Seed") &&
+                    !item.Name.Equals("Pine Cone") && !item.Name.Equals("Mahogany Seed"))
                     return ItemType.Seed;
             }
             else if (item.Name.Equals("Tree Fertilizer"))
@@ -273,17 +245,15 @@ namespace SmartBuilding.Utilities
 
         public ItemInfo GetItemInfo(SObject item)
         {
-            ItemType itemType = IdentifyItemType(item);
+            var itemType = this.IdentifyItemType(item);
             bool isDgaItem = false;
 
-            if (dgaApi != null)
-            {
+            if (this.dgaApi != null)
                 // Check to see if the item is a DGA item.
-                if (dgaApi.GetDGAItemId(item) != null)
+                if (this.dgaApi.GetDGAItemId(item) != null)
                     isDgaItem = true;
-            }
 
-            return new ItemInfo()
+            return new ItemInfo
             {
                 Item = item,
                 ItemType = itemType,
@@ -292,7 +262,8 @@ namespace SmartBuilding.Utilities
         }
 
         /// <summary>
-        /// Get the flooring ID based on the item name passed in. Required for the <see cref="StardewValley.TerrainFeatures.Flooring"/> constructor.
+        ///     Get the flooring ID based on the item name passed in. Required for the
+        ///     <see cref="StardewValley.TerrainFeatures.Flooring" /> constructor.
         /// </summary>
         /// <param name="itemName"></param>
         /// <returns></returns>
@@ -332,7 +303,7 @@ namespace SmartBuilding.Utilities
         }
 
         /// <summary>
-        /// Get the name of <see cref="StardewValley.TerrainFeatures.Flooring"/> based on the ID passed in.
+        ///     Get the name of <see cref="StardewValley.TerrainFeatures.Flooring" /> based on the ID passed in.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -372,7 +343,7 @@ namespace SmartBuilding.Utilities
         }
 
         /// <summary>
-        /// Get the ID for the type of <see cref="StardewValley.Objects.Chest"/> passed in by name.
+        ///     Get the ID for the type of <see cref="StardewValley.Objects.Chest" /> passed in by name.
         /// </summary>
         /// <param name="itemName"></param>
         /// <returns></returns>

@@ -87,6 +87,10 @@ Whether to use the custom range for charged tool use as well. If enabled (true),
 
 Whether to let attacks ignore obstacles. Normally, you cannot hit monsters if there are obstructions like rocks or walls in the way, but this can result in awkward behavior when using an increased range for melee weapons (or even with the default range, you might just want to be able to hit monsters through rocks). Setting this to true will remove the obstacle check entirely.
 
+**DontCutGrassPastNormalRange (true or false)**
+
+This prevents grass from being cut by the scythe or melee weapons beyond their normal ranges, while still using extended range for things like weeds. You can enable this to avoid accidentally cutting grass you want to keep.
+
 **CustomRangeOnClickOnly (true or false)**
 
 By default (true), this mod only takes effect when pressing a "use tool" button that is a mouse button. If you want it to work even when pressing a keyboard or controller "use tool" button, set this option to false. This will cause it to try and target the current cursor position always, so it's not recommended if you aren't actively moving the mouse around.

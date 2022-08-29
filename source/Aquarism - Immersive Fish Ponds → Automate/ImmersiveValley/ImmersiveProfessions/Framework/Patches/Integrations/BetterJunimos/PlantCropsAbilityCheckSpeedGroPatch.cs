@@ -13,11 +13,11 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.BetterJunimo
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -25,19 +25,12 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("hawkfalcon.BetterJunimos")]
 internal sealed class PlantCropsAbilityCheckSpeedGroPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     internal PlantCropsAbilityCheckSpeedGroPatch()
     {
-        try
-        {
-            Target = "BetterJunimos.Abilities.PlantCropsAbility".ToType().RequireMethod("CheckSpeedGro");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "BetterJunimos.Abilities.PlantCropsAbility".ToType().RequireMethod("CheckSpeedGro");
     }
 
     #region harmony patches

@@ -459,7 +459,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="child">The child instance.</param>
         private string GetChildBirthdayString(Child child)
         {
-            int daysOld = -child.daysOld.Value;
+            int daysOld = child.daysOld.Value;
 
             try
             {

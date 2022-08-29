@@ -19,6 +19,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using xTile.Dimensions;
 
 namespace SpriteMaster.Harmonize.Patches.Game.Pathfinding;
 
@@ -86,6 +87,8 @@ internal static partial class Pathfinding {
 				[start] = startQueueLocation
 			};
 
+			var processedSet = new HashSet<QueueLocation>(locations.Count) {startQueueLocation};
+
 			queue.Enqueue(startQueueLocation, 0);
 
 			foreach (var location in Game1.locations) {
@@ -96,7 +99,7 @@ internal static partial class Pathfinding {
 				var queueLocation = new QueueLocation(location);
 
 				if (queueDataMap.TryAdd(location, queueLocation)) {
-					queue.Enqueue(queueLocation, int.MaxValue);
+					//queue.Enqueue(queueLocation, int.MaxValue);
 				}
 			}
 
@@ -109,6 +112,10 @@ internal static partial class Pathfinding {
 				}
 
 				var qLocation = queue.Dequeue();
+
+				if (filter.ContainsFast(qLocation.Location.Name)) {
+					continue;
+				}
 
 				// Once we've reached the end node, traverse in reverse over the previous instances, to build a route
 				if (ReferenceEquals(qLocation.Location, end)) {
@@ -130,14 +137,19 @@ internal static partial class Pathfinding {
 						return;
 					}
 
-					if (!queue.Contains(dataNode)) {
-						return;
-					}
-
 					// Calculate the distance
 					var nodeDistance = distance + 1;
 
-					if (nodeDistance < queue.GetPriority(dataNode)) {
+					if (!queue.Contains(dataNode)) {
+						if (!processedSet.Add(dataNode)) {
+							return;
+						}
+
+						dataNode.ListDistance = qLocation.ListDistance + 1;
+						dataNode.Previous = qLocation;
+						queue.Enqueue(dataNode, nodeDistance);
+					}
+					else if (nodeDistance < queue.GetPriority(dataNode)) {
 						dataNode.ListDistance = qLocation.ListDistance + 1;
 						dataNode.Previous = qLocation;
 						queue.UpdatePriority(dataNode, nodeDistance);
@@ -210,6 +222,10 @@ internal static partial class Pathfinding {
 
 		// Iterate over each location, performing a recursive Dijkstra traversal on each.
 		foreach (var location in Game1.locations) {
+			if (startLocation.Equals(location)) {
+				continue;
+			}
+
 			// If we've already found a path to this location, there is no reason to process it again.
 			if (!generalFound.Add(location.Name)) {
 				continue;

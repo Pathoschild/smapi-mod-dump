@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace Shockah.ProjectFluent
 {
-	public sealed class BuiltInGameLocale: IGameLocale
+	public sealed class BuiltInGameLocale : IGameLocale
 	{
 		internal LocalizedContentManager.LanguageCode BuiltInLanguageCode { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Shockah.ProjectFluent
 			=> LocaleCode;
 	}
 
-	public sealed class ModGameLocale: IGameLocale
+	public sealed class ModGameLocale : IGameLocale
 	{
 		internal ModLanguage Language { get; private set; }
 		public string LocaleCode => Language.LanguageCode;

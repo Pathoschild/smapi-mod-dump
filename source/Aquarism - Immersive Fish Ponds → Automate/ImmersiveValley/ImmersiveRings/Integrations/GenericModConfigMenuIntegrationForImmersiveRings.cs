@@ -12,8 +12,7 @@ namespace DaLion.Stardew.Rings.Integrations;
 
 #region using directives
 
-using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.GenericModConfigMenu;
 using System;
 
 #endregion using directives
@@ -54,7 +53,8 @@ internal sealed class GenericModConfigMenuIntegrationForImmersiveRings
                 {
                     config.RebalancedRings = value;
                     ModEntry.ModHelper.GameContent.InvalidateCache("Data/ObjectInformation");
-                })
+                }
+            )
             .AddCheckbox(
                 () => "Craftable Gemstone Rings",
                 () => "Adds new combat recipes for crafting gemstone rings.",

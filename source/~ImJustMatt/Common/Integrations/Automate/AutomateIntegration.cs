@@ -10,8 +10,6 @@
 
 namespace StardewMods.Common.Integrations.Automate;
 
-using StardewModdingAPI;
-
 /// <inheritdoc />
 internal class AutomateIntegration : ModIntegration<IAutomateApi>
 {
@@ -24,5 +22,6 @@ internal class AutomateIntegration : ModIntegration<IAutomateApi>
     public AutomateIntegration(IModRegistry modRegistry)
         : base(modRegistry, AutomateIntegration.ModUniqueId)
     {
+        // Nothing
     }
 }

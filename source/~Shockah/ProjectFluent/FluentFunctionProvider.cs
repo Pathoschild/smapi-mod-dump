@@ -20,7 +20,7 @@ namespace Shockah.ProjectFluent
 		IEnumerable<(IManifest mod, string name, FluentFunction function)> GetFluentFunctions();
 	}
 
-	internal class SerialFluentFunctionProvider: IFluentFunctionProvider
+	internal class SerialFluentFunctionProvider : IFluentFunctionProvider
 	{
 		private IFluentFunctionProvider[] Providers { get; set; }
 
@@ -38,7 +38,7 @@ namespace Shockah.ProjectFluent
 		}
 	}
 
-	internal class BuiltInFluentFunctionProvider: IFluentFunctionProvider
+	internal class BuiltInFluentFunctionProvider : IFluentFunctionProvider
 	{
 		private IManifest ProjectFluentMod { get; set; }
 		private IModRegistry ModRegistry { get; set; }

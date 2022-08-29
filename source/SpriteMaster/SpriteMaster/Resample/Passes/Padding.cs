@@ -14,60 +14,61 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Resample.Passes;
 
 internal static class Padding {
 	private static readonly Color16 PadConstant = Color16.Zero;
 
-	private record struct PaddingParameters(Vector2I PaddedSize, int ExpectedPadding, Vector2B HasPaddingX, Vector2B HasPaddingY, Vector2B SolidEdgeX, Vector2B SolidEdgeY);
+	[StructLayout(LayoutKind.Auto)]
+	private record struct PaddingParameters(
+		Vector2I PaddedSize,
+		int ExpectedPadding,
+		QuadB HasPadding,
+		QuadB SolidEdge
+	);
 
-	private static bool GetPaddingParameters(Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Analysis.LegacyResults analysis, out PaddingParameters parameters) {
+	private static PaddingParameters? GetPaddingParameters(
+		Vector2I spriteSize,
+		uint scale,
+		SpriteInfo input,
+		bool forcePadding,
+		in Analysis.LegacyResults analysis
+	) {
 		if (!Config.Resample.Padding.Enabled) {
-			parameters = new();
-			return false;
+			return null;
 		}
 
-		var hasPaddingX = Vector2B.True;
-		var hasPaddingY = Vector2B.True;
-
-		Vector2B solidEdgeX = (
-			analysis.RepeatX | analysis.Wrapped.X | spriteSize.Width <= 1
-		);
-
-		Vector2B solidEdgeY = (
-			analysis.RepeatY | analysis.Wrapped.Y | spriteSize.Height <= 1
+		QuadB hasPadding = QuadB.True;
+		QuadB solidEdge = (
+			new(analysis.Repeat.Horizontal | analysis.Wrapped.X | spriteSize.Width <= 1),
+			new(analysis.Repeat.Vertical | analysis.Wrapped.Y | spriteSize.Height <= 1)
 		);
 
 		if (!Config.Resample.Padding.PadSolidEdges) {
-			hasPaddingX = solidEdgeX.Invert;
-			hasPaddingY = solidEdgeY.Invert;
+			hasPadding = solidEdge.Invert;
 		}
 
 		if (Config.Resample.Padding.AlwaysList.AnyF(prefix => input.Reference.NormalizedName().StartsWith(prefix))) {
-			hasPaddingX = Vector2B.True;
-			hasPaddingY = Vector2B.True;
+			hasPadding = QuadB.True;
 		}
 
 		int minTexels = Config.Resample.Padding.MinimumSizeTexels;
 
-		if ((hasPaddingX.Any || hasPaddingY.Any) && (spriteSize.X <= minTexels && spriteSize.Y <= minTexels)) {
-			hasPaddingX = Vector2B.False;
-			hasPaddingY = Vector2B.False;
+		if (hasPadding.Any && (spriteSize.X <= minTexels && spriteSize.Y <= minTexels)) {
+			hasPadding = QuadB.False;
 		}
-		else if ((hasPaddingX.Any || hasPaddingY.Any) && (Config.Resample.Padding.IgnoreUnknown && !input.Reference.Anonymous())) {
-			hasPaddingX = Vector2B.False;
-			hasPaddingY = Vector2B.False;
+		else if (hasPadding.Any && (Config.Resample.Padding.IgnoreUnknown && !input.Reference.Anonymous())) {
+			hasPadding = QuadB.False;
 		}
 
 		if (forcePadding) {
-			hasPaddingX = Vector2B.True;
-			hasPaddingY = Vector2B.True;
+			hasPadding = QuadB.True;
 		}
 
-		if (hasPaddingX.None && hasPaddingY.None) {
-			parameters = new();
-			return false;
+		if (hasPadding.None) {
+			return null;
 		}
 
 		// TODO we only need to pad the edge that has texels. Double padding is wasteful.
@@ -77,61 +78,65 @@ internal static class Padding {
 
 		int clampDimension = Config.ClampDimension;
 
-		if (hasPaddingX.X) {
+		if (hasPadding.Left) {
 			if ((paddedSpriteSize.X + expectedPadding) * scale > clampDimension) {
-				hasPaddingX.X = false;
+				hasPadding.Left = false;
 			}
 			else {
 				paddedSpriteSize.X += expectedPadding;
 			}
 		}
 
-		if (hasPaddingX.Y) {
+		if (hasPadding.Right) {
 			if ((paddedSpriteSize.X + expectedPadding) * scale > clampDimension) {
-				hasPaddingX.Y = false;
+				hasPadding.Right = false;
 			}
 			else {
 				paddedSpriteSize.X += expectedPadding;
 			}
 		}
 
-		if (hasPaddingY.X) {
+		if (hasPadding.Top) {
 			if ((paddedSpriteSize.Y + expectedPadding) * scale > clampDimension) {
-				hasPaddingY.X = false;
+				hasPadding.Top = false;
 			}
 			else {
 				paddedSpriteSize.Y += expectedPadding;
 			}
 		}
 
-		if (hasPaddingY.Y) {
+		if (hasPadding.Bottom) {
 			if ((paddedSpriteSize.Y + expectedPadding) * scale > clampDimension) {
-				hasPaddingY.Y = false;
+				hasPadding.Bottom = false;
 			}
 			else {
 				paddedSpriteSize.Y += expectedPadding;
 			}
 		}
 
-		if (hasPaddingX.None && hasPaddingY.None) {
-			parameters = new();
-			return false;
+		if (hasPadding.None) {
+			return null;
 		}
 
-		parameters = new(
+		return new(
 			PaddedSize: paddedSpriteSize,
 			ExpectedPadding: expectedPadding,
-			HasPaddingX: hasPaddingX,
-			HasPaddingY: hasPaddingY,
-			SolidEdgeX: solidEdgeX,
-			SolidEdgeY: solidEdgeY
+			HasPadding: hasPadding,
+			SolidEdge: solidEdge
 		);
-
-		return true;
 	}
 
-	internal static Span<Color16> Apply(ReadOnlySpan<Color16> data, Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Analysis.LegacyResults analysis, out PaddingQuad padding, out Vector2I paddedSize) {
-		if (!GetPaddingParameters(spriteSize, scale, input, forcePadding, analysis, out var parameters)) {
+	internal static Span<Color16> Apply(
+		ReadOnlySpan<Color16> data,
+		Vector2I spriteSize,
+		uint scale,
+		SpriteInfo input,
+		bool forcePadding,
+		scoped in Analysis.LegacyResults analysis,
+		out PaddingQuad padding,
+		out Vector2I paddedSize
+	) {
+		if (GetPaddingParameters(spriteSize, scale, input, forcePadding, analysis) is not {} parameters) {
 			padding = PaddingQuad.Zero;
 			paddedSize = spriteSize;
 			return data.ToSpanUnsafe();
@@ -139,8 +144,7 @@ internal static class Padding {
 
 		var paddedSpriteSize = parameters.PaddedSize;
 		var expectedPadding = parameters.ExpectedPadding;
-		var hasPaddingX = parameters.HasPaddingX;
-		var hasPaddingY = parameters.HasPaddingY;
+		var hasPadding = parameters.HasPadding;
 
 		// The actual padding logic. If we get to this point, we are actually performing padding.
 
@@ -151,112 +155,111 @@ internal static class Padding {
 			int y = 0;
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			int GetCurrentRowOffset() => y * paddedSpriteSize.Width;
+
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			void WritePaddingY(Span<Color16> data) {
-				for (int i = 0; i < expectedPadding; ++i) {
-					var strideOffset = y * paddedSpriteSize.Width;
-					for (int x = 0; x < paddedSpriteSize.Width; ++x) {
-						data.At(strideOffset + x) = PadConstant;
-					}
-					++y;
+				for (int i = 0; i < expectedPadding; ++i, ++y) {
+					var strideOffset = GetCurrentRowOffset();
+					data.Slice(strideOffset, paddedSpriteSize.Width).Fill(PadConstant);
 				}
 			}
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			void WritePaddingX(Span<Color16> data, ref int xOffset) {
-				for (int x = 0; x < expectedPadding; ++x) {
-					data.At(xOffset++) = PadConstant;
-				}
+			int WritePaddingX(Span<Color16> data, int xOffset) {
+				data.Slice(xOffset, expectedPadding).Fill(PadConstant);
+				return expectedPadding;
 			}
 
-			if (hasPaddingY.X) {
+			if (hasPadding.Top) {
 				WritePaddingY(paddedData);
 			}
 
-			for (int i = 0; i < spriteSize.Height; ++i) {
+			for (int i = 0; i < spriteSize.Height; ++i, ++y) {
 				// Write a padded X line
-				var xOffset = y * paddedSpriteSize.Width;
+				var xOffset = GetCurrentRowOffset();
 
-				if (hasPaddingX.X) {
-					WritePaddingX(paddedData, ref xOffset);
+				if (hasPadding.Left) {
+					xOffset += WritePaddingX(paddedData, xOffset);
 				}
 				data.CopyTo(paddedData, i * spriteSize.Width, xOffset, spriteSize.Width);
 				xOffset += spriteSize.Width;
-				if (hasPaddingX.Y) {
-					WritePaddingX(paddedData, ref xOffset);
+				if (hasPadding.Right) {
+					xOffset += WritePaddingX(paddedData, xOffset);
 				}
-				++y;
 			}
 
-			if (hasPaddingY.Y) {
+			if (hasPadding.Bottom) {
 				WritePaddingY(paddedData);
 			}
 		}
 
-		int startingYOffset = parameters.HasPaddingY.X ? expectedPadding : 0;
-		int startingXOffset = parameters.HasPaddingX.X ? expectedPadding : 0;
+		Vector2I startingOffset = (
+			parameters.HasPadding.Left ? expectedPadding : 0,
+			parameters.HasPadding.Top ? expectedPadding : 0
+		);
 
 		// If we had solid edges that we are padding, copy the color (but not the alpha) over by one.
-		if (parameters.HasPaddingX.X && parameters.SolidEdgeX.X) {
+		if (parameters.HasPadding.Left && parameters.SolidEdge.Left) {
 			for (int y = 0; y < spriteSize.Height; ++y) {
-				int yOffset = (y + startingYOffset) * paddedSpriteSize.Width;
+				int yOffset = (y + startingOffset.Y) * paddedSpriteSize.Width;
+				int offset = yOffset + startingOffset.X;
 
-				var src = paddedData.At(yOffset + startingXOffset);
-				src.A = 128;
-				paddedData.At(yOffset + startingXOffset - 1) = src;
+				paddedData[offset - 1] = paddedData[offset] with { A = 128 };
 			}
 		}
-		if (parameters.HasPaddingX.Y && parameters.SolidEdgeX.Y) {
+		if (parameters.HasPadding.Right && parameters.SolidEdge.Right) {
 			for (int y = 0; y < spriteSize.Height; ++y) {
-				int yOffset = (y + startingYOffset) * paddedSpriteSize.Width;
+				int yOffset = (y + startingOffset.Y) * paddedSpriteSize.Width;
 
-				int xSrcOffset = startingXOffset + spriteSize.Width - 1;
+				int xSrcOffset = startingOffset.X + spriteSize.Width - 1;
 
-				var src = paddedData.At(yOffset + xSrcOffset);
-				src.A = 128;
-				paddedData.At(yOffset + xSrcOffset + 1) = src;
+				int offset = yOffset + xSrcOffset;
+
+				paddedData[offset + 1] = paddedData[offset] with { A = 128 };
 			}
 		}
 
-		if (parameters.HasPaddingY.X && parameters.SolidEdgeY.X) {
-			Vector2B withXPadding = parameters.HasPaddingX & parameters.SolidEdgeX;
+		if (parameters.HasPadding.Top && parameters.SolidEdge.Top) {
+			Vector2B withXPadding = parameters.HasPadding.Horizontal & parameters.SolidEdge.Horizontal;
 
-			int ySrcOffset = startingYOffset * paddedSpriteSize.Width;
-			int yDstOffset = (startingYOffset - 1) * paddedSpriteSize.Width;
+			int ySrcOffset = startingOffset.Y * paddedSpriteSize.Width;
+			int yDstOffset = (startingOffset.Y - 1) * paddedSpriteSize.Width;
 
 			int xOffset = withXPadding.X ? -1 : 0;
 			int widthAdd = withXPadding.All ? 2 : withXPadding.Any ? 1 : 0;
 
 			for (int x = 0; x < spriteSize.Width + widthAdd; ++x) {
-				var src = paddedData.At(ySrcOffset + startingXOffset + xOffset + x);
-				src.A = 128;
-				paddedData.At(yDstOffset + startingXOffset + xOffset + x) = src;
+				int offset = startingOffset.X + xOffset + x;
+
+				paddedData[yDstOffset + offset] = paddedData[ySrcOffset + offset] with {A = 128};
 			}
 		}
 
-		if (parameters.HasPaddingY.Y && parameters.SolidEdgeY.Y) {
-			Vector2B withXPadding = parameters.HasPaddingX & parameters.SolidEdgeX;
+		if (parameters.HasPadding.Bottom && parameters.SolidEdge.Bottom) {
+			Vector2B withXPadding = parameters.HasPadding.Horizontal & parameters.SolidEdge.Horizontal;
 
-			int ySrcOffset = (startingYOffset + spriteSize.Y - 1) * paddedSpriteSize.Width;
-			int yDstOffset = (startingYOffset + spriteSize.Y) * paddedSpriteSize.Width;
+			int ySrcOffset = (startingOffset.Y + spriteSize.Y - 1) * paddedSpriteSize.Width;
+			int yDstOffset = (startingOffset.Y + spriteSize.Y) * paddedSpriteSize.Width;
 
 			int xOffset = withXPadding.X ? -1 : 0;
 			int widthAdd = withXPadding.All ? 2 : withXPadding.Any ? 1 : 0;
 
 			for (int x = 0; x < spriteSize.Width + widthAdd; ++x) {
-				var src = paddedData.At(ySrcOffset + startingXOffset + xOffset + x);
-				src.A = 128;
-				paddedData.At(yDstOffset + startingXOffset + xOffset + x) = src;
+				int offset = startingOffset.X + xOffset + x;
+
+				paddedData[yDstOffset + offset] = paddedData[ySrcOffset + offset] with { A = 128 }; ;
 			}
 		}
 
 		padding = new PaddingQuad(
 			new Vector2I(
-				parameters.HasPaddingX.X ? expectedPadding : 0,
-				parameters.HasPaddingX.Y ? expectedPadding : 0
+				parameters.HasPadding.Left ? expectedPadding : 0,
+				parameters.HasPadding.Right ? expectedPadding : 0
 			) * scale,
 			new Vector2I(
-				parameters.HasPaddingY.X ? expectedPadding : 0,
-				parameters.HasPaddingY.Y ? expectedPadding : 0
+				parameters.HasPadding.Top ? expectedPadding : 0,
+				parameters.HasPadding.Bottom ? expectedPadding : 0
 			) * scale
 		);
 		paddedSize = paddedSpriteSize;

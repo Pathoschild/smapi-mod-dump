@@ -48,7 +48,7 @@ namespace MobilePhone
 
         private static MobileApp GetApp()
         {
-            return new MobileApp("Mobile Phone", OpenPhoneBook, appIcon);
+            return new MobileApp(Helper.Translation.Get("mobile-phone"), OpenPhoneBook, appIcon);
         }
 
         public static void OpenPhoneBook()

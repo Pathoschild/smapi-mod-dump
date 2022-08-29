@@ -14,9 +14,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 using Common.Events;
 using Common.Extensions;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 #endregion using directives
 
@@ -38,6 +36,6 @@ internal sealed class AchievementUnlockedDayStartedEvent : DayStartedEvent
         Game1.playSound("achievement");
         Game1.addHUDMessage(new(name, true));
 
-        Unhook();
+        Disable();
     }
 }

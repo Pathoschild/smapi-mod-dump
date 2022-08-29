@@ -77,7 +77,7 @@ namespace SolidFoundations.Framework.Models.Backport
         public string BuildingType;
 
         [ContentSerializer(Optional = true)]
-        public string Builder = "Carpenter";
+        public string Builder = "Robin";
 
         [ContentSerializer(Optional = true)]
         public string BuildCondition;
@@ -93,6 +93,9 @@ namespace SolidFoundations.Framework.Models.Backport
 
         [ContentSerializer(Optional = true)]
         public string BuildingToUpgrade;
+
+        [ContentSerializer(Optional = true)]
+        public bool MagicalConstruction;
 
         public List<string> ValidBuildLocations;
 

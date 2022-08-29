@@ -12,12 +12,10 @@ namespace StardewMods.BetterChests.Features;
 
 using System.Collections.Generic;
 using System.Linq;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewMods.BetterChests.Helpers;
 using StardewMods.Common.Enums;
 using StardewMods.Common.Integrations.BetterChests;
-using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 
@@ -26,31 +24,29 @@ using StardewValley.Menus;
 /// </summary>
 internal class StashToChest : IFeature
 {
+    private static StashToChest? Instance;
+
+    private readonly ModConfig _config;
+    private readonly IModHelper _helper;
+
+    private bool _isActivated;
+
     private StashToChest(IModHelper helper, ModConfig config)
     {
-        this.Helper = helper;
-        this.Config = config;
+        this._helper = helper;
+        this._config = config;
     }
 
-    private static IEnumerable<IStorageObject> Eligible
-    {
-        get =>
-            from storage in StorageHelper.All
-            where storage.StashToChest != FeatureOptionRange.Disabled
-                  && storage.StashToChestDisableLocations?.Contains(Game1.player.currentLocation.Name) != true
-                  && !(storage.StashToChestDisableLocations?.Contains("UndergroundMine") == true && Game1.player.currentLocation is MineShaft mineShaft && mineShaft.Name.StartsWith("UndergroundMine"))
-                  && storage.Parent is not null
-                  && RangeHelper.IsWithinRangeOfPlayer(storage.StashToChest, storage.StashToChestDistance, storage.Parent, storage.Position)
-            select storage;
-    }
-
-    private static StashToChest? Instance { get; set; }
-
-    private ModConfig Config { get; }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
+    private static IEnumerable<IStorageObject> Eligible =>
+        from storage in Storages.All
+        where storage.StashToChest is not (FeatureOptionRange.Disabled or FeatureOptionRange.Default)
+           && storage.StashToChestDisableLocations?.Contains(Game1.player.currentLocation.Name) != true
+           && !(storage.StashToChestDisableLocations?.Contains("UndergroundMine") == true
+             && Game1.player.currentLocation is MineShaft mineShaft
+             && mineShaft.Name.StartsWith("UndergroundMine"))
+           && storage.Source is not null
+           && storage.StashToChest.WithinRangeOfPlayer(storage.StashToChestDistance, storage.Source, storage.Position)
+        select storage;
 
     /// <summary>
     ///     Initializes <see cref="StashToChest" />.
@@ -66,52 +62,61 @@ internal class StashToChest : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            if (IntegrationHelper.ToolbarIcons.IsLoaded)
-            {
-                IntegrationHelper.ToolbarIcons.API.AddToolbarIcon(
-                    "BetterChests.StashToChest",
-                    "furyx639.BetterChests/Icons",
-                    new(16, 0, 16, 16),
-                    I18n.Button_StashToChest_Name());
-                IntegrationHelper.ToolbarIcons.API.ToolbarIconPressed += StashToChest.OnToolbarIconPressed;
-            }
-
-            this.Helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
-            this.Helper.Events.Input.ButtonPressed += StashToChest.OnButtonPressed;
+            return;
         }
+
+        this._isActivated = true;
+        this._helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
+        this._helper.Events.Input.ButtonPressed += StashToChest.OnButtonPressed;
+
+        if (!Integrations.ToolbarIcons.IsLoaded)
+        {
+            return;
+        }
+
+        Integrations.ToolbarIcons.API.AddToolbarIcon(
+            "BetterChests.StashToChest",
+            "furyx639.BetterChests/Icons",
+            new(16, 0, 16, 16),
+            I18n.Button_StashToChest_Name());
+        Integrations.ToolbarIcons.API.ToolbarIconPressed += StashToChest.OnToolbarIconPressed;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            if (IntegrationHelper.ToolbarIcons.IsLoaded)
-            {
-                IntegrationHelper.ToolbarIcons.API.RemoveToolbarIcon("BetterChests.StashToChest");
-                IntegrationHelper.ToolbarIcons.API.ToolbarIconPressed -= StashToChest.OnToolbarIconPressed;
-            }
-
-            this.Helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
-            this.Helper.Events.Input.ButtonPressed -= StashToChest.OnButtonPressed;
+            return;
         }
+
+        this._isActivated = false;
+        this._helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
+        this._helper.Events.Input.ButtonPressed -= StashToChest.OnButtonPressed;
+
+        if (!Integrations.ToolbarIcons.IsLoaded)
+        {
+            return;
+        }
+
+        Integrations.ToolbarIcons.API.RemoveToolbarIcon("BetterChests.StashToChest");
+        Integrations.ToolbarIcons.API.ToolbarIconPressed -= StashToChest.OnToolbarIconPressed;
     }
 
     private static void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
-        if (e.Button is not SButton.MouseLeft || Game1.activeClickableMenu is not ItemGrabMenu { context: { } context } itemGrabMenu)
+        if (e.Button is not SButton.MouseLeft
+         || Game1.activeClickableMenu is not ItemGrabMenu { context: { } context } itemGrabMenu)
         {
             return;
         }
 
         var (x, y) = Game1.getMousePosition(true);
         if (itemGrabMenu.fillStacksButton?.containsPoint(x, y) == true
-            && StorageHelper.TryGetOne(context, out var storage)
-            && storage.StashToChest != FeatureOptionRange.Disabled)
+         && Storages.TryGetOne(context, out var storage)
+         && storage.StashToChest is not (FeatureOptionRange.Disabled or FeatureOptionRange.Default))
         {
             StashToChest.StashIntoStorage(storage);
         }
@@ -149,13 +154,14 @@ internal class StashToChest : IFeature
 
         for (var index = 0; index < Game1.player.MaxItems; index++)
         {
-            if (Game1.player.Items[index] is null || Game1.player.Items[index].modData.ContainsKey("furyx639.BetterChests/LockedSlot"))
+            if (Game1.player.Items[index] is null
+             || Game1.player.Items[index].modData.ContainsKey("furyx639.BetterChests/LockedSlot"))
             {
                 continue;
             }
 
             var stack = Game1.player.Items[index].Stack;
-            var tmp = storage.StashItem(Game1.player.Items[index], storage.StashToChestStacks != FeatureOption.Disabled);
+            var tmp = storage.StashItem(Game1.player.Items[index], storage.StashToChestStacks is FeatureOption.Enabled);
             if (tmp is null)
             {
                 Game1.player.Items[index] = null;
@@ -169,25 +175,29 @@ internal class StashToChest : IFeature
 
     private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (!this.Config.ControlScheme.StashItems.JustPressed())
+        if (!this._config.ControlScheme.StashItems.JustPressed())
+        {
+            return;
+        }
+
+        // Stash to All
+        if (Context.IsPlayerFree)
+        {
+            StashToChest.StashIntoAll();
+            this._helper.Input.SuppressActiveKeybinds(this._config.ControlScheme.StashItems);
+            return;
+        }
+
+        if (Game1.activeClickableMenu is not ItemGrabMenu
+         || BetterItemGrabMenu.Context?.StashToChest is null
+                                                        or FeatureOptionRange.Disabled
+                                                        or FeatureOptionRange.Default)
         {
             return;
         }
 
         // Stash to Current
-        if (Game1.activeClickableMenu is ItemGrabMenu { context: { } context }
-            && StorageHelper.TryGetOne(context, out var storage)
-            && storage.StashToChest != FeatureOptionRange.Disabled)
-        {
-            StashToChest.StashIntoStorage(storage);
-            return;
-        }
-
-        // Stash to all
-        if (Context.IsPlayerFree)
-        {
-            StashToChest.StashIntoAll();
-            this.Helper.Input.SuppressActiveKeybinds(this.Config.ControlScheme.StashItems);
-        }
+        StashToChest.StashIntoStorage(BetterItemGrabMenu.Context);
+        this._helper.Input.SuppressActiveKeybinds(this._config.ControlScheme.StashItems);
     }
 }

@@ -12,12 +12,11 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
-using Common.Data;
 using Common.Events;
 using Extensions;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using System.Linq;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -32,11 +31,10 @@ internal sealed class SlimeInflationUpdateTickedEvent : UpdateTickedEvent
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        var uninflated = ModEntry.PlayerState.PipedSlimes.Where(c => !ModDataIO.ReadFrom<bool>(c, "DoneInflating"))
-            .ToArray();
-        if (uninflated.Length <= 0)
+        var uninflated = GreenSlime_Piped.Values.Select(pair => pair.Key).Where(slime => !slime.get_Inflated()).ToArray();
+        if (uninflated.Length == 0)
         {
-            Unhook();
+            Disable();
             return;
         }
 

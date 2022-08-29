@@ -123,7 +123,7 @@ namespace BankOfFerngill.Framework.Menu
                 }
                 else
                 {
-                    _monitor.Log($"The Ok button was null.");
+                    _monitor.Log("The Ok button was null.");
                 }
             }
         }

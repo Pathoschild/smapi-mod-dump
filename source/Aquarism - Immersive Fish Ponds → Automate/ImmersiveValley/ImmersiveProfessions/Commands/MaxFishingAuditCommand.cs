@@ -15,9 +15,7 @@ namespace DaLion.Stardew.Professions.Commands;
 using Common.Commands;
 using Common.Extensions;
 using Framework;
-using JetBrains.Annotations;
 using StardewModdingAPI.Utilities;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +31,11 @@ internal sealed class MaxFishingAuditCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "fishingdex_complete";
+    public override string[] Triggers { get; } = { "fishdex_complete", "set_fishdex" };
 
     /// <inheritdoc />
-    public override string Documentation => $"Set all fish to seen and caught at max-size. Relevant for {Profession.Angler}s.";
+    public override string Documentation =>
+        $"Set all fish to seen and caught at max-size. Relevant for {Profession.Angler}s.";
 
     /// <inheritdoc />
     public override void Callback(string[] args)

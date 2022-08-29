@@ -14,9 +14,7 @@ namespace DaLion.Stardew.Arsenal.Framework.Events;
 
 using Common.Events;
 using Enchantments;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Tools;
 
 #endregion using directives
@@ -27,7 +25,10 @@ internal sealed class ArsenalSavedEvent : SavedEvent
     /// <summary>Construct an instance.</summary>
     /// <param name="manager">The <see cref="EventManager"/> instance that manages this event.</param>
     internal ArsenalSavedEvent(EventManager manager)
-        : base(manager) { }
+        : base(manager)
+    {
+        AlwaysEnabled = true;
+    }
 
     /// <inheritdoc />
     protected override void OnSavedImpl(object? sender, SavedEventArgs e)

@@ -1,14 +1,16 @@
 {
-  "GridModeActiveByDefault": true,
-  "GridCenterPlayerKey": "Home",
-  "GridUpKey": "W",
-  "GridRightKey": "D",
-  "GridDownKey": "S",
-  "GridLeftKey": "A",
-  "MovementTypeToggle": "I",
-  "TrackingModeRead": "Home",
-  "TrackingModeCycleUp": "PageUp",
-  "TrackingModeCycleDown": "PageDown",
-  "TrackingModeGetTile": "End",
-  "TrackingToggleSortingMode": "OemTilde"
+  "GridMovementActive": true,
+  "ToggleGridMovementKey": "I",
+  "GridMovementOverrideKey": "LeftControl",
+  "OTCycleUpCategory": "LeftControl + PageUp",
+  "OTCycleDownCategory": "LeftControl + PageDown",
+  "OTCycleUpObject": "PageUp",
+  "OTCycleDownObject": "PageDown",
+  "OTMoveToSelectedObject": "LeftControl + Home",
+  "OTReadSelectedObject": "Home",
+  "OTReadSelectedObjectTileLocation": "End",
+  "OTCancelAutoWalking": "Escape",
+  "OTSwitchSortingMode": "OemTilde",
+  "OTReadSelectedObjectText": "{object} is {direction} {distance} at {objectX}-{objectY}, player at {playerX}-{playerY}",
+  "OTReadSelectedObjectTileText": "{object} at {objectX}-{objectY}, player at {playerX}-{playerY}"
 }

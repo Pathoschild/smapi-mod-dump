@@ -13,6 +13,7 @@
     ** Sort button
     *********/
     "sort.by-name": "İsme",
+    "sort.by-price": "Sell Price", // TODO
     "sort.by-type": "Kategoriye",
     "sort.by-id": "ID'ye",
 

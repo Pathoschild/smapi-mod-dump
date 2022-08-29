@@ -10,8 +10,6 @@
 
 namespace StardewMods.Common.Integrations.ToolbarIcons;
 
-using StardewModdingAPI;
-
 /// <inheritdoc />
 internal class ToolbarIconsIntegration : ModIntegration<IToolbarIconsApi>
 {
@@ -24,5 +22,6 @@ internal class ToolbarIconsIntegration : ModIntegration<IToolbarIconsApi>
     public ToolbarIconsIntegration(IModRegistry modRegistry)
         : base(modRegistry, ToolbarIconsIntegration.ModUniqueId)
     {
+        // Nothing
     }
 }

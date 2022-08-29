@@ -28,6 +28,7 @@ internal sealed class DoubleBuffer<T> {
 	// https://stackoverflow.com/questions/16713076/array-bounds-check-efficiency-in-net-4-and-above
 	private readonly T Buffer0;
 	private readonly T Buffer1;
+	private readonly T[] UnorderedBothArray;
 
 	private uint CurrentBufferIndex = StartingIndex;
 
@@ -41,6 +42,8 @@ internal sealed class DoubleBuffer<T> {
 	internal T this[int index] => GetBuffer((uint)index);
 	internal T this[uint index] => GetBuffer(index);
 
+	internal ReadOnlySpan<T> UnorderedBoth => UnorderedBothArray;
+
 	internal (T, T) Both {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		get {
@@ -52,10 +55,13 @@ internal sealed class DoubleBuffer<T> {
 		}
 	}
 
+
+
 	internal (T, T) All => Both;
 	internal DoubleBuffer(in T element0, in T element1) {
 		Buffer0 = element0;
 		Buffer1 = element1;
+		UnorderedBothArray = new[] { element0, element1 };
 		Thread.MemoryBarrier();
 	}
 

@@ -47,7 +47,7 @@ internal static class Setup {
 
 		// https://github.com/spacechase0/StardewValleyMods/tree/develop/GenericModConfigMenu#for-c-mod-authors
 
-		if (SpriteMaster.Self.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu") is not {} configApi) {
+		if (SpriteMaster.Self.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu") is not { } configApi) {
 			Debug.Trace("Could not acquire GenericModConfigMenu interface");
 			return;
 		}
@@ -244,7 +244,7 @@ internal static class Setup {
 			realValue *= SizeOrder(1024, prefixResult.Value.Order);
 			resultValue = realValue.RoundToLong();
 		}
-		else { 
+		else {
 			return ThrowHelper.ThrowFormatException<long>($"Could not parse '{value}' as a numeric value");
 		}
 
@@ -506,7 +506,7 @@ internal static class Setup {
 
 		names.Value.Reverse();
 
-		return string.Join('.', names);
+		return string.Join('.', names.Value);
 	}
 
 	private static bool IsCategoryValid(Serialize.Category category, bool advanced) {
@@ -598,13 +598,13 @@ internal static class Setup {
 			}
 		}
 
-		PreviewScene.Tick();
+		PreviewScene.Tick(in PreviewOverride);
 		PreviewScene.Draw(batch, in PreviewOverride);
 	}
 
 	private static void ProcessCategory(Serialize.Category? parent, Serialize.Category category, bool advanced, IManifest manifest, IGenericModConfigMenuApi config, bool first = false) {
 		bool isRoot = parent is null;
-		
+
 		if (isRoot && advanced) {
 			config.AddPage(
 				mod: manifest,

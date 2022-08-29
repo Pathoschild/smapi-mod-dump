@@ -16,9 +16,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using StardewModdingAPI;
 using StardewMods.Common.Integrations.BetterChests;
-using StardewValley;
 
 /// <inheritdoc cref="StardewMods.Common.Integrations.BetterChests.IItemMatcher" />
 internal class ItemMatcher : ObservableCollection<string>, IItemMatcher
@@ -45,12 +43,14 @@ internal class ItemMatcher : ObservableCollection<string>, IItemMatcher
         set
         {
             this.Clear();
-            if (!string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
-                foreach (var item in Regex.Split(value, @"\s+"))
-                {
-                    this.Add(item);
-                }
+                return;
+            }
+
+            foreach (var item in Regex.Split(value, @"\s+"))
+            {
+                this.Add(item);
             }
         }
     }

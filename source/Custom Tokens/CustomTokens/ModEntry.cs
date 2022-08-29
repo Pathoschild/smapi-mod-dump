@@ -30,6 +30,13 @@ namespace CustomTokens
         void RegisterToken(IManifest mod, string name, object token);
     }
 
+    public class Update
+    {
+        public bool updatedeath = false;
+
+        public bool updatepassout = false;
+    }
+
     public class ModEntry 
         : Mod
     {
@@ -42,6 +49,8 @@ namespace CustomTokens
 
         private static readonly string[] tokens = { "DeathCountMarried", "PassOutCount", "QuestsCompleted" };
 
+        public static Update update = new Update();
+
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -53,6 +62,7 @@ namespace CustomTokens
             helper.Events.GameLoop.Saving += this.Saving;
             helper.Events.GameLoop.ReturnedToTitle += this.Title;
             helper.Events.GameLoop.DayStarted += this.DayStarted;
+            helper.Events.Multiplayer.ModMessageReceived += this.MessageReceived;
 
             // Read the mod config for values and create one if one does not currently exist
             this.config = this.Helper.ReadConfig<ModConfig>();
@@ -455,8 +465,8 @@ namespace CustomTokens
                 : 0;
 
             // Reset booleans for new day
-            DeathAndExhaustionTokens.updatepassout = true;
-            DeathAndExhaustionTokens.updatedeath = true;
+            update.updatepassout = true;
+            update.updatedeath = true;
             this.Monitor.Log($"Trackers set to update");
            
             // Get days married
@@ -512,7 +522,7 @@ namespace CustomTokens
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
         {    
             // Update death or pass out tokens if needed
-            DeathAndExhaustionTokens.UpdateDeathAndExhaustionTokens(this.Helper, this.Monitor, ModEntry.perScreen, this.config);
+            DeathAndExhaustionTokens.UpdateDeathAndExhaustionTokens(this.Helper, this.Monitor, ModEntry.perScreen, this.config, update);
             // Check if any special orders have been completed
             QuestData.CheckForCompletedSpecialOrders(ModEntry.perScreen, this.Monitor);
 
@@ -567,6 +577,18 @@ namespace CustomTokens
             {
                 ModEntry.perScreen.Value.QuestsCompleted.Clear();               
                 this.Monitor.Log("Clearing Quest data, ready for new save");
+            }
+        }
+
+        // For compatibility with The Spirit World, one of my personal mods
+        private void MessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            if (e.FromModID == "TheMightyAmondee.SpiritWorld" && e.Type == "falsealarm")
+            {
+                Update message = e.ReadAs<Update>();
+                update.updatedeath = message.updatedeath;
+                this.Monitor.Log("Fixing token values...");
+                this.Monitor.Log(ModEntry.perScreen.Value.DeathCountMarried.ToString());
             }
         }
 

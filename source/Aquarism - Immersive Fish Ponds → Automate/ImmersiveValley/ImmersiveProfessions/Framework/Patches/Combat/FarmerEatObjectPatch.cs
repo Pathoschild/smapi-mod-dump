@@ -13,8 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -33,7 +32,7 @@ internal sealed class FarmerEatObjectPatch : DaLion.Common.Harmony.HarmonyPatch
     [HarmonyPrefix]
     private static bool FarmerEatObjectPrefix()
     {
-        if (ModEntry.PlayerState.RegisteredUltimate?.IsActive != true) return true; // run original logic
+        if (Game1.player.get_IsUltimateActive().Value) return true; // run original logic
 
         Game1.playSound("cancel");
         Game1.showRedMessage(ModEntry.i18n.Get("ulti.canteat"));

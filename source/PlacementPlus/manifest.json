@@ -11,7 +11,7 @@
 {
   "Name":              "PlacementPlus",
   "Author":            "2Retr0",
-  "Version":           "1.1.1",
+  "Version":           "1.2.0",
   "Description":       "Vastly broadens where objects and buildings can be placed!",
   "UniqueID":          "2Retr0.PlacementPlus",
   "EntryDll":          "PlacementPlus.dll",

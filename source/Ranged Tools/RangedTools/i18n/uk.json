@@ -82,6 +82,9 @@
 	"optionAttacksIgnoreObstaclesName": "Attacks Ignore Obstacles", // todo
 	"optionAttacksIgnoreObstaclesTooltip": "Allows attacks to hit monsters even if there are obstacles in the way.", // todo
 	
+	"optionDontCutGrassName": "Don't Cut Grass At Range", // todo
+	"optionDontCutGrassTooltip": "Prevents scythes and weapons from cutting grass beyond the normal range (but still cutting weeds and such).", // todo
+	
 	"optionOnClickOnlyName": "Користувацький діапазон при натисканні",
 	"optionOnClickOnlyTooltip": "Якщо ввімкнено, розширені діапазони застосовуються лише під час використання інструментів за допомогою натискання. Якщо вимкнено, вони застосовуватимуться для всіх типів використання інструментів.",
 }

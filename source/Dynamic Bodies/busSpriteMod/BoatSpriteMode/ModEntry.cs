@@ -171,7 +171,7 @@ namespace BoatSpriteMode
 
 		public static bool pre_draw_islandsouth(IslandSouth __instance, SpriteBatch b)
 		{
-			ExecuteGameLocationReversePatch((IslandLocation)__instance, b); //base.draw(b);
+			ExecuteIslandLocationReversePatch((IslandLocation)__instance, b); //base.draw(b);
 
 			float[] offsets = new float[] { 0, 1, 1, 2, 1, 1, 0, -1, -1, 0 };
 			Vector2 waterbob = Vector2.Zero;

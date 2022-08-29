@@ -11,8 +11,6 @@
 namespace StardewMods.Common.Integrations;
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using StardewModdingAPI;
 
 /// <summary>Provides an integration point for using external mods' APIs.</summary>
 /// <typeparam name="T">Interface for the external mod's API.</typeparam>
@@ -29,24 +27,19 @@ internal abstract class ModIntegration<T>
     {
         this.ModRegistry = modRegistry;
         this.UniqueId = modUniqueId;
-        this.Version = string.IsNullOrWhiteSpace(modVersion)
-            ? null
-            : modVersion;
+        this.Version = string.IsNullOrWhiteSpace(modVersion) ? null : modVersion;
         this._modAPI = new(() => this.ModRegistry.GetApi<T>(this.UniqueId));
     }
 
     /// <summary>Gets the Mod's API through SMAPI's standard interface.</summary>
-    protected internal T? API
-    {
-        get => this.IsLoaded ? this._modAPI.Value : default;
-    }
+    protected internal T? API => this.IsLoaded ? this._modAPI.Value : default;
 
     /// <summary>Gets a value indicating whether the mod is loaded.</summary>
     [MemberNotNullWhen(true, nameof(ModIntegration<T>.API))]
-    protected internal bool IsLoaded
-    {
-        get => this.ModRegistry.IsLoaded(this.UniqueId) && (this.Version is null || this.ModRegistry.Get(this.UniqueId)?.Manifest.Version.IsOlderThan(this.Version) == true);
-    }
+    protected internal bool IsLoaded => this.ModRegistry.IsLoaded(this.UniqueId)
+                                     && (this.Version is null
+                                      || this.ModRegistry.Get(this.UniqueId)?.Manifest.Version.IsOlderThan(this.Version)
+                                      == true);
 
     /// <summary>
     ///     Gets the Unique Id for this mod.

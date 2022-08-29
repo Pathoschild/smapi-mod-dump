@@ -13,16 +13,14 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 #region using directives
 
 using DaLion.Common;
-using DaLion.Common.Data;
 using DaLion.Common.Extensions.Reflection;
+using DaLion.Common.Extensions.Stardew;
 using DaLion.Common.Harmony;
 using Events.GameLoop.DayEnding;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Sounds;
-using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Tools;
 using System;
@@ -32,7 +30,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using Ultimates;
-using SObject = StardewValley.Object;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -42,8 +40,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
     /// <summary>Construct an instance.</summary>
     internal GameLocationDamageMonsterPatch()
     {
-        Target = RequireMethod<GameLocation>(nameof(GameLocation.damageMonster),
-            new[]
+        Target = RequireMethod<GameLocation>(nameof(GameLocation.damageMonster), new[]
             {
                 typeof(Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int),
                 typeof(float), typeof(float), typeof(bool), typeof(Farmer)
@@ -135,11 +132,11 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
                 .Advance()
                 .Insert(
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.PlayerState))),
+                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.State))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.BruteRageCounter))),
+                        typeof(ModState).RequirePropertyGetter(nameof(ModState.BruteRageCounter))),
                     new CodeInstruction(OpCodes.Conv_R4),
-                    new CodeInstruction(OpCodes.Ldc_R4, UndyingFrenzy.PCT_INCREMENT_PER_RAGE_F),
+                    new CodeInstruction(OpCodes.Ldc_R4, Frenzy.PCT_INCREMENT_PER_RAGE_F),
                     new CodeInstruction(OpCodes.Mul),
                     new CodeInstruction(OpCodes.Add)
                 );
@@ -152,7 +149,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
         }
 
         /// From: if (who is not null && crit && who.professions.Contains(<desperado_id>) ... *= 2f;
-        /// To: if (who is not null && who.IsLocalPlayer && crit && ModEntry.PlayerState.RegisteredUltimate is Ambush ambush && ambush.ShouldBuffCritPow()) ... *= 2f;
+        /// To: if (who is not null && who.IsLocalPlayer && crit && who.get_Ultimate() is Ambush ambush && ambush.ShouldBuffCritPow()) ... *= 2f;
 
         var ambush = generator.DeclareLocal(typeof(Ambush));
         try
@@ -184,10 +181,9 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
                 .Advance()
                 .Insert(
                     // check for ambush
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)10),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.PlayerState))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.RegisteredUltimate))),
+                        typeof(Farmer_Ultimate).RequireMethod(nameof(Farmer_Ultimate.get_Ultimate))),
                     new CodeInstruction(OpCodes.Isinst, typeof(Ambush)),
                     new CodeInstruction(OpCodes.Stloc_S, ambush),
                     new CodeInstruction(OpCodes.Ldloc_S, ambush),
@@ -259,14 +255,13 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
         if (damageAmount <= 0 || isBomb || !who.IsLocalPlayer) return;
 
         var r = new Random(Guid.NewGuid().GetHashCode());
-
+        var ultimate = who.get_Ultimate();
         // record last time in combat
         if (who.HasProfession(Profession.Brute))
         {
-            ModEntry.PlayerState.SecondsOutOfCombat = 0;
+            ModEntry.State.SecondsOutOfCombat = 0;
 
-            if (who.CurrentTool is MeleeWeapon weapon &&
-                ModEntry.PlayerState.RegisteredUltimate is UndyingFrenzy frenzy && monster.Health <= 0)
+            if (who.CurrentTool is MeleeWeapon weapon && ultimate is Frenzy frenzy && monster.Health <= 0)
             {
                 if (frenzy.IsActive)
                 {
@@ -277,7 +272,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
                     //    new(who.getStandingX() + 8, who.getStandingY()), Color.Lime, 1f, who));
 
                     // increment kill count
-                    ++ModEntry.PlayerState.BruteKillCounter;
+                    ++ModEntry.State.BruteKillCounter;
                 }
                 else
                 {
@@ -292,7 +287,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
         {
             if (who.CurrentTool is MeleeWeapon && didCrit)
             {
-                if (!ModDataIO.ReadFrom<bool>(monster, "Stolen") &&
+                if (!monster.Read<bool>("Stolen") &&
                     Game1.random.NextDouble() < 0.2)
                 {
                     var drops = monster.objectsToDrop.Select(o => new SObject(o, 1) as Item)
@@ -301,7 +296,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
                     if (itemToSteal is not null && !itemToSteal.Name.Contains("Error") &&
                         who.addItemToInventoryBool(itemToSteal))
                     {
-                        ModDataIO.WriteTo(monster, "Stolen", bool.TrueString);
+                        monster.Write("Stolen", bool.TrueString);
 
                         // play sound effect
                         SFX.PoacherSteal.Play();
@@ -317,16 +312,24 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
                 }
 
                 // increment Poacher ultimate meter
-                if (ModEntry.PlayerState.RegisteredUltimate is Ambush { IsActive: false } ambush1)
+                if (ultimate is Ambush { IsActive: false } ambush1)
                     ambush1.ChargeValue += critMultiplier;
             }
 
-            if (ModEntry.PlayerState.RegisteredUltimate is Ambush ambush2)
+            if (ultimate is Ambush ambush2)
             {
-                if (ambush2.IsActive)
-                    ambush2.Deactivate();
-                else if (monster.Health <= 0 && ModEntry.PlayerState.SecondsOutOfAmbush <= 1.5d)
-                    ambush2.Activate();
+                switch (ambush2.IsActive)
+                {
+                    case true when monster.Health <= 0:
+                        ambush2.Reset();
+                        break;
+                    case true:
+                        ambush2.Deactivate();
+                        break;
+                    case false when monster.Health <= 0 && ambush2.SecondsOutOfAmbush <= 1.5d:
+                        ambush2.Activate();
+                        break;
+                }
             }
         }
 
@@ -335,7 +338,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
         // add Piper buffs
         if (r.NextDouble() < 0.16667 + who.DailyLuck / 2.0)
         {
-            var applied = ModEntry.PlayerState.AppliedPiperBuffs;
+            var applied = ModEntry.State.AppliedPiperBuffs;
             var whatToBuff = r.Next(applied.Length);
             if (whatToBuff is not (3 or 6))
             {
@@ -382,7 +385,7 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
                     )
                 });
 
-                ModEntry.EventManager.Hook<PiperDayEndingEvent>();
+                ModEntry.Events.Enable<PiperDayEndingEvent>();
             }
         }
 
@@ -399,17 +402,16 @@ internal sealed class GameLocationDamageMonsterPatch : DaLion.Common.Harmony.Har
         }
 
         // increment ultimate meter
-        if (ModEntry.PlayerState.RegisteredUltimate is Pandemic { IsActive: false } pandemic)
+        if (ultimate is Concerto { IsActive: false } concerto)
         {
-#pragma warning disable CS8509
             var increment = monster switch
-#pragma warning restore CS8509
             {
                 GreenSlime slime => 4 * slime.Scale,
                 BigSlime => 8,
+                _ => 0
             };
 
-            pandemic.ChargeValue += increment + r.Next(-2, 3);
+            concerto.ChargeValue += increment + r.Next(-2, 3);
         }
     }
 

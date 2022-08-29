@@ -16,9 +16,11 @@ using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Resample;
+using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -69,7 +71,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		if (texture is RenderTarget2D && (
 				StardewValley.GameRunner.instance.gameInstances.AnyF(game => texture == game.screen || texture == game.uiScreen) ||
 				texture.Name is ("UI Screen" or "Screen") ||
-				texture.Meta().IsSystemRenderTarget
+				meta.IsSystemRenderTarget
 			)
 		) {
 			if (!meta.TracePrinted) {
@@ -323,7 +325,11 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		return false;
 	}
 
-	internal static ManagedSpriteInstance? FetchOrCreate(XTexture2D texture, Bounds source, uint expectedScale, bool sliced) {
+	private static readonly ThreadLocal<Stopwatch> FetchStopwatch = new(() => new());
+
+	internal static ManagedSpriteInstance? FetchOrCreate(XTexture2D texture, Bounds source, uint expectedScale, bool sliced, out bool allowCache) {
+		allowCache = true;
+
 		if (!Config.IsEnabled || !Config.Resample.IsEnabled) {
 			return null;
 		}
@@ -332,10 +338,19 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			return null;
 		}
 
+		var textureMeta = texture.Meta();
+
+		// Is currentInstance referencing a texture-chain reference?
 		bool textureChain = false;
 		ManagedSpriteInstance? currentInstance = null;
 
-		if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture)) {
+		static bool ValidateInstance(ManagedSpriteInstance instance) {
+			return
+				!instance.IsDisposed &&
+				instance.IsPreview == (Configuration.Preview.Override.Instance is not null);
+		}
+
+		if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture) && ValidateInstance(scaleTexture)) {
 			if (scaleTexture.Invalidated) {
 				currentInstance = scaleTexture;
 				textureChain = true;
@@ -344,7 +359,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			{
 				case true:
 					return scaleTexture;
-				case false when scaleTexture.PreviousSpriteInstance is not null && scaleTexture.PreviousSpriteInstance.IsReady:
+				case false when scaleTexture.PreviousSpriteInstance is not null && scaleTexture.PreviousSpriteInstance.IsReady && ValidateInstance(scaleTexture.PreviousSpriteInstance):
 					currentInstance = scaleTexture.PreviousSpriteInstance;
 					textureChain = false;
 					break;
@@ -355,14 +370,25 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			}
 		}
 
-		if ((currentInstance?.NoResample ?? false) || texture.Meta().IsNoResample(source)) {
+		bool IsNoResample(ManagedSpriteInstance? instance) {
+			if (textureChain || instance is null) {
+				return false;
+			}
+
+			return instance.NoResample;
+		}
+
+		if (IsNoResample(currentInstance) || textureMeta.IsNoResample(source)) {
 			return null;
 		}
 
 		bool useStalling = Config.Resample.UseFrametimeStalling && !GameState.IsLoading;
 
-		bool useAsync = Config.AsyncScaling.Enabled && (Config.AsyncScaling.EnabledForUnknownTextures || !texture.Anonymous()) && (source.Area >= Config.AsyncScaling.MinimumSizeTexels);
-		// !texture.Meta().HasCachedData
+		bool useAsync =
+			Config.AsyncScaling.Enabled &&
+			(Config.AsyncScaling.EnabledForUnknownTextures || !texture.Anonymous()) &&
+			source.Area >= Config.AsyncScaling.MinimumSizeTexels;
+		// !textureMeta.HasCachedData
 
 		TimeSpan? remainingTime = null;
 		bool? isCached = null;
@@ -378,42 +404,65 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 
 		// TODO : We should really only populate the average when we are performing an expensive operation like GetData.
-		var watch = System.Diagnostics.Stopwatch.StartNew();
+		var watch = FetchStopwatch.Value!;
+		watch.Restart();
 
-		TextureType textureType;
-		if (sliced) {
-			textureType = TextureType.SlicedImage;
-		}
-		else if (!source.Offset.IsZero || source.Extent != texture.Extent()) {
-			textureType = TextureType.Sprite;
-		}
-		else {
-			textureType = TextureType.Image;
-		}
+		var textureType = (sliced, source != texture.Bounds()) switch {
+			(true, _) => TextureType.SlicedImage,
+			(false, true) => TextureType.Sprite,
+			_ => TextureType.Image
+		};
 
 		// TODO : break this up somewhat so that we can delay hashing for things by _one_ frame (still deterministic, but offset so we can parallelize the work).
 		// Presently, this cannot be done because the initializer is a 'ref struct' and is used immediately. If we want to check the suspended cache, it needs to be jammed away
 		// so the hashing can be performed before the next frame.
-		SpriteInfo.Initializer spriteInfoInitializer = new SpriteInfo.Initializer(
+		SpriteInfo.Initializer spriteInfoInitializer = new(
 			reference: texture,
 			dimensions: source,
 			expectedScale: expectedScale,
-			textureType: textureType,
-			animated: texture.Meta().IsAnimated(source)
+			textureType: textureType
 		);
+
+		void RestorePriority(ManagedSpriteInstance? instance) {
+			if (instance is not null && !instance.IsReady && instance.DeferredTask.TryGetTarget(out var task)) {
+				if (task.IsPriorityDowngraded) {
+					SynchronizedTaskScheduler.Instance.RestorePriority(task);
+				}
+				else {
+					SynchronizedTaskScheduler.Instance.Bump(task);
+				}
+			}
+		}
+
+		// If the currentInstance hash matches, assume it's the same and just set it as ours.
+		if (currentInstance is not null && currentInstance.SpriteInfoHash == spriteInfoInitializer.Hash) {
+			currentInstance.Invalidated = false;
+			SpriteMap.AddReplace(texture, currentInstance);
+
+			RestorePriority(currentInstance);
+			return currentInstance;
+		}
 
 		// Check for a suspended sprite instance that happens to match.
 		if (TryResurrect(in spriteInfoInitializer, out var resurrectedInstance)) {
+			if (currentInstance is not null && currentInstance != resurrectedInstance) {
+				currentInstance.Suspend();
+			}
+			RestorePriority(resurrectedInstance);
 			return resurrectedInstance;
 		}
 
+		// If there was a previous instance, return that for now.
 		if (!textureChain && currentInstance is not null) {
+			// It can be a previous sprite instance instead, so don't cache.
+			allowCache = false;
 			return currentInstance;
 		}
 
 		if (useStalling && DrawState.PushedUpdateWithin(0)) {
 			remainingTime = DrawState.RemainingFrameTime();
 			if (remainingTime <= TimeSpan.Zero) {
+				allowCache = false;
 				return currentInstance;
 			}
 
@@ -421,6 +470,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			isCached = cached;
 			if (estimatedDuration > TimeSpan.Zero && estimatedDuration > remainingTime) {
 				Debug.Trace($"Not enough frame time left to begin resampling {GetNameString()} ({estimatedDuration.TotalMilliseconds.ToString(DrawingColor.LightBlue)} ms >= {remainingTime?.TotalMilliseconds.ToString(DrawingColor.LightBlue)} ms)");
+				allowCache = false;
 				return currentInstance;
 			}
 		}
@@ -434,6 +484,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		// If this is null, it can only happen due to something being blocked, so we should try again later.
 		if (spriteInfoInitializer.ReferenceData is null) {
 			Debug.Trace($"Texture Data fetch for {GetNameString()} was {"blocked".Pastel(DrawingColor.Red)}; retrying later{GetRemainingTime()}");
+			allowCache = false;
 			return currentInstance;
 		}
 
@@ -441,14 +492,16 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 		try {
 			bool doDispatch = true;
-			var textureMeta = texture.Meta();
 			var currentRevision = textureMeta.Revision;
+
+			// Check if there is already an in-flight task for this instance.
+			// TODO : this logic feels duplicated - we can already query for the Instance, and it already holds a WeakReference to the task...
 			if (textureMeta.InFlightTasks.TryGetValue(source, out var inFlightTask)) {
 				doDispatch = inFlightTask.Revision != currentRevision || inFlightTask.ResampleTask.Status != TaskStatus.WaitingToRun;
 			}
 
 			Task<ManagedSpriteInstance> resampleTask;
-			if (!useAsync || doDispatch) {
+			if (doDispatch) {
 				resampleTask = ResampleTask.Dispatch(
 					spriteInfo: new(spriteInfoInitializer),
 					async: useAsync,
@@ -491,20 +544,37 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		SurfaceFormat.Color,
 		SurfaceFormat.Dxt5,
 		SurfaceFormat.Dxt5SRgb,
-		SurfaceFormat.Dxt3 // fonts
+		SurfaceFormat.Dxt3, // fonts
+		SurfaceFormat.Dxt3SRgb,
+		SurfaceFormat.Dxt1,
+		SurfaceFormat.Dxt1SRgb,
+		SurfaceFormat.Dxt1a
 	};
 
 	internal ManagedTexture2D? Texture = null;
 	internal readonly string Name;
-	internal Vector2F Scale;
+	private Vector2F ScaleInternal;
+
+	internal Vector2F ScaleReciprocal { get; private set; }
+	internal Vector2F Scale {
+		get => ScaleInternal;
+		private set {
+			ScaleInternal = value;
+			ScaleReciprocal = Vector2F.One / value;
+		}
+	}
+
 	internal readonly TextureType TexType;
-	private volatile bool IsReadyInternal = false;
-	internal bool IsReady => IsReadyInternal && Texture is not null;
+
+	private volatile bool IsLoaded = false;
+	internal bool IsReady => IsLoaded && Texture is not null;
+	internal readonly WeakReference<SynchronizedTaskScheduler.TextureActionTask> DeferredTask = new(null!);
 
 	internal readonly Vector2B Wrapped = Vector2B.False;
 
 	internal readonly WeakTexture Reference;
 	internal readonly Bounds OriginalSourceRectangle;
+	internal readonly ulong SpriteInfoHash = 0U;
 	internal readonly ulong Hash = 0U;
 
 	internal PaddingQuad Padding = PaddingQuad.Zero;
@@ -618,6 +688,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		};
 
 		// TODO store the HD Texture in _this_ object instead. Will confuse things like subtexture updates, though.
+		SpriteInfoHash = spriteInfo.Hash;
 		Hash = GetHash(spriteInfo, textureType);
 		Texture = Resampler.Upscale(
 			spriteInstance: this,
@@ -682,7 +753,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		Scale = (Vector2F)texture.Dimensions / (Vector2F)OriginalSize;
 
 		Thread.MemoryBarrier();
-		IsReadyInternal = true;
+		IsLoaded = true;
 		if (PreviousSpriteInstance is not null) {
 			PreviousSpriteInstance.Suspend(true);
 			PreviousSpriteInstance = null;
@@ -737,6 +808,12 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			Texture = null;
 		}
 		Dispose();
+	}
+
+	internal void DisposeSuspended() {
+		if (Suspended.CompareExchange(false, true) == true) {
+			Dispose();
+		}
 	}
 
 	public void Dispose() {
@@ -801,7 +878,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			return;
 		}
 
-		if (!IsReadyInternal || !Config.SuspendedCache.Enabled) {
+		if (!IsLoaded || !Config.SuspendedCache.Enabled) {
 			Dispose(clearChildrenIfDispose);
 			return;
 		}
@@ -833,12 +910,12 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			return false;
 		}
 
-		if (!IsReadyInternal || !Config.SuspendedCache.Enabled) {
+		if (!IsLoaded || !Config.SuspendedCache.Enabled) {
 			SuspendedSpriteCache.RemoveFast(this);
 			return false;
 		}
 
-		SuspendedSpriteCache.RemoveFast(this);
+		SuspendedSpriteCache.Resurrect(this);
 		Reference.SetTarget(texture);
 
 		SpriteMapHash = spriteMapHash;

@@ -8,11 +8,10 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.GenericModConfigMenu;
 
 #region using directives
 
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using System;
 

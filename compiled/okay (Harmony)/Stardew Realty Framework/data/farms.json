@@ -1,0 +1,91 @@
+[
+  {
+    "FarmType": 0,
+    "MapName": "Farm",
+    "PathPatches": {
+      "0": {
+        "PatchSide": 3,
+        "WarpIn": {
+          "NumberofPoints": 2,
+          "X": 0,
+          "Y": 17
+        },
+        "WarpOut": {
+          "NumberofPoints": 2,
+          "X": -1,
+          "Y": 17
+        },
+        "WarpOrientation": 0,
+        "PatchMapName": "farm_patch_0.tmx",
+        "MapPatchPointX": 0,
+        "MapPatchPointY": 15,
+        "PathBlockX": 2,
+        "PathBlockY": 18,
+		    "Sign": {
+        "UseSign": true,
+        "UseFront": false,
+        "Position": {
+          "X": 3,
+          "Y": 16
+        }
+      }
+
+      },
+      "1": {
+        "PatchSide": 3,
+        "WarpIn": {
+          "NumberofPoints": 3,
+          "X": 0,
+          "Y": 45
+        },
+        "WarpOut": {
+          "NumberofPoints": 3,
+          "X": -1,
+          "Y": 45
+        },
+        "WarpOrientation": 0,
+        "PatchMapName": "farm_patch_1.tmx",
+        "MapPatchPointX": 0,
+        "MapPatchPointY": 43,
+        "PathBlockX": 1,
+        "PathBlockY": 47,
+		    "Sign": {
+        "UseSign": true,
+        "UseFront": false,
+        "Position": {
+          "X": 3,
+          "Y": 44
+        }
+      }
+      }
+    }
+  },
+  {
+    "FarmType": 999999,
+    "WorldMapPatchPointX": 0,
+    "WorldMapPatchPointY": 0,
+    "MapName": "Backwoods",
+    "PathPatches": {
+      "0": {
+        "PatchSide": 3,
+        "WarpIn": {
+          "NumberofPoints": 2,
+          "X": 0,
+          "Y": 28
+        },
+        "WarpOut": {
+          "NumberofPoints": 2,
+          "X": -1,
+          "Y": 28
+        },
+        "WarpOrientation": 0,
+        "PatchMapName": "backwood_patch_0.tmx",
+        "MapPatchPointX": 0,
+        "MapPatchPointY": 26,
+        "PathBlockX": 7,
+        "PathBlockY": 29
+
+      }
+    }
+  }
+]

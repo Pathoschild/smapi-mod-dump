@@ -13,7 +13,7 @@ namespace DaLion.Stardew.Tweex.Integrations;
 #region using directives
 
 using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.WalkOfLife;
 
 #endregion using directives
 
@@ -28,6 +28,6 @@ internal sealed class ImmersiveProfessionsIntegration : BaseIntegration<IImmersi
     public void Register()
     {
         AssertLoaded();
-        ModEntry.ProfessionsAPI = ModApi;
+        ModEntry.ProfessionsApi = ModApi;
     }
 }

@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Extensions;
 #region using directives
 
 using Framework;
-using StardewValley;
 
 #endregion using directives
 

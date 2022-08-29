@@ -17,7 +17,7 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.StackSizeChanger
 {
-	public class StackSizeChanger: Mod
+	public class StackSizeChanger : Mod
 	{
 		private static StackSizeChanger Instance = null!;
 		internal ModConfig Config { get; private set; } = null!;

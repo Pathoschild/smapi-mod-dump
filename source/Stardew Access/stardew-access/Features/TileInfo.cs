@@ -19,7 +19,7 @@ namespace stardew_access.Features
 {
     public class TileInfo
     {
-        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection" };
+        public static string[] trackable_machines = { "bee house", "cask", "press", "keg", "machine", "maker", "preserves jar", "bone mill", "kiln", "crystalarium", "furnace", "geode crusher", "tapper", "lightning rod", "incubator", "wood chipper", "worm bin", "loom", "statue of endless fortune", "statue of perfection", "crab pot" };
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
         public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
@@ -90,16 +90,16 @@ namespace stardew_access.Features
                 toReturn = "Lava";
                 category = CATEGORY.WaterTiles;
             }
-            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding && !lessInfo)
-            {
-                toReturn = "Water";
-                category = CATEGORY.WaterTiles;
-            }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
                 (string? name, CATEGORY? category) obj = getObjectAtTile(x, y, lessInfo);
                 toReturn = obj.name;
                 category = obj.category;
+            }
+            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding && !lessInfo)
+            {
+                toReturn = "Water";
+                category = CATEGORY.WaterTiles;
             }
             else if (resourceClump != null)
             {
@@ -130,6 +130,11 @@ namespace stardew_access.Features
             else if (isMineDownLadderAtTile(x, y))
             {
                 toReturn = "Ladder";
+                category = CATEGORY.Doors;
+            }
+            else if (isShaftAtTile(x, y))
+            {
+                toReturn = "Shaft";
                 category = CATEGORY.Doors;
             }
             else if (isMineUpLadderAtTile(x, y))
@@ -262,7 +267,7 @@ namespace stardew_access.Features
             return false;
         }
 
-        public static string? getFarmAnimalAt(GameLocation? location, int x, int y, bool onlyName = false)
+        public static string? getFarmAnimalAt(GameLocation? location, int x, int y)
         {
             if (location == null)
                 return null;
@@ -290,9 +295,6 @@ namespace stardew_access.Features
                     string name = farmAnimals[i].displayName;
                     int age = farmAnimals[i].age.Value;
                     string type = farmAnimals[i].displayType;
-
-                    if (onlyName)
-                        return name;
 
                     return $"{name}, {type}, age {age}";
                 }
@@ -325,13 +327,27 @@ namespace stardew_access.Features
                     {
                         string name = building.buildingType.Value;
 
+                        // Prepend fish name for fish ponds
+                        if (building is FishPond fishPond)
+                        {
+                            if (fishPond.fishType.Value >= 0)
+                            {
+                                name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
+                            }
+                        }
+
+                        // Detect doors, input slots, etc.
                         if ((building.humanDoor.Value.X + building.tileX.Value) == x && (building.humanDoor.Value.Y + building.tileY.Value) == y)
                             return (CATEGORY.Doors, name + " Door");
                         else if ((building.animalDoor.Value.X + building.tileX.Value) == x && (building.animalDoor.Value.Y + building.tileY.Value) == y)
                             return (CATEGORY.Doors, name + " Animal Door " + ((building.animalDoorOpen.Value) ? "Opened" : "Closed"));
                         else if (building.tileX.Value == x && building.tileY.Value == y)
                             return (CATEGORY.Buildings, name);
-                        else if (!lessInfo)
+                        else if (building is Mill && (building.tileX.Value + 1) == x && (building.tileY.Value + 1) == y)
+                            return (CATEGORY.Buildings, name + " input");
+                        else if (building is Mill && (building.tileX.Value + 3) == x && (building.tileY.Value + 1) == y)
+                            return (CATEGORY.Buildings, name + " output");
+                        else
                             return (CATEGORY.Buildings, name);
                     }
                 }
@@ -480,52 +496,10 @@ namespace stardew_access.Features
             string? toReturn = null;
             CATEGORY category = CATEGORY.Others;
 
-            if (terrain.Get() is HoeDirt)
+            if (terrain.Get() is HoeDirt dirt)
             {
+                toReturn = getHoeDirtDetail(dirt);
                 category = CATEGORY.Crops;
-                HoeDirt dirt = (HoeDirt)terrain.Get();
-                if (dirt.crop != null && !dirt.crop.forageCrop.Value)
-                {
-                    string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
-                    toReturn = $"{cropName}";
-
-                    bool isWatered = dirt.state.Value == HoeDirt.watered;
-                    bool isHarvestable = dirt.readyForHarvest();
-                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                    if (isWatered)
-                        toReturn = "Watered " + toReturn;
-
-                    if (isFertilized)
-                        toReturn = "Fertilized " + toReturn;
-
-                    if (isHarvestable)
-                        toReturn = "Harvestable " + toReturn;
-
-                    if (dirt.crop.dead.Value)
-                        toReturn = "Dead " + toReturn;
-                }
-                else if (dirt.crop != null && dirt.crop.forageCrop.Value)
-                {
-                    toReturn = dirt.crop.whichForageCrop.Value switch
-                    {
-                        1 => "Spring onion",
-                        2 => "Ginger",
-                        _ => "Forageable crop"
-                    };
-                }
-                else
-                {
-                    toReturn = "Soil";
-                    bool isWatered = dirt.state.Value == HoeDirt.watered;
-                    bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
-
-                    if (isWatered)
-                        toReturn = "Watered " + toReturn;
-
-                    if (isFertilized)
-                        toReturn = "Fertilized " + toReturn;
-                }
             }
             else if (terrain.Get() is CosmeticPlant)
             {
@@ -571,6 +545,67 @@ namespace stardew_access.Features
             }
 
             return (toReturn, category);
+
+
+        }
+
+        /// <summary>
+        /// Returns the detail about the HoeDirt i.e. soil, plant, etc.
+        /// </summary>
+        /// <param name="dirt">The HoeDirt to be checked</param>
+        /// <param name="ignoreIfEmpty">Ignores returning `soil` if empty</param>
+        /// <returns>The details about the given HoeDirt</returns>
+        public static string getHoeDirtDetail(HoeDirt dirt, bool ignoreIfEmpty = false)
+        {
+            string detail;
+
+            if (dirt.crop != null && !dirt.crop.forageCrop.Value)
+            {
+                string cropName = Game1.objectInformation[dirt.crop.indexOfHarvest.Value].Split('/')[0];
+                detail = $"{cropName}";
+
+                bool isWatered = dirt.state.Value == HoeDirt.watered;
+                bool isHarvestable = dirt.readyForHarvest();
+                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                if (isWatered && MainClass.Config.WateredToggle)
+                    detail = "Watered " + detail;
+                else if (!isWatered && !MainClass.Config.WateredToggle)
+                    detail = "Unwatered " + detail;
+
+                if (isFertilized)
+                    detail = "Fertilized " + detail;
+
+                if (isHarvestable)
+                    detail = "Harvestable " + detail;
+
+                if (dirt.crop.dead.Value)
+                    detail = "Dead " + detail;
+            }
+            else if (dirt.crop != null && dirt.crop.forageCrop.Value)
+            {
+                detail = dirt.crop.whichForageCrop.Value switch
+                {
+                    1 => "Spring onion",
+                    2 => "Ginger",
+                    _ => "Forageable crop"
+                };
+            }
+            else
+            {
+                detail = (ignoreIfEmpty) ? "" : "Soil";
+                bool isWatered = dirt.state.Value == HoeDirt.watered;
+                bool isFertilized = dirt.fertilizer.Value != HoeDirt.noFertilizer;
+
+                if (isWatered && MainClass.Config.WateredToggle)
+                    detail = "Watered " + detail;
+                else if (!isWatered && !MainClass.Config.WateredToggle)
+                    detail = "Unwatered " + detail;
+
+                if (isFertilized)
+                    detail = "Fertilized " + detail;
+            }
+            return detail;
         }
 
         public static string getFruitTree(FruitTree fruitTree)
@@ -687,9 +722,18 @@ namespace stardew_access.Features
                 Chest chest = (Chest)obj;
                 toReturn = (chest.DisplayName, CATEGORY.Chests);
             }
-            else if (obj is Furniture)
+            else if (obj is IndoorPot indoorPot)
             {
-                if (lessInfo && (((Furniture)obj).TileLocation.X != x || ((Furniture)obj).TileLocation.Y != y))
+                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt, true)}";
+            }
+            else if (obj is Sign sign)
+            {
+                if (sign.displayItem.Value != null)
+                    toReturn.name = $"{obj.DisplayName}, {sign.displayItem.Value.DisplayName}";
+            }
+            else if (obj is Furniture furniture)
+            {
+                if (lessInfo && (furniture.TileLocation.X != x || furniture.TileLocation.Y != y))
                 {
                     toReturn.category = CATEGORY.Others;
                     toReturn.name = null;
@@ -698,9 +742,23 @@ namespace stardew_access.Features
                     toReturn.category = CATEGORY.Furnitures;
 
             }
-            else if (obj.Type == "Crafting" && obj.bigCraftable.Value)
+            else if (obj.IsSprinkler() && obj.heldObject.Value != null) // Detect the upgrade attached to the sprinkler
             {
-
+                if (MainClass.ModHelper != null && obj.heldObject.Value.Name.ToLower().Contains("pressure nozzle"))
+                {
+                    toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.pressurenozzle", new { value = toReturn.name });
+                }
+                else if (MainClass.ModHelper != null && obj.heldObject.Value.Name.ToLower().Contains("enricher"))
+                {
+                    toReturn.name = MainClass.ModHelper.Translation.Get("readtile.sprinkler.enricher", new { value = toReturn.name });
+                }
+                else // fall through 
+                {
+                    toReturn.name = $"{obj.heldObject.Value.DisplayName} {toReturn.name}";
+                }
+            }
+            else if ((obj.Type == "Crafting" && obj.bigCraftable.Value) || obj.Name.ToLower().Equals("crab pot"))
+            {
                 foreach (string machine in trackable_machines)
                 {
                     if (obj.Name.ToLower().Contains(machine))
@@ -719,14 +777,19 @@ namespace stardew_access.Features
                 else if (machineState == MachineState.Busy)
                     toReturn.name = $"Busy {toReturn.name}";
             }
+
             return toReturn;
         }
 
         private static MachineState GetMachineState(StardewValley.Object machine)
         {
             if (machine is CrabPot crabPot)
+            {
                 if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
                     return MachineState.Busy;
+                if (crabPot.bait.Value is not null && crabPot.heldObject.Value is not null)
+                    return MachineState.Ready;
+            }
             return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject.Value);
         }
 
@@ -888,12 +951,32 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
-                    int? index = null;
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
 
-                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
+                    int index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
 
-                    if (index == 173 || index == 174)
+                    if (index == 173)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception) { }
+
+            return false;
+        }
+
+        public static bool isShaftAtTile(int x, int y)
+        {
+            try
+            {
+                if (Game1.currentLocation is Mine or MineShaft)
+                {
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
+
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 174)
                         return true;
                 }
             }
@@ -908,12 +991,10 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
-                    int? index = null;
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
 
-                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-                    if (index == 115)
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 115)
                         return true;
                 }
             }
@@ -928,12 +1009,10 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation is Mine or MineShaft)
                 {
-                    int? index = null;
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] == null)
+                        return false;
 
-                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y] != null)
-                        index = Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex;
-
-                    if (index == 112)
+                    if (Game1.currentLocation.Map.GetLayer("Buildings").Tiles[x, y].TileIndex == 112)
                         return true;
                 }
             }

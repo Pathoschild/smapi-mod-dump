@@ -31,10 +31,14 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.MachineStatus
 {
-	public class MachineStatus: Mod
+	public class MachineStatus : Mod
 	{
-		private enum MachineType { Generator, Processor }
-		
+		private enum MachineType
+		{
+			Generator,
+			Processor
+		}
+
 		private static readonly ItemRenderer ItemRenderer = new();
 		private static readonly Vector2 DigitSize = new(5, 7);
 		private static readonly Vector2 SingleMachineSize = new(64, 64);
@@ -94,11 +98,11 @@ namespace Shockah.MachineStatus
 		private readonly ISet<(GameLocation location, SObject machine)> QueuedMachineUpdates = new HashSet<(GameLocation location, SObject machine)>();
 
 		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenHostMachines = new(() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
-		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenClientMachines = new (() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
-		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenVisibleMachines = new (() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
-		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenSortedMachines = new (() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
+		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenClientMachines = new(() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
+		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenVisibleMachines = new(() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
+		private readonly PerScreen<IList<(LocationDescriptor location, SObject machine, MachineState state)>> PerScreenSortedMachines = new(() => new List<(LocationDescriptor location, SObject machine, MachineState state)>());
 		private readonly PerScreen<IList<(SObject machine, IList<SObject> heldItems)>> PerScreenGroupedMachines = new(() => new List<(SObject machine, IList<SObject> heldItems)>());
-		private readonly PerScreen<IList<(IntPoint position, (SObject machine, IList<SObject> heldItems) machine)>> PerScreenFlowMachines = new (() => new List<(IntPoint position, (SObject machine, IList<SObject> heldItems) machine)>());
+		private readonly PerScreen<IList<(IntPoint position, (SObject machine, IList<SObject> heldItems) machine)>> PerScreenFlowMachines = new(() => new List<(IntPoint position, (SObject machine, IList<SObject> heldItems) machine)>());
 		private readonly PerScreen<bool> PerScreenAreVisibleMachinesDirty = new(() => true);
 		private readonly PerScreen<bool> PerScreenAreSortedMachinesDirty = new(() => true);
 		private readonly PerScreen<bool> PerScreenAreGroupedMachinesDirty = new(() => true);
@@ -418,7 +422,7 @@ namespace Shockah.MachineStatus
 						_ => throw new ArgumentException($"{nameof(MachineRenderingOptions.BubbleSway)} has an invalid value."),
 					};
 				}
-				
+
 				var machineUnscaledOffset = new Vector2(x - minX, y - minY) * SingleMachineSize + new Vector2(x - minX, y - minY) * Config.Spacing;
 				var machineLocation = panelLocation + machineUnscaledOffset * Config.Scale;
 				var machineState = GetMachineState(machine);
@@ -722,7 +726,7 @@ namespace Shockah.MachineStatus
 		{
 			IEnumerable<(LocationDescriptor location, SObject machine, MachineState state)> results = VisibleMachines;
 
-			void SortResults<T>(bool ascending, Func<(LocationDescriptor location, SObject machine, MachineState state), T> keySelector) where T: IComparable<T>
+			void SortResults<T>(bool ascending, Func<(LocationDescriptor location, SObject machine, MachineState state), T> keySelector) where T : IComparable<T>
 			{
 				results = results is IOrderedEnumerable<(LocationDescriptor location, SObject machine, MachineState state)> ordered
 					? (ascending ? ordered.ThenBy(keySelector) : ordered.ThenByDescending(keySelector))

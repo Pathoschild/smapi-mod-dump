@@ -12,9 +12,14 @@ mods:
    Walk of Life
 
 latest commit:
-   commit b1b9be926526799e35b868e94a6bc9b2d4c74630
+   commit defe8dbbad75e50e028c772d0f0348f4c86bb426
+   Merge: b1b9be92 78c14103
    Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
-   Date:   Wed Jul 20 21:09:32 2022 +0000
+   Date:   Fri Aug 12 16:03:35 2022 +0000
    
-       Delete BaseEvent.cs
+       Merge branch 'dev' into 'main'
+       
+       Merge
+       
+       See merge request daleao/sdv-mods!8
    

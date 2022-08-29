@@ -14,15 +14,11 @@ namespace DaLion.Stardew.Ponds.Commands;
 
 using Common;
 using Common.Commands;
-using Common.Data;
-using Common.Extensions;
+using Common.Enums;
+using Common.Extensions.Stardew;
 using Extensions;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Buildings;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -35,7 +31,7 @@ internal sealed class SetFishQualityCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "set_quality";
+    public override string[] Triggers { get; } = { "set_quality", "set", "quality" };
 
     /// <inheritdoc />
     public override string Documentation => "Set the quality of all fish in the nearest pond.";
@@ -46,12 +42,6 @@ internal sealed class SetFishQualityCommand : ConsoleCommand
         if (args.Length != 1)
         {
             Log.W("You must specify a quality (`low`, `med`, `high` or `best`).");
-            return;
-        }
-
-        if (!args[0].IsIn("low", "med", "high", "best"))
-        {
-            Log.W("Quality should be one of `low`, `med`, `high` or `best`");
             return;
         }
 
@@ -78,33 +68,38 @@ internal sealed class SetFishQualityCommand : ConsoleCommand
             return;
         }
 
-#pragma warning disable CS8509
         var newQuality = args[0] switch
-#pragma warning restore CS8509
         {
-            "low" or "normal" or "regular" or "white" => SObject.lowQuality,
-            "med" or "silver" => SObject.medQuality,
-            "high" or "gold" => SObject.highQuality,
-            "best" or "iridium" => SObject.bestQuality
+            "low" or "normal" or "regular" or "white" => Quality.Regular,
+            "med" or "silver" => Quality.Silver,
+            "high" or "gold" => Quality.Gold,
+            "best" or "iridium" => Quality.Iridium,
+            _ => (Quality)(-1)
         };
 
-        var familyCount = ModDataIO.ReadFrom<int>(nearest, "FamilyLivingHere");
+        if (newQuality < 0)
+        {
+            Log.W("Unexpected quality. Should be either low/regular, med/silver, high/gold or best/iridium.");
+            return;
+        }
+
+        var familyCount = nearest.Read<int>("FamilyLivingHere");
         var familyQualities = new int[4];
         if (familyCount > nearest.FishCount)
         {
             Log.W("FamilyLivingHere data is invalid. The data will be reset.");
             familyCount = 0;
-            ModDataIO.WriteTo(nearest, "FamilyLivingHere", null);
+            nearest.Write("FamilyLivingHere", null);
         }
 
         if (familyCount > 0)
         {
-            familyQualities[newQuality == 4 ? 3 : newQuality] += familyCount;
-            ModDataIO.WriteTo(nearest, "FamilyQualities", string.Join(',', familyQualities));
+            familyQualities[newQuality == Quality.Iridium ? 3 : (int)newQuality] += familyCount;
+            nearest.Write("FamilyQualities", string.Join(',', familyQualities));
         }
 
         var fishQualities = new int[4];
-        fishQualities[newQuality == 4 ? 3 : newQuality] += nearest.FishCount - familyCount;
-        ModDataIO.WriteTo(nearest, "FishQualities", string.Join(',', fishQualities));
+        fishQualities[newQuality == Quality.Iridium ? 3 : (int)newQuality] += nearest.FishCount - familyCount;
+        nearest.Write("FishQualities", string.Join(',', fishQualities));
     }
 }

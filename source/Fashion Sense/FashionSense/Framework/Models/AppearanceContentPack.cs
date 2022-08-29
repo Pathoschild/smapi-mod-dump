@@ -20,7 +20,7 @@ using StardewValley;
 
 namespace FashionSense.Framework.Models
 {
-    public class AppearanceContentPack
+    public abstract class AppearanceContentPack
     {
         public enum Type
         {
@@ -42,12 +42,15 @@ namespace FashionSense.Framework.Models
         public string Name { get; set; }
         internal string Id { get; set; }
         internal string PackName { get; set; }
+        internal string PackId { get; set; }
         internal Texture2D Texture { get { return _texture; } set { _cachedTexture = value; ResetTexture(); } }
         private Texture2D _texture;
         private Texture2D _cachedTexture;
         internal Texture2D ColorMaskTexture { get; set; }
         internal Texture2D SkinMaskTexture { get; set; }
         internal bool IsTextureDirty { get; set; }
+
+        internal abstract void LinkId();
 
         internal bool ResetTexture()
         {

@@ -12,10 +12,8 @@ namespace DaLion.Stardew.Tweex.Extensions;
 
 #region using directives
 
-using Common.Data;
-using StardewValley;
+using Common.Extensions.Stardew;
 using StardewValley.TerrainFeatures;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
@@ -47,9 +45,9 @@ public static class TreeExtensions
     public static int GetQualityFromAge(this Tree tree)
     {
         var skillFactor = 1f + Game1.player.ForagingLevel * 0.1f;
-        if (ModEntry.ProfessionsAPI is not null && Game1.player.professions.Contains(Farmer.lumberjack)) ++skillFactor;
+        if (ModEntry.ProfessionsApi is not null && Game1.player.professions.Contains(Farmer.lumberjack)) ++skillFactor;
 
-        var age = (int)(ModDataIO.ReadFrom<int>(tree, "Age") * skillFactor * ModEntry.Config.AgeImproveQualityFactor);
+        var age = (int)(tree.Read<int>("Age") * skillFactor * ModEntry.Config.AgeImproveQualityFactor);
         if (ModEntry.Config.DeterministicAgeQuality)
         {
             return age switch

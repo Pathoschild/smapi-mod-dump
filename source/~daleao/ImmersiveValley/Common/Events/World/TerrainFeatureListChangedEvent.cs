@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 
 #endregion region using directives
 
-/// <summary>Wrapper for <see cref="IWorldEvents.TerrainFeatureListChanged"/> allowing dynamic hooking / unhooking.</summary>
+/// <summary>Wrapper for <see cref="IWorldEvents.TerrainFeatureListChanged"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class TerrainFeatureListChangedEvent : ManagedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,7 +29,7 @@ internal abstract class TerrainFeatureListChangedEvent : ManagedEvent
     /// <param name="e">The event arguments.</param>
     internal void OnTerrainFeatureListChanged(object? sender, TerrainFeatureListChangedEventArgs e)
     {
-        if (IsHooked) OnTerrainFeatureListChangedImpl(sender, e);
+        if (IsEnabled) OnTerrainFeatureListChangedImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnTerrainFeatureListChanged" />

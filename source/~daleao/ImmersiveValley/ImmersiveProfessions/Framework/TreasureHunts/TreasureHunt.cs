@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.TreasureHunts;
 
 using Framework.Events.TreasureHunt;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using System;
 
 #endregion using directives
@@ -49,7 +48,7 @@ internal abstract class TreasureHunt : ITreasureHunt
     protected Rectangle iconSourceRect;
     protected readonly Random random = new(Guid.NewGuid().GetHashCode());
 
-    private double _chanceAccumulator = 1.0;
+    private double _chanceAccumulator = 1d;
 
     /// <summary>Construct an instance.</summary>
     internal TreasureHunt()
@@ -75,14 +74,14 @@ internal abstract class TreasureHunt : ITreasureHunt
     /// <summary>Reset the accumulated bonus chance to trigger a new hunt.</summary>
     internal void ResetChanceAccumulator()
     {
-        _chanceAccumulator = 1.0;
+        _chanceAccumulator = 1d;
     }
 
     /// <summary>Check for completion or failure.</summary>
     /// <param name="ticks">The number of ticks elapsed since the game started.</param>
     internal void Update(uint ticks)
     {
-        if (!Game1.game1.IsActive || !Game1.shouldTimePass()) return;
+        if (!Game1.game1.IsActiveNoOverlay && Game1.options.pauseWhenOutOfFocus || !Game1.shouldTimePass()) return;
 
         if (ticks % 60 == 0 && ++elapsed > timeLimit) Fail();
         else CheckForCompletion();
@@ -93,26 +92,26 @@ internal abstract class TreasureHunt : ITreasureHunt
     #region protected methods
 
     /// <summary>Roll the dice for a new treasure hunt or adjust the odds for the next attempt.</summary>
-    /// <returns><see langword="true"> if the dice roll was successful, otherwise <see langword="false">.</returns>
+    /// <returns><see langword="true"/> if the dice roll was successful, otherwise <see langword="false"/>.</returns>
     protected bool TryStart()
     {
         if (IsActive) return false;
 
         if (random.NextDouble() > ModEntry.Config.ChanceToStartTreasureHunt * _chanceAccumulator)
         {
-            _chanceAccumulator *= 1.0 + Game1.player.DailyLuck;
+            _chanceAccumulator *= 1d + Game1.player.DailyLuck;
             return false;
         }
 
-        _chanceAccumulator = 1.0;
+        _chanceAccumulator = 1d;
         return true;
     }
 
     /// <summary>Check if a treasure hunt can be started immediately and adjust the odds for the next attempt.</summary>
     protected virtual void ForceStart()
     {
-        if (IsActive) throw new InvalidOperationException("A Treasure Hunt is already active in this instance.");
-        _chanceAccumulator = 1.0;
+        if (IsActive) ThrowHelper.ThrowInvalidOperationException("A Treasure Hunt is already active in this instance.");
+        _chanceAccumulator = 1d;
     }
 
     /// <summary>Select a random tile and make sure it is a valid treasure target.</summary>

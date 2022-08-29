@@ -21,8 +21,8 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.1" />
-    <PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.5.0" />
-    <PackageReference Include="Krafs.Publicizer" Version="1.0.2">
+    <PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.5.1" />
+    <PackageReference Include="Krafs.Publicizer" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

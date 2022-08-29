@@ -17,8 +17,6 @@ using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -71,11 +69,11 @@ internal sealed class MeleeWeaponSetFarmerAnimatingPatch : DaLion.Common.Harmony
                     new CodeInstruction(OpCodes.Ldfld, typeof(MeleeWeapon).RequireField("swipeSpeed")),
                     new CodeInstruction(OpCodes.Ldc_R4, 1f),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.PlayerState))),
+                        typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.State))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PlayerState).RequirePropertyGetter(nameof(PlayerState.BruteRageCounter))),
+                        typeof(ModState).RequirePropertyGetter(nameof(ModState.BruteRageCounter))),
                     new CodeInstruction(OpCodes.Conv_R4),
-                    new CodeInstruction(OpCodes.Ldc_R4, UndyingFrenzy.PCT_INCREMENT_PER_RAGE_F / 2f),
+                    new CodeInstruction(OpCodes.Ldc_R4, Frenzy.PCT_INCREMENT_PER_RAGE_F / 2f),
                     new CodeInstruction(OpCodes.Mul),
                     new CodeInstruction(OpCodes.Sub),
                     new CodeInstruction(OpCodes.Mul),

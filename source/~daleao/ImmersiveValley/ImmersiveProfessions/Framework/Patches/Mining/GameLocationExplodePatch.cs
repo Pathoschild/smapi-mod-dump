@@ -17,21 +17,19 @@ using DaLion.Common.Extensions.Reflection;
 using Events.GameLoop;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Locations;
 using System;
 using Utility;
 using Multiplayer = StardewValley.Multiplayer;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
 internal sealed class GameLocationExplodePatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static Func<Multiplayer>? _GetMultiplayer;
+    private static Lazy<Func<Multiplayer>> _GetMultiplayer = new(() =>
+        typeof(Game1).RequireField("multiplayer").CompileStaticFieldGetterDelegate<Multiplayer>());
 
     /// <summary>Construct an instance.</summary>
     internal GameLocationExplodePatch()
@@ -57,8 +55,6 @@ internal sealed class GameLocationExplodePatch : DaLion.Common.Harmony.HarmonyPa
         var chanceModifier = who.DailyLuck / 2.0 + who.LuckLevel * 0.001 + who.MiningLevel * 0.005;
         var r = new Random(Guid.NewGuid().GetHashCode());
         var circle = new CircleTileGrid(tileLocation, radius);
-        _GetMultiplayer ??= typeof(Game1).RequireField("multiplayer")
-            .CompileStaticFieldGetterDelegate<Func<Multiplayer>>();
         foreach (var tile in circle.Tiles)
         {
             if (!__instance.objects.TryGetValue(tile, out var tileObj) || !tileObj.IsStone()) continue;
@@ -79,7 +75,7 @@ internal sealed class GameLocationExplodePatch : DaLion.Common.Harmony.HarmonyPa
                         if (isPrestigedBlaster)
                             Game1.createObjectDebris(SObject.coal, tileX, tileY,
                                 who.UniqueMultiplayerID, __instance);
-                        _GetMultiplayer()
+                        _GetMultiplayer.Value()
                             .broadcastSprites(__instance,
                                 new TemporaryAnimatedSprite(25,
                                     new(tile.X * Game1.tileSize, tile.Y * Game1.tileSize), Color.White,
@@ -99,7 +95,7 @@ internal sealed class GameLocationExplodePatch : DaLion.Common.Harmony.HarmonyPa
                         if (isPrestigedBlaster)
                             Game1.createObjectDebris(SObject.coal, tileX, tileY,
                                 who.UniqueMultiplayerID, __instance);
-                        _GetMultiplayer()
+                        _GetMultiplayer.Value()
                             .broadcastSprites(__instance,
                                 new TemporaryAnimatedSprite(25,
                                     new(tile.X * Game1.tileSize, tile.Y * Game1.tileSize), Color.White,
@@ -256,9 +252,9 @@ internal sealed class GameLocationExplodePatch : DaLion.Common.Harmony.HarmonyPa
 
         // get excited speed buff
         var distanceFromEpicenter = (int)(tileLocation - who.getTileLocation()).Length();
-        if (distanceFromEpicenter < radius * 2 + 1) ModEntry.PlayerState.DemolitionistExcitedness = 4;
-        if (distanceFromEpicenter < radius + 1) ModEntry.PlayerState.DemolitionistExcitedness += 2;
-        ModEntry.EventManager.Hook<DemolitionistUpdateTickedEvent>();
+        if (distanceFromEpicenter < radius * 2 + 1) ModEntry.State.DemolitionistExcitedness = 4;
+        if (distanceFromEpicenter < radius + 1) ModEntry.State.DemolitionistExcitedness += 2;
+        ModEntry.Events.Enable<DemolitionistUpdateTickedEvent>();
     }
 
     #endregion harmony patches

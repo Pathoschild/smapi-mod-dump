@@ -8,108 +8,85 @@
 **
 *************************************************/
 
-#region
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using Harmony;
-using Microsoft.Xna.Framework;
-using Netcode;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Network;
 using StardewValley.TerrainFeatures;
+using static PlacementPlus.ModState;
+using static PlacementPlus.Utility.Utility;
 using Object = StardewValley.Object;
-
-#endregion
 
 namespace PlacementPlus.Patches
 {
     [HarmonyPatch]
-    internal class ReusablePatches_SkipMethod
+    internal class ReusablePatches
     {
-        private static PlacementPlus.ModState modState => PlacementPlus.Instance.modState;
-        private static IMonitor Monitor                => PlacementPlus.Instance.Monitor;
-        
-        public static readonly IEnumerable<Type> OBJECT_SUBCLASSES   = Assembly.Load("Stardew Valley").GetTypes()
-                                                                               .Where(t => t.IsSubclassOf(typeof(Object)));
-
-        public static readonly IEnumerable<Type> BUILDING_SUBCLASSES = Assembly.Load("Stardew Valley").GetTypes()
-                                                                               .Where(t => t.IsSubclassOf(typeof(Building)));
+        private static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
 
         private static IEnumerable<MethodBase> TargetMethods()
         {
-            // Get MethodInfo for each overwritten CheckForAction() in subclasses of StardewValley.Object
-            var checkForActionIEnumerable = OBJECT_SUBCLASSES.SelectMany(t => t.GetMethods())
-                                                             .Where(m => m.Name.Equals("checkForAction"));
+            var assembly = Assembly.Load("Stardew Valley").GetTypes();
             
-            // Get MethodInfo for each overwritten doAction() in subclasses of StardewValley.Building
-            var doAcionIEnumerable        = BUILDING_SUBCLASSES.SelectMany(t => t.GetMethods())
-                                                             .Where(m => m.Name.Equals("doAction"));
-            
-            // Including other classes with StardewValley.Object subclasses.
-            return checkForActionIEnumerable.Concat(
-                   doAcionIEnumerable.Concat(new [] {
-                       AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performAction)),
-                       AccessTools.Method(typeof(ShippingBin),  nameof(ShippingBin.leftClicked)),
-                       AccessTools.Method(typeof(Building),     nameof(Building.doAction))
-                   }));
+            // Get MethodInfo for each 'CheckForAction()' in subclasses of StardewValley.Object.
+            var checkForActionEnumerable = assembly
+                .Where(t => t.IsSubclassOf(typeof(Object)))
+                .Select(m => m.GetMethod(nameof(Object.checkForAction)));
+
+            // Get MethodInfo for each 'doAction()' in subclasses of StardewValley.Building.
+            var doActionEnumerable = assembly
+                .Where(t => t.IsSubclassOf(typeof(Building)))
+                .Select(m => m.GetMethod(nameof(Building.doAction)));
+
+            // Combining all gathered target MethodInfo entries with some additional ones.
+            return checkForActionEnumerable.Concat(doActionEnumerable).Concat(new [] {
+                AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performAction)), 
+                AccessTools.Method(typeof(ShippingBin), nameof(ShippingBin.leftClicked)),
+            });
         }
 
         
         
-        private static bool Prefix(ref bool __result, MethodBase __originalMethod)
+        // TODO: Interactable objects shouldn't trigger until after left click is released--but they do atm!
+        /// <summary> Alters the requirements for when interactable objects/components can be interacted with. </summary>
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        private static bool Prefix(ref bool __result, MethodBase __originalMethod) 
         {
             try 
             {
-                Func<NetVector2Dictionary<TerrainFeature,NetRef<TerrainFeature>>, Vector2, bool> flooringTileChecks = (tf, t) => {
-                    // We need to use Game1.didPlayerJustLeftClick() since modState.isHoldingUseToolButton does not
-                    // cover the initial button press.
-                    var preliminaryChecks = modState.currentlyHeldItem != null                      &&
-                                            // If the method's class subclasses Object or Building.
-                                            (__originalMethod.DeclaringType == typeof(ShippingBin)  && 
-                                             __originalMethod.DeclaringType == typeof(GameLocation) ||
-                                             // If the Player is holding left click.
-                                             Game1.didPlayerJustLeftClick() || modState.isHoldingUseToolButton);
-                    
-                    // * Begin flooring tile checks * //
-                    if (!preliminaryChecks) return false; // Preliminary checks.
-
-                    var tileAtCursorIsFlooring = tf.ContainsKey(t) && tf[t] is Flooring;
-                    var isHoldingFlooring      = modState.currentlyHeldItem.category.Value == Object.furnitureCategory;
-
-                    // If the player-held item is the flooring they are looking at OR the player holding flooring.
-                    return tileAtCursorIsFlooring && !PlacementPlus.Instance.FlooringAtTileIsPlayerItem(modState.currentlyHeldItem, t) || 
-                           isHoldingFlooring;
-                };
+                // Only do new checks if the player is holding the use tool button and is holding an item and the cursor
+                // tile is placeable. We must use 'didPlayerJustLeftClick()' as modState.holdingToolButton does not
+                // cover the initial button press.
+                var holdingToolButton = Game1.didPlayerJustLeftClick() || ModState.holdingToolButton;
+                if (!holdingToolButton || heldItem == null) return true; // Run original logic.
                 
-                Func<GameLocation, Vector2, bool> fenceTileChecks = (gl, t) => {
-                    // * Begin fence tile checks * //
-                    var objectAtTile   = gl.getObjectAtTile((int) t.X, (int) t.Y);
-                    var isHoldingFence = modState.currentlyHeldItem is Fence;
-                    
-                    // If the fence the player is looking at is a gate AND the player-held item is a fence.
-                    return __originalMethod.DeclaringType == typeof(Fence) &&
-                           objectAtTile is Fence fence && fence.isGate     && 
-                           isHoldingFence;
-                };
-
-                // * Begin Prefix * //
-                if (
-                    !fenceTileChecks(modState.currentPlayer.currentLocation, modState.tileAtPlayerCursor) &&
-                    !flooringTileChecks(modState.currentTerrainFeatures, modState.tileAtPlayerCursor)
-                ) {
-                    return true;
+                
+                var sameFlooring = DoesTileHaveFlooring(terrainFeatures, cursorTile) && 
+                                   IsItemTargetFlooring(heldItem, (Flooring) terrainFeatures[cursorTile]);
+                // For fences, we allow interaction if the player is not holding a fence/flooring OR the player-held 
+                // item is the same as the tile fence/flooring respectively.
+                if (__originalMethod.DeclaringType == typeof(Fence))
+                {
+                    var sameFences = tileObject is Fence fence && IsItemTargetFence(heldItem, fence);
+                    __result = !(IsItemFlooring(heldItem) || IsItemFence(heldItem)) 
+                               || sameFlooring 
+                               || sameFences;
                 }
-
-                __result = false; // Original method will now return false.
-                return false;     // Skip original logic.
-
+                // For all other objects/buildings, we allow interaction if the player-held flooring is the same as the
+                // tile flooring.
+                else
+                {
+                    __result = !IsItemFlooring(heldItem) || sameFlooring;
+                }
+                
+                return __result; // Run original logic if it was determined that the action *should* occur.
             } catch (Exception e) {
-                Monitor.Log($"Failed in {nameof(ReusablePatches_SkipMethod)}:\n{e}", LogLevel.Error);
+                Monitor.Log($"Failed in {nameof(ReusablePatches)}:\n{e}", LogLevel.Error);
                 return true; // Run original logic.
             }
         }

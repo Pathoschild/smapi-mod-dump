@@ -8,96 +8,150 @@
 **
 *************************************************/
 
-#region
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Harmony;
+using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
+using static PlacementPlus.ModState;
+using static PlacementPlus.Utility.Utility;
 using Object = StardewValley.Object;
-
-#endregion
 
 namespace PlacementPlus.Patches
 {
     [HarmonyPatch(typeof(Object), nameof(Object.placementAction))]
-    internal class ObjectPatches_PlacementAction
+    internal class ObjectPatches
     {
-        private static IMonitor Monitor                          => PlacementPlus.Instance.Monitor;
-        private static readonly FieldInfo shakeTimerFI           = AccessTools.Field(typeof(Object), nameof(Object.shakeTimer));
-        private static readonly FieldInfo contentFI              = AccessTools.Field(typeof(Game1),  nameof(Game1.content));
-        private static readonly MethodInfo objectAtTileIsChestMI = AccessTools.Method(typeof(ObjectPatches_PlacementAction), nameof(ObjectAtTileIsChest));
-        
-        // We assume that x and y are raw coordinates and not tile coordinates...
-        // We also assume that it has already been asserted that the Object at tile is not null...
-        private static bool ObjectAtTileIsChest(GameLocation location, int x, int y)
-        {
-            var objectAtTile = location.getObjectAtTile(x / 64, y / 64);
-            return PlacementPlus.CHEST_INFO_LIST.Contains(objectAtTile.ParentSheetIndex);
-        }
-        
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilGenerator)
-        {
-            var code           = new List<CodeInstruction>(instructions);
-            var returnLabel    = ilGenerator.DefineLabel();
-            var injectionIndex = -1;
+        private static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
 
+        /// <summary>
+        /// Adds additional logic when attempting to place an object to determine if some tile object should be swapped.
+        /// Additionally prevents the appearance of the 'Unsuitable Location' dialogue when attempting to place a chest
+        /// where a chest already exists.
+        /// </summary>
+        [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
+        private static bool Prefix(GameLocation location, int x, int y, Farmer who, ref bool __result, Object __instance)
+        {
             try
             {
-                for (var i = 0; i < code.Count - 1; i++)
-                {
-                    // IL_1709: dup
-                    // * >>> Iterator will be here! <<<
-                    // IL_170a: ldc.i4.s     50 // 0x32
-                    // IL_170c: stfld        int32 StardewValley.Object::shakeTimer
-                    // IL_1711: ...etc.
-                    if (!(code[i].opcode == OpCodes.Ldc_I4_S  && Convert.ToInt32(code[i].operand) == 50  &&
-                          code[i + 1].opcode == OpCodes.Stfld && code[i + 1].operand.Equals(shakeTimerFI))
-                    ) continue;
+                var tilePos = new Vector2(x / 64, y / 64);
+                var tileObject = location.getObjectAt(x, y);
+                var terrainFeatures = location.terrainFeatures; 
+                var holdingToolButton = Game1.didPlayerJustLeftClick() || ModState.holdingToolButton;
 
-                    // IL_16df: ldc.i4.0
-                    // * >>> Iterator will be here! <<<
-                    // IL_16e0: ret
-                    // IL_16e1: ...etc.
-                    while (!(code[i].opcode == OpCodes.Ldc_I4_0 && code[i + 1].opcode == OpCodes.Ret)) i--;
-                    code[i].labels.Add(returnLabel);
+                bool SwapFlooring(Flooring flooring) 
+                {
+                    bool tileHasInteractable()  
+                    {
+                        // If the tile object is a fence gate OR not a torch/fence we consider it interactable.
+                        if (IsItemGate(tileObject) || tileObject is not (Torch or Fence)) 
+                            return true;
+                        
+                        // Otherwise we check for interactable components on buildings if the location is the farm.
+                        return location is Farm farm && IsTileOnBuildingInteractable(farm, tilePos);
+                    }
                     
-                    // IL_16c9: brfalse.s    IL_16e1
-                    // * >>> Iterator will be here! <<<
-                    // IL_16cb: ldsfld       class StardewValley.LocalizedContentManager StardewValley.Game1::content
-                    // IL_16d0: ldstr        "Strings\\StringsFromCSFiles:Object.cs.13053"
-                    // IL_16d5: ...etc.
-                    while (!(code[i].opcode == OpCodes.Ldsfld && code[i].operand.Equals(contentFI))) i--;
-                    injectionIndex = i;
-                    break;
+                    
+                    // We do not swap if:
+                    //  - Both the player-held flooring and tile flooring are the same.
+                    //  - The player is not holding the use tool button and the tile has an interactable object/feature
+                    //      (i.e. mailbox, shipping bin, etc.) (we want their actions to still be accessible).
+                    if (IsItemTargetFlooring(__instance, flooring) || (!holdingToolButton && tileHasInteractable())) 
+                        return false;
+
+                    
+                    // We use performToolAction() drops the flooring at tile as an item and generates the respective
+                    // destruction debris, destruction sound, etc. Axes can destroy all flooring.
+                    terrainFeatures[tilePos].performToolAction(new Axe(), 0, tilePos, location);
+                    terrainFeatures.Remove(tilePos);
+                    
+                    terrainFeatures.Add(tilePos, new Flooring(FlooringInfoMap[__instance.ParentSheetIndex]));
+
+                    who.reduceActiveItemByOne();
+                    return true;
                 }
-
-                if (injectionIndex == -1) throw new IndexOutOfRangeException();
                 
-                var instructionsToInject = new List<CodeInstruction>
+                bool SwapChest(Chest chest) 
                 {
-                    new CodeInstruction(OpCodes.Ldarg_1),                     // Push GameLocation location to evaluation stack.
-                    new CodeInstruction(OpCodes.Ldarg_2),                     // Push int x to evaluation stack.
-                    new CodeInstruction(OpCodes.Ldarg_3),                     // Push int y to evaluation stack.
-                    new CodeInstruction(OpCodes.Call, objectAtTileIsChestMI), // Call objectAtTileIsChest.
-                    new CodeInstruction(OpCodes.Brtrue_S, returnLabel)        // Skip showRedMessage invoke if method returns true via branching.
-                };
+                    // Do not swap if the player is not holding the use tool button (we want their inventory to still be
+                    // accessible).
+                    if (!holdingToolButton) return false;
+                    
+                    
+                    var chestToPlace = new Chest(true, tilePos, __instance.ParentSheetIndex) {
+                        shakeTimer        = 100,
+                        playerChoiceColor = { Value = chest.playerChoiceColor.Value } };
+                    chestToPlace.items.Set(chest.items); // Fill the new chest with the items of the old chest.
 
-                // Save the labels from the current opcode at injectionIndex since some branches jump there.
-                var oldOpcodeLabels = code[injectionIndex].labels; code[injectionIndex].labels = null;
-                code.InsertRange(injectionIndex, instructionsToInject); // Injecting code
+                    var isWoodenChest = chest.ParentSheetIndex == (int) ChestType.Chest;
+                    // We clear out the chest's inventory before simulating its destruction.
+                    chest.items.Clear(); chest.clearNulls();
+                    location.debris.Add(new Debris(-chest.ParentSheetIndex, new Vector2(x + 32, y + 32), who.Position));
+                    location.playSound(isWoodenChest ? "axe" : "hammer");
+                    
+                    // Spawning broken particles to simulate chest breaking.
+                    Game1.createRadialDebris(location, isWoodenChest ? 12 : 14, 64 * x, 64 * y, 4, false);
+                    location.Objects.Remove(tilePos);
+                    
+                    location.Objects.Add(tilePos, chestToPlace);
 
-                // Set the new opcode at injectionIndex to the previously saved labels.
-                code[injectionIndex].labels = oldOpcodeLabels;
+                    who.reduceActiveItemByOne();
+                    return true;
+                }
+                
+                bool SwapFence(Fence fence) 
+                {
+                    // We do not swap if:
+                    //  - Both the player-held fence and tile fence are the same (unless the tile fence has been turned
+                    //      into a gate).
+                    //  - The tile fence is a gate and the player is not holding the use tool button (i.e. right clicks
+                    //      can still be used to open gates even if the player-held item is a fence.
+                    //  - The player-held item is a gate--we don't want to overwrite the gate's functionality to convert
+                    //      fences.
+                    if (IsItemTargetFence(__instance, fence) 
+                        || (!holdingToolButton && fence.isGate.Value) 
+                        || IsItemGate(__instance)) 
+                    { return false; }
 
-                return code.AsEnumerable();
+                    
+                    // We must use the correct tool to destroy the fence as if the fence has been converted to a gate,
+                    // it needs to drop the gate as well as the original fence.
+                    var usePickaxe = (FenceType) fence.whichType.Value is
+                        FenceType.Stone_fence or FenceType.Iron_fence;
+                    fence.performToolAction(usePickaxe ? new Pickaxe() : new Axe(), location);
+                
+                    __instance.placementAction(location, x, y);
+                    // Ensure that if the original fence has a torch, it is preserved.
+                    if (fence.heldObject.Value is Torch) tileObject.heldObject.Value = new Torch(tilePos, 1);
+
+                    who.reduceActiveItemByOne();
+                    return true;
+                }
+                
+                
+                if (IsItemFlooring(__instance) && DoesTileHaveFlooring(terrainFeatures, tilePos))
+                    __result = SwapFlooring((Flooring) terrainFeatures[tilePos]);
+                else if (IsItemChest(__instance) && IsItemChest(tileObject))
+                    // We still skip the original logic if the chests are equal as to prevent the 'Unsuitable Location'
+                    // dialogue from appearing when trying to place a chest where a chest already exists.
+                    __result = __instance.ParentSheetIndex == tileObject.ParentSheetIndex || 
+                               SwapChest(tileObject as Chest);
+                else if (IsItemFence(__instance) && IsItemFence(tileObject))
+                    __result = SwapFence(tileObject as Fence);
+
+                return !__result; // Skip original logic if there was a successful swap.
             } catch (Exception e) {
-                Monitor.Log($"Failed in {nameof(ObjectPatches_PlacementAction)}:\n{e}", LogLevel.Error);
-                return code.AsEnumerable(); // Run original logic.
+                Monitor.Log($"Failed in {nameof(ObjectPatches)}:\n{e}", LogLevel.Error);
+                return true; // Run original logic.
             }
         }
     }

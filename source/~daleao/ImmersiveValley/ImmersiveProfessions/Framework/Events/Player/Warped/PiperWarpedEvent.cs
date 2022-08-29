@@ -16,10 +16,8 @@ using Common;
 using Common.Events;
 using Extensions;
 using GameLoop;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
 using System;
@@ -40,13 +38,11 @@ internal sealed class PiperWarpedEvent : WarpedEvent
     /// <inheritdoc />
     protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
-        if (e.NewLocation.Equals(e.OldLocation)) return;
-
         var isDungeon = e.NewLocation.IsDungeon();
         var hasMonsters = e.NewLocation.HasMonsters();
         if (!isDungeon && !hasMonsters)
         {
-            Manager.Hook<PiperUpdateTickedEvent>();
+            Manager.Enable<PiperUpdateTickedEvent>();
             return;
         }
 
@@ -136,6 +132,6 @@ internal sealed class PiperWarpedEvent : WarpedEvent
         Log.D($"Spawned {pipedCount} Slimes after {raisedSlimes.Length} attempts.");
 
         if (pipedCount > 0 || e.NewLocation.characters.Any(npc => npc is GreenSlime))
-            Manager.Hook<PiperUpdateTickedEvent>();
+            Manager.Enable<PiperUpdateTickedEvent>();
     }
 }

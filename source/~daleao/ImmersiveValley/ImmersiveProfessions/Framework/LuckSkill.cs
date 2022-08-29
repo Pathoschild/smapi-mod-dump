@@ -13,8 +13,7 @@ namespace DaLion.Stardew.Professions.Framework;
 #region using directives
 
 using Common.Extensions.Reflection;
-using Common.Integrations;
-using StardewValley;
+using Common.Integrations.LuckSkill;
 
 #endregion using directives
 

@@ -15,7 +15,6 @@ namespace DaLion.Stardew.Alchemy;
 
 #region using directives
 
-using StardewModdingAPI;
 
 #endregion using directives
 

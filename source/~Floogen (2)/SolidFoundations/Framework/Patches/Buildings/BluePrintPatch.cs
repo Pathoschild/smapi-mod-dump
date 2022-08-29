@@ -89,7 +89,7 @@ namespace SolidFoundations.Framework.Patches.Buildings
                         __instance.additionalPlacementTiles.Add(additionalPlacementTile.Tile);
                     }
                 }
-                __instance.magical = buildingData.Builder == "Wizard";
+                __instance.magical = buildingData.MagicalConstruction is null ? false : buildingData.MagicalConstruction.Value;
 
                 try
                 {

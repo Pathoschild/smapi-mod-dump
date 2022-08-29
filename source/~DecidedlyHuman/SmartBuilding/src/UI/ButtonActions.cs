@@ -12,9 +12,9 @@ namespace SmartBuilding.UI
 {
     public class ButtonActions
     {
-        private ModEntry mod;
-        private ModState modState;
-        
+        private readonly ModEntry mod;
+        private readonly ModState modState;
+
         // Simply passing in our main mod class is terrible, but... it's either this, or spend
         // forever rearchitecting when I could be working on the usability of the mod.
         public ButtonActions(ModEntry mod, ModState modState)
@@ -22,63 +22,63 @@ namespace SmartBuilding.UI
             this.mod = mod;
             this.modState = modState;
         }
-        
+
         public void DrawClicked()
         {
-            modState.ActiveTool = ButtonId.Draw;
-            modState.ResetVolatileTiles();
+            this.modState.ActiveTool = ButtonId.Draw;
+            this.modState.ResetVolatileTiles();
         }
 
         public void EraseClicked()
         {
-            modState.ActiveTool = ButtonId.Erase;
-            modState.ResetVolatileTiles();
+            this.modState.ActiveTool = ButtonId.Erase;
+            this.modState.ResetVolatileTiles();
         }
 
         public void FilledRectangleClicked()
         {
-            modState.ActiveTool = ButtonId.FilledRectangle;
-            modState.ResetVolatileTiles();
+            this.modState.ActiveTool = ButtonId.FilledRectangle;
+            this.modState.ResetVolatileTiles();
         }
 
         public void DrawnLayerClicked()
         {
-            modState.SelectedLayer = TileFeature.Drawn;
-            modState.ResetVolatileTiles();
+            this.modState.SelectedLayer = TileFeature.Drawn;
+            this.modState.ResetVolatileTiles();
         }
 
         public void ObjectLayerClicked()
         {
-            modState.SelectedLayer = TileFeature.Object;
-            modState.ResetVolatileTiles();
+            this.modState.SelectedLayer = TileFeature.Object;
+            this.modState.ResetVolatileTiles();
         }
 
         public void TerrainFeatureLayerClicked()
         {
-            modState.SelectedLayer = TileFeature.TerrainFeature;
-            modState.ResetVolatileTiles();
+            this.modState.SelectedLayer = TileFeature.TerrainFeature;
+            this.modState.ResetVolatileTiles();
         }
 
         public void FurnitureLayerClicked()
         {
-            modState.SelectedLayer = TileFeature.Furniture;
-            modState.ResetVolatileTiles();
+            this.modState.SelectedLayer = TileFeature.Furniture;
+            this.modState.ResetVolatileTiles();
         }
 
         public void InsertClicked()
         {
-            modState.ActiveTool = ButtonId.Insert;
-            modState.ResetVolatileTiles();
+            this.modState.ActiveTool = ButtonId.Insert;
+            this.modState.ResetVolatileTiles();
         }
 
         public void ConfirmBuildClicked()
         {
-            mod.ConfirmBuild();
+            this.mod.ConfirmBuild();
         }
 
         public void ClearBuildClicked()
         {
-            mod.ClearBuild();
+            this.mod.ClearBuild();
         }
     }
 }

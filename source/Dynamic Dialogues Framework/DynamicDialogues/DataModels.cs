@@ -14,23 +14,15 @@ using System;
 
 namespace DynamicDialogues
 {
-    /*
-     * impl. ideas:
-     * - face towards farmer
-     * - wait to stop moving before applying dialogue
-     *      (smth like :
-     *          ApplyWhenMoving defaulting to true,
-     *          or WaitToStopMoving which defaults to false
-     *      )
-     * I may (or may not) add these in the future
-     */
 
     /// <summary>
-    /// A user-friendly class for the framework, all values are strings.
+    /// A class used for Dialogues with special commands (e.g jump, emote etc).
     /// </summary>
     internal class RawDialogues
     {
-        public int Time { get; set; } = -1;  //time to add dialogue at
+        public int Time { get; set; } = -1;  //time to add dialogue at, mut. exclusive w/ from-to
+        public int From { get; set; } = 600; //from this hour
+        public int To { get; set; } = 2600; //until this hour
         public string Location { get; set; } = "any";  //location npc has to be in
 
         public string Dialogue { get; set; } = null;  //the dialogue
@@ -38,6 +30,7 @@ namespace DynamicDialogues
         public bool Override { get; set; } = false;  //if to delete previous dialogues
         public bool Immediate { get; set; } = false;  // will print dialogue right away if NPC is in location
         public bool Force { get; set; } = false;  // if Immediate, prints dialogue regardless of location
+        //public bool ApplyWhenMoving { get; set; } = false;
 
         public bool IsBubble { get; set; } = false; //showtextoverhead instead
         
@@ -46,6 +39,8 @@ namespace DynamicDialogues
         public int Shake { get; set; } = -1; //shake for x milliseconds
         public int Emote { get; set; } = -1; //emote int (if allowed)
 
+        public RawAnimation Animation { get; set; } = new RawAnimation(); //animation to play, if any
+
         public RawDialogues()
         {
         }
@@ -53,6 +48,9 @@ namespace DynamicDialogues
         public RawDialogues(RawDialogues md)
         {
             Time = md.Time;
+            From = md.From;
+            To = md.To;
+
             Location = md.Location;
 
             Dialogue = md.Dialogue;
@@ -64,24 +62,9 @@ namespace DynamicDialogues
             Shake = md.Shake;
             Emote = md.Emote;
             FaceDirection = md.FaceDirection;
-        }
-#if DEBUG
-        public RawDialogues(string word)
-        {
-            Time = (-1 * word.Length);
-            Location = $"{word} location";
 
-            Dialogue = $"{word} dialogue";
-            ClearOnMove = false;
-            Override = false;
-
-            IsBubble = false;
-            Jump = false;
-            Shake = (1 * word.Length);
-            Emote = (1 * word.Length);
-            FaceDirection = word;
+            Animation = md.Animation;
         }
-#endif
     }
     internal class RawNotifs
     {
@@ -109,7 +92,6 @@ namespace DynamicDialogues
             IsBox = rn.IsBox;
         }
     }
-
     internal class RawQuestions
     {
         public string Question { get; set; }
@@ -133,6 +115,53 @@ namespace DynamicDialogues
             
             From = q.From;
             To = q.To;
+        }
+    }
+    internal class RawAnimation
+    {
+        public bool Enabled { get; set; } = false;
+        public string Frames { get; set; }
+        public int Interval { get; set; } // milliseconds for each frame
+
+        public RawAnimation()
+        {
+        }
+
+        public RawAnimation(RawAnimation a)
+        {
+            Enabled = a.Enabled;
+            Frames = a.Frames;
+            Interval = a.Interval;
+        }
+    }
+    internal class RawMission
+    {
+        public int From { get; set; } = 600; //from this hour
+        public int To { get; set; } = 2600; //until this hour
+        public string Location { get; set; } = "any";  //location npc has to be in
+
+        public string Dialogue { get; set; } = null;  //the dialogue
+        public string AcceptQuest { get; set; } = "Yes";
+        public string RejectQuest { get; set; } = "No";
+
+        public int ID { get; set; } = 0;
+        
+        public RawMission()
+        {
+
+        }
+
+        public RawMission(RawMission rm)
+        {
+            From = rm.From;
+            To = rm.To;
+            Location = rm.Location;
+
+            Dialogue = rm.Dialogue;
+            AcceptQuest = rm.AcceptQuest;
+            RejectQuest = rm.RejectQuest;
+
+            ID = rm.ID;
         }
     }
 }

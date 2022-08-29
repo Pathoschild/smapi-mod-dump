@@ -221,43 +221,27 @@ namespace Shockah.CommonModCode.IL
 		}
 
 		public static bool IsBrtrue(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Brtrue || instruction.opcode == OpCodes.Brtrue_S;
-		}
+			=> instruction.opcode == OpCodes.Brtrue || instruction.opcode == OpCodes.Brtrue_S;
 
 		public static bool IsBrfalse(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Brfalse || instruction.opcode == OpCodes.Brfalse_S;
-		}
+			=> instruction.opcode == OpCodes.Brfalse || instruction.opcode == OpCodes.Brfalse_S;
 
 		public static bool IsBle(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Ble || instruction.opcode == OpCodes.Ble_S;
-		}
+			=> instruction.opcode == OpCodes.Ble || instruction.opcode == OpCodes.Ble_S;
 
 		public static bool IsBneUn(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Bne_Un || instruction.opcode == OpCodes.Bne_Un_S;
-		}
+			=> instruction.opcode == OpCodes.Bne_Un || instruction.opcode == OpCodes.Bne_Un_S;
 
 		public static bool IsBge(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Bge || instruction.opcode == OpCodes.Bge_S;
-		}
+			=> instruction.opcode == OpCodes.Bge || instruction.opcode == OpCodes.Bge_S;
 
 		public static bool IsBgeUn(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Bge_Un || instruction.opcode == OpCodes.Bge_Un_S;
-		}
+			=> instruction.opcode == OpCodes.Bge_Un || instruction.opcode == OpCodes.Bge_Un_S;
 
 		public static bool IsBlt(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Blt || instruction.opcode == OpCodes.Blt_S;
-		}
+			=> instruction.opcode == OpCodes.Blt || instruction.opcode == OpCodes.Blt_S;
 
 		public static bool IsBltUn(this CodeInstruction instruction)
-		{
-			return instruction.opcode == OpCodes.Blt_Un || instruction.opcode == OpCodes.Blt_Un_S;
-		}
+			=> instruction.opcode == OpCodes.Blt_Un || instruction.opcode == OpCodes.Blt_Un_S;
 	}
 }

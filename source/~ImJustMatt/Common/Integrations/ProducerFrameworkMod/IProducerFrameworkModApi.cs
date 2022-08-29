@@ -11,7 +11,6 @@
 namespace StardewMods.Common.Integrations.ProducerFrameworkMod;
 
 using System.Collections.Generic;
-using SObject = StardewValley.Object;
 
 /// <summary>
 ///     Public api to get the producer framework recipes.

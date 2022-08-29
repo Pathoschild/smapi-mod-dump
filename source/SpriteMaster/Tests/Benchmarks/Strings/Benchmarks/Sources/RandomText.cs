@@ -64,7 +64,7 @@ public abstract class RandomText : StringSource {
 			strings.Add(sb.ToString());
 		}
 
-		if (DataSets.Last().Data.Length != MaxSize) {
+		if (DefaultDataSetsStatic.Last().Data.Length != MaxSize) {
 			var sb = new StringBuilder((int)MaxSize);
 			for (var j = 0; j < MaxSize; ++j) {
 				sb.Append(RandomChar(random));

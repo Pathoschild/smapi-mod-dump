@@ -10,32 +10,28 @@
 
 namespace StardewMods.BetterChests.Features;
 
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewMods.BetterChests.Helpers;
-using StardewMods.BetterChests.Storages;
 using StardewMods.Common.Enums;
 using StardewMods.Common.Helpers;
-using StardewValley.Objects;
 
 /// <summary>
 ///     Automatically organizes items between chests during sleep.
 /// </summary>
 internal class AutoOrganize : IFeature
 {
+    private static AutoOrganize? Instance;
+
+    private readonly IModHelper _helper;
+
+    private bool _isActivated;
+
     private AutoOrganize(IModHelper helper)
     {
-        this.Helper = helper;
+        this._helper = helper;
     }
-
-    private static AutoOrganize? Instance { get; set; }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
 
     /// <summary>
     ///     Initializes <see cref="AutoOrganize" />.
@@ -51,30 +47,32 @@ internal class AutoOrganize : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            this.Helper.Events.GameLoop.DayEnding += AutoOrganize.OnDayEnding;
+            return;
         }
+
+        this._isActivated = true;
+        this._helper.Events.GameLoop.DayEnding += AutoOrganize.OnDayEnding;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            this.Helper.Events.GameLoop.DayEnding -= AutoOrganize.OnDayEnding;
+            return;
         }
+
+        this._isActivated = false;
+        this._helper.Events.GameLoop.DayEnding -= AutoOrganize.OnDayEnding;
     }
 
     private static void OnDayEnding(object? sender, DayEndingEventArgs e)
     {
-        var storages =
-            StorageHelper.All
-                         .Where(storage => storage.AutoOrganize == FeatureOption.Enabled && storage is not ChestStorage { Chest.SpecialChestType: Chest.SpecialChestTypes.JunimoChest })
-                         .OrderByDescending(storage => storage.StashToChestPriority)
-                         .ToList();
+        var storages = Storages.All.Where(storage => storage.AutoOrganize is FeatureOption.Enabled)
+                               .OrderByDescending(storage => storage.StashToChestPriority)
+                               .ToList();
 
         foreach (var fromStorage in storages)
         {
@@ -87,19 +85,23 @@ internal class AutoOrganize : IFeature
                 }
 
                 var stack = item.Stack;
-                foreach (var toStorage in storages.Where(storage => !ReferenceEquals(fromStorage, storage) && storage.StashToChestPriority > fromStorage.StashToChestPriority))
+                foreach (var toStorage in storages.Where(
+                             storage => !ReferenceEquals(fromStorage, storage)
+                                     && storage.StashToChestPriority > fromStorage.StashToChestPriority))
                 {
                     var tmp = toStorage.StashItem(item);
                     if (tmp is null)
                     {
-                        Log.Trace($"AutoOrganize: {{ Item: {item.Name}, Quantity: {stack.ToString(CultureInfo.InvariantCulture)}, From: {fromStorage}, To: {toStorage}");
+                        Log.Trace(
+                            $"AutoOrganize: {{ Item: {item.Name}, Quantity: {stack.ToString(CultureInfo.InvariantCulture)}, From: {fromStorage}, To: {toStorage}");
                         fromStorage.Items.Remove(item);
                         break;
                     }
 
                     if (stack != item.Stack)
                     {
-                        Log.Trace($"AutoOrganize: {{ Item: {item.Name}, Quantity: {(stack - item.Stack).ToString(CultureInfo.InvariantCulture)}, From: {fromStorage}, To: {toStorage}");
+                        Log.Trace(
+                            $"AutoOrganize: {{ Item: {item.Name}, Quantity: {(stack - item.Stack).ToString(CultureInfo.InvariantCulture)}, From: {fromStorage}, To: {toStorage}");
                     }
                 }
             }

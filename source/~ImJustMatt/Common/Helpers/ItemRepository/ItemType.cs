@@ -11,6 +11,7 @@
 #pragma warning disable
 
 #region License
+
 // MIT License
 //
 // Copyright (c) 2018 CJBok
@@ -32,11 +33,14 @@
 //     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
 #endregion
 
 #region README
+
 // This implementation of ItemType was derived from
 // https://github.com/CJBok/SDV-Mods/tree/master/CJBItemSpawner
+
 #endregion
 
 namespace StardewMods.Common.Helpers.ItemRepository;

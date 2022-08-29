@@ -8,17 +8,25 @@
 **
 *************************************************/
 
+using HarmonyLib;
+using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Harmonize.Patches.Game;
+using SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
 using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Emit;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using static SpriteMaster.Harmonize.Harmonize;
-using SpriteBatcher = System.Object;
+
+using SpriteMaster.Extensions.Reflection;
+using System.Linq;
 
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch;
 
@@ -91,6 +99,51 @@ internal static class PlatformRenderBatch {
 
 	internal readonly record struct States(SamplerState? SamplerState, BlendState? BlendState);
 
+	[HarmonizeTranspile(
+		type: typeof(SpriteBatcher),
+		"FlushVertexArray",
+		argumentTypes: new[] { typeof(int), typeof(int), typeof(Effect), typeof(Texture) }
+	)]
+	public static IEnumerable<CodeInstruction> FlushVertexArrayTranspiler(IEnumerable<CodeInstruction> instructions) {
+		var newMethod = new Action<GraphicsDevice, PrimitiveType, VertexPositionColorTexture[], int, int, short[], int, int, VertexDeclaration>(GL.GraphicsDeviceExt.DrawUserIndexedPrimitivesFlushVertexArray).Method;
+
+		var codeInstructions = instructions as CodeInstruction[] ?? instructions.ToArray();
+
+		bool applied = false;
+
+		static bool IsCall(OpCode opCode) {
+			return opCode.Value == OpCodes.Call.Value || opCode.Value == OpCodes.Calli.Value || opCode.Value == OpCodes.Callvirt.Value;
+		}
+
+		IEnumerable<CodeInstruction> ApplyPatch() {
+			foreach (var instruction in codeInstructions) {
+				if (
+					!IsCall(instruction.opcode) ||
+					instruction.operand is not MethodInfo callee ||
+					callee.Name != "DrawUserIndexedPrimitives"
+				) {
+					yield return instruction;
+					continue;
+				}
+
+				yield return new(OpCodes.Call, newMethod) {
+					labels = instruction.labels,
+					blocks = instruction.blocks
+				};
+				//yield return new(OpCodes.Pop);
+				applied = true;
+			}
+		}
+
+		var result = ApplyPatch().ToArray();
+
+		if (!applied) {
+			Debug.Error("Could not apply SpriteBatcher FlushVertexArray patch.");
+		}
+
+		return result;
+	}
+
 	[Harmonize(
 		"Microsoft.Xna.Framework.Graphics",
 		"Microsoft.Xna.Framework.Graphics.SpriteBatcher",
@@ -160,14 +213,14 @@ internal static class PlatformRenderBatch {
 		platform: Platform.MonoGame
 	)]
 	public static void OnFlushVertexArray(
-	SpriteBatcher __instance,
-	int start,
-	int end,
-	Effect? effect,
-	Texture? texture,
-	GraphicsDevice? ____device,
-	States __state
-) {
+		SpriteBatcher __instance,
+		int start,
+		int end,
+		Effect? effect,
+		Texture? texture,
+		GraphicsDevice? ____device,
+		States __state
+	) {
 		if (!Config.IsEnabled) {
 			return;
 		}
@@ -184,6 +237,52 @@ internal static class PlatformRenderBatch {
 		}
 		catch (Exception ex) {
 			ex.PrintError();
+		}
+	}
+
+	private static bool EnsureArrayCapacityEnabled = true;
+
+	[Harmonize(
+		"Microsoft.Xna.Framework.Graphics",
+		"Microsoft.Xna.Framework.Graphics.SpriteBatcher",
+		"EnsureArrayCapacity",
+		Fixation.Prefix,
+		PriorityLevel.Last,
+		platform: Platform.MonoGame
+	)]
+	public static bool OnEnsureArrayCapacity(SpriteBatcher __instance, int numBatchItems) {
+		if (!Config.IsEnabled || !EnsureArrayCapacityEnabled) {
+			return true;
+		}
+
+		try {
+			EnsureIndexCapacity(__instance, numBatchItems);
+			EnsureVertexCapacity(__instance, numBatchItems);
+
+			return false;
+		}
+		catch (MemberAccessException ex) {
+			Debug.Error($"Disabling {nameof(OnEnsureArrayCapacity)} patch", ex);
+			EnsureArrayCapacityEnabled = false;
+			return true;
+		}
+		catch (InvalidCastException ex) {
+			Debug.Error($"Disabling {nameof(OnEnsureArrayCapacity)} patch", ex);
+			EnsureArrayCapacityEnabled = false;
+			return true;
+		}
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void EnsureIndexCapacity(SpriteBatcher @this, int numBatchItems) {
+		@this._index = GL.GraphicsDeviceExt.SpriteBatcherValues.Indices16;
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void EnsureVertexCapacity(SpriteBatcher @this, int numBatchItems) {
+		int neededCapacity = numBatchItems << 2;
+		if (@this._vertexArray is null || @this._vertexArray.Length < neededCapacity) {
+			@this._vertexArray = GC.AllocateUninitializedArray<VertexPositionColorTexture>(neededCapacity);
 		}
 	}
 }

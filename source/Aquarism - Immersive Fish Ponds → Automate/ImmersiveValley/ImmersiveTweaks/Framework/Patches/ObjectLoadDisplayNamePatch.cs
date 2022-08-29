@@ -10,14 +10,6 @@
 
 namespace DaLion.Stardew.Tweex.Framework.Patches;
 
-#region using directives
-
-using JetBrains.Annotations;
-using StardewValley;
-using SObject = StardewValley.Object;
-
-#endregion using directives
-
 [UsedImplicitly]
 internal sealed class ObjectLoadDisplayName : Common.Harmony.HarmonyPatch
 {

@@ -16,11 +16,11 @@ namespace Shockah.FlexibleSprinklers
 {
 	internal static class SprinklerLayouts
 	{
-		public static readonly ISet<IntPoint> Basic = IntPoint.NeighborOffsets.ToHashSet();
-		public static ISet<IntPoint> Quality => Box(1).ToHashSet();
-		public static ISet<IntPoint> Iridium => Box(2).ToHashSet();
+		public static readonly IReadOnlySet<IntPoint> Basic = IntPoint.NeighborOffsets.ToHashSet();
+		public static IReadOnlySet<IntPoint> Quality => Box(1).ToHashSet();
+		public static IReadOnlySet<IntPoint> Iridium => Box(2).ToHashSet();
 
-		public static ISet<IntPoint> Vanilla(int tier)
+		public static IReadOnlySet<IntPoint> Vanilla(int tier)
 		{
 			if (tier <= 1)
 				return Basic;

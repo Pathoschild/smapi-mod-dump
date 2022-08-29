@@ -11,7 +11,6 @@
 namespace StardewMods.Common.Integrations.Automate;
 
 using Microsoft.Xna.Framework;
-using StardewValley;
 
 /// <summary>
 ///     An automatable entity, which can implement a more specific type like <see cref="IMachine" /> or

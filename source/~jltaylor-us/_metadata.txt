@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/jltaylor-us/StardewJsonProcessor
+   Git: https://github.com/jltaylor-us/StardewJsonProcessor.git
+
+mods:
+   Content Patcher Json Processor
+   Json Processor
+
+latest commit:
+   commit 546d2b13e2a1b486068d8cc2208775867c40d7b1
+   Author: Jamie Taylor <Jamie.Taylor@pobox.com>
+   Date:   Thu Aug 11 22:13:58 2022 -0400
+   
+       Add a (somewhat bare) release-notes.md for CPJP
+   

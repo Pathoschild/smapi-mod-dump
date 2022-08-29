@@ -15,46 +15,37 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewMods.BetterChests.Helpers;
 using StardewMods.BetterChests.Models;
 using StardewMods.BetterChests.UI;
 using StardewMods.Common.Integrations.BetterChests;
-using StardewValley;
 
 /// <summary>
 ///     Search for which chests have the item you're looking for.
 /// </summary>
 internal class ChestFinder : IFeature
 {
-    private readonly PerScreen<HashSet<IStorageObject>> _cachedStorages = new(() => new());
+    private static ChestFinder? Instance;
+
+    private readonly ModConfig _config;
+    private readonly IModHelper _helper;
     private readonly PerScreen<IItemMatcher?> _itemMatcher = new();
+    private readonly PerScreen<HashSet<IStorageObject>> _storages = new(() => new());
+
+    private bool _isActivated;
 
     private ChestFinder(IModHelper helper, ModConfig config)
     {
-        this.Helper = helper;
-        this.Config = config;
+        this._helper = helper;
+        this._config = config;
     }
 
-    private static ChestFinder? Instance { get; set; }
+    private IItemMatcher ItemMatcher =>
+        this._itemMatcher.Value ??= new ItemMatcher(false, this._config.SearchTagSymbol.ToString());
 
-    private HashSet<IStorageObject> CachedStorages
-    {
-        get => this._cachedStorages.Value;
-    }
-
-    private ModConfig Config { get; }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
-
-    private IItemMatcher ItemMatcher
-    {
-        get => this._itemMatcher.Value ??= new ItemMatcher(false, this.Config.SearchTagSymbol.ToString());
-    }
+    private HashSet<IStorageObject> Storages => this._storages.Value;
 
     /// <summary>
     ///     Initializes <see cref="ChestFinder" />.
@@ -70,54 +61,62 @@ internal class ChestFinder : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            this.Helper.Events.Display.MenuChanged += this.OnMenuChanged;
-            this.Helper.Events.Display.RenderedHud += this.OnRenderedHud;
-            this.Helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
-            this.Helper.Events.World.ChestInventoryChanged += this.OnChestInventoryChanged;
-
-            if (IntegrationHelper.ToolbarIcons.IsLoaded)
-            {
-                IntegrationHelper.ToolbarIcons.API.AddToolbarIcon(
-                    "BetterChests.FindChest",
-                    "furyx639.BetterChests/Icons",
-                    new(48, 0, 16, 16),
-                    I18n.Button_FindChest_Name());
-                IntegrationHelper.ToolbarIcons.API.ToolbarIconPressed += this.OnToolbarIconPressed;
-            }
+            return;
         }
+
+        this._isActivated = true;
+        this._helper.Events.Display.MenuChanged += this.OnMenuChanged;
+        this._helper.Events.Display.RenderedHud += this.OnRenderedHud;
+        this._helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
+        this._helper.Events.World.ChestInventoryChanged += this.OnChestInventoryChanged;
+
+        if (!Integrations.ToolbarIcons.IsLoaded)
+        {
+            return;
+        }
+
+        Integrations.ToolbarIcons.API.AddToolbarIcon(
+            "BetterChests.FindChest",
+            "furyx639.BetterChests/Icons",
+            new(48, 0, 16, 16),
+            I18n.Button_FindChest_Name());
+        Integrations.ToolbarIcons.API.ToolbarIconPressed += this.OnToolbarIconPressed;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            this.Helper.Events.Display.MenuChanged -= this.OnMenuChanged;
-            this.Helper.Events.Display.RenderedHud -= this.OnRenderedHud;
-            this.Helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
-            this.Helper.Events.World.ChestInventoryChanged -= this.OnChestInventoryChanged;
-
-            if (IntegrationHelper.ToolbarIcons.IsLoaded)
-            {
-                IntegrationHelper.ToolbarIcons.API.RemoveToolbarIcon("BetterChests.FindChest");
-                IntegrationHelper.ToolbarIcons.API.ToolbarIconPressed -= this.OnToolbarIconPressed;
-            }
+            return;
         }
+
+        this._isActivated = false;
+        this._helper.Events.Display.MenuChanged -= this.OnMenuChanged;
+        this._helper.Events.Display.RenderedHud -= this.OnRenderedHud;
+        this._helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
+        this._helper.Events.World.ChestInventoryChanged -= this.OnChestInventoryChanged;
+
+        if (!Integrations.ToolbarIcons.IsLoaded)
+        {
+            return;
+        }
+
+        Integrations.ToolbarIcons.API.RemoveToolbarIcon("BetterChests.FindChest");
+        Integrations.ToolbarIcons.API.ToolbarIconPressed -= this.OnToolbarIconPressed;
     }
 
     private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (!Context.IsPlayerFree || !this.Config.ControlScheme.FindChest.JustPressed())
+        if (!Context.IsPlayerFree || !this._config.ControlScheme.FindChest.JustPressed())
         {
             return;
         }
 
         this.OpenChestFinder();
-        this.Helper.Input.SuppressActiveKeybinds(this.Config.ControlScheme.FindChest);
+        this._helper.Input.SuppressActiveKeybinds(this._config.ControlScheme.FindChest);
     }
 
     private void OnChestInventoryChanged(object? sender, ChestInventoryChangedEventArgs e)
@@ -127,7 +126,8 @@ internal class ChestFinder : IFeature
             return;
         }
 
-        var storage = StorageHelper.CurrentLocation.FirstOrDefault(storage => ReferenceEquals(storage.Context, e.Chest));
+        var storage =
+            Helpers.Storages.CurrentLocation.FirstOrDefault(storage => ReferenceEquals(storage.Context, e.Chest));
         if (storage is null)
         {
             return;
@@ -135,41 +135,44 @@ internal class ChestFinder : IFeature
 
         if (storage.Items.Any(this.ItemMatcher.Matches))
         {
-            if (!this.CachedStorages.Contains(storage))
+            if (!this.Storages.Contains(storage))
             {
-                this.CachedStorages.Add(storage);
+                this.Storages.Add(storage);
             }
 
             return;
         }
 
-        this.CachedStorages.RemoveWhere(cachedStorage => ReferenceEquals(cachedStorage.Context, e.Chest));
+        this.Storages.RemoveWhere(cachedStorage => ReferenceEquals(cachedStorage.Context, e.Chest));
     }
 
     private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
-        if (e.OldMenu is SearchBar && e.NewMenu is null)
+        if (e.OldMenu is not SearchBar || e.NewMenu is not null)
         {
-            this.CachedStorages.Clear();
-            if (this.ItemMatcher.Any())
-            {
-                this.CachedStorages.UnionWith(StorageHelper.CurrentLocation.Where(storage => storage.Items.Any(this.ItemMatcher.Matches)));
-            }
+            return;
+        }
+
+        this.Storages.Clear();
+        if (this.ItemMatcher.Any())
+        {
+            this.Storages.UnionWith(
+                Helpers.Storages.CurrentLocation.Where(storage => storage.Items.Any(this.ItemMatcher.Matches)));
         }
     }
 
     private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-        if (!Context.IsPlayerFree || !this.CachedStorages.Any())
+        if (!Context.IsPlayerFree || !this.Storages.Any())
         {
             return;
         }
 
         var bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
         var srcRect = new Rectangle(412, 495, 5, 4);
-        foreach (var storage in this.CachedStorages)
+        foreach (var storage in this.Storages)
         {
-            var pos = storage.Position * 64f + new Vector2(32, -48);
+            var pos = (storage.Position + new Vector2(0.5f, -0.75f)) * Game1.tileSize;
             var onScreenPos = default(Vector2);
             if (Utility.isOnScreen(pos, 64))
             {
@@ -235,7 +238,9 @@ internal class ChestFinder : IFeature
                 rotation -= (float)Math.PI / 4f;
             }
 
-            onScreenPos = Utility.makeSafe(onScreenPos, new((float)srcRect.Width * Game1.pixelZoom, (float)srcRect.Height * Game1.pixelZoom));
+            onScreenPos = Utility.makeSafe(
+                onScreenPos,
+                new((float)srcRect.Width * Game1.pixelZoom, (float)srcRect.Height * Game1.pixelZoom));
             e.SpriteBatch.Draw(
                 Game1.mouseCursors,
                 onScreenPos,
@@ -259,6 +264,6 @@ internal class ChestFinder : IFeature
 
     private void OpenChestFinder()
     {
-        Game1.activeClickableMenu = new SearchBar(this.Helper, this.ItemMatcher);
+        Game1.activeClickableMenu = new SearchBar(this.ItemMatcher);
     }
 }

@@ -8,14 +8,12 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.JsonAssets;
 
 #region using directives
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 

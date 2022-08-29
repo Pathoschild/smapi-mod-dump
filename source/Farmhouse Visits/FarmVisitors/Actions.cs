@@ -23,7 +23,7 @@ namespace FarmVisitors
     {
         /* regular visit *
          * the one used by non-scheduled NPCs */
-        internal static void AddToFarmHouse(NPC visitor, FarmHouse farmHouse)
+        internal static void AddToFarmHouse(NPC visitor, FarmHouse farmHouse, bool HadConfirmation)
         {
             try
             {
@@ -33,32 +33,35 @@ namespace FarmVisitors
                     return;
                 }
 
-                NPC npcv = visitor;
+                bool isanimating = visitor.doingEndOfRouteAnimation.Value;
 
-                bool isanimating = npcv.doingEndOfRouteAnimation.Value;
-
-                if(isanimating == true || (npcv.doingEndOfRouteAnimation is not null && npcv.doingEndOfRouteAnimation.Value is true))
+                if(isanimating == true || (visitor.doingEndOfRouteAnimation is not null && visitor.doingEndOfRouteAnimation.Value is true))
                 {
-                    RemoveAnimation(npcv);
+                    RemoveAnimation(visitor);
                 }
                 /* not needed anymore since we exclude hospital days. however i like it and i restore the dialogues afterwards so it's fine*/
-
-                if(npcv.CurrentDialogue.Any())
+                
+                if(visitor.CurrentDialogue.Any())
                 {
-                    npcv.CurrentDialogue.Clear();
+                    visitor.CurrentDialogue.Clear();
                 }
+                
+                visitor.ignoreScheduleToday = true;
+                visitor.temporaryController = null;
 
-                npcv.ignoreScheduleToday = true;
-                npcv.temporaryController = null;
-
-                Game1.drawDialogue(npcv, Values.GetIntroDialogue(npcv));
+                if(HadConfirmation == false)
+                {
+                    //Game1.drawDialogue(npcv, Values.GetIntroDialogue(npcv));
+                    Game1.drawDialogue(visitor, Values.GetDialogueType(visitor, "Introduce"));
+                }
 
                 var position = farmHouse.getEntryLocation();
                 position.Y--;
-                npcv.faceDirection(0);
-                Game1.warpCharacter(npcv, "FarmHouse", position);
+                visitor.faceDirection(0);
+                Game1.warpCharacter(visitor, "FarmHouse", position);
 
-                npcv.showTextAboveHead(string.Format(Values.GetTextOverHead(npcv),Game1.MasterPlayer.Name));
+                //npcv.showTextAboveHead(string.Format(Values.GetTextOverHead(npcv),Game1.MasterPlayer.Name));
+                visitor.showTextAboveHead(string.Format(Values.GetDialogueType(visitor, "WalkIn"),Game1.MasterPlayer.Name));
 
                 //set before greeting because "Push" leaves dialogues at the top
                 if (Game1.MasterPlayer.isMarried())
@@ -67,9 +70,25 @@ namespace FarmVisitors
                         InLawActions(visitor);
                 }
 
-                npcv.CurrentDialogue.Push(new Dialogue(string.Format(Values.StringByPersonality(npcv), Values.GetSeasonalGifts()), npcv));
-                //add but different for attempt
-                npcv.setNewDialogue(string.Format(Values.StringByPersonality(npcv), Values.GetSeasonalGifts()), true, false);
+                //npcv.CurrentDialogue.Push(new Dialogue(string.Format(Values.StringByPersonality(npcv), Values.GetSeasonalGifts()), npcv)); <- doesnt work
+
+                var enterDialogue = Values.GetDialogueType(visitor, "Greet"); //string.Format(Values.StringByPersonality(npcv), Values.GetSeasonalGifts());
+                if(ModEntry.ReceiveGift)
+                {
+                    var withGift = $"{enterDialogue}#$b#{Values.GetGiftDialogue(visitor)}";
+#if DEBUG
+                    ModEntry.Mon.Log($"withGift: {withGift}");
+#endif
+                    enterDialogue = string.Format(withGift, Values.GetSeasonalGifts());
+                }
+#if DEBUG
+                ModEntry.Mon.Log($"enterDialogue: {enterDialogue}");
+                visitor.setNewDialogue("testing if dialogue works via setNewDialogue.", true, true);
+                visitor.CurrentDialogue.Push(new Dialogue("this is a new Dialogue being pushed to CurrentDialogue.", visitor));
+                visitor.CurrentDialogue.Push(new Dialogue($"TESTING, {enterDialogue}", visitor));
+#endif
+                visitor.setNewDialogue($"{enterDialogue}", true, true);
+                visitor.CurrentDialogue.Push(new Dialogue(Values.GetDialogueType(visitor, "Thanking"), visitor));
 
                 if (Game1.currentLocation == farmHouse)
                 {
@@ -77,7 +96,7 @@ namespace FarmVisitors
                 }
 
                 position.Y--;
-                npcv.controller = new PathFindController(npcv, farmHouse, position, 0);
+                visitor.controller = new PathFindController(visitor, farmHouse, position, 0);
             }
             catch(Exception ex)
             {
@@ -94,7 +113,7 @@ namespace FarmVisitors
                 try
                 {
                     c.CurrentDialogue?.Clear();
-                    c.Dialogue?.Clear();
+                    //c.Dialogue?.Clear(); as said before this is counterproductive and only lags / doesnt do anything for the mod
 
                     if (c.Name.Equals("Dwarf"))
                     {
@@ -169,12 +188,12 @@ namespace FarmVisitors
 
                 var currentLocation = c.currentLocation;
 
-                if (c.CurrentDialogue.Any() || c.CurrentDialogue is not null || c.Dialogue is not null)
+                if (c.CurrentDialogue.Any() || c.CurrentDialogue is not null) // || c.Dialogue is not null
                 {
                     c.CurrentDialogue.Clear();
                     c.resetCurrentDialogue();
 
-                    c.Dialogue.Clear();
+                    //c.Dialogue.Clear(); this would clear ALL dialogues (even ones not being used). bad!
 
                     c.update(Game1.currentGameTime, currentLocation);
 
@@ -186,11 +205,12 @@ namespace FarmVisitors
                     //restores (pre-visit) current dialogue
                     c.CurrentDialogue = ModEntry.VisitorData.CurrentPreVisit;
 
-                    //restores all pre visit dialogues
+                    /*restores all pre visit dialogues
                     foreach (KeyValuePair<string,string> pair in ModEntry.VisitorData.AllPreVisit)
                     {
                         c.Dialogue.Add(pair.Key, pair.Value);
                     }
+                    taken out because again we dont need this */
 
                     //if above doesnt work, try using the dialogues with CurrentDialogue.Push
                 }
@@ -255,7 +275,8 @@ namespace FarmVisitors
                 }
                 finally
                 {
-                    Game1.drawDialogue(c, Values.GetRetireDialogue(c));
+                    //Game1.drawDialogue(c, Values.GetRetireDialogue(c));
+                    Game1.drawDialogue(c, Values.GetDialogueType(c, "Retiring"));
                     ReturnToNormal(c, currentTime);
                     Game1.currentLocation.playSound("doorClose", NetAudio.SoundContext.NPC);
                 }
@@ -264,21 +285,7 @@ namespace FarmVisitors
             {
                 try
                 {
-                    if (c.controller is not null)
-                    {
-                        c.Halt();
-                        c.controller = null;
-                    }
-                    ReturnToNormal(c, currentTime);
-
-                    if(Game1.currentLocation.Name.StartsWith("Cellar"))
-                    {
-                        Game1.drawObjectDialogue(string.Format(Values.NPCGone_Cellar(), c.displayName));
-                    }
-                    else
-                    {
-                        Game1.drawObjectDialogue(string.Format(Values.GetNPCGone(), c.displayName));
-                    }
+                    Leave(c, currentTime);
                 }
                 catch (Exception ex)
                 {
@@ -322,7 +329,7 @@ namespace FarmVisitors
 
         /* customized visits *
          * ones set by user via ContentPatcher*/
-        internal static void AddCustom(NPC c, FarmHouse farmHouse, ScheduleData data)
+        internal static void AddCustom(NPC c, FarmHouse farmHouse, ScheduleData data, bool HadConfirmation)
         {
             try
             {
@@ -347,15 +354,18 @@ namespace FarmVisitors
                 npcv.ignoreScheduleToday = true;
                 npcv.temporaryController = null;
 
-                if(!string.IsNullOrWhiteSpace(data.EntryQuestion))
+                if(HadConfirmation == false)
                 {
-                    Game1.drawDialogue(npcv, data.EntryQuestion);
+                    if (!string.IsNullOrWhiteSpace(data.EntryQuestion))
+                    {
+                        Game1.drawDialogue(npcv, data.EntryQuestion);
+                    }
+                    else
+                    {
+                        //Game1.drawDialogue(npcv, Values.GetIntroDialogue(npcv));
+                        Game1.drawDialogue(npcv, Values.GetDialogueType(npcv, "Introduce"));
+                    }
                 }
-                else
-                {
-                    Game1.drawDialogue(npcv, Values.GetIntroDialogue(npcv));
-                }
-
                 var position = farmHouse.getEntryLocation();
                 position.Y--;
                 npcv.faceDirection(0);
@@ -367,16 +377,21 @@ namespace FarmVisitors
                 }
                 else
                 {
-                    npcv.showTextAboveHead(string.Format(Values.GetTextOverHead(npcv), Game1.MasterPlayer.Name));
+                    npcv.showTextAboveHead(string.Format(Values.GetDialogueType(npcv, "WalkIn"), Game1.MasterPlayer.Name));
                 }
 
-                if(!string.IsNullOrWhiteSpace(data.EntryDialogue))
+                if (!string.IsNullOrWhiteSpace(data.EntryDialogue))
                 {
-                    npcv.setNewDialogue(string.Format(Values.StringByPersonality(npcv), Values.GetSeasonalGifts()), true, false);
+                    npcv.setNewDialogue(data.EntryDialogue, true, false);
                 }
                 else
                 {
-                    npcv.setNewDialogue(string.Format(Values.StringByPersonality(npcv), Values.GetSeasonalGifts()), true, false);
+                    var enterDialogue = Values.GetDialogueType(npcv, "Greet");
+                    if (ModEntry.ReceiveGift)
+                    {
+                        enterDialogue += $"#$b#" + Values.GetGiftDialogue(npcv);
+                        enterDialogue = String.Format(enterDialogue, Values.GetSeasonalGifts());
+                    }
                 }
 
                 if (Game1.currentLocation == farmHouse)
@@ -422,20 +437,26 @@ namespace FarmVisitors
             {
                 try
                 {
-                    if (c.controller is not null)
-                    {
-                        c.Halt();
-                        c.controller = null;
-                    }
-                    ReturnToNormal(c, currentTime);
-                    
-                    Game1.drawObjectDialogue(string.Format(Values.GetNPCGone(), c.displayName));
+                    Leave(c, currentTime);
                 }
                 catch (Exception ex)
                 {
                     ModEntry.Mon.Log($"An error ocurred when pathing to entry: {ex}", LogLevel.Error);
                 }
             }
+        }
+
+        //for both
+        internal static void Leave(NPC c, int currentTime)
+        {
+            if (c.controller is not null)
+            {
+                c.Halt();
+                c.controller = null;
+            }
+            ReturnToNormal(c, currentTime);
+
+            Game1.drawObjectDialogue(string.Format(Values.GetNPCGone(Game1.currentLocation.Name.StartsWith("Cellar")), c.displayName));
         }
 
         //turn list to string

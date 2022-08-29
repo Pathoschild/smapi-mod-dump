@@ -1,0 +1,83 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewJsonProcessor
+**
+*************************************************/
+
+{
+  "shorthand": {
+    "foo": { "$string-join": [ "a", "b", "c" ] },
+    "bar": [
+      { "$string-join": [ "d", "e", "f" ] },
+      {
+        "$string-join": [
+          "x",
+          { "$string-join": [ "y", "z" ] }
+        ]
+      }
+    ]
+  },
+  "full-form": {
+    "foo": { "$transform": "string-join", "strings": [ "a", "b", "c" ] },
+    "bar": [
+      { "$transform": "string-join", "strings": [ "d", "e", "f" ] },
+      {
+        "$transform": "string-join",
+        "strings": [
+          "x",
+          { "$string-join": [ "y", "z" ] }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "foo": "abc",
+    "bar": [
+      "def",
+      "xyz"
+    ]
+  },
+  "delimiter": {
+    "foo": {
+      "$transform": "string-join",
+      "delimiter": ", ",
+      "strings": [ "a", "b", "c" ]
+    }
+  },
+  "delimiter expected": {
+    "foo": "a, b, c"
+  },
+  "missing strings": [
+    {
+      "$transform": "string-join"
+    }
+  ],
+  "bad delimiter": [
+    {
+      "$transform": "string-join",
+      "delimiter": 7,
+      "strings": []
+    }
+  ],
+  "bad strings shorthand": [
+    {
+      "$string-join": 5
+    }
+  ],
+  "bad strings": [
+    {
+      "$transform": "string-join",
+      "strings": 5
+    }
+  ],
+  "bad string": [
+    {
+      "$string-join": [ "a", 3 ]
+    }
+  ],
+  "bad string results": [ "a" ]
+  }

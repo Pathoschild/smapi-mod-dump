@@ -27,7 +27,7 @@ internal sealed partial class Scaler {
 		uint IScaler.ClampScale(uint scale) => Scaler.ClampScale(scale);
 
 		public Span<Color16> Apply(
-			in Resample.Scalers.Config configuration,
+			Resample.Scalers.Config configuration,
 			uint scaleMultiplier,
 			ReadOnlySpan<Color16> sourceData,
 			Vector2I sourceSize,

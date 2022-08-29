@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+// #define DO_UNNEEDED_PATCHES
+
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Core;
@@ -219,6 +221,7 @@ internal static class Draw {
 		);
 	}
 
+#if DO_UNNEEDED_PATCHES
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
 	public static bool OnDraw(XSpriteBatch __instance, XTexture2D? texture, XVector2 position, XRectangle? sourceRectangle, XColor color, float rotation, XVector2 origin, float scale, SpriteEffects effects, float layerDepth) {
 		return ForwardDraw(
@@ -234,6 +237,7 @@ internal static class Draw {
 			layerDepth: layerDepth
 		);
 	}
+#endif
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
 	public static bool OnDraw(XSpriteBatch __instance, XTexture2D? texture, XVector2 position, XRectangle? sourceRectangle, XColor color) {

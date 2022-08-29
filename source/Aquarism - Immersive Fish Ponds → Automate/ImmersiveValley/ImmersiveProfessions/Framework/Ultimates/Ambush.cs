@@ -17,27 +17,22 @@ using Events.GameLoop;
 using Microsoft.Xna.Framework;
 using Netcode;
 using Sounds;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Monsters;
 using System.Linq;
 
 #endregion using directives
 
 /// <summary>Handles Poacher ultimate activation.</summary>
-internal sealed class Ambush : Ultimate
+public sealed class Ambush : Ultimate
 {
     /// <summary>Construct an instance.</summary>
     internal Ambush()
-    : base(Color.MediumPurple, Color.MidnightBlue) { }
+    : base(UltimateIndex.PoacherAmbush, Color.MediumPurple, Color.MidnightBlue) { }
 
     #region public properties
 
     /// <summary>The ID of the buff that displays while Ambush is active.</summary>
     public static int BuffId { get; } = (ModEntry.Manifest.UniqueID + (int)UltimateIndex.PoacherAmbush + 4).GetHashCode();
-
-    /// <inheritdoc />
-    public override UltimateIndex Index => UltimateIndex.PoacherAmbush;
 
     #endregion public properties
 
@@ -53,6 +48,8 @@ internal sealed class Ambush : Ultimate
     internal bool IsGrantingCritBuff =>
         IsActive || Game1.buffsDisplay.otherBuffs.Any(b => b.which == BuffId - 4);
 
+    internal double SecondsOutOfAmbush { get; set; }
+
     #endregion internal properties
 
     #region internal methods
@@ -62,7 +59,7 @@ internal sealed class Ambush : Ultimate
     {
         base.Activate();
 
-        ModEntry.PlayerState.SecondsOutOfAmbush = 0d;
+        SecondsOutOfAmbush = 0d;
         foreach (var monster in Game1.currentLocation.characters.OfType<Monster>()
                      .Where(m => m.Player.IsLocalPlayer))
         {
@@ -91,7 +88,7 @@ internal sealed class Ambush : Ultimate
 
         var critBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.which == BuffId - 4);
         var duration = critBuff?.millisecondsDuration ??
-                       (int) (15000 * ((double) MaxValue / BASE_MAX_VALUE_I) / ModEntry.Config.SpecialDrainFactor);
+                       (int)(15000 * ((double)MaxValue / BASE_MAX_VALUE_I) / ModEntry.Config.SpecialDrainFactor);
         Game1.buffsDisplay.removeOtherBuff(BuffId - 4);
         Game1.buffsDisplay.removeOtherBuff(BuffId);
         Game1.player.addedSpeed -= 2;
@@ -99,20 +96,17 @@ internal sealed class Ambush : Ultimate
             new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 1,
                 GetType().Name,
-                ModEntry.i18n.Get("poacher.ulti"))
+                ModEntry.i18n.Get("poacher.ulti.name"))
             {
                 which = BuffId,
                 sheetIndex = 49,
                 glow = GlowColor,
                 millisecondsDuration = duration,
-                description = ModEntry.i18n.Get("poacher.ultidesc.hidden")
+                description = ModEntry.i18n.Get("poacher.ulti.desc.hidden")
             }
         );
 
-        if (Context.IsMainPlayer)
-            ModEntry.HostState.PoachersInAmbush.Add(Game1.player.UniqueMultiplayerID);
-        else
-            ModEntry.Broadcaster.Message("ActivatedAmbush", "UpdateHostState", Game1.MasterPlayer.UniqueMultiplayerID);
+        ModEntry.Events.Enable<AmbushUpdateTickedEvent>();
     }
 
     /// <inheritdoc />
@@ -124,36 +118,37 @@ internal sealed class Ambush : Ultimate
         var timeLeft = buff?.millisecondsDuration ?? 0;
         Game1.buffsDisplay.removeOtherBuff(BuffId);
         Game1.player.addedSpeed += 2;
-        if (timeLeft > 0)
-        {
-            var buffId = BuffId - 4;
-            Game1.buffsDisplay.removeOtherBuff(buffId);
-            Game1.buffsDisplay.addOtherBuff(
-                new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    1,
-                    GetType().Name,
-                    ModEntry.i18n.Get("poacher.ulti"))
-                {
-                    which = buffId,
-                    sheetIndex = 37,
-                    millisecondsDuration = timeLeft * 2,
-                    description = ModEntry.i18n.Get("poacher.ultidesc.revealed")
-                }
-            );
-        }
+        if (timeLeft <= 0) return;
 
-        if (Context.IsMainPlayer)
-            ModEntry.HostState.PoachersInAmbush.Remove(Game1.player.UniqueMultiplayerID);
-        else
-            ModEntry.Broadcaster.Message("DeactivatedAmbush", "UpdateHostState", Game1.MasterPlayer.UniqueMultiplayerID);
-
-        ModEntry.EventManager.Hook<PoacherUpdateTickedEvent>();
+        var buffId = BuffId - 4;
+        Game1.buffsDisplay.removeOtherBuff(buffId);
+        Game1.buffsDisplay.addOtherBuff(
+            new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1,
+                GetType().Name,
+                ModEntry.i18n.Get("poacher.ulti.name"))
+            {
+                which = buffId,
+                sheetIndex = 37,
+                millisecondsDuration = timeLeft * 2,
+                description = ModEntry.i18n.Get("poacher.ulti.desc.revealed")
+            }
+        );
     }
 
     /// <inheritdoc />
     internal override void Countdown(double elapsed)
     {
-        ChargeValue -= elapsed * 0.06 / 18.0;
+        ChargeValue -= elapsed * 0.02 / 3.0; // lasts 15s
+    }
+
+    /// <summary>Reset the Ambush timer with twice the remaining duration.</summary>
+    internal void Reset()
+    {
+        var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.which == BuffId);
+        if (buff is null) return;
+
+        buff.millisecondsDuration *= 2;
     }
 
     #endregion internal methods

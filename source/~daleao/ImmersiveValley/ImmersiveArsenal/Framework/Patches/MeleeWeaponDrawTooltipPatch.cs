@@ -13,11 +13,10 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 #region using directives
 
 using Common.Extensions.Reflection;
+using Enchantments;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Linq;
@@ -27,7 +26,8 @@ using System.Linq;
 [UsedImplicitly]
 internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
 {
-    private static Func<Item, int>? _GetDescriptionWidth;
+    private static readonly Lazy<Func<Item, int>> _GetDescriptionWidth = new(() =>
+        typeof(Item).RequireMethod("getDescriptionWidth").CompileUnboundDelegate<Func<Item, int>>());
 
     /// <summary>Construct an instance.</summary>
     internal MeleeWeaponDrawTooltipPatch()
@@ -42,11 +42,8 @@ internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
     private static bool MeleeWeaponDrawTooltipPrefix(MeleeWeapon __instance, SpriteBatch spriteBatch, ref int x,
         ref int y, SpriteFont font, float alpha)
     {
-        _GetDescriptionWidth ??=
-            typeof(Item).RequireMethod("getDescriptionWidth").CompileUnboundDelegate<Func<Item, int>>();
-
         // write description
-        var descriptionWidth = _GetDescriptionWidth(__instance);
+        var descriptionWidth = _GetDescriptionWidth.Value(__instance);
         Utility.drawTextWithShadow(spriteBatch,
             Game1.parseText(__instance.description, Game1.smallFont, descriptionWidth), font, new(x + 16, y + 20),
             Game1.textColor);
@@ -54,6 +51,7 @@ internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
         if (__instance.isScythe(__instance.IndexOfMenuItemView)) return false; // don't run original logic
 
         var co = Game1.textColor;
+
         // write damage
         if (__instance.hasEnchantmentOfType<RubyEnchantment>()) co = new(0, 120, 120);
 
@@ -63,6 +61,28 @@ internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
             Game1.content.LoadString("Strings\\UI:ItemHover_Damage", __instance.minDamage.Value,
                 __instance.maxDamage.Value), font, new(x + 68, y + 28), co * 0.9f * alpha);
         y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+
+        // write bonus knockback
+        if (Math.Abs(__instance.knockback.Value - __instance.defaultKnockBackForThisType(__instance.type.Value)) >
+            0.01f)
+        {
+            co = Game1.textColor;
+            if (__instance.hasEnchantmentOfType<AmethystEnchantment>()) co = new(0, 120, 120);
+
+            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(70, 428, 10, 10),
+                Color.White, 0f, Vector2.Zero, 4f, false, 1f);
+            Utility.drawTextWithShadow(spriteBatch,
+                Game1.content.LoadString("Strings\\UI:ItemHover_Weight",
+                    (((int)Math.Ceiling(Math.Abs(__instance.knockback.Value -
+                                                 __instance.defaultKnockBackForThisType(__instance.type.Value)) *
+                                        10f) > __instance.defaultKnockBackForThisType(__instance.type.Value))
+                        ? "+"
+                        : "") + (int)Math.Ceiling(Math.Abs(__instance.knockback.Value -
+                                                           __instance.defaultKnockBackForThisType(
+                                                               __instance.type.Value)) * 10f)), font,
+                new(x + 68, y + 28), co * 0.9f * alpha);
+            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+        }
 
         // write bonus crit rate
         var effectiveCritChance = __instance.critChance.Value;
@@ -104,6 +124,7 @@ internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
         // write bonus swing speed
         if (__instance.speed.Value != (__instance.type.Value == 2 ? -8 : 0))
         {
+            var amount = __instance.type.Value == 2 ? __instance.speed.Value + 8 : __instance.speed.Value;
             var negativeSpeed = __instance.type.Value == 2 && __instance.speed.Value < -8 ||
                                 __instance.type.Value != 2 && __instance.speed.Value < 0;
             co = Game1.textColor;
@@ -112,32 +133,20 @@ internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
             Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(130, 428, 10, 10),
                 Color.White, 0f, Vector2.Zero, 4f, false, 1f);
             Utility.drawTextWithShadow(spriteBatch,
-                Game1.content.LoadString("Strings\\UI:ItemHover_Speed",
-                    ((__instance.type.Value == 2 ? __instance.speed.Value + 8 : __instance.speed.Value) > 0
-                        ? "+"
-                        : "") + (__instance.type.Value == 2 ? __instance.speed.Value + 8 : __instance.speed.Value) / 2),
-                font, new(x + 68, y + 28), negativeSpeed ? Color.DarkRed : co * 0.9f * alpha);
+                Game1.content.LoadString("Strings\\UI:ItemHover_Speed", (amount > 0 ? "+" : "") + amount / 2), font,
+                new(x + 68, y + 28), negativeSpeed ? Color.DarkRed : co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
         }
 
-        // write bonus knockback
-        if (Math.Abs(__instance.knockback.Value - __instance.defaultKnockBackForThisType(__instance.type.Value)) >
-            0.01f)
+        // write bonus cooldown reduction
+        if (__instance.hasEnchantmentOfType<GarnetEnchantment>())
         {
-            co = Game1.textColor;
-            if (__instance.hasEnchantmentOfType<AmethystEnchantment>()) co = new(0, 120, 120);
-
-            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(70, 428, 10, 10),
+            var cdr = __instance.GetEnchantmentLevel<GarnetEnchantment>() * 0.1f;
+            var amount = $"{cdr:p0}";
+            co = new(0, 120, 120);
+            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new(x + 20, y + 20), new(150, 428, 10, 10),
                 Color.White, 0f, Vector2.Zero, 4f, false, 1f);
-            Utility.drawTextWithShadow(spriteBatch,
-                Game1.content.LoadString("Strings\\UI:ItemHover_Weight",
-                    (((int)Math.Ceiling(Math.Abs(__instance.knockback.Value -
-                                                  __instance.defaultKnockBackForThisType(__instance.type.Value)) *
-                                         10f) > __instance.defaultKnockBackForThisType(__instance.type.Value))
-                        ? "+"
-                        : "") + (int)Math.Ceiling(Math.Abs(__instance.knockback.Value -
-                                                            __instance.defaultKnockBackForThisType(
-                                                                __instance.type.Value)) * 10f)), font,
+            Utility.drawTextWithShadow(spriteBatch, ModEntry.i18n.Get("ui.itemhover.cdr", new { amount }), font,
                 new(x + 68, y + 28), co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
         }
@@ -156,7 +165,7 @@ internal sealed class MeleeWeaponDrawTooltipPatch : Common.Harmony.HarmonyPatch
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
         }
 
-        // write bonus random forge
+        // write bonus random forges
         if (__instance.enchantments.Count > 0 && __instance.enchantments[^1] is DiamondEnchantment)
         {
             co = new(0, 120, 120);

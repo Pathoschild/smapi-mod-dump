@@ -16,7 +16,6 @@ using Common;
 using Common.Extensions.Reflection;
 using Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;

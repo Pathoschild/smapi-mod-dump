@@ -32,7 +32,7 @@ namespace MapTK.TileActions
 
         private static Dictionary<ISalable, int[]> GetPriceAndStock(string shop, string id, IModHelper helper)
         {
-            if (helper.Content.Load<Dictionary<string, MapTKInventory>>(InventoryDataAsset, ContentSource.GameContent).TryGetValue(id, out MapTKInventory inv))
+            if (helper.GameContent.Load<Dictionary<string, MapTKInventory>>(InventoryDataAsset).TryGetValue(id, out MapTKInventory inv))
             {
                 Dictionary<ISalable, int[]> priceAndStock = new Dictionary<ISalable, int[]>();
 

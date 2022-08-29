@@ -16,8 +16,6 @@ using Common;
 using Common.Commands;
 using Framework;
 using Framework.Utility;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Linq;
 
@@ -32,7 +30,7 @@ internal sealed class SetSkillLevelsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "set_levels";
+    public override string[] Triggers { get; } = { "set_levels", "set_skills" };
 
     /// <inheritdoc />
     public override string Documentation =>
@@ -81,7 +79,7 @@ internal sealed class SetSkillLevelsCommand : ConsoleCommand
             var skillName = args[0];
             if (!Skill.TryFromName(skillName, true, out var skill))
             {
-                var found = ModEntry.CustomSkills.Values.SingleOrDefault(s =>
+                var found = ModEntry.CustomSkills.Values.FirstOrDefault(s =>
                     string.Equals(s.StringId, skillName, StringComparison.CurrentCultureIgnoreCase) ||
                     string.Equals(s.DisplayName, skillName, StringComparison.CurrentCultureIgnoreCase));
                 if (found is not CustomSkill customSkill)
@@ -106,12 +104,12 @@ internal sealed class SetSkillLevelsCommand : ConsoleCommand
 
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} <skill1> <newLevel> <skill2> <newLevel> ...";
+        var result = $"\n\nUsage: {Handler.EntryCommand} {Triggers.First()} <skill1> <newLevel> <skill2> <newLevel> ...";
         result += "\n\nParameters:";
         result += "\n\t- <skill>\t- a valid skill name, or 'all'";
         result += "\n\t- <newLevel>\t- a valid integer level";
         result += "\n\nExamples:";
-        result += $"\n\t- {Handler.EntryCommand} {Trigger} farming 5 cooking 10";
+        result += $"\n\t- {Handler.EntryCommand} {Triggers.First()} farming 5 cooking 10";
         return result;
     }
 }

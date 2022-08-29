@@ -11,6 +11,7 @@
 using HarmonyLib;
 using LinqFasterer;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Pastel;
 using SpriteMaster.Extensions;
 using SpriteMaster.Extensions.Reflection;
@@ -89,7 +90,12 @@ internal static class Harmonize {
 		typeof(Color8),
 		typeof(Color16),
 		typeof(Fixed8),
-		typeof(Fixed16)
+		typeof(Fixed16),
+		typeof(VertexPosition),
+		typeof(VertexPositionColor),
+		typeof(VertexPositionColorTexture),
+		typeof(VertexPositionNormalTexture),
+		typeof(VertexPositionTexture)
 	};
 
 	private static string GetMethodName(MethodInfo method, HarmonizeAttribute attribute) => attribute.Name ?? method.Name.Split('`', 2)[0];

@@ -8,11 +8,10 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.TehsFishingOverhaul;
 
 #region using directives
 
-using StardewValley;
 using System;
 
 #endregion using directives

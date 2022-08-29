@@ -15,11 +15,8 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 using DaLion.Common;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System;
 using System.Reflection;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

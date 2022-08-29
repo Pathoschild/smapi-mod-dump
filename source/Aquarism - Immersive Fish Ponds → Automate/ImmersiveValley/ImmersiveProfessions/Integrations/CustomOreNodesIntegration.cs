@@ -14,7 +14,7 @@ namespace DaLion.Stardew.Professions.Integrations;
 
 using Common.Extensions.Reflection;
 using Common.Integrations;
-using StardewModdingAPI;
+using Common.Integrations.CustomOreNodes;
 using System.Linq;
 
 #endregion using directives

@@ -15,6 +15,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -30,12 +31,18 @@ internal static partial class Debug {
 
 		internal static DebugModeFlags CurrentMode = DebugModeFlags.None;
 
+		internal static bool IsEnabled => CurrentMode != DebugModeFlags.None;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool IsModeEnabled(DebugModeFlags mode) => (CurrentMode & mode) == mode;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void EnableMode(DebugModeFlags mode) => CurrentMode |= mode;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void DisableMode(DebugModeFlags mode) => CurrentMode &= ~mode;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void ToggleMode(DebugModeFlags mode) => CurrentMode ^= mode;
 
 		private static Vector2I CurrentCursorPosition {
@@ -167,6 +174,7 @@ internal static partial class Debug {
 			internal readonly float LayerDepth;
 			internal readonly float Scale;
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal DrawInfo(
 				ManagedSpriteInstance? instance,
 				XTexture2D texture,
@@ -202,7 +210,32 @@ internal static partial class Debug {
 
 		private static readonly List<DrawInfo> SelectedDraws = new();
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool RegisterDrawForSelect(
+			ManagedSpriteInstance? instance,
+			XTexture2D texture,
+			Bounds destination,
+			Bounds source,
+			in XColor color,
+			float rotation,
+			Vector2F origin,
+			XGraphics.SpriteEffects effects,
+			float layerDepth,
+			Vector2F? scale = null,
+			Bounds? originalDestination = null,
+			Vector2F? originalPosition = null,
+			Bounds? originalSource = null,
+			Vector2F? originalOrigin = null
+		) {
+			if (!IsModeEnabled(DebugModeFlags.Select)) {
+				return false;
+			}
+
+			return RegisterDrawForSelectImpl(instance, texture, destination, source, color, rotation, origin, effects, layerDepth, scale, originalDestination, originalPosition, originalSource, originalOrigin);
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static bool RegisterDrawForSelectImpl(
 			ManagedSpriteInstance? instance,
 			XTexture2D texture,
 			Bounds destination,
@@ -261,6 +294,7 @@ internal static partial class Debug {
 			return false;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool RegisterDrawForSelect(
 			ManagedSpriteInstance? instance,
 			XTexture2D texture,
@@ -280,6 +314,28 @@ internal static partial class Debug {
 				return false;
 			}
 
+			return RegisterDrawForSelectImpl(
+				instance, texture, position, source, color, rotation, origin, scale, effects, layerDepth, originalPosition,
+				originalSource, originalOrigin
+			);
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static bool RegisterDrawForSelectImpl(
+			ManagedSpriteInstance? instance,
+			XTexture2D texture,
+			Vector2F position,
+			Bounds source,
+			in XColor color,
+			float rotation,
+			Vector2F origin,
+			Vector2F scale,
+			XGraphics.SpriteEffects effects,
+			float layerDepth,
+			Vector2F? originalPosition = null,
+			Bounds? originalSource = null,
+			Vector2F? originalOrigin = null
+		) {
 			var roundedPosition = position.NearestInt();
 			var roundedExtent = (source.ExtentF * scale).NearestInt();
 
@@ -287,7 +343,7 @@ internal static partial class Debug {
 				roundedPosition,
 				roundedExtent
 			);
-			return RegisterDrawForSelect(
+			return RegisterDrawForSelectImpl(
 				instance: instance,
 				texture: texture,
 				originalPosition: originalPosition,
@@ -308,11 +364,17 @@ internal static partial class Debug {
 		private static readonly Vector2F DimensionalScalingFactor = (1.0f, 1.0f);
 		private static readonly Vector2F TextOffset = (15.0f, 15.0f);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool Draw() {
 			if (!IsModeEnabled(DebugModeFlags.Select)) {
 				return false;
 			}
 
+			return DrawImpl();
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static bool DrawImpl() {
 			if (SelectedDraws.Count == 0) {
 				return false;
 			}

@@ -67,7 +67,7 @@ namespace PlatoTK.Presets
 
             if (helper.ModHelper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone") is IMobilePhoneApi phone)
             {
-                    Texture2D appIcon = helper.ModHelper.Content.Load<Texture2D>(specs.Icon, StardewModdingAPI.ContentSource.GameContent);
+                    Texture2D appIcon = helper.ModHelper.GameContent.Load<Texture2D>(specs.Icon);
                     bool success = phone.AddApp(specs.Id, specs.Name, () =>
                     {
                         specs.Start();

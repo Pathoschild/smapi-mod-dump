@@ -63,7 +63,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewTaxes", "StardewTaxe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulBombs", "..\..\..\Desktop\UsefulBombs-master\UsefulBombs\UsefulBombs.csproj", "{60189CF3-DC86-4725-8422-C56190D72081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankOfFerngill", "BankOfFerngill\BankOfFerngill.csproj", "{9748F9C1-6676-4CF4-9947-9E631E9F0CDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankOfFerngill", "BankOfFerngill\BankOfFerngill.csproj", "{9748F9C1-6676-4CF4-9947-9E631E9F0CDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CropReviver", "CropReviver\CropReviver.csproj", "{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -266,6 +268,14 @@ Global
 		{9748F9C1-6676-4CF4-9947-9E631E9F0CDC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9748F9C1-6676-4CF4-9947-9E631E9F0CDC}.Release|x86.ActiveCfg = Release|Any CPU
 		{9748F9C1-6676-4CF4-9947-9E631E9F0CDC}.Release|x86.Build.0 = Release|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -289,6 +299,7 @@ Global
 		{F893D8D1-96AA-4939-AC52-D222724D29A4} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
 		{60189CF3-DC86-4725-8422-C56190D72081} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
 		{9748F9C1-6676-4CF4-9947-9E631E9F0CDC} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
+		{7611CFC6-9F1D-4C81-B1B5-31D0D352694E} = {34698880-C8D5-40AE-BAC1-08FDE4359A9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB6C6B8C-9654-4232-A3DA-0819C7860DF5}
@@ -296,6 +307,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common\Common.projitems*{3e12e768-bb9a-4038-beff-754c7612ec1c}*SharedItemsImports = 5
 		Common\Common\Common.projitems*{50cd60fb-0256-4e2d-b783-0a037cf59d78}*SharedItemsImports = 13
-		Common\Common\Common.projitems*{8f850419-0b44-4327-b11a-b020fd12f16a}*SharedItemsImports = 4
+		Common\Common\Common.projitems*{9748f9c1-6676-4cf4-9947-9e631e9f0cdc}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

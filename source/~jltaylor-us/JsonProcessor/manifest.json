@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewJsonProcessor
+**
+*************************************************/
+
+{
+  "Name": "Json Processor",
+  "Author": "Jamie Taylor",
+  "Version": "0.5.0",
+  "Description": "Processes JSON files",
+  "UniqueID": "jltaylor-us.JsonProcessor",
+  "EntryDll": "JsonProcessor.dll",
+  "MinimumApiVersion": "3.7.6", // last Android version
+  "UpdateKeys": [
+    "Nexus:13183",
+    // "GitHub:jltaylor-us/StardewJsonProcessor"
+  ]
+}

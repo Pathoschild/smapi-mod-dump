@@ -19,6 +19,7 @@ using StardewValley;
 using StardewValley.Objects;
 
 using DynamicBodies.Patches;
+using DynamicBodies.Framework;
 
 namespace DynamicBodies.Data
 {
@@ -29,23 +30,31 @@ namespace DynamicBodies.Data
         public float initialLayerDepth = 0f;
         public bool overrideCheck = false;
         public Texture2D cacheImage;
+        public Texture2D sourceImage;
+        public Vector4[] paletteCache;
+        public Dictionary<string, bool> dirtyLayers;
         public int shirt { get; set; }
         public int shirtOverlayIndex = -1;
         public int pants { get; set; }
         public int shoes { get; set; }
-        public uint hair;
+        public Color hair;
         public uint dhair;
+        public uint lash;
         //Draw rendering
         public string sleeveLength { get; set; }
         public string shoeStyle { get; set; }
         public BodyPartStyle vanilla;
         public BodyPartStyle body;
         public BodyPartStyle face;
+        public BodyPartStyle eyes;
+        public BodyPartStyle ears;
+        public BodyPartStyle nose;
         public BodyPartStyle arm;
         public BodyPartStyle beard;
         public BodyPartStyle bodyHair;
         public BodyPartStyle nakedUpper;
         public BodyPartStyle nakedLower;
+        public BodyPartStyle hairStyle;
 
         //Overlays/Accessories rendering
         public Dictionary<int, Texture2D> hairTextures = new Dictionary<int, Texture2D>();
@@ -57,23 +66,49 @@ namespace DynamicBodies.Data
         public PlayerBaseExtended(Farmer who) : this(who, who.FarmerRenderer.textureName.Value) { }
         public PlayerBaseExtended(Farmer who, string baseTexture)
         {
+
+            paletteCache = GetBasePalette();
+            paletteCache[3] = Color.Transparent.ToVector4();
+
             body = new BodyPartStyle("body");
 
             vanilla = new BodyPartStyle("body");
             SetVanillaFile(baseTexture);
 
             face = new BodyPartStyle("face");
+            eyes = new BodyPartStyle("eyes");
+            ears = new BodyPartStyle("ears");
+            nose = new BodyPartStyle("nose");
             arm = new BodyPartStyle("arm");
             beard = new BodyPartStyle("beard");
             bodyHair = new BodyPartStyle("bodyHair");
             nakedLower = new BodyPartStyle("nakedLower");
             nakedUpper = new BodyPartStyle("nakedUpper");
+            hairStyle = new BodyPartStyle("hairStyle");
+
+            dirtyLayers = new Dictionary<string, bool>() {
+                { "sprite",true },
+                { "baseTexture",true },
+                { "eyes",true },
+                { "skin",true },
+                { "shoes",true },
+                { "pants",true },
+                { "shirt",true },
+                { "face",true },
+                { "arm",true },
+                { "hair",true },
+                { "beard",true },
+                { "bodyHair",true },
+                { "nakedLower",true },
+                { "nameUpper",true },
+            };
 
             shirt = who.shirt.Value;
             pants = who.pants.Value;
             shoes = who.shoes.Value;
-            hair = (uint)who.hairColor;
+            hair = who.hairstyleColor.Value;
             dhair = 0;
+            lash = 0;
             sleeveLength = "Normal";
             shoeStyle = "Normal";
 
@@ -112,6 +147,19 @@ namespace DynamicBodies.Data
             return who.Name;
         }
 
+        //Handles up to 24 colours currently
+        public static Vector4[] GetBasePalette()
+        {
+            IRawTextureData defaultColors = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\palette_skin.png");
+            Vector4[] basePalette = new Vector4[25];
+            for(int i = 0; i < 25; i++)
+            {
+                basePalette[i] = defaultColors.Data[i].ToVector4();
+                //ModEntry.debugmsg($"Added palette colour {basePalette[i].ToString()}", LogLevel.Debug);
+            }
+            return basePalette;
+        }
+
         public void DefaultOptions(Farmer who)
         {
             body.SetDefault(who);
@@ -119,11 +167,17 @@ namespace DynamicBodies.Data
             body.file = vanilla.file;
 
             face.SetDefault(who);
+            eyes.SetDefault(who);
+            ears.SetDefault(who);
+            nose.SetDefault(who);
             arm.SetDefault(who);
             beard.SetDefault(who);
             bodyHair.SetDefault(who);
             nakedLower.SetDefault(who);
             nakedUpper.SetDefault(who);
+            hairStyle.SetDefault(who);
+
+            who.modData["DB.lash"] = new Color(15, 10, 8).PackedValue.ToString();
         }
 
         public void SetModData(Farmer who, string key, string value)
@@ -135,10 +189,36 @@ namespace DynamicBodies.Data
                 {
                     change = true;
                 }
+            } else
+            {
+                change = true;
             }
             who.modData[key] = value;
             if (change)
             {
+                if (dirtyLayers.ContainsKey(key.Substring(3)))
+                {
+                    ModEntry.debugmsg($"Change happened - {key.Substring(3)}", LogLevel.Debug);
+                    dirtyLayers[key.Substring(3)] = true;
+                }
+                switch (key)
+                {
+                    case "DB.eyes":
+                    case "DB.eyeColorS":
+                    case "DB.eyeColorR":
+                    case "DB.nose":
+                    case "DB.ears":
+                        dirtyLayers["face"] = true;
+                        dirtyLayers["baseTexture"] = true;
+                        break;
+                    case "DB.body":
+                        dirtyLayers["baseTexture"] = true;
+                        break;
+                    case "DB.hairStyle":
+                        dirtyLayers["hair"] = true;
+                        break;
+                }
+                
                 UpdateTextures(who);
             }
         }
@@ -150,14 +230,28 @@ namespace DynamicBodies.Data
             if (vanilla.file == "farmer_girl_base_bald") { vanilla.file = "farmer_base_bald"; }
         }
 
+        public static Color GetColorSetting(Farmer who, string name)
+        {
+            Color toReturn = Color.Transparent;
+            if (who.modData.ContainsKey("DB."+name))
+            {
+                toReturn = new Color(uint.Parse(who.modData["DB."+name]));
+            }
+            return toReturn;
+        }
+
         public void UpdateTextures(Farmer who)
         {
             PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
+
+            //Set sprite dirty base 
+            pbe.dirtyLayers["sprite"] = pbe.dirtyLayers["baseTexture"] || pbe.dirtyLayers["face"];
 
             //Check for custom body
             if (!pbe.body.OptionMatchesModData(who))
             {
                 pbe.body.SetOptionFromModData(who, ModEntry.bodyOptions);
+                pbe.dirtyLayers["sprite"] = true;
                 pbe.dirty = true;
             }
 
@@ -165,6 +259,31 @@ namespace DynamicBodies.Data
             if (!pbe.face.OptionMatchesModData(who))
             {
                 pbe.face.SetOptionFromModData(who, ModEntry.faceOptions);
+                pbe.dirtyLayers["sprite"] = true;
+                pbe.dirty = true;
+            }
+
+            //Check for custom eyes
+            if (!pbe.eyes.OptionMatchesModData(who))
+            {
+                pbe.eyes.SetOptionFromModData(who, ModEntry.eyesOptions);
+                pbe.dirtyLayers["sprite"] = true;
+                pbe.dirty = true;
+            }
+
+            //Check for custom ears
+            if (!pbe.ears.OptionMatchesModData(who))
+            {
+                pbe.ears.SetOptionFromModData(who, ModEntry.earsOptions);
+                pbe.dirtyLayers["sprite"] = true;
+                pbe.dirty = true;
+            }
+
+            //Check for custom nose
+            if (!pbe.nose.OptionMatchesModData(who))
+            {
+                pbe.nose.SetOptionFromModData(who, ModEntry.noseOptions);
+                pbe.dirtyLayers["sprite"] = true;
                 pbe.dirty = true;
             }
 
@@ -172,6 +291,7 @@ namespace DynamicBodies.Data
             if (!pbe.arm.OptionMatchesModData(who))
             {
                 pbe.arm.SetOptionFromModData(who, ModEntry.armOptions);
+                pbe.dirtyLayers["arm"] = true;
                 pbe.dirty = true;
             }
 
@@ -179,7 +299,42 @@ namespace DynamicBodies.Data
             if (!pbe.beard.OptionMatchesModData(who))
             {
                 pbe.beard.SetOptionFromModData(who, ModEntry.beardOptions);
+                pbe.dirtyLayers["beard"] = true;
                 pbe.dirty = true;
+            }
+
+            //Check for bodyhair
+            if (!pbe.bodyHair.OptionMatchesModData(who))
+            {
+                pbe.bodyHair.SetOptionFromModData(who, ModEntry.bodyHairOptions);
+                pbe.dirtyLayers["bodyHair"] = true;
+            }
+
+            //Check for hairStyle
+            if (!pbe.hairStyle.OptionMatchesModData(who))
+            {
+                pbe.hairStyle.SetOptionFromModData(who, ModEntry.hairOptions);
+                pbe.dirtyLayers["hair"] = true;
+            }
+            if (pbe.hairStyle.option == "Default")
+            {
+                //Copy the value from farmer sprite 
+                pbe.hairStyle.option = "Vanilla's " + who.hair.Value;
+                pbe.hairStyle.file = who.hair.Value.ToString();
+                who.modData["DB." + pbe.hairStyle.name] = pbe.hairStyle.option;
+            }
+
+            if (pbe.dirtyLayers["hair"])
+            {
+                pbe.dirtyLayers["beard"] = true;
+                pbe.dirtyLayers["bodyHair"] = true;
+            }
+
+            if (who.modData.ContainsKey("DB.lash")){
+                if (who.modData["DB.lash"] != new Color(pbe.paletteCache[17]).PackedValue.ToString())
+                {
+                    pbe.dirtyLayers["eyes"] = true;
+                }
             }
 
             //Check for naked overlay
@@ -213,17 +368,12 @@ namespace DynamicBodies.Data
 
         public Texture2D GetBodyHairTexture(Farmer who)
         {
-            CheckHairTextures(who); //Redraw if needed
+            CheckHairTextures(who); //Flag dirty because hair colour changed
 
-            if (bodyHair.texture == null)
+            if (bodyHair.texture == null || dirtyLayers["bodyHair"])
             {
                 Texture2D bodyHairText2D = bodyHair.provider.ModContent.Load<Texture2D>($"assets\\bodyhair\\{bodyHair.file}.png");
-                Rectangle rect = new Rectangle(0, 0, bodyHairText2D.Width, bodyHairText2D.Height);
-                bodyHair.texture = new Texture2D(Game1.graphics.GraphicsDevice, bodyHairText2D.Width, bodyHairText2D.Height);
-                Color[] data = new Color[bodyHairText2D.Width * bodyHairText2D.Height];
-                bodyHairText2D.GetData(data, 0, data.Length);
-                bodyHair.texture.SetData(data);
-                bodyHair.texture = RenderHair(who, bodyHair.texture, rect);
+                bodyHair.texture = RenderHair(who, bodyHairText2D, new Rectangle(0,0,bodyHairText2D.Width, bodyHairText2D.Height));
             }
             return bodyHair.texture;
         }
@@ -260,73 +410,106 @@ namespace DynamicBodies.Data
             return beard.textures[beard.option];
         }
 
+        public Texture2D GetHairStyleTexture(Farmer who, string type = "")
+        {
+            CheckHairTextures(who); //Redraw if needed
+
+            if (type == "")
+            {
+                if (hairStyle.texture == null || dirtyLayers["hair"])
+                {
+                    Texture2D hairText2D = hairStyle.provider.ModContent.Load<Texture2D>($"Hair\\{hairStyle.file}.png");
+                    hairStyle.texture = RenderHair(who, hairText2D, new Rectangle(0, 0, hairText2D.Width, hairText2D.Height));
+                }
+                return hairStyle.texture;
+            } else
+            {
+                if (!hairStyle.textures.ContainsKey(type) && hairStyle.option != "Default")
+                {
+                    //Build a new one
+                    Texture2D hairText2D = hairStyle.provider.ModContent.Load<Texture2D>($"Hair\\{hairStyle.file}_{type}.png");
+                    hairStyle.textures[type] = RenderHair(who, hairText2D, new Rectangle(0, 0, hairText2D.Width, hairText2D.Height));
+                }
+                return hairStyle.textures[type];
+            }
+        }
+
         public Texture2D RenderHair(Farmer who, Texture2D source_texture, Rectangle rect)
         {
+
             Texture2D hairText2D = null;
-            //Need to render a new texture
-            hairText2D = new Texture2D(Game1.graphics.GraphicsDevice, rect.Width, rect.Height);
-            Color[] HairData = new Color[hairText2D.Width * hairText2D.Height];
-            source_texture.GetData<Color>(source_texture.LevelCount - 1, rect, HairData, 0, hairText2D.Width * hairText2D.Height);
-
-            //monitor.Log($"Building new hair texture", LogLevel.Debug);
-
+            if (source_texture.Height != rect.Height || source_texture.Width != rect.Width)
+            {
+                //Need to render a partial texture
+                hairText2D = new Texture2D(Game1.graphics.GraphicsDevice, rect.Width, rect.Height);
+                Color[] HairData = new Color[hairText2D.Width * hairText2D.Height];
+                source_texture.GetData<Color>(source_texture.LevelCount - 1, rect, HairData, 0, hairText2D.Width * hairText2D.Height);
+                hairText2D.SetData(HairData);
+            }
+            else
+            {
+                //just use the whole thing
+                hairText2D = source_texture;
+            }
             //Colours to replace
             Color hairdark = new Color(57, 57, 57);//default, generally dark
             if (who.modData.ContainsKey("DB.darkHair"))
             {
                 hairdark = new Color(uint.Parse(who.modData["DB.darkHair"]));
             }
-            Color hairdarker = Color.Lerp(hairdark, Color.Black, 0.25f);
-            Color hair = who.hairstyleColor.Value;
-            Color hairLight = Color.Lerp(hair, Color.White, 0.25f);
-            Color hairThreshold = new Color(57, 57, 57, 99);//36% or 99 alpha is the shadow overlay onto skin
-            Color hairUpper = new Color(240, 240, 240);
-            Color hairRange = new Color(hairUpper.R - hairThreshold.R, hairUpper.G - hairThreshold.G, hairUpper.B - hairThreshold.B);
 
-            for (int i = 0; i < HairData.Length; i++)
+            Texture2D texture = null;
+            //Need to render a new texture
+            texture = new Texture2D(Game1.graphics.GraphicsDevice, hairText2D.Width, hairText2D.Height);
+
+            //Use a pixel shader to handle the recolouring    
+            ModEntry.hairRamp.Parameters["xColor"].SetValue(who.hairstyleColor.Value.ToVector4());
+            ModEntry.hairRamp.Parameters["xDarkColor"].SetValue(hairdark.ToVector4());
+
+            FarmerRendererPatched.renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, hairText2D.Width, hairText2D.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+            //Store current render targets
+            RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
+            Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched.renderTarget);
+
+            if (currentRenderTargets is not null && currentRenderTargets.Length > 0 && currentRenderTargets[0].RenderTarget is not null)
             {
-                Color hairpixel = HairData[i];
-                //Check if the pixel is more solid than the hair-shadow colour
-                bool changeit = hairpixel.A > hairThreshold.A;
-                //Check if it's transparent that it is grey, then change it
-                if (!changeit && hairpixel.A > 0)
-                {
-                    changeit = hairpixel.R == hairpixel.G && hairpixel.G == hairpixel.B;
-                }
-                if (changeit)
-                {
-                    byte alpha = hairpixel.A;
-                    //Currently only uses the red chanel - ignores tinting
-                    if (hairpixel.R >= hairThreshold.R || hairpixel.R < hairUpper.R)
-                    {
-                        float perc = (float)(hairpixel.R - hairThreshold.R) / (float)hairRange.R;
-                        HairData[i] = Color.Lerp(hairdark, hair, perc);
-                    }
-
-                    if (hairpixel.R < hairThreshold.R)
-                    {
-                        float perc = (float)(hairpixel.R) / (float)hairThreshold.R;
-                        HairData[i] = Color.Lerp(hairdarker, hairdark, perc);
-                    }
-
-                    if (hairpixel.R >= hairUpper.R)
-                    {
-                        float perc = (float)(hairpixel.R - hairUpper.R) / (float)(byte.MaxValue - hairUpper.R);
-                        HairData[i] = Color.Lerp(hair, hairLight, perc);
-                    }
-                    HairData[i].A = alpha;
-                }
+                FarmerRendererPatched._cachedRenderer = currentRenderTargets[0].RenderTarget as RenderTarget2D;
             }
-            hairText2D.SetData<Color>(HairData);
-            return hairText2D;
+
+            Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched.renderTarget);
+
+            Game1.graphics.GraphicsDevice.Clear(Color.FromNonPremultiplied(255, 0, 255, 0));
+
+            using (SpriteBatch sb = new SpriteBatch(FarmerRendererPatched.renderTarget.GraphicsDevice))
+            {
+                sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, effect: ModEntry.hairRamp);
+                sb.Draw(hairText2D, new Rectangle(0, 0, hairText2D.Width, hairText2D.Height), Color.White);
+                sb.End();
+            }
+
+            Color[] pixel_data = new Color[FarmerRendererPatched.renderTarget.Width * FarmerRendererPatched.renderTarget.Height];
+            FarmerRendererPatched.renderTarget.GetData(pixel_data);
+            texture.SetData(pixel_data);
+
+
+            if (FarmerRendererPatched.renderTarget is not null)
+            {
+                FarmerRendererPatched.renderTarget.Dispose();
+            }
+
+            //return current render target
+            Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched._cachedRenderer);
+            FarmerRendererPatched._cachedRenderer = null;
+
+            return texture;
         }
 
         public void CheckHairTextures(Farmer who)
         {
             //Check for hair colour
-            if (hair != (uint)who.hairColor)
+            if (hair != who.hairstyleColor.Value)
             {
-                hair = (uint)who.hairColor;
+                hair = who.hairstyleColor.Value;
                 ResetHairTextures();
             }
 
@@ -345,9 +528,10 @@ namespace DynamicBodies.Data
         {
             ModEntry.debugmsg($"Reset hair textures", LogLevel.Debug);
 
+            dirtyLayers["bodyHair"] = true;
+
             hairTextures.Clear();
             beard.Clear();
-            bodyHair.Clear();
         }
 
         public Texture2D GetNakedUpperTexture(int skin)
@@ -361,7 +545,7 @@ namespace DynamicBodies.Data
             {
                 Texture2D texture = nakedUpper.provider.ModContent.Load<Texture2D>($"assets\\nakedUpper\\{nakedUpper.file}.png");
                 //recalculate the skin colours on the overlay
-                nakedUpper.texture = ApplySkinColor(skin, texture);
+                nakedUpper.texture = ApplyPaletteColors(texture);
             }
             if (nakedUpper.option == "Default")
             {
@@ -389,7 +573,7 @@ namespace DynamicBodies.Data
                 else
                 {
                     //recalculate the skin colours on the overlay
-                    nakedLower.texture = ApplySkinColor(skin, texture);
+                    nakedLower.texture = ApplyPaletteColors(texture);
                 }
             }
             if (nakedLower.option == "Default")
@@ -399,110 +583,48 @@ namespace DynamicBodies.Data
             return nakedLower.texture;
         }
 
-        private static Texture2D ApplySkinColor(int skin, Texture2D source_texture)
+        private static Texture2D ApplyPaletteColors(Texture2D source_texture)
         {
             Texture2D texture = null;
             //Need to render a new texture
             texture = new Texture2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height);
 
-            //Calculate the skin colours
-            int which = skin;
-            Texture2D skinColors = Game1.content.Load<Texture2D>("Characters/Farmer/skinColors");
-            Texture2D glandColors = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Character/extendedSkinColors.png");
+            //Use a pixel shader to handle the recolouring    
+            //Assumes ModEntry.paletteSwap.Parameters["xTargetPalette"].SetValue(pbe.paletteCache); is done
 
-            Color[] skinColorsData = new Color[skinColors.Width * skinColors.Height];
-            if (which < 0) which = skinColors.Height - 1;
-            if (which > skinColors.Height - 1) which = 0;
-            skinColors.GetData(skinColorsData);
+            RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+            //Store current render targets
+            RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
 
-            Color[] glandColorsData = new Color[glandColors.Width * glandColors.Height];
-            if (which < 0) which = glandColors.Height - 1;
-            if (which > glandColors.Height - 1) which = 0;
-            glandColors.GetData(glandColorsData);
-
-            //Colours to replace
-            Color darkest_old = skinColorsData[0], medium_old = skinColorsData[1], lightest_old = skinColorsData[2];
-            Color glandDark_old = glandColorsData[0], glandLight_old = glandColorsData[1];
-
-            //Store what the colours are
-            Color darkest = skinColorsData[which * 3 % (skinColors.Height * 3)];
-            Color medium = skinColorsData[which * 3 % (skinColors.Height * 3) + 1];
-            Color lightest = skinColorsData[which * 3 % (skinColors.Height * 3) + 2];
-            Color glandDark = glandColorsData[which * 2 % (glandColors.Height * 2)];
-            Color glandLight = glandColorsData[which * 2 % (glandColors.Height * 2) + 1];
-
-            Color[] data = new Color[texture.Width * texture.Height];
-            source_texture.GetData(data);
-
-            for (int i = 0; i < data.Length; i++)
+            if (currentRenderTargets is not null && currentRenderTargets.Length > 0 && currentRenderTargets[0].RenderTarget is not null)
             {
-                if (data[i].Equals(darkest_old))
-                {
-                    data[i] = darkest;
-                }
-                else if (data[i].Equals(medium_old))
-                {
-                    data[i] = medium;
-                }
-                else if (data[i].Equals(lightest_old))
-                {
-                    data[i] = lightest;
-                }
-                else if (data[i].Equals(glandDark_old))
-                {
-                    data[i] = glandDark;
-                }
-                else if (data[i].Equals(glandLight_old))
-                {
-                    data[i] = glandLight;
-                }
-
+                FarmerRendererPatched._cachedRenderer = currentRenderTargets[0].RenderTarget as RenderTarget2D;
             }
-            texture.SetData<Color>(data);
+
+            Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+
+            Game1.graphics.GraphicsDevice.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            using (SpriteBatch sb = new SpriteBatch(renderTarget.GraphicsDevice))
+            {
+                sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, effect: ModEntry.paletteSwap);
+                sb.Draw(source_texture, new Rectangle(0, 0, source_texture.Width, source_texture.Height), Color.White);
+                sb.End();
+            }
+            Color[] pixel_data = new Color[renderTarget.Width * renderTarget.Height];
+            renderTarget.GetData(pixel_data);
+            texture.SetData(pixel_data);
+
+            if (FarmerRendererPatched.renderTarget is not null)
+            {
+                FarmerRendererPatched.renderTarget.Dispose();
+            }
+            //return current render targets
+            //return current render target
+            Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched._cachedRenderer);
+            FarmerRendererPatched._cachedRenderer = null;
+
             return texture;
         }
-
-        public static Texture2D ApplyExtendedSkinColor(int skin, Texture2D source_texture)
-        {
-            Texture2D texture = null;
-            //Need to render a new texture
-            texture = new Texture2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height);
-
-            //Calculate the skin colours
-            int which = skin;
-            Texture2D glandColors = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Character/extendedSkinColors.png");
-
-            Color[] glandColorsData = new Color[glandColors.Width * glandColors.Height];
-            if (which < 0) which = glandColors.Height - 1;
-            if (which > glandColors.Height - 1) which = 0;
-            glandColors.GetData(glandColorsData);
-
-            //Colours to replace
-            Color glandDark_old = glandColorsData[0], glandLight_old = glandColorsData[1];
-
-            //Store what the colours are
-            Color glandDark = glandColorsData[which * 2 % (glandColors.Height * 2)];
-            Color glandLight = glandColorsData[which * 2 % (glandColors.Height * 2) + 1];
-
-            Color[] data = new Color[texture.Width * texture.Height];
-            source_texture.GetData(data);
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (data[i].Equals(glandDark_old))
-                {
-                    data[i] = glandDark;
-                }
-                else if (data[i].Equals(glandLight_old))
-                {
-                    data[i] = glandLight;
-                }
-
-            }
-            texture.SetData<Color>(data);
-            return texture;
-        }
-
     }
 
     public class BodyPartStyle
@@ -555,7 +677,7 @@ namespace DynamicBodies.Data
             }
             else
             {
-                ContentPackOption choice = ModEntry.getContentPack(options, who.modData["DB." + name]);
+                ContentPackOption choice = ModEntry.getContentPack(options, who.modData["DB." + name], who.IsMale);
                 if (choice == null)
                 {
                     //Option not installed

@@ -14,7 +14,7 @@ namespace DaLion.Common.Commands;
 internal interface IConsoleCommand
 {
     /// <summary>The statement that triggers this command.</summary>
-    string Trigger { get; }
+    string[] Triggers { get; }
 
     /// <summary>The human-readable documentation shown when the player runs the 'help' command.</summary>
     string Documentation { get; }

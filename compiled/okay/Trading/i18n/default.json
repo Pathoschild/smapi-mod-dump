@@ -1,0 +1,11 @@
+﻿{
+  "RequestMessage": "{0} has asked you to trade",
+  "AcceptRequest": "Accept",
+  "DeclineRequest": "Decline",
+  "RequestDeclined": "{0} has declined your trade request",
+  "PendingResponse": "Waiting for {0} to accept the trade request",
+
+  "AcceptOffer": "Accept Offer",
+  "SendOffer": "Send Offer",
+  "Confirm": "Confirm"
+}

@@ -71,9 +71,9 @@
 		"When": {
 			"Weather": "Sun, Wind",
 			"Time": "{{Range: 2300, 2550}}",
-			"HasSeenEvent: hostPlayer |contains=75160182": false,
+			//"HasSeenEvent: hostPlayer |contains=75160182": false,
 			// Host player has not yet met Undreya but has seen Pipo and Acorn's event
-			//"HasSeenEvent: hostPlayer |contains=75160384": true
+			"HasSeenEvent: hostPlayer |contains=75160384": true
 		},
 		"Update": "OnLocationChange, OnTimeChange"
 	},
@@ -95,7 +95,7 @@
 			"Weather": "Sun, Wind",
 			"Time": "{{Range: 2300, 2550}}",
 			"HasSeenEvent: hostPlayer |contains=75160181": false,
-			//"HasSeenEvent: hostPlayer |contains=75160384": true
+			"HasSeenEvent: hostPlayer |contains=75160384": true
 		},
 		"Update": "OnLocationChange, OnTimeChange"
 	},
@@ -115,7 +115,7 @@
 			"Time": "{{Range: 2300, 2550}}",
 			"Weather": "Sun, Wind",
 			"HasSeenEvent: hostPlayer |contains=75160181": true,
-			//"HasSeenEvent: hostPlayer |contains=75160384": true
+			"HasSeenEvent: hostPlayer |contains=75160384": true
 		},
 		"Update": "OnLocationChange, OnTimeChange"
     },
@@ -128,9 +128,10 @@
 		"ToArea": { "X": 60, "Y": 41, "Width": 1, "Height": 2 },
 		"When": {
 			"Time": "{{Range: 2300, 2550}}",
+			//"HasSeenEvent: hostPlayer |contains=75160181": true,
+			//"HasSeenEvent: hostPlayer |contains=75160182": false,
 			"HasSeenEvent: hostPlayer |contains=75160181": true,
-			"HasSeenEvent: hostPlayer |contains=75160182": false,
-			//"HasSeenEvent: hostPlayer |contains=75160182, 75160385": false,
+			"HasSeenEvent: hostPlayer |contains=75160182, 75160385": false,
 		},
 		"Update": "OnLocationChange, OnTimeChange"
 	},
@@ -141,8 +142,8 @@
 		"Target": "Maps/Custom_Ridgeside_RSVTheHike",
 		"FromFile": "Assets/Maps/EventMaps/UndreyaUnlock.tmx",
 		"ToArea": { "X": 60, "Y": 41, "Width": 1, "Height": 2 },
-		"When": { "HasSeenEvent: hostPlayer |contains=75160182": true },
-		//"When": { "HasSeenEvent: hostPlayer |contains=75160182, 75160385": true },
+		//"When": { "HasSeenEvent: hostPlayer |contains=75160182": true },
+		"When": { "HasSeenEvent: hostPlayer |contains=75160182, 75160385": true },
 		"Update": "OnLocationChange, OnTimeChange"
 	},
 	//Undreya calendar
@@ -153,8 +154,8 @@
 		"FromFile": "Assets/Maps/EventMaps/RSVAbandonedHouse_Sched.tmx",
 		"ToArea": { "X": 2, "Y": 3, "Width": 1, "Height": 2 },
 		"PatchMode": "Replace",
-		"When": { "HasSeenEvent: hostPlayer |contains=75160273": true },
-		//"When": { "HasSeenEvent: hostPlayer |contains=75160273, 75160386": true },
+		//"When": { "HasSeenEvent: hostPlayer |contains=75160273": true },
+		"When": { "HasSeenEvent: hostPlayer |contains=75160273, 75160386": true },
 		"Update": "OnLocationChange"
 	},
 
@@ -186,7 +187,10 @@
                }
             }
 		],
-		"When": { "HasFlag: hostPlayer": "RSV.FixedMinecart" },
+		"When": {
+			"HasFlag: hostPlayer": "RSV.FixedMinecart",
+			"HasMod: |contains=jibb.minecarts": false
+		},
 		"Update": "OnLocationChange"
     },
 	{
@@ -202,7 +206,10 @@
                }
             }
 		],
-		"When": { "HasFlag: hostPlayer": "RSV.FixedMinecart" },
+		"When": {
+			"HasFlag: hostPlayer": "RSV.FixedMinecart",
+			"HasMod: |contains=jibb.minecarts": false
+		},
 		"Update": "OnLocationChange"
 	},
 	{
@@ -216,9 +223,20 @@
 				"SetProperties": {
 				"Action": "RSVMinecart5"
                }
+            },
+
+            {
+				"Position": { "X": 22, "Y": 40 },
+				"Layer": "Buildings",
+				"SetProperties": {
+				"Action": "RSVMinecart6"
+               }
             }
 		],
-		"When": { "HasFlag: hostPlayer": "RSV.FixedMinecart" },
+		"When": {
+			"HasFlag: hostPlayer": "RSV.FixedMinecart",
+			"HasMod: |contains=jibb.minecarts": false
+		},
 		"Update": "OnLocationChange"
 	},
 	//Open Entrance
@@ -901,9 +919,8 @@
 				}
 			}
 		],
-		//"When": { "HasFlag: hostPlayer |contains=RSV.SummitFarmRedone": false }
+		"When": { "HasFlag: hostPlayer |contains=RSV.SummitHouseRedone": false }
 	},
-	/*
 	{
 		"Action": "EditMap",
 		"Target": "Maps/Custom_Ridgeside_SummitFarm",
@@ -914,12 +931,64 @@
 				"SetProperties": {
 					"Action": "Mailbox"
 				}
-			}
+			},
 		],
-		"When": { "HasFlag: hostPlayer": "RSV.SummitFarmRedone" },
-		"Update": "OnLocationChange"
+		"When": { "HasFlag: hostPlayer": "RSV.SummitHouseRedone" }
 	},
-	*/
+	{
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_SummitFarm",
+		"FromFile": "Assets/Maps/DynamicMaps/SummitFarm_HouseRedone.tmx",
+		"FromArea": { "X": 0, "Y": 0, "Width": 10, "Height": 8 },
+		"ToArea": { "X": 11, "Y": 40, "Width": 10, "Height": 8 },
+		"PatchMode": "Replace",
+		"When": { "HasFlag: hostPlayer": "RSV.SummitHouseRedone" }
+	},
+	{
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_SummitFarm",
+		"FromFile": "Assets/Maps/DynamicMaps/SummitFarm_OreArea.tmx",
+		"FromArea": { "X": 0, "Y": 0, "Width": 13, "Height": 19 },
+		"ToArea": { "X": 80, "Y": 25, "Width": 13, "Height": 19 },
+		"PatchMode": "Replace",
+		"When": { "HasConversationTopic: hostPlayer": "RSV.OreCT" }
+	},
+	{
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_SummitFarm",
+		"FromFile": "Assets/Maps/DynamicMaps/SummitFarm_OreArea.tmx",
+		"FromArea": { "X": 0, "Y": 0, "Width": 13, "Height": 20 },
+		"ToArea": { "X": 80, "Y": 24, "Width": 13, "Height": 20 },
+		"PatchMode": "Replace",
+		"When": { "HasFlag: hostPlayer": "RSV.SummitOreArea" }
+	},
+	{
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_SummitFarm",
+		"FromFile": "Assets/Maps/DynamicMaps/SummitFarm_Shed.tmx",
+		"FromArea": { "X": 0, "Y": 0, "Width": 13, "Height": 11 },
+		"ToArea": { "X": 9, "Y": 29, "Width": 13, "Height": 11 },
+		"PatchMode": "Replace",
+		"When": { "HasFlag: hostPlayer": "RSV.ShedAdded" }
+	},
+	{
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_SummitFarm",
+		"FromFile": "Assets/Maps/DynamicMaps/SummitFarm_ShedStairs.tmx",
+		"FromArea": { "X": 0, "Y": 0, "Width": 1, "Height": 6 },
+		"ToArea": { "X": 9, "Y": 43, "Width": 1, "Height": 6 },
+		"PatchMode": "Replace",
+		"When": { "HasConversationTopic: hostPlayer": "RSV.ShedCT" }
+	},
+	{
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_SummitFarm",
+		"FromFile": "Assets/Maps/DynamicMaps/SummitFarm_ShedStairs.tmx",
+		"FromArea": { "X": 0, "Y": 0, "Width": 1, "Height": 6 },
+		"ToArea": { "X": 9, "Y": 43, "Width": 1, "Height": 6 },
+		"PatchMode": "Replace",
+		"When": { "HasFlag: hostPlayer": "RSV.ShedAdded" }
+	},
 
 //Paula Clean Room
 	{
@@ -947,6 +1016,72 @@
 			}
 		],
 		"When": { "HasSeenEvent": 75160332 },
+		"Update": "OnLocationChange, OnTimeChange"
+	},
+
+//add quest boards
+	{
+		"LogName": "RSV:Add town Special Board",
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_RidgesideVillage",
+		"MapTiles": [
+			{
+				"Position": { "X": 119, "Y": 40 },
+				"Layer": "Buildings",
+				"SetProperties": {
+					"Action": "RSVSpecialOrderBoard RSVTownSO"
+				}
+			}
+		],
+		"When": { "HasSeenEvent": 75160207 },
+		"Update": "OnLocationChange"
+	},
+
+	{
+		"LogName": "RSV:Add Ninja Questboard",
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_RSVNinjaHouse",
+		"MapTiles": [
+			{
+				"Position": { "X": 6, "Y": 6 },
+				"Layer": "Buildings",
+				"SetProperties": {
+					"Action": "RSVQuestBoard RSVNinjaBoard"
+				}
+			}
+		],
+		"When": { "HasSeenEvent": 75160187 },
+		"Update": "OnLocationChange"
+	},
+
+	{
+		"LogName": "RSV:Add Ninja Special Board",
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_RSVNinjaHouse",
+		"MapTiles": [
+			{
+				"Position": { "X": 3, "Y": 4 },
+				"Layer": "Buildings",
+				"SetProperties": {
+					"Action": "RSVSpecialOrderBoard RSVNinjaSO"
+				}
+			}
+		],
+		"When": { "HasSeenEvent": 75160264 },
+		"Update": "OnLocationChange"
+	},
+
+	//Access to Amethyne Indoor Pool after 8 hearts with Maive
+	{
+		"LogName": "RSV: Access to Amethyne Pool",
+		"Action": "EditMap",
+		"Target": "Maps/Custom_Ridgeside_PurpleMansion",
+		"FromFile": "Assets/Maps/DynamicMaps/PurpleMansion_OpenBath.tmx",
+		"ToArea": { "X": 4, "Y": 4, "Width": 3, "Height": 4 },
+		"PatchMode": "Replace",
+		"When": {
+            "Query: {{Hearts:Maive}} >= 8": true
+        },
 		"Update": "OnLocationChange, OnTimeChange"
 	},
 

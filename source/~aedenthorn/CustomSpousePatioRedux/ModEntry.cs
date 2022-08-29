@@ -37,6 +37,8 @@ namespace CustomSpousePatioRedux
         public static readonly string saveKey = "custom-spouse-patio-data";
         public static Point cursorLoc;
 
+        public static int currentPage;
+
         /*********
         ** Public methods
         *********/
@@ -138,6 +140,7 @@ namespace CustomSpousePatioRedux
 
         public void StartWizard()
         {
+            currentPage = 0;
             if (outdoorAreas == null)
             {
                 Monitor.Log("Outdoor ares is null.", LogLevel.Warn);
@@ -174,7 +177,7 @@ namespace CustomSpousePatioRedux
         }
 
 
-        public void CSPWizardDialogue(string whichQuestion, string whichAnswer, int page = 0)
+        public void CSPWizardDialogue(string whichQuestion, string whichAnswer)
         {
             Monitor.Log($"question: {whichQuestion}, answer: {whichAnswer}");
             if (whichAnswer == "cancel")
@@ -195,35 +198,35 @@ namespace CustomSpousePatioRedux
                                 return;
                             }
                             header = Helper.Translation.Get("new-patio-which");
-                            if (page > 0)
+                            if (currentPage > 0)
                                 responses.Add(new Response("last", "..."));
-                            foreach (string spouse in noCustomAreaSpouses.Skip(page * Config.MaxSpousesPerPage).Take(Config.MaxSpousesPerPage))
+                            foreach (string spouse in noCustomAreaSpouses.Skip(currentPage * Config.MaxSpousesPerPage).Take(Config.MaxSpousesPerPage))
                             {
                                 responses.Add(new Response(spouse, spouse));
                             }
-                            if (noCustomAreaSpouses.Count > (page + 1) * Config.MaxSpousesPerPage)
+                            if (noCustomAreaSpouses.Count > (currentPage + 1) * Config.MaxSpousesPerPage)
                                 responses.Add(new Response("next", "..."));
                             break;
                         case "CSP_Wizard_Questions_MovePatio":
                             header = Helper.Translation.Get("move-patio-which");
-                            if (page > 0)
+                            if (currentPage > 0)
                                 responses.Add(new Response("last", "..."));
-                            foreach (string spouse in outdoorAreas.dict.Keys.Skip(page * Config.MaxSpousesPerPage).Take(Config.MaxSpousesPerPage))
+                            foreach (string spouse in outdoorAreas.dict.Keys.Skip(currentPage * Config.MaxSpousesPerPage).Take(Config.MaxSpousesPerPage))
                             {
                                 responses.Add(new Response(spouse, spouse));
                             }
-                            if(outdoorAreas.dict.Keys.Count > (page + 1) * Config.MaxSpousesPerPage)
+                            if(outdoorAreas.dict.Keys.Count > (currentPage + 1) * Config.MaxSpousesPerPage)
                                 responses.Add(new Response("next", "..."));
                             break;
                         case "CSP_Wizard_Questions_RemovePatio":
                             header = Helper.Translation.Get("remove-patio-which");
-                            if (page > 0)
+                            if (currentPage > 0)
                                 responses.Add(new Response("last", "..."));
-                            foreach (string spouse in outdoorAreas.dict.Keys.Skip(page * Config.MaxSpousesPerPage).Take(Config.MaxSpousesPerPage))
+                            foreach (string spouse in outdoorAreas.dict.Keys.Skip(currentPage * Config.MaxSpousesPerPage).Take(Config.MaxSpousesPerPage))
                             {
                                 responses.Add(new Response(spouse, spouse));
                             }
-                            if (outdoorAreas.dict.Keys.Count > (page + 1) * Config.MaxSpousesPerPage)
+                            if (outdoorAreas.dict.Keys.Count > (currentPage + 1) * Config.MaxSpousesPerPage)
                                 responses.Add(new Response("next", "..."));
                             break;
                         case "CSP_Wizard_Questions_ListPatios":
@@ -239,12 +242,14 @@ namespace CustomSpousePatioRedux
                 case "CSP_Wizard_Questions_AddPatio":
                     if(whichAnswer == "next")
                     {
-                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_AddPatio", page + 1);
+                        currentPage++;
+                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_AddPatio");
                         return;
                     }
                     if(whichAnswer == "last")
                     {
-                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_AddPatio", page - 1);
+                        currentPage--;
+                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_AddPatio");
                         return;
                     }
                     if(cursorLoc.X > Game1.player.currentLocation.map.Layers[0].LayerWidth - 4 || cursorLoc.Y > Game1.player.currentLocation.map.Layers[0].LayerWidth - 4)
@@ -274,12 +279,14 @@ namespace CustomSpousePatioRedux
                 case "CSP_Wizard_Questions_MovePatio":
                     if (whichAnswer == "next")
                     {
-                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_MovePatio", page + 1);
+                        currentPage++;
+                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_MovePatio");
                         return;
                     }
                     if (whichAnswer == "last")
                     {
-                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_MovePatio", page - 1);
+                        currentPage--;
+                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_MovePatio");
                         return;
                     }
                     header = Helper.Translation.Get("move-patio-which-way");
@@ -299,12 +306,14 @@ namespace CustomSpousePatioRedux
                 case "CSP_Wizard_Questions_RemovePatio":
                     if (whichAnswer == "next")
                     {
-                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_RemovePatio", page + 1);
+                        currentPage++;
+                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_RemovePatio");
                         return;
                     }
                     if (whichAnswer == "last")
                     {
-                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_RemovePatio", page - 1);
+                        currentPage--;
+                        CSPWizardDialogue("CSP_Wizard_Questions", "CSP_Wizard_Questions_RemovePatio");
                         return;
                     }
                     if (outdoorAreas.dict.ContainsKey(whichAnswer))
@@ -396,7 +405,14 @@ namespace CustomSpousePatioRedux
                     Tile base_tile = baseSpouseAreaTiles[spouse][layer][location];
                     if (map_layer != null)
                     {
-                        map_layer.Tiles[location.X, location.Y] = base_tile;
+                        try
+                        {
+                            map_layer.Tiles[location.X, location.Y] = base_tile;
+                        }
+                        catch(Exception ex)
+                        {
+                            SMonitor.Log($"Error adding tile {spouse} in {l.Name}: {ex}");
+                        }
                     }
                 }
             }

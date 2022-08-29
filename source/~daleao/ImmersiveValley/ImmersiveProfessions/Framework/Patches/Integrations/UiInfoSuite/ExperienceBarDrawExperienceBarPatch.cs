@@ -13,10 +13,10 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.UiInfoSuite;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -24,20 +24,13 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("Annosz.UiInfoSuite2")]
 internal sealed class ExperieneBarDrawExperienceBarPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal ExperieneBarDrawExperienceBarPatch()
     {
-        try
-        {
-            Target = "UIInfoSuite.UIElements.ExperienceBar".ToType().RequireMethod("DrawExperienceBar");
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "UIInfoSuite.UIElements.ExperienceBar".ToType().RequireMethod("DrawExperienceBar");
     }
 
     #region harmony patches

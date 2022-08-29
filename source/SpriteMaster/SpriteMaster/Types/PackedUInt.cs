@@ -22,9 +22,9 @@ namespace SpriteMaster.Types;
 internal struct PackedUInt {
 	internal uint Packed;
 
-	internal readonly Span<byte> Bytes => Reinterpret.ReinterpretAsSpanUnsafe<uint, byte>(Packed);
+	internal readonly unsafe Span<byte> Bytes => Reinterpret.ReinterpretAsSpanUnsafe<uint, byte>(Packed);
 
-	internal readonly Span<ushort> Shorts => Reinterpret.ReinterpretAsSpanUnsafe<uint, ushort>(Packed);
+	internal readonly unsafe Span<ushort> Shorts => Reinterpret.ReinterpretAsSpanUnsafe<uint, ushort>(Packed);
 
 	// TODO : this isn't ideal as it will initialize 'Packed' before setting its values
 	internal PackedUInt(byte b0, byte b1, byte b2, byte b3) : this() {

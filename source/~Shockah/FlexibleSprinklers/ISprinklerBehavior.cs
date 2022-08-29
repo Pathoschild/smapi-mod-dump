@@ -24,32 +24,32 @@ namespace Shockah.FlexibleSprinklers
 		{
 		}
 
-		IList<(ISet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map);
+		IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map);
 
-		ISet<IntPoint> GetSprinklerTiles(IMap map)
+		IReadOnlySet<IntPoint> GetSprinklerTiles(IMap map)
 			=> GetSprinklerTilesWithSteps(map).SelectMany(step => step.Item1).ToHashSet();
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Nested in another interface")]
-		public interface Independent: ISprinklerBehavior
+		public interface Independent : ISprinklerBehavior
 		{
-			IList<(ISet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info);
+			IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info);
 
-			IList<(ISet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IEnumerable<(IntPoint position, SprinklerInfo info)> sprinklers)
+			IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IEnumerable<(IntPoint position, SprinklerInfo info)> sprinklers)
 			{
-				var results = new List<(ISet<IntPoint>, float)>();
+				List<(IReadOnlySet<IntPoint>, float)> results = new();
 				foreach (var (sprinklerPosition, info) in sprinklers)
 					foreach (var step in GetSprinklerTilesWithSteps(map, sprinklerPosition, info))
 						results.Add(step);
 				return results.OrderBy(step => step.Item2).ToList();
 			}
 
-			IList<(ISet<IntPoint>, float)> ISprinklerBehavior.GetSprinklerTilesWithSteps(IMap map)
+			IReadOnlyList<(IReadOnlySet<IntPoint>, float)> ISprinklerBehavior.GetSprinklerTilesWithSteps(IMap map)
 				=> GetSprinklerTilesWithSteps(map, map.GetAllSprinklers());
 
-			ISet<IntPoint> GetSprinklerTiles(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
+			IReadOnlySet<IntPoint> GetSprinklerTiles(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
 				=> GetSprinklerTilesWithSteps(map, sprinklerPosition, info).SelectMany(step => step.Item1).ToHashSet();
 
-			ISet<IntPoint> GetSprinklerTiles(IMap map, IEnumerable<(IntPoint position, SprinklerInfo info)> sprinklers)
+			IReadOnlySet<IntPoint> GetSprinklerTiles(IMap map, IEnumerable<(IntPoint position, SprinklerInfo info)> sprinklers)
 				=> GetSprinklerTilesWithSteps(map, sprinklers).SelectMany(step => step.Item1).ToHashSet();
 		}
 	}

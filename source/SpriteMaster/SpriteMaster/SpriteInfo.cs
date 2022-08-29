@@ -28,6 +28,18 @@ namespace SpriteMaster;
 /// <para>Warning: <seealso cref="SpriteInfo">SpriteInfo</seealso> holds a reference to the reference texture's data in its <seealso cref="ReferenceDataInternal">ReferenceData field</seealso>.</para>
 /// </summary>
 internal sealed class SpriteInfo : IDisposable {
+	[Flags]
+	internal enum SpriteFlags {
+		None = 0,
+		IsWater = 1 << 0,
+		IsFont = 1 << 1,
+		BlendEnabled = 1 << 2,
+		HashMask = IsWater | IsFont | BlendEnabled,
+		WasCached = 1 << 3,
+		Preview = 1 << 4,
+		Animated = 1 << 5,
+	}
+
 	internal readonly XTexture2D Reference;
 	internal readonly Bounds Bounds;
 	internal Vector2I ReferenceSize => Reference.Extent();
@@ -36,14 +48,17 @@ internal sealed class SpriteInfo : IDisposable {
 	internal readonly uint ExpectedScale;
 	private readonly int RawOffset;
 	private readonly int RawStride;
-	internal readonly bool IsPreview;
 	internal readonly Resample.Scaler Scaler;
 	internal readonly Resample.Scaler ScalerGradient;
 	internal readonly BlendState BlendState;
-	internal readonly bool BlendEnabled;
-	internal readonly bool IsWater;
-	internal readonly bool IsFont;
+	internal readonly SpriteFlags Flags;
 	private volatile bool Broken = false;
+
+	internal bool BlendEnabled => Flags.HasFlag(SpriteFlags.BlendEnabled);
+	internal bool IsWater => Flags.HasFlag(SpriteFlags.IsWater);
+	internal bool IsFont => Flags.HasFlag(SpriteFlags.IsFont);
+	internal bool IsAnimated => Flags.HasFlag(SpriteFlags.Animated);
+	internal bool IsPreview => Flags.HasFlag(SpriteFlags.Preview);
 
 	public override string ToString() => $"SpriteInfo[Name: '{Reference.Name}', ReferenceSize: {ReferenceSize}, Size: {Bounds}]";
 
@@ -142,10 +157,8 @@ internal sealed class SpriteInfo : IDisposable {
 				hash = HashUtility.Combine(
 					SpriteDataHash,
 					Bounds.Extent.GetLongHashCode(),
-					BlendEnabled.GetLongHashCode(),
+					(Flags & SpriteFlags.HashMask).GetLongHashCode(),
 					ExpectedScale.GetLongHashCode(),
-					IsWater.GetLongHashCode(),
-					IsFont.GetLongHashCode(),
 					Reference.Format.GetLongHashCode(),
 					Scaler.GetLongHashCode(),
 					ScalerGradient.GetLongHashCode()
@@ -169,30 +182,45 @@ internal sealed class SpriteInfo : IDisposable {
 
 	[StructLayout(LayoutKind.Auto)]
 	internal readonly ref struct Initializer {
+
 		internal readonly Bounds Bounds;
 		internal readonly byte[]? ReferenceData;
 		internal readonly XTexture2D Reference;
 		internal readonly BlendState BlendState;
 		internal readonly SamplerState SamplerState;
-		internal readonly ulong? Hash;
-		internal readonly ulong? DataHash;
+		internal readonly ulong? Hash = null;
+		internal readonly ulong? DataHash = null;
 		internal readonly uint ExpectedScale;
 		internal readonly TextureType TextureType;
 		internal readonly Resample.Scaler Scaler;
 		internal readonly Resample.Scaler ScalerGradient;
 		// For statistics and throttling
-		internal readonly bool WasCached;
-		internal readonly bool IsPreview;
+		internal readonly SpriteFlags Flags;
 
-		internal Initializer(XTexture2D reference, Bounds dimensions, uint expectedScale, TextureType textureType, bool animated) {
+		internal readonly bool BlendEnabled => Flags.HasFlag(SpriteFlags.BlendEnabled);
+		internal readonly bool IsWater => Flags.HasFlag(SpriteFlags.IsWater);
+		internal readonly bool IsFont => Flags.HasFlag(SpriteFlags.IsFont);
+		internal readonly bool IsAnimated => Flags.HasFlag(SpriteFlags.Animated);
+		internal readonly bool IsPreview => Flags.HasFlag(SpriteFlags.Preview);
+		internal readonly bool WasCached => Flags.HasFlag(SpriteFlags.WasCached);
+
+		internal Initializer(XTexture2D reference, Bounds dimensions, uint expectedScale, TextureType textureType) {
+			var flags = SpriteFlags.None;
+
 			Reference = reference;
 			BlendState = DrawState.CurrentBlendState;
 			SamplerState = DrawState.CurrentSamplerState;
 			ExpectedScale = expectedScale;
 			Bounds = dimensions;
-			IsPreview = Configuration.Preview.Override.Instance is not null;
-			Scaler = Configuration.Preview.Override.Instance?.Scaler ?? Config.Resample.Scaler;
-			ScalerGradient = Configuration.Preview.Override.Instance?.ScalerGradient ?? Config.Resample.ScalerGradient;
+			if (Configuration.Preview.Override.Instance is {} instance) {
+				flags |= SpriteFlags.Preview;
+				Scaler = instance.Scaler;
+				ScalerGradient = instance.ScalerGradient;
+			}
+			else {
+				Scaler = Config.Resample.Scaler;
+				ScalerGradient = Config.Resample.ScalerGradient;
+			}
 
 			TextureType = textureType;
 
@@ -207,33 +235,45 @@ internal sealed class SpriteInfo : IDisposable {
 
 			if (refData is null) {
 				// TODO : Switch this around to use ReadOnlySequence so our hash is specific to the sprite
-				refData = new byte[reference.SizeBytes()];
+				var tempRefData = GC.AllocateUninitializedArray<byte>(reference.SizeBytes());
 				Debug.Trace($"Reloading Texture Data (not in cache): {reference.NormalizedName(DrawingColor.LightYellow)}");
-				reference.GetData(refData);
-				reference.Meta().CachedRawData = refData;
-				if (refMeta.IsCompressed) {
-					refData = null; // we can only use uncompressed data at this stage.
+				reference.GetData(tempRefData);
+				refMeta.CachedRawData = tempRefData;
+				if (!refMeta.IsCompressed) {
+					// we can only use uncompressed data at this stage.
+					refData = tempRefData;
 				}
-				WasCached = false;
-			}
-			else if (refData == Texture2DMeta.BlockedSentinel) {
-				refData = null;
-				WasCached = false;
 			}
 			else {
-				WasCached = true;
+				flags |= SpriteFlags.WasCached;
 			}
 
 			ReferenceData = refData;
 
-			Hash = null;
-			DataHash = null;
-			if (Config.SuspendedCache.Enabled && animated) {
-				(Hash, DataHash) = GetHash();
+			if (TextureType == TextureType.Sprite) {
+				if (SpriteOverrides.IsWater(Bounds, Reference)) {
+					flags |= SpriteFlags.IsWater;
+				}
+				else if (SpriteOverrides.IsFont(Reference, Bounds.Extent, Reference.Extent())) {
+					flags |= SpriteFlags.IsFont;
+				}
 			}
+
+			if (BlendState.AlphaSourceBlend != Blend.One) {
+				flags |= SpriteFlags.BlendEnabled;
+			}
+
+			if (refMeta.IsAnimated(dimensions)) {
+				flags |= SpriteFlags.Animated;
+				if (Config.SuspendedCache.Enabled) {
+					(Hash, DataHash) = GetHash(flags);
+				}
+			}
+
+			Flags = flags;
 		}
 
-		private readonly (ulong? SpriteHash, ulong? DataHash) GetHash() {
+		private readonly (ulong? SpriteHash, ulong? DataHash) GetHash(SpriteFlags flags) {
 			if (ReferenceData is null) {
 				return (null, null);
 			}
@@ -242,9 +282,6 @@ internal sealed class SpriteInfo : IDisposable {
 			int rawStride = format.SizeBytes(Reference.Width);
 			int rawOffset = (rawStride * Bounds.Top) + format.SizeBytes(Bounds.Left);
 
-			bool blendEnabled = BlendState.AlphaSourceBlend != Blend.One;
-			bool isWater = TextureType == TextureType.Sprite && SpriteOverrides.IsWater(Bounds, Reference);
-			bool isFont = !isWater && TextureType == TextureType.Sprite && SpriteOverrides.IsFont(Reference, Bounds.Extent, Reference.Extent());
 			var dataHash = GetDataHash(ReferenceData, Reference, Bounds, rawOffset, rawStride);
 
 			if (dataHash is null) {
@@ -254,10 +291,8 @@ internal sealed class SpriteInfo : IDisposable {
 			var result = HashUtility.Combine(
 				dataHash,
 				Bounds.Extent.GetLongHashCode(),
-				blendEnabled.GetLongHashCode(),
+				(flags & SpriteFlags.HashMask).GetLongHashCode(),
 				ExpectedScale.GetLongHashCode(),
-				isWater.GetLongHashCode(),
-				isFont.GetLongHashCode(),
 				Reference.Format.GetLongHashCode(),
 				Scaler.GetLongHashCode(),
 				ScalerGradient.GetLongHashCode()
@@ -276,7 +311,6 @@ internal sealed class SpriteInfo : IDisposable {
 		RawStride = format.SizeBytes(ReferenceSize.Width);
 		RawOffset = (RawStride * Bounds.Top) + format.SizeBytes(Bounds.Left);
 		ReferenceData = initializer.ReferenceData;
-		IsPreview = initializer.IsPreview;
 		Scaler = initializer.Scaler;
 		ScalerGradient = initializer.ScalerGradient;
 
@@ -285,14 +319,11 @@ internal sealed class SpriteInfo : IDisposable {
 			return;
 		}
 
-		BlendEnabled = initializer.BlendState.AlphaSourceBlend != Blend.One;
+		Flags = initializer.Flags;
 		Wrapped = new(
 			initializer.SamplerState.AddressU == TextureAddressMode.Wrap,
 			initializer.SamplerState.AddressV == TextureAddressMode.Wrap
 		);
-
-		IsWater = TextureType == TextureType.Sprite && SpriteOverrides.IsWater(Bounds, Reference);
-		IsFont = !IsWater && TextureType == TextureType.Sprite && SpriteOverrides.IsFont(Reference, Bounds.Extent, ReferenceSize);
 
 		if (initializer.DataHash.HasValue) {
 			SpriteDataHashInternal = initializer.DataHash.Value;

@@ -8,6 +8,14 @@ for queries and analysis.**
 
 # Toolbar Icons for FuryCore Change Log
 
+## 2.3.0 (August 21, 2022)
+
+* Added Tractor Mod.
+
+## 2.2.2 (August 19, 2022)
+
+* Fixed Debug Mode and Horse Flute Anywhere icons not loading.
+
 ## 2.2.1 (July 15, 2022)
 
 * Fixed Lookup Anything icon not loading.

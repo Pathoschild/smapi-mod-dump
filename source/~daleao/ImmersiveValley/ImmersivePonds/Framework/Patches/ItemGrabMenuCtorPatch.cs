@@ -13,8 +13,6 @@ namespace DaLion.Stardew.Ponds.Framework.Patches;
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using System.Collections.Generic;

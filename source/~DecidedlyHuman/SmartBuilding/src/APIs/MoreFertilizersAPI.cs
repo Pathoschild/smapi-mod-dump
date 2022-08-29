@@ -15,13 +15,13 @@ using SObject = StardewValley.Object;
 namespace SmartBuilding.APIs
 {
     /// <summary>
-    /// The API for More Fertilizers, which handles placement of fertilizers by
-    /// routes the game does not usually support.
+    ///     The API for More Fertilizers, which handles placement of fertilizers by
+    ///     routes the game does not usually support.
     /// </summary>
     public interface IMoreFertilizersAPI
     {
         /// <summary>
-        /// Checks whether or not a fertilizer can be placed at a specific tile.
+        ///     Checks whether or not a fertilizer can be placed at a specific tile.
         /// </summary>
         /// <param name="obj">StardewValley.Object to place.</param>
         /// <param name="loc">GameLocation to place at.</param>
@@ -30,7 +30,7 @@ namespace SmartBuilding.APIs
         public bool CanPlaceFertilizer(SObject obj, GameLocation loc, Vector2 tile);
 
         /// <summary>
-        /// Called to place a fertilizer at a specific location/tile.
+        ///     Called to place a fertilizer at a specific location/tile.
         /// </summary>
         /// <param name="obj">StardewValley.Object to place.</param>
         /// <param name="loc">GameLocation to place at.</param>
@@ -40,7 +40,7 @@ namespace SmartBuilding.APIs
         public bool TryPlaceFertilizer(SObject obj, GameLocation loc, Vector2 tile);
 
         /// <summary>
-        /// Animates the placement of a fertilizer at a specific location.
+        ///     Animates the placement of a fertilizer at a specific location.
         /// </summary>
         /// <param name="obj">StardewValley.Object to place.</param>
         /// <param name="loc">GameLocation to place at.</param>

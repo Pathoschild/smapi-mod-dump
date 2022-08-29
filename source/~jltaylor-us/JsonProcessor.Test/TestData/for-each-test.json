@@ -1,0 +1,183 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewJsonProcessor
+**
+*************************************************/
+
+{
+  "empty": [
+    {
+      "$transform": "for-each",
+      "var": "x",
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "empty [var]": [
+    {
+      "$transform": "for-each",
+      "var": [ "x" ],
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "empty obj": [
+    {
+      "$transform": "for-each",
+      "var": [ "x", "y" ],
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "empty results": [ [] ],
+  "missing var": [
+    {
+      "$transform": "for-each",
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "missing in": [
+    {
+      "$transform": "for-each",
+      "var": "x",
+      "yield": 5
+    }
+  ],
+  "missing yield": [
+    {
+      "$transform": "for-each",
+      "var": "x",
+      "in": []
+    }
+  ],
+  "bad in": [
+    {
+      "$transform": "for-each",
+      "var": "x",
+      "in": 7,
+      "yield": 5
+    }
+  ],
+  "array with bad var": [
+    {
+      "$transform": "for-each",
+      "var": 3,
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "object with bad var": [
+    {
+      "$transform": "for-each",
+      "var": 3,
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "0 var array": [
+    {
+      "$transform": "for-each",
+      "var": [],
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "2 var array": [
+    {
+      "$transform": "for-each",
+      "var": [ "x", "y" ],
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "non-string var array": [
+    {
+      "$transform": "for-each",
+      "var": [ 7 ],
+      "in": [],
+      "yield": 5
+    }
+  ],
+  "0 var object": [
+    {
+      "$transform": "for-each",
+      "var": [],
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "1 var object": [
+    {
+      "$transform": "for-each",
+      "var": [ "x" ],
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "3 var object": [
+    {
+      "$transform": "for-each",
+      "var": [ "x", "y", "z" ],
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "non-string var 1 object": [
+    {
+      "$transform": "for-each",
+      "var": [ 3, "y" ],
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "non-string var 2 object": [
+    {
+      "$transform": "for-each",
+      "var": [ "x", 3 ],
+      "in": {},
+      "yield": 5
+    }
+  ],
+  "array identity": [
+    {
+      "$transform": "for-each",
+      "var": "x",
+      "in": [ 1, 2, 3 ],
+      "yield": { "$var": "x" }
+    }
+  ],
+  "array identity results": [ [ 1, 2, 3 ] ],
+  "object explode": [
+    {
+      "$transform": "for-each",
+      "var": [ "x", "y" ],
+      "in": {
+        "a": 1,
+        "b": 2
+      },
+      "yield": {
+        "key": { "$var": "x" },
+        "value": { "$var": "y" }
+      }
+    }
+  ],
+  "object explode results": [
+    [
+      {
+        "key": "a",
+        "value": 1
+      },
+      {
+        "key": "b",
+        "value": 2
+      }
+    ]
+  ]
+
+
+}

@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.Content;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using System.Linq;
@@ -29,8 +28,14 @@ internal sealed class StaticAssetsInvalidatedEvent : AssetsInvalidatedEvent
     internal StaticAssetsInvalidatedEvent(ProfessionEventManager manager)
         : base(manager)
     {
-        AlwaysHooked = true;
+        AlwaysEnabled = true;
     }
+
+    /// <inheritdoc />
+    public override bool Enable() => false;
+
+    /// <inheritdoc />
+    public override bool Disable() => false;
 
     /// <inheritdoc />
     protected override void OnAssetsInvalidatedImpl(object? sender, AssetsInvalidatedEventArgs e)

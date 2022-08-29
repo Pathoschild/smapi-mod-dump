@@ -8,44 +8,38 @@
 **
 *************************************************/
 
-#region
-
 using System;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using xTile.Dimensions;
 
-#endregion
-
 namespace PlacementPlus.Patches
 {
-    // Lost code: https://pastebin.com/ZhRqL54L
     [HarmonyPatch(typeof(BuildableGameLocation), nameof(BuildableGameLocation.isBuildable))]
-    internal class BuildableGameLocationPatches_IsBuildable
+    internal class BuildableGameLocationPatches
     {
         private static IMonitor Monitor => PlacementPlus.Instance.Monitor;
-        
+
+        /// <summary> Alters the requirements for where buildings can be built. </summary>
         private static void Postfix(Vector2 tileLocation, BuildableGameLocation __instance, ref bool __result)
         {
             try
             {
-                var playerIsNotOnTile  = !Game1.player.getTileLocation().Equals(tileLocation) || !Game1.player.currentLocation.Equals(__instance);
-                var tileIsNotOccupied  = !__instance.isTileOccupiedForPlacement(tileLocation);
-                var tileIsPassable     =  __instance.isTilePassable(new Location((int) tileLocation.X, (int) tileLocation.Y), Game1.viewport);
-                var tileHasNoFurniture =  __instance.GetFurnitureAt(tileLocation) == null;
+                var location = new Location((int)tileLocation.X, (int)tileLocation.Y);
 
-                if (!(playerIsNotOnTile   &&
-                      tileIsNotOccupied   &&
-                      tileIsPassable      &&
-                      tileHasNoFurniture)
-                ) return; // Run original logic.
-                
-                __result = true; // Original method will now return true.
-            } catch (Exception e) {
-                Monitor.Log($"Failed in {nameof(BuildableGameLocationPatches_IsBuildable)}:\n{e}", LogLevel.Error);
+                // Define new (loosened) requirements for building placement.
+                var playerIsNotOnTile = !Game1.player.getTileLocation().Equals(tileLocation);
+                var tileIsNotOccupied = !__instance.isTileOccupiedForPlacement(tileLocation);
+                var tileIsPassable = __instance.isTilePassable(location, Game1.viewport);
+                var tileHasNoFurniture = __instance.GetFurnitureAt(tileLocation) == null;
+
+                __result = playerIsNotOnTile && tileIsNotOccupied && tileIsPassable && tileHasNoFurniture;
+            }
+            catch (Exception e) {
+                Monitor.Log($"Failed in {nameof(BuildableGameLocationPatches)}:\n{e}", LogLevel.Error);
             }
         }
     }

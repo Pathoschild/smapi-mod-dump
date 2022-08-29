@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Ponds.Framework.Events;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley.GameData.FishPond;
 using System.Collections.Generic;
@@ -26,7 +25,10 @@ internal sealed class PondAssetRequestedEvent : AssetRequestedEvent
     /// <summary>Construct an instance.</summary>
     /// <param name="manager">The <see cref="EventManager"/> instance that manages this event.</param>
     internal PondAssetRequestedEvent(EventManager manager)
-        : base(manager) { }
+        : base(manager)
+    {
+        AlwaysEnabled = true;
+    }
 
     /// <inheritdoc />
     protected override void OnAssetRequestedImpl(object? sender, AssetRequestedEventArgs e)

@@ -13,27 +13,27 @@ using StardewValley;
 namespace SmartBuilding
 {
     /// <summary>
-    /// Basic Item metadata.
+    ///     Basic Item metadata.
     /// </summary>
     public struct ItemInfo
     {
         /// <summary>
-        /// A reference to the item to be placed.
+        ///     A reference to the item to be placed.
         /// </summary>
         public Item Item;
 
         /// <summary>
-        /// The basic type of item that it is, determined by <see cref="ModEntry.IdentifyItemType"/>
+        ///     The basic type of item that it is, determined by <see cref="ModEntry.IdentifyItemType" />
         /// </summary>
         public ItemType ItemType;
 
         /// <summary>
-        /// Whether this item is destined to be inserted into a machine.
+        ///     Whether this item is destined to be inserted into a machine.
         /// </summary>
         public bool ToBeInserted;
 
         /// <summary>
-        /// Whether this item is a DGA item.
+        ///     Whether this item is a DGA item.
         /// </summary>
         public bool IsDgaItem;
     }

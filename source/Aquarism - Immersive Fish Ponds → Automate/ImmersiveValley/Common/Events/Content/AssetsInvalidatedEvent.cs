@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 
 #endregion using directives
 
-/// <summary>Wrapper for <see cref="IContentEvents.AssetsInvalidated"/> allowing dynamic hooking / unhooking.</summary>
+/// <summary>Wrapper for <see cref="IContentEvents.AssetsInvalidated"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class AssetsInvalidatedEvent : ManagedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,7 +29,7 @@ internal abstract class AssetsInvalidatedEvent : ManagedEvent
     /// <param name="e">The event data.</param>
     internal void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e)
     {
-        if (IsHooked) OnAssetsInvalidatedImpl(sender, e);
+        if (IsEnabled) OnAssetsInvalidatedImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnAssetsInvalidated" />

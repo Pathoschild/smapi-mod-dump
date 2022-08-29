@@ -13,8 +13,7 @@ namespace DaLion.Stardew.Taxes.Extensions;
 #region using directives
 
 using Common;
-using Common.Data;
-using StardewValley;
+using Common.Extensions.Stardew;
 using System;
 using static System.FormattableString;
 
@@ -26,8 +25,8 @@ public static class FarmerExtensions
     /// <summary>Calculate due income tax for the player.</summary>
     public static int DoTaxes(this Farmer farmer)
     {
-        var income = ModDataIO.ReadFrom<int>(farmer, "SeasonIncome");
-        var deductible = ModDataIO.ReadFrom<float>(farmer, "DeductionPct");
+        var income = farmer.Read<int>("SeasonIncome");
+        var deductible = farmer.Read<float>("DeductionPct");
         var taxable = (int)(income * (1f - deductible));
         var bracket = Framework.Utils.GetTaxBracket(taxable);
         var due = (int)Math.Round(taxable * bracket);

@@ -1,0 +1,135 @@
+{
+  "CustomChallengesEnabled": false,
+  "CountKillsOnFarm": false,
+  "DebugMonsterKills": false,
+  "GilNoRewardDialogue": "...Come back when you've got something to show me, kid",
+  "GilSleepingDialogue": "...*snore*...",
+  "GilSpecialGiftDialogue": "Thanks for cleanin' up all those monsters. Figured you deserved somethin' extra special.",
+  "Challenges": [
+    {
+      "ChallengeName": "Slimes",
+      "RequiredKillCount": 1000,
+      "RewardType": 7,
+      "RewardItemNumber": 520,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Green Slime",
+        "Frost Jelly",
+        "Sludge"
+      ]
+    },
+    {
+      "ChallengeName": "Void Spirits",
+      "RequiredKillCount": 150,
+      "RewardType": 7,
+      "RewardItemNumber": 523,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Shadow Guy",
+        "Shadow Shaman",
+        "Shadow Brute"
+      ]
+    },
+    {
+      "ChallengeName": "Skeletons",
+      "RequiredKillCount": 50,
+      "RewardType": 6,
+      "RewardItemNumber": 8,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Skeleton",
+        "Skeleton Mage",
+        "Skeleton Warrior"
+      ]
+    },
+    {
+      "ChallengeName": "Cave Insects",
+      "RequiredKillCount": 125,
+      "RewardType": 2,
+      "RewardItemNumber": 13,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Bug",
+        "Grub",
+        "Fly",
+        "Mutant Grub",
+        "Mutant Fly"
+      ]
+    },
+    {
+      "ChallengeName": "Duggies",
+      "RequiredKillCount": 30,
+      "RewardType": 6,
+      "RewardItemNumber": 27,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Duggy"
+      ]
+    },
+    {
+      "ChallengeName": "Bats",
+      "RequiredKillCount": 200,
+      "RewardType": 7,
+      "RewardItemNumber": 522,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Bat",
+        "Frost Bat",
+        "Lava Bat",
+        "Iridium Bat"
+      ]
+    },
+    {
+      "ChallengeName": "Dust Spirits",
+      "RequiredKillCount": 500,
+      "RewardType": 7,
+      "RewardItemNumber": 526,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Dust Spirit"
+      ]
+    },
+    {
+      "ChallengeName": "Rock Crabs",
+      "RequiredKillCount": 60,
+      "RewardType": 7,
+      "RewardItemNumber": 810,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Rock Crab",
+        "Lava Crab",
+        "Iridium Crab"
+      ]
+    },
+    {
+      "ChallengeName": "Mummy",
+      "RequiredKillCount": 100,
+      "RewardType": 6,
+      "RewardItemNumber": 60,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Mummy"
+      ]
+    },
+    {
+      "ChallengeName": "Pepper Rex",
+      "RequiredKillCount": 50,
+      "RewardType": 6,
+      "RewardItemNumber": 50,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Pepper Rex"
+      ]
+    },
+    {
+      "ChallengeName": "Serpent",
+      "RequiredKillCount": 250,
+      "RewardType": 7,
+      "RewardItemNumber": 811,
+      "RewardItemStack": 0,
+      "MonsterNames": [
+        "Serpent"
+      ]
+    }
+  ]
+}

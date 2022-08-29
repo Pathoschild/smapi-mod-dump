@@ -24,13 +24,18 @@ using StardewValley.Network;
 using Netcode;
 
 using DynamicBodies.Data;
+using DynamicBodies.Framework;
 using StardewValley.Objects;
 
 namespace DynamicBodies.Patches
 {
     public class FarmerRendererPatched
     {
-		public FarmerRendererPatched(Harmony harmony)
+
+        public static RenderTarget2D renderTarget;
+        public static RenderTarget2D _cachedRenderer;
+
+        public FarmerRendererPatched(Harmony harmony)
 		{
 
 			//Intervene with the loading process so we can store separate textures per user
@@ -66,10 +71,6 @@ namespace DynamicBodies.Patches
                 original: AccessTools.Method(typeof(FarmerRenderer), nameof(FarmerRenderer.drawMiniPortrat), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(int), typeof(Farmer) }),
                 prefix: new HarmonyMethod(GetType(), nameof(pre_drawMiniPortrat))
             );
-
-            harmony.CreateReversePatcher(AccessTools.Method(typeof(FarmerRenderer), "executeRecolorActions", new[] { typeof(Farmer) }),
-                new HarmonyMethod(GetType(), nameof(ExecuteRecolorActionsReversePatch))
-                ).Patch();
         }
 
         //Adjust the base texture before rendering and add event listeners
@@ -96,14 +97,17 @@ namespace DynamicBodies.Patches
             }
             if(field == "shirt" || field == "shoes")
             {
-                pbe.cacheImage = null;
+                //pbe.cacheImage = null;
+                
             }
             if(field == "shirt")
             {
-                pbe.shirt = -1;//force shirt change
+                pbe.dirtyLayers["shirt"] = true;
+                //pbe.shirt = -1;//force shirt change
             }
             if(field == "shoes")
             {
+                pbe.dirtyLayers["shoes"] = true;
                 pbe.shoes = -1;//force shoe change
             }
             if (field == "pants")
@@ -131,6 +135,7 @@ namespace DynamicBodies.Patches
         //Replace texturechanged to use the cacheimage
         public static bool pre_TextureChanged(FarmerRenderer __instance, ref Texture2D ___baseTexture, NetString ___textureName, LocalizedContentManager ___farmerTextureManager)
         {
+            ModEntry.debugmsg($"TextureChanged() called", LogLevel.Debug);
             LocalizedContentManagerOverride lcmo = ___farmerTextureManager as LocalizedContentManagerOverride;
             if (lcmo != null)
             {
@@ -157,7 +162,7 @@ namespace DynamicBodies.Patches
         }
 
         //Replace the drawing of Farmer Renderer
-        private static bool pre_Draw(FarmerRenderer __instance, ref Vector2 ___positionOffset, ref Vector2 ___rotationAdjustment, ref bool ____sickFrame, ref bool ____shirtDirty, ref bool ____spriteDirty, ref LocalizedContentManager ___farmerTextureManager, ref Dictionary<string, Dictionary<int, List<int>>> ____recolorOffsets, ref Texture2D ___baseTexture, ref string ___textureName, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
+        private static bool pre_Draw(FarmerRenderer __instance, ref Vector2 ___positionOffset, ref Vector2 ___rotationAdjustment, ref bool ____sickFrame, ref bool ____spriteDirty, ref bool ____eyesDirty, ref bool ____shirtDirty, ref bool ____pantsDirty, ref bool ____shoesDirty, ref bool ____skinDirty, ref bool ____baseTextureDirty, ref LocalizedContentManager ___farmerTextureManager, ref Dictionary<string, Dictionary<int, List<int>>> ____recolorOffsets, ref Texture2D ___baseTexture, ref string ___textureName, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
         {
             if (who.isFakeEventActor && Game1.eventUp)
             {
@@ -170,7 +175,6 @@ namespace DynamicBodies.Patches
             {
                 pbe = new PlayerBaseExtended(who, __instance.textureName.Value);
                 ModEntry.SetModDataDefaults(who);
-                pbe.dirty = true;
 
                 if (who.accessory.Value < 6 && who.accessory.Value > 0)
                 {
@@ -178,6 +182,34 @@ namespace DynamicBodies.Patches
                     who.accessory.Set(0);
                 }
             }
+
+            
+            /*
+            //these sick frames are already green..? 
+            bool sick_frame = currentFrame == 104 || currentFrame == 105;
+            if (____sickFrame != sick_frame)
+            {
+                ____sickFrame = sick_frame;
+                ____shirtDirty = true;
+                ____spriteDirty = true;
+            }*/
+
+            //Copy any dirty flags
+            pbe.dirtyLayers["sprite"] = pbe.dirtyLayers["sprite"] || ____spriteDirty;
+            pbe.dirtyLayers["baseTexture"] = pbe.dirtyLayers["baseTexture"] || ____baseTextureDirty;
+            pbe.dirtyLayers["eyes"] = pbe.dirtyLayers["eyes"] || ____eyesDirty || pbe.dirtyLayers["baseTexture"];
+            pbe.dirtyLayers["skin"] = pbe.dirtyLayers["skin"] || ____skinDirty || pbe.dirtyLayers["baseTexture"];
+            pbe.dirtyLayers["shoes"] = pbe.dirtyLayers["skin"] || ____shoesDirty || pbe.dirtyLayers["baseTexture"];
+            pbe.dirtyLayers["pants"] = pbe.dirtyLayers["pants"] || ____pantsDirty;
+            pbe.dirtyLayers["shirt"] = pbe.dirtyLayers["shirt"] || ____shirtDirty || pbe.dirtyLayers["baseTexture"];
+            //Wipe all dirty flags
+            ____spriteDirty = false;
+            ____baseTextureDirty = false;
+            ____eyesDirty = false;
+            ____skinDirty = false;
+            ____shoesDirty = false;
+            ____pantsDirty = false;
+            ____shirtDirty = false;
 
             //Overriding the texture loading didn't apply during construction, make it happen
             if (!pbe.overrideCheck)
@@ -189,6 +221,13 @@ namespace DynamicBodies.Patches
                     ___farmerTextureManager = (LocalizedContentManager)lcmo.CreateTemporary(ModEntry.context, who);
                 }
                 pbe.overrideCheck = true;
+            }
+
+            //Never generated the texture... i guess
+            if(___baseTexture == null)
+            {
+                ModEntry.debugmsg($"FarmerRenderer loaded a new sprite for {__instance.textureName}", LogLevel.Debug);
+                ___baseTexture = GetFarmerBaseSprite(who, __instance.textureName);
             }
 
             //Flat the positions to whole pixels
@@ -251,11 +290,6 @@ namespace DynamicBodies.Patches
                     pbe.dirty = true;
                 }
 
-
-                //Redraw the image
-                pbe.cacheImage = null;
-                //Wipe the skin colour calculations
-                ____recolorOffsets = null;
                 //Wipe hair calculations
                 pbe.ResetHairTextures();
                 //Wipe naked overlays
@@ -266,18 +300,19 @@ namespace DynamicBodies.Patches
             }
 
             //Draw the character
-            bool sick_frame = currentFrame == 104 || currentFrame == 105;
-            if (____sickFrame != sick_frame)
+            
+            //Replacement to the default recolouring cache system of FarmerRenderer using a shader to palette swap
+            ExecuteRecolorActionsOnBaseSprite(pbe, who);
+
+            //All fixes of rendering should be done
+            pbe.dirty = false;
+
+            if (FarmerRenderer.isDrawingForUI)
             {
-                ____sickFrame = sick_frame;
-                ____shirtDirty = true;
-                ____spriteDirty = true;
+                DrawHairBackUI(pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, ((!Game1.isUsingBackToFrontSorting) ? 1 : (-1)));
             }
-
-            ExecuteRecolorActionsReversePatch(__instance, who);
-            AdjustedVanillaMethods.drawBase(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref ___baseTexture, b, animationFrame, currentFrame, ref sourceRect, ref position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
-            DrawBodyHair(__instance, ___positionOffset, ___rotationAdjustment, ___baseTexture, animationFrame, sourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
-
+            AdjustedVanillaMethods.drawBase(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, ref sourceRect, ref position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
+            
             ///////////////////////////////
             /// Setup a new overlay drawing for upper body
             //no shirt
@@ -363,35 +398,573 @@ namespace DynamicBodies.Patches
                     drawPants = who.modData["DB.bathers"] == "true";
                 }
             }
-            if (drawPants) AdjustedVanillaMethods.drawPants(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref ___baseTexture, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
+            if (drawPants) AdjustedVanillaMethods.drawPants(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             if (nakedLowerTexture != null && pbe.nakedLower.CheckForOption("below accessories")) DrawLowerNaked(__instance, ___positionOffset, ___rotationAdjustment, ___baseTexture, animationFrame, sourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, 9.2E-08f, 9.2E-08f);
-            AdjustedVanillaMethods.drawEyes(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref ___baseTexture, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
+            AdjustedVanillaMethods.drawEyes(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             __instance.drawHairAndAccesories(b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
-            AdjustedVanillaMethods.drawArms(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref ___baseTexture, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
+            AdjustedVanillaMethods.drawArms(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             
             //prevent further rendering
             return false;
         }
 
-        internal static void ExecuteRecolorActionsReversePatch(FarmerRenderer __instance, Farmer who)
+
+        internal static void ExecuteRecolorActionsOnBaseSprite(PlayerBaseExtended pbe, Farmer who)
         {
-            new NotImplementedException("It's a stub!");
+            bool updatePalette = false;
+            if (pbe.dirtyLayers["sprite"])
+            {
+                updatePalette = true;
+                pbe.dirtyLayers["sprite"] = false;
+                if (pbe.dirtyLayers["baseTexture"])
+                {
+
+                    //this.textureChanged();
+                    pbe.dirtyLayers["eyes"] = true;
+                    pbe.dirtyLayers["shoes"] = true;
+                    //pbe.dirtyLayers["pants"] = true;//Pants aren't in the base sprite..?
+                    pbe.dirtyLayers["skin"] = true;
+                    pbe.dirtyLayers["shirt"] = true;
+
+
+                    //Replacement to farmerTextureManager.Load<Texture2D>
+                    pbe.sourceImage = GetFarmerBaseSprite(who);
+                    ModEntry.debugmsg($"Got a base texture: {pbe.sourceImage != null}", LogLevel.Debug);
+
+                    pbe.dirtyLayers["baseTexture"] = false;
+
+                }
+            }
+
+            updatePalette = updatePalette || pbe.dirtyLayers["eyes"] || pbe.dirtyLayers["skin"] || pbe.dirtyLayers["shoes"]
+                            || pbe.dirtyLayers["shirt"] || pbe.dirtyLayers["bodyHair"];
+
+            if (updatePalette) UpdatePalette(pbe, who);
         }
 
-        private static void DrawBodyHair(FarmerRenderer __instance, Vector2 ___positionOffset, Vector2 ___rotationAdjustment, Texture2D ___baseTexture, FarmerSprite.AnimationFrame animationFrame, Rectangle sourceRect, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth)
+        internal static void UpdatePalette(PlayerBaseExtended pbe, Farmer who)
         {
-            PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
-
-            if (!pbe.bodyHair.OptionMatchesModData(who))
+            //Change the pixel colours on the cached image
+            foreach (String layer in pbe.dirtyLayers.Keys)
             {
-                pbe.bodyHair.SetOptionFromModData(who, ModEntry.bodyHairOptions);
+                //Update the colour cache of each dirty layer
+                if (pbe.dirtyLayers[layer])
+                {
+                    switch (layer)
+                    {
+                        case "eyes":
+                            UpdateEyePalette(who, pbe);
+                            pbe.dirtyLayers[layer] = false;
+                            break;
+                        case "shoes":
+                            UpdateShoePalette(who, pbe);
+                            pbe.dirtyLayers[layer] = false;
+                            break;
+                        case "skin":
+                            UpdateSkinPalette(who, pbe);
+                            pbe.dirtyLayers[layer] = false;
+                            break;
+                        case "shirt":
+                            UpdateShirtPalette(who, pbe);
+                            pbe.dirtyLayers[layer] = false;
+                            break;
+                    }
+                    
+                }
             }
 
-            if (pbe.bodyHair.option != "Default")
+            /*
+             //https://github.com/Floogen/DynamicReflections/blob/development/DynamicReflections/Framework/Utilities/SpriteBatchToolkit.cs
+
+            SpriteBatchToolkit.StartRendering(DynamicReflections.playerWaterReflectionRender);
+
+                var currentRenderer = Game1.graphics.GraphicsDevice.GetRenderTargets();
+                if (currentRenderer is not null && currentRenderer.Length > 0 && currentRenderer[0].RenderTarget is not null)
+                {
+                    _cachedRenderer = currentRenderer[0].RenderTarget as RenderTarget2D;
+                }
+
+                Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget2D);
+
+            // Draw the scene
+            Game1.graphics.GraphicsDevice.Clear(Color.Transparent);
+
+            DrawReflectionViaMatrix();
+
+            // Drop the render target
+            SpriteBatchToolkit.StopRendering();
+                Game1.graphics.GraphicsDevice.SetRenderTarget(_cachedRenderer);
+                _cachedRenderer = null;
+
+            Game1.graphics.GraphicsDevice.Clear(Game1.bgColor);
+
+
+            if (renderTarget2D is not null)
             {
-                //Draw the body hair
-                b.Draw(pbe.GetBodyHairTexture(who), position + origin + ___positionOffset, sourceRect, Color.White, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + ((who.FarmerSprite.CurrentAnimationFrame.frame == 5) ? 0.00072f : 7.2E-08f));
+                renderTarget2D.Dispose();
             }
+
+            var height = Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
+            var width = Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
+            if (shouldUseScreenDimensions is true && Game1.game1 is not null && Game1.game1.screen is not null)
+            {
+                height = Game1.game1.screen.Height;
+                width = Game1.game1.screen.Width;
+            }
+
+            renderTarget2D = new RenderTarget2D(
+                Game1.graphics.GraphicsDevice,
+                width,
+                height,
+                false,
+                Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.None);
+
+            */
+
+
+            if (pbe.sourceImage != null)
+            {
+                //Use a pixel shader to handle the recolouring
+                //set up the palette render
+                ModEntry.paletteSwap.Parameters["xTargetPalette"].SetValue(pbe.paletteCache);
+
+                RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, pbe.sourceImage.Width, pbe.sourceImage.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+                //Store current render targets
+                RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
+
+                if (currentRenderTargets is not null && currentRenderTargets.Length > 0 && currentRenderTargets[0].RenderTarget is not null)
+                {
+                    _cachedRenderer = currentRenderTargets[0].RenderTarget as RenderTarget2D;
+                }
+
+                Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+
+                Game1.graphics.GraphicsDevice.Clear(Color.FromNonPremultiplied(255, 0, 255, 0));
+                
+                using (SpriteBatch sb = new SpriteBatch(renderTarget.GraphicsDevice))
+                {
+                    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, effect: ModEntry.paletteSwap);
+                    sb.Draw(pbe.sourceImage, new Rectangle(0, 0, pbe.sourceImage.Width, pbe.sourceImage.Height), Color.White);
+                    sb.End();
+                }
+
+                Color[] pixel_data = new Color[renderTarget.Width * renderTarget.Height];
+                renderTarget.GetData(pixel_data);
+                pbe.cacheImage.SetData(pixel_data);
+
+                if (renderTarget is not null)
+                {
+                    renderTarget.Dispose();
+                }
+                //return current render target
+                Game1.graphics.GraphicsDevice.SetRenderTarget(_cachedRenderer);
+                _cachedRenderer = null;
+
+
+                //Overlay the bodyhair onto the base skin
+                Texture2D bodyHairText = null;
+
+                if (pbe.bodyHair.option != "Default")
+                {
+                    bodyHairText = pbe.GetBodyHairTexture(who);
+                    pbe.dirtyLayers["bodyHair"] = false;
+                }
+
+                if (bodyHairText != null)
+                {
+                    ModEntry.debugmsg("UpdatePalette: Drawing bodyhair", LogLevel.Debug);
+                    IAssetDataForImage editor = ModEntry.context.Helper.ModContent.GetPatchHelper(pbe.cacheImage).AsImage();
+                    editor.PatchImage(bodyHairText, new Rectangle(0, 0, bodyHairText.Width, bodyHairText.Height), targetArea: new Rectangle(0, 0, bodyHairText.Width, bodyHairText.Height), PatchMode.Overlay);
+                }
+
+            }
+
+            
+
+        }
+
+        public static Texture2D GetFarmerBaseSprite(Farmer who, string texture = "")
+        {
+            Texture2D bodyText2D = null;
+            bool returnNew = texture == "";
+            //Start modifying the base texture
+            IAssetDataForImage editor = null;
+
+            //Fix up the farmer base with options
+            if ((texture.Length > 0 && texture.StartsWith("Characters\\Farmer\\farmer_") || returnNew))
+            {
+                string gender = "";
+                if (!who.IsMale) { gender = "f_"; }
+
+                //monitor.Log($"Edit [{pbeKeyPair.Key}] {pbeKeyPair.Value.baseStyle} image through Edit<t>", LogLevel.Debug);
+                PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
+                if (pbe == null)
+                {
+                    pbe = new PlayerBaseExtended(who, texture);
+                    ModEntry.SetModDataDefaults(who);
+                    pbe.dirty = true;
+
+                    if (who.accessory.Value < 6 && who.accessory.Value > 0)
+                    {
+                        who.modData["DB.beard"] = "Vanilla's Accessory " + (who.accessory.Value + 1).ToString();
+                        who.accessory.Set(0);
+                    }
+                }
+
+                string bald = "";
+                if (who.IsBaldHairStyle(who.hair.Value))
+                {
+                    bald = "_bald";
+                }
+
+                //Base texture needs to be redone
+                if (pbe.dirtyLayers["baseTexture"])
+                {
+                    //Load the base texture from this mod
+                    if (pbe.body.option == "Default")
+                    {
+                        bodyText2D = ModEntry.context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\{gender}farmer_base.png");
+                    }
+                    else
+                    {
+
+                        //Otherwise load it from a content pack
+                        bodyText2D = pbe.body.provider.ModContent.Load<Texture2D>($"assets\\bodies\\{gender}{pbe.body.file}.png");
+                    }
+
+                    editor = ModEntry.context.Helper.ModContent.GetPatchHelper(bodyText2D).AsImage();
+
+                    if (pbe.dirtyLayers["baseTexture"]) ModEntry.debugmsg("base was dirty", LogLevel.Debug);
+
+                    IRawTextureData faceText2D;
+                    if (pbe.face.option == "Default")
+                    {
+                        faceText2D = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\{gender}face{bald}.png");
+                    }
+                    else
+                    {
+                        faceText2D = pbe.face.provider.ModContent.Load<IRawTextureData>($"assets\\faces\\{pbe.face.file}{bald}.png");
+                    }
+                    editor.PatchImage(faceText2D, new Rectangle(0, 0, 96, faceText2D.Height), targetArea: new Rectangle(0, 0, 96, faceText2D.Height), PatchMode.Overlay);
+                    if(faceText2D.Width > 96)
+                    {
+                        //Add custom blink frames
+                        editor.PatchImage(faceText2D, new Rectangle(96, 0, 32, 24), targetArea: new Rectangle(256, 0, 32, 24), PatchMode.Replace);
+                    }
+
+
+
+                    //Top arms
+                    //editor.PatchImage(armsText2D, new Rectangle(0, 0, armsText2D.Width, armsText2D.Height-96), targetArea: new Rectangle(96, 0, armsText2D.Width, armsText2D.Height-96), PatchMode.Replace);
+                    //Bottom arms
+                    //editor.PatchImage(armsText2D, new Rectangle(48, 576, armsText2D.Width-48, 96), targetArea: new Rectangle(144, 576, armsText2D.Width-48, 96), PatchMode.Replace);
+                    //Bath overlay
+                    //editor.PatchImage(armsText2D, new Rectangle(0, 576, 48, 96), targetArea: new Rectangle(0, 576, 48, 96), PatchMode.Overlay);
+
+
+                    //monitor.Log($"Edit sleeve image through Edit<t>", LogLevel.Debug);
+
+                    IRawTextureData shoes;
+                    if (pbe.shoeStyle == "None")
+                    {
+                        shoes = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\feet.png");
+                        ModEntry.debugmsg($"Drawing feet.", LogLevel.Debug);
+                    }
+                    else
+                    {
+                        Boots equippedBoots = (Boots)who.boots;
+                        if (equippedBoots == null)
+                        {
+                            shoes = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\feet.png");
+                            ModEntry.debugmsg($"Default feet as nothing equipped found.", LogLevel.Debug);
+                        }
+                        else
+                        {
+                            if (ModEntry.shoeOverrides.ContainsKey(equippedBoots.Name))
+                            {
+                                shoes = ModEntry.shoeOverrides[equippedBoots.Name].contentPack.ModContent.Load<IRawTextureData>(ModEntry.shoeOverrides[equippedBoots.Name].file);
+                                ModEntry.debugmsg($"Override specific shoe for [{equippedBoots.Name}].", LogLevel.Debug);
+                            }
+                            else
+                            {
+                                List<string> roughMatches = ModEntry.shoeOverrides.Keys.Where(key => equippedBoots.Name.StartsWith(key)).ToList();
+                                if (roughMatches.Count > 0)
+                                {
+                                    shoes = ModEntry.shoeOverrides[roughMatches[0]].contentPack.ModContent.Load<IRawTextureData>(ModEntry.shoeOverrides[roughMatches[0]].file);
+                                    ModEntry.debugmsg($"Override shoes group for [{equippedBoots.Name}].", LogLevel.Debug);
+                                }
+                                else
+                                {
+                                    shoes = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\shoes_Normal.png");
+                                    ModEntry.debugmsg($"Default shoes for [{equippedBoots.Name}].", LogLevel.Debug);
+                                }
+                            }
+                        }
+
+                    }
+
+                    editor.PatchImage(shoes, new Rectangle(0, 0, shoes.Width, shoes.Height), targetArea: new Rectangle(0, 0, shoes.Width, shoes.Height), PatchMode.Overlay);
+                }
+
+                if (pbe.dirtyLayers["arm"] || pbe.dirtyLayers["baseTexture"])
+                {
+                    if (editor == null)
+                    {
+                        editor = ModEntry.context.Helper.ModContent.GetPatchHelper(pbe.sourceImage).AsImage();
+                        pbe.dirtyLayers["sprite"] = true;
+                    }
+
+                    IRawTextureData armsText2D;
+                    if (pbe.arm.option == "Default")
+                    {
+                        armsText2D = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\{gender}arm_{pbe.sleeveLength}.png");
+                    }
+                    else
+                    {
+                        armsText2D = pbe.arm.provider.ModContent.Load<IRawTextureData>($"assets\\arms\\{pbe.arm.file}_{pbe.sleeveLength}.png");
+                    }
+                    //editor.PatchImage(armsText2D, new Rectangle(0, 0, armsText2D.Width, armsText2D.Height), targetArea: new Rectangle(96, 0, armsText2D.Width, armsText2D.Height), PatchMode.Replace);
+
+                    //Top row
+                    editor.PatchImage(armsText2D, new Rectangle(0, 0, armsText2D.Width - 32, 32), targetArea: new Rectangle(96, 0, armsText2D.Width - 32, 32), PatchMode.Replace);
+                    //remainder
+                    editor.PatchImage(armsText2D, new Rectangle(0, 32, armsText2D.Width, armsText2D.Height - 32), targetArea: new Rectangle(96, 32, armsText2D.Width, armsText2D.Height - 32), PatchMode.Replace);
+                }
+
+                if (pbe.dirtyLayers["baseTexture"] && pbe.nose.option != "Default")
+                {
+                    IRawTextureData noseText2D = pbe.nose.provider.ModContent.Load<IRawTextureData>($"assets\\nose\\{pbe.nose.file}.png");
+                    editor.PatchImage(noseText2D, new Rectangle(0, 0, noseText2D.Width, noseText2D.Height), targetArea: new Rectangle(0, 0, noseText2D.Width, noseText2D.Height), PatchMode.Overlay);
+                }
+
+                if (pbe.dirtyLayers["baseTexture"] && pbe.eyes.option != "Default")
+                {
+                    IRawTextureData eyesText2D = pbe.eyes.provider.ModContent.Load<IRawTextureData>($"assets\\eyes\\{pbe.eyes.file}.png");
+                    editor.PatchImage(eyesText2D, new Rectangle(0, 0, 96, eyesText2D.Height), targetArea: new Rectangle(0, 0, 96, eyesText2D.Height), PatchMode.Overlay);
+                    if (eyesText2D.Width > 96)
+                    {
+                        //Add custom blink frames
+                        editor.PatchImage(eyesText2D, new Rectangle(96, 0, 32, 24), targetArea: new Rectangle(256, 0, 32, 24), PatchMode.Replace);
+                    }
+                }
+
+                if (pbe.dirtyLayers["baseTexture"] && pbe.ears.option != "Default")
+                {
+                    IRawTextureData earsText2D = pbe.ears.provider.ModContent.Load<IRawTextureData>($"assets\\ears\\{pbe.ears.file}.png");
+                    editor.PatchImage(earsText2D, new Rectangle(0, 0, earsText2D.Width, earsText2D.Height), targetArea: new Rectangle(0, 0, earsText2D.Width, earsText2D.Height), PatchMode.Overlay);
+                }
+
+                //Needs redrawing
+                if (pbe.dirtyLayers["baseTexture"] || pbe.dirtyLayers["sprite"] || pbe.cacheImage == null)
+                {
+                    //Store the updated version
+                    pbe.cacheImage = null;
+
+                    pbe.cacheImage = new Texture2D(Game1.graphics.GraphicsDevice, bodyText2D.Width, bodyText2D.Height);
+                    Color[] data = new Color[bodyText2D.Width * bodyText2D.Height];
+                    bodyText2D.GetData(data, 0, data.Length);
+                    pbe.cacheImage.SetData(data);
+
+                    //Render any extended colours on the base
+                    //pbe.cacheImage = PlayerBaseExtended.ApplyExtendedSkinColor(who.skin.Value, pbe.cacheImage);
+
+                    pbe.dirtyLayers["sprite"] = false;
+                }
+
+                if (!returnNew)
+                {
+                    //Return the cached image
+                    return pbe.cacheImage;
+                }
+
+            }
+
+
+
+            return bodyText2D;
+        }
+
+
+        private static Color changeBrightness(Color c, Color amount, bool lighter = true)
+        {
+            int adjust = lighter ? 1 : -1;
+            c.R = (byte)Math.Min(255, Math.Max(0, c.R + amount.R * adjust));
+            c.G = (byte)Math.Min(255, Math.Max(0, c.G + amount.G * adjust));
+            c.B = (byte)Math.Min(255, Math.Max(0, c.B + amount.B * adjust));
+            return c;
+        }
+
+        private static void UpdateEyePalette(Farmer who, PlayerBaseExtended pbe)
+        {
+            Color lightest_color = who.newEyeColor.Value;
+            if (lightest_color.A < byte.MaxValue) lightest_color.A = byte.MaxValue;
+
+            //Adjust dark eye colour by the difference between the standard colour
+            Color darken = new Color(59, 25, 9);
+
+            Color darker_color = changeBrightness(lightest_color, darken, false);
+            if (lightest_color.Equals(darker_color))
+            {
+                changeBrightness(lightest_color, darken, true);
+            }
+            pbe.paletteCache[20] = lightest_color.ToVector4();
+            pbe.paletteCache[21] = darker_color.ToVector4();
+
+            Color lightest_r_color = PlayerBaseExtended.GetColorSetting(who, "eyeColorR");
+            if (who.modData.ContainsKey("DB.eyeColorR"))
+            {
+                //Allow for two eye colours
+                Color darker_r_color = changeBrightness(lightest_r_color, darken, false);
+                if (lightest_r_color.Equals(darker_r_color))
+                {
+                    changeBrightness(lightest_r_color, darken, true);
+                }
+                pbe.paletteCache[23] = lightest_r_color.ToVector4();
+                pbe.paletteCache[24] = darker_r_color.ToVector4();
+            }
+            else
+            {
+                pbe.paletteCache[23] = lightest_color.ToVector4();
+                pbe.paletteCache[24] = darker_color.ToVector4();
+            }
+
+            //Allow for sclera colours
+            Color lightest_s_color = PlayerBaseExtended.GetColorSetting(who, "eyeColorS");
+            if (!lightest_s_color.Equals(Color.Transparent))
+            {
+                //Difference in the white/grey colour
+                darken = new Color(65, 85, 84);
+
+                Color darker_s_color = changeBrightness(lightest_s_color, darken, false);
+                if (lightest_s_color.Equals(darker_s_color))
+                {
+                    lightest_s_color = changeBrightness(darker_s_color, darken, true);
+                }
+                pbe.paletteCache[18] = lightest_s_color.ToVector4();
+                pbe.paletteCache[19] = darker_s_color.ToVector4();
+            }
+
+            //Allow for ash colours
+            Color lash_color = PlayerBaseExtended.GetColorSetting(who, "lash");
+            if (lash_color.Equals(Color.Transparent))
+            {
+                pbe.paletteCache[17] = new Color(15, 10, 8).ToVector4();
+            } else
+            {
+                pbe.paletteCache[17] = lash_color.ToVector4();
+            }
+
+        }
+
+        private static void UpdateSkinPalette(Farmer who, PlayerBaseExtended pbe)
+        {
+            //Calculate the skin colours
+            int which = who.skin.Value;
+            Texture2D skinColors = Game1.content.Load<Texture2D>("Characters/Farmer/skinColors");
+            Texture2D glandColors = Game1.content.Load<Texture2D>("Mods/ribeena.dynamicbodies/assets/Character/extendedSkinColors.png");
+
+            Color[] skinColorsData = new Color[skinColors.Width * skinColors.Height];
+            if (which < 0) which = skinColors.Height - 1;
+            if (which > skinColors.Height - 1) which = 0;
+            skinColors.GetData(skinColorsData);
+
+            Color[] glandColorsData = new Color[glandColors.Width * glandColors.Height];
+            if (which < 0) which = glandColors.Height - 1;
+            if (which > glandColors.Height - 1) which = 0;
+            glandColors.GetData(glandColorsData);
+
+            //Store what the colours are
+
+            if (skinColors.Width == 3)
+            {
+                pbe.paletteCache[4] = skinColorsData[which * 3 % (skinColors.Height * 3)].ToVector4();//Dark
+                pbe.paletteCache[5] = skinColorsData[which * 3 % (skinColors.Height * 3) + 1].ToVector4();//Medium
+                pbe.paletteCache[6] = skinColorsData[which * 3 % (skinColors.Height * 3) + 2].ToVector4();//Light
+                //Lerp the other colours
+                pbe.paletteCache[7] = Color.Lerp(skinColorsData[which * 3 % (skinColors.Height * 3)], skinColorsData[which * 3 % (skinColors.Height * 3) + 1], 0.5f).ToVector4();
+                pbe.paletteCache[8] = Color.Lerp(skinColorsData[which * 3 % (skinColors.Height * 3) + 1], skinColorsData[which * 3 % (skinColors.Height * 3) + 2], 0.5f).ToVector4();
+            }
+            else if (skinColors.Width == 5)
+            {
+                //Oooo someone went all in with a 5 width skin
+                pbe.paletteCache[4] = skinColorsData[which * 5 % (skinColors.Height * 5)].ToVector4();
+                pbe.paletteCache[5] = skinColorsData[which * 5 % (skinColors.Height * 5) + 1].ToVector4();
+                pbe.paletteCache[6] = skinColorsData[which * 5 % (skinColors.Height * 5) + 2].ToVector4();
+                pbe.paletteCache[7] = skinColorsData[which * 5 % (skinColors.Height * 5) + 3].ToVector4();
+                pbe.paletteCache[8] = skinColorsData[which * 5 % (skinColors.Height * 5) + 4].ToVector4();
+            }
+            if (glandColors.Width == 2)
+            {
+                //Original format compatibility
+                pbe.paletteCache[9] = glandColorsData[which * 2 % (glandColors.Height * 2)].ToVector4();
+                pbe.paletteCache[11] = glandColorsData[which * 2 % (glandColors.Height * 2) + 1].ToVector4();
+                //Lerp the other colour
+                pbe.paletteCache[10] = Color.Lerp(glandColorsData[which * 2 % (glandColors.Height * 2)], glandColorsData[which * 2 % (glandColors.Height * 2) + 1], 0.5f).ToVector4();
+            }
+            else if (glandColors.Width == 3)
+            {
+                pbe.paletteCache[9] = glandColorsData[which * 3 % (glandColors.Height * 3)].ToVector4();
+                pbe.paletteCache[10] = glandColorsData[which * 3 % (glandColors.Height * 3) + 1].ToVector4();
+                pbe.paletteCache[11] = glandColorsData[which * 3 % (glandColors.Height * 3) + 2].ToVector4();
+            }
+        }
+
+        private static void UpdateShoePalette(Farmer who, PlayerBaseExtended pbe)
+        {
+            Boots boots = who.boots.Value;
+            if (boots != null)
+            {
+                int which = boots.indexInColorSheet.Value;
+
+                Texture2D shoeColors = Game1.content.Load<Texture2D>("Characters\\Farmer\\shoeColors");
+                Color[] shoeColorsData = new Color[shoeColors.Width * shoeColors.Height];
+                shoeColors.GetData(shoeColorsData);
+                pbe.paletteCache[12] = shoeColorsData[which * 4 % (shoeColors.Height * 4)].ToVector4();
+                pbe.paletteCache[13] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 1].ToVector4();
+                pbe.paletteCache[14] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 2].ToVector4();
+                pbe.paletteCache[15] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 3].ToVector4();
+            }
+        }
+
+        private static void UpdateShirtPalette(Farmer who, PlayerBaseExtended pbe)
+        {
+            Color[] shirtData = new Color[FarmerRenderer.shirtsTexture.Bounds.Width * FarmerRenderer.shirtsTexture.Bounds.Height];
+            FarmerRenderer.shirtsTexture.GetData(shirtData);
+
+            int index = AdjustedVanillaMethods.ClampShirt(who.GetShirtIndex()) * 8 / 128 * 32 * FarmerRenderer.shirtsTexture.Bounds.Width + AdjustedVanillaMethods.ClampShirt(who.GetShirtIndex()) * 8 % 128 + FarmerRenderer.shirtsTexture.Width * 4;
+            int dye_index = index + 128;
+
+            //Sleeveless is handles by textures now, so no logic here for that
+
+            Color color = Utility.MakeCompletelyOpaque(who.GetShirtColor());
+            Color shirtSleeveColor = shirtData[dye_index];
+            Color clothes_color = color;
+            if (shirtSleeveColor.A < byte.MaxValue)
+            {
+                shirtSleeveColor = shirtData[index];
+                clothes_color = Color.White;
+            }
+            shirtSleeveColor = Utility.MultiplyColor(shirtSleeveColor, clothes_color);
+            pbe.paletteCache[0] = shirtSleeveColor.ToVector4();
+
+            shirtSleeveColor = shirtData[dye_index - FarmerRenderer.shirtsTexture.Width];
+            if (shirtSleeveColor.A < byte.MaxValue)
+            {
+                shirtSleeveColor = shirtData[index - FarmerRenderer.shirtsTexture.Width];
+                clothes_color = Color.White;
+            }
+            shirtSleeveColor = Utility.MultiplyColor(shirtSleeveColor, clothes_color);
+            pbe.paletteCache[1] = shirtSleeveColor.ToVector4();
+
+            shirtSleeveColor = shirtData[dye_index - FarmerRenderer.shirtsTexture.Width * 2];
+            if (shirtSleeveColor.A < byte.MaxValue)
+            {
+                shirtSleeveColor = shirtData[index - FarmerRenderer.shirtsTexture.Width * 2];
+                clothes_color = Color.White;
+            }
+            shirtSleeveColor = Utility.MultiplyColor(shirtSleeveColor, clothes_color);
+            pbe.paletteCache[2] = shirtSleeveColor.ToVector4();
         }
 
         private static void DrawLowerNaked(FarmerRenderer __instance, Vector2 ___positionOffset, Vector2 ___rotationAdjustment, Texture2D ___baseTexture, FarmerSprite.AnimationFrame animationFrame, Rectangle sourceRect, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth, float layerOff1, float layeroff2)
@@ -568,78 +1141,8 @@ namespace DynamicBodies.Patches
                     AdjustedVanillaMethods.DrawAccessory(__instance, ___positionOffset, ___rotationAdjustment, ref ___accessorySourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
                 }
 
-                ///////////////////////////////
-                /// Setup overlay for rendering new two tone hair
-                /// 
-                int hair_style = who.getHair(); // (ignore_hat: true);
-                HairStyleMetadata hair_metadata = Farmer.GetHairStyleMetadata(who.hair.Value);
-                if (who != null && who.hat.Value != null && who.hat.Value.hairDrawType.Value == 1 && hair_metadata != null && hair_metadata.coveredIndex != -1)
-                {
-                    hair_style = hair_metadata.coveredIndex;
-                    hair_metadata = Farmer.GetHairStyleMetadata(hair_style);
-                }
-                Rectangle hairstyleSourceOriginalRect = new Rectangle(hair_style * 16 % FarmerRenderer.hairStylesTexture.Width, hair_style * 16 / FarmerRenderer.hairStylesTexture.Width * 96, 16, 32 * 3);
+                DrawHair(pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, sort_direction);
 
-                Texture2D hair_texture;
-                if (hair_metadata != null)
-                {
-                    hairstyleSourceOriginalRect = new Rectangle(hair_metadata.tileX * 16, hair_metadata.tileY * 16, 16, 32);
-                    if (hair_metadata.usesUniqueLeftSprite)
-                    {
-                        hairstyleSourceOriginalRect.Height = 32 * 4;
-                    }
-                    hair_texture = pbe.GetHairTexture(who, hair_style, hair_metadata.texture, hairstyleSourceOriginalRect);
-                }
-                else
-                {
-                    hair_texture = pbe.GetHairTexture(who, hair_style, FarmerRenderer.hairStylesTexture, hairstyleSourceOriginalRect);
-                }
-
-                //Cached and recoloured hair only has the one version
-                Rectangle hairstyleSourceRect = new Rectangle(0, 0, 16, 32);
-
-                float hair_draw_layer = ModEntry.hairlayer; //2.25E-05f //2.2E-05f;
-
-                //float base_layer = layerDepth;
-
-                if (FarmerRenderer.isDrawingForUI)
-                {
-                    //hair_draw_layer = 1.15E-07f;
-                    layerDepth = 0.7f;
-                    //context.Monitor.Log($"UI layer is [{layerDepth}].", LogLevel.Debug);
-                    facingDirection = 2;
-
-                }
-
-                bool flip = false;
-                switch (facingDirection)
-                {
-                    case 0:
-                        hairstyleSourceRect.Offset(0, 64);
-                        b.Draw(hair_texture, position + origin + ___positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 4 + ((who.IsMale && hair_style >= 16) ? (-4) : ((!who.IsMale && hair_style < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
-                        break;
-                    case 1:
-                        hairstyleSourceRect.Offset(0, 32);
-                        b.Draw(hair_texture, position + origin + ___positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
-
-                        break;
-                    case 2:
-                        b.Draw(hair_texture, position + origin + ___positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
-                        break;
-                    case 3:
-                        flip = true;
-                        if (hair_metadata != null && hair_metadata.usesUniqueLeftSprite)
-                        {
-                            flip = false;
-                            hairstyleSourceRect.Offset(0, 96);
-                        }
-                        else
-                        {
-                            hairstyleSourceRect.Offset(0, 32);
-                        }
-                        b.Draw(hair_texture, position + origin + ___positionOffset + new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
-                        break;
-                }
 
                 //Draw naked
                 if (!pbe.nakedLower.CheckForOption("below accessories")) DrawLowerNaked(__instance, ___positionOffset, ___rotationAdjustment, ___baseTexture, animationFrame, sourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, ModEntry.FS_pantslayer, 5.95E-05f);
@@ -655,6 +1158,271 @@ namespace DynamicBodies.Patches
             return false;
 
         }
+
+        public static void DrawHair(PlayerBaseExtended pbe, Vector2 ___positionOffset, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth, float sort_direction)
+        {
+            bool drawHair = true;
+
+            if (who.hat.Value != null && who.hat.Value.hairDrawType.Value == 2) //Hat says hide any hair
+            {
+                drawHair = false;
+            }
+            if (drawHair)
+            {
+                ///////////////////////////////
+                /// Setup overlay for rendering new two tone 43
+                /// 
+                int hair_style = who.getHair(); // (ignore_hat: true);
+                HairStyleMetadata hair_metadata = Farmer.GetHairStyleMetadata(who.hair.Value);
+                if (pbe.hairStyle.option.StartsWith("Vanilla"))
+                {
+                    //Use the modData version
+                    hair_style = int.Parse(pbe.hairStyle.file);
+                    hair_metadata = Farmer.GetHairStyleMetadata(hair_style);
+                }
+
+                Texture2D hair_texture = null;
+                bool flip = false;
+
+                //Cached and recoloured hair only has the one version
+                Rectangle hairstyleSourceRect = new Rectangle(0, 0, 16, 32);
+                Vector2 offsetPosition = new Vector2(0, 0);
+
+                if (FarmerRenderer.isDrawingForUI)
+                {
+                    //hair_draw_layer = 1.15E-07f;
+                    layerDepth = 0.7f;
+                    //context.Monitor.Log($"UI layer is [{layerDepth}].", LogLevel.Debug);
+                    facingDirection = 2;
+                }
+
+                if (pbe.hairStyle.option == "Default" || pbe.hairStyle.option.StartsWith("Vanilla"))
+                {
+                    if (who != null && who.hat.Value != null && who.hat.Value.hairDrawType.Value == 1 && hair_metadata != null && hair_metadata.coveredIndex != -1)
+                    {
+                        hair_style = hair_metadata.coveredIndex;
+                        hair_metadata = Farmer.GetHairStyleMetadata(hair_style);
+                    }
+                    Rectangle hairstyleSourceOriginalRect = new Rectangle(hair_style * 16 % FarmerRenderer.hairStylesTexture.Width, hair_style * 16 / FarmerRenderer.hairStylesTexture.Width * 96, 16, 32 * 3);
+
+
+                    if (hair_metadata != null)
+                    {
+                        hairstyleSourceOriginalRect = new Rectangle(hair_metadata.tileX * 16, hair_metadata.tileY * 16, 16, 32);
+                        if (hair_metadata.usesUniqueLeftSprite)
+                        {
+                            hairstyleSourceOriginalRect.Height = 32 * 4;
+                        }
+                        hair_texture = pbe.GetHairTexture(who, hair_style, hair_metadata.texture, hairstyleSourceOriginalRect);
+                    }
+                    else
+                    {
+                        hair_texture = pbe.GetHairTexture(who, hair_style, FarmerRenderer.hairStylesTexture, hairstyleSourceOriginalRect);
+                    }
+
+                    //Adjust rect of what to draw
+                    switch (facingDirection)
+                    {
+                        case 0:
+                            hairstyleSourceRect.Offset(0, 64);
+                            break;
+                        case 1:
+                            hairstyleSourceRect.Offset(0, 32);
+                            break;
+                        case 3:
+                            flip = true;
+                            if (hair_metadata != null && hair_metadata.usesUniqueLeftSprite)
+                            {
+                                flip = false;
+                                hairstyleSourceRect.Offset(0, 96);
+                            }
+                            else
+                            {
+                                hairstyleSourceRect.Offset(0, 32);
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+
+
+                    List<string> all_hairs = ModEntry.getContentPackOptions(ModEntry.hairOptions).ToList();
+                    int current_index = all_hairs.IndexOf((who.modData.ContainsKey("DB.hairStyle")) ? who.modData["DB.hairStyle"] : "Default");
+                    ExtendedHair.ContentPackHairOption option = ModEntry.hairOptions[current_index] as ExtendedHair.ContentPackHairOption;
+
+                    string has_hat = "";
+                    if (who.hat.Value != null && who.hat.Value.hairDrawType.Value == 1)
+                    {
+                        if (option.hasHatTexture)
+                        {
+                            has_hat = "hat";
+                        }
+                        else
+                        {
+                            //TODO handle hairDrawType 0 not really obscured and hairDrawType 1 partially obscure
+                        }
+                    }
+
+                    flip = !option.settings.usesUniqueLeftSprite;
+                    offsetPosition.X -= (option.settings.extraWidth / 2f) * 4f;
+                    offsetPosition.Y = option.settings.yOffset * 4f;
+
+                    hair_texture = pbe.GetHairStyleTexture(who, has_hat);
+                    hairstyleSourceRect = ExpandedAnimations.getFrameRectangle(who, option.settings, option.settings.usesUniqueLeftSprite ? hair_texture.Height / 4 : hair_texture.Height / 3, 16 + option.settings.extraWidth, facingDirection);
+
+                    if (option.hasBackTexture && !FarmerRenderer.isDrawingForUI)
+                    {
+                        float hair_back_layer = -2.25E-05f;
+                        Texture2D backHairTexture;
+                        if (option.hasHatTexture)
+                        {
+                            backHairTexture = pbe.GetHairStyleTexture(who, "back_hat");
+                        }
+                        else
+                        {
+                            backHairTexture = pbe.GetHairStyleTexture(who, "back");
+                        }
+
+                        switch (facingDirection)
+                        {
+                            case 0:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 4 + ((who.IsMale && hair_style >= 16) ? (-4) : ((!who.IsMale && hair_style < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                            case 1:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                            case 2:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                            case 3:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                        }
+                    }
+                }
+
+
+
+                float hair_draw_layer = ModEntry.hairlayer; //2.25E-05f //2.2E-05f;
+
+                //float base_layer = layerDepth;
+
+
+
+                if (hair_texture != null)
+                {
+                    switch (facingDirection)
+                    {
+                        case 0:
+                            b.Draw(hair_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 4 + ((who.IsMale && hair_style >= 16) ? (-4) : ((!who.IsMale && hair_style < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
+                            break;
+                        case 1:
+                            b.Draw(hair_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
+                            break;
+                        case 2:
+                            b.Draw(hair_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
+                            break;
+                        case 3:
+                            b.Draw(hair_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + hair_draw_layer * (float)sort_direction);
+                            break;
+                    }
+                }
+            }
+        }
+        public static void DrawHairBackUI(PlayerBaseExtended pbe, Vector2 ___positionOffset, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth, float sort_direction, bool cropped = false)
+        {
+            bool drawHair = true;
+
+            if (who.hat.Value != null && who.hat.Value.hairDrawType.Value == 2) //Hat says hide any hair
+            {
+                drawHair = false;
+            }
+            if (drawHair)
+            {
+                ///////////////////////////////
+                /// Setup overlay for rendering new two tone 43
+                /// 
+                int hair_style = who.getHair(); // (ignore_hat: true);
+                HairStyleMetadata hair_metadata = Farmer.GetHairStyleMetadata(who.hair.Value);
+                if (pbe.hairStyle.option.StartsWith("Vanilla"))
+                {
+                    //Use the modData version
+                    hair_style = int.Parse(pbe.hairStyle.file);
+                    hair_metadata = Farmer.GetHairStyleMetadata(hair_style);
+                }
+
+                Texture2D hair_texture = null;
+                bool flip = false;
+
+                //Cached and recoloured hair only has the one version
+                Rectangle hairstyleSourceRect = new Rectangle(0, 0, 16, 32);
+                Vector2 offsetPosition = new Vector2(0, 0);
+
+
+                if (pbe.hairStyle.option == "Default" || pbe.hairStyle.option.StartsWith("Vanilla"))
+                {
+                    
+                }
+                else
+                {
+                    List<string> all_hairs = ModEntry.getContentPackOptions(ModEntry.hairOptions).ToList();
+                    int current_index = all_hairs.IndexOf((who.modData.ContainsKey("DB.hairStyle")) ? who.modData["DB.hairStyle"] : "Default");
+                    ExtendedHair.ContentPackHairOption option = ModEntry.hairOptions[current_index] as ExtendedHair.ContentPackHairOption;
+
+                    string has_hat = "";
+                    if (who.hat.Value != null && who.hat.Value.hairDrawType.Value == 1)
+                    {
+                        if (option.hasHatTexture)
+                        {
+                            has_hat = "hat";
+                        }
+                        else
+                        {
+                            //TODO handle hairDrawType 0 not really obscured and hairDrawType 1 partially obscure
+                        }
+                    }
+
+                    flip = !option.settings.usesUniqueLeftSprite;
+                    offsetPosition.X -= (option.settings.extraWidth / 2f) * 4f;
+                    offsetPosition.Y = option.settings.yOffset * 4f;
+
+                    hair_texture = pbe.GetHairStyleTexture(who, has_hat);
+                    hairstyleSourceRect = ExpandedAnimations.getFrameRectangle(who, option.settings, option.settings.usesUniqueLeftSprite ? hair_texture.Height / 4 : hair_texture.Height / 3, 16 + option.settings.extraWidth, facingDirection);
+
+                    if (option.hasBackTexture)
+                    {
+                        float hair_back_layer = -2.25E-05f;
+                        Texture2D backHairTexture;
+                        if (option.hasHatTexture)
+                        {
+                            backHairTexture = pbe.GetHairStyleTexture(who, "back_hat");
+                        }
+                        else
+                        {
+                            backHairTexture = pbe.GetHairStyleTexture(who, "back");
+                        }
+
+                        switch (facingDirection)
+                        {
+                            case 0:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 4 + ((who.IsMale && hair_style >= 16) ? (-4) : ((!who.IsMale && hair_style < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                            case 1:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                            case 2:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                            case 3:
+                                b.Draw(backHairTexture, position + origin + ___positionOffset + offsetPosition + new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && (int)who.hair.Value >= 16) ? (-4) : ((!who.IsMale && (int)who.hair.Value < 16) ? 4 : 0))), hairstyleSourceRect, Color.White, rotation, origin, 4f * scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + hair_back_layer * (float)sort_direction);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
         public static bool pre_drawMiniPortrat(FarmerRenderer __instance, ref Texture2D ___baseTexture, SpriteBatch b, Vector2 position, float layerDepth, float scale, int facingDirection, Farmer who)
         {
             //Stick to a pixel
@@ -668,10 +1436,111 @@ namespace DynamicBodies.Patches
             //int yOffset = 0;
             int feature_y_offset = FarmerRenderer.featureYOffsetPerFrame[0];
 
-            //Draw the base
-            b.Draw(___baseTexture, position + new Vector2(0f, (who.IsMale ? 0 : -4)) * scale / 4f, new Rectangle(0, 0, 16, who.isMale ? 15 : 16), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth);
             int sort_direction = ((!Game1.isUsingBackToFrontSorting) ? 1 : (-1));
 
+            bool drawHair = true;
+            Rectangle hairstyleSourceRect = new Rectangle(0, 0, 16, 16);
+            Texture2D hair_texture = null;
+
+            if (who.hat.Value != null && who.hat.Value.hairDrawType.Value == 2) //Hat says hide any hair
+            {
+                drawHair = false;
+            }
+            if (drawHair)
+            {
+                ///////////////////////////////
+                /// Setup overlay for rendering new two tone 43
+                /// 
+                int hair_style = who.getHair(); // (ignore_hat: true);
+                HairStyleMetadata hair_metadata = Farmer.GetHairStyleMetadata(who.hair.Value);
+                if (pbe.hairStyle.option.StartsWith("Vanilla"))
+                {
+                    //Use the modData version
+                    hair_style = int.Parse(pbe.hairStyle.file);
+                    hair_metadata = Farmer.GetHairStyleMetadata(hair_style);
+                }
+
+                Vector2 offsetPosition = new Vector2(0, 0);
+
+
+                if (pbe.hairStyle.option == "Default" || pbe.hairStyle.option.StartsWith("Vanilla"))
+                {
+                    if (who != null && who.hat.Value != null && who.hat.Value.hairDrawType.Value == 1 && hair_metadata != null && hair_metadata.coveredIndex != -1)
+                    {
+                        hair_style = hair_metadata.coveredIndex;
+                        hair_metadata = Farmer.GetHairStyleMetadata(hair_style);
+                    }
+                    Rectangle hairstyleSourceOriginalRect = new Rectangle(hair_style * 16 % FarmerRenderer.hairStylesTexture.Width, hair_style * 16 / FarmerRenderer.hairStylesTexture.Width * 96, 16, 32 * 3);
+
+
+                    if (hair_metadata != null)
+                    {
+                        hairstyleSourceOriginalRect = new Rectangle(hair_metadata.tileX * 16, hair_metadata.tileY * 16, 16, 32);
+                        if (hair_metadata.usesUniqueLeftSprite)
+                        {
+                            hairstyleSourceOriginalRect.Height = 32 * 4;
+                        }
+                        hair_texture = pbe.GetHairTexture(who, hair_style, hair_metadata.texture, hairstyleSourceOriginalRect);
+                    }
+                    else
+                    {
+                        hair_texture = pbe.GetHairTexture(who, hair_style, FarmerRenderer.hairStylesTexture, hairstyleSourceOriginalRect);
+                    }
+
+                }
+                else
+                {
+
+
+                    List<string> all_hairs = ModEntry.getContentPackOptions(ModEntry.hairOptions).ToList();
+                    int current_index = all_hairs.IndexOf((who.modData.ContainsKey("DB.hairStyle")) ? who.modData["DB.hairStyle"] : "Default");
+                    ExtendedHair.ContentPackHairOption option = ModEntry.hairOptions[current_index] as ExtendedHair.ContentPackHairOption;
+
+                    string has_hat = "";
+                    if (who.hat.Value != null && who.hat.Value.hairDrawType.Value == 1)
+                    {
+                        if (option.hasHatTexture)
+                        {
+                            has_hat = "hat";
+                        }
+                        else
+                        {
+                            //TODO handle hairDrawType 0 not really obscured and hairDrawType 1 partially obscure
+                        }
+                    }
+                    offsetPosition.X -= (option.settings.extraWidth / 2f) * 4f;
+                    offsetPosition.Y = option.settings.yOffset * 4f;
+
+                    hair_texture = pbe.GetHairStyleTexture(who, has_hat);
+                    hairstyleSourceRect = ExpandedAnimations.getFrameRectangle(who, option.settings, option.settings.usesUniqueLeftSprite ? hair_texture.Height / 4 : hair_texture.Height / 3, 16 + option.settings.extraWidth, facingDirection);
+                    hairstyleSourceRect.X += (hairstyleSourceRect.Width - 16) / 2;
+                    hairstyleSourceRect.Width = 16;
+                    hairstyleSourceRect.Height = 16;
+
+                    if (option.hasBackTexture && !FarmerRenderer.isDrawingForUI)
+                    {
+                        Texture2D backHairTexture;
+                        if (option.hasHatTexture)
+                        {
+                            backHairTexture = pbe.GetHairStyleTexture(who, "back_hat");
+                        }
+                        else
+                        {
+                            backHairTexture = pbe.GetHairStyleTexture(who, "back");
+                        }
+
+                        b.Draw(backHairTexture, position + new Vector2(0f, (who.IsMale ? 0 : -4)) * scale / 4f + new Vector2(0f, feature_y_offset * 4 + ((who.IsMale && (int)who.hair >= 16) ? (-4) : ((!who.IsMale && (int)who.hair < 16) ? 4 : 0))) * scale / 4f, hairstyleSourceRect, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth - 1.1E-07f * (float)sort_direction);
+
+                    }
+                }
+
+            }
+
+
+
+            //Draw the base
+            b.Draw(___baseTexture, position + new Vector2(0f, (who.IsMale ? 0 : -4)) * scale / 4f, new Rectangle(0, 0, 16, who.isMale ? 15 : 16), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth);
+            
             //Draw the beards
             Texture2D beardTexture = null;
             if (pbe.beard.option != "Default")
@@ -711,25 +1580,14 @@ namespace DynamicBodies.Patches
             }
 
             //Draw the hair
-            int hair_style = who.getHair(ignore_hat: true);
-            HairStyleMetadata hair_metadata = Farmer.GetHairStyleMetadata(who.hair.Value);
 
-            Texture2D hair_texture;
-            Rectangle hairstyleSourceOriginalRect = new Rectangle(hair_style * 16 % FarmerRenderer.hairStylesTexture.Width, hair_style * 16 / FarmerRenderer.hairStylesTexture.Width * 96, 16, 32 * 3);
-
-            if (hair_metadata != null)
+            if (drawHair)
             {
-                hairstyleSourceOriginalRect = new Rectangle(hair_metadata.tileX * 16, hair_metadata.tileY * 16, 16, 32);
-                hair_texture = pbe.GetHairTexture(who, hair_style, hair_metadata.texture, hairstyleSourceOriginalRect);
+                if (hair_texture != null)
+                {
+                    b.Draw(hair_texture, position + new Vector2(0f, (who.IsMale ? 0 : -4)) * scale / 4f + new Vector2(0f, feature_y_offset * 4 + ((who.IsMale && (int)who.hair >= 16) ? (-4) : ((!who.IsMale && (int)who.hair < 16) ? 4 : 0))) * scale / 4f, hairstyleSourceRect, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth + 1.1E-07f * (float)sort_direction);
+                }
             }
-            else
-            {
-                hair_texture = pbe.GetHairTexture(who, hair_style, FarmerRenderer.hairStylesTexture, hairstyleSourceOriginalRect);
-            }
-            //Cached hair just has the one style, and we only need the top part of the hair (15 pixels)
-            Rectangle hairstyleSourceRect = new Rectangle(0, 0, 16, 15);
-
-            b.Draw(hair_texture, position + new Vector2(0f, (who.IsMale ? 0 : -4)) * scale / 4f + new Vector2(0f, feature_y_offset * 4 + ((who.IsMale && (int)who.hair >= 16) ? (-4) : ((!who.IsMale && (int)who.hair < 16) ? 4 : 0))) * scale / 4f, hairstyleSourceRect, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth + 1.1E-07f * (float)sort_direction);
             //prevent further rendering
             return false;
         }

@@ -13,12 +13,11 @@ namespace DaLion.Stardew.Ponds.Extensions;
 #region using directives
 
 using Common;
-using Common.Data;
 using Common.Extensions;
 using Common.Extensions.Collections;
 using Common.Extensions.Reflection;
+using Common.Extensions.Stardew;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.GameData.FishPond;
 using StardewValley.Menus;
@@ -26,27 +25,26 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
 /// <summary>Extensions for the <see cref="FishPond"/> class.</summary>
 public static class FishPondExtensions
 {
-    private static readonly Func<FishPond, FishPondData?> _GetFishPondData = typeof(FishPond).RequireField("_fishPondData")
-        .CompileUnboundFieldGetterDelegate<Func<FishPond, FishPondData?>>();
+    private static readonly Lazy<Func<FishPond, FishPondData?>> _GetFishPondData = new(() =>
+        typeof(FishPond).RequireField("_fishPondData").CompileUnboundFieldGetterDelegate<FishPond, FishPondData?>());
 
     /// <summary>Whether the instance's population has been fully unlocked.</summary>
     public static bool HasUnlockedFinalPopulationGate(this FishPond pond)
     {
-        var data = _GetFishPondData(pond);
+        var data = _GetFishPondData.Value(pond);
         return data?.PopulationGates is null ||
                pond.lastUnlockedPopulationGate.Value >= data.PopulationGates.Keys.Max();
     }
 
     /// <summary>Whether this pond is infested with algae.</summary>
     public static bool HasAlgae(this FishPond pond) =>
-        pond.fishType.Value.IsAlgae();
+        pond.fishType.Value.IsAlgaeIndex();
 
     /// <summary>Whether a radioactive fish lives in this pond.</summary>
     public static bool HasRadioactiveFish(this FishPond pond) =>
@@ -60,7 +58,7 @@ public static class FishPondExtensions
     public static int GetEnrichmentDuration(this FishPond pond, SObject metallic)
     {
         var maxPopulation = pond.HasLegendaryFish()
-            ? ModEntry.ProfessionsAPI?.GetConfigs().LegendaryPondPopulationCap ?? 12
+            ? ModEntry.ProfessionsApi?.GetConfigs().LegendaryPondPopulationCap ?? 12
             : 12;
         var populationFactor = pond.FishCount < maxPopulation / 2f
             ? 0f
@@ -82,7 +80,7 @@ public static class FishPondExtensions
     /// <param name="who">The player.</param>
     public static void RewardExp(this FishPond pond, Farmer who)
     {
-        if (ModDataIO.ReadFrom<bool>(pond, "CheckedToday")) return;
+        if (pond.Read<bool>("CheckedToday")) return;
 
         var bonus = (int)(pond.output.Value is SObject @object
             ? @object.sellToStorePrice() * FishPond.HARVEST_OUTPUT_EXP_MULTIPLIER
@@ -142,25 +140,23 @@ public static class FishPondExtensions
             catch (InvalidOperationException ex)
             {
                 Log.W($"ItemsHeld data is invalid. {ex}\nThe data will be reset");
-                ModDataIO.WriteTo(pond, "ItemsHeld", null);
+                pond.Write("ItemsHeld", null);
             }
         }
 
-        ModDataIO.WriteTo(pond, "CheckedToday", true.ToString());
+        pond.Write("CheckedToday", true.ToString());
         return true; // expected by vanilla code
     }
 
     /// <summary>Read a serialized item list from the fish pond's mod data and return a deserialized list of <see cref="SObject"/>.</summary>
     /// <param name="pond">The <see cref="FishPond"/>.</param>
     /// <param name="field">The data field.</param>
-    internal static List<Item> DeserializeObjectListData(this FishPond pond, string field)
-    {
-        return ModDataIO.ReadFrom(pond, field)
+    internal static List<Item> DeserializeObjectListData(this FishPond pond, string field) =>
+        pond.Read(field)
             .ParseList<string>(";")?
-            .Select(s => s.ParseTuple<int, int, int>())
+            .Select(s => s?.ParseTuple<int, int, int>())
             .WhereNotNull()
             .Select(t => new SObject(t.Item1, t.Item2, quality: t.Item3))
             .Cast<Item>()
             .ToList() ?? new List<Item>();
-    }
 }

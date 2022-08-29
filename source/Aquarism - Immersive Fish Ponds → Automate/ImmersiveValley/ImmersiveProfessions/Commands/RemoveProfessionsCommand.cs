@@ -16,8 +16,6 @@ using Common;
 using Common.Commands;
 using Common.Extensions;
 using Framework;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -34,7 +32,7 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "remove_professions";
+    public override string[] Triggers { get; } = { "remove_professions", "remove_profs", "remove" };
 
     /// <inheritdoc />
     public override string Documentation =>
@@ -84,7 +82,7 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
             }
             else
             {
-                var customProfession = ModEntry.CustomProfessions.Values.SingleOrDefault(p =>
+                var customProfession = ModEntry.CustomProfessions.Values.FirstOrDefault(p =>
                     string.Equals(arg, p.StringId.TrimAll(), StringComparison.InvariantCultureIgnoreCase) ||
                     string.Equals(arg, p.GetDisplayName().TrimAll(), StringComparison.InvariantCultureIgnoreCase));
                 if (customProfession is null)
@@ -105,13 +103,13 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
 
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {Handler.EntryCommand} {Trigger} [--prestige] <profession1> <profession2> ... <professionN>";
+        var result = $"\n\nUsage: {Handler.EntryCommand} {Triggers.First()} [--prestige] <profession1> <profession2> ... <professionN>";
         result += "\n\nParameters:";
         result +=
             "\n\t- <profession>\t- a valid profession name, `all` or `unknown`. Use `unknown` to remove rogue professions from uninstalled custom skill mods.";
         result += "\n\nExamples:";
-        result += $"\n\t- {Handler.EntryCommand} {Trigger} artisan brute";
-        result += $"\n\t- {Handler.EntryCommand} {Trigger} -p all";
+        result += $"\n\t- {Handler.EntryCommand} {Triggers.First()} artisan brute";
+        result += $"\n\t- {Handler.EntryCommand} {Triggers.First()} -p all";
         return result;
     }
 }

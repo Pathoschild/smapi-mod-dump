@@ -1,0 +1,12 @@
+{
+  "EntryDll": "SmartCursor.dll",
+  "Name": "Smart Cursor",
+  "Author": "DecidedlyHuman",
+  "Version": "1.0.0",
+  "Description": "Mine like you're in Terraria using the smart cursor feature.",
+  "UniqueID": "DecidedlyHuman.SmartCursor",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [
+    "Nexus:13268"
+  ]
+}

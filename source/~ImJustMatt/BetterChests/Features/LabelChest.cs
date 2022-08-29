@@ -11,11 +11,9 @@
 namespace StardewMods.BetterChests.Features;
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewMods.BetterChests.Helpers;
-using StardewMods.Common.Enums;
-using StardewValley;
+using StardewMods.Common.Helpers;
 using StardewValley.Menus;
 
 /// <summary>
@@ -23,16 +21,16 @@ using StardewValley.Menus;
 /// </summary>
 internal class LabelChest : IFeature
 {
+    private static LabelChest? Instance;
+
+    private readonly IModHelper _helper;
+
+    private bool _isActivated;
+
     private LabelChest(IModHelper helper)
     {
-        this.Helper = helper;
+        this._helper = helper;
     }
-
-    private static LabelChest? Instance { get; set; }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
 
     /// <summary>
     ///     Initializes <see cref="LabelChest" />.
@@ -47,55 +45,62 @@ internal class LabelChest : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            this.Helper.Events.Display.RenderedActiveMenu += LabelChest.OnRenderedActiveMenu;
-            this.Helper.Events.Display.RenderedHud += this.OnRenderedHud;
+            return;
         }
+
+        this._isActivated = true;
+        this._helper.Events.Display.RenderedActiveMenu += LabelChest.OnRenderedActiveMenu;
+        this._helper.Events.Display.RenderedHud += LabelChest.OnRenderedHud;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            this.Helper.Events.Display.RenderedActiveMenu -= LabelChest.OnRenderedActiveMenu;
-            this.Helper.Events.Display.RenderedHud -= this.OnRenderedHud;
+            return;
         }
+
+        this._isActivated = false;
+        this._helper.Events.Display.RenderedActiveMenu -= LabelChest.OnRenderedActiveMenu;
+        this._helper.Events.Display.RenderedHud -= LabelChest.OnRenderedHud;
     }
 
     private static void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
     {
-        if (Game1.activeClickableMenu is not ItemGrabMenu { context: { } context } itemGrabMenu
-            || !StorageHelper.TryGetOne(context, out var storage)
-            || string.IsNullOrWhiteSpace(storage.ChestLabel))
+        if (Game1.activeClickableMenu is not ItemGrabMenu itemGrabMenu
+         || string.IsNullOrWhiteSpace(BetterItemGrabMenu.Context?.ChestLabel))
         {
             return;
         }
+
+        var bounds = Game1.smallFont.MeasureString(BetterItemGrabMenu.Context.ChestLabel).ToPoint();
 
         IClickableMenu.drawHoverText(
             e.SpriteBatch,
-            storage.ChestLabel,
+            BetterItemGrabMenu.Context.ChestLabel,
             Game1.smallFont,
-            overrideX: itemGrabMenu.xPositionOnScreen,
-            overrideY: itemGrabMenu.yPositionOnScreen - IClickableMenu.spaceToClearSideBorder - Game1.tileSize - (storage.SearchItems is not FeatureOption.Disabled ? 14 * Game1.pixelZoom : 0));
+            overrideX: itemGrabMenu.xPositionOnScreen - bounds.X - IClickableMenu.borderWidth,
+            overrideY: itemGrabMenu.yPositionOnScreen
+                     - IClickableMenu.borderWidth
+                     - BetterItemGrabMenu.TopPadding
+                     - Game1.tileSize);
     }
 
-    private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
+    private static void OnRenderedHud(object? sender, RenderedHudEventArgs e)
     {
-        if (!Context.IsPlayerFree || !(this.Helper.Input.IsDown(SButton.LeftShift) || this.Helper.Input.IsDown(SButton.RightShift)))
+        if (!Context.IsPlayerFree)
         {
             return;
         }
 
-        var pos = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y) / Game1.tileSize;
-
-        // Object exists at pos, is within reach of player, and is a Chest
-        pos.X = (int)pos.X;
-        pos.Y = (int)pos.Y;
-        if (!Game1.currentLocation.Objects.TryGetValue(pos, out var obj) || !StorageHelper.TryGetOne(obj, out var storage) || string.IsNullOrWhiteSpace(storage.ChestLabel))
+        var pos = CommonHelpers.GetCursorTile();
+        if ((!Game1.currentLocation.Objects.TryGetValue(pos, out var obj)
+          && !Game1.currentLocation.Objects.TryGetValue(pos - new Vector2(0, -1), out obj))
+         || !Storages.TryGetOne(obj, out var storage)
+         || string.IsNullOrWhiteSpace(storage.ChestLabel))
         {
             return;
         }

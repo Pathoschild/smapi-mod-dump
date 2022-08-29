@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Rings.Framework.Patches;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Objects;
 
 #endregion using directives

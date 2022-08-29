@@ -32,6 +32,23 @@
 	"config.ReplacerCompat.name": "Değiştirici \n uyumluluğu",
 	"config.ReplacerCompat.description": "NPC ikameleriyle uyumluluk için bunu açın.",
 
+	//new content
+	"config.AskForConfirmation.name": "Onay iste?
+",
+	"config.AskForConfirmation.description": "NPC'lerin (bir soru diyaloğu aracılığıyla) giriş iznine ihtiyacı olacaktır.
+",
+	"config.RejectionDialogues.name": "reddetme diyalogları
+",
+	"config.RejectionDialogues.description": "Reddedilirse, NPC'ler bunun hakkında yorum yapacaktır.
+",
+	"config.ReceiveGifts.name": "Hediye almak?
+",
+	"config.ReceiveGifts.description": "Etkinleştirilirse, ziyaretler size bir hediye getirir
+.",
+	"Visit.AllowOrNot": "{0} Kapıda. Açacak mısın?",
+	"Visit.Yes": "Evet",
+	"Visit.No": "Hayır",
+
 	/* TN: command errors */
 	"error.WorldNotReady":"Bu komutu kullanmak için bir kaydetme yüklemeniz gerekiyor.",
 	"error.InvalidValue":"geçersiz değer.",
@@ -42,6 +59,65 @@
 	"NotInSave": "NPC şu anda kayıtlı değil (onların kilidini açmadınız mı?)",
 	"CantBe2600":"Ziyaret 2600 'de bitemez.",
 	"CantBe600":"Ziyaret 600 'de başlayamaz.",
+
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "Ops. başka bir gün geleceğim
+.",
+	"NPCRejected.Outgoing2": "Evde kimse yok mu?"
+,
+	"NPCRejected.Outgoing3": "Sessizlik...#$b#Pekala, bu çok kötü.
+$1",
+	"NPCRejected.Shy1": "Belki evde kimse yoktur.
+..",
+	"NPCRejected.Shy2": "Orada mısın?#$b#...Belki yanlış zamanda geldim?
+",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "yanlış bir zamanda gelmiş olmalıyım
+.",
+	"NPCRejected.Polite2": "...#$b#Umarım @ iyidir.
+",
+	"NPCRejected.Polite3": "...Görünüşe göre bu saatte evde kimse yok.
+",
+	"NPCRejected.Neutral1": "tak tak...#$b#Pekala, gitmem gerekecek.
+",
+	"NPCRejected.Neutral2": "Hmm?#$b#Yemin ederim @ evde sanıyordum.
+",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "Ve @ burada değil mi...?#$b#Lanet olsun. Sadece benim şansım
+.$2",
+	"NPCRejected.Rude2": "Hey, anyone?",
+	"NPCRejected.Rude3": "Ah, hadi ama. Evde kimse yok mu..?
+$2",
+
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "Teşekkürler. Dışarıda hava gerçekten çok sertti.
+",
+	"NPCThanking.Outgoing2": "Evin son geldiğimden farklı görünüyor.#$b#Bir şeyi değiştirdin mi?
+",
+	"NPCThanking.Outgoing3": "%farm çiftliği çok iş gibi görünüyor."
+,
+	"NPCThanking.Shy1": "Umarım araya girmiyorumdur.",
+	"NPCThanking.Shy2": "Beni içeri aldığın için teşekkürler.",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "Buradaki yürüyüş gerçekten güzeldi.",
+	"NPCThanking.Polite2": "Davetsiz geldiğim için özür dilerim.
+",
+	"NPCThanking.Polite3": "Teşekkürler, @.",
+	"NPCThanking.Neutral1": "Peki, sürpriz ziyaretleri sever misin?
+",
+	"NPCThanking.Neutral2": "Dışarıdan çiftliğin iyi görünüyordu.
+",
+	"NPCThanking.Neutral3": "bu yeri sevdim
+.",
+	"NPCThanking.Rude1": "Evet, daha çok benziyor.
+",
+	"NPCThanking.Rude2": "Harika... ayaklarım ağrımaya başladı.
+",
+	"NPCThanking.Rude3": "Burada yürümek çok uzun sürdü.",
 
 	/* TN: introduction */
 	//by social anxiety
@@ -83,22 +159,45 @@
 
 	/* TN: greeting player */
 	//by social anxiety
-	"NPCGreet.Outgoing1": "Hey. Nasıl gidiyor? Bir uğrayıp seni ziyaret edeyim dedim.$1#$b#Sana bir hediye getirdim.[{0}]",
-	"NPCGreet.Outgoing2": "Merhaba. Çiftliğin nasıl gidiyor? Gelip kendim kontrol edeyim dedim.$1#$b#Sana bir hediye getirdim.[{0}]",
-	"NPCGreet.Outgoing3": "Merhaba! Seni bir süredir görmedim.$1#$b#İşte, sana bir hediye getirdim.[{0}]",
-	"NPCGreet.Shy1": "Merhaba, @. Nasılsın?#$b#Görünüşe göre %farm çiftliği büyüyor.#$b#Sana bir hediye getirdim.[{0}]",
-	"NPCGreet.Shy2": "Merhaba @.#$b#Geçiyordum ve ziyaret etmeye karar verdim.#$b#Sana bir hediye getirdim.[{0}]",
-	"NPCGreet.Shy3": "Hey, @. Seni görmek güzel.#$b#Nasıl olduğunu merak ediyordum.#$b#Zahmetler için sana bir hediye getirdim.[{0}]",
+	"NPCGreet.Outgoing1": "Hey. Nasıl gidiyor? Bir uğrayıp seni ziyaret edeyim dedim.$1",
+	"NPCGreet.Outgoing2": "Merhaba. Çiftliğin nasıl gidiyor? Gelip kendim kontrol edeyim dedim.$1",
+	"NPCGreet.Outgoing3": "Merhaba! Seni bir süredir görmedim.$1",
+	"NPCGreet.Shy1": "Merhaba, @. Nasılsın?#$b#Görünüşe göre %farm çiftliği büyüyor.",
+	"NPCGreet.Shy2": "Merhaba @.#$b#Geçiyordum ve ziyaret etmeye karar verdim.",
+	"NPCGreet.Shy3": "Hey, @. Seni görmek güzel.#$b#Nasıl olduğunu merak ediyordum.",
 	//by manners
-	"NPCGreet.Polite1": "@, Davetsiz geldiğim için üzgünüm. Seni kontrol etmek istedim.#$b#Ve sıkıntılar için sana bir şey getirdim. [{0}]",
-	"NPCGreet.Polite2": "Greetings. I'm glad to see you, @.#$b#Here, i brought you something for the troubles. [{0}]",
-	"NPCGreet.Polite3": "Özür dilerim... umarım hiçbir şeyi bölmüyorumdur.$1#$b#Zahmetlerim için sana bir şey getirdim. [{0}]",
-	"NPCGreet.Neutral1": "I'm going to walk in...hi, @.#$b#Here, i thought of you when i saw this.[{0}]",
-	"NPCGreet.Neutral2": "Hey, i was passing by and heard noise...#$b#Had to come check just to be safe, hehe.$1#$b#I thought of you when i saw this.[{0}]",
-	"NPCGreet.Neutral3": "Merhaba, @. Seni görmek ne güzel.#$b#Sana sürpriz bir ziyaret yapmaya karar verdim.#$b#Bunu görünce aklıma geldin. [{0}]",
-	"NPCGreet.Rude1": "Hey, @! Beni özledin mi?#$b#Bak, sana bir şey aldım.[{0}]",
-	"NPCGreet.Rude2": "Merhaba, @.#$b#Gelirken sana bir şey getirdim.[{0}]",
-	"NPCGreet.Rude3": "Hey, geçiyordum ve içeride olduğunu gördüm...geçmek istedim.#$b#Sana bir şey aldım, al.[{0}]",
+	"NPCGreet.Polite1": "@, Davetsiz geldiğim için üzgünüm. Seni kontrol etmek istedim.",
+	"NPCGreet.Polite2": "Greetings. I'm glad to see you, @.",
+	"NPCGreet.Polite3": "Özür dilerim... umarım hiçbir şeyi bölmüyorumdur.$1",
+	"NPCGreet.Neutral1": "I'm going to walk in...hi, @.",
+	"NPCGreet.Neutral2": "Hey, i was passing by and heard noise...#$b#Had to come check just to be safe, hehe.$1",
+	"NPCGreet.Neutral3": "Merhaba, @. Seni görmek ne güzel.#$b#Sana sürpriz bir ziyaret yapmaya karar verdim.",
+	"NPCGreet.Rude1": "Hey, @! Beni özledin mi?",
+	"NPCGreet.Rude2": "Merhaba, @.",
+	"NPCGreet.Rude3": "Hey, geçiyordum ve içeride olduğunu gördüm...geçmek istedim.",
+
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key. (and some new ones)
+	 * I moved them on my own, but translators can make any changes they deem necessary. */
+	"NPCGift.Normal1": "Sana bir hediye getirdim.[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "İşte, sana bir hediye getirdim.[{0}]", //outgoing3
+	"NPCGift.Normal3": "Zahmetler için sana bir hediye getirdim.[{0}]", //shy3
+	"NPCGift.Normal4": "İşte, bunu gördüğümde aklıma sen geldin.
+[{0}]", //neutral1
+	"NPCGift.Normal5": "Hey, bu bir 'sen' eşyası gibi görünüyordu. Bu yüzden senin için aldım.
+ [{0}]", //original
+	"NPCGift.Kind1": "Ve sıkıntılar için sana bir şey getirdim. [{0}]", //polite1
+	"NPCGift.Kind2": "İşte, sana dertlerin için bir şey getirdim. [{0}]"
+, //polite2
+	"NPCGift.Kind3": "Zahmetlerim için sana bir şey getirdim. [{0}]", //polite3
+	"NPCGift.Kind4": "Bunu görünce aklıma geldin. [{0}]", //neutral2
+	"NPCGift.Kind5": "Bu hoşuna gidecek bir şey gibi görünüyordu.[{0}]"
+, //original
+	"NPCGift.Lax1": "Hey, bunu al.[{0}]", //original
+	"NPCGift.Lax2": "Bak, sana bir şey aldım.[{0}]", //rude1
+	"NPCGift.Lax3": "Sana bir şey aldım, al.[{0}]", //rude3
+	"NPCGift.Lax4": "Here. I had some spares around. [{0}]", //original
+	"NPCGift.Lax5": "Gelirken sana bir şey getirdim.[{0}]", //rude2
 
 	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
 	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
@@ -195,13 +294,28 @@
 	
 	/* TN: leaving */
 	//by social
-	"NPCRetiring.Outgoing": "Eğlenceliydi ama gitmem gerek. Sonra görüşürüz!",
-	"NPCRetiring.Shy": "Geç oluyor...Şimdi gideceğim. Seni görmek güzeldi.",
-	"NPCRetiring.Polite": "@, gitmem gerekecek...bazı şeyler yapmam gerek.#$b#Seni gördüğüme sevindim!$1",
-	"NPCRetiring.Neutral": "Hey, saate bak... bir süre önce ayrılmalıydım.#$b#Başka bir gün görüşürüz!$1",
-	"NPCRetiring.Rude": "Gideceğim...seni meşgul ediyor olmalıyım.#$b#Sonra görüşürüz.",
+	"NPCRetiring.Outgoing1": "Eğlenceliydi ama gitmem gerek. Sonra görüşürüz!",
+	"NPCRetiring.Outgoing2": "Uzun zaman oldu, o yüzden gidiyorum.",
+	"NPCRetiring.Outgoing3": "Sonra görüşürüz, @.",
+	"NPCRetiring.Shy1": "Geç oluyor...Şimdi gideceğim. Seni görmek güzeldi.",
+	"NPCRetiring.Shy2": "Yapacak işlerim var ama eğlendim.#$b#Teşekkürler, @.$1",
+	"NPCRetiring.Shy3": "Afedersin, @. Şimdi gitmem gerekiyor.#$b#Zaman ayırdığın için teşekkürler.",
+	//by manners
+	"NPCRetiring.Polite1": "@, gitmem gerekecek...bazı şeyler yapmam gerek.#$b#Seni gördüğüme sevindim!$1",
+	"NPCRetiring.Polite2": "Bir süredir buradayım...müsadenle gideceğim.#$b#Bir dahaki sefere görüşürüz, @.",
+	"NPCRetiring.Polite3": "@, seni görmek eğlenceliydi.#$b#Umarım günün güzel geçer.
+",
+	"NPCRetiring.Neutral1": "Hey, saate bak... bir süre önce ayrılmalıydım.#$b#Başka bir gün görüşürüz!$1",
+	"NPCRetiring.Neutral2": "Dışarısı hava kararmadan gideyim.#$b#Görüşürüz, @.
+",
+	"NPCRetiring.Neutral3": "Yapacak işlerin olmalı, o yüzden bana müsade.#$b#Eğlendim.
+$1",
+	"NPCRetiring.Rude1": "Gideceğim...seni meşgul ediyor olmalıyım.#$b#Sonra görüşürüz.",
+	"NPCRetiring.Rude2": "Çok uzun zamandır buradayım... gidiyorum.#$b#Görüşürüz, @.
+",
+	"NPCRetiring.Rude3": "Zaten oldukça geç oldu. Başka bir gün görüşürüz.",
 
 	/* TN: gone while outside */
-	"NPCGoneWhileOutside": "Sen dışarıdayken, {0} izin aldı.",
+	"NPCGoneWhileOutside": "Sen dışarıdayken, {0} müsade istedi.",
 	"NPCGone_Cellar": "Siz mahzendeyken, {0} ayrıldı."
 }

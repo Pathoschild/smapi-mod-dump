@@ -25,7 +25,7 @@ namespace Shockah.ProjectFluent
 		IEnumerable<string> GetI18nDirectories(IManifest mod);
 	}
 
-	internal class SerialI18nDirectoryProvider: II18nDirectoryProvider
+	internal class SerialI18nDirectoryProvider : II18nDirectoryProvider
 	{
 		public event Action<II18nDirectoryProvider>? DirectoriesChanged;
 
@@ -51,7 +51,7 @@ namespace Shockah.ProjectFluent
 			=> DirectoriesChanged?.Invoke(this);
 	}
 
-	internal class ContentPackI18nDirectoryProvider: II18nDirectoryProvider, IDisposable
+	internal class ContentPackI18nDirectoryProvider : II18nDirectoryProvider, IDisposable
 	{
 		public event Action<II18nDirectoryProvider>? DirectoriesChanged;
 

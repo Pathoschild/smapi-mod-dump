@@ -12,14 +12,13 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
+using Common.Attributes;
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, DebugOnly]
 internal sealed class DebugUpdateTickedEvent : UpdateTickedEvent
 {
     /// <summary>Construct an instance.</summary>

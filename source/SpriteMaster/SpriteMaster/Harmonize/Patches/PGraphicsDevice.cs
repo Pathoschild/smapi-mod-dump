@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using static SpriteMaster.Harmonize.Harmonize;
 
@@ -47,43 +46,33 @@ internal static class PGraphicsDevice {
 	#region OnPlatformDrawUserIndexedPrimitives
 
 	[Harmonize(
-		"PlatformDrawUserIndexedPrimitives",
+		"DrawUserIndexedPrimitives",
 		Fixation.Prefix,
 		PriorityLevel.Last,
 		generic: Generic.Struct
 	)]
-	public static bool OnPlatformDrawUserIndexedPrimitives(
+	public static unsafe bool OnDrawUserIndexedPrimitives<T>(
 		GraphicsDevice __instance,
 		PrimitiveType primitiveType,
-		Array vertexData,
+		T[] vertexData,
 		int vertexOffset,
 		int numVertices,
 		short[] indexData,
 		int indexOffset,
 		int primitiveCount,
 		VertexDeclaration vertexDeclaration
-	) {
-		return true;
-	}
-
-	[Harmonize(
-		"PlatformDrawUserIndexedPrimitives",
-		Fixation.Prefix,
-		PriorityLevel.Last,
-		generic: Generic.Struct
-	)]
-	public static bool OnPlatformDrawUserIndexedPrimitives(
-		GraphicsDevice __instance,
-		PrimitiveType primitiveType,
-		Array vertexData,
-		int vertexOffset,
-		int numVertices,
-		int[] indexData,
-		int indexOffset,
-		int primitiveCount,
-		VertexDeclaration vertexDeclaration
-	) {
-		return true;
+	) where T : unmanaged {
+		return !GL.GraphicsDeviceExt.DrawUserIndexedPrimitives(
+			__instance,
+			primitiveType,
+			vertexData,
+			vertexOffset,
+			numVertices,
+			indexData,
+			indexOffset,
+			primitiveCount,
+			vertexDeclaration
+		);
 	}
 
 	[Harmonize(
@@ -92,39 +81,31 @@ internal static class PGraphicsDevice {
 		PriorityLevel.Last,
 		generic: Generic.Struct
 	)]
-	public static bool OnDrawUserIndexedPrimitives(
+	public static unsafe bool OnDrawUserIndexedPrimitives<T>(
 		GraphicsDevice __instance,
 		PrimitiveType primitiveType,
-		Array vertexData,
-		int vertexOffset,
-		int numVertices,
-		short[] indexData,
-		int indexOffset,
-		int primitiveCount,
-		VertexDeclaration vertexDeclaration
-	) {
-		return true;
-	}
-
-	[Harmonize(
-		"DrawUserIndexedPrimitives",
-		Fixation.Prefix,
-		PriorityLevel.Last,
-		generic: Generic.Struct
-	)]
-	public static bool OnDrawUserIndexedPrimitives(
-		GraphicsDevice __instance,
-		PrimitiveType primitiveType,
-		Array vertexData,
+		T[] vertexData,
 		int vertexOffset,
 		int numVertices,
 		int[] indexData,
 		int indexOffset,
 		int primitiveCount,
 		VertexDeclaration vertexDeclaration
-	) {
-		return true;
+	) where T : unmanaged {
+		return !GL.GraphicsDeviceExt.DrawUserIndexedPrimitives(
+			__instance,
+			primitiveType,
+			vertexData,
+			vertexOffset,
+			numVertices,
+			indexData,
+			indexOffset,
+			primitiveCount,
+			vertexDeclaration
+		);
 	}
+
+	
 
 	#endregion
 }

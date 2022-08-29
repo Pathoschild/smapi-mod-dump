@@ -178,9 +178,11 @@ namespace stardew_access
             //handle TileCursor update logic
             TileViewerFeature.update();
 
-            WarningsFeature.update();
+            if (Config.Warning)
+                WarningsFeature.update();
 
-            ReadTileFeature.update();
+            if (Config.ReadTile)
+                ReadTileFeature.update();
 
             if (!RadarFeature.isRunning && Config.Radar)
             {
@@ -299,7 +301,15 @@ namespace stardew_access
             // Narrate health and stamina
             if (Config.HealthNStaminaKey.JustPressed())
             {
-                string toSpeak = $"Health is {CurrentPlayer.Health} and Stamina is {CurrentPlayer.Stamina}";
+                if (ModHelper == null)
+                    return;
+
+                string toSpeak;
+                if (Config.HealthNStaminaInPercentage)
+                    toSpeak = ModHelper.Translation.Get("manuallytriggered.healthnstamina.percent", new { health = CurrentPlayer.PercentHealth, stamina = CurrentPlayer.PercentStamina });
+                else
+                    toSpeak = ModHelper.Translation.Get("manuallytriggered.healthnstamina.normal", new { health = CurrentPlayer.CurrentHealth, stamina = CurrentPlayer.CurrentStamina });
+
                 MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }

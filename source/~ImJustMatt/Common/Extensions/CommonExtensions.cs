@@ -18,6 +18,26 @@ using StardewMods.Common.Models;
 /// <summary>Common extension methods.</summary>
 internal static class CommonExtensions
 {
+    public static void InvokeAll<T>(this EventHandler<T>? eventHandler, object source, T param)
+    {
+        if (eventHandler is null)
+        {
+            return;
+        }
+
+        foreach (var handler in eventHandler.GetInvocationList())
+        {
+            try
+            {
+                handler.DynamicInvoke(source, param);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+    }
+
     /// <summary>
     ///     Maps a float value from one range to the same proportional value in another integer range.
     /// </summary>
@@ -27,7 +47,10 @@ internal static class CommonExtensions
     /// <returns>The integer value.</returns>
     public static int Remap(this float value, Range<float> sourceRange, Range<int> targetRange)
     {
-        return targetRange.Clamp((int)(targetRange.Minimum + (targetRange.Maximum - targetRange.Minimum) * ((value - sourceRange.Minimum) / (sourceRange.Maximum - sourceRange.Minimum))));
+        return targetRange.Clamp(
+            (int)(targetRange.Minimum
+                + (targetRange.Maximum - targetRange.Minimum)
+                * ((value - sourceRange.Minimum) / (sourceRange.Maximum - sourceRange.Minimum))));
     }
 
     /// <summary>
@@ -39,7 +62,10 @@ internal static class CommonExtensions
     /// <returns>The float value.</returns>
     public static float Remap(this int value, Range<int> sourceRange, Range<float> targetRange)
     {
-        return targetRange.Clamp(targetRange.Minimum + (targetRange.Maximum - targetRange.Minimum) * ((float)(value - sourceRange.Minimum) / (sourceRange.Maximum - sourceRange.Minimum)));
+        return targetRange.Clamp(
+            targetRange.Minimum
+          + (targetRange.Maximum - targetRange.Minimum)
+          * ((float)(value - sourceRange.Minimum) / (sourceRange.Maximum - sourceRange.Minimum)));
     }
 
     /// <summary>Rounds an int up to the next int by an interval.</summary>

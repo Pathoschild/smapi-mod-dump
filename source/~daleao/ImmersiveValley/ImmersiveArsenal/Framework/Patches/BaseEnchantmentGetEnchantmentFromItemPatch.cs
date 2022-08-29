@@ -16,8 +16,6 @@ using Common;
 using Common.Harmony;
 using Enchantments;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -84,13 +82,21 @@ internal sealed class BaseEnchantmentGetEnchantmentFromItemPatch : Common.Harmon
         return helper.Flush();
     }
 
-    /// <summary>Get infinity enchantment from hero soul.</summary>
+    /// <summary>Get garnet enchantment + infinity enchantment from hero soul.</summary>
     [HarmonyPostfix]
-    private static void BaseEnchantmentGetEnchantmentFromItemPostfix(ref BaseEnchantment __result, Item base_item, Item item)
+    private static void BaseEnchantmentGetEnchantmentFromItemPostfix(ref BaseEnchantment __result, Item base_item,
+        Item item)
     {
-        if (base_item is MeleeWeapon weapon && weapon.isGalaxyWeapon() &&
-            weapon.GetEnchantmentLevel<GalaxySoulEnchantment>() >= 3 &&
-            item.Name == "Hero Soul") __result = new InfinityEnchantment();
+        if (item is SObject {bigCraftable.Value: false, Name: "Garnet"})
+        {
+            __result = new GarnetEnchantment();
+        }
+        else if (base_item is MeleeWeapon weapon && weapon.isGalaxyWeapon() &&
+                 weapon.GetEnchantmentLevel<GalaxySoulEnchantment>() >= 3 &&
+                 item is SObject { bigCraftable.Value: false, Name: "Hero Soul" })
+        {
+            __result = new InfinityEnchantment();
+        }
     }
 
     #endregion harmony patches

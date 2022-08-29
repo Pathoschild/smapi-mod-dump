@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -185,6 +186,18 @@ namespace GetGlam.Framework.Menus
         {
             base.performHoverAction(x, y);
             MenuComponents.OnHover(x, y);
+        }
+
+        /// <summary>
+        /// Restores Snapshot If Menu Was Closed.
+        /// </summary>
+        /// <param name="key"></param>
+        public override void receiveKeyPress(Keys key)
+        {
+            if (Game1.options.doesInputListContain(Game1.options.menuButton, key))
+                RestoreSnapshot();
+
+            base.receiveKeyPress(key);
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
 ﻿{
     "Name": "walkthroughtrellis",
     "Author": "theofficialtab",
-    "Version": "1.0.6",
+    "Version": "1.0.7",
     "Description": "This mod allows you to walk through crops with Trellises",
     "UniqueID": "theofficialtab.walkthroughtrellis",
     "EntryDll": "walkthroughtrellis.dll",
-    "MinimumApiVersion": "3.8.3",
+    "MinimumApiVersion": "3.16.0",
     "UpdateKeys": ["Nexus:1958"]
 }

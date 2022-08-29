@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 
 #endregion using directives

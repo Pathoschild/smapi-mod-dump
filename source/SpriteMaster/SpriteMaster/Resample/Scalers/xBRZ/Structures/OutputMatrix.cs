@@ -50,7 +50,7 @@ internal ref struct OutputMatrix {
 		return Index + rot.J + rot.I * Width;
 	}
 
-	internal readonly ref Color16 this[int i, int j] => ref OutSpan.At(GetIndex(i, j));
+	internal readonly ref Color16 this[int i, int j] => ref OutSpan[GetIndex(i, j)];
 
 	//calculate input matrix coordinates after rotation at program startup
 	private static readonly FixedArray<IntPair> MatrixRotation = new((MaxScale - 1) * MaxScaleSquared * Rotator.MaxRotations);

@@ -15,9 +15,6 @@ namespace DaLion.Stardew.Professions.Commands;
 using Common;
 using Common.Commands;
 using Framework;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 using System.Linq;
 
 #endregion using directives
@@ -31,7 +28,7 @@ internal sealed class MaxAnimalMoodCommand : ConsoleCommand
         : base(handler) { }
 
     /// <inheritdoc />
-    public override string Trigger => "max_animal_mood";
+    public override string[] Triggers { get; } = { "max_animal_mood", "max_mood", "happy_animals", "happy" };
 
     /// <inheritdoc />
     public override string Documentation => $"Max-out the mood of all owned animals. Relevant for {Profession.Producer}s.";

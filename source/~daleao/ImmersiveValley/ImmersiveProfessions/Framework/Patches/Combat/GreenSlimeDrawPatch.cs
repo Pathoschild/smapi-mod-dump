@@ -13,12 +13,12 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 #region using directives
 
 using DaLion.Common;
+using DaLion.Common.Attributes;
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -27,13 +27,13 @@ using System.Reflection.Emit;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, Deprecated]
 internal sealed class GreenSlimeDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.<w/ summary>
     internal GreenSlimeDrawPatch()
     {
-        //Target = RequireMethod<GreenSlime>(nameof(GreenSlime.draw), new[] {typeof(SpriteBatch)});
+        Target = RequireMethod<GreenSlime>(nameof(GreenSlime.draw), new[] { typeof(SpriteBatch) });
     }
 
     #region harmony patches

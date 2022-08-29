@@ -10,10 +10,8 @@
 
 namespace StardewMods.BetterChests.Features;
 
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewMods.BetterChests.Helpers;
 using StardewMods.Common.Enums;
@@ -21,7 +19,6 @@ using StardewMods.Common.Helpers;
 using StardewMods.CommonHarmony.Enums;
 using StardewMods.CommonHarmony.Helpers;
 using StardewMods.CommonHarmony.Models;
-using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -32,9 +29,15 @@ internal class FilterItems : IFeature
 {
     private const string Id = "furyx639.BetterChests/FilterItems";
 
+    private static FilterItems? Instance;
+
+    private readonly IModHelper _helper;
+
+    private bool _isActivated;
+
     private FilterItems(IModHelper helper)
     {
-        this.Helper = helper;
+        this._helper = helper;
         HarmonyHelper.AddPatches(
             FilterItems.Id,
             new SavedPatch[]
@@ -46,27 +49,25 @@ internal class FilterItems : IFeature
                     PatchType.Prefix),
             });
 
-        if (IntegrationHelper.Automate.IsLoaded)
+        if (!Integrations.Automate.IsLoaded)
         {
-            var storeMethod = ReflectionHelper.GetAssemblyByName("Automate")?
-                .GetType("Pathoschild.Stardew.Automate.Framework.Storage.ChestContainer")?
-                .GetMethod("Store", BindingFlags.Public | BindingFlags.Instance);
-            if (storeMethod is not null)
-            {
-                HarmonyHelper.AddPatch(
-                    FilterItems.Id,
-                    storeMethod,
-                    typeof(FilterItems),
-                    nameof(FilterItems.Automate_Store_prefix));
-            }
+            return;
+        }
+
+        var storeMethod = ReflectionHelper.GetAssemblyByName("Automate")
+                                          ?.GetType("Pathoschild.Stardew.Automate.Framework.Storage.ChestContainer")
+                                          ?.GetMethod("Store", BindingFlags.Public | BindingFlags.Instance);
+        if (storeMethod is not null)
+        {
+            HarmonyHelper.AddPatch(
+                FilterItems.Id,
+                storeMethod,
+                typeof(FilterItems),
+                nameof(FilterItems.Automate_Store_prefix));
         }
     }
 
-    private static FilterItems? Instance { get; set; }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
+    private static IReflectionHelper Reflection => FilterItems.Instance!._helper.Reflection;
 
     /// <summary>
     ///     Initializes <see cref="FilterItems" />.
@@ -81,41 +82,45 @@ internal class FilterItems : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            HarmonyHelper.ApplyPatches(FilterItems.Id);
-            this.Helper.Events.Display.MenuChanged += FilterItems.OnMenuChanged;
+            return;
         }
+
+        this._isActivated = true;
+        HarmonyHelper.ApplyPatches(FilterItems.Id);
+        this._helper.Events.Display.MenuChanged += FilterItems.OnMenuChanged;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            HarmonyHelper.UnapplyPatches(FilterItems.Id);
-            this.Helper.Events.Display.MenuChanged -= FilterItems.OnMenuChanged;
+            return;
         }
+
+        this._isActivated = false;
+        HarmonyHelper.UnapplyPatches(FilterItems.Id);
+        this._helper.Events.Display.MenuChanged -= FilterItems.OnMenuChanged;
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
-    [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Naming is determined by Harmony.")]
+    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
+    [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Harmony")]
+    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
     private static bool Automate_Store_prefix(object stack, Chest ___Chest)
     {
-        var item = FilterItems.Instance!.Helper.Reflection.GetProperty<Item>(stack, "Sample").GetValue();
-        return !StorageHelper.TryGetOne(___Chest, out var storage) || storage.FilterMatches(item);
+        var item = FilterItems.Reflection.GetProperty<Item>(stack, "Sample").GetValue();
+        return !Storages.TryGetOne(___Chest, out var storage) || storage.FilterMatches(item);
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
-    [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Naming is determined by Harmony.")]
+    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Harmony")]
+    [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Harmony")]
+    [SuppressMessage("StyleCop", "SA1313", Justification = "Harmony")]
     [HarmonyPriority(Priority.High)]
     private static bool Chest_addItem_prefix(Chest __instance, ref Item __result, Item item)
     {
-        if (!StorageHelper.TryGetOne(__instance, out var storage) || storage.FilterMatches(item))
+        if (!Storages.TryGetOne(__instance, out var storage) || storage.FilterMatches(item))
         {
             return true;
         }
@@ -126,16 +131,14 @@ internal class FilterItems : IFeature
 
     private static void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
-        if (e.NewMenu is not ItemGrabMenu { context: { } context }
-            || !StorageHelper.TryGetOne(context, out var storage)
-            || storage.FilterItems == FeatureOption.Disabled)
+        if (e.NewMenu is not ItemGrabMenu || BetterItemGrabMenu.Context?.FilterItems is not FeatureOption.Enabled)
         {
             return;
         }
 
         if (BetterItemGrabMenu.Inventory is not null)
         {
-            BetterItemGrabMenu.Inventory.AddHighlighter(storage.FilterMatcher);
+            BetterItemGrabMenu.Inventory.AddHighlighter(BetterItemGrabMenu.Context.FilterMatcher);
         }
     }
 }

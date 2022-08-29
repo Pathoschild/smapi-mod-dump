@@ -1,0 +1,10 @@
+{
+  "isRandomSeedUsed": true,
+  "allowedSeasons": [
+    "spring",
+    "summer",
+    "fall",
+    "winter"
+  ],
+  "MaxOfDayOfMonth": 28
+}

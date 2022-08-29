@@ -13,6 +13,7 @@ using SpriteMaster.Caching;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -55,11 +56,35 @@ internal sealed class Monitor {
 		}
 	}
 
-	internal void TriggerPurge() {
+	internal void TriggerPurge(string command, Queue<string> arguments) {
+		bool hard = true;
+		bool soft = true;
+		if (arguments.Count > 0) {
+			hard = false;
+			soft = false;
+
+			foreach (var arg in arguments) {
+				switch (arg.ToLowerInvariant()) {
+					case "hard":
+						hard = true;
+						break;
+					case "soft":
+						soft = true;
+						break;
+				}
+			}
+		}
+
 		lock (CollectLock) {
 			Garbage.Collect(compact: false, blocking: false, background: true);
 			long usedMemory = GC.GetTotalMemory(false);
-			Manager.HardPurge((ulong)usedMemory, 0UL);
+			if (hard) {
+				Manager.HardPurge((ulong)usedMemory, 0UL);
+			}
+			else if (soft) {
+				Manager.SoftPurge((ulong)usedMemory, 0UL);
+			}
+
 			Garbage.Collect(compact: true, blocking: true, background: false);
 			DrawState.TriggerCollection.Set(true);
 		}

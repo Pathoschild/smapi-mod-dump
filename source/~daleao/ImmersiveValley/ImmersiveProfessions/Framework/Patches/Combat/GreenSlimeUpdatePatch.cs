@@ -12,19 +12,15 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
 
 #region using directives
 
-using DaLion.Common;
-using DaLion.Common.Data;
 using DaLion.Common.Extensions.Reflection;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Netcode;
-using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Linq;
-using SUtility = StardewValley.Utility;
+using VirtualProperties;
 
 #endregion using directives
 
@@ -33,7 +29,8 @@ internal sealed class GreenSlimeUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 {
     private const int IMMUNE_TO_DAMAGE_DURATION_I = 450;
 
-    private static Func<RockCrab, NetBool>? _GetShellGone;
+    private static readonly Lazy<Func<RockCrab, NetBool>> _GetShellGone = new(() =>
+        typeof(RockCrab).RequireField("shellGone").CompileUnboundFieldGetterDelegate<RockCrab, NetBool>());
 
     /// <summary>Construct an instance.</summary>
     internal GreenSlimeUpdatePatch()
@@ -46,10 +43,12 @@ internal sealed class GreenSlimeUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 
     /// <summary>Patch for Slimes to damage monsters around Piper.</summary>
     [HarmonyPostfix]
-    private static void GreenSlimeUpdatePostfix(GreenSlime __instance)
+    private static void GreenSlimeUpdatePostfix(GreenSlime __instance, GameTime time)
     {
-        if (!ModEntry.PlayerState.PipedSlimes.Contains(__instance)) return;
+        var pipeTimer = __instance.get_PipeTimer();
+        if (pipeTimer.Value <= 0) return;
 
+        pipeTimer.Value -= time.ElapsedGameTime.Milliseconds;
         foreach (var monster in __instance.currentLocation.characters.OfType<Monster>().Where(m => !m.IsSlime()))
         {
             var monsterBox = monster.GetBoundingBox();
@@ -58,11 +57,9 @@ internal sealed class GreenSlimeUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
                 !monsterBox.Intersects(__instance.GetBoundingBox()))
                 continue;
 
-            _GetShellGone ??= typeof(RockCrab).RequireField("shellGone")
-                .CompileUnboundFieldGetterDelegate<Func<RockCrab, NetBool>>();
             if (monster is Bug bug && bug.isArmoredBug.Value // skip Armored Bugs
                 || monster is LavaCrab && __instance.Sprite.currentFrame % 4 == 0 // skip shelled Lava Crabs
-                || monster is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 && !_GetShellGone(crab).Value // skip shelled Rock Crabs
+                || monster is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 && !_GetShellGone.Value(crab).Value // skip shelled Rock Crabs
                 || monster is LavaLurk lurk &&
                 lurk.currentState.Value == LavaLurk.State.Submerged // skip submerged Lava Lurks
                 || monster is Spiker) // skip Spikers
@@ -77,31 +74,24 @@ internal sealed class GreenSlimeUpdatePatch : DaLion.Common.Harmony.HarmonyPatch
 
             var (xTrajectory, yTrajectory) = monster.Slipperiness < 0
                 ? Vector2.Zero
-                : SUtility.getAwayFromPositionTrajectory(monsterBox, __instance.getStandingPosition()) / 2f;
-            monster.takeDamage(damageToMonster, (int)xTrajectory, (int)yTrajectory, false, 1.0, "slime");
+                : StardewValley.Utility.getAwayFromPositionTrajectory(monsterBox, __instance.getStandingPosition()) / 2f;
+            monster.takeDamage(damageToMonster, (int)xTrajectory, (int)yTrajectory, false, 1d, "slime");
             monster.currentLocation.debris.Add(new(damageToMonster,
                 new(monsterBox.Center.X + 16, monsterBox.Center.Y), new(255, 130, 0), 1f, monster));
             monster.setInvincibleCountdown(IMMUNE_TO_DAMAGE_DURATION_I);
 
             // aggro monsters
-            var fakeFarmerId = monster.GetHashCode();
-            if (!ModEntry.HostState.FakeFarmers.TryGetValue(fakeFarmerId, out var fakeFarmer))
-            {
-                fakeFarmer = ModEntry.HostState.FakeFarmers[fakeFarmerId] =
-                    new() { UniqueMultiplayerID = fakeFarmerId, currentLocation = __instance.currentLocation };
-                Log.D($"Created fake farmer with id {fakeFarmerId}.");
-            }
+            if (monster.get_Taunter().Get(monster.currentLocation) is null) monster.set_Taunter(__instance);
 
-            fakeFarmer.Position = __instance.Position;
-            ModDataIO.WriteTo(monster, "Aggroed", true.ToString());
-            ModDataIO.WriteTo(monster, "Aggroer", __instance.GetHashCode().ToString());
+            var fakeFarmer = monster.get_FakeFarmer();
+            if (fakeFarmer is not null) fakeFarmer.Position = __instance.Position;
 
             // get damaged by monster
             var damageToSlime = Math.Max(1,
                                     monster.DamageToFarmer + Game1.random.Next(-monster.DamageToFarmer / 4,
                                         monster.DamageToFarmer / 4)) -
                                 __instance.resilience.Value;
-            __instance.takeDamage(damageToSlime, (int)-xTrajectory, (int)-yTrajectory, false, 1.0, "slime");
+            __instance.takeDamage(damageToSlime, (int)-xTrajectory, (int)-yTrajectory, false, 1d, "slime");
             if (__instance.Health <= 0) break;
         }
     }

@@ -80,24 +80,11 @@ internal struct Vector2B :
 		set => Y = value;
 	}
 
-	internal bool Negative {
-		[MethodImpl(Runtime.MethodImpl.Inline)]
-		readonly get => X;
-		[MethodImpl(Runtime.MethodImpl.Inline)]
-		set => X = value;
-	}
-	internal bool Positive {
-		[MethodImpl(Runtime.MethodImpl.Inline)]
-		readonly get => Y;
-		[MethodImpl(Runtime.MethodImpl.Inline)]
-		set => Y = value;
-	}
-
 	internal readonly bool None => Packed == ZeroByte;
 	internal readonly bool Any => Packed != ZeroByte;
 	internal readonly bool All => Packed == AllValue;
 
-	internal readonly Vector2B Invert => (!X, !Y);
+	internal readonly Vector2B Invert => new((byte)(~Packed & AllValue));
 
 	[MethodImpl(Runtime.MethodImpl.Inline), DebuggerStepThrough, DebuggerHidden]
 	private static int CheckIndex(int index) {
@@ -120,31 +107,16 @@ internal struct Vector2B :
 	internal Vector2B(byte packed) => Packed = packed;
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Vector2B From(byte packed) => new(packed: packed);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Vector2B(bool x, bool y) : this(packed: Get(x, y)) { }
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Vector2B From(bool x, bool y) => new(x, y);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Vector2B((bool X, bool Y) value) : this(value.X, value.Y) { }
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Vector2B From((bool X, bool Y) value) => new(value.X, value.Y);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Vector2B(bool value) : this(value ? AllValue : ZeroByte) { }
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Vector2B From(bool value) => new(value: value);
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Vector2B(Vector2B vector) : this(vector.Packed) { }
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static Vector2B From(Vector2B vector) => new(vector: vector);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static implicit operator Vector2B((bool X, bool Y) vec) => new(vec.X, vec.Y);
@@ -174,6 +146,12 @@ internal struct Vector2B :
 	public override readonly string ToString() => $"[{X}, {Y}]";
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public static bool operator ==(Vector2B lhs, Vector2B rhs) => lhs.Packed == rhs.Packed;
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public static bool operator !=(Vector2B lhs, Vector2B rhs) => lhs.Packed != rhs.Packed;
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly int CompareTo(object? obj) => obj switch {
 		Vector2B vector => CompareTo(vector),
 		Tuple<bool, bool> vector => CompareTo(new Vector2B(vector.Item1, vector.Item2)),
@@ -192,6 +170,15 @@ internal struct Vector2B :
 	public readonly int CompareTo(bool other) => Packed.CompareTo(other ? OneByte : ZeroByte);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override readonly bool Equals(object? obj) => obj switch {
+		Vector2B vector => Equals(vector),
+		Tuple<bool, bool> vector => Equals(new Vector2B(vector.Item1, vector.Item2)),
+		ValueTuple<bool, bool> vector => Equals(vector),
+		bool boolean => Equals(boolean),
+		_ => false
+	};
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly bool Equals(Vector2B other) => Packed == other.Packed;
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -199,4 +186,7 @@ internal struct Vector2B :
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly bool Equals(bool other) => Packed == (other ? OneByte : ZeroByte);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override readonly int GetHashCode() => (X, Y).GetHashCode();
 }

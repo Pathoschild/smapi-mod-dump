@@ -1,0 +1,144 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewJsonProcessor
+**
+*************************************************/
+
+{
+  "splice array": [
+    1,
+    2,
+    {
+      "$transform": "splice",
+      "content": [ 3, 4 ],
+      "ignored": "abc"
+    },
+    {
+      "foo": [
+        "a",
+        {
+          "$transform": "splice",
+          "content": [
+            "b",
+            {
+              "$transform": "splice",
+              "content": [ "c", "d" ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "splice shorthand array": [
+    1,
+    2,
+    { "$splice": [ 3, 4 ] },
+    {
+      "foo": [
+        "a",
+        {
+          "$splice": [
+            "b",
+            { "$splice": [ "c", "d" ] }
+          ]
+        }
+      ]
+    }
+  ],
+  "splice array results": [
+    1,
+    2,
+    3,
+    4,
+    {
+      "foo": [ "a", "b", "c", "d" ]
+    }
+  ],
+  "splice object": {
+    "a": 1,
+    "ignored": {
+      "$transform": "splice",
+      "content": { "b": 2 }
+    },
+    "foo": {
+      "x": 7,
+      "ruh?": {
+        "$transform": "splice",
+        "content": {
+          "y": 8,
+          "z": 9
+        }
+      }
+    }
+  },
+  "splice shorthand object": {
+    "a": 1,
+    "$splice": { "b": 2 },
+    "foo": {
+      "x": 7,
+      "$splice": {
+        "y": 8,
+        "z": 9
+      }
+    }
+  },
+  "splice object results": {
+    "a": 1,
+    "b": 2,
+    "foo": {
+      "x": 7,
+      "y": 8,
+      "z": 9
+    }
+  },
+  "splice error 1": [
+    { "$splice": { "a": 1 } }
+  ],
+  "splice error 2": [
+    {
+      "$transform": "splice",
+      "content": { "a": 1 }
+    }
+  ],
+  "splice error 3": {
+    "foo": { "$splice": [ 1 ] }
+  },
+  "splice error 4": {
+    "foo": 123,
+    "$splice": [ 1 ]
+  },
+  "splice error top level": {
+    "$transform": "splice",
+    "content": [ 2 ]
+  },
+  "duplicate key": {
+    "$splice": {
+      "xyz": "def",
+      "foo": 1,
+      "abc": 2
+    },
+    "foo": "pre-existing key"
+  },
+  "duplicate key results": {
+    "xyz": "def",
+    "abc": 2,
+    "foo": "pre-existing key"
+  },
+  "duplicate key long-form": {
+    "abc": {
+      "$transform": "splice",
+      "content": {
+        "xyz": "def",
+        "foo": 1,
+        "abc": 2
+      }
+    },
+    "foo": "pre-existing key"
+  }
+
+
+    }

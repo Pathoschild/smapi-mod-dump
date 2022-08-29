@@ -1480,6 +1480,24 @@ namespace SolidFoundations.Framework.Models.ContentPack
             return "Buildings\\" + (string)this.buildingType.Value;
         }
 
+        // TODO: When updated to SDV v1.6, this method should be deleted
+        public override bool CanBePainted()
+        {
+            var paintDataKey = base.buildingType.Value;
+            if (String.IsNullOrEmpty(this.skinID.Value) is false)
+            {
+                paintDataKey = this.skinID.Value;
+            }
+
+            Dictionary<string, string> paintData = Game1.content.Load<Dictionary<string, string>>("Data\\PaintData");
+            if (paintData.ContainsKey(paintDataKey))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         // Preserve this override when updated to SDV v1.6, but call the base draw method if ExtendedBuildingModel
         public override void updateInteriorWarps(GameLocation interior = null)
         {

@@ -22,5 +22,8 @@ namespace FarmVisitors
         public bool Debug { get; set; } = false;
 	    public string InLawComments { get; set; } = "VanillaOnly";
         public bool ReplacerCompat { get; set; } = false;
+        public bool NeedsConfirmation { get; set; } = false;
+        public bool RejectionDialogue { get; set; } = true;
+        public bool Gifts { get; set; } = true;
     }
 }

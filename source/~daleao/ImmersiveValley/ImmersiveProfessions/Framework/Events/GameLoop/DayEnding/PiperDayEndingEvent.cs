@@ -13,9 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop.DayEnding;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 using System;
 
 #endregion using directives
@@ -34,7 +32,7 @@ internal sealed class PiperDayEndingEvent : DayEndingEvent
     protected override void OnDayEndingImpl(object? sender, DayEndingEventArgs e)
     {
         Game1.buffsDisplay.removeOtherBuff(_piperBuffId);
-        Array.Clear(ModEntry.PlayerState.AppliedPiperBuffs, 0, 12);
-        Unhook();
+        Array.Clear(ModEntry.State.AppliedPiperBuffs, 0, 12);
+        Disable();
     }
 }

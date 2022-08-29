@@ -13,9 +13,7 @@ namespace DaLion.Stardew.Rings.Framework.Patches;
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
 using Netcode;
-using StardewValley;
 using StardewValley.Objects;
 
 #endregion using directives

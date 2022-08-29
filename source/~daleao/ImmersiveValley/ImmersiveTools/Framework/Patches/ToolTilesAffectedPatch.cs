@@ -14,9 +14,7 @@ namespace DaLion.Stardew.Tools.Framework.Patches;
 
 using Common.Classes;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -58,10 +56,10 @@ internal sealed class ToolTilesAffectedPatch : Common.Harmony.HarmonyPatch
         __result = new();
         var dir = who.FacingDirection switch
         {
-            0 => new(0f, -1f),
-            1 => new(1f, 0f),
-            2 => new(0f, 1f),
-            3 => new(-1f, 0f),
+            Game1.up => new(0f, -1f),
+            Game1.right => new(1f, 0f),
+            Game1.down => new(0f, 1f),
+            Game1.left => new(-1f, 0f),
             _ => Vector2.Zero
         };
 

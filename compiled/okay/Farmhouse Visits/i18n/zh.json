@@ -12,10 +12,10 @@
 	"config.VisitDuration.description":"每次拜访应持续多长时间，每10分钟间隔(如3为30分钟)。",
 	"config.Verbose.name": "详细的日志",
 	"config.Verbose.description": "模组会记录更多的信息。",
-                "config.Extras":"附加设置",
+    "config.Extras":"附加设置",
 	"config.Blacklist.name":"黑名单",
 	"config.Blacklist.description":"你不想让他来看你的角色。用空格分开 (' ')。 例如: \"Pierre Lewis\"",
-                "config.VisitConfiguration":"访问配置",
+    "config.VisitConfiguration":"访问配置",
 	"config.Debug.name": "调试",
 	"config.Debug.Explanation":"开发人员选项",
 
@@ -24,7 +24,7 @@
 	 *
 	 * Feel free to use your language's equivalent! */
 
-                "config.InLawComments.name":"亲家的评论",
+    "config.InLawComments.name":"亲家的评论",
 	"config.InLawComments.description": "姻亲评论如果你配偶的亲戚来访，他们会问起你的配偶  (还有你的孩子，如果有的话). 这可能会影响普通亲家，模组亲家，或者两者都不会影响。 ",
 	"config.InLawComments.values.VanillaOnly":"仅星露谷",
 	"config.InLawComments.values.VanillaAndMod":"星露谷和模组NPCs",
@@ -32,33 +32,82 @@
 	"config.ReplacerCompat.name":"替代&兼容性",
 	"config.ReplacerCompat.description":"打开这个与NPC替换兼容。 ",
 
+	//new content
+	"config.AskForConfirmation.name": "Ask for confirmation?",
+	"config.AskForConfirmation.description": "NPCs will need permission to enter (via a question dialogue).",
+	"config.RejectionDialogues.name": "Rejection dialogues",
+	"config.RejectionDialogues.description": "If rejected, NPCs will comment on it.",
+	"config.ReceiveGifts.name": "Receive gifts?",
+	"config.ReceiveGifts.description": "If enabled, visits will bring you a gift.",
+	"Visit.AllowOrNot": "{0} is at the door. Open it?",
+	"Visit.Yes": "Yes",
+	"Visit.No": "No",
+
            /* TN: command errors */
-                "error.WorldNotReady":"使用该命令需要加载一个保存文件。",
+    "error.WorldNotReady":"使用该命令需要加载一个保存文件。",
 	"error.InvalidValue":"无效的值。",
 	"error.NotInFarmhouse":"你不在农场，村民不能拜访。",
 
           /* TN: bad schedule (when the user adds one via ContentPatcher) */
-          "FromHigherThanTo":"开始时间高于结束时间。 修复并重启游戏。 ",
+    "FromHigherThanTo":"开始时间高于结束时间。 修复并重启游戏。 ",
 	"NotInSave": "NPC目前不在存档中(你解锁了吗?) ",
 	"CantBe2600":"访问不能在26.00点结束。",
 	"CantBe600":"访问不能在6.00点开始。",
 
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "Oops. Vendré otro día.",
+	"NPCRejected.Outgoing2": "¿No hay nadie?",
+	"NPCRejected.Outgoing3": "Silencio...#$b#Bueno, no pasa nada.$1",
+	"NPCRejected.Shy1": "Tal vez no hay nadie...",
+	"NPCRejected.Shy2": "¿@? ¿Estás?#$b#...¿Tal vez no es buen momento?",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "Debo haber venido en mal momento.",
+	"NPCRejected.Polite2": "...#$b#Al menos espero que @ esté bien.",
+	"NPCRejected.Polite3": "...Parece que no hay nadie.",
+	"NPCRejected.Neutral1": "knock knock...#$b#Bueno, tendré que irme.",
+	"NPCRejected.Neutral2": "¿Hmm?#$b#Juraría que @ estaba en casa a esta hora.",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "¿Y @ no está...?#$b#Tenía que pasarme a mí.$2",
+	"NPCRejected.Rude2": "Oye, ¿Hay alguien?...",
+	"NPCRejected.Rude3": "Oh, en serio. ¿No responde nadie? $2",
+
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "Thanks. The weather outside was really rough.",
+	"NPCThanking.Outgoing2": "Your house looks different from the last time i came.#$b#Did you change something?",
+	"NPCThanking.Outgoing3": "%farm farm looks like a lot of work.",
+	"NPCThanking.Shy1": "Hope i'm not intruding.",
+	"NPCThanking.Shy2": "Thanks for letting me in.",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "The walk here was really nice.",
+	"NPCThanking.Polite2": "Sorry for coming uninvited.",
+	"NPCThanking.Polite3": "Thanks, @.",
+	"NPCThanking.Neutral1": "So, do you like surprise visits?",
+	"NPCThanking.Neutral2": "Your farm outside looked good.",
+	"NPCThanking.Neutral3": "I like this place.",
+	"NPCThanking.Rude1": "Yeah, that's more like it.",
+	"NPCThanking.Rude2": "Finally...my feet were starting to hurt.",
+	"NPCThanking.Rude3": "It took so long to walk here.",
+
 	/* TN: introduction */
 	//by social
-          "NPCIntroduce.Outgoing1": "@? 我来了!",
+    "NPCIntroduce.Outgoing1": "@? 我来了!",
 	"NPCIntroduce.Outgoing2": "@? 是我!",
 	"NPCIntroduce.Outgoing3": "@? 开门!",
 	"NPCIntroduce.Shy1": "@, 你在那里么?",
 	"NPCIntroduce.Shy2": "@?",
 	"NPCIntroduce.Shy3": "哈喽? 有人在家吗?",
           //by manners
-          "NPCIntroduce.Polite1": "你好，我可以进来吗?",
+    "NPCIntroduce.Polite1": "你好，我可以进来吗?",
 	"NPCIntroduce.Polite2": "打扰一下...",
 	"NPCIntroduce.Polite3": "(敲...敲...)",
 	"NPCIntroduce.Neutral1": "有人在吗?",
 	"NPCIntroduce.Neutral2": "哈喽? @?",
 	"NPCIntroduce.Neutral3": "@, 是我。",
-          "NPCIntroduce.Rude1":"@,我在外面。",
+    "NPCIntroduce.Rude1":"@,我在外面。",
 	"NPCIntroduce.Rude2": "哈喽..? @..?",
 	"NPCIntroduce.Rude3": "嗨...@, 你在吗?",
           
@@ -83,22 +132,41 @@
           
           /* TN: greeting player */
 	//by social
-	"NPCGreet.Outgoing1": "嘿。进展怎样? 我想过来看看你。我给你带了一份礼物。[{0}]",
-	"NPCGreet.Outgoing2": "嗨。你的农场怎么样了? 我想我应该自己过来看看。$1#$b#我给你带了礼物。[{0}]",
-	"NPCGreet.Outgoing3": "哈喽！我有段时间没见到你了。$1#$b#给，我给你带了份礼物。[{0}]",
-	"NPCGreet.Shy1": "嗨, @。 你最近怎么样?#$b#似乎%在农场生机勃勃#$b#我给你带了礼物。[{0}]",
-	"NPCGreet.Shy2": "哈喽, @。#$b#我正好路过，过来去看看。#$b#我给你带了礼物。[{0}]",
-	"NPCGreet.Shy3": "嗨, @。我过来看看你。#$b#最近过得怎么样.#$b#我给你带了礼物。[{0}]",
+	"NPCGreet.Outgoing1": "嘿。进展怎样? 我想过来看看你",
+	"NPCGreet.Outgoing2": "嗨。你的农场怎么样了? 我想我应该自己过来看看。$1", //modder note: took out gift dialogue, "我给你带了礼物。[{0}]"
+	"NPCGreet.Outgoing3": "哈喽！我有段时间没见到你了。$1",
+	"NPCGreet.Shy1": "嗨, @。 你最近怎么样?#$b#似乎%在农场生机勃勃",
+	"NPCGreet.Shy2": "哈喽, @。#$b#我正好路过，过来去看看",
+	"NPCGreet.Shy3": "嗨, @。我过来看看你。#$b#最近过得怎么样.",
 	//by manners
-          "NPCGreet.Polite1": "@, 我很抱歉不请自来。我想看看你怎么样了 #$b#我给你带了点东西来补偿麻烦[{0}]",
-	"NPCGreet.Polite2": "问候。我很高兴见到你，@.#$b#给，我给你带了点东西。  [{0}]",
-	"NPCGreet.Polite3": "对不起…… 希望我没有打扰你们。 $1#$b#我给你带了点东西来补偿麻烦 [{0}]",
-	"NPCGreet.Neutral1": "我要走进去了… @.#$b#给，我看到这个就想到你了。[{0}]",
-	"NPCGreet.Neutral2": "嘿，我路过的时候听到了声音…#$b#为了安全起见，我得过来检查一下，呵呵。$1#$b#我看到这个就想到你了。[{0}]",
-	"NPCGreet.Neutral3": "嗨, @。 见到你真高兴。我决定给你一个惊喜。#$b#我看到这个就想到你了。[{0}]",
-	"NPCGreet.Rude1": "嘿，@! 你想我了吗?#$b#听着，我给你带了点东西。[{0}]",
-	"NPCGreet.Rude2": "嗨, @.#$b#我在路上给你带了点东西。[{0}]",
-	"NPCGreet.Rude3": "嗨, 我正好路过，看到你在里面……我就想过来看看。#$b#我有东西给你，拿着。[{0}]",
+    "NPCGreet.Polite1": "@, 我很抱歉不请自来。我想看看你怎么样了",
+	"NPCGreet.Polite2": "问候。我很高兴见到你，@.",
+	"NPCGreet.Polite3": "对不起…… 希望我没有打扰你们。 $1",
+	"NPCGreet.Neutral1": "我要走进去了… @.",
+	"NPCGreet.Neutral2": "嘿，我路过的时候听到了声音…#$b#为了安全起见，我得过来检查一下，呵呵。$1",
+	"NPCGreet.Neutral3": "嗨, @。 见到你真高兴。我决定给你一个惊喜。",
+	"NPCGreet.Rude1": "嘿，@! 你想我了吗?",
+	"NPCGreet.Rude2": "嗨, @.",
+	"NPCGreet.Rude3": "嗨, 我正好路过，看到你在里面……我就想过来看看。",
+
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key.
+	 * (and some extra ones as new content) */
+	"NPCGift.Normal1": "我给你带了一份礼物。[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "给，我给你带了份礼物。[{0}]", //outgoing3
+	"NPCGift.Normal3": "我给你带了礼物。[{0}]", //shy3
+	"NPCGift.Normal4": "给，我看到这个就想到你了。[{0}]", //neutral1
+	"NPCGift.Normal5": "Hey, this seemed like a 'you' item. So i got it for you. [{0}]", //original
+	"NPCGift.Kind1": "我给你带了点东西来补偿麻烦[{0}]", //polite1
+	"NPCGift.Kind2": "给，我给你带了点东西。 [{0}]", //polite2
+	"NPCGift.Kind3": "我给你带了点东西来补偿麻烦 [{0}]", //polite3
+	"NPCGift.Kind4": "我看到这个就想到你了。[{0}]", //neutral2
+	"NPCGift.Kind5": "This seemed like something you'd like.[{0}]", //original
+	"NPCGift.Lax1": "Hey, take this.[{0}]", //original
+	"NPCGift.Lax2": "听着，我给你带了点东西。[{0}]", //rude1
+	"NPCGift.Lax3": "我有东西给你，拿着。[{0}]", //rude3
+	"NPCGift.Lax4": "Here. I had some spares around. [{0}]", //original
+	"NPCGift.Lax5": "我在路上给你带了点东西。[{0}]", //rude2
 
           /* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
 	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
@@ -182,7 +250,7 @@
 	"NPCFurniture.Shy2":"我不知道你有 {0}!$1",
 	"NPCFurniture.Shy3":"你的{0}…让我想起了我在家里的那个。",
 	//by manners
-         "NPCFurniture.Polite1": "@，你的 {0}...赋予了这座房子生命。",
+    "NPCFurniture.Polite1": "@，你的 {0}...赋予了这座房子生命。",
 	"NPCFurniture.Polite2": "你装饰这个地方花了不少功夫吧 , @...$1",
 	"NPCFurniture.Polite3": "抱歉，你什么时候有{0}了...？#$b# 我非常喜欢它。$1",
 	"NPCFurniture.Neutral1": "嘿，这看起来不错。$1",
@@ -194,14 +262,24 @@
 
 	/* TN: leaving */
 	//by social
-	"NPCRetiring.Outgoing": "很有趣，但我得走了。待会儿见！",
-	"NPCRetiring.Shy": "天晚了……我现在要走了。很高兴见到你。",
+	"NPCRetiring.Outgoing1": "很有趣，但我得走了。待会儿见！",
+	"NPCRetiring.Outgoing2": "It's been a while now, so i'll get going.",
+	"NPCRetiring.Outgoing3": "See you later, @.",
+	"NPCRetiring.Shy1": "天晚了……我现在要走了。很高兴见到你。",
+	"NPCRetiring.Shy2": "I have some things to do, but i had fun.#$b#Thank you, @.$1",
+	"NPCRetiring.Shy3": "Sorry, @. I'll have to leave now.#$b#Thank you for your time.",
 	//by manners
-	"NPCRetiring.Polite": "@, 我得走了…… 我需要做一些事情。 #$b#很高兴能见到你！$1",
-	"NPCRetiring.Neutral": "嘿，这个时间…… 我应该早点离开的。 #$b#改天再见!$1",
-	"NPCRetiring.Rude": "我将会……我一定让你很忙。#$b#待会儿见。",
+	"NPCRetiring.Polite1": "@, 我得走了…… 我需要做一些事情。 #$b#很高兴能见到你！$1",
+	"NPCRetiring.Polite2": "I've been here a while...i'll take my leave.#$b#See you next time, @.",
+	"NPCRetiring.Polite3": "@, it was fun to see you.#$b#Hope your day goes well.",
+	"NPCRetiring.Neutral1": "嘿，这个时间…… 我应该早点离开的。 #$b#改天再见!$1",
+	"NPCRetiring.Neutral2": "I'll leave now, before it gets darker outside.#$b#See you, @.",
+	"NPCRetiring.Neutral3": "You must have things to do, so i'll take my leave.#$b#I had fun.$1",
+	"NPCRetiring.Rude1": "我将会……我一定让你很忙。#$b#待会儿见。",
+	"NPCRetiring.Rude2": "I've been here too long... i'll be going.#$b#See you, @.",
+	"NPCRetiring.Rude3": "It's pretty late already. I'll see you another day.",
 
 	/* TN: gone while outside */	
-          "NPCGoneWhileOutside": "你在外面的时候，{0}离开了。",
-           "NPCGone_Cellar": "你在地下室的时候，{0}离开了。 "
+    "NPCGoneWhileOutside": "你在外面的时候，{0}离开了。",
+    "NPCGone_Cellar": "你在地下室的时候，{0}离开了。 "
 }

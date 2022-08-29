@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 
 #endregion using directives
 
-/// <summary>Wrapper for <see cref="IDisplayEvents.RenderingHud"/> allowing dynamic hooking / unhooking.</summary>
+/// <summary>Wrapper for <see cref="IDisplayEvents.RenderingHud"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class RenderingHudEvent : ManagedEvent
 {
     /// <summary>Construct an instance.</summary>
@@ -29,7 +29,7 @@ internal abstract class RenderingHudEvent : ManagedEvent
     /// <param name="e">The event arguments.</param>
     internal void OnRenderingHud(object? sender, RenderingHudEventArgs e)
     {
-        if (IsHooked) OnRenderingHudImpl(sender, e);
+        if (IsEnabled) OnRenderingHudImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnRenderingHud" />

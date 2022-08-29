@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Dynamic dialogues framework",
   "Author": "mistyspring",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Framework which allows for more dynamic dialogues.",
   "UniqueID": "mistyspring.dynamicdialogues",
   "EntryDll": "DynamicDialogues.dll",

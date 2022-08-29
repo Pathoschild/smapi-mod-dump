@@ -45,7 +45,7 @@ namespace PlatoTK.Content
             if (MatchesConditions != newValue)
             {
                 MatchesConditions = newValue;
-                Helper.ModHelper.Content.InvalidateCache(AssetName);
+                Helper.ModHelper.GameContent.InvalidateCache(AssetName);
             }
         }
 

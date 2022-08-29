@@ -12,11 +12,11 @@ namespace DaLion.Stardew.Tools.Integrations;
 
 #region using directives
 
-using Common.Integrations;
+using Common.Integrations.GenericModConfigMenu;
 using Configs;
 using Framework;
+using Framework.Events;
 using HarmonyLib;
-using StardewModdingAPI;
 using System;
 
 #endregion using directives
@@ -44,7 +44,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
     public void Register()
     {
         var allowedUpgrades = new[] { "Copper", "Steel", "Gold", "Iridium" };
-        if (ModEntry.HasLoadedMoonMisadventures) allowedUpgrades.AddRangeToArray(new[] { "Radioactive", "Mythicite" });
+        if (ModEntry.IsMoonMisadventuresLoaded) allowedUpgrades.AddRangeToArray(new[] { "Radioactive", "Mythicite" });
 
         // get config menu
         if (!_configMenu.IsLoaded)
@@ -93,6 +93,17 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 () => "If 'RequireModkey' is enabled, you must hold this key to begin charging.",
                 config => config.Modkey,
                 (config, value) => config.Modkey = value
+            )
+            .AddCheckbox(
+                () => "Face Towards Mouse Cursor",
+                () => "If using mouse and keyboard, turn to face towards the current cursor position before swinging your tools.",
+                config => config.FaceMouseCursor,
+                (config, value) =>
+                {
+                    config.FaceMouseCursor = value;
+                    if (value) ModEntry.Events.EnableForAllScreens<ToolButtonPressedEvent>();
+                    else ModEntry.Events.DisableForAllScreens<ToolButtonPressedEvent>();
+                }
             )
 
             // page links
@@ -151,7 +162,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 10
             );
 
-        if (ModEntry.HasLoadedMoonMisadventures)
+        if (ModEntry.IsMoonMisadventuresLoaded)
             _configMenu
                 .AddNumberField(
                     () => "Radioactive Radius",
@@ -174,8 +185,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
             .AddNumberField(
                 () => "Reaching Radius",
                 () => "The radius of affected tiles for the Axe with Reaching Enchantment.",
-                config => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4],
-                (config, value) => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4] = value,
+                config => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.IsMoonMisadventuresLoaded ? 6 : 4],
+                (config, value) => config.AxeConfig.RadiusAtEachPowerLevel[ModEntry.IsMoonMisadventuresLoaded ? 6 : 4] = value,
                 1,
                 10
             )
@@ -320,7 +331,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 10
             );
 
-        if (ModEntry.HasLoadedMoonMisadventures)
+        if (ModEntry.IsMoonMisadventuresLoaded)
             _configMenu
                 .AddNumberField(
                     () => "Radioactive Radius",
@@ -343,8 +354,8 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
             .AddNumberField(
                 () => "Reaching Radius",
                 () => "The radius of affected tiles for the Pickaxe with Reaching Enchantment.",
-                config => config.PickaxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4],
-                (config, value) => config.PickaxeConfig.RadiusAtEachPowerLevel[ModEntry.HasLoadedMoonMisadventures ? 6 : 4] = value,
+                config => config.PickaxeConfig.RadiusAtEachPowerLevel[ModEntry.IsMoonMisadventuresLoaded ? 6 : 4],
+                (config, value) => config.PickaxeConfig.RadiusAtEachPowerLevel[ModEntry.IsMoonMisadventuresLoaded ? 6 : 4] = value,
                 1,
                 10
             )
@@ -383,12 +394,6 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 () => "Whether to clear tilled dirt.",
                 config => config.PickaxeConfig.ClearDirt,
                 (config, value) => config.PickaxeConfig.ClearDirt = value
-            )
-            .AddCheckbox(
-                () => "Clear Bushes",
-                () => "Whether to clear bushes.",
-                config => config.PickaxeConfig.ClearBushes,
-                (config, value) => config.PickaxeConfig.ClearBushes = value
             )
             .AddCheckbox(
                 () => "Clear Live Crops",
@@ -501,7 +506,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 7
             );
 
-        switch (ModEntry.HasLoadedMoonMisadventures)
+        switch (ModEntry.IsMoonMisadventuresLoaded)
         {
             case false:
                 _configMenu
@@ -657,7 +662,7 @@ internal class GenericModConfigMenuIntegrationForImmersiveTools
                 7
             );
 
-        switch (ModEntry.HasLoadedMoonMisadventures)
+        switch (ModEntry.IsMoonMisadventuresLoaded)
         {
             case false:
                 _configMenu

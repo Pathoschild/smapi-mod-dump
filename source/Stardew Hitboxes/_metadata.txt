@@ -6,9 +6,9 @@ mods:
    Stardew Hitboxes
 
 latest commit:
-   commit f8a1255f3492f0b6607c7e69ae0dcafa6d08532d
+   commit 273b2e4572dd4002d0b4bf2b7cdbf44e9daa178b
    Author: Tyler <gibbstyler7@gmail.com>
-   Date:   Wed Jun 1 22:02:07 2022 -0500
+   Date:   Thu Aug 25 19:15:50 2022 -0400
    
        bump version
    

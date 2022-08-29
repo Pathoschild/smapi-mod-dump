@@ -13,9 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Locations;
 using System;
 using System.Linq;
@@ -42,8 +40,8 @@ internal sealed class SpelunkerUpdateTickedEvent : UpdateTickedEvent
         var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == _buffId);
         if (buff is not null) return;
 
-        var bonusLadderChance = (ModEntry.PlayerState.SpelunkerLadderStreak * 0.5f).ToString("0.0");
-        var bonusSpeed = Math.Min(ModEntry.PlayerState.SpelunkerLadderStreak / 10 + 1,
+        var bonusLadderChance = (ModEntry.State.SpelunkerLadderStreak * 0.5f).ToString("0.0");
+        var bonusSpeed = Math.Min(ModEntry.State.SpelunkerLadderStreak / 10 + 1,
             (int)ModEntry.Config.SpelunkerSpeedCap);
         Game1.buffsDisplay.addOtherBuff(
             new(0, 0, 0, 0, 0, 0, 0, 0, 0, bonusSpeed, 0, 0,
@@ -55,7 +53,7 @@ internal sealed class SpelunkerUpdateTickedEvent : UpdateTickedEvent
                 sheetIndex = BUFF_SHEET_INDEX_I,
                 millisecondsDuration = 0,
                 description =
-                    ModEntry.i18n.Get("spelunker.buffdesc", new { bonusLadderChance, bonusSpeed })
+                    ModEntry.i18n.Get("spelunker.buff.desc", new { bonusLadderChance, bonusSpeed })
             }
         );
     }

@@ -6,9 +6,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit aa6e53251e409b5ce8d2eec3fafb6beec5964181
+   commit 5db72e8097d6e162e281227ff08ac906e2d60ccf
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Tue Jul 26 13:55:16 2022 -0700
+   Date:   Wed Aug 3 19:57:15 2022 -0700
    
-       1.5.2 update
+       1.5.3 update
    

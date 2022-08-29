@@ -8,101 +8,50 @@
 **
 *************************************************/
 
-#region
-
 using System;
-using System.Linq;
-using Harmony;
+using System.Diagnostics.CodeAnalysis;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
-using Object = StardewValley.Object;
-
-#endregion
+using static PlacementPlus.Utility.Utility;
 
 namespace PlacementPlus.Patches
 {
-    [HarmonyPatch(typeof(Utility), nameof(Utility.playerCanPlaceItemHere))]
-    internal class UtilityPatches_PlayerCanPlaceItemHere
+    [HarmonyPatch(typeof(StardewValley.Utility), nameof(StardewValley.Utility.playerCanPlaceItemHere))]
+    internal class UtilityPatches
     {
-        private static string _ = ""; // Throwaway variable for Building.doesTileHaveProperty reference argument.
-        private static IMonitor Monitor => PlacementPlus.Instance.Monitor;
+        private static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
         
+        /// <summary>
+        /// Alters the requirements for where certain objects can be placed. This visually translates to altering the
+        /// tile cursor to be green when an object can be swapped with another.
+        /// </summary>
+        [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
         private static void Postfix(GameLocation location, Item item, int x, int y, Farmer f, ref bool __result)
         {
             try
             {
-                Func<Vector2, bool> flooringTileChecks = t => {
-                    // * Begin flooring tile checks * //
-                    var tileIsFlooring = location.terrainFeatures.ContainsKey(t) &&
-                                         location.terrainFeatures[t] is Flooring;
+                var tilePos = new Vector2(x / 64, y / 64);
+                var tileObject = location.getObjectAt(x, y);
 
-                    // We assume that any tile that has an object is a valid tile for flooring to be placed.
-                    var tileHasObject  = location.getObjectAtTile((int) t.X, (int) t.Y) != null;
-
-                    return tileIsFlooring || tileHasObject;
-                };
+                // As we are only widening where objects can be placed, if it has already been determined that that the
+                // object can be placed, we skip our logic.
+                if (__result || !StardewValley.Utility.tileWithinRadiusOfPlayer((int)tilePos.X, (int)tilePos.Y, 1, f)) 
+                    return;
                 
-                Func<Vector2, bool> chestTileChecks    = t => {
-                    // * Begin chest tile checks * //
-                    var objectAtTile        = location.getObjectAtTile((int) t.X, (int) t.Y);
-                    var objectAtTileIsChest = objectAtTile != null && PlacementPlus.CHEST_INFO_LIST.Contains(objectAtTile.ParentSheetIndex);
-
-                    return objectAtTileIsChest;
-                };
-
-                Func<Vector2, bool> fenceTileChecks    = t => {
-                    // * Begin fence tile checks * //
-                    var objectAtTile = location.getObjectAtTile((int) t.X, (int) t.Y);
-                    return objectAtTile is Fence;
-                };
                 
-                Func<Vector2, Farm, bool> farmChecks   = (t, l) => {
-                    var p = new Point((int) t.X, (int) t.Y);
-                    
-                    // * Begin Farm checks * //
-                    var tileIsMailbox       = new[] { p, new Point(p.X, p.Y + 1) }.Contains(l.GetMainMailboxPosition());
-
-                    // Also ensure that the player is not on a walkable tile in the house location.
-                    var tileIntersectsHouse =  l.GetHouseRect().Contains(p) &&
-                                              !l.GetHouseRect().Contains((int) f.getTileLocation().X,
-                                                                         (int) f.getTileLocation().Y);
-
-                    return tileIsMailbox || tileIntersectsHouse;
-                };
-                
-                Func<Vector2, BuildableGameLocation, bool> buildableGameLocationChecks = (t, l) => {
-                    // * Begin BuildableGameLocation checks * //
-                    var tileIntersectsBuilding = l.buildings.Any(b => b.occupiesTile(t) || b.doesTileHaveProperty(
-                                                    (int) t.X, (int) t.Y, "Mailbox", "Buildings", ref _));
-                    
-                    return tileIntersectsBuilding || location is Farm farm && farmChecks(t, farm);
-                };
-                
-                // * Begin Postfix * //
-                var targetTile = new Vector2((float) x / 64, (float) y / 64);
-
-                // * Begin preliminary checks * //
-                // If the targetTile is not in a valid placement position, run original logic.
-                if (!Utility.tileWithinRadiusOfPlayer((int) targetTile.X, (int) targetTile.Y, 1, f)) return;
-                
-                var itemIsFlooring          = item.category.Value == Object.furnitureCategory;
-                var itemIsChest             = PlacementPlus.CHEST_INFO_LIST.Contains(item.ParentSheetIndex);
-                var itemIsFence             = PlacementPlus.FENCE_INFO_LIST.Contains(item.ParentSheetIndex);
-                
-                if (!(location is BuildableGameLocation gl && (itemIsFlooring || itemIsChest || itemIsFence))) return; // Run original logic.
-                
-                // If any subsequent checks fail, run original logic.
-                if (itemIsFlooring && !(buildableGameLocationChecks(targetTile, gl) || flooringTileChecks(targetTile)) ||
-                    itemIsChest    && !chestTileChecks(targetTile) ||
-                    itemIsFence    && !fenceTileChecks(targetTile)
-                ) return;
-
-                __result = true; // Original method will now return true.
+                if (IsItemFlooring(item))
+                    // Assume that any tile that has an object is a valid tile for flooring to be placed.
+                    __result = tileObject != null || 
+                               (location is Farm farm && (IsTileOnBuildingEdge(farm, tilePos) || 
+                                                          DoesTileHaveMainMailbox(farm, tilePos)));
+                else if (IsItemChest(item))
+                    __result = IsItemChest(tileObject);
+                else if (IsItemFence(item))
+                    __result = IsItemFence(tileObject);
             } catch (Exception e) {
-                Monitor.Log($"Failed in {nameof(UtilityPatches_PlayerCanPlaceItemHere)}:\n{e}", LogLevel.Error);
+                Monitor.Log($"Failed in {nameof(UtilityPatches)}:\n{e}", LogLevel.Error);
             }
         }
     }

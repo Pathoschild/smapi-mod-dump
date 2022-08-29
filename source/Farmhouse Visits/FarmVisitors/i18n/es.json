@@ -37,21 +37,70 @@
 	"config.InLawComments.name":"Comentarios de familiares",
 	"config.InLawComments.description": "Si los familiares de tu pareja visitan, te preguntarán por dicho personaje (y tus bebés, si tienen). Puede afectar sólo familiares vainilla, familiares vainilla y mod, o ninguno.",
 	"config.InLawComments.values.VanillaOnly":"Sólo vainilla",
-	"config.InLawComments.values.VanillaAndMod":"Vainilla y NPCs mod",
+	"config.InLawComments.values.VanillaAndMod":"Vainilla y PNJs mod",
 	"config.InLawComments.values.None":"Ninguno",
-	"config.ReplacerCompat.name":"Compatibilidad con \n reemplazadores NPC",
-	"config.ReplacerCompat.description":"Activa esto para compatibilidad con reemplazadores de NPC.",
+	"config.ReplacerCompat.name":"Compatibilidad con \n reemplazadores PNJ",
+	"config.ReplacerCompat.description":"Activa esto para compatibilidad con reemplazadores de PNJ.",
+	
+	//new content
+	"config.AskForConfirmation.name": "¿Pedir permiso?",
+	"config.AskForConfirmation.description": "Los PNJs necesitarán permiso para entrar (aparecerá una pregunta de si/no).",
+	"config.RejectionDialogues.name": "Diálogos de rechazo",
+	"config.RejectionDialogues.description": "Si no les dejas entrar, los PNJs comentarán sobre ello.",
+	"config.ReceiveGifts.name": "¿Recibir regalos?",
+	"config.ReceiveGifts.description": "Si se activa, Las visitas te traerán un regalo.",
+	"Visit.AllowOrNot": "{0} está esperando afuera. ¿Abrir la puerta?",
+	"Visit.Yes": "Si",
+	"Visit.No": "No",
 
 	/* TN: command errors */
 	"error.WorldNotReady":"No has cargado ninguna partida aún.",
 	"error.InvalidValue":"Valor no válido.",
-	"error.NotInFarmhouse":"No estás en la casa, NPC no podrá entrar.",
+	"error.NotInFarmhouse":"No estás en la casa, NPJ no podrá entrar.",
 	
 	/* TN: bad schedule (when parsing) */
 	"FromHigherThanTo":"Hora de inicio es mayor que la hora de término. Arregla esto y reinicia el juego.",
-	"NotInSave": "¡NPC no está en la partida actual! (¿Le has desbloqueado ya?)",
+	"NotInSave": "¡PNJ no está en la partida actual! (¿Le has desbloqueado ya?)",
 	"CantBe2600":"La visita no puede terminar a las 2am (2600 en tiempo de juego).",
 	"CantBe600":"La visita no puede iniciar a las 6am (600 en tiempo de juego).",
+
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "Oops. Vendré otro día.",
+	"NPCRejected.Outgoing2": "¿No hay nadie?",
+	"NPCRejected.Outgoing3": "Silencio...#$b#Bueno, no pasa nada.$1",
+	"NPCRejected.Shy1": "Tal vez no hay nadie...",
+	"NPCRejected.Shy2": "¿@? ¿Estás?#$b#...¿Tal vez no es buen momento?",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "Debo haber venido en mal momento.",
+	"NPCRejected.Polite2": "...#$b#Al menos espero que @ esté bien.",
+	"NPCRejected.Polite3": "...Parece que no hay nadie.",
+	"NPCRejected.Neutral1": "knock knock...#$b#Bueno, tendré que irme.",
+	"NPCRejected.Neutral2": "¿Hmm?#$b#Juraría que @ estaba en casa a esta hora.",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "¿Y @ no está...?#$b#Tenía que pasarme a mí.$2",
+	"NPCRejected.Rude2": "Oye, ¿Hay alguien?...",
+	"NPCRejected.Rude3": "Oh, en serio. ¿No responde nadie? $2",
+
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "Gracias. El clima está bien fuerte afuera.",
+	"NPCThanking.Outgoing2": "Tu casa se ve diferente desde la última vez que vine.#$b#¿Le hiciste algo?",
+	"NPCThanking.Outgoing3": "La granja %farm parece mucho trabajo.",
+	"NPCThanking.Shy1": "Espero no interrumpir mucho.",
+	"NPCThanking.Shy2": "Gracias por dejarme entrar.",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "La caminata hasta aquí fue agradable.",
+	"NPCThanking.Polite2": "Disculpa por venir de repente.",
+	"NPCThanking.Polite3": "Gracias, @.",
+	"NPCThanking.Neutral1": "Bueno, ¿Te gustan las visitas sorpresa?",
+	"NPCThanking.Neutral2": "Tu granja se veía bastante bien.",
+	"NPCThanking.Neutral3": "Me gusta este lugar.",
+	"NPCThanking.Rude1": "Ahora sí... esto me gusta.",
+	"NPCThanking.Rude2": "Por fin. Me estaban empezando a doler los pies.",
+	"NPCThanking.Rude3": "Me tomó mucho llegar aquí.",
 
 	/* TN: introduction */
 	/* based on social anxiety*/
@@ -93,22 +142,41 @@
 
 	/* TN: greeting player */
 	/* based on social anxiety*/
-	"NPCGreet.Outgoing1": "Hey. ¿Qué tal? Quería pasar a visitarte. Mira, te traje un regalo.[{0}]",
-	"NPCGreet.Outgoing2": "Hola. ¿Cómo va la granja? Vine a ver cómo iba todo.$1#$b#Te traje un regalo.[{0}]",
-	"NPCGreet.Outgoing3": "¡Ey! No te he visto desde hace un tiempo.$1#$b#Te traje un regalo, toma.[{0}]",
-	"NPCGreet.Shy1": "Hola, ¿Cómo has estado?#$b#Parece que la granja %farm ha crecido.#$b#Te traje un regalo.[{0}]",
-	"NPCGreet.Shy2": "Hola, @.#$b#Estaba pasando y decidí visitarte.#$b#Te traje un regalo.[{0}]",
-	"NPCGreet.Shy3": "Hey, @. Me alegro de verte.#$b#Me estaba acordando de ti.#$b#Te traje un regalo, toma. [{0}]",
+	"NPCGreet.Outgoing1": "Hey. ¿Qué tal? Quería pasar a visitarte.",
+	"NPCGreet.Outgoing2": "Hola. ¿Cómo va la granja? Vine a ver cómo iba todo.$1",
+	"NPCGreet.Outgoing3": "¡Ey! No te he visto desde hace un tiempo.$1",
+	"NPCGreet.Shy1": "Hola, ¿Cómo has estado?#$b#Parece que la granja %farm ha crecido.",
+	"NPCGreet.Shy2": "Hola, @.#$b#Estaba pasando y decidí visitarte.",
+	"NPCGreet.Shy3": "Hey, @. Me alegro de verte.#$b#Me estaba acordando de ti.",
 	/* based on manners*/
-	"NPCGreet.Polite1": "@, perdona que te interrumpa. Vine a ver cómo estabas.#$b#Te traje algo por las molestias. [{0}]",
-	"NPCGreet.Polite2": "Buenas. Qué alegría verte, @.#$b#Ten, te traje algo por las molestias. [{0}]",
-	"NPCGreet.Polite3": "Con permiso...espero no estar interrumpiendo mucho.$1#$b#Te traje algo por las molestias. [{0}]",
-	"NPCGreet.Neutral1": "Voy a entrar...hola, @.#$b#Ten, me acordé de ti cuando vi esto.[{0}]",
-	"NPCGreet.Neutral2": "Ey, estaba pasando por acá y escuché ruido...#$b#Pasé a ver por si acaso nomás, jeje.$1#$b#Me acordé de ti cuando vi esto.[{0}]",
-	"NPCGreet.Neutral3": "Oye, @. Qué bueno verte.#$b#Me estaba acordando de ti.#$b#Te traje un regalo, toma. [{0}]",
-	"NPCGreet.Rude1": "Ey, @! ¿Me extrañaste?#$b#Mira, te traje algo.[{0}]",
-	"NPCGreet.Rude2": "Hola, @.#$b#Te compré algo en el camino.[{0}]",
-	"NPCGreet.Rude3": "Oye, estaba pasando por aquí y escuché que estabas adentro...vine a visitar.#$b#Te traje algo, toma.[{0}]",
+	"NPCGreet.Polite1": "@, perdona que te interrumpa. Vine a ver cómo estabas.",
+	"NPCGreet.Polite2": "Buenas. Qué alegría verte, @.",
+	"NPCGreet.Polite3": "Con permiso...espero no estar interrumpiendo mucho.$1",
+	"NPCGreet.Neutral1": "Voy a entrar...hola, @.",
+	"NPCGreet.Neutral2": "Ey, estaba pasando por acá y escuché ruido...#$b#Pasé a ver por si acaso nomás, jeje.$1",
+	"NPCGreet.Neutral3": "Oye, @. Qué bueno verte.#$b#Me estaba acordando de ti.",
+	"NPCGreet.Rude1": "Ey, @! ¿Me extrañaste?",
+	"NPCGreet.Rude2": "Hola, @.",
+	"NPCGreet.Rude3": "Oye, estaba pasando por aquí y escuché que estabas adentro...vine a visitar.",
+
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key.
+	 * (and some extra ones as new content) */
+	"NPCGift.Normal1": "Mira, te traje un regalo.[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "Te traje un regalo, toma.[{0}]", //outgoing3
+	"NPCGift.Normal3": "Te traje un regalo, toma. [{0}]", //shy3
+	"NPCGift.Normal4": "Ten, me acordé de ti cuando vi esto.[{0}]", //neutral1
+	"NPCGift.Normal5": "Oye, esto se veía como algo que te gustaría. Te lo traje. [{0}]", //original: Hey, this seemed like a 'you' item. So i got it for you. [{0}]
+	"NPCGift.Kind1": "Y te traje algo por las molestias. [{0}]", //polite1
+	"NPCGift.Kind2": "Ten, te traje algo por las molestias. [{0}]", //polite2
+	"NPCGift.Kind3": "Te traje algo por las molestias. [{0}]", //polite3
+	"NPCGift.Kind4": "Me acordé de ti cuando vi esto.[{0}]", //neutral2
+	"NPCGift.Kind5": "Parecía que te gustaría esto. [{0}]", //original: This seemed like something you'd like.[{0}]
+	"NPCGift.Lax1": "Ey, toma. [{0}]", //original: Hey, take this.[{0}]
+	"NPCGift.Lax2": "Mira, te traje algo.[{0}]", //rude1
+	"NPCGift.Lax3": "Te traje algo, toma.[{0}]", //rude3
+	"NPCGift.Lax4": "Ten. Tenía algunos extra guardados. [{0}]", //original: Here. I had some spares around. [{0}]
+	"NPCGift.Lax5": "Te compré algo en el camino.[{0}]", //rude2
 
 	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
 	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
@@ -204,12 +272,22 @@
 
 	/* TN: leaving */
 	/* based on social anxiety*/
-	"NPCRetiring.Outgoing": "Tengo que irme... pero la pasé bien.#$b#¡Te veré luego!$1",
-	"NPCRetiring.Shy": "El tiempo vuela...tengo que irme.#$b#Me alegro de verte.",
+	"NPCRetiring.Outgoing1": "Tengo que irme... pero la pasé bien.#$b#¡Te veré luego!$1",
+	"NPCRetiring.Outgoing2": "He estado un buen rato, así que me iré por ahora.",
+	"NPCRetiring.Outgoing3": "Te veo después, @.",
+	"NPCRetiring.Shy1": "El tiempo vuela...tengo que irme.#$b#Me alegro de verte.",
+	"NPCRetiring.Shy2": "Tengo que hacer algunas cosas, pero la pasé bien.#$b#Gracias, @.$1",
+	"NPCRetiring.Shy3": "Disculpa, @. Me tengo que ir.#$b#Gracias por tu hospitalidad.",
 	/* based on manners*/
-	"NPCRetiring.Polite": "@, me tengo que retirar...tengo algunas cosas que hacer.#$b#¡Mucho gusto en verte!$1",
-	"NPCRetiring.Neutral": "Oye, mira la hora... debería haberme ido hace rato.#$b#Te veré otro día!$1",
-    "NPCRetiring.Rude": "Ya, me voy ahora...te he ocupado mucho tiempo ya.#$b#Te veo luego.",
+	"NPCRetiring.Polite1": "@, me tengo que retirar...tengo algunas cosas que hacer.#$b#¡Mucho gusto en verte!$1",
+	"NPCRetiring.Polite2": "He estado aquí bastante tiempo, así que me retiraré.#$b#Te veré otro día, @.",
+	"NPCRetiring.Polite3": "@, fue agradable verte.#$b#Espero que te vaya bien.",
+	"NPCRetiring.Neutral1": "Oye, mira la hora... debería haberme ido hace rato.#$b#Te veré otro día!$1",
+	"NPCRetiring.Neutral2": "Me voy ahora, antes de que se haga más tarde.#$b#Nos vemos, @.",
+	"NPCRetiring.Neutral3": "Debes tener cosas que hacer, así que me iré.#$b#Fue agradable.$1",
+	"NPCRetiring.Rude1": "Ya, me voy ahora...te he ocupado mucho tiempo ya.#$b#Te veo luego.",
+	"NPCRetiring.Rude2": "He pasado aquí mucho tiempo...#$b#Nos vemos, @.",
+	"NPCRetiring.Rude3": "Se está haciendo tarde. Te veré otro día.",
 
 	/* TN: gone while outside */
 	"NPCGoneWhileOutside": "Mientras estabas afuera, {0} se retiró.",

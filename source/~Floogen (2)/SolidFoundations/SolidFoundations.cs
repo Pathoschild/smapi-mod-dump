@@ -89,6 +89,7 @@ namespace SolidFoundations
                 // Apply menu patches
                 new CarpenterMenuPatch(monitor, helper).Apply(harmony);
                 new PurchaseAnimalsMenuPatch(monitor, helper).Apply(harmony);
+                new BuildingPaintMenuPatch(monitor, helper).Apply(harmony);
 
                 // Apply object patch
                 new ChestPatch(monitor, helper).Apply(harmony);
@@ -155,6 +156,9 @@ namespace SolidFoundations
         [EventPriority(EventPriority.High + 1)]
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            // Load the buildings into the backported BuildingsData
+            _ = Helper.GameContent.Load<Dictionary<string, ExtendedBuildingModel>>("Data/BuildingsData");
+
             LoadCachedCustomBuildings();
             api.OnAfterBuildingRestoration(new EventArgs());
         }
@@ -216,8 +220,13 @@ namespace SolidFoundations
                     }
 
                     // Add any building skin masks
-                    foreach (var skin in models.Where(m => m.Skins is not null && m.Skins.Any(s => s.PaintMasks is not null)).SelectMany(m => m.Skins))
+                    foreach (var skin in models.Where(m => m.Skins is not null).SelectMany(m => m.Skins))
                     {
+                        if (skin.PaintMasks is null)
+                        {
+                            continue;
+                        }
+
                         string parsedMaskText = null;
                         foreach (var mask in skin.PaintMasks)
                         {
@@ -681,23 +690,20 @@ namespace SolidFoundations
 
                     // Load interiors
                     Monitor.Log($"Loading interiors from pack: {contentPack.Manifest.Name}", LogLevel.Trace);
-                    LoadInteriors(contentPack);
+                    LoadInteriors(contentPack, silent);
 
                     // Load the buildings
                     Monitor.Log($"Loading buildings from pack: {contentPack.Manifest.Name}", LogLevel.Trace);
-                    LoadBuildings(contentPack);
+                    LoadBuildings(contentPack, silent);
                 }
                 catch (Exception ex)
                 {
                     Monitor.Log($"Failed to load the content pack {contentPack.Manifest.UniqueID}: {ex}", LogLevel.Warn);
                 }
             }
-
-            // Load the buildings into the backported BuildingsData
-            _ = Helper.GameContent.Load<Dictionary<string, ExtendedBuildingModel>>("Data/BuildingsData");
         }
 
-        private void LoadInteriors(IContentPack contentPack)
+        private void LoadInteriors(IContentPack contentPack, bool silent)
         {
             try
             {
@@ -769,7 +775,7 @@ namespace SolidFoundations
             }
         }
 
-        private void LoadBuildings(IContentPack contentPack)
+        private void LoadBuildings(IContentPack contentPack, bool silent)
         {
             try
             {
@@ -943,6 +949,9 @@ namespace SolidFoundations
                         buildingModel.Translations = contentPack.Translation;
                     }
 
+                    // Check for any compatibility issues
+                    HandleCompatibilityIssues(buildingModel, silent);
+
                     // Track the model
                     buildingManager.AddBuilding(buildingModel);
 
@@ -954,6 +963,28 @@ namespace SolidFoundations
             catch (Exception ex)
             {
                 Monitor.Log($"Error loading buildings from content pack {contentPack.Manifest.Name}: {ex}", LogLevel.Error);
+            }
+        }
+
+        private void HandleCompatibilityIssues(ExtendedBuildingModel model, bool silent)
+        {
+            if (model is null)
+            {
+                return;
+            }
+
+            if (model.Builder.Equals("Carpenter", StringComparison.OrdinalIgnoreCase))
+            {
+                Monitor.Log($"{model.ID} is using the outdated value \"Carpenter\" for the \"Builder\" property. Solid Foundations will handle this, though the value should be changed to \"Robin\" for forward compatibility.", silent ? LogLevel.Trace : LogLevel.Warn);
+
+                model.Builder = "Robin";
+            }
+
+            if (model.MagicalConstruction is null && model.Builder.Equals("Wizard", StringComparison.OrdinalIgnoreCase))
+            {
+                Monitor.Log($"{model.ID} is using the value \"Wizard\" for the \"Builder\" property, but has not declared the \"MagicalConstruction\" property. Solid Foundations will infer \"MagicalConstruction\" as true, though for forward compatibility this should be set manually.", silent ? LogLevel.Trace : LogLevel.Warn);
+
+                model.MagicalConstruction = true;
             }
         }
 

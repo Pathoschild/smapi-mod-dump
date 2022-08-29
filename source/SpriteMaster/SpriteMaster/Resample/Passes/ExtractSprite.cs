@@ -37,7 +37,7 @@ internal static class ExtractSprite {
 		for (int y = 0; y < bounds.Extent.Height; ++y) {
 			int offset = startOffset + ((y * block) * stride);
 			for (int x = 0; x < bounds.Extent.Width; ++x) {
-				result.At(outOffset++) = data.At(offset + (x * block));
+				result[outOffset++] = data[offset + (x * block)];
 			}
 		}
 
@@ -56,7 +56,7 @@ internal static class ExtractSprite {
 			int sourceOffset = (textureBounds.Width * inBounds.Top) + inBounds.Left;
 			int destOffset = 0;
 			for (int y = 0; y < inBounds.Height; ++y) {
-				data.SliceUnsafe(sourceOffset, inBounds.Width).CopyTo(resultData.SliceUnsafe(destOffset, inBounds.Width));
+				data.Slice(sourceOffset, inBounds.Width).CopyTo(resultData.Slice(destOffset, inBounds.Width));
 				destOffset += inBounds.Width;
 				sourceOffset += textureBounds.Width;
 			}

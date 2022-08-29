@@ -92,6 +92,9 @@ namespace SolidFoundations.Framework.Models.ContentPack
         [ContentSerializer(Optional = true)]
         public string IndoorMapTypeAssembly { get; set; } = "Stardew Valley";
 
+        [ContentSerializer(Optional = true)]
+        public new bool? MagicalConstruction;
+
         public new string GetActionAtTile(int relative_x, int relative_y)
         {
             Point key = new Point(relative_x, relative_y);

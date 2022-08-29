@@ -16,8 +16,7 @@ using Common;
 using Common.Extensions.Reflection;
 using Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -35,6 +34,11 @@ internal sealed class FarmerTakeDamagePatch : Common.Harmony.HarmonyPatch
     }
 
     #region harmony patches
+
+    /// <summary>Grant i-frames during stabby sword lunge.</summary>
+    [HarmonyPrefix]
+    private static bool FarmerTakeDamagePrefix(Farmer __instance) =>
+        __instance.CurrentTool is not MeleeWeapon { type.Value: MeleeWeapon.stabbingSword, isOnSpecial: true };
 
     /// <summary>Removes damage mitigation soft cap.</summary>
     [HarmonyTranspiler]
@@ -66,7 +70,7 @@ internal sealed class FarmerTakeDamagePatch : Common.Harmony.HarmonyPatch
                     labels,
                     new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.RemoveDefenseSoftCap))),
+                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.RemoveFarmerDefenseSoftCap))),
                     new CodeInstruction(OpCodes.Brtrue_S, skipSoftCap)
                 )
                 .AdvanceUntil(

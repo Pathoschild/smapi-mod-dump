@@ -14,8 +14,6 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
 
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 
 #endregion using directives
 

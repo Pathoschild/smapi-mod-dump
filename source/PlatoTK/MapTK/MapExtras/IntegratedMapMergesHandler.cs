@@ -9,20 +9,23 @@
 *************************************************/
 
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewModdingAPI.Events;
 
 namespace MapTK.MapExtras
 {
     internal class IntegratedMapMergesHandler
     {
+        private readonly IntegratedMapEditsAssetEditor AssetEditor;
 
         public IntegratedMapMergesHandler(IModHelper helper)
         {
-            helper.Content.AssetEditors.Add(new IntegratedMapEditsAssetEditor(helper));
+            this.AssetEditor = new IntegratedMapEditsAssetEditor(helper);
+            helper.Events.Content.AssetRequested += OnAssetRequested;
+        }
+
+        public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            this.AssetEditor.OnAssetRequested(e);
         }
     }
 }

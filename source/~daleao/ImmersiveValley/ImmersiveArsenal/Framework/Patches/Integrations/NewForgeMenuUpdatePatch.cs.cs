@@ -13,13 +13,13 @@ namespace DaLion.Stardew.Arsenal.Framework.Patches;
 #region using directives
 
 using Common;
+using Common.Attributes;
 using Common.Extensions.Reflection;
 using Common.Harmony;
+using Common.Integrations.SpaceCore;
 using Enchantments;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -27,11 +27,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("spacechase0.SpaceCore")]
 internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
 {
     private static readonly Type _NewForgeMenuType = "SpaceCore.Interface.NewForgeMenu".ToType();
@@ -39,14 +38,7 @@ internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
     /// <summary>Construct an instance.</summary>
     internal NewForgeMenuUpdatePatch()
     {
-        try
-        {
-            Target = _NewForgeMenuType.RequireMethod("update", new[] { typeof(GameTime) });
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = _NewForgeMenuType.RequireMethod("update", new[] { typeof(GameTime) });
     }
 
     #region harmony patches
@@ -104,7 +96,7 @@ internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
             return null;
         }
 
-        /// Injected: else if (leftIngredientSpot.item is Slingshot slingshot && ModEntry.Config.AllowSlingshotForges)
+        /// Injected: else if (leftIngredientSpot.item is Slingshot slingshot && ModEntry.Config.EnableSlingshotForges)
         ///             UnforgeSlingshot(leftIngredientSpot.item);
         /// Between: MeleeWeapon and CombinedRing unforge behaviors...
 
@@ -135,7 +127,7 @@ internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
                     new CodeInstruction(OpCodes.Brfalse, elseIfCombinedRing),
                     new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.AllowSlingshotForges))),
+                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.EnableSlingshotForges))),
                     new CodeInstruction(OpCodes.Brfalse, elseIfCombinedRing),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldloc_S, slingshot),
@@ -158,48 +150,32 @@ internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
 
     internal static void UnforgeHolyBlade(IClickableMenu menu, MeleeWeapon holy)
     {
-        SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot ??= "SpaceCore.Interface.NewForgeMenu".ToType()
-            .RequireField("leftIngredientSpot")
-            .CompileUnboundFieldGetterDelegate<Func<IClickableMenu, ClickableTextureComponent>>();
-
         var heroSoul = (SObject)ModEntry.DynamicGameAssetsApi!.SpawnDGAItem(ModEntry.Manifest.UniqueID + "/Hero Soul");
         heroSoul.Stack = 3;
-        Utility.CollectOrDrop(heroSoul);
-        SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot(menu).item = null;
+        StardewValley.Utility.CollectOrDrop(heroSoul);
+        ExtendedSpaceCoreAPI.GetNewForgeMenuLeftIngredientSpot.Value(menu).item = null;
         Game1.playSound("coin");
     }
 
     internal static void UnforgeSlingshot(IClickableMenu menu, Slingshot slingshot)
     {
-        SpaceCoreUtils.GetNewForgeMenuForgeCostAtLevel ??= "SpaceCore.Interface.NewForgeMenu".ToType()
-            .RequireMethod("GetForgeCostAtLevel")
-            .CompileUnboundDelegate<Func<IClickableMenu, int, int>>();
-        SpaceCoreUtils.GetNewForgeMenuForgeCost ??= "SpaceCore.Interface.NewForgeMenu".ToType()
-            .RequireMethod("GetForgeCost")
-            .CompileUnboundDelegate<Func<IClickableMenu, Item, Item, int>>();
-        SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot ??= "SpaceCore.Interface.NewForgeMenu".ToType()
-            .RequireField("leftIngredientSpot")
-            .CompileUnboundFieldGetterDelegate<Func<IClickableMenu, ClickableTextureComponent>>();
-        SpaceCoreUtils.SetNewForgeMenuHeldItem ??= "SpaceCore.Interface.NewForgeMenu".ToType().RequireField("heldItem")
-            .CompileUnboundFieldSetterDelegate<Action<IClickableMenu, Item>>();
-
         var cost = 0;
         var forgeLevels = slingshot.GetTotalForgeLevels(true);
         for (var i = 0; i < forgeLevels; ++i)
-            cost += SpaceCoreUtils.GetNewForgeMenuForgeCostAtLevel(menu, i);
+            cost += ExtendedSpaceCoreAPI.GetNewForgeMenuForgeCostAtLevel.Value(menu, i);
 
         if (slingshot.hasEnchantmentOfType<DiamondEnchantment>())
-            cost += SpaceCoreUtils.GetNewForgeMenuForgeCost(menu,
-                SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot(menu).item, new SObject(72, 1));
+            cost += ExtendedSpaceCoreAPI.GetNewForgeMenuForgeCost.Value(menu,
+                ExtendedSpaceCoreAPI.GetNewForgeMenuLeftIngredientSpot.Value(menu).item, new SObject(72, 1));
 
         for (var i = slingshot.enchantments.Count - 1; i >= 0; --i)
             if (slingshot.enchantments[i].IsForge())
                 slingshot.RemoveEnchantment(slingshot.enchantments[i]);
 
-        SpaceCoreUtils.GetNewForgeMenuLeftIngredientSpot(menu).item = null;
+        ExtendedSpaceCoreAPI.GetNewForgeMenuLeftIngredientSpot.Value(menu).item = null;
         Game1.playSound("coin");
-        SpaceCoreUtils.SetNewForgeMenuHeldItem(menu, slingshot);
-        Utility.CollectOrDrop(new SObject(848, cost / 2));
+        ExtendedSpaceCoreAPI.SetNewForgeMenuHeldItem.Value(menu, slingshot);
+        StardewValley.Utility.CollectOrDrop(new SObject(848, cost / 2));
     }
 
     #endregion injected subroutines

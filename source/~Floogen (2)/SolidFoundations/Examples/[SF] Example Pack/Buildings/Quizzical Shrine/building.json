@@ -49,6 +49,7 @@
   ],
 
   "Builder": "Wizard",
+  "MagicalConstruction": true,
   "DefaultSpecialAction": {
     "ConditionalActions": [
       {

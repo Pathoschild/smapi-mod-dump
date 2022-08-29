@@ -17,7 +17,6 @@ using Common.Extensions.Reflection;
 using Common.Harmony;
 using Enchantments;
 using HarmonyLib;
-using JetBrains.Annotations;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -33,11 +32,33 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatch : Common.Harmony.Harm
     internal MeleeWeaponDoAnimateSpecialMovePatch()
     {
         Target = RequireMethod<MeleeWeapon>("doAnimateSpecialMove");
+        Postfix!.before = new[] { "DaLion.ImmersiveRings" };
     }
 
     #region harmony patches
 
-    /// <summary>Doubles hit count of Infinity Dagger's special stab move.</summary>
+    /// <summary>Implement Topaz enchantment CDR.</summary>
+    [HarmonyPostfix]
+    [HarmonyBefore("DaLion.ImmersiveRings")]
+    private static void MeleeWeaponDoAnimateSpecialMovePostfix(MeleeWeapon __instance)
+    {
+        var cdr = __instance.GetEnchantmentLevel<GarnetEnchantment>() * 0.1f;
+        if (cdr <= 0f) return;
+
+        if (MeleeWeapon.attackSwordCooldown > 0)
+            MeleeWeapon.attackSwordCooldown = (int)(MeleeWeapon.attackSwordCooldown * (1f - cdr));
+
+        if (MeleeWeapon.defenseCooldown > 0)
+            MeleeWeapon.defenseCooldown = (int)(MeleeWeapon.defenseCooldown * (1f - cdr));
+
+        if (MeleeWeapon.daggerCooldown > 0)
+            MeleeWeapon.daggerCooldown = (int)(MeleeWeapon.daggerCooldown * (1f - cdr));
+
+        if (MeleeWeapon.clubCooldown > 0)
+            MeleeWeapon.clubCooldown = (int)(MeleeWeapon.clubCooldown * (1f - cdr));
+    }
+
+    /// <summary>Increase hit count of Infinity Dagger's special stab move.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? MeleeWeaponDoAnimateSpecialMoveTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
@@ -45,7 +66,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatch : Common.Harmony.Harm
         var helper = new ILHelper(original, instructions);
 
         /// From: daggerHitsLeft = 4;
-        /// To: daggerHitsLeft = this.BaseName.Contains "Infinity" ? 8 : 4;
+        /// To: daggerHitsLeft = this.BaseName.Contains "Infinity" ? 6 : 4;
 
         var notInfinity = generator.DefineLabel();
         var resumeExecution = generator.DefineLabel();
@@ -62,7 +83,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatch : Common.Harmony.Harm
                         typeof(MeleeWeapon).RequireMethod(nameof(MeleeWeapon.hasEnchantmentOfType))
                             .MakeGenericMethod(typeof(InfinityEnchantment))),
                     new CodeInstruction(OpCodes.Brfalse_S, notInfinity),
-                    new CodeInstruction(OpCodes.Ldc_I4_8),
+                    new CodeInstruction(OpCodes.Ldc_I4_6),
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
                 )
                 .Advance()

@@ -8,13 +8,12 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Integrations;
+namespace DaLion.Common.Integrations.BetterCrafting;
 
 #region using directives
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Network;
 using System.Collections.Generic;
@@ -38,8 +37,7 @@ public enum CurrencyType
     ClubCoins,
     /// <summary>The player's Qi Gems.</summary>
     QiGems
-};
-
+}
 
 /// <summary>
 /// Used by Better Crafting to discover and
@@ -153,7 +151,6 @@ public interface IInventoryProvider
     int GetActualCapacity(object @object, GameLocation? location, Farmer? who);
 }
 
-
 /// <summary>
 /// Represents an item storage that
 /// Better Crafting is interacting with, whether by extracting
@@ -244,7 +241,6 @@ public interface IInventory
     int GetActualCapacity();
 }
 
-
 /// <summary>
 /// Represents a single ingredient used when crafting a
 /// recipe. An ingredient can be an item, a currency, or anything else.
@@ -321,7 +317,6 @@ public interface IIngredient
     #endregion consumption
 }
 
-
 /// <summary>
 /// Event fired by Better Crafting whenever a player performs a
 /// craft, and may be fired multiple times in quick succession if a player is
@@ -357,7 +352,6 @@ public interface IPerformCraftEvent
     /// </summary>
     void Complete();
 }
-
 
 /// <summary>
 /// Represents a single crafting recipe, though it need not
@@ -505,7 +499,6 @@ public interface IRecipe
 
     #endregion creation
 }
-
 
 /// <summary>
 /// Used to discover crafting recipes

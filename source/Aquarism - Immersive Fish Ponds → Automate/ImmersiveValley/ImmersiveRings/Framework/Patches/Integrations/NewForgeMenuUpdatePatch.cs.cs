@@ -13,36 +13,27 @@ namespace DaLion.Stardew.Rings.Framework.Patches;
 #region using directives
 
 using Common;
+using Common.Attributes;
 using Common.Extensions.Reflection;
 using Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 
-[UsedImplicitly]
+[UsedImplicitly, RequiresMod("spacechase0.SpaceCore")]
 internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
 {
     /// <summary>Construct an instance.</summary>
     internal NewForgeMenuUpdatePatch()
     {
-        try
-        {
-            Target = "SpaceCore.Interface.NewForgeMenu".ToType().RequireMethod("update", new[] { typeof(GameTime) });
-        }
-        catch
-        {
-            // ignored
-        }
+        Target = "SpaceCore.Interface.NewForgeMenu".ToType().RequireMethod("update", new[] { typeof(GameTime) });
     }
 
     #region harmony patches
@@ -109,10 +100,10 @@ internal sealed class NewForgeMenuUpdatePatch : Common.Harmony.HarmonyPatch
         foreach (var ring in combinedRings)
         {
             var gemstone = Utils.GemstoneByRing[ring.ParentSheetIndex];
-            Utility.CollectOrDrop(new SObject(gemstone, 1));
-            Utility.CollectOrDrop(new SObject(848, 5));
+            StardewValley.Utility.CollectOrDrop(new SObject(gemstone, 1));
+            StardewValley.Utility.CollectOrDrop(new SObject(848, 5));
         }
-        Utility.CollectOrDrop(iridiumBand);
+        StardewValley.Utility.CollectOrDrop(iridiumBand);
         menu.leftIngredientSpot.item = null;
         Game1.playSound("coin");
     }

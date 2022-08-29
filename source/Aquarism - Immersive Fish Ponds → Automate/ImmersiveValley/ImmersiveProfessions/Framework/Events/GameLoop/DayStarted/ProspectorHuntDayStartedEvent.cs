@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using Common.Events;
-using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -29,7 +28,6 @@ internal sealed class ProspectorHuntDayStartedEvent : DayStartedEvent
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object? sender, DayStartedEventArgs e)
     {
-        if (ModEntry.PlayerState.ProspectorHunt is not null)
-            ModEntry.PlayerState.ProspectorHunt.ResetChanceAccumulator();
+        ModEntry.State.ProspectorHunt.Value.ResetChanceAccumulator();
     }
 }

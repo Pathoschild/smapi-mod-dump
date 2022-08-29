@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Trading",
+    "Author": "MindMeltMax",
+    "Version": "1.0.0",
+    "Description": "Adds a menu which allows 2 players to trade items and money",
+    "UniqueID": "MindMeltMax.Trading",
+    "EntryDll": "Trading.dll",
+    "MinimumApiVersion": "3.13.0",
+    "UpdateKeys": [ "nexus:13293" ]
+}

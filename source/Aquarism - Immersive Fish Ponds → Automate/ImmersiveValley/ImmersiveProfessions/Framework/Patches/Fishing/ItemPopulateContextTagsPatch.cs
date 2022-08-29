@@ -13,11 +13,8 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 #region using directives
 
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using System.Collections.Generic;
 using Utility;
-using SObject = StardewValley.Object;
 
 #endregion using directives
 

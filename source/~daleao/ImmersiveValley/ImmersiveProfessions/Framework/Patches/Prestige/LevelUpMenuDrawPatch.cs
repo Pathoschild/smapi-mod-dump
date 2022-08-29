@@ -17,10 +17,8 @@ using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
 using Extensions;
 using HarmonyLib;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -32,7 +30,9 @@ using System.Reflection.Emit;
 [UsedImplicitly]
 internal sealed class LevelUpMenuDrawPatch : DaLion.Common.Harmony.HarmonyPatch
 {
-    private static Func<LevelUpMenu, List<int>>? _GetProfessionsToChoose;
+    private static readonly Lazy<Func<LevelUpMenu, List<int>>> _GetProfessionsToChoose = new(() =>
+        typeof(LevelUpMenu).RequireField("professionsToChoose")
+            .CompileUnboundFieldGetterDelegate<LevelUpMenu, List<int>>());
 
     /// <summary>Construct an instance.</summary>
     internal LevelUpMenuDrawPatch()
@@ -130,9 +130,7 @@ internal sealed class LevelUpMenuDrawPatch : DaLion.Common.Harmony.HarmonyPatch
     {
         if (!ModEntry.Config.EnablePrestige || !menu.isProfessionChooser || currentLevel > 10) return;
 
-        _GetProfessionsToChoose ??= typeof(LevelUpMenu).RequireField("professionsToChoose")
-            .CompileUnboundFieldGetterDelegate<Func<LevelUpMenu, List<int>>>();
-        var professionsToChoose = _GetProfessionsToChoose(menu);
+        var professionsToChoose = _GetProfessionsToChoose.Value(menu);
         if (!Profession.TryFromValue(professionsToChoose[0], out var leftProfession) ||
             !Profession.TryFromValue(professionsToChoose[1], out var rightProfession)) return;
 

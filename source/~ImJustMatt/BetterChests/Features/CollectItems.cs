@@ -12,9 +12,7 @@ namespace StardewMods.BetterChests.Features;
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewMods.BetterChests.Helpers;
@@ -23,7 +21,6 @@ using StardewMods.Common.Integrations.BetterChests;
 using StardewMods.CommonHarmony.Enums;
 using StardewMods.CommonHarmony.Helpers;
 using StardewMods.CommonHarmony.Models;
-using StardewValley;
 using StardewValley.Objects;
 
 /// <summary>
@@ -33,11 +30,16 @@ internal class CollectItems : IFeature
 {
     private const string Id = "furyx639.BetterChests/CollectItems";
 
-    private readonly PerScreen<List<IStorageObject>?> _cachedEligible = new();
+    private static CollectItems? Instance;
+
+    private readonly PerScreen<List<IStorageObject>> _eligible = new(() => new());
+    private readonly IModHelper _helper;
+
+    private bool _isActivated;
 
     private CollectItems(IModHelper helper)
     {
-        this.Helper = helper;
+        this._helper = helper;
         HarmonyHelper.AddPatches(
             CollectItems.Id,
             new SavedPatch[]
@@ -50,31 +52,7 @@ internal class CollectItems : IFeature
             });
     }
 
-    private static IEnumerable<IStorageObject> Eligible
-    {
-        get
-        {
-            foreach (var item in Game1.player.Items.Take(12))
-            {
-                if (StorageHelper.TryGetOne(item, out var storage) && storage.CollectItems != FeatureOption.Disabled)
-                {
-                    yield return storage;
-                }
-            }
-        }
-    }
-
-    private static CollectItems? Instance { get; set; }
-
-    private List<IStorageObject>? CachedEligible
-    {
-        get => this._cachedEligible.Value;
-        set => this._cachedEligible.Value = value;
-    }
-
-    private IModHelper Helper { get; }
-
-    private bool IsActivated { get; set; }
+    private static List<IStorageObject> Eligible => CollectItems.Instance!._eligible.Value;
 
     /// <summary>
     ///     Initializes <see cref="CollectItems" />.
@@ -89,23 +67,31 @@ internal class CollectItems : IFeature
     /// <inheritdoc />
     public void Activate()
     {
-        if (!this.IsActivated)
+        if (this._isActivated)
         {
-            this.IsActivated = true;
-            HarmonyHelper.ApplyPatches(CollectItems.Id);
-            this.Helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
+            return;
         }
+
+        this._isActivated = true;
+        HarmonyHelper.ApplyPatches(CollectItems.Id);
+        Configurator.StorageEdited += CollectItems.OnStorageEdited;
+        this._helper.Events.GameLoop.SaveLoaded += CollectItems.OnSaveLoaded;
+        this._helper.Events.Player.InventoryChanged += CollectItems.OnInventoryChanged;
     }
 
     /// <inheritdoc />
     public void Deactivate()
     {
-        if (this.IsActivated)
+        if (!this._isActivated)
         {
-            this.IsActivated = false;
-            HarmonyHelper.UnapplyPatches(CollectItems.Id);
-            this.Helper.Events.Player.InventoryChanged -= this.OnInventoryChanged;
+            return;
         }
+
+        this._isActivated = false;
+        HarmonyHelper.UnapplyPatches(CollectItems.Id);
+        Configurator.StorageEdited -= CollectItems.OnStorageEdited;
+        this._helper.Events.GameLoop.SaveLoaded -= CollectItems.OnSaveLoaded;
+        this._helper.Events.Player.InventoryChanged -= CollectItems.OnInventoryChanged;
     }
 
     private static bool AddItemToInventoryBool(Farmer farmer, Item? item, bool makeActiveObject)
@@ -115,18 +101,16 @@ internal class CollectItems : IFeature
             return true;
         }
 
-        CollectItems.Instance!.CachedEligible ??= CollectItems.Eligible.ToList();
-
-        if (!CollectItems.Instance.CachedEligible.Any())
+        if (!CollectItems.Eligible.Any())
         {
             return farmer.addItemToInventoryBool(item, makeActiveObject);
         }
 
-        foreach (var storage in CollectItems.Instance.CachedEligible)
+        foreach (var storage in CollectItems.Eligible)
         {
             item.resetState();
             storage.ClearNulls();
-            item = storage.StashItem(item, storage.StashToChestStacks != FeatureOption.Disabled);
+            item = storage.StashItem(item, storage.StashToChestStacks is FeatureOption.Enabled);
 
             if (item is null)
             {
@@ -139,24 +123,33 @@ internal class CollectItems : IFeature
 
     private static IEnumerable<CodeInstruction> Debris_collect_transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        foreach (var instruction in instructions)
-        {
-            if (instruction.opcode == OpCodes.Callvirt && instruction.operand.Equals(AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventoryBool))))
-            {
-                yield return new(OpCodes.Call, AccessTools.Method(typeof(CollectItems), nameof(CollectItems.AddItemToInventoryBool)));
-            }
-            else
-            {
-                yield return instruction;
-            }
-        }
+        return instructions.MethodReplacer(
+            AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventoryBool)),
+            AccessTools.Method(typeof(CollectItems), nameof(CollectItems.AddItemToInventoryBool)));
     }
 
-    private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
+    private static void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
     {
         if (e.IsLocalPlayer && (e.Added.OfType<Chest>().Any() || e.Removed.OfType<Chest>().Any()))
         {
-            this.CachedEligible = null;
+            CollectItems.RefreshEligible();
         }
+    }
+
+    private static void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
+    {
+        CollectItems.RefreshEligible();
+    }
+
+    private static void OnStorageEdited(object? sender, IStorageObject storage)
+    {
+        CollectItems.RefreshEligible();
+    }
+
+    private static void RefreshEligible()
+    {
+        var storages = Storages.FromPlayer(Game1.player, limit: 12);
+        CollectItems.Eligible.Clear();
+        CollectItems.Eligible.AddRange(storages.Where(storage => storage.CollectItems is FeatureOption.Enabled));
     }
 }

@@ -10,7 +10,7 @@
 
 namespace Shockah.ProjectFluent
 {
-	internal class NoOpFluent: IFluent<string>
+	internal class NoOpFluent : IFluent<string>
 	{
 		public bool ContainsKey(string key)
 			=> false;

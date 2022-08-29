@@ -26,5 +26,7 @@ namespace BankOfFerngill.Framework.Data
         public int NumberOfLoansPaidBack { get; set; } = 0;
 
         public int TotalNumberOfLoans { get; set; } = 0;
+
+        public bool WasHardModeDebtAdded { get; set; } = false;
     }
 }

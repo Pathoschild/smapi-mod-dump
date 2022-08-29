@@ -62,7 +62,8 @@ namespace Shockah.MailPersistenceFramework
 			addresseeID, tags, title, text,
 			items, recipe,
 			background, textColor
-		) { }
+		)
+		{ }
 
 		[JsonConstructor]
 		public MailData(

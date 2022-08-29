@@ -16,8 +16,6 @@ using Common;
 using Common.Extensions.Reflection;
 using Common.Harmony;
 using HarmonyLib;
-using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -45,7 +43,7 @@ internal sealed class ToolAddEnchantmentPatch : Common.Harmony.HarmonyPatch
         var helper = new ILHelper(original, instructions);
 
         /// From: if (this is MeleeWeapon ...
-        /// To: if (this is MeleeWeapon || this is Slingshot && ModEntry.Config.AllowSlingshotForges ...
+        /// To: if (this is MeleeWeapon || this is Slingshot && ModEntry.Config.EnableSlingshotForges ...
 
         var isWeapon = generator.DefineLabel();
         try
@@ -63,7 +61,7 @@ internal sealed class ToolAddEnchantmentPatch : Common.Harmony.HarmonyPatch
                     new CodeInstruction(OpCodes.Brfalse, resumeExecution),
                     new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.AllowSlingshotForges)))
+                        typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.EnableSlingshotForges)))
                 )
                 .Advance()
                 .AddLabels(isWeapon);

@@ -14,7 +14,6 @@ namespace DaLion.Stardew.Tools.Extensions;
 
 using Microsoft.Xna.Framework;
 using Netcode;
-using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using System;

@@ -318,7 +318,7 @@ public abstract class Textures<TElement> : BenchmarkBase<Textures<TElement>.Spri
 
 		dataList = dataList.OrderByF(sd => sd.Path).ToArrayF();
 
-		DataSets.Add(new(dataList));
+		DefaultDataSetsStatic.Add(new(dataList));
 	}
 
 	[IterationSetup]

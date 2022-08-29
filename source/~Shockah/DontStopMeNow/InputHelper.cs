@@ -16,7 +16,12 @@ namespace Shockah.DontStopMeNow
 {
 	internal static class InputHelper
 	{
-		public enum ButtonType { Mouse, Keyboard, Gamepad }
+		public enum ButtonType
+		{
+			Mouse,
+			Keyboard,
+			Gamepad
+		}
 
 		public static ButtonType? GetButtonType(this SButton button)
 		{
