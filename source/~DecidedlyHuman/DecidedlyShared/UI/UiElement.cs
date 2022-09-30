@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DecidedlyShared.Utilities;
@@ -28,11 +29,25 @@ namespace DecidedlyShared.UI
         private readonly int margins = 16;
         private int currentTopIndex;
         private bool isHovered;
+        private bool showScrollBar = false;
+
+        // This is to differentiate a draggable element (like our scrollbar handle) from a non-draggable one.
+        private bool isDraggable = false;
+
         private int maxTextLength = 500;
         private UiElement? okayButton;
         private UiElement? parentElement;
         private UiElement? titleBar;
+        private UiElement? scrollBar;
+        private UiElement? scrollBarBack;
         private List<UiElement> visibleElements;
+        private Action clickAction;
+
+        public Action OnClick
+        {
+            get => this.clickAction;
+            set => this.clickAction = value;
+        }
 
         public UiElement(string name, string label, string hoverText, int width = 0, int height = 0,
                          Orientation orientation = Orientation.Vertical, Alignment childAlignment = Alignment.Middle,
@@ -98,17 +113,24 @@ namespace DecidedlyShared.UI
                 element.bounds.Width = (int)Game1.dialogueFont.MeasureString(element.labelText).X;
                 element.bounds.Height = (int)Game1.dialogueFont.MeasureString(element.labelText).Y;
             }
+
+            this.UpdateElements();
         }
 
         public void UpdateElements()
         {
-            this.visibleElements = this.childElements.GetRange(this.currentTopIndex, this.MaximumElementsVisible);
+            this.visibleElements = this.childElements.GetRange(this.currentTopIndex, Math.Min(this.MaximumElementsVisible, this.childElements.Count));
 
             if (this.visibleElements.Any())
             {
                 this.ResizeToChildren();
                 this.UpdateChildrenPositions();
             }
+
+            this.scrollBarBack.bounds.Height = this.bounds.Height;
+            this.scrollBarBack.bounds.Width = 16;
+            this.scrollBarBack.bounds.X = this.bounds.X + this.bounds.Width + 32;
+            this.scrollBarBack.bounds.Y = this.bounds.Y;
         }
 
         public void CalculateInitialSize()
@@ -299,6 +321,47 @@ namespace DecidedlyShared.UI
             // {
             //     childElements[i].Draw(sb);
             // }
+        }
+
+        public void LeftClickHeld(int x, int y)
+        {
+
+        }
+
+        public void LeftClickRelease(int x, int y)
+        {
+
+        }
+
+        public void LeftClick(int x, int y)
+        {
+            UiElement? hitChildElement = null;
+
+            foreach (UiElement element in this.childElements)
+            {
+                if (element.containsPoint(x, y))
+                {
+                    hitChildElement = element;
+                    break;
+                }
+            }
+
+            // If the child element was hit, we pass the click coordinates into it so it can check its children.
+            if (hitChildElement != null)
+                hitChildElement.LeftClick(x, y);
+            else
+            {
+                // If the child element wasn't hit, we can assume the click was for us, so we consume it.
+                this.ConsumeLeftClick();
+            }
+        }
+
+        private void ConsumeLeftClick()
+        {
+            // We're consuming a click, so we want to execute our clickAction action if we have one.
+
+            if (this.clickAction != null)
+                this.clickAction.Invoke();
         }
     }
 }

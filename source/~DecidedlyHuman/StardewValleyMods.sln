@@ -18,9 +18,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewRituals", "StardewRituals\StardewRituals.csproj", "{8D42C1AC-3020-4F12-9087-3E5A2F1B575B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62C07841-533F-41EA-B18C-8F5BF7BD2CE2}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartBuilding", "SmartBuilding\SmartBuilding.csproj", "{62962075-ACD4-4B15-AE27-452EF2D8220A}"
 EndProject
@@ -74,15 +71,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackInTime", "BackInTime\Ba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateProject", "TemplateProject\TemplateProject.csproj", "{299882B5-AC42-420D-8747-A33DCA1F991F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TerrariaSmartCursor", "TerrariaSmartCursor\TerrariaSmartCursor.csproj", "{EF597C9B-9B78-4AA4-9808-CF1BB911FD38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartCursor", "SmartCursor\SmartCursor.csproj", "{EF597C9B-9B78-4AA4-9808-CF1BB911FD38}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Current", "Current", "{E69DF8DB-8E6B-4051-A8CC-10300BBFE99B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{03C05091-3D1F-4393-B00B-392EE2ABCD26}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inactive", "Inactive", "{CDE9D996-1C34-4899-9E84-FC1593E58E00}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shelved", "Shelved", "{CDE9D996-1C34-4899-9E84-FC1593E58E00}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Future Mods", "Future Mods", "{E354064B-9266-49E7-88A7-A7EDF08A3114}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoAccidentalClosing", "NoAccidentalClosing\NoAccidentalClosing.csproj", "{F2873CA9-EA1D-4751-9F05-B42A50040FAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmInTheSky", "FarmInTheSky\FarmInTheSky.csproj", "{C2C13B19-8A13-44CB-93BB-CEC39690BB63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -289,6 +290,18 @@ Global
 		{EF597C9B-9B78-4AA4-9808-CF1BB911FD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF597C9B-9B78-4AA4-9808-CF1BB911FD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF597C9B-9B78-4AA4-9808-CF1BB911FD38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB}.Android|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB}.Android|Any CPU.Build.0 = Debug|Any CPU
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63}.Android|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63}.Android|Any CPU.Build.0 = Debug|Any CPU
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -327,6 +340,9 @@ Global
 		{C1EC3265-4D58-4959-AA56-3FABA9FA9140} = {E69DF8DB-8E6B-4051-A8CC-10300BBFE99B}
 		{017EE5C6-E2DD-41DB-A49B-3D6AFC21D23C} = {E354064B-9266-49E7-88A7-A7EDF08A3114}
 		{EF597C9B-9B78-4AA4-9808-CF1BB911FD38} = {E69DF8DB-8E6B-4051-A8CC-10300BBFE99B}
+		{03C05091-3D1F-4393-B00B-392EE2ABCD26} = {E69DF8DB-8E6B-4051-A8CC-10300BBFE99B}
+		{F2873CA9-EA1D-4751-9F05-B42A50040FAB} = {CDE9D996-1C34-4899-9E84-FC1593E58E00}
+		{C2C13B19-8A13-44CB-93BB-CEC39690BB63} = {E69DF8DB-8E6B-4051-A8CC-10300BBFE99B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C1F496A-0730-4F2A-801B-63D4F7725C12}

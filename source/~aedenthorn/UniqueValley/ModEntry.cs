@@ -53,6 +53,7 @@ namespace UniqueValley
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
 
             helper.Events.Content.AssetRequested += Content_AssetRequested;
 
@@ -62,8 +63,14 @@ namespace UniqueValley
 
         }
 
+        private void GameLoop_ReturnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
+        {
+            subDict.Clear();
+        }
+
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
+            subDict.Clear();
             for (int i = 0; i < Game1.locations.Count; i++)
             {
                 if (!(Game1.locations[i] is MovieTheater))
@@ -85,6 +92,10 @@ namespace UniqueValley
         private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
         {
             if (e.Name.StartsWith("Characters/Dialogue/") || e.Name.StartsWith("Strings/"))
+            {
+                e.Edit(ChangeNames, StardewModdingAPI.Events.AssetEditPriority.Late);
+            }
+            else if (Config.RandomizeGiftTastes && e.NameWithoutLocale.IsEquivalentTo("Data/NPCGiftTastes"))
             {
                 e.Edit(ChangeNames, StardewModdingAPI.Events.AssetEditPriority.Late);
             }

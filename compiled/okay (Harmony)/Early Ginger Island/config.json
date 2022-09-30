@@ -1,0 +1,28 @@
+{
+  "Version": "1.0.0",
+  "BoatTicketPrice": 1000,
+  "AllowIslandFarmBeforeCC": false,
+  "BoatFixHardwoodRequired": 200,
+  "BoatFixIridiumBarsRequired": 5,
+  "BoatFixBatteryPacksRequired": 5,
+  "UnlockConditions": [
+    {
+      "Year": 1,
+      "SeasonIndex": 0,
+      "DayOfMonth": 1,
+      "HeartsWithWilly": 8
+    },
+    {
+      "Year": 1,
+      "SeasonIndex": 3,
+      "DayOfMonth": 1,
+      "HeartsWithWilly": 4
+    },
+    {
+      "Year": 2,
+      "SeasonIndex": 3,
+      "DayOfMonth": 1,
+      "HeartsWithWilly": 0
+    }
+  ]
+}

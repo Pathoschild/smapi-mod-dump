@@ -512,6 +512,8 @@ namespace FarmCaveFramework
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
+            if (!Game1.IsMasterGame)
+                return;
             caveChoice = null;
             if(Config.EnableMod && Config.ResetEvent)
             {

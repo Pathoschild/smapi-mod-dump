@@ -365,12 +365,34 @@ internal static partial class Debug {
 		private static readonly Vector2F TextOffset = (15.0f, 15.0f);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static bool Draw() {
+		internal static bool Draw(TimeSpan? frameTimeCPU, TimeSpan? frameTimeTotal) {
+			if (frameTimeCPU.HasValue) {
+				DrawFrameTime("CPU", frameTimeCPU.Value, 0.0f);
+			}
+			if (frameTimeTotal.HasValue) {
+				DrawFrameTime("Total", frameTimeTotal.Value, 20.0f);
+			}
+
 			if (!IsModeEnabled(DebugModeFlags.Select)) {
 				return false;
 			}
 
 			return DrawImpl();
+		}
+
+		private static void DrawFrameTime(string name, TimeSpan frameTime, float offset) {
+			string frameTimeString = $"{frameTime.TotalMilliseconds:N2} ms ({name})";
+
+			Game1.spriteBatch.Begin();
+			Utility.drawTextWithShadow(
+				b: Game1.spriteBatch,
+				text: frameTimeString,
+				font: Game1.smallFont,
+				position: new(200.0f, offset),
+				color: XColor.White,
+				scale: 1.0f
+			);
+			Game1.spriteBatch.End();
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]

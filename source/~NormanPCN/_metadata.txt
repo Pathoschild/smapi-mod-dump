@@ -9,9 +9,9 @@ mods:
    Longer Fence Life
 
 latest commit:
-   commit fe6217e71a0c029d0cf14ad699b95bd70910a8fd
+   commit cff79a20c78c13159a9fd2fb1c5999053b36c6a8
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Mon Jul 11 10:08:18 2022 -0700
+   Date:   Fri Sep 16 12:20:55 2022 -0700
    
-       Update config text. add German translation.
+       update tooltip description
    

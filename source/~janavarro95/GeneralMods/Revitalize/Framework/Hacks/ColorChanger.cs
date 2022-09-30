@@ -16,11 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Revitalize;
+using Omegasis.StardustCore.UIUtilities;
 using StardewValley;
-using StardustCore.UIUtilities;
 
-namespace Revitalize.Framework.Hacks
+namespace Omegasis.Revitalize.Framework.Hacks
 {
     /// <summary>
     /// Taken from SDV to be able to swap tool colors
@@ -49,36 +48,28 @@ namespace Revitalize.Framework.Hacks
             int width = Game1.toolSpriteSheet.Width;
 
             Color[] beforeData = new Color[Game1.toolSpriteSheet.Width * Game1.toolSpriteSheet.Height];
-            Game1.toolSpriteSheet.GetData<Color>(beforeData);
+            Game1.toolSpriteSheet.GetData(beforeData);
             Color[] afterData = new Color[TargetTexture.Width * TargetTexture.Height]; //Get a color data to replace
-            TargetTexture.GetData<Color>(afterData); //Get data from swap texture.
+            TargetTexture.GetData(afterData); //Get data from swap texture.
 
             ///Convert tool data to grid
             Color[,] beforeGrid = new Color[height, width];
             for (int row = 0; row < height; row++)
-            {
                 for (int column = 0; column < width; column++)
-                {
                     // Assumes row major ordering of the array.
                     beforeGrid[row, column] = beforeData[row * width + column];
-                }
-            }
             //Convert target data to grid
             int targetHeight = TargetTexture.Height;
             int targetWidth = TargetTexture.Width;
             Color[,] afterGrid = new Color[targetHeight, targetWidth];
             for (int row = 0; row < targetHeight; row++)
-            {
                 for (int column = 0; column < targetWidth; column++)
-                {
                     // Assumes row major ordering of the array.
                     afterGrid[row, column] = afterData[row * targetWidth + column];
-                }
-            }
 
 
             //Copy over data from the target texture into the before grid.
-            Rectangle stoneRegion = new Rectangle(0,80,80,32);
+            Rectangle stoneRegion = new Rectangle(0, 80, 80, 32);
             Rectangle copperRegion = new Rectangle();
             Rectangle ironRegion = new Rectangle(224, 80, 80, 32); //Create the region we want to replace.
             Rectangle goldRegion = new Rectangle();
@@ -91,40 +82,29 @@ namespace Revitalize.Framework.Hacks
             {
 
                 for (int x = region.X; x < region.X + region.Width; x++)
-                {
                     for (int y = region.Y; y < region.Y + region.Height; y++)
-                    {
                         //ModCore.log("value is: " + new Vector2(x, y));
-                        beforeGrid[y, x] = afterGrid[(int)(y - region.Y), x - region.X]; //Row, column order aka y,x order.
-                    }
-                }
+                        beforeGrid[y, x] = afterGrid[y - region.Y, x - region.X]; //Row, column order aka y,x order.
 
 
                 //Convert the tool grid back into a 1d color array
                 for (int row = 0; row < height; row++)
-                {
                     for (int column = 0; column < width; column++)
-                    {
                         try
                         {
                             beforeData[row * width + column] = beforeGrid[row, column];
                         }
                         catch (Exception err)
                         {
-                            ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                            ModCore.log("That's position: " + (row * width + column).ToString());
+                            RevitalizeModCore.log("Setting pixel color at: " + new Vector2(column, row));
+                            RevitalizeModCore.log("That's position: " + (row * width + column).ToString());
                         }
-                        //ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                        //ModCore.log("That's position: " + (row * width + column).ToString());
-                        //beforeData[row * targetWidth + column] = beforeGrid[row,column];
-                    }
-                }
             }
-            
+
 
             //beforeGrid.CopyTo(beforeData, 0);
             //Reapply the texture.
-            Game1.toolSpriteSheet.SetData<Color>(beforeData);
+            Game1.toolSpriteSheet.SetData(beforeData);
 
             //Stream stream = File.Create(Path.Combine(ModCore.ModHelper.DirectoryPath,"ToolTest.png"));
             //Game1.toolSpriteSheet.SaveAsPng(stream, width, height);
@@ -148,32 +128,24 @@ namespace Revitalize.Framework.Hacks
             int width = Game1.toolSpriteSheet.Width;
 
             Color[] beforeData = new Color[Game1.toolSpriteSheet.Width * Game1.toolSpriteSheet.Height];
-            Game1.toolSpriteSheet.GetData<Color>(beforeData);
+            Game1.toolSpriteSheet.GetData(beforeData);
             Color[] afterData = new Color[TargetTexture.Width * TargetTexture.Height]; //Get a color data to replace
-            TargetTexture.GetData<Color>(afterData); //Get data from swap texture.
+            TargetTexture.GetData(afterData); //Get data from swap texture.
 
             ///Convert tool data to grid
             Color[,] beforeGrid = new Color[height, width];
             for (int row = 0; row < height; row++)
-            {
                 for (int column = 0; column < width; column++)
-                {
                     // Assumes row major ordering of the array.
                     beforeGrid[row, column] = beforeData[row * width + column];
-                }
-            }
             //Convert target data to grid
             int targetHeight = TargetTexture.Height;
             int targetWidth = TargetTexture.Width;
             Color[,] afterGrid = new Color[targetHeight, targetWidth];
             for (int row = 0; row < targetHeight; row++)
-            {
                 for (int column = 0; column < targetWidth; column++)
-                {
                     // Assumes row major ordering of the array.
                     afterGrid[row, column] = afterData[row * targetWidth + column];
-                }
-            }
 
 
             //Copy over data from the target texture into the before grid.
@@ -190,40 +162,29 @@ namespace Revitalize.Framework.Hacks
             {
 
                 for (int x = region.X; x < region.X + region.Width; x++)
-                {
                     for (int y = region.Y; y < region.Y + region.Height; y++)
-                    {
                         //ModCore.log("value is: " + new Vector2(x, y));
-                        beforeGrid[y, x] = afterGrid[(int)(y - region.Y), x - region.X]; //Row, column order aka y,x order.
-                    }
-                }
+                        beforeGrid[y, x] = afterGrid[y - region.Y, x - region.X]; //Row, column order aka y,x order.
 
 
                 //Convert the tool grid back into a 1d color array
                 for (int row = 0; row < height; row++)
-                {
                     for (int column = 0; column < width; column++)
-                    {
                         try
                         {
                             beforeData[row * width + column] = beforeGrid[row, column];
                         }
                         catch (Exception err)
                         {
-                            ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                            ModCore.log("That's position: " + (row * width + column).ToString());
+                            RevitalizeModCore.log("Setting pixel color at: " + new Vector2(column, row));
+                            RevitalizeModCore.log("That's position: " + (row * width + column).ToString());
                         }
-                        //ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                        //ModCore.log("That's position: " + (row * width + column).ToString());
-                        //beforeData[row * targetWidth + column] = beforeGrid[row,column];
-                    }
-                }
             }
 
 
             //beforeGrid.CopyTo(beforeData, 0);
             //Reapply the texture.
-            Game1.toolSpriteSheet.SetData<Color>(beforeData);
+            Game1.toolSpriteSheet.SetData(beforeData);
             HoeNeedsReset = true;
         }
 
@@ -243,32 +204,24 @@ namespace Revitalize.Framework.Hacks
             int width = Game1.toolSpriteSheet.Width;
 
             Color[] beforeData = new Color[Game1.toolSpriteSheet.Width * Game1.toolSpriteSheet.Height];
-            Game1.toolSpriteSheet.GetData<Color>(beforeData);
+            Game1.toolSpriteSheet.GetData(beforeData);
             Color[] afterData = new Color[TargetTexture.Width * TargetTexture.Height]; //Get a color data to replace
-            TargetTexture.GetData<Color>(afterData); //Get data from swap texture.
+            TargetTexture.GetData(afterData); //Get data from swap texture.
 
             ///Convert tool data to grid
             Color[,] beforeGrid = new Color[height, width];
             for (int row = 0; row < height; row++)
-            {
                 for (int column = 0; column < width; column++)
-                {
                     // Assumes row major ordering of the array.
                     beforeGrid[row, column] = beforeData[row * width + column];
-                }
-            }
             //Convert target data to grid
             int targetHeight = TargetTexture.Height;
             int targetWidth = TargetTexture.Width;
             Color[,] afterGrid = new Color[targetHeight, targetWidth];
             for (int row = 0; row < targetHeight; row++)
-            {
                 for (int column = 0; column < targetWidth; column++)
-                {
                     // Assumes row major ordering of the array.
                     afterGrid[row, column] = afterData[row * targetWidth + column];
-                }
-            }
 
 
             //Copy over data from the target texture into the before grid.
@@ -285,40 +238,29 @@ namespace Revitalize.Framework.Hacks
             {
 
                 for (int x = region.X; x < region.X + region.Width; x++)
-                {
                     for (int y = region.Y; y < region.Y + region.Height; y++)
-                    {
                         //ModCore.log("value is: " + new Vector2(x, y));
-                        beforeGrid[y, x] = afterGrid[(int)(y - region.Y), x - region.X]; //Row, column order aka y,x order.
-                    }
-                }
+                        beforeGrid[y, x] = afterGrid[y - region.Y, x - region.X]; //Row, column order aka y,x order.
 
 
                 //Convert the tool grid back into a 1d color array
                 for (int row = 0; row < height; row++)
-                {
                     for (int column = 0; column < width; column++)
-                    {
                         try
                         {
                             beforeData[row * width + column] = beforeGrid[row, column];
                         }
                         catch (Exception err)
                         {
-                            ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                            ModCore.log("That's position: " + (row * width + column).ToString());
+                            RevitalizeModCore.log("Setting pixel color at: " + new Vector2(column, row));
+                            RevitalizeModCore.log("That's position: " + (row * width + column).ToString());
                         }
-                        //ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                        //ModCore.log("That's position: " + (row * width + column).ToString());
-                        //beforeData[row * targetWidth + column] = beforeGrid[row,column];
-                    }
-                }
             }
 
 
             //beforeGrid.CopyTo(beforeData, 0);
             //Reapply the texture.
-            Game1.toolSpriteSheet.SetData<Color>(beforeData);
+            Game1.toolSpriteSheet.SetData(beforeData);
             AxeNeedsReset = true;
         }
 
@@ -338,32 +280,24 @@ namespace Revitalize.Framework.Hacks
             int width = Game1.toolSpriteSheet.Width;
 
             Color[] beforeData = new Color[Game1.toolSpriteSheet.Width * Game1.toolSpriteSheet.Height];
-            Game1.toolSpriteSheet.GetData<Color>(beforeData);
+            Game1.toolSpriteSheet.GetData(beforeData);
             Color[] afterData = new Color[TargetTexture.Width * TargetTexture.Height]; //Get a color data to replace
-            TargetTexture.GetData<Color>(afterData); //Get data from swap texture.
+            TargetTexture.GetData(afterData); //Get data from swap texture.
 
             ///Convert tool data to grid
             Color[,] beforeGrid = new Color[height, width];
             for (int row = 0; row < height; row++)
-            {
                 for (int column = 0; column < width; column++)
-                {
                     // Assumes row major ordering of the array.
                     beforeGrid[row, column] = beforeData[row * width + column];
-                }
-            }
             //Convert target data to grid
             int targetHeight = TargetTexture.Height;
             int targetWidth = TargetTexture.Width;
             Color[,] afterGrid = new Color[targetHeight, targetWidth];
             for (int row = 0; row < targetHeight; row++)
-            {
                 for (int column = 0; column < targetWidth; column++)
-                {
                     // Assumes row major ordering of the array.
                     afterGrid[row, column] = afterData[row * targetWidth + column];
-                }
-            }
 
 
             //Copy over data from the target texture into the before grid.
@@ -380,40 +314,29 @@ namespace Revitalize.Framework.Hacks
             {
 
                 for (int x = region.X; x < region.X + region.Width; x++)
-                {
                     for (int y = region.Y; y < region.Y + region.Height; y++)
-                    {
                         //ModCore.log("value is: " + new Vector2(x, y));
-                        beforeGrid[y, x] = afterGrid[(int)(y - region.Y), x - region.X]; //Row, column order aka y,x order.
-                    }
-                }
+                        beforeGrid[y, x] = afterGrid[y - region.Y, x - region.X]; //Row, column order aka y,x order.
 
 
                 //Convert the tool grid back into a 1d color array
                 for (int row = 0; row < height; row++)
-                {
                     for (int column = 0; column < width; column++)
-                    {
                         try
                         {
                             beforeData[row * width + column] = beforeGrid[row, column];
                         }
                         catch (Exception err)
                         {
-                            ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                            ModCore.log("That's position: " + (row * width + column).ToString());
+                            RevitalizeModCore.log("Setting pixel color at: " + new Vector2(column, row));
+                            RevitalizeModCore.log("That's position: " + (row * width + column).ToString());
                         }
-                        //ModCore.log("Setting pixel color at: " + new Vector2(column, row));
-                        //ModCore.log("That's position: " + (row * width + column).ToString());
-                        //beforeData[row * targetWidth + column] = beforeGrid[row,column];
-                    }
-                }
             }
 
 
             //beforeGrid.CopyTo(beforeData, 0);
             //Reapply the texture.
-            Game1.toolSpriteSheet.SetData<Color>(beforeData);
+            Game1.toolSpriteSheet.SetData(beforeData);
             WateringCanNeedsReset = true;
         }
 
@@ -422,7 +345,7 @@ namespace Revitalize.Framework.Hacks
         /// </summary>
         public static void ResetPickaxeTexture()
         {
-            SwapPickaxeTextures(TextureManager.GetTexture(ModCore.Manifest, "Tools", "DefaultPickaxeWorking"));
+            SwapPickaxeTextures(TextureManager.GetTexture(RevitalizeModCore.Manifest, "Tools", "DefaultPickaxeWorking"));
         }
 
         /// <summary>
@@ -430,7 +353,7 @@ namespace Revitalize.Framework.Hacks
         /// </summary>
         public static void ResetHoeTexture()
         {
-            SwapHoeTextures(TextureManager.GetTexture(ModCore.Manifest, "Tools", "DefaultHoeWorking"));
+            SwapHoeTextures(TextureManager.GetTexture(RevitalizeModCore.Manifest, "Tools", "DefaultHoeWorking"));
         }
 
         /// <summary>
@@ -438,7 +361,7 @@ namespace Revitalize.Framework.Hacks
         /// </summary>
         public static void ResetAxeTexture()
         {
-            SwapAxeTextures(TextureManager.GetTexture(ModCore.Manifest, "Tools", "DefaultAxeWorking"));
+            SwapAxeTextures(TextureManager.GetTexture(RevitalizeModCore.Manifest, "Tools", "DefaultAxeWorking"));
         }
 
         /// <summary>
@@ -446,7 +369,7 @@ namespace Revitalize.Framework.Hacks
         /// </summary>
         public static void ResetWateringCanTexture()
         {
-            SwapAxeTextures(TextureManager.GetTexture(ModCore.Manifest, "Tools", "DefaultWateringCanWorking"));
+            SwapAxeTextures(TextureManager.GetTexture(RevitalizeModCore.Manifest, "Tools", "DefaultWateringCanWorking"));
         }
 
         /// <summary>

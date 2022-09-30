@@ -30,38 +30,21 @@ using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 
 using SObject = StardewValley.Object;
+using StardewModdingAPI;
+using Leclair.Stardew.Common.Integrations.StackQuality;
 
 namespace Leclair.Stardew.Common;
 
-public struct LocatedInventory {
-	public object Source { get; }
-	public GameLocation? Location { get; }
-
-	public LocatedInventory(object source, GameLocation? location) {
-		Source = source;
-		Location = location;
-	}
-
-	public override bool Equals(object? obj) {
-		return obj is LocatedInventory inventory &&
-			   EqualityComparer<object>.Default.Equals(Source, inventory.Source) &&
-			   EqualityComparer<GameLocation>.Default.Equals(Location, inventory.Location);
-	}
-
-	public override int GetHashCode() {
-		return HashCode.Combine(Source, Location);
-	}
-
-	public static bool operator ==(LocatedInventory left, LocatedInventory right) {
-		return left.Equals(right);
-	}
-
-	public static bool operator !=(LocatedInventory left, LocatedInventory right) {
-		return !(left == right);
-	}
-}
+public record struct LocatedInventory(object Source, GameLocation? Location);
 
 public static class InventoryHelper {
+
+	private static SQIntegration? intSQ;
+
+	public static void InitializeStackQuality(Mod mod) {
+		intSQ ??= new SQIntegration(mod);
+	}
+
 
 	#region Item Creation
 
@@ -219,12 +202,13 @@ public static class InventoryHelper {
 		int scanLimit = 100,
 		int targetLimit = 20,
 		bool includeSource = true,
-		bool includeDiagonal = true
+		bool includeDiagonal = true,
+		int expandSource = 0
 	) {
 		List<AbsolutePosition> positions = new();
 
-		for (int x = 0; x < source.Width; x++) {
-			for (int y = 0; y < source.Height; y++) {
+		for (int x = -expandSource; x < source.Width + expandSource; x++) {
+			for (int y = -expandSource; y < source.Height + expandSource; y++) {
 				positions.Add(new(
 					location,
 					new(
@@ -257,11 +241,20 @@ public static class InventoryHelper {
 		int scanLimit = 100,
 		int targetLimit = 20,
 		bool includeSource = true,
-		bool includeDiagonal = true
+		bool includeDiagonal = true,
+		int expandSource = 0
 	) {
-		List<AbsolutePosition> potentials = new() {
-			source
-		};
+		List<AbsolutePosition> potentials = new();
+
+		if (expandSource == 0)
+			potentials.Add(source);
+		else {
+			for(int x = -expandSource; x < expandSource; x++) {
+				for(int y = -expandSource; y < expandSource; y++) {
+					potentials.Add(new(source.Location, new Vector2(source.Position.X + x, source.Position.Y + y)));
+				}
+			}
+		}
 
 		Dictionary<AbsolutePosition, Vector2> origins = new();
 		origins[source] = source.Position;
@@ -283,6 +276,18 @@ public static class InventoryHelper {
 		);
 	}
 
+	public static void DeduplicateInventories(ref IList<LocatedInventory> inventories) {
+		HashSet<object> objects = new();
+		for(int i = 0; i < inventories.Count; i++) {
+			LocatedInventory inv = inventories[i];
+			if (objects.Contains(inv.Source)) {
+				inventories.RemoveAt(i);
+				i--;
+			} else
+				objects.Add(inv.Source);
+		}
+	}
+
 	public static List<LocatedInventory> DiscoverInventories(
 		Rectangle source,
 		GameLocation? location,
@@ -294,12 +299,13 @@ public static class InventoryHelper {
 		int scanLimit = 100,
 		int targetLimit = 20,
 		bool includeSource = true,
-		bool includeDiagonal = true
+		bool includeDiagonal = true,
+		int expandSource = 0
 	) {
 		List<AbsolutePosition> positions = new();
 
-		for (int x = 0; x < source.Width; x++) {
-			for (int y = 0; y < source.Height; y++) {
+		for (int x = -expandSource; x < source.Width + expandSource; x++) {
+			for (int y = -expandSource; y < source.Height + expandSource; y++) {
 				positions.Add(new(
 					location,
 					new(
@@ -512,7 +518,6 @@ public static class InventoryHelper {
 
 		while(i < potentials.Count && i < scanLimit) {
 			AbsolutePosition abs = potentials[i++];
-
 			SObject? obj;
 			SObject? furn;
 			TerrainFeature? feature;
@@ -832,8 +837,85 @@ public static class InventoryHelper {
 
 		for (int idx = items.Count - 1; idx >= 0; --idx) {
 			Item? item = items[idx];
-			if (item == null)
+			if (item == null || ! matcher(item))
 				continue;
+
+			// Special logic for Stack Quality
+			if (intSQ is not null && intSQ.IsLoaded && item is SObject sobj) {
+				amount = intSQ.ConsumeItem(sobj, amount, out bool set_null, out bool set_quality, max_quality);
+				if (set_null) {
+					items[idx] = null;
+					nullified = true;
+				}
+
+				if (set_quality)
+					passed_quality = true;
+
+				if (amount <= 0)
+					return amount;
+
+				continue;
+			}
+
+			// Normal logic, without Stack Quality
+			int quality = item is SObject obj ? obj.Quality : 0;
+			if (quality > max_quality) {
+				passed_quality = true;
+				continue;
+			}
+
+			int count = Math.Min(amount, item.Stack);
+			amount -= count;
+
+			if (item.Stack <= count) {
+				items[idx] = null;
+				nullified = true;
+
+			} else
+				item.Stack -= count;
+
+			if (amount <= 0)
+				return amount;
+		}
+
+		return amount;
+	}
+
+	public static int CountItem(Func<Item, bool> matcher, Farmer? who, IEnumerable<Item?>? items, out bool passed_quality, int max_quality = int.MaxValue) {
+		int amount;
+
+		if (who is not null)
+			amount = CountItem(matcher, who.Items, out passed_quality, max_quality: max_quality);
+		else {
+			amount = 0;
+			passed_quality = false;
+		}
+
+		if (items is not null) {
+			amount += CountItem(matcher, items, out bool pq, max_quality: max_quality);
+			passed_quality |= pq;
+		}
+
+		return amount;
+	}
+
+	public static int CountItem(Func<Item, bool> matcher, IEnumerable<Item?> items, out bool passed_quality, int max_quality = int.MaxValue) {
+		passed_quality = false;
+		int amount = 0;
+
+		foreach(Item? item in items) { 
+			if (item == null || !matcher(item))
+				continue;
+
+			// Special logic for Stack Quality -- only needed if we're using
+			// a maximum quality lower than Iridium.
+			if (max_quality < 4 && intSQ is not null && intSQ.IsLoaded && item is SObject sobj) {
+				amount += intSQ.CountItem(sobj, out bool set_passed, max_quality);
+				if (set_passed)
+					passed_quality = true;
+
+				continue;
+			}
 
 			int quality = item is SObject obj ? obj.Quality : 0;
 			if (quality > max_quality) {
@@ -841,20 +923,7 @@ public static class InventoryHelper {
 				continue;
 			}
 
-			if (matcher(item)) {
-				int count = Math.Min(amount, item.Stack);
-				amount -= count;
-
-				if (item.Stack <= count) {
-					items[idx] = null;
-					nullified = true;
-
-				} else
-					item.Stack -= count;
-
-				if (amount <= 0)
-					return amount;
-			}
+			amount += item.Stack;
 		}
 
 		return amount;

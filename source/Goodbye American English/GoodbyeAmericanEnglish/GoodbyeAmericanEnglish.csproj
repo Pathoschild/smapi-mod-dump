@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
     <AssemblyName>GoodbyeAmericanEnglish</AssemblyName>
     <RootNamespace>GoodbyeAmericanEnglish</RootNamespace>
     <Version>1.4.1</Version>

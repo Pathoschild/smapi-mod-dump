@@ -1,0 +1,16 @@
+﻿{
+  "Name": "[DGA] RanchingToolUpgrades",
+  "Author": "drbirbdev",
+  "version": "1.0.2",
+  "Description": "Add Pail, Shear, and Autograbber upgrades at the blacksmith.",
+  "UniqueID": "drbirbdev.RanchingToolUpgrades.DGA",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.DynamicGameAssets"
+  },
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:12280"
+  ],
+  "DGA.FormatVersion": 1,
+  "DGA.ConditionsFormatVersion": "1.23.0"
+}

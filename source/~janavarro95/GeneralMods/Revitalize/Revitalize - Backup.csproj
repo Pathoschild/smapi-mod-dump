@@ -1,0 +1,461 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>0.0.1</Version>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <RootNamespace>Revitalize</RootNamespace>
+
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Content\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StardustCore\StardustCore.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Framework\Constants\ItemIds\Objects\Resources\" />
+    <Folder Include="Framework\StaticValues\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+<Content Include="ModAssets\\**\*.*"> <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\Graphics\Items\Crafting\Blueprint.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Items\Farming\AutoHarvesterGardenPotAttachment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Items\Farming\AutoPlanterGardenPotAttachment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Items\Misc\NuclearFuel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Items\Misc\RadioactiveFuel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Farming\AdvancedFarmingSystem.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Farming\HayMaker.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Farming\IrrigatedGardenPot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Machines\ElectricFurnace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Resources\ResourcePlants\CopperOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Resources\ResourcePlants\GoldOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Resources\ResourcePlants\IridiumOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Resources\ResourcePlants\IronOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Graphics\Objects\Resources\ResourcePlants\RadioactiveOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\HUD\MachineStatusBubble.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Crafting\Blueprint.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Farming\AutoHarvesterGardenPotAttachment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Farming\AutoPlanterGardenPotAttachment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Misc\RadioactiveFuel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Misc\Glass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Misc\Sand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\AluminumIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\BauxiteOre.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\BauxiteSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\BrassIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\BronzeIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\CopperSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\ElectrumIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\GoldSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\IridiumSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\IronSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\LeadIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\LeadOre.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\LeadSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\PrismaticNugget.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\SilverIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\SilverOre.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\SilverSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\SteelIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\TinIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\TinOre.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\TinSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\TitaniumIngot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\TitaniumOre.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Resources\Ore\TitaniumSand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzeAxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzeAxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzeHoe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzeHoeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzePickaxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzePickaxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzeWateringCan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\BronzeWateringCanWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\Chainsaw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\ChainSawWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\DefaultAxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\DefaultHoeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\DefaultPickaxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\DefaultWateringCanWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedAxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedAxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedHoe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedHoeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedPickaxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedPickaxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedWateringCan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\HardenedWateringCanWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\MiningDrill.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\MiningDrillWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\Pickaxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TestingPickaxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumAxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumAxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumHoe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumHoeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumPickaxe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumPickaxeWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumWateringCan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Items\Tools\TitaniumWateringCanWorking.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\CraftingMenu\CraftButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\CraftingMenu\GoldButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\EnergyMenu\BatteryEnergyGuage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\EnergyMenu\BatteryEnergyMeter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\EnergyMenu\BatteryFrame.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\EnergyMenu\DropletColored.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\EnergyMenu\DropletOutline.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\EnergyMenu\LightningBolt.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\InventoryMenu\ItemBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\InventoryMenu\ItemBackgroundNoSpacing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\InventoryMenu\ItemTransferButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\InventoryMenu\NextPageButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\InventoryMenu\PreviousPageButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\InventoryMenu\TrashButton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\Misc\Chest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\Misc\Clock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\Misc\MenuTab.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Menus\Misc\MenuTabHorizontal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Crafting\Anvil.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Crafting\Workbench.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Farming\AdvancedFarmingSystem.aseprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Farming\AdvancedFarmingSystem.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Farming\HayMaker.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Farming\IrrigatedGardenPot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Farming\IrrigatedGardenPotChute.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Arcade\SeasideScrambleArcade.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Chairs\Oak Chair.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Lamps\Oak Lamp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Misc\Lighthouse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Misc\TrashCan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Storage\Oak Cabinet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Furniture\Tables\Oak Table.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\AlloyFurnace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\BatteryBin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\Capacitor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\ChargingStation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\ClothWindmill.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\ElectricFurnace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\Grinder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\HayMaker.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\MiningDrillMachine.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\Pipes\IronPipe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\Sandbox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\SolarArrayTier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\SolarPanelTier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\SteamBoiler.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\SteamEngine.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\WaterPump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\Windmill.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Machines\Wires\CopperWire.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\Bauxite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\Lead.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\Prismatic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\Silver.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\TestTemplate.aseprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\Tin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\Ore\Titanium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\ResourcePlants\CopperOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\ResourcePlants\GoldOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\ResourcePlants\IridiumOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\ResourcePlants\IronOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ModAssets\Graphics\Objects\Resources\ResourcePlants\RadioactiveOreBush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Import Project="..\common.targets" />
+</Project>

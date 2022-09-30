@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using StardustCore.UIUtilities.SpriteFonts.CharacterSheets;
-using StardustCore.UIUtilities.SpriteFonts.Components;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts.CharacterSheets;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts.Components;
 
-namespace StardustCore.UIUtilities.SpriteFonts.Fonts
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts
 {
     public class GenericFont
     {

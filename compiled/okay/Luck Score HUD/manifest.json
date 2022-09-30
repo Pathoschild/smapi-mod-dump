@@ -1,7 +1,7 @@
 {
   "Name": "JustLuckMod",
   "Author": "zeldela",
-  "Version": "1.0.3",
+  "Version": "1.1.0",
   "Description": "See your exact luck score every day with a simple HUD feature.",
   "UniqueID": "dJustLuckMod",
   "EntryDll": "JustLuckMod.dll",

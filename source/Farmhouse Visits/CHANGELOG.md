@@ -8,6 +8,26 @@ for queries and analysis.**
 
 ([versión en español aquí](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG-es.md))
 
+## 1.6.2
+- Added Thai translation (by watchakorn-18k)
+
+## 1.6.1
+- Updated portuguese translation
+
+## 1.6.0
+- Changed the way translations (and logs) are called.
+- NPCs can now walk on the farm.
+- Minor fixes
+
+## 1.5.3
+- Added portuguese (by BrasileiroTop)
+
+## 1.5.2
+- Turkish translation updated.
+
+## 1.5.1
+- Russian translation updated.
+
 ## 1.5.0
 - Gifts can now be toggled off.
 - Visits can now ask for permission to enter (and have optional rejection dialogue).

@@ -12,9 +12,20 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using System.Collections.Generic;
+using lv = StardewModdingAPI.LogLevel;
 
 namespace FarmVisitors
 {
+    public enum DialogueType
+    {
+        Introduce,
+        WalkIn,
+        Furniture,
+        Greet,
+        Retiring,
+        Thanking,
+        Rejected
+    }
     internal class Values
     {
         internal static bool IsMarriedToPlayer(NPC c)
@@ -28,12 +39,16 @@ namespace FarmVisitors
                 Farmer player = Game1.MasterPlayer;
                 if (!player.friendshipData.ContainsKey(c.Name))
                 {
-                    ModEntry.Mon.Log($"{c.Name} is not in the dictionary.");
+                    ModEntry.Log(
+                        $"{c.Name} is not in the dictionary.", 
+                        lv.Trace);
                     return false;
                 }
                 if (player.friendshipData[c.Name].IsMarried())
                 {
-                    ModEntry.Mon.Log($"{c.Name} is married!");
+                    ModEntry.Log(
+                        $"{c.Name} is married!", 
+                        lv.Trace);
                     return true;
                 }
                 else
@@ -54,14 +69,16 @@ namespace FarmVisitors
                 Farmer player = Game1.MasterPlayer;
                 if (!player.friendshipData.ContainsKey(c.Name))
                 {
-                    /*ModEntry.Mon.Log($"Divorced NPC check: {c.Name} is not in the dictionary.");
+                    /*ModEntry.Log($"Divorced NPC check: {c.Name} is not in the dictionary.");
                      * taking this out because a message like this is already sent by IsMarried (to avoid dupes and not confuse myself in the future)
                      */
                     return false;
                 }
                 if (player.friendshipData[c.Name].IsDivorced())
                 {
-                    ModEntry.Mon.Log($"{c.Name} is divorced!");
+                    ModEntry.Log(
+                        $"{c.Name} is divorced!", 
+                        lv.Trace);
                     return true;
                 }
                 else
@@ -91,6 +108,15 @@ namespace FarmVisitors
         /// <returns></returns>
         internal static bool IsFree(NPC who, bool IsRandom)
         {
+            //if character is robin and there's a construction ongoing
+            if (who.Name == "Robin" && Game1.getFarm().isThereABuildingUnderConstruction())
+            {
+                ModEntry.Log(
+                    $"{who.displayName} is building in the Farm. Visit will be cancelled.", 
+                    lv.Trace);
+                return false;
+            }
+
             var isHospitalDay = Utility.IsHospitalVisitDay(who.Name);
             var visitedToday = ModEntry.TodaysVisitors.Contains(who.Name);
             var visitingIsland = Game1.IsVisitingIslandToday(who.Name);
@@ -98,19 +124,27 @@ namespace FarmVisitors
 
             if (visitedToday && !IsRandom)
             {
-                ModEntry.Mon.Log($"{who.displayName} has already visited the Farm today!");
+                ModEntry.Log(
+                    $"{who.displayName} has already visited the Farm today!",
+                    lv.Trace);
             }
             if (isHospitalDay)
             {
-                ModEntry.Mon.Log($"{who.displayName} has a hospital visit scheduled today. They won't visit the farmer.");
+                ModEntry.Log(
+                    $"{who.displayName} has a hospital visit scheduled today. They won't visit the farmer.", 
+                    lv.Trace);
             }
             if (visitingIsland)
             {
-                ModEntry.Mon.Log($"{who.displayName} is visiting the island today!");
+                ModEntry.Log(
+                    $"{who.displayName} is visiting the island today!",
+                    lv.Trace);
             }
             if (isSleeping)
             {
-                ModEntry.Mon.Log($"{who.displayName} is sleeping right now.");
+                ModEntry.Log(
+                    $"{who.displayName} is sleeping right now.",
+                    lv.Trace);
             }
 
             if (IsRandom)
@@ -129,7 +163,7 @@ namespace FarmVisitors
         /// <param name="c">The NPC whose info to use.</param>
         /// <param name="which">The type of dialogue.</param>
         /// <returns></returns>
-        internal static string GetDialogueType(NPC c, string which)
+        internal static string GetDialogueType(NPC c, DialogueType which)
         {
             //allowed values: Introduce, Rejected, Greet, Retiring, WalkIn, Furniture
             
@@ -139,26 +173,26 @@ namespace FarmVisitors
             {
                 if (c.SocialAnxiety.Equals(0))
                 {
-                    return ModEntry.Help.Translation.Get($"NPC{which}.Outgoing{r}");
+                    return ModEntry.TL.Get($"NPC{which}.Outgoing{r}");
                 }
                 else
                 {
-                    return ModEntry.Help.Translation.Get($"NPC{which}.Shy{r}");
+                    return ModEntry.TL.Get($"NPC{which}.Shy{r}");
                 }
             }
             else
             {
                 if (c.Manners.Equals(1)) //polite
                 {
-                    return ModEntry.Help.Translation.Get($"NPC{which}.Polite{r}");
+                    return ModEntry.TL.Get($"NPC{which}.Polite{r}");
                 }
                 else if (c.Manners.Equals(2)) //rude
                 {
-                    return ModEntry.Help.Translation.Get($"NPC{which}.Rude{r}");
+                    return ModEntry.TL.Get($"NPC{which}.Rude{r}");
                 }
                 else //neutral
                 {
-                    return ModEntry.Help.Translation.Get($"NPC{which}.Neutral{r}");
+                    return ModEntry.TL.Get($"NPC{which}.Neutral{r}");
                 }
             }
         }
@@ -176,25 +210,25 @@ namespace FarmVisitors
             {
                 if (c.SocialAnxiety.Equals(0))
                 {
-                    return ModEntry.Help.Translation.Get($"NPCGift.Normal{r}");
+                    return ModEntry.TL.Get($"NPCGift.Normal{r}");
                 }
                 else
                 {
-                    return ModEntry.Help.Translation.Get($"NPCGift.Kind{r}");
+                    return ModEntry.TL.Get($"NPCGift.Kind{r}");
                 }
             }
 
             if (c.Manners.Equals(1)) //polite
             {
-                return ModEntry.Help.Translation.Get($"NPCGift.Kind{r}");
+                return ModEntry.TL.Get($"NPCGift.Kind{r}");
             }
             else if (c.Manners.Equals(2)) //rude
             {
-                return ModEntry.Help.Translation.Get($"NPCGift.Lax{r}");
+                return ModEntry.TL.Get($"NPCGift.Lax{r}");
             }
             else
             {
-                return ModEntry.Help.Translation.Get($"NPCGift.Normal{r}");
+                return ModEntry.TL.Get($"NPCGift.Normal{r}");
             }
         }
         
@@ -207,11 +241,11 @@ namespace FarmVisitors
         {
             if(IsCellar)
             {
-                return ModEntry.Help.Translation.Get("NPCGone_Cellar");
+                return ModEntry.TL.Get("NPCGone_Cellar");
             }
             else
             {
-                return ModEntry.Help.Translation.Get("NPCGoneWhileOutside");
+                return ModEntry.TL.Get("NPCGoneWhileOutside");
             }
         }
         

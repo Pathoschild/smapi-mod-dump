@@ -13,14 +13,13 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Omegasis.StardustCore.UIUtilities;
+using Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV1;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using StardustCore.UIUtilities;
-using StardustCore.UIUtilities.MenuComponents;
-using StardustCore.UIUtilities.MenuComponents.ComponentsV1;
 
-namespace StardustCore.Menus
+namespace Omegasis.StardustCore.Menus
 {
     // TODO: make buttons to cycle through page
     public class ModularGameMenu : IClickableMenuExtended

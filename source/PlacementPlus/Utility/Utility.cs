@@ -9,11 +9,13 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Network;
 using StardewValley.TerrainFeatures;
+
 using Object = StardewValley.Object;
-using TerrainFeatures = StardewValley.Network.NetVector2Dictionary<StardewValley.TerrainFeatures.TerrainFeature, Netcode.NetRef<StardewValley.TerrainFeatures.TerrainFeature>>;
 
 namespace PlacementPlus.Utility
 {
@@ -65,13 +67,19 @@ namespace PlacementPlus.Utility
 
 
 
-        /// <summary> Returns true if flooring exists as a TerrainFeature at the specified tile; otherwise, false. </summary>
-        public static bool DoesTileHaveFlooring(TerrainFeatures terrainFeatures, Vector2 tilePos) =>
-            terrainFeatures.ContainsKey(tilePos) && terrainFeatures[tilePos] is Flooring;
-        
+        /// <summary>
+        /// Returns <c>true</c> if flooring exists as a <see cref="TerrainFeature">TerrainFeature</see> at the specified
+        /// tile; otherwise, <c>false</c>.
+        /// </summary>
+        public static bool DoesTileHaveFlooring(
+            NetVector2Dictionary<TerrainFeature, NetRef<TerrainFeature>> terrainFeatures, Vector2 tilePos)
+        {
+            return terrainFeatures.ContainsKey(tilePos) && terrainFeatures[tilePos] is Flooring;
+        }
 
-        
-        /// <summary> Returns true if the item is flooring; otherwise, false. </summary>
+
+
+        /// <summary> Returns <c>true</c> if <c>item</c> is flooring; otherwise, <c>false</c>. </summary>
         // ? Does the furniture category only cover flooring?
         public static bool IsItemFlooring(Item item) =>
             item.Category == Object.furnitureCategory;
@@ -79,48 +87,52 @@ namespace PlacementPlus.Utility
 
         
         
-        /// <summary> Returns true if the item is the target flooring; otherwise, false. </summary>
+        /// <summary> Returns <c>true</c> if <c>item</c> is the target flooring; otherwise, <c>false</c>. </summary>
         public static bool IsItemTargetFlooring(Item item, Flooring flooring) =>
             item.ParentSheetIndex == FlooringInfoMap[flooring.whichFloor.Value];
         
 
 
-        /// <summary> Returns true if the item is a chest; otherwise, false. </summary>
+        /// <summary> Returns <c>true</c> if <c>item</c> is a chest; otherwise, <c>false</c>. </summary>
         public static bool IsItemChest(Item item) =>
             item != null && ChestInfoMap.ContainsKey(item.ParentSheetIndex);
-        
 
-        
-        /// <summary> Returns true if the item is a fence gate; otherwise, false. </summary>
+
+
+        /// <summary> Returns <c>true</c> if <c>item</c> is a fence gate; otherwise, <c>false</c>. </summary>
         // We either cast the item as Fence and check if it's a gate (for Objects), or compare the item's
         // ParentSheetIndex with the index for gates (for Items).
-        public static bool IsItemGate(Item item) =>
-            item != null && ((item as Fence)?.isGate.Value ?? 
-                             item.ParentSheetIndex == FenceInfoMap[(int) FenceType.Gate]);
+        public static bool IsItemGate(Item item)
+        {
+            return item != null && 
+                   ((item as Fence)?.isGate.Value ?? item.ParentSheetIndex == FenceInfoMap[(int)FenceType.Gate]);
+        }
 
 
 
-        /// <summary> Returns true if the item is a fence; otherwise, false. </summary>
+        /// <summary> Returns <c>true</c> if <c>item</c> is a fence; otherwise, <c>false</c>. </summary>
         public static bool IsItemFence(Item item) =>
             item != null && (FenceInfoMap.ContainsKey(item.ParentSheetIndex) || item is Fence);
         
         
         
-        /// <summary> Returns true if the item is the target fence; otherwise, false. </summary>
+        /// <summary> Returns <c>true</c> if <c>item</c> is the target fence; otherwise, <c>false</c>. </summary>
         public static bool IsItemTargetFence(Item item, Fence fence) =>
             item.Name == fence.Name && !fence.isGate.Value;
 
         
         
-        /// <summary> Returns true if the main farmhouse's mailbox lies on the tile; otherwise, false. </summary>
+        /// <summary>
+        /// Returns <c>true</c> if the main farmhouse's mailbox lies on the tile; otherwise, <c>false</c>.
+        /// </summary>
         public static bool DoesTileHaveMainMailbox(Farm farm, Vector2 tilePos) =>
             new Rectangle(tilePos.ToPoint(), new Point(1, 2)).Contains(farm.GetMainMailboxPosition());
         
         
         
         /// <summary>
-        /// Returns true if a building interactable (i.e. mailbox, door, or shipping bin) lies on the tile;
-        /// otherwise, false.
+        /// Returns <c>true</c> if a building interactable (i.e. mailbox, door, or shipping bin) lies on the tile;
+        /// otherwise, <c>false</c>.
         /// </summary>
         public static bool IsTileOnBuildingInteractable(Farm farm, Vector2 tilePos)
         {
@@ -143,7 +155,9 @@ namespace PlacementPlus.Utility
 
 
 
-        /// <summary> Returns true if the tile border of a farm building lies on the tile; otherwise, false. </summary>
+        /// <summary>
+        /// Returns <c>true</c> if the tile border of a farm building lies on the tile; otherwise, <c>false</c>.
+        /// </summary>
         public static bool IsTileOnBuildingEdge(Farm farm, Vector2 tilePos)
         {
             static bool IntersectsRectEdge(Rectangle rect, Vector2 tilePos)

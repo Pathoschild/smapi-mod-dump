@@ -42,7 +42,7 @@ namespace SkillfulClothes.Patches
         {
             if (e.NewMenu is ShopMenu shopMenu)
             {
-                Logger.Info($"Opened shop of {shopMenu.portraitPerson?.name}");
+                Logger.Info($"Opened shop of {shopMenu.portraitPerson?.Name}");
 
                 var shop = shopMenu.GetShop();
                 if (shop != Shop.None)

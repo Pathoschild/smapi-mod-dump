@@ -11,7 +11,7 @@
 namespace StardewMods.Common.Integrations.ProducerFrameworkMod;
 
 /// <inheritdoc />
-internal class ProducerFrameworkModIntegration : ModIntegration<IProducerFrameworkModApi>
+internal sealed class ProducerFrameworkModIntegration : ModIntegration<IProducerFrameworkModApi>
 {
     private const string ModUniqueId = "Digus.ProducerFrameworkMod";
 

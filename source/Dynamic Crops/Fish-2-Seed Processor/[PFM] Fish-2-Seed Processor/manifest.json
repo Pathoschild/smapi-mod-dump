@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "[PFM] Fish-2-Seed Processor",
+  "Author": "HaulinOats",
+  "Description": "Convert fish and crustaceans into seeds",
+  "Version": "1.0.0",
+  "UniqueID": "HaulinOats.Fish2SeedProcessorPFM",
+  "UpdateKeys": ["Nexus:4970"],
+  "ContentPackFor": {
+    "UniqueID": "DIGUS.ProducerFrameworkMod"
+  }
+}

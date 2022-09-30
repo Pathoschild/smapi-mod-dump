@@ -10,9 +10,7 @@
 
 using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Pastel;
-using SpriteMaster.Resample;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Spans;
@@ -38,13 +36,16 @@ internal static class Textures {
 	private static ref T ThrowUnhandledFormatException<T>(string name, SurfaceFormat format) =>
 		throw new ArgumentException(format.ToString(), name);
 
+	/// <summary>
+	/// Calculates the element or total size of the texture data with the provided <paramref name="format" /> and <paramref name="texels" />.
+	/// <para>Returns <see langword="true" /> if it is the actual size, otherwise <see langword="false" /> if it is the element size.</para>
+	/// </summary>
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static long SizeBytesLong(this SurfaceFormat format, int texels) {
+	private static bool SizeBytesInternal(this SurfaceFormat format, int texels, out int size) {
 		switch (format) {
 			case SurfaceFormat.Dxt1:
 			case SurfaceFormat.Dxt1SRgb:
 			case SurfaceFormat.Dxt1a:
-			case var _ when format == TextureFormat.BC1a:
 			case SurfaceFormat.RgbEtc1:
 			case SurfaceFormat.Rgb8Etc2:
 			case SurfaceFormat.Srgb8Etc2:
@@ -52,7 +53,8 @@ internal static class Textures {
 			case SurfaceFormat.Srgb8A1Etc2:
 			case SurfaceFormat.RgbPvrtc4Bpp:
 			case SurfaceFormat.RgbaPvrtc4Bpp:
-				return texels / 2;
+				size = texels / 2;
+				return true;
 
 			case SurfaceFormat.Dxt3:
 			case SurfaceFormat.Dxt3SRgb:
@@ -64,10 +66,11 @@ internal static class Textures {
 			case SurfaceFormat.RgbaAtcInterpolatedAlpha:
 			case SurfaceFormat.Rgba8Etc2:
 			case SurfaceFormat.SRgb8A8Etc2:
-				return texels;
+				size = texels;
+				return true;
 		}
 
-		int elementSize = format switch {
+		size = format switch {
 			SurfaceFormat.Color => 4,
 			SurfaceFormat.ColorSRgb => 4,
 			SurfaceFormat.Bgr565 => 2,
@@ -92,26 +95,76 @@ internal static class Textures {
 			_ => ThrowUnhandledFormatException<int>(nameof(format), format)
 		};
 
-		return (long)texels * elementSize;
+		return false;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static long SizeBytesLong(this SurfaceFormat format, int texels) {
+		if (format.SizeBytesInternal(texels, out int size)) {
+			return size;
+		}
+
+		return (long)texels * size;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int SizeBytes(this SurfaceFormat format, int texels) {
-		var result = SizeBytesLong(format, texels);
-		return checked((int)result);
+#if SHIPPING
+		if (format.SizeBytesInternal(texels, out int size)) {
+			return size;
+		}
+
+		return texels * size;
+#else
+		return checked((int)format.SizeBytesLong(texels));
+#endif
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static int SizeBytes(this SurfaceFormat format, Vector2I dimensions) {
-		if (format.IsBlock()) {
-			Vector2I edge = format.BlockEdge();
-			Vector2I edgeMinusOne = edge - 1;
-			dimensions = (dimensions + edgeMinusOne) & ~edgeMinusOne;
+	private static Vector2I GetBlockAligned(this Vector2I dimensions, SurfaceFormat format) {
+		if (!format.IsBlock()) {
+			return dimensions;
 		}
 
-		var result = SizeBytesLong(format, dimensions.Area);
-		return checked((int)result);
+		Vector2I edge = format.BlockEdge();
+		Vector2I edgeMinusOne = edge - 1;
+
+		return (dimensions + edgeMinusOne) & ~edgeMinusOne;
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static long SizeBytesLong(this SurfaceFormat format, Vector2I dimensions) {
+		dimensions = dimensions.GetBlockAligned(format);
+
+		return SizeBytesLong(format, dimensions.Area);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static long SizeBytesLong(this XTexture2D texture) =>
+		texture.Format.SizeBytesLong(texture.Extent());
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int SizeBytes(this SurfaceFormat format, Vector2I dimensions) {
+		dimensions = dimensions.GetBlockAligned(format);
+
+		return SizeBytes(format, dimensions.Area);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int SizeBytes(this XTexture2D texture) =>
+		texture.Format.SizeBytes(texture.Extent());
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int StrideBytes(this SurfaceFormat format, int texels) =>
+		format.SizeBytes(texels);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int StrideBytes(this SurfaceFormat format, Vector2I dimensions) =>
+		format.SizeBytes((dimensions.X, 1));
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int StrideBytes(this XTexture2D texture) =>
+		texture.Format.StrideBytes(texture.Extent());
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static SurfaceFormat ToSRgb(this SurfaceFormat format) => format switch {
@@ -196,12 +249,6 @@ internal static class Textures {
 		=> (8, 4),
 		_ => (1, 1)
 	};
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static long SizeBytesLong(this XTexture2D texture) => texture.Format.SizeBytesLong(texture.Area());
-
-	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal static int SizeBytes(this XTexture2D texture) => texture.Format.SizeBytes(texture.Area());
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool Anonymous(this XTexture2D texture) => texture.Name.IsWhiteBlank();

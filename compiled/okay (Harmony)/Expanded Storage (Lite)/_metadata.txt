@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/7431
 IDs: furyx639.ExpandedStorage
-update keys: Nexus:7431@XSLite, Nexus:7431, GitHub:ImJustMatt/StardewMods
+update keys: Nexus:7431, GitHub:ImJustMatt/StardewMods

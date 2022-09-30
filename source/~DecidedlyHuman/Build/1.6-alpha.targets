@@ -1,6 +1,7 @@
 ﻿<Project>
-	<PropertyGroup>
-		<GamePath>C:\Development\Stardew Valley\Decompiled Game\1.6.0.22137-20220517-SMAPI-4.x.x\Code\Stardew Valley\bin\Release</GamePath>
-		<ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
-	</PropertyGroup>
+  <PropertyGroup>
+    <!-- Note for people forking this repo: you will need to put your own paths here. -->
+    <GamePath>C:\Development\Stardew Valley\Dev Environment\1.6-build-22223</GamePath>
+    <ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
+  </PropertyGroup>
 </Project>

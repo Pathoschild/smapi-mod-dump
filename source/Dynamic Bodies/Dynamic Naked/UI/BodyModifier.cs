@@ -448,6 +448,7 @@ namespace DynamicBodies.UI
 
 		public void cancelAndExit()
         {
+			RevertClothing();
 			RevertChanges();
 			if (isWizardSubmenu)
 			{

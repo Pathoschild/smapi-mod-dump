@@ -15,22 +15,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Netcode;
+using Omegasis.StardustCore.Utilities;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
-using StardustCore.Utilities;
 
-namespace StardustCore.Events
+namespace Omegasis.StardustCore.Events
 {
     /// <summary>
     /// Contains functions that are used to parse event data and do additional things.
     /// </summary>
     public class ExtraEventActions
     {
-
-        private static Point OldViewportPosition;
-        private static bool StartedLerp;
-        private static int CurrentViewportLerpAmount;
 
         public static Dictionary<string, JunimoAdvanceMoveData> junimoLerpData = new Dictionary<string, JunimoAdvanceMoveData>();
 
@@ -50,56 +46,18 @@ namespace StardustCore.Events
             Game1.CurrentEvent.CurrentCommand++;
         }
 
-
-        /// <summary>
-        /// Lerp the camera to a specified position.
-        /// </summary>
-        /// <param name="EventManager"></param>
-        /// <param name="EventData"></param>
-        public static void ViewportLerp(EventManager EventManager,string EventData)
+        public static void addObjectToPlayerInventory(Event SDVEvent, GameLocation Location, GameTime Time, string[] EventData)
         {
-            string[] splits = EventData.Split(' ');
-            string name = splits[0];
-
-            int xEndPosition =Convert.ToInt32(splits[1]);
-            int yEndPosition = Convert.ToInt32(splits[2]);
-            int frames = Convert.ToInt32(splits[3]);
-            bool concurrent = Convert.ToBoolean(splits[4]);
-            if (concurrent)
-            {
-                if (EventManager.concurrentEventActions.ContainsKey(name)==false)
-                {
-                    EventManager.addConcurrentEvent(new ConcurrentEventInformation(name,EventData,EventManager,ViewportLerp));
-                    ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
-                }
-            }
-
-            if (StartedLerp==false)
-            {
-                OldViewportPosition = new Point(Game1.viewport.Location.X,Game1.viewport.Location.Y);
-                StartedLerp = true;
-            }
-
-            ++CurrentViewportLerpAmount;
-            if (CurrentViewportLerpAmount >= frames)
-            {
-                CurrentViewportLerpAmount = frames;
-                Vector2 currentLerp2 = Vector2.Lerp(new Vector2(OldViewportPosition.X, OldViewportPosition.Y), new Vector2(OldViewportPosition.X+xEndPosition, OldViewportPosition.Y+yEndPosition), (float)((float)CurrentViewportLerpAmount/(float)frames));
-                Game1.viewport.Location = new xTile.Dimensions.Location((int)currentLerp2.X, (int)currentLerp2.Y);
-
-                OldViewportPosition = new Point(0, 0);
-                CurrentViewportLerpAmount = 0;
-                StartedLerp = false;
-                if(concurrent==false)++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
-                else
-                {
-                    EventManager.finishConcurrentEvent(name);
-                }
-                return;
-            }
-            Vector2 currentLerp = Vector2.Lerp(new Vector2(OldViewportPosition.X, OldViewportPosition.Y), new Vector2(OldViewportPosition.X + xEndPosition, OldViewportPosition.Y + yEndPosition), (float)((float)CurrentViewportLerpAmount/(float)frames));
-            Game1.viewport.Location = new xTile.Dimensions.Location((int)currentLerp.X, (int)currentLerp.Y);
+            string name = EventData[0];
+            int parentSheetIndex = Convert.ToInt32(EventData[1]);
+            int amount = Convert.ToInt32(EventData[2]);
+            bool makeActiveObject = Convert.ToBoolean(EventData[3]);
+            StardewValley.Object obj = new StardewValley.Object(parentSheetIndex, amount);
+            Game1.player.addItemToInventoryBool(obj, makeActiveObject);
+            SDVEvent.CurrentCommand++;
         }
+
+
 
         /// <summary>
         /// Adds in a junimo actor at the current location. Allows for multiple.
@@ -134,6 +92,33 @@ namespace StardustCore.Events
             ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
         }
 
+        public static void AddInJumimoActorForEvent(Event Event, GameLocation Location, GameTime GameTime, string[] EventData)
+        {
+            string name = EventData[0];
+
+            string actorName = EventData[1];
+            int xPos = Convert.ToInt32(EventData[2]);
+            int yPos = Convert.ToInt32(EventData[3]);
+            Color color = new Color(Convert.ToInt32(EventData[4]), Convert.ToInt32(EventData[5]), Convert.ToInt32(EventData[6]));
+            bool flipped = Convert.ToBoolean(EventData[7]);
+
+            List<NPC> actors = Game1.CurrentEvent.actors;
+            Junimo junimo = new Junimo(new Vector2(xPos * 64, yPos * 64), -1, false);
+            junimo.Name = actorName;
+            junimo.EventActor = true;
+            junimo.flip = flipped;
+
+            IReflectedField<NetColor> colorF = StardustCore.ModCore.ModHelper.Reflection.GetField<NetColor>(junimo, "color", true);
+            NetColor c = colorF.GetValue();
+            c.R = color.R;
+            c.G = color.G;
+            c.B = color.B;
+            colorF.SetValue(c);
+
+            actors.Add((NPC)junimo);
+            ++Event.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
+        }
+
         /// <summary>
         /// Flip a given junimo actor. Necessary to make junimos face left.
         /// </summary>
@@ -146,6 +131,16 @@ namespace StardustCore.Events
             string actorName = splits[1];
             bool flipped = Convert.ToBoolean(splits[2]);
             NPC junimo=Game1.CurrentEvent.actors.Find(i => i.Name.Equals(actorName));
+            junimo.flip = flipped;
+            ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
+        }
+
+        public static void FlipJunimoActor(Event Event, GameLocation GameLocation, GameTime GameTime, string[] EventData)
+        {
+            string name = EventData[0];
+            string actorName = EventData[1];
+            bool flipped = Convert.ToBoolean(EventData[2]);
+            NPC junimo = Game1.CurrentEvent.actors.Find(i => i.Name.Equals(actorName));
             junimo.flip = flipped;
             ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
         }
@@ -164,6 +159,17 @@ namespace StardustCore.Events
         }
 
         /// <summary>
+        /// Adds the concurrent event to handle junimo movement.
+        /// </summary>
+        /// <param name="EventManager"></param>
+        /// <param name="EventData"></param>
+        public static void SetUpAdvanceJunimoMovement(Event Event, GameLocation GameLocation, GameTime GameTime, string[] EventData)
+        {
+            string name = EventData[0];
+            ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
+        }
+
+        /// <summary>
         /// Finishes handling advvance junimo movement.
         /// </summary>
         /// <param name="EventManager"></param>
@@ -174,6 +180,17 @@ namespace StardustCore.Events
             string name = splits[0];
             ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
             EventManager.finishConcurrentEvent("AdvanceJunimoMove");
+        }
+
+        /// <summary>
+        /// Finishes handling advvance junimo movement.
+        /// </summary>
+        /// <param name="EventManager"></param>
+        /// <param name="EventData"></param>
+        public static void FinishAdvanceJunimoMovement(Event Event, GameLocation Location, GameTime Time, string[] EventData)
+        {
+            string name = EventData[0];
+            ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
         }
 
         public static void AddInJunimoAdvanceMove(EventManager EventManager, string EventData)
@@ -206,6 +223,31 @@ namespace StardustCore.Events
             ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
         }
 
+        public static void AddInJunimoAdvanceMove(Event Event, GameLocation GameLocation, GameTime GameTime, string[] EventData)
+        {
+            string[] splits = EventData;
+            string name = splits[0];
+
+            string actorName = splits[1];
+            int MaxFrames = Convert.ToInt32(splits[2]);
+            int Speed = Convert.ToInt32(splits[3]);
+            bool Loop = Convert.ToBoolean(splits[4]);
+
+            List<Point> points = new List<Point>();
+            for (int i = 5; i < splits.Length; i++)
+            {
+                string pointData = splits[i];
+                string[] point = pointData.Split('_');
+                int x = Convert.ToInt32(point[0]);
+                int y = Convert.ToInt32(point[1]);
+                points.Add(new Point(x, y));
+            }
+
+            junimoLerpData.Add(actorName, new JunimoAdvanceMoveData(actorName, points, MaxFrames, Speed, Loop));
+
+            ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
+        }
+
         /// <summary>
         /// Updates all of the junimo movement logic.
         /// </summary>
@@ -227,6 +269,24 @@ namespace StardustCore.Events
         public static void RemoveAdvanceJunimoMovement(EventManager EventManager, string EventData)
         {
             string[] splits = EventData.Split(' ');
+            string name = splits[0];
+            string actorName = splits[1];
+            if (junimoLerpData.ContainsKey(actorName))
+            {
+                junimoLerpData.Remove(actorName);
+            }
+
+            ++Game1.CurrentEvent.CurrentCommand; //I've been told ++<int> is more efficient than <int>++;
+        }
+
+        /// <summary>
+        /// Removes, aka stops the junimo actor from doing their advance movement.
+        /// </summary>
+        /// <param name="EventManager"></param>
+        /// <param name="EventData"></param>
+        public static void RemoveAdvanceJunimoMovement(Event Event, GameLocation GameLocation, GameTime GameTime, string[] EventData)
+        {
+            string[] splits = EventData;
             string name = splits[0];
             string actorName = splits[1];
             if (junimoLerpData.ContainsKey(actorName))

@@ -9,7 +9,10 @@
 *************************************************/
 
 using HarmonyLib;
+using LinqFasterer;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -91,24 +94,42 @@ internal static class Inlining {
 			return;
 		}
 
-		desc.Flags &= ~MethodImpl.MethodDescClassification.mcdVerifiedState;
+		desc.Flags &= ~MethodImpl.MethodDescClassification.mcdNotInline;
 
 		*descPtr = desc;
 	}
 
+	[Flags]
+	internal enum PatchType : uint {
+		Finalizer = 1u << 0,
+		Postfix = 1u << 1,
+		Prefix = 1u << 2,
+		Transpiler = 1u << 3
+	}
+
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
-	internal static void Reenable() {
+	internal static void Reenable(PatchType patchTypes = PatchType.Transpiler) {
 		_ = Parallel.ForEach(Harmony.GetAllPatchedMethods(), patchedMethod => {
-			var patches = Harmony.GetPatchInfo(patchedMethod);
-			//var allPatches = patches.Finalizers as IList<Patch>;
-			//allPatches = allPatches.ConcatF(patches.Postfixes);
-			//allPatches = allPatches.ConcatF(patches.Prefixes);
-			//allPatches = allPatches.ConcatF(patches.Transpilers);
-			foreach (var patch in patches.Transpilers) {
+			var allPatches = Harmony.GetPatchInfo(patchedMethod);
+			IList<Patch> inlinePatches = Array.Empty<Patch>();
+
+			foreach ((var patchType, var patches) in new[] {
+				(PatchType.Finalizer, allPatches.Finalizers),
+				(PatchType.Postfix, allPatches.Postfixes),
+				(PatchType.Prefix, allPatches.Prefixes),
+				(PatchType.Transpiler, allPatches.Transpilers)
+			}) {
+				if (patchTypes.HasFlag(patchType)) {
+					inlinePatches = inlinePatches.ConcatF(patches);
+				}
+			}
+
+			foreach (var patch in inlinePatches) {
 				if (patch.PatchMethod.DeclaringType?.Assembly != SpriteMaster.Assembly) {
 					continue;
 				}
 
+				EnableInlining(patchedMethod);
 				EnableInlining(patch.GetMethod(patchedMethod));
 			}
 		});

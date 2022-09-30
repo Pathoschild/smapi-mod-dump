@@ -52,31 +52,15 @@ internal sealed class Monitor {
 	internal void TriggerGarbageCollection() {
 		lock (CollectLock) {
 			Garbage.Collect(compact: true, blocking: true, background: false);
-			DrawState.TriggerCollection.Set(true);
 		}
 	}
 
-	internal void TriggerPurge(string command, Queue<string> arguments) {
-		bool hard = true;
-		bool soft = true;
-		if (arguments.Count > 0) {
-			hard = false;
-			soft = false;
-
-			foreach (var arg in arguments) {
-				switch (arg.ToLowerInvariant()) {
-					case "hard":
-						hard = true;
-						break;
-					case "soft":
-						soft = true;
-						break;
-				}
-			}
-		}
-
+	internal void TriggerPurge(bool hard, bool soft, bool collect) {
 		lock (CollectLock) {
-			Garbage.Collect(compact: false, blocking: false, background: true);
+			if (collect) {
+				Garbage.Collect(compact: false, blocking: false, background: true);
+			}
+
 			long usedMemory = GC.GetTotalMemory(false);
 			if (hard) {
 				Manager.HardPurge((ulong)usedMemory, 0UL);
@@ -85,8 +69,9 @@ internal sealed class Monitor {
 				Manager.SoftPurge((ulong)usedMemory, 0UL);
 			}
 
-			Garbage.Collect(compact: true, blocking: true, background: false);
-			DrawState.TriggerCollection.Set(true);
+			if (collect) {
+				Garbage.Collect(compact: true, blocking: true, background: false);
+			}
 		}
 	}
 
@@ -178,8 +163,6 @@ internal sealed class Monitor {
 
 					lock (CollectLock) {
 						ResidentCache.Purge();
-						DrawState.TriggerCollection.Set(true);
-						// TODO : Do other cleanup attempts here.
 					}
 				}
 				catch (ThreadInterruptedException) {

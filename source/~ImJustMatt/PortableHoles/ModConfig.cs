@@ -14,9 +14,9 @@ using System.Globalization;
 using System.Text;
 
 /// <summary>
-///     Mod config data.
+///     Mod config data for Portable Holes.
 /// </summary>
-public class ModConfig
+internal sealed class ModConfig
 {
     /// <summary>
     ///     Gets or sets a value indicating whether damage while falling will be negated.

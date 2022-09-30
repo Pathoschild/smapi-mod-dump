@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Extensions.Reflection;
+using SpriteMaster.Metadata;
 using SpriteMaster.Types;
 using System;
 using System.Collections;
@@ -253,7 +254,13 @@ internal static class OnDrawStringImpl {
 		SpriteEffects effects,
 		float layerDepth
 	) where TCharSource : ICharSource {
-		if (!(Configuration.Preview.Override.Instance?.ResampleBasicText ?? Configuration.Config.Resample.EnabledBasicText)) {
+		var textureFlags = spriteFont.Texture?.Meta().Flags ?? default;
+
+		if (textureFlags.HasFlag(Texture2DMeta.TextureFlag.IsLargeFont) && !(Configuration.Preview.Override.Instance?.ResampleLargeText ?? Configuration.Config.Resample.EnabledLargeText)) {
+			return true;
+		}
+
+		if (textureFlags.HasFlag(Texture2DMeta.TextureFlag.IsSmallFont) && !(Configuration.Preview.Override.Instance?.ResampleSmallText ?? Configuration.Config.Resample.EnabledSmallText)) {
 			return true;
 		}
 

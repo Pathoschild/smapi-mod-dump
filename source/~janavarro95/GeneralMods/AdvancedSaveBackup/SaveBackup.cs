@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.IO;
 
 using System.Linq;
-using ICSharpCode.SharpZipLib.Zip;
 using Omegasis.SaveBackup.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -32,11 +31,14 @@ namespace Omegasis.SaveBackup
         /// <summary>The folder path containing the game's saves.</summary>
         private static readonly string SavesPath = Path.Combine(SaveBackup.AppDataPath, "Saves");
 
+        /// <summary>The folder path containing folders of the backups.</summary>
+        private static readonly string BackupSavePath = Path.Combine(SaveBackup.AppDataPath, "Backed_Up_Saves");
+
         /// <summary>The folder path containing backups of the save before the player starts playing.</summary>
-        private static readonly string PrePlayBackupsPath = Path.Combine(SaveBackup.AppDataPath, "Backed_Up_Saves", "Pre_Play_Saves");
+        private static readonly string PrePlayBackupsPath = Path.Combine(BackupSavePath, "Pre_Play_Saves");
 
         /// <summary>The folder path containing nightly backups of the save.</summary>
-        private static readonly string NightlyBackupsPath = Path.Combine(SaveBackup.AppDataPath, "Backed_Up_Saves", "Nightly_InGame_Saves");
+        private static readonly string NightlyBackupsPath = Path.Combine(BackupSavePath, "Nightly_InGame_Saves");
 
 
         /// <summary>The folder path containing the save data for Android.</summary>
@@ -45,8 +47,13 @@ namespace Omegasis.SaveBackup
         /// <summary>The folder path of the current save data for Android.</summary>
         private static string AndroidCurrentSavePath => Constants.CurrentSavePath;
 
+        /// <summary>
+        /// The base path for the backup save folder on Android.
+        /// </summary>
+        private static string AndroidBackupSavePath = Path.Combine(SaveBackup.AndroidDataPath, "Backed_Up_Saves");
+
         /// <summary>The folder path containing nightly backups of the save for Android.</summary>
-        private static string AndroidNightlyBackupsPath => Path.Combine(SaveBackup.AndroidDataPath, "Backed_Up_Saves", Constants.SaveFolderName, "Nightly_InGame_Saves");
+        private static string AndroidNightlyBackupsPath => Path.Combine(AndroidBackupSavePath, Constants.SaveFolderName, "Nightly_InGame_Saves");
 
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
@@ -63,16 +70,55 @@ namespace Omegasis.SaveBackup
 
             if (string.IsNullOrEmpty(this.Config.AlternatePreplaySaveBackupPath) == false)
             {
+                CreateCustomSavePathDirectories(this.Config.AlternatePreplaySaveBackupPath);
                 this.BackupSaves(this.Config.AlternatePreplaySaveBackupPath);
             }
             else if(Constants.TargetPlatform != GamePlatform.Android)
             {
+                CreateDefaultSaveDirectories();
                 this.BackupSaves(SaveBackup.PrePlayBackupsPath);
             }
 
             helper.Events.GameLoop.Saving += this.OnSaving;
         }
 
+        /// <summary>
+        /// Creates the default folders for the save directories.
+        /// </summary>
+        private static void CreateDefaultSaveDirectories()
+        {
+            //Create the default directories if they do not exist.
+            if (!Directory.Exists(BackupSavePath))
+            {
+                Directory.CreateDirectory(BackupSavePath);
+            }
+            if (!Directory.Exists(PrePlayBackupsPath))
+            {
+                Directory.CreateDirectory(PrePlayBackupsPath);
+            }
+            if (!Directory.Exists(NightlyBackupsPath))
+            {
+                Directory.CreateDirectory(NightlyBackupsPath);
+            }
+        }
+
+        /// <summary>
+        /// Creates the custom save path folders.
+        /// </summary>
+        /// <param name="CustomSavePath"></param>
+        private static void CreateCustomSavePathDirectories(string CustomSavePath)
+        {
+            string prePlayPath = Path.Combine(CustomSavePath, "Pre_Play_Saves");
+            string nightlyPath = Path.Combine(CustomSavePath, "Nightly_InGame_Saves");
+            if (!Directory.Exists(prePlayPath))
+            {
+                Directory.CreateDirectory(prePlayPath);
+            }
+            if (!Directory.Exists(nightlyPath))
+            {
+                Directory.CreateDirectory(nightlyPath);
+            }
+        }
 
         /*********
         ** Private methods
@@ -84,14 +130,24 @@ namespace Omegasis.SaveBackup
         {
             if (string.IsNullOrEmpty(this.Config.AlternateNightlySaveBackupPath) == false)
             {
+                CreateCustomSavePathDirectories(this.Config.AlternateNightlySaveBackupPath);
+
                 this.BackupSaves(this.Config.AlternateNightlySaveBackupPath);
             }
             else if (Constants.TargetPlatform != GamePlatform.Android)
             {
+                CreateDefaultSaveDirectories();
+
                 this.BackupSaves(SaveBackup.NightlyBackupsPath);
             }
             else
             {
+
+                if (!Directory.Exists(SaveBackup.AndroidBackupSavePath))
+                {
+                    Directory.CreateDirectory(SaveBackup.AndroidBackupSavePath);
+                }
+
                 if (!Directory.Exists(SaveBackup.AndroidNightlyBackupsPath))
                 {
                     Directory.CreateDirectory(SaveBackup.AndroidNightlyBackupsPath);
@@ -104,9 +160,11 @@ namespace Omegasis.SaveBackup
         /// <param name="folderPath">The folder path in which to generate saves.</param>
         private void BackupSaves(string folderPath)
         {
+            /*
+             Legacy code for SharpZipLib, but is probably not necessary anymore now that .Net is v5.0 across all platforms for SDV, but will keep this code here just in case I need to use it again at a later date.
             if (this.Config.UseZipCompression == false)
             {
-
+                
                 DirectoryCopy(Constants.TargetPlatform != GamePlatform.Android ? SaveBackup.SavesPath : SaveBackup.AndroidCurrentSavePath, Path.Combine(folderPath, $"backup-{DateTime.Now:yyyyMMdd'-'HHmmss}"), true);
                 new DirectoryInfo(folderPath)
                 .EnumerateDirectories()
@@ -114,9 +172,11 @@ namespace Omegasis.SaveBackup
                 .Skip(this.Config.SaveCount)
                 .ToList()
                 .ForEach(dir => dir.Delete(true));
+                
             }
             else
             {
+                
                 FastZip fastZip = new FastZip();
                 fastZip.UseZip64 = UseZip64.Off;
                 bool recurse = true;  // Include all files by recursing through the directory structure
@@ -128,19 +188,15 @@ namespace Omegasis.SaveBackup
                 .Skip(this.Config.SaveCount)
                 .ToList()
                 .ForEach(file => file.Delete());
+                
             }
-
-
-            /*
-            // back up saves This used compression but it always causes a library loading issue for OS
-            Directory.CreateDirectory(folderPath);
-            ZipFile.CreateFromDirectory(SaveBackup.SavesPath, Path.Combine(folderPath, $"backup-{DateTime.Now:yyyyMMdd'-'HHmmss}.zip"));
-
-            // delete old backups
-
             */
+
+            System.IO.Compression.ZipFile.CreateFromDirectory(Constants.TargetPlatform != GamePlatform.Android ? SaveBackup.SavesPath : SaveBackup.AndroidCurrentSavePath, Path.Combine(folderPath, $"backup-{DateTime.Now:yyyyMMdd'-'HHmmss}.zip"));
+
         }
 
+        /*
         /// <summary>
         /// An uncompressed output method.
         /// </summary>
@@ -184,27 +240,6 @@ namespace Omegasis.SaveBackup
                 }
             }
         }
-
-
-
-        ///<summary>
-        ///<see cref="https://github.com/Pathoschild/SMAPI/blob/develop/src/SMAPI.Mods.SaveBackup/ModEntry.cs"/>>
-        ///This code originated from Pathoschilds SMAPI SaveBackup Mod. All rights for this code goes to them. If this code is not allowed to be here *please* contact Omegasis to discus a proper work around.
-        /// Create a zip using a process command on MacOS.
-        /// <param name="sourcePath">The file or directory path to zip.</param>
-        /// <param name="destination">The destination file to create.</param>
-        /// </summary>
-        private void CompressUsingMacProcess(string sourcePath, FileInfo destination)
-        {
-            DirectoryInfo saveFolder = new DirectoryInfo(sourcePath);
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = "zip",
-                Arguments = $"-rq \"{destination.FullName}\" \"{saveFolder.Name}\" -x \"*.DS_Store\" -x \"__MACOSX\"",
-                WorkingDirectory = $"{saveFolder.FullName}/../",
-                CreateNoWindow = true
-            };
-            new Process { StartInfo = startInfo }.Start();
-        }
+        */
     }
 }

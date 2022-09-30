@@ -9,9 +9,9 @@
 *************************************************/
 
 using System.Collections.Generic;
-using StardustCore.UIUtilities.SpriteFonts.Components;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts.Components;
 
-namespace StardustCore.UIUtilities.SpriteFonts.CharacterSheets
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.CharacterSheets
 {
     public class GenericCharacterSheets
     {

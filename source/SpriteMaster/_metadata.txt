@@ -6,9 +6,12 @@ mods:
    SpriteMaster
 
 latest commit:
-   commit 7a3f29095b49243f94fcc0939698567ef4b3d8dc
+   commit 4b0df305d2cf5b16fc6cbd4dd8d58bf693bd5697
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Sun Aug 28 16:06:32 2022 -0500
+   Date:   Tue Sep 20 20:19:20 2022 -0500
    
-       0.15.0-Beta.4 tag
+       Fixing issue where an instance could get stuck in the SpriteMap even though it was nowhere else, preventing it from being purged or a new instance being created.
+       Fixing issue where `sm gc start` would also purge sprite instances.
+       Fixing the experimental inlining patch.
+       Fixing memory/asset leak due to a reference to the resampling Task being inadvertently held via the InFlightTasks map (and thus the reference Texture2D being kept alive) - it is now a weak reference.
    

@@ -180,20 +180,18 @@ namespace RangeHighlight {
                 api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/scarecrow", config.ShowScarecrowRangeKey,
                     config.ShowOtherScarecrowsWhenHoldingScarecrow,
                     (item, itemID, itemName) => {
-                        if (itemName.Contains("arecrow")) {
+                        if (item is StardewValley.Object sobj && sobj.IsScarecrow()) {
+                            int r = sobj.GetRadiusForScarecrow() - 1;
+                            if (r < 0) return null; // shouldn't happen?
+                            return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
+                                r == DefaultShapes.scarecrowRadius ? defaultShapes.scarecrow
+                                    : r == DefaultShapes.deluxeScarecrowRadius ? defaultShapes.deluxeScarecrow
+                                    : api.GetCartesianCircleWithTruncate((uint)r));
+                        } else if (itemName.Contains("arecrow")) {
                             return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
                                 itemName.Contains("deluxe") ? defaultShapes.deluxeScarecrow : defaultShapes.scarecrow);
                         } else {
-                            if ((item is StardewValley.Object) && (item as StardewValley.Object).IsScarecrow()) {
-                                int r = (item as StardewValley.Object).GetRadiusForScarecrow() - 1;
-                                if (r < 0) return null; // shouldn't happen?
-                                return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
-                                    r == DefaultShapes.scarecrowRadius ? defaultShapes.scarecrow
-                                        : r == DefaultShapes.deluxeScarecrowRadius ? defaultShapes.deluxeScarecrow
-                                        : api.GetCartesianCircleWithTruncate((uint)r));
-                            } else {
-                                return null;
-                            }
+                            return null;
                         }
                     });
             }
@@ -231,9 +229,9 @@ namespace RangeHighlight {
                                 default:
                                     return null;
                             }
-                        // This relies on the fact that placed bombs are not an item, so this
-                        // can use the cursor position for the location
-                        var cursorTile = highlighter.GetCursorTile();
+                            // This relies on the fact that placed bombs are not an item, so this
+                            // can use the cursor position for the location
+                            var cursorTile = highlighter.GetCursorTile();
                             return bombHelper(range, (int)cursorTile.X, (int)cursorTile.Y);
                         });
                 }

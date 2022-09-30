@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardustCore.UIUtilities.SpriteFonts.Fonts;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts;
 
-namespace StardustCore.UIUtilities.SpriteFonts.Components
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Components
 {
     public class TexturedString
     {

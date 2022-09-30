@@ -17,10 +17,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using Leclair.Stardew.BetterCrafting.DynamicRules;
 using Leclair.Stardew.BetterCrafting.Models;
+using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Crafting;
 using Leclair.Stardew.Common.Events;
-using Leclair.Stardew.Common.Types;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -53,6 +54,8 @@ public class RecipeManager : BaseManager {
 	private readonly PerScreen<List<IRecipe>> CraftingRecipes = new(() => new());
 	private readonly PerScreen<List<IRecipe>> CookingRecipes = new(() => new());
 
+	private readonly PerScreen<Dictionary<IRecipe, (List<NPC>, List<NPC>)?>> RecipeTastes = new(() => new());
+
 	// Categories
 	private Category[]? DefaultCraftingCategories;
 	private Category[]? DefaultCookingCategories;
@@ -60,6 +63,10 @@ public class RecipeManager : BaseManager {
 
 	private readonly Dictionary<long, Category[]> CraftingCategories = new();
 	private readonly Dictionary<long, Category[]> CookingCategories = new();
+
+	// Dynamic Rules
+	private readonly Dictionary<string, IDynamicRuleHandler> RuleHandlers = new();
+	private readonly InvalidRuleHandler invalidRuleHandler = new();
 
 	private readonly Dictionary<long, AppliedDefaults> AppliedDefaults = new();
 
@@ -71,7 +78,10 @@ public class RecipeManager : BaseManager {
 
 	public bool DefaultsLoaded = false;
 
-	public RecipeManager(ModEntry mod) : base(mod) { }
+	public RecipeManager(ModEntry mod) : base(mod) {
+		RegisterDefaultRuleHandlers();
+
+	}
 
 	private static void AssertFarmer([NotNull] Farmer? who) {
 		if (who == null)
@@ -79,6 +89,16 @@ public class RecipeManager : BaseManager {
 	}
 
 	#region Events
+
+	[Subscriber]
+	private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
+		foreach(var name in e.NamesWithoutLocale) {
+			if (name.IsEquivalentTo(@"Data\CraftingRecipes") || name.IsEquivalentTo(@"Data\CookingRecipes")) {
+				Invalidate();
+				break;
+			}
+		}
+	}
 
 	[Subscriber]
 	private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
@@ -168,9 +188,72 @@ public class RecipeManager : BaseManager {
 			}
 		});
 
+#if DEBUG
+		result.Add(new TestRecipe());
+#endif
+
 		return result;
 	}
 
+
+	#endregion
+
+	#region Gift Tastes
+
+	public void ClearGiftTastes() {
+		RecipeTastes.Value.Clear();
+	}
+
+	public (List<NPC>, List<NPC>)? GetGiftTastes(IRecipe recipe) {
+		if (RecipeTastes.Value.TryGetValue(recipe, out var cached))
+			return cached;
+
+		Item? item = recipe.CreateItemSafe();
+		if (item is null || item is not StardewValley.Object sobj || sobj.bigCraftable.Value) {
+			RecipeTastes.Value.Add(recipe, null);
+			return null;
+		}
+
+		DisposableList<NPC> chars;
+		try {
+			chars = Utility.getAllCharacters();
+		} catch(Exception ex) {
+			Log("Unable to get character list due to error. Gift tastes will not function.", LogLevel.Warn, ex);
+			return null;
+		}
+
+		List<NPC> loves = new();
+		List<NPC> likes = new();
+
+		foreach (NPC npc in chars) {
+			if (!npc.CanSocialize)
+				continue;
+
+			if (!Mod.Config.ShowAllTastes && !Game1.player.hasGiftTasteBeenRevealed(npc, item.ParentSheetIndex))
+				continue;
+
+			int taste;
+			try {
+				taste = npc.getGiftTasteForThisItem(item);
+			} catch {
+				// This will error for items without a gift taste. Just ignore it.
+				continue;
+			}
+
+			if (taste == NPC.gift_taste_love)
+				loves.Add(npc);
+			if (taste == NPC.gift_taste_like)
+				likes.Add(npc);
+		}
+
+		loves.Sort((a, b) => a.displayName.CompareTo(b.displayName));
+		likes.Sort((a, b) => a.displayName.CompareTo(b.displayName));
+
+		(List<NPC>, List<NPC>)? result = (loves.Count > 0 || likes.Count > 0) ? (loves, likes) : null;
+
+		RecipeTastes.Value.Add(recipe, result);
+		return result;
+	}
 
 	#endregion
 
@@ -195,7 +278,7 @@ public class RecipeManager : BaseManager {
 		return Mod.Helper.Translation.Get(category.I18nKey);
 	}
 
-	public void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
+	public void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null, bool useRules = false, IEnumerable<IDynamicRuleData>? rules = null) {
 
 		AddedAPICategories added = cooking ? API_Cooking : API_Crafting;
 		Dictionary<string, Func<string>> names = cooking ? API_DisplayName_Cooking : API_DisplayName_Crafting;
@@ -213,7 +296,10 @@ public class RecipeManager : BaseManager {
 			Icon = new CategoryIcon() {
 				Type = CategoryIcon.IconType.Item,
 				RecipeName = iconRecipe,
-			}
+			},
+			UseRules = useRules,
+			DynamicRules = rules?.
+				Select(x => DynamicRuleData.FromGeneric(x)).ToList()
 		};
 
 		if (recipeNames is not null)
@@ -227,7 +313,7 @@ public class RecipeManager : BaseManager {
 		Invalidate();
 	}
 
-	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
+	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null, bool useRules = false, IEnumerable<IDynamicRuleData>? rules = null) {
 
 		AddedAPICategories added = cooking ? API_Cooking : API_Crafting;
 
@@ -240,7 +326,10 @@ public class RecipeManager : BaseManager {
 			Icon = new CategoryIcon() {
 				Type = CategoryIcon.IconType.Item,
 				RecipeName = iconRecipe,
-			}
+			},
+			UseRules = useRules,
+			DynamicRules = rules?.
+				Select(x => DynamicRuleData.FromGeneric(x)).ToList()
 		};
 
 		if (recipeNames is not null)
@@ -375,7 +464,10 @@ public class RecipeManager : BaseManager {
 					Path = cat.Icon.Path,
 					Rect = cat.Icon.Rect,
 					Scale = cat.Icon.Scale,
-				}
+				},
+				UseRules = cat.UseRules,
+				DynamicRules = cat.DynamicRules?.
+					Select(x => DynamicRuleData.FromGeneric(x)).ToList()
 			};
 
 			if (cat.Recipes is not null)
@@ -467,6 +559,97 @@ public class RecipeManager : BaseManager {
 
 	#endregion
 
+	#region Dynamic Rules
+
+	private void RegisterDefaultRuleHandlers() {
+		RegisterRuleHandler("Uncrafted", new UncraftedRuleHandler());
+		RegisterRuleHandler("Search", new SearchRuleHandler(Mod));
+		RegisterRuleHandler("Machine", new MachineRuleHandler(Mod));
+		RegisterRuleHandler("Sprinkler", new SprinklerRuleHandler());
+		//RegisterTypeHandler("Light", new LightTypeHandler());
+		RegisterRuleHandler("BuffFarming", new BuffRuleHandler(BuffRuleHandler.FARMING));
+		RegisterRuleHandler("BuffFishing", new BuffRuleHandler(BuffRuleHandler.FISHING));
+		RegisterRuleHandler("BuffMining", new BuffRuleHandler(BuffRuleHandler.MINING));
+		RegisterRuleHandler("BuffLuck", new BuffRuleHandler(BuffRuleHandler.LUCK));
+		RegisterRuleHandler("BuffForaging", new BuffRuleHandler(BuffRuleHandler.FORAGING));
+		RegisterRuleHandler("BuffMaxEnergy", new BuffRuleHandler(BuffRuleHandler.MAX_ENERGY));
+		RegisterRuleHandler("BuffMagnetism", new BuffRuleHandler(BuffRuleHandler.MAGNETISM));
+		RegisterRuleHandler("BuffSpeed", new BuffRuleHandler(BuffRuleHandler.SPEED));
+		RegisterRuleHandler("BuffDefense", new BuffRuleHandler(BuffRuleHandler.DEFENSE));
+		RegisterRuleHandler("BuffAttack", new BuffRuleHandler(BuffRuleHandler.ATTACK));
+		RegisterRuleHandler("BuffGarlic", new SingleItemRuleHandler(772));
+		RegisterRuleHandler("BuffLife", new SingleItemRuleHandler(773));
+		RegisterRuleHandler("BuffMuscle", new SingleItemRuleHandler(351));
+		RegisterRuleHandler("BuffSquidInk", new SingleItemRuleHandler(921));
+		RegisterRuleHandler("BuffMonsterMusk", new SingleItemRuleHandler(879));
+	}
+
+	public bool RegisterRuleHandler(string key, IDynamicRuleHandler handler) {
+		lock(RuleHandlers) {
+			if (RuleHandlers.ContainsKey(key))
+				return false;
+
+			RuleHandlers.Add(key, handler);
+			return true;
+		}
+	}
+
+	public bool UnregisterRuleHandler(string key) {
+		lock(RuleHandlers) {
+			if (!RuleHandlers.ContainsKey(key))
+				return false;
+
+			RuleHandlers.Remove(key);
+			return true;
+		}
+	}
+
+	public KeyValuePair<string, IDynamicRuleHandler>[] GetRuleHandlers() {
+		lock (RuleHandlers) {
+			return RuleHandlers.ToArray();
+		}
+	}
+
+	public bool TryGetRuleHandler(string key, [NotNullWhen(true)] out IDynamicRuleHandler? handler) {
+		lock(RuleHandlers) {
+			return RuleHandlers.TryGetValue(key, out handler);
+		}
+	}
+
+	public IDynamicRuleHandler GetInvalidRuleHandler() {
+		return invalidRuleHandler;
+	}
+
+	public (IDynamicRuleHandler, object?, DynamicRuleData)[]? HydrateDynamicRules(IEnumerable<DynamicRuleData>? ruleData) {
+		if (ruleData is null)
+			return null;
+
+		List<(IDynamicRuleHandler, object?, DynamicRuleData)> result = new();
+
+		lock (RuleHandlers) {
+			foreach (DynamicRuleData rule in ruleData) {
+				if (RuleHandlers.TryGetValue(rule.Id, out var handler)) {
+					object? state;
+					try {
+						state = handler.ParseState(rule);
+					} catch (Exception ex) {
+						Log("An error occurred while executing a dynamic type handler.", LogLevel.Error, ex);
+
+						result.Add((invalidRuleHandler, invalidRuleHandler.ParseState(rule), rule));
+						continue;
+					}
+
+					result.Add((handler, state, rule));
+				} else
+					result.Add((invalidRuleHandler, invalidRuleHandler.ParseState(rule), rule));
+			}
+		}
+
+		return result.Count > 0 ? result.ToArray() : null;
+	}
+
+	#endregion
+
 	#region IRecipeProvider
 
 	public IRecipe? GetBaseRecipe(CraftingRecipe recipe) {
@@ -491,6 +674,7 @@ public class RecipeManager : BaseManager {
 	public void Invalidate() {
 		CraftingCount.ResetAllScreens();
 		CookingCount.ResetAllScreens();
+		RecipeTastes.ResetAllScreens();
 	}
 
 	public void AddProvider(IRecipeProvider provider) {

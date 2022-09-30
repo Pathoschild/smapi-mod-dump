@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using AeroCore.Generics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
 using System;
 
 namespace HDPortraits.Models
@@ -26,37 +29,46 @@ namespace HDPortraits.Models
                 Reload();
             }
         }
-        public readonly RLazy<Texture2D> overrideTexture;
 
-        internal string defaultPath = null;
-        private Texture2D savedDefault = null;
+        public readonly LazyAsset<Texture2D> overrideTexture;
         private string portraitPath = null;
+        public readonly LazyAsset<Texture2D> originalTexture;
+        internal string originalPath = null;
 
         public MetadataModel()
         {
-            overrideTexture = new(GetPortrait);
+            overrideTexture = new(ModEntry.helper, () => portraitPath)
+            {
+                CatchErrors = true
+            };
+            originalTexture = new(ModEntry.helper, () => originalPath);
         }
 
-        public void Reload() => overrideTexture.Reset();
+        public void Reload() => overrideTexture.Reload();
 
-        public Texture2D GetPortrait()
+        public bool TryGetTexture(out Texture2D texture)
         {
-            Animation?.Reset();
-
-            if (portraitPath is not null)
-                if(Utils.TryLoadAsset(portraitPath, out Texture2D texture))
-                    return texture;
-                else
-                    ModEntry.monitor.Log($"Could not find image at game asset path: '{portraitPath}'.", LogLevel.Warn);
-
-            if (defaultPath is not null)
-                if (Utils.TryLoadAsset(defaultPath, out Texture2D texture))
-                    return texture;
-                else
-                    ModEntry.monitor.Log($"Could not find default asset at path: '{defaultPath}'! An NPC is missing their portrait!", LogLevel.Error);
-
-            return null;
+            if (portraitPath is null)
+            {
+                texture = originalTexture.Value;
+                return true;
+            }
+            texture = overrideTexture.Value;
+            if (overrideTexture.LastError is not null)
+            {
+                ModEntry.monitor.Log($"An error occurred attempting to load portrait override @ '{portraitPath}':\n{overrideTexture.LastError}", 
+                    LogLevel.Error);
+				texture = originalTexture.Value;
+				return false;
+            }
+            return true;
         }
-        public Texture2D GetDefault() => savedDefault;
+        public Rectangle GetRegion(int which, int millis = -1)
+        {
+            var missing = TryGetTexture(out var tex);
+            int size = missing ? 64 : Size;
+            return Animation is null ? Game1.getSourceRectForStandardTileSheet(tex, which, size, size) : 
+                Animation.GetSourceRegion(tex, size, which, millis);
+        }
     }
 }

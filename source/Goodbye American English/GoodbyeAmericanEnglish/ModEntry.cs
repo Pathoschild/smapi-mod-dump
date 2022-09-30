@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using HarmonyLib;
 using StardewModdingAPI.Events;
 using System.Linq;
 
@@ -25,6 +26,9 @@ namespace GoodbyeAmericanEnglish
         : Mod
     {
         private ModConfig config;
+        private static IModHelper helperstatic;
+        private static IMonitor monitorstatic;
+        private static Dictionary<string, string> namereplacer = new Dictionary<string, string>();
 
         // Array to hold NPC names
         private static readonly string[] NPCs =
@@ -119,16 +123,139 @@ namespace GoodbyeAmericanEnglish
         public override void Entry(IModHelper helper)
         {
             this.config = this.Helper.ReadConfig<ModConfig>();
+            helperstatic = this.Helper;
+            monitorstatic = this.Monitor;
+            
 
             var replacer = this.Helper.Data.ReadJsonFile<NameReplacer>("NameReplacer.json");
 
             if (replacer == null)
             {
+                replacer = new NameReplacer();
                 this.Helper.Data.WriteJsonFile("NameReplacer.json", replacer);
             }
-
+            else
+            {
+                namereplacer = this.Helper.ModContent.Load<Dictionary<string, string>>("NameReplacer.json") ?? null;
+            }
+            
             helper.Events.Content.AssetRequested += this.AssetRequested;
 
+            if (this.config.AllowAdvancedNameReplacer == true)
+            {
+                var harmony = new Harmony(this.ModManifest.UniqueID);
+
+                harmony.Patch(
+                    original: AccessTools.PropertyGetter(typeof(StardewValley.Object), nameof(StardewValley.Object.DisplayName)),
+                    postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.DisplayName_Postfix))
+                    );
+            }
+        }
+
+        private static string PreservestringFromEnum(StardewValley.Object.PreserveType preservetype)
+        {
+            switch (preservetype)
+            {
+                case StardewValley.Object.PreserveType.Wine:
+                    return "Wine";
+                case StardewValley.Object.PreserveType.Jelly:
+                    return "Jelly";
+                case StardewValley.Object.PreserveType.Pickle:
+                    return "Pickles";
+                case StardewValley.Object.PreserveType.Juice:
+                    return "Juice";
+                case StardewValley.Object.PreserveType.Roe:
+                    return "Roe";
+                default:
+                    return "AgedRoe";
+            }
+        }
+
+        private static void DisplayName_Postfix(StardewValley.Object __instance, ref string __result)
+        {
+            try
+            {                           
+                if (namereplacer != null 
+                    && (namereplacer.ContainsKey($"{__instance.preservedParentSheetIndex.Value}_{PreservestringFromEnum(__instance.preserve.Value.GetValueOrDefault())}") == true 
+                    || namereplacer.ContainsKey($"{__instance.preservedParentSheetIndex.Value}_Honey") == true))
+                {
+                    var itemidvalue = __instance.preserve.Value.HasValue 
+                        ? namereplacer[$"{__instance.preservedParentSheetIndex.Value}_{PreservestringFromEnum(__instance.preserve.Value.GetValueOrDefault())}"] 
+                        : namereplacer[$"{__instance.preservedParentSheetIndex.Value}_Honey"];
+                    var newname = __instance.displayName;
+                    string nameextension = (__instance.IsRecipe ? (((CraftingRecipe.craftingRecipes.ContainsKey(__instance.displayName) && CraftingRecipe.craftingRecipes[__instance.displayName].Split('/')[2].Split(' ').Count() > 1) ? (" x" + CraftingRecipe.craftingRecipes[__instance.displayName].Split('/')[2].Split(' ')[1]) : "") + Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12657")) : "");
+
+                    if (itemidvalue.StartsWith('P') == true && __instance.preserve.Value.HasValue == true)
+                    {
+                        Game1.objectInformation.TryGetValue(__instance.preservedParentSheetIndex.Value, out var objectInformation4);
+
+                        string preservedName = "";
+                        if (string.IsNullOrEmpty(objectInformation4) == false)
+                        {
+                            preservedName = objectInformation4.Split('/')[4];
+                        }
+
+                        string[] fields = itemidvalue.Split('/');
+
+                        if (fields.Length > 2)
+                        {
+                            switch (fields[1])
+                            {
+                                case "suffix":
+                                    newname = $"{preservedName} {fields[2]}";
+                                    break;
+                                case "prefix":
+                                    newname = $"{fields[2]} {preservedName}";
+                                    break;
+                                case "replace":
+                                default:
+                                    newname = string.Format(fields[2],preservedName);                                   
+                                    break;
+                            }
+                            __result = newname + nameextension;
+                        }
+                    }
+
+                    else if (itemidvalue.StartsWith('P') == true && __instance.preserve.Value.HasValue == false && __instance.name != null && __instance.name.Contains("Honey") == true)
+                    {                        
+                        if (__instance.preservedParentSheetIndex.Value > 0)
+                        {
+                            Game1.objectInformation.TryGetValue(__instance.preservedParentSheetIndex.Value, out var objectInformation4);
+
+                            string honeyName = "";
+                            if (string.IsNullOrEmpty(objectInformation4) == false)
+                            {
+                                honeyName = objectInformation4.Split('/')[4];
+                            }
+
+                            string[] fields = itemidvalue.Split('/');
+
+                            if (fields.Length > 2)
+                            {
+                                switch (fields[1])
+                                {
+                                    case "suffix":
+                                        newname = $"{honeyName} {fields[2]}";
+                                        break;
+                                    case "prefix":
+                                        newname = $"{fields[2]} {honeyName}";
+                                        break;
+                                    case "replace":
+                                    default:
+                                        newname = string.Format(fields[2], honeyName);
+                                        break;
+                                }
+                                __result = newname + nameextension;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                monitorstatic.Log($"Failed to replace name. Details:\n{ex}", LogLevel.Error);
+            }
+           
         }
         private void AssetRequested(object sender, AssetRequestedEventArgs e)
         {
@@ -311,6 +438,77 @@ namespace GoodbyeAmericanEnglish
                     if (e.NameWithoutLocale.IsEquivalentTo("Strings\\StringsFromCSFiles"))
                     {
                         SpellingFixer();
+                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+
+                        if (namereplacer != null)
+                        {
+                            foreach (string itemid in new List<string>(namereplacer.Keys))
+                            {
+                                string[] fields = namereplacer[itemid].Split('/');
+                                if (fields[1] != "prefix" && fields[1] != "suffix")
+                                {
+                                    continue;
+                                }
+
+                                if (fields[0] == "PP" && fields[1] == "suffix")
+                                {
+                                    switch (itemid)
+                                    {
+                                        case "Juice":
+                                            data["Object.cs.12726"] = data["Object.cs.12726"].Replace("Juice", $"{fields[2]}");
+                                            break;
+                                        case "Wine":
+                                            data["Object.cs.12730"] = data["Object.cs.12730"].Replace("Wine", $"{fields[2]}");
+                                            break;
+                                        case "Pickles":
+                                            data["Object.cs.12735"] = "{0} " + $"{fields[2]}";
+                                            break;
+                                        case "Jelly":
+                                            data["Object.cs.12739"] = data["Object.cs.12739"].Replace("Jelly", $"{fields[2]}");
+                                            break;
+                                        case "Wild Honey":
+                                            data["Object.cs.12750"] = data["Object.cs.12750"].Replace("Wild Honey", $"{fields[2]}");
+                                            break;
+                                        case "Honey":
+                                            data["Object.cs.12760"] = data["Object.cs.12760"].Replace("Honey", $"{fields[2]}");
+                                            break;
+                                        case "Roe":
+                                            data["Roe_DisplayName"] = data["Roe_DisplayName"].Replace("Roe", $"{fields[2]}");
+                                            data["AgedRoe_DisplayName"] = data["AgedRoe_DisplayName"].Replace("Roe", $"{fields[2]}");
+                                            break;
+                                    }
+                                }
+
+                                else if (fields[0] == "PP" && fields[1] == "prefix")
+                                {
+                                    switch (itemid)
+                                    {
+                                        case "Juice":
+                                            data["Object.cs.12726"] = $"{fields[2]}" + " {0}";
+                                            break;
+                                        case "Wine":
+                                            data["Object.cs.12730"] = $"{fields[2]}" + " {0}";
+                                            break;
+                                        case "Pickles":
+                                            data["Object.cs.12735"] = data["Object.cs.12735"].Replace("Pickled", $"{fields[2]}");
+                                            break;
+                                        case "Jelly":
+                                            data["Object.cs.12739"] = $"{fields[2]}" + " {0}";
+                                            break;
+                                        case "Wild Honey":
+                                            data["Object.cs.12750"] = data["Object.cs.12750"].Replace("Wild Honey", $"{fields[2]}");
+                                            break;
+                                        case "Honey":
+                                            data["Object.cs.12760"] = $"{fields[2]}" + " {0}";
+                                            break;
+                                        case "Roe":
+                                            data["Roe_DisplayName"] = $"{fields[2]}" + " {0}";
+                                            data["AgedRoe_DisplayName"] = $"Aged {fields[2]}" + " {0}";
+                                            break;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // Edit general marriage dialogue
@@ -433,17 +631,15 @@ namespace GoodbyeAmericanEnglish
 
                             try
                             {
-                                Dictionary<int, string> namereplacer = this.Helper.ModContent.Load<Dictionary<int, string>>("NameReplacer.json");
-
                                 if (namereplacer != null)
                                 {
-                                    foreach (int itemid in new List<int>(namereplacer.Keys))
+                                    foreach (string itemid in new List<string>(namereplacer.Keys))
                                     {
                                         string[] fields = namereplacer[itemid].Split('/');
 
                                         if (fields[0] == "O")
                                         {
-                                            data[itemid] = data[itemid].Replace($"/{fields[1]}", $"/{fields[2]}");
+                                            data[Convert.ToInt32(itemid)] = data[Convert.ToInt32(itemid)].Replace($"/{fields[1]}/", $"/{fields[2]}/");
                                         }
                                     }
                                 }
@@ -704,17 +900,16 @@ namespace GoodbyeAmericanEnglish
 
                         try
                         {
-                            Dictionary<int, string> namereplacer = this.Helper.ModContent.Load<Dictionary<int, string>>("NameReplacer.json");
-
                             if (namereplacer != null)
                             {
-                                foreach (int itemid in new List<int>(namereplacer.Keys))
-                                {
-                                    string[] fields = namereplacer[itemid].Split('/');
+                                foreach (string itemid in new List<string>(namereplacer.Keys))
+                                {                                    
 
-                                    if (fields[0] == "C")
+                                    if (itemid.EndsWith("_C"))
                                     {
-                                        Snacks[itemid].DisplayName = Snacks[itemid].DisplayName.Replace(fields[1], fields[2]);
+                                        string[] fields = namereplacer[itemid.ToString()].Split('/');
+                                        string[] id = itemid.Split('_');
+                                        Snacks[Convert.ToInt32(id[0])].DisplayName = Snacks[Convert.ToInt32(id[0])].DisplayName.Replace(fields[0], fields[1]);
                                     }
                                 }
                             }

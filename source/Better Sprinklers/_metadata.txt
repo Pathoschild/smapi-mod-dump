@@ -6,9 +6,16 @@ mods:
    Better Sprinklers
 
 latest commit:
-   commit fb06ed3288ae7307c993e70fe44603be9d20078b
-   Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
-   Date:   Tue Dec 3 22:38:59 2019 -0300
+   commit 9534d75f79f697d78c36a5aa70c2ee931c87f196
+   Merge: fb06ed3 4cbdbc4
+   Author: speeder1 <orspeeder@gmail.com>
+   Date:   Thu Sep 1 20:19:26 2022 +0000
    
-       updated to SMAPI 3
+       Merge branch 'add-zoom-support' into 'master'
+       
+       Add Zoom Support
+       
+       Closes #3
+       
+       See merge request speeder1/SMAPISprinklerMod!7
    

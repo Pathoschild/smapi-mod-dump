@@ -11,7 +11,7 @@
 {
   "Name": "Plant All",
   "Author": "aedenthorn",
-  "Version": "0.4.0",
+  "Version": "0.5.1",
   "Description": "Plant All.",
   "UniqueID": "aedenthorn.PlantAll",
   "EntryDll": "PlantAll.dll",

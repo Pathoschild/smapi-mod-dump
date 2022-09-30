@@ -10,129 +10,111 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
+using Netcode;
 using Newtonsoft.Json;
+using Omegasis.StardustCore.Networking;
 using StardewValley;
 
-namespace Revitalize.Framework.Utilities
+namespace Omegasis.Revitalize.Framework.Utilities
 {
     /// <summary>Handles dealing with objects.</summary>
-    public class InventoryManager
+    public class InventoryManager : NetObject
     {
         /// <summary>How many items the inventory can hold.</summary>
-        public int capacity;
+        public readonly NetInt capacity = new NetInt();
 
         /// <summary>The hard uper limit for # of items to be held in case of upgrading or resizing.</summary>
-        public int MaxCapacity { get; private set; }
-
-        /// <summary>How many items are currently stored in the inventory.</summary>
-        public int ItemCount => this.items.Where(i => i != null).Count();
+        public readonly NetInt maxCapacity = new NetInt();
 
         /// <summary>The actual contents of the inventory.</summary>
-        public IList<Item> items;
+        public readonly NetObjectList<Item> items = new NetObjectList<Item>();
 
         /// <summary>
         /// Items that are to be buffered into the inventory manager if possible.
         /// </summary>
-        public IList<Item> bufferItems;
+        public readonly NetObjectList<Item> bufferItems = new NetObjectList<Item>();
 
-        /// <summary>Checks if the inventory is full or not.</summary>
-        public bool IsFull => this.ItemCount >= this.capacity && this.items.Where(i=>i==null).Count()==0;
+        public readonly NetInt displayColumns = new NetInt();
+        public readonly NetInt displayRows = new NetInt();
 
-        /// <summary>Checks to see if this core object actually has a valid inventory.</summary>
-        public bool HasInventory => this.capacity > 0;
-
-        [JsonIgnore]
-        public bool hasItemsInBuffer
+        public InventoryManager():this(6,6)
         {
-            get
-            {
-                return this.bufferItems.Count > 0;
-            }
         }
 
-        public int displayRows;
-        public int displayColumns;
-
-        [JsonIgnore]
-        public bool requiresUpdate;
-        public InventoryManager()
+        public InventoryManager(int DisplayRows = 6, int DisplayColumns = 6)
         {
-            this.capacity = 0;
-            this.setMaxLimit(0);
-            this.items = new List<Item>();
-            this.bufferItems = new List<Item>();
-        }
-
-        /// <summary>Construct an instance.</summary>
-        public InventoryManager(List<Item> items,int DisplayRows=6,int DisplayColumns=6)
-        {
-            this.capacity = int.MaxValue;
+            this.capacity.Value = int.MaxValue;
             this.setMaxLimit(int.MaxValue);
-            this.items = items;
-            this.bufferItems = new List<Item>();
-            this.displayRows = DisplayRows;
-            this.displayColumns = DisplayColumns;
+            this.displayRows.Value = DisplayRows;
+            this.displayColumns.Value = DisplayColumns;
+            this.initializeNetFields();
         }
 
-        public InventoryManager(IList<Item> items, int Capacity= int.MaxValue, int DisplayRows = 6, int DisplayColumns = 6)
+        public InventoryManager(int capacity, int MaxCapacty, int DisplayRows=6, int DisplayColumns = 6)
         {
-            this.capacity = Capacity;
+            this.capacity.Value = capacity;
+            this.setMaxLimit(MaxCapacty);
+            this.displayRows.Value = DisplayRows;
+            this.displayColumns.Value = DisplayColumns;
+            this.initializeNetFields();
+        }
+
+        /// <summary>Construct an instance.</summary>
+        public InventoryManager(IList<Item> items, int DisplayRows = 6, int DisplayColumns = 6)
+        {
+            this.capacity.Value = int.MaxValue;
             this.setMaxLimit(int.MaxValue);
-            this.items = items;
-            this.bufferItems = new List<Item>();
-            this.displayRows = DisplayRows;
-            this.displayColumns = DisplayColumns;
+            this.items.AddRange(items);
+            this.displayRows.Value = DisplayRows;
+            this.displayColumns.Value = DisplayColumns;
+            this.initializeNetFields();
         }
 
         /// <summary>Construct an instance.</summary>
-        public InventoryManager(int capacity, int DisplayRows = 6, int DisplayColumns = 6)
+        public InventoryManager(IList<Item> items, int capacity, int MaxCapacity, int DisplayRows = 6, int DisplayColumns = 6)
         {
-            this.capacity = capacity;
-            this.MaxCapacity = int.MaxValue;
-            this.items = new List<Item>();
-            this.bufferItems = new List<Item>();
-            this.displayRows = DisplayRows;
-            this.displayColumns = DisplayColumns;
-        }
-
-        /// <summary>Construct an instance.</summary>
-        public InventoryManager(int capacity, int MaxCapacity, int DisplayRows = 6, int DisplayColumns = 6)
-        {
-            this.capacity = capacity;
+            this.capacity.Value = capacity;
             this.setMaxLimit(MaxCapacity);
-            this.items = new List<Item>();
-            this.bufferItems = new List<Item>();
-            this.displayRows = DisplayRows;
-            this.displayColumns = DisplayColumns;
+            this.items.AddRange(items);
+            this.displayRows.Value = DisplayRows;
+            this.displayColumns.Value = DisplayColumns;
+            this.initializeNetFields();
+        }
+
+        protected override void initializeNetFields()
+        {
+            this.NetFields.AddFields(
+                this.capacity,
+                this.maxCapacity,
+                this.items,
+                this.bufferItems,
+                this.displayColumns,
+                this.displayRows);
         }
 
         /// <summary>Add the item to the inventory.</summary>
         public bool addItem(Item item)
         {
-            if (this.IsFull)
-            {
+            if (this.isFull())
                 return false;
-            }
             else
             {
-                for(int i = 0; i < this.items.Count; i++)
+                for (int i = 0; i < this.items.Count; i++)
                 {
                     Item self = this.items[i];
                     if (self != null && self.canStackWith(item))
                     {
                         self.addToStack(item);
-                        this.requiresUpdate = true;
                         return true;
                     }
                     if (self == null)
                     {
-                        self = item;
-                        this.requiresUpdate=true;
+                        this.items[i] = item;
                         return true;
                     }
                 }
 
-                this.requiresUpdate = true;
                 this.items.Add(item);
                 return true;
             }
@@ -142,10 +124,8 @@ namespace Revitalize.Framework.Utilities
         public Item getItem(Item item)
         {
             foreach (Item i in this.items)
-            {
                 if (item == i)
                     return item;
-            }
             return null;
         }
 
@@ -161,7 +141,6 @@ namespace Revitalize.Framework.Utilities
             if (item.Stack == 1)
                 return item;
 
-            this.requiresUpdate = true;
             item.Stack = item.Stack - 1;
             return item.getOne();
         }
@@ -169,7 +148,6 @@ namespace Revitalize.Framework.Utilities
         /// <summary>Empty the inventory.</summary>
         public void clear()
         {
-            this.requiresUpdate = true;
             this.items.Clear();
         }
 
@@ -182,27 +160,21 @@ namespace Revitalize.Framework.Utilities
         /// <summary>Resize how many items can be held by this object.</summary>
         public void resizeCapacity(int Amount)
         {
-            if (this.capacity + Amount < this.MaxCapacity)
-            {
-                this.capacity += Amount;
-                this.requiresUpdate = true;
-            }
+            if (this.capacity + Amount < this.maxCapacity)
+                this.capacity.Value += Amount;
         }
 
         /// <summary>Sets the upper limity of the capacity size for the inventory.</summary>
         public void setMaxLimit(int amount)
         {
-            this.MaxCapacity = amount;
-            this.requiresUpdate = true;
+            this.maxCapacity.Value = amount;
         }
 
         public bool canReceieveThisItem(Item I)
         {
-            if (this.IsFull) return false;
+            if (this.isFull()) return false;
             else
-            {
                 return true;
-            }
         }
 
         /// <summary>
@@ -211,16 +183,44 @@ namespace Revitalize.Framework.Utilities
         /// <returns></returns>
         public InventoryManager Copy()
         {
-            return new InventoryManager(this.capacity, this.MaxCapacity,this.displayRows,this.displayColumns);
+            return new InventoryManager(this.capacity, this.maxCapacity, this.displayRows, this.displayColumns);
         }
 
         public void dumpBufferToItems()
         {
-            foreach(Item I in this.bufferItems)
-            {
+            foreach (Item I in this.bufferItems)
                 this.addItem(I);
-            }
             this.bufferItems.Clear();
+        }
+
+        /// <summary>
+        /// Gets the number of non null items held by this inventory.
+        /// </summary>
+        /// <returns></returns>
+        public virtual int getNonNullItemCount()
+        {
+            return this.items.Where(i => i != null).Count();
+        }
+
+        /// <summary>Checks if the inventory is full or not.</summary>
+        public virtual bool isFull()
+        {
+            return this.getNonNullItemCount() >= this.capacity && this.items.Where(i => i == null).Count() == 0;
+        }
+
+        /// <summary>Checks to see if this core object actually has a valid inventory.</summary>
+        public virtual bool hasInventory()
+        {
+            return this.capacity > 0;
+        }
+
+        /// <summary>
+        /// Checks to see if the buffer list has any items.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool hasItemsInBuffer()
+        {
+            return this.bufferItems.Count > 0;
         }
     }
 }

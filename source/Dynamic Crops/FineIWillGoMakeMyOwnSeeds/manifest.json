@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Fine, I'll Go Make My Own Seeds",
+  "Author": "HaulinOats",
+  "Version": "1.0.0",
+  "Description": "A collection of mods that force the player to get seeds via alternative means like processor machines.",
+  "UniqueID": "HaulinOats.FineIllGoMakeMyOwnSeeds",
+  "EntryDll": "FineIllGoMakeMyOwnSeeds.dll",
+  "MinimumApiVersion": "1.0.0",
+  "UpdateKeys": ["Nexus:13944"],
+  "Dependencies": [
+    {
+      "UniqueID": "HaulinOats.Fish2SeedProcessorJA"
+    },
+    {
+      "UniqueID": "HaulinOats.Fish2SeedProcessorPFM"
+    },
+    {
+      "UniqueID": "HaulinOats.Mining2SeedProcessorJA"
+    },
+    {
+      "UniqueID": "HaulinOats.Mining2SeedProcessorPFM"
+    },
+    {
+      "UniqueID": "HaulinOats.MixedSeedKilnJA"
+    },
+    {
+      "UniqueID": "HaulinOats.MixedSeedKilnPFM"
+    }
+  ]
+}

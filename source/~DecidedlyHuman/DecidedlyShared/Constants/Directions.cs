@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace SmartBuilding.Constants
+namespace DecidedlyShared.Constants
 {
     public class Directions
     {

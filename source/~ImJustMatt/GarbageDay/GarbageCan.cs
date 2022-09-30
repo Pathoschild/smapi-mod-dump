@@ -21,10 +21,10 @@ using StardewValley.Objects;
 /// <summary>
 ///     Encapsulates logic for each Garbage Can managed by this mod.
 /// </summary>
-internal class GarbageCan
+internal sealed class GarbageCan
 {
     private static readonly Lazy<List<Item>> ItemsLazy = new(
-        () => new(from item in new ItemRepository().GetAll() select item.Item));
+        () => new(new ItemRepository().GetAll().Select(item => item.Item)));
 
     private readonly Chest _chest;
     private readonly Lazy<Random> _randomizer;
@@ -272,13 +272,13 @@ internal class GarbageCan
         var randomizer = new Random(
             (int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + 777 + whichCan * 77);
         var prewarm = randomizer.Next(0, 100);
-        for (var k = 0; k < prewarm; k++)
+        for (var k = 0; k < prewarm; ++k)
         {
             randomizer.NextDouble();
         }
 
         prewarm = randomizer.Next(0, 100);
-        for (var j = 0; j < prewarm; j++)
+        for (var j = 0; j < prewarm; ++j)
         {
             randomizer.NextDouble();
         }

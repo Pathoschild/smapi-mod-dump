@@ -43,6 +43,12 @@ public static class Sprites {
 
 		public readonly static Rectangle TO_INVENTORY = new(0, 48, 16, 16);
 		public readonly static Rectangle FROM_INVENTORY = new(16, 48, 16, 16);
+
+		public readonly static Rectangle FILTER_OFF = new(32, 48, 16, 16);
+		public readonly static Rectangle FILTER_ON = new(48, 48, 16, 16);
+
+		public readonly static Rectangle SELECT_BG = new(64, 48, 16, 16);
+
 	}
 
 }

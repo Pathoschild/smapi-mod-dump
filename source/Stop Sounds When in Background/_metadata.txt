@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/mustafa-git/StopSoundsWhenAltTabbed
+   Git: https://github.com/mustafa-git/StopSoundsWhenAltTabbed.git
+
+mods:
+   Stop Sounds When in Background
+
+latest commit:
+   commit b424270209e647e952994896e39d799810e65c88
+   Author: mustafa-git <89876073+mustafa-git@users.noreply.github.com>
+   Date:   Tue Sep 27 09:48:38 2022 +0200
+   
+       Update manifest.json
+       
+       Update version.
+   

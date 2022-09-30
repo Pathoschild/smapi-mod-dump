@@ -39,6 +39,11 @@ namespace AutoAnimalDoors.StardewValleyWrapper
                         {
                             buildings.Add(new Buildings.Coop(stardewBuilding as StardewValley.Buildings.Coop, this));
                         }
+                        else if (ModConfig.Instance.UnrecognizedAnimalBuildingsEnabled &&
+                            stardewBuilding.animalDoor?.X >= 0 && stardewBuilding.animalDoor?.Y >= 0)
+                        {
+                            buildings.Add(new Buildings.UnrecognizedAnimalBuilding(stardewBuilding, this));
+                        }
                         else
                         {
                             buildings.Add(new Buildings.Building(stardewBuilding));

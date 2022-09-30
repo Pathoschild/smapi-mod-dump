@@ -27,9 +27,13 @@ namespace PlacementPlus
         internal static bool    holdingToolButton;
         internal static Object  tileObject;
         internal static NetVector2Dictionary<TerrainFeature,NetRef<TerrainFeature>> terrainFeatures;
-
+        internal static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
+        
         private static bool initialized;
         
+        
+        /// <summary> Initializes ModState to begin tracking values. </summary>
+        /// <param name="helper">An <see cref="IModHelper">IModHelper</see> reference for hooking into events.</param>
         public static void Initialize(ref IModHelper helper)
         {
             if (initialized) return;
@@ -37,7 +41,7 @@ namespace PlacementPlus
             helper.Events.Input.ButtonsChanged  += (_, e) => {
                 if (!Context.IsWorldReady) return;
                 
-                // Updating mod state fields
+                // Updating mod state fields.
                 terrainFeatures = Game1.player.currentLocation.terrainFeatures;
                 cursorTile = e.Cursor.Tile;
                 heldItem = Game1.player.CurrentItem;

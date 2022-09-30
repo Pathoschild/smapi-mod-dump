@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace Revitalize.Framework.Utilities
+namespace Omegasis.Revitalize.Framework.Utilities
 {
     public static class Vector2Utilities
     {
@@ -32,9 +32,9 @@ namespace Revitalize.Framework.Utilities
         public static Vector2 UnitVector(this Vector2 vec)
         {
             if (vec == Vector2.Zero) return Vector2.Zero;
-            double mag = Magnitude(vec);
+            double mag = vec.Magnitude();
             if (mag == 0) return Vector2.Zero;
-            return new Vector2((float)(vec.X / mag),(float)(vec.Y / mag));
+            return new Vector2((float)(vec.X / mag), (float)(vec.Y / mag));
 
         }
 

@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-**Dynamic Bodies** is a [Stardew Valley](http://stardewvalley.net/) mod which loads packs
+**Dynamic Bodies** is a [Stardew Valley](http://stardewvalley.net/) (SDV) mod which loads packs
 to change and add options for the way the player renders, along with some new interfaces
 to make it easy to use these options.
 

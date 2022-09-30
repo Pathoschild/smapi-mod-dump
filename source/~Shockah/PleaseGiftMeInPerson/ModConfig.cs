@@ -9,53 +9,38 @@
 *************************************************/
 
 using Newtonsoft.Json;
+using Shockah.CommonModCode;
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 
 namespace Shockah.PleaseGiftMeInPerson
 {
-	internal class ModConfig
+	public class ModConfig : IVersioned.Modifiable
 	{
 		public class Entry : IEquatable<Entry>
 		{
-			public int GiftsToRemember { get; set; }
-			public int DaysToRemember { get; set; }
-			public GiftPreference InPersonPreference { get; set; }
-			public GiftPreference ByMailPreference { get; set; }
-			public float InfrequentGiftPercent { get; set; }
-			public float FrequentGiftPercent { get; set; }
-			public bool EnableModOverrides { get; set; }
+			[JsonProperty] public int GiftsToRemember { get; internal set; }
+			[JsonProperty] public int DaysToRemember { get; internal set; }
+			[JsonProperty] public GiftPreference InPersonPreference { get; internal set; }
+			[JsonProperty] public GiftPreference ByMailPreference { get; internal set; }
+			[JsonProperty] public float InfrequentGiftPercent { get; internal set; }
+			[JsonProperty] public float FrequentGiftPercent { get; internal set; }
+			[JsonProperty] public bool EnableModOverrides { get; internal set; } = true;
 
-			[JsonConstructor]
-			public Entry(
-				int giftsToRemember,
-				int daysToRemember,
-				GiftPreference inPersonPreference,
-				GiftPreference byMailPreference,
-				float infrequentGiftPercent,
-				float frequentGiftPercent,
-				bool enableModOverrides = true
-			)
+			public Entry()
 			{
-				this.GiftsToRemember = giftsToRemember;
-				this.DaysToRemember = daysToRemember;
-				this.InPersonPreference = inPersonPreference;
-				this.ByMailPreference = byMailPreference;
-				this.InfrequentGiftPercent = infrequentGiftPercent;
-				this.FrequentGiftPercent = frequentGiftPercent;
-				this.EnableModOverrides = enableModOverrides;
 			}
 
-			public Entry(Entry other) : this(
-				giftsToRemember: other.GiftsToRemember,
-				daysToRemember: other.DaysToRemember,
-				inPersonPreference: other.InPersonPreference,
-				byMailPreference: other.ByMailPreference,
-				infrequentGiftPercent: other.InfrequentGiftPercent,
-				frequentGiftPercent: other.FrequentGiftPercent,
-				enableModOverrides: other.EnableModOverrides
-			)
+			public Entry(Entry other)
 			{
+				GiftsToRemember = other.GiftsToRemember;
+				DaysToRemember = other.DaysToRemember;
+				InPersonPreference = other.InPersonPreference;
+				ByMailPreference = other.ByMailPreference;
+				InfrequentGiftPercent = other.InfrequentGiftPercent;
+				FrequentGiftPercent = other.FrequentGiftPercent;
+				EnableModOverrides = other.EnableModOverrides;
 			}
 
 			public void CopyFrom(Entry other)
@@ -95,29 +80,27 @@ namespace Shockah.PleaseGiftMeInPerson
 				=> !lhs.Equals(rhs);
 		}
 
-		public Entry Default { get; set; } = new(
-			giftsToRemember: 5,
-			daysToRemember: 14,
-			inPersonPreference: GiftPreference.Neutral,
-			byMailPreference: GiftPreference.HatesFrequent,
-			infrequentGiftPercent: 0.33f,
-			frequentGiftPercent: 0.66f
-		);
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public ISemanticVersion? Version { get; set; }
 
-		public Entry Spouse { get; set; } = new(
-			giftsToRemember: 5,
-			daysToRemember: 14,
-			inPersonPreference: GiftPreference.Neutral,
-			byMailPreference: GiftPreference.HatesFrequent,
-			infrequentGiftPercent: 0.33f,
-			frequentGiftPercent: 0.66f
-		);
+		[JsonProperty]
+		public Entry Default { get; internal set; } = new()
+		{
+			GiftsToRemember = 5,
+			DaysToRemember = 14,
+			InPersonPreference = GiftPreference.Neutral,
+			ByMailPreference = GiftPreference.HatesFrequent,
+			InfrequentGiftPercent = 0.33f,
+			FrequentGiftPercent = 0.66f
+		};
 
-		public IDictionary<string, Entry> PerNPC { get; set; } = new Dictionary<string, Entry>();
+		[JsonProperty]
+		public Entry? Spouse { get; internal set; }
 
-		public bool EnableNPCOverrides { get; set; } = true;
-		public bool ConfirmUnlikedInPersonGifts { get; set; } = true;
-		public bool ShowCurrentMailModifier { get; set; } = true;
+		[JsonProperty] public IDictionary<string, Entry> PerNPC { get; internal set; } = new Dictionary<string, Entry>();
+
+		[JsonProperty] public bool EnableNPCOverrides { get; internal set; } = true;
+		[JsonProperty] public bool ConfirmUnlikedInPersonGifts { get; internal set; } = true;
+		[JsonProperty] public bool ShowCurrentMailModifier { get; internal set; } = true;
 
 		public ModConfig()
 		{
@@ -128,6 +111,16 @@ namespace Shockah.PleaseGiftMeInPerson
 			Default.CopyFrom(other.Default);
 			foreach (var (name, entry) in other.PerNPC)
 				PerNPC[name] = new(entry);
+			EnableNPCOverrides = other.EnableNPCOverrides;
+			ConfirmUnlikedInPersonGifts = other.ConfirmUnlikedInPersonGifts;
+			ShowCurrentMailModifier = other.ShowCurrentMailModifier;
+
+			if (Spouse is null && other.Spouse is not null)
+				Spouse = new(other.Spouse);
+			else if (Spouse is not null && other.Spouse is null)
+				Spouse = null;
+			else if (Spouse is not null && other.Spouse is not null)
+				Spouse.CopyFrom(other.Spouse);
 		}
 
 		public Entry GetForNPC(string npcName)

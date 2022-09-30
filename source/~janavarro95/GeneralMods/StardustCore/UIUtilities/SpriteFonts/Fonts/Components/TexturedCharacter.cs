@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace StardustCore.UIUtilities.SpriteFonts.Components
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Components
 {
     public class TexturedCharacter
     {

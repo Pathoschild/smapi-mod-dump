@@ -36,6 +36,8 @@ internal static class Snow {
 	private const float MinScale = 0.65f;
 	private const float MaxScale = 1.0f;
 
+	private static readonly ThreadLocal<Random> ThreadRandom = new(() => new());
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static Bounds GetSourceRect<TWeatherDebris>(this TWeatherDebris debris) where TWeatherDebris : WeatherDebris =>
 		debris switch {
@@ -212,6 +214,8 @@ internal static class Snow {
 			rasterizerState: Game1.spriteBatch.GraphicsDevice.RasterizerState
 		);
 
+		var localRandom = ThreadRandom.Value!;
+
 		try {
 			if (__instance.takingMapScreenshot) {
 				XTexture2D drawTexture = IsPuffersnow ? FishTexture.Value : Game1.mouseCursors;
@@ -219,8 +223,8 @@ internal static class Snow {
 				foreach (var weatherDebris in AllWeatherDebris) {
 					var item = (SnowWeatherDebris)weatherDebris;
 					var position = new XVector2(
-						Game1.random.Next(Game1.viewport.Width - item.ReferenceSourceRect.Width * 3),
-						Game1.random.Next(Game1.viewport.Height - item.ReferenceSourceRect.Height * 3)
+						localRandom.Next(Game1.viewport.Width - item.ReferenceSourceRect.Width * 3),
+						localRandom.Next(Game1.viewport.Height - item.ReferenceSourceRect.Height * 3)
 					);
 
 					Game1.spriteBatch.Draw(
@@ -356,9 +360,11 @@ internal static class Snow {
 			return true;
 		}
 
+		var localRandom = ThreadRandom.Value!;
+
 		if (Game1.windGust == 0f) {
-			if (Game1.random.NextDouble() < 0.001) {
-				Game1.windGust += Game1.random.Next(-10, -1) / 100f;
+			if (localRandom.NextDouble() < 0.001) {
+				Game1.windGust += localRandom.Next(-10, -1) / 100f;
 				PreviousWind = WeatherDebris.globalWind;
 				WeatherDebris.globalWind += Game1.windGust;
 				if (Game1.soundBank is not null) {
@@ -368,7 +374,7 @@ internal static class Snow {
 			}
 		}
 		else {
-			if (Game1.random.NextDouble() < 0.007) {
+			if (localRandom.NextDouble() < 0.007) {
 				Game1.windGust = 0f;
 				WeatherDebris.globalWind = PreviousWind;
 			}
@@ -476,17 +482,17 @@ internal static class Snow {
 
 	private const float DirectionMultiplier = 1.0f / 50f;
 
-	private static readonly ThreadLocal<Random> ThreadRandom = new(() => new());
-
 	internal static void PopulateWeather(Vector2I screenSize) {
 		if (!Config.IsEnabled || !Config.Extras.Snow.IsEnabled) {
 			return;
 		}
 
-		IsPuffersnow = Game1.random.NextDouble() < Config.Extras.Snow.PuffersnowChance;
+		var localRandom = ThreadRandom.Value!;
+
+		IsPuffersnow = localRandom.NextDouble() < Config.Extras.Snow.PuffersnowChance;
 
 		Game1.isDebrisWeather = true;
-		int debrisToMake = Game1.random.Next(Config.Extras.Snow.MinimumDensity, Config.Extras.Snow.MaximumDensity);
+		int debrisToMake = localRandom.Next(Config.Extras.Snow.MinimumDensity, Config.Extras.Snow.MaximumDensity);
 		int currentScreenArea = screenSize.Width * screenSize.Height;
 		double ratio = (double)currentScreenArea / ReferenceScreenArea;
 		debrisToMake = (debrisToMake * ratio).RoundToInt();

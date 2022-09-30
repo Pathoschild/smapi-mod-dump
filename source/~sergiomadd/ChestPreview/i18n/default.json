@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "config.enabled.name": "Enable this mod",
+  "config.range.name": "Show preview range",
+  "config.range.tooltip": "0 or -1 for infite range. The value is the amount of tiles the player has to be away from a chest for the preview to show.",
+  "config.size.name": "Preview menu UI size",
+  "config.size.small": "Small",
+  "config.size.medium": "Medium",
+  "config.size.big": "Big",
+  "config.size.huge": "Huge",
+  "config.connector.name": "Show chest to preview connector",
+  "config.connector.tooltip": "The connector is the texture between the chest and the preview",
+  "config.enablekey.name": "Use keyboard key to show preview",
+  "config.key.name": "Key to press",
+  "config.key.tooltip": "Only works if the avobe option is checked",
+  "config.enablemouse.name": "Use mouse button to show preview",
+  "config.mouse.name": "Mouse button to press",
+  "config.mouse.tooltip": "Only works if the avobe option is checked",
+  "config.mouse.left": "MouseLeft",
+  "config.mouse.right": "MouseRight",
+  "config.mouse.middle": "MouseMiddle",
+  "config.mouse.x1": "MouseX1",
+  "config.mouse.x2": "MouseX2"
+}

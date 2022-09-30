@@ -14,9 +14,9 @@ using System.Globalization;
 using System.Text;
 
 /// <summary>
-///     Mod config data.
+///     Mod config data for Easy Access.
 /// </summary>
-internal class ModConfig
+internal sealed class ModConfig
 {
     /// <summary>
     ///     Gets or sets a value indicating the distance in tiles that the producer can be collected from.

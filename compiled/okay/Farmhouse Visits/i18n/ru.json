@@ -18,6 +18,8 @@
     "config.VisitConfiguration": "Конфигурация посещения",
     "config.Debug.name": "Отладка",
     "config.Debug.Explanation": "Параметры разработчика.",
+    "config.WalkOnFarm.name": "Allow NPCs on farm?",
+    "config.WalkOnFarm.description": "If you go outside during a visit, the NPC will roam the farm.",
     
     /*For translators: your in-laws = the family of your spouse.
     * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
@@ -281,5 +283,6 @@
     
     /* TN: gone while outside */
     "NPCGoneWhileOutside": "Пока вы работали снаружи, ваши гости {0} покинули вас.",
-    "NPCGone_Cellar": "Пока вы делали свои подвальные дела, ваш неподвальный друг {0} покинул вас."
+    "NPCGone_Cellar": "Пока вы делали свои подвальные дела, ваш неподвальный друг {0} покинул вас.",
+    "NPCGone_Farm": "While you were in the farm, {0} took their leave."
 }

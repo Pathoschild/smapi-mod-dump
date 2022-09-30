@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13885
+IDs: Shockah.EarlyGingerIsland
+update keys: Nexus:13885, GitHub:Shockah/Stardew-Valley-Mods

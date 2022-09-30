@@ -15,7 +15,7 @@ using StardewModdingAPI.Utilities;
 /// <summary>
 ///     Controls config data.
 /// </summary>
-internal class Controls
+internal sealed class Controls
 {
     /// <summary>
     ///     Gets or sets controls to switch to next page.

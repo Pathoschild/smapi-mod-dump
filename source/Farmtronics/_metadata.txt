@@ -6,9 +6,11 @@ mods:
    Farmtronics
 
 latest commit:
-   commit 14ede219ec0bd89dbf8b5a068d4d750264468299
-   Author: Joe Strout <joe@strout.net>
-   Date:   Mon Jul 25 19:48:30 2022 -0700
+   commit 0ab49c35228e77f9df4ee5118b459810dc0a8816
+   Author: JoeStrout <joe@strout.net>
+   Date:   Wed Sep 28 21:03:52 2022 -0700
    
-       Updated version to 1.2.0.
+       Restored use of farmer.Items.Count in one case
+       
+       (and inserted brackets that should have never been omitted in the first place)
    

@@ -20,6 +20,23 @@ using Leclair.Stardew.Common.Types;
 
 namespace Leclair.Stardew.BetterCrafting;
 
+public enum GiftStyle {
+	Heads,
+	Names
+};
+
+public enum GiftMode {
+	Never,
+	Shift,
+	Always
+};
+
+public enum MenuPriority {
+	Low,
+	Normal,
+	High
+};
+
 public enum MaxQuality {
 	Disabled,
 	None,
@@ -51,6 +68,12 @@ public class ModConfig {
 	public bool UseCategories { get; set; } = true;
 
 	public bool ShowSettingsButton { get; set; } = true;
+
+	public MenuPriority MenuPriority { get; set; } = MenuPriority.Normal;
+
+	public GiftMode ShowTastes { get; set; } = GiftMode.Shift;
+	public bool ShowAllTastes { get; set; } = false;
+	public GiftStyle TasteStyle { get; set; } = GiftStyle.Heads;
 
 	// Quality
 	public MaxQuality MaxQuality { get; set; } = MaxQuality.Iridium;
@@ -86,10 +109,16 @@ public class ModConfig {
 	public int MaxInventories { get; set; } = 32;
 	public int MaxDistance { get; set; } = 20;
 	public int MaxCheckedTiles { get; set; } = 500;
+	public int MaxWorkbenchGap { get; set; } = 0;
 
 	public bool UseDiagonalConnections { get; set; } = true;
 
 	public CaseInsensitiveHashSet ValidConnectors { get; set; } = new();
+
+	// Better Cookout Kit
+	public bool EnableCookoutWorkbench { get; set; } = true;
+	public bool EnableCookoutLongevity { get; set; } = false;
+	public bool EnableCookoutExpensive { get; set; } = false;
 
 	// Transfer Behavior
 

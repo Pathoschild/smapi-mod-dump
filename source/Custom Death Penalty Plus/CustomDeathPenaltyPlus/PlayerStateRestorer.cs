@@ -104,7 +104,7 @@ namespace CustomDeathPenaltyPlus
             }
 
             // Restore stamina to amount as specified by config values
-            Game1.player.stamina = (int)(Game1.player.maxStamina * config.DeathPenalty.EnergytoRestorePercentage);
+            Game1.player.stamina = (int)(Game1.player.maxStamina.Value * config.DeathPenalty.EnergytoRestorePercentage);
 
             // Restore health to amount as specified by config values
             Game1.player.health = Math.Max((int)(Game1.player.maxHealth * config.DeathPenalty.HealthtoRestorePercentage), 1);

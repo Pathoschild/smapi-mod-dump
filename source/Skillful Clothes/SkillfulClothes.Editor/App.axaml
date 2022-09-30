@@ -13,7 +13,9 @@
   </Application.Resources>
   
     <Application.Styles>
-        <FluentTheme Mode="Light"/>        
+      <FluentTheme Mode="Light"/>
+
+      <StyleInclude Source="avares://Material.Icons.Avalonia/App.xaml"></StyleInclude>
 
       <Style Selector="HeaderedContentControl">
         <Setter Property="Template">

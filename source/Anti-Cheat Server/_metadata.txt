@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/funny-snek/anticheat-and-servercode
+   Git: https://github.com/funny-snek/anticheat-and-servercode.git
+
+mods:
+   Anti-Cheat Server
+
+latest commit:
+   commit 7630a5360fe2e1721d6bde860aed9464f0d7a44d
+   Merge: 9f0d48c b3366a5
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Feb 23 18:08:01 2022 -0500
+   
+       Merge branch 'develop'
+   

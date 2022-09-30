@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 
-namespace Revitalize.Framework.Utilities
+namespace Omegasis.Revitalize.Framework.Utilities
 {
     /// <summary>
     /// Deals with usefull utilities to help determine the weather and the effects it has.

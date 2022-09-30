@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/8688
-IDs: StultusV.ActivatingSprinklers
+IDs: StultusV.ActivatedSprinklers, StultusV.ActivatingSprinklers
 update keys: Nexus:8688, GitHub:JudeRV/Stardew-ActivatingSprinklers

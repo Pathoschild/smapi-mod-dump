@@ -1,0 +1,70 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  //Pipes
+  //Iron Pipe
+  "item.ironpipe.name": "Iron Pipe",
+  "item.ironpipe.description": "Type: Connector Pipe\nThe basic pipe for connecting inputs and outputs.\nRate: 1 stack/1 second.",
+  //Gold Pipe
+  "item.goldpipe.name": "Gold Pipe",
+  "item.goldpipe.description": "Type: Connector Pipe\nA shinier pipe for connecting inputs and outputs.\nRate: 2 stacks/1 second.",
+  //Iridium Pipe
+  "item.iridiumpipe.name": "Iridium Pipe",
+  "item.iridiumpipe.description": "Type: Connector Pipe\nForged with iridium, is able to slide items at speeds unknown to mankind.\nRate: 4 stacks/1 second.",
+  //Extractor Pipe
+  "item.extractorpipe.name": "Extractor Pipe",
+  "item.extractorpipe.description": "Type: Output Pipe\nExtracts items from an adjacent container, and sends them through the network.\nRate: 1 item/1 second.",
+  //Gold Extractor Pipe
+  "item.goldextractorpipe.name": "Gold Extractor Pipe",
+  "item.goldextractorpipe.description": "Type: Output Pipe\nExtracts items, and lets you brag about your new shiny extractor.\nRate: 20 items/1 second",
+  //Iridium Extractor Pipe
+  "item.iridiumextractorpipe.name": "Iridium Extractor Pipe",
+  "item.iridiumextractorpipe.description": "Type: Output Pipe\nThanks to the iridium essense it extracts items at an alarming rate.\nRate: 80 items/1 second",
+  //Inserter Pipe
+  "item.inserterpipe.name": "Inserter Pipe",
+  "item.inserterpipe.description": "Type: Input Pipe\nInserts items into an adjacent container. Doesn't filter any items.",
+  //Polymorphic Pipe
+  "item.polymorphicpipe.name": "Polymorphic Pipe",
+  "item.polymorphicpipe.description": "Type: Input Pipe\nInserts items into an adjacent container. Inserts only the items already on the adjacent container.",
+  //Filter Pipe
+  "item.filterpipe.name": "Filter Pipe",
+  "item.filterpipe.description": "Type: Input Pipe\nInserts items into an adjacent container. Inserts only the items already on the filter pipe inventory. Right click the Filter Pipe to open the Inventory.",
+  //Invisibilizer
+  "item.invisibilizer.name": "Invisibilizer",
+  "item.invisibilizer.description": "Type: Machine\nIt makes pipes of the attached network turn crossable",
+  //Wrench
+  "item.wrench.name": "Wrench",
+  "item.wrench.description": "Type: Tool\nUsed for turning on/off Input/Output pipes.",
+
+  //-----------------------------------------------------------------------------------------------------------------
+
+  //Letters
+  "letter.itempipes_sendwrench": "Hello @! It has come to Madded Industries knowledge that you have started to use our products!^As a welcome gift, we are pleased to give you a tool to configure item pipes. For now it can only turn on and off IOPipes, but the engineering team is working hard on implementing further manipulations.^Thanks for putting your trust in Madded Industries, the best logistics provider of the Ferngill Republic!",
+  "letter.itempipes_itemslost": "Good morning @!^Madded Industries overnight pipe cleaning crew has found these items inside your item pipes!^Make sure to empty them before you go to bed next time. You can claim them clicking on the item on the letter.^Madded Industries, the best logistics provider of the Ferngill Republic!",
+
+  //-----------------------------------------------------------------------------------------------------------------
+
+  //Warnings
+  "warning.cloggedItems_1": "[ItemPipes] Check mail for recovery, or read the smapi log if not found",
+  "warning.cloggedItems_2": "[ItemPipes] Some pipes where clogged with items when saving and they were removed",
+  "warning.inputFull": "[ItemPipes] An input pipe couldn't insert an item because its container is full. Item sent back to output.",
+  "warning.outputFull": "[ItemPipes] An output pipe couldn't insert an item back because its container is full. Item dropped.",
+
+  "warning.filterError1": "[ItemPipes] itemName is already in the filter!.",
+  "warning.filterError2": "[ItemPipes] itemName of that quality is already in the filter!.",
+  "warning.filterError3": "[ItemPipes] Non vanilla items (itemName) are not allowed in filter pipes!",
+  "warning.filterError4": "[ItemPipes] itemType (itemName) are not allowed in filter pipes!.",
+
+  //UI
+  "ui.filterQuality": "Filter by quality"
+
+
+}

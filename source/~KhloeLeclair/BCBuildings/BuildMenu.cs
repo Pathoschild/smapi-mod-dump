@@ -137,7 +137,7 @@ internal class BuildMenu : IClickableMenu {
 		if (building == null || Location == null)
 			return false;
 
-		if (Location is Farm farm && building is GreenhouseBuilding && !farm.greenhouseUnlocked.Value)
+		if (Location is Farm farm && building is GreenhouseBuilding && !farm.greenhouseUnlocked.Value && ! Mod.Config.AllowMovingUnfinishedGreenhouse)
 			return false;
 
 		if (Game1.IsMasterGame)
@@ -471,15 +471,23 @@ internal class BuildMenu : IClickableMenu {
 							)] = chest;
 						}
 
-						// TODO: Config option to return materials to the player?
-						/*if (DemolishCheckBlueprint == null || DemolishCheckBlueprint.name != building.buildingType.Value)
+						if (DemolishCheckBlueprint == null || DemolishCheckBlueprint.name != building.buildingType.Value)
 							DemolishCheckBlueprint = new BluePrint(building.buildingType.Value);
 
 						if (DemolishCheckBlueprint != null) {
-							foreach (var entry in DemolishCheckBlueprint.itemsRequired) {
-								Game1.player.addItemToInventory(new StardewValley.Object(entry.Key, entry.Value));
+							if ( Mod.Config.RefundMaterial > 0 )
+								foreach (var entry in DemolishCheckBlueprint.itemsRequired) {
+									int amount = (int) (entry.Value * (Mod.Config.RefundMaterial / 100.0));
+									if ( amount > 0 )
+										Game1.player.addItemToInventory(new StardewValley.Object(entry.Key, amount));
+								}
+
+							if ( Mod.Config.RefundCurrency > 0 ) {
+								int amount = (int) (DemolishCheckBlueprint.moneyRequired * (Mod.Config.RefundCurrency / 100.0));
+								if ( amount > 0 )
+									Game1.player.addUnearnedMoney(amount);
 							}
-						}*/
+						}
 
 						DelayedAction.functionAfterDelay(delegate {
 							Event.Complete();

@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+[
+  {
+    "minRequiredHearts": 0,
+    "maxRequiredHearts": 20,
+    "objectID": "StardewValley.Object.IronBar",
+    "minAmount": 3,
+    "maxAmount": 3
+  },
+  {
+    "minRequiredHearts": 0,
+    "maxRequiredHearts": 20,
+    "objectID": "StardewValley.Object.GoldBar",
+    "minAmount": 3,
+    "maxAmount": 3
+  },
+  {
+    "minRequiredHearts": 0,
+    "maxRequiredHearts": 20,
+    "objectID": "StardewValley.Object.CopperBar",
+    "minAmount": 5,
+    "maxAmount": 5
+  },
+  {
+    "minRequiredHearts": 0,
+    "maxRequiredHearts": 20,
+    "objectID": "StardewValley.Object.BatteryPack",
+    "minAmount": 1,
+    "maxAmount": 1
+  },
+  {
+    "minRequiredHearts": 6,
+    "maxRequiredHearts": 20,
+    "objectID": "StardewValley.Object.IridiumSprinkler",
+    "minAmount": 1,
+    "maxAmount": 1
+  }
+]

@@ -13,53 +13,72 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
+using Omegasis.StardustCore.Animations;
 using StardewModdingAPI;
+using StardewValley;
 
-namespace StardustCore.UIUtilities
+namespace Omegasis.StardustCore.UIUtilities
 {
     public class TextureManager
     {
         public static Dictionary<string, Dictionary<string, TextureManager>> TextureManagers = new Dictionary<string, Dictionary<string, TextureManager>>();
 
 
-        public Dictionary<string, Texture2DExtended> textures;
+        public Dictionary<string, Texture2DExtended> extendedTextures;
 
-        public string name;
+        public string textureManagerId;
 
-        public TextureManager(string Name)
+        public string directory;
+
+        public TextureManager(string directory,string Name)
         {
-            this.name = Name;
-            this.textures = new Dictionary<string, Texture2DExtended>();
+            this.textureManagerId = Name;
+            this.extendedTextures = new Dictionary<string, Texture2DExtended>();
+            this.directory = directory;
         }
 
 
-        public TextureManager(string Name, IContentPack ContentPack)
+        public TextureManager(string BaseDirectory,string Name, IContentPack ContentPack)
         {
-            this.name = Name;
-            this.textures = new Dictionary<string, Texture2DExtended>();
+            this.textureManagerId = Name;
+            this.extendedTextures = new Dictionary<string, Texture2DExtended>();
+            this.directory = BaseDirectory;
         }
 
         public void addTexture(string name, Texture2DExtended texture)
         {
-            this.textures.Add(name, texture);
+            if (this.extendedTextures.ContainsKey(name)) return;
+
+            this.extendedTextures.Add(name, texture);
         }
 
         /// <summary>Returns a Texture2DExtended held by the manager.</summary>
-        public Texture2DExtended getTexture(string name,bool ThrowError=true)
+        public Texture2DExtended getExtendedTexture(string textureId,bool ThrowError=true)
         {
-            if (this.textures.ContainsKey(name))
+            if (this.extendedTextures.ContainsKey(textureId))
             {
-                return this.textures[name].Copy();
+                return this.extendedTextures[textureId].Copy();
             }
 
             if (ThrowError)
             {
-                throw new Exception(string.Format("Error, texture {0} not found!!!",name));
+                throw new Exception(string.Format("Error, texture {0} not found!!!",textureId));
             }
             else
             {
                 return null;
             }
+        }
+
+        /// <summary>Returns a <see cref="Texture2D"/> held by the manager.</summary>
+        public Texture2D getTexture(string textureId, bool ThrowError = true)
+        {
+            Texture2DExtended tex = this.getExtendedTexture(textureId, ThrowError);
+            if (tex == null)
+            {
+                return null;
+            }
+            return tex.texture;
         }
 
         /// <summary>
@@ -69,7 +88,7 @@ namespace StardustCore.UIUtilities
         /// <returns></returns>
         public bool containsTexture(string name)
         {
-            return this.textures.ContainsKey(name);
+            return this.extendedTextures.ContainsKey(name);
         }
 
 
@@ -172,7 +191,7 @@ namespace StardustCore.UIUtilities
             {
                 if (extensions.Contains(Path.GetExtension(file)))
                 {
-                    this.processFoundTexture(file, relativePath,helper,manifest);
+                    this.processFoundTexture(file, relativePath,manifest);
                     //StardustCore.ModCore.ModMonitor.Log("Found a texture!: "+Path.GetFileNameWithoutExtension(file));
                 }
             }
@@ -236,34 +255,88 @@ namespace StardustCore.UIUtilities
 
         private void processFoundTexture(string file, string relativePath)
         {
-            Texture2DExtended textureExtended = new Texture2DExtended(ModCore.ModHelper, ModCore.Manifest, Path.Combine(relativePath, Path.GetFileName(file)));
+            Texture2DExtended textureExtended = new Texture2DExtended(ModCore.Manifest, Path.Combine(relativePath, Path.GetFileName(file)),this.textureManagerId);
 
             //ModCore.log("Found texture: " + textureExtended.Name);
             
-            textureExtended.texture.Name = ModCore.Manifest.UniqueID + "_" + this.name + "_" + textureExtended.Name;
+            textureExtended.texture.Name = ModCore.Manifest.UniqueID + "_" + this.textureManagerId + "_" + textureExtended.name;
 
-            this.addTexture(textureExtended.Name, textureExtended);
+            this.addTexture(textureExtended.name, textureExtended);
         }
 
-        private void processFoundTexture(string file,string relativePath ,IModHelper Helper, IManifest Manifest)
+        private void processFoundTexture(string file,string relativePath , IManifest Manifest)
         {
-            Texture2DExtended textureExtended = new Texture2DExtended(Helper, Manifest, Path.Combine(relativePath, Path.GetFileName(file)));
+            Texture2DExtended textureExtended = new Texture2DExtended(Manifest, Path.Combine(relativePath, Path.GetFileName(file)),this.textureManagerId);
 
             //ModCore.log("Found texture: " + textureExtended.Name);
 
-            textureExtended.texture.Name = Manifest.UniqueID + "_" + this.name + "_" + textureExtended.Name;
+            textureExtended.texture.Name = Manifest.UniqueID + "_" + this.textureManagerId + "_" + textureExtended.name;
 
-            this.addTexture(textureExtended.Name, textureExtended);
+            this.addTexture(textureExtended.name, textureExtended);
         }
 
         private void processFoundTexture(string file, string relativePath, IContentPack ContentPack)
         {
-            Texture2DExtended textureExtended = new Texture2DExtended(ContentPack, Path.Combine(relativePath, Path.GetFileName(file)));
+            Texture2DExtended textureExtended = new Texture2DExtended(ContentPack, Path.Combine(relativePath, Path.GetFileName(file)),this.textureManagerId);
 
-            textureExtended.texture.Name = ContentPack.Manifest.UniqueID + "_" + this.name + "_" + textureExtended.Name;
+            textureExtended.texture.Name = ContentPack.Manifest.UniqueID + "_" + this.textureManagerId + "_" + textureExtended.name;
             //ModCore.log("Found texture: " + textureExtended.Name);
 
             //this.addTexture(textureExtended.Name, textureExtended);
+        }
+
+        /// <summary>
+        /// Loads in a texture and attempts to save it to the existing texture2DExtended passed in. 
+        /// </summary>
+        /// <param name="RelativePath"></param>
+        /// <param name="TextureName"></param>
+        /// <param name="existingTexture"></param>
+        /// <returns></returns>
+        public virtual Texture2D loadTexture(string RelativePath, string TextureName, Texture2DExtended existingTexture=null)
+        {
+            string path = Path.Combine(this.directory, RelativePath);
+            if (File.Exists(path))
+            {
+                Texture2D tex = Texture2D.FromFile(Game1.graphics.GraphicsDevice, path);
+
+                if (existingTexture != null)
+                {
+                    existingTexture.setTexture(tex);
+                    if (this.extendedTextures.ContainsKey(existingTexture.name) == false)
+                    {
+                        this.addTexture(existingTexture.name, existingTexture);
+                    }
+                }
+
+                return tex;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a new animation manager with the given parameters.
+        /// </summary>
+        /// <param name="TextureName"></param>
+        /// <param name="DefaultAnimation"></param>
+        /// <returns></returns>
+        public AnimationManager createAnimationManager(string TextureName, Animation DefaultAnimation)
+        {
+            return new AnimationManager(this.getExtendedTexture(TextureName), DefaultAnimation);
+        }
+
+        /// <summary>
+        /// Creates a new animation manager with the given parameters.
+        /// </summary>
+        /// <param name="TextureName"></param>
+        /// <param name="Animations"></param>
+        /// <param name="DefaultAnimationKey"></param>
+        /// <param name="StartingAnimationKey"></param>
+        /// <param name="startingAnimationFrame"></param>
+        /// <param name="EnabledByDefault"></param>
+        /// <returns></returns>
+        public AnimationManager createAnimationManager(string TextureName, Dictionary<string, Animation> Animations, string DefaultAnimationKey, string StartingAnimationKey, int startingAnimationFrame = 0, bool EnabledByDefault = true)
+        {
+            return new AnimationManager(this.getExtendedTexture(TextureName), Animations, DefaultAnimationKey, StartingAnimationKey, startingAnimationFrame, EnabledByDefault);
         }
 
 
@@ -277,32 +350,47 @@ namespace StardustCore.UIUtilities
             TextureManagers[ModManifest.UniqueID][managerName].addTexture(textureName, Texture);
         }
 
-        public static void AddTextureManager(IManifest ModManifest, string Name)
+        public static void AddTextureManager(string BasePath,IManifest ModManifest, string Name)
         {
             if (TextureManager.TextureManagers.ContainsKey(ModManifest.UniqueID))
             {
-                TextureManagers[ModManifest.UniqueID].Add(Name, new TextureManager(Name));
+                TextureManagers[ModManifest.UniqueID].Add(Name, new TextureManager(BasePath,Name));
             }
             else
             {
                 TextureManager.TextureManagers.Add(ModManifest.UniqueID, new Dictionary<string, TextureManager>());
-                TextureManagers[ModManifest.UniqueID].Add(Name, new TextureManager(Name));
+                TextureManagers[ModManifest.UniqueID].Add(Name, new TextureManager(BasePath,Name));
             }
 
         }
 
         public static TextureManager GetTextureManager(IManifest Manifest, string Name)
         {
-            return TextureManagers[Manifest.UniqueID][Name];
+            return GetTextureManager(Manifest.UniqueID, Name);
+        }
+
+        /// <summary>
+        /// Gets a texture 
+        /// </summary>
+        /// <param name="ModId"></param>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public static TextureManager GetTextureManager(string ModId, string Name)
+        {
+            return TextureManagers[ModId][Name];
         }
 
         public static Texture2D GetTexture(IManifest Manifest, string ManagerName, string TextureName)
         {
-            return GetTextureManager(Manifest, ManagerName).getTexture(TextureName).texture;
+            return GetTextureManager(Manifest, ManagerName).getExtendedTexture(TextureName).texture;
         }
+
+
         public static Texture2DExtended GetExtendedTexture(IManifest Manifest, string ManagerName, string TextureName)
         {
-            return GetTextureManager(Manifest, ManagerName).getTexture(TextureName);
+            return GetTextureManager(Manifest, ManagerName).getExtendedTexture(TextureName);
         }
+
+
     }
 }

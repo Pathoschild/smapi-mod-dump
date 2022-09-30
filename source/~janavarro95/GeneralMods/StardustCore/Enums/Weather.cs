@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace StardustCore.Enums
+namespace Omegasis.StardustCore.Enums
 {
     /// <summary>A custom class used to wrap Stardew Valley's weather conventions.</summary>
     public class Weather

@@ -16,47 +16,47 @@ namespace ConvenientInventory.Compatibility
 {
     public class ModInitializer
     {
-        private readonly IManifest _modManifest;
-        private readonly IModHelper _helper;
+        private readonly IManifest modManifest;
+        private readonly IModHelper helper;
 
         public ModInitializer(IManifest modManifest, IModHelper helper)
         {
-            _modManifest = modManifest;
-            _helper = helper;
+            this.modManifest = modManifest;
+            this.helper = helper;
         }
 
         public void Initialize(IGenericModConfigMenuApi api, ModConfig config)
         {
             api.RegisterModConfig(
-                mod: _modManifest,
+                mod: modManifest,
                 revertToDefault: () =>
                 {
                     config = new ModConfig();
                     ModEntry.Config = config;
                 },
-                saveToFile: () => _helper.WriteConfig(config)
+                saveToFile: () => helper.WriteConfig(config)
             );
 
-            api.SetDefaultIngameOptinValue(_modManifest, true);
+            api.SetDefaultIngameOptinValue(modManifest, true);
 
             api.RegisterLabel(
-                mod: _modManifest,
-                labelName: "Quick Stack To Nearby Chests",
+                mod: modManifest,
+                labelName: helper.Translation.Get("ModConfigMenu.Label.QuickStackToNearbyChests"),
                 labelDesc: null
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Enable Quick stack?",
-                optionDesc: "If enabled, adds a \"Quick Stack To Nearby Chests\" button to your inventory menu. Pressing this button will stack items from your inventory to any nearby chests which contain that item.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsEnableQuickStack.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsEnableQuickStack.Desc"),
                 optionGet: () => config.IsEnableQuickStack,
                 optionSet: value => config.IsEnableQuickStack = value
             );
 
             api.RegisterClampedOption(
-                mod: _modManifest,
-                optionName: "Range",
-                optionDesc: "How many tiles away from the player to search for nearby chests.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.QuickStackRange.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.QuickStackRange.Desc"),
                 optionGet: () => config.QuickStackRange,
                 optionSet: value => config.QuickStackRange = value,
                 min: 0,
@@ -65,103 +65,127 @@ namespace ConvenientInventory.Compatibility
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Enable hotkey?",
-                optionDesc: "If enabled, pressing either of the quick stack hotkeys specified below will quick stack your items, even outside of your inventory menu.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsEnableQuickStackHotkey.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsEnableQuickStackHotkey.Desc"),
                 optionGet: () => config.IsEnableQuickStackHotkey,
                 optionSet: value => config.IsEnableQuickStackHotkey = value
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Keybind (keyboard)",
-                optionDesc: "Press this key to quick stack your items.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.QuickStackKeyboardHotkey.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.QuickStackKeyboardHotkey.Desc"),
                 optionGet: () => config.QuickStackKeyboardHotkey,
                 optionSet: value => config.QuickStackKeyboardHotkey = value
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Keybind (controller)",
-                optionDesc: "Press this button to quick stack your items.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.QuickStackControllerHotkey.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.QuickStackControllerHotkey.Desc"),
                 optionGet: () => config.QuickStackControllerHotkey,
                 optionSet: value => config.QuickStackControllerHotkey = value
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Quick stack into buildings?",
-                optionDesc: "If enabled, nearby buildings with inventories (such as Mills or Junimo Huts) will also be checked when quick stacking.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsQuickStackIntoBuildingsWithInventories.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsQuickStackIntoBuildingsWithInventories.Desc"),
                 optionGet: () => config.IsQuickStackIntoBuildingsWithInventories,
                 optionSet: value => config.IsQuickStackIntoBuildingsWithInventories = value
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Quick stack overflow items?",
-                optionDesc: "If enabled, quick stack will place as many items as possible into chests which contain that item, rather than just a single stack.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsQuickStackOverflowItems.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsQuickStackOverflowItems.Desc"),
                 optionGet: () => config.IsQuickStackOverflowItems,
                 optionSet: value => config.IsQuickStackOverflowItems = value
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Show nearby chests in tooltip?",
-                optionDesc: "If enabled, hovering over the quick stack button will show a preview of all nearby chests, ordered by distance.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsQuickStackIgnoreItemQuality.Name"),
+                optionDesc: $"(Requires \"{helper.Translation.Get("ModConfigMenu.IsQuickStackOverflowItems.Name")}\" to be enabled.) " +
+                    helper.Translation.Get("ModConfigMenu.IsQuickStackIgnoreItemQuality.Desc"),
+                optionGet: () => config.IsQuickStackIgnoreItemQuality,
+                optionSet: value => config.IsQuickStackIgnoreItemQuality = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsQuickStackTooltipDrawNearbyChests.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsQuickStackTooltipDrawNearbyChests.Desc"),
                 optionGet: () => config.IsQuickStackTooltipDrawNearbyChests,
                 optionSet: value => config.IsQuickStackTooltipDrawNearbyChests = value
             );
 
             api.RegisterLabel(
-                mod: _modManifest,
-                labelName: "Favorite Items",
+                mod: modManifest,
+                labelName: helper.Translation.Get("ModConfigMenu.Label.FavoriteItems"),
                 labelDesc: null
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Enable favorite items?",
-                optionDesc: "If enabled, items in your inventory can be favorited. Favorited items will be ignored when stacking into chests.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsEnableFavoriteItems.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsEnableFavoriteItems.Desc"),
                 optionGet: () => config.IsEnableFavoriteItems,
                 optionSet: value => config.IsEnableFavoriteItems = value
             );
 
             string[] highlightStyleDescriptions =
                 {
-                    "0: Gold dashed",
-                    "1: Clean gold dashed",
-                    "2: Thick gold border",
-                    "3: Textured gold inset border",
-                    "4: Gold inset border",
-                    "5: Dark dashed"
+                    $"0: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-0")}",
+                    $"1: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-1")}",
+                    $"2: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-2")}",
+                    $"3: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-3")}",
+                    $"4: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-4")}",
+                    $"5: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-5")}",
+                    $"6: {helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc-6")}",
                 };
             api.RegisterChoiceOption(
-                mod: _modManifest,
-                optionName: "Highlight style",
-                optionDesc: "Choose your preferred texture style for highlighting favorited items in your inventory.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.FavoriteItemsHighlightTextureChoice.Desc"),
                 optionGet: () => highlightStyleDescriptions[config.FavoriteItemsHighlightTextureChoice],
                 optionSet: value =>
                     {
                         config.FavoriteItemsHighlightTextureChoice = int.Parse(value.Substring(0, 1));
-                        ConvenientInventory.FavoriteItemsHighlightTexture = _helper.Content.Load<Texture2D>($@"assets\favoriteHighlight_{value[0]}.png");
+                        ConvenientInventory.FavoriteItemsHighlightTexture = helper.Content.Load<Texture2D>($@"assets\favoriteHighlight_{value[0]}.png");
                     },
                 choices: highlightStyleDescriptions
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Keybind (keyboard)",
-                optionDesc: "Hold this key when selecting an item to favorite it.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.FavoriteItemsKeyboardHotkey.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.FavoriteItemsKeyboardHotkey.Desc"),
                 optionGet: () => config.FavoriteItemsKeyboardHotkey,
                 optionSet: value => config.FavoriteItemsKeyboardHotkey = value
             );
 
             api.RegisterSimpleOption(
-                mod: _modManifest,
-                optionName: "Keybind (controller)",
-                optionDesc: "Hold this button when selecting an item to favorite it.",
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.FavoriteItemsControllerHotkey.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.FavoriteItemsControllerHotkey.Desc"),
                 optionGet: () => config.FavoriteItemsControllerHotkey,
                 optionSet: value => config.FavoriteItemsControllerHotkey = value
+            );
+
+            api.RegisterLabel(
+                mod: modManifest,
+                labelName: helper.Translation.Get("ModConfigMenu.Label.Miscellaneous"),
+                labelDesc: null
+            );
+
+            api.RegisterSimpleOption(
+                mod: modManifest,
+                optionName: helper.Translation.Get("ModConfigMenu.IsEnableInventoryPageSideWarp.Name"),
+                optionDesc: helper.Translation.Get("ModConfigMenu.IsEnableInventoryPageSideWarp.Desc"),
+                optionGet: () => config.IsEnableInventoryPageSideWarp,
+                optionSet: value => config.IsEnableInventoryPageSideWarp = value
             );
         }
     }

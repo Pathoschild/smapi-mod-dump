@@ -126,7 +126,7 @@ namespace SkillfulClothes.Configuration
                 }
                 return effect;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Logger.Error($"Encountered an invalid effect definition at {jproperty.Path}");
             }

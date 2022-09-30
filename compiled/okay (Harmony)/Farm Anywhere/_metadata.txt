@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13926
+IDs: hmkiesel.FarmAnywhere
+update keys: Nexus:13926

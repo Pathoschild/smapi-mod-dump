@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
 
 namespace ConvenientInventory.Patches
 {
@@ -652,15 +653,35 @@ namespace ConvenientInventory.Patches
     {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(Item.canBeTrashed))]
-        public static bool CanBeTrashed_Prefix(ref bool __result)
+        public static bool CanBeTrashed_Prefix(Item __instance, ref bool __result)
         {
-            if (ModEntry.Config.IsEnableFavoriteItems && ConvenientInventory.FavoriteItemsIsItemSelected)
+            if (!ModEntry.Config.IsEnableFavoriteItems || !ConvenientInventory.FavoriteItemsIsItemSelected)
             {
-                if (!(Game1.activeClickableMenu is ItemGrabMenu itemGrabMenu && itemGrabMenu.shippingBin))
+                return true;
+            }
+
+            try
+            {
+                if (Game1.activeClickableMenu is ForgeMenu forgeMenu)
+                {
+                    int mouseX, mouseY;
+                    if (__instance == ConvenientInventory.FavoriteItemsSelectedItem
+                        && (forgeMenu.trashCan.containsPoint(mouseX = Game1.getMouseX(), mouseY = Game1.getMouseY())
+                            || !forgeMenu.isWithinBounds(mouseX, mouseY)))
+                    {
+                        __result = false;
+                        return false;
+                    }
+                }
+                else if (!(Game1.activeClickableMenu is ItemGrabMenu itemGrabMenu && itemGrabMenu.shippingBin))
                 {
                     __result = false;
                     return false;
                 }
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Failed in {nameof(CanBeTrashed_Prefix)}:\n{e}", LogLevel.Error);
             }
 
             return true;
@@ -682,7 +703,14 @@ namespace ConvenientInventory.Patches
             try
             {
                 // Game logic
-                if (__instance.Items == null || __instance.Items.Count < 12 || __instance.UsingTool || Game1.dialogueUp || (!Game1.pickingTool && !Game1.player.CanMove) || __instance.areAllItemsNull() || Game1.eventUp || Game1.farmEvent != null)
+                if (__instance.Items == null
+                    || __instance.Items.Count < 12
+                    || __instance.UsingTool
+                    || Game1.dialogueUp
+                    || (!Game1.pickingTool && !Game1.player.CanMove)
+                    || __instance.areAllItemsNull()
+                    || Game1.eventUp
+                    || Game1.farmEvent != null)
                 {
                     return;
                 }
@@ -711,6 +739,133 @@ namespace ConvenientInventory.Patches
             catch (Exception e)
             {
                 ModEntry.Instance.Monitor.Log($"Failed in {nameof(ReduceActiveItemByOne_Prefix)}:\n{e}", LogLevel.Error);
+            }
+
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(ForgeMenu))]
+    public class ForgeMenuPatches
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ForgeMenu.receiveKeyPress))]
+        public static bool ReceiveKeyPress_Prefix(Keys key)
+        {
+            if (!ModEntry.Config.IsEnableFavoriteItems || !ConvenientInventory.FavoriteItemsIsItemSelected)
+            {
+                return true;
+            }
+
+            try
+            {
+                if (key == Keys.Delete)
+                {
+                    // Prevents deletion of selected favorited item in some cases where "canBeTrashed" condition is modified (such as ForgeMenu).
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Failed in {nameof(ReceiveKeyPress_Prefix)}:\n{e}", LogLevel.Error);
+            }
+
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("_leftIngredientSpotClicked")]
+        public static bool LeftIngredientSpotClicked_Prefix(ForgeMenu __instance)
+        {
+            if (!ModEntry.Config.IsEnableFavoriteItems)
+            {
+                return true;
+            }
+
+            try
+            {
+                if (__instance.heldItem != null)
+                {
+                    ConvenientInventory.ResetFavoriteItemSlotsTracking();
+                }
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Failed in {nameof(LeftIngredientSpotClicked_Prefix)}:\n{e}", LogLevel.Error);
+            }
+
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("_rightIngredientSpotClicked")]
+        public static bool RightIngredientSpotClicked_Prefix(ForgeMenu __instance)
+        {
+            if (!ModEntry.Config.IsEnableFavoriteItems)
+            {
+                return true;
+            }
+
+            try
+            {
+                if (__instance.heldItem != null)
+                {
+                    ConvenientInventory.ResetFavoriteItemSlotsTracking();
+                }
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Failed in {nameof(RightIngredientSpotClicked_Prefix)}:\n{e}", LogLevel.Error);
+            }
+
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ForgeMenu.CraftItem))]
+        public static void CraftItem_Postfix(bool forReal = false)
+        {
+            if (!ModEntry.Config.IsEnableFavoriteItems || !forReal)
+            {
+                return;
+            }
+
+            try
+            {
+                // In case this craft used all of the cinder shards in a stack, refresh favorite item slots.
+                ConvenientInventory.UnfavoriteEmptyItemSlots();
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Failed in {nameof(CraftItem_Postfix)}:\n{e}", LogLevel.Error);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Utility))]
+    public class UtilityPatches
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(Utility.highlightShippableObjects))]
+        public static bool HighlightShippableObjects_Prefix(Item i)
+        {
+            if (!ModEntry.Config.IsEnableFavoriteItems)
+            {
+                return true;
+            }
+
+            try
+            {
+                int index = ConvenientInventory.GetPlayerInventoryIndexOfItem(i);
+                if (index != -1 && ConvenientInventory.FavoriteItemSlots[index])
+                {
+                    // Prevents shipping of favorited items.
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Failed in {nameof(HighlightShippableObjects_Prefix)}:\n{e}", LogLevel.Error);
             }
 
             return true;

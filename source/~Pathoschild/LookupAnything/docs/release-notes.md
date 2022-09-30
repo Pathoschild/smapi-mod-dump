@@ -10,6 +10,11 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed 'hide on key up' option closing lookup while the key is held.
+
+## 1.37.5
+Released 29 August 2022 for SMAPI 3.14.0 or later.
+
 * Fixed item lookup 'needed for' not listing bundles which use categories.
 * Fixed item lookup error if a mod added broken building data.
 * Internal optimizations.

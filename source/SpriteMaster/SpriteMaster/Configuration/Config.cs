@@ -36,6 +36,15 @@ internal static class Config {
 
 	internal static void SetPath(string path) => Path = path;
 
+	internal delegate void OnConfigChangedDelegate();
+
+	[Attributes.Ignore]
+	internal static event OnConfigChangedDelegate? ConfigChanged;
+
+	internal static void OnConfigChanged() {
+		ConfigChanged?.Invoke();
+	}
+
 	internal const bool IgnoreConfig = false ||
 #if DEBUG
 		true;
@@ -107,7 +116,7 @@ internal static class Config {
 	internal const int BaseMaxTextureDimension = 4096;
 
 	[Attributes.Comment("The preferred maximum texture edge length, if allowed by the hardware")]
-	[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+	[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 	[Attributes.LimitsInt(min: 1, max: AbsoluteMaxTextureDimension)]
 	[Attributes.Advanced]
 	internal static int PreferredMaxTextureDimension = 16384;
@@ -210,6 +219,18 @@ internal static class Config {
 
 	[Attributes.Advanced]
 	internal static class Debug {
+		[Attributes.Comment("Should a frametime counter be displayed?")]
+		[Attributes.Advanced]
+		internal static bool DisplayFrameTime =
+#if !SHIPPING
+	true;
+#else
+	false;
+#endif
+
+		[Attributes.Ignore]
+		internal const bool TestZoomedOutOverMax = false;
+
 		internal static class Logging {
 			internal static LogLevel LogLevel = LogLevel.Trace;
 #if (!SHIPPING && !RELEASE) || LOG_MONITOR
@@ -259,7 +280,7 @@ internal static class Config {
 #pragma warning restore CS0618 // Type or member is obsolete
 
 		[Attributes.Comment("How many MSAA samples should be used?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.ResetDisplay | Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.ResetDisplay | Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.LimitsInt(1, 16)]
 		internal static int AntialiasingSamples = 1;
 		[Attributes.Comment("Disable the depth buffer (unused in this game)")]
@@ -284,7 +305,7 @@ internal static class Config {
 		internal static bool ToggledEnable = true;
 
 		[Attributes.Comment("Should resampling be enabled?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.MenuName("Enable Resampling")]
 		[Obsolete($"Use {nameof(IsEnabled)}")]
 		internal static bool Enabled = true;
@@ -295,72 +316,97 @@ internal static class Config {
 #pragma warning restore CS0618 // Type or member is obsolete
 
 		[Attributes.Comment("Should resampling be enabled for normal sprites?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		internal static bool EnabledSprites = true;
+		[Attributes.Comment("Should resampling be enabled for portraits?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		internal static bool EnabledPortraits = true;
 		[Attributes.Comment("Should resampling be enabled for regular text?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
-		internal static bool EnabledText = true;
-		[Attributes.Comment("Should resampling be enabled for 'basic' text?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
-		internal static bool EnabledBasicText = true;
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		internal static bool EnabledLargeText = true;
+		[Attributes.Comment("Should resampling be enabled for small text?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		internal static bool EnabledSmallText = true;
 		[Attributes.Comment("Should the texture be scale-adjusted if its scaled dimensions are outside preferred dimensional limits?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool Scale = true;
 		[Attributes.Comment("What scaling algorithm should be used by default?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		internal static Root.Resample.Scaler Scaler = Root.Resample.Scaler.xBRZ;
+		[Attributes.MenuName("Scaler (Portraits)")]
+		[Attributes.Comment("What scaling algorithm should be used for portraits?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		internal static Root.Resample.Scaler ScalerPortrait = Root.Resample.Scaler.xBRZ;
+		[Attributes.MenuName("Scaler (Text)")]
+		[Attributes.Comment("What scaling algorithm should be used for text?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		internal static Root.Resample.Scaler ScalerText = Root.Resample.Scaler.xBRZ;
+		[Attributes.MenuName("Scaler (Gradients)")]
 		[Attributes.Comment("What scaling algorithm should be used for gradient sprites?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
-		internal static Root.Resample.Scaler ScalerGradient = Root.Resample.Scaler.None;
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		internal static Root.Resample.Scaler ScalerGradient = Root.Resample.Scaler.EPX;
 		[Attributes.Comment("Should dynamic scaling be used (scaling based upon apparent sprite size)")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool EnableDynamicScale = true;
 
-		[Attributes.Comment("Should excess transparent rows/colums be trimmed?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.Comment("Should excess transparent rows/columns be trimmed?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool TrimExcessTransparency = true;
 		[Attributes.Comment("Should we assume that input sprites are gamma corrected?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool AssumeGammaCorrected = true;
+		[Attributes.Comment("Minimum scale factor of sprites (clamped to chosen scaler)")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		[Attributes.LimitsInt(1, 6)]
+		internal static int MinScale = 1;
 		[Attributes.Comment("Maximum scale factor of sprites (clamped to chosen scaler)")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.LimitsInt(1, 6)]
 		internal static int MaxScale = 6;
+		[Attributes.Comment("What value should be added to the calculated scale?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		[Attributes.Advanced]
+		[Attributes.LimitsReal(0.0, 6.0)]
+		internal static float OverScale = 0.5f;
+		[Attributes.Comment("Should sprites that are already at their rendering size be forced to be rescaled?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
+		[Attributes.Advanced]
+		internal static bool ForceOverScaling = true;
 		[Attributes.Comment("Minimum edge length of a sprite to be considered for resampling")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.LimitsInt(1, AbsoluteMaxTextureDimension)]
 		[Attributes.Advanced]
 		internal static int MinimumTextureDimensions = 1;
 		[Attributes.Comment("Should wrapped addressing be enabled for sprite resampling (when analysis suggests it)?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool EnableWrappedAddressing = false;
 		[Attributes.Comment("Should resampling be stalled if it is determined that it will cause hitches?")]
 		[Attributes.Advanced]
 		internal static bool UseFrametimeStalling = true;
 		[Attributes.Comment("Should color enhancement/rebalancing be performed?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool UseColorEnhancement = true;
 		[Attributes.Comment("Should transparent pixels be premultiplied to prevent a 'halo' effect?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool PremultiplyAlpha = true;
 		[Attributes.Comment("Low pass value that should be filtered when reversing premultiplied alpha.")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.LimitsInt(ushort.MinValue, ushort.MaxValue)]
 		[Attributes.Advanced]
 		internal static ushort PremultiplicationLowPass = 1023;
 		[Attributes.Comment("Use redmean algorithm for perceptual color comparisons?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.Advanced]
 		internal static bool UseRedmean = false;
 		[Attributes.Comment("What textures are drawn in 'slices' and thus should be special-cased to be resampled as one texture?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.GMCMHidden]
 		internal static List<string> SlicedTextures = new() {
 			@"LooseSprites\Cursors::0,2000:640,256",
@@ -383,26 +429,26 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class BlockMultipleAnalysis {
 			[Attributes.Comment("Should sprites be analyzed to see if they are block multiples?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool Enabled = true;
 			[Attributes.Comment("What threshold should be used for block multiple analysis?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(0, 255)]
 			internal static int EqualityThreshold = 1;
 			[Attributes.Comment("How many blocks can be different for the test to still pass?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(1, int.MaxValue)]
 			internal static int MaxInequality = 1;
 		}
 
 		[Attributes.Comment("What textures or spritesheets use 4xblock sizes?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.GMCMHidden]
 		internal static List<string> TwoXTextures = new() {
 			@"Maps\WoodBuildings" // is _almost_ TwoX.
 		};
 		[Attributes.Comment("What textures or spritesheets use 4xblock sizes?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.GMCMHidden]
 		internal static List<string> FourXTextures = new() {
 			@"Characters\Monsters\Crow",
@@ -444,19 +490,19 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class Analysis {
 			[Attributes.Comment("Max color difference to not consider a sprite to be a gradient?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(0, 255)]
 			internal static int MaxGradientColorDifference = 38;
 			[Attributes.Comment("Minimum different shades required (per channel) for a sprite to be a gradient?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(0, int.MaxValue)]
 			internal static int MinimumGradientShades = 2;
 			[Attributes.Comment("Maximum proportion of opaque texels for a sprite to be a gradient?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0.0, 1.0)]
 			internal static double MaximumGradientOpaqueProportion = 0.95;
 			[Attributes.Comment("Minimum proportion of opaque texels for a sprite to be premultiplied?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0.0, 1.0)]
 			internal static double MinimumPremultipliedOpaqueProportion = 0.05;
 		}
@@ -465,31 +511,31 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class Deposterization {
 			[Attributes.Comment("Should deposterization prepass be performed?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal const bool PreEnabled = false; // disabled as the system needs more work
 			[Attributes.Comment("Should deposterization postpass be performed?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal const bool PostEnabled = false; // disabled as the system needs more work
 			[Attributes.Comment("Deposterization Color Threshold")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(0, 65_535)]
 			internal static int Threshold = 32;
 			[Attributes.Comment("Deposterization Block Size")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(1, int.MaxValue)]
 			internal static int BlockSize = 1;
 			[Attributes.Comment("Default number of passes")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(1, int.MaxValue)]
 			internal static int Passes = 2;
 			[Attributes.Comment("Use perceptual color for color comparisons?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool UsePerceptualColor = true;
 			[Attributes.Comment("Use redmean algorithm for perceptual color comparisons?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool UseRedmean = false;
 		}
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.GMCMHidden]
 		internal static readonly List<SurfaceFormat> SupportedFormats = new() {
 			SurfaceFormat.Color,
@@ -504,15 +550,15 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class Recolor {
 			[Attributes.Comment("Should (experimental) resample-based recoloring be enabled?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool Enabled = false;
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0, 10.0)]
 			internal static double RScalar = 0.897642;
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0, 10.0)]
 			internal static double GScalar = 0.998476;
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0, 10.0)]
 			internal static double BScalar = 1.18365;
 		}
@@ -520,19 +566,19 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class BlockCompression {
 			[Attributes.Comment("Should block compression of sprites be enabled?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool Enabled = DevEnabled && true;
 			private const bool DevEnabled = true;
 			[Attributes.Comment("What quality level should be used?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static CompressionQuality Quality = CompressionQuality.High;
 			[Attributes.Comment("What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(0, int.MaxValue)]
 			internal static int HardAlphaDeviationThreshold = 7;
 		}
 		[Attributes.Comment("What spritesheets will absolutely not be resampled or processed?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.GMCMHidden]
 		internal static List<string> Blacklist = new() {
 			@"LooseSprites\Lighting\",
@@ -546,7 +592,7 @@ internal static class Config {
 		[Attributes.Ignore]
 		internal static Regex[] BlacklistPatterns = Array.Empty<Regex>();
 		[Attributes.Comment("What spritesheets will absolutely not be treated as gradients?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.GMCMHidden]
 		internal static List<string> GradientBlacklist = new() {
 			@"TerrainFeatures\hoeDirt"
@@ -557,22 +603,22 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class Padding {
 			[Attributes.Comment("Should padding be applied to sprites to allow resampling to extend beyond the natural sprite boundaries?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool Enabled = DevEnabled && true;
 			private const bool DevEnabled = true;
 			[Attributes.Comment("What is the minimum edge size of a sprite for padding to be enabled?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(1, int.MaxValue)]
 			internal static int MinimumSizeTexels = 4;
 			[Attributes.Comment("Should unknown (unnamed) sprites be ignored by the padding system?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool IgnoreUnknown = false;
 			[Attributes.Comment("Should solid edges be padded?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool PadSolidEdges = false;
 
 			[Attributes.Comment("What spritesheets should not be padded?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.GMCMHidden]
 			internal static List<string> BlackList = new() {
 				@"LooseSprites\Cursors::256,308:50,34", // UI borders
@@ -581,13 +627,13 @@ internal static class Config {
 			internal static TextureRef[] BlackListS = Array.Empty<TextureRef>();
 
 			[Attributes.Comment("What spritesheets should have a stricter edge-detection algorithm applied?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.GMCMHidden]
 			internal static List<string> StrictList = new() {
 				@"LooseSprites\Cursors"
 			};
 			[Attributes.Comment("What spritesheets should always be padded?")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.GMCMHidden]
 			internal static List<string> AlwaysList = new() {
 				@"LooseSprites\font_bold",
@@ -626,11 +672,11 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class Common {
 			[Attributes.Comment("The tolerance for colors to be considered equal - [0, 256)")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsInt(0, 255)]
 			internal static byte EqualColorTolerance = 20;
 			[Attributes.Comment("The weight provided to luminance as opposed to chrominance when performing color comparisons")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0.0, 10.0)]
 			internal static double LuminanceWeight = 1.0;
 		}
@@ -638,19 +684,19 @@ internal static class Config {
 		[Attributes.Advanced]
 		internal static class xBRZ {
 			[Attributes.Comment("The threshold for a corner-direction to be considered 'dominant'")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0.0, 10.0)]
 			internal static double DominantDirectionThreshold = 4.4;
 			[Attributes.Comment("The threshold for a corner-direction to be considered 'steep'")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0.0, 10.0)]
 			internal static double SteepDirectionThreshold = 2.2;
 			[Attributes.Comment("Bias towards kernel center applied to corner-direction calculations")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			[Attributes.LimitsReal(0.0, 10.0)]
 			internal static double CenterDirectionBias = 3.0;
 			[Attributes.Comment("Should gradient block copies be used? (Note: Very Broken)")]
-			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+			[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 			internal static bool UseGradientBlockCopy = false;
 		}
 	}
@@ -658,14 +704,14 @@ internal static class Config {
 	[Attributes.Advanced]
 	internal static class WrapDetection {
 		[Attributes.Comment("Should edge-wrap analysis be enabled?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		internal const bool Enabled = true;
 		[Attributes.Comment("What is the threshold percentage of alpha values to be used to determine if it is a wrapping edge?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		[Attributes.LimitsReal(0.0, 1.0)]
 		internal static float EdgeThreshold = 0.2f;
 		[Attributes.Comment("What is the minimum alpha value assumed to be opaque?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllRenderingCaches)]
 		internal static byte AlphaThreshold = 1;
 	}
 
@@ -713,6 +759,9 @@ internal static class Config {
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureFileCache)]
 		[Attributes.LimitsInt(0, long.MaxValue)]
 		internal static long MaxSize = SizesExt.AsGiB(2);
+
+		[Attributes.Comment("Should all texture files in the Mods directory attempt to be pre-cached?")]
+		internal static bool Precache = false;
 	}
 
 	[Attributes.Advanced]

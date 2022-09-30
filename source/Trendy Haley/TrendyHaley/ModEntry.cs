@@ -20,7 +20,7 @@ using TrendyHaley.Framework;
 
 
 namespace TrendyHaley {
-    public class ModEntry : Mod, IAssetEditor {
+    public class ModEntry : Mod {
         private bool hasColdWeatherHaley_;
         private bool hasRandomFlowerQueen_;
         private ModConfig config_;
@@ -33,67 +33,59 @@ namespace TrendyHaley {
             this.Helper.Events.GameLoop.SaveLoaded   += OnSaveLoaded;
             this.Helper.Events.GameLoop.DayStarted   += OnDayStarted;
             this.Helper.Events.GameLoop.Saving       += OnSaving;
+            this.Helper.Events.Content.AssetRequested += (sender, e) => {
+                e.Edit(EditAsset);
+            };
         }
+        
+        private void EditAsset(IAssetData asset) {
+            if (config_ == null) {
+                return;
+            }
 
-        /// <summary>Implements <see cref="IAssetEditor.CanEdit"/>.</summary>
-        public bool CanEdit<T>(IAssetInfo asset) {
-            return asset.AssetNameEquals("Characters/Haley") ||
-                   asset.AssetNameEquals("Portraits/Haley_Beach") ||
-                   asset.AssetNameEquals("Characters/Haley_Beach") ||
-                   asset.AssetNameEquals("Portraits/Haley") ||
-                   asset.AssetNameEquals("LooseSprites/cowPhotos") ||
-                   asset.AssetNameEquals("LooseSprites/cowPhotosWinter");
-        }
-
-        /// <summary>Implements <see cref="IAssetEditor.Edit"/>.</summary>
-        public void Edit<T>(IAssetData asset) {
-            if (asset.AssetNameEquals("Characters/Haley") || asset.AssetNameEquals("Portraits/Haley")) {
-                this.Monitor.Log($"Edit asset {asset.AssetName}");
+            if (asset.NameWithoutLocale.IsEquivalentTo("Characters/Haley") || asset.NameWithoutLocale.IsEquivalentTo("Portraits/Haley")) {
+                this.Monitor.Log($"Edit asset {asset.NameWithoutLocale}");
 
                 IAssetDataForImage baseImage = asset.AsImage();
                 Texture2D overlay;
                 // Support for Cold Weather Haley.
                 if (hasColdWeatherHaley_ && Game1.IsWinter) {
-                    overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_winter_overlay_hair_gray.png");
+                    overlay = this.Helper.ModContent.Load<Texture2D>($"assets/{asset.NameWithoutLocale}_winter_overlay_hair_gray.png");
                     // Workaround for the missing sleeping sprite of Cold Weather Haley.
-                    if (asset.AssetNameEquals("Characters/Haley")) {
-                        Texture2D sleepingHaley = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_sleeping.png");
+                    if (asset.NameWithoutLocale.IsEquivalentTo("Characters/Haley")) {
+                        Texture2D sleepingHaley = this.Helper.ModContent.Load<Texture2D>($"assets/{asset.NameWithoutLocale}_sleeping.png");
                         baseImage.PatchImage(sleepingHaley, patchMode: PatchMode.Overlay);
                     }
-
                 }
                 // Support for RandomFlowerQueen.
-                else if (hasRandomFlowerQueen_ && asset.AssetNameEquals("Characters/Haley")) {
+                else if (hasRandomFlowerQueen_ && asset.NameWithoutLocale.IsEquivalentTo("Characters/Haley")) {
                     // We must replace the flowerqueen part of the base image since it contains unwanted pixels.
-                    Texture2D haleyNoFlowercrown = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_no_flowercrown.png");
+                    Texture2D haleyNoFlowercrown = this.Helper.ModContent.Load<Texture2D>($"assets/{asset.NameWithoutLocale}_no_flowercrown.png");
                     baseImage.PatchImage(haleyNoFlowercrown, targetArea: new Rectangle(0, 320, 64, 64), patchMode: PatchMode.Replace);
 
-                    overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_no_flowercrown_overlay_hair_gray.png");
+                    overlay = this.Helper.ModContent.Load<Texture2D>($"assets/{asset.NameWithoutLocale}_no_flowercrown_overlay_hair_gray.png");
                 }
                 else {
-                    overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_overlay_hair_gray.png");
+                    overlay = this.Helper.ModContent.Load<Texture2D>($"assets/{asset.NameWithoutLocale}_overlay_hair_gray.png");
                 }
 
                 baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
             }
-            else if (asset.AssetNameEquals("Characters/Haley_Beach") || asset.AssetNameEquals("Portraits/Haley_Beach")) {
-                this.Monitor.Log($"Edit asset {asset.AssetName}");
+            else if (asset.NameWithoutLocale.IsEquivalentTo("Characters/Haley_Beach") || asset.NameWithoutLocale.IsEquivalentTo("Portraits/Haley_Beach")) {
+                this.Monitor.Log($"Edit asset {asset.NameWithoutLocale}");
 
                 IAssetDataForImage baseImage = asset.AsImage();
-                Texture2D overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_overlay_hair_gray.png");
+                Texture2D overlay = this.Helper.ModContent.Load<Texture2D>($"assets/{asset.NameWithoutLocale}_overlay_hair_gray.png");
 
                 baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
             }
-            else if (asset.AssetNameEquals("LooseSprites/cowPhotos") || asset.AssetNameEquals("LooseSprites/cowPhotosWinter")) {
-                this.Monitor.Log($"Edit asset {asset.AssetName}");
+            else if (asset.NameWithoutLocale.IsEquivalentTo("LooseSprites/cowPhotos") || asset.NameWithoutLocale.IsEquivalentTo("LooseSprites/cowPhotosWinter")) {
+                this.Monitor.Log($"Edit asset {asset.NameWithoutLocale}");
 
                 IAssetDataForImage baseImage = asset.AsImage();
-                Texture2D overlay = this.Helper.Content.Load<Texture2D>("assets/Characters/Haley_cowPhotos_overlay_hair_gray.png");
+                Texture2D overlay = this.Helper.ModContent.Load<Texture2D>("assets/Characters/Haley_cowPhotos_overlay_hair_gray.png");
 
                 baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
-            }
-            else {
-                throw new ArgumentException($"Invalid asset {asset.AssetName}");
             }
         }
 
@@ -207,8 +199,8 @@ namespace TrendyHaley {
         private void SetHairColor(Color hairColor) {
             actualHairColor_ = hairColor;
 
-            this.Helper.Content.InvalidateCache("Characters/Haley");
-            this.Helper.Content.InvalidateCache("Portraits/Haley");
+            this.Helper.GameContent.InvalidateCache("Characters/Haley");
+            this.Helper.GameContent.InvalidateCache("Portraits/Haley");
         }
 
         /// <summary>Random color (always full opaque).</summary>

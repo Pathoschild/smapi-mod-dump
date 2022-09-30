@@ -11,7 +11,7 @@
 namespace StardewMods.Common.Integrations.EvenBetterRng;
 
 /// <inheritdoc />
-internal class EvenBetterRngIntegration : ModIntegration<IEvenBetterRngApi>
+internal sealed class EvenBetterRngIntegration : ModIntegration<IEvenBetterRngApi>
 {
     private const string ModUniqueId = "pepoluan.EvenBetterRNG";
 

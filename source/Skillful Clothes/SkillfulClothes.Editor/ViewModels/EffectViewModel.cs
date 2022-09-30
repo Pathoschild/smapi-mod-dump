@@ -18,21 +18,32 @@ using SkillfulClothes.Effects;
 using Avalonia.Collections;
 using ReactiveUI;
 using SkillfulClothes.Editor.Utils;
+using System.Windows.Input;
+using Splat;
+using SkillfulClothes.Editor.Services;
 
 namespace SkillfulClothes.Editor.ViewModels
 {
     class EffectViewModel : ViewModelBase
     {
+        public IDialogService DialogService { get; }
+
         public IEffect Model { get; }
 
         public string DisplayName { get; }
 
         public string Description => String.Join("\n", Model.EffectDescription.Select(x => x.Text));
 
+        public bool HasParameters => Parameters.Count > 0;
+
         public AvaloniaList<EffectParameterViewModel> Parameters { get; } = new AvaloniaList<EffectParameterViewModel>();
 
-        public EffectViewModel(IEffect model)
+        public ICommand AddSiblingEffectCommand { get; }
+
+        public EffectViewModel(IEffect model, IDialogService? dialogService = null)
         {
+            DialogService = dialogService ?? Locator.Current.GetService<IDialogService>();
+
             Model = model ?? throw new ArgumentNullException(nameof(model));
             DisplayName = NameFormatting.FormatEffectDisplayName(model.GetType().Name);
             
@@ -56,11 +67,13 @@ namespace SkillfulClothes.Editor.ViewModels
                     Parameters.Add(paramVm);
                 }
             }
+
+            AddSiblingEffectCommand = ReactiveCommand.Create(() => DialogService.SelectEffectFromLibrary((effect) => { }));
         }        
 
         private void ParamVm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (Model is ICustomizableEffect customEffect && sender is EffectParameterViewModel evm)
+            if (Model is ICustomizableEffect customEffect && sender is EffectParameterViewModel evm && e.PropertyName != null)
             {
                 var newValue = sender?.GetType()?.GetProperty(e.PropertyName)?.GetValue(sender);
 

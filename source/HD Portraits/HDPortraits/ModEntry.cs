@@ -13,6 +13,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System.Collections.Generic;
 using HDPortraits.Models;
+using System.Runtime.CompilerServices;
+using AeroCore.Utils;
 
 namespace HDPortraits
 {
@@ -41,6 +43,7 @@ namespace HDPortraits
             helper.Events.Content.AssetsInvalidated += TryReloadAsset;
             helper.Events.GameLoop.GameLaunched += GameLaunched;
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private void GameLaunched(object _, GameLaunchedEventArgs ev)
         {
             harmony.PatchAll();
@@ -75,12 +78,12 @@ namespace HDPortraits
             backupPortraits = helper.GameContent.Load<Dictionary<string, MetadataModel>>("Mods/HDPortraits");
             foreach ((string id, MetadataModel meta) in backupPortraits)
             {
-                meta.defaultPath = "Portraits/" + id;
+                meta.originalPath = "Portraits/" + id;
                 meta.Reload();
                 failedPaths.Remove(id);
             }
         }
-        public static bool TryGetMetadata(string name, string suffix, out MetadataModel meta)
+        public static bool TryGetMetadata(string name, string suffix, out MetadataModel meta, bool forceSuffix = false)
         {
             string path = $"{name}_{suffix}";
             if (suffix is not null)
@@ -89,14 +92,16 @@ namespace HDPortraits
                     return true; //cached
 
                 if (!failedPaths.Contains(path) && 
-                    (Utils.TryLoadAsset("Mods/HDPortraits/" + path, out meta) ||
+                    (Misc.TryLoadAsset(monitor, helper, "Mods/HDPortraits/" + path, out meta) ||
                     backupPortraits.TryGetValue(path, out meta)) &&
                     meta is not null)
                 {
-                    meta.defaultPath = "Portraits/" + path;
+                    meta.originalPath = "Portraits/" + path;
                     portraitSizes[path] = meta;
                     return true; //suffix
                 }
+                if (forceSuffix)
+                    return false;
             }
 
             //no suffix or suffix not found
@@ -109,11 +114,11 @@ namespace HDPortraits
                 return false;
             }
 
-            if ((Utils.TryLoadAsset("Mods/HDPortraits/" + name, out meta) || 
+            if ((Misc.TryLoadAsset(monitor, helper, "Mods/HDPortraits/" + name, out meta) || 
                 backupPortraits.TryGetValue(name, out meta)) && 
                 meta is not null)
             {
-                meta.defaultPath = "Portraits/" + name;
+                meta.originalPath = "Portraits/" + name;
                 portraitSizes[name] = meta;
                 return true; //base
             }

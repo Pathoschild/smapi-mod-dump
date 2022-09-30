@@ -22,6 +22,7 @@ namespace RangeHighlight {
         public bool ShowBeehouseRange { get; set; } = true;
         public bool ShowBombRange { get; set; } = true;
 
+        public bool HighlightBuildingsOnMouseover { get; set; } = true;
         public bool ShowOtherSprinklersWhenHoldingSprinkler { get; set; } = true;
         public bool ShowOtherScarecrowsWhenHoldingScarecrow { get; set; } = true;
         public bool ShowOtherBeehousesWhenHoldingBeehouse { get; set; } = false;
@@ -74,6 +75,12 @@ namespace RangeHighlight {
                 tooltip: I18n.Config_ShowAllKey_Tooltip,
                 getValue: () => theMod.config.ShowAllRangesKey,
                 setValue: (v) => theMod.config.ShowAllRangesKey = v);
+            gmcm.AddBoolOption(
+                mod: mod,
+                name: I18n.Config_HighlightBuildingOnMouseover,
+                tooltip: I18n.Config_HighlightBuildingOnMouseover_Tooltip,
+                getValue: () => theMod.config.HighlightBuildingsOnMouseover,
+                setValue: (v) => theMod.config.HighlightBuildingsOnMouseover = v);
 
             // Junimo Huts
             gmcm.AddSectionTitle(mod, I18n.Config_Junimo);

@@ -10,6 +10,9 @@
     "config.hotkeys-toggle.tooltip": "If true then hotkeys toggle the range highlight; otherwise highlight when hotkey is held down.",
     "config.show-all-key": "Show All Ranges Hotkey",
     "config.show-all-key.tooltip": "Hotkey to show all ranges",
+    "config.highlight-building-on-mouseover": "Highlight buildings on mouseover",
+    "config.highlight-building-on-mouseover.tooltip": "If true then highlighters for buildings (e.g., Junimo Huts) run when the mouse is pointing at the building.",
+
 
     "config.Junimo": "Junimo Huts",
     "config.Junimo.enable.tooltip": "Enable Junimo Hut range highlighting",

@@ -34,9 +34,9 @@ namespace SkillfulClothes.Effects.Buffs
 
         public void ApplyCustomEffect()
         {
-            if (Game1.player.stamina == Game1.player.maxStamina - amount)
+            if (Game1.player.stamina == Game1.player.maxStamina.Value - amount)
             {
-                Game1.player.stamina = Game1.player.maxStamina;
+                Game1.player.stamina = Game1.player.maxStamina.Value;
             }
         }
 

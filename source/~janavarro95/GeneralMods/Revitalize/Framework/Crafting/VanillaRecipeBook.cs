@@ -13,16 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Revitalize.Framework.Utilities;
 using StardewValley;
 
-namespace Revitalize.Framework.Crafting
+namespace Omegasis.Revitalize.Framework.Crafting
 {
     public class VanillaRecipeBook
     {
-        public static VanillaRecipeBook VanillaRecipes;
 
-        public Dictionary<string,Dictionary<string,VanillaRecipe>> recipesByObjectName;
+        public Dictionary<string, Dictionary<string, VanillaRecipe>> recipesByObjectName;
         /// <summary>
         /// All of the recipes bassed off of pytk id. the first key is the name of the SDV object, the second key is the player's held object pktk id if it exists. 
         /// </summary>
@@ -34,10 +32,6 @@ namespace Revitalize.Framework.Crafting
             this.recipesByObjectName = new Dictionary<string, Dictionary<string, VanillaRecipe>>();
             this.recipesByObjectPyTKID = new Dictionary<string, Dictionary<string, VanillaRecipe>>();
             this.recipesByObject = new Dictionary<string, Dictionary<Item, VanillaRecipe>>();
-            if (VanillaRecipes == null)
-            {
-                VanillaRecipes = this;
-            }
 
             this.recipesByObjectName = new Dictionary<string, Dictionary<string, VanillaRecipe>>();
             this.recipesByObjectName.Add("Furnace", new Dictionary<string, VanillaRecipe>());
@@ -259,16 +253,12 @@ namespace Revitalize.Framework.Crafting
         /// </summary>
         /// <param name="Machine"></param>
         /// <returns></returns>
-        public Dictionary<string,VanillaRecipe> GetRecipesForNamedRecipeBook(StardewValley.Object Machine)
+        public Dictionary<string, VanillaRecipe> GetRecipesForNamedRecipeBook(StardewValley.Object Machine)
         {
             if (this.recipesByObjectName.ContainsKey(Machine.Name))
-            {
                 return this.recipesByObjectName[Machine.Name];
-            }
             else
-            {
                 return null;
-            }
         }
 
         public bool DoesARecipeExistForHeldObjectName(StardewValley.Object Machine)
@@ -279,13 +269,9 @@ namespace Revitalize.Framework.Crafting
             if (recipes == null) return false;
 
             if (recipes.ContainsKey(Game1.player.ActiveObject.Name))
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
         /// <summary>
@@ -301,13 +287,9 @@ namespace Revitalize.Framework.Crafting
             if (recipes == null) return null;
 
             if (recipes.ContainsKey(Game1.player.ActiveObject.Name))
-            {
                 return recipes[Game1.player.ActiveObject.Name];
-            }
             else
-            {
                 return null;
-            }
         }
 
         public bool TryToCraftRecipe(StardewValley.Object Machine)
@@ -315,15 +297,13 @@ namespace Revitalize.Framework.Crafting
             if (this.DoesARecipeExistForHeldObjectName(Machine))
             {
                 VanillaRecipe rec = this.GetVanillaRecipeFromHeldObjectName(Machine);
-                bool crafted=rec.craft(Machine);
-                if(crafted)this.playCraftingSound(Machine);
+                bool crafted = rec.craft(Machine);
+                if (crafted) this.playCraftingSound(Machine);
                 return crafted;
             }
             else
-            {
                 //ModCore.log("No recipe!");
                 return false;
-            }
         }
 
         /// <summary>
@@ -333,10 +313,8 @@ namespace Revitalize.Framework.Crafting
         public void playCraftingSound(StardewValley.Object Machine)
         {
             if (Machine.Name == "Furnace")
-            {
                 Game1.playSound("furnace");
-            }
         }
-       
+
     }
 }

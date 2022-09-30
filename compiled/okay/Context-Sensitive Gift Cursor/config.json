@@ -1,3 +1,4 @@
 {
-  "AlwaysShowGiftTaste": false
+  "AlwaysShowGiftTaste": false,
+  "ShowSecretLostItems": false
 }

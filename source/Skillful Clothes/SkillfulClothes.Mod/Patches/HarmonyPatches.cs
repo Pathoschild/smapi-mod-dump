@@ -230,7 +230,7 @@ namespace SkillfulClothes.Patches
         {
             if (__state != null)
             {
-                List<Monster> slainMonsters = __state.Except(__instance.characters.OfType<Monster>().Where(x => x.health <= 0)).ToList();
+                List<Monster> slainMonsters = __state.Except(__instance.characters.OfType<Monster>().Where(x => x.Health <= 0)).ToList();
                 foreach (var m in slainMonsters)
                 {
                     EffectHelper.Events.RaiseMonsterSlain(Game1.player, m);
@@ -252,7 +252,7 @@ namespace SkillfulClothes.Patches
                     }
 
                     // indicate to the player that this is an invalid recipe now
-                    int itemId = __instance.craftResultDisplay.item.parentSheetIndex;
+                    int itemId = __instance.craftResultDisplay.item.ParentSheetIndex;
                     __instance.craftResultDisplay.item = null;
                     craftStateFieldInfo.SetValue(__instance, CraftState.InvalidRecipe);
                     craftDisplayedDescriptionFieldInfo.SetValue(__instance, Game1.content.LoadString("Strings\\UI:Tailor_InvalidRecipe"));                    

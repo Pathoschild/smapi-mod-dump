@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/sergiomadd/StardewValleyMods
+   Git: https://github.com/sergiomadd/StardewValleyMods.git
+
+mods:
+   Chest Preview
+   Connected Fences
+
+latest commit:
+   commit f937e2a045bd29f66a5cd1250db7cc585f0413b0
+   Author: Sergio CortÃ©s <sergiocortmon@gmail.com>
+   Date:   Wed Sep 28 14:08:27 2022 +0200
+   
+       Update README.md
+   

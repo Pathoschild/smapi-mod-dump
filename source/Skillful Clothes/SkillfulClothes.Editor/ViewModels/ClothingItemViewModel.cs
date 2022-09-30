@@ -11,8 +11,10 @@
 using Avalonia.Collections;
 using ReactiveUI;
 using SkillfulClothes.Configuration;
+using SkillfulClothes.Editor.Services;
 using SkillfulClothes.Editor.Utils;
 using SkillfulClothes.Effects;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,24 +29,32 @@ namespace SkillfulClothes.Editor.ViewModels
 
         public string DisplayName { get; }
 
-        public string Description => String.Join(", ", EffectRoot.NestedEffects.Select(x => x.Description));
+        public string Description => String.Join(", ", EffectRoot.AttachedEffects.Select(x => x.Description));
 
-        public NestedEffectParameterViewModel EffectRoot { get; } = NestedEffectParameterViewModel.CreateRoot();
+        public bool HasEffect => EffectRoot.AttachedEffects.Count > 0;
 
-        IReactiveCommand AddEffectCommand { get; }
+        public EffectRootViewModel EffectRoot { get; } = new EffectRootViewModel();
 
-        public ClothingItemViewModel(T id)
+        public IReactiveCommand AddEffectCommand { get; }
+
+        public ClothingItemViewModel(T id, IDialogService dialogService)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             DisplayName = NameFormatting.FormatClosingItemName(id?.ToString() ?? "");
 
             // TODO
             EffectRoot.PropertyChanged += EffectRoot_PropertyChanged;
+            EffectRoot.AttachedEffects.CollectionChanged += NestedEffects_CollectionChanged;
 
             AddEffectCommand = ReactiveCommand.Create(() =>
             {
-                
+                dialogService.SelectEffectFromLibrary((e) => { });
             });                               
+        }
+
+        private void NestedEffects_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(HasEffect));
         }
 
         private void EffectRoot_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

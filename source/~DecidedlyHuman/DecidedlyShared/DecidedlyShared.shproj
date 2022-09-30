@@ -3,6 +3,8 @@
     <PropertyGroup Label="Globals">
         <ProjectGuid>4023c62a-75d3-4025-8c07-b43dbce13a2d</ProjectGuid>
         <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+        <RootNamespace>DecidedlyShared</RootNamespace>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.Common.Default.props" />

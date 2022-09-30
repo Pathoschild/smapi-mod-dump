@@ -24,6 +24,7 @@ namespace SkillfulClothes.Editor.Services
         public void RegisterServices()
         {
             Locator.CurrentMutable.RegisterConstant(new DefaultDialogService(), typeof(IDialogService));
+            Locator.CurrentMutable.RegisterConstant(new YamlConfigFileSerializer(Locator.Current.GetService<IDialogService>()), typeof(IConfigFileSerializer));
         }
 
     }

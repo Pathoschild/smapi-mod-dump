@@ -1,7 +1,7 @@
 ﻿{
   "Name": "FerngillRevenueService",
   "Author": "KarratKake",
-  "Version": "1.3.0",
+  "Version": "1.3.1",
   "Description": "Keep your gameplay difficult and engaging with taxes and bills",
   "UniqueID": "KarratKake.FerngillRevenueService",
   "EntryDll": "FerngillRevenueService.dll",

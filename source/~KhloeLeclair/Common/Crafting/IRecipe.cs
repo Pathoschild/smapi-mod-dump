@@ -19,6 +19,12 @@ namespace Leclair.Stardew.Common.Crafting;
 
 // Remember to update IBetterCrafting whenever this changes!
 
+public interface IRecipeWithCaching {
+
+	public void ClearCache();
+
+}
+
 /// <summary>
 /// An <c>IRecipe</c> represents a single crafting recipe, though it need not
 /// be associated with a vanilla <see cref="StardewValley.CraftingRecipe"/>.

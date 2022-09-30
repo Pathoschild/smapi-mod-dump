@@ -13,13 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.Utilities;
 
-namespace Revitalize.Framework.World.Objects.Interfaces
+namespace Omegasis.Revitalize.Framework.World.Objects.Interfaces
 {
     public interface IInventoryManagerProvider
     {
-        public ref InventoryManager GetInventoryManager();
+        public InventoryManager GetInventoryManager();
         public void SetInventoryManager(InventoryManager Manager);
     }
 }

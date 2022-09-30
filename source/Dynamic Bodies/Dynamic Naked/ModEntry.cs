@@ -43,6 +43,8 @@ namespace DynamicBodies
 
         public static ModConfig Config;
 
+        public static Multiplayer multiplayer;
+
         public static bool british_spelling = false;
         public static BritishStrings engb;
 
@@ -75,6 +77,7 @@ namespace DynamicBodies
         public static List<ContentPackOption> nudeLOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> nudeUOptions = new List<ContentPackOption>();
         public static List<ContentPackOption> hairOptions = new List<ContentPackOption>();
+        public static Dictionary<int, List<ContentPackOption>> trinketOptions = new Dictionary<int, List<ContentPackOption>>();
         public static Dictionary<string, ContentPackOption> shoeOverrides = new Dictionary<string, ContentPackOption>();
         public static List<ShirtOverlay> shirtOverlays = new List<ShirtOverlay>();
 
@@ -82,6 +85,7 @@ namespace DynamicBodies
 
         public static Effect paletteSwap;
         public static Effect hairRamp;
+        public static Effect twoColorRamp;
 
         /*********
         ** Public methods
@@ -98,6 +102,9 @@ namespace DynamicBodies
 
             context = this;
 
+            //get the multiplayer instance to be able to send messages
+            multiplayer = this.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+
             //fallback fix
             context.Helper.Events.Content.AssetRequested += OnRequestAsset;
             //Load the config
@@ -108,7 +115,7 @@ namespace DynamicBodies
 
             context.Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             context.Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-            context.Helper.Events.GameLoop.Saving += OnSaveRevertTextures;
+            //context.Helper.Events.GameLoop.Saving += OnSaveRevertTextures;
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
@@ -338,6 +345,8 @@ namespace DynamicBodies
                 editor.PatchImage(buyCounter, targetArea: new Rectangle(320, 592, 16, 16));
                 Texture2D paintCounter = context.Helper.ModContent.Load<Texture2D>("assets\\Maps\\townInterior_leah.png");
                 editor.PatchImage(paintCounter, targetArea: new Rectangle(32, 640, 16, 16));
+                Texture2D accessoryCounter = context.Helper.ModContent.Load<Texture2D>("assets\\Maps\\townInterior_haley.png");
+                editor.PatchImage(accessoryCounter, targetArea: new Rectangle(32, 400, 16, 16));
             }
         }
 
@@ -362,7 +371,21 @@ namespace DynamicBodies
                 //tile below has the action on it
                 buildingsLayer.Tiles[3, 16].Properties.Add("Action", dynamicBodies);
             }
-            
+
+            if (asset.Name.IsEquivalentTo("Maps\\HaleyHouse"))
+            {
+                debugmsg($"Edit Haley map", LogLevel.Debug);
+
+                //Change the tile to the mirror
+                xTile.Layers.Layer frontLayer = map.GetLayer("Front");
+                //2 across and 25 down, sheet is 32 tiles across... 32*25+2, 802, start at 0
+                frontLayer.Tiles[7, 14].TileIndex = 802;
+                xTile.Layers.Layer buildingsLayer = map.GetLayer("Buildings");
+                xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Haley");
+                //tile below has the action on it
+                buildingsLayer.Tiles[7, 15].Properties.Add("Action", dynamicBodies);
+            }
+
             if (asset.Name.IsEquivalentTo("Maps\\LeahHouse"))
             {
                 debugmsg($"Edit Leah map", LogLevel.Debug);
@@ -412,8 +435,14 @@ namespace DynamicBodies
                 return true;
             }
 
+            if (action == "DynamicBodies:Haley")
+            {
+                Game1.activeClickableMenu = new AccessoryModifier();
+                return true;
+            }
+
             //Override the normal tailoring menu action in Haley's House
-            if(action == "Tailoring")
+            if (action == "Tailoring")
             {
                 Game1.activeClickableMenu = new TabbedTailoringMenu();
                 return false;
@@ -555,7 +584,7 @@ namespace DynamicBodies
         public static string[] getContentPackOptions(List<ContentPackOption> options)
         {
             List<string> toReturn = new List<string>();
-            
+
             foreach (ContentPackOption option in options)
             {
                 toReturn.Add(option.author + "'s " + option.name);   
@@ -604,6 +633,10 @@ namespace DynamicBodies
 
             hairRamp = new Effect(Game1.graphics.GraphicsDevice, File.ReadAllBytes(Path.Combine(modHelper.DirectoryPath, "Effects", "greyRamp.mgfx")));
 
+            twoColorRamp = new Effect(Game1.graphics.GraphicsDevice, File.ReadAllBytes(Path.Combine(modHelper.DirectoryPath, "Effects", "twoColorTint.mgfx")));
+
+            //Create the trinket lists
+            for (int i = 0; i < 5; i++) { trinketOptions[i] = new List<ContentPackOption>(); }
 
             //Add vanilla options to the beards
             beardOptions.Add(new ContentPackOption("Accessory 1", "0", "Vanilla", null));
@@ -650,6 +683,18 @@ namespace DynamicBodies
                     ExtendedHair data = contentPack.ReadJsonFile<ExtendedHair>("Hair\\hair.json");
                     data.OverrideDefaultHairStyles(ref hairOptions, contentPack);
                     newHair.AddRange(data.GetNewHairStyles(contentPack));
+                }
+
+                //Animated trinket styles
+                if (contentPack.HasFile("Trinkets\\trinkets.json"))
+                {
+                    debugmsg($"Loading trinkets pack: {contentPack.Manifest.Name}", LogLevel.Debug);
+
+                    Trinkets data = contentPack.ReadJsonFile<Trinkets>("Trinkets\\trinkets.json");
+                    for (int i = 0; i < 5; i++)
+                    {
+                        trinketOptions[i].AddRange(data.GetTrinketStyles(contentPack, i));
+                    }
                 }
 
                 //Animated boot styles

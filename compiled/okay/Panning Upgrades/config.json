@@ -1,8 +1,10 @@
 {
-  "BuyablePan": true,
+  "BuyablePan": false,
   "BuyCost": 1000,
   "UpgradeCostMultiplier": 1.0,
-  "ExtraDrawBaseChance": 0.2,
+  "UpgradeCostBars": 5,
+  "UpgradeDays": 2,
+  "ExtraDrawBaseChance": 0.7,
   "DailyLuckMultiplier": 1.0,
   "LuckLevelMultiplier": 0.1,
   "AnimationFrameDuration": 140,

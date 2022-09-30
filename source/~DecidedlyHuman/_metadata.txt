@@ -12,12 +12,9 @@ mods:
    Smart Cursor
 
 latest commit:
-   commit f78d0aecb432daebf4a7c224ffd83d8aa2f843ec
-   Merge: b5026be 134ee9a
+   commit 55026e5b2cc342f2e9db95af7c9eec4f880b7bf1
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Sat Aug 6 09:30:01 2022 +0100
+   Date:   Thu Sep 22 20:05:39 2022 +0100
    
-       Merge pull request #11 from NightFright2k19/master
-       
-       [Smart Cursor] DE translation
+       SC: Beginnings of using my event-based input API.
    

@@ -207,7 +207,7 @@ public class SearchBox : MenuSubscriber<ModEntry> {
 		if (! kb_open)
 			SimpleHelper.Builder()
 				.FormatText(
-					I18n.Tooltip_Search_Tip(I18n.Search_IngredientPrefix()),
+					I18n.Tooltip_Search_Tip(FlowHelper.EscapeFormatText(I18n.Search_IngredientPrefix()), FlowHelper.EscapeFormatText(I18n.Search_LikePrefix()), FlowHelper.EscapeFormatText(I18n.Search_LovePrefix())),
 					wrapText: true,
 					minWidth: width
 				)

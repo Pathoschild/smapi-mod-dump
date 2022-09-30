@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tylergibbs2/StardewValleyRoguelike
+   Git: https://github.com/tylergibbs2/StardewValleyRoguelike.git
+
+mods:
+   Stardew Valley - Roguelike
+
+latest commit:
+   commit 1ab9e14dc5092ab112af39266afd59c3932fe9c2
+   Author: Tyler <gibbstyler7@gmail.com>
+   Date:   Sun Sep 11 02:11:06 2022 -0500
+   
+       bump version
+   

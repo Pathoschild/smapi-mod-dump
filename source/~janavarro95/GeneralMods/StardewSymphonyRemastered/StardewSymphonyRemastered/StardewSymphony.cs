@@ -223,7 +223,7 @@ namespace StardewSymphonyRemastered
         {
             Texture2DExtended LoadTexture(string name)
             {
-                return new Texture2DExtended(this.Helper, this.ModManifest, $"assets/{name}");
+                return new Texture2DExtended(this.Helper.DirectoryPath,this.ModManifest,Path.Combine(ModHelper.DirectoryPath,"assets",name));
             }
 
             textureManager.searchForTextures(this.Helper,this.ModManifest,Path.Combine("assets","Locations"));

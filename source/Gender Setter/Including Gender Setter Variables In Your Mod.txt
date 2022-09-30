@@ -1,0 +1,156 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sqbr/StardewValleyMods
+**
+*************************************************/
+
+How to use Gender Setter's Variables in Your Content Patcher Mod
+
+Players can set the name/gender/birthday/pronouns etc of characters inside Gender Setter, and you can use those variables in your Content Patcher mod. This might work in other frameworks too but I only know Content Patcher. Your mod can still work as usual when Gender Setter isn't installed. 
+
+You can see an example of a mod using these variables at https://www.nexusmods.com/stardewvalley/mods/13623
+
+* How Gender Setter is structured *
+
+Gender Setter is a combination of two mods:
+1) [CP] Gender Setter/ sqbr.GenderSetter: A Content Patcher mod, which takes in player configuration options and edits the dialogue and images. 
+2) getGS/sqbr.getGS: A SMAPI mod which calculates and shares various variables based on Gender Setter's configuration options. 
+
+Players interact with Gender Setter, but it's getGS your mod is communicating with. 
+
+* Edit your manifest.json *
+
+Add Gender Setter to your dependencies, eg: 
+
+"Dependencies": [ 
+  {"UniqueID": "sqbr.GenderSetter", "IsRequired": false},
+],
+
+This makes sure Gender Setter's edits are loaded before your mod's when it's installed, and has no effect otherwise. 
+
+* Edit your content.json *
+
+Say, for example, your mod contains the line "Sam is happy today!", and you want "Sam" to change to match whatever the player has chosen as his name in Gender Setter. 
+
+First, we have to create a variable for Sam's name, which I'm going to call "SamName". The name of the variable inside getGS is also SamName.
+
+Add these lines to the DynamicTokens section of your mod:
+
+{"Name": "SamName","Value": "Sam"},
+{"Name": "SamName","Value": "{{sqbr.getGS/SamName}}", "When": {"HasMod|contains=sqbr.getGS" :"true"}},
+
+This first sets Sam's name to "Sam" as a default. When Gender Setter is installed, the second line replaces SamName with the SamName variable from inside getGS. If Gender Setter is not installed, the name remains "Sam". 
+
+Then change the line to "{{SamName}} is happy today". 
+
+* All available getGS variables *
+
+Non-character specific:
+
+MiscTextEdits: Whether to make a bunch of little changes to dialogue.
+
+MiscImageEdits: Whether to make a bunch of little changes to images.
+    
+FarmerGender: How people describe the player character.
+
+FarmerPronoun: What pronoun the player character is described with.
+
+EditIslandCharacters: Whether or not to edit the dialogue for characters from or on Ginger Island.
+
+PossessiveS: Whether to use an s for the possessive form of names ending in s. 
+
+PatchOriginalWeddingArt: Whether to patch in the vanilla game's wedding art for any character whose GameGender is being changed and who is not using the mod's art. 
+
+For each character (name):
+
+(name)Name: the new name to use in dialogue etc
+
+(name)Gender: How people describe this character using gendered words.
+
+(name)Pronoun: What pronoun this character uses.  
+
+(name)Images: Whether to edit the images, and if so, how.   
+
+(name)Birthday: The character's birthday.
+
+(name)GameGender: the 'game gender' used by the internal game code
+
+PRONOUN WORDS
+
+He pronouns -> code for Sam -> to what shows up if SamPronoun = "They". 
+
+he -> {{SamThey}} -> they
+He -> {{SamTheyU}} -> They
+him -> {{SamThem}} -> them
+Him -> {{SamThemU}} -> Them
+his cake -> {{SamTheir}} cake -> their cake
+His cake -> {{SamTheirU}} cake -> Their cake
+That cake is his -> That cake is {{SamTheirs}} -> That cake is theirs
+himself  -> {{SamThemself}} -> themself 
+
+He is hungry. -> {{SamTheyU}} {{SamAre}} hungry. -> They are hungry. 
+He was hungry. -> {{SamTheyU}} {{SamWere}} hungry. -> They were hungry.
+He has hunger. -> {{SamTheyU}} {{SamHave}} hunger. -> They have hunger. 
+He's hungry -> {{SamTheyU}}{{SamRe}} hungry. -> They're hungry. 
+He's been hungry -> {{SamTheyU}}{{SamVe}} been hungry. -> They've been hungry. 
+He keeps eating. -> {{SamTheyU}} keep{{SamS}} eating. -> They keep eating. 
+He does eat. -> {{SamTheyU}} do{{Es}} eat. -> They do eat.
+
+GENDER WORDS
+
+These are the most likely to be tweaked over time, so if you want to be sure that a specific word gets used, define your own version based on (name)Gender. 
+
+(name)Gender = Female / (name)Gender = Male /(name)Gender = Neutral
+
+(name)Adult: "woman"/"man"/"person"
+(name)Guy: "girl"/"guy"/"person"
+(name)Kid: "girl"/"boy"/"kid"
+(name)Child: "daughter"/"son"/"child"
+(name)Sibling: "sister"/"brother"/"sibling"
+(name)Nibling: "niece"/"nephew"/"nibling"
+(name)Auncle: "aunt"/"uncle"/"auncle"
+(name)AuncleU: "Aunt"/"Uncle"/"Auncle"
+(name)Parent: "mother"/"father"/"parent"
+(name)ParentName: "mom"/"dad"/"parent"
+(name)ParentU: "Mom"/"Dad"/"Parent"
+(name)Spouse: "wife"/"husband"/"spouse"
+(name)SpouseU: "Wife"/"Husband"/"Spouse"
+(name)Mx: "Mrs."/"Mr."/"Mx."
+(name)Grandparent: "Granny"/"Grandpa"/"Grandie"
+
+Exceptions:
+
+When (name)Gender = Female:
+LewisMx = Ms. 
+MorrisMx = Ms.
+PennyMx = Miss
+BirdieGuy = lady
+GovernorAdult = girl
+
+When (name)Gender = Male:
+PennyMx = Mister
+BirdieGuy = man
+GovernorAdult = guy
+
+When (name)Gender = Neutral:
+VincentGuy = kid
+EvelynGrandparent =  Grandie EvelynName
+GeorgeGrandparent = Grandie GeorgeName
+                   
+(name)ParentName = parent (name)Name for Pierre, Caroline, Kent, Jodi, Robin, Demetrius, Evelyn  
+
+Example: 
+
+Original dialogue ->
+code if said by Sam ->
+what shows up if SamGender = Neutral and KentGender = Neutral
+
+When I was a little boy, my dad seemed taller. ->
+When I was a little {{SamKid}}, my {{KentparentName}} seemed taller. ->
+When I was a little kid, my parent KentName seemed taller.
+
+ 

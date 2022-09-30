@@ -52,12 +52,12 @@ namespace Shockah.CommonModCode.GMCM
 			string valuePattern = "{Key}.value.{Value}"
 		) : this(api, mod, new SMAPITranslationSetWrapper(translations), namePattern, tooltipPattern, valuePattern) { }
 
-		public void AddSectionTitle(string keyPrefix)
+		public void AddSectionTitle(string keyPrefix, object? tokens = null)
 		{
 			Api.AddSectionTitle(
 				mod: Mod,
-				text: () => Translations.Get(NamePattern.Replace("{Key}", keyPrefix)),
-				tooltip: GetOptionalTranslatedStringDelegate(TooltipPattern.Replace("{Key}", keyPrefix))
+				text: () => Translations.Get(NamePattern.Replace("{Key}", keyPrefix), tokens),
+				tooltip: GetOptionalTranslatedStringDelegate(TooltipPattern.Replace("{Key}", keyPrefix), tokens)
 			);
 		}
 

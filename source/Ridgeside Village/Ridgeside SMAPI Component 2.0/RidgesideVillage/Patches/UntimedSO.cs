@@ -22,7 +22,6 @@ using StardewValley.Quests;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
-using SpaceCore.Events;
 
 namespace RidgesideVillage
 {
@@ -30,16 +29,6 @@ namespace RidgesideVillage
     {
         private static IMonitor Monitor { get; set; }
         private static IModHelper Helper { get; set; }
-
-        const int MEETBELINDA = 75160255;
-        const int PREUNSEAL = 75160257;
-        const int BLISSVISIT = 75160258;
-        const int RAEUNSEAL = 75160259;
-        const int OPENPORTAL = 75160256;
-        const int BLISSGH1 = 75160266;
-        const int SPIRITGH1 = 75160267;
-        const int BLISSGH2 = 75160268;
-        const int SPIRITGH2 = 75160269;
 
         private readonly static List<string> NPCNames = new List<string> { 
             "Acorn", "Aguar", "Alissa", "Anton", "Ariah", "Belinda", "Bert", "Blair", "Bliss", "Bryle", "Carmen",
@@ -54,7 +43,6 @@ namespace RidgesideVillage
             Helper = helper;
 
             Helper.Events.GameLoop.DayEnding += OnDayEnd;
-            SpaceEvents.OnEventFinished += OnEventFinished;
             Log.Trace($"Applying Harmony Patch \"{nameof(UntimedSO)}\" prefixing SDV method.");
             
             harmony.Patch(
@@ -111,7 +99,7 @@ namespace RidgesideVillage
                     int index = NPCNames.FindIndex(name => name.Equals(requester_name, StringComparison.OrdinalIgnoreCase));
                     if (index != -1)
                     {
-                        __result = new KeyValuePair<Texture2D, Rectangle>(UntimedSO.RSVemojis, new Rectangle(index % 14 * 9, index / 14 * 9, 9, 9));
+                        __result = new KeyValuePair<Texture2D, Rectangle>(RSVemojis, new Rectangle(index % 14 * 9, index / 14 * 9, 9, 9));
                         return;
                     }
                 }
@@ -131,9 +119,9 @@ namespace RidgesideVillage
         {
             try
             {
-                if (__instance.questKey.Value == "RSV.UntimedSpecialOrder.DaiaQuest")
+                if (__instance.questKey.Value == RSVConstants.SO_DAIAQUEST)
                 {
-                    Game1.player.addQuest(RSVConstants.PreparationsCompleteQuestID);
+                    Game1.player.addQuest(RSVConstants.Q_PREPCOMPLETE);
                 }
             }
             catch (Exception e)
@@ -157,94 +145,6 @@ namespace RidgesideVillage
                 {
                     o.dueDate.Value = Game1.Date.TotalDays + 100;
                 }
-            }
-        }
-
-        static void OnEventFinished(object sender, EventArgs e)
-        {
-            if (!Game1.player.IsMainPlayer)
-                return;
-
-            switch (Game1.CurrentEvent.id)
-            {
-                case MEETBELINDA:
-                    TryRemoveQuest(RSVConstants.PreparationsCompleteQuestID); // Added in line 137, might also have been completed upon reading ninja note 
-                    TryCompleteQuest(RSVConstants.NinjaNoteQuestID); // Added in QF hooks currently
-                    TryAddQuest(RSVConstants.PreUnsealQuestID);
-                    break;
-
-                case PREUNSEAL:
-                    TryCompleteQuest(RSVConstants.PreUnsealQuestID);
-                    // Crystal quests are then added
-                    break;
-
-                case BLISSVISIT:
-                    // Comes after crystal quests are complete
-                    TryAddQuest(RSVConstants.RaeUnsealQuestID);
-                    break;
-
-                case RAEUNSEAL:
-                    TryCompleteQuest(RSVConstants.RaeUnsealQuestID);
-                    TryAddQuest(RSVConstants.OpenSpiritPortalQuestID);
-                    break;
-
-                case OPENPORTAL:
-                    TryCompleteQuest(RSVConstants.OpenSpiritPortalQuestID);
-                    if (Game1.player.IsMainPlayer)
-                    {
-                        Game1.player.team.specialOrders.Add(SpecialOrder.GetSpecialOrder("RSV.UntimedSpecialOrder.SpiritRealmFlames", null));
-                    }
-                    break;
-
-                case BLISSGH1:
-                    TryAddQuest(RSVConstants.PhantomGreenHouse1QuestID);
-                    break;
-
-                case SPIRITGH1:
-                    TryCompleteQuest(RSVConstants.PhantomGreenHouse1QuestID);
-                    break;
-
-                case BLISSGH2:
-                    TryAddQuest(RSVConstants.PhantomGreenHouse2QuestID);
-                    break;
-
-                case SPIRITGH2:
-                    TryCompleteQuest(RSVConstants.PhantomGreenHouse2QuestID);
-                    // Greenhouse quest then added
-                    break;
-            }
-        }
-
-        static void TryAddQuest(int id)
-        {
-            foreach(Farmer farmer in Game1.getAllFarmers())
-            {
-                farmer.addQuest(id);
-            }
-        }
-
-        static void TryRemoveQuest(int id)
-        {
-            if (!Game1.player.hasQuest(id))
-                return;
-
-            foreach (Farmer farmer in Game1.getAllFarmers())
-            {
-                if (farmer.hasQuest(id))
-                    farmer.removeQuest(id);
-            }
-
-        }
-
-        static void TryCompleteQuest(int id)
-        {
-            if (!Game1.player.hasQuest(id))
-                return;
-
-            foreach (Farmer farmer in Game1.getAllFarmers())
-            {
-                if (farmer.hasQuest(id))
-                    farmer.completeQuest(id);
             }
         }
 

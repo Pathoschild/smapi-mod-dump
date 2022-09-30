@@ -6,9 +6,9 @@ mods:
    Mice in the Valley
 
 latest commit:
-   commit cfc00e4febd4a5eb22d0fb6642a2788b51719aed
+   commit 64b6c9fde6d251f04104342e9367426c76d9edc9
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Dec 23 18:28:25 2021 +0100
+   Date:   Thu Sep 15 19:28:21 2022 +0200
    
-       New feature: Tiger mice on Ginger Island.
+       Fix SMAPI deprecation warnings, minimum SMAPI version is 3.14 (net5.0).
    

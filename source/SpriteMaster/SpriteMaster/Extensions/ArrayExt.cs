@@ -147,6 +147,10 @@ internal static class ArrayExt {
 	}
 
 	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static unsafe T* GetPointerFromPinned<T>(this T[] array) where T : unmanaged =>
+		(T*)Unsafe.AsPointer(ref MemoryMarshal.GetArrayDataReference(array));
+
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static T[] Clone<T>(this T[] array) where T : unmanaged {
 		var temp = GC.AllocateUninitializedArray<T>(array.Length);
 		Unsafe.CopyBlock(ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(temp)), ref Unsafe.As<T, byte>(ref MemoryMarshal.GetArrayDataReference(array)), (uint)(array.LongLength * Unsafe.SizeOf<T>()));

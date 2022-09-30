@@ -1,31 +1,12 @@
-﻿{
-  "Name": "eXpanded Storage (Lite)",
+{
+  "EntryDll": "ExpandedStorage.dll",
+  "Name": "Expanded Storage",
   "Author": "furyx639",
-  "Version": "1.7.1",
-  "Description": "Framework that adds new chests.",
+  "Version": "2.0.3",
+  "Description": "Framework for adding new types of chests to the game.",
   "UniqueID": "furyx639.ExpandedStorage",
-  "EntryDll": "XSLite.dll",
-  "MinimumApiVersion": "3.12.6",
+  "MinimumApiVersion": "3.15.0",
   "UpdateKeys": [
-    "Nexus:7431@XSLite"
-  ],
-  "Dependencies": [
-    {
-      "UniqueID": "spacechase0.DynamicGameAssets",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "spacechase0.GenericModConfigMenu",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "furyx639.XSPlus",
-      "IsRequired": false,
-      "MinimumVersion": "1.0.0-beta"
-    },
-    {
-      "UniqueID": "furyx639.MoreChests",
-      "IsRequired": false
-    }
+    "Nexus:7431"
   ]
 }

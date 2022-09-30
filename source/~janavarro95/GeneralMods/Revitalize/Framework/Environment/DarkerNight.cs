@@ -11,46 +11,21 @@
 using System;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Revitalize;
-using Revitalize.Framework.Configs;
 using StardewValley;
 
-namespace Revitalize.Framework.Environment
+namespace Omegasis.Revitalize.Framework.Environment
 {
     /// <summary>Deals with making night time darker in Stardew.</summary>
     public class DarkerNight
     {
-        /// <summary>Darkness intensity.</summary>
-        public static float IncrediblyDark = 0.9f;
-
-        /// <summary>Darkness intensity.</summary>
-        public static float VeryDark = 0.75f;
-
-        /// <summary>Darkness intensity.</summary>
-        public static float SomewhatDark = 0.50f;
-
-        /// <summary>The config file.</summary>
-        public static DarkerNightConfig Config;
 
         /// <summary>The calculated night color.</summary>
         private static Color CalculatedColor;
 
-        /// <summary>Initializes the config for DarkerNight.</summary>
-        public static void InitializeConfig()
-        {
-            if (File.Exists(Path.Combine(ModCore.ModHelper.DirectoryPath, "Configs", "DarkerNightConfig.json")))
-                Config = ModCore.ModHelper.Data.ReadJsonFile<DarkerNightConfig>(Path.Combine("Configs", "DarkerNightConfig.json"));
-            else
-            {
-                Config = new DarkerNightConfig();
-                ModCore.ModHelper.Data.WriteJsonFile<DarkerNightConfig>(Path.Combine("Configs", "DarkerNightConfig.json"), Config);
-            }
-        }
-
         /// <summary>Sets the color of darkness at night.</summary>
         public static void SetDarkerColor()
         {
-            if (!Config.Enabled || Game1.player?.currentLocation == null)
+            if (!RevitalizeModCore.Configs.worldConfigManager.darkerNightConfig.Enabled || Game1.player?.currentLocation == null)
                 return;
 
             if (Game1.player.currentLocation.IsOutdoors && Game1.timeOfDay >= Game1.getStartingToGetDarkTime())
@@ -60,7 +35,7 @@ namespace Revitalize.Framework.Environment
         /// <summary>Calculates how dark it should be a night.</summary>
         public static void CalculateDarkerNightColor()
         {
-            if (!Config.Enabled || Game1.player?.currentLocation == null)
+            if (!RevitalizeModCore.Configs.worldConfigManager.darkerNightConfig.Enabled || Game1.player?.currentLocation == null)
                 return;
 
             //Calculate original lighting.
@@ -81,7 +56,7 @@ namespace Revitalize.Framework.Environment
 
             if (Game1.player.currentLocation.IsOutdoors && Game1.timeOfDay >= Game1.getStartingToGetDarkTime())
                 //Game1.ambientLight = Game1.ambientLight.GreyScaleAverage();
-                CalculatedColor = Game1.ambientLight * ((red + 30) / 255f) * Config.DarknessIntensity;
+                CalculatedColor = Game1.ambientLight * ((red + 30) / 255f) * RevitalizeModCore.Configs.worldConfigManager.darkerNightConfig.DarknessIntensity;
         }
     }
 }

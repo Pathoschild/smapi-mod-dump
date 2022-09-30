@@ -10,47 +10,58 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using Newtonsoft.Json;
+using Omegasis.StardustCore.Networking;
 using StardewValley;
+using StardewValley.Network;
 
-namespace Revitalize.Framework.Illuminate
+namespace Omegasis.Revitalize.Framework.Illuminate
 {
     /// <summary>
     /// Deals with handling lights on custom objects.
     /// </summary>
-    public class LightManager
+    public class LightManager : NetObject
     {
-        /// <summary>
-        /// The lights held by this object.
-        /// </summary>
-        public Dictionary<Vector2, LightSource> lights;
+        [XmlIgnore]
+
+        public readonly NetVector2Dictionary<LightSource, NetRef<LightSource>> lights = new NetVector2Dictionary<LightSource, NetRef<LightSource>>();
+
         /// <summary>
         /// Used to recreate lights at run time.
         /// </summary>
-        public Dictionary<Vector2, FakeLightSource> fakeLights;
+        public readonly NetVector2Dictionary<FakeLightSource, NetFakeLightSource> fakeLights;
         /// <summary>
         /// Are the lights on this object on?
         /// </summary>
-        public bool lightsOn;
+        public readonly NetBool lightsOn = new NetBool();
 
         /// <summary>
         /// Magic number for positioning.
         /// </summary>
         public const int lightBigNumber = 1000000;
 
-        [JsonIgnore]
-        public bool requiresUpdate;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         public LightManager()
         {
-            this.lights = new Dictionary<Vector2, LightSource>();
-            this.fakeLights = new Dictionary<Vector2, FakeLightSource>();
-            this.lightsOn = false;
+            this.lights = new NetVector2Dictionary<LightSource, NetRef<LightSource>>();
+            this.fakeLights = new NetVector2Dictionary<FakeLightSource, NetFakeLightSource>();
+            this.lightsOn.Value = false;
+            this.initializeNetFields();
+        }
+
+        protected override void initializeNetFields()
+        {
+            this.NetFields.AddFields(this.lights,
+                this.fakeLights,
+                this.lightsOn);
+
         }
 
         /// <summary>Add a light to the list of tracked lights.</summary>
@@ -69,7 +80,6 @@ namespace Revitalize.Framework.Illuminate
             this.lights.Add(IdKey, light);
             if (this.fakeLights.ContainsKey(IdKey)) return true;
             this.fakeLights.Add(IdKey, new FakeLightSource(light.Identifier, light.position.Value, light.color.Value.Invert(), light.radius.Value));
-            this.requiresUpdate = true;
             return true;
         }
 
@@ -95,7 +105,6 @@ namespace Revitalize.Framework.Illuminate
             this.lights.Add(IdKey, light);
             if (this.fakeLights.ContainsKey(IdKey)) return true;
             this.fakeLights.Add(IdKey, new FakeLightSource(light.Identifier, light.position.Value, light.color.Value.Invert(), light.radius.Value));
-            this.requiresUpdate = true;
             return true;
         }
 
@@ -135,7 +144,6 @@ namespace Revitalize.Framework.Illuminate
             Game1.currentLightSources.Add(light);
             location.sharedLights.Add((int)IdKey.X * lightBigNumber + (int)IdKey.Y, light);
             this.repositionLight(light, IdKey, gameObject);
-            this.requiresUpdate = true;
             return true;
         }
 
@@ -143,7 +151,9 @@ namespace Revitalize.Framework.Illuminate
         /// <param name="environment">The game location to add the light source in.</param>
         public virtual void turnOnLights(GameLocation environment, StardewValley.Object gameObject)
         {
-            foreach (KeyValuePair<Vector2, LightSource> pair in this.lights)
+            if (this.lights.Count() < this.fakeLights.Count())
+                this.regenerateRealLightsFromFakeLights();
+            foreach (KeyValuePair<Vector2, LightSource> pair in this.lights.Pairs)
                 this.turnOnLight(pair.Key, environment, gameObject);
             this.repositionLights(gameObject);
         }
@@ -152,7 +162,9 @@ namespace Revitalize.Framework.Illuminate
         /// <param name="environment">The game location to remove the light source from.</param>
         public void turnOffLights(GameLocation environment)
         {
-            foreach (KeyValuePair<Vector2, LightSource> pair in this.lights)
+            if (this.lights.Count() < this.fakeLights.Count())
+                this.regenerateRealLightsFromFakeLights();
+            foreach (KeyValuePair<Vector2, LightSource> pair in this.lights.Pairs)
                 this.turnOffLight(pair.Key, environment);
         }
 
@@ -162,7 +174,9 @@ namespace Revitalize.Framework.Illuminate
         /// <param name="gameObject"></param>
         public void repositionLights(StardewValley.Object gameObject)
         {
-            foreach (KeyValuePair<Vector2, LightSource> pair in this.lights)
+            if (this.lights.Count() < this.fakeLights.Count())
+                this.regenerateRealLightsFromFakeLights();
+            foreach (KeyValuePair<Vector2, LightSource> pair in this.lights.Pairs)
                 this.repositionLight(pair.Value, pair.Key, gameObject);
         }
 
@@ -176,7 +190,6 @@ namespace Revitalize.Framework.Illuminate
         {
             Vector2 initialPosition = gameObject.TileLocation * Game1.tileSize;
             light.position.Value = initialPosition + offset;
-            this.requiresUpdate = true;
         }
 
         /// <summary>
@@ -186,16 +199,18 @@ namespace Revitalize.Framework.Illuminate
         /// <param name="gameObject"></param>
         public virtual void toggleLights(GameLocation location, StardewValley.Object gameObject)
         {
+            if (this.lights.Count() < this.fakeLights.Count())
+                this.regenerateRealLightsFromFakeLights();
             if (!this.lightsOn)
             {
                 this.turnOnLights(location, gameObject);
-                this.lightsOn = true;
+                this.lightsOn.Value = true;
                 return;
             }
             else if (this.lightsOn)
             {
                 this.turnOffLights(Game1.player.currentLocation);
-                this.lightsOn = false;
+                this.lightsOn.Value = false;
                 return;
             }
         }
@@ -248,7 +263,7 @@ namespace Revitalize.Framework.Illuminate
             {
                 //ModCore.log("Info for file"+Path.GetFileNameWithoutExtension(file)+" has this many lights: " + info.info.lightManager.fakeLights.Count);
                 copy.lights.Clear();
-                foreach (KeyValuePair<Vector2, FakeLightSource> light in this.fakeLights)
+                foreach (KeyValuePair<Vector2, FakeLightSource> light in this.fakeLights.Pairs)
                 {
                     Vector2 position = light.Value.positionOffset;
                     position -= light.Key;
@@ -258,6 +273,21 @@ namespace Revitalize.Framework.Illuminate
                 }
             }
             return copy;
+        }
+
+
+        public virtual void regenerateRealLightsFromFakeLights()
+        {
+            //ModCore.log("Info for file"+Path.GetFileNameWithoutExtension(file)+" has this many lights: " + info.info.lightManager.fakeLights.Count);
+            this.lights.Clear();
+            foreach (KeyValuePair<Vector2, FakeLightSource> light in this.fakeLights.Pairs)
+            {
+                Vector2 position = light.Value.positionOffset;
+                position -= light.Key;
+                position /= Game1.tileSize;
+                position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
+                this.addLight(light.Key, new LightSource(light.Value.id, new Vector2(0, 0), light.Value.radius, light.Value.color.Invert()), position);
+            }
         }
 
         public static LightSource CreateLightSource(float Radius, Color ActualColor, int Texture = 4)

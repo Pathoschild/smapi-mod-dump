@@ -20,5 +20,6 @@ namespace GoodbyeAmericanEnglish
     {
         public bool MetricSystem { get; set; } = true;
         public bool FalltoAutumn { get; set; } = true;
+        public bool AllowAdvancedNameReplacer { get; set; } = true;
     }
 }

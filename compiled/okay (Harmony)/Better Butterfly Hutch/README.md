@@ -90,3 +90,8 @@ v1.0.1:
  v1.3.1
  Butterflies spawned by shaking the hutch now stay inbounds on the map.
 
+ v.1.3.2
+ Fix for a bad upload. Version change to trigger updates.
+
+ v.1.3.3
+ Added Hungarian translation. Thanks martin66789 on Nexus Mods.

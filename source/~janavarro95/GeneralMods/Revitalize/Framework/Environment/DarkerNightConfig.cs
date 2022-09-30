@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace Revitalize.Framework.Environment
+namespace Omegasis.Revitalize.Framework.Environment
 {
     /// <summary>
     /// Deals with configurations for darker night.

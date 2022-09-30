@@ -52,7 +52,7 @@ namespace SkillfulClothes.Effects.Special
         private bool canPet(FarmAnimal animal)
         {
             // petting after 19:00 will display a dialogue box, soft-locking the game
-            return Game1.timeOfDay < 1900 && !animal.wasPet;
+            return Game1.timeOfDay < 1900 && !animal.wasPet.Value;
         }
 
         private void CheckPetAnimal(IAnimalLocation location, Farmer who)

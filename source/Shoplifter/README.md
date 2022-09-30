@@ -66,6 +66,7 @@ Shoplifter fully supports translation! Currently available in:
 - German, thanks to NotErikWasTaken!
 - Spanish, thanks to viridian-fog!
 - Turkish, thanks to zenura!
+- Russian, thanks to Bellden!
 
 New translations always welcome! The best place to reach me is on the Shoplifter [mod page](https://www.nexusmods.com/stardewvalley/mods/8569).
 Translations are released seperately to the main files until a sufficient number of translations are received for a full release. 1.1.3 was the last translation full release. The release included Chinese, Korean, Italian, French, Portuguese and German.

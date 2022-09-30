@@ -207,7 +207,7 @@ namespace BetterBeehouses
             if (!ModEntry.config.UseQuality)
                 return 0;
 
-            float boost = (who.eventsSeen.Contains(2120303)) ? ModEntry.config.BearBoost : 1f;
+            float boost = who.eventsSeen.Contains(2120303) ? ModEntry.config.BearBoost : 1f;
 
             double chanceForGoldQuality = 0.2 * (who.FarmingLevel / 10.0) + 0.2 * boost * ((who.FarmingLevel + 2.0) / 12.0) + 0.01;
             double chanceForSilverQuality = System.Math.Min(0.75, chanceForGoldQuality * 2.0);

@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <AssemblyName>GoToBed</AssemblyName>
-    <Version>1.4.1</Version>
+    <Version>1.5.0</Version>
     <RootNamespace>GoToBed</RootNamespace>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <ModZipPath>$(SolutionDir)\releases</ModZipPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>

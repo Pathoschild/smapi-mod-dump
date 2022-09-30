@@ -1,0 +1,132 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+~~~~~~~~~~~~0.0.1 Revitalize 7-25-2022 xx.xx P.M~~~~~~~~~~~~~~
++Made blueprints for irrigated garden pot, and it's attachments
++made blueprints for automatic farming system
++Added mail for Maru stating when the automatic farming system, and irrigated garden pot become available for sale.
++Added blueprints for automatic farming system and irrigatd garden pot to robin's shop stock.
+
+
+~~~~~~~~~~~~0.0.1 Revitalize 7-23-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added Electric Furnace blueprints, which can be bought from Robin for 5000g.
+~Made it so the mod's crafting menu displays descriptions about the items hovered over for better details.
+~Fixed the InventoryManager (and by extention) the Crafting Menu so that crafting actually works again!
+
+
++added config prices for tool blueprints sold in Clint's shop.
++added anvil blueprints to be sold in Clint's shop. Price is also added to the config.
++made it so that tier 1 tools can be also crafted on a workbench so the player doesn't have to wait for an anvil.
+
+
+~Changed the structure of JsonCraftingComponents to use JsonItemReference instead which changed the nature of UnlockableJsonCraftingRecipes which required a rewrite of the existing json recipes.
++Added JsonCraftingBlueprint so that new blueprint items can be created in json format to be added into the game.
++Added objectid dump for all stardew valley items.
++Added object id dump for all StardewValley big craftable items.
+~Workbench no longer accidentally has every crafting recipe assigned to it.
+~Workbench no longer accidentally has every crafting tab assigned to it.
+
++Added crafting recipes for axe, hoe, pickaxe, and watering can at the anvil which allow for making more farm tools.
++Added blueprint items for axe, hoe, pickaxe, and watering can which can be bought from clint once that respective upgrade level has been met for the tool, the tool is present in the inventory, and the player doesn't already know it. 
+
+
++Finished the ability to load in json crafting books from disk.
++Added ObjectIds dump to Objects folder of the mod.
+~Made it so that ResourceManager.cs registeres all of it's item and object itds to the ObjectManager so that way there is a unified dump of all registered items for the mod.
++Added validation to JsonCraftingComponent when using registered item ids to ensure that invalid ids are not used.
++Added validation to JsonCraftingRecipes to ensure that they have at least 1 input, 1 output, and that all components they ise are valid.
++Migrated all Workbench crafting recipes from code to .json files.
+-Removed many unused recipes from a previous experimental version of this mod.
+~AnimalShopSaveData no longer crashes due to trying to save to the full path and not the relative path.
++Crafting recipes are now persisent per save file, so now they don't have to be remembered when loading the game again.
+~Blueprints are no longer consumed if the recipe is already known.
+~Blueprints will now tell you if you already know how to make them when used.
+
+
++Made json template files for AnimationManager, Animation, and AnimationFrame
++Made json template files for JsonCraftingRecipe, JsonCraftingRecipeBookDefinition, UnlockableJsonCraftingRecipe and JsonCraftingComponent
+~Cleaned up old serializer code as it is no longer necessary.
+    ~Migrated to SMAPI writeJson and readJson methods.
+~Started work migrating Workbench crafting recipes
+~Fixed CraftingInformationPage not displaying.
+
+
+~Cleaned up all references to "Content" folder and migrated to "ModAssets" folder.
++Started work on JsonContentRecipes for not having to hard code the recipes into the code.
++Cleaned up content managers into a single ContentManager.
+~Started work on JsonItemInformation files to help load in object files from disk.
+
+~~~~~~~~~~~~0.0.1 Revitalize 5-12-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Updated some aspects of the ElectricFurnace object to support Automate compatibility.
+~Fixed ElectricFurnaces incorrectly stacking with each other when of different furnace types.
+~~~~~~~~~~~~0.0.1 Revitalize 5-4-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added new ResourceBushes
+    +Added CopperOreBush: Grows 1 copper ore every day!
+    +Added IronOreBush: Grows 1 iron ore every 2 days!
+    +Added GoldOreBush: Grows 1 gold ore every 3 days!
+    +Added IridiumOreBush: Grows 1 iridium ore every 7 days!
+    +Added RadioactiveOreBush: Grows 1 radioactive ore every 14 days!
+~Fixed CustomItems causing crashes in multiplayer.
+~Fixed SaveGameManager crashing when creating a new Save.
+~Fixed MailManager crashing when starting the game.
+
+~~~~~~~~~~~~0.0.1 Revitalize 5-3-2022 xx.xx P.M~~~~~~~~~~~~~~
++Finished work on Electric Furnaces
++Added in Nuclear Furnace
++Added in Magical Furnace
++Added in Radioactive Fuel
+~Fixed crash where machines would fail to draw their status boxes when loading from a save.
+~Updated blueprints code to be able to properly display a sillouette of the item that would be learned from the blueprints.
+~Added Drawable.cs which helps to interface different kinds of Items that can be drawn.
+~Fixed CustomObjects and CustomItems being drawn too high up when being held by the farmer.
+
+~~~~~~~~~~~~0.0.1 Revitalize 5-2-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed drawing bounds on items that have offset draw positions.
+~Fixed CustomObjects updating twice as fast, which wasn't intentional.
++Finished AdvancedFarmingSystem which harvests, plants, and fertilizes crops that reside in IrrigatedGardenPots!
+~CustomObjects now shake when hit with a pickaxe.
+~CustomObjects can now be removed with a Pickaxe and properly drop their respective item.
+~CustomObjects now properly display their tooltip at a proper width in menus.
++Started Work on ElectricFurnace
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-29-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed CraftingMenu not showing up due to retooling the TextureManagers.
+~Fixed IrrigatedGardenPots taking an extra enricher, when adding the attachment.
+~Fixed IrrigatedGardenPots not gicing an enricher back if there were any other attachments on the pot.
+~Fixed being able to put multiple of the same type of attachment on an IrrigatedGardenPot, effectively wasting the items.
++Added the AutoPlanterGardenPot attachment, which will allow an AdvanceFarmingSystem to harvest crops automatically from pots with the attachment.
+    ~Additionally added more animations to the garden pot to reflect these changes.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-28-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed Animation Managers not restarting their animations when entering into a GameLocation.
++Added more animation manager variants to the irrigated water pot.
+~Fixed an issue where objects and furniture would be duplicated when loading a save by simply removing all duplicates.
++Fixed multiplayer issue where item duplication could occur when one player removes an item another player placed.
++Fixed CustomObject Stacking code.
++Fixed CustomObjects not being properly collected when turned into debris.
++Added utility code for generating item debris at a given tile location.
+~Fixed AnimationManagers speeding up when placing the same object down multiple times.
+~Fixed CustomObject.DrawPlacementBounds code to properly draw the objects and their placement bounds.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-27-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added changelog
++Rewrote TextureManagers to be more organized to access from code easier.
++Updated NampeSpaces to start with Omegasis.
++Added CraftingBook functionality.
++Cleanedup ObjectManager and ResourceManager to use cleaner code for setting AnimationManagers.
+-Removed texture2D param for BasicItemInformation.
+~Reduced duplicate draw code across custom objects.
+~Fixed HayMaker not playing a sound when dropping in an object.
++Started work on IrrigatedGardenPot.
++Added IrrigatedGardenPot
+~Fixed AnimationManager not properly displaying animations with more than 2 frames.
+~Fixed not being able to walk behind objects where there should be space by messing with draw positions and bounding boxes.
++ Finished IrrigatedGardenPot and fixed a ton of drawing issues.
+

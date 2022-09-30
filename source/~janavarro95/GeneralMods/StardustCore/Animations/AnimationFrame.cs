@@ -10,15 +10,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Netcode;
-using StardustCore.UIUtilities;
 
-namespace StardustCore.Animations
+namespace Omegasis.StardustCore.Animations
 {
     /// <summary>
     /// A class used to store animation information for a single frame.
@@ -34,9 +34,6 @@ namespace StardustCore.Animations
         /// <summary>The duration until the next frame.</summary>
         private int frameCountUntilNextAnimation;
 
-
-        [XmlIgnore]
-        public NetFields NetFields { get; } = new NetFields();
 
         public AnimationFrame()
         {
@@ -101,6 +98,26 @@ namespace StardustCore.Animations
         public void reset()
         {
             this.frameCountUntilNextAnimation = this.frameDuration;
+        }
+
+        public virtual AnimationFrame Copy()
+        {
+            return new AnimationFrame(this.sourceRectangle.X, this.sourceRectangle.Y, this.sourceRectangle.Width,this.sourceRectangle.Height, this.frameDuration);
+        }
+
+        public virtual AnimationFrame readAnimationFrame(BinaryReader reader)
+        {
+            this.sourceRectangle = reader.ReadRectangle();
+            this.frameDuration = reader.ReadInt32();
+            this.frameCountUntilNextAnimation = reader.ReadInt32();
+            return this;
+        }
+
+        public virtual void writeAnimationFrame(BinaryWriter writer)
+        {
+            writer.WriteRectangle(this.sourceRectangle);
+            writer.Write(this.frameDuration);
+            writer.Write(this.frameCountUntilNextAnimation);
         }
     }
 }

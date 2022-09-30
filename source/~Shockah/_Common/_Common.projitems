@@ -15,6 +15,7 @@
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GMCM\Helper\GMCMI18nHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GMCM\Helper\MultiPageLinkOptionForHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GMCM\Helper\MultiSelectTextOptionForHelper.cs" />
@@ -27,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)LinqExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectTokens.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReflectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMAPI\JsonSerializerExt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SMAPI\MultiplayerHelperExt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stardew\FarmHouseExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stardew\GiftTaste.cs" />

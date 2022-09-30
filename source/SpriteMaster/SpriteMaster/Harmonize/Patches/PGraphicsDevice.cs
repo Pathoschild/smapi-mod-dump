@@ -9,7 +9,11 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Extensions.Reflection;
+using System;
+using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using static SpriteMaster.Harmonize.Harmonize;
 
 namespace SpriteMaster.Harmonize.Patches;
@@ -34,6 +38,11 @@ internal static class PGraphicsDevice {
 
 	#endregion
 
+	[Harmonize(typeof(Microsoft.Xna.Framework.Game), "BeginDraw", fixation: Fixation.Prefix, priority: PriorityLevel.First)]
+	public static void OnBeginDraw(Microsoft.Xna.Framework.Game __instance) {
+		DrawState.OnBeginDraw();
+	}
+
 	#region Reset
 
 	[Harmonize("Reset", fixation: Fixation.Postfix, priority: PriorityLevel.Last)]
@@ -43,10 +52,18 @@ internal static class PGraphicsDevice {
 
 	#endregion
 
+	[Harmonize("SetVertexAttributeArray", fixation: Fixation.Prefix, priority: PriorityLevel.Last)]
+	public static bool OnSetVertexAttributeArray(GraphicsDevice __instance, bool[] attrs) {
+		return !GL.GraphicsDeviceExt.SetVertexAttributeArray(
+			__instance,
+			attrs
+		);
+	}
+
 	#region OnPlatformDrawUserIndexedPrimitives
 
 	[Harmonize(
-		"DrawUserIndexedPrimitives",
+		"PlatformDrawUserIndexedPrimitives",
 		Fixation.Prefix,
 		PriorityLevel.Last,
 		generic: Generic.Struct
@@ -76,7 +93,7 @@ internal static class PGraphicsDevice {
 	}
 
 	[Harmonize(
-		"DrawUserIndexedPrimitives",
+		"PlatformDrawUserIndexedPrimitives",
 		Fixation.Prefix,
 		PriorityLevel.Last,
 		generic: Generic.Struct
@@ -104,8 +121,6 @@ internal static class PGraphicsDevice {
 			vertexDeclaration
 		);
 	}
-
-	
 
 	#endregion
 }

@@ -13,14 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Revitalize.Framework.World.Objects.InformationFiles;
+using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
 
-namespace Revitalize.Framework.World.Objects.Interfaces
+namespace Omegasis.Revitalize.Framework.World.Objects.Interfaces
 {
     public interface IBasicItemInfoProvider
     {
+        public BasicItemInformation basicItemInformation { get; set; }
 
-        public BasicItemInformation getItemInformation();
-        public void setItemInformation(BasicItemInformation Info);
+        public string Id { get; }
     }
 }

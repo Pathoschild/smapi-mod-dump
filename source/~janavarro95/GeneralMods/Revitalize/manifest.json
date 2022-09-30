@@ -11,7 +11,7 @@
 {
   "Name": "Revitalize",
   "Author": "Alpha_Omegasis",
-  "Version": "0.0.1",
+  "Version": "0.0.2",
   "Description": "A mod that attempts to add in a variety of new things to Stardew.",
   "UniqueID": "Omegasis.Revitalize",
   "EntryDll": "Revitalize.dll",
@@ -19,6 +19,7 @@
   "UpdateKeys": [],
   "Dependencies": [
     { "UniqueID": "Omegasis.StardustCore" },
-    { "UniqueID": "spacechase0.SpaceCore" }
+    { "UniqueID": "spacechase0.SpaceCore" },
+	
   ]
 }

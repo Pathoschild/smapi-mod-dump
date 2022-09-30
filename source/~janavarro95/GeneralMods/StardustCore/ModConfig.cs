@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace StardustCore
+namespace Omegasis.StardustCore
 {
     public class ModConfig
     {

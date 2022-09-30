@@ -18,6 +18,8 @@
 	"config.VisitConfiguration":"Configuración de visita",
 	"config.Debug.name": "Debug",
 	"config.Debug.Explanation":"Opciones de desarrollador.",
+	"config.WalkOnFarm.name": "¿Permitir PNJs en granja?",
+	"config.WalkOnFarm.description": "Si vas afuera durante la visita, los PNJs caminarán por la granja.",
 	
 	/*For translators: your in-laws = the family of your spouse.
 	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
@@ -281,5 +283,6 @@
 
 	/* TN: gone while outside */
 	"NPCGoneWhileOutside": "Mientras estabas afuera, {0} se retiró.",
-	"NPCGone_Cellar": "Mientras estabas en la bodega, {0} se retiró."
+	"NPCGone_Cellar": "Mientras estabas en la bodega, {0} se retiró.",
+	"NPCGone_Farm": "Mientras estabas en la granja, {0} se retiró."
 }

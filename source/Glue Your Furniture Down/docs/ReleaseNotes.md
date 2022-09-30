@@ -8,6 +8,12 @@ for queries and analysis.**
 
 # Release Notes
 
+## v1.1.0
+- Adds global toggle for all furniture pickup
+- Adds keybind to override this mod
+- Adds translations for new config options
+- Now logs harmony patches
+
 ## v1.0.0
 - Initial release
 - Compatible with Stardew Valley 1.5.5+

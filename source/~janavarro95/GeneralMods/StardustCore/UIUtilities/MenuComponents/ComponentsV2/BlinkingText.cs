@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2
+namespace Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV2
 {
     public class BlinkingText
     {

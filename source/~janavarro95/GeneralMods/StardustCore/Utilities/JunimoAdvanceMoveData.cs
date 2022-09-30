@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Characters;
 
-namespace StardustCore.Utilities
+namespace Omegasis.StardustCore.Utilities
 {
     public class JunimoAdvanceMoveData
     {

@@ -14,7 +14,6 @@ mods:
    Custom Farming Redux
    Custom Farming Redux → CFAutomate
    Custom Furniture
-   Custom Furniture → Custom Furniture Anywhere
    Custom Movies
    Custom Music
    Custom NPC

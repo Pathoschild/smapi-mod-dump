@@ -8,6 +8,9 @@
     <EnableHarmony>true</EnableHarmony>
 
     <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+
+    <Platforms>AnyCPU</Platforms>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
 
   <ItemGroup>

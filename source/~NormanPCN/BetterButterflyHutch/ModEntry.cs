@@ -19,6 +19,7 @@ using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Helpers;
+using static StardewValley.Minigames.MineCart;
 
 namespace BetterButterflyHutch
 {
@@ -182,6 +183,12 @@ namespace BetterButterflyHutch
                 //                   (bool value) => Config.ShakeHutch = value,
                 //                   () => I18nGet("shakeHutch.Label"),
                 //                   () => I18nGet("shakeHutch.Tooltip"));
+
+                gmcm.AddBoolOption(ModManifest,
+                                   () => Config.NightButterflies,
+                                   (bool value) => Config.NightButterflies = value,
+                                   () => I18nGet("nightButterflies.Label"),
+                                   () => I18nGet("nightButterflies.Tooltip"));
             }
             else
             {
@@ -250,7 +257,12 @@ namespace BetterButterflyHutch
 
                 return spawn;
             }
-            return true;
+            else
+            {
+                if (Config.NightButterflies || !Game1.isStartingToGetDarkOut())
+                    return true;
+                return false;
+            }
         }
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -296,6 +308,27 @@ namespace BetterButterflyHutch
             return count;
         }
 
+        private static void RemoveButterflies(GameLocation loc)
+        {
+            // remove hutch spawned butterflies in instances we think they should not spawn
+            // outdoors, the game will not spawn ambient butterfies in these conditions. so just remove all butterflies.
+            // indoors, we remove after dark by config.
+
+            if (Debug)
+                Log.Debug($"Remove Butterflies. critters={loc.critters.Count}");
+
+            for (int i = loc.critters.Count - 1; i >= 0; i--)
+            {
+                if (loc.critters[i] is Butterfly)
+                {
+                    loc.critters.RemoveAt(i);
+                    if (Debug)
+                        Log.Debug($"    Remove Butterfly idx={i}");
+                }
+            }
+
+        }
+
         private static void SpawnButterflies(GameLocation loc, int hutchCount, Rectangle? boundingBox)
         {
             // if the hutch did not spawn anything, then we will not
@@ -309,11 +342,18 @@ namespace BetterButterflyHutch
                 {
                     if (Config.MinIndoors > 0)
                     {
-                        if (hutchCount < Config.MinIndoors)
-                            min = Config.MinIndoors - hutchCount;
-                        max = Config.MaxIndoors - hutchCount;
-                        if (Config.IslandButterflies)
-                            island = true;
+                        if (CanSpawn(loc))
+                        {
+                            if (hutchCount < Config.MinIndoors)
+                                min = Config.MinIndoors - hutchCount;
+                            max = Config.MaxIndoors - hutchCount;
+                            if (Config.IslandButterflies)
+                                island = true;
+                        }
+                        else
+                        {
+                            RemoveButterflies(loc);
+                        }
                     }
                 }
                 else
@@ -328,22 +368,7 @@ namespace BetterButterflyHutch
                         }
                         else
                         {
-                            // remove hutch spawned butterflies in instances we think they should not spawn
-                            // the game will not spawn ambient butterfies in these conditions.
-                            // so just remove all butterflies
-
-                            if (Debug)
-                                Log.Debug($"Remove Butterflies. critters={loc.critters.Count}");
-
-                            for (int i = loc.critters.Count - 1; i >= 0; i--)
-                            {
-                                if (loc.critters[i] is Butterfly)
-                                {
-                                    loc.critters.RemoveAt(i);
-                                    if (Debug)
-                                        Log.Debug($"    Remove Butterfly idx={i}");
-                                }
-                            }
+                            RemoveButterflies(loc);
                         }
                     }
                 }

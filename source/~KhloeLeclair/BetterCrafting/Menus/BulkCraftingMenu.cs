@@ -115,7 +115,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 		txtQuantity.OnEnterPressed += sender => {
 			sender.Selected = false;
 			if (!string.IsNullOrEmpty(txtQuantity.Text))
-				SetQuantity(Convert.ToInt32(txtQuantity.Text));
+				SetQuantity(StringToValue(txtQuantity.Text));
 
 			txtQuantity.Text = Quantity.ToString();
 		};
@@ -123,7 +123,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 		txtQuantity.OnTabPressed += sender => {
 			sender.Selected = false;
 			if (!string.IsNullOrEmpty(txtQuantity.Text))
-				SetQuantity(Convert.ToInt32(txtQuantity.Text));
+				SetQuantity(StringToValue(txtQuantity.Text));
 
 			txtQuantity.Text = Quantity.ToString();
 			snapToDefaultClickableComponent();
@@ -498,12 +498,20 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 
 	#endregion
 
+	private static int StringToValue(string input) {
+		try {
+			return int.Parse(input);
+		} catch {
+			return 1;
+		}
+	}
+
 	#region Drawing
 
 	public override void draw(SpriteBatch b) {
 
 		if (!string.IsNullOrEmpty(txtQuantity.Text))
-			SetQuantity(Convert.ToInt32(txtQuantity.Text));
+			SetQuantity(StringToValue(txtQuantity.Text));
 
 		// Dim the Background
 		b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);

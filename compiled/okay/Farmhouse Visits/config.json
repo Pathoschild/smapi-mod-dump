@@ -11,5 +11,6 @@
   "ReplacerCompat": false,
   "NeedsConfirmation": false,
   "RejectionDialogue": true,
-  "Gifts": true
+  "Gifts": true,
+  "WalkOnFarm": false
 }

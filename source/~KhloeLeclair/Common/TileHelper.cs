@@ -103,14 +103,15 @@ public static class TileHelper {
 
 	internal static Vector2? GetBenchPosition(this CraftingPage menu, Farmer? who = null) {
 		who ??= Game1.player;
+		bool cooking = menu.IsCooking();
 
 		// When using the kitchen in the farmhouse, it locks the fridge's mutex. Check
 		// to see if it's locked. If it is, then return the position one tile to the
 		// left of the fridge.
-		if (menu.IsCooking() && who.currentLocation is FarmHouse farmHouse && farmHouse.fridge.Value.GetMutex().IsLockHeld())
+		if (cooking && who.currentLocation is FarmHouse farmHouse && farmHouse.fridge.Value.GetMutex().IsLockHeld())
 			return new Vector2(farmHouse.fridgePosition.X - 1, farmHouse.fridgePosition.Y);
 
-		if (menu.IsCooking() && who.currentLocation is IslandFarmHouse islandHouse && islandHouse.fridge.Value.GetMutex().IsLockHeld())
+		if (cooking && who.currentLocation is IslandFarmHouse islandHouse && islandHouse.fridge.Value.GetMutex().IsLockHeld())
 			return new Vector2(islandHouse.fridgePosition.X - 1, islandHouse.fridgePosition.Y);
 
 		// Next, scan a 3x3 region centered on the player, looking for a Workbench object
@@ -120,6 +121,9 @@ public static class TileHelper {
 				continue;
 
 			if (obj is Workbench bench && bench.checkForAction(who, true) && bench.mutex.IsLockHeld())
+				return obj.GetRealPosition(who.currentLocation);
+
+			if (obj is Torch torch && cooking && torch.checkForAction(who, true) && torch.bigCraftable.Value && torch.ParentSheetIndex == 278)
 				return obj.GetRealPosition(who.currentLocation);
 		}
 

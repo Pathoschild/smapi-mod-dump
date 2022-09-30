@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13767
+IDs: idermailer.WinterRain
+update keys: Nexus:13767, GitHub:idermailer/WinterRain

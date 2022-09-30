@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Get Gender Setter",
+  "Author": "sqbr",
+  "Version": "1.2.5", // fixed locally
+  "Description": "Gets Gender Setter variables.",
+  "UniqueID": "sqbr.GetGS",
+  "EntryDll": "GetGS.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}
+

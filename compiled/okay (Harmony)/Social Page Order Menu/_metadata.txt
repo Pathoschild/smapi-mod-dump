@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13698
+IDs: aedenthorn.SocialPageOrderMenu
+update keys: Nexus:13698, GitHub:aedenthorn/StardewValleyMods

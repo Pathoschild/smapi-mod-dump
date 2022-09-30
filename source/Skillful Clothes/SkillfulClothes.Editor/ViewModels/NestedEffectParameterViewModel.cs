@@ -10,31 +10,24 @@
 
 using Avalonia.Collections;
 using ReactiveUI;
+using SkillfulClothes.Configuration;
 using SkillfulClothes.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SkillfulClothes.Editor.ViewModels
 {
     class NestedEffectParameterViewModel : EffectParameterViewModel
     {
-        public bool IsRoot { get; }
-
         public AvaloniaList<EffectViewModel> NestedEffects { get; } = new AvaloniaList<EffectViewModel>();
 
-        public NestedEffectParameterViewModel(string parameterName, Type parameterType, object defaultValue, object value)
-           : this(false, parameterName, parameterType, defaultValue, value)
-        {
-            // --
-        }
-
-        private NestedEffectParameterViewModel(bool isRoot, string parameterName, Type parameterType, object defaultValue, object value)
+        public NestedEffectParameterViewModel(string parameterName, Type parameterType, object? defaultValue, object? value)
              : base(parameterName, parameterType, defaultValue, value)
         {
-            IsRoot = isRoot;
             NestedEffects.CollectionChanged += NestedEffects_CollectionChanged;
 
             if (value is EffectSet effectSet)
@@ -76,12 +69,7 @@ namespace SkillfulClothes.Editor.ViewModels
             {
                 this.RaisePropertyChanged(nameof(Value));
             }
-        }
-
-        public static NestedEffectParameterViewModel CreateRoot()
-        {
-            return new NestedEffectParameterViewModel(true, "root", typeof(IEffect), null, null);
-        }
+        }        
 
     }
 }

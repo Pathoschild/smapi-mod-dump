@@ -6,5 +6,7 @@
     "fall",
     "winter"
   ],
-  "MaxOfDayOfMonth": 28
+  "avoidFestivalDay": false,
+  "useSeasonalTilesetInBusScene": true,
+  "useWinter28toYear1": true
 }

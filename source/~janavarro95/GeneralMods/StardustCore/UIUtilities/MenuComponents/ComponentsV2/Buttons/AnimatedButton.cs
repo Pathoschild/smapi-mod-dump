@@ -15,9 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardustCore.Animations;
+using Omegasis.StardustCore.Animations;
 
-namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
+namespace Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
 {
     public class AnimatedButton
     {

@@ -6,22 +6,21 @@ mods:
    Better Chests
    Custom Bundles
    Easy Access
-   Expanded Storage (Alternative Textures)
    Expanded Storage (Lite)
-   Expanded Storage (Plus)
-   Expanded Storage → XSAutomate
    FuryCore
    Garbage Day
    Ordinary Capsule
    Portable Holes
+   Shopping Cart
    Smack Dat Scarecrow
+   Stack Quality
    Too Many Animals
    Toolbar Icons
 
 latest commit:
-   commit 7250766bf0a2f2cc8fd4d25c2513b34635032870
+   commit 667f842274080cccb57d09c36480aaa5ebc2224f
    Author: Matthew Lucas <justmatt@outlook.com>
-   Date:   Sun Aug 28 12:34:11 2022 -0700
+   Date:   Thu Sep 29 16:49:24 2022 -0700
    
-       Disallow any Chest from being automatically stashed into another chest.
+       Refactor config handling
    

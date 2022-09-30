@@ -11,161 +11,274 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardustCore.Animations;
-using Revitalize.Framework.Utilities;
 using StardewValley;
-using StardustCore.UIUtilities;
 using Newtonsoft.Json;
-using Revitalize.Framework;
-using Revitalize.Framework.Managers;
-using Revitalize.Framework.Illuminate;
+using System.Xml.Serialization;
+using Netcode;
+using System.Collections.Generic;
+using Omegasis.Revitalize.Framework.Constants;
+using Omegasis.Revitalize.Framework.Illuminate;
+using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.StardustCore.Networking;
+using Omegasis.StardustCore.Animations;
+using Omegasis.StardustCore.UIUtilities;
+using Omegasis.Revitalize.Framework.Constants.ItemCategoryInformation;
+using Omegasis.Revitalize.Framework.World.Objects.InformationFiles.Json;
 
-namespace Revitalize.Framework.World.Objects.InformationFiles
+namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
 {
-    public class BasicItemInformation
+    [XmlType("Mods_Revitalize.Framework.World.Objects.InformationFiles.BasicItemInformation")]
+    public class BasicItemInformation : NetObject
     {
-        public string name;
 
-        public string id;
+        public readonly NetString name = new NetString();
 
-        public string description;
+        public readonly NetString id = new NetString();
 
-        public string categoryName;
+        public readonly NetString description = new NetString();
 
-        public Color categoryColor;
+        public readonly NetString categoryName = new NetString();
 
-        public int price;
+        public readonly NetColor categoryColor = new NetColor();
 
-        public int healthRestoredOnEating;
-        public int staminaRestoredOnEating;
+        public readonly NetInt price = new NetInt();
 
-        public int fragility;
+        public readonly NetInt healthRestoredOnEating = new NetInt();
+        public readonly NetInt staminaRestoredOnEating = new NetInt();
 
-        public bool canBeSetIndoors;
+        public readonly NetInt fragility = new NetInt();
 
-        public bool canBeSetOutdoors;
+        public readonly NetBool canBeSetIndoors = new NetBool();
 
-        public bool isLamp;
+        public readonly NetBool canBeSetOutdoors = new NetBool();
 
-        public string locationName;
+        public readonly NetBool isLamp = new NetBool();
 
-        public AnimationManager animationManager;
+        public readonly NetString locationName = new NetString();
 
-        public Vector2 drawPosition;
+        public readonly NetRef<AnimationManager> netAnimationManager = new NetRef<AnimationManager>();
 
-        private Color _drawColor;
+        public AnimationManager animationManager
+        {
+            get
+            {
+                return this.netAnimationManager.Value;
+            }
+            set
+            {
+                this.netAnimationManager.Value = value;
+            }
+        }
+
+        public readonly NetVector2 drawPosition = new NetVector2();
+
+        public readonly NetColor _drawColorBase = new NetColor();
+
+        [XmlIgnore]
         public Color DrawColor
         {
             get
             {
                 if (this.dyedColor != null)
-                {
-                    if (this.dyedColor.color != null)
-                    {
-                        if (this.dyedColor.color.A != 0)
-                        {
-                            return this.colorManager.getBlendedColor(this._drawColor, this.dyedColor.color);
-                            //return new Color( (this._drawColor.R + this._dyedColor.color.R)/2, (this._drawColor.G + this._dyedColor.color.G)/2, (this._drawColor.B + this._dyedColor.color.B)/2, 255);
-                            //return new Color(this._drawColor.R * this._dyedColor.color.R, this._drawColor.G * this._dyedColor.color.G, this._drawColor.B * this._dyedColor.color.B, 255);
-                        }
-                    }
-                }
-                return this._drawColor;
+
+                    if (this.dyedColor.color.A != 0)
+                        return this.dyedColor.getBlendedColor(this._drawColorBase);
+                return this._drawColorBase;
             }
             set
             {
-                this._drawColor = value;
+                this._drawColorBase.Value = value;
             }
         }
 
+        public readonly NetBool ignoreBoundingBox = new NetBool();
 
-        public bool ignoreBoundingBox;
+        public NetRef<InventoryManager> netInventory = new();
 
-        public InventoryManager inventory;
+        public InventoryManager inventory
+        {
+            get
+            {
+                return this.netInventory.Value;
+            }
+            set
+            {
+                this.netInventory.Value = value;
+            }
+        }
 
-        public LightManager lightManager;
+        public NetRef<LightManager> netLightManager = new();
 
-        public Enums.Direction facingDirection;
+        public LightManager lightManager
+        {
+            get
+            {
+                return this.netLightManager.Value;
+            }
+            set
+            {
+                this.netLightManager.Value = value;
+            }
+        }
 
-        public int shakeTimer;
+        public readonly NetEnum<Enums.Direction> facingDirection = new NetEnum<Enums.Direction>();
 
-        public bool alwaysDrawAbovePlayer;
+        public readonly NetInt shakeTimer = new NetInt();
 
-        public NamedColor dyedColor;
+        public readonly NetBool alwaysDrawAbovePlayer = new NetBool();
 
-        public ColorManager colorManager;
+        public readonly NetRef<NamedColor> netDyedColor = new();
+
+        public NamedColor dyedColor
+        {
+            get
+            {
+                return this.netDyedColor.Value;
+            }
+            set
+            {
+                this.netDyedColor.Value = value;
+            }
+        }
 
         /// <summary>
-        /// The dimensions for the game's bounding box in the number of TILES. So a Vector2(1,1) would have 1 tile width and 1 tile height.
+        /// The dimensions for the game's bounding box in the number of TILES. So a Vector2(1,1) would have 1 tile width and 1 tile height. There are also no "fractional" vounding boxes as the game counts whole tiles, so work (aka math) is needed to be done to ensure that the player can properly go infront of and behind objects.
         /// </summary>
-        public Vector2 boundingBoxTileDimensions;
+        public readonly NetVector2 boundingBoxTileDimensions = new NetVector2();
+
+        /// <summary>
+        /// The drawing offset of the object IN TILES.
+        /// </summary>
+        public readonly NetVector2 drawOffset = new NetVector2();
 
         [JsonIgnore]
         public bool requiresUpdate;
         public BasicItemInformation()
         {
-            this.name = "";
-            this.description = "";
-            this.categoryName = "";
-            this.categoryColor = new Color(0, 0, 0);
-            this.price = 0;
-            this.staminaRestoredOnEating = -300;
-            this.healthRestoredOnEating = -300;
-            this.canBeSetIndoors = false;
-            this.canBeSetOutdoors = false;
+            this.name.Value = "";
+            this.description.Value = "";
+            this.categoryName.Value = "";
+            this.categoryColor.Value = new Color(0, 0, 0);
+            this.price.Value = 0;
+            this.staminaRestoredOnEating.Value = -300;
+            this.healthRestoredOnEating.Value = -300;
+            this.canBeSetIndoors.Value = false;
+            this.canBeSetOutdoors.Value = false;
 
             this.animationManager = new AnimationManager();
-            this.drawPosition = Vector2.Zero;
+            this.drawPosition.Value = Vector2.Zero;
             this.DrawColor = Color.White;
             this.inventory = new InventoryManager();
             this.lightManager = new LightManager();
 
-            this.facingDirection = Enums.Direction.Down;
-            this.id = "";
-            this.shakeTimer = 0;
-            this.alwaysDrawAbovePlayer = false;
-            this.colorManager = new ColorManager(Enums.DyeBlendMode.Blend, 0.5f);
+            this.facingDirection.Value = Enums.Direction.Down;
+            this.id.Value = "";
+            this.shakeTimer.Value = 0;
+            this.alwaysDrawAbovePlayer.Value = false;
 
-            this.ignoreBoundingBox = false;
-            this.boundingBoxTileDimensions = new Vector2(1, 1);
+            this.ignoreBoundingBox.Value = false;
+            this.boundingBoxTileDimensions.Value = new Vector2(1, 1);
+            this.drawOffset.Value = new Vector2(0, 0);
+            this.dyedColor = new NamedColor();
+
+            this.initializeNetFields();
         }
 
-        public BasicItemInformation(string name, string id, string description, string categoryName, Color categoryColor,int staminaRestoredOnEating,int healthRestoredOnEating ,int fragility, bool isLamp, int price, bool canBeSetOutdoors, bool canBeSetIndoors, Texture2D texture, AnimationManager animationManager, Color drawColor, bool ignoreBoundingBox, Vector2 BoundingBoxTileDimensions ,InventoryManager Inventory, LightManager Lights,bool AlwaysDrawAbovePlayer=false,NamedColor DyedColor=null, ColorManager ColorManager=null)
+        public BasicItemInformation(string PathToBasicItemInformationFile, InventoryManager Inventory = null, LightManager Lights = null, NamedColor DyedColor = null):this(JsonUtilities.ReadJsonFile<JsonBasicItemInformation>(PathToBasicItemInformationFile), Inventory, Lights,DyedColor)
         {
-            this.name = name;
-            this.id = id;
-            this.description = description;
-            this.categoryName = categoryName;
-            this.categoryColor = categoryColor;
-            this.price = price;
-            this.staminaRestoredOnEating = staminaRestoredOnEating;
-            this.healthRestoredOnEating = healthRestoredOnEating;
 
-            this.canBeSetOutdoors = canBeSetOutdoors;
-            this.canBeSetIndoors = canBeSetIndoors;
-            this.fragility = fragility;
-            this.isLamp = isLamp;
+        }
 
-            this.animationManager = animationManager;
-            if (this.animationManager.IsNull)
-            {
-                this.animationManager = new AnimationManager(new Texture2DExtended(), new Animation(new Rectangle(0, 0, 16, 16)), false);
-                this.animationManager.getExtendedTexture().texture = texture;
-            }
+        public BasicItemInformation(JsonBasicItemInformation jsonItemInformation, InventoryManager Inventory = null, LightManager Lights = null, NamedColor DyedColor = null)
+        {
+            this.name.Value = jsonItemInformation.name;
+            this.id.Value = jsonItemInformation.id;
+            this.description.Value = jsonItemInformation.description;
 
-            this.drawPosition = Vector2.Zero;
-            this.DrawColor = drawColor;
-            this.ignoreBoundingBox = ignoreBoundingBox;
-            this.boundingBoxTileDimensions = BoundingBoxTileDimensions;
+            ItemCategory itemCategory = ItemCategories.GetItemCategory(jsonItemInformation.categoryId);
+            this.categoryName.Value = itemCategory.name;
+            this.categoryColor.Value = itemCategory.color;
+
+            this.price.Value = jsonItemInformation.sellingPrice;
+
+            this.staminaRestoredOnEating.Value = jsonItemInformation.staminaRestoredOnEating;
+            this.healthRestoredOnEating.Value = jsonItemInformation.healthRestoredOnEating;
+
+            this.canBeSetIndoors.Value = jsonItemInformation.canBeSetIndoors;
+            this.canBeSetOutdoors.Value = jsonItemInformation.canBeSetOutdoors;
+            this.fragility.Value = jsonItemInformation.fraglility;
+            this.isLamp.Value = false;
+
+            this.animationManager = jsonItemInformation.animationManager.toAnimationManager();
+
+            this.drawPosition.Value = Vector2.Zero;
+            this.DrawColor = jsonItemInformation.drawColor;
+            this.drawOffset.Value = jsonItemInformation.drawTileOffset;
+
+            this.ignoreBoundingBox.Value = jsonItemInformation.ignoreBoundingBox;
+            this.boundingBoxTileDimensions.Value = jsonItemInformation.boundingBoxTileDimensions;
+
+
+
             this.inventory = Inventory ?? new InventoryManager();
             this.lightManager = Lights ?? new LightManager();
-            this.facingDirection = Enums.Direction.Down;
-            this.shakeTimer = 0;
 
-            this.alwaysDrawAbovePlayer = AlwaysDrawAbovePlayer;
+            this.facingDirection.Value = Enums.Direction.Down;
+            this.shakeTimer.Value = 0;
 
-            this.dyedColor = DyedColor ?? new NamedColor("", new Color(0, 0, 0, 0));
-            this.colorManager = ColorManager ?? new ColorManager(Enums.DyeBlendMode.Blend, 0.5f);
+            this.alwaysDrawAbovePlayer.Value = false;
+
+            if (DyedColor != null)
+                this.dyedColor = DyedColor.getCopy();
+            else
+                this.dyedColor = new NamedColor("", new Color(0, 0, 0, 0), Enums.DyeBlendMode.Blend, 0.5f);
+
+            this.initializeNetFields();
+        }
+       
+        public BasicItemInformation(string Name, string Id, string Description, string CategoryName, Color CategoryColor, int Fragility, bool IsLamp, int Price, AnimationManager animationManager, bool IgnoreBoundingBox, Vector2 BoundingBoxTileDimensions, Vector2 BoundingBoxTileOffset ,InventoryManager Inventory = null, LightManager Lights = null, bool AlwaysDrawAbovePlayer = false, NamedColor DyedColor = null) : this(Name, Id, Description, CategoryName, CategoryColor, -300, -300, Fragility, IsLamp, Price, true, true, animationManager, Color.White, IgnoreBoundingBox, BoundingBoxTileDimensions, BoundingBoxTileOffset,Inventory, Lights, AlwaysDrawAbovePlayer, DyedColor)
+        {
+
+        }
+
+
+        public BasicItemInformation(string name, string id, string description, string categoryName, Color categoryColor, int staminaRestoredOnEating, int healthRestoredOnEating, int fragility, bool isLamp, int price, bool canBeSetOutdoors, bool canBeSetIndoors, AnimationManager animationManager, Color drawColor, bool ignoreBoundingBox, Vector2 BoundingBoxTileDimensions, Vector2 DrawTileOffset ,InventoryManager Inventory, LightManager Lights, bool AlwaysDrawAbovePlayer = false, NamedColor DyedColor = null)
+        {
+            this.name.Value = name;
+            this.id.Value = id;
+            this.description.Value = description;
+            this.categoryName.Value = categoryName;
+            this.categoryColor.Value = categoryColor;
+            this.price.Value = price;
+            this.staminaRestoredOnEating.Value = staminaRestoredOnEating;
+            this.healthRestoredOnEating.Value = healthRestoredOnEating;
+
+            this.canBeSetOutdoors.Value = canBeSetOutdoors;
+            this.canBeSetIndoors.Value = canBeSetIndoors;
+            this.fragility.Value = fragility;
+            this.isLamp.Value = isLamp;
+
+            this.animationManager = animationManager;
+
+            this.drawPosition.Value = Vector2.Zero;
+            this.DrawColor = drawColor;
+            this.ignoreBoundingBox.Value = ignoreBoundingBox;
+            this.boundingBoxTileDimensions.Value = BoundingBoxTileDimensions;
+            this.drawOffset.Value = DrawTileOffset;
+            this.inventory = Inventory ?? new InventoryManager();
+            this.lightManager = Lights ?? new LightManager();
+            this.facingDirection.Value = Enums.Direction.Down;
+            this.shakeTimer.Value = 0;
+
+            this.alwaysDrawAbovePlayer.Value = AlwaysDrawAbovePlayer;
+
+            if (DyedColor != null)
+                this.dyedColor = DyedColor.getCopy();
+            else
+                this.dyedColor = new NamedColor("", new Color(0, 0, 0, 0), Enums.DyeBlendMode.Blend, 0.5f);
+
+
+            this.initializeNetFields();
         }
 
         /// <summary>
@@ -174,7 +287,7 @@ namespace Revitalize.Framework.World.Objects.InformationFiles
         /// <returns></returns>
         public int shakeTimerOffset()
         {
-            return (this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0);
+            return this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0;
         }
 
         /// <summary>
@@ -183,7 +296,28 @@ namespace Revitalize.Framework.World.Objects.InformationFiles
         /// <returns></returns>
         public BasicItemInformation Copy()
         {
-            return new BasicItemInformation(this.name, this.id,this.description, this.categoryName, this.categoryColor, this.staminaRestoredOnEating,this.healthRestoredOnEating ,this.fragility, this.isLamp, this.price, this.canBeSetOutdoors, this.canBeSetIndoors, this.animationManager.getTexture(), this.animationManager.Copy(), this.DrawColor, this.ignoreBoundingBox,this.boundingBoxTileDimensions ,this.inventory.Copy(), this.lightManager.Copy(),this.alwaysDrawAbovePlayer,this.dyedColor,this.colorManager);
+            return new BasicItemInformation(
+                this.name,
+                this.id,
+                this.description,
+                this.categoryName,
+                this.categoryColor,
+                this.staminaRestoredOnEating,
+                this.healthRestoredOnEating,
+                this.fragility,
+                this.isLamp,
+                this.price,
+                this.canBeSetOutdoors,
+                this.canBeSetIndoors,
+                this.animationManager.Copy(),
+                this.DrawColor,
+                this.ignoreBoundingBox,
+                this.boundingBoxTileDimensions,
+                this.drawOffset ,
+                this.inventory.Copy(),
+                this.lightManager.Copy(),
+                this.alwaysDrawAbovePlayer,
+                this.dyedColor.getCopy());
         }
 
 
@@ -194,20 +328,49 @@ namespace Revitalize.Framework.World.Objects.InformationFiles
         public string getDyedColorName()
         {
             if (this.dyedColor == null)
-            {
                 return "";
-            }
             if (this.dyedColor.color.A == 0)
-            {
                 return "";
-            }
             else
-            {
                 return this.dyedColor.name;
-            }
         }
 
+        /// <summary>
+        /// Gets the netfields that should be synced across server/clients.
+        /// </summary>
+        /// <returns></returns>
 
-        
+        protected override void initializeNetFields()
+        {
+            this.NetFields.AddFields(this.name,
+
+                this.id,
+                this.description,
+                this.categoryName,
+                this.categoryColor,
+                this.price,
+                this.healthRestoredOnEating,
+                this.staminaRestoredOnEating,
+                this.fragility,
+                this.canBeSetIndoors,
+                this.canBeSetOutdoors,
+                this.isLamp,
+                this.locationName,
+                this.drawPosition,
+                this._drawColorBase,
+                this.ignoreBoundingBox,
+                this.facingDirection,
+                this.shakeTimer,
+                this.alwaysDrawAbovePlayer,
+                this.boundingBoxTileDimensions,
+                this.drawOffset
+                );
+
+            this.NetFields.AddField(this.netAnimationManager);
+            this.NetFields.AddFields(this.netInventory);
+            this.NetFields.AddField(this.netLightManager);
+            this.NetFields.AddFields(this.netDyedColor);
+        }
+
     }
 }

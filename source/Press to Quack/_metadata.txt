@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DraconisLeonidas/PressToQuack
+   Git: https://github.com/DraconisLeonidas/PressToQuack.git
+
+mods:
+   Press to Quack
+
+latest commit:
+   commit 55cf445c060fc6ba76cbf5d61a5f2ab1a954ce62
+   Author: DraconisLeonidas <lsr444444@gmail.com>
+   Date:   Tue Sep 6 16:06:58 2022 -0400
+   
+       1.1.0 GMCM and Multiplayer Support
+   

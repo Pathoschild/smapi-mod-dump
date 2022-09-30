@@ -35,10 +35,6 @@ namespace RidgesideVillage
 		static IModHelper Helper;
 		static IMonitor Monitor;
 
-		// Kitchen definitions
-		public const string SUMMITHOUSE = "Custom_Ridgeside_RSVSummitHouseNew";
-		public const string SUMMITSHED = "Custom_Ridgeside_RSVSummitShed";
-
 		public static readonly Rectangle FridgeOpenedSpriteArea = new(32, 560, 16, 32);
 		public static readonly Vector2 FridgeChestPosition = new(6830);
 		public static readonly int[] FridgeTileIndexes = { 468, 500, 1122, 1154 };
@@ -64,7 +60,12 @@ namespace RidgesideVillage
 
 		private static void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs args)
         {
-			GameLocation house = Game1.getLocationFromName(SUMMITHOUSE);
+			GameLocation house = Game1.getLocationFromName(RSVConstants.L_SUMMITHOUSE);
+			if (Game1.MasterPlayer.mailReceived.Contains(RSVConstants.M_HOUSEUPGRADED))
+			{
+				house.modData["renovated"] = "true";
+
+			}
 			try
             {
 				if (house.modData["RSV.SummitHouseFurnished"] == "true")
@@ -114,7 +115,7 @@ namespace RidgesideVillage
 				for (int i = 0; i < Game1.locations.Count; i++)
 				{
 					GameLocation location = Game1.locations[i];
-					if ((location.Name == SUMMITHOUSE || location.Name == SUMMITSHED) && location is not DecoratableLocation)
+					if ((location.Name == RSVConstants.L_SUMMITHOUSE || location.Name == RSVConstants.L_SUMMITSHED) && location is not DecoratableLocation)
 					{
 						Log.Trace($"RSV: Found {location.Name}");
 						Game1.locations.RemoveAt(i);
@@ -149,7 +150,7 @@ namespace RidgesideVillage
 					.Tiles[(int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y];
 				if (tile != null)
 				{
-					if (Game1.currentLocation.Name == SUMMITHOUSE)
+					if (Game1.currentLocation.Name == RSVConstants.L_SUMMITHOUSE)
 					{
 						// Use here as a cooking station
 						if (CookingTileIndexes.Contains(tile.TileIndex))
@@ -185,7 +186,7 @@ namespace RidgesideVillage
 			}
 
 			// Close Community Centre fridge door after use in the renovated kitchen
-			if (Game1.currentLocation.Name == SUMMITHOUSE && isCraftingMenu(e.OldMenu) && !isCraftingMenu(e.NewMenu))
+			if (Game1.currentLocation.Name == RSVConstants.L_SUMMITHOUSE && isCraftingMenu(e.OldMenu) && !isCraftingMenu(e.NewMenu))
 			{
 				TrySetFridgeDoor(Game1.currentLocation, isOpening: false, isUsingChest: false);
 				return;
@@ -248,6 +249,7 @@ namespace RidgesideVillage
 				Log.Trace("RSV: No fridge found. Creating new chest to be Summit House fridge.");
 				chest = new Chest(playerChest: true, tileLocation: FridgeChestPosition, parentSheetIndex: 216);
 				chest.fridge.Value = true;
+				chest.name = Helper.Translation.Get("RSV.Fridge");
 				here.Objects[FridgeChestPosition] = chest;
 			}
 			return chest;

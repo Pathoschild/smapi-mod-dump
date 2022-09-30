@@ -1,0 +1,63 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+  "itemToDraw": {
+    "stardewValleyItemId": "NULL",
+    "stardewValleyBigCraftableId": "NULL",
+    "registeredObjectId": "Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment",
+    "amount": 1
+  },
+  "recipesToUnlock": {
+    "Revitalize.Crafting.CraftingRecipeBooks.Workbench": "Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment"
+  },
+  "id": "Revitalize.Objects.Crafting.Blueprint.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment",
+  "name": "Blueprint: Auto Planter Attachment",
+  "description": "A blueprint used on how to craft an auto planter attachment for irrigated garden pots at a workbench. When used with an automatic farming machine, these can allow for planting seeds directly on irrigated garden pots again!",
+  "categoryId": "StardewValley.Crafting",
+  "healthRestoredOnEating": -300,
+  "staminaRestoredOnEating": -300,
+  "fraglility": 0,
+  "sellingPrice": 0,
+  "canBeSetIndoors": true,
+  "canBeSetOutdoors": true,
+  "ignoreBoundingBox": false,
+  "boundingBoxTileDimensions": "2, 2",
+  "drawTileOffset": "0, 0",
+  "drawColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "animationManager": {
+    "modManifestId": "Omegasis.Revitalize",
+    "textureManagerId": "Revitalize.Items.Crafting",
+    "textureId": "Blueprint",
+    "defaultAnimationKey": "Default",
+    "startingAnimationKey": "Default",
+    "animations": {
+      "Default": {
+        "animationFrames": [
+          {
+            "animationSourceRectangle": {
+              "X": 0,
+              "Y": 0,
+              "Width": 32,
+              "Height": 32
+            },
+            "drawForXFrames": 0
+          }
+        ],
+        "shouldAnimationLoopWhenFinished": false
+      }
+    }
+  }
+}

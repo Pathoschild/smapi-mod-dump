@@ -99,6 +99,7 @@ internal static class Setup {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static void Save() {
 		Serialize.Save(Config.Path);
+		Serialize.RefreshHash();
 	}
 
 	private static bool IsAdvanced(Type type) {
@@ -464,6 +465,12 @@ internal static class Setup {
 			case "SpriteMaster.Configuration.Config+Resample.Scaler":
 				PreviewOverride.Scaler = ExtractCombinedEnum<Resample.Scaler>((string)value);
 				break;
+			case "SpriteMaster.Configuration.Config+Resample.ScalerPortrait":
+				PreviewOverride.ScalerPortrait = ExtractCombinedEnum<Resample.Scaler>((string)value);
+				break;
+			case "SpriteMaster.Configuration.Config+Resample.ScalerText":
+				PreviewOverride.ScalerText = ExtractCombinedEnum<Resample.Scaler>((string)value);
+				break;
 			case "SpriteMaster.Configuration.Config+Resample.ScalerGradient":
 				PreviewOverride.ScalerGradient = ExtractCombinedEnum<Resample.Scaler>((string)value);
 				break;
@@ -471,12 +478,16 @@ internal static class Setup {
 				PreviewOverride.ResampleSprites = (bool)value;
 				SMMetadata.FlushValidations();
 				break;
-			case "SpriteMaster.Configuration.Config+Resample.EnabledText":
-				PreviewOverride.ResampleText = (bool)value;
+			case "SpriteMaster.Configuration.Config+Resample.EnabledPortraits":
+				PreviewOverride.ResamplePortraits = (bool)value;
 				SMMetadata.FlushValidations();
 				break;
-			case "SpriteMaster.Configuration.Config+Resample.EnabledBasicText":
-				PreviewOverride.ResampleBasicText = (bool)value;
+			case "SpriteMaster.Configuration.Config+Resample.EnabledLargeText":
+				PreviewOverride.ResampleLargeText = (bool)value;
+				SMMetadata.FlushValidations();
+				break;
+			case "SpriteMaster.Configuration.Config+Resample.EnabledSmallText":
+				PreviewOverride.ResampleSmallText = (bool)value;
 				SMMetadata.FlushValidations();
 				break;
 			default:

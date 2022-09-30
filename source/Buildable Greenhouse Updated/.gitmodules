@@ -1,3 +1,12 @@
 [submodule "space-factorissimo-updated"]
 	path = space-factorissimo-updated
 	url = https://github.com/Yariazen/space-factorissimo-updated
+[submodule "PlateUpMods"]
+	path = PlateUpMods
+	url = https://github.com/Yariazen/PlateUpMods.git
+[submodule "StardewValleyMods"]
+	path = StardewValleyMods
+	url = https://github.com/Yariazen/StardewValleyMods.git
+[submodule "FactorioMods"]
+	path = FactorioMods
+	url = https://github.com/Yariazen/FactorioMods.git

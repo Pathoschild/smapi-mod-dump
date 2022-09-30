@@ -20,9 +20,16 @@ namespace SkillfulClothes.Editor
 {
     public partial class App : Application
     {
+        private static MainWindow? MainWindow { get; set; }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        public static void Exit()
+        {
+            MainWindow?.Close();
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -32,10 +39,11 @@ namespace SkillfulClothes.Editor
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
+                MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(Locator.Current.GetService<IDialogService>()),
+                    DataContext = new MainWindowViewModel(Locator.Current.GetService<IConfigFileSerializer>(), Locator.Current.GetService<IDialogService>()),
                 };
+                desktop.MainWindow = MainWindow;
             }
 
             base.OnFrameworkInitializationCompleted();

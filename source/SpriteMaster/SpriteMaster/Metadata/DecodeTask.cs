@@ -13,6 +13,7 @@ using SpriteMaster.Tasking;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SpriteMaster.Resample;
@@ -20,14 +21,18 @@ namespace SpriteMaster.Resample;
 internal static class DecodeTask {
 	private static readonly TaskFactory Factory = new(ThreadedTaskScheduler.Instance);
 
-	private static void Decode(object? metadata) => DecodeFunction(metadata! as Texture2DMeta);
+	private readonly record struct DecodeTaskData(Texture2DMeta? Metadata, ulong Revision);
+
+	private static void Decode(object? data) => DecodeFunction((DecodeTaskData)data!);
 
 	[DoesNotReturn]
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	private static void ThrowDecompressionFailureException() =>
 		throw new InvalidOperationException("Compressed data failed to decompress");
 
-	private static void DecodeFunction(Texture2DMeta? metadata) {
+	private static void DecodeFunction(DecodeTaskData data) {
+		(var metadata, var revision) = data;
+
 		if (metadata is null) {
 			return;
 		}
@@ -42,8 +47,11 @@ internal static class DecodeTask {
 			ThrowDecompressionFailureException();
 			return;
 		}
-		metadata.SetCachedDataUnsafe(uncompressedData);
+
+		if (Interlocked.Read(ref metadata.DecodingTaskRevision) == revision) {
+			metadata.SetCachedDataUnsafe(uncompressedData);
+		}
 	}
 
-	internal static Task Dispatch(Texture2DMeta metadata) => Factory.StartNew(Decode, metadata);
+	internal static Task Dispatch(Texture2DMeta metadata, ulong revision) => Factory.StartNew(Decode, new DecodeTaskData(metadata, revision));
 }

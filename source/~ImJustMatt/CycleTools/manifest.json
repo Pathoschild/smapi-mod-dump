@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "EntryDll": "CycleTools.dll",
+  "Name": "Cycle Tools",
+  "Author": "furyx639",
+  "Version": "1.0.0",
+  "Description": "Quickly cycle between tools from the active item slot.",
+  "UniqueID": "furyx639.CycleTools",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [
+    "Nexus:13973"
+  ]
+}

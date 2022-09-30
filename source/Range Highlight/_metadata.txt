@@ -6,11 +6,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 6fc36c62687558762f7efbd9e2bfca16e8ac884b
+   commit 9e9c1b9e7a7251c3442ebf29743b04604c9c81a7
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sun May 1 19:53:53 2022 -0400
+   Date:   Sat Sep 10 15:05:28 2022 -0400
    
-       Fix bug where holding the Blue Armchair would show the mega-bomb range; v3.2.0
-       
-       Also update for SMAPI 3.14
+       Add config for whether to run building highlighters on mouseover
    

@@ -11,6 +11,7 @@
 using HarmonyLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Shockah.CommonModCode.SMAPI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -89,16 +90,7 @@ namespace Shockah.ProjectFluent
 			this.Monitor = monitor;
 			this.ContentEvents = contentEvents;
 			this.ContentPackParser = contentPackParser;
-
-			Type dataHelperType = AccessTools.TypeByName("StardewModdingAPI.Framework.ModHelpers.DataHelper, StardewModdingAPI");
-			Type jsonHelperType = AccessTools.TypeByName("StardewModdingAPI.Toolkit.Serialization.JsonHelper, SMAPI.Toolkit");
-
-			FieldInfo jsonHelperField = AccessTools.Field(dataHelperType, "JsonHelper");
-			MethodInfo jsonSettingsGetter = AccessTools.PropertyGetter(jsonHelperType, "JsonSettings");
-
-			var jsonHelper = jsonHelperField.GetValue(dataHelper)!;
-			var jsonSettings = (JsonSerializerSettings)jsonSettingsGetter.Invoke(jsonHelper, null)!;
-			this.JsonSerializer = JsonSerializer.CreateDefault(jsonSettings);
+			this.JsonSerializer = JsonSerializer.CreateDefault(JsonSerializerExt.GetSMAPISerializerSettings(dataHelper));
 
 			contentEvents.AssetRequested += OnAssetRequested;
 			contentEvents.AssetsInvalidated += OnAssetsInvalidated;

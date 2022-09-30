@@ -9,6 +9,8 @@
     <Import_RootNamespace>Leclair.Stardew.Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\StackQuality\IStackQualityApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\StackQuality\SQIntegration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Types\AbsolutePosition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CombinedRingSpriteInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CraftingHelper.cs" />
@@ -33,6 +35,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)StringTokenizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TranslationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Types\CaseInsensitiveDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\FlowNode\TextureNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\SimpleLayout\ComponentSNode.cs" />
     <Compile Include="..\Common\Types\NamespaceId.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Types\RecommendIntegrations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InventoryHelper.cs" />

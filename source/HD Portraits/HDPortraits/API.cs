@@ -16,6 +16,8 @@ using StardewValley;
 using System.Collections.Generic;
 using HDPortraits.Patches;
 using HDPortraits.Models;
+using System;
+using AeroCore.Utils;
 
 namespace HDPortraits
 {
@@ -55,7 +57,7 @@ namespace HDPortraits
         public (Rectangle, Texture2D) GetTextureAndRegion(string name, string suffix, int index, int elapsed = -1, bool reset = false)
         {
             var path = $"Portraits/{name}{(suffix is not null ? '_' + suffix : null)}";
-            if (!Utils.TryLoadAsset<Texture2D>(path, out var tex))
+            if (!Misc.TryLoadAsset<Texture2D>(ModEntry.monitor, ModEntry.helper, path, out var tex))
                 throw new ContentLoadException($"Default portrait '{path}' does not exist or could not be loaded! Do you have a typo or missing asset?");
 
             if (!ModEntry.TryGetMetadata(name, suffix, out var metadata))
@@ -70,9 +72,28 @@ namespace HDPortraits
             Rectangle rect = (metadata.Animation != null) ?
                 metadata.Animation.GetSourceRegion(texture, metadata.Size, index, elapsed) :
                 Game1.getSourceRectForStandardTileSheet(texture, index, metadata.Size, metadata.Size);
+
+			rect.X = Math.Clamp(rect.X, 0, texture.Width);
+			rect.Y = Math.Clamp(rect.Y, 0, texture.Height);
+			rect.Width -= Math.Max(0, rect.Right - texture.Width);
+            rect.Height -= Math.Max(0, rect.Bottom - texture.Height);
+
             return (rect, texture);
         }
         public void ReloadData()
-            => ModEntry.monitor.Log("ReloadData() is deprecated! Invalidate the relevant assets instead, and they will be automatically reloaded.", LogLevel.Warn);
-    }
+            => ModEntry.monitor.Log("ReloadData() is deprecated! Invalidate the relevant assets instead, and they will be automatically reloaded.", 
+                LogLevel.Warn);
+
+		public bool TryGetPortrait(string name, string suffix, int index, out Texture2D texture, out Rectangle region, int millis = -1, bool forceSuffix = false)
+        {
+            region = new(0, 0, 64, 64);
+            texture = null;
+            if(!ModEntry.TryGetMetadata(name, suffix, out var data, forceSuffix))
+                return false;
+            data.TryGetTexture(out texture);
+            region = data.GetRegion(index, millis);
+            return true;
+        }
+
+	}
 }

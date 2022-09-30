@@ -1,0 +1,288 @@
+{
+	/* TN: config  (tn = translator note) */
+	"config.CustomChance.name": "แก้ไขโอกาสเอง",
+	"config.CustomChance.description": "% ของชาวบ้านที่มาเยี่ยมคุณทุกๆ 10 นาที",
+	"config.MaxVisitsPerDay.name": "การเยี่ยมชมสูงสุดต่อวัน",
+	"config.MaxVisitsPerDay.description": "สามารถเข้าเยี่ยมคุณได้กี่ครั้งในหนึ่งวัน",
+	"config.StartingHours.name": "เวลาเปิด",
+	"config.StartingHours.description": "ช่วงเวลาที่ชาวบ้านจะสามารถเริ่มเยี่ยมชมได้",
+	"config.EndingHours.name": "เวลาปิด",
+	"config.EndingHours.description": "ช่วงเวลางที่ชาวบ้านจะเลิกเยี่ยมชม",
+	"config.VisitDuration.name": "ระยะเวลา",
+	"config.VisitDuration.description": "การเข้าชมแต่ละครั้งควรมีเวลานานเท่าไหร่ โดยแบ่งเป็นช่วงเวลาละ 10 นาที (เช่น 3 คือ 30 นาที)",
+	"config.Verbose.name": "การบันทึกอย่างละเอียด",
+	"config.Verbose.description": "ม็อดจะทำการบันทึกข้อมูลเพิ่มเติม",
+	"config.Extras": "ส่วนเสริมพิเศษ",
+	"config.Blacklist.name": "บัญชีดำ",
+	"config.Blacklist.description": "ตัวละครที่คุณไม่ต้องการให้มาเยี่ยมคุณ คั่นด้วยช่องว่าง (' ') เช่น \"ปิแอร์ ลูอิส\"",
+	"config.VisitConfiguration": "กำหนดค่าการเยี่ยมชม",
+	"config.Debug.name": "ดีบัก",
+	"config.Debug.Explanation": "ตัวเลือกนักพัฒนา",
+	"config.WalkOnFarm.name": "อนุญาตให้ NPC อยู่ฟาร์ม?",
+	"config.WalkOnFarm.description": "หากคุณออกไปข้างนอกระหว่าง NPC เยี่ยมชม NPC จะเดินเตร่ในฟาร์ม",
+	
+	/*For translators: your in-laws = the family of your spouse.
+	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
+	 *
+	 * Feel free to use your language's equivalent! */
+
+	"config.InLawComments.name": "ความเห็นของลูก",
+	"config.InLawComments.description": "หากญาติของคู่สมรสของคุณมาเยี่ยม พวกเขาจะถามเกี่ยวกับคู่สมรสของคุณ (และบุตรหลานของคุณ) ถ้ามีเกิดขึ้น สิ่งนี้สามารถส่งผลกระทบต่อลูกตัวเกมหลัก หรือตัวเกมหลักและม็อด หรือว่าไม่ใช่ทั้งสองอย่าง",
+	"config.InLawComments.values.VanillaOnly": "ตัวเกมหลักเท่านั้น",
+	"config.InLawComments.values.VanillaAndMod": "ตัวเกมหลักและม็อด NPCs",
+	"config.InLawComments.values.None": "ไม่มี",
+	"config.ReplacerCompat.name": "เปลี่ยนตัว \n เข้ากันได้",
+	"config.ReplacerCompat.description": "เปิดสิ่งนี้เพื่อให้เข้ากันได้กับตัวเปลี่ยน NPC",
+	
+	//new content
+	"config.AskForConfirmation.name": "ถามเพื่อยืนยัน?",
+	"config.AskForConfirmation.description": "NPC จะต้องได้รับอนุญาตถึงจะให้เข้ามาได้ (ผ่านกล่องโต้ตอบคำถาม)",
+	"config.RejectionDialogues.name": "บทสนทนาปฏิเสธ",
+	"config.RejectionDialogues.description": "หากถูกปฏิเสธ NPC จะแสดงความคิดเห็น",
+	"config.ReceiveGifts.name": "รับของขวัญ?",
+	"config.ReceiveGifts.description": "หากเปิดใช้งาน ผู้มาเยี่ยมชมจะนำของขวัญมาให้คุณ",
+	"Visit.AllowOrNot": "{0} อยู่ที่ประตู และเปิดมัน?",
+	"Visit.Yes": "ใช่",
+	"Visit.No": "ไม่ใช่",
+
+	/* TN: command errors */
+	"error.WorldNotReady": "คุณต้องโหลดบันทึกเพื่อใช้คำสั่งนี้",
+	"error.InvalidValue": "ค่าไม่ถูกต้อง",
+	"error.NotInFarmhouse": "คุณไม่ได้อยู่ในบ้านไร่ NPC จะไม่สามารถเข้ามาได้",
+	
+	/* TN: bad schedule (when the user adds one via ContentPatcher) */
+	"FromHigherThanTo": "จำนวนชั่วโมงเปิดสูงกว่าชั่วโมงปืด แก้ไขและเริ่มเกมใหม่",
+	"NotInSave": "ขณะนี้ NPC ยังไม่อยู่ในบันทึกตรวจสอบดูว่า (คุณปลดล็อกแล้วหรือยัง)",
+	"CantBe2600": "การเยี่ยมชมไม่สามารถปิดที่ 2600 ได้",
+	"CantBe600": "การเข้าชมไม่สามารถเปิดที่ 600 ได้",
+	
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "อ๊ะ ฉันจะมาอีกวันนะ",
+	"NPCRejected.Outgoing2": "ไม่มีใครอยู่บ้านหรอ",
+	"NPCRejected.Outgoing3": "เงียบเลย...#$b#เยี่ยม, มันแย่มาก.$1",
+	"NPCRejected.Shy1": "บางทีอาจไม่มีใครอยู่บ้าน...",
+	"NPCRejected.Shy2": "คุณอยู่ที่นั่นหรือเปล่า#$b#...บางทีฉันมาผิดเวลาหรือเปล่านะ",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "ฉันคงมาผิดเวลา",
+	"NPCRejected.Polite2": "...#$b#หวังว่า @ จะทำได้ดี",
+	"NPCRejected.Polite3": "...ดูเหมือนว่าไม่มีใครอยู่บ้านในเวลานี้นะ",
+	"NPCRejected.Neutral1": "ก๊อกก๊อก...#$b#เยี่ยม, ฉันจะต้องจากออกไปแล้ว",
+	"NPCRejected.Neutral2": "อืม?#$b#ฉันสาบานว่าฉันคิดว่า @ อยู่บ้าน",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "และ @ ไม่อยู่ที่นี่...?#$b#ให้ตายสิ โชคของฉันมัน$2",
+	"NPCRejected.Rude2": "เฮ้ใครหรอ",
+	"NPCRejected.Rude3": "โอ้ เข้ามา แล้วไม่มีใครอยู่บ้าน.. $2",
+	
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "ขอบคุณ อากาศข้างนอกช่างโหดร้ายจริงๆ",
+	"NPCThanking.Outgoing2": "บ้านของคุณดูแตกต่างจากครั้งที่แล้วที่ฉันมานะ#$b#คุณเปลี่ยนอะไรหรือเปล่า",
+	"NPCThanking.Outgoing3": "ฟาร์ม% ฟาร์มดูเหมือนจะมีงานเยอะเลยนะ",
+	"NPCThanking.Shy1": "หวังว่าฉันจะไม่บุกรุกคุณนะ",
+	"NPCThanking.Shy2": "ขอบคุณที่ให้ฉันเข้ามา",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "การเดินที่นี่มันเยี่ยมมาก",
+	"NPCThanking.Polite2": "ขอโทษที่มาไม่ได้รับเชิญนะ",
+	"NPCThanking.Polite3": "ขอบคุณ, @",
+	"NPCThanking.Neutral1": "คุณชอบการมาเซอร์ไพรส์แบบนี้ไหม",
+	"NPCThanking.Neutral2": "ฟาร์มของคุณภายนอกดูดีมากเลย",
+	"NPCThanking.Neutral3": "ฉันชอบสถานที่นี้มากเลย",
+	"NPCThanking.Rude1": "ใช่ ชอบแบบนั้นมากกว่า",
+	"NPCThanking.Rude2": "สุดท้าย...เท้าของฉันก็เริ่มเจ็บจนได้",
+	"NPCThanking.Rude3": "ใช้เวลาเดินที่นี่นานมากเลย",
+
+	/* TN: introduction */
+	//by social
+	"NPCIntroduce.Outgoing1": "@หรอ I'm coming in!",
+	"NPCIntroduce.Outgoing2": "@หรอ It's me!",
+	"NPCIntroduce.Outgoing3": "@หรอ Open the door!",
+	"NPCIntroduce.Shy1": "@, are you there?",
+	"NPCIntroduce.Shy2": "@หรอ",
+	"NPCIntroduce.Shy3": "สวัสดี มีใครอยู่บ้านไหม",
+	//by manners
+	"NPCIntroduce.Polite1": "สวัสดี ฉันขอเข้าไปได้ไหม",
+	"NPCIntroduce.Polite2": "ขอโทษ...",
+	"NPCIntroduce.Polite3": "(ก๊อกก๊อก)",
+	"NPCIntroduce.Neutral1": "มีใครอยู่ไหม",
+	"NPCIntroduce.Neutral2": "สวัสดี @หรอ",
+	"NPCIntroduce.Neutral3": "@, ฉันเอง",
+	"NPCIntroduce.Rude1": "@, ฉันอยู่ข้างนอก",
+	"NPCIntroduce.Rude2": "สวัสดี.. @..หรอ",
+	"NPCIntroduce.Rude3": "เฮ้...@, คุณอยู่ที่นั่นหรอ",
+	
+	/* TN: walk into house */
+	//by social
+	"NPCWalkIn.Outgoing1": "ว่าไง, {0}!",
+	"NPCWalkIn.Outgoing2": "เฮ้!",
+	"NPCWalkIn.Outgoing3": "สวัสดี!",
+	"NPCWalkIn.Shy1": "ว่าไง, {0}",
+	"NPCWalkIn.Shy2": "ขอโทษนะ",
+	"NPCWalkIn.Shy3": "สวัสดี",
+	//by manners
+	"NPCWalkIn.Polite1": "ขอโทษนะ",
+	"NPCWalkIn.Polite2": "ว่าไง, ทักทายนะ",
+	"NPCWalkIn.Polite3": "ทักทายนะ",
+	"NPCWalkIn.Neutral1": "ว่าไง, {0}!",
+	"NPCWalkIn.Neutral2": "กำลังมา",
+	"NPCWalkIn.Neutral3": "สวัสดี.",
+	"NPCWalkIn.Rude1": "เฮ้, {0}.",
+	"NPCWalkIn.Rude2": "ฉันจะเดินเข้าไป",
+	"NPCWalkIn.Rude3": "ว่าไง.",
+	
+	/* TN: greeting player */
+	//by social
+	"NPCGreet.Outgoing1": "เฮ้ เป็นอย่างไรบ้าง? ฉันคิดว่าจะผ่านมาทางนี้เลยแวะเยี่ยมเยียนคุณ$1",
+	"NPCGreet.Outgoing2": "ว่าไง ฟาร์มของคุณเป็นอย่างไรบ้าง? ฉันคิดว่าจะมาก็เลยมาตรวจสอบด้วยตัวเองซะเลย$1",
+	"NPCGreet.Outgoing3": "สวัสดี! ฉันไม่ได้เจอคุณมาสักพักแล้ว$1",
+	"NPCGreet.Shy1": "ว่าไง, @ คุณเป็นอย่างไรบ้าง?#$b#ดูเหมือนว่า ฟาร์ม% ฟาร์มมีการเจริญเติบโตมากขึ้นนะ",
+	"NPCGreet.Shy2": "สวัสดี, @#$b#ฉันกำลังผ่านมาทางนี้เลยตัดสินใจที่จะมาเยี่ยมชม",
+	"NPCGreet.Shy3": "เฮ้, @ ยินดีที่ได้พบคุณ#$b#ฉันสงสัยว่าคุณเป็นยังไงบ้างช่วงนี้",
+	//by manners
+	"NPCGreet.Polite1": "@, ฉันขอโทษที่เดินโดยไม่ได้รับเชิญ ฉันแค่อยากมาตรวจสอบดูคุณเฉยๆ",
+	"NPCGreet.Polite2": "ทักทาย ฉันดีใจที่ได้พบคุณนะ, @",
+	"NPCGreet.Polite3": "ขอโทษนะ..หวังว่าฉันจะไม่รบกวนอะไรคุณนะ$1",
+	"NPCGreet.Neutral1": "ฉันจะเดินเข้าไปนะ...สวัสดี, @",
+	"NPCGreet.Neutral2": "เฮ้ ฉันเดินผ่านมาแล้วได้ยินเสียง...#$b#ฉันเลยอยากมาตรวจเพื่อดูความปลอดภัยหน่ะ อิอิ$1",
+	"NPCGreet.Neutral3": "ว่าไง, @ ดีจังที่ได้พบคุณ#$b#ฉันตัดสินใจว่าจะมาเยี่ยมคุณให้คุณประหลาดใจ",
+	"NPCGreet.Rude1": "เฮ้, @! คุณคิดถึงฉันหรือเปล่า",
+	"NPCGreet.Rude2": "ว่าไง, @.",
+	"NPCGreet.Rude3": "เฮ้, ฉันเดินผ่านมาหน่ะและเห็นคุณอยู่ข้างในพอดี...ฉันแค่ผ่านมาหน่ะ",
+	
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key.
+	 * (and some extra ones as new content) */
+	"NPCGift.Normal1": "ฉันนำของขวัญมาให้คุณ[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "นี่, ฉันนำของขวัญมาให้คุณ[{0}]", //outgoing3
+	"NPCGift.Normal3": "ฉันนำของขวัญจ้าวปัญหามาให้คุณ[{0}]", //shy3
+	"NPCGift.Normal4": "นี่, ฉันคิดถึงคุณเมื่อเห็นสิ่งนี้[{0}] ", //neutral1
+	"NPCGift.Normal5": "เฮ้, นี้ดูเหมือนของที่เหมาะกับ 'คุณ' เลยดังนั้นฉันจึงได้มันมาเพื่อคุณ [{0}]", //original
+	"NPCGift.Kind1": "และฉันนำบางอย่างมาให้คุณ [{0}]", //polite1
+	"NPCGift.Kind2": "นี่, ฉันนำบางอย่างมาให้คุณของเจ้าปัญหา [{0}]", //polite2
+	"NPCGift.Kind3": "ฉันนำบางอย่างมาให้คุณของเจ้าปัญหา [{0}]", //polite3
+	"NPCGift.Kind4": "ฉันคิดถึงคุณเมื่อฉันเห็นสิ่งนี้ [{0}]", //neutral2
+	"NPCGift.Kind5": "นี้ดูเหมือนสิ่งที่คุณต้องการเลย [{0}]", //original
+	"NPCGift.Lax1": "เฮ้, รับสิ่งนี้ไปสิ [{0}]", //original
+	"NPCGift.Lax2": "ฟังนะ ฉันมีอะไรให้คุณ[{0}]", //rude1
+	"NPCGift.Lax3": "ฉันมีบางอย่างให้คุณ เอาไปสิ[{0}]", //rude3
+	"NPCGift.Lax4": "ที่นี่ ฉันมีของสำรองอยู่บ้าง [{0}]", //original
+	"NPCGift.Lax5": "ฉันมีบางอย่างให้คุณระหว่างเดินทางมาที่นี่[{0}]", //rude2
+	
+	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
+	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
+     
+     * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
+	
+	//generic lines (for any spouse)
+	"InLaw.Generic.1": "ตอนนี้ {0} อยู่ในบ้านไหม",
+	"InLaw.Generic.2": "ฉันไม่ได้เห็น {0} มานานแล้ว...",
+	"InLaw.Generic.3": "สิ่งต่างๆที่เกิดขึ้นกับ {0} เป็นอย่างไร คุณสองคนเข้ากันได้ดีไหม",
+	"InLaw.Generic.4": "เฮ้, {0} อยู่ที่นี่ไหม",
+	"InLaw.Generic.5": "แล้วไหนล่ะ {0}, @?",
+	"InLaw.Generic.6": "คุณกับ {0}, @ เป็นอย่างไรบ้าง? ทุกอย่างราบรื่นดีหรือเปล่า",
+	"InLaw.Generic.7": "ฉันไม่ได้เห็น {0} มาสักพักแล้ว...",
+	"InLaw.Generic.8": "ฉันหวังว่า {0} จะสนุกกับฟาร์ม%farmนะ...",
+	"InLaw.Generic.9": "{0} คุณดูแลดีหรือเปล่า",
+	"InLaw.Generic.10": "@... {0} เป็นยังไงบ้าง",
+	"InLaw.Generic.11": "เฮ้, ไหนหล่ะ {0}?",
+	"InLaw.Generic.12": "@, {0} อยู่ในบ้านไหม",
+	"InLaw.Generic.13": "วันนี้ {0} อยู่ที่นี่ไหม",
+	"InLaw.Generic.14": "@...{0} เป็นอย่างไรบ้าง",
+	"InLaw.Generic.15": "{0} ยังอยู่กับ @ ใช่ไหม มันก็ผ่านมานานแล้ว $1",
+	
+	//for vanilla spouses
+	"InLaw.Abigail.1": "อบิเกลยังอยู่กับเพื่อนของเธอหรือเปล่า?",
+	"InLaw.Abigail.2": "แอบบี้ยังชอบไสยศาสตร์อยู่หรือเปล่า?#$b#ฉันหวังว่าเธอจะไม่ตกอยู่ในอันตรายมากเกินไปนะ...$2",
+	"InLaw.Abigail.3": "ฉันหวังว่าอบิเกลได้รับการดูแลดีหรือเปล่า",
+	
+	"InLaw.Alex.1": "บ้านดูเงียบไปเลยตั้งแต่อเล็กซ์ย้ายมาที่นี่#$b#แต่ฉันหวังว่าเขาจะมีความสุขนะ$1",
+	"InLaw.Alex.2": "หลานชายเป็นอย่างไรบ้าง?",
+	"InLaw.Alex.3": "หลานชายของฉันยังเล่นกริดบอลอยู่ไหม?",
+	
+	"InLaw.Emily.1": "เอมิลี่เป็นยังไงบ้างหล่ะ#$b#เธอยังเลี้ยงนกแก้วอยู่หรือเปล่า",
+	"InLaw.Emily.2": "เอมิลี่เคยยุ่งวุ่นอยู่กับร้านซาลูนทุกวัน...$2#$b#ฉันหวังว่าเธอจะพักผ่อนมากขึ้นนะตอนนี้",
+	"InLaw.Emily.3": "ฉันแน่ใจว่าเอมิลี่ชอบอยู่ในฟาร์มกับคุณนะ @",
+	
+	"InLaw.Haley.1": "คุณกับเฮลีย์เป็นยังไงบ้าง$1",
+	"InLaw.Haley.2": "ฉันไม่เคยคิดว่าเฮลีย์จะรักฟาร์มมากขนาดนี้...",
+	"InLaw.Haley.3": "@, เฮลีย์ยังถ่ายรูปอยู่รึเปล่า?",
+	
+	"InLaw.Maru.1": "มารุยังทำการทดลองอยู่รึเปล่า?",
+	"InLaw.Maru.2": "มารุพักผ่อนเพียงพอหรือเปล่า#$b#การทำงานที่ฟาร์มกับคลินิกยังต้องการเป็นจำนวนมาก",
+	"InLaw.Maru.3": "มารุมอยู่ไหน, @?#$b#ฉันอยากเห็นลูกสาวของฉัน$1",
+	
+	"InLaw.Penny.1": "เพนนียังสอนเด็กอยู่ไหม",
+	"InLaw.Penny.2": "@...#$b#คุณคิดว่าฉันจะได้เห็นเพนนีหรือเปล่า",
+	"InLaw.Penny.3": "@, เพนนีทำอะไรอยู่หรอ",
+	
+	"InLaw.Sam.1": "แซมยังเล่นกีตาร์อยู่ไหม#$b#แล้วสเก็ตล่ะ",
+	"InLaw.Sam.2": "@, ลูกชายของฉันสบายดีหรือเปล่า",
+	"InLaw.Sam.3": "ฉันสงสัยว่าแซมจัดการกับละอองเกสรได้ดีหรือเปล่า...",
+	
+	"InLaw.Sebastian.1": "เซบาสเตียนยังมีมอเตอร์ไซค์อยู่หรือเปล่า",
+	"InLaw.Sebastian.2": "ฉันไม่เคยนึกเลยว่าเซบาสเตียนจะอยู่ที่ฟาร์ม...#$b#ฉันหวังว่าเขาจะมีความสุขกับที่นี่นะ",
+	"InLaw.Sebastian.3": "@, คุณมีไก่ไหมหรือเปล่า#$b#ฉันสงสัยว่าเซบาสเตียนจะทำอย่างไรกับบ้านที่เต็มไปด้วยไข่$1",
+	
+	"InLaw.Shane.1": "เฮ้, แล้วเชนหล่ะ แล้วชาลีล่ะ",
+	"InLaw.Shane.2": "ดูแลเชนดีหรือเปล่า",
+	"InLaw.Shane.3": "ฉันพนันได้เลยว่าเชนต้องมีความสุขกับการใช้ชีวิตในฟาร์มแน่",
+	
+	/* TN: ask about your kids, 1 to 5
+	 * if you have kids, this is added right after InLaw. */
+	"ask.singlechild.1": "หายไปนานตั้งแต่เห็นครั้งล่าสุด {0}...",
+	"ask.singlechild.2": "@, {0} อยู่ที่นี่มั้ย",
+	"ask.singlechild.3": "ฉันไม่เห็น {0} มาสักพักแล้ว...",
+	"ask.singlechild.4": "@, กำลัง {0} ทำตัวดีหรือเปล่า",
+	"ask.singlechild.5": "ฉันพนันว่า {0} เติบโตขึ้นมากตั้งแต่ฉันมาที่นี่ครั้งล่าสุด",
+	
+	"ask.multiplechild.1": "@, อยู่ไหน {0}?#$b#และสิ่งที่เกี่ยวกับ {1} เป็นยังไงบ้าง",
+	"ask.multiplechild.2": "ฉันไม่ได้เห็น {0} หรือ {1} มาระยะหนึ่งแล้วนะ",
+	"ask.multiplechild.3": "แล้ว {1} กับ {0} ล่ะ? ลูกๆ ของคุณอยู่ที่นี่หรือเปล่า",
+	"ask.multiplechild.4": "{1} กับ {0} เข้ากันได้ดีหรือเปล่า",
+	"ask.multiplechild.5": "{0} กับ {1} อยู่บ้านไหม",
+	
+	/*talk about furniture*/
+	//by social
+	"NPCFurniture.Outgoing1": "{0} นี้ดูดีจริงๆ ในบ้านไร่ของคุณ",
+	"NPCFurniture.Outgoing2": "เฮ้, คุณเมื่อไหร่คุณจะได้รับ {0} เมื่อไหร่",
+	"NPCFurniture.Outgoing3": "@, {0} มีขายไหม#$b#ฉันล้อเล่น$1.",
+	"NPCFurniture.Shy1": "ดังนั้น {0}...#$b#มันสวยมากเลย",
+	"NPCFurniture.Shy2": "ฉันไม่รู้ว่าคุณมี {0}! ด้วย$1",
+	"NPCFurniture.Shy3": "{0} ของคุณ... ทำให้ฉันนึกถึงบ้านที่ฉันมีเลย",
+	//by manners
+	"NPCFurniture.Polite1": "@, {0} ของคุณ...ทำให้บ้านหลังนี้มีชีวิตชีวามาก",
+	"NPCFurniture.Polite2": "คุณได้ใช้ความพยายามอย่างมากในการตกแต่งสถานที่แห่งนี้, @...$1",
+	"NPCFurniture.Polite3": "ขอโทษที คุณมีตั้งแต่เมื่อไหร่ {0}...#$b#ฉันชอบมันมาก.$1",
+	"NPCFurniture.Neutral1": "เฮ้, นี้ดูดี$1",
+	"NPCFurniture.Neutral2": "บ้านคุณสวยมาก...มีมากกว่านี้อีก {0}.",
+	"NPCFurniture.Neutral3": "ฉันรักสถานที่แห่งนี้, @#$b#ดูนั่นสิ {0}! มันงดงาม$1",
+	"NPCFurniture.Rude1": "ฉันชอบมัน {0}.",
+	"NPCFurniture.Rude2": "มีตั้งแต่เมื่อไหร่ {0}?$1",
+	"NPCFurniture.Rude3": "หาได้ที่ไหนเนี่ย {0}?",
+	
+	/* TN: leaving */
+	//by social
+	"NPCRetiring.Outgoing1": "สนุกมากแต่ต้องไป แล้วพบกันใหม่!",
+	"NPCRetiring.Outgoing2": "หายไปนานเลย งั้นฉันไปแล้วนะ",
+	"NPCRetiring.Outgoing3": "แล้วเจอกันนะ, @",
+	"NPCRetiring.Shy1": "อยู่นานเกินไปแล้ว...ฉันจะไปแล้วหล่ะ ดีใจที่ได้พบคุณนะ",
+	"NPCRetiring.Shy2": "ฉันมีบางอย่างที่ต้องทำ แต่ฉันมีความสุข#$b#ขอบคุณนะ, @$1",
+	"NPCRetiring.Shy3": "ขอโทษ, @ ฉันจะต้องจากไปแล้วหล่ะ#$b#ขอบคุณสำหรับเวลาของคุณ",
+	//by manners
+	"NPCRetiring.Polite1": "@, ฉันจะต้องไปแล้ว...ฉันมีบางอย่างที่ต้องทำ#$b#ฉันดีใจที่ได้พบคุณ!$1",
+	"NPCRetiring.Polite2": "ฉันเคยมาที่นี่ซักพักแล้ว...ฉันจะลาก่อนนะ#$b#เจอกันครั้งหน้า, @.",
+	"NPCRetiring.Polite3": "@, ดีใจที่ได้พบคุณ#$b#หวังว่าวันของคุณจะผ่านไปด้วยดี",
+	"NPCRetiring.Neutral1": "เฮ้, ดูเวลาสิ...ฉันน่าจะต้องไปตั้งนานแล้ว#$b#เจอกันหน้าวันหน้าค่ะ!$1",
+	"NPCRetiring.Neutral2": "ฉันจะไปเดี๋ยวนี้แหละ ก่อนที่ข้างนอกจะมืดลงไปมากกว่านี้#$b#แล้วพบกันใหม่, @",
+	"NPCRetiring.Neutral3": "คุณต้องมีสิ่งที่ต้องทำ ดังนั้นฉันจะลา#$b#ฉันสนุก$1",
+	"NPCRetiring.Rude1": "ฉันต้องการจะไป... ฉันต้องทำให้คุณไม่ว่าง#$b#ฉันจะพบคุณในภายหลัง",
+	"NPCRetiring.Rude2": "ฉันอยู่ที่นี่นานเกินไป... ฉันจะไป#$b#แล้วพบกันใหม่, @",
+	"NPCRetiring.Rude3": "มันดึกมากแล้ว เจอกันใหม่วันหน้า",
+	
+	/* TN: gone while outside */
+	"NPCGoneWhileOutside": "ในขณะที่คุณอยู่ข้างนอก {0} ก็ออกไปแล้ว",
+	"NPCGone_Cellar": "ในขณะที่คุณอยู่ในห้องใต้ดิน {0} ได้ออกไปแล้ว",
+	"NPCGone_Farm": "ในขณะที่คุณอยู่ในฟาร์ม {0} ก็ออกไปแล้ว"
+}

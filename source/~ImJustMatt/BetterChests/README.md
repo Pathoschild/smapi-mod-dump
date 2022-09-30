@@ -18,10 +18,12 @@ Adds enhanced chest features to the game.
     * [Better Shipping Bin](#better-shipping-bin)
     * [Carry Chest](#carry-chest)
     * [Chest Finder](#chest-finder)
+    * [Chest Info](#chest-info)
     * [Chest Menu Tabs](#chest-menu-tabs)
     * [Collect Items](#collect-items)
     * [Configurator](#configurator)
     * [Craft From Chest](#craft-from-chest)
+    * [Craft From Workbench](#craft-from-workbench)
     * [Filter Items](#filter-items)
     * [Label Chest](#label-chest)
     * [Open Held Chest](#open-held-chest)
@@ -104,12 +106,27 @@ With Carry Chest enabled, you can hit the Use Tool button to pick up chests into
 
 Search for which chest(s) have the item you're looking for.
 
-| Config      | Description                        | Default Value                         | Other Value(s)                     |
-|:------------|:-----------------------------------|---------------------------------------|:-----------------------------------|
-| ChestFinder | Enables the Chest Finder feature.  | `true`                                | `true', 'false'                    |
-| FindChest   | Assigns a keybind to find a chest. | `"LeftControl + F, RightControl + F"` | Any valid button code.<sup>1</sup> |
+| Config           | Description                                     | Default Value                         | Other Value(s)                     |
+|:-----------------|:------------------------------------------------|---------------------------------------|:-----------------------------------|
+| ChestFinder      | Enables the Chest Finder feature.               | `true`                                | `true', 'false'                    |
+| CloseChestFinder | Assigns a keybind to close the chest finder.    | `"Escape"`                            | Any valid button code.<sup>1</sup> |
+| FindChest        | Assigns a keybind to find a chest.              | `"LeftControl + F, RightControl + F"` | Any valid button code.<sup>1</sup> |
+| OpenFoundChest   | Assigns a keybind to open a found chest.        | `"Enter"`                             | Any valid button code.<sup>1</sup> |
+| OpenNextChest    | Assigns a keybind to open the next found chest. | `"Tab"`                               | Any valid button code.<sup>1</sup> |
 
 1. See [Button Codes](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
+
+### Chest Info
+
+Show stats to the left of the currently opened chest. 
+
+| Config     | Description                                | Default Value | Other Value(s)                        |
+|:-----------|:-------------------------------------------|---------------|:--------------------------------------|
+| ChestInfo  | Enables the Chest Info feature.            | `"Disabled"`  | `"Disabled"`, `"Default"`<sup>1</sup> |
+| ToggleInfo | Assigns a keybind to show/hide chest info. | `"F1"`        | Any valid button code.<sup>2</sup>    |
+
+1. See [Option Values](#option-values).
+2. See [Button Codes](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
 
 ### Chest Menu Tabs
 
@@ -166,6 +183,18 @@ Hit a configurable key to bring up a crafting menu that uses items stored in nea
 2. See [Button Codes](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Button_codes).
 3. Add `"UndergroundMine"` to the list to disable in Mine and Skull Cavern.
 4. Measured in tiles away from the player. Use `-1` for "unlimited" distance.
+
+### Craft From Workbench
+
+Allows the Workbench to craft from chests within a configurable range.
+
+| Config                     | Description                                                                          | Default Value | Other Value(s)                                                                 |
+|:---------------------------|:-------------------------------------------------------------------------------------|:--------------|:-------------------------------------------------------------------------------|
+| CraftFromWorkbench         | Enables the Craft From Workbench feature.                                            | `"Location"`  | `"Disabled"`, `"Default"`, `"Inventory"`, `"Location"`, `"World"` <sup>1</sup> |
+| CraftFromWorkbenchDistance | Limits the distance that a chest can be crafted from when accessed from a workbench. | -1            | Any positive integer or `-1`.<sup>2</sup>                                      |
+
+1. See [Range Values](#range-values).
+2. Measured in tiles away from the player. Use `-1` for "unlimited" distance.
 
 ### Filter Items
 
@@ -465,7 +494,7 @@ The SaddleBag can have its own Better Chest config by adding an entry for a ches
 
 ## Customization
 
-#### API
+### API
 
 Register your chest using the [Better Chests API](../Common/Integrations/BetterChests/IBetterChestsApi.cs).
 

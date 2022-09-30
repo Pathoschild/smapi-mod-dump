@@ -14,7 +14,7 @@ using System;
 using StardewMods.Common.Integrations.ToolbarIcons;
 
 /// <inheritdoc />
-internal class ComplexIntegration : BaseIntegration
+internal sealed class ComplexIntegration : BaseIntegration
 {
     private ComplexIntegration(IModHelper helper, IToolbarIconsApi api)
         : base(helper, api)
@@ -33,6 +33,19 @@ internal class ComplexIntegration : BaseIntegration
     public static ComplexIntegration Init(IModHelper helper, IToolbarIconsApi api)
     {
         return ComplexIntegration.Instance ??= new(helper, api);
+    }
+
+    /// <summary>
+    ///     Adds a complex integration for vanilla.
+    /// </summary>
+    /// <param name="index">The index of the mod icon.</param>
+    /// <param name="hoverText">The text to display.</param>
+    /// <param name="action">Function which returns the action to perform.</param>
+    /// <returns>Returns true if the icon was added.</returns>
+    public bool AddCustomAction(int index, string hoverText, Action action)
+    {
+        this.AddIntegration(string.Empty, index, hoverText, action);
+        return true;
     }
 
     /// <summary>

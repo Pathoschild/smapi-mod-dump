@@ -55,6 +55,7 @@ namespace DynamicBodies.Data
         public BodyPartStyle nakedUpper;
         public BodyPartStyle nakedLower;
         public BodyPartStyle hairStyle;
+        public BodyPartStyle[] trinkets = null;
 
         //Overlays/Accessories rendering
         public Dictionary<int, Texture2D> hairTextures = new Dictionary<int, Texture2D>();
@@ -85,6 +86,12 @@ namespace DynamicBodies.Data
             nakedLower = new BodyPartStyle("nakedLower");
             nakedUpper = new BodyPartStyle("nakedUpper");
             hairStyle = new BodyPartStyle("hairStyle");
+            trinkets = new BodyPartStyle[5] { new BodyPartStyle("trinket0"),
+                new BodyPartStyle("trinket1"),
+                new BodyPartStyle("trinket2"),
+                new BodyPartStyle("trinket3"),
+                new BodyPartStyle("trinket4")
+            };
 
             dirtyLayers = new Dictionary<string, bool>() {
                 { "sprite",true },
@@ -101,6 +108,7 @@ namespace DynamicBodies.Data
                 { "bodyHair",true },
                 { "nakedLower",true },
                 { "nameUpper",true },
+                { "trinkets",true },
             };
 
             shirt = who.shirt.Value;
@@ -118,6 +126,8 @@ namespace DynamicBodies.Data
 
             string whoID = GetKey(who);
             extendedFarmers[whoID] = this;
+
+            if (!who.modData.ContainsKey("DB.trinket_owned")) who.modData["DB.trinket_owned"] = "Default";
         }
 
         public static PlayerBaseExtended Get(Farmer who)
@@ -176,6 +186,7 @@ namespace DynamicBodies.Data
             nakedLower.SetDefault(who);
             nakedUpper.SetDefault(who);
             hairStyle.SetDefault(who);
+            foreach (BodyPartStyle trinket in trinkets) { trinket.SetDefault(who); }
 
             who.modData["DB.lash"] = new Color(15, 10, 8).PackedValue.ToString();
         }
@@ -337,6 +348,17 @@ namespace DynamicBodies.Data
                 }
             }
 
+            //Check for trinkets
+            int i = 0;
+            foreach (BodyPartStyle trinket in pbe.trinkets) {
+                if (!trinket.OptionMatchesModData(who))
+                {
+                    trinket.SetOptionFromModData(who, ModEntry.trinketOptions[i]);
+                    pbe.dirtyLayers["trinkets"] = true;
+                }
+                i++;
+            }
+
             //Check for naked overlay
             if (!pbe.nakedLower.OptionMatchesModData(who))
             {
@@ -378,6 +400,7 @@ namespace DynamicBodies.Data
             return bodyHair.texture;
         }
 
+        //Used for vanilla scenarios
         public Texture2D GetBeardTexture(Farmer who, int beard_style, Texture2D source_texture, Rectangle rect)
         {
             CheckHairTextures(who); //Redraw if needed
@@ -392,6 +415,7 @@ namespace DynamicBodies.Data
             return beard.textures[beard_style.ToString()];
         }
 
+        //Content pack scenarios
         public Texture2D GetBeardTexture(Farmer who)
         {
             CheckHairTextures(who); //Redraw if needed
@@ -424,7 +448,7 @@ namespace DynamicBodies.Data
                 return hairStyle.texture;
             } else
             {
-                if (!hairStyle.textures.ContainsKey(type) && hairStyle.option != "Default")
+                if (!hairStyle.textures.ContainsKey(type) && hairStyle.option != "Default" || dirtyLayers["hair"])
                 {
                     //Build a new one
                     Texture2D hairText2D = hairStyle.provider.ModContent.Load<Texture2D>($"Hair\\{hairStyle.file}_{type}.png");
@@ -466,7 +490,7 @@ namespace DynamicBodies.Data
             ModEntry.hairRamp.Parameters["xColor"].SetValue(who.hairstyleColor.Value.ToVector4());
             ModEntry.hairRamp.Parameters["xDarkColor"].SetValue(hairdark.ToVector4());
 
-            FarmerRendererPatched.renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, hairText2D.Width, hairText2D.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+            FarmerRendererPatched.renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, hairText2D.Width, hairText2D.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
             //Store current render targets
             RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
             Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched.renderTarget);
@@ -478,7 +502,7 @@ namespace DynamicBodies.Data
 
             Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched.renderTarget);
 
-            Game1.graphics.GraphicsDevice.Clear(Color.FromNonPremultiplied(255, 0, 255, 0));
+            Game1.graphics.GraphicsDevice.Clear(Color.Transparent);
 
             using (SpriteBatch sb = new SpriteBatch(FarmerRendererPatched.renderTarget.GraphicsDevice))
             {
@@ -534,7 +558,7 @@ namespace DynamicBodies.Data
             beard.Clear();
         }
 
-        public Texture2D GetNakedUpperTexture(int skin)
+        public Texture2D GetNakedUpperTexture()
         {
             if (dirty)
             {
@@ -544,8 +568,11 @@ namespace DynamicBodies.Data
             if (nakedUpper.texture == null && nakedUpper.option != "Default")
             {
                 Texture2D texture = nakedUpper.provider.ModContent.Load<Texture2D>($"assets\\nakedUpper\\{nakedUpper.file}.png");
-                //recalculate the skin colours on the overlay
-                nakedUpper.texture = ApplyPaletteColors(texture);
+                if (texture != null)
+                {
+                    //recalculate the skin colours on the overlay
+                    nakedUpper.texture = ApplyPaletteColors(texture);
+                }
             }
             if (nakedUpper.option == "Default")
             {
@@ -554,7 +581,7 @@ namespace DynamicBodies.Data
             return nakedUpper.texture;
         }
 
-        public Texture2D GetNakedLowerTexture(int skin)
+        public Texture2D GetNakedLowerTexture()
         {
             if (dirty)
             {
@@ -583,6 +610,40 @@ namespace DynamicBodies.Data
             return nakedLower.texture;
         }
 
+        public Texture2D GetTrinketTexture(Farmer who, int i)
+        {
+            if (trinkets[i].texture == null && trinkets[i].option != "Default")
+            {
+                Texture2D texture = trinkets[i].provider.ModContent.Load<Texture2D>($"Trinkets\\{trinkets[i].file}.png");
+                bool recolour = false;
+                Color c1 = Color.White;
+                Color c2 = Color.White;
+                if (who.modData.ContainsKey("DB.trinket" + i + "_c1"))
+                {
+                    c1 = new Color(uint.Parse(who.modData["DB.trinket" + i + "_c1"]));
+                }
+                if (who.modData.ContainsKey("DB.trinket" + i + "_c2"))
+                {
+                    c2 = new Color(uint.Parse(who.modData["DB.trinket" + i + "_c2"]));
+                }
+                if (!c1.Equals(Color.White)) { recolour = true; }
+                if (!c2.Equals(Color.White)) { recolour = true; }
+
+                if (recolour)
+                {
+                    trinkets[i].texture = ApplyTwoColors(texture, c1, c2);
+                } else
+                {
+                    trinkets[i].texture = texture;
+                }
+            }
+            if (trinkets[i].option == "Default")
+            {
+                return null;
+            }
+            return trinkets[i].texture;
+        }
+
         private static Texture2D ApplyPaletteColors(Texture2D source_texture)
         {
             Texture2D texture = null;
@@ -592,7 +653,7 @@ namespace DynamicBodies.Data
             //Use a pixel shader to handle the recolouring    
             //Assumes ModEntry.paletteSwap.Parameters["xTargetPalette"].SetValue(pbe.paletteCache); is done
 
-            RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+            RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
             //Store current render targets
             RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
 
@@ -603,10 +664,56 @@ namespace DynamicBodies.Data
 
             Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget);
 
-            Game1.graphics.GraphicsDevice.Clear(Color.FromNonPremultiplied(0, 0, 0, 0));
+            Game1.graphics.GraphicsDevice.Clear(Color.Transparent);
+
             using (SpriteBatch sb = new SpriteBatch(renderTarget.GraphicsDevice))
             {
                 sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, effect: ModEntry.paletteSwap);
+                sb.Draw(source_texture, new Rectangle(0, 0, source_texture.Width, source_texture.Height), Color.White);
+                sb.End();
+            }
+            Color[] pixel_data = new Color[renderTarget.Width * renderTarget.Height];
+            renderTarget.GetData(pixel_data);
+            texture.SetData(pixel_data);
+
+            if (FarmerRendererPatched.renderTarget is not null)
+            {
+                FarmerRendererPatched.renderTarget.Dispose();
+            }
+            //return current render targets
+            //return current render target
+            Game1.graphics.GraphicsDevice.SetRenderTarget(FarmerRendererPatched._cachedRenderer);
+            FarmerRendererPatched._cachedRenderer = null;
+
+            return texture;
+        }
+
+        private static Texture2D ApplyTwoColors(Texture2D source_texture, Color c1, Color c2)
+        {
+            Texture2D texture = null;
+            //Need to render a new texture
+            texture = new Texture2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height);
+
+            //Use a pixel shader to handle the recolouring
+            ModEntry.twoColorRamp.Parameters["xColor1"].SetValue(c1.ToVector4());
+            ModEntry.twoColorRamp.Parameters["xColor2"].SetValue(c2.ToVector4());
+
+            RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, source_texture.Width, source_texture.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+            //Store current render targets
+            RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
+
+            if (currentRenderTargets is not null && currentRenderTargets.Length > 0 && currentRenderTargets[0].RenderTarget is not null)
+            {
+                FarmerRendererPatched._cachedRenderer = currentRenderTargets[0].RenderTarget as RenderTarget2D;
+            }
+
+            Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+
+            Game1.graphics.GraphicsDevice.Clear(Color.Transparent);
+
+            using (SpriteBatch sb = new SpriteBatch(renderTarget.GraphicsDevice))
+            {
+                sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, effect: ModEntry.twoColorRamp);
                 sb.Draw(source_texture, new Rectangle(0, 0, source_texture.Width, source_texture.Height), Color.White);
                 sb.End();
             }
@@ -704,6 +811,7 @@ namespace DynamicBodies.Data
         public void SetDefault(Farmer who)
         {
             who.modData["DB." + name] = "Default";
+            option = "Default";
             provider = null;
             file = null;
         }

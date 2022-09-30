@@ -9,6 +9,10 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* You can now walk over the campfire wood pile.
+* You can now till the stone above the campfire.
+
 ## 2.4.2
 Released 18 August 2022 for SMAPI 3.14.0 or later.
 

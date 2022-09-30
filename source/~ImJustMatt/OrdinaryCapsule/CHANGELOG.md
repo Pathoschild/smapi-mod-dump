@@ -8,6 +8,25 @@ for queries and analysis.**
 
 # Ordinary Capsule Change Log
 
+## 1.3.0 (September 2, 2022)
+
+### Added
+
+* Added an optional break chance.
+* Added a config option for duplicating every item.
+
+## 1.2.0 (September 1, 2022)
+
+### Added
+
+* Added support for more items.
+* Added sounds for loading/grabbing items.
+* Added an API for mod integrations.
+
+### Changed
+
+* Changed the format of items.json.
+
 ## 1.1.1 (August 24, 2022)
 
 ### Fixed

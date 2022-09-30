@@ -1,0 +1,10 @@
+{
+  "Name": "Chest Preview",
+  "Author": "sergiomadd",
+  "Version": "1.0.1",
+  "Description": "Show chest contents on mouse hover",
+  "UniqueID": "sergiomadd.ChestPreview",
+  "EntryDll": "ChestPreview.dll",
+  "MinimumApiVersion": "3.16.0",
+  "UpdateKeys": [ "Nexus:13946" ]
+}

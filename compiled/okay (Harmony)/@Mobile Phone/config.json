@@ -16,7 +16,11 @@
   "PhoneIconPosition": "top-right",
   "ToolTipDelayTicks": 40,
   "TicksToMoveAppIcon": 20,
-  "AppList": [],
+  "AppList": [
+    "aedenthorn.MobilePhone",
+    "aedenthorn.MobilePhone_themes",
+    "aedenthorn.MobilePhone_Rotate"
+  ],
   "PhoneWidth": 286,
   "PhoneHeight": 503,
   "ScreenWidth": 260,

@@ -135,7 +135,7 @@ internal static class WatchDog {
 
 #if DEBUG
 			Debug.Warning($"Frozen thread detected: watchdog is breaking...");
-			Debugger.Break();
+			Debug.Break();
 #else
 			// We need to interrupt this thread. Not _safe_, but prevents freezing.
 			Debug.Warning($"Frozen thread detected: watchdog is interrupting: {thread.ManagedThreadId} {thread.Name}");

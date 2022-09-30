@@ -8,6 +8,13 @@ for queries and analysis.**
 
 # Garbage Day Change Log
 
+## 3.0.2 (Unreleased)
+
+### Changed
+
+* `garbage_clear` command removes all garbage cans placed by this mod.
+* Internal refactoring.
+
 ## 3.0.1 (August 21, 2022)
 
 ### Changed

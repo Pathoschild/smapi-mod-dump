@@ -1,0 +1,5 @@
+{
+  "ModEnabled": true,
+  "MaxWaitHour": 1200,
+  "FirstSlotTile": "8, 4"
+}

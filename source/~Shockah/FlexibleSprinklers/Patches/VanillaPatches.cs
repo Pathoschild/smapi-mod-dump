@@ -22,9 +22,19 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.FlexibleSprinklers
 {
+	internal enum FindGameLocationContext
+	{
+		GetSprinklerTiles,
+		IsInSprinklerRangeBroadphase,
+
+		FlexibleSprinklersGetModifiedSprinklerCoverage,
+		FlexibleSprinklersGetUnmodifiedSprinklerCoverage
+	}
+
 	internal static class VanillaPatches
 	{
 		internal static bool IsVanillaQueryInProgress = false;
+		internal static FindGameLocationContext? FindGameLocationContextOverride;
 		internal static GameLocation? CurrentLocation;
 		internal static Vector2? SprinklerTileOverride;
 
@@ -87,15 +97,17 @@ namespace Shockah.FlexibleSprinklers
 			done:;
 		}
 
-		private static GameLocation? FindGameLocationForObject(SObject @object)
+		private static GameLocation? FindGameLocationForObject(SObject @object, FindGameLocationContext context)
 		{
 			var location = @object.FindGameLocation(CurrentLocation);
 			if (location is null)
 			{
 				if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
-					FlexibleSprinklers.Instance.Monitor.LogOnce("Could not find the location the sprinkler is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
+					FlexibleSprinklers.Instance.Monitor.LogOnce($"Could not find the location the {@object.Name} is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
 				else
-					FlexibleSprinklers.Instance.Monitor.Log("Could not find the location the sprinkler is in.", LogLevel.Error);
+					FlexibleSprinklers.Instance.Monitor.Log($"Could not find the location the {@object.Name} is in.", LogLevel.Error);
+				FlexibleSprinklers.Instance.Monitor.Log($"FindGameLocationContext: {context}", LogLevel.Trace);
+				FlexibleSprinklers.Instance.Monitor.Log($"Player location: {(Game1.player.currentLocation is null ? "<null>" : FlexibleSprinklers.GetNameForLocation(Game1.player.currentLocation))}", LogLevel.Trace);
 			}
 			return location;
 		}
@@ -109,7 +121,7 @@ namespace Shockah.FlexibleSprinklers
 				return result;
 			}
 
-			var location = FindGameLocationForObject(__instance);
+			var location = FindGameLocationForObject(__instance, FindGameLocationContextOverride is null ? FindGameLocationContext.GetSprinklerTiles : FindGameLocationContextOverride.Value);
 			if (location is null)
 				return new List<Vector2>();
 
@@ -154,7 +166,7 @@ namespace Shockah.FlexibleSprinklers
 
 		private static bool Object_IsInSprinklerRangeBroadphase_Result(SObject __instance, Vector2 target)
 		{
-			var location = FindGameLocationForObject(__instance);
+			var location = FindGameLocationForObject(__instance, FindGameLocationContextOverride is null ? FindGameLocationContext.IsInSprinklerRangeBroadphase : FindGameLocationContextOverride.Value);
 			if (location is null)
 				return true;
 

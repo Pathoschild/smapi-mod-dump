@@ -98,6 +98,12 @@ namespace FarmerHelper
                 name: () => "Warn plants unwatered?",
                 getValue: () => Config.WarnAboutPlantsUnwateredBeforeSleep,
                 setValue: value => Config.WarnAboutPlantsUnwateredBeforeSleep = value
+            );;
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Ignore Flowers?",
+                getValue: () => Config.IgnoreFlowers,
+                setValue: value => Config.IgnoreFlowers = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,

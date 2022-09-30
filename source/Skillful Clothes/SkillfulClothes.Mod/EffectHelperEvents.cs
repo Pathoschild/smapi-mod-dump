@@ -59,13 +59,13 @@ namespace SkillfulClothes
 
         protected void RaiseLocationChanged(GameLocation oldLocation, GameLocation newLocation)
         {
-            Logger.Debug($"RaiseLocationChanged {oldLocation?.name ?? "none"} -> {newLocation?.name ?? "none"}");
+            Logger.Debug($"RaiseLocationChanged {oldLocation?.Name ?? "none"} -> {newLocation?.Name ?? "none"}");
             LocationChanged?.Invoke(this, new ValueChangeEventArgs<GameLocation>(oldLocation, newLocation));
         }
 
         public void RaiseMonsterSlain(Farmer who, Monster monster)
         {
-            Logger.Debug($"RaiseMonsterSlain: {who.name} defeated {monster.name}");
+            Logger.Debug($"RaiseMonsterSlain: {who.Name} defeated {monster.Name}");
             MonsterSlain?.Invoke(this, new MonsterSlainEventArgs(who, monster));
         }
 
@@ -94,7 +94,7 @@ namespace SkillfulClothes
             lastPlayerAddedSpeed = Game1.player.addedSpeed;
 
             // location
-            if (Game1.currentLocation != null && Game1.currentLocation.name != "none") // avoid two events for old location -> none and none -> new location
+            if (Game1.currentLocation != null && Game1.currentLocation.Name != "none") // avoid two events for old location -> none and none -> new location
             {
                 if (lastLocation != Game1.currentLocation)
                 {

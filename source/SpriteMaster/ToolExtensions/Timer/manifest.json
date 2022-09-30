@@ -8,4 +8,4 @@
 **
 *************************************************/
 
-{"Name":"Timer","Author":"mkukli","Version":"0.15.0-beta.4","Description":"Times how long the game takes to start.","UniqueID":"DigitalCarbide.SpriteMaster.Timer","EntryDll":"SpriteMaster.Timer.dll","MinimumApiVersion":"3.13.2"}
+{"Name":"Timer","Author":"mkukli","Version":"0.15.0-beta.7.0","Description":"Times how long the game takes to start.","UniqueID":"DigitalCarbide.SpriteMaster.Timer","EntryDll":"SpriteMaster.Timer.dll","MinimumApiVersion":"3.13.2"}

@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using SpriteMaster.Types.Exceptions;
 using StardewValley;
 using System.Runtime.CompilerServices;
 using System.Threading;

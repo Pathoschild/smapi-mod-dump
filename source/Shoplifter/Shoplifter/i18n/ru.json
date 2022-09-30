@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TheMightyAmondee/Shoplifter
+**
+*************************************************/
+
+{
+    "TheMightyAmondee.Shoplifter/Shoplift":"Вор?",  
+    "TheMightyAmondee.Shoplifter/Banned": "Тебя выгнали за кражу. Не испытывай удачу...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Меня сегодня уже обокрали. Достаточно...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "{{shopliftingamount}} краж от тебя за сегодня. Хватит уже...",
+    "TheMightyAmondee.Shoplifter/AlreadyShopliftedSameShop":"Здесь нечего красть...",
+    "TheMightyAmondee.Shoplifter/BanFromShop_Single":"#$b#Для меня уже достаточно воровства от тебя за этот месяц @, я запрещаю тебе приходить сюда один день.$2",
+    "TheMightyAmondee.Shoplifter/BanFromShop":"#$b#Для меня уже достаточно воровства от тебя за этот месяц, @, я запрещаю тебе приходить сюда {{daysbanned}} дней.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric": "Ты серьёзно воруешь, @?$2#$b#*вздох* Я намереваюсь оштрафовать тебя на {{fineamount}}з за это.$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre": "Ты воруешь??!! О чём ты думаешь?!$4#$b#Заплати {{fineamount}}з штрафа и можешь идти, @.$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly": "Я могу сказать, когда ты воруешь, @... Запах следует за тобой...$2#$b#Я оштрафую тебя на {{fineamount}}з за это.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin": "Серьёзно, @? Думаешь, сможешь получить бесплатный телевизор... Я не храню здесь большие вещи...$3#$b#Я оштрафую тебя на {{fineamount}}з за это... Может, это сдержит тебя.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie": "Крадём мое сено, да, @? То, что я никогда не бываю в своем магазине, не означает, что ты можешь красть у меня.$4#$b#Если ты заплатишь {{fineamount}}з в качестве штрафа, я не буду вовлекать Льюиса...$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus": "Я знаю, что сегодняшнее специальное предложение выглядит заманчиво, @, но тебе всё равно придётся заплатить за это.$3#$b#*вздох* Если заплатишь штраф в {{fineamount}}з, я забуду о твоём проступке, хорошо?$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey": "Чем, по-твоему, ты занимаешься, @? Эта вещь опасна без консультации с врачом...$8#$b#Я оштрафую тебя на {{fineamount}}з за кражу, @, это серьёзно.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint": "Ты воруешь, @! Ты хуже, чем мне казалось.$3#$b#Ты ведь знаешь, что штраф за воровство составляет {{fineamount}}з, верно? Столько тебе нужно мне заплатить.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy": "То, что я живу вдали от других, не делает меня лёгкой мишенью, @.$2#$b#Плати штраф в {{fineamount}}з и я забуду о том, что произошло.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex": "Ты правда так отчаянно нуждаешься в мороженом, @?$7#$bНикогда не думал, что мне правда придется кого-то штрафовать, но это будет стоит тебе {{fineamount}}з.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "Ты серьёзно воруешь, @?$2#$b#*вздох* Мне бы оштрафовать тебя, но ты даже не можешь себе этого позволить!$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre_NoMoney": "Ты воруешь??!! О чём ты думаешь?!$4#$b#Тебе повезло, что у тебя нет денег на оплату штрафа!$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "Я могу сказать, когда ты воруешь, @... Запах следует за тобой...$2#$b#Пожалуйста, верни это. Я не могу тебя оштрафовать, если у тебя нет денег.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Серьёзно, @? Думаешь, сможешь получить бесплатный телевизор... Я не храню здесь большие вещи...$3#$b#Так как у тебя нет средств, я опущу штраф на этот раз.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Крадём мое сено, да, @? То, что я никогда не бываю в своем магазине, не означает, что ты можешь красть у меня.$4#$b#Обычно за этим следует штраф, но я не могу взыскать его с тебя, если у тебя пусто в карманах.$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus_NoMoney": "Я знаю, что сегодняшнее специальное предложение выглядит заманчиво, @, но тебе всё равно придётся заплатить за это.$3#$b#*вздох* Я сделаю тебе поблажку и не буду штрафовать в этот раз.$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Чем, по-твоему, ты занимаешься, @? Эта вещь опасна без консультации с врачом...$8#$b#У тебя не хватает денег на оплату штрафа, так что я прощу тебя, но не воруй снова.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Ты воруешь, @! Ты хуже, чем мне казалось.$3#$b#Я не оштрафую тебя на этот раз, @, так как ты все равно не сможешь заплатить.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "То, что я живу вдали от других, не делает меня лёгкой мишенью, @.$2#$b#Не волнуйся насчёт штрафа в этот раз, @, просто уйди.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Ты правда так отчаянно нуждаешься в мороженом, @?$7#$b#Ладно, в этот раз отделаешься предупреждением.$5"
+  }

@@ -17,47 +17,78 @@ using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Revitalize.Framework.Illuminate;
-using Revitalize.Framework.World.Objects.InformationFiles;
-using Revitalize.Framework.World.Objects.Interfaces;
-using Revitalize.Framework;
-using Revitalize.Framework.Objects;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Tools;
-using StardustCore.Animations;
+using Netcode;
+using Omegasis.Revitalize.Framework.Constants;
+using Omegasis.Revitalize.Framework.Illuminate;
+using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
+using Omegasis.Revitalize.Framework.World.Objects.Interfaces;
+using Omegasis.Revitalize.Framework.World.WorldUtilities;
+using Omegasis.StardustCore.Animations;
+using Omegasis.Revitalize.Framework.Player;
+using Omegasis.Revitalize.Framework.World.Debris;
+using StardewValley.Menus;
 
-namespace Revitalize.Framework.World.Objects
+namespace Omegasis.Revitalize.Framework.World.Objects
 {
+
+    /*
+     * 
+     * NOTES: Calling this.performRemoveAction(this.tileLocation, location); is NOT the same as calling GameLocation.objects.Remove(). Perform remove action cleans up the item before being removed, but has no actual deletion/removal logic from the game world itself.
+     * 
+     * 
+     * Current issue: When right clicking the object is picked up. This is currently not intended.
+     * 
+     */
+
+
     /// <summary>
     /// A base class that is to be extended by other implementations of objects.
     ///
     /// Clicking to remove and click place are bound to the samething. Need to find a way to change that.
     /// Bounding boxes work, but not for clicking to remove. Why is that?
     /// </summary>
-    [XmlType("Revitalize.Framework.World.Objects.CustomObject")]
-    public class CustomObject:StardewValley.Objects.Furniture, ICommonObjectInterface, ILightManagerProvider, IBasicItemInfoProvider
+    [XmlType("Mods_Revitalize.Framework.World.Objects.CustomObject")]
+    public class CustomObject : StardewValley.Objects.Furniture, ICommonObjectInterface, ILightManagerProvider, ICustomModObject
     {
         public bool isCurrentLocationAStructure;
 
-        public BasicItemInformation basicItemInfo;
+        public readonly NetRef<BasicItemInformation> netBasicItemInformation = new NetRef<BasicItemInformation>();
 
-        public override string Name { get => this.basicItemInfo.name; set => this.basicItemInfo.name = value; }
-        public override string DisplayName { get => this.basicItemInfo.name; set => this.basicItemInfo.name = value; }
+        [XmlElement("basicItemInfo")]
+        public BasicItemInformation basicItemInformation
+        {
+            get
+            {
+                return this.netBasicItemInformation.Value;
+            }
+            set
+            {
+                this.netBasicItemInformation.Value = value;
+            }
+        }
+
+        [XmlIgnore]
+        public string Id
+        {
+            get
+            {
+                return this.basicItemInformation.id.Value;
+            }
+        }
 
         [XmlIgnore]
         public AnimationManager AnimationManager
         {
             get
             {
-                if (this.basicItemInfo == null) return null;
-                if (this.basicItemInfo.animationManager == null) return null;
-                return this.basicItemInfo.animationManager;
-            }
-            set
-            {
-                this.basicItemInfo.animationManager = value;
+                if (this.basicItemInformation == null) return null;
+                if (this.basicItemInformation.animationManager == null) return null;
+                return this.basicItemInformation.animationManager;
             }
         }
 
@@ -72,37 +103,76 @@ namespace Revitalize.Framework.World.Objects
             }
         }
 
+        public override string Name
+        {
+            get
+            {
+                if (this.basicItemInformation == null) return null;
+                return this.basicItemInformation.name.Value;
+            }
+            set
+            {
+                if (this.basicItemInformation != null)
+                {
+                    this.basicItemInformation.name.Value = value;
+                }
+            }
+
+
+        }
+        public override string DisplayName
+        {
+            get
+            {
+                if (this.basicItemInformation == null) return null;
+                return this.basicItemInformation.name.Value;
+            }
+            set
+            {
+                if (this.basicItemInformation != null)
+                {
+                    this.basicItemInformation.name.Value = value;
+                }
+            }
+        }
+
+        public NetInt dayUpdateCounter = new NetInt();
+
         public CustomObject()
         {
-            this.basicItemInfo = new BasicItemInformation();
+            this.basicItemInformation = new BasicItemInformation();
+
             this.furniture_type.Value = Furniture.other;
             this.bigCraftable.Value = true;
             this.Type = "interactive";
             this.name = this.Name;
 
 
-            IReflectedField<int> placementRestriction = ModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
+            IReflectedField<int> placementRestriction = RevitalizeModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
             placementRestriction.SetValue(2);
             this.Fragility = 0;
 
+            this.initializeNetFieldsPostConstructor();
         }
 
-        public CustomObject(BasicItemInformation basicItemInfo)
+        public CustomObject(BasicItemInformation BasicItemInfo)
         {
-            this.basicItemInfo=basicItemInfo;
+            this.basicItemInformation = BasicItemInfo;
             this.bigCraftable.Value = true;
             this.furniture_type.Value = Furniture.other;
             this.Type = "interactive";
             this.name = this.Name;
 
-            IReflectedField<int> placementRestriction= ModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
+            IReflectedField<int> placementRestriction = RevitalizeModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
             placementRestriction.SetValue(2);
             this.Fragility = 0;
+
+            this.initializeNetFieldsPostConstructor();
         }
 
-        public CustomObject(BasicItemInformation basicItemInfo, int StackSize=1)
+        public CustomObject(BasicItemInformation BasicItemInfo, int StackSize = 1)
         {
-            this.basicItemInfo = basicItemInfo;
+            this.basicItemInformation = BasicItemInfo;
             this.TileLocation = Vector2.Zero;
             this.Stack = StackSize;
             this.bigCraftable.Value = true;
@@ -111,13 +181,15 @@ namespace Revitalize.Framework.World.Objects
             this.name = this.Name;
             this.Fragility = 0;
 
-            IReflectedField<int> placementRestriction = ModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
+            IReflectedField<int> placementRestriction = RevitalizeModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
             placementRestriction.SetValue(2);
+
+            this.initializeNetFieldsPostConstructor();
         }
 
-        public CustomObject(BasicItemInformation basicItemInfo, Vector2 TileLocation)
+        public CustomObject(BasicItemInformation BasicItemInfo, Vector2 TileLocation)
         {
-            this.basicItemInfo = basicItemInfo;
+            this.basicItemInformation = BasicItemInfo;
             this.TileLocation = TileLocation;
             this.bigCraftable.Value = true;
             this.furniture_type.Value = Furniture.other;
@@ -125,12 +197,14 @@ namespace Revitalize.Framework.World.Objects
             this.name = this.Name;
             this.Fragility = 0;
 
-            IReflectedField<int> placementRestriction = ModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
+            IReflectedField<int> placementRestriction = RevitalizeModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
             placementRestriction.SetValue(2);
+
+            this.initializeNetFieldsPostConstructor();
         }
-        public CustomObject(BasicItemInformation basicItemInfo, Vector2 TileLocation, int StackSize=1)
+        public CustomObject(BasicItemInformation BasicItemInfo, Vector2 TileLocation, int StackSize = 1)
         {
-            this.basicItemInfo = basicItemInfo;
+            this.basicItemInformation = BasicItemInfo;
             this.TileLocation = TileLocation;
             this.Stack = StackSize;
             this.bigCraftable.Value = true;
@@ -139,8 +213,22 @@ namespace Revitalize.Framework.World.Objects
             this.name = this.Name;
             this.Fragility = 0;
 
-            IReflectedField<int> placementRestriction = ModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
+            IReflectedField<int> placementRestriction = RevitalizeModCore.ModHelper.Reflection.GetField<int>(this, "_placementRestriction");
             placementRestriction.SetValue(2);
+
+            this.initializeNetFieldsPostConstructor();
+        }
+
+        /// <summary>
+        /// Initializes NetFields to send information for multiplayer after all of the constructor initialization for this object has taken place.
+        /// </summary>
+        protected virtual void initializeNetFieldsPostConstructor()
+        {
+            if (this.basicItemInformation != null)
+            {
+                this.NetFields.AddFields(this.netBasicItemInformation);
+            }
+
         }
 
         /// <summary>
@@ -152,6 +240,7 @@ namespace Revitalize.Framework.World.Objects
         {
             return false;
         }
+
 
         public override void actionOnPlayerEntry()
         {
@@ -220,28 +309,41 @@ namespace Revitalize.Framework.World.Objects
         }
 
         /// <summary>
-        /// Checks to see if the object is being interacted with.
+        /// Checks to see if the object is being interacted with. Seems to only happen when right clicked.
         /// </summary>
         /// <param name="who"></param>
         /// <param name="justCheckingForActivity"></param>
-        /// <returns></returns>
+        /// <returns>True if something meaningful has occured. False otherwise.</returns>
         public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
         {
+            if (justCheckingForActivity)
+            {
+                //basically on item hover.
+                return true;
+            }
+
             MouseState mState = Mouse.GetState();
             KeyboardState keyboardState = Game1.GetKeyboardState();
 
-            ModCore.log("Check for action");
-
             if (mState.RightButton == ButtonState.Pressed && keyboardState.IsKeyDown(Keys.LeftShift) == false && keyboardState.IsKeyDown(Keys.RightShift) == false)
             {
-                ModCore.log("Right clicked!");
                 return this.rightClicked(who);
             }
 
             if (mState.RightButton == ButtonState.Pressed && (keyboardState.IsKeyDown(Keys.LeftShift) == true || keyboardState.IsKeyDown(Keys.RightShift) == true))
                 return this.shiftRightClicked(who);
 
-            return true;
+            if (mState.LeftButton == ButtonState.Pressed)
+            {
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+
+            //True should be retruned when something meaningful has happened.
+            //False should be returned when things like error messages have occurd.
         }
 
         public override string checkForSpecialItemHoldUpMeessage()
@@ -251,23 +353,45 @@ namespace Revitalize.Framework.World.Objects
 
         public override bool clicked(Farmer who)
         {
-            ModCore.log("Click the thing??");
-            if (Game1.player.isInventoryFull())
+            if (Game1.didPlayerJustLeftClick())
             {
-                return false;
+                return this.attemptToPickupFromGameWorld(this.TileLocation, who.currentLocation, who);
             }
-            else
-            {
-
-                this.performRemoveAction(this.TileLocation, this.getCurrentLocation());
-                return true; //needs to be true to mark actually picking up the object? Also need to play sound?
-            }
+            return true;
 
         }
 
         public override void DayUpdate(GameLocation location)
         {
             base.DayUpdate(location);
+            this.dayUpdateCounter.Value++;
+            if (this.shouldDoDayUpdate())
+            {
+                this.doActualDayUpdateLogic(location);
+                this.resetDayUpdateCounter();
+            }
+        }
+
+        public virtual void doActualDayUpdateLogic(GameLocation location)
+        {
+
+        }
+
+        /// <summary>
+        /// Since <see cref="Furniture"/> and <see cref="StardewValley.Object"/> each do a seperate day update tick, we need to actually not do a day update for one of them.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool shouldDoDayUpdate()
+        {
+            return this.dayUpdateCounter.Value >= 2;
+        }
+
+        /// <summary>
+        /// Resets the day update counter on this Object.
+        /// </summary>
+        public virtual void resetDayUpdateCounter()
+        {
+            this.dayUpdateCounter.Value = 0;
         }
 
         public override void farmerAdjacentAction(GameLocation location)
@@ -286,7 +410,7 @@ namespace Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override Color getCategoryColor()
         {
-            return this.basicItemInfo.categoryColor;
+            return this.basicItemInformation.categoryColor;
         }
 
         /// <summary>
@@ -295,7 +419,7 @@ namespace Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override string getCategoryName()
         {
-            return this.basicItemInfo.categoryName;
+            return this.basicItemInformation.categoryName;
         }
 
         /// <summary>
@@ -314,7 +438,7 @@ namespace Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override string getDescription()
         {
-            return this.basicItemInfo.description;
+            return Game1.parseText(this.basicItemInformation.description, Game1.smallFont, this.getDescriptionWidth());
         }
 
         public override StardewValley.Object GetDeconstructorOutput(Item item)
@@ -324,7 +448,7 @@ namespace Revitalize.Framework.World.Objects
 
         public override Item getOne()
         {
-            return new CustomObject(this.basicItemInfo.Copy());
+            return new CustomObject(this.basicItemInformation.Copy());
         }
 
         public override void _GetOneFrom(Item source)
@@ -334,7 +458,7 @@ namespace Revitalize.Framework.World.Objects
 
         public override int healthRecoveredOnConsumption()
         {
-            return this.basicItemInfo.healthRestoredOnEating;
+            return this.basicItemInformation.healthRestoredOnEating;
         }
 
         public override void hoverAction()
@@ -364,9 +488,8 @@ namespace Revitalize.Framework.World.Objects
 
         public override bool isPassable()
         {
+            if (this.basicItemInformation.ignoreBoundingBox) return true;
             return false;
-            if (this.basicItemInfo.ignoreBoundingBox) return true;
-            return base.isPassable();
         }
 
         public override Rectangle getBoundingBox(Vector2 tileLocation)
@@ -377,13 +500,9 @@ namespace Revitalize.Framework.World.Objects
             newBounds.X = (int)tileLocation.X * Game1.tileSize;
             newBounds.Y = (int)tileLocation.Y * Game1.tileSize;
 
-            newBounds.Width = Game1.tileSize * (int)this.basicItemInfo.boundingBoxTileDimensions.X;
-            newBounds.Height = Game1.tileSize * (int)this.basicItemInfo.boundingBoxTileDimensions.Y;
+            newBounds.Width = Game1.tileSize * (int)this.basicItemInformation.boundingBoxTileDimensions.X;
+            newBounds.Height = Game1.tileSize * (int)this.basicItemInformation.boundingBoxTileDimensions.Y;
 
-            if (newBounds != boundingBox)
-            {
-                this.boundingBox.Set(boundingBox);
-            }
             return newBounds;
         }
 
@@ -405,7 +524,7 @@ namespace Revitalize.Framework.World.Objects
 
         public override int maximumStackSize()
         {
-            return base.maximumStackSize();
+            return 999;
         }
 
         /// <summary>
@@ -429,6 +548,7 @@ namespace Revitalize.Framework.World.Objects
             base.onReadyForHarvest(environment);
         }
 
+        /*
         /// <summary>
         /// When the object is droped into (???) what happens?
         /// </summary>
@@ -441,14 +561,18 @@ namespace Revitalize.Framework.World.Objects
             return false;
             
         }
+        */
 
         /// <summary>
-        /// When this object is removed what happens?
+        /// Performs cleanup that should happen related to an object's removal and removes it properly from the game world.
         /// </summary>
         /// <param name="tileLocation"></param>
         /// <param name="environment"></param>
         public override void performRemoveAction(Vector2 tileLocation, GameLocation environment)
         {
+
+            if (environment == null) return;
+
             this.cleanUpLights();
 
 
@@ -461,17 +585,96 @@ namespace Revitalize.Framework.World.Objects
             }
             this.RemoveLightGlow(environment);
 
-            environment.objects.Remove(this.TileLocation);
-            environment.furniture.Remove(this);
+
             this.TileLocation = Vector2.Zero;
-            this.basicItemInfo.locationName = "";
+            this.basicItemInformation.locationName.Value = "";
             this.boundingBox.Value = this.getBoundingBox(Vector2.Zero);
 
             this.sittingFarmers.Clear();
-            this.removeAndAddToPlayersInventory();
+
+            this.removeFromGameWorld(tileLocation, environment);
+        }
 
 
-            //base.performRemoveAction(tileLocation, environment);
+        /// <summary>
+        /// Attempts to pickup the object from the game world, but will show a message if the player's inventory is full.
+        /// </summary>
+        /// <param name="TileLocation"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public virtual bool attemptToPickupFromGameWorld(Vector2 TileLocation, GameLocation location, Farmer who)
+        {
+            if (!this.canBeRemoved(who)) return false;
+
+            if ( who == Game1.player && who.isInventoryFull() && who.couldInventoryAcceptThisItem(this)==false)
+            {
+                Game1.showRedMessage("Inventory full.");
+                return false;
+            }
+            return this.pickupFromGameWorld(TileLocation, location, who);
+        }
+
+
+        /// <summary>
+        /// Removes this from the game world, performs cleanup, and puts the object into the player's inventory. For similar logic, <see cref="CustomObject.AttemptRemoval(Action{Furniture})"/> for furniture removal logic as this is specific to the <see cref="StardewValley.Object"/> removal logic.
+        /// </summary>
+        /// <param name="tileLocation"></param>
+        /// <param name="environment"></param>
+        /// <returns></returns>
+        public virtual bool pickupFromGameWorld(Vector2 tileLocation, GameLocation environment, Farmer who)
+        {
+
+
+
+            this.performRemoveAction(tileLocation, environment);
+
+
+            bool pickedUp=PlayerUtilities.AddItemToInventory(who, this);
+
+            if (pickedUp && who!=null)
+            {
+                SoundUtilities.PlaySound(environment, Enums.StardewSound.coin);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a game object from a <see cref="GameLocation"/>'s furniture and object lists.
+        /// </summary>
+        public virtual void removeFromGameWorld(Vector2 TileLocation, GameLocation environment)
+        {
+
+            if (environment != null)
+            {
+                environment.objects.Remove(TileLocation);
+                this.boundingBox.Value = new Rectangle(0, 0, 0, 0);
+
+                environment.furniture.Remove(this);
+                WorldUtility.RemoveFurnitureAtTileLocation(environment, TileLocation);
+            }
+        }
+
+        /// <summary>
+        /// A hack method to quickly readd an object to a game world if it wasn't actually needed to be fully removed.
+        /// </summary>
+        /// <param name="TileLocation"></param>
+        /// <param name="environment"></param>
+        public virtual void reAddToGameWorld(Vector2 TileLocation, GameLocation environment)
+        {
+            if (environment != null)
+            {
+                environment.objects.Add(TileLocation, this);
+                environment.furniture.Add(this);
+            }
+        }
+
+        public override void resetOnPlayerEntry(GameLocation environment, bool dropDown = false)
+        {
+
+
+            this.AnimationManager.resetCurrentAnimation();
+            base.resetOnPlayerEntry(environment, dropDown);
         }
 
         /// <summary>
@@ -484,15 +687,80 @@ namespace Revitalize.Framework.World.Objects
         {
             if (t == null)
             {
-                ModCore.log("Null tool used! Probably just the player's hands then.");
+                RevitalizeModCore.log("Null tool used! Probably just the player's hands then.");
+                this.shakeTimer = 200; //Milliseconds.
+                this.basicItemInformation.shakeTimer.Value = 200;
+                return false;
 
             }
             else
             {
-                ModCore.log("Player used tool: " +t.DisplayName);
+                RevitalizeModCore.log("Player used tool: " + t.DisplayName);
+
+                if (t is Pickaxe)
+                {
+                    RevitalizeModCore.log("Player used pickaxe!: ");
+                    this.createItemDebris(location, this.TileLocation, Game1.player.getTileLocation());
+                    this.performRemoveAction(this.TileLocation, location);
+                    this.shakeTimer = 200;
+                    this.basicItemInformation.shakeTimer.Value = 200;
+                    SoundUtilities.PlaySound(Enums.StardewSound.hammer);
+                    return false;
+                }
+
+
             }
             return false;
+            //False is returned if we signify no meaningul tool interactions?
+            //True is returned when something significant happens
+
         }
+
+        public virtual void createItemDebris(GameLocation location, Vector2 OriginTile, Vector2 DestinationTile)
+        {
+            //location.debris.Add(new CustomObjectDebris(this, OriginTile, DestinationTile));
+            WorldUtility.CreateItemDebrisAtTileLocation(location,this ,OriginTile, DestinationTile);
+        }
+
+        public override void drawTooltip(SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
+        {
+            base.drawTooltip(spriteBatch, ref x, ref y, font, alpha, overrideText);
+
+
+            /*
+            overrideText = new StringBuilder();
+            overrideText.Append(this.getActualDescription());
+            Vector2 small_text_size = Vector2.Zero;
+            int width = Math.Max( 0, Math.Max((int)font.MeasureString(this.getActualDescription()).X, ((int)Game1.dialogueFont.MeasureString(this.DisplayName).X))) + 32;
+            int height = Math.Max(20 * 3, (int)font.MeasureString(this.getActualDescription()).Y + 32 +  (int)((this.DisplayName != null) ? (Game1.dialogueFont.MeasureString(this.DisplayName).Y + 16f) : 0f));
+
+            IClickableMenu.drawTextureBox(spriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x, y, width +  0, height, Color.White * alpha);
+            if (this.DisplayName != null)
+            { string boldTitleText = this.DisplayName;
+                SpriteBatch b = spriteBatch;
+
+                Vector2 bold_text_size = Game1.dialogueFont.MeasureString(this.DisplayName);
+                IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x, y, width + 0, (int)Game1.dialogueFont.MeasureString(boldTitleText).Y + 32 + (int)(font.MeasureString("asd").Y) - 4, Color.White * alpha, 1f, false);
+                b.Draw(Game1.menuTexture, new Rectangle(x + 12, y + (int)Game1.dialogueFont.MeasureString(boldTitleText).Y + 32 + (int)( font.MeasureString("asd").Y) - 4, width - 4 * (6), 4), new Rectangle(44, 300, 4, 4), Color.White);
+                b.DrawString(Game1.dialogueFont, boldTitleText, new Vector2(x + 16, y + 16 + 4) + new Vector2(2f, 2f), Game1.textShadowColor);
+                b.DrawString(Game1.dialogueFont, boldTitleText, new Vector2(x + 16, y + 16 + 4) + new Vector2(0f, 2f), Game1.textShadowColor);
+                b.DrawString(Game1.dialogueFont, boldTitleText, new Vector2(x + 16, y + 16 + 4), Game1.textColor);
+                y += (int)Game1.dialogueFont.MeasureString(boldTitleText).Y;
+            }
+
+
+            if (overrideText != null && overrideText.Length != 0 && (overrideText.Length != 1 || overrideText[0] != ' '))
+            {
+                spriteBatch.DrawString(font, overrideText, new Vector2(x + 16, y + 16 + 4) + new Vector2(2f, 2f), Game1.textShadowColor * alpha);
+                spriteBatch.DrawString(font, overrideText, new Vector2(x + 16, y + 16 + 4) + new Vector2(0f, 2f), Game1.textShadowColor * alpha);
+                spriteBatch.DrawString(font, overrideText, new Vector2(x + 16, y + 16 + 4) + new Vector2(2f, 0f), Game1.textShadowColor * alpha);
+                spriteBatch.DrawString(font, overrideText, new Vector2(x + 16, y + 16 + 4), Game1.textColor * 0.9f * alpha);
+                y += (int)font.MeasureString(overrideText).Y + 4;
+            }
+            */
+        }
+
+        
 
         /// <summary>
         /// When this item is used. (Left clicked)
@@ -501,9 +769,23 @@ namespace Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override bool performUseAction(GameLocation location)
         {
-            ModCore.log("Perform use action");
+            RevitalizeModCore.log("Perform use action");
             return base.performUseAction(location);
         }
+
+        /// <summary>
+        /// Places this object at a given TILE location for the game.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="TileX"></param>
+        /// <param name="TileY"></param>
+        /// <param name="who"></param>
+        /// <returns></returns>
+        public virtual bool placementActionAtTile(GameLocation location, int TileX, int TileY, Farmer who = null)
+        {
+            return this.placementAction(location, TileX * Game1.tileSize, TileY * Game1.tileSize, who);
+        }
+
         public override bool placementAction(GameLocation location, int x, int y, Farmer who = null)
         {
 
@@ -515,47 +797,91 @@ namespace Revitalize.Framework.World.Objects
             {
                 return false;
             }
-            base.boundingBox.Value = new Rectangle(x / 64 * 64, y / 64 * 64, base.boundingBox.Width, base.boundingBox.Height);
 
+            CustomObject obj = (CustomObject)this.getOne();
 
-            //EXPERIMENTAL: UPDATe THIS IN THE CONSTRUCTOR
-            base.boundingBox.Value = new Rectangle(x / 64 * 64, y / 64 * 64, Game1.tileSize*1, Game1.tileSize * 2);
-
-            this.updateDrawPosition();
-
-
+            obj.boundingBox.Value = this.getBoundingBox(new Vector2((float)x / (float)64, (float)y / (float)64));
 
             Vector2 placementTile = new Vector2(x / 64, y / 64);
-            this.health = 10;
+            obj.health = 10;
             if (who != null)
             {
-                this.owner.Value = who.UniqueMultiplayerID;
+                obj.owner.Value = who.UniqueMultiplayerID;
             }
             else
             {
-                this.owner.Value = Game1.player.UniqueMultiplayerID;
+                obj.owner.Value = Game1.player.UniqueMultiplayerID;
             }
-            this.TileLocation = placementTile;
+            obj.TileLocation = placementTile;
 
 
-            location.furniture.Add(this);
-            location.objects.Add(placementTile, this);
-            location.playSound("thudStep");
-            this.basicItemInfo.locationName = location.NameOrUniqueName;
-            //location.playSound("stoneStep");
+            location.furniture.Add(obj);
+            location.objects.Add(placementTile, obj);
+            if (who != null)
+            {
+                SoundUtilities.PlaySound(location, Enums.StardewSound.woodyStep);
+            }
+
+            string locationName = location.NameOrUniqueName;
+            if (string.IsNullOrEmpty(location.NameOrUniqueName))
+            {
+                locationName = location.Name;
+            }
+
+            obj.basicItemInformation.locationName.Value = locationName;
+            obj.updateDrawPosition();
+
+            if (who == Game1.player)
+            {
+                this.Stack--;
+                if (this.Stack == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+
+
+
             return true;
             //Base code throws and error so I have to do it this way.
         }
 
+
+        /// <summary>
+        /// Gets a reference to the actual owner for this object.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Farmer getOwner()
+        {
+            if (this.owner.Value == Game1.player.UniqueMultiplayerID)
+            {
+                return Game1.player;
+            }
+
+            foreach(Farmer farmer in Game1.getAllFarmers())
+            {
+                if (farmer.uniqueMultiplayerID.Value.Equals(this.owner.Value))
+                {
+                    return farmer;
+                }
+            }
+            return null;
+        }
+
         public override int salePrice()
         {
-            return this.basicItemInfo.price;
+            return this.basicItemInformation.price;
         }
 
         public override int sellToStorePrice(long specificPlayerID = -1)
         {
-            return this.basicItemInfo.price;
-            return base.sellToStorePrice(specificPlayerID);
+            return this.basicItemInformation.price;
+            return base.sellToStorePrice(specificPlayerID); //logic for when it's regarding the player's professions and such.
         }
 
         public override void reloadSprite()
@@ -565,20 +891,25 @@ namespace Revitalize.Framework.World.Objects
 
         public override int staminaRecoveredOnConsumption()
         {
-            return this.basicItemInfo.staminaRestoredOnEating;
+            return this.basicItemInformation.staminaRestoredOnEating;
         }
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
             if (this.shakeTimer > 0)
             {
+                this.basicItemInformation.shakeTimer.Value -= time.ElapsedGameTime.Milliseconds;
                 this.shakeTimer -= time.ElapsedGameTime.Milliseconds;
                 if (this.shakeTimer <= 0)
                 {
                     this.health = 10;
                 }
             }
-            
+            if (this.basicItemInformation.shakeTimer.Value > 0)
+            {
+                
+            }
+
         }
 
 
@@ -586,44 +917,31 @@ namespace Revitalize.Framework.World.Objects
         /// <summary>What happens when the player right clicks the object.</summary>
         public virtual bool rightClicked(Farmer who)
         {
-            return true;
+            return false;
         }
 
         /// <summary>What happens when the player shift-right clicks this object.</summary>
         public virtual bool shiftRightClicked(Farmer who)
         {
-            return true;
-        }
-        /// <summary>Remove the object from the world and add it to the player's inventory if possible.</summary>
-        public virtual bool removeAndAddToPlayersInventory()
-        {
-            if (Game1.player.isInventoryFull())
-            {
-                Game1.showRedMessage("Inventory full.");
-                return false;
-            }
-            this.basicItemInfo.locationName = "";
-            Game1.player.addItemToInventory(this);
-            //this.updateDrawPosition(0, 0);
-            return true;
+            return false;
         }
 
 
         public virtual void setGameLocation(string LocationName, bool IsStructure)
         {
-            this.basicItemInfo.locationName = LocationName;
+            this.basicItemInformation.locationName.Value = LocationName;
             this.isCurrentLocationAStructure = IsStructure;
         }
 
         public virtual GameLocation getCurrentLocation()
         {
-            if (string.IsNullOrEmpty(this.basicItemInfo.locationName))
+            if (string.IsNullOrEmpty(this.basicItemInformation.locationName.Value))
             {
                 return null;
             }
             else
             {
-                return Game1.getLocationFromName(this.basicItemInfo.locationName, this.isCurrentLocationAStructure);
+                return Game1.getLocationFromName(this.basicItemInformation.locationName.Value, this.isCurrentLocationAStructure);
             }
         }
 
@@ -635,16 +953,16 @@ namespace Revitalize.Framework.World.Objects
 
         public virtual BasicItemInformation getItemInformation()
         {
-            return this.basicItemInfo;
+            return this.basicItemInformation;
         }
 
         public virtual void setItemInformation(BasicItemInformation Info)
         {
-            this.basicItemInfo = Info;
+            this.basicItemInformation = Info;
         }
 
 
-        public override bool canBeRemoved(Farmer who)
+        public override bool canBeRemoved(Farmer who = null)
         {
             return true;
         }
@@ -655,12 +973,12 @@ namespace Revitalize.Framework.World.Objects
         /// <param name="DyeColor"></param>
         public virtual void dyeColor(NamedColor DyeColor)
         {
-            this.basicItemInfo.dyedColor = DyeColor;
+            this.basicItemInformation.dyedColor.setFields(DyeColor);
         }
 
         public virtual void eraseDye()
         {
-            this.basicItemInfo.dyedColor = new NamedColor("", new Color(0, 0, 0, 0));
+            this.basicItemInformation.dyedColor.clearFields();
         }
 
         public override bool canStackWith(ISalable other)
@@ -668,13 +986,61 @@ namespace Revitalize.Framework.World.Objects
             if (other is CustomObject == false) return false;
             CustomObject o = (CustomObject)other;
 
-            if (this.basicItemInfo.dyedColor != o.basicItemInfo.dyedColor) return false;
-            if (this.basicItemInfo.id.Equals( o.basicItemInfo.id)==false) return false;
+            if (this.basicItemInformation.id.Value.Equals(o.basicItemInformation.id.Value) == false) return false;
 
-            return base.canStackWith(other);
+
+            if (this.maximumStackSize() >= this.Stack + other.Stack)
+            {
+                return true;
+            }
+
+            //if (this.basicItemInformation.id.Equals(o.basicItemInformation.id) == true) return true;
+
+            return false;
         }
 
-        
+
+        public virtual LightManager GetLightManager()
+        {
+            return this.basicItemInformation.lightManager;
+        }
+
+        public override void AttemptRemoval(Action<Furniture> removal_action)
+        {
+            this.attemptToPickupFromGameWorld(this.TileLocation, this.getCurrentLocation(), Game1.player);
+
+
+            Game1.player.currentLocation.localSound("coin");
+
+            //base.AttemptRemoval(removal_action);
+        }
+
+
+
+        public override int getTilesHigh()
+        {
+            return (int)this.basicItemInformation.boundingBoxTileDimensions.Y;
+        }
+
+        public override int getTilesWide()
+        {
+            return (int)this.basicItemInformation.boundingBoxTileDimensions.X;
+        }
+
+        /// <summary>
+        /// Gets the bounding box position and dimensions for this object IN TILES.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Rectangle getBoundingBoxTiles()
+        {
+            return new Rectangle(this.boundingBox.Value.X / Game1.tileSize, this.boundingBox.Value.Y / Game1.tileSize, this.getTilesWide(), this.getTilesHigh());
+        }
+
+        public override void dropItem(GameLocation location, Vector2 origin, Vector2 destination)
+        {
+            WorldUtilities.WorldUtility.CreateItemDebrisAtTileLocation(location,this ,origin / Game1.tileSize, destination / Game1.tileSize);
+        }
+
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
         //                            Rendering code                   //
@@ -687,31 +1053,7 @@ namespace Revitalize.Framework.World.Objects
 
         public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
-            if (this.AnimationManager == null)
-            {
-
-                ModCore.log("Texture null for item: " + this.basicItemInfo.id);
-                return;
-            }
-            if (this.CurrentTextureToDisplay == null)
-            {
-                ModCore.log("Texture null for item: " + this.basicItemInfo.id);
-                return;
-            }
-
-            if (this.basicItemInfo == null) return;
-
-            int scaleNerfing = Math.Max(this.AnimationManager.getCurrentAnimationFrameRectangle().Width, this.AnimationManager.getCurrentAnimationFrameRectangle().Height) / 16;
-
-            spriteBatch.Draw(this.CurrentTextureToDisplay, location + new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * transparency, 0f, new Vector2((float)(this.AnimationManager.getCurrentAnimationFrameRectangle().Width / 2), (float)(this.AnimationManager.getCurrentAnimationFrameRectangle().Height)), (scaleSize * 4f) / scaleNerfing, SpriteEffects.None, layerDepth);
-
-            if (drawStackNumber.ShouldDrawFor(this) && this.maximumStackSize() > 1 && ((double)scaleSize > 0.3 && this.Stack != int.MaxValue) && this.Stack > 1)
-                Utility.drawTinyDigits(this.Stack, spriteBatch, location + new Vector2((float)(Game1.tileSize - Utility.getWidthOfTinyDigitString(this.Stack, 3f * scaleSize)) + 3f * scaleSize, (float)((double)Game1.tileSize - 18.0 * (double)scaleSize + 2.0)), 3f * scaleSize, 1f, Color.White);
-            if (drawStackNumber.ShouldDrawFor(this) && this.Quality > 0)
-            {
-                float num = this.Quality < 4 ? 0.0f : (float)((Math.Cos((double)Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
-                spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(12f, (float)(Game1.tileSize - 12) + num), new Microsoft.Xna.Framework.Rectangle?(this.Quality < 4 ? new Microsoft.Xna.Framework.Rectangle(338 + (this.Quality - 1) * 8, 400, 8, 8) : new Microsoft.Xna.Framework.Rectangle(346, 392, 8, 8)), Color.White * transparency, 0.0f, new Vector2(4f, 4f), (float)(3.0 * (double)scaleSize * (1.0 + (double)num)), SpriteEffects.None, layerDepth);
-            }
+            this.DrawICustomModObjectInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
         }
 
         public override void drawAttachments(SpriteBatch b, int x, int y)
@@ -721,148 +1063,74 @@ namespace Revitalize.Framework.World.Objects
 
         public override void drawWhenHeld(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
         {
-            if (this.AnimationManager == null)
-            {
-                if (this.CurrentTextureToDisplay == null)
-                {
-                    ModCore.log("Texture null for item: " + this.basicItemInfo.id);
-                    return;
-                }
-            }
+            this.DrawICustomModObjectWhenHeld(spriteBatch, objectPosition, f);
+        }
 
-            if (f.ActiveObject.bigCraftable.Value)
-            {
-                spriteBatch.Draw(this.CurrentTextureToDisplay, objectPosition, this.AnimationManager.getCurrentAnimationFrameRectangle(), this.basicItemInfo.DrawColor, 0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
-                return;
-            }
-
-            spriteBatch.Draw(this.CurrentTextureToDisplay, objectPosition, this.AnimationManager.getCurrentAnimationFrameRectangle(), this.basicItemInfo.DrawColor, 0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
-            if (f.ActiveObject != null && f.ActiveObject.Name.Contains("="))
-            {
-                spriteBatch.Draw(this.CurrentTextureToDisplay, objectPosition + new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2)), this.AnimationManager.getCurrentAnimationFrameRectangle(), Color.White, 0f, new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2)), (float)Game1.pixelZoom + Math.Abs(Game1.starCropShimmerPause) / 8f, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
-                if (Math.Abs(Game1.starCropShimmerPause) <= 0.05f && Game1.random.NextDouble() < 0.97)
-                {
-                    return;
-                }
-                Game1.starCropShimmerPause += 0.04f;
-                if (Game1.starCropShimmerPause >= 0.8f)
-                {
-                    Game1.starCropShimmerPause = -0.8f;
-                }
-            }
-            //base.drawWhenHeld(spriteBatch, objectPosition, f);
+        public virtual void drawWhenHeld(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f, float Transparency, float Scale)
+        {
+            this.DrawICustomModObjectWhenHeld(spriteBatch, objectPosition, f, Transparency, Scale);
         }
 
         /// <summary>What happens when the object is drawn at a tile location.</summary>
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
-
-
-            if (x <= -1)
-            {
-                return;
-                //spriteBatch.Draw(this.basicItemInfo.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, this.TileLocation), new Rectangle?(this.AnimationManager.currentAnimation.sourceRectangle), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)(this.TileLocation.Y * Game1.tileSize) / 10000f));
-            }
-            else
-            {
-                if (this.AnimationManager == null)
-                {
-                    if (this.CurrentTextureToDisplay == null)
-                    {
-                        ModCore.log("Texture null for item: " + this.basicItemInfo.id);
-                        return;
-                    }
-                }
-                //The actual planter box being drawn.
-                if (this.AnimationManager == null)
-                {
-                    if (this.AnimationManager.getExtendedTexture() == null)
-                        ModCore.ModMonitor.Log("Tex Extended is null???");
-
-                    spriteBatch.Draw(this.CurrentTextureToDisplay, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize), y * Game1.tileSize)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)(this.TileLocation.Y * Game1.tileSize) / 10000f));
-                    // Log.AsyncG("ANIMATION IS NULL?!?!?!?!");
-                }
-
-                else
-                {
-                    //Log.AsyncC("Animation Manager is working!");
-                    int addedDepth = 0;
-                    if (this.basicItemInfo.ignoreBoundingBox) addedDepth++;
-                    if (Revitalize.ModCore.playerInfo.sittingInfo.SittingObject == this) addedDepth++;
-                    this.AnimationManager.draw(spriteBatch, this.CurrentTextureToDisplay, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize), y * Game1.tileSize)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)((this.TileLocation.Y + addedDepth) * Game1.tileSize) / 10000f));
-                }
-
-                try
-                {
-                    this.AnimationManager.tickAnimation();
-                    // Log.AsyncC("Tick animation");
-                }
-                catch (Exception err)
-                {
-                    ModCore.ModMonitor.Log(err.ToString());
-                }
-
-                // spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)((double)tileLocation.X * (double)Game1.tileSize + (((double)tileLocation.X * 11.0 + (double)tileLocation.Y * 7.0) % 10.0 - 5.0)) + (float)(Game1.tileSize / 2), (float)((double)tileLocation.Y * (double)Game1.tileSize + (((double)tileLocation.Y * 11.0 + (double)tileLocation.X * 7.0) % 10.0 - 5.0)) + (float)(Game1.tileSize / 2))), new Rectangle?(new Rectangle((int)((double)tileLocation.X * 51.0 + (double)tileLocation.Y * 77.0) % 3 * 16, 128 + this.whichForageCrop * 16, 16, 16)), Color.White, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom, SpriteEffects.None, (float)(((double)tileLocation.Y * (double)Game1.tileSize + (double)(Game1.tileSize / 2) + (((double)tileLocation.Y * 11.0 + (double)tileLocation.X * 7.0) % 10.0 - 5.0)) / 10000.0));
-            }
+            this.DrawICustomModObject(spriteBatch, alpha);
         }
 
         public override void drawPlacementBounds(SpriteBatch spriteBatch, GameLocation location)
         {
-            //Need to update this????
-            base.drawPlacementBounds(spriteBatch, location);
+            if (!this.isPlaceable())
+            {
+                return;
+            }
+            int X = (int)Game1.GetPlacementGrabTile().X * 64;
+            int Y = (int)Game1.GetPlacementGrabTile().Y * 64;
+            Game1.isCheckingNonMousePlacement = !Game1.IsPerformingMousePlacement();
+            if (Game1.isCheckingNonMousePlacement)
+            {
+                Vector2 nearbyValidPlacementPosition = Utility.GetNearbyValidPlacementPosition(Game1.player, location, this, X, Y);
+                X = (int)nearbyValidPlacementPosition.X;
+                Y = (int)nearbyValidPlacementPosition.Y;
+            }
+            /*
+            if (Utility.isThereAnObjectHereWhichAcceptsThisItem(location, this, X, Y))
+            {
+                return;
+            }
+            */
+            bool canPlaceHere = Utility.playerCanPlaceItemHere(location, this, X, Y, Game1.player) || (Utility.isThereAnObjectHereWhichAcceptsThisItem(location, this, X, Y) && Utility.withinRadiusOfPlayer(X, Y, 1, Game1.player));
+            Game1.isCheckingNonMousePlacement = false;
+            int width = this.getTilesWide();
+            int height = this.getTilesHigh();
+            for (int x_offset = 0; x_offset < width; x_offset++)
+            {
+                for (int y_offset = 0; y_offset < height; y_offset++)
+                {
+                    spriteBatch.Draw(Game1.mouseCursors, new Vector2((X / 64 + x_offset) * 64 - Game1.viewport.X, (Y / 64 + y_offset) * 64 - Game1.viewport.Y), new Microsoft.Xna.Framework.Rectangle(canPlaceHere ? 194 : 210, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.01f);
+                }
+            }
+            this.DrawICustomModObject(spriteBatch, X/64+(int)this.basicItemInformation.drawOffset.X, Y/64+(int)this.basicItemInformation.drawOffset.Y ,0.5f);
         }
 
         /// <summary>Draw the game object at a non-tile spot. Aka like debris.</summary>
         public override void draw(SpriteBatch spriteBatch, int xNonTile, int yNonTile, float layerDepth, float alpha = 1f)
         {
+
             if (this.AnimationManager == null)
             {
-                if (this.CurrentTextureToDisplay == null)
-                {
-                    ModCore.log("Texture null for item: " + this.basicItemInfo.id);
-                    return;
-                }
-            }
-
-            ModCore.log("Pos is: " + new Vector2(xNonTile, yNonTile));
-
-            //The actual planter box being drawn.
-            if (this.AnimationManager == null)
-            {
-                if (this.AnimationManager.getExtendedTexture() == null)
-                    ModCore.ModMonitor.Log("Tex Extended is null???");
-
-                spriteBatch.Draw(this.CurrentTextureToDisplay, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(xNonTile), yNonTile)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, layerDepth));
-                // Log.AsyncG("ANIMATION IS NULL?!?!?!?!");
+                spriteBatch.Draw(this.CurrentTextureToDisplay, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(xNonTile), yNonTile)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInformation.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, layerDepth));
             }
 
             else
             {
                 //Log.AsyncC("Animation Manager is working!");
-                int addedDepth = 0;
-                if (this.basicItemInfo.ignoreBoundingBox) addedDepth++;
-                if (Revitalize.ModCore.playerInfo.sittingInfo.SittingObject == this) addedDepth++;
-                this.AnimationManager.draw(spriteBatch, this.CurrentTextureToDisplay, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(xNonTile), yNonTile)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, layerDepth));
-                try
-                {
-                    this.AnimationManager.tickAnimation();
-                    // Log.AsyncC("Tick animation");
-                }
-                catch (Exception err)
-                {
-                    ModCore.ModMonitor.Log(err.ToString());
-                }
+                this.AnimationManager.draw(spriteBatch, this.CurrentTextureToDisplay, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(xNonTile), yNonTile)), new Rectangle?(this.AnimationManager.getCurrentAnimationFrameRectangle()), this.basicItemInformation.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, layerDepth));
             }
-
-            // spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)((double)tileLocation.X * (double)Game1.tileSize + (((double)tileLocation.X * 11.0 + (double)tileLocation.Y * 7.0) % 10.0 - 5.0)) + (float)(Game1.tileSize / 2), (float)((double)tileLocation.Y * (double)Game1.tileSize + (((double)tileLocation.Y * 11.0 + (double)tileLocation.X * 7.0) % 10.0 - 5.0)) + (float)(Game1.tileSize / 2))), new Rectangle?(new Rectangle((int)((double)tileLocation.X * 51.0 + (double)tileLocation.Y * 77.0) % 3 * 16, 128 + this.whichForageCrop * 16, 16, 16)), Color.White, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom, SpriteEffects.None, (float)(((double)tileLocation.Y * (double)Game1.tileSize + (double)(Game1.tileSize / 2) + (((double)tileLocation.Y * 11.0 + (double)tileLocation.X * 7.0) % 10.0 - 5.0)) / 10000.0));
-
         }
 
 
-        public virtual LightManager GetLightManager()
-        {
-            return this.basicItemInfo.lightManager;
-        }
+
+
 
 
     }

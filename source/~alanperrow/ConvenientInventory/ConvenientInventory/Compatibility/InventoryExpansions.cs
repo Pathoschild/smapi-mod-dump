@@ -9,13 +9,14 @@
 *************************************************/
 
 using StardewValley;
+using System;
 
 namespace ConvenientInventory.Compatibility
 {
     public class InventoryExpansions
     {
         /// <summary> Checks if the player's max number of items differs from the length of favoriteItemSlots. </summary>
-        public static bool IsPlayerMaxItemsChanged(bool[] favoriteItemSlots) => Game1.player.MaxItems != favoriteItemSlots?.Length;
+        public static bool IsPlayerMaxItemsChanged(bool[] favoriteItemSlots) => Math.Max(Game1.player.MaxItems, Game1.player.Items.Count) != favoriteItemSlots?.Length;
 
         /// <summary> Expands/trims favoriteItemSlots to have a length of newSize. </summary>
         public static bool[] ResizeFavoriteItemSlots(bool[] favoriteItemSlots, int newSize)

@@ -10,66 +10,134 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using Newtonsoft.Json;
+using Omegasis.StardustCore.Networking;
+using Omegasis.StardustCore.UIUtilities;
 using StardewValley;
-using StardustCore.UIUtilities;
+using StardewValley.Network;
 
-namespace StardustCore.Animations
+namespace Omegasis.StardustCore.Animations
 {
     /// <summary>Used to play animations for Stardust.CoreObject type objects and all objects that extend from it. In draw code of object make sure to use this info instead.</summary>
-    public class AnimationManager
+    public class AnimationManager : NetObject
     {
+        public readonly NetStringDictionary<Animation, NetAnimation> animations = new NetStringDictionary<Animation, NetAnimation>();
+        public readonly NetString currentAnimationName = new NetString();
 
-        public Dictionary<string, Animation> animations = new SerializableDictionary<string, Animation>();
-        public string currentAnimationName;
-        public Texture2DExtended objectTexture; ///Might not be necessary if I use the CoreObject texture sheet.
-        public bool enabled;
 
-        [JsonIgnore]
-        public bool requiresUpdate;
-        public bool IsNull => this.objectTexture == null;
+        public NetRef<Texture2DExtended> netObjectTexture = new NetRef<Texture2DExtended>();
+        public Texture2DExtended objectTexture
+        {
+            get
+            {
+                if (this.netObjectTexture == null) return null;
+                return this.netObjectTexture.Value;
+            }
+            set
+            {
+                this.netObjectTexture.Value = value;
+            }
+        }
 
-        public string defaultAnimationKey;
+        public readonly NetBool enabled = new NetBool();
 
-        public string startingAnimationKey;
+        [XmlIgnore]
+        public bool IsNull
+        {
+            get
+            {
+                if (this.objectTexture == null) return true;
+                return this.objectTexture.getTexture() == null;
+            }
+        }
+
+        public readonly NetString defaultAnimationKey = new NetString();
+
+        public readonly NetString startingAnimationKey = new NetString();
 
         public const int StaticAnimationFrameIndex = -1;
 
         /// <summary>Construct an instance.</summary>
-        public AnimationManager() { }
+        public AnimationManager() {
+            //Even empty constructors for net refs must init their net fields!
+            this.initializeNetFields();
+        }
 
 
         /// <summary>Constructor for Animation Manager class.</summary>
         /// <param name="ObjectTexture">The texture that will be used for the animation. This is typically the same as the object this class is attached to.</param>
         /// <param name="DefaultFrame">This is used if no animations will be available to the animation manager.</param>
         /// <param name="EnabledByDefault">Whether or not animations play by default. Default value is true.</param>
-        public AnimationManager(Texture2DExtended ObjectTexture, Animation DefaultAnimation, bool EnabledByDefault = true) : this(ObjectTexture, new Dictionary<string, Animation>() { { "Default", DefaultAnimation } }, "Default", "Default")
+        public AnimationManager(Texture2DExtended ObjectTexture, Animation DefaultAnimation, bool EnabledByDefault = true) : this(ObjectTexture, new SerializableDictionary<string, Animation>() { { "Default", DefaultAnimation } }, "Default", "Default")
         {
         }
 
         public AnimationManager(Texture2DExtended ObjectTexture, Dictionary<string, Animation> Animations, string DefaultAnimationKey, string StartingAnimationKey, int startingAnimationFrame = 0, bool EnabledByDefault = true)
         {
-            this.objectTexture = ObjectTexture;
-            this.enabled = EnabledByDefault;
+            this.objectTexture = new Texture2DExtended();
+            this.objectTexture.setFields(ObjectTexture);
+            this.enabled.Value = EnabledByDefault;
 
-            this.animations = Animations;
-            this.defaultAnimationKey = DefaultAnimationKey;
+            this.animations = new NetStringDictionary<Animation, NetAnimation>();
+            foreach (var pair in Animations)
+            {
+                this.animations.Add(pair.Key, pair.Value);
+            }
+
+            this.defaultAnimationKey.Value = DefaultAnimationKey;
             if (this.animations != null && string.IsNullOrEmpty(StartingAnimationKey) == false && this.animations.ContainsKey(StartingAnimationKey))
             {
-                this.startingAnimationKey = StartingAnimationKey;
+                this.startingAnimationKey.Value = StartingAnimationKey;
                 this.setAnimation(StartingAnimationKey, startingAnimationFrame);
                 this.playAnimation(StartingAnimationKey, true, startingAnimationFrame);
             }
             else
             {
-                this.currentAnimationName = DefaultAnimationKey;
-                this.startingAnimationKey = DefaultAnimationKey;
-                this.setAnimation(DefaultAnimationKey, startingAnimationFrame);
-                this.playAnimation(DefaultAnimationKey, true, startingAnimationFrame);
+                this.currentAnimationName.Value = DefaultAnimationKey;
+                this.startingAnimationKey.Value = DefaultAnimationKey;
+
+                if (!string.IsNullOrEmpty(DefaultAnimationKey))
+                {
+
+                    this.setAnimation(DefaultAnimationKey, startingAnimationFrame);
+                    this.playAnimation(DefaultAnimationKey, true, startingAnimationFrame);
+                }
 
             }
+
+            if (string.IsNullOrEmpty(this.currentAnimationName.Value))
+            {
+                throw new Exception("Current animation name empty!");
+            }
+
+            if (string.IsNullOrEmpty(this.defaultAnimationKey.Value))
+            {
+                throw new Exception("default animation name empty!");
+            }
+
+            if (string.IsNullOrEmpty(this.startingAnimationKey.Value))
+            {
+                throw new Exception("Current animation name empty!");
+            }
+
+            this.initializeNetFields();
+
+
+        }
+
+        protected override void initializeNetFields()
+        {
+            this.NetFields.AddFields(this.animations,
+                this.currentAnimationName,
+                this.enabled,
+                this.defaultAnimationKey,
+                this.startingAnimationKey);
+            this.NetFields.AddField(this.netObjectTexture);
+
 
         }
 
@@ -93,7 +161,7 @@ namespace StardustCore.Animations
                 {
                     this.getCurrentAnimation().reset();
                 }
-                this.currentAnimationName = AnimationName;
+                this.currentAnimationName.Value = AnimationName;
                 return true;
             }
             else
@@ -114,18 +182,11 @@ namespace StardustCore.Animations
         {
             if (this.animations.ContainsKey(AnimationName))
             {
-                if (this.animations.ContainsKey(AnimationName))
-                {
-                    this.getCurrentAnimation().reset();
-                    this.currentAnimationName = AnimationName;
-                    this.getCurrentAnimation().startAnimation();
-                    return true;
-                }
-                else
-                {
-                    ModCore.ModMonitor.Log("Error setting animation: " + AnimationName + " animation does not exist in list of available animations. Did you make sure to add it in?");
-                    return false;
-                }
+                this.getCurrentAnimation().reset();
+                this.currentAnimationName.Value = AnimationName;
+                this.getCurrentAnimation().startAnimation();
+                return true;
+
             }
             else
             {
@@ -135,24 +196,41 @@ namespace StardustCore.Animations
         }
 
         /// <summary>
+        /// Resets the current animation for the Animation Manager. Used mainly to restart animations for when the player walks into a <see cref="GameLocation"/> or when a save is loaded.
+        /// </summary>
+        /// <returns></returns>
+        public bool resetCurrentAnimation()
+        {
+            return this.playAnimation(this.currentAnimationName.Value, true, 0);
+        }
+
+        /// <summary>
+        /// Used to resume the current animation at the given frame index.
+        /// </summary>
+        /// <returns></returns>
+        public bool resumeCurrentAnimation()
+        {
+            return this.playAnimation(this.currentAnimationName.Value, true, this.getCurrentAnimation().currentAnimationFrameIndex);
+        }
+
+        /// <summary>
         /// Plays the default animation.
         /// </summary>
         public void playDefaultAnimation()
         {
-            this.currentAnimationName = this.defaultAnimationKey;
-            this.requiresUpdate = true;
+            this.currentAnimationName.Value = this.defaultAnimationKey;
         }
 
         /// <summary>Sets the animation manager to an on state, meaning that this animation will update on the draw frame.</summary>
         public void enableAnimation()
         {
-            this.enabled = true;
+            this.enabled.Value = true;
         }
 
         /// <summary>Sets the animation manager to an off state, meaning that this animation will no longer update on the draw frame.</summary>
         public void disableAnimation()
         {
-            this.enabled = false;
+            this.enabled.Value = false;
         }
 
         /// <summary>Used to handle general drawing functionality using the animation manager.</summary>
@@ -248,7 +326,7 @@ namespace StardustCore.Animations
 
         public void setEnabled(bool enabled)
         {
-            this.enabled = enabled;
+            this.enabled.Value = enabled;
         }
 
         public Texture2D getTexture()
@@ -304,7 +382,14 @@ namespace StardustCore.Animations
 
         public AnimationManager Copy()
         {
-            return new AnimationManager(this.objectTexture, this.animations, this.defaultAnimationKey, this.startingAnimationKey, 0, this.enabled);
+            Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
+
+            foreach (var v in this.animations.Pairs)
+            {
+                animations.Add(v.Key, v.Value.Copy());
+            }
+
+            return new AnimationManager(this.objectTexture, animations, this.defaultAnimationKey, this.startingAnimationKey, 0, this.enabled);
         }
     }
 }

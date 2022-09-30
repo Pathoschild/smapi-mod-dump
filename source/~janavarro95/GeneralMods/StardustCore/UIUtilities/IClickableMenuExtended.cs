@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV1;
 using StardewValley;
-using StardustCore.UIUtilities.MenuComponents.ComponentsV1;
 
-namespace StardustCore.UIUtilities
+namespace Omegasis.StardustCore.UIUtilities
 {
     public class IClickableMenuExtended : StardewValley.Menus.IClickableMenu
     {

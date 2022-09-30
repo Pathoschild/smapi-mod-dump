@@ -11,7 +11,7 @@
 {
 	"Name": "Please Gift Me In Person",
 	"Author": "Shockah",
-	"Version": "1.0.1",
+	"Version": "1.0.3",
 	"Description": "Adds some more realism and life to the Gift Delivery Service. An extension to the Mail Services Mod.",
 	"UniqueID": "Shockah.PleaseGiftMeInPerson",
 	"EntryDll": "PleaseGiftMeInPerson.dll",

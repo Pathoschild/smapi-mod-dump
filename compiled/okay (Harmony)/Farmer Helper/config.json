@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
   "IgnoreHarvestCrops": "",
+  "IgnoreFlowers": true,
   "LabelLatePlanting": true,
   "PreventLatePlant": true,
   "WarnAboutPlantsUnwateredBeforeSleep": true,

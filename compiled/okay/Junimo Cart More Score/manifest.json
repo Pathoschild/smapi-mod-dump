@@ -1,0 +1,10 @@
+{
+  "Name": "junimocartmorescore",
+  "Author": "yaxuan97",
+  "Version": "1.0.1",
+  "Description": "Multiple The JunimoCart MiniGame Score",
+  "UniqueID": "yaxuan97.junimocartmorescore",
+  "EntryDll": "junimocartmorescore.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:13644"]
+}

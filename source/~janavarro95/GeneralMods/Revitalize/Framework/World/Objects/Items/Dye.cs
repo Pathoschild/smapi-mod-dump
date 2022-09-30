@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Revitalize.Framework.Illuminate;
+using Omegasis.Revitalize.Framework.Illuminate;
 using StardewValley;
 
-namespace Revitalize.Framework.World.Objects.Items
+namespace Omegasis.Revitalize.Framework.World.Objects.Items
 {
     public class Dye : CustomObject
     {

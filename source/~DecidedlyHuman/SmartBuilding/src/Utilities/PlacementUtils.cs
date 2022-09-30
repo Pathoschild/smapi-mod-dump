@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using DecidedlyShared.APIs;
 using DecidedlyShared.Logging;
 using Microsoft.Xna.Framework;
-using SmartBuilding.APIs;
+using DecidedlyShared.APIs;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -269,7 +269,7 @@ namespace SmartBuilding.Utilities
                             // Next, we check to see if it's a DGA item.
                             if (itemInfo.IsDgaItem)
                             {
-                                // It is, so we try to use DGA to determine plantability. 
+                                // It is, so we try to use DGA to determine plantability.
                                 // First, we grab a reference to our HoeDirt.
                                 var hd = (HoeDirt)here.terrainFeatures[v];
 

@@ -10,10 +10,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.Crafting.JsonContent;
+using Omegasis.Revitalize.Framework.Utilities;
 using StardewValley;
 
-namespace Revitalize.Framework.Crafting
+namespace Omegasis.Revitalize.Framework.Crafting
 {
     /// <summary>
     /// A crafting recipe.
@@ -59,9 +60,13 @@ namespace Revitalize.Framework.Crafting
         /// <summary>Constructor for single item output.</summary>
         /// <param name="inputs">All the ingredients required to make the output.</param>
         /// <param name="output">The item given as output with how many</param>
-        public Recipe(List<CraftingRecipeComponent> inputs, CraftingRecipeComponent output, StatCost StatCost = null,int TimeToCraft=0)
+        public Recipe(List<CraftingRecipeComponent> inputs, CraftingRecipeComponent output, StatCost StatCost = null, int TimeToCraft = 0)
         {
             this.ingredients = inputs;
+
+            if (output.item == null)
+                throw new System.Exception("Output item can not be null for Revitalize crafting recipe!");
+
             this.outputDescription = output.item.getDescription();
             this.outputName = output.item.DisplayName;
             this.outputs = new List<CraftingRecipeComponent>()
@@ -72,7 +77,7 @@ namespace Revitalize.Framework.Crafting
             this.timeToCraft = TimeToCraft;
         }
 
-        public Recipe(List<CraftingRecipeComponent> inputs, List<CraftingRecipeComponent> outputs, string OutputName, string OutputDescription, Item DisplayItem = null, StatCost StatCost = null,int TimeToCraft=0)
+        public Recipe(List<CraftingRecipeComponent> inputs, List<CraftingRecipeComponent> outputs, string OutputName, string OutputDescription, Item DisplayItem = null, StatCost StatCost = null, int TimeToCraft = 0)
         {
             this.ingredients = inputs;
             this.outputs = outputs;
@@ -80,6 +85,60 @@ namespace Revitalize.Framework.Crafting
             this.outputDescription = OutputDescription;
             this.statCost = StatCost;
             this.timeToCraft = TimeToCraft;
+        }
+
+        public Recipe(JsonCraftingRecipe jsonRecipe)
+        {
+            List<CraftingRecipeComponent> newInputs = new List<CraftingRecipeComponent>();
+
+            if (jsonRecipe.inputs.Count == 0)
+            {
+                throw new InvalidJsonCraftingRecipeException("An error has occured for json crafting recipe {0} as it has no input items.");
+            }
+
+            if (jsonRecipe.outputs.Count == 0)
+            {
+                throw new InvalidJsonCraftingRecipeException("An error has occured for json crafting recipe {0} as it has no output items.");
+            }
+
+            foreach (JsonCraftingComponent jcc in jsonRecipe.inputs)
+            {
+
+                try
+                {
+                    jcc.validate();
+                }
+                catch (InvalidJsonCraftingComponentException err)
+                {
+                    throw new InvalidJsonCraftingRecipeException(string.Format("An error has occured for json crafting recipe {0} when trying to validate one of it's input json crafting recipe components: {1}", jsonRecipe.craftingRecipeId, err.Message));
+                }
+
+                newInputs.Add(jcc.createCraftingRecipeComponent());
+            }
+
+            List<CraftingRecipeComponent> newOutputs = new List<CraftingRecipeComponent>();
+            foreach (JsonCraftingComponent jcc in jsonRecipe.outputs)
+            {
+                try
+                {
+                    jcc.validate();
+                }
+                catch (InvalidJsonCraftingComponentException err)
+                {
+                    throw new InvalidJsonCraftingRecipeException(string.Format("An error has occured for json crafting recipe {0} when trying to validate one of it's output json crafting recipe components: {1}", jsonRecipe.craftingRecipeId, err.Message));
+                }
+
+                newOutputs.Add(jcc.createCraftingRecipeComponent());
+            }
+
+            this.ingredients = newInputs;
+            this.outputs = newOutputs;
+            this.outputName = !string.IsNullOrEmpty(jsonRecipe.outputName) ? jsonRecipe.outputName : this.outputs[0].item.DisplayName;
+            this.outputDescription = !string.IsNullOrEmpty(jsonRecipe.outputDescription) ? jsonRecipe.outputDescription : this.outputs[0].item.getDescription();
+
+            this.statCost = jsonRecipe.statCost;
+            this.timeToCraft = jsonRecipe.MinutesToCraft;
+
         }
 
         /// <summary>Checks if a player contains all recipe ingredients.</summary>
@@ -107,10 +166,8 @@ namespace Revitalize.Framework.Crafting
         public bool InventoryContainsIngredient(IList<Item> items, CraftingRecipeComponent pair)
         {
             foreach (Item i in items)
-            {
                 if (i != null && this.ItemEqualsOther(i, pair.item) && pair.requiredAmount <= i.Stack)
                     return true;
-            }
             return false;
         }
 
@@ -135,19 +192,15 @@ namespace Revitalize.Framework.Crafting
             InventoryManager manager = new InventoryManager(from);
             List<Item> removalList = new List<Item>();
             foreach (CraftingRecipeComponent pair in this.ingredients)
-            {
                 foreach (Item item in manager.items)
                 {
                     if (item == null) continue;
                     if (this.ItemEqualsOther(item, pair.item))
-                    {
                         if (item.Stack == pair.requiredAmount)
                             removalList.Add(item); //remove the item
                         else
                             item.Stack -= pair.requiredAmount; //or reduce the stack size.
-                    }
                 }
-            }
 
             foreach (var v in removalList)
                 manager.items.Remove(v);
@@ -187,13 +240,11 @@ namespace Revitalize.Framework.Crafting
         /// <param name="isPlayerInventory">Checks to see if the invventory is the player's</param>
         public void craft(ref IList<Item> from, ref IList<Item> to, bool dropToGround = false, bool isPlayerInventory = false)
         {
-            InventoryManager manager = new InventoryManager(to,Game1.player.MaxItems);
-            if (manager.ItemCount + this.outputs.Count >= manager.capacity)
-            {
+            InventoryManager manager = new InventoryManager(to, Game1.player.MaxItems);
+            if (manager.getNonNullItemCount() + this.outputs.Count >= manager.capacity)
                 if (isPlayerInventory)
                     Game1.showRedMessage("Inventory Full");
                 else return;
-            }
             this.consume(ref from);
             this.produce(ref to, dropToGround, isPlayerInventory);
         }
@@ -225,13 +276,9 @@ namespace Revitalize.Framework.Crafting
         public bool CanCraft(IList<Item> items)
         {
             if (this.statCost == null)
-            {
                 return this.InventoryContainsAllIngredient(items);
-            }
             else
-            {
                 return this.InventoryContainsAllIngredient(items) && this.statCost.canSafelyAffordCost();
-            }
         }
     }
 }

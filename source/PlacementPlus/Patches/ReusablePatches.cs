@@ -18,8 +18,10 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.TerrainFeatures;
+
 using static PlacementPlus.ModState;
 using static PlacementPlus.Utility.Utility;
+
 using Object = StardewValley.Object;
 
 namespace PlacementPlus.Patches
@@ -27,8 +29,6 @@ namespace PlacementPlus.Patches
     [HarmonyPatch]
     internal class ReusablePatches
     {
-        private static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
-
         private static IEnumerable<MethodBase> TargetMethods()
         {
             var assembly = Assembly.Load("Stardew Valley").GetTypes();

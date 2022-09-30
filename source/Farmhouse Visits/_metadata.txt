@@ -6,9 +6,9 @@ mods:
    Farmhouse Visits
 
 latest commit:
-   commit b8d1c51467a032e8713cdc751d1e9de3127c8738
+   commit 7120251be2e72b5b4b966b58087318443caffe75
    Author: misty-spring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Sun Aug 7 00:58:56 2022 -0400
+   Date:   Wed Sep 28 13:20:24 2022 -0300
    
-       Update with 1.5.0 info
+       Update CHANGELOG.md
    

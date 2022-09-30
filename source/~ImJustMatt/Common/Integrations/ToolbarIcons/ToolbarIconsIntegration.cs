@@ -11,7 +11,7 @@
 namespace StardewMods.Common.Integrations.ToolbarIcons;
 
 /// <inheritdoc />
-internal class ToolbarIconsIntegration : ModIntegration<IToolbarIconsApi>
+internal sealed class ToolbarIconsIntegration : ModIntegration<IToolbarIconsApi>
 {
     private const string ModUniqueId = "furyx639.ToolbarIcons";
 

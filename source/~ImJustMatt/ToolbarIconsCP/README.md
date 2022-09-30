@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-# Toolbar Icons for FuryCore
+# Toolbar Icons Content Pack
 
 Adds shortcut icons to activate hotkeys/commands from other mods.
 
@@ -14,6 +14,7 @@ Adds shortcut icons to activate hotkeys/commands from other mods.
 
 * [Supported Mods](#supported-mods)
 * [Translations](#translations)
+* [Credits](#credits)
 
 ### Supported Mods
 
@@ -21,9 +22,11 @@ Adds shortcut icons to activate hotkeys/commands from other mods.
 * [Data Layers](https://www.nexusmods.com/stardewvalley/mods/1691)
 * [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679)
 * [Event Lookup](https://www.nexusmods.com/stardewvalley/mods/8505)
+* [Fashion Sense](https://www.nexusmods.com/stardewvalley/mods/9969)
 * [Horse Flute Anywhere](https://www.nexusmods.com/stardewvalley/mods/7500)
 * [Instant Buildings From Farm](https://www.nexusmods.com/stardewvalley/mods/2070)
 * [Lookup Anything](https://www.nexusmods.com/stardewvalley/mods/541)
+* [Magic](https://www.nexusmods.com/stardewvalley/mods/2007)
 * [Reset Terrain Features for .NET 5](https://www.nexusmods.com/stardewvalley/mods/9350)
 * [Simple Screenshots](https://www.nexusmods.com/stardewvalley/mods/10178)
 * [Tractor Mod](https://www.nexusmods.com/stardewvalley/mods/1401)
@@ -43,3 +46,11 @@ Adds shortcut icons to activate hotkeys/commands from other mods.
 | Russian                                                            | ❌️ Not Translated |          |
 | Spanish                                                            | ❌️ Not Translated |          |
 | Turkish                                                            | ❌️ Not Translated |          |
+
+## Credits
+
+Icons created by [Tai](https://www.nexusmods.com/stardewvalley/users/92060238):
+
+* Reset Terrain Features
+* Simple Screenshots
+* Tractor Mod

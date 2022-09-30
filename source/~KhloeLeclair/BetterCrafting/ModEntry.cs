@@ -18,6 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using HarmonyLib;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Leclair.Stardew.Common;
@@ -38,14 +39,20 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 using Leclair.Stardew.BetterCrafting.Managers;
+using Leclair.Stardew.BetterCrafting.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Leclair.Stardew.BetterCrafting;
 
 public class ModEntry : ModSubscriber {
 
+	public static readonly string NPCMapLocationPath = "Mods/Bouhm.NPCMapLocations/NPCs";
+
+	public static readonly string HeadsPath = "Mods/leclair.bettercrafting/Heads";
+
 #nullable disable
 	public static ModEntry Instance { get; private set; }
-	public static IBetterCrafting API { get; private set; }
+	public static ModAPI API { get; private set; }
 #nullable enable
 
 	internal Harmony? Harmony;
@@ -71,6 +78,10 @@ public class ModEntry : ModSubscriber {
 
 #nullable enable
 
+	private Dictionary<string, HeadSize>? HeadsCache = null;
+
+	private MenuPriority? ActivePriority = null;
+
 	private readonly Hashtable invProviders = new();
 	private readonly object providerLock = new();
 
@@ -79,6 +90,7 @@ public class ModEntry : ModSubscriber {
 
 	private GMCMIntegration<ModConfig, ModEntry>? GMCMIntegration;
 
+	internal Integrations.ProducerFrameworkMod.PFMIntegration? intPFM;
 	internal Integrations.RaisedGardenBeds.RGBIntegration? intRGB;
 	internal Integrations.StackSplitRedux.SSRIntegration? intSSR;
 	internal Integrations.CookingSkill.CSIntegration? intCSkill;
@@ -99,6 +111,8 @@ public class ModEntry : ModSubscriber {
 		Harmony = new Harmony(ModManifest.UniqueID);
 
 		Patches.Workbench_Patches.Patch(this);
+		Patches.Torch_Patches.Patch(this);
+
 		SpriteText_Patches.Patch(Harmony, Monitor);
 
 		// Read Config
@@ -119,6 +133,7 @@ public class ModEntry : ModSubscriber {
 		//Sprites.Load(Helper.Content, Helper.ModRegistry);
 
 		CheckRecommendedIntegrations();
+		InjectMenuHandler();
 	}
 
 	public override object GetApi() {
@@ -127,6 +142,42 @@ public class ModEntry : ModSubscriber {
 
 
 	#region Events
+
+	private void InjectMenuHandler() {
+		if (Config is null)
+			return;
+
+		if (ActivePriority is not null) {
+			if (ActivePriority == Config.MenuPriority)
+				return;
+
+			switch(ActivePriority) {
+				case MenuPriority.Low:
+					Helper.Events.Display.MenuChanged -= LowMenuChanged;
+					break;
+				case MenuPriority.Normal:
+					Helper.Events.Display.MenuChanged -= NormalMenuChanged;
+					break;
+				case MenuPriority.High:
+					Helper.Events.Display.MenuChanged -= HighMenuChanged;
+					break;
+			}
+		}
+
+		switch(Config.MenuPriority) {
+			case MenuPriority.Low:
+				Helper.Events.Display.MenuChanged += LowMenuChanged;
+				ActivePriority = MenuPriority.Low;
+				return;
+			case MenuPriority.High:
+				Helper.Events.Display.MenuChanged += HighMenuChanged;
+				ActivePriority = MenuPriority.High;
+				return;
+		}
+
+		Helper.Events.Display.MenuChanged += NormalMenuChanged;
+		ActivePriority = MenuPriority.Normal;
+	}
 
 	private static void UpdateTextures(Texture2D? oldTex, Texture2D newTex, IClickableMenu menu) {
 		if (menu.allClickableComponents != null)
@@ -151,8 +202,21 @@ public class ModEntry : ModSubscriber {
 			UpdateTextures(oldTex, newTex, page);
 	}
 
-	[Subscriber]
-	private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
+	[EventPriority(EventPriority.Low)]
+	private void LowMenuChanged(object? sender, MenuChangedEventArgs e) {
+		HandleMenuChanged(e);
+	}
+
+	private void NormalMenuChanged(object? sender, MenuChangedEventArgs e) {
+		HandleMenuChanged(e);
+	}
+
+	[EventPriority(EventPriority.High)]
+	private void HighMenuChanged(object? sender, MenuChangedEventArgs e) {
+		HandleMenuChanged(e);
+	}
+
+	private void HandleMenuChanged(MenuChangedEventArgs e) {
 		IClickableMenu menu = Game1.activeClickableMenu;
 		if (CurrentMenu.Value == menu)
 			return;
@@ -231,9 +295,8 @@ public class ModEntry : ModSubscriber {
 			bool cooking = CraftingPageHelper.IsCooking(page);
 			if (cooking ? Config.ReplaceCooking : Config.ReplaceCrafting) {
 
-				// Make a copy of the existing chests, in case yeeting
-				// the menu creates an issue.
-				List<object> chests = new(page._materialContainers);
+				// Make a copy of the existing chests.
+				List<object>? chests = page._materialContainers is null ? null : new(page._materialContainers);
 
 				// Find our bench
 				var where = page.GetBenchPosition(Game1.player);
@@ -281,11 +344,13 @@ public class ModEntry : ModSubscriber {
 				if (crafting == 0 || cooking == 0 && names.Count > 0) {
 					bool is_cooking = cooking > 0;
 
+					// Make a copy of the existing chests.
 					var chests = Helper.Reflection.GetField<List<Chest>>(menu, "_materialContainers", false).GetValue();
-					List<object>? containers = chests == null ? null : new(chests);
+					List<object>? containers = chests is null ? null : new(chests);
 
 					// TODO: Find the bench
 
+					// Make sure to clean up the existing menu.
 					CommonHelper.YeetMenu(menu);
 
 					menu = Game1.activeClickableMenu = Menus.BetterCraftingPage.Open(
@@ -304,6 +369,10 @@ public class ModEntry : ModSubscriber {
 		if (menu is GameMenu gm && Config.ReplaceCrafting) {
 			for (int i = 0; i < gm.pages.Count; i++) {
 				if (gm.pages[i] is CraftingPage cp) {
+					// Make a copy of the existing chests.
+					List<object>? containers = cp._materialContainers is null ? null : new(cp._materialContainers);
+
+					// Make sure to clean up the existing menu.
 					CommonHelper.YeetMenu(cp);
 
 					gm.pages[i] = Menus.BetterCraftingPage.Open(
@@ -314,7 +383,7 @@ public class ModEntry : ModSubscriber {
 						height: gm.height,
 						cooking: false,
 						standalone_menu: false,
-						material_containers: (IList<LocatedInventory>?) null,
+						material_containers: containers,
 						x: gm.xPositionOnScreen,
 						y: gm.yPositionOnScreen
 					);
@@ -336,6 +405,9 @@ public class ModEntry : ModSubscriber {
 		RegisterSettings();
 
 		// Integrations
+		InventoryHelper.InitializeStackQuality(this);
+
+		intPFM = new(this);
 		intRGB = new(this);
 		intSSR = new(this);
 		intCSkill = new(this);
@@ -360,9 +432,9 @@ public class ModEntry : ModSubscriber {
 			}
 		});
 
-		// Load Data
-		Recipes.LoadRecipes();
-		Recipes.LoadDefaults();
+		// Load Data -- Actually, this is unnecessary. Do it on demand.
+		// Recipes.LoadRecipes();
+		// Recipes.LoadDefaults();
 	}
 
 	[Subscriber]
@@ -377,12 +449,137 @@ public class ModEntry : ModSubscriber {
 		RegisterSettings();
 	}
 
+	[Subscriber]
+	private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
+		foreach(var name in e.Names) {
+			if (name.IsEquivalentTo(HeadsPath))
+				HeadsCache = null;
+		}
+	}
+
+	[Subscriber]
+	private void OnObjectsChanged(object? sender, ObjectListChangedEventArgs e) {
+		if (!Config.EnableCookoutLongevity)
+			return;
+
+		// Disable the destroyOvernight flag on Cookout Kits when they're placed.
+		if (e.Added is not null)
+			foreach(var pair in e.Added) {
+				var obj = pair.Value;
+				if (obj is Torch torch && torch.bigCraftable.Value && torch.ParentSheetIndex == 278) {
+					torch.destroyOvernight = false;
+				}
+			}
+
+		// When a Cookout Kit is removed, drop the Cookout Kit item at its location.
+		if (e.Removed is not null)
+			foreach(var pair in e.Removed) {
+				var obj = pair.Value;
+				if (obj is Torch torch && torch.bigCraftable.Value && torch.ParentSheetIndex == 278 && torch.Fragility != 2) {
+					e.Location.debris.Add(new Debris(new StardewValley.Object(926, 1), new Vector2(pair.Key.X * 64 + 32, pair.Key.Y * 64 + 32)));
+				}
+			}
+	}
+
+	[Subscriber]
+	private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+		// Edit the cookout kit's recipe.
+		if (Config.EnableCookoutExpensive && e.NameWithoutLocale.IsEquivalentTo(@"Data\CraftingRecipes"))
+			e.Edit(data => {
+				var recipes = data.AsDictionary<string, string>();
+				if (recipes.Data.TryGetValue("Cookout Kit", out string? value)) {
+					string[] parts = value.Split('/');
+					parts[0] = "390 45 388 15 382 8 335 2";
+					recipes.Data["Cookout Kit"] = string.Join('/', parts);
+				}
+			});
+
+		if (e.Name.IsEquivalentTo(HeadsPath))
+			e.LoadFrom(() => {
+				const string path = "assets/heads.json";
+				Dictionary<string, HeadSize>? heads = null;
+
+				try {
+					heads = Helper.Data.ReadJsonFile<Dictionary<string, HeadSize>>(path);
+					if (heads is null)
+						Log($"The {path} file is missing or invalid.", LogLevel.Error);
+				} catch(Exception ex) {
+					Log($"The {path} file is invalid.", LogLevel.Error, ex);
+				}
+
+				if (heads is null)
+					heads = new();
+
+				// Read any extra data files.
+				foreach (var cp in Helper.ContentPacks.GetOwned()) {
+					if (!cp.HasFile("heads.json"))
+						continue;
+
+					Dictionary<string, HeadSize>? extra = null;
+					try {
+						extra = cp.ReadJsonFile<Dictionary<string, HeadSize>>("heads.json");
+					} catch (Exception ex) {
+						Log($"The heads.json file of {cp.Manifest.Name} is invalid.", LogLevel.Error, ex);
+					}
+
+					if (extra != null)
+						foreach (var entry in extra)
+							if (!string.IsNullOrEmpty(entry.Key))
+								heads[entry.Key] = entry.Value;
+				}
+
+				// Now, read the data file used by NPC Map Locations. This is
+				// convenient because a lot of mods support it.
+				Dictionary<string, JObject>? content = null;
+
+				try {
+					content = Helper.GameContent.Load<Dictionary<string, JObject>>(NPCMapLocationPath);
+
+				} catch (Exception) {
+					/* Nothing~ */
+				}
+
+				if (content is not null) {
+					int count = 0;
+
+					foreach (var entry in content) {
+						if (heads.ContainsKey(entry.Key))
+							continue;
+
+						int offset;
+						try {
+							offset = entry.Value.Value<int>("MarkerCropOffset");
+						} catch (Exception) {
+							continue;
+						}
+
+						heads[entry.Key] = new() {
+							OffsetY = offset
+						};
+						count++;
+					}
+
+					Log($"Loaded {count} head offsets from NPC Map Location data.");
+				}
+
+				return heads;
+
+			}, AssetLoadPriority.High);
+	}
+
+	public Dictionary<string, HeadSize> GetHeads() {
+		HeadsCache ??= Helper.GameContent.Load<Dictionary<string, HeadSize>>(HeadsPath);
+		return HeadsCache;
+	}
+
 	#endregion
 
 	#region Configuration
 
 	public void SaveConfig() {
 		Helper.WriteConfig(Config);
+		Helper.GameContent.InvalidateCache(@"Data\CraftingRecipes");
+		InjectMenuHandler();
 	}
 
 	[MemberNotNullWhen(true, nameof(GMCMIntegration))]
@@ -436,7 +633,7 @@ public class ModEntry : ModSubscriber {
 				I18n.Setting_Theme,
 				I18n.Setting_ThemeDesc,
 				c => c.Theme,
-				(c,v) => {
+				(c, v) => {
 					c.Theme = v;
 					ThemeManager.SelectTheme(v);
 				},
@@ -465,6 +662,44 @@ public class ModEntry : ModSubscriber {
 				I18n.Setting_EnableCategories_Tip,
 				c => c.UseCategories,
 				(c, val) => c.UseCategories = val
+			)
+			.AddChoice(
+				name: I18n.Setting_GiftTaste,
+				tooltip: I18n.Setting_GiftTaste_Tip,
+				get: c => c.ShowTastes,
+				set: (c, v) => c.ShowTastes = v,
+				choices: new Dictionary<GiftMode, Func<string>> {
+					{ GiftMode.Never, I18n.Setting_GiftTaste_Never },
+					{ GiftMode.Shift, I18n.Setting_GiftTaste_Shift },
+					{ GiftMode.Always, I18n.Setting_GiftTaste_Always }
+				}
+			)
+			.AddChoice(
+				name: I18n.Setting_GiftTasteStyle,
+				tooltip: I18n.Setting_GiftTasteStyle_Tip,
+				get: c => c.TasteStyle,
+				set: (c, v) => c.TasteStyle = v,
+				choices: new Dictionary<GiftStyle, Func<string>> {
+					{ GiftStyle.Heads, I18n.Setting_GiftTasteStyle_Heads },
+					{ GiftStyle.Names, I18n.Setting_GiftTasteStyle_Names }
+				}
+			)
+			.Add(
+				name: I18n.Setting_GiftTasteAll,
+				tooltip: I18n.Setting_GiftTasteAll_Tip,
+				get: c => c.ShowAllTastes,
+				set: (c, v) => c.ShowAllTastes = v
+			)
+			.AddChoice(
+				name: I18n.Setting_Priority,
+				tooltip: I18n.Setting_Priority_Tip,
+				get: c => c.MenuPriority,
+				set: (c, v) => c.MenuPriority = v,
+				choices: new Dictionary<MenuPriority, Func<string>> {
+					{ MenuPriority.Low, I18n.Setting_Priority_Low },
+					{ MenuPriority.Normal, I18n.Setting_Priority_Normal },
+					{ MenuPriority.High, I18n.Setting_Priority_High },
+				}
 			);
 
 		GMCMIntegration
@@ -539,6 +774,12 @@ public class ModEntry : ModSubscriber {
 				I18n.Setting_Nearby,
 				I18n.Setting_Nearby_Tip,
 				"page:nearby"
+			)
+
+			.AddLabel(
+				I18n.Setting_Cookout,
+				I18n.Setting_Cookout_About,
+				"page:cookout"
 			)
 
 			.AddLabel(
@@ -717,6 +958,30 @@ public class ModEntry : ModSubscriber {
 				I18n.Setting_Nearby_Connectors,
 				I18n.Setting_Nearby_Connectors_Tip,
 				"page:conn"
+			);
+
+		GMCMIntegration
+			.StartPage("page:cookout", I18n.Setting_Cookout)
+			.AddParagraph(I18n.Setting_Cookout_About);
+
+		GMCMIntegration
+			.Add(
+				I18n.Setting_Cookout_Workbench,
+				I18n.Setting_Cookout_Workbench_Tip,
+				c => c.EnableCookoutWorkbench,
+				(c, v) => c.EnableCookoutWorkbench = v
+			)
+			.Add(
+				I18n.Setting_Cookout_Durable,
+				I18n.Setting_Cookout_Durable_Tip,
+				c => c.EnableCookoutLongevity,
+				(c, v) => c.EnableCookoutLongevity = v
+			)
+			.Add(
+				I18n.Setting_Cookout_Expensive,
+				I18n.Setting_Cookout_Expensive_Tip,
+				c => c.EnableCookoutExpensive,
+				(c, v) => c.EnableCookoutExpensive = v
 			);
 
 		GMCMIntegration

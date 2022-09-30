@@ -9,11 +9,14 @@
 *************************************************/
 
 using Newtonsoft.Json;
+using Shockah.CommonModCode;
+using StardewModdingAPI;
 
 namespace Shockah.FlexibleSprinklers
 {
-	public class ModConfig
+	public class ModConfig : IVersioned.Modifiable
 	{
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public ISemanticVersion? Version { get; set; }
 		[JsonProperty] public SprinklerBehaviorEnum SprinklerBehavior { get; internal set; } = SprinklerBehaviorEnum.ClusterWithoutVanilla;
 		[JsonProperty] public bool IgnoreRange { get; internal set; } = false;
 		[JsonProperty] public FlexibleSprinklerBehaviorTileWaterBalanceMode TileWaterBalanceMode { get; internal set; } = FlexibleSprinklerBehaviorTileWaterBalanceMode.Relaxed;

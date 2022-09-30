@@ -9,10 +9,9 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Revitalize.Framework.Objects;
 using StardewValley;
 
-namespace Revitalize.Framework.Player.Managers
+namespace Omegasis.Revitalize.Framework.Player.Managers
 {
     public class SittingInfo
     {
@@ -25,13 +24,13 @@ namespace Revitalize.Framework.Player.Managers
 
         /// <summary>Keeps trck of time elapsed.</summary>
         GameTime timer;
-        
+
         /// <summary>How long a player has to sit to recover energy/health;</summary>
         public int SittingSpan { get; }
 
-        StardewValley.Object sittingObject;
+        Object sittingObject;
 
-        public StardewValley.Object SittingObject
+        public Object SittingObject
         {
             get
             {
@@ -52,10 +51,8 @@ namespace Revitalize.Framework.Player.Managers
             if (Game1.activeClickableMenu != null) return;
 
             if (Game1.player.isMoving())
-            {
-               
+
                 this.elapsedTime = 0;
-            }
             if (Game1.player.IsSitting() && Game1.player.CanMove)
             {
                 if (this.timer == null) this.timer = Game1.currentGameTime;

@@ -20,8 +20,16 @@ internal static class ObjectPoolExt {
 		ObjectPoolExt<T>.Take(clear);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static LazyDefaultPooledObject<T> TakeLazy<T>(Action<T>? clear = null) where T : class, new() =>
+		ObjectPoolExt<T>.TakeLazy(clear);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static PooledObject<T, TrackingObjectPool<T>> TakeTracked<T>(Action<T>? clear = null) where T : class, new() =>
 		ObjectPoolExt<T>.TakeTracked(clear);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static LazyPooledObject<T, TrackingObjectPool<T>> TakeLazyTracked<T>(Action<T>? clear = null) where T : class, new() =>
+		ObjectPoolExt<T>.TakeLazyTracked(clear);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static T Get<T>() where T : class, new() =>
@@ -49,8 +57,16 @@ internal static class ObjectPoolExt<T> where T : class, new() {
 		new(DefaultPool.Get(), clear);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static LazyDefaultPooledObject<T> TakeLazy(Action<T>? clear = null) =>
+		new(DefaultPool.Get, clear);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static PooledObject<T, TrackingObjectPool<T>> TakeTracked(Action<T>? clear = null) =>
 		new(DefaultTrackingPool.Get(), DefaultTrackingPool, clear);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static LazyPooledObject<T, TrackingObjectPool<T>> TakeLazyTracked(Action<T>? clear = null) =>
+		new(DefaultTrackingPool.Get, DefaultTrackingPool, clear);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static T Get() =>

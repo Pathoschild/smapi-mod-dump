@@ -226,8 +226,11 @@ internal static class Command {
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.GarbageCollect)) {
 			Extensions.Garbage.Collect(compact: true, blocking: true, background: false);
 		}
-		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushMetaData)) {
-			Metadata.Metadata.Purge();
+		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushMetaData) || options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushMetaDataRecache)) {
+			Metadata.Metadata.Purge(recache: options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushMetaDataRecache));
+		}
+		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.FlushSpriteMap)) {
+			SpriteMap.Purge();
 		}
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.GarbageCollect)) {
 			Extensions.Garbage.Collect(compact: true, blocking: true, background: false);

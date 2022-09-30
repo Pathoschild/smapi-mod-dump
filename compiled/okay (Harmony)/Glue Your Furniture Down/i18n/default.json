@@ -1,21 +1,23 @@
 ﻿{
   // Add in mod description
   "mod.description": "Adds options to prevent picking up furniture by type.",
-  
+
   // Add in titles for the options
+  "PreventAllPickup.title": "Disable all furniture pickup",
+  "FurniturePlacementKey.title": "Bypass keybind (enable pickup)",
   "CanPickUpBed.title": "Can pick up beds",
   "CanPickUpChair.title": "Can pick up chairs",
   "CanPickUpTable.title": "Can pick up tables",
   "CanPickUpDresser.title": "Can pick up dressers",
   "CanPickUpDecoration.title": "Can pick up decorations",
-  "CanPickUpTV.title":  "Can pick up TVs",
+  "CanPickUpTV.title": "Can pick up TVs",
   "CanPickUpLamp.title": "Can pick up lamps",
   "CanPickUpRug.title": "Can pick up rugs",
   "CanPickUpWindow.title": "Can pick up windows",
   "CanPickUpFireplace.title": "Can pick up fireplaces",
   "CanPickUpTorch.title": "Can pick up torches",
   "CanPickUpSconce.title": "Can pick up sconces",
-  "CanPickUpFishTank.title":  "Can pick up fish tanks",
+  "CanPickUpFishTank.title": "Can pick up fish tanks",
 
   // Add in error text for the options
   "CanPickUpBed.error": "Picking up beds disabled",

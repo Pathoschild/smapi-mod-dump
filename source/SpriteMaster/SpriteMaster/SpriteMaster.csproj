@@ -46,7 +46,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
-	  <DefineConstants>DEVELOPMENT;TRACE;CONTRACTS_FULL</DefineConstants>
+	  <DefineConstants>DEVELOPMENT;CONTRACTS_FULL</DefineConstants>
 	  <Optimize>true</Optimize>
 	</PropertyGroup>
 

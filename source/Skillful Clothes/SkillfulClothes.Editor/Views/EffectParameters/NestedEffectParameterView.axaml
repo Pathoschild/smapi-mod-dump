@@ -8,21 +8,11 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
       <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
 
     <TextBlock Text="{Binding ParameterName}" IsVisible="{Binding IsRoot, Converter={StaticResource boolInverter}}" VerticalAlignment="Center" />
     
     <ItemsControl Grid.Column="1" Items="{Binding NestedEffects}" Margin="10 0 0 0" />
-    <Button Grid.Column="2" Content="up" Margin="10 0 0 0" />
-    <Button Grid.Column="3" Content="down" />
-    
-    <Button Grid.Column="4" Content="-" Margin="10 0 0 0" />
-
-    <Button Grid.Column="5" Content="+" />
     
   </Grid>
 </UserControl>

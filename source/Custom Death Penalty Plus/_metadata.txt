@@ -6,10 +6,9 @@ mods:
    Custom Death Penalty Plus
 
 latest commit:
-   commit 1facc452d0249f0b32babbdc551ccbcbd217385a
-   Merge: c7dece2 0334bf0
+   commit aaf171e1f34c076bd5090a93828a1f82e567f808
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Tue Aug 2 11:17:16 2022 +1000
+   Date:   Mon Sep 19 15:11:31 2022 +1000
    
-       Merge branch 'master' of https://github.com/TheMightyAmondee/CustomDeathPenaltyPlus
+       fix editor
    

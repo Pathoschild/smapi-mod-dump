@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/sqbr/StardewValleyMods
+   Git: https://github.com/sqbr/StardewValleyMods.git
+
+mods:
+   Gender Setter
+
+latest commit:
+   commit 72b7d86cb23f2c5b03a19850a955a778bf6a5c0d
+   Author: Sean <sqbr@users.noreply.github.com>
+   Date:   Wed Sep 14 15:41:02 2022 +0800
+   
+       Add files via upload
+   

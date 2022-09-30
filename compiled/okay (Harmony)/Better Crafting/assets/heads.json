@@ -1,0 +1,98 @@
+{
+	"Abigail": {
+		"OffsetY": 3
+	},
+	"Birdie": {
+		"OffsetY": 6
+	},
+	"Caroline": {
+		"OffsetY": 2
+	},
+	"Clint": {
+		"OffsetY": -1
+	},
+	"Demetrius": {
+		"OffsetY": -2
+	},
+	"Dwarf": {
+		"OffsetY": 1
+	},
+	"Elliott": {
+		"OffsetY": -1
+	},
+	"Emily": {
+		"OffsetY": 1
+	},
+	"Evelyn": {
+		"OffsetY": 4
+	},
+	"George": {
+		"OffsetY": 4
+	},
+	"Gus": {
+		"OffsetY": 2
+	},
+	"Gunther": {
+		"OffsetY": 3
+	},
+	"Haley": {
+		"OffsetY": 2
+	},
+	"Harvey": {
+		"OffsetY": -1
+	},
+	"Jas": {
+		"OffsetY": 7
+	},
+	"Jodi": {
+		"OffsetY": 3
+	},
+	"Kent": {
+		"OffsetY": -1
+	},
+	"Leah": {
+		"OffsetY": 2
+	},
+	"Leo": {
+		"OffsetY": 6
+	},
+	"Lewis": {
+		"OffsetY": 1
+	},
+	"Linus": {
+		"OffsetY": 6
+	},
+	"Marlon": {
+		"OffsetY": 2
+	},
+	"Marnie": {
+		"OffsetY": 4
+	},
+	"Maru": {
+		"OffsetY": 2
+	},
+	"Pam": {
+		"OffsetY": 5
+	},
+	"Penny": {
+		"OffsetY": 3
+	},
+	"Robin": {
+		"OffsetY": 2
+	},
+	"Sandy": {
+		"OffsetY": 2
+	},
+	"Sebastian": {
+		"OffsetY": 1
+	},
+	"Shane": {
+		"OffsetY": 1
+	},
+	"Vincent": {
+		"OffsetY": 8
+	},
+	"Willy": {
+		"OffsetY": -1
+	}
+}

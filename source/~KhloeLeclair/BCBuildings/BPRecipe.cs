@@ -43,13 +43,22 @@ public class BPRecipe : IRecipe {
 			Query = GameStateQuery.ParseConditions(RawQuery);
 
 		List<IIngredient> ingredients = new();
+		int amount;
 
 		if (blueprint.itemsRequired != null)
-			foreach (var entry in blueprint.itemsRequired)
-				ingredients.Add(mod.BCAPI!.CreateBaseIngredient(entry.Key, entry.Value));
+			foreach (var entry in blueprint.itemsRequired) {
+				amount = (int) (entry.Value * (mod.Config.CostMaterial / 100.0));
+				if ( amount > 0 )
+					ingredients.Add(mod.BCAPI!.CreateBaseIngredient(entry.Key, amount));
+			}
 
-		if (blueprint.moneyRequired > 0)
-			ingredients.Add(mod.BCAPI!.CreateCurrencyIngredient(CurrencyType.Money, blueprint.moneyRequired));
+		amount = (int) (blueprint.moneyRequired * (mod.Config.CostCurrency / 100.0));
+		if (amount > 0)
+			ingredients.Add(mod.BCAPI!.CreateCurrencyIngredient(CurrencyType.Money, amount));
+
+		IEnumerable<IIngredient>? additional = Mod.GetAdditionalCost();
+		if (additional is not null)
+			ingredients.AddRange(additional);
 
 		Ingredients = ingredients.ToArray();
 

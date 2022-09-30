@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
-using StardustCore.UIUtilities.SpriteFonts.Components;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts.Components;
 
-namespace StardustCore.UIUtilities.SpriteFonts.CharacterSheets
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.CharacterSheets
 {
     public class VanillaCharacterSheet : GenericCharacterSheets
     {

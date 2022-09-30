@@ -73,7 +73,7 @@ internal static class SpriteMap {
 			var result = meta.TryAddToSpriteInstanceTable(instance.SpriteMapHash, instance);
 			if (!result) {
 				meta.GetSpriteInstanceTable().TryGetValue(instance.SpriteMapHash, out var current);
-				if (current is null || current.Invalidated) {
+				if (current is null || current.Invalidated || instance.PreviousSpriteInstance == current) {
 					meta.ReplaceInSpriteInstanceTable(instance.SpriteMapHash, instance);
 					result = true;
 				}
@@ -95,14 +95,20 @@ internal static class SpriteMap {
 		}
 	}
 
+	internal static bool ValidateInstance(ManagedSpriteInstance instance) {
+		return
+			!instance.IsDisposed &&
+			instance.IsPreview == (Configuration.Preview.Override.Instance is not null);
+	}
+
 	internal static bool TryGetReady(XTexture2D texture, Bounds source, uint expectedScale, [NotNullWhen(true)] out ManagedSpriteInstance? result) {
-		if (TryGet(texture, source, expectedScale, out var internalResult)) {
-			if (internalResult.IsReady) {
+		if (TryGet(texture, source, expectedScale, out var internalResult, out _)) {
+			if (ValidateInstance(internalResult) && internalResult.IsReady) {
 				result = internalResult;
 				return true;
 			}
 
-			if (internalResult.PreviousSpriteInstance?.IsReady ?? false) {
+			if (internalResult.PreviousSpriteInstance is {} previousSpriteInstance && ValidateInstance(previousSpriteInstance) && previousSpriteInstance.IsReady) {
 				result = internalResult.PreviousSpriteInstance;
 				result.Resurrect(texture, internalResult.SpriteMapHash);
 				return true;
@@ -112,8 +118,9 @@ internal static class SpriteMap {
 		return false;
 	}
 
-	internal static bool TryGet(XTexture2D texture, Bounds source, uint expectedScale, [NotNullWhen(true)] out ManagedSpriteInstance? result) {
+	internal static bool TryGet(XTexture2D texture, Bounds source, uint expectedScale, [NotNullWhen(true)] out ManagedSpriteInstance? result, out ulong hash) {
 		var rectangleHash = SpriteHash(texture: texture, source: source, expectedScale: expectedScale, preview: Configuration.Preview.Override.Instance is not null);
+		hash = rectangleHash;
 
 		var meta = texture.Meta();
 		var spriteTable = meta.GetSpriteInstanceTable();
@@ -209,6 +216,26 @@ internal static class SpriteMap {
 		}
 
 		instance?.Suspend();
+	}
+
+	internal static void Remove(ulong hash, Texture2DMeta meta, bool forceDispose) {
+		var spriteTable = meta.GetSpriteInstanceTable();
+
+		ManagedSpriteInstance? instance = null;
+		using (meta.Lock.Write) {
+			spriteTable.TryGetValue(hash, out var instance0);
+			meta.RemoveFromSpriteInstanceTable(hash, dispose: false, out var instance1);
+			instance = instance0 ?? instance1;
+		}
+
+		if (instance is not null) {
+			if (forceDispose) {
+				instance.Dispose();
+			}
+			else {
+				instance.Suspend();
+			}
+		}
 	}
 
 	// TODO : CP-A support - we hit here repeatedly for animated textures.
@@ -316,13 +343,25 @@ internal static class SpriteMap {
 		"winter"
 	};
 
+	internal static void Purge() {
+		foreach (var spriteInstance in SpriteInstanceReferences) {
+			try {
+				spriteInstance.Dispose(disposeChildren: true);
+			}
+			catch {
+				// ignored
+			}
+		}
+	}
+
 	internal static void SeasonPurge(string season) {
 		if (!Config.Garbage.SeasonalPurge) {
 			return;
 		}
 
-		try {
-			foreach (var spriteInstance in SpriteInstanceReferences) {
+		
+		foreach (var spriteInstance in SpriteInstanceReferences) {
+			try {
 				if (spriteInstance.Anonymous()) {
 					continue;
 				}
@@ -336,9 +375,9 @@ internal static class SpriteMap {
 					spriteInstance.Dispose();
 				}
 			}
-		}
-		catch {
-			// ignored
+			catch {
+				// ignored
+			}
 		}
 	}
 

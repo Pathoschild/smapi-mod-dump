@@ -15,6 +15,7 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
+using StardewValley;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -52,6 +53,21 @@ internal static class PGraphicsDeviceManager {
 		}
 	}
 	private static DeviceState LastState = new();
+
+	[Harmonize(
+		typeof(Game1),
+		"SetWindowSize",
+		Fixation.Prefix,
+		PriorityLevel.Last
+	)]
+	public static bool OnSetWindowSize(Game1 __instance, ref int w, ref int h) {
+		if (Config.Debug.TestZoomedOutOverMax) {
+			Game1.options.desiredBaseZoomLevel = 0.25f;
+			Game1.options.baseZoomLevel = 0.25f;
+		}
+
+		return true;
+	}
 
 	[Harmonize(
 		typeof(RenderTarget2D),

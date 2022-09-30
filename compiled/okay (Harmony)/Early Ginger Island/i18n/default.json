@@ -1,0 +1,17 @@
+﻿{
+  "config.boatTicketPrice.name": "Boat ticket price",
+  "config.allowIslandFarmBeforeCC.name": "Allow island farm before CC",
+  "config.allowIslandFarmBeforeCC.tooltip": "Allows unlocking the west part of Ginger Island, including the island farm.\nIf disabled, other unlocks will be modified to allow progress before the farm is unlocked.",
+
+  "config.boatFix.section.name": "Boat fix requirements",
+  "config.boatFix.hardwoodRequired.name": "Hardwood",
+  "config.boatFix.iridiumBarsRequired.name": "Iridium Bars",
+  "config.boatFix.batteryPacksRequired.name": "Battery Packs",
+
+  "config.unlockConditions.section.name": "Unlock conditions #{{Number}}",
+  "config.unlockConditions.section.tooltip": "A set of conditions to unlock Ginger Island before Community Center completion.\nIf none are fully satisfied, Ginger Island will still unlock after completing the Community Center.",
+  "config.unlockConditions.heartsWithWilly.name": "Hearts with Willy",
+  "config.unlockConditions.heartsWithWilly.tooltip": "The minimum amount of hearts any player needs with Willy for this unlock.",
+  "config.unlockConditions.date.name": "Earliest date",
+  "config.unlockConditions.date.tooltip": "The earliest date for this condition.\n\"anytime\": Satisfied right away.\n\"year 2\": Starting from Spring 1, Year 2.\n\"winter year 1\": Starting from Winter 1, Year 1.\n\"summer 15 year 2\": Starting from Summer 15, Year 2."
+}

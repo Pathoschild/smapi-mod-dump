@@ -10,7 +10,7 @@
 
 using System.ComponentModel;
 
-namespace StardustCore.Enums
+namespace Omegasis.StardustCore.Enums
 {
     /// <summary>A custom class used to wrap Stardew Valley's direction conventions.</summary>
     public class Directions

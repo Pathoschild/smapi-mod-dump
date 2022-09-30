@@ -3,6 +3,7 @@
   "AnimalDoorCloseTime": 1800,
   "CoopRequiredUpgradeLevel": 1,
   "BarnRequiredUpgradeLevel": 1,
+  "UnrecognizedAnimalBuildingsEnabled": false,
   "AutoOpenEnabled": true,
   "OpenDoorsWhenRaining": false,
   "OpenDoorsDuringWinter": false,

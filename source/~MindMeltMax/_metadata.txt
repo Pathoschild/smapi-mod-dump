@@ -5,6 +5,8 @@ urls:
 mods:
    Better Shipping Bin
    Chest Displays
+   Fishing Nets
+   Fishing Nets → Automate
    Joja's Hauntings
    Locked Chests
    Multi-User Chests
@@ -15,9 +17,9 @@ mods:
    Unbreakable Tackles
 
 latest commit:
-   commit 38dd02e886e14774b759719d90cdf06bb1195c16
+   commit 53de4e7eb666102d80c1e51e3b13264d0f82ffcb
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Sun Aug 7 21:31:54 2022 +0200
+   Date:   Mon Sep 19 19:54:37 2022 +0200
    
-       Added source code for trading mod
+       Fixed placement bug (fishnets)
    

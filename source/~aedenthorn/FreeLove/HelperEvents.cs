@@ -53,20 +53,6 @@ namespace FreeLove
                 getValue: () => Config.MinPointsToDate,
                 setValue: value => Config.MinPointsToDate = value
             );
-            
-            configMenu.AddNumberOption(
-                mod: ModManifest,
-                name: () => "Max Gifts Per Day",
-                getValue: () => Config.MaxGiftsPerSpousePerDay,
-                setValue: value => Config.MaxGiftsPerSpousePerDay = value
-            );
-            
-            configMenu.AddNumberOption(
-                mod: ModManifest,
-                name: () => "Max Gifts Per Week",
-                getValue: () => Config.MaxGiftsPerSpousePerWeek,
-                setValue: value => Config.MaxGiftsPerSpousePerWeek = value
-            );
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
@@ -89,6 +75,12 @@ namespace FreeLove
                 setValue: value => Config.RoommateRomance = value
             );
 
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Max children",
+                getValue: () => Config.MaxChildren,
+                setValue: value => Config.MaxChildren = value
+            );
             configMenu.AddBoolOption(
                 mod: ModManifest,
                 name: () => "Show Parent Names",

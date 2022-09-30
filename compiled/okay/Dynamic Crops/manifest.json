@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Dynamic Crops",
+  "Author": "HaulinOats",
+  "Version": "1.0.1", // fixed locally
+  "Description": "Dynamically generate various crop and seed properties on each new save, such as sell and purchase prices, harvest times, and even regrowth capability.",
+  "UniqueID": "HaulinOats.DynamicCrops",
+  "EntryDll": "DynamicCrops.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

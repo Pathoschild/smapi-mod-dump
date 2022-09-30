@@ -6,7 +6,7 @@
     - 字体界面位于游戏菜单从左到右最后一栏（画着两个T的那栏）。
     - 游戏内大致分为三种字体：小字体（SmallFont）、中字体（DialogueFont）、对话字体（SpriteText）。（如你所见，中文翻译和英文是不搭的，因为中文是我根据实际情况取名的，请留心）
       
-    - 界面分上下两部分，上面是一个简单的示例系统，下面是设置界面。
+    - 界面分上中下三部分，上面是一个简单的示例系统，中间是一个简单的预设系统，下面是设置界面。
         - 示例系统：更直观地反映情况。示例文本可以修改，见下“修改配置”段。同时提供一些按键更改示例的显示方式：
             - 合并示例：     将两个示例文本重合。
             - 显示边框：     显示每个字的边框。
@@ -24,19 +24,30 @@
     - 最后，点击OK，设置完成。
 
 
+预设系统：
+    从0.5版本开始，新增预设系统，简单来说，就是将各个字体设置打包保存，以便下次使用。
+    说明：
+        在你完成设置后，点击“保存当前设置为新预设”，输入新预设的基本信息，确认，新预设就保存好了。
+        你可以点左右箭头切换预设，如果要编辑某个预设，将其切换至当前，修改UI控件的值，点击“保存”即可。
+        如果要删除某个预设，将其切换至当前，点击“删除”即可。
+
+
 修改配置：
-    - ExampleText       示例文本（其中\n表示换行，建议两行，即\n一次，这样方便设置行间距）
-    - MaxFontSize       字体大小 最大值。（默认100）
-    - MinSpacing        字间距 最小值。（默认-10）
-    - MaxSpacing        字间距 最大值。（默认10）
-    - MaxLineSpacing    行间距 最大值。(默认100)
-    - MinCharOffsetX    横轴偏移量 最小值。（默认-10）
-    - MaxCharOffsetX    横轴偏移量 最大值。（默认10）
-    - MinCharOffsetY    纵轴偏移量 最小值。（默认-10）
-    - MaxCharOffsetY    纵轴偏移量 最大值。（默认10）
+    - ExampleText               示例文本（其中\n表示换行，建议两行，即\n一次，这样方便设置行间距）
+    - MaxFontSize               字体大小 最大值。（默认100）
+    - MinSpacing                字间距 最小值。（默认-10）
+    - MaxSpacing                字间距 最大值。（默认10）
+    - MaxLineSpacing            行间距 最大值。(默认100)
+    - MinCharOffsetX            横轴偏移量 最小值。（默认-10）
+    - MaxCharOffsetX            横轴偏移量 最大值。（默认10）
+    - MinCharOffsetY            纵轴偏移量 最小值。（默认-10）
+    - MaxCharOffsetY            纵轴偏移量 最大值。（默认10）
+    - DisableTextShadow         是否禁用字体阴影（默认false）
+    - OpenFontSettingsMenu      打开字体菜单的按键（默认LeftAlt + F）
+    - FontSettingsInGameMenu    是否在游戏内置菜单中添加字体栏。
 
 兼容性：
-    当前版本（0.4.0）
+    当前版本（0.5.0）
         兼容Smapi 3.14.0及以上，Windows、MacOS、Linux系统，
         语言兼容所有游戏内置语言（语言选择菜单初始3x4=12种语言）。但是使用拉丁字符的语言（en、pt、es、de、fr、it、tr、hu）无法设置对话字体，因为游戏是使用另一种方法——精灵表，来绘制字符的。
         字体格式兼容TrueType（.ttf, .ttc）、OpenType（.otf, .otc, .ttf, .ttc）。
@@ -44,12 +55,27 @@
         For latin language (en, pt, es, de, fr, it, tr, hu) users, 
         it's hard to custom dialogue font because game draws those texts with a spritesheet, and its logic in code is really hardcoded to patch.
 
+
 其他问题：
     问：这个模组支持联机吗？一定要所有玩家同时安装吗？
     答：支持；不需要，实际上对联机毫无影响。
 
 
 更新日志：
+【测试版】0.5.0 - 2022-09-07
+    新增功能：
+        - 允许禁用字体阴影（见上 修改配置 -> DisableTextShadow）。
+        - 预设系统（将一个字体设置打包保存，以便下次使用）。
+        - 刷新字体列表（选择字体左手边的刷新键），即重新扫描你电脑中的所有字体。
+        - 现在可以打开一个独立的字体菜单；游戏内置菜单中的字体栏也可以设置为关闭。
+
+    - 取消了配置菜单Generic Mod Config Menu中设置字体的功能，取而代之的是你可以在任何地方打开字体菜单（见 修改配置 -> OpenFontSettingsMenu）。
+    - 修复与魔法少女界面（n网2668）的冲突（字体设置界面黑框）。感谢n网@TenCalcite 提出问题。
+
+    - UI界面内部逻辑重构。
+    - 修复迁移程序会擦除配置的bug。
+    - 删除冗余代码。
+
 【测试版】0.4.0 - 2022-07-25
     - 添加一个“字符偏移量”的设置，允许微调字体整体的偏移，以更精确地校准。
     - 允许配置字体大小、字间距、行间距、偏移量的极值。

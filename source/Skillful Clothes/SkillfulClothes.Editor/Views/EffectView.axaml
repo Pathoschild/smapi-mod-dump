@@ -5,7 +5,13 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SkillfulClothes.Editor.Views.EffectView">
 
-    <Expander Grid.Row="2" IsExpanded="False">
+  <Grid>
+    <Grid.ColumnDefinitions>      
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    
+    <Expander IsExpanded="False" IsVisible="{Binding HasParameters}" Padding="10">
       <Expander.Header>
         <Grid>
           <Grid.RowDefinitions>
@@ -20,5 +26,29 @@
       <ItemsControl Items="{Binding Parameters}" />
       
     </Expander>
+
+    <Border BorderBrush="LightGray"
+        BorderThickness="1"
+        CornerRadius="3"
+        Padding="10" IsVisible="{Binding HasParameters, Converter={StaticResource boolInverter}}">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding DisplayName}" FontSize="18" FontWeight="DemiBold" />
+        <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="12" Margin="5 5 0 0" />
+      </Grid>
+   </Border>
+
+    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10 10 0 0" Orientation="Horizontal">
+      <Button Grid.Column="2" Content="up" />
+      <Button Grid.Column="3" Content="down" />
+
+      <Button Grid.Column="4" Content="-" Margin="10 0 0 0" />
+
+      <Button Grid.Column="5" Content="+" Margin="10 0 0 0" Command="{Binding AddSiblingEffectCommand}" />
+    </StackPanel>
+  </Grid>
      
 </UserControl>

@@ -11,7 +11,7 @@
 {
   "Name": "Better Butterfly Hutch",
   "Author": "NormanPCN",
-  "Version": "1.3.2",
+  "Version": "1.3.4",
   "Description": "Control the number of butterflies spawned by the butterfly hutch",
   "UniqueID": "NormanPCN.BetterButterflyHutch",
   "EntryDll": "BetterButterflyHutch.dll",

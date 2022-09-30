@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit b781136c5333f49051fbf2cc324c144e8b2de068
+   commit da716a4e845ee9c8992ea40ae8a17d7fde39eb70
    Author: Clare <ccathanlon@gmail.com>
-   Date:   Sun Aug 28 00:46:52 2022 -0400
+   Date:   Tue Sep 27 19:43:59 2022 -0400
    
-       made non-drinking version of paula's 14 heart event
+       fixed bug with jio and daia at movies
    

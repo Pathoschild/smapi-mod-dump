@@ -8,20 +8,18 @@ for queries and analysis.**
 
 ← [author guide](../author-guide.md)
 
-A patch with **`"Action": "EditData"`** edits fields and entries inside a data asset. Any number of
-content packs can edit the same asset.
-
 ## Contents
 * [Introduction](#introduction)
 * [How recoloring works](#recoloring-notes)
 * [Animation](#animation-frames-when-walking-running-or-riding)
 * [Making larger hair](#bigger-hair)
+* [Beards](#beards)
 
 ## Introduction
 After creating your [Hair folder and JSON file](../author-guide.md#hair), that's really all you need to
 do for creating a replacement or new hair style.
 
-## Recolouring Notes
+## Recoloring Notes
 If you want your dual hair colours to recolor well, there are some color choices to consider. Make sure that;
 *   You use only grey colors (if RGB aren't the same value, the pixel won't recolor)
 *   Transparent hair Alpha is more solid than 99 (or 39%)
@@ -101,3 +99,32 @@ You can make your hair a bit bigger by using a few extra options;
 `yOffset` allows you to move the hair up if needed, and `extraWidth` let's DynmicBodies know that
 your hair spirte is bigger than 16pixels, eg `"extraWidth": 8` would mean you have a 24 pixel width
 hair. It will always centre it though!
+
+## Beards
+Beards work a bit different to hair currently, they are a 16x96 pixel file following
+the [same recoloring](#recoloring-notes) method. The sprite are looking down, looking right and looking up. The looking
+right sprite is flipped to make the left facing version.
+
+Once a file is made, add an entry to the JSON file;
+```
+{
+  "unisex": {
+    "beards": {
+      "Long beard":"long",
+      ...
+    }
+  }
+}
+```
+Above in the `unisex` section, a 'long.png' file has been added. The folder will look like;
+```
+📁 Mods/
+   📁 [DB] YourModName/
+      🗎 content.json
+      🗎 manifest.json
+      📁 assets/
+         📁 beards/
+            🗎 long.png
+            ...
+         ...
+```

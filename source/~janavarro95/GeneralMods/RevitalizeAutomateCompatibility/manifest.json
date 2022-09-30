@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+  "Name": "RevitalizeAutomateCompatibility",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.0.1",
+  "Description": "A mod that adds Automate compatibility to Revitalize.",
+  "UniqueID": "Omegasis.RevitalizeAutomateCompatibility",
+  "EntryDll": "RevitalizeAutomateCompatibility.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [],
+  "Dependencies": [
+    { "UniqueID": "Pathoschild.Automate" },
+    { "UniqueID": "Omegasis.StardustCore" },
+    { "UniqueID": "Omegasis.Revitalize" },
+    { "UniqueID": "spacechase0.SpaceCore" }
+
+  ]
+}

@@ -43,21 +43,21 @@ public static class Workbench_Patches {
 		try {
 			ModEntry mod = ModEntry.Instance;
 			if (mod.Config.ReplaceCrafting && !(mod.Config.SuppressBC?.IsDown() ?? false)) {
-				if (justCheckingForActivity) {
-					__result = true;
-					return false;
-				}
+				// If we're not just checking, open the menu.
+				if (!justCheckingForActivity && Game1.activeClickableMenu is null)
+					Game1.activeClickableMenu = Menus.BetterCraftingPage.Open(
+						mod,
+						who.currentLocation,
+						__instance.TileLocation,
+						standalone_menu: true,
+						material_containers: (IList<object>?) null
+					);
 
-				Game1.activeClickableMenu = Menus.BetterCraftingPage.Open(
-					mod,
-					who.currentLocation,
-					__instance.TileLocation,
-					standalone_menu: true,
-					material_containers: (IList<object>?) null
-				);
-
+				// Return true and don't call the original method.
+				__result = true;
 				return false;
 			}
+
 		} catch(Exception ex) {
 			Monitor?.Log("An error occurred while attempting to interact with a Workbench.", LogLevel.Warn);
 			Monitor?.Log($"Details:\n{ex}", LogLevel.Warn);

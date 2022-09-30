@@ -8,7 +8,7 @@ for queries and analysis.**
 
 # Stardew Valley GMCM Options
 
-A Stardew Valley SMAP mod that provides additional complex option types for use with Gemeric Mod Config Menu (GMCM).
+A Stardew Valley SMAP mod that provides additional complex option types for use with Generic Mod Config Menu (GMCM).
 
 You can find this mod on [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/10505)
 if you prefer.

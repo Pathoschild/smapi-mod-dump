@@ -8,93 +8,105 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks.Sources;
 using CarryYourPet.Patches;
-using DecidedlyShared.Logging;
 using DecidedlyShared.APIs;
+using DecidedlyShared.Logging;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
+using SObject = StardewValley.Object;
 
 namespace CarryYourPet
 {
-	public class ModEntry : Mod
-	{
-		// SMAPI gubbins.
-		private static IModHelper helper;
-		private static IMonitor monitor;
-		private static Logger logger;
-		private static ModConfig config;
-		
-		// Patch stuff
-		private NPCPatches patches;
-		
-		// NPC stuff.
+    public class ModEntry : Mod
+    {
+        // SMAPI gubbins.
+        private static IModHelper helper;
+        private static IMonitor monitor;
+        private static Logger logger;
+        private static ModConfig config;
+
+        // NPC stuff.
         private CarriedCharacter carriedCharacter;
 
-		public override void Entry(IModHelper helper)
+        private readonly SObject dummyObject = new();
+
+        // Patch stuff
+        private Patches.Patches patches;
+
+        private string thing = "";
+
+        public override void Entry(IModHelper helper)
         {
             config = helper.ReadConfig<ModConfig>();
-			ModEntry.helper = helper;
-			monitor = Monitor;
-			logger = new Logger(monitor, null);
-            carriedCharacter = new CarriedCharacter();
-			patches = new NPCPatches(config, carriedCharacter, logger);
+            ModEntry.helper = helper;
+            monitor = this.Monitor;
+            logger = new Logger(monitor, null);
+            this.carriedCharacter = new CarriedCharacter();
+            this.patches = new Patches.Patches(config, this.carriedCharacter, logger);
             I18n.Init(helper.Translation);
 
-            Harmony harmony = new Harmony(ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
-			harmony.Patch(
-				original: AccessTools.Method(typeof(Pet), nameof(Pet.checkAction)),
-				postfix: new HarmonyMethod(typeof(NPCPatches), nameof(Patches.NPCPatches.PetCheckAction_Postfix)));
-            
             harmony.Patch(
-                original: AccessTools.Method(typeof(Pet), nameof(Pet.draw),
-                    parameters: new Type[] {typeof(SpriteBatch)}),
-                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(Patches.NPCPatches.PetDraw_Prefix)));
-            
+                AccessTools.Method(typeof(Pet), nameof(Pet.checkAction)),
+                postfix: new HarmonyMethod(typeof(Patches.Patches), nameof(Patches.Patches.PetCheckAction_Postfix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Pet), nameof(Pet.draw),
+                    new[] { typeof(SpriteBatch) }),
+                new HarmonyMethod(typeof(Patches.Patches), nameof(Patches.Patches.PetDraw_Prefix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.pet)),
+                new HarmonyMethod(typeof(Patches.Patches), nameof(Patches.Patches.FarmAnimalPet_Prefix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.draw),
+                    new[] { typeof(SpriteBatch) }),
+                new HarmonyMethod(typeof(Patches.Patches), nameof(Patches.Patches.FarmAnimalDraw_Prefix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Farmer), nameof(Farmer.IsCarrying)),
+                postfix: new HarmonyMethod(typeof(Patches.Patches), nameof(Patches.Patches.FarmerIsCarrying_Postfix)));
+
             // If I do ever re-enable carrying NPCs, these are the patches.
             // harmony.Patch(
             //     original: AccessTools.Method(typeof(NPC), nameof(NPC.draw),
             //         parameters: new Type[] {typeof(SpriteBatch), typeof(float)}),
-            //     prefix: new HarmonyMethod(typeof(NPCPatches), nameof(Patches.NPCPatches.NpcDraw_Prefix)));
+            //     prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.Patches.NpcDraw_Prefix)));
             //
             // harmony.Patch(
             //     original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
-            //     prefix: new HarmonyMethod(typeof(NPCPatches), nameof(Patches.NPCPatches.NpcCheckAction_Postfix)));
-			
-			helper.Events.Display.RenderedWorld += DisplayOnRenderedWorld;
-            helper.Events.Player.Warped += PlayerOnWarped;
-            helper.Events.GameLoop.GameLaunched += (sender, args) => { RegisterWithGmcm(); };
+            //     prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.Patches.NpcCheckAction_Postfix)));
+
+            helper.Events.Display.RenderedWorld += this.DisplayOnRenderedWorld;
+            helper.Events.Player.Warped += this.PlayerOnWarped;
+            helper.Events.GameLoop.GameLaunched += (sender, args) => { this.RegisterWithGmcm(); };
         }
 
         private void RegisterWithGmcm()
         {
-            IGenericModConfigMenuApi configMenuApi =
-                Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            var configMenuApi =
+                this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
             if (configMenuApi == null)
             {
-                logger.Log(I18n.CarryYourPet_Message_GmcmNotInstalled(), LogLevel.Info);
+                logger.Log(I18n.CarryYourPet_Message_GmcmNotInstalled());
 
                 return;
             }
 
-            configMenuApi.Register(ModManifest,
+            configMenuApi.Register(this.ModManifest,
                 () => config = new ModConfig(),
-                () => Helper.WriteConfig(config));
-            
+                () => this.Helper.WriteConfig(config));
+
             configMenuApi.AddKeybindList(
-                mod: ModManifest,
+                this.ModManifest,
                 name: () => I18n.CarryYourPet_Keybind_HoldToCarry(),
                 tooltip: () => I18n.CarryYourPet_Keybind_HoldToCarry_Tooltip(),
                 getValue: () => config.HoldToCarryNpc,
@@ -104,31 +116,42 @@ namespace CarryYourPet
         private void PlayerOnWarped(object sender, WarpedEventArgs e)
         {
             // On warp, we want to "drop" the NPC, which is to say, set the carried property to null.
-            carriedCharacter.Npc = null;
+            this.carriedCharacter.Npc = null;
         }
 
         private void DisplayOnRenderedWorld(object? sender, RenderedWorldEventArgs e)
-		{
-            if (carriedCharacter.Npc != null)
+        {
+            if (this.carriedCharacter.Npc != null)
             {
-                Pet pet = (Pet)this.carriedCharacter.Npc;
+                if (this.carriedCharacter.Npc is Pet)
+                {
+                    var pet = (Pet)this.carriedCharacter.Npc;
 
-                LockPetToPlayer(pet);
+                    this.LockCharacterToPlayer(pet);
 
-                this.carriedCharacter.ShouldDraw = true;
-                pet.draw(e.SpriteBatch);
-                this.carriedCharacter.ShouldDraw = false;
+                    this.carriedCharacter.ShouldDraw = true;
+                    pet.draw(e.SpriteBatch);
+                    this.carriedCharacter.ShouldDraw = false;
+                }
+                else if (this.carriedCharacter.Npc is FarmAnimal)
+                {
+                    var animal = (FarmAnimal)this.carriedCharacter.Npc;
+                    this.carriedCharacter.Npc.collidesWithOtherCharacters.Value = false;
+                    this.LockCharacterToPlayer(animal);
+
+                    this.carriedCharacter.ShouldDraw = true;
+                    animal.draw(e.SpriteBatch);
+                    this.carriedCharacter.ShouldDraw = false;
+                }
             }
         }
 
-        private void LockPetToPlayer(Pet pet)
+        private void LockCharacterToPlayer(Character character)
         {
-            pet.position.Value = Game1.player.position.Value + new Vector2(-32f, -40);
-            if (pet.CurrentBehavior != 55)
-            {
-                pet.stopWithoutChangingFrame();
-                pet.CurrentBehavior = 55;
-            }
+            if (character is Pet)
+                character.position.Value = Game1.player.position.Value + new Vector2(-32f, -112f);
+            else if (character is FarmAnimal)
+                character.position.Value = Game1.player.position.Value + new Vector2(-32f, -168f);
         }
     }
 }

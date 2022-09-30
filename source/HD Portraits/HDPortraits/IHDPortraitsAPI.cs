@@ -111,5 +111,17 @@ namespace HDPortraits
         /// <param name="npc">The NPC</param>
         /// <returns>The suffix, or null if the portrait is not being overridden</returns>
         public string GetEventPortraitFor(NPC npc);
+        /// <summary>
+        /// Attempt to get HD Portrait
+        /// </summary>
+        /// <param name="name">NPC name/ID</param>
+        /// <param name="suffix">Context Suffix</param>
+        /// <param name="index">Portrait Index</param>
+        /// <param name="texture">Texture being used</param>
+        /// <param name="region">Region being used</param>
+        /// <param name="millis">Milliseconds elapsed</param>
+        /// <param name="forceSuffix">Whether to require the suffix or default to no suffix</param>
+        /// <returns>True if HDPortraits data exists, otherwise false.</returns>
+        public bool TryGetPortrait(string name, string suffix, int index, out Texture2D texture, out Rectangle region, int millis = -1, bool forceSuffix = false);
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Hashing;
+using SpriteMaster.Types;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -44,6 +45,9 @@ internal readonly struct TextureFormat {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal long SizeBytes(int area) => SurfaceFormat.SizeBytes(area);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal long SizeBytes(Vector2I size) => SurfaceFormat.SizeBytes(size);
 
 	internal static readonly TextureFormat None = new((SurfaceFormat)(-1), (CompressionFormat)(-1));
 

@@ -20,6 +20,7 @@
     <Content Include="assets\favoriteHighlight_3.png" />
     <Content Include="assets\favoriteHighlight_4.png" />
     <Content Include="assets\favoriteHighlight_5.png" />
+    <Content Include="assets\favoriteHighlight_6.png" />
     <Content Include="assets\icon.png" />
   </ItemGroup>
   <ItemGroup>

@@ -34,7 +34,7 @@ internal sealed partial class Scaler {
 			Span<Color16> targetData,
 			Vector2I targetSize
 		) =>
-			Scaler.Apply(configuration as Config, scaleMultiplier, sourceData, sourceSize, targetData, targetSize);
+			Scaler.Apply((configuration as Config)!, scaleMultiplier, sourceData, sourceSize, targetData, targetSize);
 
 		public Resample.Scalers.Config CreateConfig(Vector2B wrapped, bool hasAlpha, bool gammaCorrected) => new Config(
 			wrapped: wrapped,

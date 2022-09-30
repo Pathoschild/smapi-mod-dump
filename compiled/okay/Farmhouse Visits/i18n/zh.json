@@ -18,6 +18,8 @@
     "config.VisitConfiguration":"访问配置",
 	"config.Debug.name": "调试",
 	"config.Debug.Explanation":"开发人员选项",
+	"config.WalkOnFarm.name": "Allow NPCs on farm?",
+	"config.WalkOnFarm.description": "If you go outside during a visit, the NPC will roam the farm.",
 
 	 /*For translators: your in-laws = the family of your spouse.
 	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
@@ -281,5 +283,6 @@
 
 	/* TN: gone while outside */	
     "NPCGoneWhileOutside": "你在外面的时候，{0}离开了。",
-    "NPCGone_Cellar": "你在地下室的时候，{0}离开了。 "
+    "NPCGone_Cellar": "你在地下室的时候，{0}离开了。 ",
+	"NPCGone_Farm": "While you were in the farm, {0} took their leave."
 }

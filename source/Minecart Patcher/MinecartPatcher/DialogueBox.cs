@@ -15,17 +15,20 @@ using System.Reflection;
 
 namespace MinecartPatcher
 {
-    internal class DialogueBox : StardewValley.Menus.DialogueBox
-    {
-        private ModEntry Mod;
+	internal class DialogueBox : StardewValley.Menus.DialogueBox
+	{
+		private ModEntry Mod;
+
 		private MethodInfo tryOutro;
+
 		private MinecartInstance activeCart;
-        public DialogueBox(MinecartInstance mc, ModEntry mod, List<Response> responses) : base(Game1.content.LoadString("Strings\\Locations:MineCart_ChooseDestination"), responses)
-        {
+
+		public DialogueBox(MinecartInstance mc, ModEntry mod, List<Response> responses) : base(Game1.content.LoadString("Strings\\Locations:MineCart_ChooseDestination"), responses)
+		{
 			activeCart = mc;
-            Mod = mod;
+			Mod = mod;
 			tryOutro = typeof(StardewValley.Menus.DialogueBox).GetMethod("tryOutro", BindingFlags.NonPublic | BindingFlags.Instance);
-        }
+		}
 
 		public override void receiveKeyPress(Keys key)
 		{

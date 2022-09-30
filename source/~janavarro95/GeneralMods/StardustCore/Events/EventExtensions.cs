@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StardustCore.Events
+namespace Omegasis.StardustCore.Events
 {
     /// <summary>
     /// Used to parse additional

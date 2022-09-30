@@ -74,6 +74,57 @@ public class FlowBuilder {
 		return this;
 	}
 
+	public FlowBuilder Divider(
+		Color? color = null,
+		Color? shadowColor = null,
+		float size = 4f,
+		float padding = 14f,
+		float shadowOffset = 2f,
+		object? extra = null,
+		string? id = null
+	) {
+		AssertState();
+		Nodes.Add(new DividerNode(
+			color: color,
+			shadowColor: shadowColor,
+			size: size,
+			padding: padding,
+			shadowOffset: shadowOffset,
+			extra: extra,
+			id: id
+		));
+		return this;
+	}
+
+	public FlowBuilder Texture(
+		Texture2D? texture,
+		Rectangle? source,
+		float scale,
+		Alignment? align = null,
+		Func<IFlowNodeSlice, int, int, bool>? onClick = null,
+		Func<IFlowNodeSlice, int, int, bool>? onHover = null,
+		Func<IFlowNodeSlice, int, int, bool>? onRightClick = null,
+		bool noComponent = false,
+		int frame = -1,
+		object? extra = null,
+		string? id = null
+	) {
+		AssertState();
+		Nodes.Add(new TextureNode(
+			texture: texture,
+			source: source,
+			scale: scale,
+			align: align,
+			onClick: onClick,
+			onHover: onHover,
+			onRightClick: onRightClick,
+			noComponent: noComponent,
+			extra: extra,
+			id: id
+		));
+		return this;
+	}
+
 	public FlowBuilder Sprite(
 		SpriteInfo? sprite,
 		float scale,
@@ -477,6 +528,10 @@ public static class FlowHelper {
 			extra: extra,
 			id: id
 		);
+	}
+
+	public static string EscapeFormatText(string text) {
+		return text.Replace("@", "@@");
 	}
 
 	public static IEnumerable<IFlowNode> FormatText(

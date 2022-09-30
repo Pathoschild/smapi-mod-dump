@@ -24,7 +24,7 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.FlexibleSprinklers
 {
-	public class FlexibleSprinklers : Mod, IFlexibleSprinklersApi
+	public class FlexibleSprinklers : BaseMod<ModConfig>, IFlexibleSprinklersApi
 	{
 		private const int PressureNozzleParentSheetIndex = 915;
 		internal static readonly string LineSprinklersModID = "hootless.LineSprinklers";
@@ -35,11 +35,11 @@ namespace Shockah.FlexibleSprinklers
 		private const float SprinklerCoverageAlphaDecrement = 1f / FPS; // 1f per second
 
 		public static FlexibleSprinklers Instance { get; private set; } = null!;
+		private bool IsSlimeHutchWaterSpotsInstalled = false;
 
 		public bool IsSprinklerBehaviorIndependent
 			=> SprinklerBehavior is ISprinklerBehavior.Independent;
 
-		public ModConfig Config { get; private set; } = null!;
 		internal ISprinklerBehavior SprinklerBehavior { get; private set; } = null!;
 		private readonly IList<Func<SObject, int?>> SprinklerTierProviders = new List<Func<SObject, int?>>();
 		private readonly IList<Func<SObject, Vector2[]>> SprinklerCoverageProviders = new List<Func<SObject, Vector2[]>>();
@@ -50,11 +50,9 @@ namespace Shockah.FlexibleSprinklers
 		internal ILineSprinklersApi? LineSprinklersApi { get; private set; }
 		internal IBetterSprinklersApi? BetterSprinklersApi { get; private set; }
 
-		public override void Entry(IModHelper helper)
+		public override void OnEntry(IModHelper helper)
 		{
 			Instance = this;
-
-			Config = helper.ReadConfig<ModConfig>();
 
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
@@ -67,13 +65,34 @@ namespace Shockah.FlexibleSprinklers
 			helper.Events.World.LargeTerrainFeatureListChanged += OnLargeTerrainFeatureListChanged;
 			helper.Events.Input.ButtonPressed += OnButtonPressed;
 
-			RegisterCustomWaterableTileProvider((location, v) => (location is SlimeHutch && v.X == 16f && v.Y >= 6f && v.Y <= 9f) ? true : null);
+			RegisterCustomWaterableTileProvider((location, v) =>
+			{
+				if (location is not SlimeHutch)
+					return null;
+
+				if (IsSlimeHutchWaterSpotsInstalled)
+				{
+					var tileIndex = location.getTileIndexAt(new((int)v.X, (int)v.Y), "Buildings");
+					if (tileIndex is 2134 or 2135)
+						return true;
+				}
+				else if (v.X == 16f && v.Y >= 6f && v.Y <= 9f)
+				{
+					return true;
+				}
+
+				return null;
+			});
 			RegisterCustomWaterableTileProvider((location, v) => Config.WaterPetBowl && location.getTileIndexAt((int)v.X, (int)v.Y, "Buildings") == 1938 ? true : null);
 
 			SetupSprinklerBehavior();
 		}
 
-		public override object GetApi() => this;
+		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
+		{
+			// do nothing, for now
+			// later on, migrate users from Flood Fill to Cluster
+		}
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
@@ -87,6 +106,8 @@ namespace Shockah.FlexibleSprinklers
 			BetterSprinklersApi = Helper.ModRegistry.GetApi<IBetterSprinklersApi>(BetterSprinklersModID);
 			if (BetterSprinklersApi != null)
 				BetterSplinklersPatches.Apply(harmony);
+
+			IsSlimeHutchWaterSpotsInstalled = Helper.ModRegistry.IsLoaded("aedenthorn.SlimeHutchWaterSpots");
 
 			SetupConfig();
 		}
@@ -223,7 +244,8 @@ namespace Shockah.FlexibleSprinklers
 				reset: () => Config = new ModConfig(),
 				save: () =>
 				{
-					Helper.WriteConfig(Config);
+					WriteConfig();
+					LogConfig();
 					SetupSprinklerBehavior();
 				}
 			);
@@ -309,7 +331,7 @@ namespace Shockah.FlexibleSprinklers
 				sprinkler.ApplySprinklerAnimation(location);
 		}
 
-		private static string GetNameForLocation(GameLocation location)
+		internal static string GetNameForLocation(GameLocation location)
 		{
 			var selfName = location.NameOrUniqueName ?? "";
 			var rootName = location.Root?.Value?.NameOrUniqueName ?? "";
@@ -493,10 +515,12 @@ namespace Shockah.FlexibleSprinklers
 				throw new InvalidOperationException("Current sprinkler behavior does not allow independent sprinkler activation.");
 
 			var wasVanillaQueryInProgress = VanillaPatches.IsVanillaQueryInProgress;
+			VanillaPatches.FindGameLocationContextOverride = FindGameLocationContext.FlexibleSprinklersGetModifiedSprinklerCoverage;
 			VanillaPatches.IsVanillaQueryInProgress = false;
 			VanillaPatches.CurrentLocation = location;
 			var layout = sprinkler.GetSprinklerTiles().ToArray();
 			VanillaPatches.IsVanillaQueryInProgress = wasVanillaQueryInProgress;
+			VanillaPatches.FindGameLocationContextOverride = null;
 			return layout;
 		}
 
@@ -522,11 +546,13 @@ namespace Shockah.FlexibleSprinklers
 			}
 
 			var wasVanillaQueryInProgress = VanillaPatches.IsVanillaQueryInProgress;
+			VanillaPatches.FindGameLocationContextOverride = FindGameLocationContext.FlexibleSprinklersGetUnmodifiedSprinklerCoverage;
 			VanillaPatches.IsVanillaQueryInProgress = true;
 			var layout = sprinkler.GetSprinklerTiles()
 				.Select(t => t - sprinkler.TileLocation)
 				.Where(t => t != Vector2.Zero).ToArray();
 			VanillaPatches.IsVanillaQueryInProgress = wasVanillaQueryInProgress;
+			VanillaPatches.FindGameLocationContextOverride = null;
 			return layout;
 		}
 

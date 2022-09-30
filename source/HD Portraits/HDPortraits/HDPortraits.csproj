@@ -16,6 +16,13 @@
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Reference Include="AeroCore">
+			<HintPath>$(GamePath)\Mods\AeroCore\AeroCore.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
 	<ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

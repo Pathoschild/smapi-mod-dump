@@ -6,13 +6,10 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit fcbceac03efddbdb0bdaae5a34d5754cef6dc614
+   commit 49f2d23ef0d227f36178e7db74ccf0568d35ef24
    Author: Nithish Kumar <nithssh@protonmail.com>
-   Date:   Sat Jul 16 21:21:38 2022 +0530
+   Date:   Fri Sep 2 09:23:36 2022 +0530
    
-       Release for 2.2.0
-       - Fix issues with multiplayer
-       - Allowed setting reminders till 2AM (previously till 12AM)
-       - Fix issue with 12AM and 12PM being mixed up
-       - Added Chinese translations
+       Change menu button supression code again
+       Update config guide
    

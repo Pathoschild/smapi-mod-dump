@@ -1,0 +1,21 @@
+{
+  "EnableRandomBundlesMod": "Enable Random Bundles Mod",
+  "AllBundlesAppear": "All Bundles Appear",
+  "RandomTypesOptionsPageTitle": "Random Type Options",
+  "UseRandomSeed": "Use Specific Seed",
+  "RandomSeed": "Seed",
+  "Crops": "Crops",
+  "Foraging": "Foraging",
+  "Fishing": "Fishing",
+  "Cooking": "Cooking",
+  "Minerals": "Minerals",
+  "Artifacts": "Artifacts",
+  "Animal": "Animal Product",
+  "Artisan": "Artisan Goods",
+  "Monster": "Monster Loot",
+  "Resources": "Resources",
+  "Crafting": "Crafting",
+  "Junk": "Junk",
+  "Vault": "Vault",
+  "Desert": "Desert"
+}

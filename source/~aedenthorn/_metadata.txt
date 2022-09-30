@@ -26,10 +26,12 @@ mods:
    Crop Hat
    Crop Variation
    Custom Achievements
+   Custom Backpack Framework
    Custom Chest Types
    Custom Decoration Areas
    Custom Dungeon Floors
    Custom Fixed Dialogue
+   Custom Gift Limits
    Custom Locks
    Custom Object Production
    Custom Ore Nodes
@@ -55,6 +57,7 @@ mods:
    Expert Sitting
    Extra Map Layers
    Familiars
+   Farm Animal Harvest Helper
    Farm Cave Framework
    Farmer Helper
    Farmer Portraits
@@ -91,6 +94,7 @@ mods:
    Mobile Phone
    Mobile Television
    Modify This
+   Move Greenhouse Plot
    Moveable Mailbox
    Moveable Pet Bowl
    Multiple Floor Farmhouse
@@ -99,7 +103,9 @@ mods:
    Musical Paths
    Night Event Chance Tweak
    Non-Random Prairie King
+   NPC Clothing Framework
    Object Import Map
+   Outfit Sets
    Overworld Chests
    Pacifist Valley
    Painting Display
@@ -127,7 +133,9 @@ mods:
    Simple Screenshots
    Sixty-Nine Shirt
    Skateboard
+   Slime Hutch Water Spots
    Social Page Order Button
+   Social Page Order Menu
    Sound Effect Replacement
    Stardew RPG
    Submerged Crab Pots
@@ -139,23 +147,22 @@ mods:
    Trash Can Reactions
    Treasure Chests Expanded
    Underground Secrets
+   Unique Valley
    Utility Grid
    Video Player
    Wall Planter
    Wall Televisions
    Watering Can Tweaks
    Wedding Tweaks
+   Week Starts Sunday
    Wiki Links
    Witcher Mod
    Zombie Outbreak
 
 latest commit:
-   commit 4f9fe81bfb028c9d09482cf673c2da352d30ad2e
-   Merge: 4df094b 6c98784
+   commit 9655ad0e3e07a5ca4713a62fbf66c13b46ef6f49
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Tue Aug 23 13:14:17 2022 -0400
+   Date:   Wed Sep 28 20:12:15 2022 -0400
    
-       Merge pull request #29 from Locked15/MobilePhoneUpdate
-       
-       Mobile Phone, 'NPC Adventures' Compatibility Update
+       custom gift limits
    

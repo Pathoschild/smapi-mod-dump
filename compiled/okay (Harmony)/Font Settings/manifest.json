@@ -1,7 +1,7 @@
 ﻿{
   "Name": "字体设置",
   "Author": "Becks723",
-  "Version": "0.4.0",
+  "Version": "0.5.0",
   "Description": "设置游戏字体。",
   "UniqueID": "Becks723.FontSettings",
   "MinimumApiVersion": "3.14.0",

@@ -6,9 +6,9 @@ mods:
    Cellar Available
 
 latest commit:
-   commit 40f08581da55f379d9f0f00da6f7cb2f7b1009e0
+   commit 394a991f9d14020d3b77e0306fe66cfd2fa841af
    Author: Candidus <candidus@xmail.net>
-   Date:   Wed Jul 7 21:56:45 2021 +0200
+   Date:   Thu Sep 15 20:24:41 2022 +0200
    
-       Fix issue with aedenthorn.MultipleSpouses
+       Minimum SMAPI version is 3.14 (net5.0).
    

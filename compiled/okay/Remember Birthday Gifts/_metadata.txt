@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13554
+IDs: zeldela-RememberBirthdays
+update keys: Nexus:13554, GitHub:zeldela/sdv-mods

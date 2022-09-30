@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewRoguelike", "StardewRoguelike\StardewRoguelike.csproj", "{63CDB202-A0C1-4C18-B44C-573610809AE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3A449B7-F71E-42DE-845C-738A46AD7235}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63CDB202-A0C1-4C18-B44C-573610809AE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63CDB202-A0C1-4C18-B44C-573610809AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63CDB202-A0C1-4C18-B44C-573610809AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63CDB202-A0C1-4C18-B44C-573610809AE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC15D7CD-9BB0-4370-8DD5-52C12864255A}
+	EndGlobalSection
+EndGlobal

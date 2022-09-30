@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace PlacementPlus.Utility
 {
     /// <summary> Helper data structure representing a bi-directional mapping between two of the same type. </summary>
-    // Adapted from Dave Zych: https://stackoverflow.com/a/32658403
+    /// <remarks>Adapted from Dave Zych: https://stackoverflow.com/a/32658403 </remarks>
     public class BiDictionary<T> : IEnumerable
     {
         private readonly Dictionary<T, T> leftDict = new(), rightDict = new();

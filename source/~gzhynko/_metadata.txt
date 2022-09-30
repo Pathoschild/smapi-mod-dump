@@ -9,8 +9,6 @@ mods:
    Fish Exclusions
    Grapes All Year Round
    Incubate Pufferfish Eggs
-   Puffer Eggs to Mayonnaise
-   Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
    commit 57bc2b7ca790e707dafe2c84846e33d66df7f8c9

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13434
+IDs: sqbr.GetGS
+update keys: Nexus:13434, GitHub:sqbr/StardewValleyMods

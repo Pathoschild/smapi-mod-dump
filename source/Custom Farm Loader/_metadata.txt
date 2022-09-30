@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+   Git: https://gitlab.com/delixx/stardew-valley-custom-farm-loader.git
+
+mods:
+   Custom Farm Loader
+
+latest commit:
+   commit 7f3caa339d3f16874018458cded931d65edb25ef
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Thu Sep 29 23:45:48 2022 +0200
+   
+       improved bridge collision detection
+   

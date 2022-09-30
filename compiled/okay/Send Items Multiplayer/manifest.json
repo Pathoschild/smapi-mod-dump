@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SendItemsMultiplayer",
+  "Author": "hafnerpw",
+  "Version": "0.2.4",
+  "Description": "Idk something",
+  "UniqueID": "hafnerpw.SendItemsMultiplayer",
+  "EntryDll": "SendItemsMultiplayer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:13794"]
+}

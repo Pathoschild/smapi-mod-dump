@@ -1,0 +1,9 @@
+{
+  "useSnowDuration": true,
+  "snowDuration": [
+    8,
+    21
+  ],
+  "chanceToRain": 0.183,
+  "chanceToSnow": 0.63
+}

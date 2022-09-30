@@ -14,18 +14,18 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+
 using static PlacementPlus.Utility.Utility;
+using static PlacementPlus.ModState;
 
 namespace PlacementPlus.Patches
 {
     [HarmonyPatch(typeof(StardewValley.Utility), nameof(StardewValley.Utility.playerCanPlaceItemHere))]
     internal class UtilityPatches
     {
-        private static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
-        
         /// <summary>
         /// Alters the requirements for where certain objects can be placed. This visually translates to altering the
-        /// tile cursor to be green when an object can be swapped with another.
+        /// cursor tile to tint green when an object can be swapped with another.
         /// </summary>
         [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
         private static void Postfix(GameLocation location, Item item, int x, int y, Farmer f, ref bool __result)

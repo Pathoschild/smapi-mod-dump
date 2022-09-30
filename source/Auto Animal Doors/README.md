@@ -30,6 +30,9 @@ If you go to bed before your animal door close time, your animal doors will be c
 
 Note: The current implementation closes the animal doors and warps the animals back as soon as you get into bed (even if you select "No" from the "Go to sleep now?" dialog). It is difficult (impossible?) to warp your animals back to safety on time once "Yes" is pressed.
 
+### Other Mods Support
+I added the option `UnrecognizedAnimalBuildingsEnabled` to allow you to enable auto opening of animal buildings that are added by other mods (example: [Aviary Mod](https://www.nexusmods.com/stardewvalley/mods/13492)). Keep in mind that I can't test every mod out there, and I can't control other mods door animations or sounds, so they will likely not follow your `DoorSoundSetting`. For this reason, I have disabled the option by default.
+
 ### Upgrade Level Requirement
 You can set the required upgrade level for barns or coops before the auto open/close feature is enabled via the CoopRequiredUpgradeLevel and BarnRequiredUpgradeLevel respectively. The number corresponds to the minimim upgrade level required for the feature to be enabled. If you want to only have the doors automatically open/close on the last upgrade level (to correspond with the auto feeder system) you can set these values to 3. 
 
@@ -45,16 +48,17 @@ You can find it in the mods install directory.
 
 ### Values
 
-| Name                        | Type      | Default | Description                                                                      |
-|:-------------------------   |:--------- |:------- |:-------------------------------------------------------------------------------- |
-| **AnimalDoorOpenTime**      | *integer* | 730     | The time animal doors are scheduled to open (730 = 7:30 am, 1310 = 1:10 pm)      |
-| **AnimalDoorCloseTime**     | *integer* | 1800    | The time animal doors are scheduled to close (730 = 7:30 am, 1310 = 1:10 pm)     |
-| **CoopRequiredUpgradeLevel**| *integer* | 1       | The coop upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
-| **BarnRequiredUpgradeLevel**| *integer* | 1       | The barn upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
-| **AutoOpenEnabled**         | *boolean* | true    | true if doors should automatically open, false if not                            |
-| **DoorSoundSetting**        | *string*  | "ONLY_ON_FARM" | Sets when you hear the door sound openning and closing. Possible values: ("ONLY_ON_FARM", "ALWAYS_ON", "ALWAYS_OFF") |
-| **OpenDoorsWhenRaining**    | *boolean* | false   | true if doors should open even when raining/lightning, false if not              |
-| **OpenDoorsDuringWinter**   | *boolean* | false   | true if doors should open even during winter, false if not                       |
+| Name                                  | Type      | Default | Description                                                                      |
+|:--------------------------------------|:--------- |:------- |:-------------------------------------------------------------------------------- |
+| **AnimalDoorOpenTime**                | *integer* | 730     | The time animal doors are scheduled to open (730 = 7:30 am, 1310 = 1:10 pm)      |
+| **AnimalDoorCloseTime**               | *integer* | 1800    | The time animal doors are scheduled to close (730 = 7:30 am, 1310 = 1:10 pm)     |
+| **CoopRequiredUpgradeLevel**          | *integer* | 1       | The coop upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
+| **BarnRequiredUpgradeLevel**          | *integer* | 1       | The barn upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
+| **UnrecognizedAnimalBuildingsEnabled**| *boolean* | false   | true if animal bulidings from other mods should auto open/close, false if not    |
+| **AutoOpenEnabled**                   | *boolean* | true    | true if doors should automatically open, false if not                            |
+| **DoorSoundSetting**                  | *string*  | "ONLY_ON_FARM" | Sets when you hear the door sound openning and closing. Possible values: ("ONLY_ON_FARM", "ALWAYS_ON", "ALWAYS_OFF") |
+| **OpenDoorsWhenRaining**              | *boolean* | false   | true if doors should open even when raining/lightning, false if not              |
+| **OpenDoorsDuringWinter**             | *boolean* | false   | true if doors should open even during winter, false if not                       |
 
   
 ### Example config.json
@@ -66,6 +70,7 @@ You can find it in the mods install directory.
   "AnimalDoorCloseTime": 1800,
   "CoopRequiredUpgradeLevel": 1,
   "BarnRequiredUpgradeLevel": 1,
+  "UnrecognizedAnimalBuildingsEnabled": false,
   "AutoOpenEnabled": true,
   "DoorSoundSetting": "ONLY_ON_FARM",
   "OpenDoorsWhenRaining": false,

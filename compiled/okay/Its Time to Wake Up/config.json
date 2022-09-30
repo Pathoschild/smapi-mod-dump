@@ -1,0 +1,4 @@
+{
+  "WakeUpTime": 500,
+  "HowThisWorks": "WakeUpTime should be a value in 24 hour time. Technically you can go as low as you want, even negative numbers, but you should not go past 2 AM (2600)."
+}

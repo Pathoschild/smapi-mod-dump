@@ -76,16 +76,20 @@ namespace Dem1se.CustomReminders
         
         void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
+            // set the menu buttons for supression for all gamemodes.
+            foreach (var ikey in Game1.options.menuButton)
+            {
+                Utilities.Globals.MenuButtons.Add(ikey.ToSButton());
+            }
+
             // set the SaveFolderName field if multiplayer host or singleplayer
             if (Context.IsMainPlayer)
             {
                 Utilities.Globals.SaveFolderName = Constants.SaveFolderName;
-                Utilities.Globals.MenuButton = Game1.options.menuButton[0].ToSButton();
             }
             else
             {
                 // Utilities.Globals.SaveFolderName -- will be assigned on peerContextRecieved event
-                Utilities.Globals.MenuButton = Game1.options.menuButton[0].ToSButton();
             }
 
             // Create the data subfolder for the save for first time users. 

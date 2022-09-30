@@ -20,13 +20,14 @@ using System.Reflection;
 using System.Linq;
 using System.Reflection.Emit;
 using HDPortraits.Models;
+using AeroCore.Utils;
+using AeroCore;
 
 namespace HDPortraits.Patches
 {
     [HarmonyPatch]
     class PortraitDrawPatch
     {
-        private static ILHelper patcher = SetupPatch();
         internal static readonly PerScreen<HashSet<MetadataModel>> lastLoaded = new(() => new());
         internal static readonly PerScreen<MetadataModel> currentMeta = new();
         internal static readonly PerScreen<string> overrideName = new();
@@ -49,9 +50,7 @@ namespace HDPortraits.Patches
         [HarmonyPatch(typeof(DialogueBox), "drawPortrait")]
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => patcher.Run(instructions);
-        public static ILHelper SetupPatch()
-        {
-            return new ILHelper("Dialogue Patch")
+        private static ILHelper patcher = new ILHelper(ModEntry.monitor, "Dialogue Patch")
                 .SkipTo(new CodeInstruction[]
                 {
                     new(OpCodes.Ldarg_0),
@@ -59,6 +58,7 @@ namespace HDPortraits.Patches
                     new(OpCodes.Ldfld, typeof(Dialogue).FieldNamed("speaker")),
                     new(OpCodes.Callvirt,typeof(NPC).MethodNamed("get_Portrait"))
                 })
+                .Skip(4)
                 .Add(new CodeInstruction(OpCodes.Call, typeof(PortraitDrawPatch).MethodNamed("SwapTexture")))
                 .SkipTo(new CodeInstruction[]
                 {
@@ -66,12 +66,13 @@ namespace HDPortraits.Patches
                     new(OpCodes.Ldfld, typeof(DialogueBox).FieldNamed("characterDialogue")),
                     new(OpCodes.Callvirt, typeof(Dialogue).MethodNamed("getPortraitIndex"))
                 })
-                .Remove(new CodeInstruction[]
+                .SkipTo(new CodeInstruction[]
                 {
                     new(OpCodes.Ldc_I4_S, 64),
                     new(OpCodes.Ldc_I4_S, 64),
                     new(OpCodes.Call, typeof(Game1).MethodNamed("getSourceRectForStandardTileSheet"))
                 })
+                .Remove(3)
                 .Add(new CodeInstruction(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("GetData")))
                 .SkipTo(new CodeInstruction[]
                 {
@@ -79,29 +80,22 @@ namespace HDPortraits.Patches
                     new(OpCodes.Ldc_R4, 0f),
                     new(OpCodes.Call, typeof(Vector2).MethodNamed("get_Zero"))
                 })
-                .Remove()
+                .Skip(3)
+                .Remove(1)
                 .Add(new CodeInstruction[]{
                     new(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("GetScale"))
                 })
                 .Finish();
-        }
-        public static Texture2D SwapTexture(Texture2D texture) => currentMeta.Value?.overrideTexture.Value ?? texture;
+        public static Texture2D SwapTexture(Texture2D texture) 
+            => currentMeta.Value is not null && currentMeta.Value.TryGetTexture(out var tex) ? tex : texture;
         public static Rectangle GetData(Texture2D texture, int index)
-        {
-            int asize = currentMeta.Value?.Size ?? 64;
-            Rectangle ret = (currentMeta.Value?.Animation != null) ?
-                currentMeta.Value.Animation.GetSourceRegion(texture, asize, index, Game1.currentGameTime.ElapsedGameTime.Milliseconds) :
-                Game1.getSourceRectForStandardTileSheet(texture, index, asize, asize);
-            if (!texture.Bounds.Contains(ret))
-                ret = new(0, 0, asize, asize);
-            return ret;
-        }
+            => currentMeta.Value?.GetRegion(index, Game1.currentGameTime.ElapsedGameTime.Milliseconds) ??
+            Game1.getSourceRectForStandardTileSheet(texture, index, 64, 64);
         public static string GetSuffix(NPC npc)
         {
             return NpcEventSuffixes.Value.TryGetValue(npc, out string s) ? s : 
                 (bool)islandwear.GetValue(npc) ? "Beach" : 
                 npc.uniquePortraitActive ? npc.currentLocation.Name : null;
         }
-        public static float GetScale() => currentMeta.Value is not null ? 256f / currentMeta.Value.Size : 4f;
     }
 }

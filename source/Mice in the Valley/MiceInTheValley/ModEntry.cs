@@ -19,10 +19,11 @@ using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 using MiceInTheValley.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 
 namespace MiceInTheValley {
-    public class ModEntry : Mod, IAssetLoader {
+    public class ModEntry : Mod {
         // Squeak.
         private SoundEffect sound_;
         private ModConfig config_;
@@ -30,6 +31,8 @@ namespace MiceInTheValley {
         public override void Entry(IModHelper helper) {
             config_ = helper.ReadConfig<ModConfig>();
             helper.Events.Player.Warped += OnWarped;
+            // Register the asset loader.
+            helper.Events.Content.AssetRequested += OnAssetRequested;
 
             // Load the sound.
             string soundFilePath = Path.Combine(helper.DirectoryPath, "assets/mouse.wav");
@@ -40,27 +43,13 @@ namespace MiceInTheValley {
             }
         }
 
-        public bool CanLoad<T>(IAssetInfo asset) {
-            bool retval = asset.AssetNameEquals("mouse")
-                       || asset.AssetNameEquals("mouse_white")
-                       || asset.AssetNameEquals("mouse_tiger");
-            if (retval) {
-                this.Monitor.Log($"Can load asset {asset.AssetName}");
-            }
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e) {
+            if (e.NameWithoutLocale.IsEquivalentTo("mouse")
+             || e.NameWithoutLocale.IsEquivalentTo("mouse_white")
+             || e.NameWithoutLocale.IsEquivalentTo("mouse_tiger")) {
+                this.Monitor.Log($"Load asset {e.NameWithoutLocale}");
 
-            return retval;
-        }
-
-        public T Load<T>(IAssetInfo asset) {
-            if (asset.AssetNameEquals("mouse")
-             || asset.AssetNameEquals("mouse_white")
-             || asset.AssetNameEquals("mouse_tiger")) {
-                this.Monitor.Log($"Load asset {asset.AssetName}");
-
-                return this.Helper.Content.Load<T>($"assets/{asset.AssetName}.png");
-            }
-            else {
-                return default(T);
+                e.LoadFromModFile<Texture2D>($"assets/{e.NameWithoutLocale}.png", AssetLoadPriority.Exclusive);
             }
         }
 

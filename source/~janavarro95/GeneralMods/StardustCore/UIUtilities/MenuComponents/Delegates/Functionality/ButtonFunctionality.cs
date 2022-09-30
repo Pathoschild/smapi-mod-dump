@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace StardustCore.UIUtilities.MenuComponents.Delegates.Functionality
+namespace Omegasis.StardustCore.UIUtilities.MenuComponents.Delegates.Functionality
 {
     /// <summary>Holds all of the functionality for handeling what happens with button interactivity.</summary>
     public class ButtonFunctionality

@@ -1,0 +1,20 @@
+{
+  "Name": "Creaturebook",
+  "Author": "KediDili",
+  "Version": "1.0.1",
+  "Description": "A framework that allows the player to have a notebook that includes info on various creatures.",
+  "UniqueID": "KediDili.Creaturebook",
+  "EntryDll": "Creaturebook.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:13807"],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

@@ -6,9 +6,9 @@ mods:
    HD Portraits
 
 latest commit:
-   commit 415ede4348c79161afa78db9f843165d05da3cb1
+   commit 7f63b3f06f34115f24f13b805e9e32869bda5703
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Sun Jun 26 23:42:05 2022 -0400
+   Date:   Sat Sep 24 23:06:17 2022 -0400
    
-       fixed base data not being initialized
+       aerocore port
    

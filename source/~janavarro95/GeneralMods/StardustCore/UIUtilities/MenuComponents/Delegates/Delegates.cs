@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace StardustCore.UIUtilities.MenuComponents.Delegates
+namespace Omegasis.StardustCore.UIUtilities.MenuComponents.Delegates
 {
     public class Delegates
     {

@@ -15,9 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using static StardustCore.Events.EventHelper;
+using static Omegasis.StardustCore.Events.EventHelper;
 
-namespace StardustCore.Events
+namespace Omegasis.StardustCore.Events
 {
     public class EventStartData
     {
@@ -27,6 +27,9 @@ namespace StardustCore.Events
         public class NPCData
         {
             private NPC npc;
+            private string npcName;
+
+
             int xPosition;
             int yPosition;
             EventHelper.FacingDirection direction;
@@ -42,11 +45,29 @@ namespace StardustCore.Events
                 this.direction = Direction;
             }
 
+            public NPCData(string NPC, int XTile, int YTile, EventHelper.FacingDirection Direction)
+            {
+                this.npcName = NPC;
+                this.xPosition = XTile;
+                this.yPosition = YTile;
+                this.direction = Direction;
+            }
+
             public override string ToString()
             {
                 StringBuilder b = new StringBuilder();
-                b.Append(this.npc.Name);
-                b.Append(" ");
+
+                if (this.npc != null)
+                {
+                    b.Append(this.npc.Name);
+                    b.Append(" ");
+                }
+                else
+                {
+                    b.Append(this.npcName);
+                    b.Append(" ");
+                }
+
                 b.Append(this.xPosition.ToString());
                 b.Append(" ");
                 b.Append(this.yPosition.ToString());
@@ -134,7 +155,7 @@ namespace StardustCore.Events
         /// <param name="CameraTileY">The starting y tile for the camera</param>
         /// <param name="Farmer">The farmer data for the event. If null then the farmer won't be in this event.</param>
         /// <param name="NPCS">The npc data for the event. If null then no npcs will be in the event.</param>
-        public EventStartData(MusicToPlayType MusicType, int CameraTileX, int CameraTileY, FarmerData Farmer, List<NPCData> NPCS)
+        public EventStartData(MusicToPlayType MusicType, int CameraTileX, int CameraTileY, FarmerData Farmer, List<NPCData> NPCS, bool Skippable=true)
         {
             this.builder = new StringBuilder();
             if(MusicType== MusicToPlayType.None)
@@ -166,7 +187,10 @@ namespace StardustCore.Events
                 }
             }
             this.add(npcData.ToString());
-            this.add("skippable");
+            if (Skippable)
+            {
+                this.add("skippable");
+            }
 
         }
 
@@ -178,10 +202,13 @@ namespace StardustCore.Events
         /// <param name="CameraTileY">The starting y tile for the camera</param>
         /// <param name="Farmer">The farmer data for the event. If null then the farmer won't be in this event.</param>
         /// <param name="NPCS">The npc data for the event. If null then no npcs will be in the event.</param>
-        public EventStartData(string SongToPlay, int CameraTileX, int CameraTileY, FarmerData Farmer, List<NPCData> NPCS)
+        public EventStartData(string SongToPlay, int CameraTileX, int CameraTileY, FarmerData Farmer, List<NPCData> NPCS, bool Skippable=true)
         {
             this.builder = new StringBuilder();
-            this.add(SongToPlay);
+            if (!string.IsNullOrEmpty(SongToPlay))
+            {
+                this.add(SongToPlay);
+            }
             this.add(CameraTileX.ToString());
             this.builder.Append(" ");
             this.builder.Append(CameraTileY.ToString());
@@ -200,7 +227,10 @@ namespace StardustCore.Events
                 }
             }
             this.add(npcData.ToString());
-            this.add("skippable");
+            if (Skippable == true)
+            {
+                this.add("skippable");
+            }
 
         }
 

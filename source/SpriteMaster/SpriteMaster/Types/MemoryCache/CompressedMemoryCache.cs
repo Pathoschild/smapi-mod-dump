@@ -14,6 +14,7 @@ using SpriteMaster.Extensions;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,11 +28,11 @@ internal class CompressedMemoryCache<TKey, TValue> :
 	private readonly ObjectCache<TKey, ValueEntry> UnderlyingCache;
 	private readonly Compression.Algorithm CurrentAlgorithm = Compression.GetPreferredAlgorithm(SMConfig.ResidentCache.Compress);
 
-	private sealed class ValueEntry : IByteSize, IDisposable {
+	private sealed class ValueEntry : ITouchable, IByteSize, IDisposable {
 		private readonly WeakReference<TValue[]> UncompressedInternal;
 		internal ReadOnlySpan<TValue> Uncompressed => GetUncompressed();
-		private byte[]? Compressed = null;
-		private readonly Task CompressionTask;
+		private volatile byte[]? Compressed = null;
+		private volatile Task CompressionTask;
 		private readonly long Size;
 		private readonly Compression.Algorithm Algorithm;
 
@@ -74,18 +75,53 @@ internal class CompressedMemoryCache<TKey, TValue> :
 				return uncompressed;
 			}
 
-			CompressionTask.Wait();
-			Compressed.AssertNotNull();
+			byte[]? compressed = null;
+			Task lastCompressionTask = null!;
+			do {
+				var currentCompressionTask = CompressionTask;
+				if (lastCompressionTask == currentCompressionTask) {
+					compressed.AssertNotNull();
+				}
+
+				try {
+					currentCompressionTask.Wait();
+				}
+				catch (ObjectDisposedException) {
+					continue;
+				}
+
+				compressed = Compressed;
+			} while (compressed is null);
 
 			lock (this) {
 				if (UncompressedInternal.TryGetTarget(out uncompressed)) {
 					return uncompressed;
 				}
 
-				var uncompressedData = Compressed!.Decompress<TValue>((int)Size, Algorithm);
+				var uncompressedData = compressed.Decompress<TValue>((int)Size, Algorithm);
 				UncompressedInternal.SetTarget(uncompressedData);
 				return uncompressedData;
 			}
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		public bool Touch() {
+			// Assume that the underlying raw data has changed (but not the size or actual handle)
+
+			if (!UncompressedInternal.TryGetTarget(out var uncompressed)) {
+				// If the underlying data has changed, but we no longer have the uncompressed data in-store,
+				// then our only choice is to discard the data altogether, which requires removing the element from the cache.
+				return false;
+			}
+
+			lock (this) {
+				Compressed = null;
+				var newCompressionTask = ICompressedMemoryCache.TaskFactory.StartNew(() => Compress(uncompressed));
+				var oldCompressionTask = Interlocked.Exchange(ref CompressionTask, newCompressionTask);
+				oldCompressionTask.Dispose();
+			}
+
+			return true;
 		}
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -100,6 +136,11 @@ internal class CompressedMemoryCache<TKey, TValue> :
 
 	public override long TotalSize => UnderlyingCache.TotalSize;
 	public override int Count => UnderlyingCache.Count;
+
+	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override bool Contains(TKey key) {
+		return UnderlyingCache.Contains(key);
+	}
 
 	[Pure, MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	public override TValue[]? Get(TKey key) {
@@ -141,15 +182,70 @@ internal class CompressedMemoryCache<TKey, TValue> :
 		return false;
 	}
 
+	[StructLayout(LayoutKind.Auto)]
+	private readonly struct ValueGetterStructInterfacing : IObjectCache<TKey, ValueEntry>.IValueGetter {
+		private readonly IMemoryCache<TKey, TValue>.IValueGetter Getter;
+		private readonly Compression.Algorithm Algorithm;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal ValueGetterStructInterfacing(IMemoryCache<TKey, TValue>.IValueGetter getter, Compression.Algorithm algorithm) {
+			Getter = getter;
+			Algorithm = algorithm;
+		}
+
+		[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+		readonly ValueEntry IObjectCache<TKey, ValueEntry>.IValueGetter.Invoke() {
+			return new(Getter.Invoke(), Algorithm);
+		}
+	}
+
+	[StructLayout(LayoutKind.Auto)]
+	private readonly struct ValueGetterStruct : IObjectCache<TKey, ValueEntry>.IValueGetter {
+		private readonly TValue[] Value;
+		private readonly Compression.Algorithm Algorithm;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal ValueGetterStruct(TValue[] value, Compression.Algorithm algorithm) {
+			Value = value;
+			Algorithm = algorithm;
+		}
+
+		[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+		readonly ValueEntry IObjectCache<TKey, ValueEntry>.IValueGetter.Invoke() {
+			return new(Value, Algorithm);
+		}
+	}
+
+	[MustUseReturnValue, MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public override bool TrySetDelegated<TValueGetter>(TKey key, TValueGetter valueGetter) where TValueGetter : struct {
+		return UnderlyingCache.TrySetDelegated(key, new ValueGetterStructInterfacing(valueGetter, CurrentAlgorithm));
+	}
+
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override bool TrySet(TKey key, TValue[] value) {
+		return UnderlyingCache.TrySetDelegated(key, new ValueGetterStruct(value, CurrentAlgorithm));
+	}
+
 	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
 	public override TValue[] Set(TKey key, TValue[] value) {
 		UnderlyingCache.SetFast(key, new(value, CurrentAlgorithm));
 		return value;
 	}
 
+	[MustUseReturnValue, MethodImpl(Runtime.MethodImpl.Inline)]
+	public override TValue[] SetOrTouch(TKey key, TValue[] value) {
+		UnderlyingCache.SetOrTouchFast(key, new(value, CurrentAlgorithm));
+		return value;
+	}
+
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override void SetFast(TKey key, TValue[] value) {
 		UnderlyingCache.SetFast(key, new(value, CurrentAlgorithm));
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override void SetOrTouchFast(TKey key, TValue[] value) {
+		UnderlyingCache.SetOrTouchFast(key, new(value, CurrentAlgorithm));
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -182,6 +278,11 @@ internal class CompressedMemoryCache<TKey, TValue> :
 		}
 
 		return default;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public override void Touch(TKey key) {
+		UnderlyingCache.Touch(key);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]

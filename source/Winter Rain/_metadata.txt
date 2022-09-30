@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/idermailer/WinterRain
+   Git: https://github.com/idermailer/WinterRain.git
+
+mods:
+   Winter Rain
+
+latest commit:
+   commit 53355df9ec363ddd42dca5d77a72d4e045cd2589
+   Author: idermailer <idermailer@gmail.com>
+   Date:   Wed Sep 14 17:30:08 2022 +0900
+   
+       1.0.1
+   

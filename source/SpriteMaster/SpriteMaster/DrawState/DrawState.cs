@@ -80,10 +80,22 @@ internal static partial class DrawState {
 	private static TimeSpan ExpectedFrameTime = GameConstants.FrameTime.TimeSpan;
 	internal static bool ForceSynchronous = false;
 
+	private static int LastFrameTimesIndex = 0;
+	private static TimeSpan[] LastFrameTimesCPU = new TimeSpan[64];
+	private static TimeSpan[] LastFrameTimesTotal = new TimeSpan[64];
 	private static readonly System.Diagnostics.Stopwatch FrameStopwatch = System.Diagnostics.Stopwatch.StartNew();
+	private static readonly System.Diagnostics.Stopwatch RealFrameStopwatch = System.Diagnostics.Stopwatch.StartNew();
 
 	private const int BaselineFrameTimeRunningCount = 20;
 	private static TimeSpan BaselineFrameTime = TimeSpan.Zero;
+
+	internal static class Statistics {
+		internal static uint DrawCalls = 0u;
+
+		internal static void Reset() {
+			DrawCalls = 0u;
+		}
+	}
 
 	internal static void UpdateDeviceManager(GraphicsDeviceManager manager) {
 		var rate = manager.GetField("game")?.GetProperty<TimeSpan>("TargetElapsedTime");
@@ -116,17 +128,42 @@ internal static partial class DrawState {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static TimeSpan ActualRemainingFrameTime() => ExpectedFrameTime - FrameStopwatch.Elapsed;
 
+	internal static void OnBeginDraw() {
+		RealFrameStopwatch.Restart();
+	}
 
 	internal static void OnPresent() {
 		Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
-		Debug.Mode.Draw();
+		TimeSpan? lastFrameTimeCPU = null;
+		TimeSpan? lastFrameTimeTotal = null;
 
-		if (!Config.IsEnabled) {
-			return;
+		if (Config.Debug.DisplayFrameTime) {
+			{
+				TimeSpan sumTime = TimeSpan.Zero;
+				foreach (var frameTime in LastFrameTimesCPU) {
+					sumTime += frameTime;
+				}
+
+				sumTime /= LastFrameTimesCPU.Length;
+				lastFrameTimeCPU = sumTime;
+			}
+			{
+				TimeSpan sumTime = TimeSpan.Zero;
+				foreach (var frameTime in LastFrameTimesTotal) {
+					sumTime += frameTime;
+				}
+
+				sumTime /= LastFrameTimesTotal.Length;
+				lastFrameTimeTotal = sumTime;
+			}
 		}
+
+		Debug.Mode.Draw(lastFrameTimeCPU, lastFrameTimeTotal);
+
+		++CurrentFrame;
 
 		if (TriggerCollection.GetAndClear()) {
 			ManagedSpriteInstance.PurgeTextures((Config.Garbage.RequiredFreeMemorySoft * Config.Garbage.RequiredFreeMemoryHysteresis).NearestLong());
@@ -155,7 +192,20 @@ internal static partial class DrawState {
 			IsUpdatedThisFrame = false;
 		}
 
-		Garbage.EphemeralCollection.Collect(++CurrentFrame);
+		if (Config.Debug.DisplayFrameTime) {
+			int index = LastFrameTimesIndex++;
+			LastFrameTimesIndex %= LastFrameTimesCPU.Length;
+			LastFrameTimesCPU[index] = RealFrameStopwatch.Elapsed;
+			LastFrameTimesTotal[index] = FrameStopwatch.Elapsed;
+		}
+
+		if (!Config.IsEnabled) {
+			return;
+		}
+
+		Runtime.CorrectProcessorAffinity();
+
+		Garbage.EphemeralCollection.Collect(CurrentFrame);
 	}
 
 	private static readonly WeakReference<xTile.Display.IDisplayDevice> LastMitigatedDevice = new(null!);
@@ -180,6 +230,8 @@ internal static partial class DrawState {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void OnPresentPost() {
+		FrameStopwatch.Restart();
+
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
 		Core.OnDrawImpl.ResetLastDrawCache();
@@ -187,7 +239,7 @@ internal static partial class DrawState {
 		// Apply the PyTK mediation here because we do not know when it might be set up
 		DisablePyTKMitigation();
 
-		FrameStopwatch.Restart();
+		Statistics.Reset();
 	}
 
 	private static bool FirstDraw = true;

@@ -19,7 +19,7 @@ using StardewModdingAPI.Events;
 /// <summary>
 ///     Handles palette swaps for theme compatibility.
 /// </summary>
-internal class ThemeHelper
+internal sealed class ThemeHelper
 {
     private ThemeHelper(IModHelper helper, string[] assetNames)
     {
@@ -139,7 +139,7 @@ internal class ThemeHelper
     {
         var colors = new Color[source.Width * source.Height];
         source.GetData(colors);
-        for (var index = 0; index < colors.Length; index++)
+        for (var index = 0; index < colors.Length; ++index)
         {
             if (this.PaletteSwap.TryGetValue(colors[index], out var newColor))
             {

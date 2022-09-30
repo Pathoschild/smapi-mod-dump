@@ -11,11 +11,11 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Omegasis.StardustCore.UIUtilities.MenuComponents.Delegates.Functionality;
 using StardewValley;
 using StardewValley.Menus;
-using StardustCore.UIUtilities.MenuComponents.Delegates.Functionality;
 
-namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
+namespace Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV1
 {
     /// <summary>An enum describing the types of slider bars that can exist.</summary>
     public enum SliderStyle
@@ -204,7 +204,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
         }
 
         /// <summary>Construct an instance.</summary>
-        public SliderButton(string name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, Dictionary<string, Animations.Animation> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true)
+        public SliderButton(string name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, SerializableDictionary<string, Animations.Animation> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true)
             : base(name, bounds, buttonTexture, displayText, sourceRect, scale, defaultAnimation, animationsToPlay, startingKey, drawColor, textColor, buttonFunctionality, startingAnimationFrame, animationEnabled, extraTexture)
         {
             this.sliderInformation = sliderInformation;

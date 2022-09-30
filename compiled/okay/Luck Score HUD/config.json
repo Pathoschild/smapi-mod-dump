@@ -1,3 +1,7 @@
 {
-  "Disable": false
+  "Disable": false,
+  "Fortune": true,
+  "Toggle": "LeftShift + L",
+  "Monochrome": false,
+  "Location": "HUD"
 }

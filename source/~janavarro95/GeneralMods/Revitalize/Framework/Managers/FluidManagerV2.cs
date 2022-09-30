@@ -14,8 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Omegasis.Revitalize.Framework.Constants;
 
-namespace Revitalize.Framework.Managers
+namespace Omegasis.Revitalize.Framework.Managers
 {
     /// <summary>
     /// A Fluid used for various mod purposes.
@@ -314,7 +315,7 @@ namespace Revitalize.Framework.Managers
         /// <param name="Capacity"></param>
         /// <param name="OnlyOutput"></param>
         /// <param name="AllowDoubleInput">Can both input tanks store the same Fluid?</param>
-        public FluidManagerV2(int Capacity, bool OnlyOutput, Enums.FluidInteractionType LiquidInteractionType, bool AllowDoubleInput = false,bool OnlyInput=false, int NumberOfInputTanks=2)
+        public FluidManagerV2(int Capacity, bool OnlyOutput, Enums.FluidInteractionType LiquidInteractionType, bool AllowDoubleInput = false, bool OnlyInput = false, int NumberOfInputTanks = 2)
         {
             if (OnlyOutput)
             {
@@ -357,7 +358,7 @@ namespace Revitalize.Framework.Managers
                     this.inputTank1 = new MachineFluidTank(Capacity);
                     this.inputTank2 = new MachineFluidTank(0);
                 }
-                else if(NumberOfInputTanks >=2)
+                else if (NumberOfInputTanks >= 2)
                 {
                     this.inputTank1 = new MachineFluidTank(Capacity);
                     this.inputTank2 = new MachineFluidTank(Capacity);
@@ -498,13 +499,9 @@ namespace Revitalize.Framework.Managers
             else
             {
                 if (this.inputTank1.CanRecieveThisFluid(L) && this.inputTank2.DoesTankContainThisFluid(L) == false)
-                {
                     return this.inputTank1.GetAmountOfFluidThisTankCanReceieve(L);
-                }
                 if (this.inputTank1.CanRecieveThisFluid(L) && this.inputTank2.DoesTankContainThisFluid(L) == false)
-                {
                     return this.inputTank2.GetAmountOfFluidThisTankCanReceieve(L);
-                }
             }
             return 0;
         }
@@ -526,13 +523,9 @@ namespace Revitalize.Framework.Managers
             else
             {
                 if (this.inputTank1.CanRecieveThisFluid(L) && this.inputTank2.DoesTankContainThisFluid(L) == false)
-                {
                     return this.inputTank1.GetAmountOfFluidInThisTank(L);
-                }
                 if (this.inputTank1.CanRecieveThisFluid(L) && this.inputTank2.DoesTankContainThisFluid(L) == false)
-                {
                     return this.inputTank2.GetAmountOfFluidInThisTank(L);
-                }
             }
             return 0;
 
@@ -547,22 +540,14 @@ namespace Revitalize.Framework.Managers
         {
             if (L == null) return false;
             if (this.allowDoubleInput)
-            {
                 if (this.inputTank1.CanRecieveThisFluid(L) || this.inputTank2.CanRecieveThisFluid(L))
-                {
                     return true;
-                }
-            }
             else
             {
                 if (this.inputTank1.CanRecieveThisFluid(L) && this.inputTank2.DoesTankContainThisFluid(L) == false)
-                {
                     return true;
-                }
                 if (this.inputTank2.CanRecieveThisFluid(L) && this.inputTank1.DoesTankContainThisFluid(L) == false)
-                {
                     return true;
-                }
             }
             return false;
 
@@ -596,7 +581,7 @@ namespace Revitalize.Framework.Managers
 
         public FluidManagerV2 Copy()
         {
-            return new FluidManagerV2(this.outputTank.capacity, this.onlyOutput, this.fluidInteractionType, this.allowDoubleInput,this.onlyInput,this.numberOfInputTanks);
+            return new FluidManagerV2(this.outputTank.capacity, this.onlyOutput, this.fluidInteractionType, this.allowDoubleInput, this.onlyInput, this.numberOfInputTanks);
         }
     }
 }

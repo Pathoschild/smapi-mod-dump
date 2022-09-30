@@ -1,6 +1,7 @@
 ﻿<Project>
-	<PropertyGroup>
-		<GamePath>C:\Development\Stardew Valley\Stardew Valley-1.5.4_SMAPI-3.12.7</GamePath>
-		<ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
-	</PropertyGroup>
+  <PropertyGroup>
+    <!-- Note for people forking this repo: you will need to put your own paths here. -->
+    <GamePath>C:\Development\Stardew Valley\Stardew Valley-1.5.4_SMAPI-3.12.7</GamePath>
+    <ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
+  </PropertyGroup>
 </Project>

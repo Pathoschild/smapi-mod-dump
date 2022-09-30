@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 
-namespace Revitalize.Framework.Crafting
+namespace Omegasis.Revitalize.Framework.Crafting
 {
     public class CraftingRecipeComponent
     {

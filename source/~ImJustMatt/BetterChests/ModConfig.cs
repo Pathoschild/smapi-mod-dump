@@ -13,14 +13,14 @@ namespace StardewMods.BetterChests;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using StardewMods.BetterChests.Features;
-using StardewMods.BetterChests.Models;
+using StardewMods.BetterChests.Framework.Features;
+using StardewMods.BetterChests.Framework.Models;
 using StardewMods.Common.Enums;
 
 /// <summary>
-///     Mod config data.
+///     Mod config data for Better Chests.
 /// </summary>
-internal class ModConfig : StorageData
+internal sealed class ModConfig : StorageData
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="ModConfig" /> class.
@@ -56,9 +56,24 @@ internal class ModConfig : StorageData
     public Controls ControlScheme { get; set; }
 
     /// <summary>
+    ///     Gets or sets a value indicating the range which workbenches will craft from.
+    /// </summary>
+    public FeatureOptionRange CraftFromWorkbench { get; set; } = FeatureOptionRange.Default;
+
+    /// <summary>
+    ///     Gets or sets a value indicating the distance in tiles that the workbench can be remotely crafted from.
+    /// </summary>
+    public int CraftFromWorkbenchDistance { get; set; }
+
+    /// <summary>
     ///     Gets or sets the <see cref="ComponentArea" /> that the <see cref="BetterColorPicker" /> will be aligned to.
     /// </summary>
     public ComponentArea CustomColorPickerArea { get; set; }
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether experimental features will be enabled.
+    /// </summary>
+    public bool Experimental { get; set; }
 
     /// <summary>
     ///     Gets or sets the symbol used to denote context tags in searches.
@@ -73,7 +88,7 @@ internal class ModConfig : StorageData
     /// <summary>
     ///     Gets or sets the color of locked slots.
     /// </summary>
-    public Colors SlotLockColor { get; set; }
+    public Colors SlotLockColor { get; set; } = Colors.Red;
 
     /// <summary>
     ///     Gets or sets a value indicating whether the slot lock button needs to be held down.
@@ -83,7 +98,7 @@ internal class ModConfig : StorageData
     /// <summary>
     ///     Gets or sets storage data for vanilla storage types.
     /// </summary>
-    public Dictionary<string, StorageData> VanillaStorages { get; set; }
+    public Dictionary<string, StorageData> VanillaStorages { get; set; } = new();
 
     /// <summary>
     ///     Populates all default values with specific values.
@@ -103,6 +118,11 @@ internal class ModConfig : StorageData
         if (this.CarryChestSlow is FeatureOption.Default)
         {
             this.CarryChestSlow = FeatureOption.Enabled;
+        }
+
+        if (this.ChestInfo is FeatureOption.Default)
+        {
+            this.ChestInfo = FeatureOption.Disabled;
         }
 
         if (this.ChestMenuTabs is FeatureOption.Default)
@@ -133,6 +153,16 @@ internal class ModConfig : StorageData
         if (this.CraftFromChestDistance == 0)
         {
             this.CraftFromChestDistance = -1;
+        }
+
+        if (this.CraftFromWorkbench is FeatureOptionRange.Default)
+        {
+            this.CraftFromWorkbench = FeatureOptionRange.Location;
+        }
+
+        if (this.CraftFromWorkbenchDistance == 0)
+        {
+            this.CraftFromWorkbenchDistance = -1;
         }
 
         if (this.CustomColorPicker is FeatureOption.Default)
@@ -200,7 +230,7 @@ internal class ModConfig : StorageData
             this.SearchTagSymbol = '#';
         }
 
-        if (this.StashToChest is FeatureOptionRange.Disabled)
+        if (this.StashToChest is FeatureOptionRange.Default)
         {
             this.StashToChest = FeatureOptionRange.Location;
         }
@@ -253,45 +283,38 @@ internal class ModConfig : StorageData
     public override string ToString()
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"AutoOrganize: {this.AutoOrganize.ToStringFast()}");
+        sb.AppendLine(" Main Config".PadLeft(50, '=')[^50..]);
         sb.AppendLine($"BetterShippingBin: {this.BetterShippingBin.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"CarryChest: {this.CarryChest.ToStringFast()}");
         sb.AppendLine($"CarryChestLimit: {this.CarryChestLimit.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"CarryChestSlow: {this.CarryChestSlow.ToStringFast()}");
         sb.AppendLine($"CarryChestSlowAmount: {this.CarryChestSlowAmount.ToString(CultureInfo.InvariantCulture)}");
         sb.AppendLine($"ChestFinder: {this.ChestFinder.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"ChestMenuTabs: {this.ChestMenuTabs.ToStringFast()}");
-        sb.AppendLine($"CollectItems: {this.CollectItems.ToStringFast()}");
-        sb.AppendLine($"Configurator: {this.Configurator.ToStringFast()}");
-        sb.AppendLine($"ConfigureMenu: {this.ConfigureMenu.ToStringFast()}");
-        sb.AppendLine($"CraftFromChest: {this.CraftFromChest.ToStringFast()}");
-        sb.AppendLine($"CraftFromChestDisableLocations: {string.Join(',', this.CraftFromChestDisableLocations)}");
-        sb.AppendLine($"CraftFromChestDistance: {this.CraftFromChestDistance.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"CustomColorPicker: {this.CustomColorPicker.ToStringFast()}");
+        sb.AppendLine($"CraftFromWorkbench: {this.CraftFromWorkbench.ToStringFast()}");
+        sb.AppendLine(
+            $"CraftFromWorkbenchDistance: {this.CraftFromWorkbenchDistance.ToString(CultureInfo.InvariantCulture)}");
         sb.AppendLine($"CustomColorPickerArea: {this.CustomColorPickerArea.ToStringFast()}");
-        sb.AppendLine($"FilterItems: {this.FilterItems.ToStringFast()}");
-        sb.AppendLine($"HideItems: {this.HideItems.ToStringFast()}");
-        sb.AppendLine($"LabelChest: {this.LabelChest.ToStringFast()}");
-        sb.AppendLine($"OpenHeldChest: {this.OpenHeldChest.ToStringFast()}");
-        sb.AppendLine($"OrganizeChest: {this.OrganizeChest.ToStringFast()}");
-        sb.AppendLine($"OrganizeChestGroupBy: {this.OrganizeChestGroupBy.ToStringFast()}");
-        sb.AppendLine($"OrganizeChestSortBy: {this.OrganizeChestSortBy.ToStringFast()}");
-        sb.AppendLine($"ResizeChest: {this.ResizeChest.ToStringFast()}");
-        sb.AppendLine($"ResizeChestCapacity: {this.ResizeChestCapacity.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"ResizeChestMenu: {this.ResizeChestMenu.ToStringFast()}");
-        sb.AppendLine($"ResizeChestMenuRows: {this.ResizeChestMenuRows.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"SearchItems: {this.SearchItems.ToStringFast()}");
         sb.AppendLine($"SearchTagSymbol: {this.SearchTagSymbol.ToString(CultureInfo.InvariantCulture)}");
         sb.AppendLine($"SlotLock: {this.SlotLock.ToString(CultureInfo.InvariantCulture)}");
         sb.AppendLine($"SlotLockColor: {this.SlotLockColor.ToStringFast()}");
         sb.AppendLine($"SlotLockHold: {this.SlotLockHold.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"StashToChest: {this.StashToChest.ToStringFast()}");
-        sb.AppendLine($"StashToChestDisableLocations: {string.Join(',', this.StashToChestDisableLocations)}");
-        sb.AppendLine($"StashToChestDistance: {this.StashToChestDistance.ToString(CultureInfo.InvariantCulture)}");
-        sb.AppendLine($"StashToChestStacks: {this.StashToChestStacks.ToStringFast()}");
-        sb.AppendLine($"TransferItems: {this.TransferItems.ToStringFast()}");
-        sb.AppendLine($"UnloadChest: {this.UnloadChest.ToStringFast()}");
-        sb.AppendLine($"UnloadChestCombine: {this.UnloadChestCombine.ToStringFast()}");
+
+        sb.AppendLine(" Control Scheme".PadLeft(50, '=')[^50..]);
+        sb.Append(this.ControlScheme);
+
+        sb.AppendLine(" Default Storage".PadLeft(50, '=')[^50..]);
+        sb.Append(base.ToString());
+
+        foreach (var (key, data) in this.VanillaStorages)
+        {
+            var output = data.ToString();
+            if (string.IsNullOrWhiteSpace(output))
+            {
+                continue;
+            }
+
+            sb.AppendLine($" {key}".PadLeft(50, '=')[^50..]);
+            sb.Append(data);
+        }
+
         return sb.ToString();
     }
 }

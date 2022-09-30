@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/HaulinOats/StardewMods
+   Git: https://github.com/HaulinOats/StardewMods.git
+
+mods:
+   Dynamic Crops
+
+latest commit:
+   commit a95df17197bdeba3d2aac4e802b32298b327a016
+   Author: Brett Connolly <brett84c@gmail.com>
+   Date:   Wed Sep 28 17:20:57 2022 -0400
+   
+       readded config menu class
+   

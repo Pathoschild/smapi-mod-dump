@@ -18,7 +18,7 @@ internal sealed class TexelTimer {
 	private long TotalDuration = 0;
 	private long TotalTexels = 0;
 
-	private double DurationPerTexel => (TotalTexels == 0) ? 0.0 : (double)TotalDuration / TotalTexels;
+	//private double DurationPerTexel => (TotalTexels == 0) ? 0.0 : (double)TotalDuration / TotalTexels;
 
 	internal void Reset() {
 		TotalDuration = 0;
@@ -27,23 +27,33 @@ internal sealed class TexelTimer {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void Add(int texels, TimeSpan duration) {
-		// Avoid a division by zero
-		if (texels == 0) {
-			return;
+		if (texels < 0) {
+			texels = 0;
+		}
+
+		if (duration < TimeSpan.Zero) {
+			duration = TimeSpan.Zero;
 		}
 
 		TotalDuration += duration.Ticks;
 		TotalTexels += texels;
-		//var texelDuration = (double)duration.Ticks / texels;
-		//DurationPerTexel -= DurationPerTexel / MaxDurationCounts;
-		//DurationPerTexel += texelDuration / MaxDurationCounts;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void Add(TextureAction action, TimeSpan duration) => Add(action.Size, duration);
 
+	/*
+	 * TotalDuration         TestDuration
+	 * --               =    --
+	 * TotalTexels           TestTexels
+	 *
+	 * TotalDuration * TestTexels = TestDuration * TotalTexels
+	 * TestDuration = (TotalDuration * TestTexels) / TotalTexels
+	 */
+
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	internal TimeSpan Estimate(int texels) => TimeSpan.FromTicks((DurationPerTexel * texels).NextLong());
+	//internal TimeSpan Estimate(int texels) => TimeSpan.FromTicks((DurationPerTexel * texels).NextLong());
+	internal TimeSpan Estimate(int texels) => TimeSpan.FromTicks(TotalTexels == 0L ? 0L : ((TotalDuration * texels) / TotalTexels));
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal TimeSpan Estimate(TextureAction action) => Estimate(action.Size);

@@ -10,38 +10,29 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Revitalize.Framework.Objects.InformationFiles;
-using Revitalize.Framework.Utilities;
-using Revitalize.Framework.World.Objects.InformationFiles;
+using Netcode;
+using Omegasis.Revitalize.Framework.Constants;
+using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
+using Omegasis.Revitalize.Framework.World.WorldUtilities;
 using StardewValley;
 
-using CustomObject = Revitalize.Framework.World.Objects.CustomObject;
-
-namespace Revitalize.Framework.Objects.Resources.OreVeins
+namespace Omegasis.Revitalize.Framework.World.Objects.Resources
 {
-    public class OreVein:CustomObject
+    [XmlType("Mods_Revitalize.Framework.World.Objects.Resources.OreVeins.OreVein")]
+    public class OreVein : CustomObject
     {
         /// <summary>
         /// Deals with information tied to the resource itself.
         /// </summary>
-        public OreResourceInformation resourceInfo;
-        public List<ResourceInformation> extraDrops;
+        public NetResourceInformation<OreResourceInformation> resourceInfo = new NetResourceInformation<OreResourceInformation>();
+        public readonly NetList<ResourceInformation, NetResourceInformation<ResourceInformation>> extraDrops = new NetList<ResourceInformation, NetResourceInformation<ResourceInformation>>();
 
 
-        private int _healthValue;
-        public int healthValue
-        {
-            get
-            {
-                return this._healthValue;
-            }
-            set
-            {
-                this._healthValue = value;
-            }
-        }
+        public readonly NetInt healthValue = new NetInt();
 
 
         public OreVein() : base()
@@ -49,23 +40,30 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
 
         }
 
-        public OreVein(BasicItemInformation Info, OreResourceInformation Resource,List<ResourceInformation> ExtraDrops,int Health) : base(Info)
+        public OreVein(BasicItemInformation Info, OreResourceInformation Resource, List<ResourceInformation> ExtraDrops, int Health) : base(Info)
         {
-            this.healthValue = Health;
-            this.resourceInfo = Resource;
-            this.extraDrops = ExtraDrops != null ? ExtraDrops : new List<ResourceInformation>();
+            this.basicItemInformation = Info;
+            this.healthValue.Value = Health;
+            this.resourceInfo.Value = Resource;
+            this.extraDrops.AddRange(ExtraDrops != null ? ExtraDrops : new List<ResourceInformation>());
             this.setHealth(this.healthValue);
             this.Price = Info.price;
         }
 
-        public OreVein(BasicItemInformation Info, Vector2 TileLocation, OreResourceInformation Resource, List<ResourceInformation> ExtraDrops,int Health) : base(Info,TileLocation)
+        public OreVein(BasicItemInformation Info, Vector2 TileLocation, OreResourceInformation Resource, List<ResourceInformation> ExtraDrops, int Health) : base(Info, TileLocation)
         {
-
-            this.healthValue = Health;
-            this.resourceInfo = Resource;
-            this.extraDrops = ExtraDrops != null ? ExtraDrops : new List<ResourceInformation>();
+            this.basicItemInformation = Info;
+            this.healthValue.Value = Health;
+            this.resourceInfo.Value = Resource;
+            this.extraDrops.AddRange(ExtraDrops != null ? ExtraDrops : new List<ResourceInformation>());
             this.setHealth(this.healthValue);
             this.Price = Info.price;
+        }
+
+        protected override void initializeNetFieldsPostConstructor()
+        {
+            base.initializeNetFieldsPostConstructor();
+            this.NetFields.AddFields(this.resourceInfo, this.extraDrops);
         }
 
 
@@ -84,12 +82,11 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
         {
             base.updateWhenCurrentLocation(time, environment);
             this.setHealth(this.healthValue);
-            this.basicItemInfo.shakeTimer -= time.ElapsedGameTime.Milliseconds;
+            this.basicItemInformation.shakeTimer.Value -= time.ElapsedGameTime.Milliseconds;
         }
 
-        public override void DayUpdate(GameLocation location)
+        public override void doActualDayUpdateLogic(GameLocation location)
         {
-            base.DayUpdate(location);
             this.setHealth(this.healthValue);
         }
 
@@ -102,27 +99,25 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
         public override bool performToolAction(Tool t, GameLocation location)
         {
 
-            if(t is StardewValley.Tools.Pickaxe)
+            if (t is StardewValley.Tools.Pickaxe)
             {
-                this.damage((t as StardewValley.Tools.Pickaxe).UpgradeLevel+1);
+                this.damage((t as StardewValley.Tools.Pickaxe).UpgradeLevel + 1);
                 if (this.getCurrentLocation() != null)
                 {
-                    this.getCurrentLocation().playSound("hammer");
+                    this.getCurrentLocation().PlaySound(Enums.StardewSound.hammer);
                     //ModCore.log("Ore has this much health left and location is not null: "+this.healthValue);
-                    this.basicItemInfo.shakeTimer = 200;
+                    this.basicItemInformation.shakeTimer.Value = 200;
                 }
                 else
                 {
-                    Game1.player.currentLocation.playSound("hammer");
+                    this.getCurrentLocation().PlaySound(Enums.StardewSound.hammer);
                     //ModCore.log("Ore has this much health left and location is null!: "+this.healthValue);
-                    this.basicItemInfo.shakeTimer = 200;
+                    this.basicItemInformation.shakeTimer.Value = 200;
                 }
                 return false;
             }
             else
-            {
                 return false;
-            }
         }
 
         /// <summary>
@@ -147,11 +142,9 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
             if (amount <= 0) return;
             else
             {
-                this.healthValue -= amount;
+                this.healthValue.Value -= amount;
                 if (this.healthValue <= 0)
-                {
                     this.destoryVein();
-                }
             }
         }
 
@@ -160,43 +153,35 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
         /// </summary>
         public void destoryVein()
         {
-            int amount = this.resourceInfo.getNumberOfDropsToSpawn();
-            Item newItem = this.resourceInfo.droppedItem.getOne();
+            int amount = this.resourceInfo.Value.getNumberOfDropsToSpawn();
+            Item newItem = this.resourceInfo.Value.droppedItem.getItem(1);
             GameLocation loc = this.getCurrentLocation();
-            for(int i = 0; i < amount; i++)
-            {
-                Game1.createItemDebris(newItem.getOne(), this.TileLocation*Game1.tileSize, Game1.random.Next(0, 3), loc);
-            }
+            for (int i = 0; i < amount; i++)
+                Game1.createItemDebris(newItem.getOne(), this.TileLocation * Game1.tileSize, Game1.random.Next(0, 3), loc);
 
             if (this.extraDrops != null)
-            {
                 foreach (ResourceInformation extra in this.extraDrops)
-                {
                     if (extra.shouldDropResource())
                     {
-                        Item extraItem = extra.droppedItem.getOne();
+                        Item extraItem = extra.droppedItem.getItem(1);
                         int extraAmount = extra.getNumberOfDropsToSpawn();
                         for (int i = 0; i < amount; i++)
-                        {
                             Game1.createItemDebris(extraItem.getOne(), this.TileLocation * Game1.tileSize, Game1.random.Next(0, 3), loc);
-                        }
                     }
                     else
                     {
                         //Resource did not meet spawn chance.
                     }
-                }
-            }
 
             if (loc != null)
             {
-                this.getCurrentLocation().playSound("stoneCrack");
+                this.getCurrentLocation().PlaySound(Enums.StardewSound.stoneCrack);
                 Game1.createRadialDebris(this.getCurrentLocation(), 14, (int)this.TileLocation.X, (int)this.TileLocation.Y, Game1.random.Next(4, 10), false, -1, false, -1);
                 loc.removeObject(this.TileLocation, false);
             }
             else
             {
-                Game1.player.currentLocation.playSound("stoneCrack");
+                this.getCurrentLocation().PlaySound(Enums.StardewSound.stoneCrack);
                 Game1.createRadialDebris(Game1.player.currentLocation, 14, (int)this.TileLocation.X, (int)this.TileLocation.Y, Game1.random.Next(4, 10), false, -1, false, -1);
                 Game1.player.currentLocation.removeObject(this.TileLocation, false);
             }
@@ -225,7 +210,12 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
 
         public override Item getOne()
         {
-            OreVein component = new OreVein(this.basicItemInfo.Copy(),this.resourceInfo,this.extraDrops,this.healthValue);
+
+            List<ResourceInformation> resourceInformation = new List<ResourceInformation>();
+            foreach (ResourceInformation resources in this.extraDrops)
+                resourceInformation.Add(resources);
+
+            OreVein component = new OreVein(this.basicItemInformation.Copy(), this.resourceInfo.Value, resourceInformation, this.healthValue);
             return component;
         }
 
@@ -234,29 +224,12 @@ namespace Revitalize.Framework.Objects.Resources.OreVeins
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
 
-            //The actual planter box being drawn.
-            if (this.basicItemInfo.animationManager == null)
-            {
-                if (this.basicItemInfo.animationManager.getExtendedTexture() == null)
-
-                spriteBatch.Draw(this.basicItemInfo.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize)+this.basicItemInfo.shakeTimerOffset(), (y * Game1.tileSize)+this.basicItemInfo.shakeTimerOffset())), new Rectangle?(this.AnimationManager.getCurrentAnimation().getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)(y * Game1.tileSize) / 10000f));
-            }
-
+            if (this.AnimationManager == null)
+                spriteBatch.Draw(this.basicItemInformation.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize) + this.basicItemInformation.shakeTimerOffset(), y * Game1.tileSize + this.basicItemInformation.shakeTimerOffset())), new Rectangle?(this.AnimationManager.getCurrentAnimation().getCurrentAnimationFrameRectangle()), this.basicItemInformation.DrawColor * alpha, 0f, Vector2.Zero, Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, y * Game1.tileSize / 10000f));
             else
             {
-                float addedDepth = 0;
-
-                this.basicItemInfo.animationManager.draw(spriteBatch, this.basicItemInfo.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize)+this.basicItemInfo.shakeTimerOffset(), (y * Game1.tileSize)+this.basicItemInfo.shakeTimerOffset())), new Rectangle?(this.AnimationManager.getCurrentAnimation().getCurrentAnimationFrameRectangle()), this.basicItemInfo.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)((y + addedDepth) * Game1.tileSize) / 10000f) + .00001f);
-
-                try
-                {
-                    this.basicItemInfo.animationManager.tickAnimation();
-                }
-                catch (Exception err)
-                {
-                    ModCore.ModMonitor.Log(err.ToString());
-                }
-                if (this.heldObject.Value != null) SpriteBatchUtilities.Draw(spriteBatch, this, this.heldObject.Value, alpha, addedDepth);
+                this.basicItemInformation.animationManager.draw(spriteBatch, this.basicItemInformation.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize) + this.basicItemInformation.shakeTimerOffset(), y * Game1.tileSize + this.basicItemInformation.shakeTimerOffset())), new Rectangle?(this.AnimationManager.getCurrentAnimation().getCurrentAnimationFrameRectangle()), this.basicItemInformation.DrawColor * alpha, 0f, Vector2.Zero, Game1.pixelZoom, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, y * Game1.tileSize / 10000f) + .00001f);
+                if (this.heldObject.Value != null) SpriteBatchUtilities.Draw(spriteBatch, this, this.heldObject.Value, alpha, 0);
             }
         }
 

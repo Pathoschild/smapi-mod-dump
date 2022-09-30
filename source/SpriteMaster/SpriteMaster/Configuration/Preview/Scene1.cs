@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Types;
 using StardewValley;
@@ -21,7 +22,9 @@ namespace SpriteMaster.Configuration.Preview;
 
 internal sealed class Scene1 : Scene {
 	//private static readonly Lazy<XTexture2D> FishTexture = new(() => StardewValley.Game1.content.Load<XTexture2D>(@"Maps\springobjects"));
-	private readonly AnimatedTexture CenterCharacterTexture;
+	private readonly AnimatedTexture CenterCharacterSpriteTexture;
+	private readonly AnimatedTexture CenterCharacterPortraitTexture;
+	private readonly Drawable CenterCharacterPortraitDrawable;
 
 	private readonly SpriteSheet OutdoorTiles;
 
@@ -114,7 +117,7 @@ internal sealed class Scene1 : Scene {
 		}
 	}
 
-	private static AnimatedTexture? MakeCharacterTexture(string path) {
+	private static AnimatedTexture? MakeCharacterSpriteTexture(string path) {
 		try {
 			return new UniformExplicitAnimatedTexture(
 				textureName: path,
@@ -143,53 +146,119 @@ internal sealed class Scene1 : Scene {
 		}
 	}
 
-	private static readonly string[] CharacterPaths = new[] {
+	private static AnimatedTexture? MakeCharacterPortraitTexture(string path) {
+		try {
+			return new UniformExplicitAnimatedTexture(
+				textureName: path,
+				spriteSize: (64, 64),
+				spriteOffset: (0, 0),
+				spritesPerRow: 2,
+				spriteIndices: new Vector2I[] {
+					(0, 0),
+					(1, 0),
+					(0, 1),
+					(1, 1)
+				},
+				ticksPerFrame: 24
+			);
+		}
+		catch {
+			return null;
+		}
+	}
+
+	private static TexturePair? MakeCharacterTextures(PathPair paths) {
+		var sprite = MakeCharacterSpriteTexture(paths.Sprite);
+		var portrait = MakeCharacterPortraitTexture(paths.Portrait);
+		try {
+			if (sprite is null || portrait is null) {
+				sprite?.Dispose();
+				portrait?.Dispose();
+				return null;
+			}
+
+			return new(sprite, portrait);
+		}
+		catch {
+			sprite?.Dispose();
+			portrait?.Dispose();
+			return null;
+		}
+	}
+
+	private static TexturePair? MakeCharacterTextures(AnimatedTexture? sprite, string portraitPath) {
+		if (sprite is null) {
+			return null;
+		}
+
+		var portrait = MakeCharacterPortraitTexture(portraitPath);
+		try {
+			if (portrait is null) {
+				sprite.Dispose();
+				portrait?.Dispose();
+				return null;
+			}
+
+			return new(sprite, portrait);
+		}
+		catch {
+			sprite.Dispose();
+			portrait?.Dispose();
+			return null;
+		}
+	}
+
+	private readonly record struct TexturePair(AnimatedTexture Sprite, AnimatedTexture Portrait);
+
+	private readonly record struct PathPair(string Sprite, string Portrait);
+
+	private static readonly PathPair[] CharacterPaths = {
 		// vanilla
-		@"Characters\Penny",
-		@"Characters\Haley",
-		@"Characters\Abigail",
-		@"Characters\Maru",
-		@"Characters\Leah",
+		new(@"Characters\Penny", @"Portraits\Penny"),
+		new(@"Characters\Haley", @"Portraits\Haley"),
+		new(@"Characters\Abigail", @"Portraits\Abigail"),
+		new(@"Characters\Maru", @"Portraits\Maru"),
+		new(@"Characters\Leah", @"Portraits\Leah"),
 		// sve
-		@"Characters\Alesia",
-		@"Characters\Claire",
-		@"Characters\Olivia",
-		@"Characters\Sophia",
+		new(@"Characters\Alesia", @"Portraits\Alesia"),
+		new(@"Characters\Claire", @"Portraits\Claire"),
+		new(@"Characters\Olivia", @"Portraits\Olivia"),
+		new(@"Characters\Sophia", @"Portraits\Sophia"),
 		// rsv
-		@"Characters\Alissa",
-		@"Characters\Corine",
-		@"Characters\Daia",
-		@"Characters\Flor",
-		@"Characters\Maddie",
-		@"Characters\Ysabelle",
+		new(@"Characters\Alissa", @"Portraits\Alissa"),
+		new(@"Characters\Corine", @"Portraits\Corine"),
+		new(@"Characters\Daia", @"Portraits\Daia"),
+		new(@"Characters\Flor", @"Portraits\Flor"),
+		new(@"Characters\Maddie", @"Portraits\Maddie"),
+		new(@"Characters\Ysabelle", @"Portraits\Ysabelle"),
 		// es
-		@"Characters\Aideen",
+		new(@"Characters\Aideen", @"Portraits\Aideen"),
 		// rsv kiwi
-		KiwiPath,
+		new(KiwiPath, @"Portraits\Kiwi"),
 		// es junimo golden
-		JunimoGoldenPath,
+		new(JunimoGoldenPath, @"Portraits\Clint"),
 		// vanilla junimo
-		JunimoPath
+		new(JunimoPath, @"Portraits\Clint"),
 	};
 
-	private static AnimatedTexture GetCenterCharacter() {
+	private static TexturePair GetCenterCharacter() {
 		var rand = new Random(RandomSeed);
 		var characters = CharacterPaths.OrderBy(_ => rand.Next());
 
 		foreach (var character in characters) {
-			AnimatedTexture? result = character switch {
-				KiwiPath => GetCenterCharacterRSVKiwi(),
-				JunimoGoldenPath => GetCenterCharacterESJunimoGolden(),
-				JunimoPath => GetCenterCharacterJunimo(),
-				_ => MakeCharacterTexture(character)
+			TexturePair? result = character switch {
+				(KiwiPath, _) => MakeCharacterTextures(GetCenterCharacterRSVKiwi(), character.Portrait),
+				(JunimoGoldenPath, _) => MakeCharacterTextures(GetCenterCharacterESJunimoGolden(), character.Portrait),
+				(JunimoPath, _) => MakeCharacterTextures(GetCenterCharacterJunimo(), character.Portrait),
+				_ => MakeCharacterTextures(character)
 			};
-			if (result is null) {
+			if (!result.HasValue) {
 				continue;
 			}
-			return result;
+			return result.Value;
 		}
 
-		return MakeCharacterTexture(CharacterPaths[0])!;
+		return MakeCharacterTextures(CharacterPaths[0])!.Value;
 	}
 
 	private static readonly string[] Seasons = new[] {
@@ -200,7 +269,7 @@ internal sealed class Scene1 : Scene {
 	};
 
 	internal Scene1(Bounds scissor) : base(scissor) {
-		CenterCharacterTexture = GetCenterCharacter();
+		(CenterCharacterSpriteTexture, CenterCharacterPortraitTexture) = GetCenterCharacter();
 
 		var rand = new Random(RandomSeed);
 
@@ -260,10 +329,11 @@ internal sealed class Scene1 : Scene {
 		);
 
 		Drawables = SetupScene(Season == "winter");
+		CenterCharacterPortraitDrawable = new Drawable(CenterCharacterPortraitTexture);
 	}
 
 	public override void Dispose() {
-		CenterCharacterTexture.Dispose();
+		CenterCharacterSpriteTexture.Dispose();
 	}
 
 	private const string ReferenceBasicText = "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch";
@@ -338,6 +408,7 @@ internal sealed class Scene1 : Scene {
 
 			var offset = Region.Extent;
 			offset -= (Vector2F)textMeasure;
+			offset.X = 0;
 
 			Utility.drawTextWithShadow(
 				b: batch,
@@ -348,6 +419,55 @@ internal sealed class Scene1 : Scene {
 				scale: 1.0f
 			);
 		}
+
+		// Draw Portrait
+		{
+			var offset = Region.Extent;
+			offset -= new Vector2F(CenterCharacterPortraitDrawable.Width, CenterCharacterPortraitDrawable.Height);
+
+			offset += (32, 32);
+
+			CenterCharacterPortraitDrawable.Tick();
+			CenterCharacterPortraitDrawable.Draw(this, batch, offset, 0.0f);
+		}
+
+		// Draw Portrait
+		/*
+		{
+			var offset = Region.Extent;
+			offset -= new Vector2F(CenterCharacterPortraitDrawable.Width, CenterCharacterPortraitDrawable.Height);
+
+			offset += (32, 32);
+
+			var tempNPC = new NPC(new AnimatedSprite(CenterCharacterPortraitTexture.Texture.Name), XVector2.Zero, "", 0, "Haley", new(), CenterCharacterPortraitTexture.Texture, true);
+
+			var dialog = new StardewValley.Dialogue("", tempNPC) {
+				showPortrait = true
+			};
+
+			var dialogBox = new StardewValley.Menus.DialogueBox(
+				0,
+				0,
+				1000, // minimum that drawPortrait requires to actually draw a portrait
+				CenterCharacterPortraitDrawable.Height * 2
+			) {
+				characterDialogue = dialog,
+				transitioning = false
+			};
+
+			bool oldShowPortraitsOption = Game1.options.showPortraits;
+			Game1.options.showPortraits = true;
+			try {
+				dialogBox.draw(batch);
+			}
+			finally {
+				Game1.options.showPortraits = oldShowPortraitsOption;
+			}
+
+			//CenterCharacterPortraitDrawable.Tick();
+			//CenterCharacterPortraitDrawable.Draw(this, batch, offset, 0.0f);
+		}
+		*/
 	}
 
 	private DrawableInstance[] SetupScene(bool winter) {
@@ -491,7 +611,7 @@ internal sealed class Scene1 : Scene {
 		try { tileArray[mid.X, mid.Y].Add(new(shadowTexture)); } catch (IndexOutOfRangeException) { }
 
 		// insert Character
-		try { tileArray[mid.X, mid.Y].Add(new(CenterCharacterTexture, offset: -(TileSizeRendered / 2))); } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X, mid.Y].Add(new(CenterCharacterSpriteTexture, offset: -(TileSizeRendered / 2))); } catch (IndexOutOfRangeException) { }
 
 		// insert Tree
 		try { tileArray[mid.X - 4, mid.Y + 2].Add(TreeTexture[1, 0]); } catch (IndexOutOfRangeException) { }
@@ -523,6 +643,6 @@ internal sealed class Scene1 : Scene {
 	}
 
 	protected override void OnTick() {
-		CenterCharacterTexture.Tick();
+		CenterCharacterSpriteTexture.Tick();
 	}
 }

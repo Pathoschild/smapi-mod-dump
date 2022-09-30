@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AeroCore.Utils;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;

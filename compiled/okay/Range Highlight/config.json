@@ -4,6 +4,7 @@
   "ShowScarecrowRange": true,
   "ShowBeehouseRange": true,
   "ShowBombRange": true,
+  "HighlightBuildingsOnMouseover": true,
   "ShowOtherSprinklersWhenHoldingSprinkler": true,
   "ShowOtherScarecrowsWhenHoldingScarecrow": true,
   "ShowOtherBeehousesWhenHoldingBeehouse": false,

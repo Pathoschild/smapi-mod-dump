@@ -35,7 +35,7 @@ namespace EventRepeater
         private HashSet<int> ResponseToForget = new HashSet<int>();
         private Event LastEvent;
         private List<int> ManualRepeaterList = new List<int>();
-        
+        private bool ShowEventIDs = true;
 
 
         /*********
@@ -114,6 +114,9 @@ namespace EventRepeater
                 helper.ConsoleCommands.Add("repeatersave", "'usage: repeatersave <filename>' Creates a textfile with all events you set to repeat manually.", SaveManualCommand);
                 helper.ConsoleCommands.Add("repeaterload", "'usage: repeaterload <filename>' Loads the file you designate.", LoadCommand);
                 helper.ConsoleCommands.Add("inject", "'usage: inject <event, mail, response> <ID>' Example: 'inject event 1324329'  Inject IDs into the game.", injectCommand);
+                helper.ConsoleCommands.Add("stopevent", "'usage: stops current event.", StopEventCommand);
+                helper.ConsoleCommands.Add("showinfo", "Toggles in game visuals of certain alerts.", ShowInfoCommand);
+                helper.ConsoleCommands.Add("emergencyskip", "Forces an event skip.. will progress the game", EmergencySkipCommand);
         }
 
         /*********
@@ -133,7 +136,12 @@ namespace EventRepeater
 
         private void OnEventStarted(Event @event)
         {
-            Game1.CurrentEvent.eventCommands = this.ExtractCommands(Game1.CurrentEvent.eventCommands, new[] { "forgetEvent", "forgetMail", "forgetResponse" }, out ISet<string> extractedCommands);
+            Monitor.Log($"Current Event: {Game1.CurrentEvent.id}", LogLevel.Debug);
+            if(ShowEventIDs == true)
+            {
+                Game1.addHUDMessage(new HUDMessage($"Current Event: {Game1.CurrentEvent.id}!"));
+            }
+            Game1.CurrentEvent.eventCommands = this.ExtractCommands(Game1.CurrentEvent.eventCommands, new[] { "forgetEvent", "forgetMail", "forgetResponse", "timeAdvance" }, out ISet<string> extractedCommands);
 
             foreach (string command in extractedCommands)
             {
@@ -173,7 +181,20 @@ namespace EventRepeater
                         else
                             this.Monitor.Log($"Could not parse response ID '{rawId}' for {commandName} command.", LogLevel.Warn);
                         break;
-
+                    case "timeAdvance":
+                        if (int.TryParse(rawId, out int hours))
+                        {
+                            int newTime = Utility.ModifyTime(Game1.timeOfDay, hours * 60);
+                            if (newTime < 2600)
+                            {
+                                Game1.timeOfDay = newTime;
+                            }
+                            else
+                                this.Monitor.Log($"Cannot advance time! {hours} would put the time to {newTime}!  Command ignored!", LogLevel.Error);
+                        }
+                        else
+                            this.Monitor.Log($"Time advancement failed: invalid number '{rawId}'.", LogLevel.Warn);
+                        break;                       
                     default:
                         this.Monitor.Log($"Unrecognized command name '{commandName}'.", LogLevel.Warn);
                         break;
@@ -300,6 +321,55 @@ namespace EventRepeater
             }
 
         }
+        private void ShowInfoCommand(string command, string[] parameters)
+        {
+            if (ShowEventIDs == true)
+            {
+                ShowEventIDs = false;
+                Game1.addHUDMessage(new HUDMessage("In Game Alerts Disabled!"));
+            }
+            if (ShowEventIDs == false)
+            {
+                ShowEventIDs = true;
+                Game1.addHUDMessage(new HUDMessage("In Game Alerts Enabled!"));
+            }
+        }
+        private void EmergencySkipCommand(string command, string[] parameters)
+        {
+            int eventtoskip = Game1.CurrentEvent.id;
+            try
+            {
+                Game1.CurrentEvent.skipEvent();
+                Monitor.Log($"Event {eventtoskip} was successfully skipped!");
+                if (ShowEventIDs == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage($"Event {eventtoskip} was successfully skipped!"));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log(ex.Message, LogLevel.Error);
+            }
+        }
+        private void StopEventCommand(string command, string[] parameters)
+        {
+            int suddenstop = Game1.CurrentEvent.id;
+            try
+            {
+                Game1.CurrentEvent.exitEvent();
+                Monitor.Log($"The Event {suddenstop} has been interrupted. You can remove the event manually if needed.");
+                if (ShowEventIDs == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage($"The Event {suddenstop} has been interrupted.  You can remove the event manually if needed."));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log(ex.Message, LogLevel.Error);
+            }
+        }
         private void SaveManualCommand(string command, string[] parameters)
         {
             //This will allow you to save your repeatable events from the manual repeater
@@ -342,12 +412,32 @@ namespace EventRepeater
             if (parameters.Length == 0) return;
             try
             {
-                int eventToForget = int.Parse(parameters[0]);
-                Game1.player.eventsSeen.Remove(eventToForget);
-                Monitor.Log("Forgetting event id: " + eventToForget, LogLevel.Debug);
+                if (parameters[0] == "all")
+                {
+                    Game1.player.eventsSeen.Clear();
+                    Game1.player.eventsSeen.Add(60367);
+                    Monitor.Log("All events removed! (Except the initial event)", LogLevel.Debug);
+                    if (ShowEventIDs == true)
+                    {
+                        Game1.addHUDMessage(new HUDMessage("All events removed! (except the initial event)"));
+                    }
+                }
+                else
+                {
+                    int eventToForget = int.Parse(parameters[0]);
+                    Game1.player.eventsSeen.Remove(eventToForget);
+                    Monitor.Log("Forgetting event id: " + eventToForget, LogLevel.Debug);
+                    if(ShowEventIDs == true)
+                    {
+                        Game1.addHUDMessage(new HUDMessage($"Forgetting event id: {eventToForget}"));
+                    }
+                }
 
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                Monitor.Log(ex.Message, LogLevel.Error);
+            }
         }
         private void ShowEventsCommand(string command, string[] parameters)
         {
@@ -374,7 +464,11 @@ namespace EventRepeater
             {
                 string MailToForget = parameters[0];
                 Game1.player.mailReceived.Remove(MailToForget);
-                Monitor.Log("Forgetting event id: " + MailToForget, LogLevel.Debug);
+                Monitor.Log("Forgetting mail id: " + MailToForget, LogLevel.Debug);
+                if (ShowEventIDs == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage($"Forgetting mail id: {MailToForget}"));
+                }
 
             }
             catch (Exception) { }
@@ -387,6 +481,10 @@ namespace EventRepeater
                 string MailtoSend = parameters[0];
                 Game1.addMailForTomorrow(MailtoSend);
                 Monitor.Log("Check Mail Tomorrow!! Sending: " + MailtoSend, LogLevel.Debug);
+                if (ShowEventIDs == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage($"Check Mail Tomorrow!! Sending: {MailtoSend}"));
+                }
 
             }
             catch (Exception) { }
@@ -408,6 +506,10 @@ namespace EventRepeater
                 int responseToForget = int.Parse(parameters[0]);
                 Game1.player.dialogueQuestionsAnswered.Remove(responseToForget);
                 Monitor.Log("Forgetting Response ID: " + responseToForget, LogLevel.Debug);
+                if (ShowEventIDs == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage($"Forgetting Response ID: {responseToForget}"));
+                }
 
             }
             catch (Exception) { }

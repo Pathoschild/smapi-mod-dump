@@ -17,6 +17,7 @@ using DecidedlyShared.Logging;
 using DecidedlyShared.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -33,6 +34,8 @@ namespace SmartCursor
         private Logger logger;
         private Vector2? targetedObject;
         private readonly int baseRange = 3;
+        private byte cooldownTimer;
+        private byte cooldownThreshold = 45;
         private bool isHoldKeyDown;
         private float staminaPerHit;
 
@@ -146,6 +149,8 @@ namespace SmartCursor
         /// </summary>
         private void GameLoopOnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
+            this.cooldownTimer++;
+
             // We only want to process any of this if our smart cursor key is held down.
             if (this.isHoldKeyDown)
             {
@@ -160,67 +165,33 @@ namespace SmartCursor
 
                 if (player.CurrentTool != null)
                     this.targetedObject = this.GetTileToTarget(playerTile, player.CurrentTool);
-
-                // switch (player.CurrentTool)
-                // {
-                //     case Pickaxe pick:
-                //         this.GetTileToTarget(playerTile, pick);
-                //
-                //         break;
-                //     case Axe axe:
-                //         objectDistancesFromPlayer = new Dictionary<BreakableEntity, float>();
-                //
-                //         foreach (var resource in this.breakableResources)
-                //             objectDistancesFromPlayer.Add(resource, Vector2.Distance(resource.Tile, playerTile));
-                //
-                //         if (objectDistancesFromPlayer.Any())
-                //         {
-                //             var sortedDistances =
-                //                 from distance in objectDistancesFromPlayer
-                //                 where distance.Key.Type is BreakableType.Axe &&
-                //                       distance.Value < this.baseRange + axe.UpgradeLevel
-                //                 orderby distance.Value
-                //                 select distance;
-                //
-                //             if (sortedDistances.Any())
-                //             {
-                //                 this.targetedObject = new Vector2();
-                //                 this.targetedObject = sortedDistances.First().Key.Tile;
-                //             }
-                //             else
-                //                 this.targetedObject = null;
-                //         }
-                //
-                //         break;
-                //     case Hoe hoe:
-                //         objectDistancesFromPlayer = new Dictionary<BreakableEntity, float>();
-                //
-                //         foreach (var resource in this.breakableResources)
-                //             objectDistancesFromPlayer.Add(resource, Vector2.Distance(resource.Tile, playerTile));
-                //
-                //         if (objectDistancesFromPlayer.Any())
-                //         {
-                //             var sortedDistances =
-                //                 from distance in objectDistancesFromPlayer
-                //                 where distance.Key.Type is BreakableType.Hoe &&
-                //                       distance.Value < this.baseRange + hoe.UpgradeLevel
-                //                 orderby distance.Value
-                //                 select distance;
-                //
-                //             if (sortedDistances.Any())
-                //             {
-                //                 this.targetedObject = new Vector2();
-                //                 this.targetedObject = sortedDistances.First().Key.Tile;
-                //             }
-                //             else
-                //                 this.targetedObject = null;
-                //         }
-                //
-                //         break;
-                // }
             }
             else
                 this.targetedObject = null;
+
+            GamePadState gamepadState = Game1.input.GetGamePadState();
+            MouseState mouseState = Game1.input.GetMouseState();
+
+            // Now, if our cooldown timer has passed and the correct keys are held, we want to hit again.
+            if (this.cooldownTimer >= this.cooldownThreshold && this.isHoldKeyDown && (gamepadState.IsButtonDown(Buttons.X)
+                    || mouseState.LeftButton == ButtonState.Pressed))
+            {
+                if (Game1.player.UsingTool)
+                    return;
+
+                var dummy = new Farmer();
+
+                if (this.targetedObject.HasValue && Game1.player.CurrentTool != null)
+                {
+                    Game1.player.CurrentTool.DoFunction(
+                        Game1.currentLocation,
+                        (int)this.targetedObject.Value.X * 64,
+                        (int)this.targetedObject.Value.Y * 64, 1, dummy);
+
+                    this.GatherResources(Game1.currentLocation);
+                    this.cooldownTimer = 0;
+                }
+            }
         }
 
         /// <summary>
@@ -346,10 +317,13 @@ namespace SmartCursor
         /// <param name="e"></param>
         private void InputOnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
+            if (e.Button == this.config.SmartCursorHold)
+                this.isHoldKeyDown = true;
+
             var dummy = new Farmer();
             this.isHoldKeyDown = e.IsDown(this.config.SmartCursorHold);
 
-            if ((e.Button == SButton.MouseLeft || e.Button == SButton.ControllerX) && !Game1.player.UsingTool)
+            if ((e.Button == SButton.MouseLeft || e.Button == SButton.ControllerX || Game1.input.GetMouseState().LeftButton == ButtonState.Pressed) && !Game1.player.UsingTool)
             {
                 if (this.targetedObject.HasValue && Game1.player.CurrentTool != null)
                 {

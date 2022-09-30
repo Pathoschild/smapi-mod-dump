@@ -1,3 +1,6 @@
 {
+  "BreakChance": 0.0,
+  "DefaultProductionTime": 1440,
+  "DuplicateEverything": false,
   "UnlockAutomatically": false
 }

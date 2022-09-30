@@ -20,6 +20,7 @@ using SpriteMaster.Types.Fixed;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -146,6 +147,14 @@ internal static class Harmonize {
 					break;
 				case Generic.Struct:
 					foreach (var structType in attribute.GenericTypes ?? StructTypes) {
+
+						if (
+							attribute.GenericConstraints is { } constraints &&
+							!constraints.AnyF(constraint => structType.IsAssignableTo(constraint))
+						) {
+							continue;
+						}
+
 						try {
 							//Debug.Trace($"\tGeneric Type: {structType.FullName}");
 							Patch(
@@ -171,6 +180,14 @@ internal static class Harmonize {
 					break;
 				case Generic.Class:
 					foreach (var objectType in attribute.GenericTypes ?? new[] {typeof(object)}) {
+
+						if (
+							attribute.GenericConstraints is { } constraints &&
+							!constraints.AnyF(constraint => objectType.IsAssignableTo(constraint))
+						) {
+							continue;
+						}
+
 						try {
 							Patch(
 								@this,

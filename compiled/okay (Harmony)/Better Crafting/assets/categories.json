@@ -14,17 +14,14 @@
 					"Height": 10
 				}
 			},
-			"Recipes": [
-				"Complete Breakfast",
-				"Hashbrowns",
-				"Pancakes",
-				"Pepper Poppers",
-				"Tom Kha Soup",
-				"Autumn's Bounty",
-				"Farmer's Lunch",
-				"Survival Burger",
-				"Maple Bar",
-				"Tropical Curry"
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffFarming"
+				},
+				{
+					"Id": "BuffForaging"
+				}
 			]
 		},
 		{
@@ -41,14 +38,14 @@
 					"Height": 10
 				}
 			},
-			"Recipes": [
-				"Bean Hotpot",
-				"Crispy Bass",
-				"Eggplant Parm.",
-				"Cran. Sauce",
-				"Miner's Treat",
-				"Banana Pudding",
-				"Squid Ink Ravioli"
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffMining"
+				},
+				{
+					"Id": "BuffMagnetism"
+				}
 			]
 		},
 		{
@@ -65,17 +62,11 @@
 					"Height": 10
 				}
 			},
-			"Recipes": [
-				"Fish Taco",
-				"Trout Soup",
-				"Dish o' The Sea",
-				"Seafoam Pudding",
-				"Chowder",
-				"Fish Stew",
-				"Escargot",
-				"Lobster Bisque",
-				"Maple Bar",
-				"Shrimp Cocktail"
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffFishing"
+				}
 			]
 		},
 		{
@@ -92,17 +83,29 @@
 					"Height": 10
 				}
 			},
-			"Recipes": [
-				"Fried Mushroom",
-				"Eggplant Parm.",
-				"Autumn's Bounty",
-				"Pumpkin Soup",
-				"Stuffing",
-				"Roots Platter",
-				"Crab Cakes",
-				"Banana Pudding",
-				"Mango Sticky Rice",
-				"Squid Ink Ravioli"
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffAttack"
+				},
+				{
+					"Id": "BuffDefense"
+				},
+				{
+					"Id": "BuffGarlic"
+				},
+				{
+					"Id": "BuffLife"
+				},
+				{
+					"Id": "BuffMuscle"
+				},
+				{
+					"Id": "BuffSquidInk"
+				},
+				{
+					"Id": "BuffMonsterMusk"
+				}
 			]
 		},
 		{
@@ -119,23 +122,17 @@
 					"Height": 10
 				}
 			},
-			"Recipes": [
-				"Complete Breakfast",
-				"Lucky Lunch",
-				"Bean Hotpot",
-				"Pepper Poppers",
-				"Tom Kha Soup",
-				"Fried Eel",
-				"Spicy Eel",
-				"Red Plate",
-				"Pumpkin Soup",
-				"Super Meal",
-				"Triple Shot Espresso",
-				"Lobster Bisque",
-				"Crab Cakes",
-				"Shrimp Cocktail",
-				"Ginger Ale",
-				"Banana Pudding"
+			"UseRules": true,
+			"DynamicRules": [
+				{
+					"Id": "BuffLuck"
+				},
+				{
+					"Id": "BuffSpeed"
+				},
+				{
+					"Id": "BuffMaxEnergy"
+				}
 			]
 		}
 	],

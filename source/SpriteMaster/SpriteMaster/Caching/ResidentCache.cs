@@ -32,6 +32,10 @@ internal static class ResidentCache {
 	);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool Contains(ulong key) =>
+		Cache.Contains(key);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte[]? Get(ulong key) =>
 		Cache.Get(key);
 
@@ -39,8 +43,17 @@ internal static class ResidentCache {
 	internal static bool TryGet(ulong key, [NotNullWhen(true)] out byte[]? value) =>
 		Cache.TryGet(key, out value);
 
-	internal static byte[] Set(ulong key, byte[] value) =>
-		Cache.Set(key, value);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TrySet(ulong key, byte[] value) =>
+		Cache.TrySet(key, value);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void SetFast(ulong key, byte[] value) =>
+		Cache.SetFast(key, value);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void SetOrTouchFast(ulong key, byte[] value) =>
+		Cache.SetOrTouchFast(key, value);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte[]? Remove(ulong key) =>
@@ -49,6 +62,10 @@ internal static class ResidentCache {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void RemoveFast(ulong key) =>
 		Cache.RemoveFast(key);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void Touch(ulong key) =>
+		Cache.Touch(key);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void Purge() {

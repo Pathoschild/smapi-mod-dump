@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
+namespace Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
 {
     /// <summary>
     /// A simple menu component for displaying SDV Items as well as being able to click them.
@@ -61,7 +61,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
         /// <summary>
         /// The background sprite for the item.
         /// </summary>
-        public StardustCore.Animations.AnimatedSprite background;
+        public Omegasis.StardustCore.Animations.AnimatedSprite background;
 
         /// <summary>
         /// The position of the button on screen.
@@ -94,7 +94,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
         /// <param name="Scale"></param>
         /// <param name="DrawStackNumber"></param>
         /// <param name="DrawColor"></param>
-        public ItemDisplayButton(Item I,StardustCore.Animations.AnimatedSprite Background,Vector2 Position, Rectangle BoundingBox, float Scale, bool DrawStackNumber, Color DrawColor)
+        public ItemDisplayButton(Item I, Omegasis.StardustCore.Animations.AnimatedSprite Background,Vector2 Position, Rectangle BoundingBox, float Scale, bool DrawStackNumber, Color DrawColor)
         {
             this.item = I;
             this.defaultBounds = BoundingBox;
@@ -184,7 +184,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
             return this.boundingBox.Contains(new Point(x, y));
         }
 
-        public bool Contains(int x, int y)
+        public bool ContainsPoint(int x, int y)
         {
             return this.boundingBox.Contains(new Point(x, y));
         }

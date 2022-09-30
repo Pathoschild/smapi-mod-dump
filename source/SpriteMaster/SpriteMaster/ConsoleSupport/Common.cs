@@ -25,46 +25,46 @@ internal static partial class ConsoleSupport {
 		{ "help", new((_, _) => InvokeHelp(CommandMap!), "Prints this command guide") },
 		{ "all-stats", new((_, _) => Debug.DumpAllStats(), "Dump Statistics") },
 		{ "memory", new((_, _) => Debug.DumpMemory(), "Dump Memory") },
-		{ "purge", new(SpriteMaster.Self.MemoryMonitor.TriggerPurge, "Trigger Purge") }
+		{ "purge", new(InvokePurge, "Trigger Purge") }
 	};
 
 	static ConsoleSupport() {
 		var commandMap = new ConcurrentDictionary<string, Command>();
 
-		var methods = SpriteMaster.Assembly.GetTypes().AsParallel()
-			.SelectMany(type => type.GetStaticMethods());
+		SpriteMaster.Assembly.GetTypes().AsParallel()
+			.SelectMany(type => type.GetStaticMethods()).ForAll(
+				method => {
+					if (method.GetCustomAttribute<CommandAttribute>() is not { } command) {
+						return;
+					}
 
-		Parallel.ForEach(methods, method => {
-			if (method.GetCustomAttribute<CommandAttribute>() is not {} command) {
-				return;
-			}
+					var parameters = method.GetParameters();
+					if (parameters.Length != 2) {
+						Debug.Error(
+							$"Console command '{command.Name}' for method '{method.GetFullName()}' does not have the expected number of parameters"
+						);
+						return;
+					}
 
-			var parameters = method.GetParameters();
-			if (parameters.Length != 2) {
-				Debug.Error(
-					$"Console command '{command.Name}' for method '{method.GetFullName()}' does not have the expected number of parameters"
-				);
-				return;
-			}
+					if (parameters[0].ParameterType != typeof(string)) {
+						Debug.Error(
+							$"Console command '{command.Name}' for method '{method.GetFullName()}' : parameter 0 type {parameters[0].ParameterType} is not {typeof(string)}"
+						);
+						return;
+					}
 
-			if (parameters[0].ParameterType != typeof(string)) {
-				Debug.Error(
-					$"Console command '{command.Name}' for method '{method.GetFullName()}' : parameter 0 type {parameters[0].ParameterType} is not {typeof(string)}"
-				);
-				return;
-			}
+					if (parameters[1].ParameterType != typeof(Queue<string>)) {
+						Debug.Error(
+							$"Console command '{command.Name}' for method '{method.GetFullName()}' : parameter 1 type {parameters[1].ParameterType} is not {typeof(Queue<string>)}"
+						);
+						return;
+					}
 
-			if (parameters[1].ParameterType != typeof(Queue<string>)) {
-				Debug.Error(
-					$"Console command '{command.Name}' for method '{method.GetFullName()}' : parameter 1 type {parameters[1].ParameterType} is not {typeof(Queue<string>)}"
-				);
-				return;
-			}
-
-			if (!commandMap.TryAdd(command.Name, new(method.CreateDelegate<CallbackDelegate>(), command.Description))) {
-				Debug.Error($"Console command is already registered: '{command.Name}'");
-			}
-		});
+					if (!commandMap.TryAdd(command.Name, new(method.CreateDelegate<CallbackDelegate>(), command.Description))) {
+						Debug.Error($"Console command is already registered: '{command.Name}'");
+					}
+				}
+		);
 
 		CommandMap.EnsureCapacity(CommandMap.Count + commandMap.Count);
 		foreach (var pair in commandMap) {

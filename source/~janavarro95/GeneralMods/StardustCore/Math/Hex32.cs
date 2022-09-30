@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace StardustCore.StardustMath
+namespace Omegasis.StardustCore.StardustMath
 {
     /// <summary>A Class that helps represents 32 bit hex.</summary>
     class Hex32 : Hex

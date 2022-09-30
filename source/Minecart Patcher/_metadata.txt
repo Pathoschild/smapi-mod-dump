@@ -6,9 +6,12 @@ mods:
    Minecart Patcher
 
 latest commit:
-   commit 422b349ab33d906b629ff5b20810bd8f044b48ab
+   commit 9ea3b2744fbe01192a5c8fdbbdc9c6e16214fe79
+   Merge: 422b349 754b44b
    Author: bwdy <47769190+bwdy@users.noreply.github.com>
-   Date:   Mon May 16 22:02:39 2022 -0800
+   Date:   Wed Sep 21 15:31:45 2022 -0800
    
-       Fix pagination (again), existence testing for destinations
+       Merge pull request #3 from Locked15/main
+       
+       Translation support, cleanup, fixes
    

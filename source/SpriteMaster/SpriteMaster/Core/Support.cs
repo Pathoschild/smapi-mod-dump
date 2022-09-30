@@ -51,6 +51,11 @@ internal static partial class OnDrawImpl {
 		[NotNullWhen(true)] out ManagedSpriteInstance? spriteInstance,
 		bool create = false
 	) {
+		if (expectedScale <= 1U && !SMConfig.Resample.ForceOverScaling) {
+			spriteInstance = null;
+			return false;
+		}
+
 		if (
 			LastDrawSpriteInstance is not null &&
 			LastDrawSpriteInstance.IsReady && !LastDrawSpriteInstance.IsDisposed && !LastDrawSpriteInstance.Suspended &&
@@ -111,14 +116,16 @@ internal static partial class OnDrawImpl {
 				return null;
 			}
 
+			var extent = reference.Extent();
+
 			// If the reference texture is too small to consider resampling, return null
-			if (reference.Extent().MaxOf <= Config.Resample.MinimumTextureDimensions) {
+			if (extent.MaxOf <= Config.Resample.MinimumTextureDimensions) {
 				return null;
 			}
 
 			bool isSliced = false;
 			if (GetIsSliced(clampedSource, reference, out var textureRef)) {
-				clampedSource = textureRef.Value.Bounds.IsEmpty ? reference.Extent() : textureRef.Value.Bounds;
+				clampedSource = textureRef.Value.Bounds.IsEmpty ? extent : textureRef.Value.Bounds;
 				isSliced = true;
 			}
 
@@ -153,13 +160,19 @@ internal static partial class OnDrawImpl {
 	private static bool Validate(this ManagedTexture2D texture) => !texture.IsDisposed;
 
 	private static void GetDrawParameters(XTexture2D texture, XRectangle? source, out Bounds bounds, out float scaleFactor) {
-		if (texture is not InternalTexture2D) {
-			texture.Meta().UpdateLastAccess();
-		}
-
 		var sourceRectangle = (Bounds)source.GetValueOrDefault(new(0, 0, texture.Width, texture.Height));
 
-		scaleFactor = SpriteOverrides.IsWater(sourceRectangle, texture) ? 4.0f : 1.0f;
+		bool isWater;
+		if (texture is not InternalTexture2D) {
+			var meta = texture.Meta();
+			meta.UpdateLastAccess();
+			isWater = SpriteOverrides.IsWater(sourceRectangle, meta);
+		}
+		else {
+			isWater = SpriteOverrides.IsWater(sourceRectangle, texture);
+		}
+
+		scaleFactor = isWater ? 4.0f : 1.0f;
 
 		ReportOnceValidations.Validate(sourceRectangle, texture);
 		bounds = sourceRectangle;

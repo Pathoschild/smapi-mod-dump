@@ -7,8 +7,10 @@
   "IsEnableQuickStackHotkey": false,
   "QuickStackKeyboardHotkey": "K",
   "QuickStackControllerHotkey": "LeftStick",
+  "IsQuickStackIgnoreItemQuality": true,
   "IsEnableFavoriteItems": true,
   "FavoriteItemsHighlightTextureChoice": 2,
   "FavoriteItemsKeyboardHotkey": "LeftAlt",
-  "FavoriteItemsControllerHotkey": "LeftShoulder"
+  "FavoriteItemsControllerHotkey": "LeftShoulder",
+  "IsEnableInventoryPageSideWarp": true
 }

@@ -6,9 +6,9 @@ mods:
    Goodbye American English
 
 latest commit:
-   commit 9e31f1bf20015b9e2ae742691ca8af6183c0a534
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Tue Jul 5 10:53:33 2022 +1000
+   commit c65efd037f1c42f5f2df5a439d11254e33debe78
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Mon Sep 26 08:11:42 2022 +1000
    
-       Update README.md
+       fixed null checker
    

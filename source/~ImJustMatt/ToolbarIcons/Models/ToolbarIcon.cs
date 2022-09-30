@@ -13,7 +13,7 @@ namespace StardewMods.ToolbarIcons.Models;
 using StardewMods.Common.Integrations.ToolbarIcons;
 
 /// <inheritdoc />
-public class ToolbarIcon : IToolbarIcon
+public sealed class ToolbarIcon : IToolbarIcon
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="ToolbarIcon" /> class.

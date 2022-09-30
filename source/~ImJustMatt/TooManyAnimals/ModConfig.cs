@@ -14,9 +14,9 @@ using System.Globalization;
 using System.Text;
 
 /// <summary>
-///     Mod config data.
+///     Mod config data for Too Many Animals.
 /// </summary>
-internal class ModConfig
+internal sealed class ModConfig
 {
     /// <summary>
     ///     Gets or sets a value indicating how many animals will be shown in the Animal Purchase menu at once.

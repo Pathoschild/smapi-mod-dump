@@ -1,0 +1,12 @@
+{
+  "Name": "Ring of Loaded Die",
+  "Description": "Greatly increases your luck.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "Krobus",
+  "EnableWithMod": "spacechase0.LuckSkill",
+  "PurchasePrice": 25000,
+}

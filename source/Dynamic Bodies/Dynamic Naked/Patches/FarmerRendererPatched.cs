@@ -325,7 +325,7 @@ namespace DynamicBodies.Patches
                 }
             }
 
-            Texture2D nakedUpperTexture = pbe.GetNakedUpperTexture(who.skin.Value);
+            Texture2D nakedUpperTexture = pbe.GetNakedUpperTexture();
             if (drawNakedOverlay)
             {
                 if (nakedUpperTexture != null)
@@ -382,7 +382,7 @@ namespace DynamicBodies.Patches
 
 
             bool drawPants = true;
-            Texture2D nakedLowerTexture = pbe.GetNakedLowerTexture(who.skin.Value);
+            Texture2D nakedLowerTexture = pbe.GetNakedLowerTexture();
             if (who.GetPantsIndex() == 14 || who.pantsItem.Value == null)
             {
                 
@@ -403,7 +403,12 @@ namespace DynamicBodies.Patches
             AdjustedVanillaMethods.drawEyes(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             __instance.drawHairAndAccesories(b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
             AdjustedVanillaMethods.drawArms(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
-            
+
+            //Draw trinket 5
+            if (pbe.trinkets[4].option != "Default")
+            {
+                DrawTrinket(4, __instance, pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth + 5E-05f, ((!Game1.isUsingBackToFrontSorting) ? 1 : (-1)));
+            }
             //prevent further rendering
             return false;
         }
@@ -529,19 +534,20 @@ namespace DynamicBodies.Patches
                 //set up the palette render
                 ModEntry.paletteSwap.Parameters["xTargetPalette"].SetValue(pbe.paletteCache);
 
-                RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, pbe.sourceImage.Width, pbe.sourceImage.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+                RenderTarget2D renderTarget = new RenderTarget2D(Game1.graphics.GraphicsDevice, pbe.sourceImage.Width, pbe.sourceImage.Height, false, Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
                 //Store current render targets
                 RenderTargetBinding[] currentRenderTargets = Game1.graphics.GraphicsDevice.GetRenderTargets();
 
                 if (currentRenderTargets is not null && currentRenderTargets.Length > 0 && currentRenderTargets[0].RenderTarget is not null)
                 {
                     _cachedRenderer = currentRenderTargets[0].RenderTarget as RenderTarget2D;
+                    ModEntry.debugmsg($"Current render targets are {currentRenderTargets.Length}", LogLevel.Debug);
                 }
 
                 Game1.graphics.GraphicsDevice.SetRenderTarget(renderTarget);
 
-                Game1.graphics.GraphicsDevice.Clear(Color.FromNonPremultiplied(255, 0, 255, 0));
-                
+                Game1.graphics.GraphicsDevice.Clear(Color.Transparent);
+
                 using (SpriteBatch sb = new SpriteBatch(renderTarget.GraphicsDevice))
                 {
                     sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, effect: ModEntry.paletteSwap);
@@ -557,10 +563,10 @@ namespace DynamicBodies.Patches
                 {
                     renderTarget.Dispose();
                 }
+
                 //return current render target
                 Game1.graphics.GraphicsDevice.SetRenderTarget(_cachedRenderer);
                 _cachedRenderer = null;
-
 
                 //Overlay the bodyhair onto the base skin
                 Texture2D bodyHairText = null;
@@ -568,8 +574,8 @@ namespace DynamicBodies.Patches
                 if (pbe.bodyHair.option != "Default")
                 {
                     bodyHairText = pbe.GetBodyHairTexture(who);
-                    pbe.dirtyLayers["bodyHair"] = false;
                 }
+                pbe.dirtyLayers["bodyHair"] = false;
 
                 if (bodyHairText != null)
                 {
@@ -628,9 +634,15 @@ namespace DynamicBodies.Patches
                     }
                     else
                     {
-
-                        //Otherwise load it from a content pack
-                        bodyText2D = pbe.body.provider.ModContent.Load<Texture2D>($"assets\\bodies\\{gender}{pbe.body.file}.png");
+                        try
+                        {
+                            //Otherwise load it from a content pack
+                            bodyText2D = pbe.body.provider.ModContent.Load<Texture2D>($"assets\\bodies\\{gender}{pbe.body.file}.png");
+                        } catch (NullReferenceException e)
+                        {
+                            //Fallback
+                            bodyText2D = ModEntry.context.Helper.ModContent.Load<Texture2D>($"assets\\Character\\{gender}farmer_base.png");
+                        }
                     }
 
                     editor = ModEntry.context.Helper.ModContent.GetPatchHelper(bodyText2D).AsImage();
@@ -722,7 +734,15 @@ namespace DynamicBodies.Patches
                     }
                     else
                     {
-                        armsText2D = pbe.arm.provider.ModContent.Load<IRawTextureData>($"assets\\arms\\{pbe.arm.file}_{pbe.sleeveLength}.png");
+                        try
+                        {
+                            armsText2D = pbe.arm.provider.ModContent.Load<IRawTextureData>($"assets\\arms\\{pbe.arm.file}_{pbe.sleeveLength}.png");
+                        }
+                        catch (NullReferenceException e)
+                        {
+                            //Fallback
+                            armsText2D = ModEntry.context.Helper.ModContent.Load<IRawTextureData>($"assets\\Character\\{gender}arm_{pbe.sleeveLength}.png");
+                        }
                     }
                     //editor.PatchImage(armsText2D, new Rectangle(0, 0, armsText2D.Width, armsText2D.Height), targetArea: new Rectangle(96, 0, armsText2D.Width, armsText2D.Height), PatchMode.Replace);
 
@@ -772,6 +792,18 @@ namespace DynamicBodies.Patches
                     pbe.dirtyLayers["sprite"] = false;
                 }
 
+                if (pbe.dirtyLayers["trinkets"])
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (pbe.trinkets[i].option != "Default")
+                        {
+                            pbe.trinkets[i].texture = pbe.GetTrinketTexture(who, i);
+                        }
+                    }
+                    pbe.dirtyLayers["trinkets"] = false;
+                }
+
                 if (!returnNew)
                 {
                     //Return the cached image
@@ -786,7 +818,7 @@ namespace DynamicBodies.Patches
         }
 
 
-        private static Color changeBrightness(Color c, Color amount, bool lighter = true)
+        public static Color changeBrightness(Color c, Color amount, bool lighter = true)
         {
             int adjust = lighter ? 1 : -1;
             c.R = (byte)Math.Min(255, Math.Max(0, c.R + amount.R * adjust));
@@ -985,7 +1017,7 @@ namespace DynamicBodies.Patches
 
             if (drawNakedOverlay)
             {
-                Texture2D nakedOverlayTexture = pbe.GetNakedLowerTexture(who.skin.Value);
+                Texture2D nakedOverlayTexture = pbe.GetNakedLowerTexture();
 
                 if (nakedOverlayTexture != null)
                 {
@@ -1066,6 +1098,12 @@ namespace DynamicBodies.Patches
                     }
                 }
 
+                //Draw trinket 1
+                if (pbe.trinkets[0].option != "Default")
+                {
+                    DrawTrinket(0, __instance, pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth + (3.2E-07f + 1.95E-05f) / 2f, sort_direction);
+                }
+
                 //Draw the beards
                 Texture2D beardTexture = null;
                 if (!pbe.beard.OptionMatchesModData(who))
@@ -1135,6 +1173,12 @@ namespace DynamicBodies.Patches
                     }
                 }
 
+                //Draw trinket 2
+                if (pbe.trinkets[1].option != "Default")
+                {
+                    DrawTrinket(1, __instance, pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth + (1.95E-05f + 2.9E-05f) / 2f, sort_direction);
+                }
+
                 //Draw Vanilla accessories
                 if ((int)who.accessory.Value >= 6)
                 {
@@ -1143,6 +1187,11 @@ namespace DynamicBodies.Patches
 
                 DrawHair(pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, sort_direction);
 
+                //Draw trinket 3
+                if (pbe.trinkets[2].option != "Default")
+                {
+                    DrawTrinket(2, __instance, pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth + (ModEntry.hairlayer + 3.9E-05f) / 2f, sort_direction);
+                }
 
                 //Draw naked
                 if (!pbe.nakedLower.CheckForOption("below accessories")) DrawLowerNaked(__instance, ___positionOffset, ___rotationAdjustment, ___baseTexture, animationFrame, sourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, ModEntry.FS_pantslayer, 5.95E-05f);
@@ -1153,10 +1202,50 @@ namespace DynamicBodies.Patches
                     AdjustedVanillaMethods.DrawHat(__instance, ___positionOffset, ref ___hatSourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, layerDepth);
                 }
 
+                //Draw trinket 4
+                if (pbe.trinkets[3].option != "Default")
+                {
+                    DrawTrinket(3, __instance, pbe, ___positionOffset, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth + (3.9E-05f + 4.9E-05f) / 2f, sort_direction);
+                }
+
             }
             //prevent further rendering
             return false;
 
+        }
+
+        public static void DrawTrinket(int trinket, FarmerRenderer __instance, PlayerBaseExtended pbe, Vector2 ___positionOffset, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth, float sort_direction)
+        {
+            List<string> all_trinkets = ModEntry.getContentPackOptions(ModEntry.trinketOptions[trinket]).ToList();
+            int current_index = all_trinkets.IndexOf((who.modData.ContainsKey("DB.trinket"+ trinket)) ? who.modData["DB.trinket" +trinket] : "Default");
+            Trinkets.ContentPackTrinketOption option = ModEntry.trinketOptions[trinket][current_index] as Trinkets.ContentPackTrinketOption;
+
+            bool flip = !option.settings.usesUniqueLeftSprite;
+            Vector2 offsetPosition = Vector2.Zero;
+            offsetPosition.X -= (option.settings.extraWidth / 2f) * 4f;
+            offsetPosition.Y = option.settings.yOffset * 4f;
+
+            Texture2D trinket_texture = pbe.GetTrinketTexture(who, trinket);
+            Rectangle trinketSourceRect = ExpandedAnimations.getFrameRectangle(who, option.settings, option.settings.usesUniqueLeftSprite ? trinket_texture.Height / 4 : trinket_texture.Height / 3, 16 + option.settings.extraWidth, facingDirection);
+
+            if (trinket_texture != null)
+            {
+                switch (facingDirection)
+                {
+                    case 0:
+                        b.Draw(trinket_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)__instance.heightOffset.Value), trinketSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth);
+                        break;
+                    case 1:
+                        b.Draw(trinket_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 4 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)__instance.heightOffset.Value), trinketSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth);
+                        break;
+                    case 2:
+                        b.Draw(trinket_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 8 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)__instance.heightOffset.Value - 4), trinketSourceRect, Color.White, rotation, origin, 4f * scale, SpriteEffects.None, layerDepth);
+                        break;
+                    case 3:
+                        b.Draw(trinket_texture, position + origin + ___positionOffset + offsetPosition + new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 4 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)__instance.heightOffset.Value), trinketSourceRect, Color.White, rotation, origin, 4f * scale, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
+                        break;
+                }
+            }
         }
 
         public static void DrawHair(PlayerBaseExtended pbe, Vector2 ___positionOffset, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth, float sort_direction)

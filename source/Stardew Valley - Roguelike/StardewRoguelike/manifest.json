@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/StardewValleyRoguelike
+**
+*************************************************/
+
+{
+  "Name": "StardewRoguelike",
+  "Author": "Tyler Gibbs",
+  "Version": "1.0.17",
+  "Description": "Stardew Valley but it's a roguelike!",
+  "UniqueID": "tylergibbs2.StardewRoguelike",
+  "EntryDll": "StardewRoguelike.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [ "GitHub:tylergibbs2/StardewValleyRoguelike" ]
+}

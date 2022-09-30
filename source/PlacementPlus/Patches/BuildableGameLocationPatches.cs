@@ -16,13 +16,13 @@ using StardewValley;
 using StardewValley.Locations;
 using xTile.Dimensions;
 
+using static PlacementPlus.ModState;
+
 namespace PlacementPlus.Patches
 {
     [HarmonyPatch(typeof(BuildableGameLocation), nameof(BuildableGameLocation.isBuildable))]
     internal class BuildableGameLocationPatches
     {
-        private static IMonitor Monitor => PlacementPlus.Instance.Monitor;
-
         /// <summary> Alters the requirements for where buildings can be built. </summary>
         private static void Postfix(Vector2 tileLocation, BuildableGameLocation __instance, ref bool __result)
         {

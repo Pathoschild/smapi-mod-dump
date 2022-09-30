@@ -3,6 +3,8 @@
   "mod.description": "Poner opciones para prevenir la recogida de muebles por tipo.",
 
   // Titulos para los tipos de muebles
+  "PreventAllPickup.title": "Desactivar recoger para todos los muebles",
+  "FurniturePlacementKey.title": "Tecla para habilitar la recogida",
   "CanPickUpBed.title": "Puedes recoger camas",
   "CanPickUpChair.title": "Puedes recoger sillas",
   "CanPickUpTable.title": "Puedes recoger mesas",

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SpriteMaster.Core;
@@ -241,9 +242,15 @@ internal static partial class OnDrawImpl {
 	}
 
 	internal static uint EstimateScale(Vector2F scale, float scaleFactor) {
+		int minScale = Config.Resample.MinScale;
+		int maxScale = Config.Resample.MaxScale;
+		if (minScale > maxScale) {
+			(minScale, maxScale) = (maxScale, minScale);
+		}
+
 		float factoredScale = scale.MaxOf * scaleFactor;
-		factoredScale += 0.5f;
-		factoredScale = factoredScale.Clamp(2.0f, Config.Resample.MaxScale);
+		factoredScale += SMConfig.Resample.OverScale;
+		factoredScale = factoredScale.Clamp(minScale, maxScale);
 		uint factoredScaleN = (uint)factoredScale.NextInt();
 		return Resample.Scalers.IScaler.Current?.ClampScale(factoredScaleN) ?? 1u;
 	}

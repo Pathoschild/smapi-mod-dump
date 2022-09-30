@@ -9,6 +9,24 @@
 *************************************************/
 
 Happy Birthday Change Log
+~~~~~~~~~~~~~~~~
+Manifest 3.16.0 Changelog
+~~~~~~~~~~~~~~~~
+Compatibility:
+    Add a new event precondition to choose between vanilla birthday events and Stardew Valley Expanded Birthday Events for NPCs that have broken vanilla events.
+
+Bugfixes:
+    Fixed birthday logic not triggering until a cutscene has occurred.
+
+~~~~~~~~~~~~~~~~
+Manifest 3.14.0 Changelog
+~~~~~~~~~~~~~~~~
+Bugfixes:
+    ~Fixed NPCs not having birthday dialogue to show during all of the birthday parties.
+      ~Also updated birthday events to be version 2 to override the old, non-working versions.
+    ~Fixed the mod crashing on vortex installs when loading the game due to trying to load a folder managed by votext (which is some metadata) as a happy birthday event file. Now event files are only loaded from .json files.
+    ~Fixed belated birthday messages coming a whole year later if your birthday was on the 28th day of a season (sorry!)
+
 
 ~~~~~~~~~~~~~~~~
 Manifest 1.9.0 Changelog

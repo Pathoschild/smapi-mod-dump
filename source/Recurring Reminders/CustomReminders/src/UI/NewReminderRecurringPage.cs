@@ -103,7 +103,10 @@ namespace Dem1se.CustomReminders.UI
         public override void draw(SpriteBatch b)
         {
             // supress the Menu button
-            Utilities.Globals.Helper.Input.Suppress(Utilities.Globals.MenuButton);
+            foreach (var sbut in Utilities.Globals.MenuButtons)
+            {
+                Utilities.Globals.Helper.Input.Suppress(sbut);
+            }
 
             // draw screen fade
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);

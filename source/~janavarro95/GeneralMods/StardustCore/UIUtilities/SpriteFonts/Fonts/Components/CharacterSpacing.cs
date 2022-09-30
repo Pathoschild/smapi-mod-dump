@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace StardustCore.UIUtilities.SpriteFonts.Components
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Components
 {
     /// <summary>Used to determine spacing between TexturedCharacters.</summary>
     public class CharacterSpacing

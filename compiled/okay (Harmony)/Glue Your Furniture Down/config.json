@@ -1,4 +1,6 @@
 {
+  "PreventAllPickup": false,
+  "FurniturePlacementKey": "LeftShift + G",
   "CanPickUpBed": true,
   "CanPickUpChair": true,
   "CanPickUpTable": true,

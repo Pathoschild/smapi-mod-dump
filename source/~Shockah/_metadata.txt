@@ -4,6 +4,7 @@ urls:
 
 mods:
    Don't Stop Me Now
+   Early Ginger Island
    Flexible Sprinklers
    Hibernation
    Machine Status
@@ -15,15 +16,9 @@ mods:
    XP Display
 
 latest commit:
-   commit 994f4c105cb02543f3a0ae0fcf7a27d1514fb4a2
+   commit 485aee0656e9087f0fa9969ed4955ea5cc9fe385
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Wed Aug 3 18:21:50 2022 +0200
+   Date:   Thu Sep 22 21:47:08 2022 +0200
    
-       Update README.md
-       
-       Update README.md
-       
-       Update README.md
-       
-       Update README.md
+       EarlyGingerIsland: Updated documents
    

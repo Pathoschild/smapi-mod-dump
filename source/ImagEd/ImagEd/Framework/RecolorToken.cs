@@ -127,7 +127,7 @@ namespace ImagEd.Framework {
                 if (File.Exists(generatedFilePathAbsolute)) {
                     monitor_.Log($"Found existing file {generatedFilePathAbsolute}, returning relative path {generatedFilePath}");
 
-                    helper_.Content.InvalidateCache(inputData.AssetName);
+                    helper_.GameContent.InvalidateCache(inputData.AssetName);
                 }
                 else {
                     try {
@@ -150,7 +150,7 @@ namespace ImagEd.Framework {
                                 monitor_.Log($"Loading asset {inputData.AssetName} from existing cache file {generatedBasePathAbsolute}");
                             }
                             else {
-                                source = helper_.Content.Load<Texture2D>(inputData.AssetName, ContentSource.GameContent);
+                                source = helper_.GameContent.Load<Texture2D>(inputData.AssetName);
                                 using (FileStream fs = new FileStream(generatedBasePathAbsolute, FileMode.Create)) {
                                     source.SaveAsPng(fs, source.Width, source.Height);
                                     fs.Close();
@@ -159,11 +159,11 @@ namespace ImagEd.Framework {
                             }
                         }
                         else {
-                            source = contentPack.LoadAsset<Texture2D>(inputData.SourcePath);
+                            source = contentPack.ModContent.Load<Texture2D>(inputData.SourcePath);
                         }
 
                         Texture2D mask = inputData.MaskPath.ToLowerInvariant() != "none"
-                                       ? contentPack.LoadAsset<Texture2D>(inputData.MaskPath)
+                                       ? contentPack.ModContent.Load<Texture2D>(inputData.MaskPath)
                                        : null;
 
                         using (Texture2D extracted = ExtractSubImage(source, mask, inputData.DesaturationMode, inputData.Brightness))
@@ -178,7 +178,7 @@ namespace ImagEd.Framework {
 
                         monitor_.Log($"Generated file {generatedFilePathAbsolute}, returning relative path {generatedFilePath}");
 
-                        helper_.Content.InvalidateCache(inputData.AssetName);
+                        helper_.GameContent.InvalidateCache(inputData.AssetName);
                     }
                     catch (ContentLoadException) {
                         // Asset is not available, return its name to prevent game from crashing.

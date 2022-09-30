@@ -92,6 +92,7 @@ namespace Shockah.MachineStatus
 
 		internal static MachineStatus Instance { get; set; } = null!;
 		internal ModConfig Config { get; private set; } = null!;
+		private bool IsConfigRegistered { get; set; } = false;
 
 		private readonly IList<WeakReference<SObject>> TrackedMachines = new List<WeakReference<SObject>>();
 		private readonly IList<SObject> IgnoredMachinesForUpdates = new List<SObject>();
@@ -148,6 +149,9 @@ namespace Shockah.MachineStatus
 				return;
 			GMCMI18nHelper helper = new(api, ModManifest, Helper.Translation);
 
+			if (IsConfigRegistered)
+				api.Unregister(ModManifest);
+
 			api.Register(
 				ModManifest,
 				reset: () => Config = new ModConfig(),
@@ -159,6 +163,7 @@ namespace Shockah.MachineStatus
 						Config.Sorting.Add(sortingOption);
 					Helper.WriteConfig(Config);
 					ForceRefreshDisplayedMachines();
+					SetupConfig();
 				}
 			);
 
@@ -280,6 +285,8 @@ namespace Shockah.MachineStatus
 			SetupExceptionsPage("config.show.ready.exceptions", MachineState.Ready, Config.ShowReadyExceptions);
 			SetupExceptionsPage("config.show.waiting.exceptions", MachineState.Waiting, Config.ShowWaitingExceptions);
 			SetupExceptionsPage("config.show.busy.exceptions", MachineState.Busy, Config.ShowBusyExceptions);
+
+			IsConfigRegistered = true;
 		}
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)

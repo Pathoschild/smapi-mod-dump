@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using DecidedlyShared.APIs;
 using DecidedlyShared.Logging;
 using Microsoft.Xna.Framework;
-using SmartBuilding.APIs;
+using SmartBuilding.Utilities;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -448,6 +448,7 @@ namespace SmartBuilding.Utilities
                 }
                 else if (itemInfo.ItemType == ItemType.GenericFurniture)
                 {
+                    // TODO: Fix bug where placing furniture with more lax placement on ignores rotations.
                     bool placedSuccessfully = false;
                     Furniture furniture = null;
 

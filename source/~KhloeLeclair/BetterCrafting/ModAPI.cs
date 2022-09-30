@@ -26,8 +26,25 @@ using StardewValley.Network;
 using StardewValley.Objects;
 
 using Leclair.Stardew.BetterCrafting.Models;
+using Leclair.Stardew.BetterCrafting.Menus;
+using StardewValley.Menus;
+using Leclair.Stardew.BetterCrafting.DynamicRules;
+using StardewModdingAPI;
 
 namespace Leclair.Stardew.BetterCrafting;
+
+
+public class PopulateContainersEventArgs : IPopulateContainersEvent {
+	public IBetterCraftingMenu Menu { get; }
+
+	public IList<Tuple<object, GameLocation?>> Containers { get; }
+
+	public PopulateContainersEventArgs(IBetterCraftingMenu menu, IList<Tuple<object, GameLocation?>> containers) {
+		Menu = menu;
+		Containers = containers;
+	}
+}
+
 
 public class ModAPI : IBetterCrafting {
 
@@ -81,7 +98,7 @@ public class ModAPI : IBetterCrafting {
 		Vector2? position = null,
 		Rectangle? area = null,
 		bool discover_containers = true,
-		IList<Tuple<object, GameLocation>>? containers = null,
+		IList<Tuple<object, GameLocation?>>? containers = null,
 		IList<string>? listed_recipes = null
 	) {
 		if (listed_recipes == null && Mod.intCCStation != null)
@@ -119,6 +136,44 @@ public class ModAPI : IBetterCrafting {
 		return typeof(Menus.BetterCraftingPage);
 	}
 
+	/// <inheritdoc />
+	public IBetterCraftingMenu? GetActiveMenu() {
+		var menu = Game1.activeClickableMenu;
+
+		while (menu is not null) {
+			if (menu is IBetterCraftingMenu bcm)
+				return bcm;
+
+			if (menu is GameMenu gm) {
+				for (int i = 0; i < gm.pages.Count; i++) {
+					if (gm.pages[i] is IBetterCraftingMenu bcm2)
+						return bcm2;
+				}
+			}
+
+			menu = menu.GetChildMenu();
+		}
+
+		return null;
+	}
+
+	/// <inheritdoc />
+	public event Action<IPopulateContainersEvent>? MenuPopulateContainers;
+
+	internal void EmitMenuPopulate(BetterCraftingPage menu, ref IList<LocatedInventory>? containers) {
+		if (MenuPopulateContainers is not null) {
+			List<Tuple<object, GameLocation?>> values = containers == null ? new() :
+				containers.Select(x => new Tuple<object, GameLocation?>(x.Source, x.Location)).ToList();
+
+			MenuPopulateContainers.Invoke(new PopulateContainersEventArgs(menu, values));
+
+			if (values.Count == 0)
+				containers = null;
+			else
+				containers = values.Select(x => new LocatedInventory(x.Item1, x.Item2)).ToList();
+		}
+	}
+
 	#endregion
 
 	#region Recipes
@@ -148,6 +203,16 @@ public class ModAPI : IBetterCrafting {
 		return new RecipeWithIngredients(recipe, ingredients, onPerformCraft);
 	}
 
+	/// <inheritdoc />
+	public IRecipeBuilder RecipeBuilder(CraftingRecipe recipe) {
+		return new RecipeBuilder(recipe);
+	}
+
+	/// <inheritdoc />
+	public IRecipeBuilder RecipeBuilder(string name) {
+		return new RecipeBuilder(name);
+	}
+
 	#endregion
 
 	#region Ingredients
@@ -163,8 +228,14 @@ public class ModAPI : IBetterCrafting {
 	}
 
 	/// <inheritdoc />
-	public IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, string displayName, Texture2D texture, Rectangle? source = null) {
+	public IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null) {
 		return new MatcherIngredient(matcher, quantity, displayName, texture, source);
+	}
+
+	/// <inheritdoc />
+	[Obsolete("Use the method that takes functions instead.")]
+	public IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, string displayName, Texture2D texture, Rectangle? source = null) {
+		return new MatcherIngredient(matcher, quantity, () => displayName, () => texture, source);
 	}
 
 	/// <inheritdoc />
@@ -177,16 +248,31 @@ public class ModAPI : IBetterCrafting {
 		InventoryHelper.ConsumeItems(items, who, inventories, maxQuality, lowQualityFirst);
 	}
 
+	/// <inheritdoc />
+	public int CountItem(Func<Item, bool> predicate, Farmer? who, IEnumerable<Item?>? items, int maxQuality = int.MaxValue) {
+		return InventoryHelper.CountItem(predicate, who, items, out bool _, max_quality: maxQuality);
+	}
+
 	#endregion
 
 	#region Categories
 
 	/// <inheritdoc />
+	public void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null, bool useRules = false, IEnumerable<IDynamicRuleData>? rules = null) {
+		Mod.Recipes.CreateDefaultCategory(cooking, categoryId, Name, recipeNames, iconRecipe, useRules, rules);
+	}
+
+	[Obsolete("For compatibility after changing the API to use a function for the display name")]
+	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null, bool useRules = false, IEnumerable<IDynamicRuleData>? rules = null) {
+		Mod.Recipes.CreateDefaultCategory(cooking, categoryId, Name, recipeNames, iconRecipe, useRules, rules);
+	}
+
+	[Obsolete("For compatibility after adding API parameters")]
 	public void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
 		Mod.Recipes.CreateDefaultCategory(cooking, categoryId, Name, recipeNames, iconRecipe);
 	}
 
-	/// <inheritdoc />
+	[Obsolete("For compatibility after adding API parameters")]
 	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
 		Mod.Recipes.CreateDefaultCategory(cooking, categoryId, Name, recipeNames, iconRecipe);
 	}
@@ -203,6 +289,25 @@ public class ModAPI : IBetterCrafting {
 
 	#endregion
 
+	#region Dynamic Rules
+
+	public bool RegisterRuleHandler(IManifest manifest, string id, IDynamicRuleHandler handler) {
+		string fullId = $"{manifest.UniqueID}/{id}";
+		return Mod.Recipes.RegisterRuleHandler(fullId, handler);
+	}
+
+	public bool RegisterRuleHandler(IManifest manifest, string id, ISimpleInputRuleHandler handler) {
+		string fullId = $"{manifest.UniqueID}/{id}";
+		return Mod.Recipes.RegisterRuleHandler(fullId, handler);
+	}
+
+	public bool UnregisterRuleHandler(IManifest manifest, string id) {
+		string fullId = $"{manifest.UniqueID}/{id}";
+		return Mod.Recipes.UnregisterRuleHandler(fullId);
+	}
+
+	#endregion
+
 	#region Inventories
 
 	/// <inheritdoc />
@@ -215,7 +320,7 @@ public class ModAPI : IBetterCrafting {
 		Mod.UnregisterInventoryProvider(type);
 	}
 
-	/// <inheritdoc />
+	[Obsolete("Included to avoid breaking API compatibility with older mods.")]
 	public void RegisterInventoryProvider(
 		Type type,
 		Func<object, GameLocation?, Farmer?, bool>? isValid,

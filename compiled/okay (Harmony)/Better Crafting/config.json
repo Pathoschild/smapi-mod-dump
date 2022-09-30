@@ -4,6 +4,10 @@
   "ReplaceCrafting": true,
   "UseCategories": true,
   "ShowSettingsButton": true,
+  "MenuPriority": "Normal",
+  "ShowTastes": "Shift",
+  "ShowAllTastes": false,
+  "TasteStyle": "Heads",
   "MaxQuality": "Iridium",
   "LowQualityFirst": true,
   "ShowKeybindTooltip": "ForController",
@@ -24,8 +28,12 @@
   "MaxInventories": 32,
   "MaxDistance": 20,
   "MaxCheckedTiles": 500,
+  "MaxWorkbenchGap": 0,
   "UseDiagonalConnections": true,
   "ValidConnectors": [],
+  "EnableCookoutWorkbench": true,
+  "EnableCookoutLongevity": false,
+  "EnableCookoutExpensive": false,
   "UseTransfer": true,
   "AddToBehaviors": {
     "UseTool": {

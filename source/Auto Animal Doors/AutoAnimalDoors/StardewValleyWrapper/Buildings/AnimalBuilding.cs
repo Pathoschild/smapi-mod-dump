@@ -53,8 +53,12 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
             this.CloseAnimalDoor();
             foreach (StardewValley.FarmAnimal animal in FarmAnimals)
             {
+                if (animal?.myID?.Value == null)
+                {
+                    Logger.Instance.Log("Animal is unrecognized, can't warp that one home!", StardewModdingAPI.LogLevel.Warn);
+                }
                 // Only warp home animals that are still on the farm
-                if (this.Farm.StardewValleyFarm.animals.ContainsKey(animal.myID.Value))
+                else if (this.Farm.StardewValleyFarm.animals.ContainsKey(animal.myID.Value))
                 {
                     animal.warpHome(this.Farm.StardewValleyFarm, animal);
                 }

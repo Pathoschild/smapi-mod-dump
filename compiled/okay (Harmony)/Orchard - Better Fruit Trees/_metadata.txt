@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13867
+IDs: Saitoue.Orchard
+update keys: Nexus:13867, GitHub:Saitoue/Orchard

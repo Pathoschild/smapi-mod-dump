@@ -11,7 +11,7 @@
 {
   "Name": "Convenient Inventory",
   "Author": "gaussfire",
-  "Version": "1.2.0",
+  "Version": "1.3.0",
   "Description": "Adds convenience features to the player's inventory, such as quick stack to nearby chests and favorited items.",
   "UniqueID": "gaussfire.ConvenientInventory",
   "EntryDll": "ConvenientInventory.dll",

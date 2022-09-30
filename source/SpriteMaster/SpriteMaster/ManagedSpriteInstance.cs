@@ -15,10 +15,12 @@ using SpriteMaster.Caching;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
+using SpriteMaster.Mitigations.PyTK;
 using SpriteMaster.Resample;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
+using StardewValley;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -52,210 +54,254 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 	internal static bool Validate(XTexture2D texture, bool clean = false) {
 		var meta = texture.Meta();
-		if (meta.Validation.HasValue) {
+		if (meta.Validation.HasValue && !meta.CheckNameChange(texture)) {
 			return meta.Validation.Value;
 		}
 
-		if (texture is InternalTexture2D) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Internal Texture");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
+		var topTexture = texture;
+		texture = texture.GetUnderlyingTexture(out bool isManaged);
 
-		if (texture is RenderTarget2D && (
-				StardewValley.GameRunner.instance.gameInstances.AnyF(game => texture == game.screen || texture == game.uiScreen) ||
-				texture.Name is ("UI Screen" or "Screen") ||
-				meta.IsSystemRenderTarget
-			)
-		) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is System Render Target");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
+		bool forceClean = false;
 
-		// For now, render targets are disabled. General ones _can_ be made to work - they need to be invalidated once they are bound to a render target slot,
-		// and a hold set on using them until they are no longer bound to a render target slot. Or on clear calls. If the render target is not a persist-type,
-		// it should be processed _immediately_. If it is, it should be processed synchronously on first use.
-		if (texture is RenderTarget2D) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Render Target");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
-
-		if (Math.Max(texture.Width, texture.Height) <= Config.Resample.MinimumTextureDimensions) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Too Small: ({texture.Extent().ToString(DrawingColor.Orange)} <= {Config.Resample.MinimumTextureDimensions.ToString(DrawingColor.Orange)})");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
-
-		if (texture.Area() == 0) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Zero Area (Degenerate)");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
-
-		// TODO pComPtr check?
-		if (texture.IsDisposed || texture.GraphicsDevice.IsDisposed) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Zombie");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
-
-		if (texture.LevelCount > 1) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Multi-Level Textures Unsupported: {texture.LevelCount.ToString(DrawingColor.Orange)} levels");
-			}
-			meta.Validation = false;
-			return false;
-		}
-
-		if (!HasLegalFormat(texture)) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Format Unsupported: {texture.Format.ToString(DrawingColor.Orange)}");
-			}
-			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
-			}
-			return false;
-		}
-
-		bool isText = false;
-		bool isBasicText = false;
-
-		if (!texture.Anonymous()) {
-			foreach (var blacklistPattern in Config.Resample.BlacklistPatterns) {
-				if (!blacklistPattern.IsMatch(texture.NormalizedName())) {
-					continue;
-				}
-
+		bool InnerValidate() {
+			if (texture is InternalTexture2D) {
 				if (!meta.TracePrinted) {
 					meta.TracePrinted = true;
-					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Blacklisted ({blacklistPattern})");
+					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Internal Texture");
 				}
-				meta.Validation = false;
-				if (clean) {
-					PurgeInvalidated(texture);
-				}
+
 				return false;
 			}
 
-			isText = texture.NormalizedName().StartsWith(@"Fonts\");
-			isBasicText = texture.Format == SurfaceFormat.Dxt3;
-
-			if (!(Configuration.Preview.Override.Instance?.ResampleText ?? Config.Resample.EnabledText) && isText) {
+			if (texture is RenderTarget2D && (
+						StardewValley.GameRunner.instance.gameInstances.AnyF(
+							game => texture == game.screen || texture == game.uiScreen || topTexture == game.screen || topTexture == game.uiScreen
+						) ||
+						texture.Name is ("UI Screen" or "Screen") ||
+						meta.IsSystemRenderTarget
+					)
+				) {
 				if (!meta.TracePrinted) {
 					meta.TracePrinted = true;
-					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Font (and text resampling is disabled)");
+					//Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is System Render Target");
 				}
-				meta.Validation = false;
-				if (clean) {
-					PurgeInvalidated(texture);
-				}
+
 				return false;
 			}
-			if (!(Configuration.Preview.Override.Instance?.ResampleBasicText ?? Config.Resample.EnabledBasicText) && isBasicText) {
-				// The only BC2 texture that I've _ever_ seen is the internal font
 
+			// For now, render targets are disabled. General ones _can_ be made to work - they need to be invalidated once they are bound to a render target slot,
+			// and a hold set on using them until they are no longer bound to a render target slot. Or on clear calls. If the render target is not a persist-type,
+			// it should be processed _immediately_. If it is, it should be processed synchronously on first use.
+			if (texture is RenderTarget2D) {
 				if (!meta.TracePrinted) {
 					meta.TracePrinted = true;
-					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Basic Font (and basic text resampling is disabled)");
+					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Render Target");
 				}
-				meta.Validation = false;
-				if (clean) {
-					PurgeInvalidated(texture);
-				}
+
 				return false;
 			}
+
+			if (Math.Max(topTexture.Width, topTexture.Height) <= Config.Resample.MinimumTextureDimensions) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace(
+						$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Too Small: ({topTexture.Extent().ToString(DrawingColor.Orange)} <= {Config.Resample.MinimumTextureDimensions.ToString(DrawingColor.Orange)})"
+					);
+				}
+
+				return false;
+			}
+
+			if (topTexture.Area() == 0) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace(
+						$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Zero Area (Degenerate)"
+					);
+				}
+
+				return false;
+			}
+
+			// TODO pComPtr check?
+			if (topTexture.IsDisposed || topTexture.GraphicsDevice.IsDisposed) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Zombie");
+				}
+
+				return false;
+			}
+
+			if (topTexture.LevelCount > 1) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace(
+						$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Multi-Level Textures Unsupported: {topTexture.LevelCount.ToString(DrawingColor.Orange)} levels"
+					);
+				}
+
+				return false;
+			}
+
+			if (!HasLegalFormat(topTexture)) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace(
+						$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Format Unsupported: {topTexture.Format.ToString(DrawingColor.Orange)}"
+					);
+				}
+
+				return false;
+			}
+
+			bool disableValidation = false;
+
+			bool IsLargeFont() {
+				if (
+					texture.NormalizedName().StartsWith(@"Fonts\") &&
+					(
+						!texture.NormalizedName().Contains("Small") ||
+						!texture.NormalizedName().Contains("tiny")
+					)
+				) {
+					return true;
+				}
+
+				if (Game1.dialogueFont is null) {
+					disableValidation = true;
+				}
+				else if (texture == Game1.dialogueFont.Texture || topTexture == Game1.dialogueFont.Texture) {
+					return true;
+				}
+
+				return false;
+			}
+
+			var isText = texture.Format == SurfaceFormat.Dxt3 || topTexture.Format == SurfaceFormat.Dxt3;
+			Texture2DMeta.SpriteType spriteType = true switch {
+				_ when isText && IsLargeFont() => Texture2DMeta.SpriteType.LargeText,
+				_ when isText => Texture2DMeta.SpriteType.SmallText,
+				_ when texture.NormalizedName().Contains("Portraits") || topTexture.NormalizedName().Contains("Portraits") => Texture2DMeta.SpriteType.Portrait,
+				_ => Texture2DMeta.SpriteType.Sprite
+			};
+
+			if (spriteType == Texture2DMeta.SpriteType.LargeText) {
+				meta.Flags |= Texture2DMeta.TextureFlag.IsLargeFont;
+			}
+			else {
+				meta.Flags &= ~Texture2DMeta.TextureFlag.IsLargeFont;
+			}
+
+			if (spriteType == Texture2DMeta.SpriteType.SmallText) {
+				meta.Flags |= Texture2DMeta.TextureFlag.IsSmallFont;
+			}
+			else {
+				meta.Flags &= ~Texture2DMeta.TextureFlag.IsSmallFont;
+			}
+
+			var currentType = meta.Type;
+			if (currentType != spriteType) {
+				if (currentType != Texture2DMeta.SpriteType.Unknown) {
+					// We need to flush the texture then because it has changed what it is
+					forceClean = true;
+				}
+				meta.Type = spriteType;
+			}
+
+			void TracePrint(string reason) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
+					Debug.Trace(
+						$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', {reason}"
+					);
+				}
+			}
+
+			switch (spriteType) {
+				case Texture2DMeta.SpriteType.LargeText when !(Configuration.Preview.Override.Instance?.ResampleLargeText ?? Config.Resample.EnabledLargeText):
+					TracePrint("Is Font (and text resampling is disabled)");
+					return false;
+				case Texture2DMeta.SpriteType.SmallText when !(Configuration.Preview.Override.Instance?.ResampleSmallText ?? Config.Resample.EnabledSmallText):
+					// The only BC2 texture that I've _ever_ seen is the internal font
+					TracePrint("Is Basic Font (and basic text resampling is disabled)");
+					return false;
+				case Texture2DMeta.SpriteType.Portrait when !(Configuration.Preview.Override.Instance?.ResamplePortraits ?? Config.Resample.EnabledPortraits):
+					TracePrint("Is Portrait (and portrait resampling is disabled)");
+					return false;
+				case Texture2DMeta.SpriteType.Sprite when !(Configuration.Preview.Override.Instance?.ResampleSprites ?? Config.Resample.EnabledSprites):
+					TracePrint("Is Sprite (and sprite resampling is disabled)");
+					return false;
+			}
+
+			if (!texture.Anonymous()) {
+				foreach (var blacklistPattern in Config.Resample.BlacklistPatterns) {
+					if (!blacklistPattern.IsMatch(texture.NormalizedName())) {
+						continue;
+					}
+
+					if (!meta.TracePrinted) {
+						meta.TracePrinted = true;
+						Debug.Trace(
+							$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Blacklisted ({blacklistPattern})"
+						);
+					}
+
+					return false;
+				}
+			}
+
+			bool isAnonymous = texture.Anonymous();
+
+			if (!disableValidation && (isText || !isAnonymous || isAnonymous != isManaged)) {
+				meta.Validation = true;
+			}
+
+			return true;
 		}
 
-		if (!(Configuration.Preview.Override.Instance?.ResampleSprites ?? Config.Resample.EnabledSprites) && !isText && !isBasicText) {
-			if (!meta.TracePrinted) {
-				meta.TracePrinted = true;
-				Debug.Trace(
-					$"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Sprite (and sprite resampling is disabled)"
-				);
-			}
-
+		if (!InnerValidate()) {
 			meta.Validation = false;
-			if (clean) {
-				PurgeInvalidated(texture);
+			if (clean || forceClean) {
+				PurgeInvalidated(topTexture);
 			}
 
 			return false;
 		}
 
-
-		if (!texture.Anonymous()) {
-			meta.Validation = true;
+		if (forceClean) {
+			PurgeInvalidated(topTexture);
 		}
 
 		return true;
 	}
 
-	private static readonly TexelTimer TexelAverage = new();
-	private static readonly TexelTimer TexelAverageCached = new();
-	private static readonly TexelTimer TexelAverageSync = new();
-	private static readonly TexelTimer TexelAverageCachedSync = new();
+	private static class TexelTimers {
+		internal static readonly TexelTimer Average = new();
+		internal static readonly TexelTimer AverageCached = new();
+		internal static readonly TexelTimer AverageSync = new();
+		internal static readonly TexelTimer AverageCachedSync = new();
+	}
 
 	internal static void ClearTimers() {
-		TexelAverage.Reset();
-		TexelAverageCached.Reset();
-		TexelAverageSync.Reset();
-		TexelAverageCachedSync.Reset();
+		TexelTimers.Average.Reset();
+		TexelTimers.AverageCached.Reset();
+		TexelTimers.AverageSync.Reset();
+		TexelTimers.AverageCachedSync.Reset();
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
-	private static TexelTimer GetTimer(bool cached, bool async) {
-		if (async) {
-			return cached ? TexelAverageCached : TexelAverage;
-		}
-		else {
-			return cached ? TexelAverageCachedSync : TexelAverageSync;
-		}
-	}
+	private static TexelTimer GetTimer(bool cached, bool async) =>
+		(cached, async) switch {
+			(false, false) => TexelTimers.AverageSync,
+			(false, true) => TexelTimers.Average,
+			(true, false) => TexelTimers.AverageCachedSync,
+			(true, true) => TexelTimers.AverageCached
+		};
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static TexelTimer GetTimer(XTexture2D texture, bool async, out bool isCached) {
-		var isTextureCached = SpriteInfo.IsCached(texture);
+		var isTextureCached = texture.Meta().CachedDataNonBlocking is not null;
 		isCached = isTextureCached;
 		return GetTimer(isTextureCached, async);
 	}
@@ -280,6 +326,27 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			}
 
 			return scaleTexture;
+		}
+
+		uint maxScale = (uint)Config.Resample.MaxScale;
+		for (uint temporaryScale = expectedScale + 1; temporaryScale <= maxScale; ++temporaryScale) {
+			if (SpriteMap.TryGetReady(texture, source, temporaryScale, out var tempScaleTexture)) {
+				if (tempScaleTexture.NoResample) {
+					return null;
+				}
+
+				return tempScaleTexture;
+			}
+		}
+
+		for (uint temporaryScale = expectedScale - 1; temporaryScale >= 2U; --temporaryScale) {
+			if (SpriteMap.TryGetReady(texture, source, temporaryScale, out var tempScaleTexture)) {
+				if (tempScaleTexture.NoResample) {
+					return null;
+				}
+
+				return tempScaleTexture;
+			}
 		}
 
 		return null;
@@ -344,13 +411,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		bool textureChain = false;
 		ManagedSpriteInstance? currentInstance = null;
 
-		static bool ValidateInstance(ManagedSpriteInstance instance) {
-			return
-				!instance.IsDisposed &&
-				instance.IsPreview == (Configuration.Preview.Override.Instance is not null);
-		}
-
-		if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture) && ValidateInstance(scaleTexture)) {
+		if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture, out ulong spriteHash) && SpriteMap.ValidateInstance(scaleTexture)) {
 			if (scaleTexture.Invalidated) {
 				currentInstance = scaleTexture;
 				textureChain = true;
@@ -359,7 +420,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			{
 				case true:
 					return scaleTexture;
-				case false when scaleTexture.PreviousSpriteInstance is not null && scaleTexture.PreviousSpriteInstance.IsReady && ValidateInstance(scaleTexture.PreviousSpriteInstance):
+				case false when scaleTexture.PreviousSpriteInstance is not null && scaleTexture.PreviousSpriteInstance.IsReady && SpriteMap.ValidateInstance(scaleTexture.PreviousSpriteInstance):
 					currentInstance = scaleTexture.PreviousSpriteInstance;
 					textureChain = false;
 					break;
@@ -367,6 +428,24 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 					currentInstance = scaleTexture;
 					textureChain = false;
 					break;
+			}
+		}
+
+		// If we didn't find a previous texture, check for one with a different scale
+		if (currentInstance is null) {
+			uint maxScale = (uint)Config.Resample.MaxScale;
+			for (uint temporaryScale = expectedScale + 1; temporaryScale <= maxScale; ++temporaryScale) {
+				if (SpriteMap.TryGetReady(texture, source, temporaryScale, out var tempScaleTexture)) {
+					currentInstance = tempScaleTexture;
+				}
+			}
+
+			if (currentInstance is null) {
+				for (uint temporaryScale = expectedScale - 1; temporaryScale >= 2U; --temporaryScale) {
+					if (SpriteMap.TryGetReady(texture, source, temporaryScale, out var tempScaleTexture)) {
+						currentInstance = tempScaleTexture;
+					}
+				}
 			}
 		}
 
@@ -416,12 +495,29 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		// TODO : break this up somewhat so that we can delay hashing for things by _one_ frame (still deterministic, but offset so we can parallelize the work).
 		// Presently, this cannot be done because the initializer is a 'ref struct' and is used immediately. If we want to check the suspended cache, it needs to be jammed away
 		// so the hashing can be performed before the next frame.
-		SpriteInfo.Initializer spriteInfoInitializer = new(
-			reference: texture,
-			dimensions: source,
-			expectedScale: expectedScale,
-			textureType: textureType
-		);
+		SpriteInfo.Initializer spriteInfoInitializer;
+
+		try {
+			spriteInfoInitializer = new(
+				reference: texture,
+				dimensions: source,
+				expectedScale: expectedScale,
+				textureType: textureType
+			);
+		}
+		catch (SpriteInfo.Initializer.InitializationException ex) {
+#if SHIPPING
+			Debug.Trace(
+#else
+			Debug.Error(
+#endif
+				$"Initialization Exception when attempting to initialize SpriteInfo for {GetNameString()}",
+				ex
+			);
+
+			allowCache = false;
+			return currentInstance;
+		}
 
 		void RestorePriority(ManagedSpriteInstance? instance) {
 			if (instance is not null && !instance.IsReady && instance.DeferredTask.TryGetTarget(out var task)) {
@@ -435,7 +531,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 
 		// If the currentInstance hash matches, assume it's the same and just set it as ours.
-		if (currentInstance is not null && currentInstance.SpriteInfoHash == spriteInfoInitializer.Hash) {
+		if (currentInstance is not null && currentInstance.SpriteInfoHash == spriteInfoInitializer.HashForced) {
 			currentInstance.Invalidated = false;
 			SpriteMap.AddReplace(texture, currentInstance);
 
@@ -452,11 +548,31 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			return resurrectedInstance;
 		}
 
-		// If there was a previous instance, return that for now.
-		if (!textureChain && currentInstance is not null) {
-			// It can be a previous sprite instance instead, so don't cache.
-			allowCache = false;
-			return currentInstance;
+		var currentRevision = textureMeta.Revision;
+		// Check if there is already an in-flight task for this instance.
+		// TODO : this logic feels duplicated - we can already query for the Instance, and it already holds a WeakReference to the task...
+		if (textureMeta.InFlightTasks.TryGetValue(source, out var inFlightTask) && inFlightTask.Revision == currentRevision && inFlightTask.SpriteHash == spriteHash) {
+			TaskStatus taskStatus = TaskStatus.RanToCompletion;
+			bool taskCompleted = true;
+			if (inFlightTask.ResampleTask.TryGetTarget(out var resampleTask)) {
+				taskStatus = resampleTask.Status;
+				taskCompleted = resampleTask.IsCompleted;
+			}
+
+			if (
+				taskStatus != TaskStatus.WaitingToRun &&
+				currentInstance is not null &&
+				(currentInstance.IsReady ||
+				(currentInstance.DeferredTask.TryGetTarget(out var deferredTask) && !deferredTask.IsCompleted))
+			) {
+				allowCache = false;
+				return currentInstance;
+			}
+
+			if (!taskCompleted) {
+				allowCache = false;
+				return null;
+			}
 		}
 
 		if (useStalling && DrawState.PushedUpdateWithin(0)) {
@@ -488,32 +604,28 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			return currentInstance;
 		}
 
-		DrawState.IsUpdatedThisFrame = true;
+		if (currentInstance is null) {
+			DrawState.IsUpdatedThisFrame = true;
+		}
 
 		try {
-			bool doDispatch = true;
-			var currentRevision = textureMeta.Revision;
+			SpriteMap.Remove(spriteHash, textureMeta, forceDispose: true);
 
-			// Check if there is already an in-flight task for this instance.
-			// TODO : this logic feels duplicated - we can already query for the Instance, and it already holds a WeakReference to the task...
-			if (textureMeta.InFlightTasks.TryGetValue(source, out var inFlightTask)) {
-				doDispatch = inFlightTask.Revision != currentRevision || inFlightTask.ResampleTask.Status != TaskStatus.WaitingToRun;
-			}
+			var resampleTask = ResampleTask.Dispatch(
+				spriteInfo: new(spriteInfoInitializer),
+				async: useAsync,
+				previousInstance: (currentInstance?.IsLoaded ?? false) ? currentInstance : null
+			);
+			textureMeta.InFlightTasks[source] = new(currentRevision, spriteHash, new(resampleTask));
 
-			Task<ManagedSpriteInstance> resampleTask;
-			if (doDispatch) {
-				resampleTask = ResampleTask.Dispatch(
-					spriteInfo: new(spriteInfoInitializer),
-					async: useAsync,
-					previousInstance: currentInstance
-				);
-				textureMeta.InFlightTasks[source] = new(currentRevision, resampleTask);
+			ManagedSpriteInstance? result;
+			if (resampleTask.IsCompletedSuccessfully) {
+				result = resampleTask.Result;
 			}
 			else {
-				return null;
+				result = currentInstance;
+				allowCache = false;
 			}
-
-			var result = resampleTask.IsCompletedSuccessfully ? resampleTask.Result : currentInstance;
 
 			if (useAsync) {
 				// It adds itself to the relevant maps.
@@ -608,10 +720,10 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	internal long MemorySize {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		get {
-			if (!IsReady || Texture is null) {
+			if (!IsReady || Texture is not {} texture) {
 				return 0;
 			}
-			return Texture.SizeBytes();
+			return texture.SizeBytes();
 		}
 	}
 
@@ -754,9 +866,9 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 		Thread.MemoryBarrier();
 		IsLoaded = true;
-		if (PreviousSpriteInstance is not null) {
-			PreviousSpriteInstance.Suspend(true);
+		if (PreviousSpriteInstance is {} previousSpriteInstance) {
 			PreviousSpriteInstance = null;
+			previousSpriteInstance.Suspend(true);
 		}
 	}
 
@@ -767,8 +879,8 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 		LastReferencedFrame = DrawState.CurrentFrame;
 
-		if (RecentAccessNode.IsValid) {
-			RecentAccessList.MoveToFront(RecentAccessNode);
+		if (RecentAccessNode is { IsValid: true} recentAccessNode) {
+			RecentAccessList.MoveToFront(recentAccessNode);
 		}
 		else {
 			RecentAccessNode = RecentAccessList.AddFront(this.MakeWeak());
@@ -780,6 +892,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		internal readonly ManagedSpriteInstance? PreviousSpriteInstance;
 		internal readonly WeakReference<XTexture2D> ReferenceTexture;
 		internal readonly ConcurrentLinkedListSlim<WeakInstance>.NodeRef RecentAccessNode;
+		internal readonly object CleanupLock;
 		internal readonly ulong MapHash;
 
 		internal CleanupData(ManagedSpriteInstance instance) {
@@ -787,6 +900,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 			ReferenceTexture = instance.Reference;
 			RecentAccessNode = instance.RecentAccessNode;
 			instance.RecentAccessNode = default;
+			CleanupLock = instance.CleanupLock;
 			MapHash = instance.SpriteMapHash;
 		}
 	}
@@ -801,13 +915,23 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	}
 
 	internal void Dispose(bool disposeChildren) {
-		if (disposeChildren && Texture is not null) {
-			if (!Texture.IsDisposed) {
-				Texture.Dispose();
-			}
+		if (disposeChildren && Texture is {} texture) {
 			Texture = null;
+			if (!texture.IsDisposed) {
+				texture.Dispose();
+			}
 		}
 		Dispose();
+	}
+
+	private Func<Delegate?>? DisposeChain(bool disposeChildren) {
+		if (disposeChildren && Texture is { } texture) {
+			Texture = null;
+			if (!texture.IsDisposed) {
+				texture.Dispose();
+			}
+		}
+		return DisposeChain();
 	}
 
 	internal void DisposeSuspended() {
@@ -816,45 +940,61 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 	}
 
+	private readonly object CleanupLock = new();
 	public void Dispose() {
-		if (IsDisposed.CompareExchange(true, false) == true) {
-			return;
+		Delegate? chainAction = () => DisposeChain();
+		while (chainAction is Func<Delegate?> callback) {
+			chainAction = callback.Invoke();
 		}
+	}
 
-		if (PreviousSpriteInstance is not null) {
-			PreviousSpriteInstance.Suspend(true);
-			PreviousSpriteInstance = null;
+	private Func<Delegate?>? DisposeChain() {
+		lock (CleanupLock) {
+			if (IsDisposed.CompareExchange(true, false) == true) {
+				return null;
+			}
+
+			if (Reference.TryGetTarget(out var reference)) {
+				SpriteMap.Remove(this, reference);
+				reference.Disposing -= OnParentDispose;
+			}
+
+			if (RecentAccessNode is { IsValid: true } recentAccessNode) {
+				RecentAccessNode = default;
+				RecentAccessList.Release(ref recentAccessNode);
+			}
+
+			if (Suspended.CompareExchange(false, true) == true) {
+				SuspendedSpriteCache.RemoveFast(this);
+			}
+
+			GC.SuppressFinalize(this);
+
+			if (PreviousSpriteInstance is {} previousSpriteInstance) {
+				PreviousSpriteInstance = null;
+				// TODO : this can end up in a _very_ long chain of textures if things bork, and thus stack overflow.
+
+				return () => previousSpriteInstance.SuspendChain(true);
+			}
+
+			return null;
 		}
-
-		if (Reference.TryGetTarget(out var reference)) {
-			SpriteMap.Remove(this, reference);
-			reference.Disposing -= OnParentDispose;
-		}
-
-		if (RecentAccessNode.IsValid) {
-			RecentAccessList.Release(ref RecentAccessNode);
-			RecentAccessNode = default;
-		}
-
-		if (Suspended.CompareExchange(false, true) == true) {
-			SuspendedSpriteCache.RemoveFast(this);
-		}
-
-		GC.SuppressFinalize(this);
 	}
 
 	internal static void Cleanup(in CleanupData data) {
 		Debug.Trace("Cleaning up finalized ManagedSpriteInstance");
-		if (data.PreviousSpriteInstance is not null) {
-			data.PreviousSpriteInstance.Suspend(true);
-		}
+		lock (data.CleanupLock) {
+			if (data.PreviousSpriteInstance is {} previousSpriteInstance) {
+				previousSpriteInstance.Suspend(true);
+			}
 
-		if (data.ReferenceTexture.TryGetTarget(out var reference)) {
-			SpriteMap.Remove(data, reference);
-		}
+			if (data.ReferenceTexture.TryGetTarget(out var reference)) {
+				SpriteMap.Remove(data, reference);
+			}
 
-		if (data.RecentAccessNode.IsValid) {
-			RecentAccessList.Release(ref Unsafe.AsRef(data.RecentAccessNode));
+			if (data.RecentAccessNode is { IsValid: true} recentAccessNode) {
+				RecentAccessList.Release(ref Unsafe.AsRef(recentAccessNode));
+			}
 		}
 	}
 
@@ -866,61 +1006,73 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	}
 
 	internal void Suspend(bool clearChildrenIfDispose = false) {
-		if (IsDisposed) {
-			return;
+		Delegate? chainAction = () => SuspendChain(clearChildrenIfDispose);
+		while (chainAction is not null) {
+			chainAction = chainAction.DynamicInvoke(null) as Delegate;
 		}
+	}
 
-		if (Suspended.CompareExchange(true, false) == true) {
-			return;
+	private Func<Delegate?>? SuspendChain(bool clearChildrenIfDispose = false) {
+		lock (CleanupLock) {
+			if (IsDisposed) {
+				return null;
+			}
+
+			if (Suspended.CompareExchange(true, false) == true) {
+				return null;
+			}
+
+			if (StardewValley.Game1.quit) {
+				return null;
+			}
+
+			if (!IsLoaded || !Config.SuspendedCache.Enabled) {
+				return () => this.DisposeChain(clearChildrenIfDispose);
+			}
+
+			// TODO : Handle clearing any reference to _this_
+			PreviousSpriteInstance = null;
+
+			if (RecentAccessNode is { IsValid: true } recentAccessNode) {
+				RecentAccessNode = default;
+				RecentAccessList.Release(ref recentAccessNode);
+			}
+
+			Invalidated = false;
+
+			Reference.SetTarget(null!);
+
+			SuspendedSpriteCache.Add(this);
 		}
-
-		if (StardewValley.Game1.quit) {
-			return;
-		}
-
-		if (!IsLoaded || !Config.SuspendedCache.Enabled) {
-			Dispose(clearChildrenIfDispose);
-			return;
-		}
-
-		// TODO : Handle clearing any reference to _this_
-		PreviousSpriteInstance = null;
-
-		if (RecentAccessNode.IsValid) {
-			RecentAccessList.Release(ref RecentAccessNode);
-			RecentAccessNode = default;
-		}
-
-		Invalidated = false;
-
-		Reference.SetTarget(null!);
-
-		SuspendedSpriteCache.Add(this);
 
 		Debug.Trace($"Sprite Instance '{Name}' {"Suspended".Pastel(DrawingColor.LightGoldenrodYellow)}");
+
+		return null;
 	}
 
 	internal bool Resurrect(XTexture2D texture, ulong spriteMapHash) {
-		if (StardewValley.Game1.quit) {
-			return false;
+		lock (CleanupLock) {
+			if (StardewValley.Game1.quit) {
+				return false;
+			}
+
+			if (IsDisposed || Suspended.CompareExchange(false, true) != true) {
+				SuspendedSpriteCache.RemoveFast(this);
+				return false;
+			}
+
+			if (!IsLoaded || !Config.SuspendedCache.Enabled) {
+				SuspendedSpriteCache.RemoveFast(this);
+				return false;
+			}
+
+			SuspendedSpriteCache.Resurrect(this);
+			Reference.SetTarget(texture);
+
+			SpriteMapHash = spriteMapHash;
+			texture.Meta().ReplaceInSpriteInstanceTable(SpriteMapHash, this);
+			SpriteMap.AddReplace(texture, this);
 		}
-
-		if (IsDisposed || Suspended.CompareExchange(false, true) != true) {
-			SuspendedSpriteCache.RemoveFast(this);
-			return false;
-		}
-
-		if (!IsLoaded || !Config.SuspendedCache.Enabled) {
-			SuspendedSpriteCache.RemoveFast(this);
-			return false;
-		}
-
-		SuspendedSpriteCache.Resurrect(this);
-		Reference.SetTarget(texture);
-
-		SpriteMapHash = spriteMapHash;
-		texture.Meta().ReplaceInSpriteInstanceTable(SpriteMapHash, this);
-		SpriteMap.AddReplace(texture, this);
 
 		Debug.Trace($"Sprite Instance '{Name}' {"Resurrected".Pastel(DrawingColor.LightCyan)}");
 

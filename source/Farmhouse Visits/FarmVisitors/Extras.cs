@@ -24,27 +24,27 @@ namespace FarmVisitors
         /* GMCM related */
         public static string ExtrasTL()
         {
-            string result = ModEntry.Help.Translation.Get("config.Extras");
+            string result = ModEntry.TL.Get("config.Extras");
             return result;
         }
         public static string BlacklistTL()
         {
-            string result = ModEntry.Help.Translation.Get("config.Blacklist.name");
+            string result = ModEntry.TL.Get("config.Blacklist.name");
             return result;
         }
         public static string BlacklistTTP()
         {
-            string result = ModEntry.Help.Translation.Get("config.Blacklist.description");
+            string result = ModEntry.TL.Get("config.Blacklist.description");
             return result;
         }
         internal static string VisitConfiguration()
         {
-            string result = ModEntry.Help.Translation.Get("config.VisitConfiguration");
+            string result = ModEntry.TL.Get("config.VisitConfiguration");
             return result;
         }
         internal static string DebugTL()
         {
-            string result = ModEntry.Help.Translation.Get("config.Debug.name");
+            string result = ModEntry.TL.Get("config.Debug.name");
             return result;
         }
 
@@ -63,22 +63,22 @@ namespace FarmVisitors
         {
             if(pair.Value.From is 600 || pair.Value.From is 0)
             {
-                ModEntry.Mon.Log(ModEntry.Help.Translation.Get("CantBe600"), LogLevel.Error);
+                ModEntry.Log(ModEntry.TL.Get("CantBe600"), LogLevel.Error);
                 return false;
             }
             if(pair.Value.To is 2600)
             {
-                ModEntry.Mon.Log(ModEntry.Help.Translation.Get("CantBe2600"), LogLevel.Error);
+                ModEntry.Log(ModEntry.TL.Get("CantBe2600"), LogLevel.Error);
                 return false;
             }
             if(!ModEntry.NameAndLevel.Keys.Contains(pair.Key))
             {
-                ModEntry.Mon.Log(ModEntry.Help.Translation.Get("NotInSave"), LogLevel.Error);
+                ModEntry.Log(ModEntry.TL.Get("NotInSave"), LogLevel.Error);
                 return false;
             }
             if(pair.Value.From > pair.Value.To && pair.Value.To is not 0)
             {
-                ModEntry.Mon.Log(ModEntry.Help.Translation.Get("FromHigherThanTo"), LogLevel.Error);
+                ModEntry.Log(ModEntry.TL.Get("FromHigherThanTo"), LogLevel.Error);
                 return false;
             }
             return true;
@@ -196,32 +196,32 @@ namespace FarmVisitors
                 result = who switch
                 {
                     //for abigail
-                    "Caroline" => ModEntry.Help.Translation.Get($"InLaw.Abigail.{ran}"),
-                    "Pierre" => ModEntry.Help.Translation.Get($"InLaw.Abigail.{ran}"),
+                    "Caroline" => ModEntry.TL.Get($"InLaw.Abigail.{ran}"),
+                    "Pierre" => ModEntry.TL.Get($"InLaw.Abigail.{ran}"),
 
                     //for alex
-                    "Evelyn" => ModEntry.Help.Translation.Get($"InLaw.Alex.{ran}"),
-                    "George" => ModEntry.Help.Translation.Get($"InLaw.Alex.{ran}"),
+                    "Evelyn" => ModEntry.TL.Get($"InLaw.Alex.{ran}"),
+                    "George" => ModEntry.TL.Get($"InLaw.Alex.{ran}"),
 
                     //for haley and emily
-                    "Emily" => ModEntry.Help.Translation.Get($"InLaw.Haley.{ran}"),
-                    "Haley" => ModEntry.Help.Translation.Get($"InLaw.Emily.{ran}"),
+                    "Emily" => ModEntry.TL.Get($"InLaw.Haley.{ran}"),
+                    "Haley" => ModEntry.TL.Get($"InLaw.Emily.{ran}"),
 
                     //for maru
-                    "Demetrius" => ModEntry.Help.Translation.Get($"InLaw.Maru.{ran}"),
+                    "Demetrius" => ModEntry.TL.Get($"InLaw.Maru.{ran}"),
 
                     //for penny
-                    "Pam" => ModEntry.Help.Translation.Get($"InLaw.Penny.{ran}"),
+                    "Pam" => ModEntry.TL.Get($"InLaw.Penny.{ran}"),
 
                     //for sam
-                    "Jodi" => ModEntry.Help.Translation.Get($"InLaw.Sam.{ran}"),
-                    "Kent" => ModEntry.Help.Translation.Get($"InLaw.Sam.{ran}"),
+                    "Jodi" => ModEntry.TL.Get($"InLaw.Sam.{ran}"),
+                    "Kent" => ModEntry.TL.Get($"InLaw.Sam.{ran}"),
 
                     //for sebastian
-                    "Robin" => ModEntry.Help.Translation.Get($"InLaw.Sebastian.{ran}"),
+                    "Robin" => ModEntry.TL.Get($"InLaw.Sebastian.{ran}"),
 
                     //for shane
-                    "Marnie" => ModEntry.Help.Translation.Get($"InLaw.Shane.{ran}"),
+                    "Marnie" => ModEntry.TL.Get($"InLaw.Shane.{ran}"),
 
                     _ => null,
                 };
@@ -230,7 +230,7 @@ namespace FarmVisitors
             {
                 int ran = Game1.random.Next(1, 16);
 
-                string notParsed = ModEntry.Help.Translation.Get($"InLaw.Generic.{ran}");
+                string notParsed = ModEntry.TL.Get($"InLaw.Generic.{ran}");
                 string spousename = GetSpouseName(who);
 
                 result = string.Format(notParsed, spousename);
@@ -293,12 +293,12 @@ namespace FarmVisitors
             
             if(kids.Count is 1)
             {
-                var notformatted = ModEntry.Help.Translation.Get($"ask.singlechild.{ran}");
+                var notformatted = ModEntry.TL.Get($"ask.singlechild.{ran}");
                 result = String.Format(notformatted, kids[0].Name);
             }
             else
             {
-                var notformatted = ModEntry.Help.Translation.Get($"ask.multiplechild.{ran}");
+                var notformatted = ModEntry.TL.Get($"ask.multiplechild.{ran}");
                 result = String.Format(notformatted, kids[0].Name, kids[1].Name);
             }
 
@@ -315,7 +315,7 @@ namespace FarmVisitors
         {
             if(!reference.Keys.Contains(who))
             {
-                ModEntry.Mon.Log("NPC not in dictionary!");
+                ModEntry.Log("NPC not in dictionary!", LogLevel.Trace);
                 return null;
             }
 
@@ -376,7 +376,7 @@ namespace FarmVisitors
         public static string GetDialogueRaw()
         {
             int ran = Game1.random.Next(0, 16);
-            string Raw = ModEntry.Help.Translation.Get($"InLaw.Generic.{ran}");
+            string Raw = ModEntry.TL.Get($"InLaw.Generic.{ran}");
 
             //string result = string.Format(Raw, GetSpouseName(who));
             

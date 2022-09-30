@@ -11,12 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Omegasis.StardustCore.UIUtilities;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts;
 using StardewModdingAPI;
 using StardewValley;
-using StardustCore.UIUtilities;
-using StardustCore.UIUtilities.SpriteFonts;
 
-namespace StardustCore
+namespace Omegasis.StardustCore
 {
     public class ModCore : Mod
     {
@@ -44,7 +44,7 @@ namespace StardustCore
             SpriteFonts.initialize();
 
             TextureManagers = new Dictionary<string, TextureManager>();
-            TextureManager = new TextureManager("StardustCore");
+            TextureManager = new TextureManager(this.Helper.DirectoryPath,"StardustCore");
             //TextureManager.addTexture("Test1", new Texture2DExtended(ModCore.ModHelper,Manifest,Path.Combine("Assets", "Graphics", "MultiTest", "Test1.png")));
             //TextureManager.addTexture("Test2", new Texture2DExtended(ModCore.ModHelper,Manifest, Path.Combine("Assets", "Graphics", "MultiTest", "Test2.png")));
             //TextureManager.addTexture("Test3", new Texture2DExtended(ModCore.ModHelper, Manifest,Path.Combine("Assets", "Graphics", "MultiTest", "Test3.png")));

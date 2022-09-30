@@ -7,5 +7,8 @@
   "MinCharOffsetX": -10,
   "MaxCharOffsetX": 10,
   "MinCharOffsetY": -10,
-  "MaxCharOffsetY": 10
+  "MaxCharOffsetY": 10,
+  "DisableTextShadow": false,
+  "OpenFontSettingsMenu": "LeftAlt + F",
+  "FontSettingsInGameMenu": true
 }

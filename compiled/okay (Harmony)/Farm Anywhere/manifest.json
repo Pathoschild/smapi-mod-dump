@@ -1,0 +1,10 @@
+﻿{
+  "Name": "[SMAPI] FarmAnywhere",
+  "Author": "hmkiesel",
+  "Version": "1.0.0",
+  "Description": "Allows you to plant crops and fruit trees outside your farm",
+  "UniqueID": "hmkiesel.FarmAnywhere",
+  "EntryDll": "FarmAnywhere.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:13926"]
+}

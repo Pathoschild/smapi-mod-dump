@@ -21,7 +21,7 @@ using StardewValley.Menus;
 /// <summary>
 ///     <see cref="IClickableMenu" /> for configuring Toolbar Icons.
 /// </summary>
-internal class ToolbarIconsMenu : IClickableMenu
+internal sealed class ToolbarIconsMenu : IClickableMenu
 {
     private int _index;
 
@@ -136,7 +136,7 @@ internal class ToolbarIconsMenu : IClickableMenu
             this.ScrollBar.bounds.Y = this.ScrollBarRunner.Top
                                     + (int)((this.ScrollBarRunner.Height - this.ScrollBar.bounds.Height)
                                           * ((float)this._index / (this.Components.Count - this.MaxItems)));
-            for (var index = 0; index < this.Components.Count; index++)
+            for (var index = 0; index < this.Components.Count; ++index)
             {
                 this.Components[index].bounds.Y =
                     (int)(this.yPositionOnScreen + (index - this._index) * this.TextHeight);
@@ -189,7 +189,7 @@ internal class ToolbarIconsMenu : IClickableMenu
             4f);
         this.ScrollBar.draw(b);
 
-        for (var index = 0; index < this.Components.Count; index++)
+        for (var index = 0; index < this.Components.Count; ++index)
         {
             if (this.Components[index].bounds.Top < this.yPositionOnScreen)
             {
@@ -339,7 +339,7 @@ internal class ToolbarIconsMenu : IClickableMenu
         if (this.DownArrow.containsPoint(x, y))
         {
             this.DownArrow.scale = this.DownArrow.baseScale;
-            this.Index++;
+            ++this.Index;
             Game1.playSound("shwip");
             return;
         }
@@ -347,7 +347,7 @@ internal class ToolbarIconsMenu : IClickableMenu
         if (this.UpArrow.containsPoint(x, y))
         {
             this.UpArrow.scale = this.UpArrow.baseScale;
-            this.Index--;
+            --this.Index;
             Game1.playSound("shwip");
             return;
         }
@@ -416,7 +416,7 @@ internal class ToolbarIconsMenu : IClickableMenu
             this.Components[index + 1] = currentComponent;
         }
 
-        for (index = 0; index < this.Components.Count; index++)
+        for (index = 0; index < this.Components.Count; ++index)
         {
             this.Components[index].bounds.Y = (int)(this.yPositionOnScreen + (index - this._index) * this.TextHeight);
         }
@@ -430,8 +430,7 @@ internal class ToolbarIconsMenu : IClickableMenu
         switch (direction)
         {
             case > 0:
-                this.Index--;
-                if (index != this.Index)
+                if (index != --this.Index)
                 {
                     Game1.playSound("shwip");
                 }
@@ -439,8 +438,7 @@ internal class ToolbarIconsMenu : IClickableMenu
                 return;
 
             case < 0:
-                this.Index++;
-                if (index != this.Index)
+                if (index != ++this.Index)
                 {
                     Game1.playSound("shwip");
                 }

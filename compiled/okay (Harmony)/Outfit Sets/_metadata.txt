@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13888
+IDs: aedenthorn.OutfitSets
+update keys: Nexus:13888, GitHub:aedenthorn/StardewValleyMods

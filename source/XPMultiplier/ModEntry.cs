@@ -8,31 +8,34 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
-using StardewValley;
-using System;
 
+using StardewValley;
+
+using System;
+using System.Reflection;
 
 namespace XPMultiplier
 {
     public sealed class ModConfig
     {
-        public byte General { get; set; } = 1;
+        public float General { get; set; } = 1;
 
-        public byte Combat { get; set; } = 1;
+        public float Combat { get; set; } = 1;
 
-        public byte Farming { get; set; } = 1;
+        public float Farming { get; set; } = 1;
 
-        public byte Fishing { get; set; } = 1;
+        public float Fishing { get; set; } = 1;
 
-        public byte Mining { get; set; } = 1;
+        public float Mining { get; set; } = 1;
 
-        public byte Foraging { get; set; } = 1;
+        public float Foraging { get; set; } = 1;
 
-        public byte Luck { get; set; } = 1;
+        public float Luck { get; set; } = 1;
 
         public KeybindList ReloadKey { get; set; } = new KeybindList(SButton.F9);
     }
@@ -47,12 +50,15 @@ namespace XPMultiplier
 
             try
             {
-                HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+                var harmony = new Harmony(ModManifest.UniqueID);
+
+                MethodInfo prefix = AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience));
+
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience)),
                     prefix: new HarmonyMethod(typeof(GainXP), nameof(GainXP.Prefix)));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Monitor.Log(e.Message, LogLevel.Error);
             }
@@ -89,29 +95,33 @@ namespace XPMultiplier
                 switch (which)
                 {
                     case 0:
-                        howMuch *= ModEntry.Config.Farming;
+                        Mul(ref howMuch, ModEntry.Config.Farming);
                         break;
                     case 1:
-                        howMuch *= ModEntry.Config.Fishing;
+                        Mul(ref howMuch, ModEntry.Config.Fishing);
                         break;
                     case 2:
-                        howMuch *= ModEntry.Config.Foraging;
+                        Mul(ref howMuch, ModEntry.Config.Foraging);
                         break;
                     case 3:
-                        howMuch *= ModEntry.Config.Mining;
+                        Mul(ref howMuch, ModEntry.Config.Mining);
                         break;
                     case 4:
-                        howMuch *= ModEntry.Config.Combat;
+                        Mul(ref howMuch, ModEntry.Config.Combat);
                         break;
                     case 5:
-                        howMuch *= ModEntry.Config.Luck;
+                        Mul(ref howMuch, ModEntry.Config.Luck);
                         break;
                 }
-
                 return;
             }
 
-            howMuch *= ModEntry.Config.General;
+            Mul(ref howMuch, ModEntry.Config.General);
+        }
+
+        private static void Mul(ref int howMuch, float by)
+        {
+            howMuch = (int)(howMuch * by);
         }
     }
 }

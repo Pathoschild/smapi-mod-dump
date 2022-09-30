@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 21ba7c6c421638fa86f55fe66e031f699508ef85
-   Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Mon May 2 13:51:39 2022 +0200
+   commit 736d614cd191cf677b1b6f24300c86db561b80d6
+   Author: LunaticShade <82759433+LunaticShade@users.noreply.github.com>
+   Date:   Tue Sep 13 22:24:27 2022 +0200
    
-       Added SkillfulClothes.Editor
+       Update README.md
    

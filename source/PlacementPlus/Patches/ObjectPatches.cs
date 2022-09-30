@@ -9,21 +9,18 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
+
 using static PlacementPlus.ModState;
 using static PlacementPlus.Utility.Utility;
+
 using Object = StardewValley.Object;
 
 namespace PlacementPlus.Patches
@@ -31,8 +28,6 @@ namespace PlacementPlus.Patches
     [HarmonyPatch(typeof(Object), nameof(Object.placementAction))]
     internal class ObjectPatches
     {
-        private static readonly IMonitor Monitor = PlacementPlus.Instance.Monitor;
-
         /// <summary>
         /// Adds additional logic when attempting to place an object to determine if some tile object should be swapped.
         /// Additionally prevents the appearance of the 'Unsuitable Location' dialogue when attempting to place a chest

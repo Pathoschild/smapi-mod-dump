@@ -29,6 +29,7 @@ mods:
    Flower Color Picker
    Flower Rain
    Generic Mod Config Menu
+   Giant Omelet
    Gradient Hair Colors
    Hybrid Crop Engine
    Json Assets
@@ -63,9 +64,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 5a718ad51b6655b75c858f35d91da5837c763ae5
+   commit ecce04c901e8de479bd7ec80e98177043fdf3959
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Wed Jul 6 20:20:40 2022 -0400
+   Date:   Tue Sep 20 00:02:52 2022 -0400
    
-       New mod and misc changes
+       omelet
    

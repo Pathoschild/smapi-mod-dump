@@ -39,11 +39,11 @@ namespace ConvenientInventory
 
         private class TypedChestWithDistance
         {
-            public TypedChest TypedChest { get; private set; }
+            public ITypedChest TypedChest { get; private set; }
 
             public double Distance { get; private set; }
 
-            public TypedChestWithDistance(TypedChest chest, double distance)
+            public TypedChestWithDistance(ITypedChest chest, double distance)
             {
                 TypedChest = chest;
                 Distance = distance;
@@ -84,6 +84,11 @@ namespace ConvenientInventory
                     {
                         if (playerItem is null || !playerItem.canStackWith(chestItem))
                         {
+                            if (ModEntry.Config.IsQuickStackOverflowItems && ModEntry.Config.IsQuickStackIgnoreItemQuality && CanStackWithIgnoreQuality(playerItem, chestItem))
+                            {
+                                stackOverflowItems.Add(playerItem.getOne());
+                            }
+
                             continue;
                         }
 
@@ -214,6 +219,11 @@ namespace ConvenientInventory
                     {
                         if (playerItem is null || !playerItem.canStackWith(chestItem))
                         {
+                            if (ModEntry.Config.IsQuickStackOverflowItems && ModEntry.Config.IsQuickStackIgnoreItemQuality && CanStackWithIgnoreQuality(playerItem, chestItem))
+                            {
+                                stackOverflowItems.Add(playerItem.getOne());
+                            }
+
                             continue;
                         }
 
@@ -307,11 +317,11 @@ namespace ConvenientInventory
                 : GetNearbyChests(farmerTileLocation, range, gameLocation);
         }
 
-        public static List<TypedChest> GetTypedChestsAroundFarmer(Farmer who, int range, bool sorted = false)
+        public static List<ITypedChest> GetTypedChestsAroundFarmer(Farmer who, int range, bool sorted = false)
         {
             if (who is null)
             {
-                return new List<TypedChest>();
+                return new List<ITypedChest>();
             }
 
             Vector2 farmerPosition = who.getStandingPosition();
@@ -464,10 +474,13 @@ namespace ConvenientInventory
                         dx = tx - (int)origin.X;
                         dy = ty - (int)origin.Y;
 
-                        ChestType chestType = TypedChest.GetChestType(chest);
+                        ChestType chestType = TypedChest.DetermineChestType(chest);
+                        if (chestType == ChestType.Package)
+                        {
+                            continue; // Do not consider new farmer packages as chests for quick stack
+                        }
 
                         var typedChest = new TypedChest(chest, chestType);
-
                         tdChests.Add(new TypedChestWithDistance(typedChest, Math.Sqrt(dx * dx + dy * dy)));
                     }
                 }
@@ -645,9 +658,9 @@ namespace ConvenientInventory
             return chests;
         }
 
-        private static List<TypedChest> GetNearbyTypedChests(Point originTile, int range, GameLocation gameLocation)
+        private static List<ITypedChest> GetNearbyTypedChests(Point originTile, int range, GameLocation gameLocation)
         {
-            var tChests = new List<TypedChest>((2 * range + 1) * (2 * range + 1));
+            var tChests = new List<ITypedChest>((2 * range + 1) * (2 * range + 1));
 
             // Chests
             for (int dx = -range; dx <= range; dx++)
@@ -663,7 +676,11 @@ namespace ConvenientInventory
                             continue;
                         }
 
-                        ChestType chestType = TypedChest.GetChestType(chest);
+                        ChestType chestType = TypedChest.DetermineChestType(chest);
+                        if (chestType == ChestType.Package)
+                        {
+                            continue; // Do not consider new farmer packages as chests for quick stack
+                        }
 
                         tChests.Add(new TypedChest(chest, chestType));
                     }
@@ -768,6 +785,37 @@ namespace ConvenientInventory
         private static bool IsPositionWithinRange(Vector2 origin, Vector2 target, int range)
         {
             return Math.Abs(origin.X - target.X) <= (range * Game1.tileSize) && Math.Abs(origin.Y - target.Y) <= (range * Game1.tileSize);
+        }
+
+        // Taken from Item.canStackWith, removing quality check.
+        private static bool CanStackWithIgnoreQuality(Item item, ISalable other)
+        {
+            if (item == null || other == null)
+            {
+                return false;
+            }
+
+            if ((other is StardewValley.Object && item is StardewValley.Object) || (other is ColoredObject && item is ColoredObject))
+            {
+                if ((other as StardewValley.Object).orderData.Value != (item as StardewValley.Object).orderData.Value)
+                {
+                    return false;
+                }
+
+                if (item is ColoredObject && other is ColoredObject && !(item as ColoredObject).color.Value.Equals((other as ColoredObject).color.Value))
+                {
+                    return false;
+                }
+
+                if (item.maximumStackSize() > 1 && other.maximumStackSize() > 1
+                    && (item as StardewValley.Object).ParentSheetIndex == (other as StardewValley.Object).ParentSheetIndex
+                    && (item as StardewValley.Object).bigCraftable.Value == (other as StardewValley.Object).bigCraftable.Value)
+                {
+                    return item.Name.Equals(other.Name);
+                }
+            }
+
+            return false;
         }
     }
 }

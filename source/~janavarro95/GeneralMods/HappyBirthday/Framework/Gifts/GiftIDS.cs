@@ -21,7 +21,6 @@ namespace Omegasis.HappyBirthday.Framework.Gifts
     {
 
 
-        public static Dictionary<string, Item> RegisteredGifts = new Dictionary<string, Item>();
 
         public enum SDVObject
         {
@@ -397,7 +396,7 @@ namespace Omegasis.HappyBirthday.Framework.Gifts
 
             BokChoy = 278,
 
-            MagicRockCandy=279,
+            MagicRockCandy = 279,
 
             Yam = 280,
 
@@ -923,7 +922,7 @@ namespace Omegasis.HappyBirthday.Framework.Gifts
 
             Apple = 613,
 
-            GreenTea=614,
+            GreenTea = 614,
 
             Bruschetta = 618,
 
@@ -1147,17 +1146,113 @@ namespace Omegasis.HappyBirthday.Framework.Gifts
 
             CactusSeeds = 802,
 
-            DinosaurMayonnaise= 807,
+            DinosaurMayonnaise = 807,
 
             //IridiumMilk = 803,
 
-            TeaLeaves =815
+            TeaLeaves = 815,
+
+
+            //TreeFertilizer = 805,
+            MovieTicket = 809,
+            Roe = 812,
+            Caviar = 445,
+            SquidInk = 814,
+            Flounder = 267,
+            SeafoamPudding = 265,
+            MidnightCarp = 269,
+            MahoganySeed = 292,
+            OstrichEgg = 289,
+            //GoldenWalnut = 73,
+            BananaSapling = 69,
+            Banana = 91,
+            GoldenCoconut = 791,
+            //FossilizedSkull = 820,
+            //FossilizedSpine = 821,
+            //FossilizedTail = 822,
+            //FossilizedLeg = 823,
+            //FossilizedRibs = 824,
+            //SnakeSkull = 825,
+            //SnakeVertebrae = 826,
+            //MummifiedBat = 827,
+            //MummifiedFrog = 828,
+            Ginger = 829,
+            TaroRoot = 830,
+            TaroTuber = 831,
+            Pineapple = 832,
+            PineappleSeeds = 833,
+            Mango = 834,
+            MangoSapling = 835,
+            Stingray = 836,
+            Lionfish = 837,
+            BlueDiscus = 838,
+            ThornsRing = 839,
+            RusticPlankFloor = 840,
+            StoneWalkwayFloor = 841,
+            CinderShard = 848,
+            MagmaCap = 851,
+            DragonTooth = 852,
+            CuriosityLure = 856,
+            TigerSlimeEgg = 857,
+            //QiGem = 858,
+            PhoenixRing = 863,
+            //WarMemento = 864,
+            //GourmetTomatoSalt = 865,
+            //StardewValleyRose = 866,
+            //AdvancedTVRemote = 867,
+            //ArcticShard = 868,
+            //WrigglingWorm = 869,
+            //PiratesLocket = 870,
+            FairyDust = 872,
+            PiñaColada = 873,
+            BugSteak = 874,
+            Ectoplasm = 875,
+            PrismaticJelly = 876,
+            QualityBobber = 877,
+            MonsterMusk = 879,
+            BoneFragment = 881,
+            FiberSeeds = 885,
+            //WarpTotemIsland = 886,
+            //QiFruit = 889,
+            //QiBean = 890,
+            MushroomTreeSeed = 891,
+            //WarpTotemQisArena = 892,
+            FireworksRed = 893,
+            FireworksPurple = 894,
+            FireworksGreen = 895,
+            //GalaxySoul = 896,
+            //PierresMissingStocklist = 897,
+            //SonofCrimsonfish = 898,
+            //MsAngler = 899,
+            //LegendII = 900,
+            //RadioactiveCarp = 901,
+            //GlacierfishJr = 902,
+            //GingerAle = 903,
+            BananaPudding = 904,
+            MangoStickyRice = 905,
+            Poi = 906,
+            TropicalCurry = 907,
+            MagicBait = 908,
+            RadioactiveOre = 909,
+            RadioactiveBar = 910,
+            //HorseFlute = 911,
+            //Enricher = 913,
+            //PressureNozzle = 915,
+            //QiSeasoning = 917,
+            HyperSpeedGro = 918,
+            DeluxeFertilizer = 919,
+            DeluxeRetainingSoil = 920,
+            SquidInkRavioli = 921,
+            SlimeCrate = 925,
+            CookoutKit = 926,
+            CampingStove = 927,
+            //GoldenEgg = 928,
+            Hedge = 929,
+            UnknownItem = 930
         }
 
-        public static List<SDVObject> GetSDVObjects()
-        {
-           SDVObject[] objIDS=(SDVObject[])Enum.GetValues(typeof(SDVObject));
-            return objIDS.ToList();
-        }
+
+
+
     }
 }

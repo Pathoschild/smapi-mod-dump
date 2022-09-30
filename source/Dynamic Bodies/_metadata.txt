@@ -6,9 +6,9 @@ mods:
    Dynamic Bodies
 
 latest commit:
-   commit 58bd7b6bdd9ccdef69ce1c94eb8c50d13540bebf
+   commit a853f8b5699d09d3c7977b90290b62de302f1f4d
    Author: USER-PC\ribeena <ribeena_@hotmail.com>
-   Date:   Sun Aug 28 11:06:25 2022 +0930
+   Date:   Tue Sep 27 20:31:07 2022 +0930
    
-       More documentation.
+       Document new trinkets system
    

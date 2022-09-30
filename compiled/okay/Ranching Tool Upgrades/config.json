@@ -2,12 +2,12 @@
   "PailBuyCost": 1000,
   "PailUpgradeCostMultiplier": 1.0,
   "PailUpgradeCostBars": 5,
-  "PailUpgradeDays": 2,
+  "PailUpgradeDays": 1,
   "ShearsBuyCost": 1000,
   "ShearsUpgradeCostMultiplier": 1.0,
   "ShearsUpgradeCostBars": 5,
-  "ShearsUpgradeDays": 2,
-  "ExtraFriendshipBase": 10,
-  "QualityBumpChanceBase": 1.0,
-  "ExtraProduceChance": 1.0
+  "ShearsUpgradeDays": 1,
+  "ExtraFriendshipBase": 2,
+  "QualityBumpChanceBase": 0.05,
+  "ExtraProduceChance": 0.1
 }

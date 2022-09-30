@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
-namespace StardustCore.IlluminateFramework
+namespace Omegasis.StardustCore.IlluminateFramework
 {
     /// <summary>Make sure all colors are inverted.</summary>
     public class LightColorsList

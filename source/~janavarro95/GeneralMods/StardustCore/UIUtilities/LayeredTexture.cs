@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace StardustCore.UIUtilities
+namespace Omegasis.StardustCore.UIUtilities
 {
     /// <summary>A class that keeps track of a collection of textures that are layered one on top of the others.</summary>
     public class LayeredTexture

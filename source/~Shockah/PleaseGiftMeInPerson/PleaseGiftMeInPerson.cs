@@ -30,7 +30,7 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.PleaseGiftMeInPerson
 {
-	public class PleaseGiftMeInPerson : Mod
+	public class PleaseGiftMeInPerson : BaseMod<ModConfig>
 	{
 		private static readonly string MailServicesMod_GiftShipmentController_QualifiedName = "MailServicesMod.GiftShipmentController, MailServicesMod";
 
@@ -45,7 +45,7 @@ namespace Shockah.PleaseGiftMeInPerson
 		private static readonly Rectangle EmojisHateSourceRect = new(0, 9, 9, 9);
 
 		internal static PleaseGiftMeInPerson Instance { get; set; } = null!;
-		internal ModConfig Config { get; private set; } = null!;
+		private IFreeLoveApi? FreeLoveApi;
 		private ModConfig.Entry LastDefaultConfigEntry = null!;
 
 		private Farmer? CurrentGiftingPlayer;
@@ -56,17 +56,26 @@ namespace Shockah.PleaseGiftMeInPerson
 		private Texture2D EmojisTexture = null!;
 		internal bool AcceptedInPersonGiftDialogue = false;
 
-		private Lazy<IReadOnlyList<(string name, string displayName)>> Characters = null!;
+		private Lazy<IReadOnlyList<(string Name, string DisplayName)>> Characters = null!;
 
 		private IDictionary<long, IDictionary<string, IList<GiftEntry>>> GiftEntries = new Dictionary<long, IDictionary<string, IList<GiftEntry>>>();
 		private readonly IDictionary<long, IList<Item>> ItemsToReturn = new Dictionary<long, IList<Item>>();
 
-		public override void Entry(IModHelper helper)
+		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
+		{
+			if (configVersion is null)
+			{
+				if (Config.Spouse is not null && Config.Spouse == Config.Default)
+					Config.Spouse = null;
+			}
+		}
+
+		public override void OnEntry(IModHelper helper)
 		{
 			Instance = this;
-			Config = helper.ReadConfig<ModConfig>();
 			LastDefaultConfigEntry = new(Config.Default);
-			Helper.Content.AssetLoaders.Add(new OverrideAssetLoader());
+			if (Config.Spouse is null)
+				Config.Spouse = new(Config.Default);
 
 			Characters = new(() =>
 			{
@@ -76,11 +85,19 @@ namespace Shockah.PleaseGiftMeInPerson
 					: new();
 
 				var characters = npcDispositions
-					.Select(c => (name: c.Key, displayName: c.Value.Split('/')[11]))
-					.Where(c => !antiSocialNpcs.ContainsKey(c.name))
-					.OrderBy(c => c.displayName)
+					.Select(c => (Name: c.Key, DisplayName: c.Value.Split('/').Length >= 12 ? c.Value.Split('/')[11] : null))
+					.Where(c => !antiSocialNpcs.ContainsKey(c.Name))
 					.ToArray();
-				return characters;
+
+				foreach (var (name, displayName) in characters)
+					if (displayName is null)
+						this.Monitor.Log($"Could not create configuration for character {name}, as its NPCDispositions are malformed.", LogLevel.Warn);
+
+				return characters
+					.Where(c => c.DisplayName is not null)
+					.Select(c => (Name: c.Name, DisplayName: c.DisplayName!))
+					.OrderBy(c => c.DisplayName)
+					.ToArray();
 			});
 
 			UpdateEmojisTexture();
@@ -89,12 +106,16 @@ namespace Shockah.PleaseGiftMeInPerson
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 			helper.Events.GameLoop.Saving += OnSaving;
+			helper.Events.Content.AssetRequested += OnAssetRequested;
 			helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
 			helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
 		}
 
+		/// <inheritdoc cref="IGameLoopEvents.GameLaunched" />
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
+			FreeLoveApi = Helper.ModRegistry.GetApi<IFreeLoveApi>("aedenthorn.FreeLove");
+
 			var harmony = new Harmony(ModManifest.UniqueID);
 			harmony.TryPatch(
 				original: () => AccessTools.Method(AccessTools.TypeByName(MailServicesMod_GiftShipmentController_QualifiedName), "GiftToNpc"),
@@ -135,6 +156,7 @@ namespace Shockah.PleaseGiftMeInPerson
 			);
 		}
 
+		/// <inheritdoc cref="IGameLoopEvents.UpdateTicked" />
 		private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
 		{
 			if (--TicksUntilConfigSetup > 0)
@@ -145,6 +167,7 @@ namespace Shockah.PleaseGiftMeInPerson
 			Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 		}
 
+		/// <inheritdoc cref="IGameLoopEvents.SaveLoaded" />
 		private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
 		{
 			if (GameExt.GetMultiplayerMode() != MultiplayerMode.Client)
@@ -154,6 +177,7 @@ namespace Shockah.PleaseGiftMeInPerson
 			}
 		}
 
+		/// <inheritdoc cref="IGameLoopEvents.Saving" />
 		private void OnSaving(object? sender, SavingEventArgs e)
 		{
 			if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
@@ -161,6 +185,31 @@ namespace Shockah.PleaseGiftMeInPerson
 
 			CleanUpGiftEntries();
 			Helper.Data.WriteSaveData(GiftEntriesSaveDataKey, GiftEntries);
+		}
+
+		/// <inheritdoc cref="IContentEvents.AssetRequested" />
+		private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
+		{
+			if (!e.Name.IsEquivalentTo(OverrideAssetPath))
+				return;
+			
+			e.LoadFrom(() =>
+			{
+				var asset = new Dictionary<string, string>();
+				if (Config.EnableNPCOverrides)
+				{
+					asset["Dwarf"] = $"{GiftPreference.Neutral}/{GiftPreference.Hates}";
+					asset["Elliott"] = $"{GiftPreference.Neutral}/{GiftPreference.Neutral}";
+					asset["Krobus"] = $"{GiftPreference.Neutral}/{GiftPreference.Hates}";
+					asset["Leo"] = $"{GiftPreference.Neutral}/{GiftPreference.LovesInfrequent}";
+					asset["Linus"] = $"{GiftPreference.Neutral}/{GiftPreference.DislikesAndHatesFrequent}";
+					asset["Penny"] = $"{GiftPreference.Neutral}/{GiftPreference.Neutral}";
+					asset["Sandy"] = $"{GiftPreference.LikesInfrequent}/{GiftPreference.LikesInfrequentButDislikesFrequent}";
+					asset["Sebastian"] = $"{GiftPreference.Dislikes}/{GiftPreference.Neutral}";
+					asset["Wizard"] = $"{GiftPreference.DislikesFrequent}/{GiftPreference.Neutral}";
+				}
+				return asset;
+			}, AssetLoadPriority.Exclusive);
 		}
 
 		private void OnPeerConnected(object? sender, PeerConnectedEventArgs e)
@@ -229,18 +278,26 @@ namespace Shockah.PleaseGiftMeInPerson
 						foreach (var (_, entry) in Config.PerNPC)
 							if (entry == LastDefaultConfigEntry)
 								entry.CopyFrom(Config.Default);
+						if (Config.Spouse is not null && Config.Spouse == LastDefaultConfigEntry)
+							Config.Spouse.CopyFrom(Config.Default);
 					}
 
 					ModConfig copy = new(Config);
+
 					var toRemove = new List<string>();
 					foreach (var (npcName, entry) in copy.PerNPC)
 						if (entry == copy.Default || entry == LastDefaultConfigEntry)
 							toRemove.Add(npcName);
-
 					foreach (var npcName in toRemove)
 						copy.PerNPC.Remove(npcName);
-					Helper.WriteConfig(copy);
+
+					if (copy.Spouse is not null && (copy.Spouse == copy.Default || copy.Spouse == LastDefaultConfigEntry))
+						copy.Spouse = null;
+
+					WriteConfig(copy);
 					LastDefaultConfigEntry = new(Config.Default);
+
+					LogConfig(copy);
 				}
 			);
 
@@ -281,13 +338,13 @@ namespace Shockah.PleaseGiftMeInPerson
 			helper.AddMultiPageLinkOption(
 				keyPrefix: "config.npcOverrides",
 				columns: _ => 3,
-				pageID: character => $"character_{character.name}",
-				pageName: character => character.displayName,
+				pageID: character => $"character_{character.Name}",
+				pageName: character => character.DisplayName,
 				pageValues: Characters.Value.ToArray()
 			);
 
 			helper.AddPage("config.spouse", "spouse");
-			SetupConfigEntryMenu(() => Config.Spouse);
+			SetupConfigEntryMenu(() => Config.Spouse!);
 
 			foreach (var (name, displayName) in Characters.Value)
 			{
@@ -381,7 +438,7 @@ namespace Shockah.PleaseGiftMeInPerson
 		{
 			var giftEntries = GetGiftEntriesForNPC(player, npcName);
 			var viaMail = giftEntries.Count(e => e.GiftMethod == GiftMethod.ByMail);
-			var configEntry = player.spouse == npcName ? Config.Spouse : Config.GetForNPC(npcName);
+			var configEntry = IsSpouse(player, npcName) ? Config.Spouse! : Config.GetForNPC(npcName);
 			if (player.spouse != npcName && configEntry.EnableModOverrides && configEntry.HasSameValues(LastDefaultConfigEntry))
 			{
 				var asset = Game1.content.Load<Dictionary<string, string>>(OverrideAssetPath);
@@ -467,6 +524,14 @@ namespace Shockah.PleaseGiftMeInPerson
 				default:
 					throw new ArgumentException($"{nameof(GiftPreference)} has an invalid value.");
 			}
+		}
+
+		private bool IsSpouse(Farmer farmer, string npcName)
+		{
+			if (FreeLoveApi is null)
+				return farmer.spouse == npcName;
+			else
+				return FreeLoveApi.GetSpouses(farmer).ContainsKey(npcName);
 		}
 
 		private void ReturnItemIfNeeded(SObject item, string originalAddresseeNpcName, GiftTaste originalGiftTaste, GiftTaste modifiedGiftTaste)
@@ -723,7 +788,7 @@ namespace Shockah.PleaseGiftMeInPerson
 				return;
 			if (Game1.currentLocation.lastQuestionKey != "MailServiceMod_GiftShipment")
 				return;
-			if (!Instance.Characters.Value.Any(c => c.name == response.responseKey))
+			if (!Instance.Characters.Value.Any(c => c.Name == response.responseKey))
 				return;
 
 			int height = SpriteText.getHeightOfString(response.responseText, width) + 16;

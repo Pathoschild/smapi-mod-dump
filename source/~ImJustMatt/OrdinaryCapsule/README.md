@@ -21,36 +21,18 @@ Nothing strange about this capsule.
 For ease of use, it is recommended to set config options
 from [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 
-| Config              | Description                                       | Default Value | Other Value(s)    |
-|:--------------------|:--------------------------------------------------|---------------|:------------------|
-| UnlockAutomatically | Automatically unlock the Ordinary Capsule recipe. | false         | `true` or `false` |
+| Config                | Description                                            | Default Value | Other Value(s)                      |
+|:----------------------|:-------------------------------------------------------|---------------|:------------------------------------|
+| BreakChance           | The chance that an Ordinary Capsule will break.        | 0             | A decimal value between 0.0 and 1.0 |
+| DefaultProductionTime | The default time it takes to produce a supported item. | 1440          | Any positive integer                |
+| DuplicateEverything   | Duplicate any item you put into the Ordinary Capsule.  | false         | `true` or `false`                   |
+| UnlockAutomatically   | Automatically unlock the Ordinary Capsule recipe.      | false         | `true` or `false`                   |
 
 ## Customization
 
-Integration with Ordinary Capsule is possible
-using [Content Patcher](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md).
+### API
 
-### Production Times
-
-Modify production times for supported items.
-
-**Target** `furyx639.OrdinaryCapsule/ProductionTime`
-
-```jsonc
-{
-  "Format": "1.25.0",
-  "Changes": [
-    {
-      "Action": "EditData",
-      "Target": "furyx639.OrdinaryCapsule/ProductionTime",
-      "Entries": {
-        // Make Truffle production time 60 minutes
-        "item_truffle": "60"
-      },
-    },
-  ]
-}
-```
+Register your items using the [Ordinary Capsule API](../Common/Integrations/OrdinaryCapsule/IOrdinaryCapsuleApi.cs).
 
 ## Translations
 

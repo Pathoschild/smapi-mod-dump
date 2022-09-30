@@ -7,6 +7,21 @@ for queries and analysis.**
 ----
 
 ([english version here](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG.md))
+
+## 1.6.0
+- Se cambió la forma en la que el mod pide traducciones (y que manda mensajes a la consola).
+- PNJs caminarán por la granja.
+- Arreglos menores.
+
+## 1.5.3
+- Se agregó idioma portugués (por BrasileiroTop)
+
+## 1.5.2
+- Traducción a turco actualizada.
+
+## 1.5.1
+- Traducción a ruso actualizada.
+
 ## 1.5.0
 - Los regalos se pueden desactivar.
 - Las visitas pueden pedir permiso para entrar (y tienen diálogo opcional si se les rechaza).

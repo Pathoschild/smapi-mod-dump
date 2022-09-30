@@ -9,9 +9,9 @@
 *************************************************/
 
 using System.IO;
-using StardustCore.UIUtilities.SpriteFonts.Fonts;
+using Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts;
 
-namespace StardustCore.UIUtilities.SpriteFonts
+namespace Omegasis.StardustCore.UIUtilities.SpriteFonts
 {
     /// <summary>Manages Fonts for Stardust core. While all fonts variables can be accessed from their classes, they can also hold a reference here.</summary>
     public class SpriteFonts

@@ -153,7 +153,7 @@ namespace SkillfulClothes
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {
-            return farmer.shirtItem.Value?.parentSheetIndex ?? -1;
+            return farmer.shirtItem.Value?.ParentSheetIndex ?? -1;
         }
 
         protected override Item GetCurrentItem(Farmer farmer)
@@ -166,7 +166,7 @@ namespace SkillfulClothes
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {
-            return farmer.pantsItem.Value?.parentSheetIndex ?? -1;
+            return farmer.pantsItem.Value?.ParentSheetIndex ?? -1;
         }
 
         protected override Item GetCurrentItem(Farmer farmer)

@@ -1,0 +1,68 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  //Pipes
+  //Iron Pipe
+  "item.ironpipe.name": "Tubería de Hierro",
+  "item.ironpipe.description": "Tipo: Tubería de Conexión\nLa tubería basica para conectar entradas con salidas.\nRatio: 1 stack/1 segundo.",
+  //Gold Pipe
+  "item.goldpipe.name": "Tubería de Oro",
+  "item.goldpipe.description": "Tipo: Tubería de Conexión\nUna tubería brillante para conectar entradas con salidas.\nRatio: 2 stack/1 segundo.",
+  //Iridium Pipe
+  "item.iridiumpipe.name": "Tubería de Iridio",
+  "item.iridiumpipe.description": "Tipo: Tubería de Conexión\nForjada con iridio, es capaz de mover objectos a velocidades extremas.\nRatio: 4 stack/1 segundo.",
+  //Extractor Pipe
+  "item.extractorpipe.name": "Tubería de Extracción",
+  "item.extractorpipe.description": "Tipo: Tubería de Salida\nExtrae objectos del contenedor adjacente, y las envia por la red de tuberias.\nRatio: 1 objecto/1 segundo.",
+  //Gold Extractor Pipe
+  "item.goldextractorpipe.name": "Tubería de Oro de Extracción",
+  "item.goldextractorpipe.description": "Tipo: Tubería de Salida\nExtrae objectos, y puedes presumir de tener un extractor brillante.\nRatio: 20 objectos/1 segundo",
+  //Iridium Extractor Pipe
+  "item.iridiumextractorpipe.name": "Tubería de Iridio de Extracción",
+  "item.iridiumextractorpipe.description": "Tipo: Tubería de Salida\nGracias a la esencia de iridio, extrae objetos a una velocidad alarmante.\nRatio: 80 objectos/1 segundo",
+  //Inserter Pipe
+  "item.inserterpipe.name": "Tubería de Inserción",
+  "item.inserterpipe.description": "Tipo: Tubería de Entrada\nInserta objetos en el contenedor adjacente. No filtra objetos.",
+  //Polymorphic Pipe
+  "item.polymorphicpipe.name": "Tubería Polimorfica",
+  "item.polymorphicpipe.description": "Tipo: Tubería de Entrada\nInserta objetos en el contenedor adjacente. Inserta solo los tipos de objetos ya existentes en el cofre.",
+  //Filter Pipe
+  "item.filterpipe.name": "Tubería Filtradora",
+  "item.filterpipe.description": "Tipo: Tubería de Entrada\nInserta objetos en el contenedor adjacente. Inserta solo objetos ya existentes en el inventario . Haz click derecho sobre la tuberia filtradora para abrir su inventario.",
+  //Invisibilizer
+  "item.invisibilizer.name": "Invisibilizador",
+  "item.invisibilizer.description": "Tipo: Máquina\nHace que las tuberias conectadas se vuelvan atravesables",
+  //Wrench
+  "item.wrench.name": "Llave Inglesa",
+  "item.wrench.description": "Tipo: Herramienta\nSe usa para apagar o encender tuberias de inserción o extracción.",
+
+  //-----------------------------------------------------------------------------------------------------------------
+
+  //Letters
+  "letter.itempipes_sendwrench": "¡Hola @! ¡A llegado a nuestra atención que has empezado a usar nuestros productos!^. Como regalo de bienvenida a nuestra empresa, te ofrecemos una herramienta para configurar tus tuberias. Por ahora solo puede encender o apagar IOPipes, pero el equipo de ingenieros esta trabajando duro para implementar nuevas funcionalidades^Gracias por confiar en Industrias Madded, el mejor proveedor de logística de la República Ferngill!",
+  "letter.itempipes_itemslost": "¡Buenos días @^!El equipo nocturno de limpieza de tuberias ha encontrado estos objetos dentro de tus tuberias!^Asegurate de vaciarlas por completo antes de irte a dormir la siguiente vez. Puedes recuperarlos haciendo click en los objetos de la carta.^Industrias Madded, el mejor proveedor de logística de la República Ferngill!",
+
+  //-----------------------------------------------------------------------------------------------------------------
+
+  //Warnings
+  "warning.cloggedItems_1": "[Item Pipes] Mira el correo para recuperar tus objetos, o lee el log de smapi",
+  "warning.cloggedItems_2": "[Item Pipes] Algunas tuberias tenian objetos cuando se guardo el juego y los objetos han sido eliminados",
+  "warning.inputFull": "[Item Pipes] Una tubería de entrada no puedo meter un objecto en su contenedor por que esta lleno. El objecto se ha enviado de vuelta a su origen.",
+  "warning.outputFull": "[Item Pipes] Una tubería de salida no puedo meter un objecto en su contenedor por que esta lleno. Objeto soltado.",
+
+  "warning.filterError1": "[ItemPipes] itemName ya esta en el filtro!.",
+  "warning.filterError2": "[ItemPipes] itemName de esa calidad ya esta en el filtro!.",
+  "warning.filterError3": "[ItemPipes] Los objectos de mods (itemName) no estan permitidos en los filtros!",
+  "warning.filterError4": "[ItemPipes] itemType (itemName) no estan permitidos en los filtros!.",
+
+  //UI
+  "ui.filterQuality": "Filtrar por calidad"
+}

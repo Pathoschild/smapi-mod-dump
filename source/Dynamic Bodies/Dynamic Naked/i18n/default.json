@@ -11,6 +11,8 @@
 {
 	"color_specialist":"Color Specialist",
 	"cosmetic_patient":"Cosmetic Patient",
+	"box_dye_user":"Box Dye User",
+	"trinkets":"Haley's Trinkets",
 	"body": "Body",
 	"face": "Face",
 	"lash_color":"Lash color",
@@ -18,7 +20,6 @@
 	"eyes_style": "Eyes Style",
 	"ears_style": "Ears Style",
 	"nose_style": "Nose Style",
-	"box_dye_user":"Box Dye User",
 	"cost":"Cost",
 	"free":"free",
 	"hair_dark":"Hair Dark",
@@ -49,4 +50,11 @@
 	"other_clothing_options":"Other clothing options",
 	"pants_overlay_setting":"Use pants colors on tops",
 	"bathers_setting":"Use swimming outfit",
+	"trinket":"Trinket",
+	"trinket_style":"Style",
+	"primary_color":"Color",
+	"secondary_color":"2nd Color",
+	"buy_for":"Buy for",
+	"owned":"Purchased",
+	"own_all":"You must buy all trinkets equipped."
 }

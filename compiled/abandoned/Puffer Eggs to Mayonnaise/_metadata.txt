@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/6162
-IDs: GZhynko.PufferEggsToMayonnaise
-update keys: Nexus:???, Nexus:6162, GitHub:gzhynko/StardewMods

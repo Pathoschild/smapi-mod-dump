@@ -8,15 +8,84 @@ for queries and analysis.**
 
 # Better Chests Change Log
 
-## 2.6.0 (Unreleased)
+## 2.8.0 (September 19, 2022)
+
+### Added
+
+* Added modifier key to scroll inventory one page at a time.
+* Added support for the Auto-Grabber.
+
+### Changed
+
+* Updated API for Expanded Storage Integration.
+
+### Fixed
+
+* Fixed locked items getting stashed when using the FillOutStacks button.
+
+## 2.7.2 (September 7, 2022)
+
+### Fixed
+
+* Fixed StashToChest Default was not being overridden by a default setting.
+
+## 2.7.1 (September 6, 2022)
+
+### Fixed
+
+* Fixed CraftFromChest not working on Crafting tab.
+
+## 2.7.0 (September 5, 2022)
+
+### Added
+
+* Added Chest Info feature.
+
+### Changed
+
+* ChestFinder can now open the menu to found chests.
+* ChestFinder automatically adds arrows after a short delay.
+
+## 2.6.3 (September 4, 2022)
+
+### Changed
+
+* Added support for Better Crafting from the inventory menu.
+
+## 2.6.1 (September 2, 2022)
+
+### Added
+
+* Added Craft From Workbench feature.
+* Added extra logging for Storages types and individual storages.
+
+### Fixed
+
+* Fixed ingredients getting multiplied every time Crafting Page is reopened.
+* Fixed SearchBar not spanning full width of ItemSelectionMenu.
+
+### Changed
+
+* Changed LockSlot key to a KeybindList.
+* Prevent CustomColorPicker from showing up on unsupported Storage Types.
+
+## 2.6.0 (September 1, 2022)
 
 ### Added
 
 * Added configurable SaddleBag type when Horse Overhaul is installed.
 
+### Fixed
+
+* Completely disable Shipping Bin features when a conflicting mod is installed.
+
 ### Changed
 
 * Disallow any Chest from being automatically stashed into another chest.
+* Craft From Chest will only lock chests when crafting items.
+* Allow stacking of empty chests.
+* When opening a held chest, gray out that chest in inventory.
+* UnloadChest only activates when the target chest is clicked on.
 
 ## 2.5.5 (August 27, 2022)
 

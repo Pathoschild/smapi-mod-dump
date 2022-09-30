@@ -10,7 +10,7 @@
 
 using System.Reflection;
 
-using Harmony;
+using HarmonyLib;
 
 using StardewModdingAPI;
 using StardewValley;
@@ -34,7 +34,7 @@ namespace GoToBed.Framework {
             monitor_.Log("Create Harmony patch");
             monitor_.Log("Disable Stardew13SpouseSleep in config.json if you experience problems");
 
-            HarmonyInstance harmony  = HarmonyInstance.Create(uniqueID);
+            Harmony harmony = new Harmony(uniqueID);
             MethodInfo      original = typeof(FarmHouse).GetMethod(nameof(FarmHouse.spouseSleepEndFunction));
             HarmonyMethod   prefix   = new HarmonyMethod(typeof(Stardew13SpouseSleepPatch),
                                                          nameof(Stardew13SpouseSleepPatch.Prefix_FarmHouse_spouseSleepEndFunction));

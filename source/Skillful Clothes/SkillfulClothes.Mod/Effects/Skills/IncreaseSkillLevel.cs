@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Newtonsoft.Json.Linq;
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
@@ -23,19 +24,18 @@ namespace SkillfulClothes.Effects.Skills
     {        
         public override string SkillName => Parameters.Skill.ToString();
 
-        EffectIcon icon;
-        protected override EffectIcon Icon => icon;        
+        protected override EffectIcon Icon => Parameters?.Skill.GetIcon() ?? EffectIcon.None;        
 
         protected override void ChangeCurrentLevel(Farmer farmer, int amount)
         {
             switch (Parameters.Skill)
             {
-                case Skill.Farming: farmer.addedFarmingLevel.Value = Math.Max(0, farmer.addedFarmingLevel + amount); break;
-                case Skill.Fishing: farmer.addedFishingLevel.Value = Math.Max(0, farmer.addedFishingLevel + amount); break;
-                case Skill.Foraging: farmer.addedForagingLevel.Value = Math.Max(0, farmer.addedForagingLevel + amount); break;
-                case Skill.Mining: farmer.addedMiningLevel.Value = Math.Max(0, farmer.addedMiningLevel + amount); break;
-                case Skill.Combat: farmer.addedCombatLevel.Value = Math.Max(0, farmer.addedCombatLevel + amount); break;
-                case Skill.Luck: farmer.addedLuckLevel.Value = Math.Max(0, farmer.addedLuckLevel + amount); break;
+                case Skill.Farming: farmer.addedFarmingLevel.Value = Math.Max(0, farmer.addedFarmingLevel.Value + amount); break;
+                case Skill.Fishing: farmer.addedFishingLevel.Value = Math.Max(0, farmer.addedFishingLevel.Value + amount); break;
+                case Skill.Foraging: farmer.addedForagingLevel.Value = Math.Max(0, farmer.addedForagingLevel.Value + amount); break;
+                case Skill.Mining: farmer.addedMiningLevel.Value = Math.Max(0, farmer.addedMiningLevel.Value + amount); break;
+                case Skill.Combat: farmer.addedCombatLevel.Value = Math.Max(0, farmer.addedCombatLevel.Value + amount); break;
+                case Skill.Luck: farmer.addedLuckLevel.Value = Math.Max(0, farmer.addedLuckLevel.Value + amount); break;
             }
         }
 

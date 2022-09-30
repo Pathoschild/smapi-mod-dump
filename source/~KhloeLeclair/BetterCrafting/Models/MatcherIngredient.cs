@@ -29,13 +29,18 @@ public class MatcherIngredient : IIngredient {
 	public readonly Func<Item, bool> ItemMatcher;
 	private readonly (Func<Item, bool>, int)[] IngList;
 
-	public MatcherIngredient(Func<Item, bool> matcher, int quantity, string displayName, Texture2D texture, Rectangle? source = null) {
+	private readonly Func<string> _displayName;
+	private readonly Func<Texture2D> _texture;
+
+	private Rectangle? _source;
+
+	public MatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null) {
 		ItemMatcher = matcher;
 		Quantity = quantity;
 
-		DisplayName = displayName;
-		Texture = texture;
-		SourceRectangle = source ?? texture.Bounds;
+		_displayName = displayName;
+		_texture = texture;
+		_source = source;
 
 		IngList = new (Func<Item, bool>, int)[] {
 			(ItemMatcher, Quantity)
@@ -46,16 +51,24 @@ public class MatcherIngredient : IIngredient {
 
 	public bool SupportsQuality => true;
 
-	public string DisplayName { get; }
+	public string DisplayName => _displayName();
 
-	public Texture2D Texture { get; }
+	public Texture2D Texture => _texture();
 
-	public Rectangle SourceRectangle { get; }
+	public Rectangle SourceRectangle {
+		get {
+			if (!_source.HasValue)
+				_source = _texture().Bounds;
+			return _source.Value;
+		}
+	}
 
 	public int Quantity { get; }
 
 	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
-		int amount = 0;
+		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality);
+
+		/*int amount = 0;
 
 		if (who != null)
 			foreach (var item in who.Items) {
@@ -74,7 +87,7 @@ public class MatcherIngredient : IIngredient {
 					amount += item.Stack;
 			}
 
-		return amount;
+		return amount;*/
 	}
 
 	public void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst) {

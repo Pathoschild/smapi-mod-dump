@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Saitoue/Orchard
+   Git: https://github.com/Saitoue/Orchard.git
+
+mods:
+   Orchard - Better Fruit Trees
+
+latest commit:
+   commit 8d422182d50384874191302389b8f67964e34fc0
+   Author: Saitoue <SaitoueRepo@gmail.com>
+   Date:   Mon Sep 26 23:40:33 2022 +0200
+   
+       new version number
+   

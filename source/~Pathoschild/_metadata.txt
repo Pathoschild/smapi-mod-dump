@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit e95c7e37f8f90d1132147879f13c6019ad031d5c
+   commit 950f7053cef8a4b692b450d9b0dab7aef5212815
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Aug 24 20:47:20 2022 -0400
+   Date:   Tue Sep 27 19:14:46 2022 -0400
    
-       fix 'needed for' not handling category bundle ingredients
+       allow tilling stone above campfire
    

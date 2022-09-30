@@ -57,7 +57,11 @@ internal static class Serialize {
 	internal static ulong ConfigHash { get; private set; } = 0UL;
 
 	internal static void RefreshHash() {
-		ConfigHash = HashClass(typeof(Config));
+		var newHash = HashClass(typeof(Config));
+		if (ConfigHash != newHash) {
+			ConfigHash = newHash;
+			Config.OnConfigChanged();
+		}
 	}
 
 	private static bool IsClassIgnored(Type? type) => type is not null && (type.HasAttribute<Attributes.IgnoreAttribute>() || IsClassIgnored(type.DeclaringType));

@@ -19,6 +19,8 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using AeroCore;
+using AeroCore.Utils;
 
 namespace HDPortraits.Patches
 {
@@ -60,15 +62,10 @@ namespace HDPortraits.Patches
             var current = PortraitDrawPatch.currentMeta.Value;
             if (current is null)
                 return new(0, 0, 64, 64);
-
-            Rectangle ret = (current.Animation is not null) ?
-                current.Animation.GetSourceRegion(current.overrideTexture.Value ?? current.GetDefault(), 
-                current.Size, 0, Game1.currentGameTime.ElapsedGameTime.Milliseconds) :
-                new(0, 0, current.Size, current.Size);
-            return ret;
+            return current.GetRegion(0, Game1.currentGameTime.ElapsedGameTime.Milliseconds);
         }
 
-        internal static ILHelper drawPatcher = new ILHelper("Shop draw")
+        internal static ILHelper drawPatcher = new ILHelper(ModEntry.monitor, "Shop draw")
             .SkipTo(new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_1),
@@ -76,18 +73,18 @@ namespace HDPortraits.Patches
                 new(OpCodes.Ldfld, typeof(ShopMenu).FieldNamed("portraitPerson")),
                 new(OpCodes.Callvirt, typeof(NPC).MethodNamed("get_Portrait"))
             })
+            .Skip(4)
             .Add(new CodeInstruction(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("SwapTexture")))
-            .Remove(new CodeInstruction[] { 
+            .SkipTo(new CodeInstruction[] { 
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Ldc_I4_S, 64),
                 new(OpCodes.Ldc_I4_S, 64),
             })
-            .Remove()
+            .Remove(5)
             .Add(new CodeInstruction(OpCodes.Call, typeof(ShopPatch).MethodNamed("GetData")))
-            .Remove(new CodeInstruction[] {
-                new(OpCodes.Ldc_R4, 4f)
-            })
+            .SkipTo(new CodeInstruction(OpCodes.Ldc_R4, 4f))
+            .Remove(1)
             .Add(new CodeInstruction(OpCodes.Call, typeof(PortraitDrawPatch).MethodNamed("GetScale")))
             .Finish();
     }

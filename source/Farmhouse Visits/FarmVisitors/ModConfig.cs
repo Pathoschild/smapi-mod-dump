@@ -25,5 +25,6 @@ namespace FarmVisitors
         public bool NeedsConfirmation { get; set; } = false;
         public bool RejectionDialogue { get; set; } = true;
         public bool Gifts { get; set; } = true;
+        public bool WalkOnFarm { get; set; } = false;
     }
 }

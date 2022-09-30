@@ -10,12 +10,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Netcode;
+using Omegasis.Revitalize.Framework.World.Objects.Items;
 using StardewValley;
 
-namespace Revitalize.Framework.Objects.InformationFiles
+namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
 {
     /// <summary>
     /// Deals with information reguarding resources.
@@ -25,7 +28,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <summary>
         /// The item to drop.
         /// </summary>
-        public StardewValley.Object droppedItem;
+        public ItemReference droppedItem;
 
         /// <summary>
         /// The min amount of resources to drop given the getNumberOfDrops function.
@@ -78,7 +81,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="I"></param>
+        /// <param name="ItemReference">The reference to the item to get from this resource.</param>
         /// <param name="MinDropAmount"></param>
         /// <param name="MaxDropAmount"></param>
         /// <param name="MinNumberOfNodes"></param>
@@ -89,9 +92,9 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <param name="SpawnAmountLuckFactor"></param>
         /// <param name="DropChanceLuckFactor"></param>
         /// <param name="DropAmountLuckFactor"></param>
-        public ResourceInformation(StardewValley.Object I, int MinDropAmount, int MaxDropAmount, int MinNumberOfNodes, int MaxNumberOfNodes,double ChanceToSpawn=1f,double ChanceToDrop=1f, double SpawnChanceLuckFactor = 0f, double SpawnAmountLuckFactor = 0f,double DropChanceLuckFactor=0f, double DropAmountLuckFactor = 0f)
+        public ResourceInformation(ItemReference ItemReference, int MinDropAmount, int MaxDropAmount, int MinNumberOfNodes, int MaxNumberOfNodes, double ChanceToSpawn = 1f, double ChanceToDrop = 1f, double SpawnChanceLuckFactor = 0f, double SpawnAmountLuckFactor = 0f, double DropChanceLuckFactor = 0f, double DropAmountLuckFactor = 0f)
         {
-            this.droppedItem = I;
+            this.droppedItem = ItemReference;
             this.minResourcePerDrop = MinDropAmount;
             this.maxResourcePerDrop = MaxDropAmount;
             this.minNumberOfNodesSpawned = MinNumberOfNodes;
@@ -104,6 +107,45 @@ namespace Revitalize.Framework.Objects.InformationFiles
             this.dropChanceLuckFactor = DropChanceLuckFactor;
         }
 
+        public virtual ResourceInformation readResourceInformation(BinaryReader reader)
+        {
+            this.minResourcePerDrop = reader.ReadInt32();
+            this.maxResourcePerDrop = reader.ReadInt32();
+            this.minNumberOfNodesSpawned = reader.ReadInt32();
+            this.maxNumberOfNodesSpawned = reader.ReadInt32();
+            this.spawnAmountLuckFactor = reader.ReadInt32();
+            this.dropAmountLuckFactor = reader.ReadInt32();
+            this.chanceToSpawn = reader.ReadInt32();
+            this.chanceToDrop = reader.ReadInt32();
+            this.spawnChanceLuckFactor = reader.ReadInt32();
+            this.dropAmountLuckFactor = reader.ReadInt32();
+
+            if (this.droppedItem == null)
+                this.droppedItem = new ItemReference();
+            this.droppedItem.readItemReference(reader);
+
+            return this;
+
+        }
+
+        public virtual void writeResourceInformation(BinaryWriter writer)
+        {
+            writer.Write(this.minResourcePerDrop);
+            writer.Write(this.maxResourcePerDrop);
+            writer.Write(this.minNumberOfNodesSpawned);
+            writer.Write(this.maxNumberOfNodesSpawned);
+            writer.Write(this.spawnAmountLuckFactor);
+            writer.Write(this.dropAmountLuckFactor);
+            writer.Write(this.chanceToSpawn);
+            writer.Write(this.chanceToDrop);
+            writer.Write(this.spawnChanceLuckFactor);
+            writer.Write(this.dropAmountLuckFactor);
+
+            if (this.droppedItem == null)
+                this.droppedItem = new ItemReference();
+            this.droppedItem.writeItemReference(writer);
+        }
+
 
         /// <summary>
         /// Gets the number of drops to spawn for the given resource;
@@ -114,13 +156,9 @@ namespace Revitalize.Framework.Objects.InformationFiles
             int amount = Game1.random.Next(this.minResourcePerDrop, this.maxResourcePerDrop + 1);
 
             if (limitToMax)
-            {
-                amount = (int)Math.Min(amount + (this.dropAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)), this.maxResourcePerDrop);
-            }
+                amount = (int)Math.Min(amount + this.dropAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value), this.maxResourcePerDrop);
             else
-            {
-                amount = (int)(amount + (this.dropAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
-            }
+                amount = (int)(amount + this.dropAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value));
             return amount;
         }
 
@@ -132,13 +170,9 @@ namespace Revitalize.Framework.Objects.InformationFiles
         {
             int amount = Game1.random.Next(this.minNumberOfNodesSpawned, this.maxNumberOfNodesSpawned + 1);
             if (limitToMax)
-            {
-                amount = (int)Math.Min(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)), this.maxNumberOfNodesSpawned);
-            }
+                amount = (int)Math.Min(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value), this.maxNumberOfNodesSpawned);
             else
-            {
-                amount = (int)(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
-            }
+                amount = (int)(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value));
             return amount;
         }
 
@@ -167,7 +201,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         public virtual bool shouldSpawn()
         {
             double chance = Game1.random.NextDouble();
-            chance = (chance - (this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
+            chance = chance - this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value);
             if (this.chanceToSpawn >= chance) return true;
             else return false;
         }
@@ -179,7 +213,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         public virtual bool shouldDropResource()
         {
             double chance = Game1.random.NextDouble();
-            chance= (chance - (this.dropChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
+            chance = chance - this.dropChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value);
 
             if (this.chanceToDrop >= chance) return true;
             else return false;
@@ -191,9 +225,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <returns></returns>
         public Item getItemDrops()
         {
-            Item I = this.droppedItem.getOne();
-            I.Stack = this.getNumberOfDropsToSpawn();
-            return I;
+            return this.droppedItem.getItem(this.getNumberOfDropsToSpawn());
         }
     }
 }

@@ -10,12 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Netcode;
 
-namespace Revitalize.Framework.Illuminate
+namespace Omegasis.Revitalize.Framework.Illuminate
 {
     /// <summary>
     /// Deals with recreating light sources in SDV.
@@ -69,6 +71,25 @@ namespace Revitalize.Framework.Illuminate
         public FakeLightSource Copy()
         {
             return new FakeLightSource(this.id, new Vector2(this.positionOffset.X, this.positionOffset.Y), new Color(this.color.R, this.color.G, this.color.B, this.color.A), this.radius);
+        }
+
+        public virtual FakeLightSource readFakeLightSource(BinaryReader reader)
+        {
+            this.id = reader.ReadInt32();
+            this.positionOffset = reader.ReadVector2();
+            this.color = reader.ReadColor();
+            this.radius = reader.ReadInt32();
+            return this;
+
+        }
+
+        public virtual void writeFakeLightSource(BinaryWriter writer)
+        {
+
+            writer.Write(this.id);
+            writer.WriteVector2(this.positionOffset);
+            writer.WriteColor(this.color);
+            writer.Write(this.radius);
         }
 
     }

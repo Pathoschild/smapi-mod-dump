@@ -10,6 +10,15 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.3.3
+Released 18 September 2022.
+
+* Added [Slime Hutch Water Spots](https://www.nexusmods.com/stardewvalley/mods/13778) compatibility.
+* Potentially fixed the "Could not find the location the sprinkler is in." errors. Again.
+* Added additional debugging information for the above error.
+* Added `config.json` logging for debugging purposes.
+* Added `config.json` versioning (not really used right now, but will be used to migrate users from the Flood Fill behavior family to Cluster).
+
 ## 1.3.2
 Released 3 August 2022.
 

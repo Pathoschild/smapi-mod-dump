@@ -17,11 +17,15 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SpriteMaster.Caching;
 
@@ -70,17 +74,18 @@ internal static partial class TextureFileCache {
 					copyArray ? cachedValue.CloneFast() : cachedValue
 				);
 
-				if (cachedSize.Area != cachedValue.Length) {
-					Debugger.Break();
-				}
-
 				Debug.Trace($"Loading Texture '{resolvedPath}' from cache.".Pastel(DrawingColor.LightGreen));
 				return false;
 			}
 		}
 
-		Debug.Trace($"Loading Texture '{resolvedPath}' from file.");
-		var rawData = File.ReadAllBytes(resolvedPath);
+		return !LoadFromFile(path: resolvedPath, copyArray: copyArray, swallowExceptions: false, out __result!);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static bool LoadFromFile(string path, bool copyArray, bool swallowExceptions, [NotNullWhen(true)] out IRawTextureData? result) {
+		Debug.Trace($"Loading Texture '{path}' from file.");
+		var rawData = File.ReadAllBytes(path);
 		try {
 			var imageResult = new Stb.ImageResult(rawData);
 			byte[] data = imageResult.Data;
@@ -92,20 +97,24 @@ internal static partial class TextureFileCache {
 			XColor[] resultData = data.Convert<byte, XColor>();
 
 			Vector2I resultSize = imageResult.Size;
-			TextureInfoCache.AddOrUpdate(resolvedPath, resultSize, (_, _) => resultSize);
-			Cache.Set(resolvedPath, resultData);
+			TextureInfoCache.AddOrUpdate(path, resultSize, (_, _) => resultSize);
+			Cache.Set(path, resultData);
 
-			__result = new RawTextureData(
+			result = new RawTextureData(
 				size: resultSize,
 				copyArray ? resultData.CloneFast() : resultData
 			);
 
-			return false;
+			return true;
 		}
 		catch (Exception ex) {
-			// If there is an exception, swallow it and just go back to the normal execution path.
-			Debug.Error($"{nameof(OnLoadRawImageData)} exception while processing '{path}'", ex);
-			return true;
+			if (!swallowExceptions) {
+				// If there is an exception, swallow it and just go back to the normal execution path.
+				Debug.Error($"{nameof(OnLoadRawImageData)} exception while processing '{path}'", ex);
+			}
+
+			result = null;
+			return false;
 		}
 	}
 
@@ -127,6 +136,94 @@ internal static partial class TextureFileCache {
 		var oldCache = Interlocked.Exchange(ref Unsafe.AsRef(Cache), newCache);
 		TextureInfoCache.Clear();
 		oldCache?.Dispose();
+	}
+
+	private static string? GetModsPath() {
+		const BindingFlags smapiBindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+
+		// Try to use reflection first.
+		Type apiConstants = typeof(StardewModdingAPI.Constants);
+		if (apiConstants.GetProperty("ModsPath", smapiBindingFlags)?.GetValue(null) is string modsPath && Directory.Exists(modsPath)) {
+			return modsPath;
+		}
+		if (apiConstants.GetProperty("DefaultModsPath", smapiBindingFlags)?.GetValue(null) is string defaultModsPath && Directory.Exists(defaultModsPath)) {
+			return defaultModsPath;
+		}
+
+		string? rootDirectory = Path.GetDirectoryName(SpriteMaster.Assembly.Location);
+
+		bool IsModsDirectory() {
+			return File.Exists(Path.Combine(rootDirectory, "Stardew Valley.dll"));
+		}
+
+		string? previousDirectory = rootDirectory;
+		while (rootDirectory is not null && rootDirectory.Length != 0 && !IsModsDirectory()) {
+			previousDirectory = rootDirectory;
+			rootDirectory = Path.GetDirectoryName(rootDirectory);
+		}
+
+		if (rootDirectory is not null) {
+			return previousDirectory!;
+		}
+
+		return null;
+	}
+
+	internal static List<FileInfo> GetAllTextures(string root) {
+		List<FileInfo> result = new();
+
+		Queue<DirectoryInfo> pending = new();
+		pending.Enqueue(new(root));
+
+		while (pending.TryDequeue(out var directory)) {
+			try {
+				foreach (var child in directory.EnumerateFileSystemInfos()) {
+					if (child is DirectoryInfo childDirectory) {
+						pending.Enqueue(childDirectory);
+					}
+					else if (child is FileInfo childFile) {
+						if (childFile.Extension.Equals(".png", StringComparison.OrdinalIgnoreCase)) {
+							result.Add(childFile);
+						}
+					}
+				}
+			}
+			catch (Exception) {
+				// swallow exceptions
+			}
+		}
+
+		return result;
+	}
+
+	internal static void Precache() {
+		if (!SMConfig.TextureFileCache.Enabled || !SMConfig.TextureFileCache.Precache) {
+			return;
+		}
+
+		if (GetModsPath() is not {} rootDirectory) {
+			// Could not derive Mods directory path :(
+			return;
+		}
+
+		// Traverse all mods looking for '.png' files (and maybe '.tga' or '.dds'?)
+		var allSpriteSheets = GetAllTextures(rootDirectory);
+
+		Parallel.ForEach(
+			allSpriteSheets, file => {
+				var originalPriority = Thread.CurrentThread.Priority;
+				Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+				try {
+					LoadFromFile(path: file.FullName, copyArray: false, swallowExceptions: true, out _);
+				}
+				catch {
+					// swallow exceptions
+				}
+				finally {
+					Thread.CurrentThread.Priority = originalPriority;
+				}
+			}
+		);
 	}
 
 	internal static long Size => Cache.SizeBytes;

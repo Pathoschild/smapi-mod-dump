@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace StardustCore.StardustMath
+namespace Omegasis.StardustCore.StardustMath
 {
     /// <summary>Base class for hex representation.</summary>
     public class Hex

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13964
+IDs: aedenthorn.CustomGiftLimits
+update keys: Nexus:13964, GitHub:aedenthorn/StardewValleyMods

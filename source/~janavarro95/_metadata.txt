@@ -26,12 +26,12 @@ mods:
    Time Freeze
 
 latest commit:
-   commit d3c2473b1e43edac40d8ae0e095913b694299cbc
-   Merge: e85f2017 d4ffe0f4
+   commit d7d567a72f5feaf3a5a5afd3d054ac9598727a97
+   Merge: d25db24a a27d73f1
    Author: Joshua Navarro <janavarro95@users.noreply.github.com>
-   Date:   Sun Apr 10 21:23:09 2022 -0700
+   Date:   Tue Sep 20 22:13:05 2022 -0700
    
-       Merge pull request #84 from janavarro95/mod/ui-scale-fix
+       Merge pull request #86 from janavarro95/dependabot/nuget/GeneralMods/OutDatedMods/Serialization/Newtonsoft.Json-13.0.1
        
-       Fix UI scaling in Billboard Anywhere
+       Bump Newtonsoft.Json from 10.0.3 to 13.0.1 in /GeneralMods/OutDatedMods/Serialization
    

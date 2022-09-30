@@ -1,0 +1,12 @@
+﻿[
+  {
+    "Name": "Copper Auto-Grabber",
+    "Price": 1,
+    "CanSell": false,
+    "Description": "description",
+    "IsDefault": false,
+    "CanPurchase":  false,
+    "ReserveNextIndex":  true,
+    "Texture": "assets/autograbbers.png:0"
+  }
+]

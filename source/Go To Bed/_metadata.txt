@@ -6,9 +6,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit 08363a2d28bf7c25ceec35b588bf779b6d2ca444
+   commit e6e02f5c1802baee376dfbdeb4657300a5ae8302
    Author: Candidus <candidus@xmail.net>
-   Date:   Tue May 18 21:09:53 2021 +0200
+   Date:   Thu Sep 15 20:28:45 2022 +0200
    
-       Fix: Entering the farm house after 2200 puts spouse to sleep immediately: Add a transpiler for FarmHouse.resetSharedState() to be able to change the hardcoded time 2200 .
+       Updated for Harmony 2.0, minimum SMAPI version is 3.14 (net5.0).
    

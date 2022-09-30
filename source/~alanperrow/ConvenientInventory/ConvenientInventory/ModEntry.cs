@@ -16,6 +16,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
 using ConvenientInventory.Compatibility;
+using System.Collections.Generic;
 
 namespace ConvenientInventory
 {
@@ -45,6 +46,12 @@ namespace ConvenientInventory
 
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.Input.ButtonReleased += OnButtonReleased;
+
+            helper.ConsoleCommands.Add("player_fixinventory",
+                "Resizes the player's inventory to its correct maximum size, dropping any extra items contained in inventory. (Some mods directly modify the player's inventory size, " +
+                "causing compatibility issues and/or leaving extra null items when uninstalled; this command should fix these issues.)" +
+                "\n\nUsage: player_fixinventory",
+                FixInventory);
         }
 
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves).
@@ -116,6 +123,51 @@ namespace ConvenientInventory
             if (Config.IsEnableFavoriteItems && (e.Button == Config.FavoriteItemsKeyboardHotkey || e.Button == Config.FavoriteItemsControllerHotkey))
             {
                 ConvenientInventory.IsFavoriteItemsHotkeyDown = false;
+            }
+        }
+
+        /// <summary>
+        /// Resizes player's inventory to player.MaxItems, dropping any extra items contained in inventory.
+        /// </summary>
+        /// <param name="command">The name of the command invoked.</param>
+        /// <param name="args">The arguments received by the command. Each word after the command name is a separate argument.</param>
+        private void FixInventory(string command, string[] args)
+        {
+            if (!Context.IsWorldReady)
+            {
+                Monitor.Log("Please load a save before using this command.", LogLevel.Info);
+                return;
+            }
+
+            var who = StardewValley.Game1.player;
+            var items = who.Items;
+
+            if (items.Count == who.MaxItems)
+            {
+                Monitor.Log($"Inventory size is already correct, no fix needed. (Inventory size: {items.Count}, Max items: {who.MaxItems})", LogLevel.Info);
+                return;
+            }
+
+            Monitor.Log($"Resizing inventory from {items.Count} => {who.MaxItems}...", LogLevel.Info);
+
+            while (items.Count > who.MaxItems)
+            {
+                int index = items.Count - 1;
+
+                if (items[index] != null)
+                {
+                    StardewValley.Game1.playSound("throwDownITem");
+
+                    StardewValley.Game1.createItemDebris(items[index], who.getStandingPosition(), who.FacingDirection)
+                        .DroppedByPlayerID.Value = who.UniqueMultiplayerID;
+
+                    Monitor.Log($"Found non-null item: '{items[index].Name}' (x {items[index].Stack}) at index: {index} when resizing inventory."
+                        + " The item was manually dropped; this may have resulted in unexpected behavior.",
+                        LogLevel.Warn);
+                }
+
+                // Remove the last item of the list
+                items.RemoveAt(index);
             }
         }
     }

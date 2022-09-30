@@ -3,6 +3,8 @@
   "mod.description": "加選項以防止撿起來家具",
 
   // 每個選項的標題
+  "PreventAllPickup.title": "防止撿起來所有家具",
+  "FurniturePlacementKey.title": "鍵綁定以啟用撿起來",
   "CanPickUpBed.title": "可以撿起來床",
   "CanPickUpChair.title": "可以撿起來椅子",
   "CanPickUpTable.title": "可以撿起來桌子",

@@ -48,11 +48,14 @@ internal static class Attributes {
 			FlushResidentCache = 1 << 3,
 			FlushTextureFileCache = 1 << 4,
 			FlushMetaData = 1 << 5,
-			FlushAllInternalCaches = FlushSuspendedSpriteCache | FlushFileCache | FlushResidentCache | FlushTextureFileCache | FlushMetaData,
+			FlushMetaDataRecache = 1 << 6,
+			FlushSpriteMap = 1 << 7,
+			FlushAllRenderingCaches = FlushSuspendedSpriteCache | FlushFileCache | FlushResidentCache | FlushMetaDataRecache | FlushSpriteMap,
+			FlushAllInternalCaches = FlushSuspendedSpriteCache | FlushFileCache | FlushResidentCache | FlushTextureFileCache | FlushMetaData | FlushSpriteMap,
 			FlushAllCaches = FlushTextureCache | FlushAllInternalCaches,
-			GarbageCollect = 1 << 6,
-			ResetDisplay = 1 << 7,
-			RequireRestart = 1 << 8
+			GarbageCollect = 1 << 8,
+			ResetDisplay = 1 << 9,
+			RequireRestart = 1 << 10
 		}
 
 		internal readonly Flag Flags = Flag.None;

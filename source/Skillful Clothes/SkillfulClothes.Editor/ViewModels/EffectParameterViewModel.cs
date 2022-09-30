@@ -24,16 +24,16 @@ namespace SkillfulClothes.Editor.ViewModels
 
         public Type ParameterType { get; }
 
-        public object DefaultValue { get; }
+        public object? DefaultValue { get; }
 
         object? _value = null;
         public object? Value { get => _value; set => this.RaiseAndSetIfChanged(ref _value, value); }
 
-        public object WrappedValue { get; }
+        public object? WrappedValue { get; }
 
         public List<object> AvailableValues { get; } = new List<object>();
 
-        public EffectParameterViewModel(string parameterName, Type parameterType, object defaultValue, object value)
+        public EffectParameterViewModel(string parameterName, Type parameterType, object? defaultValue, object? value)
         {
             ParameterName = parameterName;
             ParameterType = parameterType;

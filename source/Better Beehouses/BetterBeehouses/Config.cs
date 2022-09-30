@@ -41,6 +41,10 @@ namespace BetterBeehouses
             get { return bearBoost; }
             set { bearBoost = Math.Clamp(value, 1f, 3f); }
         }
+        public bool UseGiantCrops { get; set; } = true;
+        public bool UseFruitTrees { get; set; } = true;
+        public bool UseRandomFlower { get; set; } = false;
+        public bool FlowerCountSpeed { get; set; } = false;
 
         private ITranslationHelper i18n => ModEntry.helper.Translation;
 

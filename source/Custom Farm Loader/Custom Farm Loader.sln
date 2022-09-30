@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Custom Farm Loader", "Custom Farm Loader\Custom Farm Loader.csproj", "{58F7D8EF-76CD-4240-B8C4-8252155AC7DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58F7D8EF-76CD-4240-B8C4-8252155AC7DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F7D8EF-76CD-4240-B8C4-8252155AC7DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F7D8EF-76CD-4240-B8C4-8252155AC7DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F7D8EF-76CD-4240-B8C4-8252155AC7DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FCAF9C27-E639-47ED-B999-52B9FD282CDB}
+	EndGlobalSection
+EndGlobal

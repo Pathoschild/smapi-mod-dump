@@ -10,7 +10,7 @@
 
 using System.Diagnostics;
 using DecidedlyShared.Logging;
-using SmartBuilding.APIs;
+using DecidedlyShared.APIs;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;

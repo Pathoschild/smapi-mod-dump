@@ -15,6 +15,7 @@
       "ClearFruitTreeSeeds": false,
       "ClearFruitTreeSaplings": false,
       "CutGrownFruitTrees": false,
+      "CutTreeStumps": true,
       "ClearTreeSeeds": false,
       "ClearTreeSaplings": false,
       "CutGrownTrees": false,

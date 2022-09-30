@@ -11,7 +11,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace Revitalize.Framework.Illuminate
+namespace Omegasis.Revitalize.Framework.Illuminate
 {
     public static class ColorExtensions
     {

@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Flexible Sprinklers",
 	"Author": "Shockah",
-	"Version": "1.3.2",
+	"Version": "1.3.3",
 	"Description": "Makes the sprinklers more flexible, while keeping their behavior the same under perfect conditions.",
 	"UniqueID": "Shockah.FlexibleSprinklers",
 	"EntryDll": "FlexibleSprinklers.dll",

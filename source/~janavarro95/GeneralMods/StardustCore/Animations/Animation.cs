@@ -9,11 +9,12 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Netcode;
 
-namespace StardustCore.Animations
+namespace Omegasis.StardustCore.Animations
 {
     /// <summary>A custom class used to deal with custom animations/</summary>
     public class Animation
@@ -36,6 +37,7 @@ namespace StardustCore.Animations
 
         public Animation()
         {
+            this.animationFrames = new List<AnimationFrame>();
         }
 
         public Animation(int sourceRectX, int sourceRectY, int sourceRectWidth, int sourceRectHeight):this(new Rectangle(sourceRectX,sourceRectY,sourceRectWidth, sourceRectHeight))
@@ -68,7 +70,11 @@ namespace StardustCore.Animations
         {
             if (this.animationFrames.Count == 0) return null;
 
-            if (this.currentAnimationFrameIndex >= this.animationFrames.Count) return this.animationFrames[this.animationFrames.Count - 1];
+            if (this.currentAnimationFrameIndex >= this.animationFrames.Count)
+            {
+
+                return this.animationFrames[this.animationFrames.Count - 1];
+            }
 
             return this.animationFrames[this.currentAnimationFrameIndex];
         }
@@ -102,14 +108,15 @@ namespace StardustCore.Animations
 
             if (this.getCurrentAnimationFrame().isFinished())
             {
+                //Reset old animation frame.
+                this.getCurrentAnimationFrame().reset();
+                //Move to the next frame.
                 this.currentAnimationFrameIndex++;
+                //Reset the new frame just in case.
+                this.getCurrentAnimationFrame().reset();
                 if (this.currentAnimationFrameIndex >= this.animationFrames.Count && this.shouldLoopAnimation)
                 {
                     this.reset();
-                }
-                else
-                {
-                    this.currentAnimationFrameIndex = this.animationFrames.Count; //Prevent out of bounds index exception.
                 }
             }
         }
@@ -127,6 +134,74 @@ namespace StardustCore.Animations
         public bool isFinished()
         {
             return this.currentAnimationFrameIndex == this.animationFrames.Count && this.getCurrentAnimationFrame().isFinished();
+        }
+
+        public virtual Animation readAnimation(BinaryReader reader)
+        {
+            int animationFramesCount = reader.ReadInt32();
+            if (this.animationFrames == null)
+            {
+                this.animationFrames = new List<AnimationFrame>();
+            }
+
+            this.animationFrames.Clear();
+            for (int i = 0; i < animationFramesCount; i++)
+            {
+                AnimationFrame frame = new AnimationFrame();
+                this.animationFrames.Add(frame.readAnimationFrame(reader));
+            }
+
+            this.shouldLoopAnimation = reader.ReadBoolean();
+            this.currentAnimationFrameIndex = reader.ReadInt32();
+            return this;
+        }
+
+        public virtual void writeAnimation(BinaryWriter writer)
+        {
+            writer.Write(this.animationFrames.Count);
+            foreach(AnimationFrame frame in this.animationFrames)
+            {
+                frame.writeAnimationFrame(writer);
+            }
+            writer.Write(this.shouldLoopAnimation);
+
+            //Maybe exclude this?
+            writer.Write(this.currentAnimationFrameIndex);
+        }
+
+        public virtual Animation Copy()
+        {
+            List<AnimationFrame> copyFrames = new List<AnimationFrame>();
+
+            foreach(AnimationFrame frame in this.animationFrames)
+            {
+                copyFrames.Add(frame.Copy());
+            }
+
+            return new Animation(copyFrames, this.shouldLoopAnimation, 0);
+
+        }
+
+        /// <summary>
+        /// Creates a list of animation frames starting at a given position and generates the frame position data from left to right.
+        /// </summary>
+        /// <param name="startingPosX">The starting x position on the texture.</param>
+        /// <param name="startingPosY">The starting Y position on the texture.</param>
+        /// <param name="FrameWidth">The width of a given frame/</param>
+        /// <param name="FrameHeight">The height of a given frame.</param>
+        /// <param name="NumberOfFrames">The number of frames. Must be 1 or greater!</param>
+        /// <returns></returns>
+        public static Animation CreateAnimationFromTextureSequence(int startingPosX, int startingPosY, int FrameWidth, int FrameHeight, int NumberOfFrames, int ExistsForXFrames=-1, bool shouldLoop=true)
+        {
+            List<AnimationFrame> frames=new List<AnimationFrame>();
+
+            for(int i=0; i < NumberOfFrames; i++)
+            {
+                AnimationFrame frame = new AnimationFrame(startingPosX + (FrameWidth * i), startingPosY, FrameWidth, FrameHeight, ExistsForXFrames);
+
+                frames.Add(frame);
+            }
+            return new Animation(frames,shouldLoop);
         }
     }
 }

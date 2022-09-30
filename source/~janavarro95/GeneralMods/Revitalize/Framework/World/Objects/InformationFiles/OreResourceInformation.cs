@@ -10,54 +10,40 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.World.Objects.Items;
+using Omegasis.Revitalize.Framework.World.WorldUtilities;
 using StardewValley;
 
-namespace Revitalize.Framework.Objects.InformationFiles
+namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
 {
-    public class OreResourceInformation:ResourceInformation
+    public class OreResourceInformation : ResourceInformation
     {
 
 
         /// <summary>
         /// The floors of the mine that this resource should spawn in in the regular mine.
         /// </summary>
-        public List<IntRange> floorsToSpawnOn;
-
-        /// <summary>
-        /// A function that compares whether or not the resource can be spawned on this floor. Used in conjecture with floorsToSpawnOn
-        /// </summary>
-        [JsonIgnore]
-        public Func<int, bool> canSpawnOnThisFloor;
-        [JsonIgnore]
-        public Func<int, bool> excludeSpawnOnThisFloor;
+        public List<IntRange> floorsToSpawnOn = new List<IntRange>();
 
         /// <summary>
         /// The list of floors to exclude spawning on in the regular mine.
         /// </summary>
-        public List<IntRange> floorsToExclude;
+        public List<IntRange> floorsToExclude = new List<IntRange>();
 
         /// <summary>
         /// The floors this resource should spawn on in skull cave.
         /// </summary>
-        public List<IntRange> floorsToSpawnOnSkullCave;
+        public List<IntRange> floorsToSpawnOnSkullCave = new List<IntRange>();
         /// <summary>
         /// The floors this resource should not spawn on in skull cave.
         /// </summary>
-        public List<IntRange> floorsToExcludeSkullCave;
-
-        /// <summary>
-        /// A function that compares whether or not the resource can be spawned on this floor in skull cave. Used in conjecture with floorsToSpawnOn
-        /// </summary>
-        ///
-        [JsonIgnore]
-        public Func<int, bool> canSpawnOnThisFloorSkullCave;
-        [JsonIgnore]
-        public Func<int, bool> excludeSpawnOnThisFloorSkullCave;
+        public List<IntRange> floorsToExcludeSkullCave = new List<IntRange>();
 
         /// <summary>
         /// Should this resource spawn in the mine in the mountains?
@@ -79,15 +65,15 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <summary>
         /// The range of the number of nodes to spawn on the farm.
         /// </summary>
-        public IntRange farmSpawnAmount;
+        public IntRange farmSpawnAmount = new IntRange();
         /// <summary>
         /// The range of the number of nodes to spawn in the quarry.
         /// </summary>
-        public IntRange quarrySpawnAmount;
+        public IntRange quarrySpawnAmount = new IntRange();
         /// <summary>
         /// The range of the number of nodes to spawn in skull cave.
         /// </summary>
-        public IntRange skullCaveSpawnAmount;
+        public IntRange skullCaveSpawnAmount = new IntRange();
         /// <summary>
         /// The chance that this resource spawns on the farm.
         /// </summary>
@@ -125,7 +111,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <param name="SpawnAmountLuckFactor"></param>
         /// <param name="DropChanceLuckFactor"></param>
         /// <param name="DropAmountLuckFactor"></param>
-        public OreResourceInformation(StardewValley.Object I, List<IntRange> FloorsToSpawnOn, List<IntRange> FloorsToExclude,Func<int,bool> CanSpawnOnGivenFloor,Func<int,bool> FloorsToExcludeFun,int MinDropAmount, int MaxDropAmount, int MinNumberOfNodes, int MaxNumberOfNodes, double ChanceToSpawn = 1f, double ChanceToDrop = 1f, double SpawnChanceLuckFactor = 0f, double SpawnAmountLuckFactor = 0f, double DropChanceLuckFactor = 0f, double DropAmountLuckFactor = 0f) : base(I, MinDropAmount, MaxDropAmount, MinNumberOfNodes, MaxNumberOfNodes, ChanceToSpawn, ChanceToDrop, SpawnChanceLuckFactor, SpawnAmountLuckFactor, DropChanceLuckFactor, DropAmountLuckFactor)
+        public OreResourceInformation(ItemReference ItemReference, List<IntRange> FloorsToSpawnOn, List<IntRange> FloorsToExclude, int MinDropAmount, int MaxDropAmount, int MinNumberOfNodes, int MaxNumberOfNodes, double ChanceToSpawn = 1f, double ChanceToDrop = 1f, double SpawnChanceLuckFactor = 0f, double SpawnAmountLuckFactor = 0f, double DropChanceLuckFactor = 0f, double DropAmountLuckFactor = 0f) : base(ItemReference, MinDropAmount, MaxDropAmount, MinNumberOfNodes, MaxNumberOfNodes, ChanceToSpawn, ChanceToDrop, SpawnChanceLuckFactor, SpawnAmountLuckFactor, DropChanceLuckFactor, DropAmountLuckFactor)
         {
             this.spawnsOnFarm = false;
             this.spawnsInQuarry = false;
@@ -138,19 +124,6 @@ namespace Revitalize.Framework.Objects.InformationFiles
             this.quarrySpawnAmount = new IntRange();
             this.farmSpawnChance = 0f;
             this.quarrySpawnChance = 0f;
-
-            if (CanSpawnOnGivenFloor != null)
-            {
-                this.canSpawnOnThisFloor = CanSpawnOnGivenFloor;
-            }
-            else
-            {
-                this.canSpawnOnThisFloor = null;
-            }
-
-            this.excludeSpawnOnThisFloor = FloorsToExcludeFun;
-
-            this.canSpawnOnThisFloorSkullCave = null;
         }
 
 
@@ -182,7 +155,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <param name="SpawnAmountLuckFactor"></param>
         /// <param name="DropChanceLuckFactor"></param>
         /// <param name="DropAmountLuckFactor"></param>
-        public OreResourceInformation(StardewValley.Object I,bool SpawnsOnFarm, bool SpawnsInQuarry, bool SpawnInRegularMine, bool SpawnInSkullCave,List<IntRange> FloorsToSpawnOn,List<IntRange>FloorsToExclude,Func<int,bool> CanSpawnOnGivenFloor,Func<int,bool> FloorsToExludeFun,int MinDropAmount, int MaxDropAmount, int MinNumberOfNodes, int MaxNumberOfNodes, IntRange FarmSpawnAmount,IntRange QuarrySpawnAmount,IntRange SkullCaveSpawnAmount,List<IntRange> FloorsToSpawnOnSkullCave,List<IntRange>FloorsToExludeSkullCave,Func<int,bool> CanSpawnOnGivenFloorSkullCave,Func<int,bool>FloorsToExludeFunSkullCave,double ChanceToSpawn = 1f,double FarmSpawnChance=1f,double QuarrySpawnChance=1f,double SkullCaveSpawnChance=1f,double ChanceToDrop = 1f, double SpawnChanceLuckFactor = 0f, double SpawnAmountLuckFactor = 0f, double DropChanceLuckFactor = 0f, double DropAmountLuckFactor = 0f) : base(I, MinDropAmount, MaxDropAmount, MinNumberOfNodes, MaxNumberOfNodes,ChanceToSpawn,ChanceToDrop,SpawnChanceLuckFactor,SpawnAmountLuckFactor,DropChanceLuckFactor,DropAmountLuckFactor)
+        public OreResourceInformation(ItemReference ItemReference, bool SpawnsOnFarm, bool SpawnsInQuarry, bool SpawnInRegularMine, bool SpawnInSkullCave, List<IntRange> FloorsToSpawnOn, List<IntRange> FloorsToExclude, int MinDropAmount, int MaxDropAmount, int MinNumberOfNodes, int MaxNumberOfNodes, IntRange FarmSpawnAmount, IntRange QuarrySpawnAmount, IntRange SkullCaveSpawnAmount, List<IntRange> FloorsToSpawnOnSkullCave, List<IntRange> FloorsToExludeSkullCave, double ChanceToSpawn = 1f, double FarmSpawnChance = 1f, double QuarrySpawnChance = 1f, double SkullCaveSpawnChance = 1f, double ChanceToDrop = 1f, double SpawnChanceLuckFactor = 0f, double SpawnAmountLuckFactor = 0f, double DropChanceLuckFactor = 0f, double DropAmountLuckFactor = 0f) : base(ItemReference, MinDropAmount, MaxDropAmount, MinNumberOfNodes, MaxNumberOfNodes, ChanceToSpawn, ChanceToDrop, SpawnChanceLuckFactor, SpawnAmountLuckFactor, DropChanceLuckFactor, DropAmountLuckFactor)
         {
             // Deals with setting where this ore can spawn.
             this.spawnsOnFarm = SpawnsOnFarm;
@@ -191,26 +164,113 @@ namespace Revitalize.Framework.Objects.InformationFiles
             this.spawnInSkullCavern = SpawnInSkullCave;
 
             //Deals with inclusion/Exclusion for floors in regular mine.
-            this.floorsToSpawnOn = this.spawnInRegularMine?FloorsToSpawnOn:new List<IntRange>();
+            this.floorsToSpawnOn = this.spawnInRegularMine ? FloorsToSpawnOn : new List<IntRange>();
             this.floorsToExclude = FloorsToExclude != null ? FloorsToExclude : new List<IntRange>();
 
             ///Checks if a given resource shouds spawn and if not sets defaulted 0 values.
-            this.farmSpawnAmount = this.spawnsOnFarm? FarmSpawnAmount:new IntRange(0,0);
-            this.quarrySpawnAmount =this.spawnsInQuarry? QuarrySpawnAmount:new IntRange(0,0);
+            this.farmSpawnAmount = this.spawnsOnFarm ? FarmSpawnAmount : new IntRange(0, 0);
+            this.quarrySpawnAmount = this.spawnsInQuarry ? QuarrySpawnAmount : new IntRange(0, 0);
             this.skullCaveSpawnAmount = this.spawnInSkullCavern ? SkullCaveSpawnAmount : new IntRange(0, 0);
-            this.farmSpawnChance = this.spawnsOnFarm?FarmSpawnChance:0f;
-            this.quarrySpawnChance = this.spawnsInQuarry?QuarrySpawnChance:0f;
+            this.farmSpawnChance = this.spawnsOnFarm ? FarmSpawnChance : 0f;
+            this.quarrySpawnChance = this.spawnsInQuarry ? QuarrySpawnChance : 0f;
             this.skullCaveSpawnChance = this.spawnInSkullCavern ? SkullCaveSpawnChance : 0f;
 
             //Deals with inclusion/Exclusion for floors in skull cave.
-            this.floorsToExcludeSkullCave = FloorsToExludeSkullCave!=null? FloorsToExludeSkullCave: new List<IntRange>();
-            this.floorsToSpawnOnSkullCave = FloorsToSpawnOnSkullCave!=null? FloorsToSpawnOnSkullCave: new List<IntRange>();
-
-            this.canSpawnOnThisFloorSkullCave = this.spawnInSkullCavern ? CanSpawnOnGivenFloorSkullCave : null;
-            this.excludeSpawnOnThisFloorSkullCave = FloorsToExludeFunSkullCave;
-            this.excludeSpawnOnThisFloor = FloorsToExludeFun;
+            this.floorsToExcludeSkullCave = FloorsToExludeSkullCave != null ? FloorsToExludeSkullCave : new List<IntRange>();
+            this.floorsToSpawnOnSkullCave = FloorsToSpawnOnSkullCave != null ? FloorsToSpawnOnSkullCave : new List<IntRange>();
 
 
+        }
+
+        public override ResourceInformation readResourceInformation(BinaryReader reader)
+        {
+            base.readResourceInformation(reader);
+
+            int floorsToSpawnOnCount = reader.ReadInt32();
+            for (int i = 0; i < floorsToSpawnOnCount; i++)
+            {
+                IntRange range = new IntRange();
+                range.readIntRange(reader);
+                this.floorsToSpawnOn.Add(range);
+            }
+
+
+            int floorsToExcludeCount = reader.ReadInt32();
+            for (int i = 0; i < floorsToExcludeCount; i++)
+            {
+                IntRange range = new IntRange();
+                range.readIntRange(reader);
+                this.floorsToExclude.Add(range);
+            }
+
+
+            int floorsToSpawnOnSkullCaveCount = reader.ReadInt32();
+            for (int i = 0; i < floorsToSpawnOnSkullCaveCount; i++)
+            {
+                IntRange range = new IntRange();
+                range.readIntRange(reader);
+                this.floorsToSpawnOnSkullCave.Add(range);
+            }
+
+
+            int floorsToExcludeSkullCaveCount = reader.ReadInt32();
+            for (int i = 0; i < floorsToExcludeSkullCaveCount; i++)
+            {
+                IntRange range = new IntRange();
+                range.readIntRange(reader);
+                this.floorsToExcludeSkullCave.Add(range);
+            }
+
+            this.spawnsOnFarm = reader.ReadBoolean();
+            this.spawnsInQuarry = reader.ReadBoolean();
+            this.spawnInRegularMine = reader.ReadBoolean();
+            this.spawnInSkullCavern = reader.ReadBoolean();
+
+            this.farmSpawnAmount.readIntRange(reader);
+            this.quarrySpawnAmount.readIntRange(reader);
+            this.skullCaveSpawnAmount.readIntRange(reader);
+
+            this.farmSpawnChance = reader.ReadDouble();
+            this.quarrySpawnChance = reader.ReadDouble();
+            this.skullCaveSpawnChance = reader.ReadDouble();
+
+            return this;
+        }
+
+        public override void writeResourceInformation(BinaryWriter writer)
+        {
+            base.writeResourceInformation(writer);
+
+
+            writer.Write(this.floorsToSpawnOn.Count);
+            foreach (IntRange range in this.floorsToSpawnOn)
+                range.writeIntRange(writer);
+
+            writer.Write(this.floorsToExclude.Count);
+            foreach (IntRange range in this.floorsToExclude)
+                range.writeIntRange(writer);
+
+            writer.Write(this.floorsToSpawnOnSkullCave.Count);
+            foreach (IntRange range in this.floorsToSpawnOnSkullCave)
+                range.writeIntRange(writer);
+
+            writer.Write(this.floorsToExcludeSkullCave.Count);
+            foreach (IntRange range in this.floorsToExcludeSkullCave)
+                range.writeIntRange(writer);
+
+
+            writer.Write(this.spawnsOnFarm);
+            writer.Write(this.spawnsInQuarry);
+            writer.Write(this.spawnInRegularMine);
+            writer.Write(this.spawnInSkullCavern);
+
+            this.farmSpawnAmount.writeIntRange(writer);
+            this.quarrySpawnAmount.writeIntRange(writer);
+            this.skullCaveSpawnAmount.writeIntRange(writer);
+
+            writer.Write(this.farmSpawnChance);
+            writer.Write(this.quarrySpawnChance);
+            writer.Write(this.skullCaveSpawnChance);
         }
 
         /// <summary>
@@ -243,13 +303,9 @@ namespace Revitalize.Framework.Objects.InformationFiles
             if (this.spawnsOnFarm == false || this.farmSpawnAmount == null) return 0;
             int amount = this.farmSpawnAmount.getRandomInclusive();
             if (limitToMax)
-            {
-                amount = (int)Math.Min(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)), this.maxNumberOfNodesSpawned);
-            }
+                amount = (int)Math.Min(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value), this.maxNumberOfNodesSpawned);
             else
-            {
-                amount = (int)(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
-            }
+                amount = (int)(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value));
             return amount;
         }
         /// <summary>
@@ -262,13 +318,9 @@ namespace Revitalize.Framework.Objects.InformationFiles
             if (this.spawnsInQuarry == false || this.quarrySpawnAmount == null) return 0;
             int amount = this.quarrySpawnAmount.getRandomInclusive();
             if (limitToMax)
-            {
-                amount = (int)Math.Min(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)), this.maxNumberOfNodesSpawned);
-            }
+                amount = (int)Math.Min(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value), this.maxNumberOfNodesSpawned);
             else
-            {
-                amount = (int)(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
-            }
+                amount = (int)(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value));
             return amount;
         }
         /// <summary>
@@ -281,13 +333,9 @@ namespace Revitalize.Framework.Objects.InformationFiles
             if (this.spawnInSkullCavern == false || this.skullCaveSpawnAmount == null) return 0;
             int amount = this.quarrySpawnAmount.getRandomInclusive();
             if (limitToMax)
-            {
-                amount = (int)Math.Min(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)), this.maxNumberOfNodesSpawned);
-            }
+                amount = (int)Math.Min(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value), this.maxNumberOfNodesSpawned);
             else
-            {
-                amount = (int)(amount + (this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
-            }
+                amount = (int)(amount + this.spawnAmountLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value));
             return amount;
         }
 
@@ -299,7 +347,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         public virtual bool shouldSpawnInQuarry()
         {
             double chance = Game1.random.NextDouble();
-            chance = (chance - (this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
+            chance = chance - this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value);
             if (this.quarrySpawnChance >= chance) return true;
             else return false;
         }
@@ -311,7 +359,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         public virtual bool shouldSpawnOnFarm()
         {
             double chance = Game1.random.NextDouble();
-            chance = (chance - (this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
+            chance = chance - this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value);
             if (this.farmSpawnChance >= chance) return true;
             else return false;
         }
@@ -323,7 +371,7 @@ namespace Revitalize.Framework.Objects.InformationFiles
         public virtual bool shouldSpawnInSkullCave()
         {
             double chance = Game1.random.NextDouble();
-            chance = (chance - (this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value)));
+            chance = chance - this.spawnChanceLuckFactor * (Game1.player.LuckLevel + Game1.player.addedLuckLevel.Value);
             if (this.skullCaveSpawnChance >= chance) return true;
             else return false;
         }
@@ -335,22 +383,14 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <returns></returns>
         public override bool canSpawnAtLocation()
         {
-            if (this.spawnsOnFarm && Game1.player.currentLocation is StardewValley.Farm)
-            {
+            if (this.spawnsOnFarm && Game1.player.currentLocation is Farm)
                 return true;
-            }
             if (this.spawnsInQuarry && Game1.player.currentLocation is StardewValley.Locations.Mountain)
-            {
                 return true;
-            }
-            if (this.spawnInRegularMine && LocationUtilities.IsPlayerInMine())
-            {
+            if (this.spawnInRegularMine && GameLocationUtilities.IsPlayerInMine())
                 return true;
-            }
-            if (this.spawnInSkullCavern && LocationUtilities.IsPlayerInSkullCave())
-            {
+            if (this.spawnInSkullCavern && GameLocationUtilities.IsPlayerInSkullCave())
                 return true;
-            }
             return false;
         }
 
@@ -361,22 +401,14 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <returns></returns>
         public override bool canSpawnAtLocation(GameLocation Location)
         {
-            if(this.spawnsOnFarm && Location is StardewValley.Farm)
-            {
+            if (this.spawnsOnFarm && Location is Farm)
                 return true;
-            }
-            if(this.spawnsInQuarry && Location is StardewValley.Locations.Mountain)
-            {
+            if (this.spawnsInQuarry && Location is StardewValley.Locations.Mountain)
                 return true;
-            }
-            if(this.spawnInRegularMine && LocationUtilities.IsPlayerInMine())
-            {
+            if (this.spawnInRegularMine && GameLocationUtilities.IsPlayerInMine())
                 return true;
-            }
-            if(this.spawnInSkullCavern && LocationUtilities.IsPlayerInSkullCave())
-            {
+            if (this.spawnInSkullCavern && GameLocationUtilities.IsPlayerInSkullCave())
                 return true;
-            }
             return false;
         }
 
@@ -386,40 +418,17 @@ namespace Revitalize.Framework.Objects.InformationFiles
         /// <returns></returns>
         public bool canSpawnOnCurrentMineLevel()
         {
-            int level=LocationUtilities.CurrentMineLevel();
-            foreach(IntRange range in this.floorsToSpawnOn)
-            {
-                bool compareFun = false;
-                if (this.canSpawnOnThisFloor == null)
-                {
-                    compareFun = false;
-                }
-                else
-                {
-                    compareFun = this.canSpawnOnThisFloor(level);
-                }
-
-                if (range.ContainsInclusive(level) || compareFun==true)
-                {
-                    foreach(IntRange exclude in this.floorsToExclude)
-                    {
-                        bool excludeFun = false;
-                        if (this.excludeSpawnOnThisFloor == null)
-                        {
-                            excludeFun = false;
-                        }
-                        else
-                        {
-                            excludeFun = this.excludeSpawnOnThisFloor(level);
-                        }
-                        //Make this include exlude fun for regular mine. See above in this function.
-                        if (exclude.ContainsInclusive(level) || excludeFun) return false;
-                    }
-                    return true;
-                }
-            }
+            int level = GameLocationUtilities.CurrentMineLevel();
+            if (level == -1) return false;
+            bool compareFun = this.canSpawnOnThisFloor(level);
             return false;
         }
-        
+
+
+        public virtual bool canSpawnOnThisFloor(int Level)
+        {
+            return false;
+        }
+
     }
 }

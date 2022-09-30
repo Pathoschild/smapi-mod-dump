@@ -110,19 +110,19 @@ namespace SkillfulClothes.Types
 
         public static Shop GetShop(this ShopMenu shopMenu)
         {
-            if (Game1.currentLocation.name.Value.ToLower() == "jojamart") // todo
+            if (Game1.currentLocation.Name.ToLower() == "jojamart") // todo
             {
                 return Shop.JojaMarket;
             }
 
-            if (Game1.currentLocation.name.Value.ToLower() == "adventureguild")
+            if (Game1.currentLocation.Name.ToLower() == "adventureguild")
             {
                 return Shop.AdventureGuild;
             }
 
             // resolve shop by NPC
             
-            if (Enum.TryParse(shopMenu.portraitPerson?.name ?? "", true, out Shop shop))
+            if (Enum.TryParse(shopMenu.portraitPerson?.Name ?? "", true, out Shop shop))
             {
                 return shop;
             }

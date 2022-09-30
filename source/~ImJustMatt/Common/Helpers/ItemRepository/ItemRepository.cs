@@ -57,7 +57,7 @@ using StardewValley.Tools;
 
 /// <summary>Provides methods for searching and constructing items.</summary>
 /// <remarks>This is copied from the SMAPI source code and should be kept in sync with it.</remarks>
-internal class ItemRepository
+internal sealed class ItemRepository
 {
     /*********
     ** Fields
@@ -99,7 +99,7 @@ internal class ItemRepository
             // get tools
             if (ShouldGet(ItemType.Tool))
             {
-                for (var q = Tool.stone; q <= Tool.iridium; q++)
+                for (var q = Tool.stone; q <= Tool.iridium; ++q)
                 {
                     var quality = q;
 

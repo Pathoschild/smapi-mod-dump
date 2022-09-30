@@ -17,6 +17,9 @@ using StardewValley;
 
 namespace Omegasis.HappyBirthday.Framework.Gifts
 {
+    /// <summary>
+    /// Information regarding gifts given to the player.
+    /// </summary>
     public class GiftInformation
     {
 
@@ -62,7 +65,7 @@ namespace Omegasis.HappyBirthday.Framework.Gifts
 
         public Item getOne()
         {
-            Item I = GiftIDS.RegisteredGifts[this.objectID].getOne();
+            Item I = HappyBirthdayModCore.Instance.giftManager.registeredGifts[this.objectID].getOne();
             if (this.minAmount != this.maxAmount)
             {
                 I.Stack = StardewValley.Game1.random.Next(this.minAmount, this.maxAmount);
@@ -74,5 +77,14 @@ namespace Omegasis.HappyBirthday.Framework.Gifts
             return I;
         }
 
+        public virtual bool Equals(GiftInformation other)
+        {
+            return
+                other.minRequiredHearts.Equals(this.minRequiredHearts) &&
+                other.maxRequiredHearts.Equals(this.maxRequiredHearts) &&
+                other.objectID.Equals(this.objectID) &&
+                other.minAmount.Equals(this.minAmount) &&
+                other.maxAmount.Equals(this.maxAmount);
+        }
     }
 }

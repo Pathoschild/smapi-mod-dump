@@ -14,11 +14,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Omegasis.StardustCore.Utilities;
 using StardewValley;
 using StardewValley.Characters;
-using StardustCore.Utilities;
 
-namespace StardustCore.Events
+namespace Omegasis.StardustCore.Events
 {
     public static class EventHelperExtensions
     {
@@ -35,7 +35,7 @@ namespace StardustCore.Events
             b.Append(Amount);
             b.Append(" ");
             b.Append(MakeActiveObject);
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
         public static void ViewportLerp(this EventHelper EventHelper, Point NewPosition, double Speed)
@@ -47,7 +47,7 @@ namespace StardustCore.Events
             b.Append(NewPosition.Y);
             b.Append(" ");
             b.Append(Speed);
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
 
         }
 
@@ -60,7 +60,7 @@ namespace StardustCore.Events
             b.Append(NewTilePosition.Y*Game1.tileSize);
             b.Append(" ");
             b.Append(Speed);
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
 
         }
 
@@ -81,7 +81,7 @@ namespace StardustCore.Events
             b.Append(Frames);
             b.Append(" ");
             b.Append(Concurrent);
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
 
         }
 
@@ -110,7 +110,7 @@ namespace StardustCore.Events
             b.Append(Color.B);
             b.Append(" ");
             b.Append(Flipped);
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
         public static void FlipJunimoActor(this EventHelper EventHelper, string ActorName,bool Flipped = false)
@@ -120,20 +120,20 @@ namespace StardustCore.Events
             b.Append(ActorName);
             b.Append(" ");
             b.Append(Flipped);
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
         public static void SetUpJunimoAdvanceMove(this EventHelper EventHelper)
         {
             StringBuilder b = new StringBuilder();
             b.Append("Omegasis.EventFramework.SetUpAdvanceJunimoMovement");
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
         public static void FinishJunimoAdvanceMove(this EventHelper EventHelper)
         {
             StringBuilder b = new StringBuilder();
             b.Append("Omegasis.EventFramework.FinishAdvanceJunimoMovement");
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
         public static void AddJunimoAdvanceMove(this EventHelper EventHelper, JunimoAdvanceMoveData JunimoData)
@@ -160,7 +160,7 @@ namespace StardustCore.Events
                 }
             }
 
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace StardustCore.Events
                 }
             }
 
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
 
@@ -202,7 +202,7 @@ namespace StardustCore.Events
             b.Append("Omegasis.EventFramework.RemoveJunimoAdvanceMove ");
             b.Append(ActorName);
             b.Append(" ");
-            EventHelper.add(b);
+            EventHelper.addEventData(b);
         }
 
     }

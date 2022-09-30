@@ -6,11 +6,9 @@ mods:
    XPMultiplier
 
 latest commit:
-   commit 2251e574f3e1978e16284cb22061c821e5a084fa
+   commit eebc70a5b032cd62a73fa1803ec3bc96fccf9de8
    Author: nofilenamed <nofilenamed@gmail.com>
-   Date:   Sat Jun 19 14:23:39 2021 +0200
+   Date:   Sat Sep 24 14:19:33 2022 +0200
    
-       Update manifest.json
-       
-       Added updatekey
+       Removed .cspoj from .gitignore
    

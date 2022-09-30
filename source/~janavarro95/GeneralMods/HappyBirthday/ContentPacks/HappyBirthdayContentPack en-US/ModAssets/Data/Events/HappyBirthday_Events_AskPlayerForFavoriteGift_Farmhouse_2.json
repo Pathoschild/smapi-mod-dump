@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+  "stardewEventID": 19955,
+  "eventStringId": "HappyBirthday_Events_AskPlayerForFavoriteGift_Farmhouse_2",
+  "version": 2,
+  "EventData": "playful/6 5/farmer 9 5 0 $Spouse 6 5 0/faceDirection farmer 3 True/globalFadeToClear 0.007/move farmer -2 0 3 False/faceDirection $Spouse 1 True/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage $Spouse SpouseAskPlayerForFavoriteGift_$Spouse_0/Omegasis.HappyBirthday.Events.ShowFavoriteGiftSelectionMenu/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage $Spouse SpouseAskPlayerForFavoriteGift_$Spouse_1/globalFade 0.01/viewport -100 -100 true/end",
+  "EventPreconditionData": "StardustCore.Events.Preconditions.TimeSpecific.TimeOfDayPrecondition 600 2600/Omegasis.HappyBirthday.Framework.EventPreconditions.GameLocationIsHome/Omegasis.HappyBirthday.Framework.EventPreconditions.HasChosenFavoriteGiftPrecondition False/Omegasis.HappyBirthday.Framework.EventPreconditions.FarmHouseLevelPrecondition 1/Omegasis.HappyBirthday.Framework.EventPreconditions.IsMarried/"
+}

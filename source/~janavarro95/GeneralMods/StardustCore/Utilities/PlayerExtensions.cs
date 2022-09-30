@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 
-namespace StardustCore.Utilities
+namespace Omegasis.StardustCore.Utilities
 {
     public static class PlayerExtensions
     {

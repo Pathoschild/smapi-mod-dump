@@ -140,28 +140,48 @@ internal static class StableSort {
 			return instructions;
 		}
 
+		var oldMethod =
+			typeof(Array).GetMethods(
+			"Sort",
+			BindingFlags.Static | BindingFlags.Public
+			)?.
+			SingleOrDefaultF(method => {
+					var parameters = method.GetParameters();
+					return
+						parameters.Length == 3 &&
+						parameters[0].ParameterType.IsArray && (parameters[0].ParameterType.GetElementType()?.IsGenericParameter ?? false) &&
+						parameters[1].ParameterType == typeof(int) &&
+						parameters[2].ParameterType == typeof(int);
+				}
+			)?.
+			MakeGenericMethod(SpriteBatchItemType);
+
+		if (oldMethod is null) {
+			Debug.Error("Could not apply SpriteBatcher stable sorting patch: could not find Array.Sort");
+			return instructions;
+		}
+
 		var codeInstructions = instructions as CodeInstruction[] ?? instructions.ToArray();
 
 		bool applied = false;
 
 		IEnumerable<CodeInstruction> ApplyPatch() {
+			short callOpCode = OpCodes.Call.Value;
+
 			foreach (var instruction in codeInstructions) {
 				if (
-					instruction.opcode.Value != OpCodes.Call.Value ||
-					instruction.operand is not MethodInfo callee ||
-					!callee.IsGenericMethod ||
-					callee.GetGenericArguments().FirstOrDefaultF() != SpriteBatchItemType ||
-					callee.DeclaringType != typeof(Array) ||
-					callee.Name != "Sort" ||
-					callee.GetParameters().Length != 3
+					instruction.opcode.Value == callOpCode &&
+					ReferenceEquals(instruction.operand, oldMethod)
 				) {
-					yield return instruction;
-					continue;
+					yield return new(OpCodes.Ldarg_1);
+					yield return new(instruction) {
+						operand = newMethod
+					};
+					applied = true;
 				}
-
-				yield return new(OpCodes.Ldarg_1);
-				yield return new(OpCodes.Call, newMethod);
-				applied = true;
+				else {
+					yield return instruction;
+				}
 			}
 		}
 

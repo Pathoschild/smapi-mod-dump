@@ -53,13 +53,13 @@ internal static class FileCache {
 
 	[DoesNotReturn]
 	[MethodImpl(MethodImplOptions.NoInlining)]
-	private static void ThrowCorruptCacheFileException() =>
-		throw new IOException("Cache File is corrupted");
+	private static void ThrowCorruptCacheFileException(string path, string message) =>
+		throw new IOException($"Cache File '{path}' is corrupted: {message}");
 
 	[DoesNotReturn]
 	[MethodImpl(MethodImplOptions.NoInlining)]
-	private static T ThrowCorruptCacheFileException<T>(string path) =>
-		throw new IOException($"Cache File '{path}' is corrupted");
+	private static T ThrowCorruptCacheFileException<T>(string path, string message) =>
+		throw new IOException($"Cache File '{path}' is corrupted: {message}");
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
 	private struct CacheHeader {
@@ -82,12 +82,12 @@ internal static class FileCache {
 		public CacheHeader() { }
 
 		[MethodImpl(Runtime.MethodImpl.Inline)]
-		internal static CacheHeader Read(BinaryReader reader) {
+		internal static CacheHeader Read(string path, BinaryReader reader) {
 			CacheHeader newHeader = new();
 			var newHeaderSpan = MemoryMarshal.CreateSpan(ref newHeader, 1).Cast<CacheHeader, byte>();
 			var readBytes = reader.Read(newHeaderSpan);
 			if (readBytes != newHeaderSpan.Length) {
-				ThrowCorruptCacheFileException();
+				ThrowCorruptCacheFileException(path, "header size mismatch");
 			}
 
 			return newHeader;
@@ -218,7 +218,7 @@ internal static class FileCache {
 
 					Scaler scaler;
 					using (var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))) {
-						var header = CacheHeader.Read(reader);
+						var header = CacheHeader.Read(path, reader);
 						header.Validate(path);
 
 						scale = header.Scale;
@@ -231,15 +231,29 @@ internal static class FileCache {
 						gradient = header.Gradient;
 						var uncompressedDataLength = header.UncompressedDataLength;
 						var dataLength = header.DataLength;
+
+						if (uncompressedDataLength != format.SizeBytes(size)) {
+							return ThrowCorruptCacheFileException<bool>(path, "size mismatch");
+						}
+
 						var dataHash = header.DataHash;
 
 						var rawData = reader.ReadBytes((int)dataLength);
 
 						if (rawData.Hash() != dataHash) {
-							return ThrowCorruptCacheFileException<bool>(path);
+							return ThrowCorruptCacheFileException<bool>(path, "hash mismatch");
 						}
 
-						data = rawData.Decompress((int)uncompressedDataLength, header.Algorithm);
+						try {
+							data = rawData.Decompress((int)uncompressedDataLength, header.Algorithm);
+						}
+						catch (Exception) {
+							return ThrowCorruptCacheFileException<bool>(path, "decompression error");
+						}
+
+						if (data.Length != uncompressedDataLength) {
+							return ThrowCorruptCacheFileException<bool>(path, "decompressed size mismatch");
+						}
 					}
 
 					if (Config.FileCache.Profile) {

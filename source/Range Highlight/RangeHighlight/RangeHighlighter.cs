@@ -205,7 +205,7 @@ namespace RangeHighlight {
                 }
             }
 
-            if (Game1.currentLocation is BuildableGameLocation buildableLocation) {
+            if (Game1.currentLocation is BuildableGameLocation buildableLocation && config.HighlightBuildingsOnMouseover) {
                 // check to see if the cursor is over a building
                 Building building = buildableLocation.getBuildingAt(Game1.currentCursorTile);
                 if (building != null) {

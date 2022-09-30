@@ -32,6 +32,15 @@ namespace DecidedlyShared.Utilities
             return mapQuery.First(map => map.Name.Contains(locationName));
         }
 
+        public static bool TryGetLocation(string locationName, out GameLocation? location)
+        {
+            location = null;
+
+
+
+            return false;
+        }
+
         public static List<GameLocation> GetLocations(string searchTerm)
         {
             return Game1.locations.Where(map => map.Name.Contains(searchTerm)).ToList();

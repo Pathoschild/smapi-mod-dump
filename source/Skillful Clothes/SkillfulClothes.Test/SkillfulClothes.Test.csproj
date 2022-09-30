@@ -2,16 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
-
     <ApplicationIcon />
-
     <OutputType>Library</OutputType>
+    <StartupObject />    
+    <GamePath>../../SDV</GamePath>
 
-    <StartupObject />
+    <EnableGameDebugging>false</EnableGameDebugging>
+    <EnableModDeploy>false</EnableModDeploy>
+    <EnableModZip>false</EnableModZip>
     
-    <GamePath>../../SDV</GamePath>    
+    <Platforms>AnyCPU</Platforms>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
 
   <ItemGroup>

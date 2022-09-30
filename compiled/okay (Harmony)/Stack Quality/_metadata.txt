@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13724
+IDs: furyx639.StackQuality
+update keys: Nexus:13724, GitHub:ImJustMatt/StardewMods

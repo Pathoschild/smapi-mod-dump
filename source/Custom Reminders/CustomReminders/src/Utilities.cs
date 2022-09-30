@@ -259,7 +259,7 @@ namespace Dem1se.CustomReminders.Utilities
         public static string SaveFolderName;
 
         /// <summary>The menu button of the player, required for suppressing</summary>
-        public static SButton MenuButton;
+        public static System.Collections.Generic.List<SButton> MenuButtons;
 
         public static IManifest ModManifest;
 

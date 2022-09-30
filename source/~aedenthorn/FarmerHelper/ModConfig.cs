@@ -17,6 +17,7 @@ namespace FarmerHelper
     {
         public bool EnableMod { get; set; } = true;
         public string IgnoreHarvestCrops { get; set; } = "";
+        public bool IgnoreFlowers { get; set; } = true;
         public bool LabelLatePlanting { get; set; } = true;
         public bool PreventLatePlant { get; set; } = true;
         public bool WarnAboutPlantsUnwateredBeforeSleep { get; set; } = true;

@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-    /* TN: config  (tn = translator note)*/
+    /* TN: config (tn = translator note)*/
     "config.CustomChance.name": "Индивидуальный шанс",
     "config.CustomChance.description": "Процент шанса посещения жителями вас каждые 10 минут.",
     "config.MaxVisitsPerDay.name": "Максимальное количество посещений в день",
@@ -28,80 +28,82 @@
     "config.VisitConfiguration": "Конфигурация посещения",
     "config.Debug.name": "Отладка",
     "config.Debug.Explanation": "Параметры разработчика.",
-
+    "config.WalkOnFarm.name": "Allow NPCs on farm?",
+    "config.WalkOnFarm.description": "If you go outside during a visit, the NPC will roam the farm.",
+    
     /*For translators: your in-laws = the family of your spouse.
-	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
-	 *
-	 * Feel free to use your language's equivalent! */
-     
+    * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
+    *
+    * Feel free to use your language's equivalent! */
+    
     "config.InLawComments.name": "Диалоги от родственников.",
     "config.InLawComments.description": "Если родственники вашего супруга посещают, они спросят об упомянутом супруге (и ваших детях, если таковые имеются). Это может повлиять на супругов из ванили, родственников ванили и модов, или ни на тех, ни на других..",
     "config.InLawComments.values.VanillaOnly": "Только Ванильные НПС",
     "config.InLawComments.values.VanillaAndMod": "НПС из ванили и модов",
     "config.InLawComments.values.None": "Никакие",
-	"config.ReplacerCompat.name": "Совместимость \n с заменителем",
+    "config.ReplacerCompat.name": "Совместимость \n с заменителем",
     "config.ReplacerCompat.description": "Включите это для совместимости с заменителями NPC.(например, мод Богиня Урожая, который заменяет волшебника другим НПС)",
-
+    
     //new content
-    "config.AskForConfirmation.name": "Ask for confirmation?",
-    "config.AskForConfirmation.description": "NPCs will need permission to enter (via a question dialogue).",
-    "config.RejectionDialogues.name": "Rejection dialogues",
-    "config.RejectionDialogues.description": "If rejected, NPCs will comment on it.",
-    "config.ReceiveGifts.name": "Receive gifts?",
-    "config.ReceiveGifts.description": "If enabled, visits will bring you a gift.",
-    "Visit.AllowOrNot": "{0} is at the door. Open it?",
-    "Visit.Yes": "Yes",
-    "Visit.No": "No",
-
+    "config.AskForConfirmation.name": "Запрашивать разрешение?",
+    "config.AskForConfirmation.description": "NPC потребуется разрешение на вход (через диалог вопросов).",
+    "config.RejectionDialogues.name": "Диалоги об отказе",
+    "config.RejectionDialogues.description": "Если отклонено, NPC прокомментируют это.",
+    "config.ReceiveGifts.name": "Получать подарки?",
+    "config.ReceiveGifts.description": "Если эта функция включена, гости принесут вам подарок.",
+    "Visit.AllowOrNot": "{0} хочет зайти. Впустить гостя?",
+    "Visit.Yes": "Добро пожаловать!",
+    "Visit.No": "Я притворюсь что меня здесь нет...",
+    
     /* TN: command errors */
     "error.WorldNotReady":"Вам нужно загрузить сохранение, чтобы использовать эту команду.",
     "error.InvalidValue":"Недопустимое значение.",
     "error.NotInFarmhouse":"Вы не на ферме, НПС не смогут войти.",
-
+    
     /* TN: bad schedule (when the user adds one via ContentPatcher) */
     "FromHigherThanTo":"Начальные часы больше, чем конечные часы. Исправьте и перезапустите игру.",
     "NotInSave": "NPC в данный момент не находится в режиме сохранения (вы их уже разблокировали?)",
     "CantBe2600":"Визит не может закончиться в 2600.",
     "CantBe600":"Посещение не может начинаться с 600.",
-
-	/* TN: If you don't let them enter / reject the visit */
-	//by social
-	"NPCRejected.Outgoing1": "Oops. I'll come another day.",
-	"NPCRejected.Outgoing2": "No one's home?",
-	"NPCRejected.Outgoing3": "Silence...#$b#Well, that's too bad.$1",
-	"NPCRejected.Shy1": "Maybe no one's home...",
-	"NPCRejected.Shy2": "Are you there?#$b#...Maybe i came at a wrong time?",
-	"NPCRejected.Shy3": "...$2",
-	//by manners
-	"NPCRejected.Polite1": "I must have come at a wrong time.",
-	"NPCRejected.Polite2": "...#$b#Hopefully @ is doing fine.",
-	"NPCRejected.Polite3": "...It seems no one's home at this time.",
-	"NPCRejected.Neutral1": "knock knock...#$b#Well, i'll have to leave.",
-	"NPCRejected.Neutral2": "Hmm?#$b#I swear i thought @ was home.",
-	"NPCRejected.Neutral3": "...",
-	"NPCRejected.Rude1": "And @ isn't here...?#$b#Damn it. Just my luck.$2",
-	"NPCRejected.Rude2": "Hey, anyone?",
-	"NPCRejected.Rude3": "Oh, come on. No one's home..? $2",
-	
-	/* If allowed to enter and "ask for confirmation" is on */
-	//by social
-	"NPCThanking.Outgoing1": "Thanks. The weather outside was really rough.",
-	"NPCThanking.Outgoing2": "Your house looks different from the last time i came.#$b#Did you change something?",
-	"NPCThanking.Outgoing3": "%farm farm looks like a lot of work.",
-	"NPCThanking.Shy1": "Hope i'm not intruding.",
-	"NPCThanking.Shy2": "Thanks for letting me in.",
-	"NPCThanking.Shy3": "...",
-	//by manners
-	"NPCThanking.Polite1": "The walk here was really nice.",
-	"NPCThanking.Polite2": "Sorry for coming uninvited.",
-	"NPCThanking.Polite3": "Thanks, @.",
-	"NPCThanking.Neutral1": "So, do you like surprise visits?",
-	"NPCThanking.Neutral2": "Your farm outside looked good.",
-	"NPCThanking.Neutral3": "I like this place.",
-	"NPCThanking.Rude1": "Yeah, that's more like it.",
-	"NPCThanking.Rude2": "Finally...my feet were starting to hurt.",
-	"NPCThanking.Rude3": "It took so long to walk here.",
-
+    
+    /* TN: If you don't let them enter / reject the visit */
+    //by social
+    "NPCRejected.Outgoing1": "Ой, извини. Я приду в другой раз.",
+    "NPCRejected.Outgoing2": "Никого нет дома?",
+    "NPCRejected.Outgoing3": "Тишина...#$b#Что ж, очень жаль.$1",
+    "NPCRejected.Shy1": "Может, никого нет дома...",
+    "NPCRejected.Shy2": "Ты там?#$b#...Может быть, я не вовремя?",
+    "NPCRejected.Shy3": "АЛО ГАРАЖ!?$1#$b#Ну ладно...$2",
+    //by manners
+    "NPCRejected.Polite1": "Должно быть, я здесь не в то время.",
+    "NPCRejected.Polite2": "...#$b#Надеюсь, у @ все в порядке.",
+    "NPCRejected.Polite3": "...Похоже, в это время никого нет дома.",
+    "NPCRejected.Neutral1": "Тук-тук...#$b#Что ж, мне придется уйти.",
+    "NPCRejected.Neutral2": "Хм?#$b#Клянусь, мне казалось, что @ дома.",
+    "NPCRejected.Neutral3": "...",
+    "NPCRejected.Rude1": "И здесь нет...?#$b#И где же @ носит...$2",
+    "NPCRejected.Rude2": "...$2",
+    "NPCRejected.Rude3": "Да ладно тебе. Никого нет дома..?$2",
+    
+    /* If allowed to enter and "ask for confirmation" is on */
+    //by social
+    "NPCThanking.Outgoing1": "Спасибо. Погода на улице суровая.$1",
+    "NPCThanking.Outgoing2": "Твой дом выглядит иначе, чем в прошлый мой визит.#$b#Тут что-то изменилось?",
+    "NPCThanking.Outgoing3": "%farm ферма выглядит так, будто у тебя там много работы.",
+    "NPCThanking.Shy1": "Надеюсь, я не помешаю.",
+    "NPCThanking.Shy2": "Спасибо, что разрешаешь войти.",
+    "NPCThanking.Shy3": "...#$b#Привет.$1",
+    //by manners
+    "NPCThanking.Polite1": "Прогулка сюда была приятной.",
+    "NPCThanking.Polite2": "Извините, что пришел без приглашения.",
+    "NPCThanking.Polite3": "Спасибо, @.$1",
+    "NPCThanking.Neutral1": "Итак, тебе нравятся неожиданные визиты?$1",
+    "NPCThanking.Neutral2": "Твоя ферма снаружи выглядела хорошо.",
+    "NPCThanking.Neutral3": "Мне нравится это место.",
+    "NPCThanking.Rude1": "Да, это больше похоже на правду.",
+    "NPCThanking.Rude2": "Наконец-то... мои ноги начали болеть.",
+    "NPCThanking.Rude3": "Мне потребовалось так много времени, чтобы дойти сюда.",
+    
     /* TN: introduction */
     /* основано на социальной тревожности*/
     "NPCIntroduce.Outgoing1": "@? Я вхожу!",
@@ -120,7 +122,7 @@
     "NPCIntroduce.Rude1": "@, я снаружи.",
     "NPCIntroduce.Rude2": "Приветствую..? @..?",
     "NPCIntroduce.Rude3": "Ау...@, Ты здесь?",
-
+    
     /* TN: walk into house */
     /* основано на социальной тревожности*/
     "NPCWalkIn.Outgoing1": "Привет, {0}!",
@@ -139,7 +141,7 @@
     "NPCWalkIn.Rude1": "Хеей, {0}.",
     "NPCWalkIn.Rude2": "Я собираюсь войти.",
     "NPCWalkIn.Rude3": "Приветики.",
-
+    
     /* TN: greeting player */
     /* основано на социальной тревожности*/
     "NPCGreet.Outgoing1": "Эй. Как дела? Мне тут пришло в голову, может пока прохожу мимо, нанесу тебе визит?$1",
@@ -158,33 +160,33 @@
     "NPCGreet.Rude1": "Эй, @! Я не дам тебе успеть соскучиться по мне.$1",
     "NPCGreet.Rude2": "Приветик, @.",
     "NPCGreet.Rude3": "Привет-привет, я тут прохожу мимо и вижу, что ты внутри... и вот уже не прохожу мимо.$1",
-
-    /* TN: if player wants to receive gifts. 
-	 * Same lines as the ones in NPCGreet- just moved to their own translation key. (and some new ones)
-	 * I moved them on my own, but translators can make any changes they deem necessary. */
-	"NPCGift.Normal1": "У меня для тебя подарок.[{0}]", //outgoing1, outgoing2
+    
+    /* TN: if player wants to receive gifts.
+    * Same lines as the ones in NPCGreet- just moved to their own translation key. (and some new ones)
+    * I moved them on my own, but translators can make any changes they deem necessary. */
+    "NPCGift.Normal1": "У меня для тебя подарок.[{0}]", //outgoing1, outgoing2
     "NPCGift.Normal2": "Вот, у меня для тебя подарок.[{0}]", //outgoing3
     "NPCGift.Normal3": "Захотелось тебя немного побаловать, это подарок![{0}]", //shy3
     "NPCGift.Normal4": "Вот, когда смотрю на это, вспоминаю о тебе. Может тебе пригодится?[{0}]", //neutral1
-    "NPCGift.Normal5": "Hey, this seemed like a 'you' item. So i got it for you. [{0}]", //original
+    "NPCGift.Normal5": "Эй, мне показалось, что с этой вещицой вы на \"ты\", так что я достал её для тебя. [{0}]", //original
     "NPCGift.Kind1": "И у меня для тебя кое-что есть. [{0}]", //polite1
     "NPCGift.Kind2": "Вот, захотелось подарить тебе что-то в помощь в хозяйстве. [{0}]", //polite2
     "NPCGift.Kind3": "Вот, принёс тебя кое-что. Надеюсь пригодится. [{0}]", //polite3
     "NPCGift.Kind4": "Когда смотрю на это, сразу ты вспоминаешься.[{0}]", //neutral2
-    "NPCGift.Kind5": "This seemed like something you'd like.[{0}]", //original
-    "NPCGift.Lax1": "Hey, take this.[{0}]", //original
+    "NPCGift.Kind5": "Мне показалось, что это то, что тебе бы понравилось.[{0}]", //original
+    "NPCGift.Lax1": "Кстати, возьми это.[{0}]", //original
     "NPCGift.Lax2": "Слушай, у меня для тебя кое-что есть.[{0}]", //rude1
     "NPCGift.Lax3": "У меня для тебя кое-что есть, возьми это.[{0}]", //rude3
-    "NPCGift.Lax4": "Here. I had some spares around. [{0}]", //original
+    "NPCGift.Lax4": "Вот, держи. У меня было немного и думаю тебе тоже не помешает [{0}]", //original
     "NPCGift.Lax5": "Захотелось купить тебе кое-что по дороге сюда.[{0}]", //rude2
-
-	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
-	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion! 
-     
-     * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
-
-	 //generic lines (for any spouse)
-	"InLaw.Generic.1": "{0} сейчас дома?",
+    
+    /* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
+    * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion! 
+    
+    * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
+    
+    //generic lines (for any spouse)
+    "InLaw.Generic.1": "{0} сейчас дома?",
     "InLaw.Generic.2": "Я скучаю по {0}, мы уже давно не виделись...",
     "InLaw.Generic.3": "Как ваши дела с {0}? Вы ладите?",
     "InLaw.Generic.4": "Слушай, а {0} здесь?",
@@ -244,13 +246,13 @@
     "ask.singlechild.3": "Мне так хочется увидеться с {0}...",
     "ask.singlechild.4": "@, у вас с {0} всё хорошо?",
     "ask.singlechild.5": "Меня так давно здесь не было, держу пари что {0} сильно подрос с тех пор.",
-
+    
     "ask.multiplechild.1": "@, а где же {0}?#$b#И {1} там же?",
     "ask.multiplechild.2": "Мне так хочется увидеться с {0} и {1}.",
     "ask.multiplechild.3": "Кстати, что насчёт {1} и {0}? Ребятки здесь?",
     "ask.multiplechild.4": "Приятно видеть как {1} и {0} ладят между собой.",
     "ask.multiplechild.5": "{0} и {1} сейчас дома? Я могу с ними увидеться?",
-
+    
     /* TN: talk about furniture*/
     /* основано на социальной тревожности*/
     "NPCFurniture.Outgoing1":"{0} очень хорошо смотрится в твоём интерьере.",
@@ -269,27 +271,28 @@
     "NPCFurniture.Rude1": "Мне нравится {0}.",
     "NPCFurniture.Rude2": "С каких это пор у тебя есть {0}?$1",
     "NPCFurniture.Rude3": "Откуда у тебя {0}?",
-
+    
     /* TN: leaving */
     /* основано на социальной тревожности*/
     "NPCRetiring.Outgoing1": "Это было весело, но я должен идти. Увидимся позже!",
-    "NPCRetiring.Outgoing2": "It's been a while now, so i'll get going.",
-    "NPCRetiring.Outgoing3": "See you later, @.",
+    "NPCRetiring.Outgoing2": "Прошло уже много времени, так что я пойду.",
+    "NPCRetiring.Outgoing3": "Увидимся позже, @.",
     "NPCRetiring.Shy1": "Уже поздно...Мне пора. Было приятно повидаться с тобой.",
-    "NPCRetiring.Shy2": "I have some things to do, but i had fun.#$b#Thank you, @.$1",
-    "NPCRetiring.Shy3": "Sorry, @. I'll have to leave now.#$b#Thank you for your time.",
+    "NPCRetiring.Shy2": "У меня есть кое-какие дела, но мне было весело.#$b#Спасибо, @.$1",
+    "NPCRetiring.Shy3": "Извини, @. Мне придется уйти.#$b#Спасибо, что мы провели время.$1",
     /* основываясь на манерах*/
     "NPCRetiring.Polite1": "@, мне придется уйти... мне нужно кое-что сделать.#$b#Приятно было повидаться!$1",
-    "NPCRetiring.Polite2": "I've been here a while...i'll take my leave.#$b#See you next time, @.",
-    "NPCRetiring.Polite3": "@, it was fun to see you.#$b#Hope your day goes well.",
+    "NPCRetiring.Polite2": "Я здесь уже некоторое время...я ухожу.#$b#Увидимся в следующий раз, @.",
+    "NPCRetiring.Polite3": "@, было приятно повидаться с тобой.#$b#Надеюсь, твой день пройдет хорошо.",
     "NPCRetiring.Neutral1": "Эй, посмотри на время... мне давно нужно было идти.#$b#Увидимся в другой раз!$1",
-    "NPCRetiring.Neutral2": "I'll leave now, before it gets darker outside.#$b#See you, @.",
-    "NPCRetiring.Neutral3": "You must have things to do, so i'll take my leave.#$b#I had fun.$1",
+    "NPCRetiring.Neutral2": "Я пожалуй пойду, пока на улице не стемнело.#$b#Увидимся, @.",
+    "NPCRetiring.Neutral3": "У тебя, должно быть, есть дела, так что я откланяюсь.#$b#Было весело.$1",
     "NPCRetiring.Rude1": "Я пойду... Я, должно быть, отвлекаю тебя.#$b#Увидимся позже.",
-    "NPCRetiring.Rude2": "I've been here too long... i'll be going.#$b#See you, @.",
-    "NPCRetiring.Rude3": "It's pretty late already. I'll see you another day.",
-
+    "NPCRetiring.Rude2": "Я тут уже слишком долго... я пойду.#$b#Увидимся, @.",
+    "NPCRetiring.Rude3": "Уже довольно поздно. Увидимся в другой раз.",
+    
     /* TN: gone while outside */
     "NPCGoneWhileOutside": "Пока вы работали снаружи, ваши гости {0} покинули вас.",
-    "NPCGone_Cellar": "Пока вы делали свои подвальные дела, ваш неподвальный друг {0} покинул вас."
+    "NPCGone_Cellar": "Пока вы делали свои подвальные дела, ваш неподвальный друг {0} покинул вас.",
+    "NPCGone_Farm": "While you were in the farm, {0} took their leave."
 }

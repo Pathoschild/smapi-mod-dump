@@ -16,7 +16,7 @@ using System.Linq;
 
 using Microsoft.Xna.Framework;
 
-using Harmony;
+using HarmonyLib;
 
 using StardewModdingAPI;
 using StardewValley;
@@ -48,7 +48,7 @@ namespace GoToBed.Framework {
                                           $"and SpouseGoToBedTime to {SpouseBedTimeVerifier.DefaultGoToBedTime}",
                                           "in config.json to disable it if you experience problems"));
 
-            HarmonyInstance harmony   = HarmonyInstance.Create(uniqueID);
+            Harmony harmony = new Harmony(uniqueID);
 
             // If get up time was not modified there's no need to patch NPC.marriageDuties .
             if (spouseBedTime.GetUpTime > SpouseBedTimeVerifier.DefaultGetUpTime) {

@@ -13,6 +13,7 @@ using SpriteMaster.Caching;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Hashing;
+using SpriteMaster.Mitigations.PyTK;
 using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
@@ -20,6 +21,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +31,8 @@ namespace SpriteMaster.Metadata;
 
 // TODO : This needs a Finalize thread dispatcher, and needs to remove cached data for it from the ResidentCache.
 internal sealed class Texture2DMeta : IDisposable {
+	private const string CursorsPath = @"LooseSprites\Cursors";
+
 	private static readonly ConcurrentDictionary<ulong, SpriteDictionary> SpriteDictionaries = new();
 	private readonly SpriteDictionary SpriteInstanceTable;
 
@@ -43,6 +47,8 @@ internal sealed class Texture2DMeta : IDisposable {
 	internal enum TextureFlag : uint {
 		None				= 0U,
 		Populated		= 1U << 0,
+		IsLargeFont = 1U << 1,
+		IsSmallFont = 1U << 2,
 	}
 
 	// Class and not a struct because we want to avoid a plethora of dictionary accesses to mutate them.
@@ -55,9 +61,19 @@ internal sealed class Texture2DMeta : IDisposable {
 	private readonly ConcurrentDictionary<Bounds, SpriteData> SpriteDataMap = new();
 	private static readonly ConcurrentDictionary<string, ConcurrentDictionary<Bounds, SpriteData>> GlobalSpriteDataMaps = new();
 
-	internal readonly record struct InFlightData(long Revision, Task ResampleTask);
+	internal readonly record struct InFlightData(long Revision, ulong SpriteHash, WeakReference<Task> ResampleTask);
 	internal readonly ConcurrentDictionary<Bounds, InFlightData> InFlightTasks = new();
 	internal TextureFlag Flags = TextureFlag.None; // TODO use properties for this
+
+	internal enum SpriteType {
+		Unknown = 0,
+		Sprite,
+		SmallText,
+		LargeText,
+		Portrait,
+	}
+
+	internal SpriteType Type = SpriteType.Sprite;
 
 	internal IReadOnlyDictionary<ulong, ManagedSpriteInstance> GetSpriteInstanceTable() => SpriteInstanceTable;
 
@@ -195,24 +211,80 @@ internal sealed class Texture2DMeta : IDisposable {
 
 	/// <summary>The current (static) ID, incremented every time a new <see cref="Texture2DMeta"/> is created.</summary>
 	private static ulong CurrentId = 0U;
-	/// <summary>Whenever a new <see cref="Texture2DMeta"/> is created, <see cref="CurrentId"/> is incremented and this is set to that.</summary>
-	private readonly ulong MetaId = Interlocked.Increment(ref CurrentId);
+
 
 	internal readonly SharedLock Lock = new(LockRecursionPolicy.SupportsRecursion);
+	internal readonly WeakReference<XTexture2D> Owner;
+	// TODO : this presently is not thread-safe.
+	internal readonly WeakReference<byte[]> CachedDataInternal = new(null!);
+	internal readonly WeakReference<byte[]> CachedRawDataInternal = new(null!);
+
+	/// <summary>Whenever a new <see cref="Texture2DMeta"/> is created, <see cref="CurrentId"/> is incremented and this is set to that.</summary>
+	private readonly ulong MetaId = Interlocked.Increment(ref CurrentId);
+	internal long Revision { get; private set; } = 0;
+	internal InterlockedULong LastAccessFrame { get; private set; } = DrawState.CurrentFrame;
+	internal InterlockedULong Hash { get; private set; } = 0;
+	internal readonly Vector2I Size;
+	internal readonly uint ExpectedByteSizeRaw;
+	internal readonly uint ExpectedByteSize;
+	internal ReportOnceErrors ReportedErrors = 0;
+	internal readonly SurfaceFormat Format;
 
 	internal volatile bool TracePrinted = false;
-
 	internal bool? Validation = null;
 	internal bool IsSystemRenderTarget = false;
 	internal readonly bool IsCompressed = false;
-	internal ReportOnceErrors ReportedErrors = 0;
-	internal long Revision { get; private set; } = 0;
-	internal readonly SurfaceFormat Format;
-	internal readonly Vector2I Size;
-	internal readonly WeakReference<XTexture2D> Owner;
 
-	internal InterlockedULong LastAccessFrame { get; private set; } = DrawState.CurrentFrame;
-	internal InterlockedULong Hash { get; private set; } = 0;
+	private volatile Task DecodingTask = Task.CompletedTask;
+	internal ulong DecodingTaskRevision = 0ul;
+
+	internal readonly bool IsManagedTexture;
+
+	internal bool IsCursors { get; private set; }
+
+	private bool CheckIsCursors(XTexture2D texture) {
+		if (texture.NormalizedName() == CursorsPath) {
+			return true;
+		}
+
+		if (IsManagedTexture) {
+			var underlyingTexture = texture.GetUnderlyingTexture(out bool isManaged);
+			if (!isManaged) {
+				underlyingTexture = null;
+			}
+
+			return underlyingTexture?.NormalizedName() == CursorsPath;
+		}
+		else {
+			return false;
+		}
+	}
+
+	private string? PreviousName;
+
+	internal bool CheckNameChange(XTexture2D texture) {
+		while (true) {
+			Contract.Assert(Owner.TryGetTarget(out var target) && target == texture);
+
+			var previousName = PreviousName;
+			var currentName = texture.Name;
+			if (previousName == currentName) {
+				if (IsManagedTexture && texture.GetUnderlyingTexture(out _) is { } innerTexture && innerTexture != texture) {
+					texture = innerTexture;
+					continue;
+				}
+
+				return false;
+			}
+
+			if (!IsCursors) {
+				IsCursors = CheckIsCursors(texture);
+			}
+
+			PreviousName = currentName;
+			return true;
+		}
+	}
 
 	internal void IncrementRevision() => ++Revision;
 
@@ -225,11 +297,19 @@ internal sealed class Texture2DMeta : IDisposable {
 		if (!texture.Anonymous()) {
 			SpriteDataMap = GlobalSpriteDataMaps.GetOrAdd(texture.NormalizedName(), _ => new());
 		}
-	}
 
-	// TODO : this presently is not thread-safe.
-	private readonly WeakReference<byte[]> CachedDataInternal = new(null!);
-	private readonly WeakReference<byte[]> CachedRawDataInternal = new(null!);
+		ExpectedByteSizeRaw = (uint)texture.Format.SizeBytes(Size);
+		if (Format.IsBlock() || Format.IsCompressed()) {
+			ExpectedByteSize = (uint)SurfaceFormat.Color.SizeBytes(Size);
+		}
+		else {
+			ExpectedByteSize = ExpectedByteSizeRaw;
+		}
+
+		IsManagedTexture = Mitigations.PyTK.Textures.IsPyTKTexture(texture);
+
+		IsCursors = CheckIsCursors(texture);
+	}
 
 	internal bool HasCachedData {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -238,9 +318,9 @@ internal sealed class Texture2DMeta : IDisposable {
 				return false;
 			}
 
-			using (Lock.Read) {
+			using (Lock.ReadWrite) {
 				bool isPopulated = Flags.HasFlag(TextureFlag.Populated);
-				return isPopulated && CachedDataInternal.TryGetTarget(out _);
+				return isPopulated && CachedData is not null;
 			}
 		}
 	}
@@ -311,7 +391,7 @@ internal sealed class Texture2DMeta : IDisposable {
 
 			try {
 				// TODO : lock isn't granular enough.
-				if (Config.ResidentCache.AlwaysFlush) {
+				if (Config.ResidentCache.Enabled && Config.ResidentCache.AlwaysFlush) {
 					forcePurge = true;
 				}
 				else if (!bounds.HasValue && data.Length == refSize) {
@@ -410,6 +490,18 @@ internal sealed class Texture2DMeta : IDisposable {
 		}
 	}
 
+	private void InvalidateCachedRawData() {
+		using (Lock.Write) {
+			CachedRawDataInternal.SetTarget(null!);
+			CachedDataInternal.SetTarget(null!);
+			if (Config.ResidentCache.Enabled) {
+				ResidentCache.RemoveFast(MetaId);
+			}
+
+			Flags &= ~TextureFlag.Populated;
+		}
+	}
+
 	internal byte[]? CachedRawData {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		get {
@@ -437,23 +529,26 @@ internal sealed class Texture2DMeta : IDisposable {
 				//	return;
 				//}
 				if (value is null) {
-					using (Lock.Write) {
-						CachedRawDataInternal.SetTarget(null!);
-						CachedDataInternal.SetTarget(null!);
-						ResidentCache.RemoveFast(MetaId);
-						Flags &= ~TextureFlag.Populated;
-					}
+					InvalidateCachedRawData();
 				}
 				else {
+					if (ExpectedByteSizeRaw != (uint)value.Length) {
+						Console.Error.WriteLine($"Cached Raw Data length mismatch: {ExpectedByteSizeRaw} != {value.Length}");
+						Debug.Break();
+						Debug.Error(Environment.StackTrace);
+						InvalidateCachedRawData();
+						return;
+					}
+
 					using (Lock.Write) {
-						ResidentCache.Set(MetaId, value);
+						ResidentCache.SetOrTouchFast(MetaId, value);
 						CachedRawDataInternal.SetTarget(value);
 						if (!IsCompressed) {
 							CachedDataInternal.SetTarget(value);
 						}
 						else {
 							CachedDataInternal.SetTarget(null!);
-							DecodeTask.Dispatch(this);
+							DispatchDecodeTask(force: true);
 						}
 						Flags |= TextureFlag.Populated;
 					}
@@ -468,17 +563,59 @@ internal sealed class Texture2DMeta : IDisposable {
 	internal byte[]? CachedData {
 		[MethodImpl(Runtime.MethodImpl.Inline)]
 		get {
-			using (Lock.Read) {
+			using (Lock.ReadWrite) {
 				if (!Flags.HasFlag(TextureFlag.Populated)) {
 					return null;
 				}
 
-				if (!CachedDataInternal.TryGetTarget(out var target) && !IsCompressed) {
+				if (!CachedDataInternal.TryGetTarget(out var target)) {
 					// Attempt to pull the value out of the cache if the cache is a compressed cache.
-					target = ResidentCache.Get(MetaId);
+					var rawData = ResidentCache.Get(MetaId);
+
+					if (rawData is not null && rawData.Length != ExpectedByteSizeRaw) {
+						Debug.Error($"Size Mismatch in CachedData ResidentCache pull: {rawData.Length} != {ExpectedByteSizeRaw}");
+						if (Config.ResidentCache.Enabled) {
+							ResidentCache.Remove(MetaId);
+						}
+
+						return null;
+					}
+
+					using (Lock.Write) {
+						if (rawData is null) {
+							InvalidateCachedRawData();
+						}
+						else {
+							CachedRawDataInternal.SetTarget(rawData);
+							if (!IsCompressed) {
+								CachedDataInternal.SetTarget(rawData);
+								target = rawData;
+							}
+							else {
+								CachedDataInternal.SetTarget(null!);
+								DispatchDecodeTask();
+							}
+						}
+					}
 				}
+
+				if (target is not null && target.Length != ExpectedByteSize) {
+					Debug.Error($"Size Mismatch in target pull: {target.Length} != {ExpectedByteSize}");
+					InvalidateCachedRawData();
+				}
+
 				return target;
 			}
+		}
+	}
+
+	private void DispatchDecodeTask(bool force = false) {
+		if (!force && !DecodingTask.IsCompleted) {
+			return;
+		}
+
+		if (CachedRawData is not null) {
+			DecodingTask = DecodeTask.Dispatch(this, Interlocked.Increment(ref DecodingTaskRevision));
 		}
 	}
 
@@ -508,6 +645,15 @@ internal sealed class Texture2DMeta : IDisposable {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void SetCachedDataUnsafe(Span<byte> data) {
+		if (ExpectedByteSize != (uint)data.Length) {
+			Console.Error.WriteLine($"Cached Data length mismatch: {ExpectedByteSize} != {data.Length}");
+			Debug.Break();
+			Debug.Error(Environment.StackTrace);
+			InvalidateCachedRawData();
+
+			return;
+		}
+
 		using (Lock.Write) {
 			CachedDataInternal.SetTarget(data.ToArray());
 		}
@@ -516,6 +662,17 @@ internal sealed class Texture2DMeta : IDisposable {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void UpdateLastAccess() {
 		LastAccessFrame = DrawState.CurrentFrame;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal void PushToCache() {
+		if (!Config.ResidentCache.Enabled) {
+			return;
+		}
+
+		if (CachedRawDataInternal.TryGetTarget(out var rawData)) {
+			ResidentCache.TrySet(MetaId, rawData);
+		}
 	}
 
 	[DoesNotReturn]
@@ -566,7 +723,10 @@ internal sealed class Texture2DMeta : IDisposable {
 	}
 
 	internal static void Cleanup(in ulong id) {
-		ResidentCache.RemoveFast(id);
+		if (Config.ResidentCache.Enabled) {
+			ResidentCache.RemoveFast(id);
+		}
+
 		if (SpriteDictionaries.Remove(id, out var instances)) {
 			foreach (var instance in instances.Values) {
 				instance.Suspend();

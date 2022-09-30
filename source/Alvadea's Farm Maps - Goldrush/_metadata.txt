@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Jaksha6472/MiningShack
+   Git: https://github.com/Jaksha6472/MiningShack.git
+
+mods:
+   Alvadea's Farm Maps - Goldrush
+
+latest commit:
+   commit e2c6f0bd5dac4069b78189c365bf5a9667594e55
+   Author: Jaksha6472 <freaky_chick@gmx.de>
+   Date:   Thu Sep 29 08:00:36 2022 +0200
+   
+       Releae Version 1.0
+   

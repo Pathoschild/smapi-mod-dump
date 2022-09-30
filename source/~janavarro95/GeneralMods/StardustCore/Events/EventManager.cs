@@ -13,9 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Omegasis.StardustCore.Compatibility.SpaceCore;
+using Omegasis.StardustCore.Events.Preconditions;
+using Omegasis.StardustCore.Events.Preconditions.NPCSpecific;
+using Omegasis.StardustCore.Events.Preconditions.PlayerSpecific;
+using Omegasis.StardustCore.Events.Preconditions.TimeSpecific;
 using StardewValley;
 
-namespace StardustCore.Events
+namespace Omegasis.StardustCore.Events
 {
     public class EventManager
     {
@@ -34,21 +39,42 @@ namespace StardustCore.Events
 
         public Dictionary<Farmer, HashSet<EventHelper>> seenEvents;
 
+        public Dictionary<string, Func<string[], EventPrecondition>> eventPreconditionParsingMethods;
+
         public EventManager()
         {
             this.events = new Dictionary<string, EventHelper>();
             this.customEventLogic = new Dictionary<string, Action<EventManager,string>>();
             this.concurrentEventActions = new Dictionary<string, ConcurrentEventInformation>();
             this.seenEvents = new Dictionary<Farmer, HashSet<EventHelper>>();
+            this.eventPreconditionParsingMethods = new Dictionary<string, Func<string[], EventPrecondition>>();
+
+            //ToDO Add a way to register event precondition parsing methods and return the preconditions back to the passed in event helpers.
 
             this.customEventLogic.Add("Omegasis.EventFramework.AddObjectToPlayersInventory", ExtraEventActions.addObjectToPlayerInventory);
-            this.customEventLogic.Add("Omegasis.EventFramework.ViewportLerp", ExtraEventActions.ViewportLerp);
             this.customEventLogic.Add("Omegasis.EventFramework.AddInJunimoActor", ExtraEventActions.AddInJumimoActorForEvent);
             this.customEventLogic.Add("Omegasis.EventFramework.FlipJunimoActor", ExtraEventActions.FlipJunimoActor);
             this.customEventLogic.Add("Omegasis.EventFramework.SetUpAdvanceJunimoMovement", ExtraEventActions.SetUpAdvanceJunimoMovement);
             this.customEventLogic.Add("Omegasis.EventFramework.FinishAdvanceJunimoMovement", ExtraEventActions.FinishAdvanceJunimoMovement);
             this.customEventLogic.Add("Omegasis.EventFramework.AddInJunimoAdvanceMove", ExtraEventActions.AddInJunimoAdvanceMove);
             this.customEventLogic.Add("Omegasis.EventFramework.RemoveJunimoAdvanceMove", ExtraEventActions.RemoveAdvanceJunimoMovement);
+
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.AddObjectToPlayersInventory", ExtraEventActions.addObjectToPlayerInventory);
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.AddInJunimoActor", ExtraEventActions.AddInJumimoActorForEvent);
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.FlipJunimoActor", ExtraEventActions.FlipJunimoActor);
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.SetUpAdvanceJunimoMovement", ExtraEventActions.SetUpAdvanceJunimoMovement);
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.FinishAdvanceJunimoMovement", ExtraEventActions.FinishAdvanceJunimoMovement);
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.AddInJunimoAdvanceMove", ExtraEventActions.AddInJunimoAdvanceMove);
+            SpaceCoreAPIUtil.RegisterCustomEventCommand("Omegasis.EventFramework.RemoveJunimoAdvanceMove", ExtraEventActions.RemoveAdvanceJunimoMovement);
+
+            this.eventPreconditionParsingMethods.Add(DatingNPCEventPrecondition.EventPreconditionId, PreconditionParsingMethods.ParseDatingNpcEventPrecondition);
+            this.eventPreconditionParsingMethods.Add(CanReadJunimoEventPrecondition.EventPreconditionId, PreconditionParsingMethods.ParseCanReadJunimoEventPrecondition);
+            this.eventPreconditionParsingMethods.Add(CommunityCenterCompletedEventPreconditon.EventPreconditionId, PreconditionParsingMethods.ParseCommunityCenterCompletedPrecondition);
+            this.eventPreconditionParsingMethods.Add(IsJojaMemberEventPrecondition.EventPreconditionId, PreconditionParsingMethods.ParseIsJojaMemeberPrecondition);
+            this.eventPreconditionParsingMethods.Add(DayOfWeekPrecondition.EventPreconditionId, PreconditionParsingMethods.ParseDayOfWeekPrecondition);
+            this.eventPreconditionParsingMethods.Add(TimeOfDayPrecondition.EventPreconditionId, PreconditionParsingMethods.ParseTimeOfDayPrecondition);
+            this.eventPreconditionParsingMethods.Add(GameLocationPrecondition.EventPreconditionId, PreconditionParsingMethods.ParseGameLocationPrecondition);
+
         }
 
         /// <summary>
@@ -57,7 +83,7 @@ namespace StardustCore.Events
         /// <param name="Event"></param>
         public void addEvent(EventHelper Event)
         {
-            this.events.Add(Event.eventName, Event);
+            this.events.Add(Event.eventStringId, Event);
         }
 
         /// <summary>
@@ -141,8 +167,6 @@ namespace StardustCore.Events
         /// <param name="EventName"></param>
         public virtual void startEventAtLocationIfPossible(string EventName)
         {
-            StardustCore.ModCore.ModMonitor.Log("Try to start event!");
-
             if (this.events.ContainsKey(EventName))
             {
                 if (this.seenEvents.ContainsKey(Game1.player)){
@@ -186,6 +210,14 @@ namespace StardustCore.Events
                         this.seenEvents.Add(Game1.player,new HashSet<EventHelper>() { this.events[EventName] });
                     }
                 }
+            }
+        }
+
+        public virtual void startEventsAtLocationIfPossible()
+        {
+            foreach(string eventKey in this.events.Keys)
+            {
+                this.startEventAtLocationIfPossible(eventKey);
             }
         }
 
