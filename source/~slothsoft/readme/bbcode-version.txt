@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-challenger
+**
+*************************************************/
+
+# It seems NexusMods ist going towards markdown: 
+# - https://feedback.nexusmods.com/posts/36/updated-bbcode
+# So until then maintain versions list by hand
+# Belongs after "Removing the Mod" and before "Translator Guide"
+
+
+
+[size=6]Versions[/size]
+
+[size=5]0.5.0[/size]
+
+[list=1]
+[*] add difficulty selection
+[*] re-balancing of challenges using this difficulty feature
+[*] basic multiplayer support (only the host can change the challenge, but all players (with this mod) contribute to it)
+[*] various bugfixes
+[*] more information can be found in the [url=https://github.com/slothsoft/stardew-challenger/milestone/10?closed=1]GitHub issue list[/url]
+[/list]
+
+[size=5]0.4.3[/size]
+
+[list=1]
+[*] first Nexus release which functions more like a play-tested proof of concept
+[*] more information can be found in the [url=https://github.com/slothsoft/stardew-challenger/issues?q=is%3Aissue+is%3Aclosed]GitHub issue list[/url]
+[/list]
+

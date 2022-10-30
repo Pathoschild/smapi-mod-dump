@@ -12,9 +12,9 @@
   "Name": "[PFM] Mining-2-Seed Processor",
   "Author": "HaulinOats",
   "Description": "Convert minerals, ore, and monster loot into seeds",
-  "Version": "1.0.0",
+  "Version": "1.0.6",
   "UniqueID": "HaulinOats.Mining2SeedProcessorPFM",
-  "UpdateKeys": ["Nexus:4970"],
+  "UpdateKeys": ["Nexus:13937"],
   "ContentPackFor": {
     "UniqueID": "DIGUS.ProducerFrameworkMod"
   }

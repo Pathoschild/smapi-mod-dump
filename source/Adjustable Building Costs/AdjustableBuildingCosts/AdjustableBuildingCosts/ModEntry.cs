@@ -19,7 +19,6 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Tools;
 
 namespace AdjustableBuildingCosts
 {
@@ -29,6 +28,11 @@ namespace AdjustableBuildingCosts
 
         /// <summary>The mod configuration from the player.</summary>
         private ModConfig Config;
+
+        private int buildingDaysLeft = 0;
+        private int upgradingDaysLeft = 0;
+
+        private bool isBuilding = false;
 
         /*********
         ** Public methods
@@ -41,6 +45,8 @@ namespace AdjustableBuildingCosts
 
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
             helper.Events.Display.MenuChanged += this.OnMenuChanged;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
 
 
@@ -108,6 +114,87 @@ namespace AdjustableBuildingCosts
 
                 ((CarpenterMenu) e.NewMenu).setNewActiveBlueprint();
             }
+        }
+
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            var buildings = Game1.getFarm().buildings;
+            for (int i = 0; i < buildings.Count; i++) {
+                if (buildings[i].daysOfConstructionLeft.Value > 0 || buildings[i].daysUntilUpgrade.Value > 0) {
+                    //Monitor.Log("Setting isBuilding to true", LogLevel.Debug);
+                    isBuilding = true;
+                    break;
+                }
+            }
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            var buildings = Game1.getFarm().buildings;
+
+            for (int i = 0; i < buildings.Count; i++) {
+                if (buildings[i].daysOfConstructionLeft.Value > 0) {
+                    /*Monitor.Log("------------- Inside construction ------------", LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].ToString(), LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].nameOfIndoors, LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].daysUntilUpgrade.ToString(), LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].daysOfConstructionLeft.ToString(), LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].buildingType.Value, LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].getNameOfNextUpgrade(), LogLevel.Debug);*/
+
+                    buildingDaysLeft = buildings[i].daysOfConstructionLeft.Value;
+
+                    if (!isBuilding) {
+                        buildingDaysLeft = Config.Buildings[buildings[i].buildingType.Value].DaysToBuild;
+                        buildings[i].daysOfConstructionLeft.Value = buildingDaysLeft;
+                        isBuilding = true;
+
+                        Monitor.Log("Setting days to construct to " + buildings[i].daysOfConstructionLeft.Value + " for " + buildings[i].buildingType.Value, LogLevel.Debug);
+                        break;
+                    }
+
+                }
+
+                if (buildings[i].daysUntilUpgrade.Value > 0) {
+                    /*Monitor.Log("------------ Inside upgrade -------------", LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].ToString(), LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].nameOfIndoors, LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].daysUntilUpgrade.ToString(), LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].daysOfConstructionLeft.ToString(), LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].buildingType.Value, LogLevel.Debug);
+                    Monitor.Log("Building -> " + buildings[i].getNameOfNextUpgrade(), LogLevel.Debug);*/
+
+                    upgradingDaysLeft = buildings[i].daysUntilUpgrade.Value;
+                    if (!isBuilding) {
+                        upgradingDaysLeft = Config.Buildings[buildings[i].getNameOfNextUpgrade()].DaysToBuild;
+                        buildings[i].daysUntilUpgrade.Value = upgradingDaysLeft;
+                        isBuilding = true;
+
+                        Monitor.Log("Setting days to upgrade to " + buildings[i].daysUntilUpgrade.Value + " for " + buildings[i].buildingType.Value, LogLevel.Debug);
+                        break;
+                    }
+                }
+
+                /*Monitor.Log("------------- General ------------", LogLevel.Debug);
+                Monitor.Log("Building -> " + buildings[i].ToString(), LogLevel.Debug);
+                Monitor.Log("Building -> " + buildings[i].nameOfIndoors, LogLevel.Debug);
+                Monitor.Log("Building -> " + buildings[i].daysUntilUpgrade.ToString(), LogLevel.Debug);
+                Monitor.Log("Building -> " + buildings[i].daysOfConstructionLeft.ToString(), LogLevel.Debug);
+                Monitor.Log("Building -> " + buildings[i].buildingType.Value, LogLevel.Debug);
+                Monitor.Log("Building -> " + buildings[i].getNameOfNextUpgrade(), LogLevel.Debug);*/
+               
+            }
+
+            if (upgradingDaysLeft <= 1 && buildingDaysLeft <= 1) {
+                isBuilding = false;
+                //Monitor.Log("Resetting daysLeft", LogLevel.Debug);
+                buildingDaysLeft = 0;
+                upgradingDaysLeft = 0;
+            }
+
+            /*Monitor.Log("isBuilding -> " + isBuilding, LogLevel.Debug);
+            Monitor.Log("upgradingDaysLeft -> " + upgradingDaysLeft, LogLevel.Debug);
+            Monitor.Log("buildingDaysLeft -> " + buildingDaysLeft, LogLevel.Debug);*/
         }
     }
 }

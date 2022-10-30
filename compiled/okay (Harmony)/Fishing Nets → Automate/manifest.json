@@ -6,5 +6,5 @@
   "UniqueID": "MindMeltMax.Fishnets.Automate",
   "EntryDll": "Fishnets - Automate.dll",
   "MinimumApiVersion": "3.15.0",
-  "UpdateKeys": [ "nexus:13819-Automate" ]
+  "UpdateKeys": [ "nexus:13819@Automate" ] // fixed locally
 }

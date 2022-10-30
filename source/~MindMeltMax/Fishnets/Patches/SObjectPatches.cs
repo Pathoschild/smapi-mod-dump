@@ -73,7 +73,7 @@ namespace Fishnets.Patches
                     if (!FishNet.IsValidPlacementLocation(location, (int)tile.X, (int)tile.Y))
                         return false;
                     __result = new FishNet(tile).placementAction(location, x, y, who);
-                    if (__result && __instance.stack <= 0)
+                    if (__result && __instance.Stack <= 0)
                         Game1.player.removeItemFromInventory(__instance);
                     return false;
                 }

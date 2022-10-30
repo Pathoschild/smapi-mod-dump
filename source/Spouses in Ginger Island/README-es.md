@@ -46,18 +46,8 @@ Este mod sólo edita rutinas en días específicos (y usa entradas de diálogo p
 
 ## Para autores
 ### Cómo usar
-Para que el mod reconozca tu contenido, necesitas agregar esto al `manifest.json` de tu mod:
-```js
-"ContentPackFor":{
-	"UniqueID": "mistyspring.spousesisland", 
-	"MinimumVersion": "3.0.0" 
-	},
-```
-...y Spouses' Island agregará tu contenido de manera automática.
+(se agregará más tarde)
 
-Puedes usar [esto](https://github.com/misty-spring/SpousesIsland/blob/main/docs/content_template.json) como plantilla del content.json. Para más información, revisa [Cómo crear un paquete de contenido](https://github.com/misty-spring/SpousesIsland/blob/main/docs/creating-content-pack-es.md).
-
-Finalmente, pon manifest.json y content.json en una carpeta- como harías con cualquier otro mod.
 
 ### Para más información
 
@@ -65,10 +55,7 @@ Finalmente, pon manifest.json y content.json en una carpeta- como harías con cu
 El [validador de json](https://smapi.io/json) te dirá si hay errores en el formato (de tu paquete de contenido). En la opción 1(JSON format), selecciona "None".
 
 ## Traducciones
-Si quieres contribuir a traducir el mod, hay algunas opciones:
-* Parchar el diálogo con ContentPatcher ([aquí hay una plantilla](https://github.com/misty-spring/SpousesIsland/blob/main/docs/translate-in-contentpatcher-example.json), y aquí el [diálogo](https://github.com/misty-spring/SpousesIsland/blob/main/docs/default_for_contentpatcher.json)).
-* Crear un .json en /i18n (una plantilla(vacía) se encuentra [aquí](https://github.com/misty-spring/SpousesIsland/blob/main/docs/i18n_template.json). Para el archivo en inglés, ve [aquí](https://github.com/misty-spring/SpousesIsland/blob/main/SpousesIsland/i18n/default.json).)
-La segunda opción te permite traducir el mod completamente; puedes subir la traducción a nexusmods, o pasármela para integrarla al mod directamente (se mantendrán creditos por el aporte).
+Si quieres contribuir a traducir el mod, puedes mandarme la traducción a través de nexus (o como Pull Request aquí). También puedes subirla a nexus como tu propio archivo.
 
 El mod actualmente está disponible en Español e Inglés. Puedes ver las traducciones hechas por usuarios en la [página del mod](https://www.nexusmods.com/stardewvalley/mods/11037).
 ## Problemas comunes

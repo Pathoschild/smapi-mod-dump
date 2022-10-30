@@ -8,6 +8,19 @@ for queries and analysis.**
 
 ([english version here](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG.md))
 
+## 1.7.0
+- Las visitas comentarán sobre tus animales y/o cultivos, además de diálogo único si es invierno (o si no tienes nada aún).
+- Se cambió explicación en traducciones/i18n
+- Se arreglaron bugs con visitas de usuario
+- Se eliminó el comando `force_visit`
+- Se agregó más información disponible en la consola, y se renombró el comando a "print"
+
+## 1.6.2
+- Se agregó traducción a Thai (por watchakorn-18k)
+
+## 1.6.1
+- Se actualizó portugués
+
 ## 1.6.0
 - Se cambió la forma en la que el mod pide traducciones (y que manda mensajes a la consola).
 - PNJs caminarán por la granja.

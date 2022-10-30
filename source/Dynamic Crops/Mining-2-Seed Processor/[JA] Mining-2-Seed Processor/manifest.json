@@ -11,10 +11,10 @@
 {
   "Name": "[JA] Mining-2-Seed Processor",
   "Author": "HaulinOats",
-  "Version": "1.0.0",
+  "Version": "1.0.6",
   "Description": "Convert minerals, ore, and monster loot into seeds",
   "UniqueID": "HaulinOats.Mining2SeedProcessorJA",
-  "UpdateKeys": ["Nexus:1720"],
+  "UpdateKeys": ["Nexus:13937"],
   "ContentPackFor": {
     "UniqueID": "spacechase0.JsonAssets"
   }

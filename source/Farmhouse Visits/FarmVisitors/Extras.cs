@@ -61,27 +61,38 @@ namespace FarmVisitors
         }
         internal static bool IsScheduleValid(KeyValuePair<string, ScheduleData> pair)
         {
-            if(pair.Value.From is 600 || pair.Value.From is 0)
+            var patch = pair.Value;
+            try
             {
-                ModEntry.Log(ModEntry.TL.Get("CantBe600"), LogLevel.Error);
+                if (patch.From is 600 || patch.From is 0)
+                {
+                    ModEntry.Log(ModEntry.TL.Get("CantBe600"), LogLevel.Error);
+                    return false;
+                }
+                if (patch.To is 2600)
+                {
+                    ModEntry.Log(ModEntry.TL.Get("CantBe2600"), LogLevel.Error);
+                    return false;
+                }
+
+                var inSave = ModEntry.NameAndLevel.Keys.Contains(pair.Key);
+                if (!inSave)
+                {
+                    ModEntry.Log(ModEntry.TL.Get("NotInSave"), LogLevel.Error);
+                    return false;
+                }
+                if (patch.From > patch.To && patch.To is not 0)
+                {
+                    ModEntry.Log(ModEntry.TL.Get("FromHigherThanTo"), LogLevel.Error);
+                    return false;
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                ModEntry.Log($"Error when checking schedule: {ex}", LogLevel.Error);
                 return false;
             }
-            if(pair.Value.To is 2600)
-            {
-                ModEntry.Log(ModEntry.TL.Get("CantBe2600"), LogLevel.Error);
-                return false;
-            }
-            if(!ModEntry.NameAndLevel.Keys.Contains(pair.Key))
-            {
-                ModEntry.Log(ModEntry.TL.Get("NotInSave"), LogLevel.Error);
-                return false;
-            }
-            if(pair.Value.From > pair.Value.To && pair.Value.To is not 0)
-            {
-                ModEntry.Log(ModEntry.TL.Get("FromHigherThanTo"), LogLevel.Error);
-                return false;
-            }
-            return true;
         }
 
         /* in the future, see if using these

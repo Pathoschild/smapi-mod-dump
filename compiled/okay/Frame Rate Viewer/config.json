@@ -1,0 +1,12 @@
+{
+  "enable": true,
+  "textPos": "5, 30",
+  "textColor": {
+    "B": 48,
+    "G": 48,
+    "R": 255,
+    "A": 255
+  },
+  "textSize": 0.6,
+  "drawShadow": true
+}

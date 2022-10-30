@@ -10,95 +10,90 @@
 
 using System;
 using System.Collections.Generic;
-using GenericModConfigMenu;
 using Microsoft.Xna.Framework.Graphics;
+using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Enums;
 using StardewValley;
 using StardewValley.Characters;
 using SpousesIsland.Framework;
+using Microsoft.Xna.Framework;
+using System.Linq;
+using HarmonyLib;
+using JsonAssets;
 
 namespace SpousesIsland
 {
-    class ModConfig
-    {
-        public int CustomChance { get; set; } = 10;
-        public bool ScheduleRandom { get; set; } = false;
-        public bool CustomRoom { get; set; } = false;
-        public string Childbedcolor { get; set; } = "1";
-        public string ChildbedType { get; set; } = "mod";
-        public bool NPCDevan { get; set; } = false;
-        public bool Allow_Children { get; set; } = true;
-        public bool Allow_Abigail { get; set; } = true;
-        public bool Allow_Alex { get; set; } = true;
-        public bool Allow_Elliott { get; set; } = true;
-        public bool Allow_Emily { get; set; } = true;
-        public bool Allow_Haley { get; set; } = true;
-        public bool Allow_Harvey { get; set; } = true;
-        public bool Allow_Krobus { get; set; } = true;
-        public bool Allow_Leah { get; set; } = true;
-        public bool Allow_Maru { get; set; } = true;
-        public bool Allow_Penny { get; set; } = true;
-        public bool Allow_Sam { get; set; } = true;
-        public bool Allow_Sebastian { get; set; } = true;
-        public bool Allow_Shane { get; set; } = true;
-        public bool Allow_Claire { get; set; } = true;
-        public bool Allow_Lance { get; set; } = true;
-        public bool Allow_Magnus { get; set; } = true;
-        public bool Allow_Olivia { get; set; } = true;
-        public bool Allow_Sophia { get; set; } = true;
-        public bool Allow_Victor { get; set; } = true;
-        //debug
-        public bool Verbose { get; set; } = false;
-        public bool Debug { get; set; } = false;
-        public bool CheckDaily { get; set; } = false;
-    }
     public class ModEntry : Mod
     {
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
-            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
             helper.Events.GameLoop.ReturnedToTitle += this.TitleReturn;
 
-            this.Config = this.Helper.ReadConfig<ModConfig>();
-            ModMonitor = this.Monitor;
-            ModHelper = this.Helper;
+            helper.Events.Multiplayer.PeerContextReceived += PeerContextReceived;
+            helper.Events.Specialized.LoadStageChanged += LoadStageChanged;
 
-            //??
-            int RandomizedInt = this.RandomizedInt;
+            this.Config = this.Helper.ReadConfig<ModConfig>();
+
+            Mon = this.Monitor;
+            Help = this.Helper;
+            TL = this.Helper.Translation;
+            IsDebug = Config.Debug;
+
             //commands
             if (Config.Debug is true)
             {
-                helper.ConsoleCommands.Add("sgi_help", helper.Translation.Get("CLI.help"), this.SGI_Help);
-                helper.ConsoleCommands.Add("sgi_chance", helper.Translation.Get("CLI.chance"), this.SGI_Chance);
-                helper.ConsoleCommands.Add("sgi_reset", helper.Translation.Get("CLI.reset"), this.SGI_Reset);
-                helper.ConsoleCommands.Add("sgi_list", helper.Translation.Get("CLI.list"), this.SGI_List);
-                helper.ConsoleCommands.Add("sgi_about", helper.Translation.Get("CLI.about"), this.SGI_About);
+                helper.ConsoleCommands.Add("islandchance", helper.Translation.Get("CLI.chance"), Debugging.Chance);
             }
+
+            this.Monitor.Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.tryToReceiveActiveObject(Farmer who)\".");
+            var harmony = new Harmony(this.ModManifest.UniqueID);
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.tryToReceiveActiveObject)),
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.tryToReceiveTicket))
+                );
         }
-        /* Private
-         * Can only be accessed by this mod.
-         * Contents: Events called by Entry, player config, static Random.
-         */
+
+        //these add and/or depend on config
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            HasSVE = Commands.HasMod("FlashShifter.StardewValleyExpandedCP", this.Helper);
-            HasC2N = Commands.HasMod("Loe2run.ChildToNPC", this.Helper);
-            HasExGIM = Commands.HasMod("mistyspring.extraGImaps", this.Helper);
-            HasSeasonal = Commands.HasMod("Poltergeister.SeasonalCuteCharacters", this.Helper);
+            ClearValues();
 
-            if (Config.Verbose == true)
-            {
-                this.Monitor.Log($"\n   HasSVE = {HasSVE}\n   HasC2N = {HasC2N}\n   HasExGIM = {HasExGIM}\n   HasSeasonal = {HasSeasonal}");
-            }
+            //check for compatibility, log result
+            HasSVE = Information.HasMod("FlashShifter.StardewValleyExpandedCP");
+            HasC2N = Information.HasMod("Loe2run.ChildToNPC");
+            HasExGIM = Information.HasMod("mistyspring.extraGImaps");
+            notfurniture = Config.UseFurnitureBed == false;
 
+            this.Monitor.Log($"\n   HasSVE = {HasSVE}\n   HasC2N = {HasC2N}\n   HasExGIM = {HasExGIM}");
+
+            //choose random
             RandomizedInt = Random.Next(1, 101);
+            IslandToday = Config.CustomChance >= RandomizedInt;
 
-            ClearValues(this);
+            /* get all content packs installed - deprecated
+            GetContentPacks(); */
+
+            // get CP's api and register token
+            var api = this.Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
+            api.RegisterToken(this.ModManifest, "CanVisitIsland", () =>
+            {
+                // is island day
+                if (IslandToday)
+                    return new string[] { "true" };
+
+                else
+                    return new string[] { "false" };
+            });
+
+            InfoChildren = ChildrenData.GetInformation(Config.ChildSchedules);
+
+            jsonAssets = Helper.ModRegistry.GetApi<IApi>("spacechase0.JsonAssets");
 
             // get Generic Mod Config Menu's API (if it's installed)
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
@@ -129,6 +124,8 @@ namespace SpousesIsland
                     getValue: () => this.Config.CustomRoom,
                     setValue: value => this.Config.CustomRoom = value
                 );
+
+                //devan
                 configMenu.AddBoolOption(
                     mod: this.ModManifest,
                     name: () => this.Helper.Translation.Get("config.Devan_Nosit.name"),
@@ -136,6 +133,15 @@ namespace SpousesIsland
                     getValue: () => this.Config.NPCDevan,
                     setValue: value => this.Config.NPCDevan = value
                 );
+                configMenu.AddBoolOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("config.SeasonalDevan.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.SeasonalDevan.description"),
+                    getValue: () => this.Config.SeasonalDevan,
+                    setValue: value => this.Config.SeasonalDevan = value
+                );
+
+                //random place
                 configMenu.AddBoolOption(
                     mod: this.ModManifest,
                     name: () => this.Helper.Translation.Get("config.ScheduleRandom.name"),
@@ -150,6 +156,7 @@ namespace SpousesIsland
                     text: () => this.Helper.Translation.Get("config.advancedConfig.name"),
                     tooltip: () => this.Helper.Translation.Get("config.advancedConfig.description")
                 );
+
                 if (HasC2N is true)
                 {
                     configMenu.AddPageLink(
@@ -170,15 +177,14 @@ namespace SpousesIsland
                         getValue: () => this.Config.Allow_Children,
                         setValue: value => this.Config.Allow_Children = value
                     );
-                    configMenu.AddTextOption(
+                    configMenu.AddBoolOption(
                         mod: this.ModManifest,
-                        name: () => this.Helper.Translation.Get("config.Childbedtype.name"),
-                        tooltip: () => this.Helper.Translation.Get("config.Childbedtype.description"),
-                        getValue: () => this.Config.ChildbedType,
-                        setValue: value => this.Config.ChildbedType = value,
-                        allowedValues: new string[] { "sdv", "mod" }
-                        );
-                    if (Config.ChildbedType is "mod")
+                        name: () => this.Helper.Translation.Get("config.UseFurnitureBed.name"),
+                        tooltip: () => this.Helper.Translation.Get("config.UseFurnitureBed.description"),
+                        getValue: () => this.Config.UseFurnitureBed,
+                        setValue: value => this.Config.UseFurnitureBed = value 
+                    );
+                    if (Config.UseFurnitureBed == false) //if it's not bed furniture: lets you decide the "mod bed" color.
                     {
                         configMenu.AddTextOption(
                         mod: this.ModManifest,
@@ -190,13 +196,21 @@ namespace SpousesIsland
                     );
                         configMenu.AddImage(
                         mod: this.ModManifest,
-                        texture: KbcSamples,
+                        texture: Integrated.KbcSamples,
                         texturePixelArea: null,
                         scale: 1
                     );
                     }
+                    configMenu.AddBoolOption(
+                    mod: this.ModManifest,
+                    name: () => this.Helper.Translation.Get("config.UseModSchedule.name"),
+                    tooltip: () => this.Helper.Translation.Get("config.UseModSchedule.description"),
+                    getValue: () => this.Config.UseModSchedule,
+                    setValue: value => this.Config.UseModSchedule = value
+                );
                 }
-                //adv. config
+                
+                //adv. config page
                 configMenu.AddPage(
                     mod: this.ModManifest,
                     pageId: "advancedConfig",
@@ -205,8 +219,9 @@ namespace SpousesIsland
                 configMenu.AddSectionTitle(
                     mod: this.ModManifest,
                     text: Titles.SpouseT,
-                    tooltip: SpouseD
+                    tooltip: Integrated.SpouseD
                 );
+                //all spouse bools below
                 configMenu.AddBoolOption(
                     mod: this.ModManifest,
                     name: () => "Abigail",
@@ -350,6 +365,7 @@ namespace SpousesIsland
                     text: Titles.Debug,
                     tooltip: null
                 );
+                //debug options
                 configMenu.AddBoolOption(
                     mod: this.ModManifest,
                     name: () => this.Helper.Translation.Get("config.DebugComm.name"),
@@ -364,57 +380,20 @@ namespace SpousesIsland
                     getValue: () => this.Config.Verbose,
                     setValue: value => this.Config.Verbose = value
                 );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.CheckDaily.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.CheckDaily.description"),
-                    getValue: () => this.Config.CheckDaily,
-                    setValue: value => this.Config.CheckDaily = value
-                );
             }
-
-            ContentPackData data = new ContentPackData();
-            //this.Helper.Data.WriteJsonFile("ContentTemplate.json", data);
-            foreach (IContentPack contentPack in this.Helper.ContentPacks.GetOwned())
-            {
-                this.Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}", LogLevel.Debug);
-                if (!contentPack.HasFile("content.json"))
-                {
-                    // show 'required file missing' error
-                    this.Monitor.Log(Helper.Translation.Get($"FW.contentpack.error"), LogLevel.Warn);
-                }
-                ContentPackObject obj = contentPack.ReadJsonFile<ContentPackObject>("content.json");
-                foreach (var cpd in obj.data)
-                {
-                    if (SGIValues.CheckSpouseName(cpd.Spousename))
-                    {
-                        this.Monitor.Log($"{contentPack.Manifest.Name} is trying to add a schedule for {cpd.Spousename}. To avoid any conflicts, please untick '{cpd.Spousename}' from Advanced config.", LogLevel.Warn);
-                    }
-                    //error logs
-                    if (Commands.ParseContentPack(cpd, this.Monitor))
-                    {
-                        this.Monitor.Log(string.Format(Helper.Translation.Get($"FW.contentpack.oneOrMoreErrors"), $"{contentPack.Manifest.Name}"), LogLevel.Error);
-                    }
-                    else
-                    {
-                        CustomSchedule.Add(cpd.Spousename, cpd);
-                        this.Monitor.Log($"Added {cpd.Spousename} schedule", LogLevel.Debug);
-                    }
-                }
-            }
-
         }
+
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            /*Format:
-             * ("Word", if partial OK (e.g Word1), if subfolder OK (e.g Word/Sub/file)
-             * 
-             * NPCDevan is outside bc their stuff doesnt all load otherwise
+            /* Format:
+             * 1. Word
+             * 2. if partial OK (e.g Word1)
+             * 3. if subfolder OK (e.g Word/Sub/file)
              */
             if (e.Name.StartsWith("Maps/", false, true))
             {
-                AssetRequest.Maps(e);
-                AssetRequest.IslandMaps(this, e, Config);
+                Integrated.Maps(e);
+                Integrated.IslandMaps(e, Config);
             }
             
             if (Config.NPCDevan == true)
@@ -423,7 +402,7 @@ namespace SpousesIsland
 
                 if (e.Name.IsEquivalentTo("Portraits/Devan"))
                 {
-                    if(HasSeasonal is true) //maybe change isworldready by checking season string?
+                    if(Config.SeasonalDevan == true)
                     {
                         e.LoadFromModFile<Texture2D>($"assets/Devan/Portrait_{Game1.currentSeason}.png", AssetLoadPriority.Medium);
                     }
@@ -446,7 +425,7 @@ namespace SpousesIsland
                 {
                     if (e.NameWithoutLocale.IsEquivalentTo("Characters/Devan"))
                     {
-                        if(!Context.IsWorldReady || HasSeasonal is false)
+                        if(Config.SeasonalDevan == false)
                         {
                             e.LoadFromModFile<Texture2D>("assets/Devan/Character.png", AssetLoadPriority.Medium);
                         }
@@ -457,21 +436,18 @@ namespace SpousesIsland
                     };
                     if (e.Name.IsEquivalentTo("Characters/schedules/Devan"))
                     {
-                        if (Children is not null)
+                        var IsLeahMarried = MarriedAndAllowed.Contains("Leah");
+                        var IsElliottMarried = MarriedAndAllowed.Contains("Elliott");
+                        
+                        if (Children is not null && IslandToday)
                         {
-                            if (Config.CustomChance >= RandomizedInt)
-                            {
-                                e.LoadFromModFile<Dictionary<string, string>>("assets/Devan/Schedule_Babysit.json", AssetLoadPriority.Medium);
-                            }
-                            else
-                            {
-                                e.LoadFromModFile<Dictionary<string, string>>("assets/Devan/Schedule_Normal.json", AssetLoadPriority.Medium);
-                            }
+                            e.LoadFromModFile<Dictionary<string, string>>("assets/Devan/Schedule_Babysit.json", AssetLoadPriority.Medium);
                         }
                         else
                         {
                             e.LoadFromModFile<Dictionary<string, string>>("assets/Devan/Schedule_Normal.json", AssetLoadPriority.Medium);
                         }
+                        
                         if (CCC == true)
                         {
                             e.Edit(asset =>
@@ -480,7 +456,8 @@ namespace SpousesIsland
                                 data["Wed"] = "640 Saloon 39 7 2/650 Saloon 35 8 2/700 Saloon 14 17 2 Devan_broom/810 Saloon 13 22 2 Devan_broom/920 Saloon 32 19 2 Devan_broom/1020 Saloon 42 19 2 Devan_broom/1100 Saloon 33 8 2 Devan_broom/1200 Saloon 24 19 Devan_broom/1300 CommunityCenter 26 17 0 \"Characters\\Dialogue\\Devan:CommunityCenter1\"/1600 CommunityCenter 16 20 0/1630 CommunityCenter 11 27 2 Devan_sit \"Characters\\Dialogue\\Devan:CommunityCenter2\"/1700 Town 26 21 2/a2140 Saloon 31 19 1/2150 Saloon 31 8 2/2200 Saloon 39 7 0/2210 Saloon 44 5 3 devan_sleep";
                             });
                         }
-                        if (IsLeahMarried is true && IsElliottMarried is false)
+
+                        if (IsLeahMarried == true && IsElliottMarried == false)
                         {
                             e.Edit(asset =>
                             {
@@ -488,7 +465,7 @@ namespace SpousesIsland
                                 data["Fri"] = "640 Saloon 39 7 2/650 Saloon 35 8 2/700 Saloon 14 17 2 Devan_broom/810 Saloon 13 22 2 Devan_broom/920 Saloon 32 19 2 Devan_broom/1020 Saloon 42 19 2 Devan_broom/1100 Saloon 33 8 2 Devan_broom/1200 Saloon 24 19 Devan_broom/1300 Woods 8 9 0 \"Characters\\Dialogue\\Devan:statue\"/1600 ElliottHouse 5 8 1/1800 ElliottHouse 8 4 Devan_sit/a2140 Saloon 31 19 1/2150 Saloon 31 8 2/2200 39 7 0/2210 Saloon 44 5 3 devan_sleep";
                             });
                         }
-                        else if (IsLeahMarried is false && IsElliottMarried is true)
+                        else if (IsLeahMarried == false && IsElliottMarried == true)
                         {
                             e.Edit(asset =>
                             {
@@ -496,7 +473,7 @@ namespace SpousesIsland
                                 data["Fri"] = "640 Saloon 39 7 2/650 Saloon 35 8 2/700 Saloon 14 17 2 Devan_broom/810 Saloon 13 22 2 Devan_broom/920 Saloon 32 19 2 Devan_broom/1020 Saloon 42 19 2 Devan_broom/1100 Saloon 33 8 2 Devan_broom/1200 Saloon 24 19 Devan_broom/1300 LeahHouse 6 7 0 \"Characters\\Dialogue\\Devan:leahHouse\"/1500 LeahHouse 13 4 2 Devan_sit \"Characters\\Dialogue\\Devan:leahHouse_2\"/1600 Woods 12 6 2 Devan_sit \"Characters\\Dialogue\\Devan:secretforest\"/1800 Woods 10 17 2/a2140 Saloon 31 19 1/2150 Saloon 31 8 2/2200 39 7 0/2210 Saloon 44 5 3 devan_sleep";
                             });
                         }
-                        else if (IsLeahMarried is true && IsElliottMarried is true)
+                        else if (IsLeahMarried == true && IsElliottMarried == true)
                         {
                             e.Edit(asset =>
                             {
@@ -504,7 +481,8 @@ namespace SpousesIsland
                                 data["Fri"] = "640 Saloon 39 7 2/650 Saloon 35 8 2/700 Saloon 14 17 2 Devan_broom/810 Saloon 13 22 2 Devan_broom/920 Saloon 32 19 2 Devan_broom/1020 Saloon 42 19 2 Devan_broom/1100 Saloon 33 8 2 Devan_broom/1200 Saloon 24 19 Devan_broom/1300 Woods 8 9 0 \"Characters\\Dialogue\\Devan:statue\"/1800 Woods 12 6 2 Devan_sit \"Characters\\Dialogue\\Devan:secretforest\"/1900 Woods 10 17 2/a2140 Saloon 31 19 1/2150 Saloon 31 8 2/2200 39 7 0/2210 Saloon 44 5 3 devan_sleep";
                             });
                         }
-                        if (HasSVE is true)
+
+                        if (HasSVE == true)
                         {
                             e.Edit(asset =>
                             {
@@ -513,14 +491,11 @@ namespace SpousesIsland
                             });
                         }
                     }
-                    //if spanish load spanish file, if not it'll continue
-                    if (e.Name.IsEquivalentTo("Characters/Dialogue/Devan.es-ES"))
-                    {
-                        e.LoadFromModFile<Dictionary<string, string>>("assets/Devan/Dialogue.es-ES.json", AssetLoadPriority.Medium);
-                    }
+                    
+                    //will load a file using the locale code.
                     if (e.NameWithoutLocale.IsEquivalentTo("Characters/Dialogue/Devan"))
                     {
-                        e.LoadFromModFile<Dictionary<string, string>>("assets/Devan/Dialogue.json", AssetLoadPriority.Medium);
+                        e.LoadFromModFile<Dictionary<string, string>>($"assets/Devan/Dialogue{e.Name.LocaleCode}.json", AssetLoadPriority.Medium);
                     }
                 }
                 if (e.Name.StartsWith("Data/", false, true))
@@ -530,166 +505,184 @@ namespace SpousesIsland
                         Devan.AppendFestivalData(e);
                         Devan.FesInternational(e);
                     }
-                    if (e.Name.StartsWith("Data/", false, false))
-                    {
-                        Devan.MainData(e);
-                    }
-                    if (e.Name.StartsWith("Data/Events/", false, false))
+                    else if (e.Name.StartsWith("Data/Events/", false, false))
                     {
                         Devan.EventsInternational(e);
+                    }
+                    else
+                    {
+                        Devan.MainData(e);
                     }
                 }
             }
 
-            //if hasnt unlocked island = dont do visit
-            if(!Game1.MasterPlayer.mailReceived.Contains("willyBoatFixed"))
+            /* if hasnt unlocked island:
+             * returns / doesnt apply these patches
+             */
+            if (!BoatFixed || !IslandHouse)
             {
                 return;
             }
 
-            if (Config.CustomChance >= RandomizedInt)
+
+            if (e.Name.Equals("Data/mail") && IslandHouse)
             {
+                e.Edit(asset => {
+                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                    data.Add("Islandvisit_Qi", this.Helper.Translation.Get("Islandvisit_Qi"));
+                });
+            }
+
+            if (IslandToday && e.Name.StartsWith("Characters",false,true))
+            {
+                //harvey edit
+                if (e.NameWithoutLocale.IsEquivalentTo("Characters/Harvey") && MarriedAndAllowed.Contains("Harvey"))
+                {
+                    e.Edit(asset =>
+                    {
+                        var editor = asset.AsImage();
+                        Texture2D Harvey = ModEntry.Help.ModContent.Load<Texture2D>("assets/Spouses/Harvey_anim.png");
+                        editor.PatchImage(Harvey, new Rectangle(0, 192, 64, 32), new Rectangle(0, 192, 64, 32), PatchMode.Replace);
+                    });
+                }
+
+                //krobus
+                if(e.Name.Name.Contains("Krobus") && MarriedAndAllowed.Contains("Krobus"))
+                {
+                    this.Monitor.Log("Krobus sprites will be edited.");
+
+                    if (e.NameWithoutLocale.IsEquivalentTo("Portraits/Krobus"))
+                    {
+                        e.LoadFromModFile<Texture2D>("assets/Spouses/Krobus_Outside_Portrait.png", AssetLoadPriority.Medium);
+                    }
+                    if (e.NameWithoutLocale.IsEquivalentTo("Characters/Krobus"))
+                    {
+                        e.LoadFromModFile<Texture2D>("assets/Spouses/Krobus_Outside_Character.png", AssetLoadPriority.Medium);
+                    }
+                }
+
                 if (e.Name.StartsWith("Characters/schedules/", false, true))
                 {
-                    if (HasC2N is true && Config.Allow_Children == true)
+                    
+                    if (HasC2N && Config.Allow_Children && Children is not null && Config.UseModSchedule)
                     {
                         this.Monitor.LogOnce("Child To NPC is in the mod folder. Adding compatibility...", LogLevel.Trace);
-                        if (Children is not null && Config.ChildbedType is "mod")
-                        {
-                            if (e.NameWithoutLocale.IsEquivalentTo("Characters/schedules/" + Children?[0].Name))
-                            {
-                                e.Edit(asset => ChildrenData.ChildMOD(InfoChild1, asset));
-                            }
-                            if (e.NameWithoutLocale.IsEquivalentTo("Characters/schedules/" + Children?[1].Name))
-                            {
-                                e.Edit(asset => ChildrenData.ChildMOD(InfoChild2, asset));
-                            }
-
-                        }
-                        if (Children is not null && Config.ChildbedType is "sdv")
-                        {
-                            if (SGIValues.HasAnyKidBeds() == true)
-                            {
-                                if (e.NameWithoutLocale.IsEquivalentTo("Characters/schedules/" + Children?[0].Name))
-                                {
-                                    e.Edit(asset => ChildrenData.ChildSDV(InfoChild1, asset));
-                                }
-                                if (e.NameWithoutLocale.IsEquivalentTo("Characters/schedules/" + Children?[1].Name))
-                                {
-                                    e.Edit(asset => ChildrenData.ChildSDV(InfoChild2, asset));
-                                }
-                            }
-                            else
-                            {
-                                this.Monitor.Log("There's no children beds in farmhouse! The kids won't visit.", LogLevel.Warn);
-                            }
-                        }
-
+                        ChildrenData.EditAllKidSchedules(Config.UseFurnitureBed, e);
                     }
-                    AssetRequest.ChangeSchedulesIntegrated(this, e, Config);
-                }
-                foreach (ContentPackData cpd in CustomSchedule.Values)
-                {
-                    AssetRequest.ContentPackSchedule(this, e, cpd);
+                    Integrated.Schedules(e);
                 }
             }
 
-            if (e.Name.StartsWith("Characters/", false, true))
+            if (e.Name.StartsWith("Characters/Dialogue/", false, true))
             {
-                AssetRequest.CharacterSheetsByConfig(this, e, Config);
-
-                if (e.Name.StartsWith("Characters/Dialogue/", false, true))
-                {
-                    if (e.Name.StartsWith("Characters/Dialogue/Marr", true, false))
+                if (e.NameWithoutLocale.IsEquivalentTo("Characters/Dialogue/MarriageDialogueKrobus"))
+                    e.Edit(asset =>
                     {
-                        if (e.Name.IsEquivalentTo("Characters/Dialogue/MarriageDialogueKrobus.es-ES"))
-                            e.Edit(asset =>
-                            {
-                                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                                data.Add("funLeave_Krobus", "Intentaré ir fuera hoy...si voy temprano, tu gente no se dará cuenta$0.#$b#Pasar tiempo contigo me ha hecho ganar interés por las actividades de tu gente.$1");
-                            });
-                        if (e.Name.IsEquivalentTo("Characters/Dialogue/MarriageDialogueKrobus"))
-                            e.Edit(asset =>
-                            {
-                                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                                data.Add("funLeave_Krobus", "I'll go outside today...if i'm quick, your people won't notice.$0#$b#Thanks to you, i've become curious of humans' \"Entertainment activities\".$1");
-                            });
-                    }
+                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        data.Add("funLeave_Krobus", this.Helper.Translation.Get("Krobus.GoOutside"));
+                    });
+                    
+                Integrated.Dialogues(e);
 
-                    SGIData.DialoguesInternational(e, Config);
-                }
-
-                foreach (ContentPackData cpd in CustomSchedule.Values)
-                {
-                    if (e.NameWithoutLocale.IsEquivalentTo($"Characters/Dialogue/{cpd.Spousename}"))
-                    {
-                        AssetRequest.ContentPackDialogue(this, e, cpd);
-                    }
-                }
-            }
-            if (e.Name.StartsWith("Portraits/", false, true))
-            {
-                if (e.Name.IsEquivalentTo("Portraits/Krobus") && Config.Allow_Krobus == true && Config.CustomChance >= RandomizedInt)
-                {
-                    e.LoadFromModFile<Texture2D>("assets/Spouses/Krobus_Outside_Portrait.png", AssetLoadPriority.Medium);
-                }
             }
         }
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+
+        //if SP, loadstagechanged will obtain required data. if MP, peercontext will.
+        private void LoadStageChanged(object sender, LoadStageChangedEventArgs e)
         {
-            //get values used by mod
-            NPC kr = Game1.getCharacterFromName("Krobus", false, false);
-            NPC lh = Game1.getCharacterFromName("Leah", false, false);
-            NPC el = Game1.getCharacterFromName("Elliott", false, false);
-
-            if(kr.isMarriedOrEngaged() || kr.isRoommate())
+            if (e.NewStage == LoadStage.SaveLoadedBasicInfo)
             {
-                IsKrobusRoommate = true;
-            }
-            else
-            {
-                IsKrobusRoommate = false;
-            }
-            IsLeahMarried = lh.isMarriedOrEngaged();
-            IsElliottMarried = el.isMarriedOrEngaged();
-
-            Children = Game1.MasterPlayer.getChildren();
-            CCC = Game1.MasterPlayer.hasCompletedCommunityCenter();
-            SawDevan4H = Game1.MasterPlayer.eventsSeen.Contains(110371000);
-
-            if (Config.Verbose == true)
-            {
-                this.Monitor.Log($"\nChildren (count) = {Children};\nIsKrobusRoommate = {IsKrobusRoommate};\nIsLeahMarried = {IsLeahMarried};\nIsElliottMarried = {IsElliottMarried};\nCCC = {CCC};\nSawDevan4H = {SawDevan4H};");
+                GetRequiredData(Game1.MasterPlayer);
             }
         }
+        private void PeerContextReceived(object sender, PeerContextReceivedEventArgs e)
+        {
+            var newFarmer = Game1.getFarmer(e.Peer.PlayerID);
+
+            if (!newFarmer.IsLocalPlayer)
+            {
+                return;
+            }
+
+            GetRequiredData(newFarmer);
+        }
+
+        //these happen regardless of SP/MP
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
-            //get new chance
+            //get new %
             PreviousDayRandom = RandomizedInt;
             RandomizedInt = Random.Next(1, 101);
+            IslandToday = Config.CustomChance >= RandomizedInt;
+            IsFromTicket = false;
+
+            var ticketday = Game1.player.mailReceived.Contains("VisitTicket_day");
+            var ticketweek = Game1.player.mailReceived.Contains("VisitTicket_week");
+
+            //if player used a visit ticket
+            if (ticketday || ticketweek)
+            {
+                RandomizedInt = 0;
+                IslandToday = true;
+                IsFromTicket = true;
+
+                //remove flags
+                Game1.player.RemoveMail("VisitTicket_day");
+
+                //set them in mod file. ticketday set to true for future loading
+                status[Game1.player.userID.Value].DayVisit = ticketday;
+                status[Game1.player.userID.Value].WeekVisit = (ticketweek, status[Game1.player.userID.Value]?.WeekVisit.Item2 ?? 0);
+
+                //if true, check int value. if 7, reset. else, add 1
+                var week = status[Game1.player.userID.Value].WeekVisit;
+                if (week.Item1)
+                {
+                    if(week.Item2 == 7)
+                    {
+                        Game1.player.RemoveMail("VisitTicket_week");
+                        status[Game1.player.userID.Value].WeekVisit = (false, 0);
+                    }
+                    else
+                    {
+                        status[Game1.player.userID.Value].WeekVisit = (true, week.Item2 + 1);
+                    }
+                }
+
+                this.Helper.Data.WriteJsonFile("moddata.json", status);
+            }
 
             //re-check values
-            Children = Game1.MasterPlayer.getChildren();
-            CCC = Game1.MasterPlayer.hasCompletedCommunityCenter();
-            SawDevan4H = Game1.MasterPlayer.eventsSeen.Contains(110371000);
+            Children = Game1.player.getChildren();
+
+            if(CCC == false)
+            {
+                CCC = Game1.player.hasCompletedCommunityCenter();
+            }
+            if(SawDevan4H == false)
+            {
+                SawDevan4H = Game1.player.eventsSeen.Contains(110371000);
+            }
         }
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
-            if (e.NewTime >= 2200 && Config.CustomChance >= RandomizedInt)
+            if(IslandToday == false)
             {
-                var sgv = new SGIValues();
+                return;
+            }
+
+            if (e.NewTime >= 2200)
+            {
+                var bc = new BedCode();
                 var ifh = Game1.getLocationFromName("IslandFarmHouse");
+
                 foreach (NPC c in ifh.characters)
                 {
                     if(c.isMarried())
                     {
-                        if (Config.Verbose == true)
-                        {
-                            this.Monitor.Log($"Pathing {c.Name} to bed in {ifh.Name}...");
-                        }
+                        this.Monitor.Log($"Pathing {c.Name} to bed in {ifh.Name}...");
                         try
                         {
-                            sgv.MakeSpouseGoToBed(c, ifh);
+                            bc.MakeSpouseGoToBed(c, ifh);
                         }
                         catch (Exception ex)
                         {
@@ -699,13 +692,10 @@ namespace SpousesIsland
                     
                     else if(!c.isMarried() && HasC2N == true)
                     {
-                        if (Config.Verbose == true)
-                        {
-                            this.Monitor.Log($"Pathing {c.Name} to kid bed in {ifh.Name}...");
-                        }
+                        this.Monitor.Log($"Pathing {c.Name} to kid bed in {ifh.Name}...");
                         try
                         {
-                            sgv.MakeKidGoToBed(c, ifh);
+                            bc.MakeKidGoToBed(c, ifh);
                         }
                         catch (Exception ex)
                         {
@@ -717,95 +707,122 @@ namespace SpousesIsland
         }
         private void TitleReturn(object sender, ReturnedToTitleEventArgs e)
         {
-            ClearValues(this);
+            ClearValues();
+
+            //get new %
+            PreviousDayRandom = 0;
+            RandomizedInt = Random.Next(1, 101);
         }
 
-        private void ClearValues(ModEntry e)
+        private void ClearValues()
         {
-            //empty lists preemptively
-            if (e.SchedulesEdited is not null)
-            {
-                e.Monitor.Log("Resetting schedule list...", LogLevel.Trace);
-                e.SchedulesEdited.Clear();
-            }
-            if (e.DialoguesEdited is not null)
-            {
-                e.Monitor.Log("Resetting dialogue list...", LogLevel.Trace);
-                e.DialoguesEdited.Clear();
-            }
-            if (e.IsLeahMarried is not false)
-            {
-                e.IsLeahMarried = false;
-            }
-            if (e.IsElliottMarried is not false)
-            {
-                e.IsElliottMarried = false;
-            }
-            if (e.IsKrobusRoommate is not false)
-            {
-                e.IsKrobusRoommate = false;
-            }
-            if (e.SawDevan4H is not false)
-            {
-                e.SawDevan4H = false;
-            }
-            if (e.CCC is not false)
-            {
-                e.CCC = false;
-            }
-            if (e.RandomizedInt is not 0)
-            {
-                e.RandomizedInt = 0;
-            }
+            status = null;
+
+            this.Monitor.Log("Clearing Children...");
+            Children?.Clear();
+
+            //empty bools and int
+            SawDevan4H = false;
+            CCC = false;
+            PreviousDayRandom = 0;
+            RandomizedInt = 0;
+
+            this.Monitor.Log("SawDevan4H = false; CCC = false; RandomizedInt = 0;");
         }
-
-        private ModConfig Config;
-        private static Random random;
-
-        /*   Internal (can only be accessed by current .cs) */
-        internal void SGI_About(string command, string[] args)
+        private void GetRequiredData(Farmer player)
         {
-            if (LocalizedContentManager.CurrentLanguageCode.ToString() is "es")
+            //try to read file from moddata. if empty, check mail
+            //read here. 
+            ReadModData(player);
+
+            //now get user data
+            var boatFix = player?.mailReceived?.Contains("willyBoatFixed");
+            BoatFixed = boatFix ?? false;
+            this.Monitor.Log($"BoatFixed = {BoatFixed};");
+
+            IslandHouse = player?.mailReceived?.Contains("Island_UpgradeHouse") ?? false;
+            bool QiMail = player?.mailReceived?.Contains("Islandvisit_Qi") ?? false;
+            if(!QiMail && IslandHouse)
             {
-                this.Monitor.Log("Este mod permite que tu pareja vaya a la isla (compatible con ChildToNPC, SVE y otros). También permite crear paquetes de contenido / agregar rutinas personalizadas.\nMod creado por mistyspring (nexusmods)", LogLevel.Info);
+                player.mailbox.Add("Islandvisit_Qi");
+            }
+
+            var married = Values.GetAllSpouses(player);
+            foreach (var name in married)
+            {
+                if (IsDebug)
+                {
+                    this.Monitor.Log($"Checking NPC {name}...");
+                }
+
+                if (Values.IntegratedAndEnabled(name, Config))
+                {
+                    MarriedAndAllowed.Add(name);
+                    this.Monitor.Log($"{name} is married to player.", LogLevel.Debug);
+                }
+            }
+
+            Children = player.getChildren();
+            CCC = player.hasCompletedCommunityCenter();
+            SawDevan4H = player.eventsSeen.Contains(110371000);
+
+            this.Monitor.Log($"\nChildren (count) = {Children};\nCCC = {CCC};\nSawDevan4H = {SawDevan4H};", LogLevel.Debug);
+        }
+        private void ReadModData(Farmer player)
+        {
+            var userID = player.userID.Value;
+            var file = Helper.Data.ReadJsonFile<Dictionary<string, ModStatus>>("moddata.json");
+            if(file == null)
+            {
+                status.Add(userID, new ModStatus(player));
+            }
+            else if (file.Keys.Any(id => id == userID))
+            {
+                if (file[userID].DayVisit)
+                {
+                    //set to true n remove
+                    IsFromTicket = true;
+                    IslandToday = true;
+                    RandomizedInt = 0;
+                    file[userID].DayVisit = false;
+                }
+                if (file[userID].WeekVisit.Item1)
+                {
+                    var wv = file[userID].WeekVisit;
+                    //check value
+                    if (wv.Item2 == 7)
+                    {
+                        file[userID].WeekVisit = (false, 0);
+                    }
+                    else
+                    {
+                        IsFromTicket = true;
+                        IslandToday = true;
+                        RandomizedInt = 0;
+                        file[userID].WeekVisit = (true, wv.Item2 + 1);
+                    }
+                }
+                else
+                {
+                    status = file;
+                }
             }
             else
             {
-                this.Monitor.Log("This mod allows your spouse to visit the Island (compatible with ChildToNPC, SVE, Free Love and a few others). It's also a framework, so you can add custom schedules.\nMod created by mistyspring (nexusmods)", LogLevel.Info);
+                file.Add(userID, new ModStatus(player));
             }
-        }
-        internal void SGI_List(string command, string[] args)
-        {
-            Debugging.List(this, args, Config);
-        }
-        internal void SGI_Chance(string command, string[] args)
-        {
-            Debugging.Chance(this, args, Config);
-        }
-        internal void SGI_Reset(string command, string[] args)
-        {
-            Debugging.Reset(this, args, Config);
-        }
-        internal void SGI_Help(string command, string[] args)
-        {
-            this.Monitor.Log(this.Helper.Translation.Get("CLI.helpdescription"), LogLevel.Info);
+
+            status = file;
         }
 
-        internal Texture2D KbcSamples() => Helper.ModContent.Load<Texture2D>("assets/kbcSamples.png");
-        internal string SpouseD()
-        {
-            var SpousesDesc = this.Helper.Translation.Get("config.Vanillas.description");
-            return SpousesDesc;
-        }
-        internal List<string> SchedulesEdited = new();
-        internal List<string> DialoguesEdited = new();
-        internal List<string> TranslationsAdded = new();
-        internal List<Child> Children = new();
+        /* Helpers + things the mod uses */
 
-        internal int RandomizedInt { get; private set; }
-        internal static Dictionary<string, ContentPackData> CustomSchedule { get; private set; } = new();
-        internal static IModHelper ModHelper { get; private set; }
-        internal static IMonitor ModMonitor { get; private set; }
+        private ModConfig Config;
+        public static IApi jsonAssets;
+        private static Random random;
+        internal static IModHelper Help { get; private set; }
+        internal static ITranslationHelper TL { get; private set; }
+        internal static IMonitor Mon { get; private set; }
         internal static Random Random
         {
             get
@@ -814,18 +831,29 @@ namespace SpousesIsland
                 return random;
             }
         }
-        //internal bool CanBeSpecific;
-        internal bool IsLeahMarried { get; private set; }
-        internal bool IsElliottMarried { get; private set; }
-        internal bool IsKrobusRoommate { get; private set; }
-        internal bool SawDevan4H { get; private set; }  = false;
-        internal bool CCC { get; private set; }
-        internal bool HasSVE;
-        internal bool HasC2N;
-        internal bool HasExGIM;
-        internal bool HasSeasonal;
-        internal int PreviousDayRandom { get; private set; }
-        internal ChildSchedule InfoChild1 { get; private set; }
-        internal ChildSchedule InfoChild2 { get; private set; }
+
+        /* User-related starts here */
+
+        internal static bool IsDebug = false;
+        internal static bool IslandToday { get; private set; }
+        internal static bool IsFromTicket { get; private set; }
+        internal static int RandomizedInt { get; private set; }
+        internal static int PreviousDayRandom { get; private set; }
+
+        /* children related */
+        internal static List<Child> Children { get; private set; } = new();
+        internal static Dictionary<string,string> InfoChildren = new(); //this refers to info in relation to the mod (ie, schedule data for island visit). not actual info
+
+        /* player data */
+        public static List<string> MarriedAndAllowed { get; private set; } = new();
+        internal static bool SawDevan4H  = false;
+        internal static bool CCC = false;
+        internal static bool BoatFixed;
+        internal static bool IslandHouse = false;
+        internal static bool HasSVE;
+        internal static bool HasC2N;
+        internal static bool HasExGIM;
+        internal static bool notfurniture;
+        internal static Dictionary<string, ModStatus> status { get; private set; } = new();
     }
 }

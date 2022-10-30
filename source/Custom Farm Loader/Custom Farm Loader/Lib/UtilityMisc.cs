@@ -128,5 +128,14 @@ namespace Custom_Farm_Loader.Lib
                 4 or _ => "winter"
             };
         }
+
+        public static string getRelativeModDirectory(string modId)
+        {
+            var helper = ModEntry.Mod.Helper;
+            var mod = helper.ModRegistry.GetAll().ToList().Find(el => el.Manifest.UniqueID == modId);
+            string directoryPath = (string)HarmonyLib.AccessTools.GetDeclaredFields(mod.GetType()).Find(e => e.Name.Contains("DirectoryPath")).GetValue(mod);
+            string relativeModDirectory = Path.GetRelativePath(helper.DirectoryPath + Path.DirectorySeparatorChar, directoryPath + Path.DirectorySeparatorChar);
+            return relativeModDirectory;
+        }
     }
 }

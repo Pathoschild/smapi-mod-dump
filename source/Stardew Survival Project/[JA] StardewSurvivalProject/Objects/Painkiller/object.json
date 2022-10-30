@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+  "Name": "Painkiller",
+  "Description": "Kill pain, make you really tired though",
+  "Category": "ArtisanGoods",
+  "Edibility": -20,
+  "EdibleIsDrink": false,
+  "Price": 100,
+  "IsColored": false,
+  "Recipe": null,
+  "PurchaseFrom": "Harvey",
+  "PurchasePrice": 400,
+  "CanPurchase": true
+}

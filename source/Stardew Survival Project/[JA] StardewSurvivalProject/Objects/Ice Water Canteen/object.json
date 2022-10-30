@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+  "Name": "Ice Water Canteen",
+  "Description": "Cool you down faster with the power of iced water!",
+  "Category": "ArtisanGoods",
+  "Edibility": 0,
+  "EdibleIsDrink": true,
+  "Price": 20,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": "Full Canteen",
+        "Count": 1
+      },
+      {
+        "Object": "Ice Cube",
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  },
+}

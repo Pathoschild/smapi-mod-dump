@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -157,6 +158,27 @@ namespace stardew_access.Features
                 toReturn = junimoBundle;
                 category = CATEGORY.JunimoBundle;
             }
+
+            #region Track dropped items
+            NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
+            if (droppedItems.Count() > 0)
+            {
+                foreach (var item in droppedItems)
+                {
+                    int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
+                    int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
+                    if (xPos != x || yPos != y) continue;
+
+                    string name = item.item.DisplayName;
+                    int count = item.item.Stack;
+
+                    if (toReturn == "")
+                        return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
+                    else
+                        toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                }
+            }
+            #endregion
 
             if (toReturn == "")
                 return (null, category);
@@ -455,7 +477,7 @@ namespace stardew_access.Features
             else if (Game1.currentLocation is CommunityCenter communityCenter)
             {
                 if (communityCenter.missedRewardsChestVisible.Value && x == 22 && y == 10)
-                    return (CATEGORY.Chests, "Missed Rewards Chest");
+                    return (CATEGORY.Containers, "Missed Rewards Chest");
             }
             else if (Game1.currentLocation is BoatTunnel)
             {
@@ -486,6 +508,130 @@ namespace stardew_access.Features
                 {
                     if (islandNorth.traderActivated.Value && x == 36 && y == 71)
                         return (CATEGORY.Interactables, "Island Trader");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("coop"))
+            {
+                if (x >= 6 && x <= 9 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("big coop") || Game1.currentLocation.Name.ToLower().Equals("coop2"))
+            {
+                if (x >= 6 && x <= 13 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe coop") || Game1.currentLocation.Name.ToLower().Equals("coop3"))
+            {
+                if (x >= 6 && x <= 17 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("barn"))
+            {
+                if (x >= 8 && x <= 11 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("big barn") || Game1.currentLocation.Name.ToLower().Equals("barn2"))
+            {
+                if (x >= 8 && x <= 15 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation.Name.ToLower().Equals("deluxe barn") || Game1.currentLocation.Name.ToLower().Equals("barn3"))
+            {
+                if (x >= 8 && x <= 19 && y == 3)
+                {
+                    (string? name, CATEGORY category) bench = getObjectAtTile(x, y, true);
+                    if (bench.name != null && bench.name.ToLower().Contains("hay"))
+                        return (CATEGORY.Others, "Feeding Bench");
+                    else
+                        return (CATEGORY.Others, "Empty Feeding Bench");
+                }
+            }
+            else if (Game1.currentLocation is LibraryMuseum libraryMuseum)
+            {
+                foreach (KeyValuePair<Vector2, int> pair in libraryMuseum.museumPieces.Pairs)
+                {
+                    if (pair.Key.X == x && pair.Key.Y == y)
+                    {
+                        string displayName = Game1.objectInformation[pair.Value].Split('/')[0];
+                        return (CATEGORY.Interactables, $"{displayName} showcase");
+                    }
+                }
+
+                int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
+                for (int x1 = 0; x1 < libraryMuseum.map.Layers[0].LayerWidth; x1++)
+                {
+                    for (int y1 = 0; y1 < libraryMuseum.map.Layers[0].LayerHeight; y1++)
+                    {
+                        if (x != x1 || y != y1) continue;
+
+                        if (libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings") != null && libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Contains("Notes"))
+                        {
+                            int key = Convert.ToInt32(libraryMuseum.doesTileHaveProperty(x1, y1, "Action", "Buildings").Split(' ')[1]);
+                            xTile.Tiles.Tile tile = libraryMuseum.map.GetLayer("Buildings").PickTile(new xTile.Dimensions.Location(x * 64, y * 64), Game1.viewport.Size);
+                            string? action = null;
+                            try
+                            {
+                                tile.Properties.TryGetValue("Action", out xTile.ObjectModel.PropertyValue? value);
+                                if (value != null) action = value.ToString();
+                            }
+                            catch (System.Exception e)
+                            {
+                                MainClass.ErrorLog($"Cannot get action value at x:{x} y:{y} in LibraryMuseum");
+                                MainClass.ErrorLog(e.Message);
+                            }
+
+                            if (action != null)
+                            {
+                                string[] actionParams = action.Split(' ');
+
+                                try
+                                {
+                                    int which = Convert.ToInt32(actionParams[1]);
+                                    if (booksFound >= which)
+                                    {
+                                        string message = Game1.content.LoadString("Strings\\Notes:" + which);
+                                        return (CATEGORY.Interactables, $"{message.Split('\n')[0]} Book");
+                                    }
+                                }
+                                catch (System.Exception e)
+                                {
+                                    MainClass.ErrorLog(e.Message);
+                                }
+
+                                return (CATEGORY.Others, $"Lost Book");
+                            }
+                        }
+                    }
                 }
             }
             return (null, null);
@@ -699,37 +845,27 @@ namespace stardew_access.Features
             (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
             StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
+            if (obj == null) return toReturn;
+
             int index = obj.ParentSheetIndex;
             toReturn.name = obj.DisplayName;
 
             // Get object names based on index
             (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index, obj.Name);
 
-            if (correctNameAndCategory.name != null)
-                toReturn = correctNameAndCategory;
-            else if (obj.name.ToLower().Equals("stone"))
-                toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Equals("twig"))
-                toReturn.category = CATEGORY.Debris;
-            else if (obj.name.ToLower().Contains("quartz"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("earth crystal"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj.name.ToLower().Contains("frozen tear"))
-                toReturn.category = CATEGORY.MineItems;
-            else if (obj is Chest)
+            if (obj is Chest)
             {
                 Chest chest = (Chest)obj;
-                toReturn = (chest.DisplayName, CATEGORY.Chests);
+                toReturn = (chest.DisplayName, CATEGORY.Containers);
             }
             else if (obj is IndoorPot indoorPot)
             {
-                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt, true)}";
+                toReturn.name = $"{obj.DisplayName}, {getHoeDirtDetail(indoorPot.hoeDirt.Value, true)}";
             }
             else if (obj is Sign sign)
             {
                 if (sign.displayItem.Value != null)
-                    toReturn.name = $"{obj.DisplayName}, {sign.displayItem.Value.DisplayName}";
+                    toReturn.name = $"{sign.DisplayName}, {sign.displayItem.Value.DisplayName}";
             }
             else if (obj is Furniture furniture)
             {
@@ -768,6 +904,18 @@ namespace stardew_access.Features
                     }
                 }
             }
+            else if (correctNameAndCategory.name != null)
+                toReturn = correctNameAndCategory;
+            else if (obj.name.ToLower().Equals("stone"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Equals("twig"))
+                toReturn.category = CATEGORY.Debris;
+            else if (obj.name.ToLower().Contains("quartz"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("earth crystal"))
+                toReturn.category = CATEGORY.MineItems;
+            else if (obj.name.ToLower().Contains("frozen tear"))
+                toReturn.category = CATEGORY.MineItems;
 
             if (toReturn.category == CATEGORY.Machines) // Fix for `Harvestable table` and `Busy nodes`
             {

@@ -9,9 +9,11 @@
 *************************************************/
 
 using SpriteMaster.Configuration;
+using SpriteMaster.Extensions;
 using SpriteMaster.Types.MemoryCache;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace SpriteMaster.Caching;
 
@@ -21,14 +23,14 @@ namespace SpriteMaster.Caching;
 internal static class ResidentCache {
 	internal static bool Enabled => Config.ResidentCache.Enabled;
 
-	private static readonly IMemoryCache<ulong, byte> Cache = CreateCache();
+	private static IMemoryCache<ulong, byte> Cache = CreateCache();
 
 	internal static long Size => Cache.SizeBytes;
 
 	private static IMemoryCache<ulong, byte> CreateCache() => AbstractMemoryCache<ulong, byte>.Create(
 		name: "ResidentCache",
 		maxSize: Config.ResidentCache.MaxSize,
-		compressed: true
+		compressed: Config.ResidentCache.Compress != Compression.Algorithm.None
 	);
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
@@ -76,6 +78,14 @@ internal static class ResidentCache {
 	internal static void OnSettingsChanged() {
 		if (!Enabled) {
 			Purge();
+		}
+
+		bool isCompressed = Cache is ICompressedMemoryCache;
+		bool shouldCompress = Config.ResidentCache.Compress != Compression.Algorithm.None;
+		if (isCompressed != shouldCompress) {
+			var newCache = CreateCache();
+			var oldCache = Interlocked.Exchange(ref Cache, newCache);
+			oldCache.Dispose();
 		}
 	}
 }

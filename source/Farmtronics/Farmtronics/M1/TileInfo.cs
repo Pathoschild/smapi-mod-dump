@@ -16,19 +16,22 @@
 // which you may well find on a tile.
 
 using System.Collections.Generic;
-using Miniscript;
+using Farmtronics.Bot;
+using Farmtronics.Utils;
 using Microsoft.Xna.Framework;
+using Miniscript;
 using StardewValley;
-using StardewValley.TerrainFeatures;
 using StardewValley.Locations;
 using StardewValley.Objects;
-using Farmtronics.Bot;
+using StardewValley.TerrainFeatures;
 
 namespace Farmtronics.M1 {
 	static class TileInfo {
 
 		static ValString _name = new ValString("name");
 		static ValString _type = new ValString("type");
+		static ValString _unknown = new ValString("unknown");
+		static ValString _passable = new ValString("passable");
 		static ValString _treeType = new ValString("treeType");
 		static ValString _growthStage = new ValString("growthStage");
 		static ValString _health = new ValString("health");
@@ -44,11 +47,13 @@ namespace Farmtronics.M1 {
 		static ValString _harvestable = new ValString("harvestable");
 		static ValString _harvestMethod = new ValString("harvestMethod");
 
-		public static ValMap ToMap(StardewValley.Object obj) {
-			var result = new ValMap();
+		public static ValMap ToMap(StardewValley.Object obj, ValMap result, bool passableOnly) {
 			string type = obj.Type;
 			if (type == "asdf") type = obj.Name;	// because, c'mon.
 			result.map[_type] = new ValString(type);
+			result.map[_passable] = ValNumber.zero;
+			if (passableOnly) return result;
+
 			// ToDo: limit the following to ones that really apply for this type.
 			result.map[_name] = new ValString(obj.Name);
 			result["displayName"] = new ValString(obj.DisplayName);
@@ -67,15 +72,14 @@ namespace Farmtronics.M1 {
 				var list = new ValList();
 				result["inventory"] = list;
 				foreach (var item in inventory) {
-					list.values.Add(TileInfo.ToMap(item));
+					list.values.Add(TileInfo.ToMap(item, new ValMap()));
 				}
 			}
 			return result;
 		}
 
-		public static ValMap ToMap(StardewValley.Item item) {
-			if (item == null) return null;
-			var result = new ValMap();
+		public static ValMap ToMap(StardewValley.Item item, ValMap result) {
+			if (item == null) return result;
 			result.map[_type] = new ValString(item.GetType().Name);
 			// ToDo: limit the following to ones that really apply for this type.
 			result.map[_name] = new ValString(item.Name);
@@ -92,11 +96,12 @@ namespace Farmtronics.M1 {
 			return result;
 		}
 
-		static ValMap ToMap(TerrainFeature feature) {
-			if (feature == null) return null;
-			var result = new ValMap();
+		static ValMap ToMap(TerrainFeature feature, ValMap result, bool passableOnly) {
+			if (feature == null) return result;
 			result.map[_type] = result["name"] = new ValString(feature.GetType().Name);
 			if (feature is Tree tree) {
+				result.map[_passable] = ValNumber.zero;
+				if (passableOnly) return result;
 				result.map[_treeType] = new ValNumber(tree.treeType.Value);
 				result.map[_growthStage] = new ValNumber(tree.growthStage.Value);
 				result.map[_health] = new ValNumber(tree.health.Value);
@@ -104,6 +109,7 @@ namespace Farmtronics.M1 {
 				result.map[_tapped] = ValNumber.Truth(tree.tapped.Value);
 				result.map[_hasSeed] = ValNumber.Truth(tree.hasSeed.Value);
 			} else if (feature is HoeDirt hoeDirt) {
+				if (passableOnly) return result;
 				result.map[_dry] = ValNumber.Truth(hoeDirt.state.Value != 1);
 				var crop = hoeDirt.crop;
 				if (crop == null) result.map[_crop] = null;
@@ -129,30 +135,21 @@ namespace Farmtronics.M1 {
 			return result;
 		}
 
-		static ValMap ToMap(ResourceClump clump) {
-			if (clump == null) return null;
-			var result = new ValMap();
+		static ValMap ToMap(ResourceClump clump, ValMap result, bool passableOnly) {
+			if (clump == null) return result;
 			result.map[_type] = new ValString("Clump");
-			string name;
-			switch (clump.parentSheetIndex.Value) {
-			case ResourceClump.boulderIndex: name = "Boulder"; break;
-			case ResourceClump.hollowLogIndex: name = "Hollow Log"; break;
-			case ResourceClump.meteoriteIndex: name = "Meteorite"; break;
-			case ResourceClump.mineRock1Index:
-			case ResourceClump.mineRock2Index:
-			case ResourceClump.mineRock3Index:
-			case ResourceClump.mineRock4Index: name = "Mine Rock"; break;
-			case ResourceClump.stumpIndex: name = "Stump"; break;
-			default: name = "#" + clump.parentSheetIndex.Value; break;
-			}
+			result.map[_passable] = ValNumber.zero;
+			if (passableOnly) return result;
+			string name = clump.GetName();
 			result.map[_name] = new ValString(name);
 			result.map[_health] = new ValNumber(clump.health.Value);
 			return result;
 		}
 
-		static ValMap ToMap(Character character) {
-			if (character == null) return null;
-			var result = new ValMap();
+		static ValMap ToMap(Character character, ValMap result, bool passableOnly) {
+			if (character == null) return result;
+			result.map[_passable] = ValNumber.zero;
+			if (passableOnly) return result;
 			result.map[_type] = new ValString("Character");
 			result.map[_name] = new ValString(character.Name);
 			result["displayName"] = new ValString(character.displayName);
@@ -164,25 +161,44 @@ namespace Farmtronics.M1 {
 			return result;
 		}
 
-		public static ValMap GetInfo(GameLocation loc, Vector2 xy) {
+		/// <summary>
+		/// Report whether the given location is something a bot can pass through.
+		/// </summary>
+		public static bool IsPassable(GameLocation loc, Vector2 xy) {
+			// Because there are so many different cases to handle, and we're already handling
+			// all those cases in GetInfo, we just call through to that -- but with passableOnly
+			// set to true, so it can bail out early once it's figured that out.
+			ValMap info = GetInfo(loc, xy, true);
+			return info == null || info.map[_passable].BoolValue();
+		}
+
+		public static ValMap GetInfo(GameLocation loc, Vector2 xy, bool passableOnly=false) {
+
+			var result = new ValMap();
+			result.map[_passable] = ValNumber.one;
+			result.map[_type] = _unknown;
 
 			// check farmers
-			if (Game1.player.currentLocation == loc && Game1.player.getTileLocation() == xy) return ToMap(Game1.player);
+			if (Game1.player.currentLocation == loc && Game1.player.getTileLocation() == xy) return ToMap(Game1.player, result, passableOnly);
 			foreach (var farmer in Game1.otherFarmers.Values) {
-				if (farmer.currentLocation == loc && farmer.getTileLocation() == xy) return ToMap(farmer);
+				if (farmer.currentLocation == loc && farmer.getTileLocation() == xy) return ToMap(farmer, result, passableOnly);
 			}
 
 			// check NPCs
 			foreach (var character in loc.characters) {
 				if (character.getTileLocation() == xy) {
-					return ToMap(character);
+					return ToMap(character, result, passableOnly);
 				}
 			}
 
 			// check objects
 			StardewValley.Object obj = null;
 			loc.objects.TryGetValue(xy, out obj);
-			if (obj != null) return ToMap(obj);
+			if (obj != null) {
+				result.map[_passable] = ValNumber.zero;
+				if (passableOnly) return result;
+				return ToMap(obj, result);
+			}
 
 			// check for buildings in the buildings list (which are not always in the buildings layer!)
 			if (loc is BuildableGameLocation) {
@@ -190,9 +206,9 @@ namespace Farmtronics.M1 {
 				foreach (var b in bl.buildings) {
 					if (xy.X >= b.tileX.Value && xy.X < b.tileX.Value + b.tilesWide.Value
 							&& xy.Y >= b.tileY.Value && xy.Y < b.tileY.Value + b.tilesHigh.Value) {
-						var result = new ValMap();
 						result.map[_type] = new ValString("Building");
 						result.map[_name] = new ValString(b.buildingType.ToString());
+						result.map[_passable] = ValNumber.zero;
 						return result;
                     }
                 }
@@ -201,20 +217,19 @@ namespace Farmtronics.M1 {
 			// check terrain features
 			TerrainFeature feature = null;
 			loc.terrainFeatures.TryGetValue(xy, out feature);
-			if (feature != null) return ToMap(feature);
+			if (feature != null) return ToMap(feature, result, passableOnly);
 
 			// check LARGE terrain features
 			// (not 100% certain we need to check these separately, but maybe)
-			var xyBounds = new Rectangle((int)(xy.X*64), (int)(xy.Y*64), 64, 64);
+			var absoluteXy = xy.GetAbsolutePosition();
+			var xyBounds = new Rectangle(absoluteXy.GetIntX(), absoluteXy.GetIntY(), Game1.tileSize, Game1.tileSize);
 			foreach (LargeTerrainFeature ltf in loc.largeTerrainFeatures) {
-				if (ltf.getBoundingBox().Intersects(xyBounds)) return ToMap(ltf);
+				if (ltf.getBoundingBox().Intersects(xyBounds)) return ToMap(ltf, result, passableOnly);
 			}
 
 			// check resource clumps (these span multiple tiles)
-			var bbox = new Rectangle((int)xy.X * 64, (int)xy.Y * 64, 64, 64);
-			foreach (var clump in loc.resourceClumps) {
-				if (clump.getBoundingBox(clump.tile.Value).Intersects(bbox)) return ToMap(clump);
-			}
+			var clump = loc.GetCollidingResourceClump(absoluteXy);
+			if (clump != null) return ToMap(clump, result, passableOnly);
 
 			// check water and other such terrain properties
 			int x = (int)xy.X;
@@ -225,37 +240,44 @@ namespace Farmtronics.M1 {
 				if (loc.doesTileHaveProperty(x, y, prop, "Back") != null) hasProp = prop;
 			}
 			if (!string.IsNullOrEmpty(hasProp)) { 
-				var result = new ValMap();
+				result.map[_passable] = ValNumber.zero;
 				result.map[_type] = new ValString("Property");
 				result.map[_name] = new ValString(hasProp);
 				return result;
 			}
 
 			// check buildings (any not covered above -- such as the cabin)
-			var tileLocation = new xTile.Dimensions.Location(x*64, y*64);
+			var tileLocation = new xTile.Dimensions.Location(x*Game1.tileSize, y*Game1.tileSize);
 			var buildings_layer = loc.map.GetLayer("Buildings");
 			var tmp = buildings_layer.PickTile(tileLocation, Game1.viewport.Size);
 			if (tmp != null) {
-				var result = new ValMap();
 				result.map[_type] = new ValString("Building");
 				result.map[_name] = result.map[_type];
-				if (loc.doesTileHaveProperty(x, y, "Passable", "Buildings") != null) result.map[new ValString("passable")] = ValNumber.one;
-				if (loc.doesTileHaveProperty(x, y, "Action", "Buildings") != null) result.map[new ValString("action")] = ValNumber.one;
-
+				var p = loc.doesTileHaveProperty(x, y, "Passable", "Buildings");
+				if (!string.IsNullOrEmpty(p)) result.map[_passable] = ValNumber.one;
+				if (!passableOnly) {
+					p = loc.doesTileHaveProperty(x, y, "Action", "Buildings");
+					if (!string.IsNullOrEmpty(p)) result.map[new ValString("action")] = new ValString(p);
+				}
 				return result;
 			}
 
 			// for debugging: check properties in various layers
 			string[] layers = {"Front", "Back", "Buildings", "Paths", "AlwaysFront"};
 			foreach (string layer in layers) {
-				var tile = loc.map.GetLayer(layer).PickTile(tileLocation, Game1.viewport.Size);
+				var mapLayer = loc.map.GetLayer(layer);
+				if (mapLayer == null) continue;
+				var tile = mapLayer.PickTile(tileLocation, Game1.viewport.Size);
 				if (tile == null) continue;
 				foreach (var kv in tile.TileIndexProperties) {
 					ModEntry.instance.Monitor.Log($"layer {layer}, {kv.Key} = {kv.Value}");
                 }
             }
 
-			return null;
+			// If there is nothing at all of interest, return null rather
+			// than a map that contains only passable:true (and a type).
+			if (result.map[_passable].BoolValue()) return null;
+			return result;
 		}
 
 	}

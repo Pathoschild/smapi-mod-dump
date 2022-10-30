@@ -79,7 +79,6 @@ namespace HDPortraits
             foreach ((string id, MetadataModel meta) in backupPortraits)
             {
                 meta.originalPath = "Portraits/" + id;
-                meta.Reload();
                 failedPaths.Remove(id);
             }
         }

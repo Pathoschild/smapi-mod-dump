@@ -24,8 +24,6 @@
     "Shane": "FullyPlatonic"
   },
   "CustomPlatonicLabels": true,
-  "CustomRomanticLabels": false,
-  "EditDialogue": true,
   "AlwaysAdopt": true,
   "LovePortraits": true,
   "EditSprites": true,
@@ -34,6 +32,7 @@
   "EditPortraits_FullyPlatonic": true,
   "EditPortraits_RomanceWithoutSex": false,
   "EditPortraits_SexWithoutRomance": true,
+  "CustomRomanticLabels": "off",
   "PlatonicLabel_bouquet": "best friend",
   "PlatonicLabel_housemate": "partner",
   "RomanticLabel_bouquet": "dating",

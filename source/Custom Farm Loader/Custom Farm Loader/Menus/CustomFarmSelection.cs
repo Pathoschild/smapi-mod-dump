@@ -133,35 +133,7 @@ namespace Custom_Farm_Loader.Menus
         {
             Game1.playSound("shwip");
             this.CustomFarms = CustomFarm.getAll();
-
-            if (ModFarms.Count() == 0) {
-                List<ModFarmType> modFarms = Game1.content.Load<List<ModFarmType>>("Data\\AdditionalFarms");
-
-                foreach (ModFarmType farm in modFarms) {
-                    if (CustomFarm.get(farm.ID) != null)
-                        continue;
-
-                    ModFarms.Add(farm);
-
-                    CustomFarm newCustomFarm = new CustomFarm(farm);
-
-                    newCustomFarm.ID = farm.ID;
-                    if (farm.MapName != "")
-                        newCustomFarm.Name = farm.MapName.Replace("_", " ");
-                    if (farm.TooltipStringPath != "")
-                        newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath);
-                    if (farm.IconTexture != "")
-                        newCustomFarm.Icon = Helper.GameContent.Load<Texture2D>(farm.IconTexture);
-                    if (farm.WorldMapTexture != null)
-                        newCustomFarm.WorldMapOverlay = Helper.GameContent.Load<Texture2D>(farm.WorldMapTexture);
-                    if (farm.ID.Contains("."))
-                        newCustomFarm.Author = farm.ID.Split(".").First();
-
-                    CustomFarms.Add(newCustomFarm);
-                }
-
-                CustomFarms = CustomFarms.OrderBy(o => o.Name).ToList();
-            }
+            loadModFarms();
 
             if (Game1.whichFarm == 7)
                 CurrentCustomFarm = CustomFarms.Find(e => e.ID == Game1.whichModFarm.ID);
@@ -170,6 +142,82 @@ namespace Custom_Farm_Loader.Menus
             currentItemIndex = 0;
             setScrollBarToCurrentIndex();
             updateCustomFarmButtonNeighbors();
+        }
+
+        private void loadModFarms()
+        {
+            ModFarms = new List<ModFarmType>();
+            List<ModFarmType> modFarms = Game1.content.Load<List<ModFarmType>>("Data\\AdditionalFarms");
+
+            foreach (ModFarmType farm in modFarms) {
+                if (CustomFarm.get(farm.ID) != null)
+                    continue;
+
+                ModFarms.Add(farm);
+                CustomFarm newCustomFarm = new CustomFarm(farm);
+
+                newCustomFarm.ID = farm.ID;
+                if (farm.MapName != "")
+                    newCustomFarm.Name = farm.MapName.Replace("_", " ");
+
+                if (farm.TooltipStringPath != "")
+                    try { newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath); } catch (Exception) {
+                        Monitor.LogOnce($"Unable to load tooltip asset '{farm.TooltipStringPath}' for {farm.ID}; Resorting to default", LogLevel.Warn);
+                    }
+                if (farm.IconTexture != "") {
+                    try {
+                        newCustomFarm.Icon = Helper.GameContent.Load<Texture2D>(farm.IconTexture);
+                    } catch (Exception) {
+                        Monitor.LogOnce($"Unable to load farm icon asset '{farm.IconTexture}' for {farm.ID}; Resorting to default", LogLevel.Warn);
+                    }
+                }
+
+                if (farm.WorldMapTexture != null) {
+                    try {
+                        newCustomFarm.WorldMapOverlay = loadKnownWorldMapExceptions(farm);
+                        if (newCustomFarm.WorldMapOverlay == null)
+                            newCustomFarm.WorldMapOverlay = Helper.GameContent.Load<Texture2D>(farm.WorldMapTexture);
+                    } catch (Exception) {
+                        Monitor.LogOnce($"Unable to load world map asset '{farm.WorldMapTexture}' for {farm.ID}; Resorting to default", LogLevel.Warn);
+                    }
+
+                }
+
+                if (farm.ID.Contains("."))
+                    newCustomFarm.Author = farm.ID.Split(".").First();
+
+                CustomFarms.Add(newCustomFarm);
+            }
+
+            CustomFarms = CustomFarms.OrderBy(o => o.Name).ToList();
+        }
+
+        //Some custom farm maps have complicated logic where they want to display the world map depending on season and whether SVE is installed
+        //This is a hard coded way for CFL to still be able to display them properly during farm selection
+        //despite not really having access to CP logic
+        private Texture2D loadKnownWorldMapExceptions(ModFarmType modFarm)
+        {
+            Dictionary<string, string[]> knownWorldMapExceptions
+             = new Dictionary<string, string[]> {
+                 { "A_TK.FarmProjectForaging/WaFF", new[] { "A_TK.FarmProjectForaging", "assets/world_map/_default_SV/all_WaFF.png" } },
+                 { "A_TK.FarmProjectForaging/WaFFLE", new[] { "A_TK.FarmProjectForaging", "assets/world_map/_default_SV/all_WaFFLE.png" } }
+             };
+
+            if (!knownWorldMapExceptions.ContainsKey(modFarm.ID))
+                return null;
+
+            var map = knownWorldMapExceptions[modFarm.ID];
+            var path = UtilityMisc.getRelativeModDirectory(map[0]);
+
+            Monitor.LogOnce($"Found '{modFarm.ID}' as part of known world map excetions. Attempting hard coded load in '{path}\\{map[1]}'");
+
+            try {
+                return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
+            } catch (Exception ex) {
+                Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.ID}'");
+            }
+
+            return null;
         }
 
         private void assignCurrentFarmPreview()
@@ -430,19 +478,17 @@ namespace Custom_Farm_Loader.Menus
 
             string localizedDescription = Game1.content.LoadString(CurrentCustomFarm.asModFarmType().TooltipStringPath);
 
-            //string description = localizedDescription.Count() > 70 ? localizedDescription.Substring(0, 67) + " (...)" : localizedDescription;
-
             if (localizedDescription.Count() > 70)
                 drawDescription(b, localizedDescription,
                     x: previewRectangle.X + previewRectangle.Width + 16,
                     y: yPositionOnScreen + height - 216 + 30,
-                    width: (int)Math.Round(width * 0.6) - 20);
+                    width: (int)Math.Round(width * 0.6) - 40);
             else
                 SpriteText.drawString(b, localizedDescription,
                     x: previewRectangle.X + previewRectangle.Width + 16,
                     y: yPositionOnScreen + height - 216 + 30,
                     characterPosition: 999999,
-                    width: (int)Math.Round(width * 0.6) - 20,
+                    width: (int)Math.Round(width * 0.6) - 40,
                     height: 1
                     );
 

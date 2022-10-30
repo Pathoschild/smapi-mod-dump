@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+    "Name": "Groundwater Collector",
+    "Description": "Diamond drill down to the ground. Fresh water ready for ya!",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 335,
+                "Count": 10
+            },
+			{
+				"Object": 72,
+                "Count": 1
+			},
+			{
+				"Object": 787,
+				"Count": 2
+			}
+        ],
+		"CanPurchase": true,
+		"PurchaseFrom": "Robin",
+		"PurchasePrice": 10000,
+		"PurchaseRequirements": null
+    }
+}

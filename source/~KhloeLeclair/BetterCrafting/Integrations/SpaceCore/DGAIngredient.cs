@@ -22,11 +22,9 @@ using StardewModdingAPI;
 
 using StardewValley;
 
-using SObject = StardewValley.Object;
-
 namespace Leclair.Stardew.BetterCrafting.Integrations.SpaceCore;
 
-public class DGAIngredient : IIngredient {
+public class DGAIngredient : IOptimizedIngredient {
 
 	private readonly ModEntry Mod;
 	public readonly object Ingredient;
@@ -73,26 +71,10 @@ public class DGAIngredient : IIngredient {
 
 	public int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
 		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality);
-		/*int amount = 0;
+	}
 
-		if (who != null)
-			foreach (var item in who.Items) {
-				int quality = item is SObject obj ? obj.Quality : 0;
-				if (quality <= maxQuality && ItemMatcher(item))
-					amount += item.Stack;
-			}
-
-		if (items != null)
-			foreach (var item in items) {
-				if (item is null)
-					continue;
-
-				int quality = item is SObject obj ? obj.Quality : 0;
-				if (quality <= maxQuality && ItemMatcher(item))
-					amount += item.Stack;
-			}
-
-		return amount;*/
+	public bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+		return InventoryHelper.CountItem(ItemMatcher, who, items, out bool _, max_quality: maxQuality, limit: quantity) >= quantity;
 	}
 
 	public void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst) {

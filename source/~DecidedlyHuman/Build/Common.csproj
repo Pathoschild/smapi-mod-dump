@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
+    <Nullable>enable</Nullable>
+    <Author>DecidedlyHuman</Author>
+    <UniqueId>$(Author).$(AssemblyName)</UniqueId>
+    <EntryDll>$(AssemblyName)</EntryDll>
+    <EnableModZip Condition="'$(Configuration)' == 'Debug' ">False</EnableModZip>
+    <LangVersion>10</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1"/>
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0"/>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3"/>
+    <Using Alias="SObject" Include="StardewValley.Object"/>
+  </ItemGroup>
+
+</Project>

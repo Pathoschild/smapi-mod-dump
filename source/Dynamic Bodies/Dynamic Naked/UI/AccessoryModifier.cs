@@ -22,6 +22,7 @@ using StardewValley;
 using StardewModdingAPI;
 
 using DynamicBodies.Data;
+using HarmonyLib;
 
 namespace DynamicBodies.UI
 {
@@ -101,7 +102,7 @@ namespace DynamicBodies.UI
 
 		public AccessoryModifier(bool isWizardSubmenu = false) : base(Game1.uiViewport.Width / 2 - (632 + IClickableMenu.borderWidth* 2) / 2, Game1.uiViewport.Height / 2 - (windowHeight + IClickableMenu.borderWidth* 2) / 2 - 64, 632 + IClickableMenu.borderWidth* 2, windowHeight + IClickableMenu.borderWidth* 2 + 64)
 		{
-			CharacterBackgroundRect = new Rectangle(96, 32, 32, 48);
+			CharacterBackgroundRect = new Rectangle(0, 80, 32, 48);
 
 			who = Game1.player;
 
@@ -117,18 +118,23 @@ namespace DynamicBodies.UI
 
 			//Store settings for resetting
 			settingsBefore["acc"] = who.accessory.ToString();
-            while (who.modData.ContainsKey("DB.trinket" + currentTrinket) && currentTrinket < 5)
+            for (int i = 0; i < 5; i++)
             {
-				settingsBefore["DB.trinket" + currentTrinket] = who.modData["DB.trinket" + currentTrinket];
-				if(who.modData.ContainsKey("DB.trinket" + currentTrinket + "_c1"))
-                {
-					settingsBefore["DB.trinket" + currentTrinket + "_c1"] = who.modData["DB.trinket" + currentTrinket + "_c1"];
-				}
-				if (who.modData.ContainsKey("DB.trinket" + currentTrinket + "_c2"))
+				if (who.modData.ContainsKey("DB.trinket" + i))
 				{
-					settingsBefore["DB.trinket" + currentTrinket + "_c2"] = who.modData["DB.trinket" + currentTrinket + "_c2"];
-				}
-				currentTrinket++;
+					settingsBefore["DB.trinket" + i] = who.modData["DB.trinket" + i];
+					if (who.modData.ContainsKey("DB.trinket" + i + "_c1"))
+					{
+						settingsBefore["DB.trinket" + i + "_c1"] = who.modData["DB.trinket" + i + "_c1"];
+					}
+					if (who.modData.ContainsKey("DB.trinket" + i + "_c2"))
+					{
+						settingsBefore["DB.trinket" + i + "_c2"] = who.modData["DB.trinket" + i + "_c2"];
+					}
+				} else
+				{
+                    settingsBefore["DB.trinket" + i] = "Default";
+                }
 			}
 			currentTrinket = 0;
 
@@ -616,8 +622,10 @@ namespace DynamicBodies.UI
 						who.isCustomized.Value = true;
 						if (everythingOwned)
 						{
+                            //Set the new items ownership
+                            who.modData["trinket_owned"] = string.Join(",", ownedTrinkets);
 
-							if (isWizardSubmenu)
+                            if (isWizardSubmenu)
 							{
 								Game1.activeClickableMenu = new WizardCharacterCharacterCustomization();
 								Game1.playSound("shwip");
@@ -1218,12 +1226,6 @@ namespace DynamicBodies.UI
 			}
 		}
 
-
-		public bool canPay(int cost)
-		{
-			return who.Money >= cost;
-		}
-
 		//Draw the menu and its various buttons
 		public override void draw(SpriteBatch b)
 		{
@@ -1231,7 +1233,7 @@ namespace DynamicBodies.UI
 			Game1.drawDialogueBox(base.xPositionOnScreen, base.yPositionOnScreen, base.width, base.height, speaker: false, drawOnlyBox: true, null, objectDialogueWithPortrait: false, ignoreTitleSafe);
 			//b.Draw(Game1.daybg, new Vector2(this.portraitBox.X, this.portraitBox.Y), Color.White);
 			
-			//Draw hospital back
+			//Draw Haley back
 			b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), CharacterBackgroundRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
 			//Draw frame over
 			b.Draw(UItexture, new Vector2(this.portraitBox.X, this.portraitBox.Y), new Rectangle(0, 32, 32, 48), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.8f);
@@ -1262,7 +1264,7 @@ namespace DynamicBodies.UI
 				IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), costLabel.bounds.X - costLabel.bounds.Width / 2, costLabel.bounds.Y, costLabel.bounds.Width, costLabel.bounds.Height, (costLabel.containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY())) ? purchase_selected_color : Color.White, 4f, drawShadow: false);
 
 				//Draw the coin icon
-				b.Draw(Game1.mouseCursors, new Vector2((costLabel.bounds.X + costLabel.bounds.Width / 2f) - Game1.smallFont.MeasureString(costLabel.name).X / 2f+4f, costLabel.bounds.Y + 24), new Rectangle(193, 373, 9, 9), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.8f);
+				b.Draw(Game1.mouseCursors, new Vector2(costLabel.bounds.X + Game1.smallFont.MeasureString(costLabel.name).X / 2f+4f, costLabel.bounds.Y + 24), new Rectangle(193, 373, 9, 9), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.8f);
 			}
 
 			foreach (ClickableTextureComponent leftSelectionButton in this.leftSelectionButtons)

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Building data
+    *********/
+    "spooky-shed.name": "Моторошний сарай",
+    "spooky-shed.description": "Порожня будівля. Але й моторошна.",
+
+    "fishing-shack.name": "Рибальський курінь",
+    "fishing-shack.description": "Курінь для риболовлі.",
+
+    "mini-spa.name": "Мінісауна",
+    "mini-spa.description": "Місце для відпочинку та відновлення."
+}

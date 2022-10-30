@@ -35,6 +35,7 @@ mods:
    Json Assets
    Jump Over
    Junimos Accept Cash
+   Literally Can't Even
    Luck Skill
    Magic
    Mana Bar
@@ -53,9 +54,12 @@ mods:
    Realtime Minimap
    Responsive Knockback
    Rush Orders
+   Sharing is Caring
+   Sizable Fish
    Sleepy Eye
    SpaceCore
    Spenny
+   Spenny Lite
    Statue of Generosity
    Super Hopper
    Surfing Festival
@@ -64,9 +68,12 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit ecce04c901e8de479bd7ec80e98177043fdf3959
-   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Tue Sep 20 00:02:52 2022 -0400
+   commit c1fe95ca11d238c494988f5d73e8c95b4515b33c
+   Merge: b7d6414f 2389cc6d
+   Author: Casey W <spacechase0@users.noreply.github.com>
+   Date:   Sat Oct 29 21:07:20 2022 -0400
    
-       omelet
+       Merge pull request #315 from atravita-mods/gmcm-depre
+       
+       log which method was deprecated, sigh
    

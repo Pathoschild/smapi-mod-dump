@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14273
+IDs: aedenthorn.GiftRejection
+update keys: Nexus:14273, GitHub:aedenthorn/StardewValleyMods

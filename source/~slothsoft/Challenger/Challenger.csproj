@@ -1,0 +1,13 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <RootNamespace>Slothsoft.Challenger</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\build\common.targets" />
+
+  <ItemGroup>
+    <Reference Include="0Harmony" HintPath="$(GamePath)\smapi-internal\0Harmony.dll" />
+    <Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" />
+  </ItemGroup>
+</Project>

@@ -44,7 +44,13 @@ namespace BetterBeehouses
         public bool UseGiantCrops { get; set; } = true;
         public bool UseFruitTrees { get; set; } = true;
         public bool UseRandomFlower { get; set; } = false;
-        public bool FlowerCountSpeed { get; set; } = false;
+        public bool UseFlowerBoost { get; set; } = false;
+        public int FlowersPerBoost
+        {
+            get => flowerBoost;
+            set => flowerBoost = Math.Max(value, 1);
+        }
+        private int flowerBoost = 2;
 
         private ITranslationHelper i18n => ModEntry.helper.Translation;
 
@@ -64,6 +70,11 @@ namespace BetterBeehouses
             CapFactor = 700;
             CapCurve = 0f;
             BearBoost = 1f;
+            UseGiantCrops = true;
+            UseFruitTrees = true;
+            UseRandomFlower = false;
+            UseFlowerBoost = false;
+            FlowersPerBoost = 2;
         }
 
         public void ApplyConfig()
@@ -140,6 +151,37 @@ namespace BetterBeehouses
                 () => i18n.Get("config.bearBoost.name"),
                 () => i18n.Get("config.bearBoost.desc"),
                 1f, 3f, .05f
+            );
+            api.AddBoolOption(manifest,
+                () => UseRandomFlower,
+                (b) => UseRandomFlower = b,
+                () => i18n.Get("config.useRandomFlower.name"),
+                () => i18n.Get("config.useRandomFlower.desc")
+            );
+            api.AddBoolOption(manifest,
+                () => UseGiantCrops,
+                (b) => UseGiantCrops = b,
+                () => i18n.Get("config.useGiantCrops.name"),
+                () => i18n.Get("config.useGiantCrops.desc")
+            );
+            api.AddBoolOption(manifest,
+                () => UseFruitTrees,
+                (b) => UseFruitTrees = b,
+                () => i18n.Get("config.useFruitTrees.name"),
+                () => i18n.Get("config.useFruitTrees.desc")
+            );
+            api.AddBoolOption(manifest,
+                () => UseFlowerBoost,
+                (b) => UseFlowerBoost = b,
+                () => i18n.Get("config.useFlowerBoost.name"),
+                () => i18n.Get("config.useFlowerBoost.desc")
+            );
+            api.AddNumberOption(manifest, 
+                () => FlowersPerBoost,
+                (n) => FlowersPerBoost = n,
+                () => i18n.Get("config.flowersPerBoost.name"),
+                () => i18n.Get("config.flowersPerBoost.desc"),
+                1, 8, 1
             );
             api.AddPageLink(manifest, "price", () => i18n.Get("config.price.name"), () => i18n.Get("config.price.desc"));
             api.AddPageLink(manifest, "integration", () => i18n.Get("config.integration.name"), () => i18n.Get("config.integration.desc"));

@@ -7,9 +7,9 @@ mods:
    Json Processor
 
 latest commit:
-   commit 546d2b13e2a1b486068d8cc2208775867c40d7b1
+   commit 5a3a1c0730a801c79d86b228e6ce19682e3d7f45
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Thu Aug 11 22:13:58 2022 -0400
+   Date:   Fri Sep 30 20:59:51 2022 -0400
    
-       Add a (somewhat bare) release-notes.md for CPJP
+       add an update manifest (for testing out SMAPI changes)
    

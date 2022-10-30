@@ -6,9 +6,12 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit b6265ae2cee51c1f6d58974c971a149583712013
+   commit b6d582ccd8fcfb4afe84bb2fc38e1b1b9c7380a7
+   Merge: 00e3b6c 3360ca6
    Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Mon Sep 19 15:54:12 2022 +0200
+   Date:   Sun Oct 16 23:19:17 2022 +0200
    
-       Update status of German translation
+       Merge pull request #234 from tqdv/fix-item-tooltip-zoom
+       
+       Display the tooltip correctly for the zoom level
    

@@ -130,8 +130,12 @@ namespace LoveOfCooking.HarmonyPatches
 						motion = new Vector2(0f, -0.1f)
 					};
 					Game1.currentLocation.temporarySprites.Add(sprite);
+					return false;
 				}
-				return false;
+				else
+				{
+					return true;
+				}
 			}
 			catch (Exception ex)
 			{

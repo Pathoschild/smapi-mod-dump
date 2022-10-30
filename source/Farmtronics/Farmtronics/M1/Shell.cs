@@ -15,21 +15,32 @@ the user.
 */
 
 using System.Collections.Generic;
-using System.IO;
-using StardewModdingAPI;
-using Miniscript;
-using Microsoft.Xna.Framework;
 using Farmtronics.Bot;
-using Farmtronics.Utils;
 using Farmtronics.M1.Filesystem;
 using Farmtronics.M1.GUI;
+using Farmtronics.Utils;
+using Microsoft.Xna.Framework;
+using Miniscript;
+using StardewModdingAPI;
 
 namespace Farmtronics.M1 {
 	class Shell {
+		private long playerID;
+		public DiskController Disks => DiskController.GetDiskController(playerID);
 		static Value _bootOpts = new ValString("bootOpts");
 		static Value _controlC = new ValString("controlC");
 		public Console console { get; private set; }
 		public BotObject bot {  get; private set; }
+		
+		private string _name;
+		public string name {
+			get { return bot == null ? _name : bot.name; }
+			set {
+				_name = value;
+				if (bot != null) bot.Name = bot.DisplayName = value;
+			}
+		}
+
 		public bool allowControlCBreak {
 			get {
 				ValMap bootOpts = env.Lookup(_bootOpts) as ValMap;
@@ -47,28 +58,28 @@ namespace Farmtronics.M1 {
 		public bool runProgram;
 		public string inputReceived;		// stores input while app is running, for _input intrinsic
 
-		Disk sysDisk;
-
 		ValString curStatusColor;
 		ValString curScreenColor;
 
 		public TextDisplay textDisplay {  get {  return console.display; } }
-		
+
+		ValList stackAtLastErr;
+
 		public Shell() {
 			console = new Console(this);
 
 			// prepare the interpreter
-			interpreter = new Interpreter(null, PrintLineWithTaskCheck, PrintLine);
+			interpreter = new Interpreter(null, PrintLineWithTaskCheck, PrintErrLine);
 			interpreter.implicitOutput = PrintLine;
 			interpreter.hostData = this;
 		}
 
-		public void Init(BotObject botContext=null) {
+		public void Init(long playerID, BotObject botContext=null) {
+			this.playerID = playerID;
 			this.bot = botContext;
 			M1API.Init(this);
 
 			var display = console.display;
-			display.backColor = new Color(0.31f, 0.11f, 0.86f);
 			display.Clear();
 
 			var colors = new Color[] { Color.Red, Color.Yellow, Color.Green, Color.Purple };
@@ -89,23 +100,21 @@ namespace Farmtronics.M1 {
 				AddGlobals();
 			}
 
-			{
-				var d = new RealFileDisk();
-				d.readOnly = true;
-				d.Open(Path.Combine(ModEntry.instance.Helper.DirectoryPath, "assets", "sysdisk"));
-				sysDisk = d;
-				FileUtils.disks["sys"] = sysDisk;
-			}
-			if (!string.IsNullOrEmpty(Constants.CurrentSavePath)) {
-				var d = new RealFileDisk();
+			if (Context.IsMainPlayer) {
+				var d = new RealFileDisk(SaveData.GetUsrDiskPath(playerID));
 				d.readOnly = false;
-				d.Open(Path.Combine(Constants.CurrentSavePath, "usrdisk"));
-				FileUtils.disks["usr"] = d;
+				Disks.AddDisk("usr", d);
+				Disks.AddDisk("net", new SharedRealFileDisk("net", SaveData.NetDiskPath));
+			}
+			else {
+				Disks.AddDisk("usr", new MemoryFileDisk("usr"));
+				Disks.AddDisk("net", new MemoryFileDisk("net", true));
 			}
 
 			// Prepare the env map
 			env = new ValMap();
-			if (FileUtils.disks.ContainsKey("usr") && FileUtils.disks["usr"] != null) {
+			string diskName = "/usr";
+			if (Disks.GetDisk(ref diskName) != null) {
 				env["curdir"] = new ValString("/usr/");
 			} else {
 				env["curdir"] = new ValString("/sys/demo");
@@ -133,20 +142,22 @@ namespace Farmtronics.M1 {
 
 			// /sys/startup.ms
 
-			string startupScript = sysDisk.ReadText("startup.ms");
+			string startupScript = ModEntry.sysDisk.ReadText("startup.ms");
 			if (!string.IsNullOrEmpty(startupScript)) {
 				try {
 					FixHostInfo();
 					interpreter.REPL(startupScript);
 				} catch (System.Exception err) {
-					ModEntry.instance.Monitor.Log("Error running /sys/startup.ms: " + err.ToString());
+					ModEntry.instance.Monitor.Log("Error running /sys/startup.ms: " + err.ToString(), LogLevel.Error);
 				}
 			}
 
 			// /usr/startup.ms
-			if (FileUtils.disks.ContainsKey("usr") && FileUtils.disks["usr"] != null) {
+			string diskName = "/usr";
+			Disk usrDisk = Disks.GetDisk(ref diskName);
+			if (usrDisk != null) {
 				//ModEntry.instance.Monitor.Log("About to read startup.ms");
-				startupScript = FileUtils.disks["usr"].ReadText("startup.ms");
+				startupScript = usrDisk.ReadText("startup.ms");
 				if (!string.IsNullOrEmpty(startupScript)) BeginRun(startupScript);
 			}
 
@@ -205,7 +216,7 @@ namespace Farmtronics.M1 {
 		/// </summary>
 		public string ResolvePath(string path, out string error) {
 			string curdir = GetEnv("curdir").ToString();
-			return FileUtils.ResolvePath(curdir, path, out error);
+			return DiskUtils.ResolvePath(curdir, path, out error);
 		}
 	
 		public Value GetEnv(string key) {
@@ -252,7 +263,7 @@ namespace Farmtronics.M1 {
 			try {
 				interpreter.Compile();
 			} catch (MiniscriptException me) {
-				ModEntry.instance.Monitor.Log("Caught MiniScript exception: " + me);
+				ModEntry.instance.Monitor.Log("Caught MiniScript exception: " + me, LogLevel.Error);
 			}
 			if (interpreter.vm == null) interpreter.REPL("", 0);
 			interpreter.vm.globalContext.variables = globals;
@@ -261,7 +272,7 @@ namespace Farmtronics.M1 {
 			if (interpreter.NeedMoreInput()) {
 				// If the interpreter wants more input at this point, it's because the program
 				// has an unterminated if/while/for/function block.  Let's just cancel the run.
-				ModEntry.instance.Monitor.Log("Canceling run in BeginRun");
+				ModEntry.instance.Monitor.Log("Canceling run in BeginRun", LogLevel.Warn);
 				Break(true);
 			}		
 		}
@@ -276,7 +287,8 @@ namespace Farmtronics.M1 {
 			if (!silent && !allowControlCBreak) return;
 		
 			// grab the full stack and tuck it away for future reference
-			ValList stack = M1API.StackList(interpreter.vm);
+			ValList stack = stackAtLastErr;
+			if (stack == null) stack = M1API.StackList(interpreter.vm);
 		
 			// also find the first non-null entry, to display right away
 			SourceLoc loc = null;
@@ -320,11 +332,12 @@ namespace Farmtronics.M1 {
 					string keyStr = key.ToString();
 					if (keyStr == "_") return false;
 					//ModEntry.instance.Monitor.Log($"global {key} = {value}");
-					if (keyStr == "statusColor") {		// DEPRECATED: now in bot module
+					if (keyStr == "statusColor") {		// DEPRECATED: now in me module
 						bot.statusColor = value.ToString().ToColor();
-					} else if (keyStr == "screenColor") {
-						console.backColor = value.ToString().ToColor();
+					} else if (keyStr == "screenColor") {		// DEPRECATED: now in me module
+						bot.screenColor = value.ToString().ToColor();
 					}
+					bot.data.Update();
 					return false;	// allow the assignment
 				};
 			} else {
@@ -333,7 +346,7 @@ namespace Farmtronics.M1 {
 					string keyStr = key.ToString();
 					if (keyStr == "_") return false;
 					//ModEntry.instance.Monitor.Log($"global {key} = {value}");
-					if (keyStr == "screenColor") {
+					if (keyStr == "screenColor") {		// DEPRECATED: now in me module
 						console.backColor = value.ToString().ToColor();
 					}
 					return false;	// allow the assignment
@@ -349,8 +362,8 @@ namespace Farmtronics.M1 {
 	
 		public void Exit() {
 			if (interpreter.Running()) {
-				//interpreter.vm.globalContext.variables.SetElem(MiniMicroAPI._stackAtBreak, 
-				//	MiniMicroAPI.StackList(interpreter.vm));
+				interpreter.vm.globalContext.variables.SetElem(M1API._stackAtBreak, 
+					M1API.StackList(interpreter.vm));
 				interpreter.Stop();
 			}
 		}
@@ -359,6 +372,16 @@ namespace Farmtronics.M1 {
 			TextDisplay disp = console.display;
 			disp.Print(line);
 			disp.Print(disp.delimiter);
+		}
+
+		public void PrintErrLine(string line) {
+			if (interpreter.vm != null) {
+				stackAtLastErr = M1API.StackList(interpreter.vm);
+				interpreter.vm.globalContext.variables.SetElem(M1API._stackAtBreak, stackAtLastErr);
+			} else {
+				stackAtLastErr = new ValList();	// empty list signifies error without a VM, e.g. at compile time.
+			}
+			PrintLine(line);
 		}
 
 		void PrintLineWithTaskCheck(string line) {

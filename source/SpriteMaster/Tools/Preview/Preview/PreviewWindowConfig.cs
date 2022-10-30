@@ -25,7 +25,7 @@ internal abstract class PreviewWindowConfig : IDisposable {
 		ConfigType = configType;
 		Window = window;
 
-		PopulateWindow();
+		//PopulateWindow();
 	}
 
 	private void OnScaleChanged(uint scale) {

@@ -6,9 +6,9 @@ mods:
    Stop Sounds When in Background
 
 latest commit:
-   commit b424270209e647e952994896e39d799810e65c88
+   commit 6d23c4de61a6a8906984de89f6756df829b33b32
    Author: mustafa-git <89876073+mustafa-git@users.noreply.github.com>
-   Date:   Tue Sep 27 09:48:38 2022 +0200
+   Date:   Mon Oct 3 09:44:34 2022 +0200
    
        Update manifest.json
        

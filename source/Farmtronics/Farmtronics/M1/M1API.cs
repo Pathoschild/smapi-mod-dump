@@ -15,8 +15,10 @@ custom intrinsic functions/classes for use on the M-1.
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using Farmtronics.M1.Filesystem;
 using Farmtronics.M1.GUI;
+using Farmtronics.Multiplayer.Messages;
 using Farmtronics.Utils;
 using Microsoft.Xna.Framework;
 using Miniscript;
@@ -24,6 +26,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
+using M1FileInfo = Farmtronics.M1.Filesystem.FileInfo;
 
 namespace Farmtronics.M1 {
 	static class M1API  {
@@ -39,6 +42,8 @@ namespace Farmtronics.M1 {
 		static ValString _handle = new ValString("_handle");
 
 		public static ValMap locationsMap;	// key: name; value: Location subclass
+
+		static double lastBotWarnTime = -9999;
 
 		public static void Init(Shell shell) {
 			M1API.shell = shell;
@@ -81,8 +86,19 @@ namespace Farmtronics.M1 {
 			f = Intrinsic.Create("bot");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				double now = Game1.currentGameTime.TotalGameTime.TotalSeconds;
+				if (now - lastBotWarnTime > 60*10) {
+					sh.PrintLine("`bot` is deprecated; please use `me` instead");
+					lastBotWarnTime = now;
+				}
 				if (sh.bot == null) return Intrinsic.Result.Null;
-				return new Intrinsic.Result(BotModule());
+				return new Intrinsic.Result(MeModule());
+			};
+
+			f = Intrinsic.Create("me");
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
+				return new Intrinsic.Result(MeModule());
 			};
 
 			f = Intrinsic.Create("env");
@@ -187,7 +203,7 @@ namespace Farmtronics.M1 {
 					path += libname + ".ms";
 					string err;
 					path = sh.ResolvePath(path, out err);
-					Disk disk = FileUtils.GetDisk(ref path);
+					Disk disk = shell.Disks.GetDisk(ref path);
 					if (disk == null) continue;
 					lines = disk.ReadLines(path);
 					if (lines != null) break;
@@ -295,89 +311,141 @@ namespace Farmtronics.M1 {
 			f.code = (context, partialResult) => {
 				return new Intrinsic.Result(WorldInfo());
 			};
+
+			// stackTrace: get a list describing the call stack.
+			f = Intrinsic.Create("stackTrace");
+			f.code = (context, partialResult) => {
+				TAC.Machine vm = context.vm;
+				if (vm.globalContext.variables.ContainsKey(_stackAtBreak)) {
+					// We have a stored stack from a break or exit.
+					// So, display that.  This gets cleared by 'run' so should never interfere with
+					// showing a more up-to-date stack during a run.
+					return new Intrinsic.Result(vm.globalContext.variables.map[_stackAtBreak]);
+				}
+				// Otherwise, build a stack now from the state of the VM.
+				ValList result = StackList(context.vm);
+				return new Intrinsic.Result(result);
+			};
+
 		}
 
 		static bool DisallowAllAssignment(Value key, Value value) {
 			throw new RuntimeException("Assignment to protected map");
 		}
 
-		static ValMap botModule;
-		static HashSet<string> botProtectedKeys;
-		public static ValMap BotModule() {
-			if (botModule != null) return botModule;
+		static bool RequireBot(Shell sh, string methodName) {
+			if (sh.bot != null) return false;
+			sh.PrintLine($"me.{methodName} is only valid for bots");
+			return true;
+		}
 
-			botModule = new ValMap();
+		static ValMap meModule;
+		static HashSet<string> botProtectedKeys;
+		public static ValMap MeModule() {
+			if (meModule != null) return meModule;
+
+			meModule = new ValMap();
 
 			Intrinsic f;
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
-				return new Intrinsic.Result(new ValString(sh.bot.BotName));
+				return sh.bot == null ? Intrinsic.Result.False : Intrinsic.Result.True;
 			};
-			botModule["name"] = f.GetFunc();
+			meModule["isBot"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				return new Intrinsic.Result(new ValString(sh.name));
+			};
+			meModule["name"] = f.GetFunc();
+
+
+			f = Intrinsic.Create("");
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "facing")) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(new ValNumber(sh.bot.facingDirection));
 			};
-			botModule["facing"] = f.GetFunc();
+			meModule["facing"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "currentToolIndex")) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(new ValNumber(sh.bot.currentToolIndex));
 			};
-			botModule["currentToolIndex"] = f.GetFunc();
+			meModule["currentToolIndex"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "energy")) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(new ValNumber(sh.bot.energy));
 			};
-			botModule["energy"] = f.GetFunc();
+			meModule["energy"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "statusColor")) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(new ValString(sh.bot.statusColor.ToHexString()));
 			};
-			botModule["statusColor"] = f.GetFunc();
+			meModule["statusColor"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
-				// Move the bot
-				sh.bot.MoveForward();
-				return Intrinsic.Result.Null;
+				if (sh.bot == null) return new Intrinsic.Result(new ValString(sh.console.backColor.ToHexString()));
+				return new Intrinsic.Result(new ValString(sh.bot.screenColor.ToHexString()));
 			};
-			botModule["forward"] = f.GetFunc();
+			meModule["screenColor"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "forward")) return Intrinsic.Result.Null;
+				if (partialResult == null) {
+					// Just starting our move; tell the bot and return partial result
+					sh.bot.MoveForward();
+					return new Intrinsic.Result(null, false);
+				} else {
+					// Continue until bot stops moving
+					if (sh.bot.IsMoving()) return partialResult;
+					return Intrinsic.Result.Null;
+				}
+			};
+			meModule["forward"] = f.GetFunc();
+
+			f = Intrinsic.Create("");
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "inventory")) return Intrinsic.Result.Null;
 				ValList result = new ValList();
 				if (sh.bot.inventory != null) {
 					foreach (var item in sh.bot.inventory) {
-						result.values.Add(TileInfo.ToMap(item));
+						result.values.Add(TileInfo.ToMap(item, new ValMap()));
 					}
 				}
 				return new Intrinsic.Result(result);
 			};
-			botModule["inventory"] = f.GetFunc();
+			meModule["inventory"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "left")) return Intrinsic.Result.Null;
 				sh.bot.Rotate(-1);
 				return Intrinsic.Result.Null;
 			};
-			botModule["left"] = f.GetFunc();
+			meModule["left"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "position")) return Intrinsic.Result.Null;
 				var pos = sh.bot.TileLocation;
 				var loc = sh.bot.currentLocation;
 				var result = new ValMap();
@@ -386,38 +454,42 @@ namespace Farmtronics.M1 {
 				result["area"] = LocationSubclass(loc);
 				return new Intrinsic.Result(result);
 			};
-			botModule["position"] = f.GetFunc();
+			meModule["position"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "right")) return Intrinsic.Result.Null;
 				sh.bot.Rotate(1);
 				return Intrinsic.Result.Null;
 			};
-			botModule["right"] = f.GetFunc();
+			meModule["right"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			// ToDo: accept a count of items to place.
 			// For now, we'll just always place as many as possible.
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "placeItem")) return Intrinsic.Result.Null;
 				int itemsPlaced = sh.bot.PlaceItem();
 				return new Intrinsic.Result(itemsPlaced);
 			};
-			botModule["placeItem"] = f.GetFunc();
+			meModule["placeItem"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.AddParam("slot", 0);
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "takeItem")) return Intrinsic.Result.Null;
 				bool result = sh.bot.TakeItem(context.GetLocalInt("slot"));
 				return result ? Intrinsic.Result.True : Intrinsic.Result.False;
 			};
-			botModule["takeItem"] = f.GetFunc();
+			meModule["takeItem"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "useTool")) return Intrinsic.Result.Null;
 				
 				if (partialResult == null) {
 					// Just starting our tool use; tell the bot and return partial result
@@ -429,41 +501,59 @@ namespace Farmtronics.M1 {
 					return Intrinsic.Result.Null;
 				}
 			};
-			botModule["useTool"] = f.GetFunc();
+			meModule["useTool"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "harvest")) return Intrinsic.Result.Null;
 
 				bool result = sh.bot.Harvest();
 				return result ? Intrinsic.Result.True : Intrinsic.Result.False;
 			};
-			botModule["harvest"] = f.GetFunc();
+			meModule["harvest"] = f.GetFunc();
 
 			botProtectedKeys = new HashSet<string>();
-			foreach (Value key in botModule.Keys) {
+			foreach (Value key in meModule.Keys) {
 				botProtectedKeys.Add(key.ToString());
 			}
 
-			botModule.assignOverride = (key,value) => {
+			meModule.assignOverride = (key,value) => {
 				string keyStr = key.ToString();
 				if (keyStr == "_") return false;
-				//ModEntry.instance.Monitor.Log($"botModule {key} = {value}");
+				//ModEntry.instance.Monitor.Log($"meModule {key} = {value}");
 				if (keyStr == "name") {
 					string name = value.ToString();
-					if (!string.IsNullOrEmpty(name)) Shell.runningInstance.bot.BotName = name;
+					if (!string.IsNullOrEmpty(name)) {
+						var sh = Shell.runningInstance;
+						sh.name = name;
+						if (Context.IsMultiplayer && sh.bot != null) sh.bot.data.Update();
+					}
 					return true;
 				} else if (keyStr == "statusColor") {
-					Shell.runningInstance.bot.statusColor = value.ToString().ToColor();
+					var sh = Shell.runningInstance;
+					if (RequireBot(sh, keyStr)) return true;
+					sh.bot.statusColor = value.ToString().ToColor();
+					if (Context.IsMultiplayer) sh.bot.data.Update();
+					return true;
+				} else if (keyStr == "screenColor") {
+					var sh = Shell.runningInstance;
+					sh.console.backColor = value.ToString().ToColor();
+					if (sh.bot != null) {
+						sh.bot.screenColor = value.ToString().ToColor();
+						if (Context.IsMultiplayer) sh.bot.data.Update();
+					}
 					return true;
 				} else if (keyStr == "currentToolIndex") {
-					Shell.runningInstance.bot.currentToolIndex = value.IntValue();
+					var sh = Shell.runningInstance;
+					if (RequireBot(sh, keyStr)) return true;
+					sh.bot.currentToolIndex = value.IntValue();
 					return true;
 				} else if (botProtectedKeys.Contains(keyStr)) return true;
 				return false;	// allow the assignment
 			};
 
-			return botModule;
+			return meModule;
 		}
 
 		static ValMap fileModule;
@@ -510,7 +600,7 @@ namespace Farmtronics.M1 {
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
 
-				Disk disk = FileUtils.GetDisk(ref path);
+				Disk disk = shell.Disks.GetDisk(ref path);
 				if (!disk.IsWriteable()) return new Intrinsic.Result("Error: disk is not writeable");
 				if (!path.EndsWith("/")) path += "/";
 				if (disk.Exists(path)) return new Intrinsic.Result("Error: file already exists");
@@ -533,14 +623,14 @@ namespace Farmtronics.M1 {
 				if (path == "/") {
 					// Special case: listing the disks.
 					var disks = new List<Value>();
-					var diskNames = new List<string>(FileUtils.disks.Keys);
+					var diskNames = new List<string>(shell.Disks.GetDiskNames());
 					diskNames.Sort();
 					foreach (string name in diskNames) {
 						disks.Add(new ValString("/" + name));
 					}
 					return new Intrinsic.Result(new ValList(disks));
 				}
-				Disk disk = FileUtils.GetDisk(ref path);
+				Disk disk = shell.Disks.GetDisk(ref path);
 				if (disk == null) return Intrinsic.Result.Null;
 				Value result = disk.GetFileNames(path).ToValue();
 				return new Intrinsic.Result(result);
@@ -556,7 +646,7 @@ namespace Farmtronics.M1 {
 				string err;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
-				return new Intrinsic.Result(FileUtils.GetFileName(path));
+				return new Intrinsic.Result(PathUtils.GetFileName(path));
 			};
 			fileModule["name"] = f.GetFunc();
 
@@ -585,7 +675,7 @@ namespace Farmtronics.M1 {
 				string err;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
-				if (FileUtils.Exists(path)) return Intrinsic.Result.True;
+				if (shell.Disks.Exists(path)) return Intrinsic.Result.True;
 				return Intrinsic.Result.False;
 			};
 			fileModule["exists"] = f.GetFunc();
@@ -599,7 +689,7 @@ namespace Farmtronics.M1 {
 				string err;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
-				FileInfo info = FileUtils.GetInfo(path);
+				M1FileInfo info = shell.Disks.GetInfo(path);
 				if (info == null) return Intrinsic.Result.Null;
 				var result = new ValMap();
 				result["path"] = new ValString(path);
@@ -618,7 +708,7 @@ namespace Farmtronics.M1 {
 			f.code = (context, partialResult) => {
 				string basePath = context.GetLocalString("basePath");
 				string subpath = context.GetLocalString("subpath");
-				return new Intrinsic.Result(FileUtils.PathCombine(basePath, subpath));
+				return new Intrinsic.Result(PathUtils.PathCombine(basePath, subpath));
 			};
 			fileModule["child"] = f.GetFunc();
 
@@ -631,7 +721,7 @@ namespace Farmtronics.M1 {
 				string err;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
-				err = FileUtils.Delete(path);
+				err = shell.Disks.Delete(path);
 				if (err == null) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(err);
 			};
@@ -652,7 +742,7 @@ namespace Farmtronics.M1 {
 				newPath = sh.ResolvePath(newPath, out err);
 				if (newPath == null) return new Intrinsic.Result(err);
 			
-				err = FileUtils.MoveOrCopy(oldPath, newPath, true, false);
+				err = shell.Disks.MoveOrCopy(oldPath, newPath, true, false);
 				if (err == null) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(err);
 			};
@@ -673,7 +763,7 @@ namespace Farmtronics.M1 {
 				newPath = sh.ResolvePath(newPath, out err);
 				if (newPath == null) return new Intrinsic.Result(err);
 			
-				err = FileUtils.MoveOrCopy(oldPath, newPath, false, false);
+				err = shell.Disks.MoveOrCopy(oldPath, newPath, false, false);
 				if (err == null) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(err);
 			};
@@ -691,8 +781,8 @@ namespace Farmtronics.M1 {
 				string err = null;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
-				if ((mode == "r" || mode == "r+") && !FileUtils.Exists(path)) return new Intrinsic.Result("Error: file not found");
-				var file = new OpenFile(path, mode);
+				if ((mode == "r" || mode == "r+") && !shell.Disks.Exists(path)) return new Intrinsic.Result("Error: file not found");
+				var file = new OpenFile(shell.Disks, path, mode);
 				ValMap result = new ValMap();
 				result.SetElem(ValString.magicIsA, FileHandleClass());
 				result.map[_handle] = new ValWrapper(file);
@@ -713,7 +803,7 @@ namespace Farmtronics.M1 {
 				string err = null;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
-				Disk disk = FileUtils.GetDisk(ref path);
+				Disk disk = shell.Disks.GetDisk(ref path);
 				if (disk == null) return Intrinsic.Result.Null;
 				Value result = disk.ReadLines(path).ToValue();
 				return new Intrinsic.Result(result);
@@ -735,7 +825,7 @@ namespace Farmtronics.M1 {
 				if (path == null) return new Intrinsic.Result(err);
 
 				try {
-					Disk disk = FileUtils.GetDisk(ref path);
+					Disk disk = shell.Disks.GetDisk(ref path);
 					if (!disk.IsWriteable()) return new Intrinsic.Result("Error: disk is not writeable");
 					disk.WriteLines(path, linesVal.ToStrings());
 				} catch (System.Exception) {
@@ -1659,11 +1749,8 @@ namespace Farmtronics.M1 {
 				f.code = (context, partialResult) => {
 					string msg = context.variables.GetString("message");
 					Shell sh = context.interpreter.hostData as Shell;
-					string name;
-					if (sh.bot == null) name = "Home Computer";
-					else name = sh.bot.BotName;
 					TextDisplay disp = sh.textDisplay;
-					Game1.chatBox.addMessage(name + ": " + msg, disp.textColor);
+					AddBotChatMessage.Send(sh.name, msg, disp.textColor);
 					return Intrinsic.Result.Null;
                 };
 				worldInfo["chat"] = f.GetFunc();

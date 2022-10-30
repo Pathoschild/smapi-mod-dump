@@ -10,6 +10,12 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Updated integration with Generic Mod Config Menu.
+* Improved translations. Thanks to BrasileiroTop (updated Portuguese) and watchakorn-18k (updated Thai)!
+
+## 1.3.4
+Released 10 October 2022 for SMAPI 3.14.0 or later.
+
 * Improved translations. Thanks to bpblog (updated Spanish)!
 
 ## 1.3.3

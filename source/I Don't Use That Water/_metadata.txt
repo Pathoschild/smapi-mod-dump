@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/idermailer/iDontUseThatWater
+   Git: https://github.com/idermailer/iDontUseThatWater.git
+
+mods:
+   I Don't Use That Water
+
+latest commit:
+   commit 901227a8c9df56fab7172bdac799d720fd4967b9
+   Author: idermailer <idermailer@gmail.com>
+   Date:   Fri Oct 7 04:37:29 2022 +0900
+   
+       ì´ˆê¸° ì»¤ë°‹.
+   

@@ -85,6 +85,10 @@ internal static partial class TextureFileCache {
 					ImageResultReflect.GetHeight!(Handle)
 				);
 				Data = ImageResultReflect.GetData!(Handle);
+
+				if (Handle is IDisposable disposable) {
+					disposable.Dispose();
+				}
 			}
 		}
 	}

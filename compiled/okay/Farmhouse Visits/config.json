@@ -12,5 +12,5 @@
   "NeedsConfirmation": false,
   "RejectionDialogue": true,
   "Gifts": true,
-  "WalkOnFarm": false
+  "WalkOnFarm": true
 }

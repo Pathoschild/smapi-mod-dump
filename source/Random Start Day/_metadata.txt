@@ -6,9 +6,9 @@ mods:
    Random Start Day
 
 latest commit:
-   commit f064fe61c4eaa4a18ea197073dae7b18a43ec03d
+   commit b7c2b9b697dd37aa3ec3dde2e97e82f5e5a74a7e
    Author: idermailer <idermailer@gmail.com>
-   Date:   Wed Sep 14 03:09:20 2022 +0900
+   Date:   Sat Oct 22 01:12:35 2022 +0900
    
-       1.5.1
+       1.8.0
    

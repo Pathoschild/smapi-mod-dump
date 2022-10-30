@@ -29,8 +29,6 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
-using SObject = StardewValley.Object;
-
 namespace Leclair.Stardew.BetterCrafting.Menus;
 
 public class BulkCraftingMenu : MenuSubscriber<ModEntry> {

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14061
+IDs: aedenthorn.Wildflowers
+update keys: Nexus:14061, GitHub:aedenthorn/StardewValleyMods

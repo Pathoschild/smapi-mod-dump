@@ -10,7 +10,7 @@
 
 namespace HybridCropEngine.Framework
 {
-    internal class Configuration
+    internal sealed class Configuration
     {
         public bool ScanEverywhere { get; set; }
     }

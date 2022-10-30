@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14247
+IDs: aedenthorn.TakeAll
+update keys: Nexus:14247, GitHub:aedenthorn/StardewValleyMods

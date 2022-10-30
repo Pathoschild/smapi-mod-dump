@@ -25,12 +25,12 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit e9871683cfdcc3e32811c6cd9afb4754696bc455
-   Merge: f450bd2 5d5d325
+   commit d90cb4ab650403a7aa2e8a1e90faaf4806d39ba1
+   Merge: e987168 acc1620
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri Aug 26 20:43:27 2022 -0400
+   Date:   Mon Oct 10 08:35:19 2022 -0400
    
-       Merge pull request #10 from atravita-mods/dependabot/nuget/BenchmarkDotNet-0.13.2
+       Merge pull request #16 from atravita-mods/dependabot/nuget/Pathoschild.Stardew.ModBuildConfig-4.0.2
        
-       Bump BenchmarkDotNet from 0.13.1 to 0.13.2
+       Bump Pathoschild.Stardew.ModBuildConfig from 4.0.1 to 4.0.2
    

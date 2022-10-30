@@ -84,6 +84,8 @@ namespace Fishnets
 
         protected bool checkLocation(GameLocation location, float x, float y) => location.doesTileHaveProperty((int)x, (int)y, "Water", "Back") == null || location.doesTileHaveProperty((int)x, (int)y, "Passable", "Buildings") != null;
 
+        public bool CanCatchFish() => (Game1.getFarmer(owner) != null && Game1.getFarmer(owner).professions.Contains(11)) || bait.Value is not null;
+
         public List<Vector2> getOverlayTiles(GameLocation location)
         {
             List<Vector2> tiles = new List<Vector2>();
@@ -255,9 +257,9 @@ namespace Fishnets
         {
             bool flag1 = Game1.getFarmer(owner) != null && Game1.getFarmer(owner).professions.Contains(11);
             bool flag2 = Game1.getFarmer(owner) != null && Game1.getFarmer(owner).professions.Contains(10);
-            if (owner == 0L && Game1.player.professions.Contains(11))
+            if (owner.Value == 0L && Game1.player.professions.Contains(11))
                 flag2 = true;
-            if (!(bait.Value != null | flag1) || heldObject.Value != null)
+            if ((bait.Value == null && !flag1) || heldObject.Value != null)
                 return;
             readyForHarvest.Value = true;
             Random r = new Random((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2 + TileLocation.X * 1000 + TileLocation.Y));
@@ -271,21 +273,22 @@ namespace Fishnets
                 foreach (KeyValuePair<int, string> kvp in fishData)
                 {
                     if (kvp.Value.Contains("trap")) continue;
-                    if (flag2)
+                    if (flag2 && Statics.CanCatchThisFish(kvp.Key, location.Name))
                         nums.Add(kvp.Key);
                     else
                     {
                         if (r.NextDouble() <= .15)
                         {
-                            heldObject.Value = Statics.GetRandomFishForLocation(bait.Value.ParentSheetIndex, Game1.player, location.Name);
+                            heldObject.Value = Statics.GetRandomFishForLocation(bait.Value?.ParentSheetIndex ?? -1, Game1.player, location.Name);
                             break;
                         }
                     }
                 }
             }
-            if (heldObject.Value != null) return;
+            if (heldObject.Value != null)
+                return;
             if (flag2 && nums.Count > 0)
-                heldObject.Value = new Object(nums[r.Next(nums.Count)], bait.Value.ParentSheetIndex == 774 && r.NextDouble() <= .15 ? 2 : 1);
+                heldObject.Value = new Object(nums[r.Next(nums.Count)], bait.Value?.ParentSheetIndex == 774 && r.NextDouble() <= .15 ? 2 : 1);
             else
                 heldObject.Value = new Object(r.Next(168, 173), 1);
         }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14083
+IDs: HamioDracny.TALE.SMAPI
+update keys: Nexus:14083

@@ -11,8 +11,6 @@
 using StardewValley;
 using System.Diagnostics.CodeAnalysis;
 
-using SObject = StardewValley.Object;
-
 namespace StardewMods.Common.Integrations.StackQuality;
 
 /// <summary>

@@ -21,7 +21,9 @@ namespace BetterBeehouses
     static class Utils
     {
         private static MethodInfo addItemMethod = typeof(Utils).MethodNamed("AddItem");
-        public static MethodInfo MethodNamed(this Type type, string name)
+		public static MethodInfo PropertyGetter(this Type type, string name) => AccessTools.PropertyGetter(type, name);
+		public static MethodInfo PropertySetter(this Type type, string name) => AccessTools.PropertySetter(type, name);
+		public static MethodInfo MethodNamed(this Type type, string name)
         {
             return AccessTools.Method(type, name);
         }
@@ -43,12 +45,6 @@ namespace BetterBeehouses
         public static bool GetProduceHere(GameLocation loc, Config.ProduceWhere where)
         {
             return where is not Config.ProduceWhere.Never && (!loc.IsOutdoors || where is Config.ProduceWhere.Always);
-        }
-        public static Crop CropFromObj(StardewValley.Object obj)
-        {
-            Crop ret = new();
-            ret.indexOfHarvest.Value = obj.ParentSheetIndex;
-            return ret;
         }
         public static void AddDictionaryEntry(IAssetData asset, object key, string path)
         {

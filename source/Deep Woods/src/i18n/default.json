@@ -1,0 +1,69 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/maxvollmer/DeepWoodsMod
+**
+*************************************************/
+
+{
+  "easter-egg.hatched-message": "A new... wait a minute, a rabbit hatched?!",
+  "easter-egg.name": "Easter Egg",
+  "excalibur.description": "It feels hopeful to wield.",
+  "excalibur.name": "Excalibur",
+  "excalibur.nope-message": "It won't budge.",
+  "lost-message": "Uh-oh, it seems you got lost in the deep woods...",
+  "healing-fountain.drink-message": "You feel refreshed, energized, and somehow lucky.",
+  "woods-obelisk.description": "Warps you into the deep woods.",
+  "woods-obelisk.name": "Woods Obelisk",
+  "woods-obelisk.wizard-mail": "I could sense your presence in the depths of the forest.^There is a strong and old magic burried within the tree roots and earth.^It is difficult, but with the right ingredients I should be able to manifest an obelisk that uses this magic to allow you access much deeper into the forest.^Come to my tower when you are ready.^   -M. Rasmodius, Wizard",
+
+  "messagebox.ok": "Okay",
+
+  "maxhouse.puzzle.nope": "You hear a click, but nothing happens...",
+
+  "maxhouse.stuff.question": "Lots and lots of things.",
+  "maxhouse.stuff.answer.search": "Search through stuff",
+  "maxhouse.stuff.answer.nevermind": "Nevermind",
+  "maxhouse.stuff.nothing": "You found nothing immediately useful. Maybe another time...",
+
+  "maxhouse.books.question": "An assortment of books.",
+  "maxhouse.books.answer.read": "Read a book",
+  "maxhouse.books.answer.nevermind": "Nevermind",
+  "maxhouse.books.interesting": "That was an interesting read!",
+
+  "maxhouse.shop.empty": "The shop is currently out of stock. Come back later.",
+  "maxhouse.quests.empty": "Currently no tasks or quests are open. Come back later.",
+
+  "sign.text.welcome": "You are entering the Deep Woods. Don't venture too deep if you aren't prepared. Many before you have gotten lost or worse. You have been warned.",
+
+  "sign.text.random.1": "Snails in this area.",
+  "sign.text.random.2": "If you are very careful and very lucky, you might meet a unicorn on a sunny day.",
+  "sign.text.random.3": "Somewhere in this forest is a sword in a stone. Has been there for centuries. No one seems to be able to pull it out.",
+  "sign.text.random.4": "I can't find my way back. Maybe putting signs up will help me. Are you lost too?",
+  "sign.text.random.5": "Don't bother with those thorny bushes. I think they are indestructible. It would take a bomb to get rid of them. But who brings bombs into a forest...",
+  "sign.text.random.6": "These woods are haunted. I swear I saw a ghost one night.",
+  "sign.text.random.7": "Found a house made of food. In the middle of the forest! Chopped it all down, lasted me a good week.",
+  "sign.text.random.8": "NO to Joja's highway plans in the forest! STOP the destruction!",
+
+  "sign.text.item-marker": "I leave this sign for fellow wanderers. I am old now and my memory is fading, but somewhere here I buried {item}.",
+  "sign.text.clearing-marker": "I saw a clearing {NSWE} from here. How far I don't remember. Tread carefully, friend.",
+  "sign.text.mystical-force-marker": "There is a mystical force within this forest. I was unable to find a source, but this area is particularly strong. I am marking this location so someone else might be more lucky.",
+
+  "bigsign.message": "Welcome to the DeepWoods! Where nature and magic exist in harmony!^== Family friendly monster hunting ==^== Hiking trails for every skill level ==^== Adventure and fun for everyone ==^^Warning: Very dangerous. No liability for dead, cursed, or lost adventurers.",
+
+  "sign.NSWE.north": "North",
+  "sign.NSWE.south": "South",
+  "sign.NSWE.west": "West",
+  "sign.NSWE.east": "East",
+
+  "orb-stone.question": "You feel drawn towards this stone. You do not know why. Do you dare touch it?",
+  "orb-stone.yes": "Yes!",
+  "orb-stone.no": "Eeehh, better not.",
+  "orb-stone.touch-message": "You carefully touch the stone. You feel a humm, but nothing happens.",
+  "orb-stone.touch-message-no-orb": "You carefully touch the stone. The stone feels like it longs for something. It is a strange sensation.",
+
+  "cave-entrance.caved-in.message": "The entrance is caved in. There doesn't seem to be a way to get inside."
+}

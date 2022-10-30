@@ -13,13 +13,14 @@
     "config.advancedConfig.description": "Allow or prohibit certain spouses from going to the island. (By default, all can go).",
     "config.ScheduleRandom.name":"Random schedule",
     "config.ScheduleRandom.description":"If you enable this, your spouse will visit a randomized map during visits. (Requires to have \"Ginger Island Extra\" installed).",
-    "config.Child2NPC.description": "Configuration related to Child2NPC.",
-    "config.ChildVisitIsland.name":"Allow visit?",
-    "config.ChildVisitIsland.description":"Allows Child2NPC children to visit the island. (Requires mod)",
-    "config.SpouseRoom.title":"Spouse Room...",
-    "config.SpouseRoom.explain":"Advanced configuration related to spouse room.",
-    "config.SpouseRoom.name":"Spouse Room",
-    "config.SpouseRoom.description":"The spouse room to show in the island. (Allows any character, as long as their mod is installed)",
+    
+    "config.DebugComm.name":"Debug commands",
+    "config.DebugComm.description":"(Advanced) Allows you to use mod-related commands that check internal info.",
+    "config.Verbose.name":"Verbose logging",
+    "config.Verbose.description":"The mod will log way more info.",
+    "config.CheckDaily.name": "Check spouses daily",
+    "config.CheckDaily.description":"Every night, the mod will update the spouses list.",
+
     "config.Vanillas.name":"NPCs",
     "config.Vanillas.description":"NPCs for which the base mod adds schedules. If you want to use a custom schedule (or don't want them to visit), untick their respective box.",
     "config.RequiresSVE": "Requires SVE installed.",
@@ -27,6 +28,15 @@
     "config.CustomChance.description": "How likely your spouse is to go to the beach. ONLY numbers! (e.g 15 for 15% of chance). Doesn't accept letters.",
     "config.CustomRoom.name": "Custom spouse room?",
     "config.CustomRoom.description": "Adds a customizable spouse room to the island farmhouse.",
+
+    "config.Child2NPC.description": "Configuration related to Child2NPC.",
+
+    "config.ChildVisitIsland.name":"Allow visit?",
+    "config.ChildVisitIsland.description":"Allows Child2NPC children to visit the island. (Requires mod)",
+
+    "config.UseFurnitureBed.name":"Use furniture bed?",
+    "config.UseFurnitureBed.description":"Lets you use a normal kid bed instead. Can be placed anywhere.",
+
     "config.Childbedcolor.name":"Child bed color",
     "config.Childbedcolor.description": "The color of your child's bed.",
     "config.Childbedcolor.values.yellow": "yellow",
@@ -35,8 +45,7 @@
     "config.Childbedcolor.values.grey": "grey",
     "config.Childbedcolor.values.cyan": "cyan",
     "config.Childbedcolor.values.green": "green",
-    "config.HideSpouseRoom.name":"Hide spouse room",
-    "config.HideSpouseRoom.description":"If you enable this, your spouse's room won't appear in the island.",
+
     "config.Devan_Nosit.name":"Devan NPC",
     "config.Devan_Nosit.description": "Adds a babysitter to take care of your kids on island days. (Or alternatively, if you just want the NPC in town).",
     
@@ -60,15 +69,199 @@
     "CLI.ChangingCC": "Changing chance of visit to ",
     "CLI.InvalidValue.CC": "Please type a valid value. (allowed values: 0 to 100)",
 
-    "FW.contentpack.error":"Configuration file missing!",
-    "FW.contentpack.duplicate":"{0} is trying to add a schedule for {1}. To avoid any conflicts, please untick '{1}' from Advanced config.",
-    "FW.contentpack.noAP":"There's no arrival position in {cpd.Spousename}'s schedule!",
-    "FW.contentpack.noAD":"There's no arrival dialogue in {cpd.Spousename}'s schedule!",
-    "FW.contentpack.noLocName":"There's no name for the {0} map. Add the field and try again.",
-    "FW.contentpack.InvalidTime":"Make sure the arrival time of {0} is between 1030 and 2150.",
-    "FW.contentpack.noPosition":"There's no position for {1} in {0}.",
-    "FW.contentpack.noDialogue":"There's no dialogue for {1} in {0}.",
-    "FW.contentpack.oneOrMoreErrors":"One or more fields in {0} are not valid. The schedule won't be added.",
+    /* characters data */
 
-    "asset.error.addingdialogue":"Something went wrong when editing {0}'s dialogue. Please check the log for more details."
+    "Krobus.GoOutside": "I'll go outside today...if i'm quick, your people won't notice.$0#$b#Thanks to you, i've become curious of humans' \"Entertainment activities\".$1",
+
+    "Dialogue.Abigail.arrival": "Hi @.$1#$b#...Wow, this weather is hot...$0",
+    "Dialogue.Abigail.LocA": "Do you think we can explore this volcano?$0#$b#Willy said we shouldn't get close..$2#$b#But I still brought my sword.$1",
+    "Dialogue.Abigail.LocB": "Do you ever think of fighting these slimes, @?",
+    
+    "Dialogue.Alex.arrival": "Oh, hey @. I'm finally here.$0#$b#I can't wait to spend the day with you.$1",
+    "Dialogue.Alex.LocA": "%Alex is lifting weights.",
+    "Dialogue.Alex.LocB": "Nothing's better than the beach on a hot day like this.$1",
+    
+    "Dialogue.Elliott.arrival": "Oh, @! That was quite the ride!$8#$b#It's a pleasure to see you again.$1",
+    "Dialogue.Elliott.LocA": "%Elliott is reading.",
+    "Dialogue.Elliott.LocB": "Ah, the view here is quite virtuous$0.#$b#I can feel an idea incoming...$1",
+    
+    "Dialogue.Emily.arrival": "Hi, @!#$b#This island is full of parrots, it's lovely!",
+    "Dialogue.Emily.LocA": "%Emily seems lost in her thoughts.",
+    "Dialogue.Emily.LocB": "@, do you feel it?$0#$b#These crystals are full of powerful energy.$1",
+    
+    "Dialogue.Haley.arrival": "@, can we go see the island today?$0#$b#There's something about this place that makes me feel at ease.",
+    "Dialogue.Haley.LocA": "Hi, honey. I'm so glad you're here.$0#$b#I love how sunny the weather is here.$1",
+    "Dialogue.Haley.LocB": "%Haley is taking pictures.",
+    
+    "Dialogue.Harvey.arrival": "Hi, honey.$l#$b#This is so much nicer than being cooped up in the clinic all day.$1",
+    "Dialogue.Harvey.LocA": "I'll stay inside for a while, @.$0#$b#Make sure you stay hydrated in this weather, alright?$1",
+    "Dialogue.Harvey.LocB": "%Harvey is engrossed in a book.",
+    
+    "Dialogue.Krobus.arrival": "This house...decorating my room brings back memories.$0",
+    "Dialogue.Krobus.LocA": "You said there were caves here...i'll visit them later.$0",
+    "Dialogue.Krobus.LocB": "I've never seen crystals like these!$0#$b#My people loved crystals, you know.$0#$e#...$2#$b#...You're right. Maybe there's others like me out there.#$b#Thank you, @.$h",
+
+    "Dialogue.Leah.arrival": "It's so quiet and peaceful here.$0#$b#It's the perfect weather for some wine.$1",
+    "Dialogue.Leah.LocA": "The view here is inspiring, i just have to draw it.$0",
+    "Dialogue.Leah.LocB": "%Leah is drawing.",
+    
+    "Dialogue.Maru.arrival": "Hey! What's up?$0#$b#I can't wait to see the stars at night.$1",
+    "Dialogue.Maru.LocA": "@! Have you seen this?$9#$b#It seem there hasn't been volcanic activity in a while.",
+    "Dialogue.Maru.LocB": "Professor Snail has been telling us about Ginger Island's traditions.$0#$b#Their oral history is amazing.$1",
+    
+    "Dialogue.Penny.arrival": "Hi @.$h#$b#This island is so beautiful...",
+    "Dialogue.Penny.LocA": "Oh, I'm reading the book about a sailor i told you about.$0#$b#It's very interesting.$1",
+    "Dialogue.Penny.LocB": "Honey, Professor Snail's stories about the island are amazing.$0#$b#I didn't know they had so many traditions!$1",
+    
+    "Dialogue.Sam.arrival": "Hi, @.$0#$b#It's a nice island... isn't it?$1",
+    "Dialogue.Sam.LocA": "Hey... have you ever gone inside?$0#$b#...$0#$b#Really?$8",
+    "Dialogue.Sam.LocB": "I'm feeling pretty good here.",
+    
+    "Dialogue.Sebastian.arrival": "Hey, I'm glad you're here.$h#$b#How have you been coping with this heat?",
+    "Dialogue.Sebastian.LocA": "Man, this looks just like in 'Cave Saga X'...",
+    "Dialogue.Sebastian.LocB": "I'm not one for crowded places.$0#$b#This place is perfect.$h",
+    
+    "Dialogue.Shane.arrival": "Hey, @.$1#$b#The tropical plants here are great.$1",
+    "Dialogue.Shane.LocA": "Charlie seems to like this place.$8",
+    "Dialogue.Shane.LocB": "Hmm...this place isn't so bad.",
+
+    "Dialogue.Claire.arrival": "Hello, dear.$0#$b#I'm ready for this island's hot weather!$1",
+    "Dialogue.Claire.LocA": "%Claire is reading a screenplay.",
+    "Dialogue.Claire.LocB": "The birds here...$0#$b#There's so many of them. I can hear them chirping.$1",
+
+    "Dialogue.Lance.arrival": "Hello, my dear. This house is just as cozy as our farmland's.",
+    "Dialogue.Lance.LocA": "The caldera in this volcano holds inmense arcane power.#$b#Only the most powerful of mages can cast the spells it requires.",
+    "Dialogue.Lance.LocB": "The gentle waves of this beach...I've become accustomed to their sound.",
+
+    "Dialogue.Wizard.arrival": "Hello, dearest! I'm overjoyed to see you.$1#$b#This place is quite wonderful. You've made the house quite cozy.",
+    "Dialogue.Wizard.LocA": "The creatures of this island are aware of our presence. It has alerted them.#$b#Their arcane power is inmense...",
+    "Dialogue.Wizard.LocB": "The forge in this place...the rituals it requires are only mastered by a handful.#$b#Even with such mastery, the results are near impossible to predict.",
+
+    "Dialogue.Olivia.arrival": "Hi, sweetie. How is this weather treating you?$0#$b#We should invite Victor here someday.",
+    "Dialogue.Olivia.LocA": "Sautine City might have some competition...this place is just unique.$1#$b#You remembered i wanted a house in this island...didn't you, dear?$4",
+    "Dialogue.Olivia.LocB": "My, the ocean in this island is so clear. I would love to paint it some day.",
+
+    "Dialogue.Sophia.arrival": "@, can we stay here tonight?#$b#I'm really enjoying this trip.$0#$b#We can? Yay!",
+    "Dialogue.Sophia.LocA": "Oh, @! Look, there's some fishes in the water.$1#$b#They're nibbling at something.$1#$e#...H-hey, be careful if you go to that volcano over there, okay?$0",
+    "Dialogue.Sophia.LocB": "This? It's a manga I picked up the other day.$0#$b#Wanna read it together?$0",
+
+    "Dialogue.Victor.arrival": "Hi, love. This beach is beautiful!#$b#Compared to Pelican Town, this weather is really hot...",
+    "Dialogue.Victor.LocA": "So, this is the volcano dwarves used as an energy source...#$b#maybe we could go in someday.",
+    "Dialogue.Victor.LocB": "Have you seen the bones here, @?#$b#These are quite ancient.",
+
+    /* Devan content starts here */
+
+    //festival dialogue
+    "Festivals.spring13": "Will you participate in the festival?#$b#Me? Not really. I prefer watching everyone compete. It's more exciting.",
+    "Festivals.spring24": "Mm...delicious.$8#$b#@, try some. I bet you'll love it.$1",
+    "Festivals.summer11": "%Devan seems to be having fun with Emily.",
+    "Festivals.summer28": "Moonlight jellies... I'd never heard of that.$0#$b#Can't wait to see them.$1",
+    "Festivals.fall16": "These chickens look very well cared for.$1",
+    "Festivals.fall27": "Ive heard they made an impossible labyrinth over there...$0#$b#Maybe I'll go check it out later.$1",
+    "Festivals.winter8": "The best of this festival, you say...?$0#$b#I love to see everyone's snowmen.$0#$e#But, specially, I like Leah's ice sculptures.$1",
+    "Festivals.winter25": "Ah, hello.$0#$b#Have you tried Gus' candy canes? They turned out great.$0#$b#He prepared for a while to find the best ingredients.$1",
+
+    //disposition and mail
+    "gus_title": "boss",
+    "Devanmail": "I found this while buying groceries, and thought of you. I bet it'll be useful for your farm.",
+    "Devanmail_title": "A gift from Devan",
+
+    //gift data
+    "devan_lovedgift": "I love this stuff, thank you.",
+    "devan_likedgift": "Thanks, i appreciate the gesture.",
+    "devan_dislikedgift": "I guess i'll save it.",
+    "devan_hatedgift": "Ugh...",
+    "devan_neutralgift": "Thank you.",
+
+    //  event: LeahHouse
+    "Event.LeahHouse_1":"Stay still. I'm almost done.",
+    "Event.LeahHouse_2": "How longer? My arms are starting to hurt...$2#$b#The river sounds so nice...i might fall asleep.$1",
+    "Event.LeahHouse_3":"If you do that, i'll have to start over.$2",
+    "Event.LeahHouse_4":"Hello, @. Sorry... I'm busy right now.$0#$b#Devan is helping me with a difficult pose i want to draw. I was having a hard time with this one.",
+    "Event.LeahHouse_5": "Hey, so about 'that'...$2#$b#What i commissioned last week. How is progress coming along?$1",
+    "Event.LeahHouse_6":"It's done. It came out just like you asked.",
+    "Event.LeahHouse_7":"...$6#$b#...I swear to Yoba, it's amazing. It looks just like what i had in mind. $1",
+    "Event.LeahHouse_end": "After we're done here, you can take it home.",
+    
+    //  event: Railroad
+    "Event.Railroad_start-a1": "What are you doing?",
+    "Event.Railroad_start-a2": "Are you waiting for someone?",
+    "Event.Railroad_start-s1": "Ah, this?",
+    "Event.Railroad_start-s2": "No, not really.",
+    "Event.Railroad_talk": "I'm waiting for a train to pass by$0.#$b#They don't show up often, but the wait is worth it.$0#$b#Like birdwatching, but with trains.",
+    "Event.Railroad_mid-a1": "Have you seen any so far?",
+    "Event.Railroad_mid-a2": "What's the point, anyways?",
+    "Event.Railroad_mid-a3": "That sounds boring.",
+    "Event.Railroad_mid-s1": "Two, up until now.$0#$b#The last train was full of coal, and some bits dropped as it passed by...$2#$b#So I hope to see the train better next time.",
+    "Event.Railroad_mid-s2": "These machines are amazing. Did you know? They can run on 4 types of energy: Horse-pulled, Steam, Diesel, and Electricity.$1#$b#I used to live in a location where you could only get by train.$0",
+    "Event.Railroad_mid-s3": "Well, what's the point in farming?$5",
+    "Event.Railroad_end": "...At any rate, you can stay if you want.$0#$b#But i'm warning you, something may fall when the train comes.$0#$e#I hope you have something to cover yourself with.$1",
+    
+    //  event: Forest
+    "Event.Forest_1": "Hey, @.",
+    "Event.Forest_2": "You know, i used to be a teacher there- at the town where i grew in. $0#$b#We were far from the big city, and sustained ourselves by farming.$0#$b#...Then things changed.$2",
+    "Event.Forest_3": "With time, the our water source dried up. People started moving out, because farming wasn't possible anymore...$2#$b#I stayed. I didn't want to leave my students behind, but their families needed to. And it was for their sake, too.#$b#When I moved to the city, I lost contact. It was hard to find a new job, and it all began to pile up.#$b#Then, I heard of the valley.$7",
+    "Event.Forest_4": "When i arrived, i didn't have where to stay...but by some coincidence, i met Gus. He offered a spare room i could stay at- in exchange of working there.#$b#He said, many people had the same experience as i did.",
+    "Event.Forest_5":"Anyways, thanks for hearing my story.",
+    "Event.Forest_question":"Why did you move here, @?",
+    "Event.Forest_a1": "I wanted to escape the city, too.",
+    "Event.Forest_a2": "It was my grandfather's farm.",
+    "Event.Forest_a3": "I wanted money.",
+    "Event.Forest_s1": "I see. So it's true...it's as if this place appears when you most need it.$7",
+    "Event.Forest_s2": "So, he left it to you? Makes sense.",
+    "Event.Forest_s3": "Really? That's it? $6#$b#You could make much more money at the city.",
+    "Event.Forest_end": "Bueno, gracias por escucharme.",
+
+    //  event: Saloon
+    "Event.Saloon.base1": "...Yeah, and that's what we did.",
+    "Event.Saloon.base2": "You seem a bit too amused...that crab almost tore my hair off.$2#$b#Though, you didn't escape their claws either.$1",
+    "Event.Saloon.base3": "It's a bit hot...i'll go outside for a bit.",
+    "Event.Saloon.baseChoice":"@, do you want to come with me?#I'll go with you.#I'll stay with Elliott.",
+
+    "Event.Saloon.A-1":"Hey, @.#$e#I wanted to tell you something.#$e#You know...the town where i grew wasnt always so lonely.$0#$b#We used to be a tight knit community. The farms made money selling their goods, and would sell them to many places in Ferngill.",
+    "Event.Saloon.A-2": "It was normal to see trains there. Sometimes, while i'd work at the school, i'd hear its whistle as it passed by.$0#$b#...Truth be told, i miss being teacher.$2#$b#I wonder if those kids, and their families, found a better place...$7",
+    "Event.Saloon.A-3": "Sitting to watch for trains calmed me down. It reminded me of home. I had no idea if i'd fit here, and i was scared­.$2#$b#But, @... nowadays, i feel i'm part of the community.$7#$b#You've been a valuable friend to me­.$1#$b#I loved the town i grew in, and i'll miss it... but it's okay to move on, too. This is my home now.",
+    "Event.Saloon.A-4":"...Elliot must be getting bored. We should head back.#$e#Hey, do you want a drink?$6#$b#My treat.$1",
+    "Event.Saloon.A-end":"...#$b#I really appreciate you, @.$1",
+
+    "Event.Saloon.B-1": "Sure.#$b#I won't take too long.$1",
+    "Event.Saloon.B-2": "I get the feeling we'll have a while to talk.#$e#...@?$1#$b#Lately, i've noticed something quite intriguing.",
+    "Event.Saloon.B-3":"...At first, Devan didn't talk much with our neighbors.#$b#They seemed...off, to be honest. Quite too distant.$2#$e#Except when Leah is around. Then, Devan loosens up a bit.",
+    "Event.Saloon.B-4": "However...",
+    "Event.Saloon.B-5": "Ever since you two became friends, Devan seems happier.#$b#You've made Devan feel at home here.",
+    "Event.Saloon.B-6": "It's quite refreshing.$1",
+    "Event.Saloon.B-7": "Hey, the breeze outside is very refreshing.#$b#Did i take too long?#$e#...Hey, what's with that face?$6",
+    "Event.Saloon.B-end":"Not much. We were making small talk while waiting.#$b#I'd like to continue telling @ about when we tried the crab pots by ourselves.",
+    
+    "Invite_Abigail":"",
+    "Invite_Alex":"",
+    "Invite_Elliott":"",
+    "Invite_Emily":"",
+    "Invite_Haley":"",
+    "Invite_Harvey":"",
+    "Invite_Krobus":"",
+    "Invite_Maru":"",
+    "Invite_Penny":"",
+    "Invite_Sam":"",
+    "Invite_Sebastian":"",
+    "Invite_Shane":"",
+
+    "Invite_Claire":"",
+    "Invite_Lance":"",
+    "Invite_Olivia":"",
+    "Invite_Sophia":"",
+    "Invite_Victor":"",
+    "Invite_Wizard":"",
+
+    "Invite_generic_0_1":"",
+    "Invite_generic_0_2":"",
+    "Invite_generic_0_3":"",
+    "Invite_generic_1_1":"",
+    "Invite_generic_1_2":"",
+    "Invite_generic_1_3":"",
+    "Invite_generic_2_1":"",
+    "Invite_generic_2_2":"",
+    "Invite_generic_2_3":"",
+
+    "Islandvisit_Qi": ""
 }

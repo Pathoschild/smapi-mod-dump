@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14092
+IDs: aedenthorn.FurniturePlacementTweaks
+update keys: Nexus:14092, GitHub:aedenthorn/StardewValleyMods

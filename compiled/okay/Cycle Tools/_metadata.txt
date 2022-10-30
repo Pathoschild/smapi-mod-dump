@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13973
+IDs: furyx639.CycleTools
+update keys: Nexus:13973, GitHub:ImJustMatt/StardewMods

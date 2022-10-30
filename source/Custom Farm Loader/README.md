@@ -10,6 +10,7 @@ for queries and analysis.**
 
 <b>Custom Farm Loader</b> is a Stardew Valley Mod that gives Players an easy to use, gamepad friendly Farm Selection UI and Content Creators a powerful high level access to lower level farm related functionality enabling more diverse farm maps.
 
+[Nexusmods page](https://www.nexusmods.com/stardewvalley/mods/13804)
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 

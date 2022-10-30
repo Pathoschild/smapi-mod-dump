@@ -8,6 +8,13 @@ for queries and analysis.**
 
 ([versión en español aquí](https://github.com/misty-spring/FarmhouseVisits/blob/main/CHANGELOG-es.md))
 
+## 1.7.0
+- Visits will comment on your animals and crops, along with unique dialogue during winter (and dialogue if there's neither animals nor crops).
+- Tweaked the "In-Law dialogue" explanation in translations/i18n
+- Changed bugs with scheduled visits
+- Removed the `force_visit` command
+- More information is avaiable via console: the command has been renamed to `print`
+
 ## 1.6.2
 - Added Thai translation (by watchakorn-18k)
 

@@ -42,5 +42,15 @@
   "config.usableOptions.Anywhere": "Anywhere",
   "config.produceWhere.Never": "Nowhere",
   "config.produceWhere.Indoors": "Indoors",
-  "config.produceWhere.Always": "Anywhere"
+  "config.produceWhere.Always": "Anywhere",
+  "config.useGiantCrops.name": "Use Giant Crops",
+  "config.useGiantCrops.desc": "If bee houses should detect giant crops",
+  "config.useFruitTrees.name": "Use Trees",
+  "config.useFruitTrees.desc": "If bee houses should detect flower-bearing trees",
+  "config.useFlowerBoost.name": "Flower Boost",
+  "config.useFlowerBoost.desc": "Whether or not honey amount should be boosted by the number of nearby flowers",
+  "config.flowersPerBoost.name": "Flowers Required",
+  "config.flowersPerBoost.desc": "The number of flowers required for each additional honey",
+  "config.useRandomFlower.name": "Use Random",
+  "config.useRandomFlower.desc": "Pick a random flower instead of the closest one"
 }

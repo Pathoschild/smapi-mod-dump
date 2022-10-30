@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 950f7053cef8a4b692b450d9b0dab7aef5212815
+   commit 00690caf0aef6328c86381b58694cd799ad0a17e
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Sep 27 19:14:46 2022 -0400
+   Date:   Sun Oct 30 00:45:32 2022 -0400
    
-       allow tilling stone above campfire
+       update for the upcoming Generic Mod Config Menu 2.0.0
    

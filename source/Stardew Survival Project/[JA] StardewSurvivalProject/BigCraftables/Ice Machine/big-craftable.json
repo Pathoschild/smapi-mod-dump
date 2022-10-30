@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+    "Name": "Ice Machine",
+    "Description": "Make ice from frozen tier. Fancy.",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [{
+                "Object": 335,
+                "Count": 10
+            }, {
+                "Object": 334,
+                "Count": 10
+            }, {
+                "Object": 787,
+                "Count": 2
+            }
+        ],
+        "CanPurchase": true,
+        "PurchaseFrom": "Pierre",
+        "PurchasePrice": 15000,
+        "PurchaseRequirements": null
+    },
+    "CanPurchase": false
+}

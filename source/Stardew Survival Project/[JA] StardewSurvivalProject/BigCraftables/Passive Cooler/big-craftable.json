@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+    "Name": "Passive Cooler",
+    "Description": "You are supposed to put wet wood in but who is looking",
+    "Price": 1,
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 771,
+                "Count": 20
+            },
+			{
+                "Object": 388,
+                "Count": 50
+            }
+        ],
+        "IsDefault": true
+    }
+}

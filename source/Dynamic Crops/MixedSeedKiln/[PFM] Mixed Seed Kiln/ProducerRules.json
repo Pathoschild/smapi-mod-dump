@@ -11,26 +11,26 @@
 [
   {
     "ProducerName": "Mixed Seed Kiln",
-    "InputIdentifier": "390",
-    "InputStack": 10,
+    "InputIdentifier": "Wood",
+    "InputStack": 15,
     "MinutesUntilReady": 20,
-    "OutputIdentifier": "770",
+    "OutputIdentifier": "Mixed Seeds",
     "Sounds": ["Ship"]
   },
   {
     "ProducerName": "Mixed Seed Kiln",
-    "InputIdentifier": "771",
-    "InputStack": 10,
+    "InputIdentifier": "Stone",
+    "InputStack": 15,
     "MinutesUntilReady": 20,
-    "OutputIdentifier": "770",
+    "OutputIdentifier": "Mixed Seeds",
     "Sounds": ["Ship"]
   },
   {
     "ProducerName": "Mixed Seed Kiln",
-    "InputIdentifier": "388",
-    "InputStack": 10,
+    "InputIdentifier": "Fiber",
+    "InputStack": 15,
     "MinutesUntilReady": 20,
-    "OutputIdentifier": "770",
+    "OutputIdentifier": "Mixed Seeds",
     "Sounds": ["Ship"]
   }
 ]

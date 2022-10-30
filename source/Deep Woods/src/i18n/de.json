@@ -1,0 +1,70 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/maxvollmer/DeepWoodsMod
+**
+*************************************************/
+
+{
+  "easter-egg.hatched-message": "Es schlüpft ein... Moment mal, ein Hase?!",
+  "easter-egg.name": "Osterei",
+  "excalibur.description": "Es zu tragen erfüllt dich mit Zuversicht.",
+  "excalibur.name": "Excalibur",
+  "excalibur.nope-message": "Es bewegt sich kein Stück.",
+  "lost-message": "Oh-oh, es scheint du hast dich im tiefen Wald verlaufen...",
+  "healing-fountain.drink-message": "Du fühlst dich erholt und energiegeladen und auch, dass sich dein Glück verbessert hat.",
+  "woods-obelisk.description": "Warpt dich in den tiefen Wald.",
+  "woods-obelisk.name": "Wald-Obelisk",
+  "woods-obelisk.wizard-mail": "Ich konnte deine Anwesenheit in den Tiefen des Waldes spüren.^Eine starke und alte Magie wankt in den Baumwurzeln und der Erde.^Es ist schwierig, aber mit den richtigen Zutaten kann ich einen Obelisk manifestieren, welcher diese Magie nutzt, um dich noch viel tiefer in den Wald zu bringen.^Komm in meinen Turm wenn du bereit bist.^   -M. Rasmodius, Zauberer",
+
+  "messagebox.ok": "Okay",
+
+  "maxhouse.puzzle.nope": "Du hörst ein Klicken, aber nichts passiert...",
+
+  "maxhouse.stuff.question": "Eine ganze Menge Zeug.",
+  "maxhouse.stuff.answer.search": "Zeug durchsuchen",
+  "maxhouse.stuff.answer.nevermind": "Nee, lieber nicht",
+  "maxhouse.stuff.nothing": "Du konntest nichts sinnvolles finden. Vielleicht ein ander mal...",
+
+  "maxhouse.books.question": "Ein Sammelsurium an Büchern.",
+  "maxhouse.books.answer.read": "Lies ein Buch",
+  "maxhouse.books.answer.nevermind": "Nee, lieber nicht",
+  "maxhouse.books.interesting": "Das war ein interessantes Buch!",
+
+  "maxhouse.shop.empty": "Der Laden hat aktuell keine Ware. Komm später wieder.",
+  "maxhouse.quests.empty": "Im Moment gibt es keine Aufgaben. Komm später wieder.",
+
+  "sign.text.welcome": "Du betrittst den tiefen Wald. Laufe nicht zu weit, wenn du nicht vorbereitet bist. Viele vor dir sind verschollen oder schlimmeres. Du bist gewarnt.",
+
+  "sign.text.random.1": "Schnecken in dieser Region.",
+  "sign.text.random.2": "Wenn du sehr vorsichtig und sehr glücklich bist, kannst du vielleicht an einem sonnigen Tag ein Einhorn treffen.",
+  "sign.text.random.3": "Irgendwo in diesem Wald ist ein Schwert in einem Stein. Ist da seit Jahrhunderten. Niemand scheint es herausziehen zu können.",
+  "sign.text.random.4": "Ich finde nicht mehr zurück. Vielleicht hilft es wenn ich diese Schilder aufstelle. Bist du auch verirrt?",
+  "sign.text.random.5": "Versuchs gar nicht erst mit diesen Dornenbüschen. Ich glaub die sind unzerstörbar. Da brauchts vermutlich eine Bombe um durchzukommen. Aber wer bringt schon Bomben in den Wald...",
+  "sign.text.random.6": "In diesen Wälder spukt es. Ich schwöre ich hab ein Gespenst gesehen.",
+  "sign.text.random.7": "Hab ein Haus aus Essen gefunden. Mitten im Wald! Habs komplett zerhackt, hat mir gut eine Woche gereicht.",
+  "sign.text.random.8": "NEIN zu Jojas Autobahnplänen im Wald! STOPP die Zerstörung!",
+
+  "sign.text.item-marker": "Ich hinterlasse dieses Schild für andere Abenteuerlustige. Ich bin alt und mein Gedächtnis will nicht mehr so, aber irgendwo hier habe ich {item} vergraben.",
+  "sign.text.clearing-marker": "Ich habe eine Lichtung im {NSWE} von hier gesehen. Ich weiß nicht mehr wie weit. Sei vorsichtig.",
+  "sign.text.mystical-force-marker": "Dieser Wald hat eine mystische Aura. Ich habe leider keine Quelle finden können, aber dieses Gebiet ist besonders stark. Ich markiere diesen Ort, vielleicht hat jemand anderes mehr Glück.",
+
+  "bigsign.message": "Willkommen im Tiefen Wald! Wo Natur und Magie in Harmony existieren!^== Monsterjagd für die ganze Familie ==^== Wanderrouten für jedes Niveau ==^== Abenteuer und Spaß für alle ==^^Warnung: Sehr gefährlich. Keine Haftung für tote, verfluchte, oder vermisste Abenteuerlustige.",
+
+  "sign.NSWE.north": "Norden",
+  "sign.NSWE.south": "Süden",
+  "sign.NSWE.west": "Westen",
+  "sign.NSWE.east": "Osten",
+
+  "orb-stone.question": "Du fühlst dich zu diesem Stein hingezogen. Du weißt nicht warum. Traust du dich ihn zu berühren?",
+  "orb-stone.yes": "Ja!",
+  "orb-stone.no": "Nee, besser nicht.",
+  "orb-stone.touch-message": "Du berührst den Stein behutsam. Du fühlst ein Summen, aber nichts passiert.",
+  "orb-stone.touch-message-no-orb": "Du berührst den Stein behutsam. Der Stein fühlt sich sehnsüchtig an. Es ist eine seltsame Erfahrung.",
+
+  "cave-entrance.caved-in.message": "Der Eingang ist eingestürzt. Es scheint keinen Weg hinein zu geben."
+
+}

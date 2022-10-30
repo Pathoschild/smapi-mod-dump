@@ -17,10 +17,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
-using StardewValley.Network;
 using StardewValley.Objects;
 using StardewValley.Menus;
-using StardewModdingAPI;
 
 #if IS_BETTER_CRAFTING
 
@@ -32,6 +30,9 @@ using Leclair.Stardew.BetterCrafting.Models;
 namespace Leclair.Stardew.BetterCrafting;
 
 #else
+
+using StardewValley.Network;
+using Newtonsoft.Json.Linq;
 
 namespace Leclair.Stardew.BetterCrafting;
 
@@ -564,7 +565,11 @@ public interface IRecipeProvider {
 public interface IDynamicRuleData {
 
 	/// <summary>
-	/// The ID of the dynamic rule this data is for.
+	/// The ID of the dynamic rule this data is for. Please note that this is
+	/// an absolute ID, rather than the mod-specific IDs that would be passed
+	/// when registering a custom dynamic rule. You can use <see cref="GetAbsoluteRuleId(string)"/>
+	/// to obtain an appropriate ID if necessary, or just create it yourself
+	/// by combining your mod's unique ID with your custom rule's ID.
 	/// </summary>
 	public string Id { get; }
 
@@ -1228,32 +1233,38 @@ public interface IBetterCrafting {
 	#region Dynamic Rules
 
 	/// <summary>
+	/// Get the absolute rule ID of a rule added via <see cref="RegisterRuleHandler(string, IDynamicRuleHandler)"/>
+	/// so that you can reference it when manipulating categories using the API.
+	/// </summary>
+	/// <param name="id">An ID for the rule handler. This should be unique
+	/// within your mod, but can overlap with IDs from other mods as rule IDs
+	/// are prefixed with your mod ID internally.</param>
+	/// <returns>The prefixed rule ID.</returns>
+	string GetAbsoluteRuleId(string id);
+
+	/// <summary>
 	/// Register a new dynamic rule handler for use with dynamic categories.
 	/// </summary>
-	/// <param name="manifest">The manifest of the mod (your mod) registering
-	/// this rule handler.</param>
 	/// <param name="id">An ID for the rule handler. This should be unique
 	/// within your mod, but can overlap with IDs from other mods as rule IDs
 	/// are prefixed with your mod ID internally.</param>
 	/// <param name="handler">The rule handler instance.</param>
 	/// <returns>Whether or not the handler was successfully registered.</returns>
-	bool RegisterRuleHandler(IManifest manifest, string id, IDynamicRuleHandler handler);
+	bool RegisterRuleHandler(string id, IDynamicRuleHandler handler);
 
 	/// <summary>
-	/// See <see cref="RegisterRuleHandler(IManifest, string, IDynamicRuleHandler)"/>
+	/// See <see cref="RegisterRuleHandler(string, IDynamicRuleHandler)"/>
 	/// for details. This method exists to ensure the API translation layer functions
 	/// as you would expect.
 	/// </summary>
-	bool RegisterRuleHandler(IManifest manifest, string id, ISimpleInputRuleHandler handler);
+	bool RegisterRuleHandler(string id, ISimpleInputRuleHandler handler);
 
 	/// <summary>
 	/// Unregister a dynamic rule handler.
 	/// </summary>
-	/// <param name="manifest">The manifest of the mod (your mod) which
-	/// previously registered a rule handler.</param>
 	/// <param name="id">The ID of the rule handler.</param>
 	/// /// <returns>Whether or not the handler was successfully unregistered.</returns>
-	bool UnregisterRuleHandler(IManifest manifest, string id);
+	bool UnregisterRuleHandler(string id);
 
 	#endregion
 

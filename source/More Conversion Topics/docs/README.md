@@ -18,7 +18,7 @@ Some good references when creating content packs that rely on this mod:
    * Lumisteria Villagers React To Marriage, which is a mod that relies on this mod: https://www.nexusmods.com/stardewvalley/mods/10009
 
 ## Current Conversation Topics Added By This Mod
-Since there are a lot of conversation topics added by this mod, I've divided them up into a few sections. 
+Since there are a lot of conversation topics added by this mod, I've divided them up into a few sections. **Spoilers for endgame and Easter-egg type content here!**
 
 ### Social Conversation Topics
 These are related to various social events that happen in the game.
@@ -89,9 +89,15 @@ This mod also adds some new console commands:
    * `vl.mct.repeatable_CTs`, which prints a list of the repeatable conversation topics to the console.
 
 ## Planned Conversation Topics To Be Added
+
+**Spoilers for endgame and Easter-egg type content here!**
    * `newHorse` triggered when the player gets a horse
    * `newCat` triggered when the player adopts a cat
    * `newDog` triggered when the player adopts a dog
+   * `childrenDoved` triggered when the player turns their children into doves
+   * `newBarn` triggered when the player builds a barn
+   * `newCoop` triggered when the player builds a coop
+   * other `newBuildingName` triggered when the player builds a building
    * `UFOEscaped` triggered when the Strange Capsule cracks open
    * `passedOutExhausted` triggered when the player passes out due to low energy
    * `passedOutInjured` triggered when the player passes out due to low health

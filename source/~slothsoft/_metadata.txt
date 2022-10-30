@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/slothsoft/stardew-challenger
+   Git: https://github.com/slothsoft/stardew-challenger.git
+
+mods:
+   Challenger
+   Challenger → Automate
+
+latest commit:
+   commit cdcb139283a4047dec338be3134c19f805564cf6
+   Author: slothsoft <admin@slothsoft.de>
+   Date:   Sat Oct 29 19:18:20 2022 +0200
+   
+       [#69] fix the documentation some more
+   

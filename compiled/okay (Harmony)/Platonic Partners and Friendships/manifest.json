@@ -1,7 +1,7 @@
 {
   "Name": "Platonic Partners and Friendships [SMAPI]",
   "Author": "ch20youk",
-  "Version": "2.1.1",
+  "Version": "2.2.0",
   "Description": "Implements SMAPI patches for PPAF",
   "UniqueID": "Amaranthacyan.PPAFSMAPI",
   "EntryDll": "PlatonicPartnersAndFriendships.dll",

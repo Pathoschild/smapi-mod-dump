@@ -28,7 +28,8 @@ namespace MoreConversationTopics
                 "wedding", "divorce", "babyBoy", "babyGirl", // repeatable social CTs
                 "luauBest", "luauShorts", "luauPoisoned", // repeatable luau CTs
                 "meteoriteLandedOnFarm", "owlStatueLandedOnFarm", // repeatable night event CTs
-                "fairyFarmVisit", "witchSlimeHutVisit", "goldenWitchCoopVisit", "witchCoopVisit" // repeatable magical farm event CTs
+                "fairyFarmVisit", "witchSlimeHutVisit", "goldenWitchCoopVisit", "witchCoopVisit", // repeatable magical farm event CTs
+                "childrenDoved" // repeatable ...bad CTs
             };
 
         // Initialize Monitor and Config for this class and all other classes

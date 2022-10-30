@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Herbal Medicine",
+    "value": 10
+  },
+  {
+    "name": "Magic Herbal Medicine",
+    "value": 40
+  },
+  {
+    "name": "Bandage",
+    "value": 5
+  },
+  {
+    "name": "Tubular Bandage",
+    "value": 20
+  },
+  {
+    "name": "Regular Medkit",
+    "value": 30
+  },
+  {
+    "name": "Advanced Medkit",
+    "value": 60
+  },
+  {
+    "name": "Painkiller",
+    "value": 30
+  },
+  {
+    "name": "Fairy Rose",
+    "value": 5
+  },
+  {
+    "name": "Life Elixir",
+    "value": 20
+  }
+]

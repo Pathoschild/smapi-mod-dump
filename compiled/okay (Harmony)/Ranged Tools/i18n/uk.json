@@ -1,14 +1,14 @@
 {
 	// Option Headers	
-	"headerRanges": "Діапазони дії",
-	"headerRangedSwings": "Ranged Swings", // todo
+	"headerRanges": "Дальності дії",
+	"headerRangedSwings": "Дальності розмаху",
 	"headerUseOnTile": "Придатність",
 	"headerFaceClick": "Повернення в бік натискання",
 	"headerMisc": "Різне",
 	
 	// Ranges
-	"optionRangeName": "Діапазон {{subject}}",
-	"optionRangeTooltip": "Максимальний діапазон {{subject}} в клітинках для гравця.",
+	"optionRangeName": "Дальність {{subject}}",
+	"optionRangeTooltip": "Максимальна дальність {{subject}} в клітинках для гравця.",
 	
 	"axeForRangeName": "дії сокири",
 	"axeForRangeTooltip": "дії сокири",
@@ -18,24 +18,24 @@
 	"hoeForRangeTooltip": "дії мотики",
 	"wateringCanForRangeName": "дії лійки",
 	"wateringCanForRangeTooltip": "дії лійки",
-	"scytheForRangeName": "Scythe", // todo
-	"scytheForRangeTooltip": "the Scythe", // todo
-	"weaponsForRangeName": "Weapons", // todo
-	"weaponsForRangeTooltip": "melee weapons", // todo
+	"scytheForRangeName": "дії коси",
+	"scytheForRangeTooltip": "дії коси",
+	"weaponsForRangeName": "дії зброї",
+	"weaponsForRangeTooltip": "дії зброї ближнього бою",
 	"seedsForRangeName": "саджання насіння",
 	"seedsForRangeTooltip": "саджання насіння/добрива",
 	"objectsForRangeName": "розміщення об'єктів",
 	"objectsForRangeTooltip": "розміщення об'єктів",
 	
-	"rangeUnlimited": "необмежений",
+	"rangeUnlimited": "необмежена",
 	"rangeDefault": "1 клітинка (стандарт.)",
 	"rangeExtended": "{{tiles}} кл.",
 	
 	// Ranged Swings
-	"optionScytheSwingOriginName": "Center Scythe on Cursor", // todo
-	"optionScytheSwingOriginTooltip": "Centers area of effect for scythe swings on cursor rather than player.", // todo
-	"optionWeaponSwingOriginName": "Center Weapons on Cursor", // todo
-	"optionWeaponSwingOriginTooltip": "Centers area of effect for melee weapons on cursor rather than player.", // todo
+	"optionScytheSwingOriginName": "Відцентрування коси на курсор",
+	"optionScytheSwingOriginTooltip": "Відцентровує область дії для розмахів косою на курсорі, а не на гравцеві.",
+	"optionWeaponSwingOriginName": "Навеленння зроби на курсор",
+	"optionWeaponSwingOriginTooltip": "Відцентровує зону дії зброї ближнього бою на курсорі, а не на гравцеві.",
 	
 	// Usability
 	"optionSelfUsabilityName": "Викор. {{tool}} на кл. гравця",
@@ -57,24 +57,24 @@
 	
 	// Miscellaneous
 	"optionToolHitLocationName": "Показувати місцезнаход. індик. інстр.",
-	"optionToolHitLocationTooltip": "Впливає на роботу індикатора розташування інструмента (якщо ввімкнено).\nОригінальна логіка: дотримування діапазонів звичайної гри.\nНова логіка: враховування розширених діапазонів.\nКомбінація: вказування кількох типів одночасно.",
+	"optionToolHitLocationTooltip": "Впливає на роботу індикатора розташування інструмента (якщо ввімкнено).\nОригінальна логіка: дотримування дальностей звичайної гри.\nНова логіка: враховування розширених дальностей.\nКомбінація: вказування кількох типів одночасно.",
 	
 	"locationLogicOriginal": "Оригінальна логіка",
 	"locationLogicNew": "Нова логіка (за замовч.)",
 	"locationLogicCombined": "Комбінація",
 	
-	"optionHalfTilePositionsName": "Use Half-Tile Positions", // todo
-	"optionHalfTilePositionsTooltip": "Alters range calculation so that when player is standing \"between\" tile units, range feels more equal on all sides.", // todo
+	"optionHalfTilePositionsName": "Використовування позиції напівплитки",
+	"optionHalfTilePositionsTooltip": "Змінює розрахунок дальності таким чином, що коли гравець стоїть \"між\" блоками клітинок, дальність відчувається рівнішою з усіх боків.",
 	
-	"optionAllowRangedChargeName": "Дозволити розширення діапазонів",
-	"optionAllowRangedChargeTooltip": "Дозволяє розширювати діапазони дії інструмента, які виникатимуть із позиції курсора, а не від гравця.",
+	"optionAllowRangedChargeName": "Дозволити розширення дальностей",
+	"optionAllowRangedChargeTooltip": "Дозволяє розширювати дальності дії інструмента, які виникатимуть із позиції курсора, а не від гравця.",
 	
-	"optionAttacksIgnoreObstaclesName": "Attacks Ignore Obstacles", // todo
-	"optionAttacksIgnoreObstaclesTooltip": "Allows attacks to hit monsters even if there are obstacles in the way.", // todo
+	"optionAttacksIgnoreObstaclesName": "Ігнорувати перешкоди атакам",
+	"optionAttacksIgnoreObstaclesTooltip": "Дозволяє атакам потрапляти в монстрів, навіть якщо на шляху є перешкоди.",
 	
-	"optionDontCutGrassName": "Don't Cut Grass At Range", // todo
-	"optionDontCutGrassTooltip": "Prevents scythes and weapons from cutting grass beyond the normal range (but still cutting weeds and such).", // todo
+	"optionDontCutGrassName": "Не косити траву на відстані",
+	"optionDontCutGrassTooltip": "Перешкоджає косам і зброї косити траву за межами нормальної дальності (але все одно дозволяє скошувати бур'яни й т.п.)",
 	
-	"optionOnClickOnlyName": "Користувацький діапазон при натисканні",
-	"optionOnClickOnlyTooltip": "Якщо ввімкнено, розширені діапазони застосовуються лише під час використання інструментів за допомогою натискання. Якщо вимкнено, вони застосовуватимуться для всіх типів використання інструментів.",
+	"optionOnClickOnlyName": "Користувацька дальність при натисканні",
+	"optionOnClickOnlyTooltip": "Якщо ввімкнено, розширені дальності застосовуються лише під час використання інструментів за допомогою натискання. Якщо вимкнено, вони застосовуватимуться для всіх типів використання інструментів.",
 }

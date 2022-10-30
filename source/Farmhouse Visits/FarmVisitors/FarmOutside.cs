@@ -9,10 +9,13 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Network;
+using StardewValley.TerrainFeatures;
 using System;
+using System.Linq;
 using lv = StardewModdingAPI.LogLevel;
 
 namespace FarmVisitors
@@ -55,9 +58,7 @@ namespace FarmVisitors
 
             if (ModEntry.Debug)
             {
-                ModEntry.Log($"Leaving {e.OldLocation.Name}...", lv.Info);
-                ModEntry.Log($"Warped to {e.NewLocation.Name}", lv.Info);
-                ModEntry.Log($"isFarm = {e.NewLocation.IsFarm} , CanFollow = {ModEntry.CanFollow}, VisitorName = {ModEntry.VisitorName}", lv.Info);
+                ModEntry.Log($"Leaving {e.OldLocation.Name}...Warped to {e.NewLocation.Name}. isFarm = {e.NewLocation.IsFarm} , CanFollow = {ModEntry.CanFollow}, VisitorName = {ModEntry.VisitorName}", lv.Info);
             }
 
             string name = null;
@@ -104,17 +105,6 @@ namespace FarmVisitors
             //var newspot = getRandomOpenPointInFarm(gameLocation, Game1.random);
             var newspot = getRandomFreeTile(gameLocation);
 
-            /*if(ModEntry.Debug == false)
-            {
-                try
-                {
-                    c.controller = new PathFindController(c, gameLocation, newspot, 2);
-                }
-                catch (Exception ex)
-                {
-                    ModEntry.Log($"Something went wrong while pathing via controller: {ex}", lv.Error);
-                }
-            }*/
             try
             {
                 c.PathToOnFarm(newspot);
@@ -127,6 +117,54 @@ namespace FarmVisitors
             catch (Exception ex)
             {
                 ModEntry.Log($"Something went wrong (PathToOnFarm): {ex}", lv.Error);
+            }
+
+            if (Game1.random.Next(0, 11) <= 5)
+            {
+                var anyCrops = ModEntry.Crops.Any();
+
+                if (Game1.currentSeason == "winter")
+                {
+                    c.setNewDialogue(
+                        Values.GetDialogueType(
+                            c,
+                            DialogueType.Winter),
+                        true,
+                        false);
+                }
+                else if ((Game1.random.Next(0, 2) <= 0 || !anyCrops) && ModEntry.Animals.Any())
+                {
+                    c.setNewDialogue(
+                        string.Format(
+                            Values.GetDialogueType(
+                                c,
+                                DialogueType.Animal),
+                            Values.GetRandomObj(
+                                ItemType.Animal)),
+                        true,
+                        false);
+                }
+                else if (anyCrops)
+                {
+                    c.setNewDialogue(
+                        string.Format(
+                            Values.GetDialogueType(
+                                c, 
+                                DialogueType.Crop), 
+                            Values.GetRandomObj(
+                                ItemType.Crop)), 
+                        true, 
+                        false);
+                }
+                else
+                {
+                    c.setNewDialogue(
+                        Values.GetDialogueType(
+                            c,
+                            DialogueType.NoneYet),
+                        true,
+                        false);
+                }
             }
         }
 

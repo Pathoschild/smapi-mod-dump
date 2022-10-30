@@ -20,7 +20,7 @@ namespace BetterBeehouses
         }
         public bool GetEnabledHere(GameLocation location)
         {
-            return !ObjectPatch.CantProduceToday(location.GetSeasonForLocation() == "Winter", location);
+            return !ObjectPatch.CantProduceToday(location.GetSeasonForLocation() == "winter", location);
         }
         public bool GetEnabledHere(GameLocation location, bool isWinter)
         {

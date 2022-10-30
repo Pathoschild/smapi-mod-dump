@@ -1,0 +1,128 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-challenger
+**
+*************************************************/
+
+[color=#00ff00][size=6]Challenger[/size][/color]
+
+A mod that makes playing a challenge again. It allows you to select a challenge from a list, which restricts some parts of the game and lets you focus on another part.
+
+The mod is automatically present in the game. You will get an mail with the [b]Magical Challenge Object[/b]™ the next time you wake up.
+
+Using the attached object in its unmodified form will open the challenge menu. You can also open the menu using the key [K] (you can customize the key in either the mod’s config file or the [url=https://www.nexusmods.com/stardewvalley/mods/5098]GenericModConfigMenu[/url]).
+
+This will display all the restrictions you have to face - but you might get a little something extra to make the challenge possible. The [b]Magical Challenge Object[/b]™ will turn into this “something extra” once you start the challenge and can be used as any other object of the kind it turns into.
+
+After the challenge was finished, nothing really happens. The restrictions stay in place, but at least you get a congratulatory mail. [url=https://github.com/slothsoft/stardew-challenger/issues/76]The plan[/url] is to get a reward in future versions.
+
+This mod brings the following challenges:
+[list]
+[*]No Challenge
+[*]Brewery
+[*]Hermit
+[*]No Capitalist
+[*]Vineyard
+[/list]
+
+[size=5]No Challenge[/size]
+[list]
+[*]default value without any restrictions - for when you are sick and tired of following rules
+[/list]
+
+[size=5]Brewery[/size]
+
+[b]Goal:[/b] To earn gold by selling beer [2.500.000 for easy, 5.000.000 for medium or 10.000.000 for hard]
+[list]
+[*]rice juice is renamed to rice beer
+[*]only beers (including the new rice beer) count towards the goal
+[*]you can only buy seeds for plants that make beer (which includes rice)
+[*]you cannot build animal buildings, i.e. coop, barn and silo
+[*][easy and medium] you get a keg to start you off
+[/list]
+
+[size=5]Hermit[/size]
+
+[b]Goal:[/b] [easy and medium] To finish the community center / [hard] To reach perfection
+[list]
+[*]You cannot leave the farm, except on Sundays
+[*][easy] you get a seed maker
+[/list]
+
+[size=5]No Capitalist[/size]
+
+[b]Goal:[/b] To finish the community center
+[list]
+[*]You cannot buy from Pierre or the Joja Mart
+[*][hard] You cannot buy from Clint either (upgrading tools and opening geodes at Clint’s is still possible though)
+[*][easy] You get a seed maker to tide you over your imminent lack of seeds
+[/list]
+
+[size=5]Vineyard[/size]
+
+[b]Goal:[/b] To earn gold by selling wine [2.500.000 for easy, 5.000.000 for medium or 10.000.000 for hard]
+[list]
+[*]rice juice is renamed to rice wine
+[*]only wine and mead (and the new rice wine) count towards the goal
+[*]you can only buy seeds for plants that make wine (which includes rice)
+[*]you cannot build animal buildings, i.e. coop, barn and silo
+[*][easy and medium] you get a keg to start you off
+[/list]
+
+
+[size=6]FAQ[/size]
+
+[size=5]Can I disable / pause the challenges?[/size]
+
+Yes, absolutely. You can just select “no challenge” in the challenge menu at any time to pause the challenge. So if not buying from Clint is no fun for you, you can just pause the challenge, buy, and then select the challenge again. Your progress might not get counted if the challenge is paused, but you’re not losing the current progress either.
+
+[size=5]The bunny turned into a Seedmaker and now I can’t open the menu?[/size]
+
+You don’t need the bunny, you can also press [K] to open the same menu. Then when you select another challenge, the seedmaker will change into another object (or back to the bunny again).
+
+[size=5]Does the mod change the inventory / farm?[/size]
+
+Your inventory and the farm will not be changed, only the [b]Magical Challenge Object[/b]™ might change. This mod is only applied to current interactions.
+
+[size=5]Can you start challenges mid-playthrough?[/size]
+
+You can start the challenges at any time, and you can even pause them (by selecting “no challenge” in the menu) whenever you feel like it.
+
+
+[size=6]Configuration[/size]
+
+If you wish to configure this mod, it’s advised to install spacechase0’s [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url]. Then there will be a config page.
+
+But if you wish to change the [i]config.json[/i] file manually, you can also do that. The [i]config.json[/i] with all entries is documented [url=https://github.com/slothsoft/stardew-challenger/blob/main/README.md#configuration]here[/url].
+
+
+[size=6]Removing the Mod[/size]
+
+[list=1]
+[*]Just remove the [i]Challenger/[/i] folder (and [i]ChallengerAutomate/[/i] if you have it).
+[*]If you have a [b]Magical Challenge Object[/b]™ on your map, it should revert to a pink plush bunny
+[*]If you experienced bugs with the mod, please take the time to [url=https://github.com/slothsoft/stardew-challenger/issues]report them[/url]
+[/list]
+
+
+[size=6]Translator Guide[/size]
+
+Right now, not all translations are provided. If you want to help, translate either file in the [i][url=https://github.com/slothsoft/stardew-challenger/blob/main/Challenger/i18n/]i18n/[/url][/i] and test it right in your Stardew Valley (the same folder exists in your [i]Mods/[/i] folder). You can than provide it to me via [url=https://github.com/slothsoft/stardew-challenger/fork]pull request[/url] or [url=mailto:s.schulz@slothsoft.de]email[/url].
+
+More information can be found [url=https://github.com/slothsoft/stardew-challenger/blob/main/README.md#translator-guide]here[/url].
+
+
+[size=6]Developer Notes[/size]
+
+Can be found [url=https://github.com/slothsoft/stardew-challenger/blob/main/readme/dev-notes.md]here[/url].
+
+The source code for this mod is on [url=https://github.com/slothsoft/stardew-challenger]GitHub[/url].
+
+
+[size=6]License[/size]
+
+This project is licensed under the MIT License - see the [url=https://github.com/slothsoft/stardew-challenger/blob/main/LICENSE]MIT license[/url] for details.

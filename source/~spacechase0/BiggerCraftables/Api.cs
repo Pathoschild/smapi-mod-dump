@@ -29,7 +29,7 @@ namespace BiggerCraftables
             if (!obj.bigCraftable.Value)
                 return false;
 
-            return Mod.Entries.FirstOrDefault(e => e.Name == obj.Name) != null;
+            return Mod.Entries.ContainsKey(obj.Name);
         }
 
         public Vector2 GetBaseCraftable(GameLocation loc, Vector2 pos)
@@ -40,11 +40,11 @@ namespace BiggerCraftables
             if (!this.IsBiggerCraftable(obj))
                 return new Vector2(-1, -1);
 
-            var entry = Mod.Entries.First(e => e.Name == obj.Name);
+            var entry = Mod.Entries[obj.Name];
             int ind = obj.GetBiggerIndex();
 
             int relPosX = ind % entry.Width, relPosY = entry.Length - 1 - ind / entry.Width;
-            Vector2 basePos = new Vector2(pos.X - relPosX, pos.Y - relPosY);
+            Vector2 basePos = new(pos.X - relPosX, pos.Y - relPosY);
             return basePos;
         }
     }

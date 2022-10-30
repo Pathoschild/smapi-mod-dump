@@ -15,20 +15,20 @@ It has several parts:
 	2. The bot inventory
 	3. A MiniScript console.
 */
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace Farmtronics.Bot {
 	class UIMenu : MenuWithInventory {
 
 		BotObject bot;
 		InventoryMenu botInventoryMenu;
-
-		//Shell shell;
 
 		int consoleLeft, consoleTop;
 		const int consoleHeight = 480;
@@ -66,12 +66,6 @@ namespace Farmtronics.Bot {
 			//print($"playerInvHeight:{playerInvHeight}, consoleTop:{consoleTop} (={Game1.uiViewport.Height/2}-{totalHeight/2}), new yPositionOnScreen:{totalHeight - playerInvHeight - yPositionForInventory}");
 
 			movePosition(0, playerInvYDelta);	// (adjust position of player UI)
-			
-			// Inventory indices have to exist, since InventoryMenu exclusively uses them and can't assign items otherwise.
-			for (int i = bot.inventory.Count; i < bot.GetActualCapacity(); i++)
-			{
-				bot.inventory.Add(null);
-			}
 
 			botInventoryMenu = new InventoryMenu(Game1.uiViewport.Width/2 - widthOfTopStuff/2, consoleTop, playerInventory: false, bot.inventory,
 				capacity: bot.GetActualCapacity(), rows: 6);
@@ -143,15 +137,27 @@ namespace Farmtronics.Bot {
 				heldItem = null;
 			}
 		}
+		
+		private void DoHatAction() {
+			if (!Context.IsMultiplayer) return;
+			
+			// Update the inventory
+			bot.data.Update();
+		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true) {
-			//ModEntry.instance.Monitor.Log($"Bot.receiveLeftClick({x}, {y}, {playSound}) while heldItem={heldItem}; inDragArea={inDragArea(x,y)}");
-			//int slot = botInventoryMenu.getInventoryPositionOfClick(x, y);
-			//ModEntry.instance.Monitor.Log($"Bot.receiveLeftClick: slot={slot}");
+			bot.shell.console.receiveLeftClick(x, y, playSound);
+
+			// ModEntry.instance.Monitor.Log($"Bot.receiveLeftClick({x}, {y}, {playSound}) while heldItem={heldItem}; inDragArea={inDragArea(x,y)}");
+			int slot = botInventoryMenu.getInventoryPositionOfClick(x, y);
+			bool checkHat = slot == bot.GetActualCapacity() - 1;
+			// ModEntry.instance.Monitor.Log($"Bot.receiveLeftClick: slot={slot}");
 			base.receiveLeftClick(x, y, playSound);
 			heldItem = botInventoryMenu.leftClick(x, y, heldItem, false);
 			
-			//ModEntry.instance.Monitor.Log($"after calling botInventoryMenu.leftClick, heldItem = {heldItem}");
+			if (checkHat && heldItem is Hat) DoHatAction();
+			
+			// ModEntry.instance.Monitor.Log($"after calling botInventoryMenu.leftClick, heldItem = {heldItem}");
 
 			if (heldItem == null && inDragArea(x,y)) {
 				var cursor = ModEntry.instance.Helper.Input.GetCursorPosition();
@@ -161,17 +167,22 @@ namespace Farmtronics.Bot {
 		}
 
 		public override void receiveRightClick(int x, int y, bool playSound = true) {
-			//ModEntry.instance.Monitor.Log($"Bot.receiveRightClick({x}, {y}, {playSound})");
+			// ModEntry.instance.Monitor.Log($"Bot.receiveRightClick({x}, {y}, {playSound})");
+			int slot = botInventoryMenu.getInventoryPositionOfClick(x, y);
+			bool checkHat = slot == bot.GetActualCapacity() -1;
 			base.receiveRightClick(x, y, playSound);
 			heldItem = botInventoryMenu.rightClick(x, y, heldItem, playSound);
+			
+			if (checkHat && heldItem is Hat) DoHatAction();
 
-			//ModEntry.instance.Monitor.Log($"after calling botInventoryMenu.rightClick, heldItem = {heldItem}");
+			// ModEntry.instance.Monitor.Log($"after calling botInventoryMenu.rightClick, heldItem = {heldItem}");
 		}
 
 		// Invoked by InventoryMenu.leftClick when an item is dropped in an inventory slot.
 		void onAddItem(Item item, Farmer who) {
 			//ModEntry.instance.Monitor.Log($"Bot.onAddItem({item}, {who}");
 			// Note: bot inventory has already been added, so we don't really need this.
+			DoHatAction();
 		}
 
 		public override void performHoverAction(int x, int y) {

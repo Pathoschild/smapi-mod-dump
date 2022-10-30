@@ -50,6 +50,7 @@ namespace HDPortraits
         /// <param name="reset">Whether or not to reset animations this tick</param>
         /// <returns>The source region &amp; the texture to use</returns>
         public (Rectangle, Texture2D) GetTextureAndRegion(NPC npc, int index, int elapsed = -1, bool reset = false);
+
         [Obsolete("Directly invalidate the necessary asset instead. It will be automatically reloaded.")]
         public void ReloadData();
         /// <summary>
@@ -123,5 +124,17 @@ namespace HDPortraits
         /// <param name="forceSuffix">Whether to require the suffix or default to no suffix</param>
         /// <returns>True if HDPortraits data exists, otherwise false.</returns>
         public bool TryGetPortrait(string name, string suffix, int index, out Texture2D texture, out Rectangle region, int millis = -1, bool forceSuffix = false);
-    }
+
+        /// <summary>
+        /// Attempt to get HD Portrait
+        /// </summary>
+        /// <param name="character">The NPC to get a portrait of</param>
+        /// <param name="index">The expression index</param>
+        /// <param name="texture">The texture to use</param>
+        /// <param name="region">The source region to use</param>
+        /// <param name="millis">Milliseconds elapsed</param>
+        /// <returns>True if HDPortraits data exists, otherwise false.</returns>
+		public bool TryGetPortrait(NPC character, int index, out Texture2D texture, out Rectangle region, int millis = -1);
+
+	}
 }

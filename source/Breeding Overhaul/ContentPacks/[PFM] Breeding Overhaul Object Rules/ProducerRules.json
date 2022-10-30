@@ -1,0 +1,400 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/StarAmy/BreedingOverhaul
+**
+*************************************************/
+
+[	
+	//Male Drop Recycling Recipes
+
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Manure", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "369", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Chicken Feather", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Chicken DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Duck Feather", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Duck DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},		
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Ostrich Feather", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Ostrich DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},				
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Dinosaur Scale", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Dinosaur DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": 446, //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Rabbit DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Cow Horn", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Cow DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Goat Horn", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Goat DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Pig Tusk", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Pig DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"InputIdentifier": "Sheep Horn", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Sheep DNA", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},	
+
+
+
+	//New Egg Mayonnaise Recipes
+
+
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Large Duck Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Duck Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Large Void Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Void Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Golden Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Golden Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Large Golden Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Golden Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Blue Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Blue Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Large Blue Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Blue Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Large Dinosaur Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Dinosaur Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Large Ostrich Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 14, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 14, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+
+
+	//Fertilized Egg Mayonnaise Recipes
+
+
+
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Duck Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Duck Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized White Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Brown Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Blue Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Blue Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Golden Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Golden Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Void Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Void Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Duck Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Duck Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large White Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Brown Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Blue Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Blue Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Golden Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Golden Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Void Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Void Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Dinosaur Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Dinosaur Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 1, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 1, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Ostrich Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 10, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 10, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Dinosaur Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Dinosaur Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 2, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "Mayonnaise Machine", //Name of the producer. Required.
+		"InputIdentifier": "Fertilized Large Ostrich Egg", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+		"InputStack": 1, //The required stack of the input. Default value is 1.
+		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier": "Mayonnaise", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputStack": 14, //Set the output stack3. Default is 1.
+		"OutputMaxStack": 14, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		
+	},
+]

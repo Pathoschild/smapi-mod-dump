@@ -27,8 +27,6 @@ using StardewValley.Objects;
 using StardewValley.Projectiles;
 using StardewValley.Tools;
 
-using SObject = StardewValley.Object;
-
 namespace Leclair.Stardew.Common;
 
 public static class SpriteHelper {

@@ -5,6 +5,7 @@ urls:
 mods:
    Better Chests
    Custom Bundles
+   Cycle Tools
    Easy Access
    Expanded Storage (Lite)
    FuryCore
@@ -18,9 +19,9 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit 667f842274080cccb57d09c36480aaa5ebc2224f
+   commit a0e00e21c414f30404ed625b3fb3e930ac839826
    Author: Matthew Lucas <justmatt@outlook.com>
-   Date:   Thu Sep 29 16:49:24 2022 -0700
+   Date:   Fri Sep 30 08:41:22 2022 -0700
    
-       Refactor config handling
+       Updated solution
    

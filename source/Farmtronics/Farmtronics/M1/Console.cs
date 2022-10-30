@@ -36,7 +36,11 @@ namespace Farmtronics.M1 {
 
 		Shell owner;
 		public TextDisplay display {  get; private set; }
-		public Color backColor;
+		Color _backColor = Color.DeepSkyBlue;
+		public Color backColor {
+			get { return _backColor; }
+			set {  _backColor = value; if (display != null) display.screenColor = value; }
+		}
 
 		bool inInputMode;
 		RowCol inputStartPos;		// where on the screen we started taking input
@@ -54,8 +58,12 @@ namespace Farmtronics.M1 {
 		RowCol selStart;
 		RowCol selEnd;
 		
+		public bool isOpen {  get; private set; }
+
+		ClickableTextureComponent backButton;
+
 		public Console(Shell owner)
-		: base(Game1.uiViewport.Width/2 - width/2, Game1.uiViewport.Height/2 - height/2, width, height) {
+		: base(Game1.uiViewport.Width/2 - width/2, Game1.uiViewport.Height/2 - height/2, width, height, true) {
 
 			this.owner = owner;
 
@@ -67,7 +75,8 @@ namespace Farmtronics.M1 {
 
 			display = new TextDisplay();
 			display.onScrolled += NoteScrolled;
-			display.backColor = new Color(0.31f, 0.11f, 0.86f);
+			display.backColor = Color.Transparent;
+			display.screenColor = _backColor;
 			display.Clear();
 
 			var colors = new Color[] { Color.Red, Color.Yellow, Color.Green, Color.Purple };
@@ -98,38 +107,51 @@ namespace Farmtronics.M1 {
 
 			whiteTex = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
 			whiteTex.SetData(new[] { Color.White });
+
+			backButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + 32, yPositionOnScreen + height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f)
+			{
+				myID = 101
+			};
 		}
 
 		public void RemoveFrameAndPositionAt(int left, int top) {
+			ModEntry.instance.Monitor.Log($"Console.RemoveFrameAndPositionAt({left}, {top})");
 			drawFrame = false;
 			xPositionOnScreen = left - screenArea.Left;
 			yPositionOnScreen = top - screenArea.Top;
-			ModEntry.instance.Monitor.Log($"Console.RemoveFrameAndPositionAt({left}, {top})");
+			upperRightCloseButton.bounds = new Rectangle(xPositionOnScreen + width - 128, yPositionOnScreen - 8, 48, 48);
 
 			Game1.keyboardDispatcher.Subscriber = this;
-			this.Selected = true;
+			this.isOpen = true;
 		}
 
 		public void movePosition(int dx, int dy) {
 			xPositionOnScreen += dx;
 			yPositionOnScreen += dy;
+			upperRightCloseButton.bounds.Offset(dx, dy);
 		}
 
 		public void Present() {
 			Game1.player.Halt();
 			Game1.activeClickableMenu = this;
 			Game1.keyboardDispatcher.Subscriber = this;
-			this.Selected = true;
+			this.isOpen = true;
 		}
 
 		private void Exit() {
-			ModEntry.instance.Monitor.Log("Console.Exit()");
+			ModEntry.instance.Monitor.Log("Console.Exit() when isOpen={isOpen}\n" + new System.Diagnostics.StackTrace());
 			Game1.playSound("smallSelect");
+			this.isOpen = false;
 			Game1.exitActiveMenu();
 			Game1.player.canMove = true;
 		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true) {
+			if (upperRightCloseButton != null && readyToClose() && upperRightCloseButton.containsPoint(x, y))
+			{
+				if (playSound) Game1.playSound("bigDeSelect");
+				Exit();
+			}
 		}
 
 		public override void receiveRightClick(int x, int y, bool playSound = true) {
@@ -306,19 +328,20 @@ namespace Farmtronics.M1 {
 		public override void update(GameTime time) {
 			base.update(time);
 
-			// Arrow keys for some reason aren't provided by IKeyboardSubscriber, and
-			// don't auto-repeat like they should.  So we handle them separately here.
-			foreach (var kw in keyWatchers) {
-				kw.Update(time);
-				if (kw.justPressedOrRepeats) {
-					//ModEntry.instance.Monitor.Log($"KeyWatcher {kw.keyButton} pressed or repeats");
-					HandleKey(kw.keyChar);
+			if (isOpen) {
+				// Arrow keys for some reason aren't provided by IKeyboardSubscriber, and
+				// don't auto-repeat like they should.  So we handle them separately here.
+				foreach (var kw in keyWatchers) {
+					kw.Update(time);
+					if (kw.justPressedOrRepeats) {
+						//ModEntry.instance.Monitor.Log($"KeyWatcher {kw.keyButton} pressed or repeats");
+						HandleKey(kw.keyChar);
+					}
 				}
 			}
 
-
 			owner.Update(time);
-			display.Update(time);
+			if (isOpen) display.Update(time);
 		}
 
 		
@@ -549,7 +572,6 @@ namespace Farmtronics.M1 {
 
 	
 		public override void draw(SpriteBatch b) {
-
 			Vector2 positionOnScreen = new Vector2(xPositionOnScreen, yPositionOnScreen);
 
 			Rectangle displayArea;
@@ -576,6 +598,12 @@ namespace Farmtronics.M1 {
 			b.Draw(Assets.ScreenOverlay, positionOnScreen, drawFrame ? screenSrcR : innerSrcR,
 				Color.White,
 				0, Vector2.Zero, drawScale, SpriteEffects.None, 0.5f);
+
+			// let base code draw the close box
+			base.draw(b);
+
+			// and finally, draw the mouse cursor
+			drawMouse(b);
 		}
 
 		void FillRect(SpriteBatch b, Rectangle rect, Color color) {

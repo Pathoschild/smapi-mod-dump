@@ -8,23 +8,57 @@
 **
 *************************************************/
 
-using LinqFasterer;
-using Microsoft.Xna.Framework.Graphics;
+using GenericModConfigMenu;
+using Microsoft.Xna.Framework;
+using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Configuration.Preview;
 
 internal sealed class Scene1 : Scene {
 	//private static readonly Lazy<XTexture2D> FishTexture = new(() => StardewValley.Game1.content.Load<XTexture2D>(@"Maps\springobjects"));
-	private readonly AnimatedTexture CenterCharacterSpriteTexture;
-	private readonly AnimatedTexture CenterCharacterPortraitTexture;
-	private readonly Drawable CenterCharacterPortraitDrawable;
+
+	private readonly struct CharacterReference : IDisposable {
+		internal readonly AnimatedTexture Sprite;
+		internal readonly AnimatedTexture Portrait;
+		internal readonly Drawable Drawable;
+		internal readonly string Name;
+		internal readonly string PortraitName;
+		
+		internal CharacterReference(AnimatedTexture sprite, AnimatedTexture portrait, Drawable drawable, string name, string? portraitNameOverride) {
+			Sprite = sprite;
+			Portrait = portrait;
+			Drawable = drawable;
+			Name = name;
+			PortraitName = portraitNameOverride ?? name;
+		}
+
+		internal CharacterReference(in TextureReference textureRef) : this(
+			textureRef.Sprite, textureRef.Portrait, new(textureRef.Portrait), textureRef.Name, textureRef.PortraitName
+		) {
+
+		}
+
+		public void Dispose() {
+			Sprite.Dispose();
+			Portrait.Dispose();
+		}
+	}
+
+	private readonly CharacterReference CenterCharacter;
+
+	private readonly Stopwatch DrawStopwatch = new();
 
 	private readonly SpriteSheet OutdoorTiles;
 
@@ -35,8 +69,6 @@ internal sealed class Scene1 : Scene {
 	private readonly SpriteSheet TreeTexture;
 
 	private DrawableInstance[] Drawables;
-
-	private readonly string Season;
 
 	private Vector2I TileCount = default;
 
@@ -167,7 +199,7 @@ internal sealed class Scene1 : Scene {
 		}
 	}
 
-	private static TexturePair? MakeCharacterTextures(PathPair paths) {
+	private static TextureReference? MakeCharacterTextures(in PathReference paths) {
 		var sprite = MakeCharacterSpriteTexture(paths.Sprite);
 		var portrait = MakeCharacterPortraitTexture(paths.Portrait);
 		try {
@@ -177,7 +209,7 @@ internal sealed class Scene1 : Scene {
 				return null;
 			}
 
-			return new(sprite, portrait);
+			return new(sprite, portrait, paths.Name, paths.PortraitName);
 		}
 		catch {
 			sprite?.Dispose();
@@ -186,12 +218,12 @@ internal sealed class Scene1 : Scene {
 		}
 	}
 
-	private static TexturePair? MakeCharacterTextures(AnimatedTexture? sprite, string portraitPath) {
+	private static TextureReference? MakeCharacterTextures(AnimatedTexture? sprite, in PathReference paths) {
 		if (sprite is null) {
 			return null;
 		}
 
-		var portrait = MakeCharacterPortraitTexture(portraitPath);
+		var portrait = MakeCharacterPortraitTexture(paths.Portrait);
 		try {
 			if (portrait is null) {
 				sprite.Dispose();
@@ -199,7 +231,7 @@ internal sealed class Scene1 : Scene {
 				return null;
 			}
 
-			return new(sprite, portrait);
+			return new(sprite, portrait, paths.Name, paths.PortraitName);
 		}
 		catch {
 			sprite.Dispose();
@@ -208,60 +240,74 @@ internal sealed class Scene1 : Scene {
 		}
 	}
 
-	private readonly record struct TexturePair(AnimatedTexture Sprite, AnimatedTexture Portrait);
+	private readonly record struct TextureReference(
+		AnimatedTexture Sprite,
+		AnimatedTexture Portrait,
+		string Name,
+		string? PortraitName = null
+	);
 
-	private readonly record struct PathPair(string Sprite, string Portrait);
+	private readonly record struct PathReference(
+		string Sprite,
+		string Portrait,
+		string Name,
+		string? PortraitName = null
+	) {
+		internal static PathReference CreateDefault(string name) {
+			return new($@"Characters\{name}", $@"Portraits\{name}", name);
+		}
+	}
 
-	private static readonly PathPair[] CharacterPaths = {
+	[SuppressMessage("ReSharper", "StringLiteralTypo")]
+	private static readonly PathReference[] CharacterPaths = {
 		// vanilla
-		new(@"Characters\Penny", @"Portraits\Penny"),
-		new(@"Characters\Haley", @"Portraits\Haley"),
-		new(@"Characters\Abigail", @"Portraits\Abigail"),
-		new(@"Characters\Maru", @"Portraits\Maru"),
-		new(@"Characters\Leah", @"Portraits\Leah"),
+		PathReference.CreateDefault(@"Penny"),
+		PathReference.CreateDefault(@"Haley"),
+		PathReference.CreateDefault(@"Abigail"),
+		PathReference.CreateDefault(@"Maru"),
+		PathReference.CreateDefault(@"Leah"),
 		// sve
-		new(@"Characters\Alesia", @"Portraits\Alesia"),
-		new(@"Characters\Claire", @"Portraits\Claire"),
-		new(@"Characters\Olivia", @"Portraits\Olivia"),
-		new(@"Characters\Sophia", @"Portraits\Sophia"),
+		PathReference.CreateDefault(@"Alesia"),
+		PathReference.CreateDefault(@"Claire"),
+		PathReference.CreateDefault(@"Olivia"),
+		PathReference.CreateDefault(@"Sophia"),
 		// rsv
-		new(@"Characters\Alissa", @"Portraits\Alissa"),
-		new(@"Characters\Corine", @"Portraits\Corine"),
-		new(@"Characters\Daia", @"Portraits\Daia"),
-		new(@"Characters\Flor", @"Portraits\Flor"),
-		new(@"Characters\Maddie", @"Portraits\Maddie"),
-		new(@"Characters\Ysabelle", @"Portraits\Ysabelle"),
+		PathReference.CreateDefault(@"Alissa"),
+		PathReference.CreateDefault(@"Corine"),
+		PathReference.CreateDefault(@"Daia"),
+		PathReference.CreateDefault(@"Flor"),
+		PathReference.CreateDefault(@"Maddie"),
+		PathReference.CreateDefault(@"Ysabelle"),
 		// es
-		new(@"Characters\Aideen", @"Portraits\Aideen"),
+		PathReference.CreateDefault(@"Aideen"),
 		// rsv kiwi
-		new(KiwiPath, @"Portraits\Kiwi"),
+		new(KiwiPath, @"Portraits\Kiwi", "Kiwi"),
 		// es junimo golden
-		new(JunimoGoldenPath, @"Portraits\Clint"),
+		new(JunimoGoldenPath, @"Portraits\Clint", "GoldenJunimo", "Clint"),
 		// vanilla junimo
-		new(JunimoPath, @"Portraits\Clint"),
+		new(JunimoPath, @"Portraits\Clint", "Junimo", "Clint"),
 	};
 
-	private static TexturePair GetCenterCharacter() {
+	private static CharacterReference GetCenterCharacter() {
 		var rand = new Random(RandomSeed);
 		var characters = CharacterPaths.OrderBy(_ => rand.Next());
 
 		foreach (var character in characters) {
-			TexturePair? result = character switch {
-				(KiwiPath, _) => MakeCharacterTextures(GetCenterCharacterRSVKiwi(), character.Portrait),
-				(JunimoGoldenPath, _) => MakeCharacterTextures(GetCenterCharacterESJunimoGolden(), character.Portrait),
-				(JunimoPath, _) => MakeCharacterTextures(GetCenterCharacterJunimo(), character.Portrait),
+			TextureReference? result = character switch {
+				(KiwiPath, _, _, _) => MakeCharacterTextures(GetCenterCharacterRSVKiwi(), character),
+				(JunimoGoldenPath, _, _, _) => MakeCharacterTextures(GetCenterCharacterESJunimoGolden(), character),
+				(JunimoPath, _, _, _) => MakeCharacterTextures(GetCenterCharacterJunimo(), character),
 				_ => MakeCharacterTextures(character)
 			};
-			if (!result.HasValue) {
-				continue;
+			if (result is {} textureReference) {
+				return new(textureReference);
 			}
-			return result.Value;
 		}
 
-		return MakeCharacterTextures(CharacterPaths[0])!.Value;
+		return new(MakeCharacterTextures(CharacterPaths[0])!.Value);
 	}
 
-	private static readonly string[] Seasons = new[] {
+	private static readonly string[] Seasons = {
 		"spring",
 		"summer",
 		"fall",
@@ -269,7 +315,7 @@ internal sealed class Scene1 : Scene {
 	};
 
 	internal Scene1(Bounds scissor) : base(scissor) {
-		(CenterCharacterSpriteTexture, CenterCharacterPortraitTexture) = GetCenterCharacter();
+		CenterCharacter = GetCenterCharacter();
 
 		var rand = new Random(RandomSeed);
 
@@ -329,17 +375,16 @@ internal sealed class Scene1 : Scene {
 		);
 
 		Drawables = SetupScene(Season == "winter");
-		CenterCharacterPortraitDrawable = new Drawable(CenterCharacterPortraitTexture);
 	}
 
 	public override void Dispose() {
-		CenterCharacterSpriteTexture.Dispose();
+		CenterCharacter.Dispose();
 	}
 
 	private const string ReferenceBasicText = "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch";
-	private XGraphics.SpriteFont BasicTextFont => Game1.dialogueFont;
+	private static XGraphics.SpriteFont BasicTextFont => Game1.dialogueFont;
 	private const string ReferenceUtilityText = "It was the best of times, it was the blurst of times.";
-	private XGraphics.SpriteFont UtilityTextFont => Game1.smallFont;
+	private static XGraphics.SpriteFont UtilityTextFont => Game1.smallFont;
 
 	private void DrawStringStroked(
 		XSpriteBatch batch,
@@ -390,6 +435,23 @@ internal sealed class Scene1 : Scene {
 		}
 	}
 
+	private static readonly Lazy<IHDPortraitsAPI?> HdPortraitsApi = new(
+		// ReSharper disable once StringLiteralTypo
+		() => SpriteMaster.Self.Helper.ModRegistry.GetApi<IHDPortraitsAPI>("tlitookilakin.HDPortraits")
+	);
+
+	[Flags]
+	private enum PortraitType {
+		Vanilla = 1 << 0,
+		SeasonLower = 1 << 1,
+		SeasonUpper = 1 << 2,
+		Plain = 1 << 3,
+		Festival = 1 << 4,
+		Beach = 1 << 5
+	}
+
+	private PortraitType InvalidPortraitTypes;
+
 	protected override void OnDrawOverlay(XSpriteBatch batch, in Override overrideState) {
 		{
 			// Draw basic text
@@ -402,11 +464,13 @@ internal sealed class Scene1 : Scene {
 			);
 		}
 
+		var regionOffset = new Vector2F(Region.Extent);
+
 		{
 			// Draw sprite text
 			var textMeasure = UtilityTextFont.MeasureString(ReferenceUtilityText);
 
-			var offset = Region.Extent;
+			var offset = regionOffset;
 			offset -= (Vector2F)textMeasure;
 			offset.X = 0;
 
@@ -420,15 +484,85 @@ internal sealed class Scene1 : Scene {
 			);
 		}
 
-		// Draw Portrait
-		{
-			var offset = Region.Extent;
-			offset -= new Vector2F(CenterCharacterPortraitDrawable.Width, CenterCharacterPortraitDrawable.Height);
+		var timeSinceDraw = DrawStopwatch.Elapsed;
+		DrawStopwatch.Restart();
+
+		void DrawAnimatedInner() {
+			var portraitDrawable = CenterCharacter.Drawable;
+
+			var offset = regionOffset;
+			offset -= new Vector2F(portraitDrawable.Width, portraitDrawable.Height);
 
 			offset += (32, 32);
 
-			CenterCharacterPortraitDrawable.Tick();
-			CenterCharacterPortraitDrawable.Draw(this, batch, offset, 0.0f);
+			portraitDrawable.Tick();
+			portraitDrawable.Draw(this, batch, offset, 0.0f);
+		}
+
+		if (HdPortraitsApi.Value is not {} portraitsApi) {
+			DrawAnimatedInner();
+		}
+		else {
+			(Bounds, XTexture2D) GetPortrait(string? suffix) =>
+				portraitsApi.GetTextureAndRegion(
+					CenterCharacter.PortraitName,
+					suffix,
+					0,
+					timeSinceDraw.Milliseconds,
+					false
+				);
+
+			Bounds region = default;
+			XTexture2D? texture = null;
+
+			bool InBounds() {
+				return texture is not null && texture.Width >= region.Width && texture.Height >= region.Height;
+			}
+
+			void TryPortrait(string? suffix, PortraitType type) {
+				if (InvalidPortraitTypes.HasFlag(type)) {
+					return;
+				}
+
+				if (!InBounds()) {
+					try {
+						(region, texture) = GetPortrait(suffix);
+					}
+					catch (Exception ex) {
+						InvalidPortraitTypes |= type;
+						Debug.TraceOnce(ex);
+					}
+
+					if (!InBounds()) {
+						InvalidPortraitTypes |= type;
+					}
+				}
+			}
+
+			if (CenterCharacter.PortraitName == "Clint") {
+				InvalidPortraitTypes |= PortraitType.Beach;
+			}
+
+			if (Season is {} season) {
+				TryPortrait(season, PortraitType.SeasonLower);
+				TryPortrait(season.CapitalizeFirstLetter(), PortraitType.SeasonUpper);
+				TryPortrait(null, PortraitType.Plain);
+				TryPortrait("Festival", PortraitType.Festival);
+				TryPortrait("Beach", PortraitType.Beach);
+			}
+			else {
+				TryPortrait(null, PortraitType.Plain);
+			}
+
+			if (!InBounds()) {
+				DrawAnimatedInner();
+			}
+			else {
+				var offset = regionOffset;
+				offset -= new Vector2F(region.Width, region.Height);
+
+				batch.Draw(texture, offset, region, XColor.White);
+			}
 		}
 
 		// Draw Portrait
@@ -611,7 +745,7 @@ internal sealed class Scene1 : Scene {
 		try { tileArray[mid.X, mid.Y].Add(new(shadowTexture)); } catch (IndexOutOfRangeException) { }
 
 		// insert Character
-		try { tileArray[mid.X, mid.Y].Add(new(CenterCharacterSpriteTexture, offset: -(TileSizeRendered / 2))); } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X, mid.Y].Add(new(CenterCharacter.Sprite, offset: -(TileSizeRendered / 2))); } catch (IndexOutOfRangeException) { }
 
 		// insert Tree
 		try { tileArray[mid.X - 4, mid.Y + 2].Add(TreeTexture[1, 0]); } catch (IndexOutOfRangeException) { }
@@ -643,6 +777,6 @@ internal sealed class Scene1 : Scene {
 	}
 
 	protected override void OnTick() {
-		CenterCharacterSpriteTexture.Tick();
+		CenterCharacter.Sprite.Tick();
 	}
 }

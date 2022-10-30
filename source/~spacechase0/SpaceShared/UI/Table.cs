@@ -169,6 +169,7 @@ namespace SpaceShared.UI
             // draw table contents
             // This uses a scissor rectangle to clip content taller than one row that might be
             // drawn past the bottom of the UI, like images or complex options.
+            Element? renderLast = null;
             this.InScissorRectangle(b, contentArea, contentBatch =>
             {
                 foreach (var row in this.Rows)
@@ -177,14 +178,15 @@ namespace SpaceShared.UI
                     {
                         if (this.IsElementOffScreen(element))
                             continue;
-                        if (element == this.RenderLast)
+                        if (element == this.RenderLast) {
+                            renderLast = element;
                             continue;
+                        }
                         element.Draw(contentBatch);
                     }
                 }
-
-                this.RenderLast?.Draw(contentBatch);
             });
+            renderLast?.Draw(b);
 
             this.Scrollbar.Draw(b);
         }

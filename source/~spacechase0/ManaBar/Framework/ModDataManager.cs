@@ -28,7 +28,6 @@ namespace ManaBar.Framework
         /// <summary>The data key for the player's max mana points.</summary>
         private const string MaxManaKey = ModDataManager.Prefix + "/MaxMana";
 
-
         /*********
         ** Public methods
         *********/

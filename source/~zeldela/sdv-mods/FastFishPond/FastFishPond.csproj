@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>FastFishPond</AssemblyName>
+    <ReleaseVersion>1.0</ReleaseVersion>
+    <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pathoschild.Stardew.ModBuildConfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+  </ItemGroup>
+</Project>

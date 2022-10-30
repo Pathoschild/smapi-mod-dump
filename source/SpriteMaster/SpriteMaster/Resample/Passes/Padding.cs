@@ -270,7 +270,7 @@ internal static class Padding {
 		var normalizedName = reference.NormalizedName();
 
 		foreach (var blacklistedRef in Config.Resample.Padding.BlackListS) {
-			if (!normalizedName.StartsWith(blacklistedRef.Texture)) {
+			if (!blacklistedRef.Pattern.IsMatch(normalizedName)) {
 				continue;
 			}
 			if (blacklistedRef.Bounds.IsEmpty || blacklistedRef.Bounds.Contains(bounds)) {

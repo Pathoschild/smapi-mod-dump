@@ -53,7 +53,11 @@
         "X": 28,
         "Y": 32
       }
-    ]
+    ],
+    "WoodsWarpLocation": {
+      "X": 26,
+      "Y": 31
+    }
   },
   "Level": {
     "MinLevelForFlowers": 3,
@@ -70,6 +74,24 @@
         "BadLuck": 50,
         "Neutral": 27,
         "GoodLuck": 5
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    },
+    "ChanceForSignOnExit": {
+      "Value": {
+        "BadLuck": 20,
+        "Neutral": 25,
+        "GoodLuck": 30
       },
       "Range": 100,
       "RangeLevelModifier": {
@@ -108,7 +130,20 @@
       "Defense": 5,
       "AreaOfEffect": 5,
       "CriticalChance": 0.05,
-      "CriticalMultiplier": 5.0
+      "CriticalMultiplier": 5.0,
+      "Worthiness": {
+        "MinimumDailyLuck": 0.07,
+        "MinimumLuckLevel": 8,
+        "MinimumMiningLevel": 10,
+        "MinimumForagingLevel": 10,
+        "MinimumFishingLevel": 10,
+        "MinimumFarmingLevel": 10,
+        "MinimumCombatLevel": 10,
+        "MinimumGrandpaScore": 4,
+        "MustHaveCompletedCommunityCenter": true,
+        "MustHaveReachedMineBottom": true,
+        "MustNotBeJojaMember": true
+      }
     },
     "GingerBreadHouse": {
       "MinimumAxeLevel": 3,
@@ -781,6 +816,14 @@
           }
         },
         {
+          "Value": "Infested",
+          "Weight": {
+            "BadLuck": 1250,
+            "Neutral": 1250,
+            "GoodLuck": 1250
+          }
+        },
+        {
           "Value": "MushroomTrees",
           "Weight": {
             "BadLuck": 1000,
@@ -834,6 +877,24 @@
             "BadLuck": 250,
             "Neutral": 250,
             "GoodLuck": 250
+          }
+        }
+      ],
+      "InfestedPerks": [
+        {
+          "Value": "InfestedTree",
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": "ThornyBush",
+          "Weight": {
+            "BadLuck": 400,
+            "Neutral": 400,
+            "GoodLuck": 400
           }
         }
       ],
@@ -1439,6 +1500,7 @@
   },
   "Monsters": {
     "MonsterDensity": 100.0,
+    "InfestedMonsterDensity": 100.0,
     "DisableBuffedMonsters": false,
     "DisableDangerousMonsters": false,
     "ChanceForHalfMonsterCount": {
@@ -1795,5 +1857,48 @@
     "BaubleDensity": 100.0,
     "LeafDensity": 100.0,
     "GrassDensity": 100.0
+  },
+  "Generation": {
+    "NumTilesPerLightSource": 16,
+    "MinTilesForBauble": 16,
+    "MinTilesForLeaves": 16,
+    "MinTilesForMonsters": 16,
+    "MinTilesForTerrainFeature": 4,
+    "ChanceForWaterLily": {
+      "Value": {
+        "BadLuck": 8,
+        "Neutral": 8,
+        "GoodLuck": 8
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    },
+    "ChanceForBlossomOnWaterLily": {
+      "Value": {
+        "BadLuck": 30,
+        "Neutral": 30,
+        "GoodLuck": 30
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    }
   }
 }

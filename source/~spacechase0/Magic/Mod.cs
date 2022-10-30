@@ -44,6 +44,7 @@ namespace Magic
 
         public Api Api;
 
+        private MapEditor editor;
 
         /*********
         ** Public methods
@@ -64,7 +65,6 @@ namespace Magic
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.Saving += this.OnSaving;
-            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
 
             Framework.Magic.Init(helper.Events, helper.Input, helper.ModRegistry, helper.Multiplayer.GetNewID);
             ConsoleCommandHelper.RegisterCommandsInAssembly(this);
@@ -85,6 +85,9 @@ namespace Magic
         /// <param name="e">The event arguments.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            this.editor = new(Mod.Config, this.Helper.ModContent, HasStardewValleyExpanded);
+            this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
+
             // hook Generic Mod Config Menu
             {
                 var configMenu = this.Helper.ModRegistry.GetGenericModConfigMenuApi(this.Monitor);
@@ -243,22 +246,9 @@ namespace Magic
             }
         }
 
-        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            // hook asset editor later, so the radio is applied over other map edits if needed
-            if (Game1.ticks > 5)
-            {
-                this.Helper.Content.AssetEditors.Add(new MapEditor(
-                    config: Mod.Config,
-                    content: this.Helper.Content,
-                    hasStardewValleyExpanded: Mod.HasStardewValleyExpanded
-                ));
-
-                this.Helper.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
-            }
+            this.editor.TryEdit(e);
         }
 
         /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
@@ -297,6 +287,8 @@ namespace Magic
                 return;
 
             this.LegacyDataMigrator.OnSaved();
+
+            this.Helper.Events.GameLoop.Saving -= this.OnSaving;
         }
     }
 }

@@ -12,5 +12,10 @@
   "PatchPFM": true,
   "CapFactor": 700,
   "CapCurve": 0.0,
-  "BearBoost": 1.0
+  "BearBoost": 1.0,
+  "UseGiantCrops": true,
+  "UseFruitTrees": true,
+  "UseRandomFlower": false,
+  "UseFlowerBoost": false,
+  "FlowersPerBoost": 2
 }

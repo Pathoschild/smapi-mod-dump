@@ -25,7 +25,7 @@ enum ResamplerType {
 }
 
 internal class PreviewProgram : AbstractProgram {
-	internal static PreviewProgram? Instance => AbstractProgram.Instance as PreviewProgram;
+	internal static new PreviewProgram? Instance => AbstractProgram.Instance as PreviewProgram;
 	private readonly PreviewWindow Window;
 
 	private Color16[]? SpriteData = null;

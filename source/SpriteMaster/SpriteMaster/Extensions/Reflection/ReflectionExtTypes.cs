@@ -88,4 +88,13 @@ internal static partial class ReflectionExt {
 
 		return null;
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Type GetTypeExtRequired(string typeName) {
+		if (GetTypeExt(typeName) is { } type) {
+			return type;
+		}
+
+		throw new TypeLoadException($"Could not reflect required type '{typeName}'");
+	}
 }

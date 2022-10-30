@@ -10,20 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using HarmonyLib;
-
-using Microsoft.Xna.Framework;
 
 using StardewModdingAPI;
 
 using StardewValley;
-using StardewValley.Objects;
-
-using SObject = StardewValley.Object;
 
 namespace Leclair.Stardew.BetterCrafting.Patches;
 

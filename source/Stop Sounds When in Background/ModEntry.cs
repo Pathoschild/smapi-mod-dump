@@ -40,49 +40,49 @@ namespace StopSoundsWhenAltTabbed
         }
         void OnUpdateTicking(object? sender, UpdateTickingEventArgs e)
         {
-            if (Context.IsWorldReady)
+            if (!Context.IsGameLaunched || Game1.game1 is null|| Game1.currentSong is null)
+                return;
+
+            if (!Game1.game1.IsActive)
             {
-                if (!Game1.game1.IsActive)
+                if (Config.OnlyWhenPaused)
                 {
-                    if (Config.OnlyWhenPaused)
+                    if (!volumeSaved && Game1.options.pauseWhenOutOfFocus == true)
                     {
-                        if (!volumeSaved && Game1.options.pauseWhenOutOfFocus == true)
-                        {
-                            soundVol = Game1.options.soundVolumeLevel;
-                            ambientVol = Game1.options.ambientVolumeLevel;
-                            footstepVol = Game1.options.footstepVolumeLevel;
-                            Game1.currentSong.Pause();
-                            Game1.soundCategory.SetVolume(0.0f);
-                            Game1.ambientCategory.SetVolume(0.0f);
-                            Game1.footstepCategory.SetVolume(0.0f);
-                            volumeSaved = true;
-                        }
-                    }
-                    else
-                    {
-                        if (!volumeSaved)
-                        {
-                            soundVol = Game1.options.soundVolumeLevel;
-                            ambientVol = Game1.options.ambientVolumeLevel;
-                            footstepVol = Game1.options.footstepVolumeLevel;
-                            Game1.currentSong.Pause();
-                            Game1.soundCategory.SetVolume(0.0f);
-                            Game1.ambientCategory.SetVolume(0.0f);
-                            Game1.footstepCategory.SetVolume(0.0f);
-                            volumeSaved = true;
-                        }
+                        soundVol = Game1.options.soundVolumeLevel;
+                        ambientVol = Game1.options.ambientVolumeLevel;
+                        footstepVol = Game1.options.footstepVolumeLevel;
+                        Game1.currentSong.Pause();
+                        Game1.soundCategory.SetVolume(0.0f);
+                        Game1.ambientCategory.SetVolume(0.0f);
+                        Game1.footstepCategory.SetVolume(0.0f);
+                        volumeSaved = true;
                     }
                 }
                 else
                 {
-                    if (volumeSaved)
+                    if (!volumeSaved)
                     {
-                        Game1.currentSong.Resume();
-                        Game1.soundCategory.SetVolume(soundVol);
-                        Game1.ambientCategory.SetVolume(ambientVol);
-                        Game1.footstepCategory.SetVolume(footstepVol);
-                        volumeSaved = false;
+                        soundVol = Game1.options.soundVolumeLevel;
+                        ambientVol = Game1.options.ambientVolumeLevel;
+                        footstepVol = Game1.options.footstepVolumeLevel;
+                        Game1.currentSong.Pause();
+                        Game1.soundCategory.SetVolume(0.0f);
+                        Game1.ambientCategory.SetVolume(0.0f);
+                        Game1.footstepCategory.SetVolume(0.0f);
+                        volumeSaved = true;
                     }
+                }
+            }
+            else
+            {
+                if (volumeSaved)
+                {
+                    Game1.currentSong.Resume();
+                    Game1.soundCategory.SetVolume(soundVol);
+                    Game1.ambientCategory.SetVolume(ambientVol);
+                    Game1.footstepCategory.SetVolume(footstepVol);
+                    volumeSaved = false;
                 }
             }
         }

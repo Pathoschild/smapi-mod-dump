@@ -1,0 +1,10 @@
+﻿{
+  "Name": "FPS Viewer",
+  "Author": "Adham084",
+  "Version": "1.0.0",
+  "Description": "View Frame Rate.",
+  "UniqueID": "adham084.fpsviewer",
+  "EntryDll": "FPSViewer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:14046" ]
+}

@@ -8,6 +8,32 @@ for queries and analysis.**
 
 # Changelog
 
+## 1.4.0
+Released October 28th, 2022.
+
+### General
+
+* Update to use SMAPI 3.17. Older versions of SMAPI are no longer supported.
+* Improve performance slightly by reducing iteration when determining if a
+  given recipe has sufficient ingredients to be crafted.
+
+### Fixes
+
+* When clicking on UI elements when editing a category that is not rule based,
+  do not send click events to the rule editors.
+* When performing inventory manipulation (such as crafting) using a chest
+  located on another map, manually update the mutex to ensure the action
+  doesn't hang.
+* When the "Crafting Skill" mod is enabled, do not use the incorrect ingredient
+  consumption code. This should prevent any odd behavior, especially related
+  to limit quality crafting and/or using lower quality ingredients first.
+
+### API Changes
+
+* Each mod now receives a separate API instance, which will allow for better
+  tracking of which mod provided which data in the future.
+
+
 ## 1.3.1
 Released September 21st, 2022.
 

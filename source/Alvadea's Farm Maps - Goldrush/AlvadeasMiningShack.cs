@@ -40,11 +40,6 @@ namespace AlvadeasMiningShack
             // Fix the Shack, if it's already repaired
             if (NetWorldState.checkAnywhereForWorldStateID("miningShackRepaired"))
                 FarmPatches.fixShack();
-
-            string mapAssetKey = Helper.ModContent.GetInternalAssetName("Shack.tbin").Name;
-
-            GameLocation location = new GameLocation(mapAssetKey, "MiningShack") { IsOutdoors = false, IsFarm = false };
-            Game1.locations.Add(location);
         }
     }
 }

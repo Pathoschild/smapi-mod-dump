@@ -6,9 +6,10 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit 7f3caa339d3f16874018458cded931d65edb25ef
+   commit 01ed177765146c6a7a3c27d532bf1ed7b19a2f76
+   Merge: fa558f6 39ffbaf
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Sep 29 23:45:48 2022 +0200
+   Date:   Thu Oct 6 18:27:20 2022 +0200
    
-       improved bridge collision detection
+       Merge branch 'main' of gitlab.com:delixx/stardew-valley-custom-farm-loader
    

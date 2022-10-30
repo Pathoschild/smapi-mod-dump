@@ -24,6 +24,9 @@ using Custom_Farm_Loader.Lib.Enums;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using Microsoft.Xna.Framework;
+using xTile.Display;
+using xTile.Tiles;
+using xTile.Layers;
 
 namespace Custom_Farm_Loader.GameLoopInjections
 {
@@ -48,11 +51,20 @@ namespace Custom_Farm_Loader.GameLoopInjections
             Helper.Events.GameLoop.DayStarted += DayStarted;
         }
 
-        //It feels like this is causing micro stutters, even though it really shouldn't
+        public static void DrawLayer_Postfix(IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, xTile.Dimensions.Location displayOffset, bool wrapAround, int pixelZoom)
+        {
+            if (Game1.currentLocation?.Name != "Farm")
+                return;
+
+            var location = Game1.currentLocation;
+            var cfl_layer = location.map.GetLayer("CFL_Buildings");
+            cfl_layer.Draw(displayDevice, mapViewport, displayOffset, wrapAround, pixelZoom);
+        }
+
         public static bool isCollidingPosition_Prefix(Farm __instance, ref bool __result, Rectangle position, xTile.Dimensions.Rectangle viewport, bool isFarmer, int damagesFarmer, bool glider, Character character, bool pathfinding, bool projectile = false, bool ignoreCharacterRequirement = false)
         {
             if( CustomFarm.IsCFLMapSelected()
-                && Bridge.PassableBridgeAreas.Exists(el => characterIntersects(el, position))) {
+                && Bridge.PassableBridgeAreas.Exists(el => characterIntersects(el, position, character.FacingDirection))) {
                 __result = false;
                 return false;
             }
@@ -60,12 +72,15 @@ namespace Custom_Farm_Loader.GameLoopInjections
             return true;
         }
 
-        private static bool characterIntersects(Rectangle area, Rectangle character)
+        private static bool characterIntersects(Rectangle area, Rectangle character, int facingDirection)
         {
-            return area.X <= character.X
+            //For those fatsos out there.
+            int leeway = character.Width > 64 ? Math.Max(character.Width - 64, 16) : 0;
+
+            return area.X - leeway <= character.X
                 && area.X + area.Width - character.Width >= character.X
                 && area.Y <= character.Y
-                && area.Y + area.Height - character.Height >= character.Y;
+                && area.Y + area.Height +  - character.Height >= character.Y;
         }
 
         public static void DayStarted(object sender, DayStartedEventArgs e)
@@ -77,6 +92,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
             Bridge.addBridgesTilesheet(farm);
 
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+            Bridge.PassableBridgeAreas = new List<Rectangle>();
 
             foreach (Bridge bridge in customFarm.Bridges)
                 bridge.setTiles(farm);

@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinningSkill", "BinningSkill\BinningSkill.csproj", "{80C3C0C2-F6B1-4F42-93C2-78D72C435978}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanningUpgrades", "PanningUpgrades\PanningUpgrades.csproj", "{6B0AA4ED-834C-4AF1-A64B-0EFC01A02A61}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RanchingToolUpgrades", "RanchingToolUpgrades\RanchingToolUpgrades.csproj", "{D77594C7-ED2D-48B1-9F39-373F20F1B7E9}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BirbShared", "BirbShared\BirbShared.shproj", "{8F13906D-7E88-45B4-ABBC-617437970163}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{7BB5EFE4-05AA-48E1-BA1C-5F7F0599381E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		common-nospace.targets = common-nospace.targets
+		common-unreleased.targets = common-unreleased.targets
+		common.targets = common.targets
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocializingSkill", "SocializingSkill\SocializingSkill.csproj", "{20FAF7EA-1817-4A07-84B1-7AA7CF08536A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinterStarSpouse", "WinterStarSpouse\WinterStarSpouse.csproj", "{797A1209-B2E4-4BC9-8503-354F32B3ABF9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterFestivalNotifications", "BetterFestivalNotifications\BetterFestivalNotifications.csproj", "{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BirbSharedSpaceCore", "BirbSharedSpaceCore\BirbSharedSpaceCore.shproj", "{19CEDB88-A912-48DA-B35D-FCE2509E70E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80C3C0C2-F6B1-4F42-93C2-78D72C435978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C3C0C2-F6B1-4F42-93C2-78D72C435978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C3C0C2-F6B1-4F42-93C2-78D72C435978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C3C0C2-F6B1-4F42-93C2-78D72C435978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0AA4ED-834C-4AF1-A64B-0EFC01A02A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0AA4ED-834C-4AF1-A64B-0EFC01A02A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0AA4ED-834C-4AF1-A64B-0EFC01A02A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0AA4ED-834C-4AF1-A64B-0EFC01A02A61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77594C7-ED2D-48B1-9F39-373F20F1B7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77594C7-ED2D-48B1-9F39-373F20F1B7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77594C7-ED2D-48B1-9F39-373F20F1B7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77594C7-ED2D-48B1-9F39-373F20F1B7E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20FAF7EA-1817-4A07-84B1-7AA7CF08536A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20FAF7EA-1817-4A07-84B1-7AA7CF08536A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20FAF7EA-1817-4A07-84B1-7AA7CF08536A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20FAF7EA-1817-4A07-84B1-7AA7CF08536A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{797A1209-B2E4-4BC9-8503-354F32B3ABF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{797A1209-B2E4-4BC9-8503-354F32B3ABF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{797A1209-B2E4-4BC9-8503-354F32B3ABF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{797A1209-B2E4-4BC9-8503-354F32B3ABF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2CC4FC86-39C6-4152-8058-FE3B146896A6}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		BirbSharedSpaceCore\BirbSharedSpaceCore.projitems*{19cedb88-a912-48da-b35d-fce2509e70e6}*SharedItemsImports = 13
+		BirbShared\BirbShared.projitems*{8f13906d-7e88-45b4-abbc-617437970163}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

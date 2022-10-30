@@ -99,30 +99,6 @@ namespace LoveOfCooking
 			}
 		}
 
-		internal static void CalculateFoodRegenModifiers()
-		{
-			// Calculate food regeneration rate from skill levels
-			float[] scalingCurrent = new float[ModEntry.ItemDefinitions["RegenSkillModifiers"].Count];
-			float[] scalingMax = new float[ModEntry.ItemDefinitions["RegenSkillModifiers"].Count];
-			for (int i = 0; i < ModEntry.ItemDefinitions["RegenSkillModifiers"].Count; ++i)
-			{
-				string[] split = ModEntry.ItemDefinitions["RegenSkillModifiers"][i].Split(':');
-				string name = split[0];
-				bool isDefined = Enum.TryParse(name, out ModEntry.SkillIndex skillIndex);
-				int level = isDefined
-					? Game1.player.GetSkillLevel((int)Enum.Parse(typeof(ModEntry.SkillIndex), name))
-					: SpaceCore.Skills.GetSkill(name) is not null
-						? Game1.player.GetCustomSkillLevel(name)
-						: -1;
-				float value = float.Parse(split[1]);
-				if (level < 0)
-					continue;
-				scalingCurrent[i] = level * value;
-				scalingMax[i] = 10 * value;
-			}
-			ModEntry.Instance.States.Value.RegenSkillModifier = scalingCurrent.Sum() / scalingMax.Sum();
-		}
-
 		/// <summary>
 		/// I keep forgetting the method name
 		/// </summary>
@@ -168,10 +144,9 @@ namespace LoveOfCooking
 		/// </summary>
 		public static float GetFoodRegenRate(StardewValley.Object food)
 		{
+			float rate = 0f;
 			// Health regenerates faster when...
 
-			// drinking drinks
-			float rate = ModEntry.Instance.States.Value.LastFoodWasDrink ? 0.12f : 0.075f;
 			// consuming quality foods
 			rate += food.Quality * 0.0085f;
 			// under the 'tipsy' debuff

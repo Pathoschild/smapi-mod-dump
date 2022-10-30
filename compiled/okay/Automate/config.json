@@ -1,6 +1,5 @@
 {
   "Enabled": true,
-  "PullGemstonesFromJunimoHuts": false,
   "AutomationInterval": 60,
   "Controls": {
     "ToggleOverlay": "U"
@@ -8,9 +7,9 @@
   "ConnectorNames": [
     "Workbench"
   ],
-  "ModCompatibility": {
-    "BetterJunimos": true,
-    "WarnForMissingBridgeMod": true
-  },
+  "JunimoHutBehaviorForGems": "AutoDetect",
+  "JunimoHutBehaviorForFertilizer": "AutoDetect",
+  "JunimoHutBehaviorForSeeds": "AutoDetect",
+  "WarnForMissingBridgeMod": true,
   "MachineOverrides": {}
 }

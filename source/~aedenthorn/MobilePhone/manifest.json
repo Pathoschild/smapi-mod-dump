@@ -11,7 +11,7 @@
 {
   "Name": "Mobile Phone",
   "Author": "aedenthorn",
-  "Version": "3.0.0",
+  "Version": "3.0.2",
   "Description": "Gives you a mobile phone.",
   "UniqueID": "aedenthorn.MobilePhone",
   "EntryDll": "MobilePhone.dll",

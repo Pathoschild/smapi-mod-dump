@@ -6,9 +6,9 @@ mods:
    HD Portraits
 
 latest commit:
-   commit 7f63b3f06f34115f24f13b805e9e32869bda5703
+   commit 24084fe1b9cdaa5056fe72534339ed130868c9cd
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Sat Sep 24 23:06:17 2022 -0400
+   Date:   Fri Oct 21 21:13:23 2022 -0400
    
-       aerocore port
+       cleanup, API improvements
    

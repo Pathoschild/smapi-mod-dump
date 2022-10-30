@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14231
+IDs: aedenthorn.OKNightCheck
+update keys: Nexus:14231, GitHub:aedenthorn/StardewValleyMods

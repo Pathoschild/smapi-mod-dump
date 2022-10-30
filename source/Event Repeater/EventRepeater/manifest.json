@@ -11,7 +11,7 @@
 {
   "Name": "Event Repeater",
   "Author": "MissCoriel",
-  "Version": "6.4.3",
+  "Version": "6.4.8",
   "Description": "Adds Repeating capability to Content Patcher.",
   "UniqueID": "misscoriel.eventrepeater",
   "EntryDll": "EventRepeater.dll",

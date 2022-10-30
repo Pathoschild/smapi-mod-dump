@@ -2,9 +2,9 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://github.com/sqbr/StardewValleyMods**
+**Source repository: https://github.com/sqbr/GetGS**
 
 ----
 
-# StardewValleyMods
-My SMAPI mods for Stardew Valley
+# GetGS
+Get Gender Setter: accesses and creates variables for the Gender Setter Stardew Valley mod. 

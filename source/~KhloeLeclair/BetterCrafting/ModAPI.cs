@@ -50,8 +50,12 @@ public class ModAPI : IBetterCrafting {
 
 	private readonly ModEntry Mod;
 
-	public ModAPI(ModEntry mod) {
+	private readonly IManifest Other;
+
+
+	public ModAPI(ModEntry mod, IManifest other) {
 		Mod = mod;
+		Other = other;
 	}
 
 	#region GUI
@@ -291,16 +295,42 @@ public class ModAPI : IBetterCrafting {
 
 	#region Dynamic Rules
 
+	/// <inheritdoc />
+	public string GetAbsoluteRuleId(string id) {
+		return $"{Other.UniqueID}/{id}";
+	}
+
+	/// <inheritdoc />
+	public bool RegisterRuleHandler(string id, IDynamicRuleHandler handler) {
+		string fullId = $"{Other.UniqueID}/{id}";
+		return Mod.Recipes.RegisterRuleHandler(fullId, handler);
+	}
+
+	/// <inheritdoc />
+	public bool RegisterRuleHandler(string id, ISimpleInputRuleHandler handler) {
+		string fullId = $"{Other.UniqueID}/{id}";
+		return Mod.Recipes.RegisterRuleHandler(fullId, handler);
+	}
+
+	/// <inheritdoc />
+	public bool UnregisterRuleHandler(string id) {
+		string fullId = $"{Other.UniqueID}/{id}";
+		return Mod.Recipes.UnregisterRuleHandler(fullId);
+	}
+
+	[Obsolete("Use the version that doesn't require a manifest.")]
 	public bool RegisterRuleHandler(IManifest manifest, string id, IDynamicRuleHandler handler) {
 		string fullId = $"{manifest.UniqueID}/{id}";
 		return Mod.Recipes.RegisterRuleHandler(fullId, handler);
 	}
 
+	[Obsolete("Use the version that doesn't require a manifest.")]
 	public bool RegisterRuleHandler(IManifest manifest, string id, ISimpleInputRuleHandler handler) {
 		string fullId = $"{manifest.UniqueID}/{id}";
 		return Mod.Recipes.RegisterRuleHandler(fullId, handler);
 	}
 
+	[Obsolete("Use the version that doesn't require a manifest.")]
 	public bool UnregisterRuleHandler(IManifest manifest, string id) {
 		string fullId = $"{manifest.UniqueID}/{id}";
 		return Mod.Recipes.UnregisterRuleHandler(fullId);

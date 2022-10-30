@@ -38,7 +38,7 @@ namespace Custom_Farm_Loader.Lib
         public BridgeType Type;
         public Rotation Rotation;
         public Point Position = new Point(0, 0);
-        public uint Length;
+        public int Length;
         public int Price;
         public string Item;
 
@@ -76,7 +76,7 @@ namespace Custom_Farm_Loader.Lib
                         case "position":
                             bridge.Position = new Point(int.Parse(value.Split(",")[0]), int.Parse(value.Split(",")[1])); break;
                         case "length":
-                            bridge.Length = uint.Parse(value); break;
+                            bridge.Length = (int)uint.Parse(value); break;
                         case "price":
                             bridge.Price = int.Parse(value); break;
                         case "item":
@@ -99,100 +99,156 @@ namespace Custom_Farm_Loader.Lib
             if (location.map.TileSheets.ToList().Exists(el => el.ImageSource == BridgesTilesheet))
                 return;
 
-            TileSheet tileSheet = new TileSheet(location.map, BridgesTilesheet, new xTile.Dimensions.Size(2, 4), new xTile.Dimensions.Size(16));
-            tileSheet.Id = BridgesTilesheet;
+            TileSheet tileSheet = new TileSheet(location.map, BridgesTilesheet, new xTile.Dimensions.Size(20, 4), new xTile.Dimensions.Size(16));
             location.map.AddTileSheet(tileSheet);
             return;
         }
 
+
+        private Point pos;
+        private TileSheet tilesheet;
+        private Layer buildingsLayer;
+        private Layer bridgeLayer;
+        private Layer backLayer;
         public void setTiles(GameLocation location)
         {
+            pos = Position;
+            tilesheet = location.map.TileSheets.ToList().Find(el => el.ImageSource == BridgesTilesheet);
+            backLayer = location.map.GetLayer("Back");
+            buildingsLayer = location.map.GetLayer("Buildings");
+            if (Helper.ModRegistry.IsLoaded("aedenthorn.ExtraMapLayers")) {
+                if (location.map.GetLayer("Buildings9") == null)
+                    location.map.AddLayer(new Layer("Buildings9", location.map, buildingsLayer.LayerSize, buildingsLayer.TileSize));
+                bridgeLayer = location.map.GetLayer("Buildings9");
+            } else {
+                Monitor.LogOnce("ExtraMapLayers not detected. Please install Aedenthorns ExtraMapLayers Mod to fix bridge sprites", LogLevel.Info);
+                bridgeLayer = buildingsLayer;
+            }
+
+
             switch (Type) {
                 case BridgeType.Planks:
+                    setTilesPlanks(location, new[] { 0, 20, 40, 60 });
+                    setImpassableTiles(1);
                     break;
                 case BridgeType.Wide_Planks:
-                    setTilesWidePlanks(location);
+                    setTilesPlanks(location, new[] { 0, 20, 40, 60 }, new[] { 1, 21, 41, 61 });
+                    setImpassableTiles(2);
                     break;
             }
         }
 
-        private Point pos;
-        private TileSheet tilesheet;
-        private Layer layer;
-        private Layer backLayer;
-
-        private void setTilesWidePlanks(GameLocation location)
+        private void setImpassableTiles(int width)
         {
-            pos = Position;
-            tilesheet = location.map.TileSheets.ToList().Find(el => el.ImageSource == BridgesTilesheet);
-            layer = location.map.GetLayer("Buildings");
-            backLayer = location.map.GetLayer("Back");
+            //From all 4 corners of the bridge go one tile outwards and from the first impassable tile towards the middle
+            //start setting all back tiles as impassable
+            Point[] corners = new Point[3];
+            if (Rotation == Rotation.Vertical)
+                corners = new Point[] { new(pos.X - 1, pos.Y), new(pos.X + width, pos.Y), new(pos.X - 1, pos.Y + Length + 1), new(pos.X + width, pos.Y + Length + 1) };
+            else if (Rotation == Rotation.Horizontal)
+                corners = new Point[] { new(pos.X, pos.Y - 1), new(pos.X, pos.Y + width), new(pos.X + Length + 1, pos.Y - 1), new(pos.X + Length + 1, pos.Y + width) };
 
-            if (Rotation == Rotation.Vertical) {
-                PassableBridgeAreas.Add(new Rectangle(pos.X * 64, pos.Y * 64, 2 * 64, ((int)Length + 2) * 64));
+            setImpassableTiles(corners[0], true);
+            setImpassableTiles(corners[1], true);
+            setImpassableTiles(corners[2], false);
+            setImpassableTiles(corners[3], false);
+        }
 
-                for (int y = 0; y < Length + 2; y++) {
-                    if (y == 0) {
-                        createTile(pos.X, pos.Y, 0);
-                        createTile(pos.X + 1, pos.Y, 1);
+        private void setImpassableTiles(Point start, bool forward)
+        {
+            Tile tile;
+            Tile backTile;
+            var foundImpassable = false;
+            for (int i = 0; i < ((Length + 2) / 2) + 1; i++) {
 
-                    } else if (y == Length + 1) {
-                        createTile(pos.X, pos.Y + y, 6);
-                        createTile(pos.X + 1, pos.Y + y, 7);
-
-                    } else {
-                        if (y % 2 == 0) {
-                            createTile(pos.X, pos.Y + y, 2);
-                            createTile(pos.X + 1, pos.Y + y, 3);
-
-                        } else {
-                            createTile(pos.X, pos.Y + y, 4);
-                            createTile(pos.X + 1, pos.Y + y, 5);
-
-                        }
-
-                    }
+                if (forward) {
+                    tile = Rotation == Rotation.Vertical ? buildingsLayer.Tiles[start.X, start.Y + i] : buildingsLayer.Tiles[start.X + i, start.Y];
+                    backTile = Rotation == Rotation.Vertical ? backLayer.Tiles[start.X, start.Y + i] : backLayer.Tiles[start.X + i, start.Y];
+                } else {
+                    tile = Rotation == Rotation.Vertical ? buildingsLayer.Tiles[start.X, start.Y - i] : buildingsLayer.Tiles[start.X - i, start.Y];
+                    backTile = Rotation == Rotation.Vertical ? backLayer.Tiles[start.X, start.Y - i] : backLayer.Tiles[start.X - i, start.Y];
                 }
-            } else if (Rotation == Rotation.Horizontal) {
+
+                if (!foundImpassable)
+                    if (containsPassable(backTile) || (tile != null && !containsPassable(tile)))
+                        foundImpassable = true;
+
+
+                if (foundImpassable && backTile != null && !backTile.Properties.ContainsKey("Passable"))
+                    backTile.Properties.Add(new KeyValuePair<string, PropertyValue>("Passable", "T"));
+            }
+        }
+
+        private bool containsPassable(Tile tile)
+        {
+            if (tile == null)
+                return false;
+
+            return tile.Properties.ContainsKey("Passable") || tile.TileIndexProperties.ContainsKey("Passable");
+        }
+
+
+        private void setTilesPlanks(GameLocation location, int[] left, int[] right = null)
+        {
+            if (Rotation == Rotation.Vertical)
+                PassableBridgeAreas.Add(new Rectangle(pos.X * 64, pos.Y * 64, 2 * 64, ((int)Length + 2) * 64));
+            else if (Rotation == Rotation.Horizontal)
                 PassableBridgeAreas.Add(new Rectangle(pos.X * 64, pos.Y * 64, ((int)Length + 2) * 64, 2 * 64));
 
-                for (int x = 0; x < Length + 2; x++) {
-                    if (x == 0) {
-                        createTile(pos.X, pos.Y, 0);
-                        createTile(pos.X, pos.Y + 1, 1);
+            //For bridges that are 2 tiles wide. Sets the second tile depending on rotation
+            var width = Rotation == Rotation.Vertical ? 1 : 0;
+            var height = Rotation == Rotation.Horizontal ? 1 : 0;
 
-                    } else if (x == Length + 1) {
-                        createTile(pos.X + x, pos.Y, 6);
-                        createTile(pos.X + x, pos.Y + 1, 7);
+            for (int i = 0; i < Length + 2; i++) {
+                //Center tile increment
+                var xIncr = Rotation == Rotation.Vertical ? 0 : i;
+                var yIncr = Rotation == Rotation.Horizontal ? 0 : i;
+
+                if (i == 0) {
+                    createTile(pos.X, pos.Y, left[0]);
+                    if (right != null) createTile(pos.X + width, pos.Y + height, right[0]);
+
+                } else if (i == Length + 1) {
+                    createTile(pos.X + xIncr, pos.Y + yIncr, left[3]);
+                    if (right != null) createTile(pos.X + xIncr + width, pos.Y + yIncr + height, right[3]);
+
+                } else {
+                    if (i % 2 == 0) {
+                        createTile(pos.X + xIncr, pos.Y + yIncr, left[1]);
+                        if (right != null) createTile(pos.X + xIncr + width, pos.Y + yIncr + height, right[1]);
 
                     } else {
-                        if (x % 2 == 0) {
-                            createTile(pos.X + x, pos.Y, 2);
-                            createTile(pos.X + x, pos.Y + 1, 3);
+                        createTile(pos.X + xIncr, pos.Y + yIncr, left[2]);
+                        if (right != null) createTile(pos.X + xIncr + width, pos.Y + yIncr + height, right[2]);
 
-                        } else {
-                            createTile(pos.X + x, pos.Y, 4);
-                            createTile(pos.X + x, pos.Y + 1, 5);
-
-                        }
                     }
-                }
-            }
 
+                }
+
+            }
         }
 
         private void createTile(int x, int y, int index)
         {
-            var tile = new StaticTile(layer, tilesheet, BlendMode.Alpha, index);
+            var buildingsTile = buildingsLayer.Tiles[x, y] ?? new StaticTile(buildingsLayer, tilesheet, BlendMode.Alpha, 99999);
+
+            if (!buildingsTile.Properties.ContainsKey("Passable"))
+                buildingsTile.Properties.Add(new KeyValuePair<string, PropertyValue>("Passable", "T"));
+            buildingsLayer.Tiles[x, y] = buildingsTile;
+
+
+            var tile = new StaticTile(bridgeLayer, tilesheet, BlendMode.Alpha, index);
             tile.Properties.Add(new KeyValuePair<string, PropertyValue>("Passable", "T"));
 
             if (Rotation == Rotation.Horizontal) {
                 tile.Properties.Add(new KeyValuePair<string, PropertyValue>("@Rotation", "90"));
                 tile.Properties.Add(new KeyValuePair<string, PropertyValue>("@Flip", ((int)SpriteEffects.FlipVertically).ToString()));
             }
-                
+            bridgeLayer.Tiles[x, y] = tile;
 
-            layer.Tiles[x, y] = tile;
+
+            if (backLayer.Tiles[x, y] != null && !backLayer.Tiles[x, y].Properties.ContainsKey("NoSpawn"))
+                buildingsLayer.Tiles[x, y].Properties.Add(new KeyValuePair<string, PropertyValue>("NoSpawn", "All"));
         }
     }
 }

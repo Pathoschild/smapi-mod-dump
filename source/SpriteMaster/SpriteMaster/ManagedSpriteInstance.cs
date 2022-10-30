@@ -609,7 +609,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 
 		try {
-			SpriteMap.Remove(spriteHash, textureMeta, forceDispose: true);
+			SpriteMap.Remove(spriteHash, textureMeta, forceDispose: false);
 
 			var resampleTask = ResampleTask.Dispatch(
 				spriteInfo: new(spriteInfoInitializer),
@@ -821,6 +821,14 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 		}
 	}
 
+	private static void OnManagedTextureDispose(object? source, EventArgs _) {
+		if (source is not ManagedTexture2D texture) {
+			return;
+		}
+		Interlocked.Add(ref TotalMemoryUsage, -texture.SizeBytes());
+		texture.Disposing -= OnManagedTextureDispose;
+	}
+
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public void OnParentDispose(object? sender, EventArgs args) => OnParentDispose(sender as XTexture2D);
 
@@ -839,7 +847,7 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 
 		Interlocked.Add(ref TotalMemoryUsage, texture.SizeBytes());
 		// TODO : this won't get hit if the texture is disposed of via the finalizer
-		texture.Disposing += (_, _) => { Interlocked.Add(ref TotalMemoryUsage, -texture.SizeBytes()); };
+		texture.Disposing += OnManagedTextureDispose;
 
 		{
 #if DEBUG
@@ -1001,6 +1009,10 @@ internal sealed class ManagedSpriteInstance : IByteSize, IDisposable {
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private void OnParentDispose(XTexture2D? texture) {
 		Debug.Trace($"Parent Texture Disposing: {texture?.NormalizedName() ?? "[NULL]"}, suspending/disposing ManagedSpriteInstance");
+
+		if (texture != null) {
+			texture.Disposing -= OnParentDispose;
+		}
 
 		Suspend();
 	}

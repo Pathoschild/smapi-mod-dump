@@ -13,272 +13,320 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "129",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "472",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "156",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "251",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "796",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "251",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "717",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "433",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "147",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "477",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "137",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "474",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "706",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "476",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "131",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "429",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "145",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "473",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "267",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "475",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "708",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "478",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "148",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "745",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "162",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "745",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "799",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "745",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "722",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "427",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "702",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "273",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
@@ -286,16 +334,19 @@
     "InputIdentifier": "144",
     "InputStack": 1,
     "OutputStack": 3,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "495",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 6
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 9
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 12
     }
   },
@@ -303,289 +354,340 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "138",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "302",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "719",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "431",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "718",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "453",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "698",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "455",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "701",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "479",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "836",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "479",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "704",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "480",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "721",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "481",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "128",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "482",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "130",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "483",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "720",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "484",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "149",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "485",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "798",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "485",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "161",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "486",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "165",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "486",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "150",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "487",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "800",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "487",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
@@ -593,16 +695,19 @@
     "InputIdentifier": "155",
     "InputStack": 1,
     "OutputStack": 3,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "496",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 6
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 9
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 12
     }
   },
@@ -610,340 +715,400 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "734",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "499",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "837",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "802",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "158",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "802",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "164",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "802",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "140",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "831",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "699",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "833",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "838",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "833",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "705",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "299",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "154",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "301",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "269",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "347",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "795",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "347",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "372",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "425",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "700",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "488",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "723",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "489",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "715",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "490",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "143",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "490",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "132",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "491",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "716",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "492",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "139",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "493",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "142",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "494",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
-      "OutputStack": 2
+      "Probability": 1,
+      "OutputStack": 1
     },
     "GoldQualityInput": {
-      "OutputStack": 3
+      "Probability": 1,
+      "OutputStack": 2
     },
     "IridiumQualityInput": {
-      "OutputStack": 4
+      "Probability": 1,
+      "OutputStack": 3
     }
   },
   {
@@ -951,16 +1116,19 @@
     "InputIdentifier": "146",
     "InputStack": 1,
     "OutputStack": 3,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "497",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 6
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 9
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 12
     }
   },
@@ -969,16 +1137,19 @@
     "InputIdentifier": "707",
     "InputStack": 1,
     "OutputStack": 5,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "498",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 10
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 15
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     }
   },
@@ -987,16 +1158,19 @@
     "InputIdentifier": "141",
     "InputStack": 1,
     "OutputStack": 5,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "498",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 10
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 15
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     }
   },
@@ -1005,16 +1179,19 @@
     "InputIdentifier": "151",
     "InputStack": 1,
     "OutputStack": 5,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputIdentifier": "498",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 10
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 15
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     }
   },
@@ -1022,17 +1199,41 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "Seaweed",
     "InputStack": 1,
-    "OutputStack": 10,
-    "MinutesUntilReady": 20,
-    "OutputIdentifier": "685",
+    "OutputStack": 5,
+    "MinutesUntilReady": 60,
+    "OutputIdentifier": "Bait",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 30
     },
     "IridiumQualityInput": {
+      "Probability": 1,
+      "OutputStack": 50
+    }
+  },
+  {
+    "ProducerName": "Fish-2-Seed Processor",
+    "InputIdentifier": "Green Algae",
+    "InputStack": 1,
+    "OutputStack": 5,
+    "MinutesUntilReady": 60,
+    "OutputIdentifier": "Bait",
+    "Sounds": ["Ship"],
+    "SilverQualityInput": {
+      "Probability": 1,
+      "OutputStack": 20
+    },
+    "GoldQualityInput": {
+      "Probability": 1,
+      "OutputStack": 30
+    },
+    "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 50
     }
   },
@@ -1040,17 +1241,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "159",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 10,
     "OutputIdentifier": "Starfruit Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 30
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 40
     }
   },
@@ -1058,17 +1262,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "160",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 10,
     "OutputIdentifier": "Pumpkin Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 30
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 40
     }
   },
@@ -1076,17 +1283,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "163",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 10,
     "OutputIdentifier": "Strawberry Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 30
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 40
     }
   },
@@ -1094,17 +1304,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "775",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 15,
     "OutputIdentifier": "Rhubarb Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 25
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 35
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 50
     }
   },
@@ -1112,17 +1325,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "682",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 15,
     "OutputIdentifier": "Corn Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 25
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 35
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 50
     }
   },
@@ -1130,17 +1346,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "898",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 15,
     "OutputIdentifier": "Melon Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 25
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 35
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 50
     }
   },
@@ -1148,17 +1367,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "899",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 15,
     "OutputIdentifier": "Red Cabbage Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 25
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 35
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 50
     }
   },
@@ -1166,17 +1388,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "900",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 5,
     "OutputIdentifier": "Ancient Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 10
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 15
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 25
     }
   },
@@ -1184,17 +1409,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "901",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 10,
     "OutputIdentifier": "Cranberry Seeds",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 20
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 30
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 40
     }
   },
@@ -1202,17 +1430,20 @@
     "ProducerName": "Fish-2-Seed Processor",
     "InputIdentifier": "902",
     "InputStack": 1,
-    "MinutesUntilReady": 20,
+    "MinutesUntilReady": 60,
     "OutputStack": 5,
     "OutputIdentifier": "Rare Seed",
     "Sounds": ["Ship"],
     "SilverQualityInput": {
+      "Probability": 1,
       "OutputStack": 10
     },
     "GoldQualityInput": {
+      "Probability": 1,
       "OutputStack": 15
     },
     "IridiumQualityInput": {
+      "Probability": 1,
       "OutputStack": 25
     }
   }

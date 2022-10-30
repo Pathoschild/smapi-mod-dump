@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-challenger
+**
+*************************************************/
+
+{
+  "Name": "Challenger",
+  "Author": "Slothsoft",
+  "Version": "0.5.0",
+  "Description": "A mod that makes playing a challenge again.",
+  "UniqueID": "Slothsoft.Challenger",
+  "EntryDll": "Challenger.dll",
+  "MinimumApiVersion": "3.16.1",
+  "UpdateKeys": [
+    "Github:slothsoft/stardew-challenger"
+  ]
+}

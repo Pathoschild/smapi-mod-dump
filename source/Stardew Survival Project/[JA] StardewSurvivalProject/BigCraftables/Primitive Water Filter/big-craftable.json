@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+    "Name": "Primitive Water Filter",
+    "Description": "Filter your dirty water with active carbon. Science!!!",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 388,
+                "Count": 50
+            },
+			{
+				"Object": 169,
+                "Count": 2
+			},
+			{
+				"Object": 771,
+				"Count": 5
+			},
+			{
+				"Object": 382,
+				"Count": 5
+			}
+        ],
+		"IsDefault": true
+    }
+}

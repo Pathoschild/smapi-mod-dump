@@ -22,9 +22,10 @@ namespace DecidedlyShared.Input;
 
 public static class InputEvents
 {
-    private static Action<string> logCallback;
-    private static List<KeyWatch> keyWatches;
+    private static Action<string, LogLevel> logCallback;
+    private static List<KeyWatch> keyWatches; // TODO: Fix watch duplication bug.
     private static List<ButtonWatch> gamepadWatches;
+    private static List<MouseWatch> mouseWatches;
     private static KeyboardState currentKeyboardState;
     private static KeyboardState previousKeyboardState;
     private static GamePadState currentGamepadState;
@@ -33,7 +34,7 @@ public static class InputEvents
     private static MouseState previousMouseState;
     private static bool isInitialised = false;
 
-    public static void InitInput(IModHelper helper, Action<string> logCallback)
+    public static void InitInput(IModHelper helper, Action<string, LogLevel> logCallback)
     {
         if (!isInitialised)
         {
@@ -52,6 +53,7 @@ public static class InputEvents
 
         currentGamepadState = Game1.input.GetGamePadState();
         currentKeyboardState = Game1.input.GetKeyboardState();
+        currentMouseState = Game1.input.GetMouseState();
 
         for (int i = 0; i < keyWatches.Count; i++)
         {
@@ -97,8 +99,88 @@ public static class InputEvents
             }
         }
 
+        // for (int i = 0; i < mouseWatches.Count; i++)
+        // {
+        //     switch (mouseWatches[i].Type)
+        //     {
+        //         case KeyPressType.Hold:
+        //             switch (mouseWatches[i].button)
+        //             {
+        //                 case MouseButton.Left:
+        //                     if (previousMouseState.LeftButton == ButtonState.Pressed &&
+        //                         currentMouseState.LeftButton == ButtonState.Pressed)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //                 case MouseButton.Right:
+        //                     if (previousMouseState.RightButton == ButtonState.Pressed &&
+        //                         currentMouseState.RightButton == ButtonState.Pressed)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //                 case MouseButton.Middle:
+        //                     if (previousMouseState.MiddleButton == ButtonState.Pressed &&
+        //                         currentMouseState.MiddleButton == ButtonState.Pressed)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //             }
+        //
+        //             break;
+        //         case KeyPressType.Press:
+        //             switch (mouseWatches[i].button)
+        //             {
+        //                 case MouseButton.Left:
+        //                     if (previousMouseState.LeftButton == ButtonState.Released &&
+        //                         currentMouseState.LeftButton == ButtonState.Pressed)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //                 case MouseButton.Right:
+        //                     if (previousMouseState.RightButton == ButtonState.Released &&
+        //                         currentMouseState.RightButton == ButtonState.Pressed)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //                 case MouseButton.Middle:
+        //                     if (previousMouseState.MiddleButton == ButtonState.Released &&
+        //                         currentMouseState.MiddleButton == ButtonState.Pressed)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //             }
+        //
+        //             break;
+        //         case KeyPressType.Released:
+        //             switch (mouseWatches[i].button)
+        //             {
+        //                 case MouseButton.Left:
+        //                     if (previousMouseState.LeftButton == ButtonState.Pressed &&
+        //                         currentMouseState.LeftButton == ButtonState.Released)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //                 case MouseButton.Right:
+        //                     if (previousMouseState.RightButton == ButtonState.Pressed &&
+        //                         currentMouseState.RightButton == ButtonState.Released)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //                 case MouseButton.Middle:
+        //                     if (previousMouseState.MiddleButton == ButtonState.Pressed &&
+        //                         currentMouseState.MiddleButton == ButtonState.Released)
+        //                         InvokeAction(gamepadWatches[i]);
+        //
+        //                     break;
+        //             }
+        //
+        //             break;
+        //     }
+        // }
+
         previousGamepadState = currentGamepadState;
         previousKeyboardState = currentKeyboardState;
+        previousMouseState = currentMouseState;
     }
 
     private static void InvokeAction(KeyWatch watch)
@@ -106,7 +188,7 @@ public static class InputEvents
         if (watch.Callback != null)
             watch.Callback.Invoke();
         else
-            logCallback.Invoke($"The callback for {watch.Key.ToString()} was null.");
+            logCallback.Invoke($"The callback for {watch.Key.ToString()} was null.", LogLevel.Error);
     }
 
     private static void InvokeAction(ButtonWatch watch)
@@ -114,10 +196,11 @@ public static class InputEvents
         if (watch.Callback != null)
             watch.Callback.Invoke();
         else
-            logCallback.Invoke($"The callback for {watch.Button.ToString()} was null.");
+            logCallback.Invoke($"The callback for {watch.Button.ToString()} was null.", LogLevel.Error);
     }
 
-    public static bool RegisterEvent(KeyPressType type, Keys key, Action? callback, Action<string>? logCallback)
+    public static bool RegisterEvent(KeyPressType type, Keys key, Action? callback,
+        Action<string, LogLevel>? logCallback)
     {
         if (callback == null)
             return false;
@@ -127,7 +210,8 @@ public static class InputEvents
         return true;
     }
 
-    public static bool RegisterEvent(KeyPressType type, Buttons button, Action? callback, Action<string>? logCallback)
+    public static bool RegisterEvent(KeyPressType type, Buttons button, Action? callback,
+        Action<string, LogLevel>? logCallback)
     {
         if (callback == null)
             return false;
@@ -135,6 +219,34 @@ public static class InputEvents
         gamepadWatches.Add(new ButtonWatch(button, type, callback, logCallback));
 
         return true;
+    }
+
+    public static bool RegisterEvent(KeyPressType type, MouseButton button, Action? callback,
+        Action<string, LogLevel>? logCallback)
+    {
+        if (callback == null)
+            return false;
+
+        mouseWatches.Add(new MouseWatch(button, type, callback, logCallback));
+
+        return true;
+    }
+
+    public static bool RegisterEvent(KeyPressType type, SButton button, Action? callback,
+        Action<string, LogLevel>? logCallback)
+    {
+        bool isKeyboard, isGamepad;
+
+        isKeyboard = button.TryGetKeyboard(out Keys key);
+        isGamepad = button.TryGetController(out Buttons gamepadButton);
+
+        if (isKeyboard)
+            RegisterEvent(type, key, callback, logCallback);
+        if (isGamepad)
+            RegisterEvent(type, gamepadButton, callback, logCallback);
+
+        logCallback.Invoke("Could not parse input as either keyboard or gamepad button.", LogLevel.Error);
+        return false;
     }
 }
 

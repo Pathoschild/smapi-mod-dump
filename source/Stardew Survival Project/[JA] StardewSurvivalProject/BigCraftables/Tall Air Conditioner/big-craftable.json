@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+    "Name": "Tall Air Conditioner",
+    "Description": "Taller, better, look good in your house as well",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [{
+                "Object": 336,
+                "Count": 15
+            }, {
+                "Object": 337,
+                "Count": 5
+            }, {
+                "Object": 338,
+                "Count": 30
+            }
+        ],
+        "CanPurchase": true,
+        "PurchaseFrom": "Robin",
+        "PurchasePrice": 40000,
+        "PurchaseRequirements": null
+    },
+    "CanPurchase": false
+}

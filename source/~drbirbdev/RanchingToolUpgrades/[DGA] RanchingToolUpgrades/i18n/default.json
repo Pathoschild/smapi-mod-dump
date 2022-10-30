@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "big-craftable.copper_autograbber.name": "Copper Auto-Grabber",
+  "big-craftable.copper_autograbber.description": "Automatically harvests from your animals each morning. Must be placed inside a coop or barn.",
+  "big-craftable.steel_autograbber.name": "Steel Auto-Grabber",
+  "big-craftable.steel_autograbber.description": "Automatically harvests from your animals each morning. Must be placed inside a coop or barn.",
+  "big-craftable.gold_autograbber.name": "Gold Auto-Grabber",
+  "big-craftable.gold_autograbber.description": "Automatically harvests from your animals each morning. Must be placed inside a coop or barn.",
+  "big-craftable.iridium_autograbber.name": "Iridium Auto-Grabber",
+  "big-craftable.iridium_autograbber.description": "Automatically harvests from your animals each morning. Must be placed inside a coop or barn."
+}

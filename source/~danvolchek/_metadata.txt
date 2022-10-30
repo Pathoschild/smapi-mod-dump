@@ -35,23 +35,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 233c3607d45286c5db595ce724350058d1a4ce31
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Apr 25 17:01:05 2021 -0400
+   commit 0622b599fa24eae5883094fa2b9ac4615e201c2a
+   Author: Dan Volchek <danvolchek@users.noreply.github.com>
+   Date:   Fri Oct 28 22:51:31 2022 -0700
    
-       Update for Stardew Valley 1.5 and 64-bit SMAPI, minor fixes (#22)
-       
-       * fix hardcoded paths
-       
-       * fix button suppression in Pong
-       
-       * update NuGet packages
-       
-       * update for Stardew Valley 1.5
-       
-       * update for 64-bit SMAPI
-       
-       * update sprinkler & scarecrow range for Stardew Valley 1.5
-       
-       * remove unneeded dependency on SMAPI toolkit
+       [Better Artisan Good Icons] re-apply csproj updates
    

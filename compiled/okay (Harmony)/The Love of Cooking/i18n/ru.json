@@ -1,4 +1,4 @@
-﻿{
+{
 	// Russian translation by 3M_RUS!
 
 	// General strings
@@ -7,10 +7,10 @@
 	"world.cooking_craftable.rejected_indoors": "Нельзя поставить в помещении.",
 
 	"menu.cooking_equipment.name": "Сковорода",
-	"menu.cooking_equipment.description": "Во время готовки позволяет использовать ингридиенты {{level}} уровня.",
+	"menu.cooking_equipment.description": "Во время готовки позволяет использовать ингредиенты {{level}} уровня.",
 
 	// Cooking menu
-	"menu.cooking_station.no_cookbook": "У Вас нету поваренной книги.",
+	"menu.cooking_station.no_cookbook": "У вас нету поваренной книги.",
 	"menu.cooking_station.locked": "Кто-то еще готовит тут.",
 	"menu.cooking_station.none": "Нету кухонного гарнитура рядом.",
 	"menu.cooking_station.busy": "Здесь уже что-то готовится.",
@@ -37,9 +37,9 @@
 	"menu.cooking_recipe.buff.6": "Создание предметов",
 	"menu.cooking_recipe.buff.7": "Максимальная энергия",
 	"menu.cooking_recipe.buff.8": "Магнитизм",
-	"menu.cooking_recipe.buff.9": "Скорсть",
+	"menu.cooking_recipe.buff.9": "Скорость",
 	"menu.cooking_recipe.buff.10": "Защита",
-	"menu.cooking_recipe.buff.11": "Атака ",
+	"menu.cooking_recipe.buff.11": "Атака",
 	"menu.cooking_recipe.buff.12": "Готовка",
 
 	"menu.cooking_search.order_label": "В порядке возрастания/убывания",
@@ -56,11 +56,11 @@
 	"menu.cooking_search.filter.7": "Любимые рецепты",
 	"menu.cooking_search.none_label": "Рецептов не найдено.",
 
-	"mail.cookbook_unlocked": "@,^  Как поживаешь? Я переберала старые вещи прошлой ночью и нашла кое-что для тебя - старую фамильную поваренную книгу! ^  Там не хватает несклоько страниц, но я уверенна, что ты сам сможешь востановить рецепты. Береги себя, и не забывай хорошо кушать! ^   С любовью, от мамы.[#]От мамы",
-	"mail.cookbook_unlocked.after": "Вы получили мамину поваренную книгу. Рецепты которые Вы изучите будут записаны в эту книгу.",
+	"mail.cookbook_unlocked": "@, ^ как поживаешь? Я перебрала старые вещи прошлой ночью и нашла кое-что для тебя - старую фамильную поваренную книгу! ^  Там не хватает несколько страниц, но я уверена, что ты сам сможешь восстановить рецепты. Береги себя, и не забывай хорошо кушать! ^   С любовью, от мамы.[#]От мамы",
+	"mail.cookbook_unlocked.after": "Вы получили мамину поваренную книгу. Рецепты, которые вы изучите, будут записаны в эту книгу.",
 
 	// Cooking skill
-	"menu.cooking_skill.levelupbonus": "Можно приготовить рецепты с {{Number}} ингрнидиентами",
+	"menu.cooking_skill.levelupbonus": "Можно приготовить рецепты с {{Number}} ингредиентами",
 	"menu.cooking_skill.levelupbonus.2": "Теперь можно заваривать крапивный чай.",
 	//"menu.cooking_skill.levelupbonus.3": "Теперь вы можете приготовить {{Name}}.",
 	"menu.cooking_skill.levelup_burn": "Еда подгорает на {{Number}}% меньше",
@@ -118,8 +118,8 @@
 	"buff.nettles.inspect": "Обжечься крапивой!",
 
 	"world.fisherman.talk_1": "Хорошая ночь для рыбалки, а?$b#Гляди, паренек. Это был хороший улов.[{{id}}]",
-	"world.fisherman.talk_2": "Ты когда-нибудь видел речного тролля, сынок? Хех...$b#Эхх, ты уже взрослый для сказок.",
-	"world.fisherman.talk_3": "Эти торговцы всю рыбу распугали!!! ",
+	"world.fisherman.talk_2": "Ты когда-нибудь видел речного тролля, сынок? Хех...$b#Эх-х, ты уже взрослый для сказок.",
+	"world.fisherman.talk_3": "Эти торговцы всю рыбу распугали!!!",
 
 	// Object names
 
@@ -199,44 +199,44 @@
 	"item.admiralpie.description": "Пикантный пирог с начинкой из целой рыбы.",
 	"item.applepie.description": "Пахнет свежеиспечёнными яблоками и приправой из корицы.",
 	"item.bakedpotato.description": "Балдёжная картошечка, начинённая сыром.",
-	"item.burger.description": "Розовая бомба с сочитанием горьковатых и сладких ноток.",
+	"item.burger.description": "Розовая бомба с сочетанием горьковатых и сладких ноток.",
 	"item.waffles.description": "Зерновые вафли в черничном сиропе.",
-	"item.burrito.description": "Заверни всё что было под рукой и балдей.",
+	"item.burrito.description": "Заверни всё, что было под рукой, и балдей.",
 	"item.butteredcorn.description": "Сладкая и... внезапно масляная. На вкус отдаёт гарью.",
-	"item.cabbagepot.description": "Большой горшок свежей сочоной капусты. Зайцы и веганы оценят.",
-	"item.cabbagepot_half.description": "Остатки ещё никогда не выглядели так неапетитно.",
+	"item.cabbagepot.description": "Большой горшок свежей сочной капусты. Зайцы и веганы оценят.",
+	"item.cabbagepot_half.description": "Остатки ещё никогда не выглядели так неаппетитно.",
 	"item.cake.description": "Обыкновенный коржевой торт. Самое то под тёплое молочко!",
 	"item.cake_half.description": "Лучше бы у меня был целый торт.",
 	"item.fritters.description": "Оладушки из цветной капусты. Почти как кабачковые.",
 	"item.mornay.description": "Пресноводный рак в густом кремовом соусе.",
-	"item.dwarfstew.description": "Пинта житкого золота в прикуску с домашним рагу. Пьют ли дварфы пиво на самом деле?",
+	"item.dwarfstew.description": "Пинта жидкого золота вприкуску с домашним рагу. Пьют ли дварфы пиво на самом деле?",
 	"item.unagi.description": "Как суши, только с угрём.",
-	"item.eggsando.description": "Яйцо прикрытое с двух сторон пышным белым хлебом с майонезом. Майонеза много не бывает.",
+	"item.eggsando.description": "Яйцо, прикрытое с двух сторон пышным белым хлебом с майонезом. Майонеза много не бывает.",
 	"item.eggsando_half.description": "Нужно больше майонеза!",
 	"item.gardenpie.description": "Кусочек пирога бы сейчас не помешал!",
 	"item.stew.description": "Корнеплоды в подливе, согревают как ничто.",
 	"item.hotcocoa.description": "Греет и душу, и тело. Самое вкусное, это зефирка сверху!",
 	"item.curry.description": "Аккуратно! Не сожги всё вокруг.",
 	"item.roast.description": "Вкуснейшее рагу с мясным гарниром.",
-	"item.hunters.description": "Всегда приятно вернутся домой с охоты, если там тебя ждёт блюдо с наивкуснейшими овощами.",
+	"item.hunters.description": "Всегда приятно вернутся домой с охоты, если там тебя ждёт блюдо с вкуснейшими овощами.",
 	"item.kebab.description": "Начинка кажется сомнительной. Кто знает, как это будет на вкус?",
 	"item.loadedpotato.description": "Классическая печёная картошка, начинённая тунцом и сладкой кукурузой.",
 	"item.lobster.description": "Традиционный рецепт островитян.",
 	"item.oceanplatter.description": "Богатый выбор горячих, холодных и свежих морепродуктов.",
 	"item.onionsoup.description": "Супница заполненная наваристым луковым бульоном, присыпанным сыром.",
 	"item.skewers.description": "Летний шашлык с ананасами. Сначала пицца, а теперь и до святого добрались!",
-	"item.porridge.description": "Одну за маму...Вторую за папу....",
+	"item.porridge.description": "Одну за маму... Вторую за папу....",
 	"item.breakfast.description": "Даст вам прилив сил для продуктивного начала дня!",
-	"item.redberrypie.description": "Выглядит апетитно.А пахнэ як...Укусно!",
+	"item.redberrypie.description": "Выглядит аппетитна. А пахнэ як... Укусно!",
 	"item.saladsando.description": "В нём есть латук, рукола, одуванчик, шпинат, щавель...",
-	"item.saladsando_half.description": ".. огурцы, салат... О, а в этой части ещё и помидоры!",
-	"item.seafoodsando.description": "Вкуснющий бутерброд с крабом и кресс-салатом.",
+	"item.saladsando_half.description": "...Огурцы, салат... О, а в этой части ещё и помидоры!",
+	"item.seafoodsando.description": "Вкуснейший бутерброд с крабом и кресс-салатом.",
 	"item.seafoodsando_half.description": "Краба почти не осталось, но всё ещё неплохо!",
 	"item.stuffedpotato.description": "Двойная начинка из сыра и грибов.",
 	"item.tropicalsalad.description": "Освежающий фруктовый салат с тропическими нотками.",
 	// objects
 	"item.burntfood.description": "Получилось не очень... Можно продать... если кому-то это нужно.",
-	"item.chocolate.description": "Ммммм... шоколад.",
+	"item.chocolate.description": "М-м-м-м-м... шоколад.",
 	"item.chocolatecake_half.description": "Какая же была вкуснятина!",
 	"item.cider.description": "Питьё в разработке.",
 	"item.perry.description": "Питьё в разработке.",
@@ -263,6 +263,6 @@
 	"item.watermelon_seeds.description": "Сажайте летом. Вырастает за 10 дней.",
 	"item.watermelon_half.description": "Он настолько вкусный, что ты не сможешь съесть весь сразу.",
 	// others
-	"item.cookbook.description": "Старая, потрёпанная  поваренная книга. Нужно будет добавить новых рецептов!",
+	"item.cookbook.description": "Старая, потрёпанная поваренная книга. Нужно будет добавить новых рецептов!",
 	"item.cookingcraftable.description": "Можно использовать для готовки на улице."
 }

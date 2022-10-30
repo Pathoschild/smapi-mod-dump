@@ -455,6 +455,28 @@
 
 
     /*********
+    ** Item > melee weapon lookups
+    *********/
+    // labels
+    "item.melee-weapon.accuracy": "Точність",
+    "item.melee-weapon.critical-chance": "Критичний шанс",
+    "item.melee-weapon.critical-damage": "Критична шкода",
+    "item.melee-weapon.damage": "Шкода",
+    "item.melee-weapon.defense": "Захист",
+    "item.melee-weapon.knockback": "Відбиття",
+    "item.melee-weapon.reach": "Дальніть",
+    "item.melee-weapon.speed": "Швидкість атаки",
+
+    // values
+    "item.melee-weapon.critical-damage.label": "{{multiplier}} разів нормальних ушкоджень (до отримання бонусів гравця)",
+    "item.melee-weapon.defense.label": "{{amount}} при оснащенні",
+    "item.melee-weapon.knockback.label": "{{amount}} ({{multiplier}} разів нормальних ушкоджень)",
+    "item.melee-weapon.reach.label": "{{amount}} пікселів",
+    "item.melee-weapon.speed.shown-vs-actual": "показано: {{shownSpeed}}{{lineBreak}}насправді: {{actualSpeed}}",
+    "item.melee-weapon.speed.summary": "{{speed}} ({{milliseconds}} мілісекунд на кадр замаху, до отримання бонусів за швидкість гравця)",
+
+
+    /*********
     ** Item > movie lookups
     *********/
     // labels

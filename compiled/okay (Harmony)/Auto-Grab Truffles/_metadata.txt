@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14162
+IDs: Tsin.AutoGrabTruffles
+update keys: Nexus:14162

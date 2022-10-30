@@ -82,21 +82,12 @@ internal static class Garbage {
 					if (blocking) {
 						GCSettings.LatencyMode = GCLatencyMode.Batch;
 					}
-					if (compact) {
-						GC.Collect(
-							int.MaxValue,
-							background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
-							blocking,
-							true
-						);
-					}
-					else {
-						GC.Collect(
-							generation: int.MaxValue,
-							mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
-							blocking: blocking
-						);
-					}
+					GC.Collect(
+						int.MaxValue,
+						background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
+						blocking,
+						compact
+					);
 				}
 				finally {
 					GCSettings.LatencyMode = latencyMode;
@@ -105,7 +96,7 @@ internal static class Garbage {
 			catch (Exception ex) {
 				Debug.Trace("Failed to call preferred GC Collect", ex);
 
-				// Just in case the user's GC doesn't support the preivous properties like LatencyMode
+				// Just in case the user's GC doesn't support the previous properties like LatencyMode
 				GC.Collect(
 					generation: int.MaxValue,
 					mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,

@@ -1,0 +1,7 @@
+{
+  "ModEnabled": true,
+  "FreezeGame": true,
+  "SecondsTilAFK": 60,
+  "ShowAFKText": false,
+  "AFKText": "AFK"
+}

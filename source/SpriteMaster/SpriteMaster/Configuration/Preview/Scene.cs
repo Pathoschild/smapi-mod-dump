@@ -11,9 +11,12 @@
 using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
+using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types;
+using StardewModdingAPI;
 using StardewValley;
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using SMDrawState = SpriteMaster.DrawState;
 
@@ -24,6 +27,8 @@ internal abstract class Scene : IDisposable {
 	protected const int TileSize = 16;
 	protected const int TileSizeRendered = TileSize * 4;
 	protected const int RegionVerticalOffset = -20;
+
+	protected string? Season;
 
 	[StructLayout(LayoutKind.Auto)]
 	private readonly struct CurrentScope : IDisposable {
@@ -50,7 +55,7 @@ internal abstract class Scene : IDisposable {
 		get {
 			if (!IsWeatherStateSet) {
 				Harmonize.Patches.Game.Snow.PopulateWeather(Region.Extent);
-				InternalWeatherState = WeatherState.Backup();
+				InternalWeatherState = WeatherState.Backup(Season);
 				IsWeatherStateSet = true;
 			}
 
@@ -108,7 +113,8 @@ internal abstract class Scene : IDisposable {
 		Color8? color = null,
 		float rotation = 0.0f,
 		SpriteEffects effects = SpriteEffects.None,
-		float layerDepth = 0.0f
+		float layerDepth = 0.0f,
+		IHDPortraitsAPI? portraitsApi = null
 	) {
 		Vector2I shift = Vector2I.Zero;
 		if (destination.Extent.MaxOf > TileSizeRendered) {
@@ -283,68 +289,74 @@ internal abstract class Scene : IDisposable {
 			batch.End();
 		}
 	}
-
 	internal void Draw(XSpriteBatch batch, in Override overrideState) {
-		using var savedWeatherState = WeatherState.Backup();
-		CurrentWeatherState.Restore();
-		using var currentScope = new CurrentScope(this);
-
-		var originalSpriteBatch = Game1.spriteBatch;
-		Game1.spriteBatch = batch;
-
-		var originalLocation = Game1.currentLocation;
-		Game1.currentLocation = SceneLocation.Value;
-
 		try {
-			var originalDrawState = new DrawState {
-				Viewport = batch.GraphicsDevice.Viewport,
-				SamplerState = batch.GraphicsDevice.SamplerStates[0],
-				DepthStencilState = batch.GraphicsDevice.DepthStencilState,
-				ScissorRectangle = batch.GraphicsDevice.ScissorRectangle,
-				RasterizerState = batch.GraphicsDevice.RasterizerState
-			};
+			using var savedWeatherState = WeatherState.Backup();
+			CurrentWeatherState.Restore();
+			using var currentScope = new CurrentScope(this);
 
-			var cloneRasterizerState = originalDrawState.RasterizerState ?? RasterizerState.CullCounterClockwise;
-			State ??= new RasterizerState {
-				CullMode = cloneRasterizerState.CullMode,
-				DepthBias = cloneRasterizerState.DepthBias,
-				FillMode = cloneRasterizerState.FillMode,
-				MultiSampleAntiAlias = cloneRasterizerState.MultiSampleAntiAlias,
-				ScissorTestEnable = true,
-				SlopeScaleDepthBias = cloneRasterizerState.SlopeScaleDepthBias,
-				DepthClipEnable = cloneRasterizerState.DepthClipEnable,
-			};
+			//ContentPatcherUpdateContext?.Invoke();
 
-			batch.End();
+			var originalSpriteBatch = Game1.spriteBatch;
+			Game1.spriteBatch = batch;
+
+			var originalLocation = Game1.currentLocation;
+			Game1.currentLocation = SceneLocation.Value;
+
 			try {
-				DrawBox(batch, overrideState, originalDrawState);
+				var originalDrawState = new DrawState {
+					Viewport = batch.GraphicsDevice.Viewport,
+					SamplerState = batch.GraphicsDevice.SamplerStates[0],
+					DepthStencilState = batch.GraphicsDevice.DepthStencilState,
+					ScissorRectangle = batch.GraphicsDevice.ScissorRectangle,
+					RasterizerState = batch.GraphicsDevice.RasterizerState
+				};
 
-				using var tempOverrideState = new TempValue<Override>(ref Override.Instance, overrideState);
+				var cloneRasterizerState = originalDrawState.RasterizerState ?? RasterizerState.CullCounterClockwise;
+				State ??= new RasterizerState {
+					CullMode = cloneRasterizerState.CullMode,
+					DepthBias = cloneRasterizerState.DepthBias,
+					FillMode = cloneRasterizerState.FillMode,
+					MultiSampleAntiAlias = cloneRasterizerState.MultiSampleAntiAlias,
+					ScissorTestEnable = true,
+					SlopeScaleDepthBias = cloneRasterizerState.SlopeScaleDepthBias,
+					DepthClipEnable = cloneRasterizerState.DepthClipEnable,
+				};
 
-				batch.GraphicsDevice.ScissorRectangle = Region.ClampTo(batch.GraphicsDevice.ScissorRectangle);
+				batch.End();
+				try {
+					DrawBox(batch, overrideState, originalDrawState);
 
-				batch.GraphicsDevice.Viewport = new(Region);
+					using var tempOverrideState = new TempValue<Override>(ref Override.Instance, overrideState);
 
-				DrawFirst(batch, overrideState, originalDrawState);
-				DrawPrecipitation(batch, overrideState, originalDrawState);
-				DrawOverlay(batch, overrideState, originalDrawState);
+					batch.GraphicsDevice.ScissorRectangle = Region.ClampTo(batch.GraphicsDevice.ScissorRectangle);
+
+					batch.GraphicsDevice.Viewport = new(Region);
+
+					DrawFirst(batch, overrideState, originalDrawState);
+					DrawPrecipitation(batch, overrideState, originalDrawState);
+					DrawOverlay(batch, overrideState, originalDrawState);
+				}
+				finally {
+					batch.GraphicsDevice.Viewport = originalDrawState.Viewport;
+					batch.GraphicsDevice.ScissorRectangle = originalDrawState.ScissorRectangle;
+					batch.Begin(
+						rasterizerState: originalDrawState.RasterizerState,
+						samplerState: originalDrawState.SamplerState,
+						depthStencilState: originalDrawState.DepthStencilState
+					);
+				}
 			}
 			finally {
-				batch.GraphicsDevice.Viewport = originalDrawState.Viewport;
-				batch.GraphicsDevice.ScissorRectangle = originalDrawState.ScissorRectangle;
-				batch.Begin(
-					rasterizerState: originalDrawState.RasterizerState,
-					samplerState: originalDrawState.SamplerState,
-					depthStencilState: originalDrawState.DepthStencilState
-				);
+				Game1.spriteBatch = originalSpriteBatch;
+				Game1.currentLocation = originalLocation;
 			}
+
+			CurrentWeatherState = WeatherState.Backup(Season);
 		}
 		finally {
-			Game1.spriteBatch = originalSpriteBatch;
-			Game1.currentLocation = originalLocation;
+			//ContentPatcherUpdateContext?.Invoke();
 		}
-
-		CurrentWeatherState = WeatherState.Backup();
 	}
 
 	protected abstract void OnTick();
@@ -383,7 +395,7 @@ internal abstract class Scene : IDisposable {
 			Game1.currentLocation = originalLocation;
 		}
 
-		CurrentWeatherState = WeatherState.Backup();
+		CurrentWeatherState = WeatherState.Backup(Season);
 	}
 	protected abstract void OnResize(Vector2I size, Vector2I oldSize);
 
@@ -397,7 +409,7 @@ internal abstract class Scene : IDisposable {
 
 		OnResize(Size, oldSize);
 
-		CurrentWeatherState = WeatherState.Backup();
+		CurrentWeatherState = WeatherState.Backup(Season);
 	}
 
 	internal void ChangeOffset(Vector2I offset) {

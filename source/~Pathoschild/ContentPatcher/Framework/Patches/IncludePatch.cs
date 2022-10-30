@@ -95,7 +95,7 @@ namespace ContentPatcher.Framework.Patches
                 this.PatchLoader.UnloadPatchesLoadedBy(this);
 
             // load new patches
-            this.AttemptedDataLoad = this.Conditions.All(p => p.IsMatch);
+            this.AttemptedDataLoad = this.IsReady && this.Conditions.All(p => p.IsMatch);
             this.IsApplied = false;
             if (this.AttemptedDataLoad)
             {
@@ -104,8 +104,7 @@ namespace ContentPatcher.Framework.Patches
                     // validate file existence
                     if (!this.FromAssetExists())
                     {
-                        if (this.IsReady)
-                            this.WarnForPatch($"file '{this.FromAsset}' doesn't exist.");
+                        this.WarnForPatch($"file '{this.FromAsset}' doesn't exist.");
                         return this.MarkUpdated();
                     }
 

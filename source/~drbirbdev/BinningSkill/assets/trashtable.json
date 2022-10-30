@@ -1,0 +1,655 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    // Format
+    // "Location.WhichCan.Rarity": [ "Type.Id", "Type.Id", ... ]
+
+    // Town Default
+    // Ore, Geode, Common Fish or Crop
+    "Town.*.0": [
+        "item.378",
+        "item.380",
+        "item.382",
+        "item.535",
+        "item.536",
+        "item.537",
+        "item.24",
+        "item.264",
+        "item.398",
+        "item.132",
+        "item.136",
+        "item.142",
+        "item.131"
+    ],
+
+
+    // Jodi/Kent/Sam/Vincent
+    // Any crop
+    "Town.0.1": [
+        "item.597",
+        "item.190",
+        "item.433",
+        "item.248",
+        "item.188",
+        "item.250",
+        "item.24",
+        "item.192",
+        "item.252",
+        "item.400",
+        "item.591",
+        "item.258",
+        "item.270",
+        "item.304",
+        "item.260",
+        "item.254",
+        "item.376",
+        "item.264",
+        "item.266",
+        "item.268",
+        "item.593",
+        "item.421",
+        "item.256",
+        "item.300",
+        "item.274",
+        "item.284",
+        "item.278",
+        "item.282",
+        "item.272",
+        "item.595",
+        "item.398",
+        "item.276",
+        "item.280"
+    ],
+    // Sprinkler Attachments
+    "Town.0.2": [
+        "item.913",
+        "item.915"
+    ],
+    // Sam's Old Guitar, Seb's Lost Mace, Abby's Planchette, Sam's Boombox
+    "Town.0.3": [
+        "weapon.30",
+        "weapon.41",
+        "weapon.40",
+        "furniture.1309"
+    ],
+
+
+    // Haley/Emily: Any gemstone
+    // Any Gemstone
+    "Town.1.1": [
+        "item.60",
+        "item.82",
+        "item.64",
+        "item.66",
+        "item.68",
+        "item.70",
+        "item.72",
+        "item.80",
+        "item.82"
+    ],
+    // Prismatic Shard
+    "Town.1.2": [
+        "item.74"
+    ],
+    // Haley's Iron, Sewing Machine, Night Sky Decal #1, Night Sky Decal #2, Night Sky Decal #3
+    "Town.1.3": [
+        "weapon.42",
+        "bigcraftable.247",
+        "furniture.1914",
+        "furniture.1915",
+        "furniture.1916"
+    ],
+
+
+    // Lewis
+    // Any forage
+    "Town.2.1": [
+        "item.16",
+        "item.18",
+        "item.20",
+        "item.22",
+        "item.399",
+        "item.296",
+        "item.398",
+        "item.396",
+        "item.402",
+        "item.259",
+        "item.406",
+        "item.408",
+        "item.410",
+        "item.281",
+        "item.412",
+        "item.414",
+        "item.416",
+        "item.418",
+        "item.283"
+    ],
+    // Mermaid Pendant, Wilted Bouquet, Lucky Purple Shorts
+    "Town.2.2": [
+        "item.460",
+        "item.277",
+        "item.789"
+    ],
+    // Mini-Shipping Bin, Sold Gold Lewis, Stardew Hero Trophy, Statue of Perfection, Statue of True Perfection
+    "Town.2.3": [
+        "bigcraftable.248",
+        "bigcraftable.164",
+        "bigcraftable.116",
+        "bigcraftable.160",
+        "bigcraftable.280"
+    ],
+
+
+    // Museum (Gunther)
+    // Geodes
+    "Town.3.1": [
+        "item.535",
+        "item.536",
+        "item.537",
+        "item.749",
+        "item.275"
+    ],
+    // Deconstructor, Hopper
+    "Town.3.2": [
+        "bigcraftable.265",
+        "bigcraftable.275"
+    ],
+    // Elliott's Pencil, Penny's Fryer, Pirate Flag, Pirate Rug
+    "Town.3.3": [
+        "weapon.35",
+        "weapon.38",
+        "furniture.1900",
+        "furniture.1902"
+    ],
+
+
+    // Blacksmith (Clint)
+    // Bars
+    "Town.4.1": [
+        "item.334",
+        "item.335",
+        "item.336",
+        "item.337"
+    ],
+    // Radioactive Bar
+    "Town.4.2": [
+        "item.910"
+    ],
+    // Harvey's Mallet, Maru's Wrench, ??HMTGF??, ??Foroguemon??, ??Pinky Lemon??
+    "Town.4.3": [
+        "weapon.37",
+        "weapon.36",
+        "bigcraftable.155",
+        "bigcraftable.161",
+        "bigcraftable.162"
+    ],
+
+
+    // Saloon (Gus)
+    // Possible Dish of the Day
+    "Town.5.1": [
+        "item.194",
+        "item.195",
+        "item.197",
+        "item.198",
+        "item.199",
+        "item.200",
+        "item.201",
+        "item.202",
+        "item.203",
+        "item.204",
+        "item.205",
+        "item.207",
+        "item.208",
+        "item.209",
+        "item.210",
+        "item.211",
+        "item.212",
+        "item.213",
+        "item.214",
+        "item.215",
+        "item.218",
+        "item.219",
+        "item.220",
+        "item.221",
+        "item.222",
+        "item.223",
+        "item.225",
+        "item.226",
+        "item.227",
+        "item.228",
+        "item.229",
+        "item.230",
+        "item.231",
+        "item.232",
+        "item.233",
+        "item.234",
+        "item.235",
+        "item.236",
+        "item.237",
+        "item.238",
+        "item.239",
+        "item.240"
+    ],
+    // Qi Seasoning, Mushroom Tree Seed
+    "Town.5.2": [
+        "item.917",
+        "item.891"
+    ],
+    // Leah's Whittler, Leah's Sculpture, My First Painting, Prairie King Arcade System, Junimo Kart Arcade System
+    "Town.5.3": [
+        "weapon.39",
+        "furniture.1306",
+        "furniture.1802",
+        "bigcraftable.141",
+        "bigcraftable.159"
+    ],
+
+
+    // George/Evelyn/Alex
+    // Any fish
+    "Town.6.1": [
+        "item.128",
+        "item.129",
+        "item.130",
+        "item.131",
+        "item.132",
+        "item.136",
+        "item.137",
+        "item.138",
+        "item.139",
+        "item.140",
+        "item.141",
+        "item.142",
+        "item.143",
+        "item.144",
+        "item.145",
+        "item.146",
+        "item.147",
+        "item.148",
+        "item.149",
+        "item.150",
+        "item.151",
+        "item.154",
+        "item.155"
+    ],
+    // Magic Bait, Fairy Dust
+    "Town.6.2": [
+        "item.908",
+        "item.872"
+    ],
+    // Alex's Bat, Coffee Maker, Strawberry Decal, Fruit Salad Rug
+    "Town.6.3": [
+        "weapon.25",
+        "bigcraftable.246",
+        "furniture.1907",
+        "furniture.1909"
+    ],
+
+
+    // Jojamart/Movie Theater
+    // Ticket or poster
+    "Town.7.1": [
+        "item.167",
+
+        "item.809",
+        "furniture.1952",
+        "furniture.1953",
+        "furniture.1954",
+        "furniture.1955",
+        "furniture.1956",
+        "furniture.1957",
+        "furniture.1958",
+        "furniture.1959"
+    ],
+    // Golden Pumpkin, Pearl, Treasure Chest, Auto-Petter
+    "Town.7.2": [
+        "item.373",
+        "item.797",
+        "item.166",
+        "bigcraftable.272"
+    ],
+    // Soda Machine, Junimo Plush, Stone Junimo
+    "Town.7.3": [
+        "bigcraftable.117",
+        "furniture.1733",
+        "bigcraftable.55"
+    ],
+
+
+    // Ridgeside Village (and users of Trash extension) default
+    // Same as common RSV drops
+    "RSV.*.0": [
+        "item.309",
+        "item.66",
+        "item.216",
+        "item.132",
+        "item.171",
+        "item.170",
+        "item.78",
+        "item.86",
+        "item.403",
+        "item.153",
+        "item.167",
+        "item.136",
+        "item.310",
+        "item.311",
+        "item.80",
+        "item.420",
+        "item.152",
+        "item.172",
+        "item.68"
+    ],
+
+    // Blooming Hill Farm (Jeric, Bryle)
+    "RSV.1.1": [
+        "item.476",
+        "item.480",
+        "item.770",
+        "item.429"
+    ],
+    // Rare Seeds
+    "RSV.1.2": [
+        "item.347",
+        "item.499",
+        "item.833"
+    ],
+    "RSV.1.3": [
+        "ja_weapon.The Lucky Penny"
+    ],
+
+    // Heaps Convenience Store (Lorenzo, Shanice, Anton, Kiarra)
+    "RSV.2.1": [
+        "item.246",
+        "item.247"
+    ],
+    // Rare Fertilizers
+    "RSV.2.2": [
+        "item.918",
+        "item.919",
+        "item.920"
+    ],
+    "RSV.2.3": [
+        "ja_weapon.Cutlasset",
+        "ja_weapon.Pale Wings",
+        "ja_weapon.Ark Blade",
+        "ja_weapon.Free Lance"
+    ],
+
+    // Daniel's Residence (Ezekiel, Corine)
+    "RSV.3.1": [
+        "item.72"
+    ],
+    "RSV.3.2": [
+        "item.74"
+    ],
+    "RSV.3.3": [
+        "ja_weapon.Father's Sorrow",
+        "ja_weapon.Icreon"
+    ],
+
+    // Picken's Residence (Maddie)
+    "RSV.4.1": [
+        "item.72"
+    ],
+    "RSV.4.2": [
+        "item.74"
+    ],
+    "RSV.4.3": [
+        "ja_weapon.Heartbreaker"
+    ],
+
+    // Log Cabin Hotel (Richard, Ysabelle, Flor, Philip)
+    "RSV.5.1": [
+        "item.72"
+    ],
+    "RSV.5.2": [
+        "item.74"
+    ],
+    "RSV.5.3": [
+        "ja_weapon.Golden Key Blade",
+        "ja_weapon.Battle Dancer's Fan",
+        "ja_weapon.Observer's Hatchet",
+        "ja_weapon.Sword of Idols"
+    ],
+
+    // Odd Jobs (Ian, Sean)
+    "RSV.6.1": [
+        "item.206",
+        "item.709"
+    ],
+    "RSV.6.2": [
+        "item.74"
+    ],
+    "RSV.6.3": [
+        "ja_weapon.Laborforce",
+        "ja_weapon.Bronze Lance"
+    ],
+
+    // Ridgeside Clinic (Paula)
+    "RSV.7.1": [
+        "item.349"
+    ],
+    "RSV.7.2": [
+        "item.289",
+        "item.107",
+        "item.305"
+    ],
+    "RSV.7.3": [
+        "ja_weapon.Military Saber",
+        "item.928"
+    ],
+
+    // Kobayashi Residence (Shiro, Yuuma, Naomi)
+    "RSV.8.1": [
+        "item.72"
+    ],
+    "RSV.8.2": [
+        "item.74"
+    ],
+    "RSV.8.3": [
+        "ja_weapon.The Unbroken",
+        "ja_weapon.The Silent One",
+        "ja_weapon.Safeguard's Edge"
+    ],
+
+    // Amethyne Mansion (Maive, Sonny, Ariah, Irene, Louie, Zayne)
+    "RSV.9.1": [
+        "item.428",
+        "item.440",
+        "item.424"
+    ],
+    "RSV.9.2": [
+        "item.74"
+    ],
+    "RSV.9.3": [
+        "ja_weapon.The Madame",
+        "ja_weapon.Fox Claw",
+        "ja_weapon.Dagger Lily",
+        "ja_weapon.Lovesick",
+        "ja_weapon.Prideful"
+    ],
+
+    // Yojeong Residence (Faye)
+    "RSV.10.1": [
+        "item.421"
+    ],
+    // Clothing
+    "RSV.10.2": [
+        "ja_clothing.Cof-Faye Jacket",
+        "ja_clothing.Cray-Faye Abstract Shirt",
+        "ja_clothing.Faye-rytale Pastel",
+        "ja_clothing.Flora Golda Shirt",
+        "ja_clothing.Juninja Shirt",
+        "ja_clothing.Pika Impersonation Shirt",
+        "ja_clothing.Village Color Shirt"
+    ],
+    "RSV.10.3": [
+        "ja_weapon.Fairy Needle"
+    ],
+
+    // Akina Residence (Pika, Keahi)
+    "RSV.11.1": [
+        "item.20"
+    ],
+    "RSV.11.2": [
+        "item.74"
+    ],
+    "RSV.11.3": [
+        "ja_weapon.Gourmet Cooking Knife",
+        "ja_weapon.The Prankster"
+    ],
+
+    // Rivera Residence (Blair, Carmen)
+    "RSV.12.1": [
+        "item.130"
+    ],
+    // Fish
+    "RSV.12.2": [
+        "ja_item.Bladetail Sturgeon",
+        "ja_item.Caped Tree Frog",
+        "ja_item.Cardia Septal Jellyfish",
+        "ja_item.Crimson Spiked Clam",
+        "ja_item.Cutthroat Trout",
+        "ja_item.Fairytale Lionfish",
+        "ja_item.Fixer Eel",
+        "ja_item.Golden Rose Fin",
+        "ja_item.Harvester Trout",
+        "ja_item.Lullaby Carp",
+        "ja_item.Mountain Redbelly Dace",
+        "ja_item.Mountain Whitefish",
+        "ja_item.Pebble Back Crab",
+        "ja_item.Ridge Bluegill",
+        "ja_item.Ridgeside Bass",
+        "ja_item.Skulpin Fish"
+    ],
+    "RSV.12.3": [
+        "ja_weapon.Death's Daughter",
+        "ja_weapon.River Harpoon"
+    ],
+
+    // Bladebane Residence (Lola, Freddie)
+    "RSV.13.1": [
+        "item.72"
+    ],
+    // Cursed Artifacts
+    "RSV.13.2": [
+        "ja_item.Entombed Ring",
+        "ja_item.Golden Skull Coral",
+        "ja_item.Hollowed Bear",
+        "ja_item.Inked Fossil",
+        "ja_item.Lover's Sorrow",
+        "ja_item.Nightblack Diamond",
+        "ja_item.Shell Bracelet",
+        "ja_item.Silver Fish Bones",
+        "ja_item.Yellow Wood Sculpture"
+    ],
+    "RSV.13.3": [
+        "ja_weapon.Daggerkin",
+        "ja_weapon.Bladebane"
+    ],
+
+    // Nightingale Orchard (Alissa, Kimpoi, Malaya)
+    "RSV.14.1": [
+        "item.628"
+    ],
+    // Saplings
+    "RSV.14.2": [
+        "ja_item.Cherry Pluot Sapling",
+        "ja_item.Mountain Plumcot Sapling",
+        "ja_item.Desert Tangelo Sapling",
+        "ja_item.Paradise Rangpur Sapling",
+        "ja_item.Tropi Ugli Fruit Sapling",
+        "ja_item.Ember Blood Lime Sapling",
+        "ja_item.Highland Jostaberry Sapling",
+        "ja_item.Northern Limequat Sapling"
+    ],
+    "RSV.14.3": [
+        "ja_weapon.The Singing Dagger",
+        "ja_weapon.Prismarine Mallet",
+        "ja_weapon.Tide Bringer"
+    ],
+
+    // Liden's Residence (Bert, Olga, Trinnie)
+    "RSV.15.1": [
+        "item.336"
+    ],
+    "RSV.15.2": [
+        "item.74"
+    ],
+    "RSV.15.3": [
+        "ja_weapon.The Green Gambler",
+        "ja_weapon.Tough Love",
+        "ja_weapon.Princess of Green"
+    ],
+
+    // Water Research Facility (Mr Aguar)
+    "RSV.16.1": [
+        "item.72"
+    ],
+    // Blessed Artifacts
+    "RSV.16.2": [
+        "ja_item.Ancient Music Box",
+        "ja_item.Elven Comb",
+        "ja_item.Everfrost Stone",
+        "ja_item.Moose Statue",
+        "ja_item.Opal Halo",
+        "ja_item.Pale Candelabrum",
+        "ja_item.Relic Fox Mask",
+        "ja_item.Sapphire Pearl",
+        "ja_item.Village Hero Sculpture"
+    ],
+    "RSV.16.3": [
+        "ja_weapon.Bubble Club"
+    ],
+
+    // Electricians House (Kenneth)
+    "RSV.17.1": [
+        "item.787"
+    ],
+    "RSV.17.2": [
+        "item.74"
+    ],
+    "RSV.17.3": [
+        "ja_weapon.Battery-Powered Battle Hammer"
+    ],
+
+    // Road Trashcan ()
+    "RSV.18.1": [
+        "item.787",
+        "item.228"
+    ],
+    // Any forage
+    "RSV.18.2": [
+        "ja_item.Ridge Cherry",
+        "ja_item.Mountain Arugula",
+        "ja_item.Ridge Azorean Flower",
+        "ja_item.Ridgeside Monkshood",
+        "ja_item.Mountain Chico",
+        "ja_item.Ridge Wild Apple",
+        "ja_item.Forest Amancay",
+        "ja_item.Mountain Hokkaido",
+        "ja_item.Violet Devil's Claw",
+        "ja_item.Autumn Drop Berry",
+        "ja_item.Highland Chard",
+        "ja_item.Lava Lily",
+        "ja_item.Summit Snowbell",
+        "ja_item.Highland Butterwort",
+        "ja_item.Frost Clump Berry",
+        "ja_item.Ridgeside Clementine",
+        "ja_item.Aurorean Iris",
+        "ja_item.Sierra Wintergreen",
+        "ja_item.Mountain Mistbloom"
+    ],
+    "RSV.18.3": [
+        "ja_item.Foxbloom"
+    ]
+}

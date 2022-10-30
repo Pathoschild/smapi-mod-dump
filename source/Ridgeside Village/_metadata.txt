@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit da716a4e845ee9c8992ea40ae8a17d7fde39eb70
-   Author: Clare <ccathanlon@gmail.com>
-   Date:   Tue Sep 27 19:43:59 2022 -0400
+   commit fb72956d398e8e1004f0bb96054200f1f011b8fb
+   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
+   Date:   Fri Oct 21 08:24:07 2022 +0800
    
-       fixed bug with jio and daia at movies
+       adjustments on Yuuma's portrait
    

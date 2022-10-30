@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Build\SDV-1.5.6_SMAPI-3.15.x.targets" />
+  <Import Project="..\Build\SDV-1.5.6.targets" />
   <Import Project="..\Build\Common.csproj" />
   <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
 
@@ -8,15 +8,15 @@
     <Description>Mine like you're in Terraria using the smart cursor feature.</Description>
     <MinimumApiVersion>3.15.0</MinimumApiVersion>
     <UpdateKeys>Nexus:13268</UpdateKeys>
-    <Version>1.0.0</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <PropertyGroup>
     <EnableHarmony>false</EnableHarmony>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="obj" />
-  </ItemGroup>
+  <Target AfterTargets="Build" Name="OpenZipDirectory">
+    <Message Text="Mod ZIP exported to: $(ModZipPath)" Condition="'$(EnableModZip)' == 'True'"/>
+  </Target>
 
 </Project>

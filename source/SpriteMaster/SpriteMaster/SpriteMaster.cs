@@ -100,6 +100,13 @@ public sealed class SpriteMaster : Mod {
 			Config.ConfigVersion = Versioning.CurrentVersion;
 		}
 
+		static Regex ProcessTexturePattern(string pattern) {
+			pattern = pattern.StartsWith('@') ?
+				pattern[1..] :
+				$"^{Regex.Escape(pattern)}.*";
+			return new(pattern, RegexOptions.Compiled);
+		}
+
 		static Config.TextureRef[] ProcessTextureRefs(List<string> textureRefStrings) {
 			// handle sliced textures. At some point I will add struct support.
 			var result = new Config.TextureRef[textureRefStrings.Count];
@@ -124,7 +131,7 @@ public sealed class SpriteMaster : Mod {
 						Debug.Error($"Invalid SlicedTexture Bounds: '{elements[1]}'");
 					}
 				}
-				result[i] = new(string.Intern(texture), bounds);
+				result[i] = new(ProcessTexturePattern(texture), bounds);
 			}
 			return result;
 		}
@@ -136,11 +143,7 @@ public sealed class SpriteMaster : Mod {
 		static Regex[] ProcessTexturePatterns(List<string> texturePatternStrings) {
 			var result = new Regex[texturePatternStrings.Count];
 			for (int i = 0; i < texturePatternStrings.Count; ++i) {
-				var pattern = texturePatternStrings[i];
-				pattern = pattern.StartsWith('@') ?
-					pattern[1..] :
-					$"^{Regex.Escape(pattern)}.*";
-				result[i] = new(pattern, RegexOptions.Compiled);
+				result[i] = ProcessTexturePattern(texturePatternStrings[i]);
 			}
 			return result;
 		}

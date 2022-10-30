@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-challenger
+**
+*************************************************/
+
+{
+  "Name": "ChallengerAutomate",
+  "Author": "Slothsoft",
+  "Version": "0.5.0",
+  "Description": "Hooks the Challenger mod to Automate.",
+  "UniqueID": "Slothsoft.ChallengerAutomate",
+  "EntryDll": "ChallengerAutomate.dll",
+  "MinimumApiVersion": "3.16.1",
+  "UpdateKeys": [
+    "Github:slothsoft/stardew-challenger"
+  ],
+  "Dependencies": [
+    { "UniqueID": "Slothsoft.Challenger", "MinimumVersion": "0.5.0" },
+    { "UniqueID": "Pathoschild.Automate", "MinimumVersion": "1.27.0" }
+  ]
+}

@@ -15,6 +15,8 @@ using SObject = StardewValley.Object;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using Microsoft.Xna.Framework;
+using System.Reflection;
 
 namespace BetterBeehouses.integration
 {
@@ -24,14 +26,20 @@ namespace BetterBeehouses.integration
         private static readonly Lazy<ILHelper> getOutputPatch = new(outputPatch);
         private static readonly Lazy<ILHelper> resetPatch = new(getResetPatch);
         private static bool isPatched = false;
+        private static MethodInfo locationGetter;
+        private static MethodInfo machineGetter;
         public static bool Setup()
         {
+
             if (!ModEntry.helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
                 return false;
 
             ModEntry.monitor.Log("Automate Integration " + (ModEntry.config.PatchPFM ? "Enabling" : "Disabling"));
 
             var targetClass = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine");
+            machineGetter ??= targetClass.PropertyGetter("Machine");
+            locationGetter ??= targetClass.PropertyGetter("Location");
+
             if (!isPatched && ModEntry.config.PatchAutomate)
             {
                 isPatched = false;
@@ -72,24 +80,39 @@ namespace BetterBeehouses.integration
         private static ILHelper outputPatch()
         {
             return new ILHelper("Automate:GetOutput")
+                .Remove(new CodeInstruction[]
+                {
+                    new(OpCodes.Ldc_I4_5)
+                })
+                .Add(new CodeInstruction[]
+                {
+                    new(OpCodes.Call, typeof(ObjectPatch).MethodNamed(nameof(ObjectPatch.GetSearchRange)))
+                })
                 .SkipTo(new CodeInstruction[]
                 {
                     new(OpCodes.Dup),
                     new(OpCodes.Ldloc_0),
-                    new(OpCodes.Callvirt,typeof(SObject).MethodNamed("get_Price"))
+                    new(OpCodes.Callvirt,typeof(SObject).PropertyGetter(nameof(SObject.Price)))
                 })
                 .SkipTo(new CodeInstruction[]
                 {
-                    new(OpCodes.Callvirt, typeof(SObject).MethodNamed("set_Price"))
+                    new(OpCodes.Callvirt, typeof(SObject).PropertySetter(nameof(SObject.Price)))
                 })
                 .Add(new CodeInstruction[]
                 {
                     new(OpCodes.Dup),
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call,AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine").MethodNamed("GetOwner")),
-                    new(OpCodes.Call,typeof(ObjectPatch).MethodNamed(nameof(ObjectPatch.ManipulateObject)))
+                    new(OpCodes.Callvirt, AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine").MethodNamed("GetOwner")),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, typeof(AutomatePatch).MethodNamed(nameof(ManipulateObject)))
                 })
                 .Finish();
+        }
+        private static void ManipulateObject(SObject obj, Farmer owner, object machine)
+        {
+            var beehouse = machineGetter.Invoke(machine, null) as SObject;
+			ObjectPatch.ManipulateObject(obj, owner, locationGetter.Invoke(machine, null) as GameLocation,
+                beehouse?.TileLocation ?? default);
         }
         private static ILHelper getResetPatch()
         {
@@ -104,6 +127,10 @@ namespace BetterBeehouses.integration
                 }, ObjectPatch.ChangeDays)
                 .Finish();
         }
-        public static bool CantWorkHere(GameLocation loc) => ObjectPatch.CantProduceToday(loc.GetSeasonForLocation() == "winter", loc);
+        public static bool CantWorkHere(GameLocation loc) 
+            => ObjectPatch.CantProduceToday(loc.GetSeasonForLocation() == "winter", loc);
+
+        private static Vector2 PointToVec(Point pt)
+            => new(pt.X, pt.Y);
     }
 }

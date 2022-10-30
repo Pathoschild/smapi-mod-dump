@@ -20,8 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
-using SObject = StardewValley.Object;
-
 namespace Leclair.Stardew.BetterCrafting.DynamicRules;
 
 public class BuffRuleHandler : IDynamicRuleHandler {

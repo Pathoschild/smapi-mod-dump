@@ -213,6 +213,97 @@
         }
       ],
       "DaysToBuild": 2
+    },
+    "Gold Clock": {
+      "GoldCost": 10000000,
+      "Items": [],
+      "DaysToBuild": 2
+    },
+    "Junimo Hut": {
+      "GoldCost": 20000,
+      "Items": [
+        {
+          "ItemID": 390,
+          "Amount": 200
+        },
+        {
+          "ItemID": 771,
+          "Amount": 100
+        },
+        {
+          "ItemID": 268,
+          "Amount": 9
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Desert Obelisk": {
+      "GoldCost": 1000000,
+      "Items": [
+        {
+          "ItemID": 337,
+          "Amount": 20
+        },
+        {
+          "ItemID": 88,
+          "Amount": 10
+        },
+        {
+          "ItemID": 90,
+          "Amount": 10
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Island Obelisk": {
+      "GoldCost": 1000000,
+      "Items": [
+        {
+          "ItemID": 337,
+          "Amount": 10
+        },
+        {
+          "ItemID": 91,
+          "Amount": 10
+        },
+        {
+          "ItemID": 852,
+          "Amount": 10
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Earth Obelisk": {
+      "GoldCost": 500000,
+      "Items": [
+        {
+          "ItemID": 337,
+          "Amount": 10
+        },
+        {
+          "ItemID": 86,
+          "Amount": 10
+        }
+      ],
+      "DaysToBuild": 2
+    },
+    "Water Obelisk": {
+      "GoldCost": 500000,
+      "Items": [
+        {
+          "ItemID": 337,
+          "Amount": 5
+        },
+        {
+          "ItemID": 372,
+          "Amount": 10
+        },
+        {
+          "ItemID": 393,
+          "Amount": 10
+        }
+      ],
+      "DaysToBuild": 2
     }
   }
 }

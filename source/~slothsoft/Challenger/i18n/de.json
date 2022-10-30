@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-challenger
+**
+*************************************************/
+
+{
+  "ChallengePage.Title" : "Herausforderung",
+
+  "MagicalObject.Name": "Magischer Gegenstand",
+  "MagicalObject.Description": "Ein magischer Gegenstand, der sich mit der gewählten Herausforderung ändert.",
+
+  "Difficulty.Easy": "Einfach",
+  "Difficulty.Medium": "Mittel",
+  "Difficulty.Hard": "Schwierig",
+
+  "BaseChallenge.MagicalObject": "Du erhältst den Gegenstand \"{{item}}\"",
+  
+  "NoChallenge": "(keine Herausforderung)",
+  "NoChallenge.DisplayText": "Keine Einschränkungen irgendeiner Art.",
+
+  "BreweryChallenge": "Brauerei",
+  "BreweryChallenge.RenameRiceJuice": "Reisbier",
+  "BreweryChallenge.IncludeBeerVegetablesOnly": "Nur Samen für Bier können gekauft werden",
+ 
+  "EarnMoneyChallenge": "Kapitalist",
+  
+  "HermitChallenge": "Einsiedler",
+  "HermitChallenge.CanOnlyLeaveOnSunday": "Du kannst die Farm nur Sonntag verlassen",
+  
+  "NoCapitalistChallenge": "Anti-Kapitalist",
+
+  "VineyardChallenge": "Weinberg",
+  "VineyardChallenge.RenameRiceJuice": "Wein (Reis)",
+  "VineyardChallenge.IncludeFruitOnly": "Nur Samen für Weinobst können gekauft werden",
+  "VineyardChallenge.ExcludeAnimalBuildings": "Tiergebäude können nicht gebaut werden",
+  
+  "CannotBuyFromShop.DisplayText": "Von {{shopKeeper}} kann nicht gekauft werden",
+  "CannotBuyFromShop.Message": "Von {{shopKeeper}} kann wegen einer Herausforderung nicht gekauft werden.",
+
+  "RenameVanillaObject.DisplayText": "Existierendes Objekt umbenannt: {{NewObject}}",
+
+  "ChangeGlobalStock.AddRiceInFirstSpring": "Reis kann im ersten Frühling gekauft werden",
+  
+  "ChallengerMail.Hello": "Grüße {{name}},",
+  "ChallengerMail.Goodbye": "Wir sehen uns, Kämpfer Kevin",
+  "ChallengerMail.MagicalObjectMail": "Ich weiß aus unzweifelhafter Quelle, dass du neue Herausforderungen suchst?^^Ich, Kämpfer Kevin, heiße dich zu diesem neuen Pfad willkommen.^^Ich habe einen Gegenstand angehangen, der dir helfen wird eine neue Herausforderung zu finden, wenn du ihn benutzt.",
+  "ChallengerMail.GoalCompletedMail": "Ich weiß aus unzweifelhafter Quelle, dass du deine neuste Herausforderungen abgeschlossen hast.^^Ich, Kämpfer Kevin, beglückwünsche dich dazu!",
+  "ChallengerMail.MagicalObjectLostMail": "Ich weiß aus unzweifelhafter Quelle, dass du diesen Gegenstand verloren hast. Er wird dir helfen, eine neue Herausforderung zu finden, wenn du ihn benutzt.",
+
+  "ChallengerConfig.ButtonOpenMenu.Name": "Menü-Taste",
+  "ChallengerConfig.ButtonOpenMenu.Description": "Die Taste, die das Herausforderungs-Menü öffnet",
+
+  "PerfectionGoal": "Perfektion",
+
+  "EarnMoneyGoal": "Verdiene {{Value}}",
+  "EarnMoneyGoal.Wine": "Verdiene {{Value}} durch Wein",
+  "EarnMoneyGoal.Beer": "Verdiene {{Value}} durch Bier",
+  
+  "ChallengePage.Goal": "Ziel",
+  
+  "CommunityCenterGoal": "Gemeinschaftszentrum fertigstellen",
+
+  "NoGoal": "Kein Ziel",
+  
+  "ShopIds.SeedShop": "Pierre",
+  "ShopIds.Blacksmith": "Clint",
+  "ShopIds.JojaMart": "Joja Mart"
+}

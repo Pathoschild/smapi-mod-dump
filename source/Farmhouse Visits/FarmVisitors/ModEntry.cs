@@ -47,10 +47,8 @@ namespace FarmVisitors
 
             if (Config.Debug)
             {
-                helper.ConsoleCommands.Add("force_visit", "Force a visitor to show up.", this.ForceVisit);
-                helper.ConsoleCommands.Add("print_all", "Print all values being used.", this.PrintAll);
+                helper.ConsoleCommands.Add("print", "List the values requested.", Debugging.Print);
                 helper.ConsoleCommands.Add("vi_reload", "Reload visitor info.", this.Reload);
-                helper.ConsoleCommands.Add("print_inlaws", "Print all in-laws.", this.PrintInLaws);
             }
         }
 
@@ -352,6 +350,18 @@ namespace FarmVisitors
             }
 
             CanBeVisited = true;
+
+            //update animal and crop list
+            if(Game1.currentSeason == "winter")
+            {
+                Crops?.Clear();
+                Animals?.Clear();
+            }
+            else
+            {
+                Crops = Values.GetCrops();
+                Animals = Values.GetAnimals();
+            }
         }
         private void OnTimeChange(object sender, TimeChangedEventArgs e)
         {
@@ -372,14 +382,14 @@ namespace FarmVisitors
                 {
                     foreach (KeyValuePair<string, ScheduleData> pair in SchedulesParsed)
                     {
-                        NPC visit = Game1.getCharacterFromName(VisitorName);
+                        NPC visit = Game1.getCharacterFromName(pair.Key);
                         if (e.NewTime.Equals(pair.Value.From) && Values.IsFree(visit, false))
                         {
                             VisitorData = new TempNPC(visit);
 
                             currentCustom.Add(pair.Key, pair.Value);
 
-                            VisitorName = pair.Key;
+                            VisitorName = visit.Name;
 
                             DurationSoFar = 0;
 
@@ -520,7 +530,16 @@ namespace FarmVisitors
                         }
                         else if (Random.Next(0, 11) <= 5 && FurnitureList.Any())
                         {
-                            c.setNewDialogue(string.Format(Values.GetDialogueType(c, DialogueType.Furniture), Values.GetRandomFurniture()), true, false);
+                            c.setNewDialogue(
+                                string.Format(
+                                    Values.GetDialogueType(
+                                        c, 
+                                        DialogueType.Furniture), 
+                                    Values.GetRandomObj
+                                        (ItemType.Furniture)), 
+                                true, 
+                                false);
+
                             if (Config.Verbose == true)
                             {
                                 this.Monitor.Log($"Adding dialogue for {c.Name}...", LogLevel.Debug);
@@ -602,6 +621,8 @@ namespace FarmVisitors
                 Monitor.Log($"MaxTimeStay = {MaxTimeStay}; Config.Duration = {Config.Duration};");
             }
 
+            Animals?.Clear();
+            Crops?.Clear();
             FurnitureList?.Clear();
             FurnitureList = Values.UpdateFurniture(Utility.getHomeOfFarmer(Game1.MasterPlayer));
 
@@ -654,13 +675,15 @@ namespace FarmVisitors
                 foreach (KeyValuePair<string, ScheduleData> pair in schedules)
                 {
                     this.Monitor.Log($"Checking {pair.Key}'s schedule...");
-                    if (!Extras.IsScheduleValid(pair))
+                    bool isPatchValid = Extras.IsScheduleValid(pair);
+
+                    if (!isPatchValid)
                     {
                         this.Monitor.Log($"{pair.Key} schedule won't be added.", LogLevel.Error);
                     }
                     else
                     {
-                        SchedulesParsed.Add(pair.Key, pair.Value);
+                        SchedulesParsed.Add(pair.Key, pair.Value); //NRE
                     }
                 }
             }
@@ -875,128 +898,21 @@ namespace FarmVisitors
         }
 
         /*  console commands  */
-        private void Reload(string command, string[] arg2)
+        private void Reload(string command, string[] arg2) => GetAllVisitors();
+        /*public void SetFromCommand(NPC visit)
         {
-            GetAllVisitors();
-        }
-        private void ForceVisit(string command, string[] arg2)
-        {
-            if (Context.IsWorldReady)
-            {
-                if (Game1.MasterPlayer.currentLocation == farmHouse)
-                {
-                    if (arg2 is null)
-                    {
-                        ChooseRandom();
-                    }
-                    else if (NPCNames.Contains(arg2?[0]))
-                    {
-                        VisitorName = arg2[0];
-                        this.Monitor.Log($"VisitorName= {VisitorName}");
 
-                        if (!TodaysVisitors.Contains(VisitorName))
-                        {
-                            //save values
-                            NPC visit = Game1.getCharacterFromName(VisitorName);
-                            VisitorData = new TempNPC(visit);
+            VisitorData = new TempNPC(visit);
 
-                            //add them to farmhouse
-                            Actions.AddToFarmHouse(visit, farmHouse,false);
-                            DurationSoFar = 0;
+            DurationSoFar = 0;
 
-                            HasAnyVisitors = true;
-                            TimeOfArrival = Game1.timeOfDay;
-                            ControllerTime = 0;
+            HasAnyVisitors = true;
+            TimeOfArrival = Game1.timeOfDay;
+            ControllerTime = 0;
 
-                            this.Monitor.Log($"\nHasAnyVisitors set to true.\n{VisitorName} will begin visiting player.\nTimeOfArrival = {TimeOfArrival};\nControllerTime = {ControllerTime};");
-                        }
-                        else if (arg2[1] is "force")
-                        {
-                            //save values
-                            NPC visit = Game1.getCharacterFromName(VisitorName);
-                            VisitorData = new TempNPC(visit);
-
-                            //add them to farmhouse
-                            Actions.AddToFarmHouse(visit, farmHouse,false);
-                            DurationSoFar = 0;
-
-                            HasAnyVisitors = true;
-                            TimeOfArrival = Game1.timeOfDay;
-                            ControllerTime = 0;
-
-                            this.Monitor.Log($"\nHasAnyVisitors set to true.\n{VisitorName} will begin visiting player.\nTimeOfArrival = {TimeOfArrival};\nControllerTime = {ControllerTime};");
-                        }
-                        else
-                        {
-                            VisitorName = null;
-                            this.Monitor.Log($"{VisitorName} has already visited the Farm today!");
-                        }
-                    }
-                    else
-                    {
-                        this.Monitor.Log(Helper.Translation.Get("error.InvalidValue"), LogLevel.Error);
-                    }
-                }
-                else
-                {
-                    this.Monitor.Log(Helper.Translation.Get("error.NotInFarmhouse"), LogLevel.Error);
-                }
-            }
-            else
-            {
-                this.Monitor.Log(Helper.Translation.Get("error.WorldNotReady"), LogLevel.Error);
-            }
-        }
-        private void PrintAll(string command, string[] arg2)
-        {
-            string cc = currentCustom?.Count.ToString() ?? "none";
-            string f = VisitorData?.Facing.ToString() ?? "none";
-            string pv = VisitorData?.CurrentPreVisit?.Count.ToString() ?? "none";
-            string n = VisitorData?.Name ?? "none";
-            string am = VisitorData?.AnimationMessage ?? "none";
-
-            this.Monitor.Log($"\n\nVisitorName = {VisitorName ?? "none"}; \nIsConfigValid = {IsConfigValid}; \nHasAnyVisitors = {HasAnyVisitors}; \nTimeOfArrival = {TimeOfArrival}; \nCounterToday = {CounterToday}; \nDurationSoFar = {DurationSoFar}; \nMaxTimeStay = {MaxTimeStay}; \nControllerTime = {ControllerTime},");
-
-            this.Monitor.Log($"\ncurrentCustom count = {cc}; \nVisitorData: \n   Name = {n},\n   Facing = {f}, \n  AnimationMessage = {am}, \n  Dialogues pre-visit: {pv}");
-        }
-        private void PrintInLaws(string arg1, string[] arg2)
-        {
-            if (!Context.IsWorldReady)
-            {
-                this.Monitor.Log(this.Helper.Translation.Get("error.WorldNotReady"), LogLevel.Error);
-            }
-            else
-            {
-                string result = "\n";
-
-                foreach (var pair in InLaws)
-                {
-                    string pairvalue = "";
-                    foreach (string name in pair.Value)
-                    {
-                        if (pair.Value[^1].Equals(name))
-                        {
-                            pairvalue += $"{name}.";
-                        }
-                        else
-                        {
-                            pairvalue += $"{name}, ";
-                        }
-                    }
-
-                    result += $"\n{pair.Key}: {pairvalue}";
-                }
-
-                if (result.Equals("\n"))
-                {
-                    this.Monitor.Log("No in-laws found. (Searched all NPCs with friendship)", LogLevel.Warn);
-                }
-                else
-                {
-                    this.Monitor.Log(result, LogLevel.Info);
-                }
-            }
-        }
+            this.Monitor.Log($"\nHasAnyVisitors set to true.\n{VisitorName} will begin visiting player.\nTimeOfArrival = {TimeOfArrival};\nControllerTime = {ControllerTime};", LogLevel.Info);
+        }*/
+        //(other commands moved to a new file)
 
         /*  data  */
         private ModConfig Config;
@@ -1043,11 +959,14 @@ namespace FarmVisitors
 
         //information
         internal static Dictionary<string, int> NameAndLevel { get; private set; } = new();
-        internal static List<string> NPCNames { get; private set; }
-        internal static List<string> FurnitureList { get; private set; }
-        internal static List<string> BlacklistParsed { get; private set; }
-        internal static Dictionary<string, ScheduleData> SchedulesParsed { get; private set; }
-        internal static Dictionary<string, ScheduleData> currentCustom { get; private set; }
+        internal static List<string> NPCNames { get; private set; } = new();
+        internal static List<string> BlacklistParsed { get; private set; } = new();
+        internal static Dictionary<string, ScheduleData> SchedulesParsed { get; private set; } = new();
+        internal static Dictionary<string, ScheduleData> currentCustom { get; private set; } = new();
+        //selectable
+        internal static List<string> FurnitureList { get; private set; } = new();
+        internal static List<string> Animals { get; private set; } = new();
+        internal static Dictionary<int,string> Crops { get; private set; } = new();
 
         //public data
         public static Dictionary<string, List<string>> InLaws { get; private set; } = new();

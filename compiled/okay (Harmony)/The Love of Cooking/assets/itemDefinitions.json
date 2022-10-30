@@ -17,12 +17,6 @@
 	"NpcKitchenFriendshipRequired": [
 		"6"
 	],
-	"RegenBaseRate": [
-		"128"
-	],
-	"RegenSpeedScale": [
-		"2.5"
-	],
 	"AutoConsumeOilAndSeasoning": [
 		"false"
 	],
@@ -47,6 +41,18 @@
 	],
 	"ShopDiscounts": [
 		"Saloon:35"
+	],
+	"RegenBaseRate": [
+		"128"
+	],
+	"RegenHealthRate": [
+		"0.3"
+	],
+	"RegenEnergyRate": [
+		"1.0"
+	],
+	"RegenFinalRate": [
+		"2.5"
 	],
 	"RegenSkillModifiers": [
 		"Combat:0.025",

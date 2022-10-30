@@ -144,6 +144,13 @@ namespace ContentPatcherJsonProcessor {
             }
         }
 
+        // A few links to source that I was viewing at various points when figuring all of this stuff out:
+        // (I.e., a dump of the browser tabs I still have open so that I can close them now)
+        // https://github.com/Pathoschild/StardewMods/blob/content-patcher/1.21/ContentPatcher/Framework/RawContentPack.cs
+        // https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/Framework/RawContentPack.cs
+        // https://github.com/Pathoschild/SMAPI/blob/develop/src/SMAPI/Framework/ContentPack.cs
+        // https://github.com/Pathoschild/SMAPI/blob/develop/src/SMAPI.Toolkit/Serialization/JsonHelper.cs#L46
+        
         private static IEnumerable<CodeInstruction> TryReloadContentTranspile(IEnumerable<CodeInstruction> instructions) {
             if (sVars is null) {
                 throw new InvalidOperationException("code run before required initialization");

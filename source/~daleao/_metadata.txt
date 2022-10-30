@@ -12,14 +12,14 @@ mods:
    Walk of Life
 
 latest commit:
-   commit defe8dbbad75e50e028c772d0f0348f4c86bb426
-   Merge: b1b9be92 78c14103
+   commit 7afd32737f8f04ae97f134b37e9bfa24c8325b40
+   Merge: defe8dbb 251fa66f
    Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
-   Date:   Fri Aug 12 16:03:35 2022 +0000
+   Date:   Wed Oct 5 21:27:43 2022 +0000
    
-       Merge branch 'dev' into 'main'
+       Merge branch 'main' into 'main'
        
-       Merge
+       Improve Chinese translation for Walk Of Life mod.
        
-       See merge request daleao/sdv-mods!8
+       See merge request daleao/sdv-mods!7
    

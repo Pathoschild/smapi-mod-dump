@@ -1,0 +1,90 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+[14:04:32 TRACE StardewSurvivalProject] name=FarmHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Farm, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=FarmCave, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Town, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=JoshHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=HaleyHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=SamHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Blacksmith, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=ManorHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=SeedShop, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Saloon, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Trailer, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Hospital, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=HarveyRoom, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Beach, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=ElliottHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Mountain, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=ScienceHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=SebastianRoom, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Tent, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Forest, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=WizardHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=AnimalShop, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=LeahHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BusStop, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=Mine, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Sewer, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BugLand, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Desert, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=Club, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=SandyHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=ArchaeologyHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=WizardHouseBasement, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=AdventureGuild, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Woods, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=Railroad, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=WitchSwamp, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=WitchHut, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=WitchWarpCave, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Summit, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=FishShop, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BathHouse_Entry, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BathHouse_MensLocker, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BathHouse_WomensLocker, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BathHouse_Pool, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=CommunityCenter, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=JojaMart, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Greenhouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=SkullCave, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Backwoods, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=Tunnel, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Trailer_Big, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Cellar, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Cellar2, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Cellar3, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Cellar4, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BeachNightMarket, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=MermaidHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Submarine, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=AbandonedJojaMart, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=MovieTheater, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Sunroom, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=BoatTunnel, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandSouth, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=IslandSouthEast, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=IslandSouthEastCave, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandEast, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=IslandWest, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=IslandNorth, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=IslandHut, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandWestCave1, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandNorthCave1, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandFieldOffice, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandFarmHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=CaptainRoom, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=IslandShrine, isOutdoor=True
+[14:04:32 TRACE StardewSurvivalProject] name=IslandFarmCave, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=Caldera, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=LeoTreeHouse, isOutdoor=False
+[14:04:32 TRACE StardewSurvivalProject] name=QiNutRoom, isOutdoor=False

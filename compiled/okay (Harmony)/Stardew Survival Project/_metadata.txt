@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14183
+IDs: neroyuki.rlvalley
+update keys: Nexus:14183, GitHub:NeroYuki/StardewSurvivalProject

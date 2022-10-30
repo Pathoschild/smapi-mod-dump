@@ -21,7 +21,7 @@ using StardewValley.TerrainFeatures;
 
 namespace HybridCropEngine
 {
-    internal class Mod : StardewModdingAPI.Mod, IAssetLoader
+    internal class Mod : StardewModdingAPI.Mod
     {
         public static Mod Instance;
         public static Configuration Config;
@@ -35,16 +35,12 @@ namespace HybridCropEngine
 
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
-        }
 
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals("Data/HybridCrops");
-        }
-
-        public T Load<T>(IAssetInfo asset)
-        {
-            return (T)(object)new Dictionary<int, HybridCropData>();
+            helper.Events.Content.AssetRequested += (_, e) =>
+            {
+                if (e.NameWithoutLocale.IsEquivalentTo("Data/HybridCrops"))
+                    e.LoadFrom(() => new Dictionary<int, HybridCropData>(), AssetLoadPriority.Exclusive);
+            };
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -127,9 +123,11 @@ namespace HybridCropEngine
                 ulong la = (ulong)entry.Value.BaseCropA;
                 ulong lb = (ulong)entry.Value.BaseCropB;
 
-                ret.Add((la << 32) | lb, entry.Key);
+                if (!ret.TryAdd((la << 32) | lb, entry.Key))
+                    Log.Error($"{entry.Value} may be a duplicate, skipping.");
                 if (entry.Value.BaseCropA != entry.Value.BaseCropB)
-                    ret.Add((lb << 32) | la, entry.Key);
+                    if(!ret.TryAdd((lb << 32) | la, entry.Key))
+                        Log.Error($"{entry.Value} may be a duplicate, skipping.");
             }
             return ret;
         }

@@ -1,0 +1,11 @@
+﻿{
+  "EmergencySkip.title": "紧急跳过",
+  "EmergencySkip.description": "像可跳过事件一样中断事件",
+
+  "ShowInfo.title": "显示信息",
+  "ShowInfo.description": "启用或禁用HUD消息",
+
+  "NormalSkip.title": "正常的跳过",
+  "NormalSkip.description": "中断事件并将其标记为临时可见"
+
+}

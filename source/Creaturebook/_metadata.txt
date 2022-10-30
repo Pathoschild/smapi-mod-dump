@@ -6,9 +6,9 @@ mods:
    Creaturebook
 
 latest commit:
-   commit 1cc35807ef06b70e3c8133f8122ac1dbe4d7d366
+   commit 457ac248bb2c50c7475b5669fc6056a44db2ae67
    Author: KediDili <78353874+KediDili@users.noreply.github.com>
-   Date:   Sun Sep 25 19:51:41 2022 +0300
+   Date:   Sat Oct 29 16:03:48 2022 +0300
    
-       Migration to modData
+       Lists to arrays, no more momential freezing on tool use
    

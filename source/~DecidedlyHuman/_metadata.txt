@@ -12,9 +12,12 @@ mods:
    Smart Cursor
 
 latest commit:
-   commit 55026e5b2cc342f2e9db95af7c9eec4f880b7bf1
+   commit 99fa29c57db30ace5d511b26e27dbc4a4e787822
+   Merge: 1630f4b 4f097ee
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Thu Sep 22 20:05:39 2022 +0100
+   Date:   Fri Oct 14 14:44:22 2022 +0100
    
-       SC: Beginnings of using my event-based input API.
+       Merge pull request #12 from sketchbook22/master
+       
+       optimized and refactored getTileToTarget
    

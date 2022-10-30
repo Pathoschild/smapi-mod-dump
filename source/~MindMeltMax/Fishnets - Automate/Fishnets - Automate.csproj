@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Fishnets.Automate</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Automate">
+      <HintPath>$(GamePath)\Mods\Automate\Automate.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Fishnets">
+      <HintPath>$(GamePath)\Mods\Fishnets\Fishnets.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+  </ItemGroup>
+
+</Project>

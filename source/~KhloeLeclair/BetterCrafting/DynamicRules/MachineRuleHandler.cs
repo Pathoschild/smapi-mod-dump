@@ -10,9 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common.Crafting;
@@ -23,8 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
 using StardewValley.Menus;
-
-using SObject = StardewValley.Object;
 
 namespace Leclair.Stardew.BetterCrafting.DynamicRules;
 

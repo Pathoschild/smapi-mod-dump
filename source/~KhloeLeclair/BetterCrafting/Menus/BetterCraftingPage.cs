@@ -35,7 +35,6 @@ using StardewValley.Menus;
 using StardewValley.Network;
 using StardewValley.Objects;
 
-using SObject = StardewValley.Object;
 using Leclair.Stardew.BetterCrafting.DynamicRules;
 using StardewValley.Characters;
 using System.Reflection;
@@ -366,7 +365,9 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		VISIBLE_TABS = (height - 120) / 64;
 
 		// Run the event to populate containers.
-		ModEntry.API.EmitMenuPopulate(this, ref material_containers);
+		// TODO: Track which mod adds each container.
+		foreach(var api in ModEntry.Instance.APIInstances.Values)
+			api.EmitMenuPopulate(this, ref material_containers);
 
 		MaterialContainers = material_containers;
 
@@ -1643,7 +1644,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				},
 				locked, items, chests
 			);
-		}, nullLocationValid: true);
+		}, nullLocationValid: true, helper: Mod.Helper);
 	}
 
 	private void PerformCraftRecursive(
@@ -1745,26 +1746,22 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		// Consume ingredients and rebuild our item list.
 		if (consume) {
-			// If we are cooking and using the Cooking Skill mod and
-			// we have a recipe and we're only operating on chests,
-			// then go ahead and use the vanilla CookingRecipe's
-			// consumeIngredients method.
-			if (cooking && Mod.intCSkill != null && Mod.intCSkill.IsLoaded && ChestsOnly && recipe.CraftingRecipe != null)
-				recipe.CraftingRecipe.consumeIngredients(chests);
-			else
-				recipe.Consume(Game1.player, locked, Quality, Mod.Config.LowQualityFirst);
-		}
+			recipe.Consume(Game1.player, locked, Quality, Mod.Config.LowQualityFirst);
 
-		// Even if consume is false, Cooking Skill may have
-		// modified items so refresh our list.
-		items = GetActualContainerContents(locked);
+			// And refresh the working items list since we consumed items, assuming
+			// this isn't the last pass. Don't do this if ingredients is not null
+			// though as it'd be wasted effort.
+			if (times > 1 && ingredients == null)
+				items = GetActualContainerContents(locked);
+		}
 
 		if (ingredients != null) {
 			used_additional = true;
 
 			// Consume ingredients and rebuild our item list.
 			CraftingHelper.ConsumeIngredients(ingredients, Game1.player, seasoningInventories ? locked : null, Quality, Mod.Config.LowQualityFirst);
-			items = GetActualContainerContents(locked);
+			if (times > 1)
+				items = GetActualContainerContents(locked);
 
 			// Show a notice if the user used their last seasoning.
 			if (!CraftingHelper.HasIngredients(ingredients, Game1.player, seasoningInventories ? items : null, seasoningInventories ? locked : null, Quality))
@@ -1861,7 +1858,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				onDone();
 				Working = false;
 				onDoneAction?.Invoke(item);
-			}, nullLocationValid: true);
+			}, nullLocationValid: true, helper: Mod.Helper);
 
 		} else {
 			InventoryHelper.WithInventories(CachedInventories, Mod.GetInventoryProvider, Game1.player, (locked, onDone) => {
@@ -1879,7 +1876,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				}
 
 				onDoneAction?.Invoke(items.Count > 0 ? items[0] : null);
-			}, nullLocationValid: true);
+			}, nullLocationValid: true, helper: Mod.Helper);
 		}
 	}
 
@@ -2620,7 +2617,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		base.receiveLeftClick(x, y, playSound);
 
-		if (Editing && Flow is not null && Flow.ReceiveLeftClick(x, y, playSound))
+		if (Editing && Flow is not null && (CurrentTab?.Category?.UseRules ?? false) && Flow.ReceiveLeftClick(x, y, playSound))
 			return;
 
 		// Inventory
@@ -3461,7 +3458,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				trashCanLidRotation = Math.Max(trashCanLidRotation - (float) Math.PI / 48f, 0f);
 		}
 
-		if (Flow is not null) {
+		if (Editing && Flow is not null && (CurrentTab?.Category?.UseRules ?? false)) {
 			if (Flow.PerformMiddleScroll(x, y))
 				return;
 

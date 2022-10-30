@@ -11,12 +11,10 @@ mods:
    See Me Rollin'
 
 latest commit:
-   commit c5a8e4bae67ee9da41032eca6360ad06af37a763
+   commit d37ad5b15024eb1edabbae79b026c5b2d1e27ce5
+   Merge: 30a2eb7 f3743a6
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Wed Sep 21 16:13:22 2022 -0400
+   Date:   Fri Oct 28 23:14:19 2022 -0400
    
-       Better Crafting 1.3.1
-       
-       * Fix large grid items in the menu.
-       * Add new methods for building recipes to the API.
+       Merge branch 'main' of github.com:KhloeLeclair/StardewMods
    

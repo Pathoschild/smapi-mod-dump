@@ -10,6 +10,7 @@
 
 using LinqFasterer;
 using SpriteMaster.Configuration;
+using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System.Drawing.Imaging;
 using System.IO;
@@ -18,20 +19,40 @@ using System.Text;
 namespace SpriteMaster.Tools.Preview.Converter;
 
 internal class ConverterProgram : AbstractProgram {
-	private record struct Job(Uri Path, uint Scale);
+	private record struct Job(Uri Path, uint Scale, Resample.Scaler Scaler);
 
 	internal override async Task<int> OnSubMainAsync(Options options, List<Argument> args) {
 		var info = true;
 
+		Resample.Scaler scaler = Resample.Scaler.xBRZ;
+
 		foreach (var arg in args) {
 			if (arg.IsCommand) {
-				throw new ArgumentException($"Unknown Argument: {arg}");
+				switch (arg.Command?.ToLowerInvariant()) {
+					case "xbrz":
+						scaler = Resample.Scaler.xBRZ;
+						break;
+					case "xbrepx":
+					case "xbrzepx":
+						scaler = Resample.Scaler.xBREPX;
+						break;
+					case "epx":
+						scaler = Resample.Scaler.EPX;
+						break;
+					case "epx-legacy":
+					case "epxlegacy":
+						scaler = Resample.Scaler.EPXLegacy;
+						break;
+					default:
+						throw new ArgumentException($"Unknown Argument: {arg}");
+				}
 			}
 		}
 
-		const uint scale = 6;
+		var scalerInfo = Resample.Scalers.IScaler.GetScalerInfo(scaler)!;
 
-		var jobs = new HashSet<Job>(options.Paths.SelectF<string, Job>(path => new(new(path), scale)));
+		var jobs = new HashSet<Job>(options.Paths.SelectF<string, Job>(path => new(new(path), (uint)scalerInfo.MaxScale, scaler)));
+		jobs.AddRange(options.Paths.SelectF<string, Job>(path => new(new(path), Math.Max(2u, (uint)scalerInfo.MinScale), scaler)));
 
 		if (info) {
 			Console.WriteLine("Settings:");
@@ -126,18 +147,17 @@ internal class ConverterProgram : AbstractProgram {
 		// TODO : padding?
 		// Padding?
 
-		var scalerConfig = new Resample.Scalers.xBRZ.Config(
-			wrapped: Vector2B.False,
-			luminanceWeight: Config.Resample.Common.LuminanceWeight,
-			equalColorTolerance: Config.Resample.Common.EqualColorTolerance,
-			dominantDirectionThreshold: Config.Resample.xBRZ.DominantDirectionThreshold,
-			steepDirectionThreshold: Config.Resample.xBRZ.SteepDirectionThreshold,
-			centerDirectionBias: Config.Resample.xBRZ.CenterDirectionBias
-		);
 		uint scale = job.Scale;
 		if (scale != 1) {
+			var scalerInfo = Resample.Scalers.IScaler.GetScalerInfo(job.Scaler)!;
+			var scalerInterface = scalerInfo.Interface;
+			var scalerConfig = scalerInterface.CreateConfig(
+				wrapped: Vector2B.False,
+				hasAlpha: true,
+				gammaCorrected: true
+			);
+
 			var targetSize = imageSize * scale;
-			var scalerInterface = new Resample.Scalers.xBRZ.Scaler.ScalerInterface();
 			imageData = scalerInterface.Apply(
 				scalerConfig,
 				scaleMultiplier: scale,
@@ -171,7 +191,7 @@ internal class ConverterProgram : AbstractProgram {
 			var path = job.Path.LocalPath;
 			var extension = Path.GetExtension(path);
 			path = Path.Combine(Path.GetDirectoryName(path)!, Path.GetFileNameWithoutExtension(path));
-			path = $"{path}.resampled{extension}";
+			path = $"{path}.resampled.{scale}.{job.Scaler}{extension}";
 			resampledBitmap.Save(path, ImageFormat.Png);
 		}
 	}

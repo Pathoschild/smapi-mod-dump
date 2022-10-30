@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14087
+IDs: aedenthorn.PersonalTravellingCart
+update keys: Nexus:14087, GitHub:aedenthorn/StardewValleyMods

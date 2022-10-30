@@ -31,7 +31,7 @@ namespace MoonMisadventures.Game.Locations
         {
         }
 
-        public LunarFarmCave( IContentHelper content )
+        public LunarFarmCave( IModContentHelper content )
         : base( content, "MoonFarmCave", "MoonFarmCave" )
         {
         }

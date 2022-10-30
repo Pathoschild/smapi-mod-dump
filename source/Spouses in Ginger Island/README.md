@@ -8,9 +8,8 @@ for queries and analysis.**
 
 (For a version in Spanish, [see here](https://github.com/misty-spring/SpousesIsland/blob/main/README-es.md). / Para una versión en Español, [ve aquí](https://github.com/misty-spring/SpousesIsland/blob/main/README-es.md).)
 
-**Spouses' Island** is a Stardew Valley mod, which allows the player's spouse to visit the island. Comes with integrated schedules for the vanilla spouses, and offers support for custom schedules (including mod NPCs).
-
-To choose if it's an island day, this mod uses a randomized number- and compares it with the chance(%) set by the user. This number changes every in-game day.
+**Spouses' Island** is a Stardew Valley mod, which allows the player's spouse to visit the island. Comes with schedules for vanilla spouses and SVE+Child2NPC compatibility.
+User-made are avaiable via ContentPatcher.
 
 ## Contents
 * [For players](#for-players)
@@ -47,10 +46,30 @@ This mod only edits schedules on specific days (and uses unique dialogue keys), 
 
 ## For custom spouses
 ### How to use
-The mod has a framework, but i suggest learning to edit schedules instead (the framework does the same thing).
-If you know how schedules work, just add the token `"": "true"` to your patch.
+Edit the spouse's schedule via ContentPatcher, and add the following token: `mistyspring.spousesisland/IslandToday` as condition.
 
-If you'd still rather use the framework instead, [see here.]()
+You don't need to worry about pathing them to a bed: the mod will do this starting from 10pm. 
+(Just make sure their last schedule point is 'IslandFarmHouse').
+
+The schedule can be however you want. For example:
+```
+{
+  "Action": "EditData",
+  "Target": "Characters/schedules/<your-spouse-name>",
+  "Entries": {
+     "marriage_Mon": "700 IslandFarmHouse 16 9 0/900 IslandFarmHouse 20 15 0/1200 IslandWest 39 41 0/1400 IslandWest 39 45 3/1500 IslandWest 85 39 2/1700 IslandSouth 12 27 2/a2300 IslandFarmHouse 16 9 0"
+     "marriage_Tue": "GOTO marriage_Mon", 
+     "marriage_Wed" = "GOTO marriage_Mon",
+     "marriage_Thu" = "GOTO marriage_Mon",
+     "marriage_Fri" = "GOTO marriage_Mon",
+     "marriage_Sat" = "GOTO marriage_Mon",
+     "marriage_Sun" = "GOTO marriage_Mon";
+     },
+  "When": {
+     "mistyspring.spousesisland/IslandToday": "true"
+    }
+  },
+```
 
 ### For more help
 
@@ -58,7 +77,8 @@ If you'd still rather use the framework instead, [see here.]()
 The [json parser](https://smapi.io/json) will tell you of any problem within the content pack. When asked for a JSON format, leave it as "None".
 
 ## Translations
-If you'd like to contribute translating, (or post the translation on your own)
+If you'd like to contribute translating, you can send me the translation (either via nexusmods or as a pull request.) You can also post the translation on nexus as your own file.
+
 ## Known issues
 Children can't use NPC warps. However, this is a bug on ChildToNPC's side (which i can't do much about).
 

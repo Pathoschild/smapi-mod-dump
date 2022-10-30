@@ -11,20 +11,37 @@
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using lv = StardewModdingAPI.LogLevel;
 
 namespace FarmVisitors
 {
+    public enum ItemType
+    {
+        Animal,
+        Crop,
+        Furniture
+    }
+
     public enum DialogueType
     {
+        //about the visit
         Introduce,
         WalkIn,
         Furniture,
         Greet,
         Retiring,
         Thanking,
-        Rejected
+        Rejected,
+
+        //about the farm
+        Animal,
+        Crop,
+        NoneYet,
+        Winter
     }
     internal class Values
     {
@@ -282,9 +299,16 @@ namespace FarmVisitors
         /// Get a random index from the player's furniture list.
         /// </summary>
         /// <returns></returns>
-        internal static string GetRandomFurniture()
+        internal static string GetRandomObj(ItemType i)
         {
-            var list = ModEntry.FurnitureList;
+
+            List<string> list = i switch
+            {
+                ItemType.Furniture => ModEntry.FurnitureList,
+                ItemType.Animal => ModEntry.Animals,
+                ItemType.Crop => ModEntry.Crops.Values.ToList(),
+                _ => throw new KeyNotFoundException()
+            };
 
             //if there's no furniture, return null
             if (list is null)
@@ -310,6 +334,80 @@ namespace FarmVisitors
             {
                 //templist.Add(f.DisplayName);
                 templist.Add($"\"{f.DisplayName.ToLower()}\"");
+            }
+            return templist;
+        }
+        
+        /// <summary>
+        /// Gets the index and name of all crop types in Farm.
+        /// </summary>
+        /// <returns></returns>
+        internal static Dictionary<int, string> GetCrops()
+        {
+            try
+            {
+                Dictionary<int, string> CropData = Game1.content.Load<Dictionary<int, string>>("Data/Crops");
+                Dictionary<int, string> ObjData = Game1.content.Load<Dictionary<int, string>>("Data/ObjectInformation");
+
+                Dictionary<int, string> tempdict = new();
+                var farm = Game1.getFarm();
+
+                foreach (TerrainFeature value in farm.terrainFeatures.Values)
+                {
+                    bool isDirt = value is HoeDirt;
+                    if (!isDirt) //if not dirt
+                        continue;
+
+                    var crop = (value as HoeDirt).crop;
+
+                    if (crop != null && !(crop.dead.Value))
+                    {
+                        int index = crop.rowInSpriteSheet.Value != Crop.rowOfWildSeeds ? crop.netSeedIndex.Value : crop.whichForageCrop.Value;
+
+                        if (tempdict.ContainsKey(index))
+                            continue;
+
+                        string info = null;
+                        CropData?.TryGetValue(index, out info);
+                        if (info == null)
+                        {
+                            if (ModEntry.Debug)
+                            {
+                                ModEntry.Log($"Key {index} not found in CropData.", lv.Warn);
+                            }
+                            continue;
+
+                        }
+                        var objInd = SpanSplit.GetNthChunk(info, new char['/'], 4).ToString();
+
+                        ObjData.TryGetValue(int.Parse(objInd), out string objInfo);
+                        var name = SpanSplit.GetNthChunk(objInfo, new char['/'], 5).ToString();
+
+                        //tempdict.Add(index, $"\"{name}\"");
+                        tempdict.Add(index, $"{name}");
+                    }
+                }
+                return tempdict;
+            }
+            catch(Exception ex)
+            {
+                ModEntry.Log($"Error while getting crops: {ex}", lv.Error);
+                return null;
+            }
+        }
+        
+        /// <summary>
+        /// Returns name of all animals.
+        /// </summary>
+        /// <returns></returns>
+        internal static List<string> GetAnimals()
+        {
+            var all = Game1.getFarm().getAllFarmAnimals();
+
+            List<string> templist = new();
+            foreach (FarmAnimal animal in all)
+            {
+                templist.Add($"\"{animal.Name}\"");
             }
             return templist;
         }

@@ -1,0 +1,137 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+[
+  {
+    "name": "Fresh Water",
+    "value": 8
+  },
+  {
+    "name": "Full Canteen",
+    "value": 20
+  },
+  {
+    "name": "Dirty Canteen",
+    "value": 20
+  },
+  {
+    "name": "Ice Water Canteen",
+    "value": 20,
+    "coolingModifier": 5
+  },
+  {
+    "name": "Ginger Ale",
+    "value": 12,
+    "coolingModifier": -2
+  },
+  {
+    "name": "Fish Stew",
+    "value": 8
+  },
+  {
+    "name": "Artichoke Dip",
+    "value": 6
+  },
+  {
+    "name": "Chowder",
+    "value": 8
+  },
+  {
+    "name": "Lobster Bisque",
+    "value": 8
+  },
+  {
+    "name": "Rice Pudding",
+    "value": 8
+  },
+  {
+    "name": "Banana Pudding",
+    "value": 8
+  },
+  {
+    "name": "Pale Broth",
+    "value": 8
+  },
+  {
+    "name": "Parsnip Soup",
+    "value": 8
+  },
+  {
+    "name": "Pumpkin Soup",
+    "value": 8
+  },
+  {
+    "name": "Poi",
+    "value": 8
+  },
+  {
+    "name": "Trout Soup",
+    "value": 8
+  },
+  {
+    "name": "Large Milk",
+    "value": 12
+  },
+  {
+    "name": "Milk",
+    "value": 6
+  },
+  {
+    "name": "Large Goat Milk",
+    "value": 12
+  },
+  {
+    "name": "Goat Milk",
+    "value": 6
+  },
+  {
+    "name": "Triple Shot Espresso",
+    "value": 5
+  },
+  {
+    "name": "Coffee",
+    "value": 5
+  },
+  //PPJA Items
+  {
+    "name": "Algae Soup",
+    "value": 3,
+    "coolingModifier": 2
+  },
+  {
+    "name": "Basil Tomato Soup",
+    "value": 5
+  },
+  {
+    "name": "Bean Hotpot",
+    "value": 4,
+    "coolingModifier": -2
+  },
+  {
+    "name": "Beef Stock",
+    "value": 3
+  },
+  {
+    "name": "Broth",
+    "value": 3
+  },
+  {
+    "name": "Chicken Stock",
+    "value": 3
+  }
+  //{
+  //  "name": "Alexander Cocktail",
+  //  "value": 5
+  //},
+  //{
+  //  "name": "Americano",
+  //  "value": 5
+  //}
+]

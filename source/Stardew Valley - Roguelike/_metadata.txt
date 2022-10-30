@@ -6,9 +6,9 @@ mods:
    Stardew Valley - Roguelike
 
 latest commit:
-   commit 1ab9e14dc5092ab112af39266afd59c3932fe9c2
+   commit 915820ac0dbc0f6719157c4c33cea20f19425159
    Author: Tyler <gibbstyler7@gmail.com>
-   Date:   Sun Sep 11 02:11:06 2022 -0500
+   Date:   Mon Sep 12 16:02:15 2022 -0500
    
-       bump version
+       changes floors descended to be based on highest level mineshaft
    

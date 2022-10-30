@@ -8,6 +8,7 @@ mods:
    Advanced Loot Framework
    Advanced Melee Framework
    Advanced Menu Positioning
+   AFK Pause
    Animated Parrot and Perch
    Another Jump Mod
    April Bug Fix Suite
@@ -44,6 +45,7 @@ mods:
    Custom Spouse Patio Redux
    Custom Spouse Patio Wizard
    Custom Spouse Rooms
+   Custom Starter Package
    Custom Toolbar
    Custom Tree Tweaks
    Custom Wallpaper Framework
@@ -72,12 +74,16 @@ mods:
    Fruit Tree Tweaks
    Furniture Adjustment
    Furniture Display Framework
+   Furniture Placement Tweaks
    Furniture Recolor
    Gem Isles
+   Gift Rejection
    Groundhog Day
    Harvest Seeds
    Here Fishy
    Hugs and Kisses
+   In-Game SMAPI Log Uploader
+   Instant Building Construction and Upgrade
    Instant Growth Powder
    Krobus Roommate Shop
    Livestock Choices
@@ -105,6 +111,7 @@ mods:
    Non-Random Prairie King
    NPC Clothing Framework
    Object Import Map
+   OK Night Check
    Outfit Sets
    Overworld Chests
    Pacifist Valley
@@ -113,12 +120,14 @@ mods:
    Particle Effects
    Pelican xVASynth
    Persistent Grange Display
+   Personal Traveling Cart
    Pipe Irrigation
    Placeable Mine Shafts
    Planned Parenthood
    Plant and Fertilize All
    Planter Trees
    Play Prairie King With NPCs
+   Playground Mod
    Prismatic Fire
    Prismatic Furniture
    Quick Load
@@ -127,6 +136,7 @@ mods:
    Random NPCs
    Realistic Random Names
    Robin Work Hours
+   Secret Hedge Maze
    Seed Maker Tweaks
    Self Serve
    Show Players Behind Buildings
@@ -140,6 +150,7 @@ mods:
    Stardew RPG
    Submerged Crab Pots
    Swim
+   Take All
    Tappable Palm Trees
    Train Tracks
    Trampoline
@@ -156,13 +167,14 @@ mods:
    Wedding Tweaks
    Week Starts Sunday
    Wiki Links
+   Wild Flowers
    Witcher Mod
    Zombie Outbreak
 
 latest commit:
-   commit 9655ad0e3e07a5ca4713a62fbf66c13b46ef6f49
+   commit f034d28d4bd9908bc33d9883410a569a213eb0e5
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Wed Sep 28 20:12:15 2022 -0400
+   Date:   Sat Oct 29 12:30:55 2022 -0400
    
-       custom gift limits
+       etc
    

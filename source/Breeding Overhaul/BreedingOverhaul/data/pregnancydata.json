@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/StarAmy/BreedingOverhaul
+**
+*************************************************/
+
+{
+  "PreganancyItems": {
+    "Brown Cow": "Cow DNA",
+    "White Cow": "Cow DNA",
+    "Male Cow": "",
+    "Goat": "Goat DNA",
+    "Male Goat": "",
+    "Sheep": "Sheep DNA",
+    "Male Sheep": "",
+    "Rabbit": "Rabbit DNA",
+    "Male Rabbit": "",
+    "Pig": "Pig DNA",
+    "Male Pig": "",
+  },
+  "Offspring": {
+    "Brown Cow": [ "Brown Cow", "White Cow", "Male Cow" ],
+    "White Cow": [ "Brown Cow", "White Cow", "Male Cow" ],
+    "Goat": [ "Goat", "Male Goat" ],
+    "Sheep": ["Sheep", "Male Sheep"],
+    "Rabbit": ["Rabbit", "Male Rabbit"],
+    "Pig": ["Pig", "Male Pig"]
+  }
+}

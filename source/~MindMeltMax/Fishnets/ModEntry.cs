@@ -59,7 +59,12 @@ namespace Fishnets
             // to avoid Crashes / Broken objects
             foreach (var l in Game1.locations)
             {
-                if (l.Objects is null || l.Objects.Count() <= 0) continue;
+                if (l.Objects is null || l.Objects.Count() <= 0)
+                {
+                    if (l.modData.ContainsKey(ModDataKey))
+                        l.modData.Remove(ModDataKey);
+                    continue;
+                }
 
                 var fishNets = l.Objects.Values.Where(x => x is FishNet);
                 var serializable = new List<FishNet.FishNetSerializable>();
@@ -74,6 +79,7 @@ namespace Fishnets
                     string json = JsonConvert.SerializeObject(serializable);
                     l.modData[ModDataKey] = json;
                 }
+                else l.modData.Remove(ModDataKey);
 
                 foreach (var f in fishNets)
                     l.Objects.Remove(f.TileLocation);
@@ -104,6 +110,9 @@ namespace Fishnets
                         fishNet.heldObject.Value = new Object(f.ObjectId, 1);
                     if (!l.Objects.ContainsKey(f.Tile))
                         l.Objects.Add(f.Tile, fishNet);
+
+                    //If fishnet failed to update previously, try again
+                    fishNet.DayUpdate(l);
                 }
             }
         }
@@ -121,7 +130,7 @@ namespace Fishnets
                         FishNetId = data.Keys.Last() + 1;
                     }
                     data[FishNetId] = $"Fish Net/50/-300/Crafting/{i18n.Get("Name")}/{i18n.Get("Description")}";
-                }, AssetEditPriority.Late);
+                }, AssetEditPriority.Early);
             }
 
             if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
@@ -130,11 +139,23 @@ namespace Fishnets
                 {
                     var data = asset.AsDictionary<string, string>().Data;
                     data["Fish Net"] = $"335 3 771 30/Field/{FishNetId}/false/Fishing 6";
-                }, AssetEditPriority.Late);
+                }, AssetEditPriority.Early);
             }
 
             if (e.NameWithoutLocale.IsEquivalentTo("Maps/springobjects"))
             {
+                e.Edit(asset =>
+                {
+                    var img = asset.AsImage();
+                    var fishNetTexture = Helper.ModContent.Load<Texture2D>("assets/FishNet.png");
+                    int columnPosition = lastObjectId % 24;
+                    bool shouldExtend = columnPosition == 0;
+                    if (shouldExtend)
+                        img.ExtendImage(img.Data.Width, img.Data.Height + 16);
+                    fishNetTextureLocation ??= new(img.Data.Bounds.X + (16 * columnPosition) + 16, img.Data.Bounds.Y + img.Data.Height - 16, 16, 16);
+                    img.PatchImage(fishNetTexture, targetArea: fishNetTextureLocation);
+                }, AssetEditPriority.Early);
+
                 e.Edit(asset =>
                 {
                     var img = asset.AsImage();

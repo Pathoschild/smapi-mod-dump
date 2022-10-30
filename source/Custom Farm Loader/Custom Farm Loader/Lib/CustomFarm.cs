@@ -23,6 +23,7 @@ namespace Custom_Farm_Loader.Lib
 {
     public class CustomFarm
     {
+        private static bool LoadedCachedCustomFarms = false;
         public static List<CustomFarm> CachedCustomFarms = new List<CustomFarm>();
         public static List<ModFarmType> CachedModFarmTypes = new List<ModFarmType>();
 
@@ -33,6 +34,7 @@ namespace Custom_Farm_Loader.Lib
 
         private static readonly List<string> VanillaTypes = new List<string> { "Standard", "Riverland", "Forest", "Hills", "Wilderness", "Four Corners", "Beach" };
         private static CustomFarm CurrentCustomFarm = null;
+        private static string CurrentCustomFarmId = "";
 
         private bool IsCFLMap = false;
         private ModFarmType ModFarmType; //Only used for non CFL maps
@@ -335,11 +337,10 @@ namespace Custom_Farm_Loader.Lib
 
         public static CustomFarm getCurrentCustomFarm()
         {
-            if (Game1.whichFarm != 7)
-                return CurrentCustomFarm = null;
-
-            if (CurrentCustomFarm == null || CurrentCustomFarm.ID != Game1.whichModFarm.ID)
+            if (CurrentCustomFarmId != Game1.whichModFarm.ID) {
+                CurrentCustomFarmId = Game1.whichModFarm.ID;
                 CurrentCustomFarm = get(Game1.whichModFarm.ID);
+            }
 
             return CurrentCustomFarm;
         }
@@ -361,7 +362,7 @@ namespace Custom_Farm_Loader.Lib
 
         public static CustomFarm get(string id, bool isCFLMap = true)
         {
-            if (CachedCustomFarms.Count() == 0) getAll();
+            if (!LoadedCachedCustomFarms) getAll();
 
             IEnumerable<CustomFarm> maps = CachedCustomFarms.FindAll(el => el.ID == id && el.IsCFLMap == isCFLMap);
 
@@ -384,7 +385,6 @@ namespace Custom_Farm_Loader.Lib
             if (CachedCustomFarms.Count > 0)
                 return CachedCustomFarms;
 
-
             var mods = Helper.ModRegistry.GetAll();
 
             CachedCustomFarms = new List<CustomFarm>();
@@ -397,6 +397,7 @@ namespace Custom_Farm_Loader.Lib
             }
 
             CachedCustomFarms = CachedCustomFarms.OrderBy(o => o.Name).ToList();
+            LoadedCachedCustomFarms = true;
 
             return CachedCustomFarms;
         }

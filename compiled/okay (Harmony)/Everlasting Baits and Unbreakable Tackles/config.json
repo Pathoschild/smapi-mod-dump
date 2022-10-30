@@ -2,5 +2,7 @@
   "DisableIridiumQualityFish": false,
   "IridiumQualityFishOnlyWithWildBait": true,
   "IridiumQualityFishOnlyWithIridiumQualityBait": false,
-  "IridiumQualityFishMinimumSize": 0.95
+  "IridiumQualityFishMinimumSize": 0.95,
+  "DisableBaits": false,
+  "DisableTackles": false
 }

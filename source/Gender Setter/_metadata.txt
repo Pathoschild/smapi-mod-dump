@@ -1,14 +1,15 @@
 urls:
-   web: https://github.com/sqbr/StardewValleyMods
-   Git: https://github.com/sqbr/StardewValleyMods.git
+   web: https://github.com/sqbr/GetGS
+   Git: https://github.com/sqbr/GetGS.git
 
 mods:
    Gender Setter
 
 latest commit:
-   commit 72b7d86cb23f2c5b03a19850a955a778bf6a5c0d
-   Author: Sean <sqbr@users.noreply.github.com>
-   Date:   Wed Sep 14 15:41:02 2022 +0800
+   commit e4fc03dca4537f39408cde44fb1cdf59e8b3553e
+   Merge: c697829 02b9409
+   Author: sqbr <sqbr@users.noreply.github.com>
+   Date:   Sat Oct 15 17:13:10 2022 +0800
    
-       Add files via upload
+       Merge branch 'master' of https://github.com/sqbr/GetGS
    

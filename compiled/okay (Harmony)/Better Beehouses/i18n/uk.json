@@ -42,5 +42,15 @@
   "config.usableOptions.Anywhere": "Будь-де",
   "config.produceWhere.Never": "Ніде",
   "config.produceWhere.Indoors": "В приміщенні",
-  "config.produceWhere.Always": "Будь-де"
+  "config.produceWhere.Always": "Будь-де",
+  "config.useGiantCrops.name": "Використовувати гігантські врожаї",
+  "config.useGiantCrops.desc": "Якщо вулики повинні виявляти гігантські врожаї",
+  "config.useFruitTrees.name": "Використовувати дерева",
+  "config.useFruitTrees.desc": "Якщо вулики повинні виявляти плодоносні дерева",
+  "config.useFlowerBoost.name": "Прискорення квітками",
+  "config.useFlowerBoost.desc": "Чи має кількість меду збільшуватись від кількості квіток, що знаходяться поруч",
+  "config.flowersPerBoost.name": "Необхідні квіти",
+  "config.flowersPerBoost.desc": "Кількість квіток, необхідних для отримання кожного додаткового меду",
+  "config.useRandomFlower.name": "Використовувати випадковість",
+  "config.useRandomFlower.desc": "Вибирає випадкову квітку замість найближчої"
 }

@@ -28,8 +28,13 @@ public static class CraftingHelper {
 			return true;
 
 		foreach (var entry in ingredients)
-			if (entry.GetAvailableQuantity(who, items, inventories, maxQuality) < entry.Quantity)
-				return false;
+			if (entry is IOptimizedIngredient opti) {
+				if (!opti.HasAvailableQuantity(entry.Quantity, who, items, inventories, maxQuality))
+					return false;
+			} else {
+				if (entry.GetAvailableQuantity(who, items, inventories, maxQuality) < entry.Quantity)
+					return false;
+			}
 
 		return true;
 	}

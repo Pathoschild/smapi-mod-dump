@@ -1,0 +1,12 @@
+{
+  "ModEnabled": true,
+  "swingSpeed": 1.0,
+  "springSpeed": 1.0,
+  "slideSpeed": 1.0,
+  "climbSpeed": 1.0,
+  "swingBackSound": "doorCreakReverse",
+  "swingForthSound": "doorCreak",
+  "springSound": "dustMeep",
+  "slideSound": "shwip",
+  "climbSound": "stoneStep"
+}

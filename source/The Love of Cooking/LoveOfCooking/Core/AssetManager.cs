@@ -196,6 +196,11 @@ namespace LoveOfCooking
 			if (asset.DataType == typeof(Texture2D) && asset.AsImage().Data.IsDisposed)
 				return;
 
+			else if (asset.NameWithoutLocale.IsEquivalentTo(AssetManager.GameContentDefinitionsPath))
+			{
+				// Update cached mod definitions
+				ModEntry.Instance.States.Value.Regeneration.UpdateDefinitions();
+			}
 			else if (asset.NameWithoutLocale.IsEquivalentTo(@"Data/BigCraftablesInformation"))
 			{
 				AssetManager.EditBigCraftables(asset: asset);

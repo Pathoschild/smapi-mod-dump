@@ -6,9 +6,9 @@ mods:
    Better Beehouses
 
 latest commit:
-   commit c6621c44e76d73fe65af509d7e3767f5ab5d1b22
+   commit 2d8b3a30b5547e2720e43b4da251ef5535d4ce30
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Wed Sep 21 23:48:05 2022 -0400
+   Date:   Mon Oct 17 13:21:32 2022 -0400
    
-       work on extended scanning
+       bump manifest
    

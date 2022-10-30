@@ -14,7 +14,7 @@ namespace BedTweaks
     {
         public int GetBedWidth()
         {
-            return ModEntry.config.BedWidth;
+            return ModEntry.Config.BedWidth;
         }
     }
 }

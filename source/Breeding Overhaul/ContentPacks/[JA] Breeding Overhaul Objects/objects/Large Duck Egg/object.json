@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/StarAmy/BreedingOverhaul
+**
+*************************************************/
+
+{
+    "Name": "Large Duck Egg",
+    "Description": "An extra-large duck egg from a happy duck.",
+    "Category": "Egg",
+    "Edibility": 20,
+    "Price": 160,
+    "IsColored": false,
+    "GiftTastes":
+    {
+        "Like": ["Alex", "Demetrius", "Harvey", "Jodi", "Kent", "Leah", "Linus", "Marnie", "Pierre", "Sam", "Shane"],
+        "Neutral": ["Caroline", "Clint", "Elliot", "Emily", "Evelyn", "George", "Gus", "Krobus", "Lewis", "Maru", "Penny", "Robin", "Sandy", "Willy"],
+        "Dislike": ["Abigail", "Dwarf", "Haley", "Jas", "Pam", "Vincent", "Wizard"],
+        "Hate": ["Sebastian"]
+    },
+}

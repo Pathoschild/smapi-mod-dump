@@ -23,9 +23,7 @@ namespace HDPortraits.Patches
         [HarmonyPostfix]
         public static void Cleanup()
         {
-            foreach (var item in PortraitDrawPatch.lastLoaded.Value)
-                item?.Reload();
-            PortraitDrawPatch.lastLoaded.Value.Clear();
+            PortraitDrawPatch.currentMeta.Value?.Animation?.Reset();
         }
 
         public static void Init(DialogueBox __instance)
@@ -38,7 +36,7 @@ namespace HDPortraits.Patches
                 {
                     PortraitDrawPatch.lastLoaded.Value.Add(meta);
                     PortraitDrawPatch.currentMeta.Value = meta;
-                    meta.Reload();
+                    meta.Animation?.Reset();
                 } else
                 {
                     PortraitDrawPatch.currentMeta.Value = null;

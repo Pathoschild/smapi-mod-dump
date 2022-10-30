@@ -6,9 +6,9 @@ mods:
    Dynamic Crops
 
 latest commit:
-   commit a95df17197bdeba3d2aac4e802b32298b327a016
+   commit 17752451b2a813cc52f1fdc6dc2daa6bbf73d4dd
    Author: Brett Connolly <brett84c@gmail.com>
-   Date:   Wed Sep 28 17:20:57 2022 -0400
+   Date:   Sat Oct 8 09:18:33 2022 -0400
    
-       readded config menu class
+       updates to all mods
    

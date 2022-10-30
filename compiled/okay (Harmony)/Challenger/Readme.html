@@ -1,0 +1,604 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Slothsoft Challenger</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Slothsoft Challenger</h1>
+</header>
+<h1 id="challenger">Challenger</h1>
+<p><em>A Mod for <a href="https://www.stardewvalley.net/">Stardew
+Valley</a></em></p>
+<p><a href="LICENSE"><img
+src="https://img.shields.io/github/license/jenkinsci/java-client-api.svg?label=License"
+alt="MIT Licence" /></a></p>
+<ul>
+<li><strong>Author:</strong> <a href="mailto:s.schulz@slothsoft.de">Stef
+Schulz</a></li>
+<li><strong>Repository:</strong> <a
+href="https://github.com/slothsoft/stardew-challenger"
+class="uri">https://github.com/slothsoft/stardew-challenger</a></li>
+<li><strong>Open Issues:</strong> <a
+href="https://github.com/slothsoft/stardew-challenger/issues"
+class="uri">https://github.com/slothsoft/stardew-challenger/issues</a></li>
+</ul>
+<p>A mod that makes playing a challenge again. It allows you to select a
+challenge from a list, which restricts some parts of the game and lets
+you focus on another part.</p>
+<p><img alt="Screenshot" src="https://github.com/slothsoft/stardew-challenger/raw/main/readme/screenshot.png" width="300"/></p>
+<p><strong>Content of this ReadMe:</strong></p>
+<ul>
+<li><strong><a href="#user-manual">User Manual</a></strong>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#installing">Installing</a></li>
+<li><a href="#removing-the-mod">Removing the Mod</a></li>
+<li><a href="#using-the-mod">Using the Mod</a>
+<ul>
+<li><a href="#no-challenge">No Challenge</a></li>
+<li><a href="#brewery">Brewery</a></li>
+<li><a href="#hermit">Hermit</a></li>
+<li><a href="#no-capitalist">No Capitalist</a></li>
+<li><a href="#vineyard">Vineyard</a></li>
+</ul></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#versions">Versions</a></li>
+</ul></li>
+<li><strong><a href="#translator-guide">Translator
+Guide</a></strong></li>
+<li><strong><a href="#developer-notes">Developer Notes</a></strong></li>
+<li><strong><a href="#license">License</a></strong></li>
+</ul>
+<h2 id="user-manual">User Manual</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>You need <strong><a href="https://smapi.io/">SMAPI</a></strong> to
+run any kind of mods. And of course you need <strong><a
+href="https://www.stardewvalley.net/">Stardew Valley</a></strong>.</p>
+<h3 id="installing">Installing</h3>
+<ol type="1">
+<li>Install <a href="https://smapi.io/">SMAPI</a></li>
+<li>Unzip the latest <em><a
+href="https://github.com/slothsoft/stardew-challenger/releases/latest">Challenger.zip</a></em>
+to the <em>Mods/</em> folder</li>
+<li>If you want to use spacechase0’s <a
+href="https://www.nexusmods.com/stardewvalley/mods/5098">Generic Mod
+Config Menu</a>, this mod automatically hooks into its menu</li>
+<li>If you want to use Pathoschild’s <a
+href="https://www.nexusmods.com/stardewvalley/mods/1063">Automate</a>,
+unzip the <em><a
+href="https://github.com/slothsoft/stardew-challenger/releases/latest">ChallengerAutomate.zip</a></em>,
+too</li>
+</ol>
+<h3 id="removing-the-mod">Removing the Mod</h3>
+<p><img alt="Screenshot" align="right" src="https://github.com/slothsoft/stardew-challenger/raw/main/readme/screenshot_revert.png" width="100"></p>
+<ol type="1">
+<li>Just remove the <em>Challenger/</em> folder (and
+<em>ChallengerAutomate/</em> if you have it).</li>
+<li>If you have a <strong>Magical Challenge Object</strong>™ on your
+map, it should revert to a pink plush bunny</li>
+<li>If you experienced bugs with the mod, please take the time to <a
+href="https://github.com/slothsoft/stardew-challenger/issues">report
+them</a></li>
+</ol>
+<h3 id="using-the-mod">Using the Mod</h3>
+<p>The mod is automatically present in the game. You will get an mail
+with the <strong>Magical Challenge Object</strong>™ the next time you
+wake up.</p>
+<p><img alt="Screenshot Mail" src="https://github.com/slothsoft/stardew-challenger/raw/main/readme/screenshot_mail.png" width="300"/></p>
+<p>Using the attached object in its unmodified form will open the
+challenge menu. You can also open the menu using the key [K] (you can
+customize the key in either the mod’s config file or the <a
+href="https://www.nexusmods.com/stardewvalley/mods/5098">GenericModConfigMenu</a>).</p>
+<p><img alt="Screenshot Mail" src="https://github.com/slothsoft/stardew-challenger/raw/main/readme/screenshot_menu.png" width="300"/></p>
+<p>This will display all the restrictions you have to face - but you
+might get a little something extra to make the challenge possible. The
+<strong>Magical Challenge Object</strong>™ will turn into this
+“something extra” once you start the challenge and can be used as any
+other object of the kind it turns into.</p>
+<p>After the challenge was finished, nothing really happens. The
+restrictions stay in place, but at least you get a congratulatory mail.
+<a href="https://github.com/slothsoft/stardew-challenger/issues/76">The
+plan</a> is to get a reward in future versions.</p>
+<p>This mod brings the following challenges:</p>
+<ul>
+<li><a href="#no-challenge">No Challenge</a></li>
+<li><a href="#brewery">Brewery</a></li>
+<li><a href="#hermit">Hermit</a></li>
+<li><a href="#no-capitalist">No Capitalist</a></li>
+<li><a href="#vineyard">Vineyard</a></li>
+</ul>
+<h4 id="no-challenge">No Challenge</h4>
+<ul>
+<li>default value without any restrictions - for when you are sick and
+tired of following rules</li>
+</ul>
+<h4 id="brewery">Brewery</h4>
+<p><strong>Goal:</strong> To earn gold by selling beer [2.500.000 for
+easy, 5.000.000 for medium or 10.000.000 for hard]</p>
+<ul>
+<li>rice juice is renamed to rice beer</li>
+<li>only beers (including the new rice beer) count towards the goal</li>
+<li>you can only buy seeds for plants that make beer (which includes
+rice)</li>
+<li>you cannot build animal buildings, i.e. coop, barn and silo</li>
+<li>[easy and medium] you get a keg to start you off</li>
+</ul>
+<h4 id="hermit">Hermit</h4>
+<p><strong>Goal:</strong> [easy and medium] To finish the community
+center / [hard] To reach perfection</p>
+<ul>
+<li>You cannot leave the farm, except on Sundays</li>
+<li>[easy] you get a seed maker</li>
+</ul>
+<h4 id="no-capitalist">No Capitalist</h4>
+<p><strong>Goal:</strong> To finish the community center</p>
+<ul>
+<li>You cannot buy from Pierre or the Joja Mart</li>
+<li>[hard] You cannot buy from Clint either (upgrading tools and opening
+geodes at Clint’s is still possible though)</li>
+<li>[easy] You get a seed maker to tide you over your imminent lack of
+seeds</li>
+</ul>
+<h4 id="vineyard">Vineyard</h4>
+<p><strong>Goal:</strong> To earn gold by selling wine [2.500.000 for
+easy, 5.000.000 for medium or 10.000.000 for hard]</p>
+<ul>
+<li>rice juice is renamed to rice wine</li>
+<li>only wine and mead (and the new rice wine) count towards the
+goal</li>
+<li>you can only buy seeds for plants that make wine (which includes
+rice)</li>
+<li>you cannot build animal buildings, i.e. coop, barn and silo</li>
+<li>[easy and medium] you get a keg to start you off</li>
+</ul>
+<h3 id="faq">FAQ</h3>
+<h4 id="can-i-disable-pause-the-challenges">Can I disable / pause the
+challenges?</h4>
+<p>Yes, absolutely. You can just select “no challenge” in the challenge
+menu at any time to pause the challenge. So if not buying from Clint is
+no fun for you, you can just pause the challenge, buy, and then select
+the challenge again. Your progress might not get counted if the
+challenge is paused, but you’re not losing the current progress
+either.</p>
+<h4
+id="the-bunny-turned-into-a-seedmaker-and-now-i-cant-open-the-menu">The
+bunny turned into a Seedmaker and now I can’t open the menu?</h4>
+<p>You don’t need the bunny, you can also press [K] to open the same
+menu. Then when you select another challenge, the seedmaker will change
+into another object (or back to the bunny again).</p>
+<h4 id="does-the-mod-change-the-inventory-farm">Does the mod change the
+inventory / farm?</h4>
+<p>Your inventory and the farm will not be changed, only the
+<strong>Magical Challenge Object</strong>™ might change. This mod is
+only applied to current interactions.</p>
+<h4 id="can-you-start-challenges-mid-playthrough">Can you start
+challenges mid-playthrough?</h4>
+<p>You can start the challenges at any time, and you can even pause them
+(by selecting “no challenge” in the menu) whenever you feel like it.</p>
+<h3 id="configuration">Configuration</h3>
+<p>If you wish to configure this mod, it’s advised to install
+spacechase0’s <a
+href="https://www.nexusmods.com/stardewvalley/mods/5098">Generic Mod
+Config Menu</a>. Then there will be a config page.</p>
+<p><img alt="Screenshot" src="https://github.com/slothsoft/stardew-challenger/raw/main/readme/screenshot_config.png" width="300"/></p>
+<p>But if you wish to change the <em>config.json</em> file manually, you
+can also do that. The <em>config.json</em> with all entries is:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>     <span class="dt">&quot;ButtonOpenMenu&quot;</span><span class="fu">:</span> <span class="st">&quot;K&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 8%" />
+<col style="width: 10%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key in JSON</th>
+<th>Config Name</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ButtonOpenMenu</code></td>
+<td>Menu Button</td>
+<td>K</td>
+<td>The button to use when you want to open the menu to select the
+challenge or observe your progress</td>
+</tr>
+</tbody>
+</table>
+<h3 id="versions">Versions</h3>
+<table>
+<colgroup>
+<col style="width: 2%" />
+<col style="width: 25%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Version</th>
+<th>Issues</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Future</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/4">Issues</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>0.5.0</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/10?closed=1">Issues</a></td>
+<td>- add difficulty selection<br>- re-balancing of challenges using
+this difficulty feature<br>- basic multiplayer support (only the host
+can change the challenge, but all players (with this mod) contribute to
+it)<br>- various bugfixes</td>
+</tr>
+<tr class="odd">
+<td>0.4.3</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/9?closed=1">Issues</a></td>
+<td>Release blockers II</td>
+</tr>
+<tr class="even">
+<td>0.4.2</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/8?closed=1">Issues</a></td>
+<td>Release blockers</td>
+</tr>
+<tr class="odd">
+<td>0.4.1</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/7?closed=1">Issues</a></td>
+<td>2nd alpha test bugfixes</td>
+</tr>
+<tr class="even">
+<td>0.4.0</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/6?closed=1">Issues</a></td>
+<td>After play testing version 0.2.x and 0.3.x it turned out the
+challenges have some mayor flaws - so mod was revamped to make it
+playable</td>
+</tr>
+<tr class="odd">
+<td>0.3.1</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/3?closed=1">Issues</a></td>
+<td>Fix of the most glaring bugs</td>
+</tr>
+<tr class="even">
+<td>0.3.0</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/5?closed=1">Issues</a></td>
+<td>More challenges</td>
+</tr>
+<tr class="odd">
+<td>0.2.0</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/2?closed=1">Issues</a></td>
+<td>Alpha test</td>
+</tr>
+<tr class="even">
+<td>0.1.0</td>
+<td><a
+href="https://github.com/slothsoft/stardew-challenger/milestone/1?closed=1">Issues</a></td>
+<td>Proof of concept</td>
+</tr>
+</tbody>
+</table>
+<p><em>(All issues can be found <a
+href="https://github.com/slothsoft/stardew-challenger/issues">here</a>.)</em></p>
+<h2 id="translator-guide">Translator Guide</h2>
+<p>Right now, not all translations are provided. If you want to help,
+translate either file in the <em><a
+href="Challenger/i18n/">i18n/</a></em> and test it right in your Stardew
+Valley (the same folder exists in your <em>Mods/</em> folder). You can
+than provide it to me via <a
+href="https://github.com/slothsoft/stardew-challenger/fork">pull
+request</a> or <a href="mailto:s.schulz@slothsoft.de">email</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Language</th>
+<th>Translated?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>default</code></td>
+<td>English</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td><code>de</code></td>
+<td>German</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td><code>es</code></td>
+<td>Spanish</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>fr</code></td>
+<td>French</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>hu</code></td>
+<td>Hungarian</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>it</code></td>
+<td>Italian</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>ko</code></td>
+<td>Korean</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>pt</code></td>
+<td>Portugese</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>ru</code></td>
+<td>Russian</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>tr</code></td>
+<td>Turkish</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>zh</code></td>
+<td>Chinese</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="developer-notes">Developer Notes</h2>
+<p>Can be found <a href="https://github.com/slothsoft/stardew-challenger/blob/main/readme/dev-notes.md">here</a>.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License - see the <a
+href="LICENSE">MIT license</a> for details.</p>
+</body>
+</html>

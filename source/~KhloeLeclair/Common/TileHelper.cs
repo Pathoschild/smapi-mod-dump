@@ -21,8 +21,6 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-using SObject = StardewValley.Object;
-
 namespace Leclair.Stardew.Common;
 
 public static class TileHelper {

@@ -21,6 +21,10 @@ using static SpriteMaster.Runtime;
 namespace SpriteMaster;
 
 internal static partial class Debug {
+	private readonly record struct TraceOnceElement(string File, int Line);
+
+	private static readonly HashSet<TraceOnceElement> TraceOnceMap = new();
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), DebuggerStepThrough, DebuggerHidden]
 	internal static bool CheckLogLevel(LogLevel logLevel) => Config.Debug.Logging.LogLevel <= logLevel;
 
@@ -32,6 +36,20 @@ internal static partial class Debug {
 	}
 
 	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
+	internal static void TraceOnce(string message, bool format = true, [CallerMemberName] string caller = "", [CallerFilePath] string path = "", [CallerLineNumber] int line = 0) {
+		if (!CheckLogLevel(LogLevel.Trace))
+			return;
+
+		lock (TraceOnceMap) {
+			if (!TraceOnceMap.Add(new(path, line))) {
+				return;
+			}
+		}
+
+		DebugWriteStr($"{caller.Format(format)}{message}", LogLevel.Trace);
+	}
+
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace<T>(T exception, [CallerMemberName] string caller = "") where T : Exception {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
@@ -39,9 +57,37 @@ internal static partial class Debug {
 	}
 
 	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
+	internal static void TraceOnce<T>(T exception, [CallerMemberName] string caller = "", [CallerFilePath] string path = "", [CallerLineNumber] int line = 0) where T : Exception {
+		if (!CheckLogLevel(LogLevel.Trace))
+			return;
+
+		lock (TraceOnceMap) {
+			if (!TraceOnceMap.Add(new(path, line))) {
+				return;
+			}
+		}
+
+		TraceLn(ParseException(exception), caller: caller);
+	}
+
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace<T>(string message, T exception, [CallerMemberName] string caller = "") where T : Exception {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
+		TraceLn($"{message}\n{ParseException(exception)}", caller: caller);
+	}
+
+	[Conditional("DEBUG"), Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
+	internal static void TraceOnce<T>(string message, T exception, [CallerMemberName] string caller = "", [CallerFilePath] string path = "", [CallerLineNumber] int line = 0) where T : Exception {
+		if (!CheckLogLevel(LogLevel.Trace))
+			return;
+
+		lock (TraceOnceMap) {
+			if (!TraceOnceMap.Add(new(path, line))) {
+				return;
+			}
+		}
+
 		TraceLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 

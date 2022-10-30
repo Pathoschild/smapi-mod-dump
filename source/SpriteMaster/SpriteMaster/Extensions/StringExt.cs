@@ -11,6 +11,7 @@
 using Pastel;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
@@ -32,6 +33,16 @@ internal static class StringExt {
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool IsWhiteBlank([NotNullWhen(false)] this string? str) => string.IsNullOrEmpty(str?.Trim());
+
+	internal static string CapitalizeFirstLetter(this string str) {
+		if (str.Length == 0 || char.IsUpper(str[0])) {
+			return str;
+		}
+
+		var charSpan = new char[1] { char.ToUpperInvariant(str[0]) }.AsReadOnlySpan();
+
+		return string.Concat(charSpan, str.AsSpan(1));
+	}
 
 	internal static string Reverse(this string str) {
 		str.AssertNotNull();

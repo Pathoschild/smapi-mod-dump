@@ -24,6 +24,11 @@ internal static class Textures {
 	private static readonly Type? AnimatedTexture2DType = ReflectionExt.GetTypeExt("PyTK.Types.AnimatedTexture2D");
 	private static readonly Type? ScaledTexture2DType = ReflectionExt.GetTypeExt("PyTK.Types.ScaledTexture2D");
 
+	private static readonly Type? PortraitureTextureLoaderType = ReflectionExt.GetTypeExt("Portraiture.TextureLoader");
+
+	private static readonly Func<Dictionary<string, XTexture2D>>? PortraitureTextureList =
+		PortraitureTextureLoaderType?.GetFieldGetter<Dictionary<string, XTexture2D>>("pTextures");
+
 	private static readonly bool IsAnimatedTextureDerivedFromScaledTexture =
 		AnimatedTexture2DType?.IsAssignableTo(ScaledTexture2DType) ?? false;
 
@@ -202,6 +207,16 @@ internal static class Textures {
 
 		bool lastIsManaged;
 
+		var startTexture = texture;
+
+		{
+			if (string.IsNullOrEmpty(texture.Name) && PortraitureTextureList?.Invoke() is { } textureList) {
+				if (textureList.FirstOrDefault(pair => pair.Value == texture) is { } texturePair) {
+					texture.Name = texturePair.Key;
+				}
+			}
+		}
+
 		while (texture.ParseTexture(out lastIsManaged) is {} parsedTexture) {
 			if (!seenSet.Value.Add(parsedTexture)) {
 				break;
@@ -211,6 +226,15 @@ internal static class Textures {
 		}
 
 		isManaged = wasManaged || lastIsManaged;
+
+		{
+			if (startTexture != texture && string.IsNullOrEmpty(texture.Name) &&
+					PortraitureTextureList?.Invoke() is { } textureList) {
+				if (textureList.FirstOrDefault(pair => pair.Value == texture) is { } texturePair) {
+					texture.Name = texturePair.Key;
+				}
+			}
+		}
 
 		return texture;
 	}

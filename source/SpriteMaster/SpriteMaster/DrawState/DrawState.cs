@@ -21,6 +21,7 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using xTile.Display;
 
 namespace SpriteMaster;
 
@@ -209,21 +210,33 @@ internal static partial class DrawState {
 	}
 
 	private static readonly WeakReference<xTile.Display.IDisplayDevice> LastMitigatedDevice = new(null!);
+	private static readonly Type? PyDisplayDeviceType = ReflectionExt.GetTypeExt(@"PyTK.Types.PyDisplayDevice");
+	private static readonly Action<IDisplayDevice, bool>? AdjustOriginSetter = PyDisplayDeviceType?.GetFieldSetter<IDisplayDevice, bool>("adjustOrigin");
+
+	private static readonly Predicate<IDisplayDevice>? IsPyDisplayDevice =
+		PyDisplayDeviceType?.GetIsDelegate<IDisplayDevice>();
+
 	// ReSharper disable once InconsistentNaming
 	private static void DisablePyTKMitigation() {
 		if (!Config.Extras.ModPatches.DisablePyTKMitigation) {
 			return;
 		}
-		if (LastMitigatedDevice.TryGetTarget(out var lastDevice) && lastDevice == Game1.mapDisplayDevice) {
+
+		if (IsPyDisplayDevice is not { } isPyDisplayDevice || AdjustOriginSetter is not { } adjustOriginSetter) {
 			return;
 		}
 
-		if (Game1.mapDisplayDevice is null || !Game1.mapDisplayDevice.GetType().Name.Contains("PyDisplayDevice")) {
+		var mapDisplayDevice = Game1.mapDisplayDevice;
+
+		if (LastMitigatedDevice.TryGetTarget(out var lastDevice) && lastDevice == mapDisplayDevice) {
 			return;
 		}
 
-		var adjustOriginField = Game1.mapDisplayDevice.GetType().GetField("adjustOrigin", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
-		adjustOriginField?.SetValue(Game1.mapDisplayDevice, false);
+		if (!isPyDisplayDevice(mapDisplayDevice)) {
+			return;
+		}
+
+		adjustOriginSetter(mapDisplayDevice, false);
 
 		LastMitigatedDevice.SetTarget(Game1.mapDisplayDevice);
 	}

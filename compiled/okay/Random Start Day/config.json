@@ -7,6 +7,7 @@
     "winter"
   ],
   "avoidFestivalDay": false,
-  "useSeasonalTilesetInBusScene": true,
+  "alwaysStartAt1st": false,
+  "useSeasonalSeeds": true,
   "useWinter28toYear1": true
 }

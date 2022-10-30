@@ -43,5 +43,6 @@
   "TimeNSeasonKey": "Q",
   "VerboseCoordinates": true,
   "SnapMouse": true,
-  "Warning": true
+  "Warning": true,
+  "TTS": true
 }

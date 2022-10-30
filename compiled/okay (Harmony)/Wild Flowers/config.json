@@ -1,0 +1,8 @@
+{
+  "$id": "1",
+  "ModEnabled": true,
+  "WildFlowersMakeFlowerHoney": true,
+  "WeaponsHarvestFlowers": false,
+  "wildflowerGrowChance": 0.005,
+  "DisallowNames": []
+}

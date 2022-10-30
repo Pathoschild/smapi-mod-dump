@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+  "Name": "Regular Medkit",
+  "Description": "First-aid items packed neatly into this kit. Would be really useful for prolonged adventure",
+  "Category": "ArtisanGoods",
+  "Edibility": 1,
+  "EdibleIsDrink": false,
+  "Price": 100,
+  "IsColored": false,
+  "Recipe": null,
+  "PurchaseFrom": "Harvey",
+  "PurchasePrice": 600,
+  "CanPurchase": true
+}

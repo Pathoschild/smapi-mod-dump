@@ -38,15 +38,7 @@ namespace UIInfoSuite2.UIElements
                 Game1.mouseCursors,
                 new Rectangle(331, 374, 15, 14),
                 Game1.pixelZoom);
-        private readonly ClickableTextureComponent _museumIcon =
-            new(
-                "",
-                new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
-                "",
-                Game1.content.LoadString("Strings\\Locations:ArchaeologyHouse_Gunther_Donate", new object[0]),
-                Game1.getCharacterFromName("Gunther").Sprite.Texture,
-                Game1.getCharacterFromName("Gunther").GetHeadShot(),
-                Game1.pixelZoom);
+        private readonly ClickableTextureComponent _museumIcon;
         private readonly ClickableTextureComponent _shippingBottomIcon =
             new(
                 "",
@@ -77,6 +69,25 @@ namespace UIInfoSuite2.UIElements
         public ShowItemHoverInformation(IModHelper helper)
         {
             _helper = helper;
+
+            var gunther = Game1.getCharacterFromName("Gunther");
+            if (gunther == null) {
+                ModEntry.MonitorObject.Log($"{this.GetType().Name}: Could not find Gunther in the game, creating a fake one for ourselves.", LogLevel.Warn);
+                gunther = new NPC() {
+                    Name = "Gunther",
+                    Age = 0,
+                    Sprite = new AnimatedSprite("Characters\\Gunther"),
+                };
+            }
+
+            _museumIcon = new(
+                "",
+                new Rectangle(0, 0, Game1.tileSize, Game1.tileSize),
+                "",
+                Game1.content.LoadString("Strings\\Locations:ArchaeologyHouse_Gunther_Donate", new object[0]),
+                gunther.Sprite.Texture,
+                gunther.GetHeadShot(),
+                Game1.pixelZoom);
         }
 
         public void ToggleOption(bool showItemHoverInformation)
@@ -235,9 +246,9 @@ namespace UIInfoSuite2.UIElements
         private void DrawAdvancedTooltip()
         {
 
-            if (_hoverItem.Value != null &&
-                _hoverItem.Value.Name != "Scythe" &&
-              !(_hoverItem.Value is StardewValley.Tools.FishingRod))
+            if (_hoverItem.Value != null
+                && !(_hoverItem.Value is StardewValley.Tools.MeleeWeapon weapon && weapon.isScythe())
+                && !(_hoverItem.Value is StardewValley.Tools.FishingRod))
             {
                 int itemPrice = 0;
                 int stackPrice = 0;
@@ -304,18 +315,18 @@ namespace UIInfoSuite2.UIElements
                     windowHeight += 40;
 
                 int windowY = Game1.getMouseY() + 20;
-                windowY = Game1.viewport.Height - windowHeight - windowY < 0 ? Game1.viewport.Height - windowHeight : windowY;
+                int windowX = Game1.getMouseX() - 25 - windowWidth;
 
-                int windowX = Game1.getMouseX() - windowWidth - 25;
+                // Adjust the tooltip's position when it overflows
+                var safeArea = Utility.getSafeArea();
 
-                if (Game1.getMouseX() > Game1.viewport.Width - 300)
-                {
-                    windowX = Game1.viewport.Width - windowWidth - 350;
-                }
-                else if (windowX < 0)
-                {
+                if (windowY + windowHeight > safeArea.Bottom)
+                    windowY = safeArea.Bottom - windowHeight;
+
+                if (Game1.getMouseX() + 300 > safeArea.Right)
+                    windowX = safeArea.Right - 350 - windowWidth;
+                else if (windowX < safeArea.Left)
                     windowX = Game1.getMouseX() + 350;
-                }
 
                 Vector2 windowPos = new Vector2(windowX, windowY);
                 Vector2 currentDrawPos = new Vector2(windowPos.X + 30, windowPos.Y + 40);

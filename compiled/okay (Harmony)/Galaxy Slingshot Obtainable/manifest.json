@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Galaxy Slingshot Obtainable",
+  "Author": "Adham084",
+  "Version": "1.0.0",
+  "Description": "Makes Galaxy Slingshot obtainable from the adventurer's guild.",
+  "UniqueID": "adham084.galaxyslingshot",
+  "EntryDll": "GalaxySlingshot.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:14115" ]
+}

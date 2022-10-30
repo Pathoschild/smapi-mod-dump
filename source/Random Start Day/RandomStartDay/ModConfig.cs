@@ -20,17 +20,19 @@ class ModConfig
     // reset other randomize options only when isRandomSeedUsed is TRUE
     public string[] allowedSeasons { get; set; }
     public bool avoidFestivalDay { get; set; }
+    public bool alwaysStartAt1st { get; set; }
 
-
-    public bool useSeasonalTilesetInBusScene { get; set; }
+    public bool useSeasonalSeeds { get; set; }
     public bool useWinter28toYear1 { get; set; }
+
     public ModConfig()
     {
         this.isRandomSeedUsed = true;
         this.allowedSeasons = new string[] { "spring", "summer", "fall", "winter" };
         this.avoidFestivalDay = false;
+        this.alwaysStartAt1st = false;
 
-        this.useSeasonalTilesetInBusScene = true;
+        this.useSeasonalSeeds = true;
         this.useWinter28toYear1 = true;
     }
 }

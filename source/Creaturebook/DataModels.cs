@@ -11,6 +11,8 @@
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using Microsoft.Xna.Framework;
+
 namespace Creaturebook
 {
     public class ModConfig
@@ -19,44 +21,81 @@ namespace Creaturebook
         public bool ShowDiscoveryDates { get; set; } = true;
         public KeybindList OpenMenuKeybind { get; set; } = KeybindList.Parse("LeftControl + LeftShift + B");
         public string WayToGetNotebook { get; set; } = "Letter";
+        public bool EnableStickies { get; set; } = true;
     }
     public class ModData
     {
         public IDictionary<string, SDate> DiscoveryDates { get; set; } = new Dictionary<string, SDate>();
         public bool IsNotebookObtained { get; set; } = false;
     }
-    public class Chapter
+    public struct Chapter
     {
-        public int CreatureAmount { get; set; }
-        public string ChapterTitle { get; set; }
-        public string ChapterFolder { get; set; }
-        public string CreatureNamePrefix { get; set; }
-        public string Author { get; set; } = "Example Author name for Header Page";
-        public bool EnableSets { get; set; } = false;
-        public IDictionary<string, string> setsAndIDs { get; set;} = new Dictionary<string, string>();
+        public enum Categories
+        {
+            Animals,
+            Plants,
+            Monsters,
+            Magical,
+            Other
+        }
+        public string Title;
+
+        public string Folder;
+
+        public string CreatureNamePrefix;
+
+        public Categories Category;
+
+        public IContentPack FromContentPack;
+
+        public List<Creature> Creatures;
+
+        public List<Set> Sets;
+
+        public string Author;
+
+        public bool EnableSets;
     }
-    public class Creature
+    public struct Set
     {
-        public int ID { get; set; }
-        public int OffsetX { get; set; } = 0;
-        public int OffsetX_2 { get; set; } = 0;
-        public int OffsetX_3 { get; set; } = 0;
-        public int OffsetY { get; set; } = 0;
-        public int OffsetY_2 { get; set; } = 0;
-        public int OffsetY_3 { get; set; } = 0;
-        public string Desc { get; set; } = "";
-        public string Name { get; set; }
-        public string Prefix { get; set; }
-        public string ScientificName { get; set; } = null;
-        public string OverrideDefaultNaming { get; set; } = "";
-        public string directory { get; set; }
-        public string BelongsToSet { get; set; } = "Other";
-        public bool HasExtraImages { get; set; } = false;
-        public bool HasScientificName { get; set; } = false;
-        public bool HasFunFact { get; set; } = true;
-        public float Scale_1 { get; set; } = 1f;
-        public float Scale_2 { get; set; } = 1f;
-        public float Scale_3 { get; set; } = 1f;
-        public IContentPack FromContentPack { get; set; }
+        public string InternalName;
+
+        public string DisplayNameKey;
+
+        public int[] CreaturesBelongingToThisSet;
+
+        public int DiscoverWithThisItem;
+
+        public Vector2[] OffsetsInMenu;
+
+        public float[] ScalesInMenu;
+
+        public bool NeedsSecondPage;
+    }
+    public struct Creature
+    {
+        public int ID;
+        
+        public string Name;
+        
+        public string ScientificName;
+
+        public Vector2[] ImageOffsets;
+
+        public float[] ImageScales;
+
+        public int UseThisItem;
+
+        public string Desc;
+
+        public string[] OverrideDefaultNaming;
+
+        public string Directory;
+
+        public bool HasExtraImages;
+
+        public bool HasScientificName;
+
+        public bool HasFunFact;
     }
 }

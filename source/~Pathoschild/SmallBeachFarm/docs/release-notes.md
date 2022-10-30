@@ -10,6 +10,12 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Updated integration with Generic Mod Config Menu.
+* Improved translations. Thanks to watchakorn-18k (updated Thai)!
+
+## 2.4.3
+Released 10 October 2022 for SMAPI 3.14.0 or later.
+
 * You can now walk over the campfire wood pile.
 * You can now till the stone above the campfire.
 

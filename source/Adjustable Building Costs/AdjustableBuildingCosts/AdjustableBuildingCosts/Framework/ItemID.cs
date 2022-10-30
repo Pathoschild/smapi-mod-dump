@@ -29,6 +29,15 @@ namespace AdjustableBuildingCosts.Framework
         GOLD_BAR = 336,
         IRIDIUM_BAR = 337,
         REFINED_QUARTZ = 338,
-        CLOTH = 428
+        CLOTH = 428,
+        FIBER = 771,
+        STARFRUIT = 268,
+        EARTH_CRYSTAL = 86,
+        COCONUT = 88,
+        CACTUS_FRUIT = 90,
+        BANANA = 91,
+        DRAGON_TOOTH = 852,
+        CLAM = 372,
+        CORAL = 393
     }
 }

@@ -36,12 +36,38 @@ internal static partial class OnDrawImpl {
 
 	// Odds are high that we will run into the same textures/sprites being drawn one after another.
 	// Thus, if we cache the last one, we will more-often-than-not likely be able to avoid a lot of work.
-	private static (XTexture2D? Reference, uint ExpectedScale, Bounds? Source, Bounds UpdatedSource) LastDrawParams = new(null, 0, null, new());
-	private static ManagedSpriteInstance? LastDrawSpriteInstance = null;
+	private static readonly CachedDrawParams LastDrawParams = new();
+
+	private sealed class CachedDrawParams {
+		private readonly ComparableWeakReference<XTexture2D?> WeakReference = new(null!);
+		private readonly WeakReference<ManagedSpriteInstance?> WeakInstance = new(null!);
+
+		internal ManagedSpriteInstance? Instance {
+			get => WeakInstance.TryGetTarget(out var target) ? target : null;
+			set => WeakInstance.SetTarget(value);
+		}
+
+		internal XTexture2D? Reference {
+			get => WeakReference.Target;
+			set => WeakReference.Target = value;
+		}
+		internal uint ExpectedScale = 0;
+		internal Bounds? Source = null;
+		internal Bounds UpdatedSource = default;
+
+		internal void Reset() {
+			WeakReference.SetTarget(null);
+			ExpectedScale = 0;
+			Source = null;
+			UpdatedSource = default;
+		}
+	}
 
 	internal static void ResetLastDrawCache() {
-		LastDrawParams = new(null, 0, null, new());
-		LastDrawSpriteInstance = null;
+		var lastDrawParams = LastDrawParams;
+		lock (lastDrawParams) {
+			lastDrawParams.Reset();
+		}
 	}
 
 	private static bool FetchScaledTexture(
@@ -56,35 +82,42 @@ internal static partial class OnDrawImpl {
 			return false;
 		}
 
-		if (
-			LastDrawSpriteInstance is not null &&
-			LastDrawSpriteInstance.IsReady && !LastDrawSpriteInstance.IsDisposed && !LastDrawSpriteInstance.Suspended &&
-			LastDrawParams.Reference == reference &&
-			LastDrawParams.ExpectedScale == expectedScale &&
-			LastDrawParams.Source == source
-		) {
-			source = LastDrawParams.UpdatedSource;
-			spriteInstance = LastDrawSpriteInstance;
-			return true;
-		}
+		var lastDrawParams = LastDrawParams;
 
-		var originalSource = source;
-		var invert = source.Invert;
-		spriteInstance = reference.FetchScaledTexture(
-			expectedScale: expectedScale,
-			source: ref source,
-			allowCache: out bool allowCache,
-			create: create
-		);
-		source.Invert = invert;
-
-		if (spriteInstance is not null) {
-			if (allowCache) {
-				LastDrawParams = new(reference, expectedScale, originalSource, source);
-				LastDrawSpriteInstance = spriteInstance;
+		lock (lastDrawParams) {
+			if (
+				lastDrawParams.Instance is { } lastDrawInstance &&
+				lastDrawInstance.IsReady && !lastDrawInstance.IsDisposed && !lastDrawInstance.Suspended &&
+				lastDrawParams.Reference == reference &&
+				lastDrawParams.ExpectedScale == expectedScale &&
+				lastDrawParams.Source == source
+			) {
+				source = lastDrawParams.UpdatedSource;
+				spriteInstance = lastDrawInstance;
+				return true;
 			}
 
-			return true;
+			var originalSource = source;
+			var invert = source.Invert;
+			spriteInstance = reference.FetchScaledTexture(
+				expectedScale: expectedScale,
+				source: ref source,
+				allowCache: out bool allowCache,
+				create: create
+			);
+			source.Invert = invert;
+
+			if (spriteInstance is not null) {
+				if (allowCache) {
+					lastDrawParams.Reference = reference;
+					lastDrawParams.ExpectedScale = expectedScale;
+					lastDrawParams.Source = originalSource;
+					lastDrawParams.UpdatedSource = source;
+					lastDrawParams.Instance = spriteInstance;
+				}
+
+				return true;
+			}
 		}
 
 		return false;

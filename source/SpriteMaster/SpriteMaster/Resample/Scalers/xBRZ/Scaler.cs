@@ -150,7 +150,7 @@ internal sealed partial class Scaler : AbstractScaler<Config, Scaler.ValueScale>
 	//detect blend direction
 	[Pure]
 	private BlendResult PreProcessCorners(in Kernel4X4 ker) {
-		var result = new BlendResult();
+		BlendResult result = default;
 
 		if (ker.F == ker.G && ker.J == ker.K || ker.F == ker.J && ker.G == ker.K) {
 			return result;
@@ -189,6 +189,80 @@ internal sealed partial class Scaler : AbstractScaler<Config, Scaler.ValueScale>
 				result.G = dominantGradient;
 			}
 		}
+
+		/*
+		const uint testComp = 16_386u;
+
+		var fb = comparer.ColorDistance(ker.F, ker.B);
+		var fe = comparer.ColorDistance(ker.F, ker.E);
+		var fj = comparer.ColorDistance(ker.F, ker.J);
+		var fg = comparer.ColorDistance(ker.F, ker.G);
+		*/
+
+		/*
+		 * 			---------
+						| F | G | //evaluate corner between F, G, J, K
+						----|---| //current input pixel is at position F
+						| J | K |
+						---------
+		 */
+
+		/*
+		uint testEdges = 0;
+		if (fb < testComp && fe < testComp) {
+			if (comparer.ColorDistance(ker.F, ker.A) >= testComp) {
+				result.F = BlendType.None;
+			}
+		}
+
+		if (fb < testComp && fg < testComp) {
+			if (comparer.ColorDistance(ker.F, ker.C) >= testComp) {
+				result.G = BlendType.None;
+			}
+		}
+		if (fj < testComp && fe < testComp) {
+			if (comparer.ColorDistance(ker.F, ker.I) >= testComp) {
+				result.J = BlendType.None;
+			}
+		}
+		if (fj < testComp && fg < testComp) {
+			if (comparer.ColorDistance(ker.F, ker.K) >= testComp) {
+				result.K = BlendType.None;
+			}
+		}*/
+
+		/*
+		var kernel = new Color16[4,4] {
+			{
+				ker.A, ker.B, ker.C, ker.D
+			},
+			{
+				ker.E, ker.F, ker.G, ker.H
+			},
+			{
+				ker.I, ker.J, ker.K, ker.L
+			},
+			{
+				ker.M, ker.N, ker.O, ker.P
+			}
+		};
+
+		unsafe bool HasSolidEdge(int x, int y) {
+			var reference = kernel[x, y];
+			var comps = stackalloc uint[8] {
+				comparer.ColorDistance(reference, kernel[x - 1, y - 1]),
+				comparer.ColorDistance(reference, kernel[x    , y - 1]),
+				comparer.ColorDistance(reference, kernel[x + 1, y - 1]),
+
+				comparer.ColorDistance(reference, kernel[x - 1, y    ]),
+				comparer.ColorDistance(reference, kernel[x + 1, y    ]),
+
+				comparer.ColorDistance(reference, kernel[x - 1, y + 1]),
+				comparer.ColorDistance(reference, kernel[x    , y + 1]),
+				comparer.ColorDistance(reference, kernel[x + 1, y + 1])
+			};
+		}
+		*/
 
 		return result;
 	}

@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
+using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,10 +49,10 @@ namespace Fishnets
             if (locationKey == "BeachNightMarket")
                 locationKey = "Beach";
 
-            GameLocation location = Game1.getLocationFromName(locationKey);
-
             if (locationData.ContainsKey(locationKey))
             {
+                GameLocation location = Game1.getLocationFromName(locationKey);
+
                 string[] arr1 = locationData[locationKey].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
                 if (flag2)
                 {
@@ -110,6 +111,32 @@ namespace Fishnets
             if (flag1)
                 obj.scale.X = 1f;
             return obj;
+        }
+
+        internal static bool CanCatchThisFish(int index, string locationName)
+        {
+            Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+
+            string locationKey = locationName;
+            if (locationKey == "BeachNightMarket")
+                locationKey = "Beach";
+
+            if (locationData.ContainsKey(locationKey))
+            {
+                GameLocation location = Game1.getLocationFromName(locationKey);
+
+                string[] arr1 = locationData[locationKey].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
+
+                Dictionary<string, string> data = new();
+                if (arr1.Length > 1)
+                    for (int i = 0; i < arr1.Length; i += 2)
+                        data[arr1[i]] = arr1[i + 1];
+                string[] keys = data.Keys.ToArray();
+
+                return keys.Any(x => x == $"{index}");
+            }
+
+            return false;
         }
     }
 }

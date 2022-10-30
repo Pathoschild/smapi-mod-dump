@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+  "Name": "Full Canteen",
+  "Description": "Bring it along with ya. You will need it when you're thirsty",
+  "Category": "ArtisanGoods",
+  "Edibility": 0,
+  "EdibleIsDrink": true,
+  "Price": 20,
+  "IsColored": false,
+  "Recipe": null
+}

@@ -171,7 +171,7 @@
 	"NPCGift.Lax5": "Gelirken sana bir şey getirdim.[{0}]", //rude2
 
 	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
-	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
+	 * FOR TRANSLATORS: "InLaw.<name>" is said by your in-laws when married to that NPC! e.g, If married to Alex, Evelyn and George will use "InLaw.Alex" dialogues towards you. Hope this clears any confusion!
      
      * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
 

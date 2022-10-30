@@ -10,10 +10,5 @@
 
 namespace HybridCropEngine.Framework
 {
-    internal class HybridCropData
-    {
-        public int BaseCropA;
-        public int BaseCropB;
-        public double Chance;
-    }
+    internal sealed record HybridCropData(int BaseCropA, int BaseCropB, double Chance);
 }

@@ -10,6 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using JsonAssets.Data;
 using JsonAssets.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -249,6 +252,11 @@ namespace JsonAssets
             return true;
         }
 
+        public bool TryGetGiantCropSprite(int productID, out Lazy<Texture2D> texture)
+            => CropData.giantCropMap.TryGetValue(productID, out texture);
+
+        public int[] GetGiantCropIndexes()
+            => CropData.giantCropMap.Keys.ToArray();
 
         /*********
         ** Internal methods

@@ -1,5 +1,12 @@
 {
   "SmartCursorHold": "LeftControl",
+  "TierOneRange": 1,
+  "TierTwoRange": 2,
+  "TierThreeRange": 3,
+  "TierFourRange": 4,
+  "TierFiveRange": 5,
+  "TierSixRange": 6,
+  "TierSevenRange": 7,
   "AllowTargetingBabyTrees": false,
   "AllowTargetingGiantCrops": false,
   "AllowTargetingTappedTrees": false

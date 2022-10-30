@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -174,9 +175,8 @@ namespace StardewRPG
 				{
 					if (exp < levels[i])
 					{
-						Farmer f = Game1.player;
+						Farmer f = (Farmer)AccessTools.Field(typeof(Game1), "_player").GetValue(null);
 						GainExperience(ref f, levels[i] - exp);
-						Game1.player = f;
 						SMonitor.Log($"Added {levels[i] - exp} exp");
 						break;
 					}

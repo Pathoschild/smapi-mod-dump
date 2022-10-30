@@ -9,6 +9,13 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.32.1
+Released 10 October 2022 for SMAPI 3.14.0 or later.
+
+* Added log messages to simplify troubleshooting when the menu doesn't open.
+* Fixed 'no friendship decay' sometimes not applied to the overnight friendship decay when you quit after saving.
+* Improved translations. Thanks to ellipszist (updated Thai)!
+
 ## 1.32.0
 Released 18 August 2022 for SMAPI 3.14.0 or later.
 

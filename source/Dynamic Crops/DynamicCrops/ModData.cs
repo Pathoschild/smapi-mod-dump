@@ -8,10 +8,7 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
 
 namespace DynamicCrops
 {
@@ -63,12 +60,7 @@ namespace DynamicCrops
         };
         //[0]English Name/[1]Sell Price (Seed Cost)/[2]Edibility/[3]Seed Category/[4]Display Name/[5]Description
         public Dictionary<string, string> ObjectData { get; set; } = new Dictionary<string, string>(){
-            { "16", "Wild Horseradish/50/5/Basic -81/Wild Horseradish/A spicy root found in the spring."},
-            { "18", "Daffodil/30/0/Basic -81/Daffodil/A traditional spring flower that makes a nice gift."},
-            { "20", "Leek/60/16/Basic -81/Leek/A tasty relative of the onion."},
-            { "22", "Dandelion/40/10/Basic -81/Dandelion/Not the prettiest flower, but the leaves make a good salad."},
             { "24", "Parsnip/2/10/Basic -75/Parsnip/A spring tuber closely related to the carrot. It has an earthy taste and is full of nutrients."},
-            { "78", "Cave Carrot/25/12/Basic -81/Cave Carrot/A starchy snack found in caves. It helps miners work longer."},
             { "88", "Coconut/100/-300/Basic -79/Coconut/A seed of the coconut palm. It has many culinary uses."},
             { "90", "Cactus Fruit/75/30/Basic -79/Cactus Fruit/The sweet fruit of the prickly pear cactus."},
             { "188", "Green Bean/40/10/Basic -75/Green Bean/A juicy little bean with a cool, crisp snap."},
@@ -79,9 +71,7 @@ namespace DynamicCrops
             { "252", "Rhubarb/220/-300/Basic -79/Rhubarb/The stalks are extremely tart, but make a great dessert when sweetened."},
             { "254", "Melon/250/45/Basic -79/Melon/A cool, sweet summer treat."},
             { "256", "Tomato/60/8/Basic -75/Tomato/Rich and slightly tangy, the Tomato has a wide variety of culinary uses."},
-            { "257", "Morel/150/8/Basic -81/Morel/Sought after for its unique nutty flavor."},
             { "258", "Blueberry/50/10/Basic -79/Blueberry/A popular berry reported to have many health benefits. The blue skin has the highest nutrient concentration."},
-            { "259", "Fiddlehead Fern/90/10/Basic -75/Fiddlehead Fern/The young shoots are an edible specialty."},
             { "260", "Hot Pepper/40/5/Basic -79/Hot Pepper/Fiery hot with a hint of sweetness."},
             { "262", "Wheat/25/-300/Basic -75/Wheat/One of the most widely cultivated grains. Makes a great flour for breads and cakes."},
             { "264", "Radish/90/18/Basic -75/Radish/A crisp and refreshing root vegetable with hints of pepper when eaten raw."},
@@ -95,35 +85,23 @@ namespace DynamicCrops
             { "276", "Pumpkin/320/-300/Basic -75/Pumpkin/A fall favorite, grown for its crunchy seeds and delicately flavored flesh. As a bonus, the hollow shell can be carved into a festive decoration."},
             { "278", "Bok Choy/80/10/Basic -75/Bok Choy/The leafy greens and fibrous stalks are healthy and delicious."},
             { "280", "Yam/160/18/Basic -75/Yam/A starchy tuber with a lot of culinary versatility."},
-            { "281", "Chanterelle/160/30/Basic -81/Chanterelle/A tasty mushroom with a fruity smell and slightly peppery flavor."},
             { "282", "Cranberries/75/15/Basic -79/Cranberries/These tart red berries are a traditional winter food."},
-            { "283", "Holly/80/-15/Basic -81/Holly/The leaves and bright red berries make a popular winter decoration."},
             { "284", "Beet/100/12/Basic -75/Beet/A sweet and earthy root vegatable. As a bonus, the leaves make a great salad."},
-            { "296", "Salmonberry/5/10/Basic -79/Salmonberry/A spring-time berry with the flavor of the forest."},
             { "299", "Amaranth Seeds/35/-300/Seeds -74/Amaranth Seeds/Plant these in the fall. Takes 7 days to grow. Harvest with the scythe."},
             { "300", "Amaranth/150/20/Basic -75/Amaranth/A purple grain cultivated by an ancient civilization."},
             { "301", "Grape Starter/30/-300/Seeds -74/Grape Starter/Plant these in the fall. Takes 10 days to grow, but keeps producing after that. Grows on a trellis."},
             { "302", "Hops Starter/30/-300/Seeds -74/Hops Starter/Plant these in the summer. Takes 11 days to grow, but keeps producing after that. Grows on a trellis."},
+            { "303", "Pale Ale/300/20/Basic -26/Pale Ale/Drink in moderation./drink/0 0 0 0 0 0 0 0 0 0 0/0" },
             { "304", "Hops/25/18/Basic -75/Hops/A bitter, tangy flower used to flavor beer."},
+            { "340", "Honey/150/-300/Basic -26/Honey/It's a sweet syrup produced by bees." },
+            { "346", "Beer/200/20/Basic -26/Beer/Drink in moderation./drink/0 0 0 0 0 0 0 0 0 0 0/0" },
             { "347", "Rare Seed/200/-300/Seeds -74/Rare Seed/Sow in fall. Takes all season to grow."},
             { "376", "Poppy/140/18/Basic -80/Poppy/In addition to its colorful flower, the Poppy has culinary and medicinal uses."},
-            { "396", "Spice Berry/80/10/Basic -79/Spice Berry/It fills the air with a pungent aroma."},
+            { "395", "Coffee/150/1/Crafting/Coffee/It smells delicious. This is sure to give you a boost./drink/0 0 0 0 0 0 0 0 0 1 0/120" },
             { "398", "Grape/80/15/Basic -79/Grape/A sweet cluster of fruit."},
-            { "399", "Spring Onion/8/5/Basic -81/Spring Onion/These grow wild during the spring."},
             { "400", "Strawberry/120/20/Basic -79/Strawberry/A sweet, juicy favorite with an appealing red color."},
-            { "402", "Sweet Pea/50/0/Basic -80/Sweet Pea/A fragrant summer flower."},
-            { "404", "Common Mushroom/40/15/Basic -81/Common Mushroom/Slightly nutty, with good texture."},
-            { "406", "Wild Plum/80/10/Basic -79/Wild Plum/Tart and juicy with a pungent aroma."},
-            { "408", "Hazelnut/90/12/Basic -81/Hazelnut/That's one big hazelnut!"},
-            { "410", "Blackberry/20/10/Basic -79/Blackberry/An early-fall treat."},
-            { "412", "Winter Root/70/10/Basic -81/Winter Root/A starchy tuber."},
-            { "414", "Crystal Fruit/150/25/Basic -79/Crystal Fruit/A delicate fruit that pops up from the snow."},
-            { "416", "Snow Yam/100/12/Basic -81/Snow Yam/This little yam was hiding beneath the snow."},
             { "417", "Sweet Gem Berry/3000/-300/Basic -17/Sweet Gem Berry/It's by far the sweetest thing you've ever smelled." },
-            { "418", "Crocus/60/0/Basic -80/Crocus/A flower that can bloom in the winter."},
-            { "420", "Red Mushroom/75/-20/Basic -81/Red Mushroom/A spotted mushroom sometimes found in caves."},
             { "421", "Sunflower/80/18/Basic -80/Sunflower/A common misconception is that the flower turns so it's always facing the sun."},
-            { "422", "Purple Mushroom/250/50/Basic -81/Purple Mushroom/A rare mushroom found deep in caves."},
             { "425", "Fairy Seeds/100/-300/Seeds -74/Fairy Seeds/Plant in fall. Takes 12 days to produce a mysterious flower. Assorted Colors."},
             { "427", "Tulip Bulb/10/-300/Seeds -74/Tulip Bulb/Plant in spring. Takes 6 days to produce a colorful flower. Assorted colors."},
             { "429", "Jazz Seeds/15/-300/Seeds -74/Jazz Seeds/Plant in spring. Takes 7 days to produce a blue puffball flower."},
@@ -160,14 +138,8 @@ namespace DynamicCrops
             { "593", "Summer Spangle/90/18/Basic -80/Summer Spangle/A tropical bloom that thrives in the humid summer air. Has a sweet, tangy aroma."},
             { "595", "Fairy Rose/290/18/Basic -80/Fairy Rose/An old folk legend suggests that the sweet smell of this flower attracts fairies."},
             { "597", "Blue Jazz/50/18/Basic -80/Blue Jazz/The flower grows in a sphere to invite as many butterflies as possible."},
-            { "613", "Apple/100/15/Basic -79/Apple/A crisp fruit used for juice and cider."},
-            { "634", "Apricot/50/15/Basic -79/Apricot/A tender little fruit with a rock-hard pit."},
-            { "635", "Orange/100/15/Basic -79/Orange/Juicy, tangy, and bursting with sweet summer aroma."},
-            { "636", "Peach/140/15/Basic -79/Peach/It's almost fuzzy to the touch."},
-            { "637", "Pomegranate/140/15/Basic -79/Pomegranate/Within the fruit are clusters of juicy seeds."},
-            { "638", "Cherry/80/15/Basic -79/Cherry/It's popular, and ripens sooner than most other fruits."},
+            { "614", "Green Tea/100/5/Basic -26/Green Tea/A pleasant, energizing beverage made from lightly processed tea leaves./drink/0 0 0 0 0 0 0 30 0 0 0/360" },
             { "745", "Strawberry Seeds/0/-300/Seeds -74/Strawberry Seeds/Plant these in spring. Takes 8 days to mature, and keeps producing strawberries after that."},
-            { "770", "Mixed Seeds/0/-300/Seeds -74/Mixed Seeds/There's a little bit of everything here. Plant them and see what grows!"},
             { "802", "Cactus Seeds/0/-300/Seeds -74/Cactus Seeds/Can only be grown indoors. Takes 12 days to mature, and then produces fruit every 3 days."},
             { "815", "Tea Leaves/50/-300/Basic -75/Tea Leaves/The young leaves of the tea plant. Can be brewed into the popular, energizing beverage."},
             { "830", "Taro Root/100/15/Basic -75/Taro Root/This starchy root is one of the most ancient crops."},
@@ -181,306 +153,6 @@ namespace DynamicCrops
         //     // Display the number of command line arguments.
         //     ModData.initUtility();
         // }
-
-        public static ModData initUtility(ModConfig config)
-        {
-            var cropAndObjectData = new ModData();
-            var flowerSeedIndexes = new string[] { "425", "427", "429", "453", "455", "431" };
-            var seasonCrops = new Dictionary<string, List<string>>
-            {
-                { "spring", new List<string>() },
-                { "summer", new List<string>() },
-                { "fall", new List<string>() },
-                { "winter", new List<string>() }
-            };
-
-            //default values for crop growth ranges
-            var growthRangeShortMin = 5;
-            var growthRangeShortMax = 8;
-            var growthRangeMediumMin = 9;
-            var growthRangeMediumMax = 15;
-            var growthRangeLongMin = 16;
-            var growthRangeLongMax = 25;
-
-            //crop seed and price range gold per day multipliers
-            var regularSeedGPDMultiplierMin = 2;
-            var regularSeedGPDMultiplierMax = 5;
-            var regularCropGPDMultiplierMin = 10;
-            var regularCropGPDMultiplierMax = 15;
-            var regrowSeedGPDMultiplierMin = 4;
-            var regrowSeedGPDMultiplierMax = 7;
-            var regrowCropGPDMultiplierMin = 8;
-            var regrowCropGPDMultiplierMax = 11;
-
-            Console.WriteLine($"Growth range (Short): {growthRangeShortMin} - {growthRangeShortMax}");
-            Console.WriteLine($"Growth range (Medium): {growthRangeMediumMin} - {growthRangeMediumMax}");
-            Console.WriteLine($"Growth range (Long): {growthRangeLongMin} - {growthRangeLongMax}");
-
-            //separate each crop/seed into seasons
-            foreach (var crop in cropAndObjectData.CropData)
-            {
-                var seasons = crop.Value.Split('/')[1].Split(' ');
-                foreach (var season in seasons)
-                {
-                    seasonCrops[season].Add(crop.Key);
-                }
-            }
-
-            //loop through each season
-            foreach (var season in seasonCrops)
-            {
-                Console.WriteLine($"{season.Key.ToUpper()}");
-
-                var seasonCropPool = new List<string>(seasonCrops[season.Key].Shuffle());
-                var totalSeasonCrops = seasonCropPool.Count;
-
-                //set number of crops per season that are allowed to regrow
-                var totalRegrowthCropsPercentage = 0.40;
-                var totalRegrowthCrops = Math.Ceiling(totalSeasonCrops * totalRegrowthCropsPercentage);
-                Console.WriteLine($"total regrowth crops: {totalRegrowthCrops}");
-
-                //set how many crops per season will fall into short, medium, and long-term harvests
-                //medium crop percentage will end up being percentage difference leftover after removing long and short crop percentages from 100%
-                var totalShortCropsPercentage = 0.20;
-                var totalLongCropsPercentage = 0.20;
-                var totalMediumCropsPercentage = 1 - (totalShortCropsPercentage + totalLongCropsPercentage);
-                var totalShortCrops = Math.Ceiling(totalSeasonCrops * totalShortCropsPercentage);
-                var totalLongCrops = Math.Ceiling(totalSeasonCrops * totalLongCropsPercentage);
-                var totalMediumCrops = Math.Ceiling(totalSeasonCrops * totalMediumCropsPercentage);
-                var totalCropTypeSum = totalShortCrops + totalMediumCrops + totalLongCrops;
-
-                //get total crops that will be allowed to have extra yields
-                var totalExtraYieldCropsPercentage = Helpers.GetRandomIntegerInRange(10, 15);
-                var totalExtraYieldCrops = Math.Ceiling((totalSeasonCrops * totalExtraYieldCropsPercentage) * 0.01);
-                Console.WriteLine($"total extra yields for {season.Key}: {totalExtraYieldCrops}");
-
-                //if the sum of calculated harvest categories does not equal actual crops in season
-                //remove/add difference from medium harvest length crops
-                if (totalCropTypeSum > totalSeasonCrops) totalMediumCrops -= totalCropTypeSum - totalSeasonCrops;
-                if (totalCropTypeSum < totalSeasonCrops) totalMediumCrops += totalSeasonCrops - totalCropTypeSum;
-                Console.WriteLine($"short:{totalShortCrops} medium:{totalMediumCrops} long:{totalLongCrops}");
-                Console.WriteLine($"total crops for: {totalShortCrops + totalMediumCrops + totalLongCrops}");
-
-                //loop through each individual season's crop index array
-                for (int seasonCropIdx = 0; seasonCropIdx < seasonCropPool.Count; seasonCropIdx++)
-                {
-                    var seedIdx = seasonCropPool[seasonCropIdx];
-                    var objIdx = cropAndObjectData.CropData[seedIdx].Split('/')[3];
-                    Console.WriteLine($"seedIdx: {seedIdx}");
-                    Console.WriteLine($"objIdx: {objIdx}");
-                    var item = new Dictionary<string, string[]>
-                    {
-                        { "cropData", cropAndObjectData.CropData[seedIdx].Split('/') },
-                        { "seedObjData", cropAndObjectData.ObjectData[seedIdx].Split('/') },
-                        { "cropObjData", cropAndObjectData.ObjectData[objIdx].Split('/') },
-                    };
-
-                    //generate random growth (harvest) times for different crops
-                    //manually set Parsnip to be a short-term crop since it's the only crop
-                    //you have access to start making money from at the start of new game
-                    var totalGrowthTime = Helpers.GetRandomIntegerInRange(growthRangeMediumMin, growthRangeMediumMax);
-                    if (totalShortCrops > 0 || seedIdx == "472")
-                    {
-                        //for all crops that are NOT Parsnip
-                        if (seedIdx != "472")
-                        {
-                            totalGrowthTime = Helpers.GetRandomIntegerInRange(growthRangeShortMin, growthRangeShortMax);
-                        }
-                        else
-                        {
-                            //for Parsnip
-                            if (totalShortCrops == 0) totalMediumCrops--;
-                            totalGrowthTime = 4;
-                        }
-                        totalShortCrops--;
-                    }
-                    else if (totalLongCrops > 0)
-                    {
-                        totalGrowthTime = Helpers.GetRandomIntegerInRange(growthRangeLongMin, growthRangeLongMax);
-                        totalLongCrops--;
-                    }
-                    Console.WriteLine($"total growth time: {totalGrowthTime} days");
-
-                    //dynamically generate growth stages
-                    var growthStagesArr = Array.ConvertAll(item["cropData"][0].Split(' '), s => int.Parse(s));
-                    var averageGrowthStageDays = totalGrowthTime / growthStagesArr.Length;
-                    for (var i = 0; i < growthStagesArr.Length; i++)
-                    {
-                        growthStagesArr[i] = averageGrowthStageDays;
-                    }
-
-                    //if total sum of growth stages is less than total grow time, remove the difference from last stage
-                    var growthStagesSum = growthStagesArr.Aggregate((total, next) => total + next);
-
-                    if (growthStagesSum < totalGrowthTime)
-                    {
-                        growthStagesArr[growthStagesArr.Length - 1] += totalGrowthTime - growthStagesSum;
-                    }
-                    //if last growth stage is at least 2 days higher than previous day,
-                    //distribute excess to previous day
-                    var growthDayDiff = growthStagesArr.Last() - growthStagesArr[growthStagesArr.Length - 2];
-                    if (growthDayDiff > 1)
-                    {
-                        growthStagesArr[growthStagesArr.Length - 1]--;
-                        growthStagesArr[growthStagesArr.Length - 2]++;
-                    }
-                    //shuffles array so growth stage positions are randomized
-                    var newGrowthStagesArr = Array.ConvertAll(growthStagesArr, i => i.ToString()).Shuffle();
-                    item["cropData"][0] = string.Join(' ', newGrowthStagesArr);
-
-                    //set up dynamic description for seeds
-                    var cropSeasons = string.Join(", ", item["cropData"][1].Split(' ').Select((season, idx) => Helpers.Capitalize(season)));
-                    var seedDescription = $"Plant these in {Helpers.ReplaceLastOccurrence(cropSeasons, ", ", " or ")}. ";
-                    var daysString = totalGrowthTime < 2 ? "day" : "days";
-                    seedDescription += $"Takes {totalGrowthTime} {daysString} to mature";
-
-                    //if crop is regrowth capable or on a trellis
-                    var isTrellisCrop = Convert.ToBoolean(Helpers.Capitalize(item["cropData"][7]));
-                    var isFlower = flowerSeedIndexes.All(seedIdx.Contains);
-                    var flowersCanRegrow = config.flowersCanRegrow;
-                    Console.WriteLine($"is flower: {flowersCanRegrow}");
-
-                    if (totalRegrowthCrops > 0 || isTrellisCrop) applyRegrowValues();
-                    else applyRegularValues();
-
-                    //store updated description
-                    item["seedObjData"][5] = seedDescription;
-                    Console.WriteLine($"seed description: {seedDescription}");
-
-                    // if crop is allowed to have extra chance for multiple harvesting
-                    if (totalExtraYieldCrops <= 0)
-                    {
-                        item["cropData"][6] = "false";
-                    }
-                    else
-                    {
-                        //balance out values to prevent high-priced crops from 
-                        var cropSellPrice = int.Parse(item["cropObjData"][1]);
-                        var maxAllowedHarvest = 1;
-                        var extraYieldChancePercentageMax = 5;
-                        if (cropSellPrice <= 50)
-                        {
-                            maxAllowedHarvest = 3;
-                            extraYieldChancePercentageMax = 24;
-                        }
-                        else if (cropSellPrice > 50 && cropSellPrice <= 125)
-                        {
-                            maxAllowedHarvest = 2;
-                            extraYieldChancePercentageMax = 16;
-                        }
-                        else if (cropSellPrice > 125 && cropSellPrice <= 150)
-                        {
-                            maxAllowedHarvest = 2;
-                            extraYieldChancePercentageMax = 8;
-                        }
-                        var minYieldHarvest = Helpers.GetRandomIntegerInRange(1, maxAllowedHarvest);
-                        var maxYieldHarvest = Helpers.GetRandomIntegerInRange(minYieldHarvest, maxAllowedHarvest);
-                        var chanceForExtraCrops = Helpers.GetRandomIntegerInRange(2, extraYieldChancePercentageMax) * 0.01;
-                        item["cropData"][6] = $"true {minYieldHarvest} {maxYieldHarvest} 0 {chanceForExtraCrops}";
-
-                        //reduce crop sell price due to extra yield chance
-                        item["cropObjData"][1] = Math.Ceiling(int.Parse(item["cropObjData"][1]) * (1 - (chanceForExtraCrops * (minYieldHarvest - 1)))).ToString();
-
-                        Console.WriteLine($"** EXTRA YIELD **");
-                        Console.WriteLine($"{item["cropData"][6]}");
-                        Console.WriteLine($"updated crop sell price: {item["cropObjData"][1]}");
-                        totalExtraYieldCrops--;
-                    }
-
-                    //calculates and prints out gold per day/month per plot
-                    {
-                        double maxHarvests = 1;
-                        double extraSeedPurchaseMultiplier = 1;
-                        double sellPricePerHarvest = int.Parse(item["cropObjData"][1]);
-                        double seedPurchasePrice = int.Parse(item["seedObjData"][1]);
-                        double daysToRegrow = int.Parse(item["cropData"][4]);
-                        double daysToMaturity = item["cropData"][0].Split(' ').Select(day => int.Parse(day)).Aggregate(0, (total, next) => total + next);
-                        double growingDays = 1;
-                        var extraYieldsVal = item["cropData"][6];
-
-                        //if regrow capable
-                        if (int.Parse(item["cropData"][4]) > -1) {
-                            maxHarvests = Math.Floor((27 - daysToMaturity) / daysToRegrow + 1);
-                            growingDays = daysToMaturity + (maxHarvests - 1) * daysToRegrow;
-                        } else {
-                            maxHarvests = Math.Floor(27 / daysToMaturity);
-                            extraSeedPurchaseMultiplier = maxHarvests;
-                            growingDays = daysToMaturity + (maxHarvests - 1) * daysToMaturity;
-                        }
-
-                        //if crop has extra yield potential
-                        if (extraYieldsVal.Length > 6) {
-                            sellPricePerHarvest *= int.Parse(extraYieldsVal.Split(' ')[1]);
-                        }
-
-                        Console.WriteLine($"days to maturity: {daysToMaturity}");
-                        Console.WriteLine($"max harvests: {maxHarvests}");
-                        Console.WriteLine($"days to regrow: {daysToRegrow}");
-                        var goldPerDay = (maxHarvests * sellPricePerHarvest - seedPurchasePrice * extraSeedPurchaseMultiplier) / growingDays;
-                        Console.WriteLine($"Gold per day (per plot): {Math.Round(goldPerDay, 2)}g");
-                        Console.WriteLine($"Gold per season (per plot): {Math.Round(goldPerDay * 27, 2)}g");
-                    }
-                    
-                    //join arrays and update crop and object data
-                    cropAndObjectData.CropData[seedIdx] = string.Join('/', item["cropData"]);
-                    cropAndObjectData.ObjectData[seedIdx] = string.Join('/', item["seedObjData"]);
-                    cropAndObjectData.ObjectData[objIdx] = string.Join('/', item["cropObjData"]);
-                    Console.WriteLine("----------------------");
-                    
-                    //calculation helper functions
-                    void applyRegrowValues()
-                    {
-                        //if flower but flowers aren't allowed to regrow, exit regrowth function and apply regular values to flower instead
-                        if (isFlower && !flowersCanRegrow)
-                        {
-                            applyRegularValues();
-                            return;
-                        }
-
-                        //if more crops are allowed to be given regrowth capabilities, set regrowth time to be between 30% - 42% of total grow time.
-                        var regrowthPercentage = Helpers.GetRandomIntegerInRange(30, 60);
-                        item["cropData"][4] = Math.Ceiling(totalGrowthTime * (regrowthPercentage * 0.01)).ToString();
-                        Console.WriteLine($"regrowth: {item["cropData"][4]} days");
-
-                        //set crop and seed sell prices
-                        var seedPriceMultiplier = Helpers.GetRandomIntegerInRange(regrowSeedGPDMultiplierMin, regrowSeedGPDMultiplierMax);
-                        var cropPriceMultiplier = Helpers.GetRandomIntegerInRange(regrowCropGPDMultiplierMin, regrowCropGPDMultiplierMax);
-                        item["seedObjData"][1] = (totalGrowthTime * seedPriceMultiplier).ToString();
-                        item["cropObjData"][1] = (totalGrowthTime * cropPriceMultiplier).ToString();
-                        Console.WriteLine($"seed price multiplier: {seedPriceMultiplier}");
-                        Console.WriteLine($"crop price multiplier: {cropPriceMultiplier}");
-                        Console.WriteLine($"seed purchase price: {item["seedObjData"][1]}g");
-                        Console.WriteLine($"crop sell price    : {item["cropObjData"][1]}g");
-                        // (total growth time x seed price multiplier):
-
-                        //append season text with regrowth verbiage
-                        seedDescription += ", but keeps producing after that." + (isTrellisCrop ? " Grows on a trellis." : "");
-                        totalRegrowthCrops--;
-                    }
-
-                    void applyRegularValues()
-                    {
-                        //if crop is NOT regrowth capable, set crop to not regrow
-                        item["cropData"][4] = "-1";
-                        Console.WriteLine($"no regrowth");
-
-                        //set crop and seed sell prices
-                        var seedPriceMultiplier = Helpers.GetRandomIntegerInRange(regularSeedGPDMultiplierMin, regularSeedGPDMultiplierMax);
-                        var cropPriceMultiplier = Helpers.GetRandomIntegerInRange(regularCropGPDMultiplierMin, regularCropGPDMultiplierMax);
-                        item["seedObjData"][1] = (totalGrowthTime * seedPriceMultiplier).ToString();
-                        item["cropObjData"][1] = (totalGrowthTime * cropPriceMultiplier).ToString();
-                        Console.WriteLine($"seed price multiplier: {seedPriceMultiplier}");
-                        Console.WriteLine($"crop price multiplier: {cropPriceMultiplier}");
-                        Console.WriteLine($"seed purchase price: {item["seedObjData"][1]}g");
-                        Console.WriteLine($"crop sell price    : {item["cropObjData"][1]}g");
-
-                        //append period to season text
-                        seedDescription += '.';
-                    }
-                }
-            }
-            return cropAndObjectData;
-        }
     }
 }
 

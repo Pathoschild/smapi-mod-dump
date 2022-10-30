@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/StarAmy/BreedingOverhaul
+**
+*************************************************/
+
+{
+   "Name": "VanillaLivestockTweaks",
+   "Author": "StarAmy",
+   "Version": "1.0.0",
+   "Description": "Recolor female ducks and female goatsto match StarAmy's Vanilla Males, and add a number of animal products",
+   "UniqueID": "StarAmy.VanillaLivestockTweaks",
+   "Dependencies": [
+        {
+            "UniqueID": "spacechase0.JsonAssets",
+            "IsRequired": true
+        },
+    ],
+   "ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+		"MinimumVersion": "1.20.0"
+   }
+}

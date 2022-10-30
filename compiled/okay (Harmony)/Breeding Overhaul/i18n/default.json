@@ -1,0 +1,5 @@
+{
+  "BigCraftable.Incubator.NoHatch": "This doesn't belong here and wont hatch.",
+  "Tool.InseminationSyringe.CantBeInseminated": "{{animalName}} can't be inseminated.",
+  "Tool.InseminationSyringe.CorrectItem": "You should use {{itemName}} to inseminate this animal."
+}

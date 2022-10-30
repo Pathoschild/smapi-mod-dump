@@ -98,6 +98,39 @@ namespace AdjustableBuildingCosts.Framework
             shippingBin.GoldCost = 250;
             shippingBin.Items.Add(new ItemAmount((int) ItemID.WOOD, 150));
 
+            BlueprintCost goldClock = new BlueprintCost();
+            goldClock.GoldCost = 10000000;
+
+            BlueprintCost junimoHut = new BlueprintCost();
+            junimoHut.GoldCost = 20000;
+            junimoHut.Items.Add(new ItemAmount((int) ItemID.STONE, 200));
+            junimoHut.Items.Add(new ItemAmount((int) ItemID.FIBER, 100));
+            junimoHut.Items.Add(new ItemAmount((int) ItemID.STARFRUIT, 9));
+
+            BlueprintCost desertObelisk = new BlueprintCost();
+            desertObelisk.GoldCost = 1000000;
+            desertObelisk.Items.Add(new ItemAmount((int) ItemID.IRIDIUM_BAR, 20));
+            desertObelisk.Items.Add(new ItemAmount((int) ItemID.COCONUT, 10));
+            desertObelisk.Items.Add(new ItemAmount((int) ItemID.CACTUS_FRUIT, 10));
+
+            BlueprintCost earthObelisk = new BlueprintCost();
+            earthObelisk.GoldCost = 500000;
+            earthObelisk.Items.Add(new ItemAmount((int) ItemID.IRIDIUM_BAR, 10));
+            earthObelisk.Items.Add(new ItemAmount((int) ItemID.EARTH_CRYSTAL, 10));
+
+            BlueprintCost islandObelisk = new BlueprintCost();
+            islandObelisk.GoldCost = 1000000;
+            islandObelisk.Items.Add(new ItemAmount((int) ItemID.IRIDIUM_BAR, 10));
+            islandObelisk.Items.Add(new ItemAmount((int) ItemID.BANANA, 10));
+            islandObelisk.Items.Add(new ItemAmount((int) ItemID.DRAGON_TOOTH, 10));
+
+            BlueprintCost waterObelisk = new BlueprintCost();
+            waterObelisk.GoldCost = 500000;
+            waterObelisk.Items.Add(new ItemAmount((int) ItemID.IRIDIUM_BAR, 5));
+            waterObelisk.Items.Add(new ItemAmount((int) ItemID.CLAM, 10));
+            waterObelisk.Items.Add(new ItemAmount((int) ItemID.CORAL, 10));
+
+
             Buildings.Add("Coop", coop);
             Buildings.Add("Big Coop", bigCoop);
             Buildings.Add("Deluxe Coop", deluxeCoop);
@@ -113,6 +146,13 @@ namespace AdjustableBuildingCosts.Framework
             Buildings.Add("Stable", stable);
             Buildings.Add("Slime Hutch", slimeHutch);
             Buildings.Add("Shipping Bin", shippingBin);
+
+            Buildings.Add("Gold Clock", goldClock);
+            Buildings.Add("Junimo Hut", junimoHut);
+            Buildings.Add("Desert Obelisk", desertObelisk);
+            Buildings.Add("Island Obelisk", islandObelisk);
+            Buildings.Add("Earth Obelisk", earthObelisk);
+            Buildings.Add("Water Obelisk", waterObelisk);
         }
     }
 }

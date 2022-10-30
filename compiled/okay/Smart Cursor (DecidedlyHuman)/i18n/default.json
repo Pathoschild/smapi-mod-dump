@@ -1,7 +1,20 @@
 ﻿{
-    // Settings
+    // Keybinds
     "settings.keybinds.title": "Keybinds",
     "settings.keybinds.hold-to-activate": "Hold to activate",
+
+    // Tier ranges
+    "settings.ranges.tier-ranges.title": "Tool Tier Ranges",
+    "settings.ranges.tier-amount-notice": "You can set the range for each tier of tool here. Tiers 5 and up will be unused unless you have mods that add them as upgrades.",
+    "settings.ranges.tier-1-range": "Base",
+    "settings.ranges.tier-2-range": "Copper",
+    "settings.ranges.tier-3-range": "Steel",
+    "settings.ranges.tier-4-range": "Gold",
+    "settings.ranges.tier-5-range": "Iridium",
+    "settings.ranges.tier-6-range": "Tier 6",
+    "settings.ranges.tier-7-range": "Tier 7",
+
+    // Toggles
     "settings.toggles.title": "Optional Toggles",
     "settings.toggles.allow-targeting-baby-trees": "Allow targeting baby trees",
     "settings.toggles.allow-targeting-baby-trees.tooltip": "This will allow the smart cursor to target trees that aren't fully grown.",

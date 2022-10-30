@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FastExpressionCompiler.LightExpression;
 using LinqFasterer;
 using SpriteMaster.Types.Reflection;
 using System;
@@ -275,5 +276,31 @@ internal static partial class ReflectionExt {
 	internal static VariableInfo? GetStaticVariable(this Type type, string name) {
 		var members = type.GetStaticMembers(name);
 		return VariableInfo.From(members.WhereF(member => member is (FieldInfo or PropertyInfo)).FirstOrDefaultF());
+	}
+
+	internal static Predicate<object?> GetIsDelegate(this Type? type) {
+		if (type is null) {
+			return _ => false;
+		}
+
+		var objectExpression = Expression.Parameter(typeof(object), "obj");
+		var isNullExpression = Expression.ReferenceEqual(objectExpression, Expression.NullConstant);
+		var isTypeExpression = Expression.TypeIs(objectExpression, type);
+		var resultExpression = Expression.IfThenElse(isNullExpression, Expression.FalseConstant, isTypeExpression);
+
+		return Expression.Lambda<Predicate<object?>>(resultExpression, objectExpression).CompileFast();
+	}
+
+	internal static Predicate<TObject?> GetIsDelegate<TObject>(this Type? type) {
+		if (type is null) {
+			return _ => false;
+		}
+
+		var objectExpression = Expression.Parameter(typeof(object), "obj");
+		var isNullExpression = Expression.ReferenceEqual(objectExpression, Expression.NullConstant);
+		var isTypeExpression = Expression.TypeIs(objectExpression, type);
+		var resultExpression = Expression.IfThenElse(isNullExpression, Expression.FalseConstant, isTypeExpression);
+
+		return Expression.Lambda<Predicate<TObject?>>(resultExpression, objectExpression).CompileFast();
 	}
 }

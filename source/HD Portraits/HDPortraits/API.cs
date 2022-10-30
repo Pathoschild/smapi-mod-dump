@@ -53,12 +53,25 @@ namespace HDPortraits
         public string GetEventPortraitFor(NPC npc)
             => npc.uniquePortraitActive ? PortraitDrawPatch.NpcEventSuffixes.Value.GetValueOrDefault(npc, null) : null;
         public (Rectangle, Texture2D) GetTextureAndRegion(NPC npc, int index, int elapsed = -1, bool reset = false)
-            => GetTextureAndRegion(npc.getTextureName(), PortraitDrawPatch.GetSuffix(npc), index, elapsed, reset);
+        {
+            if (!ModEntry.TryGetMetadata(npc.Name, PortraitDrawPatch.GetSuffix(npc), out var data))
+                return (Game1.getSourceRectForStandardTileSheet(npc.Portrait, index, 64, 64), npc.Portrait);
+            if (!data.TryGetTexture(out var texture))
+                texture = npc.Portrait;
+            if (reset)
+                data.Animation?.Reset();
+            return (data.GetRegion(index, elapsed).Clamp(texture.Bounds), texture);
+        }
         public (Rectangle, Texture2D) GetTextureAndRegion(string name, string suffix, int index, int elapsed = -1, bool reset = false)
         {
             var path = $"Portraits/{name}{(suffix is not null ? '_' + suffix : null)}";
             if (!Misc.TryLoadAsset<Texture2D>(ModEntry.monitor, ModEntry.helper, path, out var tex))
-                throw new ContentLoadException($"Default portrait '{path}' does not exist or could not be loaded! Do you have a typo or missing asset?");
+            {
+                ModEntry.monitor.Log(
+                    $"Default portrait '{path}' does not exist or could not be loaded! Do you have a typo or missing asset?",
+                    LogLevel.Warn);
+                return (default, null);
+            }
 
             if (!ModEntry.TryGetMetadata(name, suffix, out var metadata))
                 return (Game1.getSourceRectForStandardTileSheet(tex, index, 64, 64), tex);
@@ -66,23 +79,12 @@ namespace HDPortraits
             if (reset)
                 metadata.Animation?.Reset();
 
-            PortraitDrawPatch.lastLoaded.Value.Add(metadata);
-
             Texture2D texture = metadata.overrideTexture.Value ?? tex;
-            Rectangle rect = (metadata.Animation != null) ?
-                metadata.Animation.GetSourceRegion(texture, metadata.Size, index, elapsed) :
-                Game1.getSourceRectForStandardTileSheet(texture, index, metadata.Size, metadata.Size);
-
-			rect.X = Math.Clamp(rect.X, 0, texture.Width);
-			rect.Y = Math.Clamp(rect.Y, 0, texture.Height);
-			rect.Width -= Math.Max(0, rect.Right - texture.Width);
-            rect.Height -= Math.Max(0, rect.Bottom - texture.Height);
-
-            return (rect, texture);
+            return (metadata.GetRegion(index, elapsed).Clamp(texture.Bounds), texture);
         }
         public void ReloadData()
             => ModEntry.monitor.Log("ReloadData() is deprecated! Invalidate the relevant assets instead, and they will be automatically reloaded.", 
-                LogLevel.Warn);
+                LogLevel.Debug);
 
 		public bool TryGetPortrait(string name, string suffix, int index, out Texture2D texture, out Rectangle region, int millis = -1, bool forceSuffix = false)
         {
@@ -90,10 +92,30 @@ namespace HDPortraits
             texture = null;
             if(!ModEntry.TryGetMetadata(name, suffix, out var data, forceSuffix))
                 return false;
-            data.TryGetTexture(out texture);
+            if(!data.TryGetTexture(out texture))
+            {
+                ModEntry.monitor.Log($"Could not load portrait for '{name}_{suffix}'! No texture found.", LogLevel.Warn);
+                return false;
+            }
             region = data.GetRegion(index, millis);
             return true;
         }
-
+        public bool TryGetPortrait(NPC character, int index, out Texture2D texture, out Rectangle region, int millis = -1)
+        {
+            texture = null;
+            region = default;
+            if (character is null)
+                return false;
+            if (ModEntry.TryGetMetadata(character.Name, PortraitDrawPatch.GetSuffix(character), out var data))
+            {
+                if (!data.TryGetTexture(out texture))
+                    texture = character.Portrait;
+                region = data.GetRegion(index, millis);
+                return true;
+            }
+            texture = character.Portrait;
+            region = Game1.getSourceRectForStandardTileSheet(texture, index, 64, 64);
+            return false;
+        }
 	}
 }

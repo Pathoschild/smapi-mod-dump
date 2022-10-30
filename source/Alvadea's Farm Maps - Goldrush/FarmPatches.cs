@@ -96,7 +96,7 @@ namespace AlvadeasMiningShack
             location.map.Properties["NightTiles"] = location.map.Properties["NightTiles"].ToString() + " " + "Buildings 22 54 517";
             location.map.Properties["Light"] = location.map.Properties["Light"].ToString() + " " + "22 54 4";
 
-            location.setTileProperty(23, 55, "Buildings", "Action", "Warp 14 15 MiningShack");
+            location.setTileProperty(23, 55, "Buildings", "Action", "Warp 14 15 Custom_MiningShack");
             location.setTileProperty(12, 57, "Back", "WaterSource", "T");
             location.setTileProperty(13, 57, "Back", "WaterSource", "T");
 

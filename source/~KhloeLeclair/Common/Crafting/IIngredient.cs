@@ -97,3 +97,28 @@ public interface IIngredient {
 
 	#endregion
 }
+
+
+public interface IOptimizedIngredient : IIngredient {
+
+	/// <summary>
+	/// Determine if at least a given amount of this ingredient is available.
+	/// This should return immediately once the amount has been found for
+	/// best performance.
+	/// </summary>
+	/// <param name="quantity">The required quantity.</param>
+	/// <param name="who">The farmer performing the craft</param>
+	/// <param name="items">A list of all available <see cref="Item"/>s across
+	/// all available <see cref="IInventory"/> instances. If you only support
+	/// consuming ingredients from certain <c>IInventory</c> types, you should
+	/// not use this value and instead iterate over the inventories. Please
+	/// note that this does <b>not</b> include the player's inventory.</param>
+	/// <param name="inventories">All the available inventories.</param>
+	/// <param name="maxQuality">The maximum item quality we are allowed to
+	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
+	/// returns <c>false</c>.</param>
+	bool HasAvailableQuantity(int quantity, Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+		return GetAvailableQuantity(who, items, inventories, maxQuality) >= quantity;
+	}
+
+}

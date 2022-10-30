@@ -9,17 +9,11 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 
-using GenericModConfigMenu;
 using StardewModdingAPI;
 
 using StardewMods.Common.Integrations.StackQuality;
-
-using SObject = StardewValley.Object;
 
 namespace Leclair.Stardew.Common.Integrations.StackQuality;
 

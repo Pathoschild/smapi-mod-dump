@@ -173,7 +173,7 @@ internal sealed class Texture2DMeta : IDisposable {
 
 		if (NormalizedName is not null) {
 			foreach (var slicedTexture in Config.Resample.SlicedTexturesS) {
-				if (!NormalizedName.StartsWith(slicedTexture.Texture)) {
+				if (!slicedTexture.Pattern.IsMatch(NormalizedName)) {
 					continue;
 				}
 

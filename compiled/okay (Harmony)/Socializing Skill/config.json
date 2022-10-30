@@ -1,0 +1,19 @@
+{
+  "ExperienceFromTalking": 2,
+  "ExperienceFromGifts": 5,
+  "ExperienceFromEvents": 10,
+  "ExperienceFromQuests": 20,
+  "FriendshipRecoveryPerLevel": 1,
+  "FriendlyExtraFriendship": 10,
+  "SmoothTalkerPositiveMultiplier": 2.0,
+  "SmoothTalkerNegativeMultiplier": 0.5,
+  "GifterLovedGiftExtraFriendship": 80,
+  "GifterLikedGiftExtraFriendship": 40,
+  "GifterNeutralGiftExtraFriendship": 20,
+  "HelpfulRewardMultiplier": 2.0,
+  "HagglerMinHeartLevel": 6,
+  "HagglerDiscountPercentPerHeartLevel": 2,
+  "BelovedGiftPercentChance": 5,
+  "BelovedGiftRarePercentChance": 30,
+  "BelovedGiftSuperRarePercentChance": 30
+}

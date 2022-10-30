@@ -11,7 +11,7 @@
 {
   "Name": "Custom Backpack Framework",
   "Author": "aedenthorn",
-  "Version": "0.8.2",
+  "Version": "0.9.1",
   "Description": "CustomBackpack.",
   "UniqueID": "aedenthorn.CustomBackpack",
   "EntryDll": "CustomBackpack.dll",

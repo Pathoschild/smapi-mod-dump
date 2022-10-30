@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/zeldela/sdv-mods
+   Git: https://github.com/zeldela/sdv-mods.git
+
+mods:
+   Fast Fish Ponds (and Rebalancing)
+   Remember Birthday Gifts
+
+latest commit:
+   commit 815e57a9269a9a8d2703c822a040094f534c9e6c
+   Author: zeldela <delagomen@gmail.com>
+   Date:   Sun Oct 2 15:59:13 2022 -0400
+   
+       fish pond edit
+   

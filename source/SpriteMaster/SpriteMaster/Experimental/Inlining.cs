@@ -109,6 +109,7 @@ internal static class Inlining {
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
 	internal static void Reenable(PatchType patchTypes = PatchType.Transpiler) {
+#if false
 		_ = Parallel.ForEach(Harmony.GetAllPatchedMethods(), patchedMethod => {
 			var allPatches = Harmony.GetPatchInfo(patchedMethod);
 			IList<Patch> inlinePatches = Array.Empty<Patch>();
@@ -133,6 +134,7 @@ internal static class Inlining {
 				EnableInlining(patch.GetMethod(patchedMethod));
 			}
 		});
+#endif
 	}
 }
 

@@ -9,18 +9,15 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
+
 using HarmonyLib;
-using JsonAssets.Data;
-using Netcode;
+
 using Spacechase.Shared.Patching;
+
 using SpaceShared;
+
 using StardewModdingAPI;
-using StardewValley;
+
 using StardewValley.Objects;
 
 namespace JsonAssets.Patches;
@@ -35,6 +32,7 @@ internal class BootPatcher : BasePatcher
             );
     }
 
+#nullable enable
     private static Exception? FinalizeBootDisplayFields(Boots __instance, Exception __exception)
     {
         if (__exception is not null)

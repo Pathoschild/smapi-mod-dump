@@ -169,7 +169,7 @@ namespace CustomDeathPenaltyPlus
 
         private void AssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data\\mail"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data\\mail") && Game1.player.modData.ContainsKey($"{this.ModManifest.UniqueID}.MoneyLostLastPassOut") == true)
             {
                 e.Edit(asset =>
                 {

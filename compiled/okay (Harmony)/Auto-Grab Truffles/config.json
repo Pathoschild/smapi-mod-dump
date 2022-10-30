@@ -1,0 +1,7 @@
+{
+  "EnableAutoGrabTruffles": true,
+  "Collection": "Instantly",
+  "GainExperience": true,
+  "ApplyGathererBonus": true,
+  "ApplyBotanistBonus": true
+}

@@ -1,0 +1,18 @@
+<Project>
+
+    <PropertyGroup>
+        <RootNamespace>Slothsoft.ChallengerAutomate</RootNamespace>
+    </PropertyGroup>
+
+    <Import Project="..\build\common.targets" />
+
+    <ItemGroup>
+      <ProjectReference Include="..\Challenger\Challenger.csproj" />
+        <Reference Include="0Harmony" HintPath="$(GamePath)\smapi-internal\0Harmony.dll" />
+        <Reference Include="Automate" HintPath="$(GamePath)\Mods [dev+Automate]\Automate\Automate.dll" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <GameModsPath>$(GamePath)\Mods [dev+Automate]\</GameModsPath>
+    </PropertyGroup>
+</Project>

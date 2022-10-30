@@ -14,6 +14,8 @@ using StardewValley;
 using MathF = System.MathF;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace BetterBeehouses
 {
@@ -75,13 +77,13 @@ namespace BetterBeehouses
             .SkipTo(new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, typeof(Object).MethodNamed("get_name")),
+                new(OpCodes.Call, typeof(Object).PropertyGetter(nameof(Object.name))),
                 new(OpCodes.Ldstr,"Bee House"),
                 new(OpCodes.Callvirt,typeof(string).MethodNamed("Equals",new[]{typeof(string)}))
             })
             .SkipTo(new CodeInstruction[]
             {
-                new(OpCodes.Callvirt, typeof(Character).MethodNamed("get_currentLocation")),
+                new(OpCodes.Callvirt, typeof(Character).PropertyGetter(nameof(Character.currentLocation))),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, typeof(Object).FieldNamed("tileLocation"))
             })
@@ -102,32 +104,35 @@ namespace BetterBeehouses
             })
             .SkipTo(new CodeInstruction[]
             {
-                new(OpCodes.Callvirt, typeof(Object).MethodNamed("set_Price"))
+                new(OpCodes.Callvirt, typeof(Object).PropertySetter(nameof(Object.Price)))
             })
             .Add(new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld,typeof(Object).FieldNamed("heldObject")),
-                new(OpCodes.Callvirt,typeof(NetRef<Object>).MethodNamed("get_Value")),
+                new(OpCodes.Ldfld, typeof(Object).FieldNamed("heldObject")),
+                new(OpCodes.Callvirt, typeof(NetRef<Object>).PropertyGetter(nameof(NetRef<Object>.Value))),
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Call,typeof(ObjectPatch).MethodNamed(nameof(ManipulateObject)))
+                new(OpCodes.Ldnull),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, typeof(Object).PropertyGetter(nameof(Object.TileLocation))),
+                new(OpCodes.Call, typeof(ObjectPatch).MethodNamed(nameof(ManipulateObject)))
             })
             .SkipTo(new CodeInstruction[]
             {
-                new(OpCodes.Call,typeof(Game1).MethodNamed("get_currentLocation")),
+                new(OpCodes.Call,typeof(Game1).PropertyGetter(nameof(Game1.currentLocation))),
                 new(OpCodes.Call,typeof(Game1).MethodNamed("GetSeasonForLocation")),
                 new(OpCodes.Ldstr, "winter"),
                 new(OpCodes.Callvirt, typeof(string).MethodNamed("Equals",new[] { typeof(string) }))
             })
             .Add(new CodeInstruction[]
             {
-                new(OpCodes.Call,typeof(Game1).MethodNamed("get_currentLocation")),
+                new(OpCodes.Call,typeof(Game1).PropertyGetter(nameof(Game1.currentLocation))),
                 new(OpCodes.Call,typeof(ObjectPatch).MethodNamed(nameof(CantProduceToday)))
             })
             .SkipTo(new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, typeof(Object).MethodNamed("get_name")),
+                new(OpCodes.Call, typeof(Object).PropertyGetter(nameof(Object.name))),
                 new(OpCodes.Ldstr, "Bee House"),
                 new(OpCodes.Callvirt, typeof(string).MethodNamed("Equals",new[] { typeof(string) }))
             })
@@ -181,8 +186,9 @@ namespace BetterBeehouses
             foreach (var code in codes)
                 yield return code;
         }
-        public static void ManipulateObject(Object obj, Farmer who = null)
+        public static void ManipulateObject(Object obj, Farmer who, GameLocation where, Vector2 tile)
         {
+            where ??= who?.currentLocation ?? Game1.currentLocation;
             obj.Quality = GetQuality(who);
             float val = obj.Price * ModEntry.config.ValueMultiplier;
             int cap = ModEntry.config.CapFactor;
@@ -192,10 +198,17 @@ namespace BetterBeehouses
                     1f / (1f + ModEntry.config.CapCurve)
                 );
             obj.Price = (int)(val + .5f);
+            var test = UtilityPatch.GetAllNearFlowers(where, tile, ModEntry.config.FlowerRange).ToArray();
+			if (ModEntry.config.UseFlowerBoost)
+                obj.Stack += System.Math.Max(UtilityPatch.GetAllNearFlowers(where, tile, ModEntry.config.FlowerRange).Count() - 1, 0) 
+                    / ModEntry.config.FlowersPerBoost;
         }
-        public static bool CantProduceToday(bool isWinter, GameLocation loc) => isWinter && !Utils.GetProduceHere(loc, ModEntry.config.ProduceInWinter);
-        public static int GetSearchRange() => ModEntry.config.FlowerRange;
-        public static int GetProduceDays(int original) => System.Math.Max(original * ModEntry.config.DaysToProduce / 4, 1);
+        public static bool CantProduceToday(bool isWinter, GameLocation loc) 
+            => isWinter && !Utils.GetProduceHere(loc, ModEntry.config.ProduceInWinter);
+        public static int GetSearchRange() 
+            => ModEntry.config.FlowerRange;
+        public static int GetProduceDays(int original) 
+            => System.Math.Max(original * ModEntry.config.DaysToProduce / 4, 1);
         public static bool CanProduceHere(GameLocation loc)
         {
             var where = ModEntry.config.UsableIn;

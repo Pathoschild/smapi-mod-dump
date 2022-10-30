@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "Name": "[DGA] RanchingToolUpgrades",
+  "Author": "drbirbdev",
+  "version": "1.0.2",
+  "Description": "Add Pail, Shear, and Autograbber upgrades at the blacksmith.",
+  "UniqueID": "drbirbdev.RanchingToolUpgrades.DGA",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.DynamicGameAssets"
+  },
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:12280"
+  ],
+  "DGA.FormatVersion": 1,
+  "DGA.ConditionsFormatVersion": "1.23.0"
+}

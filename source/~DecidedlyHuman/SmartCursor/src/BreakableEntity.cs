@@ -8,11 +8,8 @@
 **
 *************************************************/
 
-using System.Configuration;
 using DecidedlyShared.Constants;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 using SObject = StardewValley.Object;
 
@@ -22,6 +19,7 @@ namespace SmartCursor
     {
         private SmartCursorConfig config;
         public Vector2 Tile { get; }
+
         public BreakableType Type { get; }
 
         /// <summary>
@@ -99,8 +97,10 @@ namespace SmartCursor
             if (tf is GiantCrop)
                 return this.config.AllowTargetingGiantCrops ? BreakableType.Axe : BreakableType.NotAllowed;
 
-            if (tf is ResourceClump)
-                return BreakableType.Pickaxe;
+            if (tf is ResourceClump clump)
+            {
+                return this.GetBreakableType(clump);
+            }
 
             return BreakableType.NotAllowed;
         }
@@ -114,7 +114,7 @@ namespace SmartCursor
             if (clump is GiantCrop)
                 return this.config.AllowTargetingGiantCrops ? BreakableType.Axe : BreakableType.NotAllowed;
 
-            return BreakableType.Pickaxe;
+            return BreakableType.Axe;
         }
     }
 }

@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Name": "BetterFestivalNotifications",
+    "Author": "drbirbdev",
+    "Version": "1.0.1",
+    "Description": "Customize notifications when a festival starts.",
+    "UniqueID": "drbirbdev.BetterFestivalNotifications",
+    "EntryDll": "BetterFestivalNotifications.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:14170" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}

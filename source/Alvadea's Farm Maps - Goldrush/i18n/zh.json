@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Jaksha6472/MiningShack
+**
+*************************************************/
+
+{
+"miningshack.question": "哦. 这个棚屋的状态似乎不算太糟糕. 修复塔需要100个木地板，200个石头，再加25个铜锭。",
+"miningshack.notEnough": "材料还不够...",
+"miningshack.leave": "不，不是现在。",
+"miningshack.repair": "修好这个房子!"
+}

@@ -6,12 +6,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit abb8a6fc74dd7bd527fef95fb1dc3ad780c208b0
-   Merge: dca1c77 7c43a34
-   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Tue Jun 7 20:53:48 2022 +0200
+   commit b15a4107cafebfbc035925f7e8f445b4adc945cf
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Sat Oct 22 18:23:13 2022 +0200
    
-       Merge pull request #13 from Giasko0/patch-1
-       
-       Italian translation
+       Update SMAPI dependency and get rid of Harmony (only used for debugging)
    

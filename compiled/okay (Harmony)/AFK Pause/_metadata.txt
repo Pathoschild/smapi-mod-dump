@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14228
+IDs: aedenthorn.AFKTimePause
+update keys: Nexus:14228, GitHub:aedenthorn/StardewValleyMods

@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "menu.title": "Професія каменяра",
+    "menu.extra": "Ви вичерпали всі свої навички... Виберіть професію каменяра",
+    "profession.time.name": "Хронологія",
+    "profession.time.description": "Триваліть дня на 20% довша.",
+    "profession.profit.name": "Іменита марка",
+    "profession.profit.description": "Вартість всього відвантаженого на 5% більша."
+}

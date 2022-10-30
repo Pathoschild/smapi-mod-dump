@@ -9,6 +9,15 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Updated integration with Generic Mod Config Menu.
+* Improved translations. Thanks to watchakorn-18k (added Thai)!
+
+## 1.11.2
+Released 10 October 2022 for SMAPI 3.14.0 or later.
+
+* Improved translations. Thanks to Becks723 (updated Chinese)!
+
 ## 1.11.1
 Released 18 August 2022 for SMAPI 3.14.0 or later.
 

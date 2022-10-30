@@ -1,7 +1,7 @@
 ﻿{
   "Name": "RanchingToolUpgrades",
   "Author": "drbirbdev",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "Description": "Add Pail, Shear, and Autograbber upgrades at the blacksmith.",
   "UniqueID": "drbirbdev.RanchingToolUpgrades",
   "EntryDll": "RanchingToolUpgrades.dll",
@@ -18,7 +18,7 @@
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
-      "Required": false
+      "IsRequired": false
     }
   ]
 }

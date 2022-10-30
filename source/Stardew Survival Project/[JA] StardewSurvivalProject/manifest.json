@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NeroYuki/StardewSurvivalProject
+**
+*************************************************/
+
+{
+  "Name": "StardewSurvivalProject Items",
+  "Author": "NeroYuki",
+  "Version": "0.3.0-alpha",
+  "Description": "Json Assets for new items added to support StardewSurvivalProject's new mechanic",
+  "UniqueID": "neroyuki.rlvalleyitems",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  },
+  "MinimumApiVersion": "3.12.0",
+  "UpdateKeys": []
+}
