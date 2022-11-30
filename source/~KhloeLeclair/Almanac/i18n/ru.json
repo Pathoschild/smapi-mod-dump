@@ -34,6 +34,15 @@
 	"crop.paddy": "орошаемые культуры",
 
 	"crop.using-none": "Сроки и даты роста указаны с учетом того, что у вас нет удобрений или навыка.",
+
+	"page.crop.seed-filter": "Фильтровать по SEMEN",
+	"page.crop.seed-filter.disabled": "Отключено",
+	"page.crop.seed-filter.inventory": "В инвенторе",
+	"page.crop.seed-filter.owned": "В собственности",
+
+	"crop.seed-filter": "Показать только имеющиеся семена",
+	
+	"crop.using-none": "Следующие сроки и даты выращивания предполагают, что у вас нет удобрений или навыков.",
 	"crop.using-agri": "Сроки и даты роста указаны с учетом того, что вы {{agriculturist}}.",
 	"crop.using-speed": "Сроки и даты роста указаны с учетом использования {{fertilizer}}.",
 	"crop.using-both": "Сроки и даты роста указаны с учетом того, что вы {{agriculturist}} и используете {{fertilizer}}.",
@@ -46,6 +55,7 @@
 	"crop.regrow-time": "Дает урожай каждые {{count}} дня.",
 	"crop.paddy-note": "Растет быстрее вблизи воды.",
 	"crop.giant-note": "Может вырасти до гигантских размеров.",
+	"crop.giant-hover": "@Bgiant size@b",
 	"crop.trellis-note": "Растет на подпорках.",
 
 	"page.weather": "Прогноз погоды",
@@ -59,11 +69,7 @@
 	"festival.when-times": "{{start}} до {{end}}",
 	"festival.where": "Где:",
 	"festival.date": "Дата:",
-
-	"festival.location.Town": "Город Пеликан",
-	"festival.location.Beach": "Пляж",
-	"festival.location.Forest": "Лес Синдерсэп",
-
+	
 	"weather.sunny": "Солнечно",
 	"weather.rain": "Дождь",
 	"weather.debris": "Ветер",
@@ -94,6 +100,7 @@
 	"page.fortune.event.witch": "Ведьмы устраивают свой шабаш.",
 	"page.fortune.event.meteorite": "По всей республике Фернгилл ожидаются метеоритные дожди",
 	"page.fortune.event.owl": "Окутанные тайной, каменные стражи спускаются в долину.",
+	"page.fortune.event.ufo": "Странные существа с неба пролетают над Фернгиллом.",
 
 	"page.mines": "Подземелье",
 	"page.mines.about": "Ниже приведена прогнозируемая активность монстров на этажах для этого сезона:",
@@ -122,11 +129,76 @@
 	"page.notices.birthday.no-s": "У {{name}} день рождения!",
 	"page.notices.birthday.s": "У {{name}} день рождения!",
 
+	"page.notices.merchant": "The Traveling Merchant will be in town.",
+	"page.notices.merchant.stock": "The Traveling Merchant will be selling:",
+
+	"page.notices.train": "A train is scheduled to pass the station at {{time}}.",
+	
+	// Fishing Page
+
+	"page.fish": "Рыболовство",
+	"page.fish.aquarium.none": "Это не может быть помещено в аквариум.",
+	"page.fish.caught": "Вы поймали @B{{count}}@b штук.",
+	"page.fish.caught.not": "Вы не ловили это ранее.",
+
+	// TL Note: You can use {{big_cm}}, {{min_cm}}, and {{max_cm}} instead of _inch.
+	"page.fish.size": "Ваш рекордный улов @B{{big_inch}}\"@b.",
+	"page.fish.size.range": "Она длинной от @B{{min_inch}}\"@b до @B{{max_inch}}\"@b.",
+
+	"page.fish.weather.Sunny": "{{fish}} можно поймать только в солнечную погоду.",
+	"page.fish.weather.Rainy": "{{fish}} можно поймать только в дождливую погоду.",
+	"page.fish.weather.Any": "{{fish}} всегда активен, в дождь.",
+	"page.fish.level": "Вам нужен {{skill}} уровень @B{{level}}@b что бы поймать это.",
+	"page.fish.legendary": "{{fish}} легендарная рыба.",
+	"page.fish.time.all": "Можно поймать в любое время суток.",
+	"page.fish.time": "Можно поймать с @B{{start}}@b до @B{{end}}@b.",
+	"page.fish.time.many": "Можно поймать за следующие промежутки времени: {{spans}}.",
+	"page.fish.time.range": "с @B{{start}}@b до @B{{end}}@b",
+	"page.fish.locations": "Места",
+	"page.fish.seasons.all": "Все сезоны",
+	"page.fish.locations.none": "Эта рыба не имеет данных о местонахождении.",
+	"page.fish.pond": "Разведение рыбы",
+	"page.fish.pond.none": "{{fish}} не может быть помещен в пруд.",
+	"page.fish.pond.start": "",
+	"page.fish.filter.weather": "Фильтровать по Погоде",
+	"page.fish.filter.none": "Нефильтрованно",
+	"page.fish.none": "Нет рыбы, соответствующей вашим текущим фильтрам.",
+	"page.fish.nothing": "Здесь нихуя нет, уёбывай",
+	"fish.weather.Any": "В любую",
+	"fish.weather.Rainy": "Дождливую",
+	"fish.weather.Sunny": "Солнечную",
+	"page.fish.filter.type": "Фильтр по типу",
+	"page.fish.filter.type.trap": "Отлов (крабовый мешок)",
+	"page.fish.filter.type.caught": "Рыбалка (удочка)",
+	"page.fish.filter.caught": "Фильтр по пойманным",
+	"page.fish.filter.true": "Да",
+	"page.fish.filter.false": "Нет",
+	"page.fish.filter.location": "Фильтр по текущему местоположению",
+	"page.fish.filter.now": "Да, этот сезон",
+	"page.fish.location.fresh": "{{fish}} живёт в прессной воде.",
+	"page.fish.location.ocean": "{{fish}} живёт в солёной воде.",
+	
 	// Settings
 
+	"settings.theme": "Тема",
+	"settings.theme-desc": "Эта тема будет использоваться для меню Альманаха.",
+
+	"theme.automatic": "Автоматически",
+	"theme.default": "Стандартно",
+	
 	"settings.button": "Показывать кнопку Альманаха",
 	"settings.button-desc": "Добавляет в меню инвентаря кнопку для открытия Альманаха.",
 
+	"settings.button.Disabled": "Отключено",
+	"settings.button.LeftTop": "Лево-верх меню",
+	"settings.button.LeftBottom": "Лево-низ меню",
+	"settings.button.OrganizeRight": "Справо от Сортировать",
+	"settings.button.TrashRight": "Справа от Мусорки",
+	"settings.button.TrashDown": "Под Мусоркой",
+
+	"settings.unlimited": "Безлимитно",
+	"settings.days": "{{count}} дней",
+	
 	"settings.available": "Альманах доступен всегда",
 	"settings.available-desc": "Альманах будет доступен всегда, независимо от того, получили ли вы его копию или нет.",
 
@@ -136,6 +208,9 @@
 	"settings.magic": "Волшебная страница",
 	"settings.magic-desc": "Если эта функия включена, волшебная страница всегда будет доступна и не требовать события с Волшебником для активации.",
 
+	"settings.forecast-length": "Длина прогноза",
+	"settings.forecast-length.desc": "Прогноз на столько-то дней вперед.",
+	
 	"settings.weather.deterministic": "Конкретизируемая погода",
 	"settings.weather.deterministic-desc": "Для работы прогноза погоды, Альманах заменяет расчет погоды на иной, который использует предсказуемую случайность. Если это вызывает проблемы, вы можете отключить эту функцию. Однако это приведет к отключению расширенного прогноза погоды.",
 
@@ -177,8 +252,21 @@
 
 	"settings.mines": "Страница: Подземелье",
 
+	"settings.fish": "Страница: Рыболовство",
+	"settings.fish.show-tank": "Предпросмотр",
+	"settings.fish.show-tank-desc": "Если эта функция включена, на странице Рыбалка будет показано, как каждая рыба выглядит в аквариуме..",
+
+	"settings.fish.decorate-tank": "Декорации Аквариума",
+	"settings.fish.decorate-tank-desc": "При включении этой функции предварительный просмотр аквариума будет содержать несколько декоративных элементов в дополнение к рыбам.",
+
+	"settings.fish.legendary": "Показать легендарную рыбу",
+	"settings.fish.legendary-desc": "Когда эта функция включена, легендарные рыбы также будут занесены в Альманах.",
+
 	"settings.notices": "Страница: Напоминалки",
 	
+	"settings.notices.trains": "Показать Поезда",
+	"settings.notices.trains-desc": "Если эта функция включена, расписание поездов будет публиковаться в Местных извещениях. Это можно использовать в качестве альтернативы странице Расписание поездов.",
+
     "settings.notices.anniversaries": "Показывать Свадьбы и Годовщины",
 	"settings.notices.anniversaries-desc": "Отображение Свадебного дня и Годовщины всех игроков на странице Напоминалки.",
 
@@ -187,12 +275,21 @@
 	"settings.notices.gathering": "Показывать Собирательство",
 	"settings.notices.gathering-desc": "Отображение морошки, радужных ракушек и подобного на странице Напоминалки.",
 
+	"settings.notices.merchant": "Показать Странствующий торговец",
+	"settings.notices.merchant-desc": "When enabled, visits from the Traveling Merchant will be listed in Local Notices. If you wish, we can show the items they'll have as well.",
+	"settings.notices.merchant.Disabled": "Отключено",
+	"settings.notices.merchant.Visit": "Показать только дни визита",
+	"settings.notices.merchant.Stock": "Показать дни визита и запасы",
+
 	"settings.restore-state": "Создать закладку",
 	"settings.restore-state.desc": "Альманах будет открыт на той странице, на которой он был закрыт в последний раз.",
 
 	"settings.cycle-time": "Время цикла",
 	"settings.cycle-time.desc": "Когда в определенный день необходимо показать несколько изображений, каждое изображение отображается в течение этого количества секунд.",
 
+	"settings.debug": "Режим отладки",
+	"settings.debug.desc": "При включении этого режима в Альманахе может отображаться некоторая дополнительная информация, полезная для отладки. Режим отладки также позволяет нажать F5 для обновления данных.",
+	
 	// Events
 
 	// Pierre at Farm
@@ -214,5 +311,48 @@
 	"event.11022001.2": "У меня есть кое-что полезное для тебя.",
 	"event.11022001.3": "Получена копия 'Альманаха Имбирного острова'.",
 	"event.11022001.4": "Пускай это и мелочь, но знать, какая будет погода - это ведь здорово. Знаешь, некоторые рыбы любят дождливую погоду.",
-	"event.11022001.5": "Что ж, не буду тебя задерживать. Попутного ветра, @."
+	"event.11022001.5": "Что ж, не буду тебя задерживать. Попутного ветра, @.",
+
+	// Locations
+
+	"location.WitchSwamp": "Ведьмино болото",
+	"location.BugLand": "Логово жуков-мутантов",
+
+	"location.Caldera": "Остров Джинджер (Кальдера вулкан)",
+	"location.IslandWest": "Западный остров Джинджер",
+	"location.IslandNorth": "Северный остров Джинджер",
+	"location.IslandSouth": "Южный остров Джинджер",
+	"location.IslandSouthEast": "Юговосточный остров Джинджер",
+	"location.IslandSouthEastCave": "Юговосточный остров Джинджер (Пещера)",
+	"location.IslandEast": "Восточный остров Джинджер",
+
+	"location.sub-any": "Любое",
+	"location.sub-floor": "Пол {{floor}}",
+
+	"location.Forest.River": "Река",
+	"location.Forest.Pond": "Водоём",
+
+	"location.Island.Ocean": "Океан",
+	"location.Island.Freshwater": "Прессный",
+
+	// Maps: Stardew Aquarium
+	"location.Custom_ExteriorMuseum": "Stardew Aquarium",
+	"location.ExteriorMuseum": "Stardew Aquarium",
+
+	// Maps: Stardew Valley Expanded
+	"location.Custom_AdventurerSummit": "Саммит искателей приключений",
+	"location.Custom_BlueMoonVineyard": "Виноградник Голубая луна",
+	"location.Custom_BlueMoonVineyard.0": "Океан",
+	"location.Custom_BlueMoonVineyard.1": "Река",
+	"location.Custom_CrimsonBadlands": "Багровые пустоши",
+	"location.Custom_FableReef": "Сказочный риф",
+	"location.Custom_ForestWest": "Западный Синдерсапский лес",
+	"location.Custom_Highlands": "Высокогорье",
+	"location.Custom_Highlands.0": "Руины",
+	"location.Custom_Highlands.1": "Река",
+	"location.Custom_HighlandsCavern": "Высокогорье (пещера)",
+	"location.Custom_JunimoWoods": "Лес Джунимо",
+	//"location.Custom_MorrisProperty": "",
+	"location.Custom_ShearwaterBridge": "Мост Шеарвотер",
+	"location.Custom_SpriteSpring2": "Спрайт Спринг"
 }

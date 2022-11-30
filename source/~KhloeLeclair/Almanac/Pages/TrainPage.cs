@@ -66,7 +66,7 @@ public class TrainPage : BasePage<BaseState>, ICalendarPage {
 
 				builder.Text("\n\n");
 				builder.Text($"{sdate.ToLocaleString(withYear: false)}\n", font: Game1.dialogueFont);
-				builder.Text($"  {TimeHelper.FormatTime(time)}");
+				builder.Text($"  {Mod.FormatTime(time)}");
 			}
 		}
 
@@ -140,7 +140,7 @@ public class TrainPage : BasePage<BaseState>, ICalendarPage {
 		if (time < 0)
 			return;
 
-		Menu.HoverText = TimeHelper.FormatTime(time);
+		Menu.HoverText = Mod.FormatTime(time);
 	}
 
 	#endregion

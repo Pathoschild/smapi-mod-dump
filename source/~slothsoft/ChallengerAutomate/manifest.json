@@ -11,7 +11,7 @@
 {
   "Name": "ChallengerAutomate",
   "Author": "Slothsoft",
-  "Version": "0.5.0",
+  "Version": "1.0.0",
   "Description": "Hooks the Challenger mod to Automate.",
   "UniqueID": "Slothsoft.ChallengerAutomate",
   "EntryDll": "ChallengerAutomate.dll",
@@ -20,7 +20,7 @@
     "Github:slothsoft/stardew-challenger"
   ],
   "Dependencies": [
-    { "UniqueID": "Slothsoft.Challenger", "MinimumVersion": "0.5.0" },
+    { "UniqueID": "Slothsoft.Challenger", "MinimumVersion": "1.0.0" },
     { "UniqueID": "Pathoschild.Automate", "MinimumVersion": "1.27.0" }
   ]
 }

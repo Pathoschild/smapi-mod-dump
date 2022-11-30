@@ -280,7 +280,6 @@ public static class StringTokenizer {
 			Date: date ?? Game1.Date,
 			TimeOfDay: time ?? Game1.timeOfDay,
 			Ticks: tick ?? Game1.ticks,
-			PickedValue: picked ?? rnd.NextDouble(),
 			Farmer: who ?? Game1.player,
 			Location: location,
 			Item: item,

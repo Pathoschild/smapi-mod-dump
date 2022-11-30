@@ -6,9 +6,9 @@ mods:
    Farmtronics
 
 latest commit:
-   commit b10b837d18f14cbcd38d75680d0410dee3a66064
-   Author: Joe Strout <joe@strout.net>
-   Date:   Sat Oct 22 17:12:39 2022 -0700
+   commit 9a104ffe35a6d1887ea84b91db5c425365296be9
+   Author: JoeStrout <joe@strout.net>
+   Date:   Mon Nov 28 18:21:22 2022 -0700
    
-       Added `stackTrace` which was somehow missing.
+       Update README.md
    

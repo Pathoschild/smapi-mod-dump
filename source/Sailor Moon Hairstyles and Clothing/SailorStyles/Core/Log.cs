@@ -12,7 +12,7 @@ namespace SailorStyles
 {
 	internal class Log
 	{
-		internal static void D(string str, bool isDebug=true)
+		internal static void D(string str, bool isDebug = true)
 		{
 			ModEntry.Instance.Monitor.Log(str,
 				isDebug ? StardewModdingAPI.LogLevel.Debug : StardewModdingAPI.LogLevel.Trace);

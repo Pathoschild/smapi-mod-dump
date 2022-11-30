@@ -2,21 +2,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AssemblyName>ThemeManager</AssemblyName>
-		<Version>0.1.0</Version>
+		<Version>0.5.0</Version>
 		<RootNamespace>Leclair.Stardew.ThemeManager</RootNamespace>
 
 		<EnableHarmony>true</EnableHarmony>
 		<EnableTranslation>true</EnableTranslation>
+    
 	</PropertyGroup>
 	
 	<Import Project="..\Common\Common.projitems" Label="Shared" />
 	<Import Project="..\_build\common.targets" />
 
+  <PropertyGroup>
+    <EnableModZip>True</EnableModZip>
+  </PropertyGroup>
+  
 	<ItemGroup>
 		<Reference Include="SMAPI.Toolkit">
 			<HintPath>$(GamePath)\smapi-internal\SMAPI.Toolkit.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>$(GamePath)\SkiaSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
 	</ItemGroup>
 
 </Project>

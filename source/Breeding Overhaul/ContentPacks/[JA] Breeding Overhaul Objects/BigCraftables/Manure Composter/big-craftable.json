@@ -1,0 +1,37 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/StarAmy/BreedingOverhaul
+**
+*************************************************/
+
+{
+  "Name": "Manure Composter",
+  "Description": "A place to process livestock manure into usable fertilizer.",
+  "Category": "Crafting",
+  "ProvidesLight": false,
+  "ReserveExtraIndexCount": 3,
+  "Recipe":
+      {
+     "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": "Manure",
+            "Count": 5,
+        },
+        {
+            "Object": "Hay",
+            "Count": 10,
+        }, 
+        {
+            "Object": "Hardwood",
+            "Count": 10,
+        },
+      ],
+      "IsDefault":true,
+      "CanPurchase": false,
+  },
+}

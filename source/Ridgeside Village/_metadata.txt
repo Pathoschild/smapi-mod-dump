@@ -6,9 +6,12 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit fb72956d398e8e1004f0bb96054200f1f011b8fb
-   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Fri Oct 21 08:24:07 2022 +0800
+   commit 8129aaf40b70596b7189f2e4c498e26e8c8c335a
+   Merge: 65743da1 882d4209
+   Author: cl4r3 <ccathanlon@gmail.com>
+   Date:   Tue Nov 22 14:21:10 2022 -0500
    
-       adjustments on Yuuma's portrait
+       Merge pull request #157 from ellipszist/main
+       
+       typo
    

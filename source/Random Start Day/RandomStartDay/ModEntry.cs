@@ -8,17 +8,16 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Enums;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace RandomStartDay
@@ -28,9 +27,8 @@ namespace RandomStartDay
     public class ModEntry : Mod
     {
         private ModConfig config;
-
         private int dayOfMonth;
-        private String currentSeason = "spring";
+        private string currentSeason = "spring";
 
         private bool introEnd = true; // for asset replacing
         public bool winter28 = false;
@@ -49,6 +47,15 @@ namespace RandomStartDay
             helper.Events.Content.AssetRequested += this.Content_AssetRequested;
             helper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
             helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
+
+            var harmony = new Harmony(this.ModManifest.UniqueID);
+            string tipMethodName = Helper.Reflection.GetMethod(new TV(), "getTodaysTip").MethodInfo.Name;
+            HarmonyMethodPatches.Initialize(helper, Monitor);
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Objects.TV), tipMethodName),
+                postfix: new HarmonyMethod(typeof(HarmonyMethodPatches), nameof(HarmonyMethodPatches.changeTodaysTip))
+                ); 
         }
 
         // EVENTS
@@ -241,7 +248,7 @@ namespace RandomStartDay
                         break;
                     default:
                         {
-                            this.Monitor.Log("array \"allowedSeasons\" contains invalid value(s). Valid values are: \"spring\", \"summer\", \"fall\", \"winter\". This mod did NOT work.", LogLevel.Error);
+                            Monitor.Log("array \"allowedSeasons\" contains invalid value(s). Valid values are: \"spring\", \"summer\", \"fall\", \"winter\". This mod did NOT work.", LogLevel.Error);
                             introEnd = true;
                             return;
                         }

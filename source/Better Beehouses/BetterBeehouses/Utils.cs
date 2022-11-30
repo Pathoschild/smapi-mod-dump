@@ -89,5 +89,25 @@ namespace BetterBeehouses
             }
             return new string(r[..len]).ToLowerInvariant();
         }
-    }
+		public static string GetChunk(this string str, char delim, int which)
+		{
+			int i = 0;
+			int n = 0;
+			int z = 0;
+			while (i < str.Length)
+			{
+				if (str[i] == delim)
+				{
+					if (n == which)
+						return str[z..i];
+					n++;
+					z = i + 1;
+				}
+				i++;
+			}
+			if (n == which)
+				return str[z..i];
+			return "";
+		}
+	}
 }

@@ -75,22 +75,29 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 });
             }
 
-            if (e.NameWithoutLocale.BaseName.Contains("CFL_Icon/"))
+            if (e.NameWithoutLocale.BaseName.StartsWith("CFL_Icon/"))
             {
                 string id = e.NameWithoutLocale.BaseName.Split("CFL_Icon/")[1];
                 CustomFarm customFarm = CustomFarm.get(id);
 
-                e.LoadFrom(delegate () { return customFarm.Icon; }, AssetLoadPriority.Medium);
+                e.LoadFrom(delegate () {
+                    if (customFarm.Icon != null)
+                        return customFarm.Icon;
+                    else
+                        return customFarm.loadIconTexture();
+                }, AssetLoadPriority.Low);
 
                 return;
             }
 
-            if (e.NameWithoutLocale.BaseName.Contains("CFL_WorldMapTexture/"))
+            if (e.NameWithoutLocale.BaseName.StartsWith("CFL_WorldMap/"))
             {
-                string id = e.NameWithoutLocale.BaseName.Split("CFL_WorldMapTexture/")[1];
+                string id = e.NameWithoutLocale.BaseName.Split("CFL_WorldMap/")[1];
                 CustomFarm customFarm = CustomFarm.get(id);
 
-                e.LoadFrom(delegate () { return customFarm.WorldMapOverlay; }, AssetLoadPriority.Medium);
+                e.LoadFrom(delegate () {
+                    return customFarm.loadWorldMapTexture();
+                }, AssetLoadPriority.Low);
 
                 return;
             }

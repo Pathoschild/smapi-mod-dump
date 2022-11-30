@@ -225,7 +225,6 @@ namespace RangeHighlight {
                 Item item = Game1.player.CurrentItem;
                 string itemName = item.Name.ToLower();
                 int itemID = item.ParentSheetIndex;
-                Utility.IsNormalObjectAtParentSheetIndex(item, itemID);
                 for (int i = 0; i < itemHighlighters.Count; ++i) {
                     if (!itemHighlighterStartCalled[i]) {
                         itemHighlighters[i].onStart?.Invoke();
@@ -233,12 +232,27 @@ namespace RangeHighlight {
                     }
                     var ret = itemHighlighters[i].highlighter(item, itemID, itemName);
                     if (ret != null) {
-                        var cursorTile = GetCursorTile();
-                        AddHighlightTiles(ret.Item1, ret.Item2, (int)cursorTile.X, (int)cursorTile.Y);
                         if (itemHighlighters[i].highlightOthersWhenHeld) {
                             runItemHighlighter[i] = true;
                         }
                         iterateItems = true;
+                        var cursorTile = GetCursorTile();
+                        var actionTile = cursorTile;
+                        bool mouseHidden = !Game1.wasMouseVisibleThisFrame || Game1.mouseCursorTransparency == 0f;
+                        bool showAtActionTile = config.HighlightActionLocation == HighlightActionLocationStyle.Always
+                            || config.HighlightActionLocation == HighlightActionLocationStyle.WhenMouseHidden && mouseHidden;
+                        if (mouseHidden || !Utility.tileWithinRadiusOfPlayer((int)cursorTile.X, (int)cursorTile.Y, 1, Game1.player)) {
+                            var grabTile = Game1.player.GetGrabTile();
+                            var oldVal = Game1.isCheckingNonMousePlacement;
+                            Game1.isCheckingNonMousePlacement = true;
+                            actionTile = Utility.GetNearbyValidPlacementPosition(Game1.player, Game1.currentLocation, item, (int)grabTile.X * 64 + 32, (int)grabTile.Y * 64 + 32) / 64;
+                            Game1.isCheckingNonMousePlacement = oldVal;
+                        }
+                        if (showAtActionTile) AddHighlightTiles(ret.Item1, ret.Item2, (int)actionTile.X, (int)actionTile.Y);
+                        if ((!showAtActionTile || cursorTile != actionTile)
+                            && !mouseHidden) {
+                            AddHighlightTiles(ret.Item1, ret.Item2, (int)cursorTile.X, (int)cursorTile.Y);
+                        }
                         break;
                     }
                 }

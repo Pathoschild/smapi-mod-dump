@@ -11,34 +11,37 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SailorStyles.Editors
 {
-	internal class HairstylesManager : IAssetEditor, IAssetLoader
+	internal static class HairstylesManager
 	{
-		private IModHelper Helper => ModEntry.Instance.Helper;
+        internal static bool TryLoad(AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentHairstyleImagePath))
+            {
+                e.LoadFromModFile<Texture2D>(ModConsts.LocalHairstylesSpritesPath + ".png", AssetLoadPriority.Exclusive);
+                return true;
+            }
+            return false;
+        }
 
-		public bool CanLoad<T>(IAssetInfo asset)
-		{
-			return asset.AssetNameEquals(ModConsts.GameContentHairstyleImagePath);
-		}
+        internal static bool TryEdit(AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentHairstyleDataPath))
+            {
+                e.Edit(Edit, AssetEditPriority.Late);
+                return true;
+            }
+            return false;
+        }
 
-		public T Load<T>(IAssetInfo asset)
-		{
-			return (T)(object)Helper.Content.Load
-				<Texture2D>
-				(ModConsts.LocalHairstylesSpritesPath + ".png");
-		}
-
-		public bool CanEdit<T>(IAssetInfo asset)
-		{
-			return asset.AssetNameEquals(ModConsts.GameContentHairstyleDataPath);
-		}
-
-		public void Edit<T>(IAssetData asset)
+		internal static void Edit(IAssetData asset)
 		{
 			const int styleW = 16;
 			const int styleH = 128;
@@ -52,7 +55,7 @@ namespace SailorStyles.Editors
 				<Texture2D>
 				(ModConsts.GameContentHairstyleImagePath);
 			int count = 0;
-			Color[] pixelData = new Color[styleW * styleH];
+            Color[] pixelData = GC.AllocateUninitializedArray<Color>(styleW * styleH);
 
 			// Find index of first non-empty slot in custom hairstyles spritesheet
 			for (int x = (hairstylesTexture.Width / styleW) - 1; x >= 0 && count == 0; --x)
@@ -92,9 +95,12 @@ namespace SailorStyles.Editors
 				int y = (int)(i * 0.125) * 8;
 				newData.Add(styleId, $"{ModConsts.HairstylesSheetId}/{x}/{y}/{hasLeftStyle}/{coveredStyleId}/{isBaldStyle}");
 			}
-			Log.D(newData.Aggregate("HairData:", (total, cur) => $"{total}\n{cur.Key}: {cur.Value}"),
-				ModEntry.Config.DebugMode);
-			asset.ReplaceWith(data.Concat(newData).ToDictionary(pair => pair.Key, pair => pair.Value));
+
+            if (ModEntry.Config.DebugMode)
+                Log.D($"HairData: {string.Join('\n', newData.Select((kvp) => $"{kvp.Key}: {kvp.Value}"))}");
+
+            foreach (var (key, value) in newData)
+                data.Add(key, value);
 		}
 	}
 }

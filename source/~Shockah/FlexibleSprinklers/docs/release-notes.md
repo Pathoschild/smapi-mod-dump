@@ -10,6 +10,18 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.4.1
+Released 13 November 2022.
+
+* Fixed a bug where tiles were being watered twice if the "Vanilla > Cluster" behavior was chosen.
+
+## 1.4.0
+Released 13 November 2022.
+
+* Reimplemented watering of tiles without a direct path to a sprinkler in the "Cluster" behavior (usually only a case if the behavior is set specifically to "Vanilla > Cluster").
+* Added an option to additionally water the tiles the sprinklers are at.
+* The mod now ignores unknown location sprinklers that are the current player item (UI Info Suite compatibility).
+
 ## 1.3.3
 Released 18 September 2022.
 

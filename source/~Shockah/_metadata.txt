@@ -16,9 +16,9 @@ mods:
    XP Display
 
 latest commit:
-   commit 485aee0656e9087f0fa9969ed4955ea5cc9fe385
+   commit e92a104e78ea90b592288b6dcca147df78554518
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Thu Sep 22 21:47:08 2022 +0200
+   Date:   Fri Nov 18 18:28:04 2022 +0100
    
-       EarlyGingerIsland: Updated documents
+       Solution fixes
    

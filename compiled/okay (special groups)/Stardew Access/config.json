@@ -44,5 +44,6 @@
   "VerboseCoordinates": true,
   "SnapMouse": true,
   "Warning": true,
-  "TTS": true
+  "TTS": true,
+  "TrackDroppedItems": true
 }

@@ -1,0 +1,5 @@
+Copy the files in the libraries folder according to you OS and paste them into the Stardew Valley root folder (the folder containing the Mods folder and the StardewModdingAPI).
+
+This is a one time process, you won't have to repeat this after updating the mod to next version.
+
+TTS should work after this and in case it doesn't, try copying the files over to the mod's folder as well.

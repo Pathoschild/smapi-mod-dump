@@ -1,0 +1,11 @@
+{
+	"ID": "TutorialMenu",
+
+	"Patches": {
+		"#TutorialMenu:draw(SpriteBatch)": {
+			"Colors": {
+				"Blue": { "*": "$TutorialHover" }
+			}
+		}
+	}
+}

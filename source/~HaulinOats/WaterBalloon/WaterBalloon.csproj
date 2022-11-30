@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Stardew Valley" />
+    <None Remove="MonoGame.Framework" />
+    <None Remove="StardewModdingAPI" />
+    <None Remove="Pathoschild.Stardew.ModBuildConfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Stardew Valley">
+      <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Stardew Valley\Contents\MacOS\Stardew Valley.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Stardew Valley\Contents\MacOS\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Stardew Valley\Contents\MacOS\StardewModdingAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
+  </ItemGroup>
+</Project>

@@ -18,5 +18,7 @@ namespace StardewSurvivalProject.source.model
 {
     public class Mood
     {
+        public double value = 0;
+
     }
 }

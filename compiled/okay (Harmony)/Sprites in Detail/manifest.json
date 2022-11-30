@@ -1,0 +1,16 @@
+﻿{
+  "Name": "SpritesInDetail",
+  "Author": "BleakCodex",
+  "Version": "0.4.0",
+  "Description": "Higher pixel sprites",
+  "UniqueID": "BleakCodex.SpritesInDetail",
+  "EntryDll": "SpritesInDetail.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:14487" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.22.0"
+    }
+  ]
+}

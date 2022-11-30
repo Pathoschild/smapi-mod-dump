@@ -30,7 +30,12 @@ namespace RangeHighlight {
         public override void Entry(IModHelper helper) {
             this.helper = helper;
             I18n.Init(helper.Translation);
-            config = helper.ReadConfig<ModConfig>();
+            try {
+                config = helper.ReadConfig<ModConfig>();
+            } catch (Exception e) {
+                Monitor.Log($"Error reading configuration file: {e}\nConfiguration will be replaced with the default configuration, overwriting your old configuration file on the next save.", LogLevel.Warn);
+                config = new ModConfig();
+            }
             highlighter = new RangeHighlighter(this);
             api = _api_private = new RangeHighlightAPI(this);
             defaultShapes = new DefaultShapes(api);

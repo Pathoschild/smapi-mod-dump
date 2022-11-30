@@ -7,9 +7,12 @@ mods:
    Challenger → Automate
 
 latest commit:
-   commit cdcb139283a4047dec338be3134c19f805564cf6
-   Author: slothsoft <admin@slothsoft.de>
-   Date:   Sat Oct 29 19:18:20 2022 +0200
+   commit b3706bf528ff5dea928b889b1254b7bca2d5ab94
+   Merge: cdcb139 1999b62
+   Author: Slothsoft <admin@slothsoft.de>
+   Date:   Fri Nov 4 16:21:14 2022 +0100
    
-       [#69] fix the documentation some more
+       Merge pull request #84 from slothsoft/feature/release
+       
+       Release Features
    

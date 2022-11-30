@@ -18,6 +18,12 @@
     "config.overlay.max-width.desc": "Largeur maximale de l'overlay en pixels",
     "config.overlay.max-items": "Éléments max",
     "config.overlay.max-items.desc": "Nombre maximum d'éléments à afficher dans l'overlay (nombre de ligne)",
+    "config.overlay.zoom": "Taille du zoom avec",
+    "config.overlay.zoom.desc": "Choisissez laquelle des options de zoom du jeu contrôle la taille de l'overlay",
+    "config.overlay.x-offset": "Décalage X",
+    "config.overlay.x-offset.desc": "Décalage X de l'overlay en pixels à partir du bord gauche de l'écran",
+    "config.overlay.y-offset": "Décalage Y",
+    "config.overlay.y-offset.desc": "Décalage Y de l'overlay en pixels à partir du bord supérieur de l'écran",
 
     // Superposition
     "overlay.header": "Liste To-Dew",

@@ -1,0 +1,68 @@
+{
+    "Format": "1.20.0",
+   	"ConfigSchema": {
+ 		"ReskinFemaleDuck": {
+        	"AllowValues": "True, False",
+        	"Default": "True",
+      	},
+      	"ReskinFemaleGoat": {
+        	"AllowValues": "True, False",
+        	"Default": "True",
+    	},
+      	"ReskinDuckFeather": {
+        	"AllowValues": "True, False",
+        	"Default": "True",
+      	},
+   },
+    "Changes": [
+		{
+			"Action": "Load",
+            "Target": "Animals/Duck",
+            "FromFile": "assets/FemaleDuck.png",
+            "When": {
+            	"ReskinFemaleDuck": "True",
+         }
+		},
+		{
+			"Action": "Load",
+            "Target": "Animals/Goat",
+            "FromFile": "assets/FemaleGoat.png",
+            "When": {
+            	"ReskinFemaleGoat": "True",
+         }
+		},	
+		{
+            "Action": "EditImage",
+            "Target": "Maps/springobjects",
+            "FromFile": "assets/duckfeather.png",
+            "FromArea": {
+                "X": 0,
+                "Y": 0,
+                "Width": 16,
+                "Height": 16
+            },
+            "ToArea": {
+                "X": 192,
+                "Y": 288,
+                "Width": 16,
+                "Height": 16
+            },
+            "When": {
+            	"ReskinDuckFeather": "True",
+         }
+        },
+		{
+			"Action": "EditData",
+			"Target": "Data/FarmAnimals",
+			"Entries": {
+				"Blue Chicken": "1/3/{{spacechase0.JsonAssets/ObjectId:Blue Egg}}/{{spacechase0.JsonAssets/ObjectId:Large Blue Egg}}/cluck/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/7/4/null/641/800/Blue Chicken/Coop",
+				"Golden Chicken": "1/3/928/{{spacechase0.JsonAssets/ObjectId:Large Golden Egg}}/cluck/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/7/4/null/641/800/Blue Chicken/Coop",
+				"Void Chicken": "1/3/305/{{spacechase0.JsonAssets/ObjectId:Large Void Egg}}/cluck/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/7/4/null/641/800/Blue Chicken/Coop",
+				"Ostrich": "7/7/289/{{spacechase0.JsonAssets/ObjectId:Large Ostrich Egg}}/ostrich/8/32/48/32/8/32/48/32/0/false/Barn/32/32/32/32/3/8/null/642/16000/Ostrich/Barn",	
+				"Duck": "2/5/442/{{spacechase0.JsonAssets/ObjectId:Large Duck Egg}}/Duck/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/3/8/null/642/4000/Duck/Coop",
+				"Rabbit": "4/6/440/440/rabbit/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/10/5/null/643/8000/Rabbit/Coop",
+                "Dinosaur": "7/0/107/{{spacechase0.JsonAssets/ObjectId:Large Dinosaur Egg}}/none/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/4/7/null/641/1000/Dinosaur/Coop",
+			},
+		},
+	 ]
+}

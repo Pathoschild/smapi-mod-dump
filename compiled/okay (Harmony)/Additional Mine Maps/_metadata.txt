@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14595
+IDs: aedenthorn.AdditionalMineMaps
+update keys: Nexus:14595, GitHub:aedenthorn/StardewValleyMods

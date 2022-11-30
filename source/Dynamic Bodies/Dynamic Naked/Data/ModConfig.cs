@@ -20,5 +20,6 @@ namespace DynamicBodies.Data
     {
         public bool freecustomisation = false;
         public bool debugmsgs = false;
+        public bool adjustmaps = true;
     }
 }

@@ -27,7 +27,8 @@ public class CommunityCenterGoal : IGoal {
     }
     
     public bool IsCompleted(Difficulty difficulty) {
-        return Game1.netWorldState.Value.Bundles.Values.SelectMany(b => b).All(v => v);
+        var (finished, all) = GetProgressAsInts();
+        return finished >= all;
     }
     
     public void Start() {
@@ -43,6 +44,11 @@ public class CommunityCenterGoal : IGoal {
     }
 
     public string GetProgress(Difficulty difficulty) {
+        var (finished, all) = GetProgressAsInts();
+        return $"{(100 * finished / all):0} / 100%";
+    }
+    
+    private (int, int) GetProgressAsInts() {
         int finished, all;
         
         if (Game1.player.hasCompletedCommunityCenter()) {
@@ -59,7 +65,7 @@ public class CommunityCenterGoal : IGoal {
             finished = Game1.netWorldState.Value.Bundles.Values.SelectMany(b => b).Count(v => v);
             all = Game1.netWorldState.Value.Bundles.Values.SelectMany(b => b).Count();
         }
-        return $"{(100 * finished / all):0} / 100%";
+        return (finished, all);
     }
 
     private static bool[] GetMailsForCommunityCenter() {

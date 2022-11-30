@@ -1,0 +1,28 @@
+{
+    "Name": "Fertilized Large Dinosaur Egg",
+    "Description": "Fertilized Dinosaur Egg, inserted into the incubator for breeding.",
+    "Category": "Crafting",
+    "Edibility": -300,
+    "Price": 550,
+    "IsColored": false,
+    "Recipe": { 
+        "ResultCount": 1,
+         "Ingredients": 
+          [
+           {
+             "Object": "Dinosaur DNA",
+             "Count": 1,
+              },
+             {
+             "Object": "Large Dinosaur Egg",
+             "Count": 1,
+            }       
+            ],
+            "IsDefault": true,
+            },
+    "GiftTastes":
+    {
+        "Like": ["Shane"],
+		"Dislike": ["Alex", "Elliot", "Harvey", "Sam", "Sebastian", "Marnie", "Abigail", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Leo", "Lewis", "Linus", "Pam", "Pierre", "Robin", "Vincent", "Willy", "Wizard"]
+    },
+}

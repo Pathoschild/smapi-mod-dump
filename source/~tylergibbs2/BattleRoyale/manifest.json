@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Battle Royalley: Year 2",
+  "Author": "tylergibbs2",
+  "Version": "1.0.3",
+  "Description": "An homage to Ilyaki's original Battle Royalley.",
+  "UniqueID": "tylergibbs2.BattleRoyalleyYear2",
+  "EntryDll": "BattleRoyale.dll",
+  "MinimumApiVersion": "3.13",
+  "UpdateKeys": [ "GitHub:tylergibbs2/BattleRoyalley-Year2", "Nexus:9891" ]
+}

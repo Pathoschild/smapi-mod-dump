@@ -12,6 +12,7 @@ using System;
 using Netcode;
 using Slothsoft.Challenger.Api;
 using Slothsoft.Challenger.Challenges;
+using Slothsoft.Challenger.Common;
 using Slothsoft.Challenger.Models;
 using StardewModdingAPI.Events;
 using StardewValley.Network;
@@ -32,6 +33,8 @@ public abstract class BaseGoal<TProgress> : IGoal
         Progress = ReadProgressType();
     }
 
+    internal event EventHandler<TProgress> ProgressChanged;
+    
     private TProgress ReadProgressType() {
         return _netProgresses.GetOrRead(Id) ?? Activator.CreateInstance<TProgress>();
     }
@@ -39,6 +42,7 @@ public abstract class BaseGoal<TProgress> : IGoal
     protected void WriteProgressType(TProgress progress) {
         Progress = progress;
         _netProgresses.Write(Id, progress);
+        ProgressChanged(this, progress);
     }
 
     public virtual string GetDisplayName(Difficulty difficulty) {

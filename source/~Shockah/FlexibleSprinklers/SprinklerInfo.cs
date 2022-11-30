@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
+using Shockah.CommonModCode;
 using System;
 using System.Collections.Generic;
 
@@ -16,13 +16,18 @@ namespace Shockah.FlexibleSprinklers
 {
 	public readonly struct SprinklerInfo : IEquatable<SprinklerInfo>
 	{
-		public readonly IReadOnlySet<Vector2> Layout { get; init; }
+		public static SprinklerInfo Basic { get; private set; } = new SprinklerInfo(SprinklerLayouts.Basic);
+		public static SprinklerInfo Quality { get; private set; } = new SprinklerInfo(SprinklerLayouts.Quality);
+		public static SprinklerInfo Iridium { get; private set; } = new SprinklerInfo(SprinklerLayouts.Iridium);
+		public static SprinklerInfo IridiumWithPressureNozzle { get; private set; } = new SprinklerInfo(SprinklerLayouts.IridiumWithPressureNozzle);
+
+		public readonly IReadOnlySet<IntPoint> Layout { get; init; }
 
 		public readonly int Power { get; init; }
 
-		public SprinklerInfo(IReadOnlySet<Vector2> layout) : this(layout, layout.Count) { }
+		public SprinklerInfo(IReadOnlySet<IntPoint> layout) : this(layout, layout.Count) { }
 
-		public SprinklerInfo(IReadOnlySet<Vector2> layout, int power)
+		public SprinklerInfo(IReadOnlySet<IntPoint> layout, int power)
 		{
 			this.Layout = layout;
 			this.Power = power;

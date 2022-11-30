@@ -30,6 +30,11 @@
 		<ModZipPath>$(SolutionDir)\_releases</ModZipPath>
 	</PropertyGroup>
 
+	<!-- game starting -->
+	<PropertyGroup>
+		<StartArguments>--mods-path "$(ModSet)"</StartArguments>
+	</PropertyGroup>
+
 	<!-- non-release settings -->
 	<PropertyGroup Condition="$(Configuration) != 'Release'">
 		<EnableModZip>False</EnableModZip>
@@ -40,7 +45,7 @@
 	<!-- mod build package -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
 		<PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3" />
 		<Reference Include="Newtonsoft.Json">
 			<HintPath>$(GamePath)\smapi-internal\Newtonsoft.Json.dll</HintPath>

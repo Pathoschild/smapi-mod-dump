@@ -1,4 +1,5 @@
 {
   "freecustomisation": false,
-  "debugmsgs": false
+  "debugmsgs": false,
+  "adjustmaps": true
 }

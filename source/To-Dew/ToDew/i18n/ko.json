@@ -28,6 +28,12 @@
     "config.overlay.max-width.desc": "최대 오버레이 길이",
     "config.overlay.max-items": "최대 리스트",
     "config.overlay.max-items.desc": "오버레이에 띄울 수 있는 최대 리스트 갯수",
+    "config.overlay.zoom": "확대/축소 크기",
+    "config.overlay.zoom.desc": "오버레이의 크기를 제어하는 게임의 확대/축소 옵션을 선택하세요",
+    "config.overlay.x-offset": "X 오프셋",
+    "config.overlay.x-offset.desc": "X 화면 왼쪽 가장자리에서 오버레이의 오프셋(픽셀 단위)",
+    "config.overlay.y-offset": "Y 오프셋",
+    "config.overlay.y-offset.desc": "화면 상단 가장자리에서 오버레이의 Y 오프셋(픽셀 단위)",
 
     // Overlay
     "overlay.header": "To-Dew List",

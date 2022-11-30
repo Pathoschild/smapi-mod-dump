@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>InputTest</AssemblyName>
+    <Version>0.1.0</Version>
+    <RootNamespace>Leclair.Stardew.InputTest</RootNamespace>
+
+    <Name>Input Tester</Name>
+    <UniqueId>leclair.inputtest</UniqueId>
+    <Author>Khloe Leclair</Author>
+    <Description>A mod to test input events, so that casey will stop abusing Maru's Robot.</Description>
+    <MinimumApiVersion>3.16</MinimumApiVersion>
+    <UpdateKeys></UpdateKeys>
+  </PropertyGroup>
+
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
+  <Import Project="..\_build\common.targets" />
+
+</Project>

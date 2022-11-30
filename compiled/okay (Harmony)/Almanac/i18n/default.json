@@ -102,7 +102,12 @@
 	"page.mines.type.InfestedQuarry": "Quarry Infestation",
 	"page.mines.type.Dino": "Cavern Dinosaurs",
 
+	"page.error": "Error",
+	"page.error.desc": "An error occurred within this menu page. See the game log for more details.",
+
 	"page.notices": "Local Notices",
+
+	"page.notices.birthday-error": "There was an error loading the list of game characters. Birthdays cannot be displayed. See the log for more details.",
 
 	"page.notices.season": "{{item}} season goes from {{start}} through {{end}}.",
 	"page.notices.summer": "The summer ocean currents are expected to hit Pelican Beach with extra debris from the 12th to the 14th.",
@@ -167,6 +172,13 @@
 	"page.fish.filter.now": "Yes, This Season",
 	"page.fish.location.fresh": "{{fish}} lives in fresh water.",
 	"page.fish.location.ocean": "{{fish}} lives in salt water.",
+
+	"page.fish.filter.aquarium": "Filter by Aquarium Donation",
+	"page.fish.aquarium.true": "Donated Only",
+	"page.fish.aquarium.false": "Not Donated Only",
+
+	"page.fish.aquarium.donated": "You have donated this to Stardew Aquarium.",
+	"page.fish.aquarium.not-donated": "You have not donated this to Stardew Aquarium.",
 
 	// Settings
 
@@ -234,7 +246,7 @@
 	"settings.fortune.deterministic-desc": "In order for the daily luck predictions of the Almanac to work, we replace the calculation for daily fortune with one that uses a predictable source of randomness. If this is causing problems, you can disable the behavior here. However, doing so will disable the daily luck forecast.",
 
 	"settings.fortune.exact": "Show Luck Percentages",
-	"settings.fortune.exact-desc": "When enabled, the exact daily luck percentage will be displayed in Fortune calendar tooltips.",
+	"settings.fortune.exact-desc": "When enabled, the exact daily luck percentage will be displayed in Fortune calendar tool-tips.",
 
 	"settings.train": "Page: Train Schedule",
 
@@ -303,6 +315,13 @@
 	"event.11022001.4": "'s not much, but knowin' what the weather'll be is great. Some fish only come out in the rain, you know?",
 	"event.11022001.5": "Well, I best not keep yeh. Have a good day, @.",
 
+	// Times
+	// If this is set, we'll use a custom format for times displayed by Almanac
+	// rather than using the game's built-in getTimeOfDayString method.
+	// See https://stardewvalleywiki.com/Modding:Custom_languages#Data_format for
+	// details. (Specifically, TimeFormat in the data format table.)
+	"time-format": "",
+
 	// Locations
 
 	"location.WitchSwamp": "Witch's Swamp",
@@ -316,6 +335,8 @@
 	"location.IslandSouthEastCave": "Southeast Ginger Island (Cave)",
 	"location.IslandEast": "East Ginger Island",
 
+	"location.Submarine": "Submarine",
+
 	"location.sub-any": "Any",
 	"location.sub-floor": "Floor {{floor}}",
 
@@ -327,7 +348,6 @@
 
 	// Maps: Stardew Aquarium
 	"location.Custom_ExteriorMuseum": "Stardew Aquarium",
-	"location.ExteriorMuseum": "Stardew Aquarium",
 
 	// Maps: Stardew Valley Expanded
 	"location.Custom_AdventurerSummit": "Adventurer Summit",
@@ -344,5 +364,52 @@
 	"location.Custom_JunimoWoods": "Junimo Woods",
 	//"location.Custom_MorrisProperty": "",
 	"location.Custom_ShearwaterBridge": "Shearwater Bridge",
-	"location.Custom_SpriteSpring2": "Sprite Spring"
+	"location.Custom_SpriteSpring2": "Sprite Spring",
+	"location.Custom_GrampletonSuburbs": "Grampleton Suburbs",
+	"location.Custom_GrampletonSuburbsTrainStation": "Grampleton Suburbs Train Station",
+
+	// Maps: East Scarpe
+	"location.Custom_EastScarpe": "East Scarp",
+	"location.Custom_EastScarpe.0": "Pond",
+	"location.Custom_EastScarpe.1": "Tide Pools",
+	"location.Custom_EastScarpe.2": "Ocean",
+	"location.Custom_ESDeepDark": "East Scarp (Deep Dark)",
+	"location.Custom_ESDeepMountains": "Deep Mountains",
+	"location.Custom_ESClearingHouse": "Vineyard",
+	"location.Custom_ESMeadowFarm": "Meadow Farm",
+	"location.Custom_ESVineyard": "Vineyard",
+	"location.Custom_ESMineEntrance": "East Scarp (Mines Entrance)",
+	"location.Custom_ESSeaCave": "East Scarp (Sea Cave)",
+	"location.Custom_ESSmugglerDen": "Smuggler's Den",
+	"location.Custom_ESOrchard": "Cherry Orchard",
+
+	// Maps: Ridgeside Village
+	"location.Custom_Ridgeside_RidgesideVillage": "Ridgeside Village",
+	"location.Custom_Ridgeside_RSVSewers": "Ridgeside Village (Sewers)",
+	"location.Custom_Ridgeside_Ridge": "The Ridge",
+	"location.Custom_Ridgeside_RidgeFalls": "Ridge Falls",
+	"location.Custom_Ridgeside_RidgeForest": "Ridge Forest",
+	"location.Custom_Ridgeside_RidgePond": "Ridge Pond",
+	"location.Custom_Ridgeside_SummitFarm": "Summit Farm",
+
+	// Maps: Downtown Zuzu
+	"location.Custom_DTZ_Forest1": "Zuzu Forest",
+	"location.Custom_DTZ_Forest2": "Zuzu Forest",
+	//"location.Custom_DTZ_Forest1.1": "",
+	"location.Custom_DTZ_ResortSouth": "Kahuna Resort",
+	"location.Custom_DTZ_ZuzuCityOasis1": "Zuzu Desert",
+	"location.Custom_DTZ_Waterway": "Zuzu City",
+
+	// Maps: Dam
+	"location.Custom_Dam": "The Dam",
+	//"location.Custom_Dam_AfforestationArea": "Dam Afforestation Area",
+	//"location.Custom_Dam_Cliff": "Cliff Near the Dam",
+	//"location.Custom_Dam_Road": "Road to the Dam",
+
+	// Maps: Flooded Cave
+	"location.Custom_Flooded_Cave": "Flooded Cave",
+
+	// Maps: Tristan
+	"location.Custom_LK_SecretCave": "Secret Woods (Cave)",
+	"location.Custom_LK_FairyPool": "Secret Woods (Fairy Pool)"
 }

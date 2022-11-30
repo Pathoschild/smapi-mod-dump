@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Water Balloon",
+  "Description": "Throw on the ground to water a 5x5 area",
+  "Category": "Crafting",
+  "Edibility": -300,
+  "Price": 100,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 92,
+        "Count": 25
+      }
+    ],
+    "IsDefault": true,
+    "CanPurchase": false
+  }
+}

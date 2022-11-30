@@ -10,85 +10,106 @@
 
 using StardewModdingAPI;
 using System;
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using StardewModdingAPI.Events;
+using SailorStyles.Core;
 
 namespace SailorStyles.Editors
 {
-	public class ObjectDisplayNameEditor : IAssetEditor
+	public static class ObjectDisplayNameEditor
 	{
 		private static ITranslationHelper i18n => ModEntry.Instance.Helper.Translation;
 
-		public bool CanEdit<T>(IAssetInfo asset)
-		{
-			return ModEntry.JsonAssets != null && Context.IsWorldReady
-				&& (asset.AssetNameEquals(Path.Combine("Data", "ClothingInformation"))
-					|| asset.AssetNameEquals(Path.Combine("Data", "hats")));
-		}
+        internal static bool TryEdit(AssetRequestedEventArgs e)
+        {
+            if (ModEntry.JsonAssets is null)
+                return false;
 
-		public void Edit<T>(IAssetData asset)
-		{
-			Edit(asset);
-		}
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/ClothingInformation"))
+            {
+                e.Edit((asset) =>
+                {
+                    var data = asset.AsDictionary<int, string>().Data;
 
-		private static void Edit(IAssetData asset)
-		{
-			void localiseNames(
-				ref IDictionary<int, string> source, Dictionary<string, bool> packs,
-				int nameIndex, int descriptionIndex,
-				Func<string, List<string>> packSelector, Func<string, int> idSelector)
-			{
-				const char delimiter = ':';
-				List<string> items = packs
-					.SelectMany(pack => packSelector(ModEntry.GetIdFromContentPackName(pack.Key, pack.Value)))
-					.ToList();
-				Dictionary<string, int> itemsGrouped = items
-					.Zip(items.Select(item => idSelector(item)), (name, id) => name + delimiter + id)
-					.ToDictionary(str => str.Split(delimiter)[0], str => int.Parse(str.Split(delimiter)[1]));
-				foreach (KeyValuePair<string, int> nameAndId in itemsGrouped)
-				{
-					string name = nameAndId.Key.Split('/')[0].ToLower().Replace(" ", "");
-					List<string> entry = source[nameAndId.Value].Split('/').ToList();
-					while (entry.Count < Math.Max(nameIndex, descriptionIndex))
-						entry.Add("");
-					entry[nameIndex] = i18n.Get($"item.{name}.name").ToString();
-					entry[descriptionIndex] = i18n.Get($"item.{name}.description").ToString();
-					source[nameAndId.Value] = string.Join("/", entry);
-				}
-			}
+                    // Add localised names and descriptions for new clothes
+                    Dictionary<string, bool> packs = ModConsts.ClothingPacks
+                        .ToDictionary(pack => pack, isHat => false);
+                    LocaliseItems(
+                        source: ref data,
+                        packs: packs,
+                        nameIndex: 1,
+                        descriptionIndex: 2,
+                        packSelector: ModEntry.JsonAssets.GetAllClothingFromContentPack,
+                        idSelector: ModEntry.JsonAssets.GetClothingId);
+                    asset.AsDictionary<int, string>().ReplaceWith(data);
+                });
+                return true;
+            }
 
-			if (asset.AssetNameEquals(Path.Combine("Data", "ClothingInformation")))
-			{
-				var data = asset.AsDictionary<int, string>().Data;
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/hats"))
+            {
+                e.Edit((asset) =>
+                {
+                    var data = asset.AsDictionary<int, string>().Data;
 
-				// Add localised names and descriptions for new clothes
-				Dictionary<string, bool> packs = ModConsts.ClothingPacks.ToDictionary(pack => pack, isHat => false);
-				localiseNames(
-					source: ref data, packs: packs,
-					nameIndex: 1, descriptionIndex: 2,
-					packSelector: ModEntry.JsonAssets.GetAllClothingFromContentPack,
-					idSelector: ModEntry.JsonAssets.GetClothingId);
-				asset.AsDictionary<int, string>().ReplaceWith(data);
-				return;
-			}
+                    // Add localised names and descriptions for new hats
+                    Dictionary<string, bool> packs = ModConsts.HatPacks
+                        .ToDictionary(pack => pack, isHat => true);
+                    packs.Add("Tuxedo Top Hats", true);
+                    LocaliseItems(
+                        source: ref data,
+                        packs: packs,
+                        nameIndex: 5,
+                        descriptionIndex: 1, // JA items inexplicably add a blank field at index 4
+                        packSelector: ModEntry.JsonAssets.GetAllHatsFromContentPack,
+                        idSelector: ModEntry.JsonAssets.GetHatId);
 
-			if (asset.AssetNameEquals(Path.Combine("Data", "hats")))
-			{
-				var data = asset.AsDictionary<int, string>().Data;
+                    asset.AsDictionary<int, string>().ReplaceWith(data);
+                });
+                return true;
+            }
+            return false;
+        }
 
-				// Add localised names and descriptions for new hats
-				Dictionary<string, bool> packs = ModConsts.HatPacks.ToDictionary(pack => pack, isHat => true);
-				packs.Add("Tuxedo Top Hats", true);
-				localiseNames(
-					source: ref data, packs: packs,
-					nameIndex: 5, descriptionIndex: 1, // JA items inexplicably add a blank field at index 4
-					packSelector: ModEntry.JsonAssets.GetAllHatsFromContentPack,
-					idSelector: ModEntry.JsonAssets.GetHatId);
+        private static void LocaliseItems(
+            ref IDictionary<int, string> source,
+            Dictionary<string, bool> packs,
+            int nameIndex,
+            int descriptionIndex,
+            Func<string, List<string>> packSelector,
+            Func<string, int> idSelector)
+        {
+            IEnumerable<string> items = packs
+                .SelectMany(pack => packSelector(ModEntry.GetIdFromContentPackName(pack.Key, pack.Value)));
+            Dictionary<string, int> itemsGrouped = items
+                .ToDictionary(key => key, value => idSelector(value));
 
-				asset.AsDictionary<int, string>().ReplaceWith(data);
-				return;
-			}
-		}
+            foreach ((string name, int id) in itemsGrouped)
+            {
+                string normalisedName = name
+                    .GetNthChunk('/', 0)
+                    .ToString()
+                    .ToLowerInvariant()
+                    .Replace(" ", "");
+                string[] entry = source[id]
+                    .Split('/', Math.Max(nameIndex, descriptionIndex) + 2);
+
+                if (entry.Length < Math.Max(nameIndex, descriptionIndex))
+                {
+                    int initialLength = entry.Length;
+                    Array.Resize(ref entry, Math.Max(nameIndex, descriptionIndex));
+                    for (int i = initialLength; i < entry.Length; i++)
+                        entry[i] = string.Empty;
+                }
+
+                // Localise names and descriptions
+                entry[nameIndex] = i18n.Get($"item.{normalisedName}.name");
+                entry[descriptionIndex] = i18n.Get($"item.{normalisedName}.description");
+
+                // Update data asset
+                source[id] = string.Join('/', entry);
+            }
+        }
 	}
 }

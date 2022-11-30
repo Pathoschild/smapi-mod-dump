@@ -1,0 +1,16 @@
+﻿{
+    "Name": "JunimoBoy",
+    "Author": "Tyler Gibbs",
+    "Version": "1.0.0",
+    "Description": "Adds a portable game system.",
+    "UniqueID": "tylergibbs2.JunimoBoy",
+    "EntryDll": "JunimoBoy.dll",
+    "MinimumApiVersion": "3.15.0",
+    "UpdateKeys": [ "Nexus:14384" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.JsonAssets",
+            "MinimumVersion": "1.10.0"
+        }
+    ]
+}

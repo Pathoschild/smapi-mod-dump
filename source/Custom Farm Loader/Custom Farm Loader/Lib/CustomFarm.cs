@@ -32,7 +32,7 @@ namespace Custom_Farm_Loader.Lib
         private static IModHelper Helper;
         private static Texture2D MissingMapIcon;
 
-        private static readonly List<string> VanillaTypes = new List<string> { "Standard", "Riverland", "Forest", "Hills", "Wilderness", "Four Corners", "Beach" };
+        private static readonly List<string> VanillaTypes = new List<string> { "standard", "riverland", "forest", "hills", "wilderness", "four corners", "beach" };
         private static CustomFarm CurrentCustomFarm = null;
         private static string CurrentCustomFarmId = "";
 
@@ -49,6 +49,8 @@ namespace Custom_Farm_Loader.Lib
         public Texture2D Icon;
         public Texture2D WorldMapOverlay;
         public string Preview = "";
+        private string IconValue = "";
+        private string WorldMapOverlayValue = "";
 
         public string Author = "Unknown";
         public int MaxPlayers = 0;
@@ -63,7 +65,7 @@ namespace Custom_Farm_Loader.Lib
         public List<Bridge> Bridges = new List<Bridge>();
         public FarmProperties Properties = new FarmProperties();
 
-        
+
         public string ContentPackDirectory = ""; // The mod directory of the map we're loading
         public string RelativeContentPackPath = ""; // The mod folder of the map we're loading as a relative path to CFL
         public string RelativeMapDirectoryPath = ""; // The map directory of the map we're loading relative its mod folder
@@ -133,14 +135,14 @@ namespace Custom_Farm_Loader.Lib
                             customFarm.MaxPlayers = int.Parse(value);
                             break;
                         case "icon":
-                            customFarm.Icon = loadIconTexture($"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}", value, customFarm);
+                            customFarm.IconValue = value;
                             break;
                         case "preview":
                             if (value != "")
                                 customFarm.Preview = $"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}\\{value}";
                             break;
                         case "worldmapoverlay":
-                            customFarm.WorldMapOverlay = loadWorldMapTexture($"{customFarm.RelativeContentPackPath}{customFarm.RelativeMapDirectoryPath}", value, customFarm);
+                            customFarm.WorldMapOverlayValue = value;
                             break;
                         case "warps":
                             customFarm.Warps = parseWarps(n);
@@ -268,15 +270,30 @@ namespace Custom_Farm_Loader.Lib
             return ret;
         }
 
-        private static Texture2D loadIconTexture(string path, string iconValue, CustomFarm customFarm)
+        public void reloadTextures()
         {
+            if (!IsCFLMap)
+                return;
 
-            if (iconValue == "") return null;
+            //We load the icon and world map textures late to give recolor mods time to patch them.
+            //The world map is additionally being reloaded on daystart to allow for seasonal world maps
+            if (Icon == null)
+                Icon = Helper.GameContent.Load<Texture2D>(asModFarmType().IconTexture);
+
+            Helper.GameContent.InvalidateCache(asModFarmType().WorldMapTexture);
+            WorldMapOverlay = Helper.GameContent.Load<Texture2D>(asModFarmType().WorldMapTexture);
+        }
+
+        public Texture2D loadIconTexture()
+        {
+            string path = RelativeContentPackPath + RelativeMapDirectoryPath;
+
+            if (IconValue == "") return MissingMapIcon;
 
             if (Game1.mouseCursors == null)
                 Game1.mouseCursors = Game1.content.Load<Texture2D>("LooseSprites\\Cursors");
 
-            switch (iconValue.ToLower()) {
+            switch (IconValue.ToLower()) {
                 case "standard":
                     return UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(2, 324, 18, 20));
                 case "riverland":
@@ -293,22 +310,24 @@ namespace Custom_Farm_Loader.Lib
                     return UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(24, 345, 18, 20));
             }
 
-
             try {
-                return Helper.ModContent.Load<Texture2D>($"{path}\\{iconValue}");
+                return Helper.ModContent.Load<Texture2D>($"{path}\\{IconValue}");
 
             } catch (Exception ex) {
-                Monitor.Log($"Unable to load the map icon in:\n{path}\\{iconValue}", LogLevel.Warn);
+                Monitor.LogOnce($"Unable to load the map icon in:\n{path}\\{IconValue}", LogLevel.Warn);
             }
             return MissingMapIcon;
         }
 
-        private static Texture2D loadWorldMapTexture(string path, string worldMapFile, CustomFarm customFarm)
+        public Texture2D loadWorldMapTexture()
         {
+            string path = RelativeContentPackPath + RelativeMapDirectoryPath;
+            string worldMapFile = WorldMapOverlayValue;
 
             if (worldMapFile == "") return null;
 
-            Texture2D map = Game1.content.Load<Texture2D>("LooseSprites\\map");
+            //Texture2D map = Game1.content.Load<Texture2D>("LooseSprites\\map");
+            Texture2D map = Helper.GameContent.Load<Texture2D>("LooseSprites\\map");
             switch (worldMapFile.ToLower()) {
                 case "standard":
                     return UtilityMisc.createSubTexture(map, new Rectangle(0, 43, 131, 61));
@@ -330,9 +349,11 @@ namespace Custom_Farm_Loader.Lib
                 return Helper.ModContent.Load<Texture2D>($"{path}\\{worldMapFile}");
 
             } catch (Exception ex) {
-                Monitor.Log($"Unable to load the world map texture in:\n{path}\\{worldMapFile}", LogLevel.Warn);
+                Monitor.LogOnce($"Unable to load the world map texture in:\n{path}\\{worldMapFile}", LogLevel.Warn);
             }
-            return loadWorldMapTexture("", "Standard", customFarm);
+
+            WorldMapOverlayValue = "";
+            return null;
         }
 
         public static CustomFarm getCurrentCustomFarm()
@@ -355,7 +376,7 @@ namespace Custom_Farm_Loader.Lib
                 MapName = $"CFL_Map/{this.ID}",
                 TooltipStringPath = $"Strings/UI:CFL_Description/{this.ID}",
                 IconTexture = $"CFL_Icon/{this.ID}",
-                WorldMapTexture = $"CFL_WorldMapTexture/{this.ID}",
+                WorldMapTexture = $"CFL_WorldMap/{this.ID}",
                 ModData = new Dictionary<string, string>()
             };
         }
@@ -376,7 +397,7 @@ namespace Custom_Farm_Loader.Lib
             } else if (maps.Count() == 1)
                 return maps.First();
             else
-                Monitor.Log($"Failed to load Custom Farm with the id '{id}'", LogLevel.Trace);
+                Monitor.LogOnce($"Failed to load Custom Farm with the id '{id}'", LogLevel.Trace);
             return null;
         }
 
@@ -431,6 +452,17 @@ namespace Custom_Farm_Loader.Lib
             return Game1.whichFarm == 7
                 && getCurrentCustomFarm() != null
                 && getCurrentCustomFarm().IsCFLMap;
+        }
+
+        public string getLocalizedDescription()
+        {
+            var description = Game1.content.LoadString(asModFarmType().TooltipStringPath);
+
+            if (IsCFLMap)
+                return description;
+            else
+                return description.Substring(description.IndexOf('_') + 1);
+
         }
     }
 }

@@ -1,3 +1,0 @@
-[submodule "dependencies/Harmony"]
-	path = dependencies/Harmony
-	url = git@github.com:hcoona/Harmony.git

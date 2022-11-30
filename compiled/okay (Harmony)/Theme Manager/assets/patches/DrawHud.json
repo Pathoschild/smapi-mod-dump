@@ -1,0 +1,26 @@
+{
+	"ID": "DrawHud",
+
+	"Patches": {
+		"StardewValley.Game1:drawHUD": {
+			"Colors": {
+				"Pink": { "*": "$HUDHealthLow" },
+				"Red": { "*": "$HUDHealthText" }
+			},
+
+			"RedToGreenLerp": {
+				"1": [
+					"$HUDStaminaRed",
+					"$HUDStaminaYellow",
+					"$HUDStaminaGreen"
+				],
+
+				"2": [
+					"$HUDHealthRed",
+					"$HUDHealthYellow",
+					"$HUDHealthGreen"
+				]
+			}
+		}
+	}
+}

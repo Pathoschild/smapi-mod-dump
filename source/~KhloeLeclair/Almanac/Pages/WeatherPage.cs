@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using Leclair.Stardew.Almanac.Menus;
 using Leclair.Stardew.Common;
@@ -168,8 +169,8 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 					builder
 						.FormatText($"\n  {I18n.Festival_When()} ", shadow: false)
 						.Translate(Mod.Helper.Translation.Get("festival.when-times"), new {
-							start = TimeHelper.FormatTime(start),
-							end = TimeHelper.FormatTime(end)
+							start = Mod.FormatTime(start),
+							end = Mod.FormatTime(end)
 						}, new TextStyle(shadow: false));
 				}
 			}
@@ -177,6 +178,37 @@ public class WeatherPage : BasePage<BaseState>, ICalendarPage {
 
 		if (IsIsland) {
 			builder.FormatText($"{I18n.Page_WeatherIsland()}\n\n", font: Game1.dialogueFont);
+
+			/*List<NPC> chars = new();
+			try {
+				Utility.getAllCharacters(chars);
+			} catch(Exception ex) {
+				chars = null;
+			}
+
+			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
+				if (WeatherHelper.IsRainy(Forecast[day - 1]))
+					continue;
+
+				date.DayOfMonth = day;
+				var npcs = NoticesHelper.GetIslandVisitors(chars, date);
+
+				ModEntry.Instance.Log($"Getting visitors for {date} took: {sw.ElapsedMilliseconds}", StardewModdingAPI.LogLevel.Debug);
+
+				if (npcs is null)
+					continue;
+
+				builder.Text($"Day {day}: ");
+
+				for(int i = 0; i < npcs.Count; i++) {
+					if (i > 0)
+						builder.Text($", ");
+
+					builder.Text(npcs[i]);
+				}
+
+				builder.Text("\n\n");
+			}*/
 
 			if (pirateDays!.Count > 0) {
 				string dates = string.Join(", ", pirateDays);

@@ -1,0 +1,10 @@
+{
+  "Name": "BFAV Vanilla Males",
+  "Author": "StarAmy",
+  "Version": "1.1.0",
+  "Description": "Adds male animals using BFAV.",
+  "UniqueID": "Amy.BFAVMales",
+  "ContentPackFor": {
+    "UniqueID": "Paritee.BetterFarmAnimalVariety"
+  }
+}

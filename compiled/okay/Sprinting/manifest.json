@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Sprinting",
   "Author": "onemix",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "Allows sprinting and energy regeneration.",
   "UniqueID": "onemix.Sprinting",
   "EntryDll": "Sprinting.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:10469" ]
 }

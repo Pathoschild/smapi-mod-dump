@@ -10,7 +10,7 @@ for queries and analysis.**
 
 _A Mod for [Stardew Valley](https://www.stardewvalley.net/)_
 
-[![MIT Licence](https://img.shields.io/github/license/jenkinsci/java-client-api.svg?label=License)](LICENSE)
+[![MIT Licence](https://img.shields.io/github/license/jenkinsci/java-client-api.svg?label=License)](./LICENSE)
 
 - **Author:** [Stef Schulz](mailto:s.schulz@slothsoft.de)
 - **Repository:** <https://github.com/slothsoft/stardew-challenger>
@@ -19,7 +19,7 @@ _A Mod for [Stardew Valley](https://www.stardewvalley.net/)_
 A mod that makes playing a challenge again. It allows you to select a challenge from a list, 
 which restricts some parts of the game and lets you focus on another part.
 
-<img alt="Screenshot" src="readme/screenshot.png" width="300"/>
+<img alt="Screenshot" src="./readme/screenshot.png" width="300"/>
 
 **Content of this ReadMe:**
 
@@ -61,7 +61,7 @@ You need **[SMAPI](https://smapi.io/)** to run any kind of mods. And of course y
 
 ### Removing the Mod
 
-<img alt="Screenshot" align="right" src="readme/screenshot_revert.png" width="100">
+<img alt="Screenshot" align="right" src="./readme/screenshot_revert.png" width="100">
 
 1. Just remove the _Challenger/_ folder (and _ChallengerAutomate/_ if you have it).
 1. If you have a **Magical Challenge Object**™ on your map, it should revert to a pink plush bunny
@@ -74,12 +74,12 @@ You need **[SMAPI](https://smapi.io/)** to run any kind of mods. And of course y
 The mod is automatically present in the game. You will get an mail with the **Magical Challenge Object**™
 the next time you wake up.
 
-<img alt="Screenshot Mail" src="readme/screenshot_mail.png" width="300"/>
+<img alt="Screenshot Mail" src="./readme/screenshot_mail.png" width="300"/>
 
 Using the attached object in its unmodified form will open the challenge menu. You can also open the menu using the
 key [K] (you can customize the key in either the mod's config file or the [GenericModConfigMenu](https://www.nexusmods.com/stardewvalley/mods/5098)).
 
-<img alt="Screenshot Mail" src="readme/screenshot_menu.png" width="300"/>
+<img alt="Screenshot Mail" src="./readme/screenshot_menu.png" width="300"/>
 
 This will display all the restrictions you have to face - but you might get a little something extra to
 make the challenge possible. The **Magical Challenge Object**™ will turn into this "something extra" once you
@@ -173,7 +173,7 @@ If you wish to configure this mod, it's advised to install spacechase0's
 [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098). Then there will be a config
 page.
 
-<img alt="Screenshot" src="readme/screenshot_config.png" width="300"/>
+<img alt="Screenshot" src="./readme/screenshot_config.png" width="300"/>
 
 But if you wish to change the _config.json_ file manually, you can also do that. The _config.json_ with all
 entries is:
@@ -195,6 +195,7 @@ entries is:
 | Version | Issues                                                                          | Changes                                                                                                                                                                                                                                  |
 |---------|---------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Future  | [Issues](https://github.com/slothsoft/stardew-challenger/milestone/4)           |                                                                                                                                                                                                                                          |
+| 1.0.0   | [Issues](https://github.com/slothsoft/stardew-challenger/milestone/11?closed=1) | - makes the mod feature-complete                                                                                                                                                                                                         |
 | 0.5.0   | [Issues](https://github.com/slothsoft/stardew-challenger/milestone/10?closed=1) | - add difficulty selection<br>- re-balancing of challenges using this difficulty feature<br>- basic multiplayer support (only the host can change the challenge, but all players (with this mod) contribute to it)<br>- various bugfixes |
 | 0.4.3   | [Issues](https://github.com/slothsoft/stardew-challenger/milestone/9?closed=1)  | Release blockers II                                                                                                                                                                                                                      |
 | 0.4.2   | [Issues](https://github.com/slothsoft/stardew-challenger/milestone/8?closed=1)  | Release blockers                                                                                                                                                                                                                         |
@@ -211,7 +212,7 @@ _(All issues can be found [here](https://github.com/slothsoft/stardew-challenger
 
 ## Translator Guide
 
-Right now, not all translations are provided. If you want to help, translate either file in the _[i18n/](Challenger/i18n/)_
+Right now, not all translations are provided. If you want to help, translate either file in the _[i18n/](./Challenger/i18n/)_
 and test it right in your Stardew Valley (the same folder exists in your _Mods/_ folder). You can than provide it
 to me via [pull request](https://github.com/slothsoft/stardew-challenger/fork) or [email](mailto:s.schulz@slothsoft.de).
 
@@ -233,9 +234,9 @@ to me via [pull request](https://github.com/slothsoft/stardew-challenger/fork) o
 
 ## Developer Notes
 
-Can be found [here](readme/dev-notes.md).
+Can be found [here](./readme/dev-notes.md).
 
 
 ## License
 
-This project is licensed under the MIT License - see the [MIT license](LICENSE) for details.
+This project is licensed under the MIT License - see the [MIT license](./LICENSE) for details.

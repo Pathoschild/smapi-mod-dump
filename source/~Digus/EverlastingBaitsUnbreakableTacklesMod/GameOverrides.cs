@@ -30,12 +30,12 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             Farmer lastUser = DataLoader.Helper.Reflection.GetField<Farmer>(__instance,"lastUser").GetValue();
             if (consumeBaitAndTackle && lastUser != null && lastUser.IsLocalPlayer)
             {
-                if (__instance.attachments[0] != null && __instance.attachments[0].Quality == 4)
+                if (!DataLoader.ModConfig.DisableBaits && __instance.attachments[0] != null && __instance.attachments[0].Quality == 4)
                 {
                     __instance.attachments[0].Stack++;
                 }
 
-                if (__instance.attachments[1] != null && __instance.attachments[1].Quality == 4)
+                if (!DataLoader.ModConfig.DisableTackles && __instance.attachments[1] != null && __instance.attachments[1].Quality == 4)
                 {
                     __instance.attachments[1].uses.Value--;
                 }
@@ -57,7 +57,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             return true;
         }
 
-        public static bool ClickCraftingRecipe(CraftingPage __instance, ref ClickableTextureComponent c)
+        public static void ClickCraftingRecipe(CraftingPage __instance, ref ClickableTextureComponent c)
         {
             CraftingRecipe craftingRecipe = DataLoader.Helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(__instance, "pagesOfCraftingRecipes").GetValue()[DataLoader.Helper.Reflection.GetField<int>(__instance, "currentCraftingPage").GetValue()][c];
 
@@ -70,8 +70,6 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
                     Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Quest.cs.13636"), 2));
                 }
             }
-
-            return true;
         }
 
         public static bool TryToReceiveActiveObject(NPC __instance, ref Farmer who)

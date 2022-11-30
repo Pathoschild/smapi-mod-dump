@@ -19,6 +19,7 @@ namespace Profiler
     internal class ModConfig
     {
         public int BigLoopThreshold { get; set; } = 100;
+        public double BigLoopInnerThreshold { get; set; } = 0.01d;
         public int EventThreshold { get; set; } = 10;
 
         public double LoggerDurationOuterThreshold { get; set; } = 5.0;

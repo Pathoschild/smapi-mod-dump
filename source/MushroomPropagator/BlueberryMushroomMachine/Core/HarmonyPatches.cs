@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony; // el diavolo
+using HarmonyLib; // el diavolo
 using StardewValley;
 using StardewValley.Menus;
 using System;
@@ -18,9 +18,9 @@ namespace BlueberryMushroomMachine
 {
 	internal class HarmonyPatches
 	{
-		public static void Apply()
+		public static void Apply(string uniqueID)
 		{
-			var harmony = HarmonyInstance.Create($"{ModValues.AuthorName}.{ModValues.PackageName}");
+			var harmony = new Harmony(uniqueID);
 
 			harmony.Patch(
 				original: AccessTools.Method(typeof(CraftingRecipe), "createItem"),
@@ -33,7 +33,7 @@ namespace BlueberryMushroomMachine
 				prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CraftingPage_ClickCraftingRecipe_Prefix)));
 		}
 
-		internal static void CraftingRecipe_CreateItem_Postfix(CraftingRecipe __instance, Item __result)
+		internal static void CraftingRecipe_CreateItem_Postfix(CraftingRecipe __instance, ref Item __result)
 		{
 			// Intercept machine crafts with a Propagator subclass,
 			// rather than a generic nonfunctional craftable
@@ -51,13 +51,15 @@ namespace BlueberryMushroomMachine
 		}
 
 		internal static bool CraftingPage_ClickCraftingRecipe_Prefix(
-			List<Dictionary<ClickableTextureComponent, CraftingRecipe>> ___pagesOfCraftingRecipes, int ___currentCraftingPage, Item ___heldItem,
+			List<Dictionary<ClickableTextureComponent, CraftingRecipe>> ___pagesOfCraftingRecipes, int ___currentCraftingPage, ref Item ___heldItem,
 			ClickableTextureComponent c, bool playSound = true)
 		{
 			try
 			{
-				// Fetch an instance of any clicked-on craftable in the crafting menu
-				var tempItem = ___pagesOfCraftingRecipes[___currentCraftingPage][c].createItem();
+                var recipe = ___pagesOfCraftingRecipes[___currentCraftingPage][c];
+
+                // Fetch an instance of any clicked-on craftable in the crafting menu
+                var tempItem = recipe.createItem();
 
 				// Fall through the prefix for any craftables other than the Propagator
 				if (!tempItem.Name.Equals(ModValues.PropagatorInternalName))
@@ -66,14 +68,13 @@ namespace BlueberryMushroomMachine
 				// Behaviours as from base method
 				if (___heldItem == null)
 				{
-					___pagesOfCraftingRecipes[___currentCraftingPage][c].consumeIngredients(null);
+					recipe.consumeIngredients(null);
 					___heldItem = tempItem;
 					if (playSound)
 						Game1.playSound("coin");
 				}
-				if (Game1.player.craftingRecipes.ContainsKey(___pagesOfCraftingRecipes[___currentCraftingPage][c].name))
-					Game1.player.craftingRecipes[___pagesOfCraftingRecipes[___currentCraftingPage][c].name]
-						+= ___pagesOfCraftingRecipes[___currentCraftingPage][c].numberProducedPerCraft;
+				if (Game1.player.craftingRecipes.TryGetValue( recipe.name, out int prevCount))
+					Game1.player.craftingRecipes[recipe.name] = prevCount + recipe.numberProducedPerCraft;
 				if (___heldItem == null || !Game1.player.couldInventoryAcceptThisItem(___heldItem))
 					return false;
 

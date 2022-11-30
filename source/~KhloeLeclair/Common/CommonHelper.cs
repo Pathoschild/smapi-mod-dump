@@ -27,6 +27,58 @@ namespace Leclair.Stardew.Common;
 
 public static class CommonHelper {
 
+	#region Equality
+
+	internal static bool ShallowEquals<TValue>(this TValue[]? input, TValue[]? other, IEqualityComparer<TValue>? comparer = null) {
+		if (input == other) return true;
+		if ((input == null) || (other == null)) return false;
+		if (input.Rank != other.Rank) return false;
+		if (input.LongLength != other.LongLength) return false;
+
+		comparer ??= EqualityComparer<TValue>.Default;
+
+		for(int i = 0; i < input.Length; i++) {
+			if (!comparer.Equals(input[i], other[i]))
+				return false;
+		}
+
+		return true;
+	}
+
+	internal static bool ShallowEquals<TValue>(this IList<TValue> input, IList<TValue> other, IEqualityComparer<TValue>? comparer = null) {
+		if (input == other) return true;
+		if ((input == null) || (other == null)) return false;
+		if (input.Count != other.Count) return false;
+
+		comparer ??= EqualityComparer<TValue>.Default;
+
+		for(int i = 0; i < input.Count; i++) {
+			if (!comparer.Equals(input[i], other[i]))
+				return false;
+		}
+
+		return true;
+	}
+
+	internal static bool ShallowEquals<TKey, TValue>(this Dictionary<TKey, TValue> input, Dictionary<TKey, TValue> other, IEqualityComparer<TValue>? comparer = null) where TKey : notnull {
+		if (input == other) return true;
+		if ((input == null) || (other == null)) return false;
+		if (input.Count != other.Count) return false;
+
+		comparer ??= EqualityComparer<TValue>.Default;
+
+		foreach(var entry in input) {
+			if (!other.TryGetValue(entry.Key, out TValue? value))
+				return false;
+			if (!comparer.Equals(entry.Value, value))
+				return false;
+		}
+
+		return true;
+	}
+
+	#endregion
+
 	#region Color Parsing
 
 	#region Color Names

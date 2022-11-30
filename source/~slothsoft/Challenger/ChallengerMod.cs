@@ -29,15 +29,15 @@ public class ChallengerMod : Mod {
     /// <param name="modHelper">Provides simplified APIs for writing mods.</param>
     public override void Entry(IModHelper modHelper) {
         Instance = this;
-        Config = Helper.ReadConfig<ChallengerConfig>();
+        Config = modHelper.ReadConfig<ChallengerConfig>();
 
-        Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-        Helper.Events.Input.ButtonPressed += OnButtonPressed;
-        Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        Helper.Events.GameLoop.ReturnedToTitle += OnReturnToTitle;
+        modHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+        modHelper.Events.Input.ButtonPressed += OnButtonPressed;
+        modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        modHelper.Events.GameLoop.ReturnedToTitle += OnReturnToTitle;
 
-        Helper.Events.GameLoop.DayStarted += OnDayStarted;
-        Helper.Events.GameLoop.DayEnding += OnDayEnding;
+        modHelper.Events.GameLoop.DayStarted += OnDayStarted;
+        modHelper.Events.GameLoop.DayEnding += OnDayEnding;
         
         // Patches
         MagicalObject.PatchObject(ModManifest.UniqueID);
@@ -66,7 +66,9 @@ public class ChallengerMod : Mod {
     public bool IsInitialized() => _api != null;
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
+        // hook other Mods if they exist
         HookToGenericModConfigMenu.Apply(this);
+        HookToInformant.Apply(this);
     }
     
     /// <summary>

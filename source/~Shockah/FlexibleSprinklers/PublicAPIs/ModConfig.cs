@@ -44,5 +44,6 @@ namespace Shockah.FlexibleSprinklers
 		[JsonProperty] public bool CompatibilityMode { get; internal set; } = true;
 		[JsonProperty] public bool WaterGardenPots { get; internal set; } = false;
 		[JsonProperty] public bool WaterPetBowl { get; internal set; } = false;
+		[JsonProperty] public bool WaterAtSprinkler { get; internal set; } = false;
 	}
 }

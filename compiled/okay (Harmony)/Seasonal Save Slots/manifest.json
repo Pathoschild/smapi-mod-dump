@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Seasonal Save Slots",
+    "Author": "Tyler Gibbs",
+    "Version": "1.0.0",
+    "Description": "Your save slots will be colored based on the season.",
+    "UniqueID": "tylergibbs2.SeasonalSaveSlots",
+    "EntryDll": "SeasonalSaveSlots.dll",
+    "MinimumApiVersion": "3.15.0",
+    "UpdateKeys": [ "Nexus:14382" ]
+}

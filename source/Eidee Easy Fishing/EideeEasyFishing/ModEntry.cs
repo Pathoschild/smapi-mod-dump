@@ -24,6 +24,8 @@ namespace EideeEasyFishing
 
         public override void Entry(IModHelper helper)
         {
+            I18n.Init(helper.Translation);
+
             Config = Helper.ReadConfig<ModConfig>();
             Keys = Config.Controls.ParseControls();
 
@@ -48,70 +50,74 @@ namespace EideeEasyFishing
 
             configMenu.AddSectionTitle(
                 mod: ModManifest,
-                text: () => Helper.Translation.Get("config.section.general.name"));
+                text: I18n.Config_Section_General_Name);
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("config.bitefaster.name"),
-                tooltip: () => Helper.Translation.Get("config.bitefaster.description"),
+                name: I18n.Config_BiteFaster_Name,
+                tooltip: I18n.Config_BiteFaster_Description,
                 getValue: () => Config.BiteFaster,
                 setValue: value => Config.BiteFaster = value);
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("config.hitautomatically.name"),
-                tooltip: () => Helper.Translation.Get("config.hitautomatically.description"),
+                name: I18n.Config_HitAutomatically_Name,
+                tooltip: I18n.Config_HitAutomatically_Description,
                 getValue: () => Config.HitAutomatically,
                 setValue: value => Config.HitAutomatically = value);
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("config.skipminigame.name"),
-                tooltip: () => Helper.Translation.Get("config.skipminigame.description"),
-                getValue: () => Config.SkipMinigame,
-                setValue: value => Config.SkipMinigame = value);
-
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.fisheasycaught.name"),
-                tooltip: () => Helper.Translation.Get("config.fisheasycaught.description"),
-                getValue: () => Config.FishEasyCaught,
-                setValue: value => Config.FishEasyCaught = value);
-
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.treasurealwaysbefound.name"),
-                tooltip: () => Helper.Translation.Get("config.treasurealwaysbefound.description"),
+                name: I18n.Config_TreasureAlwaysBeFound_Name,
+                tooltip: I18n.Config_TreasureAlwaysBeFound_Description,
                 getValue: () => Config.TreasureAlwaysBeFound,
                 setValue: value => Config.TreasureAlwaysBeFound = value);
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("config.treasureeasycaught.name"),
-                tooltip: () => Helper.Translation.Get("config.treasureeasycaught.description"),
-                getValue: () => Config.TreasureEasyCaught,
-                setValue: value => Config.TreasureEasyCaught = value);
-
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => Helper.Translation.Get("config.alwayscaughtdoublefish.name"),
-                tooltip: () => Helper.Translation.Get("config.alwayscaughtdoublefish.description"),
+                name: I18n.Config_AlwaysCaughtDoubleFish_Name,
+                tooltip: I18n.Config_AlwaysCaughtDoubleFish_Description,
                 getValue: () => Config.AlwaysCaughtDoubleFish,
                 setValue: value => Config.AlwaysCaughtDoubleFish = value);
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("config.caughtdoublefishonanybait.name"),
-                tooltip: () => Helper.Translation.Get("config.caughtdoublefishonanybait.description"),
+                name: I18n.Config_CaughtDoubleFishOnAnyBait_Name,
+                tooltip: I18n.Config_CaughtDoubleFishOnAnyBait_Description,
                 getValue: () => Config.CaughtDoubleFishOnAnyBait,
                 setValue: value => Config.CaughtDoubleFishOnAnyBait = value);
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => Helper.Translation.Get("config.alwaysmaxcastpower.name"),
-                tooltip: () => Helper.Translation.Get("config.alwaysmaxcastpower.description"),
+                name: I18n.Config_AlwaysMaxCastPower_Name,
+                tooltip: I18n.Config_AlwaysMaxCastPower_Description,
                 getValue: () => Config.AlwaysMaxCastPower,
                 setValue: value => Config.AlwaysMaxCastPower = value);
+
+            configMenu.AddSectionTitle(
+                mod: ModManifest,
+                text: I18n.Config_Section_Minigame_Name);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: I18n.Config_SkipMinigame_Name,
+                tooltip: I18n.Config_SkipMinigame_Description,
+                getValue: () => Config.SkipMinigame,
+                setValue: value => Config.SkipMinigame = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: I18n.Config_FishEasyCaught_Name,
+                tooltip: I18n.Config_FishEasyCaught_Description,
+                getValue: () => Config.FishEasyCaught,
+                setValue: value => Config.FishEasyCaught = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: I18n.Config_TreasureEasyCaught_Name,
+                tooltip: I18n.Config_TreasureEasyCaught_Description,
+                getValue: () => Config.TreasureEasyCaught,
+                setValue: value => Config.TreasureEasyCaught = value);
         }
 
         private void OnMenuChanged(object sender, MenuChangedEventArgs args)
@@ -144,10 +150,15 @@ namespace EideeEasyFishing
 
                         if (!bossFish)
                         {
-                            if (Config.CaughtDoubleFishOnAnyBait || (rod.attachments[0] == null ? -1 : rod.attachments[0].ParentSheetIndex) == 774)
+                            if (Config.CaughtDoubleFishOnAnyBait || rod.getBaitAttachmentIndex() == 774)
                             {
                                 caughtDouble = Config.AlwaysCaughtDoubleFish || Game1.random.NextDouble() < (0.25 + (Game1.player.DailyLuck / 2.0));
                             }
+                        }
+
+                        if (Game1.isFestival())
+                        {
+                            Game1.CurrentEvent.perfectFishing();
                         }
 
                         rod.caughtDoubleFish = caughtDouble;
@@ -188,7 +199,7 @@ namespace EideeEasyFishing
 
                 if (!Config.SkipMinigame && Config.AlwaysCaughtDoubleFish)
                 {
-                    rod.caughtDoubleFish = !rod.bossFish && (Config.CaughtDoubleFishOnAnyBait || (rod.attachments[0] == null ? -1 : rod.attachments[0].ParentSheetIndex) == 774);
+                    rod.caughtDoubleFish = !rod.bossFish && (Config.CaughtDoubleFishOnAnyBait || rod.getBaitAttachmentIndex() == 774);
                 }
             }
 
@@ -219,8 +230,11 @@ namespace EideeEasyFishing
             if (args.Button == Keys.ReloadConfig)
             {
                 Config = Helper.ReadConfig<ModConfig>();
-                string msg = Helper.Translation.Get("message.config.reload");
-                Game1.addHUDMessage(new HUDMessage(msg, HUDMessage.error_type) { noIcon = true, timeLeft = HUDMessage.defaultTime });
+                Game1.addHUDMessage(new HUDMessage(I18n.Message_Config_Reload(), HUDMessage.error_type)
+                {
+                    noIcon = true,
+                    timeLeft = HUDMessage.defaultTime
+                });
             }
         }
     }

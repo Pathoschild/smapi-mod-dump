@@ -102,12 +102,25 @@ namespace Shockah.FlexibleSprinklers
 			var location = @object.FindGameLocation(CurrentLocation);
 			if (location is null)
 			{
-				if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
-					FlexibleSprinklers.Instance.Monitor.LogOnce($"Could not find the location the {@object.Name} is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
+				Action<string, LogLevel> logMethod;
+				if (Game1.player.CurrentItem == @object)
+				{
+					logMethod = FlexibleSprinklers.Instance.Monitor.LogOnce;
+					logMethod($"Could not find the location the {@object.Name} is in, but it's the current player item; most likely a UI Info Suite check is in progress.", LogLevel.Debug);
+				}
+				else if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
+				{
+					logMethod = FlexibleSprinklers.Instance.Monitor.LogOnce;
+					logMethod($"Could not find the location the {@object.Name} is in, but we're a multiplayer client, so this is *probably* safe.", LogLevel.Debug);
+				}
 				else
-					FlexibleSprinklers.Instance.Monitor.Log($"Could not find the location the {@object.Name} is in.", LogLevel.Error);
-				FlexibleSprinklers.Instance.Monitor.Log($"FindGameLocationContext: {context}", LogLevel.Trace);
-				FlexibleSprinklers.Instance.Monitor.Log($"Player location: {(Game1.player.currentLocation is null ? "<null>" : FlexibleSprinklers.GetNameForLocation(Game1.player.currentLocation))}", LogLevel.Trace);
+				{
+					logMethod = FlexibleSprinklers.Instance.Monitor.Log;
+					logMethod($"Could not find the location the {@object.Name} is in.", LogLevel.Error);
+				}
+
+				logMethod($"FindGameLocationContext: {context}", LogLevel.Trace);
+				logMethod($"Player location: {(Game1.player.currentLocation is null ? "<null>" : FlexibleSprinklers.GetNameForLocation(Game1.player.currentLocation))}", LogLevel.Trace);
 			}
 			return location;
 		}

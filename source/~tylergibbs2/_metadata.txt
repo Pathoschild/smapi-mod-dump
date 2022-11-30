@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/tylergibbs2/StardewValleyMods
+   Git: https://github.com/tylergibbs2/StardewValleyMods.git
+
+mods:
+   Cold Pets
+   Junimo Boy
+   Seasonal Save Slots
+
+latest commit:
+   commit bd81d1eac26faf153bb7577215f12c9d3a98b342
+   Author: Tyler <gibbstyler7@gmail.com>
+   Date:   Tue Nov 22 18:38:07 2022 -0600
+   
+       bump version
+   

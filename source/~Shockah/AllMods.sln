@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarlyGingerIsland", "EarlyGingerIsland\EarlyGingerIsland.csproj", "{DA2B5B0D-2906-4351-B266-086C4BB15ED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EarlyGingerIsland", "EarlyGingerIsland\EarlyGingerIsland.csproj", "{DA2B5B0D-2906-4351-B266-086C4BB15ED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,10 +62,14 @@ Global
 		{5AE05C77-966B-49A8-8000-2FB2486DD82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE05C77-966B-49A8-8000-2FB2486DD82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE05C77-966B-49A8-8000-2FB2486DD82F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5755B5E3-AC9D-4A3E-9C01-2731828B9CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5755B5E3-AC9D-4A3E-9C01-2731828B9CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9B27087-1AAA-4459-81EC-8C2F80D2E5FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B27087-1AAA-4459-81EC-8C2F80D2E5FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -98,12 +102,8 @@ Global
 		SolutionGuid = {740E3A5B-D4B3-423E-86ED-F1C6C5E553D4}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		_CommonWithHarmony\_CommonWithHarmony.projitems*{1f02be31-490b-474c-b5db-d16990f287cb}*SharedItemsImports = 5
-		_Common\_Common.projitems*{1f02be31-490b-474c-b5db-d16990f287cb}*SharedItemsImports = 5
 		_CommonWithHarmony\_CommonWithHarmony.projitems*{2270e272-3de2-4e0d-8907-29e32ecf68fe}*SharedItemsImports = 5
 		_Common\_Common.projitems*{2270e272-3de2-4e0d-8907-29e32ecf68fe}*SharedItemsImports = 5
-		_CommonWithHarmony\_CommonWithHarmony.projitems*{2c253073-438b-4475-8afb-87d74ee1ec10}*SharedItemsImports = 5
-		_Common\_Common.projitems*{2c253073-438b-4475-8afb-87d74ee1ec10}*SharedItemsImports = 5
 		_CommonWithHarmony\_CommonWithHarmony.projitems*{2fcb0a9c-fbe0-480d-a896-72300866bfbe}*SharedItemsImports = 5
 		_Common\_Common.projitems*{2fcb0a9c-fbe0-480d-a896-72300866bfbe}*SharedItemsImports = 5
 		_Common\_Common.projitems*{5755b5e3-ac9d-4a3e-9c01-2731828b9caa}*SharedItemsImports = 13

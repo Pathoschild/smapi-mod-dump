@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/13381
-IDs: Becks723.FixFloorPlacement
-update keys: Nexus:13381

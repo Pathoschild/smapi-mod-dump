@@ -1,7 +1,7 @@
 {
   "Name": "Heelies",
   "Author": "fakemonster",
-  "Version": "0.2.0",
+  "Version": "0.2.2",
   "Description": "Sick heelies for the homie",
   "UniqueID": "fakemonster.Heelies",
   "EntryDll": "Heelies.dll",

@@ -10,6 +10,11 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Improved split-screen support.
+
+## 1.28.1
+Released 30 October 2022 for SMAPI 3.14.0 or later.
+
 * Updated integration with Generic Mod Config Menu.
 * Improved translations. Thanks to ChulkyBow (updated Ukrainian) and watchakorn-18k (added Thai)!
 

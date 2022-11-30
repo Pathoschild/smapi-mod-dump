@@ -28,8 +28,6 @@ using StardewModdingAPI.Events;
 
 using StardewValley;
 
-using SObject = StardewValley.Object;
-
 using Leclair.Stardew.Almanac.Models;
 
 namespace Leclair.Stardew.Almanac.Managers;
@@ -366,16 +364,15 @@ public class LuckManager : BaseManager {
 		Load();
 
 		var state = new GameStateQuery.GameState(
-			rnd: Game1.random,
-			date: date,
-			timeOfDay: 600,
-			ticks: 0,
-			pickedValue: Game1.random.NextDouble(),
-			farmer: Game1.player,
-			location: null,
-			item: null,
-			monitor: Mod.Monitor,
-			trace: false
+			Random: Game1.random,
+			Date: date,
+			TimeOfDay: 600,
+			Ticks: 0,
+			Farmer: Game1.player,
+			Location: null,
+			Item: null,
+			Monitor: Mod.Monitor,
+			DoTrace: false
 		);
 
 		if (DataEvents != null)

@@ -144,8 +144,8 @@ internal static class SpriteBatch_Patches {
 
 	static bool DrawString_Prefix(ref Vector2 position) {
 		position = new Vector2(
-			MathF.Round(position.X),
-			MathF.Round(position.Y)
+			MathF.Floor(position.X),
+			MathF.Floor(position.Y)
 		);
 
 		return true;

@@ -56,6 +56,11 @@ namespace Custom_Farm_Loader.Menus
             );
 
             harmony.Patch(
+               original: AccessTools.Method(typeof(CharacterCustomization), "optionButtonClick"),
+               postfix: new HarmonyMethod(typeof(CCM_Patches), nameof(CCM_Patches.optionButtonClick_Postfix))
+            );
+
+            harmony.Patch(
                original: AccessTools.Method(typeof(CharacterCustomization), "LoadFarmTypeData"),
                postfix: new HarmonyMethod(typeof(CCM_Patches), nameof(CCM_Patches.loadFarmTypeData_Postfix))
             );
@@ -70,6 +75,7 @@ namespace Custom_Farm_Loader.Menus
 
         private static Texture2D CustomFarmIcon;
         private static ClickableTextureComponent CustomFarmButton = null;
+        private static CustomFarm CurrentCustomFarm = null;
 
         public static void Initialize(IMonitor monitor, IModHelper helper)
         {
@@ -88,8 +94,9 @@ namespace Custom_Farm_Loader.Menus
         public static void refreshFarmTypeButtons_Postfix(CharacterCustomization __instance)
         {
             Point baseFarmButton = new Point(__instance.xPositionOnScreen + __instance.width + 4 + 8, __instance.yPositionOnScreen + IClickableMenu.borderWidth);
-            CustomFarmButton = new ClickableTextureComponent("CustomFarm", new Rectangle(baseFarmButton.X + 112, baseFarmButton.Y + 616, 88, 80), null, "Custom", CustomFarmIcon, new Rectangle(0, 0, 18, 20), 4f)
-            {
+            int y = baseFarmButton.Y + 616;
+            y = __instance.backButton.bounds.Y - y < 48 ? y - 48 : y;
+            CustomFarmButton = new ClickableTextureComponent("CustomFarm", new Rectangle(baseFarmButton.X + 112, y, 88, 80), null, "Custom", CustomFarmIcon, new Rectangle(0, 0, 18, 20), 4f) {
                 myID = 548,
                 upNeighborID = -99998,
                 leftNeighborID = -99998,
@@ -97,6 +104,7 @@ namespace Custom_Farm_Loader.Menus
                 downNeighborID = -99998
             };
             __instance.farmTypeButtons.Add(CustomFarmButton);
+            updateCustomFarmButton();
 
             //Updates sticky elements for gamepad
             __instance.populateClickableComponentList();
@@ -104,8 +112,7 @@ namespace Custom_Farm_Loader.Menus
 
         public static bool optionButtonClick_Prefix(CharacterCustomization __instance, string name)
         {
-            try
-            {
+            try {
                 if (name != "CustomFarm")
                     return true;
 
@@ -116,50 +123,48 @@ namespace Custom_Farm_Loader.Menus
                 Game1.playSound("drumkit6");
 
                 __instance.AddDependency();
-                IClickableMenu customFarmSelection = new CustomFarmSelection(Game1.whichFarm);
+                IClickableMenu customFarmSelection = new CustomFarmSelection();
                 __instance.SetChildMenu(customFarmSelection);
-                (TitleMenu.subMenu = customFarmSelection).exitFunction = delegate
-                {
+                (TitleMenu.subMenu = customFarmSelection).exitFunction = delegate {
+                    CurrentCustomFarm = (TitleMenu.subMenu as CustomFarmSelection).CurrentCustomFarm;
+                    updateCustomFarmButton();
+
                     TitleMenu.subMenu = __instance;
                     __instance.RemoveDependency();
                     __instance.populateClickableComponentList();
-                    if (Game1.options.SnappyMenus)
-                    {
+                    if (Game1.options.SnappyMenus) {
                         __instance.setCurrentlySnappedComponentTo(636);
                         __instance.snapCursorToCurrentSnappedComponent();
                     }
                 };
 
                 return false;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Monitor.Log($"Failed in {nameof(optionButtonClick_Prefix)}:\n{ex}", LogLevel.Error);
                 return false;
             }
 
         }
 
-        public static bool draw_Prefix(CharacterCustomization __instance, List<ClickableComponent> ___leftSelectionButtons, string ___hoverText, SpriteBatch b)
+        public static void optionButtonClick_Postfix(string name)
+        {
+            updateCustomFarmButton();
+        }
+
+            public static bool draw_Prefix(CharacterCustomization __instance, List<ClickableComponent> ___leftSelectionButtons, string ___hoverText, SpriteBatch b)
         {
             if (__instance.source != CharacterCustomization.Source.NewGame && __instance.source != CharacterCustomization.Source.HostNewFarm)
                 return true;
 
-            try
-            {
+            try {
                 __instance.farmTypeButtons.Remove(CustomFarmButton);
                 CustomFarmButton.draw(b, Color.White, 0.88f);
 
+                //Red farm selection rectangle
                 if (Game1.whichFarm == 7 && __instance.farmTypeButtons.Count > 0 && CustomFarmButton != null)
-                {
-                    //Red farm selection rectangle
                     IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(375, 357, 3, 3), CustomFarmButton.bounds.X - 8, CustomFarmButton.bounds.Y - 4, CustomFarmButton.bounds.Width, CustomFarmButton.bounds.Height + 8, Color.White, 4f, drawShadow: false);
 
-                }
-
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Monitor.Log($"Failed in {nameof(draw_Prefix)}:\n{ex}", LogLevel.Error);
             }
             return true;
@@ -168,6 +173,26 @@ namespace Custom_Farm_Loader.Menus
         {
             if (__instance.source == CharacterCustomization.Source.NewGame || __instance.source == CharacterCustomization.Source.HostNewFarm)
                 __instance.farmTypeButtons.Add(CustomFarmButton);
+        }
+
+        private static void updateCustomFarmButton()
+        {
+            var customFarm = CurrentCustomFarm;
+
+            if (CustomFarmButton == null)
+                return;
+
+            if (customFarm != null && Game1.whichFarm == 7) {
+                var description = customFarm.getLocalizedDescription().Replace("_", " ");
+                description = description.Length > 200 ? description.Substring(0, 200) + "..." : description;
+                CustomFarmButton.hoverText = $"{customFarm.Name.Replace("_", " ")}";
+                CustomFarmButton.texture = customFarm.Icon;
+
+            } else {
+                CustomFarmButton.hoverText = "Custom";
+                CustomFarmButton.texture = CustomFarmIcon;
+
+            }
         }
     }
 }

@@ -6,12 +6,11 @@ for queries and analysis.**
 
 ----
 
-![](https://i.imgur.com/OU2DqU1.png)
+![Banner](https://i.imgur.com/mnLpY3B.png)
 ### – Sailor Moon Hairstyles, Clothing, and Kimono
-A Stardew Valley mod big on new custom content for character sprites.  
-Clothing component also includes the logic for a new NPC shop.
+A Stardew Valley mod big on new custom content for character sprites.
 
-![](https://i.imgur.com/bwKQKF2.png)
+![How to install](https://i.imgur.com/bwKQKF2.png)
 
 1. Install [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) to get all the hats and clothes in,
 
@@ -24,4 +23,4 @@ Clothing component also includes the logic for a new NPC shop.
 +   Add items from other content packs to Artemis' shop in the config, just add their unique ID.  
 +   Got lots of hair mods? No need to edit the images! Sailor Styles adds onto your current set.
 
-![](https://i.imgur.com/BvKon6a.png)
+![Footer](https://i.imgur.com/BvKon6a.png)

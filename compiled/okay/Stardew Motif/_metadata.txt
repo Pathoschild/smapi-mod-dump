@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14326
+IDs: Vinyks.StardewMotif
+update keys: Nexus:14326

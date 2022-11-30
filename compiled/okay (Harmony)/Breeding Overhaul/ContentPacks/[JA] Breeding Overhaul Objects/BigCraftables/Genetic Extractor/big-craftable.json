@@ -1,0 +1,23 @@
+{
+  "Name": "Genetic Extractor",
+  "Description": "A small bench used for studying and processing genetic material from animal samples.",
+  "Category": "Crafting",
+  "ProvidesLight": false,
+  "ReserveExtraIndexCount": 3,
+  "Recipe":
+      {
+     "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": "Iron Bar",
+            "Count": 3,
+        },
+        {
+            "Object": "Hardwood",
+            "Count": 10,
+        },
+      ],
+      "IsDefault":true,
+      "CanPurchase": false,
+  },
+}

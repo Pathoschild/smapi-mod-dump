@@ -1,0 +1,19 @@
+{
+  "Name": "Water Balloon",
+  "Description": "Throw on the ground to water a 5x5 area",
+  "Category": "Crafting",
+  "Edibility": -300,
+  "Price": 100,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 92,
+        "Count": 25
+      }
+    ],
+    "IsDefault": true,
+    "CanPurchase": false
+  }
+}

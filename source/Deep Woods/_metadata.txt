@@ -6,9 +6,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit b15a4107cafebfbc035925f7e8f445b4adc945cf
+   commit 32e76f3d4d635b7257e11df07482ed12ba953d5b
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sat Oct 22 18:23:13 2022 +0200
+   Date:   Tue Nov 22 08:48:32 2022 +0100
    
-       Update SMAPI dependency and get rid of Harmony (only used for debugging)
+       Spanish translation for 3.0.0 by Papaya2
    

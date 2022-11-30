@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
+  "filter": "Filter",
+  "name": "Name",
+  "fridge": "Fridge",
+  "open": "Open",
+  "put": "Put",
+  "take": "Take",
+  "rename": "Rename",
+  "target": "Target",
+  "sort": "Sort By",
+  "store-similar": "Store Similar",
+  "sort-LA": "Location (Asc)",
+  "sort-LD": "Location (Desc)",
+  "sort-NA": "Name (Asc)",
+  "sort-ND": "Name (Desc)",
+  "sort-CA": "Capacity (Asc)",
+  "sort-CD": "Capacity (Desc)",
+  "sort-IA": "Items (Asc)",
+  "sort-ID": "Items (Desc)"
+}

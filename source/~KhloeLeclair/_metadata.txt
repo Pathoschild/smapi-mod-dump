@@ -8,13 +8,14 @@ mods:
    Better Crafting
    Better Crafting → SpaceCore Support
    Better Crafting: Buildings
+   Giant Crop Tweaks
    See Me Rollin'
+   Theme Manager
 
 latest commit:
-   commit d37ad5b15024eb1edabbae79b026c5b2d1e27ce5
-   Merge: 30a2eb7 f3743a6
+   commit 7ef348249fd803f266ca1f1dac7c80c6312064c3
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Fri Oct 28 23:14:19 2022 -0400
+   Date:   Sat Nov 19 18:25:35 2022 -0500
    
-       Merge branch 'main' of github.com:KhloeLeclair/StardewMods
+       Yet more documentation commit.
    

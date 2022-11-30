@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "StardewNametags",
+  "Author": "tylergibbs2",
+  "Version": "1.0.4",
+  "Description": "Nametags for players in Stardew Valley.",
+  "UniqueID": "tylergibbs2.StardewNametags",
+  "EntryDll": "StardewNametags.dll",
+  "MinimumApiVersion": "3.12",
+  "UpdateKeys": [ "GitHub:tylergibbs2/StardewNametags" ]
+}

@@ -64,16 +64,27 @@ namespace Profiler
             output.Add(new CodeInstruction(OpCodes.Nop));
             output.Add(new CodeInstruction(OpCodes.Call, outerSW.LocalType.GetMethod("StartNew")));
             output.Add(new CodeInstruction(OpCodes.Stloc, outerSW.LocalIndex));
+
+            CodeInstruction lastLdLoc = null;
+            CodeInstruction handlerLocal = null;
             foreach (var instruction in instructions)
             {
+                if (instruction.IsLdloc())
+                {
+                    lastLdLoc = instruction;
+                }
+                if (instruction.opcode == OpCodes.Callvirt && (instruction.operand as MethodInfo).Name == "get_SourceMod")
+                {
+                    handlerLocal = lastLdLoc;
+                }
                 // Pushing Mod into HeuristicModsRunningCode stack
                 if (instruction.opcode == OpCodes.Callvirt && (instruction.operand as MethodInfo).Name == "Push")
                 {
                     // Call StartTimerSmallLoop(this, handler): Stopwatch
                     output.Add(new CodeInstruction(OpCodes.Nop));
                     output.Add(new CodeInstruction(OpCodes.Ldarg_0));
-                    output.Add(new CodeInstruction(OpCodes.Ldloc_2));
-                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod("StartTimerSmallLoop")));
+                    output.Add(handlerLocal);
+                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod(nameof(StartTimerSmallLoop))));
                     output.Add(new CodeInstruction(OpCodes.Stloc, innerSW.LocalIndex));
                 }
                 else if (instruction.opcode == OpCodes.Ret)
@@ -82,7 +93,7 @@ namespace Profiler
                     output.Add(new CodeInstruction(OpCodes.Ldarg_0));
                     output.Add(new CodeInstruction(OpCodes.Ldloc, outerSW.LocalIndex));
                     output.Add(new CodeInstruction(OpCodes.Ldloc, timers.LocalIndex));
-                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod("StopTimerBigloop")));
+                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod(nameof(StopTimerBigloop))));
                     output.Add(new CodeInstruction(OpCodes.Nop));
                 }
                 output.Add(instruction);
@@ -91,10 +102,10 @@ namespace Profiler
                 {
                     // Call StopTimerSmallLoop(this, handler, innerSW, timers);
                     output.Add(new CodeInstruction(OpCodes.Ldarg_0));
-                    output.Add(new CodeInstruction(OpCodes.Ldloc_2));
+                    output.Add(handlerLocal);
                     output.Add(new CodeInstruction(OpCodes.Ldloc, innerSW.LocalIndex));
                     output.Add(new CodeInstruction(OpCodes.Ldloc, timers.LocalIndex));
-                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod("StopTimerSmallLoop")));
+                    output.Add(new CodeInstruction(OpCodes.Call, typeof(ManagedEventPatches).GetMethod(nameof(StopTimerSmallLoop))));
                     output.Add(new CodeInstruction(OpCodes.Nop));
                 }
             }
@@ -154,8 +165,8 @@ namespace Profiler
                     "GameLoop.TimeChanged" => $" ({Game1.timeOfDay:D4})",
                     _ => ""
                 };
-                var slowestMods = timers.OrderByDescending(o => o.Item2.Elapsed.TotalMilliseconds);
-                var msg = string.Join("\n", slowestMods.Select(t => $"\t{t.Item1.Manifest.UniqueID} => {t.Item2.Elapsed.TotalMilliseconds:N}"));
+                var slowestMods = timers.Where(o => o.Item2.Elapsed.TotalMilliseconds >= Config.BigLoopInnerThreshold).OrderByDescending(o => o.Item2.Elapsed.TotalMilliseconds);
+                var msg = string.Join("\n", slowestMods.Select(t => $"\t{t.Item1.Manifest.UniqueID} => {t.Item2.Elapsed.TotalMilliseconds:N}ms"));
                 Monitor.Log($"[BigLoop] In total, it took {sw.Elapsed.TotalMilliseconds:N}ms handling {eventName}{extra}\n{msg}", LogLevel.Debug);
             }
         }

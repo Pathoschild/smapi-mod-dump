@@ -87,7 +87,16 @@ namespace SocializingSkill
 
             if (taste <= 2)
             {
-                Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromGifts);
+                float exp = ModEntry.Config.ExperienceFromGifts;
+                if (taste == 0)
+                {
+                    exp *= ModEntry.Config.LovedGiftExpMultiplier;
+                }
+                if (e.Npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+                {
+                    exp *= ModEntry.Config.BirthdayGiftExpMultiplier;
+                }
+                Skills.AddExperience(Game1.player, "drbirbdev.Socializing", (int)exp);
             }
         }
     }

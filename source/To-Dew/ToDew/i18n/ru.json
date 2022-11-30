@@ -28,6 +28,12 @@
     "config.overlay.max-width.desc": "Максимальная ширина оверлея в пикселях",
     "config.overlay.max-items": "Максимальное количество элементов списка",
     "config.overlay.max-items.desc": "Максимальное количество элементов списка, отображающихся в оверлее",
+    "config.overlay.zoom": "Увеличить размер с",
+    "config.overlay.zoom.desc": "Выберите, какой из параметров масштабирования игры управляет размером наложения",
+    "config.overlay.x-offset": "Смещение по оси X",
+    "config.overlay.x-offset.desc": "Смещение по оси X наложения в пикселях от левого края экрана",
+    "config.overlay.y-offset": "Смещение Y",
+    "config.overlay.y-offset.desc": "Y Смещение оверлея в пикселях от верхнего края экрана",
 
     // Оверлей
     "overlay.header": "Список дел",

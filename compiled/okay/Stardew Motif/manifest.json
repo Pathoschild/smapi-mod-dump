@@ -1,0 +1,10 @@
+{
+    "Name": "StardewMotif",
+    "Author": "Vinyks",
+    "Version": "1.0",
+    "Description": "Replaces Abigail, Leah and Sam; with the popular german Vtubers: Luny, Mona and Fin",
+    "UniqueID": "Vinyks.StardewMotif",
+    "EntryDll": "StardewMotif.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:14326" ]
+}

@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewModdingAPI;
 
+using StardewValley.BellsAndWhistles;
+
 namespace Leclair.Stardew.ThemeManager;
 
 /// <summary>
@@ -25,19 +27,26 @@ namespace Leclair.Stardew.ThemeManager;
 /// </summary>
 public interface IBaseTheme {
 
-	Color? TextColor { get; }
+	/// <summary>
+	/// Try to get a color variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	Color? GetVariable(string key);
 
-	Color? TextShadowColor { get; }
+	/// <summary>
+	/// A dictionary of all valid colors used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	Dictionary<string, Color> Variables { get; }
 
-	Color? TextShadowAltColor { get; }
-
-	Color? ErrorTextColor { get; }
-
-	Color? HoverColor { get; }
-
-	Color? ButtonHoverColor { get; }
-
+	/// <summary>
+	/// A dictionary of all sprite text colors that are set by the theme.
+	/// You can just use <see cref="SpriteText.getColorFromIndex(int)"/>
+	/// rather than checking this list if using the active theme.
+	/// </summary>
 	Dictionary<int, Color> SpriteTextColors { get; }
+
 }
 
 /// <summary>
@@ -58,6 +67,16 @@ public interface IThemeChangedEvent<DataT> {
 	string NewId { get; }
 
 	/// <summary>
+	/// The manifest of the previously active theme.
+	/// </summary>
+	IThemeManifest? OldManifest { get; }
+
+	/// <summary>
+	/// The manifest of the newly active theme.
+	/// </summary>
+	IThemeManifest? NewManifest { get; }
+
+	/// <summary>
 	/// The theme data of the previously active theme.
 	/// </summary>
 	DataT? OldData { get; }
@@ -66,13 +85,20 @@ public interface IThemeChangedEvent<DataT> {
 	/// The theme data of the newly active theme.
 	/// </summary>
 	DataT NewData { get; }
+}
+
+public interface IThemesDiscoveredEvent<DataT> {
+
+	IReadOnlyDictionary<string, IThemeManifest> Manifests { get; }
+
+	IReadOnlyDictionary<string, DataT> Data { get; }
 
 }
 
 /// <summary>
 /// A manifest has necessary metadata for a theme for display in theme
 /// selection UI, for performing automatic theme selection, and for
-/// loading assets correctly from the filesystem.
+/// loading assets correctly from the file system.
 /// </summary>
 public interface IThemeManifest {
 
@@ -111,6 +137,14 @@ public interface IThemeManifest {
 	/// The manifest of the mod that provides this theme.
 	/// </summary>
 	IManifest ProvidingMod { get; }
+
+	/// <summary>
+	/// If a theme is non-selectable, it cannot be selected as the active
+	/// theme and will not be displayed in the UI to users. Non-selectable
+	/// themes are potentially useful for use in conjunction with
+	/// <see cref="FallbackTheme"/>.
+	/// </summary>
+	bool NonSelectable { get; }
 
 	#endregion
 
@@ -167,7 +201,7 @@ public interface IThemeManager {
 	#region Basic Values
 
 	/// <summary>
-	/// The manifest of the mod that this <see cref="ITypedThemeManager{DataT}"/>
+	/// The manifest of the mod that this <see cref="IThemeManager"/>
 	/// instance is supporting.
 	/// </summary>
 	IManifest ModManifest { get; }
@@ -180,6 +214,14 @@ public interface IThemeManager {
 	string AssetLoaderPrefix { get; }
 
 	/// <summary>
+	/// A string that represents the path used when redirecting theme
+	/// data through game content to allow Content Patcher access to
+	/// your mod's theme data. By default, this value is
+	/// <c>Mods/{yourMod.UniqueId}/ThemeData</c>
+	/// </summary>
+	string ThemeLoaderPath { get; }
+
+	/// <summary>
 	/// The relative path to where your mod keeps its embedded themes.
 	/// By default, this is <c>assets/themes</c>. If this is <c>null</c>,
 	/// no embedded themes will be loaded.
@@ -187,7 +229,14 @@ public interface IThemeManager {
 	string? EmbeddedThemesPath { get; }
 
 	/// <summary>
-	/// Whether or not <see cref="ITypedThemeManager{DataT}"/> is redirecting
+	/// Whether or not this <see cref="IThemeManager"/> is redirecting
+	/// theme data loading through <see cref="IGameContentHelper"/> to
+	/// allow other mods, such as Content Patcher, to modify theme data.
+	/// </summary>
+	bool UsingThemeRedirection { get; }
+
+	/// <summary>
+	/// Whether or not this <see cref="IThemeManager"/> is redirecting
 	/// asset loading through <see cref="IGameContentHelper"/> to allow
 	/// other mods, such as Content Patcher, to modify theme assets.
 	/// </summary>
@@ -419,6 +468,13 @@ public interface ITypedThemeManager<DataT> : IThemeManager where DataT : new() {
 	/// </summary>
 	event EventHandler<IThemeChangedEvent<DataT>>? ThemeChanged;
 
+	/// <summary>
+	/// This event is fired whenever themes are discovered and theme data has
+	/// been loaded, but before theme selection runs. This can be used to
+	/// perform any extra processing of theme data.
+	/// </summary>
+	event EventHandler<IThemesDiscoveredEvent<DataT>>? ThemesDiscovered;
+
 	#endregion
 }
 
@@ -442,10 +498,21 @@ public interface IThemeManagerApi {
 	/// rather than throwing an <see cref="InvalidCastException"/>.
 	/// </summary>
 	/// <typeparam name="DataT">The type for the mod's theme data.</typeparam>
-	/// <param name="modManifest">The mod's manifest.</param>
 	/// <param name="themeManager">The <see cref="ITypedThemeManager{DataT}"/>
 	/// instance, if one exists.</param>
-	bool TryGetManager<DataT>(IManifest modManifest, [NotNullWhen(true)] out ITypedThemeManager<DataT>? themeManager) where DataT : class, new();
+	/// <param name="forMod">An optional manifest to get the theme manager
+	/// for a specific mod.</param>
+	bool TryGetManager<DataT>([NotNullWhen(true)] out ITypedThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new();
+
+	/// <summary>
+	/// Try to get an existing <see cref="IThemeManager"/> instance for a mod.
+	/// This will never create a new instance.
+	/// </summary>
+	/// <param name="themeManager">The <see cref="IThemeManager"/>
+	/// instance, if one exists.</param>
+	/// <param name="forMod">An optional manifest to get the theme manager
+	/// for a specific mod.</param>
+	bool TryGetManager([NotNullWhen(true)] out IThemeManager? themeManager, IManifest? forMod = null);
 
 	/// <summary>
 	/// Get an <see cref="ITypedThemeManager{DataT}"/> for a mod. If there is no
@@ -454,56 +521,35 @@ public interface IThemeManagerApi {
 	/// If there is an existing instance, the parameters are ignored.
 	/// </summary>
 	/// <typeparam name="DataT">The type for the mod's theme data.</typeparam>
-	/// <param name="modManifest">The mod's manifest.</param>
 	/// <param name="defaultTheme">A <typeparamref name="DataT"/> instance to
 	/// use for the <c>default</c> theme. If one is not provided, a new
 	/// instance will be created.</param>
 	/// <param name="embeddedThemesPath">The relative path to search for
-	/// embedded themes at. See <see cref="ITypedThemeManager{DataT}.EmbeddedThemesPath"/>.</param>
+	/// embedded themes at. See <see cref="IThemeManager.EmbeddedThemesPath"/>.</param>
 	/// <param name="assetPrefix">A string prepended to asset paths when
 	/// loading assets from the <c>default</c> theme. See
-	/// <see cref="ITypedThemeManager{DataT}.DefaultAssetPrefix"/>.</param>
+	/// <see cref="IThemeManager.DefaultAssetPrefix"/>.</param>
 	/// <param name="assetLoaderPrefix">A string prepended to asset names
 	/// when redirecting assets through <see cref="IGameContentHelper"/>.
-	/// See <see cref="ITypedThemeManager{DataT}.AssetLoaderPrefix"/>.</param>
+	/// See <see cref="IThemeManager.AssetLoaderPrefix"/>.</param>
+	/// <param name="themeLoaderPath">A string used when redirecting
+	/// theme data through <see cref="IGameContentHelper"/>.
+	/// See <see cref="IThemeManager.ThemeLoaderPath"/>.</param>
 	/// <param name="forceAssetRedirection">If set to a value, override
-	/// the default behavior of <see cref="ITypedThemeManager{DataT}.UsingAssetRedirection"/>.</param>
+	/// the default behavior of <see cref="IThemeManager.UsingAssetRedirection"/>.</param>
+	/// <param name="forceThemeRedirection">If set to a value, override
+	/// the default behavior of <see cref="IThemeManager.UsingThemeRedirection"/></param>
 	/// <exception cref="InvalidCastException">Thrown when attempting to get a
 	/// manager with a different <typeparamref name="DataT"/> than it was
 	/// created with.</exception>
 	ITypedThemeManager<DataT> GetOrCreateManager<DataT>(
-		IManifest modManifest,
 		DataT? defaultTheme = null,
 		string? embeddedThemesPath = "assets/themes",
 		string? assetPrefix = "assets",
 		string? assetLoaderPrefix = null,
-		bool? forceAssetRedirection = null
-	) where DataT : class, new();
-
-	/// <summary>
-	/// Manage a <typeparamref name="DataT"/> instance for a mod using a
-	/// <see cref="ITypedThemeManager{DataT}"/>. This uses a <c>ref</c> parameter
-	/// to replace the existing theme instance with a new one when the
-	/// theme is changed.
-	///
-	/// If you need to change any of the parameters used to create a theme
-	/// manager, you should first call <see cref="GetOrCreateManager{DataT}(IManifest, DataT?, string?, string?, string?, bool?)"/>
-	/// before using this method.
-	/// </summary>
-	/// <typeparam name="DataT">The type for the mod's theme data.</typeparam>
-	/// <param name="modManifest">The mod's manifest.</param>
-	/// <param name="theme">The default <typeparamref name="DataT"/> instance.
-	/// If the <see cref="ITypedThemeManager{DataT}"/> instance was not already
-	/// created, this will be used as the <c>default</c> theme's data.</param>
-	/// <param name="onThemeChanged">An optional action to be called whenever
-	/// the theme is changed or reloaded.</param>
-	/// <exception cref="InvalidCastException">Thrown when attempting to get a
-	/// manager with a different <typeparamref name="DataT"/> than it was
-	/// created with.</exception>
-	ITypedThemeManager<DataT> ManageTheme<DataT>(
-		IManifest modManifest,
-		ref DataT theme,
-		EventHandler<IThemeChangedEvent<DataT>>? onThemeChanged = null
+		string? themeLoaderPath = null,
+		bool? forceAssetRedirection = null,
+		bool? forceThemeRedirection = null
 	) where DataT : class, new();
 
 	#endregion
@@ -513,7 +559,8 @@ public interface IThemeManagerApi {
 	/// <summary>
 	/// Parse a color from a string. This supports CSS hex format, CSS rgb()
 	/// format, a selection of color names, and basic "[r], [g], [b], [a]"
-	/// values separated by commas.
+	/// values separated by commas. This also attempts to use color variables
+	/// from the current game theme if your input starts with <c>$</c>.
 	/// </summary>
 	/// <param name="value">The input string to parse</param>
 	/// <param name="color">The resulting color, or null</param>

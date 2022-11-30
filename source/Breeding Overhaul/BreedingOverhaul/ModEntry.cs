@@ -142,53 +142,57 @@ namespace BreedingOverhaul
                 {
                     if (File.Exists(Path.Combine(contentPack.DirectoryPath, "incubatordata.json")))
                     {
-                        this.Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                        IncubatorData contentPackData = contentPack.ReadJsonFile<IncubatorData>("incubatordata.json");
-                        foreach (string incubatorEntry in contentPackData.IncubatorItems.Keys)
+                        this.Monitor.Log($"Reading content pack incubator data: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                        try
                         {
-                            if (incubatorData.IncubatorItems.Remove(incubatorEntry))
+                            IncubatorData contentPackData = contentPack.ReadJsonFile<IncubatorData>("incubatordata.json");
+                            foreach (string incubatorEntry in contentPackData.IncubatorItems.Keys)
                             {
-                                this.Monitor.Log($"Removing old incubator to offspring map entry for {incubatorEntry}, replacing with {contentPackData.IncubatorItems[incubatorEntry]}", LogLevel.Trace);
+                                if (incubatorData.IncubatorItems.Remove(incubatorEntry))
+                                {
+                                    this.Monitor.Log($"Removing old incubator to offspring map entry for {incubatorEntry}, replacing with {contentPackData.IncubatorItems[incubatorEntry]}", LogLevel.Trace);
+                                }
+                                incubatorData.IncubatorItems.Add(incubatorEntry, contentPackData.IncubatorItems[incubatorEntry]);
                             }
-                            incubatorData.IncubatorItems.Add(incubatorEntry, contentPackData.IncubatorItems[incubatorEntry]);
                         }
-                    }
-                    else
-                    {
-                        this.Monitor
-                            .Log(
-                                $"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\n" +
-                                $"It does not have an incubatordata.json file."
-                                , LogLevel.Warn);
+                        catch (Exception ex)
+                        {
+                            this.Monitor
+                                .Log(
+                                    $"Error while loading content pack incubatordata.json: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}. It'll be ignored.\n{ex}"
+                                    , LogLevel.Error);
+                        }
                     }
                     if (File.Exists(Path.Combine(contentPack.DirectoryPath, "pregnancydata.json")))
                     {
-                        this.Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                        PregnancyData contentPackData = contentPack.ReadJsonFile<PregnancyData>("pregnancydata.json");
-                        foreach (string pregnancyItemKey in contentPackData.PreganancyItems.Keys)
+                        this.Monitor.Log($"Reading content pack pregnancy data: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                        try
                         {
-                            if (pregnancyData.PreganancyItems.Remove(pregnancyItemKey))
+                            PregnancyData contentPackData = contentPack.ReadJsonFile<PregnancyData>("pregnancydata.json");
+                            foreach (string pregnancyItemKey in contentPackData.PreganancyItems.Keys)
                             {
-                                this.Monitor.Log($"Removing old pregnancy item entry for {pregnancyItemKey}, replacing with {contentPackData.PreganancyItems[pregnancyItemKey]}", LogLevel.Trace);
+                                if (pregnancyData.PreganancyItems.Remove(pregnancyItemKey))
+                                {
+                                    this.Monitor.Log($"Removing old pregnancy item entry for {pregnancyItemKey}, replacing with {contentPackData.PreganancyItems[pregnancyItemKey]}", LogLevel.Trace);
+                                }
+                                pregnancyData.PreganancyItems.Add(pregnancyItemKey, contentPackData.PreganancyItems[pregnancyItemKey]);
                             }
-                            pregnancyData.PreganancyItems.Add(pregnancyItemKey, contentPackData.PreganancyItems[pregnancyItemKey]);
+                            foreach (string offspringKey in contentPackData.Offspring.Keys)
+                            {
+                                if (pregnancyData.Offspring.Remove(offspringKey))
+                                {
+                                    this.Monitor.Log($"Removing old animal to offspring entry for {offspringKey}, replacing with {contentPackData.Offspring[offspringKey]}", LogLevel.Trace);
+                                }
+                                pregnancyData.Offspring.Add(offspringKey, contentPackData.Offspring[offspringKey]);
+                            }
                         }
-                        foreach (string offspringKey in contentPackData.Offspring.Keys)
+                        catch (Exception ex)
                         {
-                            if (pregnancyData.Offspring.Remove(offspringKey))
-                            {
-                                this.Monitor.Log($"Removing old animal to offspring entry for {offspringKey}, replacing with {contentPackData.Offspring[offspringKey]}", LogLevel.Trace);
-                            }
-                            pregnancyData.Offspring.Add(offspringKey, contentPackData.Offspring[offspringKey]);
+                            this.Monitor
+                                .Log(
+                                    $"Error while loading content pack pregnancydata.json: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}. It'll be ignored.\n{ex}"
+                                    , LogLevel.Error);
                         }
-                    }
-                    else
-                    {
-                        this.Monitor
-                            .Log(
-                                $"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\n" +
-                                $"It does not have an incubatordata.json file."
-                                , LogLevel.Warn);
                     }
                 }
                 catch (Exception ex)

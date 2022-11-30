@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14439
+IDs: aedenthorn.MailboxMenu
+update keys: Nexus:14439, GitHub:aedenthorn/StardewValleyMods

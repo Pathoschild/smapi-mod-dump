@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Dynamic Crops",
+  "Author": "HaulinOats",
+  "Version": "1.1.5",
+  "Description": "Dynamically generate various crop and seed properties, such as sell and purchase prices, harvest times, and even regrowth capability.",
+  "UniqueID": "HaulinOats.DynamicCrops",
+  "EntryDll": "DynamicCrops.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

@@ -1,6 +1,6 @@
 {
-  "unlockYear": 1,
-  "unlockSeason": "Fall",
-  "unlockDay": 2,
-  "skipCutscene": false
+  "UnlockYear": 1,
+  "UnlockSeason": "Fall",
+  "UnlockDay": 2,
+  "SkipCutscene": false
 }

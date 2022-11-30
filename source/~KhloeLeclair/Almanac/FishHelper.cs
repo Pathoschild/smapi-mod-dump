@@ -22,10 +22,9 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewModdingAPI;
 
-using SObject = StardewValley.Object;
-
 using Leclair.Stardew.Almanac.Fish;
 using Leclair.Stardew.Almanac.Models;
+using StardewModdingAPI.Utilities;
 
 namespace Leclair.Stardew.Almanac;
 

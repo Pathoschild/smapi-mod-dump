@@ -1,7 +1,7 @@
-{
+﻿{
   "Name": "Configurable Special Orders Unlock",
-  "Author": "Vertigon",
-  "Version": "0.1.1",
+  "Author": "sophie",
+  "Version": "0.2.1",
   "Description": "Mod to configure the unlock requirements of the Special Orders Board.",
   "UniqueID": "Vertigon.ConfigurableSpecialOrdersUnlock",
   "EntryDll": "ConfigurableSpecialOrdersUnlock.dll",

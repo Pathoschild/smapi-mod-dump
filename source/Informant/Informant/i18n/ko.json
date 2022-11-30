@@ -1,0 +1,71 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-informant
+**
+*************************************************/
+
+{
+  "BundleTooltipDecorator" : "번들 표시",
+  "BundleTooltipDecorator.Description" : "번들에 필요한 아이템을 표시합니다",
+
+  "SellPriceDisplayable" : "판매 가격 표시",
+  "SellPriceDisplayable.Description" : "툴팁 하단에 판매 가격을 표시합니다",
+  
+  "MuseumDecorator": "박물관 표시",
+  "MuseumDecorator.Description": "박물관에 기증해야 하는 아이템을 표시합니다",
+
+  "NewRecipeDisplayable" : "새 제작법 표시",
+  "NewRecipeDisplayable.Description" : "아직 요리하거나 제작해본적 없는 제작법을 표시합니다",
+  
+  "ShippingBinDecorator": "출하 표시",
+  "ShippingBinDecorator.Description": "출하한적 없는 아이템을 표시합니다",
+  
+  "CropTooltipGenerator" : "작물 정보",
+  "CropTooltipGenerator.Description" : "작물의 종류와 수확까지 남은 시간을 보여줍니다",
+  "CropTooltipGenerator.0DaysLeft" : "다 자람",
+  "CropTooltipGenerator.1DayLeft" : "하루 남음",
+  "CropTooltipGenerator.XDaysLeft" : "{{X}}일 남음",
+  "CropTooltipGenerator.Dead" : "시듦",
+
+  "FruitTreeTooltipGenerator" : "과일 나무 정보",
+  "FruitTreeTooltipGenerator.Description" : "과일 나무의 정보와 수확까지 남은 시간을 보여줍니다",
+
+  "MachineTooltipGenerator" : "기계 정보",
+  "MachineTooltipGenerator.Description" : "기계의 결과물과 남은 시간을 보여줍니다",
+  "MachineTooltipGenerator.Finished" : "완료",
+  "MachineTooltipGenerator.CannotBeUnloaded" : "취소 불가능",
+  "MachineTooltipGenerator.ForNextQuality" : "다음 등급까지 {{X}}",
+  "MachineTooltipGenerator.ForTotal" : "총 {{X}}",
+ 
+  "TreeTooltipGenerator" : "나무 정보",
+  "TreeTooltipGenerator.Description" : "나무의 정보를 보여줍니다",
+  "TreeTooltipGenerator.Type1" : "참나무",
+  "TreeTooltipGenerator.Type2" : "단풍나무",
+  "TreeTooltipGenerator.Type3" : "소나무",
+  "TreeTooltipGenerator.Type6" : "야자수",
+  "TreeTooltipGenerator.Type7" : "버섯나무",
+  "TreeTooltipGenerator.Type8" : "마호가니 나무",
+  "TreeTooltipGenerator.Type9" : "야자수",
+
+  "Config.Decorators.GeneralSection" : "표시기 - 일반",
+  "Config.Decorators.Visibility" : "표시기 - 활성화",
+  "Config.TooltipGenerators.GeneralSection" : "정보 - 일반",
+  "Config.TooltipGenerators.Visibility" : "정보 - 활성화",
+
+  "Config.DecorateLockedBundles" : "잠긴 번들 표시",
+  "Config.DecorateLockedBundles.Description" : "아직 잠겨있는 번들에 필요한 아이템도 표시합니다",
+  
+  "Config.TooltipTrigger": "정보 표시 조건",
+  "Config.TooltipTrigger.Hover": "커서 가져다댈 때",
+  "Config.TooltipTrigger.ButtonHeld": "버튼 누를 때",
+  "Config.TooltipTriggerButton": "정보 표시 버튼",
+
+  "Config.HideMachineTooltips": "기계 정보 숨기기",
+  "Config.HideMachineTooltips.ForNonMachines": "비기계류에 대해",
+  "Config.HideMachineTooltips.ForChests": "상자에 대해",
+  "Config.HideMachineTooltips.Never": "숨기지 않음"
+}

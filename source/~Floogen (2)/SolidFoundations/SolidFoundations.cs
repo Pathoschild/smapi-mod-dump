@@ -569,7 +569,7 @@ namespace SolidFoundations
             }
 
             // Called missed Farm updates
-            foreach (GenericBuilding building in Game1.getFarm().buildings.Where(b => b is GenericBuilding))
+            foreach (GenericBuilding building in Game1.getFarm().buildings.Where(b => b is GenericBuilding).ToList())
             {
                 building.dayUpdate(Game1.dayOfMonth);
             }

@@ -9,58 +9,70 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using System.Linq;
 
 namespace BlueberryMushroomMachine.Editors
 {
-	internal class BigCraftablesInfoEditor : IAssetEditor
+    internal static class BigCraftablesInfoEditor
 	{
-		private readonly bool _isDebugging;
+        private static int LastIndexedValue = -1;
 
-		public BigCraftablesInfoEditor()
+		public static bool ApplyEdit(AssetRequestedEventArgs e)
 		{
-			_isDebugging = ModEntry.Instance.Config.DebugMode;
+            if (e.NameWithoutLocale.IsEquivalentTo(@"Data/BigCraftablesInformation"))
+            {
+                e.Edit(EditImpl);
+                return true;
+            }
+            return false;
 		}
 
-		public bool CanEdit<T>(IAssetInfo asset)
-		{
-			return asset.AssetNameEquals(@"Data/BigCraftablesInformation");
-		}
+        public static void EditImpl(IAssetData asset)
+        {
+            Log.T($"Editing {asset.Name}.",
+                ModEntry.Instance.Config.DebugMode);
 
-		public void Edit<T>(IAssetData asset)
-		{
-			Log.T($"Editing {asset.AssetName}.",
-				_isDebugging);
+            var data = asset.AsDictionary<int, string>().Data;
 
-			var data = asset.AsDictionary<int, string>().Data;
+            // Slide into a free tilesheet index.
+            var index = data.Keys.Where(id => id < 300).Max() + 1;    // Avoids JA incompatibilities.
 
-			// Slide into a free tilesheet index.
-			var index = data.Keys.Where(id => id < 300).Max()+1;	// Avoids JA incompatibilities.
-			ModValues.PropagatorIndex = index;
+            if (index == 1)
+                Log.W($"Could not find free index for mushroom propagator. This may cause issues");
 
-			Log.D($"Object indexed:  {ModValues.PropagatorIndex}",
-				_isDebugging);
+            ModValues.PropagatorIndex = index;
 
-			// Inject custom object data with appending index.
-			ModValues.ObjectData = string.Format(ModValues.ObjectData,
-				ModValues.PropagatorInternalName,
-				ModEntry.Instance.i18n.Get("machine.desc"));
+            Log.D($"Object indexed:  {ModValues.PropagatorIndex}",
+                ModEntry.Instance.Config.DebugMode);
 
-			if (!data.ContainsKey(ModValues.PropagatorIndex))
-				data.Add(ModValues.PropagatorIndex, ModValues.ObjectData);
+            // Inject custom object data with appending index.
+            ModValues.ObjectData = string.Format(ModValues.ObjectData,
+                ModValues.PropagatorInternalName,
+                ModEntry.Instance.i18n.Get("machine.desc"));
 
-			// Update not-yet-injected crafting recipe data to match.
-			ModValues.CraftingRecipeData = string.Format(ModValues.CraftingRecipeData,
-				ModValues.PropagatorIndex);
+            if (!data.ContainsKey(ModValues.PropagatorIndex))
+                data.Add(ModValues.PropagatorIndex, ModValues.ObjectData);
+            else
+                Log.W($"Chosen ID {index} seems previously occupied somehow.");
 
-			Log.D($"Object injected: \"{ModValues.PropagatorIndex}\": " +
-			      $"\"{data[ModValues.PropagatorIndex]}\"",
-				_isDebugging);
+            // Update not-yet-injected crafting recipe data to match.
+            ModValues.CraftingRecipeData = string.Format(ModValues.CraftingRecipeData,
+                ModValues.PropagatorIndex);
 
-			// Invalidate cache of possibly-badly-indexed data.
-			ModEntry.Instance.Helper.Content.InvalidateCache(@"Data/Events/Farm");
-			ModEntry.Instance.Helper.Content.InvalidateCache(@"Data/CraftingRecipes");
-			ModEntry.Instance.Helper.Content.InvalidateCache(@"Tilesheets/Craftables");
-		}
+            Log.D($"Object injected: \"{ModValues.PropagatorIndex}\": " +
+                  $"\"{data[ModValues.PropagatorIndex]}\"",
+                ModEntry.Instance.Config.DebugMode);
+
+            if (LastIndexedValue != index)
+            {
+                Log.D("Invalidating cache for ID change", ModEntry.Instance.Config.DebugMode);
+                // Invalidate cache of possibly-badly-indexed data.
+                ModEntry.Instance.Helper.GameContent.InvalidateCache(@"Data/Events/Farm");
+                ModEntry.Instance.Helper.GameContent.InvalidateCache(@"Data/CraftingRecipes");
+                ModEntry.Instance.Helper.GameContent.InvalidateCache(@"Tilesheets/Craftables");
+            }
+            LastIndexedValue = index;
+        }
 	}
 }

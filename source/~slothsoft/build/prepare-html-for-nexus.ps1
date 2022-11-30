@@ -14,8 +14,8 @@ $html = $html -replace "(?ms)</h1>(.*?)</ul>",'</h1>'
 # Removes the TOC and installation and deinstallation guides
 $html = $html -replace "<p><p>",'<p>'
 $html = $html -replace "(?ms)<p><strong>Content(.*?)<h3 id=""using-the-mod(.*?)</h3>",''
-# Removes images entirely
-$html = $html -replace '<img(.*?)src="readme/(.*?)"(.*?)width="(.*?)"(.*?)>(\n)+','' 
+# Removes images with width entirely, because BBCode can't do that (yet?)
+$html = $html -replace '<img(.*?)src="(.*?)"(.*?)width(.*?)"(.*?)>(\n)+','' 
 # Removes anchor links
 $html = $html -replace '<a href="#(.*?)">(.*?)</a>','$2'
 # Link correct license file

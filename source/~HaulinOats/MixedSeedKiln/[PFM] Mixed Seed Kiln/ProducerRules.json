@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+[
+  {
+    "ProducerName": "Mixed Seed Kiln",
+    "InputIdentifier": "Wood",
+    "InputStack": 30,
+    "MinutesUntilReady": 20,
+    "OutputIdentifier": "Mixed Seeds",
+    "Sounds": ["Ship"]
+  },
+  {
+    "ProducerName": "Mixed Seed Kiln",
+    "InputIdentifier": "Stone",
+    "InputStack": 30,
+    "MinutesUntilReady": 20,
+    "OutputIdentifier": "Mixed Seeds",
+    "Sounds": ["Ship"]
+  },
+  {
+    "ProducerName": "Mixed Seed Kiln",
+    "InputIdentifier": "Fiber",
+    "InputStack": 30,
+    "MinutesUntilReady": 20,
+    "OutputIdentifier": "Mixed Seeds",
+    "Sounds": ["Ship"]
+  },
+  {
+    "ProducerName": "Mixed Seed Kiln",
+    "InputIdentifier": "Sap",
+    "InputStack": 30,
+    "MinutesUntilReady": 20,
+    "OutputIdentifier": "Mixed Seeds",
+    "Sounds": ["Ship"]
+  }
+]

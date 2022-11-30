@@ -1,0 +1,128 @@
+[
+    {
+      "Name": "Male Cow",
+      "MinimalNumberOfMeat": 5,
+      "MaximumNumberOfMeat": 20,
+      "MinimumDaysBetweenTreats": 5,
+      "LikedTreats": [
+        78,
+      264,
+      300,
+      184
+      ],
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Goat",
+      "MinimalNumberOfMeat": 3,
+      "MaximumNumberOfMeat": 8,
+      "MinimumDaysBetweenTreats": 4,
+      "LikedTreats": [
+      78,
+      398,
+      613,
+      274,
+      436
+      ],
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Pig",
+      "MinimalNumberOfMeat": 4,
+      "MaximumNumberOfMeat": 16,
+      "MinimumDaysBetweenTreats": 3,
+      "LikedTreats": [
+      78,
+      254,
+      276
+      ],
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Sheep",
+      "MinimalNumberOfMeat": 4,
+      "MaximumNumberOfMeat": 16,
+      "MinimumDaysBetweenTreats": 3,
+      "LikedTreats": [
+         78,
+      250,
+      280
+      ],
+       "MinimumNumberOfExtraWool": 0,
+      "MaximumNumberOfExtraWool": 2,
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Chicken",
+      "MinimalNumberOfMeat": 1,
+      "MaximumNumberOfMeat": 4,
+      "MinimumDaysBetweenTreats": 4,
+      "LikedTreats": [
+         78,
+      262,
+      270
+      ],
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Duck",
+      "MinimalNumberOfMeat": 1,
+      "MaximumNumberOfMeat": 5,
+      "MinimumDaysBetweenTreats": 4,
+      "LikedTreats": [
+      78,
+      278,
+      207
+      ],
+      "MinimumNumberOfFeatherChances": 0,
+     "MaximumNumberOfFeatherChances": 2,
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Rabbit",
+      "MinimalNumberOfMeat": 1,
+      "MaximumNumberOfMeat": 4,
+      "MinimumDaysBetweenTreats": 4,
+      "LikedTreats": [
+        78,
+      190,
+      414,
+      266
+      ],
+      "MinimumNumberOfExtraWool": 0,
+      "MaximumNumberOfExtraWool": 1,
+      "MinimumNumberOfFeetChances": 0,
+      "MaximumNumberOfFeetChances": 4,
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Ostrich",
+      "MinimalNumberOfMeat": 18,
+      "MaximumNumberOfMeat": 1,
+      "MinimumDaysBetweenTreats": 3,
+      "LikedTreats": [
+        78,
+      -75
+      ],
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+    {
+      "Name": "Male Dinosaur",
+      "MinimumDaysBetweenTreats": 4,
+      "LikedTreats": [
+        78,
+      18,
+      418
+      ],
+      "MinimumDaysUtillBirth": null,
+      "CanUseDeluxeItemForPregnancy": false
+    },
+]

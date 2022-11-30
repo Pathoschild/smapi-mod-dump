@@ -1,0 +1,13 @@
+{
+    "Name": "Manure",
+    "Description": "You could probably recycle this into something useful.",
+    "Category": "AnimalGoods",
+    "Edibility": -300,
+    "Price": 3,
+    "IsColored": false,
+    "Recipe": null,
+    "GiftTastes":
+    {
+		"Hate": ["Marnie", "Alex", "Elliot", "Harvey", "Sam", "Sebastian", "Shane", "Abigail", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Leo", "Lewis", "Linus", "Pam", "Pierre", "Robin", "Vincent", "Willy", "Wizard"]
+    },
+}

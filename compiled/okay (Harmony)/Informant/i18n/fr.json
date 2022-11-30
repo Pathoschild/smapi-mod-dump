@@ -1,0 +1,61 @@
+{
+    "BundleTooltipDecorator" : "Annotation des paquets",
+    "BundleTooltipDecorator.Description" : "Signale les objets qui sont nécessaires aux paquets",
+
+    "SellPriceDisplayable" : "Annotation des prix de vente",
+    "SellPriceDisplayable.Description" : "Ajoute le prix de vente en bas de l'infobulle",
+
+    "MuseumDecorator": "Annotation du musée",
+    "MuseumDecorator.Description": "Signale les objets qui sont nécessaires au musée",
+
+    "NewRecipeDisplayable" : "Annotation des nouvelles recettes",
+    "NewRecipeDisplayable.Description" : "Signale les recettes qui n'ont pas encore été cuisinées",
+
+    "ShippingBinDecorator": "Annotation d'expédition",
+    "ShippingBinDecorator.Description": "Signale les objets qui n'ont pas encore été expédiés",
+
+    "CropTooltipGenerator" : "Infobulle des récoltes",
+    "CropTooltipGenerator.Description" : "Une infobulle qui affiche le type de culture et le temps restant avant la récolte",
+    "CropTooltipGenerator.0DaysLeft" : "Prêt à récolter",
+    "CropTooltipGenerator.1DayLeft" : "1 jour restant",
+    "CropTooltipGenerator.XDaysLeft" : "{{X}} jour restant",
+    "CropTooltipGenerator.Dead" : "Mort",
+
+    "FruitTreeTooltipGenerator" : "Infobulle des arbres fruitier",
+    "FruitTreeTooltipGenerator.Description" : "Une infobulle qui affiche le type d'arbre fruitier et le temps restant avant la récolte",
+
+    "MachineTooltipGenerator" : "Infobulle des machines",
+    "MachineTooltipGenerator.Description" : "Une infobulle qui affiche le type de résultat et le temps restant",
+    "MachineTooltipGenerator.Finished" : "Fini",
+    "MachineTooltipGenerator.CannotBeUnloaded" : "Ne peut pas être déchargé",
+    "MachineTooltipGenerator.ForNextQuality" : "{{X}} pour la qualité suivante",
+    "MachineTooltipGenerator.ForTotal" : "{{X}} au total",
+
+    "TreeTooltipGenerator" : "Infobulle d'arbres",
+    "TreeTooltipGenerator.Description" : "Une infobulle qui affiche le type d'arbre",
+    "TreeTooltipGenerator.Type1" : "Chêne",
+    "TreeTooltipGenerator.Type2" : "Erable",
+    "TreeTooltipGenerator.Type3" : "Pin",
+    "TreeTooltipGenerator.Type6" : "Palmier",
+    "TreeTooltipGenerator.Type7" : "Arbre à champignon",
+    "TreeTooltipGenerator.Type8" : "Acajou",
+    "TreeTooltipGenerator.Type9" : "Palmier",
+
+    "Config.Decorators.GeneralSection" : "Infobulle - Général",
+    "Config.Decorators.Visibility" : "Infobulle - Visibilité",
+    "Config.TooltipGenerators.GeneralSection" : "Infobulles - Général",
+    "Config.TooltipGenerators.Visibility" : "Infobulles - Visibilité",
+
+    "Config.DecorateLockedBundles" : "Annoter les paquets vérouillés",
+    "Config.DecorateLockedBundles.Description" : "Affiche les annotations de paquet pour les paquets encore verrouillés",
+
+    "Config.TooltipTrigger": "Déclencheur d'infobulle",
+    "Config.TooltipTrigger.Hover": "Au survol",
+    "Config.TooltipTrigger.ButtonHeld": "Au maintient de bouton",
+    "Config.TooltipTriggerButton": "Au clic de bouton",
+
+    "Config.HideMachineTooltips": "Masquer les infobulles des machines",
+    "Config.HideMachineTooltips.ForNonMachines": "Pour les non machines",
+    "Config.HideMachineTooltips.ForChests": "Pour les coffres",
+    "Config.HideMachineTooltips.Never": "Jamais"
+  }

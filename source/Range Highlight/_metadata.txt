@@ -6,9 +6,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 9e9c1b9e7a7251c3442ebf29743b04604c9c81a7
+   commit b5b23fc3d3010fbe3eff9fdf1e882083dd9c2416
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat Sep 10 15:05:28 2022 -0400
+   Date:   Thu Nov 24 11:13:50 2022 -0500
    
-       Add config for whether to run building highlighters on mouseover
+       v3.5.0
    

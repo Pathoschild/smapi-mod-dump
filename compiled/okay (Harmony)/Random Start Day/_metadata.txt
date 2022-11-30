@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13225
+IDs: idermailer.RandomStartDay
+update keys: Nexus:13225, GitHub:idermailer/RandomStartDay

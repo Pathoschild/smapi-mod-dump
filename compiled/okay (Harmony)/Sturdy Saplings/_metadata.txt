@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14440
+IDs: sophie.SturdySaplings
+update keys: Nexus:14440, GitHub:sophiesalacia/StardewMods

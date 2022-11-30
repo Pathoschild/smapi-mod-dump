@@ -106,6 +106,7 @@ This mod also adds some new console commands:
    * `otherPlayerWonEgghunt` triggered when a different player wins the egghunt
    * `AbigailWonEgghunt` triggered when Abigail wins the egghunt (note: will need compatibility check for mods that change who wins the egghunt)
    * `playerSkippedFestival` triggered when the player skips a festival (note: this is a fairly complex idea and may not be implemented)
+   * `dancedWithPerson` triggered when the player dances with `Person` at the Flower Dance
 
 ## Some Examples of When It Might Be Advisable to Use Stats as Tokens, Custom Tokens, Or Content Patcher Instead
 

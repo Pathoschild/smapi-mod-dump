@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/ModOrganizer2/modorganizer-basic_games
+   Git: https://github.com/ModOrganizer2/modorganizer-basic_games.git
+
+mods:
+   Lasting Conversation Topics
+
+latest commit:
+   commit 16939ac6c737c5b136801f869f9b52c6e2feb515
+   Merge: 887cbc9 82b8341
+   Author: Al <26797547+Al12rs@users.noreply.github.com>
+   Date:   Sun Mar 20 16:47:34 2022 +0100
+   
+       Merge pull request #88 from ZashIn/fix_linters
+       
+       linter fix: mypy --platform win32 for tox check on github (linux)
+   

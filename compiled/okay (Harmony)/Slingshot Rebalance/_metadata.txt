@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14391
+IDs: Redwood.SlingshotRebalance
+update keys: Nexus:14391

@@ -68,7 +68,7 @@
 					"DeluxeProduceLuck": 0.2,
 					"Data": "7/0/Manure/Dinosaur Scale/none/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/4/7/null/641/1000/Male Dinosaur/Coop",
 					"Sprites": {
-						"Adult": "assets/Dinosaur.png",
+						"Adult": "assets/MaleDinosaur.png",
 					}
 				},
 			],

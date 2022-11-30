@@ -6,9 +6,9 @@ mods:
    Breeding Overhaul
 
 latest commit:
-   commit 96e23cb0cdebc94ec1b6b40edd7b1d8ed7607e8b
-   Author: StarAmy <101292680+StarAmy@users.noreply.github.com>
-   Date:   Fri Oct 14 13:21:07 2022 -0700
+   commit fc7db865830e528beb0ec6c8e3a1c79029f2f32a
+   Author: Amy <amelia.e.redfield@gmail.com>
+   Date:   Tue Nov 29 15:35:29 2022 -0800
    
-       Update README.md
+       updated new machine descriptions
    

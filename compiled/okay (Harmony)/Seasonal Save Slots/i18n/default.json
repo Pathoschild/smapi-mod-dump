@@ -1,0 +1,6 @@
+﻿{
+    "Config.ShowSeasonIcon.Title": "Show Season Icon",
+    "Config.ShowSeasonIcon.Tooltip": "Whether or not to show an icon for the current season on each save slot.",
+    "Config.ShowSeasonColoredLine.Title": "Show Season Colored Line",
+    "Config.ShowSeasonColoredLine.Tooltip": "Whether or not to show a colored line for the current season on each save slot."
+}

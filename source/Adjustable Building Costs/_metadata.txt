@@ -6,9 +6,12 @@ mods:
    Adjustable Building Costs
 
 latest commit:
-   commit 9d7fb95a9c3c505897d70124cbdfc1d858606385
-   Author: miguellucas <cmiguel.lucas@gmail.com>
-   Date:   Sun Oct 23 16:36:43 2022 +0100
+   commit 2d5553c117de7b348ebfd9e48b9a9ca58adfb0bb
+   Merge: 9d7fb95 8f87acc
+   Author: Miguel Lucas <MiguelLucas@users.noreply.github.com>
+   Date:   Fri Nov 4 16:54:25 2022 +0000
    
-       Fixed buildings days to build/upgrade
+       Merge pull request #1 from MiguelLucas/AdjustableBuildingCosts
+       
+       1.2.0
    

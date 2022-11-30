@@ -28,12 +28,10 @@ This mod brings the following challenges:
 [*]No Capitalist
 [*]Vineyard
 [/list]
-
 [size=5]No Challenge[/size]
 [list]
 [*]default value without any restrictions - for when you are sick and tired of following rules
 [/list]
-
 [size=5]Brewery[/size]
 
 [b]Goal:[/b] To earn gold by selling beer [2.500.000 for easy, 5.000.000 for medium or 10.000.000 for hard]
@@ -44,7 +42,6 @@ This mod brings the following challenges:
 [*]you cannot build animal buildings, i.e. coop, barn and silo
 [*][easy and medium] you get a keg to start you off
 [/list]
-
 [size=5]Hermit[/size]
 
 [b]Goal:[/b] [easy and medium] To finish the community center / [hard] To reach perfection
@@ -52,7 +49,6 @@ This mod brings the following challenges:
 [*]You cannot leave the farm, except on Sundays
 [*][easy] you get a seed maker
 [/list]
-
 [size=5]No Capitalist[/size]
 
 [b]Goal:[/b] To finish the community center
@@ -61,7 +57,6 @@ This mod brings the following challenges:
 [*][hard] You cannot buy from Clint either (upgrading tools and opening geodes at Clint’s is still possible though)
 [*][easy] You get a seed maker to tide you over your imminent lack of seeds
 [/list]
-
 [size=5]Vineyard[/size]
 
 [b]Goal:[/b] To earn gold by selling wine [2.500.000 for easy, 5.000.000 for medium or 10.000.000 for hard]
@@ -72,25 +67,28 @@ This mod brings the following challenges:
 [*]you cannot build animal buildings, i.e. coop, barn and silo
 [*][easy and medium] you get a keg to start you off
 [/list]
-
-
 [size=6]FAQ[/size]
+
 
 [size=5]Can I disable / pause the challenges?[/size]
 
 Yes, absolutely. You can just select “no challenge” in the challenge menu at any time to pause the challenge. So if not buying from Clint is no fun for you, you can just pause the challenge, buy, and then select the challenge again. Your progress might not get counted if the challenge is paused, but you’re not losing the current progress either.
 
+
 [size=5]The bunny turned into a Seedmaker and now I can’t open the menu?[/size]
 
 You don’t need the bunny, you can also press [K] to open the same menu. Then when you select another challenge, the seedmaker will change into another object (or back to the bunny again).
+
 
 [size=5]Does the mod change the inventory / farm?[/size]
 
 Your inventory and the farm will not be changed, only the [b]Magical Challenge Object[/b]™ might change. This mod is only applied to current interactions.
 
+
 [size=5]Can you start challenges mid-playthrough?[/size]
 
 You can start the challenges at any time, and you can even pause them (by selecting “no challenge” in the menu) whenever you feel like it.
+
 
 
 [size=6]Configuration[/size]
@@ -100,15 +98,15 @@ If you wish to configure this mod, it’s advised to install spacechase0’s [ur
 But if you wish to change the [i]config.json[/i] file manually, you can also do that. The [i]config.json[/i] with all entries is documented [url=https://github.com/slothsoft/stardew-challenger/blob/main/README.md#configuration]here[/url].
 
 
+
 [size=6]Removing the Mod[/size]
 
+[img]https://github.com/slothsoft/stardew-challenger/raw/main/readme/screenshot_revert.png[/img]
 [list=1]
 [*]Just remove the [i]Challenger/[/i] folder (and [i]ChallengerAutomate/[/i] if you have it).
 [*]If you have a [b]Magical Challenge Object[/b]™ on your map, it should revert to a pink plush bunny
 [*]If you experienced bugs with the mod, please take the time to [url=https://github.com/slothsoft/stardew-challenger/issues]report them[/url]
 [/list]
-
-
 [size=6]Translator Guide[/size]
 
 Right now, not all translations are provided. If you want to help, translate either file in the [i][url=https://github.com/slothsoft/stardew-challenger/blob/main/Challenger/i18n/]i18n/[/url][/i] and test it right in your Stardew Valley (the same folder exists in your [i]Mods/[/i] folder). You can than provide it to me via [url=https://github.com/slothsoft/stardew-challenger/fork]pull request[/url] or [url=mailto:s.schulz@slothsoft.de]email[/url].
@@ -116,11 +114,13 @@ Right now, not all translations are provided. If you want to help, translate eit
 More information can be found [url=https://github.com/slothsoft/stardew-challenger/blob/main/README.md#translator-guide]here[/url].
 
 
+
 [size=6]Developer Notes[/size]
 
 Can be found [url=https://github.com/slothsoft/stardew-challenger/blob/main/readme/dev-notes.md]here[/url].
 
 The source code for this mod is on [url=https://github.com/slothsoft/stardew-challenger]GitHub[/url].
+
 
 
 [size=6]License[/size]

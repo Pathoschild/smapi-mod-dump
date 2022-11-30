@@ -12,6 +12,11 @@
     "config.show-all-key.tooltip": "Hotkey to show all ranges",
     "config.highlight-building-on-mouseover": "Highlight buildings on mouseover",
     "config.highlight-building-on-mouseover.tooltip": "If true then highlighters for buildings (e.g., Junimo Huts) run when the mouse is pointing at the building.",
+    "config.highlight-action-location": "Show at action location",
+    "config.highlight-action-location.tooltip": "If the currently held object has a highlighter, show its range at the location where the object will be placed if you press the action button.",
+    "config.highlight-action-location-style.Never": "Never",
+    "config.highlight-action-location-style.WhenMouseHidden": "When mouse cursor is hidden",
+    "config.highlight-action-location-style.Always": "Always",
 
 
     "config.Junimo": "Junimo Huts",

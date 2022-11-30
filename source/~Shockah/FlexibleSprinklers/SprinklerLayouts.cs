@@ -19,6 +19,7 @@ namespace Shockah.FlexibleSprinklers
 		public static readonly IReadOnlySet<IntPoint> Basic = IntPoint.NeighborOffsets.ToHashSet();
 		public static IReadOnlySet<IntPoint> Quality => Box(1).ToHashSet();
 		public static IReadOnlySet<IntPoint> Iridium => Box(2).ToHashSet();
+		public static IReadOnlySet<IntPoint> IridiumWithPressureNozzle => Box(3).ToHashSet();
 
 		public static IReadOnlySet<IntPoint> Vanilla(int tier)
 		{

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Configurable Luck",
+  "Author": "sophie",
+  "Version": "0.1.0",
+  "Description": "Allows you to set your luck value manually.",
+  "UniqueID": "sophie.ConfigurableLuck",
+  "EntryDll": "ConfigurableLuck.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": []
+}

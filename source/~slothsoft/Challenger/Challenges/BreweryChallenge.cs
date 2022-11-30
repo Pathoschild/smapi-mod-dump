@@ -11,7 +11,7 @@
 using System.Linq;
 using Slothsoft.Challenger.Api;
 using Slothsoft.Challenger.Goals;
-using Slothsoft.Challenger.Models;
+using Slothsoft.Challenger.Common;
 using Slothsoft.Challenger.Restrictions;
 
 namespace Slothsoft.Challenger.Challenges;
@@ -61,7 +61,7 @@ public class BreweryChallenge : BaseChallenge {
     
     protected override IGoal CreateGoal(IModHelper modHelper) {
         var beerIndexes = new[] { ObjectIds.Beer, ObjectIds.PaleAle };
-        return new EarnMoneyGoal(ModHelper, EarnMoneyChallenge.CalculateTargetMoney, "Beer", salable => {
+        var goal = new EarnMoneyGoal(ModHelper, EarnMoneyChallenge.CalculateTargetMoney, "Beer", salable => {
             if (beerIndexes.Contains(salable.ParentSheetIndex))
                 return true;
             // this is rice "beer"
@@ -71,5 +71,7 @@ public class BreweryChallenge : BaseChallenge {
             }
             return false;
         });
+        goal.ProgressChanged += (_, _) => ProgressChangedInvoked();
+        return goal;
     }
 }

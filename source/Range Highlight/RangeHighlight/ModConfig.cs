@@ -15,6 +15,9 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 
 namespace RangeHighlight {
+    internal enum HighlightActionLocationStyle {
+        Never, WhenMouseHidden, Always
+    }
     internal class ModConfig {
         public bool ShowJunimoRange { get; set; } = true;
         public bool ShowSprinklerRange { get; set; } = true;
@@ -23,6 +26,7 @@ namespace RangeHighlight {
         public bool ShowBombRange { get; set; } = true;
 
         public bool HighlightBuildingsOnMouseover { get; set; } = true;
+        public HighlightActionLocationStyle HighlightActionLocation { get; set; } = HighlightActionLocationStyle.Always;
         public bool ShowOtherSprinklersWhenHoldingSprinkler { get; set; } = true;
         public bool ShowOtherScarecrowsWhenHoldingScarecrow { get; set; } = true;
         public bool ShowOtherBeehousesWhenHoldingBeehouse { get; set; } = false;
@@ -81,6 +85,14 @@ namespace RangeHighlight {
                 tooltip: I18n.Config_HighlightBuildingOnMouseover_Tooltip,
                 getValue: () => theMod.config.HighlightBuildingsOnMouseover,
                 setValue: (v) => theMod.config.HighlightBuildingsOnMouseover = v);
+            gmcm.AddTextOption(
+                mod: mod,
+                name: I18n.Config_HighlightActionLocation,
+                tooltip: I18n.Config_HighlightActionLocation_Tooltip,
+                allowedValues: Enum.GetNames<HighlightActionLocationStyle>(),
+                formatAllowedValue: (v) => theMod.helper.Translation.Get("config.highlight-action-location-style." + v),
+                getValue: theMod.config.HighlightActionLocation.ToString,
+                setValue: (v) => theMod.config.HighlightActionLocation = Enum.Parse<HighlightActionLocationStyle>(v));
 
             // Junimo Huts
             gmcm.AddSectionTitle(mod, I18n.Config_Junimo);
@@ -255,6 +267,7 @@ namespace RangeHighlight {
         void AddParagraph(IManifest mod, Func<string> text);
         void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
         void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
     }
     // See https://github.com/jltaylor-us/StardewGMCMOptions/blob/default/StardewGMCMOptions/IGMCMOptionsAPI.cs
     public interface GMCMOptionsAPI {

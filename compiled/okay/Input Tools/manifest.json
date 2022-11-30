@@ -1,0 +1,16 @@
+﻿{
+    "Name": "InputTools",
+    "Author": "Sagittaeri",
+    "Version": "0.2.0",
+    "Description": "Tools to simplify inputs from keyboard, mouse and controller.",
+    "UniqueID": "Sagittaeri.InputTools",
+    "EntryDll": "InputTools.dll",
+    "MinimumApiVersion": "3.14.0",
+    "UpdateKeys": [ "Nexus:14553" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}

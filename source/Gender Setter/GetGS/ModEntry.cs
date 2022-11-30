@@ -47,7 +47,7 @@ namespace GetGS
             /// <param name="mod">The manifest of the mod defining the token (see <see cref="Mod.ModManifest"/> in your entry class).</param>
             /// <param name="name">The token name. This only needs to be unique for your mod; Content Patcher will prefix it with your mod ID automatically, like <c>YourName.ExampleMod/SomeTokenName</c>.</param>
             /// <param name="getValue">A function which returns the current token value. If this returns a null or empty list, the token is considered unavailable in the current context and any patches or dynamic tokens using it are disabled.</param>
-            void RegisterToken(IManifest mod, string name, Func<IEnumerable<string>?> getValue);
+            void RegisterToken(IManifest mod, string name, Func<IEnumerable<string>> getValue);
 
         }
     }
@@ -79,17 +79,23 @@ namespace GetGS
         //combines dict1 and dict2, adds upper and lower case as needed
         private Dictionary<string, string> make_p_dict(string pronoun, Dictionary<string, string> dict1, Dictionary<string, string> dict2)
         {
-            foreach (KeyValuePair<string, string> kvp in dict2) //I could probably just copy this somehow
+            var dict3 = new Dictionary<string, string>(); //Copies dict1 entries into a new dictionary, dict3
+            foreach (string key in dict1.Keys)
             {
-                dict1[kvp.Key] = kvp.Value;
+                dict3.Add(key, dict1[key]);
             }
-            dict1["They"] = pronoun.ToLower();
+
+            foreach (KeyValuePair<string, string> kvp in dict2) //Does the same thing as the previous code except with dict2, I was just experimenting with methods
+            {
+                dict3[kvp.Key] = kvp.Value;
+            }
+            dict3["They"] = pronoun.ToLower();
             string[] thems = { "They", "Them", "Their" };
             foreach (string w in thems)
             {
-                dict1[w + "U"] = Capitalise(dict1[w]);
+                dict3[w + "U"] = Capitalise(dict3[w]);
             }
-            return dict1;
+            return dict3;
         }
 
         private readonly string[] pronouns = new string[] { "He", "She", "They", "They (singular)", "It", "Xe", "Fae", "E" };
@@ -243,7 +249,7 @@ namespace GetGS
                          { "Female",female_exceptions_dict},{ "Male", male_exceptions_dict},{ "Neutral",neutral_exceptions_dict}
                 };
 
-                string[] name_list = new string[] { "Abigail", "Alex", "Birdie", "Bouncer", "Caroline", "Charlie", "Clint", "Demetrius", "Dwarf", "Elliott", "Emily", "Evelyn", "Farmer", "George", "Gil", "Governor", "Grandpa", "Gunther", "Gus", "Haley", "Harvey", "Henchman", "Jas", "Jodi", "Kent", "Krobus", "Leah", "Leo", "Lewis", "Linus", "Marcello", "Marlon", "Marnie", "Maru", "MisterQi", "Morris", "OldMariner", "Pam", "Penny", "Pierre", "ProfessorSnail", "Robin", "Sam", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Wizard" };
+                string[] name_list = new string[] { "Abigail", "Alex", "Birdie", "Bouncer", "Caroline", "Charlie", "Clint", "Demetrius", "Dwarf", "Elliott", "Emily", "Evelyn", "Farmer", "George", "Gil", "Governor", "Grandpa", "Gunther", "Gus", "Haley", "Harvey", "Henchman", "Jas", "Jodi", "Kent", "Krobus", "Leah", "Leo", "Lewis", "Linus", "Marcello", "Marlon", "Marnie", "Maru", "MisterQi", "Morris", "OldMariner", "Pam", "Penny", "Pierre", "ProfessorSnail", "Robin", "Sam", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Witch","Wizard" };
 
                 foreach (string name in name_list) {
                     var g = variable_dict[name+"Gender"]; //gender of this character as in config.json
@@ -278,7 +284,13 @@ namespace GetGS
                     else
                         api.RegisterToken(this.ModManifest, name + "Possession", () => new[] { "'s" });
                 }
+                    if (variable_dict["WizardName"].Length>0) 
+                        api.RegisterToken(this.ModManifest, "WizardInitial", () => new[] { variable_dict["WizardName"].Substring(0, 1) });
+                    else
+                        api.RegisterToken(this.ModManifest, "WizardInitial", () => new[] { "M" });
+
             }
+                
         }
     }
 }

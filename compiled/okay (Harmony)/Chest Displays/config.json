@@ -1,7 +1,7 @@
 {
-  "ChangeItemKey": "OemQuotes",
-  "ItemScale": 0.5,
+  "ChangeItemKey": "OemQuotes, LeftStick",
+  "ItemScale": 0.42,
   "Transparency": 1.0,
   "DisplayQuality": true,
-  "RetainItem": false
+  "ShowFirstIfNoneSelected": true
 }

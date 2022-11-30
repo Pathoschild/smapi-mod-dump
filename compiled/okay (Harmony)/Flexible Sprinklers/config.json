@@ -1,5 +1,5 @@
 {
-  "Version": "1.3.3",
+  "Version": "1.4.1",
   "SprinklerBehavior": "ClusterWithoutVanilla",
   "IgnoreRange": false,
   "TileWaterBalanceMode": "Relaxed",
@@ -26,5 +26,6 @@
   "Tier8Power": 224,
   "CompatibilityMode": true,
   "WaterGardenPots": false,
-  "WaterPetBowl": false
+  "WaterPetBowl": false,
+  "WaterAtSprinkler": false
 }

@@ -176,6 +176,7 @@ namespace Custom_Farm_Loader.Menus
             ModFarms = Game1.content.Load<List<ModFarmType>>("Data\\AdditionalFarms");
             LoadGameMenuParent = __instance;
             CachedFarmTypes = new Dictionary<int, string>();
+            CustomFarm.getAll().ForEach(farm => farm.reloadTextures());
         }
     }
 }

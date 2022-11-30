@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+  "EntryDll": "GiantCropTweaks.dll",
+  "Name": "Giant Crop Tweaks",
+  "Author": "Khloe Leclair",
+  "Version": "0.1.0",
+  "Description": "A mod that tweaks the behavior of giant crops in a few ways to hopefully make them less potentially annoying.",
+  "UniqueID": "leclair.giantcroptweaks",
+  "MinimumApiVersion": "3.16",
+  "UpdateKeys": [
+    "Nexus:14370@Main"
+  ]
+}

@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using Slothsoft.Challenger.Api;
-using Slothsoft.Challenger.Models;
+using Slothsoft.Challenger.Common;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
 

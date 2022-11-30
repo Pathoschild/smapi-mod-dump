@@ -27,8 +27,6 @@ using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-using SObject = StardewValley.Object;
-
 using Leclair.Stardew.Almanac.Menus;
 using Leclair.Stardew.Almanac.Pages;
 
@@ -40,12 +38,19 @@ public class FishingState : BaseState {
 	public FishType FType = FishType.None;
 	public CaughtStatus CStatus = CaughtStatus.None;
 	public LocationFilter LFilter = LocationFilter.Off;
+	public AquariumFilter AFilter = AquariumFilter.Off;
 }
 
 public enum LocationFilter {
 	Off,
 	On,
 	Now
+};
+
+public enum AquariumFilter {
+	Off,
+	Donated,
+	Undonated
 };
 
 public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
@@ -69,6 +74,10 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 	public static readonly Rectangle LOCATION_TRUE = new(464, 288, 16, 16);
 	public static readonly Rectangle LOCATION_NOW = new(464, 256, 16, 16);
 
+	public static readonly Rectangle AQUARIUM_OFF = new(496, 352, 16, 16);
+	public static readonly Rectangle AQUARIUM_DONATED = new(496, 320, 16, 16);
+	public static readonly Rectangle AQUARIUM_UNDONATED = new(496, 336, 16, 16);
+
 	private readonly MenuFishTank Tank;
 
 	[SkipForClickableAggregation]
@@ -78,6 +87,9 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 	public ClickableTextureComponent btnFilterType;
 	public ClickableTextureComponent btnFilterCaught;
 	public ClickableTextureComponent btnFilterLocation;
+	public ClickableTextureComponent? btnFilterAquarium;
+
+	public readonly bool HasAquarium;
 
 	private FishInfo? CurrentFish;
 
@@ -89,6 +101,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 	public FishType FType = FishType.None;
 	public CaughtStatus CStatus = CaughtStatus.None;
 	public LocationFilter LFilter = LocationFilter.Off;
+	public AquariumFilter AFilter = AquariumFilter.Off;
 
 	// Sprites
 	public Rectangle SourceWeather => Weather switch {
@@ -120,6 +133,13 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		_ => Rectangle.Empty
 	};
 
+	public Rectangle SourceAquarium => AFilter switch {
+		AquariumFilter.Off => AQUARIUM_OFF,
+		AquariumFilter.Donated => AQUARIUM_DONATED,
+		AquariumFilter.Undonated => AQUARIUM_UNDONATED,
+		_ => Rectangle.Empty
+	};
+
 	#region Life Cycle
 
 	public static FishingPage? GetPage(AlmanacMenu menu, ModEntry mod) {
@@ -132,6 +152,8 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 	public FishingPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
 		// Set up the cache for rendering the right page flow.
 		FishFlow = new(_info => BuildRightPage(_info), () => CurrentFish);
+
+		HasAquarium = Mod.Helper.ModRegistry.IsLoaded("Cherry.StardewAquarium");
 
 		// Initialize our tank.
 		Tank = new(Rectangle.Empty) {
@@ -201,10 +223,23 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		) {
 			myID = 4,
 			upNeighborID = 3,
-			downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+			downNeighborID = 5,
 			leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
 			rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
 		};
+
+		btnFilterAquarium = HasAquarium ? new ClickableTextureComponent(
+			new Rectangle(0, 0, 64, 64),
+			Menu.background,
+			new Rectangle(336, 352, 16, 16),
+			4f
+		) {
+			myID = 5,
+			upNeighborID = 4,
+			downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+			leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+			rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+		} : null;
 	}
 
 	public override void ThemeChanged() {
@@ -214,6 +249,9 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		btnFilterType.texture = Menu.background;
 		btnFilterCaught.texture = Menu.background;
 		btnFilterLocation.texture = Menu.background;
+
+		if (btnFilterAquarium != null)
+			btnFilterAquarium.texture = Menu.background;
 
 		Tank.FloorTexture = Menu.background;
 		Tank.FrameTexture = Menu.background;
@@ -239,6 +277,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		state.FType = FType;
 		state.CStatus = CStatus;
 		state.LFilter = LFilter;
+		state.AFilter = AFilter;
 
 		return state;
 	}
@@ -260,6 +299,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		FType = state.FType;
 		CStatus = state.CStatus;
 		LFilter = state.LFilter;
+		AFilter = state.AFilter;
 	}
 
 	public IFlowNode[]? BuildRightPage(FishInfo? _info) {
@@ -369,6 +409,14 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		} else
 			builder.FormatText(I18n.Page_Fish_Caught_Not());
 
+		if (HasAquarium) {
+			bool donated = CheckAquariumDonated(info);
+			if (donated)
+				builder.FormatText($" {I18n.Page_Fish_Aquarium_Donated()}");
+			else
+				builder.FormatText($" {I18n.Page_Fish_Aquarium_NotDonated()}");
+		}
+
 		builder.Text("\n\n");
 
 		if (info.Legendary)
@@ -443,8 +491,8 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 					builder.Translate(
 						Mod.Helper.Translation.Get("page.fish.time"),
 						new {
-							start = TimeHelper.FormatTime(caught.Times[0].Start),
-							end = TimeHelper.FormatTime(caught.Times[0].End)
+							start = Mod.FormatTime(caught.Times[0].Start),
+							end = Mod.FormatTime(caught.Times[0].End)
 						}
 					);
 
@@ -458,8 +506,8 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 						b2.Translate(
 							Mod.Helper.Translation.Get("page.fish.time.range"),
 							new {
-								start = TimeHelper.FormatTime(t.Start),
-								end = TimeHelper.FormatTime(t.End)
+								start = Mod.FormatTime(t.Start),
+								end = Mod.FormatTime(t.End)
 							}
 						);
 					}
@@ -622,6 +670,9 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		return builder.Build();
 	}
 
+	private bool CheckAquariumDonated(FishInfo fish) {
+		return Game1.MasterPlayer.mailReceived.Contains($"AquariumDonated:{fish.Name.Replace(" ", "")}");
+	}
 
 	public override void Update() {
 		base.Update();
@@ -658,6 +709,12 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 				if (CStatus == CaughtStatus.Caught && caught == 0)
 					continue;
 				if (CStatus == CaughtStatus.Uncaught && caught > 0)
+					continue;
+			}
+
+			if (HasAquarium && AFilter != AquariumFilter.Off) {
+				bool donated = CheckAquariumDonated(fish);
+				if (donated != (AFilter == AquariumFilter.Donated))
 					continue;
 			}
 
@@ -856,7 +913,8 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 			btnFilterWeather,
 			btnFilterType,
 			btnFilterCaught,
-			btnFilterLocation
+			btnFilterLocation,
+			btnFilterAquarium
 		);
 
 		tankComponent.bounds = new(
@@ -889,6 +947,7 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		btnFilterType.tryHover(x, y);
 		btnFilterCaught.tryHover(x, y);
 		btnFilterLocation.tryHover(x, y);
+		btnFilterAquarium?.tryHover(x, y);
 
 		if (btnFilterWeather.containsPoint(x,y)) {
 			var builder = SimpleHelper.Builder()
@@ -947,6 +1006,20 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 
 			Menu.HoverNode = builder.GetLayout();
 		}
+
+		if (btnFilterAquarium != null && btnFilterAquarium.containsPoint(x, y)) {
+			var builder = SimpleHelper.Builder()
+				.FormatText(I18n.Page_Fish_Filter_Aquarium());
+
+			if (AFilter == AquariumFilter.Off)
+				builder.FormatText(I18n.Page_Fish_Filter_None(), color: Game1.textColor * 0.4f);
+			else if (AFilter == AquariumFilter.Donated)
+				builder.FormatText(I18n.Page_Fish_Aquarium_True(), color: Game1.textColor * 0.4f);
+			else
+				builder.FormatText(I18n.Page_Fish_Aquarium_False(), color: Game1.textColor * 0.4f);
+
+			Menu.HoverNode = builder.GetLayout();
+		}
 	}
 
 	public override bool ReceiveLeftClick(int x, int y, bool playSound) {
@@ -989,6 +1062,17 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 
 			Update();
 			btnFilterLocation.scale = btnFilterLocation.baseScale;
+			if (playSound)
+				Game1.playSound("smallSelect");
+
+			return true;
+		}
+
+		if (btnFilterAquarium != null && btnFilterAquarium.containsPoint(x, y)) {
+			AFilter = CommonHelper.Cycle(AFilter);
+
+			Update();
+			btnFilterAquarium.scale = btnFilterAquarium.baseScale;
 			if (playSound)
 				Game1.playSound("smallSelect");
 
@@ -1044,6 +1128,17 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 			return true;
 		}
 
+		if (btnFilterAquarium != null && btnFilterAquarium.containsPoint(x, y)) {
+			AFilter = CommonHelper.Cycle(AFilter, -1);
+
+			Update();
+			btnFilterAquarium.scale = btnFilterAquarium.baseScale;
+			if (playSound)
+				Game1.playSound("smallSelect");
+
+			return true;
+		}
+
 		return base.ReceiveRightClick(x, y, playSound);
 	}
 
@@ -1055,6 +1150,35 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 		base.Draw(b);
 
 		// TODO: Make these colors and rectangles constants.
+
+		/*if (Mod.Config.DebugMode) {
+			var pos = Game1.getMousePosition(false);
+
+			int x = (Game1.viewport.X + pos.X) / Game1.tileSize;
+			int y = (Game1.viewport.Y + pos.Y) / Game1.tileSize; // pixelZoom;
+
+			int zone = Game1.currentLocation.getFishingLocation(new Vector2(x, y));
+
+			SimpleHelper.Builder()
+				.Group()
+					.Text($"Pos: ({x}, {y})")
+				.EndGroup()
+				.Group()
+					.Text($"Map: ")
+					.Text($"{Game1.currentLocation.Name} => {Mod.GetLocationName(Game1.currentLocation)}")
+				.EndGroup()
+				.Group()
+					.Text($"Fish Area: ")
+					.Text($"{zone} => {Mod.GetSubLocationName(new Models.SubLocation(Game1.currentLocation.Name, zone))}")
+				.EndGroup()
+				.GetLayout()
+				.DrawHover(
+					batch: b,
+					defaultFont: Game1.smallFont,
+					overrideX: 4,
+					overrideY: 4
+				);
+		}*/
 
 		// Divider?
 		b.Draw(
@@ -1121,6 +1245,18 @@ public class FishingPage : BasePage<FishingState>, ILeftFlowMargins {
 			SourceLocation,
 			Color.White
 		);
+
+		// Aquarium Button
+		if (btnFilterAquarium != null) {
+			btnFilterAquarium.draw(b);
+
+			b.Draw(
+				Menu.background,
+				btnFilterAquarium.bounds,
+				SourceAquarium,
+				Color.White
+			);
+		}
 	}
 
 	public void DrawTank(SpriteBatch b) { 

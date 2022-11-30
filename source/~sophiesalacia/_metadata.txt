@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/sophiesalacia/StardewMods
+   Git: https://github.com/sophiesalacia/StardewMods.git
+
+mods:
+   Car Warp
+   Colored Crystalariums
+   Configurable Luck
+   Splash Text
+   Sturdy Saplings
+
+latest commit:
+   commit d74d08b7aa1e7d7ec1d237d5cbd77b0fc55ba3f2
+   Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
+   Date:   Tue Nov 15 15:09:40 2022 -0500
+   
+       Update version of CSOU for update notifications.
+   

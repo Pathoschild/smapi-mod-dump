@@ -8,9 +8,9 @@ mods:
    Ranching Tool Upgrades
 
 latest commit:
-   commit 94844b10dc0e27b73446fd88e7ae72d871f6bd8e
+   commit 94c6d4e01ea838868547ae35ffde0bcf9de7c090
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Sun Oct 23 09:21:31 2022 -0700
+   Date:   Sun Oct 30 13:57:39 2022 -0700
    
-       Add russian translation for socializing skill
+       Fix event exp and friendship decay perk effect
    

@@ -12,7 +12,7 @@
 	//Male Drop Recycling Recipes
 
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Manure Composter", //Name of the producer. Required.
 		"InputIdentifier": "Manure", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -23,7 +23,7 @@
 		
 	},	
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Chicken Feather", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -34,7 +34,7 @@
 		
 	},
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Duck Feather", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -45,7 +45,7 @@
 		
 	},		
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Ostrich Feather", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -56,7 +56,7 @@
 		
 	},				
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Dinosaur Scale", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -67,7 +67,7 @@
 		
 	},	
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": 446, //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -78,7 +78,7 @@
 		
 	},	
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Cow Horn", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -89,7 +89,7 @@
 		
 	},	
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Goat Horn", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -100,7 +100,7 @@
 		
 	},	
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Pig Tusk", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
@@ -111,7 +111,7 @@
 		
 	},	
 	{ // All lines that have a default value can be removed and that value will be used.
-		"ProducerName": "Recycling Machine", //Name of the producer. Required.
+		"ProducerName": "Genetic Extractor", //Name of the producer. Required.
 		"InputIdentifier": "Sheep Horn", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
 		"InputStack": 1, //The required stack of the input. Default value is 1.
 		"MinutesUntilReady": 200, //The amount of minutes it takes to produce. Should be divisible by 10. Required.

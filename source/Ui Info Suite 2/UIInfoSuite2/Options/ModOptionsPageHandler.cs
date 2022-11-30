@@ -10,6 +10,7 @@
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using System;
@@ -22,20 +23,28 @@ namespace UIInfoSuite2.Options
 {
     internal class ModOptionsPageHandler : IDisposable
     {
-        private List<ModOptionsElement> _optionsElements = new();
-        private readonly List<IDisposable> _elementsToDispose;
-        private ModOptionsPageButton _modOptionsPageButton;
-        private ModOptionsPage _modOptionsPage;
         private readonly IModHelper _helper;
         private readonly bool _showPersonalConfigButton;
+        
+        private List<ModOptionsElement> _optionsElements = new();
+        private readonly List<IDisposable> _elementsToDispose;
 
+        private ModOptionsPage _modOptionsPage;
+        private ModOptionsPageButton _modOptionsPageButton;
         private int _modOptionsTabPageNumber;
+
+        private PerScreen<IClickableMenu> _lastMenu = new();        
+        private List<int> _instancesWithOptionsPageOpen = new();
+        private bool _windowResizing = false;
 
         public ModOptionsPageHandler(IModHelper helper, ModOptions options, bool showPersonalConfigButton)
         {
             if (showPersonalConfigButton)
             {
-                helper.Events.Display.MenuChanged += ToggleModOptions;
+                helper.Events.Display.RenderingActiveMenu += OnRenderingMenu;
+                helper.Events.Display.RenderedActiveMenu += OnRenderedMenu;
+                GameRunner.instance.Window.ClientSizeChanged += OnWindowClientSizeChanged;
+                helper.Events.Display.WindowResized += OnWindowResized;
             }
             _helper = helper;
             _showPersonalConfigButton = showPersonalConfigButton;
@@ -91,13 +100,13 @@ namespace UIInfoSuite2.Options
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowExperienceGain)), whichOption++, experienceBar.ToggleShowExperienceGain, () => options.ShowExperienceGain, v => options.ShowExperienceGain = v));
             if (!_helper.ModRegistry.IsLoaded("Bouhm.NPCMapLocations"))
                 _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowLocationOfTownsPeople)), whichOption++, locationOfTownsfolk.ToggleShowNPCLocationsOnMap, () => options.ShowLocationOfTownsPeople, v => options.ShowLocationOfTownsPeople = v));
-            var BirthdayIcon = new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowBirthdayIcon)), whichOption++, showBirthdayIcon.ToggleOption, () => options.ShowBirthdayIcon, v => options.ShowBirthdayIcon = v);
-            _optionsElements.Add(BirthdayIcon);
-            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.HideBirthdayIfFullFriendShip)), whichOption++, showBirthdayIcon.ToggleDisableOnMaxFriendshipOption, () => options.HideBirthdayIfFullFriendShip, v => options.HideBirthdayIfFullFriendShip = v, BirthdayIcon));
+            var birthdayIcon = new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowBirthdayIcon)), whichOption++, showBirthdayIcon.ToggleOption, () => options.ShowBirthdayIcon, v => options.ShowBirthdayIcon = v);
+            _optionsElements.Add(birthdayIcon);
+            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.HideBirthdayIfFullFriendShip)), whichOption++, showBirthdayIcon.ToggleDisableOnMaxFriendshipOption, () => options.HideBirthdayIfFullFriendShip, v => options.HideBirthdayIfFullFriendShip = v, birthdayIcon));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowHeartFills)), whichOption++, showAccurateHearts.ToggleOption, () => options.ShowHeartFills, v => options.ShowHeartFills = v));
             var animalPetIcon = new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowAnimalsNeedPets)), whichOption++, showWhenAnimalNeedsPet.ToggleOption, () => options.ShowAnimalsNeedPets, v => options.ShowAnimalsNeedPets = v);
             _optionsElements.Add(animalPetIcon);
-            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.HideAnimalPetOnMaxFriendship)), whichOption++, showWhenAnimalNeedsPet.ToggleDisableOnMaxFirendshipOption, () => options.HideAnimalPetOnMaxFriendship, v => options.HideAnimalPetOnMaxFriendship = v, animalPetIcon));
+            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.HideAnimalPetOnMaxFriendship)), whichOption++, showWhenAnimalNeedsPet.ToggleDisableOnMaxFriendshipOption, () => options.HideAnimalPetOnMaxFriendship, v => options.HideAnimalPetOnMaxFriendship = v, animalPetIcon));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.DisplayCalendarAndBillboard)), whichOption++, showCalendarAndBillboardOnGameMenuButton.ToggleOption, () => options.DisplayCalendarAndBillboard, v => options.DisplayCalendarAndBillboard = v));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowCropAndBarrelTooltip)), whichOption++, showCropAndBarrelTime.ToggleOption, () => options.ShowCropAndBarrelTooltip, v => options.ShowCropAndBarrelTooltip = v));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(options.ShowItemEffectRanges)), whichOption++, showScarecrowAndSprinklerRange.ToggleOption, () => options.ShowItemEffectRanges, v => options.ShowItemEffectRanges = v));
@@ -125,80 +134,119 @@ namespace UIInfoSuite2.Options
 
         private void OnButtonLeftClicked(object sender, EventArgs e)
         {
-            if (Game1.activeClickableMenu is GameMenu gameMenu
-                && !GameMenu.forcePreventClose // Do not activate when an action is being remapped
-                && gameMenu.GetCurrentPage().readyToClose())
+            // Do not activate when an action is being remapped
+            if (Game1.activeClickableMenu is GameMenu gameMenu && gameMenu.readyToClose())
             {
-                SetActiveClickableMenuToModOptionsPage();
+                gameMenu.currentTab = _modOptionsTabPageNumber;
                 Game1.playSound("smallSelect");
             }
         }
 
-        private void ToggleModOptions(object sender, MenuChangedEventArgs e)
+        // Early because it is called during Display.RenderingActiveMenu instead of later during Display.MenuChanged,
+        private void EarlyOnMenuChanged(IClickableMenu? oldMenu, IClickableMenu? newMenu)
         {
-            // Remove from old menu
-            if (e.OldMenu != null)
+            if (_showPersonalConfigButton)
             {
-                _helper.Events.Display.RenderingActiveMenu -= OnRenderingMenu;
-                _helper.Events.Display.RenderedActiveMenu -= OnRenderedMenu;
-                if (_modOptionsPageButton != null)
-                    _modOptionsPageButton.OnLeftClicked -= OnButtonLeftClicked;
-
-                if (e.OldMenu is GameMenu gameMenu)
+                // Remove from old menu
+                if (oldMenu is GameMenu oldGameMenu)
                 {
-                    List<IClickableMenu> tabPages = gameMenu.pages;
-                    tabPages.Remove(_modOptionsPage);
-                }
-            }
-
-            // Add to new menu
-            if (e.NewMenu is GameMenu newMenu)
-            {
-                if (_modOptionsPageButton == null)
-                {
-                    _modOptionsPage = new ModOptionsPage(_optionsElements, _helper.Events);
-                    _modOptionsPageButton = new ModOptionsPageButton(_helper.Events);
+                    if (_modOptionsPage != null)
+                    {
+                        oldGameMenu.pages.Remove(_modOptionsPage);
+                        _modOptionsPage = null;
+                    }
+                    if (_modOptionsPageButton != null)
+                    {
+                        _modOptionsPageButton.OnLeftClicked -= OnButtonLeftClicked;
+                        _modOptionsPageButton = null;
+                    }
                 }
 
-                _helper.Events.Display.RenderingActiveMenu += OnRenderingMenu;
-                _helper.Events.Display.RenderedActiveMenu += OnRenderedMenu;
-                _modOptionsPageButton.OnLeftClicked += OnButtonLeftClicked;
-                List<IClickableMenu> tabPages = newMenu.pages;
-
-                _modOptionsTabPageNumber = tabPages.Count;
-                tabPages.Add(_modOptionsPage);
+                // Add to new menu
+                if (newMenu is GameMenu newGameMenu)
+                {
+                    // Both modOptions variables require Game1.activeClickableMenu to not be null.
+                    if (_modOptionsPage == null)
+                        _modOptionsPage = new ModOptionsPage(_optionsElements, _helper.Events);
+                    if (_modOptionsPageButton == null)
+                        _modOptionsPageButton = new ModOptionsPageButton(_helper.Events);
+                    
+                    _modOptionsPageButton.OnLeftClicked += OnButtonLeftClicked;
+                    List<IClickableMenu> tabPages = newGameMenu.pages;
+                    _modOptionsTabPageNumber = tabPages.Count;
+                    tabPages.Add(_modOptionsPage);
+                }
             }
-        }
-
-        private void SetActiveClickableMenuToModOptionsPage()
-        {
-            if (Game1.activeClickableMenu is GameMenu menu)
-                menu.currentTab = _modOptionsTabPageNumber;
         }
 
         private void OnRenderingMenu(object sender, RenderingActiveMenuEventArgs e)
         {
-            if (_showPersonalConfigButton && Game1.activeClickableMenu is GameMenu gameMenu)
+            if (_showPersonalConfigButton)
             {
-                // Draw our tab icon behind the menu even if it is dimmed by the menu's transparent background,
-                // so that it still displays during transitions eg. when a letter is viewed in the collections tab
-                DrawButton(gameMenu);
+                // Trigger the "EarlyOnMenuChanged" event
+                if (_lastMenu.Value != Game1.activeClickableMenu)
+                {
+                    EarlyOnMenuChanged(_lastMenu.Value, Game1.activeClickableMenu);
+                    _lastMenu.Value = Game1.activeClickableMenu;
+                }
+                if (Game1.activeClickableMenu is GameMenu gameMenu)
+                {
+                    // Draw our tab icon behind the menu even if it is dimmed by the menu's transparent background,
+                    // so that it still displays during transitions eg. when a letter is viewed in the collections tab
+                    DrawButton(gameMenu);
+                }
             }
         }
 
         private void OnRenderedMenu(object sender, RenderedActiveMenuEventArgs e)
         {
-            if (Game1.activeClickableMenu is GameMenu gameMenu &&
-                gameMenu.currentTab != 3 && // Do not render when the map is showing
-                                            // Do not render if a letter is open in the collection's page
-                !(gameMenu.currentTab == 5 && gameMenu.GetCurrentPage() is CollectionsPage cPage && cPage.letterviewerSubMenu != null) &&
-                _showPersonalConfigButton) // Only render when it is enabled in the config.json
+            if (_showPersonalConfigButton
+                && Game1.activeClickableMenu is GameMenu gameMenu
+                // But don't render when the map is displayed...
+                && !(gameMenu.currentTab == GameMenu.mapTab
+                    // ...or when a letter is opened in the collection's page
+                    || gameMenu.GetCurrentPage() is CollectionsPage cPage && cPage.letterviewerSubMenu != null
+                ))
             {
                 DrawButton(gameMenu);
 
                 // Draw the game menu's hover text again so it displays above our tab
                 if (!gameMenu.hoverText.Equals(""))
                     IClickableMenu.drawHoverText(Game1.spriteBatch, gameMenu.hoverText, Game1.smallFont);
+            }
+        }
+
+        private void OnWindowClientSizeChanged(object sender, EventArgs e)
+        {
+            if (_showPersonalConfigButton)
+            {
+                _windowResizing = true;
+                GameRunner.instance.ExecuteForInstances((Game1 instance) => {
+                    if (Game1.activeClickableMenu is GameMenu gameMenu && gameMenu.currentTab == _modOptionsTabPageNumber)
+                    {
+                        // Temporarily change all open mod options pages to the game's options page
+                        // because the GameMenu is recreated when the window is resized, before we can add
+                        // our mod options page to GameMenu#pages.
+                        gameMenu.currentTab = GameMenu.optionsTab;
+                        _instancesWithOptionsPageOpen.Add(instance.instanceId);
+                    }
+                });
+            }
+        }
+
+        private void OnWindowResized(object sender, EventArgs e)
+        {
+            if (_windowResizing) {
+                _windowResizing = false;
+                GameRunner.instance.ExecuteForInstances((Game1 instance) => {
+                    if (_instancesWithOptionsPageOpen.Remove(instance.instanceId))
+                    {
+                        if (Game1.activeClickableMenu is GameMenu gameMenu)
+                        {
+                            gameMenu.currentTab = _modOptionsTabPageNumber;
+                        }
+                    }
+                });
             }
         }
 

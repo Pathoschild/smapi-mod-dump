@@ -1,0 +1,20 @@
+{
+	"ID": "Billboard",
+
+	"Variables": {
+		"$BillboardHover": "$ButtonHover"
+	},
+
+	"Patches": {
+		"#Billboard:draw(SpriteBatch)": {
+			"Colors": {
+				"Gray": { "*": "$CalendarDim" },
+				"Blue": { "*": "$CalendarToday" },
+				"LightPink": { "*": "$BillboardHover" }
+			},
+			"Fields": {
+				"textColor": { "*": "$BillboardText" }
+			}
+		}
+	}
+}

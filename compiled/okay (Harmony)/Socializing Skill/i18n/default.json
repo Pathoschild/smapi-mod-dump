@@ -1,6 +1,6 @@
 ﻿{
     "skill.name": "Socializing",
-    "skill.perk": "-{{bonus}} daily friendship decay",
+    "skill.perk": "{{bonus}}% chance no daily friendship decay",
 
     "friendly.name": "Friendly",
     "friendly.desc": "Gain additional friendship from talking to villagers",
@@ -19,6 +19,10 @@
     "dialogue.beloved.rare": "Hey {{name}}, I think you might like this.",
     "dialogue.beloved.superrare": "I saw this, and I knew you'd love it.",
 
+    "config.ExperienceModifiers": "Experience Modifiers",
+    "config.SkillPerkModifiers": "Skill Perk Modifiers",
+    "config.ProfessionModifiers": "Profession Modifiers",
+
     "config.ExperienceFromTalking": "Exp From Talking",
     "config.ExperienceFromTalking.tooltip": "Experience gained from talking to villagers",
     "config.ExperienceFromGifts": "Exp From Gifts",
@@ -27,27 +31,43 @@
     "config.ExperienceFromEvents.tooltip": "Experience gained from heart events",
     "config.ExperienceFromQuests": "Exp From Quests",
     "config.ExperienceFromQuests.tooltip": "Experience gained from completeing bulletin board requests",
+    "config.LovedGiftExpMultiplier": "Loved Gift Experience Multiplier",
+    "config.LovedGiftExpMultiplier.tooltip": "Multiplies experience gained from giving gifts if the villager loves the gift",
+    "config.BirthdayGiftExpMultiplier": "Birthday Gift Experience Multiplier",
+    "config.BirthdayGiftExpMultiplier.tooltip": "Multiplies experience gained from giving gifts if it is the villagers birthday",
 
-    "config.FriendshipRecoveryPerLevel": "Friendship Decay Decrease",
-    "config.FriendshipRecoveryPerLevel.tooltip": "Per level decrease in daily friendship decay when you don't talk to someone'",
+    "config.ChanceNoFriendshipDecayPerLevel": "Chance Of No Decay Per Level",
+    "config.ChanceNoFriendshipDecayPerLevel.tooltip": "Per level chance that friendship won't decay overnight",
+
+    "config.FriendlyProfessionModifiers": "Friendly Profession Modifiers",
     "config.FriendlyExtraFriendship": "Extra Friendship",
     "config.FriendlyExtraFriendship.tooltip": "Extra friendship from talking to someone when you have the Friendly profession",
+
+    "config.SmoothTalkerProfessionModifiers": "Smooth Talker Profession Modifiers",
     "config.SmoothTalkerPositiveMultiplier": "Positive Multiplier",
     "config.SmoothTalkerPositiveMultiplier.tooltip": "Multiplies positive event responses by this amount when you have the Smooth Talker profession (keey > 1 to make responses better)",
     "config.SmoothTalkerNegativeMultiplier": "Negative Multiplier",
     "config.SmoothTalkerNegativeMultiplier.tooltip": "Multiplies negative event responses by this amount when you have the Smooth Talker profession (keep > 0 and < 1 to make responses better, but not positive)",
+
+    "config.GifterProfessionModifiers": "Gifter Profession Modifiers",
     "config.GifterLovedGiftExtraFriendship": "Loved Gift Extra Friendship",
     "config.GifterLovedGiftExtraFriendship.tooltip": "Extra friendship for loved gifts when you have the Gifter profession",
     "config.GifterLikedGiftExtraFriendship": "Liked Gift Extra Friendship",
     "config.GifterLikedGiftExtraFriendship.tooltip": "Extra friendship for liked gifts when you have the Gifter profession",
     "config.GifterNeutralGiftExtraFriendship": "Neutral Gift Extra Friendship",
     "config.GifterNeutralGiftExtraFriendship.tooltip": "Extra friendship for neutral gifts when you have the Gifter profession",
+
+    "config.HelpfulProfessionModifiers": "Helpful Profession Modifiers",
     "config.HelpfulRewardMultiplier": "Reward Multiplier",
     "config.HelpfulRewardMultiplier.tooltip": "Multiplies quest reward money by this amount when you have the Helpful profession",
+
+    "config.HagglerProfessionModifiers": "Haggler Profession Modifiers",
     "config.HagglerMinHeartLevel": "Min Heart Level",
     "config.HagglerMinHeartLevel.tooltip": "Begins giving discounts when friendship is at this level when you have the Haggler profession",
     "config.HagglerDiscountPercentPerHeartLevel": "Discount Percent Per Heart Level",
     "config.HagglerDiscountPercentPerHeartLevel.tooltip": "Extra discount percent per heart level starting at the minimum heart level",
+
+    "config.BelovedProfessionModifiers": "Beloved Profession Modifiers",
     "config.BelovedGiftPercentChance": "Gift Percent Chance",
     "config.BelovedGiftPercentChance.tooltip": "Chance to get a gift from someone when you have the Beloved profession",
     "config.BelovedGiftRarePercentChance": "Rare Gift Percent Chance",

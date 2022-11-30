@@ -1,0 +1,10 @@
+{
+    "Name": "Legendary Fish Pond Framework",
+    "Author": "sharpskull2",
+    "Version": "1.0",
+    "Description": "This is a Framework to be used with my other mod (CP) Better Fish Ponds to allow for legendary fish to be put into fish ponds",
+    "UniqueID": "sharpskull2.LegendaryFishPondFramework",
+    "EntryDll": "LegendaryFishPondFramework.dll",
+    "MinimumApiVersion": "3.18.0",
+    "UpdateKeys": []
+}

@@ -13,7 +13,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using Slothsoft.Challenger;
-using Slothsoft.Challenger.Models;
+using Slothsoft.Challenger.Common;
 
 namespace Slothsoft.ChallengerAutomate; 
 

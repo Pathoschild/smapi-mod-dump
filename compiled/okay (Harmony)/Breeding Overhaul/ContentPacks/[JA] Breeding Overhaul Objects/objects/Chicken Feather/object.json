@@ -1,0 +1,15 @@
+{
+    "Name": "Chicken Feather",
+    "Description": "A eather dropped by a chicken. Good source of DNA.",
+    "Category": "AnimalGoods",
+    "Edibility": -300,
+    "Price": 150,
+    "IsColored": false,
+    "Recipe": null,
+    "CanPurchase": false, 
+    "GiftTastes":
+    {
+        "Love": ["Linus", "Shane"],
+		"Like": ["Alex", "Elliot", "Harvey", "Sam", "Sebastian", "Abigail", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Leo", "Lewis", "Marnie", "Pam", "Pierre", "Robin", "Vincent", "Willy", "Wizard"]
+    },
+}

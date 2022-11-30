@@ -1,0 +1,12 @@
+{
+	"ID": "ShopMenu",
+
+	"Patches": {
+		"#ShopMenu:draw(SpriteBatch)": {
+			"Colors": {
+				"Wheat": { "*": "$ShopSelected" },
+				"Blue": { "*": "$ShopQiSelected" }
+			}
+		}
+	}
+}

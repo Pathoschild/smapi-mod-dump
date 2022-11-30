@@ -2,19 +2,19 @@
   <PropertyGroup>
     <AssemblyName>SailorStyles</AssemblyName>
     <RootNamespace>SailorStyles</RootNamespace>
-    <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
+    <Version>4.6.0</Version>
+    <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <IgnoreModFilePatterns>TMXTile\.(?:dll|pdb)</IgnoreModFilePatterns>
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>

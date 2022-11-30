@@ -1,0 +1,16 @@
+{
+    "Name": "Large Blue Egg",
+    "Description": "A big blue egg from a happy blue chicken.",
+    "Category": "Egg",
+    "Edibility": 10,
+    "Price": 95,
+    "IsColored": false,
+    "GiftTastes":
+  {
+        "Love": ["Shane"],
+        "Like": ["Demetrius", "Alex", "Jodi", "Kent", "Leah", "Linus", "Pierre", "Sam", "Marnie"],
+        "Neutral": [ "Elliot", "Harvey", "Emily", "Maru", "Penny", "Caroline", "Clint", "Evelyn", "George", "Gus", "Lewis", "Robin", "Willy", "Leo"],
+        "Disike": ["Dwarf", "Abigail", "Jas", "Vincent", "Pam", "Wizard", "Haley"],
+        "Hate": ["Sebastian"],
+   }
+}

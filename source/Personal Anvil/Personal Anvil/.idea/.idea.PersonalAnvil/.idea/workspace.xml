@@ -14,7 +14,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd4ca5a9-8b94-442b-a0ac-3b2eefe97ecb" name="Changes" comment="!.6 support" />
+    <list default="true" id="cd4ca5a9-8b94-442b-a0ac-3b2eefe97ecb" name="Changes" comment="!.6 support">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PersonalAnvil/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PersonalAnvil/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnvilMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AnvilMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ModEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PersonalAnvil.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/PersonalAnvil.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/PersonalAnvil.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/PersonalAnvil.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/PersonalAnvil.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/PersonalAnvil.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/PersonalAnvil.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/PersonalAnvil.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/PersonalAnvil.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/PersonalAnvil.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/PersonalAnvil.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/PersonalAnvil.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/obj/PersonalAnvil.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,18 +54,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -57,6 +75,10 @@
       <option name="presentableId" value="Default" />
       <updated>1658446326567</updated>
       <workItem from="1658446332511" duration="3340000" />
+      <workItem from="1661090014798" duration="110000" />
+      <workItem from="1661094286628" duration="598000" />
+      <workItem from="1668355768762" duration="2024000" />
+      <workItem from="1668367805209" duration="1292000" />
     </task>
     <task id="LOCAL-00001" summary="!.6 support">
       <created>1658449621011</created>
@@ -94,5 +116,24 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="!.6 support" />
     <option name="LAST_COMMIT_MESSAGE" value="!.6 support" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/AnvilMenu.cs</url>
+          <line>170</line>
+          <properties documentPath="$PROJECT_DIR$/AnvilMenu.cs" initialLine="170" containingFunctionPresentation="method 'update'">
+            <startOffsets>
+              <option value="6731" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6732" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

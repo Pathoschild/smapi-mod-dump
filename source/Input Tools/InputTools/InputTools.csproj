@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Name>InputTools</Name>
+    <Description>Tools to simplify inputs from keyboard, mouse and controller.</Description>
+    <MinimumApiVersion>3.14.0</MinimumApiVersion>
+    <UpdateKeys>Nexus:14553</UpdateKeys>
+    <Version>0.2.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
+  </ItemGroup>
+
+</Project>

@@ -58,13 +58,18 @@ namespace Custom_Farm_Loader.Menus
 
         public List<ClickableComponent> CustomFarmButtons = new List<ClickableComponent>();
         private List<CustomFarm> CustomFarms = new List<CustomFarm>();
-        private CustomFarm CurrentCustomFarm = null;
+        public CustomFarm CurrentCustomFarm = null;
 
         public int currentItemIndex;
 
         protected int currentTabHover;
 
-        public CustomFarmSelection(int default_selection_id) : base(Game1.uiViewport.Width / 2 - 320, Game1.uiViewport.Height - 64 - 192, 640, 192)
+
+        protected int DescriptionScrollIndex = 0;
+        protected string[] SplitPreviewDescription = new string[] { };
+        public ClickableTextureComponent DescriptionUpArrow;
+        public ClickableTextureComponent DescriptionDownArrow;
+        public CustomFarmSelection() : base(Game1.uiViewport.Width / 2 - 320, Game1.uiViewport.Height - 64 - 192, 640, 192)
         {
             updatePosition();
             initializeUpperRightCloseButton();
@@ -115,7 +120,7 @@ namespace Custom_Farm_Loader.Menus
             DownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 64, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
                 myID = 106,
                 upNeighborID = 97865,
-                leftNeighborID = 3546
+                leftNeighborID = 3546,
             };
             ScrollBar = new ClickableTextureComponent(new Rectangle(UpArrow.bounds.X + 12, UpArrow.bounds.Y + UpArrow.bounds.Height + 4, 24, 40), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f);
             ScrollBarRunner = new Rectangle(ScrollBar.bounds.X, UpArrow.bounds.Y + UpArrow.bounds.Height + 4, ScrollBar.bounds.Width, height - 64 - UpArrow.bounds.Height - 28);
@@ -127,16 +132,31 @@ namespace Custom_Farm_Loader.Menus
                     fullyImmutable = true
                 });
             }
+
+            DescriptionUpArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 48, yPositionOnScreen + height - 200, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f) {
+                myID = 801,
+                downNeighborID = 802,
+                upNeighborID = 3546,
+                rightNeighborID = 106
+            };
+            DescriptionDownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 48, yPositionOnScreen + height - 42, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
+                myID = 802,
+                upNeighborID = 801,
+                rightNeighborID = 106
+            };
         }
 
         public void applyTab()
         {
             Game1.playSound("shwip");
             this.CustomFarms = CustomFarm.getAll();
+            CustomFarm.getAll().ForEach(farm => farm.reloadTextures());
             loadModFarms();
 
             if (Game1.whichFarm == 7)
                 CurrentCustomFarm = CustomFarms.Find(e => e.ID == Game1.whichModFarm.ID);
+            DescriptionScrollIndex = 0;
+            SplitPreviewDescription = new string[] { };
             assignCurrentFarmPreview();
 
             currentItemIndex = 0;
@@ -150,23 +170,24 @@ namespace Custom_Farm_Loader.Menus
             List<ModFarmType> modFarms = Game1.content.Load<List<ModFarmType>>("Data\\AdditionalFarms");
 
             foreach (ModFarmType farm in modFarms) {
-                if (CustomFarm.get(farm.ID) != null)
+                if (CustomFarms.Exists(el => el.ID == farm.ID))
                     continue;
 
                 ModFarms.Add(farm);
                 CustomFarm newCustomFarm = new CustomFarm(farm);
 
                 newCustomFarm.ID = farm.ID;
+                newCustomFarm.Author = findMapAuthor(farm);
                 if (farm.MapName != "")
                     newCustomFarm.Name = farm.MapName.Replace("_", " ");
 
                 if (farm.TooltipStringPath != "")
-                    try { newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath); } catch (Exception) {
+                    try { newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath);} catch (Exception) {
                         Monitor.LogOnce($"Unable to load tooltip asset '{farm.TooltipStringPath}' for {farm.ID}; Resorting to default", LogLevel.Warn);
                     }
                 if (farm.IconTexture != "") {
                     try {
-                        newCustomFarm.Icon = Helper.GameContent.Load<Texture2D>(farm.IconTexture);
+                        newCustomFarm.Icon = loadCroppedIcon(farm);
                     } catch (Exception) {
                         Monitor.LogOnce($"Unable to load farm icon asset '{farm.IconTexture}' for {farm.ID}; Resorting to default", LogLevel.Warn);
                     }
@@ -191,6 +212,58 @@ namespace Custom_Farm_Loader.Menus
 
             CustomFarms = CustomFarms.OrderBy(o => o.Name).ToList();
         }
+        private string findMapAuthor(ModFarmType modFarm)
+        {
+            List<Tuple<string, int>> relatedModRating = new List<Tuple<string, int>>();
+
+            foreach (var mod in Helper.ModRegistry.GetAll().ToList()) {
+                var manifest = mod.Manifest;
+                if (manifest.UniqueID == modFarm.ID)
+                    return manifest.Author;
+                else if (manifest.UniqueID.Contains(modFarm.ID))
+                    relatedModRating.Add(Tuple.Create(manifest.Author, 3));
+                else if (manifest.Name == modFarm.ID)
+                    relatedModRating.Add(Tuple.Create(manifest.Author, 2));
+                else if (manifest.Name.Contains(modFarm.ID))
+                    relatedModRating.Add(Tuple.Create(manifest.Author, 1));
+            }
+
+            if (relatedModRating.Count == 0)
+                return "Unknown";
+
+            var mostLikelyMod = relatedModRating.OrderBy(el => el.Item2).Last();
+            return mostLikelyMod.Item1;
+        }
+
+        //Some custom farm maps have transparent pixels on the side.
+        //This trims them away
+        private Texture2D loadCroppedIcon(ModFarmType modFarm)
+        {
+            Texture2D icon = Helper.GameContent.Load<Texture2D>(modFarm.IconTexture);
+
+            int count = icon.Bounds.Width * icon.Bounds.Height;
+            Color[] data = new Color[count];
+            icon.GetData(0, icon.Bounds, data, 0, count);
+
+            //Getting the leftmost and rightmost column index of the first visible pixel
+            int left = icon.Bounds.Width;
+            int right = 0;
+            for (int i = 0; i < count; i++) {
+                if (data[i].A != 0) {
+                    if (i % icon.Bounds.Width < left)
+                        left = i % icon.Bounds.Width;
+
+                    if (i % icon.Bounds.Width > right)
+                        right = i % icon.Bounds.Width;
+                }
+            }
+
+            if (left == 0 && right == icon.Bounds.Width - 1)
+                return icon;
+            else
+                return UtilityMisc.createSubTexture(icon, new Rectangle(left, 0, right - left + 1, icon.Bounds.Height));
+        }
+
 
         //Some custom farm maps have complicated logic where they want to display the world map depending on season and whether SVE is installed
         //This is a hard coded way for CFL to still be able to display them properly during farm selection
@@ -209,7 +282,7 @@ namespace Custom_Farm_Loader.Menus
             var map = knownWorldMapExceptions[modFarm.ID];
             var path = UtilityMisc.getRelativeModDirectory(map[0]);
 
-            Monitor.LogOnce($"Found '{modFarm.ID}' as part of known world map excetions. Attempting hard coded load in '{path}\\{map[1]}'");
+            Monitor.LogOnce($"Found '{modFarm.ID}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
 
             try {
                 return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
@@ -230,7 +303,7 @@ namespace Custom_Farm_Loader.Menus
             try {
                 CurrentFarmPreview = ModEntry._Helper.ModContent.Load<Texture2D>(CurrentCustomFarm.Preview);
             } catch (Exception ex) {
-                ModEntry._Monitor.Log($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", StardewModdingAPI.LogLevel.Warn);
+                ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", StardewModdingAPI.LogLevel.Warn);
             }
 
 
@@ -254,13 +327,9 @@ namespace Custom_Farm_Loader.Menus
             updatePosition();
             initializeUpperRightCloseButton();
 
-            UpArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + 16, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f);
-            DownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 64, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f);
-            ScrollBar = new ClickableTextureComponent(new Rectangle(UpArrow.bounds.X + 12, UpArrow.bounds.Y + UpArrow.bounds.Height + 4, 24, 40), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f);
-            ScrollBarRunner = new Rectangle(ScrollBar.bounds.X, UpArrow.bounds.Y + UpArrow.bounds.Height + 4, ScrollBar.bounds.Width, height - 64 - UpArrow.bounds.Height - 28);
-            for (int i = 0; i < 4; i++) {
-                CustomFarmButtons.Add(new ClickableComponent(new Rectangle(xPositionOnScreen + 16, yPositionOnScreen + 16 + i * ((height - 256) / 4), width - 32, (height - 256) / 4 + 4), string.Concat(i)));
-            }
+            CustomFarmButtons.Clear();
+            createClickTableTextures();
+            setScrollBarToCurrentIndex();
         }
 
         private void downArrowPressed()
@@ -296,6 +365,9 @@ namespace Custom_Farm_Loader.Menus
         {
             Game1.playSound("coin");
             CurrentCustomFarm = customFarm;
+            DescriptionScrollIndex = 0;
+            SplitPreviewDescription = new string[] { };
+
             Game1.whichFarm = 7;
             if (ModFarms.Exists(e => e.ID == customFarm.ID))
                 Game1.whichModFarm = ModFarms.Find(e => e.ID == customFarm.ID);
@@ -325,10 +397,17 @@ namespace Custom_Farm_Loader.Menus
                 Scrolling = true;
             } else if (base.upperRightCloseButton.containsPoint(x, y)) {
                 exitThisMenu();
+                return;
             } else if (!DownArrow.containsPoint(x, y) && x > xPositionOnScreen + width && x < xPositionOnScreen + width + 128 && y > yPositionOnScreen && y < yPositionOnScreen + height) {
                 Scrolling = true;
                 leftClickHeld(x, y);
                 releaseLeftClick(x, y);
+            } else if (DescriptionUpArrow.containsPoint(x, y) && DescriptionScrollIndex != 0) {
+                DescriptionScrollIndex--;
+                Game1.playSound("shwip");
+            } else if (DescriptionDownArrow.containsPoint(x, y) && SplitPreviewDescription.Length > DescriptionScrollIndex + 3) {
+                DescriptionScrollIndex++;
+                Game1.playSound("shwip");
             }
 
 
@@ -378,6 +457,28 @@ namespace Custom_Farm_Loader.Menus
                 downArrowPressed();
                 Game1.playSound("shiny4");
             }
+        }
+
+        public override void receiveGamePadButton(Buttons b)
+        {
+            if ((b == Buttons.LeftShoulder || b == Buttons.LeftTrigger ) && DescriptionScrollIndex != 0) {
+                DescriptionScrollIndex--;
+                Game1.playSound("shwip");
+            } else if ((b == Buttons.RightShoulder || b == Buttons.RightTrigger) && SplitPreviewDescription.Length > DescriptionScrollIndex + 3) {
+                DescriptionScrollIndex++;
+                Game1.playSound("shwip");
+            }
+
+            base.receiveGamePadButton(b);
+        }
+
+        public override void performHoverAction(int x, int y)
+        {
+            this.UpArrow.tryHover(x, y, 0.5f);
+            this.DownArrow.tryHover(x, y, 0.5f);
+            this.DescriptionUpArrow.tryHover(x, y, 0.5f);
+            this.DescriptionDownArrow.tryHover(x, y, 0.5f);
+            this.upperRightCloseButton.tryHover(x, y, 0.5f);
         }
 
         protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
@@ -476,28 +577,30 @@ namespace Custom_Farm_Loader.Menus
             string title = $"{displayName} by {CurrentCustomFarm.Author}";
             SpriteText.drawStringWithScrollBackground(b, title, previewRectangle.X + 16, yPositionOnScreen + height - 250);
 
-            string localizedDescription = Game1.content.LoadString(CurrentCustomFarm.asModFarmType().TooltipStringPath);
-
-            if (localizedDescription.Count() > 70)
-                drawDescription(b, localizedDescription,
-                    x: previewRectangle.X + previewRectangle.Width + 16,
-                    y: yPositionOnScreen + height - 216 + 30,
-                    width: (int)Math.Round(width * 0.6) - 40);
-            else
-                SpriteText.drawString(b, localizedDescription,
-                    x: previewRectangle.X + previewRectangle.Width + 16,
-                    y: yPositionOnScreen + height - 216 + 30,
-                    characterPosition: 999999,
-                    width: (int)Math.Round(width * 0.6) - 40,
-                    height: 1
-                    );
+            drawDescription(b, CurrentCustomFarm.getLocalizedDescription(),
+                x: previewRectangle.X + previewRectangle.Width + 16,
+                y: yPositionOnScreen + height - 216 + 30,
+                width: width - previewRectangle.Width - 40);
 
         }
 
-        public static void drawDescription(SpriteBatch b, string description, int x, int y, int width)
+        public void drawDescription(SpriteBatch b, string description, int x, int y, int width)
         {
-            string descriptionString = Game1.parseText(description, Game1.smallFont, width);
-            b.DrawString(Game1.smallFont, descriptionString, new Vector2(x, y), Game1.textColor * 0.75f);
+            if (SplitPreviewDescription.Length == 0 && description != "")
+                SplitPreviewDescription = Game1.parseText(description, Game1.dialogueFont, width).Split(Environment.NewLine);
+
+            string descriptionString = "";
+            for (int i = DescriptionScrollIndex; i < DescriptionScrollIndex + 3; i++) {
+                if (SplitPreviewDescription.Length > i)
+                    descriptionString += SplitPreviewDescription[i] + Environment.NewLine;
+            }
+            Utility.drawTextWithShadow(b, descriptionString, Game1.dialogueFont, new Vector2(x, y), Game1.textColor);
+
+            if (DescriptionScrollIndex != 0)
+                DescriptionUpArrow.draw(b);
+
+            if (SplitPreviewDescription.Length > DescriptionScrollIndex + 3)
+                DescriptionDownArrow.draw(b);
         }
 
     }

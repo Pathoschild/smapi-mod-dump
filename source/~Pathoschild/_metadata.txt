@@ -21,9 +21,11 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 00690caf0aef6328c86381b58694cd799ad0a17e
+   commit 296320ada7f66f29bd965dddbbe97a53dbd58fa7
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Oct 30 00:45:32 2022 -0400
+   Date:   Fri Nov 18 23:20:30 2022 -0500
    
-       update for the upcoming Generic Mod Config Menu 2.0.0
+       add Portuguese translations for Fast Animations
+       
+       Thanks to RayBatista on Nexus!
    

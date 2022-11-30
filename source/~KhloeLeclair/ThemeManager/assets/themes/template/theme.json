@@ -11,22 +11,20 @@
 {
 	"Name": "Theme Template",
 
-	// Generic Colors
-	"TextColor": "#221122",
-	"TextShadowColor": "#CE9C5F",
-	"TextShadowAltColor": "#dd9454",
-
-	"ErrorTextColor": "red",
-
-	"HoverColor": "wheat",
-	"ButtonHoverColor": "lightpink",
-
-	"UnselectedOptionColor": "#646464",
+	"Variables": {
+		"Text": "#221122",
+		"TextShadow": "#CE9C5F",
+		"TextShadowAlt": "#DD9454",
+		"ErrorText": "red",
+		"Hover": "wheat",
+		"ButtonHover": "lightpink",
+		"UnselectedOption": "#646464"
+	},
 
 	"SpriteTextColors": {
 		"1": "skyblue",
 		"2": "red",
-		"3": "#642bff",
+		"3": "#6E2BFF",
 		"4": "white",
 		"5": "orangered",
 		"6": "limegreen",
@@ -34,107 +32,28 @@
 		"8": "#3c3c3c"
 	},
 
-	// Billboard
-	"CalendarDimColor": "gray",
-	"CalendarTodayColor": "blue",
-	"BillboardHoverColor": null, // ButtonHoverColor
-	"BillboardTextColor": null, // TextColor
-
-	// CarpenterMenu
-
-	"CarpenterMagicBackgroundColor": "royalblue",
-	"CarpenterMagicTextColor": "palegoldenrod",
-
-	// CoopMenu
-
-	"CoopTabSelectedColor": "#ffff96",
-	"CoopTabSelectedShadowColor": "#dd9454",
-	"CoopSmallTabSelectedColor": "orange",
-	"CoopSmallTabSelectedShadowColor": "darkorange",
-	"CoopTabHoverColor": "yellow",
-	"CoopTabHoverShadowColor": "darkgoldenrod",
-	"CoopHoverColor": null, // HoverColor
-
-	// DayTimeMoneyBox
-
-	"DayTimeAlignment": "top,right",
-	"DayTimeOffsetX": 0,
-	"DayTimeOffsetY": 8,
-	"DayTimeTextColor": null, // TextColor
-	"DayTimeAfterMidnightColor": null, // ErrorTextColor
-
-	// ExitPage
-
-	"ExitPageHoverColor": null, // HoverColor
-
-	// ForgeMenu
-
-	"ForgeMenuBackgroundColor": "#740b03",
-
-	// IClickableMenu
-
-	"HoverTextTextColor": null, // TextColor
-	"HoverTextShadowColor": null, // TextShadowColor
-	"HoverTextInsufficientTextColor": "red",
-	"HoverTextModifiedStatTextColor": "#007878",
-	"HoverTextEnchantmentTextColor": "#7800d2",
-	"HoverTextForgeCountTextColor": "dimgray",
-	"HoverTextForgedTextColor": "darkred",
-
-	// LetterViewerMenu
-
-	"LetterViewerHoverColor": null, // ButtonHoverColor
-
-	// LevelUpMenu
-
-	"LevelUpHoverTextColor": "green",
-
-	// LoadGameMenu
-
-	"LoadGameErrorTextColor": null, // ErrorTextColor
-	"LoadGameHoverColor": null, // HoverColor
-
-	// MineElevatorMenu
-
-	"ElevatorCurrentFloorTextColor": "gray",
-	"ElevatorFloorTextColor": "gold",
-
-	// MoneyDial
-
-	"MoneySparkleColor": "gold",
-	"MoneyTextColor": "maroon",
-
-	// OptionsDropDown
-
-	"DropDownTextColor": null, // TextColor
-	"DropDownHoverColor": null, // HoverColor
-
-	// QuestLog
-
-	"QuestHoverColor": null, // HoverColor
-	"QuestObjectiveTextColor": "darkblue",
-	"QuestBarIncompleteColor": "red",
-	"QuestBarIncompleteDarkColor": "darkred",
-	"QuestBarCompleteColor": "limegreen",
-	"QuestBarCompleteDarkColor": "green",
-
-	// ShopMenu
-
-	"ShopSelectedColor": "wheat",
-	"ShopQiSelectedColor": "blue",
-
-	// SkillsPage
-
-	"SkillsPageTextColor": null, // TextColor
-	"SkillsPageModifiedNumberColor": "lightgreen",
-	"SkillsPageNumberColor": "sandybrown",
-
-	// SpecialOrdersBoard
-
-	"SpecialOrdersHoverColor": null, // ButtonHoverColor
-
-	// TutorialMenu
-
-	"TutorialHoverColor": "blue"
-
+	"Patches": [
+		"Billboard",
+		"BobberBar",
+		"CarpenterMenu",
+		"CharacterCustomization",
+		"CoopMenu",
+		"DayTimeMoneyBox",
+		"DrawHud",
+		"DrawTextWithShadow",
+		"ExitPage",
+		"ForgeMenu",
+		"ItemTooltips",
+		"LetterViewerMenu",
+		"LevelUpMenu",
+		"LoadGameMenu",
+		"MineElevatorMenu",
+		"MoneyDial",
+		"OptionsDropDown",
+		"QuestLog",
+		"ShopMenu",
+		"SkillsPage",
+		"SpecialOrdersBoard",
+		"TutorialMenu"
+	]
 }

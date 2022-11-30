@@ -31,8 +31,6 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 
-using SObject = StardewValley.Object;
-
 namespace Leclair.Stardew.Almanac.Crops;
 
 public enum SeedFilter {
@@ -138,8 +136,26 @@ public class CropPage : BasePage<CropState>, ICalendarPage, ITab {
 			builder.FormatText(I18n.Crop_LastDay());
 			builder.Divider();
 
-			foreach (CropInfo crop in crops)
-				builder.Sprite(crop.Sprite, 3f, label: crop.Name);
+			if (crops.Count > 5) {
+				List<ISimpleNode> left = new();
+				List<ISimpleNode> right = new();
+
+				bool is_right = false;
+
+				foreach(CropInfo crop in crops) {
+					(is_right ? right : left).Add(new Common.UI.SimpleLayout.SpriteNode(crop.Sprite, scale: 3f, label: crop.Name));
+					is_right = !is_right;
+				}
+
+				builder.Group(margin: 8)
+					.Group(align: Alignment.Top).AddRange(left).EndGroup()
+					.Group(align: Alignment.Top).AddRange(right).EndGroup()
+					.EndGroup();
+
+			} else {
+				foreach (CropInfo crop in crops)
+					builder.Sprite(crop.Sprite, 3f, label: crop.Name);
+			}
 
 			return builder.GetLayout();
 
@@ -480,11 +496,11 @@ public class CropPage : BasePage<CropState>, ICalendarPage, ITab {
 			}
 
 			if (last.SeasonIndex == Menu.Season) {
-				int day = last.DayOfMonth;
-				if (LastDays[day - 1] == null)
-					LastDays[day - 1] = new();
+				int day = last.DayOfMonth - 1;
+				if (LastDays.Length > day && LastDays[day] == null)
+					LastDays[day] = new();
 
-				LastDays[day - 1].Add(crop);
+				LastDays[day].Add(crop);
 			}
 
 			bool OnHover(IFlowNodeSlice slice, int x, int y) {

@@ -1,0 +1,20 @@
+{
+	"ID": "OptionsDropDown",
+
+	"Variables": {
+		"$DropDownHover": "$Hover",
+		"$DropDownText": "$Text"
+	},
+
+	"Patches": {
+		"#OptionsDropDown:draw(SpriteBatch,,,)": {
+			"Colors": {
+				"Wheat": { "*": "$DropDownHover" }
+			},
+
+			"Fields": {
+				"textColor": { "*": "$DropDownText" }
+			}
+		}
+	}
+}

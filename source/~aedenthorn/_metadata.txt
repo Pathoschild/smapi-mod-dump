@@ -3,12 +3,14 @@ urls:
    Git: https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
+   Additional Mine Maps
    Advanced Cooking
    Advanced Flute Blocks
    Advanced Loot Framework
    Advanced Melee Framework
    Advanced Menu Positioning
    AFK Pause
+   All Chests Menu
    Animated Parrot and Perch
    Another Jump Mod
    April Bug Fix Suite
@@ -34,6 +36,7 @@ mods:
    Custom Fixed Dialogue
    Custom Gift Limits
    Custom Locks
+   Custom Mine Cart Steam
    Custom Object Production
    Custom Ore Nodes
    Custom Pet Beds
@@ -54,7 +57,10 @@ mods:
    Dialogue New Line
    Dialogue Trees
    Dreamscape
+   Dungeon Merchants
+   Dynamic Map Tiles
    Email App
+   Emily for Stardew Impact
    Enhanced Loot Magnet
    Expert Sitting
    Extra Map Layers
@@ -76,6 +82,7 @@ mods:
    Furniture Display Framework
    Furniture Placement Tweaks
    Furniture Recolor
+   Galaxy Weapon Choice
    Gem Isles
    Gift Rejection
    Groundhog Day
@@ -86,10 +93,12 @@ mods:
    Instant Building Construction and Upgrade
    Instant Growth Powder
    Krobus Roommate Shop
+   Light Mod
    Livestock Choices
    Log Spam Filter
    Longer Seasons
    Loose Audio Files
+   Mailbox Menu
    Map Editor
    Map Teleport
    Meteor Defence
@@ -135,6 +144,7 @@ mods:
    Quotes
    Random NPCs
    Realistic Random Names
+   Restauranteer
    Robin Work Hours
    Secret Hedge Maze
    Seed Maker Tweaks
@@ -147,6 +157,7 @@ mods:
    Social Page Order Button
    Social Page Order Menu
    Sound Effect Replacement
+   Stardew Impact
    Stardew RPG
    Submerged Crab Pots
    Swim
@@ -172,9 +183,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit f034d28d4bd9908bc33d9883410a569a213eb0e5
+   commit e0eecaf8504d1721ffb697fff6de15715ce81e75
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sat Oct 29 12:30:55 2022 -0400
+   Date:   Tue Nov 29 02:55:54 2022 -0500
    
        etc
    

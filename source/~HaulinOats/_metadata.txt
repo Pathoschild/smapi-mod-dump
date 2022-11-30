@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/HaulinOats/StardewMods
+   Git: https://github.com/HaulinOats/StardewMods.git
+
+mods:
+   Dynamic Crops
+   Water Balloon
+
+latest commit:
+   commit 52d12b71bd1b7c1f60726314c9605d5455b3f534
+   Author: Brett Connolly <brett84c@gmail.com>
+   Date:   Thu Nov 17 10:19:55 2022 -0500
+   
+       updates to water balloon mod
+   

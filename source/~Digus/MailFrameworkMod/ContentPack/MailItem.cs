@@ -31,6 +31,9 @@ namespace MailFrameworkMod.ContentPack
         public List<string> Seasons;
         public string Weather;
         public int? HouseUpgradeLevel;
+        public int? DeepestMineLevel;
+        public int? CurrentMoney;
+        public uint? TotalMoneyEarned;
         public List<FriendshipCondition> FriendshipConditions;
         public List<SkillCondition> SkillConditions;
         public List<StatsCondition> StatsConditions;

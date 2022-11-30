@@ -1,0 +1,14 @@
+{
+    "Name": "Large Dinosaur Egg",
+    "Description": "An extra-large dinosaur egg from a happy dinosaur.",
+    "Category": "Egg",
+    "Edibility": -300,
+    "Price": 550,
+    "IsColored": false,
+    "Recipe": null,
+    "GiftTastes":
+    {
+        "Like": ["Penny", "Dwarf"],
+		"Dislike": ["Shane", "Alex", "Elliot", "Harvey", "Sam", "Sebastian", "Marnie", "Abigail", "Emily", "Haley", "Leah", "Maru", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Leo", "Lewis", "Linus", "Pam", "Pierre", "Robin", "Vincent", "Willy", "Wizard"]
+    },
+}

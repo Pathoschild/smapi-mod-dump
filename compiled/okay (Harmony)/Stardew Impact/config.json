@@ -1,0 +1,17 @@
+{
+  "ModEnabled": true,
+  "MinPoints": 1500,
+  "PortraitScale": 2.0,
+  "PortraitSpacing": 32,
+  "SkillsScale": 2.0,
+  "SkillsSpacing": 32,
+  "Button1": "D1",
+  "Button2": "D2",
+  "Button3": "D3",
+  "Button4": "D4",
+  "Button5": "D5",
+  "SkillButton": "E",
+  "BurstButton": "Q",
+  "CurrentSkillOffsetX": 0,
+  "CurrentSkillOffsetY": 0
+}

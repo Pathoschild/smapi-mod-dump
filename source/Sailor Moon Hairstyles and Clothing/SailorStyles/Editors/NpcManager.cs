@@ -10,51 +10,66 @@
 
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 using System.Collections.Generic;
 
 namespace SailorStyles.Editors
 {
-	internal class NpcManager : IAssetLoader, IAssetEditor
+	internal static class NpcManager
 	{
-		private IModHelper Helper => ModEntry.Instance.Helper;
+        internal static bool TryLoad(AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentCatSchedulePath))
+                e.LoadFromModFile<Dictionary<string, string>>(ModConsts.LocalCatSchedulePath + ".json", AssetLoadPriority.Exclusive);
+            else if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentCatSpritesPath))
+                e.LoadFromModFile<Texture2D>(ModConsts.LocalCatSpritesPath + ".png", AssetLoadPriority.Exclusive);
+            else if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentCatPortraitPath))
+                e.LoadFromModFile<Texture2D>(ModConsts.LocalCatPortraitPath + ".png", AssetLoadPriority.Exclusive);
+            else
+                return false;
+            return true;
+        }
 
-		public bool CanLoad<T>(IAssetInfo asset)
-		{
-			return asset.AssetNameEquals(ModConsts.GameContentCatSchedulePath) 
-				|| asset.AssetNameEquals(ModConsts.GameContentCatSpritesPath) 
-				|| asset.AssetNameEquals(ModConsts.GameContentCatPortraitPath);
-		}
+        internal static bool TryEdit(AssetRequestedEventArgs e, IModContentHelper helper)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentAnimationsPath))
+                e.Edit((IAssetData asset) => Edit(asset, helper), AssetEditPriority.Default);
+            else if (e.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentCatSchedulePath))
+                e.Edit((IAssetData asset) => Edit(asset, helper), AssetEditPriority.Default);
+            else
+                return false;
+            return true;
+        }
 
-		public T Load<T>(IAssetInfo asset)
-		{
-			if (asset.AssetNameEquals(ModConsts.GameContentCatSchedulePath))
-				return (T)(object) Helper.Content.Load
-					<Dictionary<string, string>>
-					(ModConsts.LocalCatSchedulePath + ".json");
-			if (asset.AssetNameEquals(ModConsts.GameContentCatSpritesPath))
-				return (T) (object) Helper.Content.Load
-					<Texture2D>
-					(ModConsts.LocalCatSpritesPath + ".png");
-			if (asset.AssetNameEquals(ModConsts.GameContentCatPortraitPath))
-				return (T) (object) Helper.Content.Load
-					<Texture2D>
-					(ModConsts.LocalCatPortraitPath + ".png");
-			return (T) (object) null;
-		}
+		private static void Edit(IAssetData asset, IModContentHelper helper)
+        {
+            if (asset.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentAnimationsPath))
+            {
+                // Add CatShop character animation sequence definitions to data asset
+                var data = asset.AsDictionary<string, string>().Data;
+                var json = helper.Load
+                    <Dictionary<string, string>>
+                    (ModConsts.LocalAnimationsPath + ".json");
 
-		public bool CanEdit<T>(IAssetInfo asset)
-		{
-			return asset.AssetNameEquals(ModConsts.GameContentAnimationsPath);
-		}
-
-		public void Edit<T>(IAssetData asset)
-		{
-			var json = Helper.Content.Load
-				<Dictionary<string, string>>
-				(ModConsts.LocalAnimationsPath + ".json");
-			foreach (var pair in json)
-				if (!asset.AsDictionary<string, string>().Data.ContainsKey(pair.Key))
-					asset.AsDictionary<string, string>().Data.Add(pair);
-		}
+                foreach ((string key, string value) in json)
+                {
+                    _ = data.TryAdd(key, value);
+                }
+                asset.ReplaceWith(data);
+            }
+            else if (asset.NameWithoutLocale.IsEquivalentTo(ModConsts.GameContentCatSchedulePath))
+            {
+                // Add CatShop game and tile location values to character schedule data asset
+                var data = asset.AsDictionary<string, string>().Data;
+                data["spring"] = string.Format(
+                    data["spring"],
+                    ModConsts.CatLocationId,
+                    ModConsts.CatTileLocation.X,
+                    ModConsts.CatTileLocation.Y,
+                    Game1.down);
+                asset.ReplaceWith(data);
+            }
+        }
 	}
 }

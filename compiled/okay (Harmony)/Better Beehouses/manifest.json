@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Better Beehouses",
   "Author": "Tlitookilakin",
-  "Version": "1.3.1",
+  "Version": "1.3.2",
   "Description": "Improves bee houses",
   "UniqueID": "tlitookilakin.BetterBeehouses",
   "EntryDll": "BetterBeehouses.dll",
@@ -22,6 +22,10 @@
     },
     {
         "UniqueID": "Pathoschild.Automate",
+        "IsRequired": false
+    },
+    {
+        "UniqueID": "CJBok.ItemSpawner",
         "IsRequired": false
     }
   ]

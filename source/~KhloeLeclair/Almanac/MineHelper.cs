@@ -41,6 +41,14 @@ public class MineHelper {
 			: Game1.netWorldState.Value.MinesDifficulty;
 	}
 
+	public static Random GetNormalRandom(int floor, ulong seed, int date) {
+		return new Random((date + 1) * floor + 4 * floor + (int) seed / 2);
+	}
+
+	public static Random GetInfestationRandom(int floor, ulong seed, int date) {
+		return new Random((date + 1) + floor * 100 + (int) seed / 2);
+	}
+
 	public static LevelType GetLevelType(int floor, ulong seed, int date) {
 		if (floor < 1 || floor > 77377)
 			return LevelType.None;
@@ -55,7 +63,7 @@ public class MineHelper {
 
 			// Check for monster infestation first, since that
 			// has a higher priority.
-			rnd = new((date + 1) + floor * 100 + (int)seed / 2);
+			rnd = GetInfestationRandom(floor, seed, date);
 
 			if (rnd.NextDouble() < 0.044 && floor % 40 > 5 && floor % 40 < 30 && floor % 40 != 19) {
 				if (rnd.NextDouble() < 0.5)
@@ -72,7 +80,7 @@ public class MineHelper {
 			}
 
 			// Now check for mushrooms.
-			rnd = new((date - 1) * floor + 4 * floor + (int)seed / 2);
+			rnd = GetNormalRandom(floor, seed, date);
 
 			// Duplicate randomness calls that are used before.
 			// We don't care about their output.
@@ -89,7 +97,7 @@ public class MineHelper {
 
 		// Skull Caves
 		if (floor >= 121 && floor < 77377) {
-			rnd = new((date + 1) + floor * 100 + (int)seed / 2);
+			rnd = GetInfestationRandom(floor, seed, date);
 
 			if (rnd.NextDouble() < 0.044 && floor % 40 > 5 && floor % 40 < 30 && floor % 40 != 19) {
 				LevelType result;

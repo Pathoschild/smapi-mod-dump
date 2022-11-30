@@ -1,0 +1,15 @@
+{
+  "ModEnabled": true,
+  "MenuOnMailbox": true,
+  "ModKey": "None",
+  "MenuKey": "F15",
+  "InboxText": "Mailbox",
+  "ArchiveText": "Old Mail",
+  "WindowWidth": 1600,
+  "WindowHeight": 1000,
+  "GridColumns": 4,
+  "EnvelopeWidth": 256,
+  "EnvelopeHeight": 192,
+  "SideWidth": 194,
+  "GridSpace": 64
+}

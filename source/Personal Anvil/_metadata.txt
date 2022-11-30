@@ -6,9 +6,9 @@ mods:
    Personal Anvil
 
 latest commit:
-   commit 1b5d3c892b1d4380b650bb8d328bdbb2e59464ee
+   commit 9df276c5cf8abd6e88051337237188d4bf7da939
    Author: Ishan Jalan <44338423+ishanjalan@users.noreply.github.com>
-   Date:   Fri Jul 22 22:49:01 2022 +0530
+   Date:   Mon Nov 14 01:25:25 2022 +0530
    
-       Update workspace.xml
+       SMAPI 4.0.0 migration
    

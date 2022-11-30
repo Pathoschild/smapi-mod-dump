@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Eidee Easy Fishing",
   "Author": "EideeHi",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Mods to make fishing easier, customizable by config.",
   "UniqueID": "net.eidee.stardew_valley.easy_fishing",
   "EntryDll": "EideeEasyFishing.dll",

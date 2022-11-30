@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Lasting Conversation Topics",
+    "Author": "sophie",
+    "Version": "1.0.2", // fixed locally
+    "Description": "Extends given conversation topics indefinitely.",
+    "UniqueID": "sophie.LastingCTs",
+    "EntryDll": "LastingConversationTopics.dll",
+    "MinimumApiVersion": "3.13.0",
+    "UpdateKeys": [ "Nexus:14377" ]
+}

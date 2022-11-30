@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14366
+IDs: aedenthorn.SDIEmily
+update keys: Nexus:14366, GitHub:aedenthorn/StardewValleyMods

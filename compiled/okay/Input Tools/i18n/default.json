@@ -1,0 +1,6 @@
+﻿// Copyright 2022 Sagittaeri
+{
+    // Strings used in the config menu
+    "config.HideCursorInstantlyWhenControllerUsed.name": "Instantly hides cursor",
+    "config.HideCursorInstantlyWhenControllerUsed.tooltip": "Instantly hides cursor when the controller is used. Cursor reappears when mouse or right stick is moved.",
+}

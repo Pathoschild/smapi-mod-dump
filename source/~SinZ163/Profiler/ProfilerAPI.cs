@@ -11,11 +11,13 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Profiler
@@ -32,21 +34,25 @@ namespace Profiler
         public MethodBase AddGenericDurationPatch(string type, string method);
     }
 
+    internal record ProfileLoggerRow(double OccuredAt, object Metadata);
+
     public class ProfilerAPI : IProfilerAPI
     {
-        private ProfilerLogger Logger { get; }
         private ModConfig Config { get; }
         public Harmony Harmony { get; }
         public IMonitor Monitor { get; }
         public Stopwatch Timer { get; }
 
-        internal ProfilerAPI(ProfilerLogger logger, ModConfig config, Harmony harmony, Stopwatch timer, IMonitor monitor)
+        internal ConcurrentStack<EventEntry> EventMetadata { get; private set; }
+
+        internal ProfilerAPI(ModConfig config, Harmony harmony, Stopwatch timer, IMonitor monitor)
         {
-            Logger = logger;
             Config = config;
             Harmony = harmony;
             Monitor = monitor;
             Timer = timer;
+
+            EventMetadata = new();
         }
 
         public void Write(EventMetadata eventDetails)
@@ -56,37 +62,32 @@ namespace Profiler
         private void Write(double at, EventMetadata eventDetails)
         {
             // Finally back to the root event, log
-            if (Logger.EventMetadata.IsEmpty)
+            if (EventMetadata.IsEmpty)
             {
                 if (eventDetails is EventDurationMetadata durationMetadata && durationMetadata.Duration < Config.LoggerDurationOuterThreshold)
                 {
                     return;
                 }
-                Logger.AddRow(new ProfileLoggerRow(at, eventDetails));
+                Monitor.Log($"[RawLog] {JsonSerializer.Serialize(new ProfileLoggerRow(at, eventDetails))}", LogLevel.Trace);
             }
-            else
+            else if (EventMetadata.TryPeek(out var outerMetadata))
             {
-                if (Logger.EventMetadata.TryPeek(out var outerMetadata))
+                if (eventDetails is EventDurationMetadata durationMetadata && durationMetadata.Duration < Config.LoggerDurationInnerThreshold)
                 {
-                    // AssetRequested as a nested event is *way* too noisy, removing all together
-                    //if (metadata.EventType != "Content.AssetRequested" && metadata.EventType != "Content.AssetReady" && metadata.EventType != "Content.AssetsInvalidated")
-                    if (eventDetails is EventDurationMetadata durationMetadata && durationMetadata.Duration < Config.LoggerDurationInnerThreshold)
-                    {
-                        return;
-                    }
-                    outerMetadata.Entry.InnerDetails.Add(new ProfileLoggerRow(at, eventDetails));
+                    return;
                 }
+                outerMetadata.Entry.InnerDetails.Add(new ProfileLoggerRow(at, eventDetails));
             }
         }
 
         public void Push(EventMetadata eventDetails)
         {
-            Logger.EventMetadata.Push(new(Timer.Elapsed.TotalMilliseconds, eventDetails));
+            EventMetadata.Push(new(Timer.Elapsed.TotalMilliseconds, eventDetails));
         }
 
         public void Pop(Func<EventMetadata, EventMetadata> modifier)
         {
-            if (Logger.EventMetadata.TryPop(out var metadataPair))
+            if (EventMetadata.TryPop(out var metadataPair))
             {
                 var metadata = modifier(metadataPair.Entry);
                 Write(metadataPair.At, metadata);

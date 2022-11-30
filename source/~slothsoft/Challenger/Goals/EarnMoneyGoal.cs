@@ -50,9 +50,13 @@ public class EarnMoneyGoal : BaseGoal<EarnMoneyProgress> {
         base.Start();
         GlobalMoneyCounter.AddSellEvent(OnItemSold);
     }
+
+    internal bool IsCountingAllowed(Item soldItem) {
+        return _isCountingAllowed(soldItem);
+    }
     
     private void OnItemSold(Item soldItem, int moneyEarned) {
-        if (_isCountingAllowed(soldItem)) {
+        if (IsCountingAllowed(soldItem)) {
             Progress.MoneyEarned += moneyEarned;
             WriteProgressType(Progress);
         }

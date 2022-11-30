@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Item.JunimoBoy.Name": "Junimo Boy",
+    "Item.JunimoBoy.Description": "A portable game console.",
+
+    "Item.JunimoBoy.Startup": "The console boots up... which game do you want to play?"
+}

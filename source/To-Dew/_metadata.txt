@@ -6,9 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 7961a22af9fb80a34d176146a90f92e98b877ddc
+   commit 1d9904a0ff5452a2c8c925dc3ef08770795caec7
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sun Jan 9 22:36:17 2022 -0500
+   Date:   Sun Nov 20 22:17:42 2022 -0500
    
-       release 1.10.2
+       release 1.11.0; update readme, release notes, manifest
    

@@ -10,6 +10,11 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Improved translations. Thanks to EngurRuzgar (updated Turkish)!
+
+## 4.16.2
+Released 30 October 2022 for SMAPI 3.14.0 or later.
+
 * Updated integration with Generic Mod Config Menu.
 
 ## 4.16.1

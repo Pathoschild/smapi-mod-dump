@@ -225,6 +225,10 @@ namespace Shockah.FlexibleSprinklers
 			if (heldItem?.ParentSheetIndex == PressureNozzleParentSheetIndex && @object.heldObject?.Value?.ParentSheetIndex != PressureNozzleParentSheetIndex)
 				return;
 
+			#if DEBUG
+			SprinklerBehavior.ClearCache();
+			#endif
+
 			if (Config.ActivateOnAction && SprinklerBehavior is ISprinklerBehavior.Independent)
 				ActivateSprinkler(@object, location);
 			if (Config.ShowCoverageOnAction)
@@ -254,6 +258,7 @@ namespace Shockah.FlexibleSprinklers
 			helper.AddBoolOption("config.ignoreRange", () => Config.IgnoreRange);
 			helper.AddBoolOption("config.waterGardenPots", () => Config.WaterGardenPots);
 			helper.AddBoolOption("config.waterPetBowl", () => Config.WaterPetBowl);
+			helper.AddBoolOption("config.waterAtSprinkler", () => Config.WaterAtSprinkler);
 			helper.AddBoolOption("config.compatibilityMode", () => Config.CompatibilityMode);
 
 			helper.AddSectionTitle("config.cluster.section");
@@ -293,15 +298,26 @@ namespace Shockah.FlexibleSprinklers
 		{
 			if (Config.SprinklerBehavior is SprinklerBehaviorEnum.Flexible or SprinklerBehaviorEnum.FlexibleWithoutVanilla)
 				Monitor.LogOnce("The \"Flood fill\"-family behaviors are obsolete and will be removed in a future update. Please switch to using the \"Cluster\"-family behaviors.", LogLevel.Warn);
-			SprinklerBehavior = Config.SprinklerBehavior switch
+
+			ISprinklerBehavior sprinklerBehavior = Config.SprinklerBehavior switch
 			{
-				SprinklerBehaviorEnum.Cluster => new ClusterSprinklerBehavior(Config.ClusterBehaviorClusterOrdering, Config.ClusterBehaviorBetweenClusterBalanceMode, Config.ClusterBehaviorInClusterBalanceMode, new VanillaSprinklerBehavior()),
-				SprinklerBehaviorEnum.ClusterWithoutVanilla => new ClusterSprinklerBehavior(Config.ClusterBehaviorClusterOrdering, Config.ClusterBehaviorBetweenClusterBalanceMode, Config.ClusterBehaviorInClusterBalanceMode, null),
+				SprinklerBehaviorEnum.Cluster => new ClusterSprinklerBehavior(Config.ClusterBehaviorClusterOrdering, Config.ClusterBehaviorBetweenClusterBalanceMode, Config.ClusterBehaviorInClusterBalanceMode, Config.IgnoreRange, Config.SplitDisconnectedClusters, new VanillaSprinklerBehavior()),
+				SprinklerBehaviorEnum.ClusterWithoutVanilla => new ClusterSprinklerBehavior(Config.ClusterBehaviorClusterOrdering, Config.ClusterBehaviorBetweenClusterBalanceMode, Config.ClusterBehaviorInClusterBalanceMode, Config.IgnoreRange, Config.SplitDisconnectedClusters, null),
 				SprinklerBehaviorEnum.Flexible => new FloodFillSprinklerBehavior(Config.TileWaterBalanceMode, new VanillaSprinklerBehavior()),
 				SprinklerBehaviorEnum.FlexibleWithoutVanilla => new FloodFillSprinklerBehavior(Config.TileWaterBalanceMode, null),
 				SprinklerBehaviorEnum.Vanilla => new VanillaSprinklerBehavior(),
 				_ => throw new ArgumentException($"{nameof(SprinklerBehaviorEnum)} has an invalid value."),
 			};
+
+			if (Config.WaterAtSprinkler)
+			{
+				if (sprinklerBehavior is ISprinklerBehavior.Independent independent)
+					sprinklerBehavior = new SelfWaterSprinklerBehavior.Independent(independent);
+				else
+					sprinklerBehavior = new SelfWaterSprinklerBehavior(sprinklerBehavior);
+			}
+
+			this.SprinklerBehavior = sprinklerBehavior;
 		}
 
 		public void ActivateAllSprinklers()
@@ -395,7 +411,7 @@ namespace Shockah.FlexibleSprinklers
 		{
 			var layout = GetUnmodifiedSprinklerCoverage(sprinkler);
 			var power = GetSprinklerPower(sprinkler, layout);
-			return new SprinklerInfo(layout.ToHashSet(), power);
+			return new SprinklerInfo(layout.Select(p => new IntPoint((int)p.X, (int)p.Y)).ToHashSet(), power);
 		}
 
 		public int GetSprinklerPower(SObject sprinkler)
@@ -432,7 +448,7 @@ namespace Shockah.FlexibleSprinklers
 		internal int GetSprinklerMaxRange(SprinklerInfo info)
 		{
 			int spreadRange = GetSprinklerSpreadRange(info.Power);
-			int focusedRange = GetSprinklerFocusedRange(info.Layout.ToArray());
+			int focusedRange = GetSprinklerFocusedRange(info.Layout.Select(p => new Vector2(p.X, p.Y)).ToArray());
 			return Math.Max(spreadRange, focusedRange);
 		}
 
@@ -440,12 +456,14 @@ namespace Shockah.FlexibleSprinklers
 		{
 			if (SprinklerBehavior is not ISprinklerBehavior.Independent)
 				throw new InvalidOperationException("Current sprinkler behavior does not allow independent sprinkler activation.");
+			IntPoint intPointTileLocation = new((int)tileLocation.X, (int)tileLocation.Y);
+			IntPoint sprinklerTileLocation = new((int)sprinkler.TileLocation.X, (int)sprinkler.TileLocation.Y);
 
 			var info = GetSprinklerInfo(sprinkler);
-			var manhattanDistance = ((int)tileLocation.X - (int)sprinkler.TileLocation.X) + ((int)tileLocation.Y - (int)sprinkler.TileLocation.Y);
+			var manhattanDistance = (intPointTileLocation.X - sprinklerTileLocation.X) + (intPointTileLocation.Y - sprinklerTileLocation.Y);
 			if (manhattanDistance > GetSprinklerMaxRange(info))
 			{
-				if (!info.Layout.Contains(tileLocation - sprinkler.TileLocation))
+				if (!info.Layout.Contains(intPointTileLocation - sprinklerTileLocation))
 					return false;
 			}
 			return GetModifiedSprinklerCoverage(sprinkler, location).Contains(tileLocation);
@@ -469,17 +487,19 @@ namespace Shockah.FlexibleSprinklers
 
 		private bool PrivateIsTileInRangeOfSprinklers(IEnumerable<SObject> sprinklers, GameLocation location, Vector2 tileLocation, bool isForAllSprinklers)
 		{
+			IntPoint intPointTileLocation = new((int)tileLocation.X, (int)tileLocation.Y);
 			var sprinklersList = sprinklers.ToList();
 			foreach (var sprinkler in sprinklersList)
 			{
 				if (!sprinkler.IsSprinkler())
 					continue;
+				IntPoint sprinklerTileLocation = new((int)sprinkler.TileLocation.X, (int)sprinkler.TileLocation.Y);
 
 				var info = GetSprinklerInfo(sprinkler);
-				var manhattanDistance = ((int)tileLocation.X - (int)sprinkler.TileLocation.X) + ((int)tileLocation.Y - (int)sprinkler.TileLocation.Y);
+				var manhattanDistance = (intPointTileLocation.X - sprinklerTileLocation.X) + (intPointTileLocation.Y - sprinklerTileLocation.Y);
 				if (manhattanDistance > GetSprinklerMaxRange(info))
 				{
-					if (SprinklerBehavior is not ISprinklerBehavior.Independent || !info.Layout.Contains(tileLocation - sprinkler.TileLocation))
+					if (SprinklerBehavior is not ISprinklerBehavior.Independent || !info.Layout.Contains(intPointTileLocation - sprinklerTileLocation))
 						continue;
 				}
 				goto afterSimpleCheck;

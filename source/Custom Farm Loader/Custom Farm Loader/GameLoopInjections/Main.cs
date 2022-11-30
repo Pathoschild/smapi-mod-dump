@@ -45,6 +45,18 @@ namespace Custom_Farm_Loader.GameLoopInjections
             DailyUpdateEvents.Initialize(mod);
             BridgeEvents.Initialize(mod);
             AssetsRequested.Initialize(mod);
+
+
+            Helper.Events.GameLoop.DayStarted += DayStarted;
+        }
+
+        public static void DayStarted(object sender, DayStartedEventArgs e)
+        {
+            if (!CustomFarm.IsCFLMapSelected())
+                return;
+
+            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+            customFarm.reloadTextures();
         }
     }
 }

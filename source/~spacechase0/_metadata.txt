@@ -3,8 +3,11 @@ urls:
    Git: https://github.com/spacechase0/StardewValleyMods.git
 
 mods:
+   A Quality Mod
+   Advanced Social Interactions
    Animal Social Menu
    Another Hunger Mod
+   Backstory Questions Framework
    Better Meteorites
    Better Shop Menu
    Bigger Craftables
@@ -56,6 +59,7 @@ mods:
    Rush Orders
    Sharing is Caring
    Sizable Fish
+   Skill Training
    Sleepy Eye
    SpaceCore
    Spenny
@@ -68,12 +72,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit c1fe95ca11d238c494988f5d73e8c95b4515b33c
-   Merge: b7d6414f 2389cc6d
-   Author: Casey W <spacechase0@users.noreply.github.com>
-   Date:   Sat Oct 29 21:07:20 2022 -0400
+   commit 5b96db3354d69ecf99bbd2fa621e8c56045799e2
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Tue Nov 29 19:12:34 2022 -0500
    
-       Merge pull request #315 from atravita-mods/gmcm-depre
-       
-       log which method was deprecated, sigh
+       Stuff so far with things
    

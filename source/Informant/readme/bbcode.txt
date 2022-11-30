@@ -1,0 +1,104 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/slothsoft/stardew-informant
+**
+*************************************************/
+
+[color=#00ff00][size=6]Informant[/size][/color]
+
+A mod that displays additional information on various objects. It marks inventory items that are still necessary for the bundle, calculates how many days are still left until the harvest and displays what is in a machine and how much time is left on it.
+
+This mod also provides a handy API to extend its functionality.
+
+
+The mod is automatically present in the game. You just need to move the mouse over the object you wish to get the information from.
+
+If you don’t like one or more of the displayed information (or worse, if there are conflicts with other mods), you can disable each type.
+
+
+[size=5]Decorators[/size]
+
+There are some decorators, i.e. images displayed on the regular item tooltip, that have a specific meaning:
+[list]
+[*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/bundle.png[/img] [b]Bundles Decorator[/b] - displayed when the item is still needed for the bundles
+[*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/museum.png[/img] [b]Museum Decorator[/b] - displayed when the item is still needed for the museum
+[*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/shipping_bin.png[/img] [b]Shipping Decorator[/b] - displayed when the item was not yet shipped
+[/list]
+For the [b]Bundles Decorator[/b], there is the option to show it on items needed for still locked bundles. On default, the decorator is only shown for the bundles you have access to, to keep it fair and balanced.
+
+
+[size=5]Tooltips[/size]
+
+You can also configure the tooltip “trigger”, i.e. if you want the tooltip to show when the mouse hovers over an object, or if you want to press a key. You can also select the key to press.
+
+On default, of all the big craftable objects in the game, only machines that produce something will get a tooltip. You can configure that to include all craftable objects, or all except chest (if you have a mod that shows specific information for them already).
+
+
+
+[size=6]Configuration[/size]
+
+If you wish to configure this mod, it’s advised to install spacechase0’s [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url]. Then there will be a config page.
+
+But if you wish to change the [i]config.json[/i] file manually, you can also do that. The [i]config.json[/i] with all entries is documented [url=https://github.com/slothsoft/stardew-informant/blob/main/README.md#configuration]here[/url].
+
+
+
+[size=6]Versions[/size]
+[list]
+[*] [B]Future[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/1]Issues[/url]): 
+[*] [B]1.3.3[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/13?closed=1]Issues[/url]): Portuguese translation and bugfixes
+[*] [B]1.3.2[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/12?closed=1]Issues[/url]): Translations (add French translation; update Korean translation)
+[*] [B]1.3.1[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/11?closed=1]Issues[/url]): Bugfixes (fix config for “new” recipe; fix fruit tree calculation on Ginger Island; make decorator display shipped item needed for “ship 15 of everything”; fix time remaining for casks; fix ginger tooltip)
+[*] [B]1.3.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/9?closed=1]Issues[/url]): Additional information (marks uncrafted recipes, shipping decorator, shows icons on tooltips)
+[*] [B]1.2.2[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/10?closed=1]Issues[/url]): Turkish translation
+[*] [B]1.2.1[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/8?closed=1]Issues[/url]): Chinese translation
+[*] [B]1.2.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/7?closed=1]Issues[/url]): Sell price feature
+[*] [B]1.1.1[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/6?closed=1]Issues[/url]): Bugfixes from NexusMods feedback
+[*] [B]1.1.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/5?closed=1]Issues[/url]): Split-screen &amp; API fixes
+[*] [B]1.0.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/4?closed=1]Issues[/url]): Nexus Release
+[*] [B]0.4.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/3?closed=1]Issues[/url]): Prepare for Nexus Release
+[*] [B]0.3.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/2?closed=1]Issues[/url]): Strutured PoC
+[*] [B]0.2.0[/B]: Crop Informant
+[*] [B]0.1.0[/B]: Bundle Informant
+[/list]
+
+[i](All issues can be found [url=https://github.com/slothsoft/stardew-informant/issues]here[/url].)[/i]
+
+
+
+[size=6]Translator Guide[/size]
+
+Right now, not all translations are provided. If you want to help, translate either file in the [i][url=https://github.com/slothsoft/stardew-informant/blob/main/Informant/i18n/]i18n/[/url][/i] and test it right in your Stardew Valley (the same folder exists in your [i]Mods/[/i] folder). You can than provide it to me via [url=https://github.com/slothsoft/stardew-informant/fork]pull request[/url] or [url=mailto:s.schulz@slothsoft.de]email[/url].
+[list]
+[*] English ([font=Courier New][color=#00ffff]default[/color][/font]): &#9989;
+[*] German ([font=Courier New][color=#00ffff]de[/color][/font]): &#9989;
+[*] Spanish ([font=Courier New][color=#00ffff]es[/color][/font]): &#128284;
+[*] French ([font=Courier New][color=#00ffff]fr[/color][/font]): &#9989; (thanks to [url=https://github.com/ArndGlh]ArndGlh[/url])
+[*] Hungarian ([font=Courier New][color=#00ffff]hu[/color][/font]): &#128284;
+[*] Italian ([font=Courier New][color=#00ffff]it[/color][/font]): &#128284;
+[*] Japanese ([font=Courier New][color=#00ffff]ja[/color][/font]): &#128284;
+[*] Korean ([font=Courier New][color=#00ffff]ko[/color][/font]): &#9989; (thanks to [url=https://github.com/brighteast99]brighteast99[/url])
+[*] Portugese ([font=Courier New][color=#00ffff]pt[/color][/font]): &#9989; (thanks to [url=https://github.com/Mikeliro]Mikeliro[/url]
+[*] Russian ([font=Courier New][color=#00ffff]ru[/color][/font]): &#128284;
+[*] Thai ([font=Courier New][color=#00ffff]th[/color][/font]): &#128284;
+[*] Turkish ([font=Courier New][color=#00ffff]tr[/color][/font]): &#9989; (thanks to [url=https://www.nexusmods.com/stardewvalley/users/114449313]ExaBronto[/url])
+[*] Chinese ([font=Courier New][color=#00ffff]zh[/color][/font]): &#9989; (thanks to [url=https://github.com/gottyduke]gottyduke[/url])
+[/list]
+
+
+
+[size=6]Developer Notes[/size]
+
+Can be found [url=https://github.com/slothsoft/stardew-informant#developer-notes]here[/url].
+
+The source code for this mod is on [url=https://github.com/slothsoft/stardew-informant]GitHub[/url].
+
+
+
+[size=6]License[/size]
+
+This project is licensed under the MIT License - see the [url=https://github.com/slothsoft/stardew-informant/blob/main/LICENSE]MIT license[/url] for details.

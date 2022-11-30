@@ -152,7 +152,6 @@ namespace AdjustableBuildingCosts
                         Monitor.Log("Setting days to construct to " + buildings[i].daysOfConstructionLeft.Value + " for " + buildings[i].buildingType.Value, LogLevel.Debug);
                         break;
                     }
-
                 }
 
                 if (buildings[i].daysUntilUpgrade.Value > 0) {
@@ -182,7 +181,6 @@ namespace AdjustableBuildingCosts
                 Monitor.Log("Building -> " + buildings[i].daysOfConstructionLeft.ToString(), LogLevel.Debug);
                 Monitor.Log("Building -> " + buildings[i].buildingType.Value, LogLevel.Debug);
                 Monitor.Log("Building -> " + buildings[i].getNameOfNextUpgrade(), LogLevel.Debug);*/
-               
             }
 
             if (upgradingDaysLeft <= 1 && buildingDaysLeft <= 1) {

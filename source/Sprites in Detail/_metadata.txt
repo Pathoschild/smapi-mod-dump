@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/BleakCodex/SpritesInDetail
+   Git: https://github.com/BleakCodex/SpritesInDetail.git
+
+mods:
+   Sprites in Detail
+
+latest commit:
+   commit dcdd1faeb21c317d6b6a387c6427fc5d35870491
+   Author: BleakCodex <BleakCodex@gmail.com>
+   Date:   Mon Nov 28 19:25:20 2022 -0800
+   
+       Version Bump
+   

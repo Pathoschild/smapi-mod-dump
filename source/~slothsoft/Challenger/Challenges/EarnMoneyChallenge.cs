@@ -23,7 +23,9 @@ public class EarnMoneyChallenge : BaseChallenge {
     }
 
     protected override IGoal CreateGoal(IModHelper modHelper) {
-        return new EarnMoneyGoal(modHelper, CalculateTargetMoney);
+        var goal = new EarnMoneyGoal(modHelper, CalculateTargetMoney);
+        goal.ProgressChanged += (_, _) => ProgressChangedInvoked();
+        return goal;
     }
 
     internal static int CalculateTargetMoney(Difficulty difficulty) {

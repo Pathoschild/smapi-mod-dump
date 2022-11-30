@@ -93,6 +93,10 @@ internal static class PatchUtils {
 		);
 	}
 
+	internal static bool IsConstructor<T>(this CodeInstruction instr) {
+		return instr.opcode == OpCodes.Newobj && instr.operand is ConstructorInfo cinfo && cinfo.DeclaringType == typeof(T);
+	}
+
 	internal static int? AsInt(this CodeInstruction instr) {
 		if (instr.opcode == OpCodes.Ldc_I4_0)
 			return 0;
@@ -165,6 +169,118 @@ internal static class PatchUtils {
 						}
 					}
 				}
+			}
+
+			yield return in0;
+		}
+	}
+
+	internal static IEnumerable<CodeInstruction> ReplaceCalls(
+		IEnumerable<CodeInstruction> instructions,
+		IEnumerable<KeyValuePair<MethodInfo, Color>>? callReplacements = null,
+		IEnumerable<KeyValuePair<Color, Color>>? rawReplacements = null,
+		IEnumerable<KeyValuePair<FieldInfo, Color>>? fieldReplacements = null
+	) {
+		var callDict = callReplacements is null ? null : callReplacements is IDictionary<MethodInfo, Color> cdict ? cdict : callReplacements.ToDictionary(x => x.Key, x => x.Value);
+		var fieldDict = fieldReplacements is null ? null : fieldReplacements is IDictionary<FieldInfo, Color> fdict ? fdict : fieldReplacements.ToDictionary(x => x.Key, x => x.Value);
+		var rawDict = rawReplacements is null ? null : rawReplacements is IDictionary<Color, Color> rdict ? rdict : rawReplacements.ToDictionary(x => x.Key, x => x.Value);
+
+		ConstructorInfo cstruct = AccessTools.Constructor(typeof(Color), new Type[] {
+			typeof(uint)
+		});
+
+		var instrs = instructions.ToArray();
+
+		for (int i = 0; i < instrs.Length; i++) {
+			CodeInstruction in0 = instrs[i];
+
+			if (i + 3 < instrs.Length && rawDict is not null) {
+				CodeInstruction in1 = instrs[i + 1];
+				CodeInstruction in2 = instrs[i + 2];
+				CodeInstruction in3 = instrs[i + 3];
+
+				if (in3.opcode == OpCodes.Newobj && in3.operand is ConstructorInfo ctor && ctor.DeclaringType == typeof(Color)) {
+					int? val0 = in0.AsInt();
+					int? val1 = in1.AsInt();
+					int? val2 = in2.AsInt();
+
+					if (val0.HasValue && val1.HasValue && val2.HasValue) {
+						Color c = new(val0.Value, val1.Value, val2.Value);
+						if (rawDict.TryGetValue(c, out var rrepl)) {
+							ModEntry.Instance.Log($"Replacing raw color: {c} with {rrepl}");
+							ModEntry.Instance.Log($"-- {in0}");
+							ModEntry.Instance.Log($"-- {in1}");
+							ModEntry.Instance.Log($"-- {in2}");
+							ModEntry.Instance.Log($"-- {in3}");
+
+							var r0 = new CodeInstruction(in0) {
+								opcode = OpCodes.Ldc_I4,
+								operand = unchecked((int) rrepl.PackedValue)
+							};
+
+							ModEntry.Instance.Log($"++ {r0}");
+							yield return r0;
+
+							r0 = new CodeInstruction(
+								opcode: OpCodes.Newobj,
+								operand: cstruct
+							);
+
+							ModEntry.Instance.Log($"++ {r0}");
+							yield return r0;
+
+							i += 3;
+							continue;
+						}
+					}
+				}
+			}
+
+			if (in0.opcode == OpCodes.Call && callDict is not null && in0.operand is MethodInfo method && callDict.TryGetValue(method, out var replacement)) {
+				ModEntry.Instance.Log($"Replacing Call: {method} with {replacement}");
+				ModEntry.Instance.Log($"-- {in0}");
+
+				var r0 = new CodeInstruction(in0) {
+					opcode = OpCodes.Ldc_I4,
+					operand = unchecked((int) replacement.PackedValue)
+				};
+
+				ModEntry.Instance.Log($"++ {r0}");
+				yield return r0;
+
+				r0 = new CodeInstruction(
+					opcode: OpCodes.Newobj,
+					operand: cstruct
+				);
+
+				ModEntry.Instance.Log($"++ {r0}");
+				yield return r0;
+
+				continue;
+			}
+
+			if (in0.opcode == OpCodes.Ldsfld && fieldDict is not null && in0.operand is FieldInfo field && fieldDict.TryGetValue(field, out var repl)) {
+
+				ModEntry.Instance.Log($"Replacing field: {field} with {repl}");
+				ModEntry.Instance.Log($"-- {in0}");
+
+				var r0 = new CodeInstruction(in0) {
+					opcode = OpCodes.Ldc_I4,
+					operand = unchecked((int) repl.PackedValue)
+				};
+
+				ModEntry.Instance.Log($"++ {r0}");
+				yield return r0;
+
+				r0 = new CodeInstruction(
+					opcode: OpCodes.Newobj,
+					operand: cstruct
+				);
+
+				ModEntry.Instance.Log($"++ {r0}");
+				yield return r0;
+
+				continue;
 			}
 
 			yield return in0;

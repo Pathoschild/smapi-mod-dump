@@ -19,6 +19,7 @@ using MailFrameworkMod.integrations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
@@ -26,8 +27,9 @@ using StardewValley.Tools;
 
 namespace MailFrameworkMod
 {
-    public class DataLoader : IAssetEditor
+    public class DataLoader
     {
+        internal const string MailAssetName = "Data/mail";
         public static Dictionary<Tuple<string,string>, Texture2D> _contentPackAssets = new Dictionary<Tuple<string, string>, Texture2D>();
 
         private static readonly List<string> NoUpgradeLevelTools = new List<string>() {"Scythe", "Shears", "Milk Pail", "Fishing Rod", "Golden Scythe", "Pan", "Return Scepter" };
@@ -40,34 +42,39 @@ namespace MailFrameworkMod
         public DataLoader(IModHelper helper)
         {
             Helper = helper;
+            Helper.Events.Content.AssetRequested += this.Edit;
+
             DgaApi = MailFrameworkModEntry.ModHelper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
             ConditionsCheckerApi = Helper.ModRegistry.GetApi<IConditionsChecker>("Cherry.ExpandedPreconditionsUtility");
             ConditionsCheckerApi?.Initialize(false, MailFrameworkModEntry.Manifest.UniqueID);
         }
-
-        public bool CanEdit<T>(IAssetInfo asset)
+        
+        public void Edit(object sender, AssetRequestedEventArgs e)
         {
-            return asset.AssetNameEquals("Data\\mail");
-        }
+            if (e.NameWithoutLocale.IsEquivalentTo(MailAssetName))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, string>().Data;
+                    foreach (Letter letter in MailDao.GetSavedLetters())
+                    {
+                        if (letter.Title != null && !letter.AutoOpen)
+                        {
+                            data[letter.Id] = letter.Text + "[#]" + letter.Title;
+                        }
+                    }
 
-        public void Edit<T>(IAssetData asset)
-        {
-            var data = asset.AsDictionary<string, string>().Data;
-            foreach (Letter letter in MailDao.GetSavedLetters())
-            {
-                if (letter.Title != null && !letter.AutoOpen)
-                {
-                    data[letter.Id] = letter.Text + "[#]" + letter.Title;
-                }
+                    foreach (string letterId in MailDao.GetRemovedLetterIds())
+                    {
+                        if (data.ContainsKey(letterId))
+                        {
+                            data.Remove(letterId);
+                        }
+                    }
+
+                    MailDao.CleanDataToUpdate();
+                });
             }
-            foreach (string letterId in MailDao.GetRemovedLetterIds())
-            {
-                if (data.ContainsKey(letterId))
-                {
-                    data.Remove(letterId);
-                }
-            }
-            MailDao.CleanDataToUpdate();
         }
 
         public static void LoadContentPacks(object sender, EventArgs e)
@@ -93,7 +100,7 @@ namespace MailFrameworkMod
                         {
                             if (c.Name != null && c.Collection != Collection.Crafting)
                             {
-                                objects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"), ContentSource.GameContent);
+                                objects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
                                 KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(c.Name + "/"));
                                 if (pair.Value != null)
                                 {
@@ -139,6 +146,9 @@ namespace MailFrameworkMod
                             && (mailItem.ExpandedPrecondition == null || (ConditionsCheckerApi != null && ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPrecondition)))
                             && (mailItem.ExpandedPreconditions == null || (ConditionsCheckerApi != null && ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPreconditions)))
                             && (mailItem.HouseUpgradeLevel == null || mailItem.HouseUpgradeLevel <= Game1.player.HouseUpgradeLevel)
+                            && (mailItem.DeepestMineLevel == null || mailItem.DeepestMineLevel <= Game1.player.deepestMineLevel)
+                            && (mailItem.CurrentMoney == null || mailItem.CurrentMoney <= Game1.player.Money)
+                            && (mailItem.TotalMoneyEarned == null || mailItem.TotalMoneyEarned <= Game1.player.totalMoneyEarned)
                         ;
 
                         if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
@@ -152,7 +162,7 @@ namespace MailFrameworkMod
                                     case ItemType.Object:
                                         if (i.Name != null)
                                         {
-                                            objects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"), ContentSource.GameContent);
+                                            objects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
                                             KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -177,7 +187,7 @@ namespace MailFrameworkMod
                                     case ItemType.BigCraftable:
                                         if (i.Name != null)
                                         {
-                                            bigObjects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/BigCraftablesInformation"), ContentSource.GameContent);
+                                            bigObjects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/BigCraftablesInformation"));
                                             KeyValuePair<int, string> pair = bigObjects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -254,7 +264,7 @@ namespace MailFrameworkMod
                                         }
                                         break;
                                     case ItemType.Ring:
-                                        objects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                                        objects ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
                                         if (i.Name != null)
                                         {
                                             KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
@@ -286,7 +296,7 @@ namespace MailFrameworkMod
                                     case ItemType.Furniture:
                                         if (i.Name != null)
                                         {
-                                            furnitures ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Furniture"), ContentSource.GameContent);
+                                            furnitures ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Furniture"));
                                             KeyValuePair<int, string> pair = furnitures.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -310,7 +320,7 @@ namespace MailFrameworkMod
                                     case ItemType.Weapon:
                                         if (i.Name != null)
                                         {
-                                            weapons ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Weapons"), ContentSource.GameContent);
+                                            weapons ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Weapons"));
                                             KeyValuePair<int, string> pair = weapons.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -335,7 +345,7 @@ namespace MailFrameworkMod
                                     case ItemType.Boots:
                                         if (i.Name != null)
                                         {
-                                            boots ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Boots"), ContentSource.GameContent);
+                                            boots ??= MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Boots"));
                                             KeyValuePair<int, string> pair = boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -456,7 +466,7 @@ namespace MailFrameworkMod
             var key = new Tuple<string, string>(contentPack.Manifest.UniqueID, textureName);
             if (!_contentPackAssets.ContainsKey(key))
             {
-                _contentPackAssets[key] = contentPack.LoadAsset<Texture2D>(textureName);
+                _contentPackAssets[key] = contentPack.ModContent.Load<Texture2D>(textureName);
             }
             return _contentPackAssets[key];
         }

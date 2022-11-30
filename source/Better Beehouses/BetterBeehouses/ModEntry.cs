@@ -41,6 +41,7 @@ namespace BetterBeehouses
             api = new();
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Content.AssetRequested += AssetRequested;
+            helper.Events.GameLoop.DayStarted += (s, e) => integration.CJBPatch.ReloadFruits();
         }
         private void OnGameLaunched(object sender, GameLaunchedEventArgs ev)
         {
@@ -50,9 +51,7 @@ namespace BetterBeehouses
             if (helper.ModRegistry.IsLoaded("Digus.ProducerFrameworkMod") && !config.PatchPFM)
                 monitor.Log(i18n.Get("general.pfmPatchDisabled"), LogLevel.Info);
             harmony.PatchAll();
-            PFMPatch.Setup();
-            AutomatePatch.Setup();
-            PFMAutomatePatch.Setup();
+            config.Patch();
             config.RegisterModConfigMenu(ModManifest);
         }
         public override object GetApi()

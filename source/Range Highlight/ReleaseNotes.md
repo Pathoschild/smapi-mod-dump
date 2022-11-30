@@ -9,6 +9,16 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 3.5.0
+
+* Show at action location: if the currently held item has a highlighter,
+  then show the range at the
+  location where the item would be placed if you press the action button.
+  This can be disabled or set to show only when the mouse is hidden
+  in the configuration.
+* _Don't_ show the range of the currently held item at the mouse position
+  if the mouse has been hidden (presumably because you are using a controller).
+
 ## Version 3.4.0
 
 * Add a new configuration option for whether building highlighters (e.g.,

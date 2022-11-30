@@ -10,6 +10,7 @@
   "UseQuality": false,
   "PatchAutomate": true,
   "PatchPFM": true,
+  "PatchCJB": true,
   "CapFactor": 700,
   "CapCurve": 0.0,
   "BearBoost": 1.0,
@@ -17,5 +18,6 @@
   "UseFruitTrees": true,
   "UseRandomFlower": false,
   "UseFlowerBoost": false,
-  "FlowersPerBoost": 2
+  "FlowersPerBoost": 2,
+  "UseAnyFruitTrees": false
 }

@@ -6,11 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit dd0d052f64f203e2211acd50123561790d44b492
-   Author: Bartholomue <bartholomueyoung@gmail.com>
-   Date:   Sat Oct 29 07:09:47 2022 -0500
+   commit 6e5f9365f003b7edeb0f2d22c5da72151c5eb4d6
+   Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
+   Date:   Sat Nov 26 15:42:56 2022 +0530
    
-       Static Tiles Container Migration
-       
-       Changed categorization of multiple objects to fit the new container category for ease of access to important items.
+       Adding missing entries
    

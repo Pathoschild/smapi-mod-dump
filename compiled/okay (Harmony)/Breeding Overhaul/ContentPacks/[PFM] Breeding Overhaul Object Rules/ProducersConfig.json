@@ -1,0 +1,37 @@
+﻿[
+	{
+		"ProducerName": "Manure Composter", //Name of the producer
+		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
+		"AlternateFrameWhenReady": true, //If the producer should use the alternate frame and ready for harvest.
+		"DisableBouncingAnimationWhileWorking": true, // If the producer bouncing animation while working should be disabled.
+		"MultipleStatsIncrement": true, //If all stats that match should be incremented. If false, just the first match will be increased. Default is false.
+		"WorkingTime": { // If a value is defined, the machine will only produce during this period. Production will be on hold out of this period. Default is working any time.
+			"Begin": 600, //Format [HHmm]. The time from which the machine can start producing. Default is 0
+			"End": 1800 //Format [HHmm]. The time at which the machine stop producing. Default is 0
+		},
+		"WorkingSeason": [ "spring", "summer", "fall" ], // The seasons in which the machine will work. Different than other conditions, season clean the machine at the start of the day if in a not working season. The default is working in any season. 
+		"ProducingAnimation": { // Set a configuration for animating the producing state of the machine. Default is null.
+			"RelativeFrameIndex": [ 1, 2, 3 ], //Index and order of the frames that should be used for the animation. Index start at zero, the base frame and index of the non producing state. Extra frames are content from that frame. Extra frames can be added with Json Assets or Content Patcher.
+			"FrameInterval": 10, // Amount of game ticks between frames. Default is 10
+		},
+		"ReadyAnimation": { // Set a configuration for animating the producing state of the machine. Default is null.
+			"RelativeFrameIndex": [ 1, 2, 3 ], //Index and order of the frames that should be used for the animation. Index start at zero, the base frame and index of the non producing state. Extra frames are content from that frame. Extra frames can be added with Json Assets or Content Patcher.
+			"FrameInterval": 10, // Amount of game ticks between frames. Default is 10
+		},
+	},
+	{
+		"ProducerName": "Genetic Extractor", //Name of the producer
+		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
+		"AlternateFrameWhenReady": false, //If the producer should use the alternate frame and ready for harvest.
+		"DisableBouncingAnimationWhileWorking": true, // If the producer bouncing animation while working should be disabled.
+		"MultipleStatsIncrement": true, //If all stats that match should be incremented. If false, just the first match will be increased. Default is false.
+		"WorkingTime": { // If a value is defined, the machine will only produce during this period. Production will be on hold out of this period. Default is working any time.
+			"Begin": 600, //Format [HHmm]. The time from which the machine can start producing. Default is 0
+			"End": 2600 //Format [HHmm]. The time at which the machine stop producing. Default is 0
+		},
+		"ProducingAnimation": { // Set a configuration for animating the producing state of the machine. Default is null.
+			"RelativeFrameIndex": [ 1, 2, 3 ], //Index and order of the frames that should be used for the animation. Index start at zero, the base frame and index of the non producing state. Extra frames are content from that frame. Extra frames can be added with Json Assets or Content Patcher.
+			"FrameInterval": 10, // Amount of game ticks between frames. Default is 10
+		},
+	},
+]

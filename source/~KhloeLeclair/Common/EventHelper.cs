@@ -17,6 +17,8 @@ using System.Reflection;
 
 using Leclair.Stardew.Common.Events;
 
+using Microsoft.Build.Utilities;
+
 using StardewModdingAPI;
 
 namespace Leclair.Stardew.Common;
@@ -69,6 +71,35 @@ public static class EventHelper {
 				object? pobj = prop.GetValue(obj);
 				if (pobj != null)
 					ScanObjectTypes(pobj, typeToEvent, recurse - 1);
+			}
+		}
+	}
+
+	delegate void ConsoleCommandDelegate(string name, string[] args);
+
+	public static void RegisterConsoleCommands(object provider, ICommandHelper helper, Action<string, LogLevel>? logger) {
+		Type provtype = provider.GetType();
+
+		foreach(MethodInfo method in provtype.GetMethods(METHOD_FLAGS)) {
+			Attribute? attr = method.GetCustomAttribute(typeof(ConsoleCommand));
+			if (attr is not ConsoleCommand cmd)
+				continue;
+
+			ParameterInfo[] parms = method.GetParameters();
+			if (parms.Length != 2)
+				continue;
+
+			if (parms[0].ParameterType != typeof(string) || parms[1].ParameterType != typeof(string[]))
+				continue;
+
+			string name = string.IsNullOrWhiteSpace(cmd.Name) ? method.Name : cmd.Name;
+			string desc = string.IsNullOrWhiteSpace(cmd.Description) ? string.Empty : cmd.Description;
+
+			try {
+				ConsoleCommandDelegate del = method.CreateDelegate<ConsoleCommandDelegate>(provider);
+				helper.Add(name, desc, new Action<string, string[]>(del));
+			} catch (Exception ex) {
+				logger?.Invoke($"Failed to register console command {name}: {ex}", LogLevel.Error);
 			}
 		}
 	}

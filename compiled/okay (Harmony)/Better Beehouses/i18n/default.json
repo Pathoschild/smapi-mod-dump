@@ -52,5 +52,9 @@
   "config.flowersPerBoost.name": "Flowers Required",
   "config.flowersPerBoost.desc": "The number of flowers required for each additional honey",
   "config.useRandomFlower.name": "Use Random",
-  "config.useRandomFlower.desc": "Pick a random flower instead of the closest one"
+  "config.useRandomFlower.desc": "Pick a random flower instead of the closest one",
+  "config.useAnyFruitTrees.name": "Allow All Fruit Trees",
+  "config.useAnyFruitTrees.desc": "Whether or not to ignore the flower item check when making honey from trees.",
+  "config.patchCJB.name": "CJB Integration",
+  "config.patchCJB.desc": "Patch CJB Item Spawner to register missing honey items"
 }

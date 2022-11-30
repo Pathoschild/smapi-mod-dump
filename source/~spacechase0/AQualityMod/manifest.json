@@ -11,7 +11,7 @@
 {
     "Name": "A Quality Mod",
     "Author": "spacechase0",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "Description": "...",
     "UniqueID": "spacechase0.AQualityMod",
     "EntryDll": "AQualityMod.dll",

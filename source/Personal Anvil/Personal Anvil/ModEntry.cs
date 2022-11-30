@@ -51,7 +51,7 @@ namespace PersonalAnvil
             Game1.currentLocation.Objects.TryGetValue(tile, out var obj);
             if (obj == null || !obj.bigCraftable.Value) return;
             if (obj.ParentSheetIndex.Equals(_anvilId))
-                Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper.ModContent);
+                Game1.activeClickableMenu = new WorkbenchGeodeMenu(Helper);
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)

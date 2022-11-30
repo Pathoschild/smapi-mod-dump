@@ -28,6 +28,7 @@ namespace BetterBeehouses
         public bool UseQuality { get; set; } = false;
         public bool PatchAutomate { get; set; } = true;
         public bool PatchPFM { get; set; } = true;
+        public bool PatchCJB { get; set; } = true;
         public int CapFactor { get; set; } = 700;
         private float capCurve = 0f;
         public float CapCurve
@@ -51,6 +52,7 @@ namespace BetterBeehouses
             set => flowerBoost = Math.Max(value, 1);
         }
         private int flowerBoost = 2;
+        public bool UseAnyFruitTrees { set; get; } = false;
 
         private ITranslationHelper i18n => ModEntry.helper.Translation;
 
@@ -67,6 +69,7 @@ namespace BetterBeehouses
             UseQuality = false;
             PatchAutomate = true;
             PatchPFM = true;
+            PatchCJB = true;
             CapFactor = 700;
             CapCurve = 0f;
             BearBoost = 1f;
@@ -75,16 +78,23 @@ namespace BetterBeehouses
             UseRandomFlower = false;
             UseFlowerBoost = false;
             FlowersPerBoost = 2;
+            UseAnyFruitTrees = false;
         }
 
         public void ApplyConfig()
         {
             ModEntry.helper.WriteConfig(this);
             ModEntry.helper.GameContent.InvalidateCache("Mods/aedenthorn.ParticleEffects/dict");
-            integration.AutomatePatch.Setup();
-            integration.PFMPatch.Setup();
-            integration.PFMAutomatePatch.Setup();
+            Patch();
         }
+
+        public void Patch()
+        {
+			integration.AutomatePatch.Setup();
+			integration.PFMPatch.Setup();
+			integration.PFMAutomatePatch.Setup();
+			integration.CJBPatch.Setup();
+		}
 
         public void RegisterModConfigMenu(IManifest manifest)
         {
@@ -183,7 +193,13 @@ namespace BetterBeehouses
                 () => i18n.Get("config.flowersPerBoost.desc"),
                 1, 8, 1
             );
-            api.AddPageLink(manifest, "price", () => i18n.Get("config.price.name"), () => i18n.Get("config.price.desc"));
+			api.AddBoolOption(manifest,
+				() => UseAnyFruitTrees,
+				(b) => UseAnyFruitTrees = b,
+				() => i18n.Get("config.useAnyFruitTrees.name"),
+				() => i18n.Get("config.useAnyFruitTrees.desc")
+			);
+			api.AddPageLink(manifest, "price", () => i18n.Get("config.price.name"), () => i18n.Get("config.price.desc"));
             api.AddPageLink(manifest, "integration", () => i18n.Get("config.integration.name"), () => i18n.Get("config.integration.desc"));
 
             //integration
@@ -207,9 +223,15 @@ namespace BetterBeehouses
                 () => i18n.Get("config.patchPFM.name"),
                 () => i18n.Get("config.patchPFM.desc")
             );
+			api.AddBoolOption(manifest,
+				() => PatchCJB,
+				(b) => PatchCJB = b,
+				() => i18n.Get("config.patchCJB.name"),
+				() => i18n.Get("config.patchCJB.desc")
+			);
 
-            //price balancing
-            api.AddPage(manifest, "price", () => i18n.Get("config.price.name"));
+			//price balancing
+			api.AddPage(manifest, "price", () => i18n.Get("config.price.name"));
             api.AddNumberOption(manifest,
                 () => ValueMultiplier,
                 (n) => ValueMultiplier = n,

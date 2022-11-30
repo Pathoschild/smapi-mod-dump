@@ -1,0 +1,27 @@
+{
+  "ModEnabled": true,
+  "RequireEvent": true,
+  "AutoFillFridge": true,
+  "PatchSaloonMap": true,
+  "RevealGiftTaste": true,
+  "SellCurrentRecipes": true,
+  "ModKey": "LeftAlt",
+  "MaxNPCOrdersPerNight": 2,
+  "LovedFriendshipChange": 40,
+  "LikedFriendshipChange": 20,
+  "PriceMarkup": 1.0,
+  "OrderChance": 0.05,
+  "LovedDishChance": 0.7,
+  "EventKey": "980558/t 600 1130/w sunny/f Gus 1250",
+  "EventReplacePart": "/pause 500/end",
+  "EventReplaceWith": "/pause 200/speak Gus \"{0}\"/pause 500/end",
+  "EmilySaloonString": "Saloon 15 17 0 square_3_1_0",
+  "RestaurantLocations": [
+    "Saloon"
+  ],
+  "IgnoredNPCs": [
+    "Gus",
+    "Emily"
+  ],
+  "KitchenTiles": []
+}

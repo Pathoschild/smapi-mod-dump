@@ -96,6 +96,7 @@ public class ModEntry : ModSubscriber {
 	internal Integrations.LuckSkill.LSIntegration? intLS;
 	internal Integrations.JsonAssets.JAIntegration? intJA;
 	internal Integrations.MoreGiantCrops.MGCIntegration? intMGC;
+	internal Integrations.GiantCropTweaks.GCTIntegration? intGCT;
 
 	private bool ShouldCloseGMCM = false;
 
@@ -301,9 +302,10 @@ public class ModEntry : ModSubscriber {
 
 	public void Invalidate() {
 		Assets.Invalidate();
-		Notices.Invalidate();
 		Crops.Invalidate();
 		Fish.Invalidate();
+		Luck.Invalidate();
+		Notices.Invalidate();
 		Weather.Invalidate();
 	}
 
@@ -314,6 +316,7 @@ public class ModEntry : ModSubscriber {
 		intLS = new(this);
 		intJA = new(this);
 		intMGC = new(this);
+		intGCT = new(this);
 
 		// More Init
 		RegisterConfig();
@@ -325,14 +328,14 @@ public class ModEntry : ModSubscriber {
 				Log($"Book: {book.Id}");
 		});
 
-		Helper.ConsoleCommands.Add("ts", "Parse a tokenstring.", (name, args) => {
+		Helper.ConsoleCommands.Add("al_ts", "Parse a tokenstring.", (name, args) => {
 			string input = string.Join(' ', args);
 
 			Log($" Input: {input}");
 			Log($"Result: {StringTokenizer.ParseString(input, item: Game1.player?.CurrentItem, monitor: Monitor, trace: true)}");
 		});
 
-		Helper.ConsoleCommands.Add("gsq", "Run a GameStateQuery", (name, args) => {
+		Helper.ConsoleCommands.Add("al_gsq", "Run a GameStateQuery", (name, args) => {
 			int seed = -1;
 			try {
 				seed = int.Parse(args[0]);
@@ -1044,6 +1047,11 @@ public class ModEntry : ModSubscriber {
 			return $"(no-i18n: {name})";
 
 		return name;
+	}
+
+
+	public string FormatTime(int time) {
+		return TimeHelper.FormatTime(time, Helper.Translation.Get("time-format"));
 	}
 
 }

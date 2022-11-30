@@ -1,0 +1,12 @@
+{
+	"ID": "MineElevatorMenu",
+
+	"Patches": {
+		"#MineElevatorMenu:draw(SpriteBatch)": {
+			"Colors": {
+				"Gray": { "*": "$ElevatorCurrentFloorText" },
+				"Gold": { "*": "$ElevatorFloorText" }
+			}
+		}
+	}
+}

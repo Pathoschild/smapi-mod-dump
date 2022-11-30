@@ -18,6 +18,12 @@
     "config.overlay.max-width.desc": "Ancho máximo de la superposición en píxeles",
     "config.overlay.max-items": "Máximo de ítems",
     "config.overlay.max-items.desc": "Número máximo de elementos a mostrar en la superposición",
+    "config.overlay.zoom": "Ampliar tamaño con",
+    "config.overlay.zoom.desc": "Elige cuál de las opciones de zoom del juego controla el tamaño de la superposición",
+    "config.overlay.x-offset": "Desplazamiento X",
+    "config.overlay.x-offset.desc": "Desplazamiento X de la superposición en píxeles desde el borde izquierdo de la pantalla",
+    "config.overlay.y-offset": "Desplazamiento Y",
+    "config.overlay.y-offset.desc": "Desplazamiento Y de la superposición en píxeles desde el borde superior de la pantalla",
 
     // Overlay
     "overlay.header": "Lista de tareas",

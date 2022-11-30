@@ -96,7 +96,7 @@ namespace Shockah.FlexibleSprinklers
 			if (FlexibleSprinklers.Instance.Config.IgnoreRange)
 			{
 				sprinklerRange = int.MaxValue;
-				sprinkler1dRange = (int)info.Layout.Max(t => Math.Max(Math.Abs(t.X), Math.Abs(t.Y)));
+				sprinkler1dRange = info.Layout.Max(t => Math.Max(Math.Abs(t.X), Math.Abs(t.Y)));
 			}
 			else
 			{

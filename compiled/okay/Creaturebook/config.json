@@ -2,5 +2,6 @@
   "ShowScientificNames": true,
   "ShowDiscoveryDates": true,
   "OpenMenuKeybind": "LeftControl + LeftShift + B",
-  "WayToGetNotebook": "Letter"
+  "WayToGetNotebook": "Letter",
+  "EnableStickies": true
 }

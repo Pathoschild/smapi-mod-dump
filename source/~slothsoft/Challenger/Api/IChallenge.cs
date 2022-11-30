@@ -67,4 +67,10 @@ public interface IChallenge {
     /// </summary>
     /// <returns></returns>
     string GetProgress(Difficulty difficulty);
+    
+    /// <summary>
+    /// Returns a world date of when the challenge was completed, or null if it was not completed yet.
+    /// </summary>
+    /// <returns></returns>
+    WorldDate? GetCompletedDate(Difficulty difficulty);
 }

@@ -1,0 +1,29 @@
+{
+    "Name": "Fertilized Large Blue Egg",
+    "Description": "Fertilized Blue Chicken Egg, inserted into the incubator for breeding.",
+    "Category": "Crafting",
+    "Edibility": 15,
+    "Price": 95,
+    "IsColored": false,
+    "Recipe": { 
+        "ResultCount": 1,
+         "Ingredients": 
+          [
+           {
+             "Object": "Chicken DNA",
+             "Count": 1,
+              },
+             {
+             "Object": "Large Blue Egg",
+             "Count": 1,
+            }       
+            ],
+            "IsDefault": true,
+            },
+    "CanPurchase": false, 
+    "GiftTastes":
+    {
+        "Like": ["Shane"],
+		"Hate": ["Alex", "Elliot", "Harvey", "Sam", "Sebastian", "Marnie", "Abigail", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Leo", "Lewis", "Linus", "Pam", "Pierre", "Robin", "Vincent", "Willy", "Wizard"]
+    },
+}

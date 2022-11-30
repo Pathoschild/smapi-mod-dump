@@ -190,14 +190,14 @@ namespace CustomBackpack
             }
         }
 
-        [HarmonyPatch(typeof(IClickableMenu), nameof(IClickableMenu.moveCursorInDirection))]
+        [HarmonyPatch(typeof(IClickableMenu), nameof(IClickableMenu.applyMovementKey), new Type[] {typeof(int) })]
         public class IClickableMenu_moveCursorInDirection_Patch
         {
             public static bool Prefix(IClickableMenu __instance, int direction)
             {
                 if (!Config.ModEnabled || __instance.currentlySnappedComponent is null)
                     return true;
-                InventoryMenu menu;
+                InventoryMenu menu = null;
                 if (__instance is InventoryPage)
                 {
                     menu = (__instance as InventoryPage).inventory;
@@ -215,6 +215,16 @@ namespace CustomBackpack
                     menu = (__instance as JunimoNoteMenu).inventory;
                 }
                 else
+                {
+                    foreach(var field in AccessTools.GetDeclaredFields(__instance.GetType()))
+                    {
+                        if(field.FieldType == typeof(InventoryMenu) && ((InventoryMenu)field.GetValue(__instance)).actualInventory == Game1.player.Items)
+                        {
+                            menu = (InventoryMenu)field.GetValue(__instance);
+                        }
+                    }
+                }
+                if(menu is null)
                     return true;
                 if (!menu.Scrolling())
                     return true;
@@ -503,5 +513,64 @@ namespace CustomBackpack
                 return false;
             }
         }
-   }
+        [HarmonyPatch(typeof(Farmer), nameof(Farmer.shiftToolbar))]
+        private static class Farmer_shiftToolbar_Patch
+        {
+            public static bool Prefix(Farmer __instance, bool right)
+            {
+                if (!Config.ModEnabled || Config.ShiftRows < 1 || Config.ShiftRows >= __instance.Items.Count / 12 || __instance.Items is null || __instance.Items.Count < 37 || __instance.UsingTool || Game1.dialogueUp || (!Game1.pickingTool && !Game1.player.CanMove) || __instance.areAllItemsNull() || Game1.eventUp || Game1.farmEvent != null)
+                    return true;
+                if (Config.ShiftRows == 1)
+                    return false;
+                Game1.playSound("shwip");
+
+                if (__instance.CurrentItem != null)
+                {
+                    __instance.CurrentItem.actionWhenStopBeingHeld(__instance);
+                }
+                List<Item> toAlter = __instance.Items.Take(Config.ShiftRows * 12).ToList();
+                if (right)
+                {
+                    List<Item> toMove = toAlter.Take(12).ToList();
+                    for (int i = 0; i < toMove.Count; i++)
+                    {
+                        toAlter.RemoveAt(0);
+                    }
+                    toAlter.AddRange(toMove);
+                }
+                else
+                {
+                    List<Item> toMove = toAlter.Skip(toAlter.Count - 12).Take(12).ToList();
+                    for (int i = 0; i < toAlter.Count - 12; i++)
+                    {
+                        toMove.Add(toAlter[i]);
+                    }
+                    for (int i = 0; i < toMove.Count; i++)
+                    {
+                        toAlter[i] = toMove[i];
+                    }
+
+                }
+                for (int i = 0; i < toAlter.Count; i++)
+                {
+                    __instance.Items[i] = toAlter[i];
+                }
+
+                __instance.netItemStowed.Set(false);
+                if (__instance.CurrentItem != null)
+                {
+                    __instance.CurrentItem.actionWhenBeingHeld(__instance);
+                }
+                for (int j = 0; j < Game1.onScreenMenus.Count; j++)
+                {
+                    if (Game1.onScreenMenus[j] is Toolbar)
+                    {
+                        (Game1.onScreenMenus[j] as Toolbar).shifted(right);
+                        return false;
+                    }
+                }
+                return false;
+            }
+        }
+    }
 }

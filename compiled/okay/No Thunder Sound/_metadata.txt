@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14414
+IDs: Sto13.NoThunderSound
+update keys: Nexus:14414

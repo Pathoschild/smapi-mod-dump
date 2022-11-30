@@ -1,0 +1,348 @@
+{
+	"mod-name": "Almanac",
+
+	"almanac.open": "Otwórz Almanach",
+
+	"almanac.cover": "Almanach\nFarmera\nFerngill",
+	"almanac.cover-island": "Almanach\nFarmera\nFerngill\ni\nWysp Paprociowych",
+
+	"calendar.when": "{{season}}, Rok {{year}}",
+
+	"calendar.day.1": "Pon",
+	"calendar.day.2": "Wt",
+	"calendar.day.3": "Śr",
+	"calendar.day.4": "Czw",
+	"calendar.day.5": "Pt",
+	"calendar.day.6": "Sob",
+	"calendar.day.7": "Nd",
+
+	"page.crops": "Terminy Sadzenia",
+
+	"crop.last-day": "Ostatni Dzień Dla:",
+
+	"crop.toggle": "Włącz {{mode}}",
+	"crop.paddy": "Bonus za Bliskość Wody",
+
+	"page.crop.none": "Nie ma upraw pasujących do bieżących filtrów.",
+
+	"page.crop.seed-filter": "Filtuj wg. Nasion",
+	"page.crop.seed-filter.disabled": "Wyłączone",
+	"page.crop.seed-filter.inventory": "W ekwipunku",
+	"page.crop.seed-filter.owned": "Posiadane",
+
+	"crop.seed-filter": "Wyświetl Tylko Posiadane Nasiona",
+
+	"crop.using-none": "Poniższe czasy i daty wzrostu zakładają, że nie używasz nawozów ani nie masz umiejętności.",
+	"crop.using-agri": "Poniższe czasy i daty wzrostu zakładają, że jesteś {{agriculturist}}em.",
+	"crop.using-speed": "Poniższe czasy i daty wzrostu zakładają, że używasz {{fertilizer}}.",
+	"crop.using-both": "Poniższe czasy i daty wzrostu zakładają, że jesteś {{agriculturist}}em i używasz {{fertilizer}}.",
+	"crop.using-paddy": "Zakładają również, że rośliny, które czerpią korzyści z wody, są @Buprawiane w jej pobliżu@b.",
+
+	"crop.grow-time": "Rośnie {{count}} dni.",
+	"crop.harvests": "W tym roku spodziewaj się {{count}} zbiorów.",
+	"crop.harvests-date": "Spodziewaj się {{count}} zbiorów w tym roku po posadzeniu w dniu {{date}}.",
+	"crop.last-date": "Sadź nie później niż {{date}}.",
+	"crop.regrow-time": "Produkuje co {{count}} dni.",
+	"crop.paddy-note": "Szybszy wzrost w pobliżu wody.",
+	"crop.giant-note": "Potrafi urosnąć do {{link}}.",
+	"crop.giant-hover": "@Bolbrzymiego rozmiaru@b",
+	"crop.trellis-note": "Wymaga treliażu.",
+
+	"page.weather": "Prognoza Pogody",
+	"page.weather-island": "Prognoza Pogody Imbirowej Wyspy",
+
+	"page.weather.pirates": "Gildia Poszukiwaczy Przygód ostrzega, że spodziewa się aktywności piratów na Imbirowej Wyspie lub w jej pobliżu w następujących dniach:",
+
+	"festival.about": "Następujące festiwale odbędą się na obszarze Doliny Stardew w {{season}}:",
+
+	"festival.when": "Kiedy:",
+	"festival.when-times": "{{start}} do {{end}}",
+	"festival.where": "Gdzie:",
+	"festival.date": "Data:",
+
+	"weather.sunny": "Słonecznie",
+	"weather.rain": "Deszcze",
+	"weather.debris": "Wietrznie",
+	"weather.lightning": "Burze",
+	"weather.festival": "Słonecznie",
+	"weather.snow": "Śnieg",
+
+	"page.train": "Rozkład Jazdy Pociągów",
+	"page.train.about": "@BOstrzeżenie:@b Pociągi będą przejeżdżać przez stację Doliny Stardew w następujących godzinach. Dla własnego bezpieczeństwa zawsze trzymaj się z dala od torów, gdy w pobliżu przejeżdża pociąg.",
+
+	"page.train.notice": "Ruch pociągów do stacji Doliny Stardew jest zawieszony przez całą wiosnę, ponieważ przeprowadzana jest planowa konserwacja torów.",
+
+	"page.fortune": "Fortuna",
+
+	"page.fortune.luck-awful": "Niezadowolone duchy będą utrudniać życie.",
+	"page.fortune.luck-bad": "Rozgniewane duchy nie przyniosą nikomu szczęścia.",
+	"page.fortune.luck-neutral": "Duchy będą w idealnej równowadze. Dzień w twoich rękach.",
+	"page.fortune.luck-good": "Duchy z dobrym nastrojem zapewnią więcej szczęścia.",
+	"page.fortune.luck-great": "Szczęśliwe duchy obdarzą wszystkich pomyślnością.",
+
+	"page.fortune.event.none": "Oczekuj spokojnego sezonu. Musisz odszukać w sobie emocje i dążyć do radości w codziennym życiu.",
+
+	"page.fortune.about": "Oto, co może się wydarzyć w {{Season}}, a co nie.",
+
+	"page.fortune.garbage-hat": "Śmieci jednego człowieka są skarbem innego.",
+
+	"page.fortune.event.fairy": "Nocą pojawi się dobroduszna wróżka. Ci, którym się poszczęści, mogą liczyć na obfite zbiory.",
+	"page.fortune.event.witch": "Tej nocy w okolicy spodziewane są wiedźmy.",
+	"page.fortune.event.meteorite": "W całym Ferngill spodziewane są deszcze meteorów.",
+	"page.fortune.event.owl": "Owiani tajemnicą, kamienni strażnicy zstąpią do doliny.",
+	"page.fortune.event.ufo": "Nad Ferngill przelatują dziwne istoty zza nieba.",
+
+	"page.mines": "Podziemia",
+	"page.mines.about": "Poniżej znajduje się zestawienie przewidywanej aktywności potworów w {{Season}}:",
+
+	"page.mines.type.Mushroom": "Grzyby",
+	"page.mines.type.InfestedMonster": "Zainfekowane",
+	"page.mines.type.InfestedSlime": "Zainfekowane Szlamem",
+	"page.mines.type.Quarry": "Kamieniołom",
+	"page.mines.type.InfestedQuarry": "Zainfekowanie Kamieniołomu",
+	"page.mines.type.Dino": "Jaskiniowe Dinozaury",
+
+	"page.notices": "Informacje Lokalne",
+
+	"page.notices.season": "Sezon na {{item}} trwa od {{start}} do {{end}}.",
+	"page.notices.summer": "Przewiduje się, że letnie prądy morskie wyrzucą na Plażę Pelikan dodatkowe przedmioty w dniach od 12 do 14.",
+	"page.notices.market": "Nocny Rynek jest otwarty do późna w dniach od 15 do 17.",
+
+	"page.notices.anniversary.no-s": "Rocznica {{name}} i {{spouse}}!",
+	"page.notices.anniversary.s": "Rocznica {{name}} i {{spouse}}!",
+
+	"page.notices.wedding.no-s": "Ślub {{name}} i {{spouse}}!",
+	"page.notices.wedding.s": "Ślub {{name}} i {{spouse}}!",
+
+	"page.notices.festival": "Pora na {{name}}! Przyjdź do {{where}} między {{start}} a {{end}}.",
+
+	"page.notices.birthday.no-s": "{{name}} obchodzi swoje urodziny!",
+	"page.notices.birthday.s": "{{name}} obchodzi swoje urodziny!",
+
+	"page.notices.merchant": "W miasteczku pojawi się Wędrowny Handlarz.",
+	"page.notices.merchant.stock": "Wędrowny Handlarz będzie sprzedawał:",
+
+	"page.notices.train": "Pociąg ma przejeżdżać przez stację o {{time}}.",
+
+	// Fishing Page
+
+	"page.fish": "Wędkarstwo",
+	"page.fish.aquarium.none": "Nie można trzymać w akwarium.",
+	"page.fish.caught": "Złapano @B{{count}}@b z nich.",
+	"page.fish.caught.not": "Jeszcze nie złapano.",
+
+	// TL Note: You can use {{big_cm}}, {{min_cm}}, and {{max_cm}} instead of _inch.
+	"page.fish.size": "Twoja największa zdobycz to @B{{big_cm}}\"@b.",
+	"page.fish.size.range": "Osiąga rozmiar od @B{{min_cm}}\"@b do @B{{max_cm}}\"@b.",
+
+	"page.fish.weather.Sunny": "{{fish}} jest aktywna tylko podczas @Bsłonecznej@b pogody.",
+	"page.fish.weather.Rainy": "{{fish}} jest aktywna tylko podczas @Bdeszczowej@b pogody.",
+	"page.fish.weather.Any": "{{fish}} jest zawsze aktywna, deszcz czy słońce.",
+	"page.fish.level": "Potrzebujesz {{skill}} na poziomie @B{{level}}@b aby złapać.",
+	"page.fish.legendary": "{{fish}} jest legendarną rybą.",
+	"page.fish.time.all": "Pozostaje aktywna o każdej porze dnia.",
+	"page.fish.time": "Pozostaje aktywna od @B{{start}}@b do @B{{end}}@b.",
+	"page.fish.time.many": "Pozostaje aktywna w następujących okresach czasu: {{spans}}.",
+	"page.fish.time.range": "@B{{start}}@b do @B{{end}}@b",
+	"page.fish.locations": "Lokacje",
+	"page.fish.seasons.all": "Wszystkie Sezony",
+	"page.fish.locations.none": "Ta ryba nie ma danych dotyczących lokalizacji.",
+	"page.fish.pond": "Hodowla Ryb",
+	"page.fish.pond.none": "{{fish}} nie może być umieszczona w stawie rybnym.",
+	"page.fish.pond.start": "",
+	"page.fish.filter.weather": "Filtruj wg. Pogody",
+	"page.fish.filter.none": "Niefiltrowane",
+	"page.fish.none": "Nie ma ryb pasujących do bieżących filtrów.",
+	"page.fish.nothing": "Nic tu nie ma do oglądania...",
+	"fish.weather.Any": "Każda",
+	"fish.weather.Rainy": "Deszczowo",
+	"fish.weather.Sunny": "Słonecznie",
+	"page.fish.filter.type": "Filtruj wg. Typu",
+	"page.fish.filter.type.trap": "Pułapki (Klatka na Kraby)",
+	"page.fish.filter.type.caught": "Wędkarstwo (Wędka)",
+	"page.fish.filter.caught": "Filtruj wg. Złapanych",
+	"page.fish.filter.true": "Tak",
+	"page.fish.filter.false": "Nie",
+	"page.fish.filter.location": "Filtruj wg. Obecnej Lokalizacji",
+	"page.fish.filter.now": "Tak, Ten Sezon",
+	"page.fish.location.fresh": "{{fish}} żyje w wodach słodkich.",
+	"page.fish.location.ocean": "{{fish}} żyje w wodach słonych.",
+
+	// Settings
+
+	"settings.theme": "Motyw Interfejsu",
+	"settings.theme-desc": "Ten motyw zostanie użyty w menu Almanachu.",
+
+	"theme.automatic": "Automatyczny",
+	"theme.default": "Domyślny",
+
+	"settings.button": "Położenie Przycisku Almanachu",
+	"settings.button-desc": "Jeśli nie jest wyłączone, do menu ekwipunku w tej pozycji zostanie dodany przycisk otwierający Almanach.",
+
+	"settings.button.Disabled": "Wyłączony",
+	"settings.button.LeftTop": "Lewy Górny Róg Menu",
+	"settings.button.LeftBottom": "Lewy Dolny Róg Menu",
+	"settings.button.OrganizeRight": "Prawo od Organizuj",
+	"settings.button.TrashRight": "Prawo od Kosza",
+	"settings.button.TrashDown": "Poniżej Kosza",
+
+	"settings.unlimited": "Bez Limitu",
+	"settings.days": "{{count}} Dni",
+
+	"settings.available": "Almanach Zawsze Dostępny",
+	"settings.available-desc": "Jeśli jest włączone, Almanach będzie zawsze dostępny, bez względu na to, czy otrzymano już jego egzemplarz.",
+
+	"settings.island": "Wyspowy Zawsze Dostępny",
+	"settings.island-desc": "Jeśli jest włączone, Almanach będzie zawsze rozszerzony, aby wyświetlać treści z Imbirowej Wyspy.",
+
+	"settings.magic": "Magiczny Zawsze Dostępny",
+	"settings.magic-desc": "Jeśli jest włączone, magiczne strony będą zawsze dostępne i nie będą wymagały scenki z czarodziejem.",
+
+	"settings.forecast-length": "Długość Prognozy",
+	"settings.forecast-length.desc": "Przewidywanie do tylu dni naprzód.",
+
+	"settings.weather.deterministic": "Użyj Szacowanej Pogody",
+	"settings.weather.deterministic-desc": "Aby prognoza pogody w Almanachu działała, zastępujemy obliczenia jutrzejszej pogody obliczeniami, które wykorzystują przewidywalne źródło losowości. Jeśli powoduje to problemy, można wyłączyć to zachowanie. Spowoduje to jednak wyłączenie rozszerzonej prognozy pogody.",
+
+	"settings.weather.rules": "Włącz Reguły Pogodowe",
+	"settings.weather.rules-desc": "Reguły pogodowe wprowadzają dodatkowe ograniczenia do losowej pogody. Domyślne zasady zapewniają trzy deszczowe dni pod koniec wiosny, aby ułatwić ulepszanie konewek, oraz że w każdym tygodniu jest co najmniej jeden dzień deszczowy i co najmniej jeden słoneczny.",
+
+	"settings.controls": "Sterowanie",
+
+	"settings.controls.almanac": "Otwórz Almanach",
+	"settings.controls.almanac-desc": "Po naciśnięciu tego przycisku zostanie otwarty interfejs Almanachu.",
+
+	"settings.enable": "Włącz Stronę",
+	"settings.enable-desc": "Czy ta strona powinna zostać dodana do Almanachu.",
+
+	"settings.crops": "Strona: Terminy Sadzenia",
+
+	"settings.crops.preview": "Podgląd Plonów",
+	"settings.crops.preview-desc": "Gdy włączone są podglądy plonów, najechanie kursorem myszy na uprawę w zakładce Terminy Sadzenia, pokazuje na kalendarzu w jakiej fazie będzie uprawa danego dnia.",
+
+	"settings.crops.preview.enable": "Włącz Podgląd",
+
+	"settings.crops.preview.plantonfirst": "Zawsze Sadź na Początku",
+	"settings.crops.preview.plantonfirst-desc": "Jeśli jest włączone, przegląd miesiąca widoczny po wybraniu uprawy będzie zawsze rozpoczynał sadzenie od pierwszego dnia, nawet jeśli bieżąca data jest po pierwszym dniu miesiąca.",
+
+	"settings.crops.preview.sprite": "Użyj Ikon Zbiorów",
+	"settings.crops.preview.sprite-desc": "Jeśli jest włączone, zamiast obrazka końcowej fazy wzrostu będzie używany obrazek uprawy, aby łatwiej było stwierdzić w jakich dniach można zbierać plony.",
+
+	"settings.fortune": "Strona: Fortuna",
+
+	"settings.fortune.deterministic": "Użyj Szacowane Szczęście",
+	"settings.fortune.deterministic-desc": "Aby codzienne przewidywanie szczęścia w Almanachu działało, zastępujemy obliczenia codziennej fortuny obliczeniami, które wykorzystują przewidywalne źródło losowości. Jeśli powoduje to problemy, możesz wyłączyć to zachowanie tutaj. Spowoduje to jednak wyłączenie codziennej prognozy szczęścia.",
+
+	"settings.fortune.exact": "Pokaż Procent Szczęścia",
+	"settings.fortune.exact-desc": "Jeśli jest włączone, dokładny dzienny procent szczęścia będzie wyświetlany w dymkach kalendarza Fortuny.",
+
+	"settings.train": "Strona: Rozkład Jazdy Pociągów",
+
+	"settings.weather": "Strona: Prognoza Pogody",
+
+	"settings.mines": "Strona: Podziemia",
+
+	"settings.fish": "Strona: Wędkarstwo",
+	"settings.fish.show-tank": "Pokaż Podgląd w Akwarium",
+	"settings.fish.show-tank-desc": "Jeśli jest włączone, na stronie Wędkarstwa będą wyświetlane podglądy wyglądu każdej ryby w akwarium.",
+
+	"settings.fish.decorate-tank": "Udekoruj Akwarium",
+	"settings.fish.decorate-tank-desc": "Jeśli jest włączone, w podglądzie akwarium oprócz ryb pojawi się parę elementów dekoracyjnych.",
+
+	"settings.fish.legendary": "Uwzględnij Legendarne Ryby",
+	"settings.fish.legendary-desc": "Jeśli jest włączone, legendarne ryby będą również wyświetlane w Almanachu.",
+
+	"settings.notices": "Strona: Informacje Lokalne",
+
+	"settings.notices.trains": "Pokaż Pociągi",
+	"settings.notices.trains-desc": "Jeśli jest włączone, rozkład jazdy pociągów będzie umieszczony w Informacjach Lokalnych. Można tego użyć jako alternatywy dla strony Rozkład Jazdy Pociągów.",
+
+	"settings.notices.anniversaries": "Pokaż Rocznice",
+	"settings.notices.anniversaries-desc": "Jeśli jest włączone, śluby i rocznice wszystkich farmerów będą wyświetlane na stronie Informacji Lokalnych.",
+
+	"settings.notices.festivals": "Pokaż Festiwale",
+	"settings.notices.festivals-desc": "Jeśli jest włączone, festiwale będą wyświetlane na stronie Informacje Lokalne.",
+	"settings.notices.gathering": "Pokaż Zbieractwo",
+	"settings.notices.gathering-desc": "Jeśli jest włączone, możliwości zbierackie będą wyświetlane na stronie Informacji Lokalych.",
+
+	"settings.notices.merchant": "Pokaż Wędrownego Handlarza",
+	"settings.notices.merchant-desc": "Jeśli jest włączone, wizyty Wędrownego Handlarza będą wyświetlane w Informacjach Lokalnych. Jeśli chcesz, możesz także wyświetlić przedmioty, które będzie mieć.",
+	"settings.notices.merchant.Disabled": "Wyłączone",
+	"settings.notices.merchant.Visit": "Pokaż Tylko Wizyty",
+	"settings.notices.merchant.Stock": "Pokaż Wizyty i Zaopatrzenie",
+
+	"settings.restore-state": "Przywróć Poprzedni Stan",
+	"settings.restore-state.desc": "Jeśli jest włączone, Almanach zapamięta stan, w jakim znajdował się po zamknięciu i ponownym otwarciu.",
+
+	"settings.cycle-time": "Cykl Czasu",
+	"settings.cycle-time.desc": "Jeśli w danym dniu ma być wyświetlanych wiele obrazków, każdy z nich jest pokazywany przez tyle sekund.",
+
+	"settings.debug": "Tryb Debugowania",
+	"settings.debug.desc": "Jeśli jest włączone, w Almanachu mogą być wyświetlane dodatkowe informacje użyteczne w debugowaniu. Tryb Debugowania pozwala również na odświeżanie danych przez naciśnięcie F5.",
+
+	// Events
+
+	// Pierre at Farm
+	"event.11022000.0": "Witaj, @. Wygląda na to, że dobrze się tu zadomowiłeś!^Witaj, @. Wygląda na to, że dobrze się tu zadomowiłaś!",
+	"event.11022000.1": "Przyszła właśnie moja przesyłka z tegorocznym Almanachem Farmera. Jako że jesteś nowy, pomyślałem, że przyniosę ci egzemplarz.^Przyszła właśnie moja przesyłka z tegorocznym Almanachem Farmera. Jako że jesteś nowa, pomyślałem, że przyniosę ci egzemplarz.",
+	"event.11022000.2": "Otrzymano egzemplarz 'Almanachu Farmera'.",
+	"event.11022000.3": "Pełno w nim przydatnych informacji. Prognozy pogody. Planowanie rotacji upraw. Rozkład jazdy pociągów regionalnych. Mnóstwo rzeczy.",
+	"event.11022000.4": "Zapoznaj się z tym, co możesz uprawiać. Gdy będziesz gotów do sadzenia, możesz kupić nasiona w moim sklepie.#$b#Nasiona Pierra są *najlepsze* jakie można znaleźć.",
+
+	// Wizard at Farm
+	"event.11022002.0": "Witam serdecznie... @. Czekałem na ciebie.#$b#Chciałbym ci coś podarować.",
+	"event.11022002.1": "Otrzymano egzemplarz 'Magicznego Almanachu'.",
+	"event.11022002.2": "Jako farmer dobrze znasz prognozy.#$b#Ten almanach zawiera duchową prognozę, napisaną przez samą Welwick.#$b#Pomoże ci zachować bezpieczeństwo i rozwijać się.",
+	"event.11022002.3": "A teraz wybacz... Mam sporo pracy.",
+
+	// Willy at FishShop
+	"event.11022001.0": "Ahoj!",
+	"event.11022001.1": "Wybierasz się na wyspę, kolego?^Wybierasz się na wyspę, panienko?",
+	"event.11022001.2": "Mam tu coś, co może ci się przydać. Trzymaj.",
+	"event.11022001.3": "Otrzymano egzemplarz 'Almanachu Wysp Paprociowych'.",
+	"event.11022001.4": "Niewiele, ale świadomość jaka będzie pogoda, jest wspaniała. Niektóre ryby pojawiają się tylko podczas deszczu, wiesz?",
+	"event.11022001.5": "No cóż, nie zatrzymuję cię. Miłego dnia, @.",
+
+	// Locations
+
+	"location.WitchSwamp": "Bagno Wiedźmy",
+	"location.BugLand": "Legowisko Zmutowanych Robaków",
+
+	"location.Caldera": "Imbirowa Wyspa (Kaldera)",
+	"location.IslandWest": "Imbirowa Wyspa - Zachód",
+	"location.IslandNorth": "Imbirowa Wyspa - Północ",
+	"location.IslandSouth": "Imbirowa Wyspa - Południe",
+	"location.IslandSouthEast": "Imbirowa Wyspa - Południowy Wschód",
+	"location.IslandSouthEastCave": "Imbirowa Wyspa - Południowy Wschód (Jaskinia)",
+	"location.IslandEast": "Imbirowa Wyspa - Wschód",
+
+	"location.sub-any": "Wszędzie",
+	"location.sub-floor": "Piętro {{floor}}",
+
+	"location.Forest.River": "Rzeka",
+	"location.Forest.Pond": "Staw",
+
+	"location.Island.Ocean": "Ocean",
+	"location.Island.Freshwater": "Wody Słodkie",
+
+	// Maps: Stardew Aquarium
+	"location.Custom_ExteriorMuseum": "Stardew Akwarium",
+	"location.ExteriorMuseum": "Stardew Akwarium",
+
+	// Maps: Stardew Valley Expanded
+	"location.Custom_AdventurerSummit": "Szczyt",
+	"location.Custom_BlueMoonVineyard": "Winnica Blue Moon",
+	"location.Custom_BlueMoonVineyard.0": "Ocean",
+	"location.Custom_BlueMoonVineyard.1": "Rzeka",
+	"location.Custom_CrimsonBadlands": "Karmazynowe Pustkowia",
+	"location.Custom_FableReef": "Baśniowa Rafa",
+	"location.Custom_ForestWest": "Zachodni Las Cindersap",
+	"location.Custom_Highlands": "Wyżyny",
+	"location.Custom_Highlands.0": "Ruiny",
+	"location.Custom_Highlands.1": "Rzeka",
+	"location.Custom_HighlandsCavern": "Wyżyny (Jaskinia)",
+	"location.Custom_JunimoWoods": "Las Junimo",
+	"location.Custom_MorrisProperty": "Posiadłość Morrisa",
+	"location.Custom_ShearwaterBridge": "Most Shearwater",
+	"location.Custom_SpriteSpring2": "Źródełko Duszków"
+}

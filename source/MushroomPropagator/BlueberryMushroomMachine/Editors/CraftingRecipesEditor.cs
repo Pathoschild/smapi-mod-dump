@@ -9,26 +9,25 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace BlueberryMushroomMachine.Editors
 {
-	internal class CraftingRecipesEditor : IAssetEditor
+	internal static class CraftingRecipesEditor
 	{
-		private readonly bool _isDebugging;
-
-		public CraftingRecipesEditor()
+		public static bool ApplyEdit(AssetRequestedEventArgs e)
 		{
-			_isDebugging = ModEntry.Instance.Config.DebugMode;
+            if (e.NameWithoutLocale.IsEquivalentTo(@"Data/CraftingRecipes"))
+            {
+                e.Edit(EditImpl);
+                return true;
+            }
+            return false;
 		}
-
-		public bool CanEdit<T>(IAssetInfo asset)
+		public static void EditImpl(IAssetData asset)
 		{
-			return asset.AssetNameEquals(@"Data/CraftingRecipes");
-		}
-		public void Edit<T>(IAssetData asset)
-		{
-			Log.T($"Editing {asset.AssetName}.",
-				_isDebugging);
+			Log.T($"Editing {asset.Name}.",
+                ModEntry.Instance.Config.DebugMode);
 
 			// Inject crafting recipe data using custom appended index as the result.
 			var name = ModValues.PropagatorInternalName;
@@ -37,7 +36,7 @@ namespace BlueberryMushroomMachine.Editors
 				data.Add(name, ModValues.CraftingRecipeData);
 
 			Log.D($"Recipe injected: \"{name}\": \"{data[name]}\"",
-				_isDebugging);
+                ModEntry.Instance.Config.DebugMode);
 		}
 	}
 }

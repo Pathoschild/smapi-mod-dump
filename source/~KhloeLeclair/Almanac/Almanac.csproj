@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AssemblyName>Almanac</AssemblyName>
-		<Version>0.17.0</Version>
+		<Version>0.18.1</Version>
 		<RootNamespace>Leclair.Stardew.Almanac</RootNamespace>
 		
 		<EnableHarmony>true</EnableHarmony>

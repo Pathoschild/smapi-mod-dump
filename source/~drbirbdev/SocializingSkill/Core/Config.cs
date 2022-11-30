@@ -17,15 +17,15 @@ using BirbShared.Config;
 
 namespace SocializingSkill
 {
-    [ConfigClass(I18NNameSuffix = "")]
+    [ConfigClass(I18NNameSuffix = "", I18NTextSuffix = "")]
     internal class Config
     {
-        [ConfigPageLink("Experience", "Experience Modifiers")]
-        [ConfigPageLink("Perks", "Skill Perk Modifiers")]
-        [ConfigPageLink("Professions", "Profession Modifiers")]
+        [ConfigPageLink("Experience", "ExperienceModifiers")]
+        [ConfigPageLink("Perks", "SkillPerkModifiers")]
+        [ConfigPageLink("Professions", "ProfessionModifiers")]
 
         [ConfigPage("Experience")]
-        [ConfigSectionTitle("Experience Modifiers")]
+        [ConfigSectionTitle("ExperienceModifiers")]
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int ExperienceFromTalking { get; set; } = 2;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
@@ -34,28 +34,32 @@ namespace SocializingSkill
         public int ExperienceFromEvents { get; set; } = 10;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int ExperienceFromQuests { get; set; } = 20;
+        [ConfigOption(Min = 1, Max = 5, Interval = 0.1f)]
+        public float LovedGiftExpMultiplier { get; set; } = 2;
+        [ConfigOption(Min = 1, Max = 5, Interval = 0.1f)]
+        public float BirthdayGiftExpMultiplier { get; set; } = 2;
 
         [ConfigPage("Perks")]
-        [ConfigSectionTitle("Skill Perk Modifiers")]
+        [ConfigSectionTitle("SkillPerkModifiers")]
         [ConfigOption(Min = 1, Max = 10, Interval = 1)]
-        public int FriendshipRecoveryPerLevel { get; set; } = 1;
+        public int ChanceNoFriendshipDecayPerLevel { get; set; } = 5;
 
         [ConfigPage("Professions")]
-        [ConfigSectionTitle("Profession Modifiers")]
+        [ConfigSectionTitle("ProfessionModifiers")]
 
-        [ConfigSectionTitle("Friendly Profession Modifiers")]
+        [ConfigSectionTitle("FriendlyProfessionModifiers")]
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int FriendlyExtraFriendship { get; set; } = 10;
 
 
-        [ConfigSectionTitle("Smooth Talker Profession Modifiers")]
+        [ConfigSectionTitle("SmoothTalkerProfessionModifiers")]
         [ConfigOption(Min = -5.0f, Max = 5.0f, Interval = 0.1f)]
         public float SmoothTalkerPositiveMultiplier { get; set; } = 2.0f;
         [ConfigOption(Min = -5.0f, Max = 5.0f, Interval = 0.1f)]
         public float SmoothTalkerNegativeMultiplier { get; set; } = 0.5f;
 
 
-        [ConfigSectionTitle("Gifter Profession Modifiers")]
+        [ConfigSectionTitle("GifterProfessionModifiers")]
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int GifterLovedGiftExtraFriendship { get; set; } = 80;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
@@ -63,19 +67,19 @@ namespace SocializingSkill
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int GifterNeutralGiftExtraFriendship { get; set; } = 20;
 
-        [ConfigSectionTitle("Helpful Profession Modifiers")]
+        [ConfigSectionTitle("HelpfulProfessionModifiers")]
         [ConfigOption(Min = 1.0f, Max = 5.0f, Interval = 0.1f)]
         public float HelpfulRewardMultiplier { get; set; } = 2.0f;
 
 
-        [ConfigSectionTitle("Haggler Profession Modifiers")]
+        [ConfigSectionTitle("HagglerProfessionModifiers")]
         [ConfigOption(Min = 1, Max = 10, Interval = 1)]
         public int HagglerMinHeartLevel { get; set; } = 6;
         [ConfigOption(Min = 0, Max = 10, Interval = 1)]
         public int HagglerDiscountPercentPerHeartLevel { get; set; } = 2;
 
 
-        [ConfigSectionTitle("Beloved Profession Modifiers")]
+        [ConfigSectionTitle("BelovedProfessionModifiers")]
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int BelovedGiftPercentChance { get; set; } = 5;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]

@@ -18,7 +18,7 @@ public class ThemeManifest : IThemeManifest {
 
 	#region Constructor
 
-	internal ThemeManifest(string uniqueID, string name, IReadOnlyDictionary<string, string>? localizedNames, string? translationKey, IManifest providingMod, string[]? supportedMods, string[]? unsupportedMods, string? fallbackTheme, string? assetPrefix, bool? overrideRedirection) {
+	internal ThemeManifest(string uniqueID, string name, IReadOnlyDictionary<string, string>? localizedNames, string? translationKey, IManifest providingMod, string[]? supportedMods, string[]? unsupportedMods, string? fallbackTheme, string? assetPrefix, bool? overrideRedirection, bool nonSelectable) {
 		UniqueID = uniqueID;
 		Name = name;
 		LocalizedNames = localizedNames;
@@ -29,6 +29,7 @@ public class ThemeManifest : IThemeManifest {
 		FallbackTheme = fallbackTheme;
 		AssetPrefix = assetPrefix;
 		OverrideRedirection = overrideRedirection;
+		NonSelectable = nonSelectable;
 	}
 
 	#endregion
@@ -44,6 +45,8 @@ public class ThemeManifest : IThemeManifest {
 	public string? TranslationKey { get; }
 
 	public IManifest ProvidingMod { get; }
+
+	public bool NonSelectable { get; }
 
 	#endregion
 

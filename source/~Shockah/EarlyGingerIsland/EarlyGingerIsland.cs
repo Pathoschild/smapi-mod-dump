@@ -32,6 +32,11 @@ namespace Shockah.EarlyGingerIsland
 		private bool IsConfigRegistered { get; set; } = false;
 		private UnlockCondition NewUnlockCondition = new();
 
+		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
+		{
+			// no migration required, for now
+		}
+
 		public override void OnEntry(IModHelper helper)
 		{
 			Instance = this;
@@ -71,8 +76,19 @@ namespace Shockah.EarlyGingerIsland
 
 		private void OnDayStarted(object? sender, DayStartedEventArgs e)
 		{
-			if (ShouldGingerIslandBeUnlocked() && !Game1.player.hasOrWillReceiveMail("willyBackRoomInvitation"))
-				Game1.player.mailbox.Add("willyBackRoomInvitation");
+			if (ShouldGingerIslandBeUnlocked())
+			{
+				if (!Game1.player.hasOrWillReceiveMail("willyBackRoomInvitation"))
+					Game1.addMail("willyBackRoomInvitation");
+				if (Config.BoatFixHardwoodRequired <= 0 && !Game1.player.hasOrWillReceiveMail("willyBoatHull"))
+					Game1.addMail("willyBoatHull", noLetter: true);
+				if (Config.BoatFixIridiumBarsRequired <= 0 && !Game1.player.hasOrWillReceiveMail("willyBoatAnchor"))
+					Game1.addMail("willyBoatAnchor", noLetter: true);
+				if (Config.BoatFixBatteryPacksRequired <= 0 && !Game1.player.hasOrWillReceiveMail("willyBoatTicketMachine"))
+					Game1.addMail("willyBoatTicketMachine", noLetter: true);
+				if (Config.BoatFixHardwoodRequired <= 0 && Config.BoatFixIridiumBarsRequired <= 0 && Config.BoatFixBatteryPacksRequired <= 0 && !Game1.player.hasOrWillReceiveMail("willyBoatFixed"))
+					Game1.addMail("willyBoatFixed", noLetter: true);
+			}
 		}
 
 		private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
@@ -136,19 +152,19 @@ namespace Shockah.EarlyGingerIsland
 			helper.AddNumberOption(
 				keyPrefix: "config.boatFix.hardwoodRequired",
 				property: () => Config.BoatFixHardwoodRequired,
-				min: 1
+				min: 0
 			);
 
 			helper.AddNumberOption(
 				keyPrefix: "config.boatFix.iridiumBarsRequired",
 				property: () => Config.BoatFixIridiumBarsRequired,
-				min: 1
+				min: 0
 			);
 
 			helper.AddNumberOption(
 				keyPrefix: "config.boatFix.batteryPacksRequired",
 				property: () => Config.BoatFixBatteryPacksRequired,
-				min: 1
+				min: 0
 			);
 
 			void RegisterUnlockConditionSection(int? index)
@@ -196,14 +212,17 @@ namespace Shockah.EarlyGingerIsland
 
 		private bool ShouldGingerIslandBeUnlocked()
 		{
+			if (!Game1.MasterPlayer.mailReceived.Contains("spring_2_1")) // Willy introduction mail
+				return false;
 			foreach (var condition in Config.UnlockConditions)
 			{
 				if (Game1.Date.TotalDays < condition.Date.TotalDays)
 					continue;
 				foreach (var player in Game1.getAllFarmers())
 					if (player.getFriendshipHeartLevelForNPC("Willy") < condition.HeartsWithWilly)
-						continue;
+						goto outerContinue;
 				return true;
+				outerContinue:;
 			}
 			return ShouldGingerIslandBeUnlockedInVanilla();
 		}

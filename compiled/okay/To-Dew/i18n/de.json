@@ -18,6 +18,12 @@
     "config.overlay.max-width.desc": "Maximale Breite der Überlagerung in Pixel",
     "config.overlay.max-items": "Max Items",
     "config.overlay.max-items.desc": "Maximale Anzahl von Elementen, die im Overlay angezeigt werden sollen",
+    "config.overlay.zoom": "Größe vergrößern mit",
+    "config.overlay.zoom.desc": "Wählen Sie, welche der Zoom-Optionen des Spiels die Größe des Overlays steuert",
+    "config.overlay.x-offset": "X-Offset",
+    "config.overlay.x-offset.desc": "X-Offset des Overlays in Pixel vom linken Bildschirmrand",
+    "config.overlay.y-offset": "Y-Offset",
+    "config.overlay.y-offset.desc": "Y-Offset des Overlays in Pixel vom oberen Bildschirmrand",
 
     // Überlagerung
     "overlay.header": "To-Dew List",

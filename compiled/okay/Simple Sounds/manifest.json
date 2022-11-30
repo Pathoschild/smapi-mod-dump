@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Simple Sounds",
+  "Author": "BleakCodex",
+  "Version": "1.0.1",
+  "Description": "Simple Modding Tool to Add Custom Sounds for other mods or events",
+  "UniqueID": "BleakCodex.SimpleSounds",
+  "EntryDll": "SimpleSounds.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:14540" ]
+}

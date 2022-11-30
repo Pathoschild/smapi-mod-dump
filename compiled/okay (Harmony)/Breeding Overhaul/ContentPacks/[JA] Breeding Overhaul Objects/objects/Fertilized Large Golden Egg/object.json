@@ -1,0 +1,30 @@
+{
+    "Name": "Fertilized Large Golden Egg",
+    "Description": "Fertilized Void Chicken Egg, inserted into the incubator for breeding.",
+    "Category": "Crafting",
+    "Edibility": 15,
+    "Price": 900,
+    "IsColored": false,
+    "Recipe": { 
+        "ResultCount": 1,
+         "Ingredients": 
+          [
+           {
+             "Object": "Chicken DNA",
+             "Count": 1,
+              },
+             {
+             "Object": "Large Golden Egg",
+             "Count": 1,
+            }       
+            ],
+            "IsDefault": true,
+            },
+    "GiftTastes":
+    {
+        "Like": ["Shane", "Alex", "Jodie", "Kent", "Demetrius", "Leah", "Marnie", "Linus", "Pierre", "Sam"],
+		"Neutral": [ "Elliot", "Harvey", "Emily", "Maru", "Penny", "Caroline", "Clint", "Evelyn", "George", "Gus", "Leo", "Lewis","Robin",  "Willy"],
+        "Dislike": ["Dwarf", "Haley", "Abigail", "Vincent", "Pam", "Wizard", "Jas"],
+        "Hate": ["Sebastian"],
+    },
+}

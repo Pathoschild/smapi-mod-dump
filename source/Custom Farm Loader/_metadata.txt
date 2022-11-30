@@ -6,10 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit 01ed177765146c6a7a3c27d532bf1ed7b19a2f76
-   Merge: fa558f6 39ffbaf
+   commit fa3049722036de986827975ad048bb0d9dca34fc
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Oct 6 18:27:20 2022 +0200
+   Date:   Mon Nov 28 04:48:44 2022 +0100
    
-       Merge branch 'main' of gitlab.com:delixx/stardew-valley-custom-farm-loader
+       Always Fix TVs when creating a new game
    

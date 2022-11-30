@@ -6,9 +6,9 @@ mods:
    Better Beehouses
 
 latest commit:
-   commit 2d8b3a30b5547e2720e43b4da251ef5535d4ce30
-   Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Mon Oct 17 13:21:32 2022 -0400
+   commit 5b6b08c6d566995d41501bd2e5baaf0ffaab1f6d
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Wed Nov 2 12:28:51 2022 -0400
    
-       bump manifest
+       unspaghetti
    

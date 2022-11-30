@@ -8,7 +8,7 @@ for queries and analysis.**
 
 ****This mod is in ALPHA release stage. It has no currently known issues, but is likely to contain bugs, extraneous code, etc, and the documentation is under constant improvement. Please only download if you're willing to be patient as problems crop up, and I encourage early downloaders to let me know of anything you'd like to see adjusted or rebalanced. ****
 ---------------------------------
-Breeding Overhaul is a Stardew Valley mod that aims to revamp the vanilla breeding system when used in conjunction with Animal Husbandry Mod (formerly ButcherMod) and Better Farm Animal Variety. Json Assets (DGA version will be out at some point), Production Framework Mod, and Content Patcher are all also required for full function. It consists of the following sections:
+Breeding Overhaul is a Stardew Valley mod that aims to revamp the vanilla breeding system when used in conjunction with Animal Husbandry Mod (formerly ButcherMod) and Better Farm Animal Variety. Json Assets (DGA version will be out at some point), Production Framework Mod, and Content Patcher are all also required for full function. As of the 1.1.0 update, it consists of the following sections:
 
 1. Breeding Overhaul, the main project code. It makes the following changes to the base game / Animal Husbandry Mod behavior:
 
@@ -96,17 +96,23 @@ Breeding Overhaul is a Stardew Valley mod that aims to revamp the vanilla breedi
 			Fertilized Large Ostrich Egg, which hatch 1-2 new baby ostrich (normal or male)*
 			Fertilized Large Dinosaur Egg, which hatch 1-2 new dinosaurs (normal or male)*
 			
-        * In development; probably going to be a 1.1.0 feature
+        * In development; probably going to be a 1.2.0 feature
 	
         	Blue Mayonnaise, a new artisan good made from blue eggs and large blue eggs.
 			Golden Mayonnaise, a new artisan good made from golden eggs and large golden eggs.
 			Ostrich Mayonnaise, a new artisan good made from ostrich eggs and large ostrich eggs.
         
+		As of the 1.1.0 update, two new bigcraftables, the Manure Composter and the Genetic Extractor, have also been added to assist in object processing.
+	
+	
 6. [PFM] Breeding Overhaul Object Rules adds processing rules for all the new objects. 
 
-    The recycling machine now produces:
+    The manure composter now produces:
        
         	Manure = Quality Fertilizer
+		
+    The genetic extractor now produces:
+    
         	Cow Horn = Cow DNA     
         	Goat Horn = Goat DNA
         	Sheep Horn = Sheep DNA
@@ -128,7 +134,7 @@ So, what does this mean for gameplay?
 Breeding Egg-Laying Animals In-Game (assuming you use default configuration for the incubatordata file):
 
                 1. Obtain DNA for the correct species - you can buy DNA from Marnie, or process 
-		your male animal's unique drops into it at the recycling machine. 
+		your male animal's unique drops into it at the genetic extractor. 
                 2. Craft a fertile egg using an egg and a DNA, or a large fertile egg using a large egg and a DNA.
                 3. Drop the fertile egg in the incubator just like normal, and wait for it to hatch (now it has a 
 		chance to be born male, too). Large fertile eggs have a chance to hatch two new babies if you have space for them.
@@ -136,7 +142,7 @@ Breeding Egg-Laying Animals In-Game (assuming you use default configuration for 
 Breeding Live-Birth Animals In-Game (assuming you use default configuration for the pregnancydata file):
 
                 1. Obtain DNA for the correct species - you can buy DNA from Marnie, or process your male animal's 
-		unique drops into it at the recycling machine. 
+		unique drops into it at the genetic extractor. 
                 2. Use the DNA in the Animal Husbandry Mod insemination syringe instead of the vanilla drops (milk, etc). 
                 3. Wait for your animal to be born through the normal Animal Husbandry Mod process 
 		(now it has a chance to be born male, too). 

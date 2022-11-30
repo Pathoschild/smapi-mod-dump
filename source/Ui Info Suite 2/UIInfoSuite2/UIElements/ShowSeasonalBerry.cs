@@ -65,8 +65,7 @@ namespace UIInfoSuite2.UIElements
         public void ToggleHazelnutOption(bool showHazelnut)
         {
             ShowHazelnut = showHazelnut;
-
-            UpdateBerryForDay();
+            ToggleOption(true);
         }
 
         #endregion

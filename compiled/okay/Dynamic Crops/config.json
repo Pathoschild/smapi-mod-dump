@@ -1,3 +1,5 @@
 {
-  "flowersCanRegrow": true
+  "flowersCanRegrow": true,
+  "activateDynamicCrops": true,
+  "onlyAffectBaseCrops": false
 }

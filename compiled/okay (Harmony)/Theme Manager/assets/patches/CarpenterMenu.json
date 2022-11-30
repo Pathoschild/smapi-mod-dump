@@ -1,0 +1,13 @@
+{
+	"ID": "CarpenterMenu",
+
+	"Patches": {
+		"#CarpenterMenu:draw(SpriteBatch)": {
+			"Colors": {
+				"Red": { "*": "$ErrorText" },
+				"PaleGoldenrod": { "*": "$CarpenterMagicText" },
+				"RoyalBlue": { "*": "$CarpenterMagicBackground" }
+			}
+		}
+	}
+}

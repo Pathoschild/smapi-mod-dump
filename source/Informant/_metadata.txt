@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/slothsoft/stardew-informant
+   Git: https://github.com/slothsoft/stardew-informant.git
+
+mods:
+   Informant
+
+latest commit:
+   commit ee03a7b605134cd0334152db3ad69e29918d5ef7
+   Merge: ed3b8ae 04d83b9
+   Author: Slothsoft <admin@slothsoft.de>
+   Date:   Sun Nov 27 14:12:26 2022 +0100
+   
+       Merge pull request #81 from slothsoft/bugfixes/bugfix-sunday
+       
+       Bugfixes
+   

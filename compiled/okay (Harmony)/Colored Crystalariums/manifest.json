@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Colored Crystalariums",
+    "Author": "sophie",
+    "Version": "0.1.0",
+    "Description": "Crystalariums change color depending on what gem is inside.",
+    "UniqueID": "sophie.ColoredCrystalariums",
+    "EntryDll": "ColoredCrystalariums.dll",
+    "MinimumApiVersion": "3.13.0",
+    "UpdateKeys": [ "Nexus:14428" ]
+}

@@ -13,49 +13,41 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace BlueberryMushroomMachine.Editors
 {
-	internal class BigCraftablesTilesheetEditor : IAssetEditor
+    internal static class BigCraftablesTilesheetEditor
 	{
-		private readonly bool _isDebugging;
+        private static IRawTextureData tex;
+        internal static void Initialize(IModContentHelper helper)
+        {
+            tex = helper.Load<IRawTextureData>(ModValues.MachinePath);
+        }
 
-		public BigCraftablesTilesheetEditor()
+		public static bool ApplyEdit(AssetRequestedEventArgs e)
 		{
-			_isDebugging = ModEntry.Instance.Config.DebugMode;
+            if (e.NameWithoutLocale.IsEquivalentTo(@"TileSheets/Craftables"))
+            {
+                e.Edit(EditImpl);
+                return true;
+            }
+            return false;
 		}
 
-		public bool CanEdit<T>(IAssetInfo asset)
+		public static void EditImpl(IAssetData asset)
 		{
-			return asset.AssetNameEquals(@"TileSheets/Craftables");
-		}
+			Log.T($"Editing {asset.Name}.",
+                ModEntry.Instance.Config.DebugMode);
 
-		public void Edit<T>(IAssetData asset)
-		{
-			Log.T($"Editing {asset.AssetName}.",
-				_isDebugging);
-
-			// Expand the base tilesheet if needed.
-			var src = ModEntry.Instance.Helper.Content.Load<Texture2D>(ModValues.MachinePath);
+            // Expand the base tilesheet if needed.
+            var src = tex;
 			var dest = asset.AsImage();
 			var srcRect = new Rectangle(0, 0, 16, 32);
 			var destRect = Propagator.getSourceRectForBigCraftable(ModValues.PropagatorIndex);
 
-			if (destRect.Bottom > dest.Data.Height)
-			{
-				Log.D("Expanding bigCraftables tilesheet.",
-					_isDebugging);
-
-				var original = dest.Data;
-				var texture = new Texture2D(Game1.graphics.GraphicsDevice, original.Width, destRect.Bottom);
-
-				Log.D($"Original: {original.Width}x{original.Height}"
-					+ $"\nExpanded: {texture.Width}x{texture.Height}",
-					_isDebugging);
-
-				dest.ReplaceWith(texture);
-				dest.PatchImage(original);
-			}
+            // expand if needed
+            dest.ExtendImage(dest.Data.Bounds.Width, destRect.Height);
 
 			// Append machine sprite onto the default tilesheet.
 			dest.PatchImage(src, srcRect, destRect);

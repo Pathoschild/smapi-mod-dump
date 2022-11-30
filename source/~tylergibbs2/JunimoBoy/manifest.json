@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "JunimoBoy",
+    "Author": "Tyler Gibbs",
+    "Version": "1.0.0",
+    "Description": "Adds a portable game system.",
+    "UniqueID": "tylergibbs2.JunimoBoy",
+    "EntryDll": "JunimoBoy.dll",
+    "MinimumApiVersion": "3.15.0",
+    "UpdateKeys": [ "Nexus:14384" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.JsonAssets",
+            "MinimumVersion": "1.10.0"
+        }
+    ]
+}

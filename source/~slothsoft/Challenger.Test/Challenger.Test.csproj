@@ -1,0 +1,39 @@
+<Project>
+
+    <PropertyGroup>
+        <RootNamespace>ChallengerTest</RootNamespace>
+
+        <EnableGameDebugging>false</EnableGameDebugging>
+        <EnableModDeploy>false</EnableModDeploy>
+        <EnableModZip>false</EnableModZip>
+        <BundleExtraAssemblies>All</BundleExtraAssemblies>
+    </PropertyGroup>
+
+    <Import Project="..\build\common.targets" />
+
+    <ItemGroup>
+        <ProjectReference Include="..\Challenger\Challenger.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="MonoGame.Framework" HintPath="$(GamePath)\MonoGame.Framework.dll" />
+        <Reference Include="Stardew Valley" HintPath="$(GamePath)\Stardew Valley.dll" />
+        <Reference Include="SMAPI.Toolkit.CoreInterfaces" HintPath="$(GamePath)\smapi-internal\SMAPI.Toolkit.CoreInterfaces.dll" />
+        <Reference Include="StardewModdingAPI" HintPath="$(GamePath)\StardewModdingAPI.dll" />
+        <Reference Include="StardewValley.GameData" HintPath="$(GamePath)\StardewValley.GameData.dll" />
+        <Reference Include="xTile" HintPath="$(GamePath)\xTile.dll" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+        <PackageReference Include="Moq" Version="4.18.2" />
+        <PackageReference Include="NUnit" Version="3.13.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttributes Include="ChallengerTest.SolutionFileAttribute">
+            <_Parameter1>$(SolutionPath)</_Parameter1>
+        </AssemblyAttributes>
+    </ItemGroup>
+</Project>

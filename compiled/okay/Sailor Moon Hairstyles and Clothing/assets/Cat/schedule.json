@@ -1,7 +1,3 @@
 {
-	"rain": "GOTO spring",
-	"winter": "GOTO spring",
-	"fall": "GOTO spring",
-	"summer": "GOTO spring",
-	"spring": "600 Forest 33 96 0 zss_cat_standing/1240 Forest 33 96 0 zss_cat_sitting/1830 Forest 33 96 0 zss_cat_sleepy/2020 Forest 33 96 0 zss_cat_snoozing"
+	"spring": "600 {0} {1} {2} {3} blueberry.SailorStyles.CatStanding/1240 {0} {1} {2} {3} blueberry.SailorStyles.CatSitting/1830 {0} {1} {2} {3} blueberry.SailorStyles.CatDrowsy/2020 {0} {1} {2} {3} blueberry.SailorStyles.CatSnoozing"
 }

@@ -8,6 +8,13 @@ for queries and analysis.**
 
 
 # Release Notes
+## Version 1.11.0
+
+* Add on option to toggle whether the overlay is scaled with UI Scale or Zoom Level
+* Add config UI for the overlay Offset-X and Offset-Y config options
+* Fix overlay on map areas smaller than the screen (e.g., bus stop)
+* Fix overlay drawn over Qi coin total in the casino
+* Fix GMCM deprecation warning
 
 ## Version 1.10.2
 

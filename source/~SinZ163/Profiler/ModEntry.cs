@@ -22,18 +22,10 @@ using System.Threading.Tasks;
 
 namespace Profiler
 {
-    /*
-    public record ProfilerContentPack(string Format, ProfilerEntry[] Entries);
-    public record ProfilerEntry(string Type, string TargetType, string TargetMethod, string ConditionalMod, DetailsEntry Details);
-    public record DetailsEntry(string Type, string Name); */
-
-
     public class ModEntry : Mod
     {
         internal ModConfig Config { get; private set; }
         public Stopwatch timer { get; private set; }
-
-        internal ProfilerLogger Logger { get; private set; }
 
         internal ProfilerAPI ProfilerAPI { get; private set; }
 
@@ -54,12 +46,8 @@ namespace Profiler
 
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
-            // TODO: Add logic to do the MP detection
-            var path = Path.Combine(Constants.LogDir, "profile-log.log");
-            Logger = new ProfilerLogger(path);
-
             var harmony = new HarmonyLib.Harmony(this.ModManifest.UniqueID);
-            ProfilerAPI = new ProfilerAPI(Logger, Config, harmony, timer, Monitor);
+            ProfilerAPI = new ProfilerAPI(Config, harmony, timer, Monitor);
             PublicPatches.Initialize(ProfilerAPI, harmony);
             ManagedEventPatches.Initialize(Monitor, this.Config, ProfilerAPI, harmony);
             this.timer.Restart();
@@ -117,61 +105,61 @@ namespace Profiler
             return ProfilerAPI;
         }
 
-        [EventPriority((EventPriority)Int32.MaxValue)]
+        [EventPriority((EventPriority)int.MaxValue)]
         private void Specialized_LoadStageChangedFast(object sender, LoadStageChangedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Fast] LoadStageChanged {e.OldStage} -> {e.NewStage}", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MaxValue)]
+        [EventPriority((EventPriority)int.MaxValue)]
         private void GameLoop_GameLaunchedFast(object sender, GameLaunchedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Fast] Game Launched", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MaxValue)]
+        [EventPriority((EventPriority)int.MaxValue)]
         private void GameLoop_DayStartedFast(object sender, DayStartedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Fast] Day Started", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MaxValue)]
+        [EventPriority((EventPriority)int.MaxValue)]
         private void GameLoop_SaveLoadedFast(object sender, SaveLoadedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Fast] Save Loaded", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MaxValue)]
+        [EventPriority((EventPriority)int.MaxValue)]
         private void Player_WarpedFast(object sender, WarpedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Fast] Warped {e.OldLocation} -> {e.NewLocation} ({Game1.timeOfDay:D4})", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MinValue)]
+        [EventPriority((EventPriority)int.MinValue)]
         private void Specialized_LoadStageChangedSlow(object sender, LoadStageChangedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Slow] LoadStageChanged {e.OldStage} -> {e.NewStage}", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MinValue)]
+        [EventPriority((EventPriority)int.MinValue)]
         private void GameLoop_GameLaunchedSlow(object sender, GameLaunchedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Slow] Game Launched", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MinValue)]
+        [EventPriority((EventPriority)int.MinValue)]
         private void GameLoop_DayStartedSlow(object sender, DayStartedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Slow] Day Started", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MinValue)]
+        [EventPriority((EventPriority)int.MinValue)]
         private void GameLoop_SaveLoadedSlow(object sender, SaveLoadedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Slow] Save Loaded", LogLevel.Info);
         }
 
-        [EventPriority((EventPriority)Int32.MinValue)]
+        [EventPriority((EventPriority)int.MinValue)]
         private void Player_WarpedSlow(object sender, WarpedEventArgs e)
         {
             Monitor.Log($"[{timer.Elapsed.TotalMilliseconds:N}][Slow] Warped {e.OldLocation} -> {e.NewLocation} ({Game1.timeOfDay:D4})", LogLevel.Info);

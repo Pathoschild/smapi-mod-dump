@@ -53,6 +53,7 @@ namespace DynamicBodies
 
         internal static BootsPatched bootsPatcher;
         internal static FarmerRendererPatched farmerRendererPatcher;
+        internal static CharacterCreatorPatched creatorPatched;
 
         private static bool debugMode = true;
 
@@ -156,8 +157,9 @@ namespace DynamicBodies
             //Fix up rendering of boots
             bootsPatcher = new BootsPatched(harmony);
 
+            //Fix up new game a bit
+            creatorPatched = new CharacterCreatorPatched(harmony);
 
-            
 
             helper.ConsoleCommands.Add("db_layer_get", "gets layer", delegate { context.Monitor.Log($"OK, layer is {hairlayer}.", LogLevel.Debug); });
             helper.ConsoleCommands.Add("db_layer_set", "sets layer", delegate (string command, string[] args) { hairlayer = float.Parse(args[0]); });
@@ -265,8 +267,7 @@ namespace DynamicBodies
                 args.LoadFromModFile<IRawTextureData>(args.Name.ToString().Substring("Mods/ribeena.dynamicbodies/".Length), AssetLoadPriority.Low);
             }
 
-            if (args.Name.IsEquivalentTo("Maps\\townInterior")
-                || args.Name.IsEquivalentTo("Mods/ribeena.dynamicbodies/assets/Character/shirts_overlay.png"))
+            if (args.Name.IsEquivalentTo("Mods/ribeena.dynamicbodies/assets/Character/shirts_overlay.png"))
             {
                 args.Edit(EditImageAsset);
             }
@@ -276,13 +277,21 @@ namespace DynamicBodies
                 args.Edit(bootsPatcher.PatchImage);
             }
 
-            if (args.Name.IsEquivalentTo("Maps\\Hospital")
+            if (Config.adjustmaps)
+            {
+                if (args.Name.IsEquivalentTo("Maps\\townInterior"))
+                {
+                    args.Edit(EditImageAsset);
+                }
+
+                if (args.Name.IsEquivalentTo("Maps\\Hospital")
                 || args.Name.IsEquivalentTo("Maps\\LeahHouse")
                 || args.Name.IsEquivalentTo("Maps\\Trailer")
                 || args.Name.IsEquivalentTo("Maps\\Trailer_big")
-                || args.Name.IsEquivalentTo("Maps\\HaleyHouse")) 
-            {
-                args.Edit(EditMapAsset);
+                || args.Name.IsEquivalentTo("Maps\\HaleyHouse"))
+                {
+                    args.Edit(EditMapAsset);
+                }
             }
         }
 
@@ -765,6 +774,12 @@ namespace DynamicBodies
                 name: () => "Free character customisation",
                 getValue: () => Config.freecustomisation,
                 setValue: value => Config.freecustomisation = value
+            );
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Add mirror stations to maps",
+                getValue: () => Config.adjustmaps,
+                setValue: value => Config.adjustmaps = value
             );
         }
 

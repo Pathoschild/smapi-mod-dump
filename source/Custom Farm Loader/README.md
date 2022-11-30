@@ -120,7 +120,7 @@ CFL provides a set of templates for each vanilla farm available for download at 
 You  can use those templates to create your own content pack mod, which will load the map into the game.<br>
 Please follow the [Modding:Content packs Guide](https://stardewvalleywiki.com/Modding:Content_packs) to assist you in creating your own content pack.
 
-Use the map editor "[Tiled](#https://www.mapeditor.org/)" to edit your maps.<br>
+Use the map editor "[Tiled](https://www.mapeditor.org/)" to edit your maps.<br>
 Make sure to enable the Tbin plugin under 'Edit &gt; Preferences &gt; Plugins'.<br>
 tbin.dll on Windows, libtbin.so on Linux, or libtbin.dylib on Mac.
 

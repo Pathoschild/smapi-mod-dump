@@ -3,6 +3,7 @@
 
 
 	// Artemis' clothing shop
+	"catshop.text.name": "Artemis",
 	"catshop.text.1": "Meow!",
 	"catshop.text.2": "Want to dress up? I've got everything!",
 	"catshop.text.3": "Welcome! Buy yourself something nice.",
@@ -186,7 +187,7 @@
 	"item.chapeaudefleurs.name": "Chapeau De Fleurs",
 	"item.chapeauroyale.name": "Chapeau Royale",
 	"item.chapeaucocktail.name": "Chapeau Cocktail",
-	"item.chapeaudefiance.name": "Chapeau De Fiance",
+	"item.chapeaudefiance.name": "Chapeau De Fiancé",
 	"item.chapeaublanc.name": "Chapeau Blanc",
 
 	// Man About Town

@@ -52,21 +52,31 @@ namespace Custom_Farm_Loader.Lib
 
         private static Rectangle parseArea(string value)
         {
-            var startString = value.Split(";")[0];
-            var endString = value.Split(";")[1];
-            Point startPosition = new Point(int.Parse(startString.Split(",")[0]), int.Parse(startString.Split(",")[1]));
-            Point endPosition = new Point(int.Parse(endString.Split(",")[0]), int.Parse(endString.Split(",")[1]));
-            //Swap AreaBegin and AreaEnd when they're not aligned as expected
-            if (startPosition.X > endPosition.X) {
-                startPosition.X = endPosition.X;
-                endPosition.X = int.Parse(startString.Split(",")[0]);
-            }
-            if (startPosition.Y > endPosition.Y) {
-                startPosition.Y = endPosition.Y;
-                endPosition.Y = int.Parse(startString.Split(",")[1]);
+            if(!value.Contains(","))
+                throw new Exception($"Not a valid Area/Position: '{value}'");
+
+            if (value.Contains(";")) {
+                var startString = value.Split(";")[0];
+                var endString = value.Split(";")[1];
+                Point startPosition = new Point(int.Parse(startString.Split(",")[0]), int.Parse(startString.Split(",")[1]));
+                Point endPosition = new Point(int.Parse(endString.Split(",")[0]), int.Parse(endString.Split(",")[1]));
+                //Swap AreaBegin and AreaEnd when they're not aligned as expected
+                if (startPosition.X > endPosition.X) {
+                    startPosition.X = endPosition.X;
+                    endPosition.X = int.Parse(startString.Split(",")[0]);
+                }
+                if (startPosition.Y > endPosition.Y) {
+                    startPosition.Y = endPosition.Y;
+                    endPosition.Y = int.Parse(startString.Split(",")[1]);
+                }
+
+                return new Rectangle(startPosition.X, startPosition.Y, 1 + endPosition.X - startPosition.X, 1 + endPosition.Y - startPosition.Y);
+            } else {
+                Point startPosition = new Point(int.Parse(value.Split(",")[0]), int.Parse(value.Split(",")[1]));
+
+                return new Rectangle(startPosition.X, startPosition.Y, 1, 1);
             }
 
-            return new Rectangle(startPosition.X, startPosition.Y, 1 + endPosition.X - startPosition.X, 1 + endPosition.Y - startPosition.Y);
         }
 
         public bool isTileIncluded(Vector2 v)

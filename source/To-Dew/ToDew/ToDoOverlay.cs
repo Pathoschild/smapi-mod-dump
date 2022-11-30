@@ -11,6 +11,8 @@
 // Copyright 2021 Jamie Taylor
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -31,6 +33,7 @@ namespace ToDew {
         public Color textColor = Color.White * 0.8f;
         public int offsetX = 0;
         public int offsetY = 0;
+        public bool scaleWithUI = false;
         public static void RegisterConfigMenuOptions(Func<OverlayConfig> getThis, GenericModConfigMenuAPI api, GMCMOptionsAPI apiExt, IManifest modManifest) {
             api.AddSectionTitle(modManifest, I18n.Config_Overlay, I18n.Config_Overlay_Desc);
             api.AddBoolOption(
@@ -63,6 +66,26 @@ namespace ToDew {
                 tooltip: I18n.Config_Overlay_MaxItems_Desc,
                 getValue: () => getThis().maxItems,
                 setValue: (int val) => getThis().maxItems = val);
+            api.AddNumberOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_XOffset,
+                tooltip: I18n.Config_Overlay_XOffset_Desc,
+                getValue: () => getThis().offsetX,
+                setValue: (int val) => getThis().offsetX = val);
+            api.AddNumberOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_YOffset,
+                tooltip: I18n.Config_Overlay_YOffset_Desc,
+                getValue: () => getThis().offsetY,
+                setValue: (int val) => getThis().offsetY = val);
+            api.AddTextOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_Zoom,
+                tooltip: I18n.Config_Overlay_Zoom_Desc,
+                getValue: () => getThis().scaleWithUI ? "OptionsPage_UIScale" : "OptionsPage.cs.11254",
+                setValue: (string val) => getThis().scaleWithUI = "OptionsPage_UIScale" == val,
+                allowedValues: new[] { "OptionsPage_UIScale", "OptionsPage.cs.11254" },
+                formatAllowedValue: (string val) => Game1.content.LoadString("Strings\\StringsFromCSFiles:" + val));
             if (apiExt is not null) {
                 apiExt.AddColorOption(
                     mod: modManifest,
@@ -104,6 +127,7 @@ namespace ToDew {
             ListHeaderSize = font.MeasureString(ListHeader);
             // initialize rendering callback
             theMod.Helper.Events.Display.RenderedWorld += OnRenderedWorld;
+            theMod.Helper.Events.Display.RenderingHud += OnRenderingHud;
             // initialize the list UI and callback
             theList.OnChanged += OnListChanged;
             syncMenuItemList();
@@ -150,21 +174,35 @@ namespace ToDew {
             syncMenuItemList();
         }
 
+        internal void ConfigSaved() {
+            bounds.X = config.offsetX;
+            bounds.Y = config.offsetY;
+        }
+
+
         public void Dispose() {
             this.theList.OnChanged -= OnListChanged;
             theMod.Helper.Events.Display.RenderedWorld -= OnRenderedWorld;
+            theMod.Helper.Events.Display.RenderingHud -= OnRenderingHud;
         }
 
-        private void OnRenderedWorld(object sender, RenderedWorldEventArgs e) {
+        private void Draw(SpriteBatch spriteBatch) {
             if (lines.Count == 0) return;
             if (!config.enabled) return; // shouldn't get this far, but why not check anyway
             if (Game1.game1.takingMapScreenshot) return;
             if (Game1.eventUp || Game1.farmEvent != null) return;
             if (config.hideAtFestivals && Game1.isFestival()) return;
-            var spriteBatch = e.SpriteBatch;
             Rectangle effectiveBounds = bounds;
-            if (Game1.CurrentMineLevel > 0 || Game1.currentLocation is VolcanoDungeon vd && vd.level.Value > 0) {
-                effectiveBounds.Y += 80;
+            if (Game1.CurrentMineLevel > 0
+                || Game1.currentLocation is VolcanoDungeon vd && vd.level.Value > 0
+                || Game1.currentLocation is Club)
+            {
+                int adjust = Game1.uiMode ? (int)MathF.Ceiling(80f * Game1.options.zoomLevel / Game1.options.uiScale) : 80;
+                effectiveBounds.Y = Math.Max(effectiveBounds.Y, adjust);
+            }
+            if (Game1.isOutdoorMapSmallerThanViewport()) {
+                effectiveBounds.X = Math.Max(effectiveBounds.X, -Game1.uiViewport.X);
+                effectiveBounds.Y = Math.Max(effectiveBounds.Y, -Game1.uiViewport.Y);
             }
             float topPx = effectiveBounds.Y + marginTop;
             float leftPx = effectiveBounds.X + marginLeft;
@@ -183,5 +221,12 @@ namespace ToDew {
             }
         }
 
+        private void OnRenderedWorld(object sender, RenderedWorldEventArgs e) {
+            if (!config.scaleWithUI) Draw(e.SpriteBatch);
+        }
+
+        private void OnRenderingHud(object sender, RenderingHudEventArgs e) {
+            if (config.scaleWithUI) Draw(e.SpriteBatch);
+        }
     }
 }

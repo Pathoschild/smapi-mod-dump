@@ -1,0 +1,22 @@
+{
+	"ID": "LoadGameMenu",
+
+	"Variables": {
+		"$LoadGameErrorText": "$ErrorText",
+		"$LoadGameHover": "$Hover"
+	},
+
+	"Patches": {
+		"#LoadGameMenu+SaveFileSlot:drawVersionMismatchSlot": {
+			"Colors": {
+				"Red": { "*": "$LoadGameErrorText" }
+			}
+		},
+
+		"#LoadGameMenu:drawSlotBackground": {
+			"Colors": {
+				"Wheat": { "*": "$LoadGameHover" }
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+{
+    "Name": "Golden Mayonnaise",
+    "Description": "Delicious mayonnaise lightly flecked with gold.",
+    "Category": "ArtisanGoods",
+    "Edibility": -300,
+    "Price": 1200,
+    "IsColored": false,
+    "GiftTastes":
+     {
+        "Like": ["Shane", "Demetrius", "Alex", "Jodi", "Kent", "Leah", "Linus", "Pierre", "Sam", "Marnie"],
+        "Neutral": [ "Elliot", "Harvey", "Emily", "Maru", "Penny", "Caroline", "Clint", "Evelyn", "George", "Gus", "Lewis", "Robin", "Willy", "Leo"],
+        "Disike": ["Dwarf", "Abigail", "Jas", "Vincent", "Pam", "Wizard", "Haley"],
+        "Hate": ["Sebastian"],
+   }
+}

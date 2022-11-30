@@ -24,6 +24,8 @@ This document helps mod authors create a content pack for Dynamic Bodies.
   * [Shirt Overlays](#shirt-overlays)
   * [Trinkets or Accessories](#trinkets)
 * [Working with other mods](#working-with-other-mods)
+  * [Maps](#maps)
+* [Translations](#translations)
 
 ## Introduction
 ### What is, and why, Dynamic Bodies?
@@ -345,7 +347,7 @@ fourth row is looking left.
 [`Trinkets` documentation](author-guide/trinkets.md) for more info.
 
 
-## Working with other mods
+### Working with other mods
 With SMAPI's new content pipeline this mod has been made with that in mind. You can use [Content Patcher](https://www.nexusmods.com/stardewvalley/mods/1915)
 to easily adjust any of the default graphics. This means if you want to make a farmer sprite
 overhaul mod, you can without changing any of the files, or just want to make it work
@@ -377,6 +379,15 @@ can then modify it using a Content Patcher mod like below;
 
 It follows `Target` being `Mods/ribeena.dynamicbodies/` followed by the name and folders.
 It's recommended you use the `HasMod` condition to make the mod only apply when needed.
+
+#### Maps
+You can use the config settings to set "adjustmaps" to "false" - this will stop the mod
+from adding graphics and access points to the new menus. To add them to a custom map
+you will need to use Content Patcher and the following actions;
+*   DynamicBodies:Doctors
+*   DynamicBodies:Haley
+*   DynamicBodies:Leah
+*   DynamicBodies:Pam
 
 ### Translations
 There are no translations, however Dynamic Bodies is set up for translations - use the [default.json](../i18n/default.json)

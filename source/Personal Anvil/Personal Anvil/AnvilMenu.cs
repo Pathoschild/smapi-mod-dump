@@ -21,8 +21,8 @@ namespace PersonalAnvil
     {
         public const int region_geodeSpot = 998;
         private readonly AnimatedSprite clint;
-        private readonly IModContentHelper content;
-        private readonly List<TemporaryAnimatedSprite> fluffSprites = new List<TemporaryAnimatedSprite>();
+        private readonly IModHelper content;
+        private readonly List<TemporaryAnimatedSprite> fluffSprites = new();
         private int alertTimer;
         private float delayBeforeShowArtifactTimer;
         public int geodeAnimationTimer;
@@ -34,7 +34,7 @@ namespace PersonalAnvil
         private bool waitingForServerResponse;
         private int yPositionOfGem;
 
-        public WorkbenchGeodeMenu(IModContentHelper content) : base(null, true, true, 12, 132)
+        public WorkbenchGeodeMenu(IModHelper content) : base(null, true, true, 12, 132)
         {
             this.content = content;
             if (yPositionOnScreen == borderWidth + spaceToClearTopBorder)
@@ -43,7 +43,7 @@ namespace PersonalAnvil
             geodeSpot = new ClickableComponent(
                 new Rectangle(xPositionOnScreen + spaceToClearSideBorder + borderWidth / 2,
                     yPositionOnScreen + spaceToClearTopBorder + 4, 560, 308), "") { myID = 998, downNeighborID = 0 };
-            clint = new AnimatedSprite(content.GetInternalAssetName("assets/Empty.png").ToString(), 8, 32, 48);
+            clint = new AnimatedSprite(content.ModContent.GetInternalAssetName("assets/Empty.png").ToString(), 8, 32, 48);
             if (inventory.inventory != null && inventory.inventory.Count >= 12)
                 for (var index = 0; index < 12; ++index)
                     if (inventory.inventory[index] != null)
@@ -85,12 +85,12 @@ namespace PersonalAnvil
             Game1.playSound("stoneStep");
             clint.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
             {
-                new FarmerSprite.AnimationFrame(8, 24),
-                new FarmerSprite.AnimationFrame(9, 24),
-                new FarmerSprite.AnimationFrame(10, 24),
-                new FarmerSprite.AnimationFrame(11, 24),
-                new FarmerSprite.AnimationFrame(12, 24),
-                new FarmerSprite.AnimationFrame(8, 24)
+                new(8, 24),
+                new(9, 24),
+                new(10, 24),
+                new(11, 24),
+                new(12, 24),
+                new(8, 24)
             });
             clint.loop = false;
         }
@@ -107,7 +107,7 @@ namespace PersonalAnvil
             if (Game1.player.freeSpotsInInventory() > 1 ||
                 (Game1.player.freeSpotsInInventory() == 1 && heldItem.Stack == 1))
             {
-                if (heldItem.QualifiedItemID == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked.Value)
+                if (heldItem.ParentSheetIndex == 791 && !Game1.netWorldState.Value.GoldenCoconutCracked.Value)
                 {
                     waitingForServerResponse = true;
                     Game1.player.team.goldenCoconutMutex.RequestLock(() =>
@@ -171,7 +171,7 @@ namespace PersonalAnvil
             {
                 geodeDestructionAnimation = null;
                 geodeSpot.item = null;
-                if (geodeTreasure != null && geodeTreasure.QualifiedItemID == "(O)128")
+                if (geodeTreasure != null && Utility.IsNormalObjectAtParentSheetIndex(geodeTreasure, 73))
                     Game1.netWorldState.Value.GoldenCoconutCracked.Value = true;
                 Game1.player.addItemToInventoryBool(geodeTreasure);
                 geodeTreasure = null;
@@ -185,7 +185,7 @@ namespace PersonalAnvil
                 clint.animateOnce(time);
                 if (clint.currentFrame == 11 && currentFrame != 11)
                 {
-                    if (geodeSpot.item != null && geodeSpot.item.QualifiedItemID == "(O)275")
+                    if (geodeSpot.item != null && geodeSpot.item.ParentSheetIndex == 275)
                     {
                         Game1.playSound("hammer");
                         Game1.playSound("woodWhack");
@@ -200,21 +200,22 @@ namespace PersonalAnvil
                     var y = 448;
                     if (geodeSpot.item != null)
                     {
-                        var qualifiedItemId = geodeSpot.item.QualifiedItemID;
-                        if (!(qualifiedItemId == "(O)536"))
-                        {
-                            if (qualifiedItemId == "(O)537")
-                                y += 128;
-                        }
-                        else
-                        {
-                            y += 64;
-                        }
+                        var parentSheetIndex = (geodeSpot.item as Object)?.ParentSheetIndex;
+                        if (parentSheetIndex != null)
+                            switch ((int)parentSheetIndex)
+                            {
+                                case 536:
+                                    y += 64;
+                                    break;
+                                case 537:
+                                    y += 128;
+                                    break;
+                            }
 
                         geodeDestructionAnimation = new TemporaryAnimatedSprite("TileSheets\\animations",
                             new Rectangle(0, y, 64, 64), 100f, 8, 0,
                             new Vector2(geodeSpot.bounds.X + 392 - 32, geodeSpot.bounds.Y + 192 - 32), false, false);
-                        if (geodeSpot.item?.QualifiedItemID == "(O)275")
+                        if (geodeSpot.item != null && geodeSpot.item.ParentSheetIndex == 275)
                         {
                             geodeDestructionAnimation = new TemporaryAnimatedSprite
                             {
@@ -279,17 +280,18 @@ namespace PersonalAnvil
                             geodeTreasure = Utility.getTreasureFromGeode(geodeSpot.item);
                         }
 
-                        if (geodeSpot.item?.QualifiedItemID != "(O)275" &&
-                            (!(geodeTreasure is Object) || !(geodeTreasure as Object).Type.Contains("Mineral")) &&
-                            geodeTreasure is Object && (geodeTreasure as Object).Type.Contains("Arch") &&
-                            !Game1.player.hasOrWillReceiveMail("artifactFound"))
-                            geodeTreasure = new Object(390, 5);
+                        if (geodeSpot.item.ParentSheetIndex != 275 &&
+                            (!(geodeTreasure is Object) || !((Object)geodeTreasure).Type.Contains("Mineral")) &&
+                            geodeTreasure is Object && ((Object)geodeTreasure).Type.Contains("Arch") &&
+                            !Game1.player.hasOrWillReceiveMail("artifactFound")) geodeTreasure = new Object(390, 5);
                     }
                 }
 
                 if (geodeDestructionAnimation != null &&
-                    ((geodeDestructionAnimation.id != 777.0 && geodeDestructionAnimation.currentParentTileIndex < 7) ||
-                     (geodeDestructionAnimation.id == 777.0 && geodeDestructionAnimation.currentParentTileIndex < 5)))
+                    ((geodeDestructionAnimation.id != 777f &&
+                      geodeDestructionAnimation.currentParentTileIndex < 7) ||
+                     (geodeDestructionAnimation.id == 777f &&
+                      geodeDestructionAnimation.currentParentTileIndex < 5)))
                 {
                     geodeDestructionAnimation.update(time);
                     if (delayBeforeShowArtifactTimer > 0.0)
@@ -316,7 +318,7 @@ namespace PersonalAnvil
                         if ((geodeDestructionAnimation.currentParentTileIndex == 7 ||
                              (geodeDestructionAnimation.id == 777.0 &&
                               geodeDestructionAnimation.currentParentTileIndex == 5)) && (!(geodeTreasure is Object) ||
-                                (geodeTreasure as Object).Price > 75))
+                                ((Object)geodeTreasure).Price > 75))
                         {
                             sparkle = new TemporaryAnimatedSprite("TileSheets\\animations",
                                 new Rectangle(0, 640, 64, 64), 100f, 8, 0,
@@ -327,7 +329,7 @@ namespace PersonalAnvil
                         else if ((geodeDestructionAnimation.currentParentTileIndex == 7 ||
                                   (geodeDestructionAnimation.id == 777.0 &&
                                    geodeDestructionAnimation.currentParentTileIndex == 5)) && geodeTreasure is Object &&
-                                 (geodeTreasure as Object).Price <= 75)
+                                 ((Object)geodeTreasure).Price <= 75)
                         {
                             Game1.playSound("newArtifact");
                         }
@@ -360,13 +362,13 @@ namespace PersonalAnvil
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
             draw(b);
             Game1.dayTimeMoneyBox.drawMoneyBox(b);
-            b.Draw(content.Load<Texture2D>("assets/bgpatch.png"), new Vector2(geodeSpot.bounds.X, geodeSpot.bounds.Y),
+            b.Draw(content.ModContent.Load<Texture2D>("assets/bgpatch.png"), new Vector2(geodeSpot.bounds.X, geodeSpot.bounds.Y),
                 new Rectangle(0, 0, 140, 78), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.87f);
             if (geodeSpot.item != null)
             {
                 if (geodeDestructionAnimation == null)
                 {
-                    var flag = geodeSpot.item.QualifiedItemID == "(O)275";
+                    var flag = geodeSpot.item.ParentSheetIndex == 275;
                     geodeSpot.item.drawInMenu(b,
                         new Vector2(geodeSpot.bounds.X + 360 + (flag ? -8 : 0),
                             geodeSpot.bounds.Y + 160 + (flag ? 8 : 0)), 1f);

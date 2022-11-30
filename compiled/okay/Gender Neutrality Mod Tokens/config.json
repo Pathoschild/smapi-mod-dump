@@ -1,0 +1,19 @@
+{
+  "Singular": "true",
+  "SingularBool": true,
+  "SubjectivePronoun": "They",
+  "ObjectivePronoun": "Them",
+  "PosessivePronoun": "Their",
+  "Title": "Mx.",
+  "Adjective": "Gorgeous",
+  "SpouseNoun": "Partner",
+  "GenericNoun": "Person",
+  "AdultAntiquatedNoun": "Folk",
+  "AdultFamilialNoun": "Kid",
+  "ElderAntiquatedNoun": "Kid",
+  "ElderInformalNoun": "Kid",
+  "ElderFamilialNoun": "Child",
+  "ChildFamilialNoun": "Cousin",
+  "ServiceFormalNoun": "Esteemed Patron",
+  "TraderNoun": "Traveller"
+}

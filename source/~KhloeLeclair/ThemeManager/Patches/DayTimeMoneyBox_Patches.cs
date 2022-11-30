@@ -35,13 +35,6 @@ internal static class DayTimeMoneyBox_Patches {
 
 		try {
 			mod.Harmony!.Patch(
-				original: AccessTools.Method(typeof(DayTimeMoneyBox), nameof(DayTimeMoneyBox.draw), new Type[] {
-					typeof(SpriteBatch)
-				}),
-				transpiler: new HarmonyMethod(typeof(DayTimeMoneyBox_Patches), nameof(Draw_Transpiler))
-			);
-
-			mod.Harmony!.Patch(
 				original: AccessTools.Method(typeof(DayTimeMoneyBox), "updatePosition"),
 				prefix: new HarmonyMethod(
 					typeof(DayTimeMoneyBox_Patches),
@@ -52,14 +45,6 @@ internal static class DayTimeMoneyBox_Patches {
 		} catch (Exception ex) {
 			mod.Log("Unable to apply DayTimeMoneyBox patches due to error.", LogLevel.Error, ex);
 		}
-	}
-
-	public static Color GetTextColor() {
-		return Mod?.BaseTheme?.DayTimeTextColor ?? Game1.textColor;
-	}
-
-	public static Color GetAfterMidnightColor() {
-		return Mod?.BaseTheme?.DayTimeAfterMidnightColor ?? Mod?.BaseTheme?.ErrorTextColor ?? Color.Red;
 	}
 
 	static bool UpdatePosition_Prefix(DayTimeMoneyBox __instance) {
@@ -140,19 +125,6 @@ internal static class DayTimeMoneyBox_Patches {
 		}
 
 		return true;
-	}
-
-	static IEnumerable<CodeInstruction> Draw_Transpiler(IEnumerable<CodeInstruction> instructions) {
-		return PatchUtils.ReplaceColors(
-			instructions: instructions,
-			type: typeof(DayTimeMoneyBox_Patches),
-			replacements: new Dictionary<string, string> {
-				{ nameof(Color.Red), nameof(GetAfterMidnightColor) }
-			},
-			fieldReplacements: new Dictionary<string, string> {
-				{ nameof(Game1.textColor), nameof(GetTextColor) }
-			}.HydrateFieldKeys(typeof(Game1)).HydrateMethodValues(typeof(DayTimeMoneyBox_Patches))
-		);
 	}
 
 }

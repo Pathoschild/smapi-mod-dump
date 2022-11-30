@@ -6,12 +6,12 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit b6d582ccd8fcfb4afe84bb2fc38e1b1b9c7380a7
-   Merge: 00e3b6c 3360ca6
+   commit 5faed364de72e5b4b36b7aee2fefdd4245b9cfc6
+   Merge: 2ada02f 17d2bbe
    Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Sun Oct 16 23:19:17 2022 +0200
+   Date:   Mon Nov 28 10:32:19 2022 +0100
    
-       Merge pull request #234 from tqdv/fix-item-tooltip-zoom
+       Merge pull request #261 from Annosz/secondary-setting-toggle
        
-       Display the tooltip correctly for the zoom level
+       Changing a secondary setting also toggles recalculation
    

@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Mining-2-Seed Processor",
+  "Description": "Convert minerals, ore, and monster loot into farmable seeds!",
+  "Price": 100,
+  "ProvidesLight": true,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 390, //stone
+        "Count": 25
+      },
+      {
+        "Object": 382, //coal
+        "Count": 5
+      },
+      {
+        "Object": 378, //copper ore
+        "Count": 10
+      }
+    ],
+    "IsDefault": true,
+    "CanPurchase": false
+  }
+}

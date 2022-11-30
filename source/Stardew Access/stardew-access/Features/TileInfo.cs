@@ -50,6 +50,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             var terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
+            string? warp = getWarpPointAtTile(x, y);
             (CATEGORY? category, string? name) dynamicTile = getDynamicTilesInfo(x, y, lessInfo);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y, lessInfo);
@@ -123,6 +124,11 @@ namespace stardew_access.Features
                 toReturn = bush;
                 category = CATEGORY.Bush;
             }
+            else if (warp != null)
+            {
+                toReturn = warp;
+                category = CATEGORY.Doors;
+            }
             else if (door != null)
             {
                 toReturn = door;
@@ -160,22 +166,34 @@ namespace stardew_access.Features
             }
 
             #region Track dropped items
-            NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
-            if (droppedItems.Count() > 0)
+            if (MainClass.Config.TrackDroppedItems)
             {
-                foreach (var item in droppedItems)
+                try
                 {
-                    int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
-                    int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
-                    if (xPos != x || yPos != y) continue;
+                    NetCollection<Debris> droppedItems = Game1.currentLocation.debris;
+                    if (droppedItems.Count() > 0)
+                    {
+                        foreach (var item in droppedItems)
+                        {
+                            int xPos = ((int)item.Chunks[0].position.Value.X / Game1.tileSize) + 1;
+                            int yPos = ((int)item.Chunks[0].position.Value.Y / Game1.tileSize) + 1;
+                            if (xPos != x || yPos != y) continue;
 
-                    string name = item.item.DisplayName;
-                    int count = item.item.Stack;
+                            if (item.item == null) continue;
 
-                    if (toReturn == "")
-                        return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
-                    else
-                        toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                            string name = item.item.DisplayName;
+                            int count = item.item.Stack;
+
+                            if (toReturn == "")
+                                return ($"Dropped Item: {count} {name}", CATEGORY.DroppedItems);
+                            else
+                                toReturn = $"{toReturn}, Dropped Item: {count} {name}";
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MainClass.ErrorLog($"An error occured while detecting dropped items:\n{e.Message}");
                 }
             }
             #endregion
@@ -278,6 +296,9 @@ namespace stardew_access.Features
         {
             Rectangle rect = new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62);
 
+            // Check whether the position is a warp point, if so then return false, sometimes warp points are 1 tile off the map for example in coops and barns
+            if (isWarpPointAtTile(x, y)) return false;
+
             if (Game1.currentLocation.isCollidingPosition(rect, Game1.viewport, true, 0, glider: false, Game1.player, pathfinding: true))
             {
                 return true;
@@ -285,6 +306,18 @@ namespace stardew_access.Features
 
             if (Game1.currentLocation is Woods && getStumpsInWoods(x, y) != null)
                 return true;
+
+            return false;
+        }
+
+        public static Boolean isWarpPointAtTile(int x, int y)
+        {
+            if (Game1.currentLocation == null) return false;
+
+            foreach (Warp warpPoint in Game1.currentLocation.warps)
+            {
+                if (warpPoint.X == x && warpPoint.Y == y) return true;
+            }
 
             return false;
         }
@@ -431,9 +464,7 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is FarmHouse farmHouse)
             {
-                if (farmHouse.getEntryLocation().X == x && farmHouse.getEntryLocation().Y == y)
-                    return (CATEGORY.Doors, "Exit");
-                else if (farmHouse.upgradeLevel >= 1)
+                if (farmHouse.upgradeLevel >= 1)
                     if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y) // Standing spot is where the player will stand
                         return (CATEGORY.Interactables, "Kitchen");
                     else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
@@ -441,9 +472,7 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
             {
-                if (x == 14 && y == 17)
-                    return (CATEGORY.Doors, "Exit");
-                else if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
+                if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
                     return (CATEGORY.Interactables, "Kitchen");
                 else if (islandFarmHouse.fridgePosition.X == x && islandFarmHouse.fridgePosition.Y == y)
                     return (CATEGORY.Interactables, "Fridge");
@@ -1167,6 +1196,27 @@ namespace stardew_access.Features
             catch (Exception) { }
 
             return false;
+        }
+
+        public static string? getWarpPointAtTile(int x, int y)
+        {
+            try
+            {
+                if (Game1.currentLocation == null) return null;
+
+                foreach (Warp warpPoint in Game1.currentLocation.warps)
+                {
+                    if (warpPoint.X != x || warpPoint.Y != y) continue;
+
+                    return $"{warpPoint.TargetName} Entrance";
+                }
+            }
+            catch (Exception e)
+            {
+                MainClass.ErrorLog($"Error while detecting warp points.\n{e.Message}");
+            }
+
+            return null;
         }
 
         public static string? getDoorAtTile(int x, int y)

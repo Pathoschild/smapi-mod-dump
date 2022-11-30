@@ -6,10 +6,9 @@ mods:
    Gender Setter
 
 latest commit:
-   commit e4fc03dca4537f39408cde44fb1cdf59e8b3553e
-   Merge: c697829 02b9409
+   commit 0b16232aa3695e3e2a37714a051ef74ca5da2185
    Author: sqbr <sqbr@users.noreply.github.com>
-   Date:   Sat Oct 15 17:13:10 2022 +0800
+   Date:   Sun Oct 30 23:25:41 2022 +0800
    
-       Merge branch 'master' of https://github.com/sqbr/GetGS
+       Fixed 'Them'
    

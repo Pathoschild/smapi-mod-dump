@@ -22,6 +22,12 @@
     "config.overlay.background-color.desc": "Background color of the overlay",
     "config.overlay.text-color": "Text Color",
     "config.overlay.text-color.desc": "Color of the item text in the overlay",
+    "config.overlay.zoom": "Zoom size with",
+    "config.overlay.zoom.desc": "Choose which of the game's zoom options controls the size of the overlay",
+    "config.overlay.x-offset": "X Offset",
+    "config.overlay.x-offset.desc": "X Offset of the overlay in pixels from the left edge of the screen",
+    "config.overlay.y-offset": "Y Offset",
+    "config.overlay.y-offset.desc": "Y Offset of the overlay in pixels from the top edge of the screen",
 
     // Overlay
     "overlay.header": "To-Dew List",

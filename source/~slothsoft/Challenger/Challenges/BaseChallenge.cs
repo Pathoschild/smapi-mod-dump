@@ -8,10 +8,14 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using Slothsoft.Challenger.Api;
+using Slothsoft.Challenger.Common;
 using Slothsoft.Challenger.Goals;
 using Slothsoft.Challenger.Models;
+using Slothsoft.Challenger.Objects;
+using StardewModdingAPI.Events;
 
 namespace Slothsoft.Challenger.Challenges;
 
@@ -19,15 +23,30 @@ public abstract class BaseChallenge : IChallenge {
 
     private IRestriction[]? _restrictions;
     private IGoal? _goal;
+    private ChallengeInfo? _info;
+    private Difficulty? _currentDifficulty;
 
     protected BaseChallenge(IModHelper modHelper, string id) {
         ModHelper = modHelper;
         Id = id;
     }
+    
     public string Id { get; }
     protected IModHelper ModHelper { get; }
     public string DisplayName => ModHelper.Translation.Get(GetType().Name);
+    internal event EventHandler<EventArgs>? ProgressChanged;
+    
+    protected virtual ChallengeInfo ChallengeInfo {
+        get {
+            _info ??= Game1.netWorldState.Value.GetChallengerState().ChallengeInfos.GetOrRead(Id) ?? new ChallengeInfo();
+            return _info;
+        }
+    }
 
+    internal void ProgressChangedInvoked() {
+        ProgressChanged?.Invoke(this, EventArgs.Empty);
+    }
+    
     public virtual string GetDisplayText(Difficulty difficulty) {
         var result = "";
         foreach (var restriction in CreateRestrictions(ModHelper, difficulty)) {
@@ -65,12 +84,16 @@ public abstract class BaseChallenge : IChallenge {
         return "";
     }
 
-    public void Start(Difficulty difficulty) {
+    public virtual void Start(Difficulty difficulty) {
+        _currentDifficulty = difficulty;
+        
         foreach (var restriction in GetOrCreateRestrictions(difficulty)) {
             restriction.Apply();
         }
-
+        
         GetGoal().Start();
+        ModHelper.Events.GameLoop.DayEnding += OnDayEnding;
+        ProgressChanged += OnProgressChanged;
     }
 
     private IEnumerable<IRestriction> GetOrCreateRestrictions(Difficulty difficulty) {
@@ -80,7 +103,38 @@ public abstract class BaseChallenge : IChallenge {
 
     protected abstract IRestriction[] CreateRestrictions(IModHelper modHelper, Difficulty difficulty);
 
-    public void Stop() {
+    private void OnDayEnding(object? sender, DayEndingEventArgs e) {
+        // only when you get to the end of the day the challenge will start - so
+        // you can switch it during the day or check other challenges etc.
+        if (ChallengeInfo.StartedOn < 0) {
+            ChallengeInfo.StartedOn = new WorldDate(Game1.year, Game1.currentSeason, Game1.dayOfMonth).TotalDays;
+            Game1.netWorldState.Value.GetChallengerState().ChallengeInfos.Write(Id, ChallengeInfo);
+        }
+    }
+    
+    internal void OnProgressChanged(object? sender, EventArgs e) {
+        if (_currentDifficulty == null) return; // shouldn't happen
+        // check if we have now finished the the challenge
+        var currentDifficulty = (int) _currentDifficulty!.Value;
+        for (var difficulty = 0; difficulty <= currentDifficulty; difficulty++) {
+            if (GetGoal().IsCompleted((Difficulty) difficulty)) {
+                if (!ChallengeInfo.CompletedOn.ContainsKey(difficulty)) {
+                    // we have finished the challenge for the first time, so mark the day
+                    ChallengeInfo.SetCompletedOnDate((Difficulty) difficulty, new WorldDate(Game1.year, Game1.currentSeason, Game1.dayOfMonth));
+                    Game1.netWorldState.Value.GetChallengerState().ChallengeInfos.Write(Id, ChallengeInfo);
+                }
+                if (difficulty == currentDifficulty) {
+                    ProgressChanged -= OnProgressChanged;
+                }
+            }
+        }
+    }
+    
+    public virtual void Stop() {
+        ModHelper.Events.GameLoop.DayEnding -= OnDayEnding;
+        ProgressChanged -= OnProgressChanged;
+        GetGoal().Stop();
+        
         if (_restrictions != null) {
             foreach (var restriction in _restrictions) {
                 restriction.Remove();
@@ -88,6 +142,7 @@ public abstract class BaseChallenge : IChallenge {
 
             _restrictions = null;
         }
+        _currentDifficulty = null;
     }
 
     public virtual MagicalReplacement GetMagicalReplacement(Difficulty difficulty) {
@@ -112,10 +167,20 @@ public abstract class BaseChallenge : IChallenge {
     }
 
     public string GetProgress(Difficulty difficulty) {
+        var completedOnDate = ChallengeInfo.GetCompletedOnDate(difficulty);
+        if (completedOnDate != null) {
+            return ModHelper.Translation.Get("BaseChallenge.CompletedOn", new {
+                Date = completedOnDate.Localize(),
+            }).ToString();
+        }
         return GetGoal().GetProgress(difficulty);
     }
 
     public bool WasStarted() {
         return GetGoal().WasStarted();
+    }
+
+    public WorldDate? GetCompletedDate(Difficulty difficulty) {
+        return ChallengeInfo.GetCompletedOnDate(difficulty); 
     }
 }

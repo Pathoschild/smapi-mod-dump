@@ -1,0 +1,16 @@
+﻿{
+  "Name": "GNMTokens",
+  "Author": "Hana",
+  "Version": "1.0.0",
+  "Description": "<One or two sentences about the mod>",
+  "UniqueID": "Hana.GNMTokens",
+  "EntryDll": "GNMTokens.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

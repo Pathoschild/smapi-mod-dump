@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14570
+IDs: spacechase0.BackstoryQuestionsFramework
+update keys: Nexus:14570, GitHub:spacechase0/StardewValleyMods

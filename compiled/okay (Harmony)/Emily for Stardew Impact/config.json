@@ -1,0 +1,16 @@
+{
+  "ModEnabled": true,
+  "MaxSkillRange": 256,
+  "MaxBurstRange": 512,
+  "MaxSkillDistanceOffLookAxis": 64,
+  "MaxBurstDistanceOffLookAxis": 64,
+  "SkillRadius": 128,
+  "BurstRadius": 512,
+  "BurstPullSpeed": 128,
+  "SkillHits": 5,
+  "SkillSpeed": 1.0,
+  "BurstSpeed": 1.0,
+  "BurstEndRadius": 16,
+  "SkillDamageMult": 0.2,
+  "BurstDamageMult": 0.2
+}

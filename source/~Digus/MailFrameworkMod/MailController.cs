@@ -365,6 +365,11 @@ namespace MailFrameworkMod
                                 letterViewerMenu.letterTexture = letter.LetterTexture;
                             }
                             letterViewerMenu.TextColor = letter.TextColor;
+                            if (letter.UpperRightCloseButtonTexture != null &&
+                                letterViewerMenu.upperRightCloseButton != null)
+                            {
+                                letterViewerMenu.upperRightCloseButton = new ClickableTextureComponent(new Rectangle(letterViewerMenu.xPositionOnScreen + letterViewerMenu.width - 36, letterViewerMenu.yPositionOnScreen - 8, 48, 48), letter.UpperRightCloseButtonTexture, new Rectangle(0, 0, 12, 12), 4f, false);
+                            }
                             __instance.letterviewerSubMenu = letterViewerMenu;
                             return false;
                         }

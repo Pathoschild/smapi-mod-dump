@@ -4,6 +4,7 @@
   "ShowRowNumbers": true,
   "ShowArrows": true,
   "MinHandleHeight": 16,
+  "ShiftRows": 3,
   "HandleColor": {
     "B": 32,
     "G": 84,

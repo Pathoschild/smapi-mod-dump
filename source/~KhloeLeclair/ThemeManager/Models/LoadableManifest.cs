@@ -28,4 +28,5 @@ internal class LoadableManifest {
 	public string? FallbackTheme { get; set; }
 	public string? AssetPrefix { get; set; } = "assets";
 	public bool? OverrideRedirection { get; set; }
+	public bool NonSelectable { get; set; }
 }

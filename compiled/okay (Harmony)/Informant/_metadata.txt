@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14293
+IDs: Slothsoft.Informant
+update keys: Nexus:14293, GitHub:slothsoft/stardew-informant

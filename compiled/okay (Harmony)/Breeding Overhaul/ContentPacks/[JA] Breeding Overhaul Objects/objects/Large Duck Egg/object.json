@@ -1,0 +1,15 @@
+{
+    "Name": "Large Duck Egg",
+    "Description": "An extra-large duck egg from a happy duck.",
+    "Category": "Egg",
+    "Edibility": 20,
+    "Price": 160,
+    "IsColored": false,
+    "GiftTastes":
+    {
+        "Like": ["Alex", "Demetrius", "Harvey", "Jodi", "Kent", "Leah", "Linus", "Marnie", "Pierre", "Sam", "Shane"],
+        "Neutral": ["Caroline", "Clint", "Elliot", "Emily", "Evelyn", "George", "Gus", "Krobus", "Lewis", "Maru", "Penny", "Robin", "Sandy", "Willy"],
+        "Dislike": ["Abigail", "Dwarf", "Haley", "Jas", "Pam", "Vincent", "Wizard"],
+        "Hate": ["Sebastian"]
+    },
+}

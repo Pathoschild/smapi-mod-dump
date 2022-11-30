@@ -88,7 +88,7 @@ namespace BetterElevator
 				case Keys.Enter:
 					if(levelToGoto > 0)
                     {
-						if (Game1.player.currentLocation is MineShaft && (Game1.player.currentLocation as MineShaft).getMineArea(-1) == 121)
+						if (IsSkullCave())
 							levelToGoto += 120;
 						Game1.player.currentLocation.playSound("stairsdown");
 						ModEntry.SMonitor.Log($"Entering mine level {levelToGoto}");
@@ -122,16 +122,29 @@ namespace BetterElevator
 				return;
 			string ls = (levelToGoto == 0 ? "" : levelToGoto.ToString())  + n;
 			int newLevel = int.Parse(ls);
-			if (!ModEntry.Config.Unrestricted && newLevel > MineShaft.lowestLevelReached)
+			if (IsSkullCave())
 			{
-				newLevel = MineShaft.lowestLevelReached;
-			}
-			if (newLevel > 120 && ((Game1.player.currentLocation is MineShaft && (Game1.player.currentLocation as MineShaft).getMineArea(-1) != 121) || Game1.player.currentLocation.Name == "Mine"))
-            {
-				newLevel = 120;
-			}
+				if (!ModEntry.Config.Unrestricted)
+				{
+                    newLevel = Math.Min(Math.Max(MineShaft.lowestLevelReached - 120, 0), newLevel);
+                }
+            }
+			else
+			{
+                if (!ModEntry.Config.Unrestricted)
+                {
+                    newLevel = Math.Min(Math.Min(MineShaft.lowestLevelReached, 120), newLevel);
+                }
+
+            }
 			levelToGoto = newLevel;
 		}
+
+		private bool IsSkullCave()
+		{
+			return ((Game1.player.currentLocation is MineShaft && (Game1.player.currentLocation as MineShaft).getMineArea(-1) == 121) || Game1.player.currentLocation.Name == "SkullCave");
+
+        }
 
 		public override void receiveRightClick(int x, int y, bool playSound = true)
 		{
@@ -144,22 +157,17 @@ namespace BetterElevator
 			b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
 			Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen - 64 + 8, width + 21, height + 64, false, true, null, false, true, -1, -1, -1);
 			base.draw(b);
-			int lowestLevel = MineShaft.lowestLevelReached;
-			if (Game1.player.currentLocation is MineShaft && (Game1.player.currentLocation as MineShaft).getMineArea(-1) == 121)
-			{
-				lowestLevel -= 120;
-			}
-			else if(Game1.player.currentLocation.Name == "SkullCave")
-            {
-				if(lowestLevel <= 120)
-					lowestLevel = 0;
+
+            int lowestLevel = MineShaft.lowestLevelReached;
+            if (IsSkullCave()) { 
+				lowestLevel = Math.Max(0, lowestLevel - 120);
             }
             else
             {
-				lowestLevel = Math.Min(120, lowestLevel);
+                lowestLevel = Math.Min(120, lowestLevel);
             }
 
-			string level = (levelToGoto > 0 ?  level = levelToGoto.ToString() : "");
+            string level = (levelToGoto > 0 ?  levelToGoto.ToString() : "");
 			
 			int blinkRate = 16;
 			drawTicks++;

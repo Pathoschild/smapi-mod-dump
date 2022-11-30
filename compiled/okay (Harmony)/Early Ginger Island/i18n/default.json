@@ -13,5 +13,5 @@
   "config.unlockConditions.heartsWithWilly.name": "Hearts with Willy",
   "config.unlockConditions.heartsWithWilly.tooltip": "The minimum amount of hearts any player needs with Willy for this unlock.",
   "config.unlockConditions.date.name": "Earliest date",
-  "config.unlockConditions.date.tooltip": "The earliest date for this condition.\n\"anytime\": Satisfied right away.\n\"year 2\": Starting from Spring 1, Year 2.\n\"winter year 1\": Starting from Winter 1, Year 1.\n\"summer 15 year 2\": Starting from Summer 15, Year 2."
+  "config.unlockConditions.date.tooltip": "The earliest date for this condition.\n\"year 2\": Starting from Spring 1, Year 2.\n\"winter year 1\": Starting from Winter 1, Year 1.\n\"summer 15 year 2\": Starting from Summer 15, Year 2."
 }

@@ -19,6 +19,7 @@
   "Difficulty.Hard": "Hard",
   
   "BaseChallenge.MagicalObject": "You get the object \"{{item}}\"",
+  "BaseChallenge.CompletedOn": "Completed on {{Date}}",
   
   "NoChallenge": "(no challenge)",
   "NoChallenge.DisplayText": "No restrictions of any kind.",
@@ -69,5 +70,8 @@
   
   "ShopIds.SeedShop": "Pierre",
   "ShopIds.Blacksmith": "Clint",
-  "ShopIds.JojaMart": "Joja Mart"
+  "ShopIds.JojaMart": "Joja Mart",
+
+  "HookToInformant.DisplayName": "Challenger-Dekoration",
+  "HookToInformant.Description": "Markiert Gegenstände, die für das Ziel der Herausforderung gebraucht werden"
 }

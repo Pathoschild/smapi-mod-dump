@@ -7,11 +7,9 @@ mods:
    Profiler
 
 latest commit:
-   commit c347fdfed87fe2ee0419d82fb60beef72309af41
+   commit fdb580422ee39adaf0326a79f000e1b4be7bb4be
    Author: SinZ <github@361zn.is>
-   Date:   Fri Jul 1 13:38:29 2022 +1000
+   Date:   Wed Nov 23 20:36:21 2022 +1100
    
-       Switch to a TimeElapsed model of tracking OccuredAt to save on filesize
-       
-       Also change config to be able to throttle inner and outer logs, removing the hardcoded filter on certain event types
+       Switch to logging as SMAPI Traces
    

@@ -26,6 +26,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
 using Leclair.Stardew.Almanac.Pages;
@@ -305,10 +306,28 @@ public class AlmanacMenu : IClickableMenu {
 		Date = new(Year, WeatherHelper.GetSeasonName(newSeason), newDay);
 
 		foreach (IAlmanacPage page in Pages)
-			page?.DateChanged(oldDate, Date);
+			try {
+				page?.DateChanged(oldDate, Date);
+			} catch(Exception ex) {
+				Mod.Log($"An error occurred while changing the date of a page.", LogLevel.Error, ex);
+				if (page == CurrentPage)
+					SetErrorState();
+			}
 
 		//CurrentPage?.DateChanged(oldDate, Date);
 		return true;
+	}
+
+	public void SetErrorState() {
+		SetLeftFlow(null);
+		SetRightFlow(FlowHelper.Builder()
+			.Texture(Game1.mouseCursors, new Rectangle(268, 470, 16, 16), 3f, align: Alignment.Center | Alignment.Middle)
+			.Text(" ")
+			.FormatText(I18n.Page_Error(), font: Game1.dialogueFont, align: Alignment.Middle)
+			.Text("\n\n")
+			.FormatText(I18n.Page_Error_Desc())
+			.Build()
+		);
 	}
 
 
@@ -408,7 +427,12 @@ public class AlmanacMenu : IClickableMenu {
 		if (PageIndex == index)
 			return false;
 
-		CurrentPage?.Deactivate();
+		try {
+			CurrentPage?.Deactivate();
+		} catch(Exception ex) {
+			Mod.Log($"An error occurred while deactivating an Almanac page.", LogLevel.Error, ex);
+		}
+
 		PageComponents = null;
 		SetLeftFlow(null);
 		SetRightFlow(null);
@@ -432,7 +456,13 @@ public class AlmanacMenu : IClickableMenu {
 				break;
 		}
 
-		CurrentPage?.Activate();
+		try {
+			CurrentPage?.Activate();
+		} catch(Exception ex) {
+			Mod.Log($"An error occurred while activating an Almanac page.", LogLevel.Error, ex);
+			SetErrorState();
+		}
+
 		Recenter();
 		UpdateScrollComponents();
 
@@ -588,8 +618,13 @@ public class AlmanacMenu : IClickableMenu {
 
 		UpdateTabs();
 		UpdateCalendarComponents();
-		CurrentPage?.UpdateComponents();
-		PageComponents = CurrentPage?.GetComponents();
+		try {
+			CurrentPage?.UpdateComponents();
+			PageComponents = CurrentPage?.GetComponents();
+		} catch(Exception ex) {
+			Mod.Log($"An error occurred while updating a page's components.", LogLevel.Error, ex);
+			PageComponents = null;
+		}
 		populateClickableComponentList();
 	}
 

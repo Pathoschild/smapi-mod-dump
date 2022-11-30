@@ -17,6 +17,12 @@
 
 [size=6]Versions[/size]
 
+[size=5]1.0.0[/size]
+
+[list=1]
+[*] makes the mod feature-complete
+[/list]
+
 [size=5]0.5.0[/size]
 
 [list=1]

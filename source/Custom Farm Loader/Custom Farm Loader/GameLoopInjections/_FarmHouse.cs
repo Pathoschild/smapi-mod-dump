@@ -47,23 +47,29 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         public static void FarmHouse_Postfix(FarmHouse __instance, string m, string name)
         {
+            fixBrokenTVs(__instance);
             if (!CustomFarm.IsCFLMapSelected())
                 return;
 
             loadStartFurniture(__instance);
         }
 
+        private static void fixBrokenTVs(FarmHouse __instance)
+        {
+            for (int i = 0; i < __instance.furniture.Count; i++) {
+                var furniture = __instance.furniture[i];
+
+                if (Furniture.TvIds.Exists(e => e == furniture.ParentSheetIndex.ToString()) && furniture.GetType().Name != "TV")
+                    __instance.furniture[i] = new StardewValley.Objects.TV(furniture.ParentSheetIndex, furniture.TileLocation);
+            }
+        }
+
         private static void loadStartFurniture(FarmHouse __instance)
         {
-            if (!CustomFarm.IsCFLMapSelected())
-                return;
-
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
 
-            foreach (Furniture furniture in customFarm.StartFurniture)
-            {
-                switch (furniture.Type)
-                {
+            foreach (Furniture furniture in customFarm.StartFurniture) {
+                switch (furniture.Type) {
                     case FurnitureType.Wallpaper:
                         __instance.SetWallpaper(furniture.ID, "Bedroom");
                         break;
@@ -73,10 +79,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
                     case FurnitureType.Furniture:
                         if (Furniture.TvIds.Exists(e => e == furniture.ID))
                             __instance.furniture.Add(new StardewValley.Objects.TV(int.Parse(furniture.ID), furniture.Position));
-                        else if(Furniture.BedIds.Exists( e=> e == furniture.ID))
+                        else if (Furniture.BedIds.Exists(e => e == furniture.ID))
                             __instance.furniture.Add(new StardewValley.Objects.BedFurniture(int.Parse(furniture.ID), furniture.Position));
-                        else
-                        {
+                        else {
                             __instance.furniture.Add(new StardewValley.Objects.Furniture(int.Parse(furniture.ID), furniture.Position, furniture.Rotations));
                             if (furniture.heldObject != null)
                                 __instance.furniture.Last().heldObject.Value

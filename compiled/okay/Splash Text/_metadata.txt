@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14416
+IDs: sophie.SplashText
+update keys: Nexus:14416, GitHub:sophiesalacia/StardewMods

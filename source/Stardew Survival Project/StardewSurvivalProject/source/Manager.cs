@@ -197,7 +197,13 @@ namespace StardewSurvivalProject.source
 
         public void onDayEnding()
         {
-            //clear all buff on day ending (bug-free?)
+            //specifically remove refreshing buff to prevent permanent stamina increase
+            if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.refreshingEffectIndex))
+            {
+                Game1.buffsDisplay.removeOtherBuff(effects.EffectManager.refreshingEffectIndex);
+            }
+
+            //clear all buff on day ending (bug-free?) - not bug-free, funky stuff happen with max stamina buff
             Game1.buffsDisplay.clearAllBuffs();
 
             if (player == null) return;

@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Slothsoft.Challenger.Api;
-using Slothsoft.Challenger.Models;
+using Slothsoft.Challenger.Common;
 
 // ReSharper disable InconsistentNaming
 

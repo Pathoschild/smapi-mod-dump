@@ -13,8 +13,8 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Slothsoft.Challenger.Api;
+using Slothsoft.Challenger.Common;
 using Slothsoft.Challenger.Menus;
-using Slothsoft.Challenger.Models;
 using StardewModdingAPI.Events;
 
 // ReSharper disable InconsistentNaming
