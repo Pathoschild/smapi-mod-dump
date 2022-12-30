@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewModdingAPI;
 using StardewValley.BellsAndWhistles;
+using System.Globalization;
 
 #if HARMONY
 using HarmonyLib;
@@ -26,7 +27,7 @@ using HarmonyLib;
 namespace Leclair.Stardew.Common;
 
 #if HARMONY
-internal static class SpriteText_Patches {
+internal static class Common_SpriteText_Patches {
 
 	private static IMonitor? Monitor;
 
@@ -35,7 +36,7 @@ internal static class SpriteText_Patches {
 
 		harmony.Patch(
 			original: AccessTools.Method(typeof(SpriteText), nameof(SpriteText.getColorFromIndex)),
-			prefix: new HarmonyMethod(typeof(SpriteText_Patches), nameof(getColorFromIndex__Prefix))
+			prefix: new HarmonyMethod(typeof(Common_SpriteText_Patches), nameof(getColorFromIndex__Prefix))
 		);
 	}
 

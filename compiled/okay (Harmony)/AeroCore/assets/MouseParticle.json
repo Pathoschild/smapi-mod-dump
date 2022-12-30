@@ -1,0 +1,16 @@
+﻿{
+	"Behavior": "simple",
+	"BehaviorSettings": {
+		"MaxSpeed": 32,
+		"MaxCurve": 45
+	},
+	"Skin": "Simple",
+	"SkinSettings": {
+		"Texture": "LooseSprites/Cursors",
+		"Region": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+		"MinScale": 4,
+		"MaxScale": 4,
+		"Colors": ["white", "transparent"],
+		"ColorLoops": 10
+	}
+}

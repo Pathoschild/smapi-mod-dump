@@ -20,22 +20,13 @@ using System.Xml.Serialization;
 namespace RanchingToolUpgrades
 {
     [XmlType("Mods_drbirbdev_upgradeablepail")] // SpaceCore serialisation signature
-    public class UpgradeablePail : MilkPail, ICustomIcon
+    public class UpgradeablePail : MilkPail
     {
         public const int MaxUpgradeLevel = 4;
-
-        public Rectangle IconSource()
-        {
-            Rectangle source = new(0, 0, 16, 16);
-            source.Y += this.UpgradeLevel * source.Height;
-            return source;
-        }
 
         public UpgradeablePail() : base()
         {
             base.UpgradeLevel = 0;
-            base.InitialParentTileIndex = -1;
-            base.IndexOfMenuItemView = -1;
         }
 
         public UpgradeablePail(int upgradeLevel) : base()
@@ -43,6 +34,17 @@ namespace RanchingToolUpgrades
             base.UpgradeLevel = upgradeLevel;
             base.InitialParentTileIndex = -1;
             base.IndexOfMenuItemView = -1;
+        }
+
+        public override Item getOne()
+        {
+            UpgradeablePail result = new()
+            {
+                UpgradeLevel = base.UpgradeLevel
+            };
+            this.CopyEnchantments(this, result);
+            result._GetOneFrom(this);
+            return result;
         }
 
         public static bool CanBeUpgraded()
@@ -56,13 +58,20 @@ namespace RanchingToolUpgrades
             spriteBatch.Draw(
                 texture: ModEntry.Assets.Sprites,
                 position: location + new Vector2(32f, 32f),
-                sourceRectangle: this.IconSource(),
+                sourceRectangle: IconSourceRectangle(this.UpgradeLevel),
                 color: color * transparency,
                 rotation: 0f,
                 origin: new Vector2(8, 8),
                 scale: Game1.pixelZoom * scaleSize,
                 effects: SpriteEffects.None,
                 layerDepth: layerDepth);
+        }
+
+        public static Rectangle IconSourceRectangle(int upgradeLevel)
+        {
+            Rectangle source = new(0, 0, 16, 16);
+            source.Y += upgradeLevel * source.Height;
+            return source;
         }
 
         public override bool canBeTrashed()
@@ -99,6 +108,10 @@ namespace RanchingToolUpgrades
             {
                 int quantity = 1;
                 int upgradeLevel = who.getToolFromName("Pail").UpgradeLevel + 1;
+                if (who.getToolFromName("Pail") is not UpgradeablePail)
+                {
+                    upgradeLevel = 1;
+                }
                 int upgradePrice = ModEntry.Instance.Helper.Reflection.GetMethod(
                     typeof(Utility), "priceForToolUpgradeLevel")
                     .Invoke<int>(upgradeLevel);

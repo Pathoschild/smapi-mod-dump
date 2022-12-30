@@ -366,7 +366,7 @@ namespace SpritesInDetail
                             {
                                 ReplacedTexture replacement;
 
-                                if (info.Target.Contains("Farmer"))
+                                if (info.Target.Contains("farmer_") && info.HDTexture is not null)
                                 {
                                     replacement = new ReplacedTexture(asset.AsImage().Data, info.HDTexture, info, info.HDTexture.Width, info.HDTexture.Height);
                                     IAssetDataForImage assetImage = asset.AsImage();
@@ -519,22 +519,31 @@ namespace SpritesInDetail
                             updatedOrigin = new Vector2(16, 107);
                         }
                     } else if (r.Height == 24) {
-                        //Social Tab
                         updatedDestination = new Rectangle(destination.X, destination.Y - 80, (int)(a.HDTextureInfo.SpriteWidth * scale.X), (int)(a.HDTextureInfo.SpriteHeight * scale.Y)); ;
                         updatedSource = new Rectangle?(new Rectangle(0, 0, 64, 110));
-                        updatedOrigin = new Vector2(32, 55);
+                        if (origin.X == 8 && origin.Y == 12)
+                        {
+                            //Social Tab
+                            updatedOrigin = new Vector2(32, 55);
+                        } else
+                        {
+                            //Calendar
+                            updatedOrigin = new Vector2(16, 34);
+                        }
                     }
-                    spriteAlreadyDrawn = true;
-                    if (a.HDTextureInfo.IsFarmer)
-                    {
-                        __instance.Draw(a, updatedDestination, updatedSource, color, rotation, updatedOrigin, effects, layerDepth);
-                    } else
-                    {
-                        __instance.Draw(a.NewTexture, updatedDestination, updatedSource, color, rotation, updatedOrigin, effects, layerDepth);
-                    }
-                    spriteAlreadyDrawn = false;
-                    return false;
                 }
+
+                spriteAlreadyDrawn = true;
+                if (a.HDTextureInfo.IsFarmer)
+                {
+                    __instance.Draw(a, updatedDestination, updatedSource, color, rotation, updatedOrigin, effects, layerDepth);
+                }
+                else
+                {
+                    __instance.Draw(a.NewTexture, updatedDestination, updatedSource, color, rotation, updatedOrigin, effects, layerDepth);
+                }
+                spriteAlreadyDrawn = false;
+                return false;
             }
 
             return true;

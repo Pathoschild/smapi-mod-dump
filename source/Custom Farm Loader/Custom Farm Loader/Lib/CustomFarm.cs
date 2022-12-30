@@ -143,6 +143,7 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "worldmapoverlay":
                             customFarm.WorldMapOverlayValue = value;
+                            customFarm.WorldMapOverlay = customFarm.loadWorldMapTexture();
                             break;
                         case "warps":
                             customFarm.Warps = parseWarps(n);

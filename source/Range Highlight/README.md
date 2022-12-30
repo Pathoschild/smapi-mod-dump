@@ -76,7 +76,7 @@ Follow the usual installation proceedure for SMAPI mods:
 ### Configuration
 
 Starting in version 3.1, the configuration setting described below are also available
-via in-game (title screen only) via the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
+via in-game via the [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 and [GMCM Options](https://www.nexusmods.com/stardewvalley/mods/10505) mods.
 
 When SMAPI runs the mod for the first time it will create a `config.json`
@@ -115,7 +115,7 @@ It then uses this API to add highlights as described above.  The API includes
 functions to:
 * Describe common highlight shapes
 * Get the tint colors configured for this mod
-* Add highlighters based on `Building` object or item name
+* Add highlighters for Buildings, Items, and TemporaryAnimatedSprites
 
 For the full API, see [`IRangeHighlightAPI.cs`](https://github.com/jltaylor-us/StardewRangeHighlight/blob/default/RangeHighlight/IRangeHighlightAPI.cs).
 
@@ -123,6 +123,3 @@ For general information on how to use another mod's API in your mod,
 see the [Mod Integration](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations)
 page on the Stardew Valley Wiki.
 
-_Disclaimer:_  Highlighting for bombs does not use the public API.  They're
-weird, and I didn't want to make a messy API to support them without some other
-use case for it.

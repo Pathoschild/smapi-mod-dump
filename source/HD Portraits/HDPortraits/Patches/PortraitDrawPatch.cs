@@ -70,10 +70,10 @@ namespace HDPortraits.Patches
                 {
                     new(OpCodes.Ldc_I4_S, 64),
                     new(OpCodes.Ldc_I4_S, 64),
-                    new(OpCodes.Call, typeof(Game1).MethodNamed("getSourceRectForStandardTileSheet"))
+                    new(OpCodes.Call, typeof(Game1).MethodNamed(nameof(Game1.getSourceRectForStandardTileSheet)))
                 })
                 .Remove(3)
-                .Add(new CodeInstruction(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("GetData")))
+                .Add(new CodeInstruction(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed(nameof(GetData))))
                 .SkipTo(new CodeInstruction[]
                 {
                     new(OpCodes.Call, typeof(Color).MethodNamed("get_White")),
@@ -82,8 +82,12 @@ namespace HDPortraits.Patches
                 })
                 .Skip(3)
                 .Remove(1)
-                .Add(new CodeInstruction[]{
-                    new(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("GetScale"))
+                .Add(new CodeInstruction[]{ // 256f / region.Width
+                    new(OpCodes.Ldc_R4, 256f), // 4 * (64 / size)
+                    new(OpCodes.Ldloc_S, 5),
+                    new(OpCodes.Ldfld, typeof(Rectangle).FieldNamed(nameof(Rectangle.Width))),
+                    new(OpCodes.Conv_R4),
+                    new(OpCodes.Div)
                 })
                 .Finish();
         public static Texture2D SwapTexture(Texture2D texture) 

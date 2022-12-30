@@ -11,7 +11,7 @@
 {
 	"ID": "ForgeMenu",
 
-	"Patches": {
+	"ColorPatches": {
 		"#ForgeMenu:draw(SpriteBatch)": {
 			"RawColors": {
 				"116, 11, 3": { "*": "$ForgeBackground" }

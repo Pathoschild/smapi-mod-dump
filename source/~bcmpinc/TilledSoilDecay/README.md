@@ -34,29 +34,25 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
-#### 1.0:
-* Added dependency on the StardewHack library mod.
+#### 6.0:
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 
-#### 2.0:
-* Updated for Stardew Valley 1.4
-
-#### 3.0:
-* Added support for greenhouse soil.
-
-#### 4.0:
-* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
-* Add 64-bit support
-
-#### 5.1:
-* Add support for Ginger Island
-
-#### 5.2:
-* Removed changing soil decay at the start of a new season, as it seems to have been removed from the game.
+#### 5.7:
+* Soil decay at the start of a new season was not removed. This version allows you to configure that decay.
 
 #### 5.6:
 * Added back changing soil decay at the start of a new season, due to popular request.
 * Updated for Stardew Valley 1.5.6
 
-#### 5.7:
-* Soil decay at the start of a new season was not removed. This version allows you to configure that decay.
+#### 5.2:
+* Removed changing soil decay at the start of a new season, as it seems to have been removed from the game.
 
+#### 5.1:
+* Add support for Ginger Island
+
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Add 64-bit support
+
+#### 3.0:
+* Added support for greenhouse soil.

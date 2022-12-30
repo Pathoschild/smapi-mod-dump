@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>WarpNetwork</AssemblyName>
     <RootNamespace>WarpNetwork</RootNamespace>
-    <Version>1.1.0</Version>
+    <Version>1.3.2</Version>
     <TargetFramework>net5.0</TargetFramework>
     <ProjectGuid>{4775BDED-E362-46C0-948B-6DE9DE926A4D}</ProjectGuid>
   </PropertyGroup>
@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-	<Reference Include="SpaceCore">
-      <HintPath>..\..\..\libraries\SpaceCore.dll</HintPath>
+	<Reference Include="AeroCore">
+      <HintPath>$(GamePath)\Mods\AeroCore\AeroCore.dll</HintPath>
       <CopyLocal>False</CopyLocal>
       <Private>False</Private>
     </Reference>

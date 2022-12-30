@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/greyivy/OrnithologistsGuild
+   Git: https://github.com/greyivy/OrnithologistsGuild.git
+
+mods:
+   Ornithologist's Guild
+
+latest commit:
+   commit 9d9c67b90f9cfc834219aabac3b563d5db02f0ea
+   Author: Ivy Grey <ivymisc@posteo.net>
+   Date:   Thu Dec 29 20:05:02 2022 -0800
+   
+       1.2.1-alpha
+   

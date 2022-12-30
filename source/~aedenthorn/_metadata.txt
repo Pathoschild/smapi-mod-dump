@@ -15,6 +15,7 @@ mods:
    Another Jump Mod
    April Bug Fix Suite
    Bed Tweaks
+   Bee Paths
    Better Elevator
    Better Lightning Rods
    Boss Creatures
@@ -58,6 +59,7 @@ mods:
    Dialogue Trees
    Dreamscape
    Dungeon Merchants
+   Dynamic Flooring
    Dynamic Map Tiles
    Email App
    Emily for Stardew Impact
@@ -83,13 +85,16 @@ mods:
    Furniture Placement Tweaks
    Furniture Recolor
    Galaxy Weapon Choice
+   Garden Pot Tweaks
    Gem Isles
    Gift Rejection
    Groundhog Day
    Harvest Seeds
+   Help Wanted
    Here Fishy
    Hugs and Kisses
    In-Game SMAPI Log Uploader
+   Infallible Fishing
    Instant Building Construction and Upgrade
    Instant Growth Powder
    Krobus Roommate Shop
@@ -121,6 +126,7 @@ mods:
    NPC Clothing Framework
    Object Import Map
    OK Night Check
+   Omni Tools
    Outfit Sets
    Overworld Chests
    Pacifist Valley
@@ -157,6 +163,8 @@ mods:
    Social Page Order Button
    Social Page Order Menu
    Sound Effect Replacement
+   Sound Tweaker
+   Spoilage
    Stardew Impact
    Stardew RPG
    Submerged Crab Pots
@@ -183,9 +191,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit e0eecaf8504d1721ffb697fff6de15715ce81e75
+   commit c869469142758b695709e9924db224bb41e385c7
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Tue Nov 29 02:55:54 2022 -0500
+   Date:   Fri Dec 30 04:39:07 2022 -0500
    
        etc
    

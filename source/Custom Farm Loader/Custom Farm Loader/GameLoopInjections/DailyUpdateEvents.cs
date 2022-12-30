@@ -57,6 +57,13 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 if (!dailyUpdate.Filter.isValid(who: Game1.player))
                     continue;
 
+                dailyUpdate.Location = Game1.getLocationFromName(dailyUpdate.LocationName);
+
+                if(dailyUpdate.Location == null) {
+                    Monitor.LogOnce($"Unknown Location for DailyUpdate: {dailyUpdate.LocationName}", LogLevel.Error);
+                    continue;
+                }
+
                 if (dailyUpdate.Type == DailyUpdateType.TransformWeeds)
                     updateTransformWeeds(dailyUpdate);
                 else
@@ -111,15 +118,13 @@ namespace Custom_Farm_Loader.GameLoopInjections
             if (Game1.IsWinter)
                 return;
 
-            Farm farm = Game1.getFarm();
-            farm.dropObject(new StardewValley.Object(dailyUpdate.Position, getRandomForestFarmDrop(), null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+            dailyUpdate.Location.dropObject(new StardewValley.Object(dailyUpdate.Position, getRandomForestFarmDrop(), null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
 
         }
 
         private static void updateSpawnForagingDrops(DailyUpdate dailyUpdate)
         {
-            Farm farm = Game1.getFarm();
-            farm.dropObject(new StardewValley.Object(dailyUpdate.Position, Utility.getRandomBasicSeasonalForageItem(Game1.currentSeason, (int)Game1.stats.DaysPlayed), null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+            dailyUpdate.Location.dropObject(new StardewValley.Object(dailyUpdate.Position, getRandomForagingDrop(), null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
 
         }
 
@@ -141,24 +146,39 @@ namespace Custom_Farm_Loader.GameLoopInjections
             return possibleItems.ElementAt(Game1.random.Next(possibleItems.Count));
         }
 
+        private static int getRandomForagingDrop()
+        {
+            List<int> possibleItems = new List<int>();
+            if (Game1.currentSeason == "spring")
+                possibleItems.AddRange(new int[] { 16, 18, 20, 22 });
+
+            else if (Game1.currentSeason == "summer")
+                possibleItems.AddRange(new int[] { 396, 398, 402 });
+
+            else if (Game1.currentSeason == "fall")
+                possibleItems.AddRange(new int[] { 404, 406, 408, 410 });
+
+            else
+                possibleItems.AddRange(new int[] { 412, 414, 416, 418 });
+
+            return possibleItems.ElementAt(Game1.random.Next(possibleItems.Count));
+        }
+
         private static void updateSpawnBeachDrops(DailyUpdate dailyUpdate)
         {
-            Farm farm = Game1.getFarm();
             int itemID = getRandomBeachDrop(dailyUpdate.Position);
             if (itemID >= 922 & itemID <= 924)
-                farm.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, itemID, 1) {
+                dailyUpdate.Location.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, itemID, 1) {
                     Fragility = 2,
                     MinutesUntilReady = 3
                 });
 
             else if (itemID != -1)
-                farm.dropObject(new StardewValley.Object(dailyUpdate.Position, itemID, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+                dailyUpdate.Location.dropObject(new StardewValley.Object(dailyUpdate.Position, itemID, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
         }
 
         private static int getRandomBeachDrop(Vector2 v)
         {
-            Farm farm = Game1.getFarm();
-
             Game1.stats.incrementStat("beachFarmSpawns", 1);
 
             if (Game1.random.NextDouble() < 0.15 || Game1.stats.getStat("beachFarmSpawns") % 4u == 0)
@@ -183,8 +203,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         private static void updateSpawnQuerryRocks(DailyUpdate dailyUpdate)
         {
-            Farm farm = Game1.getFarm();
-            farm.objects.Add(dailyUpdate.Position, getRandomQuerryRock(dailyUpdate.Position));
+            dailyUpdate.Location.objects.Add(dailyUpdate.Position, getRandomQuerryRock(dailyUpdate.Position));
         }
 
         private static StardewValley.Object getRandomQuerryRock(Vector2 v)
@@ -235,8 +254,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         private static void updateTransformWeeds(DailyUpdate dailyUpdate)
         {
-            Farm farm = Game1.getFarm();
-            var viableObjects = farm.objects.Pairs.Where(
+            var viableObjects = dailyUpdate.Location.objects.Pairs.Where(
                 obj => dailyUpdate.Area.isTileIncluded(new Vector2(obj.Value.TileLocation.X, obj.Value.TileLocation.Y))
                 && obj.Value.name.Equals("Weeds")
                 );
@@ -257,8 +275,6 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         private static void updateSpawnResourceClumps(DailyUpdate dailyUpdate)
         {
-            Farm farm = Game1.getFarm();
-
             int width = 1;
             int height = 1;
             List<SpringObjectID> largeResources = new List<SpringObjectID> { SpringObjectID.Large_Stump, SpringObjectID.Large_Log, SpringObjectID.Boulder, SpringObjectID.Boulder_Alternative, SpringObjectID.Blue_Boulder, SpringObjectID.Blue_Boulder_Alternative, SpringObjectID.Dense_Boulder, SpringObjectID.Meteorite };
@@ -270,34 +286,32 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             for (int x = (int)dailyUpdate.Position.X; x < dailyUpdate.Position.X + width; x++)
                 for (int y = (int)dailyUpdate.Position.Y; y < dailyUpdate.Position.Y + width; y++)
-                    if (!farm.isTileLocationTotallyClearAndPlaceable(x, y))
+                    if (!dailyUpdate.Location.isTileLocationTotallyClearAndPlaceable(x, y))
                         return;
 
             if (largeResources.Exists(x => x == dailyUpdate.ItemID))
-                farm.resourceClumps.Add(new ResourceClump((int)randomizeResourceIDs(dailyUpdate.ItemID), width, height, dailyUpdate.Position));
+                dailyUpdate.Location.resourceClumps.Add(new ResourceClump((int)randomizeResourceIDs(dailyUpdate.ItemID), width, height, dailyUpdate.Position));
 
             else if (dailyUpdate.ItemID == SpringObjectID.Weed)
-                farm.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, getRandomWeedForSeason(farm.GetSeasonForLocation()), 1));
+                dailyUpdate.Location.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, getRandomWeedForSeason(dailyUpdate.Location.GetSeasonForLocation()), 1));
 
             else
-                farm.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, (int)dailyUpdate.ItemID, 1));
+                dailyUpdate.Location.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, (int)dailyUpdate.ItemID, 1));
 
         }
 
         private static void updateSpawnItemDrops(DailyUpdate dailyUpdate)
         {
-            Farm farm = Game1.getFarm();
-
             if (dailyUpdate.Items.Count == 0)
                 return;
 
-            if (!farm.isTileLocationTotallyClearAndPlaceable((int)dailyUpdate.Position.X, (int)dailyUpdate.Position.Y))
+            if (!dailyUpdate.Location.isTileLocationTotallyClearAndPlaceable((int)dailyUpdate.Position.X, (int)dailyUpdate.Position.Y))
                 return;
 
             string itemID = UtilityMisc.PickSomeInRandomOrder(dailyUpdate.Items, 1).First();
 
             if (int.TryParse(itemID, out int parentSheetIndex))
-                farm.dropObject(new StardewValley.Object(dailyUpdate.Position, parentSheetIndex, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+                dailyUpdate.Location.dropObject(new StardewValley.Object(dailyUpdate.Position, parentSheetIndex, null, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: true), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
             else
                 Monitor.LogOnce($"Tried to spawn non integer item '{itemID}' at DU SpawnItemDrops", LogLevel.Warn);
         }

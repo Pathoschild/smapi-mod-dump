@@ -14,6 +14,7 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using StardewValley;
+using GenericModConfigMenu;
 
 namespace StardewHack.MovementSpeed
 {
@@ -32,10 +33,10 @@ namespace StardewHack.MovementSpeed
             Patch(typeof(Game1), "UpdateControlInput", Game1_UpdateControlInput);
         }
 
-        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        protected override void InitializeApi(IGenericModConfigMenuApi api)
         {
-            api.RegisterClampedOption(ModManifest, "Movement Speed Multiplier", "The movement speed is multiplied by this amount. The mod's default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed.", () => config.MovementSpeedMultiplier, (float val) => config.MovementSpeedMultiplier = val, 0, 5);
-            api.RegisterClampedOption(ModManifest, "Tool Charge Delay", "Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging.", () => config.ToolChargeDelay, (int val) => config.ToolChargeDelay = val, 100, 600);
+            api.AddNumberOption(mod: ModManifest, name: () => "Movement Speed Multiplier", tooltip: () => "The movement speed is multiplied by this amount. The mod's default is 1.5, meaning 50% faster movement. Set this to 1 to disable the increase in movement speed.", getValue: () => config.MovementSpeedMultiplier, setValue: (float val) => config.MovementSpeedMultiplier = val, min: 0, max: 5);
+            api.AddNumberOption(mod: ModManifest, name: () => "Tool Charge Delay",         tooltip: () => "Time required for charging the hoe or watering can in ms. Normally this is 600ms. The default is 600/1.5 = 400, meaning 50% faster charging. Set this to 600 to disable faster tool charging.", getValue: () => config.ToolChargeDelay, setValue: (int val) => config.ToolChargeDelay = val, min: 100, max: 600);
         }
 
         static float getMovementSpeedMultiplier() => getInstance().config.MovementSpeedMultiplier;

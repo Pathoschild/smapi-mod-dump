@@ -17,8 +17,8 @@ using System;
 using System.Collections.Generic;
 using BirbShared;
 using System.Reflection;
-using static StardewValley.FarmerSprite;
 using StardewValley.Tools;
+using System.Reflection.Emit;
 
 namespace PanningUpgrades
 {
@@ -32,13 +32,14 @@ namespace PanningUpgrades
             Dictionary<ISalable, int[]> __result,
             Farmer who)
         {
-            UpgradeablePan.AddToShopStock(itemPriceAndStock: __result, who: who);
-        }
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            try
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                UpgradeablePan.AddToShopStock(itemPriceAndStock: __result, who: who);
+
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -53,37 +54,37 @@ namespace PanningUpgrades
         static bool Prefix(
             Farmer who)
         {
-            if (who.mostRecentlyGrabbedItem is UpgradeablePan)
+            try
             {
-                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
-                    textureName: ModEntry.Assets.SpritesPath,
-                    sourceRect: UpgradeablePan.IconSourceRectangle((who.mostRecentlyGrabbedItem as Tool).UpgradeLevel),
-                    animationInterval: 2500f,
-                    animationLength: 1,
-                    numberOfLoops: 0,
-                    position: who.Position + new Vector2(0f, -124f),
-                    flicker: false,
-                    flipped: false,
-                    layerDepth: 1f,
-                    alphaFade: 0f,
-                    color: Color.White,
-                    scale: 4f,
-                    scaleChange: 0f,
-                    rotation: 0f,
-                    rotationChange: 0f)
+                if (who.mostRecentlyGrabbedItem is UpgradeablePan)
                 {
-                    motion = new Vector2(0f, -0.1f)
-                });
-                return false;
+                    Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                        textureName: ModEntry.Assets.SpritesPath,
+                        sourceRect: UpgradeablePan.IconSourceRectangle((who.mostRecentlyGrabbedItem as Tool).UpgradeLevel),
+                        animationInterval: 2500f,
+                        animationLength: 1,
+                        numberOfLoops: 0,
+                        position: who.Position + new Vector2(0f, -124f),
+                        flicker: false,
+                        flipped: false,
+                        layerDepth: 1f,
+                        alphaFade: 0f,
+                        color: Color.White,
+                        scale: 4f,
+                        scaleChange: 0f,
+                        rotation: 0f,
+                        rotationChange: 0f)
+                    {
+                        motion = new Vector2(0f, -0.1f)
+                    });
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
-        }
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
-            }
         }
     }
 
@@ -96,26 +97,25 @@ namespace PanningUpgrades
         /// </summary>
         public static void Postfix(Dictionary<ISalable, int[]> __result)
         {
-            // Keying off of `new Pan()` doesn't work.
-            // Iterate over items for sale, and remove any by the name "Copper Pan".
-            foreach (ISalable key in __result.Keys)
+            try
             {
-                if (key.Name.Equals("Copper Pan"))
+                // Keying off of `new Pan()` doesn't work.
+                // Iterate over items for sale, and remove any by the name "Copper Pan".
+                foreach (ISalable key in __result.Keys)
                 {
-                    __result.Remove(key);
+                    if (key.Name.Equals("Copper Pan"))
+                    {
+                        __result.Remove(key);
+                    }
+                }
+                if (ModEntry.Config.BuyablePan)
+                {
+                    __result.Add(new UpgradeablePan(0), new int[2] { ModEntry.Config.BuyCost, 2147483647 });
                 }
             }
-            if (ModEntry.Config.BuyablePan)
+            catch (Exception e)
             {
-                __result.Add(new UpgradeablePan(0), new int[2] { ModEntry.Config.BuyCost, 2147483647 });
-            }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -130,22 +130,20 @@ namespace PanningUpgrades
             ref Item __result,
             Item placedItem)
         {
-
-            if (placedItem != null && placedItem is UpgradeablePan upgradeablePan)
+            try
             {
-                __result = UpgradeablePan.PanToHat(upgradeablePan);
-                return false;
+                if (placedItem != null && placedItem is UpgradeablePan upgradeablePan)
+                {
+                    __result = UpgradeablePan.PanToHat(upgradeablePan);
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
         }
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
-            }
-        }
-
     }
 
     [HarmonyPatch(typeof(Utility), nameof(Utility.PerformSpecialItemGrabReplacement))]
@@ -159,44 +157,43 @@ namespace PanningUpgrades
             ref Item __result,
             Item heldItem)
         {
-            if (heldItem != null && heldItem is Hat)
+            try
             {
-                int hatId = (int)(heldItem as Hat).which;
-                if (hatId == ModEntry.JsonAssets.GetHatId("Pan"))
+                if (heldItem != null && heldItem is Hat)
                 {
-                    __result = new UpgradeablePan(0);
+                    int hatId = (int)(heldItem as Hat).which;
+                    if (hatId == ModEntry.JsonAssets.GetHatId("Pan"))
+                    {
+                        __result = new UpgradeablePan(0);
+                    }
+                    else if (hatId == 71) // Using original copper pan hat.
+                    {
+                        __result = new UpgradeablePan(1);
+                    }
+                    else if (hatId == ModEntry.JsonAssets.GetHatId("Steel Pan"))
+                    {
+                        __result = new UpgradeablePan(2);
+                    }
+                    else if (hatId == ModEntry.JsonAssets.GetHatId("Gold Pan"))
+                    {
+                        __result = new UpgradeablePan(3);
+                    }
+                    else if (hatId == ModEntry.JsonAssets.GetHatId("Iridium Pan"))
+                    {
+                        __result = new UpgradeablePan(4);
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                    return false;
                 }
-                else if (hatId == 71) // Using original copper pan hat.
-                {
-                    __result = new UpgradeablePan(1);
-                }
-                else if (hatId == ModEntry.JsonAssets.GetHatId("Steel Pan"))
-                {
-                    __result = new UpgradeablePan(2);
-                }
-                else if (hatId == ModEntry.JsonAssets.GetHatId("Gold Pan"))
-                {
-                    __result = new UpgradeablePan(3);
-                }
-                else if (hatId == ModEntry.JsonAssets.GetHatId("Iridium Pan"))
-                {
-                    __result = new UpgradeablePan(4);
-                }
-                else
-                {
-                    return true;
-                }
-                return false;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
-            }
         }
     }
 
@@ -224,17 +221,16 @@ namespace PanningUpgrades
         /// </summary>
         public static void Postfix(Item[] __state)
         {
-            if (__state is not null && __state[0] is UpgradeablePan upgradeablePan && __state[1] != Game1.player.hat.Value)
+            try
             {
-                Game1.player.hat.Value = UpgradeablePan.PanToHat(upgradeablePan);
+                if (__state is not null && __state[0] is UpgradeablePan upgradeablePan && __state[1] != Game1.player.hat.Value)
+                {
+                    Game1.player.hat.Value = UpgradeablePan.PanToHat(upgradeablePan);
+                }
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -259,77 +255,76 @@ namespace PanningUpgrades
         /// </summary>
         public static void Postfix(int index)
         {
-            if (index == 303)
+            try
             {
-                int upgradeLevel = Game1.player.CurrentTool.UpgradeLevel;
-                int genderOffset = Game1.player.IsMale ? -1 : 0;
-
-                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
-                    textureName: ModEntry.Assets.SpritesPath,
-                    sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
-                    animationInterval: ModEntry.Config.AnimationFrameDuration,
-                    animationLength: 4,
-                    numberOfLoops: 3,
-                    position: Game1.player.Position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
-                    flicker: false,
-                    flipped: false,
-                    layerDepth: 1f,
-                    alphaFade: 0f,
-                    color: Color.White,
-                    scale: 4f,
-                    scaleChange: 0f,
-                    rotation: 0f,
-                    rotationChange: 0f)
+                if (index == 303)
                 {
-                    endFunction = extraInfo =>
-                    {
-                        Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
-                            textureName: ModEntry.Assets.SpritesPath,
-                            sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
-                            animationInterval: ModEntry.Config.AnimationFrameDuration,
-                            animationLength: 3,
-                            numberOfLoops: 0,
-                            position: Game1.player.position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
-                            flicker: false,
-                            flipped: false,
-                            layerDepth: 1f,
-                            alphaFade: 0f,
-                            color: Color.White,
-                            scale: 4f,
-                            scaleChange: 0f,
-                            rotation: 0f,
-                            rotationChange: 0f)
-                        {
-                            endFunction = extraInfo =>
-                            {
-                                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
-                                    textureName: ModEntry.Assets.SpritesPath,
-                                    sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
-                                    animationInterval: ModEntry.Config.AnimationFrameDuration * 2.5f,
-                                    animationLength: 1,
-                                    numberOfLoops: 0,
-                                    position: Game1.player.position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
-                                    flicker: false,
-                                    flipped: false,
-                                    layerDepth: 1f,
-                                    alphaFade: 0f,
-                                    color: Color.White,
-                                    scale: 4f,
-                                    scaleChange: 0f,
-                                    rotation: 0f,
-                                    rotationChange: 0f));
-                            }
-                        });
-                    }
-                });
-            }
-        }
+                    int upgradeLevel = Game1.player.CurrentTool.UpgradeLevel;
+                    int genderOffset = Game1.player.IsMale ? -1 : 0;
 
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+                    Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                        textureName: ModEntry.Assets.SpritesPath,
+                        sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
+                        animationInterval: ModEntry.Config.AnimationFrameDuration,
+                        animationLength: 4,
+                        numberOfLoops: 3,
+                        position: Game1.player.Position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
+                        flicker: false,
+                        flipped: false,
+                        layerDepth: 1f,
+                        alphaFade: 0f,
+                        color: Color.White,
+                        scale: 4f,
+                        scaleChange: 0f,
+                        rotation: 0f,
+                        rotationChange: 0f)
+                    {
+                        endFunction = extraInfo =>
+                        {
+                            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                                textureName: ModEntry.Assets.SpritesPath,
+                                sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
+                                animationInterval: ModEntry.Config.AnimationFrameDuration,
+                                animationLength: 3,
+                                numberOfLoops: 0,
+                                position: Game1.player.position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
+                                flicker: false,
+                                flipped: false,
+                                layerDepth: 1f,
+                                alphaFade: 0f,
+                                color: Color.White,
+                                scale: 4f,
+                                scaleChange: 0f,
+                                rotation: 0f,
+                                rotationChange: 0f)
+                            {
+                                endFunction = extraInfo =>
+                                {
+                                    Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                                        textureName: ModEntry.Assets.SpritesPath,
+                                        sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
+                                        animationInterval: ModEntry.Config.AnimationFrameDuration * 2.5f,
+                                        animationLength: 1,
+                                        numberOfLoops: 0,
+                                        position: Game1.player.position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
+                                        flicker: false,
+                                        flipped: false,
+                                        layerDepth: 1f,
+                                        alphaFade: 0f,
+                                        color: Color.White,
+                                        scale: 4f,
+                                        scaleChange: 0f,
+                                        rotation: 0f,
+                                        rotationChange: 0f));
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -342,25 +337,24 @@ namespace PanningUpgrades
         /// </summary>
         public static bool Prefix(Event __instance, string[] split)
         {
-            if (split.Length > 1 && split[1].ToLower() == "pan")
+            try
             {
-                Game1.player.addItemByMenuIfNecessary(new UpgradeablePan());
-                if (Game1.activeClickableMenu == null)
+                if (split.Length > 1 && split[1].ToLower() == "pan")
                 {
+                    Game1.player.addItemByMenuIfNecessary(new UpgradeablePan());
+                    if (Game1.activeClickableMenu == null)
+                    {
+                        __instance.CurrentCommand++;
+                    }
                     __instance.CurrentCommand++;
+                    return false;
                 }
-                __instance.CurrentCommand++;
-                return false;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
-            }
         }
     }
 
@@ -372,21 +366,20 @@ namespace PanningUpgrades
         /// </summary>
         public static bool Prefix(Event __instance, string[] split)
         {
-            if (split.Length > 1 && split[1].Equals("pan"))
+            try
             {
-                __instance.farmer.holdUpItemThenMessage(new UpgradeablePan());
-                __instance.CurrentCommand++;
-                return false;
+                if (split.Length > 1 && split[1].Equals("pan"))
+                {
+                    __instance.farmer.holdUpItemThenMessage(new UpgradeablePan());
+                    __instance.CurrentCommand++;
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
-            }
         }
     }
 
@@ -400,47 +393,105 @@ namespace PanningUpgrades
             Event __instance,
             Dictionary<string, Vector3> ___actorPositionsAfterMove)
         {
-            if (__instance.id == 404798)
+            try
             {
-                // Generic skip logic copied from skipEvent.
-                // If other mods patch skipEvent to change this logic, things might break.
-                if (__instance.playerControlSequence)
+                if (__instance.id == 404798)
                 {
-                    __instance.EndPlayerControlSequence();
-                }
-                Game1.playSound("drumkit6");
-                ___actorPositionsAfterMove.Clear();
-                foreach (NPC i in __instance.actors)
-                {
-                    bool ignore_stop_animation = i.Sprite.ignoreStopAnimation;
-                    i.Sprite.ignoreStopAnimation = true;
-                    i.Halt();
-                    i.Sprite.ignoreStopAnimation = ignore_stop_animation;
-                    __instance.resetDialogueIfNecessary(i);
-                }
-                __instance.farmer.Halt();
-                __instance.farmer.ignoreCollisions = false;
-                Game1.exitActiveMenu();
-                Game1.dialogueUp = false;
-                Game1.dialogueTyping = false;
-                Game1.pauseTime = 0f;
+                    // Generic skip logic copied from skipEvent.
+                    // If other mods patch skipEvent to change this logic, things might break.
+                    if (__instance.playerControlSequence)
+                    {
+                        __instance.EndPlayerControlSequence();
+                    }
+                    Game1.playSound("drumkit6");
+                    ___actorPositionsAfterMove.Clear();
+                    foreach (NPC i in __instance.actors)
+                    {
+                        bool ignore_stop_animation = i.Sprite.ignoreStopAnimation;
+                        i.Sprite.ignoreStopAnimation = true;
+                        i.Halt();
+                        i.Sprite.ignoreStopAnimation = ignore_stop_animation;
+                        __instance.resetDialogueIfNecessary(i);
+                    }
+                    __instance.farmer.Halt();
+                    __instance.farmer.ignoreCollisions = false;
+                    Game1.exitActiveMenu();
+                    Game1.dialogueUp = false;
+                    Game1.dialogueTyping = false;
+                    Game1.pauseTime = 0f;
 
-                // Event specific skip logic.
-                if (Game1.player.getToolFromName("Pan") is null)
-                {
-                    Game1.player.addItemByMenuIfNecessary(new UpgradeablePan());
+                    // Event specific skip logic.
+                    if (Game1.player.getToolFromName("Pan") is null)
+                    {
+                        Game1.player.addItemByMenuIfNecessary(new UpgradeablePan());
+                    }
+                    __instance.endBehaviors(new string[1] { "end" }, Game1.currentLocation);
+                    return false;
                 }
-                __instance.endBehaviors(new string[1] { "end" }, Game1.currentLocation);
-                return false;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
         }
+    }
 
-        static void Finalizer(Exception __exception)
+    // 3rd party
+    // Fix Wear More Rings incompatibility
+    [HarmonyPatch("StardewHack.WearMoreRings.ModEntry", "EquipmentClick")]
+    class WearMoreRings_ModEntry_EquipmentClick
+    {
+        public static bool Prepare()
         {
-            if (__exception != null)
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("bcmpinc.WearMoreRings");
+        }
+
+        public static void Prefix(
+            ClickableComponent icon
+            )
+        {
+            try
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                if (icon.name == "Hat" && Game1.player.CursorSlotItem is UpgradeablePan pan)
+                {
+                    Game1.player.CursorSlotItem = UpgradeablePan.PanToHat(pan);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+
+    }
+
+    // Allow sending pan to upgrade in the mail with Mail Services
+    [HarmonyPatch("MailServicesMod.ToolUpgradeOverrides", "mailbox")]
+    class MailServicesMod_ToolUpgradeOverrides_Mailbox
+    {
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("Digus.MailServicesMod");
+        }
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var code = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < code.Count; i++)
+            {
+                if (code[i].Is(OpCodes.Isinst, typeof(Axe)))
+                {
+                    yield return new CodeInstruction(OpCodes.Isinst, typeof(UpgradeablePan));
+                    yield return code[i + 1];
+                    yield return code[i + 2];
+                    yield return code[i + 3];
+                    yield return code[i];
+                } else
+                {
+                    yield return code[i];
+                }
             }
         }
     }

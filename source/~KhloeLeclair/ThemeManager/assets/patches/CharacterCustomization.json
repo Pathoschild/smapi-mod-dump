@@ -11,10 +11,14 @@
 {
 	"ID": "CharacterCustomization",
 
+	"ColorVariables": {
+		"$CharacterCustomizationErrorText": "$ErrorText"
+	},
+
 	"Patches": {
 		"#CharacterCustomization:draw(SpriteBatch)": {
 			"Colors": {
-				"Red": { "*": "$ErrorText" }
+				"Red": { "*": "$CharacterCustomizationErrorText" }
 			}
 		}
 	}

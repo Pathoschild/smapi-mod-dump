@@ -11,43 +11,19 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Menus;
-using StardewValley.Tools;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using BirbShared;
+using System.Reflection;
+using System.Reflection.Emit;
+using StardewValley.Tools;
 
 namespace RanchingToolUpgrades
 {
-    internal interface HarmonyPatches
+    [HarmonyPatch(typeof(Utility), nameof(Utility.getBlacksmithUpgradeStock))]
+    class Utility_GetBlacksmithUpgradeStock
     {
-        public static void Patch(string id)
-        {
-            Harmony harmony = new(id);
-            try
-            {
-                // Patch relevent shop inventories, and upgrade actions
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Utility), nameof(Utility.getBlacksmithUpgradeStock)),
-                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Utility_GetBlacksmithUpgradeStock_Postfix)));
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.showHoldingItem)),
-                    prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Farmer_ShowHoldingItem_Prefix)));
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Utility), nameof(Utility.getAnimalShopStock)),
-                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Utility_GetAnimalShopStock_Postfix)));
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Tries to add cooking tool to Blacksmith shop stock.
-        /// </summary>
-        public static void Utility_GetBlacksmithUpgradeStock_Postfix(
+        public static void Postfix(
             Dictionary<ISalable, int[]> __result,
             Farmer who)
         {
@@ -56,27 +32,36 @@ namespace RanchingToolUpgrades
                 UpgradeablePail.AddToShopStock(itemPriceAndStock: __result, who: who);
                 UpgradeableShears.AddToShopStock(itemPriceAndStock: __result, who: who);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {nameof(Utility_GetBlacksmithUpgradeStock_Postfix)}\n{ex}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
+    }
 
-        /// <summary>
-        /// Draws the correct tool sprite when receiving an upgrade.
-        /// </summary>
-        public static bool Farmer_ShowHoldingItem_Prefix(
+    [HarmonyPatch(typeof(Farmer), nameof(Farmer.showHoldingItem))]
+    class Farmer_ShowHoldingItem
+    {
+        public static bool Prefix(
             Farmer who)
         {
             try
             {
-                
                 Item mrg = who.mostRecentlyGrabbedItem;
                 if (mrg is UpgradeablePail || mrg is UpgradeableShears)
                 {
+                    Rectangle r;
+                    if (mrg is UpgradeablePail)
+                    {
+                        r = UpgradeablePail.IconSourceRectangle((who.mostRecentlyGrabbedItem as Tool).UpgradeLevel);
+                    }
+                    else
+                    {
+                        r = UpgradeableShears.IconSourceRectangle((who.mostRecentlyGrabbedItem as Tool).UpgradeLevel);
+                    }
                     Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
                         textureName: ModEntry.Assets.SpritesPath,
-                        sourceRect: ((ICustomIcon)mrg).IconSource(),
+                        sourceRect: r,
                         animationInterval: 2500f,
                         animationLength: 1,
                         numberOfLoops: 0,
@@ -96,14 +81,18 @@ namespace RanchingToolUpgrades
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {nameof(Farmer_ShowHoldingItem_Prefix)}\n{ex}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
             return true;
         }
+    }
 
-        public static void Utility_GetAnimalShopStock_Postfix(
+    [HarmonyPatch(typeof(Utility), nameof(Utility.getAnimalShopStock))]
+    class Utility_GetAnimalShopStock
+    {
+        public static void Postfix(
             Dictionary<ISalable, int[]> __result
             )
         {
@@ -127,9 +116,45 @@ namespace RanchingToolUpgrades
                     __result.Add(new UpgradeableShears(0), new int[2] { ModEntry.Config.ShearsBuyCost, 1 });
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {nameof(Utility_GetAnimalShopStock_Postfix)}\n{ex}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+    }
+
+    // 3rd party
+    // Allow sending tools to upgrade in the mail with Mail Services
+    [HarmonyPatch("MailServicesMod.ToolUpgradeOverrides", "mailbox")]
+    class MailServicesMod_ToolUpgradeOverrides_Mailbox
+    {
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("Digus.MailServicesMod");
+        }
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var code = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < code.Count; i++)
+            {
+                if (code[i].Is(OpCodes.Isinst, typeof(Axe)))
+                {
+                    yield return new CodeInstruction(OpCodes.Isinst, typeof(UpgradeablePail));
+                    yield return code[i + 1];
+                    yield return code[i + 2];
+                    yield return code[i + 3];
+                    yield return new CodeInstruction(OpCodes.Isinst, typeof(UpgradeableShears));
+                    yield return code[i + 1];
+                    yield return code[i + 2];
+                    yield return code[i + 3];
+                    yield return code[i];
+                }
+                else
+                {
+                    yield return code[i];
+                }
             }
         }
     }

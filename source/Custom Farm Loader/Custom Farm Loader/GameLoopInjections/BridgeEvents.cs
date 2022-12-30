@@ -43,6 +43,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             var harmony = new Harmony(mod.ModManifest.UniqueID);
 
+            return;
             harmony.Patch(
                original: AccessTools.Method(typeof(Farm), nameof(Farm.isCollidingPosition), new[] { typeof(Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool) }),
                prefix: new HarmonyMethod(typeof(BridgeEvents), nameof(BridgeEvents.isCollidingPosition_Prefix))

@@ -6,6 +6,7 @@
   "NumBatWings": 100,
   "WinterButterflies": false,
   "IslandButterflies": false,
+  "NightButterflies": false,
   "UseHarmony": true,
   "Debug": false
 }

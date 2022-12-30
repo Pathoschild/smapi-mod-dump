@@ -1,5 +1,5 @@
 {
-  "VanillaWarpsEnabled": "AfterObelisk",
+  "WarpsEnabled": "AfterObelisk",
   "FarmWarpEnabled": "AfterObelisk",
   "AccessFromDisabled": false,
   "AccessFromWand": false,

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>BreakPintailClient</AssemblyName>
+    <Version>0.1.0</Version>
+    <RootNamespace>Leclair.Stardew.BreakPintailClient</RootNamespace>
+
+    <Name>Break Pintail Client</Name>
+    <UniqueId>leclair.stardew.breakpintailclient</UniqueId>
+    <Author>Khloe Leclair</Author>
+    <Description>I'm here to make mods and break Pintail. And I'm all outta mods.</Description>
+    <MinimumApiVersion>3.16</MinimumApiVersion>
+    <UpdateKeys></UpdateKeys>
+  </PropertyGroup>
+
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
+  <Import Project="..\_build\common.targets" />
+
+</Project>

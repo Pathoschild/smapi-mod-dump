@@ -20,6 +20,8 @@ using StardewValley.Tools;
 using BirbShared;
 using StardewValley.Objects;
 using System.Reflection;
+using xTile.Dimensions;
+using System.Reflection.Emit;
 
 namespace BinningSkill
 {
@@ -27,79 +29,60 @@ namespace BinningSkill
     /// Binning Skill
     ///  - give binning exp
     ///  - give binning skill bonus drops
-    /// Sneak Profession
-    ///  - negate negative reactions to being caught
     /// </summary>
     [HarmonyPatch(typeof(Town), nameof(Town.checkAction))]
     class Town_CheckAction
     {
+        [HarmonyBefore(new string[] { "AairTheGreat.BetterGarbageCans" })]
         public static void Prefix(
             Town __instance,
             ref int[] __state,
             NetArray<bool, NetBool> ___garbageChecked,
             xTile.Dimensions.Location tileLocation,
-            xTile.Dimensions.Rectangle viewport,
             Farmer who)
         {
-            if (who.mount == null && __instance.map.GetLayer("Buildings").Tiles[tileLocation] != null &&
-                __instance.map.GetLayer("Buildings").Tiles[tileLocation].TileIndex == 78)
+            try
             {
-                string s = __instance.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
-                int whichCan = ((s != null) ? Convert.ToInt32(s.Split(' ')[1]) : (-1));
-                if (whichCan < 0 || whichCan >= ___garbageChecked.Length)
+                if (who.mount == null && __instance.map.GetLayer("Buildings").Tiles[tileLocation] != null &&
+                    __instance.map.GetLayer("Buildings").Tiles[tileLocation].TileIndex == 78)
                 {
-                    return;
-                }
-                if (!___garbageChecked[whichCan])
-                {
-                    // Remember which can was interacted with, since the game code adjusts garbageChecked array
-                    __state = new int[]
+                    string s = __instance.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
+                    int whichCan = ((s != null) ? Convert.ToInt32(s.Split(' ')[1]) : (-1));
+                    if (whichCan < 0 || whichCan >= ___garbageChecked.Length)
                     {
+                        return;
+                    }
+                    if (!___garbageChecked[whichCan])
+                    {
+                        // Remember which can was interacted with, since the game code adjusts garbageChecked array
+                        __state = new int[]
+                        {
                         whichCan,
                         __instance.debris.Count,
-                    };
+                        };
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
 
         public static void Postfix(
-            bool __result,
-            Town __instance,
             ref int[] __state,
-            NetArray<bool, NetBool> ___garbageChecked,
-            xTile.Dimensions.Location tileLocation,
-            xTile.Dimensions.Rectangle viewport,
-            Farmer who)
+            Location tileLocation)
         {
-            if (__state != null && __state.Length > 0)
+            try
             {
-                if (who.HasCustomProfession(BinningSkill.Sneak))
+                if (__state != null && __state.Length > 0)
                 {
-                    // TODO: skip this stuff by transpiling.  Will fix global chat message being displayed with sneak profession
-                    Character c = Utility.isThereAFarmerOrCharacterWithinDistance(new Vector2(tileLocation.X, tileLocation.Y), 7, __instance);
-                    if (c != null && c is NPC && c is not StardewValley.Characters.Horse)
-                    {
-                        if (!c.Name.Equals("Linus"))
-                        {
-                            // Sneak Profession
-                            // Undo friendship drop and cancel dialogue/emote
-                            c.isEmoting = false;
-                            Game1.dialogueUp = false;
-                            Game1.activeClickableMenu = null;
-                            who.forceCanMove();
-                            who.changeFriendship(ModEntry.Config.FriendshipRecovery, c as NPC);
-                        }
-                    }
+                    Utilities.DoTrashCanCheck("Town", __state[0].ToString(), __state[1], Utilities.GetItemPosition(new Vector2(tileLocation.X, tileLocation.Y)));
                 }
-
-                Utilities.DoTrashCanCheck("Town", __state[0].ToString(), __state[1], Utilities.GetItemPosition(new Vector2(tileLocation.X, tileLocation.Y)));
             }
-        }
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -112,34 +95,33 @@ namespace BinningSkill
             Farmer f,
             ref int __result)
         {
-            if (f.HasCustomProfession(BinningSkill.Reclaimer))
+            try
             {
-                if (__result < 0)
+                if (f.HasCustomProfession(BinningSkill.Reclaimer))
                 {
-                    return;
-                }
-                float extraPercentage = (ModEntry.Config.ReclaimerExtraValuePercent / 100.0f);
-                int extraAmount = 0;
-                if (i.canBeTrashed())
-                {
-                    if (i is StardewValley.Object && !(i as StardewValley.Object).bigCraftable)
+                    if (__result < 0)
                     {
-                        extraAmount = (int)((float)i.Stack * ((float)(i as StardewValley.Object).sellToStorePrice(-1L) * extraPercentage));
+                        return;
                     }
-                    if (i is MeleeWeapon || i is Ring || i is Boots)
+                    float extraPercentage = (ModEntry.Config.ReclaimerExtraValuePercent / 100.0f);
+                    int extraAmount = 0;
+                    if (i.canBeTrashed())
                     {
-                        extraAmount = (int)((float)i.Stack * ((float)(i.salePrice() / 2) * extraPercentage));
+                        if (i is StardewValley.Object && !(i as StardewValley.Object).bigCraftable)
+                        {
+                            extraAmount = (int)((float)i.Stack * ((float)(i as StardewValley.Object).sellToStorePrice(-1L) * extraPercentage));
+                        }
+                        if (i is MeleeWeapon || i is Ring || i is Boots)
+                        {
+                            extraAmount = (int)((float)i.Stack * ((float)(i.salePrice() / 2) * extraPercentage));
+                        }
                     }
+                    __result += extraAmount;
                 }
-                __result += extraAmount;
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -148,27 +130,24 @@ namespace BinningSkill
     class NPC_GetGiftTasteForThisItem
     {
         public static void Postfix(
-            Item item,
             ref int __result)
         {
-            if (Game1.player.HasCustomProfession(BinningSkill.Upseller))
+            try
             {
-                if (__result == 6)
+                if (Game1.player.HasCustomProfession(BinningSkill.Upseller))
                 {
-                    __result = 4;
+                    if (__result == 6)
+                    {
+                        __result = 4;
+                    }
+                    else if (__result == 4)
+                    {
+                        __result = 8;
+                    }
                 }
-                else if (__result == 4)
-                {
-                    __result = 8;
-                }
-            }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            } catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -183,8 +162,15 @@ namespace BinningSkill
             bool probe,
             Farmer who)
         {
-            // Check heldObject in the prefix.  Need to see if this was null to know if trash has been recycled.
-            __state = __instance.heldObject.Value;
+            try
+            {
+                // Check heldObject in the prefix.  Need to see if this was null to know if trash has been recycled.
+                __state = __instance.heldObject.Value;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
         }
 
         public static void Postfix(
@@ -194,53 +180,52 @@ namespace BinningSkill
             bool probe,
             Farmer who)
         {
-            if (probe)
+            try
             {
-                return;
-            }
-            if (!__instance.Name.Equals("Recycling Machine"))
-            {
-                return;
-            }
-            if (__instance.isTemporarilyInvisible)
-            {
-                return;
-            }
-            if (dropInItem is not StardewValley.Object)
-            {
-                return;
-            }
-            if (dropInItem is Wallpaper)
-            {
-                return;
-            }
-            StardewValley.Object dropIn = dropInItem as StardewValley.Object;
-            if (dropIn.ParentSheetIndex == 872)
-            {
-                return;
-            }
-
-            if (dropIn.ParentSheetIndex >= 168 && dropIn.ParentSheetIndex <= 172 && __state == null)
-            {
-                __instance.heldObject.Value = Utilities.GetSalvagerUpgrade(__instance.heldObject.Value);
-
-                if (who.HasCustomProfession(BinningSkill.Environmentalist))
+                if (probe)
                 {
-                    if (who.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
-                    {
-                        Utility.improveFriendshipWithEveryoneInRegion(who, ModEntry.Config.RecyclingFriendshipGain, 2);
-                    }
+                    return;
+                }
+                if (!__instance.Name.Equals("Recycling Machine"))
+                {
+                    return;
+                }
+                if (__instance.isTemporarilyInvisible)
+                {
+                    return;
+                }
+                if (dropInItem is not StardewValley.Object)
+                {
+                    return;
+                }
+                if (dropInItem is Wallpaper)
+                {
+                    return;
+                }
+                StardewValley.Object dropIn = dropInItem as StardewValley.Object;
+                if (dropIn.ParentSheetIndex == 872)
+                {
+                    return;
                 }
 
-                SpaceCore.Skills.AddExperience(who, "drbirbdev.Binning", ModEntry.Config.ExperienceFromRecycling);
-            }
-        }
+                if (dropIn.ParentSheetIndex >= 168 && dropIn.ParentSheetIndex <= 172 && __state == null)
+                {
+                    __instance.heldObject.Value = Utilities.GetSalvagerUpgrade(__instance.heldObject.Value);
 
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+                    if (who.HasCustomProfession(BinningSkill.Environmentalist))
+                    {
+                        if (who.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
+                        {
+                            Utility.improveFriendshipWithEveryoneInRegion(who, ModEntry.Config.RecyclingFriendshipGain, 2);
+                        }
+                    }
+
+                    SpaceCore.Skills.AddExperience(who, "drbirbdev.Binning", ModEntry.Config.ExperienceFromRecycling);
+                }
+            }
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -253,22 +238,21 @@ namespace BinningSkill
             string name,
             bool isCookingRecipe)
         {
-            if (name.Equals("Recycling Machine") && Game1.player.HasCustomProfession(BinningSkill.Recycler))
+            try
             {
-                __instance.recipeList = new()
+                if (name.Equals("Recycling Machine") && Game1.player.HasCustomProfession(BinningSkill.Recycler))
                 {
-                    { 388, 15 },
-                    { 390, 15 },
-                    { 334, 1 }
-                };
+                    __instance.recipeList = new()
+                    {
+                        { 388, 15 },
+                        { 390, 15 },
+                        { 334, 1 }
+                    };
+                }
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -288,31 +272,36 @@ namespace BinningSkill
             Vector2 position,
             HashSet<Vector2> ___TrashCansTriggeredToday)
         {
-            if (___TrashCansTriggeredToday.Contains(position))
+            try
             {
-                return;
-            }
+                if (___TrashCansTriggeredToday.Contains(position))
+                {
+                    return;
+                }
 
-            __state = new object[]
+                __state = new object[]
+                {
+                    tileAction.Split(' ')[1],
+                    Game1.currentLocation.debris.Count,
+                };
+            }
+            catch (Exception e)
             {
-                tileAction.Split(' ')[1],
-                Game1.currentLocation.debris.Count,
-            };
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
         }
 
         public static void Postfix(
             object[] __state,
-            string tileAction,
             Vector2 position)
         {
-            if (__state != null && __state.Length > 0)
+            try
             {
-                if (!Game1.player.HasCustomProfession(BinningSkill.Sneak))
+                if (__state != null && __state.Length > 0)
                 {
-                    Character c = Utility.isThereAFarmerOrCharacterWithinDistance(position, 7, Game1.currentLocation);
+                    Character c = Sneak_Transpiler.DoSneak(position, 7, Game1.currentLocation);
                     if (c != null && c is NPC && c is not StardewValley.Characters.Horse)
                     {
-                        // Sneak Profession
                         // RSV doesn't have people catch you in trashcans, so just do some vanilla behaviour to add that.
 
                         // TODO: broadcast chat messages
@@ -345,17 +334,13 @@ namespace BinningSkill
                         }
                         Game1.drawDialogue(c as NPC);
                     }
+
+                    Utilities.DoTrashCanCheck("RSV", (string)__state[0], (int)__state[1], Utilities.GetItemPosition(position));
                 }
-
-                Utilities.DoTrashCanCheck("RSV", (string)__state[0], (int)__state[1], Utilities.GetItemPosition(position));
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -372,21 +357,20 @@ namespace BinningSkill
             int index,
             ref Item __result)
         {
-            if (__result == null)
+            try
             {
-                __result = Utilities.GetBonusItem("Town", index.ToString(), Game1.player, false);
+                if (__result == null)
+                {
+                    __result = Utilities.GetBonusItem("Town", index.ToString(), Game1.player, false);
+                }
+                else if (ModEntry.Config.AutomateGrantsXp)
+                {
+                    Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromTrashSuccess);
+                }
             }
-            else if (ModEntry.Config.AutomateGrantsXp)
+            catch (Exception e)
             {
-                Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromTrashSuccess);
-            }
-        }
-
-        internal static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -412,37 +396,295 @@ namespace BinningSkill
             bool __result,
             object __instance)
         {
-            if (__result)
+            try
             {
-                if (ModEntry.Config.AutomateGrantsXp)
+                if (__result)
                 {
-                    Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromRecycling);
-                }
-
-                if (Game1.player.HasCustomProfession(BinningSkill.Environmentalist))
-                {
-                    if (Game1.player.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
+                    if (ModEntry.Config.AutomateGrantsXp)
                     {
-                        Utility.improveFriendshipWithEveryoneInRegion(Game1.player, ModEntry.Config.RecyclingFriendshipGain, 2);
+                        Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromRecycling);
+                    }
+
+                    if (Game1.player.HasCustomProfession(BinningSkill.Environmentalist))
+                    {
+                        if (Game1.player.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
+                        {
+                            Utility.improveFriendshipWithEveryoneInRegion(Game1.player, ModEntry.Config.RecyclingFriendshipGain, 2);
+                        }
+                    }
+
+                    if (Game1.player.HasCustomProfession(BinningSkill.Salvager))
+                    {
+                        StardewValley.Object machine = (StardewValley.Object)Machine.GetValue(__instance);
+
+                        machine.heldObject.Value = Utilities.GetSalvagerUpgrade(machine.heldObject.Value);
                     }
                 }
-
-                if (Game1.player.HasCustomProfession(BinningSkill.Salvager))
-                {
-                    StardewValley.Object machine = (StardewValley.Object)Machine.GetValue(__instance);
-
-                    machine.heldObject.Value = Utilities.GetSalvagerUpgrade(machine.heldObject.Value);
-                }
             }
-        }
-
-        internal static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
 
+    [HarmonyPatch("BetterGarbageCans.GamePatch.GarbageCanOverrider", "CheckForTreasure")]
+    class BetterGarbageCans_GarbageCanOverrider_CheckForTreasure
+    {
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("AairTheGreat.BetterGarbageCans");
+        }
+
+        public static void Prefix(
+            ref object[] __state,
+            GameLocation location,
+            int index
+            )
+        {
+            try
+            {
+                __state = new object[]
+                {
+                    index,
+                    location.debris.Count,
+                };
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+
+        public static void Postfix(
+            object[] __state,
+            Location tileLocation
+            )
+        {
+            try
+            {
+                if (__state != null && __state.Length > 0)
+                {
+                    Utilities.DoTrashCanCheck("Town", __state[0].ToString(), (int)__state[1], Utilities.GetItemPosition(tileLocation));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+    }
+
+    [HarmonyPatch("StardewMods.GarbageDay.GarbageCan", "AddLoot")]
+    class GarbageDay_GarbageCan_AddLoot
+    {
+
+
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("furyx639.GarbageDay");
+        }
+
+        public static void Prefix(
+            ref object[] __state,
+            Chest ____chest)
+        {
+            try
+            {
+                int whichCan = BirbShared.Utilities.GetIntData(____chest, "furyx639.GarbageDay/WhichCan");
+                __state = new object[]
+                {
+                    whichCan,
+                    ____chest.items.Count,
+                };
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+
+        public static void Postfix(
+            ref object[] __state,
+            Chest ____chest)
+        {
+            try
+            {
+                if (__state != null && __state.Length > 0)
+                {
+                    int exp = 0;
+                    if (____chest.items.Count > (int)__state[1])
+                    {
+                        exp = ModEntry.Config.ExperienceFromTrashSuccess;
+                    } else
+                    {
+                        int rarity = BirbShared.Utilities.GetRarity(Utilities.GetBinningRarityLevels());
+                        if (rarity < 0)
+                        {
+                            return;
+                        }
+                        string dropString = BirbShared.Utilities.GetRandomDropStringFromLootTable(ModEntry.Assets.TrashTable, "Town", __state[0].ToString(), rarity.ToString());
+                        Item drop = BirbShared.Utilities.ParseDropString(dropString, ModEntry.JsonAssets, ModEntry.DynamicGameAssets);
+
+                        if (rarity < 0)
+                        {
+                            exp = ModEntry.Config.ExperienceFromTrashFail;
+                        }
+                        else
+                        {
+                            exp = ModEntry.Config.ExperienceFromTrashBonus * (int)(Math.Pow(2, rarity));
+                        }
+                    }
+                    int currExp = BirbShared.Utilities.GetIntData(____chest, "drbirbdev.BinningSkill/GarbageDayExp");
+                    ____chest.modData.Remove("drbirbdev.BinningSkill/GarbageDayExp");
+                    exp += currExp;
+                    ____chest.modData.Add("drbirbdev.BinningSkill/GarbageDayExp", exp.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+    }
+
+    [HarmonyPatch("StardewMods.GarbageDay.GarbageCan", "CheckAction")]
+    class GarbageDay_GarbageCan_CheckAction
+    {
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("furyx639.GarbageDay");
+        }
+
+        public static void Postfix(
+            Chest ____chest)
+        {
+            try
+            {
+                int exp = BirbShared.Utilities.GetIntData(____chest, "drbirbdev.BinningSkill/GarbageDayExp");
+                if (exp > 0)
+                {
+                    Skills.AddExperience(Game1.player, "drbirbdev.Binning", exp);
+                    ____chest.modData.Remove("drbirbdev.BinningSkill/GarbageDayExp");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+    }
+
+    [HarmonyPatch("StardewMods.GarbageDay.GarbageCan", "EmptyTrash")]
+    class GarbageDay_GarbageCan_EmptyTrash
+    {
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("furyx639.GarbageDay");
+        }
+
+        public static void Postfix(
+            Chest ____chest)
+        {
+            try
+            {
+                ____chest.modData.Remove("drbirbdev.BinningSkill/GarbageDayExp");
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            }
+        }
+    }
+
+    [HarmonyPatch("DeluxeGrabberRedux.Grabbers.TownGarbageCanGrabber", "GrabItems")]
+    class DeluxeGrabberRedux_TownGarbageCanGrabber_GrabItems
+    {
+        public static bool Prepare()
+        {
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("ferdaber.DeluxeGrabberRedux");
+        }
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (CodeInstruction instr in instructions)
+            {
+                if (instr.Is(OpCodes.Call, AccessTools.Method("DeluxeGrabberRedux.MapGrabber:TryAddItem", new Type[] { typeof(Item) })))
+                {
+                    // Load whichCan to stack
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 5);
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(DeluxeGrabberRedux_TownGarbageCanGrabber_GrabItems), nameof(DoBinningSkill)));
+                }
+                yield return instr;
+            }
+        }
+
+        public static Item DoBinningSkill(Item obj, int whichCan)
+        {
+            if (obj is not null)
+            {
+                // Do exp gain and return existing object.
+                Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromTrashSuccess);
+                return obj;
+            }
+
+            return Utilities.GetBonusItem("Town", whichCan.ToString(), Game1.player, false);
+        }
+    }
+
+    // Multi-patch
+    [HarmonyPatch]
+    class Sneak_Transpiler
+    {
+
+        static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.Method(typeof(Town), nameof(Town.checkAction));
+
+            if (ModEntry.Instance.Helper.ModRegistry.IsLoaded("AairTheGreat.BetterGarbageCans"))
+            {
+                yield return AccessTools.Method("BetterGarbageCans.GamePatch.GarbageCanOverrider:CheckForNPCMessages");
+            }
+            if (ModEntry.Instance.Helper.ModRegistry.IsLoaded("furyx639.GarbageDay"))
+            {
+                if (AccessTools.Method("StardewMods.GarbageDay.GarbageDay:OnButtonPressed") is null)
+                {
+                    yield return AccessTools.Method("StardewMods.GarbageDay.ModEntry:OnButtonPressed");
+                }
+                else
+                {
+                    yield return AccessTools.Method("StardewMods.GarbageDay.GarbageDay:OnButtonPressed");
+                }
+            }
+        }
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (CodeInstruction instr in instructions)
+            {
+                if (instr.Is(OpCodes.Call, AccessTools.Method(typeof(Utility), nameof(Utility.isThereAFarmerOrCharacterWithinDistance))))
+                {
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Sneak_Transpiler), nameof(DoSneak)));
+                }
+                else
+                {
+                    yield return instr;
+                }
+            }
+        }
+
+        public static Character DoSneak(Vector2 tileLocation, int tilesAway, GameLocation location)
+        {
+            Character c = Utility.isThereAFarmerOrCharacterWithinDistance(tileLocation, tilesAway, location);
+            if (c != null && c is NPC && c is not StardewValley.Characters.Horse && c.Name.Equals("Linus"))
+            {
+                return c;
+            }
+            if (!Game1.player.HasCustomProfession(BinningSkill.Sneak))
+            {
+                return c;
+            }
+            return null;
+        }
+    }
 }

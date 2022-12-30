@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "AutoOrganize": [
+    "AxesOfEvil.DeliveryService"
+  ],
+  "BetterColorPicker": [
+    "berkayylmao.ChestEx"
+  ],
+  "BetterItemGrabMenu": [
+    "berkayylmao.ChestEx"
+  ],
+  "BetterShippingBin": [
+    "Pathoschild.ChestsAnywhere",
+    "MindMeltMax.BetterShipping"
+  ],
+  "CarryChest": [
+    "spacechase0.CarryChest"
+  ],
+  "CategorizeChest": [
+    "aEnigma.ConvenientChests"
+  ],
+  "ChestMenuTabs": [
+    "berkayylmao.ChestEx"
+  ],
+  "CraftFromChest": [
+    "aEnigma.ConvenientChests"
+  ],
+  "LabelChest": [
+    "Pathoschild.ChestsAnywhere",
+    "SPDChestLabel"
+  ],
+  "OrganizeChest": [
+    "Jower.BetterSort"
+  ],
+  "ResizeChest": [
+    "berkayylmao.ChestEx"
+  ],
+  "ResizeChestMenu": [
+    "berkayylmao.ChestEx"
+  ],
+  "SearchItems": [
+    "berkayylmao.ChestEx"
+  ],
+  "StashToChest": [
+    "aEnigma.ConvenientChests",
+    "ZackHill.StashItems",
+    "gaussfire.ConvenientInventory"
+  ]
+}

@@ -1,5 +1,6 @@
 {
   "SprintingKey": "LeftControl",
+  "KeyIsToggle": false,
   "SpeedBoost": 2,
   "EnergyDrainPerSecond": 1.0,
   "SkillBased": true,

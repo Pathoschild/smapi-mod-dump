@@ -1,0 +1,35 @@
+﻿{
+    "config.generalOptions": "General options",
+    "config.useVanilla.name": "Use vanilla birds *",
+    "config.useVanilla.tooltip": "* Requires restart",
+    "config.useBuiltIn.name": "Use built-in bird pack *",
+    "config.useBuiltIn.tooltip": "* Requires restart",
+    "config.saveOurBirds.title": "Save our birds!",
+    "config.saveOurBirds.content": "The world has lost nearly 3 BILLION birds since 1970. For information on the many ways you can help, please visit:",
+    "config.aboutKyle.title": "About Kyle",
+    "config.aboutKyle.content": "Kyle the raven was inspired by Kyle, a raven I met at The Raptors in Duncan, BC, Canada.",
+
+    "mail.Introduction": "Dear @, ^^Your grandmother, an avid birder of many years, left you this. We hope you find a way to continue her tradition this spring! ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",
+    "mail.LifeList1": "Dear @, ^^Congrats, you've identified your first bird! We think these may be of some help. ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",
+    "mail.LifeList5": "Dear @, ^^Five birds identified! You're on a roll. Leave some of this delicious corn for the birds! ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",
+    "mail.LifeList10": "Dear @, ^^Ten birds identified is quite the milestone. If only these Sunflower Seeds were hulled... ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",
+    "mail.LifeList15": "Dear @, ^^Fifteen birds identified!? You're becoming an expert! Perhaps the frugivores in your life will enjoy this. ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",
+    "mail.LifeListAll": "Dear @, ^^You've identified every bird Pelican Town has to offer! Your grandmother left you this as a reward for a job well done. She would be very proud of the birder you've become. < ^^Until next time, ^The Pelican Town Ornithologist's Guild",
+
+    "items.LifeList.title": "{{playerName}}'s Life List ({{identified}}/{{total}} birds)",
+    "items.LifeList.pagination": "Page {{page}} of {{total}}",
+    "items.LifeList.actionNext": "Next page",
+    "items.LifeList.actionClose": "Close life list",
+    "items.LifeList.empty": "empty",
+    "items.LifeList.emptyTip": "Tip: binoculars can help you identify the birds around you.",
+    "items.LifeList.sighted": "Sighted {{date}} ({{location}}): {{attribute}}",
+    "items.LifeList.identified": "Identified {{date}} ({{location}}): {{attribute}}",
+
+    "items.Binoculars.newlyIdentified": "Newly identified:",
+    "items.Binoculars.alreadyIdentified": "Already identified:",
+    "items.Binoculars.notYetIdentified": "Not yet identified:",
+    "items.Binoculars.placeholder": "???",
+
+    "items.AntiqueBinoculars.message": "Binoculars fell apart in your hands",
+    "items.JojaBinoculars.message": "Binoculars jammed when you tried to focus them"
+}

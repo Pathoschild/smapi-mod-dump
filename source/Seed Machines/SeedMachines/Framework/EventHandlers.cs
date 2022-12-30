@@ -28,10 +28,6 @@ namespace SeedMachines.Framework
         public static void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
             ModEntry.dataLoader = new DataLoader();
-            if (DataLoader.isJsonAssetsLoaded != true)
-            {
-                ModEntry.modHelper.Content.AssetEditors.Add(ModEntry.dataLoader);
-            }
         }
         public static void OnDayStarted(object sender, DayStartedEventArgs args)
         {
@@ -65,7 +61,6 @@ namespace SeedMachines.Framework
             if (
                 Context.IsPlayerFree
                 && (args.Button.IsActionButton() || Constants.TargetPlatform == GamePlatform.Android)
-                && args.Cursor.Tile != null
                 && Game1.currentLocation.objects.ContainsKey(args.Cursor.Tile)
                 && Game1.currentLocation.objects[args.Cursor.Tile] is IBigCraftable
                 && args.Cursor.Tile.Equals(args.Cursor.GrabTile)

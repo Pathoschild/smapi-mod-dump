@@ -11,7 +11,7 @@
 {
   "Name": "Informant.Test",
   "Author": "Slothsoft",
-  "Version": "1.3.3",
+  "Version": "1.4.0",
   "Description": "Test Project.",
   "UniqueID": "Slothsoft.Informant.Test",
   "EntryDll": "Informant.Test.dll",

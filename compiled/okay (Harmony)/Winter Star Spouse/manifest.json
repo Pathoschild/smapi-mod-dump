@@ -1,7 +1,7 @@
 ﻿{
     "Name": "WinterStarSpouse",
     "Author": "drbirbdev",
-    "Version": "1.0.2",
+    "Version": "1.0.3",
     "Description": "Customize how often you spouse is your winter star secret santa.",
     "UniqueID": "drbirbdev.WinterStarSpouse",
     "EntryDll": "WinterStarSpouse.dll",

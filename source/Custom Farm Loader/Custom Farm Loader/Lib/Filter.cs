@@ -125,7 +125,7 @@ namespace Custom_Farm_Loader.Lib
         public bool isValid(bool excludeSeason = false, bool excludeWeather = false, bool excludeTime = false, Farmer who = null)
         {
             return (isValidSeason() || excludeSeason)
-                && (isValidWeather() || excludeSeason)
+                && (isValidWeather() || excludeWeather)
                 && (isValidTime() || excludeTime)
                 && isValidDay()
                 && isValidSkill(who);

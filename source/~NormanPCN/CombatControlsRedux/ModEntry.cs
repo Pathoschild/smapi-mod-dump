@@ -16,7 +16,10 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Tools;
+//using StardewValley.Locations;
 using GenericModConfigMenu;
+using Helpers;
+
 
 /*
     This is an adaption of the work of Dj-Stalin (DJ-STLN), who created the original Combat Controls Mod.
@@ -40,6 +43,7 @@ using GenericModConfigMenu;
         auto swing with separate control for sword/club and dagger.
         slick moves disabled for daggers and scythe. there were issues here anyway.
         added slick move velocity config settings. separate velocity for special and not special slides.
+        added club ground slam spam attack.
         
 
     Combat Controls Redux is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License  
@@ -62,6 +66,7 @@ namespace CombatControlsRedux
             public int TickCountdown = 0;
             public bool IsHoldingAttack = false;
             public int MyFacingDirection = -1;
+            public int ClubSpamAttack = 0;
         }
 
         public ModConfig Config;
@@ -69,9 +74,10 @@ namespace CombatControlsRedux
         internal IModHelper MyHelper;
         //private IReflectedMethod PerformFireTool;
 
+        internal const int ClubSpamCountdown = 3;
 
-        private const int CountdownStart = 6;
-        private const int CountdownRepeat = 1;
+        internal Logger Log;
+
         private readonly PerScreen<PerScreenData> ScreenData = new(createNewState: () => new PerScreenData());
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
@@ -79,6 +85,8 @@ namespace CombatControlsRedux
         public override void Entry(IModHelper helper)
         {
             MyHelper = helper;
+
+            Log = new Logger(Monitor);
 
             // original Mod: all config load and event hooking was done on entry. no removal.
             // entry config loads don't work when using GMCM optional. GMCM may not have been loaded yet.
@@ -113,6 +121,10 @@ namespace CombatControlsRedux
 
             Config.SlideVelocity = Math.Min(maxSlideVelocity, Math.Max(minSlideVelocity, Config.SlideVelocity));
             Config.SpecialSlideVelocity = Math.Min(maxSlideVelocity, Math.Max(minSlideVelocity, Config.SpecialSlideVelocity));
+
+            Config.CountdownStart = Math.Min(10, Math.Max(3, Config.CountdownStart));
+            Config.CountdownRepeat = Math.Min(Config.CountdownStart, Math.Max(1, Config.CountdownRepeat));
+            Config.CountdownFastDaggerOffset = Math.Min(Config.CountdownStart-1, Math.Max(1, Config.CountdownFastDaggerOffset));
 
             // use GMCM in an optional manner.
 
@@ -149,6 +161,11 @@ namespace CombatControlsRedux
                                    (bool value) => Config.AutoSwingDagger = value,
                                    () => I18nGet("autoSwingDagger.Label"),
                                    () => I18nGet("autoSwingDagger.tooltip"));
+                gmcm.AddBoolOption(ModManifest,
+                                   () => Config.MouseFix,
+                                   (bool value) => Config.ClubSpecialSpamAttack = value,
+                                   () => I18nGet("clubSpamAttack.Label"),
+                                   () => I18nGet("clubSpamAttack.tooltip"));
                 gmcm.AddBoolOption(ModManifest,
                                    () => Config.SlickMoves,
                                    (bool value) => Config.SlickMoves = value,
@@ -191,7 +208,7 @@ namespace CombatControlsRedux
             }
             else
             {
-                Monitor.LogOnce("Generic Mod Config Menu not available.", LogLevel.Info);
+                Log.LogOnce("Generic Mod Config Menu not available.");
             };
         }
 
@@ -204,6 +221,7 @@ namespace CombatControlsRedux
             screen.TickCountdown = 0;
             screen.IsHoldingAttack = false;
             screen.MyFacingDirection = -1;
+            screen.ClubSpamAttack = 0;
 
             //PerformFireTool = MyHelper.Reflection.GetMethod(Game1.player, "performFireTool");
 
@@ -283,24 +301,72 @@ namespace CombatControlsRedux
                 // note: the scythe identifies itself as a melee weapon
                 MeleeWeapon tool = who.CurrentTool as MeleeWeapon;
 
+                bool controller = (e.Button == SButton.ControllerX) || (e.Button == SButton.ControllerA);
+                bool scythe = false;
+                bool dagger = false;
+                bool club = false;
+                bool special = false;
+                bool swordSpecial = false;
+                bool clubSpecial = false;
+                if (tool != null)
+                {
+                    scythe = tool.isScythe();
+                    dagger = tool.type.Value == MeleeWeapon.dagger;
+                    club = tool.type.Value == MeleeWeapon.club;
+                    //note: Game logic always returns true if no regular swing occurs after a special swing.
+                    //      the boolean is not auto reset. only regular swing seems to reset the boolean.
+                    //      is there a better way to detect an actual special?
+                    special = tool.isOnSpecial;
+                    swordSpecial = special && (tool.type.Value == MeleeWeapon.defenseSword);
+                    clubSpecial = special && club;
+                }
+
                 if (useToolButtonPressed && (tool != null))
                 {
                     screen.IsHoldingAttack = true;
-                    screen.TickCountdown = CountdownStart;
+                    screen.TickCountdown = Config.CountdownStart;
+
+                    //Log.Debug($"Speed = {tool.speed.Value}");
+                    if (dagger)
+                    {
+                        // fast daggers need a short initial delay. this is because their animation is so fast.
+                        // if the user button press is a bit slow, they may get an unintended auto swing.
+                        // this is not too bad since the dagger stab is so fast.
+                        if (tool.speed.Value > 3) // >= +2 speed.
+                        {
+                            // fast daggers.
+                            screen.TickCountdown -= Config.CountdownFastDaggerOffset;
+
+                            if (tool.speed.Value > 5)
+                            {
+                                // really fast daggers.
+                                screen.TickCountdown -= 1;
+                            }
+                            else if (tool.speed.Value > 7)
+                            {
+                                // crazy fast daggers.
+                                screen.TickCountdown -= 1;
+                            }
+
+                            // speed buffs affect weapon speed.
+                            if (who.addedSpeed != 0)
+                            {
+                                //Log.Debug($"SpeedBuff = {who.addedSpeed}");
+                                screen.TickCountdown -= 1;
+                            }
+
+                            if (screen.TickCountdown <= 0)
+                                screen.TickCountdown = 1;
+                        }
+                    }
                 }
 
-                bool controller = (e.Button == SButton.ControllerX) || (e.Button == SButton.ControllerA);
                 if (
                     ((Config.MouseFix && !controller) || (controller && Config.ControllerFix)) &&
                     ((tool != null) || Config.RegularToolsFix) &&
                     ((who.CurrentTool is not FishingRod) || !(who.CurrentTool as FishingRod).isFishing)
                    )
                 {
-                    bool scythe = tool?.isScythe() == true;
-                    bool dagger = (tool?.type.Value == MeleeWeapon.dagger);
-                    bool special = tool?.isOnSpecial == true;
-                    bool swordSpecial = special && (tool?.type.Value == MeleeWeapon.defenseSword);
-                    bool clubSpecial = special && (tool?.type.Value == MeleeWeapon.club);
 
                     if (
                         (tool != null) &&
@@ -321,10 +387,10 @@ namespace CombatControlsRedux
                         // it still seems to work okay on the diagonal, with single velocity adjustment.
                         // so maybe not limit
 
-                        //Monitor.Log($".movementDirections.Count={who.movementDirections.Count}", LogLevel.Debug);
+                        //Log.Debug($".movementDirections.Count={who.movementDirections.Count}");
                         if (who.movementDirections.Count == 1)
                         {
-                            //Monitor.Log($".xV={who.xVelocity}, .yV={who.yVelocity}", LogLevel.Debug);
+                            //Log.Debug($".xV={who.xVelocity}, .yV={who.yVelocity}");
                             switch (who.getDirection())
                             {
                             case Game1.left:
@@ -392,55 +458,98 @@ namespace CombatControlsRedux
                             screen.MyFacingDirection = Game1.down;
                         }
                     }
+
                 }
+
+                if (club && actionButtonPressed && !special)
+                {
+                    //Log.Debug("\n\n\nClub ground slam.");
+                    screen.ClubSpamAttack = -1;
+                }
+
+                // i want to trigger this only when it is available.
+                // i think this can only happen during the duration of the ground slam animation.
+                if (clubSpecial && useToolButtonPressed && Config.ClubSpecialSpamAttack && (screen.ClubSpamAttack < 0))
+                {
+                    //Log.Debug("Club Spam attack setup");
+                    screen.ClubSpamAttack = Config.ClubSpamCount;
+                    screen.TickCountdown = ClubSpamCountdown;
+                }
+
             }
         }
 
         /// <summary>Raised when the game state is about to be updated (≈60 times per second).
-        /// This method implements the Auto Swing feature of the mod.</summary>
+        /// This method implements the Auto Swing feature and ground slam spam attack.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void GameLoop_UpdateTicking(object sender, EventArgs e)
         {
-            // Test IsHoldingAttack first. It is the main logic restricter here.
-
             PerScreenData screen = ScreenData.Value;
 
-            if (screen.IsHoldingAttack && Context.IsPlayerFree)
+            if (Context.IsPlayerFree)
             {
                 Farmer who = Game1.player;
 
-                // this auto swing code does not work for the Scythe.
-                // I am good with that. I explicitly disable the scythe anyway.
-
                 if (who.CurrentTool is MeleeWeapon tool)
                 {
-                    bool dagger = (tool.type.Value == MeleeWeapon.dagger);
-                    if ((!tool.isScythe()) && ((Config.AutoSwing && !dagger) || (Config.AutoSwingDagger && dagger)))
+
+                    if ((tool.type.Value == MeleeWeapon.club) && (screen.ClubSpamAttack > 0))
                     {
-                        // spamming FireTool at every tick (60/s) seems excessive. at least to me.
-                        // it seems to work with spams. i don't know the exact overhead.
-                        // i'll reduce to every N ticks. N must be small.
-                        // too big a number and auto swing just does not work at all.
-                        // the next fire may need to be set during a current fire/swing/something.
-                        // even a little reduction seems somehow "nicer". what the heck.
-                        // update: fast weapons + lots of speed buffs need a real repeat short delay. maybe dump the repeat timing.
-                        if (screen.TickCountdown > 0)
+                        //Log.Debug($"UpdateTicking: countdown={screen.TickCountdown}, isOnSpecial={tool.isOnSpecial}, spamAttack={screen.ClubSpamAttack}");
+
+                        if (tool.isOnSpecial)
                         {
-                            screen.TickCountdown -= 1;
+                            if (screen.TickCountdown > 0)
+                            {
+                                screen.TickCountdown -= 1;
+                            }
+                            else
+                            {
+                                screen.ClubSpamAttack -= 1;
+                                screen.TickCountdown = ClubSpamCountdown;
+
+                                bool ok = Game1.pressUseToolButton();
+                                //tool.leftClick(who);
+                            }
                         }
                         else
                         {
-                            // which is "better" FireTool or (private internal) PerformFireTool
-                            // Looking at the Stardew code, PerformFireTool seems to be the implementation of NetEvent.Fire.
-                            // Farmer.FireTool is just a call to NetEvent.Fire
-                            // Fire clearly has a bit over minor checking/overhead before calling the implementation.
-                            // code that we should probably have execute.
-                            // i've seen some auto swing code use performFireTool. so I wondered the diff.
+                            screen.ClubSpamAttack = 0;
+                        }
+                    }
+                    else if (screen.IsHoldingAttack)
+                    {
+                        // this auto swing code does not work for the Scythe. I am good with that.
 
-                            who.FireTool();
-                            //PerformFireTool.Invoke();
-                            screen.TickCountdown = CountdownRepeat;
+                        bool dagger = (tool.type.Value == MeleeWeapon.dagger);
+                        if ((Config.AutoSwing && !dagger) || (Config.AutoSwingDagger && dagger))
+                        {
+                            // we have an initial longer delay to avoid a slow finger press/click causing an unintended auto swing.
+                            // that extra swing could be slow.
+                            // repeat...
+                            // spamming FireTool at every tick seems excessive (60/s). at least to me.
+                            // FireTool seems to work with spams fine. i don't know the exact overhead.
+                            // i'll reduce to every N ticks. N must be small.
+                            // the next fire seems to need to be set during a current fire/swing animation.
+                            // even a little spam reduction seems somehow "nicer". what the heck.
+                            if (screen.TickCountdown > 0)
+                            {
+                                screen.TickCountdown -= 1;
+                            }
+                            else
+                            {
+                                // which is "better". FireTool or (private internal) PerformFireTool
+                                // Looking at the Stardew code, PerformFireTool seems to be the implementation of NetEvent.Fire.
+                                // Farmer.FireTool is just a call to NetEvent.Fire
+                                // Fire clearly has a bit over minor checking/overhead before calling the implementation.
+                                // code that we should probably have execute.
+                                // i've seen some auto swing code use performFireTool. so I wonder about the diff.
+
+                                who.FireTool();
+                                //PerformFireTool.Invoke();
+                                screen.TickCountdown = Config.CountdownRepeat;
+                            }
                         }
                     }
                 }
@@ -464,7 +573,7 @@ namespace CombatControlsRedux
                 //re-setting the direction here seems to work well enough. I've seen some animation quirks at times.
                 //this re-change may be happening on the next game tick.
                                         
-                //Monitor.Log($"FacingDirection different me={facing} game={Game1.player.FacingDirection}", LogLevel.Debug);
+                //Log.Debug($"FacingDirection different me={facing} game={Game1.player.FacingDirection}");
                 Game1.player.FacingDirection = facing;
             }
         }

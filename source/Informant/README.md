@@ -68,7 +68,9 @@ can disable each type.
 There are some decorators, i.e. images displayed on the regular item tooltip, that have a specific meaning:
 
 - ![Bundle Image](./Informant/assets/bundle.png) **Bundles Decorator** - displayed when the item is still needed for the bundles
+- ![Field Office Image](./Informant/assets/field_office.png) **Field Office Decorator** - displayed when the item is still needed for the island field office
 - ![Museum Image](./Informant/assets/museum.png) **Museum Decorator** - displayed when the item is still needed for the museum
+- ![Rarecrow Image](./Informant/assets/rarecrow.png) **Rarecrow Decorator** - displayed when the item is still needed for the rarecrow collection
 - ![Shipping Bin Image](./Informant/assets/shipping_bin.png) **Shipping Decorator** - displayed when the item was not yet shipped
 
 For the **Bundles Decorator**, there is the option to show it on items needed for still locked bundles. On
@@ -104,7 +106,9 @@ entries is:
     "bundles": true,
     "challenger-decorator": true,
     "crop": true,
+    "fieldoffice": true,
     "fruit-tree": true,
+    "rarecrow": true,
     "machine": true,
     "museum": true,
     "sell-price": true,
@@ -118,20 +122,22 @@ entries is:
 }
 ```
 
-| Key in JSON             | Config Name             | Default Value    | Explanation                                                                                                                                              |
-|-------------------------|-------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `DisplayIds.bundles`    | Bundles Decorator       | `true`           | True if the bundle decorator should be activated                                                                                                         |
-| `DisplayIds.crop`       | Crops Tooltip           | `true`           | True if the crops tooltip should be activated                                                                                                            |
-| `DisplayIds.fruit-tree` | Fruit Trees Tooltip     | `true`           | True if the fruit trees tooltip should be activated                                                                                                      |
-| `DisplayIds.machine`    | Machines Tooltip        | `true`           | True if the machines tooltip should be activated                                                                                                         |
-| `DisplayIds.museum`     | Museum Decorator        | `true`           | True if the museum decorator should be activated                                                                                                         |
-| `DisplayIds.sell-price` | Sell Price Decorator    | `true`           | True to show the item's price on the bottom of the tooltip                                                                                               |
-| `DisplayIds.shipping`   | Shipping Decorator      | `true`           | True to marks items that were not shipped yet                                                                                                            |
-| `DisplayIds.tree`       | Trees Tooltip           | `true`           | True if the trees tooltip should be activated                                                                                                            |
-| `DecorateLockedBundles` | Decorate Locked Bundles | `false`          | `ForNonMachines` displays tooltips only on machines that do work<br>`ForChests` hides tooltips only for chests<br>`Never` displays tooltip on every item |
-| `HideMachineTooltips`   | Hide Machine Tooltips   | `ForNonMachines` | `ForNonMachines` displays tooltips only on machines that do work<br>`ForChests` hides tooltips only for chests<br>`Never` displays tooltip on every item |
-| `TooltipTrigger`        | Tooltip Trigger         | `Hover`          | `Hover` to get tooltips when the mouse hovers over the item<br>`ButtonHeld` to get tooltips only when a button is held                                   |
-| `TooltipTriggerButton`  | Tooltip Button          | `MouseRight`     | If the trigger is `ButtonHeld`, this is the button that triggers the tooltip                                                                             |
+| Key in JSON              | Config Name             | Default Value    | Explanation                                                                                                                                              |
+|--------------------------|-------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `DisplayIds.bundles`     | Bundles Decorator       | `true`           | True if the bundle decorator should be activated                                                                                                         |
+| `DisplayIds.crop`        | Crops Tooltip           | `true`           | True if the crops tooltip should be activated                                                                                                            |
+| `DisplayIds.fieldoffice` | Field Office Decorator  | `true`           | True if the field office decorator tooltip should be activated                                                                                           |
+| `DisplayIds.fruit-tree`  | Fruit Trees Tooltip     | `true`           | True if the fruit trees tooltip should be activated                                                                                                      |
+| `DisplayIds.machine`     | Machines Tooltip        | `true`           | True if the machines tooltip should be activated                                                                                                         |
+| `DisplayIds.museum`      | Museum Decorator        | `true`           | True if the museum decorator should be activated                                                                                                         |
+| `DisplayIds.rarecrow`    | Rarecrow Decorator      | `true`           | True if the rarecrow decorator should be activated                                                                                                       |
+| `DisplayIds.sell-price`  | Sell Price Decorator    | `true`           | True to show the item's price on the bottom of the tooltip                                                                                               |
+| `DisplayIds.shipping`    | Shipping Decorator      | `true`           | True to marks items that were not shipped yet                                                                                                            |
+| `DisplayIds.tree`        | Trees Tooltip           | `true`           | True if the trees tooltip should be activated                                                                                                            |
+| `DecorateLockedBundles`  | Decorate Locked Bundles | `false`          | `ForNonMachines` displays tooltips only on machines that do work<br>`ForChests` hides tooltips only for chests<br>`Never` displays tooltip on every item |
+| `HideMachineTooltips`    | Hide Machine Tooltips   | `ForNonMachines` | `ForNonMachines` displays tooltips only on machines that do work<br>`ForChests` hides tooltips only for chests<br>`Never` displays tooltip on every item |
+| `TooltipTrigger`         | Tooltip Trigger         | `Hover`          | `Hover` to get tooltips when the mouse hovers over the item<br>`ButtonHeld` to get tooltips only when a button is held                                   |
+| `TooltipTriggerButton`   | Tooltip Button          | `MouseRight`     | If the trigger is `ButtonHeld`, this is the button that triggers the tooltip                                                                             |
 
 
 
@@ -140,7 +146,8 @@ entries is:
 | Version | Issues                                                                         | Changes                                                                                                                                                                                                       |
 |---------|--------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Future  | [Issues](https://github.com/slothsoft/stardew-informant/milestone/1)           |                                                                                                                                                                                                               |
-| 1.3.3   | [Issues](https://github.com/slothsoft/stardew-informant/milestone/13?closed=1) | Portuguese translation and bugfixes                                                                                                                       |
+| 1.4.0   | [Issues](https://github.com/slothsoft/stardew-informant/milestone/14?closed=1) | Add rarecrow and field office decorators                                                                                                                                                                      |
+| 1.3.3   | [Issues](https://github.com/slothsoft/stardew-informant/milestone/13?closed=1) | Portuguese translation and bugfixes                                                                                                                                                                           |
 | 1.3.2   | [Issues](https://github.com/slothsoft/stardew-informant/milestone/12?closed=1) | Translations (add French translation; update Korean translation)                                                                                                                                              |
 | 1.3.1   | [Issues](https://github.com/slothsoft/stardew-informant/milestone/11?closed=1) | Bugfixes (fix config for "new" recipe; fix fruit tree calculation on Ginger Island; make decorator display shipped item needed for "ship 15 of everything"; fix time remaining for casks; fix ginger tooltip) |
 | 1.3.0   | [Issues](https://github.com/slothsoft/stardew-informant/milestone/9?closed=1)  | Additional information (marks uncrafted recipes, shipping decorator, shows icons on tooltips)                                                                                                                 |
@@ -207,7 +214,7 @@ namespace MyMod.ThirdParty;
 
 /// <summary>
 /// Base class for the entire API. Can be used to add custom information providers.<br/>
-/// <b>API Version:</b> 1.3.3
+/// <b>API Version:</b> 1.4.0
 /// </summary>
 public interface IInformant {
 

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;
 using System.IO;
+using DynamicBodies.Data;
 
 namespace DynamicBodies
 {
@@ -243,17 +244,7 @@ namespace DynamicBodies
 				facingDirection = ((!animationFrame.flip) ? 1 : 3);
 			}
 			b.Draw(_baseTexture, position + origin + _positionOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
-			if (!FarmerRenderer.isDrawingForUI && (bool)who.swimming)
-			{
-				if (who.currentEyes != 0 && who.FacingDirection != 0 && (Game1.timeOfDay < 2600 || (who.isInBed.Value && who.timeWentToBed.Value != 0)) && ((!who.FarmerSprite.PauseForSingleAnimation && !who.UsingTool) || (who.UsingTool && who.CurrentTool is FishingRod)))
-				{
-					b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4 + 20 + ((who.FacingDirection == 1) ? 12 : ((who.FacingDirection == 3) ? 4 : 0)), FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 40), new Rectangle(5, 16, (who.FacingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
-					b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4 + 20 + ((who.FacingDirection == 1) ? 12 : ((who.FacingDirection == 3) ? 4 : 0)), FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 40), new Rectangle(264 + ((who.FacingDirection == 3) ? 4 : 0), 2 + (who.currentEyes - 1) * 2, (who.FacingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 1.2E-07f);
-				}
-				farmerRenderer.drawHairAndAccesories(b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
-				b.Draw(Game1.staminaRect, new Rectangle((int)position.X + (int)who.yOffset + 8, (int)position.Y - 128 + sourceRect.Height * 4 + (int)origin.Y - (int)who.yOffset, sourceRect.Width * 4 - (int)who.yOffset * 2 - 16, 4), Game1.staminaRect.Bounds, Color.White * 0.75f, 0f, Vector2.Zero, SpriteEffects.None, layerDepth + 0.001f);
-				return;
-			}
+			
 		}
 		public static void drawPants(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
 		{
@@ -264,20 +255,56 @@ namespace DynamicBodies
 			{
 				pants_rect.X += 96;
 			}
-			b.Draw(FarmerRenderer.pantsTexture, position + origin + _positionOffset, pants_rect, overrideColor.Equals(Color.White) ? Utility.MakeCompletelyOpaque(who.GetPantsColor()) : overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + ((who.FarmerSprite.CurrentAnimationFrame.frame == 5) ? 0.00092f : 9.2E-08f));
+            PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
+            Texture2D pantsTexture = FarmerRenderer.pantsTexture;
+            if(pbe.body.textures.ContainsKey("pants") && pbe.body.textures["pants"] != null)
+            {
+                pantsTexture = pbe.body.textures["pants"];
+            }
+			b.Draw(pantsTexture, position + origin + _positionOffset, pants_rect, overrideColor.Equals(Color.White) ? Utility.MakeCompletelyOpaque(who.GetPantsColor()) : overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + ((who.FarmerSprite.CurrentAnimationFrame.frame == 5) ? 0.00092f : 9.2E-08f));
 		}
 		public static void drawEyes(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
 		{
+
+            
+
             //sourceRect.Offset(288, 0); //Source rect isn't used
-			if ((who.currentEyes != 0 || facingDirection == 3) && //dont draw over when open or do when open but looking left
-                facingDirection != 0 && //looking up
-                (Game1.timeOfDay < 2600 || (who.isInBed.Value && who.timeWentToBed.Value != 0)) &&//2am pass out
+            if ((who.currentEyes != 0 || facingDirection == 3) && //dont draw over when open or do when open but looking left
+                facingDirection != 0 && //not looking up
+                (Game1.timeOfDay < 2600 || (who.isInBed.Value && who.timeWentToBed.Value != 0)) &&//2am pass out, or gone to bed
                 ((!who.FarmerSprite.PauseForSingleAnimation && !who.UsingTool) || (who.UsingTool && who.CurrentTool is FishingRod)) && //Fishing is ignored?
                 (!who.UsingTool || !(who.CurrentTool is FishingRod fishing_rod) || fishing_rod.isFishing))
 			{
 				int x_adjustment = 4;//5 pixel in from the left of the frame originally
-                //adjustments for a single eye
-				x_adjustment = (animationFrame.flip ? (x_adjustment - FarmerRenderer.featureXOffsetPerFrame[currentFrame]) : (x_adjustment + FarmerRenderer.featureXOffsetPerFrame[currentFrame]));
+                                     //adjustments for a single eye
+
+                float yoffset = FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 - 8;
+                if (who.IsMale)
+                {
+                    if (who.FacingDirection == 2)
+                    {
+                        //front on eyes slightly lower for males
+                        yoffset += 44;
+                    }
+                    else
+                    {
+                        yoffset += 40;
+                    }
+                }
+                else
+                {
+                    if (who.FacingDirection == 2)
+                    {
+                        //front on eyes slightly lower for males
+                        yoffset += 48;
+                    }
+                    else
+                    {
+                        yoffset += 44;
+                    }
+                }
+
+                x_adjustment = (animationFrame.flip ? (x_adjustment - FarmerRenderer.featureXOffsetPerFrame[currentFrame]) : (x_adjustment + FarmerRenderer.featureXOffsetPerFrame[currentFrame]));
                 switch (facingDirection)
 				{
 					case 1:
@@ -290,14 +317,10 @@ namespace DynamicBodies
                 //scale to pixel size
 				x_adjustment *= 4;
                 //Drawing from the top left frame (0) - not sure what this part is for..? A hacky draw over eyes with skin color?
-                //b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && who.FacingDirection != 2) ? 36 : 40)),
-                //    new Rectangle(5, 16, (facingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
-                if (who.currentEyes != 0)
-                {
-                    //Draw over eyes with skin colour, new frame location
-                    b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.IsMale && who.FacingDirection != 2) ? 36 : 44) - 8),
-                        new Rectangle(256, 2, (facingDirection == 2) ? 8 : 4, 4), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
-                }
+                //Draw over eyes with skin colour, new frame location
+                b.Draw(_baseTexture, position + origin + _positionOffset + new Vector2(x_adjustment, yoffset),
+                    new Rectangle(256 + ((facingDirection == 3) ? 4 : 0), 2, (facingDirection == 2) ? 8 : 4, 4), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 5E-08f);
+                
                 //Drawing from the animation frames
                 Vector2 offsetFrame = new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + 44);
                 offsetFrame.Y -= 4;//for larger eye animations
@@ -305,12 +328,10 @@ namespace DynamicBodies
                 {
                     offsetFrame.Y -= 4;//side views are up one pixel
                 }
-                if(who.IsMale)
+
+                if (who.IsMale)
                 {
                     offsetFrame.Y -= 4;//males eyes are a bit higher
-                } else
-                {
-                    offsetFrame.Y += 4;//female eyes are a bit lower
                 }
 
                 int pixel_y = 2 + (who.currentEyes - 1) * 4;
@@ -325,15 +346,73 @@ namespace DynamicBodies
 			}
 		}
 
-		public static void drawArms(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
+        public static void drawArmBack(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, Vector2 _positionOffset, Texture2D _backTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
+        {
+            //Don't bother rendering if there's a slingshot happening
+            /*if (who.usingSlingshot || (who.CurrentTool is Slingshot))
+            {
+                return;
+            }*/
+
+            float arm_layer_offset = -1E-07f;
+
+            if (animationFrame.secondaryArm && !who.bathingClothes.Value)
+            {
+                //Go to the secondary arms
+                sourceRect.Offset(96, 0);
+            }
+
+            if (who.bathingClothes.Value && who.modData.ContainsKey("DB.bathers") && who.modData["DB.bathers"] == "false")
+            {
+                PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
+                if (pbe.nakedUpper.CheckForOption("sleeve short") || pbe.nakedUpper.CheckForOption("sleeve")
+                    || pbe.nakedUpper.CheckForOption("sleeve long"))
+                {
+                    sourceRect.Offset(0, -574);//Use the normal arms
+                }
+                if (FarmerRenderer.isDrawingForUI)
+                {
+                    //Weird offset issue
+                    //_positionOffset.Y -= 8;
+                }
+            }
+
+            b.Draw(_backTexture, position + origin + _positionOffset + who.armOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + arm_layer_offset);
+        }
+
+        public static void drawArms(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who, bool hasBackTexture)
 		{
 			float arm_layer_offset = 4.9E-05f;
-			if (facingDirection == 0)
+			if (facingDirection == 0 && !hasBackTexture)
 			{
 				arm_layer_offset = -1E-07f;
 			}
-			sourceRect.Offset(animationFrame.secondaryArm ? 192 : 96, 0);
-			b.Draw(_baseTexture, position + origin + _positionOffset + who.armOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + arm_layer_offset);
+
+            sourceRect.Offset(96, 0);
+            if (animationFrame.secondaryArm && !who.bathingClothes.Value)
+            {
+                //Go to the secondary arms
+                sourceRect.Offset(96, 0);
+            }
+
+
+            if (who.bathingClothes.Value && who.modData.ContainsKey("DB.bathers") && who.modData["DB.bathers"] == "false")
+            {
+                PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
+                if (pbe.nakedUpper.CheckForOption("sleeve short") || pbe.nakedUpper.CheckForOption("sleeve")
+                    || pbe.nakedUpper.CheckForOption("sleeve long"))
+                {
+                    sourceRect.Offset(0, -574);//Use the normal arms
+                }
+                if (FarmerRenderer.isDrawingForUI)
+                {
+                    //Weird offset issue
+                    //_positionOffset.Y -= 8;
+                }
+            }
+            
+
+            b.Draw(_baseTexture, position + origin + _positionOffset + who.armOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + arm_layer_offset);
 			if (!who.usingSlingshot || !(who.CurrentTool is Slingshot))
 			{
 				return;

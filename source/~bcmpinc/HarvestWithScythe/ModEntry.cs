@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
+using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Netcode;
@@ -126,22 +127,20 @@ namespace StardewHack.HarvestWithScythe
             return res;
         }
 
-        protected override void InitializeApi(GenericModConfigMenuAPI api) {
-            api.RegisterSimpleOption(ModManifest, "Harvest With Sword", "Whether a sword can be used instead of a normal scythe.", () => config.HarvestWithSword, (bool val) => config.HarvestWithSword = val);
+        protected override void InitializeApi(IGenericModConfigMenuApi api) {
+            api.AddBoolOption(mod: ModManifest, name: () => "Harvest With Sword", tooltip: () => "Whether a sword can be used instead of a normal scythe.", getValue: () => config.HarvestWithSword, setValue: (bool val) => config.HarvestWithSword = val);
 
             string[] options = { "Hand", "Scythe", "Both", "Gold" };
-            string options_desc =
-                " · Hand: only pluckable;\n" +
-                " · Scythe: only scythable;\n" +
-                " · Both: both pluckable and scythable;\n" +
-                " · Gold: like 'both', but requires the golden scythe.";
-            api.RegisterLabel(ModManifest, "HarvestMode", null);
-            api.RegisterParagraph(ModManifest, options_desc);
-            api.RegisterChoiceOption(ModManifest, "PluckableCrops", "How crops that normally can only be harvested by hand can be harvested.", () => writeEnum(config.HarvestMode.PluckableCrops), (string val) => config.HarvestMode.PluckableCrops = parseEnum(val), options);
-            api.RegisterChoiceOption(ModManifest, "ScythableCrops", "How crops that normally can only be harvested with a scythe can be harvested.", () => writeEnum(config.HarvestMode.ScythableCrops), (string val) => config.HarvestMode.ScythableCrops = parseEnum(val), options);
-            api.RegisterChoiceOption(ModManifest, "Flowers", "How flowers can be harvested.", () => writeEnum(config.HarvestMode.Flowers), (string val) => config.HarvestMode.Flowers = parseEnum(val), options);
-            api.RegisterChoiceOption(ModManifest, "Forage", "How forage can be harvested.", () => writeEnum(config.HarvestMode.Forage), (string val) => config.HarvestMode.Forage = parseEnum(val), options);
-            api.RegisterChoiceOption(ModManifest, "SpringOnion", "How spring onions can be harvested.", () => writeEnum(config.HarvestMode.SpringOnion), (string val) => config.HarvestMode.SpringOnion = parseEnum(val), options);
+            api.AddSectionTitle(mod: ModManifest, text: () => "HarvestMode");
+            api.AddParagraph(mod: ModManifest, text: () => " · Hand: only pluckable;");
+            api.AddParagraph(mod: ModManifest, text: () => " · Scythe: only scythable;");
+            api.AddParagraph(mod: ModManifest, text: () => " · Both: both pluckable and scythable;");
+            api.AddParagraph(mod: ModManifest, text: () => " · Gold: like 'both', but requires the golden scythe.");
+            api.AddTextOption(mod: ModManifest, name: () => "PluckableCrops", tooltip: () => "How crops that normally can only be harvested by hand can be harvested.", getValue: () => writeEnum(config.HarvestMode.PluckableCrops), setValue: (string val) => config.HarvestMode.PluckableCrops = parseEnum(val), allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: () => "ScythableCrops", tooltip: () => "How crops that normally can only be harvested with a scythe can be harvested.", getValue: () => writeEnum(config.HarvestMode.ScythableCrops), setValue: (string val) => config.HarvestMode.ScythableCrops = parseEnum(val), allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: () => "Flowers",        tooltip: () => "How flowers can be harvested.", getValue: () => writeEnum(config.HarvestMode.Flowers), setValue: (string val) => config.HarvestMode.Flowers = parseEnum(val), allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: () => "Forage",         tooltip: () => "How forage can be harvested.", getValue: () => writeEnum(config.HarvestMode.Forage), setValue: (string val) => config.HarvestMode.Forage = parseEnum(val), allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: () => "SpringOnion",    tooltip: () => "How spring onions can be harvested.", getValue: () => writeEnum(config.HarvestMode.SpringOnion), setValue: (string val) => config.HarvestMode.SpringOnion = parseEnum(val), allowedValues: options);
         }
 #endregion
 

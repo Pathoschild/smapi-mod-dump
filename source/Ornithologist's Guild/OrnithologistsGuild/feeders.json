@@ -1,0 +1,102 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+[
+  {
+    "id": "WoodenHopper",
+    "type": "Hopper",
+    "range": 10,
+    "maxFlocks": 1,
+    "zOffset": -28,
+    "texture": "WoodenHopper.png",
+    "sellPrice": 2500,
+    "cost": 25000,
+    "recipePrice": 500,
+    "recipeIngredients": [
+      {
+        "Type": "VanillaObject",
+        "Value": 388,
+        "_Name": "Wood",
+        "Quantity": 100
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 338,
+        "_Name": "Refined Quartz",
+        "Quantity": 5
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 709,
+        "_Name": "Hardwood",
+        "Quantity": 5
+      }
+    ],
+    "capacityHrs": 12
+  },
+  {
+    "id": "PlasticTube",
+    "type": "Tube",
+    "range": 15,
+    "maxFlocks": 2,
+    "zOffset": -16,
+    "texture": "PlasticTube.png",
+    "sellPrice": 1250,
+    "cost": 12500,
+    "recipePrice": 250,
+    "recipeIngredients": [
+      {
+        "Type": "VanillaObject",
+        "Value": 335,
+        "_Name": "Iron",
+        "Quantity": 25
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 338,
+        "_Name": "Refined Quartz",
+        "Quantity": 5
+      }
+    ],
+    "capacityHrs": 12
+  },
+  {
+    "id": "WoodenPlatform",
+    "type": "Platform",
+    "range": 25,
+    "maxFlocks": 3,
+    "zOffset": -10,
+    "texture": "WoodenPlatform.png",
+    "sellPrice": 5000,
+    "cost": 50000,
+    "recipePrice": 1000,
+    "recipeIngredients": [
+      {
+        "Type": "VanillaObject",
+        "Value": 388,
+        "_Name": "Wood",
+        "Quantity": 250
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 709,
+        "_Name": "Hardwood",
+        "Quantity": 20
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 335,
+        "_Name": "Iron",
+        "Quantity": 5
+      }
+    ],
+    "capacityHrs": 12
+  }
+]

@@ -12,6 +12,8 @@ using System;
 
 namespace StardewHack.WearMoreRings
 {
+    
+    [Obsolete("Wear More Rings now stores rings in a combined ring in the player's left ring slot. Using this API should therefore no longer be necessary for interoperability between mods that do stuff with rings and the Wear More Rings mod.")]
     public interface IWearMoreRingsAPI {
         /// <summary>
         /// Count how many of the specified ring type the given player has equipped. This includes the vanilla left & right rings.

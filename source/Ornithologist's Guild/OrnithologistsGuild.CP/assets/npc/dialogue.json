@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+  "Custom_Ivy_OrnithologistsGuild_Mon": "CAW! CAW!$3#$b#%Maybe Kyle isn't the biggest fan of Mondays...",
+  "Custom_Ivy_OrnithologistsGuild_Tue": "Caw!$1#$b#%Kyle seems to be in a good mood today.",
+  "Custom_Ivy_OrnithologistsGuild_Wed": "Bok bok bok... %adj %noun!$0#$b#%Is Kyle trying to say something?",
+  "Custom_Ivy_OrnithologistsGuild_Thu": "...$2#$b#%If only Kyle could tell you what's bothering him...",
+  "Custom_Ivy_OrnithologistsGuild_Fri": "%Kyle pecks the ground nervously.",
+  "Custom_Ivy_OrnithologistsGuild_Sat": "Croak...$1#$b#%Kyle seems enthusiastic about your presence.",
+  "Custom_Ivy_OrnithologistsGuild_Sun": "Bok... %noun?$2#$b#%What is Kyle trying to tell you?",
+  "Custom_Ivy_OrnithologistsGuild_15_14": "%Kyle is sleeping peacefully. Ssh, don't wake him!"
+}

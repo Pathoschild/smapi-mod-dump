@@ -1,0 +1,380 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+[
+    {
+      "id": "Black",
+      "name": "Brewer's Blackbird",
+      "maxFlockSize": 3,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 2,
+        "fall": 1,
+        "winter": 1
+      },
+      "weightedRandom": 5,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Corn": 3,
+        "SunflowerSeeds": 2
+      },
+      "weightedFeeders": {
+        "Platform": 3
+      },
+      "flapDuration": 250,
+      "flySpeed": 6,
+      "cautiousness": 3
+    },
+    {
+      "id": "Blonde",
+      "name": "Cedar Waxwing",
+      "maxFlockSize": 6,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 2,
+        "winter": 1
+      },
+      "weightedRandom": 5,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Fruit": 3
+      },
+      "weightedFeeders": {
+        "Hopper": 3
+      },
+      "flapDuration": 200,
+      "flySpeed": 6,
+      "cautiousness": 5
+    },
+    {
+      "id": "Brown",
+      "name": "House Finch",
+      "maxFlockSize": 2,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 2,
+        "winter": 1
+      },
+      "weightedRandom": 100,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "MixedSeeds": 3,
+        "SunflowerSeeds": 5
+      },
+      "weightedFeeders": {
+        "Hopper": 3,
+        "Platform": 1,
+        "Tube": 5
+      },
+      "flapDuration": 150,
+      "flySpeed": 7,
+      "cautiousness": 5
+    },
+    {
+      "id": "Cardinal",
+      "name": "Northern Cardinal",
+      "maxFlockSize": 2,
+      "seasonalMultiplier": {
+        "spring": 1,
+        "summer": 1,
+        "fall": 2,
+        "winter": 3
+      },
+      "weightedRandom": 20,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Corn": 4,
+        "MixedSeeds": 3,
+        "SunflowerSeeds": 4
+      },
+      "weightedFeeders": {
+        "Hopper": 2,
+        "Platform": 3,
+        "Tube": 1
+      },
+      "flapDuration": 250,
+      "flySpeed": 5,
+      "cautiousness": 4
+    },
+    {
+      "id": "Chickadee",
+      "name": "Black-capped Chickadee",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 2,
+        "winter": 3
+      },
+      "weightedRandom": 100,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "MixedSeeds": 5,
+        "SunflowerSeeds": 5
+      },
+      "weightedFeeders": {
+        "Hopper": 5,
+        "Platform": 3,
+        "Tube": 5
+      },
+      "flapDuration": 500,
+      "flySpeed": 4,
+      "cautiousness": 2
+    },
+    {
+      "id": "Cream",
+      "name": "Mourning Dove",
+      "maxFlockSize": 5,
+      "seasonalMultiplier": {
+        "spring": 1,
+        "summer": 2,
+        "fall": 1,
+        "winter": 1
+      },
+      "weightedRandom": 4,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Corn": 1,
+        "MixedSeeds": 3,
+        "SunflowerSeeds": 1
+      },
+      "weightedFeeders": {
+        "Hopper": 1,
+        "Platform": 2
+      },
+      "flapDuration": 400,
+      "flySpeed": 6,
+      "cautiousness": 2
+    },
+    {
+      "id": "Goldfinch",
+      "name": "American Goldfinch",
+      "maxFlockSize": 6,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 2,
+        "winter": 0
+      },
+      "weightedRandom": 5,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "SunflowerSeeds": 2
+      },
+      "weightedFeeders": {
+        "Hopper": 2,
+        "Platform": 1,
+        "Tube": 3
+      },
+      "flapDuration": 150,
+      "flySpeed": 7,
+      "cautiousness": 6
+    },
+    {
+      "id": "Grey",
+      "name": "Canada Jay",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 1,
+        "summer": 0,
+        "fall": 1,
+        "winter": 2
+      },
+      "weightedRandom": 5,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Fruit": 1,
+        "MixedSeeds": 2,
+        "SunflowerSeeds": 2
+      },
+      "weightedFeeders": {
+        "Hopper": 2,
+        "Platform": 3,
+        "Tube": 1
+      },
+      "flapDuration": 400,
+      "flySpeed": 6,
+      "cautiousness": 4
+    },
+    {
+      "id": "Honeycreeper",
+      "name": "Green Honeycreeper",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 0,
+        "summer": 1,
+        "fall": 0,
+        "winter": 0
+      },
+      "weightedRandom": 0,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Fruit": 1
+      },
+      "weightedFeeders": {
+        "Hopper": 1
+      },
+      "flapDuration": 250,
+      "flySpeed": 6,
+      "cautiousness": 8
+    },
+    {
+      "id": "Junco",
+      "name": "Dark-eyed Junco",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 1,
+        "summer": 0,
+        "fall": 1,
+        "winter": 2
+      },
+      "weightedRandom": 20,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Corn": 1,
+        "MixedSeeds": 2,
+        "SunflowerSeeds": 2
+      },
+      "weightedFeeders": {
+        "Hopper": 1,
+        "Platform": 3
+      },
+      "flapDuration": 250,
+      "flySpeed": 4,
+      "cautiousness": 3
+    },
+    {
+      "id": "Starling",
+      "name": "European Starling",
+      "maxFlockSize": 3,
+      "seasonalMultiplier": {
+        "spring": 3,
+        "summer": 1,
+        "fall": 2,
+        "winter": 1
+      },
+      "weightedRandom": 20,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Corn": 4,
+        "Fruit": 4,
+        "MixedSeeds": 3,
+        "SunflowerSeeds": 3
+      },
+      "weightedFeeders": {
+        "Hopper": 2,
+        "Platform": 3,
+        "Tube": 1
+      },
+      "flapDuration": 250,
+      "flySpeed": 6,
+      "cautiousness": 3
+    },
+    {
+      "id": "Strawberry",
+      "name": "Spotted Towhee",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 1,
+        "winter": 2
+      },
+      "weightedRandom": 5,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "Corn": 3,
+        "MixedSeeds": 3,
+        "SunflowerSeeds": 3
+      },
+      "weightedFeeders": {
+        "Platform": 3
+      },
+      "flapDuration": 300,
+      "flySpeed": 4,
+      "cautiousness": 2
+    },
+    {
+      "id": "Titmouse",
+      "name": "Tufted Titmouse",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 2,
+        "winter": 3
+      },
+      "weightedRandom": 10,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "MixedSeeds": 2,
+        "SunflowerSeeds": 2
+      },
+      "weightedFeeders": {
+        "Hopper": 5,
+        "Platform": 3,
+        "Tube": 5
+      },
+      "flapDuration": 500,
+      "flySpeed": 4,
+      "cautiousness": 4
+    },
+    {
+      "id": "White",
+      "name": "White-breasted Nuthatch",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 1,
+        "summer": 0,
+        "fall": 1,
+        "winter": 3
+      },
+      "weightedRandom": 0,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "SunflowerSeeds": 2
+      },
+      "weightedFeeders": {
+        "Hopper": 1,
+        "Platform": 1,
+        "Tube": 1
+      },
+      "flapDuration": 200,
+      "flySpeed": 6,
+      "cautiousness": 4
+    },
+    {
+      "id": "Wren",
+      "name": "Carolina Wren",
+      "maxFlockSize": 1,
+      "seasonalMultiplier": {
+        "spring": 2,
+        "summer": 1,
+        "fall": 2,
+        "winter": 1
+      },
+      "weightedRandom": 5,
+      "weightedBath": 3,
+      "weightedFoods": {
+        "MixedSeeds": 2,
+        "SunflowerSeeds": 1
+      },
+      "weightedFeeders": {
+        "Hopper": 2,
+        "Platform": 1,
+        "Tube": 2
+      },
+      "flapDuration": 300,
+      "flySpeed": 5,
+      "cautiousness": 5
+    }
+  ]

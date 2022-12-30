@@ -24,14 +24,8 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
-#### 0.5:
-* Added options to configure how (fast) grass growths & spreads.
-
-#### 1.0:
-* Added dependency on StardewHack.
-
-#### 2.0:
-* Updated for Stardew Valley 1.4
+#### 6.0:
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 
 #### 4.0:
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).

@@ -15,10 +15,7 @@ using StardewValley.Menus;
 using HDPortraits.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using AeroCore;
 using AeroCore.Utils;
 
@@ -31,8 +28,6 @@ namespace HDPortraits.Patches
         [HarmonyPostfix]
         internal static void Init(ShopMenu __instance, string who)
         {
-            ModEntry.monitor.Log(who);
-
             if (who is null && __instance.portraitPerson?.Name is null)
                 return;
 
@@ -52,9 +47,9 @@ namespace HDPortraits.Patches
         }
         [HarmonyPatch("draw")]
         [HarmonyTranspiler]
-        internal static IEnumerable<CodeInstruction> drawPatch(IEnumerable<CodeInstruction> instructions)
+        internal static IEnumerable<CodeInstruction> drawPatch(IEnumerable<CodeInstruction> instructions, ILGenerator gen)
         {
-            return drawPatcher.Run(instructions);
+            return drawPatcher.Run(instructions, gen);
         }
 
         internal static Rectangle GetData()
@@ -63,6 +58,17 @@ namespace HDPortraits.Patches
             if (current is null)
                 return new(0, 0, 64, 64);
             return current.GetRegion(0, Game1.currentGameTime.ElapsedGameTime.Milliseconds);
+        }
+
+        private static Rectangle log(Rectangle region)
+        {
+            ModEntry.monitor.LogOnce(region.ToString());
+            return region;
+        }
+        private static float log2(float what)
+        {
+            ModEntry.monitor.LogOnce(what.ToString());
+            return what;
         }
 
         internal static ILHelper drawPatcher = new ILHelper(ModEntry.monitor, "Shop draw")
@@ -82,10 +88,25 @@ namespace HDPortraits.Patches
                 new(OpCodes.Ldc_I4_S, 64),
             })
             .Remove(5)
-            .Add(new CodeInstruction(OpCodes.Call, typeof(ShopPatch).MethodNamed("GetData")))
+            .Add(new CodeInstruction[] {
+                new(OpCodes.Call, typeof(ShopPatch).MethodNamed("GetData")),
+                new(OpCodes.Dup)
+            })
+            .StoreLocal("region", typeof(Rectangle))
             .SkipTo(new CodeInstruction(OpCodes.Ldc_R4, 4f))
             .Remove(1)
-            .Add(new CodeInstruction(OpCodes.Call, typeof(PortraitDrawPatch).MethodNamed("GetScale")))
-            .Finish();
+            .Add(new CodeInstruction[]
+            {
+				new(OpCodes.Ldc_R4, 256f)
+			})
+            .LoadLocal("region")
+			.Add(new CodeInstruction[]{ // (64 / n) * 4; 64 is default size. s = 256 / n
+                new(OpCodes.Call, typeof(ShopPatch).MethodNamed(nameof(log))),
+				new(OpCodes.Ldfld, typeof(Rectangle).FieldNamed(nameof(Rectangle.Width))),
+				new(OpCodes.Conv_R4),
+                new(OpCodes.Div),
+                new(OpCodes.Call, typeof(ShopPatch).MethodNamed(nameof(log2)))
+			})
+			.Finish();
     }
 }

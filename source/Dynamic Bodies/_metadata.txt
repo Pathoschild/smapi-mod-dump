@@ -6,9 +6,9 @@ mods:
    Dynamic Bodies
 
 latest commit:
-   commit e98999548e90d42d27f859c4d3945df41ee85210
+   commit a063c50406738db671e16ad7e27dba7f5f50def8
    Author: ribeena <ribeena_@hotmail.com>
-   Date:   Mon Nov 7 22:06:56 2022 +1030
+   Date:   Sat Dec 24 21:24:58 2022 +1030
    
-       Update version
+       Added colours for naked overlays, the abilty to have sleeves too
    

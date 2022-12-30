@@ -25,7 +25,9 @@ If you don’t like one or more of the displayed information (or worse, if there
 There are some decorators, i.e. images displayed on the regular item tooltip, that have a specific meaning:
 [list]
 [*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/bundle.png[/img] [b]Bundles Decorator[/b] - displayed when the item is still needed for the bundles
+[*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/field_office.png[/img] [b]Field Office Decorator[/b] - displayed when the item is still needed for the island field office
 [*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/museum.png[/img] [b]Museum Decorator[/b] - displayed when the item is still needed for the museum
+[*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/rarecrow.png[/img] [b]Rarecrow Decorator[/b] - displayed when the item is still needed for the rarecrow collection
 [*][img]https://github.com/slothsoft/stardew-informant/raw/main/Informant/assets/shipping_bin.png[/img] [b]Shipping Decorator[/b] - displayed when the item was not yet shipped
 [/list]
 For the [b]Bundles Decorator[/b], there is the option to show it on items needed for still locked bundles. On default, the decorator is only shown for the bundles you have access to, to keep it fair and balanced.
@@ -50,6 +52,7 @@ But if you wish to change the [i]config.json[/i] file manually, you can also do 
 [size=6]Versions[/size]
 [list]
 [*] [B]Future[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/1]Issues[/url]): 
+[*] [B]1.4.0[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/14?closed=1]Issues[/url]): Add rarecrow and field office decorators
 [*] [B]1.3.3[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/13?closed=1]Issues[/url]): Portuguese translation and bugfixes
 [*] [B]1.3.2[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/12?closed=1]Issues[/url]): Translations (add French translation; update Korean translation)
 [*] [B]1.3.1[/B] ([url=https://github.com/slothsoft/stardew-informant/milestone/11?closed=1]Issues[/url]): Bugfixes (fix config for “new” recipe; fix fruit tree calculation on Ginger Island; make decorator display shipped item needed for “ship 15 of everything”; fix time remaining for casks; fix ginger tooltip)

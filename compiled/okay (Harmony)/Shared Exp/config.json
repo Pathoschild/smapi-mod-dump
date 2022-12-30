@@ -1,5 +1,6 @@
 {
   "SplitBetweenPlayers": false,
   "EnableCatchupExp": true,
-  "IsHardewValleyPresent": false
+  "UseLuck": false,
+  "ResetLuck": false
 }

@@ -32,36 +32,36 @@ namespace SocializingSkill
             bool ___quickResponse)
         {
 
-            for (int i = 0; i < ___playerResponses.Count; i++)
+            try
             {
-                if (___playerResponses[i].responseKey == null || response.responseKey == null || !___playerResponses[i].responseKey.Equals(response.responseKey))
+                for (int i = 0; i < ___playerResponses.Count; i++)
                 {
-                    continue;
+                    if (___playerResponses[i].responseKey == null || response.responseKey == null || !___playerResponses[i].responseKey.Equals(response.responseKey))
+                    {
+                        continue;
+                    }
+                    if (__instance.answerQuestionBehavior != null)
+                    {
+                        return;
+                    }
+                    if (___quickResponse)
+                    {
+                        return;
+                    }
+                    if (Game1.isFestival())
+                    {
+                        return;
+                    }
+                    if (___playerResponses[i].friendshipChange <= 0)
+                    {
+                        return;
+                    }
+                    Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromEvents);
                 }
-                if (__instance.answerQuestionBehavior != null)
-                {
-                    return;
-                }
-                if (___quickResponse)
-                {
-                    return;
-                }
-                if (Game1.isFestival())
-                {
-                    return;
-                }
-                if (___playerResponses[i].friendshipChange <= 0)
-                {
-                    return;
-                }
-                Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromEvents);
             }
-        }
-        internal static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -76,24 +76,23 @@ namespace SocializingSkill
             int friendshipChange,
             NPCDialogueResponse __instance)
         {
-            if (Game1.player.HasCustomProfession(SocializingSkill.SmoothTalker))
+            try
             {
-                if (friendshipChange < 0)
+                if (Game1.player.HasCustomProfession(SocializingSkill.SmoothTalker))
                 {
-                    __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerNegativeMultiplier);
-                }
-                else
-                {
-                    __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerPositiveMultiplier);
+                    if (friendshipChange < 0)
+                    {
+                        __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerNegativeMultiplier);
+                    }
+                    else
+                    {
+                        __instance.friendshipChange = (int)(friendshipChange * ModEntry.Config.SmoothTalkerPositiveMultiplier);
+                    }
                 }
             }
-        }
-
-        internal static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -107,38 +106,37 @@ namespace SocializingSkill
         static void Postfix(
                 string[] split)
         {
-            if (Game1.player.HasCustomProfession(SocializingSkill.SmoothTalker))
+            try
             {
-                NPC character = Game1.getCharacterFromName(split[1]);
-                if (character == null)
+                if (Game1.player.HasCustomProfession(SocializingSkill.SmoothTalker))
                 {
-                    return;
+                    NPC character = Game1.getCharacterFromName(split[1]);
+                    if (character == null)
+                    {
+                        return;
+                    }
+
+                    int friendship = Convert.ToInt32(split[2]);
+
+                    // Undo original method friendship change
+                    Game1.player.changeFriendship(-friendship, character);
+
+                    if (friendship < 0)
+                    {
+                        friendship = (int)(friendship * ModEntry.Config.SmoothTalkerNegativeMultiplier);
+                    }
+                    else
+                    {
+                        friendship = (int)(friendship * ModEntry.Config.SmoothTalkerPositiveMultiplier);
+                        Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromEvents);
+                    }
+
+                    Game1.player.changeFriendship(friendship, character);
                 }
-
-                int friendship = Convert.ToInt32(split[2]);
-
-                // Undo original method friendship change
-                Game1.player.changeFriendship(-friendship, character);
-
-                if (friendship < 0)
-                {
-                    friendship = (int)(friendship * ModEntry.Config.SmoothTalkerNegativeMultiplier);
-                }
-                else
-                {
-                    friendship = (int)(friendship * ModEntry.Config.SmoothTalkerPositiveMultiplier);
-                    Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromEvents);
-                }
-
-                Game1.player.changeFriendship(friendship, character);
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -160,21 +158,20 @@ namespace SocializingSkill
             bool __result,
             NPC n)
         {
-            if (!__result)
+            try
             {
-                return;
+                if (!__result)
+                {
+                    return;
+                }
+                if (n != null)
+                {
+                    Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromQuests);
+                }
             }
-            if (n != null)
+            catch (Exception e)
             {
-                Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromQuests);
-            }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -192,17 +189,16 @@ namespace SocializingSkill
 
         static void Postfix(ref int __result)
         {
-            if (Game1.player.HasCustomProfession(SocializingSkill.Helpful))
+            try
             {
-                __result = (int)(__result * ModEntry.Config.HelpfulRewardMultiplier);
+                if (Game1.player.HasCustomProfession(SocializingSkill.Helpful))
+                {
+                    __result = (int)(__result * ModEntry.Config.HelpfulRewardMultiplier);
+                }
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -214,55 +210,54 @@ namespace SocializingSkill
     {
         internal static void Postfix(int currency, ShopMenu __instance)
         {
-            if (!Game1.player.HasCustomProfession(SocializingSkill.Haggler))
+            try
             {
-                return;
-            }
-            if (currency != 0)
-            {
-                return;
-            }
-            NPC who = __instance.portraitPerson;
-            if (who == null)
-            {
-                return;
-            }
-            if (who.Name == null)
-            {
-                return;
-            }
-            if (!Game1.player.friendshipData.ContainsKey(who.Name))
-            {
-                return;
-            }
-
-            int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(who.Name);
-            if (heartLevel < ModEntry.Config.HagglerMinHeartLevel)
-            {
-                return;
-            }
-            if (heartLevel > 10)
-            {
-                heartLevel = 10;
-            }
-
-            int discountPercent = (heartLevel - ModEntry.Config.HagglerMinHeartLevel + 1) * ModEntry.Config.HagglerDiscountPercentPerHeartLevel;
-
-            float discount = (100f - discountPercent) / 100;
-            foreach(KeyValuePair<ISalable, int[]> item in __instance.itemPriceAndStock)
-            {
-                if (item.Value != null && item.Value.Length > 0)
+                if (!Game1.player.HasCustomProfession(SocializingSkill.Haggler))
                 {
-                    item.Value[0] = (int)(discount * item.Value[0]);
+                    return;
+                }
+                if (currency != 0)
+                {
+                    return;
+                }
+                NPC who = __instance.portraitPerson;
+                if (who == null)
+                {
+                    return;
+                }
+                if (who.Name == null)
+                {
+                    return;
+                }
+                if (!Game1.player.friendshipData.ContainsKey(who.Name))
+                {
+                    return;
+                }
+
+                int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(who.Name);
+                if (heartLevel < ModEntry.Config.HagglerMinHeartLevel)
+                {
+                    return;
+                }
+                if (heartLevel > 10)
+                {
+                    heartLevel = 10;
+                }
+
+                int discountPercent = (heartLevel - ModEntry.Config.HagglerMinHeartLevel + 1) * ModEntry.Config.HagglerDiscountPercentPerHeartLevel;
+
+                float discount = (100f - discountPercent) / 100;
+                foreach (KeyValuePair<ISalable, int[]> item in __instance.itemPriceAndStock)
+                {
+                    if (item.Value != null && item.Value.Length > 0)
+                    {
+                        item.Value[0] = (int)(discount * item.Value[0]);
+                    }
                 }
             }
-        }
-
-        internal static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -275,57 +270,56 @@ namespace SocializingSkill
 
         internal static void Postfix(ShopMenu __instance, int currency)
         {
-            // TODO: Refactor into common location
-            if (!Game1.player.HasCustomProfession(SocializingSkill.Haggler))
+            try
             {
-                return;
-            }
-            if (currency != 0)
-            {
-                return;
-            }
-            NPC who = __instance.portraitPerson;
-            if (who == null)
-            {
-                return;
-            }
-            if (who.Name == null)
-            {
-                return;
-            }
-            if (!Game1.player.friendshipData.ContainsKey(who.Name))
-            {
-                return;
-            }
-            
-
-            int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(who.Name);
-            if (heartLevel < ModEntry.Config.HagglerMinHeartLevel)
-            {
-                return;
-            }
-            if (heartLevel > 10)
-            {
-                heartLevel = 10;
-            }
-
-            int discountPercent = (heartLevel - ModEntry.Config.HagglerMinHeartLevel + 1) * ModEntry.Config.HagglerDiscountPercentPerHeartLevel;
-
-            float discount = (100f - discountPercent) / 100;
-            foreach (KeyValuePair<ISalable, int[]> item in __instance.itemPriceAndStock)
-            {
-                if (item.Value != null && item.Value.Length > 0)
+                // TODO: Refactor into common location
+                if (!Game1.player.HasCustomProfession(SocializingSkill.Haggler))
                 {
-                    item.Value[0] = (int)(discount * item.Value[0]);
+                    return;
+                }
+                if (currency != 0)
+                {
+                    return;
+                }
+                NPC who = __instance.portraitPerson;
+                if (who == null)
+                {
+                    return;
+                }
+                if (who.Name == null)
+                {
+                    return;
+                }
+                if (!Game1.player.friendshipData.ContainsKey(who.Name))
+                {
+                    return;
+                }
+
+
+                int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(who.Name);
+                if (heartLevel < ModEntry.Config.HagglerMinHeartLevel)
+                {
+                    return;
+                }
+                if (heartLevel > 10)
+                {
+                    heartLevel = 10;
+                }
+
+                int discountPercent = (heartLevel - ModEntry.Config.HagglerMinHeartLevel + 1) * ModEntry.Config.HagglerDiscountPercentPerHeartLevel;
+
+                float discount = (100f - discountPercent) / 100;
+                foreach (KeyValuePair<ISalable, int[]> item in __instance.itemPriceAndStock)
+                {
+                    if (item.Value != null && item.Value.Length > 0)
+                    {
+                        item.Value[0] = (int)(discount * item.Value[0]);
+                    }
                 }
             }
-        }
-
-        internal static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -337,48 +331,47 @@ namespace SocializingSkill
     {
         static void Postfix(Farmer __instance)
         {
-            Random random = new();
-            int level = SpaceCore.Skills.GetSkillLevel(__instance, "drbirbdev.Socializing");
-            if (random.Next(100) < level * ModEntry.Config.ChanceNoFriendshipDecayPerLevel)
+            try
             {
-                // Undo vanilla friendship decay
-                // TODO: check other mods for friendship loss prevention maybe
-                foreach (string name in __instance.friendshipData.Keys)
+                Random random = new();
+                int level = SpaceCore.Skills.GetSkillLevel(__instance, "drbirbdev.Socializing");
+                if (random.Next(100) < level * ModEntry.Config.ChanceNoFriendshipDecayPerLevel)
                 {
-                    bool single = false;
-                    NPC i = Game1.getCharacterFromName(name);
-                    if (i == null)
+                    // Undo vanilla friendship decay
+                    // TODO: check other mods for friendship loss prevention maybe
+                    foreach (string name in __instance.friendshipData.Keys)
                     {
-                        i = Game1.getCharacterFromName<Child>(name, mustBeVillager: false);
-                    }
-                    if (i != null)
-                    {
-                        if (i != null && (bool)i.datable && !__instance.friendshipData[name].IsDating() && !i.isMarried())
+                        bool single = false;
+                        NPC i = Game1.getCharacterFromName(name);
+                        if (i == null)
                         {
-                            single = true;
+                            i = Game1.getCharacterFromName<Child>(name, mustBeVillager: false);
                         }
-                        if (__instance.spouse != null && name.Equals(__instance.spouse) && !__instance.hasPlayerTalkedToNPC(name))
+                        if (i != null)
                         {
-                            __instance.changeFriendship(20, i);
-                        }
-                        else if (i != null && __instance.friendshipData[name].IsDating() && !__instance.hasPlayerTalkedToNPC(name) && __instance.friendshipData[name].Points < 2500)
-                        {
-                            __instance.changeFriendship(10, i);
-                        }
-                        else if ((!single && __instance.friendshipData[name].Points < 2500) || (single && __instance.friendshipData[name].Points < 2000))
-                        {
-                            __instance.changeFriendship(2, i);
+                            if (i != null && (bool)i.datable && !__instance.friendshipData[name].IsDating() && !i.isMarried())
+                            {
+                                single = true;
+                            }
+                            if (__instance.spouse != null && name.Equals(__instance.spouse) && !__instance.hasPlayerTalkedToNPC(name))
+                            {
+                                __instance.changeFriendship(20, i);
+                            }
+                            else if (i != null && __instance.friendshipData[name].IsDating() && !__instance.hasPlayerTalkedToNPC(name) && __instance.friendshipData[name].Points < 2500)
+                            {
+                                __instance.changeFriendship(10, i);
+                            }
+                            else if ((!single && __instance.friendshipData[name].Points < 2500) || (single && __instance.friendshipData[name].Points < 2000))
+                            {
+                                __instance.changeFriendship(2, i);
+                            }
                         }
                     }
                 }
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -394,25 +387,24 @@ namespace SocializingSkill
             int amount,
             NPC __instance)
         {
-            if (!__instance.Name.Contains("King")
-                && !who.hasPlayerTalkedToNPC(__instance.Name)
-                && who.friendshipData.ContainsKey(__instance.Name)
-                && !__instance.isDivorcedFrom(who)
-                && amount > 0)
+            try
             {
-                SpaceCore.Skills.AddExperience(who, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromTalking);
-                if (who.HasCustomProfession(SocializingSkill.Friendly))
+                if (!__instance.Name.Contains("King")
+            && !who.hasPlayerTalkedToNPC(__instance.Name)
+            && who.friendshipData.ContainsKey(__instance.Name)
+            && !__instance.isDivorcedFrom(who)
+            && amount > 0)
                 {
-                    who.changeFriendship(ModEntry.Config.FriendlyExtraFriendship, __instance);
+                    SpaceCore.Skills.AddExperience(who, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromTalking);
+                    if (who.HasCustomProfession(SocializingSkill.Friendly))
+                    {
+                        who.changeFriendship(ModEntry.Config.FriendlyExtraFriendship, __instance);
+                    }
                 }
             }
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
+            catch (Exception e)
             {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }
@@ -427,60 +419,59 @@ namespace SocializingSkill
             NPC __instance,
             ref bool __result)
         {
-            if (__result)
+            try
             {
-                return;
-            }
-            if (__instance.IsInvisible || __instance.isSleeping.Value || !who.CanMove)
-            {
-                return;
-            }
-            if (!who.HasCustomProfession(SocializingSkill.Beloved))
-            {
-                return;
-            }
-            if (ModEntry.BelovedCheckedToday.Value == null)
-            {
-                ModEntry.BelovedCheckedToday.Value = new List<string>();
-            }
-            if (ModEntry.BelovedCheckedToday.Value.Contains(__instance.Name))
-            {
-                return;
-            }
-            ModEntry.BelovedCheckedToday.Value.Add(__instance.Name);
+                if (__result)
+                {
+                    return;
+                }
+                if (__instance.IsInvisible || __instance.isSleeping.Value || !who.CanMove)
+                {
+                    return;
+                }
+                if (!who.HasCustomProfession(SocializingSkill.Beloved))
+                {
+                    return;
+                }
+                if (ModEntry.BelovedCheckedToday.Value == null)
+                {
+                    ModEntry.BelovedCheckedToday.Value = new List<string>();
+                }
+                if (ModEntry.BelovedCheckedToday.Value.Contains(__instance.Name))
+                {
+                    return;
+                }
+                ModEntry.BelovedCheckedToday.Value.Add(__instance.Name);
 
-            int rarity = Utilities.GetRarity(new int[] {
+                int rarity = Utilities.GetRarity(new int[] {
                     ModEntry.Config.BelovedGiftPercentChance,
                     ModEntry.Config.BelovedGiftRarePercentChance,
                     ModEntry.Config.BelovedGiftSuperRarePercentChance
             });
-            if (rarity < 0)
-            {
-                return;
+                if (rarity < 0)
+                {
+                    return;
+                }
+                // Get a gift from Beloved profession
+
+                string heartLevel = who.getFriendshipHeartLevelForNPC(__instance.Name).ToString();
+
+                string dropString = Utilities.GetRandomDropStringFromLootTable(ModEntry.Assets.BelovedTable, __instance.Name, heartLevel, rarity.ToString());
+                Item gift = Utilities.ParseDropString(dropString);
+                string dialogue = rarity switch
+                {
+                    0 => (string)ModEntry.Instance.I18n.Get("dialogue.beloved"),
+                    1 => (string)ModEntry.Instance.I18n.Get("dialogue.beloved.rare", new { name = Game1.player.displayName }),
+                    _ => (string)ModEntry.Instance.I18n.Get("dialogue.beloved.superrare"),
+                };
+                __instance.CurrentDialogue.Push(new Dialogue(dialogue, __instance));
+                Game1.drawDialogue(__instance);
+                Game1.player.addItemByMenuIfNecessary(gift);
+                __result = true;
             }
-            // Get a gift from Beloved profession
-
-            string heartLevel = who.getFriendshipHeartLevelForNPC(__instance.Name).ToString();
-
-            string dropString = Utilities.GetRandomDropStringFromLootTable(ModEntry.Assets.BelovedTable, __instance.Name, heartLevel, rarity.ToString());
-            Item gift = Utilities.ParseDropString(dropString);
-            string dialogue = rarity switch
+            catch (Exception e)
             {
-                0 => (string)ModEntry.Instance.I18n.Get("dialogue.beloved"),
-                1 => (string)ModEntry.Instance.I18n.Get("dialogue.beloved.rare", new { name = Game1.player.displayName }),
-                _ => (string)ModEntry.Instance.I18n.Get("dialogue.beloved.superrare"),
-            };
-            __instance.CurrentDialogue.Push(new Dialogue(dialogue, __instance));
-            Game1.drawDialogue(__instance);
-            Game1.player.addItemByMenuIfNecessary(gift);
-            __result = true;
-        }
-
-        static void Finalizer(Exception __exception)
-        {
-            if (__exception != null)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{__exception}");
+                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
             }
         }
     }

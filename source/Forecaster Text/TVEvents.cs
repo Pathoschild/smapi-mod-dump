@@ -33,247 +33,115 @@
  * SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ForecasterText.Objects;
-using ForecasterText.Objects.Enums;
+using ForecasterText.Objects.Messages;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Network;
 
 namespace ForecasterText {
     internal class TVEvents {
-        private readonly VirtualTV Television = new();
+        private readonly ModEntry Mod;
         private readonly ForecasterConfigManager ConfigManager;
-        private ForecasterConfig Config => this.ConfigManager.ModConfig;
         
-        public TVEvents(ForecasterConfigManager config) {
+        private ITranslationHelper Translations => this.Mod.Helper.Translation;
+        
+        private ForecasterConfig Config => this.ConfigManager.ModConfig;
+        private ForecasterConfig MultiplayerConfig => this.Config is {UseSameForOthers: true} ? this.Config : this.ConfigManager.MultiplayerConfig;
+        
+        public TVEvents(
+            ModEntry mod,
+            ForecasterConfigManager config
+        ) {
+            this.Mod = mod;
             this.ConfigManager = config;
         }
         
         public void OnDayStart(object sender, DayStartedEventArgs e) {
-            if (!Context.IsWorldReady)
+            if (!Context.IsWorldReady) {
+                this.Mod.Monitor.Log("World is not ready yet", LogLevel.Error);
                 return;
-            
-            // Get the player
-            Farmer player = Game1.player;
+            }
             
             // Send messages for each event
-            this.SendChatMessage(new [] {
-                this.GetTownForecast(),
-                this.GetIslandForecast(),
-                this.GetDailyLuck(player),
-                this.GetQueenOfSauce(player),
-                this.GetBirthdays(player)
-            });
+            this.SendChatMessages();
+        }
+        public void OnFarmerJoin(object sender, Farmer farmer) {
+            // Send messages for each event
+            this.SendChatMessages(farmer);
         }
         
         #region Show messages in chat
         
-        private void SendChatMessage(IEnumerable<MessageSource> messages) {
-            foreach (MessageSource message in messages)
-                this.SendChatMessage(message?.ToString());
-        }
-        private void SendChatMessage(string message) {
-            if (message is not null)
-                Game1.chatBox.addInfoMessage(message);
-        }
-        
-        #endregion
-        #region Weather
-        
-        private MessageSource GetTownForecast() {
-            WorldDate date = new(Game1.Date);
-            ++date.TotalDays;
-            return this.GetTownForecast(!Game1.IsMasterGame ? Game1.getWeatherModificationsForDate(date, Game1.netWorldState.Value.WeatherForTomorrow) : Game1.getWeatherModificationsForDate(date, Game1.weatherForTomorrow));
-        }
-        
-        public MessageSource GetTownForecast(int weather)
-            => this.GetWeatherInformation(this.Config.StardewValleyWeather, "Pelican Town forecast", weather);
-        
-        private MessageSource GetIslandForecast() {
-            if (!ModEntry.PlayerBeenToIsland())
-                return null;
-            return this.GetIslandForecast(Game1.netWorldState.Value.GetWeatherForLocation(
-                Game1.getLocationFromName("IslandSouth").GetLocationContext()
-            ).weatherForTomorrow.Value);
-        }
-        
-        public MessageSource GetIslandForecast(int weather)
-            => this.GetWeatherInformation(this.Config.GingerIslandWeather, "Ginger Island forecast", weather);
-        
-        private MessageSource GetWeatherInformation(WeatherDisplay config, string prefix, int weather) {
-            if (!this.ShowWeather(config, weather))
-                return null;
-            
-            uint?[] emojis = weather switch {
-                Game1.weather_sunny
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SUN) },
-                Game1.weather_festival
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SUN), this.ConfigManager.GetEmoji(WeatherIcons.FESTIVAL) },
-                Game1.weather_wedding
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SUN), this.ConfigManager.GetEmoji(WeatherIcons.WEDDING) },
-                Game1.weather_rain
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.RAIN) },
-                Game1.weather_debris when Game1.currentSeason.Equals("winter")
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SNOW) },
-                Game1.weather_debris
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SUN) },
-                Game1.weather_lightning
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.LIGHTNING), this.ConfigManager.GetEmoji(WeatherIcons.RAIN) },
-                Game1.weather_snow
-                    => new[] { this.ConfigManager.GetEmoji(WeatherIcons.SNOW) },
-                _ => null
+        private void SendChatMessages(Farmer peer = null) {
+            ISourceMessage[] messages = {
+                new WeatherMessage.PelicanTown(),
+                new WeatherMessage.GingerIsland(),
+                new SpiritMoodMessage(),
+                new QueenOfSauceMessage(this.Mod),
+                new BirthdaysMessage()
             };
             
-            // If no icons, or no results
-            if (emojis is not {Length: >0})
-                return null;
-            
-            StringBuilder builder = new($"{prefix} ");
-            foreach (uint? raw in emojis)
-                if (raw is uint emoji)
-                    builder.Append($"[{emoji}]");
-            
-            return MessageSource.TV(builder.ToString());
+            foreach (ISourceMessage message in messages) {
+                if (peer is null)
+                    this.SendChatMessage(message);
+                else this.SendChatMessageToPeer(peer, message);
+            }
         }
-        
-        private bool ShowWeather(WeatherDisplay display, int weather) {
-            return display switch {
-                WeatherDisplay.NEVER => false,
-                WeatherDisplay.ALWAYS => true,
-                _ => weather switch {
-                    Game1.weather_sunny => display is WeatherDisplay.NOT_RAINING,
-                    Game1.weather_festival => display is WeatherDisplay.NOT_RAINING,
-                    Game1.weather_wedding => display is WeatherDisplay.NOT_RAINING,
-                    Game1.weather_rain => display is WeatherDisplay.RAINING,
-                    Game1.weather_debris => display is WeatherDisplay.NOT_RAINING,
-                    Game1.weather_lightning => display is WeatherDisplay.RAINING,
-                    Game1.weather_snow => display is WeatherDisplay.NOT_RAINING,
-                    _ => false
+        private void SendChatMessage(ISourceMessage message) {
+            // Ignore if trying to send a disabled message
+            if (message is null)
+                return;
+            
+            // Write the message to ourselves
+            if (message.Write(Game1.player, this.Translations, this.Config) is string written)
+                Game1.chatBox.addInfoMessage(written);
+            
+            // If the mod should be shared with non-mod players
+            if (this.Config.SendToOthers) {
+                foreach (Farmer farmer in Game1.getOnlineFarmers().Where(farmer => !this.Mod.PlayerHasMod(farmer)))
+                    this.SendChatMessageToPeer(farmer, message);
+            }
+        }
+        private void SendChatMessageToPeer(Farmer farmer, ISourceMessage message) {
+            ISourceMessage writeOut = (message as MessageSource)?.Message ?? message;
+            if (writeOut.Write(farmer, this.Translations, this.MultiplayerConfig) is not string written)
+                return;
+            string name;
+            string text;
+            
+            if (message is MessageSource source) {
+                name = source.T9N;
+                text = written;
+            } else if (written.Split(':', 2) is {Length: 2} split) {
+                name = split[0].TrimEnd();
+                text = split[1].TrimStart();
+            } else return;
+            
+            OutgoingMessage outgoing = new(
+                15,
+                farmer,
+                (object)"ChatMessageFormat",
+                (object)new[] {
+                    name,
+                    text
                 }
-            };
-        }
-        
-        #endregion
-        #region Luck
-        
-        private MessageSource GetDailyLuck(Farmer who) {
-            SpiritMoods mood = this.GetSpiritMood(who);
+            );
             
-            if ( // If any of the "Show Luck" options is turned off
-                (mood is SpiritMoods.GOOD_HUMOR or SpiritMoods.VERY_HAPPY && !this.Config.ShowGoodLuck)
-                || (mood is SpiritMoods.NEUTRAL && !this.Config.ShowNeutralLuck)
-                || (mood is SpiritMoods.SOMEWHAT_ANNOYED or SpiritMoods.MILDLY_PERTURBED or SpiritMoods.VERY_DISPLEASED && !this.Config.ShowBadLuck)
-            ) return null;
-            
-            return this.GetDailyLuck(mood);
-        }
-        
-        public MessageSource GetDailyLuck(SpiritMoods mood) {
-            string str = this.ConfigManager.GetEmoji(mood) is uint u ? $"[{u}]" : " ??? ";
-            return MessageSource.TV($"[{this.Config.SpiritsEmoji}]are{str}today");
-        }
-        
-        private SpiritMoods GetSpiritMood(Farmer who) {
-            if (who.team.sharedDailyLuck.Value == -0.12)
-                return SpiritMoods.VERY_DISPLEASED; // Furious (TV.cs.13191)
-            if (who.DailyLuck == 0.0)
-                return SpiritMoods.NEUTRAL; // Neutral (TV.cs.13201)
-            if (who.DailyLuck >= -0.07 && who.DailyLuck < -0.02) {
-                Random random = new Random((int) Game1.stats.DaysPlayed + (int) Game1.uniqueIDForThisGame / 2);
-                if (random.NextDouble() < 0.5)
-                    return SpiritMoods.SOMEWHAT_ANNOYED; // Somewhat Annoyed (TV.cs.13193)
-                return SpiritMoods.MILDLY_PERTURBED; // Mildly Perturbed (TV.cs.13195)
-            }
-            if (who.DailyLuck >= -0.07 && who.team.sharedDailyLuck.Value != 0.12) {
-                if (who.DailyLuck > 0.07)
-                    return SpiritMoods.VERY_HAPPY; // Very Happy (TV.cs.13198)
-                if (who.DailyLuck <= 0.02)
-                    return SpiritMoods.NEUTRAL; // Neutral (TV.cs.13200)
-                return SpiritMoods.GOOD_HUMOR; // Good Humor (TV.cs.13199)
-            }
-            if (who.DailyLuck >= -0.07)
-                return SpiritMoods.GOOD_HUMOR; // Joyous (TV.cs.13197)
-            return SpiritMoods.VERY_DISPLEASED; // Very Displeased (TV.cs.13192)
-        }
-        
-        #endregion
-        #region Recipes
-        
-        private MessageSource GetQueenOfSauce(Farmer farmer) {
-            int num = (int)(Game1.stats.DaysPlayed % 224U / 7U);
-            if (Game1.stats.DaysPlayed % 224U == 0U)
-                num = 32;
-            FarmerTeam team = farmer.team;
-            switch (Game1.dayOfMonth % 7) {
-                case 0: // Sunday
-                    break;
-                case 3: // Wednesday
-                    if (team.lastDayQueenOfSauceRerunUpdated.Value != Game1.Date.TotalDays) {
-                        team.lastDayQueenOfSauceRerunUpdated.Set(Game1.Date.TotalDays);
-                        team.queenOfSauceRerunWeek.Set(this.Television.GetRerunWeek());
+            if (Game1.IsServer && Game1.server is IGameServer server) {
+                server.sendMessage(
+                    outgoing.FarmerID,
+                    15,
+                    Game1.player,
+                    (object)"ChatMessageFormat",
+                    (object)new[] {
+                        name,
+                        text
                     }
-                    num = team.queenOfSauceRerunWeek.Value;
-                    break;
-                default: return null;
-            }
-            
-            // Dictionary of recipes
-            Dictionary<string, string> dictionary = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\TV\\CookingChannel");
-            if (!dictionary.TryGetValue($"{num}", out string translation))
-                return null;
-            
-            // Split the translation info
-            string[] recipeInfo = translation.Split('/');
-            if (recipeInfo.Length <= 0)
-                return null;
-            
-            // Get the recipe name
-            string recipeName = recipeInfo[0];
-            bool hasRecipe = ModEntry.PlayerHasRecipe(farmer, recipeName);
-            if ((hasRecipe && !this.Config.ShowExistingRecipes) || (!hasRecipe && !this.Config.ShowNewRecipes))
-                return null;
-            return this.GetQueenOfSauce(recipeName, hasRecipe);
-        }
-        
-        public MessageSource GetQueenOfSauce(string recipe, bool hasRecipe)
-            => MessageSource.TV($"[{(hasRecipe ? this.Config.KnownRecipeEmoji : this.Config.NewRecipeEmoji)}]Learn to make \"{recipe}\"");
-        
-        #endregion
-        #region Birthdays
-        
-        private MessageSource GetBirthdays(Farmer farmer) {
-            // If not showing birthdays
-            if (!this.Config.ShowBirthdays)
-                return null;
-            
-            // Get a list of todays birthdays
-            return this.GetBirthdays(farmer.friendshipData.FieldDict.Keys.Where(name
-                => Game1.getCharacterFromName(name, true) is NPC npc && npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth)
-            ));
-        }
-        public MessageSource GetBirthdays(IEnumerable<string> names) {
-            StringBuilder builder = null;
-            
-            foreach (string name in names) {
-                // Create the build if it doesn't exist
-                builder ??= new StringBuilder($"[{this.Config.BirthdayEmoji}]");
-                
-                if (!this.Config.UseVillagerNames && this.ConfigManager.GetNpcEmoji(name) is uint u)
-                    builder.Append($"[{u}]");
-                else {
-                    // Add a space between names
-                    if (builder.Length > 0 && builder[builder.Length - 1] is not ']')
-                        builder.Append(' ');
-                    
-                    builder.Append(name);
-                }
-            }
-            
-            return MessageSource.Calendar(builder?.ToString());
+                );
+            } else if (Game1.IsClient)
+                Game1.client.sendMessage(outgoing);
         }
         
         #endregion

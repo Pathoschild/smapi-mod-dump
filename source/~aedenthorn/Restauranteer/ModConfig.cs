@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using System.Collections.Generic;
 
 namespace Restauranteer
@@ -20,8 +21,10 @@ namespace Restauranteer
         public bool RequireEvent { get; set; } = true;
         public bool AutoFillFridge { get; set; } = true;
         public bool PatchSaloonMap { get; set; } = true;
+        public bool AddFridgeObjects { get; set; } = false;
         public bool RevealGiftTaste { get; set; } = true;
         public bool SellCurrentRecipes { get; set; } = true;
+        public SButton ModKey { get; set; } = SButton.LeftAlt;
         public int MaxNPCOrdersPerNight { get; set; } = 2;
         public int LovedFriendshipChange { get; set; } = 40;
         public int LikedFriendshipChange { get; set; } = 20;

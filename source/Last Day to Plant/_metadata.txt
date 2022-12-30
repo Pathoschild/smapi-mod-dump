@@ -6,12 +6,12 @@ mods:
    Last Day to Plant
 
 latest commit:
-   commit 55658aaf3e7d8cda4cb4c413cbf7248dd1173f60
-   Merge: dcc83f4 1059a82
+   commit 09784034ec4bdb85fe9c3099695e12445985173d
+   Merge: 55658aa a9019d0
    Author: Daylon Crider <dmcrider@users.noreply.github.com>
-   Date:   Sat Mar 20 15:39:48 2021 -0700
+   Date:   Wed Dec 28 16:17:13 2022 -0700
    
-       Merge pull request #18 from dmcrider/mods
+       Merge pull request #19 from dmcrider/mods
        
        Mods
    

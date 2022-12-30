@@ -1,0 +1,16 @@
+﻿{
+  "Name": "DailyPhoneQuest",
+  "Author": "ActionJackson",
+  "Version": "1.0.1",
+  "Description": "Gives you a daily quest to complete",
+  "UniqueID": "ActionJackson.DailyPhoneQuest",
+  "EntryDll": "DailyPhoneQuest.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+   {
+      "UniqueID": "PurrplingCat.QuestFramework",
+      "MinimumVersion": "1.4.2"
+   }
+  ]
+}

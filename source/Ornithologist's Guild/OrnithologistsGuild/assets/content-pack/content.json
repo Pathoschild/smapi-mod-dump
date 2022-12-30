@@ -1,0 +1,369 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+  "FormatVersion": 1,
+  "Birdies": [
+    {
+      "ID": "AmericanGoldfinch",
+      "AssetPath": "assets/AmericanGoldfinch.png",
+      "SoundAssetPath": "assets/AmericanGoldfinch.wav",
+
+      "Attributes": 3,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 7,
+      "Cautiousness": 6,
+      "FlapDuration": 400,
+      "FlySpeed": 6,
+
+      "BaseWt": 0.1,
+      "FeederBaseWts": {
+        "Hopper": 0.2,
+        "Platform": 0.1,
+        "Tube": 0.3
+      },
+      "FoodBaseWts": {
+        "SunflowerSeeds": 0.1
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Spring, Fall"
+          },
+          "AddWt": 0.05
+        },
+        {
+          "When": {
+            "Season": "Winter"
+          },
+          "SubWt": 0.05
+        }
+      ]
+    },
+    {
+      "ID": "AmericanRobin",
+      "AssetPath": "assets/AmericanRobin.png",
+      "SoundAssetPath": "assets/AmericanRobin.wav",
+
+      "Attributes": 2,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 3,
+      "Cautiousness": 4,
+      "FlapDuration": 400,
+      "FlySpeed": 5,
+
+      "BaseWt": 0.05,
+      "FeederBaseWts": {
+        "Platform": 0.05
+      },
+      "FoodBaseWts": {
+        "Fruit": 0.05,
+        "SunflowerSeeds": 0.05
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Spring"
+          },
+          "AddWt": 0.25
+        }
+      ]
+    },
+    {
+      "ID": "BlackCappedChickadee",
+      "AssetPath": "assets/BlackCappedChickadee.png",
+      "SoundAssetPath": "assets/BlackCappedChickadee.wav",
+
+      "Attributes": 3,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 3,
+      "Cautiousness": 3,
+      "FlapDuration": 500,
+      "FlySpeed": 4,
+
+      "BaseWt": 0.3,
+      "FeederBaseWts": {
+        "Hopper": 0.3,
+        "Platform": 0.05,
+        "Tube": 0.25
+      },
+      "FoodBaseWts": {
+        "MixedSeeds": 0.2,
+        "SunflowerSeeds": 0.3
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Winter"
+          },
+          "AddWt": 0.1
+        }
+      ]
+    },
+    {
+      "ID": "AmericanBushtit",
+      "AssetPath": "assets/AmericanBushtit.png",
+      "SoundAssetPath": "assets/AmericanBushtit.wav",
+
+      "Attributes": 2,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 9,
+      "Cautiousness": 5,
+      "FlapDuration": 400,
+      "FlySpeed": 4,
+
+      "BaseWt": 0.05,
+      "FeederBaseWts": {
+        "Tube": 0.2,
+        "Hopper": 0.15,
+        "Platform": 0.2
+      },
+      "FoodBaseWts": {
+        "SunflowerSeeds": 0.05
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Time": "{{Range: 1000, 1030}}"
+          },
+          "AddWt": 0.2
+        },
+        {
+          "When": {
+            "Time": "{{Range: 1700, 1730}}"
+          },
+          "AddWt": 0.2
+        }
+      ]
+    },
+    {
+      "ID": "HouseFinch",
+      "AssetPath": "assets/HouseFinch.png",
+      "SoundAssetPath": "assets/HouseFinch.wav",
+
+      "Attributes": 2,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 3,
+      "Cautiousness": 5,
+      "FlapDuration": 400,
+      "FlySpeed": 5.5,
+
+      "BaseWt": 0.2,
+      "FeederBaseWts": {
+        "Hopper": 0.3,
+        "Platform": 0.1,
+        "Tube": 0.4
+      },
+      "FoodBaseWts": {
+        "MixedSeeds": 0.05,
+        "SunflowerSeeds": 0.1
+      },
+
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        }
+      ]
+    },
+    {
+      "ID": "HouseSparrow",
+      "AssetPath": "assets/HouseSparrow.png",
+      "SoundAssetPath": "assets/HouseSparrow.wav",
+
+      "Attributes": 2,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 5,
+      "Cautiousness": 2,
+      "FlapDuration": 450,
+      "FlySpeed": 4.5,
+
+      "BaseWt": 0.1,
+      "FeederBaseWts": {
+        "Tube": 0.1,
+        "Hopper": 0.1,
+        "Platform": 0.2
+      },
+      "FoodBaseWts": {
+        "Corn": 0.1,
+        "MixedSeeds": 0.05,
+        "SunflowerSeeds": 0.05
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Town, Custom_EastScarpe"
+          },
+          "AddWt": 0.4
+        }
+      ]
+    },
+    {
+      "ID": "RedWingedBlackbird",
+      "AssetPath": "assets/RedWingedBlackbird.png",
+      "SoundAssetPath": "assets/RedWingedBlackbird.wav",
+
+      "Attributes": 3,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 1,
+      "Cautiousness": 4,
+      "FlapDuration": 400,
+      "FlySpeed": 5,
+
+      "BaseWt": 0.05,
+      "FeederBaseWts": {
+        "Platform": 0.1
+      },
+      "FoodBaseWts": {
+        "Corn": 0.2,
+        "SunflowerSeeds": 0.1
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Mountain",
+            "Season": "Spring, Summer"
+          },
+          "AddWt": 0.3
+        }
+      ]
+    },
+    {
+      "ID": "SpottedTowhee",
+      "AssetPath": "assets/SpottedTowhee.png",
+      "SoundAssetPath": "assets/SpottedTowhee.wav",
+
+      "Attributes": 3,
+
+      "ShouldUseBath": true,
+      "MaxFlockSize": 1,
+      "Cautiousness": 4,
+      "FlapDuration": 600,
+      "FlySpeed": 4.5,
+
+      "BaseWt": 0.1,
+      "FeederBaseWts": {
+        "Platform": 0.1
+      },
+      "FoodBaseWts": {
+        "Corn": 0.1,
+        "MixedSeeds": 0.1,
+        "SunflowerSeeds": 0.1
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Forest"
+          },
+          "AddWt": 0.2
+        }
+      ]
+    }
+  ]
+}

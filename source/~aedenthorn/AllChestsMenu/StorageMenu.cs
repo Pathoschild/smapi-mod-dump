@@ -222,6 +222,17 @@ namespace AllChestsMenu
                 {
                     list = new(Game1.locations);
                 }
+                foreach(var l in list.ToArray())
+                {
+                    if(l is BuildableGameLocation)
+                    {
+                        foreach(var b in (l as BuildableGameLocation).buildings)
+                        {
+                            if(b.indoors.Value is not null)
+                                list.Add(b.indoors.Value);
+                        }
+                    }
+                }
                 foreach (var l in list)
                 {
                     if(l is FarmHouse)
@@ -246,22 +257,30 @@ namespace AllChestsMenu
                     foreach (var kvp in l.objects.Pairs)
                     {
                         var obj = kvp.Value;
+                        Chest chest;
                         if (obj is Chest && (obj as Chest).playerChest.Value && (obj as Chest).CanBeGrabbed)
                         {
-                            Chest chest = obj as Chest;
-                            RestoreNulls(chest.items);
-                            string key = $"{l.Name} {kvp.Key.X},{kvp.Key.Y}";
-                            if (obj.modData.TryGetValue(chestsAnywhereKey, out string chestName) && !string.IsNullOrEmpty(chestName))
-                            {
-                                key = $"{chestName} ({key})";
-                            }
-                            else
-                            {
-                                chestName = "";
-                            }
-
-                            allStorageList.Add(new StorageData() { chest = chest, name = chestName, location = l.Name, tile = new Vector2(-1, -1), label = key, index = allStorageList.Count });
+                            chest = obj as Chest;
                         }
+                        else if (obj.heldObject.Value is Chest)
+                        {
+                            chest = obj.heldObject.Value as Chest;
+                        }
+                        else 
+                            continue;
+                        RestoreNulls(chest.items);
+                        string key = $"{l.Name} {kvp.Key.X},{kvp.Key.Y}";
+                        if (obj.modData.TryGetValue(chestsAnywhereKey, out string chestName) && !string.IsNullOrEmpty(chestName))
+                        {
+                            key = $"{chestName} ({key})";
+                        }
+                        else
+                        {
+                            chestName = "";
+                        }
+
+                        allStorageList.Add(new StorageData() { chest = chest, name = chestName, location = l.Name, tile = new Vector2(-1, -1), label = key, index = allStorageList.Count });
+
                     }
                 }
                 SortAllStorages();

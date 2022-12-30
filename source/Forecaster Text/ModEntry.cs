@@ -33,6 +33,11 @@
  * SOFTWARE.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using ForecasterText.Objects;
 using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -41,13 +46,17 @@ using StardewValley;
 namespace ForecasterText {
     public sealed class ModEntry : Mod {
         internal readonly TVEvents Events;
-        private readonly ForecasterConfigManager ConfigManager;
+        internal readonly ForecasterConfigManager ConfigManager;
+        private readonly VirtualTV Television = new();
         
         public string ModID => this.ModManifest.UniqueID;
         
         public ModEntry() {
             this.ConfigManager = new ForecasterConfigManager(this);
-            this.Events = new TVEvents(this.ConfigManager);
+            this.Events = new TVEvents(
+                this,
+                this.ConfigManager
+            );
         }
         
         /// <summary>
@@ -56,6 +65,10 @@ namespace ForecasterText {
         public override void Entry(IModHelper helper) {
             this.Helper.Events.GameLoop.DayStarted += this.Events.OnDayStart;
             this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            this.Helper.Events.Multiplayer.PeerConnected += this.OnPeerJoin;
+            
+            // Reload example content when the language is changed
+            this.Helper.Events.Content.LocaleChanged += this.ConfigManager.ReRender;
         }
         
         /// <summary>
@@ -66,20 +79,107 @@ namespace ForecasterText {
                 this.ConfigManager.RegisterConfigManager(configMenu);
         }
         
-        /// <summary>Check if the main player knows a recipe</summary>
-        public static bool PlayerHasRecipe(string recipe)
-            => ModEntry.PlayerHasRecipe(Game1.player, recipe);
+        /// <summary>
+        /// When a player joins the game, make sure they know the details of the day
+        /// </summary>
+        private void OnPeerJoin(object sender, PeerConnectedEventArgs peerConnectedEventArgs) {
+            Farmer farmer = Game1.getOnlineFarmers()
+                .FirstOrDefault(farmer => farmer.UniqueMultiplayerID == peerConnectedEventArgs.Peer.PlayerID && !this.PlayerHasMod(farmer));
+            if (farmer is not null)
+                this.Events.OnFarmerJoin(sender, farmer);
+        }
         
-        /// <summary>Check if a farmer knows a recipe</summary>
-        public static bool PlayerHasRecipe(Farmer farmer, string recipe)
-            => farmer.cookingRecipes.ContainsKey(recipe);
+        /// <summary>Check if another farmer has the ForecasterTexts mod</summary>
+        public bool PlayerHasMod(Farmer farmer)
+            => this.PlayerHasMod(farmer, this.ModID);
         
-        /// <summary>Check if the main player has been to ginger island</summary>
-        public static bool PlayerBeenToIsland()
-            => ModEntry.PlayerBeenToIsland(Game1.player);
+        /// <summary>Check if another farmer has a specific mod</summary>
+        public bool PlayerHasMod(Farmer farmer, string modId) {
+            if (Game1.player == farmer)
+                return this.Helper.ModRegistry.Get(modId) is not null;
+            return this.Helper.Multiplayer.GetConnectedPlayer(farmer.UniqueMultiplayerID) is { HasSmapi: true } peer
+                && peer.GetMod(modId) is not null;
+        }
         
-        /// <summary>Check if a farmer has been to ginger island</summary>
-        public static bool PlayerBeenToIsland(Farmer farmer)
-            => farmer.hasOrWillReceiveMail("Visited_Island");
+        public IRecipeFinder GetRecipeFinder(Farmer farmer)
+            => new RecipeFinder(this, farmer);
+        
+        private sealed class RecipeFinder : IRecipeFinder {
+            private readonly ModEntry Mod;
+            private readonly DayOfWeek DayOfWeek;
+            private readonly Farmer Farmer;
+            private FarmerTeam Team => this.Farmer.team;
+            private VirtualTV Television => this.Mod.Television;
+            
+            public RecipeFinder(ModEntry mod, Farmer farmer) {
+                this.Mod = mod;
+                this.DayOfWeek = (DayOfWeek)(Game1.dayOfMonth % 7);
+                this.Farmer = farmer;
+            }
+            
+            /// <inheritdoc/>
+            public string GetAnyRecipe() => this.DayOfWeek switch {
+                DayOfWeek.Sunday or DayOfWeek.Wednesday => this.GetRegularRecipes(),
+                DayOfWeek.Friday => this.GetAnimalHusbandryRecipes(),
+                _ => null
+            };
+            
+            private string GetRegularRecipes() {
+                uint played = Game1.stats.DaysPlayed;
+                if (played < 5)
+                    return null;
+                
+                int num = (int)(Game1.stats.DaysPlayed % 224U / 7U);
+                if (played % 224U == 0U)
+                    num = 32;
+                
+                switch (this.DayOfWeek) {
+                    case DayOfWeek.Sunday:
+                        break;
+                    case DayOfWeek.Wednesday:
+                        if (this.Team.lastDayQueenOfSauceRerunUpdated.Value != Game1.Date.TotalDays) {
+                            this.Team.lastDayQueenOfSauceRerunUpdated.Set(Game1.Date.TotalDays);
+                            this.Team.queenOfSauceRerunWeek.Set(this.Television.GetRerunWeek());
+                        }
+                        num = this.Team.queenOfSauceRerunWeek.Value;
+                        break;
+                    default: return null;
+                }
+                
+                // Dictionary of recipes
+                Dictionary<string, string> dictionary = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\TV\\CookingChannel");
+                if (!dictionary.TryGetValue($"{num}", out string translation))
+                    return null;
+                
+                // Split the translation info
+                string[] recipeInfo = translation.Split('/');
+                
+                // Get the recipe name
+                return recipeInfo.Length <= 0 ? null : recipeInfo[0];
+            }
+            
+            private string GetAnimalHusbandryRecipes() {
+                if (!this.Mod.PlayerHasMod(this.Farmer, "Digus.AnimalHusbandryMod"))
+                    return null;
+                
+                if (
+                    Type.GetType("AnimalHusbandryMod.recipes.MeatFridayChannel, AnimalHusbandryMod") is not Type type
+                    || Activator.CreateInstance(type) is not object fridayChannel
+                    || type.GetMethod("GetRecipeNumber", BindingFlags.NonPublic | BindingFlags.Static) is not MethodInfo getRecipeNumber
+                    || getRecipeNumber.Invoke(null, Array.Empty<object>()) is not int recipeNumber
+                    || type.GetField("_recipes", BindingFlags.NonPublic | BindingFlags.Instance) is not FieldInfo recipeField
+                    || recipeField.GetValue(fridayChannel) is not Dictionary<int, string> recipes
+                ) {
+                    this.Mod.Monitor.Log("Reflection failed", LogLevel.Error);
+                    return null;
+                }
+                
+                // Split the translation info
+                string[] recipeInfo = recipes[recipeNumber].Split('/');
+                
+                // Get the recipe name
+                return recipeInfo.Length <= 0 ? null : recipeInfo[0];
+            }
+        }
     }
 }

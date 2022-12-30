@@ -1,0 +1,32 @@
+{
+  "ModEnabled": true,
+  "QualityReduction": true,
+  "Spoiling": true,
+  "DisplayDays": true,
+  "DisplayDaysLeft": true,
+  "FruitsDays": 5,
+  "VegetablesDays": 5,
+  "GreensDays": 4,
+  "FlowersDays": 3,
+  "EggDays": 3,
+  "MilkDays": 2,
+  "CookingDays": 2,
+  "MeatDays": 1,
+  "FishDays": 1,
+  "FridgeMult": 0.1,
+  "PlayerMult": 1.5,
+  "SpoiledIndex": 168,
+  "CustomSpoiledColor": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  },
+  "CustomSpoilage": {
+    "Sap": {
+      "age": 0,
+      "category": 9999,
+      "spoiled": null
+    }
+  }
+}

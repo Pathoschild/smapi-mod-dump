@@ -21,16 +21,9 @@ using BirbShared;
 namespace RanchingToolUpgrades
 {
     [XmlType("Mods_drbirbdev_upgradeableshears")]
-    public class UpgradeableShears : Shears, ICustomIcon
+    public class UpgradeableShears : Shears
     {
         public const int MaxUpgradeLevel = 4;
-
-        public Rectangle IconSource()
-        {
-            Rectangle source = new(16, 0, 16, 16);
-            source.Y += this.UpgradeLevel * source.Height;
-            return source;
-        }
 
         public UpgradeableShears() : base()
         {
@@ -46,6 +39,17 @@ namespace RanchingToolUpgrades
             base.IndexOfMenuItemView = -1;
         }
 
+        public override Item getOne()
+        {
+            UpgradeableShears result = new()
+            {
+                UpgradeLevel = base.UpgradeLevel
+            };
+            this.CopyEnchantments(this, result);
+            result._GetOneFrom(this);
+            return result;
+        }
+
         public static bool CanBeUpgraded()
         {
             Tool shears = Game1.player.getToolFromName("Shears");
@@ -57,13 +61,20 @@ namespace RanchingToolUpgrades
             spriteBatch.Draw(
                 texture: ModEntry.Assets.Sprites,
                 position: location + new Vector2(32f, 32f),
-                sourceRectangle: this.IconSource(),
+                sourceRectangle: IconSourceRectangle(this.UpgradeLevel),
                 color: color * transparency,
                 rotation: 0f,
                 origin: new Vector2(8, 8),
                 scale: Game1.pixelZoom * scaleSize,
                 effects: SpriteEffects.None,
                 layerDepth: layerDepth);
+        }
+
+        public static Rectangle IconSourceRectangle(int upgradeLevel)
+        {
+            Rectangle source = new(16, 0, 16, 16);
+            source.Y += upgradeLevel * source.Height;
+            return source;
         }
 
         public override bool canBeTrashed()
@@ -101,6 +112,10 @@ namespace RanchingToolUpgrades
             {
                 int quantity = 1;
                 int upgradeLevel = who.getToolFromName("Shears").UpgradeLevel + 1;
+                if (who.getToolFromName("Shears") is not UpgradeableShears)
+                {
+                    upgradeLevel = 1;
+                }
                 int upgradePrice = ModEntry.Instance.Helper.Reflection.GetMethod(
                     typeof(Utility), "priceForToolUpgradeLevel")
                     .Invoke<int>(upgradeLevel);

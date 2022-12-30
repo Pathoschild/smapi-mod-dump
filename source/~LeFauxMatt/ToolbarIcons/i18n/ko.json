@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "button.AlwaysScrollMap": "항상 지도 스크롤 활성화",
+  "button.CheatsMenu": "CJB 치트 메뉴 오픈",
+  "button.ItemSpawner": "CJB 아이템 생성기 오픈",
+  "button.DynamicGameAssets": "DGA 모드 스토어 오픈"
+}

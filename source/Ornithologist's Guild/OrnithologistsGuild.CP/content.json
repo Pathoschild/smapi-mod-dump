@@ -1,0 +1,377 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+  "Format": "1.28.0",
+  "CustomLocations": [
+    {
+      "Name": "Custom_Ivy_OrnithologistsGuild",
+      "FromMapFile": "assets/map/OrnithologistsGuild.tmx"
+    }
+  ],
+  "Changes": [
+    // Quests
+    {
+      "Action": "Include",
+      "FromFile": "assets/quests.json"
+    },
+    // ******************************************************************
+    // MAP
+    // ******************************************************************
+    // Forest
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest",
+      "FromFile": "assets/map/Forest_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 6,
+        "Y": 48,
+        "Width": 9,
+        "Height": 4
+      },
+      "ToArea": {
+        "X": 6,
+        "Y": 48,
+        "Width": 9,
+        "Height": 4
+      },
+      "MapProperties": {
+        "Perches": "10 58 -146 0"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest",
+      "FromFile": "assets/map/Forest_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 5,
+        "Y": 52,
+        "Width": 10,
+        "Height": 9
+      },
+      "ToArea": {
+        "X": 5,
+        "Y": 52,
+        "Width": 10,
+        "Height": 9
+      },
+      "MapProperties": {
+        "Perches": "10 58 -146 0",
+        "Light": "9 56 1 9 57 1"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest",
+      "FromFile": "assets/map/Forest_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 7,
+        "Y": 61,
+        "Width": 8,
+        "Height": 5
+      },
+      "ToArea": {
+        "X": 7,
+        "Y": 61,
+        "Width": 8,
+        "Height": 5
+      }
+    },
+    // Forest-IceFestival
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest-IceFestival",
+      "FromFile": "assets/map/Forest-IceFestival_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 6,
+        "Y": 48,
+        "Width": 9,
+        "Height": 4
+      },
+      "ToArea": {
+        "X": 6,
+        "Y": 48,
+        "Width": 9,
+        "Height": 4
+      },
+      "MapProperties": {
+        "Perches": "10 58 -146 0"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest-IceFestival",
+      "FromFile": "assets/map/Forest-IceFestival_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 5,
+        "Y": 52,
+        "Width": 10,
+        "Height": 9
+      },
+      "ToArea": {
+        "X": 5,
+        "Y": 52,
+        "Width": 10,
+        "Height": 9
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest-IceFestival",
+      "FromFile": "assets/map/Forest-IceFestival_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 7,
+        "Y": 61,
+        "Width": 8,
+        "Height": 5
+      },
+      "ToArea": {
+        "X": 7,
+        "Y": 61,
+        "Width": 8,
+        "Height": 5
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest-IceFestival",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 15,
+            "Y": 61
+          },
+          "Layer": "Front",
+          "SetIndex": "754"
+        },
+        {
+          "Position": {
+            "X": 15,
+            "Y": 62
+          },
+          "Layer": "Buildings",
+          "SetIndex": "786"
+        }
+      ]
+    },
+    // Forest-FlowerFestival
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest-FlowerFestival",
+      "FromFile": "assets/map/Forest_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 5,
+        "Y": 57,
+        "Width": 10,
+        "Height": 4
+      },
+      "ToArea": {
+        "X": 65,
+        "Y": 0,
+        "Width": 10,
+        "Height": 4
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest-FlowerFestival",
+      "FromFile": "assets/map/Forest_OrnithologistsGuild.tmx",
+      "FromArea": {
+        "X": 7,
+        "Y": 61,
+        "Width": 8,
+        "Height": 7
+      },
+      "ToArea": {
+        "X": 67,
+        "Y": 4,
+        "Width": 8,
+        "Height": 7
+      }
+    },
+    // Custom_Ivy_OrnithologistsGuild
+    {
+      "Action": "EditData",
+      "Target": "Strings/StringsFromMaps",
+      "Entries": {
+        "Ivy_OrnithologistsGuild.1": "Joja Binoculars (4x)",
+        "Ivy_OrnithologistsGuild.2": "Antique Binoculars (6x)",
+        "Ivy_OrnithologistsGuild.3": "Pro Binoculars (10x)",
+        "Ivy_OrnithologistsGuild.4": "Hopper Feeder. Small range. Holds Corn, Mixed Seeds, Hulled Sunflower Seeds, and Fruit.",
+        "Ivy_OrnithologistsGuild.5": "Tube Feeder. Medium range. Holds Mixed Seeds and Hulled Sunflower Seeds.",
+        "Ivy_OrnithologistsGuild.6": "Platform Feeder. Large range. Holds Corn, Mixed Seeds, Hulled Sunflower Seeds, and Fruit.",
+        "Ivy_OrnithologistsGuild.7": "Birdsongs play quietly in the background.",
+        "Ivy_OrnithologistsGuild.8": "A warm, cozy nest, perfect for a small raven.",
+        "Ivy_OrnithologistsGuild.9": "\"Nadia Nightingale's Summoning Birds With Magic, Third Edition\"",
+        "Ivy_OrnithologistsGuild.10": "\"Humans often assume that corvids are unintelligent but new research shows that avian brains actually share similarities with humans. In trials, crows have been shown to be as intelligent as human children.\"",
+        "Ivy_OrnithologistsGuild.11": "Maps labeled \"Common Barn Owl Habitats\" and \"Popular Roosting Spots in the Valley\".",
+        "Ivy_OrnithologistsGuild.12": "\"Bird Conservation for Beginners\", \"Bread: The Silent Killer\", and \"Chickadees: Tour Guides of the Forest\"",
+        "Ivy_OrnithologistsGuild.13": "\"101 Vegan Alternatives to Eating Chicken\", \"One Finch Two Finch Red Finch Blue Finch\", \"Birds of East Scarpe: Revised Edition\"",
+        "Ivy_OrnithologistsGuild.14": "\"Bird-friendly Farming\", \"Joja: The Darkest Timeline\", \"The Great Migration\"",
+        "Ivy_OrnithologistsGuild.15": "\"Crowpocalypse Now\", \"Lovebirds: Photographs of Wild Birds in Love\", \"The Science Behind Better Bird Feeders\"",
+        "Ivy_OrnithologistsGuild.16": "A map of the world with tiny pins in many places.",
+        "Ivy_OrnithologistsGuild.17": "A book lies open on the shelf, its pages shredded by somebody's beak.",
+        "Ivy_OrnithologistsGuild.18": "\"The Secret Life of Seagulls\", \"All Crows Are Beautiful: A Zine\", \"Passerine Party: My Life as a Bird Rehabilitator\"",
+        "Ivy_OrnithologistsGuild.19": "A cuckoo clock would be more fitting.",
+        "Ivy_OrnithologistsGuild.20": "\"The Joy of Making Birdseed: 75th Anniversary Edition\"",
+        "Ivy_OrnithologistsGuild.21": "\"Manufacturing Best Practices for Top Quality Bird Seed\"",
+        "Ivy_OrnithologistsGuild.22": "Fruit and bird seed are displayed neatly in bins.",
+        "Ivy_OrnithologistsGuild.23": "A painting of a beautiful, fat, fluffy chicken.",
+        "Ivy_OrnithologistsGuild.24": "Boxes of Hulled Sunflower Seeds ready to be shipped.",
+        "Ivy_OrnithologistsGuild.25": "INTAKE RECORD: KYLE^^A YOUNG RAVEN, SMALLER THAN MOST OTHERS AND UNABLE TO FLY, WAS FOUND UNRESPONSIVE AT THE SIDE OF THE ROAD. UPON MEDICAL EXAMINATION, IT WAS DETERMINED THAT ONE OF HIS WINGS HAD BEEN BROKEN AFTER HE HAD BEEN HIT BY A CAR. DESPITE OUR BEST ATTEMPTS AT SAVING THE WING HE WILL LIKELY NEVER FLY AGAIN.^^THE PELICAN TOWN ORNITHOLOGIST'S GUILD",
+        "Ivy_OrnithologistsGuild.26": "A well-used Spell-n-Speak with what seem to be beak marks on its buttons."
+      }
+    },
+    // Custom_Ivy_OrnithologistsGuild events
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_Ivy_OrnithologistsGuild",
+      "FromFile": "assets/map/events.json"
+    },
+    // Custom_Ivy_OrnithologistsGuild event-specific images
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/map/SpellNSpeak.png",
+      "ToArea": {
+        "X": 64,
+        "Y": 592,
+        "Width": 48,
+        "Height": 16
+      },
+      "When": {
+        "LocationName": "Custom_Ivy_OrnithologistsGuild"
+      },
+      "Update": "OnLocationChange"
+    },
+    // PowerUp map edits
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_Ivy_OrnithologistsGuild",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 16,
+            "Y": 14
+          },
+          "Layer": "Buildings",
+          "Remove": true
+        },
+        {
+          "Position": {
+            "X": 16,
+            "Y": 14
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": null
+          }
+        },
+        {
+          "Position": {
+            "X": 13,
+            "Y": 22
+          },
+          "Layer": "Front",
+          "SetTilesheet": "Z_SpellNSpeak",
+          "SetIndex": 0
+        },
+        {
+          "Position": {
+            "X": 13,
+            "Y": 22
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Message Ivy_OrnithologistsGuild.26"
+          }
+        }
+      ],
+      "When": {
+        "HasFlag": "Ivy_OrinothlogistsGuild_PowerUp"
+      },
+      "Update": "OnLocationChange"
+    },
+    // Forest (Stardew Valley Reimagined 3 patch by @Lemurkat)
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest",
+      "FromFile": "assets/map/Forest_OrnithologistsGuild__SVR3.tmx",
+      "FromArea": {
+        "X": 0,
+        "Y": 0,
+        "Width": 11,
+        "Height": 18
+      },
+      "ToArea": {
+        "X": 5,
+        "Y": 49,
+        "Width": 11,
+        "Height": 18
+      },
+      "MapProperties": {
+        "Perches": "10 58 -146 0"
+      },
+      "When": {
+        "HasMod": "DaisyNiko.SVR3"
+      }
+    },
+    // ******************************************************************
+    // NPC: KYLE
+    // ******************************************************************
+    {
+      "Action": "Include",
+      "FromFile": "assets/npc/disposition.json"
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "Entries": {
+        "OrinothlogistsGuild_Kyle": "Caw!/787 72 74 203 206 800 684 397/Croak.../80 86 82 68 70 66 64 62 60 84 108 129 136 131 130 132 137 138 139 140 141 128 142 143 144 145 146 147 149 150 151 156 158 159 160 164 165 168 171 170 194 195 197 198 199 201 202 204 205 207 208 209 210 211 212 213 214 215 218 219 221 222 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 267 -79 -81 -20 -26 -12 -7 -5 -4 -2 807 799 798 797 795 775 734 733 732 731 730 729 728 727 723 721 720 717 716 715 708 707 706 705 704 702 701 699 700 698 682 651 649 648 638 637 636 635 634 618 613 612 611 610 609 608 607 606 605 604 454 445 444 442 48 436 430 428 312 424 423 417 416 414 410 406 400 398 396 394 393 372 344 342 340 308 307 306 305 296 282 280 279 270 269 268 258 254 186 184 182 180 176 174 124 105 90/.../78 116 172 196 192 190 188 200 223 247 -75 -6 772 769 768 767 766 724 597 595 593 591 589 588 587 586 585 579 578 577 576 574 575 573 572 571 570 569 568 567 566 565 564 563 562 561 560 559 558 557 556 555 554 553 552 551 549 548 547 550 546 544 545 543 542 541 540 539 538 459 457 456 446 432 421 418 412 408 402 399 376 373 350 349 304 284 283 278 274 272 271 266 264 260 259 257 256 250 248 163 161 157 155 154 153 152 127 126 125 123 122 121 120 119 117 115 114 113 112 111 110 109 107 106 104 101 103 100 98 99 96 97 92 88 24 22 20 18 16/CAW! CAW!/162 167 220 815 814 726 725 614 433 395 348 346 303 253 30/* pecks nervously */148 216 243 244 -80 -27 812 796 774 773 722 719 718 685 447 422 420 404 403 392 338 337 336 335 334 300 281 276 265 252 169 "
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/AnimationDescriptions",
+      "Entries": {
+        "OrinothlogistsGuild_Kyle_perch": "16/16 16 16 17 17 17 18 18 18 19 19 19/16",
+        "OrinothlogistsGuild_Kyle_doze": "20 20 20 21 21 21 22 22 22 23/23/23 22 22 22 21 21 21 20 20 20" // naming this "sleep" causes issues because of the non-standard sprite size and emotes
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/OrinothlogistsGuild_Kyle",
+      "FromFile": "assets/npc/sprites.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Portraits/OrinothlogistsGuild_Kyle",
+      "FromFile": "assets/npc/portrait.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/schedules/OrinothlogistsGuild_Kyle",
+      "FromFile": "assets/npc/schedules.json"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/Dialogue/OrinothlogistsGuild_Kyle",
+      "FromFile": "assets/npc/dialogue.json"
+    },
+    {
+      "Action": "Include",
+      "FromFile": "assets/npc/dialogue_PowerUp.json",
+      "When": {
+        "HasFlag": "Ivy_OrinothlogistsGuild_PowerUp"
+      },
+      "Update": "OnLocationChange"
+    }
+  ]
+}

@@ -6,9 +6,12 @@ mods:
    Range Highlight
 
 latest commit:
-   commit b5b23fc3d3010fbe3eff9fdf1e882083dd9c2416
+   commit 43148795e871344d91c854637e6cb5955967ea4e
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Thu Nov 24 11:13:50 2022 -0500
+   Date:   Sun Nov 27 19:41:56 2022 -0500
    
-       v3.5.0
+       Add warning on game load for possible UI Info Suite 2 conflicts
+       
+       Add warning on game load if both Range Highlight and UI Info Suite 2 are
+       configured to show ranges.
    

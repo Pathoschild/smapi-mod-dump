@@ -14,6 +14,7 @@ using Netcode;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using Microsoft.Xna.Framework;
+using GenericModConfigMenu;
 
 namespace StardewHack.TilledSoilDecay
 {
@@ -67,23 +68,23 @@ namespace StardewHack.TilledSoilDecay
             Patch((GameLocation gl) => gl.DayUpdate(0), GameLocation_DayUpdate);
         }
 
-        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        protected override void InitializeApi(IGenericModConfigMenuApi api)
         {
-            api.RegisterLabel(ModManifest, "Each night", "How soil decays every night");
-            api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 0.1 (=10%).", () => (float)config.EachNight.DryingRate, (float val) => config.EachNight.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.EachNight.Delay, (int val) => config.EachNight.Delay = val, 0, 4);
-            api.RegisterLabel(ModManifest, "Each Season", "How soil decays on the farm (and maps that have the `ClearEmptyDirtOnNewMonth` property) during nights between seasons");
-            api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 0.8 (=80%).", () => (float)config.EachSeason.DryingRate, (float val) => config.EachSeason.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.EachSeason.Delay, (int val) => config.EachSeason.Delay = val, 0, 4);
-            api.RegisterLabel(ModManifest, "Greenhouse", "How soil decays inside the greenhouse");
-            api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 1.0 (=100%).", () => (float)config.Greenhouse.DryingRate, (float val) => config.Greenhouse.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.Greenhouse.Delay, (int val) => config.Greenhouse.Delay = val, 0, 4);
-            api.RegisterLabel(ModManifest, "Island", "How soil decays on Ginger Island");
-            api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 0.1 (=10%).", () => (float)config.Island.DryingRate, (float val) => config.Island.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.Island.Delay, (int val) => config.Island.Delay = val, 0, 4);
-            api.RegisterLabel(ModManifest, "Non-farm", "How soil decays outside the farm");
-            api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 1.0 (=100%).", () => (float)config.NonFarm.DryingRate, (float val) => config.NonFarm.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.NonFarm.Delay, (int val) => config.NonFarm.Delay = val, 0, 4);
+            api.AddSectionTitle(mod: ModManifest, text: () => "Each night",  tooltip: () => "How soil decays every night");
+            api.AddNumberOption(mod: ModManifest, name: () => "Drying Rate", tooltip: () => "Chance that tilled soil will disappear. Normally this is 0.1 (=10%).", getValue: () => (float)config.EachNight.DryingRate, setValue: (float val) => config.EachNight.DryingRate = val, min: 0.0f, max: 1.0f);
+            api.AddNumberOption(mod: ModManifest, name: () => "Delay",       tooltip: () => "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", getValue: () => config.EachNight.Delay, setValue: (int val) => config.EachNight.Delay = val, min: 0, max: 4);
+            api.AddSectionTitle(mod: ModManifest, text: () => "Each Season", tooltip: () => "How soil decays on the farm (and maps that have the `ClearEmptyDirtOnNewMonth` property) during nights between seasons");
+            api.AddNumberOption(mod: ModManifest, name: () => "Drying Rate", tooltip: () => "Chance that tilled soil will disappear. Normally this is 0.8 (=80%).", getValue: () => (float)config.EachSeason.DryingRate, setValue: (float val) => config.EachSeason.DryingRate = val, min: 0.0f, max: 1.0f);
+            api.AddNumberOption(mod: ModManifest, name: () => "Delay",       tooltip: () => "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", getValue: () => config.EachSeason.Delay, setValue: (int val) => config.EachSeason.Delay = val, min: 0, max: 4);
+            api.AddSectionTitle(mod: ModManifest, text: () => "Greenhouse",  tooltip: () => "How soil decays inside the greenhouse");
+            api.AddNumberOption(mod: ModManifest, name: () => "Drying Rate", tooltip: () => "Chance that tilled soil will disappear. Normally this is 1.0 (=100%).", getValue: () => (float)config.Greenhouse.DryingRate, setValue: (float val) => config.Greenhouse.DryingRate = val, min: 0.0f, max: 1.0f);
+            api.AddNumberOption(mod: ModManifest, name: () => "Delay",       tooltip: () => "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", getValue: () => config.Greenhouse.Delay, setValue: (int val) => config.Greenhouse.Delay = val, min: 0, max: 4);
+            api.AddSectionTitle(mod: ModManifest, text: () => "Island",      tooltip: () => "How soil decays on Ginger Island");
+            api.AddNumberOption(mod: ModManifest, name: () => "Drying Rate", tooltip: () => "Chance that tilled soil will disappear. Normally this is 0.1 (=10%).", getValue: () => (float)config.Island.DryingRate, setValue: (float val) => config.Island.DryingRate = val, min: 0.0f, max: 1.0f);
+            api.AddNumberOption(mod: ModManifest, name: () => "Delay",       tooltip: () => "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", getValue: () => config.Island.Delay, setValue: (int val) => config.Island.Delay = val, min: 0, max: 4);
+            api.AddSectionTitle(mod: ModManifest, text: () => "Non-farm",    tooltip: () => "How soil decays outside the farm");
+            api.AddNumberOption(mod: ModManifest, name: () => "Drying Rate", tooltip: () => "Chance that tilled soil will disappear. Normally this is 1.0 (=100%).", getValue: () => (float)config.NonFarm.DryingRate, setValue: (float val) => config.NonFarm.DryingRate = val, min: 0.0f, max: 1.0f);
+            api.AddNumberOption(mod: ModManifest, name: () => "Delay",       tooltip: () => "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", getValue: () => config.NonFarm.Delay, setValue: (int val) => config.NonFarm.Delay = val, min: 0, max: 4);
         }
 
         void Farm_DayUpdate() {

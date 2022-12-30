@@ -1,0 +1,44 @@
+{
+    "Mon": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "Tue": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "Wed": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "Thu": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "Fri": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "Sat": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "Sun": "Hi, @!
+    #$q 14638085/14638086 koophire_followup#Would you like to hire me for 750g?
+        #$r 14638085 15 koophire_yes#Yes
+        #$r 14638086 0 koophire_no#No
+    ",
+    "koophire_yes": "...",
+    "koophire_no": "Oh, okay. I'll be here.$s",
+    "koophire_followup":
+        "$p 14638085
+            #Thanks for letting me come with you!$h
+            |Hi, @!$k
+        ",
+}

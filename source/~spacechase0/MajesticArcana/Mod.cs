@@ -28,6 +28,7 @@ namespace MajesticArcana
             AlchemyRecipes.Init();
 
             Helper.ConsoleCommands.Add("magik_alchemy", "...", OnAlchemyCommand);
+            Helper.ConsoleCommands.Add("magik_spellcrafting", "...", OnSpellcraftingCommand);
         }
 
         private void OnAlchemyCommand(string arg1, string[] arg2)
@@ -36,6 +37,14 @@ namespace MajesticArcana
                 return;
 
             Game1.activeClickableMenu = new AlchemyMenu();
+        }
+
+        private void OnSpellcraftingCommand(string arg1, string[] arg2)
+        {
+            if (!Context.IsPlayerFree)
+                return;
+
+            Game1.activeClickableMenu = new SpellcraftingMenu();
         }
     }
 }

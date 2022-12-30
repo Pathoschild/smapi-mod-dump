@@ -11,7 +11,7 @@
 {
   "Name": "AdditionalMineMaps",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.2.1",
   "Description": "AdditionalMineMaps.",
   "UniqueID": "aedenthorn.AdditionalMineMaps",
   "EntryDll": "AdditionalMineMaps.dll",

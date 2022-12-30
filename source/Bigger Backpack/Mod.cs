@@ -18,10 +18,17 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Objects;
 using StardewHack;
 using StardewValley.Locations;
+using StardewModdingAPI.Events;
+using GenericModConfigMenu;
 
 namespace BiggerBackpack
 {
-    public class Mod : Hack<Mod>, IAssetEditor, IAssetLoader
+    public class ModConfig {
+        /** How much you have to pay to buy this backpack in the shop. (default = 50000).*/
+        public int BackpackCost = 50000;
+    }
+    
+    public class Mod : HackWithConfig<Mod,ModConfig>
     {
         public static Mod instance;
 
@@ -31,7 +38,8 @@ namespace BiggerBackpack
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void HackEntry(IModHelper helper)
         {
-            bigBackpack = Helper.Content.Load<Texture2D>("LooseSprites/BiggerBackpack", ContentSource.GameContent);
+            bigBackpack = Helper.ModContent.Load<Texture2D>("backpack.png");
+            helper.Events.Content.AssetRequested += this.OnAssetRequested;
 
             Helper.ConsoleCommands.Add("player_setbackpacksize", "Set the size of the player's backpack. This must be 12, 24, 36 or 48", command);
             
@@ -171,7 +179,7 @@ namespace BiggerBackpack
 #region Buy Backpack
         static public void clickBackpack()
         {
-            Response yes = new Response("Purchase", "Purchase (50,000g)");
+            Response yes = new Response("Purchase", string.Format("Purchase ({0:N0}g)", getBackpackCost()));
             Response no = new Response("Not", Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_ResponseNo"));
             Response[] resps = new Response[] { yes, no };
             Game1.currentLocation.createQuestionDialogue("Backpack Upgrade -- 48 slots", resps, "Backpack");
@@ -205,11 +213,13 @@ namespace BiggerBackpack
         }
 
         static void buyBackpack() {
-            Game1.player.Money -= 50000;
+            Game1.player.Money -= getBackpackCost();
             Game1.player.holdUpItemThenMessage((Item)new SpecialItem(99, "Premium Pack") { DisplayName = "Premium Pack" }, true);
             Game1.player.increaseBackpackSize(12);
             // Game1.multiplayer.globalChatInfoMessage ("BackpackDeluxe", Game1.player.Name);
         }
+
+        public static int getBackpackCost() => getInstance().config.BackpackCost;
         
         // Inject code for rendering the larger backpack when picked up.
         void GameLocation_answerDialogueAction() {
@@ -229,10 +239,10 @@ namespace BiggerBackpack
                 code[2],
                 Instructions.Ldc_I4_S(48),
                 Instructions.Bge(AttachLabel(get_player)),
-                //   && Game1.player.Money >= 50000) {
+                //   && Game1.player.Money >= Mod.getBackpackCost()) {
                 Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
                 Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.Money)),
-                Instructions.Ldc_I4(50000),
+                Instructions.Call(GetType(), nameof(getBackpackCost)),
                 Instructions.Blt(AttachLabel(get_player)),
                 //   buyBackpack();
                 Instructions.Call(typeof(Mod), nameof(Mod.buyBackpack)),
@@ -512,37 +522,30 @@ namespace BiggerBackpack
 #endregion
 
 #region Assets
-        bool IAssetEditor.CanEdit<T>(IAssetInfo asset)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (asset.AssetNameEquals("LooseSprites/JunimoNote")) {
-                return true;
-            }
-            return false;
-        }
-
-        void IAssetEditor.Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("LooseSprites/JunimoNote")) {
-                var junimoNote  = Helper.Content.Load<Texture2D>("JunimoNote.png");
-                // 344,28 - 121x127
-                asset.AsImage().PatchImage(junimoNote, targetArea: new Rectangle(344, 28, 121, 127));
+            if (e.Name.IsEquivalentTo("LooseSprites/JunimoNote"))
+            {
+                e.Edit(asset => {
+                    var editor = asset.AsImage();
+                    var junimoNote  = Helper.ModContent.Load<IRawTextureData>("JunimoNote.png");
+                    // 344,28 - 121x127
+                    editor.PatchImage(junimoNote, targetArea: new Rectangle(344, 28, 121, 127));
+                });
             }
         }
+#endregion
 
-        bool IAssetLoader.CanLoad<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals("LooseSprites/BiggerBackpack")) {
-                return true;
-            }
-            return false;
-        }
-
-        T IAssetLoader.Load<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals("LooseSprites/BiggerBackpack")) {
-                return Helper.Content.Load<T>("backpack.png", ContentSource.ModFolder);
-            }
-            throw new System.ArgumentException("BiggerBackpack cannot load asset for " + asset.AssetName);
+#region Config
+        protected override void InitializeApi(IGenericModConfigMenuApi api) {
+            api.AddNumberOption(
+                mod: ModManifest, 
+                name: () => "Backpack cost", 
+                tooltip: () => "How much you have to pay to buy this backpack in the shop.", 
+                getValue: () => config.BackpackCost, 
+                setValue: (int val) => config.BackpackCost = val,
+                min: 0
+            );
         }
 #endregion
     }

@@ -1,0 +1,77 @@
+﻿{
+    "skill.name": "사교성",
+    "skill.perk": "{{bonus}}% 확률로 대화하지 않은 날 호감도가 감소하지 않습니다",
+
+    "friendly.name": "친근한",
+    "friendly.desc": "주민들과 대화할 때 더 많은 호감도를 얻습니다",
+    "smoothtalker.name": "부드러운 말투",
+    "smoothtalker.desc": "호감도 이벤트에서 호감도를 더 많이 얻거나 덜 잃습니다",
+    "gifter.name": "선물 공세",
+    "gifter.desc": "선물을 줄 때 더 많은 호감도를 얻습니다",
+    "helpful.name": "심부름꾼",
+    "helpful.desc": "의뢰 보상이 증가합니다",
+    "haggler.name": "흥정꾼",
+    "haggler.desc": "상점 주인과 친할 경우 물건 가격을 할인받습니다",
+    "beloved.name": "사랑받는",
+    "beloved.desc": "친구들로부터 종종 선물을 받습니다",
+
+    "dialogue.beloved": "받아. 집 근처에서 주웠어.",
+    "dialogue.beloved.rare": "{{name}}, 네가 좋아할지도 몰라서 가져왔어.",
+    "dialogue.beloved.superrare": "이걸 보자마자 네가 좋아할 것 같아서 가져왔어.",
+
+    "config.ExperienceModifiers": "경험치 계수",
+    "config.SkillPerkModifiers": "스킬 특전 계수",
+    "config.ProfessionModifiers": "특성 계수",
+
+    "config.ExperienceFromTalking": "대화 경험치",
+    "config.ExperienceFromTalking.tooltip": "주민들과 대화할 때 얻는 경험치",
+    "config.ExperienceFromGifts": "선물 경험치",
+    "config.ExperienceFromGifts.tooltip": "주민들에게 선물할 때 얻는 경험치",
+    "config.ExperienceFromEvents": "이벤트 경험치",
+    "config.ExperienceFromEvents.tooltip": "호감도 이벤트에서 얻는 경험치",
+    "config.ExperienceFromQuests": "의뢰 경험치",
+    "config.ExperienceFromQuests.tooltip": "게시판 의뢰를 완료할 때 얻는 경험치",
+    "config.LovedGiftExpMultiplier": "사랑하는 선물 경험치 계수",
+    "config.LovedGiftExpMultiplier.tooltip": "주민들이 사랑하는 선물을 줄 때 경험치 획득 증가량 계수",
+    "config.BirthdayGiftExpMultiplier": "생일선물 경험치 계수",
+    "config.BirthdayGiftExpMultiplier.tooltip": "주민들에게 생일선물을 줄 때 경험치 획득 증가량 계수",
+
+    "config.ChanceNoFriendshipDecayPerLevel": "레벨당 호감도 감소 방지 확률",
+    "config.ChanceNoFriendshipDecayPerLevel.tooltip": "레벨당 대화하지 않은 날 호감도 감소 방지 확률",
+
+    "config.FriendlyProfessionModifiers": "친근한 특성 계수",
+    "config.FriendlyExtraFriendship": "추가 호감도",
+    "config.FriendlyExtraFriendship.tooltip": "친근한 특성을 보유중일 때 대화로부터 추가로 얻는 경험치",
+
+    "config.SmoothTalkerProfessionModifiers": "부드러운 말투 특성 계수",
+    "config.SmoothTalkerPositiveMultiplier": "호감도 획득 증가 계수",
+    "config.SmoothTalkerPositiveMultiplier.tooltip": "부드러운 말투 특성을 보유중일 때 호감도 이벤트에서 호감도 획득 증가 계수 (호감도를 더 얻으려면 1보다 큰 값으로 설정)",
+    "config.SmoothTalkerNegativeMultiplier": "호감도 손실 감소 계수",
+    "config.SmoothTalkerNegativeMultiplier.tooltip": "부드러운 말투 특성을 보유중일 때 호감도 이벤트에서 호감도 손실 감소 계수 (호감도를 덜 잃으려면 0과 1 사이 값으로 설정)",
+
+    "config.GifterProfessionModifiers": "선물 공세 특성 계수",
+    "config.GifterLovedGiftExtraFriendship": "사랑하는 선물 추가 호감도",
+    "config.GifterLovedGiftExtraFriendship.tooltip": "선물 공세 특성을 보유한 채로 사랑하는 선물을 줄 때 추가로 얻는 호감도",
+    "config.GifterLikedGiftExtraFriendship": "좋아하는 선물 추가 호감도",
+    "config.GifterLikedGiftExtraFriendship.tooltip": " 선물 공세 특성을 보유한 채로 좋아하는 선물을 줄 때 추가로 얻는 호감도",
+    "config.GifterNeutralGiftExtraFriendship": "그저그런 선물 추가 호감도",
+    "config.GifterNeutralGiftExtraFriendship.tooltip": "선물 공세 특성을 보유한 채로 그저그런 선물을 줄 때 추가로 얻는 호감도",
+
+    "config.HelpfulProfessionModifiers": "심부름꾼 특성 계수",
+    "config.HelpfulRewardMultiplier": "보상 계수",
+    "config.HelpfulRewardMultiplier.tooltip": "심부름꾼 특성을 보유중일 때 의뢰 완료시 보상 골드 증가량 계수",
+
+    "config.HagglerProfessionModifiers": "흥정꾼 특성 계수",
+    "config.HagglerMinHeartLevel": "필요 호감도 레벨",
+    "config.HagglerMinHeartLevel.tooltip": "흥정꾼 특성을 보유중일 때 할인받기 위해 최소로 필요한 호감도 레벨",
+    "config.HagglerDiscountPercentPerHeartLevel": "호감도 레벨당 할인율",
+    "config.HagglerDiscountPercentPerHeartLevel.tooltip": "필요 호감도 레벨부터 레벨당 추가로 증가하는 할인율",
+
+    "config.BelovedProfessionModifiers": "사랑받는 특성 계수",
+    "config.BelovedGiftPercentChance": "선물 확률",
+    "config.BelovedGiftPercentChance.tooltip": "사랑받는 특성을 보유중일 때 누군가로부터 선물을 받을 확률",
+    "config.BelovedGiftRarePercentChance": "희귀한 선물 확률",
+    "config.BelovedGiftRarePercentChance.tooltip": "받은 선물이 희귀한 선물일 확률",
+    "config.BelovedGiftSuperRarePercentChance": "매우 희귀한 선물 확률",
+    "config.BelovedGiftSuperRarePercentChance.tooltip": "받은 희귀한 선물이 매우 희귀한 선물일 확률"
+}

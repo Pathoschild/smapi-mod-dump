@@ -9,13 +9,6 @@ for queries and analysis.**
 # Warp Network
 Warp Network is a flexible and lightweight fast-travel mod for Stardew Valley. It is designed to be easily expandable and easy-to-use. For more information on integrating mods, please see the wiki.
 
-## Requirements
-* SMAPI 3.9.4+
-* SpaceCore 2.9.0+
-
-## Installation
-Warp Network is installed like any other SMAPI mod- simply unzip it and drop it into the `Stardew Valley/Mods` folder. Make sure to also install the correct versions of SMAPI & SpaceCore!
-
 ## Configuration
 Warp Network can be configured either in-game (if Generic Mod Config Menu is also installed), or by directly editing the `config.json`file in the Warp Network mod folder. (Note: you need to run the game with the mod loaded **at least once** before the config file will appear.)
 

@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Reflection.Emit;
+using GenericModConfigMenu;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
@@ -32,11 +33,11 @@ namespace StardewHack.TreeSpread
             Patch((Tree t) => t.dayUpdate(null, new Microsoft.Xna.Framework.Vector2()), Tree_DayUpdate);
         }
 
-        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        protected override void InitializeApi(IGenericModConfigMenuApi api)
         {
-            api.RegisterClampedOption(ModManifest, "Seed Chance", "Chance that a tree will have a seed. Normally this is 0.05 (=5%).", () => config.SeedChance, (float val) => config.SeedChance = val, 0, 1);
-            api.RegisterSimpleOption(ModManifest, "Only Prevent Tapped", "Whether only tapped trees are prevented from spreading.", () => config.OnlyPreventTapped, (bool val) => config.OnlyPreventTapped = val);
-            api.RegisterSimpleOption(ModManifest, "Retain Seed", "Whether the tree should keep its seed during the night, to compensate for trees not spreading. Vanilla SDV removes seeds during the night.", () => config.RetainSeed, (bool val) => config.RetainSeed = val);
+            api.AddNumberOption(mod: ModManifest, name: () => "Seed Chance",         tooltip: () => "Chance that a tree will have a seed. Normally this is 0.05 (=5%).", getValue: () => config.SeedChance, setValue: (float val) => config.SeedChance = val, min: 0, max: 1);
+            api.AddBoolOption  (mod: ModManifest, name: () => "Only Prevent Tapped", tooltip: () => "Whether only tapped trees are prevented from spreading.", getValue: () => config.OnlyPreventTapped, setValue: (bool val) => config.OnlyPreventTapped = val);
+            api.AddBoolOption  (mod: ModManifest, name: () => "Retain Seed",         tooltip: () => "Whether the tree should keep its seed during the night, to compensate for trees not spreading. Vanilla SDV removes seeds during the night.", getValue: () => config.RetainSeed, setValue: (bool val) => config.RetainSeed = val);
         }
 
         static float getSeedChance() => getInstance().config.SeedChance;

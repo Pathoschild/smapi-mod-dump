@@ -38,6 +38,8 @@ namespace Custom_Farm_Loader.Lib
         public Area Area = new Area();
         public List<BackgroundType> BackgroundTypes = new List<BackgroundType>();
         public Vector2 Position = new Vector2(0, 0);
+        public GameLocation Location = null;
+        public string LocationName = "Farm";
 
         public static void Initialize(Mod mod)
         {
@@ -89,6 +91,9 @@ namespace Custom_Farm_Loader.Lib
                         case "items":
                             dailyUpdate.Items = ItemObject.MapNameToParentsheetindex(UtilityMisc.parseStringArray(property));
                             break;
+                        case "map" or "location":
+                            dailyUpdate.LocationName = value;
+                            break;
                         default:
                             if (dailyUpdate.Filter.parseAttribute(property))
                                 break;
@@ -128,8 +133,7 @@ namespace Custom_Farm_Loader.Lib
 
         private void addValidTilesFromRectangle(Rectangle rect, List<Vector2> validTiles, bool checkExists = false)
         {
-            Farm farm = Game1.getFarm();
-            var tiles = farm.Map.GetLayer("Back").Tiles.Array;
+            var tiles = Location.Map.GetLayer("Back").Tiles.Array;
 
             int maxX = rect.X + rect.Width > tiles.GetLength(0) ? tiles.GetLength(0) : rect.X + rect.Width;
             int maxY = rect.Y + rect.Height > tiles.GetLength(1) ? tiles.GetLength(1) : rect.Y + rect.Height;
@@ -152,22 +156,21 @@ namespace Custom_Farm_Loader.Lib
         private static List<string> test = new List<string>();
         public bool isValidTile(Vector2 v)
         {
-            Farm farm = Game1.getFarm();
-            if (!farm.isTileLocationTotallyClearAndPlaceable(v))
+            if (!Location.isTileLocationTotallyClearAndPlaceable(v))
                 return false;
 
-            if (farm.getTileIndexAt((int)v.X, (int)v.Y, "AlwaysFront") != -1)
+            if (Location.getTileIndexAt((int)v.X, (int)v.Y, "AlwaysFront") != -1)
                 return false;
 
-            string x = farm.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "BeachSpawn", "Back");
+            string x = Location.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "BeachSpawn", "Back");
             if (!test.Exists(e => e == x))
                 test.Add(x);
 
-            if (BackgroundTypes.Contains(BackgroundType.Beach) && farm.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "BeachSpawn", "Back") != "")
+            if (BackgroundTypes.Contains(BackgroundType.Beach) && Location.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "BeachSpawn", "Back") != "")
                 return true;
 
             if (!BackgroundTypes.Contains(BackgroundType.Any) && BackgroundTypes.Count != 0)
-                return BackgroundTypes.Exists(bg => farm.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "Type", "Back").Equals(bg.ToString()));
+                return BackgroundTypes.Exists(bg => Location.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "Type", "Back").Equals(bg.ToString()));
 
             return true;
         }

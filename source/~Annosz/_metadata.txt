@@ -10,12 +10,12 @@ mods:
    Sleepless Fisherman
 
 latest commit:
-   commit d1c53c7c4cd14a371b7e58d80ccc08222400bf05
-   Merge: e3717ae e7b0a2a
-   Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Tue Sep 29 18:32:20 2020 +0200
+   commit 848c2393eea0582ff5115afef72c6be01a0c0b5d
+   Merge: 2579ff1 2a4fea2
+   Author: TÃ³th ÃdÃ¡m <adam_toth4@epam.com>
+   Date:   Wed Dec 14 15:41:11 2022 +0100
    
-       Merge pull request #4 from Annosz/development
+       Merge pull request #8 from Annosz/dependabot/nuget/StardewValleyMods/KrobusSellsLargerStacks/Newtonsoft.Json-13.0.2
        
-       Add Remember Faced Direction mod
+       Bump Newtonsoft.Json from 12.0.3 to 13.0.2 in /StardewValleyMods/KrobusSellsLargerStacks
    

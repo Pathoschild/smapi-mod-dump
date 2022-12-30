@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14700
+IDs: tlitookilakin.AeroCore
+update keys: GitHub:Tlitookilakin/AeroCore, Nexus:14700, ModDrop:1275014

@@ -8,19 +8,16 @@
 **
 *************************************************/
 
-using Chest_Displays.Harmony;
+using Chest_Displays.Patches;
 using Chest_Displays.Utility;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewValley.Tools;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 
 using SObject = StardewValley.Object;
 using SUtils = StardewValley.Utility;
@@ -29,154 +26,93 @@ namespace Chest_Displays
 {
     public class ModEntry : Mod
     {
-        public static IModHelper RequestableHelper;
-        public static IMonitor RequestableMonitor;
-        public static Config RequestableConfig;
+        public static IModHelper IHelper;
+        public static IMonitor IMonitor;
+        public static Config IConfig;
 
         public bool host = false;
-
-        public static List<SaveData> SavedData = new List<SaveData>();
+        private bool hadSavedData = false;
 
         public override void Entry(IModHelper helper)
         {
-            RequestableHelper = Helper;
-            RequestableMonitor = Monitor;
+            IHelper = Helper;
+            IMonitor = Monitor;
 
-            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
-
-            helper.Events.World.ObjectListChanged += World_ObjectListChanged;
-            helper.Events.World.ChestInventoryChanged += World_ChestInventoryChanged;
-
-            helper.Events.GameLoop.Saving += GameLoop_Saving;
+            helper.Events.Input.ButtonPressed += onButtonPressed;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.GameLoop.GameLaunched += onGameLaunch;
 
-            helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
-            helper.Events.Multiplayer.PeerConnected += Multiplayer_PeerConnected;
             CheckConfig();
         }
 
 
         private void CheckConfig()
         {
-            RequestableConfig = Helper.ReadConfig<Config>();
-            if (!(RequestableConfig.ChangeItemKey == "Quotes" || RequestableConfig.ChangeItemKey == "Quote")) return;
-            RequestableConfig.ChangeItemKey = "OemQuotes";
-            Helper.WriteConfig(RequestableConfig);
-        }
-
-        private void Multiplayer_PeerConnected(object sender, PeerConnectedEventArgs e)
-        {
-            if (!host) Helper.Multiplayer.SendMessage(SavedData, Helper.ModRegistry.ModID, new[] { Helper.ModRegistry.ModID }, new[] { e.Peer.PlayerID });
-        }
-
-        private void Multiplayer_ModMessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            if(e.FromModID == Helper.ModRegistry.ModID)
-                SavedData = e.ReadAs<List<SaveData>>();
+            IConfig = Helper.ReadConfig<Config>();
+            if (!IConfig.ChangeItemButtons.Any())
+            {
+                Monitor.Log($"No valid entry button found, button has been reset to defaults ('\"' on keyboard and LeftStick on controller)", LogLevel.Warn);
+                IConfig.ChangeItemKey = "OemQuotes, LeftStick";
+                Helper.WriteConfig(IConfig);
+            }
         }
 
         private void GameLoop_Saving(object sender, SavingEventArgs e)
         {
             if (!host) return;
 
-            Helper.Data.WriteSaveData("MindMeltMax.ChestDisplay", SavedData);
-            if (Game1.IsMultiplayer)
-                Helper.Multiplayer.SendMessage(SavedData, Helper.ModRegistry.ModID, new[] { Helper.ModRegistry.ModID });
+            if (hadSavedData)
+                Helper.Data.WriteSaveData<object>($"MindMeltMax.ChestDisplay", null);
+            hadSavedData = false;
         }
 
-        private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
+        private void GameLoop_SaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
-            if (Game1.IsMasterGame || (Game1.IsMultiplayer && Game1.MasterPlayer == Game1.player)) host = true;
+            if (Context.IsMainPlayer) host = true;
             if (!host) return;
 
             var data = Helper.Data.ReadSaveData<List<SaveData>>($"MindMeltMax.ChestDisplay");
             if (data == null) return;
-            SavedData = data;
+            hadSavedData = true;
+            for (int i = 0; i < data.Count; i++)
+            {
+                var item = data[i];
+                var loc = Game1.getLocationFromName(item.Location);
+                var key = new Vector2(item.X, item.Y);
+
+                if (loc.Objects.ContainsKey(key) && loc.Objects[key] is Chest c)
+                {
+                    Item obj = SUtils.getItemFromStandardTextDescription(item.ItemDescription, Game1.player);
+                    if (obj is null) continue;
+                    int itemType = Utils.getItemType(obj);
+                    ModData modData = new()
+                    { 
+                        Item = obj is Tool t ? t.BaseName : Utils.GetItemNameFromIndex(Utils.GetItemIndexInParentSheet(obj, itemType), itemType), 
+                        ItemType = Utils.getItemType(obj), 
+                        ItemQuality = obj is SObject o ? o.Quality : -1, 
+                        Color = null, 
+                        UpgradeLevel = -1 
+                    };
+
+                    c.modData[Helper.ModRegistry.ModID] = JsonConvert.SerializeObject(modData);
+                }    
+            }
         }
 
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e) => Patcher.Init(Helper);
+        private void onGameLaunch(object? sender, GameLaunchedEventArgs e) => Patcher.Init(Helper);
 
-        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void onButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
             if (!Context.CanPlayerMove)
                 return;
 
-            if(Utils.IsChangeItemKey(e.Button))
+            if (IConfig.ChangeItemButtons.Any(x => x == e.Button))
             {
-                var OatT = Game1.player.currentLocation.getObjectAtTile((int)e.Cursor.Tile.X, (int)e.Cursor.Tile.Y);
-                if (OatT != null && OatT is Chest)
-                {
-                    var chest = OatT as Chest;
-                    if (Utils.nullChest(chest))
-                        return;
-                    if (Game1.player.CurrentItem != null && !(Game1.player.CurrentItem is Tool))
-                    {
-                        foreach(SaveData sd in SavedData)
-                        {
-                            if (sd.Item == Game1.player.CurrentItem.Name && ((Utils.isZeroType(Game1.player.CurrentItem) && sd.ItemQuality == 0) || sd.ItemQuality == (Game1.player.CurrentItem as SObject).Quality) && sd.Location == Game1.player.currentLocation.Name && sd.X == e.Cursor.Tile.X && sd.Y == e.Cursor.Tile.Y) return;
-                            else if (sd.Location == Game1.player.currentLocation.Name && sd.X == e.Cursor.Tile.X && sd.Y == e.Cursor.Tile.Y)
-                            {
-                                Chest c = OatT as Chest;
-                                c.addItem(Game1.player.CurrentItem.getOne());
-                                sd.Item = Game1.player.CurrentItem.Name;
-                                sd.ItemDescription = SUtils.getStandardDescriptionFromItem(Utils.getItemFromName(sd.Item, c), 1);
-                                sd.ItemQuality = Utils.isZeroType(Game1.player.CurrentItem) ? 0 : (Game1.player.CurrentItem as SObject).Quality;
-                                Game1.player.CurrentItem.Stack--;
-                                Item held = Game1.player.CurrentItem;
-                                if (held.Stack <= 0 || Utils.isZeroType(held)) Game1.player.removeItemFromInventory(held);
-                                Helper.Multiplayer.SendMessage(SavedData, Helper.ModRegistry.ModID, new[] { Helper.ModRegistry.ModID });
-                                return;
-                            }
-                        }
-                        var quality = Utils.isZeroType(Game1.player.CurrentItem) ? 0 : (Game1.player.CurrentItem as SObject).Quality;
-                        SavedData.Add(new SaveData(Game1.player.CurrentItem.Name, SUtils.getStandardDescriptionFromItem(Game1.player.CurrentItem, Game1.player.CurrentItem.Stack), quality, (int)e.Cursor.Tile.X, (int)e.Cursor.Tile.Y, Game1.player.currentLocation.Name));
-                        Chest tmp = OatT as Chest;
-                        tmp.addItem(Game1.player.CurrentItem.getOne());
-                        Game1.player.CurrentItem.Stack--;
-                        var currentItem = Game1.player.CurrentItem;
-                        if (currentItem.Stack <= 0 || Utils.isZeroType(currentItem)) Game1.player.removeItemFromInventory(currentItem);
-                        Helper.Multiplayer.SendMessage(SavedData, Helper.ModRegistry.ModID, new[] { Helper.ModRegistry.ModID });
-                    }
-                }
-            }
-        }
+                var tile = Game1.player.GetGrabTile();
+                var OatT = Game1.player.currentLocation.getObjectAtTile((int)tile.X, (int)tile.Y);
 
-        private void World_ObjectListChanged(object sender, ObjectListChangedEventArgs e)
-        {
-            if(e.Removed != null)
-            {
-                List<SaveData> tmp = new List<SaveData>();
-                foreach (var obj in e.Removed)
-                {
-                    if(obj.Value is Chest)
-                    {
-                        foreach(SaveData sd in SavedData)
-                        {
-                            if (obj.Key == new Vector2(sd.X, sd.Y) && e.Location == Game1.getLocationFromName(sd.Location))
-                                tmp.Add(sd);
-                        }
-                    }
-                }
-                foreach (SaveData sd in tmp)
-                    SavedData.Remove(sd);
-            }
-        }
-
-        private void World_ChestInventoryChanged(object sender, ChestInventoryChangedEventArgs e)
-        {
-            List<SaveData> tmp = new List<SaveData>();
-            if (e.Removed != null)
-            {
-                foreach (SaveData sd in SavedData)
-                {
-                    foreach (Item i in e.Removed)
-                        if (i.Name == sd.Item && e.Location == Game1.getLocationFromName(sd.Location) && e.Chest == e.Location.getObjectAtTile(sd.X, sd.Y) && !RequestableConfig.RetainItem)
-                            tmp.Add(sd);
-                }
-
-                foreach (SaveData sd in tmp)
-                    SavedData.Remove(sd);
+                if (OatT is not null and Chest c)
+                    Game1.activeClickableMenu = new ChangeDisplayMenu(c);
             }
         }
     }

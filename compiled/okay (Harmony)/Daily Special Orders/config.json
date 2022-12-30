@@ -9,6 +9,16 @@
     true,
     true
   ],
+  "RSVRefreshes": [
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
   "QiRefreshes": [
     false,
     true,

@@ -1,5 +1,13 @@
 ﻿# Smart Cursor Changelog
 
+## 1.1.4
+#### Fixes
+* Fixed the mod not actually loading its configuration values internally at launch. They were previously applied to GMCM, but not the mod's data itself.
+
+## 1.1.3
+#### Fixes
+* Fixed bug with GMCM integration not correctly saving configuration changes.
+
 ## 1.1.2
 #### Fixes
 * Fixed the GMCM config menu not actually saving the range settings. Oops.

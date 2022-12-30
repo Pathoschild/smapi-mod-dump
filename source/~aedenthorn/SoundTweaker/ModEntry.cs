@@ -9,28 +9,13 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
-using Newtonsoft.Json;
+using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Objects;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.RegularExpressions;
-using xTile;
-using xTile.Dimensions;
-using xTile.Tiles;
 
 namespace SoundTweaker
 {
-    /// <summary>The mod entry point.</summary>
     public partial class ModEntry : Mod
     {
 
@@ -42,9 +27,8 @@ namespace SoundTweaker
         
         public static string dictPath = "aedenthorn.SoundTweaker/dictionary";
         public static Dictionary<string, TweakData> tweakDict = new Dictionary<string, TweakData>();
+        public static Dictionary<string, XactSoundBankSound[]> originalSounds = new Dictionary<string, XactSoundBankSound[]>();
 
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Config = Helper.ReadConfig<ModConfig>();
@@ -55,21 +39,37 @@ namespace SoundTweaker
             SHelper = helper;
 
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             Helper.Events.Content.AssetRequested += Content_AssetRequested;
-            Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            //Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
 
             var harmony = new Harmony(ModManifest.UniqueID);
-            harmony.PatchAll();
+            //harmony.PatchAll();
+            
+            var data = new TweakData()
+            {
+                sounds = new List<SoundInfo> { new SoundInfo() { filePaths = { "aedenthorn.TestSound/guitar", "aedenthorn.TestSound/drum" }, cuePaths = { "toyPiano", "flute" }, soundIndexes = { 257, 258, 259 }, minVolume = 0.75f, maxVolume = 1f, minPitch = 1f, maxPitch = 2f, reverb = false, minFrequency = 0, maxFrequency = 1000, minQ = 0, maxQ = 500, filterMode = FilterMode.HighPass } }
+            };
+            //File.WriteAllText("contents.json", JsonConvert.SerializeObject(data, Formatting.Indented));
+            
+        }
 
+        private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        {
+            ReloadSounds();
         }
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
-            if(e.Button == SButton.Delete)
+            if (e.Button == SButton.Delete)
             {
-                Game1.playSound("bigSelect");
+                Game1.stopMusicTrack(Game1.MusicContext.Default);
+                ReloadSounds();
+
+                Game1.playSound("snowyStep");
             }
         }
+
 
         private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
         {

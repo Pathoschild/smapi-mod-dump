@@ -1,0 +1,111 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GamePath>/Users/ivy/Applications/Stardew Valley Development.app/Contents/MacOS</GamePath>
+    <AssemblyName>OrnithologistsGuild</AssemblyName>
+    <EnableHarmony>true</EnableHarmony>
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+    <ModFolderName>Ornithologists Guild</ModFolderName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>node build-content.js</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>node build-content.js</command>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>bash ${SolutionDir}/generate_zip.sh</command>
+          <workingdir>${SolutionDir}/</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Pathoschild.Stardew.ModBuildConfig" />
+    <None Remove="lib\" />
+    <None Remove="DynamicGameAssets" />
+    <None Remove="assets\" />
+    <None Remove="assets\dga\" />
+    <None Remove="assets\dga\i18n\" />
+    <None Remove="Game\" />
+    <None Remove="Game\Items\" />
+    <None Remove="MailFrameworkMod" />
+    <None Remove="SimpleStateMachineLibrary" />
+    <None Remove="StateMachine" />
+    <None Remove="MonoGame.Primitives2D" />
+    <None Remove="Utilities\" />
+    <None Remove="Game\Critters\" />
+    <None Remove="ContentPatcher" />
+    <None Remove="Content\" />
+    <None Remove="content-pack\" />
+    <None Remove="content-pack\i18n\" />
+    <None Remove="Models\" />
+    <None Remove="i18n\" />
+    <None Remove="Pathoschild.Stardew.ModTranslationClassBuilder" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
+    <PackageReference Include="StateMachine" Version="1.2.4" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lib\" />
+    <Folder Include="assets\" />
+    <Folder Include="assets\dga\" />
+    <Folder Include="assets\dga\i18n\" />
+    <Folder Include="Game\" />
+    <Folder Include="Game\Items\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Game\Critters\" />
+    <Folder Include="Content\" />
+    <Folder Include="content-pack\" />
+    <Folder Include="content-pack\i18n\" />
+    <Folder Include="Models\" />
+    <Folder Include="i18n\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DynamicGameAssets" Private="False">
+      <HintPath>lib\DynamicGameAssets.dll</HintPath>
+    </Reference>
+    <Reference Include="MailFrameworkMod" Private="False">
+      <HintPath>lib\MailFrameworkMod.dll</HintPath>
+    </Reference>
+    <Reference Include="ContentPatcher" Private="False">
+      <HintPath>lib\ContentPatcher.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="assets\goldfinch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="birds.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="feeders.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="foods.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="content-pack\content.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="content-pack\i18n\default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

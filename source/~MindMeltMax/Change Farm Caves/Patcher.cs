@@ -55,7 +55,7 @@ namespace ChangeFarmCaves
             {
                 if (__instance.Name == "Demetrius" && Game1.IsMasterGame)
                 {
-                    if (__instance.CurrentDialogue.Count <= 0)
+                    if (__instance.CurrentDialogue.Count <= 0 && who.CurrentItem is null)
                     {
                         var responses = Game1.currentLocation.createYesNoResponses();
                         if (Game1.activeClickableMenu is null)

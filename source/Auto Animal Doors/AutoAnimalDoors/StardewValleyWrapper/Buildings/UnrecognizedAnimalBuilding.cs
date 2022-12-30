@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 {
-    class UnrecognizedAnimalBuilding : AnimalBuilding
+    public class UnrecognizedAnimalBuilding : AnimalBuilding
     {
         public UnrecognizedAnimalBuilding(StardewValley.Buildings.Building building, Farm farm) : base(building, farm)
         {

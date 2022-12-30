@@ -6,10 +6,9 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit dfbd1bb90633c0f3b5432fb1b7b86a7e6fec5ee7
+   commit d3999d558ae67f8be90ab955d21b93a1e548bc71
    Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Sun Jul 3 21:07:53 2022 -0400
+   Date:   Thu Dec 29 13:53:33 2022 -0500
    
-       Added the option to show Birthday reminders (Disabled by default)
-       Changed some message formatting
+       Bumped version number to 1.2.0
    

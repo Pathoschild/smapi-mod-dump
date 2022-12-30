@@ -56,9 +56,35 @@ namespace MoreConversationTopics
             {
                 Monitor.Log($"Failed to add postfix player wedding event with exception: {ex}", LogLevel.Error);
             }
+
+            try
+            {
+                Monitor.Log("Adding Harmony postfix to engagementResponse() in NPC.cs", LogLevel.Trace);
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(NPC), "engagementResponse"),
+                    postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(NPC_engagementResponse_Postfix))
+                );
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed to add postfix player to NPC engagement with exception: {ex}", LogLevel.Error);
+            }
+
+            try
+            {
+                Monitor.Log("Adding Harmony postfix to handleIncomingProposal() in FarmerTeam.cs", LogLevel.Trace);
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(FarmerTeam), "handleIncomingProposal"),
+                    postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(FarmerTeam_handleIncomingProposal_Postfix))
+                );
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed to add postfix multiplayer engagement with exception: {ex}", LogLevel.Error);
+            }
         }
 
-        // Method that is used to postfix
+        // Methods that are used to postfix
         private static void Utility_getWeddingEvent_Postfix(Farmer farmer)
         {
             try
@@ -89,6 +115,55 @@ namespace MoreConversationTopics
             catch (Exception ex)
             {
                 Monitor.Log($"Failed to add player's spouse wedding conversation topic with exception: {ex}", LogLevel.Error);
+            }
+        }
+
+        private static void NPC_engagementResponse_Postfix(NPC __instance, Farmer who, bool asRoommate)
+        {
+            if (asRoommate)
+            {
+                try
+                {
+                    MCTHelperFunctions.AddOrExtendCT(who, "newRoommate", Config.EngagementDuration);
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log($"Failed to add player's wedding conversation topic with exception: {ex}", LogLevel.Error);
+                }
+            }
+            else
+            {
+                try
+                {
+                    MCTHelperFunctions.AddOrExtendCT(who, "engaged", Config.EngagementDuration);
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log($"Failed to add player's wedding conversation topic with exception: {ex}", LogLevel.Error);
+                }
+            }
+        }
+
+        private static void FarmerTeam_handleIncomingProposal_Postfix(Proposal proposal)
+        {
+            try
+            {
+                // Only handle accepted proposals of marriage
+                if (proposal.response.Value == ProposalResponse.Accepted && proposal.proposalType.Value == ProposalType.Marriage)
+                {
+                    MCTHelperFunctions.AddOrExtendCT(Game1.player, "engaged", Config.EngagementDuration);
+
+                    Farmer spouse = Game1.getFarmerMaybeOffline(proposal.sender.Value.UniqueMultiplayerID);
+                    MCTHelperFunctions.AddOrExtendCT(spouse, "engaged", Config.EngagementDuration);
+                    if (!Game1.getOnlineFarmers().Contains(spouse))
+                    {
+                        Monitor.Log($"Added engaged conversation topic to offline multiplayer spouse, unknown behavior may result", LogLevel.Warn);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed to add multiplayer engagement conversation topics with exception: {ex}", LogLevel.Error);
             }
         }
     }

@@ -38,6 +38,43 @@ namespace Custom_Farm_Loader
             Lib.Main.Initialize(this);
             GameLoopInjections.Main.Initialize(this);
             Menus.Main.Initialize(this);
+
+
+            helper.ConsoleCommands.Add("cfl_debug", "Debug Breakpoint", this.debug);
+            helper.ConsoleCommands.Add("cfl_furniture", "Debug Breakpoint", this.printFurniture);
+        }
+
+        private void debug(string command, string[] args)
+        {
+            if (System.Diagnostics.Debugger.IsAttached)
+                System.Diagnostics.Debugger.Break();
+        }
+
+        private void printFurniture(string command, string[] args)
+        {
+            var player = Game1.player;
+            var loc = player.currentLocation;
+            string res = "\"StartFurniture\": [" + System.Environment.NewLine;
+            if (loc.Name == "FarmHouse") {
+                StardewValley.Locations.FarmHouse fh = (loc as StardewValley.Locations.FarmHouse);
+                if (fh.wallpaperIDs.Contains("Bedroom"))
+                    res += $@"{{ ""Type"": ""Wallpaper"", ""ID"":""{fh.appliedWallpaper["Bedroom"]}""," + Environment.NewLine;
+                if (fh.floorIDs.Contains("Bedroom"))
+                    res += $@"{{ ""Type"": ""Floor"", ""ID"":""{fh.appliedFloor["Bedroom"]}""," + Environment.NewLine;
+            }
+
+            foreach (var furniture in loc.furniture) {
+                if (furniture.parentSheetIndex != 0)
+                    res += $"{{ /*{furniture.Name}*/ \"ID\": {furniture.ParentSheetIndex}, " +
+                           $"\"Position\": \"{furniture.TileLocation.X}, {furniture.TileLocation.Y}\", " +
+                           (furniture.rotations > 1 ? $"\"Rotations\": {furniture.rotations - 1} " : "") +
+                             "}," + Environment.NewLine;
+                else
+                    loc = loc;
+            }
+            res += "]";
+
+            Monitor.Log(res, LogLevel.Info);
         }
     }
 

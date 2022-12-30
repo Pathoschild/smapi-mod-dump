@@ -1,3 +1,4 @@
 {
-  "TradeMenuButton": "G, RightStick"
+  "TradeMenuButton": "G, LeftStick",
+  "Radius": 1
 }

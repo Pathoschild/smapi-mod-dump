@@ -30,20 +30,8 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * On a day with falling leaves, the leaves disappear when scrolling past the west edge of the map.
 
 ## Changes
-#### 0.3:
-* Added a configurable toggle button to enable/disable this mod during the game.
-
-#### 0.5:
-* Toggles for indoor and outdoor areas separately.
-
-#### 0.6:
-* Prepare mod to be SMAPI 3.0 compatible.
-
-#### 1.0:
-* Added dependency on StardewHack.
-
-#### 2.0:
-* Updated for Stardew Valley 1.4
+#### 6.0:
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 
 #### 4.0:
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).

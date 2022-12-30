@@ -12,6 +12,12 @@
   "BundleTooltipDecorator" : "收集包",
   "BundleTooltipDecorator.Description" : "标记还未献祭的物品",
 
+  "FieldOfficeDecorator" : "Field Office Decorator",
+  "FieldOfficeDecorator.Description" : "Marks items that are needed for the island field office",
+
+  "RarecrowDecorator" : "Rarecrow Decorator",
+  "RarecrowDecorator.Description" : "Marks items that are needed for the rarecrow collection",
+  
   "SellPriceDisplayable" : "售价",
   "SellPriceDisplayable.Description" : "显示物品售价信息",
   

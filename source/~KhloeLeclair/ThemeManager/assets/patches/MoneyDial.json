@@ -14,8 +14,8 @@
 	"Patches": {
 		"StardewValley.BellsAndWhistles.MoneyDial:draw": {
 			"Colors": {
-				"Gold": { "*": "$MoneyDialSparkleColor" },
-				"Maroon": { "*": "$MoneyDialTextColor" }
+				"Gold": { "*": "$MoneyDialSparkle" },
+				"Maroon": { "*": "$MoneyDialText" }
 			}
 		}
 	}

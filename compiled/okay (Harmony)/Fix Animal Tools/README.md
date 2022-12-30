@@ -13,11 +13,8 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
-#### 1.0:
-* Added dependency on the StardewHack library mod.
-
-#### 2.0:
-* Updated for Stardew Valley 1.4
+#### 6.0:
+* Increased version number so it has the same major version as StardewHack.
 
 #### 4.0:
 * Add 64-bit support

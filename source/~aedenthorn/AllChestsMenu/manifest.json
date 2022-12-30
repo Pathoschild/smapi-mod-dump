@@ -11,7 +11,7 @@
 {
   "Name": "All Chests Menu",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.2.2",
   "Description": "All Chests Menu.",
   "UniqueID": "aedenthorn.AllChestsMenu",
   "EntryDll": "AllChestsMenu.dll",

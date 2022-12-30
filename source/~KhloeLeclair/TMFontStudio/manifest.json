@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+  "EntryDll": "ThemeManagerFontStudio.dll",
+  "Name": "Theme Manager: Font Studio",
+  "Author": "Khloe Leclair",
+  "Version": "0.5.0-Debug",
+  "Description": "A font authoring add-on for Theme Manager, to make it easier for modders to create custom fonts.",
+  "UniqueID": "leclair.stardew.tmfontstudio",
+  "MinimumApiVersion": "3.16",
+  "Dependencies": [
+    {
+      "UniqueID": "leclair.thememanager",
+      "IsRequired": false
+    }
+  ]
+}

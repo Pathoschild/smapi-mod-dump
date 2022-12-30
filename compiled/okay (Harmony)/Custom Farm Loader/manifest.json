@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Custom Farm Loader",
   "Author": "DeLiXx",
-  "Version": "1.0.7",
+  "Version": "1.0.9",
   "Description": "Adds UI for selecting a custom farm.",
   "UniqueID": "DeLiXx.Custom_Farm_Loader",
   "EntryDll": "Custom Farm Loader.dll",

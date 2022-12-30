@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/11288
-IDs: DaLion.ImmersivePonds, DaLion.ImmersiveFishPonds
-update keys: Nexus:11288

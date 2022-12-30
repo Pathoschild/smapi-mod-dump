@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Reflection.Emit;
+using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -39,11 +40,29 @@ namespace StardewHack.AlwaysScrollMap
             Helper.Events.Input.ButtonPressed += ToggleScroll;
         }
         
-        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        protected override void InitializeApi(IGenericModConfigMenuApi api)
         {
-            api.RegisterSimpleOption(ModManifest, "Enabled indoors", "Always scroll map indoors", () => config.EnabledIndoors, (bool val) => config.EnabledIndoors = val);
-            api.RegisterSimpleOption(ModManifest, "Enabled outdoors", "Always scroll map outdoors", () => config.EnabledOutdoors, (bool val) => config.EnabledOutdoors = val);
-            api.RegisterSimpleOption(ModManifest, "Toggle", "Toggle scrolling in current location", () => config.ToggleScroll, (SButton val) => config.ToggleScroll = val);
+            api.AddBoolOption(
+                mod: ModManifest, 
+                name: () => "Enabled indoors", 
+                tooltip: () => "Always scroll map indoors", 
+                getValue: () => config.EnabledIndoors, 
+                setValue: (bool val) => config.EnabledIndoors = val
+            );
+            api.AddBoolOption(
+                mod: ModManifest, 
+                name: () => "Enabled outdoors", 
+                tooltip: () => "Always scroll map outdoors", 
+                getValue: () => config.EnabledOutdoors, 
+                setValue: (bool val) => config.EnabledOutdoors = val
+            );
+            api.AddKeybind(
+                mod: ModManifest, 
+                name: () => "Toggle", 
+                tooltip: () => "Toggle scrolling in current location", 
+                getValue: () => config.ToggleScroll, 
+                setValue: (SButton val) => config.ToggleScroll = val
+            );
         }
 
         private void ToggleScroll(object sender, ButtonPressedEventArgs e) {

@@ -11,7 +11,7 @@
 {
 	"ID": "OptionsDropDown",
 
-	"Variables": {
+	"ColorVariables": {
 		"$DropDownHover": "$Hover",
 		"$DropDownText": "$Text"
 	},
@@ -22,8 +22,8 @@
 				"Wheat": { "*": "$DropDownHover" }
 			},
 
-			"Fields": {
-				"textColor": { "*": "$DropDownText" }
+			"ColorFields": {
+				"Game1:textColor": { "*": "$DropDownText" }
 			}
 		}
 	}

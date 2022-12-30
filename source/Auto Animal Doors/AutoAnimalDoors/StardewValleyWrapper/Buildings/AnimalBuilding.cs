@@ -17,7 +17,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 
     public enum AnimalBuildingType { BARN, COOP, OTHER };
 
-    abstract class AnimalBuilding : Building
+    public abstract class AnimalBuilding : Building
     {
         private Farm Farm { get; }
 
@@ -31,7 +31,16 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         {
             get
             {
-                return this.building.indoors.Get() as StardewValley.AnimalHouse;
+                StardewValley.GameLocation indoors = this.building.indoors.Get();
+                if (indoors is StardewValley.AnimalHouse)
+                {
+                    return indoors as StardewValley.AnimalHouse;
+                }
+
+                Logger.Instance.Log(
+                    string.Format("Animal building {0} has invalid indoor type {1}, name of inddors {2}", this.building, indoors, this.building?.nameOfIndoors),
+                    StardewModdingAPI.LogLevel.Warn);
+                return new StardewValley.AnimalHouse();
             }
         }
 
@@ -67,6 +76,10 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 
         public bool AreAllAnimalsHome()
         {
+            if (Indoors?.animalsThatLiveHere?.Count == null || Indoors?.animals == null)
+            {
+                Logger.Instance.Log(string.Format("Something is wrong with this animal building, skipping it: "), StardewModdingAPI.LogLevel.Warn);
+            }
             return Indoors.animalsThatLiveHere.Count == Indoors.animals.Count();
         }
 
@@ -88,7 +101,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 
         public void ToggleAnimalDoorState()
         {
-            if (this.building.animalDoor.Value != null && !this.building.isUnderConstruction())
+            if (this.building?.animalDoor?.Value != null && !this.building.isUnderConstruction())
             {
 
                 PlayDoorSound();
@@ -101,7 +114,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
         private void PlayDoorSound()
         {
             DoorSoundSetting doorSoundSetting = ModConfig.Instance.DoorSoundSetting;
-            if(doorSoundSetting == DoorSoundSetting.ALWAYS_ON ||
+            if (doorSoundSetting == DoorSoundSetting.ALWAYS_ON ||
                 doorSoundSetting == DoorSoundSetting.ONLY_ON_FARM && StardewValley.Game1.player.currentLocation.IsFarm)
             {
                 if (!building.animalDoorOpen.Value)

@@ -15,10 +15,10 @@ using System.Collections.Generic;
 namespace AutoAnimalDoors.StardewValleyWrapper
 {
     public enum Weather { SNOWING, RAINING, LIGHTNING, SUNNY, WINDY };
-    
+
     public enum Season { SPRING, SUMMER, FALL, WINTER };
 
-    class Game
+    public class Game
     {
         private static Game instance;
 
@@ -46,19 +46,27 @@ namespace AutoAnimalDoors.StardewValleyWrapper
             {
                 List<Farm> farms = new List<Farm>();
                 farms.Add(new Farm(StardewValley.Game1.getFarm()));
-                Console.Write(String.Format("First farm {0}", StardewValley.Game1.getFarm().name));
                 // Look for custom farms as well
-                foreach (StardewValley.GameLocation location in StardewValley.Game1.locations) {
+                foreach (StardewValley.GameLocation location in StardewValley.Game1.locations)
+                {
                     if (IsLocationAFarm(location))
                     {
-                        Console.Write(String.Format("Got farm {0}", location.name));
+                        Logger.Instance.Log(String.Format("Got farm {0}", location.Name));
                         farms.Add(new Farm((StardewValley.Farm)location));
                     }
                 }
                 return farms;
             }
         }
-        
+
+        public int CurrentTime
+        {
+            get
+            {
+                return StardewValley.Game1.timeOfDay;
+            }
+        }
+
         private bool IsLocationAFarm(StardewValley.GameLocation location)
         {
             return location.GetType().IsSubclassOf(typeof(StardewValley.Farm));

@@ -35,23 +35,27 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using ForecasterText.Objects;
 using ForecasterText.Objects.Enums;
+using ForecasterText.Objects.Messages;
 using GenericModConfigMenu;
 using StardewModdingAPI;
-using StardewValley;
 
 namespace ForecasterText {
     public sealed class ForecasterConfigManager {
         private ForecasterConfig _CachedConfig;
         private readonly ModEntry Mod;
+        private ITranslationHelper Translations => this.Mod.Helper.Translation;
         
         private List<ConfigEmojiMessage> Examples = new();
         
         public ForecasterConfig ModConfig {
             get => this._CachedConfig ??= this.Mod.Helper.ReadConfig<ForecasterConfig>();
             private set => this._CachedConfig = value;
+        }
+        public ForecasterConfig MultiplayerConfig {
+            get => this.ModConfig.Child ??= new ForecasterConfig();
+            private set => this.ModConfig.Child = value;
         }
         
         public ForecasterConfigManager(ModEntry mod) {
@@ -72,227 +76,250 @@ namespace ForecasterText {
                 save: () => this.Mod.Helper.WriteConfig(this.ModConfig)
             );
             
+            // TODO: Re-Enable multiplayer config display once message format for sending is figured out
+            //ForecasterConfig multiplayerConfig = this.MultiplayerConfig;
+            this.InitializePage(this.ModConfig);
+            //this.InitializePage(multiplayerConfig, "child");
+        }
+        
+        private void InitializePage(ForecasterConfig config, string page = null) {
+            if (page is "child") {
+                this.ConfigMenu.AddPage(this.Manifest, page, () => "Multiplayer");
+                this.AddParagraph("Here you can set the options that are used for sending the TV information to other players. They will only receive alerts if they do not already have this mod");
+            }
+            
             // When to display weather
-            this.AddSectionTitle(
-                "Show Weather",
-                "When to show weather messages"
+            this.AddSectionTitle("weather");
+            
+            this.AddWeatherDropdown(
+                () => config.StardewValleyWeather,
+                display => config.StardewValleyWeather = display,
+                "weather.pelican_town"
             );
             
             this.AddWeatherDropdown(
-                () => this.ModConfig.StardewValleyWeather,
-                display => this.ModConfig.StardewValleyWeather = display,
-                "Pelican Town",
-                "When to show the weather for Pelican Town"
-            );
-            
-            this.AddWeatherDropdown(
-                () => this.ModConfig.GingerIslandWeather,
-                display => this.ModConfig.GingerIslandWeather = display,
-                "Ginger Island",
-                "When to show the weather for Ginger Island"
+                () => config.GingerIslandWeather,
+                display => config.GingerIslandWeather = display,
+                "weather.ginger_island"
             );
             
             // When to display birthdays
-            this.AddSectionTitle(
-                "Show Birthdays",
-                "When to show birthday messages"
+            this.AddSectionTitle("birthdays");
+            
+            this.AddBoolOption(
+                () => config.ShowBirthdays,
+                value => config.ShowBirthdays = value,
+                "birthdays",
+                "birthdays.desc2"
             );
             this.AddBoolOption(
-                () => this.ModConfig.ShowBirthdays,
-                value => this.ModConfig.ShowBirthdays = value,
-                "Show Birthdays",
-                "If birthdays are shown"
-            );
-            this.AddBoolOption(
-                () => this.ModConfig.UseVillagerNames,
+                () => config.UseVillagerNames,
                 value => {
-                    this.ModConfig.UseVillagerNames = value;
-                    this.Examples.ForEach(message => message.Dirty = true);
+                    config.UseVillagerNames = value;
+                    this.ReRender();
                 },
-                "Use Names",
-                "Shows names of villagers instead of their face icon"
+                "birthdays.use_names"
             );
             
             // When to display luck
-            this.AddSectionTitle(
-                "Show Luck",
-                "When to show luck messages"
+            this.AddSectionTitle("luck");
+            
+            this.AddBoolOption(
+                () => config.ShowGoodLuck,
+                value => config.ShowGoodLuck = value,
+                "luck.good"
             );
             
             this.AddBoolOption(
-                () => this.ModConfig.ShowGoodLuck,
-                value => this.ModConfig.ShowGoodLuck = value,
-                "Show Good Luck",
-                "If good luck messages are displayed"
+                () => config.ShowNeutralLuck,
+                value => config.ShowNeutralLuck = value,
+                "luck.neutral"
             );
             
             this.AddBoolOption(
-                () => this.ModConfig.ShowNeutralLuck,
-                value => this.ModConfig.ShowNeutralLuck = value,
-                "Show Neutral Luck",
-                "If neutral luck messages are displayed"
-            );
-            
-            this.AddBoolOption(
-                () => this.ModConfig.ShowBadLuck,
-                value => this.ModConfig.ShowBadLuck = value,
-                "Show Bad Luck",
-                "If bad luck messages are displayed"
+                () => config.ShowBadLuck,
+                value => config.ShowBadLuck = value,
+                "luck.bad"
             );
             
             // When to display recipes
-            this.AddSectionTitle(
-                "Show Recipes",
-                "When to show recipe messages"
+            this.AddSectionTitle("recipes");
+            
+            this.AddBoolOption(
+                () => config.ShowNewRecipes,
+                value => config.ShowNewRecipes = value,
+                "recipes.new"
             );
             
             this.AddBoolOption(
-                () => this.ModConfig.ShowNewRecipes,
-                value => this.ModConfig.ShowNewRecipes = value,
-                "Show new recipes",
-                "Show messages for recipes that are not known"
+                () => config.ShowExistingRecipes,
+                value => config.ShowExistingRecipes = value,
+                "recipes.learned"
             );
             
-            this.AddBoolOption(
-                () => this.ModConfig.ShowExistingRecipes,
-                value => this.ModConfig.ShowExistingRecipes = value,
-                "Show learned recipes",
-                "Show messages for recipes that are already known"
-            );
+            if (config.Child is not null) {
+                // Multiplayer options
+                this.AddPageLink(
+                    "child",
+                    "multiplayer"
+                );
+                
+                this.AddBoolOption(
+                    () => config.SendToOthers,
+                    value => config.SendToOthers = value,
+                    "multiplayer.share"
+                );
+                
+                this.AddBoolOption(
+                    () => config.UseSameForOthers,
+                    value => config.UseSameForOthers = value,
+                    "multiplayer.config"
+                );
+            }
             
             // The icons to use
-            this.AddSectionTitle(
-                "Event Icons",
-                "The icons to use in messages for spirits"
-            );
+            this.AddSectionTitle("icons.spirits");
             
             // Emoji to represent Spirits
-            this.AddEmojiSelector("Spirits", null,
-                () => this.ModConfig.SpiritsEmoji,
-                i => this.ModConfig.SpiritsEmoji = i
+            this.AddEmojiSelector("icons.spirit", null,
+                () => config.SpiritsEmoji,
+                i => config.SpiritsEmoji = i
             );
-            this.AddEmojiSelector("Very Happy", null,
-                () => this.ModConfig.VeryHappySpiritEmoji,
-                i => this.ModConfig.VeryHappySpiritEmoji = i,
-                message => this.SpiritExampleMessage(message, SpiritMoods.VERY_HAPPY)
+            this.AddEmojiSelector("icons.spirits.very_happy", null,
+                () => config.VeryHappySpiritEmoji,
+                i => config.VeryHappySpiritEmoji = i,
+                message => this.SpiritExampleMessage(message, SpiritMoods.VERY_HAPPY)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Good Humor", null,
-                () => this.ModConfig.GoodHumorSpiritEmoji,
-                i => this.ModConfig.GoodHumorSpiritEmoji = i,
-                message => this.SpiritExampleMessage(message, SpiritMoods.GOOD_HUMOR)
+            this.AddEmojiSelector("icons.spirits.good_humor", null,
+                () => config.GoodHumorSpiritEmoji,
+                i => config.GoodHumorSpiritEmoji = i,
+                message => this.SpiritExampleMessage(message, SpiritMoods.GOOD_HUMOR)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Neutral", null,
-                () => this.ModConfig.NeutralSpiritEmoji,
-                i => this.ModConfig.NeutralSpiritEmoji = i,
-                message => this.SpiritExampleMessage(message, SpiritMoods.NEUTRAL)
+            this.AddEmojiSelector("icons.spirits.neutral", null,
+                () => config.NeutralSpiritEmoji,
+                i => config.NeutralSpiritEmoji = i,
+                message => this.SpiritExampleMessage(message, SpiritMoods.NEUTRAL)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Somewhat Annoyed", null,
-                () => this.ModConfig.SomewhatAnnoyedSpiritEmoji,
-                i => this.ModConfig.SomewhatAnnoyedSpiritEmoji = i,
-                message => this.SpiritExampleMessage(message, SpiritMoods.SOMEWHAT_ANNOYED)
+            this.AddEmojiSelector("icons.spirits.somewhat_annoyed", null,
+                () => config.SomewhatAnnoyedSpiritEmoji,
+                i => config.SomewhatAnnoyedSpiritEmoji = i,
+                message => this.SpiritExampleMessage(message, SpiritMoods.SOMEWHAT_ANNOYED)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Mildly Perturbed", null,
-                () => this.ModConfig.MildlyPerturbedSpiritEmoji,
-                i => this.ModConfig.MildlyPerturbedSpiritEmoji = i,
-                message => this.SpiritExampleMessage(message, SpiritMoods.MILDLY_PERTURBED)
+            this.AddEmojiSelector("icons.spirits.mildly_perturbed", null,
+                () => config.MildlyPerturbedSpiritEmoji,
+                i => config.MildlyPerturbedSpiritEmoji = i,
+                message => this.SpiritExampleMessage(message, SpiritMoods.MILDLY_PERTURBED)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Very Displeased", null,
-                () => this.ModConfig.VeryDispleasedSpiritEmoji,
-                i => this.ModConfig.VeryDispleasedSpiritEmoji = i,
-                message => this.SpiritExampleMessage(message, SpiritMoods.VERY_DISPLEASED)
+            this.AddEmojiSelector("icons.spirits.very_displeased", null,
+                () => config.VeryDispleasedSpiritEmoji,
+                i => config.VeryDispleasedSpiritEmoji = i,
+                message => this.SpiritExampleMessage(message, SpiritMoods.VERY_DISPLEASED)?.Write(config, this.Translations)
             );
             
             // Emoji for recipes
-            this.AddSectionTitle(
-                "Recipe Icons",
-                "The icons to use in messages for recipes"
+            this.AddSectionTitle("icons.recipes");
+            
+            this.AddEmojiSelector("icons.recipes.new", null,
+                () => config.NewRecipeEmoji,
+                i => config.NewRecipeEmoji = i,
+                message => this.RecipeExampleMessage(message, false)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("New Recipe", null,
-                () => this.ModConfig.NewRecipeEmoji,
-                i => this.ModConfig.NewRecipeEmoji = i,
-                message => this.RecipeExampleMessage(message, false)
-            );
-            this.AddEmojiSelector("Known Recipe", null,
-                () => this.ModConfig.KnownRecipeEmoji,
-                i => this.ModConfig.KnownRecipeEmoji = i,
-                message => this.RecipeExampleMessage(message, true)
+            this.AddEmojiSelector("icons.recipes.learned", null,
+                () => config.KnownRecipeEmoji,
+                i => config.KnownRecipeEmoji = i,
+                message => this.RecipeExampleMessage(message, true)?.Write(config, this.Translations)
             );
             
             // Emoji for birthdays
-            this.AddSectionTitle(
-                "Birthday Icons",
-                "The icons used for birthdays"
-            );
-            this.AddEmojiSelector("Birthday Today", null,
-                () => this.ModConfig.BirthdayEmoji,
-                i => this.ModConfig.BirthdayEmoji = i,
-                message => this.BirthdayExampleMessage(message, new [] { "Shane", "Abigail" })
+            this.AddSectionTitle("icons.birthdays");
+            
+            this.AddEmojiSelector("icons.birthdays.today", null,
+                () => config.BirthdayEmoji,
+                i => config.BirthdayEmoji = i,
+                message => this.BirthdayExampleMessage(message, new [] { "Shane", "Abigail" })?.Write(config, this.Translations)
             );
             
             // Emojis for weather
-            this.AddSectionTitle(
-                "Weather Icons",
-                "The icons to use in messages for weather"
+            this.AddSectionTitle("icons.weather");
+            
+            this.AddEmojiSelector("icons.weather.sunny",
+                () => config.SunWeatherEmoji,
+                i => config.SunWeatherEmoji = i,
+                message => this.WeatherExampleMessage(message, WeatherIcons.SUN)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Sunny", "Displays if it will be sunny the next day", 
-                () => this.ModConfig.SunWeatherEmoji,
-                i => this.ModConfig.SunWeatherEmoji = i,
-                message => this.WeatherExampleMessage(message, WeatherIcons.SUN)
+            this.AddEmojiSelector("icons.weather.rain",
+                () => config.RainWeatherEmoji,
+                i => config.RainWeatherEmoji = i,
+                message => this.WeatherExampleMessage(message, WeatherIcons.RAIN)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Rain", "Displays if it will rain the next day", 
-                () => this.ModConfig.RainWeatherEmoji,
-                i => this.ModConfig.RainWeatherEmoji = i,
-                message => this.WeatherExampleMessage(message, WeatherIcons.RAIN)
+            this.AddEmojiSelector("icons.weather.thunder",
+                () => config.ThunderWeatherEmoji,
+                i => config.ThunderWeatherEmoji = i,
+                message => this.WeatherExampleMessage(message, WeatherIcons.LIGHTNING)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Thunder", "Displays if it will thunder the next day",
-                () => this.ModConfig.ThunderWeatherEmoji,
-                i => this.ModConfig.ThunderWeatherEmoji = i,
-                message => this.WeatherExampleMessage(message, WeatherIcons.LIGHTNING)
+            this.AddEmojiSelector("icons.weather.snow",
+                () => config.SnowWeatherEmoji,
+                i => config.SnowWeatherEmoji = i,
+                message => this.WeatherExampleMessage(message, WeatherIcons.SNOW)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Snow", "Displays if it will snow the next day",
-                () => this.ModConfig.SnowWeatherEmoji,
-                i => this.ModConfig.SnowWeatherEmoji = i,
-                message => this.WeatherExampleMessage(message, WeatherIcons.SNOW)
+            this.AddEmojiSelector("icons.weather.festival",
+                () => config.FestivalWeatherEmoji,
+                i => config.FestivalWeatherEmoji = i,
+                message => this.WeatherExampleMessage(message, WeatherIcons.FESTIVAL)?.Write(config, this.Translations)
             );
-            this.AddEmojiSelector("Festival", "Displays with the weather if a festival is the next day",
-                () => this.ModConfig.FestivalWeatherEmoji,
-                i => this.ModConfig.FestivalWeatherEmoji = i,
-                message => this.WeatherExampleMessage(message, WeatherIcons.FESTIVAL)
-            );
-            this.AddEmojiSelector("Wedding", "Displays with the weather if a wedding is the next day",
-                () => this.ModConfig.WeddingWeatherEmoji,
-                i => this.ModConfig.WeddingWeatherEmoji = i,
-                message => this.WeatherExampleMessage(message, WeatherIcons.WEDDING)
+            this.AddEmojiSelector("icons.weather.wedding",
+                () => config.WeddingWeatherEmoji,
+                i => config.WeddingWeatherEmoji = i,
+                message => this.WeatherExampleMessage(message, WeatherIcons.WEDDING)?.Write(config, this.Translations)
             );
         }
         
         private void Register(Action reset, Action save)
             => this.ConfigMenu?.Register(this.Manifest, reset, save);
         
-        private void AddSectionTitle(string text, string tooltip = null)
-            => this.AddSectionTitle(() => text, () => tooltip);
+        private void AddSectionTitle(string key) {
+            IConfT9N t9N = this.Translation(key);
+            this.AddSectionTitle(t9N.Get, t9N.GetDesc);
+        }
         
         private void AddSectionTitle(Func<string> text, Func<string> tooltip = null)
             => this.ConfigMenu?.AddSectionTitle(this.Manifest, text, tooltip);
         
-        private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, string name, string tooltip = null)
-            => this.AddBoolOption(getValue, setValue, () => name, () => tooltip);
-        
+        private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, string name) {
+            IConfT9N t9N = this.Translation(name);
+            this.AddBoolOption(getValue, setValue, t9N.Get, t9N.GetDesc);
+        }
+        private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, string name, string tooltip) {
+            IConfT9N t9N = this.Translation(name, tooltip);
+            this.AddBoolOption(getValue, setValue, t9N.Get, t9N.GetDesc);
+        }
         private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null)
             => this.ConfigMenu?.AddBoolOption(this.Manifest, getValue, setValue, name, tooltip);
         
-        private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, string name, string tooltip = null)
-            => this.AddWeatherDropdown(getValue, setValue, () => name, () => tooltip);
+        private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, string name) {
+            IConfT9N t9N = this.Translation(name);
+            this.AddWeatherDropdown(getValue, setValue, t9N.Get, t9N.GetDesc);
+        }
         
-        private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, Func<string> name, Func<string> tooltip = null)
-            => this.ConfigMenu?.AddTextOption(this.Manifest, () => Config.Normalize(getValue()), value => setValue(Config.FromInput<WeatherDisplay>(value)), name, tooltip, Config.Values<WeatherDisplay>());
+        private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, Func<string> name, Func<string> tooltip = null) => this.ConfigMenu?.AddTextOption(
+            this.Manifest,
+            () => getValue().ToString(),
+            value => setValue(Enum.TryParse(value, true, out WeatherDisplay display) ? display : WeatherDisplay.ALWAYS),
+            name,
+            tooltip,
+            allowedValues: Config.Values<WeatherDisplay>(),
+            formatAllowedValue: value => this.Translations.Get($"config.weather.show.{value.ToLowerInvariant()}")
+        );
         
-        private void AddEmojiSelector(string text, string tooltip = null, Func<uint> get = null, Action<uint> set = null, ConfigMessageParsingRenderer parser = null) {
+        private void AddEmojiSelector(string text, Func<uint> get = null, Action<uint> set = null, ConfigMessageParsingRenderer parser = null)
+            => this.AddEmojiSelector(text, text is null ? null : $"{text}.desc", get, set, parser);
+        
+        private void AddEmojiSelector(string text, string tooltip, Func<uint> get = null, Action<uint> set = null, ConfigMessageParsingRenderer parser = null) {
             // Unlike other types check if the config exists before constructing types
             if (this.ConfigMenu is {} config) {
-                ConfigEmojiMenu menu = new(this.Mod, text, tooltip, get, i => {
+                ConfigEmojiMenu menu = new(this.Mod, this.Translation(text, tooltip), get, i => {
                     set?.Invoke(i);
-                    this.Examples.ForEach(message => message.Dirty = true);
+                    this.ReRender();
                 });
                 
                 if (parser is not null) {
@@ -310,9 +337,9 @@ namespace ForecasterText {
                 
                 config.AddComplexOption(
                     this.Manifest,
-                    () => menu.Name,
+                    menu.T9N.Get,
                     menu.OnDraw,
-                    () => menu.Tooltip,
+                    menu.T9N.GetDesc,
                     height: () => menu.Height,
                     afterReset: () => menu.ResetView(),
                     beforeMenuOpened: () => menu.ResetView()
@@ -320,90 +347,75 @@ namespace ForecasterText {
             }
         }
         
+        private void AddPageLink(string page, string text) {
+            IConfT9N t9N = this.Translation(text);
+            this.AddPageLink(page, t9N.Get, t9N.GetDesc);
+        }
+
+        private void AddPageLink(string page, Func<string> text, Func<string> tooltip)
+            => this.ConfigMenu?.AddPageLink(this.Manifest, page, text, tooltip);
+        
         private void AddParagraph(string text) => 
             this.AddParagraph(() => text);
         
         private void AddParagraph(Func<string> text) => 
-            this.ConfigMenu.AddParagraph(this.Manifest, text);
-        
-        #endregion
-        #region Getters
-        
-        public uint? GetEmoji(WeatherIcons icon) => icon switch {
-            WeatherIcons.SUN => this.ModConfig.SunWeatherEmoji,
-            WeatherIcons.RAIN => this.ModConfig.RainWeatherEmoji,
-            WeatherIcons.LIGHTNING => this.ModConfig.ThunderWeatherEmoji,
-            WeatherIcons.FESTIVAL => this.ModConfig.FestivalWeatherEmoji,
-            WeatherIcons.SNOW => this.ModConfig.SnowWeatherEmoji,
-            WeatherIcons.WEDDING => this.ModConfig.WeddingWeatherEmoji,
-            _ => 0u
-        };
-        public uint? GetEmoji(SpiritMoods icon) => icon switch {
-            SpiritMoods.VERY_HAPPY => this.ModConfig.VeryHappySpiritEmoji,
-            SpiritMoods.GOOD_HUMOR => this.ModConfig.GoodHumorSpiritEmoji,
-            SpiritMoods.NEUTRAL => this.ModConfig.NeutralSpiritEmoji,
-            SpiritMoods.SOMEWHAT_ANNOYED => this.ModConfig.SomewhatAnnoyedSpiritEmoji,
-            SpiritMoods.MILDLY_PERTURBED => this.ModConfig.MildlyPerturbedSpiritEmoji,
-            SpiritMoods.VERY_DISPLEASED => this.ModConfig.VeryDispleasedSpiritEmoji,
-            _ => 0u
-        };
-        public uint? GetEmoji(Character character) => character switch {
-            NPC npc => this.GetNpcEmoji(npc.getName()),
-            _ => null
-        };
-        public uint? GetNpcEmoji(string name) => name.ToLower(CultureInfo.InvariantCulture) switch {
-            "abigail" => 154u,
-            "penny" => 155u,
-            "maru" => 156u,
-            "leah" => 157u,
-            "haley" => 158u,
-            "emily" => 159u,
-            "alex" => 160u,
-            "shane" => 161u,
-            "sebastian" => 162u,
-            "sam" => 163u,
-            "harvey" => 164u,
-            "elliot" => 165u,
-            "sandy" => 166u,
-            "evelyn" => 167u,
-            "marnie" => 168u,
-            "caroline" => 169u,
-            "robin" => 170u,
-            "pierre" => 171u,
-            "pam" => 172u,
-            "jodi" => 173u,
-            "lewis" => 174u,
-            "linus" => 175u,
-            "marlon" => 176u,
-            "willy" => 177u,
-            "wizard" => 178u,
-            "morris" => 179u,
-            "jas" => 180u,
-            "vincent" => 181u,
-            "krobus" => 182u,
-            "dwarf" => 183u,
-            "gus" => 184u,
-            "gunther" => 185u,
-            "george" => 186u,
-            "demestrius" => 187u,
-            "clint" => 188u,
-            _ => null
-        };
+            this.ConfigMenu?.AddParagraph(this.Manifest, text);
         
         #endregion
         #region Examples
         
-        internal string SpiritExampleMessage(ConfigEmojiMessage message, SpiritMoods mood)
-            => this.Mod.Events.GetDailyLuck(mood)?.ToString();
+        internal ISourceMessage SpiritExampleMessage(ConfigEmojiMessage message, SpiritMoods mood)
+            => ISourceMessage.GetDailyLuck(mood);
         
-        internal string RecipeExampleMessage(ConfigEmojiMessage message, bool hasRecipe)
-            => this.Mod.Events.GetQueenOfSauce("Trout Soup", hasRecipe)?.ToString();
+        internal ISourceMessage RecipeExampleMessage(ConfigEmojiMessage message, bool hasRecipe)
+            => ISourceMessage.GetQueenOfSauce("Trout Soup", hasRecipe);
         
-        internal string BirthdayExampleMessage(ConfigEmojiMessage message, IEnumerable<string> names)
-            => this.Mod.Events.GetBirthdays(names)?.ToString();
+        internal ISourceMessage BirthdayExampleMessage(ConfigEmojiMessage message, IEnumerable<object> names)
+            => ISourceMessage.GetBirthdays(names, this.ModConfig);
         
-        internal string WeatherExampleMessage(ConfigEmojiMessage message, WeatherIcons weatherDisplay)
-            => this.Mod.Events.GetTownForecast((int)weatherDisplay)?.ToString();
+        internal ISourceMessage WeatherExampleMessage(ConfigEmojiMessage message, WeatherIcons weatherDisplay)
+            => new WeatherMessage.TestDisplay(weatherDisplay);
+        
+        #endregion
+        #region Rendering
+        
+        public void ReRender<T>(object sender, T e)
+            => this.ReRender();
+        
+        private void ReRender()
+            => this.Examples.ForEach(message => message.Dirty = true);
+        
+        #endregion
+        #region Translation Keys
+        
+        private IConfT9N Translation(string key)
+            => new ConfigurationTranslation(this.Translations, key);
+        private IConfT9N Translation(string mainKey, string descKey)
+            => new ConfigurationTranslation(this.Translations, mainKey, descKey);
+        
+        private sealed class ConfigurationTranslation : IConfT9N {
+            private readonly ITranslationHelper Translations;
+            private readonly string MainKey;
+            private readonly string DescKey;
+            
+            public ConfigurationTranslation(
+                ITranslationHelper translations,
+                string key
+            ): this(translations, key, key is null ? null : $"{key}.desc") {}
+            public ConfigurationTranslation(ITranslationHelper translations, string mainKey, string descKey) {
+                this.Translations = translations;
+                this.MainKey = mainKey is null ? null : $"config.{mainKey}";
+                this.DescKey = descKey is null ? null : $"config.{descKey}";
+            }
+            
+            /// <inheritdoc/>
+            public string Get()
+                => this.MainKey is null ? null : this.Translations.Get(this.MainKey);
+            
+            /// <inheritdoc/>
+            public string GetDesc()
+                => this.DescKey is null ? null : this.Translations.Get(this.DescKey);
+        }
         
         #endregion
     }

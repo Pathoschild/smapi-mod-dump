@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "section.general.name": "General",
+  "section.general.description": "General configuration options.",
+  "section.controls.name": "Controls",
+  "section.controls.description": "Controller/keyboard configurations.",
+  "config.animal-shop-limit.name": "Animal Shop Limit",
+  "config.animal-shop-limit.tooltip": "How many animals can be displayed at a time.",
+  "config.next-page.name": "Next Page Button",
+  "config.next-page.tooltip": "Key to show the next page of animals.",
+  "config.previous-page.name": "Previous Page Button",
+  "config.previous-page.tooltip": "Key to show the previous page of animals."
+}

@@ -25,7 +25,7 @@ namespace MoreConversationTopics
         private static IModHelper Helper;
 
         private static readonly string[] modRepeatableConversationTopics = new string[] {
-                "wedding", "divorce", "babyBoy", "babyGirl", // repeatable social CTs
+                "engaged", "wedding", "divorce", "babyBoy", "babyGirl", // repeatable social CTs
                 "luauBest", "luauShorts", "luauPoisoned", // repeatable luau CTs
                 "meteoriteLandedOnFarm", "owlStatueLandedOnFarm", // repeatable night event CTs
                 "fairyFarmVisit", "witchSlimeHutVisit", "goldenWitchCoopVisit", "witchCoopVisit", // repeatable magical farm event CTs

@@ -11,7 +11,7 @@
 {
   "Name": "Dungeon Merchants",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.1.1",
   "Description": "Dungeon Merchants.",
   "UniqueID": "aedenthorn.DungeonMerchants",
   "EntryDll": "DungeonMerchants.dll",

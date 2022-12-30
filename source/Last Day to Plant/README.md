@@ -7,7 +7,7 @@ for queries and analysis.**
 ----
 
 # Release History
-Check out the [roadmap](https://github.com/dmcrider/LastDayToPlant/projects/1). Don't see a feature you want? [Create an issue](https://github.com/dmcrider/LastDayToPlant/issues/new)
+v2.0.2 - Fixed crop names not being translated correctly.
 
 v2.0.1 - Added support for other mods.
 
@@ -18,7 +18,7 @@ v1.1.0 - Added configuration settings. Will now show messages when it is the las
 v1.0.0 - Initial Release.
 
 # Install
-- Download from [NexusMods](https://www.nexusmods.com/stardewvalley/mods/7917) (recommended) or from the [latest release](/dmcrider/LastDayToPlant/releases/latest)
+- Download from NexusMods: https://www.nexusmods.com/stardewvalley/mods/7917 (recommended) or from the latest release: https://github.com/dmcrider/LastDayToPlant/releases/latest
 - Requires SMAPI
 - Extract the ZIP to `\Stardew Valley\Mods\`
 - Start the game to create the `config.json` file
@@ -41,12 +41,10 @@ The `config.json` file looks like this:
       "BonstersFruitAndVeggiesPath": "",
     }
 
-Any option that ends with "Path" expects a full path to the root folder of that mod. For example, `"PPJAFruitsAndVeggiesPath": "D:/Steam/steamapps/common/Stardew Valley/Mods/Fruits and Veggies/[PPJA] Fruits and Veggies"`. If you have any issues getting the path right, let me know via [GitHub](https://github.com/dmcrider/LastDayToPlant/issues).
+Any option that ends with "Path" expects a full path to the root folder of that mod. For example, `"PPJAFruitsAndVeggiesPath": "D:/Steam/steamapps/common/Stardew Valley/Mods/Fruits and Veggies"`. If you have any issues getting the path right, let me know via GitHub: https://github.com/dmcrider/LastDayToPlant/issues.
 
 # Running into issues?
-If something is going wrong, please let me know by [submitting an issue on GitHub](https://github.com/dmcrider/LastDayToPlant/issues/new), or email me directly at [mods@dayloncrider.com](mailto:mods@dayloncrider.com). I try my best to test multiple scenarios, but I can't test everything.
-
-Want early access? Have a desire to help test releases before they go public? Send me an email at [mods@dayloncrider.com](mailto:mods@dayloncrider.com).
+If something is going wrong, please let me know by submitting an issue on GitHub: https://github.com/dmcrider/LastDayToPlant/issues/new, or email me directly at mods@dayloncrider.com. I try my best to test multiple scenarios, but I can't test everything.
 
 # Supported Languages
 - English
@@ -57,10 +55,10 @@ Want early access? Have a desire to help test releases before they go public? Se
 I am aware that some translations are not getting the translated crop name. I am looking into this and hope to have a fix soon.
 
 # Special Thanks
-[@Duckexza](https://github.com/Duckexza) - Brazilian translation
-[@4x4cheesecake](https://github.com/4x4cheesecake) - Fix for [#16](https://github.com/dmcrider/LastDayToPlant/issues/16)
+@Duckexza (https://github.com/Duckexza) - Brazilian translation
+@4x4cheesecake (https://github.com/4x4cheesecake) - Fix for this issue: https://github.com/dmcrider/LastDayToPlant/issues/16
 
 [@4x4cheesecake](https://github.com/4x4cheesecake) - Fix for [#16](https://github.com/dmcrider/LastDayToPlant/issues/16)
 
 # Like what I do?
-If you enjoy the content I create, a donation is greatly appreciated (though NEVER required!). You can make a donation [on my website](https://www.dayloncrider.com/donations)
+If you enjoy the content I create, a donation is greatly appreciated (though NEVER required!). You can make a donation [on my website](https://www.dayloncrider.com/donations).

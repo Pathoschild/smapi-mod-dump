@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Tlitookilakin/AeroCore
+   Git: https://github.com/Tlitookilakin/AeroCore.git
+
+mods:
+   AeroCore
+
+latest commit:
+   commit c0e1646374bedc52646e83fb9bc6847b182f5d74
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Wed Dec 14 14:55:29 2022 -0500
+   
+       version bump
+   

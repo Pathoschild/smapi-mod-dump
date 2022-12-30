@@ -39,7 +39,7 @@ Here are all 25 colors and a brief explanation of what they are for.
 | Hex: `#5b1f24` | Shoes medium dark |
 | Hex: `#77291a` | Shoes medium light |
 | Hex: `#ad471b` | Shoes light |
-| &nbsp; | Unassigned transparent |
+| Hex: `transparent` | Pants color (used internally only) |
 | Hex: `#4a4542` | Eyelash/eyebrow color - new color, make sure to draw over those eyelashes with this |
 | Hex: `#fffdfc` | Sclera light (whites of the eyes) |
 | Hex: `#bea8a8` | Sclera dark |

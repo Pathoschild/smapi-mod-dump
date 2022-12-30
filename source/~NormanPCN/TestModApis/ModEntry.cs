@@ -80,7 +80,7 @@ namespace TemplateMod
                 Log.Debug("GetApi EasierMonsterEradicationApi == null");
 
             object rapi = MyHelper.ModRegistry.GetApi("NormanPCN.EasierMonsterEradication");
-            if (api != null)
+            if (rapi != null)
                 Log.Debug($"Relection Slimes={MyHelper.Reflection.GetMethod(rapi, "GetMonsterGoal").Invoke<int>("Slimes")}");
             else
                 Log.Debug("Reflection EasierMonsterEradicationApi == null");

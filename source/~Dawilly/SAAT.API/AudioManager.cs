@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using Microsoft.Xna.Framework.Audio;
+
 using NVorbis;
 
 using StardewModdingAPI;
@@ -33,10 +34,10 @@ namespace SAAT.API
         private readonly IMonitor monitor;
 
         /// <inheritdoc/>
-        public ISoundBank SoundBank { get; }
+        public ICue DefaultingCue { get; }
 
         /// <inheritdoc/>
-        public ICue DefaultingCue { get; }
+        public ISoundBank SoundBank { get; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="AudioManager"/> class.

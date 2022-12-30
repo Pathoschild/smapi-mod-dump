@@ -49,5 +49,4 @@
     "config.FriendshipRecovery.tooltip": "The amount of friendship needed to undo negative reactions to being caught going through garbage when using the Sneak profession.  25 for the vanilla game, but if villager reactions to searching trash cans are adjusted in another mod, this value will need to be changed.",
     "config.ReclaimerExtraValuePercent": "Reclaimer Extra Value Percent",
     "config.ReclaimerExtraValuePercent.tooltip": "Extra value gained when reclaiming an item via the inventory trash when using the Reclaimer profession"
-
 }

@@ -351,6 +351,7 @@ namespace Skateboard
                 if (!Config.ModEnabled || __instance.name != "Skateboard")
                     return;
                 __result.modData[boardKey] = "true";
+                (__result as Object).Type = "Skateboard";
             }
         }
         [HarmonyPatch(typeof(Object), nameof(Object.isPlaceable))]

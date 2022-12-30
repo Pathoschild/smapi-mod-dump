@@ -87,6 +87,10 @@ For swords and clubs.
 > The movement velocity for special attack slick moves. Swords and clubs. Controls the speed and distance of the slide.
 
 ## Changlog
+v.1.2.5
+* Fix for REALLY fast daggers and auto swing.
+* Added an auto spam attack for the Club special ground slam attack. After the ground slam, you immediately click LeftClick and/or UseTool button once and this mod will spam UseTool a number of additional times for you. Be quick the allowed timeframe is narrow.
+
 v1.2.4
 * Fixes typos and syntax of the config option text. Adds a German translation.
 

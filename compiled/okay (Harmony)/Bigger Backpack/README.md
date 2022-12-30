@@ -3,6 +3,11 @@
 ## Description
 Buy a bigger backpack at Pierre's for only 50,000g! This backpack has 48 slots.
 
+## Config
+*Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
+
+* `BackpackCost`: How much you have to pay to buy this backpack in the shop. Default = 50000).
+
 ## Console Commands
 * `player_setbackpacksize slots`: Changes the size of your inventory. Valid values for slots are 12, 24, 36 and 48. Items in the removed slots will be spilled onto the ground.
 
@@ -21,29 +26,12 @@ Please report bugs on [GitHub](https://github.com/spacechase0/BiggerBackpack/iss
 To remove the mod, first run `player_setbackpacksize 36` in the SMAPI console and safe your game. 
 
 ## Changes
-#### 1.1:
-* Added dependency on StardewHack.
-* Fix inventory for shops and shipping bins.
-* Ring can now (hopefully) also be bought using gamepad.
-* The backpack no longer overlays the player or deluxe backpack.
-* Compatible with the [Wear More Rings](https://www.nexusmods.com/stardewvalley/mods/3214) mod.
-* The `player_setbackpacksize` will spill items on the ground rather than deleting them.
+#### 6.0:
+* Compatibility with upcoming SMAPI 4.0.
+* Added setting `BackpackCost` to modify the cost of the bigger backpack.
 
-#### 1.2:
-* Fixed `player_setbackpacksize` not working when empty inventory slots are being removed.
-* Add support for the community center.
-
-#### 2.0:
-* Updated for Stardew Valley 1.4
-
-#### 2.1:
-* Fix that equipment icons sometimes overlapped inventory.
-
-#### 2.3:
-* Fix position where money is drawn in shops.
+#### 4.0:
+* Add 64-bit support.
 
 #### 3.0:
 * Allow content patcher mods, such as [Garden Variety UI](https://www.nexusmods.com/stardewvalley/mods/3879) to override the custom assets used in this mod.
-
-#### 4.0
-* Add 64-bit support.

@@ -37,9 +37,6 @@ namespace AdditionalMineMaps
         {
             Config = Helper.ReadConfig<ModConfig>();
 
-            if (!Config.ModEnabled)
-                return;
-
             context = this;
 
             SMonitor = Monitor;
@@ -96,6 +93,12 @@ namespace AdditionalMineMaps
                 name: () => "Mod Enabled",
                 getValue: () => Config.ModEnabled,
                 setValue: value => Config.ModEnabled = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Allow Vanilla Maps",
+                getValue: () => Config.AllowVanillaMaps,
+                setValue: value => Config.AllowVanillaMaps = value
             );
         }
     }

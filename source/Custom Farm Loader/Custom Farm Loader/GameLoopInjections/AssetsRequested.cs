@@ -45,28 +45,23 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         private static void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/AdditionalFarms"))
-            {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/AdditionalFarms")) {
                 //List of all modded farms was requested.
                 //We just append our own
 
-                e.Edit(edit =>
-                {
+                e.Edit(edit => {
                     var data = edit.GetData<List<ModFarmType>>();
                     data.AddRange(CustomFarm.getAllAsModFarmType());
                 });
                 return;
             }
 
-            if (e.NameWithoutLocale.BaseName.Contains("Strings/UI"))
-            {
-                e.Edit(edit =>
-                {
+            if (e.NameWithoutLocale.BaseName.Contains("Strings/UI")) {
+                e.Edit(edit => {
                     var data = edit.AsDictionary<string, string>().Data;
                     List<CustomFarm> customFarms = CustomFarm.getAll();
 
-                    foreach (CustomFarm customFarm in customFarms)
-                    {
+                    foreach (CustomFarm customFarm in customFarms) {
                         KeyValuePair<string, string> localization = customFarm.TranslatedDescriptions.Find(el => el.Key == e.Name.LocaleCode || el.Key == e.Name.LanguageCode.ToString());
                         string localizedDescription = localization.Key == null ? customFarm.Description : localization.Value;
 
@@ -75,8 +70,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 });
             }
 
-            if (e.NameWithoutLocale.BaseName.StartsWith("CFL_Icon/"))
-            {
+            if (e.NameWithoutLocale.BaseName.StartsWith("CFL_Icon/")) {
                 string id = e.NameWithoutLocale.BaseName.Split("CFL_Icon/")[1];
                 CustomFarm customFarm = CustomFarm.get(id);
 
@@ -90,20 +84,21 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 return;
             }
 
-            if (e.NameWithoutLocale.BaseName.StartsWith("CFL_WorldMap/"))
-            {
+            if (e.NameWithoutLocale.BaseName.Contains("CFL_WorldMap/")) {
                 string id = e.NameWithoutLocale.BaseName.Split("CFL_WorldMap/")[1];
                 CustomFarm customFarm = CustomFarm.get(id);
 
                 e.LoadFrom(delegate () {
-                    return customFarm.loadWorldMapTexture();
+                    if (customFarm.WorldMapOverlay != null)
+                        return customFarm.WorldMapOverlay;
+                    else
+                        return customFarm.loadWorldMapTexture();
                 }, AssetLoadPriority.Low);
 
                 return;
             }
 
-            if (e.NameWithoutLocale.BaseName.Contains("CFL_Map/"))
-            {
+            if (e.NameWithoutLocale.BaseName.Contains("CFL_Map/")) {
                 string id = e.NameWithoutLocale.BaseName.Split("CFL_Map/")[1];
                 CustomFarm customFarm = CustomFarm.get(id);
 

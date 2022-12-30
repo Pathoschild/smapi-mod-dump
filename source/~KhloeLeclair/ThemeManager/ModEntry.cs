@@ -9,18 +9,15 @@
 *************************************************/
 
 using System;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Reflection.Emit;
 
 using HarmonyLib;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 using Leclair.Stardew.Common.Integrations.GenericModConfigMenu;
 using Leclair.Stardew.Common.Events;
@@ -32,46 +29,100 @@ using StardewValley.Menus;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-using Leclair.Stardew.ThemeManager.Patches;
-using Leclair.Stardew.ThemeManager.Models;
-using Leclair.Stardew.Common.Types;
 using Leclair.Stardew.Common;
 
+using Leclair.Stardew.ThemeManager.Models;
+using Leclair.Stardew.ThemeManager.Patches;
+using Leclair.Stardew.ThemeManager.Serialization;
+
 using SMAPIJsonHelper = StardewModdingAPI.Toolkit.Serialization.JsonHelper;
-using System.Diagnostics;
-using SkiaSharp;
+using Leclair.Stardew.ThemeManager.Managers;
+using Leclair.Stardew.ThemeManager.VariableSets;
+using Nanoray.Pintail;
+using System.Security.AccessControl;
+using Leclair.Stardew.Common.Extensions;
 
 namespace Leclair.Stardew.ThemeManager;
 
-public class ModEntry : ModSubscriber {
+public partial class ModEntry : ModSubscriber {
 
 	#nullable disable
 	public static ModEntry Instance { get; private set; }
-
 	internal ModConfig Config;
 	#nullable enable
 
-	internal Harmony? Harmony;
-	internal GMCMIntegration<ModConfig, ModEntry>? intGMCM;
+	#region Fields - Integrations
+
 	internal Integrations.ContentPatcher.CPIntegration? intCP;
 
+	internal GMCMIntegration<ModConfig, ModEntry>? intGMCM;
 	internal bool ConfigStale = false;
+
+	#endregion
+
+	#region Fields - Content Packs + JsonHelper
 
 	internal SMAPIJsonHelper? JsonHelper;
 
 	internal readonly Dictionary<IManifest, IContentPack> ContentPacks = new();
-	internal readonly Dictionary<string, Func<object>> LoadingAssets = new();
+
+	#endregion
+
+	#region Fields - Theme Manager Storage & APIs
+
+	internal ThemeManager<GameTheme>? GameThemeManager;
+	internal GameTheme? GameTheme;
+
 	internal readonly Dictionary<IManifest, (Type, IThemeManager)> Managers = new();
-	internal readonly Dictionary<string, IThemeManager> ManagersByThemeAsset = new();
+
+	internal readonly Dictionary<string, IThemeManagerInternal> ManagersByThemeAsset = new();
+	internal readonly Dictionary<string, IThemeManagerInternal> ManagersByAssetPrefix = new();
+
 	internal readonly Dictionary<IManifest, ModAPI> APIs = new();
+
+	#endregion
+
+	#region Fields - Patches
+
+	internal Harmony? Harmony;
 
 	internal Dictionary<string, PatchGroupData>? PatchGroups;
 
-	internal ThemeManager<Models.BaseTheme>? BaseThemeManager;
-
-	internal Models.BaseTheme? BaseTheme;
-
 	internal readonly Dictionary<MethodInfo, DynamicPatcher> DynamicPatchers = new();
+
+	#endregion
+
+	#region Fields - Managed Assets
+
+	internal readonly Dictionary<IAssetName, WeakReference<IManagedAsset>> ManagedAssets = new();
+	internal readonly Dictionary<IAssetName, Type> AssetTypes = new();
+	internal readonly Dictionary<IAssetName, string?> AssetExtensions = new();
+
+	#endregion
+
+	#region Fields - Non-Theme Managers
+
+	// Temporarily disable nullable because these should always be set before
+	// any other code runs.
+	#nullable disable
+
+	internal SpriteFontManager SpriteFontManager;
+	internal SpriteTextManager SpriteTextManager;
+
+	#nullable enable
+
+	#endregion
+
+	#region Fields - GameContentManager.DoesAssetExist<T>()
+
+	internal delegate bool GCMDoesAssetExist<T>(IAssetName assetName);
+
+	internal bool GameContentManager_Loaded;
+	internal object? GameContentManager_Instance;
+	internal MethodInfo? GameContentManager_DoesAssetExist;
+	internal Hashtable? GameContentManager_Delegates;
+
+	#endregion
 
 	#region Construction
 
@@ -89,7 +140,9 @@ public class ModEntry : ModSubscriber {
 
 		DayTimeMoneyBox_Patches.Patch(this);
 		SpriteBatch_Patches.Patch(this);
-		Patches.SpriteText_Patches.Patch(this);
+		Game1_Patches.Patch(this);
+		SpriteText_Patches.Patch(this);
+		OptionsDropDown_Patches.Patch(this);
 
 		// Read Configuration
 		Config = Helper.ReadConfig<ModConfig>();
@@ -98,19 +151,25 @@ public class ModEntry : ModSubscriber {
 		// I18n
 		I18n.Init(Helper.Translation);
 
-		// Base Theme
-		BaseTheme = BaseTheme.GetDefaultTheme();
-		BaseThemeManager = new ThemeManager<BaseTheme>(
+		// Managers
+		SpriteFontManager = new(this);
+		SpriteTextManager = new(this);
+
+		// Base Theme Manager
+		GameTheme = GameTheme.GetDefaultTheme();
+		GameThemeManager = new ThemeManager<GameTheme>(
 			mod: this,
 			other: ModManifest,
 			selectedThemeId: Config.StardewTheme ?? "automatic",
 			manifestKey: "stardew:theme",
-			defaultTheme: BaseTheme,
-			themeLoaderPath: $"Mods/{ModManifest.UniqueID}/GameThemeData"
+			defaultTheme: GameTheme,
+			assetLoaderPrefix: $"Mods/{ModManifest.UniqueID}/GameThemes"
 		);
 
-		ManagersByThemeAsset[BaseThemeManager.ThemeLoaderPath] = BaseThemeManager;
-		BaseThemeManager.ThemeChanged += OnStardewThemeChanged;
+		ManagersByAssetPrefix[GameThemeManager.AssetLoaderPrefix] = GameThemeManager;
+		ManagersByThemeAsset[GameThemeManager.ThemeLoaderPath] = GameThemeManager;
+
+		GameThemeManager.ThemeChanged += OnStardewThemeChanged;
 	}
 
 	public override object? GetApi(IModInfo mod) {
@@ -161,7 +220,7 @@ public class ModEntry : ModSubscriber {
 		intGMCM.Unregister();
 		intGMCM.Register(true);
 
-		var choices = BaseThemeManager!.GetThemeChoiceMethods();
+		var choices = GameThemeManager!.GetThemeChoiceMethods();
 
 		intGMCM.AddChoice(
 			name: I18n.Setting_GameTheme,
@@ -169,7 +228,7 @@ public class ModEntry : ModSubscriber {
 			get: c => c.StardewTheme,
 			set: (c,v) => {
 				c.StardewTheme = v;
-				BaseThemeManager!._SelectTheme(v);
+				GameThemeManager!._SelectTheme(v);
 			},
 			choices: choices
 		);
@@ -189,7 +248,7 @@ public class ModEntry : ModSubscriber {
 
 			void Setter(ModConfig cfg, string value) {
 				cfg.SelectedThemes[uid] = value;
-				if (Managers.TryGetValue(entry.Key, out var mdata) && mdata.Item2 is IThemeSelection tselect)
+				if (Managers.TryGetValue(entry.Key, out var mdata) && mdata.Item2 is IThemeManagerInternal tselect)
 					tselect._SelectTheme(value);
 			}
 
@@ -335,6 +394,7 @@ public class ModEntry : ModSubscriber {
 				if (converter.GetType().Name != "ColorConverter")
 					converters.Add(converter);
 
+			//converters.Add(new VariableSetConverter());
 			converters.Add(new Common.Serialization.Converters.ColorConverter());
 		}
 	}
@@ -401,47 +461,107 @@ public class ModEntry : ModSubscriber {
 
 	#region Method Resolution
 
-	internal string? GetEasyString(MethodInfo method) {
-		string? type = method.DeclaringType?.FullName;
+	/// <summary>
+	/// Generate a string for targeting a member of a type.
+	/// </summary>
+	/// <param name="member">The member we want a string for.</param>
+	/// <param name="replaceMenuWithHash">When true, if a type name starts with
+	/// <c>StardewValley.Menus.</c> it will be replaced with a <c>#</c> for
+	/// the sake of brevity.</param>
+	/// <param name="includeTypes">Whether or not a type list should be
+	/// included. By default, this is null and a list will be included only
+	/// if the member is a constructor or method AND there is potential
+	/// ambiguity in selecting the correct method.</param>
+	internal string? ToTargetString(MemberInfo member, bool replaceMenuWithHash = true, bool? includeTypes = null) {
+		string? type = member.DeclaringType?.FullName;
 		if (type is null)
 			return null;
 
-		if (type.StartsWith("StardewValley.Menus."))
+		if (type.StartsWith("StardewValley.Menus.") && replaceMenuWithHash)
 			type = $"#{type[20..]}";
 
-		var parms = method.GetParameters();
-		string[] args = new string[parms.Length];
+		if (!includeTypes.HasValue) {
+			if (member is ConstructorInfo) {
+				var ctors = member.DeclaringType is not null ?
+					AccessTools.GetDeclaredConstructors(member.DeclaringType)
+					: null;
 
-		for (int i = 0; i < parms.Length; i++)
-			args[i] = parms[i].ParameterType?.Name ?? string.Empty;
+				includeTypes = ctors is null || ctors.Count > 1 || ctors[0] != member;
 
-		string? assembly = method.DeclaringType?.Assembly.GetName().Name;
+			} else if (member is MethodBase) {
+				var meths = member.DeclaringType is not null ?
+					AccessTools.GetDeclaredMethods(member.DeclaringType).Where(x => x.Name.Equals(member.Name)).ToArray()
+					: null;
+
+				includeTypes = meths is null || meths.Length > 1 || meths[0] != member;
+
+			} else
+				includeTypes = false;
+		}
+
+		string? argumentList;
+
+		if (includeTypes.Value) {
+			string[] args;
+
+			if (member is MethodBase method) {
+				var parms = method.GetParameters();
+				args = new string[parms.Length];
+
+				for (int i = 0; i < parms.Length; i++)
+					args[i] = parms[i].ParameterType?.Name ?? string.Empty;
+			} else if (member is PropertyInfo prop)
+				args = new string[] {
+				prop.PropertyType?.Name ?? string.Empty
+			};
+			else if (member is FieldInfo field)
+				args = new string[] {
+				field.FieldType?.Name ?? string.Empty
+			};
+			else
+				args = Array.Empty<string>();
+
+			argumentList = $"({string.Join(',', args)})";
+		} else
+			argumentList = string.Empty;
+
+		string? assembly = member.DeclaringType?.Assembly.GetName().Name;
 		if (assembly is null || assembly == "Stardew Valley")
 			assembly = string.Empty;
 		else
 			assembly = $"{assembly}!";
 
-		return $"{assembly}{type}:{method.Name}({string.Join(',', args)})";
+		return $"{assembly}{type}:{member.Name}{argumentList}";
 	}
 
-	internal (Type, MethodInfo)? ResolveMethod(string input, Type? current = null) {
-		var result = ResolveMethods(input, current);
+	internal (Type, TValue)? ResolveMember<TValue>(string input, Type? current = null) where TValue : MemberInfo {
+		var result = ResolveMembers<TValue>(input, current);
 		return result.FirstOrDefault();
 	}
 
-	internal IEnumerable<(Type, MethodInfo)> ResolveMethods(string input, Type? current = null) {
+	internal IEnumerable<(Type, TValue)> ResolveMembers<TValue>(string input, Type? current = null) where TValue : MemberInfo {
 		if (input == null)
 			yield break;
 
 		string? assemblyName;
 		string typeName;
-		string methodName;
+		string entryName;
 
 		int idx = input.IndexOf(':');
-		if (idx == -1)
-			methodName = "draw";
-		else {
-			methodName = input[(idx + 1)..];
+		if (idx == -1) {
+			if (typeof(TValue) == typeof(ConstructorInfo)) {
+				// Do nothing?
+				entryName = string.Empty;
+			} else if (typeof(TValue) == typeof(MethodInfo)) {
+				// For methods, default to "draw"
+				entryName = "draw";
+			} else {
+				// For everything else, default to using that name.
+				entryName = input;
+				input = string.Empty;
+			}
+		} else {
+			entryName = input[(idx + 1)..];
 			input = input[..idx];
 		}
 
@@ -452,6 +572,7 @@ public class ModEntry : ModSubscriber {
 
 			assemblyName = current.Assembly.GetName().Name;
 			typeName = current.FullName ?? current.Name;
+
 		} else {
 			idx = input.IndexOf('!');
 			if (idx == -1) {
@@ -465,14 +586,19 @@ public class ModEntry : ModSubscriber {
 
 		if (typeName.StartsWith('#'))
 			typeName = $"StardewValley.Menus.{typeName[1..]}";
+		else if (typeName.Equals("Game1"))
+			typeName = "StardewValley.Game1";
 
 		string[]? types = null;
-		if (methodName.EndsWith(')')) {
-			idx = methodName.IndexOf('(');
+		if (entryName.EndsWith(')')) {
+			idx = entryName.IndexOf('(');
 
 			if (idx != -1) {
-				types = methodName[(idx + 1)..(methodName.Length - 1)].Split(',');
-				methodName = methodName[..idx];
+				types = entryName[(idx + 1)..(entryName.Length - 1)].Split(',');
+				entryName = entryName[..idx];
+
+				if (types.Length > 1 && typeof(TValue) != typeof(MethodInfo))
+					yield break;
 			}
 		}
 
@@ -484,40 +610,213 @@ public class ModEntry : ModSubscriber {
 				if (!string.Equals(type.FullName, typeName))
 					continue;
 
-				var methods = AccessTools.GetDeclaredMethods(type);
+				List<TValue>? members;
 
-				foreach (var method in methods) {
-					if (method is null || !method.Name.Equals(methodName))
+				if (typeof(TValue) == typeof(MethodInfo))
+					members = AccessTools.GetDeclaredMethods(type) as List<TValue>;
+				else if (typeof(TValue) == typeof(FieldInfo))
+					members = AccessTools.GetDeclaredFields(type) as List<TValue>;
+				else if (typeof(TValue) == typeof(PropertyInfo))
+					members = AccessTools.GetDeclaredProperties(type) as List<TValue>;
+				else if (typeof(TValue) == typeof(ConstructorInfo))
+					members = AccessTools.GetDeclaredConstructors(type) as List<TValue>;
+				else
+					yield break;
+
+				if (members is null)
+					continue;
+
+				foreach(var member in members) {
+					if (member is null || !member.Name.Equals(entryName))
 						continue;
 
 					if (types is not null) {
-						var parms = method.GetParameters();
-						if (parms.Length != types.Length)
-							continue;
-
-						bool valid = true;
-						for (int i = 0; i < types.Length; i++) {
-							string inp = types[i];
-							if (string.IsNullOrEmpty(inp))
+						if (member is MethodBase method) {
+							var parms = method.GetParameters();
+							if (parms.Length != types.Length)
 								continue;
 
-							var parm = parms[i];
-							if (!string.Equals(parm.ParameterType.FullName, inp, StringComparison.OrdinalIgnoreCase) &&
-								!string.Equals(parm.ParameterType.Name, inp, StringComparison.OrdinalIgnoreCase)) {
-								valid = false;
-								break;
-							}
-						}
+							bool valid = true;
+							for (int i = 0; i < types.Length; i++) {
+								string inp = types[i];
+								if (string.IsNullOrEmpty(inp))
+									continue;
 
-						if (!valid)
+								var parm = parms[i];
+								if (!string.Equals(parm.ParameterType.FullName, inp, StringComparison.OrdinalIgnoreCase) &&
+									!string.Equals(parm.ParameterType.Name, inp, StringComparison.OrdinalIgnoreCase)) {
+									valid = false;
+									break;
+								}
+							}
+
+							if (!valid)
+								continue;
+
+						} else if (member is PropertyInfo || member is FieldInfo) {
+							var mtype = member is PropertyInfo prop ? prop.PropertyType : member is FieldInfo field ? field.FieldType : null;
+							if (mtype is null)
+								continue;
+
+							bool valid = false;
+							for (int i = 0; i < types.Length; i++) {
+								string inp = types[i];
+								if (string.IsNullOrEmpty(inp))
+									continue;
+								if (string.Equals(mtype.FullName, inp, StringComparison.OrdinalIgnoreCase) ||
+									string.Equals(mtype.Name, inp, StringComparison.OrdinalIgnoreCase)) {
+									valid = true;
+									break;
+								}
+							}
+
+							if (!valid)
+								continue;
+						} else
 							continue;
 					}
 
-					yield return (type, method);
+					yield return (type, member);
 				}
 			}
 		}
 	}
+
+	#endregion
+
+	#region Pin the Tail on Pintail
+
+	private IProxyManager<string>? SMAPI_ProxyManager;
+
+	/// <summary>
+	/// Grab SMAPI's ProxyManager so we use the same Pintail instances as
+	/// SMAPI's API proxying.
+	/// </summary>
+	public IProxyManager<string>? GetProxyManager() {
+		if (SMAPI_ProxyManager is not null)
+			return SMAPI_ProxyManager;
+
+		try {
+			var field = AccessTools.Field(Helper.ModRegistry.GetType(), "ProxyFactory");
+			object? InterfaceProxyFactory = field.GetValue(Helper.ModRegistry);
+			if (InterfaceProxyFactory is null)
+				throw new ArgumentNullException(nameof(InterfaceProxyFactory));
+
+			field = AccessTools.Field(InterfaceProxyFactory.GetType(), "ProxyManager");
+			object? ProxyManager = field.GetValue(InterfaceProxyFactory);
+
+			if (ProxyManager is IProxyManager<string> pms)
+				SMAPI_ProxyManager = pms;
+			else
+				throw new ArgumentException(nameof(ProxyManager));
+
+		} catch(Exception ex) {
+			Log($"Unable to grab ProxyManager from SMAPI: {ex}", LogLevel.Error);
+		}
+
+		return SMAPI_ProxyManager;
+	}
+
+	public bool CanProxy<T>(Type destinationType, string destinationModId) {
+		return CanProxy(typeof(T), destinationType, destinationModId);
+	}
+
+	public bool CanProxy(Type sourceType, Type destinationType, string destinationModId) {
+		return CanProxy(sourceType, ModManifest.UniqueID, destinationType, destinationModId);
+	}
+
+	public bool CanProxy(Type sourceType, string sourceModId, Type destinationType, string destinationModId) {
+		if (sourceModId == destinationModId)
+			return false;
+
+		var proxy = GetProxyManager();
+		if (proxy is null)
+			return false;
+
+		try {
+			// Try to un-proxy
+			foreach (Type itype in sourceType.GetInterfacesRecursively(includingSelf: true)) {
+				var unfactory = proxy.GetProxyFactory(new ProxyInfo<string>(
+					target: new TypeInfo<string>(sourceModId, destinationType),
+					proxy: new TypeInfo<string>(destinationModId, itype)
+				));
+
+				if (unfactory is null)
+					continue;
+
+				return true;
+			}
+
+			proxy.ObtainProxyFactory(new ProxyInfo<string>(
+				target: new TypeInfo<string>(sourceModId, sourceType),
+				proxy: new TypeInfo<string>(destinationModId, destinationType)
+			));
+
+			return true;
+		} catch {
+			return false;
+		}
+	}
+
+	public bool TryProxyRemote<T>(object? sourceInstance, string sourceModId, [NotNullWhen(true)] out T? destinationInstance, bool silent = false, Type? sourceType = null) {
+		if (TryProxy(sourceInstance, sourceModId, typeof(T), ModManifest.UniqueID, out object? obj, silent: silent, sourceType: sourceType) && obj is T tobj) {
+			destinationInstance = tobj;
+			return true;
+		}
+
+		destinationInstance = default;
+		return false;
+	}
+
+	public bool TryProxy(object? sourceInstance, string sourceModId, Type destinationType, string destinationModId, [NotNullWhen(true)] out object? destinationInstance, bool silent = false, Type? sourceType = null) {
+		var proxy = GetProxyManager();
+		if (sourceModId == destinationModId || proxy is null || sourceInstance is null) {
+			destinationInstance = null;
+			return false;
+		}
+
+		try {
+			sourceType ??= sourceInstance.GetType();
+
+			// Short circuit Pintail proxies if we can.
+			if (sourceType.GetField("__Target", BindingFlags.Instance | BindingFlags.NonPublic) is FieldInfo field && destinationType.IsAssignableFrom(field.FieldType)) {
+				destinationInstance = field.GetValue(sourceInstance);
+				if (destinationInstance is not null)
+					return true;
+			}
+
+			// Try to un-proxy
+			foreach (Type itype in sourceType.GetInterfacesRecursively(includingSelf: true)) {
+				var unfactory = proxy.GetProxyFactory(new ProxyInfo<string>(
+					target: new TypeInfo<string>(sourceModId, destinationType),
+					proxy: new TypeInfo<string>(destinationModId, itype)
+				));
+
+				if (unfactory is null)
+					continue;
+
+				if (unfactory.TryUnproxy(proxy, sourceInstance, out object? unproxied)) {
+					destinationInstance = unproxied;
+					return true;
+				}
+			}
+
+			var factory = proxy.ObtainProxyFactory(new ProxyInfo<string>(
+				target: new TypeInfo<string>(sourceModId, sourceType),
+				proxy: new TypeInfo<string>(destinationModId, destinationType)
+			));
+
+			destinationInstance = factory.ObtainProxy(proxy, sourceInstance);
+			return true;
+
+		} catch(Exception ex) {
+			if (!silent)
+				Log($"Unable to proxy type {sourceInstance.GetType()} to {destinationType}: {ex}", LogLevel.Debug);
+			destinationInstance = null;
+			return false;
+		}
+	}
+
 
 	#endregion
 
@@ -591,25 +890,16 @@ public class ModEntry : ModSubscriber {
 			if (data.RequiredMods is not null)
 				foreach(var entry in data.RequiredMods) {
 					var info = Helper.ModRegistry.Get(entry.UniqueID);
-					if (info is null) {
+					if (!entry.Matches(info)) {
 						data.CanUse = false;
 						break;
 					}
+				}
 
-					bool between;
-					try {
-						between = info.Manifest.Version.IsBetween(
-							string.IsNullOrWhiteSpace(entry.MinimumVersion) ?
-								info.Manifest.Version : new SemanticVersion(entry.MinimumVersion),
-							string.IsNullOrWhiteSpace(entry.MaximumVersion) ?
-								info.Manifest.Version : new SemanticVersion(entry.MaximumVersion)
-						);
-					} catch(Exception ex) {
-						Log($"An error occurred while checking the version of a required mod for patch data {data.ID}", LogLevel.Warn, ex);
-						between = false;
-					}
-
-					if (!between) { 
+			if (data.ForbiddenMods is not null)
+				foreach(var entry in data.ForbiddenMods) {
+					var info = Helper.ModRegistry.Get(entry.UniqueID);
+					if (entry.Matches(info)) {
 						data.CanUse = false;
 						break;
 					}
@@ -630,458 +920,9 @@ public class ModEntry : ModSubscriber {
 
 	#endregion
 
-	#region Console Commands
-
-	[ConsoleCommand("tm_menu_colors", "View all of the detected colors used in a class's draw() method (or another listed method)")]
-	private void Command_MenuColors(string _, string[] args) {
-		// Use the current menu as the backup type.,
-		IClickableMenu menu = Game1.activeClickableMenu;
-		if (menu is not null) {
-			if (menu is TitleMenu && TitleMenu.subMenu is not null)
-				menu = TitleMenu.subMenu;
-
-			if (menu is GameMenu gm && gm.currentTab < gm.pages.Count)
-				menu = gm.pages[gm.currentTab];
-
-		} else {
-			int x = Game1.getMouseX();
-			int y = Game1.getMouseY();
-			foreach(var m in Game1.onScreenMenus) {
-				if (m.xPositionOnScreen <= x && m.xPositionOnScreen + m.width >= x &&
-					m.yPositionOnScreen <= y && m.yPositionOnScreen + m.height >= y
-				) {
-					menu = m;
-					break;
-				}
-			}
-		}
-
-		IClickableMenu? child = menu?.GetChildMenu();
-		while (child is not null) {
-			menu = child;
-			child = menu.GetChildMenu();
-		}
-
-		string input = string.Join(' ', args);
-		var result = ResolveMethod(string.Join(' ', args), current: menu?.GetType());
-
-		Type? type = result?.Item1;
-		MethodInfo? info = result?.Item2;
-
-		if (type is null) {
-			Log($"Could not find type.");
-			return;
-		}
-
-		if (info is null) {
-			Log($"Could not find method in {type.FullName}");
-			return;
-		}
-
-		// If we've already patched the method, un-patch it temporarily.
-		if (DynamicPatchers.TryGetValue(info, out var patcher))
-			patcher.Unpatch();
-		else
-			patcher = null;
-
-		var Instructions = PatchProcessor.GetCurrentInstructions(info);
-		if (Instructions is null) {
-			Log($"Could not read method instructions.");
-			return;
-		}
-
-		// Reapply our patch.
-		patcher?.Patch();
-
-		Dictionary<FieldInfo, string> fields = new();
-
-		foreach (string name in new string[] {
-				"bgColor",
-				"textColor",
-				"textShadowColor",
-				"unselectedOptionColor"
-			}) {
-			FieldInfo? field = typeof(Game1).GetField(name);
-			if (field is not null)
-				fields.Add(field, field.Name);
-		}
-
-		var r2gLerp = AccessTools.Method(typeof(Utility), nameof(Utility.getRedToGreenLerpColor));
-
-		Dictionary<MethodInfo, string> colors = new();
-		foreach (var entry in typeof(Color).GetProperties()) {
-			if (entry.Name.Equals("White") || entry.Name.Equals("Black"))
-				continue;
-
-			if (entry.GetGetMethod() is MethodInfo method) {
-				colors.Add(method, entry.Name);
-			}
-		}
-
-		Log($"Method: {GetEasyString(info)}", LogLevel.Info);
-		Log($"Class: {type.FullName}", LogLevel.Trace);
-		Log($"Method (Raw): {info.FullDescription()}", LogLevel.Trace);
-		Log($"Detected Colors:", LogLevel.Info);
-
-		bool found = false;
-
-		Dictionary<string, List<int>> Colors = new();
-		Dictionary<string, List<int>> RawColors = new();
-		Dictionary<string, List<int>> Fields = new();
-		List<int> RedToGreenLerps = new();
-
-		for (int i = 0; i < Instructions.Count; i++) {
-			CodeInstruction in0 = Instructions[i];
-
-			//Log($"{i}: {in0}", LogLevel.Debug);
-
-			if (in0.opcode == OpCodes.Call && in0.operand is MethodInfo method && colors.TryGetValue(method, out string? name)) {
-				if (!Colors.TryGetValue(name, out var list)) {
-					list = new();
-					Colors[name] = list;
-				}
-				list.Add(i);
-				found = true;
-			}
-
-			if (in0.opcode == OpCodes.Call && in0.operand is MethodInfo meth && meth == r2gLerp) {
-				RedToGreenLerps.Add(i);
-				found = true;
-			}
-
-			if (in0.opcode == OpCodes.Ldsfld && in0.operand is FieldInfo fld && fields.TryGetValue(fld, out string? fname)) {
-				if (!Fields.TryGetValue(fname, out var list)) {
-					list = new();
-					Fields[fname] = list;
-				}
-				list.Add(i);
-				found = true;
-			}
-
-			if (i + 3 < Instructions.Count) {
-				CodeInstruction in1 = Instructions[i + 1];
-				CodeInstruction in2 = Instructions[i + 2];
-				CodeInstruction in3 = Instructions[i + 3];
-
-				if (in3.opcode == OpCodes.Newobj && in3.operand is ConstructorInfo ctor && ctor.DeclaringType == typeof(Color)) {
-					int? val0 = in0.AsInt();
-					int? val1 = in1.AsInt();
-					int? val2 = in2.AsInt();
-
-					if (val0.HasValue && val1.HasValue && val2.HasValue) {
-						string key = $"{val0.Value}, {val1.Value}, {val2.Value}";
-						if (!RawColors.TryGetValue(key, out var list)) {
-							list = new();
-							RawColors[key] = list;
-						}
-						list.Add(i);
-						found = true;
-					}
-				}
-			}
-		}
-
-		if (!found)
-			Log($"- Did not find any colors.", LogLevel.Info);
-		if (Colors.Count > 0) {
-			Log($"- Colors:", LogLevel.Info);
-			foreach (var entry in Colors)
-				Log($"  - {entry.Key} (Offsets: {string.Join(", ", entry.Value)})", LogLevel.Info);
-		}
-		if (RawColors.Count > 0) {
-			Log($"- Raw Colors:", LogLevel.Info);
-			foreach (var entry in RawColors)
-				Log($"  - {entry.Key} (Offsets: {string.Join(", ", entry.Value)})", LogLevel.Info);
-		}
-		if (Fields.Count > 0) {
-			Log($"- Fields:", LogLevel.Info);
-			foreach (var entry in Fields)
-				Log($"  - {entry.Key} (Offsets: {string.Join(", ", entry.Value)})", LogLevel.Info);
-		}
-		if (RedToGreenLerps.Count > 0)
-			Log($"- RedToGreenLerp (Offsets: {string.Join(", ", RedToGreenLerps)})", LogLevel.Info);
-
-		/*Log($"Instructions:");
-		for (int i = 0; i < Instructions.Length; i++) {
-			CodeInstruction in0 = Instructions[i];
-			Log($"{i,4} {in0}");
-		}*/
-	}
-
-	[ConsoleCommand("tm_toggle_font_fix", "Toggle Theme Manager's font alignment fix.")]
-	private void Command_ToggleFontFix(string name, string[] args) {
-		Config.AlignText = !Config.AlignText;
-		SaveConfig();
-
-		Log($"Font alignment has been set to {Config.AlignText}", LogLevel.Info);
-	}
-
-	[ConsoleCommand("theme", "View available themes, reload themes, and change the current themes.")]
-	private void Command_Theme(string name, string[] args) {
-		// List Mods
-		if (args.Length == 0 || string.Equals("list", args[0], StringComparison.OrdinalIgnoreCase)) {
-			List<string[]> ents = new() {
-				new string[] {
-					"stardew",
-					BaseThemeManager!.ActiveThemeId,
-					BaseThemeManager!.SelectedThemeId,
-					BaseThemeManager!.GetThemeChoices().Count.ToString()
-				}
-			};
-
-			foreach (var entry in Managers)
-				ents.Add(new string[] {
-					entry.Key.UniqueID,
-					entry.Value.Item2.ActiveThemeId,
-					entry.Value.Item2.SelectedThemeId,
-					entry.Value.Item2.GetThemeChoices().Count.ToString()
-				});
-
-			LogTable(new string[] {
-				"Manager ID",
-				"Active Theme",
-				"Selected Theme",
-				"Total Themes"
-			}, ents, LogLevel.Info, " | ");
-			return;
-		}
-
-		if (string.Equals(args[0], "help", StringComparison.OrdinalIgnoreCase)) {
-			LogTable(null, new string[][] {
-				new string[] {
-					"list", "List all the mods currently using theme managers, as well as their active themes."
-				},
-				new string[] {
-					"help", "View this information."
-				},
-				new string[] {
-					"reload", "Reload all theme managers' themes."
-				},
-				new string[] {
-					"[manager] list", "List all the themes available for a given theme manager."
-				},
-				new string[] {
-					"[manager] paths", "List a manager's asset paths, for use with Content Patcher."
-				},
-				new string[] {
-					"[manager] reload", "Reload a given theme manager's themes."
-				},
-				new string[] {
-					"[manager] [theme]", "Select a theme for a given theme manager."
-				}
-			}, LogLevel.Info);
-			return;
-		}
-
-		if (string.Equals(args[0], "reload", StringComparison.OrdinalIgnoreCase)) {
-			Command_ReTheme(name, args);
-			return;
-		}
-
-		// It's a manager command. Look one up.
-		IThemeManager? manager = null;
-		string? target = null;
-
-		// Strict matching
-		if (string.Equals(args[0], "stardew", StringComparison.OrdinalIgnoreCase)) {
-			target = "stardew";
-			manager = BaseThemeManager;
-		} else {
-			foreach (var entry in Managers) {
-				if (string.Equals(args[0], entry.Key.UniqueID, StringComparison.OrdinalIgnoreCase)) {
-					manager = entry.Value.Item2;
-					target = entry.Key.UniqueID;
-					break;
-				}
-			}
-		}
-
-		// Sloppy matching.
-		if (manager is null) {
-			if ("stardew".Contains(args[0], StringComparison.OrdinalIgnoreCase)) {
-				manager = BaseThemeManager;
-				target = "stardew";
-			} else {
-				foreach (var entry in Managers) {
-					if (entry.Key.UniqueID.Contains(args[0], StringComparison.OrdinalIgnoreCase)) {
-						manager = entry.Value.Item2;
-						target = entry.Key.UniqueID;
-						break;
-					}
-				}
-			}
-		}
-
-		// No matches?
-		if (manager is null) {
-			Log($"Unable to match manager: {args[0]}", LogLevel.Warn);
-			return;
-		}
-
-		Log($"Manager: {target}", LogLevel.Info);
-
-		if (args.Length > 1 && string.Equals(args[1], "reload", StringComparison.OrdinalIgnoreCase)) {
-			manager.Discover();
-			manager.Invalidate();
-			Log($"Reloaded all themes across 1 manager.", LogLevel.Info);
-			return;
-		}
-
-		if (args.Length > 1 && string.Equals(args[1], "paths", StringComparison.OrdinalIgnoreCase)) {
-			if (manager.UsingThemeRedirection)
-				Log($"Theme Data: {manager.ThemeLoaderPath}", LogLevel.Info);
-			else
-				Log($"Theme Data Redirection is disabled for this manager.", LogLevel.Info);
-
-			if (manager.UsingAssetRedirection) {
-				Log($"Asset Prefix: {manager.AssetLoaderPrefix}", LogLevel.Info);
-
-				Dictionary<string, string> cached = new();
-
-				// Pretend like we're going to invalidate the cache so we can get
-				// the names of all cached assets.
-				Helper.GameContent.InvalidateCache(asset => {
-					if (asset.Name.StartsWith(manager.AssetLoaderPrefix))
-						cached[asset.Name.Name] = asset.DataType.Name;
-					return false;
-				});
-
-				if (cached.Count > 0) {
-					List<string[]> ents = new();
-					foreach (var entry in cached)
-						ents.Add(new string[] { entry.Key, entry.Value });
-
-					Log($"Cached Assets:", LogLevel.Info);
-					LogTable(new string[] { "Key", "Type" }, ents, LogLevel.Info);
-				} else
-					Log($"There are no cached assets.", LogLevel.Info);
-
-			} else
-				Log($"Asset Redirection is disabled for this manager.", LogLevel.Info);
-
-			return;
-		}
-
-		if (args.Length > 1 && !string.Equals(args[1], "list", StringComparison.OrdinalIgnoreCase)) {
-			string needle = string.Join(" ", args, 1, args.Length - 1);
-			string? selected = null;
-			var themes = manager.GetThemeChoices();
-
-			// Check for unique ID matches first.
-			foreach (var pair in themes) {
-				if (pair.Key.Equals(needle, StringComparison.OrdinalIgnoreCase)) {
-					selected = pair.Key;
-					target = pair.Value;
-					break;
-				}
-			}
-
-			// Now check for unique ID partial matches.
-			if (selected is null)
-				foreach (var pair in themes) {
-					if (pair.Key.Contains(needle, StringComparison.OrdinalIgnoreCase)) {
-						selected = pair.Key;
-						target = pair.Value;
-						break;
-					}
-				}
-
-			// Lastly select for partial display name matches
-			if (selected is null)
-				foreach (var pair in themes) {
-					if (pair.Value.Contains(needle, StringComparison.OrdinalIgnoreCase)) {
-						selected = pair.Key;
-						target = pair.Value;
-						break;
-					}
-				}
-
-			if (selected != null) {
-				manager.SelectTheme(selected);
-				Log($"Selected Theme: {selected} ({target})", LogLevel.Info);
-
-			} else
-				Log($"Unable to match theme: {needle}", LogLevel.Warn);
-		}
-
-		List<string[]> entries = new();
-
-		foreach(var pair in manager.GetThemeChoices()) {
-			bool sel = pair.Key == manager.SelectedThemeId;
-			bool active = pair.Key == manager.ActiveThemeId;
-
-			entries.Add(new string[] {
-				sel ? "***" : "",
-				active ? "***" : "",
-				pair.Key,
-				pair.Value
-			});
-		}
-
-		LogTable(new string[] {
-				"Selected", "Active", "ID", "Name"
-			}, entries, LogLevel.Info);
-	}
-
-	[ConsoleCommand("tm_repatch", "Reload all patch data and reapply patches.")]
-	private void Command_Repatch(string name, string[] args) {
-		PatchGroups = null;
-		LoadPatchGroups();
-
-		SelectPatches(BaseTheme);
-
-		Log($"Reloaded {PatchGroups.Count} patch groups and applied patches to {DynamicPatchers.Count} methods.", LogLevel.Info);
-	}
-
-	[ConsoleCommand("retheme", "Reload all themes.")]
-	private void Command_ReTheme(string name, string[] args) {
-
-		BaseThemeManager!.Discover();
-		BaseThemeManager!.Invalidate();
-
-		foreach (var entry in Managers) {
-			entry.Value.Item2.Discover();
-			entry.Value.Item2.Invalidate();
-		}
-
-		Log($"Reloaded all themes across {Managers.Count + 1} managers.", LogLevel.Info);
-	}
-
-	#endregion
-
 	#region Events
 
-	private Color? RasterizeColor(string input, Dictionary<string, string> values, Dictionary<string, Color> parsed) {
-		CaseInsensitiveHashSet visited = new();
-		while (input is not null) {
-			if (!visited.Add(input)) {
-				Log($"Infinite loop detected resolving color: {string.Join(" -> ", visited)}", LogLevel.Warn);
-				return null;
-			}
-
-			if (input.StartsWith('$')) {
-				string key = input[1..];
-				if (parsed.TryGetValue(key, out var result))
-					return result;
-
-				if (!values.TryGetValue(key, out string? value))
-					return null;
-
-				input = value;
-
-			} else if (CommonHelper.TryParseColor(input, out var res)) { 
-				return res;
-
-			} else {
-				Log($"Unable to parse color: {input}", LogLevel.Warn);
-				return null;
-			}
-		}
-
-		return null;
-	}
-
-	private void SelectPatches(BaseTheme? theme) {
+	private void SelectPatches(GameTheme? theme) {
 		LoadPatchGroups();
 
 		// Reset our existing patches.
@@ -1098,7 +939,7 @@ public class ModEntry : ModSubscriber {
 
 				foreach (var entry in patch.Patches) {
 					if (!patch.Methods.TryGetValue(entry.Key, out var methods)) {
-						methods = ResolveMethods(entry.Key, null).Select(x => x.Item2).ToArray();
+						methods = ResolveMembers<MethodInfo>(entry.Key, null).Select(x => x.Item2).ToArray();
 						patch.Methods[entry.Key] = methods;
 					}
 
@@ -1124,20 +965,42 @@ public class ModEntry : ModSubscriber {
 		}
 	}
 
-	private void OnStardewThemeChanged(object? sender, IThemeChangedEvent<BaseTheme> e) {
-		BaseTheme = e.NewData;
+	private void OnStardewThemeChanged(object? sender, IThemeChangedEvent<GameTheme> e) {
+		GameTheme = e.NewData;
+
+		GameTheme.ColorVariables ??= new ColorVariableSet();
+		GameTheme.FontVariables ??= new FontVariableSet();
+		GameTheme.TextureVariables ??= new TextureVariableSet();
+		GameTheme.BmFontVariables ??= new BmFontVariableSet();
+
+		// Assign the patch variables.
+		GameTheme.ColorVariables.DefaultValues = GameTheme.PatchColorVariables;
+		GameTheme.FontVariables.DefaultValues = GameTheme.PatchFontVariables;
+		GameTheme.TextureVariables.DefaultValues = GameTheme.PatchTextureVariables;
+		GameTheme.BmFontVariables.DefaultValues = GameTheme.PatchBmFontVariables;
 
 		// Access SpriteTextColors to force all the theme's data to build.
-		int _ = BaseTheme.SpriteTextColors.Count;
+		int _ = GameTheme.SpriteTextColors.Count;
 
 		// Apply the text color / text shadow color to the fields in Game1.
-		Game1.textColor = BaseTheme.Variables.GetValueOrDefault("Text", BaseThemeManager!.DefaultTheme.Variables["Text"]);
-		Game1.textShadowColor = BaseTheme.Variables.GetValueOrDefault("TextShadow", BaseThemeManager!.DefaultTheme.Variables["TextShadow"]);
-		Game1.unselectedOptionColor = BaseTheme.Variables.GetValueOrDefault("UnselectedOption", BaseThemeManager!.DefaultTheme.Variables["UnselectedOption"]);
+		Game1.textColor = GameTheme.ColorVariables.GetValueOrDefault("Text", GameThemeManager!.DefaultTheme.ColorVariables["Text"]);
+		Game1.textShadowColor = GameTheme.ColorVariables.GetValueOrDefault("TextShadow", GameThemeManager!.DefaultTheme.ColorVariables["TextShadow"]);
+		Game1.unselectedOptionColor = GameTheme.ColorVariables.GetValueOrDefault("UnselectedOption", GameThemeManager!.DefaultTheme.ColorVariables["UnselectedOption"]);
 
-		SelectPatches(BaseTheme);
-		DynamicPatcher.UpdateColors(BaseTheme.Variables);
+		// Apply the font fields in Game1.
+		SpriteFontManager!.AssignFonts(GameTheme);
+		SpriteTextManager!.AssignFonts(GameTheme);
+
+		// Apply the patches.
+		SelectPatches(GameTheme);
+
+		// Update the values used by the patches.
+		DynamicPatcher.UpdateColors(GameTheme.ColorVariables);
+		DynamicPatcher.UpdateFonts(GameTheme.FontVariables);
+		DynamicPatcher.UpdateTextures(GameTheme.TextureVariables);
+		DynamicPatcher.UpdateBmFonts(GameTheme.BmFontVariables);
 	}
+
 
 	[Subscriber]
 	private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
@@ -1147,7 +1010,7 @@ public class ModEntry : ModSubscriber {
 
 		// Load Patches
 		LoadPatchGroups();
-		BaseThemeManager!.Discover();
+		GameThemeManager!.Discover();
 
 		// Settings
 		RegisterSettings();
@@ -1178,26 +1041,181 @@ public class ModEntry : ModSubscriber {
 		}
 	}
 
+	#endregion
+
+	#region Managed Assets
+
+	public bool TryGetManagedAsset<T>(string assetName, [NotNullWhen(true)] out IManagedAsset<T>? managedAsset) where T : notnull {
+		if (string.IsNullOrWhiteSpace(assetName)) {
+			managedAsset = null;
+			return false;
+		}
+
+		return TryGetManagedAsset<T>(Helper.GameContent.ParseAssetName(assetName), out managedAsset);
+	}
+
+	public bool TryGetManagedAsset<T>(IAssetName assetName, [NotNullWhen(true)] out IManagedAsset<T>? managedAsset) where T : notnull {
+		if (assetName is null) {
+			managedAsset = null;
+			return false;
+		}
+
+		if (ManagedAssets.TryGetValue(assetName, out var reference) && reference.TryGetTarget(out var target)) {
+			if (target is IManagedAsset<T> mat) {
+				managedAsset = mat;
+				return true;
+
+			} else {
+				managedAsset = null;
+				return false;
+			}
+		}
+
+		DeclareAssetType<T>(assetName);
+
+		lock ((ManagedAssets as ICollection).SyncRoot) {
+			managedAsset = new ManagedAsset<T>(this, assetName);
+			ManagedAssets[assetName] = new WeakReference<IManagedAsset>(managedAsset);
+		}
+
+		return true;
+	}
+
+	#endregion
+
+	#region Asset Handling
+
+	#region DoesAssetExist Delegates
+
+	internal void LoadGameContentManager() {
+		GameContentManager_Loaded = false;
+		if (!GameContentManager_Loaded) {
+			GameContentManager_Loaded = true;
+			FieldInfo? field = AccessTools.Field(Helper.GameContent.GetType(), "GameContentManager");
+			if (field is not null) {
+				try {
+					GameContentManager_Instance = field.GetValue(Helper.GameContent);
+				} catch(Exception ex) {
+					Log($"Unable to read GameContentManager from GameContent helper. Asset loading will break.", LogLevel.Error, ex);
+					return;
+				}
+
+				if (GameContentManager_Instance is not null)
+					GameContentManager_DoesAssetExist = GameContentManager_Instance.GetType().GetMethod("DoesAssetExist", BindingFlags.Instance | BindingFlags.Public);
+			}
+		}
+	}
+
+	internal GCMDoesAssetExist<T>? GetDoesAssetExistDelegate<T>() {
+		LoadGameContentManager();
+		if (GameContentManager_DoesAssetExist is null)
+			return null;
+
+		Type tType = typeof(T);
+		GameContentManager_Delegates ??= new();
+
+		lock (GameContentManager_Delegates.SyncRoot) {
+			if (!GameContentManager_Delegates.ContainsKey(tType)) {
+				GCMDoesAssetExist<T>? @delegate;
+				try {
+					var generic = GameContentManager_DoesAssetExist.MakeGenericMethod(typeof(T));
+					@delegate = generic.CreateDelegate<GCMDoesAssetExist<T>>(GameContentManager_Instance);
+				} catch(Exception ex) {
+					Log($"Unable to create DoesAssetExist delegate: {ex}", LogLevel.Error);
+					@delegate = null;
+				}
+
+				GameContentManager_Delegates[tType] = @delegate;
+				return @delegate;
+			}
+
+			return GameContentManager_Delegates[tType] as GCMDoesAssetExist<T>;
+		}
+	}
+
+	#endregion
+
+	public bool DoesAssetExist<T>([NotNullWhen(true)] IAssetName? name) {
+		if (name is null)
+			return false;
+
+		LoadGameContentManager();
+		if (GameContentManager_DoesAssetExist is null)
+			return false;
+
+		var @delegate = GetDoesAssetExistDelegate<T>();
+		if (@delegate is null)
+			return false;
+
+		DeclareAssetType<T>(name);
+		return @delegate(name);
+	}
+
+	public void DeclareAssetType<T>(IAssetName? assetName) {
+		if (assetName is null)
+			return;
+
+		Type tType = typeof(T);
+
+		// If we're requesting a managed asset, get the generic type from it.
+		if (tType.IsConstructedGenericType && tType.GetGenericTypeDefinition() == typeof(IManagedAsset<>))
+			tType = tType.GetGenericArguments()[0];
+
+		lock ((AssetTypes as ICollection).SyncRoot) {
+			AssetTypes[assetName] = tType;
+		}
+	}
+
 	[Subscriber]
 	private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
+		bool reload_spritefonts = false;
+		bool reload_spritetext = false;
+
 		foreach(var entry in e.Names) {
-			if (ManagersByThemeAsset.TryGetValue(entry.Name, out var manager) && manager is IThemeSelection tselect)
-				tselect.InvalidateThemeData();
+			if (ManagersByThemeAsset.TryGetValue(entry.Name, out var manager))
+				manager.InvalidateThemeData();
+
+			if (ManagedAssets.TryGetValue(entry, out var reference) && reference.TryGetTarget(out var managed))
+				managed.MarkStale();
+
+			switch(entry.Name.ToLower()) {
+				case "fonts/spritefont1":
+				case "fonts/smallfont":
+				case "fonts/tinyfont":
+				case "fonts/tinyfontborder":
+					reload_spritefonts = true;
+					break;
+				case "loosesprites/font_bold":
+				case "loosesprites/font_colored":
+					reload_spritetext = true;
+					break;
+			}
+		}
+
+		if (reload_spritefonts) {
+			SpriteFontManager.UpdateDefaultFonts();
+			SpriteFontManager.AssignFonts(GameTheme);
+		}
+
+		if (reload_spritetext) {
+			SpriteTextManager.UpdateDefaultTextures();
+			SpriteTextManager.AssignFonts(GameTheme);
 		}
 	}
 
 	[Subscriber]
 	private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
-		Func<object>? loader;
-		lock ((LoadingAssets as ICollection).SyncRoot) {
-			if (!LoadingAssets.TryGetValue(e.Name.BaseName, out loader))
-				return;
+		if (ManagersByThemeAsset.TryGetValue(e.Name.Name, out var manager)) {
+			manager.HandleAssetRequested(e);
+			return;
 		}
 
-		e.LoadFrom(
-			loader,
-			priority: AssetLoadPriority.Low
-		);
+		foreach(var entry in ManagersByAssetPrefix) {
+			if (e.Name.StartsWith(entry.Key)) {
+				entry.Value.HandleAssetRequested(e);
+				return;
+			}
+		}
 	}
 
 	#endregion

@@ -105,8 +105,19 @@ namespace SAAT.Mod {
             var list = Game1.player.songsHeard.ToList();
             var soundBank = this.audioApi.SoundBank;
 
+            if (soundBank is SAATSoundBankWrapper saatSoundBank)
+            {
+                soundBank = saatSoundBank.VanillaSoundBank;
+            }
+
             foreach (string item in list)
             {
+                // The sole exception. title_day is a placeholder for MainTheme.
+                if (item == "title_day")
+                {
+                    continue;
+                }
+
                 // TO-DO: On audio engine replacement, we will no longer need to try-catch.
                 // A non-existing audio file will result in a null being returned.
                 // For now... this a bit of a performance cost.

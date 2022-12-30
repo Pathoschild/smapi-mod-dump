@@ -6,9 +6,12 @@ mods:
    Infinite Inventory
 
 latest commit:
-   commit 8d57ec22df4736ef151ab56d171def57b373c08f
-   Author: unidarkshin <devinlematty@gmail.com>
-   Date:   Fri Jan 29 16:57:07 2021 -0500
+   commit 50b5af5244dcb1bc2d52b9661da1ee0ecfa9d7bb
+   Merge: d752ab1 bbd0d84
+   Author: ItsDan <grillwar@gmail.com>
+   Date:   Thu Dec 22 13:33:56 2022 -0600
    
-       le sk upd
+       Merge pull request #25 from unidarkshin/dependabot/nuget/Mods/InfiniteInventory/Newtonsoft.Json-13.0.2
+       
+       Bump Newtonsoft.Json from 12.0.3 to 13.0.2 in /Mods/InfiniteInventory
    

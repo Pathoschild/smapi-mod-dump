@@ -6,9 +6,9 @@ mods:
    Deep Woods Warp Network Integration
 
 latest commit:
-   commit a53ca8872ddfda990935a8a85f9d4069b606cfe0
-   Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Mon Dec 20 22:25:57 2021 -0500
+   commit 638361e5da6bea5549d722f174e91a4c6008ba3b
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Wed Dec 14 12:41:15 2022 -0500
    
-       fix icon not loading
+       bump version
    

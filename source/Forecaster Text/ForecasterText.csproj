@@ -11,6 +11,7 @@
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Objects\Addons" />
       <Folder Include="Properties" />
     </ItemGroup>
 </Project>

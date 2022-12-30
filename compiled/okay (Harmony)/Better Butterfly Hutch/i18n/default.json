@@ -14,5 +14,7 @@
   "islandButterflies.Label": "Island Butterflies",
   "islandButterflies.tooltip": "Spawn island butterflies indoors on the mainland.",
   "shakeHutch.Label": "Shake Hutch",
-  "shakeHutch.tooltip":  "Shake the hutch to spawn butterflies. You shake the hutch just like shaking a tree."
+  "shakeHutch.tooltip": "Shake the hutch to spawn butterflies. You shake the hutch just like shaking a tree.",
+  "nightButterflies.Label": "Night Butterflies",
+  "nightButterflies.Tooltip": "Indoor butterflies. When enabled, indoor butterfly hutches will spawn butterflies all day. Just as in the vanilla game. Disabling this spawns butterflies only in daylight hours. Butterflies need rest too!"
 }

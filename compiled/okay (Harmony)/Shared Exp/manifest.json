@@ -1,7 +1,7 @@
 ﻿{
   "Name": "SharedXp",
   "Author": "Batzpup",
-  "Version": "1.0.4", // fixed locally
+  "Version": "1.0.6",
   "Description": "Shares skill xp among all players in multiplayer",
   "UniqueID": "SharedExp.Batzpup",
   "EntryDll": "SharedExp.dll",

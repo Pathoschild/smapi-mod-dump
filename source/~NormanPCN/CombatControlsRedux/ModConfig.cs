@@ -19,6 +19,8 @@ namespace CombatControlsRedux
         public bool AutoSwing = false;
         public bool AutoSwingDagger = true;
 
+        public bool ClubSpecialSpamAttack = false;
+
         public bool SlickMoves = true;
         public bool SwordSpecialSlickMove = true;
         public bool ClubSpecialSlickMove = false;
@@ -29,6 +31,10 @@ namespace CombatControlsRedux
         //undocumented options
         public bool Debug = false;//unused right now.
         public bool NearTileFacingFix = false;
+        public int CountdownStart = 6;
+        public int CountdownFastDaggerOffset = 2;
+        public int CountdownRepeat = 2;
+        public int ClubSpamCount = 3;
     }
 }
 

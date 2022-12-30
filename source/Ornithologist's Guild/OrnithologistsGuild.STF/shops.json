@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+  "Shops": [
+    {
+      "ShopName": "Ivy_OrnithologistsGuild",
+      "CategoriesToSellHere": [
+        -20,
+        -74
+      ],
+      "_CategoriesToSellHereName": [
+        "Junk",
+        "Seeds"
+      ],
+      "PortraitPath": "assets/portrait.png",
+      "Quote": "Caw! Caw!",
+      "ItemStocks": [
+        {
+          "ItemType": "Object",
+          "StockPrice": 200,
+          "ItemNames": [
+            "Sunflower Seeds"
+          ],
+          "Stock": 25
+        }
+      ],
+      "When": [
+        "t 800 1300"
+      ],
+      "ClosedMessage": "This store is open daily from 8AM to 1PM."
+    }
+  ]
+}

@@ -28,5 +28,7 @@
   "slideVelocity.Label": "Slide Velocity",
   "slideVelocity.tooltip": "Movement velocity of the slick moves slide. For swords and clubs. Controls speed and distance of the slide.",
   "specSlideVelocity.Label": "Special Slide Velocity",
-  "specSlideVelocity.tooltip": "Movement velocity for special slick moves. For swords and clubs. Controls speed and distance of the slide."
+  "specSlideVelocity.tooltip": "Movement velocity for special slick moves. For swords and clubs. Controls speed and distance of the slide.",
+  "clubSpamAttack.label": "Club Ground Slam Spam Attack",
+  "clubSpamAttack.tooltip":  "This option will perform a spam attack of LeftClick/UseTool on the Club special ground slam attack. You must do the LeftClick/UseTool once to start the spam attack."
 }

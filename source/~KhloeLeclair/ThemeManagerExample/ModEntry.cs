@@ -33,14 +33,13 @@ public class ThemeData {
 
 public class ModEntry : Mod {
 
-	internal ITypedThemeManager<ThemeData>? ThemeManager;
+	internal IThemeManager<ThemeData>? ThemeManager;
+	internal IManagedAsset<Texture2D>? Background;
 	internal ThemeData Theme = new();
-	internal Texture2D? Background;
 
-	internal IBaseTheme? BaseTheme;
+	internal IGameTheme? GameTheme;
 
 	public override void Entry(IModHelper helper) {
-
 		Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 		Helper.Events.Display.RenderedHud += Display_RenderedHud;
 	}
@@ -48,7 +47,7 @@ public class ModEntry : Mod {
 	private void Display_RenderedHud(object? sender, StardewModdingAPI.Events.RenderedHudEventArgs e) {
 		// Read values from our theme!
 		float scale = Theme.TextScale;
-		Color color = Theme.TextColor ?? BaseTheme?.GetVariable("Text") ?? Game1.textColor;
+		Color color = Theme.TextColor ?? GameTheme?.GetVariable("Text") ?? Game1.textColor;
 
 		// Set up the text!
 		string text = $"Hello!\n\nSelected Theme: {ThemeManager?.SelectedThemeId}\nActive Theme: {ThemeManager?.ActiveThemeId}";
@@ -56,16 +55,17 @@ public class ModEntry : Mod {
 
 		// Draw a box! Not just any box, but a box using our
 		// Background texture.
-		IClickableMenu.drawTextureBox(
-			e.SpriteBatch,
-			texture: Background,
-			sourceRect: new Rectangle(0, 0, 15, 15),
-			x: 16, y: 16,
-			width: 48 + (int) size.X,
-			height: 48 + (int) size.Y,
-			color: Color.White,
-			scale: 4f
-		);
+		if (Background?.Value != null)
+			IClickableMenu.drawTextureBox(
+				e.SpriteBatch,
+				texture: Background.Value,
+				sourceRect: new Rectangle(0, 0, 15, 15),
+				x: 16, y: 16,
+				width: 48 + (int) size.X,
+				height: 48 + (int) size.Y,
+				color: Color.White,
+				scale: 4f
+			);
 
 		// Now draw our text in the box, using the color
 		// and scale from our theme.
@@ -85,38 +85,45 @@ public class ModEntry : Mod {
 	private void GameLoop_GameLaunched(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e) {
 		SetupTheme();
 
-		Background = Load<Texture2D>("Background.png");
+		Background = LoadManaged<Texture2D>("Background.png");
 	}
 
-	private T Load<T>(string path) where T : notnull {
+	private IManagedAsset<T> LoadManaged<T>(string path) where T : notnull {
 		if (ThemeManager is not null)
-			return ThemeManager.Load<T>(path);
-		return Helper.ModContent.Load<T>($"assets/{path}");
+			return ThemeManager.GetManagedAsset<T>(path);
+		return new FallbackManagedAsset<T>($"assets/{path}", Helper, Monitor);
 	}
 
 	private void SetupTheme() {
 		if (!Helper.ModRegistry.IsLoaded("leclair.thememanager"))
 			return;
 
-		var api = Helper.ModRegistry.GetApi<IThemeManagerApi>("leclair.thememanager");
+		IThemeManagerApi? api;
+		try {
+			api = Helper.ModRegistry.GetApi<IThemeManagerApi>("leclair.thememanager");
+		} catch (Exception ex) {
+			Monitor.Log($"Unable to get Theme Manager's API: {ex}", LogLevel.Error);
+			return;
+		}
+
 		if (api is null)
 			return;
 
 		ThemeManager = api.GetOrCreateManager<ThemeData>();
 
-		BaseTheme = api.BaseTheme;
-		api.BaseThemeChanged += OnBaseThemeChanged;
+		GameTheme = api.GameTheme;
+		api.GameThemeChanged += OnBaseThemeChanged;
 
 		Theme = ThemeManager.Theme;
 		ThemeManager.ThemeChanged += OnThemeChanged;
 	}
 
-	private void OnBaseThemeChanged(object? sender, IThemeChangedEvent<IBaseTheme> e) {
-		BaseTheme =  e.NewData;
+	private void OnBaseThemeChanged(object? sender, IThemeChangedEvent<IGameTheme> e) {
+		GameTheme =  e.NewData;
 	}
 
 	private void OnThemeChanged(object? sender, IThemeChangedEvent<ThemeData> e) {
 		Theme = e.NewData;
-		Background = Load<Texture2D>("Background.png");
+		Background = LoadManaged<Texture2D>("Background.png");
 	}
 }

@@ -72,9 +72,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 5b96db3354d69ecf99bbd2fa621e8c56045799e2
+   commit e6cc7ed9637b793cac62c6bc35a7d35b3cb68e81
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Tue Nov 29 19:12:34 2022 -0500
+   Date:   Sat Dec 10 01:58:43 2022 -0500
    
-       Stuff so far with things
+       GMCM gamepad support
    

@@ -6,9 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit fa3049722036de986827975ad048bb0d9dca34fc
+   commit 94ef9244fbe6229258841b024ec9fe9ae0d01b5b
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Mon Nov 28 04:48:44 2022 +0100
+   Date:   Mon Dec 26 23:43:04 2022 +0100
    
-       Always Fix TVs when creating a new game
+       cleanup
    

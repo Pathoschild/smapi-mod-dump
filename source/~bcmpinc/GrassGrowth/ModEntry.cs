@@ -10,6 +10,7 @@
 
 using System;
 using System.Reflection.Emit;
+using GenericModConfigMenu;
 using StardewValley;
 
 namespace StardewHack.GrassGrowth
@@ -43,14 +44,14 @@ namespace StardewHack.GrassGrowth
             Patch((GameLocation gl) => gl.growWeedGrass(0), GameLocation_growWeedGrass);
         }
 
-        protected override void InitializeApi(GenericModConfigMenuAPI api)
+        protected override void InitializeApi(IGenericModConfigMenuApi api)
         {
-            api.RegisterSimpleOption(ModManifest, "Disable Growth", "Whether grass growth & spreading should be suppressed entirely.", () => config.DisableGrowth, (bool val) => config.DisableGrowth = val);
-            api.RegisterSimpleOption(ModManifest, "Grow Everywhere", "Whether grass spreads almost everywhere. If false, grass spreading is limited to tillable tiles.", () => config.GrowEverywhere, (bool val) => config.GrowEverywhere = val);
-            api.RegisterClampedOption(ModManifest, "Growth Chance", "The chance that grass grows or spreads.", () => config.GrowthChance, (float val) => config.GrowthChance = val, 0, 1);
-            api.RegisterClampedOption(ModManifest, "Spread Chance", "The chance for each neighbouring tile that the grass will spread there.", () => config.SpreadChance, (float val) => config.SpreadChance = val, 0, 1);
-            api.RegisterClampedOption(ModManifest, "Daily Growth", "The number of iterations that grass growth is applied per day", () => config.DailyGrowth, (int val) => config.DailyGrowth = val, 0, 10);
-            api.RegisterClampedOption(ModManifest, "Monthly Growth", "Additional iterations that grass growth is applied at the start of each month.", () => config.MonthlyGrowth, (int val) => config.MonthlyGrowth = val, 0, 100);
+            api.AddBoolOption(mod: ModManifest, name: () => "Disable Growth",  tooltip: () => "Whether grass growth & spreading should be suppressed entirely.", getValue: () => config.DisableGrowth, setValue: (bool val) => config.DisableGrowth = val);
+            api.AddBoolOption(mod: ModManifest, name: () => "Grow Everywhere", tooltip: () => "Whether grass spreads almost everywhere. If false, grass spreading is limited to tillable tiles.",  getValue: () => config.GrowEverywhere, setValue: (bool val) => config.GrowEverywhere = val);
+            api.AddNumberOption(mod: ModManifest, name: () => "Growth Chance",  tooltip: () => "The chance that grass grows or spreads.",  getValue: () => config.GrowthChance, setValue: (float val) => config.GrowthChance = val, min:0, max:1);
+            api.AddNumberOption(mod: ModManifest, name: () => "Spread Chance",  tooltip: () => "The chance for each neighbouring tile that the grass will spread there.",  getValue: () => config.SpreadChance, setValue: (float val) => config.SpreadChance = val, min:0, max:1);
+            api.AddNumberOption(mod: ModManifest, name: () => "Daily Growth",   tooltip: () => "The number of iterations that grass growth is applied per day",  getValue: () => config.DailyGrowth, setValue: (int val) => config.DailyGrowth = val, min: 0, max: 10);
+            api.AddNumberOption(mod: ModManifest, name: () => "Monthly Growth", tooltip: () => "Additional iterations that grass growth is applied at the start of each month.",  getValue: () => config.MonthlyGrowth, setValue: (int val) => config.MonthlyGrowth = val, min:0, max:100);
         }
 
         static int getMonthlyGrowth() => getInstance().config.MonthlyGrowth;

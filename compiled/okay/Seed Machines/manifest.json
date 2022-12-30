@@ -1,10 +1,20 @@
 {
-    "Name": "Seed Machines",
-    "Author": "Veress",
-    "Version": "0.0.4-beta",
-    "Description": "Add Seed Machines for your craftable items.",
-    "UniqueID": "Veress.SeedMachines",
-    "EntryDll": "SeedMachines.dll",
-    "MinimumApiVersion": "3.8.0",
-    "UpdateKeys": [ "Nexus:6265" ]
+  "Name": "Seed Machines",
+  "Author": "Veress",
+  "Version": "0.0.5-beta",
+  "Description": "Add Seed Machines for your craftable items.",
+  "UniqueID": "Veress.SeedMachines",
+  "EntryDll": "SeedMachines.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:6265" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true
+    }
+  ]
 }

@@ -11,7 +11,7 @@
 {
   "Name": "SoundTweaker",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.3.0",
   "Description": "SoundTweaker.",
   "UniqueID": "aedenthorn.SoundTweaker",
   "EntryDll": "SoundTweaker.dll",
@@ -28,5 +28,5 @@
       "IsRequired": false
     }
   ],
-  "UpdateKeys": [ "Nexus:14519" ]
+  "UpdateKeys": [ "Nexus:14767" ]
 }

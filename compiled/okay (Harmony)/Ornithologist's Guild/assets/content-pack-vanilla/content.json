@@ -1,0 +1,88 @@
+﻿{
+  "FormatVersion": 1,
+  // TODO PurpleBird, RedBird?
+  "Birdies": [
+    {
+      "ID": "BrownBird",
+      "BaseFrame": 25,
+
+      "Attributes": 1,
+
+      "MaxFlockSize": 3,
+
+      "BaseWt": 0.5,
+      "FeederBaseWts": {
+        "Hopper": 0.25,
+        "Tube": 0.25,
+        "Platform": 0.25
+      },
+      "FoodBaseWts": {
+        "Corn": 0.25,
+        "Fruit": 0.25,
+        "MixedSeeds": 0.25,
+        "SunflowerSeeds": 0.25
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1500, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad, Farm"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Summer"
+          },
+          "NilWt": true
+        }
+      ]
+    },
+    {
+      "ID": "BlueBird",
+      "BaseFrame": 45,
+
+      "Attributes": 1,
+
+      "MaxFlockSize": 3,
+
+      "BaseWt": 0.5,
+      "FeederBaseWts": {
+        "Hopper": 0.25,
+        "Tube": 0.25,
+        "Platform": 0.25
+      },
+      "FoodBaseWts": {
+        "Corn": 0.25,
+        "Fruit": 0.25,
+        "MixedSeeds": 0.25,
+        "SunflowerSeeds": 0.25
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1500, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad, Farm"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Summer"
+          },
+          "NilWt": true
+        }
+      ]
+    }
+  ]
+}

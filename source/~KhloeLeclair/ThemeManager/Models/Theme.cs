@@ -22,6 +22,6 @@ namespace Leclair.Stardew.ThemeManager.Models;
 internal record Theme<DataT>(
 	DataT Data,
 	ThemeManifest Manifest,
-	IContentPack Content,
+	IContentPack? Content,
 	string? RelativePath
 );

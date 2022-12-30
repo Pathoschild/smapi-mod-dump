@@ -29,7 +29,9 @@ namespace UIInfoSuite2.UIElements
         private ClickableTextureComponent _berryIcon;
 
         private readonly IModHelper _helper;
-        public bool ShowHazelnut { get; set; }
+
+        private bool Enabled { get; set; }
+        private bool ShowHazelnut { get; set; }
 
         #endregion
 
@@ -47,6 +49,8 @@ namespace UIInfoSuite2.UIElements
 
         public void ToggleOption(bool showSeasonalBerry)
         {
+            Enabled = showSeasonalBerry;
+
             _berrySpriteLocation = null;
             _helper.Events.GameLoop.DayStarted -= OnDayStarted;
             _helper.Events.Display.RenderingHud -= OnRenderingHud;
@@ -65,7 +69,7 @@ namespace UIInfoSuite2.UIElements
         public void ToggleHazelnutOption(bool showHazelnut)
         {
             ShowHazelnut = showHazelnut;
-            ToggleOption(true);
+            ToggleOption(Enabled);
         }
 
         #endregion

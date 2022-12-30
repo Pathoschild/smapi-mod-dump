@@ -24,11 +24,12 @@ using StardewValley.Menus;
 
 namespace SeedMachines.Framework.BigCraftables
 {
+    [XmlType("Mods_SeedMachines_SeedMachine")]
     public class SeedMachine : IBigCraftable
     {
         public SeedMachine() : base()
         {
-            this.wrapper = IBigCraftableWrapper.getWrapper("Seed Machine");
+            this.wrapperName = "Seed Machine";
             this.animate();
         }
         public SeedMachine(StardewValley.Object baseObject, IBigCraftableWrapper wrapper) 

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AeroCore;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using WarpNetwork.models;
 
 namespace WarpNetwork
 {
+    [ModInit]
     class ObeliskPatch
     {
         private static readonly Dictionary<string, Point> ObeliskTargets = new()
@@ -25,6 +27,10 @@ namespace WarpNetwork
             { "Beach", new Point(20, 4) },
             { "Desert", new Point(35, 43) }
         };
+        internal static void Init()
+        {
+            ModEntry.helper.Events.Player.Warped += MoveAfterWarp;
+        }
         public static void MoveAfterWarp(object sender, WarpedEventArgs ev)
         {
             if (ev.IsLocalPlayer)

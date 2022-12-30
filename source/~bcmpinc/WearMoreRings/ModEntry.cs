@@ -8,17 +8,18 @@
 **
 *************************************************/
 
-using Netcode;
+using GenericModConfigMenu;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Monsters;
 using StardewValley.Objects;
 using System;
-using System.Collections.Generic;
 using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 namespace StardewHack.WearMoreRings
 {
@@ -28,143 +29,74 @@ namespace StardewHack.WearMoreRings
         public int Rings = 8;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>, IWearMoreRingsAPI
+#pragma warning restore CS0618 // Type or member is obsolete
     {
-        private const String DATA_KEY = "bcmpinc.WearMoreRings/chest-id";
-
-        static readonly ConditionalWeakTable<Farmer, Chest> ring_inventory = new ConditionalWeakTable<Farmer, Chest>();
-        
+        private Type forge_menu_class = typeof(ForgeMenu);
         public static readonly Random random = new Random();
-        
+        public static readonly PerScreen<RingMap> container = new PerScreen<RingMap>();
+
         public override void HackEntry(IModHelper helper) {
-            if (config.Rings < 0) {
-                config.Rings = 0;
+            if (config.Rings < 2) {
+                config.Rings = 2;
             }
-            if (config.Rings > 20) {
-                config.Rings = 20;
+            if (config.Rings > RingMap.MAX_RINGS) {
+                config.Rings = RingMap.MAX_RINGS;
                 getInstance().Monitor.Log("Rings limited to 20. You only have so many fingers... and toes.", LogLevel.Warn);
             }
         
-            helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-            helper.ConsoleCommands.Add("player_resetmodifiers", "Clears buffs, then resets and reapplies the modifiers applied by boots & rings.", HandleActionReset);
+            helper.Events.GameLoop.SaveLoaded += (object sender, SaveLoadedEventArgs e) => {
+                getInstance().Monitor.Log($"Save loaded for {Game1.player.displayName}.", LogLevel.Info);
+                container.Value = new RingMap(Game1.player);
+                Migration.Import(Monitor, helper);
+                container.Value.limitSize(config.Rings);
+                ResetModifiers();
+            };
+            helper.Events.GameLoop.Saving += (object sender, SavingEventArgs e) => {
+                container.Value.Save();
+            };
+            helper.ConsoleCommands.Add("player_resetmodifiers", "Clears buffs, then resets and reapplies the modifiers applied by boots & rings.", (string arg1, string[] arg2) => { ResetModifiers(); });
+            helper.ConsoleCommands.Add("world_destroyringchests", "Removes any remaining ring chests used for storing player's rings. Any items contained therein will be dropped at your feet.", (string arg1, string[] arg2) => { Migration.DestroyRemainingChests(Monitor); });
+            helper.ConsoleCommands.Add("player_openforge", "Opens the forge menu.", (string arg1, string[] arg2) => { Game1.activeClickableMenu = new ForgeMenu(); });
             
-            Patch((Farmer f)=>f.isWearingRing(0), Farmer_isWearingRing);
-            Patch((Farmer f)=>f.GetEffectsOfRingMultiplier(0), Farmer_GetEffectsOfRingMultiplier);
-            Patch(typeof(Farmer), "updateCommon", Farmer_updateCommon);
-            Patch((GameLocation gl)=>gl.cleanupBeforePlayerExit(), GameLocation_cleanupBeforePlayerExit); 
-            Patch(typeof(GameLocation), "resetLocalState", GameLocation_resetLocalState); 
-            Patch((GameLocation gl)=>gl.damageMonster(new Rectangle(),0,0,false,0.0f,0,0.0f,0.0f,false,null), GameLocation_damageMonster);
             Patch(()=>new InventoryPage(0,0,0,0), InventoryPage_ctor);
             Patch((InventoryPage ip)=>ip.draw(null), InventoryPage_draw);
             Patch((InventoryPage ip)=>ip.performHoverAction(0,0), InventoryPage_performHoverAction);
             Patch((InventoryPage ip)=>ip.receiveLeftClick(0,0,false), InventoryPage_receiveLeftClick);
             Patch(()=>new Ring(0), Ring_ctor);
-        }
 
-        protected override void InitializeApi(GenericModConfigMenuAPI api) {
-            api.RegisterClampedOption(ModManifest, "Rings", "How many ring slots are available.", () => config.Rings, (int val) => config.Rings = val, 0, 20);
-        }
-
-        #region API
-        public override object GetApi() {
-            return this;
-        }
-        
-        delegate void RingVisitor(Ring ring);
-        static void ForEachRing(Farmer f, RingVisitor visitor) {
-            if (f == null) throw new ArgumentNullException(nameof(f));
-            if (f.leftRing.Value != null) visitor(f.leftRing.Value);
-            if (f.rightRing.Value != null) visitor(f.rightRing.Value);
-            foreach(Item item in ModEntry.GetRingInventory(f).items) {
-                var ring = item as Ring;
-                if (ring != null) {
-                    if (ring is CombinedRing) {
-                        foreach (var cr in ((CombinedRing)ring).combinedRings) {
-                            visitor(ring);
-                        }
-                    } else {
-                        visitor(ring);
-                    }
-                }
+            if (helper.ModRegistry.IsLoaded("spacechase0.SpaceCore")) {
+                Monitor.Log("Found SpaceCore mod, trying to patch its NewForgeMenu class instead.", LogLevel.Warn);
+                forge_menu_class = AccessTools.TypeByName("SpaceCore.Interface.NewForgeMenu");
             }
-        }
-
-        public int CountEquippedRings(Farmer f, int which) {
-            int res = 0;
-            ForEachRing(f, r => {
-                if (r.GetsEffectOfRing(which)) {
-                    res++;
-                }
-             });
-            return res;
-        }
-
-        public IEnumerable<Ring> GetAllRings(Farmer f) {
-            var res = new List<Ring>();
-            ForEachRing(f, r => res.Add(r));
-            return res;
-        }
-        #endregion API
-        
-        #region JewelryChest
-        static Vector2 getPositionFromId(int id) {
-            return new Vector2(id, -50);
-        }
-        static Chest GetRingInventory_internal(Farmer farmer) {
-            Farm farm = Game1.getFarm();
-            int id = 0;
-            
-            // Check whether the farmer has a chest assigned.
-            if (farmer.modData.ContainsKey(DATA_KEY)) {
-                id = int.Parse(farmer.modData[DATA_KEY]);
-                getInstance().Monitor.Log($"Farmer {farmer.Name} has existing chest {id}.");
-                if (farm.objects.ContainsKey(getPositionFromId(id))) {
-                    var existing_chest = farm.objects[getPositionFromId(id)];
-                    if (existing_chest is Chest) {
-                        existing_chest.modData["Pathoschild.ChestsAnywhere/IsIgnored"] = "true";
-                        // Yes, return it.
-                        return (Chest)existing_chest;
-                    }
-                    getInstance().Monitor.Log("Object is not a chest!", LogLevel.Error);
-                } else {
-                    getInstance().Monitor.Log("Chest went missing!", LogLevel.Error);
-                }
-            }
-            
-            // No, create a new chest.
-            while (farm.objects.ContainsKey(getPositionFromId(id))) id++;
-            Chest new_chest = new Chest(true);
-            farm.objects[getPositionFromId(id)] = new_chest;
-            farmer.modData[DATA_KEY] = id.ToString();
-            getInstance().Monitor.Log($"Farmer {farmer.Name} has new chest {id}.");
-            new_chest.modData["Pathoschild.ChestsAnywhere/IsIgnored"] = "true";
-            return new_chest;
+            Patch(forge_menu_class, "_CreateButtons", ForgeMenu_CreateButtons);
         }
         
-        public static Chest GetRingInventory(Farmer f) {
-            var res = ring_inventory.GetValue(f, GetRingInventory_internal);
-            while (res.items.Count < getInstance().config.Rings - 2) res.items.Add(null);
-            return res;
-        }
-        #endregion JewelryChest
-        
-        #region Events
-        /// <summary>
-        /// Reads the saved extra rings and creates them.
-        /// </summary>
-        void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e) {
-            Migration.Import(Monitor, helper);
+        protected override void InitializeApi(IGenericModConfigMenuApi api) {
+            api.AddNumberOption(
+                mod: ModManifest, 
+                name: () => "Rings", 
+                tooltip: () => "How many ring slots are available.", 
+                getValue: () => config.Rings, 
+                setValue: (int val) => {
+                    config.Rings = val; 
+                    if (container != null) container.Value.limitSize(val);
+                },
+                min: 2, 
+                max: 20
+            );
         }
 
-        /// <summary>
-        /// Attempts to fix save game corruption caused by inappropriate (un)equipping of rings.
-        /// </summary>
-        void HandleActionReset(string arg1, string[] arg2) {
+        public void ResetModifiers() {
             var who = Game1.player;
             Monitor.Log("Resetting modifiers for " + who.Name);
             who.ClearBuffs();
-            ForEachRing(who, (r) => r.onUnequip(who, who.currentLocation));
+
+            who.leftRing.Value?.onUnequip(who, who.currentLocation);
+            who.rightRing.Value?.onUnequip(who, who.currentLocation);
             who.boots.Value?.onUnequip();
+            
             who.MagneticRadius = 128;
             who.knockbackModifier = 0;
             who.weaponPrecisionModifier = 0;
@@ -175,177 +107,47 @@ namespace StardewHack.WearMoreRings
             who.resilience = 0;
             who.addedLuckLevel.Value = 0;
             who.immunity = 0;
+
+            who.leftRing.Value?.onEquip(who, who.currentLocation);
+            who.rightRing.Value?.onEquip(who, who.currentLocation);
             who.boots.Value?.onEquip();
-            ForEachRing(who, (r) => r.onEquip(who, who.currentLocation));
         }
 
-
-        #endregion Events
-
-
-        void Farmer_isWearingRing() {
-            AllCode().Replace(
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.getInstance)),
-                Instructions.Ldarg_0(),
-                Instructions.Ldarg_1(),
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CountEquippedRings), typeof(Farmer), typeof(int)),
-                Instructions.Ret()
-            );
+#region API
+        public override object GetApi(IModInfo info) {
+            Monitor.Log($"Mod {info.Manifest.Name} requested the deprecated Wear More Rings API. Since version 5.0 mods should be compatible with WMR without custom support.", LogLevel.Warn);
+            return this;
+        }
+        
+        public int CountEquippedRings(Farmer f, int which) {
+            int res = 0;
+            foreach (var r in GetAllRings(f)) {
+                if (r.GetsEffectOfRing(which)) {
+                    res++;
+                }
+            }
+            return res;
         }
 
-        void Farmer_GetEffectsOfRingMultiplier() {
-            AllCode().Replace(
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.getInstance)),
-                Instructions.Ldarg_0(),
-                Instructions.Ldarg_1(),
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CountEquippedRings), typeof(Farmer), typeof(int)),
-                Instructions.Ret()
-            );
-        }
-
-
-
-
-        public static void UpdateRings(GameTime time, GameLocation location, Farmer f) {
-            void Update(Ring r) { 
-                if (r != null) r.update(time, location, f); 
-            };
-            Update(f.leftRing.Value);
-            Update(f.rightRing.Value);
-            foreach(Item item in ModEntry.GetRingInventory(f).items) {
-                Update(item as Ring);
+        public IEnumerable<Ring> GetAllRings(Farmer f) {
+            if (f == null) throw new ArgumentNullException(nameof(f));
+            var stack = new Stack<Ring>();
+            stack.Push(f.leftRing.Value);
+            stack.Push(f.rightRing.Value);
+            while (stack.Count > 0) {
+                var ring = stack.Pop();
+                if (ring is CombinedRing) {
+                    foreach (var cr in ((CombinedRing)ring).combinedRings) {
+                        stack.Push(cr);
+                    }
+                } else if (ring != null) {
+                    yield return ring;
+                }
             }
         }
-
-        #region Patch Farmer
-        void Farmer_updateCommon() {
-            FindCode(
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
-                OpCodes.Callvirt,
-                OpCodes.Brfalse,
-                
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
-                OpCodes.Callvirt,
-                OpCodes.Ldarg_1,
-                OpCodes.Ldarg_2,
-                OpCodes.Ldarg_0,
-                OpCodes.Callvirt,
-                
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
-                OpCodes.Callvirt,
-                OpCodes.Brfalse,
-                
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
-                OpCodes.Callvirt,
-                OpCodes.Ldarg_1,
-                OpCodes.Ldarg_2,
-                OpCodes.Ldarg_0,
-                OpCodes.Callvirt
-            ).Replace(
-                Instructions.Ldarg_1(),
-                Instructions.Ldarg_2(),
-                Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), nameof(UpdateRings), typeof (GameTime), typeof(GameLocation), typeof(Farmer))
-            );
-        }
-        #endregion Patch Farmer
-
-        #region Patch GameLocation
-        public static void ring_onLeaveLocation(GameLocation location) {
-            ForEachRing(Game1.player, r => r.onLeaveLocation(Game1.player, location));
-        }
+#endregion API
         
-        void GameLocation_cleanupBeforePlayerExit() { 
-            var code = FindCode(
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
-                OpCodes.Callvirt,
-                OpCodes.Brfalse
-            );
-            code.Extend(
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
-                OpCodes.Callvirt,
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                OpCodes.Ldarg_0,
-                Instructions.Callvirt(typeof(Ring), nameof(Ring.onLeaveLocation), typeof(Farmer), typeof(GameLocation))
-            );
-            code.Replace(
-                Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), nameof(ModEntry.ring_onLeaveLocation), typeof(GameLocation))
-            );
-        }
-        
-        public static void ring_onNewLocation(GameLocation location) {
-            ForEachRing(Game1.player, r => r.onNewLocation(Game1.player, location));
-        }
-        
-        void GameLocation_resetLocalState() { 
-            var code = FindCode(
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
-                OpCodes.Callvirt,
-                OpCodes.Brfalse
-            );
-            code.Extend(
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
-                OpCodes.Callvirt,
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                OpCodes.Ldarg_0,
-                Instructions.Callvirt(typeof(Ring), nameof(Ring.onNewLocation), typeof(Farmer), typeof(GameLocation))
-            );
-            code.Replace(
-                Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), nameof(ring_onNewLocation), typeof(GameLocation))
-            );
-        }
-         
-        public static void ring_onMonsterSlay(Monster target, GameLocation location, Farmer who) {
-            if (who == null) return;
-            ForEachRing(who, r => r.onMonsterSlay(target, location, who));
-        }
-        
-        void GameLocation_damageMonster() {
-            byte arg_who = (byte)(Array.Find(original.GetParameters(), info => info.Name == "who").Position+1);
-
-            var code = FindCode(
-                // if (who != null && who.leftRing.Value != null) {
-                Instructions.Ldarg_S(arg_who), // who
-                OpCodes.Brfalse,
-                Instructions.Ldarg_S(arg_who), // who
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
-                OpCodes.Callvirt,
-                OpCodes.Brfalse
-            );
-            code.Extend(
-                // who.rightRing.Value
-                Instructions.Ldarg_S(arg_who), // who
-                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
-                OpCodes.Callvirt,
-                // .onMonsterSlay (monster, this, who);
-                OpCodes.Ldloc_2, // monster
-                OpCodes.Ldarg_0, // this
-                Instructions.Ldarg_S(arg_who), // who
-                Instructions.Callvirt(typeof(Ring), nameof(Ring.onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
-            );
-            
-            var monster = code.SubRange(code.length - 4, 3);
-            code.Replace(
-                // ModEntry.ring_onMonsterSlay(monster, this, who);
-                monster[0],
-                monster[1],
-                monster[2],
-                Instructions.Call(typeof(ModEntry), nameof(ring_onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
-            );
-        }
-        #endregion Patch GameLocation
-        
-        #region Patch InventoryPage
+#region Patch InventoryPage
         static public void AddIcon(InventoryPage page, string name, int x, int y, int id, int up, int down, int left, int right, Item item) {
             var rect = new Rectangle (
                 page.xPositionOnScreen + 48 + x*4, 
@@ -365,8 +167,6 @@ namespace StardewHack.WearMoreRings
         }
 
         static public void AddEquipmentIcons(InventoryPage page) {
-            Chest chest = GetRingInventory(Game1.player);
-            
             int inv = Game1.player.MaxItems - 12;
             //             name            x   y   id   up   dn   lt   rt, item
             AddIcon(page, "Hat",           0,  0, 102, inv, 103,  -1, 110, Game1.player.hat.Value);
@@ -397,20 +197,8 @@ namespace StardewHack.WearMoreRings
             for (int i=0; i<max_rings; i++) {
                 String name;
                 Ring ring;
-                switch (i) {
-                    case 0:
-                        name = "Left Ring";
-                        ring = Game1.player.leftRing.Value;
-                        break;
-                    case 1:
-                        name = "Right Ring";
-                        ring = Game1.player.rightRing.Value;
-                        break;
-                    default:
-                        name = "Extra Ring " + (i-2);
-                        ring = chest.items[i-2] as Ring;
-                        break;
-                }
+                name = "Ring " + i;
+                ring = container.Value[i];
                 var x = i/4;
                 var y = i%4;
                 AddIcon(page, name, 52+16*x, 16*y, slot_id(x,y), slot_id(x,y-1), slot_id(x,y+1), slot_id(x-1,y), slot_id(x+1,y, 105), ring);
@@ -479,6 +267,21 @@ namespace StardewHack.WearMoreRings
             // Change the equipment slot drawing code to draw the 4 additional slots.
             InstructionRange range;
             try {
+                // Windows
+                range  = FindCode(
+                    // switch (equipmentIcon.name) {
+                    OpCodes.Ldloca_S,
+                    OpCodes.Call,
+                    OpCodes.Stloc_S, // 4
+                    OpCodes.Ldloc_S, // 4
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
+                    OpCodes.Stloc_S, // 5
+                    // case "Hat":
+                    OpCodes.Ldloc_S, // 5
+                    Instructions.Ldstr("Hat")
+                );
+            } catch (Exception err) {
+                LogException(err, LogLevel.Trace);
                 // Linux & MacOS
                 range  = FindCode(
                     // switch (equipmentIcon.name) {
@@ -490,21 +293,6 @@ namespace StardewHack.WearMoreRings
                     OpCodes.Stloc_S, // 5
                     OpCodes.Ldloc_S, // 5
                     OpCodes.Brfalse,
-                    // case "Hat":
-                    OpCodes.Ldloc_S, // 5
-                    Instructions.Ldstr("Hat")
-                );
-            } catch (Exception err) {
-                LogException(err, LogLevel.Trace);
-                // Windows
-                range  = FindCode(
-                    // switch (equipmentIcon.name) {
-                    OpCodes.Ldloca_S,
-                    OpCodes.Call,
-                    OpCodes.Stloc_S, // 4
-                    OpCodes.Ldloc_S, // 4
-                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
-                    OpCodes.Stloc_S, // 5
                     // case "Hat":
                     OpCodes.Ldloc_S, // 5
                     Instructions.Ldstr("Hat")
@@ -533,22 +321,6 @@ namespace StardewHack.WearMoreRings
             var var_item = generator.DeclareLocal(typeof(Item));
             InstructionRange code;
             try {
-                // Linux & MacOS
-                code = FindCode(
-                    // switch (equipmentIcon.name) {
-                    OpCodes.Ldloc_1,
-                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
-                    OpCodes.Stloc_2,
-                    // case null: break;
-                    OpCodes.Ldloc_2,
-                    OpCodes.Brfalse,
-                    // case "Hat":
-                    OpCodes.Ldloc_2,
-                    Instructions.Ldstr("Hat")
-                );
-                code.Extend(code.Follow(4));
-            } catch (Exception err) {
-                LogException(err, LogLevel.Trace);
                 // Windows
                 code = FindCode(
                     // switch (equipmentIcon.name) {
@@ -567,6 +339,22 @@ namespace StardewHack.WearMoreRings
                     OpCodes.Br
                 );
                 code.Extend(code.End.Follow(-1));
+            } catch (Exception err) {
+                LogException(err, LogLevel.Trace);
+                // Linux & MacOS
+                code = FindCode(
+                    // switch (equipmentIcon.name) {
+                    OpCodes.Ldloc_1,
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
+                    OpCodes.Stloc_2,
+                    // case null: break;
+                    OpCodes.Ldloc_2,
+                    OpCodes.Brfalse,
+                    // case "Hat":
+                    OpCodes.Ldloc_2,
+                    Instructions.Ldstr("Hat")
+                );
+                code.Extend(code.Follow(4));
             }
             code.Replace(
                 // var item = EquipmentIcon.item
@@ -637,23 +425,20 @@ namespace StardewHack.WearMoreRings
             }
             
             // Update inventory
-            Chest chest = GetRingInventory(Game1.player);
             switch (icon.name) {
-            case "Hat":          Game1.player.hat.Set (helditem as Hat);            break;
-            case "Shirt":        Game1.player.shirtItem.Set (helditem as Clothing); break;
-            case "Pants":        Game1.player.pantsItem.Set (helditem as Clothing); break;
-            case "Boots":        Game1.player.boots.Set (helditem as Boots);        break;
-            case "Left Ring":    Game1.player.leftRing.Set (helditem as Ring);      break;
-            case "Right Ring":   Game1.player.rightRing.Set (helditem as Ring);     break;
-            default:
-                if (icon.name.StartsWith("Extra Ring ", StringComparison.Ordinal)) {
-                    int id = int.Parse(icon.name.Substring(11));
-                    chest.items[id] = helditem;
-                } else {
-                    getInstance().Monitor.Log ($"ERROR: Trying to fit equipment item into invalid slot '{icon.name}'", LogLevel.Error);
-                    return false;
-                }
-                break;
+                case "Hat":          Game1.player.hat.Set (helditem as Hat);            break;
+                case "Shirt":        Game1.player.shirtItem.Set (helditem as Clothing); break;
+                case "Pants":        Game1.player.pantsItem.Set (helditem as Clothing); break;
+                case "Boots":        Game1.player.boots.Set (helditem as Boots);        break;
+                default:
+                    if (icon.name.StartsWith("Ring ", StringComparison.Ordinal)) {
+                        int id = int.Parse(icon.name.Substring(5));
+                        container.Value[id] = helditem as Ring;
+                    } else {
+                        getInstance().Monitor.Log ($"ERROR: Trying to fit equipment item into invalid slot '{icon.name}'", LogLevel.Error);
+                        return false;
+                    }
+                    break;
             }
 
             // Equip/unequip
@@ -682,22 +467,6 @@ namespace StardewHack.WearMoreRings
             // Handle a ring-inventory slot being clicked.
             InstructionRange code;
             try {
-                // Linux & MacOS
-                code = FindCode(
-                    // switch (equipmentIcon.name) {
-                    OpCodes.Ldloc_1,
-                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
-                    OpCodes.Stloc_3,
-                    // case null: break;
-                    OpCodes.Ldloc_3,
-                    OpCodes.Brfalse,
-                    // case "Hat":
-                    OpCodes.Ldloc_3,
-                    Instructions.Ldstr("Hat")
-                );
-                code.Extend(code.Follow(4));
-            } catch (Exception err) {
-                LogException(err, LogLevel.Trace);
                 // Windows
                 code = FindCode(
                     // switch (equipmentIcon.name) {
@@ -716,6 +485,22 @@ namespace StardewHack.WearMoreRings
                     OpCodes.Br
                 );
                 code.Extend(code.End.Follow(-1));
+            } catch (Exception err) {
+                LogException(err, LogLevel.Trace);
+                // Linux & MacOS
+                code = FindCode(
+                    // switch (equipmentIcon.name) {
+                    OpCodes.Ldloc_1,
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
+                    OpCodes.Stloc_3,
+                    // case null: break;
+                    OpCodes.Ldloc_3,
+                    OpCodes.Brfalse,
+                    // case "Hat":
+                    OpCodes.Ldloc_3,
+                    Instructions.Ldstr("Hat")
+                );
+                code.Extend(code.Follow(4));
             }
             code.Replace(
                 code[0],
@@ -764,8 +549,30 @@ namespace StardewHack.WearMoreRings
             );
         }
         #endregion Patch InventoryPage
-        
-        #region Patch Ring
+
+#region Patch ForgeMenu
+        void ForgeMenu_CreateButtons() {
+            // Remove vanilla ring buttons.
+            var code = FindCode(
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(forge_menu_class, nameof(ForgeMenu.equipmentIcons))
+            );
+            code.Extend(
+                Instructions.Ldstr("Ring2")
+            );
+            code.Extend(
+                OpCodes.Dup,
+                Instructions.Ldc_I4(-99998),
+                OpCodes.Stfld,
+                Instructions.Callvirt(typeof(List<ClickableComponent>), nameof(List<ClickableComponent>.Add), typeof(ClickableComponent))
+            );
+            code.Replace(Instructions.Ret());
+        }
+#endregion
+
+#region Patch Ring
+        // Not sure how my mod uses this, but the code in the Ring constructor that generates a UniqueID seems seriously flawed.
+        // It has a reasonably high probability of creating duplicates. So this patch replaces it with a number from a randomly seeded PRNG.
         void Ring_ctor() {
             var code = FindCode(
                 OpCodes.Ldarg_0,
@@ -787,7 +594,7 @@ namespace StardewHack.WearMoreRings
                 Instructions.Call(typeof(Random), nameof(Random.Next))
             );
         }
-        #endregion Patch Ring
+#endregion Patch Ring
     }
 }
 

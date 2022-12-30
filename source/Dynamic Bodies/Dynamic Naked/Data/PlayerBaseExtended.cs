@@ -70,6 +70,7 @@ namespace DynamicBodies.Data
 
             paletteCache = GetBasePalette();
             paletteCache[3] = Color.Transparent.ToVector4();
+            paletteCache[16] = FarmerRendererPatched.changeBrightness(who.pantsColor.Value, new Color(50, 50, 50), false).ToVector4();
 
             body = new BodyPartStyle("body");
 
@@ -571,7 +572,7 @@ namespace DynamicBodies.Data
                 if (texture != null)
                 {
                     //recalculate the skin colours on the overlay
-                    nakedUpper.texture = ApplyPaletteColors(texture);
+                    nakedUpper.texture = ApplyPaletteColors(ApplyTwoColors(texture, new Color(paletteCache[0]), new Color(paletteCache[16])));
                 }
             }
             if (nakedUpper.option == "Default")
@@ -591,16 +592,19 @@ namespace DynamicBodies.Data
             if (nakedLower.texture == null && nakedLower.option != "Default")
             {
                 Texture2D texture = nakedLower.provider.ModContent.Load<Texture2D>($"assets\\nakedLower\\{nakedLower.file}.png");
-                
-                if (nakedLower.CheckForOption("no skin"))
+
+                if (texture != null)
                 {
-                    //Don't calculate new colours, it doesn't have them
-                    nakedLower.texture = texture;
-                }
-                else
-                {
-                    //recalculate the skin colours on the overlay
-                    nakedLower.texture = ApplyPaletteColors(texture);
+                    if (nakedLower.CheckForOption("no skin"))
+                    {
+                        //Don't calculate skin colours, it doesn't have them
+                        nakedLower.texture = ApplyTwoColors(texture, new Color(paletteCache[0]), new Color(paletteCache[16]));
+                    }
+                    else
+                    {
+                        //recalculate the skin colours on the overlay
+                        nakedLower.texture = ApplyPaletteColors(ApplyTwoColors(texture, new Color(paletteCache[0]), new Color(paletteCache[16])));
+                    }
                 }
             }
             if (nakedLower.option == "Default")
@@ -644,7 +648,7 @@ namespace DynamicBodies.Data
             return trinkets[i].texture;
         }
 
-        private static Texture2D ApplyPaletteColors(Texture2D source_texture)
+        public static Texture2D ApplyPaletteColors(Texture2D source_texture)
         {
             Texture2D texture = null;
             //Need to render a new texture

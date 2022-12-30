@@ -21,11 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 296320ada7f66f29bd965dddbbe97a53dbd58fa7
+   commit b12b8f530dee6b035ad6c6df68d9a2361b66f546
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Nov 18 23:20:30 2022 -0500
+   Date:   Thu Dec 22 22:12:34 2022 -0500
    
-       add Portuguese translations for Fast Animations
-       
-       Thanks to RayBatista on Nexus!
+       improve error-handling for MoveEntries
    

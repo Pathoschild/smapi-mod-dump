@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using HarmonyLib;
 
 using StardewModdingAPI;
+using StardewValley;
 
 namespace Leclair.Stardew.ThemeManager.Patches;
 

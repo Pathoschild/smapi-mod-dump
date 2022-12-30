@@ -11,6 +11,9 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AdvancedMultipleMutexRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\ConsoleCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\EventExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\NameValueCollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GlobalUsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\StackQuality\IStackQualityApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\StackQuality\SQIntegration.cs" />

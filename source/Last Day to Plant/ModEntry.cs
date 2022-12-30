@@ -10,6 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -19,80 +25,30 @@ namespace LastDayToPlant
 {
     public class ModEntry : Mod
     {
-        private List<Crop> SpringCrops;
-        private List<Crop> SummerCrops;
-        private List<Crop> FallCrops;
-        private List<Crop> WinterCrops;
-
         private const int DaysInAMonth = 28;
         private IModHelper MyHelper;
         private ModConfig MyConfig;
+        private readonly List<Crop> AllCrops = new List<Crop>();
+        internal static IMonitor InternalMonitor;
 
         public override void Entry(IModHelper helper)
         {
             MyHelper = helper;
             MyConfig = MyHelper.ReadConfig<ModConfig>();
+            InternalMonitor = this.Monitor;
 
-            if (MyConfig.IncludeBaseGameCrops)
+            LoadBaseGameCrops();
+            LoadModCrops();
+
+            // Localize the messages
+            foreach(var crop in AllCrops)
             {
-                SpringCrops = SetSpringCrops();
-                SummerCrops = SetSummerCrops();
-                FallCrops = SetFallCrops();
-                WinterCrops = new List<Crop>();
-            }
-            else
-            {
-                SpringCrops = new List<Crop>();
-                SummerCrops = new List<Crop>();
-                FallCrops = new List<Crop>();
-                WinterCrops = new List<Crop>();
-            }
-
-            List<ModCompat> modsToShow = new List<ModCompat>();
-
-            // Load Mods
-            if(MyConfig.PPJAFruitsAndVeggiesPath != "")
-            {
-                this.Monitor.Log("Loading [PPJA] Fruits and Veggies", LogLevel.Info);
-                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Fruits and Veggies", MyConfig.PPJAFruitsAndVeggiesPath + @"\[JA] Fruits and Veggies\Crops\");
-                modsToShow.Add(ppjaFruitsAndVeggies);
-            }
-
-            if (MyConfig.PPJAFantasyCropsPath != "")
-            {
-                this.Monitor.Log("Loading [PPJA] Fantasy Crops", LogLevel.Info);
-                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Fantasy Crops", MyConfig.PPJAFantasyCropsPath + @"\[JA] Fantasy Crops\Crops\");
-                modsToShow.Add(ppjaFruitsAndVeggies);
-            }
-
-            if (MyConfig.PPJAAncientCropsPath != "")
-            {
-                this.Monitor.Log("Loading [PPJA] Ancient Crops", LogLevel.Info);
-                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Ancient Crops", MyConfig.PPJAAncientCropsPath + @"\[JA] Ancient Crops\Crops\");
-                modsToShow.Add(ppjaFruitsAndVeggies);
-            }
-
-            if (MyConfig.PPJACannabisKitPath != "")
-            {
-                this.Monitor.Log("Loading [PPJA] Cannabis Kit", LogLevel.Info);
-                ModCompat ppjaFruitsAndVeggies = new ModCompat("[PPJA] Cannabis Kit", MyConfig.PPJACannabisKitPath + @"\[JA] Cannabis Kit\Crops\");
-                modsToShow.Add(ppjaFruitsAndVeggies);
-            }
-
-            if (MyConfig.BonstersFruitAndVeggiesPath != "")
-            {
-                this.Monitor.Log("Loading Bonster's Fruit & Veggies", LogLevel.Info);
-                ModCompat ppjaFruitsAndVeggies = new ModCompat("Bonster's Fruit & Veggies", MyConfig.BonstersFruitAndVeggiesPath + @"\Crops\");
-                modsToShow.Add(ppjaFruitsAndVeggies);
-            }
-
-            foreach (ModCompat mod in modsToShow)
-            {
-                ModCompatResult result = mod.LoadCrops(SpringCrops, SummerCrops, FallCrops, WinterCrops, MyHelper);
-
-                if (result == ModCompatResult.Success) { continue; }
-
-                this.Monitor.Log($"Unable to load {mod.Name}. Error Code: {result}", LogLevel.Error);
+                var baseName = crop.Name;
+                crop.Name = helper.Translation.Get($"crop.{baseName}");
+                crop.Message = helper.Translation.Get("notification.crop.no-fertilizer", new { cropName = crop.Name });
+                crop.MessageSpeedGro = helper.Translation.Get("notification.crop.speed-gro", new { cropName = crop.Name });
+                crop.MessageDelxueSpeedGro = helper.Translation.Get("notification.crop.deluxe-speed-gro", new { cropName = crop.Name });
+                crop.MessageHyperSpeedGro = helper.Translation.Get("notification.crop.hyper-speed-gro", new { cropName = crop.Name });
             }
 
             MyHelper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
@@ -112,67 +68,106 @@ namespace LastDayToPlant
                 }
             }
 
-            // Load the Base Crops
+            // Show any crops that can't be planted after today and still be harvested
             var currentDay = SDate.From(Game1.Date).Day;
+            var currentYear = SDate.From(Game1.Date).Year;
             var currentSeason = SDate.From(Game1.Date).Season;
-
             switch (currentSeason)
             {
                 case "spring":
-                    ShowCrops(SpringCrops, currentDay);
+                    ShowCrops(Season.spring, currentDay, currentYear);
                     break;
                 case "summer":
-                    ShowCrops(SummerCrops, currentDay);
+                    ShowCrops(Season.summer, currentDay, currentYear);
                     break;
                 case "fall":
-                    ShowCrops(FallCrops, currentDay);
+                    ShowCrops(Season.fall, currentDay, currentYear);
                     break;
                 case "winter":
-                    ShowCrops(WinterCrops, currentDay);
+                    ShowCrops(Season.winter, currentDay, currentYear);
                     break;
                 default:
                     return;
             }
         }
 
-        private void ShowCrops(List<Crop> cropList, int day)
+        private void LoadBaseGameCrops()
         {
-            foreach (Crop crop in cropList)
-            {                
-                if (MyConfig.ShowBaseCrops)
-                {
-                    var DaysToMatureBoosted = ActualGrowRate(crop, Fertilizer.None);
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("LastDayToPlant.BaseGameCrops.Crops.json"))
+            using (var reader = new StreamReader(stream))
+            {
+                var json = JArray.Parse(reader.ReadToEnd());
+                var list = json.ToObject<List<Crop>>();
+                AllCrops.AddRange(list);
+            }
+        }
 
-                    if (DaysToMatureBoosted + day == DaysInAMonth)
-                    {
-                        Game1.addHUDMessage(new HUDMessage(crop.Message, HUDMessage.newQuest_type));
-                    }
+        private void LoadModCrops()
+        {
+            var modsPath = Path.Combine(Constants.ExecutionPath, "Mods");
+            var modsPathExists = Directory.Exists(modsPath);
+
+            if (modsPathExists)
+            {
+                FindAndLoadCrops(modsPath);
+            }
+        }
+
+        private void FindAndLoadCrops(string path)
+        {
+            var files = Directory.GetFiles(path, "crop.json", SearchOption.AllDirectories);
+            foreach(var file in files)
+            {
+                var info = new FileInfo(file);
+                if(info.Name == "crop.json")
+                {
+                    AllCrops.Add(Crop.FromModFile(file));
+                }
+            }
+        }
+
+        private void ShowCrops(Season season, int day, int year)
+        {
+            // Some crops are only available in Year 2. We don't want to show them in Year 1
+            var filtered = AllCrops.Where(x => x.IsLastGrowSeason(season) && year >= x.AvailableYear);
+            if(MyConfig.ShowGingerIslandCrops == false)
+            {
+                filtered = filtered.Where(x => x.GingerIsland == false);
+            }
+
+            foreach (var crop in filtered)
+            {
+                // No Fertilizer
+                var daysToMatureBoosted = CalculateActualGrowRate(crop, Fertilizer.None);
+                if (daysToMatureBoosted + day == DaysInAMonth)
+                {
+                    Game1.addHUDMessage(new HUDMessage(crop.Message, HUDMessage.newQuest_type));
                 }
 
+                // SpeedGro
                 if (MyConfig.ShowSpeedGro)
                 {
-                    var DaysToMatureBoosted = ActualGrowRate(crop, Fertilizer.SpeedGro);
-
+                    var DaysToMatureBoosted = CalculateActualGrowRate(crop, Fertilizer.SpeedGro);
                     if (DaysToMatureBoosted + day == DaysInAMonth)
                     {
                         Game1.addHUDMessage(new HUDMessage(crop.MessageSpeedGro, HUDMessage.newQuest_type));
                     }
                 }
 
+                // Deluxe SpeedGro
                 if (MyConfig.ShowDeluxeSpeedGro)
                 {
-                    var DaysToMatureBoosted = ActualGrowRate(crop, Fertilizer.DeluxeSpeedGro);
-
+                    var DaysToMatureBoosted = CalculateActualGrowRate(crop, Fertilizer.DeluxeSpeedGro);
                     if (DaysToMatureBoosted + day == DaysInAMonth)
                     {
                         Game1.addHUDMessage(new HUDMessage(crop.MessageDelxueSpeedGro, HUDMessage.newQuest_type));
                     }
                 }
 
+                // Hyper SppedGro
                 if (MyConfig.ShowHyperSpeedGro)
                 {
-                    var DaysToMatureBoosted = ActualGrowRate(crop, Fertilizer.HyperSpeedGro);
-
+                    var DaysToMatureBoosted = CalculateActualGrowRate(crop, Fertilizer.HyperSpeedGro);
                     if (DaysToMatureBoosted + day == DaysInAMonth)
                     {
                         Game1.addHUDMessage(new HUDMessage(crop.MessageHyperSpeedGro, HUDMessage.newQuest_type));
@@ -181,79 +176,25 @@ namespace LastDayToPlant
             }
         }
 
-        private int ActualGrowRate(Crop crop, double fertilizerFactor)
+        private int CalculateActualGrowRate(Crop crop, double factor)
         {
-            double actualDaysToMature = crop.DaysToMature - crop.DaysToMature * fertilizerFactor;
-
             if (FarmingSkills.IsAgriculturist)
             {
-                actualDaysToMature = crop.DaysToMature - crop.DaysToMature * (fertilizerFactor + FarmingSkills.AgriculturistGrowthRate);
-                return (int)actualDaysToMature;
+                return (int)(crop.DaysToMature - (crop.DaysToMature * (factor + FarmingSkills.AgriculturistGrowthRate)));
             }
-            return (int)actualDaysToMature;
-        }
 
-        private List<Crop> SetSpringCrops()
-        {
-            var retval = new List<Crop>()
-            {
-                Crop.GetLocalizedCrop("spring","Blue Jazz",4, MyHelper),
-                Crop.GetLocalizedCrop("spring","Cauliflower",12,MyHelper),
-                Crop.GetLocalizedCrop("spring","Garlic",4,MyHelper),
-                Crop.GetLocalizedCrop("spring","Green Bean",10,MyHelper),
-                Crop.GetLocalizedCrop("spring","Kale",6,MyHelper),
-                Crop.GetLocalizedCrop("spring","Parsnip",4,MyHelper),
-                Crop.GetLocalizedCrop("spring","Potato",6,MyHelper),
-                Crop.GetLocalizedCrop("spring","Rhubarb",13,MyHelper),
-                Crop.GetLocalizedCrop("spring","Strawberry",8,MyHelper),
-                Crop.GetLocalizedCrop("spring","Tulip",6,MyHelper),
-                Crop.GetLocalizedCrop("spring","Rice",8,MyHelper)
-            };
-
-            return retval;
-        }
-
-        private List<Crop> SetSummerCrops()
-        {
-            var retval = new List<Crop>()
-            {
-                Crop.GetLocalizedCrop("summer","Blueberry",13, MyHelper),
-                Crop.GetLocalizedCrop("summer","Hops",11,MyHelper),
-                Crop.GetLocalizedCrop("summer","Hot Pepper",5,MyHelper),
-                Crop.GetLocalizedCrop("summer","Coffee Bean",10,MyHelper),
-                Crop.GetLocalizedCrop("summer","Melon",12,MyHelper),
-                Crop.GetLocalizedCrop("summer","Poppy",7,MyHelper),
-                Crop.GetLocalizedCrop("summer","Radish",6,MyHelper),
-                Crop.GetLocalizedCrop("summer","Red Cabbage",9,MyHelper),
-                Crop.GetLocalizedCrop("summer","Starfruit",13,MyHelper),
-                Crop.GetLocalizedCrop("summer","Summer Spangle",8,MyHelper),
-                Crop.GetLocalizedCrop("summer","Tomato",11,MyHelper)
-            };
-
-            return retval;
-        }
-
-        private List<Crop> SetFallCrops()
-        {
-            var retval = new List<Crop>()
-            {
-                Crop.GetLocalizedCrop("fall","Wheat",4, MyHelper),
-                Crop.GetLocalizedCrop("fall","Corn",14,MyHelper),
-                Crop.GetLocalizedCrop("fall","Amaranth",7,MyHelper),
-                Crop.GetLocalizedCrop("fall","Artichoke",8,MyHelper),
-                Crop.GetLocalizedCrop("fall","Beet",6,MyHelper),
-                Crop.GetLocalizedCrop("fall","Bok Choy",4,MyHelper),
-                Crop.GetLocalizedCrop("fall","Cranberries",7,MyHelper),
-                Crop.GetLocalizedCrop("fall","Eggplant",5,MyHelper),
-                Crop.GetLocalizedCrop("fall","Sunflower",8,MyHelper),
-                Crop.GetLocalizedCrop("fall","Fairy Rose",12,MyHelper),
-                Crop.GetLocalizedCrop("fall","Grape",10,MyHelper),
-                Crop.GetLocalizedCrop("fall","Pumpkin",13,MyHelper),
-                Crop.GetLocalizedCrop("fall","Yam",10,MyHelper),
-                Crop.GetLocalizedCrop("fall","Ancient Fruit",28,MyHelper)
-            };
-
-            return retval;
+            return (int)(crop.DaysToMature - (crop.DaysToMature * factor));
         }
     }
+
+    public enum Season
+    {
+        spring,
+        summer,
+        fall,
+        winter
+    }
 }
+/*
+ 
+ */

@@ -8,13 +8,14 @@
 **
 *************************************************/
 
+using AeroCore;
+using AeroCore.API;
+using AeroCore.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Network;
-using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -22,60 +23,51 @@ using WarpNetwork.models;
 
 namespace WarpNetwork
 {
+    [ModInit]
     class ItemHandler
     {
         private static readonly PerScreen<WarpItem> currentTotem = new();
         private static readonly PerScreen<string> currentID = new();
-        public static void ButtonPressed(object sender, ButtonPressedEventArgs action)
+        internal static void Init()
         {
-            if (action.IsSuppressed())
-            {
+            ModEntry.AeroAPI.UseItemEvent += TryUseTotem;
+            ModEntry.AeroAPI.UseObjectEvent += ActivateObject;
+        }
+        internal static void TryUseTotem(IUseItemEventArgs ev)
+        {
+            if (ev.IsHandled || !ev.NormalGameplay)
                 return;
-            }
-            Farmer who = Game1.player;
-            if (action.Button.IsActionButton())
-            {
-                if (CanUseHere(who))
-                {
-                    if (who.ActiveObject is not Furniture and not null)
-                    {
-                        if (!who.canMove || who.ActiveObject.isTemporarilyInvisible)
-                        {
-                            return;
-                        }
-                        string id = null;
-                        if (ModEntry.dgaAPI != null)
-                        {
-                            id = ModEntry.dgaAPI.GetDGAItemId(who.ActiveObject);
 
-                        }
-                        if (id == null)
-                        {
-                            id = who.ActiveObject.ParentSheetIndex.ToString();
-                        }
-                        if (UseItem(who, id))
-                        {
-                            ModEntry.helper.Input.Suppress(action.Button);
-                        }
-                    }
-                }
-            }
-            else if (action.Button.IsUseToolButton() && who.CurrentTool is Wand && ModEntry.config.AccessFromWand && ModEntry.config.MenuEnabled)
+            if (ev.IsTool)
             {
-                if (CanUseHere(who) && who.CanMove)
+                if (ev.Item is Wand)
                 {
+                    ev.ConsumeItem = false;
+                    ev.IsHandled = true;
                     WarpHandler.ShowWarpMenu("_wand");
-                    ModEntry.helper.Input.Suppress(action.Button);
                 }
+            } else if (UseItem(Game1.player, ev.ItemStringID))
+            {
+                ev.ConsumeItem = false; //manage it manually if its a totem
+                ev.IsHandled = true;
             }
+        }
+        internal static void ActivateObject(IUseObjectEventArgs ev)
+        {
+            if (ev.IsHandled || ev.IsChecking || !Utils.GetWarpObjects().TryGetValue(ev.ObjectStringID, out var data))
+                return;
+
+            ev.IsHandled = true;
+            Color color = data.Color.TryParseColor(out var c) ? c : Color.White;
+            DoTotemWarpEffects(color, ev.ObjectStringID, false, ev.Who, (f) => WarpHandler.DirectWarp(data.Destination, data.IgnoreDisabled), true);
         }
         private static bool UseItem(Farmer who, string id)
         {
             Dictionary<string, WarpItem> items = Utils.GetWarpItems();
-            if (items.ContainsKey(id))
+            var aid = id.StartsWith("(O)") ? id[3..] : id;
+            if (items.TryGetValue(id, out var item) || items.TryGetValue(aid, out item))
             {
-                WarpItem item = items[id];
-                if (item.Destination.ToLower() == "_all")
+                if (item.Destination.Equals("_all", StringComparison.OrdinalIgnoreCase))
                     WarpHandler.ShowWarpMenu("", item.Consume);
                 else if (ModEntry.config.WarpCancelEnabled)
                     RequestUseItem(item, id);
@@ -89,7 +81,7 @@ namespace WarpNetwork
         {
             currentTotem.Value = item;
             currentID.Value = id;
-            if (item.Destination.ToLowerInvariant() == "_return")
+            if (item.Destination.Equals("_return", StringComparison.OrdinalIgnoreCase))
                 if (WarpHandler.wandLocation.Value is not null)
                     Game1.currentLocation.createQuestionDialogue(ModEntry.i18n.Get("ui-usereturn"), Game1.currentLocation.createYesNoResponses(), AnswerRequest);
                 else
@@ -101,38 +93,20 @@ namespace WarpNetwork
         }
         private static void AnswerRequest(Farmer who, string key)
         {
-            if (key=="Yes")
+            if (key == "Yes")
                 ConfirmUseItem(currentTotem.Value, who, currentID.Value);
             currentTotem.Value = null;
             currentID.Value = null;
         }
         private static void ConfirmUseItem(WarpItem item, Farmer who, string id)
         {
-            Color color = Utils.ParseColor(item.Color);
+            Color color = item.Color.TryParseColor(out var c) ? c : Color.White;
             DoTotemWarpEffects(color, id, item.Consume, who, (f) => WarpHandler.DirectWarp(item.Destination, item.IgnoreDisabled));
         }
-        private static bool CanUseHere(Farmer who)
-        {
-            return (
-                    !who.UsingTool &&
-                    !Game1.pickingTool &&
-                    Game1.activeClickableMenu is null &&
-                    !Game1.eventUp &&
-                    !Game1.isFestival() &&
-                    !Game1.nameSelectUp &&
-                    Game1.numberOfSelectedItems == -1 &&
-                    !Game1.fadeToBlack &&
-                    !who.swimming.Value &&
-                    !who.bathingClothes.Value &&
-                    !who.onBridge.Value
-                    );
-        }
-        private static void DoTotemWarpEffects(Color color, string id, bool Consume, Farmer who, Func<Farmer, bool> action)
+        private static void DoTotemWarpEffects(Color color, string id, bool Consume, Farmer who, Func<Farmer, bool> action, bool isCraftable = false)
         {
             if (!int.TryParse(id, out int index))
-            {
                 index = Utils.GetDeterministicHashCode(id);
-            }
             who.jitterStrength = 1f;
             who.currentLocation.playSound("warrior", NetAudio.SoundContext.Default);
             who.faceDirection(2);
@@ -146,9 +120,8 @@ namespace WarpNetwork
                 new FarmerSprite.AnimationFrame( (short) who.FarmerSprite.CurrentFrame, 0, false, false, new AnimatedSprite.endOfAnimationBehavior((f) => {
                     if (action(f))
                     {
-                        if(Consume){
+                        if(Consume)
                             who.reduceActiveItemByOne();
-                        }
                     } else
                     {
                         who.temporarilyInvincible = false;
@@ -156,53 +129,56 @@ namespace WarpNetwork
                     }
                 }), true)
             }, null);
-            // reflection
-            Multiplayer mp = ModEntry.helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-            // --
-            mp.broadcastSprites(who.currentLocation,
-            new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(0.0f, -96f), false, false, false, 0.0f)
+            if (!isCraftable) // no support for bigcraftables until 1.6. otherwise you'll get random sprites
             {
-                motion = new Vector2(0.0f, -1f),
-                scaleChange = 0.01f,
-                alpha = 1f,
-                alphaFade = 0.0075f,
-                shakeIntensity = 1f,
-                initialPosition = who.Position + new Vector2(0.0f, -96f),
-                xPeriodic = true,
-                xPeriodicLoopTime = 1000f,
-                xPeriodicRange = 4f,
-                layerDepth = 1f
-            },
-            new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(-64f, -96f), false, false, false, 0.0f)
-            {
-                motion = new Vector2(0.0f, -0.5f),
-                scaleChange = 0.005f,
-                scale = 0.5f,
-                alpha = 1f,
-                alphaFade = 0.0075f,
-                shakeIntensity = 1f,
-                delayBeforeAnimationStart = 10,
-                initialPosition = who.Position + new Vector2(-64f, -96f),
-                xPeriodic = true,
-                xPeriodicLoopTime = 1000f,
-                xPeriodicRange = 4f,
-                layerDepth = 0.9999f
-            },
-            new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(64f, -96f), false, false, false, 0.0f)
-            {
-                motion = new Vector2(0.0f, -0.5f),
-                scaleChange = 0.005f,
-                scale = 0.5f,
-                alpha = 1f,
-                alphaFade = 0.0075f,
-                delayBeforeAnimationStart = 20,
-                shakeIntensity = 1f,
-                initialPosition = who.Position + new Vector2(64f, -96f),
-                xPeriodic = true,
-                xPeriodicLoopTime = 1000f,
-                xPeriodicRange = 4f,
-                layerDepth = 0.9988f
-            });
+                // reflection
+                Multiplayer mp = ModEntry.helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+                // --
+                mp.broadcastSprites(who.currentLocation,
+                new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(0.0f, -96f), false, false, false, 0.0f)
+                {
+                    motion = new Vector2(0.0f, -1f),
+                    scaleChange = 0.01f,
+                    alpha = 1f,
+                    alphaFade = 0.0075f,
+                    shakeIntensity = 1f,
+                    initialPosition = who.Position + new Vector2(0.0f, -96f),
+                    xPeriodic = true,
+                    xPeriodicLoopTime = 1000f,
+                    xPeriodicRange = 4f,
+                    layerDepth = 1f
+                },
+                new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(-64f, -96f), false, false, false, 0.0f)
+                {
+                    motion = new Vector2(0.0f, -0.5f),
+                    scaleChange = 0.005f,
+                    scale = 0.5f,
+                    alpha = 1f,
+                    alphaFade = 0.0075f,
+                    shakeIntensity = 1f,
+                    delayBeforeAnimationStart = 10,
+                    initialPosition = who.Position + new Vector2(-64f, -96f),
+                    xPeriodic = true,
+                    xPeriodicLoopTime = 1000f,
+                    xPeriodicRange = 4f,
+                    layerDepth = 0.9999f
+                },
+                new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(64f, -96f), false, false, false, 0.0f)
+                {
+                    motion = new Vector2(0.0f, -0.5f),
+                    scaleChange = 0.005f,
+                    scale = 0.5f,
+                    alpha = 1f,
+                    alphaFade = 0.0075f,
+                    delayBeforeAnimationStart = 20,
+                    shakeIntensity = 1f,
+                    initialPosition = who.Position + new Vector2(64f, -96f),
+                    xPeriodic = true,
+                    xPeriodicLoopTime = 1000f,
+                    xPeriodicRange = 4f,
+                    layerDepth = 0.9988f
+                });
+            }
             Game1.screenGlowOnce(color, false, 0.005f, 0.3f);
             Utility.addSprinklesToLocation(who.currentLocation, who.getTileX(), who.getTileY(), 16, 16, 1300, 20, Color.White, null, true);
         }

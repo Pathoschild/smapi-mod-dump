@@ -1,0 +1,25 @@
+{
+  "EnableMod": true,
+  "ModButton": "LeftAlt",
+  "CycleButton": "X",
+  "RemoveButton": "Z",
+  "ShowNumber": true,
+  "NumberColor": {
+    "B": 203,
+    "G": 192,
+    "R": 255,
+    "A": 255
+  },
+  "SwitchForObjects": true,
+  "SwitchForTrees": true,
+  "SwitchForResourceClumps": true,
+  "SwitchForGrass": true,
+  "SwitchForCrops": true,
+  "SwitchForPan": true,
+  "SwitchForWateringCan": true,
+  "SwitchForFishing": true,
+  "SwitchForWatering": true,
+  "SwitchForTilling": true,
+  "SwitchForAnimals": true,
+  "SwitchForMonsters": true
+}

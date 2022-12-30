@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14767
+IDs: aedenthorn.SoundTweaker
+update keys: Nexus:14767, GitHub:aedenthorn/StardewValleyMods

@@ -11,16 +11,14 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using Newtonsoft.Json;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Objects;
+using StardewValley.BellsAndWhistles;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using xTile.Dimensions;
+using xTile.ObjectModel;
+using xTile.Tiles;
 using Object = StardewValley.Object;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
@@ -61,8 +59,42 @@ namespace Restauranteer
                 }
                 Vector2 emotePosition = __instance.getLocalPosition(Game1.viewport);
                 emotePosition.Y -= 32 + __instance.Sprite.SpriteHeight * 4;
-                b.Draw(emoteSprite, emotePosition, new Rectangle?(new Rectangle(emoteIndex * 16 % Game1.emoteSpriteSheet.Width, emoteIndex * 16 / emoteSprite.Width * 16, 16, 16)), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, __instance.getStandingY() / 10000f);
-                b.Draw(Game1.objectSpriteSheet, emotePosition + new Vector2(16, 8), GameLocation.getSourceRectForObject(orderData.dish), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, (__instance.getStandingY() + 1) / 10000f);
+                if (SHelper.Input.IsDown(Config.ModKey))
+                {
+                    SpriteText.drawStringWithScrollCenteredAt(b, orderData.dishName, (int)emotePosition.X + 32, (int)emotePosition.Y, "", 1, -1, 1);
+                }
+                else
+                {
+                    b.Draw(emoteSprite, emotePosition, new Rectangle?(new Rectangle(emoteIndex * 16 % Game1.emoteSpriteSheet.Width, emoteIndex * 16 / emoteSprite.Width * 16, 16, 16)), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, __instance.getStandingY() / 10000f);
+                    b.Draw(Game1.objectSpriteSheet, emotePosition + new Vector2(16, 8), GameLocation.getSourceRectForObject(orderData.dish), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, (__instance.getStandingY() + 1) / 10000f);
+                }
+
+            }
+        }
+        [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.checkAction))]
+        public class GameLocation_checkAction_Patch
+        {
+            public static bool Prefix(GameLocation __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
+            {
+                if (!Config.ModEnabled || !Config.RestaurantLocations.Contains(__instance.Name))
+                    return true;
+                Tile tile = __instance.map.GetLayer("Buildings").PickTile(new Location(tileLocation.X * 64, tileLocation.Y * 64), viewport.Size);
+                if (tile != null && tile.Properties.TryGetValue("Action", out PropertyValue property) && property == "DropBox GusFridge")
+                {
+                    if(__instance.performAction(property, who, tileLocation))
+                    {
+
+                        __result = true;
+                        return false;
+                    }
+                    else if (Config.RequireEvent && !Game1.player.eventsSeen.Contains(980558))
+                    {
+                        Game1.drawObjectDialogue(SHelper.Translation.Get("low-friendship"));
+                        __result = true;
+                        return false;
+                    }
+                }
+                return true;
             }
         }
         [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.performAction))]
@@ -70,7 +102,7 @@ namespace Restauranteer
         {
             public static bool Prefix(GameLocation __instance, string action, Farmer who, Location tileLocation, ref bool __result)
             {
-                if (!Config.ModEnabled || !Config.RestaurantLocations.Contains(__instance.Name) || action != "kitchen" )
+                if (!Config.ModEnabled || !Config.RestaurantLocations.Contains(__instance.Name) || (action != "kitchen" && action != "restaurant"))
                     return true;
                 if (Config.RequireEvent && !Game1.player.eventsSeen.Contains(980558))
                 {
@@ -79,49 +111,7 @@ namespace Restauranteer
                     return false;
                 }
                 var fridge = GetFridge(__instance);
-                if (Config.AutoFillFridge)
-                {
-                    fridge.Value.items.Clear();
-                    foreach (var c in __instance.characters)
-                    {
-                        if (c.modData.TryGetValue(orderKey, out string dataString))
-                        {
-                            OrderData data = JsonConvert.DeserializeObject<OrderData>(dataString);
-                            CraftingRecipe r = new CraftingRecipe(data.dishName, true);
-                            if (r is not null)
-                            {
-                                foreach (var key in r.recipeList.Keys)
-                                {
-                                    if (Game1.objectInformation.ContainsKey(key))
-                                    {
-                                        var obj = new Object(key, r.recipeList[key]);
-                                        SMonitor.Log($"Adding {obj.Name} ({obj.ParentSheetIndex}) x{obj.Stack} to fridge");
-                                        fridge.Value.addItem(obj);
-                                    }
-                                    else
-                                    {
-                                        List<int> list = new List<int>();
-                                        foreach (var kvp in Game1.objectInformation)
-                                        {
-                                            string[] objectInfoArray = kvp.Value.Split('/', StringSplitOptions.None);
-                                            string[] typeAndCategory = objectInfoArray[3].Split(' ', StringSplitOptions.None);
-                                            if (typeAndCategory.Length > 1 && typeAndCategory[1] == key.ToString())
-                                            {
-                                                list.Add(kvp.Key);
-                                            }
-                                        }
-                                        if (list.Any())
-                                        {
-                                            var obj = new Object(list[Game1.random.Next(list.Count)], r.recipeList[key]);
-                                            SMonitor.Log($"Adding {obj.Name} ({obj.ParentSheetIndex}) x{obj.Stack} to fridge");
-                                            fridge.Value.addItem(obj);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+
                 __instance.ActivateKitchen(fridge);
                 __result = true;
                 return false;

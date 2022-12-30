@@ -12,6 +12,12 @@
   "BundleTooltipDecorator" : "Bündel-Dekoration",
   "BundleTooltipDecorator.Description" : "Markiert Gegenstände, die für die Bündel gebraucht werden",
 
+  "FieldOfficeDecorator" : "Außenstelle-Dekoration",
+  "FieldOfficeDecorator.Description" : "Markiert Gegenstände, die für die Insel-Außenstelle gebraucht werden",
+
+  "RarecrowDecorator" : "Vogelscheuchen-Dekoration",
+  "RarecrowDecorator.Description" : "Markiert Gegenstände, die für die Vogelscheuchensammlung gebraucht werden",
+  
   "SellPriceDisplayable" : "Verkaufspreis-Dekoration",
   "SellPriceDisplayable.Description" : "Fügt den Verkaufspreis unten am Tooltip ein",
   

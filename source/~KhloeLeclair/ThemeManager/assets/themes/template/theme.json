@@ -11,7 +11,7 @@
 {
 	"Name": "Theme Template",
 
-	"Variables": {
+	"ColorVariables": {
 		"Text": "#221122",
 		"TextShadow": "#CE9C5F",
 		"TextShadowAlt": "#DD9454",

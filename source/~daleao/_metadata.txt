@@ -6,20 +6,15 @@ mods:
    Aquarism - Immersive Fish Ponds
    Better Artisan Good Icons For Meads
    Fellowship - Immersive Rings
-   Power Tools
    Quality of Life - Immersive Tweaks
    Serfdom - Immersive Taxes
+   Tooth and Nail - Immersive Tools
    Walk of Life
 
 latest commit:
-   commit 7afd32737f8f04ae97f134b37e9bfa24c8325b40
-   Merge: defe8dbb 251fa66f
-   Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
-   Date:   Wed Oct 5 21:27:43 2022 +0000
+   commit 00b78b70a6400241e20ed0de52627bce6e1e3faf
+   Author: DaLion <daleao.matheus@gmail.com>
+   Date:   Fri Dec 30 01:47:23 2022 -0300
    
-       Merge branch 'main' into 'main'
-       
-       Improve Chinese translation for Walk Of Life mod.
-       
-       See merge request daleao/sdv-mods!7
+       Missing change in changelog.
    

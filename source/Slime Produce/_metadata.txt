@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/andraemon/SlimeProduce
+   Git: https://github.com/andraemon/SlimeProduce.git
+
+mods:
+   Slime Produce
+
+latest commit:
+   commit bcbd0d21e85d569551acf010cd1fa4f41e7c92a2
+   Author: andraemon <43394694+andraemon@users.noreply.github.com>
+   Date:   Thu Dec 8 07:27:29 2022 -0500
+   
+       fixed special purple slime drops
+   

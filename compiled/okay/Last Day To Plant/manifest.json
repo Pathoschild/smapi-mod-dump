@@ -1,7 +1,7 @@
 {
   "Name": "LastDayToPlant",
   "Author": "dmcrider57",
-  "Version": "2.0.2",
+  "Version": "2.1.0",
   "Description": "Shows a message when today is the last day a crop can be planted this year. Supports some mods.",
   "UniqueID": "com.dayloncrider.stardewvalley.lastdaytoplant",
   "EntryDll": "LastDayToPlant.dll",

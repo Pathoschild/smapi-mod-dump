@@ -81,25 +81,26 @@ public static class EventHelper {
 		Type provtype = provider.GetType();
 
 		foreach(MethodInfo method in provtype.GetMethods(METHOD_FLAGS)) {
-			Attribute? attr = method.GetCustomAttribute(typeof(ConsoleCommand));
-			if (attr is not ConsoleCommand cmd)
-				continue;
+			foreach (var attr in method.GetCustomAttributes(typeof(ConsoleCommand))) {
+				if (attr is not ConsoleCommand cmd)
+					continue;
 
-			ParameterInfo[] parms = method.GetParameters();
-			if (parms.Length != 2)
-				continue;
+				ParameterInfo[] parms = method.GetParameters();
+				if (parms.Length != 2)
+					continue;
 
-			if (parms[0].ParameterType != typeof(string) || parms[1].ParameterType != typeof(string[]))
-				continue;
+				if (parms[0].ParameterType != typeof(string) || parms[1].ParameterType != typeof(string[]))
+					continue;
 
-			string name = string.IsNullOrWhiteSpace(cmd.Name) ? method.Name : cmd.Name;
-			string desc = string.IsNullOrWhiteSpace(cmd.Description) ? string.Empty : cmd.Description;
+				string name = string.IsNullOrWhiteSpace(cmd.Name) ? method.Name : cmd.Name;
+				string desc = string.IsNullOrWhiteSpace(cmd.Description) ? string.Empty : cmd.Description;
 
-			try {
-				ConsoleCommandDelegate del = method.CreateDelegate<ConsoleCommandDelegate>(provider);
-				helper.Add(name, desc, new Action<string, string[]>(del));
-			} catch (Exception ex) {
-				logger?.Invoke($"Failed to register console command {name}: {ex}", LogLevel.Error);
+				try {
+					ConsoleCommandDelegate del = method.CreateDelegate<ConsoleCommandDelegate>(provider);
+					helper.Add(name, desc, new Action<string, string[]>(del));
+				} catch (Exception ex) {
+					logger?.Invoke($"Failed to register console command {name}: {ex}", LogLevel.Error);
+				}
 			}
 		}
 	}

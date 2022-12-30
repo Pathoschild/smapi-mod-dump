@@ -129,7 +129,6 @@ internal class SellPriceDisplayable : IDisplayable {
 
     private static void RememberCurrencyCoordinates(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects,  float layerDepth) {
         if (_myCall) return; // we don't need to remember our own calls
-        
         if (texture == Game1.debrisSpriteSheet) {
             // CoinSourceBounds is the direct rectangle over the coint icon, but it seems sometimes a bigger rectangle is drawn
             // to have a bit of an empty space to the left or on the top or ....

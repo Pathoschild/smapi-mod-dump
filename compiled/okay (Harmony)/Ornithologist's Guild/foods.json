@@ -1,0 +1,63 @@
+[
+    {
+        "type": "Corn",
+        "feederAssetIndex": 1,
+        "feedersTypes": [
+            "Hopper",
+            "Platform"
+        ],
+        "items": [
+            "Corn"
+        ]
+    },
+    {
+        "type": "Fruit",
+        "feederAssetIndex": 2,
+        "feedersTypes": [
+            "Hopper",
+            "Platform"
+        ],
+        "items": [
+            "Apple",
+            "Banana",
+            "Blackberry",
+            "Blueberry",
+            "Cherry",
+            "Cranberries",
+            "Grape",
+            "Mango",
+            "Melon",
+            "Orange",
+            "Peach",
+            "Pineapple",
+            "Pomegranate",
+            "Salmonberry",
+            "Strawberry",
+            "Wild Plum"
+        ]
+    },
+    {
+        "type": "MixedSeeds",
+        "feederAssetIndex": 3,
+        "feedersTypes": [
+            "Hopper",
+            "Platform",
+            "Tube"
+        ],
+        "items": [
+            "Mixed Seeds"
+        ]
+    },
+    {
+        "type": "SunflowerSeeds",
+        "feederAssetIndex": 4,
+        "feedersTypes": [
+            "Hopper",
+            "Platform",
+            "Tube"
+        ],
+        "items": [
+            "DGA:Ivy.OrnithologistsGuild/HulledSunflowerSeeds"
+        ]
+    }
+]

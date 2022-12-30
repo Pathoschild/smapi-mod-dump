@@ -18,14 +18,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SeedMachines.Framework.BigCraftables
 {
-    class SeedBandit : IBigCraftable
+    [XmlType("Mods_SeedMachines_SeedBandit")]
+    public class SeedBandit : IBigCraftable
     {
         public SeedBandit() : base()
         {
-            this.wrapper = IBigCraftableWrapper.getWrapper("Seed Bandit");
+            this.wrapperName = "Seed Bandit";
             this.animate();
         }
 

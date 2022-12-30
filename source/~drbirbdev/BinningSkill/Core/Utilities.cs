@@ -13,6 +13,7 @@ using BirbShared;
 using Microsoft.Xna.Framework;
 using SpaceCore;
 using StardewValley;
+using xTile.Dimensions;
 
 namespace BinningSkill
 {
@@ -66,6 +67,11 @@ namespace BinningSkill
         internal static Vector2 GetItemPosition(Vector2 tilePosition)
         {
             return new Vector2(tilePosition.X + 0.5f, tilePosition.Y - 1) * 64f;
+        }
+
+        internal static Vector2 GetItemPosition(Location tileLocation)
+        {
+            return new Vector2(tileLocation.X + 0.5f, tileLocation.Y - 1) * 64f;
         }
 
         internal static int[] GetBinningRarityLevels()

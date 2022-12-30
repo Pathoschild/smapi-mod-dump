@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/14639
+IDs: aedenthorn.InfallibleFishing
+update keys: Nexus:14639, GitHub:aedenthorn/StardewValleyMods

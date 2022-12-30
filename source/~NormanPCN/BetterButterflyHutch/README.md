@@ -108,4 +108,4 @@ v1.0.1:
  Added Hungarian translation. Thanks martin66789 on Nexus Mods.
 
  v.1.3.4
- Add night butterflies option.
+ Added a night butterflies option. Let indoor butterflies have the evenings off, just like outdoor butterflies.

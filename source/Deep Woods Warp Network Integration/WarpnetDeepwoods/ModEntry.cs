@@ -8,15 +8,15 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 
 namespace WarpnetDeepwoods
 {
-    public class ModEntry : Mod, IAssetLoader
+    public class ModEntry : Mod
     {
         internal static Config Config;
         private static IWarpNetAPI WarpApi = null;
@@ -24,6 +24,7 @@ namespace WarpnetDeepwoods
         {
             Config = helper.ReadConfig<Config>();
             helper.Events.GameLoop.GameLaunched += SetupIntegrations;
+            helper.Events.Content.AssetRequested += LoadAssets;
         }
         private void SetupIntegrations(object sender, GameLaunchedEventArgs ev)
         {
@@ -32,9 +33,7 @@ namespace WarpnetDeepwoods
             WarpApi.AddCustomDestinationHandler("deepwoods", CanWarpToDeepWoods, GetWarpLabel, () => "Deepwoods", WarpToDeepWoods);
         }
         private string GetWarpLabel()
-        {
-            return Helper.Translation.Get("ui-label");
-        }
+            => Helper.Translation.Get("ui-label");
         private static void WarpToDeepWoods()
         {
             Game1.exitActiveMenu();
@@ -43,31 +42,19 @@ namespace WarpnetDeepwoods
         private static bool CanWarpToDeepWoods()
         {
             if (!Config.AfterObelisk)
-            {
                 return true;
-            }
             Farm farm = Game1.getFarm();
             if(farm is null)
-            {
                 return false;
-            }
             foreach(Building building in farm.buildings)
-            {
                 if(building.buildingType.ToString() == "Woods Obelisk")
-                {
                     return true;
-                }
-            }
             return false;
         }
-
-        public bool CanLoad<T>(IAssetInfo asset)
+        private static void LoadAssets(object _, AssetRequestedEventArgs ev)
         {
-            return asset.AssetNameEquals("Data/WarpNetwork/Icons/Deepwoods");
-        }
-        public T Load<T>(IAssetInfo asset)
-        {
-            return Helper.Content.Load<T>(PathUtilities.NormalizePath("assets/icon.png"));
+            if (ev.NameWithoutLocale.IsEquivalentTo("Data/WarpNetwork/Icons/Deepwoods"))
+                ev.LoadFromModFile<Texture2D>("assets/icon.png", AssetLoadPriority.Medium);
         }
     }
 }

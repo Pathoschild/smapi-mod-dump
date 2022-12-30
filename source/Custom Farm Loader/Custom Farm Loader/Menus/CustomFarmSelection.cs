@@ -372,7 +372,7 @@ namespace Custom_Farm_Loader.Menus
             if (ModFarms.Exists(e => e.ID == customFarm.ID))
                 Game1.whichModFarm = ModFarms.Find(e => e.ID == customFarm.ID);
             else
-                Game1.whichModFarm = CurrentCustomFarm.asModFarmType();
+                Game1.whichModFarm = customFarm.asModFarmType();
             Game1.spawnMonstersAtNight = customFarm.Properties.SpawnMonstersAtNight;
             assignCurrentFarmPreview();
         }

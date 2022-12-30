@@ -1,0 +1,26 @@
+urls:
+   web: https://github.com/LeFauxMatt/StardewMods
+   Git: https://github.com/LeFauxMatt/StardewMods.git
+
+mods:
+   Better Chests
+   Cycle Tools
+   Easy Access
+   Expanded Storage
+   Garbage Day
+   Is It Cake
+   Ordinary Capsule
+   Portable Holes
+   Shopping Cart
+   Smack Dat Scarecrow
+   Stack Quality
+   Too Many Animals
+   Toolbar Icons
+
+latest commit:
+   commit 1c0cc343a01d6f332897091e608c6530cb4554a8
+   Author: Matthew Lucas <justmatt@outlook.com>
+   Date:   Mon Oct 17 18:14:34 2022 -0700
+   
+       chore: Reformat
+   

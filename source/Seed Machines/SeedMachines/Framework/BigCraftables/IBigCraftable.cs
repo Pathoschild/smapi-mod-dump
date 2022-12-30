@@ -27,7 +27,11 @@ namespace SeedMachines.Framework.BigCraftables
         public int currentAnimationIndex = 0;
         public double timestampPreviousAnimation = -1;
         public StardewValley.Object baseObject;
-        public IBigCraftableWrapper wrapper;
+        public String wrapperName;
+        public IBigCraftableWrapper wrapper
+        {
+            get { return IBigCraftableWrapper.getWrapper(this.wrapperName); }
+        }
 
         public IBigCraftable() : base()
         {
@@ -41,7 +45,7 @@ namespace SeedMachines.Framework.BigCraftables
             )
         {
             this.baseObject = baseObject;
-            this.wrapper = wrapper;
+            this.wrapperName = wrapper.name;
 
             this.animate();
         }
@@ -76,8 +80,8 @@ namespace SeedMachines.Framework.BigCraftables
             Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
             Microsoft.Xna.Framework.Rectangle destination =
                 new Microsoft.Xna.Framework.Rectangle(
-                    (int)(position.X - scaleFactor.X / 2f) + ((shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0),
-                    (int)(position.Y - scaleFactor.Y / 2f) + ((shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0),
+                    (int)(position.X - scaleFactor.X / 2f) + ((shakeTimer > 0) ? (new Random(DateTime.Now.Millisecond)).Next(-1, 2) : 0),
+                    (int)(position.Y - scaleFactor.Y / 2f) + ((shakeTimer > 0) ? (new Random(DateTime.Now.Millisecond)).Next(-1, 2) : 0),
                     (int)(64f + scaleFactor.X), (int)(128f + scaleFactor.Y / 2f)
                 );
             float draw_layer = Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f;
@@ -105,8 +109,8 @@ namespace SeedMachines.Framework.BigCraftables
             Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(xNonTile, yNonTile));
             Microsoft.Xna.Framework.Rectangle destination =
                 new Microsoft.Xna.Framework.Rectangle(
-                    (int)(position.X - scaleFactor.X / 2f) + ((shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0),
-                    (int)(position.Y - scaleFactor.Y / 2f) + ((shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0),
+                    (int)(position.X - scaleFactor.X / 2f) + ((shakeTimer > 0) ? (new Random(DateTime.Now.Millisecond)).Next(-1, 2) : 0),
+                    (int)(position.Y - scaleFactor.Y / 2f) + ((shakeTimer > 0) ? (new Random(DateTime.Now.Millisecond)).Next(-1, 2) : 0),
                     (int)(64f + scaleFactor.X), (int)(128f + scaleFactor.Y / 2f)
                 );
             spriteBatch.Draw(

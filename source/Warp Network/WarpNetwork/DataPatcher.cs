@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using AeroCore;
+using AeroCore.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -25,21 +27,50 @@ using xTile.Tiles;
 
 namespace WarpNetwork
 {
+    [ModInit]
     class DataPatcher
     {
         private static readonly string[] DefaultDests = { "farm", "mountain", "beach", "desert", "island" };
 
         public static Dictionary<string, WarpLocation> ApiLocs = new(StringComparer.OrdinalIgnoreCase);
         public static Dictionary<string, WarpItem> ApiItems = new(StringComparer.OrdinalIgnoreCase);
+        internal static HashSet<string> buildingTypes = new(StringComparer.OrdinalIgnoreCase);
 
+        internal static void Init()
+        {
+            ModEntry.helper.Events.Content.AssetRequested += AssetRequested;
+            ModEntry.helper.Events.GameLoop.SaveLoaded += SaveLoaded;
+            ModEntry.helper.Events.World.BuildingListChanged += BuildingsChanged;
+        }
+
+        private static void SaveLoaded(object _, SaveLoadedEventArgs ev)
+        {
+            buildingTypes.Clear();
+            foreach(var b in Misc.GetAllBuildings())
+                buildingTypes.Add(b.buildingType.Value.Collapse());
+
+            ModEntry.monitor.Log($"Save loaded, reloaded building type list: [{buildingTypes.ContentsToString()}]");
+            ModEntry.helper.GameContent.InvalidateCache(ModEntry.pathLocData);
+        }
+        private static void BuildingsChanged(object _, BuildingListChangedEventArgs ev)
+        {
+            // remove THEN add, in case a building was removed and one of the same type was added
+            foreach (var b in ev.Removed)
+                buildingTypes.Remove(b.buildingType.Value.Collapse());
+
+            foreach (var b in ev.Added)
+                buildingTypes.Add(b.buildingType.Value.Collapse());
+
+            ModEntry.monitor.Log($"Buildings changed, new type list: [{buildingTypes.ContentsToString()}]");
+        }
         internal static void AssetRequested(object _, AssetRequestedEventArgs ev)
         {
-            if (ev.Name.IsEquivalentTo(ModEntry.pathLocData))
+            if (ev.NameWithoutLocale.IsEquivalentTo(ModEntry.pathLocData))
                 ev.Edit((a) => EditLocations(a.AsDictionary<string, WarpLocation>().Data));
-            else if (ev.Name.IsEquivalentTo(ModEntry.pathItemData))
+            else if (ev.NameWithoutLocale.IsEquivalentTo(ModEntry.pathItemData))
                 ev.Edit((a) => AddApiItems(a.AsDictionary<string, WarpItem>().Data));
-            else if (ModEntry.config.MenuEnabled && MapHasWarpStatue(ev.Name))
-                ev.Edit((a) => AddVanillaWarpStatue(a.AsMap(), ev.Name.ToString()));
+            else if (ModEntry.config.MenuEnabled && MapHasWarpStatue(ev.NameWithoutLocale))
+                ev.Edit((a) => AddVanillaWarpStatue(a.AsMap(), ev.NameWithoutLocale.ToString()));
         }
         private static bool MapHasWarpStatue(IAssetName name)
         {
@@ -63,62 +94,14 @@ namespace WarpNetwork
                 dict[key] = ApiLocs[key];
 
             foreach (string key in DefaultDests)
-                if (dict.ContainsKey(key))
+                if (dict.TryGetValue(key, out var dest))
                 {
-                    Translation label = ModEntry.i18n.Get("dest-" + key);
+                    Translation label = ModEntry.i18n.Get("dest." + key);
+                    
                     if (label.HasValue())
-                        dict[key].Label = label;
+                        dest.Label = label.ToString();
+                    dest.Enabled = ModEntry.config.WarpsEnabled != WarpEnabled.Never;
                 }
-
-            if (ModEntry.config.FarmWarpEnabled == WarpEnabled.Never && 
-                ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Never)
-                return;
-
-            if (!ModEntry.config.ObeliskCheckRequired())
-            {
-                for(int i = 0; i < DefaultDests.Length; i++)
-                    if(DefaultDests[i] != "farm" || ModEntry.config.FarmWarpEnabled == WarpEnabled.Always)
-                        EnableLocation(dict, DefaultDests[i]);
-            }
-            else
-            {
-                bool AnyObelisk = ModEntry.config.FarmWarpEnabled == WarpEnabled.Always;
-                bool ObeliskAlways = ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Always;
-
-                bool ObeliskWater = ObeliskAlways;
-                bool ObeliskEarth = ObeliskAlways;
-                bool ObeliskDesert = ObeliskAlways;
-                bool ObeliskIsland = ObeliskAlways;
-
-                Farm farm = Game1.getFarm();
-                if (farm is not null)
-                {
-                    //dependency loop when editing farm map leaves farm as null
-                    foreach (Building building in farm.buildings)
-                    {
-                        if (building.buildingType.Value.Contains("Obelisk"))
-                            AnyObelisk = true;
-
-                        switch (building.buildingType.Value)
-                        {
-                            case "Water Obelisk": ObeliskWater = true; break;
-                            case "Earth Obelisk": ObeliskEarth = true; break;
-                            case "Desert Obelisk": ObeliskDesert = true; break;
-                            case "Island Obelisk": ObeliskIsland = true; break;
-                        }
-                    }
-                }
-
-                if (ModEntry.config.VanillaWarpsEnabled != WarpEnabled.Never)
-                {
-                    EnableLocation(dict, "beach", ObeliskWater);
-                    EnableLocation(dict, "mountain", ObeliskEarth);
-                    EnableLocation(dict, "desert", ObeliskDesert);
-                    EnableLocation(dict, "island", ObeliskIsland);
-                }
-                if (ModEntry.config.FarmWarpEnabled != WarpEnabled.Never)
-                    EnableLocation(dict, "farm", AnyObelisk);
-            }
         }
         private static void AddVanillaWarpStatue(IAssetDataForMap map, string Name)
         {
@@ -165,11 +148,6 @@ namespace WarpNetwork
                     }
                 }
             }
-        }
-        private static void EnableLocation(IDictionary<string, WarpLocation> dict, string key, bool enabled = true)
-        {
-            if (dict.ContainsKey(key))
-                dict[key].Enabled = enabled;
         }
     }
 }

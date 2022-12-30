@@ -17,8 +17,9 @@ Configure the amount of ring slots in your inventory. By default adds 6 addition
 * `Rings`: Number of ring slots available. Normally this is 2, this mod increases it to 8. Max = 20.
 
 ## Console Commands
-* `player_resetmodifiers`: Clears buffs, then resets and reapplies the modifiers applied by boots & rings.
-
+* `player_openforge`:        Opens the forge menu.
+* `player_resetmodifiers`:   Clears buffs, then resets and reapplies the modifiers applied by boots & rings.
+* `world_destroyringchests`: Removes the chests used for storing player's rings. Any items contained therein will be dropped at your feet.
 ## Dependencies
 This mod requires the following mods to be installed:
 
@@ -28,45 +29,50 @@ This mod requires the following mods to be installed:
 ## Known bugs
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
+* The forge menu does not show your ring slots.
 * This mod does not support android / mobile.
-* While rings from the [Giant Crop Ring](https://www.nexusmods.com/stardewvalley/mods/1182) mod can be equipped in the additional slots, their effects won't be applied. Rings from the [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) mod, v1.0.3+ should work though.
-* This mod is incompatible with [Multiplayer Time](https://www.nexusmods.com/stardewvalley/mods/2543). Using both will cause save game corruption. This can (hopefully) be fixed by uninstalling either of these mods. If you keep Multiplayer Time, the mod should resolve the issue automatically. If you use Wear More Rings you need to execute the `player_resetmodifiers` console command manually.
+* This mod might be incompatible with [Multiplayer Time](https://www.nexusmods.com/stardewvalley/mods/2543). Using both will cause save game corruption. This can (hopefully) be fixed by uninstalling either of these mods. If you keep Multiplayer Time, the mod should resolve the issue automatically. If you use Wear More Rings you need to execute the `player_resetmodifiers` console command manually.
+* Ring Slots in the Inventory screen can overlap with other text in the UI, especially with a high `Rings` setting. This won't be fixed.
+
+## API
+Mods adding additional rings most should work out of the box. For backwards compatibility this mod provides an API to access the equipped rings: [IWearMoreRingsAPI](https://github.com/bcmpinc/StardewHack/blob/master/WearMoreRings/IWearMoreRingsAPI.cs).
 
 ## Changes
-#### 1.0:
-* Created this mod. It hasn't been extensively tested and hence might still have some bugs.
+#### 6.3:
+* Name the combined ring used for ring storage to clearly communicate its purpose. 
+* Prevent crash caused by equipping the combined ring inside of itself.
+* Add support for local co-op (aka split-screen).
+* Removed ring slots from the forge menu so the player cannot accidentally unequip the container ring there.
 
-#### 1.1:
-* Fixed horse animation and dismounting bug.
+#### 6.2:
+* Added `player_dismantle_nested` command to get rid of nested combined rings, prior to accessing the forge.
+* Fixed issue with re-joining in multiplayer creating nested combined rings.
 
-#### 1.2:
-* Added Mod Integration API, [IWearMoreRingsAPI](https://github.com/bcmpinc/StardewHack/blob/master/WearMoreRings/IWearMoreRingsAPI.cs), for mods that add new types of rings.
-* Fixed error due to save methods being called on multiplayer clients.
-* Fixed issue with unequipping one ring disabling the glow effect of all rings.
-* Fixed rings disappearing when shift+clicking them in your inventory.
+#### 6.1:
+* Re-added the [IWearMoreRingsAPI](https://github.com/bcmpinc/StardewHack/blob/master/WearMoreRings/IWearMoreRingsAPI.cs).
+* Rings no longer drop during migration.
+* If the player has rings in slots that are not accessible due to a lower ring capacity, these rings are dropped.
 
-#### 1.3:
-* Fix exception during startup on windows.
+#### 6.0:
+* Rewrite most of the mod for better multiplayer support. It now uses Combined Rings rather than a hidden chest for ring storage. Note that after the update you have to manually re-equip your rings.
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
+* Added `world_destroyringchests` command to destroy any remaining old rings chests.
+* Removed the API as it's no longer needed.
 
-#### 1.4:
-* Fixed old rings not working & disappearing on save&reload (hopefully).
+#### 4.0:
+* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Add 64-bit support
 
-#### 1.5:
-* Don't delete all rings if one has an unknown object ID.
-* Fix support for Stardew Valley 1.3.36 on MacOS.
+#### 3.4:
+* Rearanged ring slots. The right ring is now positioned in the first column, second from the top.
+* Added config parameter `Rings` for the amount of ring slots. Anything above 8 will result in text overlaying the ring slots.
 
-#### 1.6:
-* Change the network protocol version to prevent people with the mod from connecting to servers without the mod and vice-versa.
+#### 3.3:
+* Hide the chest in the [Chests Anywhere](https://www.nexusmods.com/stardewvalley/mods/518) mod.
+* Added the `player_resetmodifiers` command for people who added/removed rings from the hidden chest using Chests Anywhere to fix any issues this might have caused.
 
-#### 2.1:
-* Updated for Stardew Valley 1.4.
-
-#### 2.2:
-* Fix issue with shift-click equipping items not properly updating the GUI.
-* Fix startup issues on MacOS & Windows.
-
-#### 3.0:
-* Updated for Stardew Valley 1.4.4.
+#### 3.2:
+* Fixed issue with some effects of combined rings not being applied.
 
 #### 3.1:
 * Updated for Stardew Valley 1.5.
@@ -74,17 +80,5 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Mod no longer modifies the network protocol.
 * Rings are now stored in a way that works for combined and modded rings.
 
-#### 3.2:
-* Fixed issue with some effects of combined rings not being applied.
-
-#### 3.3:
-* Hide the chest in the [Chests Anywhere](https://www.nexusmods.com/stardewvalley/mods/518) mod.
-* Added the `player_resetmodifiers` command for people who added/removed rings from the hidden chest using Chests Anywhere to fix any issues this might have caused.
-
-#### 3.4:
-* Rearanged ring slots. The right ring is now positioned in the first column, second from the top.
-* Added config parameter `Rings` for the amount of ring slots. Anything above 8 will result in text overlaying the ring slots.
-
-#### 4.0:
-* Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
-* Add 64-bit support
+#### 3.0:
+* Updated for Stardew Valley 1.4.4.

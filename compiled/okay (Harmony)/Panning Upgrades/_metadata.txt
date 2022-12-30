@@ -1,3 +1,3 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/12212
+page URL: https://www.nexusmods.com/stardewvalley/mods/12242
 IDs: drbirbdev.PanningUpgrades
-update keys: Nexus:12212, Nexus:12242, GitHub:drbirbdev/StardewValley
+update keys: Nexus:12242, GitHub:drbirbdev/StardewValley

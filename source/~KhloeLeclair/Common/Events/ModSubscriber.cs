@@ -38,6 +38,60 @@ public abstract class ModSubscriber : Mod {
 			Monitor.Log($"Details:\n{ex}", level: exLevel ?? level);
 	}
 
+	public virtual void LogTable(StringBuilder sb, string[]? headers, IEnumerable<string[]> entries, LogLevel level = LogLevel.Debug, string separator = "  ") {
+		// First, determine the maximum column count.
+		int columns = 0;
+
+		if (headers is not null)
+			columns = headers.Length;
+		else {
+			foreach (string[] entry in entries)
+				columns = Math.Max(columns, entry.Length);
+		}
+
+		// Now determine the length of each column.
+		int[] longest = new int[columns];
+
+		if (headers is not null) {
+			for (int i = 0; i < headers.Length; i++)
+				longest[i] = headers[i].Length;
+		}
+
+		foreach (string[] entry in entries) {
+			for (int i = 0; i < entry.Length; i++)
+				longest[i] = Math.Max(longest[i], entry[i].Length);
+		}
+
+		// Build a format string.
+		StringBuilder sb2 = new();
+
+		for (int i = 0; i < longest.Length; i++) {
+			if (i > 0)
+				sb2.Append(separator);
+			sb2.Append($"{{{i},-{longest[i]}}}");
+		}
+
+		string fmt = sb2.ToString();
+
+		if (headers is not null) {
+			sb.AppendLine(string.Format(fmt, args: headers));
+
+			int sum = longest.Sum() + (columns - 1) * separator.Length;
+			sb.AppendLine(new string('=', sum));
+		}
+
+		foreach (string[] entry in entries) {
+			string[] args;
+			if (entry.Length < columns) {
+				args = new string[columns];
+				Array.Copy(entry, args, entry.Length);
+			} else
+				args = entry;
+
+			sb.AppendLine(string.Format(fmt, args: args));
+		}
+	}
+
 	public virtual void LogTable(string[]? headers, IEnumerable<string[]> entries, LogLevel level = LogLevel.Debug, string separator = "  ") {
 		// First, determine the maximum column count.
 		int columns = 0;

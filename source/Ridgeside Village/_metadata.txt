@@ -6,12 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 8129aaf40b70596b7189f2e4c498e26e8c8c335a
-   Merge: 65743da1 882d4209
-   Author: cl4r3 <ccathanlon@gmail.com>
-   Date:   Tue Nov 22 14:21:10 2022 -0500
+   commit 190b5d6083ac8b7832681b55345130dcf0db375f
+   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
+   Date:   Thu Dec 29 11:43:32 2022 +0800
    
-       Merge pull request #157 from ellipszist/main
-       
-       typo
+       updated Kiwi's portraits
    

@@ -54,10 +54,10 @@ internal static class DayTimeMoneyBox_Patches {
 				return true;
 
 			Alignment? alignment = mode.Value == ClockAlignMode.ByTheme ?
-				Mod!.BaseTheme?.DayTimeAlignment :
+				Mod!.GameTheme?.DayTimeAlignment :
 				Mod!.Config.ClockAlignment;
-			int? offsetX = Mod?.BaseTheme?.DayTimeOffsetX;
-			int? offsetY = Mod?.BaseTheme?.DayTimeOffsetY;
+			int? offsetX = Mod?.GameTheme?.DayTimeOffsetX;
+			int? offsetY = Mod?.GameTheme?.DayTimeOffsetY;
 
 			if (alignment.HasValue || offsetX.HasValue || offsetY.HasValue) {
 				Alignment align = alignment ?? Alignment.None;

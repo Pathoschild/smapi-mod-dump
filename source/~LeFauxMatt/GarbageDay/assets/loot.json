@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  "Town": {
+    "item_trash": 1,
+    "item_joja_cola": 1,
+    "item_broken_glasses": 1,
+    "item_broken_cd": 1,
+    "item_soggy_newspaper": 1,
+    "item_bread": 1,
+    "item_field_snack": 1,
+    "item_acorn": 0.3,
+    "item_maple_seed": 0.3,
+    "item_pine_cone": 0.3,
+    "item_green_algae": 0.3
+  }
+}

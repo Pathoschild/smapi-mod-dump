@@ -57,6 +57,26 @@ Above in the `male` section, a 'toned.png' file has been added. The folder will 
          ...
 ```
 
+### Custom clothing and feet
+You can assign specific feet and clothing to match your body-shape if it's significantly different.
+You do this by including a file with "_shirts" ("_shirts_overlay" for matching overalls), "_pants",
+and "_feet". If you did them all, your folder would look like;
+```
+📁 Mods/
+   📁 [DB] YourModName/
+      🗎 content.json
+      🗎 manifest.json
+      📁 assets/
+         📁 bodies/
+            🗎 toned.png
+            🗎 toned_feet.png
+            🗎 toned_shirts.png
+            🗎 toned_shirts_overlay.png
+            🗎 toned_pants.png
+            ...
+         ...
+```
+
 ## Body Hair
 The body hair option [renders to the hair colors](hair.md#recoloring-notes) chosen by the player.
 These are an image
@@ -91,7 +111,8 @@ Naked Overlays allows the player to decide how their character will look when th
 have pants or shirts equipped. The player can change the option of whether these show
 when swimming/bathing ingame in the tailoring menu.
 
-As such these overlays could be NSFW using the [extended skin colors](color-palette.md), they could be censor
+As such these overlays could be NSFW using the [extended skin colors](color-palette.md),
+or using [greys/magentas for shirt/pant](trinkets.md#recoloring-notes), they could be censor
 squares/items or they might just be swimming outfits or underwear. There are two versions,
 one for the upper body and one for the lower body which shown when shirt or pants aren't
 present.
@@ -128,7 +149,8 @@ smaller 16x128 image using sprites for facing down, right, up and left. The fold
             ...
          ...
 ```
-Not including any options, this will default to the 96x672 pixel full animation.
+Not including "no animation", this will default to the 96x672 pixel full animation. You can
+also specify "sleeve short"/"sleeve"/"sleeve long" to have sleeves on the overlay.
 
 ### Naked Lower Overlays
 The naked lower overlay option draws similar to pants. These are an image

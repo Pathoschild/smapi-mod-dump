@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AeroCore.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -39,9 +40,7 @@ namespace WarpNetwork
             { "farm_island", 6 }
         };
         public static Point GetActualFarmPoint(int default_x, int default_y)
-        {
-            return GetActualFarmPoint(Game1.getFarm().Map, default_x, default_y);
-        }
+            => GetActualFarmPoint(Game1.getFarm().Map, default_x, default_y);
         public static Point GetActualFarmPoint(Map map, int default_x, int default_y, string filename = null)
         {
             int x = default_x;
@@ -85,17 +84,7 @@ namespace WarpNetwork
             }
         }
         public static int GetFarmType(string filename)
-        {
-            if (filename is null)
-            {
-                return Game1.whichFarm;
-            }
-            if (FarmTypeMap.ContainsKey(filename))
-            {
-                return FarmTypeMap[filename];
-            }
-            return 0;
-        }
+            => (filename is null) ? Game1.whichFarm : FarmTypeMap.TryGetValue(filename, out var type) ? type : 0;
         public static Point GetMapPropertyPosition(Map map, string property, int default_x, int default_y)
         {
             if (!map.Properties.ContainsKey(property))
@@ -129,118 +118,9 @@ namespace WarpNetwork
             return ret;
         }
         public static Dictionary<string, WarpItem> GetWarpItems()
-        {
-            return ModEntry.helper.GameContent.Load<Dictionary<string, WarpItem>>(ModEntry.pathItemData);
-        }
-        public static T ParseEnum<T>(string str)
-        {
-            Type type = typeof(T);
-            try
-            {
-                T val = (T)Enum.Parse(type, str);
-                if (Enum.IsDefined(type, val))
-                {
-                    return val;
-                }
-                else
-                {
-                    return default;
-                }
-            }
-            catch (ArgumentException)
-            {
-                return default;
-            }
-        }
-        public static Color ParseColor(string str)
-        {
-            if (str.Length == 0)
-            {
-                ModEntry.monitor.Log("Could not parse color from string: '" + str + "'.", LogLevel.Warn);
-                return Color.Transparent;
-            }
-            if (str[0] == '#')
-            {
-                if (str.Length <= 6)
-                {
-                    ModEntry.monitor.Log("Could not parse color from string: '" + str + "'.", LogLevel.Warn);
-                    return Color.Transparent;
-                }
-                int r = Convert.ToInt32(str.Substring(1, 2), 16);
-                int g = Convert.ToInt32(str.Substring(3, 2), 16);
-                int b = Convert.ToInt32(str.Substring(5, 2), 16);
-                if (str.Length > 8)
-                {
-                    int a = Convert.ToInt32(str.Substring(7, 2), 16);
-                    return new Color(r, g, b, a);
-                }
-                return new Color(r, g, b);
-            }
-            else
-            {
-                string[] vals = str.Replace(" ", "").Split(',');
-                if (vals.Length > 2)
-                {
-                    if (vals.Length > 3)
-                    {
-                        return new Color(int.Parse(vals[0]), int.Parse(vals[1]), int.Parse(vals[2]), int.Parse(vals[3]));
-                    }
-                    return new Color(int.Parse(vals[0]), int.Parse(vals[1]), int.Parse(vals[2]));
-                }
-                ModEntry.monitor.Log("Could not parse color from string: '" + str + "'.", LogLevel.Warn);
-                return Color.Transparent;
-            }
-        }
-        public static bool IsFestivalAtLocation(string Location)
-        {
-            return !(Location is null) && Game1.weatherIcon == 1 && Game1.whereIsTodaysFest.ToLower() == Location.ToLower();
-        }
-        public static bool IsFestivalReady()
-        {
-            if (Game1.weatherIcon != 1)
-            {
-                return false;
-            }
-            return Convert.ToInt32(ModEntry.helper.GameContent.Load<Dictionary<string, string>>("Data/Festivals/" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[1].Split(' ')[0]) <= Game1.timeOfDay;
-        }
-        public static bool LocationExists(string name)
-        {
-            return GetWarpLocations().ContainsKey(name);
-        }
-        public static bool IsLocationEnabled(string name)
-        {
-            Dictionary<string, WarpLocation> dests = GetWarpLocations();
-            return dests.ContainsKey(name) && dests[name].Enabled;
-        }
-        public static string IterableToString(IEnumerable<object> iter)
-        {
-            StringBuilder sb = new();
-            sb.Append("[");
-            foreach (object item in iter)
-            {
-                sb.Append(item.ToString());
-                sb.Append(", ");
-            }
-            sb.Append("]");
-            return sb.ToString();
-        }
-        public static void reduceItemCount(Farmer who, Item what, int count)
-        {
-            if (what == null)
-                return;
-            what.Stack -= count;
-            if (what != null && what.Stack <= 0)
-            {
-                if (who != null)
-                {
-                    if (what == who.CurrentItem)
-                    {
-                        who.showNotCarrying();
-                    }
-                    who.removeItemFromInventory(what);
-                }
-            }
-        }
+            => new(ModEntry.helper.GameContent.Load<Dictionary<string, WarpItem>>(ModEntry.pathItemData), StringComparer.OrdinalIgnoreCase);
+        public static Dictionary<string, WarpItem> GetWarpObjects()
+            => new(ModEntry.helper.GameContent.Load<Dictionary<String, WarpItem>>(ModEntry.pathObjectData), StringComparer.OrdinalIgnoreCase);
         //Used to get DGA item #
         public static int GetDeterministicHashCode(string str)
         {
@@ -262,5 +142,17 @@ namespace WarpNetwork
         }
         public static string WithoutPath(this string path, string prefix)
             => PathUtilities.GetSegments(path, PathUtilities.GetSegments(prefix).Length + 1)[^1];
+        internal static bool IsAnyObeliskBuilt(ICollection<WarpLocation> locs)
+        {
+            foreach (var loc in locs)
+                if (loc.RequiredBuilding is not null && DataPatcher.buildingTypes.Contains(loc.RequiredBuilding.Collapse()))
+                    return true;
+            return false;
+        }
+        public static bool IsAccessible(this IDictionary<string, WarpLocation> dict, string id)
+            => (!id.Equals("farm", StringComparison.OrdinalIgnoreCase) || 
+            ModEntry.config.FarmWarpEnabled != WarpEnabled.AfterObelisk || 
+            IsAnyObeliskBuilt(dict.Values)) && 
+            (dict[id]?.IsAccessible() ?? false);
     }
 }

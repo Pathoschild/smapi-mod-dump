@@ -31,6 +31,7 @@ using xTile.Dimensions;
 using xTile.Tiles;
 using static StardewValley.Projectiles.BasicProjectile;
 using static System.Net.Mime.MediaTypeNames;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Guns
 {
@@ -43,13 +44,12 @@ namespace Guns
         public static ModConfig Config;
 
         public static ModEntry context;
-        public static bool isFiring;
-        public static int fireTicks;
         public static Texture2D gunTexture;
         
         public static string dictPath = "aedenthorn.Guns/dictionary";
-        public static Dictionary<string, TweakData> tweakDict = new Dictionary<string, TweakData>();
-        public static int altFrame;
+        public static string firingKey = "aedenthorn.Guns/firing";
+        public static Dictionary<string, GunData> gunDict = new Dictionary<string, GunData>();
+        public static Dictionary<long, string> farmerDict = new Dictionary<long, string>();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -63,33 +63,41 @@ namespace Guns
             SHelper = helper;
 
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
-            Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+            Helper.Events.Content.AssetRequested += Content_AssetRequested;
+
+            //var data = new GunData();
+            //File.WriteAllText("content.json", JsonConvert.SerializeObject(data));
 
             var harmony = new Harmony(ModManifest.UniqueID);
             harmony.PatchAll();
+            
+        }
 
+
+        private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        {
+            if(!Config.ModEnabled)
+            {
+                return;
+            }
+            if(e.NameWithoutLocale.IsEquivalentTo(dictPath))
+            {
+                e.LoadFrom(() => new Dictionary<string, GunData>(), StardewModdingAPI.Events.AssetLoadPriority.Exclusive);
+            }
         }
 
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
-            if(isFiring)
-            {
-                fireTicks++;
-                altFrame = (fireTicks / 5 % 2);
-                if(fireTicks % 5 == 0)
-                {
-                    Game1.playSound("shiny4");
-                    Game1.currentLocation.projectiles.Add(new BasicProjectile(10, 380, 0, 0, 0, Game1.player.FacingDirection == 3 ? -25 : 25, 0, Game1.player.Position + new Vector2(Game1.player.FacingDirection == 3 ? -64 : 48, -48), "", "", false, true, Game1.player.currentLocation, Game1.player, true, null));
-                }
-            }
-            else
-            {
-                fireTicks = 0;
-            }
         }
-        private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+        private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
+            gunDict = Helper.GameContent.Load<Dictionary<string, GunData>>(dictPath);
+            foreach(var key in gunDict.Keys.ToArray()) 
+            {
+                gunDict[key].gunTexture = Helper.GameContent.Load<Texture2D>(gunDict[key].gunTexturePath);
+            }
             gunTexture = Helper.ModContent.Load<Texture2D>("assets/uzi.png");
         }
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)

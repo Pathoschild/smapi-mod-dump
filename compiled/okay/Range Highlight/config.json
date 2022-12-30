@@ -1,4 +1,5 @@
 {
+  "RefreshInterval": 6,
   "ShowJunimoRange": true,
   "ShowSprinklerRange": true,
   "ShowScarecrowRange": true,

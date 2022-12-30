@@ -11,7 +11,7 @@
 {
 	"ID": "QuestLog",
 
-	"Variables": {
+	"ColorVariables": {
 		"$QuestLogText": "$Text",
 		"$QuestLogHover": "$Hover"
 	},
@@ -27,8 +27,8 @@
 				"Green": { "*": "$QuestBarCompleteDark" }
 			},
 
-			"Fields": {
-				"textColor": { "*": "$QuestLogText" }
+			"ColorFields": {
+				"Game1:textColor": { "*": "$QuestLogText" }
 			}
 		}
 	}

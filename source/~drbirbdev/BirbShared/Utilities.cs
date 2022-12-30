@@ -20,6 +20,15 @@ namespace BirbShared
 {
     internal class Utilities
     {
+        public static int GetIntData(Item item, string key, int defaultValue = 0)
+        {
+            if (!item.modData.TryGetValue(key, out string value) || !int.TryParse(value, out int intValue))
+            {
+                intValue = defaultValue;
+            }
+            return intValue;
+        }
+
         public static int GetRarity(int[] chances)
         {
             Random random = new();

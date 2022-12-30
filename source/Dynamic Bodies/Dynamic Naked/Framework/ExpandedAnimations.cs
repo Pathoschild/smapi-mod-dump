@@ -133,6 +133,26 @@ namespace DynamicBodies.Framework
                         }
                         anim_group = "Ride";
                         break;
+                    //Bathhouse bathers walk
+                    case 121:
+                        anim_name = "WalkUp";
+                        anim_group = "Walk";
+                        break;
+                    case 109:
+                        anim_name = "WalkDown";
+                        anim_group = "Walk";
+                        break;
+                    case 115:
+                        if (who.FacingDirection == 1)
+                        {
+                            anim_name = "WalkRight";
+                        }
+                        else
+                        {
+                            anim_name = "WalkLeft";
+                        }
+                        anim_group = "Walk";
+                        break;
                 }
 
                 bool moving = false;
@@ -141,7 +161,7 @@ namespace DynamicBodies.Framework
                     moving = true;
                 }
 
-                //Handle run/walk/ride aniamtions
+                //Handle run/walk/ride animations
                 if (moving)
                 {
                     int totalAnimationFrames = sprite.currentAnimation.Count;
@@ -178,7 +198,7 @@ namespace DynamicBodies.Framework
                     }
                     else
                     {
-                        ModEntry.debugmsg($"The hair animation didn't find frame matches for '{anim_name}' or '{anim_group}'", LogLevel.Debug);
+                        ModEntry.debugmsg($"The hair animation didn't find frame matches for '{anim_name}' or '{anim_group}' for moving frame '{sprite.CurrentSingleAnimation}'", LogLevel.Debug);
                     }
                 }
             }

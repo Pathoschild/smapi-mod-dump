@@ -9,11 +9,12 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using SpaceCore.Events;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewValley;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using WarpNetwork.api;
 using WarpNetwork.models;
 
@@ -25,14 +26,15 @@ namespace WarpNetwork
         public static readonly string pathLocData = PathUtilities.NormalizeAssetName("Data/WarpNetwork/Destinations");
         public static readonly string pathItemData = PathUtilities.NormalizeAssetName("Data/WarpNetwork/WarpItems");
         public static readonly string pathIcons = PathUtilities.NormalizeAssetName("Data/WarpNetwork/Icons");
+        public static readonly string pathObjectData = PathUtilities.NormalizeAssetName("Data/WarpNetwork/Objects");
         internal static readonly HashSet<string> knownIcons = new(new[] {"DEFAULT", "farm", "mountain", "island", "desert", "beach", "RETURN"});
 
         //main
         internal static Config config;
         internal static IModHelper helper;
         internal static IMonitor monitor;
-        internal static IDynamicGameAssets dgaAPI = null;
         internal static ITranslationHelper i18n;
+        internal static AeroCore.API.IAeroCoreAPI AeroAPI;
         public static API api = new();
         public override void Entry(IModHelper helper)
         {
@@ -40,36 +42,31 @@ namespace WarpNetwork
             ModEntry.helper = helper;
             monitor = Monitor;
             i18n = helper.Translation;
-            helper.ConsoleCommands.Add("warpnet", "Master command for Warp Network mod. Use 'warpnet' or 'warpnet help' to see a list of subcommands.", CommandHandler.Main);
-            helper.Events.Content.AssetRequested += DataPatcher.AssetRequested;
+
             helper.Events.Content.AssetRequested += LoadAssets;
             helper.Events.GameLoop.GameLaunched += GameLaunched;
-            helper.Events.GameLoop.DayStarted += (s, e) => helper.GameContent.InvalidateCache(pathLocData);
-            helper.Events.Input.ButtonPressed += ItemHandler.ButtonPressed;
-            helper.Events.Player.Warped += ObeliskPatch.MoveAfterWarp;
-            SpaceEvents.ActionActivated += WarpHandler.HandleAction;
-            helper.Events.World.BuildingListChanged += updateBuildingList;
+            LocalizedContentManager.OnLanguageChange += (c) => helper.GameContent.InvalidateCache(pathLocData);
         }
-        public void updateBuildingList(object sender, BuildingListChangedEventArgs ev)
-        {
-            if (config.ObeliskCheckRequired())
-                helper.GameContent.InvalidateCache(pathLocData);
-        }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void GameLaunched(object sender, GameLaunchedEventArgs ev)
         {
-            if (helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
-                dgaAPI = helper.ModRegistry.GetApi<IDynamicGameAssets>("spacechase0.DynamicGameAssets");
-            config.RegisterModConfigMenu(ModManifest);
+            AeroAPI = helper.ModRegistry.GetApi<AeroCore.API.IAeroCoreAPI>("tlitookilakin.AeroCore");
+            AeroAPI.RegisterGMCMConfig(ModManifest, helper, config, 
+                () => helper.GameContent.InvalidateCache(pathLocData)
+            );
+            AeroAPI.InitAll();
             CPIntegration.AddTokens(ModManifest);
         }
         public override object GetApi() => api;
         private void LoadAssets(object _, AssetRequestedEventArgs ev)
         {
-            if (ev.NameWithoutLocale.IsEquivalentTo(pathLocData))
+            if (ev.NameWithoutLocale.IsEquivalentTo(pathObjectData))
+                ev.LoadFromModFile<Dictionary<string, WarpItem>>("assets/WarpObjects.json", AssetLoadPriority.Low);
+            else if (ev.NameWithoutLocale.IsEquivalentTo(pathLocData))
                 ev.LoadFromModFile<Dictionary<string, WarpLocation>>("assets/Destinations.json", AssetLoadPriority.Medium);
             else if (ev.NameWithoutLocale.IsEquivalentTo(pathItemData))
                 ev.LoadFromModFile<Dictionary<string, WarpItem>>("assets/WarpItems.json", AssetLoadPriority.Medium);
-            else if (ev.Name.StartsWith(pathIcons))
+            else if (ev.NameWithoutLocale.StartsWith(pathIcons))
             {
                 var name = ev.NameWithoutLocale.ToString().WithoutPath(pathIcons);
                 if (knownIcons.Contains(name))

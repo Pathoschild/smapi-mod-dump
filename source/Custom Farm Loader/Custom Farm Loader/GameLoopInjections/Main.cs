@@ -56,7 +56,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 return;
 
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
-            customFarm.reloadTextures();
+           customFarm.reloadTextures();
         }
     }
 }

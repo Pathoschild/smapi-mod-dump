@@ -13,17 +13,17 @@
 	<Import Project="..\Common\Common.projitems" Label="Shared" />
 	<Import Project="..\_build\common.targets" />
 
-  <PropertyGroup>
-    <EnableModZip>True</EnableModZip>
-  </PropertyGroup>
-  
 	<ItemGroup>
+    <Reference Include="Nanoray.Pintail">
+      <HintPath>$(GamePath)\smapi-internal\Pintail.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
 		<Reference Include="SMAPI.Toolkit">
 			<HintPath>$(GamePath)\smapi-internal\SMAPI.Toolkit.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-    <Reference Include="SkiaSharp">
-      <HintPath>$(GamePath)\SkiaSharp.dll</HintPath>
+    <Reference Include="BmFont">
+      <HintPath>$(GamePath)\BmFont.dll</HintPath>
       <Private>false</Private>
     </Reference>
 	</ItemGroup>

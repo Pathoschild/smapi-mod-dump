@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  // Feature Config
+  "config.collect-outputs-distance.name": "Distância para Coletar Produção",
+  "config.collect-outputs-distance.tooltip": "A quantas células de distância é possível coletar de um produtor.",
+  "config.dispense-inputs-distance.name": "Distância para Distribuir Materiais",
+  "config.dispense-inputs-distance.tooltip": "A quantas células de distância é possível distribuir para um produtor.",
+  "config.dispense-inputs-priority.name": "Prioridade de Distribuição de Materiais",
+  "config.dispense-inputs-priority.tooltip": "Produtores com uma maior prioridade receberão materiais primeiro.",
+  // Config Controls
+  "config.collect-items.name": "Botão para Coletar Itens",
+  "config.collect-items.tooltip": "Botão para coletar itens de produtores acessíveis.",
+  "config.dispense-items.name": "Botão para Distribuir Itens",
+  "config.dispense-items.tooltip": "Botão para distribuir itens para produtores acessíveis.",
+  // Config Pages
+  "section.general.name": "Geral",
+  "section.general.description": "Opções de configuração de funções em geral.",
+  "section.controls.name": "Controles",
+  "section.controls.description": "Configurações de controle/teclado.",
+  // UI - Button
+  "button.collect-outputs.name": "Coletar Produção",
+  "button.dispense-inputs.name": "Distribuir Materiais"
+}

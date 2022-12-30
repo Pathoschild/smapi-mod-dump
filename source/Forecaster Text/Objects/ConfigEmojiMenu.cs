@@ -51,8 +51,7 @@ namespace ForecasterText.Objects {
         internal static Texture2D ChatBoxTexture;
         
         internal readonly Mod Mod;
-        public readonly string Name;
-        public readonly string Tooltip;
+        public readonly IConfT9N T9N;
         
         private readonly List<ClickableComponent> Emojis = new();
         private readonly ClickableComponent UpArrow;
@@ -76,17 +75,15 @@ namespace ForecasterText.Objects {
         
         public ConfigEmojiMenu(
             Mod mod,
-            string name,
-            string tooltip,
+            IConfT9N t9N,
             Func<uint> get,
             Action<uint> set
         ) {
             ConfigEmojiMenu.EmojiTextures ??= Game1.content.Load<Texture2D>(@"LooseSprites\emojis");
-            ConfigEmojiMenu.ChatBoxTexture ??= Game1.content.Load<Texture2D>("LooseSprites\\chatBox");
+            ConfigEmojiMenu.ChatBoxTexture ??= Game1.content.Load<Texture2D>(@"LooseSprites\chatBox");
             
             this.Mod = mod;
-            this.Name = name;
-            this.Tooltip = tooltip;
+            this.T9N = t9N;
             
             this.Getter = get;
             this.Setter = set;

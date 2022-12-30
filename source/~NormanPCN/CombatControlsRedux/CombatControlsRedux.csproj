@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Helpers\Helpers.cs" Link="Helpers.cs" />
     <Compile Include="..\Helpers\IGenericModConfigMenuApi.cs" Link="IGenericModConfigMenuApi.cs" />
   </ItemGroup>
 

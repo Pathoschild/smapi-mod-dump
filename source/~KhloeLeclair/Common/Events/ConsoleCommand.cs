@@ -14,7 +14,7 @@ using System;
 
 namespace Leclair.Stardew.Common.Events;
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class ConsoleCommand : Attribute {
 
 	public string Name { get; }

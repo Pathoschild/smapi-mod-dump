@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/daleao/sdv-mods
+**
+*************************************************/
+
+{
+    "object.Hero Soul.name": "Hero Soul",
+    "object.Hero Soul.description": "The materialized essence of a hero.",
+	"object.Dwarven Scrap.name": "Dwarven Scrap Metal",
+    "object.Dwarven Scrap.description": "It looks ancient yet somewhat futuristic."
+}

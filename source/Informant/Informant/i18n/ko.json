@@ -12,6 +12,12 @@
   "BundleTooltipDecorator" : "번들 표시",
   "BundleTooltipDecorator.Description" : "번들에 필요한 아이템을 표시합니다",
 
+  "FieldOfficeDecorator" : "Field Office Decorator",
+  "FieldOfficeDecorator.Description" : "Marks items that are needed for the island field office",
+
+  "RarecrowDecorator" : "Rarecrow Decorator",
+  "RarecrowDecorator.Description" : "Marks items that are needed for the rarecrow collection",
+  
   "SellPriceDisplayable" : "판매 가격 표시",
   "SellPriceDisplayable.Description" : "툴팁 하단에 판매 가격을 표시합니다",
   

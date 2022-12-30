@@ -23,5 +23,8 @@
   "KnownRecipeEmoji": 135,
   "ShowBirthdays": false,
   "UseVillagerNames": false,
-  "BirthdayEmoji": 152
+  "BirthdayEmoji": 152,
+  "SendToOthers": false,
+  "UseSameForOthers": true,
+  "Child": null
 }

@@ -5,6 +5,7 @@ Changes the player's movement speed using a flat multiplier.
 As such it stacks properly with other speed modifiers, such as horses, coffee and being slimed.
 It also reduces the charging time of the hoe and watering can.
 The movement speed and charging times can be configured in the mod's `config.json`, see below.
+The movement speed change is not applied during cutscenes, as this would cause the game to softlock.
 
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
@@ -22,20 +23,12 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
-#### 0.4:
-* Fixed incompatibility with Mouse Move Mode mod.
-* Setting `MovementSpeedMultiplier: 1` or `ToolChargeDelay: 600` will disable the associated patch.
-
-#### 1.0:
-* Added dependency on StardewHack.
-
-#### 2.0:
-* Updated for Stardew Valley 1.4
-* Movement speed change is no longer applied during cutscenes.
-
-#### 3.1:
-* Updated for Stardew Valley 1.5
+#### 6.0:
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 
 #### 4.0:
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 * Add 64-bit support
+
+#### 3.1:
+* Updated for Stardew Valley 1.5

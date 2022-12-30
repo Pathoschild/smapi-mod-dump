@@ -24,6 +24,13 @@ using Leclair.Stardew.Common.Types;
 using StardewModdingAPI;
 using StardewValley;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework.Graphics;
+using System.Text;
+using StardewValley.BellsAndWhistles;
+using static StardewValley.BellsAndWhistles.SpriteText;
+using System.Runtime.CompilerServices;
+using BmFont;
+using Leclair.Stardew.ThemeManager.Managers;
 
 namespace Leclair.Stardew.ThemeManager.Patches;
 
@@ -33,21 +40,215 @@ internal class DynamicPatcher : IDisposable {
 
 	internal static bool DidPatch = false;
 	internal static Dictionary<MethodBase, DynamicPatcher> LivePatchers = new();
-	private static Dictionary<string, Color>? Colors;
+
+	private static IReadOnlyDictionary<string, Color>? Colors;
+	private static IReadOnlyDictionary<string, IManagedAsset<SpriteFont>>? Fonts;
+	private static IReadOnlyDictionary<string, IManagedAsset<IBmFontData>>? BmFonts;
+	private static IReadOnlyDictionary<string, IManagedAsset<Texture2D>>? Textures;
+
+	#endregion
+
+	#region Static Field Updates
+
+	public static void UpdateColors(IReadOnlyDictionary<string, Color> colors) {
+		Colors = colors;
+	}
+
+	public static void UpdateFonts(IReadOnlyDictionary<string, IManagedAsset<SpriteFont>> fonts) {
+		Fonts = fonts;
+	}
+
+	public static void UpdateBmFonts(IReadOnlyDictionary<string, IManagedAsset<IBmFontData>> bmFonts) {
+		BmFonts = bmFonts;
+	}
+
+	public static void UpdateTextures(IReadOnlyDictionary<string, IManagedAsset<Texture2D>> textures) {
+		Textures = textures;
+	}
+
+	#endregion
+
+	#region SpriteText Access
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void ModifySpriteText(string? spriteTexture, string? coloredTexture, string? font) {
+		Texture2D? spriteTex = string.IsNullOrEmpty(spriteTexture) ? null : Textures?.GetValueOrDefault(spriteTexture)?.Value;
+		Texture2D? coloredTex = string.IsNullOrEmpty(coloredTexture) ? null : Textures?.GetValueOrDefault(coloredTexture)?.Value;
+		IBmFontData? fontData = string.IsNullOrEmpty(font) ? null : BmFonts?.GetValueOrDefault(font)?.Value;
+
+		if (spriteTex != null || coloredTex != null || fontData != null)
+			SpriteTextManager.Instance?.ApplyFont(spriteTex, coloredTex, fontData);
+	}
+
+	public static void SpriteText_drawStringHorizontallyCenteredAt(SpriteBatch b, string s, int x, int y, int characterPosition, int width, int height, float alpha, float layerDepth, bool junimoText, int color, int maxWidth, string? texOne, string? texTwo, string? font) {
+		ModifySpriteText(texOne, texTwo, font);
+
+		try {
+			SpriteText.drawStringHorizontallyCenteredAt(b, s, x, y, characterPosition, width, height, alpha, layerDepth, junimoText, color, maxWidth);
+		} finally {
+			SpriteTextManager.Instance?.ApplyNormalFont();
+		}
+	}
+
+	public static void SpriteText_drawStringWithScrollCenteredAt_Int(SpriteBatch b, string s, int x, int y, int width, float alpha, int color, int scrollType, float layerDepth, bool junimoText, string? texOne, string? texTwo, string? font) {
+		ModifySpriteText(texOne, texTwo, font);
+
+		try {
+			SpriteText.drawStringWithScrollCenteredAt(b, s, x, y, width, alpha, color, scrollType, layerDepth, junimoText);
+		} finally {
+			SpriteTextManager.Instance?.ApplyNormalFont();
+		}
+	}
+
+	public static void SpriteText_drawStringWithScrollCenteredAt_String(SpriteBatch b, string s, int x, int y, string placeHolderWidthText, float alpha, int color, int scrollType, float layerDepth, bool junimoText, string? texOne, string? texTwo, string? font) {
+		ModifySpriteText(texOne, texTwo, font);
+
+		try {
+			SpriteText.drawStringWithScrollCenteredAt(b, s, x, y, placeHolderWidthText, alpha, color, scrollType, layerDepth, junimoText);
+		} finally {
+			SpriteTextManager.Instance?.ApplyNormalFont();
+		}
+	}
+
+	public static void SpriteText_drawStringWithScrollBackground(SpriteBatch b, string s, int x, int y, string placeHolderWidthText, float alpha, int color, ScrollTextAlignment scroll_text_alignment, string? texOne, string? texTwo, string? font) {
+		ModifySpriteText(texOne, texTwo, font);
+
+		try {
+			SpriteText.drawStringWithScrollBackground(b, s, x, y, placeHolderWidthText, alpha, color, scroll_text_alignment);
+		} finally {
+			SpriteTextManager.Instance?.ApplyNormalFont();
+		}
+	}
+
+	public static void SpriteText_drawString(SpriteBatch b, string s, int x, int y, int characterPosition, int width, int height, float alpha, float layerDepth, bool junimoText, int drawBGScroll, string placeHolderScrollWidthText, int color, ScrollTextAlignment scroll_text_alignment, string? texOne, string? texTwo, string? font) {
+		ModifySpriteText(texOne, texTwo, font);
+
+		try {
+			SpriteText.drawString(b, s, x, y, characterPosition, width, height, alpha, layerDepth, junimoText, drawBGScroll, placeHolderScrollWidthText, color, scroll_text_alignment);
+		} finally {
+			SpriteTextManager.Instance?.ApplyNormalFont();
+		}
+	}
+
+	#endregion
+
+	#region Texture Access
+
+	public static Texture2D GetTexture(Texture2D @default, string key) {
+		return Textures != null && Textures.TryGetValue(key, out var tex) && tex.Value is Texture2D texture ? texture : @default;
+	}
+
+	#endregion
+
+	#region Font Access
+
+	public static SpriteFont GetFont(SpriteFont @default, string key) {
+		return Fonts != null && Fonts.TryGetValue(key, out var font) && font.Value is SpriteFont sf ? sf: @default;
+	}
 
 	#endregion
 
 	#region Color Access
 
-	public static void UpdateColors(Dictionary<string, Color> colors) {
-		Colors = colors;
+	internal static void DrawTextWithShadowSB(SpriteBatch b, StringBuilder text, SpriteFont font, Vector2 position, Color color, float scale = 1f, float layerDepth = -1f, int horizontalShadowOffset = -1, int verticalShadowOffset = -1, float shadowIntensity = 1f, int numShadows = 3, string? key = null) {
+		if (Colors != null && key != null && Colors.TryGetValue(key, out Color val))
+			Utility.drawTextWithColoredShadow(
+				b: b,
+				text: text.ToString(),
+				font: font,
+				position: position,
+				color: color,
+				shadowColor: val * shadowIntensity,
+				scale: scale,
+				layerDepth: layerDepth,
+				horizontalShadowOffset: horizontalShadowOffset,
+				verticalShadowOffset: verticalShadowOffset,
+				numShadows: numShadows
+			);
+		else
+			Utility.drawTextWithShadow(
+				b: b,
+				text: text,
+				font: font,
+				position: position,
+				color: color,
+				scale: scale,
+				layerDepth: layerDepth,
+				horizontalShadowOffset: horizontalShadowOffset,
+				verticalShadowOffset: verticalShadowOffset,
+				shadowIntensity: shadowIntensity,
+				numShadows: numShadows
+			);
+	}
+
+	internal static void DrawTextWithShadowStr(SpriteBatch b, string text, SpriteFont font, Vector2 position, Color color, float scale = 1f, float layerDepth = -1f, int horizontalShadowOffset = -1, int verticalShadowOffset = -1, float shadowIntensity = 1f, int numShadows = 3, string? key = null) {
+		if (Colors != null && key != null && Colors.TryGetValue(key, out Color val))
+			Utility.drawTextWithColoredShadow(
+				b: b,
+				text: text,
+				font: font,
+				position: position,
+				color: color,
+				shadowColor: val * shadowIntensity,
+				scale: scale,
+				layerDepth: layerDepth,
+				horizontalShadowOffset: horizontalShadowOffset,
+				verticalShadowOffset: verticalShadowOffset,
+				numShadows: numShadows
+			);
+		else
+			Utility.drawTextWithShadow(
+				b: b,
+				text: text,
+				font: font,
+				position: position,
+				color: color,
+				scale: scale,
+				layerDepth: layerDepth,
+				horizontalShadowOffset: horizontalShadowOffset,
+				verticalShadowOffset: verticalShadowOffset,
+				shadowIntensity: shadowIntensity,
+				numShadows: numShadows
+			);
+	}
+
+	internal static void DrawTextWithShadowSBPacked(SpriteBatch b, StringBuilder text, SpriteFont font, Vector2 position, Color color, float scale = 1f, float layerDepth = -1f, int horizontalShadowOffset = -1, int verticalShadowOffset = -1, float shadowIntensity = 1f, int numShadows = 3, uint key = 0) {
+		Utility.drawTextWithColoredShadow(
+			b: b,
+			text: text.ToString(),
+			font: font,
+			position: position,
+			color: color,
+			shadowColor: new Color(key) * shadowIntensity,
+			scale: scale,
+			layerDepth: layerDepth,
+			horizontalShadowOffset: horizontalShadowOffset,
+			verticalShadowOffset: verticalShadowOffset,
+			numShadows: numShadows
+		);
+	}
+
+	internal static void DrawTextWithShadowStrPacked(SpriteBatch b, string text, SpriteFont font, Vector2 position, Color color, float scale = 1f, float layerDepth = -1f, int horizontalShadowOffset = -1, int verticalShadowOffset = -1, float shadowIntensity = 1f, int numShadows = 3, uint key = 0) {
+		Utility.drawTextWithColoredShadow(
+			b: b,
+			text: text,
+			font: font,
+			position: position,
+			color: color,
+			shadowColor: new Color(key) * shadowIntensity,
+			scale: scale,
+			layerDepth: layerDepth,
+			horizontalShadowOffset: horizontalShadowOffset,
+			verticalShadowOffset: verticalShadowOffset,
+			numShadows: numShadows
+		);
 	}
 
 	internal static Color GetColorPacked(string key, uint @default) {
 		return Colors != null && Colors.TryGetValue(key, out Color val) ? val: new Color(@default);
 	}
 
-	internal static Color GetColor(string key, Color @default) {
+	internal static Color GetColor(Color @default, string key) {
 		return Colors != null && Colors.TryGetValue(key, out Color val) ? val : @default;
 	}
 
@@ -134,7 +335,7 @@ internal class DynamicPatcher : IDisposable {
 
 	#endregion
 
-	#region Lifecycle
+	#region Life Cycle
 
 	public DynamicPatcher(ModEntry mod, MethodInfo method, string key) {
 		Mod = mod;
@@ -236,7 +437,11 @@ internal class DynamicPatcher : IDisposable {
 			var applied = new PatchData() {
 				Colors = new(),
 				RawColors = new(),
-				Fields = new(),
+				ColorFields = new(),
+				FontFields = new(),
+				TextureFields = new(),
+				SpriteTextDraw = new(),
+				DrawTextWithShadow = new(),
 				RedToGreenLerp = new()
 			};
 
@@ -265,16 +470,50 @@ internal class DynamicPatcher : IDisposable {
 					}
 				}
 
-				if (patch.Fields is not null) {
-					foreach (var entry in patch.Fields) {
-						if (!applied.Fields.TryGetValue(entry.Key, out var existing)) {
+				if (patch.ColorFields is not null) {
+					foreach (var entry in patch.ColorFields) {
+						if (!applied.ColorFields.TryGetValue(entry.Key, out var existing)) {
 							existing = new();
-							applied.Fields[entry.Key] = entry.Value;
+							applied.ColorFields[entry.Key] = entry.Value;
 						}
 
 						foreach (var ent in entry.Value)
 							existing[ent.Key] = ent.Value;
 					}
+				}
+
+				if (patch.FontFields is not null) {
+					foreach (var entry in patch.FontFields) {
+						if (!applied.FontFields.TryGetValue(entry.Key, out var existing)) {
+							existing = new();
+							applied.FontFields[entry.Key] = entry.Value;
+						}
+
+						foreach (var ent in entry.Value)
+							existing[ent.Key] = ent.Value;
+					}
+				}
+
+				if (patch.TextureFields is not null) {
+					foreach (var entry in patch.TextureFields) {
+						if (!applied.TextureFields.TryGetValue(entry.Key, out var existing)) {
+							existing = new();
+							applied.TextureFields[entry.Key] = entry.Value;
+						}
+
+						foreach (var ent in entry.Value)
+							existing[ent.Key] = ent.Value;
+					}
+				}
+
+				if (patch.SpriteTextDraw is not null) {
+					foreach(var entry in patch.SpriteTextDraw)
+						applied.SpriteTextDraw[entry.Key] = entry.Value;
+				}
+
+				if (patch.DrawTextWithShadow is not null) {
+					foreach (var entry in patch.DrawTextWithShadow)
+						applied.DrawTextWithShadow[entry.Key] = entry.Value;
 				}
 
 				if (patch.RedToGreenLerp is not null) {
@@ -284,7 +523,7 @@ internal class DynamicPatcher : IDisposable {
 			}
 
 			// Now, compare it to our existing applied changes.
-			if (applied.Colors.Count == 0 && applied.RawColors.Count == 0 && applied.Fields.Count == 0 && applied.RedToGreenLerp.Count == 0)
+			if (applied.Colors.Count == 0 && applied.RawColors.Count == 0 && applied.ColorFields.Count == 0 && applied.FontFields.Count == 0 && applied.TextureFields.Count == 0 && applied.SpriteTextDraw.Count == 0 && applied.DrawTextWithShadow.Count == 0 && applied.RedToGreenLerp.Count == 0)
 				applied = null;
 
 			if (applied is null) {
@@ -311,11 +550,51 @@ internal class DynamicPatcher : IDisposable {
 							IsDirty = true;
 					}
 				}
-				if (!IsDirty && !applied.Fields!.ShallowEquals(AppliedChanges.Fields!))
+				if (!IsDirty && !applied.ColorFields!.ShallowEquals(AppliedChanges.ColorFields!))
 					IsDirty = true;
 				else if (!IsDirty) {
-					foreach(var entry in applied.Fields!) {
-						if (AppliedChanges.Fields!.TryGetValue(entry.Key, out var existing))
+					foreach(var entry in applied.ColorFields!) {
+						if (AppliedChanges.ColorFields!.TryGetValue(entry.Key, out var existing))
+							IsDirty |= entry.Value.ShallowEquals(existing);
+						else
+							IsDirty = true;
+					}
+				}
+				if (!IsDirty && !applied.FontFields!.ShallowEquals(AppliedChanges.FontFields!))
+					IsDirty = true;
+				else if (!IsDirty) {
+					foreach (var entry in applied.FontFields!) {
+						if (AppliedChanges.FontFields!.TryGetValue(entry.Key, out var existing))
+							IsDirty |= entry.Value.ShallowEquals(existing);
+						else
+							IsDirty = true;
+					}
+				}
+				if (!IsDirty && !applied.TextureFields!.ShallowEquals(AppliedChanges.TextureFields!))
+					IsDirty = true;
+				else if (!IsDirty) {
+					foreach (var entry in applied.TextureFields!) {
+						if (AppliedChanges.TextureFields!.TryGetValue(entry.Key, out var existing))
+							IsDirty |= entry.Value.ShallowEquals(existing);
+						else
+							IsDirty = true;
+					}
+				}
+				if (!IsDirty && !applied.DrawTextWithShadow!.ShallowEquals(AppliedChanges.DrawTextWithShadow!))
+					IsDirty = true;
+				else if (!IsDirty) {
+					foreach(var entry in applied.DrawTextWithShadow!) {
+						if (AppliedChanges.DrawTextWithShadow!.TryGetValue(entry.Key, out string? existing))
+							IsDirty |= string.Equals(entry.Value, existing);
+						else
+							IsDirty = true;
+					}
+				}
+				if (!IsDirty && !applied.SpriteTextDraw!.ShallowEquals(AppliedChanges.SpriteTextDraw!))
+					IsDirty = true;
+				else if (!IsDirty) {
+					foreach (var entry in applied.SpriteTextDraw!) {
+						if (AppliedChanges.SpriteTextDraw!.TryGetValue(entry.Key, out string[]? existing))
 							IsDirty |= entry.Value.ShallowEquals(existing);
 						else
 							IsDirty = true;
@@ -436,6 +715,59 @@ internal class DynamicPatcher : IDisposable {
 		return false;
 	}
 
+	internal static int HydrateFieldSet(string key, Dictionary<string, Dictionary<string, string>>? source, Dictionary<FieldInfo, Dictionary<RuleRange, string>> values, Dictionary<FieldInfo, Dictionary<RuleRange, Color>>? directValues, Type? current = null) {
+		if (source is null)
+			return 0;
+
+		int count = 0;
+
+		foreach(var entry in source) {
+			bool matched = false;
+			foreach (var field in ModEntry.Instance.ResolveMembers<FieldInfo>(entry.Key, current)) {
+				if (field.Item2 is null)
+					continue;
+
+				matched = true;
+
+				foreach(var ent in entry.Value) {
+					if (!RuleRange.TryParse(ent.Key, out var range)) {
+						ModEntry.Instance.Log($"Unable to parse rule \"{ent.Key}\" for {entry.Key} while processing {key}", LogLevel.Warn);
+						continue;
+					}
+
+					if (ent.Value.StartsWith('$')) {
+						if (!values.TryGetValue(field.Item2, out var entries)) {
+							entries = new();
+							values[field.Item2] = entries;
+						}
+						entries[range] = ent.Value[1..];
+						count++;
+
+					} else if (directValues is not null) {
+						if (CommonHelper.TryParseColor(ent.Value, out var color)) {
+							if (!directValues.TryGetValue(field.Item2, out var entries)) {
+								entries = new();
+								directValues[field.Item2] = entries;
+							}
+							entries[range] = color.Value;
+							count++;
+
+						} else
+							ModEntry.Instance.Log($"Unable to parse color \"{ent.Value}\" for {entry.Key} while processing {key}", LogLevel.Warn);
+
+					} else
+						ModEntry.Instance.Log($"Unable to parse value \"{ent.Value}\" for {entry.Key} while processing {key}", LogLevel.Warn);
+				}
+			}
+
+			if (!matched)
+				ModEntry.Instance.Log($"Unable to resolve field \"{entry.Key}\" while processing {key}", LogLevel.Warn);
+		}
+
+		return count;
+	}
+
+
 	internal static IEnumerable<CodeInstruction> Transpiler(MethodBase method, IEnumerable<CodeInstruction> instructions) {
 		DidPatch = true;
 
@@ -452,17 +784,27 @@ internal class DynamicPatcher : IDisposable {
 		Dictionary<MethodInfo, int> HitColors = new();
 		Dictionary<Color, int> HitRawColors = new();
 		Dictionary<FieldInfo, int> HitFields = new();
+
 		int HitLerps = 0;
+		int HitSpriteTextDraw = 0;
+		int HitDrawTextWithShadow = 0;
 
-		// Now, data structures for 
-
+		// Now, data structures for storing what we're changing.
 		Dictionary<MethodInfo, (Dictionary<RuleRange, string>, Color)> Colors = new();
 		Dictionary<Color, Dictionary<RuleRange, string>> RawColors = new();
-		Dictionary<FieldInfo, Dictionary<RuleRange, string>> Fields = new();
+		Dictionary<FieldInfo, Dictionary<RuleRange, string>> ColorFields = new();
 
 		Dictionary<MethodInfo, Dictionary<RuleRange, Color>> DirectColors = new();
 		Dictionary<Color, Dictionary<RuleRange, Color>> DirectRawColors = new();
-		Dictionary<FieldInfo, Dictionary<RuleRange, Color>> DirectFields = new();
+		Dictionary<FieldInfo, Dictionary<RuleRange, Color>> DirectColorFields = new();
+
+		Dictionary<FieldInfo, Dictionary<RuleRange, string>> FontFields = new();
+		Dictionary<FieldInfo, Dictionary<RuleRange, string>> TextureFields = new();
+
+		Dictionary<RuleRange, (string, string, string?)>? SpriteTextDraw = null;
+
+		Dictionary<RuleRange, string>? DrawTextWithShadow = null;
+		Dictionary<RuleRange, Color>? DirectDrawTextWithShadow = null;
 
 		Dictionary<RuleRange, (string, string, string)>? Lerp = null;
 		Dictionary<RuleRange, (Color, Color, Color)>? DirectLerp = null;
@@ -550,50 +892,48 @@ internal class DynamicPatcher : IDisposable {
 				}
 			}
 
-		if (patcher.AppliedChanges.Fields is not null)
-			foreach(var entry in patcher.AppliedChanges.Fields) {
-				FieldInfo field;
-				if (entry.Key == "textColor" || entry.Key == "textShadowColor" || entry.Key == "unselectedOptionColor")
-					field = AccessTools.Field(typeof(Game1), entry.Key);
-				else {
-					patcher.Mod.Log($"Skipping unknown field name \"{entry.Key}\" processing {patcher.Key}", LogLevel.Warn);
+		count += HydrateFieldSet(patcher.Key, patcher.AppliedChanges.ColorFields, ColorFields, DirectColorFields, method.DeclaringType);
+		count += HydrateFieldSet(patcher.Key, patcher.AppliedChanges.FontFields, FontFields, null, method.DeclaringType);
+		count += HydrateFieldSet(patcher.Key, patcher.AppliedChanges.TextureFields, TextureFields, null, method.DeclaringType);
+
+		if (patcher.AppliedChanges.SpriteTextDraw is not null) {
+			foreach(var entry in patcher.AppliedChanges.SpriteTextDraw) {
+				if (!RuleRange.TryParse(entry.Key, out var range)) {
+					patcher.Mod.Log($"Unable to parse rule \"{entry.Key}\" for SpriteTextDraw while processing {patcher.Key}", LogLevel.Warn);
 					continue;
 				}
 
-				if (!Fields.TryGetValue(field, out var entries))
-					entries = new();
-
-				if (!DirectFields.TryGetValue(field, out var directs))
-					directs = new();
-
-				foreach (var ent in entry.Value) {
-					if (!RuleRange.TryParse(ent.Key, out var range)) {
-						patcher.Mod.Log($"Unable to parse rule \"{ent.Key}\" processing {patcher.Key}", LogLevel.Warn);
-						continue;
-					}
-
-					if (ent.Value.StartsWith('$'))
-						entries[range] = ent.Value[1..];
-					else if (CommonHelper.TryParseColor(ent.Value, out var c))
-						directs[range] = c.Value;
-					else {
-						patcher.Mod.Log($"Unable to parse color \"{ent.Value}\" processing {patcher.Key}", LogLevel.Warn);
-						continue;
-					}
+				if (entry.Value is null || entry.Value.Length < 2 || entry.Value.Length > 3 || string.IsNullOrWhiteSpace(entry.Value[0]) || string.IsNullOrWhiteSpace(entry.Value[1]) || !entry.Value[0].StartsWith('$') || !entry.Value[1].StartsWith('$') || (entry.Value.Length == 3 && (string.IsNullOrWhiteSpace(entry.Value[2]) || !entry.Value[2].StartsWith('$')))) {
+					patcher.Mod.Log($"Invalid value \"{entry.Value}\" for \"{entry.Key}\" for SpriteTextDraw while processing {patcher.Key}", LogLevel.Warn);
+					continue;
 				}
 
-				if (entries.Count > 0) {
-					Fields[field] = entries;
+				SpriteTextDraw ??= new();
+				SpriteTextDraw[range] = new(entry.Value[0][1..], entry.Value[1][1..], entry.Value.Length == 3 ? entry.Value[2][1..] : null);
+				count++;
+			}
+		}
+
+		if (patcher.AppliedChanges.DrawTextWithShadow is not null)
+			foreach(var entry in patcher.AppliedChanges.DrawTextWithShadow) {
+				if (!RuleRange.TryParse(entry.Key, out var range)) {
+					patcher.Mod.Log($"Unable to parse rule \"{entry.Key}\" processing {patcher.Key}", LogLevel.Warn);
+					continue;
+				}
+
+				if (entry.Value.StartsWith('$')) {
+					DrawTextWithShadow ??= new();
+					DrawTextWithShadow[range] = entry.Value[1..];
 					count++;
-				}
-
-				if (directs.Count > 0) {
-					DirectFields[field] = directs;
+				} else if (CommonHelper.TryParseColor(entry.Value, out var c)) {
+					DirectDrawTextWithShadow ??= new();
+					DirectDrawTextWithShadow[range] = c.Value;
 					count++;
-				}
+				} else
+					patcher.Mod.Log($"Unable to parse color \"{entry.Value}\" processing {patcher.Key}", LogLevel.Warn);
 			}
 
-		if (patcher.AppliedChanges.RedToGreenLerp is not null) {
+		if (patcher.AppliedChanges.RedToGreenLerp is not null)
 			foreach (var entry in patcher.AppliedChanges.RedToGreenLerp) {
 				if (!RuleRange.TryParse(entry.Key, out var range)) {
 					patcher.Mod.Log($"Unable to parse rule \"{entry.Key}\" processing {patcher.Key}", LogLevel.Warn);
@@ -614,18 +954,14 @@ internal class DynamicPatcher : IDisposable {
 				if (is_variable) {
 					Lerp ??= new();
 					Lerp[range] = (entry.Value[0][1..], entry.Value[1][1..], entry.Value[2][1..]);
+					count++;
 				} else if (CommonHelper.TryParseColor(entry.Value[0], out var left) && CommonHelper.TryParseColor(entry.Value[1], out var middle) && CommonHelper.TryParseColor(entry.Value[2], out var right)) {
 					DirectLerp ??= new();
 					DirectLerp[range] = (left.Value, middle.Value, right.Value);
+					count++;
 				} else
 					patcher.Mod.Log($"Unable to parse color \"{entry.Value}\" processing {patcher.Key}", LogLevel.Warn);
 			}
-
-			if (Lerp != null)
-				count++;
-			if (DirectLerp != null)
-				count++;
-		}
 
 		if (count == 0)
 			return instructions;
@@ -635,12 +971,57 @@ internal class DynamicPatcher : IDisposable {
 
 		bool has_raw = RawColors.Count > 0 || DirectRawColors.Count > 0;
 
+		// SpriteTextDraw
+		Dictionary<MethodInfo, MethodInfo> SpriteTextDraw_Methods = new() {
+			{
+				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawString)),
+				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawString))
+			},
+			{
+				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawStringHorizontallyCenteredAt)),
+				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringHorizontallyCenteredAt))
+			},
+			{
+				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawStringWithScrollBackground)),
+				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringWithScrollBackground))
+			},
+			{
+				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawStringWithScrollCenteredAt), new Type[] {
+					typeof(SpriteBatch), typeof(string), typeof(int), typeof(int), typeof(int), typeof(float),
+					typeof(int), typeof(int), typeof(float), typeof(bool)
+				}),
+				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringWithScrollCenteredAt_Int))
+			},
+			{
+				AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawStringWithScrollCenteredAt), new Type[] {
+					typeof(SpriteBatch), typeof(string), typeof(int), typeof(int), typeof(string), typeof(float),
+					typeof(int), typeof(int), typeof(float), typeof(bool)
+				}),
+				AccessTools.Method(typeof(DynamicPatcher), nameof(SpriteText_drawStringWithScrollCenteredAt_String))
+			}
+		};
+
+		MethodInfo getFont = AccessTools.Method(typeof(DynamicPatcher), nameof(GetFont));
+		MethodInfo getTexture = AccessTools.Method(typeof(DynamicPatcher), nameof(GetTexture));
+
 		MethodInfo getColorPacked = AccessTools.Method(typeof(DynamicPatcher), nameof(GetColorPacked));
 		MethodInfo getColor = AccessTools.Method(typeof(DynamicPatcher), nameof(GetColor));
 		MethodInfo getLerpPacked = AccessTools.Method(typeof(DynamicPatcher), nameof(GetLerpColorPacked));
 		MethodInfo getLerp = AccessTools.Method(typeof(DynamicPatcher), nameof(GetLerpColor));
 
-		MethodInfo RedGreenLerpInfo = AccessTools.Method(typeof(Utility), nameof(Utility.getRedToGreenLerpColor));
+		MethodInfo drawTextSBPacked = AccessTools.Method(typeof(DynamicPatcher), nameof(DrawTextWithShadowSBPacked));
+		MethodInfo drawTextSB = AccessTools.Method(typeof(DynamicPatcher), nameof(DrawTextWithShadowSB));
+		MethodInfo drawTextStrPacked = AccessTools.Method(typeof(DynamicPatcher), nameof(DrawTextWithShadowStrPacked));
+		MethodInfo drawTextStr = AccessTools.Method(typeof(DynamicPatcher), nameof(DrawTextWithShadowStr));
+
+		MethodInfo Utility_GetRedGreenLerp = AccessTools.Method(typeof(Utility), nameof(Utility.getRedToGreenLerpColor));
+
+		MethodInfo Utility_DrawTextShadowSB = AccessTools.Method(typeof(Utility), nameof(Utility.drawTextWithShadow), new Type[] {
+			typeof(SpriteBatch), typeof(StringBuilder), typeof(SpriteFont), typeof(Vector2), typeof(Color), typeof(float), typeof(float), typeof(int), typeof(int), typeof(float), typeof(int)
+		});
+		MethodInfo Utility_DrawTextShadowStr = AccessTools.Method(typeof(Utility), nameof(Utility.drawTextWithShadow), new Type[] {
+			typeof(SpriteBatch), typeof(string), typeof(SpriteFont), typeof(Vector2), typeof(Color), typeof(float), typeof(float), typeof(int), typeof(int), typeof(float), typeof(int)
+		});
 
 		ConstructorInfo cstruct = AccessTools.Constructor(typeof(Color), new Type[] {
 			typeof(uint)
@@ -654,11 +1035,18 @@ internal class DynamicPatcher : IDisposable {
 
 		void AddAndLog(string message, CodeInstruction[] newInstructions, CodeInstruction[] oldInstructions) {
 			if (patcher.Mod.Config.DebugPatches) {
-				patcher!.Mod.Log(message);
-				foreach (var entry in oldInstructions)
-					patcher.Mod.Log($"-- {entry}");
-				foreach (var entry in newInstructions)
-					patcher.Mod.Log($"++ {entry}");
+				patcher!.Mod.Log(message, LogLevel.Debug);
+				int start = result.Count;
+				int i = start;
+				foreach (var entry in oldInstructions) {
+					patcher.Mod.Log($"{i:D3} -- {entry}", LogLevel.Trace);
+					i++;
+				}
+				i = start;
+				foreach (var entry in newInstructions) {
+					patcher.Mod.Log($"{i:D3} ++ {entry}", LogLevel.Trace);
+					i++;
+				}
 			}
 
 			result.AddRange(newInstructions);
@@ -689,7 +1077,7 @@ internal class DynamicPatcher : IDisposable {
 
 						if (RawColors.TryGetValue(c, out var entries) && TryGetMatch(entries, i, hits, out string? key)) {
 							AddAndLog(
-								$"Replacing raw color {c} with: {key}",
+								$"Replacing raw color {c} with \"{key}\" at {i}",
 								new CodeInstruction[] {
 									new CodeInstruction(in0) {
 										opcode = OpCodes.Ldstr,
@@ -715,7 +1103,7 @@ internal class DynamicPatcher : IDisposable {
 
 						} else if (DirectRawColors.TryGetValue(c, out var cent) && TryGetMatch(cent, i, hits, out Color clr)) {
 							AddAndLog(
-								$"Replacing raw color {c} with static: {clr}",
+								$"Replacing raw color {c} with static {clr} at {i}",
 								new CodeInstruction[] {
 									new CodeInstruction(in0) {
 										opcode = OpCodes.Ldc_I4,
@@ -739,82 +1127,289 @@ internal class DynamicPatcher : IDisposable {
 				}
 			}
 
-			// Color Properties (Color.Red)
+			// Methods
 			if (in0.opcode == OpCodes.Call && in0.operand is MethodInfo meth) {
-				// Increment Hits
-				HitColors.TryGetValue(meth, out int hits);
-				hits++;
-				HitColors[meth] = hits;
+				// Color Properties (Color.Red, Color.White, etc.)
+				if (Colors.TryGetValue(meth, out var centries)) {
+					// Increment hits.
+					HitColors.TryGetValue(meth, out int hits);
+					hits++;
+					HitColors[meth] = hits;
 
-				if (Colors.TryGetValue(meth, out var entries) && TryGetMatch(entries.Item1, i, hits, out string? key)) {
-					AddAndLog(
-						$"Replacing color property {meth.Name} with: {key}",
-						new CodeInstruction[] {
-							new CodeInstruction(in0) {
-								opcode = OpCodes.Ldstr,
-								operand = key
+					if (TryGetMatch(centries.Item1, i, hits, out string? key)) {
+						AddAndLog(
+							$"Replacing color property {meth.Name} with \"{key}\" at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldstr,
+									operand = key
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Ldc_I4,
+									operand: unchecked((int) centries.Item2.PackedValue)
+								),
+								new CodeInstruction(
+									opcode: OpCodes.Call,
+									operand: getColorPacked
+								)
 							},
-							new CodeInstruction(
-								opcode: OpCodes.Ldc_I4,
-								operand: unchecked((int) entries.Item2.PackedValue)
-							),
-							new CodeInstruction(
-								opcode: OpCodes.Call,
-								operand: getColorPacked
-							)
-						},
 
-						oldInstructions: new CodeInstruction[] {
-							in0
-						}
-					);
+							oldInstructions: new CodeInstruction[] {
+								in0
+							}
+						);
 
-					continue;
+						continue;
+					}
 				}
 
-				if (DirectColors.TryGetValue(meth, out var cent) && TryGetMatch(cent, i, hits, out color)) {
-					AddAndLog(
-						$"Replacing color property {meth.Name} with static: {color}",
-						new CodeInstruction[] {
-							new CodeInstruction(in0) {
-								opcode = OpCodes.Ldc_I4,
-								operand = unchecked((int) color.PackedValue)
+				// Color Properties (But Direct)
+				if (DirectColors.TryGetValue(meth, out var dcentries)) {
+					// Increment hits.
+					HitColors.TryGetValue(meth, out int hits);
+					hits++;
+					HitColors[meth] = hits;
+
+					if (TryGetMatch(dcentries, i, hits, out color)) {
+						AddAndLog(
+							$"Replacing color property {meth.Name} with static {color} at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldc_I4,
+									operand = unchecked((int) color.PackedValue)
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Newobj,
+									operand: cstruct
+								)
 							},
-							new CodeInstruction(
-								opcode: OpCodes.Newobj,
-								operand: cstruct
-							)
-						},
 
-						oldInstructions: new CodeInstruction[] {
-							in0
-						}
-					);
+							oldInstructions: new CodeInstruction[] {
+								in0
+							}
+						);
 
-					continue;
+						continue;
+					}
 				}
+
+				// DrawTextWithShadow
+				if (meth == Utility_DrawTextShadowSB || meth == Utility_DrawTextShadowStr) {
+					HitDrawTextWithShadow++;
+					bool is_sb = meth == Utility_DrawTextShadowSB;
+
+					if (DrawTextWithShadow is not null && TryGetMatch(DrawTextWithShadow, i, HitDrawTextWithShadow, out string? key)) {
+						AddAndLog(
+							$"Replacing {meth.Name} call with \"{key}\" at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldstr,
+									operand = key
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Call,
+									operand: is_sb ? drawTextSB : drawTextStr
+								)
+							},
+
+							oldInstructions: new CodeInstruction[] {
+								in0
+							}
+						);
+
+						continue;
+					}
+
+					if (DirectDrawTextWithShadow is not null && TryGetMatch(DirectDrawTextWithShadow, i, HitDrawTextWithShadow, out var c)) {
+						AddAndLog(
+							$"Replacing {meth.Name} call with static {c} at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldc_I4,
+									operand = unchecked((int) c.PackedValue)
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Call,
+									operand: is_sb ? drawTextSBPacked : drawTextStrPacked
+								)
+							},
+
+							oldInstructions: new CodeInstruction[] { in0 }
+						);
+
+						continue;
+					}
+				}
+
+				// SpriteTextDraw
+				if (SpriteTextDraw is not null && SpriteTextDraw_Methods.TryGetValue(meth, out var wrapped)) {
+					HitSpriteTextDraw++;
+
+					if (wrapped is null)
+						patcher.Mod.Log($"Somehow, wrapped is null for {meth}", LogLevel.Warn);
+
+					else if (TryGetMatch(SpriteTextDraw, i, HitSpriteTextDraw, out var values)) {
+						AddAndLog(
+							$"Replacing {meth.Name} call with \"{values}\" at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldstr,
+									operand = values.Item1
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Ldstr,
+									operand: values.Item2
+								),
+								new CodeInstruction(
+									opcode: values.Item3 == null ? OpCodes.Ldnull : OpCodes.Ldstr,
+									operand: values.Item3
+								),
+								new CodeInstruction(
+									opcode: OpCodes.Call,
+									operand: wrapped
+								)
+							},
+
+							oldInstructions: new CodeInstruction[] {
+								in0
+							}
+						);
+
+						continue;
+					}
+				}
+
+				// RedToGreenLerp
+				if (meth == Utility_GetRedGreenLerp) {
+					HitLerps++;
+
+					if (Lerp is not null && TryGetMatch(Lerp, i, HitLerps, out var values)) {
+						AddAndLog(
+							$"Replacing {meth.Name} call with \"{values}\" at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldstr,
+									operand = values.Item1
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Ldstr,
+									operand: values.Item2
+								),
+								new CodeInstruction(
+									opcode: OpCodes.Ldstr,
+									operand: values.Item3
+								),
+								new CodeInstruction(
+									opcode: OpCodes.Call,
+									operand: getLerp
+								)
+							},
+
+							oldInstructions: new CodeInstruction[] {
+								in0
+							}
+						);
+
+						continue;
+					}
+
+					if (DirectLerp is not null && TryGetMatch(DirectLerp, i, HitLerps, out var cvalues)) {
+						AddAndLog(
+							$"Replacing {meth.Name} call with static {cvalues} at {i}",
+							new CodeInstruction[] {
+								new CodeInstruction(in0) {
+									opcode = OpCodes.Ldc_I4,
+									operand = unchecked((int) cvalues.Item1.PackedValue)
+								},
+								new CodeInstruction(
+									opcode: OpCodes.Ldc_I4,
+									operand: unchecked((int) cvalues.Item2.PackedValue)
+								),
+								new CodeInstruction(
+									opcode: OpCodes.Ldc_I4,
+									operand: unchecked((int) cvalues.Item3.PackedValue)
+								),
+								new CodeInstruction(
+									opcode: OpCodes.Call,
+									operand: getLerpPacked
+								)
+							},
+
+							oldInstructions: new CodeInstruction[] {
+								in0
+							}
+						);
+
+						continue;
+					}
+				}
+
+
 			}
 
-			// Static Field Access (Game1.textColor)
-			if (in0.opcode == OpCodes.Ldsfld && in0.operand is FieldInfo field) {
+			// Static Fields
+			if ((in0.opcode == OpCodes.Ldsfld || in0.opcode == OpCodes.Ldfld) && in0.operand is FieldInfo field) {
 				HitFields.TryGetValue(field, out int hits);
 				hits++;
 				HitFields[field] = hits;
 
-				if (Fields.TryGetValue(field, out var entries) && TryGetMatch(entries, i, hits, out string? key)) {
+				// Texture Fields (Game1.mouseCursors, etc.)
+				if (TextureFields.TryGetValue(field, out var tentries) && TryGetMatch(tentries, i, hits, out string? key)) {
 					AddAndLog(
-						$"Replacing static field {field.Name} with: {key}",
+						$"Replacing static texture field {field.Name} with \"{key}\" at {i}",
 						new CodeInstruction[] {
-							// Yes, even though we're also emitting in0
-							// basically, we need to replace it so that
-							// labels and stuff don't get screwed up.
-							new CodeInstruction(in0) {
-								opcode = OpCodes.Ldstr,
-								operand = key
-							},
+							in0,
 							new CodeInstruction(
-								opcode: in0.opcode,
-								operand: in0.operand
+								opcode: OpCodes.Ldstr,
+								operand: key
+							),
+							new CodeInstruction(
+								opcode: OpCodes.Call,
+								operand: getTexture
+							)
+						},
+
+						oldInstructions: new CodeInstruction[] {
+							in0
+						}
+					);
+
+					continue;
+				}
+
+				// Font Fields (Game1.smallText, etc.)
+				if (FontFields.TryGetValue(field, out var fentries) && TryGetMatch(fentries, i, hits, out key)) {
+					AddAndLog(
+						$"Replacing static font field {field.Name} with \"{key}\" at {i}",
+						new CodeInstruction[] {
+							in0,
+							new CodeInstruction(
+								opcode: OpCodes.Ldstr,
+								operand: key
+							),
+							new CodeInstruction(
+								opcode: OpCodes.Call,
+								operand: getFont
+							)
+						},
+
+						oldInstructions: new CodeInstruction[] {
+							in0
+						}
+					);
+
+					continue;
+				}
+
+				// Color Fields (Game1.textColor, etc.)
+				if (ColorFields.TryGetValue(field, out var entries) && TryGetMatch(entries, i, hits, out key)) {
+					AddAndLog(
+						$"Replacing static color field {field.Name} with \"{key}\" at {i}",
+						new CodeInstruction[] {
+							in0,
+							new CodeInstruction(
+								opcode: OpCodes.Ldstr,
+								operand: key
 							),
 							new CodeInstruction(
 								opcode: OpCodes.Call,
@@ -830,9 +1425,11 @@ internal class DynamicPatcher : IDisposable {
 					continue;
 				}
 
-				if (DirectFields.TryGetValue(field, out var cent) && TryGetMatch(cent, i, hits, out color)) {
+				// Color Fields, but hard-coded
+				// Only support static fields for this to maintain the stack.
+				if (in0.opcode == OpCodes.Ldsfld && DirectColorFields.TryGetValue(field, out var cent) && TryGetMatch(cent, i, hits, out color)) {
 					AddAndLog(
-						$"Replacing static field {field.Name} with static: {color}",
+						$"Replacing static color field {field.Name} with static {color} at {i}",
 						new CodeInstruction[] {
 							new CodeInstruction(in0) {
 								opcode = OpCodes.Ldc_I4,
@@ -841,71 +1438,6 @@ internal class DynamicPatcher : IDisposable {
 							new CodeInstruction(
 								opcode: OpCodes.Newobj,
 								operand: cstruct
-							)
-						},
-
-						oldInstructions: new CodeInstruction[] {
-							in0
-						}
-					);
-
-					continue;
-				}
-			}
-
-			// Red To Green Lerp
-			if (in0.opcode == OpCodes.Call && in0.operand is MethodInfo minfo && minfo == RedGreenLerpInfo) {
-				HitLerps++;
-
-				if (Lerp is not null && TryGetMatch(Lerp, i, HitLerps, out var values)) {
-					AddAndLog(
-						$"Replacing {minfo.Name} call with: {values}",
-						new CodeInstruction[] {
-							new CodeInstruction(in0) {
-								opcode = OpCodes.Ldstr,
-								operand = values.Item1
-							},
-							new CodeInstruction(
-								opcode: OpCodes.Ldstr,
-								operand: values.Item2
-							),
-							new CodeInstruction(
-								opcode: OpCodes.Ldstr,
-								operand: values.Item3
-							),
-							new CodeInstruction(
-								opcode: OpCodes.Call,
-								operand: getLerp
-							)
-						},
-
-						oldInstructions: new CodeInstruction[] {
-							in0
-						}
-					);
-
-					continue;
-				}
-
-				if (DirectLerp is not null && TryGetMatch(DirectLerp, i, HitLerps, out var cvalues)) {
-					AddAndLog(
-						$"Replacing {minfo.Name} call with static: {cvalues}",
-						new CodeInstruction[] {
-							new CodeInstruction(in0) {
-								opcode = OpCodes.Ldc_I4,
-								operand = unchecked((int) cvalues.Item1.PackedValue)
-							},
-							new CodeInstruction(
-								opcode: OpCodes.Ldc_I4,
-								operand: unchecked((int) cvalues.Item2.PackedValue)
-							),
-							new CodeInstruction(
-								opcode: OpCodes.Ldc_I4,
-								operand: unchecked((int) cvalues.Item3.PackedValue)
-							),
-							new CodeInstruction(
-								opcode: OpCodes.Call,
-								operand: getLerpPacked
 							)
 						},
 

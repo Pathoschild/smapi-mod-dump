@@ -132,10 +132,10 @@ namespace DynamicBodies
             );
 
             //Patch for touch events
-            /*harmony.Patch(
+            harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performTouchAction), new[] { typeof(string), typeof(Vector2) }),
-                prefix: new HarmonyMethod(GetType(), nameof(pre_performAction))
-            );*/
+                prefix: new HarmonyMethod(GetType(), nameof(pre_performTouchAction))
+            );
 
             //Patch for actions on maps
             harmony.Patch(
@@ -224,6 +224,7 @@ namespace DynamicBodies
             __instance.boots.fieldChangeEvent += delegate { FarmerRendererPatched.FieldChanged("shoes", __instance); };
             __instance.shirtItem.fieldChangeEvent += delegate { FarmerRendererPatched.FieldChanged("shirt", __instance); };
             __instance.pantsItem.fieldChangeEvent += delegate { FarmerRendererPatched.FieldChanged("pants", __instance); };
+            __instance.bathingClothes.fieldChangeEvent += delegate { FarmerRendererPatched.FieldChanged("shirt", __instance); };
         }
 
 
@@ -371,51 +372,92 @@ namespace DynamicBodies
             {
                 debugmsg($"Edit Doctor map", LogLevel.Debug);
 
-                //Change the tile to the mirror
-                xTile.Layers.Layer frontLayer = map.GetLayer("Front");
-                //21 across and 38 down, sheet is 32 tiles across... 32*37+21, 1205, start at 0
-                frontLayer.Tiles[3, 15].TileIndex = 1204;
+                
                 xTile.Layers.Layer buildingsLayer = map.GetLayer("Buildings");
-                xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Doctors");
-                //tile below has the action on it
-                buildingsLayer.Tiles[3, 16].Properties.Add("Action", dynamicBodies);
+                if (buildingsLayer.Tiles[3, 16].Properties.ContainsKey("Action"))
+                {
+                    context.Monitor.Log("Cannot change Hospital map - tile already has '" + buildingsLayer.Tiles[3, 16].Properties["Action"] + "' action. Please make a ConentPatcher mod to add your own action tile to use DB - https://github.com/ribeena/StardewValleyMods/blob/main/Dynamic%20Naked/docs/author-guide.md#maps", LogLevel.Error);
+                }
+                else
+                {
+                    //Change the tile to the mirror
+                    xTile.Layers.Layer frontLayer = map.GetLayer("Front");
+                    //21 across and 38 down, sheet is 32 tiles across... 32*37+21, 1205, start at 0
+                    frontLayer.Tiles[3, 15].TileIndex = 1204;
+
+                    xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Doctors");
+                    //tile below has the action on it
+                    buildingsLayer.Tiles[3, 16].Properties.Add("Action", dynamicBodies);
+                }
             }
 
             if (asset.Name.IsEquivalentTo("Maps\\HaleyHouse"))
             {
                 debugmsg($"Edit Haley map", LogLevel.Debug);
 
-                //Change the tile to the mirror
-                xTile.Layers.Layer frontLayer = map.GetLayer("Front");
-                //2 across and 25 down, sheet is 32 tiles across... 32*25+2, 802, start at 0
-                frontLayer.Tiles[7, 14].TileIndex = 802;
                 xTile.Layers.Layer buildingsLayer = map.GetLayer("Buildings");
-                xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Haley");
-                //tile below has the action on it
-                buildingsLayer.Tiles[7, 15].Properties.Add("Action", dynamicBodies);
+                if (buildingsLayer.Tiles[7, 15].Properties.ContainsKey("Action"))
+                {
+                    if(buildingsLayer.Tiles[7, 15].Properties["Action"] == "Message \"HaleyHouseSVE.5\"")
+                    {
+                        context.Monitor.Log("Applying SVE fix for Haley's house (no string celebrity of the year for you, Haley!)", LogLevel.Alert);
+                        //Change the tile to the mirror
+                        xTile.Layers.Layer frontLayer = map.GetLayer("Front");
+                        //2 across and 25 down, sheet is 32 tiles across... 32*25+2, 802, start at 0
+                        frontLayer.Tiles[7, 14].TileIndex = 802;
+
+                        buildingsLayer.Tiles[7, 15].Properties["Action"] = "DynamicBodies:Haley";
+
+                    }
+                    context.Monitor.Log("Cannot change Haley House map - tile already has '" + buildingsLayer.Tiles[7, 15].Properties["Action"] + "' action. Please make a ConentPatcher mod to add your own action tile to use DB - https://github.com/ribeena/StardewValleyMods/blob/main/Dynamic%20Naked/docs/author-guide.md#maps", LogLevel.Error);
+                }
+                else
+                {
+                    //Change the tile to the mirror
+                    xTile.Layers.Layer frontLayer = map.GetLayer("Front");
+                    //2 across and 25 down, sheet is 32 tiles across... 32*25+2, 802, start at 0
+                    frontLayer.Tiles[7, 14].TileIndex = 802;
+
+                    xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Haley");
+                    //tile below has the action on it
+                    buildingsLayer.Tiles[7, 15].Properties.Add("Action", dynamicBodies);
+                }
             }
 
             if (asset.Name.IsEquivalentTo("Maps\\LeahHouse"))
             {
+                
                 debugmsg($"Edit Leah map", LogLevel.Debug);
-                //Change the tile to the table
-                xTile.Layers.Layer frontLayer = map.GetLayer("Front");
+                
                 xTile.Layers.Layer buildingsLayer = map.GetLayer("Buildings");
-                //3 across and 53 down, sheet is 32 tiles across... 32*53+3, 1205, start at 0
-                buildingsLayer.Tiles[10, 4].TileIndex = 1699;
-                xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Leah");
-                //tile below has the action on it
-                buildingsLayer.Tiles[10, 4].Properties.Add("Action", dynamicBodies);
 
-                frontLayer.Tiles[10, 3].TileIndex = 1282;
+                if (buildingsLayer.Tiles[10, 4].Properties.ContainsKey("Action"))
+                {
+                    context.Monitor.Log("Cannot change Leah House map - tile already has '"+ buildingsLayer.Tiles[10, 4].Properties["Action"] + "' action. Please make a ConentPatcher mod to add your own action tile to use DB - https://github.com/ribeena/StardewValleyMods/blob/main/Dynamic%20Naked/docs/author-guide.md#maps", LogLevel.Error);
+                } else { 
+                    //3 across and 53 down, sheet is 32 tiles across... 32*53+3, 1205, start at 0
+                    buildingsLayer.Tiles[10, 4].TileIndex = 1699;
+                    xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Leah");
+                    //tile below has the action on it
+                    buildingsLayer.Tiles[10, 4].Properties.Add("Action", dynamicBodies);
+                    //Change the tile to the table
+                    xTile.Layers.Layer frontLayer = map.GetLayer("Front");
+                    frontLayer.Tiles[10, 3].TileIndex = 1282;
+                }
             }
             
             if (asset.Name.IsEquivalentTo("Maps\\Trailer") || asset.Name.IsEquivalentTo("Maps\\Trailer_big"))
             {
                 debugmsg($"Edit Trailer map", LogLevel.Debug);
                 xTile.Layers.Layer buildingsLayer = map.GetLayer("Buildings");
-                xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Pam");
-                buildingsLayer.Tiles[12, 6].Properties.Add("Action", dynamicBodies);
+                if(buildingsLayer.Tiles[12, 6].Properties.ContainsKey("Action"))
+                {
+                    context.Monitor.Log("Cannot change Trailer map - tile already has '" + buildingsLayer.Tiles[12, 6].Properties["Action"] + "' action. Please make a ConentPatcher mod to add your own action tile to use DB - https://github.com/ribeena/StardewValleyMods/blob/main/Dynamic%20Naked/docs/author-guide.md#maps", LogLevel.Error);
+                } else
+                {
+                    xTile.ObjectModel.PropertyValue dynamicBodies = new xTile.ObjectModel.PropertyValue("DynamicBodies:Pam");
+                    buildingsLayer.Tiles[12, 6].Properties.Add("Action", dynamicBodies);
+                }
             }
         }
 
@@ -475,6 +517,47 @@ namespace DynamicBodies
 
                 return false;
             }
+
+            //Override arbitrary gender lock on bathhouse
+            if (Config.bathhouse && action.StartsWith("WarpWomensLocker"))
+            {
+                String[] actionParams = action.Split(" ");
+
+                who.faceGeneralDirection(new Vector2(tileLocation.X, tileLocation.Y) * 64f);
+                if (actionParams.Length < 5)
+                {
+                    Game1.currentLocation.playSoundAt("doorClose", new Vector2(tileLocation.X, tileLocation.Y));
+                }
+                Game1.warpFarmer(actionParams[3], Convert.ToInt32(actionParams[1]), Convert.ToInt32(actionParams[2]), flip: false);
+                return false;
+            }
+            if (Config.bathhouse && action.StartsWith("WarpMensLocker"))
+            {
+                String[] actionParams = action.Split(" ");
+
+                who.faceGeneralDirection(new Vector2(tileLocation.X, tileLocation.Y) * 64f);
+                if (actionParams.Length < 5)
+                {
+                    Game1.currentLocation.playSoundAt("doorClose", new Vector2(tileLocation.X, tileLocation.Y));
+                }
+                Game1.warpFarmer(actionParams[3], Convert.ToInt32(actionParams[1]), Convert.ToInt32(actionParams[2]), flip: false);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool pre_performTouchAction(GameLocation __instance, string fullActionString, Vector2 playerStandingPosition)
+        {
+            
+
+            //Override arbitrary gender lock on bathhouse
+            if (Config.bathhouse && (fullActionString.StartsWith("WomensLocker") || fullActionString.StartsWith("MensLocker")))
+            {
+                //Don't tell them which locker it is
+                return false;
+            }
+
             return true;
         }
 
@@ -780,6 +863,12 @@ namespace DynamicBodies
                 name: () => "Add mirror stations to maps",
                 getValue: () => Config.adjustmaps,
                 setValue: value => Config.adjustmaps = value
+            );
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Gender-free bathhouse lockers",
+                getValue: () => Config.bathhouse,
+                setValue: value => Config.bathhouse = value
             );
         }
 

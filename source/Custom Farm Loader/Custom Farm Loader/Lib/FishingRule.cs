@@ -40,8 +40,11 @@ namespace Custom_Farm_Loader.Lib
 
         public List<Fish> Fish = new List<Fish>();
         public bool CatchOceanCrabPotFish = false;
+        public GameLocation Location = null;
+        public string LocationName = "Farm";
 
         public bool ChangedCatchOceanCrabPotFish = false;
+
 
         public static List<FishingRule> parseFishingRuleJsonArray(JProperty fishingRuleArray)
         {
@@ -74,6 +77,9 @@ namespace Custom_Farm_Loader.Lib
                             fishingRule.ChangedCatchOceanCrabPotFish = true;
                             fishingRule.CatchOceanCrabPotFish = Boolean.Parse(value);
                             break;
+                        case "map" or "location":
+                            fishingRule.LocationName = value;
+                            break;
                         default:
                             if (fishingRule.Filter.parseAttribute(property))
                                 break;
@@ -94,7 +100,7 @@ namespace Custom_Farm_Loader.Lib
         }
         public StardewValley.Object getFish(bool isUsingMagicBait, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
         {
-            var validFish = Fish.FindAll(el => el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait));
+            var validFish = Fish.FindAll(el => el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who));
             validFish = UtilityMisc.PickSomeInRandomOrder(validFish, validFish.Count).ToList();
             string whichFish = "";
             FishType fishType = FishType.Item;

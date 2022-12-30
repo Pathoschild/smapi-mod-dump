@@ -33,33 +33,25 @@ This library is used by the following mods:
 
 ## Known bugs
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
-* StardewHack has been built on Linux and therefore needs rewriting to work on Windows. SMAPI does this automatically, however if during startup Stardew Valley hangs on `Loading StardewHack.dll (rewritten in memory)...`, this is probably due to your virus scanner preventing SMAPI from doing so.
 
 ## Changes
-#### 1.1:
-* User friendly error messages in the log file.
-* In game error message for when patches fail to apply cleanly.
+#### 6.0:
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 
-#### 2.0:
-* Updated for Stardew Valley 1.4
-* Improved IL searching capabilities.
-* Fix error message upon start for android.
-* Also warn when patch fails due to method not being found or being ambiguous.
+#### 5.2:
+* Fixed issue with `System.AppDomain.DefineDynamicAssembly` for compatibility with SDV 1.5.5 beta
 
-#### 3.0:
-* Changed how StardewHack finds the methods it wants to patch.
-* Fix incompatibility with SkillPrestige.CookingSkill causing `Failed to find method` errors.
+#### 5.1:
+* Updated to use Harmony 2.1 and support SMAPI 3.12
+* Fixes the `System.InvalidOperationException: Late bound operations cannot be performed on types or methods for which ContainsGenericParameters is true.` issue.
+
+#### 5.0:
+* StardewHack 5.0 is cursed and does not exist.
 
 #### 4.0:
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 * Add 64-bit support
 
-#### 5.0
-* StardewHack 5.0 is cursed and does not exist.
-
-#### 5.1
-* Updated to use Harmony 2.1 and support SMAPI 3.12
-* Fixes the `System.InvalidOperationException: Late bound operations cannot be performed on types or methods for which ContainsGenericParameters is true.` issue.
-
-#### 5.2
-* Fixed issue with `System.AppDomain.DefineDynamicAssembly` for compatibility with SDV 1.5.5 beta
+#### 3.0:
+* Changed how StardewHack finds the methods it wants to patch.
+* Fix incompatibility with SkillPrestige.CookingSkill causing `Failed to find method` errors.

@@ -7,11 +7,10 @@ mods:
    SAAT.Mod
 
 latest commit:
-   commit ecc71ef840ab51960f6abbe9c08ee9342011ff34
-   Author: ZeroMeters <gamemx25@gmail.com>
-   Date:   Mon Jan 31 17:05:21 2022 -0800
+   commit 23d494394f0b5a0ca8ec3b2707388fc57b7f7a0c
+   Merge: 69fcd98 ecc71ef
+   Author: David Weil <gamemx25@gmail.com>
+   Date:   Sun Dec 18 17:23:19 2022 -0800
    
-       Update README.md
-       
-       Typo
+       Merge branch 'master' of https://github.com/Dawilly/SAAT
    

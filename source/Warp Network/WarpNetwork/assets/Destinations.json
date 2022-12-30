@@ -13,7 +13,7 @@
     "location": "Farm",
     "x": 48,
     "y": 7,
-    "enabled": false,
+    "enabled": true,
     "label": "Farm",
     "icon":  "farm"
   },
@@ -21,32 +21,36 @@
     "location": "Mountain",
     "x": 31,
     "y": 20,
-    "enabled": false,
+    "enabled": true,
     "label": "Mountains",
-    "icon":  "mountain"
+    "icon":  "mountain",
+    "requiredBuilding": "earth obelisk"
   },
   "beach": {
     "location": "Beach",
     "x": 20,
     "y": 4,
-    "enabled": false,
+    "enabled": true,
     "label": "Beach",
-    "icon":  "beach"
+    "icon":  "beach",
+    "requiredBuilding": "water obelisk"
   },
   "desert": {
     "location": "Desert",
     "x": 35,
     "y": 43,
-    "enabled": false,
+    "enabled": true,
     "label": "Desert",
-    "icon": "desert"
+    "icon": "desert",
+    "requiredBuilding": "desert obelisk"
   },
   "island": {
     "location": "IslandSouth",
     "x": 11,
     "y": 11,
-    "enabled": false,
+    "enabled": true,
     "label": "Ginger Island",
-    "icon": "island"
+    "icon": "island",
+    "requiredBuilding": "island obelisk"
   }
 }

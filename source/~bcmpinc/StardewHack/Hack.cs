@@ -303,15 +303,18 @@ namespace StardewHack
 
         private void onLaunched(object sender, GameLaunchedEventArgs e)
         {
-            var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            var api = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (api != null) {
-                api.RegisterModConfig(ModManifest, () => config = new C(), () => Helper.WriteConfig(config));
-                api.SetDefaultIngameOptinValue(ModManifest, true);
+                api.Register(
+                    mod: ModManifest, 
+                    reset: () => config = new C(), 
+                    save: () => Helper.WriteConfig(config),
+                    titleScreenOnly: false
+                );
                 InitializeApi(api);
             }
         }
         
-        abstract protected void InitializeApi(GenericModConfigMenuAPI api);
+        abstract protected void InitializeApi(GenericModConfigMenu.IGenericModConfigMenuApi api);
     }
 }
-

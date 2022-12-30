@@ -6,12 +6,12 @@ mods:
    Informant
 
 latest commit:
-   commit ee03a7b605134cd0334152db3ad69e29918d5ef7
-   Merge: ed3b8ae 04d83b9
+   commit 9c66704ac2be4de5fae03032985ec1de4898d31d
+   Merge: ee03a7b 1393513
    Author: Slothsoft <admin@slothsoft.de>
-   Date:   Sun Nov 27 14:12:26 2022 +0100
+   Date:   Sun Dec 4 09:41:58 2022 +0100
    
-       Merge pull request #81 from slothsoft/bugfixes/bugfix-sunday
+       Merge pull request #84 from slothsoft/feature/more-decorators
        
-       Bugfixes
+       More Decorators
    

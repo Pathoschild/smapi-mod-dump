@@ -6,9 +6,9 @@ mods:
    Miss Coriel's Unique Courtship Response Core
 
 latest commit:
-   commit 0f9d56a6caac7cc4575022724677fa4630709491
+   commit 5288773e69b0da5f80f8f880625c0ec12640d3af
    Author: Omega Terra Coriel <44127678+MissCoriel@users.noreply.github.com>
-   Date:   Wed Apr 7 07:04:52 2021 -0500
+   Date:   Sun Dec 18 10:22:31 2022 -0600
    
-       Add files via upload
+       Update to 2.0
    

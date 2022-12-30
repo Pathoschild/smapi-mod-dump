@@ -22,6 +22,7 @@ Since there are a lot of conversation topics added by this mod, I've divided the
 
 ### Social Conversation Topics
 These are related to various social events that happen in the game.
+   * `engaged` (triggered when a player gets engaged, repeatable)
    * `wedding` (triggered when a player gets married, repeatable)
    * `divorce` (triggered when you get divorced, repeatable)
    * `babyBoy` (triggered when you have a baby, and it's a boy, repeatable)

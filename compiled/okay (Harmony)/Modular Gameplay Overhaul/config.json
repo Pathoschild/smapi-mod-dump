@@ -1,0 +1,303 @@
+{
+  "EnableProfessions": true,
+  "EnableArsenal": false,
+  "EnableRings": false,
+  "EnablePonds": false,
+  "EnableTaxes": false,
+  "EnableTools": false,
+  "EnableTweex": true,
+  "Arsenal": {
+    "Slingshots": {
+      "DisableGracePeriod": true,
+      "EnableCrits": true,
+      "EnableEnchants": true,
+      "EnableForges": true,
+      "EnableSpecialMove": true,
+      "BullseyeReplacesCursor": true
+    },
+    "Weapons": {
+      "EnableComboHits": true,
+      "ComboHitsPerWeapon": {
+        "StabbingSword": 4,
+        "DefenseSword": 4,
+        "Club": 2
+      },
+      "GroundedClubSmash": true,
+      "DefenseImprovesParry": true,
+      "EnableStabbySwords": true,
+      "GalaxySwordType": "StabbingSword",
+      "InfinityBladeType": "StabbingSword",
+      "EnableRebalance": true,
+      "EnableRetexture": true,
+      "EnableEnchants": true
+    },
+    "FaceMouseCursor": true,
+    "SlickMoves": true,
+    "ColorCodedForYourConvenience": true,
+    "RebalancedForges": true,
+    "KnockbackDamage": true,
+    "OverhauledDefense": true,
+    "MonsterHealthMultiplier": 1.0,
+    "MonsterDamageMultiplier": 1.0,
+    "MonsterDefenseMultiplier": 1.0,
+    "VariedEncounters": true,
+    "WoodyReplacesRusty": true,
+    "DwarvishCrafting": true,
+    "InfinityPlusOne": true,
+    "IridiumBarsRequiredForGalaxyArsenal": 10
+  },
+  "Ponds": {
+    "DaysUntilAlgaeSpawn": 3,
+    "RoeProductionChanceMultiplier": 1.0,
+    "RoeAlwaysSameQualityAsFish": false
+  },
+  "Professions": {
+    "ModKey": "LeftShift, LeftShoulder",
+    "ShouldJunimosInheritProfessions": false,
+    "CustomArtisanMachines": [
+      "Alembic",
+      "Artisanal Soda Maker",
+      "Butter Churn",
+      "Canning Machine",
+      "Carbonator",
+      "Cola Maker",
+      "Cream Soda Maker",
+      "DNA Synthesizer",
+      "Dehydrator",
+      "Drying Rack",
+      "Espresso Machine",
+      "Extruder",
+      "Foreign Cask",
+      "Glass Jar",
+      "Grinder",
+      "Ice Cream Machine",
+      "Infuser",
+      "Juicer",
+      "Marble Soda Machine",
+      "Meat Press",
+      "Pepper Blender",
+      "Shaved Ice Machine",
+      "Smoker",
+      "Soap Press",
+      "Sorbet Machine",
+      "Still",
+      "Syrup Maker",
+      "Vinegar Cask",
+      "Wax Barrel",
+      "Yogurt Jar"
+    ],
+    "BeesAreAnimals": true,
+    "ForagesNeededForBestQuality": 100,
+    "MineralsNeededForBestQuality": 100,
+    "LaxOwnershipRequirements": false,
+    "TrackPointerScale": 1.0,
+    "TrackPointerBobbingRate": 1.0,
+    "DisableAlwaysTrack": false,
+    "ChanceToStartTreasureHunt": 0.1,
+    "AllowScavengerHuntsOnFarm": false,
+    "ScavengerHuntHandicap": 1.0,
+    "ProspectorHuntHandicap": 1.0,
+    "TreasureDetectionDistance": 3.0,
+    "SpelunkerSpeedCap": 10,
+    "EnableGetExcited": true,
+    "FishNeededForInstantCatch": 500,
+    "AnglerMultiplierCap": 1.0,
+    "ShowFishCollectionMaxIcon": true,
+    "LegendaryPondPopulationCap": 6,
+    "TrashNeededPerTaxBonusPct": 100,
+    "TrashNeededPerFriendshipPoint": 100,
+    "ConservationistTaxBonusCeiling": 0.37,
+    "PiperBuffCap": 10,
+    "EnableSpecials": true,
+    "SpecialActivationKey": "LeftShift, LeftShoulder",
+    "HoldKeyToActivateSpecial": true,
+    "SpecialActivationDelay": 1.0,
+    "SpecialGainFactor": 1.0,
+    "SpecialDrainFactor": 1.0,
+    "EnablePrestige": true,
+    "SkillResetCostMultiplier": 1.0,
+    "ForgetRecipes": true,
+    "AllowMultiplePrestige": false,
+    "PrestigeExpMultiplier": 0.1,
+    "RequiredExpPerExtendedLevel": 5000,
+    "PrestigeRespecCost": 20000,
+    "ChangeUltCost": 0,
+    "BaseSkillExpMultipliers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "CustomSkillExpMultipliers": {
+      "DaLion.Alchemy": 1.0,
+      "blueberry.Cooking": 1.0,
+      "spacechase0.Cooking": 1.0,
+      "spacechase0.Luck": 1.0,
+      "spacechase0.Magic": 1.0,
+      "drbirbdev.BinningSkill": 1.0,
+      "drbirbdev.SocializingSkill": 1.0
+    },
+    "PrestigeProgressionStyle": "StackedStars"
+  },
+  "Rings": {
+    "RebalancedRings": true,
+    "CraftableGemRings": true,
+    "CraftableGlowAndMagnetRings": true,
+    "ImmersiveGlowstoneRecipe": true,
+    "TheOneInfinityBand": true,
+    "EnableResonance": true
+  },
+  "Taxes": {
+    "AnnualInterest": 0.06,
+    "IncomeTaxCeiling": 0.37,
+    "DeductibleAnimalExpenses": true,
+    "DeductibleBuildingExpenses": true,
+    "DeductibleSeedExpenses": true,
+    "DeductibleToolExpenses": true,
+    "DeductibleObjects": []
+  },
+  "Tools": {
+    "Axe": {
+      "EnableCharging": true,
+      "RequiredUpgradeForCharging": "Copper",
+      "RadiusAtEachPowerLevel": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ClearFruitTreeSeeds": false,
+      "ClearFruitTreeSaplings": false,
+      "CutGrownFruitTrees": false,
+      "ClearTreeSeeds": false,
+      "ClearTreeSaplings": false,
+      "CutGrownTrees": false,
+      "CutTappedTrees": false,
+      "CutGiantCrops": false,
+      "ClearBushes": true,
+      "ClearLiveCrops": false,
+      "ClearDeadCrops": true,
+      "ClearDebris": true,
+      "PlayShockwaveAnimation": true,
+      "AllowReachingEnchantment": true,
+      "AllowMasterEnchantment": true,
+      "BaseStaminaMultiplier": 1.0
+    },
+    "Pick": {
+      "EnableCharging": true,
+      "RequiredUpgradeForCharging": "Copper",
+      "RadiusAtEachPowerLevel": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "BreakBouldersAndMeteorites": true,
+      "HarvestMineSpawns": true,
+      "BreakMineContainers": true,
+      "ClearObjects": false,
+      "ClearFlooring": false,
+      "ClearDirt": true,
+      "ClearLiveCrops": false,
+      "ClearDeadCrops": true,
+      "ClearDebris": true,
+      "PlayShockwaveAnimation": true,
+      "AllowReachingEnchantment": true,
+      "AllowMasterEnchantment": true,
+      "BaseStaminaMultiplier": 1.0
+    },
+    "Hoe": {
+      "AffectedTiles": [
+        [
+          3,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "OverrideAffectedTiles": false,
+      "AllowMasterEnchantment": true,
+      "BaseStaminaMultiplier": 1.0
+    },
+    "Can": {
+      "AffectedTiles": [
+        [
+          3,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "AllowSwiftEnchantment": true,
+      "OverrideAffectedTiles": false,
+      "AllowMasterEnchantment": true,
+      "BaseStaminaMultiplier": 1.0
+    },
+    "Scythe": {
+      "RegularRadius": 2,
+      "GoldRadius": 4,
+      "ClearTreeSaplings": true,
+      "AllowHaymakerEnchantment": true
+    },
+    "RequireModkey": true,
+    "Modkey": "LeftShift, LeftShoulder",
+    "HideAffectedTiles": false,
+    "StaminaCostMultiplier": 1.0,
+    "TicksBetweenWaves": 4,
+    "FaceMouseCursor": true
+  },
+  "Tweex": {
+    "BeeHouseAgingFactor": 1.0,
+    "MushroomBoxAgingFactor": 1.0,
+    "TreeAgingFactor": 1.0,
+    "FruitTreeAgingFactor": 1.0,
+    "DeterministicAgeQuality": true,
+    "BerryBushesRewardExp": true,
+    "MushroomBoxesRewardExp": true,
+    "TappersRewardExp": true,
+    "PreventFruitTreeGrowthInWinter": true,
+    "LargeProducsYieldQuantityOverQuality": true,
+    "DairyArtisanMachines": [
+      "Butter Churn",
+      "Ice Cream Machine",
+      "Keg",
+      "Yogurt Jar"
+    ],
+    "MillsPreserveQuality": true,
+    "ExplosionTriggeredBombs": true,
+    "LegendaryFishAlwaysBestQuality": true
+  },
+  "DebugKey": "LeftAlt"
+}

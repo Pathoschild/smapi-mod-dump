@@ -12,10 +12,14 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using xTile.Layers;
 using xTile.ObjectModel;
+using xTile.Tiles;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DynamicMapTiles
@@ -28,37 +32,34 @@ namespace DynamicMapTiles
         public static ModConfig Config;
         public static ModEntry context;
 
+        public static string dictPath = "aedenthorn.DynamicMapTiles/dictionary";
         public static Dictionary<string, List<PushedTile>> pushingDict = new Dictionary<string, List<PushedTile>>();
+        public static Dictionary<string, DynamicTileInfo> dynamicDict = new Dictionary<string, DynamicTileInfo>();
         
+        public static string addLayerKey = "DMT/addLayer";
+        public static string addTilesheetKey = "DMT/addTilesheet";
         public static string changeIndexKey = "DMT/changeIndex";
-        public static string changeIndexOffKey = "DMT/changeIndexOff";
         public static string changeMultipleIndexKey = "DMT/changeMultipleIndex";
-        public static string changeMultipleIndexOffKey = "DMT/changeMultipleIndexOff";
         public static string changePropertiesKey = "DMT/changeProperties";
-        public static string changePropertiesOffKey = "DMT/changePropertiesOff";
         public static string changeMultiplePropertiesKey = "DMT/changeMultipleProperties";
-        public static string changeMultiplePropertiesOffKey = "DMT/changeMultiplePropertiesOff";
         public static string triggerKey = "DMT/trigger";
-        public static string triggerOnceKey = "DMT/triggerOnce";
         public static string explodeKey = "DMT/explode";
         public static string explosionKey = "DMT/explosion";
-        public static string explosionOnceKey = "DMT/explosionOnce";
         public static string pushKey = "DMT/push";
+        public static string pushableKey = "DMT/pushable";
+        public static string pushAlsoKey = "DMT/pushAlso";
         public static string pushOthersKey = "DMT/pushOthers";
         public static string soundKey = "DMT/sound";
-        public static string soundOnceKey = "DMT/soundOnce";
-        public static string soundOffKey = "DMT/soundOff";
-        public static string soundOffOnceKey = "DMT/soundOffOnce";
         public static string teleportKey = "DMT/teleport";
         public static string teleportTileKey = "DMT/teleportTile";
         public static string giveKey = "DMT/give";
+        public static string takeKey = "DMT/take";
         public static string chestKey = "DMT/chest";
         public static string chestAdvancedKey = "DMT/chestAdvanced";
         public static string messageKey = "DMT/message";
-        public static string messageOnceKey = "DMT/messageOnce";
         public static string eventKey = "DMT/event";
-        public static string eventOnceKey = "DMT/eventOnce";
         public static string mailKey = "DMT/mail";
+        public static string mailRemoveKey = "DMT/mailRemove";
         public static string mailBoxKey = "DMT/mailbox";
         public static string invalidateKey = "DMT/invalidate";
         public static string musicKey = "DMT/music";
@@ -70,39 +71,32 @@ namespace DynamicMapTiles
         public static string speedKey = "DMT/speed";
         public static string moveKey = "DMT/move";
         public static string emoteKey = "DMT/emote";
-        public static string emoteOnceKey = "DMT/emoteOnce";
         public static string animationKey = "DMT/animation";
-        public static string animationOnceKey = "DMT/animationOnce";
+        public static string slipperyKey = "DMT/slippery";
 
         public static List<string> actionKeys = new List<string>()
         {
+            addLayerKey,
+            addTilesheetKey,
             changeIndexKey,
-            changeIndexOffKey,
             changeMultipleIndexKey,
-            changeMultipleIndexOffKey,
             changePropertiesKey,
-            changePropertiesOffKey,
             changeMultiplePropertiesKey,
-            changeMultiplePropertiesOffKey,
             explodeKey,
             explosionKey,
-            explosionOnceKey,
             pushKey,
             pushOthersKey,
             soundKey,
-            soundOnceKey,
-            soundOffKey,
-            soundOffOnceKey,
             teleportKey,
             teleportTileKey,
             giveKey,
+            takeKey,
             chestKey,
             chestAdvancedKey,
             messageKey,
-            messageOnceKey,
             eventKey,
-            eventOnceKey,
             mailKey,
+            mailRemoveKey,
             mailBoxKey,
             invalidateKey,
             musicKey,
@@ -114,49 +108,7 @@ namespace DynamicMapTiles
             speedKey,
             moveKey,
             emoteKey,
-            emoteOnceKey,
-            animationKey,
-            animationOnceKey
-        };
-        public static List<string> stepOnKeys = new List<string>()
-        {
-            changeIndexKey,
-            changeMultipleIndexKey,
-            changePropertiesKey,
-            changeMultiplePropertiesKey,
-            explosionKey,
-            explosionOnceKey,
-            soundKey,
-            soundOnceKey,
-            teleportKey,
-            teleportTileKey,
-            giveKey,
-            chestKey,
-            chestAdvancedKey,
-            messageKey,
-            messageOnceKey,
-            eventKey,
-            eventOnceKey,
-            mailKey,
-            mailBoxKey,
-            invalidateKey,
-            musicKey,
-            healthKey,
-            staminaKey,
-            buffKey,
-            emoteKey,
-            emoteOnceKey,
-            animationKey,
-            animationOnceKey
-        };
-        public static List<string> stepOffKeys = new List<string>()
-        {
-            changeIndexOffKey,
-            changeMultipleIndexOffKey,
-            changePropertiesOffKey,
-            changeMultiplePropertiesOffKey,
-            soundOffKey,
-            soundOffOnceKey
+            animationKey
         };
 
         public override void Entry(IModHelper helper)
@@ -170,14 +122,84 @@ namespace DynamicMapTiles
 
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
             Helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            Helper.Events.Content.AssetRequested += Content_AssetRequested;
+            Helper.Events.Player.Warped += Player_Warped;
 
             var harmony = new Harmony(ModManifest.UniqueID);
             harmony.PatchAll();
 
         }
+
+        private void Player_Warped(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
+        {
+            if (!Config.ModEnabled)
+                return;
+            Stopwatch s = new Stopwatch();
+            s.Start();
+            var dict = Helper.GameContent.Load<Dictionary<string, DynamicTileInfo>>(dictPath);
+            foreach (var kvp in dict)
+            {
+                var info = kvp.Value;
+                int count = 0;
+                if (info.locations is not null && !info.locations.Contains(e.NewLocation.Name))
+                    continue;
+                if (info.tileSheets is not null && !info.tileSheets.Exists(s => e.NewLocation.Map.TileSheets.ToList().Exists(ss => ss.Id == s)) && !info.tileSheets.Exists(s => e.NewLocation.Map.TileSheets.ToList().Exists(ss => ss.ImageSource.Contains(s))))
+                    continue;
+                if (info.tileSheetPaths is not null && !info.tileSheetPaths.Exists(s => e.NewLocation.Map.TileSheets.ToList().Exists(ss => ss.ImageSource.Contains(s))))
+                    continue;
+                foreach (var layer in e.NewLocation.Map.Layers)
+                {
+                    if (info.layers is not null && !info.layers.Contains(layer.Id))
+                        continue;
+                    for (int x = 0; x < layer.Tiles.Array.GetLength(0); x++)
+                    {
+                        for (int y = 0; y < layer.Tiles.Array.GetLength(1); y++)
+                        {
+                            if (layer.Tiles[x, y] is not null)
+                            {
+                                if (info.tileSheets is not null && !info.tileSheets.Contains(layer.Tiles[x, y].TileSheet.Id))
+                                    continue;
+                                if (info.tileSheetPaths is not null && !info.tileSheetPaths.Exists(s => layer.Tiles[x, y].TileSheet.ImageSource.Contains(s)))
+                                    continue;
+                                if (info.indexes is not null && !info.indexes.Contains(layer.Tiles[x, y].TileIndex))
+                                    continue;
+                                Point point = new Point(x, y);
+                                if (info.rectangles is not null && !info.rectangles.Exists(r => r.Contains(point)))
+                                    continue;
+                                count++;
+                                foreach (var prop in info.properties)
+                                {
+                                    layer.Tiles[x, y].Properties[prop.Key] = prop.Value;
+                                }
+                            }
+                        }
+                    }
+                }
+                Monitor.Log($"Added properties from {kvp.Key} to {count} tiles in {e.NewLocation.Name}");
+            }
+            s.Stop();
+            Monitor.Log($"{s.Elapsed} elapsed");
+        }
+
+        private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        {
+
+        }
+
+        private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        {
+            if (!Config.ModEnabled)
+                return;
+            if (e.NameWithoutLocale.IsEquivalentTo(dictPath))
+            {
+                e.LoadFrom(() => new Dictionary<string, DynamicTileInfo>(), StardewModdingAPI.Events.AssetLoadPriority.Exclusive);
+            }
+        }
+
         public override object GetApi()
         {
             return new DynamicMapTilesApi();
@@ -230,11 +252,9 @@ namespace DynamicMapTiles
                 if(tile != null)
                 {
                     tile.Properties[changeIndexKey] = "380";
-                    tile.Properties[changeIndexOffKey] = "206";
                     tile.Properties[soundKey] = "slime";
                     tile.Properties[buffKey] = "13";
                     tile.Properties[messageKey] = "You have been slimed!";
-                    tile.Properties[soundOffKey] = "shwip";
                     //tile.Properties[teleportKey] = $"{30 * 64} {57 * 64}";
                     //tile.Properties.Remove(teleportKey);
                     //tile.Properties[eventKey] = "playful/20 57/Harvey 25 57 3/skippable/pause 200/speak Harvey \"Hey, why are you stepping there, @?\"/pause 500/end";
@@ -244,11 +264,8 @@ namespace DynamicMapTiles
                 if(tile != null)
                 {
                     tile.Properties[changeMultipleIndexKey] = "Buildings 41 85=Landscape/1140|Buildings 43 85=Landscape/1141|Front 41 84=Landscape/1117|Front 43 84=Landscape/1118|Front 41 83=Landscape/1090|Front 43 83=Landscape/1091";
-                    tile.Properties[changeMultipleIndexOffKey] = "Buildings 41 85=|Buildings 43 85=|Front 41 84=|Front 43 84=|Front 41 83=|Front 43 83=";
                     tile.Properties[changeMultiplePropertiesKey] = "Buildings,42,85,Action=kitchen";
-                    tile.Properties[changeMultiplePropertiesOffKey] = "Buildings,42,85,Action=";
                     tile.Properties[soundKey] = "shwip";
-                    tile.Properties[soundOffKey] = "shwip";
                 }
                 tile = Game1.currentLocation.Map.GetLayer("Back").Tiles[42, 91];
                 if(tile != null)
@@ -281,7 +298,7 @@ namespace DynamicMapTiles
                 if(tile != null)
                 {
                     tile.Properties[giveKey] = "Weapon/Rusty Sword";
-                    tile.Properties[messageOnceKey] = "You found an old sword!";
+                    tile.Properties[messageKey+"Once"] = "You found an old sword!";
                 }
                 for (int i = 0; i < 10; i++)
                 {
@@ -323,20 +340,7 @@ namespace DynamicMapTiles
                         var t = l.PickTile(new xTile.Dimensions.Location(tile.position.X, tile.position.Y), Game1.viewport.Size);
                         if (t is not null)
                         {
-                            foreach (var kvp in t.Properties)
-                            {
-                                foreach (var str in actionKeys)
-                                {
-                                    if (kvp.Key == str + "Pushed")
-                                    {
-                                        actions.Add(kvp.Key);
-                                    }
-                                }
-                            }
-                            if (actions.Count > 0)
-                            {
-                                TriggerActions(actions, new List<Layer>() { t.Layer }, tile.farmer, new Point(tile.position.X / 64, tile.position.Y / 64));
-                            }
+                            TriggerActions(new List<Layer>() { t.Layer }, tile.farmer, new Point(tile.position.X / 64, tile.position.Y / 64), new List<string>() { "Pushed" });
                         }
                     }
                     tiles.RemoveAt(i);

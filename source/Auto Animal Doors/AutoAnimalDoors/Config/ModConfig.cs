@@ -14,7 +14,7 @@ using AutoAnimalDoors.Config;
 
 namespace AutoAnimalDoors.StardewValleyWrapper
 {
-    class ModConfig
+    public class ModConfig
     {
         public static ModConfig Instance { get; set; }
 

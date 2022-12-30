@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/14377
 IDs: sophie.LastingCTs
-update keys: Nexus:14377, GitHub:ModOrganizer2/modorganizer-basic_games
+update keys: Nexus:14377@LastingConversationTopics, Nexus:14377, GitHub:ModOrganizer2/modorganizer-basic_games

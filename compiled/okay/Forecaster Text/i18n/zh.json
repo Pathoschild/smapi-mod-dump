@@ -1,0 +1,95 @@
+{
+	"source.tv": "电视: {{content}}",
+	"source.calendar": "日历: {{content}}",
+	
+	"tv.spirits": "{{spirit}}今天{{mood}}",
+	"tv.recipe": "{{icon}}学习制作 \"{{recipe}}\"",
+	"tv.birthday": "{{icon}}{{...}}",
+	
+	"tv.weather.pelican_town": "鹈鹕镇天气预报 {{...}}",
+	"tv.weather.ginger_island": "姜岛天气预报 {{...}}",
+	
+	"config.weather": "显示天气",
+	"config.weather.desc": "何时显示天气",
+	
+	"config.weather.pelican_town": "鹈鹕镇",
+	"config.weather.pelican_town.desc": "何时显示鹈鹕镇天气",
+	"config.weather.ginger_island": "姜岛",
+	"config.weather.ginger_island.desc": "何时显示姜岛天气",
+	
+	"config.weather.show.always": "一直",
+	"config.weather.show.raining": "下雨",
+	"config.weather.show.not_raining": "不下雨",
+	"config.weather.show.never": "从不",
+	
+	"config.birthdays": "显示生日",
+	"config.birthdays.desc": "何时显示生日",
+	"config.birthdays.desc2": "是否显示生日",
+	
+	"config.birthdays.use_names": "使用村民姓名",
+	"config.birthdays.use_names.desc": "使用村民姓名而不是图标",
+	
+	"config.luck": "显示运气",
+	"config.luck.desc": "何时显示运气",
+	
+	"config.luck.good": "显示好运气",
+	"config.luck.good.desc": "是否显示好运气信息",
+	"config.luck.neutral": "显示一般运气",
+	"config.luck.neutral.desc": "是否显示一般运气信息",
+	"config.luck.bad": "显示坏运气",
+	"config.luck.bad.desc": "是否显示坏运气信息",
+	
+	"config.recipes": "显示食谱",
+	"config.recipes.desc": "何时显示食谱",
+	
+	"config.recipes.new": "显示未学习食谱",
+	"config.recipes.new.desc": "显示未学习过的食谱",
+	"config.recipes.learned": "显示已学习食谱",
+	"config.recipes.learned.desc": "显示已经学习过的食谱",
+	
+	"config.multiplayer": "多人模式",
+	"config.multiplayer.desc": "调整其他玩家的mod选项",
+	
+	"config.multiplayer.share": "与其他玩家分享",
+	"config.multiplayer.share.desc": "给没有此mod的玩家发送信息",
+	"config.multiplayer.config": "使用相同设定",
+	"config.multiplayer.config.desc": "是否和其他玩家使用相同设定。当与其他玩家共享mod时，其他玩家可以使用不同的设定。选择 多人模式 来调整其他玩家的mod选项",
+	
+	"config.icons.spirits": "精灵图标",
+	"config.icons.spirits.desc": "显示精灵时使用的图标",
+	
+	"config.icons.spirit": "精灵",
+	"config.icons.spirits.very_happy": "非常开心",
+	"config.icons.spirits.good_humor": "心情很不错",
+	"config.icons.spirits.neutral": "没有倾向",
+	"config.icons.spirits.somewhat_annoyed": "很冷漠",
+	"config.icons.spirits.mildly_perturbed": "有些烦躁",
+	"config.icons.spirits.very_displeased": "十分不满",
+	
+	"config.icons.recipes": "食谱图标",
+	"config.icons.recipes.desc": "显示食谱时使用的图标",
+	
+	"config.icons.recipes.new": "未学习食谱",
+	"config.icons.recipes.learned": "已学习食谱",
+	
+	"config.icons.birthdays": "生日图标",
+	"config.icons.birthdays.desc": "显示生日时使用的图标",
+	
+	"config.icons.birthdays.today": "今天生日",
+	
+	"config.icons.weather": "天气图标",
+	"config.icons.weather.desc": "显示天气时使用的图标",
+	
+	"config.icons.weather.sunny": "晴天",
+	"config.icons.weather.sunny.desc": "第二天为晴天时显示",
+	"config.icons.weather.rain": "雨天",
+	"config.icons.weather.rain.desc": "第二天为雨天时显示",
+	"config.icons.weather.thunder": "雷雨天",
+	"config.icons.weather.thunder.desc": "第二天为雷雨天时显示",
+	"config.icons.weather.snow": "下雪",
+	"config.icons.weather.snow.desc": "第二天下雪时显示",
+	"config.icons.weather.festival": "节日",
+	"config.icons.weather.festival.desc": "第二天有节日时显示",
+	"config.icons.weather.wedding": "婚礼",
+	"config.icons.weather.wedding.desc": "第二天有婚礼时显示"
+}

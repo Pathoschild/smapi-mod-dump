@@ -11,6 +11,7 @@
 using Chest_Displays.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -25,64 +26,45 @@ using System.Threading.Tasks;
 using SObject = StardewValley.Object;
 using SUtils = StardewValley.Utility;
 
-namespace Chest_Displays.Harmony
+namespace Chest_Displays.Patches
 {
     public class ChestPatches
     {
-        private static IModHelper Helper = ModEntry.RequestableHelper;
-        private static IMonitor Monitor = ModEntry.RequestableMonitor;
-        private static Config Config = ModEntry.RequestableConfig;
+        private static IModHelper Helper => ModEntry.IHelper;
+        private static IMonitor Monitor => ModEntry.IMonitor;
+        private static Config Config => ModEntry.IConfig;
 
-        public static void draw_postfix(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
+        public static void draw_postfix(Chest __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
             try
             {
-                foreach (SaveData sd in ModEntry.SavedData)
+                if (Utils.InvalidChest(__instance)) return;
+
+                bool flag1 = false;
+                int lidFrame = Helper.Reflection.GetField<int>(__instance, "currentLidFrame").GetValue();
+                if (lidFrame != __instance.startingLidFrame.Value) return;
+
+                if (__instance.modData.ContainsKey(ModEntry.IHelper.ModRegistry.ModID))
                 {
-                    if(sd.Location == Game1.player.currentLocation.Name && sd.X == x && sd.Y == y)
+                    var data = JsonConvert.DeserializeObject<ModData>(__instance.modData[Helper.ModRegistry.ModID]);
+                    if (data is not null)
                     {
-                        Chest current = Game1.player.currentLocation.getObjectAtTile(x, y) as Chest;
-                        if(current != null)
-                        {
-                            int lidFrame = Helper.Reflection.GetField<int>(current, "currentLidFrame").GetValue();
-                            if (lidFrame != current.startingLidFrame) continue;
-                        }
-                        Item i;
-                        if (ModEntry.RequestableConfig.RetainItem)
-                            i = SUtils.getItemFromStandardTextDescription(sd.ItemDescription, null);
-                        else
-                            i = Utils.getItemFromName(sd.Item, current);
-                        if (i == null)
-                            continue;
-                        int itemType = Utils.getItemType(i);
-                        if (itemType == 1) (i as SObject).Quality = sd.ItemQuality;
-                        Utils.drawItem(spriteBatch, i, itemType, x, y, Utils.GetLocationFromItemType(itemType, x, y), Utils.GetDepthFromItemType(itemType, x, y));
-                        return;
+                        Item? i = Utils.getItemFromName(data.Item, data.ItemType, data.ItemQuality, data.UpgradeLevel, data.Color);
+                        if (i is null) flag1 = true;
+                        else Utils.drawItem(spriteBatch, i, data.ItemType, x, y, Utils.GetLocationFromItemType(data.ItemType, x, y), Utils.GetDepthFromItemType(data.ItemType, x, y));
                     }
                 }
+                else flag1 = true;
 
-                foreach(var o in Game1.player.currentLocation.Objects.Values)
+                if (flag1 && Config.ShowFirstIfNoneSelected && __instance.items.Count > 0)
                 {
-                    if (o is Chest && o.TileLocation == new Vector2(x, y))
-                    {
-                        Chest current = o as Chest;
-                        if (current != null)
-                        {
-                            if (Utils.nullChest(current) || current.items.Count <= 0)
-                                continue;
-                            int lidFrame = Helper.Reflection.GetField<int>(current, "currentLidFrame").GetValue();
-                            if (lidFrame != current.startingLidFrame) continue;
-                            Item i = current.items[0];
-                            if (i == null)
-                                continue;
-                            int itemType = Utils.getItemType(i);
-                            Utils.drawItem(spriteBatch, i, itemType, x, y, Utils.GetLocationFromItemType(itemType, x, y), Utils.GetDepthFromItemType(itemType, x, y));
-                            return;
-                        }
-                    }
+                    Item? i = __instance.items.FirstOrDefault(x => x is not null);
+                    if (i is null) return;
+                    int itemType = Utils.getItemType(i);
+                    Utils.drawItem(spriteBatch, i, itemType, x, y, Utils.GetLocationFromItemType(itemType, x, y), Utils.GetDepthFromItemType(itemType, x, y));
                 }
             }
-            catch(Exception ex) { Monitor.Log($"Failed drawing object at X : {x} - Y : {y}", LogLevel.Error);  Monitor.Log($"{ex} - {ex.Message}", LogLevel.Trace); }
+            catch(Exception ex) { Monitor.LogOnce($"Failed drawing object at X : {x} - Y : {y}", LogLevel.Error);  Monitor.LogOnce($"{ex} - {ex.Message}", LogLevel.Trace); }
         }
     }
 }

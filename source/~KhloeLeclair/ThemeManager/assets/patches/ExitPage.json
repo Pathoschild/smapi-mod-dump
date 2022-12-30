@@ -11,7 +11,7 @@
 {
 	"ID": "ExitPage",
 
-	"Variables": {
+	"ColorVariables": {
 		"$ExitPageHover": "$Hover"
 	},
 

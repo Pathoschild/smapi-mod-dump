@@ -56,6 +56,27 @@ namespace Custom_Farm_Loader.GameLoopInjections
                prefix: new HarmonyMethod(typeof(_Farm), nameof(_Farm.catchOceanCrabPotFishFromThisSpot_Prefix))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Farm), nameof(Farm.GetSpouseOutdoorAreaCorner)),
+                prefix: new HarmonyMethod(typeof(_Farm), nameof(_Farm.GetSpouseOutdoorAreaCorner_Prefix))
+             );
+        }
+
+        public static bool GetSpouseOutdoorAreaCorner_Prefix(Farm __instance, ref Vector2 __result)
+        {
+            if (!CustomFarm.IsCFLMapSelected())
+                return true;
+
+            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+
+            foreach (var location in customFarm.Locations)
+                if (location.Key.ToLower().Replace(" ", "") == "spousearea") {
+                    __result = Utility.PointToVector2(location.Value);
+                    return false;
+                }
+
+
+            return true; ;
         }
 
         public static bool getFish_Prefix(Farm __instance, ref StardewValley.Object __result, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string location = null)
@@ -74,7 +95,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             bool isUsingMagicBait = __instance.IsUsingMagicBait(who);
             var validFishingRules = customFarm.FishingRules.FindAll(el => el.Area.isTileIncluded(bobberTile)
-                                                                       && el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait)
+                                                                       && el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who)
                                                                        && el.Fish.Count > 0);
 
             if (validFishingRules.Count == 0)
@@ -132,8 +153,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
 
-            var validFishingRules = customFarm.FishingRules.FindAll(el => el.Area.isTileIncluded(new Vector2(x,y))
-                                                                       && el.Filter.isValid() 
+            var validFishingRules = customFarm.FishingRules.FindAll(el => el.Area.isTileIncluded(new Vector2(x, y))
+                                                                       && el.Filter.isValid()
                                                                        && el.ChangedCatchOceanCrabPotFish);
 
             if (validFishingRules.Count == 0)

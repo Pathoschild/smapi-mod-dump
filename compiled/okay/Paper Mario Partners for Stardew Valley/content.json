@@ -1,0 +1,34 @@
+{
+    "Format": "1.28.0",
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "Portraits/Goombella",
+            "FromFile": "Portraits/Goombella.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Characters/Goombella",
+            "FromFile": "Characters/Goombella.png",
+        },
+        {
+            "Action": "Load",
+            "Target": "Characters/Dialogue/Goombella",
+            "FromFile": "Characters/Dialogue/Goombella.json",
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCDispositions",
+            "Entries": {
+                "Goombella": "teen/rude/outgoing/positive/female/not-datable/Mario, I guess/Town/spring 22//AdventureGuild 3 16/Goombella",
+            },
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "Entries": {
+                "Goombella": "Wow! Thanks, @! This is really amazing!/408 221 420 226 119 428/Hey, hey, hey! This is really very special!/-27/Thanks, I think./-75/Ew! Gross! What the heck is that?/330/Thanks.// "
+            },
+        },
+    ]
+}

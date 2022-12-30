@@ -8,6 +8,7 @@
 		<RepositoryType>git</RepositoryType>
 
 		<!-- build settings -->
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -15,6 +16,7 @@
 
 		<CodeAnalysisRuleSet>$(SolutionDir)\_build\Rules.ruleset</CodeAnalysisRuleSet>
 		<DefineConstants Condition="$(EnableHarmony) == 'True'">$(DefineConstants);HARMONY</DefineConstants>
+		<DefineConstants Condition="$(EnableTranslation) == 'True'">$(DefineConstants);TRANSLATION</DefineConstants>
 
 		<!-- game version -->
 		<GameVersion>1.5.6</GameVersion>

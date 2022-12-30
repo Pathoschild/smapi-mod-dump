@@ -15,8 +15,6 @@ using Leclair.Stardew.Common.Types;
 
 using Newtonsoft.Json;
 
-using StardewModdingAPI;
-
 namespace Leclair.Stardew.ThemeManager.Models;
 
 public class PatchGroupData {
@@ -26,9 +24,17 @@ public class PatchGroupData {
 	[JsonIgnore]
 	public bool CanUse { get; set; }
 
-	public RequiredMod[]? RequiredMods { get; set; }
+	public VersionedMod[]? RequiredMods { get; set; }
 
-	public CaseInsensitiveDictionary<string>? Variables { get; set; }
+	public VersionedMod[]? ForbiddenMods { get; set; }
+
+	public CaseInsensitiveDictionary<string>? ColorVariables { get; set; }
+
+	public CaseInsensitiveDictionary<string>? FontVariables { get; set; }
+
+	public CaseInsensitiveDictionary<string>? BmFontVariables { get; set; }
+
+	public CaseInsensitiveDictionary<string>? TextureVariables { get; set; }
 
 	public Dictionary<string, PatchData>? Patches { get; set; }
 
@@ -37,10 +43,3 @@ public class PatchGroupData {
 
 }
 
-public class RequiredMod {
-
-	public string UniqueID { get; set; } = string.Empty;
-	public string? MinimumVersion { get; set; }
-	public string? MaximumVersion { get; set; }
-
-}

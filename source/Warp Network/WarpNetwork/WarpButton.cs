@@ -40,6 +40,7 @@ namespace WarpNetwork
         {
             this.location = location;
             this.index = index;
+            loc.Reload();
         }
         public void updateLabel()
         {

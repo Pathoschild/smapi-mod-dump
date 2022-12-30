@@ -9,6 +9,26 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 3.6.0
+
+### User-visible Changes
+
+* Configuration via GMCM can now be done in-game (not just from the title menu)
+* Add configuration option for refresh interval
+* Add a warning in the SMAPI log when a save is loaded and both Range Highlight
+  and UI Info Suite 2 are configured to show ranges.
+
+### API Changes
+
+* All of the previously existing API methods for adding highlighters are deprecated
+  and have new versions that support in-game configuration changes.
+* Add API methods for adding highlights to temporary animated sprites.  The bomb
+  range highlighting built in to Range Highlight uses these new methods, so now
+  all highilighters that come with Range Highlight use the public API.
+* Item highilighters can now (optionally) return multiple ranges (with different
+  tint colors) to highlight.
+
+
 ## Version 3.5.0
 
 * Show at action location: if the currently held item has a highlighter,

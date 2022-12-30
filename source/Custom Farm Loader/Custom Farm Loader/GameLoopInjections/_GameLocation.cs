@@ -39,11 +39,25 @@ namespace Custom_Farm_Loader.GameLoopInjections
             var harmony = new Harmony(mod.ModManifest.UniqueID);
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.reloadMap)),
-               postfix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.reloadMap_Postfix))
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.loadMap)),
+               postfix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.loadMap_Postfix))
             );
+
+            harmony.Patch(
+                original: AccessTools.PropertyGetter(typeof(GameLocation), nameof(GameLocation.Map)),
+                prefix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.getMap_Prefix))
+            );
+
         }
-        public static void reloadMap_Postfix(GameLocation __instance)
+
+        public static bool getMap_Prefix(GameLocation __instance, ref xTile.Map __result)
+        {
+            ReplaceMapProperties(__instance);
+
+            return true;
+        }
+
+        public static void loadMap_Postfix(GameLocation __instance, string mapPath)
         {
             ReplaceMapProperties(__instance);
         }
@@ -57,11 +71,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
 
             //Warps
-            foreach (var warp in customFarm.Warps)
-            {
+            foreach (var warp in customFarm.Warps) {
                 var coordinates = new xTile.ObjectModel.PropertyValue(warp.Value.X + " " + warp.Value.Y);
-                string propertyName = warp.Key.ToLower().Replace(" ", "") switch
-                {
+                string propertyName = warp.Key.ToLower().Replace(" ", "") switch {
                     "busstop" => "BusStopEntry",
                     "forest" => "ForestEntry",
                     "backwoods" => "BackwoodsEntry",
@@ -78,13 +90,12 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
 
             //Locations
-            foreach (var location in customFarm.Locations)
-            {
+            foreach (var location in customFarm.Locations) {
                 var coordinates = new xTile.ObjectModel.PropertyValue(location.Value.X + " " + location.Value.Y);
-                string propertyName = location.Key.ToLower().Replace(" ", "") switch
-                {
+                string propertyName = location.Key.ToLower().Replace(" ", "") switch {
                     "farmhouse" => "FarmHouseEntry",
                     "greenhouse" => "GreenhouseLocation",
+                    //The SpouseAreaLocation isn't updated in reloadMap, so we prefix GetSpouseOutdoorAreaCorner in _Farm
                     "spousearea" => "SpouseAreaLocation",
                     "farmcave" => "FarmCaveEntry",
                     "mailbox" => "MailboxLocation",

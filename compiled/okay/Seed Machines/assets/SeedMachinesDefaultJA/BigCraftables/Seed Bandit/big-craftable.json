@@ -1,0 +1,32 @@
+{
+  "Name": "Seed Bandit",
+  "Description": "You give me some money - I give you some seeds. Simple deal.",
+  "Price": 15000,
+  "IsDefault": true,
+  "ProvidesLight": false,
+  "ReserveExtraIndexCount": 3,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 787,
+        "Count": 2
+      },
+      {
+        "Object": 337,
+        "Count": 5
+      },
+      {
+        "Object": 335,
+        "Count": 20
+      }
+    ],
+    "CanPurchase": false
+  },
+  "NameLocalization": {
+    "ru": "Бандит-Огородник"
+  },
+  "DescriptionLocalization": {
+    "ru": "Ты даешь мне деньги - Я даю тебе семена. Уговор простой."
+  }
+}

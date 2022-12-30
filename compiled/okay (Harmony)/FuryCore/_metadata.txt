@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10696
-IDs: furyx639.FuryCore
-update keys: Nexus:10696@FuryCore, Nexus:10696, GitHub:ImJustMatt/StardewMods

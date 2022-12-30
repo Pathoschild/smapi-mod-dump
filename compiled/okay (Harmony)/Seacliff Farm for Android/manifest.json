@@ -1,7 +1,7 @@
 {
   "Name": "SeaCliff Farm Code",
   "Author": "FreeTheJunimos",
-  "Version": "1.0.0",
+  "Version": "1.0.1", // fixed locally
   "Description": "Code for separate freshwater and ocean zones",
   "UniqueID": "freethejunimos.seaclifffarm",
   "EntryDll": "SeaCliffFarm.dll",

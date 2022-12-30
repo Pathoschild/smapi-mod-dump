@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -21,18 +21,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chest_Displays.Harmony
+namespace Chest_Displays.Patches
 {
     public class Patcher
     {
-        private static HarmonyInstance harmony;
+        private static Harmony harmony;
 
         public static void Init(IModHelper helper)
         {
-            harmony = HarmonyInstance.Create(helper.ModRegistry.ModID);
+            harmony = new Harmony(helper.ModRegistry.ModID);
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Chest), nameof(Chest.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
+                //prefix: new HarmonyMethod(typeof(ChestPatches), nameof(ChestPatches.draw_prefix))
                 postfix: new HarmonyMethod(typeof(ChestPatches), nameof(ChestPatches.draw_postfix))
             );
         }

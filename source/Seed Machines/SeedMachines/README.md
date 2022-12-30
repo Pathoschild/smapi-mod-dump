@@ -76,7 +76,8 @@ My big plans:
 
 ## Release Notes
 
- - **0.0.4-beta** - **current version** - Updated minimum SMAPI version to 3.8.0
+ - **0.0.5-beta** - **current version** - Fixed issue with saving the game. Now **JsonAssets** and **SpaceCore** from spacechase0 are **REQUIRED**
+ - **0.0.4-beta** - Updated minimum SMAPI version to 3.8.0
  - **0.0.3-beta** - Quick changes for parameterless constructors fix (v1)
  - **0.0.2-beta** - Fixed issue with loading of the assets on Android devices. Added compatilibty-fix for JsonAssets mod from spacechase0 (if it installed)
  - **0.0.1-beta** - Added base functionality for Seed Machine and Seed Bandit.

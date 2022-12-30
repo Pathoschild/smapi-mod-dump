@@ -11,6 +11,8 @@
 {
   // GMCM
   "mod-description": "Adds conversation topics for use in dialogue mods.",
+  "EngagementDuration.title": "Engagement/New Roommate Duration",
+  "EngagementDuration.description":  "People may comment on you getting engaged/a new roommate for this many days afterwards.",
   "WeddingDuration.title": "Wedding Duration",
   "WeddingDuration.description": "People may comment on your wedding for this many days afterwards.",
   "BirthDuration.title": "Birth Duration",

@@ -11,7 +11,7 @@
 {
   "Name": "Deep Woods / Warp Network Integration",
   "Author": "Tlitookilakin",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Integrates Deep Woods with Warp Network.",
   "UniqueID": "tlitookilakin.deepwoodswarpnet",
   "EntryDll": "WarpnetDeepwoods.dll",

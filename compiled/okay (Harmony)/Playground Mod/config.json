@@ -1,5 +1,6 @@
 {
   "ModEnabled": true,
+  "Festivals": false,
   "swingSpeed": 1.0,
   "springSpeed": 1.0,
   "slideSpeed": 1.0,

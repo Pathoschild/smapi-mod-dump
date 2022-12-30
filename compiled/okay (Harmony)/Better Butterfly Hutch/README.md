@@ -69,6 +69,9 @@ Spawn Ginger Island butterflies indoors on the mainland.
 - Shake Hutch:
 Shake the hutch to spawn butterflies. You shake the hutch just like shaking a tree.
 
+- Night butterflies:
+When enabled, indoor butterfly hutches will spawn butterflies after the game "getting dark" time. The vanilla hutch spawns butterflies all day when indoors. Disabling this spawns butterflies as outdoors and butterflies can get the evening off and get a little rest. :-).
+
 ## Changlog
 
 v1.0.1:  
@@ -95,3 +98,6 @@ v1.0.1:
 
  v.1.3.3
  Added Hungarian translation. Thanks martin66789 on Nexus Mods.
+
+ v.1.3.4
+ Added a night butterflies option. Let indoor butterflies have the evenings off, just like outdoor butterflies.

@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/LeFauxMatt/StardewMods
+**
+*************************************************/
+
+{
+  // Feature Config
+  "config.collect-outputs-distance.name": "Collect Distance",
+  "config.collect-outputs-distance.tooltip": "The tiles away from the player that producers can be collected from.",
+  "config.dispense-inputs-distance.name": "Dispense Distance",
+  "config.dispense-inputs-distance.tooltip": "The tiles away from the player that producers can be dispensed into.",
+  "config.dispense-inputs-priority.name": "Dispense Input Priority",
+  "config.dispense-inputs-priority.tooltip": "Producers with a higher priority will be dispensed into first.",
+  "config.do-dig-spots.name": "Do Dig Spots",
+  "config.do-dig-spots.tooltip": "Collect will grab from dig spots.",
+  "config.do-forage.name": "Do Forage",
+  "config.do-forage.tooltip": "Collect will have foraging drop as item debris.",
+  "config.do-machines.name": "Do Machines",
+  "config.do-machines.tooltip": "Collect will grab outputs from machines.",
+  "config.do-terrain.name": "Do Terrain",
+  "config.do-terrain.tooltip": "Collect will shake terrain such as bushes and trees.",
+  // Config Controls
+  "config.collect-items.name": "Collect Items Button",
+  "config.collect-items.tooltip": "Key to collect items from accessible producers.",
+  "config.dispense-items.name": "Dispense Items Button",
+  "config.dispense-items.tooltip": "Key to dispense items into accessible producers.",
+  // Config Pages
+  "section.general.name": "General",
+  "section.general.description": "General customization options for features.",
+  "section.controls.name": "Controls",
+  "section.controls.description": "Controller/keyboard configurations.",
+  // UI - Button
+  "button.collect-outputs.name": "Collect Outputs",
+  "button.dispense-inputs.name": "Dispense Inputs"
+}

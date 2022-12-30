@@ -91,7 +91,7 @@ namespace HDPortraits
                     return true; //cached
 
                 if (!failedPaths.Contains(path) && 
-                    (Misc.TryLoadAsset(monitor, helper, "Mods/HDPortraits/" + path, out meta) ||
+                    (Misc.TryLoadAsset(monitor, helper, "Mods/HDPortraits/" + path, out meta, LogLevel.Trace) ||
                     backupPortraits.TryGetValue(path, out meta)) &&
                     meta is not null)
                 {
@@ -113,7 +113,7 @@ namespace HDPortraits
                 return false;
             }
 
-            if ((Misc.TryLoadAsset(monitor, helper, "Mods/HDPortraits/" + name, out meta) || 
+            if ((Misc.TryLoadAsset(monitor, helper, "Mods/HDPortraits/" + name, out meta, LogLevel.Trace) || 
                 backupPortraits.TryGetValue(name, out meta)) && 
                 meta is not null)
             {

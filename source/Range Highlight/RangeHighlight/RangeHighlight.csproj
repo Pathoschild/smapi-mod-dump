@@ -8,6 +8,7 @@
     <RootNamespace>RangeHighlight</RootNamespace>
     <AssemblyName>RangeHighlight</AssemblyName>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

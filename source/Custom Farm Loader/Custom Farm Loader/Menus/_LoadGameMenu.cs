@@ -114,12 +114,15 @@ namespace Custom_Farm_Loader.Menus
 
             var farm = ModFarms.Find(el => el.ID == whichFarm);
 
-            if (farm == null) {
+            if (farm == null || farm.IconTexture == "") {
                 CachedFarmTypeIcons.Add(whichFarm, null);
                 return null;
             }
 
-            icon = Helper.GameContent.Load<Texture2D>(farm.IconTexture);
+            try {
+                icon = Helper.GameContent.Load<Texture2D>(farm.IconTexture);
+            } catch (Exception) { Monitor.LogOnce($"Unable to load icon asset '{farm.IconTexture}' for farm {whichFarm}"); };
+
             CachedFarmTypeIcons.Add(whichFarm, icon);
             return icon;
         }

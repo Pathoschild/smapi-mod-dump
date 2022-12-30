@@ -12,6 +12,8 @@
 {
     // Strings used in the config menu
     "config.install-gmcm-options": "If you install the GMCM Options mod then you will be able to configure colors in this menu.",
+    "config.refresh-interval": "Refresh Interval",
+    "config.refresh-interval.tooltip": "How often (in game \"ticks\") the positions of highlighted tiles are calculated",
     "config.enable": "Enable",
     "config.hotkey": "Hotkey",
     "config.tint": "Color",

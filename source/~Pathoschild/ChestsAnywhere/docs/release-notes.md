@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed error when another mod sets invalid chest options.
+
 ## 1.22.4
 Released 30 October 2022 for SMAPI 3.14.0 or later.
 

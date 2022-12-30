@@ -27,14 +27,32 @@ public class CPIntegration : BaseAPIIntegration<IContentPatcherAPI, ModEntry> {
 			return;
 
 		API.RegisterToken(Self.ModManifest, "GameTheme", () => {
-			if (Self.BaseThemeManager is null)
+			if (Self.GameThemeManager is null)
 				return new[] {
 					"default"
 				};
 
 			return new[] {
-				Self.BaseThemeManager.ActiveThemeId
+				Self.GameThemeManager.ActiveThemeId
 			};
 		});
 	}
+
+	public void RegisterManager(IManifest other, string tokenName, IThemeManager manager) {
+		if (!IsLoaded)
+			return;
+
+		API.RegisterToken(other, tokenName, () => {
+			if (manager is null)
+				return new[] {
+					"default"
+				};
+
+			return new[] {
+				manager.ActiveThemeId
+			};
+		});
+
+	}
+
 }

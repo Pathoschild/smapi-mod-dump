@@ -63,7 +63,7 @@ namespace HDPortraits.Models
         }
         public Rectangle GetRegion(int which, int millis = -1)
         {
-            var missing = TryGetTexture(out var tex);
+            var missing = !TryGetTexture(out var tex);
             int size = missing ? 64 : Size;
             return Animation is null ? Game1.getSourceRectForStandardTileSheet(tex, which, size, size) : 
                 Animation.GetSourceRegion(tex, size, which, millis);

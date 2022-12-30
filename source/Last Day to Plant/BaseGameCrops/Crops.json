@@ -1,0 +1,371 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dmcrider/LastDayToPlant
+**
+*************************************************/
+
+[
+  {
+    "Name": "Blue Jazz",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 7,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Cauliflower",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 12,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Coffee Bean",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 10,
+    "Regrowth": 2,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Garlic",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 4,
+    "Regrowth": 0,
+    "AvailableYear": 2,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Green Bean",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 10,
+    "Regrowth": 3,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Kale",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 6,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Parsnip",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 4,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Potato",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 6,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Rhubarb",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 13,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Strawberry",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 8,
+    "Regrowth": 4,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Tulip",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 6,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Unmilled Rice",
+    "Seasons": [ "spring" ],
+    "DaysToGrow": 8,
+    "Regrowth": 0,
+    "Irrigated": 6,
+    "AvailableYear": 1,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Blueberry",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 13,
+    "Regrowth": 4,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Corn",
+    "Seasons": [ "summer", "fall" ],
+    "DaysToGrow": 14,
+    "Regrowth": 4,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Hops",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 11,
+    "Regrowth": 1,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Hot Pepper",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 5,
+    "Regrowth": 3,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Melon",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 12,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Poppy",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 7,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Radish",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 6,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Red Cabbage",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 9,
+    "Regrowth": 0,
+    "AvailableYear": 2,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Starfruit",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 13,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Summer Spangle",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 8,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Sunflower",
+    "Seasons": [ "summer", "fall" ],
+    "DaysToGrow": 8,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Tomato",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 11,
+    "Regrowth": 4,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Wheat",
+    "Seasons": [ "summer", "fall" ],
+    "DaysToGrow": 4,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Amaranth",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 7,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Artichoke",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 8,
+    "Regrowth": 0,
+    "AvailableYear": 2,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Beet",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 6,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Bok Choy",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 4,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Cranberries",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 7,
+    "Regrowth": 5,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Eggplant",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 5,
+    "Regrowth": 5,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Fairy Rose",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 12,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Grape",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 10,
+    "Regrowth": 3,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Pumpkin",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 13,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Yam",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 10,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Ancient Fruit",
+    "Seasons": [ "spring", "summer", "fall" ],
+    "DaysToGrow": 28,
+    "Regrowth": 7,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Fiber",
+    "Seasons": [ "spring", "summer", "fall" ],
+    "DaysToGrow": 7,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 0,
+    "GingerIsland": false
+  },
+  {
+    "Name": "Pineapple",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 14,
+    "Regrowth": 7,
+    "AvailableYear": 1,
+    "GingerIsland": true
+  },
+  {
+    "Name": "Taro Root",
+    "Seasons": [ "summer" ],
+    "DaysToGrow": 10,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated": 7,
+    "GingerIsland": true
+  },
+  {
+    "Name": "Sweet Gem Berry",
+    "Seasons": [ "fall" ],
+    "DaysToGrow": 24,
+    "Regrowth": 0,
+    "AvailableYear": 1,
+    "Irrigated":  0,
+    "GingerIsland": false
+  }
+]

@@ -21,23 +21,16 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
-#### 1.0:
-* Added dependency on the StardewHack library mod.
-* Added option to limit this mod tapped trees only.
+#### 6.0:
+* Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 
-#### 1.1:
-* Fix: the option for tapped trees wasn't preventing trees from spreading at all.
-
-#### 2.0:
-* Updated for Stardew Valley 1.4
-
-#### 3.1:
-* Updated for Stardew Valley 1.5
+#### 4.2:
+* Fix issue with `OnlyPreventTapped` being applied when set to false, causing trees to spread when they shouldn't.
 
 #### 4.0:
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 * Added retain seed config option.
 * Add 64-bit support
 
-#### 4.2:
-* Fix issue with `OnlyPreventTapped` being applied when set to false, causing trees to spread when they shouldn't.
+#### 3.1:
+* Updated for Stardew Valley 1.5

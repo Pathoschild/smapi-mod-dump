@@ -501,7 +501,7 @@ public class ScrollableFlow {
 	}
 
 	public bool ReceiveLeftClick(int x, int y, bool playSound = true) {
-		if (ScrollBar.visible && ScrollArea.Contains(x, y)) {
+		if (ScrollMax > 0 && ScrollBar.visible && ScrollArea.Contains(x, y)) {
 
 			if (ScrollBar.containsPoint(x, y)) {
 				float middle = ScrollBar.bounds.Y + (ScrollBar.bounds.Height / 2f);
@@ -677,7 +677,7 @@ public class ScrollableFlow {
 				y: ScrollArea.Y,
 				width: ScrollArea.Width,
 				height: ScrollArea.Height,
-				color: Color.White,
+				color: ScrollMax > 0 ? Color.White : (Color.Black * 0.35f),
 				scale: 4f,
 				drawShadow: false
 			);

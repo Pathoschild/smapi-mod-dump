@@ -11,13 +11,13 @@ for f in files:
         text = file.read()
 
     # Bump mod version
-    text = re.sub('"Version": "[\d.]+",', '"Version": "5.1",', text)
+    text = re.sub('"Version": "[\d.]+",', '"Version": "6.0",', text)
 
     # Bump api version
-    text = re.sub('"MinimumApiVersion": "[\d.]+",', '"MinimumApiVersion": "3.12.0",', text)
+    text = re.sub('"MinimumApiVersion": "[\d.]+",', '"MinimumApiVersion": "3.18.0",', text)
 
     # Bump StardewHack version
-    text = re.sub('("UniqueID": "bcmpinc[.]StardewHack",\s+"MinimumVersion":) "[\d.]+"', '\\1 "5.1"', text)
+    text = re.sub('("UniqueID": "bcmpinc[.]StardewHack",\s+"MinimumVersion":) "[\d.]+"', '\\1 "6.0"', text)
 
     with open(f, "w") as file:
         file.write(text)

@@ -87,5 +87,41 @@ namespace ForecasterText {
         public uint BirthdayEmoji { get; set; } = 152u;
         
         #endregion
+        #region Multiplayer
+        
+        public bool SendToOthers { get; set; } = false;
+        public bool UseSameForOthers { get; set; } = true;
+        public ForecasterConfig Child { get; set; } = null;
+        
+        #endregion
+        #region Getters
+        
+        public uint? GetEmoji(WeatherIcons icon) => icon switch {
+            WeatherIcons.SUN => this.SunWeatherEmoji,
+            WeatherIcons.RAIN => this.RainWeatherEmoji,
+            WeatherIcons.LIGHTNING => this.ThunderWeatherEmoji,
+            WeatherIcons.FESTIVAL => this.FestivalWeatherEmoji,
+            WeatherIcons.SNOW => this.SnowWeatherEmoji,
+            WeatherIcons.WEDDING => this.WeddingWeatherEmoji,
+            _ => 0u
+        };
+        public uint? GetEmoji(SpiritMoods icon) => icon switch {
+            SpiritMoods.VERY_HAPPY => this.VeryHappySpiritEmoji,
+            SpiritMoods.GOOD_HUMOR => this.GoodHumorSpiritEmoji,
+            SpiritMoods.NEUTRAL => this.NeutralSpiritEmoji,
+            SpiritMoods.SOMEWHAT_ANNOYED => this.SomewhatAnnoyedSpiritEmoji,
+            SpiritMoods.MILDLY_PERTURBED => this.MildlyPerturbedSpiritEmoji,
+            SpiritMoods.VERY_DISPLEASED => this.VeryDispleasedSpiritEmoji,
+            _ => 0u
+        };
+        public uint? GetEmoji(MiscEmoji icon) => icon switch {
+            MiscEmoji.SPIRITS => this.SpiritsEmoji,
+            MiscEmoji.BIRTHDAY => this.BirthdayEmoji,
+            MiscEmoji.NEW_RECIPE => this.NewRecipeEmoji,
+            MiscEmoji.KNOWN_RECIPE => this.KnownRecipeEmoji,
+            _ => 0u
+        };
+        
+        #endregion
     }
 }

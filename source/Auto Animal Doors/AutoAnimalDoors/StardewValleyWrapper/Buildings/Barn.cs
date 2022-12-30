@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 {
-    class Barn : AnimalBuilding
+    public class Barn : AnimalBuilding
     {
         private StardewValley.Buildings.Barn StardewBarn { get; set; }
 

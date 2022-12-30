@@ -11,7 +11,7 @@
 {
 	"ID": "LetterViewerMenu",
 
-	"Variables": {
+	"ColorVariables": {
 		"$LetterViewerHover": "$ButtonHover"
 	},
 

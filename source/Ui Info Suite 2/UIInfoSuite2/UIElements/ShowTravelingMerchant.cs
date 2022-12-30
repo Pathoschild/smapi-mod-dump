@@ -28,7 +28,8 @@ namespace UIInfoSuite2.UIElements
         private bool _travelingMerchantIsVisited;
         private ClickableTextureComponent _travelingMerchantIcon;
 
-        public bool HideWhenVisited { get; set; }
+        private bool Enabled { get; set; }
+        private bool HideWhenVisited { get; set; }
 
         private readonly IModHelper _helper;
         #endregion
@@ -47,6 +48,8 @@ namespace UIInfoSuite2.UIElements
 
         public void ToggleOption(bool showTravelingMerchant)
         {
+            Enabled = showTravelingMerchant;
+
             _helper.Events.Display.RenderingHud -= OnRenderingHud;
             _helper.Events.Display.RenderedHud -= OnRenderedHud;
             _helper.Events.GameLoop.DayStarted -= OnDayStarted;
@@ -65,7 +68,7 @@ namespace UIInfoSuite2.UIElements
         public void ToggleHideWhenVisitedOption(bool hideWhenVisited)
         {
             HideWhenVisited = hideWhenVisited;
-            ToggleOption(true);
+            ToggleOption(Enabled);
         }
         #endregion
 

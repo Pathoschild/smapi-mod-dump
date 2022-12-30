@@ -6,12 +6,12 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 5faed364de72e5b4b36b7aee2fefdd4245b9cfc6
-   Merge: 2ada02f 17d2bbe
-   Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Mon Nov 28 10:32:19 2022 +0100
+   commit 1bd790bb7aec7e912f4dae47b1a1914ff29383be
+   Merge: 10f04aa aa80288
+   Author: Tilwa Qendov <tqdv@users.noreply.github.com>
+   Date:   Mon Dec 19 11:18:41 2022 +0100
    
-       Merge pull request #261 from Annosz/secondary-setting-toggle
+       Merge pull request #272 from Annosz/version-2.2.9
        
-       Changing a secondary setting also toggles recalculation
+       Version 2.2.9
    

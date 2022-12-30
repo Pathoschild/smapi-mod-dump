@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+[
+    {
+        "type": "Corn",
+        "feederAssetIndex": 1,
+        "feedersTypes": [
+            "Hopper",
+            "Platform"
+        ],
+        "items": [
+            "Corn"
+        ]
+    },
+    {
+        "type": "Fruit",
+        "feederAssetIndex": 2,
+        "feedersTypes": [
+            "Hopper",
+            "Platform"
+        ],
+        "items": [
+            "Apple",
+            "Banana",
+            "Blackberry",
+            "Blueberry",
+            "Cherry",
+            "Cranberries",
+            "Grape",
+            "Mango",
+            "Melon",
+            "Orange",
+            "Peach",
+            "Pineapple",
+            "Pomegranate",
+            "Salmonberry",
+            "Strawberry",
+            "Wild Plum"
+        ]
+    },
+    {
+        "type": "MixedSeeds",
+        "feederAssetIndex": 3,
+        "feedersTypes": [
+            "Hopper",
+            "Platform",
+            "Tube"
+        ],
+        "items": [
+            "Mixed Seeds"
+        ]
+    },
+    {
+        "type": "SunflowerSeeds",
+        "feederAssetIndex": 4,
+        "feedersTypes": [
+            "Hopper",
+            "Platform",
+            "Tube"
+        ],
+        "items": [
+            "DGA:Ivy.OrnithologistsGuild/HulledSunflowerSeeds"
+        ]
+    }
+]

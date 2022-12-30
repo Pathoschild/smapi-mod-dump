@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/daleao/sdv-mods
+   Git: https://github.com/daleao/sdv-mods.git
+
+mods:
+   Modular Gameplay Overhaul
+
+latest commit:
+   commit 00b78b70a6400241e20ed0de52627bce6e1e3faf
+   Author: DaLion <daleao.matheus@gmail.com>
+   Date:   Fri Dec 30 01:47:23 2022 -0300
+   
+       Missing change in changelog.
+   

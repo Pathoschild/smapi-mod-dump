@@ -11,7 +11,7 @@
 {
 	"ID": "SpecialOrdersBoard",
 
-	"Variables": {
+	"ColorVariables": {
 		"$SpecialOrdersHover": "$ButtonHover"
 	},
 

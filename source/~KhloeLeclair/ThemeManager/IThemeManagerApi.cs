@@ -12,33 +12,374 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+using BmFont;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using Newtonsoft.Json;
+
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 using StardewValley.BellsAndWhistles;
 
 namespace Leclair.Stardew.ThemeManager;
 
+
+/// <summary>
+/// A managed asset is a special wrapper around an asset that you can request
+/// from Theme Manager. Managed assets will be updated automatically whenever
+/// an asset is invalidated.
+///
+/// Specifically, a managed asset's cached value will be marked as stale if
+/// an invalidation happens, and it will be loaded again the next time you
+/// try to access its value.
+///
+/// You'll almost always be working with a typed <see cref="IManagedAsset{TValue}"/>
+/// instead of this interface.
+/// </summary>
+public interface IManagedAsset {
+
+	/// <summary>
+	/// The name of the asset being managed.
+	/// </summary>
+	IAssetName AssetName { get; }
+
+	/// <summary>
+	/// Make the managed asset load its value. If the asset is already loaded
+	/// and isn't stale, this will do nothing.
+	/// </summary>
+	void Load();
+
+	/// <summary>
+	/// Whether or not the managed asset has already loaded.
+	/// </summary>
+	bool IsLoaded { get; }
+
+	/// <summary>
+	/// Whether or not the managed asset is currently stale because its asset
+	/// was invalidated.
+	/// </summary>
+	bool IsStale { get; }
+
+	/// <summary>
+	/// Mark the managed asset as stale, so that it's reloaded the next time
+	/// its value is accessed or <see cref="Load"/> is called.
+	/// </summary>
+	void MarkStale();
+
+	/// <summary>
+	/// An event that's fired when the managed asset is marked as stale.
+	/// </summary>
+	event EventHandler? MarkedStale;
+
+	/// <summary>
+	/// The raw value of a managed asset. You will likely always want to use
+	/// the <see cref="IManagedAsset{TValue}.Value"/> instead, but in case
+	/// you're working with multi-typed collections this may be useful.
+	/// </summary>
+	object? RawValue { get; }
+
+}
+
+/// <summary>
+/// A managed asset with a type, allowing you to access its value directly.
+/// Please note that the value may be <c>null</c> .
+/// </summary>
+/// <typeparam name="TValue">The type of the asset.</typeparam>
+public interface IManagedAsset<TValue> : IManagedAsset where TValue : notnull {
+
+	TValue? Value { get; }
+
+}
+
+/// <summary>
+/// This is a simple implementation of <see cref="IManagedAsset{TValue}"/>
+/// for wrapping an asset loaded from <see cref="IModContentHelper"/>.
+/// While this implementation, by itself, does not function to automatically
+/// update when the asset is invalidated, it can be used in the event that
+/// Theme Manager is not installed to make development easier.
+/// </summary>
+/// <typeparam name="TValue">The type of the asset.</typeparam>
+public class FallbackManagedAsset<TValue> : IManagedAsset<TValue> where TValue : notnull {
+
+	private readonly IModHelper Helper;
+	private readonly IMonitor? Monitor;
+
+	private TValue? _Value;
+
+	#region Life Cycle
+
+	public FallbackManagedAsset(string path, IModHelper helper, IMonitor? monitor = null) {
+		Path = path;
+		Helper = helper;
+		Monitor = monitor;
+	}
+
+	#endregion
+
+	#region Properties
+
+	public string Path { get; }
+
+	public IAssetName AssetName => Helper.ModContent.GetInternalAssetName(Path);
+
+	public bool IsLoaded { get; private set; }
+	public bool IsStale { get; private set; }
+
+	public object? RawValue => Value;
+
+	public TValue? Value {
+		get {
+			if (!IsLoaded || IsStale)
+				Load();
+
+			return _Value;
+		}
+	}
+
+	public event EventHandler? MarkedStale;
+
+	#endregion
+
+	#region Methods
+
+	public void Load() {
+		if (IsLoaded && !IsStale)
+			return;
+
+		IsLoaded = true;
+		IsStale = false;
+
+		try {
+			_Value = Helper.ModContent.Load<TValue>(Path);
+		} catch(Exception ex) {
+			Monitor?.Log($"Failed loading asset from '{Path}' for managed asset: {ex}", LogLevel.Error);
+		}
+	}
+
+	public void MarkStale() {
+		IsStale = true;
+		MarkedStale?.Invoke(this, EventArgs.Empty);
+	}
+
+	#endregion
+
+}
+
+
+/// <summary>
+/// A variable set is a dictionary of variables. Variables support inheritance
+/// from fall back themes, can reference other variables, and can reference
+/// variables from game themes.
+///
+/// You are almost always going to be dealing with <see cref="IVariableSet{TValue}"/>
+/// rather than this untyped interface.
+/// </summary>
+public interface IVariableSet {
+
+	/// <summary>
+	/// This method is called by Theme Manager when populating a theme data
+	/// class with variable sets, and is used internally by variable sets to
+	/// allow fall back theme support to work.
+	/// </summary>
+	/// <param name="manager">The manager controlling the theme this
+	/// variable set is a part of.</param>
+	/// <param name="manifest">The manifest for the theme this
+	/// variable set is a part of.</param>
+	void SetReferences(IThemeManager? manager, IThemeManifest? manifest);
+
+	/// <summary>
+	/// The raw values represent the raw strings that were read from the
+	/// theme's source file. These values may still have "$" characters
+	/// prefixing their key names.
+	/// </summary>
+	IReadOnlyDictionary<string, string>? RawValues { get; set; }
+
+	/// <summary>
+	/// Inherited values from fall back themes, combined with the <see cref="RawValues"/>
+	/// from this theme. All keys will have had their "$" characters stripped
+	/// at this time. The values from <see cref="DefaultValues"/> will not
+	/// be included.
+	/// </summary>
+	IReadOnlyDictionary<string, string> InheritedValues { get; }
+
+	/// <summary>
+	/// An optional dictionary of default values for variables. These values
+	/// have the lowest priority, only being used if the variable is not
+	/// present in the fall back theme(s) or this theme.
+	/// </summary>
+	IReadOnlyDictionary<string, string>? DefaultValues { get; set; }
+
+}
+
+/// <summary>
+/// A variable set is a dictionary of variables. Variables support inheritance
+/// from fall back themes, can reference other variables, and can reference
+/// variables from game themes.
+/// </summary>
+/// <typeparam name="TValue">The type of variable.</typeparam>
+public interface IVariableSet<TValue> : IVariableSet, IReadOnlyDictionary<string, TValue> {
+
+	/// <summary>
+	/// The calculated, final variables
+	/// </summary>
+	IReadOnlyDictionary<string, TValue> CalculatedValues { get; }
+
+}
+
+/// <summary>
+/// The VariableSetConverter is a <see cref="JsonConverter"/> instance that can
+/// be used as a proxy for Theme Manager's <see cref="IVariableSet"/> converter,
+/// allowing you to use it with the <see cref="JsonConverterAttribute"/>
+/// attribute without needing a direct dependency.
+///
+/// To use this, simply use the <see cref="JsonConverterAttribute"/> as you
+/// would normally, using this type. Then, in your code, once you've acquired
+/// the Theme Manager API call <see cref="SetConverter(JsonConverter?)"/> with
+/// the <see cref="JsonConverter"/> instance exposed by Theme Manager's API.
+///
+/// In the event that Theme Manager is not installed and does not load, this
+/// will simply read and write a null value.
+/// </summary>
+public class VariableSetConverter : JsonConverter {
+
+	private static JsonConverter? MainConverter;
+
+	public static void SetConverter(JsonConverter? mainConverter) {
+		MainConverter = mainConverter;
+	}
+
+	public override bool CanConvert(Type objectType) {
+		return MainConverter?.CanConvert(objectType) ?? false;
+	}
+
+	public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
+		if (MainConverter is null)
+			return null;
+		return MainConverter.ReadJson(reader, objectType, existingValue, serializer);
+	}
+
+	public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
+		if (MainConverter is null)
+			writer.WriteNull();
+		else
+			MainConverter.WriteJson(writer, value, serializer);
+	}
+}
+
+
+/// <summary>
+/// This interface represents the necessary information to render a BmFont.
+/// BmFonts are used primarily by <see cref="SpriteText"/> for drawing text.
+///
+/// They're loaded from <c>.fnt</c> files.
+/// </summary>
+public interface IBmFontData {
+	/// <summary>
+	/// The raw font file.
+	/// </summary>
+	FontFile File { get; }
+
+	/// <summary>
+	/// A map of characters.
+	/// </summary>
+	Dictionary<char, FontChar> CharacterMap { get; }
+
+	/// <summary>
+	/// A list of loaded textures for each <see cref="FontPage" />
+	/// </summary>
+	List<Texture2D> FontPages { get; }
+
+	/// <summary>
+	/// The initial pixel zoom that should be used for this font.
+	/// </summary>
+	float PixelZoom { get; }
+}
+
 /// <summary>
 /// This theme data represents basic colors being used by the game.
 /// </summary>
-public interface IBaseTheme {
+public interface IGameTheme {
+
+	#region Variable Lookup
 
 	/// <summary>
 	/// Try to get a color variable, or return <c>null</c> if there is no
 	/// variable with the provided name.
 	/// </summary>
 	/// <param name="key">The variable to get.</param>
-	Color? GetVariable(string key);
+	Color? GetColorVariable(string key);
+
+	/// <summary>
+	/// Try to get a BmFont variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IBmFontData? GetBmFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a BmFont variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IManagedAsset<IBmFontData>? GetManagedBmFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a font variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	SpriteFont? GetFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a font variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IManagedAsset<SpriteFont>? GetManagedFontVariable(string key);
+
+	/// <summary>
+	/// Try to get a texture variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	Texture2D? GetTextureVariable(string key);
+
+	/// <summary>
+	/// Try to get a texture variable, or return <c>null</c> if there is no
+	/// variable with the provided name.
+	/// </summary>
+	/// <param name="key">The variable to get.</param>
+	IManagedAsset<Texture2D>? GetManagedTextureVariable(string key);
+
+	#endregion
 
 	/// <summary>
 	/// A dictionary of all valid colors used by the theme. Keys are
 	/// not case-sensitive.
 	/// </summary>
-	Dictionary<string, Color> Variables { get; }
+	IVariableSet<Color> ColorVariables { get; }
+
+	/// <summary>
+	/// A dictionary of all valid BmFonts used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	IVariableSet<IManagedAsset<IBmFontData>> BmFontVariables { get; }
+
+	/// <summary>
+	/// A dictionary of all valid sprite fonts used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	IVariableSet<IManagedAsset<SpriteFont>> FontVariables { get; }
+
+	/// <summary>
+	/// A dictionary of all valid textures used by the theme. Keys are
+	/// not case-sensitive.
+	/// </summary>
+	IVariableSet<IManagedAsset<Texture2D>> TextureVariables { get; }
 
 	/// <summary>
 	/// A dictionary of all sprite text colors that are set by the theme.
@@ -50,7 +391,7 @@ public interface IBaseTheme {
 }
 
 /// <summary>
-/// This event is emitted by <see cref="ITypedThemeManager{DataT}"/> whenever the
+/// This event is emitted by <see cref="IThemeManager{DataT}"/> whenever the
 /// current theme changes. This can happen when themes are reload, or when
 /// the user selects a different theme.
 /// </summary>
@@ -87,10 +428,23 @@ public interface IThemeChangedEvent<DataT> {
 	DataT NewData { get; }
 }
 
+/// <summary>
+/// This event is emitted by <see cref="IThemeManager{DataT}"/> whenever
+/// themes are discovered. This can happen during the initial load, when
+/// themes are manually reloaded, when the theme data asset is invalidated,
+/// or when <see cref="IThemeManager.Discover(bool, bool, bool)"/> is
+/// called manually.
+/// </summary>
 public interface IThemesDiscoveredEvent<DataT> {
 
+	/// <summary>
+	/// A read-only dictionary of all theme manifests.
+	/// </summary>
 	IReadOnlyDictionary<string, IThemeManifest> Manifests { get; }
 
+	/// <summary>
+	/// A read-only dictionary of all theme data.
+	/// </summary>
 	IReadOnlyDictionary<string, DataT> Data { get; }
 
 }
@@ -152,7 +506,7 @@ public interface IThemeManifest {
 
 	/// <summary>
 	/// An array of <see cref="IManifest.UniqueID"/>s of mods that this theme
-	/// is meant to support. When <see cref="ITypedThemeManager{DataT}.SelectedThemeId"/>
+	/// is meant to support. When <see cref="IThemeManager{DataT}.SelectedThemeId"/>
 	/// is set to <c>automatic</c>, this theme will potentially be selected if
 	/// any of the listed mods are present and loaded.
 	/// </summary>
@@ -160,7 +514,7 @@ public interface IThemeManifest {
 
 	/// <summary>
 	/// An array of <see cref="IManifest.UniqueID"/>s of mods that this theme
-	/// does <b>not</b> support. When <see cref="ITypedThemeManager{DataT}.SelectedThemeId"/>
+	/// does <b>not</b> support. When <see cref="IThemeManager{DataT}.SelectedThemeId"/>
 	/// is set to <c>automatic</c>, this theme will never be selected if any
 	/// of the listed mods are present and loaded.
 	/// </summary>
@@ -187,7 +541,7 @@ public interface IThemeManifest {
 	/// When set to a non-null value, assets for this theme will either be
 	/// forced to use asset redirection, or forced to <b>not</b> use asset
 	/// redirection, overriding the default behavior from the
-	/// <see cref="ITypedThemeManager{DataT}"/> instance.
+	/// <see cref="IThemeManager{DataT}"/> instance.
 	/// </summary>
 	bool? OverrideRedirection { get; }
 
@@ -335,6 +689,19 @@ public interface IThemeManager {
 
 	#endregion
 
+	#region Content Patcher
+
+	/// <summary>
+	/// Register a simple Content Patcher token that returns the
+	/// <see cref="ActiveThemeId"/>. This token is registered for your mod,
+	/// so you need to have a dependency on Content Patcher in your mod's
+	/// manifest or Content Patcher will reject it.
+	/// </summary>
+	/// <param name="name">The name of the token.</param>
+	void RegisterCPToken(string name = "Theme");
+
+	#endregion
+
 	#region Theme Selection
 
 	/// <summary>
@@ -372,11 +739,54 @@ public interface IThemeManager {
 	#region Asset Loading
 
 	/// <summary>
+	/// Get the name of an asset, as generated to load a given asset through
+	/// the game content pipeline. This may return <c>null</c> if the asset
+	/// won't be loaded from a theme.
+	/// </summary>
+	/// <param name="path">The relative file path.</param>
+	/// <param name="themeId">The theme the asset name should be generated with.</param>
+	/// <param name="stripFileExtensions">When true, the file extension will
+	/// be stripped when generating asset names for working with GameContent.</param>
+	IAssetName? GetAssetName(string path, string? themeId, bool stripFileExtensions = true);
+
+	/// <summary>
 	/// Invalidate all cached assets that we provide.
 	/// </summary>
 	/// <param name="themeId">An optional theme ID to only clear that
 	/// theme's assets.</param>
 	void Invalidate(string? themeId = null);
+
+	/// <summary>
+	/// Invalidate a specific asset we provide.
+	/// </summary>
+	/// <param name="path">The path to the asset.</param>
+	/// <param name="themeId">An optional theme ID to only clear that
+	/// theme's asset.</param>
+	/// <param name="stripFileExtensions">When true, the file extension will
+	/// be stripped when generating asset names for working with GameContent.</param>
+	void Invalidate(string path, string? themeId = null, bool stripFileExtensions = true);
+
+	/// <summary>
+	/// Get an <see cref="IManagedAsset{TValue}"/> instance for an asset. This
+	/// uses similar logic to <see cref="Load{T}(string, string?, bool, bool)"/>
+	/// but <b>does not</b> support assets that aren't being loaded through
+	/// asset redirection.
+	/// </summary>
+	/// <typeparam name="T">The expected data type.</typeparam>
+	/// <param name="path">The relative file path.</param>
+	/// <param name="themeId">If set, load the asset from the specified theme
+	/// rather than the active theme.</param>
+	/// <param name="stripFileExtensions">When true, the file extension will
+	/// be stripped when generating asset names for working with the
+	/// game content pipeline.</param>
+	/// <param name="allowFallback">When true, if an asset does not exist in
+	/// the requested theme, we'll try loading it from the theme's specified
+	/// fall back theme if one exists.</param>
+	/// <exception cref="ArgumentException">The <paramref name="path"/> is empty
+	/// or contains invalid characters.</exception>
+	/// <exception cref="ContentLoadException">The content asset couldn't be
+	/// loaded (e.g. because it doesn't exist).</exception>
+	IManagedAsset<T> GetManagedAsset<T>(string path, string? themeId = null, bool stripFileExtensions = true, bool allowFallback = true) where T : notnull;
 
 	/// <summary>
 	/// Load an asset from a theme and return it. Depending on <see cref="UsingAssetRedirection"/>
@@ -388,24 +798,33 @@ public interface IThemeManager {
 	/// <param name="path">The relative file path.</param>
 	/// <param name="themeId">If set, load the asset from the specified theme
 	/// rather than the active theme.</param>
+	/// <param name="stripFileExtensions">When true, the file extension will
+	/// be stripped when generating asset names for working with the
+	/// game content pipeline.</param>
+	/// <param name="allowFallback">When true, if an asset does not exist in
+	/// the requested theme, we'll try loading it from the theme's specified
+	/// fall back theme if one exists.</param>
 	/// <exception cref="ArgumentException">The <paramref name="path"/> is empty
 	/// or contains invalid characters.</exception>
 	/// <exception cref="ContentLoadException">The content asset couldn't be
 	/// loaded (e.g. because it doesn't exist).</exception>
-	T Load<T>(string path, string? themeId = null) where T : notnull;
+	T Load<T>(string path, string? themeId = null, bool stripFileExtensions = true, bool allowFallback = true) where T : notnull;
 
 	/// <summary>
-	/// Check whether a given file exists in a theme.
+	/// Check whether an asset exists in a theme.
 	/// </summary>
 	/// <param name="path">The relative file path.</param>
 	/// <param name="themeId">If set, check for the asset in the specified
 	/// theme rather than the active theme.</param>
-	/// <param name="useFallback">If true and the asset is not present in
-	/// the theme, check for the asset in the <see cref="IThemeManifest.FallbackTheme"/>
-	/// theme as well.</param>
-	/// <param name="useDefault">If true and the asset is not present in
-	/// the theme, check for the asset in the <c>default</c> theme as well.</param>
-	bool HasFile(string path, string? themeId = null, bool useFallback = true, bool useDefault = true);
+	/// <param name="stripFileExtensions">When true, the file extension will
+	/// be stripped when generating asset names for working with the
+	/// game content pipeline.</param>
+	/// <param name="allowFallback">When true, if an asset does not exist in
+	/// the requested theme, we'll check to see if it exists in the theme's
+	/// specified fall back theme if one exists.</param>
+	/// <param name="allowDefault">When true, if an asset does not exist
+	/// elsewhere we'll check to see if it exists in the base mod's assets.</param>
+	bool DoesAssetExist<T>(string path, string? themeId = null, bool stripFileExtensions = true, bool allowFallback = true, bool allowDefault = true) where T : notnull;
 
 	#endregion
 }
@@ -417,7 +836,7 @@ public interface IThemeManager {
 /// Content Patcher support, and emitting events when the theme changes.
 /// </summary>
 /// <typeparam name="DataT">Your mod's theme data type</typeparam>
-public interface ITypedThemeManager<DataT> : IThemeManager where DataT : new() {
+public interface IThemeManager<DataT> : IThemeManager where DataT : new() {
 
 	#region Theme Enumeration
 
@@ -482,27 +901,95 @@ public interface IThemeManagerApi {
 
 	#region Game Themes
 
-	IBaseTheme BaseTheme { get; }
+	IGameTheme GameTheme { get; }
 
-	event EventHandler<IThemeChangedEvent<IBaseTheme>>? BaseThemeChanged;
+	event EventHandler<IThemeChangedEvent<IGameTheme>>? GameThemeChanged;
+
+	#endregion
+
+	#region Variable Sets
+
+	/// <summary>
+	/// This <see cref="JsonConverter"/> instance handles <see cref="IVariableSet{TValue}"/>
+	/// instances, both reading and writing them. You should store this value
+	/// using <see cref="VariableSetConverter.SetConverter(JsonConverter?)"/>
+	/// if you're using variable sets in your theme.
+	/// </summary>
+	JsonConverter VariableSetConverter { get; }
+
+	/// <summary>
+	/// Parse a value of <typeparamref name="TValue"/> from a string.
+	/// </summary>
+	/// <typeparam name="TValue">The desired type</typeparam>
+	/// <param name="input">The input to parse</param>
+	/// <param name="manager">The Theme Manager instance this variable set
+	/// belongs to, if one is known.</param>
+	/// <param name="manifest">The theme manifest of the theme this variable set
+	/// belongs to, if one is known.</param>
+	/// <param name="result">The resulting value</param>
+	/// <returns>Whether or not a value was parsed successfully.</returns>
+	delegate bool TryParseVariableSetValue<TValue>(string input, IThemeManager? manager, IThemeManifest? manifest, [NotNullWhen(true)] out TValue? result);
+
+	/// <summary>
+	/// Register a new type that can be stored within a <see cref="IVariableSet{TValue}"/>.
+	/// </summary>
+	/// <typeparam name="TValue">The type to be supported.</typeparam>
+	/// <param name="parseDelegate">A method for parsing values from strings.</param>
+	/// <returns>Whether or not the parser was registered successfully. If
+	/// false, another parser for the type was already registered.</returns>
+	bool RegisterVariableSetType<TValue>(TryParseVariableSetValue<TValue> parseDelegate);
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{TValue}"/> instance using the
+	/// main implementation of variable sets. This should be used in conjunction
+	/// with <see cref="RegisterVariableSetType{TValue}(TryParseVariableSetValue{TValue})"/>.
+	/// If you want to create a variable set for <see cref="IBmFontData"/>,
+	/// <see cref="Texture2D"/>, or <see cref="SpriteFont"/> you should use
+	/// the specific methods for those.
+	/// </summary>
+	/// <exception cref="ArgumentException">Throws an exception when attempting
+	/// to create a variable set with an unsupported type. The default supported
+	/// types are: <see cref="Color"/>.</exception>
+	IVariableSet<TValue> CreateVariableSet<TValue>();
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{IManagedAsset{IBmFontData}}"/>
+	/// instance for <see cref="IBmFontData"/> using the main
+	/// implementation of variable sets.
+	/// </summary>
+	IVariableSet<IManagedAsset<IBmFontData>> CreateBmFontVariableSet();
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{IManagedAsset{Texture2D}}"/>
+	/// instance for managed textures using the main implementation
+	/// of variable sets.
+	/// </summary>
+	IVariableSet<IManagedAsset<Texture2D>> CreateTextureVariableSet();
+
+	/// <summary>
+	/// Create a new <see cref="IVariableSet{IManagedAsset{SpriteFont}}"/>
+	/// instance for managed sprite fonts using the main implementation
+	/// of variable sets.
+	/// </summary>
+	IVariableSet<IManagedAsset<SpriteFont>> CreateFontVariableSet();
 
 	#endregion
 
 	#region Custom Themes
 
 	/// <summary>
-	/// Try to get an existing <see cref="ITypedThemeManager{DataT}"/> instance
+	/// Try to get an existing <see cref="IThemeManager{DataT}"/> instance
 	/// for a mod. This will never create a new instance. If
 	/// <typeparamref name="DataT"/> does not match the type used when
 	/// creating the existing manager, this method will return <c>false</c>
 	/// rather than throwing an <see cref="InvalidCastException"/>.
 	/// </summary>
 	/// <typeparam name="DataT">The type for the mod's theme data.</typeparam>
-	/// <param name="themeManager">The <see cref="ITypedThemeManager{DataT}"/>
+	/// <param name="themeManager">The <see cref="IThemeManager{DataT}"/>
 	/// instance, if one exists.</param>
 	/// <param name="forMod">An optional manifest to get the theme manager
 	/// for a specific mod.</param>
-	bool TryGetManager<DataT>([NotNullWhen(true)] out ITypedThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new();
+	bool TryGetManager<DataT>([NotNullWhen(true)] out IThemeManager<DataT>? themeManager, IManifest? forMod = null) where DataT : class, new();
 
 	/// <summary>
 	/// Try to get an existing <see cref="IThemeManager"/> instance for a mod.
@@ -515,7 +1002,7 @@ public interface IThemeManagerApi {
 	bool TryGetManager([NotNullWhen(true)] out IThemeManager? themeManager, IManifest? forMod = null);
 
 	/// <summary>
-	/// Get an <see cref="ITypedThemeManager{DataT}"/> for a mod. If there is no
+	/// Get an <see cref="IThemeManager{DataT}"/> for a mod. If there is no
 	/// existing instance, create a new one using the supplied parameters.
 	///
 	/// If there is an existing instance, the parameters are ignored.
@@ -539,17 +1026,22 @@ public interface IThemeManagerApi {
 	/// the default behavior of <see cref="IThemeManager.UsingAssetRedirection"/>.</param>
 	/// <param name="forceThemeRedirection">If set to a value, override
 	/// the default behavior of <see cref="IThemeManager.UsingThemeRedirection"/></param>
+	/// <param name="onThemeChanged">An event handler to call whenever the
+	/// theme changes. This is provided as an alternative to registering an
+	/// event handler after the API call returns, as theme discovery will
+	/// have happened by then and there will not be an initial event dispatch.</param>
 	/// <exception cref="InvalidCastException">Thrown when attempting to get a
 	/// manager with a different <typeparamref name="DataT"/> than it was
 	/// created with.</exception>
-	ITypedThemeManager<DataT> GetOrCreateManager<DataT>(
+	IThemeManager<DataT> GetOrCreateManager<DataT>(
 		DataT? defaultTheme = null,
 		string? embeddedThemesPath = "assets/themes",
 		string? assetPrefix = "assets",
 		string? assetLoaderPrefix = null,
 		string? themeLoaderPath = null,
 		bool? forceAssetRedirection = null,
-		bool? forceThemeRedirection = null
+		bool? forceThemeRedirection = null,
+		EventHandler<IThemeChangedEvent<DataT>>? onThemeChanged = null
 	) where DataT : class, new();
 
 	#endregion
@@ -572,17 +1064,17 @@ public interface IThemeManagerApi {
 	#region Colored SpriteText
 
 	/// <summary>
-	/// Draw arbitrarily-colored strings of
-	/// <see cref="StardewValley.BellsAndWhistles.SpriteText"/>.
+	/// Draw strings of <see cref="SpriteText"/> with arbitrary colors and fonts.
 	/// </summary>
 	/// <param name="batch">The SpriteBatch to draw with</param>
+	/// <param name="font">The font to draw with</param>
 	/// <param name="text">The text to draw</param>
 	/// <param name="x">the x coordinate</param>
 	/// <param name="y">the y coordinate</param>
 	/// <param name="color">the color to draw with, or <c>null</c> for the
 	/// default color</param>
 	/// <param name="alpha">The transparency to draw with</param>
-	void DrawSpriteText(SpriteBatch batch, string text, int x, int y, Color? color, float alpha = 1f);
+	void DrawSpriteText(SpriteBatch batch, IBmFontData? font, string text, int x, int y, Color? color, float alpha = 1f);
 
 	#endregion
 }

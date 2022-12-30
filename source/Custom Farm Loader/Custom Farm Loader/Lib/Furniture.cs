@@ -183,6 +183,16 @@ namespace Custom_Farm_Loader.Lib
             return name;
         }
 
+        public static string MapParentsheetindexToName(int id)
+        {
+            var match = CachedFurnitureData.FirstOrDefault(fur => fur.Key == id);
+
+            if (match.Value != null)
+                return match.Value.Split("/").First();
+
+            return "";
+        }
+
         private static string MapDuplicateFurniture(string name)
         {
             //Some furniture in data\\furniture has the same name.

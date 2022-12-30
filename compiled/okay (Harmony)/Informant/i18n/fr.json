@@ -2,6 +2,12 @@
     "BundleTooltipDecorator" : "Annotation des paquets",
     "BundleTooltipDecorator.Description" : "Signale les objets qui sont nécessaires aux paquets",
 
+    "FieldOfficeDecorator" : "Field Office Decorator",
+    "FieldOfficeDecorator.Description" : "Marks items that are needed for the island field office",
+
+    "RarecrowDecorator" : "Rarecrow Decorator",
+    "RarecrowDecorator.Description" : "Marks items that are needed for the rarecrow collection",
+    
     "SellPriceDisplayable" : "Annotation des prix de vente",
     "SellPriceDisplayable.Description" : "Ajoute le prix de vente en bas de l'infobulle",
 

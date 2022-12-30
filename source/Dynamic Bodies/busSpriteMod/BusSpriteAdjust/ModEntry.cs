@@ -102,7 +102,7 @@ namespace BusSpriteAdjust
             pamEraseRect = new Rectangle(busRect.X+ pamOriginalOffset.X, busRect.Y+ pamOriginalOffset.Y, pamRect.Width, pamRect.Height);
 
             //Animated wheels
-            busWheelsTex = helper.Content.Load<Texture2D>("assets/bus_wheels.png");
+            busWheelsTex = helper.ModContent.Load<Texture2D>("assets\\bus_wheels.png");
 
             harmony = new Harmony(ModManifest.UniqueID);
 
@@ -175,6 +175,12 @@ namespace BusSpriteAdjust
                     postfix: new HarmonyMethod(typeof(ModEntry), nameof(post_busLeftToDesert))
                 );
             }
+
+            //SDVE compatibility
+            //https://github.com/FlashShifter/StardewValleyExpanded
+            //Desert warp tile is 18,27, same as vanilla
+            //the fancy patch to make the code work
+            //https://github.com/FlashShifter/StardewValleyExpanded/blob/master/Code/HarmonyPatch_FixDesertBusWarp.cs
         }
 
 

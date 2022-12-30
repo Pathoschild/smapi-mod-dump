@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Dynamic Bodies",
   "Author": "ribeena",
-  "Version": "0.0.6", // fixed locally
+  "Version": "0.0.8",
   "Description": "Make per Farmer changes to your body's appearance.",
   "UniqueID": "ribeena.dynamicbodies",
   "EntryDll": "DynamicBodies.dll",

@@ -90,7 +90,7 @@
 			},
 			"ChanceOnEntry": 1,
 			"MinPerCluster": 1,
-			"MaxPerCluster": 10,
+			"MaxPerCluster": 5,
 			"ChanceOnWater": 0,
 			"Type": "BrownBird"
 		},
@@ -104,7 +104,7 @@
 			},
 			"ChanceOnEntry": 1,
 			"MinPerCluster": 1,
-			"MaxPerCluster": 10,
+			"MaxPerCluster": 5,
 			"ChanceOnWater": 0,
 			"Type": "BlueBird"
 		},
