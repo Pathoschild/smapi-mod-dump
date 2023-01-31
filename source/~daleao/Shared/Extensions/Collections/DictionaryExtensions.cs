@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Shared.Extensions.Collections;
 
 using System.Collections.Generic;
 using System.Linq;
+using NetFabric.Hyperlinq;
 
 #endregion using directives
 
@@ -43,7 +44,11 @@ public static class DictionaryExtensions
 
         return dictionary.Count == 0
             ? string.Empty
-            : string.Join(pairSeparator, dictionary.Select(p => $"{p.Key}{keyValueSeparator}{p.Value}"));
+            : string.Join(
+                pairSeparator,
+                dictionary
+                    .AsValueEnumerable()
+                    .Select(p => $"{p.Key}{keyValueSeparator}{p.Value}"));
     }
 
     /// <summary>

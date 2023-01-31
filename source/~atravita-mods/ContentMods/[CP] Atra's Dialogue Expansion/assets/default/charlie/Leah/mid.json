@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Leah - mid hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Leah",
+        "Entries": {
+            "1{{YearRemainder}}": "Start of a new month, @! What are you planning on getting done?",
+            "3{{YearRemainder}}": "@, I got a new commission! I'm so excited.$h",
+            "5{{YearRemainder}}": "When I need inspiration, I take walks through the forest.#$b#I love living out here! $h",
+            "7{{YearRemainder}}": "I've got a little kitchen in my studio but honestly it's not much.#$b#There's so much fresh food to be found in the forest though! I love fresh salads.",
+        },
+        "When": {"YearModulus": 1}
+    },
+    {
+        "LogName": "Leah -- Extended Dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Leah",
+        "Entries": {
+            "movieTheater": "Heard that a movie theater's coming to town!$h#$e$To be honest, movies are certainly something I've missed.",
+        }
+    },
+    {
+        "LogName": "Leah -- Married Dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueLeah",
+        "Entries": {
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}": "It's our anniversary, dear! Don't you think we should do something fun today?", 
+        },
+        "When": {"HasMod" :"TheMightyAmondee.CustomTokens"}
+    },
+]}

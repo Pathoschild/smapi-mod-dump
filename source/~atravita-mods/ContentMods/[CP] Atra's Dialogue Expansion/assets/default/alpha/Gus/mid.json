@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Gus",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "Entries":
+            {
+            "movieTheater" : "Looks like I have competition now.$s#$b#Something new for people to do on a Friday night.#$e#Would be nice to see a movie sometime...$k",
+            "Sun10": "You're a good friend, @. {{Random: Here's one on the house.[395 303 346]++Here's a meal on the house.[226 239 242 263 204]++Here's a hot beverage on the house.[253]|inputSeparator=++}}$h#$e#Cheers! To another good week!",
+        },
+    },
+    {
+        "LogName": "Gus Snow",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "When":
+        {
+            "Weather: valley": "Snow",
+        },
+        "Entries":
+        {
+            "Sun10": "My, it's chilly outside, isn't it @? Have a hot beverage on the house.[253]$h.",
+        }
+    }
+]}

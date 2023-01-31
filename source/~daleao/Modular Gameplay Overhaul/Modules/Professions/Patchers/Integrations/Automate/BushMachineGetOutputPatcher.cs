@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -52,7 +52,7 @@ internal sealed class BushMachineGetOutputPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
+                .MatchProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
                 .Move(-1)
                 .Insert(
                     new[]
@@ -67,7 +67,7 @@ internal sealed class BushMachineGetOutputPatcher : HarmonyPatcher
                             OpCodes.Call,
                             typeof(BushMachineGetOutputPatcher).RequireMethod(nameof(GetOutputSubroutine))),
                     })
-                .Match(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
                 .Remove(count)
                 .StripLabels();
         }

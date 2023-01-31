@@ -29,6 +29,17 @@
     "reclaimer.name": "Reclaimer",
     "reclaimer.desc": "+{{ReclaimerExtraValuePercent}}% value when trashing items",
 
+    "recycler.prestige.desc": "Even cheaper cost to craft recycling machines",
+    "environmentalist.prestige.desc": "Gain double the friendship from recycling trash",
+    "salvager.prestige.desc": "Get even better output from recycling machines",
+    "sneak.prestige.desc": "When caught in trashcans, villagers think you are being helpful and taking out trash",
+    "upseller.prestige.desc": "Villagers are at worst neutral to gifts received",
+    "reclaimer.prestige.desc": "+{{ReclaimerExtraValuePercent}}% * 1.5 value when trashing items",
+
+    "sneak.prestige.dialogue.child": "Oh you're taking out the trash? I hate having to do that!",
+    "sneak.prestige.dialogue.teen": "I see you're helping out around town. Thanks!",
+    "sneak.prestige.dialogue.adult": "Wow, taking out other peoples trash, how diligent!",
+
     "config.ExperienceFromTrashFail": "Exp From Trash",
     "config.ExperienceFromTrashFail.tooltip": "Experience gained from searching garbage and finding nothing",
     "config.ExperienceFromTrashSuccess": "Exp From Trash Success",

@@ -4,11 +4,12 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
-#pragma warning disable CS1591
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable SA1600 // Elements should be documented
 namespace DaLion.Overhaul;
 
 /// <summary>Holds constants shared by different modules.</summary>
@@ -36,6 +37,9 @@ public sealed class Constants
     public const int BananaSaplingIndex = 69;
     public const int PineappleIndex = 832;
     public const int MangoIndex = 834;
+
+    // flower
+    public const int SunflowerIndex = 421;
 
     // resources
     public const int HardwoodIndex = 709;
@@ -102,7 +106,7 @@ public sealed class Constants
 
     public const int PiratesSwordIndex = 43;
     public const int BrokenTridentIndex = 51;
-    public const int NeptunesGlaiveIndex = 14;
+    public const int NeptuneGlaiveIndex = 14;
 
     public const int BoneSwordIndex = 5;
     public const int OssifiedBladeIndex = 60;
@@ -173,3 +177,5 @@ public sealed class Constants
     // other
     public const int ExpAtLevel10 = 15000;
 }
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

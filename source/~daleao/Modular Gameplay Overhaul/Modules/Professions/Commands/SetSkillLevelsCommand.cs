@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Commands;
 #region using directives
 
 using System.Linq;
+using System.Text;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions.Collections;
 
@@ -29,7 +30,7 @@ internal sealed class SetSkillLevelsCommand : ConsoleCommand
     }
 
     /// <inheritdoc />
-    public override string[] Triggers { get; } = { "set_levels", "set_skills" };
+    public override string[] Triggers { get; } = { "set_levels", "set_skills", "levelup", "skillup" };
 
     /// <inheritdoc />
     public override string Documentation =>
@@ -37,7 +38,7 @@ internal sealed class SetSkillLevelsCommand : ConsoleCommand
         this.GetUsage();
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (args.Length < 2 || args.Length % 2 != 0)
         {
@@ -105,12 +106,13 @@ internal sealed class SetSkillLevelsCommand : ConsoleCommand
     private string GetUsage()
     {
         var result =
-            $"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers.First()} <skill1> <newLevel> <skill2> <newLevel> ...";
-        result += "\n\nParameters:";
-        result += "\n\t- <skill>\t- a valid skill name, or 'all'";
-        result += "\n\t- <newLevel>\t- a valid integer level";
-        result += "\n\nExamples:";
-        result += $"\n\t- {this.Handler.EntryCommand} {this.Triggers.First()} farming 5 cooking 10";
-        return result;
+            new StringBuilder(
+                $"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers[0]} <skill1> <newLevel> <skill2> <newLevel> ...");
+        result.Append("\n\nParameters:");
+        result.Append("\n\t- <skill>\t- a valid skill name, or 'all'");
+        result.Append("\n\t- <newLevel>\t- a valid integer level");
+        result.Append("\n\nExamples:");
+        result.Append($"\n\t- {this.Handler.EntryCommand} {this.Triggers[0]} farming 5 cooking 10");
+        return result.ToString();
     }
 }

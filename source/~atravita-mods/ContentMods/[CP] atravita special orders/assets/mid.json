@@ -40,6 +40,15 @@
     },
     {
         "Action": "Include",
+        "FromFile": "assets/Mid/HotFoods.json",
+        "When": {
+            "AllowedSkills|contains=Fishing": "true",
+            "AllowedSkills|contains=Gifting": "true",
+            "AllowedSkills|contains=Cooking": "true"
+        }
+    },
+    {
+        "Action": "Include",
         "FromFile": "assets/Mid/InAJam.json",
         "When": {
             "AllowedSkills|contains=ArtisanGoods": "true",

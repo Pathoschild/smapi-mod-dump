@@ -33,6 +33,7 @@ Either run this SMAPI with this mod installed once or use [Generic Mod Config Me
 * Prevents gates from popping off if you hold right click near them (again, unless `FurniturePlacementKey` is held down.)
 * `JukeboxesEverywhere` allow jukeboxes to be played most places. (Some maps have dedicated music that will override the jukebox).
 * `PhoneSpeedUpFactor` speeds up phone calls.
+* `CraneGameDifficulty` adjusts the chance the crane game will drop your prize.
 * `GoldenCoconutsOffIsland` allows golden coconuts to spawn from any palm tree as long as you've found one. (off by default).
 * `SaveBombedForage` saves any forage that gets hit by a bomb - it just gets dropped next to your character instead. (off by default)
 * `HideCrabPots` causes crab pots to be hidden during events and festivals.
@@ -52,4 +53,5 @@ Translations would be very welcome! DM me or submit a pull request.
     - Vigor for the Portuguese translation! 
     - [Angel4Killer](https://github.com/angel4killer) for the Russian translation!
     - [Mistyspring](https://github.com/misty-spring) for the Spanish translation!
+    - [park4934](https://blog.naver.com/park971202/222878509680) for the Korean translation!
 * [Changelog](docs/changelog.md)

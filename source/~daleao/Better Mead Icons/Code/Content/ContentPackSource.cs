@@ -4,33 +4,33 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
 using StardewModdingAPI;
 
-namespace BetterMeadIcons.Content;
+namespace DaLion.Meads.Content;
 
 internal class ContentPackSource : TextureDataContentSource
 {
-	private readonly IContentPack pack;
+	private readonly IContentPack _pack;
     
 	public override CustomTextureData TextureData { get; }
 
 	public ContentPackSource(IContentPack pack)
 	{
-		this.pack = pack;
+		this._pack = pack;
 		TextureData = pack.ReadJsonFile<CustomTextureData>("data.json");
 	}
 
 	public override T Load<T>(string path)
 	{
-		return pack.ModContent.Load<T>(path);
+		return _pack.ModContent.Load<T>(path);
 	}
 
 	public override IManifest GetManifest()
 	{
-		return pack.Manifest;
+		return _pack.Manifest;
 	}
 }

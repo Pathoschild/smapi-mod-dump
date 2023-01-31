@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Rain - alpha - seedshop",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Caroline",
+        "When": {"Weather: valley": "Rain, Storm"},
+        "Entries": {"SeedShop_Entry": "Oh, it's really pouring out there"}
+    },
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Caroline": "#$c .7#I hope the sun comes out soon. What did the weather report say today?#A good cup of tea is excellent on a day like this. Here. I've got an extra.[614]",
+        }
+    },
+]}

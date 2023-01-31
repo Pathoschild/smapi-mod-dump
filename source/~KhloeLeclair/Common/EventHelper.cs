@@ -17,8 +17,6 @@ using System.Reflection;
 
 using Leclair.Stardew.Common.Events;
 
-using Microsoft.Build.Utilities;
-
 using StardewModdingAPI;
 
 namespace Leclair.Stardew.Common;

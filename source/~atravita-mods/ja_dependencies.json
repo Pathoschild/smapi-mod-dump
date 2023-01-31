@@ -12,14 +12,15 @@
   "Dependencies": [
     {
       "UniqueID": "spacechase0.JsonAssets",
-      "MinimumVersion": "1.10.6"
+      "MinimumVersion": "1.10.9"
     },
     {
       "UniqueID": "spacechase0.SpaceCore"
     },
     {
       "UniqueID": "atravita.AtraCore",
-      "MinimumVersion": "0.1.1"
+      "MinimumVersion": "0.1.4",
+      "IsRequired": true
     }
   ]
 }

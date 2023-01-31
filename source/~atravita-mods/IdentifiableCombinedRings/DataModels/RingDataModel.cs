@@ -10,18 +10,20 @@
 
 namespace IdentifiableCombinedRings.DataModels;
 
+internal readonly record struct RingPair(int first, int second);
+
 /// <summary>
-/// The data model used for rings. There was an idea here once.
+/// The data model used for rings.
 /// </summary>
-public class RingDataModel
+public sealed class RingDataModel
 {
     /// <summary>
-    /// Either the name or int id of the rings?
+    /// Gets or sets either the name or int id of the rings.
     /// </summary>
-    public List<string> RingIdentifiers { get; set; } = new();
+    public string? RingIdentifiers { get; set; }
 
     /// <summary>
-    /// The path to the texture to use.
+    /// Gets or sets the path to the texture to use.
     /// </summary>
     public string TextureLocation { get; set; } = string.Empty;
 }

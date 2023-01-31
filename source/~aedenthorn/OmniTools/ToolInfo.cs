@@ -22,6 +22,7 @@ namespace OmniTools
         public string displayName;
         public List<string> enchantments = new();
         public List<ObjectInfo> attachments = new();
+        public Dictionary<string, string> modData = new();
         public List<object> vars = new();
         public ToolInfo()
         {
@@ -40,6 +41,12 @@ namespace OmniTools
             foreach (var o in tool.attachments)
             {
                 attachments.Add(o is not null ? new ObjectInfo(o.ParentSheetIndex, o.Stack, o.Quality) : null);
+            }
+            foreach (var kvp in tool.modData.Pairs)
+            {
+                if (kvp.Key == ModEntry.toolCountKey || kvp.Key == ModEntry.toolsKey)
+                    continue;
+                modData.Add(kvp.Key, kvp.Value);
             }
             if(tool is WateringCan)
             {

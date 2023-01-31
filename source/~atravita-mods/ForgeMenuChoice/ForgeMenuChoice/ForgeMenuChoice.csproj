@@ -2,7 +2,6 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -11,7 +10,7 @@
     <Name>Pick Your Enchantment</Name>
     <Description>Allows you to pick which enchantment you get.</Description>
     <UpdateKeys> Nexus:11376, ModDrop:1125882 </UpdateKeys>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 

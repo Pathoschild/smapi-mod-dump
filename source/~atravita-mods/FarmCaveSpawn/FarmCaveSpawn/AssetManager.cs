@@ -11,7 +11,6 @@
 using AtraBase.Collections;
 
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 
 namespace FarmCaveSpawn;
 
@@ -21,19 +20,26 @@ namespace FarmCaveSpawn;
 internal static class AssetManager
 {
     /// <summary>
-    /// Gets fake asset location for the denylist.
+    /// Gets fake asset location for the deny list.
     /// </summary>
-    internal static string DENYLIST_LOCATION { get; } = PathUtilities.NormalizeAssetName("Mods/atravita_FarmCaveSpawn_denylist");
+    internal static IAssetName DENYLIST_LOCATION { get; private set; } = null!;
 
     /// <summary>
     /// Gets fake asset location for more locations that can spawn in fruit.
     /// </summary>
-    internal static string ADDITIONAL_LOCATIONS_LOCATION { get; } = PathUtilities.NormalizeAssetName("Mods/atravita_FarmCaveSpawn_additionalLocations");
+    internal static IAssetName ADDITIONAL_LOCATIONS_LOCATION { get; private set; } = null!;
 
     /// <summary>
-    /// Loads assets for this mod.
+    /// Initialize the AssetManager.
     /// </summary>
-    /// <param name="e">Event args.</param>
+    /// <param name="parser">Game Content Helper.</param>
+    internal static void Initialize(IGameContentHelper parser)
+    {
+        DENYLIST_LOCATION = parser.ParseAssetName("Mods/atravita_FarmCaveSpawn_denylist");
+        ADDITIONAL_LOCATIONS_LOCATION = parser.ParseAssetName("Mods/atravita_FarmCaveSpawn_additionalLocations");
+    }
+
+    /// <inheritdoc cref="IContentEvents.AssetRequested"/>
     internal static void Load(AssetRequestedEventArgs e)
     {
         if (e.Name.IsEquivalentTo(DENYLIST_LOCATION))

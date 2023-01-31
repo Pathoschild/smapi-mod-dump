@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -35,10 +35,10 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
     public override string Documentation => "Forcefully advances the specified quest-line (either Clint's Forge or Yoba's Virtues).";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         var player = Game1.player;
-        if (args.Length == 0)
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Log.W("You must specify a quest-line to advance (either \"Forge\" or \"Ruin\".");
             return;
@@ -78,7 +78,6 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
                 player.Write(DataFields.ProvenGenerosity, true.ToString());
                 player.Write(DataFields.ProvenValor, true.ToString());
                 Virtue.List.ForEach(virtue => virtue.CheckForCompletion(Game1.player));
-                player.completeQuest(Constants.VirtuesNextQuestId);
                 break;
         }
     }

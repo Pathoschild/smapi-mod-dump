@@ -11,10 +11,16 @@
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+
 using AtraBase.Toolkit;
-using AtraBase.Toolkit.Reflection;
+
+using AtraCore.Framework.ReflectionManager;
+
+using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
+
 using HarmonyLib;
+
 using StardewValley.TerrainFeatures;
 
 namespace MoreFertilizers.HarmonyPatches;
@@ -32,25 +38,39 @@ internal static class GetFertilizerSourceRectTranspiler
         {
             return 0;
         }
+        else if (fertilizer == ModEntry.MiraculousBeveragesID)
+        {
+            return 1;
+        }
+        else if (fertilizer == ModEntry.OrganicFertilizerID)
+        {
+            return 2;
+        }
         else if (fertilizer == ModEntry.PaddyCropFertilizerID)
         {
             return 3;
+        }
+        else if (fertilizer == ModEntry.JojaFertilizerID
+            || fertilizer == ModEntry.DeluxeJojaFertilizerID
+            || fertilizer == ModEntry.SecretJojaFertilizerID)
+        {
+            return 4;
         }
         else if (fertilizer == ModEntry.LuckyFertilizerID)
         {
             return 5;
         }
+        else if (fertilizer == ModEntry.RadioactiveFertilizerID)
+        {
+            return 6;
+        }
         else if (fertilizer == ModEntry.BountifulFertilizerID)
         {
             return 7;
         }
-        else if (fertilizer == ModEntry.JojaFertilizerID || fertilizer == ModEntry.DeluxeJojaFertilizerID)
+        else if (fertilizer == ModEntry.WisdomFertilizerID)
         {
-            return 4;
-        }
-        else if (fertilizer == ModEntry.OrganicFertilizerID)
-        {
-            return 2;
+            return 8;
         }
         return 0;
     }
@@ -84,7 +104,7 @@ internal static class GetFertilizerSourceRectTranspiler
                 ldloc,
                 new(OpCodes.Brtrue_S, branchpast), // The  previous code has already returned a value, I don't need to.
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, typeof(GetFertilizerSourceRectTranspiler).StaticMethodNamed(nameof(GetIndexForFertilizer))),
+                new(OpCodes.Call, typeof(GetFertilizerSourceRectTranspiler).GetCachedMethod(nameof(GetIndexForFertilizer), ReflectionCache.FlagTypes.StaticFlags)),
                 stloc,
             }, withLabels: labels);
             return helper.Render();
@@ -92,6 +112,7 @@ internal static class GetFertilizerSourceRectTranspiler
         catch (Exception ex)
         {
             ModEntry.ModMonitor.Log($"Mod crashed while transpiling Hoedirt.Draw:\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

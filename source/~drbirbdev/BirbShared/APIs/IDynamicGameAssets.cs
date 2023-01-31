@@ -21,7 +21,7 @@ namespace BirbShared.APIs
         /// </summary>
         /// <param name="item">The item to get the DGA item ID of.</param>
         /// <returns>The DGA item ID if it has one, otherwise null.</returns>
-        /// string GetDGAItemId(object item);
+        string GetDGAItemId(object item);
 
         /// <summary>
         /// Spawn a DGA item, referenced with its full ID ("mod.id/ItemId").

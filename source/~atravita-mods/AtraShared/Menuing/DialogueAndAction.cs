@@ -21,16 +21,20 @@ public class DialogueAndAction : DialogueBox
 {
     private readonly List<Action?> actions;
 
+    private readonly IInputHelper inputHelper;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogueAndAction"/> class.
     /// </summary>
     /// <param name="dialogue">Initial dialogue.</param>
     /// <param name="responses">List of responses.</param>
     /// <param name="actions">List of associated actions.</param>
-    public DialogueAndAction(string dialogue, List<Response> responses, List<Action?> actions)
+    /// <param name="inputHelper">SMAPI's input helper.</param>
+    public DialogueAndAction(string dialogue, List<Response> responses, List<Action?> actions, IInputHelper inputHelper)
         : base(dialogue, responses)
     {
         this.actions = actions;
+        this.inputHelper = inputHelper;
     }
 
     /// <summary>
@@ -51,8 +55,10 @@ public class DialogueAndAction : DialogueBox
             {
                 if (i < this.actions.Count)
                 {
+                    this.inputHelper.Suppress(key.ToSButton());
                     this.actions[i]?.Invoke();
                     this.closeDialogue();
+                    break;
                 }
             }
         }
@@ -67,7 +73,7 @@ public class DialogueAndAction : DialogueBox
     [UsedImplicitly]
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
-        if (this.safetyTimer <= 0 && this.selectedResponse > -1 && this.selectedResponse < this.actions.Count)
+        if (this.safetyTimer <= 0 && this.selectedResponse >= 0 && this.selectedResponse < this.actions.Count)
         {
             this.actions[this.selectedResponse]?.Invoke();
         }

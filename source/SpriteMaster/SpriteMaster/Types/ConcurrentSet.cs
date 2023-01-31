@@ -31,6 +31,14 @@ internal class ConcurrentSet<T> :
 
 	private readonly ConcurrentDictionary<T, byte> Container;
 
+	internal List<T> Copy => Container.Keys.ToList();
+
+	internal void CopyTo(List<T> list) {
+		foreach (var element in Container.Keys) {
+			list.Add(element);
+		}
+	}
+
 	#region Constructors
 
 	internal ConcurrentSet() :

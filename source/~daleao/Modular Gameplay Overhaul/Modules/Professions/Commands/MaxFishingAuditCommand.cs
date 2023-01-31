@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,10 +13,8 @@ namespace DaLion.Overhaul.Modules.Professions.Commands;
 #region using directives
 
 using System.Collections.Generic;
-using System.Linq;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions;
-using StardewModdingAPI.Utilities;
 
 #endregion using directives
 
@@ -38,25 +36,26 @@ internal sealed class MaxFishingAuditCommand : ConsoleCommand
         $"Set all fish to seen and caught at max-size. Relevant for {Profession.Angler}s.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
-        var fishData = Game1.content
-            .Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
-            .Where(p => !p.Key.IsIn(152, 153, 157) && !p.Value.Contains("trap"))
-            .ToDictionary(p => p.Key, p => p.Value);
-        foreach (var (key, value) in fishData)
+        foreach (var (key, value) in ModHelper.GameContent.Load<Dictionary<int, string>>("Data/Fish"))
         {
-            var dataFields = value.Split('/');
+            if (key is 152 or 153 or 157 || value.Contains("trap"))
+            {
+                continue;
+            }
+
+            var dataFields = value.SplitWithoutAllocation('/');
             if (Game1.player.fishCaught.ContainsKey(key))
             {
                 var caught = Game1.player.fishCaught[key];
-                caught[1] = Convert.ToInt32(dataFields[4]) + 1;
+                caught[1] = int.Parse(dataFields[4]) + 1;
                 Game1.player.fishCaught[key] = caught;
                 Game1.stats.checkForFishingAchievements();
             }
             else
             {
-                Game1.player.fishCaught.Add(key, new[] { 1, Convert.ToInt32(dataFields[4]) + 1 });
+                Game1.player.fishCaught.Add(key, new[] { 1, int.Parse(dataFields[4]) + 1 });
             }
         }
     }

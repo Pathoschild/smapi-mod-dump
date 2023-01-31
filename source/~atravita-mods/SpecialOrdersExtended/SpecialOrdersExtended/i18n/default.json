@@ -11,11 +11,17 @@
 {
   "$schema": "https://smapi.io/schemas/i18n.json",
   //Warnings
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+  "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
+  "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled.",
   "cp-not-installed": "Content Patcher not installed, tokens will not be available.",
-  "IllFormatedConfig": "Config file seems ill-formated, using default.",
 
-  "SurpressUnnecessaryBoardUpdates.name": "Surpress Unnecessary Board Updates",
+  "SurpressUnnecessaryBoardUpdates.tile": "Suppress Unnecessary Board Updates",
   "SurpressUnnecessaryBoardUpdates.description": "Prevents the game from trying to reload the special order data before the board is even open.",
+  "UseTagCache.title ": "Use Tag Cache",
+  "UseTagCache.description": "Caches the results of tags to avoid repeated checks.",
+  "AvoidRepeatingQiOrders.title": "Avoid Repeating Qi Orders",
+  "AvoidRepeatingQiOrders.description": "If enabled, Qi orders will not repeat until you've completed all of them.",
 
   //Documentation for console commands
   "special_order_pool.description": "Lists the current special orders. If order is not available, explains why.",
@@ -37,7 +43,7 @@
   "analyzing": "Analyzing",
   "parsable": "seems parsable",
   "unparsable": "has errors in parsing",
-  "nonrepeatable": "Nonrepeatable",
+  "nonrepeatable": "Non-repeatable",
   "repeatable-seen": "Repeatable, seen before",
   "month-long-late": "Month long quest, not available after the {{cutoff}}th",
   "has-invalid-tags": "Has invalid tags",
@@ -58,11 +64,11 @@
   "dialogue.error-in-patched-function": "Failed in checking for Special Order dialogue for NPC {{Name}}",
 
   "current-keys-found": "Current Keys Found: ",
-  "hardcoded": "Hardcoded: ",
+  "hardcoded": "Hard-coded: ",
   "dictionary": "In dictionary: ",
 
   "stat-not-found": "{{key}} not found in `stats.cs`. Is it provided by a mod that's not currently loaded?'",
   "stat-cache-fail": "Failure to use {{key}}, please take this log to {{atra}}.",
 
-  "skill-not-found": "${{profession}} for {{skill}} not found; perhaps it's from a mod not installed?"
+  "skill-not-found": "{{profession}} for {{skill}} not found; perhaps it's from a mod not installed?"
 }

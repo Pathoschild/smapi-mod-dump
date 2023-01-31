@@ -6,17 +6,9 @@ mods:
    Alternative Textures
 
 latest commit:
-   commit e42ee5b6fffdb97175e0f2095a0b368aec054b95
-   Author: Seelensplitter <110759594+Seelensplitter@users.noreply.github.com>
-   Date:   Mon Aug 8 22:08:39 2022 +0200
+   commit a7a78eb49588c7c755112b0cc7ca05c900734a88
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Wed Jan 18 20:45:31 2023 -0600
    
-       Create de.json (#45)
-       
-       * Create de.json
-       
-       German translation
-       
-       * Included de.json for build output
-       
-       Co-authored-by: Floogen <31755155+Floogen@users.noreply.github.com>
+       v6.4.4 released
    

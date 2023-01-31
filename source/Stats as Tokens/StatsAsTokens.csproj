@@ -2,14 +2,14 @@
 	<PropertyGroup>
 		<AssemblyName>StatsAsTokens</AssemblyName>
 		<RootNamespace>StatsAsTokens</RootNamespace>
-		<Version>0.5.2</Version>
-		<TargetFramework>net452</TargetFramework>
+		<Version>0.5.3</Version>
+		<TargetFramework>net5.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
 		<Reference Include="ContentPatcher">
 			<HintPath>D:\Games\SteamLibrary\steamapps\common\Stardew Valley\Mods\ContentPatcher\ContentPatcher.dll</HintPath>
 			<Private>False</Private>

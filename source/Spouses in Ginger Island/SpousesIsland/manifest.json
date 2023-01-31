@@ -11,7 +11,7 @@
 {
   "Name": "Spouses' Island",
   "Author": "mistyspring",
-  "Version": "3.6.0",
+  "Version": "4.0.0",
   "Description": "Framework which allows spouses to visit the island. Comes with integrated schedules.",
   "UniqueID": "mistyspring.spousesisland",
   "EntryDll": "SpousesIsland.dll",
@@ -20,6 +20,7 @@
   "Dependencies": [
     { "UniqueID": "MadaraUchiha.NonDestructiveNPCs", "IsRequired": true },
     { "UniqueID":"Esca.CustomNPCExclusions", "IsRequired":true },
+    { "UniqueID":"spacechase0.JsonAssets", "IsRequired":true },
     { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": true}
  ]
 }

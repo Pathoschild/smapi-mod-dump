@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -28,7 +28,7 @@ using HarmonyLib;
 
 [UsedImplicitly]
 [RequiresMod("Pathoschild.Automate")]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class GenericObjectMachinePatchers : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="GenericObjectMachinePatchers"/> class.</summary>
@@ -73,7 +73,7 @@ internal sealed class GenericObjectMachinePatchers : HarmonyPatcher
 
     /// <summary>Replaces large egg output quality with quantity + add flower memory to automated kegs.</summary>
     [HarmonyTranspiler]
-    [HarmonyBefore("Overhaul.Modules.Professions")]
+    [HarmonyBefore("DaLion.Overhaul.Modules.Professions")]
     private static IEnumerable<CodeInstruction>? GenericObjectMachineTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
@@ -117,7 +117,7 @@ internal sealed class GenericObjectMachinePatchers : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Tweaks Failed patching modded Artisan behavior to generic Automate machines." +
+            Log.E("Tweeex module failed patching modded Artisan behavior to generic Automate machines." +
                   "\n—-- Do NOT report this to Automate's author. ---" +
                   $"\nHelper returned {ex}");
             return null;

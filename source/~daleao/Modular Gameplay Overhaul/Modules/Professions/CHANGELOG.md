@@ -2,11 +2,73 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
 # Professions Module Change Log
+
+## 1.3.0
+
+### Fixed
+
+* Fixed a bug preventing explosive ammo from exploding without the Desperado profession.
+* Fixed a possible Out-Of-Range Exception when hovering a Rascal Slingshot.
+
+## 1.2.1
+
+### Changed
+
+* Changes to Pacher Ambush -> *If an enemy is slain within ~~1.5s~~ 0.5s out of Ambush, immediately regain ~~20%~~ 25% special ability charge.*
+
+### Fixed
+
+* Fixed a possible throw when poaching from a monster that has no item to drop.
+
+## 1.2.0
+
+### Changed
+
+* Dramatically increased Blaster's chance of producing coal. Apparently the vanilla chance is so retardedly low that just doubling it doesn't make a noticeable difference.
+* Piper Slimes no longer take on the properties of Hutch Slimes, because I decided that wasn't really immersive. Piper Slimes are not summoned from the Hutch; they are attracted due to the Piper's "sliminess", and therefore they should be native to the current location.
+
+### Fixed
+
+* The Prestige API should now be fully functional, so custom skill mod authors can now support prestige profession variants.
+* Fixed the Agriculturist perk, which I straight up forgot to include in 1.1.0.
+
+## 1.1.1
+
+### Changed
+
+* Spelunker momentum is now gained on interaction with a ladder or sink hole, and not on player warped. This prevents exploiting other warp methods such as the elevator to rank up the buff for free.
+* Prestige mechanic should now be fully functional for custom SpaceCore skills. Expect Binning and Socialization compatibility soon!
+
+## 1.1.0
+
+## Changed
+
+* **Agriculturist:** The chance for Iridium Quality crops has been reduced to half of the chance with Deluxe Fertilizer.
+* **Artisan:** Effect changed from "output quality **is at least as good** as input quality" to "output quality **can be as good** as input quality". I.e., instead of simply preserving the quality of the input, there is now a formula in place to choose a quality that is lower than or equal to that of the input. The 5% promotion chance still applies.
+
+## 1.0.2
+
+### Added
+
+* Prospector now also tracks Resource Clumps.
+* Added Custom Resource Clumps integration.
+
+### Fixed
+
+* Fixed buggy nodes being spawned by Prospector.
+* Fixed a typo in Brute's Rage buff.
+* Fixed Custom Ore Nodes integration.
+
+## 1.0.1
+
+### Changed
+
+* Prospector ore spawning chance is no longer recursive, which should dramatically reduce the odds of extra node spawns.
 
 ## 1.0.0
 

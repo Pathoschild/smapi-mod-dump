@@ -22,8 +22,8 @@
     "message.on-time-change.time-stopped": "Внезапно, время остановилось...",
 
     // changed based on location
-    "message.on-location-change.time-stopped-globally": "Похоже, время остановилось везде...",
-    "message.on-location-change.time-stopped-here": "Кажется, время здесь застыло...",
+    "message.on-location-change.time-stopped-globally": "Время остановилось везде...",
+    "message.on-location-change.time-stopped-here": "Время здесь застыло...",
     "message.on-location-change.time-speed-here": "Здесь 10 минут ощущаются как {{seconds}} сек...",
 
 
@@ -32,12 +32,10 @@
     *********/
     // general options
     "config.general-options": "Основные опции",
-
-    // TODO
-    "config.enable-on-festival-days.name": "Enable on festival days",
-    "config.enable-on-festival-days.desc": "Whether to change tick length on festival days.",
-    "config.location-notify.name": "Show time info on warp",
-    "config.location-notify.desc": "Whether to show a message about the time settings when you enter a location.",
+    "config.enable-on-festival-days.name": "Вкл. во время праздников",
+    "config.enable-on-festival-days.desc": "Изменять ли длину тиков в праздничные дни.",
+    "config.location-notify.name": "Показывать скорость времени",
+    "config.location-notify.desc": "Если включить, то при переходе на другую локацию будут отображены настройки времени в этой локации",
 
     // seconds per minute section
     "config.seconds-per-minute": "Секунд за минуту",
@@ -47,12 +45,10 @@
     "config.outdoors-speed.desc": "Количество секунд в одной игровой минуте на улице.",
     "config.mine-speed.name": "В шахте",
     "config.mine-speed.desc": "Количество секунд в одной игровой минуте в шахте.",
-
-    // TODO
-    "config.skull-cavern-speed.name": "Skull Cavern",
-    "config.skull-cavern-speed.desc": "The number of seconds per in-game minute while in the Skull Cavern.",
-    "config.volcano-dungeon-speed.name": "Volcano Dungeon",
-    "config.volcano-dungeon-speed.desc": "The number of seconds per in-game minute while in the Volcano Dungeon.",
+    "config.skull-cavern-speed.name": "Пещера Черепа",
+    "config.skull-cavern-speed.desc": "Количество секунд в одной игровой минуте в Пещера Черепа.",
+    "config.volcano-dungeon-speed.name": "Вулканическое подземелье",
+    "config.volcano-dungeon-speed.desc": "Количество секунд в одной игровой минуте в Вулканическом подземелье.",
 
     // freeze time section
     "config.freeze-time": "Остановка времени",
@@ -64,25 +60,23 @@
     "config.freeze-time-outdoors.desc": "Эта опция полностью остановит время на улице.",
     "config.freeze-time-mine.name": "В шахте",
     "config.freeze-time-mine.desc": "Эта опция полностью остановит время в шахте.",
-
-    // TODO
-    "config.freeze-time-skull-cavern.name": "Skull Cavern",
-    "config.freeze-time-skull-cavern.desc": "Whether to freeze time while in the Skull Cavern.",
-    "config.freeze-time-volcano-dungeon.name": "Volcano Dungeon",
-    "config.freeze-time-volcano-dungeon.desc": "Whether to freeze time while in the Volcano Dungeon.",
-    "config.freeze-time-freeze-names.name": "Freeze location names",
-    "config.freeze-time-freeze-names.desc": "The names of specific locations in which to freeze time. Location names can be seen in-game using the Debug Mode mod. You can list multiple with commas.",
-    "config.freeze-time-dont-freeze-names.name": "Don't freeze location names",
-    "config.freeze-time-dont-freeze-names.desc": "The names of specific locations in which time shouldn't be frozen, regardless of the previous settings. Location names can be seen in-game using the Debug Mode mod. You can list multiple with commas.",
+    "config.freeze-time-skull-cavern.name": "Пещера Черепа",
+    "config.freeze-time-skull-cavern.desc": "Эта опция полностью остановит время в Пещере Черепа.",
+    "config.freeze-time-volcano-dungeon.name": "Вулканическое подземелье",
+    "config.freeze-time-volcano-dungeon.desc": "Эта опция полностью остановит время в Вулканическом подземелье.",
+    "config.freeze-time-freeze-names.name": "Заморозить время в",
+    "config.freeze-time-freeze-names.desc": "Названия конкретных локаций, в которых время будет заморожено. Названия локаций можно увидеть в игре с помощью мода \"Debug Mode\". Вы можете перечислить несколько через запятую.",
+    "config.freeze-time-dont-freeze-names.name": "Не замораживать время в",
+    "config.freeze-time-dont-freeze-names.desc": "Названия конкретных локаций, в которых время не будет заморожено, вне зависимости от предыдущих настроек. Названия локаций можно увидеть в игре с помощью мода \"Debug Mode\". Вы можете перечислить несколько через запятую.",
 
     // controls
     "config.controls": "Управление",
     "config.freeze-time-key.name": "Остановить время",
     "config.freeze-time-key.desc": "Эта клавиша будет останавливать и продолжать течение времени. Остановленное время будет таким пока вы не нажмёте клавишу снова; обычное течение времени может быть прервано в зависимости от настроек.",
     "config.slow-time-key.name": "Замедлить время",
-    "config.slow-time-key.desc": "Клавиша, которая будет замедлять время, на 1 секунду за 10 игровых минут. Комбинируя с клавишей Ctrl - 100 секунд, Shift - 10 секунд или Alt - 0.1 секунд (100 миллисекунд).",
+    "config.slow-time-key.desc": "Клавиша(по умолчанию - . ), которая будет замедлять время, на 1 секунду за 10 игровых минут. Комбинируя с клавишей Ctrl - 100 секунд, Shift - 10 секунд или Alt - 0.1 секунд (100 миллисекунд).",
     "config.speed-up-time-key.name": "Ускорить время",
-    "config.speed-up-time-key.desc": "Клавиша, которая будет ускорять время, на 1 секунду за 10 игровых минут. Комбинируя с клавишей Ctrl - 100 секунд, Shift - 10 секунд или Alt - 0.1 секунд (100 миллисекунд).",
+    "config.speed-up-time-key.desc": "Клавиша(по умолчанию - , ), которая будет ускорять время, на 1 секунду за 10 игровых минут. Комбинируя с клавишей Ctrl - 100 секунд, Shift - 10 секунд или Alt - 0.1 секунд (100 миллисекунд).",
     "config.reload-key.name": "Перезагрузить настройки",
     "config.reload-key.desc": "Клавиша, которая перезагружает все значения из config.json и сразу же их применяет. Если время было остановлено клавишей, оно останется остановленным."
 }

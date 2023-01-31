@@ -42,11 +42,13 @@ namespace PacifistValley
             Config = this.Helper.ReadConfig<ModConfig>();
             SMonitor = Monitor;
 
+            Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            
             if (!Config.EnableMod)
                 return;
 
             Helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
-            Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.Content.AssetRequested += Content_AssetRequested;
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
@@ -135,7 +137,6 @@ namespace PacifistValley
                    postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Skeleton_behaviorAtGameTick_postfix))
                 );
             }
-            helper.Events.Content.AssetRequested += Content_AssetRequested;
         }
 
         private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
@@ -359,6 +360,11 @@ namespace PacifistValley
                     mod: ModManifest,
                     reset: () => Config = new ModConfig(),
                     save: () => Helper.WriteConfig(Config)
+                );
+                configMenu.AddSectionTitle(
+                    mod: ModManifest,
+                    text: () => "You must close the game and restart for changes to take effect." 
+                    
                 );
                 configMenu.AddBoolOption(
                     mod: ModManifest,

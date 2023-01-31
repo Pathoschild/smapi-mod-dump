@@ -11,7 +11,7 @@
 {
   "Name": "BinningSkill",
   "Author": "drbirbdev",
-  "Version": "1.1.2",
+  "Version": "1.2.1",
   "Description": "Adds a skill related to digging through trashcans.",
   "UniqueID": "drbirbdev.BinningSkill",
   "EntryDll": "BinningSkill.dll",
@@ -25,6 +25,11 @@
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "DaLion.Overhaul",
+      "MinimumVersion": "1.1.1",
       "IsRequired": false
     }
   ]

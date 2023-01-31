@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Fishing;
 #region using directives
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 
@@ -28,14 +29,14 @@ internal sealed class ItemPopulateContextTagsPatcher : HarmonyPatcher
     }
 
     /// <summary>Gets extended family pairs by legendary fish id.</summary>
-    private static IReadOnlyDictionary<int, int> ExtendedFamilyPairs { get; } = new Dictionary<int, int>
+    private static ImmutableDictionary<int, int> ExtendedFamilyPairs { get; } = new Dictionary<int, int>
     {
         { 898, 159 },
         { 899, 160 },
         { 900, 163 },
         { 901, 682 },
         { 902, 775 },
-    };
+    }.ToImmutableDictionary();
 
     #region harmony patches
 

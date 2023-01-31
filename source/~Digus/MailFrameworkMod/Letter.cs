@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 
 namespace MailFrameworkMod
@@ -34,13 +35,21 @@ namespace MailFrameworkMod
         /// </summary>
         public string GroupId;
         /// <summary>
-        /// this letter title to be show in the collections menu
+        /// this letter title to be show in the collections menu. Use a translation key if you provide a ITranslationHelper
         /// </summary>
         public string Title;
         /// <summary>
-        /// text to be show on the letter menu. You can use @ to put the players name and ^ for line breakes
+        /// translated title
+        /// </summary>
+        public string TranslatedTitle => I18N != null ? I18N.Get(Title) : Title;
+        /// <summary>
+        /// text to be show on the letter menu. You can use @ to put the players name and ^ for line breaks. Use a translation key if you provide a ITranslationHelper
         /// </summary>
         public string Text { get; private set; }
+        /// <summary>
+        /// translated text
+        /// </summary>
+        public string TranslatedText => I18N != null ? I18N.Get(Text) : Text;
         /// <summary>
         /// list of static items to be added in the letter. If null or empty, no item is added
         /// There is a bug with the game when adding more than one object. It draws one over the other, and when clicked the one showing is the last one to be picked.
@@ -82,6 +91,10 @@ namespace MailFrameworkMod
         /// when conditions are met any recipe will be learned and the callback will be called. the letter won't show in the mailbox
         /// </summary>
         public bool AutoOpen;
+        /// <summary>
+        /// translation helper of the content pack or mod
+        /// </summary>
+        public ITranslationHelper I18N;
 
         /// <summary>
         /// Creates a letter.
@@ -128,7 +141,7 @@ namespace MailFrameworkMod
 
         public override string ToString()
         {
-            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, { nameof(Text)}: {Text}";
+            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {TranslatedTitle}, { nameof(Text)}: {TranslatedText}";
         }
     }
 }

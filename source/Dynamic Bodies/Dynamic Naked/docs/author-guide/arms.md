@@ -69,7 +69,7 @@ arbitrary decision on sleeve lengths - the player can edit this as needed in-gam
 a player changes the sleeves that saves only on that item, all future shirts
 have the default sleeve length.
 
-If you are adding clothing using JSONAssets, then you can also
+If you are adding clothing using JSONAssets/Dyanmic Game Assets, then you can also
 add metadata to make it clear what sleeves it is when they first get the top
 by using the metadata field;
 ```
@@ -82,4 +82,4 @@ by using the metadata field;
     "Metadata": "DB.Short"
 }
 ```
-You have the options of vanilla's `Sleeveless`, `DB.Short` and `DB.Long`.
+You have the options of vanilla's `Sleeveless` or `DB.Short` and `DB.Long`.

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -22,6 +22,13 @@ using StardewValley.Tools;
 /// <summary>A harmless ball of snow fired by a <see cref="Slingshot"/>.</summary>
 internal sealed class SnowballProjectile : BasicProjectile
 {
+    /// <summary>Initializes a new instance of the <see cref="SnowballProjectile"/> class.</summary>
+    /// <remarks>Required for multiplayer syncing.</remarks>
+    public SnowballProjectile()
+        : base()
+    {
+    }
+
     /// <summary>Initializes a new instance of the <see cref="SnowballProjectile"/> class.</summary>
     /// <param name="firer">The <see cref="Farmer"/> who fired this projectile.</param>
     /// <param name="overcharge">The amount of overcharge with which the projectile was fired.</param>

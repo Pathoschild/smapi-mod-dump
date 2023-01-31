@@ -8,6 +8,38 @@ for queries and analysis.**
 
 # Changelog
 
+## 1.5.0
+Released January 14th, 2022.
+
+### New Features
+
+* Added new dynamic filter for creating a category with all recipes.
+* Added option to include a category's recipes within the Miscellaneous
+  category. Usually, only recipes that don't appear in any other categories
+  appear within Misc. However, enabling this on a category will allow its
+  recipes to still appear within Miscellaneous.
+* Added a new feature to recycle (or un-craft) items directly from the crafting
+  menu. As this potentially affects game balance, the feature is disabled by
+  default. You can also enable it separately for crafting and cooking.
+
+### Changes
+
+* Added a few new icons to the icon picker.
+
+### Fixes
+
+* Do not let users open the settings menu if they're holding an item, as that
+  may result in the loss of the item.
+* Pressing the menu close button (`E`) may cause the menu to close when it
+  should not.
+
+### API Changes
+
+* Fix typos in documentation.
+* Allow passing a specific item to be returned when recycling a matcher-based
+  ingredient. Doing so disables fuzzy-type item matching for the ingredient.
+
+
 ## 1.4.0
 Released October 28th, 2022.
 

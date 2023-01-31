@@ -168,10 +168,10 @@ public sealed class ModEntry : Mod
         // Register mod configuration
         gmcm.Register(this.ModManifest, () => this._config = new(), () => this.Helper.WriteConfig(this.Config));
 
-        gmcm.API.AddSectionTitle(this.ModManifest, I18n.Section_General_Name, I18n.Section_General_Description);
+        gmcm.Api.AddSectionTitle(this.ModManifest, I18n.Section_General_Name, I18n.Section_General_Description);
 
         // Animal Shop Limit
-        gmcm.API.AddNumberOption(
+        gmcm.Api.AddNumberOption(
             this.ModManifest,
             () => this.Config.AnimalShopLimit,
             value => this.Config.AnimalShopLimit = value,
@@ -179,10 +179,10 @@ public sealed class ModEntry : Mod
             I18n.Config_AnimalShopLimit_Tooltip,
             fieldId: nameof(ModConfig.AnimalShopLimit));
 
-        gmcm.API.AddSectionTitle(this.ModManifest, I18n.Section_Controls_Name, I18n.Section_Controls_Description);
+        gmcm.Api.AddSectionTitle(this.ModManifest, I18n.Section_Controls_Name, I18n.Section_Controls_Description);
 
         // Next Page
-        gmcm.API.AddKeybindList(
+        gmcm.Api.AddKeybindList(
             this.ModManifest,
             () => this.Config.ControlScheme.NextPage,
             value => this.Config.ControlScheme.NextPage = value,
@@ -191,7 +191,7 @@ public sealed class ModEntry : Mod
             nameof(Controls.NextPage));
 
         // Previous Page
-        gmcm.API.AddKeybindList(
+        gmcm.Api.AddKeybindList(
             this.ModManifest,
             () => this.Config.ControlScheme.PreviousPage,
             value => this.Config.ControlScheme.PreviousPage = value,

@@ -6,6 +6,33 @@ for queries and analysis.**
 
 ----
 
+## [Unreleased] - ????-??-??
+
+### Added
+
+- Ability to change the camera position, you can also reset it to the default position
+- Auto Zoom to approximate map size
+
+### Improvements
+
+- Major code optimizations
+
+### Fixed
+
+- UI not showing up when using the 'Reset UI' option with the option 'Hide UI at a certain zoom level' enabled
+
+
+## [1.14.0] - 2023-01-21
+
+### Added
+
+- Ability to change to zoom level to the approximate current map size
+
+### Changed
+
+- Minimum API version to 3.18.1
+
+
 ## [1.13.0] - 2022-07-24
 
 ### Added
@@ -35,7 +62,7 @@ for queries and analysis.**
 
 ### Added
 
-- Option that hides the UI at a certain zoom level.
+- Option that hides the UI at a certain zoom level
 
 ### Fixed
 
@@ -45,13 +72,13 @@ for queries and analysis.**
 
 ### Added
 
-- Toggle UI.
+- Toggle UI
 
 ## [1.9.0] - 2022-01-27
 
 ### Added
 
-- Max and Min UI or Zoom.
+- Max and Min UI or Zoom
 
 ### Changed
 
@@ -59,7 +86,7 @@ for queries and analysis.**
 
 ### Improvements 
 
-- Updated API for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098).
+- Updated API for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098)
 - README file
 
 ### Fixed
@@ -70,32 +97,32 @@ for queries and analysis.**
 
 ### Improvements 
 
-- Added support for the new API version.
+- Added support for the new API version
 
 ## [1.7.0] - 2021-05-17
 
 ### Added
 
-- Reset UI or Zoom.
+- Reset UI or Zoom
 
 ## [1.6.0] - 2021-05-01
 
 ### Added
 
-- Control Zoom and UI levels anywhere if activated.
+- Control Zoom and UI levels anywhere if activated
 
 ## [1.5.1] - 2021-04-12
 
 ### Fixed
 
-- Support for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098).
+- Support for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098)
 - Some text typos
 
 ## [1.5.0] - 2021-04-11
 
 ### Added
 
-- Support for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098).
+- Support for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098)
 
 ### Changed
 
@@ -157,7 +184,9 @@ for queries and analysis.**
 
 - Initial release
 
-[unreleasedTabThatIMightUseLater]: https://github.com/thespbgamer/ZoomLevel/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/thespbgamer/ZoomLevel/compare/1.14.0...HEAD
+[1.15.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.15.0
+[1.14.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.14.0
 [1.13.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.13.0
 [1.12.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.12.0
 [1.11.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.11.0

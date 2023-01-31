@@ -227,7 +227,7 @@ public sealed class ModEntry : Mod
             gmcm.Register(this.ModManifest, () => this._config = new(), () => this.Helper.WriteConfig(this.Config));
 
             // Collect Items
-            gmcm.API.AddKeybindList(
+            gmcm.Api.AddKeybindList(
                 this.ModManifest,
                 () => this.Config.ControlScheme.CollectItems,
                 value => this.Config.ControlScheme.CollectItems = value,
@@ -236,7 +236,7 @@ public sealed class ModEntry : Mod
                 nameof(Controls.CollectItems));
 
             // Dispense Items
-            gmcm.API.AddKeybindList(
+            gmcm.Api.AddKeybindList(
                 this.ModManifest,
                 () => this.Config.ControlScheme.DispenseItems,
                 value => this.Config.ControlScheme.DispenseItems = value,
@@ -245,7 +245,7 @@ public sealed class ModEntry : Mod
                 nameof(Controls.DispenseItems));
 
             // Collect Output Distance
-            gmcm.API.AddNumberOption(
+            gmcm.Api.AddNumberOption(
                 this.ModManifest,
                 () => this.Config.CollectOutputDistance,
                 value => this.Config.CollectOutputDistance = value,
@@ -257,7 +257,7 @@ public sealed class ModEntry : Mod
                 fieldId: nameof(ModConfig.CollectOutputDistance));
 
             // Dispense Input Distance
-            gmcm.API.AddNumberOption(
+            gmcm.Api.AddNumberOption(
                 this.ModManifest,
                 () => this.Config.DispenseInputDistance,
                 value => this.Config.DispenseInputDistance = value,
@@ -269,7 +269,7 @@ public sealed class ModEntry : Mod
                 fieldId: nameof(ModConfig.DispenseInputDistance));
 
             // Do Dig Spots
-            gmcm.API.AddBoolOption(
+            gmcm.Api.AddBoolOption(
                 this.ModManifest,
                 () => this.Config.DoDigSpots,
                 value => this.Config.DoDigSpots = value,
@@ -278,7 +278,7 @@ public sealed class ModEntry : Mod
                 nameof(ModConfig.DoDigSpots));
 
             // Do Forage
-            gmcm.API.AddBoolOption(
+            gmcm.Api.AddBoolOption(
                 this.ModManifest,
                 () => this.Config.DoForage,
                 value => this.Config.DoForage = value,
@@ -287,7 +287,7 @@ public sealed class ModEntry : Mod
                 nameof(ModConfig.DoForage));
 
             // Do Machines
-            gmcm.API.AddBoolOption(
+            gmcm.Api.AddBoolOption(
                 this.ModManifest,
                 () => this.Config.DoMachines,
                 value => this.Config.DoMachines = value,
@@ -296,7 +296,7 @@ public sealed class ModEntry : Mod
                 nameof(ModConfig.DoMachines));
 
             // Do Terrain
-            gmcm.API.AddBoolOption(
+            gmcm.Api.AddBoolOption(
                 this.ModManifest,
                 () => this.Config.DoTerrain,
                 value => this.Config.DoTerrain = value,
@@ -310,19 +310,19 @@ public sealed class ModEntry : Mod
             return;
         }
 
-        toolbarIcons.API.AddToolbarIcon(
+        toolbarIcons.Api.AddToolbarIcon(
             "EasyAccess.CollectItems",
             $"{this.ModManifest.UniqueID}/Icons",
             new Rectangle(0, 0, 16, 16),
             I18n.Button_CollectOutputs_Name());
 
-        toolbarIcons.API.AddToolbarIcon(
+        toolbarIcons.Api.AddToolbarIcon(
             "EasyAccess.DispenseInputs",
             $"{this.ModManifest.UniqueID}/Icons",
             new Rectangle(16, 0, 16, 16),
             I18n.Button_DispenseInputs_Name());
 
-        toolbarIcons.API.ToolbarIconPressed += this.OnToolbarIconPressed;
+        toolbarIcons.Api.ToolbarIconPressed += this.OnToolbarIconPressed;
     }
 
     private void OnToolbarIconPressed(object? sender, string id)

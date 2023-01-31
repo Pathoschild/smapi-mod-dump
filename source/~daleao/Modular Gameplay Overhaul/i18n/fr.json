@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -24,7 +24,7 @@
   "agriculturist.desc.prestiged": "Les cultures poussent 10 % >> 20 % plus vite.",
   "artisan.title.male": "Artisan",
   "artisan.title.female": "Artisane",
-  "artisan.desc": "Toutes les machines artisanales fonctionnent 10 % plus vite. La qualité de sorite des machines est égale ou supérieure que la qualité de l’ingrédient d’entrée.",
+  "artisan.desc": "Toutes les machines artisanales fonctionnent 10 % plus vite. La qualité de sortie des machines peut être aussi bonne que la qualité de l’ingrédient d’entrée.",
   "artisan.desc.prestiged": "Toutes les machines artisanales fonctionnent 10 % >> 25 % plus vite.",
 
   "rancher.title.male": "Cowboy",
@@ -206,6 +206,94 @@
   "prestige.achievement.title.female": "Touche-à-tout",
   "prestige.achievement.desc": "Acquérir tous les professions dans toutes les compétences.",
 
+
+  // *********** //
+  // * ARSENAL * //
+  // *********** //
+
+  "weapons.dwarven.prefix": "Naine",
+  "weapons.elven.prefix": "Elfique",
+  "weapons.darksword.name": "Lame de la ruine",
+  "weapons.darksword.desc": "Une lame maudite. Elle devient plus puissante en consommant la force vitale des ennemis vaincus.",
+  "weapons.darksword.found": "Il y a autre chose derrière la statue.",
+  "weapons.darksword.chill": "Vous sentez un frisson sinistre parcourir votre colonne vertébrale.",
+  "weapons.darksword.question": "Quoi qu'il en soit, vous devriez probablement le laisser tranquille...",
+  "weapons.darksword.grabit": "Prendre-le",
+  "weapons.darksword.leaveit": "Laisser-le",
+  "weapons.darksword.holdupmessage": "Vous tendez la main et découvrez une épée à l'ancienne. Lorsque vous l'attrapez, la lame commence à briller d'une couleur verte maladive. Soudain, vous avez l'impression que toute la paix, l'espoir et le bonheur ont été drainés du monde... ^^     Vous obtenez le ={{darksword}}= ^",
+  "weapons.darksword.cantdeposit": "Le {{darksword}} ne peut pas être abandonné.",
+  "weapons.holyblade.name": "Lame de l'aube",
+  "weapons.holyblade.desc": "Une lame bénie, accordée à un héros vertueux.",
+  "weapons.holyblade.holdupmessage": "Le {{darksword}} réagit à l'Autel de Yoba ! L'énergie sinistre de la lame commence à s'estomper, et à sa place une sensation de chaleur s'infiltre dans votre paume...^^     Vous obtenez le ={{holyblade}}=  ^",
+  "weapons.insecthead.extradesc": " Inflige des dégâts proportionnels au nombre d'insectes tués.",
+  "weapons.obsidianedge.extradesc": " Coupe à travers l'armure ennemie.",
+  "weapons.iridiumneedle.extradesc": " Garantit un coup critique.",
+  "slingshots.infinity.name": "Lance-pierre infinie",
+  "slingshots.infinity.desc": "La vrie forme du Lance-pierre galactique.",
+  "objects.galaxysoul.desc": "Le noyau matérialisé d'une minuscule galaxie.",
+
+  "blueprint.found.first": "Vous avez trouvé un vieux plan ! Il est estompé, mais vous reconnaissez la forme d'un {{type}} à côté de certains symboles nains. Peut-être que le bon artisan pourrait y trouver un sens.",
+  "blueprint.found.local": "Vous avez trouvé un plan nain.",
+  "blueprint.found.global": "{who} a trouvé un plan nain.",
+  "blacksmith.forge.option": "Forger",
+  "blacksmith.forge.explanation": "Je pourrais forger de nouvelles armes basées sur les plans que vous avez trouvés. Si seulement j'avais ces matériaux étranges.",
+  "blacksmith.forge.confirmation": "Oh, vous en avez trouvé ! Je vais commencer ça dès que possible. Il devrait être prêt dans quelques jours.",
+
+  "dialogue.clint.blueprint.notdone": "Hé @. Je n'ai toujours pas fini de déchiffrer ton plan.$0#$b#Peut-être demain...$2",
+  "dialogue.clint.blueprint.done": "Hé @. J'ai fini de traduire ce vieux plan.$0#$b#Désolé d'avoir pris si longtemps.$2#$b#Cela s'est avéré être une recette pour une arme fabriquée à partir de matériaux étranges.$0#$b#Celui qui l'a écrit était clairement un maître forgeron. Les techniques décrites ici sont tout à fait remarquables.$2#$b#J'aimerais vraiment essayer de faire ça, mais je ne sais pas où trouver ces matériaux.#$b#Quoi qu'il en soit, voici votre livre. Si vous tombez sur ce truc, ramenez-le ici et je vous fabriquerai cette arme gratuitement.",
+  "dialogue.gil.virtues": "Un véritable aventurier devrait vivre selon les Cinq Vertus Héroïques : Honneur, Compassion, Sagesse, Générosité et Vaillance. Ceux qui le font sont considérés comme des héros aux yeux de Yoba, tenus de toujours revenir sains et saufs de leurs aventures.#$b#C'est du moins ce que disait ma maman.",
+  "dialogue.wizard.curse.canthelp": "Je suis désolé, @. Je crains que même l'arcane ne peut plus vous aider maintenant.#$b#Votre seul espoir est de rechercher le divin.",
+
+  "events.forge.intro": "distantBanjo/3 15/farmer 5 19 0 Clint 3 13 2/pause 1000/speak Clint \"Ah, salut @.$1\"/move farmer 0 -4 3/move farmer -2 0 0/pause 500/speak Clint \"Quoi de neuf, t'as un outil pour que je me mette à niveau ?\"/pause 500/speak Clint \"Qu'est-ce que c'est, un vieux plan ?\"/pause 1000/speak Clint \"J'adorerais t'aider, @, mais je ne comprends aucun de ces gribouillis...$2\"/pause 1000/speak Clint \"T'as dis quoi? T'as le guide de traduction pour cela ?$0#$b#Mais ça va prendre des jours à déchiffrer...$2\"/pause 500/speak Clint \"Enfin, d'accord. Je vais commencer ce soir. Reviens me voir dans quelques jours.\"/pause 500/addQuest 144701/end",
+  "events.curse.intro": "WizardSong/-1000 -1000/farmer 8 24 0 Wizard 10 15 2/showFrame Wizard 20/viewport 8 18 true/move farmer 0 -3 0/pause 2000/speak Wizard \"@, c'est bien que tu sois venu.\"/pause 300/showFrame Wizard 16/pause 500/speak Wizard \"J'ai ressenti une perturbation dans l'arcane, mais je ne savais pas ce que c'était jusqu'à ce que tu entres.\"/pause 500/showFrame Wizard 0/pause 500/move Wizard -2 0 3/move Wizard 0 3 2/pause 1000/speak Wizard \"Cette étrange épée...\"/move Wizard 0 1 2/pause 300/speak Wizard \"Dis-moi, comment as-tu fait pour l'obtenir ?\"/pause 1500/speak Wizard \"Je vois.\"/pause 500/move Wizard 0 -1 0/speak Wizard \"La quantité d'énergie malveillante qui en émane ne peut signifier qu'une chose.\"/pause 500/faceDirection Wizard 2 true/pause 500/speak Wizard \"Ce doit être l'épée du Héros Ruiné.$1\"/pause 1000/move Wizard 0 1 2/pause 200/speak Wizard \"L'histoire raconte que le héros Viego brandissait autrefois une magnifique lame dorée, offerte par Yoba lui-même.\"/pause 200/showFrame Wizard 18/pause 200/speak Wizard \"Mais lorsque sa femme bien-aimée a péri, Viego est devenu fou et consumé par le chagrin.\"/pause 500/showFrame Wizard 0/pause 500/move Wizard -2 0 3/pause 200/speak Wizard \"Il se tourna vers la sorcellerie, obsédé par la pensée de la ressusciter.#$b#Bien qu'à grands frais, il a finalement réussi.\"/pause 200/move Wizard 2 0 1/pause 200/speak Wizard \"Pendant un bref instant, le corps de sa femme a surgi d'un horrible spectre d'ombre et de rage.#$b#Confuse d'avoir été arrachée à la mort, elle a pris la propre lame de Viego et l'a enfoncée dans son cœur.\"/faceDirection Wizard 2 true/speak Wizard \"Et à ce moment, la sombre sorcellerie de Viego et le pouvoir sacré de Yoba se sont affrontés, une brume noire s'est déversée du cœur de Viego, et il est devenu le Héros Ruiné, piégé dans la non-mort.\"/move Wizard 0 -1 0/speak Wizard \"Moi-même, je ne croyais pas aux histoires. Mais si la lame est réelle, alors peut-être que Viego lui-même est toujours là-bas, à sa recherche.\"/pause 1500/move Wizard 0 2 2/speak Wizard \"Cette épée finira par vous consumer, @, tout comme Viego.#$b#Il est impératif que tu t'en débarrasses. Et quoi que tu fasses, ne l'utilise pas.\"/pause 500/addQuest 144703/end",
+  "events.curse.intro.sve": "WizardSong/-1000 -1000/farmer 8 24 0 Wizard 10 15 2/showFrame Wizard 20/viewport 8 18 true/move farmer 0 -3 0/pause 2000/speak Wizard \"@, c'est bien que tu sois venu.\"/pause 300/showFrame Wizard 16/pause 500/speak Wizard \"J'ai ressenti une perturbation dans l'arcane, mais je ne savais pas ce que c'était jusqu'à ce que tu entres.\"/pause 500/showFrame Wizard 0/pause 500/move Wizard -2 0 3/move Wizard 0 3 2/pause 1000/speak Wizard \"Cette étrange épée...\"/move Wizard 0 1 2/pause 300/speak Wizard \"Dis-moi, comment as-tu fait pour l'obtenir ?\"/pause 1500/speak Wizard \"Je vois.\"/pause 500/move Wizard 0 -1 0/speak Wizard \"La quantité d'énergie malveillante qui en émane ne peut signifier qu'une chose.\"/pause 500/faceDirection Wizard 2 true/pause 500/speak Wizard \"Ce doit être l'épée du Héros Ruiné.$3\"/pause 1000/move Wizard 0 1 2/pause 200/speak Wizard \"L'histoire raconte que le héros Viego brandissait autrefois une magnifique lame dorée, offerte par Yoba lui-même.\"/pause 200/showFrame Wizard 18/pause 200/speak Wizard \"Mais lorsque sa femme bien-aimée a péri, Viego est devenu fou et consumé par le chagrin.\"/pause 500/showFrame Wizard 0/pause 500/move Wizard -2 0 3/pause 200/speak Wizard \"Il se tourna vers la sorcellerie, obsédé par la pensée de la ressusciter.#$b#Bien qu'à grands frais, il a finalement réussi.\"/pause 200/move Wizard 2 0 1/pause 200/speak Wizard \"Pendant un bref instant, le corps de sa femme a surgi d'un horrible spectre d'ombre et de rage.#$b#Confuse d'avoir été arrachée à la mort, elle a pris la propre lame de Viego et l'a enfoncée dans son cœur.\"/faceDirection Wizard 2 true/speak Wizard \"Et à ce moment, la sombre sorcellerie de Viego et le pouvoir sacré de Yoba se sont affrontés, une brume noire s'est déversée du cœur de Viego, et il est devenu le Héros Ruiné, piégé dans la non-mort.\"/move Wizard 0 -1 0/speak Wizard \"Moi-même, je ne croyais pas aux histoires. Mais si la lame est réelle, alors peut-être que Viego lui-même est toujours là-bas, à sa recherche.\"/pause 1500/move Wizard 0 2 2/speak Wizard \"Cette épée finira par vous consumer, @, tout comme Viego.#$b#Il est impératif que tu t'en débarrasses. Et quoi que tu fasses, ne l'utilise pas.\"/pause 500/addQuest 144703/end",
+
+  "events.100162.sword": "MarlonsTheme/21 9/farmer -100 -100 0 Marlon 23 6 2/addQuest 14/skippable/pause 1000/move Marlon 0 2 2/pause 500/showFrame Marlon 4/pause 1000/speak Marlon \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame Marlon 0/pause 500/speak Marlon \"... Je regardais juste dans cet ancien puits de mine.#$b#Ça a l’air abandonné depuis des décennies.\"/pause 500/showFrame Marlon 4/speak Marlon \"Pourtant, il y a probablement du bon minerai là-dedans.#$b#Mais un endroit comme ça, plongé dans l’obscurité et qui n’a pas été touché depuis si longtemps... Je crains que du minerai ne soit pas la seule chose que l’on pourrait trouver...\"/pause 500/showFrame Marlon 0/pause 500/speak Marlon \"Tiens, prends ça. Tu pourrais en avoir besoin.\"/pause 500/playSound dwop/faceDirection farmer 1 true/pause 50/faceDirection farmer 2/itemAboveHead sword/pause 3300/awardFestivalPrize sword/pause 300/faceDirection farmer 1 true/pause 100/faceDirection farmer 0/pause 500/speak Marlon \"J’allais oublier, je m’appelle Marlon. Je gère la guilde des aventuriers dans la vallée.#$b#Je vais garder un oeil sur toi. Fais tes preuves et peut-être que tu pourras devenir membre de la guilde.\"/pause 500/end",
+  "events.100162.nosword": "MarlonsTheme/21 9/farmer -100 -100 0 Marlon 23 6 2/addQuest 14/skippable/pause 1000/move Marlon 0 2 2/pause 500/showFrame Marlon 4/pause 1000/speak Marlon \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame Marlon 0/pause 500/speak Marlon \"... Je regardais juste dans cet ancien puits de mine.#$b#Ça a l’air abandonné depuis des décennies.\"/pause 500/showFrame Marlon 4/speak Marlon \"Pourtant, il y a probablement du bon minerai là-dedans.#$b#Mais un endroit comme ça, plongé dans l’obscurité et qui n’a pas été touché depuis si longtemps... Je crains que du minerai ne soit pas la seule chose que l’on pourrait trouver...\"/pause 500/showFrame Marlon 0/pause 500/speak Marlon \"Tu ferais mieux de savoir manier cette arme. Tu peux en avoir besoin.\"/pause 500/speak Marlon \"J’allais oublier, je m’appelle Marlon. Je gère la guilde des aventuriers dans la vallée.#$b#Je vais garder un oeil sur toi. Fais tes preuves et peut-être que tu pourras devenir membre de la guilde.\"/pause 500/end",
+  "events.100162.sword.sve": "MarlonsTheme/21 9/farmer -100 -100 0 MarlonFay 23 6 2/addQuest 14/skippable/pause 1000/move MarlonFay 0 2 2/pause 500/showFrame MarlonFay 19/pause 1000/speak MarlonFay \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame MarlonFay 0/pause 500/speak MarlonFay \"...I was just wondering how far down this mine shaft goes.#$b#I'm going to take care of some of the monsters in here before they start climbing out into the valley.$1#$b#You seem concerned. I may be old, but age hasn't robbed me of my skill with a sword, quite yet.$0\"/pause 500/showFrame MarlonFay 18/pause 2000/showFrame MarlonFay 0/pause 500/speak MarlonFay \"As leader of the adventurer's guild I've met a lot of fighters in my time. I recognize that look in your eye.$2\"/pause 1500/speak MarlonFay \"Take this. It's a training weapon. It may not look like much, but you'll be able to battle the monsters here.\"/playSound dwop/faceDirection farmer 1 true/pause 50/faceDirection farmer 2/itemAboveHead sword/pause 3300/awardFestivalPrize sword/pause 300/faceDirection farmer 1 true/pause 100/faceDirection farmer 0/pause 500/speak MarlonFay \"I'll keep my eye on you. Prove yourself and I might think about making you a member.\"/pause 750/end",
+  "events.100162.nosword.sve": "MarlonsTheme/21 9/farmer -100 -100 0 MarlonFay 23 6 2/addQuest 14/skippable/pause 1000/move MarlonFay 0 2 2/pause 500/showFrame MarlonFay 19/pause 1000/speak MarlonFay \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame MarlonFay 0/pause 500/speak MarlonFay \"...I was just wondering how far down this mine shaft goes.#$b#I'm going to take care of some of the monsters in here before they start climbing out into the valley.$1#$b#You seem concerned. I may be old, but age hasn't robbed me of my skill with a sword, quite yet.$0\"/pause 500/showFrame MarlonFay 18/pause 2000/showFrame MarlonFay 0/pause 500/speak MarlonFay \"As leader of the adventurer's guild I've met a lot of fighters in my time. I recognize that look in your eye.$2\"/pause 300/showFrame MarlonFay 19/pause 1000/showFrame MarlonFat 0/pause 300/speak MarlonFay \"Prove to me that you can swing that weapon and I might think about making you a member.\"/pause 750/end",
+  "events.1337098.nopurchase": "MarlonsTheme/-500 -500/farmer -200 -200 0 MarlonFay 4 11 2/viewport 6 13 true/skippable/pause 2000/warp farmer 6 19/playSound doorClose/pause 500/showFrame MarlonFay 17/pause 150/textAboveHead MarlonFay \"You found something!\"/pause 350/move farmer 0 -5 3/move farmer -2 0 0/move farmer 0 -1 0/showFrame MarlonFay 0/pause 500/speak MarlonFay \"That weapon! There's no mistaking it!$1#$b#You received a Galaxy Sword!\"/pause 1000/showFrame MarlonFay 18/pause 1000/speak MarlonFay \"You have been deemed worthy, @. This is a true honor.$2#$b#I obtained my first Galaxy weapon after a night of harsh battles at Castle Village.#$b#There was a purple blinding light as a sword slowly fell into my hands. I felt the power of the cosmos for a brief second.#$b#Wizards and scholars believe Yoba gifts these weapons to true peacekeepers of humanity.\"/pause 1200/speak MarlonFay \"I'm proud of you!$1\"/showFrame MarlonFay 0/pause 500/end",
+
+  "fromcsfiles.MeleeWeapon.cs.14122": "Le Tesson prismatique brille, absorbe l'iridium de votre sac à dos et se transforme sous vos yeux ! ^^     Vous obtenez le ={{galaxyWeapon}}=  ^",
+  "locations.Town.DwarfGrave.Translated": "     Vous traduisez le nain :     \n\nEntre triplés d'or perdus dans le sable\nproduisez un arc-en-ciel forgé depuis la terre\nimplorez les cieux ! revendiquez votre droit\nlaissez les tonnerres rugir votre nom\nsi votre cœur est pur et votre conscience claire\net votre foi n'a ni doute ni peur\nles étoiles pleuvront là-bas sceau\net vous accorderont l'acier du ciel",
+  "locations.SeedShop.Yoba": "\"No evil shall touch a true Hero of Yoba.\"",
+
+  "mail.curse.intro": "Dear @, I must see you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodius, Wizard[#]Ruined Hero",
+
+  "quests.forge.intro": "Basic/Un héritage nain/Clint vous a dit qu'il finirait de traduire ce vieux plan dans quelques jours./Rendez visite à Clint pour vous renseigner sur le plan./Blacksmith/144702/0/-1/false",
+  "quests.forge.next": "Basic/Un héritage nain II/Ce vieux plan s'est avéré être une recette pour une puissante arme ancienne ! Pourrait-il y en avoir d'autres ?/Trouvez les plans nains restants./null/-1/0/-1/false",
+  "quests.curse.intro": "Basic/La lame du héros ruiné/The weapon you found carries the curse of the Ruined Hero! You can already feel it draining away your life energy. Better find some way to lift that curse, and fast!/Trouvez un moyen de lever la malédiction de la Lame en ruine./null/144704/0/-1/false",
+  "quests.curse.next": "Basic/La lame du héros ruiné/Ceux qui incarnent les vertus d'un véritable héros sont purifiés de tout mal par le pouvoir divin de Yoba./Prouvez que vous vivez selon les cinq vertus héroïques./null/144705/0/-1/false",
+  "quests.curse.last": "Basic/La lame du héros ruiné/Ceux qui incarnent les vertus d'un véritable héros sont purifiés de tout mal par le pouvoir divin de Yoba./Apportez la Lame de la ruine à l'autel de Yoba./null/-1/0/-1/false",
+  "quests.virtues.honor": "Basic/Épreuve d'honneur/L'honneur ne peut pas être acheté. L'honneur ne se vend pas non plus, car sa valeur est supérieure à tous les trésors du monde. Pourtant on peut le perdre, et celui qui le fait aura sali son nom pour l'éternité. Une personne vraiment honorable soutient toujours ses actions, fait face à tous les défis et refuse de mentir./Attendez une chance de prouver votre honeur./null/-1/0/-1/false",
+  "quests.virtues.compassion": "Basic/Épreuve de compassion/De nombreux traits témoignent de la vraie nature d'une personne. La compassion est ce qui sépare les hommes des bêtes. Celui qui éprouve de la sympathie pour son prochain ne fermera jamais les yeux sur le malheur. Ils se tiendront toujours à la défense des lésés./Attendez une chance de démontrer de la compassion./null/-1/0/-1/false",
+  "quests.virtues.wisdom": "Basic/Épreuve de sagesse/La sagesse est une vertu que l'on doit s'efforcer de cultiver tout au long de sa vie, car il est impossible d'être si sage qu'on ne puisse devenir encore plus sage. Les sages le savent... Au cours de notre voyage dans la vie, nous devons chercher à faire des choix judicieux. N'oubliez pas que les choix judicieux ne sont pas ceux qui nous facilitent ou simplifient la vie. Souvent, ils les compliquent. Mais toujours, ils nous rendent meilleurs./Attendez une chance de prouver votre sagesse./null/-1/0/-1/false",
+  "quests.virtues.generosity": "Basic/Épreuve de générosité/Nul ne peut être qualifié de bon s'il ne partage pas sa prospérité avec les autres. La générosité est nécessaire pour la dignité dans la vie et la paix dans la mort./Attendez une chance de prouver votre générosité./null/-1/0/-1/false",
+  "quests.virtues.valor": "Basic/Épreuve de vaillance/La bravoure ne rend pas bon, mais combien d'hommes bons avez-vous rencontrés au cours de votre vie qui étaient des lâches ? Ceux qui ont de la valeur n'hésitent pas à s'opposer à la majorité, quelles qu'en soient les conséquences./Attendez une chance de prouver votre vaillance./null/-1/0/-1/false",
+
+  "yoba.question": "Il y a des inscriptions supplémentaires sur l'autel...",
+  "virtues.honor.name": "Honneur",
+  "virtues.compassion.name": "Compassion",
+  "virtues.wisdom.name": "Sagesse",
+  "virtues.generosity.name": "Générosité",
+  "virtues.valor.name": "Vaillance",
+  "virtues.honor.flavor": "\"L'honneur ne peut pas être acheté. L'honneur ne se vend pas non plus, car sa valeur est supérieure à tous les trésors du monde. Pourtant on peut le perdre, et celui qui le fait aura sali son nom pour l'éternité. Une personne vraiment honorable soutient toujours ses actions, fait face à tous les défis et refuse de mentir.\"",
+  "virtues.compassion.flavor": "\"De nombreux traits témoignent de la vraie nature d'une personne. La compassion est ce qui sépare les hommes des bêtes. Celui qui éprouve de la sympathie pour son prochain ne fermera jamais les yeux sur le malheur. Ils se tiendront toujours à la défense des lésés.\"",
+  "virtues.wisdom.flavor": "\"La sagesse est une vertu que l'on doit s'efforcer de cultiver tout au long de sa vie, car il est impossible d'être si sage qu'on ne puisse devenir encore plus sage. Les sages le savent... Au cours de notre voyage dans la vie, nous devons chercher à faire des choix judicieux. N'oubliez pas que les choix judicieux ne sont pas ceux qui nous facilitent ou simplifient la vie. Souvent, ils les compliquent. Mais toujours, ils nous rendent meilleurs.\"",
+  "virtues.generosity.flavor": "\"Nul ne peut être qualifié de bon s'il ne partage pas sa prospérité avec les autres. La générosité est nécessaire pour la dignité dans la vie et la paix dans la mort.\"",
+  "virtues.valor.flavor": "\"La bravoure ne rend pas bon, mais combien d'hommes bons avez-vous rencontrés au cours de votre vie qui étaient des lâches ? Ceux qui ont de la valeur n'hésitent pas à s'opposer à la majorité, quelles qu'en soient les conséquences.\"",
+
+  // json assets
+  "objects.dwarvishblueprint.name": "Ancien plan nain",
+  "objects.dwarvishblueprint.description": "C'est effacé, mais toujours lisible.",
+  "objects.herosoul.name": "Âme de héros",
+  "objects.herosoul.description": "L'essence matérialisée d'un héros.",
+  "objects.dwarvenscrap.name": "Ferraille naine",
+  "objects.dwarvenscrap.description": "Il a l'air ancien, mais quelque peu futuriste.",
+  "objects.elderwood.name": "Bois ancien",
+  "objects.elderwood.description": "Un morceau de bois enchanté par une ancienne race magique.",
+
+
   // ********* //
   // * RINGS * //
   // ********* //
@@ -224,6 +312,26 @@
   "rings.garnet.name": "Bague Grenat",
   "rings.garnet.description": "Diminue le temps de recharge des coups spéciaux de 10 %.",
   "rings.iridium.description": "Une bague en iridium.",
+  "rings.infinity.name": "Bague Infinie",
+  "rings.infinity.description": "Un vaisseau de grande puissance.",
+  "global.infinitycraft": "{{who}} a forgé une Bague Infini.",
+  "resonance": "Résonance",
+
+  // **************** //
+  // * ENCHANTMENTS * //
+  // **************** //
+
+  "enchantments.carving": "Découpant",
+  "enchantments.cleaving": "Fendant",
+  "enchantments.energized": "Energisant",
+  "enchantments.tribute": "Tribut",
+  "enchantments.vampiric": "Sanguinaire",
+  "enchantments.engorging": "Glouton",
+  "enchantments.gatling": "Mitraillant",
+  "enchantments.preserving": "Préservant",
+  "enchantments.quincy": "Quincy",
+  "enchantments.spreading": "Répandant",
+
 
   // *********** //
   // ** TAXES ** //
@@ -238,13 +346,20 @@
   "honorific.male": "Monsieur",
   "honorific.female": "Madame",
 
+
   // **************** //
   // ** UI STRINGS ** //
   // **************** //
 
-  "ui.itemhover.damage": "{{amount}} Damage",
-  "ui.itemhover.precision": "{{amount}} Precision",
-  "ui.itemhover.cdr": "{{amount}} Cooldown Reduction",
+  "ui.itemhover.damage": "{{amount}} Dégâts",
+  "ui.itemhover.crate": "{{amount}} Chance Crit.",
+  "ui.itemhover.cpow": "{{amount}} Puissance Crit.",
+  "ui.itemhover.knockback": "{{amount}} Recul",
+  "ui.itemhover.firespeed": "{{amount}} Vitesse",
+  "ui.itemhover.swingspeed": "{{amount}} Vitesse",
+  "ui.itemhover.cdr": "{{amount}} Temps de récharge",
+  "ui.itemhover.resist": "{{amount}} Résistance",
+  "ui.itemhover.precision": "{{amount}} Précision",
 
   "article.definite.male": "au",
   "article.definite.female": "à la",
@@ -255,6 +370,7 @@
   "season.summer": "estivale",
   "season.fall": "d'automne",
   "season.winter": "d'hiver",
+
 
   // ********* //
   // * PONDS * //

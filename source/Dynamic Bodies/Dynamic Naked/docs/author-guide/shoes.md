@@ -27,14 +27,12 @@ This means that when using the boots stainer/tailoring screens the mod generates
 icon with the correct colors. The colors come straight from the shoes palette, and it 
 calculates the additional 2 colors.
 
-## Adding custom boots with JSONAssets
+## Adding custom boots with JSONAssets/Dynamic Game Assets
 If you are adding new boots with [JSONAssets](https://www.nexusmods.com/stardewvalley/mods/1720)
+or [Dynamic Game Assets](https://www.nexusmods.com/stardewvalley/mods/9365)
 there's not much you need to do - the name will fuzzy match like above, and the
-new color palette you add will work automatically with the stainer.
+new color palette you add will work automatically with the stainer provided
+you've use the same 5 brown colors.
 
 Refer to the [boots sprite](../../assets/Interface/springobjects_boots.png) of
 this mod and create your icon using those 5 colors and it should work fine.
-
-### What about JSONAssets successor Dynamic Game Assets
-This feature doesn't currently work with [Dynamic Game Assets](https://www.nexusmods.com/stardewvalley/mods/9365)
-because Dynamic Bodies is unable to access the boots icon that is shown.

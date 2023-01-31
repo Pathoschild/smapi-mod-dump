@@ -36,10 +36,11 @@ using StardewValley.Network;
 using StardewValley.Objects;
 
 using Leclair.Stardew.BetterCrafting.DynamicRules;
-using StardewValley.Characters;
-using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
+using Leclair.Stardew.BetterCrafting.Patches;
 
 namespace Leclair.Stardew.BetterCrafting.Menus;
+
 
 public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu {
 
@@ -69,7 +70,6 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	public readonly GameLocation? Location;
 	public readonly Vector2? Position;
 	public readonly Rectangle? Area;
-	public readonly SObject? Object;
 	public NetMutex? Mutex;
 
 	public IList<LocatedInventory>? MaterialContainers;
@@ -84,6 +84,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	public TextBox? txtCategoryName;
 	public ClickableComponent? btnCategoryName;
 	public ClickableTextureComponent? btnCategoryFilter;
+	public ClickableTextureComponent? btnCategoryIncludeInMisc;
 
 	public List<ClickableComponent>? FlowComponents;
 	public ClickableTextureComponent? btnFlowUp;
@@ -122,6 +123,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	protected Dictionary<IRecipe, ClickableTextureComponent> RecipeComponents = new();
 	[SkipForClickableAggregation]
 	protected Dictionary<ClickableTextureComponent, IRecipe> ComponentRecipes = new();
+
+	protected readonly Dictionary<Item, IRecipe> RecipesByItem = new(ItemEqualityComparer.Instance);
 
 	// Tabs
 	public ClickableTextureComponent? btnTabsUp;
@@ -175,7 +178,18 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	public bool Working { get; private set; } = false;
 	private readonly List<ItemGrabMenu.TransferredItemSprite> tSprites = new();
 
+	// Recycling
+	internal readonly Cache<(Item, IRecipe, IRecyclable[], IIngredient[])?, Item?> HeldItemRecyclable;
+
+	public Texture2D RecyclingBinTexture;
+
+	public bool Recycling { get; private set; } = true;
+
 	// Sprite Sources
+
+	public Rectangle SourceTrashCan => Recycling ? new(0, 0, 18, 26) : new(564 + Game1.player.trashCanLevel * 18, 102, 18, 26);
+	public Rectangle SourceTrashCanLid => Recycling ? new(0, 27, 18, 10) : new(564 + Game1.player.trashCanLevel * 18, 129, 18, 10);
+	public Rectangle SourceIncludeInMisc => (CurrentTab?.Category?.IncludeInMisc ?? false) ? Sprites.Buttons.INCLUDE_MISC_ON : Sprites.Buttons.INCLUDE_MISC_OFF;
 	public Rectangle SourceTransferTo => Sprites.Buttons.TO_INVENTORY;
 	public Rectangle SourceTransferFrom => Sprites.Buttons.FROM_INVENTORY;
 	public Rectangle SourceFilter => Filter == null ? Sprites.Buttons.SEARCH_OFF : Sprites.Buttons.SEARCH_ON;
@@ -364,9 +378,11 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		MAX_TABS = (height - 120) / 64;
 		VISIBLE_TABS = (height - 120) / 64;
 
+		LoadTextures();
+
 		// Run the event to populate containers.
 		// TODO: Track which mod adds each container.
-		foreach(var api in ModEntry.Instance.APIInstances.Values)
+		foreach (var api in ModEntry.Instance.APIInstances.Values)
 			api.EmitMenuPopulate(this, ref material_containers);
 
 		MaterialContainers = material_containers;
@@ -388,13 +404,52 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		lastRecipeHover = new(key => hoverRecipe?.CreateItemSafe(CreateLog), () => hoverRecipe?.Name);
 
-		Mod.Recipes.ClearGiftTastes();
+		HeldItemRecyclable = new(item => {
+			if (item is null || !item.canBeTrashed())
+				return null;
 
-		if (Location != null) {
-			// TODO: 
-			Object = null;
-		} else
-			Object = null;
+			if (!RecipesByItem.TryGetValue(item, out IRecipe? recipe)) {
+				foreach (var entry in RecipesByItem) {
+					if (ItemEqualityComparer.Instance.Equals(entry.Key, item)) { 
+						recipe = entry.Value;
+						break;
+					}
+				}
+			}
+
+			if (recipe is null || recipe.Ingredients is null)
+				return null;
+
+			if (!Mod.Config.RecycleUnknownRecipes && !recipe.HasRecipe(Game1.player))
+				return null;
+
+			List<IRecyclable>? recyclable = null;
+			List<IIngredient>? nonrecyclable = null;
+
+			foreach (IIngredient ingredient in recipe.Ingredients) {
+				if (ingredient is IRecyclable ing && ing.CanRecycle(Game1.player, item, Mod.Config.RecycleFuzzyItems)) {
+					recyclable ??= new();
+					recyclable.Add(ing);
+				} else {
+					nonrecyclable ??= new();
+					nonrecyclable.Add(ingredient);
+				}
+			}
+
+			// If we get nothing from it, don't let them recycle it.
+			if (recyclable is null || recyclable.Count == 0)
+				return null;
+
+			return (
+				item,
+				recipe,
+				recyclable?.ToArray() ?? Array.Empty<IRecyclable>(),
+				nonrecyclable?.ToArray() ?? Array.Empty<IIngredient>()
+			);
+
+		}, () => HeldItem);
+
+		Mod.Recipes.ClearGiftTastes();
 
 		// InventoryMenu
 		int nRows = rows ?? Mod.GetBackpackRows(Game1.player);
@@ -536,8 +591,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		trashCan = new ClickableTextureComponent(
 			bounds: new Rectangle(btnX, btnY, 64, 104),
-			texture: Game1.mouseCursors,
-			sourceRect: new Rectangle(564 + Game1.player.trashCanLevel * 18, 102, 18, 26),
+			texture: Recycling ? RecyclingBinTexture : Game1.mouseCursors,
+			sourceRect: SourceTrashCan,
 			scale: 4f
 		) {
 			myID = 106,
@@ -619,6 +674,13 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			snapToDefaultClickableComponent();
 	}
 
+	[MemberNotNull(nameof(RecyclingBinTexture))]
+	public void LoadTextures() {
+		RecyclingBinTexture = Mod.ThemeManager.Load<Texture2D>("recycle.png");
+		if (Recycling && trashCan is not null)
+			trashCan.texture = RecyclingBinTexture;
+	}
+
 	public IClickableMenu Menu => this;
 
 	protected void ReleaseLocks() {
@@ -688,6 +750,16 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		LayoutRecipes();
 	}
 
+	public void ToggleIncludeInMisc() {
+		if (!Editing || CurrentTab?.Category is null)
+			return;
+
+		CurrentTab.Category.IncludeInMisc = !CurrentTab.Category.IncludeInMisc;
+
+		if (btnCategoryIncludeInMisc is not null)
+			btnCategoryIncludeInMisc.sourceRect = SourceIncludeInMisc;
+	}
+
 	public void ToggleEditMode() {
 		if (Editing) {
 			// Save any last state.
@@ -721,7 +793,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			int x = BasePageX() + 72;
 			int y = CraftingPageY() - 96;
 
-			int txtWidth = width - 2 * (IClickableMenu.borderWidth + IClickableMenu.spaceToClearSideBorder) - 72 - 80;
+			int txtWidth = width - 2 * (IClickableMenu.borderWidth + IClickableMenu.spaceToClearSideBorder) - 72 - 80 - 80;
 
 			txtCategoryName = new TextBox(
 				textBoxTexture: Game1.content.Load<Texture2D>("LooseSprites\\textBox"),
@@ -781,6 +853,23 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
 				downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
 				leftNeighborID = 536,
+				rightNeighborID = 538
+			};
+
+			btnCategoryIncludeInMisc = new ClickableTextureComponent(
+				bounds: new Rectangle(
+					x + txtWidth + 16 + 64 + 16,
+					y - 8,
+					64, 64
+				),
+				texture: Sprites.Buttons.Texture,
+				sourceRect: SourceIncludeInMisc,
+				scale: 4f
+			) {
+				myID = 538,
+				upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+				downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+				leftNeighborID = 537,
 				rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
 			};
 
@@ -804,6 +893,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			btnCategoryName = null;
 			btnCategoryIcon = null;
 			btnCategoryFilter = null;
+			btnCategoryIncludeInMisc = null;
 			FlowComponents = null;
 			Flow = null;
 		}
@@ -840,10 +930,10 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 						texture: handler.Texture,
 						source: handler.Source,
 						scale: scale,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					)
 					.Text(" ")
-					.FormatText(handler.DisplayName, align: Alignment.Middle);
+					.FormatText(handler.DisplayName, align: Alignment.VCenter);
 
 				var extra = handler is IExtraInfoRuleHandler info ? info.GetExtraInfo(state) : null;
 				if (extra is not null)
@@ -874,9 +964,9 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			builder.Divider(size: 1, shadowOffset: 1);
 
 		var sb2 = FlowHelper.Builder()
-			.Texture(Game1.mouseCursors, new Rectangle(0, 428, 10, 10), 4f, align: Alignment.Middle)
+			.Texture(Game1.mouseCursors, new Rectangle(0, 428, 10, 10), 4f, align: Alignment.VCenter)
 			.Text(" ")
-			.FormatText(I18n.Filter_AddNew(), align: Alignment.Middle);
+			.FormatText(I18n.Filter_AddNew(), align: Alignment.VCenter);
 
 		var node2 = new Common.UI.FlowNode.SelectableNode(
 			sb2.Build(),
@@ -1070,9 +1160,14 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	protected virtual void DiscoverRecipes() {
 		Recipes.Clear();
 		RecipesByName.Clear();
+		RecipesByItem.Clear();
 		Favorites.Clear();
 
 		foreach (IRecipe recipe in Mod.Recipes.GetRecipes(cooking)) {
+			Item? item = recipe.CreateItemSafe(CreateLog);
+			if (item is not null)
+				RecipesByItem.TryAdd(item, recipe);
+
 			if (!Editing && !recipe.HasRecipe(Game1.player) && (!cooking || Mod.Config.HideUnknown))
 				continue;
 
@@ -1143,7 +1238,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 					if (cat.CachedRules is not null) {
 						foreach (IRecipe recipe in Recipes) {
-							Lazy<Item?> result = new Lazy<Item?>(() => recipe.CreateItemSafe());
+							Lazy<Item?> result = new Lazy<Item?>(() => recipe.CreateItemSafe(CreateLog));
 
 							bool matched = false;
 							foreach (var handler in cat.CachedRules) {
@@ -1155,7 +1250,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 							if (matched) {
 								recipes.Add(recipe);
-								unused.Remove(recipe);
+								if ( ! cat.IncludeInMisc )
+									unused.Remove(recipe);
 							}
 						}
 					}
@@ -1167,7 +1263,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 							continue;
 
 						recipes.Add(recipe);
-						unused.Remove(recipe);
+						if ( ! cat.IncludeInMisc )
+							unused.Remove(recipe);
 					}
 
 				if (Editing || recipes.Count > 0) {
@@ -2182,6 +2279,9 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		if (Editing && btnCategoryFilter != null)
 			btnCategoryFilter.sourceRect = SourceCatFilter;
 
+		if (Editing && btnCategoryIncludeInMisc != null)
+			btnCategoryIncludeInMisc.sourceRect = SourceIncludeInMisc;
+
 		if (Editing && Flow is not null)
 			UpdateFlow();
 
@@ -2508,8 +2608,15 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			return;
 
 		if (!Editing && key.Equals(Keys.Delete) && HeldItem.canBeTrashed()) {
-			Utility.trashItem(HeldItem);
-			HeldItem = null;
+			if (Recycling) { 
+				if (Game1.options.SnappyMenus) {
+					setCurrentlySnappedComponentTo(trashCan.myID);
+					snapCursorToCurrentSnappedComponent();
+				}
+			} else {
+				Utility.trashItem(HeldItem);
+				HeldItem = null;
+			}
 		}
 
 		if (Game1.isAnyGamePadButtonBeingHeld() && Game1.options.doesInputListContain(Game1.options.menuButton, key))
@@ -2658,6 +2765,15 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			return;
 		}
 
+		if (btnCategoryIncludeInMisc != null && btnCategoryIncludeInMisc.containsPoint(x, y)) {
+			ToggleIncludeInMisc();
+			btnCategoryIncludeInMisc.scale = btnCategoryIncludeInMisc.baseScale;
+
+			if (playSound)
+				Game1.playSound("bigSelect");
+			return;
+		}
+
 		// Pagination
 		if (btnPageUp != null && btnPageUp.containsPoint(x, y) && pageIndex > 0) {
 			ChangePage(-1);
@@ -2758,9 +2874,11 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		// Settings
 		if (btnSettings != null && btnSettings.containsPoint(x, y)) {
-			if (playSound)
-				Game1.playSound("smallSelect");
-			Mod.OpenGMCM();
+			if (readyToClose()) {
+				if (playSound)
+					Game1.playSound("smallSelect");
+				Mod.OpenGMCM();
+			}
 			return;
 		}
 
@@ -2832,10 +2950,29 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			btnToggleUniform.scale = btnToggleUniform.baseScale;
 		}
 
-		// Trash
-		if (!Editing && (trashCan?.containsPoint(x, y) ?? false) && (HeldItem?.canBeTrashed() ?? false)) {
-			Utility.trashItem(HeldItem);
-			HeldItem = null;
+		// Trash / Recycle
+		if (!Editing && (trashCan?.containsPoint(x, y) ?? false)) {
+			if (HeldItem is null && Mod.Config.RecycleClickToggle) {
+				var mode = Cooking ? Mod.Config.RecycleCooking : Mod.Config.RecycleCrafting;
+				if (mode == RecyclingMode.Enabled)
+					mode = RecyclingMode.Disabled;
+				else if (mode == RecyclingMode.Disabled)
+					mode = RecyclingMode.Enabled;
+				else
+					return;
+
+				if (Cooking)
+					Mod.Config.RecycleCooking = mode;
+				else
+					Mod.Config.RecycleCrafting = mode;
+
+				Mod.SaveConfig();
+
+				if (playSound)
+					Game1.playSound("smallSelect");
+
+			} else
+				RecycleOrTrash();
 			return;
 		}
 
@@ -2847,6 +2984,70 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			HeldItem = null;
 			return;
 		}
+	}
+
+	protected void RecycleOrTrash(bool once = false) {
+		if (HeldItem is null || !HeldItem.canBeTrashed())
+			return;
+
+		if (Recycling) {
+			var recycling = HeldItemRecyclable.Value;
+			if (Recycling && recycling.HasValue) {
+				var item = recycling.Value.Item1;
+				var recipe = recycling.Value.Item2;
+				IRecyclable[] recyclable = recycling.Value.Item3;
+
+				bool handled = false;
+
+				int remaining = item.Stack;
+				while (remaining >= recipe.QuantityPerCraft) {
+					List<Item> recovered = new();
+
+					foreach (IRecyclable ingredient in recyclable) {
+						var result = ingredient.Recycle(Game1.player, item, Mod.Config.RecycleFuzzyItems);
+						if (result is not null)
+							recovered.AddRange(result);
+					}
+
+					foreach (var recitem in recovered) {
+						if (recitem is null)
+							continue;
+						Item leftover = Game1.player.addItemToInventory(recitem);
+						if (leftover is not null)
+							Game1.createItemDebris(leftover, Game1.player.getStandingPosition(), Game1.player.FacingDirection, Game1.player.currentLocation);
+					}
+
+					handled = true;
+					remaining -= recipe.QuantityPerCraft;
+					item.Stack = remaining;
+
+					if (once)
+						break;
+				}
+
+				if (handled)
+					Game1.playSound("dirtyHit");
+
+				if (remaining > 0)
+					HeldItem = item;
+				else
+					HeldItem = null;
+			}
+
+		} else if (once && HeldItem.Stack > 1) {
+			Item one = HeldItem.getOne();
+			one.Stack = 1;
+			HeldItem.Stack -= 1;
+
+			Utility.trashItem(one);
+
+		} else { 
+			Utility.trashItem(HeldItem);
+			HeldItem = null;
+		}
+
+		// Ensure that the tool-tip is updated after we do stuff.
+		hoverMode = int.MinValue;
 	}
 
 	public override void receiveRightClick(int x, int y, bool playSound = true) {
@@ -2937,6 +3138,12 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				}
 			}
 
+		// Trash / Recycle
+		if (!Editing && (trashCan?.containsPoint(x, y) ?? false)) {
+			RecycleOrTrash(true);
+			return;
+		}
+
 		// ???
 	}
 
@@ -2980,7 +3187,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		if (category.CachedRules is not null) {
 			foreach (IRecipe recipe in Recipes) {
-				Lazy<Item?> result = new Lazy<Item?>(() => recipe.CreateItemSafe());
+				Lazy<Item?> result = new Lazy<Item?>(() => recipe.CreateItemSafe(CreateLog));
 
 				bool matched = false;
 				foreach (var handler in category.CachedRules) {
@@ -3133,6 +3340,17 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		hoverRecipe = null;
 		hoverAmount = -1;
 
+		bool canRecycle = (Cooking ? Mod.Config.RecycleCooking : Mod.Config.RecycleCrafting) switch {
+			RecyclingMode.Enabled => true,
+			RecyclingMode.Automatic => HeldItemRecyclable.Value.HasValue,
+			_ => false
+		};
+		if (canRecycle != Recycling) {
+			Recycling = canRecycle;
+			trashCan.texture = Recycling ? RecyclingBinTexture : Game1.mouseCursors;
+			trashCan.sourceRect = SourceTrashCan;
+		}
+
 		if (GetChildMenu() is IClickableMenu menu) {
 			hoverMode = -1;
 			hoverNode = null;
@@ -3256,7 +3474,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 		if (btnSettings != null) {
 			btnSettings.tryHover(x, y);
-			if (btnSettings.containsPoint(x, y))
+			if (btnSettings.containsPoint(x, y) && readyToClose())
 				mode = 5;
 		}
 
@@ -3293,10 +3511,32 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				mode = (CurrentTab?.Category?.UseRules ?? false) ? 13 : 14;
 		}
 
+		if (btnCategoryIncludeInMisc != null) {
+			btnCategoryIncludeInMisc.tryHover(x, y);
+			if (btnCategoryIncludeInMisc.containsPoint(x, y))
+				mode = (CurrentTab?.Category?.IncludeInMisc ?? false) ? 15 : 16;
+		}
+
+		if (!Editing && trashCan != null && Recycling && trashCan.containsPoint(x, y))
+			mode = 17;
+
 		// If the mode changed, regenerate the fancy tool-tip.
 		if (mode != hoverMode) {
 			hoverMode = mode;
 			hoverNode = null;
+
+			if (mode == 15 || mode == 16) {
+				// Toggle Include In Misc.
+				Category? cat = CurrentTab?.Category;
+				if (cat is not null) {
+					var builder = SimpleHelper.Builder()
+						.Text(cat.IncludeInMisc ? I18n.Tooltip_IncludeInMisc() : I18n.Tooltip_IncludeInMisc_Disabled())
+						.Divider()
+						.FormatText(I18n.Tooltip_IncludeInMisc_About(), wrapText: true);
+
+					hoverNode = builder.GetLayout();
+				}
+			}
 
 			if (mode == 13 || mode == 14) {
 				// Toggle Dynamic Filtering
@@ -3309,6 +3549,121 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 					hoverNode = builder.GetLayout();
 				}
+			}
+
+			if (mode == 17 && HeldItem is not null) {
+				// Recycling
+				var builder = SimpleHelper.Builder();
+				var recycling = HeldItemRecyclable.Value;
+
+				if (recycling.HasValue) {
+					var item = recycling.Value.Item1;
+					var recipe = recycling.Value.Item2;
+
+					int multiplier = item.Stack / recipe.QuantityPerCraft;
+
+					if (multiplier <= 0) {
+						string label = recipe.DisplayName;
+						if (item.Stack > 1)
+							label = $"{label} x{item.Stack}";
+
+						builder
+							.Text(I18n.Tooltip_Recycle(label))
+							.Divider()
+							.FormatText(I18n.Tooltip_Recycle_Insufficient(recipe.QuantityPerCraft), color: Color.Red, wrapText: true);
+
+					} else {
+						IRecyclable[] recyclable = recycling.Value.Item3;
+						IIngredient[] nonrecyclable = recycling.Value.Item4;
+
+						List<ISimpleNode> ingredients = new();
+						List<ISimpleNode> wasted = new();
+
+						foreach (var entry in recyclable) {
+							int amount = entry.GetRecycleQuantity(Game1.player, item, Mod.Config.RecycleFuzzyItems) * multiplier;
+							Texture2D texture = entry.GetRecycleTexture(Game1.player, item, Mod.Config.RecycleFuzzyItems);
+							Rectangle source = entry.GetRecycleSourceRect(Game1.player, item, Mod.Config.RecycleFuzzyItems);
+							string displayName = entry.GetRecycleDisplayName(Game1.player, item, Mod.Config.RecycleFuzzyItems);
+
+							var ebuilder = SimpleHelper
+								.Builder(LayoutDirection.Horizontal, margin: 8)
+								.Sprite(
+									new SpriteInfo(texture, source),
+									scale: 2,
+									quantity: amount,
+									align: Alignment.VCenter
+								)
+								.Text(
+									displayName,
+									align: Alignment.VCenter
+								);
+
+							ingredients.Add(ebuilder.GetLayout());
+						}
+
+						foreach (var entry in nonrecyclable) {
+							int amount = entry.Quantity * multiplier;
+
+							var ebuilder = SimpleHelper
+								.Builder(LayoutDirection.Horizontal, margin: 8)
+								.Sprite(
+									new SpriteInfo(entry.Texture, entry.SourceRectangle),
+									scale: 2,
+									quantity: amount,
+									align: Alignment.VCenter
+								)
+								.Text(
+									entry.DisplayName,
+									align: Alignment.VCenter
+								);
+
+							wasted.Add(ebuilder.GetLayout());
+						}
+
+						string label = recipe.DisplayName;
+						int amnt = multiplier * recipe.QuantityPerCraft;
+						if (amnt > 1)
+							label = $"{label} x{amnt}";
+
+						builder
+							.Text(I18n.Tooltip_Recycle(label))
+							.Divider()
+							.Text(I18n.Tooltip_Recycle_Returns())
+							.AddRange(ingredients);
+
+						if (wasted.Count > 0)
+							builder
+								.Divider()
+								.Text(I18n.Tooltip_Recycle_NotReturned())
+								.AddRange(wasted);
+
+						TTWhen when = Mod.Config.ShowKeybindTooltip;
+						if (when == TTWhen.Always || (when == TTWhen.ForController && Game1.options.gamepadControls)) {
+							builder
+								.Divider()
+								.Group(8)
+									.Add(GetLeftClickNode())
+									.Text(I18n.Tooltip_Recycle_All(amnt))
+								.EndGroup()
+								.Group(8)
+									.Add(GetRightClickNode())
+									.Text(I18n.Tooltip_Recycle_Once(recipe.QuantityPerCraft))
+								.EndGroup();
+						}
+					}
+
+				} else {
+					string label = HeldItem.DisplayName;
+					if (HeldItem.Stack > 1)
+						label = $"{label} x{HeldItem.Stack}";
+
+					builder
+						.Text(I18n.Tooltip_Recycle(label))
+						.Divider()
+						.FormatText(I18n.Tooltip_Recycle_Invalid(), color: Color.Red, wrapText: true);
+				}
+
+				hoverNode = builder.GetLayout();
 			}
 
 			if (mode == 8) {
@@ -3408,7 +3763,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 							hoverText = I18n.Tooltip_Quality_Gold();
 							break;
 						case MaxQuality.Iridium:
-							hoverText= I18n.Tooltip_Quality_Iridium();
+							hoverText = I18n.Tooltip_Quality_Iridium();
 							break;
 						case MaxQuality.None:
 						default:
@@ -3443,12 +3798,16 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		// Trash Can
 		if (!Editing && trashCan != null) {
 			if (trashCan.containsPoint(x, y)) {
-				if (trashCanLidRotation <= 0)
-					Game1.playSound("trashcanlid");
+				bool rotate = !Recycling || HeldItemRecyclable.Value.HasValue;
+				if (rotate) {
+					if (trashCanLidRotation <= 0)
+						Game1.playSound("trashcanlid");
 
-				trashCanLidRotation = Math.Min(trashCanLidRotation + (float) Math.PI / 48f, 1.570796f);
+					trashCanLidRotation = Math.Min(trashCanLidRotation + (float) Math.PI / 48f, 1.570796f);
+				} else
+					trashCanLidRotation = Math.Max(trashCanLidRotation - (float) Math.PI / 48f, 0f);
 
-				if (HeldItem != null) {
+				if (HeldItem != null && ! Recycling) {
 					hoverAmount = Utility.getTrashReclamationPrice(HeldItem, Game1.player);
 					if (hoverAmount > 0)
 						hoverText = Game1.content.LoadString("Strings\\UI:TrashCanSale");
@@ -3468,6 +3827,9 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 
 	public override bool readyToClose() {
 		if (!Standalone && GetChildMenu() != null)
+			return false;
+
+		if (!Standalone && (txtCategoryName?.Selected ?? false))
 			return false;
 
 		return HeldItem == null;
@@ -3502,6 +3864,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 			), 4f);
 			txtCategoryName?.Draw(b);
 			btnCategoryFilter?.draw(b);
+			btnCategoryIncludeInMisc?.draw(b);
 
 			if (CurrentTab?.Category?.UseRules ?? false) {
 				drawVerticalIntersectingPartition(
@@ -3518,7 +3881,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		// Buttons
 		btnSearch?.draw(b);
 		btnToggleEdit?.draw(b);
-		btnSettings?.draw(b);
+		if (btnSettings != null && readyToClose())
+			btnSettings.draw(b);
 		btnToggleUniform?.draw(b);
 
 		if (!Editing) {
@@ -3536,9 +3900,9 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		if (!Editing && trashCan != null) {
 			trashCan.draw(b);
 			b.Draw(
-				Game1.mouseCursors,
+				Recycling ? RecyclingBinTexture : Game1.mouseCursors,
 				new Vector2(trashCan.bounds.X + 60, trashCan.bounds.Y + 40),
-				new Rectangle(564 + Game1.player.trashCanLevel * 18, 129, 18, 10),
+				SourceTrashCanLid,
 				Color.White,
 				trashCanLidRotation,
 				new Vector2(16f, 10f),
@@ -3838,7 +4202,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 						new SpriteInfo(entry.Texture, entry.SourceRectangle),
 						scale: 2,
 						quantity: quant,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					);
 
 				if (FilterIngredients)
@@ -3847,7 +4211,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 							HighlightSearchTerms(entry.DisplayName, true),
 							color: color,
 							shadowColor: shadow,
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						);
 				else
 					ebuilder
@@ -3855,18 +4219,18 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 							entry.DisplayName,
 							color: color,
 							shadowColor: shadow,
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						);
 
 				if (Game1.options.showAdvancedCraftingInformation)
 					ebuilder
 						.Space()
-						.Text($"{amount}", align: Alignment.Middle)
+						.Text($"{amount}", align: Alignment.VCenter)
 						.Texture(
 							Game1.mouseCursors,
 							SpriteHelper.MouseIcons.BACKPACK,
 							2,
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						);
 
 				ingredients.Add(ebuilder.GetLayout());
@@ -3889,7 +4253,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 				);
 
 			eb
-				.Text($"({craftable})", align: Alignment.Middle)
+				.Text($"({craftable})", align: Alignment.VCenter)
 				.EndGroup();
 
 		} else if (Filter != null)
@@ -4108,7 +4472,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 						Game1.mouseCursors,
 						source,
 						scale: 2,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					);
 				else {
 					string label = (Convert.ToInt32(health) > 0 ? "+" : "") + health;
@@ -4118,12 +4482,12 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 							Game1.mouseCursors,
 							source,
 							scale: 3,
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						)
 						.Space(false, 4)
 						.Text(
 							Game1.content.LoadString("Strings\\UI:ItemHover_Health", label),
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						)
 					.EndGroup();
 				}
@@ -4147,7 +4511,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 						Game1.mouseCursors,
 						source,
 						scale: 2,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					);
 				else {
 					string label = (Convert.ToInt32(stamina) > 0 ? "+" : "") + stamina;
@@ -4157,12 +4521,12 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 							Game1.mouseCursors,
 							source,
 							scale: 3,
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						)
 						.Space(false, 4)
 						.Text(
 							Game1.content.LoadString("Strings\\UI:ItemHover_Energy", label),
-							align: Alignment.Middle
+							align: Alignment.VCenter
 						)
 					.EndGroup();
 				}
@@ -4192,7 +4556,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 						Game1.mouseCursors,
 						source,
 						scale: 2,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					);
 
 					continue;
@@ -4207,10 +4571,10 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 						Game1.mouseCursors,
 						source,
 						scale: 3,
-						align: Alignment.Middle
+						align: Alignment.VCenter
 					)
 					.Space(false, 4)
-					.Text(label, align: Alignment.Middle)
+					.Text(label, align: Alignment.VCenter)
 				.EndGroup();
 			}
 		}
@@ -4313,7 +4677,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 	public static ISimpleNode GetNode(SButton button) {
 		var sprite = SpriteHelper.GetSprite(button);
 		if ( sprite != null )
-			return new SpriteNode(sprite, scale: 2, alignment: Alignment.Middle);
+			return new SpriteNode(sprite, scale: 2, alignment: Alignment.VCenter);
 
 		return new TextNode($"{button}:");
 	}
@@ -4330,7 +4694,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry>, IBetterCraftingMenu 
 		}
 
 		if (sprite != null)
-			return new SpriteNode(sprite, scale: 2, alignment: Alignment.Middle);
+			return new SpriteNode(sprite, scale: 2, alignment: Alignment.VCenter);
 
 		return new TextNode($"{ModEntry.GetInputLabel(buttons)}:");
 	}

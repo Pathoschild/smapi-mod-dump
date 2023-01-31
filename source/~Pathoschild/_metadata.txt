@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b12b8f530dee6b035ad6c6df68d9a2361b66f546
+   commit 8ea1c8e8f3b47c9a4d45b1667769a03d548e5c85
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Dec 22 22:12:34 2022 -0500
+   Date:   Mon Jan 30 20:37:35 2023 -0500
    
-       improve error-handling for MoveEntries
+       improve controller support in Lookup Anything's search menu
    

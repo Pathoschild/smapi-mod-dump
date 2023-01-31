@@ -9,8 +9,13 @@
 *************************************************/
 
 using System.Text;
+
+using AtraBase.Toolkit;
+
 using AtraShared;
+
 using StardewModdingAPI.Utilities;
+
 using AtraUtils = AtraShared.Utils.Utils;
 
 namespace SpecialOrdersExtended.DataModels;
@@ -53,8 +58,8 @@ public class DialogueLog : AbstractDataModel
         {
             ASThrowHelper.ThrowSaveNotLoaded();
         }
-        DialogueLog log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Game1.uniqueIDForThisGame}{IDENTIFIER}{multiplayerID:X8}")
-            ?? new DialogueLog(Game1.uniqueIDForThisGame.ToString(), multiplayerID);
+        DialogueLog log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Constants.SaveFolderName.GetStableHashCode()}{IDENTIFIER}{multiplayerID:X8}")
+            ?? new DialogueLog(Constants.SaveFolderName, multiplayerID);
         log.MultiplayerID = multiplayerID; // fix the multiplayer ID since ReadGlobalData will use the default zero-parameter constructor.
         return log;
     }
@@ -72,11 +77,11 @@ public class DialogueLog : AbstractDataModel
         {
             ASThrowHelper.ThrowSaveNotLoaded();
         }
-        DialogueLog? log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Game1.uniqueIDForThisGame}{IDENTIFIER}{multiplayerID:X8}_temp_{SDate.Now().DaysSinceStart}");
+        DialogueLog? log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Constants.SaveFolderName.GetStableHashCode()}{IDENTIFIER}{multiplayerID:X8}_temp_{SDate.Now().DaysSinceStart}");
         if (log is not null)
         {
             // Delete temporary file
-            ModEntry.DataHelper.WriteGlobalData<DialogueLog>($"{Game1.uniqueIDForThisGame}{IDENTIFIER}{multiplayerID:X8}_temp_{SDate.Now().DaysSinceStart}", null);
+            ModEntry.DataHelper.WriteGlobalData<DialogueLog>($"{Constants.SaveFolderName.GetStableHashCode()}{IDENTIFIER}{multiplayerID:X8}_temp_{SDate.Now().DaysSinceStart}", null);
             log.MultiplayerID = multiplayerID;
             return log;
         }
@@ -156,7 +161,7 @@ public class DialogueLog : AbstractDataModel
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
-        stringBuilder.Append($"DialogueLog({this.Savefile}):");
+        stringBuilder.Append($"DialogueLog({this.SaveFile}):");
         foreach (string key in AtraUtils.ContextSort(this.SeenDialogues.Keys))
         {
             stringBuilder.AppendLine().Append($"    {key}:").AppendJoin(", ", this.SeenDialogues[key]);

@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Text;
+using AtraBase.Toolkit;
 using AtraShared.Utils.Extensions;
 using GingerIslandMainlandAdjustments.Utils;
 using StardewModdingAPI.Utilities;
@@ -179,7 +180,7 @@ internal static class ConsoleCommands
         }
         List<int> keys = new(npc.Schedule.Keys);
         keys.Sort();
-        StringBuilder sb = new();
+        StringBuilder sb = StringBuilderCache.Acquire(keys.Count * 100);
         foreach (int key in keys)
         {
             SchedulePathDescription schedulePathDescription = npc.Schedule[key];
@@ -198,7 +199,7 @@ internal static class ConsoleCommands
             sb.Append("\t\t").Append(I18n.DisplaySchedule_Message()).AppendLine(schedulePathDescription.endOfRouteMessage);
         }
         sb.AppendLine();
-        Globals.ModMonitor.Log(sb.ToString(), level);
+        Globals.ModMonitor.Log(StringBuilderCache.GetStringAndRelease(sb), level);
     }
 
     /// <summary>

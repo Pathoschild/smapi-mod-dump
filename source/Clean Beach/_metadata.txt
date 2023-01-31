@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Artinity/clean-beach
+   Git: https://github.com/Artinity/clean-beach.git
+
+mods:
+   Clean Beach
+
+latest commit:
+   commit 6e4f836e4db2bcdca3e4fa2cc058c821fab81d26
+   Author: Artinity <31357507+Artinity@users.noreply.github.com>
+   Date:   Thu Jan 5 15:37:11 2023 +0100
+   
+       Create README.md
+   

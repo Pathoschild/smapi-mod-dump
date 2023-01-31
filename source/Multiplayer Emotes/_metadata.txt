@@ -6,12 +6,12 @@ mods:
    Multiplayer Emotes
 
 latest commit:
-   commit 066cdbc981ee4b59d81d1487695a0d645a685d1d
-   Merge: 70e2225 f509b2e
+   commit f9b7fad071f0f75122b0b2b194ac01cd3cb21c59
+   Merge: 066cdbc abab9fe
    Author: Ferran Tudela <tudelaigarcia@gmail.com>
-   Date:   Thu Oct 28 16:16:47 2021 +0200
+   Date:   Mon Jan 16 14:54:38 2023 +0100
    
-       Merge pull request #9 from FerMod/FerMod
+       Merge pull request #10 from FerMod/dependabot/nuget/CustomEmojis/Newtonsoft.Json-13.0.2
        
-       Add new mods
+       Bump Newtonsoft.Json from 13.0.1 to 13.0.2 in /CustomEmojis
    

@@ -4,17 +4,15 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
 namespace DaLion.Overhaul.Modules.Rings.Patchers;
 
-using System.Linq;
-
 #region using directives
 
-using DaLion.Overhaul.Modules.Arsenal.Extensions;
+using System.Linq;
 using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Harmony;
@@ -44,7 +42,8 @@ internal sealed class AquamarineEnchantmentApplyToPatcher : HarmonyPatcher
             return;
         }
 
-        var chord = player.Get_ResonatingChords()
+        var chord = player
+            .Get_ResonatingChords()
             .Where(c => c.Root == Gemstone.Aquamarine)
             .ArgMax(c => c.Amplitude);
         if (chord is null)

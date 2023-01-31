@@ -600,9 +600,9 @@ public static class FlowHelper {
 					break;
 
 				case '|':
-					if (na.HasFlag(Alignment.Center))
+					if (na.HasFlag(Alignment.HCenter))
 						continue;
-					na = na.With(Alignment.Center);
+					na = na.With(Alignment.HCenter);
 					break;
 
 				case '>':
@@ -618,9 +618,9 @@ public static class FlowHelper {
 					break;
 
 				case '-':
-					if (na.HasFlag(Alignment.Middle))
+					if (na.HasFlag(Alignment.VCenter))
 						continue;
-					na = na.With(Alignment.Middle);
+					na = na.With(Alignment.VCenter);
 					break;
 
 				case 'v':
@@ -990,7 +990,7 @@ public static class FlowHelper {
 	private static float GetYOffset(Alignment alignment, float height, float containerHeight) {
 		if (alignment.HasFlag(Alignment.Bottom))
 			return (float) Math.Floor(containerHeight - height);
-		if (alignment.HasFlag(Alignment.Middle))
+		if (alignment.HasFlag(Alignment.VCenter))
 			return (float) Math.Floor((containerHeight - height) / 2f);
 
 		return 0;
@@ -1008,7 +1008,7 @@ public static class FlowHelper {
 				found = true;
 
 			if (!found) {
-				if (s.Node.Alignment.HasFlag(Alignment.Center))
+				if (s.Node.Alignment.HasFlag(Alignment.HCenter))
 					can_center = false;
 				if (s.Node.Alignment.HasFlag(Alignment.Right)) {
 					can_right = false;
@@ -1024,7 +1024,7 @@ public static class FlowHelper {
 		if (alignment.HasFlag(Alignment.Right))
 			return can_right ? (float) Math.Floor(before) : 0;
 
-		if (alignment.HasFlag(Alignment.Center))
+		if (alignment.HasFlag(Alignment.HCenter))
 			return can_center ? (float) Math.Floor(before / 2f) : 0;
 
 		return 0;

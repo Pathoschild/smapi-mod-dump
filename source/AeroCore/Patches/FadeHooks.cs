@@ -26,11 +26,12 @@ namespace AeroCore.Patches
         internal static event Action<int> AfterFadeOut;
         internal static event Action<int> AfterFadeIn;
         private static IReflectedField<ScreenFade> fadeField;
-        internal static readonly PerScreen<ScreenFade> gameFade = new(() => fadeField.GetValue());
+        internal static readonly PerScreen<ScreenFade> gameFade = new(GetFade);
 
         internal static void Init()
         {
             fadeField = ModEntry.helper.Reflection.GetField<ScreenFade>(typeof(Game1), "screenFade");
+            gameFade.ResetAllScreens();
         }
 
         [HarmonyPatch("onFadeToBlackComplete")]
@@ -45,6 +46,15 @@ namespace AeroCore.Patches
         internal static void FadeIn()
         {
             AfterFadeIn?.Invoke(Context.ScreenId);
+        }
+
+        internal static ScreenFade GetFade()
+        {
+            if (fadeField is not null)
+                return fadeField.GetValue();
+
+            ModEntry.monitor.Log("Requested screenfade before it was initialized in the game! This may indicate issues elsewhere.");
+            return null;
         }
     }
 }

@@ -10,7 +10,9 @@
 
 #nullable enable
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Crafting;
@@ -19,11 +21,13 @@ using Leclair.Stardew.Common.Inventory;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using StardewModdingAPI;
+
 using StardewValley;
 
 namespace Leclair.Stardew.BetterCrafting.Models;
 
-public class BaseIngredient : IOptimizedIngredient {
+public class BaseIngredient : IOptimizedIngredient, IRecyclable {
 
 	private readonly int Index;
 	private readonly KeyValuePair<int, int>[] IngList;
@@ -38,6 +42,96 @@ public class BaseIngredient : IOptimizedIngredient {
 			new(Index, Quantity)
 		};
 	}
+
+	#region IRecyclable
+
+	private Tuple<bool, Item?>? RecycledItem;
+
+	[MemberNotNull(nameof(RecycledItem))]
+	public void LoadRecycledItem() {
+		if (RecycledItem is not null)
+			return;
+
+		int id = Index;
+
+		// Wild Seeds (Any) are special.
+		if (id == -777)
+			id = Game1.Date.SeasonIndex switch {
+				0 => 495, // Spring
+				1 => 496, // Summer
+				2 => 497, // Fall
+				_ => 498  // Winter
+			};
+
+		if (id >= 0) {
+			RecycledItem = new(false, InventoryHelper.CreateObjectOrRing(id));
+			return;
+		}
+
+		// Fuzzy search.
+		Item? result = null;
+		int price = 0;
+		int count = 0;
+
+		foreach (Item item in ModEntry.Instance.GetMatchingItems(item => item.Category == id)) {
+			int ip = item.salePrice();
+			count++;
+			if (result is null || ip < price) {
+				result = item;
+				price = ip;
+			}
+		}
+
+		ModEntry.Instance.Log($"Item matches for \"{id}\": {count} -- Using: {result?.Name} (Price: {price})", LogLevel.Trace);
+		RecycledItem = new(true, result);
+	}
+
+	public Texture2D GetRecycleTexture(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		LoadRecycledItem();
+		if (!fuzzyItems && RecycledItem.Item1)
+			return Texture;
+		return SpriteHelper.GetTexture(RecycledItem.Item2) ?? Texture;
+	}
+
+	public Rectangle GetRecycleSourceRect(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		LoadRecycledItem();
+		if (!fuzzyItems && RecycledItem.Item1)
+			return SourceRectangle;
+		return SpriteHelper.GetSourceRectangle(RecycledItem.Item2) ?? SourceRectangle;
+	}
+
+	public string GetRecycleDisplayName(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		LoadRecycledItem();
+		if (!fuzzyItems && RecycledItem.Item1)
+			return DisplayName;
+		return RecycledItem.Item2?.DisplayName ?? DisplayName;
+	}
+
+	public int GetRecycleQuantity(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		return Quantity;
+	}
+
+	public bool CanRecycle(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		LoadRecycledItem();
+		if (!fuzzyItems && RecycledItem.Item1)
+			return false;
+
+		return RecycledItem.Item2 is not null;
+	}
+
+	public IEnumerable<Item>? Recycle(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		LoadRecycledItem();
+		if (!fuzzyItems && RecycledItem.Item1)
+			return null;
+
+		Item? item = RecycledItem.Item2;
+		if (item is null)
+			return null;
+
+		return IRecyclable.GetManyOf(item, Quantity);
+	}
+
+	#endregion
 
 	public string DisplayName {
 		get {

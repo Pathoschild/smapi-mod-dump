@@ -8,17 +8,11 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace UIInfoSuite
 {
-    public interface LevelExtenderInterface
+    public interface ILevelExtenderInterface
     {
-        int[] currentXP();
-        int[] requiredXP();
+        int[] CurrentXp();
+        int[] RequiredXp();
     }
 }

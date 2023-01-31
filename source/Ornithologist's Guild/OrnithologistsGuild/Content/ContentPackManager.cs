@@ -19,16 +19,12 @@ namespace OrnithologistsGuild.Content
     {
         private const string FILENAME = "content.json";
 
-        internal static ContentPatcher.IContentPatcherAPI CP;
-
         public static List<ContentPackDef> ContentPackDefs = new List<ContentPackDef>();
 
         public static Dictionary<string, BirdieDef> BirdieDefs = new Dictionary<string, BirdieDef>();
 
         public static void Initialize()
         {
-            CP = ModEntry.Instance.Helper.ModRegistry.GetApi<ContentPatcher.IContentPatcherAPI>("Pathoschild.ContentPatcher");
-
             ModEntry.Instance.Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         }
 
@@ -119,7 +115,7 @@ namespace OrnithologistsGuild.Content
         private static void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs _)
         {
             // Parse conditions on second tick
-            if (CP.IsConditionsApiReady)
+            if (ModEntry.CP.IsConditionsApiReady)
             {
                 ModEntry.Instance.Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
 
@@ -130,7 +126,7 @@ namespace OrnithologistsGuild.Content
                     {
                         try
                         {
-                            birdieDef.ParseConditions(CP);
+                            birdieDef.ParseConditions();
                         } catch (Exception e)
                         {
                             ModEntry.Instance.Monitor.Log(@$"Error in content pack: {contentPackDef.ContentPack.Manifest.Name} {contentPackDef.ContentPack.Manifest.Version} (in {birdieDef.ID}): {e.ToString()}", LogLevel.Error);

@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <Name>AtraCore</Name>
     <Description>A core library mod some of my other mods depend on.</Description>
     <UpdateKeys>Nexus:12932</UpdateKeys>
@@ -32,13 +32,16 @@
 
   <PropertyGroup>
     <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
     <PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-    <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.1.2" />
+    <PackageReference Include="LinqFasterer" Version="2.1.0" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.1" />
+    <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="SkiaSharp" Version="2.88.0" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
@@ -56,6 +59,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pintail\Pintail\Pintail.csproj" private="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>

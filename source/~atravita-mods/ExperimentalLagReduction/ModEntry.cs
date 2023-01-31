@@ -31,10 +31,11 @@ internal sealed class ModEntry : Mod
 
         // statics
         ModMonitor = this.Monitor;
-
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
     }
 
+    /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
     private void OnGameLaunch(object? sender, GameLaunchedEventArgs e)
     {
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
@@ -49,7 +50,7 @@ internal sealed class ModEntry : Mod
     {
         try
         {
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(ModEntry).Assembly);
         }
         catch (Exception ex)
         {

@@ -36,6 +36,10 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 
 	[StructLayout(LayoutKind.Sequential, Pack = sizeof(int), Size = sizeof(int))]
 	internal readonly struct NodeRef {
+#if VALIDATE_CLLSLIM
+		private readonly ConcurrentLinkedListSlim<T> Owner;
+#endif
+
 		// This is 0 and not -1 because default initialization of `NodeRef` will always initialize this to 0 even if we specify -1.
 		private readonly int IndexInternal = 0;
 
@@ -43,8 +47,26 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 
 		internal readonly bool IsValid => Index != -1;
 
+		[Conditional("VALIDATE_CLLSLIM")]
+		internal void ValidateOwner(ConcurrentLinkedListSlim<T> @this) {
+#if VALIDATE_CLLSLIM
+			if (@this != Owner) {
+				Debug.Break();
+			}
+
+			if (Index > @this.NodeListOffset) {
+				Debug.Break();
+			}
+#endif
+		}
+
 		[MethodImpl(Inline)]
+#if VALIDATE_CLLSLIM
+		internal NodeRef(int index, ConcurrentLinkedListSlim<T> owner) {
+			Owner = owner;
+#else
 		internal NodeRef(int index) {
+#endif
 			index.AssertPositiveOrZero();
 			IndexInternal = index + 1;
 		}
@@ -94,6 +116,34 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 	// Only for debugging purposes
 	private ref Node HeadNode => ref GetNode(Head);
 	private ref Node TailNode => ref GetNode(Tail);
+
+	[Conditional("VALIDATE_CLLSLIM")]
+	private void CheckCycle() {
+		HashSet<NodeRef> nodes = new(Count);
+
+		var current = Head;
+		while (current) {
+			if (!nodes.Add(current)) {
+				Debug.Break();
+			}
+
+			ref var node = ref GetNode(current);
+			current = node.Next;
+		}
+	}
+
+	[Conditional("VALIDATE_CLLSLIM")]
+	private void CheckCycle(NodeRef nodeRef) {
+		var current = Head;
+		while (current) {
+			if (current == nodeRef) {
+				Debug.Break();
+			}
+
+			ref var node = ref GetNode(current);
+			current = node.Next;
+		}
+	}
 
 	private int GetListCount() {
 		int count = 0;
@@ -148,6 +198,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 	/// </summary>
 	[MustUseReturnValue, MethodImpl(Inline)]
 	private NodePair GetNewNode() {
+		NodePair nodePair;
+
 		// If the NodeFreeList is not empty, then simply pull one out of it.
 		if (NodeFreeList.Count != 0) {
 			// Pop the last element off of the free list.
@@ -160,18 +212,33 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 			// Clear it out.
 			newNode.Next = default;
 			newNode.Previous = default;
-			return new(ref newNode, new(freeIndex));
+#if VALIDATE_CLLSLIM
+			nodePair = new(ref newNode, new(freeIndex, this));
+#else
+			nodePair = new(ref newNode, new(freeIndex));
+#endif
+			CheckCycle(nodePair.Ref);
+
+			nodePair.Ref.ValidateOwner(this);
+		}
+		else {
+			// Otherwise, we need a new node.
+			int offset = Interlocked.Increment(ref NodeListOffset);
+
+			// If the new offset is larger than the current array, enlarge the array.
+			if (offset >= NodeArray.Length) {
+				Array.Resize(ref NodeArray, AdjustSize(offset + 1));
+			}
+
+#if VALIDATE_CLLSLIM
+			nodePair = new(ref NodeArray[offset], new(offset, this));
+#else
+			nodePair = new(ref NodeArray[offset], new(offset));
+#endif
+			CheckCycle(nodePair.Ref);
 		}
 
-		// Otherwise, we need a new node.
-		int offset = Interlocked.Increment(ref NodeListOffset);
-
-		// If the new offset is larger than the current array, enlarge the array.
-		if (offset >= NodeArray.Length) {
-			Array.Resize(ref NodeArray, AdjustSize(offset + 1));
-		}
-
-		return new(ref NodeArray[offset], new(offset));
+		return nodePair;
 	}
 
 	/// <summary>
@@ -203,11 +270,10 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 			// Increment and validate the current node count.
 			++Count;
 			Count.AssertPositiveOrZero();
+			ValidateDebug();
 #if (!SHIPPING || CONTRACTS_FULL) && !DEVELOPMENT
 			Count.AssertEqual(GetListCount());
 #endif
-
-			ValidateDebug();
 
 			return newNode;
 		}
@@ -221,6 +287,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 		if (!nodeRef) {
 			return;
 		}
+
+		nodeRef.ValidateOwner(this);
 
 		lock (this) {
 			// If the node is invalid, then do nothing.
@@ -279,6 +347,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 			return default;
 		}
 
+		nodeRef.ValidateOwner(this);
+
 		lock (this) {
 			NodeRef nodeRefLocal = nodeRef;
 
@@ -320,16 +390,18 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 
 			// Decrement and validate the current node count.
 			--Count;
-			Count.AssertPositiveOrZero();
-#if (!SHIPPING || CONTRACTS_FULL) && !DEVELOPMENT
-			Count.AssertEqual(GetListCount());
-#endif
+			CheckCycle(nodeRefLocal);
+			nodeRefLocal.ValidateOwner(this);
 			// Add the index to the node free list.
 			NodeFreeList.Add(nodeRefLocal.Index);
 			// Clear out the index.
 			nodeRef = default;
 
+			Count.AssertPositiveOrZero();
 			ValidateDebug();
+#if (!SHIPPING || CONTRACTS_FULL) && !DEVELOPMENT
+			Count.AssertEqual(GetListCount());
+#endif
 
 			return value;
 		}
@@ -369,6 +441,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 
 	[Conditional("VALIDATE_CLLSLIM")]
 	private void CheckNode(NodeRef nodeRef) {
+		nodeRef.ValidateOwner(this);
+
 		try {
 			nodeRef.Index.AssertPositiveOrZero(
 				$"{nameof(NodeRef)} expected to be valid but has invalid index '{nodeRef.Index}'"
@@ -490,6 +564,8 @@ internal sealed class ConcurrentLinkedListSlim<T> {
 			Head = default;
 			Tail = default;
 			Count = 0;
+
+			NodeListOffset = nodeListLength;
 
 			ValidateDebug();
 		}

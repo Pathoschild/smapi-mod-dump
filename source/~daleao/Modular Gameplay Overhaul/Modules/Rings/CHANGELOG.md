@@ -2,11 +2,37 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
 # Rings Module Change Log
+
+## 1.2.3
+
+* Fixed an issue with the overhuled Warrior Ring buff never ending.
+
+## 1.2.2
+
+### Added
+
+* Added "Resonance" to resonant Infinity Band tooltip.
+
+### Fixed
+
+* Fixed a bug in Chord harmonization logic.
+
+## 1.1.1
+
+### Fixed
+
+* Added missing config checks to Better Crafting integration.
+
+## 1.0.2
+
+### Fixed
+
+* Apparently there was still a possible Null-Reference Exception in SpaceCore's NewForgeMenu.
 
 ## 1.0.0
 

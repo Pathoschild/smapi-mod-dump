@@ -38,44 +38,47 @@ namespace MailServicesMod
             MailDao.SaveLetter(
                 new Letter(
                     "MailServiceMod.DeliveryQuestsInfo"
-                    , I18N.Get("Shipment.Quest.DeliveryQuestsLetter")
+                    , "Shipment.Quest.DeliveryQuestsLetter"
                     , (l) => !DataLoader.ModConfig.DisableQuestService && !Game1.player.mailReceived.Contains(l.Id) && SDate.Now() >= new SDate(2, "spring", 1)
                     , (l) => Game1.player.mailReceived.Add(l.Id)
                 )
                 {
-                    Title = I18N.Get("Shipment.Quest.DeliveryQuestsLetter.Title")
+                    Title = "Shipment.Quest.DeliveryQuestsLetter.Title",
+                    I18N = I18N
                 }
             );
 
             MailDao.SaveLetter(
                 new Letter(
                     "MailServiceMod.ToolUpgradeInfo"
-                    , I18N.Get("Shipment.Clint.UpgradeLetter")
+                    , "Shipment.Clint.UpgradeLetter"
                     , (l) => !DataLoader.ModConfig.DisableToolShipmentService && !Game1.player.mailReceived.Contains(l.Id) && SDate.Now() >= new SDate(6, "spring", 1)
                     , (l) => Game1.player.mailReceived.Add(l.Id)
                 )
                 {
-                    Title = I18N.Get("Shipment.Clint.UpgradeLetter.Title")
+                    Title = "Shipment.Clint.UpgradeLetter.Title",
+                    I18N = I18N
                 }
             );
 
             MailDao.SaveLetter(
                 new Letter(
                     "MailServiceMod.GiftShipmentInfo"
-                    , I18N.Get("Shipment.Wizard.GiftShipmentLetter")
+                    , "Shipment.Wizard.GiftShipmentLetter"
                     , (l) => !DataLoader.ModConfig.DisableGiftService && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.eventsSeen.Contains(112)
                     , (l) => Game1.player.mailReceived.Add(l.Id)
                 )
                 {
-                    Title = I18N.Get("Shipment.Wizard.GiftShipmentLetter.Title"),
-                    WhichBG = 2
+                    Title = "Shipment.Wizard.GiftShipmentLetter.Title",
+                    WhichBG = 2,
+                    I18N = I18N
                 }
             );
 
             MailDao.SaveLetter(
                 new Letter(
                     "MailServiceMod.MarlonRecoveryReward"
-                    , I18N.Get("Delivery.Marlon.RecoveryRewardLetter")
+                    , "Delivery.Marlon.RecoveryRewardLetter"
                     , (l) => !Game1.player.mailReceived.Contains(l.Id) && Game1.player.hasCompletedAllMonsterSlayerQuests.Value && !GetRecoveryConfig(Game1.player).DisableRecoveryConfigInGameChanges
                     , (l) =>
                     {
@@ -84,15 +87,16 @@ namespace MailServicesMod
                     }
                 )
                 {
-                    Title = I18N.Get("Delivery.Marlon.RecoveryRewardLetter.Title"),
-                    GroupId = "MailServicesMod.GuildRecovery"
+                    Title = "Delivery.Marlon.RecoveryRewardLetter.Title",
+                    GroupId = "MailServicesMod.GuildRecovery",
+                    I18N = I18N
                 }
             );
 
             MailDao.SaveLetter(
                 new Letter(
                     "MailServicesMod.MarlonRecoveryOffer"
-                    , I18N.Get("Delivery.Marlon.RecoveryOfferLetter")
+                    , "Delivery.Marlon.RecoveryOfferLetter"
                     , (l) => !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("MailServiceMod.MarlonRecoveryReward") && Game1.player.mailReceived.Contains("guildMember") && !DataLoader.GetRecoveryConfig(Game1.player).EnableRecoveryService && !GetRecoveryConfig(Game1.player).DisableRecoveryConfigInGameChanges
                     , (l) =>
                     {
@@ -101,14 +105,15 @@ namespace MailServicesMod
                     }
                 )
                 {
-                    Title = I18N.Get("Delivery.Marlon.RecoveryOfferLetter.Title"),
-                    GroupId = "MailServicesMod.GuildRecovery"
+                    Title = "Delivery.Marlon.RecoveryOfferLetter.Title",
+                    GroupId = "MailServicesMod.GuildRecovery",
+                    I18N = I18N
                 }
             );
 
             Letter upgradeLetter = new Letter(
                 ToolUpgradeMailId
-                , I18N.Get("Delivery.Clint.UpgradeLetter")
+                , "Delivery.Clint.UpgradeLetter"
                 , (l) => !DataLoader.ModConfig.DisableToolDeliveryService && Game1.player.toolBeingUpgraded.Value != null && Game1.player.daysLeftForToolUpgrade.Value <= 0
                 , (l) =>
                 {
@@ -132,14 +137,15 @@ namespace MailServicesMod
                 }
             )
             {
-                Title = I18N.Get("Delivery.Clint.UpgradeLetter.Title"),
-                DynamicItems = (l) => Game1.player.toolBeingUpgraded.Value != null ? new List<Item> { Game1.player.toolBeingUpgraded.Value } : new List<Item>()
+                Title = "Delivery.Clint.UpgradeLetter.Title",
+                DynamicItems = (l) => Game1.player.toolBeingUpgraded.Value != null ? new List<Item> { Game1.player.toolBeingUpgraded.Value } : new List<Item>(),
+                I18N = I18N
             };
             MailDao.SaveLetter(upgradeLetter);
 
             Letter recoveryLetter = new Letter(
                 ItemRecoveryMailId
-                , I18N.Get("Delivery.Marlon.RecoveryLetter")
+                , "Delivery.Marlon.RecoveryLetter"
                 , (l) => GetRecoveryConfig(Game1.player).EnableRecoveryService && GuildRecoveryController.GetItemsToRecover()?.Count > 0
                 , (l) =>
                 {
@@ -148,8 +154,9 @@ namespace MailServicesMod
                 }
             )
             {
-                Title = I18N.Get("Delivery.Marlon.RecoveryLetter.Title"),
-                DynamicItems = (l) => GuildRecoveryController.GetItemsToRecover()
+                Title = "Delivery.Marlon.RecoveryLetter.Title",
+                DynamicItems = (l) => GuildRecoveryController.GetItemsToRecover(),
+                I18N = I18N
             };
             MailDao.SaveLetter(recoveryLetter);
         }

@@ -9,6 +9,11 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.5.3
+Released 09 January 2023 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Updated for the upcoming Generic Mod Config Menu 2.0.0.
+
 ## 1.5.2
 Released 25 May 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

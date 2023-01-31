@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -165,11 +165,12 @@ public static class TypeExtensions
     {
         yield return parent;
 
-        foreach (var t1 in parent.GetNestedTypes(AccessTools.all))
+        var nested = parent.GetNestedTypes(AccessTools.all);
+        for (var i = 0; i < nested.Length; i++)
         {
-            foreach (var t2 in GetAllInnerTypes(t1))
+            foreach (var inner in GetAllInnerTypes(nested[i]))
             {
-                yield return t2;
+                yield return inner;
             }
         }
     }

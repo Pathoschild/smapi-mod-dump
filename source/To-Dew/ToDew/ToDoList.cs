@@ -77,6 +77,7 @@ namespace ToDew {
             public bool IsVisibleToday { get; set; }
 
             public ListItem() {
+                Text = ""; // presumably to be overwritten in deserialization, but need a value for nullability check
                 // these provide the default values for items read from a serialized form
                 // that doesn't include these properties
                 FarmWeatherVisiblity = WeatherVisiblity.All;
@@ -173,8 +174,8 @@ namespace ToDew {
             } else {
                 // initialize with an empty list until we get the content from the host
                 theList = new ListData();
-                IMultiplayerPeer host = theMod.Helper.Multiplayer.GetConnectedPlayer(Game1.MasterPlayer.UniqueMultiplayerID);
-                var hostMod = host.GetMod(theMod.ModManifest.UniqueID);
+                IMultiplayerPeer? host = theMod.Helper.Multiplayer.GetConnectedPlayer(Game1.MasterPlayer.UniqueMultiplayerID);
+                var hostMod = host?.GetMod(theMod.ModManifest.UniqueID);
                 if (hostMod == null) {
                     _incompatibleMultiplayerHost = true;
                     theMod.Monitor.Log(I18n.Message_HostNoMod(modName: theMod.ModManifest.Name), LogLevel.Warn);
@@ -189,7 +190,7 @@ namespace ToDew {
         }
 
         /// <summary>The event raised when the list changes.</summary>
-        public event EventHandler<List<ListItem>> OnChanged;
+        public event EventHandler<List<ListItem>>? OnChanged;
 
         private void DoAddItem(string text) {
             ListItem item = new ListItem(theMod.Helper.Multiplayer.GetNewID(), text);

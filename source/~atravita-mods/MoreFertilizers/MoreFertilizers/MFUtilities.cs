@@ -8,6 +8,13 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit.Extensions;
+using AtraCore.Framework.ItemManagement;
+
+using AtraShared.Caching;
+using AtraShared.ConstantsAndEnums;
+using AtraShared.Wrappers;
+
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
@@ -24,28 +31,34 @@ internal static class MFUtilities
     /// <param name="level">Int skill level.</param>
     /// <returns>Fertilizer ID (-1 if not found).</returns>
     internal static int GetRandomFertilizerFromLevel(this int level)
-        => Game1.random.Next(Math.Clamp(level + 1, 0, 11)) switch
+        => Game1.random.Next(Math.Clamp((int)(level * 1.5) + 1, 0, 16)) switch
             {
                 0 => ModEntry.LuckyFertilizerID,
                 1 => ModEntry.JojaFertilizerID,
                 2 => ModEntry.PaddyCropFertilizerID,
                 3 => ModEntry.OrganicFertilizerID,
                 4 => ModEntry.FruitTreeFertilizerID,
-                5 => ModEntry.FishFoodID,
-                6 => ModEntry.DeluxeFishFoodID,
-                7 => ModEntry.DomesticatedFishFoodID,
-                8 => ModEntry.DeluxeJojaFertilizerID,
-                9 => ModEntry.DeluxeFruitTreeFertilizerID,
+                5 => ModEntry.SeedyFertilizerID,
+                6 => ModEntry.FishFoodID,
+                7 => ModEntry.RadioactiveFertilizerID,
+                8 => ModEntry.DeluxeFishFoodID,
+                9 => ModEntry.DomesticatedFishFoodID,
+                10 => ModEntry.DeluxeJojaFertilizerID,
+                11 => ModEntry.DeluxeFruitTreeFertilizerID,
+                12 => ModEntry.TreeTapperFertilizerID,
+                13 => ModEntry.EverlastingFertilizerID,
+                14 => ModEntry.MiraculousBeveragesID,
+                15 => ModEntry.BountifulBushID,
                 _ => ModEntry.BountifulFertilizerID,
             };
 
     /// <summary>
-    /// Whether hoedirt contains a crop should be considered a Joja crop for the Joja and Organic fertilizers.
+    /// Whether HoeDirt contains a crop should be considered a Joja crop for the Joja and Organic fertilizers.
     /// </summary>
-    /// <param name="dirt">Hoedirt.</param>
-    /// <returns>True if the hoedirt has a joja crop.</returns>
+    /// <param name="dirt">HoeDirt.</param>
+    /// <returns>True if the HoeDirt has a joja crop.</returns>
     internal static bool HasJojaCrop(this HoeDirt dirt)
-        => dirt.crop is not null && dirt.crop.IsJojaCrop();
+        => dirt?.crop?.IsJojaCrop() == true;
 
     /// <summary>
     /// Whether the crop should be considered a Joja crop for the Joja and Organic fertilizers.
@@ -54,18 +67,23 @@ internal static class MFUtilities
     /// <returns>True if crop is a joja crop.</returns>
     internal static bool IsJojaCrop(this Crop crop)
     {
-        string data = Game1.objectInformation[crop.indexOfHarvest.Value];
+        if (crop?.indexOfHarvest?.Value is null)
+        {
+            return false;
+        }
+
+        string data = Game1Wrappers.ObjectInfo[crop.indexOfHarvest.Value];
         int index = data.IndexOf('/');
         if (index >= 0)
         {
-            ReadOnlySpan<char> span = data.AsSpan(0, index);
+            ReadOnlySpan<char> span = data.AsSpan(0, index).Trim();
             return span.Contains("Joja", StringComparison.OrdinalIgnoreCase);
         }
         return false;
     }
 
     /// <summary>
-    /// Fixes IDs for all hoedirt in a specific location.
+    /// Fixes IDs for all HoeDirt in a specific location.
     /// Given the idMapping.
     /// </summary>
     /// <param name="loc">Location to fix.</param>
@@ -92,5 +110,34 @@ internal static class MFUtilities
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Returns the id and type of an SObject, or null if not found.
+    /// </summary>
+    /// <param name="identifier">string identifier.</param>
+    /// <returns>id/type tuple, or null for not found.</returns>
+    internal static int? ResolveID(string identifier)
+    {
+        if (!int.TryParse(identifier, out int id))
+        {
+            id = DataToItemMap.GetID(ItemTypeEnum.SObject, identifier);
+        }
+
+        if (id < -1 || !Game1Wrappers.ObjectInfo.TryGetValue(id, out string? data))
+        {
+            ModEntry.ModMonitor.Log($"{identifier} could not be resolved, skipping");
+            return null;
+        }
+
+        ReadOnlySpan<char> cat = data.GetNthChunk('/', SObject.objectInfoTypeIndex);
+        int index = cat.GetIndexOfWhiteSpace();
+        if (index < 0 || !int.TryParse(cat[(index + 1)..], out int type) || type is not SObject.SeedsCategory)
+        {
+            ModEntry.ModMonitor.Log($"{identifier} with {id} does not appear to be a seed, skipping.");
+            return null;
+        }
+
+        return id;
     }
 }

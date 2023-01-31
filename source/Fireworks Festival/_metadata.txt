@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/elizabethcd/FireworksFestival
+   Git: https://github.com/elizabethcd/FireworksFestival.git
+
+mods:
+   Fireworks Festival
+
+latest commit:
+   commit bac0dded4c07cfac7f3621f8690a4fcf606e603a
+   Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
+   Date:   Sat Jan 28 23:58:57 2023 -0500
+   
+       Mod pretty much working
+   

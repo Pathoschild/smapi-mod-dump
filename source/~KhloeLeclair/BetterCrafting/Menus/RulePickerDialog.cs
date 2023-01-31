@@ -74,10 +74,10 @@ public class RulePickerDialog : MenuSubscriber<ModEntry> {
 					texture: handler.Texture,
 					source: handler.Source,
 					scale: scale,
-					align: Alignment.Middle
+					align: Alignment.VCenter
 				)
 				.Text(" ")
-				.FormatText(handler.DisplayName, align: Alignment.Middle);
+				.FormatText(handler.DisplayName, align: Alignment.VCenter);
 
 			var node = new SelectableNode(
 				b2.Build(),

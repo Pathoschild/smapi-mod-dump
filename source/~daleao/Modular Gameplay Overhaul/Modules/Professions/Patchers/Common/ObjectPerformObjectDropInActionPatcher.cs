@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -61,15 +61,25 @@ internal sealed class ObjectPerformObjectDropInActionPatcher : HarmonyPatcher
 
         var user = who;
         var owner = ProfessionsModule.Config.LaxOwnershipRequirements ? Game1.player : __instance.GetOwner();
+        var r = new Random(Guid.NewGuid().GetHashCode());
 
         // artisan users can preserve the input quality
         if (user.HasProfession(Profession.Artisan))
         {
             // golden mayonnaise is always iridium quality
-            held.Quality = __instance.ParentSheetIndex == (int)Machine.MayonnaiseMachine && dropIn.ParentSheetIndex == Constants.GoldenEggIndex &&
+            held.Quality = __instance.ParentSheetIndex == (int)Machine.MayonnaiseMachine &&
+                           dropIn.ParentSheetIndex == Constants.GoldenEggIndex &&
                            !ModHelper.ModRegistry.IsLoaded("ughitsmegan.goldenmayoForProducerFrameworkMod")
                 ? SObject.bestQuality
                 : dropIn.Quality;
+            if (r.NextDouble() > who.FarmingLevel / 30d)
+            {
+                held.Quality = (int)((Quality)held.Quality).Decrement();
+                if (r.NextDouble() > who.FarmingLevel / 15d)
+                {
+                    held.Quality = (int)((Quality)held.Quality).Decrement();
+                }
+            }
         }
 
         // artisan-owned machines work faster and may upgrade quality
@@ -149,9 +159,9 @@ internal sealed class ObjectPerformObjectDropInActionPatcher : HarmonyPatcher
                         var notPrestigedBreeder = generator.DefineLabel();
                         var resumeExecution = generator.DefineLabel();
                         helper
-                            .FindProfessionCheck(Profession.Breeder.Value)
+                            .MatchProfessionCheck(Profession.Breeder.Value)
                             .Match(new[] { new CodeInstruction(OpCodes.Ldloc_0) }, ILHelper.SearchOption.Previous)
-                            .Match(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var steps)
+                            .Count(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var steps)
                             .Copy(
                                 out var copy,
                                 steps,

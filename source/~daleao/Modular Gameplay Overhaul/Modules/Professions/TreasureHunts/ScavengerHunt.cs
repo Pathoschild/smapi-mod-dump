@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -429,7 +429,7 @@ internal sealed class ScavengerHunt : TreasureHunt
 
         var index = possibles.ElementAt(this.Random.Next(possibles.Count));
         var stack = this.Random.Next(2, 7) *
-                    (!(this.Random.NextDouble() < 0.05 + (Game1.player.LuckLevel * 0.015)) ? 1 : 2);
+                    (this.Random.NextDouble() < 0.05 + (Game1.player.LuckLevel * 0.015) ? 2 : 1);
         treasures.Add(new SObject(index, stack));
         if (this.Random.NextDouble() < 0.05 + (Game1.player.LuckLevel * 0.03))
         {
@@ -535,8 +535,8 @@ internal sealed class ScavengerHunt : TreasureHunt
             case 3:
             {
                 treasures.Add(this.Random.NextDouble() < 0.28
-                    ? new SObject(72, 1) // diamond
-                    : new SObject(80, this.Random.Next(1, 3))); // quartz
+                    ? new SObject(SObject.diamondIndex, 1) // diamond
+                    : new SObject(SObject.quartzIndex, this.Random.Next(1, 3))); // quartz
                 break;
             }
         }
@@ -637,7 +637,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         // prismatic shard
         if (this.Random.NextDouble() < 0.005 * luckModifier * Math.Pow(2, streak))
         {
-            treasures.Add(new SObject(74, 1));
+            treasures.Add(new SObject(SObject.prismaticShardIndex, 1));
         }
 
         // strange doll
@@ -672,7 +672,7 @@ internal sealed class ScavengerHunt : TreasureHunt
 
         if (treasures.Count == 1)
         {
-            treasures.Add(new SObject(72, 1)); // consolation diamond
+            treasures.Add(new SObject(SObject.diamondIndex, 1)); // consolation diamond
         }
     }
 

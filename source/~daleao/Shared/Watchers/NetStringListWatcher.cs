@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -25,10 +25,10 @@ internal class NetStringListWatcher : DisposableWatcher, ICollectionWatcher<stri
     private readonly NetList<string, NetString> _field;
 
     /// <summary>The pairs added since the last reset.</summary>
-    private readonly ISet<string> _added = new HashSet<string>(new EquatableComparer<string>());
+    private readonly HashSet<string> _added = new(new EquatableComparer<string>());
 
     /// <summary>The pairs removed since the last reset.</summary>
-    private readonly ISet<string> _removed = new HashSet<string>(new EquatableComparer<string>());
+    private readonly HashSet<string> _removed = new(new EquatableComparer<string>());
 
     /// <summary>Initializes a new instance of the <see cref="NetStringListWatcher"/> class.</summary>
     /// <param name="name">A name which identifies what the watcher is watching, used for troubleshooting.</param>
@@ -84,8 +84,8 @@ internal class NetStringListWatcher : DisposableWatcher, ICollectionWatcher<stri
     /// <param name="newValues">The new list of values.</param>
     private void OnArrayReplaced(NetList<string, NetString> list, IList<string> oldValues, IList<string> newValues)
     {
-        ISet<string> oldSet = new HashSet<string>(oldValues, new EquatableComparer<string>());
-        ISet<string> changed = new HashSet<string>(newValues, new EquatableComparer<string>());
+        var oldSet = new HashSet<string>(oldValues, new EquatableComparer<string>());
+        var changed = new HashSet<string>(newValues, new EquatableComparer<string>());
 
         foreach (var value in oldSet)
         {

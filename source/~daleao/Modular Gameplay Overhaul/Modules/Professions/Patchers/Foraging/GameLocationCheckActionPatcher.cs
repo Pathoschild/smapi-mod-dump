@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -52,9 +52,9 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Farmer.botanist, ILHelper.SearchOption.First) // find index of botanist check
+                .MatchProfessionCheck(Farmer.botanist, ILHelper.SearchOption.First) // find index of botanist check
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) }) // start of objects[key].isForage() check
-                .Match(
+                .Count(
                     new[]
                     {
                         new CodeInstruction(
@@ -101,9 +101,9 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
         {
             var gemologistCheck = generator.DefineLabel();
             helper
-                .FindProfessionCheck(Farmer.botanist, ILHelper.SearchOption.First) // return to botanist check
+                .MatchProfessionCheck(Farmer.botanist, ILHelper.SearchOption.First) // return to botanist check
                 .Move(-1) // retreat to start of check
-                .Match(new[] { new CodeInstruction(OpCodes.Br_S) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Br_S) }, out var count)
                 .Copy(// copy entire section until done setting quality
                     out copy,
                     count,
@@ -136,7 +136,7 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
                     new[] { new CodeInstruction(OpCodes.Ldarg_0) },
                     ILHelper.SearchOption.Previous) // start of call to isForage()
 
-                .Match(
+                .Count(
                     new[]
                     {
                         // right before call to IsForagedMineral()
@@ -212,9 +212,9 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
             var isNotPrestiged = generator.DefineLabel();
             var resumeExecution = generator.DefineLabel();
             helper
-                .FindProfessionCheck(Profession.Forager.Value)
+                .MatchProfessionCheck(Profession.Forager.Value)
                 .Move(-1)
-                .Match(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var steps)
+                .Count(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var steps)
                 .Copy(out copy, steps, true, true)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_R8, 0.2) })
                 .AddLabels(isNotPrestiged)

@@ -107,4 +107,18 @@ public interface IJsonAssetsAPI
     /// <param name="sourceRect">out param, source rectangle.</param>
     /// <returns>True if successful, false otherwise.</returns>
     bool TryGetCustomSprite(object entity, out Texture2D texture, out Rectangle sourceRect);
+
+    /// <summary>
+    /// Gets the texture of a Giant Crop.
+    /// </summary>
+    /// <param name="productID">The product ID.</param>
+    /// <param name="texture">Out param, the texture.</param>
+    /// <returns>True if successful, false otherwise.</returns>
+    bool TryGetGiantCropSprite(int productID, out Lazy<Texture2D> texture);
+
+    /// <summary>
+    /// Gets the giant crops JA recognizes.
+    /// </summary>
+    /// <returns></returns>
+    int[] GetGiantCropIndexes();
 }

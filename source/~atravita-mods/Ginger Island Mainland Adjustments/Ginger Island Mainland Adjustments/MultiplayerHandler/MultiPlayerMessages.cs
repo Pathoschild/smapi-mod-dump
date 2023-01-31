@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using AtraCore.Framework.Caches;
+
+using AtraShared.Caching;
 using AtraShared.Utils.Extensions;
 using GingerIslandMainlandAdjustments.AssetManagers;
 using HarmonyLib;
@@ -24,10 +27,13 @@ public static class MultiplayerSharedState
 {
     private const string SCHEDULEMESSAGE = "GIMAScheduleUpdateMessage";
 
+    private static PerScreen<TickCache<bool>> hasSeenEvent = new(
+        static () => new (static () => Game1.player.eventsSeen.Contains(AssetEditor.PAMEVENT)));
+
     /// <summary>
-    /// Gets or sets pam's current schedule string.
+    /// Gets Pam's current schedule string.
     /// </summary>
-    internal static string? PamsSchedule { get; set; }
+    internal static string? PamsSchedule { get; private set; }
 
     /// <summary>
     /// Updates entry for Pam's schedule whenever a person joins in multiplayer.
@@ -36,7 +42,7 @@ public static class MultiplayerSharedState
     internal static void ReSendMultiplayerMessage(PeerConnectedEventArgs e)
     {
         if (Context.IsMainPlayer && Context.IsWorldReady
-            && Game1.getCharacterFromName("Pam") is NPC pam
+            && NPCCache.GetByVillagerName("Pam") is NPC pam
             && pam.TryGetScheduleEntry(pam.dayScheduleName.Value, out string? rawstring)
             && Globals.UtilitySchedulingFunctions.TryFindGOTOschedule(pam, SDate.Now(), rawstring, out string redirectedstring))
         {
@@ -55,7 +61,7 @@ public static class MultiplayerSharedState
         if (e.FromModID == Globals.Manifest.UniqueID && e.Type == SCHEDULEMESSAGE)
         {
             PamsSchedule = e.ReadAs<string>();
-            Globals.ModMonitor.Log($"Recieved Pam's schedule {PamsSchedule}");
+            Globals.ModMonitor.Log($"Received Pam's schedule {PamsSchedule}");
         }
     }
 
@@ -66,13 +72,12 @@ public static class MultiplayerSharedState
     {
         try
         {
-            if (Context.IsMainPlayer && __instance?.Name.Equals("Pam", StringComparison.OrdinalIgnoreCase) == true
-                && Game1.player.eventsSeen.Contains(AssetEditor.PAMEVENT)
+            if (Context.IsMainPlayer && hasSeenEvent.Value.GetValue() && __instance?.Name.Equals("Pam", StringComparison.OrdinalIgnoreCase) == true
                 && __instance.TryGetScheduleEntry(__instance.dayScheduleName.Value, out string? rawstring)
                 && Globals.UtilitySchedulingFunctions.TryFindGOTOschedule(__instance, SDate.Now(), rawstring, out string redirectedstring))
             {
                 PamsSchedule = redirectedstring;
-                Globals.ModMonitor.Log($"Grabbing Pam's rawSchedule for phone: {redirectedstring}");
+                Globals.ModMonitor.DebugOnlyLog($"Grabbing Pam's rawSchedule for phone: {redirectedstring}");
                 Globals.Helper.Multiplayer.SendMessage(redirectedstring, SCHEDULEMESSAGE, modIDs: new[] { Globals.Manifest.UniqueID });
             }
         }

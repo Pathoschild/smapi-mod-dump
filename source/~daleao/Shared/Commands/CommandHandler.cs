@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,9 +15,11 @@ namespace DaLion.Shared.Commands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using DaLion.Shared.Attributes;
 using DaLion.Shared.Extensions.Collections;
 using HarmonyLib;
+using NetFabric.Hyperlinq;
 using StardewModdingAPI;
 
 #endregion using directives
@@ -47,6 +49,20 @@ internal sealed class CommandHandler
     /// <summary>Gets the human-readable name of the providing mod.</summary>
     internal string Mod { get; private set; } = null!; // set in register
 
+    /// <summary>Implicitly registers all <see cref="IConsoleCommand"/> types in the assembly using reflection.</summary>
+    /// <param name="helper">The <see cref="ICommandHelper"/> API for the current mod.</param>
+    /// <param name="mod">Human-readable name of the providing mod.</param>
+    /// <param name="entry">The <see cref="string"/> used as entry for all handled <see cref="IConsoleCommand"/>s.</param>
+    /// <param name="conditional">An optional conditional expression that prevents the entry command from being executed.</param>
+    /// <returns>The <see cref="CommandHandler"/> instance.</returns>
+    internal static CommandHandler HandeAll(ICommandHelper helper, string mod, string entry, Func<bool>? conditional = null)
+    {
+        Log.D($"[CommandHandler]: Gathering all commands...");
+        return new CommandHandler(helper)
+            .HandleImplicitly()
+            .Register(mod, entry, conditional);
+    }
+
     /// <summary>Implicitly registers <see cref="IConsoleCommand"/> types in the specified namespace.</summary>
     /// <param name="helper">The <see cref="ICommandHelper"/> API for the current mod.</param>
     /// <param name="namespace">The desired namespace.</param>
@@ -54,7 +70,7 @@ internal sealed class CommandHandler
     /// <param name="entry">The <see cref="string"/> used as entry for all handled <see cref="IConsoleCommand"/>s.</param>
     /// <param name="conditional">An optional conditional expression that prevents the entry command from being executed.</param>
     /// <returns>The <see cref="CommandHandler"/> instance.</returns>
-    internal static CommandHandler FromNamespace(ICommandHelper helper, string @namespace, string mod, string entry, Func<bool>? conditional = null)
+    internal static CommandHandler HandleFromNamespace(ICommandHelper helper, string @namespace, string mod, string entry, Func<bool>? conditional = null)
     {
         Log.D($"[CommandHandler]: Gathering commands in {@namespace}...");
         return new CommandHandler(helper)
@@ -69,7 +85,7 @@ internal sealed class CommandHandler
     /// <param name="entry">The <see cref="string"/> used as entry for all handled <see cref="IConsoleCommand"/>s.</param>
     /// <param name="conditional">An optional conditional expression that prevents the entry command from being executed.</param>
     /// <returns>The <see cref="CommandHandler"/> instance.</returns>
-    internal static CommandHandler WithAttribute<TAttribute>(ICommandHelper helper, string mod, string entry, Func<bool>? conditional = null)
+    internal static CommandHandler HandleWithAttribute<TAttribute>(ICommandHelper helper, string mod, string entry, Func<bool>? conditional = null)
         where TAttribute : Attribute
     {
         Log.D($"[CommandHandler]: Gathering commands with {nameof(TAttribute)}...");
@@ -87,7 +103,7 @@ internal sealed class CommandHandler
     {
         if (this._handledCommands.Count == 0)
         {
-            Log.D($"The mod {mod} did not provide any console commands.");
+            Log.D($"[CommandHandler]: The mod {mod} did not provide any console commands.");
             return this;
         }
 
@@ -105,7 +121,7 @@ internal sealed class CommandHandler
     /// <param name="args">The supplied arguments.</param>
     internal void Entry(string command, string[] args)
     {
-        if (args.Length == 0)
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Log.I(
                 $"This is the entry point for all {this.Mod} console commands. Use it by specifying a command to be executed. " +
@@ -115,13 +131,13 @@ internal sealed class CommandHandler
 
         if (string.Equals(args[0], "help", StringComparison.InvariantCultureIgnoreCase))
         {
-            var result = "Available commands:";
+            var result = new StringBuilder("Available commands:");
             this._handledCommands.Values.Distinct().ForEach(c =>
             {
-                result +=
-                    $"\n\t-{command} {c.Triggers.First()}";
+                result.Append($"\n\t-{command} {c.Triggers[0]}");
             });
-            Log.I(result);
+
+            Log.I(result.ToString());
             return;
         }
 
@@ -135,7 +151,7 @@ internal sealed class CommandHandler
                                 string.Equals(args[1], "doc", StringComparison.InvariantCultureIgnoreCase)))
         {
             Log.I(
-                $"{handled.Documentation}\n\nAliases: {string.Join(',', handled.Triggers.Skip(1).Select(t => "`" + t + "`"))}");
+                $"{handled.Documentation}\n\nAliases: {string.Join(',', handled.Triggers.AsValueEnumerable().Skip(1).Select(t => "`" + t + "`"))}");
             return;
         }
 
@@ -150,7 +166,7 @@ internal sealed class CommandHandler
             return;
         }
 
-        handled.Callback(args.Skip(1).ToArray());
+        handled.Callback(args[0], args.Skip(1).ToArray());
     }
 
     /// <summary>Implicitly handles <see cref="IConsoleCommand"/> types using reflection.</summary>
@@ -170,8 +186,9 @@ internal sealed class CommandHandler
         }
 
         Log.D($"[CommandHandler]: Instantiating commands...");
-        foreach (var type in commandTypes)
+        for (var i = 0; i < commandTypes.Length; i++)
         {
+            var type = commandTypes[i];
             try
             {
 #if RELEASE
@@ -195,9 +212,9 @@ internal sealed class CommandHandler
                         new[] { this.GetType() },
                         null)!
                     .Invoke(new object?[] { this });
-                foreach (var trigger in command.Triggers)
+                for (var j = 0; j < command.Triggers.Length; j++)
                 {
-                    this._handledCommands.Add(trigger, command);
+                    this._handledCommands.Add(command.Triggers[j], command);
                 }
 
                 Log.D($"[CommandHandler]: Handling {command.GetType().Name}");

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,15 +13,14 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Common;
 #region using directives
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Overhaul.Modules.Professions.Events.Display;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions;
-using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.SMAPI;
+using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Buildings;
@@ -60,11 +59,17 @@ internal sealed class LevelUpMenuGetImmediateProfessionPerkPatcher : HarmonyPatc
         profession
             .When(Profession.Aquarist).Then(() =>
             {
-                Game1.getFarm().buildings
-                    .OfType<FishPond>()
-                    .Where(p => (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer ||
-                                 ProfessionsModule.Config.LaxOwnershipRequirements) && !p.isUnderConstruction())
-                    .ForEach(p => p.UpdateMaximumOccupancy());
+                var buildings = Game1.getFarm().buildings;
+                for (var i = 0; i < buildings.Count; i++)
+                {
+                    var building = buildings[i];
+                    if (building is FishPond pond &&
+                        (pond.IsOwnedBy(Game1.player) || ProfessionsModule.Config.LaxOwnershipRequirements) &&
+                        !pond.isUnderConstruction())
+                    {
+                        pond.UpdateMaximumOccupancy();
+                    }
+                }
             })
             .When(Profession.Rascal).Then(() =>
             {

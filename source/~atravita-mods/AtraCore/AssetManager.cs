@@ -19,6 +19,15 @@ namespace AtraCore;
 /// </summary>
 internal static class AssetManager
 {
+    private static IAssetName prismatic = null!;
+
+    /// <summary>
+    /// Initializes the asset manager.
+    /// </summary>
+    /// <param name="parser">GameContentHelper.</param>
+    internal static void Initialize(IGameContentHelper parser)
+        => prismatic = parser.ParseAssetName(AtraCoreConstants.PrismaticMaskData);
+
     /// <summary>
     /// Gets the prismatic models data asset.
     /// </summary>
@@ -36,15 +45,16 @@ internal static class AssetManager
         return null;
     }
 
-    /// <summary>
-    /// Applies the edits and loads for this mod.
-    /// </summary>
-    /// <param name="e">Event args.</param>
+    /// <inheritdoc cref="IContentEvents.AssetRequested"/>
     internal static void Apply(AssetRequestedEventArgs e)
     {
-        if (e.NameWithoutLocale.IsEquivalentTo(AtraCoreConstants.PrismaticMaskData))
+        if (e.NameWithoutLocale.IsEquivalentTo(prismatic))
         {
             e.LoadFrom(EmptyContainers.GetEmptyDictionary<string, DrawPrismaticModel>, AssetLoadPriority.Low);
+        }
+        else if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/AdventureGuild") || e.NameWithoutLocale.IsEquivalentTo("Data/Events/Blacksmith"))
+        {
+            e.LoadFrom(EmptyContainers.GetEmptyDictionary<string, string>, AssetLoadPriority.Low);
         }
     }
 }

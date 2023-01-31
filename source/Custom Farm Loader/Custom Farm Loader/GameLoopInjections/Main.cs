@@ -43,7 +43,6 @@ namespace Custom_Farm_Loader.GameLoopInjections
             _Farm.Initialize(mod);
             _FarmHouse.Initialize(mod);
             DailyUpdateEvents.Initialize(mod);
-            BridgeEvents.Initialize(mod);
             AssetsRequested.Initialize(mod);
 
 

@@ -18,6 +18,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Tools;
+using static MailServicesMod.ToolUpgradeController;
 
 namespace MailServicesMod
 {
@@ -37,6 +38,7 @@ namespace MailServicesMod
             {
                 MailServicesModEntry.ModMonitor.Log("Error trying to remove the tool delivery letter from the mailbox.", LogLevel.Error);
                 MailServicesModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
             }
         }
 
@@ -54,6 +56,7 @@ namespace MailServicesMod
             {
                 MailServicesModEntry.ModMonitor.Log("Error trying to avoid the trash can to be added to the inventory.", LogLevel.Error);
                 MailServicesModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
             }
             return true;
         }
@@ -68,41 +71,14 @@ namespace MailServicesMod
                     {
                         if (tool is Axe || tool is Pickaxe || tool is Hoe || tool is WateringCan)
                         {
-                            Dictionary<ISalable, int[]> blacksmithUpgradeStock = Utility.getBlacksmithUpgradeStock(Game1.player);
-                            int[] cost = blacksmithUpgradeStock
-                                .Where(s => s.Key.GetType() == tool.GetType())
-                                .Select(s => s.Value)
-                                .FirstOrDefault();
-                            if (cost != null)
+                            if (DataLoader.ModConfig.EnableAskToUpgradeTool)
                             {
-                                int price = cost[0] + DataLoader.ModConfig.ToolShipmentServiceFee;
-                                int barIndex = cost[2];
-                                const int barCount = 5;
-                                if (Game1.player.Money >= price)
-                                {
-                                    if (Game1.player.hasItemInInventory(barIndex, barCount))
-                                    {
-                                        ShopMenu.chargePlayer(Game1.player, 0, price);
-                                        Game1.player.removeItemsFromInventory(barIndex, barCount);
-
-                                        Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Clint.UpgradeLetter.ToolSent", new { Tool = tool.DisplayName }));
-
-                                        tool.UpgradeLevel++;
-                                        Game1.player.removeItemFromInventory(tool);
-                                        Game1.player.toolBeingUpgraded.Value = tool;
-                                        Game1.player.daysLeftForToolUpgrade.Value = 2;
-                                        Game1.playSound("parry");
-                                    }
-                                    else
-                                    {
-                                        Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Clint.UpgradeLetter.NoBars", new { Tool = tool.DisplayName }));
-                                    }
-                                }
-                                else
-                                {
-                                    Game1.drawObjectDialogue(DataLoader.I18N.Get("Shipment.Clint.UpgradeLetter.NoMoney", new { Tool = tool.DisplayName }));
-                                }
+                                ToolUpgradeController.OpenUpgradeDialog();
                                 return false;
+                            }
+                            else
+                            {
+                                if (ToolUpgradeController.TryToSendTool()) return false;
                             }
                         }
                     }
@@ -112,8 +88,32 @@ namespace MailServicesMod
             {
                 MailServicesModEntry.ModMonitor.Log("Error trying to send the tool to upgrade.", LogLevel.Error);
                 MailServicesModEntry.ModMonitor.Log($"The error message above:{e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
             }
             return true;
+        }
+
+        public static void answerDialogueAction(string questionAndAnswer)
+        {
+            try
+            {
+                switch (questionAndAnswer)
+                {
+                    case null:
+                        break;
+                    case UpgradeDialogKey + "_" + UpgradeResponseKeyYes:
+                        ToolUpgradeController.TryToSendTool();
+                        break;
+                    case UpgradeDialogKey + "_" + UpgradeResponseKeyNo:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                MailServicesModEntry.ModMonitor.Log("Error trying to answer your tool upgrade service shipping confirmation.", LogLevel.Error);
+                MailServicesModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
+            }
         }
     }
 }

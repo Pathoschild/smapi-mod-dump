@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.IO;
 using System.Linq;
 using DynamicGameAssets.PackData;
@@ -18,13 +17,14 @@ using OrnithologistsGuild.Game.Items;
 using SpaceShared.APIs;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 namespace OrnithologistsGuild
 {
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod
+    public partial class ModEntry : Mod
     {
+        internal static ContentPatcher.IContentPatcherAPI CP;
+
         internal static DynamicGameAssets.IDynamicGameAssetsApi DGA;
         internal static ContentPack DGAContentPack;
 
@@ -39,6 +39,13 @@ namespace OrnithologistsGuild
             this.Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             this.Helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             // this.Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+
+            this.Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+        }
+
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            DebugHandleInput(e);
         }
 
         // private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -49,25 +56,37 @@ namespace OrnithologistsGuild
         //     }
         // }
 
-        //private void Player_Warped(object sender, WarpedEventArgs e)
-        //{
-        //    var kyle = e.NewLocation.characters.FirstOrDefault(c => c.Name == "OrinothlogistsGuild_Kyle");
-
-        //    if (kyle != null)
-        //    {
-        //        // Increase width of character sprite
-        //        kyle.Sprite = new AnimatedSprite(kyle.Sprite.loadedTexture, 0, 32, 32);
-        //    }
-        //}
-
         private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             SaveDataManager.Load();
             Mail.Initialize();
+
+            // Verify that all outdoor maps have biomes specified
+            foreach (var location in StardewValley.Game1.locations)
+            {
+                var biomes = location.GetBiomes();
+                if (location.IsOutdoors && (
+                    biomes == null ||
+                    biomes.Length == 0 ||
+                    (biomes.Length == 1 && biomes[0].Equals("default")
+                )))
+                {
+                    Monitor.Log($"No biomes specified for outdoor location \"{location.Name}\"", LogLevel.Warn);
+                }
+            }
         }
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            // Custom tokens
+            CP = Helper.ModRegistry.GetApi<ContentPatcher.IContentPatcherAPI>("Pathoschild.ContentPatcher");
+            CP.RegisterToken(this.ModManifest, "LocationBiome", () =>
+            {
+                if (!Context.IsWorldReady) return null;
+
+                return StardewValley.Game1.player.currentLocation.GetBiomes();
+            });
+
             // Config
             ConfigManager.Initialize();
 
@@ -98,10 +117,10 @@ namespace OrnithologistsGuild
             // Harmony patches
             var harmony = new Harmony(this.ModManifest.UniqueID);
 
-            LocationPatches.Initialize(this.Monitor);
+            GameLocationPatches.Initialize(this.Monitor);
             harmony.Patch(
                original: AccessTools.Method(typeof(StardewValley.GameLocation), nameof(StardewValley.GameLocation.addBirdies)),
-               prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.addBirdies_Prefix))
+               prefix: new HarmonyMethod(typeof(GameLocationPatches), nameof(GameLocationPatches.addBirdies_Prefix))
             );
 
             TreePatches.Initialize(this.Monitor);
@@ -110,34 +129,7 @@ namespace OrnithologistsGuild
                prefix: new HarmonyMethod(typeof(TreePatches), nameof(TreePatches.performUseAction_Prefix))
             );
 
-            // Console commands
-            Helper.ConsoleCommands.Add("og_debug", "Adds debug items to inventory", OnDebugCommand);
-            Helper.ConsoleCommands.Add("og_spawn", "Consistently spawns specified creature ID", OnDebugCommand);
-        }
-
-        private void OnDebugCommand(string cmd, string[] args)
-        {
-            if (cmd.Equals("og_debug"))
-            {
-                //Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(270, 32)); // Corn
-                Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(770, 32)); // Mixed Seeds
-                //Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(431, 32)); // Sunflower Seeds
-                Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(832, 32)); // Pineapple
-
-                Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("WoodenHopper").ToItem());
-                //Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("WoodenPlatform").ToItem());
-                //Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("PlasticTube").ToItem());
-                //Game1.player.addItemByMenuIfNecessary((Item)DGAContentPack.Find("SeedHuller").ToItem());
-                //Game1.player.addItemByMenuIfNecessary((Item)new LifeList());
-                //Game1.player.addItemByMenuIfNecessary((Item)new JojaBinoculars());
-                //Game1.player.addItemByMenuIfNecessary((Item)new AntiqueBinoculars());
-                //Game1.player.addItemByMenuIfNecessary((Item)new ProBinoculars());
-            } else if (cmd.Equals("og_spawn"))
-            {
-                BirdieDef birdieDef = ContentPackManager.BirdieDefs.Values.FirstOrDefault(birdieDef => birdieDef.ID.Equals(args[0], StringComparison.OrdinalIgnoreCase));
-
-                BetterBirdieSpawner.debugAlwaysSpawn = birdieDef;
-            }
+            RegisterDebugCommands();
         }
     }
 }

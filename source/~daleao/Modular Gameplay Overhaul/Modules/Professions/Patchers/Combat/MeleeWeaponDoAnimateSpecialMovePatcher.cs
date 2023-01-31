@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -50,7 +50,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatcher : HarmonyPatcher
                 {
                     helper
                         // find index of acrobat check
-                        .FindProfessionCheck(
+                        .MatchProfessionCheck(
                             Farmer.acrobat,
                             i == 0 ? ILHelper.SearchOption.First : ILHelper.SearchOption.Next)
                         .Move(-2)

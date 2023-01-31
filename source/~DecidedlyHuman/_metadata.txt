@@ -8,6 +8,7 @@ mods:
    Carry Your Pet
    Default Window Size
    Into the Game (Save Loaded Notifier)
+   Mapping Extensions and Extra Properties (MEEP)
    Smart Building
    Smart Cursor
 

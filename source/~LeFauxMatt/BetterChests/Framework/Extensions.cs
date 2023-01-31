@@ -42,7 +42,7 @@ internal static class Extensions
         IManifest manifest,
         IStorageData data)
     {
-        gmcm.API!.AddNumberOption(
+        gmcm.Api!.AddNumberOption(
             manifest,
             data.GetChestCapacity,
             data.SetChestCapacity,
@@ -65,7 +65,7 @@ internal static class Extensions
         IManifest manifest,
         IStorageData data)
     {
-        gmcm.API!.AddNumberOption(
+        gmcm.Api!.AddNumberOption(
             manifest,
             data.GetChestMenuRows,
             data.SetChestMenuRows,
@@ -94,7 +94,7 @@ internal static class Extensions
         Func<string> name,
         Func<string> tooltip)
     {
-        gmcm.API!.AddNumberOption(
+        gmcm.Api!.AddNumberOption(
             manifest,
             () => data.GetDistance(featureName),
             value => data.SetDistance(featureName, value),
@@ -123,7 +123,7 @@ internal static class Extensions
         Func<string> name,
         Func<string> tooltip)
     {
-        gmcm.API!.AddTextOption(
+        gmcm.Api!.AddTextOption(
             manifest,
             () => getValue().ToStringFast(),
             value => setValue(FeatureOptionExtensions.TryParse(value, out var option) ? option : FeatureOption.Default),
@@ -150,7 +150,7 @@ internal static class Extensions
         Func<string> name,
         Func<string> tooltip)
     {
-        gmcm.API!.AddTextOption(
+        gmcm.Api!.AddTextOption(
             manifest,
             () => getValue().ToStringFast(),
             value => setValue(

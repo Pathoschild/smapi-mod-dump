@@ -11,7 +11,7 @@
 {
   "Name": "CatalogueFilter",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.2.0",
   "Description": "CatalogueFilter.",
   "UniqueID": "aedenthorn.CatalogueFilter",
   "EntryDll": "CatalogueFilter.dll",

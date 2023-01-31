@@ -1,0 +1,18 @@
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
+    }
+  ],
+  "EntryDll": "FixPigRandom.dll",
+  "Name": "FixPigsRandom",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "Pigs no longer bring you infinite truffles when time is paused.",
+  "UniqueID": "atravita.FixPigRandom",
+  "MinimumApiVersion": "3.18",
+  "UpdateKeys": [
+    "Nexus:15003"
+  ]
+}

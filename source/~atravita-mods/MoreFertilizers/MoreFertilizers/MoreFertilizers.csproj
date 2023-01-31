@@ -2,15 +2,14 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <PropertyGroup>
+    <Version>0.3.3</Version>
     <Name>More Fertilizers</Name>
     <Description>Adds more fertilizers to the game.</Description>
-    <Version>0.2.0</Version>
     <UpdateKeys>Nexus:11837</UpdateKeys>
     <BaseManifest>..\..\ja_dependencies.json</BaseManifest>
   </PropertyGroup>
@@ -22,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AtraCore\AtraCore.csproj" private="false" />
     <ProjectReference Include="..\..\Pintail\Pintail\Pintail.csproj" private="false" />
+    <Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" private="false"/>
   </ItemGroup>
   
   <ItemGroup>

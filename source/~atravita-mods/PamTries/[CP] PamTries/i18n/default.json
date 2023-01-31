@@ -59,6 +59,9 @@
     "No": "No",
     "and": "and",
 
+    // movie dialogue
+    "pam-movie-default": "Nothing like ending a long week with a movie and some nachos.$h",
+    "penny-movie-default": "I'm so glad I've managed to convince Mom to join me at the movies!$h",
 
     // Special order translations:
     "atravita.PamApology.Name": "For My Baby Girl",
@@ -71,6 +74,10 @@
     "atravita.PamApology.deliver_soup": "Deliver the soup to Penny.",
     "atravita.PamApology.deliver_soup_response": "Oh. Um. Thanks!",
 
+    // Movie reactions
+    "with-penny.before": "Heya kiddo, lookin' forward to seein' a movie with my Penny.#$b#And you, of course!",
+    "with-penny.during": "Penny, you want some more popcorn?",
+    "with-penny.after": "That was pretty fun! We should do it more often.$h",
     
     //Translations for events. Format: last three digits of event#-speaker-line #  (subpart)
     //Initial rehab event
@@ -106,6 +113,8 @@
     "002-pam-01": "Ah! Home sweet home!",
     "002-pam-02": "Although I don't miss goin' to work every day...",
     "002-penny-03": "Mom's back from rehab! Have you heard?",
+
+    //Catch Pam fishing in the forest.
 
     //Pam apologies to Gus
 

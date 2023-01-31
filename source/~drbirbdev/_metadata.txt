@@ -4,13 +4,15 @@ urls:
 
 mods:
    Binning Skill
+   Junimo Kart Global Rankings
+   Leaderboard Library
    Panning Upgrades
    Ranching Tool Upgrades
 
 latest commit:
-   commit bbf113e1b5c42084ff53f1aeffdadbc9e6ab585d
+   commit a1b81becc7ddc175cc98c3c430578e82bb6dc7af
    Author: github-actions <github-actions@github.com>
-   Date:   Fri Dec 30 18:29:42 2022 +0000
+   Date:   Thu Jan 26 06:37:39 2023 +0000
    
        Auto-increment version number
    

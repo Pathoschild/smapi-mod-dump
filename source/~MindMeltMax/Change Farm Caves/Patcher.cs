@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -55,7 +56,7 @@ namespace ChangeFarmCaves
             {
                 if (__instance.Name == "Demetrius" && Game1.IsMasterGame)
                 {
-                    if (__instance.CurrentDialogue.Count <= 0 && who.CurrentItem is null)
+                    if (__instance.CurrentDialogue.Count <= 0 && (who.CurrentItem is null || !CanGift(__instance, who.CurrentItem, who)))
                     {
                         var responses = Game1.currentLocation.createYesNoResponses();
                         if (Game1.activeClickableMenu is null)
@@ -84,7 +85,10 @@ namespace ChangeFarmCaves
             {
                 if (isChangingFarmCave)
                 {
-                    new Event().answerDialogue(Game1.currentLocation.lastQuestionKey, __instance.selectedResponse);
+                    if (!ModEntry.IConfig.Instant)
+                        Game1.getLocationFromName("FarmCave").modData["ChangeFarmCaves.ShouldChange"] = $"{Game1.currentLocation.lastQuestionKey},{__instance.selectedResponse}";
+                    else
+                        new Event().answerDialogue(Game1.currentLocation.lastQuestionKey, __instance.selectedResponse);
                     isChangingFarmCave = false;
                     __instance.closeDialogue();
                     return false;
@@ -114,6 +118,15 @@ namespace ChangeFarmCaves
                 return true;
             }
             catch (Exception ex) { ModEntry.IMonitor.Log($"Failed patching {nameof(Event.answerDialogue)}", LogLevel.Error); ModEntry.IMonitor.Log($"{ex.Message}\n{ex.StackTrace}"); return true; }
+        }
+
+        private static bool CanGift(NPC who, Item what, Farmer player)
+        {
+            if (!who.canReceiveThisItemAsGift(what)) 
+                return false;
+            if ((player.friendshipData[who.Name].GiftsToday == 1 || player.friendshipData[who.Name].GiftsThisWeek == 2) && !who.isMarried())
+                return false;
+            return true;
         }
     }
 }

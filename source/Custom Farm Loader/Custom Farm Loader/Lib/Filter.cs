@@ -165,8 +165,8 @@ namespace Custom_Farm_Loader.Lib
 
         private bool isValidDay()
         {
-            return (AfterDay == 0 || AfterDay < Game1.Date.TotalDays)
-                && (BeforeDay == 0 || BeforeDay > Game1.Date.TotalDays);
+            return (!ChangedAfterDay || AfterDay < Game1.Date.TotalDays + 1)
+                && (!ChangedBeforeDay || BeforeDay > Game1.Date.TotalDays + 1);
         }
 
         private bool isValidTime()

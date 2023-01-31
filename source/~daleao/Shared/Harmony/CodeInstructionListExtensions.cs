@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -119,6 +119,8 @@ public static class CodeInstructionListExtensions
     /// <returns>An exact copy of <paramref name="instructions"/> in a new <see cref="List{T}"/> instance.</returns>
     public static List<CodeInstruction> Clone(this List<CodeInstruction> instructions)
     {
-        return instructions.Select(instruction => new CodeInstruction(instruction)).ToList();
+        return instructions
+            .Select(instruction => new CodeInstruction(instruction))
+            .ToList();
     }
 }

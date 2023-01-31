@@ -6,9 +6,9 @@ mods:
    Dynamic Bodies
 
 latest commit:
-   commit a063c50406738db671e16ad7e27dba7f5f50def8
+   commit 444b3566509cbddc16f10788f1cf59efd2affdd8
    Author: ribeena <ribeena_@hotmail.com>
-   Date:   Sat Dec 24 21:24:58 2022 +1030
+   Date:   Tue Jan 17 09:13:21 2023 +1030
    
-       Added colours for naked overlays, the abilty to have sleeves too
+       Add checks for when DGA items are equipped and fix the metadata, add documentations
    

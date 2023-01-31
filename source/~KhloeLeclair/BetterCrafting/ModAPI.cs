@@ -232,6 +232,12 @@ public class ModAPI : IBetterCrafting {
 	}
 
 	/// <inheritdoc />
+	public IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Item? recycleTo = null) {
+		return new MatcherIngredient(matcher, quantity, displayName, texture, source, recycleTo);
+	}
+
+	/// <inheritdoc />
+	[Obsolete("Use the method that takes an optional recycleTo parameter instead.")]
 	public IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null) {
 		return new MatcherIngredient(matcher, quantity, displayName, texture, source);
 	}

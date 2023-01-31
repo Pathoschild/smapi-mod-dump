@@ -37,6 +37,10 @@
     {
         "UniqueID": "CJBok.ItemSpawner",
         "IsRequired": false
+    },
+    {
+        "UniqueID": "DaLion.Overhaul",
+        "IsRequired": false
     }
   ]
 }

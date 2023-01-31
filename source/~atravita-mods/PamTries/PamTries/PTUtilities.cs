@@ -18,12 +18,15 @@ internal static class PTUtilities
     internal static IDictionary<string, string>? Lexicon { get; set; }
 
     /// <summary>
-    /// Loads the Leixcon file.
+    /// Loads the Lexicon file.
     /// </summary>
     /// <param name="contentHelper">the game content helper.</param>
     internal static void PopulateLexicon(IGameContentHelper contentHelper)
     {
-        Lexicon = contentHelper.Load<Dictionary<string, string>>("Strings/Lexicon");
+        if (Context.ScreenId == 0 || !Context.IsSplitScreen)
+        {
+            Lexicon = contentHelper.Load<Dictionary<string, string>>("Strings/Lexicon");
+        }
     }
 
     /// <summary>

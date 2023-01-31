@@ -26,5 +26,7 @@ namespace LovedLabelsRedux
         public String NeedsPettingMessage { get; set; } = "Needs Petting";
 
         public bool IsUIEnabled { get; set; } = true;
+
+        public bool IsPettingEnabled { get; set; } = false;
     }
 }

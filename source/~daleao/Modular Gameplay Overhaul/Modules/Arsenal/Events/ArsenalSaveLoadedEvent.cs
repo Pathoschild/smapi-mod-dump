@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,9 @@ namespace DaLion.Overhaul.Modules.Arsenal.Events;
 #region using directives
 
 using System.Linq;
+using DaLion.Overhaul.Modules.Arsenal.Extensions;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.Extensions.Stardew;
 using StardewModdingAPI.Events;
@@ -50,7 +52,17 @@ internal sealed class ArsenalSaveLoadedEvent : SaveLoadedEvent
                 item => item is MeleeWeapon { InitialParentTileIndex: Constants.DarkSwordIndex }) is not null &&
             !player.hasOrWillReceiveMail("viegoCurse"))
         {
-            player.mailForTomorrow.Add("viegoCurse");
+            Game1.addMailForTomorrow("viegoCurse");
+        }
+
+        if (Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade"))
+        {
+            player.WriteIfNotExists(DataFields.ProvenGenerosity, true.ToString());
+        }
+
+        if (player.NumMonsterSlayerQuestsCompleted() >= 5)
+        {
+            player.WriteIfNotExists(DataFields.ProvenValor, true.ToString());
         }
 
         if (Game1.options.useLegacySlingshotFiring)
@@ -58,5 +70,44 @@ internal sealed class ArsenalSaveLoadedEvent : SaveLoadedEvent
             ModEntry.Config.Arsenal.Slingshots.BullseyeReplacesCursor = false;
             ModHelper.WriteConfig(ModEntry.Config);
         }
+
+        if (!ArsenalModule.Config.EnableAutoSelection)
+        {
+            return;
+        }
+
+        var indices = Game1.player.Read(DataFields.SelectableArsenal).ParseList<int>();
+        if (indices.Count == 0)
+        {
+            return;
+        }
+
+        var leftover = indices.ToList();
+        for (var i = 0; i < indices.Count; i++)
+        {
+            var index = indices[i];
+            if (index < 0)
+            {
+                leftover.Remove(index);
+                continue;
+            }
+
+            var item = Game1.player.Items[index];
+            if (item is not (Tool tool and (MeleeWeapon or Slingshot)))
+            {
+                continue;
+            }
+
+            if (tool is MeleeWeapon weapon && weapon.isScythe())
+            {
+                continue;
+            }
+
+            ArsenalModule.State.SelectableArsenal = tool;
+            leftover.Remove(index);
+            break;
+        }
+
+        Game1.player.Write(DataFields.SelectableArsenal, string.Join(',', leftover));
     }
 }

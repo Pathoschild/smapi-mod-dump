@@ -47,6 +47,7 @@ namespace MailServicesMod
             {
                 MailServicesModEntry.ModMonitor.Log("Error trying to answer you recovery service letter.", LogLevel.Error);
                 MailServicesModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
             }
         }
 
@@ -63,6 +64,7 @@ namespace MailServicesMod
             {
                 MailServicesModEntry.ModMonitor.Log("Error trying to remove you recovery letter from the mailbox.", LogLevel.Error);
                 MailServicesModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
             }
             return true;
         }

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,7 +37,7 @@ internal sealed class SlingshotCanAutoFirePatcher : HarmonyPatcher
     /// <summary>Patch to add Desperado auto-fire during Ultimate.</summary>
     [HarmonyPrefix]
     [HarmonyPriority(Priority.High)]
-    [HarmonyBefore("Overhaul.Modules.Arsenal")]
+    [HarmonyBefore("DaLion.Overhaul.Modules.Arsenal")]
     private static bool SlingshotCanAutoFirePrefix(Slingshot __instance, ref bool __result)
     {
         try

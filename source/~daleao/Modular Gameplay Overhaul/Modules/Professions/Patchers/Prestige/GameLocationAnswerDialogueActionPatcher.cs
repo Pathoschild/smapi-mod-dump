@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -20,7 +20,6 @@ using DaLion.Overhaul.Modules.Professions.Sounds;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions;
-using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -81,14 +80,15 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
                 default:
                 {
                     // if cancel do nothing
-                    var skillName = questionAndAnswer.Split('_')[1];
-                    if (skillName is "cancel" or "Yes")
+                    var skillNameAsSpan = questionAndAnswer.SplitWithoutAllocation('_')[1];
+                    if (skillNameAsSpan.Equals("cancel", StringComparison.Ordinal) || skillNameAsSpan.Equals("Yes", StringComparison.Ordinal))
                     {
                         __result = true;
                         return false; // don't run original logic
                     }
 
                     // get skill type and do action
+                    var skillName = skillNameAsSpan.ToString();
                     if (Skill.TryFromName(skillName, true, out var skill))
                     {
                         if (questionAndAnswer.Contains("skillReset_"))
@@ -272,7 +272,10 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.PrestigeRespecCost);
 
         // remove all prestige professions for this skill
-        Enumerable.Range(100 + (skill * 6), 6).ForEach(GameLocation.RemoveProfession);
+        for (var i = 0; i < 6; i++)
+        {
+            GameLocation.RemoveProfession(100 + (skill * 6) + i);
+        }
 
         var currentLevel = Farmer.checkForLevelGain(0, player.experiencePoints[0]);
         if (currentLevel >= 15)
@@ -309,7 +312,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.ChangeUltCost);
 
         // change ultimate
-        var chosenUltimate = Ultimate.FromName(choice.Split("_")[1]);
+        var chosenUltimate = Ultimate.FromName(choice.SplitWithoutAllocation('_')[1].ToString());
         player.Set_Ultimate(chosenUltimate);
 
         // play sound effect

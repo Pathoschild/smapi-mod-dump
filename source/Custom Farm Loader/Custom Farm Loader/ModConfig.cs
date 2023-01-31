@@ -18,11 +18,9 @@ namespace Custom_Farm_Loader
 {
     public class ModConfig
     {
-        public bool VanillaBridges { get; set; }
 
         public ModConfig()
         {
-            this.VanillaBridges = false;
         }
     }
 }

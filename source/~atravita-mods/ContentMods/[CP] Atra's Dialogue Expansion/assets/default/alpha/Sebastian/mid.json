@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Sebastian mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Sebastian",
+        "Entries": {
+            "6_2": "Why is it every time I have to work with a Java team, they've done something weird with their architecture?$a",
+            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b# Jane, I needed this reviewed last week! Could you please help me convince everyone to help keep things moving?",
+            "summerSebastianRoom_9_4": "Sorry, @, I'm working and need to focus right now.",
+            "fallSebastianRoom_9_4": "Work? Nah, @, I can implement A-star in my sleep.",
+        },
+        "When": {
+            "YearModulus": "2"
+        }
+    },
+    {
+        "LogName": "Sebastian mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Sebastian",
+        "Entries": {
+            "winter_15_2": "@, I got a five percent raise this year! Biggest one they've ever given me!$h",
+            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b#I saw your email; is there anything in particular we could change?"
+        },
+        "When": {
+            "YearModulus": "3"
+        }
+    },
+    {
+        "LogName": "Sebastian mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Sebastian",
+        "Entries": {
+            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b#I'm not sure I understand the third requirement.#$b#Exactly what hardware are we expected to support here?"
+        },
+        "When": {
+            "YearModulus": "4"
+        }
+    },
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Sebastian": "Ocean gazing? In this weather?",
+        }
+    },
+]}

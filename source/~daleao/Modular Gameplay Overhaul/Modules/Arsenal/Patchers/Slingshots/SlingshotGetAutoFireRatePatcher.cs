@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,8 +37,8 @@ internal sealed class SlingshotGetAutoFireRatePatcher : HarmonyPatcher
     {
         var firer = __instance.getLastFarmerToUse();
         var ultimate = ProfessionsModule.IsEnabled ? firer.Get_Ultimate() : null;
-        if ((ultimate is not null && ultimate.Index == Farmer.desperado &&
-             ultimate.IsActive) || !__instance.hasEnchantmentOfType<GatlingEnchantment>())
+        if (ultimate is { Index: Farmer.desperado, IsActive: true } ||
+            !__instance.hasEnchantmentOfType<GatlingEnchantment>())
         {
             return;
         }

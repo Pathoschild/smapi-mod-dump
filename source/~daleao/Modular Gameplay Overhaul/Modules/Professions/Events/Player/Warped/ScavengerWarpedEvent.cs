@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,10 +13,11 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Player;
 #region using directives
 
 using System.Collections.Generic;
-using System.Globalization;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions;
+using DaLion.Shared.Extensions.Memory;
 using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
@@ -62,21 +63,32 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
 
     private static void TrySpawnForageables(int amount, GameLocation location)
     {
+        Log.D($"Trying to spawn extra forage in {location.Name}.");
+
+        if (location.numberOfSpawnedObjectsOnMap >= 6)
+        {
+            Log.D($"But {location.Name} already has the maximum number of spawned objects.");
+            return;
+        }
+
         var r = new Random(Guid.NewGuid().GetHashCode());
         var locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
-        if (!locationData.ContainsKey(location.Name))
+        if (!locationData.TryGetValue(location.Name, out var rawData))
         {
+            Log.D($"But there is no location data for {location.Name}.");
             return;
         }
 
-        var rawData = locationData[location.Name].Split('/')[Utility.getSeasonNumber(location.GetSeasonForLocation())];
-        if (rawData.Equals("-1") || location.numberOfSpawnedObjectsOnMap >= 6)
+        var seasonData = rawData.SplitWithoutAllocation('/')[Utility.getSeasonNumber(location.GetSeasonForLocation())];
+        if (seasonData.Equals("-1", StringComparison.Ordinal))
         {
+            Log.D($"But there is no forage data for {location.Name} for the current season.");
             return;
         }
 
-        var split = rawData.Split(' ');
-        var numberToSpawn = r.Next(1, Math.Min(5, 7 - amount));
+        var split = seasonData.Split(' ');
+        var numberToSpawn = r.Next(1, amount);
+        var count = 0;
         for (var i = 0; i < numberToSpawn; i++)
         {
             for (var j = 0; j < 11; j++)
@@ -88,13 +100,13 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
                 var whichObject = r.Next(split.Length / 2) * 2;
                 if (@object != null || location.doesTileHaveProperty(x, y, "Spawnable", "Back") == null ||
                     location.doesEitherTileOrTileIndexPropertyEqual(x, y, "Spawnable", "Back", "F") ||
-                    r.NextDouble() > Convert.ToDouble(split[whichObject + 1], CultureInfo.InvariantCulture) ||
+                    r.NextDouble() > double.Parse(split[whichObject + 1]) ||
                     !location.isTileLocationTotallyClearAndPlaceable(x, y) || location.getTileIndexAt(x, y, "AlwaysFront") != -1 ||
                     location.getTileIndexAt(x, y, "Front") != -1 || location.isBehindBush(position) ||
                     (Game1.random.NextDouble() > 0.1 && location.isBehindTree(position)) || !location.dropObject(
                         new SObject(
                             position,
-                            Convert.ToInt32(split[whichObject]),
+                            int.Parse(split[whichObject]),
                             null,
                             canBeSetDown: false,
                             canBeGrabbed: true,
@@ -108,8 +120,11 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
                 }
 
                 location.numberOfSpawnedObjectsOnMap++;
+                count++;
                 break;
             }
         }
+
+        Log.D($"[Scavenger]: Spawned {count} forages.");
     }
 }

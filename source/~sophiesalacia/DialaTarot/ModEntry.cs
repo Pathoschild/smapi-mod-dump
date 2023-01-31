@@ -10,7 +10,7 @@
 
 using StardewModdingAPI;
 
-namespace TarotEvent;
+namespace DialaTarotCSharp;
 
 public class ModEntry : Mod
 {

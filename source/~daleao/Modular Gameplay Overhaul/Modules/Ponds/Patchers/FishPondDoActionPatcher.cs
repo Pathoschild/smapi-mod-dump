@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -24,6 +24,7 @@ using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Netcode;
+using NetFabric.Hyperlinq;
 using StardewValley.Buildings;
 
 #endregion using directives
@@ -74,7 +75,7 @@ internal sealed class FishPondDoActionPatcher : HarmonyPatcher
                 .Move(-1)
                 .SetOpCode(OpCodes.Brfalse_S)
                 .Move()
-                .Match(
+                .Count(
                     new[]
                     {
                         new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -120,7 +121,7 @@ internal sealed class FishPondDoActionPatcher : HarmonyPatcher
                         new CodeInstruction(OpCodes.Beq),
                     })
                 .Match(new[] { new CodeInstruction(OpCodes.Ldloc_0) }, ILHelper.SearchOption.Previous)
-                .Match(new[] { new CodeInstruction(OpCodes.Beq) }, out var steps)
+                .Count(new[] { new CodeInstruction(OpCodes.Beq) }, out var steps)
                 .Copy(
                     out var copy,
                     steps,
@@ -201,8 +202,8 @@ internal sealed class FishPondDoActionPatcher : HarmonyPatcher
                 .Select(li => li?.ParseTuple<int, int>())
                 .WhereNotNull()
                 .ToList();
-        var count = heldMinerals.Sum(m => new SObject(m.Item1, 1).Name.Contains("Bar") ? 5 : 1);
-        if (count >= 20)
+        var count = heldMinerals.Sum(m => new SObject(m.Item1, 1).Name.Contains("Bar") ? 4 : 1);
+        if (count >= 40)
         {
             Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Buildings:PondFull"));
             return true;
@@ -215,7 +216,11 @@ internal sealed class FishPondDoActionPatcher : HarmonyPatcher
         }
 
         heldMinerals.Add((metallic.ParentSheetIndex, days));
-        pond.Write(DataFields.MetalsHeld, string.Join(';', heldMinerals.Select(m => string.Join(',', m.Item1, m.Item2))));
+        pond.Write(
+            DataFields.MetalsHeld,
+            string.Join(';', heldMinerals
+                .AsValueEnumerable()
+                .Select(m => string.Join(',', m.Item1, m.Item2))));
 
         Reflector
             .GetUnboundMethodDelegate<ShowObjectThrownIntoPondAnimationDelegate>(

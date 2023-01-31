@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,9 +12,9 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Common;
 
 #region using directives
 
-using System.Linq;
 using System.Reflection;
 using DaLion.Overhaul.Modules.Professions.Extensions;
+using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -74,10 +74,17 @@ internal sealed class LevelUpMenuRevalidateHealthPatcher : HarmonyPatcher
 
         try
         {
-            foreach (var pond in Game1.getFarm().buildings.OfType<FishPond>().Where(p =>
-                         (p.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer) &&
-                         !p.isUnderConstruction()))
+            var buildings = Game1.getFarm().buildings;
+            for (var i = 0; i < buildings.Count; i++)
             {
+                var building = buildings[i];
+                if (building is not FishPond pond ||
+                    !(pond.IsOwnedBy(farmer) || ProfessionsModule.Config.LaxOwnershipRequirements) ||
+                    pond.isUnderConstruction())
+                {
+                    continue;
+                }
+
                 // revalidate fish pond capacity
                 pond.UpdateMaximumOccupancy();
                 pond.currentOccupants.Value = Math.Min(pond.currentOccupants.Value, pond.maxOccupants.Value);

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -47,7 +47,7 @@ internal sealed class BushShakePatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Farmer.botanist) // find index of botanist check
+                .MatchProfessionCheck(Farmer.botanist) // find index of botanist check
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) })
                 .GetLabels(out var labels) // backup branch labels
                 .ReplaceWith(

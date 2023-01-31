@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -43,10 +43,13 @@ internal sealed class GreenSlimeTakeDamagePatcher : HarmonyPatcher
             return;
         }
 
-        foreach (var monster in __instance.currentLocation.characters.OfType<Monster>()
-                     .Where(m => !m.IsSlime() && m.Get_Taunter() == __instance))
+        for (var i = 0; i < __instance.currentLocation.characters.Count; i++)
         {
-            monster.Set_Taunter(null);
+            var character = __instance.currentLocation.characters[i];
+            if (character is Monster monster && !monster.IsSlime() && monster.Get_Taunter() == __instance)
+            {
+                monster.Set_Taunter(null);
+            }
         }
     }
 

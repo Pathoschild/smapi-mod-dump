@@ -340,7 +340,6 @@ namespace TwoPlayerPrairieKing
                 }
                 else if (sayWhat == Game1.content.LoadString("Strings\\StringsFromCSFiles:AbigailGame.cs.11901") || sayWhat == Game1.content.LoadString("Strings\\StringsFromCSFiles:AbigailGame.cs.11902"))
                 {
-
                     which = "die";
                 }
                 else if (sayWhat == Game1.content.LoadString("Strings\\StringsFromCSFiles:AbigailGame.cs.11896"))
@@ -365,7 +364,7 @@ namespace TwoPlayerPrairieKing
                     sayWhat = dict[keys[Game1.random.Next(keys.Count)]];
                     //SMonitor.Log($"{coopName} saying {sayWhat}");
                 }
-                else
+                else if(SHelper.Translation.Get(which).HasValue())
                 {
                     sayWhat = SHelper.Translation.Get(which);
                 }

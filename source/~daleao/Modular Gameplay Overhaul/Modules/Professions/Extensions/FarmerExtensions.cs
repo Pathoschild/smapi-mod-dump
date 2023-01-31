@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,10 +15,13 @@ namespace DaLion.Overhaul.Modules.Professions.Extensions;
 
 using System.Collections.Generic;
 using System.Linq;
+using DaLion.Overhaul.Modules.Professions.Events.GameLoop;
+using DaLion.Overhaul.Modules.Professions.Events.Player;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
+using NetFabric.Hyperlinq;
 using StardewModdingAPI.Utilities;
 using StardewValley.Buildings;
 using StardewValley.Monsters;
@@ -75,12 +78,20 @@ internal static class FarmerExtensions
     internal static bool HasAllProfessions(this Farmer farmer, bool includeCustom = false)
     {
         var allProfessions = Enumerable.Range(0, 30);
-        if (includeCustom)
+        if (!allProfessions.All(farmer.professions.Contains))
         {
-            allProfessions = allProfessions.Concat(SCProfession.List.Select(p => p.Id));
+            return false;
         }
 
-        return allProfessions.All(farmer.professions.Contains);
+        if (includeCustom && !SCProfession.List
+                .AsValueEnumerable()
+                .Select(p => p.Id)
+                .All(farmer.professions.Contains))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -97,8 +108,7 @@ internal static class FarmerExtensions
             .DefaultIfEmpty(-1)
             .Last();
 
-        var allPrestiged = Profession.GetRange(true).Concat(SCProfession.GetAllIds(true)).ToHashSet();
-        return allPrestiged.Contains(branch) ? branch - 100 : branch;
+        return farmer.professions.Contains(branch - 100) ? branch - 100 : branch;
     }
 
     /// <summary>
@@ -162,7 +172,7 @@ internal static class FarmerExtensions
     {
         return subset is null
             ? farmer.professions[^1]
-            : farmer.professions.Where(p => p.IsIn(subset)).DefaultIfEmpty(-1).Last();
+            : farmer.professions.Intersect(subset).DefaultIfEmpty(-1).Last();
     }
 
     /// <summary>
@@ -172,28 +182,37 @@ internal static class FarmerExtensions
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     internal static void RevalidateUltimate(this Farmer farmer)
     {
-        var ultimateIndex = farmer.Read(DataFields.UltimateIndex, -1);
-        switch (ultimateIndex)
+        var currentIndex = farmer.Read(DataFields.UltimateIndex, -1);
+        var newIndex = currentIndex;
+        switch (currentIndex)
         {
             case < 0 when farmer.professions.Any(p => p is >= 26 and < 30):
+            {
                 Log.W(
                     $"{farmer.Name} is eligible for Ultimate but is not currently registered to any. The registered Ultimate will be set to a default value.");
-                ultimateIndex = farmer.professions.First(p => p is >= 26 and < 30);
+                newIndex = farmer.professions.First(p => p is >= 26 and < 30);
                 break;
-            case >= 0 when !farmer.professions.Contains(ultimateIndex):
+            }
+
+            case >= 0 when !farmer.professions.Contains(currentIndex):
             {
-                Log.W($"{farmer.Name} is registered to Ultimate index {ultimateIndex} but is missing the corresponding profession. The registered Ultimate will be reset.");
-                ultimateIndex = farmer.professions.Any(p => p is >= 26 and < 30)
+                Log.W($"{farmer.Name} is registered to Ultimate index {currentIndex} but is missing the corresponding profession. The registered Ultimate will be reset.");
+                newIndex = farmer.professions.Any(p => p is >= 26 and < 30)
                     ? farmer.professions.First(p => p is >= 26 and < 30)
                     : -1;
-
                 break;
             }
         }
 
-        if (ultimateIndex > 0)
+        if (newIndex != currentIndex)
         {
-            farmer.Set_Ultimate(Ultimate.FromValue(ultimateIndex));
+            farmer.Write(DataFields.UltimateIndex, newIndex.ToString());
+            currentIndex = newIndex;
+        }
+
+        if (currentIndex > 0)
+        {
+            EventManager.Enable<UltimateWarpedEvent>();
         }
     }
 
@@ -203,8 +222,10 @@ internal static class FarmerExtensions
     internal static IEnumerable<Ultimate> GetUnchosenUltimates(this Farmer farmer)
     {
         var chosen = farmer.Get_Ultimate();
-        return farmer.professions.Where(p => p is >= 26 and < 30)
-            .Except(chosen is not null ? new[] { chosen.Value } : Enumerable.Empty<int>()).Select(Ultimate.FromValue);
+        return new[] { 26, 27, 28, 29 }
+            .Intersect(farmer.professions)
+            .Except(chosen?.Value.Collect() ?? ValueEnumerable.Empty<int>())
+            .Select(Ultimate.FromValue);
     }
 
     /// <summary>
@@ -231,8 +252,8 @@ internal static class FarmerExtensions
             return false;
         }
 
-        var dataFields = specificFishData.Split('/');
-        return farmer.fishCaught[index][1] >= Convert.ToInt32(dataFields[4]);
+        var dataFields = specificFishData.SplitWithoutAllocation('/');
+        return farmer.fishCaught[index][1] >= int.Parse(dataFields[4]);
     }
 
     /// <summary>Gets the price bonus applied to animal produce sold by <see cref="Profession.Producer"/>.</summary>
@@ -240,9 +261,20 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="float"/> multiplier for animal products.</returns>
     internal static float GetProducerPriceBonus(this Farmer farmer)
     {
-        return Game1.getFarm().buildings.Where(b =>
-            (b.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer || ProfessionsModule.Config.LaxOwnershipRequirements) &&
-            b.buildingType.Contains("Deluxe") && ((AnimalHouse)b.indoors.Value).isFull()).Sum(_ => 0.05f);
+        var sum = 0f;
+        var buildings = Game1.getFarm().buildings;
+        for (var i = 0; i < buildings.Count; i++)
+        {
+            var building = buildings[i];
+            if ((building.IsOwnedBy(farmer) || ProfessionsModule.Config.LaxOwnershipRequirements) &&
+                !building.isUnderConstruction() && building.buildingType.Contains("Deluxe") &&
+                ((AnimalHouse)building.indoors.Value).isFull())
+            {
+                sum += 0.05f;
+            }
+        }
+
+        return sum;
     }
 
     /// <summary>Gets the bonus catching bar speed for prestiged <see cref="Profession.Fisher"/>.</summary>
@@ -264,7 +296,8 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="float"/> multiplier for fish prices.</returns>
     internal static float GetAnglerPriceBonus(this Farmer farmer)
     {
-        var fishData = Game1.content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
+        var fishData = Game1.content
+            .Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
             .Where(p => !p.Key.IsAlgaeIndex() && !p.Value.Contains("trap"))
             .ToDictionary(p => p.Key, p => p.Value);
 
@@ -276,12 +309,12 @@ internal static class FarmerExtensions
                 continue;
             }
 
-            var dataFields = specificFishData.Split('/');
-            if (Collections.LegendaryFishNames.Contains(dataFields[0]))
+            var dataFields = specificFishData.SplitWithoutAllocation('/');
+            if (Collections.LegendaryFishNames.Contains(dataFields[0].ToString()))
             {
                 bonus += 0.05f;
             }
-            else if (value[1] >= Convert.ToInt32(dataFields[4]))
+            else if (value[1] >= int.Parse(dataFields[4]))
             {
                 bonus += 0.01f;
             }
@@ -295,14 +328,20 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="float"/> catching height.</returns>
     internal static float GetAquaristCatchingBarCompensation(this Farmer farmer)
     {
-        var fishTypes = Game1.getFarm().buildings
-            .OfType<FishPond>()
-            .Where(pond =>
-                (pond.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer ||
-                 ProfessionsModule.Config.LaxOwnershipRequirements) && pond.fishType.Value > 0)
-            .Select(pond => pond.fishType.Value);
+        HashSet<int> fishTypes = new();
+        var buildings = Game1.getFarm().buildings;
+        for (var i = 0; i < buildings.Count; i++)
+        {
+            var building = buildings[i];
+            if (building is FishPond pond &&
+                (pond.IsOwnedBy(Game1.player) || ProfessionsModule.Config.LaxOwnershipRequirements) &&
+                !pond.isUnderConstruction() && pond.fishType.Value > 0)
+            {
+                fishTypes.Add(pond.fishType.Value);
+            }
+        }
 
-        return Math.Min(fishTypes.Distinct().Count() * 0.000165f, 0.002f);
+        return Math.Min(fishTypes.Count * 0.000165f, 0.002f);
     }
 
     /// <summary>Gets the price bonus applied to all items sold by <see cref="Profession.Conservationist"/>.</summary>
@@ -339,16 +378,29 @@ internal static class FarmerExtensions
             : SObject.bestQuality;
     }
 
+    /// <summary>Applies <see cref="Profession.Spelunker"/> effects following interaction with a ladder or sink hole.</summary>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    internal static void AddSpelunkerMomentum(this Farmer farmer)
+    {
+        ProfessionsModule.State.SpelunkerLadderStreak++;
+        EventManager.Enable<SpelunkerUpdateTickedEvent>();
+        if (!farmer.HasProfession(Profession.Spelunker, true))
+        {
+            return;
+        }
+
+        farmer.health = Math.Min(farmer.health + (int)(farmer.maxHealth * 0.025f), farmer.maxHealth);
+        farmer.Stamina = Math.Min(farmer.Stamina + (farmer.MaxStamina * 0.01f), farmer.MaxStamina);
+    }
+
     /// <summary>Enumerates the <see cref="GreenSlime"/>s currently inhabiting owned <see cref="SlimeHutch"/>es.</summary>
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="GreenSlime"/>s currently inhabiting owned <see cref="SlimeHutch"/>es.</returns>
     internal static IEnumerable<GreenSlime> GetRaisedSlimes(this Farmer farmer)
     {
         return Game1.getFarm().buildings
-            .Where(b =>
-                (b.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer ||
-                 ProfessionsModule.Config.LaxOwnershipRequirements) && b.indoors.Value is SlimeHutch &&
-                !b.isUnderConstruction())
+            .Where(b => (b.IsOwnedBy(farmer) || ProfessionsModule.Config.LaxOwnershipRequirements) &&
+                        b.indoors.Value is SlimeHutch && !b.isUnderConstruction())
             .SelectMany(b => b.indoors.Value.characters.OfType<GreenSlime>());
     }
 

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -31,7 +31,7 @@ internal sealed class TreeDayUpdatePatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Ages tapper trees.</summary>
+    /// <summary>Age trees for quality tapper.</summary>
     [HarmonyPostfix]
     private static void TreeDayUpdatePostfix(Tree __instance)
     {

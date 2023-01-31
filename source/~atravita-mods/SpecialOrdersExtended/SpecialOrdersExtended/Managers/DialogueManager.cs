@@ -186,7 +186,7 @@ internal class DialogueManager
     {
         if (!Context.IsWorldReady)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
         }
         return PerscreenedDialogueLog!.Contains(key, characterName);
     }
@@ -202,7 +202,7 @@ internal class DialogueManager
     {
         if (!Context.IsWorldReady)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
         }
         return PerscreenedDialogueLog!.TryAdd(key, characterName);
     }
@@ -218,7 +218,7 @@ internal class DialogueManager
     {
         if (!Context.IsWorldReady)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
         }
         return PerscreenedDialogueLog!.TryRemove(key, characterName);
     }
@@ -291,6 +291,11 @@ internal class DialogueManager
             // Handle dialogue for orders currently active (no matter their state)
             foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders)
             {
+                if (specialOrder?.questKey is null)
+                {
+                    continue;
+                }
+
                 string baseKey = __1 ? specialOrder.questKey.Value : Game1.currentSeason + specialOrder.questKey.Value;
                 baseKey += specialOrder.questState.Value switch
                 {
@@ -332,9 +337,14 @@ internal class DialogueManager
             // Handle available order dialogue.
             if (SpecialOrder.IsSpecialOrdersBoardUnlocked())
             {
-                HashSet<string> currentOrders = Game1.player.team.specialOrders.Select((SpecialOrder s) => s.questKey.Value).ToHashSet();
+                HashSet<string> currentOrders = Game1.player.team.specialOrders.Where(s => s?.questKey is not null).Select((SpecialOrder s) => s.questKey.Value).ToHashSet();
                 foreach (SpecialOrder specialOrder in Game1.player.team.availableSpecialOrders)
                 {
+                    if (specialOrder?.questKey is null)
+                    {
+                        continue;
+                    }
+
                     if (!currentOrders.Contains(specialOrder.questKey.Value))
                     {
                         __result = FindBestDialogue(specialOrder.questKey.Value + "_IsAvailable", __instance, __0);

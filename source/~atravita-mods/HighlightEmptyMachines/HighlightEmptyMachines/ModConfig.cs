@@ -61,8 +61,13 @@ public sealed class ModConfig
     public Dictionary<VanillaMachinesEnum, bool> VanillaMachines { get; set; }
 
     /// <summary>
-    /// Gets or sets a mapping that sets whether coloration of PFM machines should be enabed.
+    /// Gets or sets a mapping that sets whether coloration of PFM machines should be enabled.
     /// </summary>
     [GMCMDefaultIgnore]
     public Dictionary<string, bool> ProducerFrameworkModMachines { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not machine pulsing should be disabled.
+    /// </summary>
+    public bool DisablePulsing { get; set; } = false;
 }

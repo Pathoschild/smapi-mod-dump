@@ -98,9 +98,23 @@ public enum ScheduleStrictness
     Loose,
 }
 
+/// <summary>
+/// Whether an NPC should get an override to go to the Island.
+/// </summary>
 public enum VillagerExclusionOverride
 {
+    /// <summary>
+    /// Override the default vanilla value.
+    /// </summary>
     Yes,
+
+    /// <summary>
+    /// Do not override the default vanilla value.
+    /// </summary>
     No,
+
+    /// <summary>
+    /// Override to allow resort access only if the NPC is married.
+    /// </summary>
     IfMarried,
 }

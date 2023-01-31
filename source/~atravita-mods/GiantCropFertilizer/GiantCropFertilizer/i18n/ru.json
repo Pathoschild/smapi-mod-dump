@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "mod-description": "Добавляет удобрение, которое увеличивает вероятность гигантского роста урожая!",
+
+  "IllFormatedConfig": "Конфигурационный файл отформатирован неправильно, используются  значения по умолчанию. Пожалуйста, используйте меню Generic Mod Config для настройки.",
+
+  "api-not-found": "{{APIID}} не найдено, интеграция отключена.",
+  "api-too-old": "Пожалуйста обновите {{apiName}}({{APIID}}) по крайней мере, до версии {{minversion}}. Текущая версия {{currentversion}}. Интеграция отключена.",
+
+  "giant-crop-fertilizer.name": "Удобрение Большероста",
+  "giant-crop-fertilizer.description": "Значительно увеличивает шансы на получение гигантских урожаев!",
+
+  //GMCM
+  "GiantCropChance.title": "Шанс Большероста",
+  "GiantCropChance.description": "Вероятность того, что удобренный квадрат даст гигантский урожай, если будут соблюдены все остальные условия.",
+
+  "AllowGiantCropsOffFarm.title": "Разрешает выращивать Гигантские урожаи вне Фермы",
+  "AllowGiantCropsOffFarm.description": "По умолчанию гигантские культуры могут расти только на ферме. Это позволяет им расти вне фермы.",
+
+  "AllowGiantCropsParagraph":  "Больше Гигантских Культур, которые вы установили, позволяют выращивать гигантские культуры вне фермы, так что эта настройка в этом моде была отключена."
+}

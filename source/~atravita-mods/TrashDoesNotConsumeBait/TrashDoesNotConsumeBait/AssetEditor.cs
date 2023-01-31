@@ -9,8 +9,8 @@
 *************************************************/
 
 using AtraShared.Utils.Extensions;
+
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 
 namespace TrashDoesNotConsumeBait;
 
@@ -19,22 +19,30 @@ namespace TrashDoesNotConsumeBait;
 /// </summary>
 public static class AssetEditor
 {
-#pragma warning disable SA1310 // Field names should not contain underscore. Reviewed.
-    private static readonly string FORGE_MENU_CHOICE = PathUtilities.NormalizeAssetName("Mods/atravita_ForgeMenuChoice_Tooltip_Data");
-    private static readonly string SECRET_NOTE_LOCATION = PathUtilities.NormalizeAssetName("Data/SecretNotes");
-#pragma warning restore SA1310 // Field names should not contain underscore
+    private static IAssetName forgeMenuChoice = null!;
+    private static IAssetName secretNoteLocation = null!;
 
     /// <summary>
-    /// Edits the secret note and ForgeMenuChoice's tooltips to match.
+    /// Initializes the asset editor.
     /// </summary>
-    /// <param name="e">Event params.</param>
+    /// <param name="parser">game content helper.</param>
+    internal static void Initialize(IGameContentHelper parser)
+    {
+        forgeMenuChoice = parser.ParseAssetName("Mods/atravita_ForgeMenuChoice_Tooltip_Data");
+        secretNoteLocation = parser.ParseAssetName("Data/SecretNotes");
+    }
+
+    /// <inheritdoc cref="IContentEvents.AssetRequested"/>
+    /// <remarks>
+    /// Edits the secret note and ForgeMenuChoice's tool-tips to match.
+    /// </remarks>
     internal static void EditAssets(AssetRequestedEventArgs e)
     {
-        if (e.NameWithoutLocale.IsEquivalentTo(FORGE_MENU_CHOICE))
+        if (e.NameWithoutLocale.IsEquivalentTo(forgeMenuChoice))
         {
             e.Edit(EditForgeMenu);
         }
-        else if (e.NameWithoutLocale.IsEquivalentTo(SECRET_NOTE_LOCATION))
+        else if (e.NameWithoutLocale.IsEquivalentTo(secretNoteLocation))
         {
             e.Edit(EditSecretNote);
         }
@@ -45,8 +53,8 @@ public static class AssetEditor
     /// </summary>
     internal static void Invalidate()
     {
-        ModEntry.GameContentHelper.InvalidateCacheAndLocalized(SECRET_NOTE_LOCATION);
-        ModEntry.GameContentHelper.InvalidateCacheAndLocalized(FORGE_MENU_CHOICE);
+        ModEntry.GameContentHelper.InvalidateCacheAndLocalized(secretNoteLocation.BaseName);
+        ModEntry.GameContentHelper.InvalidateCacheAndLocalized(forgeMenuChoice.BaseName);
     }
 
     private static void EditForgeMenu(IAssetData editor)

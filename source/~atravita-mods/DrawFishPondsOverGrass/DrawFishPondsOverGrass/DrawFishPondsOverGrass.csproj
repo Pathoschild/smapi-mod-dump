@@ -2,7 +2,6 @@
   <Import Project="..\..\csproj_common" />
   
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -10,7 +9,7 @@
   <PropertyGroup>
     <Name>Draw Fish Ponds Over Grass.</Name>
     <Description>Draws fish ponds **over** grass placed under it.</Description>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
     <UpdateKeys>Nexus:11352</UpdateKeys>
   </PropertyGroup>

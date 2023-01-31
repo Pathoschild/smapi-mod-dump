@@ -11,8 +11,8 @@ Changelog
 
 1. Add condition to just randomly reduce the chance of a quest appearing. (May need integrate with that one mod that changes the day special orders appear?)
 2. Add condition for total number of quests completed, per board.
-3. Fix issue where unicode in the save name will cause issues while saving.
 <!-- Better documentation for the dialogue tags? -->
+<!-- fix the tracker-->
 
 
 #### Stardew 1.6 todo
@@ -25,6 +25,18 @@ Changelog
 1. Somehow limit the kill objective to just monsters on a certain (few?) maps. (Perhaps a custom objective, perhaps a Special Rule).
 <!-- Handle WoL professions? -->
 
+#### Version 1.1.1
+<!-- TODO: Fix watcher code, add ability to pick the other quest -->
+
+* Deliver orders can now be completed partially.
+* Fix duration override.
+* Fix issue where unicode in the save name prevents saving of custom data.
+* Internal optimizations. <!--Recent SO watcher now only runs every ten in-game minutes as backup; a new system using NetEvents was implemented.-->
+
+* Qi orders now have a setting where you can choose to avoid duplicates until every quest has been completed.
+* Tag checking now has a little cache.
+* Add emoji system.
+
 #### Version 1.1.0
 
 * Moves to using AtraCore.
@@ -32,7 +44,7 @@ Changelog
 * Internal optimizations.
 * Clear the relevant dialogue log when a player *fails* a quest.
 * Add a method for content packs to more easily add untimed orders.
-* Update to handle SaveAnywhere.
+* Update to handle `SaveAnywhere`.
 
 #### Version 1.0.7
 

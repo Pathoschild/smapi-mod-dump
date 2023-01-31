@@ -47,7 +47,7 @@ internal static class FruitTreeGrowthPatch
                     new (SpecialCodeInstructionCases.LdLoc),
                     new (OpCodes.Ldfld),
                     new (OpCodes.Conv_I4),
-                    new (OpCodes.Callvirt, typeof(GameLocation).GetCachedMethod(nameof(GameLocation.getObjectAtTile), ReflectionCache.FlagTypes.InstanceFlags, new Type[] { typeof(int), typeof(int) })),
+                    new (OpCodes.Callvirt, typeof(GameLocation).GetCachedMethod<int, int>(nameof(GameLocation.getObjectAtTile), ReflectionCache.FlagTypes.InstanceFlags)),
                     })
                 .FindNext(new CodeInstructionWrapper[]
                     {

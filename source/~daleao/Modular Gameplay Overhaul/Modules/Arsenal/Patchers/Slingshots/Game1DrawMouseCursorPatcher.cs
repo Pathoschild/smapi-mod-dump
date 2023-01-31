@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Slingshots;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Arsenal.Events;
+using DaLion.Overhaul.Modules.Arsenal.Events.Slingshots;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 

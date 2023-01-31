@@ -14,11 +14,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AeroCore
 {
@@ -46,6 +41,8 @@ namespace AeroCore
                 isLightActive = ModEntry.Config.CursorLightHold || !isLightActive;
             if (ModEntry.Config.PlaceBind.JustPressed())
                 TryPlaceItem(ev.Cursor.GrabTile);
+            if (ModEntry.Config.ReloadBind.JustPressed())
+                Utils.Maps.ReloadCurrentLocation(true);
         }
         private static void ButtonReleased(object _, ButtonReleasedEventArgs ev)
         {
@@ -67,7 +64,7 @@ namespace AeroCore
             var held = Game1.player.CurrentItem;
             if (held is null)
                 return;
-            var place = ItemWrapper.WrapItem(held.getOne(), true);
+            var place = ItemWrapper.WrapItem(held.getOne(), true, true);
             if (tile != Game1.player.getTileLocation() && where.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile))
             {
                 where.Objects[tile] = place;

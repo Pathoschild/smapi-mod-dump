@@ -26,6 +26,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using static Microsoft.Xna.Framework.Graphics.Texture2D;
 using static SpriteMaster.Harmonize.Harmonize;
@@ -118,13 +119,37 @@ internal static class PTexture2D {
 				int inOffset = 0;
 				int inRowLength = rect.Width * sizeof(T);
 
-				var cachedSpan = new Span2D<byte>(
-					array: cachedData,
-					offset: startIndex * sizeof(T),
-					width: rect.Width * sizeof(T),
-					height: rect.Height,
-					pitch: (instance.Width - rect.Width) * sizeof(T)
-				);
+				int pitch = instance.Width - rect.Width;
+
+				Span2D<byte> cachedSpan;
+
+				try {
+					cachedSpan = new(
+						array: cachedData,
+						offset: startIndex * sizeof(T),
+						width: rect.Width * sizeof(T),
+						height: rect.Height,
+						pitch: pitch * sizeof(T)
+					);
+				}
+				catch (Exception ex) {
+					// If an exception occurred, we cannot use cached data. We should also report the parameters.
+					using var resultPooled = ObjectPoolExt.Take<StringBuilder>(builder => builder.Clear());
+					var result = resultPooled.Value;
+					result.AppendLine($"Array Length: {cachedData.Length}");
+					result.AppendLine($"T: {typeof(T).Name} ({sizeof(T)} bytes)");
+					result.AppendLine($"Offset: {startIndex} ({startIndex * sizeof(T)})");
+					result.AppendLine($"Width: {rect.Width} ({rect.Width * sizeof(T)})");
+					result.AppendLine($"Height: {rect.Height}");
+					result.AppendLine($"Pitch: {pitch} ({pitch * sizeof(T)})");
+					result.AppendLine($"Rect: {rect}");
+					result.AppendLine($"Instance: {instance.Extent()}");
+					result.AppendLine($"ElementCount: {elementCount}");
+					result.AppendLine($"Level: {level}");
+					result.AppendLine($"ArraySlice: {arraySlice}");
+					Debug.Warning(result.ToString(), ex);
+					return true;
+				}
 
 				for (int y = 0; y < rect.Height; ++y) {
 					var inSpanRow = inSpan.Slice(inOffset, inRowLength);

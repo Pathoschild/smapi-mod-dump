@@ -30,9 +30,9 @@ internal sealed class ModEntry : Mod
     internal static IMonitor ModMonitor { get; private set; } = null!;
 
     /// <summary>
-    /// Gets or sets the config instance for this mod.
+    /// Gets the config instance for this mod.
     /// </summary>
-    internal static ModConfig Config { get; set; } = null!;
+    internal static ModConfig Config { get; private set; } = null!;
 
     /// <summary>
     /// Gets the game content helper for this mod.
@@ -45,12 +45,16 @@ internal sealed class ModEntry : Mod
         ModMonitor = this.Monitor;
         GameContentHelper = helper.GameContent;
         I18n.Init(helper.Translation);
+        AssetEditor.Initialize(helper.GameContent);
         Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
 
         helper.Events.GameLoop.GameLaunched += this.SetUpConfig;
         helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 
         helper.Events.Content.AssetRequested += this.OnAssetRequested;
+
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
+
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
     }
 
@@ -105,7 +109,7 @@ internal sealed class ModEntry : Mod
     {
         try
         {
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(ModEntry).Assembly);
         }
         catch (Exception ex)
         {

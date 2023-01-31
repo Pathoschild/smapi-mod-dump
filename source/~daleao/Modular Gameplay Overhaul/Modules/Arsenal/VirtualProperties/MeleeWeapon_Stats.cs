@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,9 +15,12 @@ namespace DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
 
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using DaLion.Overhaul.Modules.Arsenal.Configs;
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
 using DaLion.Overhaul.Modules.Arsenal.Extensions;
 using DaLion.Overhaul.Modules.Rings.VirtualProperties;
+using DaLion.Shared.Exceptions;
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
 using StardewValley.Tools;
 
@@ -35,6 +38,7 @@ internal static class MeleeWeapon_Stats
             var caveInsectsKilled = Game1.stats.getMonstersKilled("Grub") +
                                     Game1.stats.getMonstersKilled("Fly") +
                                     Game1.stats.getMonstersKilled("Bug");
+            // ReSharper disable once PossibleLossOfFraction
             return (int)(caveInsectsKilled / 5 * 0.85);
         }
 
@@ -66,12 +70,12 @@ internal static class MeleeWeapon_Stats
         return maxDamage;
     }
 
-    internal static float Get_AbsoluteKnockback(this MeleeWeapon weapon)
+    internal static float Get_EffectiveKnockback(this MeleeWeapon weapon)
     {
         return Values.GetValue(weapon, Create).Knockback;
     }
 
-    internal static float Get_RelativeKnockback(this MeleeWeapon weapon)
+    internal static float Get_DisplayKnockback(this MeleeWeapon weapon)
     {
         var knockback = Values.GetValue(weapon, Create).Knockback;
         var @default = weapon.defaultKnockBackForThisType(weapon.type.Value);
@@ -80,7 +84,16 @@ internal static class MeleeWeapon_Stats
             return 0f;
         }
 
-        return (knockback / @default) - 1f;
+        switch (ArsenalModule.Config.Weapons.WeaponTooltipStyle)
+        {
+            case WeaponConfig.TooltipStyle.Absolute:
+                return knockback - @default;
+            case WeaponConfig.TooltipStyle.Relative:
+                return (knockback / @default) - 1f;
+            default:
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<WeaponConfig.TooltipStyle, float>(
+                    ArsenalModule.Config.Weapons.WeaponTooltipStyle);
+        }
     }
 
     internal static float Get_EffectiveCritChance(this MeleeWeapon weapon)
@@ -89,7 +102,7 @@ internal static class MeleeWeapon_Stats
         return weapon.type.Value != MeleeWeapon.dagger ? critChance : (critChance + 0.005f) * 1.12f;
     }
 
-    internal static float Get_RelativeCritChance(this MeleeWeapon weapon)
+    internal static float Get_DisplayCritChance(this MeleeWeapon weapon)
     {
         var critChance = Values.GetValue(weapon, Create).CritChance;
         var @default = weapon.DefaultCritChance();
@@ -98,7 +111,16 @@ internal static class MeleeWeapon_Stats
             return 0f;
         }
 
-        return (critChance / @default) - 1f;
+        switch (ArsenalModule.Config.Weapons.WeaponTooltipStyle)
+        {
+            case WeaponConfig.TooltipStyle.Absolute:
+                return critChance - @default;
+            case WeaponConfig.TooltipStyle.Relative:
+                return (critChance / @default) - 1f;
+            default:
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<WeaponConfig.TooltipStyle, float>(
+                    ArsenalModule.Config.Weapons.WeaponTooltipStyle);
+        }
     }
 
     internal static float Get_EffectiveCritPower(this MeleeWeapon weapon)
@@ -106,7 +128,7 @@ internal static class MeleeWeapon_Stats
         return Values.GetValue(weapon, Create).CritPower;
     }
 
-    internal static float Get_RelativeCritPower(this MeleeWeapon weapon)
+    internal static float Get_DisplayCritPower(this MeleeWeapon weapon)
     {
         var critPower = Values.GetValue(weapon, Create).CritPower;
         var @default = weapon.DefaultCritPower();
@@ -115,7 +137,16 @@ internal static class MeleeWeapon_Stats
             return 0f;
         }
 
-        return (critPower / @default) - 1f;
+        switch (ArsenalModule.Config.Weapons.WeaponTooltipStyle)
+        {
+            case WeaponConfig.TooltipStyle.Absolute:
+                return critPower - @default;
+            case WeaponConfig.TooltipStyle.Relative:
+                return (critPower / @default) - 1f;
+            default:
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<WeaponConfig.TooltipStyle, float>(
+                    ArsenalModule.Config.Weapons.WeaponTooltipStyle);
+        }
     }
 
     internal static float Get_EffectiveSwingSpeed(this MeleeWeapon weapon)
@@ -123,7 +154,7 @@ internal static class MeleeWeapon_Stats
         return 10f / (10f + Values.GetValue(weapon, Create).SwingSpeed);
     }
 
-    internal static float Get_RelativeSwingSpeed(this MeleeWeapon weapon)
+    internal static float Get_DisplaySwingSpeed(this MeleeWeapon weapon)
     {
         return Values.GetValue(weapon, Create).SwingSpeed * 0.1f;
     }
@@ -133,7 +164,7 @@ internal static class MeleeWeapon_Stats
         return 1f - (Values.GetValue(weapon, Create).CooldownReduction * 0.1f);
     }
 
-    internal static float Get_RelativeCooldownReduction(this MeleeWeapon weapon)
+    internal static float Get_DisplayCooldownReduction(this MeleeWeapon weapon)
     {
         return Values.GetValue(weapon, Create).CooldownReduction * 0.1f;
     }
@@ -143,7 +174,7 @@ internal static class MeleeWeapon_Stats
         return 10f / (10f + Values.GetValue(weapon, Create).Resilience);
     }
 
-    internal static float Get_RelativeResilience(this MeleeWeapon weapon)
+    internal static float Get_DisplayResilience(this MeleeWeapon weapon)
     {
         return Values.GetValue(weapon, Create).Resilience * 0.1f;
     }
@@ -203,14 +234,14 @@ internal static class MeleeWeapon_Stats
         holder.MaxDamage = weapon.maxDamage.Value;
         var data = ModHelper.GameContent
             .Load<Dictionary<int, string>>("Data/weapons")[weapon.InitialParentTileIndex]
-            .Split('/');
+            .SplitWithoutAllocation('/');
         if (weapon.Get_ResonatingChord<RubyEnchantment>() is { } rubyChord)
         {
             holder.MinDamage = (int)(holder.MinDamage +
-                                     (weapon.Read(DataFields.BaseMinDamage, Convert.ToInt32(data[2])) *
+                                     (weapon.Read(DataFields.BaseMinDamage, int.Parse(data[2])) *
                                       weapon.GetEnchantmentLevel<RubyEnchantment>() * rubyChord.Amplitude * 0.1f));
             holder.MaxDamage = (int)(holder.MaxDamage +
-                                     (weapon.Read(DataFields.BaseMaxDamage, Convert.ToInt32(data[3])) *
+                                     (weapon.Read(DataFields.BaseMaxDamage, int.Parse(data[3])) *
                                       weapon.GetEnchantmentLevel<RubyEnchantment>() * rubyChord.Amplitude * 0.1f));
         }
 
@@ -244,7 +275,7 @@ internal static class MeleeWeapon_Stats
         holder.CooldownReduction = weapon.GetEnchantmentLevel<GarnetEnchantment>();
         if (weapon.Get_ResonatingChord<GarnetEnchantment>() is { } garnetChord)
         {
-            holder.CooldownReduction = (float)(weapon.GetEnchantmentLevel<GarnetEnchantment>() * garnetChord.Amplitude);
+            holder.CooldownReduction += (float)(weapon.GetEnchantmentLevel<GarnetEnchantment>() * garnetChord.Amplitude);
         }
 
         holder.Resilience = weapon.addedDefense.Value;
@@ -253,7 +284,7 @@ internal static class MeleeWeapon_Stats
              holder.Resilience += (float)(weapon.GetEnchantmentLevel<TopazEnchantment>() * topazChord.Amplitude);
         }
 
-        var points = weapon.Read(DataFields.BaseMaxDamage, Convert.ToInt32(data[3])) * weapon.type.Value switch
+        var points = weapon.Read(DataFields.BaseMaxDamage, int.Parse(data[3])) * weapon.type.Value switch
         {
             MeleeWeapon.stabbingSword or MeleeWeapon.defenseSword => 0.5f,
             MeleeWeapon.dagger => 0.75f,

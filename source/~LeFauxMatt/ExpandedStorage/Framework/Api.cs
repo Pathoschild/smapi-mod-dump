@@ -100,8 +100,6 @@ public sealed class Api : IExpandedStorageApi
             }
 
             // Get Shop Entry in DGA Format
-
-
             loadedAny = true;
         }
 

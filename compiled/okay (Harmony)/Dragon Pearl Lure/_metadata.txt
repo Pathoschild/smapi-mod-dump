@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15109
+IDs: violetlizabet.DragonPearlLure
+update keys: Nexus:15109

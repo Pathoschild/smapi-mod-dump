@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -28,10 +28,10 @@ internal class NetListWatcher<TValue> : DisposableWatcher, ICollectionWatcher<TV
     private readonly NetList<TValue, NetRef<TValue>> _field;
 
     /// <summary>The pairs added since the last reset.</summary>
-    private readonly ISet<TValue> _added = new HashSet<TValue>(new ObjectReferenceComparer<TValue>());
+    private readonly HashSet<TValue> _added = new(new ObjectReferenceComparer<TValue>());
 
     /// <summary>The pairs removed since the last reset.</summary>
-    private readonly ISet<TValue> _removed = new HashSet<TValue>(new ObjectReferenceComparer<TValue>());
+    private readonly HashSet<TValue> _removed = new(new ObjectReferenceComparer<TValue>());
 
     /// <summary>Initializes a new instance of the <see cref="NetListWatcher{TValue}"/> class.</summary>
     /// <param name="name">A name which identifies what the watcher is watching, used for troubleshooting.</param>
@@ -87,8 +87,8 @@ internal class NetListWatcher<TValue> : DisposableWatcher, ICollectionWatcher<TV
     /// <param name="newValues">The new list of values.</param>
     private void OnArrayReplaced(NetList<TValue, NetRef<TValue>> list, IList<TValue> oldValues, IList<TValue> newValues)
     {
-        ISet<TValue> oldSet = new HashSet<TValue>(oldValues, new ObjectReferenceComparer<TValue>());
-        ISet<TValue> changed = new HashSet<TValue>(newValues, new ObjectReferenceComparer<TValue>());
+        var oldSet = new HashSet<TValue>(oldValues, new ObjectReferenceComparer<TValue>());
+        var changed = new HashSet<TValue>(newValues, new ObjectReferenceComparer<TValue>());
 
         foreach (var value in oldSet)
         {

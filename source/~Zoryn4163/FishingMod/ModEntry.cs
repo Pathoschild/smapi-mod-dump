@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Linq;
 using FishingMod.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -78,9 +77,9 @@ namespace FishingMod
             // apply infinite bait/tackle
             if (e.IsOneSecond && (this.Config.InfiniteBait || this.Config.InfiniteTackle))
             {
-                if (Game1.player.CurrentTool is FishingRod rod && rod.attachments?.FirstOrDefault() != null)
+                if (Game1.player.CurrentTool is FishingRod rod)
                 {
-                    if (this.Config.InfiniteBait)
+                    if (this.Config.InfiniteBait && rod.attachments?.Length > 0 && rod.attachments[0] != null)
                         rod.attachments[0].Stack = rod.attachments[0].maximumStackSize();
 
                     if (this.Config.InfiniteTackle && rod.attachments?.Length > 1 && rod.attachments[1] != null)

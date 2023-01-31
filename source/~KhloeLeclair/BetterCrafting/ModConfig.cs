@@ -20,6 +20,12 @@ using Leclair.Stardew.Common.Types;
 
 namespace Leclair.Stardew.BetterCrafting;
 
+public enum RecyclingMode {
+	Automatic,
+	Enabled,
+	Disabled
+};
+
 public enum GiftStyle {
 	Heads,
 	Names
@@ -91,6 +97,16 @@ public class ModConfig {
 	// Actions
 	public ButtonAction LeftClick { get; set; } = ButtonAction.Craft;
 	public ButtonAction RightClick { get; set; } = ButtonAction.BulkCraft;
+
+
+	// Recycling
+
+	public bool RecycleClickToggle { get; set; } = false;
+	public RecyclingMode RecycleCrafting { get; set; } = RecyclingMode.Disabled;
+	public RecyclingMode RecycleCooking { get; set; } = RecyclingMode.Disabled;
+
+	public bool RecycleUnknownRecipes { get; set; } = false;
+	public bool RecycleFuzzyItems { get; set; } = false;
 
 
 	// Standard Crafting

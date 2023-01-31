@@ -15,7 +15,9 @@
         "Target": "Characters/Dialogue/Gus",
         "Entries": {
             "Thu8": "@! You should try my new spaghetti sauce!",
-            "Thu10": "#$c .5#Good food, good drink, good friends. What more can I want from life?#I've always wanted my own saloon. This place is a dream come true for me.#"
+            "Thu10": "#$c .5#Good food, good drink, good friends. What more can I want from life?#I've always wanted my own saloon. This place is a dream come true for me.#",
+            "PamTriesRehab": "@! I'm so glad that Pam's gone off to rehab. All that drinkin' ain't good for anyone...",
+            "PamTriesRehabHoneymoon": "You did a good thing, @. Hope this attempt at sobriety sticks for Pam."
         }
     },
     {
@@ -41,6 +43,7 @@
         "Action": "EditData",
         "Target": "Characters/Dialogue/Pam",
         "Entries": {
+            "islandResortUnlocked": "@! Lookin' forward to going on vacation sometime!",
             "Pam_InProgress": "@! I'm lookin' forward to trying that potato drink!$h",
             "atravita.PamApology_InProgress": "@! Thanks so much for offering to help me gather a few of Penny's favorite gifts!$h#$b#I'm certain that you'll do a good job finding quality melons!",
             "atravita.PamApology_Completed": "Thank you so much, @! I'm certain Penny'll appreciate everything!#$b#You've done so much for this ol' lady...$h",
@@ -70,12 +73,12 @@
         }
     },
     {
-        "LogName": "Base dialogue - player married to Penny",
+        "LogName": "Base dialogue - any player married to Penny",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Pam",
-        "When": {"Relationship:Penny": "Married"},
+        "When": {"Spouse:AnyPlayer": "Penny"},
         "Entries": {
             "Trailer_Entry": "Ah, home sweet home!/Ah, home at last!"
-            }
+        }
     }
 ]}

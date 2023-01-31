@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -41,19 +41,8 @@ internal sealed class SlingshotDrawInMenuPatcher : HarmonyPatcher
     /// <summary>Draw slingshot cooldown.</summary>
     [HarmonyPostfix]
     private static void SlingshotDrawInMenuPostfix(
-        Slingshot __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, StackDrawType drawStackNumber, bool drawShadow)
+        SpriteBatch spriteBatch, Vector2 location, float scaleSize, StackDrawType drawStackNumber, bool drawShadow)
     {
-        if (drawStackNumber != 0 && __instance.numAttachmentSlots.Value > 1 && __instance.attachments[1] is not null)
-        {
-            Utility.drawTinyDigits(
-                __instance.attachments[1].Stack,
-                spriteBatch,
-                location + new Vector2(64 - Utility.getWidthOfTinyDigitString(__instance.attachments[1].Stack, 3f * scaleSize) + (3f * scaleSize), 64f - (18f * scaleSize) + 2f),
-                3f * scaleSize,
-                1f,
-                Color.White);
-        }
-
         if (ArsenalModule.State.SlingshotCooldown <= 0)
         {
             return;

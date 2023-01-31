@@ -25,6 +25,7 @@ namespace Custom_Farm_Loader.Lib
     {
         public List<Rectangle> Exclude = new List<Rectangle>();
         public List<Rectangle> Include = new List<Rectangle>();
+        public string LocationName = "Farm";
 
         public bool parseAttribute(JProperty property)
         {
@@ -32,6 +33,9 @@ namespace Custom_Farm_Loader.Lib
             string value = property.Value.ToString();
 
             switch (name.ToLower()) {
+                case "map" or "location":
+                    LocationName = value;
+                    break;
                 case "position":
                     Include.Add(new Rectangle(int.Parse(value.Split(",")[0]), int.Parse(value.Split(",")[1]), 1, 1));
                     break;

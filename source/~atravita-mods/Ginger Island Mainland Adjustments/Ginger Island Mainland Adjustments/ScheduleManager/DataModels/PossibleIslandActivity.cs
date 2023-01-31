@@ -29,8 +29,8 @@ internal readonly struct PossibleIslandActivity
     /// <summary>
     /// Initializes a new instance of the <see cref="PossibleIslandActivity"/> struct.
     /// </summary>
-    /// <param name="possiblepoints">A list of possible points for this activty.</param>
-    /// <param name="map">Which map the activty is on. (default: IslandSouth).</param>
+    /// <param name="possiblepoints">A list of possible points for this activity.</param>
+    /// <param name="map">Which map the activity is on. (default: IslandSouth).</param>
     /// <param name="direction">Which direction.</param>
     /// <param name="basechance">Base chance to pick this activity. Overridden by ChanceMap.</param>
     /// <param name="dialogueKey">Which dialogue key to use for this location.</param>
@@ -38,12 +38,12 @@ internal readonly struct PossibleIslandActivity
     /// <param name="animation">The animation to play. May be not required.</param>
     /// <param name="chanceMap">Function that maps specific NPCs to custom chances.</param>
     internal PossibleIslandActivity(
-        [NotNull] List<Point> possiblepoints,
-        [NotNull] string map = "IslandSouth",
-        [NotNull] int direction = 2,
-        [NotNull] double basechance = 1.0,
-        [NotNull] string dialogueKey = "Resort",
-        [NotNull] bool animation_required = false,
+        List<Point> possiblepoints,
+        string map = "IslandSouth",
+        int direction = 2,
+        double basechance = 1.0,
+        string dialogueKey = "Resort",
+        bool animation_required = false,
         string? animation = null,
         Func<NPC, double>? chanceMap = null)
     {
@@ -89,8 +89,7 @@ internal readonly struct PossibleIslandActivity
             return null;
         }
         // Run a random chance to not pick this spot.
-        double chance = overrideChanceMap?.Invoke(character) ?? this.chanceMap(character);
-        if (random.NextDouble() > chance)
+        if (random.NextDouble() > (double)(overrideChanceMap?.Invoke(character) ?? this.chanceMap(character)))
         {
             return null;
         }
@@ -111,21 +110,20 @@ internal readonly struct PossibleIslandActivity
         Utility.Shuffle(random, this.possiblepoints);
         foreach (Point pt in this.possiblepoints)
         {
-            if (usedPoints.Contains(pt))
+            if (!usedPoints.Contains(pt))
             {
-                continue;
+                return new SchedulePoint(
+                    random: random,
+                    npc: character,
+                    map: this.map,
+                    time: time,
+                    point: pt,
+                    isarrivaltime: false,
+                    direction: this.direction,
+                    animation: schedule_animation,
+                    varKey: varKey,
+                    basekey: this.dialogueKey);
             }
-            return new SchedulePoint(
-                random: random,
-                npc: character,
-                map: this.map,
-                time: time,
-                point: pt,
-                isarrivaltime: false,
-                direction: this.direction,
-                animation: schedule_animation,
-                varKey: varKey,
-                basekey: this.dialogueKey);
         }
         return null;
     }
@@ -134,6 +132,7 @@ internal readonly struct PossibleIslandActivity
     /// Whether or not an animation is one we should avoid repeating.
     /// </summary>
     /// <returns>true if animation is unique, false otherwise.</returns>
+    [MemberNotNullWhen(returnValue: true, "animation")]
     private bool IsAnimationUnique()
         => !string.IsNullOrEmpty(this.animation)
             && !this.animation.StartsWith("square_");

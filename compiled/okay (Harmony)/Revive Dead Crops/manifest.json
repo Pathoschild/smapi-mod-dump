@@ -1,0 +1,18 @@
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
+    }
+  ],
+  "EntryDll": "ReviveDeadCrops.dll",
+  "Name": "Revive Dead Crops",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "Lets you revive dead crops.",
+  "UniqueID": "atravita.ReviveDeadCrops",
+  "MinimumApiVersion": "3.18",
+  "UpdateKeys": [
+    "Nexus:15005"
+  ]
+}

@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
@@ -60,9 +60,9 @@ The perks in *italics* refer to ![shield:prestige] variants. Written in *(parent
 - ![](resources/assets/sprites/loose/harvester.png)  **Harvester (Lv5)** - 10% *(20%)* chance for extra yield from harvested crops.
 	- Yields an equivalent 10% monetary bonus to vanilla on average, but also provides value if you choose not to sell raw crops.
 - ![](resources/assets/sprites/loose/agriculturist.png)  **Agriculturist (Lv10)** - Crops grow 10% *(20%)* faster. Grow best-quality crops organically without fertilizer.
-	- Allows harvesting iridium-quality crops, normally only possible with Deluxe Fertilizer. The chance is unchanged from vanilla, and is equal to half the chance of gold quality. This means that fertilizers are **not** obsolete, as they will still massively increase that chance.
-- ![](resources/assets/sprites/loose/artisan.png)  **Artisan (Lv10)** - All artisan machines work 10% *(25%)* faster. Machine output quality is at least as good as input ingredient quality.
-	- Essentially implements [Quality Artisan Products](https://www.moddrop.com/stardew-valley/mods/707502-quality-artisan-products) exclusively for Artisans. Also added is 5% chance to promote the output quality by one level. Note that the quality preservation perk is tied to the Artisan player, while the quality promotion perk is tied to the machine itself; in other words, only Artisans themselves can preserve the quality of ingredients, but they can do so on any machine, whereas any non-Artisan player can benefit from a quality upgrade, so long as they use a machine crafted by an Artisan player (ownerhsip requirements can be turned off in the configs).
+	- Allows harvesting iridium-quality crops, normally only possible with Deluxe Fertilizer. The chance is equivalent to half of the chance with Deluxe Fertilizer. This means that fertilizers are **not** obsolete.
+- ![](resources/assets/sprites/loose/artisan.png)  **Artisan (Lv10)** - Artisan machines work 10% *(25%)* faster. Machine output quality can be as good as input ingredient quality.
+	- Quality output is based on Farming level. The lowest possible quality is 2 stages below the input quality, and the highest possible quality is 1 higher than the input quality. For reference, the chance to preserve quality at level 10 is 30%. Note that the quality preservation perk is tied to the Artisan player, while the production time and quality promotion perks are tied to the machine itself; in other words, only Artisans themselves can preserve the quality of ingredients, but they can do so on any machine, whereas any non-Artisan player can benefit from faster production and quality upgrades, so long as they use a machine crafted by an Artisan player (ownerhsip requirements can be turned off in the configs).
 - ![](resources/assets/sprites/loose/miner.png)  **Rancher (Lv5)** - Befriend animals 2× *(3×)* quicker.
 	- Gain double mood *and* friendship points from petting. Newborn animals are also born with a non-zero, random initial friendship.
 - ![](resources/assets/sprites/loose/breeder.png)  **Breeder (Lv10)** - Incubation 2× *(3×)* faster and natural pregnancy 3× *(5×)* more likely. Increase value of animals at high friendship.
@@ -166,7 +166,7 @@ Note that, though all combat professions can be acquired via skill reset, only o
 
 - ![](resources/assets/sprites/loose/undyingrage.png)  **Undying Frenzy (Brute / Amazon)** - Doubles rage accumulation for 15s. Immune to passing out. When the effect ends, recovers 5% health for every enemy slain while the buff was active.
 	- Charged by taking damage or defeating enemies. Charges more quickly if enemies are defeated using a blunt weapon.
-- ![](resources/assets/sprites/loose/cloaking.png)  **Ambuscade (Bushwhacker)** - Become invisible and untargetable for 30s. Effect ends prematurely if the player attacks an enemy. When the effect ends, gain a 2x crit. power buff that lasts for twice the leftover invisibility duration. If an enemy is slain within 1.5s out of Ambush, immediately regain 20% special ability charge.
+- ![](resources/assets/sprites/loose/cloaking.png)  **Ambuscade (Bushwhacker)** - Become invisible and untargetable for 30s. Effect ends prematurely if the player attacks an enemy. When the effect ends, gain a 2x crit. power buff that lasts for twice the leftover invisibility duration. If an enemy is slain within 0.5s out of Ambush, immediately regain 25% special ability charge.
 	- Charged by scoring critical hits, and the charge amount is proportional to crit. power.
 - ![](resources/assets/sprites/loose/bullettime.png)  **Death Blossom (Desperado)** - For 15s enable auto-fire in eight directions at once.
 	- Journey of the Prairie King, "IRL".
@@ -186,7 +186,7 @@ Switching special abilities is not possible if the Prestige system is disabled. 
 
 The following mods are fully integrated:
 
-- All [SpaceCore][mod:spacecore] custom skills are fully supported by the skill reset systems, including but not limited to: [Luck Skill][mod:luck], [Cooking Skill][mod:cooking], [Magic][mod:magic], [Love Of Cooking][mod:loc], [Binning Skill][mod:binning] and [Socializing Skill][mod:socializing]. However, **only skills which explicitly provide prestiged professions will be supported by the Prestige system**. An [API](../../ModApi.cs) is provided for mod authors to register their custom skills for prestige. Authors are responsible for providing the prestige perks and functionality of their own professions,as well as corresponding prestige icons and descriptions.
+- All [SpaceCore][mod:spacecore] custom skills are fully supported by the skill reset systems, including but not limited to: [Luck Skill][mod:luck], [Cooking Skill][mod:cooking], [Magic][mod:magic], [Love Of Cooking][mod:loc], [Binning Skill][mod:binning] and [Socializing Skill][mod:socializing]. However, **only skills which explicitly provide prestiged professions will be supported by the Prestige system**. An [API](../../ModApi.cs) is provided for mod authors to register their custom skills for prestige. Authors are responsible for providing the prestige perks and functionality of their own professions, as well as corresponding prestige icons and descriptions.
 - [Automate][mod:automate] machines will apply Artisan, Ecologist and Gemologist perks to all appropriate machines which meet the ownership requirements (if that setting is enabled). In the case of machines that are not crafted, such as the Farm Cave Mushroom Boxes and terrain features like Berry Bushes and Fruit Trees, only the session host's professions will apply. In cases which consider the professions of the user, and not of the owner, then the owner of the closest chest in the automation group is used.
 - [Producer Framework Mod][mod:pfm] and [PFMAutomate][mod:pfm-automate] respect the same rules as above, but not all machines are compatible by default. Machines from the following PPJA packs and addons are compatible out-of-the-box:
 	- [Artisan Valley][mod:artisan-valley]
@@ -216,6 +216,7 @@ The following mods are **not** compatible:
 - [Better Slingshots][mod:better-slingshots], [Ring Overhaul][mod:ring-overhaul], or any mod that affects Slingshot behavior.
 - [Quality Artisan Products][mod:qap] and [Quality Artisan Products for Artisan Valley][mod:qap-av], as they will be overriden by this mod's changes to the Artisan profession (use [Flower Meads][mod:flower-meads] instead for the namesake feature).
 - [All Professions][mod:all-professions] and [Skill Prestige][mod:prestige], as they conflict with this mod's Prestige system. You could potentially use them if you disable this mod's Prestige system, but I will not provide support in case of bugs.
+- [Yet Another Harvest With Scythe Mod][mod:yahwsm] will not apply modded profession perks. Use instead the feature included in CJB Cheats Menu.
 
 ## F.A.Q.
 
@@ -264,6 +265,8 @@ To consume the API, copy both interfaces from the [Shared.Integrations.ModularOv
 - [Artisan Valley][mod:artisan-valley] to add more variety to Artisan and Producer products.
 - [Slime Produce][mod:slime-produce] (makes Slime ranching more interesting and profitable).
 - [Ostrich Mayo and Golden Mayo][mod:new-mayo] (better consistency for Ostrich and Golden eggs in combination with Artisan profession).
+- [Skill Training][mod:skill-training] (immersively speed-up your skill resets).
+- [Tap Giant Crops][mod:tap-giant-crops] (do more with the Tapper profession).﻿
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -312,6 +315,9 @@ To consume the API, copy both interfaces from the [Shared.Integrations.ModularOv
 [mod:icons-redone]: <https://www.nexusmods.com/stardewvalley/mods/4163> "Profession Icons Redone"
 [mod:vintage-ui]: <https://www.nexusmods.com/stardewvalley/mods/4697> "Vintage Interface"
 [mod:cjb-cheats]: <https://www.nexusmods.com/stardewvalley/mods/4> "CJB Cheats Menu"
+[mod:tap-giant-crops]: <https://www.nexusmods.com/stardewvalley/mods/13052> "Tap Giant Crops"
+[mod:skill-training]: <https://www.nexusmods.com/stardewvalley/mods/14452> "Skill Training"
+[mod:yahwsm]: <https://www.nexusmods.com/stardewvalley/mods/2731> "Yet Another Harvest With Scythe Mod"
 
 <!-- USER LINKS -->
 [user:enai]: <https://www.nexusmods.com/skyrimspecialedition/users/3959191> "Enai Siaion"

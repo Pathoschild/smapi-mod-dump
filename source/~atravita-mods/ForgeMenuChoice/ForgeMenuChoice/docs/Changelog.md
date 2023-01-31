@@ -17,6 +17,13 @@ Changelog
 * Controllers probably won't be able to lock onto the arrows properly, owing to the....nontraditional menu setup here. It's likely not something I can fix, either.
 * I apply the chosen enchantment when forging, not before. So if you're using a predictor, it'll just show what the game would have picked. (This goes for Many Enchantment's debug logging as well.)
 
+#### Version 1.1.2
+* Add Russian (thanks pavlo2906)!
+
+#### Version 1.1.1
+* Fixes Enchanted Scythes support.
+* Adds keybinds - should work for controllers too.
+
 #### Version 1.1.0
 * Update to using AtraCore (and associated internal improvements).
 
@@ -34,10 +41,10 @@ Updates to SMAPI 3.14.0. Internal optimizations.
 * Fixes the check for duplicate enchantments.
 
 #### Version 1.0.1
-* Added tooltips: hover over the name of the enchantment to get a description. (You may need to find a certain journal scrap first.)
+* Added tool-tips: hover over the name of the enchantment to get a description. (You may need to find a certain journal scrap first.)
 * Slightly adjust the menu for longer enchantment names in some languages. Fix issue where the enchantment names would not change if you switched languages.
-* Made this mod's textures targetable in Content Patcher.
-* Splitscreen fixes.
+* Made this mod's textures target-able in Content Patcher.
+* Split-screen fixes.
 
 #### Version 1.0.0
 * Initial upload.

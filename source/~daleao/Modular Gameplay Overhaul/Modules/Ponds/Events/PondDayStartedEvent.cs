@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Ponds.Events;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
 using StardewModdingAPI.Events;
@@ -35,11 +34,15 @@ internal sealed class PondDayStartedEvent : DayStartedEvent
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object? sender, DayStartedEventArgs e)
     {
-        foreach (var pond in Game1.getFarm().buildings.OfType<FishPond>().Where(p =>
-                     (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
-                     !p.isUnderConstruction()))
+        var buildings = Game1.getFarm().buildings;
+        for (var i = 0; i < buildings.Count; i++)
         {
-            pond.Write(DataFields.CheckedToday, false.ToString());
+            var building = buildings[i];
+            if (building is FishPond pond && pond.IsOwnedBy(Game1.player) &&
+                !pond.isUnderConstruction())
+            {
+                pond.Write(DataFields.CheckedToday, false.ToString());
+            }
         }
     }
 }

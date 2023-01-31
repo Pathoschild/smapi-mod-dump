@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -44,5 +44,25 @@ public class LavaEnchantment : BaseWeaponEnchantment
     public override bool ShouldBeDisplayed()
     {
         return false;
+    }
+
+    /// <inheritdoc />
+    protected override void _OnDealDamage(Monster monster, GameLocation location, Farmer who, ref int amount)
+    {
+        var monsterBox = monster.GetBoundingBox();
+        var sprites = new TemporaryAnimatedSprite(
+            362,
+            Game1.random.Next(50, 120),
+            6,
+            1,
+            new Vector2(monsterBox.Center.X - 32, monsterBox.Center.Y - 32),
+            flicker: false,
+            flipped: false);
+        sprites.color = Color.OrangeRed;
+
+        Reflector
+            .GetStaticFieldGetter<Multiplayer>(typeof(Game1), "multiplayer")
+            .Invoke()
+            .broadcastSprites(location, sprites);
     }
 }

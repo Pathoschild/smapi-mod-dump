@@ -101,7 +101,7 @@ internal static class ScheduleNullWarp
     {
         if (targetLocation is null)
         {
-            ModEntry.ModMonitor.Log($"Someone has requested {character?.Name} warp to a null location. Surpressing that.", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Someone has requested {character?.Name} warp to a null location at game time {Game1.timeOfDay}. Surpressing that.", LogLevel.Error);
             return false;
         }
         return true;

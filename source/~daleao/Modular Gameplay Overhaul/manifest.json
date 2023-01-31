@@ -4,20 +4,37 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
 {
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
   "$schema": "https://smapi.io/schemas/manifest.json",
   "UniqueID": "DaLion.Overhaul",
   "Name": "MARGO :: Modular Gameplay Overhaul",
   "Author": "DaLion",
-  "Version": "1.0.0-Debug",
+  "Version": "1.3.1",
   "Description": "An immersive gameplay overhaul, broken down into modules.",
   "MinimumApiVersion": "3.18.0",
   "EntryDll": "DaLion.Overhaul.dll",
   "Dependencies": [
+    {
+      "UniqueID": "aedenthorn.CustomOreNodes",
+      "MinimumVersion": "2.1.1",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "aedenthorn.CustomResourceClumps",
+      "MinimumVersion": "0.7.0",
+      "IsRequired": false
+    },
     {
       "UniqueID": "BBR.BetterRings",
       "IsRequired": false
@@ -66,6 +83,6 @@
     }
   ],
   "UpdateKeys": [
-    "Nexus:14470"
+    "Nexus:14470@Main"
   ]
 }

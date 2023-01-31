@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,10 +13,10 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Fishing;
 #region using directives
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Overhaul.Modules.Professions.Extensions;
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -93,14 +93,18 @@ internal sealed class CollectionsPageDrawPatcher : HarmonyPatcher
         }
 
         var currentPage = page.currentPage;
-        foreach (var c in from c in page.collections[currentTab][currentPage]
-                 let index = Convert.ToInt32(c.name.Split(' ')[0])
-                 where Game1.player.HasCaughtMaxSized(index)
-                 select c)
+        for (var i = 0; i < page.collections[currentTab][currentPage].Count; i++)
         {
+            var component = page.collections[currentTab][currentPage][i];
+            var index = int.Parse(component.name.SplitWithoutAllocation(' ')[0]);
+            if (!Game1.player.HasCaughtMaxSized(index))
+            {
+                continue;
+            }
+
             var destRect = new Rectangle(
-                c.bounds.Right - (Textures.MaxIconTx.Width * 2),
-                c.bounds.Bottom - (Textures.MaxIconTx.Height * 2),
+                component.bounds.Right - (Textures.MaxIconTx.Width * 2),
+                component.bounds.Bottom - (Textures.MaxIconTx.Height * 2),
                 Textures.MaxIconTx.Width * 2,
                 Textures.MaxIconTx.Height * 2);
             b.Draw(Textures.MaxIconTx, destRect, Color.White);

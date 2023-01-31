@@ -23,7 +23,8 @@ This document helps mod authors create a content pack for Dynamic Bodies.
   * [Shoes](#shoes)
   * [Shirt Overlays](#shirt-overlays)
   * [Trinkets or Accessories](#trinkets)
-* [Working with other mods](#working-with-other-mods)
+* [Working with other mods to provide shirts etc](author-guide/other-mods.md)
+* [Changing assets for other mods](#other-mods-pipeline)
   * [Maps](#maps)
 * [Translations](#translations)
 
@@ -282,21 +283,9 @@ start of the name. In the about example, 'Sneakers' will match to "Sneakers - Ye
 The vanilla outfits are already done for the shirts-overalls color overlay, you can see the vanilla
 version with the [shirts_overlay.png](../assets/Character/shirts_overlay.png) file.
 
-When adding more shirts using JSONAssets you need to provide it a name, that name can be used to add
-a new overlay. Create your black and white image and under the `[DB] YourModName\Shirts` folder create
-a `shirts.json` file which may look like;
+These add the pants color over the shirt for things like overalls.
 
-```
-{
-	"overlays": {
-		"Hanging Overalls": ["hangingoveralls_male.png"],
-		"High Waisted Belt": ["highbelt_male.png"],
-	}
-}
-```
-On the left `Hanging Overalls` is the name of the shirt for JSONAssets, and on the right is the 8x32 pixel image
-to overlay onto it, simply add `"Metadata": "DB.PantsOverlay"` in your JSONAssets file to flag the added
-shirt as a Dynamic Bodies shirt with an overlay from the pant color.
+You can add your own using [JSONAssets](author-guide/other-mods.md#ja-shirt-overlays) or [DGA](author-guide/other-mods.md#dga-shirt-overlays).
 
 ### Trinkets
 Trinkets is a new system for accessories, it allows you to add a cost to the items which can be purchased and
@@ -347,7 +336,7 @@ fourth row is looking left.
 [`Trinkets` documentation](author-guide/trinkets.md) for more info.
 
 
-### Working with other mods
+### Other mods pipeline
 With SMAPI's new content pipeline this mod has been made with that in mind. You can use [Content Patcher](https://www.nexusmods.com/stardewvalley/mods/1915)
 to easily adjust any of the default graphics. This means if you want to make a farmer sprite
 overhaul mod, you can without changing any of the files, or just want to make it work
@@ -388,6 +377,9 @@ you will need to use Content Patcher and the following actions;
 *   DynamicBodies:Haley
 *   DynamicBodies:Leah
 *   DynamicBodies:Pam
+
+You can make a simple [ContentPatcher](https://www.nexusmods.com/stardewvalley/mods/1915) mod to adjust any custom maps to include these
+points to access the menus of this mod.
 
 ### Translations
 There are no translations, however Dynamic Bodies is set up for translations - use the [default.json](../i18n/default.json)

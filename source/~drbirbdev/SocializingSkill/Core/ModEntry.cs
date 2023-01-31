@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using BirbShared;
+using BirbShared.APIs;
 using BirbShared.Asset;
 using BirbShared.Command;
 using BirbShared.Config;
@@ -27,6 +28,9 @@ namespace SocializingSkill
         internal static Config Config;
         internal static Assets Assets;
 
+        internal static bool MargoLoaded;
+        internal static IMargo MargoAPI;
+
         internal ITranslationHelper I18n => this.Helper.Translation;
 
         internal static readonly PerScreen<List<string>> BelovedCheckedToday = new();
@@ -42,6 +46,7 @@ namespace SocializingSkill
             new AssetClassParser(this, Assets).ParseAssets();
 
             this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
+            this.Helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
             this.Helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
             SpaceCore.Events.SpaceEvents.AfterGiftGiven += this.SpaceEvents_AfterGiftGiven;
         }
@@ -51,7 +56,28 @@ namespace SocializingSkill
             new ConfigClassParser(this, Config).ParseConfigs();
             new Harmony(this.ModManifest.UniqueID).PatchAll();
             new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
+
+            MargoLoaded = this.Helper.ModRegistry.IsLoaded("DaLion.Overhaul");
+
             Skills.RegisterSkill(new SocializingSkill());
+
+            if (MargoLoaded)
+            {
+                MargoAPI = this.Helper.ModRegistry.GetApi<IMargo>("DaLion.Overhaul");
+                if (MargoAPI is null)
+                {
+                    Log.Error("Can't access the MARGO API. Is the mod installed correctly?");
+                }
+            }
+        }
+
+        private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+        {
+            if (MargoAPI is not null)
+            {
+                string id = Skills.GetSkill("drbirbdev.Socializing").Id;
+                MargoAPI.RegisterCustomSkillForPrestige(id);
+            }
         }
 
         // Beloved Profession
@@ -70,16 +96,20 @@ namespace SocializingSkill
             if (Game1.player.HasCustomProfession(SocializingSkill.Gifter))
             {
                 int extraFriendship = 0;
+                if (Game1.player.HasCustomPrestigeProfession(SocializingSkill.Gifter))
+                {
+                    extraFriendship += 20;
+                }
                 switch (taste)
                 {
                     case 0:
-                        extraFriendship = ModEntry.Config.GifterLovedGiftExtraFriendship;
+                        extraFriendship += ModEntry.Config.GifterLovedGiftExtraFriendship;
                         break;
                     case 2:
-                        extraFriendship = ModEntry.Config.GifterLikedGiftExtraFriendship;
+                        extraFriendship += ModEntry.Config.GifterLikedGiftExtraFriendship;
                         break;
                     case 8:
-                        extraFriendship = ModEntry.Config.GifterNeutralGiftExtraFriendship;
+                        extraFriendship += ModEntry.Config.GifterNeutralGiftExtraFriendship;
                         break;
                 }
                 Game1.player.changeFriendship(extraFriendship, e.Npc);

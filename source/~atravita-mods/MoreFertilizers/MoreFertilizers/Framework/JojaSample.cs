@@ -9,10 +9,11 @@
 *************************************************/
 
 using AtraShared.Menuing;
+
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+
 using StardewValley.Locations;
-using xTile.Dimensions;
 
 namespace MoreFertilizers.Framework;
 
@@ -43,7 +44,7 @@ internal static class JojaSample
         {
             string[] jojaEventstring = new[]
             {
-            "continue/-100 -100/farmer 13 28 0 Morris 13 22 2/ignoreCollisions farmer/",
+            "continue/-100 -100/farmer 13 28 0 Morris 13 22 2/makeInvisible 21 22 1 3/ignoreCollisions farmer/",
             "ignoreCollisions Morris/skippable/viewport 13 25/move Morris 0 2 2/pause 400/",
             $"speak Morris \"{I18n.GetByKey($"joja.event.{Game1.random.Next(3)}")}\"/pause 400/end",
             };

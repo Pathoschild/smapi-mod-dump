@@ -32,7 +32,8 @@ internal static class IndoorPotPlacement
         }
         if (dropInItem?.modData?.GetBool(CanPlaceHandler.Organic) == true
             && __instance.hoeDirt?.Value?.fertilizer?.Value is HoeDirt.noFertilizer
-            && ModEntry.OrganicFertilizerID != -1)
+            && ModEntry.OrganicFertilizerID != -1
+            && Game1.random.Next(2) == 0)
         {
             __instance.hoeDirt.Value.fertilizer.Value = ModEntry.OrganicFertilizerID;
         }

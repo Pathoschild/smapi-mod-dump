@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -59,9 +59,9 @@ public static class GenericExtensions
     public static IEnumerable<T> Collect<T>(this T value, params T[] others)
     {
         yield return value;
-        foreach (var next in others)
+        for (var i = 0; i < others.Length; i++)
         {
-            yield return next;
+            yield return others[i];
         }
     }
 

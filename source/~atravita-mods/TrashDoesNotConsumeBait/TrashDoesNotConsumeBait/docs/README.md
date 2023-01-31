@@ -21,4 +21,4 @@ This mod uses SMAPI's i18n feature for translations. I'd love to get translation
 4. Make sure you have [dotnet-5.0-sdk](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) installed.
 5. If your copy of the game is not in the standard STEAM or Gog install locations, you may need to edit the csproj to point at it. [Instructions here](https://github.com/Pathoschild/SMAPI/blob/develop/docs/technical/mod-package.md#available-properties).
 
-This project uses Pathos' multiplatform nuget, so it **should** build on any platform, although admittedly I've only tried it with Windows.
+This project uses Pathos' multi-platform nuget, so it **should** build on any platform, although admittedly I've only tried it with Windows.

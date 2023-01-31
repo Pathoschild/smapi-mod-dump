@@ -120,13 +120,13 @@ public sealed class ModEntry : Mod
         var toolbarIcons = new ToolbarIconsIntegration(this.Helper.ModRegistry);
         if (toolbarIcons.IsLoaded)
         {
-            toolbarIcons.API.AddToolbarIcon(
+            toolbarIcons.Api.AddToolbarIcon(
                 "PortableHoles.PlaceHole",
                 $"{this.ModManifest.UniqueID}/Icons",
                 new Rectangle(0, 0, 16, 16),
                 I18n.Button_PortableHole_Tooltip());
 
-            toolbarIcons.API.ToolbarIconPressed += ModEntry.OnToolbarIconPressed;
+            toolbarIcons.Api.ToolbarIconPressed += ModEntry.OnToolbarIconPressed;
         }
 
         var gmcm = new GenericModConfigMenuIntegration(this.Helper.ModRegistry);
@@ -139,7 +139,7 @@ public sealed class ModEntry : Mod
         gmcm.Register(this.ModManifest, () => this._config = new(), () => this.Helper.WriteConfig(this.Config));
 
         // Soft Fall
-        gmcm.API.AddBoolOption(
+        gmcm.Api.AddBoolOption(
             this.ModManifest,
             () => this.Config.SoftFall,
             value => this.Config.SoftFall = value,
@@ -147,7 +147,7 @@ public sealed class ModEntry : Mod
             I18n.Config_SoftFall_Tooltip);
 
         // Unlock Automatically
-        gmcm.API.AddBoolOption(
+        gmcm.Api.AddBoolOption(
             this.ModManifest,
             () => this.Config.UnlockAutomatically,
             value => this.Config.UnlockAutomatically = value,

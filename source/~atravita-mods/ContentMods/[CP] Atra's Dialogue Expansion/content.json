@@ -1,0 +1,69 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Format": "1.28.0",
+    "ConfigSchema": {
+        "EnableFor": {
+            "AllowValues": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sandy, Sebastian",
+            "AllowMultiple": true,
+            "Default": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sandy, Sebastian",
+            "AllowBlank": true
+        }
+    },
+    "DynamicTokens": [
+        {
+            "Name": "TaxDay",
+            "Value": "spring_20"
+        },
+        {
+            "Name": "TaxDay",
+            "Value": "{{TaxDay}}_2",
+            "When": {
+                "Year|contains=1": false,
+            }
+        },
+        {
+            "Name": "DialogueRandom",
+            "Value": "{{Random:alpha, bravo, charlie, delta}}",
+        },
+        {
+            "Name": "YearModulus",
+            "Value": "{{Query: {{Year}} % 5}}"
+        },
+        {
+            "Name": "YearRemainder",
+            "Value": "",
+            "When": {
+                "Year": "1"
+            }
+        },
+        {
+            "Name": "YearRemainder",
+            "Value": "_2",
+            "When": {
+                "Year|contains=1": false
+            }
+        }
+    ],
+    "Changes": [
+        {
+            "Action": "Include",
+            "LogName": "Dialogue Changes: base",
+            "FromFile": "{{FirstValidFile: assets/{{language}}/base.json, assets/default/base.json}}",
+        },
+        {
+            "Action": "Include",
+            "LogName": "Dialogue Changes: Randomized",
+            "FromFile": "{{FirstValidFile: assets/{{language}}/{{DialogueRandom}}/toc.json, assets/default/{{DialogueRandom}}/toc.json}}"
+        }
+    ],
+}

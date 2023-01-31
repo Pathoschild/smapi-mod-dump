@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System.Buffers;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Xna.Framework;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -19,8 +21,11 @@ namespace AtraShared.Utils;
 /// <summary>
 /// Utility for gamelocations.
 /// </summary>
+[SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1124:Do not use regions", Justification = "Reviewed")]
 public static class GameLocationUtils
 {
+    #region Animations
+
     /// <summary>
     /// The code in this function is effectively copied from the game, and explodes a bomb on this tile.
     /// </summary>
@@ -206,6 +211,55 @@ public static class GameLocationUtils
                 });
     }
 
+    #endregion
+
+    #region AllLocations
+
+    /// <summary>
+    /// Gets all the tiles of a location within specified bounds.
+    /// </summary>
+    /// <param name="location">The location to get the tiles from.</param>
+    /// <param name="xstart">Start for x.</param>
+    /// <param name="xend">End for x.</param>
+    /// <param name="ystart">Start for y.</param>
+    /// <param name="yend">End for y.</param>
+    /// <returns>A rented array of tiles, plus the total count.</returns>
+    /// <remarks>The array is rented, do remember to return it.</remarks>
+    public static (Vector2[] tiles, int count) GetTiles(
+        this GameLocation location,
+        int xstart = 1,
+        int xend = int.MaxValue,
+        int ystart = 1,
+        int yend = int.MaxValue)
+    {
+        Guard.IsNotNull(location);
+
+        // sanity
+        xstart = Math.Max(xstart, 1);
+        ystart = Math.Max(ystart, 1);
+
+        xend = Math.Clamp(xend, xstart, location.Map.Layers[0].LayerWidth - 2);
+        yend = Math.Clamp(yend, ystart, location.Map.Layers[0].LayerHeight - 2);
+
+        int count = (xend - xstart) * (yend - ystart);
+
+        if (count == 0)
+        {
+            return (Array.Empty<Vector2>(), 0);
+        }
+
+        Vector2[]? buffer = ArrayPool<Vector2>.Shared.Rent(count);
+        int yLength = yend - ystart + 1;
+        for (int x = xstart; x <= xend; x++)
+        {
+            for (int y = ystart; y <= yend; y++)
+            {
+                buffer[((x - xstart) * yLength) + (y - ystart)] = new Vector2(x, y);
+            }
+        }
+        return (buffer, count);
+    }
+
     /// <summary>
     /// Yields all game locations.
     /// </summary>
@@ -275,4 +329,6 @@ public static class GameLocationUtils
             }
         }
     }
+
+    #endregion
 }

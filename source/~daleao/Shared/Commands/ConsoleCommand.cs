@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -30,5 +30,5 @@ internal abstract class ConsoleCommand : IConsoleCommand
     protected CommandHandler Handler { get; }
 
     /// <inheritdoc />
-    public abstract void Callback(string[] args);
+    public abstract void Callback(string trigger, string[] args);
 }

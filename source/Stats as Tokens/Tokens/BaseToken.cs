@@ -33,7 +33,7 @@ namespace StatsAsTokens
 	/// </summary>
 	internal abstract class BaseToken
 	{
-		internal static readonly string host = "hostPlayer", loc = "localPlayer";
+		internal static readonly string host = "hostplayer", loc = "localplayer";
 
 		/*********
 		** Public methods

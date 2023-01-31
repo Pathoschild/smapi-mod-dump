@@ -39,9 +39,18 @@ namespace HelpWanted
         public static List<IQuestData> questList = new();
         public static List<IQuestData> modQuestList = new();
         public static Random random;
-        public static Texture2D pinTexture;
-        public static Texture2D padTexture;
+
         public static Dictionary<string, JsonQuestData> modQuestDict = new Dictionary<string, JsonQuestData>();
+
+        public static Dictionary<string, List<Texture2D>> npcPinTextures = new();
+        public static Dictionary<string, List<Texture2D>> questPinTextures = new();
+        public static Dictionary<string, Dictionary<string, List<Texture2D>>> npcQuestPinTextures = new();
+        public static List<Texture2D> pinTextures = new();
+
+        public static Dictionary<string, List<Texture2D>> npcPadTextures = new();
+        public static Dictionary<string, List<Texture2D>> questPadTextures = new();
+        public static Dictionary<string, Dictionary<string, List<Texture2D>>> npcQuestPadTextures = new();
+        public static List<Texture2D> padTextures = new();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -83,34 +92,21 @@ namespace HelpWanted
         {
             if (!Config.ModEnabled || Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason))
                 return;
-            try
-            {
-                pinTexture = Game1.content.Load<Texture2D>(pinTexturePath);
-            }
-            catch
-            {
-                pinTexture = Helper.ModContent.Load<Texture2D>("assets/pin.png");
-            }
-            try
-            {
-                padTexture = Game1.content.Load<Texture2D>(padTexturePath);
-            }
-            catch
-            {
-                padTexture = Helper.ModContent.Load<Texture2D>("assets/pad.png");
-            }
+            LoadTextures();
             var dict = Helper.GameContent.Load<Dictionary<string, JsonQuestData>>(dictPath);
             foreach(var kvp in dict)
             {
                 var d = kvp.Value;
+                if (Game1.random.Next(100) >= d.percentChance)
+                    continue;
                 try
                 {
                     var q = new QuestData()
                     {
                         pinTextureSource = d.pinTextureSource,
                         padTextureSource = d.padTextureSource,
-                        pinTexture = string.IsNullOrEmpty(d.pinTexturePath) ? pinTexture : Helper.GameContent.Load<Texture2D>(d.pinTexturePath),
-                        padTexture = string.IsNullOrEmpty(d.padTexturePath) ? padTexture : Helper.GameContent.Load<Texture2D>(d.padTexturePath),
+                        pinTexture = string.IsNullOrEmpty(d.pinTexturePath) ? GetPinTexture(d.quest.target, d.quest.questType.ToString()) : Helper.GameContent.Load<Texture2D>(d.pinTexturePath),
+                        padTexture = string.IsNullOrEmpty(d.padTexturePath) ? GetPadTexture(d.quest.target, d.quest.questType.ToString()) : Helper.GameContent.Load<Texture2D>(d.padTexturePath),
                         pinColor = d.pinColor is null ? GetRandomColor() : d.pinColor.Value,
                         padColor = d.padColor is null ? GetRandomColor() : d.padColor.Value,
                         icon = string.IsNullOrEmpty(d.iconPath) ? Game1.getCharacterFromName(d.quest.target).Portrait : Helper.GameContent.Load<Texture2D>(d.iconPath),
@@ -158,6 +154,7 @@ namespace HelpWanted
                     Game1.questOfTheDay.reloadObjective();
                     gettingQuestDetails = false;
                     NPC npc = null;
+                    QuestType questType = QuestType.ItemDelivery;
                     if (Game1.questOfTheDay is ItemDeliveryQuest)
                     {
                         npc = Game1.getCharacterFromName((Game1.questOfTheDay as ItemDeliveryQuest).target.Value);
@@ -165,18 +162,23 @@ namespace HelpWanted
                     else if (Game1.questOfTheDay is ResourceCollectionQuest)
                     {
                         npc = Game1.getCharacterFromName((Game1.questOfTheDay as ResourceCollectionQuest).target.Value);
+                        questType = QuestType.ResourceCollection;
                     }
                     else if (Game1.questOfTheDay is SlayMonsterQuest)
                     {
                         npc = Game1.getCharacterFromName((Game1.questOfTheDay as SlayMonsterQuest).target.Value);
+                        questType = QuestType.SlayMonster;
                     }
                     else if (Game1.questOfTheDay is FishingQuest)
                     {
                         npc = Game1.getCharacterFromName((Game1.questOfTheDay as FishingQuest).target.Value);
+                        questType = QuestType.Fishing;
                     }
                     if (npc is not null)
                     {
-                        if (Config.OneQuestPerVillager && npcs.Contains(npc.Name))
+                        if ((Config.OneQuestPerVillager && npcs.Contains(npc.Name)) ||
+                            (Config.AvoidMaxHearts && !Game1.IsMultiplayer && Game1.player.tryGetFriendshipLevelForNPC(npc.Name) >= Utility.GetMaximumHeartsForCharacter(npc) * 250)
+                        )
                         {
                             tries++;
                             if(tries > 100)
@@ -193,7 +195,7 @@ namespace HelpWanted
                         tries = 0;
                         npcs.Add(npc.Name);
                         Texture2D icon = npc.Portrait;
-                        questList.Add(new QuestData() { padTexture = padTexture, pinTexture = pinTexture, padTextureSource = new Rectangle(0, 0, 64, 64), pinTextureSource = new Rectangle(0, 0, 64, 64), icon = icon, iconSource = iconRect, quest = Game1.questOfTheDay, pinColor = GetRandomColor(), padColor = GetRandomColor(), iconColor = new Color(Config.PortraitTintR, Config.PortraitTintG, Config.PortraitTintB, Config.PortraitTintA), iconOffset = iconOffset, iconScale = Config.PortraitScale });
+                        questList.Add(new QuestData() { padTexture = GetPadTexture(npc.Name, questType.ToString()), pinTexture = GetPinTexture(npc.Name, questType.ToString()), padTextureSource = new Rectangle(0, 0, 64, 64), pinTextureSource = new Rectangle(0, 0, 64, 64), icon = icon, iconSource = iconRect, quest = Game1.questOfTheDay, pinColor = GetRandomColor(), padColor = GetRandomColor(), iconColor = new Color(Config.PortraitTintR, Config.PortraitTintG, Config.PortraitTintB, Config.PortraitTintA), iconOffset = iconOffset, iconScale = Config.PortraitScale });
                     }
                 }
                 catch(Exception ex) 
@@ -205,7 +207,6 @@ namespace HelpWanted
             modQuestList.Clear();
             Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
         }
-
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
@@ -242,6 +243,13 @@ namespace HelpWanted
             
             configMenu.AddBoolOption(
                 mod: ModManifest,
+                name: () => "Allow Artisan Goods",
+                getValue: () => Config.AllowArtisanGoods,
+                setValue: value => Config.AllowArtisanGoods = value
+            );
+            
+            configMenu.AddBoolOption(
+                mod: ModManifest,
                 name: () => "Ignore Game's Item Choice",
                 getValue: () => Config.IgnoreVanillaItemSelection,
                 setValue: value => Config.IgnoreVanillaItemSelection = value
@@ -256,9 +264,16 @@ namespace HelpWanted
             
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "One Quest / Villager",
-                getValue: () => Config.OneQuestPerVillager,
-                setValue: value => Config.OneQuestPerVillager = value
+                name: () => "Avoid Max Heart Villagers",
+                getValue: () => Config.AvoidMaxHearts,
+                setValue: value => Config.AvoidMaxHearts = value
+            );
+
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Max Item Price",
+                getValue: () => Config.MaxPrice,
+                setValue: value => Config.MaxPrice = value
             );
 
             configMenu.AddNumberOption(

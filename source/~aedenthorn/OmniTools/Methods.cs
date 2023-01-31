@@ -42,9 +42,26 @@ namespace OmniTools
             }
             return toolSoundList[toolList.IndexOf(t.GetType())];
         }
+        private static bool CheckTool(Tool currentTool, Type type)
+        {
+            if (currentTool is null)
+                return false;
+
+            if (type == null)
+            {
+                return currentTool.GetType() == typeof(MeleeWeapon) && (currentTool as MeleeWeapon).isScythe();
+            }
+            if (type == typeof(MeleeWeapon))
+            {
+                return currentTool.GetType() == typeof(MeleeWeapon) && !(currentTool as MeleeWeapon).isScythe();
+            }
+            return currentTool.GetType() == type;
+        }
 
         public static Tool SwitchTool(Tool currentTool, Type type, List<ToolInfo> tools = null)
         {
+            if(CheckTool(currentTool, type))
+                return currentTool;
             int index = type is null ? toolList.IndexOf(typeof(MeleeWeapon)) : toolList.IndexOf(type);
             if (index < 0)
                 return null;
@@ -70,6 +87,7 @@ namespace OmniTools
                         {
                             currentTool.modData.Remove(toolsKey);
                         }
+                        currentTool.modData[toolCountKey] = tools.Count + "";
                         return null;
                     }
                     if ((type == typeof(MeleeWeapon) && (newTool as MeleeWeapon).isScythe(newTool.ParentSheetIndex)) || (type is null && !(newTool as MeleeWeapon).isScythe(newTool.ParentSheetIndex)))
@@ -83,6 +101,7 @@ namespace OmniTools
                         outTools.Add(tools[idx]);
                     }
                     newTool.modData[toolsKey] = JsonConvert.SerializeObject(outTools);
+                    newTool.modData[toolCountKey] = outTools.Count + "";
                     return newTool;
                 }
             }
@@ -91,27 +110,39 @@ namespace OmniTools
 
         public static Tool SmartSwitch(Tool currentTool, GameLocation currentLocation, Vector2 tile, List<ToolInfo> tools = null)
         {
+            if (!Config.FromWeapon && currentTool is MeleeWeapon && !(currentTool as MeleeWeapon).isScythe(currentTool.ParentSheetIndex))
+                return null;
             if (Config.SwitchForMonsters && currentTool.getLastFarmerToUse() is not null)
             {
                 var f = currentTool.getLastFarmerToUse();
-                foreach (var c in currentLocation.characters)
+                foreach (var t in GetToolsFromTool(currentTool))
                 {
-                    foreach(var t in GetToolsFromTool(currentTool))
+                    if (t is MeleeWeapon && !(t as MeleeWeapon).isScythe(t.ParentSheetIndex))
                     {
-                        if(t is MeleeWeapon && !(t as MeleeWeapon).isScythe(t.ParentSheetIndex))
+                        foreach (var c in currentLocation.characters)
                         {
-                            Vector2 tileLocation = Vector2.Zero;
-                            Vector2 tileLocation2 = Vector2.Zero;
-                            var aoe = (t as MeleeWeapon).getAreaOfEffect((int)tile.X * 64, (int)tile.Y * 64, f.FacingDirection, ref tileLocation, ref tileLocation2, f.GetBoundingBox(), f.FarmerSprite.currentAnimationIndex);
-                            if (c is Monster && c.GetBoundingBox().Intersects(aoe))
+                            if (c is Monster)
                             {
+                                var distance = Vector2.Distance(c.GetBoundingBox().Center.ToVector2(), f.GetBoundingBox().Center.ToVector2());
+                                if (distance > Config.MaxMonsterDistance)
+                                    continue;
+                                if (f.FacingDirection == 0 && c.GetBoundingBox().Top > f.GetBoundingBox().Bottom)
+                                    continue;
+                                if (f.FacingDirection == 1 && c.GetBoundingBox().Right < f.GetBoundingBox().Left)
+                                    continue;
+                                if (f.FacingDirection == 2 && c.GetBoundingBox().Bottom < f.GetBoundingBox().Top)
+                                    continue;
+                                if (f.FacingDirection == 3 && c.GetBoundingBox().Left > f.GetBoundingBox().Right)
+                                    continue;
                                 Tool tool = SwitchTool(currentTool, typeof(MeleeWeapon), tools);
                                 if (tool != null)
                                     return tool;
                             }
                         }
+                        break;
                     }
                 }
+
             }
             if (Config.SwitchForAnimals)
             {
@@ -168,6 +199,25 @@ namespace OmniTools
                             return tool;
                     }
                 }
+                if(currentLocation is Woods)
+                {
+                    foreach (ResourceClump clump in (currentLocation as Woods).stumps)
+                    {
+                        var bb = clump.getBoundingBox(clump.tile.Value);
+                        if (bb.Intersects(tileRect))
+                        {
+                            Tool tool = SwitchForClump(currentTool, clump, tools);
+                            if (tool is not null)
+                                return tool;
+                        }
+                    }
+                }
+                if (currentLocation is Forest && (Game1.currentLocation as Forest).log?.occupiesTile((int)tile.X, (int)tile.Y) == true)
+                {
+                    Tool tool = SwitchForClump(currentTool, (Game1.currentLocation as Forest).log, tools);
+                    if (tool is not null)
+                        return tool;
+                }
             }
             if (Config.SwitchForPan && currentTool.getLastFarmerToUse() is not null)
             {
@@ -180,10 +230,24 @@ namespace OmniTools
                 }
 
             }
-            if (Config.SwitchForWateringCan && currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y)) 
-            { 
-                Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools); 
-                if (tool != null) return tool; 
+            if (Config.SwitchForWateringCan)
+            {
+                if (currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y))
+                {
+                    Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
+                    if (tool != null) return tool;
+
+                }
+                if (currentLocation is Farm && currentLocation.getTileIndexAt((int)tile.X, (int)tile.Y, "Buildings") == 1938 && !(currentLocation as Farm).petBowlWatered.Value)
+                { 
+                    Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
+                    if (tool != null) return tool;
+                }
+                if (currentLocation.objects.TryGetValue(tile, out obj) && obj.Name.EndsWith("Pet Bowl"))
+                { 
+                    Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
+                    if (tool != null) return tool;
+                }
             }
 
             if (Config.SwitchForFishing && currentLocation.waterTiles is not null)
@@ -344,6 +408,7 @@ namespace OmniTools
 
             tools.Add(new ToolInfo(currentTool));
             t.modData[toolsKey] = JsonConvert.SerializeObject(tools.Skip(1));
+            t.modData[toolCountKey] = (tools.Count - 1) + "";
             Game1.playSound(GetToolSound(t));
             return t;
         }
@@ -364,18 +429,23 @@ namespace OmniTools
                 {
                     currentTool.modData.Remove(toolsKey);
                 }
+                currentTool.modData[toolCountKey] = tools.Count + "";
+
                 return currentTool;
             }
             if (tools.Count > 1)
             {
                 t.modData[toolsKey] = JsonConvert.SerializeObject(tools.Skip(1));
+                t.modData[toolCountKey] = (tools.Count - 1) + "";
             }
             else
             {
                 t.modData.Remove(toolsKey);
+                t.modData.Remove(toolCountKey);
             }
             Game1.playSound(GetToolSound(t));
             currentTool.modData.Remove(toolsKey);
+            currentTool.modData.Remove(toolCountKey);
             if (!Game1.player.addItemToInventoryBool(currentTool))
             {
                 Game1.createItemDebris(currentTool, Game1.player.getStandingPosition(), Game1.player.FacingDirection, null, -1);
@@ -383,6 +453,18 @@ namespace OmniTools
             return t;
         }
 
+
+        public static void UpdateEnchantments(Farmer player, Tool oldTool, Tool newTool)
+        {
+            foreach (var e in oldTool.enchantments)
+            {
+                e.OnUnequip(player);
+            }
+            foreach (var e in newTool.enchantments)
+            {
+                e.OnEquip(player);
+            }
+        }
         public static Tool GetToolFromInfo(ToolInfo toolInfo)
         {
             Tool t = GetToolFromDescription(toolInfo.description.index, toolInfo.description.upgradeLevel);
@@ -391,7 +473,7 @@ namespace OmniTools
                 try
                 {
                     var type = typeof(Game1).Assembly.GetType(s);
-                    AccessTools.Method(t.enchantments.GetType(), "Add").Invoke(t.enchantments, new object[] { Activator.CreateInstance(type) });
+                    AccessTools.Method(t.GetType(), "AddEnchantment").Invoke(t, new object[] { Activator.CreateInstance(type) });
                 }
                 catch { }
             }
@@ -406,7 +488,11 @@ namespace OmniTools
                     SMonitor.Log(ex.ToString());
                 }
             }
-            if(t is WateringCan && toolInfo.vars.Count > 0)
+            foreach (var kvp in toolInfo.modData)
+            {
+                t.modData.Add(kvp.Key, kvp.Value);
+            }
+            if (t is WateringCan && toolInfo.vars.Count > 0)
                 (t as WateringCan).WaterLeft = (int)(long)toolInfo.vars[0];
             return t;
         }

@@ -35,7 +35,7 @@ namespace CCRMAutomate.Automate
         public MachineState GetState()
         {
             return this.Machine.heldObject.Value == null
-                ? MachineState.Disabled
+                ? (CCRMAutomateModEntry.ModConfig.EnableAutomateClonerInput ? MachineState.Empty : MachineState.Disabled)
                 : this.Machine.readyForHarvest.Value
                     ? MachineState.Done
                     : MachineState.Processing;
@@ -74,7 +74,45 @@ namespace CCRMAutomate.Automate
 
         public bool SetInput(IStorage input)
         {
-            // started manually
+            if (CCRMAutomateModEntry.ModConfig.EnableAutomateClonerInput)
+            {
+                SObject machine = this.Machine;
+                SObject heldObject = machine.heldObject.Value;
+                foreach (ITrackedStack trackedStack in input.GetItems())
+                {
+                    if (trackedStack.Sample is SObject objectInput
+                        && !objectInput.bigCraftable.Value)
+                    {
+                        CustomCloner cloner = ClonerController.GetCloner(machine.Name);
+                        int? machineMinutesUntilReady = null;
+                        if (cloner.CloningDataId.ContainsKey(objectInput.ParentSheetIndex))
+                        {
+                            machineMinutesUntilReady = cloner.CloningDataId[objectInput.ParentSheetIndex];
+                        }
+                        else if (cloner.CloningDataId.ContainsKey(objectInput.Category))
+                        {
+                            machineMinutesUntilReady = cloner.CloningDataId[objectInput.Category];
+                        }
+                        if (machineMinutesUntilReady.HasValue)
+                        {
+                            machine.heldObject.Value = (SObject)objectInput.getOne();
+                            machine.readyForHarvest.Value = false;
+                            if (DataLoader.ModConfig.OverrideContentPackGetObjectProperties ? DataLoader.ModConfig.GetObjectBackImmediately : cloner.GetObjectBackImmediately)
+                            {
+                                machine.MinutesUntilReady = 0;
+                                machine.minutesElapsed(0, Location);
+                            }
+                            else
+                            {
+                                machine.MinutesUntilReady = machineMinutesUntilReady.Value;
+                            }
+                            machine.initializeLightSource(machine.TileLocation, false);
+                            trackedStack.Reduce(1);
+                            return true;
+                        }
+                    }
+                }
+            }
             return false;
         }
     }

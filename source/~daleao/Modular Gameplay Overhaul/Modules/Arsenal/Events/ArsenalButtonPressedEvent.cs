@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Events;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Arsenal.Events.Weapons;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
@@ -36,16 +37,40 @@ internal sealed class ArsenalButtonPressedEvent : ButtonPressedEvent
     /// <inheritdoc />
     protected override void OnButtonPressedImpl(object? sender, ButtonPressedEventArgs e)
     {
-        var isActionButton = e.Button.IsActionButton();
-        var isUseToolButton = e.Button.IsUseToolButton();
-        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null || !(isActionButton || isUseToolButton))
+        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null)
         {
             return;
         }
 
         var player = Game1.player;
-        var tool = player.CurrentTool;
-        if (tool is not (MeleeWeapon or Slingshot) || player.UsingTool || player.isRidingHorse() || !player.CanMove)
+        if (player.CurrentTool is not { } tool || player.UsingTool || player.isRidingHorse() || !player.CanMove)
+        {
+            return;
+        }
+
+        var isActionButton = e.Button.IsActionButton();
+        var isUseToolButton = e.Button.IsUseToolButton();
+        if (!(isActionButton || isUseToolButton))
+        {
+            return;
+        }
+
+        var originalDirection = (FacingDirection)player.FacingDirection;
+        if (ArsenalModule.Config.FaceMouseCursor && !Game1.options.gamepadControls && tool is MeleeWeapon w && !w.isScythe())
+        {
+            player.FaceTowardsTile(Game1.currentCursorTile);
+        }
+
+        if (ArsenalModule.Config.EnableAutoSelection && ArsenalModule.State.SelectableArsenal is not null &&
+            ArsenalModule.State.SelectableArsenal != tool &&
+            ToolsModule.State.SelectableToolByType.ContainsKey(tool.GetType()) &&
+            ArsenalSelector.TryFor(player, out var index))
+        {
+            Game1.player.CurrentToolIndex = index;
+            tool = Game1.player.CurrentTool;
+        }
+
+        if (tool is not (MeleeWeapon or Slingshot))
         {
             return;
         }
@@ -74,24 +99,12 @@ internal sealed class ArsenalButtonPressedEvent : ButtonPressedEvent
                     return;
             }
         }
-        else if (isUseToolButton && tool is MeleeWeapon && ArsenalModule.State.ComboCooldown > 0)
-        {
-            return;
-        }
-
-        var originalDirection = (FacingDirection)player.FacingDirection;
-        if (!Game1.options.gamepadControls && ArsenalModule.Config.FaceMouseCursor)
-        {
-            // face mouse cursor
-            player.FaceTowardsTile(Game1.currentCursorTile);
-        }
 
         if (!isUseToolButton || !player.isMoving() || !player.running || !ArsenalModule.Config.SlickMoves)
         {
             return;
         }
 
-        // do drift
         var directionVector = originalDirection.ToVector();
         if (originalDirection.IsVertical())
         {

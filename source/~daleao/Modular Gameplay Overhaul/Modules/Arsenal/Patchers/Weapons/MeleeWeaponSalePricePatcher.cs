@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Weapons;
 
 #region using directives
 
+using System.Linq;
 using System.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -50,12 +51,29 @@ internal sealed class MeleeWeaponSalePricePatcher : HarmonyPatcher
 
             if (tier == WeaponTier.Masterwork)
             {
-                __result = __instance.Name.StartsWith("Dwarven") ? tier.Price : (int)(tier.Price * 1.5);
+                __result = __instance.Name.StartsWith("Dragon")
+                    ? (int)(tier.Price * 1.5)
+                    : __instance.Name.StartsWith("Elvish")
+                        ? (int)(tier.Price * 0.75)
+                        : tier.Price;
                 __result *= 2;
                 return false; // don't run original logic
             }
 
-            __result = tier.Price * 2;
+            __result = tier.Price * 2; // x2 because this number will be halved later
+
+            // bonus points if has intrinsic enchantment
+            if (__instance.enchantments.FirstOrDefault(e => !e.IsForge() && e.IsSecondaryEnchantment()) is not null)
+            {
+                __result += 2000;
+            }
+
+            // bonus points if has non-forge enchantment
+            if (__instance.enchantments.FirstOrDefault(e => !e.IsForge() && !e.IsSecondaryEnchantment()) is not null)
+            {
+                __result += 2000;
+            }
+
             return false; // don't run original logic
         }
         catch (Exception ex)

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -108,42 +108,48 @@ public sealed class ILHelper
     /// </summary>
     /// <param name="pattern">A pattern of <see cref="CodeInstruction"/>s to match.</param>
     /// <param name="search">The <see cref="SearchOption"/>.</param>
+    /// <param name="nth">Match the nth occurrence of this <paramref name="pattern"/>.</param>
     /// <returns>The <see cref="ILHelper"/> instance.</returns>
-    public ILHelper Match(CodeInstruction[] pattern, SearchOption search = SearchOption.Next)
+    public ILHelper Match(CodeInstruction[] pattern, SearchOption search = SearchOption.Next, int nth = 1)
     {
-        var index = -1;
-        switch (search)
+        for (var i = 0; i < nth; i++)
         {
-            case SearchOption.First or SearchOption.Next:
+            var index = -1;
+            switch (search)
             {
-                var start = search is SearchOption.Next ? this.CurrentIndex + 1 : 0;
-                index = this._instructions.IndexOf(pattern, start);
-                break;
+                case SearchOption.First or SearchOption.Next:
+                {
+                    var start = search is SearchOption.Next ? this.CurrentIndex + 1 : 0;
+                    index = this._instructions.IndexOf(pattern, start);
+                    break;
+                }
+
+                case SearchOption.Previous or SearchOption.Last:
+                {
+                    var searchSpace = this._instructions.Clone();
+                    searchSpace.Reverse();
+
+                    var start = search is SearchOption.Previous ? searchSpace.Count - this.CurrentIndex : 0;
+                    index = searchSpace.Count - searchSpace.IndexOf(pattern.Reverse().ToArray(), start) -
+                            pattern.Length;
+                    break;
+                }
+
+                default:
+                {
+                    ThrowHelperExtensions.ThrowUnexpectedEnumValueException(search);
+                    break;
+                }
             }
 
-            case SearchOption.Previous or SearchOption.Last:
+            if (index < 0)
             {
-                var searchSpace = this._instructions.Clone();
-                searchSpace.Reverse();
-
-                var start = search is SearchOption.Previous ? searchSpace.Count - this.CurrentIndex : 0;
-                index = searchSpace.Count - searchSpace.IndexOf(pattern.Reverse().ToArray(), start) - pattern.Length;
-                break;
+                ThrowHelperExtensions.ThrowPatternNotFoundException(pattern, this.Original, this.Snitch);
             }
 
-            default:
-            {
-                ThrowHelperExtensions.ThrowUnexpectedEnumValueException(search);
-                break;
-            }
+            this._indexStack.Push(index);
         }
 
-        if (index < 0)
-        {
-            ThrowHelperExtensions.ThrowPatternNotFoundException(pattern, this.Original, this.Snitch);
-        }
-
-        this._indexStack.Push(index);
         return this;
     }
 
@@ -156,7 +162,7 @@ public sealed class ILHelper
     /// <param name="count">The number of instructions until the first occurrence of <paramref name="pattern"/>.</param>
     /// <param name="search">The <see cref="SearchOption"/>.</param>
     /// <returns>The <see cref="ILHelper"/> instance.</returns>
-    public ILHelper Match(CodeInstruction[] pattern, out int count, SearchOption search = SearchOption.Next)
+    public ILHelper Count(CodeInstruction[] pattern, out int count, SearchOption search = SearchOption.Next)
     {
         this.Match(pattern, search);
         var end = this._indexStack.Pop() + 1;
@@ -228,6 +234,7 @@ public sealed class ILHelper
     /// <summary>Moves the stack pointer an integer number of <paramref name="steps"/>.</summary>
     /// <param name="steps">Number of steps by which to move the stack pointer.</param>
     /// <returns>The <see cref="ILHelper"/> instance.</returns>
+    /// <remarks>Positive means down.</remarks>
     public ILHelper Move(int steps = 1)
     {
         if (this.CurrentIndex + steps < 0 || this.CurrentIndex + steps > this.LastIndex)
@@ -309,9 +316,9 @@ public sealed class ILHelper
         copy = this._instructions.GetRange(this.CurrentIndex, count).Clone().ToArray();
         if (removeLabels)
         {
-            foreach (var instruction in copy)
+            for (var i = 0; i < copy.Length; i++)
             {
-                instruction.labels.Clear();
+                copy[i].labels.Clear();
             }
         }
 
@@ -475,6 +482,7 @@ public sealed class ILHelper
     /// <returns>The <see cref="ILHelper"/> instance.</returns>
     public ILHelper ForEach(CodeInstruction[] pattern, Action action)
     {
+        this.GoTo(0);
         while (this.TryMoveNext(pattern))
         {
             action.Invoke();

@@ -17,6 +17,9 @@
     "Shipment.Clint.UpgradeLetter.ToolSent": "{{Tool}} sent to upgrade.",
     "Shipment.Clint.UpgradeLetter.NoBars": "You don't have enough metal bars to send the {{Tool}} to upgrade.",
     "Shipment.Clint.UpgradeLetter.NoMoney": "You don't have enough money to send the {{Tool}} to upgrade.",
+    "Shipment.Clint.UpgradeLetter.Question": "Send tool to upgrade?",
+    "Shipment.Clint.UpgradeLetter.Yes": "Yes",
+    "Shipment.Clint.UpgradeLetter.No": "No",
     // Item Delivery Quest Service
     "Shipment.Quest.ItemDelivery.NotEnoughItems": "{{Npc}} needs {{Number}} of them.",
     "Shipment.Quest.ItemDelivery.NoMoney": "You don't have enough money to send the quest item.",

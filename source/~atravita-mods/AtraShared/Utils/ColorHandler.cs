@@ -186,4 +186,9 @@ ColorParseFail:
     /// <returns>Hex string.</returns>
     public static string ToHexString(this Color color)
     => $"#{color.R:X2}{color.G:X2}{color.B:X2}{color.A:X2}";
+
+    /// <summary>Get the complementary color.</summary>
+    /// <param name="color">The color to inverse.</param>
+    /// <remarks>Stolen from DaLion. Thanks!</remarks>
+    public static XNAColor Inverse(this XNAColor color) => new(color.PackedValue ^ 0xFFFFFFu);
 }

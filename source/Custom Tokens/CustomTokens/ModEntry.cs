@@ -47,10 +47,10 @@ namespace CustomTokens
 
         public static readonly PerScreen<PlayerData> perScreen = new PerScreen<PlayerData>(createNewState: () => new PlayerData());
 
-        private static readonly string[] tokens = { "DeathCountMarried", "PassOutCount", "QuestsCompleted" };
+        private static readonly string[] tokens = { "DeathCountMarried", "PassOutCount", "QuestsCompleted", "DeepestVolcanoFloor" };
 
         public static Update update = new Update();
-
+        public static int deathcounter;
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -62,7 +62,6 @@ namespace CustomTokens
             helper.Events.GameLoop.Saving += this.Saving;
             helper.Events.GameLoop.ReturnedToTitle += this.Title;
             helper.Events.GameLoop.DayStarted += this.DayStarted;
-            helper.Events.Multiplayer.ModMessageReceived += this.MessageReceived;
 
             // Read the mod config for values and create one if one does not currently exist
             this.config = this.Helper.ReadConfig<ModConfig>();
@@ -420,6 +419,63 @@ namespace CustomTokens
                        return null;
                    });
 
+                // Register "DeepestNormalMineLevel" token
+                api.RegisterToken(
+                    this.ModManifest,
+                    "DeepestNormalMineLevel",
+                    () =>
+                    {
+                        if (Context.IsWorldReady)
+                        {
+                            var deepestStandardMineLevel = ModEntry.perScreen.Value.DeepestMineLevel < 121 ? ModEntry.perScreen.Value.DeepestMineLevel : 120;
+
+                            return new[]
+                            {
+                            deepestStandardMineLevel.ToString()
+                            };
+                        }
+
+                        return null;
+                    });
+
+                // Register "DeepestSkullCavernMineLevel" token
+                api.RegisterToken(
+                    this.ModManifest,
+                    "DeepestSkullCavernMineLevel",
+                    () =>
+                    {
+                        if (Context.IsWorldReady)
+                        {
+                            var deepestSkullCavernMineLevel = ModEntry.perScreen.Value.DeepestMineLevel > 120 ? ModEntry.perScreen.Value.DeepestMineLevel - 120 : 0;
+
+                            return new[]
+                            {
+                            deepestSkullCavernMineLevel.ToString()
+                            };
+                        }
+
+                        return null;
+                    });
+
+                // Register "DeepestVolcanoFloor" token
+                api.RegisterToken(
+                    this.ModManifest,
+                    "DeepestVolcanoFloor",
+                    () =>
+                    {
+                        if (Context.IsWorldReady)
+                        {
+                            var deepestVolcanoFloor = ModEntry.perScreen.Value.DeepestVolcanoFloor;
+
+                            return new[]
+                            {
+                            deepestVolcanoFloor.ToString()
+                            };
+                        }
+
+                        return null;
+                    });
+
                 // Register "Child" token
                 api.RegisterToken(this.ModManifest, "Child", new ChildTokens());
             }
@@ -435,6 +491,8 @@ namespace CustomTokens
         /// <param name="e">The event arguments.</param>
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
+            deathcounter = (int)Game1.player.stats.timesUnconscious;
+
             // Add mod data to save file if needed
             foreach(var token in tokens)
             {
@@ -462,6 +520,9 @@ namespace CustomTokens
                 : 0;
             ModEntry.perScreen.Value.PassOutCount = Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"] != "" 
                 ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"])
+                : 0;
+            ModEntry.perScreen.Value.DeepestVolcanoFloor = Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"] != ""
+                ? int.Parse(Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"])
                 : 0;
 
             // Reset booleans for new day
@@ -557,6 +618,7 @@ namespace CustomTokens
             // Update old tracker
             Game1.player.modData[$"{this.ModManifest.UniqueID}.DeathCountMarried"] = ModEntry.perScreen.Value.DeathCountMarried.ToString();
             Game1.player.modData[$"{this.ModManifest.UniqueID}.PassOutCount"] = ModEntry.perScreen.Value.PassOutCount.ToString();
+            Game1.player.modData[$"{this.ModManifest.UniqueID}.DeepestVolcanoFloor"] = ModEntry.perScreen.Value.DeepestVolcanoFloor.ToString();
             this.Monitor.Log("Trackers updated for new day");
         }
 
@@ -577,18 +639,6 @@ namespace CustomTokens
             {
                 ModEntry.perScreen.Value.QuestsCompleted.Clear();               
                 this.Monitor.Log("Clearing Quest data, ready for new save");
-            }
-        }
-
-        // For compatibility with The Spirit World, one of my personal mods
-        private void MessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            if (e.FromModID == "TheMightyAmondee.SpiritWorld" && e.Type == "falsealarm")
-            {
-                Update message = e.ReadAs<Update>();
-                update.updatedeath = message.updatedeath;
-                this.Monitor.Log("Fixing token values...");
-                this.Monitor.Log(ModEntry.perScreen.Value.DeathCountMarried.ToString());
             }
         }
 
@@ -628,6 +678,9 @@ namespace CustomTokens
                 // Display information in SMAPI console
                 this.Monitor.Log($"\n\nMineLevel: {ModEntry.perScreen.Value.CurrentMineLevel}" +
                     $"\nVolcanoFloor: {ModEntry.perScreen.Value.CurrentVolcanoFloor}" +
+                    $"\nDeepestNormalMineLevel: { (ModEntry.perScreen.Value.DeepestMineLevel < 121 ? ModEntry.perScreen.Value.DeepestMineLevel : 120)}" +
+                    $"\nDeepestSkullCavernMineLevel: {(ModEntry.perScreen.Value.DeepestMineLevel > 120 ? ModEntry.perScreen.Value.DeepestMineLevel - 120 : 0)}" +
+                    $"\nDeepestVolcanoFloor: {ModEntry.perScreen.Value.DeepestVolcanoFloor}" +
                     $"\nDeepestMineLevel: {ModEntry.perScreen.Value.DeepestMineLevel}" +
                     $"\nYearsMarried: {ModEntry.perScreen.Value.CurrentYearsMarried}" +
                     $"\nAnniversaryDay: {ModEntry.perScreen.Value.AnniversaryDay}" +

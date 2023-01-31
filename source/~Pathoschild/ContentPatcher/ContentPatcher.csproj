@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>1.28.3</Version>
+    <Version>1.28.4</Version>
     <RootNamespace>ContentPatcher</RootNamespace>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" />
+    <Reference Include="SMAPI.Toolkit" HintPath="$(GamePath)\smapi-internal\SMAPI.Toolkit.dll" />
   </ItemGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" />

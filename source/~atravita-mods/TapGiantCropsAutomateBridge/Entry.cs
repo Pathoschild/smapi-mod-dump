@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
+
 namespace TapGiantCropsAutomateBridge;
 
 internal sealed class AutomateBridge

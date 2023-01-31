@@ -69,7 +69,7 @@ public interface IInventoryProvider {
 	/// Check to see if this object is valid for inventory operations.
 	///
 	/// If location is null, it should not be considered when determining
-	/// the validitiy of the object.
+	/// the validity of the object.
 	/// 
 	/// </summary>
 	/// <param name="obj">the object</param>
@@ -330,7 +330,7 @@ public interface IIngredient {
 	/// count. This cannot be ignored unless <see cref="SupportsQuality"/>
 	/// returns <c>false</c>.</param>
 	/// <param name="lowQualityFirst">Whether or not we should make an effort
-	/// to consume lower quality ingredients before ocnsuming higher quality
+	/// to consume lower quality ingredients before consuming higher quality
 	/// ingredients.</param>
 	void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst);
 
@@ -386,7 +386,7 @@ public interface IRecipe {
 #region Identity
 
 	/// <summary>
-	/// An addditional sorting value to apply to recipes in the Better Crafting
+	/// An additional sorting value to apply to recipes in the Better Crafting
 	/// menu. Applied before other forms of sorting.
 	/// </summary>
 	int SortValue { get; }
@@ -406,7 +406,7 @@ public interface IRecipe {
 	string DisplayName { get; }
 
 	/// <summary>
-	/// An optional description of the recipe displayed on its tooltip.
+	/// An optional description of the recipe displayed on its tool-tip.
 	/// </summary>
 	string? Description { get; }
 
@@ -419,7 +419,7 @@ public interface IRecipe {
 	/// <summary>
 	/// How many times the player has crafted this recipe. If advanced crafting
 	/// information is enabled, and this value is non-zero, it will be
-	/// displayed on recipe tooltips.
+	/// displayed on recipe tool-tips.
 	/// </summary>
 	/// <param name="who">The player we're asking about.</param>
 	int GetTimesCrafted(Farmer who);
@@ -489,7 +489,7 @@ public interface IRecipe {
 	bool CanCraft(Farmer who);
 
 	/// <summary>
-	/// An optional, extra string to appear on item tooltips. This can be used
+	/// An optional, extra string to appear on item tool-tips. This can be used
 	/// for displaying error messages to the user, or anything else that would
 	/// be relevant. For example, the add-on for crafting buildings uses this
 	/// to display error messages telling users why they are unable to craft
@@ -1129,7 +1129,11 @@ public interface IBetterCrafting {
 	/// <param name="displayName">The name to display for the ingredient.</param>
 	/// <param name="texture">The texture to display the ingredient with.</param>
 	/// <param name="source">The source rectangle of the texture to display.</param>
-	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null);
+	/// <param name="recycleTo">An optional item to return when recycling this
+	/// ingredient. Providing a value here marks this ingredients as non-fuzzy
+	/// for the purpose of recycling. If you want fuzzy behavior, just leave
+	/// this as null and an appropriate item will be discovered.</param>
+	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, Func<string> displayName, Func<Texture2D> texture, Rectangle? source = null, Item? recycleTo = null);
 
 	[Obsolete("Use the method that takes functions instead.")]
 	IIngredient CreateMatcherIngredient(Func<Item, bool> matcher, int quantity, string displayName, Texture2D texture, Rectangle? source = null);
@@ -1213,7 +1217,7 @@ public interface IBetterCrafting {
 	/// <param name="cooking">If true, we alter a cooking category.
 	/// Otherwise, crafting.</param>
 	/// <param name="categoryId">The ID of the category to alter.</param>
-	/// <param name="recipeNames">An enummeration of recipe names for recipes to
+	/// <param name="recipeNames">An enumeration of recipe names for recipes to
 	/// add to the category.</param>
 	void AddRecipesToDefaultCategory(bool cooking, string categoryId, IEnumerable<string> recipeNames);
 
@@ -1224,7 +1228,7 @@ public interface IBetterCrafting {
 	/// <param name="cooking">If true, we alter a cooking category.
 	/// Otherwise, crafting.</param>
 	/// <param name="categoryId">The ID of the category to alter.</param>
-	/// <param name="recipeNames">An enummeration of recipe names for recipes to
+	/// <param name="recipeNames">An enumeration of recipe names for recipes to
 	/// remove from the category.</param>
 	void RemoveRecipesFromDefaultCategory(bool cooking, string categoryId, IEnumerable<string> recipeNames);
 

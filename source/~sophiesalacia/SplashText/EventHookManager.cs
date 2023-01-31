@@ -58,11 +58,11 @@ internal class EventHookManager
 
     private static void LoadAssets(object sender, AssetRequestedEventArgs e)
     {
-        if (e.Name.IsEquivalentTo(Globals.ContentPath))
+        if (e.NameWithoutLocale.IsEquivalentTo(Globals.ContentPath))
         {
             e.LoadFromModFile<List<string>>("Assets/splashTexts.json", AssetLoadPriority.Medium);
         }
-        else if (e.Name.IsEquivalentTo(Globals.SplashFontPath))
+        else if (e.NameWithoutLocale.IsEquivalentTo(Globals.SplashFontPath))
         {
             e.LoadFromModFile<SpriteFont>("Assets/splashFont.xnb", AssetLoadPriority.Medium);
         }

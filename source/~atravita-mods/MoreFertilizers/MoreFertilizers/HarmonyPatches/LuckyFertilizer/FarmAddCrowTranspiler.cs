@@ -11,6 +11,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 using AtraCore.Framework.ReflectionManager;
+using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -40,7 +41,7 @@ internal static class FarmAddCrowTranspiler
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             helper.FindNext(new CodeInstructionWrapper[]
-            {
+            { // exclude from the inital count.
                 new (OpCodes.Ldloca_S),
                 new (OpCodes.Call, typeof(KeyValuePair<Vector2, TerrainFeature>).GetCachedProperty("Value", ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
                 new (OpCodes.Isinst, typeof(HoeDirt)),
@@ -58,16 +59,47 @@ internal static class FarmAddCrowTranspiler
             .Insert(new CodeInstruction[]
             {
                 local,
-                new (OpCodes.Call, typeof(KeyValuePair<Vector2, TerrainFeature>).GetCachedProperty("Value", ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
-                new (OpCodes.Isinst, typeof(HoeDirt)),
-                new (OpCodes.Call, typeof(FarmAddCrowTranspiler).GetCachedMethod(nameof(HasLuckyFertilizer), ReflectionCache.FlagTypes.StaticFlags)),
-                new (OpCodes.Brtrue_S, label),
-            }, withLabels: labelsToMove);
+                new(OpCodes.Call, typeof(KeyValuePair<Vector2, TerrainFeature>).GetCachedProperty("Value", ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
+                new(OpCodes.Isinst, typeof(HoeDirt)),
+                new(OpCodes.Call, typeof(FarmAddCrowTranspiler).GetCachedMethod(nameof(HasLuckyFertilizer), ReflectionCache.FlagTypes.StaticFlags)),
+                new(OpCodes.Brtrue_S, label),
+            }, withLabels: labelsToMove)
+            .FindNext(new CodeInstructionWrapper[]
+            { // skip past if picked anyways.
+                new(OpCodes.Callvirt, typeof(Random).GetCachedMethod(nameof(Random.Next), ReflectionCache.FlagTypes.InstanceFlags, new[] { typeof(int) } )),
+            })
+            .FindNext(new CodeInstructionWrapper[]
+            {
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, typeof(GameLocation).GetCachedField(nameof(GameLocation.terrainFeatures), ReflectionCache.FlagTypes.InstanceFlags)),
+                new(SpecialCodeInstructionCases.LdLoc),
+                new(OpCodes.Callvirt),
+                new(OpCodes.Isinst, typeof(HoeDirt)),
+                new(OpCodes.Brfalse),
+            })
+            .Copy(5, out IEnumerable<CodeInstruction>? codes)
+            .Advance(5)
+            .Push()
+            .StoreBranchDest()
+            .AdvanceToStoredLabel()
+            .DefineAndAttachLabel(out Label secondLabel)
+            .Pop()
+            .Advance(1)
+            .GetLabels(out IList<Label>? labelsToMove2)
+            .Insert(codes.ToArray(), labelsToMove2)
+            .Insert(new CodeInstruction[]
+            {
+                new(OpCodes.Call, typeof(FarmAddCrowTranspiler).GetCachedMethod(nameof(HasLuckyFertilizer), ReflectionCache.FlagTypes.StaticFlags)),
+                new(OpCodes.Brtrue_S, secondLabel),
+            });
+
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)
         {
             ModEntry.ModMonitor.Log($"Mod crashed while transpiling Farm.addCrow:\n\n{ex}", LogLevel.Error);
+            original?.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

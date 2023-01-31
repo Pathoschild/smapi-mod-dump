@@ -2,7 +2,6 @@
   <Import Project="..\..\csproj_common" />
   
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
@@ -11,7 +10,7 @@
     <Name>Museum Store</Name>
     <Description>Adds museum rewards to a store.</Description>
     <UpdateKeys>Nexus:12598</UpdateKeys>
-    <Version>0.2.0</Version>
+    <Version>0.2.2</Version>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 

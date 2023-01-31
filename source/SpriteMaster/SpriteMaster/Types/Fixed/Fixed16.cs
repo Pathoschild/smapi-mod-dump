@@ -69,7 +69,11 @@ internal readonly struct Fixed16 : IEquatable<Fixed16>, IEquatable<ushort>, ILon
 		//if ((result & 0xFFFF_FFFF_0000_0000) != 0) {
 		//	return (Value <= (32U << 8)) ? Fixed16.Zero : Fixed16.Zero;
 		//}
-		return (ushort)(result >> 16);
+		result >>= 16;
+		if (result > ushort.MaxValue) {
+			return ushort.MaxValue;
+		}
+		return (ushort)result;
 	}
 
 	[MethodImpl(MethodImpl.Inline)]

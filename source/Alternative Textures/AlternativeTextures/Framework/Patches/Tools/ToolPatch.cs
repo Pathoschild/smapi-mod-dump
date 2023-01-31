@@ -319,6 +319,10 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.paint_not_placeable"), 3));
                     return CancelUsing(who);
                 }
+                else if (targetedTerrain is HoeDirt hoeDirt && hoeDirt.crop is null)
+                {
+                    return CancelUsing(who);
+                }
 
                 if (!targetedTerrain.modData.ContainsKey("AlternativeTextureName"))
                 {
@@ -341,7 +345,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         var instanceSeasonName = $"{AlternativeTextureModel.TextureType.FruitTree}_{saplingName}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";
                         AssignDefaultModData(targetedTerrain, instanceSeasonName, true);
                     }
-                    else if (targetedTerrain is HoeDirt hoeDirt)
+                    else if (targetedTerrain is HoeDirt hoeDirt && hoeDirt.crop is not null)
                     {
                         var instanceName = Game1.objectInformation.ContainsKey(hoeDirt.crop.netSeedIndex.Value) ? Game1.objectInformation[hoeDirt.crop.netSeedIndex.Value].Split('/')[0] : String.Empty;
                         var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Crop}_{instanceName}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";

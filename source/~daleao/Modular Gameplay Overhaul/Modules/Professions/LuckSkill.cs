@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -82,14 +82,20 @@ public sealed class LuckSkill : Skill
         this.ProfessionPairs[this.Professions[1].Id] =
             new ProfessionPair(this.Professions[4], this.Professions[5], this.Professions[1], 10);
 
-        foreach (var profession in this.Professions)
+        for (var i = 0; i < 6; i++)
         {
+            var profession = this.Professions[i];
             SCProfession.Loaded[profession.Id] = (SCProfession)profession;
         }
+
+        Instance = this;
     }
 
     /// <inheritdoc />
     public override int MaxLevel => 10;
+
+    /// <summary>Gets the singleton <see cref="LuckSkill"/> instance.</summary>
+    internal static Skill? Instance { get; private set; }
 
     /// <inheritdoc />
     public override void Revalidate()

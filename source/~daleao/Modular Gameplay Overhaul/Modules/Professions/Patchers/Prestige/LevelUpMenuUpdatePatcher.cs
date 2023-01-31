@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -279,7 +279,7 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
         }
 
         // Injected: if (shouldProposeFinalQuestion) ProposeFinalQuestion(chosenProfession)
-        // Aand: if (shouldCongratulateOnFullPrestige) CongratulateOnFullPrestige(chosenProfession)
+        // And: if (shouldCongratulateOnFullPrestige) CongratulateOnFullPrestige(chosenProfession)
         // Before: if (!isActive || !informationUp)
         try
         {
@@ -432,7 +432,7 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
         }
 
         var hasAllProfessions = Game1.player.HasAllProfessionsInSkill(skill);
-        Log.D($"Farmer {Game1.player.Name} " + (hasAllProfessions
+        Log.D($"[Prestige]: Farmer {Game1.player.Name} " + (hasAllProfessions
             ? $" has acquired all professions in the {skill} skill and may now gain extended levels."
             : $" does not yet have all professions in the {skill} skill."));
         if (hasAllProfessions)
@@ -440,11 +440,14 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
             return true;
         }
 
-        var missingProfessionNames = string.Join(
+#if DEBUG
+        var missing = string.Join(
             ',',
-            Game1.player.GetMissingProfessionsInSkill(skill)
+            Game1.player
+                .GetMissingProfessionsInSkill(skill)
                 .Select(p => p.Title));
-        Log.D($"Missing professions: {missingProfessionNames}");
+        Log.D($"[Prestige]: Missing professions: {missing}");
+#endif
         return false;
     }
 
@@ -486,7 +489,7 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
             "prestige.levelup.unlocked",
             new { skill = Skill.FromValue(chosenProfession / 6).DisplayName }));
 
-        if (!Game1.player.HasAllProfessions())
+        if (!Game1.player.HasAllProfessions(true))
         {
             return;
         }

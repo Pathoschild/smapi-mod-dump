@@ -37,7 +37,11 @@ namespace AeroCore.Utils
         private static void checkSkipFadeIn(int screen)
         {
             if (skipFade.Value)
-                Patches.FadeHooks.gameFade.Value.fadeToBlackAlpha = -1f;
+            {
+                var fade = Patches.FadeHooks.gameFade.Value;
+                if (fade is not null)
+                    fade.fadeToBlackAlpha = -1f;
+			}
             skipFade.Value = false;
         }
 
@@ -132,6 +136,9 @@ namespace AeroCore.Utils
             => QuickWarp(Game1.getLocationRequest(name, structure), x, y, facing);
         public static void ReloadCurrentLocation(bool quick = false)
         {
+            if (Game1.player is null)
+                return;
+
             var pos = Game1.player.getTileLocationPoint();
             var loc = Game1.player.currentLocation;
             var facing = Game1.player.FacingDirection;

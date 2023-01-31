@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -45,7 +45,8 @@ internal static class FarmerExtensions
         var list = farmer.Items;
         for (var i = 0; i < list.Count; i++)
         {
-            if (list[i] is not Ring || list[i].ParentSheetIndex != index)
+            var item = list[i];
+            if (item is not Ring || item.ParentSheetIndex != index)
             {
                 continue;
             }
@@ -72,13 +73,14 @@ internal static class FarmerExtensions
         var list = farmer.Items;
         for (var i = 0; i < list.Count; i++)
         {
-            if (list[i] is not SObject || list[i].ParentSheetIndex != index)
+            var item = list[i];
+            if (item is not SObject || item.ParentSheetIndex != index)
             {
                 continue;
             }
 
             var toRemove = amount;
-            amount -= list[i].Stack;
+            amount -= item.Stack;
             list[i].Stack -= toRemove;
             if (list[i].Stack <= 0)
             {

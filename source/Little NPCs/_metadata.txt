@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/mus-candidus/LittleNPCs
+   Git: https://github.com/mus-candidus/LittleNPCs.git
+
+mods:
+   Little NPCs
+
+latest commit:
+   commit 86854b1d9e73299e9214f37fb54a631e1d16e665
+   Author: Candidus <candidus@xmail.net>
+   Date:   Tue Jan 24 20:46:33 2023 +0100
+   
+       Fix error in README.
+   

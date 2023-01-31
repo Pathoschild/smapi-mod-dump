@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -49,7 +49,7 @@ internal sealed class EventManager
     internal IModEvents ModEvents { get; }
 
     /// <summary>Gets an enumerable of all <see cref="IManagedEvent"/>s instances.</summary>
-    internal IEnumerable<IManagedEvent> Managed => this._eventCache.Select(pair => pair.Value).AsEnumerable();
+    internal IEnumerable<IManagedEvent> Managed => this._eventCache.Select(pair => pair.Value);
 
     /// <summary>Gets an enumerable of all <see cref="IManagedEvent"/>s currently enabled for the local player.</summary>
     internal IEnumerable<IManagedEvent> Enabled => this.Managed.Where(e => e.IsEnabled);
@@ -59,7 +59,8 @@ internal sealed class EventManager
     /// <returns>A <see cref="IEnumerable{T}"/> of enabled <see cref="IManagedEvent"/>s in the specified screen.</returns>
     internal IEnumerable<IManagedEvent> EnabledForScreen(int screenId)
     {
-        return this.Managed.Where(e => e.IsEnabledForScreen(screenId));
+        return this.Managed
+            .Where(e => e.IsEnabledForScreen(screenId));
     }
 
     /// <summary>Adds the <paramref name="event"/> instance to the cache.</summary>
@@ -149,9 +150,9 @@ internal sealed class EventManager
     /// <param name="eventTypes">The <see cref="IManagedEvent"/> types to enable.</param>
     internal void Enable(params Type[] eventTypes)
     {
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
-            this.Enable(type);
+            this.Enable(eventTypes[i]);
         }
     }
 
@@ -185,9 +186,9 @@ internal sealed class EventManager
     /// <param name="eventTypes">The <see cref="IManagedEvent"/> types to enable.</param>
     internal void EnableForScreen(int screenId, params Type[] eventTypes)
     {
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
-            this.EnableForScreen(type, screenId);
+            this.EnableForScreen(eventTypes[i], screenId);
         }
     }
 
@@ -213,9 +214,9 @@ internal sealed class EventManager
     /// <param name="eventTypes">The <see cref="IManagedEvent"/> types to enable.</param>
     internal void EnableForAllScreens(params Type[] eventTypes)
     {
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
-            this.EnableForAllScreens(type);
+            this.EnableForAllScreens(eventTypes[i]);
         }
     }
 
@@ -246,9 +247,9 @@ internal sealed class EventManager
     /// <param name="eventTypes">The <see cref="IManagedEvent"/> types to disable.</param>
     internal void Disable(params Type[] eventTypes)
     {
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
-            this.Disable(type);
+            this.Disable(eventTypes[i]);
         }
     }
 
@@ -282,9 +283,9 @@ internal sealed class EventManager
     /// <param name="eventTypes">The <see cref="IManagedEvent"/> types to disable.</param>
     internal void DisableForScreen(int screenId, params Type[] eventTypes)
     {
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
-            this.DisableForScreen(type, screenId);
+            this.DisableForScreen(eventTypes[i], screenId);
         }
     }
 
@@ -310,9 +311,9 @@ internal sealed class EventManager
     /// <param name="eventTypes">The <see cref="IManagedEvent"/> types to disable.</param>
     internal void DisableForAllScreens(params Type[] eventTypes)
     {
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
-            this.DisableForAllScreens(type);
+            this.DisableForAllScreens(eventTypes[i]);
         }
     }
 
@@ -449,8 +450,9 @@ internal sealed class EventManager
         }
 
         Log.D("[EventManager]: Instantiating events....");
-        foreach (var type in eventTypes)
+        for (var i = 0; i < eventTypes.Length; i++)
         {
+            var type = eventTypes[i];
 #if RELEASE
             var debugAttribute = type.GetCustomAttribute<DebugAttribute>();
             if (debugAttribute is not null)

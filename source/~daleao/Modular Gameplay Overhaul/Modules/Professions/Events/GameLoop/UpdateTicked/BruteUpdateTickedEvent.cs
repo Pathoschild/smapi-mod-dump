@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -76,7 +76,7 @@ internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
                 0,
                 1,
                 "Brute",
-                I18n.Get("brute.title" + (Game1.player.IsMale ? ".title" : ".female")) + " " +
+                I18n.Get("brute.title" + (Game1.player.IsMale ? ".male" : ".female")) + " " +
                 I18n.Get("brute.buff.name"))
             {
                 which = this._buffId,

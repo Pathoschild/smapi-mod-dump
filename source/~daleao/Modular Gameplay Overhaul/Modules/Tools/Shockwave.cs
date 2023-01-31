@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -100,8 +100,13 @@ internal class Shockwave
             affectedTiles = this._tileGrids[0].Tiles;
         }
 
-        foreach (var tile in affectedTiles.Except(new[] { this._epicenter, this._farmer.getTileLocation() }))
+        foreach (var tile in affectedTiles)
         {
+            if (tile == this._epicenter || tile == this._farmer.getTileLocation())
+            {
+                continue;
+            }
+
             this._farmer.TemporarilyFakeInteraction(() =>
             {
                 // face tile to avoid game skipping interaction
@@ -144,7 +149,7 @@ internal class Shockwave
             return;
         }
 
-        Log.D(this._tileGrids[^1].ToString());
+        //Log.D(this._tileGrids[^1].ToString());
         ToolsModule.State.Shockwaves.Remove(this);
     }
 

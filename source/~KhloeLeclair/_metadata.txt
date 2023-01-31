@@ -13,9 +13,12 @@ mods:
    Theme Manager
 
 latest commit:
-   commit 20781329d1ef39d2154cc07a5270ed8b27de31c7
+   commit 03c5242ab4f19caca5d23ff7fa49591c9f82101d
+   Merge: cd16e77 7b5c9a0
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Fri Dec 2 16:02:41 2022 -0500
+   Date:   Sun Jan 15 00:54:39 2023 -0500
    
-       Add a little more to the test.
+       Merge pull request #14 from thiagomasson/main
+       
+       Portuguese translation
    

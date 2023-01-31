@@ -41,6 +41,8 @@ using StardewValley.TerrainFeatures;
 using Leclair.Stardew.BetterCrafting.Managers;
 using Leclair.Stardew.BetterCrafting.Models;
 using Newtonsoft.Json.Linq;
+using StardewValley.Tools;
+using Leclair.Stardew.BetterCrafting.Integrations.RaisedGardenBeds;
 
 namespace Leclair.Stardew.BetterCrafting;
 
@@ -75,7 +77,7 @@ public class ModEntry : ModSubscriber {
 	public RecipeManager Recipes;
 	public FavoriteManager Favorites;
 
-	internal ThemeManager<Models.Theme> ThemeManager;
+	internal ThemeManager<Theme> ThemeManager;
 
 #nullable enable
 
@@ -97,6 +99,7 @@ public class ModEntry : ModSubscriber {
 	internal Integrations.CookingSkill.CSIntegration? intCSkill;
 	internal Integrations.SpaceCore.SCIntegration? intSCore;
 	internal Integrations.CustomCraftingStation.CCSIntegration? intCCStation;
+	internal Integrations.DynamicGameAssets.DGAIntegration? intDGA;
 
 	internal Models.Theme? Theme => ThemeManager.Theme;
 
@@ -110,10 +113,11 @@ public class ModEntry : ModSubscriber {
 		// Harmony
 		Harmony = new Harmony(ModManifest.UniqueID);
 
+		Patches.Item_Patches.Patch(this);
 		Patches.Workbench_Patches.Patch(this);
 		Patches.Torch_Patches.Patch(this);
 
-		SpriteText_Patches.Patch(Harmony, Monitor);
+		Common_SpriteText_Patches.Patch(Harmony, Monitor);
 
 		// Read Config
 		Config = Helper.ReadConfig<ModConfig>();
@@ -198,13 +202,17 @@ public class ModEntry : ModSubscriber {
 
 		if (Game1.activeClickableMenu is GameMenu gm) {
 			foreach(var gmp in gm.pages) {
-				if (gmp is Menus.BetterCraftingPage)
+				if (gmp is Menus.BetterCraftingPage bcp) {
 					UpdateTextures(oldTex, newTex, gmp);
+					bcp.LoadTextures();
+				}
 			}
 		}
 
-		if (Game1.activeClickableMenu is Menus.BetterCraftingPage page)
+		if (Game1.activeClickableMenu is Menus.BetterCraftingPage page) {
 			UpdateTextures(oldTex, newTex, page);
+			page.LoadTextures();
+		}
 	}
 
 	[EventPriority(EventPriority.Low)]
@@ -418,11 +426,21 @@ public class ModEntry : ModSubscriber {
 		intCSkill = new(this);
 		intSCore = new(this);
 		intCCStation = new(this);
+		intDGA = new(this);
 
 		// Commands
 		Helper.ConsoleCommands.Add("bc_update", "Invalidate cached data.", (name, args) => {
 			Recipes.Invalidate();
-			Log($"Invalided 1 cache.");
+
+			CachedObjects = null;
+			CachedBigCraftables = null;
+			CachedFurniture = null;
+			CachedBoots = null;
+			CachedClothing = null;
+			CachedHats = null;
+			CachedWeapons = null;
+
+			Log($"Invalided caches.");
 		});
 
 		Helper.ConsoleCommands.Add("bc_retheme", "Reload all themes.", (name, args) => {
@@ -459,6 +477,27 @@ public class ModEntry : ModSubscriber {
 		foreach(var name in e.Names) {
 			if (name.IsEquivalentTo(HeadsPath))
 				HeadsCache = null;
+
+			if (name.IsEquivalentTo(@"Data\ObjectInformation"))
+				CachedObjects = null;
+
+			if (name.IsEquivalentTo(@"Data\BigCraftablesInformation"))
+				CachedBigCraftables = null;
+
+			if (name.IsEquivalentTo(@"Data\Furniture"))
+				CachedFurniture = null;
+
+			if (name.IsEquivalentTo(@"Data\Boots"))
+				CachedBoots = null;
+
+			if (name.IsEquivalentTo(@"Data\ClothingInformation"))
+				CachedClothing = null;
+
+			if (name.IsEquivalentTo(@"Data\hats"))
+				CachedHats = null;
+
+			if (name.IsEquivalentTo(@"Data\weapons"))
+				CachedWeapons = null;
 		}
 	}
 
@@ -776,6 +815,12 @@ public class ModEntry : ModSubscriber {
 
 		GMCMIntegration
 			.AddLabel(
+				I18n.Setting_Recycle,
+				I18n.Setting_Recycle_About,
+				"page:recycle"
+			)
+
+			.AddLabel(
 				I18n.Setting_Nearby,
 				I18n.Setting_Nearby_Tip,
 				"page:nearby"
@@ -792,6 +837,12 @@ public class ModEntry : ModSubscriber {
 				I18n.Setting_Transfer_About,
 				"page:transfer"
 			);
+
+		Dictionary<RecyclingMode, Func<string>> recycleModes = new() {
+			[RecyclingMode.Automatic] = I18n.Setting_RecycleMode_Automatic,
+			[RecyclingMode.Enabled] = I18n.Setting_RecycleMode_Enabled,
+			[RecyclingMode.Disabled] = I18n.Setting_RecycleMode_Disabled
+		};
 
 		Dictionary<TTWhen, Func<string>> whens = new() {
 			[TTWhen.Never] = I18n.Setting_Ttwhen_Never,
@@ -940,6 +991,43 @@ public class ModEntry : ModSubscriber {
 		}
 
 		GMCMIntegration
+			.StartPage("page:recycle", I18n.Setting_Recycle)
+			.AddParagraph(I18n.Setting_Recycle_About)
+			.Add(
+				I18n.Setting_Recycle_ClickToggle,
+				I18n.Setting_Recycle_ClickToggle_Tip,
+				c => c.RecycleClickToggle,
+				(c, v) => c.RecycleClickToggle = v
+			)
+			.AddChoice(
+				I18n.Setting_Recycle_Crafting,
+				I18n.Setting_Recycle_Crafting_Tip,
+				c => c.RecycleCrafting,
+				(c, v) => c.RecycleCrafting = v,
+				recycleModes
+			)
+			.AddChoice(
+				I18n.Setting_Recycle_Cooking,
+				I18n.Setting_Recycle_Cooking_Tip,
+				c => c.RecycleCooking,
+				(c, v) => c.RecycleCooking = v,
+				recycleModes
+			)
+			.AddLabel("")
+			.Add(
+				I18n.Setting_Recycle_Fuzzy,
+				I18n.Setting_Recycle_Fuzzy_Tip,
+				c => c.RecycleFuzzyItems,
+				(c, v) => c.RecycleFuzzyItems = v
+			)
+			.Add(
+				I18n.Setting_Recycle_Unknown,
+				I18n.Setting_Recycle_Unknown_Tip,
+				c => c.RecycleUnknownRecipes,
+				(c, v) => c.RecycleUnknownRecipes = v
+			);
+
+		GMCMIntegration
 			.StartPage("page:nearby", I18n.Setting_Nearby)
 			.AddParagraph(I18n.Setting_Nearby_Tip)
 			.Add(
@@ -1057,6 +1145,145 @@ public class ModEntry : ModSubscriber {
 
 	public static string GetInputLabel(InputButton[] buttons) {
 		return string.Join(", ", buttons.Reverse().Select(btn => btn.ToString()));
+	}
+
+	#endregion
+
+	#region Item Enumeration
+
+	private List<Item>? CachedObjects;
+	private List<Item>? CachedBigCraftables;
+	private List<Item>? CachedFurniture;
+	private List<Item>? CachedWeapons;
+	private List<Item>? CachedBoots;
+	private List<Item>? CachedHats;
+	private List<Item>? CachedClothing;
+
+	[MemberNotNull(nameof(CachedObjects))]
+	private void LoadObjects() {
+		if (CachedObjects is null) {
+			CachedObjects = new();
+			foreach(int id in Game1.objectInformation.Keys) {
+				Item? item = InventoryHelper.CreateObjectOrRing(id);
+				if (item is not null)
+					CachedObjects.Add(item);
+			}
+		}
+	}
+
+	[MemberNotNull(nameof(CachedBigCraftables))]
+	private void LoadBigCraftables() {
+		if (CachedBigCraftables is null) {
+			CachedBigCraftables = new();
+			foreach(int id in Game1.bigCraftablesInformation.Keys)
+				CachedBigCraftables.Add(new SObject(Vector2.Zero, id, 1));
+		}
+	}
+
+	[MemberNotNull(nameof(CachedFurniture))]
+	private void LoadFurniture() {
+		if (CachedFurniture is null) {
+			CachedFurniture = new();
+			foreach(int id in Game1.content.Load<Dictionary<int, string>>(@"Data\Furniture").Keys)
+				CachedFurniture.Add(Furniture.GetFurnitureInstance(id, Vector2.Zero));
+		}
+	}
+
+	[MemberNotNull(nameof(CachedWeapons))]
+	private void LoadWeapons() {
+		if (CachedWeapons is null) {
+			CachedWeapons = new();
+			foreach (int id in Game1.content.Load<Dictionary<int, string>>(@"Data\weapons").Keys)
+				CachedWeapons.Add(new MeleeWeapon(id));
+		}
+	}
+
+	[MemberNotNull(nameof(CachedBoots))]
+	private void LoadBoots() {
+		if (CachedBoots is null) {
+			CachedBoots = new();
+			foreach (int id in Game1.content.Load<Dictionary<int, string>>(@"Data\Boots").Keys)
+				CachedBoots.Add(new Boots(id));
+		}
+	}
+
+	[MemberNotNull(nameof(CachedHats))]
+	private void LoadHats() {
+		if (CachedHats is null) {
+			CachedHats = new();
+			foreach (int id in Game1.content.Load<Dictionary<int, string>>(@"Data\hats").Keys)
+				CachedHats.Add(new Hat(id));
+		}
+	}
+
+	[MemberNotNull(nameof(CachedClothing))]
+	private void LoadClothes() {
+		if (CachedClothing is null) {
+			CachedClothing = new();
+			foreach (int id in Game1.clothingInformation.Keys)
+				CachedClothing.Add(new Clothing(id));
+		}
+	}
+
+	public IEnumerable<Item> GetMatchingItems(Func<Item, bool> predicate, bool normalObjects = true, bool bigCraftables = true, bool clothing = true, bool dga = true) {
+		if (normalObjects)
+			LoadObjects();
+			// Screw you VS this is not "may be null" why are you not seeing
+			// the MemberNotNull attribute on LoadObjects()?
+			foreach(Item item in CachedObjects!) {
+				if (predicate(item))
+					yield return item;
+			}
+
+		if (bigCraftables) {
+			LoadBigCraftables();
+			foreach(Item item in CachedBigCraftables) {
+				if (predicate(item))
+					yield return item;
+			}
+
+			LoadFurniture();
+			foreach(Item item in CachedFurniture) {
+				if (predicate(item))
+					yield return item;
+			}
+		}
+
+		// if tools
+		LoadWeapons();
+		foreach(Item item in CachedWeapons) {
+			if (predicate(item))
+				yield return item;
+		}
+
+		// if boots
+		LoadBoots();
+		foreach(Item item in CachedBoots) {
+			if (predicate(item))
+				yield return item;
+		}
+
+		// if hats
+		LoadHats();
+		foreach(Item item in CachedHats) {
+			if (predicate(item))
+				yield return item;
+		}
+
+		if (clothing) {
+			LoadClothes();
+			foreach(Item item in CachedClothing) {
+				if (predicate(item))
+					yield return item;
+			}
+		}
+
+		// Finally, DynamicGameAssets.
+		if (dga && intDGA != null)
+			foreach(Item item in intDGA.GetAllItems()) {
+				if (predicate(item))
+					yield return item;
+			}
 	}
 
 	#endregion

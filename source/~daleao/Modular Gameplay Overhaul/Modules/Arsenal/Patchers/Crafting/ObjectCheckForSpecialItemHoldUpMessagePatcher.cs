@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -45,6 +45,11 @@ internal sealed class ObjectCheckForSpecialItemHoldUpMessagePatcher : HarmonyPat
         if (found.Count == 1)
         {
             var type = ((WeaponType)new MeleeWeapon(found[0]).type.Value).ToStringFast();
+            if (type.Contains("Sword"))
+            {
+                type = type.SplitCamelCase()[1];
+            }
+
             __result = I18n.Get("blueprint.found.first", new { type });
         }
         else

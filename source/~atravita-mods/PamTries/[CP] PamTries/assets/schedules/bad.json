@@ -16,7 +16,7 @@
         "Entries": {
             "GIRemainder": "1800 Saloon 7 18 1/2300 Trailer 25 17 2 pam_sleep",
             "spring_25": "800 Trailer 15 4 2 pam_sit_down/1130 Hospital 4 17 2 pam_sit_down \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.000\"/1330 Hospital 4 6 1 \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.001\"/1600 Saloon 7 18 1 \"Strings\\schedules\\Pam:atravita.PamTries.spring_25.bad\"/2000 Trailer 10 9 2 pam_drink/2200 Trailer 25 17 2 pam_sleep",
-            "fall_15": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Saloon 7 18 1/2000 Trailer 10 9 2 pam_drink/2400 Trailer 25 17 2 pam_sleep" //consistent schedule on Sandy's bday
+            "fall_15": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Saloon 7 18 1/2000 Trailer 10 9 2 pam_drink/2400 Trailer 25 17 2 pam_sleep" //consistent schedule on Sandy's birthday
         }
     },
     {
@@ -44,7 +44,8 @@
         "Target": "Characters/schedules/Pam",
         "When": {
             "PamScheduleToken": "alpha",
-            "BusReliability": "false"
+            "BusReliability": "false",
+            "IsCommunityCenterComplete": "false"
             },
         "Entries": {//Joja then saloon
             "bus": "800 Trailer 15 4 2 pam_sit_down/1200 JojaMart 6 19 1/1700 Saloon 7 18 1/2400 Trailer 25 17 2 pam_sleep"
@@ -66,7 +67,7 @@
         "LogName": "schedule charlie",
         "Action": "EditData",
         "Target": "Characters/schedules/Pam",
-        "Entries": {//attempts to cook....
+        "Entries": {//attempts to cook...
             "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Trailer 9 7 0/2300 Trailer 25 17 2 pam_sleep"
         },
         "When": {"PamScheduleToken": "charlie"}

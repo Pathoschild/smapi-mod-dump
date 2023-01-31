@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -66,11 +66,11 @@ internal sealed class FruitTreeShakePatcher : HarmonyPatcher
                     new[] { new CodeInstruction(OpCodes.Ldarg_0) },
                     labels)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) })
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out var count)
                 .Remove(count)
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
                 .Remove(count)
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
                 .Remove(count)
                 .StripLabels();
         }

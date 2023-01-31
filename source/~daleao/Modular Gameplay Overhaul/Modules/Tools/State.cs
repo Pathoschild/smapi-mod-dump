@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -20,4 +20,6 @@ using System.Collections.Generic;
 internal sealed class State
 {
     internal List<Shockwave> Shockwaves { get; } = new();
+
+    internal Dictionary<Type, SelectableTool?> SelectableToolByType { get; } = new();
 }

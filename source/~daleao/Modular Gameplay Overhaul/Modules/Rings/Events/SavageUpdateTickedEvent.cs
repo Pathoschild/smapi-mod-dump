@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Rings.Events;
 using System.Collections.Generic;
 using System.Linq;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 
@@ -34,8 +35,10 @@ internal sealed class SavageUpdateTickedEvent : UpdateTickedEvent
     {
         this._buffId = (Manifest.UniqueID + "Savage").GetHashCode();
         this._buffSource =
-            ModHelper.GameContent.Load<Dictionary<int, string>>("Data/ObjectInformation")[Constants.SavangeRingIndex]
-                .Split('/')[0];
+            ModHelper.GameContent
+                .Load<Dictionary<int, string>>("Data/ObjectInformation")[Constants.SavangeRingIndex]
+                .SplitWithoutAllocation('/')[0]
+                .ToString();
         this._buffDescription = Game1.content.LoadString("Strings\\StringsFromCSFiles:Buff.cs.472");
     }
 

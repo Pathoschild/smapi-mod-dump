@@ -22,7 +22,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see https://www.gnu.org/licenses/.
 
-using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -53,7 +52,7 @@ namespace StatsAsTokens
 		/// </summary>
 		static FoodEatenToken()
 		{
-			objectData = Globals.Helper.Content.Load<Dictionary<int, string>>("Data/ObjectInformation", ContentSource.GameContent);
+			objectData = Globals.Helper.GameContent.Load<Dictionary<int, string>>("Data/ObjectInformation");
 
 			foodEatenDict = new();
 			cachedFoodEatenDict = new();
@@ -68,7 +67,7 @@ namespace StatsAsTokens
 			error = "";
 			string[] args = input.ToLower().Trim().Split('|');
 
-			if (args.Count() == 2)
+			if (args.Length == 2)
 			{
 				if (!args[0].Contains("player="))
 				{
@@ -76,15 +75,15 @@ namespace StatsAsTokens
 				}
 				else if (args[0].IndexOf('=') == args[0].Length - 1)
 				{
-					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
+					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'localPlayer'. ";
 				}
 				else
 				{
 					// accept hostplayer or host, localplayer or local
 					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim();
-					if (!(playerType.Equals("hostPlayer") || playerType.Equals("currentPlayer")))
+					if (!(playerType.Equals(host) || playerType.Equals(loc)))
 					{
-						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
+						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'localPlayer'. ";
 					}
 				}
 
@@ -174,7 +173,7 @@ namespace StatsAsTokens
 			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 			string food = args[1].Substring(args[1].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 
-			string pType = playerType.Equals("hostPlayer") ? host : loc;
+			string pType = playerType.Equals(host) ? host : loc;
 
 			if (TryGetFoodEaten(food, pType, out string foodEatenNum))
 			{
@@ -192,7 +191,7 @@ namespace StatsAsTokens
 		/// Initializes internal dictionary to 0. Scrapes ObjectInformation to locate all edible items (edibility != -300).
 		/// </summary>
 		/// <returns>A dictionary with all food items as keys, initialized to value 0.</returns>
-		private static SerializableDictionary<string, int> InitializeFoodEatenStats()
+		internal static SerializableDictionary<string, int> InitializeFoodEatenStats()
 		{
 			SerializableDictionary<string, int> foodEaten = new();
 
@@ -220,7 +219,7 @@ namespace StatsAsTokens
 		/// <param name="playerType"></param>
 		/// <param name="foodEatenNum"></param>
 		/// <returns></returns>
-		private bool TryGetFoodEaten(string foodNameOrId, string playerType, out string foodEatenNum)
+		private static bool TryGetFoodEaten(string foodNameOrId, string playerType, out string foodEatenNum)
 		{
 			string pType = playerType;
 			string foodId = "";

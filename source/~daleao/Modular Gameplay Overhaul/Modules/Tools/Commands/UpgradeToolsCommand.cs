@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Tools.Commands;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using DaLion.Overhaul.Modules.Tools.Integrations;
 using DaLion.Shared.Commands;
 using StardewValley.Tools;
@@ -38,7 +39,7 @@ internal sealed class UpgradeToolsCommand : ConsoleCommand
 
     /// <inheritdoc />
     [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1012:Opening braces should be spaced correctly", Justification = "Paradoxical.")]
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (Game1.player.CurrentTool is not ({ } tool and (Axe or Hoe or Pickaxe or WateringCan or FishingRod)))
         {
@@ -52,7 +53,7 @@ internal sealed class UpgradeToolsCommand : ConsoleCommand
             return;
         }
 
-        if (!Enum.TryParse<UpgradeLevel>(args[0], true, out var upgradeLevel))
+        if (!UpgradeLevelExtensions.TryParse(args[0], true, out var upgradeLevel))
         {
             Log.W($"Invalid upgrade level {args[0]}." + this.GetUsage());
             return;
@@ -74,16 +75,16 @@ internal sealed class UpgradeToolsCommand : ConsoleCommand
     /// <summary>Tell the dummies how to use the console command.</summary>
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers.FirstOrDefault()} <level>";
-        result += "\n\nParameters:";
-        result += "\n\t- <level>: one of 'copper', 'steel', 'gold', 'iridium'";
+        var result = new StringBuilder($"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers.FirstOrDefault()} <level>");
+        result.Append("\n\nParameters:");
+        result.Append("\n\t- <level>: one of 'copper', 'steel', 'gold', 'iridium'");
         if (MoonMisadventuresIntegration.Instance?.IsLoaded == true)
         {
-            result += ", 'radioactive', 'mythicite'";
+            result.Append(", 'radioactive', 'mythicite'");
         }
 
-        result += "\n\nExample:";
-        result += $"\n\t- {this.Handler.EntryCommand} {this.Triggers.First()} iridium";
-        return result;
+        result.Append("\n\nExample:");
+        result.Append($"\n\t- {this.Handler.EntryCommand} {this.Triggers[0]} iridium");
+        return result.ToString();
     }
 }

@@ -46,18 +46,24 @@ internal static class SObjectPatches
     [HarmonyPriority(Priority.VeryLow)]
     [HarmonyPatch(nameof(SObject.performObjectDropInAction))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
-    private static void PostfixDropInAction(SObject __instance, Item dropInItem, bool probe)
+    private static void PostfixDropInAction(SObject __instance, Item dropInItem, bool probe, bool __result)
     {
-        if (!probe)
+        if (!probe && __result)
         {
             try
             {
-                if (__instance.heldObject?.Value is not null && dropInItem.modData?.GetBool(CanPlaceHandler.Organic) == true)
+                if (__instance.heldObject?.Value is not null && dropInItem.modData?.GetBool(CanPlaceHandler.Organic) == true
+                    && !__instance.heldObject.Value.modData?.GetBool(CanPlaceHandler.Organic) != true)
                 {
                     __instance.heldObject.Value.modData?.SetBool(CanPlaceHandler.Organic, true);
                     if (!__instance.heldObject.Value.Name.Contains(" (Organic)"))
                     {
                         __instance.heldObject.Value.Name += " (Organic)";
+
+                        if (__instance.ParentSheetIndex is 346 or 303 or 614 or 395 or 459)
+                        {
+                            __instance.Price = (int)(1.1 * __instance.Price);
+                        }
                     }
                     __instance.heldObject.Value.MarkContextTagsDirty();
                 }
@@ -76,7 +82,8 @@ internal static class SObjectPatches
     {
         try
         {
-            if (i is SObject obj && !obj.bigCraftable.Value && obj.ParentSheetIndex != -1 && ModEntry.SpecialFertilizerIDs.Contains(obj.ParentSheetIndex))
+            if (__result && i is SObject obj && !obj.bigCraftable.Value
+                && obj.ParentSheetIndex != -1 && ModEntry.SpecialFertilizerIDs.Contains(obj.ParentSheetIndex))
             {
                 __result = false;
                 return false;

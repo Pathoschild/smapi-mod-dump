@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -172,53 +172,39 @@ internal sealed class NewForgeMenuUpdatePatcher : HarmonyPatcher
 
     #region injected subroutines
 
-    private static void UnforgeHolyBlade(IClickableMenu menu, MeleeWeapon holy)
+    private static void UnforgeHolyBlade(NewForgeMenu menu, MeleeWeapon holy)
     {
         Utility.CollectOrDrop(new SObject(Globals.HeroSoulIndex!.Value, 1));
-        Reflector
-            .GetUnboundFieldGetter<IClickableMenu, ClickableTextureComponent>(menu, "leftIngredientSpot")
-            .Invoke(menu).item = null;
+        menu.leftIngredientSpot.item = null;
         Game1.playSound("coin");
     }
 
-    private static void UnforgeSlingshot(IClickableMenu menu, Slingshot slingshot)
+    private static void UnforgeSlingshot(NewForgeMenu menu, Slingshot slingshot)
     {
         var cost = 0;
         var forgeLevels = slingshot.GetTotalForgeLevels(true);
         for (var i = 0; i < forgeLevels; i++)
         {
-            cost += Reflector
-                .GetUnboundMethodDelegate<Func<IClickableMenu, int, int>>(menu, "GetForgeCostAtLevel")
-                .Invoke(menu, i);
+            cost += menu.GetForgeCostAtLevel(i);
         }
 
         if (slingshot.hasEnchantmentOfType<DiamondEnchantment>())
         {
-            var leftIngredientSpot = Reflector
-                .GetUnboundFieldGetter<IClickableMenu, ClickableTextureComponent>(menu, "leftIngredientSpot")
-                .Invoke(menu).item;
-            cost += Reflector
-                .GetUnboundMethodDelegate<Func<IClickableMenu, Item, Item, int>>(menu, "GetForgeCost")
-                .Invoke(
-                    menu,
-                    leftIngredientSpot,
-                    new SObject(72, 1));
+            cost += menu.GetForgeCost(menu.leftIngredientSpot.item, new SObject(SObject.diamondIndex, 1));
         }
 
         for (var i = slingshot.enchantments.Count - 1; i >= 0; i--)
         {
-            if (slingshot.enchantments[i].IsForge())
+            var enchantment = slingshot.enchantments[i];
+            if (enchantment.IsForge())
             {
-                slingshot.RemoveEnchantment(slingshot.enchantments[i]);
+                slingshot.RemoveEnchantment(enchantment);
             }
         }
 
-        Reflector
-            .GetUnboundFieldGetter<IClickableMenu, ClickableTextureComponent>(menu, "leftIngredientSpot")
-            .Invoke(menu).item = null;
+        menu.leftIngredientSpot.item = null;
         Game1.playSound("coin");
-        Reflector.GetUnboundFieldSetter<IClickableMenu, Item>(menu, "heldItem")
-            .Invoke(menu, slingshot);
+        menu.heldItem = slingshot;
         Utility.CollectOrDrop(new SObject(848, cost / 2));
     }
 

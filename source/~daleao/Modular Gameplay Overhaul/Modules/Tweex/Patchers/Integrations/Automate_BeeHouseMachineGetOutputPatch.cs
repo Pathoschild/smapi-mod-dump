@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -26,7 +26,7 @@ using HarmonyLib;
 
 [UsedImplicitly]
 [RequiresMod("Pathoschild.Automate")]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class BeeHouseMachineGetOutputPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="BeeHouseMachineGetOutputPatcher"/> class.</summary>
@@ -75,7 +75,7 @@ internal sealed class BeeHouseMachineGetOutputPatcher : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Tweaks failed improving automated honey quality with age." +
+            Log.E("Tweex module failed improving automated honey quality with age." +
                   "\n—-- Do NOT report this to Automate's author. ---" +
                   $"\nHelper returned {ex}");
             return null;

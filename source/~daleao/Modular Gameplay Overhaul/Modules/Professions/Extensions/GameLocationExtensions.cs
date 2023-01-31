@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Professions.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using DaLion.Shared.Extensions;
+using DaLion.Shared.Extensions.Memory;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley.Locations;
@@ -52,7 +53,7 @@ internal static class GameLocationExtensions
     /// <param name="farmers">All the farmer instances in the location with the given profession.</param>
     /// <returns><see langword="true"/> if the <paramref name="location"/> has at least one <see cref="Farmer"/> with the specified <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
     internal static bool DoesAnyPlayerHereHaveProfession(
-        this GameLocation location, IProfession profession, out IList<Farmer> farmers)
+        this GameLocation location, IProfession profession, out List<Farmer> farmers)
     {
         farmers = new List<Farmer>();
         if (!Context.IsMultiplayer && location.Equals(Game1.player.currentLocation) &&
@@ -62,9 +63,12 @@ internal static class GameLocationExtensions
         }
         else
         {
-            foreach (var farmer in location.farmers.Where(farmer => farmer.HasProfession(profession)))
+            foreach (var farmer in location.farmers)
             {
-                farmers.Add(farmer);
+                if (farmer.HasProfession(profession))
+                {
+                    farmers.Add(farmer);
+                }
             }
         }
 
@@ -90,32 +94,36 @@ internal static class GameLocationExtensions
     /// <summary>Gets the raw fish data for this <paramref name="location"/> during the current game season.</summary>
     /// <param name="location">The <see cref="GameLocation"/>.</param>
     /// <returns>The raw fish data for <paramref name="location"/> and the current game season.</returns>
-    internal static string[] GetRawFishDataForCurrentSeason(this GameLocation location)
+    internal static SpanSplitter GetRawFishDataForCurrentSeason(this GameLocation location)
     {
         var locationData =
             Game1.content.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/Locations"));
-        return locationData[location.NameOrUniqueName].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)]
+        return locationData[location.NameOrUniqueName]
+            .SplitWithoutAllocation('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)]
             .Split(' ');
     }
 
     /// <summary>Gets the raw fish data for this <paramref name="location"/> including all seasons.</summary>
     /// <param name="location">The <see cref="GameLocation"/>.</param>
     /// <returns>The raw fish data for <paramref name="location"/> and for all seasons.</returns>
-    internal static string[] GetRawFishDataForAllSeasons(this GameLocation location)
+    internal static SpanSplitter GetRawFishDataForAllSeasons(this GameLocation location)
     {
         var locationData =
             Game1.content.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/Locations"));
-        List<string> allSeasonFish = new();
+        var allSeasonFish = string.Empty;
         for (var i = 0; i < 4; i++)
         {
-            var seasonalFishData = locationData[location.NameOrUniqueName].Split('/')[4 + i].Split(' ');
-            if (seasonalFishData.Length > 1)
+            var seasonalFishData = locationData[location.NameOrUniqueName]
+                .SplitWithoutAllocation('/')[4 + i]
+                .Split(' ');
+            for (var j = 0; j < seasonalFishData.Length; j++)
             {
-                allSeasonFish.AddRange(seasonalFishData);
+                var fish = seasonalFishData[j];
+                allSeasonFish = string.Concat(allSeasonFish.AsSpan(), " ".AsSpan(), fish);
             }
         }
 
-        return allSeasonFish.ToArray();
+        return allSeasonFish.SplitWithoutAllocation(' ');
     }
 
     /// <summary>Determines whether a <paramref name="tile"/> on a map is valid for spawning diggable treasure.</summary>

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,5 +19,14 @@ public static class FarmAnimalExtensions
     public static Farmer GetOwner(this FarmAnimal animal)
     {
         return Game1.getFarmerMaybeOffline(animal.ownerID.Value) ?? Game1.MasterPlayer;
+    }
+
+    /// <summary>Checks whether the <paramref name="animal"/> is owned by the specified <see cref="Farmer"/>.</summary>
+    /// <param name="animal">The <see cref="FarmAnimal"/>.</param>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    /// <returns><see langword="true"/> if the <paramref name="animal"/>'s owner ID  value is equal to the unique ID of the <paramref name="farmer"/>, otherwise <see langword="false"/>.</returns>
+    public static bool IsOwnedBy(this FarmAnimal animal, Farmer farmer)
+    {
+        return animal.ownerID.Value == farmer.UniqueMultiplayerID;
     }
 }

@@ -93,6 +93,8 @@ mods:
    Help Wanted
    Here Fishy
    Hugs and Kisses
+   Immersive Scarecrows
+   Immersive Sprinklers
    In-Game SMAPI Log Uploader
    Infallible Fishing
    Instant Building Construction and Upgrade
@@ -114,7 +116,9 @@ mods:
    Mobile Phone
    Mobile Television
    Modify This
+   Moolah Money Mod
    Move Greenhouse Plot
+   Move It
    Moveable Mailbox
    Moveable Pet Bowl
    Multiple Floor Farmhouse
@@ -136,6 +140,7 @@ mods:
    Pelican xVASynth
    Persistent Grange Display
    Personal Traveling Cart
+   Pet Hats
    Pipe Irrigation
    Placeable Mine Shafts
    Planned Parenthood
@@ -171,6 +176,7 @@ mods:
    Swim
    Take All
    Tappable Palm Trees
+   Tool Smart Switch
    Train Tracks
    Trampoline
    Transparent Objects
@@ -191,9 +197,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit c869469142758b695709e9924db224bb41e385c7
+   commit 42c44fc91ea82dfaf8d7bd1b8da2c62f46dda57d
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Dec 30 04:39:07 2022 -0500
+   Date:   Mon Jan 30 18:45:33 2023 -0500
    
        etc
    

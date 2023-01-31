@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -118,7 +118,7 @@ public sealed class ModConfig
 
     /// <summary>Gets the key used to trigger debug features.</summary>
     [JsonProperty]
-    public KeybindList DebugKey { get; internal set; } = KeybindList.Parse("LeftAlt");
+    public KeybindList DebugKey { get; internal set; } = KeybindList.Parse("RightShift, RightShoulder");
 
     /// <summary>Validates all internal configs and overwrites the user's config file if any invalid settings were found.</summary>
     /// <param name="helper">Provides simplified APIs for writing mods.</param>

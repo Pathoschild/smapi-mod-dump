@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Version>1.1.3</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="i18n\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="SolidFoundations">
+			<HintPath>$(GamePath)\Mods\SolidFoundations\SolidFoundations.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<Target Name="ModifyDeploy" BeforeTargets="BeforeBuild">
+		<CreateProperty Value="$(GameModsPath)\BuildableGreenhouse">
+			<Output PropertyName="GameModsPath" TaskParameter="Value" />
+		</CreateProperty>
+	</Target>
+
+	<Target Name="DeployPack" AfterTargets="Build">
+		<Message Text="Running DeployPack target..." />
+		<ItemGroup>
+			<_FilesToCopy Include="$(ProjectDir)pack/**/*" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(_FilesToCopy)" DestinationFiles="@(_FilesToCopy->'$(GameModsPath)\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+		<ZipDirectory
+			DestinationFile="$(ProjectDir)bin\Debug\$(TargetFramework)\$(ModFolderName) $(Version).zip"
+			Overwrite="True"
+			SourceDirectory="$(GameModsPath)" />
+		<Exec Command="bash build.sh" />
+	</Target>
+</Project>

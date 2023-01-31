@@ -10,6 +10,9 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
+
+using AtraBase.Toolkit.Reflection;
+
 using AtraCore.Framework.ReflectionManager;
 using AtraShared.Utils.HarmonyHelper;
 using HarmonyLib;
@@ -23,13 +26,29 @@ namespace ForgeMenuChoice.HarmonyPatches;
 [HarmonyPatch(typeof(Tool))]
 internal static class GetEnchantmentPatch
 {
+    internal static void ApplyPatch(Harmony harmony)
+    {
+        try
+        {
+            Type dgaObject = AccessTools.TypeByName("ScytheFixes.Patcher")
+                ?? ReflectionThrowHelper.ThrowMethodNotFoundException<Type>("EnchantableScythes");
+            harmony.Patch(
+                original: dgaObject.GetCachedMethod("Forge_Post", ReflectionCache.FlagTypes.StaticFlags),
+                transpiler: new HarmonyMethod(typeof(GetEnchantmentPatch), nameof(Transpiler)));
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling EnchantableScythes. Integration may not work correctly.\n\n{ex}", LogLevel.Error);
+        }
+    }
+
     /// <summary>
     /// Function that substitutes in an enchantment.
     /// </summary>
     /// <param name="base_item">Tool.</param>
     /// <param name="item">Thing to enchant with.</param>
     /// <returns>Enchanment to substitute in.</returns>
-    public static BaseEnchantment SubstituteEnchantment(Item base_item, Item item)
+    private static BaseEnchantment SubstituteEnchantment(Item base_item, Item item)
     {
         try
         {
@@ -67,7 +86,7 @@ internal static class GetEnchantmentPatch
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Ran into errors transpiling Tool.Forge to use selection.\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Ran into errors transpiling {original.FullDescription()} to use selection.\n\n{ex}", LogLevel.Error);
         }
         return null;
     }

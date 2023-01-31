@@ -9,6 +9,9 @@
 *************************************************/
 
 using System.Reflection;
+
+using AtraCore.Framework.Caches;
+
 using AtraShared.Integrations;
 using AtraShared.Utils.Extensions;
 using GingerIslandMainlandAdjustments.Configuration;
@@ -53,6 +56,11 @@ internal static class GenerateGMCM
                 getValue: static () => Globals.Config.EnforceGITiming,
                 setValue: static value => Globals.Config.EnforceGITiming = value,
                 tooltip: I18n.Config_EnforceGITiming_Description)
+            .AddBoolOption(
+                name: I18n.Config_RequireResortDialogue_Title,
+                getValue: static () => Globals.Config.RequireResortDialogue,
+                setValue: static value => Globals.Config.RequireResortDialogue = value,
+                tooltip: I18n.Config_RequireResortDialogue_Description)
             .AddEnumOption(
                 name: I18n.Config_WearIslandClothing_Title,
                 getValue: static () => Globals.Config.WearIslandClothing,
@@ -106,7 +114,7 @@ internal static class GenerateGMCM
 
         foreach (PropertyInfo property in typeof(ModConfig).GetProperties())
         {
-            if (property.Name.StartsWith("Allow"))
+            if (property.Name.StartsWith("Allow", StringComparison.OrdinalIgnoreCase))
             {
                 if (property.PropertyType == typeof(bool))
                 {
@@ -129,13 +137,17 @@ internal static class GenerateGMCM
 
         Globals.Config.PopulateScheduleStrictness();
 
+        helper.AddPageHere("strictness", I18n.ScheduleStrictness, I18n.ScheduleStrictness_Description)
+              .AddParagraph(I18n.ScheduleStrictness_Description);
         foreach ((string k, ScheduleStrictness v) in Globals.Config.ScheduleStrictness)
         {
             helper.AddEnumOption(
-                () => Game1.getCharacterFromName(k)?.displayName ?? k,
+                () => NPCCache.GetByVillagerName(k)?.displayName ?? k,
                 () => Globals.Config.ScheduleStrictness.TryGetValue(k, out ScheduleStrictness val) ? val : ScheduleStrictness.Default,
                 (value) => Globals.Config.ScheduleStrictness[k] = value);
         }
+
+        Globals.Helper.AsyncWriteConfig(Globals.ModMonitor, Globals.Config);
     }
 
     private static string TwoPlaceFixedPoint(float f) => $"{f:f2}";

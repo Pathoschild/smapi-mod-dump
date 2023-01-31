@@ -16,7 +16,6 @@
         "Entries": {
             "atravita.PamTries.alcoholics": "Heya @. I'm just...just here to get some advice.",
             "atravita.PamTries.drunk": "%Pam seems unresponsive. Best to leave her alone.",
-            "atravita.PamTries.movies": "Nothing like ending a long week with a movie and some nachos.$h",
             "atravita.PamTries.praying": "Yoba help me...",
             "atravita.PamTries.therapy": "@, butt out! I'm in the middle of a teletherapy session...",
             "atravita.PamTries.medications": "Just pickin' up my meds...why are they so expensive?$s",
@@ -27,16 +26,8 @@
             "atravita.PamTries.spring_25.good": "Yoba help me...",
             "atravita.PamTries.spring_25.neutral": "Doc's disappointed in me. Again.$s",
             "atravita.PamTries.homebooze": "Think I should still have a beer or two somewhere in this kitchen.",
-            "atravita.PamTries.kickedout": "Harumph. Gus cut me off. Why does he think he can control what I do?$u",
+            "atravita.PamTries.kickedout": "Harrumph. Gus cut me off. Why does he think he can control what I do?$u",
             "atravita.PamTries.winter_16": "Think I got something Penny'll appreciate. @, are you also shoppin' for Winter Star presents?"
         }
-    },
-    {
-        "Action": "EditData",
-        "Target": "Strings/schedules/Penny",
-        "LogName": "Penny -- movie strings",
-        "Entries": {
-            "atravita.PamTries.movies": "I'm so glad I've managed to convince Mom to join me at the movies!$h"
-        }
-    },
+    }
 ]}

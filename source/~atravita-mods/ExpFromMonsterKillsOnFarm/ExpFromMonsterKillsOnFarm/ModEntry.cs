@@ -41,6 +41,7 @@ internal sealed class ModEntry : Mod
         I18n.Init(helper.Translation);
 
         Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
         helper.Events.GameLoop.GameLaunched += this.SetUpConfig;
     }
@@ -52,7 +53,7 @@ internal sealed class ModEntry : Mod
     private void ApplyPatches(Harmony harmony)
     {
         // handle patches from annotations.
-        harmony.PatchAll();
+        harmony.PatchAll(typeof(ModEntry).Assembly);
         harmony.Snitch(this.Monitor, this.ModManifest.UniqueID, transpilersOnly: true);
     }
 

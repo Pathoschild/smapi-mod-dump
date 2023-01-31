@@ -12,10 +12,12 @@ const { promises: fs } = require("fs");
 const path = require("path");
 
 const UNIQUE_ID = "Ivy.OrnithologistsGuild";
+const SHOP_ID = "STF.Ivy_OrnithologistsGuild";
 
 (async () => {
     console.log('Building content.json... ')
 
+    const baths = JSON.parse(await fs.readFile("baths.json", "utf-8"));
     const feeders = JSON.parse(await fs.readFile("feeders.json", "utf-8"));
     const foods = JSON.parse(await fs.readFile("foods.json", "utf-8"));
 
@@ -41,9 +43,9 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
             "$ItemType": "ShopEntry",
             "Item": {
                 "Type": "DGAItem",
-                "Value": "Ivy.OrnithologistsGuild/HulledSunflowerSeeds"
+                "Value": `${UNIQUE_ID}/HulledSunflowerSeeds`
             },
-            "ShopId": "STF.Ivy_OrnithologistsGuild",
+            "ShopId": SHOP_ID,
             "MaxSold": 25,
             "Cost": 300
         },
@@ -67,10 +69,10 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
         {
             "$ItemType": "ShopEntry",
             "Item": {
-              "Type": "Custom",
-              "Value": "OrnithologistsGuild.Game.Items.JojaBinoculars/arg"
+                "Type": "Custom",
+                "Value": "OrnithologistsGuild.Game.Items.JojaBinoculars/arg"
             },
-            "ShopId": "STF.Ivy_OrnithologistsGuild",
+            "ShopId": SHOP_ID,
             "Cost": 2500
         },
         {
@@ -97,10 +99,10 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
         {
             "$ItemType": "ShopEntry",
             "Item": {
-              "Type": "Custom",
-              "Value": "OrnithologistsGuild.Game.Items.AntiqueBinoculars/arg"
+                "Type": "Custom",
+                "Value": "OrnithologistsGuild.Game.Items.AntiqueBinoculars/arg"
             },
-            "ShopId": "STF.Ivy_OrnithologistsGuild",
+            "ShopId": SHOP_ID,
             "Cost": 5000
         },
         {
@@ -114,10 +116,10 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
         {
             "$ItemType": "ShopEntry",
             "Item": {
-              "Type": "Custom",
-              "Value": "OrnithologistsGuild.Game.Items.ProBinoculars/arg"
+                "Type": "Custom",
+                "Value": "OrnithologistsGuild.Game.Items.ProBinoculars/arg"
             },
-            "ShopId": "STF.Ivy_OrnithologistsGuild",
+            "ShopId": SHOP_ID,
             "Cost": 25000
         },
         {
@@ -130,15 +132,15 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
             "$ItemType": "ShopEntry",
             "Item": {
                 "Type": "DGAItem",
-                "Value": "Ivy.OrnithologistsGuild/SeedHuller"
+                "Value": `${UNIQUE_ID}/SeedHuller`
             },
-            "ShopId": "STF.Ivy_OrnithologistsGuild",
+            "ShopId": SHOP_ID,
             "MaxSold": 1,
             "Cost": 2500
         },
         {
             "$ItemType": "MachineRecipe",
-            "MachineId": "Ivy.OrnithologistsGuild/SeedHuller",
+            "MachineId": `${UNIQUE_ID}/SeedHuller`,
             "MinutesToProcess": 30,
             "MachineWorkingTextureOverride": "SeedHuller.png:1",
             "MachinePulseWhileWorking": true,
@@ -154,45 +156,54 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
                     "Weight": 1,
                     "Value": {
                         "Type": "DGAItem",
-                        "Value": "Ivy.OrnithologistsGuild/HulledSunflowerSeeds"
+                        "Value": `${UNIQUE_ID}/HulledSunflowerSeeds`
                     }
                 }
             ]
         },
     ];
 
-    for (let feeder of feeders) {
+    for (let bath of baths) {
         // BigCraftable
-        output.push({
+        const bigCraftable = {
             "$ItemType": "BigCraftable",
-            "ID": feeder.id,
-            "Texture": `${feeder.texture}:0`,
-            "SellPrice": feeder.sellPrice
-        })
+            "ID": bath.ID,
+            "Texture": `${bath.Texture}:0`,
+            "SellPrice": bath.SellPrice
+        }
+        if (!bath.Heated) {
+            bigCraftable.DynamicFields = [
+                {
+                    "Conditions": { "Season": "winter" },
+                    "Texture": `${bath.Texture}:1`, // Frozen texture
+                }
+            ]
+        }
+        output.push(bigCraftable)
 
         // ShopEntry
         output.push({
             "$ItemType": "ShopEntry",
             "Item": {
                 "Type": "DGAItem",
-                "Value": `${UNIQUE_ID}/${feeder.id}`
+                "Value": `${UNIQUE_ID}/${bath.ID}`
             },
-            "ShopId": "STF.Ivy_OrnithologistsGuild",
+            "ShopId": SHOP_ID,
             "MaxSold": 1,
-            "Cost": feeder.cost
+            "Cost": bath.Cost
         })
 
-        if (feeder.recipeIngredients && feeder.recipePrice) {
+        if (bath.RecipeIngredients && bath.RecipePrice) {
             // Recipe
             output.push({
                 "$ItemType": "CraftingRecipe",
-                "ID": `Ivy_OrnithologistsGuild_Recipe_${feeder.id}`,
+                "ID": `Ivy_OrnithologistsGuild_Recipe_${bath.ID}`,
                 "KnownByDefault": true,
                 "Result": {
                     "Type": "DGAItem",
-                    "Value": `${UNIQUE_ID}/${feeder.id}`
+                    "Value": `${UNIQUE_ID}/${bath.ID}`
                 },
-                "Ingredients": feeder.recipeIngredients
+                "Ingredients": bath.RecipeIngredients
             })
 
             // TODO not compatible with ShopTileFramework
@@ -201,23 +212,72 @@ const UNIQUE_ID = "Ivy.OrnithologistsGuild";
             //     "$ItemType": "ShopEntry",
             //     "Item": {
             //         "Type": "DGARecipe",
-            //         "Value": `${UNIQUE_ID}/Ivy_OrnithologistsGuild_Recipe_${feeder.id}`
+            //         "Value": `${UNIQUE_ID}/Ivy_OrnithologistsGuild_Recipe_${feeder.ID}`
             //     },
-            //     "ShopId": "STF.Ivy_OrnithologistsGuild",
+            //     "ShopId": SHOP_ID,
             //     "MaxSold": 1,
-            //     "Cost": feeder.recipePrice
+            //     "Cost": feeder.RecipePrice
+            // })
+        }
+    }
+
+    for (let feeder of feeders) {
+        // BigCraftable
+        output.push({
+            "$ItemType": "BigCraftable",
+            "ID": feeder.ID,
+            "Texture": `${feeder.Texture}:0`,
+            "SellPrice": feeder.SellPrice
+        })
+
+        // ShopEntry
+        output.push({
+            "$ItemType": "ShopEntry",
+            "Item": {
+                "Type": "DGAItem",
+                "Value": `${UNIQUE_ID}/${feeder.ID}`
+            },
+            "ShopId": SHOP_ID,
+            "MaxSold": 1,
+            "Cost": feeder.Cost
+        })
+
+        if (feeder.RecipeIngredients && feeder.RecipePrice) {
+            // Recipe
+            output.push({
+                "$ItemType": "CraftingRecipe",
+                "ID": `Ivy_OrnithologistsGuild_Recipe_${feeder.ID}`,
+                "KnownByDefault": true,
+                "Result": {
+                    "Type": "DGAItem",
+                    "Value": `${UNIQUE_ID}/${feeder.ID}`
+                },
+                "Ingredients": feeder.RecipeIngredients
+            })
+
+            // TODO not compatible with ShopTileFramework
+            // Recipe ShopEntry
+            // output.push({
+            //     "$ItemType": "ShopEntry",
+            //     "Item": {
+            //         "Type": "DGARecipe",
+            //         "Value": `${UNIQUE_ID}/Ivy_OrnithologistsGuild_Recipe_${feeder.ID}`
+            //     },
+            //     "ShopId": SHOP_ID,
+            //     "MaxSold": 1,
+            //     "Cost": feeder.RecipePrice
             // })
         }
 
         // MachineRecipe
         for (let food of foods) {
-            if (food.feedersTypes.includes(feeder.type)) {
-                for (let item of food.items) {
+            if (food.FeedersTypes.includes(feeder.Type)) {
+                for (let item of food.Items) {
                     output.push({
                         "$ItemType": "MachineRecipe",
-                        "MachineId": `${UNIQUE_ID}/${feeder.id}`,
-                        "MinutesToProcess": feeder.capacityHrs * 60,
-                        "MachineWorkingTextureOverride": `${feeder.texture}:${food.feederAssetIndex}`,
+                        "MachineId": `${UNIQUE_ID}/${feeder.ID}`,
+                        "MinutesToProcess": feeder.CapacityHrs * 60,
+                        "MachineWorkingTextureOverride": `${feeder.Texture}:${food.FeederAssetIndex}`,
                         "MachinePulseWhileWorking": false,
                         "StartWorkingSound": null,
                         "Ingredients": [

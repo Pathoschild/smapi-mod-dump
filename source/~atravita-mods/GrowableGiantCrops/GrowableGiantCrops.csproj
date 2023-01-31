@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\csproj_common" />
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Name>Growable Giant Crops</Name>
+    <Description>Lets you grow giant crops.</Description>
+    <Version>0.1.0</Version>
+    <UpdateKeys>Nexus:15111</UpdateKeys>
+    <BaseManifest>..\spacecore_dependencies.json</BaseManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="HarmonyPatches\ToolPatches\Game1Patcher.cs~RF29fede4a.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AtraCore\AtraCore.csproj" private="false" />
+    <ProjectReference Include="..\Pintail\Pintail\Pintail.csproj" private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="StardewValley" />
+    <Using Include="StardewModdingAPI" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Alias="NotNullAttribute" Include="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    <Using Alias="Object" Include="System.Object" />
+    <Using Alias="SObject" Include="StardewValley.Object" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="assets\textures\" />
+    <Folder Include="docs\" />
+    <Folder Include="HarmonyPatches\ItemPatches\" />
+  </ItemGroup>
+
+</Project>

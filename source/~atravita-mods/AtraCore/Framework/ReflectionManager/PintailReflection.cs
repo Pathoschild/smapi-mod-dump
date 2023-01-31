@@ -21,11 +21,11 @@ internal static class PintailReflection
 {
     private static readonly Lazy<ProxyManager<Nothing>> proxyManager = new(() =>
     {
-        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
+        AssemblyBuilder? assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
             new AssemblyName($"AtraCore.Proxies, Version={typeof(PintailReflection).Assembly.GetName().Version}, Culture=neutral"),
             AssemblyBuilderAccess.Run); // Maybe I want RunAndCollect?
 
-        var moduleBuilder = assemblyBuilder.DefineDynamicModule("Proxies");
+        ModuleBuilder? moduleBuilder = assemblyBuilder.DefineDynamicModule("Proxies");
         return new ProxyManager<Nothing>(
             moduleBuilder,
             new(noMatchingMethodHandler: ProxyManagerConfiguration<Nothing>.ThrowExceptionNoMatchingMethodHandler,

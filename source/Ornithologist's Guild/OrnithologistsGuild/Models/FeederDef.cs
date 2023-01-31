@@ -16,19 +16,17 @@ namespace OrnithologistsGuild.Models
 {
     public class FeederDef
     {
-        // TODO capitalize like BirdieDef
-        public string id;
-        public string type;
+        public string ID;
+        public string Type;
 
-        public int zOffset;
+        public int ZOffset;
 
-        public int range;
-        public int maxFlocks;
+        public int Range;
+        public int MaxFlocks;
 
         public static FeederDef FromFeeder(CustomBigCraftable feeder)
         {
-            return ContentManager.Feeders.FirstOrDefault(feederDef => feederDef.id == feeder.Id);
+            return ContentManager.Feeders.FirstOrDefault(feederDef => feederDef.ID == feeder.Id);
         }
     }
 }
-

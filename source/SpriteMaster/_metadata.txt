@@ -6,9 +6,9 @@ mods:
    SpriteMaster
 
 latest commit:
-   commit d2719487ff9ecc43a7450d9e455c1b3039343202
+   commit cf70d002d1b958572aecbaa7f875e7a154008b7a
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Sun Oct 23 18:47:31 2022 -0500
+   Date:   Sun Jan 29 16:20:50 2023 -0600
    
-       Updating version to 0.15.0-beta.10
+       Incrementing version to 0.15.0-beta.11.
    

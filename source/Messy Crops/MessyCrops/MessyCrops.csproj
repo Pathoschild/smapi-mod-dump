@@ -3,10 +3,8 @@
 	<PropertyGroup>
 		<AssemblyName>MessyCrops</AssemblyName>
 		<RootNamespace>MessyCrops</RootNamespace>
-		<Version>1.0.0</Version>
+		<Version>1.0.2</Version>
 		<TargetFramework>net5.0</TargetFramework>
-		<Platforms>x86</Platforms>
-		<PlatformTarget>x86</PlatformTarget>
 		<EnableHarmony>true</EnableHarmony>
 	</PropertyGroup>
 

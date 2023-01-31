@@ -6,9 +6,9 @@ mods:
    Stats as Tokens
 
 latest commit:
-   commit da29e9854ac043a625b502d039019302adce896a
-   Author: dtomlinson-ga <dtomlinson-ga@users.noreply.github.com>
-   Date:   Wed Oct 27 12:40:20 2021 -0400
+   commit 1a535b4dc0b2b8c2b4857ec8f310d17e424a9158
+   Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
+   Date:   Fri Jan 20 13:09:25 2023 -0500
    
-       Rename player arguments in preparation for Content Patcher 1.24.0. Add MarriageToken and VersionToken (not fully implemented). Fix other instances of parentSheetIndex being used instead of ParentSheetIndex.
+       Fix dinosaursEggsLayed stat
    

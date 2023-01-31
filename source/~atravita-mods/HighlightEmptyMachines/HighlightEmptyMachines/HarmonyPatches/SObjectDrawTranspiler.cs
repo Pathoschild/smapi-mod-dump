@@ -37,25 +37,32 @@ internal class SObjectDrawTranspiler
         {
             return Color.White;
         }
-        if (ModEntry.Config.VanillaMachines.TryGetValue((VanillaMachinesEnum)obj.ParentSheetIndex, out bool val) && val)
+        if (PFMMachineHandler.ValidMachines.TryGetValue(obj.ParentSheetIndex, out MachineStatus status))
+        {
+            return status switch
+            {
+                MachineStatus.Invalid => ModEntry.Config.InvalidColor,
+                MachineStatus.Enabled => ModEntry.Config.EmptyColor,
+                _ => Color.White,
+            };
+        }
+        else if (ModEntry.Config.VanillaMachines.TryGetValue((VanillaMachinesEnum)obj.ParentSheetIndex, out bool val) && val)
         {
             if (obj is Cask cask && Game1.currentLocation is GameLocation loc && !cask.IsValidCaskLocation(loc))
             {
                 return ModEntry.Config.InvalidColor;
             }
-            return ModEntry.Config.EmptyColor;
-        }
-        else if (PFMMachineHandler.ValidMachines.TryGetValue(obj.ParentSheetIndex, out PFMMachineStatus status))
-        {
-            return status switch
+            else if (obj.ParentSheetIndex == (int)VanillaMachinesEnum.BeeHouse && BeehouseHandler.Status.Value == MachineStatus.Invalid)
             {
-                PFMMachineStatus.Invalid => ModEntry.Config.InvalidColor,
-                PFMMachineStatus.Enabled => ModEntry.Config.EmptyColor,
-                _ => Color.White,
-            };
+                return ModEntry.Config.InvalidColor;
+            }
+            return ModEntry.Config.EmptyColor;
         }
         return Color.White;
     }
+
+    [MethodImpl(TKConstants.Hot)]
+    private static bool ShouldDisablePulsing() => ModEntry.Config.DisablePulsing;
 
 #pragma warning disable SA1116 // Split parameters should start on line after declaration. Reviewed
     [HarmonyPatch(nameof(SObject.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) })]
@@ -67,23 +74,42 @@ internal class SObjectDrawTranspiler
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             helper.FindNext(new CodeInstructionWrapper[]
             {
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Ldfld, typeof(SObject).GetCachedField(nameof(SObject.bigCraftable), ReflectionCache.FlagTypes.InstanceFlags)),
+                OpCodes.Ldarg_0,
+                (OpCodes.Ldfld, typeof(SObject).GetCachedField(nameof(SObject.bigCraftable), ReflectionCache.FlagTypes.InstanceFlags)),
             })
             .FindNext(new CodeInstructionWrapper[]
+            { // Vector2 vector = this.getScale();
+                OpCodes.Ldarg_0,
+                (OpCodes.Callvirt, typeof(SObject).GetCachedMethod(nameof(SObject.getScale), ReflectionCache.FlagTypes.InstanceFlags)),
+                SpecialCodeInstructionCases.StLoc,
+            })
+            .Push() // edit to Vector2 vector = ShouldDisablePulsing ? Vector2.Zero : this.getScale();
+            .GetLabels(out IList<Label>? pulseLabels)
+            .Advance(2)
+            .DefineAndAttachLabel(out Label nopulseJump)
+            .Pop()
+            .DefineAndAttachLabel(out Label pulseJump)
+            .Insert(new CodeInstruction[]
             {
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Ldfld, typeof(Item).GetCachedField(nameof(Item.parentSheetIndex), ReflectionCache.FlagTypes.InstanceFlags)),
-                new (OpCodes.Call),
-                new (OpCodes.Ldc_I4, 272),
-                new (OpCodes.Bne_Un),
+                new(OpCodes.Call, typeof(SObjectDrawTranspiler).GetCachedMethod(nameof(ShouldDisablePulsing), ReflectionCache.FlagTypes.StaticFlags)),
+                new(OpCodes.Brfalse, pulseJump),
+                new(OpCodes.Call, typeof(Vector2).GetCachedProperty(nameof(Vector2.Zero), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
+                new (OpCodes.Br_S, nopulseJump),
+            }, withLabels: pulseLabels)
+            .FindNext(new CodeInstructionWrapper[]
+            {
+                OpCodes.Ldarg_0,
+                (OpCodes.Ldfld, typeof(Item).GetCachedField(nameof(Item.parentSheetIndex), ReflectionCache.FlagTypes.InstanceFlags)),
+                OpCodes.Call,
+                (OpCodes.Ldc_I4, 272),
+                OpCodes.Bne_Un,
             })
             .Advance(4)
             .StoreBranchDest()
             .AdvanceToStoredLabel()
             .FindNext(new CodeInstructionWrapper[]
             {
-                new (OpCodes.Call, typeof(Color).GetCachedProperty(nameof(Color.White), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
+                (OpCodes.Call, typeof(Color).GetCachedProperty(nameof(Color.White), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
             })
             .GetLabels(out IList<Label> colorLabels, clear: true)
             .ReplaceInstruction(OpCodes.Call, typeof(SObjectDrawTranspiler).GetCachedMethod(nameof(BigCraftableNeedsInputLayerColor), ReflectionCache.FlagTypes.StaticFlags))
@@ -91,12 +117,14 @@ internal class SObjectDrawTranspiler
             {
                 new(OpCodes.Ldarg_0),
             }, withLabels: colorLabels);
+
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling SObject.draw\n\n{ex}", LogLevel.Error);
-            original?.Snitch(ModEntry.ModMonitor);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

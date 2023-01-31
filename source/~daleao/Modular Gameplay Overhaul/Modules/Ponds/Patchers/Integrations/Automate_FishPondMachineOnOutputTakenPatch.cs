@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -30,7 +30,7 @@ using StardewValley.Objects;
 
 [UsedImplicitly]
 [RequiresMod("Pathoschild.Automate")]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class FishPondMachineOnOutputTakenPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="FishPondMachineOnOutputTakenPatcher"/> class.</summary>
@@ -66,15 +66,15 @@ internal sealed class FishPondMachineOnOutputTakenPatcher : HarmonyPatcher
                 SObject o;
                 if (index == 812) // roe
                 {
-                    var split = Game1.objectInformation[machine.fishType.Value].Split('/');
+                    var split = Game1.objectInformation[machine.fishType.Value].SplitWithoutAllocation('/');
                     var c = machine.fishType.Value == 698
                         ? new Color(61, 55, 42)
                         : TailoringMenu.GetDyeColor(machine.GetFishObject()) ?? Color.Orange;
                     o = new ColoredObject(812, stack, c);
-                    o.name = split[0] + " Roe";
+                    o.name = split[0].ToString() + " Roe";
                     o.preserve.Value = SObject.PreserveType.Roe;
                     o.preservedParentSheetIndex.Value = machine.fishType.Value;
-                    o.Price += Convert.ToInt32(split[1]) / 2;
+                    o.Price += int.Parse(split[1]) / 2;
                     o.Quality = quality;
                 }
                 else

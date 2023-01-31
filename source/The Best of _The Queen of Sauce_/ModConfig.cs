@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BestOfQueenOfSauce
+namespace Bpendragon.BestOfQueenOfSauce
 {
     class ModConfig
     {

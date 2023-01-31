@@ -14,6 +14,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using AtraBase.Toolkit.Reflection;
 using AtraShared.Utils.HarmonyHelper;
+using AtraShared.Wrappers;
+
 using HarmonyLib;
 using StardewValley.Locations;
 
@@ -63,7 +65,7 @@ internal static class ReplaceBeverage
     private static List<int> GetBeverageIDs()
     {
         List<int> beverageIds = new();
-        foreach ((int key, string value) in Game1.objectInformation)
+        foreach ((int key, string value) in Game1Wrappers.ObjectInfo)
         {
             string[] splitvals = value.Split('/');
             if (splitvals.Length > 6 && splitvals[6].Contains("drink", StringComparison.OrdinalIgnoreCase))

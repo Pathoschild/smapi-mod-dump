@@ -11,7 +11,7 @@
 {
   "Name": "Health Bars",
   "Author": "Zoryn",
-  "Version": "2.8.0",
+  "Version": "2.8.1",
   "Description": "Shows monster health bars.",
   "UniqueID": "Zoryn.HealthBars",
   "EntryDll": "HealthBars.dll",

@@ -9,15 +9,22 @@
 *************************************************/
 
 using AtraBase.Toolkit.Reflection;
+
 using AtraCore.Framework.ReflectionManager;
+
 using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
 using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
+
 using ForgeMenuChoice.HarmonyPatches;
+
 using HarmonyLib;
+
 using Microsoft.Xna.Framework.Graphics;
+
 using StardewModdingAPI.Events;
+
 using AtraUtils = AtraShared.Utils.Utils;
 
 namespace ForgeMenuChoice;
@@ -46,8 +53,21 @@ internal sealed class ModEntry : Mod
     /// </summary>
     internal static ModConfig Config { get; private set; }
 
+    /// <summary>
+    /// Gets the input helper for this mod.
+    /// </summary>
+    internal static IInputHelper InputHelper { get; private set; }
+
+    /// <summary>
+    /// Gets the string utilities for this mod.
+    /// </summary>
     internal static StringUtils StringUtils { get; private set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+    /// <summary>
+    /// Gets a delegate that checks to see if the forge instance is Casey's NewForgeMenu or not.
+    /// </summary>
+    internal static Func<object, bool>? IsSpaceForge { get; private set; } = null;
 
     /// <inheritdoc/>
     public override void Entry(IModHelper helper)
@@ -57,9 +77,13 @@ internal sealed class ModEntry : Mod
         StringUtils = new(this.Monitor);
         GameContentHelper = helper.GameContent;
         TranslationHelper = helper.Translation;
+        InputHelper = helper.Input;
 
         I18n.Init(helper.Translation);
+        AssetLoader.Initialize(helper.GameContent);
         Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
+
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
 
@@ -67,7 +91,12 @@ internal sealed class ModEntry : Mod
         helper.Events.Content.AssetRequested += this.OnAssetRequested;
         helper.Events.Content.LocaleChanged += this.OnLocaleChanged;
         helper.Events.Content.AssetsInvalidated += this.OnAssetInvalidated;
+
+        helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
     }
+
+    private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
+        => ForgeMenuPatches.ApplyButtonPresses(e);
 
     private void OnLocaleChanged(object? sender, LocaleChangedEventArgs e)
     {
@@ -78,12 +107,7 @@ internal sealed class ModEntry : Mod
         AssetLoader.Refresh();
     }
 
-    /// <summary>
-    /// Things to run after all mods are initialized.
-    /// And the game is launched.
-    /// </summary>
-    /// <param name="sender">SMAPI.</param>
-    /// <param name="e">Event arguments.</param>
+    /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
     /// <remarks>We must wait until GameLaunched to patch in order to patch Spacecore.</remarks>
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
@@ -104,11 +128,17 @@ internal sealed class ModEntry : Mod
     {
         try
         {
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(ModEntry).Assembly);
+
+            if (this.Helper.ModRegistry.Get("Goldenrevolver.EnchantableScythes") is IModInfo sycthes)
+            {
+                this.Monitor.Log("Applying compat patches for Enchantable Scythes.", LogLevel.Debug);
+                GetEnchantmentPatch.ApplyPatch(harmony);
+            }
 
             if (this.Helper.ModRegistry.Get("spacechase0.SpaceCore") is not IModInfo spacecore)
             {
-                this.Monitor.Log($"Spacecore not installed, compat patches unnecessary.", LogLevel.Debug);
+                this.Monitor.Log($"Spacecore not installed, compat patches unnecessary.", LogLevel.Trace);
             }
             else
             {
@@ -136,6 +166,8 @@ internal sealed class ModEntry : Mod
                     harmony.Patch(
                         original: spaceforge.GetCachedMethod("performHoverAction", ReflectionCache.FlagTypes.InstanceFlags),
                         postfix: new HarmonyMethod(typeof(ForgeMenuPatches), nameof(ForgeMenuPatches.PostfixPerformHoverAction)));
+
+                    IsSpaceForge = spaceforge.GetTypeIs();
                 }
                 else
                 {

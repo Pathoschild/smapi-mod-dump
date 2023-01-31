@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -35,7 +35,7 @@ internal sealed class NewForgeMenuCraftItemPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void NewForgeMenuCraftItemPostfix(ref Item? __result, Item? left_item, Item? right_item, bool forReal)
     {
-        if (!RingsModule.Config.TheOneInfinityBand ||
+        if (!RingsModule.Config.TheOneInfinityBand || !Globals.InfinityBandIndex.HasValue ||
             left_item is not Ring { ParentSheetIndex: Constants.IridiumBandIndex } ||
             right_item?.ParentSheetIndex != Constants.GalaxySoulIndex)
         {

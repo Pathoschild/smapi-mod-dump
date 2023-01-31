@@ -12,16 +12,23 @@ using System.Reflection;
 using AtraBase.Toolkit.Reflection;
 using AtraCore.Framework.ReflectionManager;
 using AtraCore.Utilities;
+
 using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
 using AtraShared.Integrations.Interfaces;
+using AtraShared.Integrations.Interfaces.ContentPatcher;
 using AtraShared.MigrationManager;
 using AtraShared.Utils.Extensions;
+
 using HarmonyLib;
+
+using SpecialOrdersExtended.HarmonyPatches;
 using SpecialOrdersExtended.Managers;
 using SpecialOrdersExtended.Niceties;
 using StardewModdingAPI.Events;
+
 using StardewValley.GameData;
+
 using AtraUtils = AtraShared.Utils.Utils;
 
 namespace SpecialOrdersExtended;
@@ -29,14 +36,19 @@ namespace SpecialOrdersExtended;
 /// <inheritdoc />
 internal sealed class ModEntry : Mod
 {
+    private static readonly string[] ModsThatHandleTheBoard = new string[] { "Rafseazz.RidgesideVillage", "PurrplingCat.QuestFramework", "Esca.EMP" };
+    private bool hasModsThatHandleBoard = false;
+
+    private PlayerTeamWatcher? watcher;
+
     /// <summary>
-    /// Spacecore API handle.
+    /// SpaceCore API handle.
     /// </summary>
     /// <remarks>If null, means API not loaded.</remarks>
     private static ISpaceCoreAPI? spaceCoreAPI;
 
     /// <summary>
-    /// Gets the Spacecore API instance.
+    /// Gets the SpaceCore API instance.
     /// </summary>
     /// <remarks>If null, was not able to be loaded.</remarks>
     internal static ISpaceCoreAPI? SpaceCoreAPI => spaceCoreAPI;
@@ -61,7 +73,7 @@ internal sealed class ModEntry : Mod
     /// </summary>
     internal static ModConfig Config { get; private set; } = null!;
 
-    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Field kept near accessor.")]
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Field kept near accessors.")]
     private static readonly Lazy<Func<string, bool>> CheckTagLazy = new(
         typeof(SpecialOrder)
             .GetCachedMethod("CheckTag", ReflectionCache.FlagTypes.StaticFlags)
@@ -77,9 +89,13 @@ internal sealed class ModEntry : Mod
     {
         // Bind useful SMAPI features.
         I18n.Init(helper.Translation);
+        AssetManager.Initialize(helper.GameContent);
+        CustomEmoji.Init(helper.GameContent);
         ModMonitor = this.Monitor;
         DataHelper = helper.Data;
         MultiplayerHelper = helper.Multiplayer;
+
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
 
         Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
 
@@ -106,15 +122,44 @@ internal sealed class ModEntry : Mod
         helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
         helper.Events.GameLoop.Saving += this.Saving;
         helper.Events.GameLoop.DayEnding += this.OnDayEnd;
-        helper.Events.GameLoop.OneSecondUpdateTicking += this.OneSecondUpdateTicking;
-        helper.Events.Content.AssetRequested += this.OnAssetRequested;
+        helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
+
+        helper.Events.GameLoop.TimeChanged += static (_, _) => RecentSOManager.GrabNewRecentlyCompletedOrders();
+        helper.Events.GameLoop.OneSecondUpdateTicked += this.OneSecondUpdateTicked;
+
+        helper.Events.Content.AssetRequested += static (_, e) => AssetManager.OnLoadAsset(e);
+        helper.Events.Content.AssetsInvalidated += static (_, e) => AssetManager.Reset(e.NamesWithoutLocale);
+
+        helper.Events.Content.AssetReady += static (_, e) => CustomEmoji.Ready(e);
+        helper.Events.Content.AssetsInvalidated += static (_, e) => CustomEmoji.Reset(e.NamesWithoutLocale);
     }
 
     private void ApplyPatches(Harmony harmony)
     {
         try
         {
-            harmony.PatchAll();
+            harmony.Patch(
+                original: typeof(NPC).GetCachedMethod(nameof(NPC.checkForNewCurrentDialogue), ReflectionCache.FlagTypes.InstanceFlags),
+                postfix: new HarmonyMethod(typeof(DialogueManager), nameof(DialogueManager.PostfixCheckDialogue)));
+        }
+        catch (Exception ex)
+        {
+            ModMonitor.Log($"Failed to patch NPC::checkForNewCurrentDialogue for Special Orders Dialogue. Dialogue will be disabled\n\n{ex}", LogLevel.Error);
+        }
+
+        if (ModsThatHandleTheBoard.All(uniqueID => !this.Helper.ModRegistry.IsLoaded(uniqueID)))
+        {
+            this.Monitor.Log("Applying patch to suppress board updates.");
+            SpecialOrderPatches.ApplyUpdatePatch(harmony);
+        }
+        else
+        {
+            this.hasModsThatHandleBoard = true;
+        }
+
+        try
+        {
+            harmony.PatchAll(typeof(ModEntry).Assembly);
         }
         catch (Exception ex)
         {
@@ -123,40 +168,25 @@ internal sealed class ModEntry : Mod
 
         try
         {
-            harmony.Patch(
-                original: AccessTools.Method(typeof(NPC), nameof(NPC.checkForNewCurrentDialogue)),
-                postfix: new HarmonyMethod(typeof(DialogueManager), nameof(DialogueManager.PostfixCheckDialogue)));
+            DebuggingPatches.Apply(harmony);
         }
         catch (Exception ex)
         {
-            ModMonitor.Log($"Failed to patch NPC::checkForNewCurrentDialogue for Special Orders Dialogue. Dialogue will be disabled\n\n{ex}", LogLevel.Error);
+            this.Monitor.Log($"Failed while trying to apply debugging patches.\n\n{ex}", LogLevel.Warn);
         }
 
         harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
     }
 
-    /// <summary>
-    /// Raised every second.
-    /// </summary>
-    /// <param name="sender">Unknown, used by SMAPI.</param>
-    /// <param name="e">OneSecondUpdate params.</param>
-    /// <remarks>Currently handles: grabbing new recently completed special orders.</remarks>
-    private void OneSecondUpdateTicking(object? sender, OneSecondUpdateTickingEventArgs e)
-        => RecentSOManager.GrabNewRecentlyCompletedOrders();
-
-    /// <summary>
-    /// Raised on game launch.
-    /// </summary>
-    /// <param name="sender">Unknown, used by SMAPI.</param>
-    /// <param name="e">Game Launched arguments.</param>
+    /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
     /// <remarks>Used to bind APIs and register CP tokens.</remarks>
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         Harmony? harmony = new(this.ModManifest.UniqueID);
         this.ApplyPatches(harmony);
 
-        // Bind Spacecore API
-        IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Debug);
+        // Bind SpaceCore API
+        IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Trace);
         if (helper.TryGetAPI("spacechase0.SpaceCore", "1.5.10", out spaceCoreAPI))
         {
             MethodInfo eventcommand = typeof(EventCommands).StaticMethodNamed(nameof(EventCommands.AddSpecialOrder));
@@ -177,6 +207,11 @@ internal sealed class ModEntry : Mod
             api.RegisterToken(this.ModManifest, "Completed", new Tokens.CompletedSpecialOrders());
             api.RegisterToken(this.ModManifest, "CurrentRules", new Tokens.CurrentSpecialOrderRule());
             api.RegisterToken(this.ModManifest, "RecentCompleted", new Tokens.RecentCompletedSO());
+
+            api.RegisterToken(
+                mod: this.ModManifest,
+                name: "ProfitMargin",
+                getValue: static () => new[] { Math.Round(Game1.MasterPlayer.difficultyModifier, 2).ToString() });
         }
 
         if (helper.TryGetAPI("Omegasis.SaveAnywhere", "2.13.0", out ISaveAnywhereApi? saveAnywhereApi))
@@ -197,47 +232,37 @@ internal sealed class ModEntry : Mod
         }
     }
 
+    #region save anywhere
+
     private void AfterSaveAnywhere(object? sender, EventArgs e)
     {
-        DialogueManager.LoadTemp();
-        RecentSOManager.LoadTemp();
+        try
+        {
+            DialogueManager.LoadTemp();
+            RecentSOManager.LoadTemp();
+        }
+        catch (Exception ex)
+        {
+            this.Monitor.Log($"Failed in loading temporary files:\n\n{ex}", LogLevel.Error);
+        }
     }
 
     private void BeforeSaveAnywhere(object? sender, EventArgs e)
     {
-        DialogueManager.SaveTemp();
-        RecentSOManager.SaveTemp();
-    }
-
-    /// <summary>
-    /// Raised right before the game is saved.
-    /// </summary>
-    /// <param name="sender">Unknown, used by SMAPI.</param>
-    /// <param name="e">Event arguments.</param>
-    /// <remarks>Used to handle day-end events.</remarks>
-    private void Saving(object? sender, SavingEventArgs e)
-    {
-        this.Monitor.DebugOnlyLog("Event Saving raised");
-
-        DialogueManager.Save(); // Save dialogue
-
-        if (Context.IsSplitScreen && Context.ScreenId != 0)
-        {// Some properties only make sense for a single player to handle in splitscreen.
-            return;
+        try
+        {
+            DialogueManager.SaveTemp();
+            RecentSOManager.SaveTemp();
         }
-
-        TagManager.ResetRandom();
-        StatsManager.ClearProperties(); // clear property cache, repopulate at next use
-        RecentSOManager.GrabNewRecentlyCompletedOrders();
-        RecentSOManager.DayUpdate(Game1.stats.daysPlayed);
-        RecentSOManager.Save();
+        catch (Exception ex)
+        {
+            this.Monitor.Log($"Failed in saving temporary files:\n\n{ex}", LogLevel.Error);
+        }
     }
 
-    /// <summary>
-    /// Raised when save is loaded.
-    /// </summary>
-    /// <param name="sender">Unknown, used by SMAPI.</param>
-    /// <param name="e">Parameters.</param>
+    #endregion
+
+    /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
     /// <remarks>Used to load in this mod's data models.</remarks>
     private void SaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
@@ -260,13 +285,70 @@ internal sealed class ModEntry : Mod
             this.migrator = null;
         }
         RecentSOManager.Load();
+        this.watcher = new();
     }
 
-    /// <summary>
+    /// <inheritdoc cref="IGameLoopEvents.Saving"/>
+    /// <remarks>Used to handle day-end events.</remarks>
+    private void Saving(object? sender, SavingEventArgs e)
+    {
+        this.Monitor.DebugOnlyLog("Event Saving raised");
+
+        TagManager.ResetRandom();
+        TagManager.ClearCache();
+
+        if (!this.hasModsThatHandleBoard && !SpecialOrder.IsSpecialOrdersBoardUnlocked())
+        {
+            this.Monitor.Log($"Board is not open, skipping saving");
+            return;
+        }
+
+        DialogueManager.Save();
+
+        if (Context.IsSplitScreen && Context.ScreenId != 0)
+        {// Some properties only make sense for a single player to handle in splitscreen.
+            return;
+        }
+
+        if (this.watcher is not null)
+        {
+            foreach (string? key in this.watcher.Check())
+            {
+                RecentSOManager.TryAdd(key);
+            }
+        }
+
+        StatsManager.ClearProperties(); // clear property cache, repopulate at next use
+        RecentSOManager.GrabNewRecentlyCompletedOrders();
+        RecentSOManager.DayUpdate(Game1.stats.daysPlayed);
+        RecentSOManager.Save();
+    }
+
+    /// <inheritdoc cref="IGameLoopEvents.ReturnedToTitle"/>
+    private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
+    {
+        this.watcher?.Dispose();
+        this.watcher = null;
+    }
+
+    /// <inheritdoc cref="IGameLoopEvents.OneSecondUpdateTicked"/>
+    private void OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+    {
+        if (this.watcher is null)
+        {
+            return;
+        }
+
+        foreach (string? key in this.watcher.Check())
+        {
+            RecentSOManager.TryAdd(key);
+        }
+    }
+
+    /// <inheritdoc cref="IGameLoopEvents.Saved"/>
+    /// <remarks>
     /// Writes migration data then detaches the migrator.
-    /// </summary>
-    /// <param name="sender">Smapi thing.</param>
-    /// <param name="e">Arguments for just-before-saving.</param>
+    /// </remarks>
     private void WriteMigrationData(object? sender, SavedEventArgs e)
     {
         if (this.migrator is not null)
@@ -276,6 +358,8 @@ internal sealed class ModEntry : Mod
         }
         this.Helper.Events.GameLoop.Saved -= this.WriteMigrationData;
     }
+
+    #region console commands
 
     /// <summary>
     /// Console commands to check the value of a tag.
@@ -292,7 +376,7 @@ internal sealed class ModEntry : Mod
         foreach (string tag in args)
         {
             string base_tag;
-            var span = tag.AsSpan().Trim();
+            ReadOnlySpan<char> span = tag.AsSpan().Trim();
             bool match = true;
             if (span.StartsWith("!"))
             {
@@ -348,8 +432,20 @@ internal sealed class ModEntry : Mod
         ModMonitor.Log($"{I18n.Analyzing()} {key}", LogLevel.Debug);
         try
         {
-            SpecialOrder.GetSpecialOrder(key, Game1.random.Next());
-            ModMonitor.Log($"\t{key} {I18n.Parsable()}", LogLevel.Debug);
+            SpecialOrder? specialOrder = SpecialOrder.GetSpecialOrder(key, Game1.random.Next());
+            if (specialOrder is not null)
+            {
+                ModMonitor.Log($"\t{key} {I18n.Parsable()}", LogLevel.Debug);
+                if (specialOrder.orderType.Value.Length != 0 && specialOrder.orderType.Value != "Qi")
+                {
+                    ModMonitor.Log($"\t\tNon-vanilla special order type {specialOrder.orderType.Value}", LogLevel.Debug);
+                }
+            }
+            else
+            {
+                ModMonitor.Log($"\t{key} {I18n.Unparsable()}", LogLevel.Error);
+                return false;
+            }
         }
         catch (Exception ex)
         {
@@ -411,18 +507,18 @@ internal sealed class ModEntry : Mod
         return true;
     }
 
-    /********
-     * REGION UNTIMED ORDERS.
-     ********/
+    #endregion
 
-    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
-        => AssetManager.OnLoadAsset(e);
+    #region untimed
 
+    /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
     private void OnDayEnd(object? sender, DayEndingEventArgs e)
     {
+        CustomEmoji.Reset();
+
         if (Context.IsMainPlayer && Game1.player.team.specialOrders.Count > 0)
         {
-            HashSet<string> overrides = AssetManager.GetDurationOverride().Where(kvp => kvp.Value == -1).Select(kvp => kvp.Key).ToHashSet();
+            HashSet<string> overrides = AssetManager.Untimed.Value;
             if (overrides.Count == 0)
             {
                 return;
@@ -438,4 +534,5 @@ internal sealed class ModEntry : Mod
             }
         }
     }
+    #endregion
 }

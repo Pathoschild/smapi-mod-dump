@@ -51,7 +51,7 @@ internal static class PlantGrassUnder
     /// <param name="__2">The farmer doing the placing.</param>
     /// <param name="__result">The result to substitute in.</param>
     [HarmonyPostfix]
-    [SuppressMessage("StyleCop", "SA1313", Justification = "Style prefered by Harmony")]
+    [SuppressMessage("StyleCop", "SA1313", Justification = "Style preferred by Harmony")]
     public static void PostfixPerformObjectDropInAction(SObject __instance, Item __0, bool __1, Farmer __2, ref bool __result)
     {
         if (__result // Placed something already

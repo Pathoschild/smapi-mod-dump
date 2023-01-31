@@ -2,7 +2,6 @@
   <Import Project="..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
     <UpdateKeys></UpdateKeys>
@@ -11,7 +10,7 @@
   <PropertyGroup>
     <Name>Easier Dart Puzzle</Name>
     <Description>Makes the dart puzzle easier.</Description>
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
     <UpdateKeys>Nexus:13049</UpdateKeys>
     <BaseManifest>..\base_dependencies.json</BaseManifest>
   </PropertyGroup>

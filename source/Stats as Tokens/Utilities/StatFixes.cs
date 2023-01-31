@@ -86,7 +86,7 @@ namespace StatsAsTokens
 					}
 					else
 					{
-						Game1.stats.stat_dictionary["dinosaurEggsLayed"] += 1;
+						Game1.stats.stat_dictionary["dinosaurEggsLayed"] = 1;
 					}
 					break;
 

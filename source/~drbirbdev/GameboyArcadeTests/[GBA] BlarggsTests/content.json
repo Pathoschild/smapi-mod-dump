@@ -1,0 +1,57 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+[
+    {
+        "Name": "cgb_sound",
+        "ID": "cgb_sound",
+        "FilePath": "assets/cgb_sound.gb"
+    },
+    {
+        "Name": "cpu_instrs",
+        "ID": "cpu_instrs",
+        "FilePath": "assets/cpu_instrs.gb"
+    },
+    {
+        "Name": "dmg_sound",
+        "ID": "dmg_sound",
+        "FilePath": "assets/dmg_sound.gb"
+    },
+    {
+        "Name": "halt_bug",
+        "ID": "halt_bug",
+        "FilePath": "assets/halt_bug.gb"
+    },
+    {
+        "Name": "instr_timing",
+        "ID": "instr_timing",
+        "FilePath": "assets/instr_timing.gb"
+    },
+    {
+        "Name": "interrupt_time",
+        "ID": "interrupt_time",
+        "FilePath": "assets/interrupt_time.gb"
+    },
+    {
+        "Name": "mem_timing",
+        "ID": "mem_timing",
+        "FilePath": "assets/mem_timing.gb"
+    },
+    {
+        "Name": "mem_timing_2",
+        "ID": "mem_timing_2",
+        "FilePath": "assets/mem_timing_2.gb"
+    },
+    {
+        "Name": "oam_bug",
+        "ID": "oam_bug",
+        "FilePath": "assets/oam_bug.gb"
+    }
+]

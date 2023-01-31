@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -16,7 +16,6 @@ using DaLion.Shared.Attributes;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using SpaceCore.Interface;
-using StardewValley.Menus;
 using StardewValley.Tools;
 
 #endregion using directives
@@ -35,16 +34,14 @@ internal sealed class NewForgeMenuIsValidUnforgePatcher : HarmonyPatcher
 
     /// <summary>Allow unforge Slingshot.</summary>
     [HarmonyPostfix]
-    private static void NewForgeMenuIsValidUnforgePostfix(IClickableMenu __instance, ref bool __result)
+    private static void NewForgeMenuIsValidUnforgePostfix(NewForgeMenu __instance, ref bool __result)
     {
         if (__result)
         {
             return;
         }
 
-        var item = Reflector
-            .GetUnboundFieldGetter<IClickableMenu, ClickableTextureComponent>(__instance, "leftIngredientSpot")
-            .Invoke(__instance).item;
+        var item = __instance.leftIngredientSpot.item;
         __result = item is MeleeWeapon { InitialParentTileIndex: Constants.HolyBladeIndex } ||
                    (item is Slingshot slingshot && slingshot.GetTotalForgeLevels() > 0);
     }

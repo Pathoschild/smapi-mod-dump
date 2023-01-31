@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Integrations;
 #region using directives
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
@@ -22,6 +23,7 @@ using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceCore;
 using SpaceCore.Interface;
 using StardewValley.Menus;
 
@@ -94,7 +96,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Professions failed adjusing localized skill page content position." +
+            Log.E("Professions module failed adjusing localized skill page content position." +
                   "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
@@ -137,7 +139,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Professions Failed patching to draw SpaceCore skills page extended level bars." +
+            Log.E("Professions module failed patching to draw SpaceCore skills page extended level bars." +
                   "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
@@ -178,7 +180,87 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Professions Failed patching to draw max skill level with different color." +
+            Log.E("Professions module failed patching to draw max skill level with different color." +
+                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
+                  $"\nHelper returned {ex}");
+            return null;
+        }
+
+        // repeat previous 2 injections now for custom skills
+
+        var levelIndex2 = helper.Locals[19];
+        var skillLevel2 = helper.Locals[20];
+        try
+        {
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldloc_S, levelIndex2),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, 9),
+                        new CodeInstruction(OpCodes.Bne_Un),
+                    },
+                    ILHelper.SearchOption.First)
+                .StripLabels(out var labels)
+                .Insert(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldloc_S, levelIndex2),
+                        new CodeInstruction(OpCodes.Ldloc_2), // local 2 = int indexWithLuckSkill
+                        new CodeInstruction(OpCodes.Ldloc_0), // load x
+                        new CodeInstruction(OpCodes.Ldloc_1), // load y
+                        new CodeInstruction(OpCodes.Ldloc_3), // load xOffset
+                        new CodeInstruction(OpCodes.Ldloc_S, skillLevel2),
+                        new CodeInstruction(OpCodes.Ldarg_1), // load b
+                        new CodeInstruction(
+                            OpCodes.Call,
+                            typeof(SkillsPageDrawPatcher).RequireMethod(nameof(SkillsPageDrawPatcher
+                                .DrawExtendedLevelBars))),
+                    },
+                    labels);
+        }
+        catch (Exception ex)
+        {
+            Log.E("Professions module failed patching to draw SpaceCore skills page extended level bars for custom skills." +
+                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
+                  $"\nHelper returned {ex}");
+            return null;
+        }
+
+        try
+        {
+            var isSkillLevel20 = generator.DefineLabel();
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Call,
+                            typeof(Color).RequirePropertyGetter(nameof(Color.SandyBrown))),
+                    })
+                .Insert(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldloc_S, skillLevel2),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, 20),
+                        new CodeInstruction(OpCodes.Beq_S, isSkillLevel20),
+                    })
+                .Move()
+                .GetOperand(out var resumeExecution)
+                .Move()
+                .Insert(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Call,
+                            typeof(Color).RequirePropertyGetter(nameof(Color.Cornsilk))),
+                        new CodeInstruction(OpCodes.Br_S, resumeExecution),
+                    },
+                    new[] { isSkillLevel20 });
+        }
+        catch (Exception ex)
+        {
+            Log.E("Professions module failed patching to draw max custom skill level with different color." +
                   "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
@@ -213,7 +295,32 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Professions Failed patching to draw skills page prestige ribbons." +
+            Log.E("Professions module failed patching to draw skills page prestige ribbons." +
+                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
+                  $"\nHelper returned {ex}");
+            return null;
+        }
+
+        // From: levelIndex < skill.ExperienceCurve.Length;
+        // To: levelIndex < 10;
+        try
+        {
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(Skills.Skill).RequirePropertyGetter(nameof(Skills.Skill.ExperienceCurve))),
+                    },
+                    ILHelper.SearchOption.First)
+                .Remove(3)
+                .Move(-1)
+                .ReplaceWith(new CodeInstruction(OpCodes.Ldc_I4_S, 10));
+        }
+        catch (Exception ex)
+        {
+            Log.E("Professions module failed patching to draw skills page prestige ribbons." +
                   "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
@@ -223,4 +330,39 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
     }
 
     #endregion harmony patches
+
+    #region injected subroutines
+
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:Elements should be ordered by access", Justification = "Harmony-injected subroutine shared by a SpaceCore patch.")]
+    internal static void DrawExtendedCustomLevelBars(
+        int levelIndex, int indexWithLuckSkill, int x, int y, int addedX, int skillLevel, SpriteBatch b)
+    {
+        if (!ProfessionsModule.Config.EnablePrestige)
+        {
+            return;
+        }
+
+        var drawBlue = skillLevel > levelIndex + 10;
+        if (!drawBlue)
+        {
+            return;
+        }
+
+        // this will draw only the blue bars
+        if ((levelIndex + 1) % 5 != 0)
+        {
+            b.Draw(
+                Textures.SkillBarsTx,
+                new Vector2(addedX + x + (levelIndex * 36), y - 4 + (indexWithLuckSkill * 56)),
+                new Rectangle(0, 0, 8, 9),
+                Color.White,
+                0f,
+                Vector2.Zero,
+                4f,
+                SpriteEffects.None,
+                1f);
+        }
+    }
+
+    #endregion injected subroutines
 }

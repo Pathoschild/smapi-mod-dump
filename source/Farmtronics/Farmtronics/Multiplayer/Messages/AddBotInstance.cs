@@ -22,6 +22,8 @@ namespace Farmtronics.Multiplayer.Messages {
 		public string LocationName { get; set; }
 		public Vector2 TileLocation { get; set; }
 
+		public bool HasGivenUp => attempt >= maxAttempts;
+
 		public static void Send(BotObject bot) {
 			var message = new AddBotInstance() {
 				LocationName = bot.currentLocation.NameOrUniqueName,
@@ -31,7 +33,7 @@ namespace Farmtronics.Multiplayer.Messages {
 		}
 		
 		private GameLocation GetLocation() {
-			return ModEntry.instance.Helper.Multiplayer.GetActiveLocations().Where(location => location.NameOrUniqueName == LocationName).Single();
+			return ModEntry.instance.Helper.Multiplayer.GetActiveLocations().Single(location => location.NameOrUniqueName == LocationName);
 		}
 		
 		private BotObject GetBotFromLocation(GameLocation location) {
@@ -42,22 +44,24 @@ namespace Farmtronics.Multiplayer.Messages {
 			var location = GetLocation();
 			var bot = GetBotFromLocation(location);
 			if (bot == null && attempt < maxAttempts) {
-				ModEntry.instance.Monitor.Log($"Could not add new bot instance. Trying again later.", LogLevel.Warn);
+				Debug.Log($"Could not add new bot instance. Trying again later.", LogLevel.Warn);
 				if (!BotManager.lostInstances.Contains(this)) BotManager.lostInstances.Add(this);
-				BotManager.AddFindEvent();
 				attempt++;
 				return;
 			}
 			else if (bot == null) {
-				ModEntry.instance.Monitor.Log($"Could not add new bot instance. Aborting after {attempt} attempts.", LogLevel.Error);
-				BotManager.lostInstances.Remove(this);
+				// Only log this message once.
+				if (attempt == maxAttempts) {
+					Debug.Log($"Could not add new bot instance. Aborting after {attempt} attempts.", LogLevel.Error);	
+				}
+				attempt++;
 				return;
 			}
 			BotManager.lostInstances.Remove(this);
 			BotManager.instances.Add(bot);
 			bot.data.Load();
 			bot.currentLocation = location;
-			ModEntry.instance.Monitor.Log($"Successfully added bot to instance list: {LocationName} - {TileLocation}", LogLevel.Info);
+			Debug.Log($"Successfully added bot to instance list: {LocationName} - {TileLocation}", LogLevel.Info);
 			bot.InitShell();
 		}
 	}

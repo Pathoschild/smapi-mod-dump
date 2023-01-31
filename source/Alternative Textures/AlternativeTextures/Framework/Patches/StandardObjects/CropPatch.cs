@@ -62,8 +62,8 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         [HarmonyBefore(new string[] { "spacechase0.DynamicGameAssets" })]
         private static bool DrawPrefix(Crop __instance, Vector2 ___origin, Vector2 ___drawPosition, Rectangle ___sourceRect, Rectangle ___coloredSourceRect, float ___coloredLayerDepth, Vector2 ___smallestTileSizeOrigin, float ___layerDepth, SpriteBatch b, Vector2 tileLocation, Color toTint, float rotation)
         {
-            var hoeDirt = Game1.currentLocation.terrainFeatures[tileLocation] as HoeDirt;
-            if (hoeDirt != null && hoeDirt.modData.ContainsKey("AlternativeTextureName"))
+            
+            if (Game1.currentLocation.terrainFeatures.TryGetValue(tileLocation, out TerrainFeature hoeDirt) && hoeDirt is HoeDirt && hoeDirt.modData.ContainsKey("AlternativeTextureName"))
             {
                 var textureModel = AlternativeTextures.textureManager.GetSpecificTextureModel(hoeDirt.modData["AlternativeTextureName"]);
                 if (textureModel is null)

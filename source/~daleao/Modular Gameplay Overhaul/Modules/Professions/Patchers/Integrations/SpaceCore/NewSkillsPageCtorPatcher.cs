@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,14 +12,12 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Integrations;
 
 #region using directives
 
-using System.Collections.Generic;
 using DaLion.Shared.Attributes;
-using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using SpaceCore;
 using SpaceCore.Interface;
-using StardewValley.Menus;
 
 #endregion using directives
 
@@ -40,7 +38,7 @@ internal sealed class NewSkillsPageCtorPatcher : HarmonyPatcher
     ///     bars to green for level >10.
     /// </summary>
     [HarmonyPostfix]
-    private static void SkillsPageCtorPostfix(IClickableMenu __instance)
+    private static void NewSkillsPageCtorPostfix(NewSkillsPage __instance)
     {
         if (!ProfessionsModule.Config.EnablePrestige)
         {
@@ -53,16 +51,12 @@ internal sealed class NewSkillsPageCtorPatcher : HarmonyPatcher
             __instance.width += 24;
         }
 
-        if (__instance.GetType().RequireField("skillBars").GetValue(__instance) is not List<ClickableTextureComponent>
-            skillBars)
-        {
-            return;
-        }
-
         var srcRect = new Rectangle(16, 0, 14, 9);
-        foreach (var component in skillBars)
+        var skills = Skills.GetSkillList();
+        for (var i = 0; i < __instance.skillBars.Count; i++)
         {
-            int skillIndex;
+            var component = __instance.skillBars[i];
+            int skillIndex, skillLevel;
             switch (component.myID / 100)
             {
                 case 1:
@@ -76,7 +70,18 @@ internal sealed class NewSkillsPageCtorPatcher : HarmonyPatcher
                         _ => skillIndex,
                     };
 
-                    if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 15)
+                    skillLevel = skillIndex switch
+                    {
+                        < 5 => Game1.player.GetUnmodifiedSkillLevel(skillIndex),
+                        > 5 => Skills.GetSkillLevel(
+                            Game1.player,
+                            skills[skillIndex - (LuckSkill.Instance is null ? 5 : 6)]),
+                        _ => LuckSkill.Instance is not null
+                            ? Game1.player.GetUnmodifiedSkillLevel(skillIndex)
+                            : Skills.GetSkillLevel(Game1.player, skills[skillIndex - 5]),
+                    };
+
+                    if (skillLevel >= 15)
                     {
                         component.texture = Textures.SkillBarsTx;
                         component.sourceRect = srcRect;
@@ -95,7 +100,18 @@ internal sealed class NewSkillsPageCtorPatcher : HarmonyPatcher
                         _ => skillIndex,
                     };
 
-                    if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 20)
+                    skillLevel = skillIndex switch
+                    {
+                        < 5 => Game1.player.GetUnmodifiedSkillLevel(skillIndex),
+                        > 5 => Skills.GetSkillLevel(
+                            Game1.player,
+                            skills[skillIndex - (LuckSkill.Instance is null ? 5 : 6)]),
+                        _ => LuckSkill.Instance is not null
+                            ? Game1.player.GetUnmodifiedSkillLevel(skillIndex)
+                            : Skills.GetSkillLevel(Game1.player, skills[skillIndex - 5]),
+                    };
+
+                    if (skillLevel >= 20)
                     {
                         component.texture = Textures.SkillBarsTx;
                         component.sourceRect = srcRect;

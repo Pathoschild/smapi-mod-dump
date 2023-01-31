@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -38,7 +38,7 @@ internal sealed class AmethystEnchantmentApplyToPatcher : HarmonyPatcher
             return true; // run original logic
         }
 
-        weapon.knockback.Value += __instance.GetLevel() * 0.1f;
+        weapon.knockback.Value += 0.1f * __instance.GetLevel();
         return false; // don't run original logic
     }
 

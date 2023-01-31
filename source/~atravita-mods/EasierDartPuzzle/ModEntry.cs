@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Reflection;
 using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
 using AtraShared.Utils.Extensions;
@@ -19,7 +18,7 @@ using AtraUtils = AtraShared.Utils.Utils;
 namespace EasierDartPuzzle;
 
 /// <inheritdoc/>
-internal class ModEntry : Mod
+internal sealed class ModEntry : Mod
 {
     /// <summary>
     /// Gets the logger for this file.
@@ -36,27 +35,28 @@ internal class ModEntry : Mod
     {
         ModMonitor = this.Monitor;
         I18n.Init(helper.Translation);
+        AssetManager.Initialize(helper.GameContent);
         Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
         if (Config.MinDartCount > Config.MaxDartCount)
         {
             (Config.MinDartCount, Config.MaxDartCount) = (Config.MaxDartCount, Config.MinDartCount);
+            helper.AsyncWriteConfig(this.Monitor, Config);
         }
+
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
 
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
 
-        helper.Events.Content.AssetRequested += this.OnAssetRequested;
+        helper.Events.Content.AssetRequested += static (_, e) => AssetManager.Apply(e);
     }
-
-    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
-        => AssetManager.Apply(e);
 
     private void ApplyPatches(Harmony harmony)
     {
         try
         {
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(ModEntry).Assembly);
         }
         catch (Exception ex)
         {
@@ -65,6 +65,7 @@ internal class ModEntry : Mod
         harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
     }
 
+    /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
     private void OnGameLaunch(object? sender, GameLaunchedEventArgs e)
     {
         GMCMHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, this.ModManifest);

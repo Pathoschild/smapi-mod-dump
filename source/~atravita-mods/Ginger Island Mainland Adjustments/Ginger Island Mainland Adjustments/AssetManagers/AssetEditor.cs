@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+using AtraCore.Framework.Caches;
+
+using AtraShared.Caching;
+
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley.Locations;
@@ -23,26 +27,60 @@ internal static class AssetEditor
     /// Pam's mail key.
     /// </summary>
     internal const string PAMMAILKEY = "atravita_GingerIslandMainlandAdjustments_PamMail";
+
+    /// <summary>
+    /// The integer key of Pam's heart event.
+    /// </summary>
     internal const int PAMEVENT = 99219999;
+
+    private static readonly PerScreen<TickCache<bool>> HasSeenNineHeart = new(
+    static () => new(() => Game1.player?.eventsSeen?.Contains(503180) == true));
+
+    private static readonly PerScreen<TickCache<bool>> HasSeenPamEvent = new(
+        static () => new(() => Game1.player?.eventsSeen?.Contains(PAMEVENT) == true));
+
+    private static readonly string Dialogue = PathUtilities.NormalizeAssetName("Characters/Dialogue");
 
     // The following dialogue is edited from the code side so each NPC has at least the Resort dialogue.
     // A CP pack will override as these are set to edit early.
-    private static readonly string GeorgeDialogueLocation = PathUtilities.NormalizeAssetName("Characters/Dialogue/George");
-    private static readonly string EvelynDialogueLocation = PathUtilities.NormalizeAssetName("Characters/Dialogue/Evelyn");
-    private static readonly string SandyDialogueLocation = PathUtilities.NormalizeAssetName("Characters/Dialogue/Sandy");
-    private static readonly string WillyDialogueLocation = PathUtilities.NormalizeAssetName("Characters/Dialogue/Willy");
-    private static readonly string WizardDialogueLocation = PathUtilities.NormalizeAssetName("Characters/Dialogue/Wizard");
+    private static IAssetName georgeDialogueLocation = null!;
+    private static IAssetName evelynDialogueLocation = null!;
+    private static IAssetName sandyDialogueLocation = null!;
+    private static IAssetName willyDialogueLocation = null!;
+    private static IAssetName wizardDialogueLocation = null!;
 
     // We edit Pam's phone dialogue into Strings/Characters so content packs can target that.
-    private static readonly string PhoneStringLocation = PathUtilities.NormalizeAssetName("Strings/Characters");
+    private static IAssetName phoneStringLocation = null!;
 
     // A ten heart event and letter are included to unlock the phone. Edit late - I don't really want CP packs changing this.
-    private static readonly string DataEventsSeedshop = PathUtilities.NormalizeAssetName("Data/Events/SeedShop");
-    private static readonly string DataMail = PathUtilities.NormalizeAssetName("Data/mail");
+    private static IAssetName dataEventsSeedshop = null!;
+    private static IAssetName dataMail = null!;
 
     // We edit Pam's nine heart event to set flags to remember which path the player chose.
     // This currently isn't used for anything.
-    private static readonly string DataEventsTrailerBig = PathUtilities.NormalizeAssetName("Data/Events/Trailer_Big");
+    private static IAssetName dataEventsTrailerBig = null!;
+
+    /// <summary>
+    /// Initializes the AssetEditor.
+    /// </summary>
+    /// <param name="parser">GameContentHelper.</param>
+    internal static void Initialize(IGameContentHelper parser)
+    {
+        // dialogue
+        georgeDialogueLocation = parser.ParseAssetName("Characters/Dialogue/George");
+        evelynDialogueLocation = parser.ParseAssetName("Characters/Dialogue/Evelyn");
+        sandyDialogueLocation = parser.ParseAssetName("Characters/Dialogue/Sandy");
+        willyDialogueLocation = parser.ParseAssetName("Characters/Dialogue/Willy");
+        wizardDialogueLocation = parser.ParseAssetName("Characters/Dialogue/Wizard");
+
+        // phone
+        phoneStringLocation = parser.ParseAssetName("Strings/Characters");
+
+        // events
+        dataEventsSeedshop = parser.ParseAssetName("Data/Events/SeedShop");
+        dataMail = parser.ParseAssetName("Data/mail");
+        dataEventsTrailerBig = parser.ParseAssetName("Data/Events/Trailer_Big");
+    }
 
     /// <summary>
     /// Handles editing assets for this mod.
@@ -50,42 +88,42 @@ internal static class AssetEditor
     /// <param name="e">Asset event arguments.</param>
     internal static void Edit(AssetRequestedEventArgs e)
     {
-        if (e.NameWithoutLocale.IsEquivalentTo(PhoneStringLocation))
+        if (e.NameWithoutLocale.IsEquivalentTo(phoneStringLocation))
         {
             e.Edit(EditPhone, AssetEditPriority.Early);
         }
-        else if (e.NameWithoutLocale.IsEquivalentTo(DataEventsSeedshop))
+        else if (HasSeenNineHeart.Value.GetValue() && !HasSeenPamEvent.Value.GetValue() && e.NameWithoutLocale.IsEquivalentTo(dataEventsSeedshop))
         {
             e.Edit(EditSeedShopEvent, AssetEditPriority.Late);
         }
-        else if (e.NameWithoutLocale.IsEquivalentTo(DataMail))
+        else if (e.NameWithoutLocale.IsEquivalentTo(dataMail))
         {
             e.Edit(EditMail, AssetEditPriority.Late);
         }
-        else if (e.NameWithoutLocale.IsEquivalentTo(DataEventsTrailerBig))
+        else if (!HasSeenNineHeart.Value.GetValue() && e.NameWithoutLocale.IsEquivalentTo(dataEventsTrailerBig))
         {
             e.Edit(EditTrailerBig, AssetEditPriority.Late);
         }
-        else if (e.NameWithoutLocale.IsDirectlyUnderPath("Characters/Dialogue")
+        else if (e.NameWithoutLocale.BaseName.StartsWith(Dialogue)
             && Game1.getLocationFromName("IslandSouth") is IslandSouth island && island.resortRestored.Value)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo(GeorgeDialogueLocation))
+            if (e.NameWithoutLocale.IsEquivalentTo(georgeDialogueLocation))
             {
                 e.Edit(EditGeorgeDialogue, AssetEditPriority.Early);
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo(EvelynDialogueLocation))
+            else if (e.NameWithoutLocale.IsEquivalentTo(evelynDialogueLocation))
             {
                 e.Edit(EditEvelynDialogue, AssetEditPriority.Early);
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo(SandyDialogueLocation))
+            else if (e.NameWithoutLocale.IsEquivalentTo(sandyDialogueLocation))
             {
                 e.Edit(EditSandyDialogue, AssetEditPriority.Early);
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo(WillyDialogueLocation))
+            else if (e.NameWithoutLocale.IsEquivalentTo(willyDialogueLocation))
             {
                 e.Edit(EditWillyDialogue, AssetEditPriority.Early);
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo(WizardDialogueLocation))
+            else if (e.NameWithoutLocale.IsEquivalentTo(wizardDialogueLocation))
             {
                 e.Edit(EditWizardDialogue, AssetEditPriority.Early);
             }
@@ -140,7 +178,7 @@ internal static class AssetEditor
     private static void EditMail(IAssetData e)
     {
         IAssetDataForDictionary<string, string>? editor = e.AsDictionary<string, string>();
-        editor.Data[PAMMAILKEY] = $"{I18n.Pam_Mail_Text()}^^   --{Game1.getCharacterFromName("Pam", mustBeVillager: true)?.displayName ?? I18n.Pam()}[#]{I18n.Pam_Mail_Title()}";
+        editor.Data[PAMMAILKEY] = $"{I18n.Pam_Mail_Text()}^^   --{NPCCache.GetByVillagerName("Pam")?.displayName ?? I18n.Pam()}[#]{I18n.Pam_Mail_Title()}";
     }
 
     private static void EditSeedShopEvent(IAssetData e)

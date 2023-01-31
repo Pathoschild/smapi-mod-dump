@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -79,7 +79,7 @@ internal sealed class GenericObjectMachinePatcher : HarmonyPatcher
 
     /// <summary>Patch to apply Artisan effects to automated generic machines.</summary>
     [HarmonyTranspiler]
-    [HarmonyAfter("Overhaul.Modules.Tweex")]
+    [HarmonyAfter("DaLion.Overhaul.Modules.Tweex")]
     private static IEnumerable<CodeInstruction>? GenericObjectMachineTranspiler(
         IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
@@ -152,10 +152,19 @@ internal sealed class GenericObjectMachinePatcher : HarmonyPatcher
         var output = machine.heldObject.Value;
         var chest = AutomateIntegration.Instance?.GetClosestContainerTo(machine, location);
         var user = ProfessionsModule.Config.LaxOwnershipRequirements ? Game1.player : chest?.GetOwner() ?? Game1.MasterPlayer;
+        var r = new Random(Guid.NewGuid().GetHashCode());
         if (user.HasProfession(Profession.Artisan) ||
             (ProfessionsModule.Config.LaxOwnershipRequirements && Game1.game1.DoesAnyPlayerHaveProfession(Profession.Artisan, out _)))
         {
             output.Quality = input.Quality;
+            if (r.NextDouble() > user.FarmingLevel / 30d)
+            {
+                output.Quality = (int)((Quality)output.Quality).Decrement();
+                if (r.NextDouble() > user.FarmingLevel / 15d)
+                {
+                    output.Quality = (int)((Quality)output.Quality).Decrement();
+                }
+            }
         }
 
         var owner = ProfessionsModule.Config.LaxOwnershipRequirements ? Game1.player : machine.GetOwner();
@@ -164,7 +173,7 @@ internal sealed class GenericObjectMachinePatcher : HarmonyPatcher
             return;
         }
 
-        if (output.Quality < SObject.bestQuality && Game1.random.NextDouble() < 0.05)
+        if (output.Quality < SObject.bestQuality && r.NextDouble() < 0.05)
         {
             output.Quality += output.Quality == SObject.highQuality ? 2 : 1;
         }

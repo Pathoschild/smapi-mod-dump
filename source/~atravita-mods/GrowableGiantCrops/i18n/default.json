@@ -1,0 +1,53 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "mod-description": "Lets you put down giant crops.",
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  // GMCM
+  "ShopLocation": "Shop Location",
+  "ShopLocation.description": "The location of the bush shop in the Witch's place.",
+  "ShouldNPCsTrampleGiantCrops.title": "Should NPCs Trample Giant Crops.",
+  "ShouldNPCsTrampleGiantCrops.description": "If enabled, will allow NPCs to remove giant crops in their path.",
+  "RelaxedPlacement.title": "Relaxed Placement",
+  "RelaxedPlacement.description": "If enabled, placement rules will be relaxed.",
+
+  // Items
+  "Shovel.Name": "Shovel",
+  "Shovel.Description": "An old, beat up shovel.",
+
+  // Giant crops
+  "GiantCropCategory": "Giant Crop",
+  "GiantCrop.name": "Giant {{crop}}",
+  "GiantCrop.description": "An abnormally large {{crop}}.",
+
+  // Resource Clumps
+  "ResourceClumpCategory": "Resource Clump",
+  "ResourceClumpInvalid.name": "Invalid Resource Clump",
+  "ResourceClumpInvalid.description": "Hey, how did you get this in your inventory?",
+
+  "Stump.name": "Stump",
+  "Stump.description": "A large stump. Can be placed.",
+  "HollowLog.name": "Hollow Log",
+  "HollowLog.description": "A large hollow log. Can be placed",
+  "Meteorite.name": "Meteorite",
+  "Meteorite.description": "Once, it fell from the sky. Now, you have it in your pocket.",
+  "Boulder.name": "Boulder",
+  "Boulder.description": "A large boulder. Can be placed.",
+
+  "MineRockOne.name": "Mine Rock",
+  "MineRockOne.description": "A large mine rock. Can be placed.",
+  "MineRockThree.name": "Frozen Mine Rock",
+  "MineRockThree.description": "A large, rather frozen, mine rock. Can be placed.",
+}

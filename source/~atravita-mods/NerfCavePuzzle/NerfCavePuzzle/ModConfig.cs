@@ -15,7 +15,7 @@ namespace NerfCavePuzzle;
 /// <summary>
 /// The config class for this mod.
 /// </summary>
-internal class ModConfig
+internal sealed class ModConfig
 {
     private float speedModifier = 1f;
     private float flashScale = 1f;
@@ -55,4 +55,9 @@ internal class ModConfig
     /// Gets or sets a value indicating whether or not to pause between rounds.
     /// </summary>
     public bool PauseBetweenRounds { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not re-asking should be enabled.
+    /// </summary>
+    public bool AllowReAsks { get; set; } = true;
 }

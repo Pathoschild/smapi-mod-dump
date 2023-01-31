@@ -2,13 +2,109 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
 # Arsenal Change Log
 
+## 1.3.1
+
+### Fixed
+
+* Fixed start-up error with Neptune's Glaive patcher.
+
+## 1.3.0
+
+### Changed
+
+* Drop chance of Lava Katana has been doubled.
+* Drop chance of Neptune's Glaive has been halved.
+* Added apostrophe to "Neptune's Glaive", to make it sound more unique.
+
+### Fixed
+
+* Fixed a bug preventing explosive ammo from exploding without the Desperado profession.
+* Fixed a bug with Obsidian Edge and Lava Katana drops creating error daggers instead.
+
+## 1.2.3
+
+### Added
+
+* Added some emote bubbles to spice up Blade of the Ruined Hero and Clint's Forge events.
+* Added the ability to customize the auto-selection border color.
+
+## Changed
+
+* Tribute enchantment threshold now inreases with each kill, and resets on taking damage.
+
+### Fixed
+
+* Blade of the Ruined Hero introduction event is no longer skippable.
+
+## 1.2.1
+
+### Fixed
+
+* Fixed auto-selection preventing other LeftShift actions in inventory menu.
+* Fixed inverted swipe effect when swinging scythe.
+
+## 1.2.0
+
+### Added
+
+* Added arsenal auto-selection.
+* You can now specify individual weapon with the console command for getting blueprints (`ars get bp <weapon1> <weapon2> etc...`).
+
+### Fixed
+
+* Fixed a bug in the console command for getting blueprints (`ars get bp`).
+
+## 1.1.0
+
+### Fixed
+
+* Fixed out-of-bounds tooltip elements for slingshots higher than basic.
+* Fixed bullseye position while aiming.
+
+## 1.0.4
+
+### Added
+
+* Added SwipeHold config. You can now hold the tool button to perform a continuous combo instead of spam-clicking.
+* Added CustomStabbingSwords config. Users can now register swords from their modlist to be treated as Stabbing swords. **Do not enter vanilla swords here, or non-sword weapons.**
+* Lava Katana swing effect is now orange-ish.
+
+### Fixed
+
+* Fixed shipping bin logic, which was also messed up by the Dark Sword.
+
+## 1.0.3-Hotfix
+
+Hotfix for Null-Reference Exception when opening Clint's shop menu.
+
+## 1.0.2
+
+### Added
+
+* Defense overhaul setting now also reduces Jinxed debuff from -8 to -5 defense.
+
+### Fixed
+
+* Fixed the overlaping ammo stacks displaying on slingshots with double ammo.
+* Fixed the shop selling logic which was messed up in 1.0.1.
+* Fixed the tooltip of weapons enchanted with Diamond.
+* Dark Sword should now be immune from accidental deposit by Better Chests' stack feature.
+* Clint's menu should now support mod geodes like Kaya's.
+
 ## 1.0.1
+
+### Added
+
+* Added an option to change the display style of weapon tooltips between relative and absolute values.
+* Added colorful swipe effect for Blade of Ruin and Blade of Dawn, as well as Infinity Gavel smash hit.
+* Legendary weapons can no longer be sold.
+* Enchanted weapons now sell for a premium (+1000g).
 
 ### Changed
 
@@ -17,6 +113,11 @@ for queries and analysis.**
 ### Fixed
 
 * Galaxy and Infinity weapons, Blade of Ruin and Blade of Dawn are now marked as Special and cannot be trashed.
+* Fixed a bug with Garnet resonance.
+* Improved the response of FaceMouseCursor feature in-between combo hits.
+* Fixed the direction of the swipe effect on backhand sword swipes.
+* No longer conflicts with Love Of Cooking's Frying Pan upgrades or drbirbdev's Panning and Ranching Tool Upgrades.
+* No longer prevents players from receiving the Galaxy Sword mail flag.
 
 ## 1.0.0
 

@@ -89,10 +89,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 CustomFarm customFarm = CustomFarm.get(id);
 
                 e.LoadFrom(delegate () {
-                    if (customFarm.WorldMapOverlay != null)
-                        return customFarm.WorldMapOverlay;
-                    else
-                        return customFarm.loadWorldMapTexture();
+                    return customFarm.loadWorldMapTexture();
                 }, AssetLoadPriority.Low);
 
                 return;
@@ -107,8 +104,6 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 return;
             }
 
-            if (e.NameWithoutLocale.BaseName == Bridge.BridgesTilesheet)
-                e.LoadFromModFile<Texture2D>("assets/CFL_Bridges", AssetLoadPriority.Medium);
         }
     }
 }

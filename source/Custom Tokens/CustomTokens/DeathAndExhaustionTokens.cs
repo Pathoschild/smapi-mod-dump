@@ -16,16 +16,15 @@ namespace CustomTokens
 {
     public class DeathAndExhaustionTokens
     {
+        
         internal void UpdateDeathAndExhaustionTokens(IModHelper helper, IMonitor monitor, PerScreen<PlayerData> data, ModConfig config, Update update)
         {
             // Update tracker if player died, is married and tracker should update
-            if (Game1.killScreen == true && Game1.player.isMarried() == true && update.updatedeath == true)
+            if (Game1.player.stats.timesUnconscious > ModEntry.deathcounter && Game1.player.isMarried() == true)
             {
                 // Increment tracker
                 data.Value.DeathCountMarried++;
-
-                // Already updated, ensures tracker won't repeatedly increment
-                update.updatedeath = false;
+                ModEntry.deathcounter++;
 
                 // Display trace information in SMAPI log
                 if (config.ResetDeathCountMarriedWhenDivorced == true)
@@ -36,12 +35,6 @@ namespace CustomTokens
                 {
                     monitor.Log($"{Game1.player.Name} has died {data.Value.DeathCountMarried} time(s) whilst married.");
                 }
-            }
-
-            else if (Game1.killScreen == false && update.updatedeath == false)
-            {
-                // Tracker should be updated next death
-                update.updatedeath = true;
             }
 
             // Has player passed out?

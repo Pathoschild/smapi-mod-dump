@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Weapons;
 
 #region using directives
 
-using System.Linq;
 using System.Reflection;
 using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
 using DaLion.Shared.Harmony;
@@ -39,7 +38,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
     private static bool MeleeWeaponDrawTooltipPrefix(
         MeleeWeapon __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha)
     {
-        if (!ArsenalModule.Config.Weapons.EnableRebalance)
+        if (!ArsenalModule.Config.Weapons.EnableRebalance || __instance.isScythe())
         {
             return true; // run original logic
         }
@@ -57,10 +56,6 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
                 new Vector2(x + 16, y + 20),
                 Game1.textColor);
             y += (int)font.MeasureString(Game1.parseText(__instance.description, Game1.smallFont, descriptionWidth)).Y;
-            if (__instance.isScythe(__instance.IndexOfMenuItemView))
-            {
-                return false; // don't run original logic
-            }
 
             var co = Game1.textColor;
 
@@ -93,7 +88,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
 
             // write bonus knockback
-            var relativeKnockback = __instance.Get_RelativeKnockback();
+            var relativeKnockback = __instance.Get_DisplayKnockback();
             if (relativeKnockback != 0)
             {
                 co = __instance.hasEnchantmentOfType<AmethystEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
@@ -122,7 +117,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             }
 
             // write bonus crit rate
-            var relativeCritChance = __instance.Get_RelativeCritChance();
+            var relativeCritChance = __instance.Get_DisplayCritChance();
             if (relativeCritChance != 0)
             {
                 co = __instance.hasEnchantmentOfType<AquamarineEnchantment>()
@@ -153,7 +148,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             }
 
             // write bonus crit power
-            var relativeGetCritPower = __instance.Get_RelativeCritPower();
+            var relativeGetCritPower = __instance.Get_DisplayCritPower();
             if (relativeGetCritPower != 0)
             {
                 co = __instance.hasEnchantmentOfType<JadeEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
@@ -182,7 +177,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             }
 
             // write bonus swing speed
-            var speed = __instance.Get_RelativeSwingSpeed();
+            var speed = __instance.Get_DisplaySwingSpeed();
             if (speed != 0)
             {
                 co = __instance.hasEnchantmentOfType<EmeraldEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
@@ -211,7 +206,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             }
 
             // write bonus cooldown reduction
-            var cooldownReduction = __instance.Get_RelativeCooldownReduction();
+            var cooldownReduction = __instance.Get_DisplayCooldownReduction();
             if (cooldownReduction > 0)
             {
                 co = new Color(0, 120, 120);
@@ -238,7 +233,7 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             }
 
             // write bonus defense
-            var resistance = __instance.Get_RelativeResilience();
+            var resistance = __instance.Get_DisplayResilience();
             if ((ArsenalModule.Config.OverhauledDefense && resistance != 0f) || resistance > 1f)
             {
                 co = __instance.hasEnchantmentOfType<TopazEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
@@ -287,8 +282,14 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
             co = new Color(120, 0, 210);
 
             // write other enchantments
-            foreach (var enchantment in __instance.enchantments.Where(e => e.ShouldBeDisplayed()))
+            for (var i = 0; i < __instance.enchantments.Count; i++)
             {
+                var enchantment = __instance.enchantments[i];
+                if (!enchantment.ShouldBeDisplayed())
+                {
+                    continue;
+                }
+
                 Utility.drawWithShadow(
                     spriteBatch,
                     Game1.mouseCursors2,

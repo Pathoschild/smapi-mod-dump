@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Slingshots;
 
 #region using directives
 
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
@@ -47,7 +46,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
         float alpha,
         StringBuilder? overrideText)
     {
-        if (__instance is not Slingshot slingshot || slingshot.enchantments.Count == 0)
+        if (__instance is not Slingshot slingshot)
         {
             return true; // run original logic
         }
@@ -280,8 +279,14 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
 
             // write other enchantments
             co = new Color(120, 0, 210);
-            foreach (var enchantment in __instance.enchantments.Where(e => e.ShouldBeDisplayed()))
+            for (var i = 0; i < __instance.enchantments.Count; i++)
             {
+                var enchantment = __instance.enchantments[i];
+                if (!enchantment.ShouldBeDisplayed())
+                {
+                    continue;
+                }
+
                 Utility.drawWithShadow(
                     spriteBatch,
                     Game1.mouseCursors2,

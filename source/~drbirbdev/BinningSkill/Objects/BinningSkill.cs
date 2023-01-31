@@ -26,11 +26,24 @@ namespace BinningSkill
         {
             this.Icon = ModEntry.Assets.IconA;
             this.SkillsPageIcon = ModEntry.Assets.IconB;
-
-            this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000 };
             this.ExperienceBarColor = new Microsoft.Xna.Framework.Color(99, 107, 107);
 
-            this.AddProfessions(
+            if (ModEntry.MargoLoaded)
+            {
+                this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 70000 };
+                this.AddProfessions(
+                    Recycler = new KeyedProfession(this, "Recycler", ModEntry.Assets.Recycler, ModEntry.Assets.RecyclerP, ModEntry.Instance.Helper),
+                    Sneak = new KeyedProfession(this, "Sneak", ModEntry.Assets.Sneak, ModEntry.Assets.SneakP, ModEntry.Instance.Helper),
+                    Environmentalist = new KeyedProfession(this, "Environmentalist", ModEntry.Assets.Environmentalist, ModEntry.Assets.EnvironmentalistP, ModEntry.Instance.Helper),
+                    Salvager = new KeyedProfession(this, "Salvager", ModEntry.Assets.Salvager, ModEntry.Assets.SalvagerP, ModEntry.Instance.Helper),
+                    Upseller = new KeyedProfession(this, "Upseller", ModEntry.Assets.Upseller, ModEntry.Assets.UpsellerP, ModEntry.Instance.Helper),
+                    Reclaimer = new KeyedProfession(this, "Reclaimer", ModEntry.Assets.Reclaimer, ModEntry.Assets.ReclaimerP, ModEntry.Instance.Helper, ModEntry.Config)
+                );
+            }
+            else
+            {
+                this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000 };
+                this.AddProfessions(
                     Recycler = new KeyedProfession(this, "Recycler", ModEntry.Assets.Recycler, ModEntry.Instance.I18n),
                     Sneak = new KeyedProfession(this, "Sneak", ModEntry.Assets.Sneak, ModEntry.Instance.I18n),
                     Environmentalist = new KeyedProfession(this, "Environmentalist", ModEntry.Assets.Environmentalist, ModEntry.Instance.I18n),
@@ -38,6 +51,7 @@ namespace BinningSkill
                     Upseller = new KeyedProfession(this, "Upseller", ModEntry.Assets.Upseller, ModEntry.Instance.I18n),
                     Reclaimer = new KeyedProfession(this, "Reclaimer", ModEntry.Assets.Reclaimer, ModEntry.Instance.I18n, ModEntry.Config)
                 );
+            }
         }
 
         private void AddProfessions(KeyedProfession lvl5A, KeyedProfession lvl5B, KeyedProfession lvl10A1, KeyedProfession lvl10A2, KeyedProfession lvl10B1, KeyedProfession lvl10B2)

@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Alex": "#$c .5#Hmmph. This is not good weather for sports, but... oh well, I can always lift weights inside.#Days like this let the truly dedicated show their mettle.#$b#What? I know some words.",
+        }
+    },
+    {
+        "LogName": "Alex - mid hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Alex",
+        "When": {"YearModulus": "2"},
+        "Entries": {
+            "4_2": "@! I saw a new exercise on social media the other day. Can't wait to try it out.",
+            "6_2": "There's nothing like a nice early morning run.$h",
+        }
+    }
+]}

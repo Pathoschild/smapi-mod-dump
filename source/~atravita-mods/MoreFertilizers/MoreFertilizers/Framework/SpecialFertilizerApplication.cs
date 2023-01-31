@@ -9,7 +9,6 @@
 *************************************************/
 
 using AtraCore.Utilities;
-using AtraShared.Menuing;
 using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using HarmonyLib;
@@ -37,23 +36,33 @@ internal static class SpecialFertilizerApplication
     /// <param name="helper">SMAPI's input helper.</param>
     internal static void ApplyFertilizer(ButtonPressedEventArgs e, IInputHelper helper)
     {
-        if (!MenuingExtensions.IsNormalGameplay() || !(e.Button.IsUseToolButton() || e.Button.IsActionButton())
-            || Game1.player.ActiveObject is not SObject obj || obj.bigCraftable.Value)
+        if (Game1.player.ActiveObject?.bigCraftable?.Value != false || Game1.player.ActiveObject.GetType() != typeof(SObject))
         {
             return;
         }
 
-        Vector2 placementtile;
-        if (PlaceHandler.CanPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.Tile)
-            && Utility.withinRadiusOfPlayer(((int)e.Cursor.Tile.X * 64) + 32, ((int)e.Cursor.Tile.Y * 64) + 32, PLACEMENTRADIUS, Game1.player))
+        SObject obj = Game1.player.ActiveObject;
+
+        Vector2 placementtile = Utility.withinRadiusOfPlayer(((int)e.Cursor.Tile.X * 64) + 32, ((int)e.Cursor.Tile.Y * 64) + 32, PLACEMENTRADIUS, Game1.player)
+                                    ? e.Cursor.Tile
+                                    : e.Cursor.GrabTile;
+
+        // HACK move the tile further from the player if they're controller.
+        if ((obj.ParentSheetIndex == ModEntry.FishFoodID || obj.ParentSheetIndex == ModEntry.DeluxeFishFoodID) &&
+            !Game1.currentLocation.isWaterTile((int)placementtile.X, (int)placementtile.Y))
         {
-            placementtile = e.Cursor.Tile;
+            placementtile = Game1.player.FacingDirection switch
+            {
+                Game1.up => Game1.player.getTileLocation() - new Vector2(0, 3),
+                Game1.down => Game1.player.getTileLocation() + new Vector2(0, 3),
+                Game1.left => Game1.player.getTileLocation() - new Vector2(3, 0),
+                _ => Game1.player.getTileLocation() + new Vector2(3, 0)
+            };
         }
-        else if (PlaceHandler.CanPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.GrabTile))
-        {
-            placementtile = e.Cursor.GrabTile;
-        }
-        else
+
+        ModEntry.ModMonitor.DebugOnlyLog($"Checking tile {placementtile}");
+
+        if (!PlaceHandler.CanPlaceFertilizer(obj, Game1.currentLocation, placementtile, true))
         {
             return;
         }
@@ -76,35 +85,8 @@ internal static class SpecialFertilizerApplication
             Game1.player.FaceFarmerTowardsPosition(placementpixel);
             Game1.playSound("throwDownITem");
 
-            Vector2 delta = placementpixel - Game1.player.Position;
-            float gravity = 0.0025f;
-            float velocity = -0.08f;
-            if (delta.Y < -80)
-            {
-                // Ensure the initial velocity is sufficiently fast to make it all the way up.
-                velocity -= MathF.Sqrt(2 * MathF.Abs(delta.Y + 80) * gravity);
-            }
-            float time = (MathF.Sqrt(Math.Max((velocity * velocity) + (gravity * (delta.Y + 128) * 2f), 0)) / gravity) - (velocity / gravity);
-
-            Multiplayer mp = MultiplayerHelpers.GetMultiplayer();
-            mp.broadcastSprites(
-                Game1.currentLocation,
-                new TemporaryAnimatedSprite(
-                    textureName: Game1.objectSpriteSheetName,
-                    sourceRect: Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, obj.ParentSheetIndex, 16, 16),
-                    position: Game1.player.position - new Vector2(0, 128f),
-                    flipped: false,
-                    alphaFade: 0f,
-                    color: Color.White)
-                {
-                    scale = Game1.pixelZoom,
-                    layerDepth = 1f,
-                    totalNumberOfLoops = 1,
-                    interval = time,
-                    acceleration = new Vector2(0f, gravity),
-                    motion = new Vector2(delta.X / time, velocity),
-                    timeBasedMotion = true,
-                });
+            Multiplayer? mp = MultiplayerHelpers.GetMultiplayer();
+            float time = obj.ParabolicThrowItem(Game1.player.Position - new Vector2(0, 128), placementpixel, mp, Game1.currentLocation);
 
             GameLocationUtils.DrawWaterSplash(Game1.currentLocation, placementpixel, mp, (int)time);
 
@@ -132,16 +114,22 @@ internal static class SpecialFertilizerApplication
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
     private static bool PrefixPlayerCanPlaceItemHere(GameLocation location, Item item, int x, int y, Farmer f, ref bool __result)
     {
+        if (item.GetType() != typeof(SObject))
+        {
+            return true;
+        }
+
         try
         {
-            Vector2 tile = new(MathF.Floor(x / 64f), MathF.Floor(y / 64f));
+            Vector2 tile = new(x / 64, y / 64);
             if (item is SObject obj && PlaceHandler.CanPlaceFertilizer(obj, location, tile) &&
                 Utility.withinRadiusOfPlayer(x, y, PLACEMENTRADIUS, f))
             {
                 __result = true;
                 return false;
             }
-            else if (item is SObject fert && ModEntry.SpecialFertilizerIDs.Contains(fert.ParentSheetIndex))
+            else if (item is SObject fert && !fert.bigCraftable.Value && fert.Category == SObject.fertilizerCategory
+                && ModEntry.SpecialFertilizerIDs.Contains(fert.ParentSheetIndex))
             {
                 __result = false;
                 return false;

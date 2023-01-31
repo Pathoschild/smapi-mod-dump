@@ -18,6 +18,13 @@ Adds additional tags that can be used to constrain the appearance of special ord
 2. Download this mod and unzip it into `Stardew Valley/Mods`.
 3. Run the game using SMAPI.
 
+### Configuration
+Run SMAPI at least once with this mod installed to generate the `config.json`, or use [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) to configure.
+
+* `SurpressUnnecessaryBoardUpdates` prevents the board from trying to update if it's not unlocked yet. Disable this if it causes issues.
+* `UseTagCache` will use a small internal cache to prevent recalculating tags often.
+* `AvoidRepeatingQiOrders` will cause completed Qi orders to never appear on the board UNLESS you've finished all of them. Primarily put this one in because I got tired of waiting for Danger in the Deep to show up.
+
 ### For modders:
 
 tl;dr Special orders are cached on Sunday night, making it hard to use CP tokens to control how Special Orders show up. I wanted to write a special order that would challenge you to gather a certain number of blackberries, and wrote this so that one special order would only show up in the one week in the year where it's actually, you know, possible.
@@ -37,11 +44,6 @@ Also adds a way to override the duration of special orders. Edit the asset `Mods
 Finally, adds dialogue keys. Their documentation can be found [here](docs/DialogueKeys.MD).
 
 [Changelog](docs/CHANGELOG.MD).
-
-### Configuration
-Run SMAPI at least once with this mod installed to generate the `config.json`, or use [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) to configure.
-
-* `SurpressUnnecessaryBoardUpdates` prevents the board from trying to update if it's not unlocked yet. Disable this if it causes issues.
 
 ### Known issues:
 1. I suspect (but am not absolutely sure) that if you complete two ship orders at the same time, only one will finish. This should only rarely happen in vanilla because there's only a few quests with ship requirements or have multi-week duration, but if you add a lot of multi-week ship orders you may run into this as well. This mod doesn't affect that part of the code though - it just patches CheckTag.

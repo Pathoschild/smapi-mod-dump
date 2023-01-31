@@ -10,9 +10,14 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
-using AtraBase.Toolkit.Reflection;
+
+using AtraCore.Framework.ReflectionManager;
+
+using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
+
 using HarmonyLib;
+
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
@@ -40,20 +45,24 @@ internal static class CoconutsOffIsland
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             helper.FindNext(new CodeInstructionWrapper[]
-                {
-                    new (SpecialCodeInstructionCases.LdArg),
-                    new (OpCodes.Brfalse_S),
-                    new (SpecialCodeInstructionCases.LdArg),
-                    new (OpCodes.Isinst),
-                    new (OpCodes.Brfalse_S),
-                })
-                .Advance(3)
-                .ReplaceInstruction(OpCodes.Call, typeof(CoconutsOffIsland).StaticMethodNamed(nameof(CoconutsOffIsland.AllowCoconutShakingHere)), keepLabels: true);
+            {
+                SpecialCodeInstructionCases.LdArg,
+                OpCodes.Brfalse_S,
+                SpecialCodeInstructionCases.LdArg,
+                OpCodes.Isinst,
+                OpCodes.Brfalse_S,
+            })
+            .Advance(3)
+            .ReplaceInstruction(
+                opcode: OpCodes.Call,
+                operand: typeof(CoconutsOffIsland).GetCachedMethod(nameof(AllowCoconutShakingHere), ReflectionCache.FlagTypes.StaticFlags),
+                keepLabels: true);
             return helper.Render();
         }
         catch (Exception ex)
         {
             ModEntry.ModMonitor.Log($"Ran into error transpiling coconut trees to drop coconuts everywhere!\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

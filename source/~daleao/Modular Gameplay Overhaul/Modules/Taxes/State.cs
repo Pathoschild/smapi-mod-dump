@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,5 +15,5 @@ internal sealed class State
 {
     internal int LatestAmountDue { get; set; }
 
-    internal int LatestAmountCharged { get; set; }
+    internal int LatestAmountWithheld { get; set; }
 }

@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common;
@@ -29,6 +30,12 @@ using StardewValley.Menus;
 namespace Leclair.Stardew.BetterCrafting.Menus;
 
 public class IconPicker : MenuSubscriber<ModEntry> {
+
+	public static readonly int[] OBJECT_SPRITES = new int[] {
+		0,  // Weeds
+		73, // Golden Walnut
+		79, // Lost Note
+	};
 
 	public readonly Action<CategoryIcon> onPick;
 
@@ -59,6 +66,16 @@ public class IconPicker : MenuSubscriber<ModEntry> {
 		FlowComponents = Flow.DynamicComponents;
 
 		var builder = FlowHelper.Builder();
+
+		foreach(int id in OBJECT_SPRITES) { 
+			Rectangle rect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, id, 16, 16);
+			SpriteInfo sprite = new(Game1.objectSpriteSheet, rect);
+
+			builder.Sprite(sprite, scale: 3, onClick: (_, _, _) => {
+				Pick(GameTexture.Object, rect);
+				return true;
+			});
+		}
 
 		for(int i = 0; i < 17; i++) {
 			Rectangle rect = new(10 * i, 428, 10, 10);

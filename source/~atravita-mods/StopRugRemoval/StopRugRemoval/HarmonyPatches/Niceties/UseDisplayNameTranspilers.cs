@@ -61,7 +61,7 @@ internal static class UseDisplayNameTranspilers
                 new(OpCodes.Pop), // pop the displayName from the stack, revert to the name.
             }, withLabels: labels);
 
-            helper.Print();
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)

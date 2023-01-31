@@ -130,7 +130,15 @@ public class SCIntegration : BaseAPIIntegration<IApi, ModEntry>, IRecipeProvider
 						result = new BaseIngredient(index.Value, matcher.Quantity);
 
 				} else if (cls.Equals("DynamicGameAssets.DGACustomCraftingRecipe+DGAIngredientMatcher")) {
-					result = new DGAIngredient(ing, Self);
+					IItemAbstraction? itemAbstraction;
+					try {
+						object? abstraction = Self.Helper.Reflection.GetField<object>(ing, "ingred", true).GetValue();
+						itemAbstraction = abstraction is null ? null : ProxyMan.ObtainProxy<IItemAbstraction>(abstraction);
+					} catch {
+						itemAbstraction = null;
+					}
+
+					result = new DGAIngredient(ing, Self, itemAbstraction);
 
 				} else
 					result = new SCIngredient(ing, Self);

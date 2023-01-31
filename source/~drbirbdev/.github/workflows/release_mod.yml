@@ -62,7 +62,7 @@ jobs:
       - name: Parse Manifest File
         id: parse_manifest
         run: |
-          echo "manifest=$(echo ${{ matrix.zip }} | cut -d "/" -f 3 | cut -d "_" -f 1)/manifest.json" >> "$GITHUB_OUTPUT"
+          echo "manifest=$(echo ${{ matrix.zip }} | cut -d "/" -f 3 | cut -d " " -f 1)/manifest.json" >> "$GITHUB_OUTPUT"
 
       - name: Read Manifest
         id: read_manifest

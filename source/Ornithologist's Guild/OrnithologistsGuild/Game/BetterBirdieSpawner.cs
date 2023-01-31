@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using DynamicGameAssets.Game;
 using Microsoft.Xna.Framework;
@@ -24,9 +23,7 @@ namespace OrnithologistsGuild
 {
     public class BetterBirdieSpawner
     {
-        public static BirdieDef debugAlwaysSpawn = null;
-
-        public static void AddBirdies(GameLocation location, double chance = 0, bool onlyIfOnScreen = false)
+        public static void AddBirdies(GameLocation location, double chance = 0, bool onScreen = false)
         {
             // If AddBirdies is called before warp is complete, ContentPactcher conditions will not be up to date with the new location
             if (Game1.isWarping)
@@ -37,7 +34,7 @@ namespace OrnithologistsGuild
                 handlerPlayerWarped = delegate
                 {
                     ModEntry.Instance.Monitor.Log("...warped, calling AddBirdies");
-                    AddBirdies(location, chance, onlyIfOnScreen);
+                    AddBirdies(location, chance, onScreen);
 
                     ModEntry.Instance.Helper.Events.Player.Warped -= handlerPlayerWarped;
                 };
@@ -49,7 +46,13 @@ namespace OrnithologistsGuild
 
             if (!location.IsOutdoors) return;
 
-            ModEntry.Instance.Monitor.Log("AddBirdies");
+            // TODO redo chance system
+            // Original SDV source:
+            // `double chance1 = Math.Max(0.15, Math.Min(0.5, (double) (this.map.Layers[0].LayerWidth * this.map.Layers[0].LayerHeight) / 15000.0));
+            // ...followed by other chances for other types of birds, e.g. woodpecker (which is 1/5th of `chance1`)
+            chance = Math.Clamp(chance, 0.15, 0.35);
+
+            ModEntry.Instance.Monitor.Log($"AddBirdies onScreen={onScreen} chance={chance}");
 
             // First, get locations of all bird feeders
             foreach (var overlaidDict in location.Objects)
@@ -69,7 +72,7 @@ namespace OrnithologistsGuild
                                 var foodDef = FoodDef.FromFeeder(feeder);
                                 if (foodDef != null)
                                 {
-                                    AddBirdiesNearFeeder(location, feeder, feederDef, foodDef, onlyIfOnScreen);
+                                    AddBirdiesNearFeeder(location, feeder, feederDef, foodDef, chance, onScreen);
                                 }
                             }
                         }
@@ -77,24 +80,21 @@ namespace OrnithologistsGuild
                 }
             }
 
-            if (chance > 0) AddRandomBirdies(location, chance, onlyIfOnScreen);
+            if (chance > 0) AddRandomBirdies(location, chance, onScreen);
         }
 
-        private static void AddRandomBirdies(GameLocation location, double chance, bool onlyIfOnScreen)
+        private static void AddRandomBirdies(GameLocation location, double chance, bool onScreen)
         {
             ModEntry.Instance.Monitor.Log("AddRandomBirdies");
 
             BirdieDef flockBirdieDef = null;
 
-            // Override chance
-            if (location is Farm) chance = 0.15;
-
             // Chance to add another flock
             int flocksAdded = 0;
-            while ((debugAlwaysSpawn != null && flocksAdded == 0) || Game1.random.NextDouble() < chance / (flocksAdded + 1)) // Chance lowers after every flock
+            while ((ModEntry.debug_AlwaysSpawn != null && flocksAdded == 0) || Game1.random.NextDouble() < chance / (flocksAdded + 1)) // Chance lowers after every flock
             {
                 // Determine flock parameters
-                flockBirdieDef = debugAlwaysSpawn == null ? GetRandomBirdieDef() : debugAlwaysSpawn;
+                flockBirdieDef = ModEntry.debug_AlwaysSpawn == null ? GetRandomBirdieDef() : ModEntry.debug_AlwaysSpawn;
                 if (flockBirdieDef == null) return;
 
                 int flockSize = Game1.random.Next(1, flockBirdieDef.MaxFlockSize + 1);
@@ -102,60 +102,53 @@ namespace OrnithologistsGuild
                 // Try 50 times to find an empty patch within the location
                 for (int trial = 0; trial < 50; trial++)
                 {
-                    // Get a random tile within the feeder range
+                    // Get a random tile on the map
                     var randomTile = location.getRandomTile();
 
-                    if (!onlyIfOnScreen || !Utility.isOnScreen(randomTile * Game1.tileSize, Game1.tileSize))
+                    if (Utility.isOnScreen(randomTile * Game1.tileSize, Game1.tileSize) != onScreen) continue;
+                    if (!BetterBirdie.CanSpawnAtOrRelocateTo(location, randomTile, flockBirdieDef)) continue;
+
+                    ModEntry.Instance.Monitor.Log($"Found clear location at {randomTile}, adding flock of {flockSize} {flockBirdieDef.ID}");
+
+                    // Spawn birdies
+                    for (int index = 0; index < flockSize; ++index)
                     {
-                        // Get a 3x3 patch around the random tile
-                        var randomRect = new Microsoft.Xna.Framework.Rectangle((int)randomTile.X - 1, (int)randomTile.Y - 1, 3, 3);
-
-                        if (!location.isAreaClear(randomRect)) continue;
-
-                        ModEntry.Instance.Monitor.Log($"Found clear location at {randomRect}, adding flock of {flockSize} {flockBirdieDef.ID}");
-
-                        // Spawn birdies
-                        List<Critter> crittersToAdd = new List<Critter>();
-                        for (int index = 0; index < flockSize; ++index)
+                        // 5% chance to spawn bird perched
+                        Perch perch = null;
+                        if (Game1.random.NextDouble() < 0.05)
                         {
-                            Perch perch = null;
-
-                            // 5% chance to spawn bird perched
-                            if (Game1.random.NextDouble() < 0.05)
-                            {
-                                perch = Perch.GetRandomAvailablePerch(location, flockBirdieDef);
-                            }
-
-                            if (perch == null) {
-                                crittersToAdd.Add((Critter)new BetterBirdie(flockBirdieDef, Vector2.Zero));
-                            } else if (!onlyIfOnScreen || !Utility.isOnScreen(Utilities.XY(perch.Position), Game1.tileSize))
-                            {
-                                location.critters.Add(new BetterBirdie(flockBirdieDef, Vector2.Zero, perch));
-                            }
+                            perch = Perch.GetRandomAvailablePerch(location, flockBirdieDef);
+                            // Ensure perch is/isn't onscreen
+                            if (perch != null && Utility.isOnScreen(Utilities.XY(perch.Position), Game1.tileSize) != onScreen) perch = null;
                         }
 
-                        ModEntry.Instance.Helper.Reflection.GetMethod(location, "addCrittersStartingAtTile").Invoke(randomTile, crittersToAdd);
-
-                        flocksAdded++;
-
-                        break;
+                        if (perch == null) {
+                            var tile = Utility.getTranslatedVector2(randomTile, Game1.random.Next(4), 1f);
+                            location.addCritter((Critter)new BetterBirdie(flockBirdieDef, tile));
+                        } else {
+                            location.addCritter(new BetterBirdie(flockBirdieDef, Vector2.Zero, perch));
+                        }
                     }
+
+                    flocksAdded++;
+
+                    break;
                 }
             }
         }
 
-        private static void AddBirdiesNearFeeder(GameLocation location, CustomBigCraftable feeder, Models.FeederDef feederDef, Models.FoodDef food, bool onlyIfOnScreen)
+        private static void AddBirdiesNearFeeder(GameLocation location, CustomBigCraftable feeder, Models.FeederDef feederDef, Models.FoodDef food, double chance, bool onScreen)
         {
             ModEntry.Instance.Monitor.Log("AddBirdiesNearFeeder");
 
             // Build a rectangle around the feeder based on the range
-            var feederRect = Utility.getRectangleCenteredAt(feeder.TileLocation, (feederDef.range * 2) + 1);
+            var feederRect = Utility.getRectangleCenteredAt(feeder.TileLocation, (feederDef.Range * 2) + 1);
 
             BirdieDef flockBirdieDef = null;
 
             // Chance to add another flock
             int flocksAdded = 0;
-            while (flocksAdded < feederDef.maxFlocks && Game1.random.NextDouble() < 0.3)
+            while (flocksAdded < feederDef.MaxFlocks && Game1.random.NextDouble() < (chance * 2))
             {
                 // Determine flock parameters
                 flockBirdieDef = GetRandomFeederBirdieDef(feederDef, food);
@@ -163,7 +156,9 @@ namespace OrnithologistsGuild
 
                 int flockSize = Game1.random.Next(1, flockBirdieDef.MaxFlockSize + 1);
 
-                var shouldAddBirdToFeeder = flocksAdded == 0 && Game1.random.NextDouble() < 0.65 && (!onlyIfOnScreen || !Utility.isOnScreen(feeder.TileLocation * Game1.tileSize, Game1.tileSize));
+                var shouldAddBirdToFeeder = flocksAdded == 0 && Game1.random.NextDouble() < 0.65;
+                // Ensure feeder is/isn't onscreen
+                if (Utility.isOnScreen(feeder.TileLocation * Game1.tileSize, Game1.tileSize) != onScreen) shouldAddBirdToFeeder = false;
                 if (shouldAddBirdToFeeder) flockSize -= 1;
 
                 // Try 50 times to find an empty patch within the feeder range
@@ -172,29 +167,20 @@ namespace OrnithologistsGuild
                     // Get a random tile within the feeder range
                     var randomTile = Utility.getRandomPositionInThisRectangle(feederRect, Game1.random);
 
-                    if (location.isTileOnMap(randomTile) && (!onlyIfOnScreen || !Utility.isOnScreen(randomTile * Game1.tileSize, Game1.tileSize)))
+                    if (Utility.isOnScreen(randomTile * Game1.tileSize, Game1.tileSize) != onScreen) continue;
+                    if (!BetterBirdie.CanSpawnAtOrRelocateTo(location, randomTile, flockBirdieDef)) continue;
+
+                    ModEntry.Instance.Monitor.Log($"Found clear location at {randomTile}, adding flock of {flockSize} {flockBirdieDef.ID}");
+
+                    // Spawn birdies
+                    for (int index = 0; index < flockSize; ++index)
                     {
-                        // Get a 3x3 patch around the random tile 
-                        // var randomRect = new Microsoft.Xna.Framework.Rectangle((int)randomTile.X - 2, (int)randomTile.Y - 2, 5, 5); // TODO revert to 5x5 if needed
-                        var randomRect = new Microsoft.Xna.Framework.Rectangle((int)randomTile.X - 1, (int)randomTile.Y - 1, 3, 3);
-
-                        if (!location.isAreaClear(randomRect)) continue;
-
-                        ModEntry.Instance.Monitor.Log($"Found clear location at {randomRect}, adding flock of {flockSize} {flockBirdieDef.ID}");
-
-                        // Spawn birdies
-                        List<Critter> crittersToAdd = new List<Critter>();
-
-                        for (int index = 0; index < flockSize; ++index)
-                        {
-                            crittersToAdd.Add((Critter)new BetterBirdie(flockBirdieDef, Vector2.Zero));
-                        }
-
-                        ModEntry.Instance.Helper.Reflection.GetMethod(location, "addCrittersStartingAtTile").Invoke(randomTile, crittersToAdd);
-
-                        flocksAdded++;
-                        break;
+                        var tile = Utility.getTranslatedVector2(randomTile, Game1.random.Next(4), 1f);
+                        location.addCritter((Critter)new BetterBirdie(flockBirdieDef, tile));
                     }
+
+                    flocksAdded++;
+                    break;
                 }
 
                 var perch = new Perch(feeder);

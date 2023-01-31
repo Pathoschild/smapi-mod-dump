@@ -10,7 +10,6 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
-using AtraBase.Toolkit.Reflection;
 using AtraCore.Framework.ReflectionManager;
 using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
@@ -21,7 +20,7 @@ using StardewValley.Locations;
 namespace MoreFertilizers.HarmonyPatches.FishFood;
 
 /// <summary>
-/// Handles transpiling the caldera.
+/// A transpiler against Caldera.getFish.
 /// </summary>
 [HarmonyPatch(typeof(Caldera))]
 internal static class CalderaGetFishTranspiler

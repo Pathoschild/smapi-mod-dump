@@ -34,13 +34,25 @@ internal static class PanGetPanItemsPostfix
         {
             __result.Add(new SObject(ModEntry.LuckyFertilizerID, 5));
         }
+        else if (location is Farm && ModEntry.WisdomFertilizerID != -1 && Game1.player.FarmingLevel > 4)
+        {
+            __result.Add(new SObject(ModEntry.WisdomFertilizerID, 5));
+        }
         else if (location is IslandLocation && ModEntry.OrganicFertilizerID != -1)
         {
             __result.Add(new SObject(ModEntry.OrganicFertilizerID, 5));
         }
-        else if (location is Sewer && ModEntry.DeluxeJojaFertilizerID != -1)
+        else if (location is Sewer)
         {
-            __result.Add(new SObject(ModEntry.DeluxeJojaFertilizerID, 5));
+            if (ModEntry.SecretJojaFertilizerID != -1 && Game1.random.NextDouble() < 0.1
+                && Utility.hasFinishedJojaRoute())
+            {
+                __result.Add(new SObject(ModEntry.SecretJojaFertilizerID, 2));
+            }
+            if (ModEntry.DeluxeJojaFertilizerID != -1)
+            {
+                __result.Add(new SObject(ModEntry.DeluxeJojaFertilizerID, 5));
+            }
         }
         else if (location is BugLand && ModEntry.BountifulFertilizerID != -1)
         {

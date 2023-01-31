@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Enchantments;
 
 using System.Collections.Generic;
 using DaLion.Overhaul.Modules.Arsenal.Extensions;
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -43,11 +44,11 @@ internal sealed class RubyEnchantmentUnapplyToPatcher : HarmonyPatcher
 
         var data = ModHelper.GameContent
             .Load<Dictionary<int, string>>("Data/weapons")[weapon.InitialParentTileIndex]
-            .Split('/');
+            .SplitWithoutAllocation('/');
         weapon.minDamage.Value -=
-            (int)(weapon.Read(DataFields.BaseMinDamage, Convert.ToInt32(data[2])) * __instance.GetLevel() * 0.1f);
+            (int)(weapon.Read(DataFields.BaseMinDamage, int.Parse(data[2])) * __instance.GetLevel() * 0.1f);
         weapon.maxDamage.Value -=
-            (int)(weapon.Read(DataFields.BaseMaxDamage, Convert.ToInt32(data[3])) * __instance.GetLevel() * 0.1f);
+            (int)(weapon.Read(DataFields.BaseMaxDamage, int.Parse(data[3])) * __instance.GetLevel() * 0.1f);
         return false; // don't run original logic
     }
 

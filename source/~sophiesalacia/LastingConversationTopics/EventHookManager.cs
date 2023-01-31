@@ -20,7 +20,7 @@ internal class EventHookManager
 {
     internal static void InitializeEventHooks()
     {
-        Globals.EventHelper.Content.AssetRequested += LoadAssets;
+        Globals.EventHelper.Content.AssetRequested += LoadOrEditAssets;
         Globals.EventHelper.GameLoop.DayStarted += ProcessConversationTopics;
     }
 
@@ -48,9 +48,9 @@ internal class EventHookManager
         }
     }
 
-    private static void LoadAssets(object sender, AssetRequestedEventArgs e)
+    private static void LoadOrEditAssets(object sender, AssetRequestedEventArgs e)
     {
-        if (e.Name.IsEquivalentTo(Globals.ContentPath))
+        if (e.NameWithoutLocale.IsEquivalentTo(Globals.ContentPath))
         {
             e.LoadFrom(
                 () => new Dictionary<string, string>
@@ -59,6 +59,19 @@ internal class EventHookManager
                 },
                 AssetLoadPriority.Medium
             );
+        }
+
+        // Remove the flag for cc_Greenhouse NOT in progress - otherwise this event never fires
+        else if (e.NameWithoutLocale.IsEquivalentTo("Data/Events/Farm"))
+        {
+            e.Edit(asset =>
+            {
+                var data = asset.AsDictionary<string, string>().Data;
+
+                data["900553/t 600 1130/Hn ccPantry/w sunny"] =
+                    data["900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny"];
+                data.Remove("900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny");
+            });
         }
     }
 }

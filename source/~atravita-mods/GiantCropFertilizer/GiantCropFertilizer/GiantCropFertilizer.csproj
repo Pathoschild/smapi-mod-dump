@@ -2,7 +2,6 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -11,7 +10,7 @@
     <Name>Giant Crop Fertilizer</Name>
     <Description>Adds a fertilizer that forces giant crops.</Description>
     <UpdateKeys>Nexus:11620</UpdateKeys>
-    <Version>0.2.0</Version>
+    <Version>0.2.2</Version>
     <BaseManifest>..\..\ja_dependencies.json</BaseManifest>
   </PropertyGroup>
 

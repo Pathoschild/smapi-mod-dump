@@ -2,11 +2,22 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
 # Tweex Module Change Log
+
+## 1.0.2
+
+### Added
+
+* Added option to age Tea Bushes, just like Bee Hives and Mushroom Boxes. Tea Bushes will produce higher quality Tea Leaves as they mature.
+* You can now set the amount of exp rewarded for harvesting Berry Bushes, Mushroom Boxes and Tappers.
+
+### Fixed
+
+* Fixed a bug where Mushrom Box quality did not apply when automated.
 
 ## 0.9.3
 

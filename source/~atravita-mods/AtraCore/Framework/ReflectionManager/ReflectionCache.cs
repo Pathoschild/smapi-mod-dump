@@ -10,14 +10,16 @@
 
 using System.Reflection;
 using AtraBase.Caching;
+using AtraBase.Collections;
 using AtraBase.Toolkit.Reflection;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace AtraCore.Framework.ReflectionManager;
 
 /// <summary>
 /// A class for cached reflection.
 /// </summary>
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Records break stylecop :(.")]
 public static class ReflectionCache
 {
     /// <summary>
@@ -54,8 +56,44 @@ public static class ReflectionCache
     /// <param name="FlagTypes"></param>
     /// <param name="MemberType"></param>
     /// <param name="Params"></param>
-[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "This is a record lol.")]
-    private readonly record struct ReflectionCacheMember(Type Type, string Name, FlagTypes FlagTypes, MemberTypes MemberType, Type[]? Params);
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "This is a record lol.")]
+    private readonly record struct ReflectionCacheMember(Type Type, string Name, FlagTypes FlagTypes, MemberTypes MemberType, Type[]? Params)
+    {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int factor = -0x5AAA_AAD7;
+
+                int ret = ((EqualityComparer<Type>.Default.GetHashCode(this.Type) * factor) + EqualityComparer<string>.Default.GetHashCode(this.Name)) * factor;
+                ret += EqualityComparer<FlagTypes>.Default.GetHashCode(this.FlagTypes);
+                ret *= factor;
+                ret += EqualityComparer<MemberTypes>.Default.GetHashCode(this.MemberType);
+                ret *= factor;
+
+                if (this.Params is not null)
+                {
+                    for (int i = 0; i < this.Params.Length; i++)
+                    {
+                        Type? param = this.Params[i];
+                        ret += EqualityComparer<Type>.Default.GetHashCode(param);
+                        ret *= factor;
+                    }
+                }
+
+                return ret;
+            }
+        }
+
+        public bool Equals(ReflectionCacheMember other)
+        {
+            if (EqualityComparer<Type>.Default.Equals(this.Type, other.Type) && EqualityComparer<string>.Default.Equals(this.Name, other.Name) && EqualityComparer<FlagTypes>.Default.Equals(this.FlagTypes, other.FlagTypes) && EqualityComparer<MemberTypes>.Default.Equals(this.MemberType, other.MemberType))
+            {
+                return this.Params.ArraySequenceEquals(other.Params);
+            }
+            return false;
+        }
+    }
 
     private static readonly SimpleConcurrentCache<ReflectionCacheMember, MemberInfo> Cache = new(2, 50);
 
@@ -148,7 +186,7 @@ public static class ReflectionCache
     }
 
     /// <summary>
-    /// Gets a propertyinfo, from the cache if possible.
+    /// Gets a PropertyInfo, from the cache if possible.
     /// </summary>
     /// <param name="type">Type to search in.</param>
     /// <param name="propertyName">Property to search for.</param>
@@ -198,6 +236,36 @@ public static class ReflectionCache
         }
         return ReflectionThrowHelper.ThrowMethodNotFoundException<FieldInfo>(type.FullName + "::" + fieldName);
     }
+
+    #region niceties
+
+    /// <inheritdoc cref="GetCachedMethod(Type, string, FlagTypes, Type[])"/>
+    /// <remarks>For a method with a signature that takes one param.</remarks>
+    /// <typeparam name="T">type signature.</typeparam>
+    public static MethodInfo GetCachedMethod<T>(this Type type, string fieldName, FlagTypes flags)
+        => type.GetCachedMethod(fieldName, flags, new[] { typeof(T) });
+
+    public static MethodInfo GetCachedMethod<T1, T2>(this Type type, string fieldName, FlagTypes flags)
+        => type.GetCachedMethod(fieldName, flags, new[] { typeof(T1), typeof(T2) });
+
+    public static MethodInfo GetCachedMethod<T1, T2, T3>(this Type type, string fieldName, FlagTypes flags)
+        => type.GetCachedMethod(fieldName, flags, new[] { typeof(T1), typeof(T2), typeof(T3) });
+
+    public static MethodInfo GetCachedMethod<T1, T2, T3, T4>(this Type type, string fieldName, FlagTypes flags)
+        => type.GetCachedMethod(fieldName, flags, new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) });
+
+    public static ConstructorInfo GetCachedConstructor<T>(this Type type, FlagTypes flags)
+        => type.GetCachedConstructor(flags, new[] { typeof(T) } );
+
+    public static ConstructorInfo GetCachedConstructor<T1, T2>(this Type type, FlagTypes flags)
+        => type.GetCachedConstructor(flags, new[] { typeof(T1), typeof(T2) });
+
+    public static ConstructorInfo GetCachedConstructor<T1, T2, T3>(this Type type, FlagTypes flags)
+        => type.GetCachedConstructor(flags, new[] { typeof(T1), typeof(T2), typeof(T3) });
+
+    public static ConstructorInfo GetCachedConstructor<T1, T2, T3, T4>(this Type type, FlagTypes flags)
+        => type.GetCachedConstructor(flags, new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) });
+    #endregion
 
     /// <summary>
     /// Clears the reflection cache.

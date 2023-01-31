@@ -143,8 +143,11 @@ namespace DynamicMapTiles
             var dict = Helper.GameContent.Load<Dictionary<string, DynamicTileInfo>>(dictPath);
             foreach (var kvp in dict)
             {
+                Monitor.Log($"Adding properties from {kvp.Key}");
                 var info = kvp.Value;
                 int count = 0;
+                if (info.properties is null)
+                    continue;
                 if (info.locations is not null && !info.locations.Contains(e.NewLocation.Name))
                     continue;
                 if (info.tileSheets is not null && !info.tileSheets.Exists(s => e.NewLocation.Map.TileSheets.ToList().Exists(ss => ss.Id == s)) && !info.tileSheets.Exists(s => e.NewLocation.Map.TileSheets.ToList().Exists(ss => ss.ImageSource.Contains(s))))
@@ -372,9 +375,9 @@ namespace DynamicMapTiles
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Debug",
-                getValue: () => Config.IsDebug,
-                setValue: value => Config.IsDebug = value
+                name: () => "Trigger During Events",
+                getValue: () => Config.TriggerDuringEvents,
+                setValue: value => Config.TriggerDuringEvents = value
             );
         }
     }

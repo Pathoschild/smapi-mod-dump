@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
@@ -32,19 +31,21 @@ internal sealed class SlimeDeflationUpdateTickedEvent : UpdateTickedEvent
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        var undeflated = GreenSlime_Piped.Values
-            .Select(pair => pair.Value)
-            .Where(piped => piped.PipeTimer <= 0 && piped.Instance.Scale > piped.OriginalScale)
-            .ToArray();
-        if (undeflated.Length == 0)
+        var count = 0;
+        foreach (var (_, piped) in GreenSlime_Piped.Values)
         {
-            this.Disable();
-            return;
+            if (piped.PipeTimer > 0 || piped.Instance.Scale <= piped.OriginalScale)
+            {
+                continue;
+            }
+
+            piped.Deflate();
+            count++;
         }
 
-        foreach (var piped in undeflated)
+        if (count == 0)
         {
-            piped.Deflate();
+            this.Disable();
         }
     }
 }

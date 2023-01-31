@@ -22,6 +22,9 @@ Table of Contents
 * [Creating a static perch on a map](#creating-a-static-perch-on-a-map)
    * [Examples](#examples)
       * [Adding two roost perches](#adding-two-roost-perches)
+* [Using the biomes system](#using-the-biomes-system)
+   * [Specifying biomes on a custom map](#specifying-biomes-on-a-custom-map)
+   * [List of biomes](#list-of-biomes)
 
 
 # Creating a content pack
@@ -63,8 +66,9 @@ All content packs require a `content.json` file in their root.
 | `AssetPath`        | Path to sprite                                                                                                                                                                               | `false`  | Stardew Valley `critters` tilesheet |
 | `SoundAssetPath`   | Path to custom sound                                                                                                                                                                         | `false`  |                                     |
 | `BaseFrame`        | Sprite base frame                                                                                                                                                                            | `false`  | `0`                                 |
+| `BathingClipBottom`| Number of pixels to clip from the bottom of the sprite when the bird is bathing (see `CanBathe`)                                                                                             | `false`  | `8`                                 |
 | `Attributes`       | Number of discoverable attributes (see [Translations](#translations))                                                                                                                        | `true`   |                                     |
-| `ShouldUseBath`    | *Not yet used*                                                                                                                                                                               | `true`   |                                     |
+| `CanBathe`         | Whether the bird should use bird baths (see `BathingClipBottom`)                                                                                                                             | `true`   |                                     |
 | `MaxFlockSize`     | Maximum number of birds to spawn in a single flock                                                                                                                                           | `true`   |                                     |
 | `Cautiousness`     | How close a player must in, in tiles, for a bird to frighten                                                                                                                                 | `true`   |                                     |
 | `FlapDuration`     | Duration, in ms, between flaps                                                                                                                                                               | `true`   |                                     |
@@ -84,8 +88,9 @@ All content packs require a `content.json` file in their root.
 
 - Spawn globally, but are somewhat rare
 - Common at Hopper feeders with Fruit, somewhat rare at Platform feeders with Fruit
-- More common in Winter, in the Forest location
-- Less common in Summer
+- Slightly more common in Winter in the `forest` [biome](#using-the-biomes-system)
+- Significantly less common in Summer
+- Do not spawn in `desert` and `void` [biomes](#using-the-biomes-system)
 
 ```json
 {
@@ -100,15 +105,16 @@ All content packs require a `content.json` file in their root.
     "Conditions": [
         {
             "When": {
-                "Season": "Winter"
+                "Season": "Winter",
+                "Ivy.OrnithologistsGuild/LocationBiome": "forest"
             },
             "AddWt": 0.1
         },
         {
             "When": {
-                "LocationName": "Forest"
+                "Ivy.OrnithologistsGuild/LocationBiome": "desert, void"
             },
-            "AddWt": 0.1
+            "NilWt": true
         },
         {
             "When": {
@@ -121,6 +127,8 @@ All content packs require a `content.json` file in their root.
 ```
 
 ### Vanilla Stardew Valley birds
+
+Replicates the vanilla bird logic.
 
 - Spawn globally and are very common
 - Visit at all feeder types with all food types
@@ -171,14 +179,16 @@ All content packs require a `content.json` file in their root.
 
 Replace `{ID}` with the `ID` of your birdie.
 
-| Key                          | Description                                                             |   |   |
-|------------------------------|-------------------------------------------------------------------------|---|---|
-| `birdie.{ID}.commonName`     | Your bird's common name                                                 |   |   |
-| `birdie.{ID}.scientificName` | Your bird's scientific name                                             |   |   |
-| `birdie.{ID}.attribute.{N}`  | A short attribute like "plump body" where `{N}` is the attribute number |   |   |
-| `birdie.{ID}.funFact`        | A fun fact about your bird!                                             |   |   |
+| Key                          | Description                                                             |
+|------------------------------|-------------------------------------------------------------------------|
+| `birdie.{ID}.commonName`     | Your bird's common name                                                 |
+| `birdie.{ID}.scientificName` | Your bird's scientific name                                             |
+| `birdie.{ID}.attribute.{N}`  | A short attribute like "plump body" where `{N}` is the attribute number |
+| `birdie.{ID}.funFact`        | A fun fact about your bird!                                             |
 
 # Creating a static perch on a map
+
+Mod authors can add static perches to their maps. Birds will naturally land and roost on them!
 
 Set **map** property `Perches` to a value in the following format:
 
@@ -195,3 +205,31 @@ Adds two roost perches at `(10,56)` and `(5,17)` with pixel a Z offset of `-18` 
     "Perches": "10 56 -18 0/5 17 -18 0"
 }
 ```
+
+# Using the biomes system
+
+Biomes allow birds from all sources to spawn conditionally on vanilla maps *and* maps added by mods. For example, a mod author can add a desert themed map and have all desert birds spawn naturally.
+
+Instead of spawning birds conditionally based on `LocationName`, we'll use `Ivy.OrnithologistsGuild/LocationBiome`. See [weight system examples](#weight-system-examples).
+
+## Specifying biomes on a custom map
+
+Mod authors can specify biomes on their own maps using the `Biomes` map property. The value should be a list of biomes seperated by a `/`.
+
+For example, a map that is both a `forest` and a `wetland` biome would use `forest/wetland`.
+
+If no biomes are specified, the `default` biome will be applied and a general set of birds will spawn.
+
+## List of biomes
+
+- `default` (unspecified biome)
+- `void` (unhospitable biome)
+- `farm`
+- `forest`
+- `city`
+- `ocean`
+- `wetland`
+- `desert`
+- `island` (not yet implemented)
+
+Custom biome names can be used as well.

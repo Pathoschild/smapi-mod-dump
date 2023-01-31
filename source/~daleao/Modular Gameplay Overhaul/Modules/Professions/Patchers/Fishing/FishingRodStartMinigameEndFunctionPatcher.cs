@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -44,9 +44,9 @@ internal sealed class FishingRodStartMinigameEndFunctionPatcher : HarmonyPatcher
         try
         {
             helper // find index of pirate check
-                .FindProfessionCheck(Farmer.pirate)
+                .MatchProfessionCheck(Farmer.pirate)
                 .Move(-2)
-                .Match(new[] { new CodeInstruction(OpCodes.Add) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Add) }, out var count)
                 .Remove(count); // remove this check
         }
         catch (Exception ex)

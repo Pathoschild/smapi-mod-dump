@@ -80,6 +80,10 @@ namespace CustomTokens
 
                 // Update tracker
                 data.Value.CurrentVolcanoFloor = VolcanoShaft.level.Value;
+                if (VolcanoShaft.level.Value > data.Value.DeepestVolcanoFloor)
+                {
+                    data.Value.DeepestVolcanoFloor = VolcanoShaft.level.Value;
+                }
             }
 
             else

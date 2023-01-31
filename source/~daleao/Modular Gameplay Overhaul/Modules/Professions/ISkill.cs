@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions;
 #region using directives
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Extensions.Collections;
@@ -76,7 +77,7 @@ public interface ISkill
     virtual IEnumerable<int> TierTwoProfessionIds => this.ProfessionIds.TakeLast(4);
 
     /// <summary>Gets the experience required for each level.</summary>
-    internal static IReadOnlyDictionary<int, int> ExperienceByLevel { get; } = new Dictionary<int, int>
+    internal static ImmutableDictionary<int, int> ExperienceByLevel { get; } = new Dictionary<int, int>
     {
         { 0, 0 },
         { 1, 100 },
@@ -99,7 +100,7 @@ public interface ISkill
         { 18, Constants.ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 8) },
         { 19, Constants.ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 9) },
         { 20, Constants.ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 10) },
-    };
+    }.ToImmutableDictionary();
 
     /// <summary>Adds experience points for this skill.</summary>
     /// <param name="amount">The amount of experience to add.</param>
@@ -119,14 +120,14 @@ public interface ISkill
         var isSkillLevelTen = this.CurrentLevel >= 10;
         if (!isSkillLevelTen)
         {
-            Log.D($"{this.StringId} skill cannot be reset because it's level is lower than 10.");
+            Log.D($"[Prestige]: {this.StringId} skill cannot be reset because it's level is lower than 10.");
             return false;
         }
 
         var justLeveledUp = this.NewLevels.Contains(10);
         if (justLeveledUp)
         {
-            Log.D($"{this.StringId} skill cannot be reset because {farmer.Name} has not yet seen the level-up menu.");
+            Log.D($"[Prestige]: {this.StringId} skill cannot be reset because {farmer.Name} has not yet seen the level-up menu.");
             return false;
         }
 
@@ -135,14 +136,14 @@ public interface ISkill
         if (!hasProfessionsLeftToAcquire)
         {
             Log.D(
-                $"{this.StringId} skill cannot be reset because {farmer.Name} either already has all professions in the skill, or has none at all.");
+                $"[Prestige]: {this.StringId} skill cannot be reset because {farmer.Name} either already has all professions in the skill, or has none at all.");
             return false;
         }
 
         var alreadyResetThisSkill = ProfessionsModule.State.SkillsToReset.Contains(this);
         if (alreadyResetThisSkill)
         {
-            Log.D($"{this.StringId} skill has already been marked for reset tonight.");
+            Log.D($"[Prestige]: {this.StringId} skill has already been marked for reset tonight.");
             return false;
         }
 

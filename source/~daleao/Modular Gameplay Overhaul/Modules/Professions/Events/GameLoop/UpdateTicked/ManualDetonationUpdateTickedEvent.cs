@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
 
@@ -36,10 +35,13 @@ internal sealed class ManualDetonationUpdateTickedEvent : UpdateTickedEvent
             return;
         }
 
-        foreach (var sprite in Game1.currentLocation.TemporarySprites.Where(sprite =>
-                     sprite.bombRadius > 0 && sprite.totalNumberOfLoops == int.MaxValue))
+        for (var i = 0; i < Game1.currentLocation.TemporarySprites.Count; i++)
         {
-            sprite.currentNumberOfLoops = sprite.totalNumberOfLoops - 1;
+            var sprite = Game1.currentLocation.TemporarySprites[i];
+            if (sprite.bombRadius > 0 && sprite.totalNumberOfLoops == int.MaxValue)
+            {
+                sprite.currentNumberOfLoops = sprite.totalNumberOfLoops - 1;
+            }
         }
 
         this.Disable();

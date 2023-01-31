@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Quests;
@@ -21,12 +22,120 @@ namespace HelpWanted
 {
     public partial class ModEntry
     {
+
+        private void LoadTextures()
+        {
+            pinTextures.Clear();
+            npcPinTextures.Clear();
+            questPinTextures.Clear();
+            padTextures.Clear();
+            npcPadTextures.Clear();
+            questPadTextures.Clear();
+            var dispoDict = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
+            AddTextures(pinTextures, pinTexturePath, "assets/pin.png");
+            foreach(var npc in dispoDict.Keys)
+            {
+                npcPinTextures[npc] = new();
+                AddTextures(npcPinTextures[npc], pinTexturePath + "/" + npc);
+                npcQuestPinTextures[npc] = new();
+                foreach (var quest in Enum.GetNames(typeof(QuestType)))
+                {
+                    npcQuestPinTextures[npc][quest] = new();
+                    AddTextures(npcQuestPinTextures[npc][quest], pinTexturePath + "/" + npc + "/" + quest);
+                }
+            }
+            foreach (var quest in Enum.GetNames(typeof(QuestType)))
+            {
+                questPinTextures[quest] = new();
+                AddTextures(questPinTextures[quest], pinTexturePath + "/" + quest);
+            }
+            AddTextures(padTextures, padTexturePath, "assets/pad.png");
+            foreach(var npc in dispoDict.Keys)
+            {
+                npcPadTextures[npc] = new();
+                AddTextures(npcPadTextures[npc], padTexturePath + "/" + npc);
+                npcQuestPadTextures[npc] = new();
+                foreach (var quest in Enum.GetNames(typeof(QuestType)))
+                {
+                    npcQuestPadTextures[npc][quest] = new();
+                    AddTextures(npcQuestPadTextures[npc][quest], padTexturePath + "/" + npc + "/" + quest);
+                }
+            }
+            foreach (var quest in Enum.GetNames(typeof(QuestType)))
+            {
+                questPadTextures[quest] = new();
+                AddTextures(questPadTextures[quest], padTexturePath + "/" + quest);
+            }
+        }
+
+        private void AddTextures(List<Texture2D> list, string path, string fallback = null)
+        {
+            try
+            {
+                int i = 1;
+                for (; ; )
+                {
+                    list.Add(Game1.content.Load<Texture2D>(path + "/" + i));
+                    i++;
+                }
+            }
+            catch { }
+            if (!list.Any())
+            {
+                try
+                {
+                    list.Add(Game1.content.Load<Texture2D>(path));
+                }
+                catch
+                {
+                    if(fallback is not null)
+                        list.Add(Helper.ModContent.Load<Texture2D>(fallback));
+                }
+            }
+        }
+
+        private Texture2D GetPadTexture(string target, string questType)
+        {
+            List<Texture2D> list;
+            if (npcQuestPadTextures.TryGetValue(target, out var dict) && dict.TryGetValue(questType, out list) && list.Any())
+            {
+                return list.Count > 1 ? list[Game1.random.Next(list.Count)] : list[0];
+            }
+            if (npcPadTextures.TryGetValue(target, out list) && list.Any())
+            {
+                return list.Count > 1 ? list[Game1.random.Next(list.Count)] : list[0];
+            }
+            if (questPadTextures.TryGetValue(questType, out list) && list.Any())
+            {
+                return list.Count > 1 ? list[Game1.random.Next(list.Count)] : list[0];
+            }
+            return padTextures.Count > 1 ? padTextures[Game1.random.Next(padTextures.Count)] : padTextures[0];
+        }
+
+        private Texture2D GetPinTexture(string target, string questType)
+        {
+            List<Texture2D> list;
+            if (npcQuestPinTextures.TryGetValue(target, out var dict) && dict.TryGetValue(questType, out list) && list.Any())
+            {
+                return list.Count > 1 ? list[Game1.random.Next(list.Count)] : list[0];
+            }
+            if (npcPinTextures.TryGetValue(target, out list) && list.Any())
+            {
+                return list.Count > 1 ? list[Game1.random.Next(list.Count)] : list[0];
+            }
+            if (questPinTextures.TryGetValue(questType, out list) && list.Any())
+            {
+                return list.Count > 1 ? list[Game1.random.Next(list.Count)] : list[0];
+            }
+            return pinTextures.Count > 1 ? pinTextures[Game1.random.Next(pinTextures.Count)] : pinTextures[0];
+        }
+
         private static List<int> GetPossibleCrops(List<int> oldList)
         {
             if (!Config.ModEnabled)
                 return oldList;
             List<int> newList = GetRandomItemList(oldList);
-            SMonitor.Log($"possible crops: {newList?.Count}");
+            //SMonitor.Log($"possible crops: {newList?.Count}");
             return (newList is null || !newList.Any()) ? oldList : newList;
         }
         private static int GetRandomItem(int result, List<int> possibleItems)
@@ -47,7 +156,7 @@ namespace HelpWanted
             var ii = items[random.Next(items.Count)];
             if (!Game1.objectInformation.ContainsKey(ii))
                 return result;
-            SMonitor.Log($"our random: {ii}");
+            //SMonitor.Log($"our random: {ii}");
             //SMonitor.Log($"found our random: {ii}");
             return ii;
         }
@@ -75,12 +184,13 @@ namespace HelpWanted
             List<int> items = new List<int>();
             foreach (var str in split)
             {
-                if (!int.TryParse(str, out int i))
+                if (!int.TryParse(str, out int i) || !Game1.objectInformation.ContainsKey(i))
                     continue;
-                if (i > 1000)
-                {
-                    var x = i;
-                }
+                Object obj = new Object(i, 1);
+                if (!Config.AllowArtisanGoods && obj is not null && obj.Category == Object.artisanGoodsCategory)
+                    continue;
+                if (Config.MaxPrice > 0 && obj is not null && obj.Price > Config.MaxPrice)
+                    continue;
                 items.Add(i);
             }
             if (!items.Any() || (!Config.IgnoreVanillaItemSelection && possibleItems?.Any() != true))
@@ -97,7 +207,7 @@ namespace HelpWanted
                     if (idx >= 0)
                     {
                         Object obj = new Object(idx, 1);
-                        if (obj is null || !items.Contains(obj.Category))
+                        if (obj is null || !items.Contains(obj.Category) || (!Config.AllowArtisanGoods && obj.Category == Object.artisanGoodsCategory) || (Config.MaxPrice > 0 && obj.Price > Config.MaxPrice))
                         {
                             possibleItems.RemoveAt(i);
                         }

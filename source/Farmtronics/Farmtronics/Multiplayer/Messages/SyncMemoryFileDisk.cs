@@ -40,7 +40,7 @@ namespace Farmtronics.Multiplayer.Messages {
 			if (disk == null) return;
 			
 			disk.root = RootDirectory;
-			// ModEntry.instance.Monitor.Log($"MemoryFileDisk data: {disk.root.ToString()}");
+			// Debug.Log($"MemoryFileDisk data: {disk.root.ToString()}");
 		}
 	}
 }

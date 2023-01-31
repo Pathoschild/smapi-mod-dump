@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Haley high-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Haley",
+        "When": {"YearRemainder": 2},
+        "Entries": {
+            "1_2": "Mother sent me some photos from her vacation.#$b#They're taking a cruise out of %place.#$e#Go with them?...I...I'm not sure about that.",
+            "3_2": "Hey @, Father sent me a gift card to the athleisure store in %place. Wanna go check it out?",
+            "5_2": "@, what do you think of this new foundation? Mom bought it for me.",
+        }
+    },
+]}

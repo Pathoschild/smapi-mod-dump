@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using SObject = StardewValley.Object;
@@ -18,7 +18,11 @@ namespace CustomCrystalariumMod
     /// <summary>The mod entry class loaded by SMAPI.</summary>
     public class CustomCrystalariumModEntry : Mod
     {
+        public static IModHelper ModHelper;
         public static IMonitor ModMonitor;
+        public static IManifest Manifest;
+
+        public static DataLoader DataLoader;
 
         /*********
         ** Public methods
@@ -27,12 +31,14 @@ namespace CustomCrystalariumMod
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            ModHelper = helper;
             ModMonitor = Monitor;
+            Manifest = ModManifest;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
-            Helper.ConsoleCommands.Add("config_reload_contentpacks_customcrystalariummod", "Reload all content packs for custom crystalarium mod.", DataLoader.LoadContentPacksCommand);
+            helper.ConsoleCommands.Add("config_reload_contentpacks_customcrystalariummod", "Reload all content packs for custom crystalarium mod.", DataLoader.LoadContentPacksCommand);
         }
 
         /*********
@@ -43,29 +49,28 @@ namespace CustomCrystalariumMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            new DataLoader(Helper, ModManifest);
-
-            var harmony = HarmonyInstance.Create("Digus.CustomCrystalariumMod");
+            DataLoader = new DataLoader(ModHelper, ModManifest);
+            var harmony = new Harmony("Digus.CustomCrystalariumMod");
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), "getMinutesForCrystalarium"),
-                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.GetMinutesForCrystalarium))
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.GetMinutesForCrystalarium)) { priority = Priority.HigherThanNormal }
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.performObjectDropInAction)),
-                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.PerformObjectDropInAction))
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.PerformObjectDropInAction)) { priority = Priority.HigherThanNormal}
             );
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.performRemoveAction)),
-                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.PerformRemoveAction))
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.PerformRemoveAction)) { priority = Priority.HigherThanNormal }
             );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),
-                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.CheckForAction_prefix)),
-                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.CheckForAction_postfix))
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.CheckForAction_prefix)) { priority = Priority.HigherThanNormal },
+                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.CheckForAction_postfix)) { priority = Priority.HigherThanNormal }
             );
         }
 

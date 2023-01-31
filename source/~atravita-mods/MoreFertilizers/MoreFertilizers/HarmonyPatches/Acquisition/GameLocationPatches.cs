@@ -37,7 +37,7 @@ internal static class GameLocationPatches
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
     private static void Postfix(GameLocation __instance, Monster monster, int x, int y, Farmer who)
     {
-        if(__instance is not Farm || who is null || Game1.random.NextDouble() > DropChance.Value || monster.MaxHealth < MIN_MONSTER_HEALTH)
+        if(__instance is not Farm || who is null || Game1.random.NextDouble() > ((monster is RockGolem ? 2.5 : 1 ) * DropChance.Value) || monster.MaxHealth < MIN_MONSTER_HEALTH)
         {
             return;
         }

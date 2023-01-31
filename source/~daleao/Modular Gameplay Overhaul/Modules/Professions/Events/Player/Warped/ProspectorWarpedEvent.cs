@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -16,8 +16,10 @@ using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
+using xTile.Dimensions;
 
 #endregion using directives
 
@@ -44,13 +46,13 @@ internal sealed class ProspectorWarpedEvent : WarpedEvent
         }
 
         if (e.NewLocation.currentEvent is not null || e.NewLocation is not MineShaft shaft ||
-            (!shaft.IsTreasureOrSafeRoom() && prospectorHunt.TryStart(e.NewLocation)))
+            shaft.IsTreasureOrSafeRoom() || prospectorHunt.TryStart(e.NewLocation))
         {
             return;
         }
 
         var streak = e.Player.Read<int>(DataFields.ProspectorHuntStreak);
-        if (streak > 0)
+        if (streak > 1)
         {
             TrySpawnOreNodes(streak / 2, shaft);
         }
@@ -58,32 +60,24 @@ internal sealed class ProspectorWarpedEvent : WarpedEvent
 
     private static void TrySpawnOreNodes(int amount, MineShaft shaft)
     {
+        var count = 0;
         for (var i = 0; i < amount; i++)
         {
             var tile = shaft.getRandomTile();
             if (!shaft.isTileLocationTotallyClearAndPlaceable(tile) || !shaft.isTileOnClearAndSolidGround(tile) ||
-                shaft.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Diggable", "Back") != null)
+                shaft.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Diggable", "Back") != null ||
+                !shaft.isTileLocationOpen(new Location((int)tile.X, (int)tile.Y)) ||
+                shaft.isTileOccupied(new Vector2(tile.X, tile.Y)) ||
+                shaft.getTileIndexAt((int)tile.X, (int)tile.Y, "Back") == -1 ||
+                shaft.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Type", "Back") == "Dirt")
             {
                 continue;
             }
 
-            var ore = shaft.getAppropriateOre(tile);
-            if (ore.ParentSheetIndex == 670)
-            {
-                ore.ParentSheetIndex = 668;
-            }
-
-            Utility.recursiveObjectPlacement(
-                ore,
-                (int)tile.X,
-                (int)tile.Y,
-                0.949999988079071,
-                0.30000001192092896,
-                shaft,
-                "Dirt",
-                ore.ParentSheetIndex == 668 ? 1 : 0,
-                0.05000000074505806,
-                ore.ParentSheetIndex != 668 ? 1 : 2);
+            shaft.placeAppropriateOreAt(new Vector2(tile.X, tile.Y));
+            count++;
         }
+
+        Log.D($"[Prospector]: Spawned {count} resource nodes.");
     }
 }

@@ -152,7 +152,7 @@ namespace MailFrameworkMod
 
             if (ShownLetter.Value != null)
             {
-                var activeClickableMenu = new LetterViewerMenuExtended(ShownLetter.Value.Text.Replace("@", Game1.player.Name),ShownLetter.Value.Id);
+                var activeClickableMenu = new LetterViewerMenuExtended(ShownLetter.Value.TranslatedText.Replace("@", Game1.player.Name),ShownLetter.Value.Id);
                 MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(ShownLetter.Value.WhichBG);
                 if (ShownLetter.Value.LetterTexture != null)
                 {
@@ -249,11 +249,9 @@ namespace MailFrameworkMod
             out string cookingOrCraftingText)
         {
             Dictionary<string, string> cookingData =
-                MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes",
-                    ContentSource.GameContent);
+                MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/CookingRecipes"));
             Dictionary<string, string> craftingData =
-                MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes",
-                    ContentSource.GameContent);
+                MailFrameworkModEntry.ModHelper.GameContent.Load<Dictionary<string, string>>(PathUtilities.NormalizeAssetName("Data/CraftingRecipes"));
             recipeString = null;
             dataArrayI18NSize = 0;
             cookingOrCraftingText = null;
@@ -358,7 +356,7 @@ namespace MailFrameworkMod
                         Letter letter = MailDao.FindLetter(clickableComponent.name.Split(' ')[0]);
                         if (letter != null && !letter.AutoOpen)
                         {
-                            LetterViewerMenuExtended letterViewerMenu = new LetterViewerMenuExtended(letter.Text.Replace("@", Game1.player.Name), letter.Id, true);
+                            LetterViewerMenuExtended letterViewerMenu = new LetterViewerMenuExtended(letter.TranslatedText.Replace("@", Game1.player.Name), letter.Id, true);
                             MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(letterViewerMenu, "whichBG").SetValue(letter.WhichBG);
                             if (letter.LetterTexture != null)
                             {

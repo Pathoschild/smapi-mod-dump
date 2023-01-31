@@ -11,6 +11,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
+using StardewValley.Menus;
 
 namespace MoreFertilizers.HarmonyPatches.Acquisition;
 
@@ -31,7 +32,7 @@ internal static class SeedShopPatches
                 && !(Game1.year == 1 && Game1.currentSeason.Equals("spring", StringComparison.OrdinalIgnoreCase))
                 && Game1.player.team.AverageDailyLuck() > 0.07)
             {
-                __result.Add(new SObject(Vector2.Zero, ModEntry.LuckyFertilizerID, 1), new[] { Game1.year == 1 ? 100 : 150, int.MaxValue });
+                __result.Add(new SObject(Vector2.Zero, ModEntry.LuckyFertilizerID, 1), new[] { Game1.year == 1 ? 100 : 150, ShopMenu.infiniteStock });
             }
         }
         catch (Exception ex)

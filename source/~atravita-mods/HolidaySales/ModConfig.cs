@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using NetEscapades.EnumGenerators;
+
 namespace HolidaySales;
 
 /// <summary>
@@ -15,12 +17,16 @@ namespace HolidaySales;
 /// </summary>
 internal sealed class ModConfig
 {
+    /// <summary>
+    /// Gets or sets a value indicating how shops should behave during festivals.
+    /// </summary>
     public FestivalsShopBehavior StoreFestivalBehavior { get; set; } = FestivalsShopBehavior.MapDependent;
 }
 
 /// <summary>
 /// The expected behavior of the shops during festivals.
 /// </summary>
+[EnumExtensions]
 internal enum FestivalsShopBehavior
 {
     /// <summary>

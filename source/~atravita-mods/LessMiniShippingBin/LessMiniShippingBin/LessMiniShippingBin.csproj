@@ -2,13 +2,12 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.3.0</Version>
+    <Version>0.3.2</Version>
     <Name>Less Mini Shipping Bin</Name>
     <Description>Lets you make the mini shipping bin bigger.</Description>
     <UpdateKeys>Nexus:10959</UpdateKeys>

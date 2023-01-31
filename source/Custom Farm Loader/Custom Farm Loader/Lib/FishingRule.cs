@@ -77,9 +77,6 @@ namespace Custom_Farm_Loader.Lib
                             fishingRule.ChangedCatchOceanCrabPotFish = true;
                             fishingRule.CatchOceanCrabPotFish = Boolean.Parse(value);
                             break;
-                        case "map" or "location":
-                            fishingRule.LocationName = value;
-                            break;
                         default:
                             if (fishingRule.Filter.parseAttribute(property))
                                 break;

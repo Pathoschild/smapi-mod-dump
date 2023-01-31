@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,6 @@ namespace DaLion.Shared.ModData;
 #region using directives
 
 using DaLion.Shared.Extensions;
-using DaLion.Shared.Networking;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.TerrainFeatures;
@@ -23,9 +22,6 @@ using StardewValley.TerrainFeatures;
 /// <summary>Handles reading from and writing to the <see cref="ModDataDictionary"/> of different objects.</summary>
 internal static class ModDataIO
 {
-    /// <inheritdoc cref="Broadcaster"/>
-    private static Broadcaster _broadcaster = null!; // set on init
-
     /// <summary>Gets the unique of the initialized mod.</summary>
     internal static string? ModId { get; private set; }
 
@@ -42,9 +38,9 @@ internal static class ModDataIO
     /// <returns>The value of the <paramref name="field"/> as a <see cref="string"/>, if it exists, or <paramref name="defaultValue"/> if not.</returns>
     public static string Read(Farmer farmer, string field, string defaultValue = "", string modId = "")
     {
-        return Game1.MasterPlayer?.modData.Read(
-            $"{(string.IsNullOrEmpty(modId) ? ModId : modId)}/{farmer.UniqueMultiplayerID}/{field}",
-            defaultValue) ?? defaultValue;
+        return Game1.player.modData.Read(
+            $"{(string.IsNullOrEmpty(modId) ? ModId : modId)}/{field}",
+            defaultValue);
     }
 
     /// <summary>
@@ -60,9 +56,9 @@ internal static class ModDataIO
     public static T Read<T>(Farmer farmer, string field, T defaultValue = default, string modId = "")
         where T : struct
     {
-        return Game1.MasterPlayer?.modData.Read(
-            $"{(string.IsNullOrEmpty(modId) ? ModId : modId)}/{farmer.UniqueMultiplayerID}/{field}",
-            defaultValue) ?? defaultValue;
+        return Game1.player.modData.Read(
+            $"{(string.IsNullOrEmpty(modId) ? ModId : modId)}/{field}",
+            defaultValue);
     }
 
     /// <summary>
@@ -76,20 +72,15 @@ internal static class ModDataIO
     {
         if (string.IsNullOrEmpty(field))
         {
-            Log.W("[ModData] Received empty field string.");
+            Log.W("[ModData]: Received empty field string.");
             return;
         }
 
-        if (Context.IsMultiplayer && !Context.IsMainPlayer)
-        {
-            _broadcaster.MessageHost($"Write/{field}/{value ?? string.Empty}", "UpdateData");
-            return;
-        }
-
-        Game1.player.modData.Write($"{ModId}/{farmer.UniqueMultiplayerID}/{field}", value);
+        Game1.player.modData.Write($"{ModId}/{field}", value);
         Log.V(string.IsNullOrEmpty(value)
             ? $"[ModDataIO]: Cleared {farmer.Name}'s {field}."
             : $"[ModDataIO]: Wrote {value} to {farmer.Name}'s {field}.");
+        Log.D("[ModDataIO]: New data state:\n" + Game1.player.modData.ToDebugString());
     }
 
     /// <summary>
@@ -102,21 +93,13 @@ internal static class ModDataIO
     /// <returns><see langword="true"/> if the <paramref name="field"/> already existed, otherwise <see langword="false"/>.</returns>
     public static bool WriteIfNotExists(Farmer farmer, string field, string? value)
     {
-        if (Game1.MasterPlayer.modData.ContainsKey($"{ModId}/{farmer.UniqueMultiplayerID}/{field}"))
+        if (Game1.player.modData.ContainsKey($"{ModId}/{field}"))
         {
             Log.V($"[ModDataIO]: The data field {field} already existed.");
             return true;
         }
 
-        if (Context.IsMultiplayer && !Context.IsMainPlayer)
-        {
-            _broadcaster.MessageHost($"Write/{field}/{value ?? string.Empty}", "UpdateData");
-        }
-        else
-        {
-            Write(farmer, field, value);
-        }
-
+        Write(farmer, field, value);
         return false;
     }
 
@@ -130,12 +113,6 @@ internal static class ModDataIO
     /// <param name="separator">A <see cref="string"/> with which to separate appended values.</param>
     public static void Append(Farmer farmer, string field, string value, string separator = ",")
     {
-        if (Context.IsMultiplayer && !Context.IsMainPlayer)
-        {
-            _broadcaster.MessageHost(value, $"UpdateData/Append/{field}");
-            return;
-        }
-
         var current = Read(farmer, field);
         if (current.Contains(value))
         {
@@ -159,13 +136,7 @@ internal static class ModDataIO
     public static void Increment<T>(Farmer farmer, string field, T amount)
         where T : struct
     {
-        if (Context.IsMultiplayer && !Context.IsMainPlayer)
-        {
-            _broadcaster.MessageHost(amount.ToString()!, $"UpdateData/Increment/{field}");
-            return;
-        }
-
-        Game1.player.modData.Increment($"{ModId}/{farmer.UniqueMultiplayerID}/{field}", amount);
+        Game1.player.modData.Increment($"{ModId}/{field}", amount);
         Log.V($"[ModDataIO]: Incremented {farmer.Name}'s {field} by {amount}.");
     }
 
@@ -179,13 +150,7 @@ internal static class ModDataIO
     public static void Increment<T>(Farmer farmer, string field)
         where T : struct
     {
-        if (Context.IsMultiplayer && !Context.IsMainPlayer)
-        {
-            _broadcaster.MessageHost("1", $"UpdateData/Increment/{field}");
-            return;
-        }
-
-        Game1.player.modData.Increment($"{ModId}/{farmer.UniqueMultiplayerID}/{field}", "1".Parse<T>());
+        Game1.player.modData.Increment($"{ModId}/{field}", "1".Parse<T>());
         Log.V($"[ModDataIO]: Incremented {farmer.Name}'s {field} by 1.");
     }
 
@@ -816,11 +781,9 @@ internal static class ModDataIO
     #endregion terrain feature rw
 
     /// <summary>Initializes the <see cref="ModDataIO"/> with the specified <paramref name="modId"/>.</summary>
-    /// <param name="helper">The <see cref="IMultiplayerHelper"/> API of the current <see cref="IMod"/>.</param>
     /// <param name="modId">The unique of the active mod.</param>
-    internal static void Init(IMultiplayerHelper helper, string modId)
+    internal static void Init(string modId)
     {
-        _broadcaster = new Broadcaster(helper, modId);
         ModId = modId;
     }
 }

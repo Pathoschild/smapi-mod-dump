@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,6 +19,7 @@ using DaLion.Shared.Attributes;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
+using NetFabric.Hyperlinq;
 using StardewValley.Locations;
 using StardewValley.Monsters;
 
@@ -47,12 +48,13 @@ internal sealed class GreenSlimeGetExtraDropItemsPatcher : HarmonyPatcher
         }
 
         var slimeCount =
-            Game1.getFarm().buildings.Where(b =>
+            Game1.getFarm().buildings
+                .Where(b =>
                     (b.owner.Value.IsIn(pipers.Select(p => p.UniqueMultiplayerID)) ||
-                     !Context.IsMultiplayer) && b.indoors.Value is SlimeHutch && !b.isUnderConstruction() &&
+                     ProfessionsModule.Config.LaxOwnershipRequirements) && b.indoors.Value is SlimeHutch && !b.isUnderConstruction() &&
                     b.indoors.Value.characters.Count > 0)
-                .Sum(b => b.indoors.Value.characters.Count(npc => npc is GreenSlime)) +
-            Game1.getFarm().characters.Count(npc => npc is GreenSlime);
+                .Sum(b => b.indoors.Value.characters.AsValueEnumerable().Count(npc => npc is GreenSlime)) +
+            Game1.getFarm().characters.AsValueEnumerable().Count(npc => npc is GreenSlime);
         if (slimeCount == 0)
         {
             return;
@@ -78,12 +80,12 @@ internal sealed class GreenSlimeGetExtraDropItemsPatcher : HarmonyPatcher
         {
             if (r.NextDouble() < baseChance / 8)
             {
-                __result.Add(new SObject(72, 1)); // diamond
+                __result.Add(new SObject(SObject.diamondIndex, 1));
             }
 
             if (r.NextDouble() < baseChance / 10)
             {
-                __result.Add(new SObject(74, 1)); // prismatic shard
+                __result.Add(new SObject(SObject.prismaticShardIndex, 1));
             }
         }
 
@@ -95,7 +97,7 @@ internal sealed class GreenSlimeGetExtraDropItemsPatcher : HarmonyPatcher
             {
                 while (r.NextDouble() < baseChance / 2)
                 {
-                    __result.Add(new SObject(382, count)); // coal
+                    __result.Add(new SObject(SObject.coal, count));
                 }
 
                 if (r.NextDouble() < baseChance / 3)
@@ -112,24 +114,24 @@ internal sealed class GreenSlimeGetExtraDropItemsPatcher : HarmonyPatcher
             {
                 while (r.NextDouble() < baseChance / 2)
                 {
-                    __result.Add(new SObject(384, 1)); // gold ore
+                    __result.Add(new SObject(SObject.gold, 1));
                 }
 
                 if (r.NextDouble() < baseChance / 3)
                 {
-                    __result.Add(new SObject(336, 1)); // gold bar
+                    __result.Add(new SObject(SObject.goldBar, 1));
                 }
             }
             else if (color.R > 220 && color.G is > 90 and < 150 && color.B < 50) // red
             {
                 while (r.NextDouble() < baseChance / 2)
                 {
-                    __result.Add(new SObject(378, 1)); // copper ore
+                    __result.Add(new SObject(SObject.copper, 1));
                 }
 
                 if (r.NextDouble() < baseChance / 3)
                 {
-                    __result.Add(new SObject(334, 1)); // copper bar
+                    __result.Add(new SObject(SObject.copperBar, 1));
                 }
             }
             else if (color.R > 150 && color.G > 150 && color.B > 150)
@@ -139,19 +141,19 @@ internal sealed class GreenSlimeGetExtraDropItemsPatcher : HarmonyPatcher
                     while (r.NextDouble() < baseChance / 2)
                     {
                         __result.Add(new SObject(338, 1)); // refined quartz
-                        __result.Add(new SObject(72, 1)); // diamond
+                        __result.Add(new SObject(SObject.diamondIndex, 1));
                     }
                 }
                 else // grey
                 {
                     while (r.NextDouble() < baseChance / 2)
                     {
-                        __result.Add(new SObject(380, 1)); // iron ore
+                        __result.Add(new SObject(SObject.iron, 1));
                     }
 
                     if (r.NextDouble() < baseChance / 3)
                     {
-                        __result.Add(new SObject(335, 1)); // iron bar
+                        __result.Add(new SObject(SObject.ironBar, 1));
                     }
                 }
             }
@@ -159,12 +161,12 @@ internal sealed class GreenSlimeGetExtraDropItemsPatcher : HarmonyPatcher
             {
                 while (r.NextDouble() < baseChance / 3)
                 {
-                    __result.Add(new SObject(386, 1)); // iridium ore
+                    __result.Add(new SObject(SObject.iridium, 1));
                 }
 
                 if (r.NextDouble() < baseChance / 4)
                 {
-                    __result.Add(new SObject(337, 1)); // iridium bar
+                    __result.Add(new SObject(SObject.iridiumBar, 1));
                 }
             }
 

@@ -6,17 +6,17 @@ mods:
    Ui Info Suite
 
 latest commit:
-   commit 963114b1e9605a0c6179ee00946cdf5184ad8b8a
-   Author: MihÃ¡ly Hunyady <megamegax@users.noreply.github.com>
-   Date:   Sat Jan 16 18:39:33 2021 +0100
+   commit 8e2492ffeca6e0b8fff8bd47253e2c6d601ce44f
+   Author: ELL <ellipszist@gmail.com>
+   Date:   Wed Jan 25 23:07:08 2023 +0700
    
-       Hungarian translation with some extra translations I've found missing. (#58)
+       Update Thai translations (#79)
        
-       * add hungarian translation
+       * Update Thai translations
        
-       * translate NPCBirthday and UI Mod Options texts
+       * Update th.json
        
-       * fix imports
+       * Update th.json
        
-       * translation fix
+       Co-authored-by: cdaragorn <707092+cdaragorn@users.noreply.github.com>
    

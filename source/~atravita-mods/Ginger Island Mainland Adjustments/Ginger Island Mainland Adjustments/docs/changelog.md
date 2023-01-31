@@ -28,7 +28,7 @@ Changelog
 <!-- Get Willy to change in his bedroom? -->
 <!-- Make sure the GI schedule keys are right.... -->
 <!-- Document animations -->
-<!-- Consider not allowing spouses to go to Ginger Island if they have a defined marriage_Season_day key?-->
+<!-- Warp NPCs into, say, Town, if they need to walk a long distance? -->
 <!-- Document new tokens -->
 
 ##### Known Issues
@@ -37,8 +37,13 @@ Changelog
 2. If you pause time, NPCs will tend to get stuck at schedule points. Unfortunately for Ginger Island, this usually ends with NPCs trapped in the changing room. If you go to Ginger Island and see no one there, try unpausing time. Or just leave them trapped in the changing room....(or I guess, disable changing)
 3. The debugging console commands basically only work for the host in multiplayer.
 
+### Version 1.1.7
+* Remove no longer necessary compat code.
+* Add the `ScheduleStrictness` property, which I promise to document sometime....
+* adds an option to prevent villagers with no Resort dialogue from going to the Resort.
+
 ### Version 1.1.6
-* Bugfixes.
+* Various bugfixes
 
 ### Version 1.1.5
 

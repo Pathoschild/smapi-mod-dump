@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Unlockable Areas",
+  "Author": "DeLiXx",
+  "Version": "1.0.0",
+  "Description": "Adds means of unlocking map areas",
+  "UniqueID": "DeLiXx.Unlockable_Areas",
+  "EntryDll": "Unlockable Areas.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:15132" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.28.0",
+      "IsRequired": false
+    }
+  ]
+}

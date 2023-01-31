@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Slingshots;
 
 #region using directives
 
-using System.Linq;
+using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -37,23 +37,19 @@ internal sealed class ToolGetExtraSpaceNeededForTooltipSpecialIconsPatcher : Har
     private static void ToolGetExtraSpaceNeededForTooltipSpecialIconsPostfix(
         Tool __instance, ref Point __result, SpriteFont font)
     {
-        if (__instance is not Slingshot slingshot || slingshot.enchantments.Count <= 0)
+        if (__instance is not Slingshot slingshot)
         {
             return;
         }
 
-        if (slingshot.GetTotalForgeLevels() > 0)
+        if (slingshot.hasEnchantmentOfType<DiamondEnchantment>())
         {
-            var forgeCount = slingshot.enchantments.Where(e => e.IsForge()).Distinct().Count();
-            if (slingshot.hasEnchantmentOfType<DiamondEnchantment>())
-            {
-                __result.X = (int)Math.Max(
-                    __result.X,
-                    font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Plural", __instance.GetMaxForges())).X);
-            }
-
-            __result.Y += (int)(Math.Max(font.MeasureString("TT").Y, 48f) * forgeCount);
+            __result.X = (int)Math.Max(
+                __result.X,
+                font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Plural", __instance.GetMaxForges())).X);
         }
+
+        __result.Y += (int)(Math.Max(font.MeasureString("TT").Y, 48f) * slingshot.CountNonZeroStats());
     }
 
     #endregion harmony patches

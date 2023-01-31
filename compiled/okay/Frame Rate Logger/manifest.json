@@ -1,0 +1,12 @@
+{
+  "EntryDll": "FrameRateLogger.dll",
+  "Name": "Frame Rate Logger",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "Logs the current frame rate.",
+  "UniqueID": "atravita.FrameRateLogger",
+  "MinimumApiVersion": "3.18",
+  "UpdateKeys": [
+    "Nexus:15002"
+  ]
+}

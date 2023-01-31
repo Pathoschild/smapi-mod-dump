@@ -40,16 +40,23 @@ Here's what you can change:
 
 * Player controls:
 
-  Setting Name                                        | Default Value                                                   | Description
-  :-------------------------------------------------- | :-------------------------------------------------------------- | :------------------
-  `KeybindListIncreaseZoomOrUI`                       | `OemPeriod` aka `.` or `RightStick`                             | Key to Increase Zoom or UI Level.
-  `KeybindListDecreaseZoomOrUI`                       | `OemComma` aka `,` or `LeftStick`                               | Key to Decrease Zoom or UI Level.
-  `KeybindListHoldToChangeUI`                         | `LeftShift` or `RightShift` or `LeftTrigger and RightTrigger"`  | Key you need to hold to change the UI.
-  `KeybindListResetZoomOrUI`                          | `null` aka **nothing**                                          | Key to Reset the Zoom or UI Level.
-  `KeybindListMaxZoomOrUI`                            | `null` aka **nothing**                                          | Key to Max the Zoom out or Maximize the UI.
-  `KeybindListMinZoomOrUI`                            | `null` aka **nothing**                                          | Key to Max the Zoom in or Minimize the UI.
-  `KeybindListToggleUI`                               | `null` aka **nothing**                                          | Keybinds to toggle the UI Visibility.
-  `KeybindListToggleHideUIWithCertainZoom`            | `null` aka **nothing**                                          | Keybinds to hides the UI at a certain Zoom Level.
+  Setting Name                                           | Default Value                                                   | Description
+  :----------------------------------------------------- | :-------------------------------------------------------------- | :-----------------------------------------------
+  `KeybindListIncreaseZoomOrUI`                          | `OemPeriod` aka `.` or `RightStick`                             | Key to Increase Zoom or UI Level.
+  `KeybindListDecreaseZoomOrUI`                          | `OemComma` aka `,` or `LeftStick`                               | Key to Decrease Zoom or UI Level.
+  `KeybindListHoldToChangeUI`                            | `LeftShift` or `RightShift` or `LeftTrigger and RightTrigger"`  | Key you need to hold to change the UI.
+  `KeybindListResetZoomOrUI`                             | `null` aka **nothing**                                          | Key to Reset the Zoom or UI Level.
+  `KeybindListMaxZoomOrUI`                               | `null` aka **nothing**                                          | Key to Max the Zoom out or Maximize the UI.
+  `KeybindListMinZoomOrUI`                               | `null` aka **nothing**                                          | Key to Max the Zoom in or Minimize the UI.
+  `KeybindListToggleUI`                                  | `null` aka **nothing**                                          | Keybinds to toggle the UI Visibility.
+  `KeybindListToggleHideUIWithCertainZoom`               | `null` aka **nothing**                                          | Keybinds to hides the UI at a certain Zoom Level.
+  `KeybindListChangeZoomToApproximateCurrentMapSize`     | `null` aka **nothing**                                          | Keybinds to change to zoom level to the approximate current map size.
+  `KeybindListMovementCameraLeft`                        | `null` aka **nothing**                                          | Keybinds to change the camera a bit to the left and locks it.
+  `KeybindListMovementCameraRight`                       | `null` aka **nothing**                                          | Keybinds to change the camera a bit to the right and locks it.
+  `KeybindListMovementCameraUp`                          | `null` aka **nothing**                                          | Keybinds to change the camera a bit up and locks it.
+  `KeybindListMovementCameraDown`                        | `null` aka **nothing**                                          | Keybinds to change the camera a bit down and locks it.
+  `KeybindListResetCameraMovement`                       | `null` aka **nothing**                                          | Keybinds to reset the camera movement and unlocks it.
+  
   
 * Zoom and UI values:
 
@@ -61,18 +68,22 @@ Here's what you can change:
   `MaxZoomInLevelAndUIValue`     | -0.35         | The value of the max Zoom in Level or Min UI.
   `ResetZoomOrUIValue`           |  1.00         | The value of the Zoom or UI level reset.
   `ZoomLevelThatHidesUI`         |  0.35         | The value of the Zoom level that hides the UI.
+  `CameraMovementSpeed`          |  25           | The speed that the camera moves.
 
 * Other options:
 
-  Setting Name                    | Default Value   | Description
-  :------------------------------ | :-------------- | :------------------
-  `SuppressControllerButton`      | `true`          | If your controller inputs are suppressed or not.
-  `ZoomAndUIControlEverywhere`    | `false`         | If activated you can control your Zoom and UI Level anywhere.
-  `IsHideUIWithCertainZoom`       | `false`         | If activated your UI hides when it reaches a certain zoom level.
+  Setting Name                         | Default Value   | Description
+  :----------------------------------- | :-------------- | :------------------
+  `SuppressControllerButton`           | `true`          | If your controller inputs are suppressed or not.
+  `ZoomAndUIControlEverywhere`         | `false`         | If activated you can control your Zoom and UI Level anywhere.
+  `IsHideUIWithCertainZoom`            | `false`         | If activated your UI hides when it reaches a certain zoom level.
+  `PressAnyButtonToCenterCamera`       | `true`          | If activated any key you press will center the Camera.
+  `AutoZoomToMapSize`                  | `false`         | If activated it auto zooms to map size.
 
 ## Compatibility
 ZoomLevel is compatible with Stardew Valley 1.5+ on Linux/Mac/Windows, both single-player, local co-op and multiplayer.
 
 ## See also
-* [Nexus mod](http://www.nexusmods.com/stardewvalley/mods/7363/)
+* [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/7363/?tab=files)
+* [CurseForge mod](https://www.curseforge.com/stardewvalley/mods/zoom-level/files)
 * [The mod that this mod was based by](https://github.com/GuiNoya/SVMods/)

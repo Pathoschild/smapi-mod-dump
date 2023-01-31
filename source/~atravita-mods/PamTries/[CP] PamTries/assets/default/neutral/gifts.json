@@ -21,5 +21,15 @@
             "GiftReaction_Wine": "Kiddo, why are you doing this to me? I'm trying to quit.",
             "GiftReaction_Mead": "I'm trying to quit. Why are you doing this to me?$u"
         }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "Neutral custom gift dialogue, post-order",
+        "Target": "Characters/Dialogue/Pam",
+        "When": { "HasFlag": "atravita_PamApology_Reward"},
+        "Entries":{
+            "GiftReaction_Beer~1": "Kiddo, I don't want none of that, okay?",
+            "GiftReaction_Wine~1": "Why ya like this, kiddo? You're not being helpful." 
+        }
     }
 ]}

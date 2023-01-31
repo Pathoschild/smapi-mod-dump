@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/greyivy/OrnithologistsGuild
+**
+*************************************************/
+
+{
+    // Vanilla Stardew Valley
+    "Farm": ["farm"],
+    "Town": ["city"],
+    "Beach": ["ocean"],
+    "BusStop": ["farm", "city"],
+    "Mountain": ["wetland"],
+    "Forest": ["forest"],
+    "Mine": ["city"],
+    "Desert": ["desert"],
+    "Woods": ["forest", "wetland"],
+    "Railroad": ["void"],
+    "Summit": ["forest"],
+    "Backwoods": ["forest"],
+    "BeachNightMarket": ["ocean"],
+    "IslandSouth": ["island", "ocean"],
+    "IslandSouthEast": ["island", "ocean"],
+    "IslandEast": ["island"],
+    "IslandWest": ["island", "ocean"],
+    "IslandNorth": ["island"],
+    "IslandShrine": ["island"],
+
+    // East Scarp compat (may be overriden by mod author in the future)
+    "Custom_EastScarpe": ["city", "ocean"],
+    "Custom_ESMeadowFarm": ["farm"],
+    "Custom_ESOrchard": ["void"],
+    "Custom_ESMineEntrance": ["city"],
+    "Custom_ESDeepMountains": ["forest"]
+
+    // Ridgeside Village compat (may be overriden by mod author in the future)
+    // TODO
+    
+    // Stardew Valley Expanded compat (may be overriden by mod author in the future)
+    // TODO
+}

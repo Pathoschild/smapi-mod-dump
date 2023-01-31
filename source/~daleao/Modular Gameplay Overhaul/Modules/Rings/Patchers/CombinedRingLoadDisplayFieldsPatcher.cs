@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Rings.Patchers;
 
 #region using directives
 
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Objects;
@@ -46,9 +47,9 @@ internal sealed class CombinedRingLoadDisplayFieldsPatcher : HarmonyPatcher
             return false; // don't run original logic
         }
 
-        var data = Game1.objectInformation[__instance.indexInTileSheet.Value].Split('/');
-        __instance.displayName = data[4];
-        __instance.description = data[5];
+        var data = Game1.objectInformation[__instance.indexInTileSheet.Value].SplitWithoutAllocation('/');
+        __instance.displayName = data[4].ToString();
+        __instance.description = data[5].ToString();
         __result = true;
         return false; // don't run original logic
     }

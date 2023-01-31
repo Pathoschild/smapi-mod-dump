@@ -27,7 +27,7 @@ internal class EventHookManager
 
     private static void LoadAssets(object sender, AssetRequestedEventArgs e)
     {
-        if (e.Name.IsEquivalentTo(Globals.WarpLocationsContentPath))
+        if (e.NameWithoutLocale.IsEquivalentTo(Globals.WarpLocationsContentPath))
         {
             e.LoadFrom(
                 () => new Dictionary<string, WarpLocationModel>(),

@@ -8,8 +8,9 @@
 **
 *************************************************/
 
+using System.Globalization;
 using System.Runtime.CompilerServices;
-using Microsoft.Toolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
@@ -111,12 +112,40 @@ public static class Utils
     }
 
     /// <summary>
+    /// Sorts strings (in place), taking into account the CultureInfo of the currently selected language.
+    /// </summary>
+    /// <param name="list">List of strings.</param>
+    /// <returns>A sorted list of strings.</returns>
+    public static List<string> ContextSort(List<string> list)
+    {
+        list.Sort(GetCurrentLanguageComparer(ignoreCase: true));
+        return list;
+    }
+
+    /// <summary>
     /// Returns a StringComparer for the current language the player is using.
     /// </summary>
     /// <param name="ignoreCase">Whether or not to ignore case.</param>
     /// <returns>A string comparer.</returns>
     public static StringComparer GetCurrentLanguageComparer(bool ignoreCase = false)
-        => StringComparer.Create(Game1.content.CurrentCulture, ignoreCase);
+        => StringComparer.Create(GetCurrentCulture(), ignoreCase);
+
+    /// <summary>
+    /// Tries to get a CultureInfo corresponding to the player's current culture. Falls back to the thread
+    /// culture.
+    /// </summary>
+    /// <returns>CultureInfo.</returns>
+    public static CultureInfo GetCurrentCulture()
+    {
+        try
+        {
+            return new CultureInfo(Game1.content.LanguageCodeString(Game1.content.GetCurrentLanguage()));
+        }
+        catch (CultureNotFoundException)
+        {
+            return CultureInfo.CurrentCulture;
+        }
+    }
 
     /// <summary>
     /// Gets all birthday NPCs.
@@ -125,9 +154,9 @@ public static class Utils
     /// <returns>IEnumerable of birthday npcs.</returns>
     public static IEnumerable<NPC> GetBirthdayNPCs(SDate day)
     {
-        foreach (NPC npc in Utility.getAllCharacters())
+        foreach (NPC npc in NPCHelpers.GetNPCs())
         {
-            if (npc.isBirthday(day.Season, day.Day))
+            if (npc is not null && npc.isBirthday(day.Season, day.Day))
             {
                 yield return npc;
             }

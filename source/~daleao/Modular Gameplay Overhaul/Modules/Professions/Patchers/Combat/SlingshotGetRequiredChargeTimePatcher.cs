@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -34,7 +34,7 @@ internal sealed class SlingshotGetRequiredChargeTimePatcher : HarmonyPatcher
 
     /// <summary>Patch to reduce Slingshot charge time for Desperado.</summary>
     [HarmonyPostfix]
-    [HarmonyAfter("Overhaul.Modules.Arsenal")]
+    [HarmonyAfter("DaLion.Overhaul.Modules.Arsenal")]
     private static void SlingshotGetRequiredChargeTimePostfix(Slingshot __instance, ref float __result)
     {
         var firer = __instance.getLastFarmerToUse();

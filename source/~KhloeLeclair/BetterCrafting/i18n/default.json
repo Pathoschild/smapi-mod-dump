@@ -34,7 +34,7 @@
 	"setting.gift-taste-style.tip": "When set to Heads, gift tastes will be indicated using the heads of each character. When set to names, their names will be displayed instead.",
 
 	"setting.gift-taste": "Show Gift Tastes",
-	"setting.gift-taste.tip": "When this is enabled, known gift tastes will be displayed in item tooltips for convenience. Matching gift tastes are always displayed when searching.",
+	"setting.gift-taste.tip": "When this is enabled, known gift tastes will be displayed in item tool-tips for convenience. Matching gift tastes are always displayed when searching.",
 	"setting.gift-taste.never": "Never",
 	"setting.gift-taste.shift": "When Holding Shift",
 	"setting.gift-taste.always": "Always",
@@ -80,8 +80,8 @@
 	"setting.key.behavior.right": "Right-Click / X Behavior",
 	"setting.key.behavior.right.tip": "When right clicking (or pressing X on controller) on a recipe, this action will be performed.",
 
-	"setting.key.tooltip": "Show Hotkeys in Tooltips",
-	"setting.key.tooltip.tip": "When enabled, hotkeys will be displayed at the bottom of Better Crafting's tooltips.",
+	"setting.key.tooltip": "Show Hotkeys in Tool-tips",
+	"setting.key.tooltip.tip": "When enabled, hotkeys will be displayed at the bottom of Better Crafting's tool-tips.",
 
 	"setting.ttwhen.Never": "Never",
 	"setting.ttwhen.ForController": "When Using Controller",
@@ -117,6 +117,28 @@
 
 	"setting.nearby.floors": "Flooring",
 	"setting.nearby.other": "Other Examples",
+
+	"setting.recycle": "Recycling",
+	"setting.recycle.about": "When this is enabled, you can use the crafting menu to recycle items and get back the items that were used to craft it.",
+
+	"setting.recycle.fuzzy": "Fuzzy Item Matching",
+	"setting.recycle.fuzzy.tip": "Some crafting recipes don't require specific items, instead matching things like \"Egg (Any)\". By default, these aren't returned. Enabling this will return the cheapest matching item in such cases.",
+
+	"setting.recycle.unknown": "Allow Unknown Recipes",
+	"setting.recycle.unknown.tip": "When this is enabled, you can recycle items even if you don't have their crafting recipe unlocked.",
+
+	"setting.recycle.crafting": "Crafting Recycling",
+	"setting.recycle.crafting.tip": "Whether or not recycling should be allowed when crafting.",
+
+	"setting.recycle.cooking": "Cooking Recycling",
+	"setting.recycle.cooking.tip": "Whether or not recycling should be allowed when cooking.",
+
+	"setting.recycle-mode.enabled": "Always",
+	"setting.recycle-mode.disabled": "Never",
+	"setting.recycle-mode.automatic": "Automatic (When Holding Recyclable Item)",
+
+	"setting.recycle.click-toggle": "Click to Toggle",
+	"setting.recycle.click-toggle.tip": "When this is enabled, clicking the trash bin in the crafting menu will toggle recycling on or off. This only works when not holding an item.",
 
 	"setting.transfer": "Transfer to Storage",
 	"setting.transfer.about": "This feature allows you to quickly store items from your inventory into chests connected to a Workbench or your kitchen. Matching items get placed in appropriate chests, similar to Add to Existing Stacks.",
@@ -186,7 +208,7 @@
 	"setting.hide-unknown": "Hide Unknown Recipes",
 	"setting.hide-unknown.tip": "When enabled, recipes you haven't learned yet won't be displayed in the menu.",
 
-	// Tooltips
+	// Tool-tips
 	"tooltip.loves": "Loves: {{npcs}}",
 	"tooltip.likes": "Likes: {{npcs}}",
 
@@ -208,6 +230,15 @@
 
 	"tooltip.edit-filter-locked": "Individual recipes cannot be enabled or disabled when using Dynamic Rules for a category. Please adjust your rules, or disable Dynamic Rules.",
 
+	// Recycling
+	"tooltip.recycle": "Recycle {{item}}",
+	"tooltip.recycle.invalid": "You cannot recycle this item.",
+	"tooltip.recycle.insufficient": "You need at least {{count}} of this item to recycle it.",
+	"tooltip.recycle.returns": "Returns:",
+	"tooltip.recycle.not-returned": "Not Returned:",
+	"tooltip.recycle.all": "Recycle All ({{amount}})",
+	"tooltip.recycle.once": "Recycle Some ({{amount}})",
+
 	// Buttons
 	"tooltip.edit-mode": "Edit Categories",
 	"tooltip.favorites": "Only Show Favorites",
@@ -218,6 +249,10 @@
 	"tooltip.filter.enabled": "Dynamic Rules: Enabled",
 	"tooltip.filter.disabled": "Dynamic Rules: Disabled",
 	"tooltip.filter.about": "This lets you create categories based on rules, rather than by manually selecting individual recipes.",
+
+	"tooltip.include-in-misc": "Include in Miscellaneous: Enabled",
+	"tooltip.include-in-misc.disabled": "Include in Miscellaneous: Disabled",
+	"tooltip.include-in-misc.about": "Normally, if a recipe is in another category it will not be displayed in the Miscellaneous category. Enable this to allow recipes in this category to also appear in the Miscellaneous category.",
 
 	"tooltip.search": "Search Recipes",
 	"tooltip.search.old-tip": "Tip: Start your search with \"@B{{prefix}}@b\" to also search by ingredients. Start your search with \"@B{{likes}}@b\" to also search by characters that like an item, or \"@B{{loves}}@b\" to also search by characters that love an item.",
@@ -283,6 +318,9 @@
 	// Dynamic Filters
 	"filter.add-new": "Add New Rule",
 
+	"filter.everything": "Everything",
+	"filter.everything.about": "This rule matches every recipe.",
+
 	"filter.buff": "Buff: {{type}}",
 	"filter.buff.about": "This rule matches items that give the {{type}} buff when consumed.",
 
@@ -299,7 +337,7 @@
 	"filter.sprinkler.about": "This rule matches sprinklers.",
 
 	"filter.light": "Light",
-	"filter.light.about": "This rule matches placable lights.",
+	"filter.light.about": "This rule matches placeable lights.",
 
 	"filter.error": "Invalid Rule",
 	"filter.error.about": "This rule ID is invalid or not registered, and may be from a mod that was removed."

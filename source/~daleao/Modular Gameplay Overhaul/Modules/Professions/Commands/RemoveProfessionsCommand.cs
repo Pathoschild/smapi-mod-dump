@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Professions.Commands;
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.SMAPI;
@@ -32,29 +33,44 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
     }
 
     /// <inheritdoc />
-    public override string[] Triggers { get; } = { "remove_professions", "remove_profs", "remove" };
+    public override string[] Triggers { get; } = { "remove_professions", "remove_profs", "remove", "clear" };
 
     /// <inheritdoc />
     public override string Documentation =>
         "Remove the specified professions from the player. Does not affect skill levels." + this.GetUsage();
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
-        if (args.Length == 0)
+        if (trigger == "clear")
+        {
+            var shouldInvalidate = Game1.player.professions.Intersect(Profession.GetRange(true)).Any();
+            Game1.player.professions.Clear();
+            LevelUpMenu.RevalidateHealth(Game1.player);
+            if (shouldInvalidate)
+            {
+                ModHelper.GameContent.InvalidateCacheAndLocalized("LooseSprites/Cursors");
+            }
+
+            Log.I($"Cleared all professions from {Game1.player.Name}.");
+            return;
+        }
+
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Log.W("You must specify at least one profession." + this.GetUsage());
             return;
         }
 
         List<int> professionsToRemove = new();
-        foreach (var arg in args)
+        for (var i = 0; i < args.Length; i++)
         {
-            if (string.Equals(arg, "all", StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(args[i], "all", StringComparison.InvariantCultureIgnoreCase))
             {
+                var shouldInvalidate = Game1.player.professions.Intersect(Profession.GetRange(true)).Any();
                 Game1.player.professions.Clear();
                 LevelUpMenu.RevalidateHealth(Game1.player);
-                if (professionsToRemove.Intersect(Profession.GetRange(true)).Any())
+                if (shouldInvalidate)
                 {
                     ModHelper.GameContent.InvalidateCacheAndLocalized("LooseSprites/Cursors");
                 }
@@ -63,8 +79,8 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
                 break;
             }
 
-            if (string.Equals(arg, "rogue", StringComparison.InvariantCultureIgnoreCase) ||
-                string.Equals(arg, "unknown", StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(args[i], "rogue", StringComparison.InvariantCultureIgnoreCase) ||
+                string.Equals(args[i], "unknown", StringComparison.InvariantCultureIgnoreCase))
             {
                 var range = Game1.player.professions
                     .Where(pid =>
@@ -75,8 +91,8 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
                 professionsToRemove.AddRange(range);
                 Log.I($"Removed unknown professions from {Game1.player.Name}.");
             }
-            else if (Profession.TryFromName(arg, true, out var profession) ||
-                     Profession.TryFromLocalizedName(arg, true, out profession))
+            else if (Profession.TryFromName(args[i], true, out var profession) ||
+                     Profession.TryFromLocalizedName(args[i], true, out profession))
             {
                 professionsToRemove.Add(profession.Id);
                 professionsToRemove.Add(profession.Id + 100);
@@ -85,11 +101,11 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
             else
             {
                 var customProfession = SCProfession.List.FirstOrDefault(p =>
-                    string.Equals(arg, p.StringId.TrimAll(), StringComparison.InvariantCultureIgnoreCase) ||
-                    string.Equals(arg, p.Title.TrimAll(), StringComparison.InvariantCultureIgnoreCase));
+                    string.Equals(args[i], p.StringId.TrimAll(), StringComparison.InvariantCultureIgnoreCase) ||
+                    string.Equals(args[i], p.Title.TrimAll(), StringComparison.InvariantCultureIgnoreCase));
                 if (customProfession is null)
                 {
-                    Log.W($"Ignoring unknown profession {arg}.");
+                    Log.W($"Ignoring unknown profession {args[i]}.");
                     continue;
                 }
 
@@ -113,13 +129,14 @@ internal sealed class RemoveProfessionsCommand : ConsoleCommand
     private string GetUsage()
     {
         var result =
-            $"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers.First()} [--prestige] <profession1> <profession2> ... <professionN>";
-        result += "\n\nParameters:";
-        result +=
-            "\n\t- <profession>\t- a valid profession name, `all` or `unknown`. Use `unknown` to remove rogue professions from uninstalled custom skill mods.";
-        result += "\n\nExamples:";
-        result += $"\n\t- {this.Handler.EntryCommand} {this.Triggers.First()} artisan brute";
-        result += $"\n\t- {this.Handler.EntryCommand} {this.Triggers.First()} -p all";
-        return result;
+            new StringBuilder(
+                $"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers[0]} [--prestige] <profession1> <profession2> ... <professionN>");
+        result.Append("\n\nParameters:");
+        result.Append(
+            "\n\t- <profession>\t- a valid profession name, `all` or `unknown`. Use `unknown` to remove rogue professions from uninstalled custom skill mods.");
+        result.Append("\n\nExamples:");
+        result.Append($"\n\t- {this.Handler.EntryCommand} {this.Triggers[0]} artisan brute");
+        result.Append($"\n\t- {this.Handler.EntryCommand} {this.Triggers[0]} -p all");
+        return result.ToString();
     }
 }

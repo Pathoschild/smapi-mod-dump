@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -33,9 +33,19 @@ internal sealed class FishingRodEnchantmentCanApplyToPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void FishingRodEnchantmentCanApplyTo(FishingRodEnchantment __instance, ref bool __result, Item item)
     {
-        if (__instance is MasterEnchantment && item is Axe or Hoe or Pickaxe or WateringCan)
+        if (__instance is not MasterEnchantment)
         {
-            __result = true;
+            return;
+        }
+
+        switch (item)
+        {
+            case Axe when ToolsModule.Config.Axe.AllowMasterEnchantment:
+            case Hoe when ToolsModule.Config.Hoe.AllowMasterEnchantment:
+            case Pickaxe when ToolsModule.Config.Pick.AllowMasterEnchantment:
+            case WateringCan when ToolsModule.Config.Can.AllowMasterEnchantment:
+                __result = true;
+                break;
         }
     }
 

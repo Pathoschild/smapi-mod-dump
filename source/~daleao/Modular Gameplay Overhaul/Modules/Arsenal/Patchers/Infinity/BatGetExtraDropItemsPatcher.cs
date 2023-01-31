@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -51,7 +51,7 @@ internal sealed class BatGetExtraDropItemsPatcher : HarmonyPatcher
                         new CodeInstruction(OpCodes.Newobj, typeof(MeleeWeapon).RequireConstructor(typeof(int))),
                     })
                 .StripLabels(out var labels)
-                .Match(
+                .Count(
                     new[]
                     {
                         new CodeInstruction(

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Weapons;
 
 #region using directives
 
+using System.Linq;
 using DaLion.Overhaul.Modules.Arsenal.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -35,17 +36,23 @@ internal sealed class MeleeWeaponCtorPatcher : HarmonyPatcher
     private static void MeleeWeaponCtorPostfix(MeleeWeapon __instance)
     {
         if (ArsenalModule.Config.Weapons.EnableRebalance &&
-            __instance.InitialParentTileIndex == Constants.InsectHeadIndex)
+            __instance.InitialParentTileIndex is Constants.InsectHeadIndex or Constants.NeptuneGlaiveIndex)
         {
-            __instance.type.Value = MeleeWeapon.dagger;
             __instance.specialItem = true;
+            if (__instance.InitialParentTileIndex == Constants.InsectHeadIndex)
+            {
+                __instance.type.Value = MeleeWeapon.dagger;
+            }
+
             return;
         }
 
         if (ArsenalModule.Config.Weapons.EnableStabbySwords &&
-            Collections.StabbingSwords.Contains(__instance.InitialParentTileIndex))
+            (Collections.StabbingSwords.Contains(__instance.InitialParentTileIndex) ||
+            ArsenalModule.Config.Weapons.CustomStabbingSwords.Contains(__instance.Name)))
         {
             __instance.type.Value = MeleeWeapon.stabbingSword;
+            Log.D($"The type of {__instance.Name} was converted to Stabbing sword.");
         }
 
         __instance.AddIntrinsicEnchantments();

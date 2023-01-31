@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -60,7 +60,7 @@ internal sealed class LevelUpMenuCtorPatcher : HarmonyPatcher
                         new CodeInstruction(OpCodes.Rem_Un),
                         new CodeInstruction(OpCodes.Ldc_I4_0),
                     })
-                .Match(new[] { new CodeInstruction(OpCodes.Ldc_I4_S, 10) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Ldc_I4_S, 10) }, out var count)
                 .Remove(count);
         }
         catch (Exception ex)

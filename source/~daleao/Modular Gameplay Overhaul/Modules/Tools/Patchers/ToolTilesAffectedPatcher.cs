@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,9 +37,9 @@ internal sealed class ToolTilesAffectedPatcher : HarmonyPatcher
 
     private static uint[] PickaxeAffectedTilesRadii => ToolsModule.Config.Pick.RadiusAtEachPowerLevel;
 
-    private static uint[][] HoeAffectedTiles => ToolsModule.Config.Hoe.AffectedTiles;
+    private static (uint Length, uint Radius)[] HoeAffectedTiles => ToolsModule.Config.Hoe.AffectedTilesAtEachPowerLevel;
 
-    private static uint[][] WateringCanAffectedTiles => ToolsModule.Config.Can.AffectedTiles;
+    private static (uint Length, uint Radius)[] WateringCanAffectedTiles => ToolsModule.Config.Can.AffectedTilesAtEachPowerLevel;
 
     #region harmony patches
 
@@ -60,8 +60,8 @@ internal sealed class ToolTilesAffectedPatcher : HarmonyPatcher
             return true; // run original logic
         }
 
-        var length = __instance is Hoe ? HoeAffectedTiles[power - 1][0] : WateringCanAffectedTiles[power - 1][0];
-        var radius = __instance is Hoe ? HoeAffectedTiles[power - 1][1] : WateringCanAffectedTiles[power - 1][1];
+        var length = __instance is Hoe ? HoeAffectedTiles[power - 1].Length : WateringCanAffectedTiles[power - 1].Length;
+        var radius = __instance is Hoe ? HoeAffectedTiles[power - 1].Radius : WateringCanAffectedTiles[power - 1].Radius;
 
         __result = new List<Vector2>();
         var direction = who.FacingDirection switch

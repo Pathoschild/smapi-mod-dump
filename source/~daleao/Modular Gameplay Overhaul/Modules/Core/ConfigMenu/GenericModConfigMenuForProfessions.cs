@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,8 +14,8 @@ namespace DaLion.Overhaul.Modules.Core.ConfigMenu;
 
 using System.Linq;
 using DaLion.Overhaul.Modules.Professions;
-using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.SMAPI;
+using DaLion.Shared.Extensions.Stardew;
 using StardewValley.Buildings;
 
 #endregion using directives
@@ -36,24 +36,6 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "The key used by Prospector, Scavenger and Rascal professions to enable active effects.",
                 config => config.Professions.ModKey,
                 (config, value) => config.Professions.ModKey = value)
-            .AddDropdown(
-                () => "Progression Style",
-                () => "Determines the sprite that appears next to skill bars.",
-                config => config.Professions.PrestigeProgressionStyle.ToString(),
-                (config, value) =>
-                {
-                    config.Professions.PrestigeProgressionStyle = Enum.Parse<Config.ProgressionStyle>(value);
-                    ModHelper.GameContent.InvalidateCacheAndLocalized(
-                        $"{Manifest.UniqueID}/PrestigeProgression");
-                },
-                new[] { "StackedStars", "Gen3Ribbons", "Gen4Ribbons" },
-                value => value switch
-                {
-                    "StackedStars" => "Stacked Stars",
-                    "Gen3Ribbons" => "Gen 3 Ribbons",
-                    "Gen4Ribbons" => "Gen 4 Ribbons",
-                    _ => ThrowHelper.ThrowArgumentOutOfRangeException<string>(nameof(value), value, null),
-                })
 
             // professions
             .AddSectionTitle(() => "Profession Settings")
@@ -184,12 +166,21 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) =>
                 {
                     config.Professions.LegendaryPondPopulationCap = (uint)value;
-                    if (Context.IsWorldReady)
+                    if (!Context.IsWorldReady)
                     {
-                        Game1.getFarm().buildings.OfType<FishPond>()
-                            .Where(p => (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer ||
-                                         ProfessionsModule.Config.LaxOwnershipRequirements) &&
-                                        !p.isUnderConstruction()).ForEach(p => p.UpdateMaximumOccupancy());
+                        return;
+                    }
+
+                    var buildings = Game1.getFarm().buildings;
+                    for (var i = 0; i < buildings.Count; i++)
+                    {
+                        var building = buildings[i];
+                        if (building is FishPond pond &&
+                            (pond.IsOwnedBy(Game1.player) || config.Professions.LaxOwnershipRequirements) &&
+                            !pond.isUnderConstruction())
+                        {
+                            pond.UpdateMaximumOccupancy();
+                        }
                     }
                 },
                 4,
@@ -289,7 +280,7 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Cumulative bonus that multiplies a skill's experience gain after each respective skill reset.",
                 config => config.Professions.PrestigeExpMultiplier,
                 (config, value) => config.Professions.PrestigeExpMultiplier = value,
-                0f,
+                -0.5f,
                 2f)
             .AddNumberField(
                 () => "Required Experience Per Extended Level",
@@ -316,6 +307,24 @@ internal sealed partial class GenericModConfigMenuCore
                 0,
                 100000,
                 10000)
+            .AddDropdown(
+                () => "Progression Style",
+                () => "Determines the style of the sprite that appears next to skill bars, and indicates the skill reset progression.",
+                config => config.Professions.PrestigeProgressionStyle.ToString(),
+                (config, value) =>
+                {
+                    config.Professions.PrestigeProgressionStyle = Enum.Parse<Config.ProgressionStyle>(value);
+                    ModHelper.GameContent.InvalidateCacheAndLocalized(
+                        $"{Manifest.UniqueID}/PrestigeProgression");
+                },
+                new[] { "StackedStars", "Gen3Ribbons", "Gen4Ribbons" },
+                value => value switch
+                {
+                    "StackedStars" => "Stacked Stars",
+                    "Gen3Ribbons" => "Gen 3 Ribbons",
+                    "Gen4Ribbons" => "Gen 4 Ribbons",
+                    _ => ThrowHelper.ThrowArgumentOutOfRangeException<string>(nameof(value), value, null),
+                })
 
             // difficulty settings
             .AddSectionTitle(() => "Difficulty Settings")

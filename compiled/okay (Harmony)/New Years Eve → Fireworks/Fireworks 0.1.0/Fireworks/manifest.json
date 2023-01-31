@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Fireworks",
+    "Author": "sophie",
+    "Version": "0.1.0",
+    "Description": "Fireworks show for mod jam.",
+    "UniqueID": "sophie.Fireworks",
+    "EntryDll": "Fireworks.dll",
+    "MinimumApiVersion": "3.13.0",
+    "UpdateKeys": []
+}

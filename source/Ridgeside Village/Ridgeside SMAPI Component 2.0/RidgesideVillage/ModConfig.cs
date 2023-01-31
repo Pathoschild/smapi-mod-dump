@@ -22,5 +22,8 @@ namespace RidgesideVillage
 
         public bool ShowVillagersOnMap = true;
 
+        //events offset by install date via RSVInstallDay token
+        public bool progressiveStory = true;
+
     }
 }

@@ -9,8 +9,8 @@
 *************************************************/
 
 {
-    "$schema":"https://smapi.io/schemas/content-patcher.json",
-    "Format": "1.25.0",
+    "$schema": "https://smapi.io/schemas/content-patcher.json",
+    "Format": "1.27.0",
     "ConfigSchema": { //Would you like Pam to change her schedule? Also small changes to Penny's Sunday
         "ScheduleChanges": {
             "AllowValues": "true,false",
@@ -24,7 +24,7 @@
             "AllowValues": "true,false",
             "Default": "false"
         },
-        "GiftChanges": {//If enabled, Pam will get angry at you for giving her booze, unless it's been a bad day.
+        "GiftChanges": { //If enabled, Pam will get angry at you for giving her booze, unless it's been a bad day.
             "AllowValues": "true,false",
             "Default": "true"
         },
@@ -46,35 +46,41 @@
             "Name": "PamMood",
             "Value": "{{Random:good,neutral,bad}}"
         },
-        {//Slight increase to mood chances post-rehab
+        { //Slight increase to mood chances post-rehab
             "Name": "PamMood",
             "Value": "{{Random:good, good, neutral, neutral, bad}}",
             //"Value": "good",
-            "When": {"HasSeenEvent": "99210002"}
+            "When": {
+                "HasSeenEvent": "99210002"
+            }
         },
         {
             "Name": "PamMood",
             "Value": "good",
-            "When": {"HasConversationTopic": "PamTriesRehabHoneymoon"}
+            "When": {
+                "HasConversationTopic": "PamTriesRehabHoneymoon"
+            }
         },
-        {//Increased chance of bad mood if Penny is in a "bad marriage".
+        { //Increased chance of bad mood if Penny is in a "bad marriage".
             "Name": "PamMood",
             "Value": "{{Random:good, neutral, bad, bad, bad}}",
-            "When":{
+            "When": {
                 "Relationship:Penny": "Married",
                 "Hearts:Penny": "0,1,2,3,4,5,6,7,8"
             },
         },
-        {//use the code variant if it's available
+        { //use the code variant if it's available
             "Name": "PamMood",
             "Value": "{{atravita.PamTries/PamMood}}",
-            "When": {"HasMod": "atravita.PamTries"}
+            "When": {
+                "HasMod": "atravita.PamTries"
+            }
         },
         {
             "Name": "PamRandomToken",
             "Value": "{{Random:alpha,bravo,charlie,delta}}"
         },
-        {//randomize the "bad" schedule.
+        { //randomize the "bad" schedule.
             "Name": "PamScheduleToken",
             "Value": "{{Random:alpha,bravo,charlie,delta, echo, foxtrot,golf}}"
         },
@@ -92,13 +98,15 @@
         {
             "Name": "PamFishing",
             "Value": " pam_fish",
-            "When": {"HasMod": "atravita.PamTries"}
+            "When": {
+                "HasMod": "atravita.PamTries"
+            }
         },
-        {//Randomized fishing location.
+        { //Randomized fishing location.
             "Name": "PamFishingLocation",
             "Value": "{{Random:Mountain 58 25 2++Forest 35 25 2++Town 2 93 2++Forest 96 39|inputSeparator=++}} {{PamFishing}}"
         },
-        {//CC Movie locations
+        { //CC Movie locations
             "Name": "PamMovieLocation",
             "Value": "Town 99 55 1 \"Strings\\schedules\\Pam:atravita.PamTries.movies\""
         },
@@ -106,53 +114,61 @@
             "Name": "PennyMovieLocation",
             "Value": "Town 100 55 3 \"Strings\\schedules\\Penny:atravita.PamTries.movies\""
         },
-        {//Joja movie locations
+        { //Joja movie locations
             "Name": "PamMovieLocation",
             "Value": "Town 48 22 1 \"Strings\\schedules\\Pam:atravita.PamTries.movies\"",
-            "When": {"HasFlag": "ccMovieTheaterJoja"}
+            "When": {
+                "HasFlag": "ccMovieTheaterJoja"
+            }
         },
         {
             "Name": "PennyMovieLocation",
             "Value": "Town 49 22 3 \"Strings\\schedules\\Penny:atravita.PamTries.movies\"",
-            "When": {"HasFlag": "ccMovieTheaterJoja"}
+            "When": {
+                "HasFlag": "ccMovieTheaterJoja"
+            }
         },
     ],
-"Changes": [
-    {//Gives Pam a fishing animation. Note - requires Harmony.
-        "LogName": "Fishing Animation",
-        "Action": "EditData",
-        "Target": "Data/animationDescriptions",
-        "Entries": {
-            "pam_fish": "8/8 8 9 9 10 10 11 11/8"
+    "Changes": [
+        { //Gives Pam a fishing animation. Note - requires Harmony.
+            "LogName": "Fishing Animation",
+            "Action": "EditData",
+            "Target": "Data/animationDescriptions",
+            "Entries": {
+                "pam_fish": "8/8 8 9 9 10 10 11 11/8"
+            },
+            "When": {
+                "HasMod": "atravita.PamTries"
+            }
         },
-        "When": {"HasMod": "atravita.PamTries"}
-    },
-    {
-        "LogName": "Animations",
-        "Action": "EditData",
-        "Target": "Data/animationDescriptions",
-        "Entries":{
-            "pam_drink": "32/32/32",
-            "pam_angry": "28/28 28 28 28 28 28 28 28 28 29 29 29 29 29/28",
-            "pam_crying": "26/26 26 26 26 26 26 26 26 27 27 27 27 27 27 27 27/26",
-            "pam_beach_umbrella": "0/0/0"
+        {
+            "LogName": "Animations",
+            "Action": "EditData",
+            "Target": "Data/animationDescriptions",
+            "Entries": {
+                "pam_drink": "32/32/32",
+                "pam_angry": "28/28 28 28 28 28 28 28 28 28 29 29 29 29 29/28",
+                "pam_crying": "26/26 26 26 26 26 26 26 26 27 27 27 27 27 27 27 27/26",
+                "pam_beach_umbrella": "0/0/0"
+            },
         },
-    },
-    {
-        "Action": "Include",
-        "FromFile": "postevent.json",
-        "When": {"HasSeenEvent": "503180"} //Pam's 9 heart event
-    },
-    {
-        "Action": "Include",
-        "FromFile": "assets/specialOrders/PamApology.json"
-    },
-    {
-        "Action": "EditData",
-        "Target": "Strings/Lexicon",
-        "Entries": {
-            "and": "{{i18n:and}}"
+        {
+            "Action": "Include",
+            "FromFile": "postevent.json",
+            "When": {
+                "HasSeenEvent": "503180"
+            } //Pam's 9 heart event
+        },
+        {
+            "Action": "Include",
+            "FromFile": "assets/specialOrders/PamApology.json"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Strings/Lexicon",
+            "Entries": {
+                "and": "{{i18n:and}}"
+            }
         }
-    }
-],
+    ],
 }

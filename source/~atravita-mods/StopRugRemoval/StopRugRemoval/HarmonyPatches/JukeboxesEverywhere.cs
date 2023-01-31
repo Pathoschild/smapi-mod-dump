@@ -36,6 +36,7 @@ internal static class JukeboxesEverywhere
             || location is Cellar || location.IsFarm || location.IsGreenhouse;
 
     [HarmonyPatch(nameof(MiniJukebox.checkForAction))]
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1116:Split parameters should start on line after declaration", Justification = "Reviewed.")]
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
     {
         try
@@ -58,7 +59,19 @@ internal static class JukeboxesEverywhere
                 .Insert(new CodeInstruction[]
                 {
                     new (OpCodes.Call, typeof(JukeboxesEverywhere).StaticMethodNamed(nameof(JukeboxesEverywhere.ShouldPlayJukeBoxHere))),
-                });
+                })
+                .FindNext(new CodeInstructionWrapper[]
+                {
+                    new(OpCodes.Ldsfld, typeof(Game1).GetCachedField(nameof(Game1.isRaining), ReflectionCache.FlagTypes.StaticFlags)),
+                })
+                .GetLabels(out IList<Label>? labels)
+                .Remove(1)
+                .Insert(new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_1), // Farmer who
+                    new(OpCodes.Callvirt, typeof(Character).GetCachedProperty(nameof(Character.currentLocation), ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
+                    new(OpCodes.Call, typeof(Game1).GetCachedMethod(nameof(Game1.IsRainingHere), ReflectionCache.FlagTypes.StaticFlags)),
+                }, withLabels: labels);
             return helper.Render();
         }
         catch (Exception ex)

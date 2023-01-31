@@ -4,17 +4,17 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
-namespace DaLion.Overhaul.Modules.Arsenal.Events;
+namespace DaLion.Overhaul.Modules.Arsenal.Events.Weapons;
 
 #region using directives
 
 using DaLion.Overhaul.Modules.Arsenal.Extensions;
-using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions.Stardew;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Tools;
@@ -32,24 +32,21 @@ internal sealed class ComboButtonPressedEvent : ButtonPressedEvent
     }
 
     /// <inheritdoc />
-    public override bool IsEnabled => ArsenalModule.Config.Weapons.EnableComboHits;
+    public override bool IsEnabled => Context.IsWorldReady && Game1.activeClickableMenu is null && ArsenalModule.Config.Weapons.EnableComboHits;
 
     /// <inheritdoc />
     protected override void OnButtonPressedImpl(object? sender, ButtonPressedEventArgs e)
     {
-        if (!ArsenalModule.Config.Weapons.EnableComboHits)
-        {
-            return;
-        }
-
         var player = Game1.player;
-        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null || !e.Button.IsUseToolButton() ||
-            player.CurrentTool is not MeleeWeapon weapon || weapon.isScythe())
+        if (!e.Button.IsUseToolButton() || player.CurrentTool is not MeleeWeapon weapon || weapon.isScythe())
         {
             return;
         }
 
-        var hitStep = ArsenalModule.State.ComboHitStep;
+        ArsenalModule.State.HoldingWeaponSwing = true;
+        this.Manager.Enable<ComboButtonReleasedEvent>();
+
+        var hitStep = ArsenalModule.State.ComboHitQueued;
         if (hitStep == ComboHitStep.Idle)
         {
             return;
@@ -69,8 +66,7 @@ internal sealed class ComboButtonPressedEvent : ButtonPressedEvent
 
         ModHelper.Input.Suppress(e.Button);
 
-        var type = weapon.type.Value;
-        if (type == MeleeWeapon.club && hitStep == finalHitStep - 1)
+        if (weapon.IsClub() && hitStep == finalHitStep - 1)
         {
             player.QueueSmash(weapon);
         }

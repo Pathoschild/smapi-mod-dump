@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,8 +15,10 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Weapons;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Tools;
+using xTile.Dimensions;
 
 #endregion using directives
 
@@ -51,24 +53,16 @@ internal sealed class GameLocationMonsterDropPatcher : HarmonyPatcher
                     return;
                 }
 
-                if (Game1.mine.GetAdditionalDifficulty() > 0 && Game1.random.NextDouble() < 0.01 + (who.LuckLevel * 0.002f))
+                if (Game1.mine.GetAdditionalDifficulty() > 0 && Game1.random.NextDouble() < 0.015 + (who.LuckLevel * 0.002f))
                 {
-                    monster.ModifyMonsterLoot(Game1.createItemDebris(
-                        new MeleeWeapon(Constants.ObsidianEdgeIndex, 1),
-                        new Vector2(x, y),
-                        -1,
-                        __instance));
+                    __instance.debris.Add(new Debris(new MeleeWeapon(Constants.ObsidianEdgeIndex), new Vector2(x, y)));
                 }
 
                 break;
             case Bat bat when bat.magmaSprite.Value:
-                if (Game1.random.NextDouble() < 0.005 + (who.LuckLevel * 0.003f))
+                if (Game1.random.NextDouble() < 0.01 + (who.LuckLevel * 0.003f))
                 {
-                    monster.ModifyMonsterLoot(Game1.createItemDebris(
-                        new MeleeWeapon(Constants.LavaKatanaIndex, 1),
-                        new Vector2(x, y),
-                        -1,
-                        __instance));
+                    __instance.debris.Add(new Debris(new MeleeWeapon(Constants.LavaKatanaIndex), new Vector2(x, y)));
                 }
 
                 break;

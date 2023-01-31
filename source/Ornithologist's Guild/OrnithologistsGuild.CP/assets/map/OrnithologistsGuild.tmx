@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="31" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="62">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="31" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="63">
  <properties>
   <property name="AmbientLight" value="95 95 95"/>
   <property name="Doors" value="15 20 indoor 120"/>
@@ -42,6 +42,9 @@
  </tileset>
  <tileset firstgid="2776" name="Z_SpellNSpeak" tilewidth="16" tileheight="16" tilecount="3" columns="3">
   <image source="SpellNSpeak.png" width="48" height="16"/>
+ </tileset>
+ <tileset firstgid="2779" name="Z_StoneBath" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+  <image source="StoneBath.png" width="32" height="32"/>
  </tileset>
  <layer id="1" name="Back" width="31" height="31">
   <data encoding="csv">
@@ -103,7 +106,7 @@
 0,0,0,0,0,0,65,332,113,220,0,215,113,113,220,121,219,113,113,220,0,128,113,113,69,0,0,0,0,0,0,
 0,0,0,0,0,0,65,364,2126,0,0,0,0,0,0,0,0,0,0,0,0,0,2158,402,2154,0,0,0,0,0,0,
 0,0,0,0,0,0,65,0,2157,0,0,0,918,919,919,2774,919,919,894,0,0,0,2157,866,69,0,0,0,0,0,0,
-0,0,0,0,0,0,65,0,0,0,0,0,950,951,952,951,951,952,926,496,0,0,0,898,69,0,0,0,0,0,0,
+0,0,0,0,0,0,65,0,0,0,0,2781,950,951,952,951,951,952,926,496,0,0,0,898,69,0,0,0,0,0,0,
 0,0,0,0,0,0,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,0,0,0,0,0,0,
 0,0,0,0,0,0,65,0,2742,0,0,0,0,0,0,0,0,0,0,0,0,0,2752,0,69,0,0,0,0,0,0,
 0,0,0,0,0,0,65,0,0,0,0,0,0,891,1073,1074,1075,892,0,0,0,0,0,0,69,0,0,0,0,0,0,
@@ -137,7 +140,7 @@
 0,0,0,0,0,0,0,0,2158,0,0,0,0,0,0,89,0,280,0,216,0,0,2126,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,2158,0,0,0,0,0,0,0,0,0,0,0,0,0,2126,370,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,886,0,0,0,0,0,830,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,433,0,432,920,652,513,434,464,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2779,433,0,432,920,652,513,434,464,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,2737,0,0,0,0,0,0,0,0,0,0,0,0,0,2747,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,2153,0,0,0,0,0,0,859,1041,1042,1043,860,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -353,6 +356,11 @@
    <properties>
     <property name="Action" value="Message Ivy_OrnithologistsGuild.26"/>
     <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="62" name="TileData" x="176" y="368" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message Ivy_OrnithologistsGuild.27"/>
    </properties>
   </object>
  </objectgroup>

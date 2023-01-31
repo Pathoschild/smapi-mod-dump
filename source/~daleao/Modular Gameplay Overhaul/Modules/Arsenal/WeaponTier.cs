@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -50,7 +50,7 @@ public sealed class WeaponTier : SmartEnum<WeaponTier>
 
     #endregion enum values
 
-    private static readonly IReadOnlyDictionary<int, WeaponTier> TierByWeapon;
+    private static readonly Dictionary<int, WeaponTier> TierByWeapon;
 
     static WeaponTier()
     {
@@ -92,7 +92,7 @@ public sealed class WeaponTier : SmartEnum<WeaponTier>
             { Constants.WickedKrisIndex, Mythic },
             { Constants.TheSlammerIndex, Mythic },
             { Constants.InsectHeadIndex, Mythic },
-            { Constants.NeptunesGlaiveIndex, Mythic },
+            { Constants.NeptuneGlaiveIndex, Mythic },
             { Constants.ObsidianEdgeIndex, Mythic },
             { Constants.LavaKatanaIndex, Mythic },
             { Constants.IridiumNeedleIndex, Mythic },

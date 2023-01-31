@@ -1014,7 +1014,7 @@ namespace DynamicBodies.UI
 				this.lastHeldColorPicker = this.secondaryColorPicker;
 			}
 
-			if (this.costLabel.containsPoint(x, y))
+			if (this.costLabel.containsPoint(x + costLabel.bounds.Width / 2, y))
 			{
 				if (currentOwned) { Game1.playSound("cancel"); }
 				else
@@ -1261,7 +1261,7 @@ namespace DynamicBodies.UI
 			else
 			{
 				//Draw purchase background border
-				IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), costLabel.bounds.X - costLabel.bounds.Width / 2, costLabel.bounds.Y, costLabel.bounds.Width, costLabel.bounds.Height, (costLabel.containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY())) ? purchase_selected_color : Color.White, 4f, drawShadow: false);
+				IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), costLabel.bounds.X - costLabel.bounds.Width / 2, costLabel.bounds.Y, costLabel.bounds.Width, costLabel.bounds.Height, (costLabel.containsPoint(Game1.getOldMouseX() + costLabel.bounds.Width / 2, Game1.getOldMouseY())) ? purchase_selected_color : Color.White, 4f, drawShadow: false);
 
 				//Draw the coin icon
 				b.Draw(Game1.mouseCursors, new Vector2(costLabel.bounds.X + Game1.smallFont.MeasureString(costLabel.name).X / 2f+4f, costLabel.bounds.Y + 24), new Rectangle(193, 373, 9, 9), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.8f);

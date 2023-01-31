@@ -11,6 +11,11 @@ Changelog
 
 TODO: optionally highlight **buildings** that have empty machines within them?
 
+### Version 0.2.1
+* Fix beehouses, integration with Better Beehouses.
+* Remove some items.
+* Optimize PFM integration when players have a large number of unconditional PFM machines.
+
 ### Version 0.2.0
 
 Move to using AtraCore.

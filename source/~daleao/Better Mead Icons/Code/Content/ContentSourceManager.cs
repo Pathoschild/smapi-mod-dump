@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -16,11 +16,11 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
-namespace BetterMeadIcons.Content;
+namespace DaLion.Meads.Content;
 
 internal class ContentSourceManager
 {
-    private static readonly ConstructorInfo _ArtisanGoodTextureProviderCtor =
+    private static readonly ConstructorInfo ArtisanGoodTextureProviderCtor =
         "BetterArtisanGoodIcons.ArtisanGoodTextureProvider".ToType().RequireConstructor(3);
 
     internal static object? TryLoadContentSource(TextureDataContentSource contentSource, IMonitor monitor)
@@ -44,7 +44,7 @@ internal class ContentSourceManager
 		{
 			try
             {
-                provider = _ArtisanGoodTextureProviderCtor.Invoke(new[] {contentSource.Load<Texture2D>(imagePath), source, good});
+                provider = ArtisanGoodTextureProviderCtor.Invoke(new[] {contentSource.Load<Texture2D>(imagePath), source, good});
 				return true;
 			}
 			catch (Exception)
@@ -52,6 +52,7 @@ internal class ContentSourceManager
 				monitor.Log($"Couldn't load Mead from {manifest.Name} ({manifest.UniqueID}) because the Mead texture file path is invalid ({imagePath}).", LogLevel.Warn);
 			}
 		}
+
 		return false;
 	}
 }

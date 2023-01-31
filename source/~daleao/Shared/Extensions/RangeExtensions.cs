@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -29,7 +29,7 @@ public static class RangeExtensions
 }
 
 /// <summary>Allows enumerating <see cref="int"/>s.</summary>
-[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Preference for class required by struct extension class.")]
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Preference for struct required by extension class.")]
 public ref struct CustomIntEnumerator
 {
     private readonly int _end;

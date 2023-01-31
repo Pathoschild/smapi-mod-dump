@@ -41,7 +41,7 @@ Simply delete the mod from your Mods directory.
 
 ## Additionally:
 
-* Thanks to [martin66789](https://forums.nexusmods.com/index.php?/user/27323031-martin66789/) for the Hungarian translation, love1997 for the Chinese translation, and c4ttzinhaa(https://github.com/atravita-mods/StardewMods/commits?author=c4ttzinhaa) for the Portuguese translation!
+* Thanks to [martin66789](https://forums.nexusmods.com/index.php?/user/27323031-martin66789/) for the Hungarian translation, love1997 for the Chinese translation, c4ttzinhaa(https://github.com/atravita-mods/StardewMods/commits?author=c4ttzinhaa) for the Portuguese translation, and pavlo2906 for the Russian translation!
 
 ## See also
 

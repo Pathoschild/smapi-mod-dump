@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Crafting;
 
 #region using directives
 
-using System.Linq;
 using System.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -45,7 +44,18 @@ internal sealed class ShopMenuGetPlayerCurrencyAmountPatcher : HarmonyPatcher
                 return true; // run original logic
             }
 
-            __result = who.Items.Where(i => i.ParentSheetIndex == currencyType).Sum(i => i.Stack);
+            __result = 0;
+            for (var i = 0; i < who.Items.Count; i++)
+            {
+                var item = who.Items[i];
+                if (item.ParentSheetIndex != currencyType)
+                {
+                    continue;
+                }
+
+                __result += item.Stack;
+            }
+
             return false; // don't run original logic
         }
         catch (Exception ex)

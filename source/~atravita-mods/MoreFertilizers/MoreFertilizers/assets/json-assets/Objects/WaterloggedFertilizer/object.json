@@ -11,7 +11,7 @@
 {
   "Name": "Waterlogged Fertilizer",
   "Price": 10,
-  "Category": "Junk",
+  "Category": -19,
   "Edibility": -300,
   "TranslationKey": "waterlogged-fertilizer",
 }

@@ -25,6 +25,7 @@ internal sealed class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)

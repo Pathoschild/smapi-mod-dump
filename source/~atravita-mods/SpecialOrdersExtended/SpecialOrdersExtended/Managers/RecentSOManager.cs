@@ -9,8 +9,10 @@
 *************************************************/
 
 using AtraBase.Toolkit.Extensions;
+
 using AtraShared;
 using AtraShared.Utils.Extensions;
+
 using SpecialOrdersExtended.DataModels;
 
 namespace SpecialOrdersExtended.Managers;
@@ -48,7 +50,7 @@ internal class RecentSOManager
     {
         if (recentCompletedSO is null)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
         }
         recentCompletedSO.Save();
     }
@@ -61,7 +63,7 @@ internal class RecentSOManager
     {
         if (recentCompletedSO is null)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
         }
         recentCompletedSO.SaveTemp();
     }
@@ -83,11 +85,12 @@ internal class RecentSOManager
     {
         if(recentCompletedSO is null)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
+            return;
         }
         List<string> keysRemoved = recentCompletedSO.dayUpdate(daysplayed);
         DialogueManager.ClearRepeated(keysRemoved);
-        ModEntry.ModMonitor.DebugLog($"Keys removed from Recent Completed SOs: {string.Join(", ", keysRemoved)}");
+        ModEntry.ModMonitor.LogIfVerbose(() => $"Keys removed from Recent Completed SOs: {string.Join(", ", keysRemoved)}");
     }
 
     /// <summary>
@@ -97,6 +100,11 @@ internal class RecentSOManager
     /// <returns>true if an order got added to RecentCompletedSO, false otherwise.</returns>
     internal static bool GrabNewRecentlyCompletedOrders()
     {
+        if (!Context.IsWorldReady)
+        {
+            return false;
+        }
+
         Dictionary<string, SpecialOrder>? currentOrders = Game1.player?.team?.specialOrders?.ToDictionaryIgnoreDuplicates(a => a.questKey.Value, a => a)
             ?? SaveGame.loaded?.specialOrders?.ToDictionaryIgnoreDuplicates(a => a.questKey.Value, a => a);
         if (currentOrders is null)
@@ -158,7 +166,7 @@ internal class RecentSOManager
     }
 
     /// <summary>
-    /// Tries to add a questkey to the RecentCompletedSO data model
+    /// Tries to add a QuestKey to the RecentCompletedSO data model
     /// If it's already there, does nothing.
     /// </summary>
     /// <param name="questkey">Quest key (exact).</param>
@@ -168,7 +176,8 @@ internal class RecentSOManager
     {
         if (!Context.IsWorldReady)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
+            return false;
         }
         if (recentCompletedSO!.TryAdd(questkey, Game1.stats.DaysPlayed))
         {
@@ -188,7 +197,8 @@ internal class RecentSOManager
     {
         if (!Context.IsWorldReady)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
+            return false;
         }
         return recentCompletedSO!.TryRemove(questkey);
     }
@@ -205,7 +215,7 @@ internal class RecentSOManager
     {
         if (!Context.IsWorldReady)
         {
-            throw new SaveNotLoadedError();
+            ASThrowHelper.ThrowSaveNotLoaded();
         }
         return recentCompletedSO!.IsWithinXDays(questkey, days);
     }

@@ -6,12 +6,9 @@ mods:
    Warp Network
 
 latest commit:
-   commit 9088a6b1af2b74a2279915790fafbe2124490a49
-   Merge: e0be9b5 e0e963d
+   commit d7bb7fd545c64ead12097631930ea89b35a50009
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Wed Dec 14 19:10:40 2022 -0500
+   Date:   Wed Jan 25 12:45:01 2023 -0500
    
-       Merge pull request #6 from thiagomasson/master
-       
-       Updated pt.json
+       add german
    

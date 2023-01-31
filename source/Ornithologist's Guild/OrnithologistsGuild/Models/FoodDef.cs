@@ -16,13 +16,12 @@ namespace OrnithologistsGuild.Models
 {
     public class FoodDef
     {
-        // TODO capitalize like BirdieDef
-        public string type;
-        public int feederAssetIndex;
+        public string Type;
+        public int FeederAssetIndex;
 
         public static FoodDef FromFeeder(CustomBigCraftable feeder)
         {
-            return ContentManager.Foods.FirstOrDefault(food => feeder.TextureOverride.EndsWith($":{food.feederAssetIndex}"));
+            return ContentManager.Foods.FirstOrDefault(food => feeder.TextureOverride.EndsWith($":{food.FeederAssetIndex}"));
         }
     }
 }

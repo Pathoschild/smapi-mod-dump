@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -131,7 +131,7 @@ public interface IModularOverhaul
         void Reset();
     }
 
-    #region treasure hunt
+    #region treasure hunts
 
     /// <summary>The type of <see cref="ITreasureHunt"/>; either Scavenger or Prospector.</summary>
     public enum TreasureHuntType
@@ -195,9 +195,9 @@ public interface IModularOverhaul
         Vector2 Target { get; }
     }
 
-    #endregion treasure hunt
+    #endregion treasure hunts
 
-    #region ultimate
+    #region ultimates
 
     /// <summary>Interface for Ultimate abilities.</summary>
     public interface IUltimate
@@ -278,9 +278,9 @@ public interface IModularOverhaul
         Farmer Player { get; }
     }
 
-    #endregion ultimate
+    #endregion ultimates
 
-    #region resonance
+    #region resonances
 
     /// <summary>The number of steps between two <see cref="IGemstone"/>s in a Diatonic Scale.</summary>
     public enum IntervalNumber
@@ -377,6 +377,6 @@ public interface IModularOverhaul
         IntervalNumber IntervalWith(IGemstone other);
     }
 
-    #endregion resonance
+    #endregion resonances
 }
 #pragma warning restore SA1201 // Elements should appear in the correct order

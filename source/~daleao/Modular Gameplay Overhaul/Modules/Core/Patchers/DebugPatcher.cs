@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,7 +15,6 @@ namespace DaLion.Overhaul.Modules.Core.Patchers;
 using DaLion.Shared.Attributes;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
-using StardewValley;
 
 #endregion using directives
 

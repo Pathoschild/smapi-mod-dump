@@ -40,7 +40,7 @@
         "Entries": {//Late night shopping at Pierre's
             "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 SeedShop 2 24 3 \"Strings\\schedules\\Pam:atravita.PamTries.seedshop_late\"/2100 Trailer 15 4 2 pam_sit_down/2400 Trailer 25 17 2 pam_sleep"
         },
-        "When": {"DayofWeek": "Monday"}
+        "When": {"DayOfWeek": "Monday"}
     },
     {
         "LogName": "Pam - Tuesdays",
@@ -49,7 +49,7 @@
         "Entries": {//Fishes with Willy.
             "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 Beach 26 36 2 {{PamFishing}}/2200 Trailer 25 17 2 pam_sleep"
         },
-        "When": {"DayofWeek": "Tuesday"}
+        "When": {"DayOfWeek": "Tuesday"}
     },
     {
         "LogName": "Pam - Wednesdays",
@@ -58,7 +58,7 @@
         "Entries": {//Goes to church.
             "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 SeedShop 37 18 0 \"Strings\\schedules\\Pam:atravita.PamTries.praying\"/2200 Trailer 25 17 2 pam_sleep"
         },
-        "When": {"DayofWeek": "Wednesday"}
+        "When": {"DayOfWeek": "Wednesday"}
     },
     {
         "LogName": "Pam - Thursday",
@@ -67,7 +67,7 @@
         "Entries": {//Goes fishing, location varies
             "bus": "630 Trailer 15 4 2 pam_sit_down/830 BusStop 11 10 2/1700 {{PamFishingLocation}}/2300 Trailer 25 17 2 pam_sleep"
         },
-        "When": {"DayofWeek": "Thursday"}
+        "When": {"DayOfWeek": "Thursday"}
     },
     {
         "LogName": "Pam - Friday",
@@ -76,7 +76,7 @@
         "Entries": {//Saloon with Willy and Clint
             "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 Saloon 16 22 1/2200 Trailer 25 17 2 pam_sleep"
         },
-        "When": {"DayofWeek": "Friday"}
+        "When": {"DayOfWeek": "Friday"}
     },
     {
         "LogName": "Pam - Saturday",
@@ -95,12 +95,13 @@
             "bus": "630 Town 74 75 2 {{PamFishing}}/830 BusStop 11 10 2/1700 {{PamMovieLocation}}/2200 Trailer 25 17 2 pam_sleep"
         },
         "When": {
-            "DayofWeek": "Sunday",
+            "DayOfWeek": "Sunday",
             "HasFlag": "ccMovieTheater",
             "MovieNight": "true"
         }
     },
     {//todo - figure out a different schedule for Pam is penny is married...may need a custom token here.
+    // TODO: schedules for the theater if the player chose the JOJA route.
         "LogName": "Penny - Sundays at the movies",
         "Action": "EditData",
         "Target": "Characters/schedules/Penny",
@@ -122,11 +123,12 @@
         "Target": "Characters/schedules/Penny",
         "Entries": {
             "rain": "900 Trailer 5 5 0/1100 Trailer 9 7 0/1300 Trailer 12 6 0 penny_dishes/1500 Trailer 14 4 2 penny_sit_down/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
-            "rain2": "810 Town 104 89 2 \"Strings\\schedules\\Penny:rain2.000\"/1200 ArchaeologyHouse 20 5 0/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
+            "rain2": "810 Town 104 89 2 \"Strings\\schedules\\Penny:rain2.000\"/1200 ArchaeologyHouse 20 5 0/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "marriage_{{season}}_{{day}}": "900 Trailer 1 8 0/1030 CommunityCenter 23 17 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
         },
         "When": {
             "HasFlag": "ccMovieTheater",
-            "DayofWeek": "Sunday",
+            "DayOfWeek": "Sunday",
             "MovieNight": "true"
         }
     }

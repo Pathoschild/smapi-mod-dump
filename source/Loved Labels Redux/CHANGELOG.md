@@ -6,6 +6,16 @@ for queries and analysis.**
 
 ----
 
+## [1.2.0] - 2023-01-22
+
+### Added
+
+- Added auto pet farm animals option
+
+### Improvements
+
+- Updated dependencies
+
 ## [1.1.0] - 2022-07-20
 
 ### Added
@@ -31,7 +41,8 @@ for queries and analysis.**
 
 - Initial release
 
-[unreleased]: https://github.com/thespbgamer/LovedLabelsRedux/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/thespbgamer/LovedLabelsRedux/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/thespbgamer/LovedLabelsRedux/releases/tag/1.2.0
 [1.1.0]: https://github.com/thespbgamer/LovedLabelsRedux/releases/tag/1.1.0
 [1.0.2]: https://github.com/thespbgamer/LovedLabelsRedux/releases/tag/1.0.2
 [1.0.0]: https://github.com/thespbgamer/LovedLabelsRedux/releases/tag/1.0.0

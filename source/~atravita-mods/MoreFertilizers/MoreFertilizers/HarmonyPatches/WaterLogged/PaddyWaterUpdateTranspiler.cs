@@ -10,11 +10,16 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
-using AtraBase.Toolkit.Reflection;
+
 using AtraCore.Framework.ReflectionManager;
+
+using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
+
 using HarmonyLib;
+
 using Microsoft.Xna.Framework;
+
 using StardewValley.TerrainFeatures;
 
 namespace MoreFertilizers.HarmonyPatches.WaterLogged;
@@ -25,14 +30,17 @@ namespace MoreFertilizers.HarmonyPatches.WaterLogged;
 [HarmonyPatch(typeof(HoeDirt))]
 internal static class PaddyWaterUpdateTranspiler
 {
-    private static void UpdateNeighbors(HoeDirt dirt, int tileX, int tileY, GameLocation location)
+    private static void UpdateNeighbors(HoeDirt dirt, int index, int tileX, int tileY, GameLocation location)
     {
-        Vector2 v = new(tileX, tileY);
-        dirt.nearWaterForPaddy.Value = -1;
-        if (dirt.hasPaddyCrop() && dirt.paddyWaterCheck(location, v))
+        if (index == ModEntry.PaddyCropFertilizerID)
         {
-            dirt.state.Value = -1;
-            dirt.updateNeighbors(location, v);
+            Vector2 v = new(tileX, tileY);
+            dirt.nearWaterForPaddy.Value = -1;
+            if (dirt.hasPaddyCrop() && dirt.paddyWaterCheck(location, v))
+            {
+                dirt.state.Value = -1;
+                dirt.updateNeighbors(location, v);
+            }
         }
     }
 
@@ -43,25 +51,27 @@ internal static class PaddyWaterUpdateTranspiler
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             helper.FindNext(new CodeInstructionWrapper[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_S),
+            { // the first use of "applySpeedIncreases" is in the fertilizer section.
+                OpCodes.Ldarg_0,
+                OpCodes.Ldarg_S,
                 new(OpCodes.Call, typeof(HoeDirt).GetCachedMethod("applySpeedIncreases", ReflectionCache.FlagTypes.InstanceFlags)),
             })
             .Advance(3)
             .Insert(new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldarg_2),
                 new(OpCodes.Ldarg_3),
                 new(OpCodes.Ldarg_S, 6),
-                new(OpCodes.Call, typeof(PaddyWaterUpdateTranspiler).StaticMethodNamed(nameof(UpdateNeighbors))),
+                new(OpCodes.Call, typeof(PaddyWaterUpdateTranspiler).GetCachedMethod(nameof(UpdateNeighbors), ReflectionCache.FlagTypes.StaticFlags)),
             });
             return helper.Render();
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Hoedirt.plant:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}:\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

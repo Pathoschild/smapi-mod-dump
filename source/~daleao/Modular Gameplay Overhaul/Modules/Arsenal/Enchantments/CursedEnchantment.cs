@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -66,9 +66,15 @@ public class CursedEnchantment : BaseWeaponEnchantment
     protected override void _OnMonsterSlay(Monster m, GameLocation location, Farmer who)
     {
         base._OnMonsterSlay(m, location, who);
-        if (who.CurrentTool is MeleeWeapon { InitialParentTileIndex: Constants.DarkSwordIndex } darkSword)
+        if (who.CurrentTool is not MeleeWeapon { InitialParentTileIndex: Constants.DarkSwordIndex } darkSword)
         {
-            darkSword.Increment(DataFields.CursePoints);
+            return;
+        }
+
+        darkSword.Increment(DataFields.CursePoints);
+        if (darkSword.Read<int>(DataFields.CursePoints) >= 50 && !who.hasOrWillReceiveMail("viegoCurse"))
+        {
+            who.mailForTomorrow.Add("viegoCurse");
         }
     }
 }

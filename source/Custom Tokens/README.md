@@ -13,7 +13,10 @@ Custom Tokens is a mod that provides some additional tokens for Content Patcher,
 Basic Tokens:
 - ``MineLevel`` the player is currently on
 - ``VolcanoFloor`` the player is currently on
-- ``DeepestMineLevel``, the deepest minelevel the player has reached
+- ``DeepestMineLevel``, the deepest minelevel the player has reached, inclusive of both the normal and Skull Cavern mines
+- ``DeepestVolcanoFloor``, the deepest volcano floor reached by the player
+- ``DeepestNormalMineLevel``, the deepest normal minelevel reached by the player
+- ``DeepestSkullCavernMineLevel``, the deepest skull cavern minelevel reached
 - Anniversary of the player, split into two tokens, ``AnniversaryDay`` and ``AnniversarySeason``
 - ``YearsMarried``, total number of years married
 - ``QuestIDsCompleted``, a list of quest ids that the player has completed
@@ -47,7 +50,7 @@ The mod works best with new save files due to these limitations, while it will s
 These tokens are more unstable as they use the advanced api so that input arguments are supported. They may not work fully for farmhands in split screen.
 
 #### Child:
-This token takes exactly 3 input arguments. They are not case sensitive.
+This token takes exactly 3 input arguments. They are not case sensitive. This token is not fully compatible with ChildToNPC.
 
 The first argument, ``player`` ,gives the player type 
 - Can be either ``host`` or ``local``. 
@@ -88,9 +91,12 @@ Token | Default value | What it tracks | Notes
 Minelevel | 0 | Players current minelevel | Add 120 to Skull Cavern floors for token value. The quarry mine has a minelevel of 77377
 VolcanoFloor | 0 | Players current floor in the Volcano Dungeon
 DeepestMineLevel | 0 | The deepest minelevel the player has reached | Skull Cavern floors included
+DeepestNormalMinelevel | 0 | Players deepest minelevel in the normal mines
+DeepestSkullCavernMinelevel | 0 | Players deepest minelevel in the Skull Cavern
+DeepestVolcanoFloor | 0 | Players deepest floor in the Volcano Dungeon | The deepest floor reached since the mod has been added.
 AnniversaryDay | 0 | The day the player was married on
 AnniversarySeason | No season | The season the player was married in | Value is in all lower-case
-Years Married | 0 | The number of years the player has been married for
+YearsMarried | 0 | The number of years the player has been married for
 QuestIDsCompleted | None | A list of quest ids that the player has completed | Only records quests with ids as specified in the Quests.xnb
 QuestsCompleted | 0 | The total number of quests completed | Includes quests with no ids e.g Bulletin board quests
 SOIDsCompleted | None | A list of the special orders a player has completed | Repeating the same order will not add the key to the token again 

@@ -14,6 +14,7 @@ namespace BetterBeehouses
 {
     public class API : IBetterBeehousesAPI
     {
+        // TODO: add get all near and get all rect
         public int GetDaysToProduce()
         {
             return ModEntry.config.DaysToProduce;

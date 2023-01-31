@@ -24,7 +24,7 @@ using xTile.ObjectModel;
 
 namespace MobilePhone
 {
-    internal class PhonePatches
+    public class PhonePatches
     {
         private static IMonitor Monitor;
         private static IModHelper Helper;
@@ -37,7 +37,7 @@ namespace MobilePhone
             Helper = helper;
             Config = config;
         }
-        internal static bool Game1_pressSwitchToolButton_prefix()
+        public static bool Game1_pressSwitchToolButton_prefix()
         {
             if (ModEntry.phoneOpen && ModEntry.screenRect.Contains(Game1.getMousePosition()))
             {
@@ -45,7 +45,7 @@ namespace MobilePhone
             }
             return true;
         }
-        internal static bool Farmer_addItemToInventory_prefix(Item item, ref Item __result)
+        public static bool Farmer_addItemToInventory_prefix(Item item, ref Item __result)
         {
             if (ModEntry.isReminiscing)
             {
@@ -55,7 +55,7 @@ namespace MobilePhone
             }
             return true;
         }
-        internal static bool Farmer_changeFriendship_prefix(int amount, NPC n)
+        public static bool Farmer_changeFriendship_prefix(int amount, NPC n)
         {
             if (ModEntry.isReminiscing)
             {
@@ -64,7 +64,7 @@ namespace MobilePhone
             }
             return true;
         }
-        internal static void GameLocation_resetLocalState_postfix(GameLocation __instance)
+        public static void GameLocation_resetLocalState_postfix(GameLocation __instance)
         {
             if (ModEntry.isReminiscing)
             {
@@ -124,7 +124,7 @@ namespace MobilePhone
                 }
             }
         }
-        internal static bool Event_command_cutscene_prefix(ref Event __instance, GameLocation location, GameTime time, string[] split, ref ICustomEventScript ___currentCustomEventScript)
+        public static bool Event_command_cutscene_prefix(ref Event __instance, GameLocation location, GameTime time, string[] split, ref ICustomEventScript ___currentCustomEventScript)
         {
             if (!ModEntry.isInviting)
                 return true;
@@ -194,7 +194,7 @@ namespace MobilePhone
             }
         }
 
-        internal static bool Event_command_prefix(Event __instance, string[] split)
+        public static bool Event_command_prefix(Event __instance, string[] split)
         {
             if (ModEntry.isReminiscing)
             {
@@ -205,7 +205,7 @@ namespace MobilePhone
             }
             return true;
         }
-        internal static bool Event_endBehaviors_prefix(Event __instance, string[] split)
+        public static bool Event_endBehaviors_prefix(Event __instance, string[] split)
         {
             if (ModEntry.isReminiscing)
             {
@@ -215,7 +215,7 @@ namespace MobilePhone
             }
             return true;
         }
-        internal static bool Event_namePet_prefix(Event __instance, string name)
+        public static bool Event_namePet_prefix(Event __instance, string name)
         {
             if (ModEntry.isReminiscing)
             {
@@ -254,7 +254,7 @@ namespace MobilePhone
             }
             return true;
         }
-        internal static bool Event_skipEvent_prefix(Event __instance, ref Dictionary<string, Vector3> ___actorPositionsAfterMove)
+        public static bool Event_skipEvent_prefix(Event __instance, ref Dictionary<string, Vector3> ___actorPositionsAfterMove)
         {
             if (ModEntry.isReminiscing)
             {
@@ -278,7 +278,7 @@ namespace MobilePhone
             return true;
         }
 
-        internal static bool CarpenterMenu_returnToCarpentryMenu_prefix()
+        public static bool CarpenterMenu_returnToCarpentryMenu_prefix()
         {
             if (!ModEntry.inCall)
                 return true;
@@ -292,7 +292,7 @@ namespace MobilePhone
             return false;
         }
 
-        internal static bool CarpenterMenu_returnToCarpentryMenuAfterSuccessfulBuild_prefix()
+        public static bool CarpenterMenu_returnToCarpentryMenuAfterSuccessfulBuild_prefix()
         {
             if (!ModEntry.inCall)
                 return true;
@@ -368,7 +368,7 @@ namespace MobilePhone
             MobilePhoneCall.ShowMainCallDialogue(ModEntry.callingNPC);
         }
 
-        internal static void GameLocation_answerDialogue_prefix(GameLocation __instance, Response answer)
+        public static void GameLocation_answerDialogue_prefix(GameLocation __instance, Response answer)
         {
             try
             {

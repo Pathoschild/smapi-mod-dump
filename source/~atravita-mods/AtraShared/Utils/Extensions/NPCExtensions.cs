@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+using CommunityToolkit.Diagnostics;
+
+using Microsoft.Xna.Framework;
+
 namespace AtraShared.Utils.Extensions;
 
 /// <summary>
@@ -24,8 +28,13 @@ public static class NPCExtensions
         this NPC npc,
         string dialogueKey)
     {
-        npc.CurrentDialogue.Clear();
-        npc.CurrentDialogue.Push(new Dialogue(npc.Dialogue[dialogueKey], npc) { removeOnNextMove = true });
+        Guard.IsNotNull(npc);
+
+        if (!string.IsNullOrWhiteSpace(dialogueKey) && npc.Dialogue.TryGetValue(dialogueKey, out string? dialogue))
+        {
+            npc.CurrentDialogue.Clear();
+            npc.CurrentDialogue.Push(new Dialogue(dialogue, npc) { removeOnNextMove = true });
+        }
     }
 
     /// <summary>
@@ -43,12 +52,16 @@ public static class NPCExtensions
         bool clearOnMovement = false)
     {
         string dialogue = npc.tryToGetMarriageSpecificDialogueElseReturnDefault(dialogueKey);
-        if (string.IsNullOrEmpty(dialogue))
+        if (string.IsNullOrWhiteSpace(dialogue))
         {
             return false;
         }
         else
         {
+            // make endearment token work. This is basically copied from game code.
+            dialogue = dialogue.Replace(MarriageDialogueReference.ENDEARMENT_TOKEN_LOWER, npc.getTermOfSpousalEndearment().ToLower(), StringComparison.Ordinal);
+            dialogue = dialogue.Replace(MarriageDialogueReference.ENDEARMENT_TOKEN, npc.getTermOfSpousalEndearment(), StringComparison.Ordinal);
+
             if (!add)
             {
                 npc.CurrentDialogue.Clear();
@@ -63,7 +76,7 @@ public static class NPCExtensions
     /// Given a base key, gets a random dialogue from a set.
     /// </summary>
     /// <param name="npc">NPC.</param>
-    /// <param name="basekey">Basekey to use.</param>
+    /// <param name="basekey">Base key to use.</param>
     /// <param name="random">Random to use, defaults to Game1.random if null.</param>
     /// <returns>null if no dialogue key found, a random dialogue key otherwise.</returns>
     public static string? GetRandomDialogue(
@@ -98,18 +111,36 @@ public static class NPCExtensions
     /// <param name="scheduleKey">Schedule key to look for.</param>
     /// <param name="rawData">Raw schedule string.</param>
     /// <returns>True if successful, false otherwise.</returns>
-    /// <remarks>Does **not** set _lastLoadedScheduleKey.</remarks>
+    /// <remarks>Does **not** set _lastLoadedScheduleKey, intentionally.</remarks>
     public static bool TryGetScheduleEntry(
         this NPC npc,
         string scheduleKey,
         [NotNullWhen(returnValue: true)] out string? rawData)
     {
         rawData = null;
-        Dictionary<string, string> scheduleData = npc.getMasterScheduleRawData();
+        Dictionary<string, string>? scheduleData = npc.getMasterScheduleRawData();
         if (scheduleData is null || scheduleKey is null)
         {
             return false;
         }
         return scheduleData.TryGetValue(scheduleKey, out rawData);
+    }
+
+    /// <summary>
+    /// Gets the tile an NPC is currently facing.
+    /// </summary>
+    /// <param name="npc">NPC in question.</param>
+    /// <returns>Tile they're facing.</returns>
+    public static Vector2 GetFacingTile(this Character npc)
+    {
+        Vector2 tile = npc.Position / Game1.tileSize;
+        return npc.facingDirection.Get() switch
+        {
+            Game1.up => new(tile.X, tile.Y - 1),
+            Game1.down => new(tile.X, tile.Y + 1),
+            Game1.left => new(tile.X - 1, tile.Y),
+            Game1.right => new(tile.X + 1, tile.Y),
+            _ => tile,
+        };
     }
 }

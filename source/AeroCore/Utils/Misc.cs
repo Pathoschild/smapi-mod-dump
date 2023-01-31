@@ -315,5 +315,14 @@ namespace AeroCore.Utils
                 Math.Clamp(source.Height, bounds.Top - origin.Y, bounds.Bottom - origin.Y));
             return new(origin, size);
         }
+        public static Rectangle? Intersection(this Rectangle rect1, Rectangle rect2)
+            => Math.Min(rect1.Right, rect2.Right) < Math.Max(rect1.Left, rect2.Left) ||
+                Math.Min(rect1.Bottom, rect2.Bottom) < Math.Max(rect1.Top, rect2.Top)
+                ? null : new(
+                    Math.Max(rect1.Left, rect2.Left), Math.Min(rect1.Right, rect2.Right),
+                    Math.Max(rect1.Top, rect2.Top), Math.Min(rect1.Bottom, rect2.Bottom)
+                );
+        public static int Volume(this Rectangle rect)
+            => Math.Abs(rect.Width * rect.Height);
     }
 }

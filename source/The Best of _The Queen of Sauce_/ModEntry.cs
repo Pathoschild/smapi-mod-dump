@@ -24,12 +24,14 @@ using StardewValley;
 using StardewValley.Menus;
 using SVObject = StardewValley.Object;
 
-namespace BestOfQueenOfSauce
+namespace Bpendragon.BestOfQueenOfSauce
 {
-    partial class ModEntry : Mod
+    internal partial class ModEntry : Mod
     {
-        private Dictionary<string, int> FirstAirDate = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> FirstAirDate = new();
         private ModConfig Config;
+        private bool MailChangesMade = false;
+
         public override void Entry(IModHelper helper)
         {
             Config = helper.ReadConfig<ModConfig>();
@@ -62,16 +64,25 @@ namespace BestOfQueenOfSauce
 
             helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Content.AssetRequested += OnAssetRequested;
         }
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            Helper.Content.AssetEditors.Add(new MailEditor(Config.DaysAfterAiring, Config.Price));
+            if (!MailChangesMade && e.NameWithoutLocale.IsEquivalentTo("Data\\mail"))
+            {
+                e.Edit(asset => {
+                    var data = asset.AsDictionary<string, string>().Data;
+
+                    data["BestOfQOS.Letter1"] = I18n.BestOfQOS_Letter1().Replace("[days]", Config.DaysAfterAiring.ToString()).Replace("[price]", Config.Price.ToString());
+                });
+                MailChangesMade = true;
+            }
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
-            if(Game1.Date.TotalDays >= 7 + Config.DaysAfterAiring + 1)
+            if (Game1.Date.TotalDays >= 7 + Config.DaysAfterAiring + 1)
             {
                 Game1.addMailForTomorrow("BestOfQOS.Letter1");
             }
@@ -81,9 +92,9 @@ namespace BestOfQueenOfSauce
         {
             if (!Context.IsWorldReady) return; //World Hasn't Loaded yet, it's definitely not the menu we want
             if (e.NewMenu == null) return; //Menu was closed
-            if (!(e.NewMenu is ShopMenu)) return;
+            if (e.NewMenu is not ShopMenu) return;
             if (!(Helper.Reflection.GetField<string>(e.NewMenu, "storeContext").GetValue() == "Saloon")) return;
-            ShopMenu menu = (ShopMenu)e.NewMenu;
+            var menu = (ShopMenu)e.NewMenu;
             //Naming is hard. This is the most recent date that a recipe can be available. 
             // Example, it's Y2,S27 (Day 167) using the default config setting of 28 days (making this variable 139) Complete Breakfast (aired day 133) would be available, but Luck Lunch (day 140) would not.
             int latestRecipeDate = Game1.Date.TotalDays - Config.DaysAfterAiring;
@@ -95,83 +106,10 @@ namespace BestOfQueenOfSauce
                 tmp2.IsRecipe = true;
                 tmp2.Stack = 1;
                 tmp2.Name = tmp.name;
-                tmp2.ParentSheetIndex = tmp.getIndexOfMenuView(); 
+                tmp2.ParentSheetIndex = tmp.getIndexOfMenuView();
                 menu.forSale.Add(tmp2);
                 menu.itemPriceAndStock.Add(tmp2, new int[2] { Config.Price, 1 });
             }
-        }
-    }
-
-    class SellingRecipe : ISalable
-    {
-        public SellingRecipe(SVObject item, int price)
-        {
-            this.item = item;
-            this.price = price;
-        }
-
-        private SVObject item;
-        private int price;
-
-        public string DisplayName => item.DisplayName;
-
-        public string Name => item.name;
-
-        public int Stack { get => 0; set => throw new NotImplementedException(); }
-
-        public bool actionWhenPurchased()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int addToStack(Item stack)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CanBuyItem(Farmer farmer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool canStackWith(ISalable other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string getDescription()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ISalable GetSalableInstance()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsInfiniteStock()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int maximumStackSize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int salePrice()
-        {
-            return price;
-        }
-
-        public bool ShouldDrawIcon()
-        {
-            throw new NotImplementedException();
         }
     }
 }

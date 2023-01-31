@@ -28,6 +28,7 @@ By default, it simply requires the player interact with the statue again before 
 2. `FlashScale`: A multiplier that controls how long the flashes of light last. Set higher for them to last longer. **This can be set locally** (1 = same as vanilla.)
 3. `MaxNotes`: Caps the maximum number of notes per round. (Default to 7, same as vanilla). **Host must set this - it is ignored for farmhands**.
 4. `PauseBetweenRounds`: If set true, the puzzle will pause between rounds - you must talk to the statue again to continue. **Host must set this - it is ignored for farmhands**. (Much thanks to [unlitday](https://www.nexusmods.com/users/114778613/) for writing the dialogue for me!)
+5. `AllowReAsks`: Whether or not the statue will repeat the pattern if asked to.
 
 ## Compatibility
 

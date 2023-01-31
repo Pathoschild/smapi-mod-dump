@@ -1,20 +1,22 @@
 urls:
-   web: https://gitlab.com/daleao/sdv-mods
-   Git: https://gitlab.com/daleao/sdv-mods.git
+   web: https://github.com/daleao/sdv-mods
+   Git: https://github.com/daleao/sdv-mods.git
 
 mods:
    Aquarism - Immersive Fish Ponds
    Better Artisan Good Icons For Meads
+   Chargeable Resource Tools
    Fellowship - Immersive Rings
+   Modular Gameplay Overhaul
    Quality of Life - Immersive Tweaks
    Serfdom - Immersive Taxes
    Tooth and Nail - Immersive Tools
    Walk of Life
 
 latest commit:
-   commit 00b78b70a6400241e20ed0de52627bce6e1e3faf
+   commit 78cca6f9aa9fe8fc067f41db9f2eb7b1dfe86b41
    Author: DaLion <daleao.matheus@gmail.com>
-   Date:   Fri Dec 30 01:47:23 2022 -0300
+   Date:   Mon Jan 30 12:27:02 2023 -0300
    
-       Missing change in changelog.
+       1.3.1
    

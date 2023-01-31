@@ -1,0 +1,96 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes": [
+    {
+        "LogName": "Demetrius - base",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries":
+            {
+            "movieTheater": "Oh, a movie theater?$k#$e#$c 0.5#Sorry, I'm not one for movies.#I don't usually watch movies",
+        },
+        "When" : {
+            "EnableFor|contains=Demetrius": true,
+        }
+    },
+    {
+        "LogName": "Rain -- during winter - elliott.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {
+            "Season": "winter",
+            "EnableFor|contains=Elliott": true,
+        },
+        "Entries":{
+            "Elliott": "A day like this is good for my productivity.#$e#It's not like I'd be going out in this weather.#$e#Maybe to the saloon. Later.",
+        }
+    },
+    {
+        "LogName": "Lewis base dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Lewis",
+        "Entries": {
+            "{{TaxDay}}": "We've all gotta do our duty, @, and that duty includes paying our taxes.",
+        },
+        "When" : {
+            "EnableFor|contains=Lewis": true,
+        }
+    },
+    {
+        "LogName": "Pam base dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pam",
+        "Entries": {
+            "{{TaxDay}}": "Why I've gotta pay taxes to fund this stupid war, I'll never know."
+        },
+        "When" : {
+            "EnableFor|contains=Pam": true,
+        }
+    },
+    {
+        "LogName": "Gus New Years At Resort",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "When": {
+            "Season": "winter",
+            "Day": 28,
+            "EnableFor|contains=Gus": true,
+        },
+        "Entries": {
+            "IslandSouth_14_21": "Happy New Year, @! Have one on me today.[873]#$e#May the next year be even better!",
+        }
+    },
+    {
+        "LogName": "Sandy Movies",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Sandy",
+        "When": {
+            "HasFlag": "ccMovieTheater",
+            "EnableFor|contains=Sandy": true
+        },
+        "Entries": {
+            "movieTheater": "I heard you guys have a theater now!$h#$b#I'm so excited! I love movies.",
+            "Fri10": "So...have you seen a good movie recently?$h#$b#I hear The Mysteries of %place is good.#$e#$c .5#Say, I'd love to see a movie with you.#$e#It's always a treat to see you."
+        }
+    },
+    {
+        "LogName": "Rain -- during winter - evelyn.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {
+            "Season": "winter",
+            "EnableFor|contains=Evelyn": true
+        },
+        "Entries":{
+            "Evelyn": "Weather like this...we didn't use to get rain during winter.$s#$e#The snow'll become slush and that's difficult for George.",
+        }
+    },
+]}

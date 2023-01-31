@@ -57,10 +57,10 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 if (!dailyUpdate.Filter.isValid(who: Game1.player))
                     continue;
 
-                dailyUpdate.Location = Game1.getLocationFromName(dailyUpdate.LocationName);
+                dailyUpdate.Location = Game1.getLocationFromName(dailyUpdate.Area.LocationName);
 
                 if(dailyUpdate.Location == null) {
-                    Monitor.LogOnce($"Unknown Location for DailyUpdate: {dailyUpdate.LocationName}", LogLevel.Error);
+                    Monitor.LogOnce($"Unknown Location for DailyUpdate: {dailyUpdate.Area.LocationName}", LogLevel.Error);
                     continue;
                 }
 

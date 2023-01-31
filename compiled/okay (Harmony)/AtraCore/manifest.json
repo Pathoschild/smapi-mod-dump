@@ -1,11 +1,19 @@
 {
-  "EntryDll": "AtraCore.dll",
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "atravita.AtraCore",
   "Name": "AtraCore",
   "Author": "atravita",
-  "Version": "0.1.1",
+  "Version": "0.1.4",
   "Description": "A core library mod some of my other mods depend on.",
-  "UniqueID": "atravita.AtraCore",
-  "MinimumApiVersion": "3.15",
+  "MinimumApiVersion": "3.18",
+  "EntryDll": "AtraCore.dll",
   "UpdateKeys": [
     "Nexus:12932"
   ]

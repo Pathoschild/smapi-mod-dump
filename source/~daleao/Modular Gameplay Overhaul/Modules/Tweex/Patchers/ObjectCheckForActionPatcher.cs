@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -51,13 +51,13 @@ internal sealed class ObjectCheckForActionPatcher : HarmonyPatcher
             return;
         }
 
-        if (__instance.name.Contains("Tapper") && TweexModule.Config.TappersRewardExp)
+        if (__instance.name.Contains("Tapper") && TweexModule.Config.TapperExpReward > 0)
         {
-            Game1.player.gainExperience(Farmer.foragingSkill, 5);
+            Game1.player.gainExperience(Farmer.foragingSkill, (int)TweexModule.Config.TapperExpReward);
         }
-        else if (__instance.name.Contains("Mushroom Box") && TweexModule.Config.MushroomBoxesRewardExp)
+        else if (__instance.name.Contains("Mushroom Box") && TweexModule.Config.MushroomBoxExpReward > 0)
         {
-            Game1.player.gainExperience(Farmer.foragingSkill, 1);
+            Game1.player.gainExperience(Farmer.foragingSkill, (int)TweexModule.Config.MushroomBoxExpReward);
         }
     }
 
@@ -82,7 +82,7 @@ internal sealed class ObjectCheckForActionPatcher : HarmonyPatcher
                             typeof(SObject).RequireField(nameof(SObject.preservedParentSheetIndex))),
                     })
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) }, ILHelper.SearchOption.Previous)
-                .Match(new[] { new CodeInstruction(OpCodes.Callvirt) }, out var steps)
+                .Count(new[] { new CodeInstruction(OpCodes.Callvirt) }, out var steps)
                 .Copy(out var copy, steps, false, true)
                 .Match(new[]
                 {

@@ -33,7 +33,7 @@ internal static class ShopHandler
     /// <param name="e">Button pressed event arguments.</param>
     internal static void HandleSandyShop(ButtonPressedEventArgs e)
     {
-        if (HandlingShop.Value || !e.Button.IsActionButton() || !(Game1.currentLocation?.Name?.Equals("SandyHouse", StringComparison.OrdinalIgnoreCase) == true))
+        if (HandlingShop.Value || !(Game1.currentLocation?.Name?.Equals("SandyHouse", StringComparison.OrdinalIgnoreCase) == true))
         {
             return;
         }
@@ -67,7 +67,7 @@ internal static class ShopHandler
     /// <param name="e">Button pressed event arguments.</param>
     internal static void HandleWillyShop(ButtonPressedEventArgs e)
     {
-        if (HandlingShop.Value || !e.Button.IsActionButton() || Game1.currentLocation is not FishShop fishShop
+        if (HandlingShop.Value || Game1.currentLocation is not FishShop fishShop
             || !Game1.IsVisitingIslandToday("Willy") || fishShop.getCharacterFromName("Willy") is not null)
         {
             return;

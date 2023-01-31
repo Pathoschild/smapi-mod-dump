@@ -62,5 +62,9 @@
   "config.flowersPerBoost.name": "Необхідні квіти",
   "config.flowersPerBoost.desc": "Кількість квіток, необхідних для отримання кожного додаткового меду",
   "config.useRandomFlower.name": "Використовувати випадковість",
-  "config.useRandomFlower.desc": "Вибирає випадкову квітку замість найближчої"
+  "config.useRandomFlower.desc": "Вибирає випадкову квітку замість найближчої",
+  "config.useAnyFruitTrees.name": "Дозволити всі фруктові дерева",
+  "config.useAnyFruitTrees.desc": "Чи варто ігнорувати перевірку на наявність квіток при виготовленні меду з дерев.",
+  "config.patchCJB.name": "Інтеграція зі CJB модом",
+  "config.patchCJB.desc": "Підлатати мод CJB Item Spawner для реєстрації відсутніх предметів з меду"
 }

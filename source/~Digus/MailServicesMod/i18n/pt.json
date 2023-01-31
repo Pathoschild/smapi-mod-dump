@@ -17,6 +17,9 @@
     "Shipment.Clint.UpgradeLetter.ToolSent": "{{Tool}} enviado(a) pra melhoria.",
     "Shipment.Clint.UpgradeLetter.NoBars": "Você não tem barras de metal suficientes para enviar o(a) {{Tool}} para melhoria.",
     "Shipment.Clint.UpgradeLetter.NoMoney": "Você não tem dinheiro suficiente para enviar o(a) {{Tool}} para melhoria.",
+    "Shipment.Clint.UpgradeLetter.Question": "Enviar ferramenta para melhoria?",
+    "Shipment.Clint.UpgradeLetter.Yes": "Sim",
+    "Shipment.Clint.UpgradeLetter.No": "Não",
     // Item Delivery Quest Service
     "Shipment.Quest.ItemDelivery.NotEnoughItems": "{{Npc}} precisa de {{Number}} destes.",
     "Shipment.Quest.ItemDelivery.NoMoney": "Você não tem dinheiro suficiente para enviar o item da quest.",
@@ -36,7 +39,7 @@
     "Delivery.Marlon.RecoveryLetter.Title": "Serviço de Recuperação do Marlon",
     // Gift Shipment
     "Shipment.Wizard.GiftShipmentLetter": "Já se perguntou porque este lugar tem um serviço de correios tão bom?^O prefeito se orgulha tanto mas nem ao menos sabe quem faz o serviço de forma tão eficiente.^Meus estudos arcanos me fazem acreditar que os Junimos são os responsáveis.^Se você coloca um item na caixa de correio endereçado a alguém, ele é entregue como mágica.^Só queria compartilhar um pouco mais de conhecimento sobre os Junimos com você.^   -M. Rasmodius, Feiticeiro",
-    "Shipment.Wizard.GiftShipmentLetter.Title": "Wizard About Gift Shipment",
+    "Shipment.Wizard.GiftShipmentLetter.Title": "Feiticeiro Sobre o Correio",
     "Shipment.Gift.Previous": "@Anterior",
     "Shipment.Gift.Next": "Próximo>",
     "Shipment.Gift.None": "Ninguém",

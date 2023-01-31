@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul;
 #region using directives
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 #endregion using directives
@@ -21,7 +22,7 @@ using System.Linq;
 internal static class Collections
 {
     /// <summary>Gets the recognized artisan machines.</summary>
-    internal static IReadOnlySet<string> ArtisanMachines { get; } = new HashSet<string>
+    internal static ImmutableHashSet<string> ArtisanMachines { get; } = new HashSet<string>
     {
         "Cheese Press",
         "Keg",
@@ -29,10 +30,10 @@ internal static class Collections
         "Mayonnaise Machine",
         "Oil Maker",
         "Preserves Jar",
-    }.Concat(ProfessionsModule.Config.CustomArtisanMachines).ToHashSet();
+    }.Concat(ProfessionsModule.Config.CustomArtisanMachines).ToImmutableHashSet();
 
     /// <summary>Gets the names of the legendary fish.</summary>
-    internal static IReadOnlySet<string> LegendaryFishNames { get; } = new HashSet<string>
+    internal static ImmutableHashSet<string> LegendaryFishNames { get; } = new HashSet<string>
     {
         "Crimsonfish", // vanilla
         "Angler", // vanilla
@@ -48,10 +49,10 @@ internal static class Collections
         "Deep Ridge Angler", // ridgeside
         "Sockeye Salmon", // ridgeside
         "Waterfall Snakehead", // ridgeside
-    };
+    }.ToImmutableHashSet();
 
     /// <summary>Gets the resource that should spawn from a given stone.</summary>
-    internal static IReadOnlyDictionary<int, int> ResourceFromStoneId { get; } = new Dictionary<int, int>
+    internal static ImmutableDictionary<int, int> ResourceFromStoneId { get; } = new Dictionary<int, int>
     {
         // stone
         { 668, 390 },
@@ -91,10 +92,10 @@ internal static class Collections
         { 818, 330 },
         { 843, 848 },
         { 844, 848 },
-    };
+    }.ToImmutableDictionary();
 
     /// <summary>Gets or sets the ids of resource nodes.</summary>
-    internal static IReadOnlySet<int> ResourceNodeIds { get; set; } = new HashSet<int>
+    internal static ImmutableHashSet<int> ResourceNodeIds { get; set; } = new HashSet<int>
     {
         // ores
         751, // copper node
@@ -129,10 +130,13 @@ internal static class Collections
         843, // cinder shard node
         844, // cinder shard node
         46, // mystic stone
-    };
+    }.ToImmutableHashSet();
+
+    /// <summary>Gets or sets the ids of (valuable) resource clumps.</summary>
+    internal static HashSet<int> ResourceClumpIds { get; set; } = new();
 
     /// <summary>Gets the corresponding extended family pair by legendary fish id.</summary>
-    internal static IReadOnlyDictionary<int, int> ExtendedFamilyPairs { get; } = new Dictionary<int, int>
+    internal static ImmutableDictionary<int, int> ExtendedFamilyPairs { get; } = new Dictionary<int, int>
     {
         { Constants.CrimsonfishIndex, Constants.SonOfCrimsonfishIndex },
         { Constants.AnglerIndex, Constants.MsAnglerIndex },
@@ -144,10 +148,10 @@ internal static class Collections
         { Constants.Legend2Index, Constants.LegendIndex },
         { Constants.RadioactiveCarpIndex, Constants.MutantCarpIndex },
         { Constants.GlacierfishJrIndex, Constants.GlacierfishIndex },
-    };
+    }.ToImmutableDictionary();
 
     /// <summary>Gets the swords that should be converted to Stabbing Swords.</summary>
-    internal static ISet<int> StabbingSwords { get; } = new HashSet<int>
+    internal static HashSet<int> StabbingSwords { get; } = new()
     {
         Constants.SteelSmallswordIndex,
         Constants.CutlassIndex,

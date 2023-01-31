@@ -9,6 +9,10 @@
 *************************************************/
 
 using AtraBase.Toolkit.StringHandler;
+
+using AtraShared.Utils;
+using AtraShared.Wrappers;
+
 using Microsoft.Xna.Framework;
 using PelicanTownFoodBank.Models;
 using StardewModdingAPI.Utilities;
@@ -83,7 +87,7 @@ internal static class PantryStockManager
     /// <returns>The daily inventory.</returns>
     internal static List<int> SetUpInventory()
     {
-        Random seededRandom = new((int)(Game1.uniqueIDForThisGame * 2) + (int)(Game1.stats.DaysPlayed * 40));
+        Random seededRandom = RandomUtils.GetSeededRandom(6, "atravita.CCOverhaul");
         List<int> neededIngredients = GetNeededIngredients();
         (List<int> cookingIngredients, List<int> cookedItems) = GetOtherSellables();
         Utility.Shuffle(seededRandom, neededIngredients);
@@ -99,7 +103,7 @@ internal static class PantryStockManager
 
     private static List<int> GetNeededIngredients()
     {
-        List<int> neededIngredients = new();
+        List<int> neededIngredients = new(24);
         Dictionary<string, string> recipes = Game1.content.Load<Dictionary<string, string>>("Data/CookingRecipes");
         foreach ((string learned_recipe, int number_made) in Game1.player.cookingRecipes.Pairs)
         {
@@ -124,9 +128,9 @@ internal static class PantryStockManager
 
     private static (List<int> cookingIngredients, List<int> cookedItems) GetOtherSellables()
     {
-        List<int> cookingIngredients = new();
-        List<int> cookedItems = new();
-        foreach ((int index, string data) in Game1.objectInformation)
+        List<int> cookingIngredients = new(24);
+        List<int> cookedItems = new(24);
+        foreach ((int index, string data) in Game1Wrappers.ObjectInfo)
         {
             SpanSplit splits = data.SpanSplit('/');
             SpanSplit typesandcategory = splits[3].SpanSplit();

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -50,7 +50,7 @@ internal sealed class CropHarvestPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Farmer.botanist) // find index of botanist check
+                .MatchProfessionCheck(Farmer.botanist) // find index of botanist check
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }) // start of obj.Quality = 4
                 .ReplaceWith(
                     // replace with custom quality
@@ -77,10 +77,10 @@ internal sealed class CropHarvestPatcher : HarmonyPatcher
         // Note: this particular method is too edgy for Harmony's AccessTools, so we use some old-fashioned reflection trickery to find this particular overload of FarmerExtensions.IncrementData<T>
         try
         {
-            var incrementMethod = typeof(DaLion.Shared.Extensions.Stardew.FarmerExtensions)
+            var incrementMethod = typeof(Shared.Extensions.Stardew.FarmerExtensions)
                                       .GetMethods()
                                       .FirstOrDefault(mi =>
-                                          mi.Name.Contains(nameof(DaLion.Shared.Extensions.Stardew.FarmerExtensions.Increment)) && mi.GetGenericArguments().Length > 0)?
+                                          mi.Name.Contains(nameof(Shared.Extensions.Stardew.FarmerExtensions.Increment)) && mi.GetGenericArguments().Length > 0)?
                                       .MakeGenericMethod(typeof(uint)) ??
                                   ThrowHelper.ThrowMissingMethodException<MethodInfo>("Increment method not found.");
 
@@ -115,31 +115,40 @@ internal sealed class CropHarvestPatcher : HarmonyPatcher
             return null;
         }
 
-        // From: if (fertilizerQualityLevel >= 3 && random2.NextDouble() < chanceForGoldQuality / 2.0)
-        // To: if (Game1.player.professions.Contains(<agriculturist_id>) || fertilizerQualityLevel >= 3) && random2.NextDouble() < chanceForGoldQuality / 2.0)
-        var random2 = helper.Locals[9];
+        //// Injected: or (Game1.player.professions.Contains(<agriculturist_id>) && random2.NextDouble() < chanceForGoldQuality / 3.0)
+        //// After: if (fertilizerQualityLevel >= 3 && random2.NextDouble() < chanceForGoldQuality / 2.0)
         try
         {
-            var fertilizerQualityLevel = helper.Locals[8];
-            var isAgriculturist = generator.DefineLabel();
+            var checkForAgriculturist = generator.DefineLabel();
+            var setIridiumQuality = generator.DefineLabel();
             helper
                 .Match(
                     new[]
                     {
                         // find index of Crop.fertilizerQualityLevel >= 3
-                        new CodeInstruction(OpCodes.Ldloc_S, fertilizerQualityLevel),
+                        new CodeInstruction(OpCodes.Ldloc_S, helper.Locals[8]),
                         new CodeInstruction(OpCodes.Ldc_I4_3),
                         new CodeInstruction(OpCodes.Blt_S),
                     })
-                .InsertProfessionCheck(Profession.Agriculturist.Value)
-                .Insert(new[] { new CodeInstruction(OpCodes.Brtrue_S, isAgriculturist) })
-                .Match(
-                    new[]
-                    {
-                        // find start of dice roll
-                        new CodeInstruction(OpCodes.Ldloc_S, random2),
-                    })
-                .AddLabels(isAgriculturist); // branch here if player is agriculturist
+                .Move(2)
+                .GetOperand(out var checkForGoldQuality) // this is the label for the failed iridium check
+                .SetOperand(checkForAgriculturist) // if failed, try the OR
+                .Match(// advance until the end of random2.NextDouble() < chanceForGoldQuality / 2.0
+                    new[] { new CodeInstruction(OpCodes.Bge_Un_S), })
+                .ReplaceWith(new CodeInstruction(OpCodes.Blt_S, setIridiumQuality)) // replace AND with OR
+                .Move()
+                .AddLabels(setIridiumQuality) // this is the destination for a successful iridium check
+                .InsertProfessionCheck(Profession.Agriculturist.Value, new[] { checkForAgriculturist })
+                .Insert(new[]
+                {
+                    new CodeInstruction(OpCodes.Brfalse_S, checkForGoldQuality),
+                    new CodeInstruction(OpCodes.Ldloc_S, helper.Locals[9]),
+                    new CodeInstruction(OpCodes.Callvirt, typeof(Random).RequireMethod(nameof(Random.NextDouble))),
+                    new CodeInstruction(OpCodes.Ldloc_S, helper.Locals[10]),
+                    new CodeInstruction(OpCodes.Ldc_R8, 3d),
+                    new CodeInstruction(OpCodes.Div),
+                    new CodeInstruction(OpCodes.Bge_Un_S, checkForGoldQuality),
+                });
         }
         catch (Exception ex)
         {
@@ -159,7 +168,7 @@ internal sealed class CropHarvestPatcher : HarmonyPatcher
                     // find index of numToHarvest++
                     new CodeInstruction(OpCodes.Ldloc_S, numToHarvest),
                 })
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_S, numToHarvest) }, out var steps)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_S, numToHarvest) }, out var steps)
                 .Copy(out var copy, steps, true)
                 .Match(
                     new[]
@@ -176,7 +185,7 @@ internal sealed class CropHarvestPatcher : HarmonyPatcher
                     new[]
                     {
                         new CodeInstruction(OpCodes.Ldarg_S, (byte)4), // arg 4 = JunimoHarvester junimoHarvester
-                        new CodeInstruction(OpCodes.Ldloc_S, random2),
+                        new CodeInstruction(OpCodes.Ldloc_S, helper.Locals[9]),
                         new CodeInstruction(
                             OpCodes.Call,
                             typeof(CropHarvestPatcher).RequireMethod(nameof(ShouldIncreaseHarvestYield))),

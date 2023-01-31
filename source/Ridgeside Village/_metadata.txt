@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 190b5d6083ac8b7832681b55345130dcf0db375f
+   commit 6fc7a592bc2406646b656cbf627481db5e234ba9
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Thu Dec 29 11:43:32 2022 +0800
+   Date:   Tue Jan 24 23:34:31 2023 +0800
    
-       updated Kiwi's portraits
+       Portraits and Events
    

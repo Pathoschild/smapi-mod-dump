@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Projectiles;
 
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
 using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
-using DaLion.Shared.Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
@@ -27,6 +26,13 @@ using StardewValley.Tools;
 internal sealed class LightBeamProjectile : BasicProjectile
 {
     public const int TileSheetIndex = 11;
+
+    /// <summary>Initializes a new instance of the <see cref="LightBeamProjectile"/> class.</summary>
+    /// <remarks>Required for multiplayer syncing.</remarks>
+    public LightBeamProjectile()
+        : base()
+    {
+    }
 
     /// <summary>Initializes a new instance of the <see cref="LightBeamProjectile"/> class.</summary>
     /// <param name="source">The <see cref="MeleeWeapon"/> which fired this projectile.</param>
@@ -67,7 +73,7 @@ internal sealed class LightBeamProjectile : BasicProjectile
         this.height.Value = 32f;
     }
 
-    public Farmer Firer { get; }
+    public Farmer? Firer { get; }
 
     public int Damage { get; }
 

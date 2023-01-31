@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/WarpNetwork
+**
+*************************************************/
+
+﻿{
+  "ui-fail": "Nichts passiert...",
+  "ui-label": "Ziel wählen",
+  "ui-cancel": "Abbrechen",
+  "ui-usetotem": "Teleport zu: {{Label}}?",
+  "ui-usereturn": "Zur letzten Position zurückkehren?",
+  "config.WarpsEnabled.label": "Vanilla-Teleports aktiviert",
+  "config.WarpsEnabled.desc": "Wann Teleports aktiviert werden sollen",
+  "config.FarmWarpEnabled.label": "Farm-Teleport aktiviert",
+  "config.FarmWarpEnabled.desc": "Wann der Teleport zur Farm aktiviert werden soll",
+  "config.AccessFromDisabled.label": "Zugriff von deakt. Zielen aus",
+  "config.AccessFromDisabled.desc": "Zugriff auf das Netzwerk von deaktivierten Zielen",
+  "config.AccessFromWand.label": "Zugriff durch Zepter d. Rückkehr",
+  "config.AccessFromWand.desc": "Zugriff auf das Netzwerk über das Zepter der Rückkehr",
+  "config.PatchObelisks.label": "Vanilla Obelisken überschreiben",
+  "config.PatchObelisks.desc": "Überschreibt die Teleports der Vanilla-Obelisken, um mit benutzerdefinierten Zielkoordinaten zu arbeiten.",
+  "config.MenuEnabled.label": "Aktiviere Teleport-Netzwerk-Menü",
+  "config.MenuEnabled.desc": "Aktiviere das Teleport-Netzwerk-Menü. Wenn dies deaktiviert ist, kann das Warp-Netzwerk von keiner der Statuen aus erreicht werden.",
+  "config.WarpCancelEnabled.label": "Totem-Teleport bestätigen",
+  "config.WarpCancelEnabled.desc": "Wenn du ein Totem benutzt, musst du bestätigen, ob du es benutzen willst oder nicht.",
+  "config.WandReturnEnabled.label": "Rückkehr durch den Zauberstab",
+  "config.WandReturnEnabled.desc": "Wenn du den Zauberstab benutzt, speichert er deine Position und ermöglicht es dir, dich später dorthin zurück zu teleportieren.",
+  "config.WarpEnabled.Always": "Immer",
+  "config.WarpEnabled.Never": "Nie",
+  "config.WarpEnabled.AfterObelisk": "Nach Obelisken",
+  "dest.Farm": "Farm",
+  "dest.Berg": "Berge",
+  "dest.beach": "Strand",
+  "dest.island": "Ingwerinsel",
+  "dest.desert": "Wüste",
+  "dest.return": "Rückkehr"
+}

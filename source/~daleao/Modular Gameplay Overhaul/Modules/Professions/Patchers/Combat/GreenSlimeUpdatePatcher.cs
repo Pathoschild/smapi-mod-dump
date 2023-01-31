@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Combat;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions.Stardew;
@@ -47,8 +46,14 @@ internal sealed class GreenSlimeUpdatePatcher : HarmonyPatcher
         }
 
         __instance.Get_Piped()!.PipeTimer -= time.ElapsedGameTime.Milliseconds;
-        foreach (var monster in __instance.currentLocation.characters.OfType<Monster>().Where(m => !m.IsSlime()))
+        for (var i = 0; i < __instance.currentLocation.characters.Count; i++)
         {
+            var character = __instance.currentLocation.characters[i];
+            if (character is not Monster monster || !monster.IsSlime())
+            {
+                continue;
+            }
+
             var monsterBox = monster.GetBoundingBox();
             if (monster.IsInvisible || monster.isInvincible() ||
                 (monster.isGlider.Value && !(__instance.Scale > 1.8f || __instance.Get_Jumping())) ||
@@ -100,7 +105,7 @@ internal sealed class GreenSlimeUpdatePatcher : HarmonyPatcher
 
             // get damaged by monster
             randomizedDamage = monster.DamageToFarmer +
-                                   Game1.random.Next(-monster.DamageToFarmer / 4, monster.DamageToFarmer / 4);
+                               Game1.random.Next(-monster.DamageToFarmer / 4, monster.DamageToFarmer / 4);
             var damageToSlime = Math.Max(1, randomizedDamage) - __instance.resilience.Value;
             __instance.takeDamage(damageToSlime, (int)-xTrajectory, (int)-yTrajectory, false, 1d, "slime");
             if (__instance.Health <= 0)

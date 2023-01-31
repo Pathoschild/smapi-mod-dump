@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -53,9 +53,7 @@ internal sealed class ObjectDayUpdatePatcher : HarmonyPatcher
                 ? Math.Max(
                     Game1.player.GetEcologistForageQuality(),
                     __instance.GetQualityFromAge())
-                : Game1.player.professions.Contains(Farmer.botanist)
-                    ? SObject.bestQuality
-                    : __instance.GetQualityFromAge();
+                : __instance.GetQualityFromAge();
         }
     }
 

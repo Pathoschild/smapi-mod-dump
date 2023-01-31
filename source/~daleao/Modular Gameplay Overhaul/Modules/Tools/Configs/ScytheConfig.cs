@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -30,6 +30,22 @@ public sealed class ScytheConfig
     /// <summary>Gets a value indicating whether to clear tree saplings.</summary>
     [JsonProperty]
     public bool ClearTreeSaplings { get; internal set; } = true;
+
+    /// <summary>Gets a value indicating whether to harvest crops.</summary>
+    [JsonProperty]
+    public bool HarvestCrops { get; internal set; } = false;
+
+    /// <summary>Gets a value indicating whether to harvest flowers.</summary>
+    [JsonProperty]
+    public bool HarvestFlowers { get; internal set; } = false;
+
+    /// <summary>Gets a value indicating whether to harvest spring onions.</summary>
+    [JsonProperty]
+    public bool HarvestSpringOnions { get; internal set; } = false;
+
+    /// <summary>Gets a value indicating whether the harvest settings apply only to Golden Scythe.</summary>
+    [JsonProperty]
+    public bool GoldScytheOnly { get; internal set; } = false;
 
     /// <summary>Gets a value indicating whether the scythes can be enchanted with Haymaker.</summary>
     [JsonProperty]

@@ -78,7 +78,7 @@ namespace StatsAsTokens
 			error = "";
 			string[] args = input.ToLower().Trim().Split('|');
 
-			if (args.Count() == 2)
+			if (args.Length == 2)
 			{
 				if (!args[0].Contains("player="))
 				{
@@ -86,15 +86,15 @@ namespace StatsAsTokens
 				}
 				else if (args[0].IndexOf('=') == args[0].Length - 1)
 				{
-					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
+					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'localPlayer'. ";
 				}
 				else
 				{
 					// accept hostplayer or host, localplayer or local
 					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim();
-					if (!(playerType.Equals("hostPlayer") || playerType.Equals("currentPlayer")))
+					if (!(playerType.Equals(host) || playerType.Equals(loc)))
 					{
-						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
+						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'localPlayer'. ";
 					}
 				}
 
@@ -184,7 +184,7 @@ namespace StatsAsTokens
 			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 			string treeType = args[1].Substring(args[1].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 
-			string pType = playerType.Equals("hostPlayer") ? host : loc;
+			string pType = playerType.Equals(host) ? host : loc;
 
 			if (TryGetTreesFelled(treeType, pType, out string treeNum))
 			{
@@ -202,7 +202,7 @@ namespace StatsAsTokens
 		/// Initializes internal dictionary to 0.
 		/// </summary>
 		/// <returns>A dictionary with all tree types as keys, initialized to value 0.</returns>
-		private static Dictionary<string, int> InitializeTreesFelledStats()
+		internal static Dictionary<string, int> InitializeTreesFelledStats()
 		{
 			return new Dictionary<string, int>()
 			{
@@ -223,7 +223,7 @@ namespace StatsAsTokens
 		/// <param name="playerType"></param>
 		/// <param name="treeNum"></param>
 		/// <returns></returns>
-		private bool TryGetTreesFelled(string treeNameOrId, string playerType, out string treeNum)
+		private static bool TryGetTreesFelled(string treeNameOrId, string playerType, out string treeNum)
 		{
 			string pType = playerType;
 			string treeTypeNum = "";

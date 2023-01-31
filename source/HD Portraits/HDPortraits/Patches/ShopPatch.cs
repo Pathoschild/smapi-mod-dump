@@ -12,8 +12,6 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
-using HDPortraits.Models;
-using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using AeroCore;
@@ -21,92 +19,82 @@ using AeroCore.Utils;
 
 namespace HDPortraits.Patches
 {
-    [HarmonyPatch(typeof(ShopMenu))]
-    internal class ShopPatch
-    {
-        [HarmonyPatch("setUpShopOwner")]
-        [HarmonyPostfix]
-        internal static void Init(ShopMenu __instance, string who)
-        {
-            if (who is null && __instance.portraitPerson?.Name is null)
-                return;
+	[HarmonyPatch(typeof(ShopMenu))]
+	internal class ShopPatch
+	{
+		[HarmonyPatch("setUpShopOwner")]
+		[HarmonyPostfix]
+		[HarmonyPriority(Priority.Last)]
+		internal static void Init(ShopMenu __instance, string who)
+		{
+			var npc = __instance.portraitPerson;
+			var name = DialoguePatch.GetTextureNameSync(npc, out var has_suffix);
 
-            string name = __instance.portraitPerson?.Name is not null ?
-                __instance.portraitPerson.getTextureName() : NPC.getTextureNameForCharacter(who);
+			if (who is null && name is null)
+				return;
 
-            string suffix = null;
-            if(__instance.portraitPerson is not null)
-                suffix = PortraitDrawPatch.GetSuffix(__instance.portraitPerson);
+			name ??= NPC.getTextureNameForCharacter(who);
 
-            if (ModEntry.TryGetMetadata(name, suffix, out var meta))
-            {
-                PortraitDrawPatch.lastLoaded.Value.Add(meta);
-                PortraitDrawPatch.currentMeta.Value = meta;
-                meta.Animation?.Reset();
-            }
-        }
-        [HarmonyPatch("draw")]
-        [HarmonyTranspiler]
-        internal static IEnumerable<CodeInstruction> drawPatch(IEnumerable<CodeInstruction> instructions, ILGenerator gen)
-        {
-            return drawPatcher.Run(instructions, gen);
-        }
+			if (name.Length is 0)
+				ModEntry.monitor.Log("Could not retrieve portrait name for nameless NPC!", StardewModdingAPI.LogLevel.Warn);
 
-        internal static Rectangle GetData()
-        {
-            var current = PortraitDrawPatch.currentMeta.Value;
-            if (current is null)
-                return new(0, 0, 64, 64);
-            return current.GetRegion(0, Game1.currentGameTime.ElapsedGameTime.Milliseconds);
-        }
+			string suffix = npc is not null && !has_suffix ? PortraitDrawPatch.GetSuffix(npc) : null;
 
-        private static Rectangle log(Rectangle region)
-        {
-            ModEntry.monitor.LogOnce(region.ToString());
-            return region;
-        }
-        private static float log2(float what)
-        {
-            ModEntry.monitor.LogOnce(what.ToString());
-            return what;
-        }
+			if (ModEntry.TryGetMetadata(name, suffix, out var meta))
+			{
+				PortraitDrawPatch.lastLoaded.Value.Add(meta);
+				PortraitDrawPatch.currentMeta.Value = meta;
+				meta.Animation?.Reset();
+			}
+		}
 
-        internal static ILHelper drawPatcher = new ILHelper(ModEntry.monitor, "Shop draw")
-            .SkipTo(new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, typeof(ShopMenu).FieldNamed("portraitPerson")),
-                new(OpCodes.Callvirt, typeof(NPC).MethodNamed("get_Portrait"))
-            })
-            .Skip(4)
-            .Add(new CodeInstruction(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("SwapTexture")))
-            .SkipTo(new CodeInstruction[] { 
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_S, 64),
-                new(OpCodes.Ldc_I4_S, 64),
-            })
-            .Remove(5)
-            .Add(new CodeInstruction[] {
-                new(OpCodes.Call, typeof(ShopPatch).MethodNamed("GetData")),
-                new(OpCodes.Dup)
-            })
-            .StoreLocal("region", typeof(Rectangle))
-            .SkipTo(new CodeInstruction(OpCodes.Ldc_R4, 4f))
-            .Remove(1)
-            .Add(new CodeInstruction[]
-            {
+		[HarmonyPatch("draw")]
+		[HarmonyTranspiler]
+		internal static IEnumerable<CodeInstruction> drawPatch(IEnumerable<CodeInstruction> instructions, ILGenerator gen)
+			=> drawPatcher.Run(instructions, gen);
+
+		internal static Rectangle GetData()
+		{
+			var current = PortraitDrawPatch.currentMeta.Value;
+			if (current is null)
+				return new(0, 0, 64, 64);
+			return current.GetRegion(0, Game1.currentGameTime.ElapsedGameTime.Milliseconds);
+		}
+
+		internal static ILHelper drawPatcher = new ILHelper(ModEntry.monitor, "Shop draw")
+			.SkipTo(new CodeInstruction[]
+			{
+				new(OpCodes.Ldarg_1),
+				new(OpCodes.Ldarg_0),
+				new(OpCodes.Ldfld, typeof(ShopMenu).FieldNamed("portraitPerson")),
+				new(OpCodes.Callvirt, typeof(NPC).MethodNamed("get_Portrait"))
+			})
+			.Skip(4)
+			.Add(new CodeInstruction(OpCodes.Call,typeof(PortraitDrawPatch).MethodNamed("SwapTexture")))
+			.SkipTo(new CodeInstruction[] { 
+				new(OpCodes.Ldc_I4_0),
+				new(OpCodes.Ldc_I4_0),
+				new(OpCodes.Ldc_I4_S, 64),
+				new(OpCodes.Ldc_I4_S, 64),
+			})
+			.Remove(5)
+			.Add(new CodeInstruction[] {
+				new(OpCodes.Call, typeof(ShopPatch).MethodNamed("GetData")),
+				new(OpCodes.Dup)
+			})
+			.StoreLocal("region", typeof(Rectangle))
+			.SkipTo(new CodeInstruction(OpCodes.Ldc_R4, 4f))
+			.Remove(1)
+			.Add(new CodeInstruction[]
+			{
 				new(OpCodes.Ldc_R4, 256f)
 			})
-            .LoadLocal("region")
+			.LoadLocal("region")
 			.Add(new CodeInstruction[]{ // (64 / n) * 4; 64 is default size. s = 256 / n
-                new(OpCodes.Call, typeof(ShopPatch).MethodNamed(nameof(log))),
 				new(OpCodes.Ldfld, typeof(Rectangle).FieldNamed(nameof(Rectangle.Width))),
 				new(OpCodes.Conv_R4),
-                new(OpCodes.Div),
-                new(OpCodes.Call, typeof(ShopPatch).MethodNamed(nameof(log2)))
+				new(OpCodes.Div)
 			})
 			.Finish();
-    }
+	}
 }

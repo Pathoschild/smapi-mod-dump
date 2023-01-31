@@ -22,20 +22,19 @@ namespace AvoidLosingScepter;
 /// <inheritdoc />
 internal sealed class ModEntry : Mod
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
     /// <summary>
     /// Gets the logger for this mod.
     /// </summary>
-    internal static IMonitor ModMonitor { get; private set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    internal static IMonitor ModMonitor { get; private set; } = null!;
 
     /// <inheritdoc />
     public override void Entry(IModHelper helper)
     {
         I18n.Init(helper.Translation);
         ModMonitor = this.Monitor;
-        this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
+
+        helper.Events.GameLoop.GameLaunched += (_, _) => this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
     }
 
     /// <summary>
@@ -105,11 +104,11 @@ internal sealed class ModEntry : Mod
             helper.FindNext(new CodeInstructionWrapper[]
             {
                 new(OpCodes.Call, typeof(Game1).GetCachedProperty(nameof(Game1.player), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
-                new(OpCodes.Callvirt),
-                new(SpecialCodeInstructionCases.LdLoc),
+                OpCodes.Callvirt,
+                SpecialCodeInstructionCases.LdLoc,
                 new(OpCodes.Callvirt, typeof(IList<Item>).GetCachedProperty("Item", ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
                 new(OpCodes.Isinst, typeof(MeleeWeapon)),
-                new(OpCodes.Callvirt),
+                OpCodes.Callvirt,
                 new(OpCodes.Ldc_I4_S, 47),
                 new(SpecialCodeInstructionCases.Wildcard, (inst) => inst.opcode == OpCodes.Beq || inst.opcode == OpCodes.Beq_S ),
             });
@@ -137,15 +136,14 @@ internal sealed class ModEntry : Mod
             copylist.Add(new(OpCodes.Brtrue_S, label));
             CodeInstruction[]? copy = copylist.ToArray();
 
-            helper.Advance(1)
-            .Insert(copy);
+            helper.Advance(1).Insert(copy);
 
             return helper.Render();
         }
         catch (Exception ex)
         {
             ModMonitor.Log($"Mod crashed while transpiling mine death methods:\n\n{ex}", LogLevel.Error);
-            original?.Snitch(ModEntry.ModMonitor);
+            original.Snitch(ModMonitor);
         }
         return null;
     }

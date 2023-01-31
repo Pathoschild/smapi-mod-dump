@@ -2,23 +2,24 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
 # Modular Overhaul Change Logs
 
-## Revision 1 Highlights
+## Minor release 1.3.x Highlights
 
-* Legendary weapons are now marked as Special.
+* [Tools]: Now includes the popular Harvest With Scythe feature, so you no longer have to rely on CJB Cheats Menu's implementation. The implementation is similar to Yet Another Harvest With Scythe Mod, which means they will conflict if installed together. Unlike YAHWSM, this implementation does not apply to forage.
+* Minor bug fixes.
 
-## Major Release 1 Highlights
+## Major Release 1.x.x Highlights
 
 * Official release of Modular Gameplay Overhaul.
 * Official release of the [Arsenal](Modules/Arsenal/README.md) module.
-* Changes to Slingshot [Professions](Modules/Professions/README.md) to accomodate the changes introduced by Arsenal.
-* New icons for prestiged professions.
-* Introduction of Gemstone Music Theory in the [Rings](Modules/Rings/README.md) module.
+* [Professions]: Changes to Slingshot to accomodate those introduced by Arsenal.
+* [Professions]: New icons for prestiged professions.
+* [Rings]: Introduction of Gemstone Music Theory in the [Rings](Modules/Rings/README.md) module.
 
 ## Detailed Change Logs
 

@@ -36,13 +36,13 @@ namespace LovedLabelsRedux
             configsForTheMod = helper.ReadConfig<ModConfig>();
             _hearts = helper.ModContent.Load<Texture2D>("assets/hearts.png");
 
-            helper.Events.GameLoop.GameLaunched += onLaunched;
+            helper.Events.GameLoop.GameLaunched += OnLaunched;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Display.Rendered += OnRendered;
         }
 
-        private void onLaunched(object sender, GameLaunchedEventArgs e)
+        private void OnLaunched(object sender, GameLaunchedEventArgs e)
         {
             var genericModConfigMenuAPI = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
@@ -55,6 +55,7 @@ namespace LovedLabelsRedux
 
                 genericModConfigMenuAPI.AddSectionTitle(ModManifest, Helper.Translation.Get("others.title.name").ToString, Helper.Translation.Get("others.title.description").ToString);
                 genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsUIEnabled, (bool val) => configsForTheMod.IsUIEnabled = val, Helper.Translation.Get("others.ToggleUICurrentState.name").ToString, Helper.Translation.Get("others.ToggleUICurrentState.description").ToString);
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsPettingEnabled, (bool val) => configsForTheMod.IsPettingEnabled = val, Helper.Translation.Get("others.ToggleIsPetting.name").ToString, Helper.Translation.Get("others.ToggleIsPetting.description").ToString);
 
                 genericModConfigMenuAPI.AddTextOption(ModManifest, () => configsForTheMod.AlreadyPettedMessage, (string val) => configsForTheMod.AlreadyPettedMessage = val, Helper.Translation.Get("others.AlreadyPettedMessage.name").ToString, Helper.Translation.Get("others.AlreadyPettedMessage.description").ToString);
                 genericModConfigMenuAPI.AddTextOption(ModManifest, () => configsForTheMod.NeedsPettingMessage, (string val) => configsForTheMod.NeedsPettingMessage = val, Helper.Translation.Get("others.NeedsPettingMessage.name").ToString, Helper.Translation.Get("others.NeedsPettingMessage.description").ToString);
@@ -76,6 +77,21 @@ namespace LovedLabelsRedux
         {
             if (!Context.IsPlayerFree || !Game1.currentLocation.IsFarm) { return; }
             _hoverText = null;
+
+            if (configsForTheMod.IsPettingEnabled)
+            {
+                FarmAnimal[] farmAnimals = Game1.getFarm().getAllFarmAnimals().Where(p => !p.wasPet.Value).ToArray();
+
+                if (farmAnimals.Any())
+                {
+                    foreach (FarmAnimal animal in farmAnimals)
+                    {
+                        //this.Monitor.Log($"Animal: {animal.Name} - {animal.displayName} - {animal.type} - {animal.age} - {animal.wasPet.Value} - {animal.fullness.Value} - {animal.friendshipTowardFarmer.Value} - {animal.daysSinceLastFed.Value}", LogLevel.Info);
+                        animal.pet(Game1.player);
+                    }
+                }
+            }
+
             if (!configsForTheMod.IsUIEnabled)
             {
                 return;
@@ -84,7 +100,7 @@ namespace LovedLabelsRedux
             GameLocation location = Game1.currentLocation;
             Vector2 mousePos = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y) / Game1.tileSize;
 
-            FarmAnimal[] animals = new FarmAnimal[0];
+            FarmAnimal[] animals = Array.Empty<FarmAnimal>();
             switch (location)
             {
                 case AnimalHouse house:
@@ -98,7 +114,7 @@ namespace LovedLabelsRedux
 
             foreach (FarmAnimal animal in animals)
             {
-                RectangleF animalBoundaries = new RectangleF(animal.position.X, animal.position.Y - animal.Sprite.getHeight(), animal.Sprite.getWidth() * 3 + animal.Sprite.getWidth() / 1.5f, animal.Sprite.getHeight() * 4);
+                RectangleF animalBoundaries = new(animal.position.X, animal.position.Y - animal.Sprite.getHeight(), animal.Sprite.getWidth() * 3 + animal.Sprite.getWidth() / 1.5f, animal.Sprite.getHeight() * 4);
 
                 if (animalBoundaries.Contains(mousePos.X * Game1.tileSize, mousePos.Y * Game1.tileSize))
                     _hoverText = animal.wasPet.Value ? configsForTheMod.AlreadyPettedMessage : configsForTheMod.NeedsPettingMessage;
@@ -106,7 +122,7 @@ namespace LovedLabelsRedux
 
             foreach (Pet pet in location.characters.OfType<Pet>())
             {
-                RectangleF petBoundaries = new RectangleF(pet.position.X, pet.position.Y - pet.Sprite.getHeight() * 2, pet.Sprite.getWidth() * 3 + pet.Sprite.getWidth() / 1.5f, pet.Sprite.getHeight() * 4);
+                RectangleF petBoundaries = new(pet.position.X, pet.position.Y - pet.Sprite.getHeight() * 2, pet.Sprite.getWidth() * 3 + pet.Sprite.getWidth() / 1.5f, pet.Sprite.getHeight() * 4);
                 if (petBoundaries.Contains(mousePos.X * Game1.tileSize, mousePos.Y * Game1.tileSize))
                 {
                     NetLongDictionary<int, NetInt> lastPettedDays = Helper.Reflection.GetField<NetLongDictionary<int, NetInt>>(pet, "lastPetDay").GetValue();

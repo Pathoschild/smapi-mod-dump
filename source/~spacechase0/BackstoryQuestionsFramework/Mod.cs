@@ -108,7 +108,7 @@ namespace BackstoryQuestionsFramework
 
             int oldoldcheck = oldCheck;
             oldCheck = check;
-            return check != oldCheck;
+            return check != oldoldcheck;
         }
 
         public bool IsReady()
@@ -147,7 +147,7 @@ namespace BackstoryQuestionsFramework
 
         public IEnumerable<string> GetValues(string input)
         {
-            if (string.IsNullOrWhiteSpace(input) || values.ContainsKey( input.Trim() ))
+            if (string.IsNullOrWhiteSpace(input) || !values.ContainsKey( input.Trim() ))
                 yield break;
 
             foreach (string entry in values[input.Trim()])

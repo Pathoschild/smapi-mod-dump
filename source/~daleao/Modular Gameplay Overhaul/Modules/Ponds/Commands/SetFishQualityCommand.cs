@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -36,7 +36,7 @@ internal sealed class SetFishQualityCommand : ConsoleCommand
     public override string Documentation => "Set the quality of all fish in the nearest pond.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (args.Length != 1)
         {
@@ -51,7 +51,7 @@ internal sealed class SetFishQualityCommand : ConsoleCommand
         }
 
         var nearest = Game1.player.GetClosestBuilding<FishPond>(predicate: b =>
-            (b.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) && !b.isUnderConstruction());
+            b.IsOwnedBy(Game1.player) && !b.isUnderConstruction());
         if (nearest is null)
         {
             Log.W("There are no owned ponds nearby.");

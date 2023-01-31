@@ -10,13 +10,16 @@
 
 using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
-using AtraShared.Integrations.Interfaces.Automate;
 using AtraShared.Menuing;
 using AtraShared.Utils.Extensions;
+
 using HarmonyLib;
+
 using Microsoft.Xna.Framework;
+
 using StardewModdingAPI.Events;
 using StardewValley.TerrainFeatures;
+
 using TapGiantCrops.Framework;
 
 namespace TapGiantCrops;
@@ -36,26 +39,17 @@ internal sealed class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         ModMonitor = this.Monitor;
+        AssetManager.Initialize(helper.GameContent);
 
         helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         helper.Events.GameLoop.DayEnding += this.OnDayEnding;
 
         helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 
-        /*
-#if !DEBUG
-        if (!Constants.ApiVersion.IsOlderThan("3.16.0"))
-#endif
-        {
-            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-        }
-#if !DEBUG
-        else
-        {
-            this.Monitor.Log($"Automate support not complete for now :(");
-        }
-#endif
-        */
+        helper.Events.Content.AssetRequested += static (_, e) => AssetManager.Load(e);
+        helper.Events.Content.AssetsInvalidated += static (_, e) => AssetManager.Reset(e.NamesWithoutLocale);
+
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
 
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
     }
@@ -63,15 +57,12 @@ internal sealed class ModEntry : Mod
     /// <inheritdoc />
     public override object? GetApi() => Api;
 
-    private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-    {
-    }
-
+    /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
     private void OnDayEnding(object? sender, DayEndingEventArgs e)
     {
         Utility.ForAllLocations((location) =>
         {
-            foreach (var feature in location.resourceClumps)
+            foreach (ResourceClump? feature in location.resourceClumps)
             {
                 if (feature is GiantCrop crop)
                 {
@@ -103,7 +94,7 @@ internal sealed class ModEntry : Mod
     {
         try
         {
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(ModEntry).Assembly);
         }
         catch (Exception ex)
         {
@@ -112,9 +103,11 @@ internal sealed class ModEntry : Mod
         harmony.Snitch(this.Monitor, this.ModManifest.UniqueID, transpilersOnly: true);
     }
 
+    /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
-        if (!MenuingExtensions.IsNormalGameplay() || !(e.Button.IsUseToolButton() || e.Button.IsActionButton()))
+        if (!(e.Button.IsUseToolButton() || e.Button.IsActionButton())
+            || !MenuingExtensions.IsNormalGameplay())
         {
             return;
         }
@@ -124,6 +117,7 @@ internal sealed class ModEntry : Mod
         }
     }
 
+    /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
     private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) => Api.Init();
 
     [HarmonyPriority(Priority.High)]
@@ -146,7 +140,7 @@ internal sealed class ModEntry : Mod
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Attempt to prefix Utility.playerCanPlaceItemHere has failed:\n\n{ex}", LogLevel.Error);
+            ModMonitor.Log($"Attempt to prefix Utility.playerCanPlaceItemHere has failed:\n\n{ex}", LogLevel.Error);
         }
         return true;
     }

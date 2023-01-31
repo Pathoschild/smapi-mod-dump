@@ -246,21 +246,16 @@ namespace DynamicBodies
 			b.Draw(_baseTexture, position + origin + _positionOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
 			
 		}
-		public static void drawPants(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
+		public static void drawPants(Texture2D pantsTexture, int pantIndex, Vector2 _positionOffset, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
 		{
 			Rectangle pants_rect = new Rectangle(sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height);
-			pants_rect.X += ClampPants(who) % 10 * 192;
-			pants_rect.Y += ClampPants(who) / 10 * 688;
+			pants_rect.X += pantIndex % 10 * 192;
+			pants_rect.Y += pantIndex / 10 * 688;
 			if (!who.IsMale)
 			{
 				pants_rect.X += 96;
 			}
-            PlayerBaseExtended pbe = PlayerBaseExtended.Get(who);
-            Texture2D pantsTexture = FarmerRenderer.pantsTexture;
-            if(pbe.body.textures.ContainsKey("pants") && pbe.body.textures["pants"] != null)
-            {
-                pantsTexture = pbe.body.textures["pants"];
-            }
+            
 			b.Draw(pantsTexture, position + origin + _positionOffset, pants_rect, overrideColor.Equals(Color.White) ? Utility.MakeCompletelyOpaque(who.GetPantsColor()) : overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + ((who.FarmerSprite.CurrentAnimationFrame.frame == 5) ? 0.00092f : 9.2E-08f));
 		}
 		public static void drawEyes(FarmerRenderer farmerRenderer, ref Vector2 _rotationAdjustment, ref Vector2 _positionOffset, ref Texture2D _baseTexture, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)

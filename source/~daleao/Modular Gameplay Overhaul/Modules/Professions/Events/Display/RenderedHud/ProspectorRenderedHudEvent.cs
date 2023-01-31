@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Display;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
 using Microsoft.Xna.Framework;
@@ -41,10 +40,14 @@ internal sealed class ProspectorRenderedHudEvent : RenderedHudEvent
 
         var shouldHighlightOnScreen = ProfessionsModule.Config.ModKey.IsDown();
 
-        // reveal on-screen trackable objects
-        foreach (var (tile, _) in Game1.currentLocation.Objects.Pairs.Where(p =>
-                     p.Value.ShouldBeTrackedBy(Profession.Prospector)))
+        // track objects, such as ore nodes
+        foreach (var (tile, @object) in Game1.currentLocation.Objects.Pairs)
         {
+            if (!@object.ShouldBeTrackedBy(Profession.Prospector))
+            {
+                continue;
+            }
+
             tile.TrackWhenOffScreen(Color.Yellow);
             if (shouldHighlightOnScreen)
             {
@@ -52,7 +55,24 @@ internal sealed class ProspectorRenderedHudEvent : RenderedHudEvent
             }
         }
 
-        // reveal on-screen panning point
+        // track resource clumps
+        for (var i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
+        {
+            var clump = Game1.currentLocation.resourceClumps[i];
+            if (!Collections.ResourceClumpIds.Contains(clump.parentSheetIndex.Value))
+            {
+                continue;
+            }
+
+            var tile = clump.tile.Value + new Vector2(0.5f, 0f);
+            tile.TrackWhenOffScreen(Color.Yellow);
+            if (shouldHighlightOnScreen)
+            {
+                tile.TrackWhenOnScreen(Color.Yellow);
+            }
+        }
+
+        // track panning spots
         if (!Game1.currentLocation.orePanPoint.Value.Equals(Point.Zero))
         {
             var tile = Game1.currentLocation.orePanPoint.Value.ToVector2() * 64f;
@@ -68,6 +88,7 @@ internal sealed class ProspectorRenderedHudEvent : RenderedHudEvent
             return;
         }
 
+        // track mine ladders and shafts
         foreach (var tile in shaft.GetLadderTiles())
         {
             tile.TrackWhenOffScreen(Color.Lime);

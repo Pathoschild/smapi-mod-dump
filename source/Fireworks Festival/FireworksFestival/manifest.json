@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/FireworksFestival
+**
+*************************************************/
+
+{
+  "Name": "Fireworks Festival",
+  "Author": "violetlizabet",
+  "Version": "0.1.0",
+  "Description": "Adds a summer fireworks festival as well as craftable fireworks.",
+  "UniqueID": "violetlizabet.FireworksFestival",
+  "EntryDll": "FireworksFestival.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:15261" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.DynamicGameAssets",
+      "MinimumVersion": "1.4.4"
+    }
+  ],
+  "DGA.FormatVersion": 2,
+  "DGA.ConditionsFormatVersion": "1.23.0"
+}

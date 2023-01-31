@@ -9,6 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Configuration;
+using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using StardewModdingAPI;
@@ -108,6 +109,45 @@ internal static class PAssetDataForImage {
 		}
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static unsafe void ApplyOverlayFast(ReadOnlySpan<XColor> source, XColor[] target) {
+		fixed (XColor* srcX = source) {
+			fixed (XColor* trgX = target) {
+				Color8* src = (Color8*)srcX;
+				Color8* trg = (Color8*)trgX;
+
+				// merge pixels
+				for (int i = 0; i < source.Length; i++) {
+					var above = src[i];
+					var below = trg[i];
+
+					// shortcut transparency
+					if (above.A.Value < MinOpacity) {
+						src[i] = below;
+						continue;
+					}
+
+					if (below.A.Value < MinOpacity) {
+						src[i] = above;
+						continue;
+					}
+
+					// merge pixels
+					// This performs a conventional alpha blend for the pixels, which are already
+					// premultiplied by the content pipeline. The formula is derived from
+					// https://shawnhargreaves.com/blog/premultiplied-alpha.html.
+					Fixed8 alphaBelow = new((byte)(byte.MaxValue - above.A.Value));
+					src[i] = new(
+						above.R + (below.R * alphaBelow), // r
+						above.G + (below.G * alphaBelow), // g
+						above.B + (below.B * alphaBelow), // b
+						Math.Max(above.A.Value, below.A.Value) // a
+					);
+				}
+			}
+		}
+	}
+
 	[Harmonize(
 		typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade),
 		"StardewModdingAPI.Framework.Content.AssetDataForImage",
@@ -167,7 +207,7 @@ internal static class PAssetDataForImage {
 	Harmonize.PriorityLevel.Last,
 	critical: false
 )]
-	public static bool PatchImageImpl(IAssetDataForImage __instance, XColor[] sourceData, int sourceWidth, int sourceHeight, XRectangle sourceArea, XRectangle targetArea, PatchMode patchMode) {
+	public static bool PatchImageImpl(IAssetDataForImage __instance, XColor[] sourceData, int sourceWidth, int sourceHeight, XRectangle sourceArea, XRectangle targetArea, PatchMode patchMode, int startRow = 0) {
 		if (!Config.SMAPI.ApplyPatchEnabled) {
 			return true;
 		}
@@ -186,17 +226,20 @@ internal static class PAssetDataForImage {
 		// get source data
 		int pixelCount = sourceArea.Width * sourceArea.Height;
 
+		int firstPixel = startRow * sourceArea.Width;
+		int lastPixel = firstPixel + pixelCount - 1;
+
 		// merge data in overlay mode
 		if (patchMode == PatchMode.Overlay) {
 			// get target data
 			var targetData = GC.AllocateUninitializedArray<XColor>(pixelCount);
 			target.GetData(0, targetArea, targetData, 0, pixelCount);
 
-			ApplyOverlayFast(sourceData, targetData);
+			ApplyOverlayFast(sourceData.AsReadOnlySpan().Slice(firstPixel, pixelCount), targetData);
 		}
 
 		// patch target texture
-		target.SetData(0, targetArea, sourceData, 0, pixelCount);
+		target.SetData(0, targetArea, sourceData, firstPixel, pixelCount);
 		return false;
 	}
 }

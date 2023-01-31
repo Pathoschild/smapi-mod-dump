@@ -124,8 +124,8 @@ namespace Custom_Farm_Loader.Lib
             return seasonNumber switch {
                 0 => "spring",
                 1 => "summer",
-                3 => "fall",
-                4 or _ => "winter"
+                2 => "fall",
+                3 or _ => "winter"
             };
         }
 

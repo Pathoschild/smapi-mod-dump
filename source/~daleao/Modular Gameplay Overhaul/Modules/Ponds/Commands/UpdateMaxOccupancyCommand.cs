@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,9 +12,8 @@ namespace DaLion.Overhaul.Modules.Ponds.Commands;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Shared.Commands;
-using DaLion.Shared.Extensions.Collections;
+using DaLion.Shared.Extensions.Stardew;
 using StardewValley.Buildings;
 
 #endregion using directives
@@ -36,24 +35,35 @@ internal sealed class UpdateMaxOccupancyCommand : ConsoleCommand
     public override string Documentation => "Update the maximum population of all owned fish ponds.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (args.Length > 0)
         {
             Log.W("Additional arguments will be ignored.");
         }
 
-        var ponds = Game1.getFarm().buildings.OfType<FishPond>().Where(p =>
-                (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
-                !p.isUnderConstruction())
-            .ToHashSet();
-        if (ponds.Count == 0)
+        var count = 0;
+        var buildings = Game1.getFarm().buildings;
+        for (var i = 0; i < buildings.Count; i++)
         {
-            Log.W("You don't own any Fish Ponds.");
-            return;
+            var building = buildings[i];
+            if (building is not FishPond pond || !pond.IsOwnedBy(Game1.player) ||
+                pond.isUnderConstruction())
+            {
+                continue;
+            }
+
+            pond.UpdateMaximumOccupancy();
+            count++;
         }
 
-        ponds.ForEach(p => p.UpdateMaximumOccupancy());
-        Log.I($"Maximum occupancy updated for {ponds.Count} Fish Ponds.");
+        if (count > 0)
+        {
+            Log.I($"Maximum occupancy updated for {count} Fish Ponds.");
+        }
+        else
+        {
+            Log.W("You don't own any Fish Ponds.");
+        }
     }
 }

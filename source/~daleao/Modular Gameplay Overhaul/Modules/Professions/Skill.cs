@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -79,9 +79,9 @@ public class Skill : SmartEnum<Skill>, ISkill
             _ => string.Empty,
         };
 
-        foreach (var pid in Enumerable.Range(value * 6, 6))
+        for (var i = 0; i < 6; i++)
         {
-            this.Professions.Add(Profession.FromValue(pid));
+            this.Professions.Add(Profession.FromValue((value * 6) + i));
         }
 
         this.ProfessionPairs[-1] = new ProfessionPair(this.Professions[0], this.Professions[1], null, 5);
@@ -110,7 +110,10 @@ public class Skill : SmartEnum<Skill>, ISkill
     public float BaseExperienceMultiplier => ProfessionsModule.Config.BaseSkillExpMultipliers[this.Value];
 
     /// <inheritdoc />
-    public IEnumerable<int> NewLevels => Game1.player.newLevels.Where(p => p.X == this.Value).Select(p => p.Y);
+    public IEnumerable<int> NewLevels =>
+        Game1.player.newLevels
+            .Where(p => p.X == this.Value)
+            .Select(p => p.Y);
 
     /// <inheritdoc />
     public IList<IProfession> Professions { get; } = new List<IProfession>();
@@ -168,10 +171,13 @@ public class Skill : SmartEnum<Skill>, ISkill
             .When(Luck).Then(() => farmer.luckLevel.Value = 0);
 
         // reset new levels
-        var toRemove = farmer.newLevels.Where(p => p.X == this);
-        foreach (var item in toRemove)
+        for (var i = 0; i < farmer.newLevels.Count; i++)
         {
-            farmer.newLevels.Remove(item);
+            var level = farmer.newLevels[i];
+            if (level.X == this.Value)
+            {
+                farmer.newLevels.Remove(level);
+            }
         }
 
         // reset skill experience
@@ -184,7 +190,7 @@ public class Skill : SmartEnum<Skill>, ISkill
         }
 
         // revalidate health
-        if (this == Farmer.combatSkill)
+        if (this.Value == Farmer.combatSkill)
         {
             LevelUpMenu.RevalidateHealth(farmer);
         }
@@ -193,7 +199,7 @@ public class Skill : SmartEnum<Skill>, ISkill
     /// <inheritdoc />
     public void ForgetRecipes(bool saveForRecovery = true)
     {
-        if (this == Farmer.luckSkill)
+        if (this.Value == Farmer.luckSkill)
         {
             return;
         }
@@ -209,7 +215,8 @@ public class Skill : SmartEnum<Skill>, ISkill
                 key => farmer.craftingRecipes[key]);
         foreach (var (key, value) in CraftingRecipe.craftingRecipes)
         {
-            if (!value.Split('/')[4].Contains(this.StringId) || !craftingRecipes.ContainsKey(key))
+            if (!value.SplitWithoutAllocation('/')[4].Contains(this.StringId, StringComparison.Ordinal) ||
+                !craftingRecipes.ContainsKey(key))
             {
                 continue;
             }
@@ -232,7 +239,8 @@ public class Skill : SmartEnum<Skill>, ISkill
                 key => farmer.cookingRecipes[key]);
         foreach (var (key, value) in CraftingRecipe.cookingRecipes)
         {
-            if (!value.Split('/')[3].Contains(this.StringId) || !cookingRecipes.ContainsKey(key))
+            if (!value.SplitWithoutAllocation('/')[3].Contains(this.StringId, StringComparison.Ordinal) ||
+                !cookingRecipes.ContainsKey(key))
             {
                 continue;
             }

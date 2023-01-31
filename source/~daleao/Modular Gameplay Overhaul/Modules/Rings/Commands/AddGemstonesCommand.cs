@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -38,7 +38,7 @@ internal sealed class AddGemstonesCommand : ConsoleCommand
     public override string Documentation => "Add the specified gemstones to the selected infinity band.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (!RingsModule.Config.TheOneInfinityBand || !Globals.InfinityBandIndex.HasValue)
         {
@@ -46,7 +46,7 @@ internal sealed class AddGemstonesCommand : ConsoleCommand
             return;
         }
 
-        if (args.Length == 0)
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Log.W("No gemstones were specified.");
             return;

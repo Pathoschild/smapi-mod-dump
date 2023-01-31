@@ -228,7 +228,7 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 
 		var builder = SimpleHelper
 			.Builder(minSize: new Vector2(4 * 80, 0))
-			.Text(I18n.Bulk_Crafting(), font: Game1.dialogueFont, align: Alignment.Center)
+			.Text(I18n.Bulk_Crafting(), font: Game1.dialogueFont, align: Alignment.HCenter)
 			//.Divider()
 			.Group(margin: 8)
 				.Space()
@@ -310,21 +310,21 @@ public class BulkCraftingMenu : MenuSubscriber<ModEntry> {
 				new SpriteInfo(ing.Texture, ing.SourceRectangle),
 				scale: 2,
 				quantity: quant,
-				align: Alignment.Middle
+				align: Alignment.VCenter
 			)
 			.Text(
 				ing.DisplayName,
 				color: color,
 				shadowColor: shadow,
-				align: Alignment.Middle
+				align: Alignment.VCenter
 			)
 			.Space()
-			.Text(available.ToString(), align: Alignment.Middle)
+			.Text(available.ToString(), align: Alignment.VCenter)
 			.Texture(
 				Game1.mouseCursors,
 				SpriteHelper.MouseIcons.BACKPACK,
 				2,
-				align: Alignment.Middle
+				align: Alignment.VCenter
 			)
 			.GetLayout();
 	}

@@ -164,7 +164,7 @@ namespace AeroCore.API
                 var once = afterFadeOut.GetValueForScreen(e);
                 for (int i = once.Count - 1; i >= 0; i--)
                 {
-                    once[i]();
+                    once[i]?.Invoke();
                     once.RemoveAt(i);
                 }
             };
@@ -174,7 +174,7 @@ namespace AeroCore.API
                 var once = afterFadeIn.GetValueForScreen(e);
                 for (int i = once.Count - 1; i >= 0; i--)
                 {
-                    once[i]();
+                    once[i]?.Invoke();
                     once.RemoveAt(i);
                 }
             };

@@ -2,9 +2,16 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Name>Panning Framework</Name>
+    <Version>0.1.0</Version>
+    <Description>A framework to allow adding things to panning.</Description>
+    <UpdateKeys>-1</UpdateKeys>
+    <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 
 

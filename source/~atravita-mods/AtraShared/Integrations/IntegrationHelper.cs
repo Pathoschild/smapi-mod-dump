@@ -12,6 +12,8 @@
 using System.Diagnostics;
 #endif
 
+using CommunityToolkit.Diagnostics;
+
 namespace AtraShared.Integrations;
 
 /// <summary>
@@ -24,10 +26,14 @@ public class IntegrationHelper
     /// </summary>
     /// <param name="monitor">Logger instance.</param>
     /// <param name="translation">Translation helper.</param>
-    /// <param name="modRegistry">Mod registery.</param>
+    /// <param name="modRegistry">Mod registry.</param>
     /// <param name="loglevel">Level to log issues to.</param>
     public IntegrationHelper(IMonitor monitor, ITranslationHelper translation, IModRegistry modRegistry, LogLevel loglevel = LogLevel.Info)
     {
+        Guard.IsNotNull(monitor);
+        Guard.IsNotNull(translation);
+        Guard.IsNotNull(modRegistry);
+
         this.Monitor = monitor;
         this.Translation = translation;
         this.ModRegistry = modRegistry;
@@ -45,7 +51,7 @@ public class IntegrationHelper
     protected ITranslationHelper Translation { get; init; }
 
     /// <summary>
-    /// Gets the modregistry instance.
+    /// Gets the mod registry instance.
     /// </summary>
     protected IModRegistry ModRegistry { get; init; }
 
@@ -59,15 +65,17 @@ public class IntegrationHelper
     /// </summary>
     /// <typeparam name="T">Interface to map to.</typeparam>
     /// <param name="apiid">UniqueID of the other mod.</param>
-    /// <param name="minversion">Minimum semantic version.</param>
+    /// <param name="minversion">Minimum semantic version, or null for no minimum.</param>
     /// <param name="api">An instance of the api.</param>
     /// <returns>True if successful, false otherwise.</returns>
     public bool TryGetAPI<T>(
-        [NotNull] string apiid,
-        [NotNull] string minversion,
-        [NotNullWhen(returnValue: true )] out T? api)
+        string apiid,
+        string? minversion,
+        [NotNullWhen(returnValue: true)] out T? api)
         where T : class
     {
+        Guard.IsNotNull(apiid);
+
         if (this.ModRegistry.Get(apiid) is not IModInfo modInfo)
         {
             this.Monitor.Log(
@@ -77,7 +85,7 @@ public class IntegrationHelper
             api = default;
             return false;
         }
-        if (modInfo.Manifest.Version.IsOlderThan(minversion))
+        if (minversion is not null && modInfo.Manifest.Version.IsOlderThan(minversion))
         {
             this.Monitor.Log(
                 this.Translation.Get("api-too-old")
@@ -87,10 +95,17 @@ public class IntegrationHelper
             return false;
         }
 #if DEBUG
-        Stopwatch sw = new();
-        sw.Start();
+        Stopwatch sw = Stopwatch.StartNew();
 #endif
-        api = this.ModRegistry.GetApi<T>(apiid);
+        try
+        {
+            api = this.ModRegistry.GetApi<T>(apiid);
+        }
+        catch (Exception ex)
+        {
+            this.Monitor.Log($"Failed while attempting to map {apiid}\n\n{ex}", LogLevel.Error);
+            api = null;
+        }
 #if DEBUG
         sw.Stop();
         this.Monitor.Log($"Mapping {apiid} took {sw.ElapsedMilliseconds} milliseconds", LogLevel.Info);

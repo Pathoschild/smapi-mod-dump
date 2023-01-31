@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -177,14 +177,15 @@ internal sealed class ForgeMenuUpdatePatcher : HarmonyPatcher
 
         if (slingshot.hasEnchantmentOfType<DiamondEnchantment>())
         {
-            cost += menu.GetForgeCost(menu.leftIngredientSpot.item, new SObject(72, 1));
+            cost += menu.GetForgeCost(menu.leftIngredientSpot.item, new SObject(SObject.diamondIndex, 1));
         }
 
         for (var i = slingshot.enchantments.Count - 1; i >= 0; i--)
         {
-            if (slingshot.enchantments[i].IsForge())
+            var enchantment = slingshot.enchantments[i];
+            if (enchantment.IsForge())
             {
-                slingshot.RemoveEnchantment(slingshot.enchantments[i]);
+                slingshot.RemoveEnchantment(enchantment);
             }
         }
 

@@ -30,6 +30,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterFestivalNotifications
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BirbSharedSpaceCore", "BirbSharedSpaceCore\BirbSharedSpaceCore.shproj", "{19CEDB88-A912-48DA-B35D-FCE2509E70E6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JunimoKartGlobalRankings", "JunimoKartGlobalRankings\JunimoKartGlobalRankings.csproj", "{4C0316A5-1EC3-423D-9CA7-4BC95EAEB983}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardLibrary", "LeaderboardLibrary\LeaderboardLibrary.csproj", "{11798AF2-2E08-4283-8232-6FCB5997D109}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameboyArcade", "GameboyArcade\GameboyArcade.csproj", "{8EC72E05-8280-4CA2-983F-D1FB714B988B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		BirbSharedSpaceCore\BirbSharedSpaceCore.projitems*{19cedb88-a912-48da-b35d-fce2509e70e6}*SharedItemsImports = 13
@@ -64,6 +70,18 @@ Global
 		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCFF64B5-9EA5-4CCD-972D-108A97F389E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C0316A5-1EC3-423D-9CA7-4BC95EAEB983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C0316A5-1EC3-423D-9CA7-4BC95EAEB983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C0316A5-1EC3-423D-9CA7-4BC95EAEB983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C0316A5-1EC3-423D-9CA7-4BC95EAEB983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11798AF2-2E08-4283-8232-6FCB5997D109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11798AF2-2E08-4283-8232-6FCB5997D109}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11798AF2-2E08-4283-8232-6FCB5997D109}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11798AF2-2E08-4283-8232-6FCB5997D109}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

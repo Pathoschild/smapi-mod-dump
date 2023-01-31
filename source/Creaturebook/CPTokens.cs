@@ -117,14 +117,15 @@ namespace Creaturebook
                     {
                         foreach (var chapter in ModEntry.Chapters)
                         {
-                            for (int i = 0; i < chapter.Creatures.Count; i++)
+                            for (int i = 0; i < chapter.Creatures.Length; i++)
                             {
                                 if (chapter.FromContentPack.Manifest.UniqueID + "_" + chapter.CreatureNamePrefix + "_" + chapter.Creatures[i].ID == previousKey && item.Value != "null")
                                 {
                                     b_Boolean = true;
                                     break;
                                 }
-                            }                        }
+                            }
+                        }
                     }
                 }
                 return a_Boolean != b_Boolean;
@@ -145,7 +146,7 @@ namespace Creaturebook
                     {
                         foreach (var chapter in ModEntry.Chapters)
                         {
-                            for (int i = 0; i < chapter.Creatures.Count; i++)
+                            for (int i = 0; i < chapter.Creatures.Length; i++)
                             {
                                 if (chapter.FromContentPack.Manifest.UniqueID + "_" + chapter.CreatureNamePrefix + "_" + chapter.Creatures[i].ID == input && item.Value != null)
                                 {
@@ -164,6 +165,100 @@ namespace Creaturebook
             {
                 yield return null;
             }
+        }
+    }
+    internal class IsSetFullyDiscovered
+    {
+        string previousValue;
+        List<bool> checks = new();
+        int number = 0;
+
+        public bool AllowsInput()
+        {
+            return true;
+        }
+        public bool CanHaveMultipleValues(string input)
+        {
+            return false;
+        }
+
+        public bool IsReady()
+        {
+            return Context.IsWorldReady;
+        }
+
+        public bool UpdateContext()
+        {
+            checks = new List<bool>();
+            foreach (var item in Game1.player.modData.Pairs)
+            {
+                if (item.Key.StartsWith(ModEntry.MyModID) && item.Key != ModEntry.MyModID + "_IsNotebookObtained")
+                {
+                    for (int i = 0; i < ModEntry.Chapters.Count; i++)
+                    {
+                        for (int x = 0; x < ModEntry.Chapters[i].Sets.Length; x++)
+                        {
+                            for (int f = 0; f < ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet.Length; f++)
+                            {
+                                if (previousValue == ModEntry.Chapters[i].Sets[x].InternalName && item.Key.Contains(ModEntry.Chapters[i].FromContentPack.Manifest.UniqueID + "." + ModEntry.Chapters[i].CreatureNamePrefix + "_" + ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet[f].ToString()) && item.Value != "null")
+                                    checks.Add(true);
+                                
+                                else if (previousValue == ModEntry.Chapters[i].Sets[x].InternalName && (item.Key.Contains(ModEntry.Chapters[i].FromContentPack.Manifest.UniqueID + "." + ModEntry.Chapters[i].CreatureNamePrefix + "_" + ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet[f].ToString()) || item.Value == "null"))
+                                    checks.Add(false);
+                                
+                                number = ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet.Length;
+                            }
+                        }
+                    }
+                }
+            }
+            int a = 0;
+            for (int i = 0; i < checks.Count; i++)
+            {
+                if (checks[i])
+                {
+                    a++;
+                }
+            }
+            return a != number;
+        }
+
+        /// <summary>Get the current values.</summary>
+        /// <param name="input">The input arguments, if applicable.</param>
+        public IEnumerable<string> GetValues(string input)
+        {
+            checks = new List<bool>();
+            foreach (var item in Game1.player.modData.Pairs)
+            {
+                if (item.Key.StartsWith(ModEntry.MyModID) && item.Key != ModEntry.MyModID + "_IsNotebookObtained")
+                {
+                    for (int i = 0; i < ModEntry.Chapters.Count; i++)
+                    {
+                        for (int x = 0; x < ModEntry.Chapters[i].Sets.Length; x++)
+                        {
+                            for (int f = 0; f < ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet.Length; f++)
+                            {
+                                if (input == ModEntry.Chapters[i].Sets[x].InternalName && item.Key.Contains(ModEntry.Chapters[i].FromContentPack.Manifest.UniqueID + "." + ModEntry.Chapters[i].CreatureNamePrefix + "_" + ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet[f].ToString()) && item.Value != "null")
+                                    checks.Add(true);
+                                else if (input == ModEntry.Chapters[i].Sets[x].InternalName && (item.Key.Contains(ModEntry.Chapters[i].FromContentPack.Manifest.UniqueID + "." + ModEntry.Chapters[i].CreatureNamePrefix + "_" + ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet[f].ToString()) || item.Value == "null"))
+                                    checks.Add(false);
+                                number = ModEntry.Chapters[i].Sets[x].CreaturesBelongingToThisSet.Length;
+                            }
+                        }
+                    }
+                }
+            }
+            int a = 0;
+            for (int i = 0; i < checks.Count; i++)
+            {
+                if (checks[i])
+                {
+                    a++;
+                }
+            }
+            previousValue = (a == number).ToString();
+            yield return (a == number).ToString();
+                 
         }
     }
 }

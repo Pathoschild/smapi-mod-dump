@@ -42,11 +42,6 @@ namespace Custom_Farm_Loader.GameLoopInjections
             var harmony = new Harmony(mod.ModManifest.UniqueID);
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(Farm), nameof(Farm.getFish)),
-               prefix: new HarmonyMethod(typeof(_Farm), nameof(_Farm.getFish_Prefix))
-            );
-
-            harmony.Patch(
                original: AccessTools.Method(typeof(Farm), nameof(Farm.performTenMinuteUpdate)),
                postfix: new HarmonyMethod(typeof(_Farm), nameof(_Farm.performTenMinuteUpdate_Postfix))
             );
@@ -77,34 +72,6 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
 
             return true; ;
-        }
-
-        public static bool getFish_Prefix(Farm __instance, ref StardewValley.Object __result, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string location = null)
-        {
-
-            if (!CustomFarm.IsCFLMapSelected())
-                return true;
-
-            foreach (Building b in __instance.buildings)
-                if (b is FishPond && b.isTileFishable(bobberTile)) {
-                    __result = (b as FishPond).CatchFish();
-                    return false;
-                }
-
-            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
-
-            bool isUsingMagicBait = __instance.IsUsingMagicBait(who);
-            var validFishingRules = customFarm.FishingRules.FindAll(el => el.Area.isTileIncluded(bobberTile)
-                                                                       && el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who)
-                                                                       && el.Fish.Count > 0);
-
-            if (validFishingRules.Count == 0)
-                return true;
-
-            FishingRule chosenFishingRule = UtilityMisc.PickSomeInRandomOrder(validFishingRules, 1).First();
-
-            __result = chosenFishingRule.getFish(isUsingMagicBait, millisecondsAfterNibble, bait, waterDepth, who, baitPotency, bobberTile);
-            return false;
         }
 
         public static void performTenMinuteUpdate_Postfix(Farm __instance, int timeOfDay)

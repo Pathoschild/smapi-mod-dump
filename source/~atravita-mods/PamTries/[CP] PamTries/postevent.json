@@ -16,6 +16,12 @@
         "When": {"ScheduleChanges": "true"}
     },
     {
+        "Action":"Include",
+        "LogName": "Base schedule changes",
+        "FromFile": "assets/schedules/base.json",
+        "When": {"ScheduleChanges": "true"}
+    },
+    {
         "Action": "Include",
         "LogName": "Gift changes",
         "FromFile": "assets/gifts.json",
@@ -68,6 +74,23 @@
             "HasFile:{{FromFile}}": true
         }
     },
+    {//load default base dialogue
+        "Action": "Include",
+        "LogName": "Dialogue Changes - subfiles",
+        "FromFile": "assets/default/base/dialogue/{{PamRandomToken}}.json",
+        "When": {
+            "HasFile:{{FromFile}}": true,
+            "HasFile:assets/{{language}}/base/dialogue/{{PamRandomToken}}.json": false
+        }
+    },
+    {//load language-specific base dialogue
+        "Action": "Include",
+        "LogName": "Dialogue Changes - subfiles",
+        "FromFile": "assets/{{language}}/base/dialogue/{{PamRandomToken}}.json",
+        "When": {
+            "HasFile:{{FromFile}}": true
+        }
+    },
     {
         "Action": "Include",
         "LogName": "Relationship Dialogue Changes",
@@ -80,12 +103,17 @@
     },
     {
         "Action": "Include",
-        "LogName": "Base mail changes",
-        "FromFile": "{{FirstValidFile: assets/{{language}}/quests_mail.json, assets/default/mail.json}}"
+        "LogName": "Movie dialogue",
+        "FromFile": "assets/strings.json"
     },
     {
         "Action": "Include",
-        "LogName": "Event changes",
+        "LogName": "Base mail changes",
+        "FromFile": "{{FirstValidFile: assets/{{language}}/mail.json, assets/default/mail.json}}"
+    },
+    {
+        "Action": "Include",
+        "LogName": "Event and quest changes",
         "FromFile": "assets/events.json"
     },
     {
@@ -108,6 +136,12 @@
         "PatchMode": "Replace",
         "When": {"HasSeenEvent": "99210001", "HouseChanges": "true"} //Pam to rehab
     },
+    {
+        "Action": "Include",
+        "LogName": "Movie reactions",
+        "FromFile": "assets/moviereactions.json",
+        "When": {"HasSeenEvent": "99210001", "MapChanges": "true"} //Pam to rehab
+    },
     { // Prevent Pam from going on vacation on her therapy days.
       // For GIMA's exclusion system
         "Action": "EditData",
@@ -129,8 +163,20 @@
         },
         "When": {
             "HasMod": "Esca.CustomNPCExclusions",
+            "HasMod|Contains=atravita.GingerIslandMainlandAdjustments": "false",
             "Day": "6,16",
             "HasSeenEvent": "99210002"
+        }
+     },
+     {
+        "Action": "EditData",
+        "Target": "Data/CustomNPCExclusions",
+        "Entries": {
+            "Pam": "WinterStar"
+        },
+        "When":{
+            "HasMod": "Esca.CustomNPCExclusions",
+            "HasConversationTopic": "PamTriesRehab"
         }
      }
 ]}

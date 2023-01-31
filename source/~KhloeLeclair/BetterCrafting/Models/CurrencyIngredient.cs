@@ -10,6 +10,7 @@
 
 #nullable enable
 
+using System;
 using System.Collections.Generic;
 
 using Leclair.Stardew.Common.Crafting;
@@ -29,7 +30,7 @@ public enum CurrencyType {
 	QiGems
 };
 
-public class CurrencyIngredient : IIngredient {
+public class CurrencyIngredient : IIngredient, IRecyclable {
 
 	public readonly CurrencyType Type;
 
@@ -39,6 +40,57 @@ public class CurrencyIngredient : IIngredient {
 		Type = type;
 		Quantity = quantity;
 	}
+
+	#region IRecyclable
+
+	public Texture2D GetRecycleTexture(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		return Texture;
+	}
+
+	public Rectangle GetRecycleSourceRect(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		return SourceRectangle;
+	}
+
+	public string GetRecycleDisplayName(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		return DisplayName;
+	}
+
+	public int GetRecycleQuantity(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		return Quantity;
+	}
+
+	public bool CanRecycle(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		switch (Type) {
+			case CurrencyType.Money:
+			case CurrencyType.FestivalPoints:
+			case CurrencyType.ClubCoins:
+			case CurrencyType.QiGems:
+				return true;
+		}
+
+		return false;
+	}
+
+	public IEnumerable<Item>? Recycle(Farmer who, Item? recycledItem, bool fuzzyItems) {
+		switch (Type) {
+			case CurrencyType.Money:
+				who.Money += Quantity;
+				break;
+			case CurrencyType.FestivalPoints:
+				who.festivalScore += Quantity;
+				break;
+			case CurrencyType.ClubCoins:
+				who.clubCoins += Quantity;
+				break;
+			case CurrencyType.QiGems:
+				who.QiGems += Quantity;
+				break;
+		}
+
+		return null;
+	}
+
+	#endregion
 
 	public string DisplayName {
 		get {

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,11 +12,11 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Infinity;
 
 #region using directives
 
-using System.Linq;
 using System.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using NetFabric.Hyperlinq;
 using StardewValley;
 using StardewValley.Tools;
 
@@ -68,7 +68,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
 
     #endregion harmony patches
 
-    #region injected subroutines
+    #region handlers
 
     private static void HandleYobaAltar(GameLocation location, Farmer who)
     {
@@ -111,6 +111,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
             {
                 string question = I18n.Get("yoba.question");
                 var responses = Virtue.List
+                    .AsValueEnumerable()
                     .Select(v => new Response(v.Name, v.DisplayName))
                     .ToArray();
                 location.createQuestionDialogue(question, responses, "Yoba");
@@ -139,7 +140,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
                 Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
             }
         }
-        else if (!who.hasOrWillReceiveMail("viegoCurse") && !who.isInventoryFull())
+        else if (!who.hasOrWillReceiveMail("gotDarkSword") && !who.isInventoryFull())
         {
             ProposeGrabDarkSword(location);
         }
@@ -168,5 +169,5 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
             "DarkSword");
     }
 
-    #endregion injected subroutines
+    #endregion handlers
 }

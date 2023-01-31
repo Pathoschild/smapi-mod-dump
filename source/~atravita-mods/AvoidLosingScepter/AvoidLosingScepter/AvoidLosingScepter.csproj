@@ -2,12 +2,11 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
     <Name>Avoid Losing Scepter</Name>
     <Description>Prevents the Return Scepter from being lost on death.</Description>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <UpdateKeys>Nexus:11856</UpdateKeys>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>

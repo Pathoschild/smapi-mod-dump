@@ -12,11 +12,25 @@ using EasierDartPuzzle.HarmonyPatches;
 using StardewModdingAPI.Events;
 
 namespace EasierDartPuzzle;
+
+/// <summary>
+/// Manages assets for this mod.
+/// </summary>
 internal static class AssetManager
 {
+    private static IAssetName stringsFromMaps = null!;
+
+    /// <summary>
+    /// Initialize the asset manager.
+    /// </summary>
+    /// <param name="parser">game content helper.</param>
+    internal static void Initialize(IGameContentHelper parser)
+        => stringsFromMaps = parser.ParseAssetName(@"Strings\StringsFromMaps");
+
+    /// <inheritdoc cref="IContentEvents.AssetRequested"/>
     internal static void Apply(AssetRequestedEventArgs e)
     {
-        if (e.NameWithoutLocale.IsEquivalentTo(@"Strings\StringsFromMaps"))
+        if (e.NameWithoutLocale.IsEquivalentTo(stringsFromMaps))
         {
             e.Edit(ApplyImpl, AssetEditPriority.Late);
         }

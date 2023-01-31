@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -41,11 +41,10 @@ internal sealed class FishPondUpdateMaximumOccupancyPatcher : HarmonyPatcher
         {
             __instance.maxOccupants.Set((int)ProfessionsModule.Config.LegendaryPondPopulationCap);
         }
-        else if (____fishPondData is not null &&
-                 ((__instance.GetOwner().HasProfession(Profession.Aquarist) &&
-                   __instance.HasUnlockedFinalPopulationGate()) || (ProfessionsModule.Config.LaxOwnershipRequirements &&
-                                                                    Game1.game1.DoesAnyPlayerHaveProfession(
-                                                                        Profession.Aquarist, out _))))
+        else if (____fishPondData is not null && __instance.HasUnlockedFinalPopulationGate() &&
+                 (__instance.GetOwner().HasProfession(Profession.Aquarist) ||
+                  (ProfessionsModule.Config.LaxOwnershipRequirements &&
+                   Game1.game1.DoesAnyPlayerHaveProfession(Profession.Aquarist, out _))))
         {
             __instance.maxOccupants.Set(12);
         }

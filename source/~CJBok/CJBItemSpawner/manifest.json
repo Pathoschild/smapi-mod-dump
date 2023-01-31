@@ -11,7 +11,7 @@
 {
     "Name": "CJB Item Spawner",
     "Author": "CJBok and Pathoschild",
-    "Version": "2.2.1",
+    "Version": "2.2.2",
     "Description": "Simple in-game item spawner!",
     "UniqueID": "CJBok.ItemSpawner",
     "EntryDll": "CJBItemSpawner.dll",

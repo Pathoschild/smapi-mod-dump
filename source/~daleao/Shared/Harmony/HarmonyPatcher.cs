@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -29,9 +29,6 @@ internal abstract class HarmonyPatcher : IHarmonyPatcher
         (this.Prefix, this.Postfix, this.Transpiler, this.Finalizer, this.Reverse) = this.GetHarmonyMethods();
     }
 
-    /// <summary>Gets or sets the method that is currently being patched.</summary>
-    protected internal static MethodBase? NowPatching { get; protected set; }
-
     /// <inheritdoc />
     public MethodBase Target { get; protected set; } = null!; // initialized in derived class
 
@@ -49,6 +46,9 @@ internal abstract class HarmonyPatcher : IHarmonyPatcher
 
     /// <inheritdoc />
     public HarmonyMethod? Reverse { get; }
+
+    /// <summary>Gets or sets the method that is currently being patched.</summary>
+    protected internal static MethodBase? NowPatching { get; protected set; }
 
     /// <inheritdoc />
     bool IHarmonyPatcher.Apply(Harmony harmony)

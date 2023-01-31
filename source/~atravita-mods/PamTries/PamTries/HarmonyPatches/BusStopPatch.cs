@@ -8,16 +8,21 @@
 **
 *************************************************/
 
-#if DEBUG
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+
 using AtraBase.Toolkit;
+
 using AtraCore.Framework.ReflectionManager;
+
 using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
+
 using HarmonyLib;
+
 using Microsoft.Xna.Framework;
+
 using StardewValley.Locations;
 
 namespace PamTries.HarmonyPatches;
@@ -50,22 +55,6 @@ internal static class BusStopPatch
          * Want to: remove the check for Pam from
          * if (Game1.player.Money >= (Game1.shippingTax ? 50 : 500) && base.characters.Contains(characterFromName) && characterFromName.getTileLocation().Equals(new Vector2(11f, 10f)))
          * AND replace it with our own check.
-         *
-         * So delete:
-         * ldarg.0
-         * ldfld class Netcode.NetCollection`1<class StardewValley.NPC> StardewValley.GameLocation::characters
-         * ldloc.0
-         * callvirt instance bool class Netcode.NetCollection`1<class StardewValley.NPC>::Contains(!0)
-         * brfalse IL_0137
-         * IL_0082: ldloc.0
-         *  callvirt instance valuetype [MonoGame.Framework]Microsoft.Xna.Framework.Vector2 StardewValley.Character::getTileLocation()
-         * stloc.1
-         * IL_0089: ldloca.s 1
-         * IL_008b: ldc.r4 11
-         * IL_0090: ldc.r4 10
-         * IL_0095: newobj instance void [MonoGame.Framework]Microsoft.Xna.Framework.Vector2::.ctor(float32, float32)
-         * IL_009a: call instance bool [MonoGame.Framework]Microsoft.Xna.Framework.Vector2::Equals(valuetype [MonoGame.Framework]Microsoft.Xna.Framework.Vector2)
-         *
          *
          * TODO: figure out what draws Pam in the bus and remove that too...
         *****************************************/
@@ -104,10 +93,9 @@ internal static class BusStopPatch
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Failed when trying to apply transpiler for BusStop.answerDialogue\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Failed when trying to apply transpiler for {original.FullDescription()}\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
             return null;
         }
     }
 }
-
-#endif

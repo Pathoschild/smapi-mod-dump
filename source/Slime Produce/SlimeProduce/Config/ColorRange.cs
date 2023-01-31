@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 
 namespace SlimeProduce
 {
-    public  class ColorRange
+    public class ColorRange
     {
         public int[] Red { get; set; }
         public int[] Green { get; set; }

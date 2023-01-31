@@ -8,25 +8,60 @@
 **
 *************************************************/
 
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewValley;
+using xTile.Dimensions;
 
-namespace TarotEvent;
+namespace DialaTarotCSharp;
 
 [HarmonyPatch]
 class HarmonyPatches
 {
     [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.performAction))]
     [HarmonyPrefix]
-    public static bool performAction_Prefix(string action, Farmer who)
+    public static bool performAction_Prefix(string action, Farmer who, Location tileLocation)
     {
         if (action != "DialaTarot" || !who.IsLocalPlayer)
             return true;
 
         GameLocation currentLoc = Game1.currentLocation;
-        currentLoc.createQuestionDialogue("Would you like to have a tarot reading done?", currentLoc.createYesNoResponses(), "tarotReading");
+
+        #if DEBUG
+            currentLoc.createQuestionDialogue("Would you like to have a tarot reading done?",
+            currentLoc.createYesNoResponses(), "tarotReading");
+            return false;
+        #endif
+
+        // if diala is in the current location and near enough to the tile location
+        if (currentLoc.characters.Where(npc => npc.Name == "Diala").TakeWhile(npc => Vector2.Distance(npc.getTileLocation(), new Vector2(tileLocation.X, tileLocation.Y)) > 3f).Any())
+        {
+            // if you've already done a reading today, reject with specific message
+            if (who.modData.ContainsKey("sophie.DialaTarot/ReadingDoneForToday"))
+            {
+                Game1.drawObjectDialogue("You've already had a reading done today. Come back another time.");
+                return false;
+            }
+
+            // if you have seen the necessary event
+            if (who.eventsSeen.Contains(20031411))
+            {
+                currentLoc.createQuestionDialogue("Would you like to have a tarot reading done?",
+                    currentLoc.createYesNoResponses(), "tarotReading");
+                return false;
+            }
+
+            // otherwise generic rejection dialogue
+            Game1.drawObjectDialogue("Diala is busy.");
+            return false;
+        }
+
+        // if diala is not on the map or near the tile location
+        Game1.drawObjectDialogue("Come back when Diala is here.");
         return false;
+
     }
 
     [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.answerDialogueAction))]
@@ -36,8 +71,31 @@ class HarmonyPatches
         if (questionAndAnswer != "tarotReading_Yes")
             return true;
 
+        Game1.player.modData["sophie.DialaTarot/ReadingDoneForToday"] = "true";
+
+        Game1.activeClickableMenu = null;
         GameLocation currentLoc = Game1.currentLocation;
-        currentLoc.startEvent(new Event("none/-100 -100/farmer -100 -100 0/globalFadeToClear/skippable/bgColor 0 0 0/ambientLight 0 0 0/changeToTemporaryMap TestTarot/viewport 14 8 true/pause 1200/message \"The Ace of Cups: Signals the start of something beautiful when it comes to new relationships.\"/pause 500/message \"The Sun: There is happiness, celebration, and fulfillment in this relationship.\"/pause 500/message \"The Lovers: Signals pure love and harmony between you and your partner.\"/pause 1000/globalFade/viewport -999 -999/end"));
+
+        string eventString = Game1.content.Load<Dictionary<string, string>>("sophie.DialaTarot/Event")["Event"];
+
+        currentLoc.startEvent(new Event(eventString));
         return false;
+    }
+
+    [HarmonyPatch(typeof(Event), nameof(Event.command_cutscene))]
+    [HarmonyPrefix]
+    public static bool command_cutscene_Prefix(Event __instance, string[] split)
+    {
+        // if custom event script is active, skip prefix and run original code
+        if (__instance.currentCustomEventScript != null)
+        {
+            return true;
+        }
+        if (split[1] == "DialaTarot")
+        {
+            __instance.currentCustomEventScript = new EventScriptDialaTarot();
+        }
+
+        return true;
     }
 }

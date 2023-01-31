@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -36,27 +36,29 @@ internal sealed class ClearNewLevelsCommand : ConsoleCommand
         "Clear the player's cache of new levels for the specified skills, or all vanilla skills if none are specified.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
-        if (args.Length == 0)
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Game1.player.newLevels.Clear();
         }
         else
         {
-            foreach (var arg in args)
+            for (var i = 0; i < args.Length; i++)
             {
-                if (Skill.TryFromName(arg, true, out var skill))
+                if (Skill.TryFromName(args[i], true, out var skill))
                 {
-                    Game1.player.newLevels.Set(Game1.player.newLevels.Where(p => p.X != skill).ToList());
+                    Game1.player.newLevels.Set(Game1.player.newLevels
+                        .Where(p => p.X != skill)
+                        .ToList());
                 }
                 else
                 {
                     var customSkill = SCSkill.Loaded.Values.FirstOrDefault(s =>
-                        string.Equals(s.DisplayName, arg, StringComparison.CurrentCultureIgnoreCase));
+                        string.Equals(s.DisplayName, args[i], StringComparison.CurrentCultureIgnoreCase));
                     if (customSkill is null)
                     {
-                        Log.W($"Ignoring unknown skill {arg}.");
+                        Log.W($"Ignoring unknown skill {args[i]}.");
                         continue;
                     }
 

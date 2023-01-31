@@ -18,6 +18,7 @@ namespace OKNightCheck
     {
         public bool ModEnabled { get; set; } = true;
         public bool ShowQuote { get; set; } = true;
+        public bool ShowQuitButton { get; set; } = true;
         public Color QuoteColor { get; set; } = Color.DarkSeaGreen;
         public int QuoteCharPerLine { get; set; } = 50;
         public int LineSpacing { get; set; } = 10;

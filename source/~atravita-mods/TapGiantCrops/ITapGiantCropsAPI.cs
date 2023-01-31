@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewValley.TerrainFeatures;
 
 namespace TapGiantCrops;
 
@@ -32,4 +33,12 @@ public interface ITapGiantCropsAPI
     /// <param name="tile">Tile.</param>
     /// <returns>True if successfully placed, false otherwise.</returns>
     public bool TryPlaceTapper(GameLocation loc, Vector2 tile, SObject obj);
+
+    /// <summary>
+    /// Called to query the tapper product and time required (in days) for a GiantCrop/tapper combo.
+    /// </summary>
+    /// <param name="giantCrop">The giant crop.</param>
+    /// <param name="tapper">The tapper.</param>
+    /// <returns>The result and how many days it should take.</returns>
+    public (SObject obj, int days)? GetTapperProduct(GiantCrop giantCrop, SObject tapper);
 }

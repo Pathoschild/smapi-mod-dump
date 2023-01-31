@@ -32,13 +32,13 @@ internal class AssetManager
 
     internal static void LoadOrEditAssets(object sender, AssetRequestedEventArgs e)
     {
-        if (e.Name.IsEquivalentTo(Globals.FontContentPath))
+        if (e.NameWithoutLocale.IsEquivalentTo(Globals.FontContentPath))
             e.LoadFromModFile<Texture2D>("Assets/cdFont.png", AssetLoadPriority.Medium);
-        else if (e.Name.IsEquivalentTo("LooseSprites/JojaCDForm"))
+        else if (e.NameWithoutLocale.IsEquivalentTo("LooseSprites/JojaCDForm"))
             e.Edit(EditJojaCdForm);
-        else if (e.Name.IsEquivalentTo("Data/Bundles"))
+        else if (e.NameWithoutLocale.IsEquivalentTo("Data/Bundles"))
             e.Edit(EditBundleData);
-        else if (e.Name.IsEquivalentTo("Data/ExtraDialogue"))
+        else if (e.NameWithoutLocale.IsEquivalentTo("Data/ExtraDialogue"))
             e.Edit(EditExtraDialogue);
     }
 

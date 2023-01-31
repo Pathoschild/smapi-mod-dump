@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,6 @@ namespace DaLion.Shared.Extensions.Xna;
 #region using directives
 
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 
 #endregion using directives
@@ -146,7 +145,7 @@ public static class Vector2Extensions
     /// <param name="height">The height of the region.</param>
     /// <param name="predicate">The boundary condition.</param>
     /// <returns>The set of points belonging to the region, as <see cref="Vector2"/>.</returns>
-    public static IEnumerable<Vector2> FloodFill(this Vector2 origin, int width, int height, Func<Vector2, bool> predicate)
+    public static IReadOnlyList<Vector2> FloodFill(this Vector2 origin, int width, int height, Func<Vector2, bool> predicate)
     {
         if (origin.X <= 0)
         {
@@ -183,9 +182,12 @@ public static class Vector2Extensions
             }
 
             result.Add(tile);
-            foreach (var neighbor in tile.GetEightNeighbors(width, height).Where(v => !visited.Contains(v)))
+            foreach (var neighbor in tile.GetEightNeighbors(width, height))
             {
-                toVisit.Enqueue(neighbor);
+                if (!visited.Contains(neighbor))
+                {
+                    toVisit.Enqueue(neighbor);
+                }
             }
         }
 

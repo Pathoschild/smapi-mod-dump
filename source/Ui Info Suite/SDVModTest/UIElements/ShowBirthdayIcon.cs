@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UIInfoSuite.Extensions;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using System;
@@ -22,7 +23,7 @@ namespace UIInfoSuite.UIElements
     class ShowBirthdayIcon : IDisposable
     {
         private NPC _birthdayNPC;
-        private ClickableTextureComponent _birthdayIcon;
+        private readonly PerScreen<ClickableTextureComponent> _birthdayIcon = new PerScreen<ClickableTextureComponent>();
         private readonly IModEvents _events;
         private readonly IModHelper _helper;
 
@@ -110,9 +111,9 @@ namespace UIInfoSuite.UIElements
             {
                 if (_birthdayNPC != null)
                 {
-                    Rectangle headShot = _birthdayNPC.GetHeadShot();
-                    Point iconPosition = IconHandler.Handler.GetNewIconPosition();
-                    float scale = 2.9f;
+                    var headShot = _birthdayNPC.GetHeadShot();
+                    var iconPosition = IconHandler.Handler.GetNewIconPosition();
+                    var scale = 2.9f;
 
                     Game1.spriteBatch.Draw(
                         Game1.mouseCursors,
@@ -125,7 +126,7 @@ namespace UIInfoSuite.UIElements
                         SpriteEffects.None,
                         1f);
 
-                    _birthdayIcon =
+                    _birthdayIcon.Value =
                         new ClickableTextureComponent(
                             _birthdayNPC.Name,
                             new Rectangle(
@@ -139,7 +140,7 @@ namespace UIInfoSuite.UIElements
                             headShot,
                             2f);
 
-                    _birthdayIcon.draw(Game1.spriteBatch);
+                    _birthdayIcon.Value.draw(Game1.spriteBatch);
                 }
             }
         }
@@ -150,10 +151,11 @@ namespace UIInfoSuite.UIElements
         private void OnRenderedHud(object sender, RenderedHudEventArgs e)
         {
             // draw hover text
-            if (_birthdayNPC != null &&
-                (_birthdayIcon?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false))
+            if (_birthdayNPC != null && 
+                (_birthdayIcon.Value?.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ?? false))
             {
-                String hoverText = String.Format(_helper.SafeGetString(LanguageKeys.NPCBirthday), _birthdayNPC.Name);
+                var hoverText = string.Format(_helper.SafeGetString(LanguageKeys.NPCBirthday), _birthdayNPC.Name);
+
                 IClickableMenu.drawHoverText(
                     Game1.spriteBatch,
                     hoverText,

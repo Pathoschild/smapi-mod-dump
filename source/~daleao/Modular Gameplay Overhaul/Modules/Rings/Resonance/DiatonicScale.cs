@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -65,9 +65,9 @@ public readonly struct DiatonicScale
     /// <summary>Gets the first <see cref="Gemstone"/> in the <see cref="DiatonicScale"/>.</summary>
     public Gemstone Root => this.Notes[0];
 
-    /// <summary>Gets the <see cref="Gemstone"/> at index <paramref name="i"/>.</summary>
-    /// <param name="i">A <see cref="int"/> index.</param>
-    public Gemstone this[int i] => this.Notes[i % 7];
+    /// <summary>Gets the <see cref="Gemstone"/> at the specified <paramref name="index"/>.</summary>
+    /// <param name="index">A <see cref="int"/> index.</param>
+    public Gemstone this[int index] => this.Notes[index % 7];
 
     /// <summary>Gets the index of the specified <see cref="Gemstone"/> in the current <see cref="DiatonicScale"/>.</summary>
     /// <param name="gemstone">Some <see cref="Gemstone"/>.</param>

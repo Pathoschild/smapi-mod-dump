@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Rings.Patchers;
 
 using System.Linq;
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
-using DaLion.Overhaul.Modules.Arsenal.Extensions;
 using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Harmony;
@@ -44,7 +43,8 @@ internal sealed class GarnetEnchantmentApplyToPatcher : HarmonyPatcher
             return;
         }
 
-        var chord = player.Get_ResonatingChords()
+        var chord = player
+            .Get_ResonatingChords()
             .Where(c => c.Root == Gemstone.Garnet)
             .ArgMax(c => c.Amplitude);
         if (chord is null)

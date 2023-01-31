@@ -10,7 +10,6 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
-using AtraBase.Toolkit.Reflection;
 using AtraCore.Framework.ReflectionManager;
 using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;

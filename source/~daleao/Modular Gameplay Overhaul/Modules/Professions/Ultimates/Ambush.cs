@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -34,7 +34,7 @@ public sealed class Ambush : Ultimate
 
     /// <inheritdoc />
     public override string Description =>
-        I18n.Get(this.Name.ToLower() + ".desc." + (this.IsGrantingCritBuff ? "revealed" : "hidden"));
+        I18n.Get(this.Name.ToLower() + ".desc." + (this.IsActive ? "hidden" : "revealed"));
 
     /// <inheritdoc />
     public override IProfession Profession => Professions.Profession.Poacher;
@@ -62,9 +62,14 @@ public sealed class Ambush : Ultimate
 
         this.SecondsOutOfAmbush = 0d;
 
-        foreach (var monster in Game1.currentLocation.characters.OfType<Monster>()
-                     .Where(m => m.Player?.IsLocalPlayer == true))
+        for (var i = 0; i < Game1.currentLocation.characters.Count; i++)
         {
+            var character = Game1.currentLocation.characters[i];
+            if (character is not Monster { Player.IsLocalPlayer: true } monster)
+            {
+                continue;
+            }
+
             monster.focusedOnFarmers = false;
             switch (monster)
             {
@@ -156,7 +161,7 @@ public sealed class Ambush : Ultimate
                 this.GetType().Name,
                 this.DisplayName)
             {
-                which = buffId,
+                which = buffId - 4,
                 sheetIndex = BackStabSheetIndex,
                 millisecondsDuration = timeLeft * 2,
                 description = this.Description,

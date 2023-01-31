@@ -35,6 +35,8 @@ public class Category {
 	public CaseInsensitiveHashSet? Recipes { get; set; }
 	public string[]? UnwantedRecipes { get; set; }
 
+	public bool IncludeInMisc { get; set; }
+
 	[JsonIgnore]
 	public (IDynamicRuleHandler, object?, DynamicRuleData)[]? CachedRules { get; set; }
 

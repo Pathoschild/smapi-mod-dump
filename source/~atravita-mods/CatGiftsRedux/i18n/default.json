@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+  "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
+  "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled.",
+
+  "PetMessage": "{{Pet}} has brought you a {{Item}}.",
+
+  // GMCM
+  "MinChance.title": "Min Chance",
+  "MinChance.description": "The chance a pet will bring you at minimum hearts.",
+  "MaxChance.title": "Max Chance",
+  "MaxChance.description": "The chance a pet will bring you something at maximum hearts.",
+  "WeeklyLimit.title": "Weekly Limit",
+  "WeeklyLimit.description": "The max number of gifts per week.",
+  "GiftsInRain.title": "Gifts In Rain",
+  "GiftsInRain.description": "Whether or not your pet will bring you gifts if it's raining out.",
+  "MaxPriceForAllItems.title": "Max Price",
+  "MaxPriceForAllItems.description": "Caps the price of items.",
+
+  "PickerWeights.title": "Picker Weights",
+  "PickerWeights.description": "Use these to adjust the mix of items you get.",
+
+  "UserDefinedListWeight.title": "User Defined List",
+  "USerDefinedListWeight.description": "Affects the chance of picking from the user defined list. (See the config.json!)",
+
+  "ForageFromMapsWeight.title": "Forage From Maps",
+  "ForageFromMapsWeight.description": "Affects the chance of picking a random piece of forage from a list of predefined maps.",
+  "AllItemsWeight.title": "All Items",
+  "AllItemsWeight.description": "Affects the chance of picking any random item from the game.",
+  "AnimalProductsWeight.title": "Animal Products",
+  "AnimalProductsWeight.description": "Affects the chance of picking any animal product.",
+  "DailyDishWeight.title": "Daily Dish",
+  "DailyDishWeight.description": "Affects the chance of picking the daily dish.",
+  "HatWeight.title": "Hat",
+  "HatWeight.description": "Affects the chance of picking an unlocked hat.",
+  "ModDefinedWeight.title": "Mod Defined",
+  "ModDefinedWeight.description": "Affects the chance of picking from a list other mods can define.",
+  "OnFarmCropWeight.title": "On Farm Crop",
+  "OnFarmCropWeight.description": "Affects the chance of picking the product from a random crop on the farm.",
+  "RingsWeight.title": "Rings",
+  "RingsWeight.description": "Affects the chance of picking a random ring.",
+  "SeasonalCropsWeight.title": "Seasonal Crop",
+  "SeasonalCropsWeight.description": "Affects the chance of picking a random seasonal crop's product.",
+  "SeasonalFruitWeight.title": "Seasonal Fruit",
+  "SeasonalFruitWeight.description": "Affects the chance of picking a random seasonal fruit tree's product."
+}

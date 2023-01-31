@@ -36,6 +36,21 @@ namespace BinningSkill
         [AssetProperty("assets/upseller.png")]
         public Texture2D Upseller { get; set; }
 
+        // Prestige Icons
+        [AssetProperty("assets/environmentalistP.png")]
+        public Texture2D EnvironmentalistP { get; set; }
+        [AssetProperty("assets/reclaimerP.png")]
+        public Texture2D ReclaimerP { get; set; }
+        [AssetProperty("assets/recyclerP.png")]
+        public Texture2D RecyclerP { get; set; }
+        [AssetProperty("assets/salvagerP.png")]
+        public Texture2D SalvagerP { get; set; }
+        [AssetProperty("assets/sneakP.png")]
+        public Texture2D SneakP { get; set; }
+        [AssetProperty("assets/upsellerP.png")]
+        public Texture2D UpsellerP { get; set; }
+
+
         [AssetProperty("assets/trashtable.json")]
         public Dictionary<string, List<string>> TrashTable { get; set; }
 

@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Demetrius Volcano",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "When":
+        {
+            "HasFlag": "Island_FirstParrot",
+        },
+        "Entries":
+        {
+            "Resort": "The mushrooms around here are extraordinary!$h#$e#I have never seen any mushrooms like these!",
+        }
+    },
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Demetrius": "Rare to see winter storms around here.",
+        }
+    },
+    {
+        "LogName": "Demetrius mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries": {
+            "fallScienceHouse_22_20": "I'd love to talk, @, but I have a grant submission coming up that I need to work on.",
+        },
+        "When": {
+            "YearModulus": "1"
+        }
+    },
+    {
+        "LogName": "Demetrius mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries": {
+            "6_2": "I hope my collaborator can get his edits in soon....$s",
+            "16_2": "It's always reviewer two, isn't it? Always.$a",
+            "ScienceHouse_22_20": "I'm so sorry, @, I've got so much work I need to get done before Monday.",
+            "summerScienceHouse_22_20": "Just need to gather a little more data for a proposal.",
+            "fallMountain_45_8": "Some of these trees are more than a hundred years old. I hope you weren't planning on cutting them down."
+        },
+        "When": {
+            "YearModulus": "2"
+        }
+    },
+    {
+        "LogName": "Demetrius mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries": {
+            "6_2": "Did you see that paper by the %name group out of %place University? Amazing, isn't it?$h",
+            "fallScienceHouse_22_20": "Got a conference coming up, @, hoping I can get myself a talk.",
+            "winterScienceHouse_22_20": "My collaborator claims his equipment is broken again.#$b#We're far closer to the submission deadline for this paper than I'd like..."
+        },
+        "When": {
+            "YearModulus": "3"
+        }
+    }
+]}

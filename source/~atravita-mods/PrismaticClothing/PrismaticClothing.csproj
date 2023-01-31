@@ -2,7 +2,6 @@
   <Import Project="..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -10,7 +9,7 @@
   <PropertyGroup>
     <Name>Prismatic Clothing</Name>
     <Description>The prismatic shard makes clothing prismatic.</Description>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <UpdateKeys>Nexus:13051</UpdateKeys>
     <BaseManifest>..\base_dependencies.json</BaseManifest>
   </PropertyGroup>

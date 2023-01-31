@@ -12,6 +12,8 @@
 
 using Microsoft.Xna.Framework;
 
+#nullable enable
+
 namespace MoreFertilizers;
 
 /// <summary>
@@ -28,6 +30,16 @@ public interface IMoreFertilizersAPI
     /// <param name="tile">Tile to place at.</param>
     /// <returns>True if the fertilizer can be placed, false otherwise.</returns>
     public bool CanPlaceFertilizer(StardewValley.Object obj, GameLocation loc, Vector2 tile);
+
+    /// <summary>
+    /// Checks whether or not a fertilizer can be placed at a specific tile.
+    /// </summary>
+    /// <param name="obj">StardewValley.Object to place.</param>
+    /// <param name="loc">GameLocation to place at.</param>
+    /// <param name="tile">Tile to place at.</param>
+    /// <param name="alert">Whether or not to display a message to the player.</param>
+    /// <returns>True if the fertilizer can be placed, false otherwise.</returns>
+    public bool CanPlaceFertilizer(StardewValley.Object obj, GameLocation loc, Vector2 tile, bool alert);
 
     /// <summary>
     /// Called to place a fertilizer at a specific location/tile.

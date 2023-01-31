@@ -33,7 +33,7 @@
             "Resort_Bar": "Really wish I could have a little something right about now. Guess I'll have to settle for seltzer.#$b#Argh. No one likes seltzer.",
             "Resort_Wander": "Wonder what else I can do on this island?$h",
             "Resort_Bar_2": "Maybe just one drink? I'm on vacation...",
-            "Resort_Umbrella": "I think I'm startin' to burn?",
+            "Resort_Umbrella": "#$c .5#I think I'm startin' to burn?#It's a lot hotter than I'd expected...$s#",
             "Saloon_Entry": null,
             "Saloon_Mon": null,
             "Saloon_Tue": null,
@@ -52,7 +52,7 @@
     {
         "Action": "EditData",
         "Target": "Characters/Dialogue/rainy",
-        "LogName": "Bad Dialogue, rain",
+        "LogName": "Neutral Dialogue, rain",
         "Entries": {
             "Pam": "{{Random: Howdy, kid. Stayin' dry?++Wish I had a nice warm beverage to warm my hands. Or maybe some parsnip soup...++Heya, kiddo, how're you doing on a dreary day like this?|inputSeparator=++}}"
         }
@@ -66,7 +66,8 @@
             "summer_Mon10": "Penny used to ride with me in the summers. We'd travel all over the country.#$b#But it wasn't like we saw anything that wasn't just the highways.#$e#She'd usually read the whole time.",
             "fall_Thu8": "@, what did you want to do when you were a kid?",
             "winter_Tue8": "Kids grow up so fast, don't they? Could've sworn %kid2 was just born yesterday...$h",
-            "winter_Tue8_inlaw_Penny": "#$c 0.5#How are my grandkids doing?$h#I still have difficulty believing I'm a grandma...$h#"
+            "winter_Tue8_inlaw_Penny": "#$c 0.5#How are my grandkids doing?$h#I still have difficulty believing I'm a grandma...$h#",
+            "Resort_Bar": "Say, @, you ever consider bringin' your kids here?",
         },
         "When": {
             "HasValue:{{ChildNames | valueAt=1}}": true

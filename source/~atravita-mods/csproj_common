@@ -1,34 +1,49 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Thanks to DecidedlyHuman! Remove bin and obj automatically with a clean action. 
+  <Target Name="RemoveAutoGenDirs" AfterTargets="Clean">
+    <RemoveDir Directories="$(ProjectDir)bin;$(ProjectDir)obj" />
+  </Target>  -->
+  
   <!--common project properties-->
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>11</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Author>atravita</Author>
-    <MinimumApiVersion>3.15</MinimumApiVersion>
-    <UniqueId>$(Author).$(AssemblyName)</UniqueId>
+    <Authors>atravita</Authors>
+    <MinimumApiVersion>3.18</MinimumApiVersion>
+    <UniqueId>$(Authors).$(AssemblyName)</UniqueId>
     <EntryDll>$(AssemblyName).dll</EntryDll>
+    <GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
+    <GameModsPath>$(GamePath)/Mods</GameModsPath>
   </PropertyGroup>
 
   <PropertyGroup>
     <IgnoreModFilePatterns>\.xcf$</IgnoreModFilePatterns>
     <EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
+    <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
   </PropertyGroup>
+
 
   <!--common packages everyone uses-->
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
-    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3" />
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
 
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+
+    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta06"
+      PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>

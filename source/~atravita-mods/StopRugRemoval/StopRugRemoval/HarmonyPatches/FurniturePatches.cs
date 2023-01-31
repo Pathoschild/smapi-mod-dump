@@ -9,8 +9,11 @@
 *************************************************/
 
 using AtraShared.Utils.Extensions;
+
 using HarmonyLib;
+
 using Microsoft.Xna.Framework;
+
 using StardewValley.BellsAndWhistles;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -34,7 +37,7 @@ internal class FurniturePatches
         try
         {
             if (!ModEntry.Config.Enabled || !ModEntry.Config.PreventRugRemoval
-                || !__result
+                || !__result || ModEntry.Config.FurniturePlacementKey.IsDown()
                 || !__instance.furniture_type.Value.Equals(Furniture.rug)
                 || __0.currentLocation is not GameLocation currentLocation)
             {
@@ -107,8 +110,6 @@ internal class FurniturePatches
         return true;
     }
 #endif
-
-#warning - remember DGA?
 
     /// <summary>
     /// Prefix to prevent objects from accidentally being removed from tables.

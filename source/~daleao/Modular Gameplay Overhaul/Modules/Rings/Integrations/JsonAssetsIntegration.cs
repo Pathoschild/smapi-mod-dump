@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -57,6 +57,6 @@ internal sealed class JsonAssetsIntegration : ModIntegration<JsonAssetsIntegrati
         Globals.GarnetIndex = this.ModApi.GetObjectId("Garnet");
         Globals.GarnetRingIndex = this.ModApi.GetObjectId("Garnet Ring");
         Globals.InfinityBandIndex = this.ModApi.GetObjectId("Infinity Band");
-        Log.D("The IDs for custom items in the Rings module have been assigned.");
+        Log.T("[Rings]: The IDs for custom items in the Rings module have been assigned.");
     }
 }

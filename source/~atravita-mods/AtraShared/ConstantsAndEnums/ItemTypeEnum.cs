@@ -113,10 +113,9 @@ public static class ItemExtensions
     /// <summary>
     /// Gets whether or not something is a DGA item.
     /// </summary>
-    private static Lazy<Func<object, bool>?> isDGAItem = new(() =>
+    private static readonly Lazy<Func<object, bool>?> isDGAItem = new(() =>
     {
-        Type? type = AccessTools.TypeByName("DynamicGameAssets.Game.IDGAItem, DynamicGameAssets");
-        return type?.GetTypeIs();
+        return AccessTools.TypeByName("DynamicGameAssets.Game.IDGAItem, DynamicGameAssets")?.GetTypeIs();
     });
 
     /// <summary>

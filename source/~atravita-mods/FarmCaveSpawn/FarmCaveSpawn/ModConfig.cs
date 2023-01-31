@@ -9,12 +9,14 @@
 *************************************************/
 
 using AtraShared.Integrations.GMCMAttributes;
+using NetEscapades.EnumGenerators;
 
 namespace FarmCaveSpawn;
 
 /// <summary>
 /// How the mod should handle out-of-season fruit.
 /// </summary>
+[EnumExtensions]
 public enum SeasonalBehavior
 {
     /// <summary>
@@ -129,8 +131,13 @@ internal sealed class ModConfig
     /// <summary>
     /// Caps the price of fruit you can get.
     /// </summary>
-    [GMCMRange(0, 1000)]
+    [GMCMRange(0, 1500)]
     public int PriceCap { get; set; } = 200;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not progression mode is active.
+    /// </summary>
+    public bool ProgressionMode { get; set; } = false;
 }
 #pragma warning restore SA1623 // Property summary documentation should match accessors
 #pragma warning restore SA1201 // Elements should appear in the correct order

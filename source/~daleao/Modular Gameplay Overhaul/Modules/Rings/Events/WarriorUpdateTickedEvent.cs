@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Rings.Events;
 
 using System.Collections.Generic;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 
@@ -33,8 +34,10 @@ internal sealed class WarriorUpdateTickedEvent : UpdateTickedEvent
     {
         this._buffId = (Manifest.UniqueID + "Warrior").GetHashCode();
         this._buffSource =
-            ModHelper.GameContent.Load<Dictionary<int, string>>("Data/ObjectInformation")[Constants.WarriorRingIndex]
-                .Split('/')[0];
+            ModHelper.GameContent
+                .Load<Dictionary<int, string>>("Data/ObjectInformation")[Constants.WarriorRingIndex]
+                .SplitWithoutAllocation('/')[0]
+                .ToString();
         this._buffDescription = Game1.content.LoadString("Strings\\StringsFromCSFiles:Buff.cs.468");
     }
 
@@ -44,6 +47,7 @@ internal sealed class WarriorUpdateTickedEvent : UpdateTickedEvent
         var killCount = RingsModule.State.WarriorKillCount;
         if (killCount < 10)
         {
+            this.Disable();
             return;
         }
 

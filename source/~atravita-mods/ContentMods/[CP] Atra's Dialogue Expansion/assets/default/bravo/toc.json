@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "Include",
+        "LogName": "Clint - mid hearts",
+        "FromFile": "assets/default/bravo/Clint/mid.json",
+        "When": {
+            "EnableFor": "Clint",
+            "Query: {{Hearts:Clint}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Emily - mid hearts",
+        "FromFile": "assets/default/bravo/Emily/mid.json",
+        "When": {
+            "EnableFor": "Emily",
+            "Query: {{Hearts:Emily}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Haley - mid hearts",
+        "FromFile": "assets/default/bravo/Haley/mid.json",
+        "When": {
+            "EnableFor": "Haley",
+            "Query: {{Hearts:Haley}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Haley - high hearts",
+        "FromFile": "assets/default/bravo/Haley/high.json",
+        "When": {
+            "EnableFor": "Haley",
+            "Query: {{Hearts:Haley}} >= 8": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Harvey - mid hearts",
+        "FromFile": "assets/default/bravo/Harvey/mid.json",
+        "When": {
+            "EnableFor": "Harvey",
+            "Query: {{Hearts:Harvey}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Jodi - mid hearts",
+        "FromFile": "assets/default/bravo/Jodi/mid.json",
+        "When": {
+            "EnableFor": "Jodi",
+            "Query: {{Hearts:Jodi}} >= 6": true,
+        }
+    }
+]}

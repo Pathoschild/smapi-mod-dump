@@ -34,7 +34,7 @@ internal static class PreventMusicCrash
         {
             return true;
         }
-        if (Game1.soundBank is null || !Context.IsWorldReady)
+        if (Game1.soundBank is null || !Context.IsWorldReady || Game1.soundBank is DummySoundBank)
         {
             return false;
         }
@@ -45,8 +45,8 @@ internal static class PreventMusicCrash
                 SoundBank? soundBankImpl = SoundBankWrapperHandler.GetActualSoundBank(soundBank);
                 if (!SoundBankWrapperHandler.HasCue(soundBankImpl, cue))
                 {
-                    ModEntry.ModMonitor.Log($"Surpressing unknown cue {cue}", LogLevel.Info);
-                    Game1.showRedMessage($"Music cue {cue} surpressed");
+                    ModEntry.ModMonitor.Log($"Suppressing unknown cue {cue}", LogLevel.Info);
+                    Game1.showRedMessage($"Music cue {cue} suppressed");
                     return true;
                 }
             }
@@ -75,7 +75,7 @@ internal static class PreventMusicCrash
             })
             .Advance(1);
 
-            var ldloc = helper.CurrentInstruction.ToLdLoc();
+            CodeInstruction? ldloc = helper.CurrentInstruction.ToLdLoc();
 
             helper.FindNext(new CodeInstructionWrapper[]
             {

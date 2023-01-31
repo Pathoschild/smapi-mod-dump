@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -35,17 +35,32 @@ internal sealed class ToolButtonPressedEvent : ButtonPressedEvent
     /// <inheritdoc />
     protected override void OnButtonPressedImpl(object? sender, ButtonPressedEventArgs e)
     {
-        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null || !e.Button.IsUseToolButton() ||
-            Game1.options.gamepadControls)
+        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null || !e.Button.IsUseToolButton())
         {
             return;
         }
 
         var player = Game1.player;
-        if (player.CurrentTool is Axe or Hoe or Pickaxe or WateringCan && !player.UsingTool &&
-            !player.isRidingHorse() && player.CanMove)
+        if (player.CurrentTool is not { } tool || player.UsingTool || player.isRidingHorse() || !player.CanMove)
+        {
+            return;
+        }
+
+        if (ToolsModule.Config.FaceMouseCursor && !Game1.options.gamepadControls && (tool is not MeleeWeapon weapon || weapon.isScythe()))
         {
             player.FaceTowardsTile(Game1.currentCursorTile);
+        }
+
+        if (!ToolsModule.Config.EnableAutoSelection ||
+            !(ToolsModule.State.SelectableToolByType.ContainsKey(tool.GetType()) ||
+              ArsenalModule.State.SelectableArsenal == tool))
+        {
+            return;
+        }
+
+        if (ToolSelector.TryFor(e.Cursor.GrabTile, Game1.player, Game1.player.currentLocation, out var selectable))
+        {
+            Game1.player.CurrentToolIndex = selectable.Value.Index;
         }
     }
 }

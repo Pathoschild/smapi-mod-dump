@@ -8,15 +8,19 @@
 **
 *************************************************/
 
-namespace AtraShared.ConstantsAndEnums;
+using System.Numerics;
 
-#pragma warning disable SA1602 // Enumeration items should be documented. Should be obvious enough
+using CommunityToolkit.Diagnostics;
+using NetEscapades.EnumGenerators;
+
+namespace AtraShared.ConstantsAndEnums;
 
 /// <summary>
 /// Seasons as flags, typically used for season constraints.
 /// </summary>
 [Flags]
-public enum StardewSeasons : uint
+[EnumExtensions]
+public enum StardewSeasons : byte
 {
     /// <summary>
     /// No season constraints.
@@ -52,24 +56,45 @@ public enum StardewSeasons : uint
 /// <summary>
 /// Extensions for the seasons enum.
 /// </summary>
-public static class SeasonExtensions
+public static partial class SeasonExtensions
 {
     /// <summary>
     /// Parses a list of strings into the season enum.
     /// </summary>
     /// <param name="seasonList">List of strings of seasons...</param>
     /// <returns>Stardew Seasons.</returns>
-    public static StardewSeasons ParseSeasonList(this List<string> seasonList)
+    public static StardewSeasons ParseSeasonList(this IEnumerable<string> seasonList)
     {
+        Guard.IsNotNull(seasonList);
+
         StardewSeasons season = StardewSeasons.None;
         foreach (string? seasonstring in seasonList)
         {
-            if (Enum.TryParse(seasonstring, ignoreCase: true, out StardewSeasons s))
+            if (StardewSeasonsExtensions.TryParse(name: seasonstring.AsSpan().Trim(), value: out StardewSeasons s, ignoreCase: true))
             {
                 season |= s;
             }
         }
         return season;
+    }
+
+    public static bool TryParseSeasonList(this IEnumerable<string> seasonList, out StardewSeasons seasons)
+    {
+        Guard.IsNotNull(seasonList);
+
+        seasons = StardewSeasons.None;
+        foreach (string? seasonstring in seasonList)
+        {
+            if (StardewSeasonsExtensions.TryParse(name: seasonstring.AsSpan().Trim(), value: out StardewSeasons s, ignoreCase: true))
+            {
+                seasons |= s;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /// <summary>
@@ -79,7 +104,10 @@ public static class SeasonExtensions
     /// <returns>Season.</returns>
 #warning - need to fix in Stardew 1.6.
     public static StardewSeasons GetSeasonFromGame(GameLocation? loc)
-        => Utility.getSeasonNumber(Game1.GetSeasonForLocation(loc)) switch
+        => GetSeasonFromIndex(Utility.getSeasonNumber(Game1.GetSeasonForLocation(loc)));
+
+    public static StardewSeasons GetSeasonFromIndex(int index)
+        => index switch
         {
             0 => StardewSeasons.Spring,
             1 => StardewSeasons.Summer,
@@ -87,71 +115,44 @@ public static class SeasonExtensions
             3 => StardewSeasons.Winter,
             _ => StardewSeasons.None,
         };
-}
-
-/// <summary>
-/// Weathers as flags....
-/// </summary>
-[Flags]
-public enum StardewWeather : uint
-{
-    /// <summary>
-    /// No weather contraints.
-    /// </summary>
-    None = 0,
 
     /// <summary>
-    /// Sunny weather.
+    /// Shifts all values in a StardewSeason enum over by one month.
     /// </summary>
-    Sunny = 0b1,
-
-    /// <summary>
-    /// Rain
-    /// </summary>
-    Rainy = 0b10,
-
-    /// <summary>
-    /// Storming.
-    /// </summary>
-    Stormy = 0b100,
-
-    /// <summary>
-    /// Snowing (winter only).
-    /// </summary>
-    Snowy = 0b1000,
-
-    /// <summary>
-    /// Windy weather, usually leaves blowing around the screen.
-    /// </summary>
-    Windy = 0b10000,
-
-    /// <summary>
-    /// All weathers.
-    /// </summary>
-    All = Sunny | Rainy | Stormy | Snowy | Windy,
-}
-#pragma warning restore SA1602 // Enumeration items should be documented
-
-/// <summary>
-/// Extensions for the weather enum.
-/// </summary>
-public static class WeatherExtensions
-{
-    /// <summary>
-    /// Gets a list of strings and parses them to the weatherenum.
-    /// </summary>
-    /// <param name="weatherList">List of strings of weathers....</param>
-    /// <returns>Enum.</returns>
-    public static StardewWeather ParseWeatherList(this List<string> weatherList)
+    /// <param name="seasons">Initial seasons.</param>
+    /// <returns>Seasons shifted by one.</returns>
+    public static StardewSeasons GetNextSeason(this StardewSeasons seasons)
     {
-        StardewWeather weather = StardewWeather.None;
-        foreach (string? weatherstring in weatherList)
+        int shifted = (byte)seasons << 1;
+
+        if (seasons.HasFlag(StardewSeasons.Winter))
         {
-            if (Enum.TryParse(weatherstring, ignoreCase: true, out StardewWeather w))
-            {
-                weather |= w;
-            }
+            shifted |= 0b1;
         }
-        return weather;
+        shifted &= 0b1111;
+        return (StardewSeasons)shifted;
     }
+
+    public static StardewSeasons GetPreviousSeason(this StardewSeasons seasons)
+    {
+        int shifted = (byte)seasons >> 1;
+        if (seasons.HasFlag(StardewSeasons.Spring))
+        {
+            shifted |= 0b1000;
+        }
+        shifted &= 0b1111;
+        return (StardewSeasons)shifted;
+    }
+
+    public static int CountSeasons(this StardewSeasons seasons) => BitOperations.PopCount((uint)seasons);
+
+    public static int ToSeasonIndex(this StardewSeasons seasons)
+        => seasons switch
+        {
+            StardewSeasons.Spring => 0,
+            StardewSeasons.Summer => 1,
+            StardewSeasons.Fall => 2,
+            StardewSeasons.Winter => 3,
+            _ => ThrowHelper.ThrowArgumentException<int>("Expected a single season.")
+        };
 }

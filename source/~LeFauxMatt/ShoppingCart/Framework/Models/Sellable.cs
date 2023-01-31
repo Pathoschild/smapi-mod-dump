@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using StardewMods.Common.Extensions;
 using StardewMods.Common.Integrations.ShoppingCart;
-using StardewMods.ShoppingCart.Framework;
 using StardewValley.Menus;
 
 /// <summary>
@@ -86,8 +85,8 @@ internal sealed class Sellable : ICartItem
             // Stack Quality Integration
             if (Integrations.StackQuality.IsLoaded
              && inventory[i] is SObject obj
-             && Integrations.StackQuality.API.EquivalentObjects(obj, this.Item)
-             && Integrations.StackQuality.API.GetStacks(obj, out var stacks))
+             && Integrations.StackQuality.Api.EquivalentObjects(obj, this.Item)
+             && Integrations.StackQuality.Api.GetStacks(obj, out var stacks))
             {
                 var quality = ((SObject)this.Item).Quality;
                 toTake = Math.Min(quantity, stacks[quality == 4 ? 3 : quality]);
@@ -100,7 +99,7 @@ internal sealed class Sellable : ICartItem
                     continue;
                 }
 
-                Integrations.StackQuality.API.UpdateStacks(obj, stacks);
+                Integrations.StackQuality.Api.UpdateStacks(obj, stacks);
                 continue;
             }
 
@@ -131,7 +130,7 @@ internal sealed class Sellable : ICartItem
         var obj = heldItem as SObject;
         var available = obj is not null
                      && Integrations.StackQuality.IsLoaded
-                     && Integrations.StackQuality.API.GetStacks(obj, out var stacks)
+                     && Integrations.StackQuality.Api.GetStacks(obj, out var stacks)
             ? stacks[obj.Quality == 4 ? 3 : obj.Quality]
             : heldItem.Stack > 0
                 ? heldItem.Stack
@@ -146,8 +145,8 @@ internal sealed class Sellable : ICartItem
 
             if (obj is not null
              && Integrations.StackQuality.IsLoaded
-             && Integrations.StackQuality.API.EquivalentObjects(obj, item)
-             && Integrations.StackQuality.API.GetStacks((SObject)item, out stacks))
+             && Integrations.StackQuality.Api.EquivalentObjects(obj, item)
+             && Integrations.StackQuality.Api.GetStacks((SObject)item, out stacks))
             {
                 available += stacks[obj.Quality == 4 ? 3 : obj.Quality];
                 continue;

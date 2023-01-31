@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Multiplayer;
 
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -39,8 +40,7 @@ internal sealed class HostRequestedModMessageReceivedEvent : ModMessageReceivedE
             return;
         }
 
-        var split = e.ReadAs<string>().Split('/');
-        var request = split[0];
+        var request = e.ReadAs<string>().SplitWithoutAllocation('/')[0].ToString();
         var who = Game1.getFarmer(e.FromPlayerID);
         if (who is null)
         {
@@ -51,7 +51,7 @@ internal sealed class HostRequestedModMessageReceivedEvent : ModMessageReceivedE
         switch (request)
         {
             case "HuntIsOn":
-                Log.D($"Prestiged treasure hunter {who.Name} is hunting for treasure.");
+                Log.D($"[Prestige]: {who.Name} is hunting for treasure. Time will be frozen for the duration.");
                 this.Manager.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
                 break;
         }

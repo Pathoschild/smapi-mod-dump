@@ -17,6 +17,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Color = Microsoft.Xna.Framework.Color;
+
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -26,6 +29,7 @@ using Netcode;
 using DynamicBodies.Data;
 using DynamicBodies.Framework;
 using StardewValley.Objects;
+using System.Drawing;
 
 namespace DynamicBodies.Patches
 {
@@ -95,18 +99,15 @@ namespace DynamicBodies.Patches
                     return;//Abort
                 }
             }
-            if(field == "shirt" || field == "shoes")
-            {
-                //pbe.cacheImage = null;
-                
-            }
             if(field == "shirt")
             {
+                if (ModEntry.dga != null) DGAItems.ShirtFixes(who.shirtItem.Get());
                 pbe.dirtyLayers["shirt"] = true;
                 //pbe.shirt = -1;//force shirt change
             }
             if(field == "shoes")
             {
+                if (ModEntry.dga != null) DGAItems.ShoeFixes(who.boots.Get());
                 pbe.dirtyLayers["shoes"] = true;
                 pbe.shoes = -1;//force shoe change
             }
@@ -116,8 +117,14 @@ namespace DynamicBodies.Patches
                 //Update stored pants colour, darken it
                 if(who.pantsItem.Value != null)
                 {
+                    if (ModEntry.dga != null) DGAItems.PantsFixes(who.pantsItem.Get());
                     pbe.paletteCache[16] = changeBrightness(who.pantsColor.Value, new Color(50,50,50), false).ToVector4();
                 }
+            }
+
+            if (field == "hat")
+            {
+                if (ModEntry.dga != null) DGAItems.HatFixes(who.hat.Get());
             }
 
             pbe.dirty = true;
@@ -167,6 +174,7 @@ namespace DynamicBodies.Patches
         }
 
         //Replace the drawing of Farmer Renderer
+        [HarmonyBefore(new string[] { "spacechase0.DynamicGameAssets" })]
         private static bool pre_Draw(FarmerRenderer __instance, ref Vector2 ___positionOffset, ref Vector2 ___rotationAdjustment, ref bool ____sickFrame, ref bool ____spriteDirty, ref bool ____eyesDirty, ref bool ____shirtDirty, ref bool ____pantsDirty, ref bool ____shoesDirty, ref bool ____skinDirty, ref bool ____baseTextureDirty, ref LocalizedContentManager ___farmerTextureManager, ref Dictionary<string, Dictionary<int, List<int>>> ____recolorOffsets, ref Texture2D ___baseTexture, ref string ___textureName, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
         {
             if (who.isFakeEventActor && Game1.eventUp)
@@ -415,6 +423,11 @@ namespace DynamicBodies.Patches
 
             bool drawPants = true;
             Texture2D nakedLowerTexture = pbe.GetNakedLowerTexture();
+            Texture2D pantsTexture = FarmerRenderer.pantsTexture;
+            if (pbe.body.textures.ContainsKey("pants") && pbe.body.textures["pants"] != null)
+            {
+                pantsTexture = pbe.body.textures["pants"];
+            }
             if (who.GetPantsIndex() == 14 || who.pantsItem.Value == null)
             {
                 
@@ -430,7 +443,20 @@ namespace DynamicBodies.Patches
                     drawPants = who.modData["DB.bathers"] == "true";
                 }
             }
-            if (drawPants) AdjustedVanillaMethods.drawPants(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
+            bool pants_not_drawn = true;
+            if (ModEntry.dga != null)
+            {
+                Texture2D pantsTextureDGA = GetFarmerPants(who.pantsItem.Get(), pbe.body.name);
+                if (pantsTextureDGA != null)
+                {
+                    pants_not_drawn = false;
+                    int pantIndex = DGAItems.GetDGAPants(ModEntry.dga.GetDGAItemId(who.pantsItem.Get())).GetIndex(pbe.body.name);
+
+                    AdjustedVanillaMethods.drawPants(pantsTextureDGA, pantIndex, ___positionOffset, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
+                }
+            }
+
+            if (drawPants && pants_not_drawn) AdjustedVanillaMethods.drawPants(pantsTexture, AdjustedVanillaMethods.ClampPants(who), ___positionOffset, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             if (nakedLowerTexture != null && pbe.nakedLower.CheckForOption("below accessories")) DrawLowerNaked(__instance, ___positionOffset, ___rotationAdjustment, ___baseTexture, animationFrame, sourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, 9.2E-08f, 9.2E-08f);
             AdjustedVanillaMethods.drawEyes(__instance, ref ___rotationAdjustment, ref ___positionOffset, ref pbe.cacheImage, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             //ensure subsequent layers are above the eyes
@@ -1032,29 +1058,101 @@ namespace DynamicBodies.Patches
         private static void UpdateShoePalette(Farmer who, PlayerBaseExtended pbe)
         {
             Boots boots = who.boots.Value;
+            
             if (boots != null)
             {
-                int which = boots.indexInColorSheet.Value;
 
-                Texture2D shoeColors = Game1.content.Load<Texture2D>("Characters\\Farmer\\shoeColors");
-                Color[] shoeColorsData = new Color[shoeColors.Width * shoeColors.Height];
-                shoeColors.GetData(shoeColorsData);
-                pbe.paletteCache[12] = shoeColorsData[which * 4 % (shoeColors.Height * 4)].ToVector4();
-                pbe.paletteCache[13] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 1].ToVector4();
-                pbe.paletteCache[14] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 2].ToVector4();
-                pbe.paletteCache[15] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 3].ToVector4();
+                if (ModEntry.dga != null)
+                {
+                    string colorID = boots.indexInColorSheet.Value+"";//Start with default
+                    if (ModEntry.dga.GetDGAItemId(boots) != null && !boots.modData.ContainsKey("DGA.FarmerColors"))
+                    {
+                        boots.modData["DGA.FarmerColors"] = ModEntry.dga.GetDGAItemId(boots);
+                        ModEntry.debugmsg("DGA boots palette stored on item", LogLevel.Debug);
+                    }
+
+                    if (boots.modData.ContainsKey("DGA.FarmerColors")) { colorID = boots.modData["DGA.FarmerColors"]; }
+                    else { boots.modData["DGA.FarmerColors"] = colorID; }
+
+                    Color[] shoeColors = ShoesPalette.GetColors(colorID);
+                    pbe.paletteCache[12] = shoeColors[0].ToVector4();
+                    pbe.paletteCache[13] = shoeColors[1].ToVector4();
+                    pbe.paletteCache[14] = shoeColors[2].ToVector4();
+                    pbe.paletteCache[15] = shoeColors[3].ToVector4();
+                }
+                else
+                {
+                    int which = boots.indexInColorSheet.Value;
+
+                    Texture2D shoeColors = Game1.content.Load<Texture2D>("Characters\\Farmer\\shoeColors");
+                    Color[] shoeColorsData = new Color[shoeColors.Width * shoeColors.Height];
+                    shoeColors.GetData(shoeColorsData);
+                    pbe.paletteCache[12] = shoeColorsData[which * 4 % (shoeColors.Height * 4)].ToVector4();
+                    pbe.paletteCache[13] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 1].ToVector4();
+                    pbe.paletteCache[14] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 2].ToVector4();
+                    pbe.paletteCache[15] = shoeColorsData[which * 4 % (shoeColors.Height * 4) + 3].ToVector4();
+                }
             }
+        }
+
+        public static Texture2D GetFarmerShirt(Farmer who, Item shirt, bool color = false, bool overlay = false, string bodystyle = "")
+        {
+            if (ModEntry.dga == null) return null;
+
+            Texture2D toReturn = null;
+            string shirt_id = ModEntry.dga.GetDGAItemId(shirt);
+            if (shirt_id == null)
+            {
+                return toReturn;
+            }
+            else { 
+                if(DGAItems.GetDGAShirt(shirt_id) != null)
+                {
+                    toReturn = DGAItems.GetDGAShirt(shirt_id).GetTexture(who.isMale, color, overlay, bodystyle);
+                }
+            }
+            return toReturn;
+        }
+
+        public static Texture2D GetFarmerPants(Item pants, string bodystyle = "")
+        {
+            if (ModEntry.dga == null) return null;
+
+            Texture2D toReturn = null;
+            string pants_id = ModEntry.dga.GetDGAItemId(pants);
+            if (pants_id == null)
+            {
+                return toReturn;
+            }
+            else
+            {
+                if (DGAItems.GetDGAPants(pants_id) != null)
+                {
+                    toReturn = DGAItems.GetDGAPants(pants_id).GetTexture(bodystyle);
+                }
+            }
+            return toReturn;
         }
 
         private static void UpdateShirtPalette(Farmer who, PlayerBaseExtended pbe)
         {
             if (who.shirtItem.Get() == null) return; //Shirt was removed so no need to change the colour
 
-            Color[] shirtData = new Color[FarmerRenderer.shirtsTexture.Bounds.Width * FarmerRenderer.shirtsTexture.Bounds.Height];
-            FarmerRenderer.shirtsTexture.GetData(shirtData);
+            Texture2D shirtsTexture = GetFarmerShirt(who, who.shirtItem.Get());
+            if(shirtsTexture == null) shirtsTexture = FarmerRenderer.shirtsTexture;
 
-            int index = AdjustedVanillaMethods.ClampShirt(who.GetShirtIndex()) * 8 / 128 * 32 * FarmerRenderer.shirtsTexture.Bounds.Width + AdjustedVanillaMethods.ClampShirt(who.GetShirtIndex()) * 8 % 128 + FarmerRenderer.shirtsTexture.Width * 4;
+            Color[] shirtData = new Color[shirtsTexture.Bounds.Width * shirtsTexture.Bounds.Height];
+            shirtsTexture.GetData(shirtData);
+
+            int index = AdjustedVanillaMethods.ClampShirt(who.GetShirtIndex()) * 8 / 128 * 32 * shirtsTexture.Bounds.Width + AdjustedVanillaMethods.ClampShirt(who.GetShirtIndex()) * 8 % 128 + shirtsTexture.Width * 4;
+            
             int dye_index = index + 128;
+            //for custom shirts
+            if (shirtsTexture.Bounds.Width <= 8)
+            {
+                index = shirtsTexture.Width * 4;
+                dye_index = index;
+            }
 
             //Sleeveless is handles by textures now, so no logic here for that
 
@@ -1069,19 +1167,19 @@ namespace DynamicBodies.Patches
             shirtSleeveColor = Utility.MultiplyColor(shirtSleeveColor, clothes_color);
             pbe.paletteCache[0] = shirtSleeveColor.ToVector4();
 
-            shirtSleeveColor = shirtData[dye_index - FarmerRenderer.shirtsTexture.Width];
+            shirtSleeveColor = shirtData[dye_index - shirtsTexture.Width];
             if (shirtSleeveColor.A < byte.MaxValue)
             {
-                shirtSleeveColor = shirtData[index - FarmerRenderer.shirtsTexture.Width];
+                shirtSleeveColor = shirtData[index - shirtsTexture.Width];
                 clothes_color = Color.White;
             }
             shirtSleeveColor = Utility.MultiplyColor(shirtSleeveColor, clothes_color);
             pbe.paletteCache[1] = shirtSleeveColor.ToVector4();
 
-            shirtSleeveColor = shirtData[dye_index - FarmerRenderer.shirtsTexture.Width * 2];
+            shirtSleeveColor = shirtData[dye_index - shirtsTexture.Width * 2];
             if (shirtSleeveColor.A < byte.MaxValue)
             {
-                shirtSleeveColor = shirtData[index - FarmerRenderer.shirtsTexture.Width * 2];
+                shirtSleeveColor = shirtData[index - shirtsTexture.Width * 2];
                 clothes_color = Color.White;
             }
             shirtSleeveColor = Utility.MultiplyColor(shirtSleeveColor, clothes_color);
@@ -1163,16 +1261,48 @@ namespace DynamicBodies.Patches
                 //Draw the shirts
                 if (!who.bathingClothes.Value && who.shirtItem.Get() != null)
                 {
+                    bool shirt_not_drawn = true;
+                    int shirtindex = -1;
                     Texture2D shirtsTexture = FarmerRenderer.shirtsTexture;
                     if (pbe.body.textures.ContainsKey("shirt") && pbe.body.textures["shirt"] != null)
                     {
                         shirtsTexture = pbe.body.textures["shirt"];
                     }
 
-                    AdjustedVanillaMethods.DrawShirt(__instance, shirtsTexture, ___positionOffset, ___rotationAdjustment, ref ___shirtSourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
+                    if(ModEntry.dga != null)
+                    {
+                        Texture2D shirtsTextureDGA = GetFarmerShirt(who, who.shirtItem.Get(), false, false, pbe.body.name);
+                        if (shirtsTextureDGA != null)
+                        {
+                            shirt_not_drawn = false;
+                            shirtsTexture = shirtsTextureDGA;
+                            shirtindex = DGAItems.GetDGAShirt(ModEntry.dga.GetDGAItemId(who.shirtItem.Get())).GetIndex(who.isMale, false, false, pbe.body.name);
+
+                            AdjustedVanillaMethods.DrawShirt(__instance, shirtsTexture, ___positionOffset, ___rotationAdjustment, ref ___shirtSourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth, false, shirtindex);
+                            //try color layer
+                            shirtsTextureDGA = GetFarmerShirt(who, who.shirtItem.Get(), true, false, pbe.body.name);
+                            if (shirtsTextureDGA != null)
+                            {
+                                shirtindex = DGAItems.GetDGAShirt(ModEntry.dga.GetDGAItemId(who.shirtItem.Get())).GetIndex(who.isMale, true, false, pbe.body.name);
+
+                                AdjustedVanillaMethods.DrawShirt(__instance, shirtsTextureDGA, ___positionOffset, ___rotationAdjustment, ref ___shirtSourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth + 1.2E-07f, false, shirtindex);
+                            }
+
+                            //try overlay layer
+                            shirtsTextureDGA = GetFarmerShirt(who, who.shirtItem.Get(), false, true, pbe.body.name);
+                            if (shirtsTextureDGA != null && who.pants.Value != 14 && who.pantsItem.Get() != null && who.pantsItem.Get().dyeable)
+                            {
+                                shirtindex = DGAItems.GetDGAShirt(ModEntry.dga.GetDGAItemId(who.shirtItem.Get())).GetIndex(who.isMale, false, true, pbe.body.name);
+
+                                AdjustedVanillaMethods.DrawShirt(__instance, shirtsTextureDGA, ___positionOffset, ___rotationAdjustment, ref ___shirtSourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor.Equals(Color.White) ? Utility.MakeCompletelyOpaque(who.GetPantsColor()) : overrideColor, layerDepth + 1.2E-07f + 1.4E-07f, false, shirtindex);
+                            }
+                        }
+                    }
+
+                    if(shirt_not_drawn) AdjustedVanillaMethods.DrawShirt(__instance, shirtsTexture, ___positionOffset, ___rotationAdjustment, ref ___shirtSourceRect, b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
 
                     //layerDepth += 1.4E-07f;
-                    if (who.modData.ContainsKey("DB.overallColor") && who.modData["DB.overallColor"] == "true")
+                    if (shirt_not_drawn && who.modData.ContainsKey("DB.overallColor") && who.modData["DB.overallColor"] == "true")
                     {
                         if (who.pants.Value != 14 && who.pantsItem.Get() != null && who.pantsItem.Get().dyeable)
                         {

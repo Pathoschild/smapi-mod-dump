@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.IO;
 using Farmtronics.Bot;
 using Farmtronics.M1;
@@ -62,6 +61,7 @@ namespace Farmtronics
 			helper.Events.Multiplayer.PeerContextReceived += MultiplayerManager.OnPeerContextReceived;
 			helper.Events.Multiplayer.PeerConnected += MultiplayerManager.OnPeerConnected;
 			helper.Events.Multiplayer.PeerDisconnected += MultiplayerManager.OnPeerDisconnected;
+			helper.Events.Player.Warped += BotManager.FindLostInstancesOnWarp;
 			
 			Assets.Initialize(helper);
 			Monitor.Log($"Loaded fontAtlas with size {Assets.FontAtlas.Width}x{Assets.FontAtlas.Height}");
@@ -183,7 +183,7 @@ namespace Farmtronics
 			var dlog = e.NewMenu as DialogueBox;
 			if (dlog == null) return;
 			if (!dlog.isQuestion || dlog.responses[0].responseKey != "Weather") return;
-			// Only allow players to use the home computer at their own cabin
+			// Only allow players to use the home computer at their own s
 			if (Game1.player.currentLocation.NameOrUniqueName != Game1.player.homeLocation.Value) return;
 
 			// TV menu: insert a new option for the Home Computer
@@ -218,10 +218,11 @@ namespace Farmtronics
 			if (Context.IsMainPlayer) {
 				SaveData.CreateSaveDataDirs();
 				if (SaveData.IsOldSaveDirPresent()) SaveData.MoveOldSaveDir();
-				ModEntry.instance.Monitor.Log($"Setting host player ID: {Game1.player.UniqueMultiplayerID}");
+				Debug.Log($"Setting host player ID: {Game1.player.UniqueMultiplayerID}");
 				MultiplayerManager.hostID = Game1.player.UniqueMultiplayerID;
 			}
 			BotManager.ConvertChestsToBots();
+			if (shell != null) shell.name = PerPlayerData.HomeComputerName;
 		}
 
 		public void OnDayStarted(object sender, DayStartedEventArgs args) {
@@ -253,7 +254,7 @@ namespace Farmtronics
 		private void InitComputerShell() {
 			if (shell == null) {
 				shell = new Shell();
-				shell.name = "Home Computer";
+				shell.name = PerPlayerData.HomeComputerName;
 				shell.Init(Game1.player.UniqueMultiplayerID);
 			}
 		}

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -46,13 +46,13 @@ internal sealed class Game1DrawHudPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Farmer.tracker) // find index of tracker check
+                .MatchProfessionCheck(Farmer.tracker) // find index of tracker check
                 .Move(-1)
                 .GetLabels(out var leave) // the exception block leave opcode destination
                 .GoTo(helper.LastIndex)
                 .GetLabels(out var labels) // get the labels of the final return instruction
                 .Return()
-                .Match(
+                .Count(
                     new[] { new CodeInstruction(OpCodes.Ret) },
                     out var count) // remove everything after the profession check up until the return instruction
                 .Remove(count - 1)

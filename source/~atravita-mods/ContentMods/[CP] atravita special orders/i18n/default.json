@@ -300,6 +300,23 @@
     "atravita.essence.mail.title": "Monster Essence thank-you note",
 
 // **************
+// Hot Foods
+// *************
+
+    "atravita.hotfoods.name": "Some Like It Hot.",
+    "atravita.hotfoods.text": "Looking for help catering! Let's get grab some fresh fish, cook up some seafood dishes, and hand them out around town!",
+    "atravita.hotfoods.collect_tuna": "Fish up a tuna.",
+    "atravita.hotfoods.collect_flounder": "Fish up a flounder.",
+    "atravita.hotfoods.collect_sunfish": "Fish up a sunfish.",
+    "atravita.hotfoods.collect_rainbow_trout": "Fish up a rainbow trout.",
+    "atravita.hotfoods.cook": "Cook 30 seafood dishes.",
+    "atravita.hotfoods.gift": "Gift 10 liked seafood dishes.",
+    "atravita.hotfoods.donate": "Place the remainder of the seafood dishes in the fridge in the saloon.",
+
+    "atravita.hotfoods.mail.text": "Thanks for helping me throw the bash! I've attached some items that'll help you make great seafood!",
+    "atravita.hotfoods.mail.title": "Hot Foods thank-you note",
+
+// **************
 // In a Jam
 // **************
     "atravita.in_a_jam.name": "In A Jam",

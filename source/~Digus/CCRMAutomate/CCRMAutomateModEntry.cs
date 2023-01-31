@@ -20,12 +20,16 @@ namespace CCRMAutomate
         internal static IMonitor ModMonitor { get; set; }
         internal new static IModHelper Helper { get; set; }
 
+        public static ModConfig ModConfig;
+
         public override void Entry(IModHelper helper)
         {
             ModMonitor = Monitor;
             Helper = helper;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+
+            ModConfig = Helper.ReadConfig<CCRMAutomate.ModConfig>();
         }
 
         /*********

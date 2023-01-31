@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -26,7 +26,7 @@ using HarmonyLib;
 
 [UsedImplicitly]
 [RequiresMod("Pathoschild.Automate")]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class FruitTreeMachineGetOutputPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="FruitTreeMachineGetOutputPatcher"/> class.</summary>
@@ -71,17 +71,17 @@ internal sealed class FruitTreeMachineGetOutputPatcher : HarmonyPatcher
                     new[] { new CodeInstruction(OpCodes.Ldloc_0) },
                     labels)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldloc_0) })
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out var count)
                 .Remove(count)
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
                 .Remove(count)
-                .Match(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
+                .Count(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
                 .Remove(count)
                 .StripLabels();
         }
         catch (Exception ex)
         {
-            Log.E("Immersive Tweaks failed customizing automated fruit tree age quality factor." +
+            Log.E("Tweex module failed customizing automated fruit tree age quality factor." +
                   "\n—-- Do NOT report this to Automate's author. ---" +
                   $"\nHelper returned {ex}");
             return null;

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using NetEscapades.EnumGenerators;
+
 namespace PamTries;
 
 #pragma warning disable SA1300 // Element should begin with upper-case letter
@@ -15,6 +17,7 @@ namespace PamTries;
 /// <summary>
 /// Enum for Pam's mood.
 /// </summary>
+[EnumExtensions]
 internal enum PamMood
 {
     bad,

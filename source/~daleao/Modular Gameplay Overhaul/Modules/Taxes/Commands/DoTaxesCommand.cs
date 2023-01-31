@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,9 +37,9 @@ internal sealed class DoTaxesCommand : ConsoleCommand
         "Check accounting stats for the current season-to-date, or the closing season if checking on the 1st day of the season.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
-        if (!Enum.TryParse<Season>(Game1.currentSeason, true, out var currentSeason))
+        if (!SeasonExtensions.TryParse(Game1.currentSeason, true, out var currentSeason))
         {
             Log.E($"Failed to parse the current season {Game1.currentSeason}");
             return;
@@ -59,18 +59,19 @@ internal sealed class DoTaxesCommand : ConsoleCommand
 
         var dueF = 0f;
         var bracket = 0f;
+        var temp = taxable;
         for (var i = 0; i < 7; i++)
         {
             bracket = RevenueService.Brackets[i];
             var threshold = RevenueService.Thresholds[bracket];
-            if (taxable > threshold)
+            if (temp > threshold)
             {
                 dueF += threshold * bracket;
-                taxable -= threshold;
+                temp -= threshold;
             }
             else
             {
-                dueF += taxable * bracket;
+                dueF += temp * bracket;
                 break;
             }
         }

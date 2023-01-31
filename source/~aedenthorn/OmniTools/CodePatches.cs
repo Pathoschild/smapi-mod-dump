@@ -10,44 +10,29 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Monsters;
-using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Windows.Input;
-using xTile.Dimensions;
-using Object = StardewValley.Object;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace OmniTools
 {
     public partial class ModEntry
     {
-
-        [HarmonyPatch(typeof(WateringCan), nameof(WateringCan.drawInMenu))]
-        public class WateringCan_drawInMenu_Patch
+        [HarmonyPatch(typeof(Item), nameof(Item.canBeTrashed))]
+        public class Item_canBeTrashed_Patch
         {
-            public static void Postfix(Tool __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
+            public static void Postfix(Item __instance, ref bool __result)
             {
-                if (!Config.EnableMod || !Config.ShowNumber || !__instance.modData.TryGetValue(toolsKey, out string toolsString))
+                if (!Config.EnableMod || !__result || !__instance.modData.ContainsKey(toolsKey))
                     return;
-                var count = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count + 1;
-                Utility.drawTinyDigits(count, spriteBatch, location + new Vector2(4, 0), 3f * scaleSize, 1f, Config.NumberColor);
+                __result = false;
             }
         }
         [HarmonyPatch(typeof(Slingshot), nameof(Slingshot.drawInMenu))]
@@ -57,7 +42,12 @@ namespace OmniTools
             {
                 if (!Config.EnableMod || !Config.ShowNumber || !__instance.modData.TryGetValue(toolsKey, out string toolsString))
                     return;
-                var count = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count + 1;
+                if(!__instance.modData.TryGetValue(toolCountKey, out string countString))
+                {
+                    countString = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count.ToString();
+                    __instance.modData[toolCountKey] = countString;
+                }
+                var count = int.Parse(countString) + 1;
                 Utility.drawTinyDigits(count, spriteBatch, location + new Vector2(4, 0), 3f * scaleSize, 1f, Config.NumberColor);
             }
         }
@@ -68,7 +58,12 @@ namespace OmniTools
             {
                 if (!Config.EnableMod || !Config.ShowNumber || !__instance.modData.TryGetValue(toolsKey, out string toolsString))
                     return;
-                var count = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count + 1;
+                if (!__instance.modData.TryGetValue(toolCountKey, out string countString))
+                {
+                    countString = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count.ToString();
+                    __instance.modData[toolCountKey] = countString;
+                }
+                var count = int.Parse(countString) + 1;
                 Utility.drawTinyDigits(count, spriteBatch, location + new Vector2(4, 0), 3f * scaleSize, 1f, Config.NumberColor);
             }
         }
@@ -77,9 +72,14 @@ namespace OmniTools
         {
             public static void Postfix(Tool __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
             {
-                if (!Config.EnableMod || !Config.ShowNumber || __instance is WateringCan || !__instance.modData.TryGetValue(toolsKey, out string toolsString))
+                if (!Config.EnableMod || !Config.ShowNumber || !__instance.modData.TryGetValue(toolsKey, out string toolsString))
                     return;
-                var count = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count + 1;
+                if (!__instance.modData.TryGetValue(toolCountKey, out string countString))
+                {
+                    countString = JsonConvert.DeserializeObject<List<ToolInfo>>(toolsString).Count.ToString();
+                    __instance.modData[toolCountKey] = countString;
+                }
+                var count = int.Parse(countString) + 1;
                 Utility.drawTinyDigits(count, spriteBatch, location + new Vector2(4, 0), 3f * scaleSize, 1f, Config.NumberColor);
             }
         }
@@ -123,9 +123,12 @@ namespace OmniTools
                         if (c.containsPoint(mouse.X, mouse.Y))
                         {
                             int slotNumber = Convert.ToInt32(c.name);
-                            if (slotNumber >= inv.actualInventory.Count || inv.actualInventory[slotNumber] is null || !inv.actualInventory[slotNumber].modData.TryGetValue(toolsKey, out string toolsString))
+                            if (slotNumber >= inv.actualInventory.Count || inv.actualInventory[slotNumber] is not Tool || !inv.actualInventory[slotNumber].modData.TryGetValue(toolsKey, out string toolsString))
                                 return;
-                            inv.actualInventory[slotNumber] = CycleTool(inv.actualInventory[slotNumber] as Tool, toolsString);
+                            var newTool = CycleTool(inv.actualInventory[slotNumber] as Tool, toolsString);
+                            if(slotNumber == Game1.player.CurrentToolIndex)
+                                UpdateEnchantments(Game1.player, inv.actualInventory[slotNumber] as Tool, newTool);
+                            inv.actualInventory[slotNumber] = newTool;
                             return;
                         }
                     }
@@ -137,9 +140,12 @@ namespace OmniTools
                         if (c.containsPoint(mouse.X, mouse.Y))
                         {
                             int slotNumber = Convert.ToInt32(c.name);
-                            if (slotNumber >= inv.actualInventory.Count || inv.actualInventory[slotNumber] is null || !inv.actualInventory[slotNumber].modData.TryGetValue(toolsKey, out string toolsString))
+                            if (slotNumber >= inv.actualInventory.Count || inv.actualInventory[slotNumber] is not Tool || !inv.actualInventory[slotNumber].modData.TryGetValue(toolsKey, out string toolsString))
                                 return;
-                            inv.actualInventory[slotNumber] = RemoveTool(inv.actualInventory[slotNumber] as Tool, toolsString);
+                            var newTool = RemoveTool(inv.actualInventory[slotNumber] as Tool, toolsString);
+                            if (slotNumber == Game1.player.CurrentToolIndex)
+                                UpdateEnchantments(Game1.player, inv.actualInventory[slotNumber] as Tool, newTool);
+                            inv.actualInventory[slotNumber] = newTool;
                             return;
                         }
                     }
@@ -190,6 +196,7 @@ namespace OmniTools
                         Game1.playSound(GetToolSound(toPlace as Tool));
                         list.Add(new ToolInfo(toPlace as Tool));
                         __instance.actualInventory[slotNumber].modData[toolsKey] = JsonConvert.SerializeObject(list);
+                        __instance.actualInventory[slotNumber].modData[toolCountKey] = list.Count + "";
                         return false;
                     }
                 }
@@ -210,6 +217,7 @@ namespace OmniTools
                 Tool t = SmartSwitch(__instance.CurrentTool, __instance.currentLocation, tile, tools);
                 if (t is not null)
                 {
+                    UpdateEnchantments(__instance, __instance.CurrentTool, t);
                     __instance.CurrentTool = t;
                 }
             }
@@ -270,9 +278,19 @@ namespace OmniTools
             {
                 if (!Config.EnableMod || !Config.SwitchForCrops || Game1.player.CurrentTool is not Tool || !Game1.player.CurrentTool.modData.ContainsKey(toolsKey))
                     return;
-                Tool tool = SwitchForTerrainFeature(Game1.player.CurrentTool, __instance);
-                if (tool is not null)
-                    Game1.player.CurrentTool = tool;
+                Tool t = SwitchForTerrainFeature(Game1.player.CurrentTool, __instance);
+                if (t is not null)
+                {
+                    foreach (var e in Game1.player.CurrentTool.enchantments)
+                    {
+                        e.OnUnequip(Game1.player);
+                    }
+                    Game1.player.CurrentTool = t;
+                    foreach (var e in t.enchantments)
+                    {
+                        e.ApplyTo(t, Game1.player);
+                    }
+                }
             }
         }
     }

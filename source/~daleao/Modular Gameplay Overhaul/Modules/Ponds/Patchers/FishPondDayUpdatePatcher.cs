@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -58,7 +58,9 @@ internal sealed class FishPondDayUpdatePatcher : HarmonyPatcher
                 heldMetals[i] = (metal, --daysLeft);
             }
 
-            __instance.Write(DataFields.MetalsHeld, string.Join(';', heldMetals.Select(m => string.Join(',', m.Item1, m.Item2))));
+            __instance.Write(
+                DataFields.MetalsHeld,
+                string.Join(';', heldMetals.Select(m => string.Join(',', m.Item1, m.Item2))));
         }
 
 #if RELEASE
@@ -202,7 +204,7 @@ internal sealed class FishPondDayUpdatePatcher : HarmonyPatcher
                             OpCodes.Callvirt,
                             typeof(Random).RequireMethod(nameof(Random.NextDouble))),
                     })
-                .Match(new[] { new CodeInstruction(OpCodes.Bge_Un_S) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Bge_Un_S) }, out var count)
                 .Remove(count)
                 .Match(
                     new[]

@@ -36,6 +36,19 @@ namespace SocializingSkill
         [AssetProperty("assets/beloved.png")]
         public Texture2D Beloved { get; set; }
 
+        [AssetProperty("assets/friendlyP.png")]
+        public Texture2D FriendlyP { get; set; }
+        [AssetProperty("assets/smoothtalkerP.png")]
+        public Texture2D SmoothTalkerP { get; set; }
+        [AssetProperty("assets/gifterP.png")]
+        public Texture2D GifterP { get; set; }
+        [AssetProperty("assets/helpfulP.png")]
+        public Texture2D HelpfulP { get; set; }
+        [AssetProperty("assets/hagglerP.png")]
+        public Texture2D HagglerP { get; set; }
+        [AssetProperty("assets/belovedP.png")]
+        public Texture2D BelovedP { get; set; }
+
 
         [AssetProperty("assets/belovedtable.json")]
         public Dictionary<string, List<string>> BelovedTable { get; set; }

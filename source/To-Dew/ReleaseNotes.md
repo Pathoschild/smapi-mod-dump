@@ -8,6 +8,11 @@ for queries and analysis.**
 
 
 # Release Notes
+
+## Version 1.12.0
+
+* Allow clicking in overlay to mark an item as done (configurable)
+
 ## Version 1.11.0
 
 * Add on option to toggle whether the overlay is scaled with UI Scale or Zoom Level

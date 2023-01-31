@@ -232,7 +232,7 @@ namespace MobilePhone
             // Changes end. 
         }
 
-        internal static void ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        public static void ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             ModEntry.ClosePhone();
         }

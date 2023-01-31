@@ -59,13 +59,15 @@ internal class GenericModConfigMenuHelper
             {
                 string formattedValue = val switch
                 {
-                    <= -0.12f => "Worst",
+                    <= -0.13f => "Worst\n(Beyond\nVanilla)",
+                    -0.12f => "Worst",
                     > -0.12f and < -0.07f => "Very Bad",
                     >= -0.07f and < -0.02f => "Bad",
                     >= -0.02f and <= 0.02f => "Neutral",
                     > 0.02f and <= 0.07f => "Good",
                     > 0.07f and < 0.12f => "Very Good",
-                    >= 0.12f => "Best",
+                    0.12f => "Best",
+                    >= 0.13f => "Best\n(Beyond\nVanilla)",
                     _ => "Unknown"
                 };
                 formattedValue += $"\n({val})";

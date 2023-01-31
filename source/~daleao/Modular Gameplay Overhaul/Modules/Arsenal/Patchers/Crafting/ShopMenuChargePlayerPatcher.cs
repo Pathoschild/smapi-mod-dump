@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Crafting;
 #region using directives
 
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -47,37 +46,38 @@ internal sealed class ShopMenuChargePlayerPatcher : HarmonyPatcher
                 return true; // run original logic
             }
 
-            var currencies = who.Items.Where(i => i.ParentSheetIndex == currencyType).ToArray();
-            if (currencies.Length == 0)
-            {
-                Log.E($"{who} was allowed to spend {amount} {getCurrencyName(currencyType)} but didn't have any.");
-                return false; // don't run original logic
-            }
-
             var leftover = amount;
-            foreach (var currency in currencies)
+            for (var i = 0; i < who.Items.Count; i++)
             {
-                var j = who.Items.IndexOf(currency);
-                if (currency.Stack >= leftover)
+                var item = who.Items[i];
+                if (item.ParentSheetIndex != currencyType)
                 {
-                    currency.Stack -= leftover;
-                    if (currency.Stack <= 0)
+                    continue;
+                }
+
+                if (item.Stack >= leftover)
+                {
+                    item.Stack -= leftover;
+                    if (item.Stack <= 0)
                     {
-                        who.Items[j] = null;
+                        who.Items[i] = null;
                     }
 
                     break;
                 }
 
-                leftover -= currency.Stack;
-                who.Items[j] = null;
+                leftover -= item.Stack;
+                who.Items[i] = null;
             }
 
-            if (leftover > 0)
+            if (leftover <= 0)
             {
-                Log.E($"{who} was allowed to spend {amount} {getCurrencyName(currencyType)} but only had {amount - leftover}.");
+                return false; // don't run original logic
             }
 
+            Log.E(leftover == amount
+                ? $"{who} was allowed to spend {amount} {getCurrencyName(currencyType)} but didn't have any."
+                : $"{who} was allowed to spend {amount} {getCurrencyName(currencyType)} but only had {amount - leftover}.");
             return false; // don't run original logic
         }
         catch (Exception ex)

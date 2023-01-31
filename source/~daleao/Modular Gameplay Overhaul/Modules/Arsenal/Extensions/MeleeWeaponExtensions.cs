@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,8 +14,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Extensions;
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
 using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
 using DaLion.Shared;
@@ -109,8 +107,8 @@ internal static class MeleeWeaponExtensions
 
     /// <summary>Refreshes the stats of the specified <paramref name="weapon"/>.</summary>
     /// <param name="weapon">The <see cref="MeleeWeapon"/>.</param>
-    /// <param name="force">Whether to force a stat refresh, even if initial stats have already been cached for the <paramref name="weapon"/>.</param>
-    internal static void RefreshStats(this MeleeWeapon weapon, bool force = false)
+    /// <param name="option">The <see cref="RefreshOption"/>.</param>
+    internal static void RefreshStats(this MeleeWeapon weapon, RefreshOption option = RefreshOption.Initial)
     {
         var data = ModHelper.GameContent.Load<Dictionary<int, string>>("Data/weapons");
         if (!data.ContainsKey(weapon.InitialParentTileIndex))
@@ -118,30 +116,42 @@ internal static class MeleeWeaponExtensions
             return;
         }
 
-        var split = data[weapon.InitialParentTileIndex].Split('/');
-        weapon.BaseName = split[0];
-        weapon.knockback.Value = (float)Convert.ToDouble(split[4], CultureInfo.InvariantCulture);
-        weapon.speed.Value = Convert.ToInt32(split[5]);
-        weapon.addedPrecision.Value = Convert.ToInt32(split[6]);
-        weapon.addedDefense.Value = Convert.ToInt32(split[7]);
-        weapon.type.Set(Convert.ToInt32(split[8]));
-        weapon.addedAreaOfEffect.Value = Convert.ToInt32(split[11]);
-        weapon.critChance.Value = (float)Convert.ToDouble(split[12], CultureInfo.InvariantCulture);
-        weapon.critMultiplier.Value = (float)Convert.ToDouble(split[13], CultureInfo.InvariantCulture);
+        var split = data[weapon.InitialParentTileIndex].SplitWithoutAllocation('/');
+        weapon.BaseName = split[0].ToString();
+        weapon.knockback.Value = float.Parse(split[4]);
+        weapon.speed.Value = int.Parse(split[5]);
+        weapon.addedPrecision.Value = int.Parse(split[6]);
+        weapon.addedDefense.Value = int.Parse(split[7]);
+        weapon.type.Set(int.Parse(split[8]));
+        weapon.addedAreaOfEffect.Value = int.Parse(split[11]);
+        weapon.critChance.Value = float.Parse(split[12]);
+        weapon.critMultiplier.Value = float.Parse(split[13]);
 
         if (weapon.isScythe())
         {
-            weapon.minDamage.Value = Convert.ToInt32(split[2]);
-            weapon.maxDamage.Value = Convert.ToInt32(split[3]);
+            weapon.minDamage.Value = int.Parse(split[2]);
+            weapon.maxDamage.Value = int.Parse(split[3]);
             weapon.type.Set(3);
             MeleeWeapon_Stats.Invalidate(weapon);
             return;
         }
 
-        if (force)
+        if (option == RefreshOption.FromData)
+        {
+            weapon.minDamage.Value = int.Parse(split[2]);
+            weapon.maxDamage.Value = int.Parse(split[3]);
+            MeleeWeapon_Stats.Invalidate(weapon);
+            weapon.Write(DataFields.BaseMinDamage, weapon.minDamage.Value.ToString());
+            weapon.Write(DataFields.BaseMaxDamage, weapon.maxDamage.Value.ToString());
+            return;
+        }
+
+        if (option == RefreshOption.Randomized)
         {
             weapon.RandomizeDamage();
             MeleeWeapon_Stats.Invalidate(weapon);
+            weapon.Write(DataFields.BaseMinDamage, weapon.minDamage.Value.ToString());
+            weapon.Write(DataFields.BaseMaxDamage, weapon.maxDamage.Value.ToString());
             return;
         }
 
@@ -151,18 +161,23 @@ internal static class MeleeWeaponExtensions
         {
             weapon.minDamage.Value = initialMinDamage;
             weapon.maxDamage.Value = initialMaxDamage;
+            MeleeWeapon_Stats.Invalidate(weapon);
+            return;
         }
-        else if (!weapon.IsUnique() && (!ArsenalModule.Config.DwarvishCrafting || !weapon.CanBeCrafted()) &&
-                 ArsenalModule.Config.Weapons.EnableRebalance && WeaponTier.GetFor(weapon) > WeaponTier.Untiered)
+
+        if (!weapon.IsUnique() && (!ArsenalModule.Config.DwarvishCrafting || !weapon.CanBeCrafted()) &&
+            ArsenalModule.Config.Weapons.EnableRebalance && WeaponTier.GetFor(weapon) > WeaponTier.Untiered)
         {
             weapon.RandomizeDamage();
         }
         else
         {
-            weapon.minDamage.Value = Convert.ToInt32(split[2]);
-            weapon.maxDamage.Value = Convert.ToInt32(split[3]);
+            weapon.minDamage.Value = int.Parse(split[2]);
+            weapon.maxDamage.Value = int.Parse(split[3]);
         }
 
+        weapon.Write(DataFields.BaseMinDamage, weapon.minDamage.Value.ToString());
+        weapon.Write(DataFields.BaseMaxDamage, weapon.maxDamage.Value.ToString());
         MeleeWeapon_Stats.Invalidate(weapon);
     }
 
@@ -206,8 +221,6 @@ internal static class MeleeWeaponExtensions
 
         weapon.minDamage.Value = (int)Math.Max(minDamage, 1);
         weapon.maxDamage.Value = (int)Math.Max(maxDamage, 3);
-        weapon.Write(DataFields.BaseMinDamage, weapon.minDamage.Value.ToString());
-        weapon.Write(DataFields.BaseMaxDamage, weapon.maxDamage.Value.ToString());
 
         int getBaseDamage(int level, bool dangerous)
         {
@@ -334,9 +347,9 @@ internal static class MeleeWeaponExtensions
         swipeSpeed *= farmer.GetTotalSwingSpeedModifier();
         if (farmer.IsLocalPlayer)
         {
-            foreach (var enchantment in weapon.enchantments)
+            for (var i = 0; i < weapon.enchantments.Count; i++)
             {
-                if (enchantment is BaseWeaponEnchantment weaponEnchantment)
+                if (weapon.enchantments[i] is BaseWeaponEnchantment weaponEnchantment)
                 {
                     weaponEnchantment.OnSwing(weapon, farmer);
                 }

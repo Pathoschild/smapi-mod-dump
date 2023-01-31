@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -30,6 +30,13 @@ using StardewValley.Tools;
 internal sealed class ObjectProjectile : BasicProjectile
 {
     private int _pierceCount;
+
+    /// <summary>Initializes a new instance of the <see cref="ObjectProjectile"/> class.</summary>
+    /// <remarks>Required for multiplayer syncing.</remarks>
+    public ObjectProjectile()
+        : base()
+    {
+    }
 
     /// <summary>Initializes a new instance of the <see cref="ObjectProjectile"/> class.</summary>
     /// <param name="ammo">The <see cref="SObject"/> that was fired.</param>
@@ -113,11 +120,11 @@ internal sealed class ObjectProjectile : BasicProjectile
         }
     }
 
-    public Item Ammo { get; }
+    public Item? Ammo { get; }
 
-    public Farmer Firer { get; }
+    public Farmer? Firer { get; }
 
-    public Slingshot Source { get; }
+    public Slingshot? Source { get; }
 
     public int Damage { get; private set; }
 
@@ -142,7 +149,7 @@ internal sealed class ObjectProjectile : BasicProjectile
     /// <inheritdoc />
     public override void behaviorOnCollisionWithMonster(NPC n, GameLocation location)
     {
-        if (n is not Monster { IsMonster: true } monster)
+        if (this.Ammo is null || this.Firer is null || this.Source is null || n is not Monster { IsMonster: true } monster)
         {
             base.behaviorOnCollisionWithMonster(n, location);
             return;
@@ -197,11 +204,17 @@ internal sealed class ObjectProjectile : BasicProjectile
 
         if (!ProfessionsModule.IsEnabled)
         {
+            Reflector
+                .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
+                .Invoke(this, location);
             return;
         }
 
         if (!this.Firer.professions.Contains(Farmer.desperado))
         {
+            Reflector
+                .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
+                .Invoke(this, location);
             return;
         }
 
@@ -241,7 +254,7 @@ internal sealed class ObjectProjectile : BasicProjectile
     public override void behaviorOnCollisionWithOther(GameLocation location)
     {
         base.behaviorOnCollisionWithOther(location);
-        if (!ProfessionsModule.IsEnabled)
+        if (this.Ammo is null || this.Firer is null || this.Source is null || !ProfessionsModule.IsEnabled)
         {
             return;
         }
@@ -281,6 +294,11 @@ internal sealed class ObjectProjectile : BasicProjectile
     /// <inheritdoc />
     public override bool update(GameTime time, GameLocation location)
     {
+        if (this.Ammo is null || this.Firer is null || this.Source is null)
+        {
+            return base.update(time, location);
+        }
+
         var bounces = this.bouncesLeft.Value;
         var didCollide = base.update(time, location);
         if (bounces > this.bouncesLeft.Value)
@@ -374,7 +392,7 @@ internal sealed class ObjectProjectile : BasicProjectile
     /// <returns><see langword="true"/> if the projectile is an egg, fruit, vegetable or slime, otherwise <see langword="false"/>.</returns>
     public bool IsSquishy()
     {
-        return this.Ammo.Category is SObject.EggCategory or SObject.FruitsCategory or SObject.VegetableCategory ||
-               this.Ammo.ParentSheetIndex == Constants.SlimeIndex;
+        return this.Ammo?.Category is SObject.EggCategory or SObject.FruitsCategory or SObject.VegetableCategory ||
+               this.Ammo?.ParentSheetIndex == Constants.SlimeIndex;
     }
 }

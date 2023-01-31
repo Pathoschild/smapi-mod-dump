@@ -8,15 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace UIInfoSuite
 {
-    static class LanguageKeys
+    internal static class LanguageKeys
     {
         public const string Days = "Days";
         public const string DaysToMature = "DaysToMature";
@@ -36,5 +30,6 @@ namespace UIInfoSuite
         public const string DaysUntilToolIsUpgraded = "DaysUntilToolIsUpgraded";
         public const string ToolIsFinishedBeingUpgraded = "ToolIsFinishedBeingUpgraded";
         public const string NPCBirthday = "NPCBirthday";
+        public const string RobinBuildingStatus = "RobinBuildingStatus";
     }
 }

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -33,7 +33,8 @@ internal sealed partial class GenericModConfigMenuCore
                 config => config.Taxes.AnnualInterest,
                 (config, value) => config.Taxes.AnnualInterest = value,
                 0f,
-                2f)
+                20f,
+                0.5f)
             .AddCheckbox(
                 () => "Deductible Building Expenses",
                 () => "Whether or not any gold spent constructing farm buildings is tax-deductible.",

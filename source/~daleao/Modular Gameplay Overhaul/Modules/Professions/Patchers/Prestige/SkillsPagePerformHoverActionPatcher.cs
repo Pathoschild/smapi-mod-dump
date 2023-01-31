@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
 #region using directives
 
 using System.Linq;
+using System.Xml.Linq;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Harmony;
@@ -93,9 +94,10 @@ internal sealed class SkillsPagePerformHoverActionPatcher : HarmonyPatcher
             }
 
             ___hoverText = I18n.Get("prestige.skillpage.tooltip", new { count });
-            ___hoverText = professionsForThisSkill
-                .Select(p => p.Title)
-                .Aggregate(___hoverText, (current, name) => current + $"\n• {name}");
+            for (var j = 0; j < professionsForThisSkill.Length; j++)
+            {
+                ___hoverText += $"\n• {professionsForThisSkill[j].Title}";
+            }
         }
     }
 

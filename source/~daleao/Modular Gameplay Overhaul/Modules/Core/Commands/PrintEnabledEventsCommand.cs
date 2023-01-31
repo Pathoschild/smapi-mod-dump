@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Core.Commands;
 #region using directives
 
 using System.Linq;
+using System.Text;
 using DaLion.Shared.Attributes;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Events;
@@ -37,14 +38,14 @@ internal sealed class PrintEnabledEventsCommand : ConsoleCommand
     public override string Documentation => "Prints all currently subscribed mod events.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
-        var message = "Enabled events:";
+        var message = new StringBuilder("Enabled events:");
         var events = ModEntry.EventManager.Enabled.Cast<ManagedEvent>().ToList();
         events.Sort();
         message = events.Aggregate(
             message,
-            (current, next) => current + "\n\t- " + next.GetType().Name);
-        Log.I(message);
+            (current, next) => current.Append("\n\t- " + next.GetType().Name));
+        Log.I(message.ToString());
     }
 }

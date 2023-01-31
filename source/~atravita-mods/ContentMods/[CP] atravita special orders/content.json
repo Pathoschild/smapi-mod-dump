@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-    "Format": "1.23.0",
+    "Format": "1.27.0",
     "ConfigSchema": {
         "AllowedSkills": {
             "AllowValues": "Farming, Fishing, Foraging, Combat, Mining, Cooking, ArtisanGoods, Ranching, Gifting",
@@ -88,7 +88,10 @@
     },
     {
         "Action": "Include",
-        "FromFile": "assets/Dialogue/Lewis.json, assets/Dialogue/Gus.json, assets/Dialogue/Caroline.json, assets/Dialogue/Willy.json"
+        "FromFile": "assets/Dialogue/Lewis.json, assets/Dialogue/Gus.json, assets/Dialogue/Caroline.json, assets/Dialogue/Willy.json",
+        "When": {
+            "HasMod": "atravita.SpecialOrdersExtended"
+        }
     },
     {
         "Action": "Include",

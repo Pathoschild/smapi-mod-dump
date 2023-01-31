@@ -61,7 +61,7 @@ public class MigrationManager
         if (this.DataHelper.ReadGlobalData<MigrationDataClass>(FILENAME) is MigrationDataClass migrationData
             && migrationData.VersionMap.TryGetValue(Constants.SaveFolderName!, out this.oldversion))
         {
-            this.Monitor.Log($"Migrator found old version {this.oldversion} for {this.Manifest.UniqueID}", LogLevel.Trace);
+            this.Monitor.Log($"Migrator found old version {this.oldversion} for {this.Manifest.UniqueID} - current is {this.Manifest.Version}", LogLevel.Trace);
             return this.Manifest.Version.ToString() == this.oldversion;
         }
         else

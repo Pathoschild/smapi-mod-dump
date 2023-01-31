@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -43,7 +43,7 @@ internal sealed class MeleeWeaponGetNumberOfDescriptionCategoriesPatcher : Harmo
         try
         {
             __result = __instance.CountNonZeroStats();
-            if (__instance.hasEnchantmentOfType<DiamondEnchantment>())
+            if (__instance.enchantments.Count > 0 && __instance.enchantments[^1] is DiamondEnchantment)
             {
                 __result++;
             }

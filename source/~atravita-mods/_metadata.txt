@@ -11,26 +11,28 @@ mods:
    Easier Dart Puzzle
    Farm Cave Spawns More Tree Fruit
    Farm Combat Grants XP Too
+   Fix Pig Random
+   Frame Rate Logger
    Giant Crop Fertilizer
    Ginger Island Mainland Adjustments
    Highlight Empty Machines
    Holiday Sales
+   Last Day to Plant Redux
    Less Mini Shipping Bin
    More Fertilizers
    Museum Store
    Pick Your Enchantment
    Prismatic Clothing
+   Revive Dead Crops
+   Sleep In Wedding
    Special Orders Tags Extended
    Tap Giant Crops
    Trash Does Not Consume Bait
 
 latest commit:
-   commit 006728f00f9f6cfd476b28fc42a27678c7fe80b3
-   Merge: 6efac17 e61c6e2
+   commit ac5fba0d2a69761fa48423c38a189903dd6c8ec9
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Wed Dec 28 14:49:16 2022 -0500
+   Date:   Mon Jan 30 21:28:38 2023 -0500
    
-       Merge pull request #19 from atravita-mods/dependabot/nuget/BenchmarkDotNet-0.13.3
-       
-       Bump BenchmarkDotNet from 0.13.2 to 0.13.3
+       insert one texture cache
    

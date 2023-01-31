@@ -1,0 +1,52 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Data/MoviesReactions",
+        "TargetField": ["Pam", "Reactions"],
+        "Entries":
+        {
+            "reaction_999":
+            {
+                "Tag": "*",
+                "Response": "love",
+                "Whitelist": ["Penny"],
+                "SpecialResponses": {
+                  "BeforeMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "{{i18n:with-penny.before}}"
+                  },
+                  "DuringMovie": {
+                    "ResponsePoint":null,
+                    "Script":"",
+                    "Text": "{{i18n:with-penny.during}}"
+                  },
+                  "AfterMovie": {
+                    "ResponsePoint": null,
+                    "Script": "",
+                    "Text": "{{i18n:with-penny.after}}"
+                  }
+                },
+                "ID": "reaction_999"
+              }
+        }
+    },
+    {
+        "Action":"EditData",
+        "Target": "Data/MoviesReactions",
+        "TargetField": ["Pam", "Reactions"],
+        "MoveEntries": [
+            { "ID": "reaction_999", "ToPosition": "Top" }
+        ]
+    }
+]}

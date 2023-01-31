@@ -51,6 +51,7 @@ mods:
    Multi Fertilizer
    New Game Plus
    Object Time Left
+   Persistent Mines
    Preexisting Relationship
    Profit Calculator
    Pyromancer's Journey
@@ -63,6 +64,7 @@ mods:
    Sleepy Eye
    SpaceCore
    Spenny
+   Spenny Deluxe
    Spenny Lite
    Statue of Generosity
    Super Hopper
@@ -72,9 +74,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit e6cc7ed9637b793cac62c6bc35a7d35b3cb68e81
-   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sat Dec 10 01:58:43 2022 -0500
+   commit 56d392e3fae03ccb0f16992329121b22c7a5c53e
+   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Sun Jan 15 16:26:31 2023 -0500
    
-       GMCM gamepad support
+       SpaceCore 1.11.0, damageFarmer event command
    

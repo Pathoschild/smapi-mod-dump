@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -31,14 +31,20 @@ internal sealed class SetRegisteredUltimateCommand : ConsoleCommand
     }
 
     /// <inheritdoc />
-    public override string[] Triggers { get; } = { "set_ult" };
+    public override string[] Triggers { get; } = { "register_ult", "set_ult", "register" };
 
     /// <inheritdoc />
     public override string Documentation => "Change the player's currently registered Special Ability.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
+        {
+            Log.W("You must enter a valid 2nd-tier combat profession or special ability name.");
+            return;
+        }
+
         if (args.Length > 1)
         {
             Log.W("Additional arguments beyond the first will be ignored.");
@@ -58,8 +64,8 @@ internal sealed class SetRegisteredUltimateCommand : ConsoleCommand
         }
 
         if (!Ultimate.TryFromName(args[0], true, out var ultimate) &&
-            !(Profession.TryFromLocalizedName(args[0], true, out var profession) &&
-             Ultimate.TryFromValue(profession, out ultimate)))
+            !(int.TryParse(args[0], out var index) && Ultimate.TryFromValue(index, out ultimate)) &&
+            !(Profession.TryFromLocalizedName(args[0], true, out var profession) && Ultimate.TryFromValue(profession, out ultimate)))
         {
             Log.W("You must enter a valid 2nd-tier combat profession or special ability name.");
             return;

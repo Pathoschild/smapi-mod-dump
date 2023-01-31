@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using AtraShared.Integrations.Interfaces;
+using AtraShared.Integrations.Interfaces.ContentPatcher;
 using GingerIslandMainlandAdjustments.ScheduleManager;
 using GingerIslandMainlandAdjustments.Utils;
 using StardewValley.Locations;

@@ -15,15 +15,12 @@
       "ID": "AmericanGoldfinch",
       "AssetPath": "assets/AmericanGoldfinch.png",
       "SoundAssetPath": "assets/AmericanGoldfinch.wav",
-
       "Attributes": 3,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 7,
       "Cautiousness": 6,
       "FlapDuration": 400,
-      "FlySpeed": 6,
-
+      "FlySpeed": 5.5,
       "BaseWt": 0.1,
       "FeederBaseWts": {
         "Hopper": 0.2,
@@ -42,7 +39,7 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert"
           },
           "NilWt": true
         },
@@ -64,15 +61,12 @@
       "ID": "AmericanRobin",
       "AssetPath": "assets/AmericanRobin.png",
       "SoundAssetPath": "assets/AmericanRobin.wav",
-
       "Attributes": 2,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 4,
       "FlapDuration": 400,
       "FlySpeed": 5,
-
       "BaseWt": 0.05,
       "FeederBaseWts": {
         "Platform": 0.05
@@ -90,7 +84,7 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert, island"
           },
           "NilWt": true
         },
@@ -106,15 +100,12 @@
       "ID": "BlackCappedChickadee",
       "AssetPath": "assets/BlackCappedChickadee.png",
       "SoundAssetPath": "assets/BlackCappedChickadee.wav",
-
       "Attributes": 3,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 3,
       "FlapDuration": 500,
       "FlySpeed": 4,
-
       "BaseWt": 0.3,
       "FeederBaseWts": {
         "Hopper": 0.3,
@@ -134,9 +125,15 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert, island"
           },
           "NilWt": true
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome": "forest"
+          },
+          "AddWt": 0.1
         },
         {
           "When": {
@@ -150,15 +147,12 @@
       "ID": "AmericanBushtit",
       "AssetPath": "assets/AmericanBushtit.png",
       "SoundAssetPath": "assets/AmericanBushtit.wav",
-
       "Attributes": 2,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 9,
       "Cautiousness": 5,
       "FlapDuration": 400,
       "FlySpeed": 4,
-
       "BaseWt": 0.05,
       "FeederBaseWts": {
         "Tube": 0.2,
@@ -177,7 +171,7 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert, island"
           },
           "NilWt": true
         },
@@ -199,15 +193,12 @@
       "ID": "HouseFinch",
       "AssetPath": "assets/HouseFinch.png",
       "SoundAssetPath": "assets/HouseFinch.wav",
-
       "Attributes": 2,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 5,
       "FlapDuration": 400,
       "FlySpeed": 5.5,
-
       "BaseWt": 0.2,
       "FeederBaseWts": {
         "Hopper": 0.3,
@@ -218,7 +209,6 @@
         "MixedSeeds": 0.05,
         "SunflowerSeeds": 0.1
       },
-
       "Conditions": [
         {
           "When": {
@@ -228,7 +218,7 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void"
           },
           "NilWt": true
         }
@@ -238,16 +228,13 @@
       "ID": "HouseSparrow",
       "AssetPath": "assets/HouseSparrow.png",
       "SoundAssetPath": "assets/HouseSparrow.wav",
-
       "Attributes": 2,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 5,
       "Cautiousness": 2,
       "FlapDuration": 450,
       "FlySpeed": 4.5,
-
-      "BaseWt": 0.1,
+      "BaseWt": 0.15,
       "FeederBaseWts": {
         "Tube": 0.1,
         "Hopper": 0.1,
@@ -267,13 +254,13 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void"
           },
           "NilWt": true
         },
         {
           "When": {
-            "LocationName": "Town, Custom_EastScarpe"
+            "Ivy.OrnithologistsGuild/LocationBiome": "city"
           },
           "AddWt": 0.4
         }
@@ -283,16 +270,13 @@
       "ID": "RedWingedBlackbird",
       "AssetPath": "assets/RedWingedBlackbird.png",
       "SoundAssetPath": "assets/RedWingedBlackbird.wav",
-
       "Attributes": 3,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 1,
       "Cautiousness": 4,
       "FlapDuration": 400,
       "FlySpeed": 5,
-
-      "BaseWt": 0.05,
+      "BaseWt": 0.025,
       "FeederBaseWts": {
         "Platform": 0.1
       },
@@ -309,13 +293,13 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert, island"
           },
           "NilWt": true
         },
         {
           "When": {
-            "LocationName": "Mountain",
+            "Ivy.OrnithologistsGuild/LocationBiome": "forest, wetland",
             "Season": "Spring, Summer"
           },
           "AddWt": 0.3
@@ -326,16 +310,13 @@
       "ID": "SpottedTowhee",
       "AssetPath": "assets/SpottedTowhee.png",
       "SoundAssetPath": "assets/SpottedTowhee.wav",
-
       "Attributes": 3,
-
-      "ShouldUseBath": true,
+      "CanBathe": true,
       "MaxFlockSize": 1,
       "Cautiousness": 4,
       "FlapDuration": 600,
       "FlySpeed": 4.5,
-
-      "BaseWt": 0.1,
+      "BaseWt": 0.05,
       "FeederBaseWts": {
         "Platform": 0.1
       },
@@ -353,15 +334,43 @@
         },
         {
           "When": {
-            "LocationName": "Desert, Railroad"
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert, island"
           },
           "NilWt": true
         },
         {
           "When": {
-            "LocationName": "Forest"
+            "Ivy.OrnithologistsGuild/LocationBiome": "forest"
           },
-          "AddWt": 0.2
+          "AddWt": 0.25
+        }
+      ]
+    },
+    {
+      "ID": "Verdin",
+      "AssetPath": "assets/Verdin.png",
+      "SoundAssetPath": "assets/Verdin.wav",
+      "Attributes": 3,
+      "CanBathe": true,
+      "MaxFlockSize": 3,
+      "Cautiousness": 5,
+      "FlapDuration": 400,
+      "FlySpeed": 4,
+      "BaseWt": 0.5,
+      "FeederBaseWts": {},
+      "FoodBaseWts": {},
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome |contains=desert": "false"
+          },
+          "NilWt": true
         }
       ]
     }

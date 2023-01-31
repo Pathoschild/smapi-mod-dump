@@ -9,6 +9,52 @@ for queries and analysis.**
 Changelog
 =============
 
+#### TODO items
+* Beverage fertilizer
+    - Fruit trees (DGA, Automate?)
+* Tree Tapper's: Automate integration.
+* Something for mushroom boxen? (1.6 - reduce to one day?)
+* Make good draw code for all of the fertilizers. (don't forget domesticated fish - maybe some more jumping...)
+* PR Pathos to make CJB pass in the correct fertilizer (b/c Everlasting) - done, waiting for Pathos to merge.
+
+#### Version 0.3.3
+* Update to latest AtraCore.
+* Fix everlasting fertilizer not getting a special color.
+* Fix Radioactive fertilizer not properly ignoring seasons in Greenhouse locations.
+
+#### Version 0.3.2
+* Balance
+    * Secret Joja Fertilizer now uses random round proportional instead of math.floor.
+* Bugfixes
+    * Fix compat with Theft of the Winter Star.
+
+#### Version 0.3.1
+* Fixed integration with the two extended tools mods.
+* Updated Chinese translation (thanks to Puffeeydii!)
+
+#### Version 0.3.0
+* Added new fertilizers:
+    - Bountiful Bush Fertilizer: increases the production periods of tea and berry bushes.
+    - Fertilizer of Miraculous Beverages: makes beverages appear.
+    - Rapid Bush Fertilizer: makes tea tree bushes grow 20% faster.
+    - Secret Joja Fertilizer: decreases growth time, has a chance of decreasing regrowth time, but forces the crop to be base quality.
+    - Wisdom Fertilizer: increases farming XP by 10%.
+    - Seedy Fertilizer: drops the seed! (doesn't work for DGA crops yet).
+    - Prismatic Fertilizer: Makes flowers cycle through the prismatic colors.
+    - Radioactive Fertilizer: Causes crops to mutate overnight.
+    - Everlasting Fertilizer: Crops in this fertilizer ignore seasons.
+    - Tree Tapper's Fertilizer: Tapped trees have a chance of producing an additional product.
+* Adjusted previous fertilizers:
+    - Waterlogged now increases the growth speed of paddy crops a little.
+    - Deluxe Fruit Tree's color scheme now no longer resembles a vanilla fertilizer that much.
+    - The two fruit tree growth fertilizers have been boosted slightly.
+* Added German translation (thanks to CrisTortion!)
+* Fixes the lucky fertilizer.
+* Fixes integration with Prismatic/Radioactive tools.
+* Fixes organic fertilizer with beer, pale ale, green tea, mead, and coffee.
+* Internal improvements.
+* Deshuffle code fixes.
+
 #### Version 0.2.0
 * Move to using AtraCore, which should have improved loading times significantly.
 * Added Chinese translation (thanks to Puffeeydii!)

@@ -108,7 +108,7 @@ puts "Primary: #{Primary}"
 puts "32-bit: #{Copy32 ? "enabled" : "disabled"}"
 puts "64-bit: #{Copy64 ? "enabled" : "disabled"}"
 
-PrebuiltPaths = [SolutionDir + 'Libraries']
+PrebuiltPaths = [SolutionDir + 'Libraries', Pathname.new('Libraries'), Pathname.new('Extra')]
 
 class Library
 	attr_reader :path, :name, :ext

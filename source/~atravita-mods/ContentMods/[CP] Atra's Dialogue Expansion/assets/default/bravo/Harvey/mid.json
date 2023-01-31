@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Harvey mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Harvey",
+        "Entries": {
+            "6_2": "My practice is barely scraping by. Not sure how I can see more patients in a town as small as this, though.$s",
+            "22_2": "Saw a new study from %place Biologics, their new chemotherapy agent doubled the five-year survival rate for non-alcoholic primary hepatic malignancy.",
+        },
+        "When": {
+            "YearModulus": "2"
+        }
+    },
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Harvey": "#$c .9#A cup of coffee would be quite nice right now.#Here. Have a cup of coffee. It's important to stay warm on a day like this.[395]",
+        }
+    },
+]}

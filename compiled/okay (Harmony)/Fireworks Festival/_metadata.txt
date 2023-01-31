@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15261
+IDs: violetlizabet.FireworksFestival
+update keys: Nexus:15261

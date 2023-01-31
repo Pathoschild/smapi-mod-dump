@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Arsenal.Projectiles;
 
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
 using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
-using DaLion.Shared.Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
@@ -38,6 +37,13 @@ internal sealed class InfinityProjectile : BasicProjectile
     };
 
     private int _index;
+
+    /// <summary>Initializes a new instance of the <see cref="InfinityProjectile"/> class.</summary>
+    /// <remarks>Required for multiplayer syncing.</remarks>
+    public InfinityProjectile()
+        : base()
+    {
+    }
 
     /// <summary>Initializes a new instance of the <see cref="InfinityProjectile"/> class.</summary>
     /// <param name="source">The <see cref="MeleeWeapon"/> which fired this projectile.</param>
@@ -78,7 +84,7 @@ internal sealed class InfinityProjectile : BasicProjectile
         this.height.Value = 32f;
     }
 
-    public Farmer Firer { get; }
+    public Farmer? Firer { get; }
 
     public int Damage { get; }
 

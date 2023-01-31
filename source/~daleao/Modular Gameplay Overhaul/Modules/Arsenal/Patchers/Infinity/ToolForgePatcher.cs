@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -149,7 +149,7 @@ internal sealed class ToolForgePatcher : HarmonyPatcher
                 .Match(new[] { new CodeInstruction(OpCodes.Brfalse_S) })
                 .GetOperand(out var toRemove)
                 .Return()
-                .Match(
+                .Count(
                     new[]
                     {
                         new CodeInstruction(

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Tools.Effects;
 #region using directives
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using DaLion.Overhaul.Modules.Tools.Configs;
 using DaLion.Overhaul.Modules.Tools.Extensions;
 using DaLion.Shared.Extensions.Stardew;
@@ -39,10 +40,10 @@ internal sealed class PickaxeEffect : IToolEffect
 
     /// <summary>Gets the <see cref="Pickaxe"/> upgrade levels needed to break supported resource clumps.</summary>
     /// <remarks>Derived from <see cref="ResourceClump.performToolAction"/>.</remarks>
-    private IDictionary<int, int> UpgradeLevelsNeededForResource { get; } = new Dictionary<int, int>
+    private ImmutableDictionary<int, int> UpgradeLevelsNeededForResource { get; } = new Dictionary<int, int>
     {
         [ResourceClump.meteoriteIndex] = Tool.gold, [ResourceClump.boulderIndex] = Tool.steel,
-    };
+    }.ToImmutableDictionary();
 
     /// <inheritdoc />
     public bool Apply(

@@ -15,7 +15,7 @@ using StardewValley.Tools;
 namespace TrashDoesNotConsumeBait.HarmonyPatches;
 
 /// <summary>
-/// Class that holds patches against the toolbar.
+/// Class that holds patches against the tool bar.
 /// </summary>
 [HarmonyPatch(typeof(Toolbar))]
 internal static class ToolbarPatches
@@ -46,22 +46,26 @@ internal static class ToolbarPatches
                         case SObject.baitCategory:
                             if (fishingRod.UpgradeLevel >= 2)
                             {
-                                Game1.player.ActiveObject = null; // setting ActiveObject to null removes the active object from inventory.
-                                if (fishingRod.attachments[0] is SObject bait)
+                                SObject? prev = fishingRod.attachments[0];
+
+                                if (prev is not null && prev.canStackWith(activeObj))
                                 {
-                                    Game1.player.ActiveObject = bait; // settting the ActiveObject to an item adds it to inventory.
+                                    prev.Stack = activeObj.addToStack(prev);
+                                    if (prev.Stack <= 0)
+                                    {
+                                        prev = null;
+                                    }
                                 }
+
+                                // setting the ActiveObject to an item adds it to inventory. If prev is null, ActiveObject is just removed from the inventory
+                                Game1.player.ActiveObject = prev;
                                 fishingRod.attachments[0] = activeObj;
                             }
                             return;
                         case SObject.tackleCategory:
-                            if (fishingRod.UpgradeLevel > 2)
+                            if (fishingRod.UpgradeLevel >= 3)
                             {
-                                Game1.player.ActiveObject = null; // setting ActiveObject to null removes the active object from inventory.
-                                if (fishingRod.attachments[1] is SObject tackle)
-                                {
-                                    Game1.player.ActiveObject = tackle;
-                                }
+                                Game1.player.ActiveObject = fishingRod.attachments[1];
                                 fishingRod.attachments[1] = activeObj;
                             }
                             return;

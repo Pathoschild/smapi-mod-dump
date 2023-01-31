@@ -13,9 +13,9 @@
   "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
   "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled.",
 
-  "mod-description": "Shopkeeps don't close for festivals out of town anymore!",
+  "mod-description": "Shopkeepers don't close for festivals out of town anymore!",
 
-  "StoreFestivalBehavior.title": "Store Fertival Behavior",
+  "StoreFestivalBehavior.title": "Store Festival Behavior",
   "StoreFestivalBehavior.description": "Should stores be closed for festivals?",
 
   "config.FestivalsShopBehavior.Open": "Open",

@@ -20,6 +20,8 @@
     "config.overlay.desc": "오버레이 구성 수정",
     "config.overlay.enabled": "활성화",
     "config.overlay.enabled.desc": "오버레이 활성화를 할 것 입니까?",
+    "config.overlay.click-to-mark-done": "완료로 표시할 항목 클릭",
+    "config.overlay.click-to-mark-done.desc": "완료 항목을 표시하려면 오버레이를 클릭하도록 설정",
     "config.overlay.hotkey": "단축키",
     "config.overlay.hotkey.desc": "활성화하거나 비활성하는 키",
     "config.overlay.hide-at-festivals": "축제 때 비활성화",

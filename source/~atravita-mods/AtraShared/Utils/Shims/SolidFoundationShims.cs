@@ -26,7 +26,6 @@ public static class SolidFoundationShims
 
     private static readonly Lazy<Func<object, bool>?> isSFBuilding = new(() =>
     {
-        Type sFBuilding = AccessTools.TypeByName("SolidFoundations.Framework.Models.ContentPack.GenericBuilding");
-        return sFBuilding?.GetTypeIs();
+        return AccessTools.TypeByName("SolidFoundations.Framework.Models.ContentPack.GenericBuilding")?.GetTypeIs();
     });
 }

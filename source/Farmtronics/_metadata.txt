@@ -6,9 +6,9 @@ mods:
    Farmtronics
 
 latest commit:
-   commit 9a104ffe35a6d1887ea84b91db5c425365296be9
+   commit 6807af791a89d3dd7e4c20c17548c75a8c811b7d
    Author: JoeStrout <joe@strout.net>
-   Date:   Mon Nov 28 18:21:22 2022 -0700
+   Date:   Sun Jan 29 08:01:33 2023 -0700
    
-       Update README.md
+       Bumped version number to 1.3.3.
    

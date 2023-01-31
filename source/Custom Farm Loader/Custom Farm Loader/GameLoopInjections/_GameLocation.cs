@@ -21,6 +21,7 @@ using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework;
 using System.Reflection;
 using Custom_Farm_Loader.Lib;
+using StardewValley.Buildings;
 
 namespace Custom_Farm_Loader.GameLoopInjections
 {
@@ -48,6 +49,10 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 prefix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.getMap_Prefix))
             );
 
+            harmony.Patch(
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.getFish)),
+               prefix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.getFish_Prefix))
+            );
         }
 
         public static bool getMap_Prefix(GameLocation __instance, ref xTile.Map __result)
@@ -109,6 +114,36 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
                 __instance.map.Properties.Add(propertyName, coordinates);
             }
+        }
+
+        public static bool getFish_Prefix(GameLocation __instance, ref StardewValley.Object __result, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
+        {
+
+            if (!CustomFarm.IsCFLMapSelected())
+                return true;
+
+            if(__instance.IsFarm)
+            foreach (Building b in (__instance as Farm).buildings)
+                if (b is FishPond && b.isTileFishable(bobberTile)) {
+                    __result = (b as FishPond).CatchFish();
+                    return false;
+                }
+
+            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+
+            bool isUsingMagicBait = __instance.IsUsingMagicBait(who);
+            var validFishingRules = customFarm.FishingRules.FindAll(el => el.Area.LocationName == __instance.Name
+                                                                       && el.Area.isTileIncluded(bobberTile)
+                                                                       && el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who)
+                                                                       && el.Fish.Count > 0);
+
+            if (validFishingRules.Count == 0)
+                return true;
+
+            FishingRule chosenFishingRule = UtilityMisc.PickSomeInRandomOrder(validFishingRules, 1).First();
+
+            __result = chosenFishingRule.getFish(isUsingMagicBait, millisecondsAfterNibble, bait, waterDepth, who, baitPotency, bobberTile);
+            return false;
         }
     }
 }

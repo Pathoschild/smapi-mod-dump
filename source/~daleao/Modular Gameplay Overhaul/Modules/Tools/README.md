@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
@@ -20,12 +20,13 @@ This module is inspired by the tool progression system of old Harvest Moon: Frie
   <img src="resources/cover.gif" align="center" height="auto" width="80%" alt="Logo">
 </figure>
 
-This module provides four main features (and one minor feature):
+This module provides the following features:
 1. Allows the Axe and Pickaxe to be charged according to the tool's upgrade level, just like Hoe and Watering Can.
 2. Allows customizing the area of effect of the Hoe and Watering Can.
-3. Allows customizing the range of Scythe and Golden Scythe.
+3. Allows customizing the range of Scythe and Golden Scythe, and allows them to harvest crops.
 4. Extends certain tool enchantments, allowing them to be applied to a greater variety of tools.
-5. Causes the farmer to automatically face the mouse cursor before using a tool.
+5. Intelligently auto-selects the best tool for a target action tile.
+6. Automatically faces the mouse cursor before using a tool.
 
 All features can be toggled on or off.
 
@@ -42,13 +43,17 @@ Like the Tractor Mod, what the shockwave actually does can also be configured. B
 
 The area of effect of Hoe and Watering Can may be customized by setting a length and radius for each upgrade level. Note that the radius adds to both side of the farmer, such that a radius of 1 yields an area 3 tiles wide.
 
-The radius of the Scythe and Golden Scythe can also be configured. By default, a regular Scythe will have twice the range of a sword, and a Golden Scythe will have twice the range of a regular Scythe. Setting the ranges to zero reverts them back to vanilla status.
+The radius of the Scythe and Golden Scythe can also be configured. By default, a regular Scythe will have twice the range of a sword, and a Golden Scythe will have twice the range of a regular Scythe. Setting the ranges to zero reverts them back to vanilla status. Also includes the popular Harvest With Scythe feature, replacing other similar mods.
 
 ## Enchantments
 
 All tool enchantments are compatible. The Reaching Enchantment will work on chargeable resource tools as it ordinarily does for farming tools, increasing the maximum charge level by **one**. The Powerful Enchantment likewise continues to increase the power of resource tools, and that extends to every affected tile in the shockwave.
 
 In addition, this module will allow the Swift Enchantment to be applied to the Watering Can, and the Master Enchantment to be applied to all tools, boosting the corresponding skill level by **one**. Lastly, the Haymaker Enchantment can now be applied to the Scythe and Golden Scythe.
+
+## Auto-Selection
+
+Hold the Mod Key (default LeftShift) and click on any tool in your toolbar or inventory to enable it for auto-selection. As long the current tool is itself enabled for auto-selection, pressing the tool-use button will cause the appropriate enabled tool to be intelligently selected for the target tile.
 
 ## Configs
 
@@ -71,3 +76,4 @@ The tools are compatible withThis mod uses Harmony to patch the behavior of Axe 
 - Compatible with [Moon Misadventures](https://www.nexusmods.com/stardewvalley/mods/10612).
 - Compatible with [Harvest Moon FoMT-like Watering Can And Hoe Area](https://www.nexusmods.com/stardewvalley/mods/7851) as long as you don't touch Hoe and Watering Can settings (although you can just set them to the same values used by that mod to achieve the same effect).
 - **Not** compatible with the likes of [Combat Controls - Fixed Mouse Click](https://www.nexusmods.com/stardewvalley/mods/2590) or [Combat Controls Redux](https://www.nexusmods.com/stardewvalley/mods/10496), as those features are already included in this and others modules.
+- **Not** compatible with other Harvest With Scythe mods, such as [Yet Another Harvest With Scythe](https://www.nexusmods.com/stardewvalley/mods/2731).

@@ -36,15 +36,21 @@ namespace MailServicesMod
                 api.RegisterSimpleOption(manifest, "Tool Delivery Service", "You will receive upgraded tools in the mailbox.", () => !modConfig.DisableToolDeliveryService, (bool val) => modConfig.DisableToolDeliveryService = !val);
                 api.RegisterSimpleOption(manifest, "Tool Shipment Service", "Let you send tools to upgrade using the mailbox.", () => !modConfig.DisableToolShipmentService, (bool val) => modConfig.DisableToolShipmentService = !val);
 
-                api.RegisterLabel(manifest, "Services Fees:", "Fixed fee per use of service.");
-                api.RegisterSimpleOption(manifest, "Gift Shipment", "How much you'll be charged for sending gifts.", () => modConfig.GiftServiceFee, (int val) => modConfig.GiftServiceFee = val);
-                api.RegisterSimpleOption(manifest, "Quest Item Shipment", "How much you'll be charged for sending quest items.", () => modConfig.QuestServiceFee, (int val) => modConfig.QuestServiceFee = val);
-                api.RegisterSimpleOption(manifest, "Tool Shipment", "How much you'll be charged for sending tools to upgrade.", () => modConfig.ToolShipmentServiceFee, (int val) => modConfig.ToolShipmentServiceFee = val);
+                api.RegisterLabel(manifest, "Services Fees:", "Fee per use of service.");
+                api.RegisterSimpleOption(manifest, "Gift Shipment (G)", "How much gold you'll be charged for sending gifts.", () => modConfig.GiftServiceFee, (int val) => modConfig.GiftServiceFee = val);
+                api.RegisterSimpleOption(manifest, "Gift Shipment (%)", "How much in gift value percentage you'll be charged for sending gifts.", () => modConfig.GiftServicePercentFee, (int val) => modConfig.GiftServicePercentFee = val);
+                api.RegisterSimpleOption(manifest, "Quest Item Shipment (G)", "How much gold you'll be charged for sending quest items.", () => modConfig.QuestServiceFee, (int val) => modConfig.QuestServiceFee = val);
+                api.RegisterSimpleOption(manifest, "Tool Shipment (G)", "How much extra gold you'll be charged for sending tools to upgrade.", () => modConfig.ToolShipmentServiceFee, (int val) => modConfig.ToolShipmentServiceFee = val);
+                api.RegisterSimpleOption(manifest, "Tool Shipment (%)", "How much extra in tool upgrade cost percentage you'll be charged for sending tools to upgrade.", () => modConfig.ToolShipmentServicePercentFee, (int val) => modConfig.ToolShipmentServicePercentFee = val);
 
                 api.RegisterLabel(manifest, "General:", "");
                 api.RegisterSimpleOption(manifest, "Show Dialog On Shipment", "Show the npc dialog as if you were delivering something in person. Works for gifts and quest completion.", () => modConfig.ShowDialogOnItemDelivery, (bool val) => modConfig.ShowDialogOnItemDelivery = val);
+                
+                api.RegisterLabel(manifest, "Tool Upgrade Service:", "Properties related to the tool upgrade service.");
+                api.RegisterSimpleOption(manifest, "Ask to Upgrade Tool", "When placing the tool in the mailbox you will have to confirm if you want to upgrade it.", () => modConfig.EnableAskToUpgradeTool, (bool val) => modConfig.EnableAskToUpgradeTool = val);
 
                 api.RegisterLabel(manifest, "Gift Service:", "Properties related to the gift service.");
+                api.RegisterSimpleOption(manifest, "Minimum Friendship Points", "Friendship points needed to send gifts to a NPC. 250 friendship points equal 1 heart level.", () => modConfig.MinimumFriendshipPointsToSendGift, (int val) => modConfig.MinimumFriendshipPointsToSendGift = val);
                 api.RegisterSimpleOption(manifest, "NPC Page Size", "Number of villagers shown per page on gift shipment.", () => modConfig.GiftChoicePageSize, (int val) => modConfig.GiftChoicePageSize = val);
                 api.RegisterSimpleOption(manifest, "Jealousy", "Make it possible for your spouse to be jealous of gifts sent by mail like of gifts given in person.", () => modConfig.EnableJealousyFromMailedGifts, (bool val) => modConfig.EnableJealousyFromMailedGifts = val);
                 api.RegisterSimpleOption(manifest, "Max Friendship", "Make it possible to send gifts to friends with maxed friendship.", () => modConfig.EnableGiftToNpcWithMaxFriendship, (bool val) => modConfig.EnableGiftToNpcWithMaxFriendship = val);
@@ -94,7 +100,7 @@ namespace MailServicesMod
 
         private static GenericModConfigMenuApi GetApi()
         {
-            return _api = _api ?? DataLoader.Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            return _api ??= DataLoader.Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
         }
     }
 }

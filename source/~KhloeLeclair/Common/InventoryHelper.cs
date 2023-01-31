@@ -96,6 +96,18 @@ public static class InventoryHelper {
 	}
 
 	[return: MaybeNull]
+	public static Item CreateObjectOrRing(int id) {
+		if (!Game1.objectInformation.TryGetValue(id, out string? data) || string.IsNullOrWhiteSpace(data) || id < 0)
+			return null;
+
+		string[] parts = data.Split('/');
+		if (parts.Length > 3 && parts[3] == "Ring")
+			return new Ring(id);
+
+		return new SObject(id, 1);
+	}
+
+	[return: MaybeNull]
 	public static Item CreateItemById(string id, int amount, int quality = 0, bool allow_null = false) {
 		var match = ITEM_REGEX.Match(id);
 		string type;
@@ -122,7 +134,7 @@ public static class InventoryHelper {
 				result = new Boots(nid);
 				break;
 			case "F":
-				result = new Furniture(nid, Vector2.Zero);
+				result = Furniture.GetFurnitureInstance(nid, Vector2.Zero);
 				break;
 			case "H":
 				result = new Hat(nid);

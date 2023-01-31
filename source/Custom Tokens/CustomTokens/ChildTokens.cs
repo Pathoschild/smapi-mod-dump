@@ -48,7 +48,7 @@ namespace CustomTokens
 
             error = "";
             // Get input arguments
-            string[] tokenarg = input.ToLower().Trim().Split('|');
+            string[] tokenarg = input?.ToLower()?.Trim()?.Split('|') ?? new string[0];
 
             // Are the correct number of input arguments present
             if (tokenarg.Count() == 3)

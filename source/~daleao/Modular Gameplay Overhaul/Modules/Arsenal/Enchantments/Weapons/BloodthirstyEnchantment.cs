@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Enchantments;
 #region using directives
 
 using System.Xml.Serialization;
-using DaLion.Overhaul.Modules.Arsenal.Events;
+using DaLion.Overhaul.Modules.Arsenal.Events.Weapons;
 using Microsoft.Xna.Framework;
 using StardewValley.Monsters;
 

@@ -12,8 +12,18 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace GiantCropFertilizer;
+
+/// <summary>
+/// Holds useful and extension methods for this mod.
+/// </summary>
 internal static class GCFUtils
 {
+    /// <summary>
+    /// Fixes the Giant Crop Fertilizer's ID on a specfic map.
+    /// </summary>
+    /// <param name="loc">Map to fix.</param>
+    /// <param name="storedID">The old id.</param>
+    /// <param name="newID">The new id.</param>
     internal static void FixIDsInLocation(this GameLocation loc, int storedID, int newID)
     {
         foreach (TerrainFeature terrainfeature in loc.terrainFeatures.Values)

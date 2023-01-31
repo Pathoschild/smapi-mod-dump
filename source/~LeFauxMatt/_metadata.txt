@@ -18,9 +18,9 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit 1c0cc343a01d6f332897091e608c6530cb4554a8
-   Author: Matthew Lucas <justmatt@outlook.com>
-   Date:   Mon Oct 17 18:14:34 2022 -0700
+   commit 85cef8123349c3b5e995c34916e225e0112ef4af
+   Author: FauxMatt <github@fauxmail.net>
+   Date:   Fri Jan 13 15:58:54 2023 -0800
    
-       chore: Reformat
+       chore: Supress styling rules for external code
    

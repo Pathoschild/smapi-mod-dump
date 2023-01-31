@@ -59,4 +59,4 @@ Si quieres contribuir a traducir el mod, puedes mandarme la traducción a travé
 
 El mod actualmente está disponible en Español e Inglés. Puedes ver las traducciones hechas por usuarios en la [página del mod](https://www.nexusmods.com/stardewvalley/mods/11037).
 ## Problemas comunes
-Si usas *child to npc*, es posible que tu hije tenga problemas en FishShop (la tienda de Willy). Esto es porque Child to NPC tiene problemas con NPCWarp (de lo cual no puedo hacer mucho, sólo es posible esperar hasta una actualización).
+Si usas *child to npc*, es posible que tu hije tenga problemas en FishShop (la tienda de Willy). ChildToNPC usa Warps(puntos de transporte) de jugador, pero he agregado compatibilidad para esto.

@@ -80,6 +80,12 @@ internal static class MultiYieldCropsCompat
                 obj.modData?.SetBool(CanPlaceHandler.Joja, true);
                 obj.MarkContextTagsDirty();
             }
+            else if (fertilizer == ModEntry.SecretJojaFertilizerID)
+            {
+                obj.Quality = 0;
+                obj.modData?.SetBool(CanPlaceHandler.Joja, true);
+                obj.MarkContextTagsDirty();
+            }
         }
         catch (Exception ex)
         {

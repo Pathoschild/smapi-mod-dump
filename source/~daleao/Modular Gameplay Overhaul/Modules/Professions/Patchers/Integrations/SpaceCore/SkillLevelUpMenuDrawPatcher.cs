@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -92,12 +92,9 @@ internal sealed class SkillLevelUpMenuDrawPatcher : HarmonyPatcher
 
     #region injected subroutines
 
-    private static void DrawSubroutine(IClickableMenu menu, int currentLevel, SpriteBatch b)
+    private static void DrawSubroutine(SkillLevelUpMenu menu, int currentLevel, SpriteBatch b)
     {
-        var isProfessionChooser = Reflector
-            .GetUnboundFieldGetter<IClickableMenu, bool>(menu, "isProfessionChooser")
-            .Invoke(menu);
-        if (!ProfessionsModule.Config.EnablePrestige || !isProfessionChooser || currentLevel > 10)
+        if (!ProfessionsModule.Config.EnablePrestige || !menu.isProfessionChooser || currentLevel > 10)
         {
             return;
         }
@@ -124,9 +121,9 @@ internal sealed class SkillLevelUpMenuDrawPatcher : HarmonyPatcher
 
             if (selectionArea.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
-                string hoverText = I18n.Get(leftProfession.Id % 6 <= 1
-                    ? "prestige.levelup.tooltip:5"
-                    : "prestige.levelup.tooltip:10");
+                string hoverText = I18n.Get(leftProfession.Level == 10
+                    ? "prestige.levelup.tooltip:10"
+                    : "prestige.levelup.tooltip:5");
                 IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
             }
         }
@@ -143,9 +140,9 @@ internal sealed class SkillLevelUpMenuDrawPatcher : HarmonyPatcher
 
             if (selectionArea.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
-                string hoverText = I18n.Get(leftProfession.Id % 6 <= 1
-                    ? "prestige.levelup.tooltip:5"
-                    : "prestige.levelup.tooltip:10");
+                string hoverText = I18n.Get(leftProfession.Level == 10
+                    ? "prestige.levelup.tooltip:10"
+                    : "prestige.levelup.tooltip:5");
                 IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
             }
         }

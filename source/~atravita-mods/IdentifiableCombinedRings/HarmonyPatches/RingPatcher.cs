@@ -9,6 +9,9 @@
 *************************************************/
 
 using HarmonyLib;
+
+using Netcode;
+
 using StardewValley.Objects;
 
 namespace IdentifiableCombinedRings.HarmonyPatches;
@@ -24,20 +27,25 @@ internal class RingPatcher
     /// </summary>
     /// <param name="__instance">Combined ring to check.</param>
     /// <param name="__result">Output (the Display Name).</param>
-    [HarmonyPatch(nameof(Ring.DisplayName), MethodType.Getter)]
     [HarmonyPostfix]
+    [HarmonyPatch(nameof(Ring.DisplayName), MethodType.Getter)]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification ="Harmony convention")]
     public static void PostfixGetDisplayName(Ring __instance, ref string __result)
     {
         if (__instance is CombinedRing combinedRing)
         {
-            if (combinedRing.combinedRings.Count > 2 || combinedRing.combinedRings[0] is CombinedRing || combinedRing.combinedRings[0] is CombinedRing)
+            NetList<Ring, NetRef<Ring>> combinedRings = combinedRing.combinedRings;
+            if (combinedRings.Count <= 1)
+            {
+                return;
+            }
+            if (combinedRings.Count > 2 || combinedRings[0] is CombinedRing || combinedRings[1] is CombinedRing)
             {
                 __result += I18n.Many();
                 return;
             }
 
-            __result = string.Join(" & ", combinedRing.combinedRings.Select((Ring ring) => ring.DisplayName));
+            __result = combinedRings[0].DisplayName + " & " + combinedRings[1].DisplayName;
         }
     }
 }

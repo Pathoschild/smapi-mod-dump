@@ -9,9 +9,16 @@
 *************************************************/
 
 using AtraBase.Toolkit.Extensions;
+using AtraBase.Toolkit.Reflection;
+
+using AtraCore.Framework.ReflectionManager;
+
 using AtraShared.ConstantsAndEnums;
+using AtraShared.Utils.Extensions;
 using AtraShared.Utils.Shims;
-using Microsoft.Toolkit.Diagnostics;
+using AtraShared.Wrappers;
+
+using CommunityToolkit.Diagnostics;
 using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 
@@ -20,15 +27,28 @@ namespace TapGiantCrops.Framework;
 /// <summary>
 /// API instance for Tap Giant Crops.
 /// </summary>
-public class TapGiantCrop : ITapGiantCropsAPI
+public sealed class TapGiantCrop : ITapGiantCropsAPI
 {
+    /// <summary>
+    /// A setter to shake a giant crop.
+    /// </summary>
+    private static readonly Action<GiantCrop, float> GiantCropSetShake = typeof(GiantCrop)
+        .GetCachedField("shakeTimer", ReflectionCache.FlagTypes.InstanceFlags)
+        .GetInstanceFieldSetter<GiantCrop, float>();
+
+    internal static void ShakeGiantCrop(GiantCrop crop)
+    {
+        GiantCropSetShake(crop, 100f);
+        crop.NeedsUpdate = true;
+    }
+
     private SObject keg = null!;
 
     /// <inheritdoc />
     public bool CanPlaceTapper(GameLocation loc, Vector2 tile, SObject obj)
     {
-        Guard.IsNotNull(loc, nameof(loc));
-        Guard.IsNotNull(obj, nameof(obj));
+        Guard.IsNotNull(loc);
+        Guard.IsNotNull(obj);
         if (loc.objects.ContainsKey(tile))
         {
             return false;
@@ -43,13 +63,12 @@ public class TapGiantCrop : ITapGiantCropsAPI
     /// <inheritdoc />
     public bool TryPlaceTapper(GameLocation loc, Vector2 tile, SObject obj)
     {
-        Guard.IsNotNull(loc, nameof(loc));
-        Guard.IsNotNull(obj, nameof(obj));
+        Guard.IsNotNull(loc);
+        Guard.IsNotNull(obj);
         if (this.CanPlaceTapper(loc, tile, obj))
         {
             SObject tapper = (SObject)obj.getOne();
-            GiantCrop? giant = GetGiantCropAt(loc, tile);
-            if (giant is not null)
+            if (GetGiantCropAt(loc, tile) is GiantCrop giant)
             {
                 (SObject obj, int days)? output = this.GetTapperProduct(giant, tapper);
                 if (output is not null)
@@ -57,9 +76,12 @@ public class TapGiantCrop : ITapGiantCropsAPI
                     tapper.heldObject.Value = output.Value.obj;
                     tapper.MinutesUntilReady = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, output.Value.days);
                 }
+
+                loc.playSound("axe");
+                ShakeGiantCrop(giant);
+                loc.objects[tile] = tapper;
+                return true;
             }
-            loc.objects[tile] = tapper;
-            return true;
         }
         return false;
     }
@@ -70,26 +92,49 @@ public class TapGiantCrop : ITapGiantCropsAPI
     /// <param name="giantCrop">The giant crop.</param>
     /// <param name="tapper">The tapper in question.</param>
     /// <returns>tuple of the item and how long it should take.</returns>
+    [Pure]
     public (SObject obj, int days)? GetTapperProduct(GiantCrop giantCrop, SObject tapper)
     {
-        if (DynamicGameAssetsShims.IsDGAGiantCrop?.Invoke(giantCrop) == true)
+        if (DynamicGameAssetsShims.IsDGAGiantCrop?.Invoke(giantCrop) == true || giantCrop.parentSheetIndex?.Value is null)
         {
             return null;
         }
-        int cropindex = giantCrop.which.Value switch
-        {
-            0 => 190,
-            1 => 254,
-            2 => 276,
-            _ => giantCrop.which.Value,
-        };
 
-        SObject crop = new(cropindex, 999);
-        this.keg.heldObject.Value = null;
-        this.keg.performObjectDropInAction(crop, false, Game1.player);
-        SObject? heldobj = this.keg.heldObject.Value;
-        this.keg.heldObject.Value = null;
-        if (heldobj?.getOne() is SObject returnobj)
+        int giantCropIndx = giantCrop.parentSheetIndex.Value;
+
+        SObject? returnobj = AssetManager.GetOverrideItem(giantCropIndx);
+
+        if (returnobj is null)
+        {
+            // find a keg output.
+            SObject crop = new(giantCropIndx, 999);
+            this.keg.heldObject.Value = null;
+            this.keg.performObjectDropInAction(crop, false, Game1.player);
+            SObject? heldobj = this.keg.heldObject.Value;
+            this.keg.heldObject.Value = null;
+            if (heldobj?.getOne() is SObject obj)
+            {
+                returnobj = obj;
+            }
+        }
+
+        // special case: giant flowers make honey
+        // this makes no sense.
+        if (returnobj is null && giantCropIndx.GetCategoryFromIndex() == SObject.flowersCategory)
+        {
+            string flowerdata = Game1Wrappers.ObjectInfo[giantCropIndx];
+            returnobj = new SObject(340, 1); // honey index.
+            string honeyName = $"{flowerdata.GetNthChunk('/', 0).ToString()} Honey";
+
+            returnobj.Name = honeyName;
+            if (int.TryParse(flowerdata.GetNthChunk('/', SObject.objectInfoPriceIndex), out int price))
+            {
+                returnobj.Price += 2 * price;
+            }
+            returnobj.preservedParentSheetIndex.Value = giantCropIndx;
+        }
+
+        if (returnobj is not null)
         {
             int days = returnobj.Price / (25 * giantCrop.width.Value * giantCrop.height.Value);
             if (tapper.ParentSheetIndex == 264)
@@ -98,7 +143,9 @@ public class TapGiantCrop : ITapGiantCropsAPI
             }
             return (returnobj, Math.Max(1, days));
         }
-        return null;
+
+        // fallback - return sap.
+        return (new SObject(92, 20), 2);
     }
 
     /// <summary>

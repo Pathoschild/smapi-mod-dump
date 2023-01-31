@@ -11,7 +11,7 @@
 {
   "mod.description": "Prevents rugs from being removed if there's something on the rug. Also some other things.",
   "Enabled.title": "Enabled",
-  "Enabled.description": "Whether to enable or diable this mod.",
+  "Enabled.description": "Whether to enable or disable this mod.",
   "PreventRugRemoval.title": "Prevent Rug Removal",
   "PreventRugRemoval.description": "Whether rugs should be prevented from being removed when things are on them.",
   "CanPlaceRugsOutside.title": "Can Place Rug Outside",
@@ -28,9 +28,11 @@
   "JukeboxesEverywhere.description": "Allows jukeboxes to be played anywhere!",
   "GoldenCoconutsOffIsland.title": "Golden Coconuts Off Island",
   "GoldenCoconutsOffIsland.description": "Golden coconuts can drop from palm trees off the island too! It's quite rare though.",
+  "AlertChanges.title": "Alert Changes",
+  "AlertChanges.description": "Adds some minor changes to alerts",
 
   "FurniturePlacementKey.title": "Furniture Placement Key",
-  "FurniturePlacementKey.description": "The keybind used to allow objects to be removed from tables.",
+  "FurniturePlacementKey.description": "The key-bind used to allow objects to be removed from tables.",
 
   "HideCrabPots.title": "Hide Crab Pots",
   "HideCrabPots.description": "Hides crab pots during events.",
@@ -44,7 +46,28 @@
   "PhoneSpeedUpFactor.title": "Phone Speed Up Factor",
   "PhoneSpeedUpFactor.description": "How much to speed up the phone call by.",
 
+  "EditElliottEvent.title": "Edit Elliott Event",
+  "EditElliottEvent.description": "Whether or not to edit Elliott's event to add a choice for juice instead of alcohol.",
+
+  "BetIcons.title": "Bet1k/10k Icons",
+  "BetIcons.description": "Whether or not to show the bet1k/bet10k icons.",
+
+  // secret notes gmmc
+  "SecretNotesOverride.title": "Secret Note options",
+  "SecretNotesOverride.descriptions": "Controls how this mod handles secret notes.",
+
+  "OverrideSecretNotes.title": "Override Secret Notes",
+  "OverrideSecretNotes.description": "Let this mod override how the game handles spawning secret notes.",
+
+  "MaxNoteChance.title": "Max Note Chance",
+  "MaxNoteChance.description": "The highest chance a note will be produced.",
+
+  "MinNoteChance.title": "Min Note Chance",
+  "MinNoteChance.description": "The chance used for the last note.",
+
   // Handle the confirmation GMCM stuff....
+  "NapalmInSafeAreas.title": "Napalm In Safe Areas",
+  "NapalmInSafeAreas.description": "If disabled, prevents napalm rings from taking effect in areas marked as Safe (by default the Farm).",
 
   "BombLocationDetailed": "Bomb and warp confirmation per location",
   "BombLocationDetailed.description": "Sets whether or not a location should be considered safe or dangerous when it comes to bomb confirmation. A dynamic location is considered dangerous if there is a single enemy on it.",
@@ -54,7 +77,7 @@
   "config.IsSafeLocationEnum.Dynamic": "Dynamic",
 
   "config.ConfirmationEnum.Off": "Off",
-  "config.ConfirmationEnum.NotInMultiplayer": "Not In Multiplayer",
+  "config.ConfirmationEnum.NotInMultiplayer": "Not In Multi-player",
   "config.ConfirmationEnum.On": "On",
   "config.ConfirmationEnum.InMultiplayerOnly": "In MultiplayerOnly",
 
@@ -79,10 +102,16 @@
 
   "BetterReturnScepter": "Since you have Better Return Scepter installed, the return scepter settings for this mod have been disabled.",
 
-  "ReturnScepterInSafeAreas.title": "Return Scepter\nin Safe Areas",
+  "ReturnScepterInSafeAreas.title": "Return Scepter\nIn Safe Areas",
   "ReturnScepterInSafeAreas.description": "Whether return scepter confirmation should be enabled in safe areas.",
   "ReturnScepterInDangerousAreas.title": "Return Scepter\nIn Dangerous Areas",
   "ReturnScepterInDangerousAreas.description": "Whether return scepter confirmation should be enabled in dangerous areas.",
+
+  "CraneGameDifficulty.title": "Crane Game Difficulty",
+  "CraneGameDifficulty.description": "The difficulty for the crane game. Set **higher** for an easier crane game.",
+
+  "RemoveDuplicateNPCs.title": "Remove Duplicated NPCs",
+  "RemoveDuplicateNPCs.description": "Remove duplicated NPCs if one is found.",
 
   // Messages to the player.
   "rug-removal-message": "Remove all items on rug before removing rug!",

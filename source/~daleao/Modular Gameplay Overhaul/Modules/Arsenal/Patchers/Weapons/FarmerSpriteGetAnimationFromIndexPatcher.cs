@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Weapons;
 
 using System.Reflection;
 using DaLion.Overhaul.Modules.Arsenal.Extensions;
+using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley;
@@ -45,18 +46,17 @@ internal sealed class FarmerSpriteGetAnimationFromIndexPatcher : HarmonyPatcher
         {
             var owner = Reflector.GetUnboundFieldGetter<FarmerSprite, Farmer>(requester, "owner")
                 .Invoke(requester);
-            if (!owner.IsLocalPlayer || owner.CurrentTool is not MeleeWeapon weapon)
+            if (!owner.IsLocalPlayer || owner.CurrentTool is not MeleeWeapon weapon || weapon.isScythe())
             {
                 return true; // run original logic
             }
 
-            var type = weapon.type.Value;
-            var hitStep = ArsenalModule.State.ComboHitStep;
-            if (type == MeleeWeapon.club && hitStep == weapon.GetFinalHitStep() - 1)
+            var hitStep = ArsenalModule.State.ComboHitQueued;
+            if (weapon.IsClub() && hitStep == weapon.GetFinalHitStep() - 1)
             {
                 owner.QueueSmash(weapon);
             }
-            else if ((int)hitStep % 2 == 0 || weapon.isScythe())
+            else if ((int)hitStep % 2 == 0)
             {
                 owner.QueueForwardSwipe(weapon);
             }

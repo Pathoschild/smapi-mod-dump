@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -86,13 +86,13 @@ internal abstract class OverhaulModule : SmartEnum<OverhaulModule>
     {
         if (this.IsActive)
         {
-            Log.D($"{this.Name} module is already active.");
+            Log.D($"[Core]: {this.Name} module is already active.");
             return;
         }
 
         EventManager.ManageNamespace(this.Namespace);
-        this._harmonizer = Harmonizer.FromNamespace(helper.ModRegistry, this.Namespace);
-        this._commandHandler ??= CommandHandler.FromNamespace(
+        this._harmonizer = Harmonizer.ApplyFromNamespace(helper.ModRegistry, this.Namespace);
+        this._commandHandler ??= CommandHandler.HandleFromNamespace(
             helper.ConsoleCommands,
             this.Namespace,
             this.DisplayName,
@@ -100,6 +100,7 @@ internal abstract class OverhaulModule : SmartEnum<OverhaulModule>
             () => this.IsActive);
         this.IsActive = true;
         this.InvalidateAssets();
+        Log.T($"[Core]: {this.Name} module activated.");
     }
 
     /// <summary>Deactivates the module.</summary>
@@ -107,7 +108,7 @@ internal abstract class OverhaulModule : SmartEnum<OverhaulModule>
     {
         if (!this.IsActive)
         {
-            Log.D($"{this.Name} module is not active.");
+            Log.D($"[Core]: {this.Name} module is not active.");
             return;
         }
 
@@ -115,6 +116,7 @@ internal abstract class OverhaulModule : SmartEnum<OverhaulModule>
         this._harmonizer = this._harmonizer.Unapply();
         this.IsActive = false;
         this.InvalidateAssets();
+        Log.T($"[Core]: {this.Name} module deactivated.");
     }
 
     /// <summary>Causes SMAPI to reload all assets edited by this module.</summary>
@@ -237,7 +239,7 @@ internal abstract class OverhaulModule : SmartEnum<OverhaulModule>
     {
         /// <summary>Initializes a new instance of the <see cref="OverhaulModule.TaxesModule"/> class.</summary>
         internal TaxesModule()
-            : base("Taxes", 5, "tax")
+            : base("Taxes", 5, "taxes")
         {
         }
 

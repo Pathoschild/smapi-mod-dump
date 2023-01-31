@@ -12,6 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IDynamicGameAssets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IGenericModConfigMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IJsonAssets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APIs\ILeaderboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APIs\IMargo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ISpaceCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Asset\AssetClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Asset\AssetClassParser.cs" />
@@ -19,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Command\CommandClassParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigClassParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FarmerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>

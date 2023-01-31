@@ -9,6 +9,15 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed ingredient names in recipes that need any egg or any milk.
+* Improved controller support in the search menu.
+
+## 1.38.2
+Released 09 January 2023 for SMAPI 3.14.0 or later.
+
+* Improved translations. Thanks to Mysti57155 (updated French) and wally232 (updated Korean)!
+
 ## 1.38.1
 Released 30 October 2022 for SMAPI 3.14.0 or later.
 

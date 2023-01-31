@@ -36,7 +36,7 @@ Here's what you can change:
 
   Setting Name                                        | Default Value                                                   | Description
   :-------------------------------------------------- | :-------------------------------------------------------------- | :------------------
-  `KeybindListToggleUIKey`                            | `LeftShift and OemPipe`                                         | The keybind that toggles the UI in-game.
+  `KeybindListToggleUIKey`                            | `LeftShift and OemPipe` aka `LeftShift and \`              | The keybind that toggles the UI in-game.
 
   
 * String values:
@@ -52,6 +52,7 @@ Here's what you can change:
   Setting Name                    | Default Value   | Description
   :------------------------------ | :-------------- | :------------------
   `IsUIEnabled`                   | `true`          | If true shows the UI, if false hides it.
+  `IsPettingEnabled`              | `false`         | If true then auto pets farm animals, if false does not auto pet.
 
 
 ## Compatibility

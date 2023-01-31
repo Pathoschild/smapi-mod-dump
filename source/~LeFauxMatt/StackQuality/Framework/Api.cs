@@ -126,7 +126,6 @@ public sealed class Api : IStackQualityApi
         return true;
     }
 
-
     /// <inheritdoc />
     public bool MoveStacks(SObject fromObj, [NotNullWhen(true)] ref Item? toItem, int[] amount)
     {

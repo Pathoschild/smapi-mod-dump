@@ -39,7 +39,6 @@ namespace Custom_Farm_Loader.Lib
         public List<BackgroundType> BackgroundTypes = new List<BackgroundType>();
         public Vector2 Position = new Vector2(0, 0);
         public GameLocation Location = null;
-        public string LocationName = "Farm";
 
         public static void Initialize(Mod mod)
         {
@@ -90,9 +89,6 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "items":
                             dailyUpdate.Items = ItemObject.MapNameToParentsheetindex(UtilityMisc.parseStringArray(property));
-                            break;
-                        case "map" or "location":
-                            dailyUpdate.LocationName = value;
                             break;
                         default:
                             if (dailyUpdate.Filter.parseAttribute(property))

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -42,7 +42,7 @@ internal sealed class PrestigeDayEndingEvent : DayEndingEvent
         {
             var toReset = ToReset.Dequeue();
             toReset.Reset();
-            Log.D($"{Game1.player.Name}'s {toReset.DisplayName} skill has been reset.");
+            Log.D($"[Prestige]: {Game1.player.Name}'s {toReset.DisplayName} skill has been reset.");
         }
     }
 }

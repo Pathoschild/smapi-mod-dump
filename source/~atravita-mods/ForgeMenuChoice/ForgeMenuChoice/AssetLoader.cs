@@ -9,7 +9,6 @@
 *************************************************/
 
 using AtraBase.Toolkit.StringHandler;
-using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
@@ -24,17 +23,10 @@ namespace ForgeMenuChoice;
 public static class AssetLoader
 {
     private const string ASSETPREFIX = "Mods/atravita_ForgeMenuChoice_";
-
-#pragma warning disable SA1310 // Field names should not contain underscore. Reviewed.
-    private static readonly string UI_ELEMENT_LOCATION = PathUtilities.NormalizeAssetName("assets/Forge-Buttons.png");
-    private static readonly string UI_ASSET_PATH = PathUtilities.NormalizeAssetName(ASSETPREFIX + "Forge_Buttons");
-    private static readonly string TOOLTIP_DATA_PATH = PathUtilities.NormalizeAssetName(ASSETPREFIX + "Tooltip_Data");
-#pragma warning restore SA1310 // Field names should not contain underscore
-
-    private static IAssetName? uiAssetName = null;
-    private static IAssetName? tooltipAssetName = null;
-
-    private static Lazy<Texture2D> uiElementLazy = new(() => ModEntry.GameContentHelper.Load<Texture2D>(UI_ASSET_PATH));
+    private static readonly string UiTexturePath = PathUtilities.NormalizePath("assets/Forge-Buttons.png");
+    private static IAssetName uiAssetPath = null!;
+    private static IAssetName tooltipDataPath = null!;
+    private static Lazy<Texture2D> uiElementLazy = new(() => ModEntry.GameContentHelper.Load<Texture2D>(uiAssetPath));
     private static Lazy<Dictionary<string, string>> tooltipDataLazy = new(GrabAndWrapTooltips);
 
     /// <summary>
@@ -52,11 +44,15 @@ public static class AssetLoader
     /// </summary>
     internal static string ENCHANTMENT_NAMES_LOCATION { get; } = PathUtilities.NormalizeAssetName("Strings/EnchantmentNames");
 
-    private static IAssetName UI_ASSET_NAME
-        => uiAssetName ??= ModEntry.GameContentHelper.ParseAssetName(UI_ASSET_PATH);
-
-    private static IAssetName TOOLTIP_DATA_NAME
-        => tooltipAssetName ??= ModEntry.GameContentHelper.ParseAssetName(TOOLTIP_DATA_PATH);
+    /// <summary>
+    /// Initializes the asset manager.
+    /// </summary>
+    /// <param name="parser">GameContentHelper.</param>
+    internal static void Initialize(IGameContentHelper parser)
+    {
+        uiAssetPath = parser.ParseAssetName(ASSETPREFIX + "Forge_Buttons");
+        tooltipDataPath = parser.ParseAssetName(ASSETPREFIX + "Tooltip_Data");
+    }
 
     /// <summary>
     /// Refreshes the Lazys.
@@ -64,11 +60,11 @@ public static class AssetLoader
     /// <param name="assets">Which assets to refresh? Leave null to refresh all.</param>
     internal static void Refresh(IReadOnlySet<IAssetName>? assets = null)
     {
-        if (uiElementLazy.IsValueCreated && (assets is null || assets.Contains(UI_ASSET_NAME)))
+        if (uiElementLazy.IsValueCreated && (assets is null || assets.Contains(uiAssetPath)))
         {
-            uiElementLazy = new(() => ModEntry.GameContentHelper.Load<Texture2D>(UI_ASSET_PATH));
+            uiElementLazy = new(() => ModEntry.GameContentHelper.Load<Texture2D>(uiAssetPath));
         }
-        if (tooltipDataLazy.IsValueCreated && (assets is null || assets.Contains(TOOLTIP_DATA_NAME)))
+        if (tooltipDataLazy.IsValueCreated && (assets is null || assets.Contains(tooltipDataPath)))
         {
             tooltipDataLazy = new(GrabAndWrapTooltips);
         }
@@ -80,11 +76,11 @@ public static class AssetLoader
     /// <param name="e">Event args.</param>
     internal static void OnLoadAsset(AssetRequestedEventArgs e)
     {
-        if (e.NameWithoutLocale.Equals(UI_ASSET_NAME))
+        if (e.NameWithoutLocale.Equals(uiAssetPath))
         {
-            e.LoadFromModFile<Texture2D>(UI_ELEMENT_LOCATION, AssetLoadPriority.Low);
+            e.LoadFromModFile<Texture2D>(UiTexturePath, AssetLoadPriority.Low);
         }
-        else if (e.NameWithoutLocale.Equals(TOOLTIP_DATA_NAME))
+        else if (e.NameWithoutLocale.Equals(tooltipDataPath))
         {
             e.LoadFrom(GenerateToolTips, AssetLoadPriority.Low);
         }
@@ -156,7 +152,7 @@ public static class AssetLoader
 
     private static Dictionary<string, string> GrabAndWrapTooltips()
     {
-        Dictionary<string, string> tooltips = ModEntry.GameContentHelper.Load<Dictionary<string, string>>(TOOLTIP_DATA_PATH);
+        Dictionary<string, string> tooltips = ModEntry.GameContentHelper.Load<Dictionary<string, string>>(tooltipDataPath);
         foreach ((string k, string v) in tooltips)
         {
             tooltips[k] = ModEntry.StringUtils.ParseAndWrapText(v, Game1.smallFont, 300);

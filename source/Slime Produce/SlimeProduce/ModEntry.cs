@@ -22,6 +22,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using System.IO;
 using SObject = StardewValley.Object;
+using System.Linq;
 
 namespace SlimeProduce
 {
@@ -45,6 +46,7 @@ namespace SlimeProduce
             // Subscribe event handlers
             Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             Helper.Events.Content.AssetRequested += OnAssetRequested;
+            Helper.Events.World.ObjectListChanged += OnObjectListChanged;
 
             // Register console commands
             Helper.ConsoleCommands.Add("spawn_slime", "Spawns a slime or slimes of a certain color.\n\n" +
@@ -74,7 +76,6 @@ namespace SlimeProduce
             // Enable Deluxe Grabber Redux integration if it's present
             DeluxeGrabberReduxLoaded = Helper.ModRegistry.IsLoaded("ferdaber.DeluxeGrabberRedux");
             if (DeluxeGrabberReduxLoaded) {
-                Helper.Events.World.ObjectListChanged += OnObjectListChanged;
                 Monitor.Log("Deluxe Auto-Grabber Redux integration loaded", LogLevel.Debug);
             }
             
@@ -95,18 +96,26 @@ namespace SlimeProduce
                             break;
                         }
 
+                // Duplicate item drops can occur from multipler users running this routine at the same time
+                // 1. Exit if the grabber is handling drops and you are *NOT* the host
+                if (grabber != null && Game1.MasterPlayer.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID)
+                    return;
+                // 2. Exit if the grabber is *NOT* handling drops and you are *NOT* the first player in the hutch
+                if (grabber == null && e.Location.farmers.OrderByDescending(f => f.UniqueMultiplayerID).FirstOrDefault()?.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID)
+                    return;
+
                 // Add additional slimeball drops as debris or to grabber
                 foreach (KeyValuePair<Vector2, SObject> obj in e.Removed)
                     if (obj.Value.Name == "Slime Ball")
                     {
                         var drops = new SlimeBall(obj.Value).GenerateDrops();
 
-                        if (e.Location.farmers.Count >= 1)
-                            foreach (KeyValuePair<int, int> drop in drops)
-                                Game1.createMultipleObjectDebris(drop.Key, (int)obj.Value.TileLocation.X, (int)obj.Value.TileLocation.Y, drop.Value, 1f + ((Game1.player.FacingDirection == 2) ? 0f : ((float)Game1.random.NextDouble())));
-                        else if (grabber != null)
+                        if (grabber != null)
                             foreach (KeyValuePair<int, int> drop in drops)
                                 grabber.addItem(new SObject(drop.Key, drop.Value, false, -1, 0));
+                        else
+                            foreach (KeyValuePair<int, int> drop in drops)
+                                Game1.createMultipleObjectDebris(drop.Key, (int)obj.Value.TileLocation.X, (int)obj.Value.TileLocation.Y, drop.Value, 1f + ((Game1.player.FacingDirection == 2) ? 0f : ((float)Game1.random.NextDouble())));
                     }
             }
         }

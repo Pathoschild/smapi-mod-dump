@@ -15,9 +15,30 @@ Most users should download the mod from the [Nexus page](https://www.nexusmods.c
 
 Feel free to use these fertilizers as rewards for special orders or quests! Additionally, crops grown via the organic fertilizer carry the [context tag](https://stardewvalleywiki.com/Modding:Items#Categories) `atravita_morefertilizers_organic` and crops grown with the joja fertilizers carry the context tag `atravita_morefertilizers_joja`.
 
+### Radioactive fertilizer exclusions:
+
+If you'd like for the Radioactive fertilizer to exclude your crops, just edit the data asset `Mods/atravita/MoreFertilizers/RadioactiveDenylist`. This is a string-string dictionary where the key is an identifier (either the integer id or the name of the seed) and the value is ignored. For example:
+
+```js
+{
+    "Format": "1.28.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/atravita/MoreFertilizers/RadioactiveDenylist",
+            "Entries": {
+                "Pufferchick Seeds": "null",
+            }
+        }
+    ]
+}
+```
+
+will prevent the radioactive fertilizer from changing a seed into `Pufferchick Seeds`.
+
 ### API
 
-Fertilizers that go into HoeDirt are handled by normal game methods, but fertilizers that don't are handled entirely within this mod. For integration, there's an API for applying the non-hoedirt fertilizers, located at [../IMoreFertilizersAPI.cs](../IMoreFertilizersAPI.cs). 
+Fertilizers that go into HoeDirt are handled by normal game methods (with the exception of the Prismatic Fertilizer, which is also handled internally), but fertilizers that don't are handled entirely within this mod. For integration, there's an API for applying the non-hoedirt fertilizers, located at [../IMoreFertilizersAPI.cs](../IMoreFertilizersAPI.cs). 
 
 ### Translations:
 

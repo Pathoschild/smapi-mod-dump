@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -38,7 +38,7 @@ internal sealed class UnlockPopulationGatesCommand : ConsoleCommand
         "Unlock the specified population gate for the nearest pond, or the all gates if none are specified, and set the max occupants to the maximum value.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (args.Length > 1)
         {
@@ -46,7 +46,7 @@ internal sealed class UnlockPopulationGatesCommand : ConsoleCommand
         }
 
         var nearest = Game1.player.GetClosestBuilding<FishPond>(predicate: b =>
-            (b.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) && !b.isUnderConstruction());
+            b.IsOwnedBy(Game1.player) && !b.isUnderConstruction());
         if (nearest is null)
         {
             Log.W("There are no owned ponds nearby.");
@@ -84,13 +84,8 @@ internal sealed class UnlockPopulationGatesCommand : ConsoleCommand
 
         nearest.lastUnlockedPopulationGate.Value = gate;
         nearest.UpdateMaximumOccupancy();
-        if (args.Length > 0)
-        {
-            Log.I($"Unlocked {args[0]} population gates for nearby {nearest.GetFishObject().Name} pond.");
-        }
-        else
-        {
-            Log.I($"Unlocked all population gates for nearby {nearest.GetFishObject().Name} pond.");
-        }
+        Log.I(args.Length > 0
+            ? $"Unlocked {args[0]} population gates for nearby {nearest.GetFishObject().Name} pond."
+            : $"Unlocked all population gates for nearby {nearest.GetFishObject().Name} pond.");
     }
 }

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -35,7 +35,7 @@ internal sealed class StardewValleyExpandedIntegration : ModIntegration<StardewV
         .ReadContentPackConfig("FlashShifter.StardewValleyExpandedCP")
         ?.Value<bool?>("DisableGaldoranTheme") == true;
 
-    /// <summary>Gets a value indicating where the <c>UseGaldoranThemeAllTimes</c> config setting is enabled.</summary>
+    /// <summary>Gets a value indicating whether the <c>UseGaldoranThemeAllTimes</c> config setting is enabled.</summary>
     internal bool UseGaldoranThemeAllTimes => this.IsLoaded && ModHelper
         .ReadContentPackConfig("FlashShifter.StardewValleyExpandedCP")
         ?.Value<bool?>("UseGaldoranThemeAllTimes") == true;

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Tools.Effects;
 #region using directives
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using DaLion.Overhaul.Modules.Tools.Configs;
 using DaLion.Overhaul.Modules.Tools.Extensions;
@@ -37,10 +38,10 @@ internal sealed class AxeEffect : IToolEffect
 
     /// <summary>Gets the <see cref="Axe"/> upgrade levels needed to break supported resource clumps.</summary>
     /// <remarks>Derived from <see cref="ResourceClump.performToolAction"/>.</remarks>
-    private IDictionary<int, int> UpgradeLevelsNeededForResource { get; } = new Dictionary<int, int>
+    private ImmutableDictionary<int, int> UpgradeLevelsNeededForResource { get; } = new Dictionary<int, int>
     {
         [ResourceClump.stumpIndex] = Tool.copper, [ResourceClump.hollowLogIndex] = Tool.steel,
-    };
+    }.ToImmutableDictionary();
 
     /// <inheritdoc />
     public bool Apply(

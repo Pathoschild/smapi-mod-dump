@@ -94,18 +94,18 @@ namespace BetterBeehouses.integration
                     new(OpCodes.Ldloc_0),
                     new(OpCodes.Callvirt,typeof(SObject).PropertyGetter(nameof(SObject.Price)))
                 })
-                .SkipTo(new CodeInstruction[]
+                .InsertBefore(new CodeInstruction[]
                 {
-                    new(OpCodes.Callvirt, typeof(SObject).PropertySetter(nameof(SObject.Price)))
-                })
-                .Add(new CodeInstruction[]
-                {
-                    new(OpCodes.Dup),
+                    new(OpCodes.Ldloc_S, 4),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine").MethodNamed("GetOwner")),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, typeof(AutomatePatch).MethodNamed(nameof(ManipulateObject)))
-                })
+                }, new CodeInstruction[]
+				{
+					new(OpCodes.Ldnull),
+					new(OpCodes.Ldarg_0)
+				})
                 .Finish();
         }
         private static void ManipulateObject(SObject obj, Farmer owner, object machine)

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Rings.Patchers;
 #region using directives
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Shared.Extensions.Reflection;
@@ -112,14 +111,15 @@ internal sealed class ForgeMenuUpdatePatcher : HarmonyPatcher
 
     private static void UnforgeInfinityBand(ForgeMenu menu, CombinedRing infinity)
     {
-        var combinedRings = infinity.combinedRings.ToList();
-        infinity.combinedRings.Clear();
-        foreach (var gemstone in combinedRings.Select(ring => Gemstone.FromRing(ring.ParentSheetIndex)))
+        for (var i = 0; i < infinity.combinedRings.Count; i++)
         {
+            var ring = infinity.combinedRings[i];
+            var gemstone = Gemstone.FromRing(ring.ParentSheetIndex);
             Utility.CollectOrDrop(new SObject(gemstone, 1));
             Utility.CollectOrDrop(new SObject(848, 5));
         }
 
+        infinity.combinedRings.Clear();
         Utility.CollectOrDrop(new Ring(Globals.InfinityBandIndex!.Value));
         menu.leftIngredientSpot.item = null;
         Game1.playSound("coin");

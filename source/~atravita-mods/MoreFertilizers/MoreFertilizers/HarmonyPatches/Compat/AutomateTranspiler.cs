@@ -101,7 +101,7 @@ internal static class AutomateTranspiler
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Ret),
             })
-            .GetLabels(out IList<Label>? labels)
+            .GetLabels(out IList<Label>? labels, clear: true)
             .Insert(copy.ToArray(), withLabels: labels)
             .Insert(new CodeInstruction[]
             {

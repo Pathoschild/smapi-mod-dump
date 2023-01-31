@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Common;
 #region using directives
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
@@ -59,20 +60,15 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
     [HarmonyTargetMethods]
     private static IEnumerable<MethodBase> TargetMethods()
     {
-        var types = new[]
+        return new[]
         {
             typeof(AngryRoger), typeof(Bat), typeof(BigSlime), typeof(BlueSquid), typeof(Bug), typeof(Duggy),
             typeof(DwarvishSentry), typeof(Fly), typeof(Ghost), typeof(GreenSlime), typeof(Grub), typeof(LavaCrab),
             typeof(Mummy), typeof(RockCrab), typeof(RockGolem), typeof(ShadowGirl), typeof(ShadowGuy),
             typeof(ShadowShaman), typeof(SquidKid), typeof(Serpent),
-        };
-
-        foreach (var type in types)
-        {
-            yield return type.RequireMethod(
-                "takeDamage",
-                new[] { typeof(int), typeof(int), typeof(int), typeof(bool), typeof(double), typeof(Farmer) });
-        }
+        }.Select(t => t.RequireMethod(
+            "takeDamage",
+            new[] { typeof(int), typeof(int), typeof(int), typeof(bool), typeof(double), typeof(Farmer) }));
     }
 
     #region harmony patches

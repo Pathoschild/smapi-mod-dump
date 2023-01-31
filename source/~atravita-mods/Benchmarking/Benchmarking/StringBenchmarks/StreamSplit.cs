@@ -9,7 +9,6 @@
 *************************************************/
 
 using AtraBase.Toolkit.StringHandler;
-using BenchmarkDotNet.Attributes;
 
 namespace Benchmarking.StringBenchmarks;
 public class Splitter

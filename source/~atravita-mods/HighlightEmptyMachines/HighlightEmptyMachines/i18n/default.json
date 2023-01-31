@@ -16,6 +16,9 @@
   "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
 
   // GMCM
+  "DisablePulsing.title": "Disable Pulsing",
+  "DisablePulsing.description": "When enabled, machines won't pulse.",
+
   "EmptyColor.title": "Empty Color",
   "EmptyColor.description": "The color to apply to empty machines",
 
@@ -26,5 +29,5 @@
   "IndividualMachines.description": "Toggle individual machines on and off",
 
   "PFM.section": "Producer Framework Mod machines",
-  "PFM.description": "The following are the currently installed PFM machines.",
+  "PFM.description": "The following are the currently installed PFM machines."
 }

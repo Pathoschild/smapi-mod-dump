@@ -40,12 +40,32 @@ internal static class FruitTreeDrawTranspiler
             Type dgaFruitTree = AccessTools.TypeByName("DynamicGameAssets.Game.CustomFruitTree")
                 ?? ReflectionThrowHelper.ThrowMethodNotFoundException<Type>("DGA Fruit Trees");
             harmony.Patch(
-                original: dgaFruitTree.InstanceMethodNamed("draw"),
+                original: dgaFruitTree.GetCachedMethod("draw", ReflectionCache.FlagTypes.InstanceFlags),
                 transpiler: new HarmonyMethod(typeof(FruitTreeDrawTranspiler), nameof(Transpiler)));
         }
         catch (Exception ex)
         {
             ModEntry.ModMonitor.Log($"Mod crashed while transpiling DGA. Integration may not work correctly.\n\n{ex}", LogLevel.Error);
+        }
+    }
+
+    /// <summary>
+    /// Applies this patch to AT.
+    /// </summary>
+    /// <param name="harmony">Harmony instance.</param>
+    internal static void ApplyATPatch(Harmony harmony)
+    {
+        try
+        {
+            Type atFruitTree = AccessTools.TypeByName("AlternativeTextures.Framework.Patches.StandardObjects.FruitTreePatch")
+                ?? ReflectionThrowHelper.ThrowMethodNotFoundException<Type>("AT Fruit tree");
+            harmony.Patch(
+                original: atFruitTree.GetCachedMethod("DrawPrefix", ReflectionCache.FlagTypes.StaticFlags),
+                transpiler: new HarmonyMethod(typeof(FruitTreeDrawTranspiler), nameof(Transpiler)));
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling AT. Integration may not work correctly.\n\n{ex}", LogLevel.Error);
         }
     }
 
@@ -82,7 +102,6 @@ internal static class FruitTreeDrawTranspiler
                 new(OpCodes.Ldfld, typeof(FruitTree).GetCachedField(nameof(FruitTree.growthStage), ReflectionCache.FlagTypes.InstanceFlags)),
                 new(OpCodes.Call),
                 new(OpCodes.Ldc_I4_4),
-                new(OpCodes.Bge),
             })
             .FindNext(new CodeInstructionWrapper[]
             {
@@ -100,7 +119,7 @@ internal static class FruitTreeDrawTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling FruitTree.Draw:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}:\n\n{ex}", LogLevel.Error);
             original?.Snitch(ModEntry.ModMonitor);
         }
         return null;

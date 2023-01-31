@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "Include",
+        "LogName": "Alex - mid hearts",
+        "FromFile": "assets/default/alpha/Alex/mid.json",
+        "When": {
+            "EnableFor": "Alex",
+            "Query: {{Hearts:Alex}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Elliott - mid hearts",
+        "FromFile": "assets/default/alpha/Elliott/mid.json",
+        "When": {
+            "EnableFor": "Elliott",
+            "Query: {{Hearts:Elliott}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Evelyn - mid hearts",
+        "FromFile": "assets/default/alpha/Evelyn/mid.json",
+        "When": {
+            "EnableFor": "Evelyn",
+            "Query: {{Hearts:Evelyn}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "George - mid hearts",
+        "FromFile": "assets/default/alpha/George/mid.json",
+        "When": {
+            "EnableFor": "George",
+            "Query: {{Hearts:George}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Gus - mid hearts",
+        "FromFile": "assets/default/alpha/Gus/mid.json",
+        "When": {
+            "EnableFor": "Gus",
+            "Query: {{Hearts:Gus}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Sebastian - mid hearts",
+        "FromFile": "assets/default/alpha/Sebastian/mid.json",
+        "When": {
+            "EnableFor": "Sebastian",
+            "Query: {{Hearts:Sebastian}} >= 6": true,
+        }
+    }
+]}

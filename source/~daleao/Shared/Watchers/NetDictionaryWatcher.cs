@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -34,10 +34,10 @@ internal class NetDictionaryWatcher<TKey, TValue, TField, TSerialDict, TSelf> : 
     private readonly NetDictionary<TKey, TValue, TField, TSerialDict, TSelf> _field;
 
     /// <summary>The pairs added since the last reset.</summary>
-    private readonly IDictionary<TKey, TValue> _added = new Dictionary<TKey, TValue>();
+    private readonly Dictionary<TKey, TValue> _added = new();
 
     /// <summary>The pairs removed since the last reset.</summary>
-    private readonly IDictionary<TKey, TValue> _removed = new Dictionary<TKey, TValue>();
+    private readonly Dictionary<TKey, TValue> _removed = new();
 
     /// <summary>Initializes a new instance of the <see cref="NetDictionaryWatcher{TKey, TValue, TField, TSerialDict, TSelf}"/> class.</summary>
     /// <param name="name">A name which identifies what the watcher is watching, used for troubleshooting.</param>

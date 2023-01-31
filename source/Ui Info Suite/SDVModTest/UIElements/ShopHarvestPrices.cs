@@ -15,7 +15,6 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using System.Reflection;
 using UIInfoSuite.Extensions;
 
 namespace UIInfoSuite.UIElements
@@ -53,18 +52,18 @@ namespace UIInfoSuite.UIElements
             if (!(menu.hoveredItem is Item hoverItem)) return;
 
             // draw shop harvest prices
-            bool isSeeds = hoverItem is StardewValley.Object hoverObject && hoverObject.Type == "Seeds";
-            bool isSapling = hoverItem.Name.EndsWith("Sapling");
-            int value = 0;
+            var isSeeds = hoverItem is StardewValley.Object hoverObject && hoverObject.Type == "Seeds";
+            var isSapling = hoverItem.Name.EndsWith("Sapling");
+            var value = 0;
             if (isSeeds 
                 && hoverItem.Name != "Mixed Seeds"
                 && hoverItem.Name != "Winter Seeds")
             {
 
-                bool itemHasPriceInfo = Tools.GetTruePrice(hoverItem) > 0;
+                var itemHasPriceInfo = Tools.GetTruePrice(hoverItem) > 0;
                 if (itemHasPriceInfo)
                 {
-                    StardewValley.Object temp =
+                    var temp =
                         new StardewValley.Object(
                             new Debris(
                                 new Crop(
@@ -100,9 +99,9 @@ namespace UIInfoSuite.UIElements
 
             if (value > 0)
             {
-                int xPosition = menu.xPositionOnScreen - 30;
-                int yPosition = menu.yPositionOnScreen + 580;
-                int height = isSapling ? 258 : 208;
+                var xPosition = menu.xPositionOnScreen - 30;
+                var yPosition = menu.yPositionOnScreen + 580;
+                var height = isSapling ? 258 : 208;
                     IClickableMenu.drawTextureBox(
                     Game1.spriteBatch,
                     xPosition + 20,
@@ -111,7 +110,7 @@ namespace UIInfoSuite.UIElements
                     height,
                     Color.White);
                 // Title "Harvest Price"
-                String textToRender = _helper.SafeGetString(LanguageKeys.HarvestPrice);
+                var textToRender = _helper.SafeGetString(LanguageKeys.HarvestPrice);
                 Utility.drawTextWithShadow(
                     Game1.spriteBatch,
                     textToRender,
@@ -142,10 +141,10 @@ namespace UIInfoSuite.UIElements
 
 
                 // Found out what this was for: Redraw the tooltip so it doesn't get overlapped by harvest price
-                String hoverText = _helper.Reflection.GetField<String>(menu, "hoverText").GetValue();
-                String hoverTitle = _helper.Reflection.GetField<String>(menu, "boldTitleText").GetValue();
-                IReflectedMethod getHoveredItemExtraItemIndex = _helper.Reflection.GetMethod(menu, "getHoveredItemExtraItemIndex");
-                IReflectedMethod getHoveredItemExtraItemAmount = _helper.Reflection.GetMethod(menu, "getHoveredItemExtraItemAmount");
+                var hoverText = _helper.Reflection.GetField<String>(menu, "hoverText").GetValue();
+                var hoverTitle = _helper.Reflection.GetField<String>(menu, "boldTitleText").GetValue();
+                var getHoveredItemExtraItemIndex = _helper.Reflection.GetMethod(menu, "getHoveredItemExtraItemIndex");
+                var getHoveredItemExtraItemAmount = _helper.Reflection.GetMethod(menu, "getHoveredItemExtraItemAmount");
                 IClickableMenu.drawToolTip(
                     Game1.spriteBatch,
                     hoverText,

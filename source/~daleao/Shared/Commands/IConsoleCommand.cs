@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -20,6 +20,7 @@ internal interface IConsoleCommand
     string Documentation { get; }
 
     /// <summary>The action that will be executed.</summary>
+    /// <param name="trigger">The trigger word.</param>
     /// <param name="args">The command arguments.</param>
-    void Callback(string[] args);
+    void Callback(string trigger, string[] args);
 }

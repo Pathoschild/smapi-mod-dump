@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -50,9 +50,9 @@ internal sealed class PlantCropsAbilityApplySpeedIncreasesPatcher : HarmonyPatch
             var isNotPrestiged = generator.DefineLabel();
             var resumeExecution = generator.DefineLabel();
             helper
-                .FindProfessionCheck(Profession.Agriculturist.Value)
+                .MatchProfessionCheck(Profession.Agriculturist.Value)
                 .Move()
-                .FindProfessionCheck(Profession.Agriculturist.Value)
+                .MatchProfessionCheck(Profession.Agriculturist.Value)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_R4, 0.1f) })
                 .AddLabels(isNotPrestiged)
                 .Insert(new[] { new CodeInstruction(OpCodes.Ldloc_0) })

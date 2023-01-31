@@ -1,0 +1,39 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/DragonPearlLure
+**
+*************************************************/
+
+{
+  "Name": "violetlizabet.PearlLure",
+  "Category": "Crafting",
+  "Description": "A special lure that serpents find fascinating.",
+  "Edibility": -300,
+  "Price": 100,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 287, // Bomb
+        "Count": 1
+      },
+      {
+        "Object": 768, // Solar Essence
+        "Count": 2
+      }
+    ],
+    "IsDefault": false,
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 5000,
+    "PurchaseRequirements": [ "SkillLevel mining 7" ]
+  },
+  "CanPurchase": true,
+  "PurchaseFrom": "Dwarf",
+  "PurchasePrice": 900,
+  "TranslationKey": "pearl-lure"
+}

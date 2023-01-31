@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -55,7 +55,7 @@ internal static class Slingshot_Stats
             Constants.GalaxySlingshotIndex => 0.2f,
             Constants.InfinitySlingshotIndex => 0.25f,
             _ => 0f,
-        }; ;
+        };
     }
 
     internal static float Get_EffectiveCritChanceModifier(this Slingshot slingshot)
@@ -106,6 +106,48 @@ internal static class Slingshot_Stats
     internal static float Get_RelativeResilience(this Slingshot slingshot)
     {
         return Values.GetValue(slingshot, Create).Resilience * 0.1f;
+    }
+
+    internal static int CountNonZeroStats(this Slingshot slingshot)
+    {
+        var count = 0;
+
+        if (Values.GetValue(slingshot, Create).Damage > 0 || slingshot.InitialParentTileIndex != Constants.BasicSlingshotIndex)
+        {
+            count++;
+        }
+
+        if (Values.GetValue(slingshot, Create).Knockback > 0 || slingshot.InitialParentTileIndex != Constants.BasicSlingshotIndex)
+        {
+            count++;
+        }
+
+        if (Values.GetValue(slingshot, Create).CritChance > 0)
+        {
+            count++;
+        }
+
+        if (Values.GetValue(slingshot, Create).CritPower > 0)
+        {
+            count++;
+        }
+
+        if (Values.GetValue(slingshot, Create).FireSpeed > 0)
+        {
+            count++;
+        }
+
+        if (Values.GetValue(slingshot, Create).CooldownReduction > 0)
+        {
+            count++;
+        }
+
+        if (Values.GetValue(slingshot, Create).Resilience > 0)
+        {
+            count++;
+        }
+
+        return count;
     }
 
     internal static void Invalidate(this Slingshot slingshot)

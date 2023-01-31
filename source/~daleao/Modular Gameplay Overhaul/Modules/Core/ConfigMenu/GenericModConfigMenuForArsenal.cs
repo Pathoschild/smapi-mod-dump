@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,8 +12,12 @@ namespace DaLion.Overhaul.Modules.Core.ConfigMenu;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Arsenal;
+using DaLion.Overhaul.Modules.Arsenal.Configs;
 using DaLion.Overhaul.Modules.Arsenal.Integrations;
 using DaLion.Shared.Extensions.SMAPI;
+using DaLion.Shared.Integrations.GenericModConfigMenu;
+using Microsoft.Xna.Framework;
 using StardewValley.Objects;
 
 #endregion using directives
@@ -27,7 +31,32 @@ internal sealed partial class GenericModConfigMenuCore
         this
             .AddPage(OverhaulModule.Arsenal.Namespace, () => "Arsenal Settings")
 
-            .AddSectionTitle(() => "Movement Settings")
+            .AddSectionTitle(() => "Movement & Control Settings")
+            .AddKeyBinding(
+                () => "Mod Key",
+                () => "The key used for indicating the weapon or slingshot for auto-selection, if enabled.",
+                config => config.Tools.ModKey,
+                (config, value) => config.Tools.ModKey = value)
+            .AddCheckbox(
+                () => "Enable Auto-Selection",
+                () =>
+                    "The best selected weapon or slingshot will be automatically equiped near enemies.",
+                config => config.Tools.EnableAutoSelection,
+                (config, value) =>
+                {
+                    config.Tools.EnableAutoSelection = value;
+                    if (!value)
+                    {
+                        ArsenalModule.State.SelectableArsenal = null;
+                    }
+                })
+            .AddColorPicker(
+                () => "Selection Border Color",
+                () => "The color used to indicate a weapon or slingshot that may be auto-selected.",
+                config => config.Arsenal.SelectionBorderColor,
+                (config, value) => config.Arsenal.SelectionBorderColor = value,
+                Color.Magenta,
+                colorPickerStyle: (uint)IGenericModConfigMenuOptionsApi.ColorPickerStyle.RGBSliders)
             .AddCheckbox(
                 () => "Face Towards Mouse Cursor",
                 () =>
@@ -219,6 +248,13 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Draws a bulls-eye instead of the mouse cursor while firing a slingshot. This option does not support pull-back firing for obvious reasons.",
                 config => config.Arsenal.Slingshots.BullseyeReplacesCursor,
                 (config, value) => config.Arsenal.Slingshots.BullseyeReplacesCursor = value)
+            .AddNumberField(
+                () => "Auto-Selection Range",
+                () => "The minimum distance away from a monster to auto-select your chosen slingshot.",
+                config => (int)config.Arsenal.Slingshots.AutoSelectionRange,
+                (config, value) => config.Arsenal.Slingshots.AutoSelectionRange = (uint)value,
+                2,
+                12)
 
             // weapon settings
             .AddPage(OverhaulModule.Arsenal + "/Weapons", () => "Weapon Settings")
@@ -228,6 +264,11 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Replaces vanilla weapon spam with a more strategic combo system.",
                 config => config.Arsenal.Weapons.EnableComboHits,
                 (config, value) => config.Arsenal.Weapons.EnableComboHits = value)
+            .AddCheckbox(
+                () => "Enable Hold Swipe",
+                () => "Allows performing combos by simply holding the tool button instead of spam-clicking.",
+                config => config.Arsenal.Weapons.SwipeHold,
+                (config, value) => config.Arsenal.Weapons.SwipeHold = value)
             .AddCheckbox(
                 () => "Grounded Club Smash",
                 () =>
@@ -261,11 +302,11 @@ internal sealed partial class GenericModConfigMenuCore
 
                     if (value)
                     {
-                        Arsenal.Utils.ConvertAllStabbingSwords();
+                        Utils.ConvertAllStabbingSwords();
                     }
                     else
                     {
-                        Arsenal.Utils.RevertAllStabbingSwords();
+                        Utils.RevertAllStabbingSwords();
                     }
                 })
             .AddCheckbox(
@@ -274,12 +315,12 @@ internal sealed partial class GenericModConfigMenuCore
                 config => config.Arsenal.Weapons.EnableRebalance,
                 (config, value) =>
                 {
-                    if (value && !config.Arsenal.Weapons.EnableRebalance)
+                    if (value != config.Arsenal.Weapons.EnableRebalance)
                     {
                         ModHelper.GameContent.InvalidateCacheAndLocalized("Data/weapons");
                         if (Context.IsWorldReady)
                         {
-                            Arsenal.Utils.RefreshAllWeapons();
+                            Utils.RefreshAllWeapons(value ? RefreshOption.Randomized : RefreshOption.FromData);
                         }
                     }
 
@@ -302,6 +343,20 @@ internal sealed partial class GenericModConfigMenuCore
                 {
                     config.Arsenal.Weapons.EnableEnchants = value;
                     ModHelper.GameContent.InvalidateCache("TileSheets/BuffsIcons");
-                });
+                })
+            .AddDropdown(
+                () => "Tooltip Style",
+                () => "Determines the sprite that appears next to skill bars.",
+                config => config.Arsenal.Weapons.WeaponTooltipStyle.ToString(),
+                (config, value) => config.Arsenal.Weapons.WeaponTooltipStyle = Enum.Parse<WeaponConfig.TooltipStyle>(value),
+                new[] { "Absolute", "Relative" },
+                null)
+            .AddNumberField(
+                () => "Auto-Selection Range",
+                () => "The minimum distance away from a monster to auto-select your chosen weapon.",
+                config => (int)config.Arsenal.Weapons.AutoSelectionRange,
+                (config, value) => config.Arsenal.Weapons.AutoSelectionRange = (uint)value,
+                1,
+                3);
     }
 }

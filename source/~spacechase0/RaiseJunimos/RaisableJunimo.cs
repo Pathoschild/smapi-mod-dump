@@ -53,7 +53,7 @@ namespace RaiseJunimos
                 NetFields.AddFields(val, disp);
             }
         }
-        public const int LifetimeInDays = 28 * 3; // A year
+        public const int LifetimeInDays = 28 * 3;
 
         private readonly NetString name = new("Junimo");
         private readonly NetInt age = new(0);
@@ -341,7 +341,7 @@ namespace RaiseJunimos
                 case AgePhase.Child: happinessLost = 50; break;
                 case AgePhase.Adult: happinessLost = 25; break;
             }
-            Happiness -= happinessLost;
+            Happiness = Math.Max( 0, Happiness - happinessLost );
 
             WasPetToday = false;
             GiftsGivenToday = 0;

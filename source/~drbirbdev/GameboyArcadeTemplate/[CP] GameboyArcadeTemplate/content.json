@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Format": "1.28.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Events/Saloon",
+            "Entries": {
+                "151940000/v Gus/F/c 1": "jaunty/11 19/farmer 14 24 0 Gus 13 21 0/addBigProp 13 20 141/move farmer 0 -3 3/emote Gus 52/speak Gus \"Hi, I'm just trying out this new game for the saloon. Let me show you.\"/cutscene drbirbdev.GameboyArcadeTemplate.GBA.Adjustris/updateMinigame -9/pause 1000/speak Gus \"Now lets see here\"/updateMinigame 5/pause 1000/updateMinigame -5/pause 1000/speak Gus \"Oh the blocks are falling!  Maybe I stack them up!\"/updateMinigame 2/pause 5000/updateMinigame 0/speak Gus \"Well I'm not very good at it.  How about you buy one of these games to play at home?\"/end"
+            }
+        }
+    ]
+}

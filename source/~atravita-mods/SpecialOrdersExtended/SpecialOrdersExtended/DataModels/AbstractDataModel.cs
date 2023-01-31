@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit;
+
 using StardewModdingAPI.Utilities;
 
 namespace SpecialOrdersExtended.DataModels;
@@ -21,14 +23,14 @@ public abstract class AbstractDataModel
     /// Initializes a new instance of the <see cref="AbstractDataModel"/> class.
     /// </summary>
     /// <param name="savefile">String that represents the savefile name.</param>
-    /// <remarks>Savefile name is farmname + unique ID in 1.5+.</remarks>
-    public AbstractDataModel(string savefile) => this.Savefile = savefile;
+    /// <remarks>SaveFile name is farmname + unique ID in 1.5+.</remarks>
+    public AbstractDataModel(string savefile) => this.SaveFile = savefile;
 
     /// <summary>
     /// Gets or sets string that represents the savefile name.
     /// </summary>
-    /// <remarks>Savefile name is farmname + unique ID in 1.5+.</remarks>
-    public virtual string Savefile { get; set; }
+    /// <remarks>SaveFile name is unique ID in 1.5+.</remarks>
+    public virtual string SaveFile { get; set; }
 
     /// <summary>
     /// Handles saving.
@@ -36,7 +38,7 @@ public abstract class AbstractDataModel
     /// <param name="identifier">An identifier token to add to the filename.</param>
     internal virtual void Save(string identifier)
     {
-        Task.Run(() => ModEntry.DataHelper.WriteGlobalData(this.Savefile + identifier, this))
+        Task.Run(() => ModEntry.DataHelper.WriteGlobalData(this.SaveFile.GetStableHashCode() + identifier, this))
             .ContinueWith((t) => ModEntry.ModMonitor.Log(t.Status == TaskStatus.RanToCompletion ? $"Saved {identifier}" : $"{identifier} failed to save with {t.Status} - {t.Exception}"));
     }
 

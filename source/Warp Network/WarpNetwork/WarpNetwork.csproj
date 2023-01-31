@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>WarpNetwork</AssemblyName>
     <RootNamespace>WarpNetwork</RootNamespace>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
     <TargetFramework>net5.0</TargetFramework>
     <ProjectGuid>{4775BDED-E362-46C0-948B-6DE9DE926A4D}</ProjectGuid>
   </PropertyGroup>

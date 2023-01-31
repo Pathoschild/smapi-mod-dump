@@ -11,7 +11,7 @@
 {
     "Name": "Mail Services Mod",
     "Author": "Digus",
-    "Version": "1.4.1",
+    "Version": "1.5.0",
     "Description": "Mail services to send and receive item using the mailbox.",
     "UniqueID": "Digus.MailServicesMod",
     "EntryDll": "MailServicesMod.dll",
@@ -19,7 +19,7 @@
     "Dependencies": [
         {
             "UniqueID": "DIGUS.MailFrameworkMod",
-            "MinimumVersion": "1.9.1"
+            "MinimumVersion": "1.14.0"
         },
         {
             "UniqueID": "spacechase0.GenericModConfigMenu",

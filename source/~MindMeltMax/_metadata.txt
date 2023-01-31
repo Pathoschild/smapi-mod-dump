@@ -11,6 +11,7 @@ mods:
    Joja's Hauntings
    Locked Chests
    Multi-User Chests
+   Multiplayer Info
    Piggy Bank Mod
    Single-Player Regen
    Sounds Patcher
@@ -18,11 +19,9 @@ mods:
    Unbreakable Tackles
 
 latest commit:
-   commit ee5ba0af9ffe4c5e42c218b39e522201de2a7f38
+   commit 6ccb79bac0287ef9b91b4f5d8a8f403659e23011
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Mon Dec 5 17:37:14 2022 +0100
+   Date:   Mon Jan 30 17:40:08 2023 +0100
    
-       Update for recent updates
-       
-       been over a week, seems about time...
+       Edits for personal code convention
    

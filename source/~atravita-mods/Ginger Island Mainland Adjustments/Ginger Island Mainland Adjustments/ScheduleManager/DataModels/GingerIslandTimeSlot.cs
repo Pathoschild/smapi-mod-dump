@@ -32,7 +32,7 @@ internal class GingerIslandTimeSlot
         new Point(1, 1),
         new Point(-1, -1),
         new Point(2, 0),
-        new Point(0, -2),
+        new Point(0, 2),
     };
 
     /// <summary>
@@ -104,7 +104,7 @@ internal class GingerIslandTimeSlot
     internal Dictionary<NPC, string> Animations => this.animations;
 
     /// <summary>
-    /// Gets which time this Timeslot should happen at.
+    /// Gets which time this TimeSlot should happen at.
     /// </summary>
     internal int TimeSlot => this.timeslot;
 
@@ -173,7 +173,7 @@ internal class GingerIslandTimeSlot
                 time: this.timeslot,
                 usedPoints: this.usedPoints,
                 lastAssignment: lastAssignment,
-                overrideChanceMap: (NPC npc) => 0.8,
+                overrideChanceMap: static (NPC npc) => 0.8,
                 animation_descriptions: animationDescriptions,
                 groupName: GIScheduler.CurrentVisitingGroup?.Contains(this.musician) == true ? GIScheduler.CurrentGroup : null);
             if (musicianPoint is not null)
@@ -263,7 +263,7 @@ internal class GingerIslandTimeSlot
                 }
             }
 
-            Globals.ModMonitor.DebugOnlyLog($"Now using fallback spot assignment for {visitor.Name} at {this.timeslot}", LogLevel.Warn);
+            Globals.ModMonitor.DebugOnlyLog($"Now using fall back spot assignment for {visitor.Name} at {this.timeslot}", LogLevel.Warn);
 
             // now iterate backwards through the list, forcibly assigning people to places....
             for (int i = PossibleActivities.Count - 1; i >= 0; i--)
@@ -291,7 +291,7 @@ CONTINUELOOP:
     }
 
     /// <summary>
-    /// Adds a schedulepoint to the usedPoints dictionary, the animations log, and the character's assignment.
+    /// Adds a schedule point to the usedPoints dictionary, the animations log, and the character's assignment.
     /// </summary>
     /// <param name="npc">NPC in question.</param>
     /// <param name="schedulePoint">SchedulePoint to assign.</param>
@@ -325,13 +325,13 @@ CONTINUELOOP:
             // dancing
             new PossibleIslandActivity(
                 new List<Point> { new Point(22, 21), new Point(23, 21) },
-                chanceMap: (NPC npc) => npc.Name.Equals("Emily", StringComparison.OrdinalIgnoreCase) ? 0.7 : 0.5,
+                chanceMap: static (NPC npc) => npc.Name.Equals("Emily", StringComparison.OrdinalIgnoreCase) ? 0.7 : 0.5,
                 dialogueKey: "Resort_Dance",
                 animation: "beach_dance",
                 animation_required: true),
             // wandering
             new PossibleIslandActivity(
-                new List<Point> { new Point(7, 16), new Point(31, 24), new Point(18, 13) },
+                new List<Point> { new Point(7, 16), new Point(31, 24), new Point(18, 13), new Point(24, 15) },
                 basechance: 0.4,
                 dialogueKey: "Resort_Wander",
                 animation: "square_3_3"),
@@ -346,10 +346,10 @@ CONTINUELOOP:
                 dialogueKey: "Resort_Fish",
                 animation_required: true,
                 animation: "beach_fish"),
-            // under umberella
+            // under umbrella
             new PossibleIslandActivity(
                 new List<Point> { new Point(26, 26), new Point(28, 29), new Point(10, 27) },
-                chanceMap: (NPC npc) => npc.Name.Equals("Abigail", StringComparison.OrdinalIgnoreCase) ? 0.5 : 0.3,
+                chanceMap: static (NPC npc) => npc.Name.Equals("Abigail", StringComparison.OrdinalIgnoreCase) ? 0.5 : 0.3,
                 dialogueKey: "Resort_Umbrella",
                 animation: "beach_umbrella",
                 animation_required: false),
@@ -358,7 +358,7 @@ CONTINUELOOP:
                 new List<Point> { new Point(20, 24), new Point(30, 29) },
                 dialogueKey: "Resort_Chair",
                 basechance: 0.6,
-                chanceMap: (NPC npc) => npc.Age == NPC.adult ? 0.6 : 0,
+                chanceMap: static (NPC npc) => (npc.Age == NPC.adult || (npc.Age == NPC.teen && npc.SocialAnxiety == NPC.shy)) ? 0.6 : 0,
                 animation: "beach_chair",
                 animation_required: false),
 #if DEBUG
@@ -367,7 +367,7 @@ CONTINUELOOP:
                 new List<Point> { new Point(3, 28) },
                 dialogueKey: "Resort_Antisocial",
                 basechance: 0,
-                chanceMap: (NPC npc) => npc.SocialAnxiety == NPC.shy && npc.Optimism == NPC.negative && !npc.Name.Equals("George", StringComparison.OrdinalIgnoreCase) ? 0.6 : 0.0,
+                chanceMap: static (NPC npc) => npc.SocialAnxiety == NPC.shy && npc.Optimism == NPC.negative && !npc.Name.Equals("George", StringComparison.OrdinalIgnoreCase) ? 0.6 : 0.0,
                 map: "IslandSouthEast",
                 animation: "beach_antisocial",
                 animation_required: false),
@@ -387,7 +387,7 @@ CONTINUELOOP:
                 direction: Game1.right,
                 animation: "beach_pier",
                 animation_required: false,
-                chanceMap: (NPC npc) => npc.Age == NPC.adult ? 0.5 : 0),
+                chanceMap: static (NPC npc) => npc.Age == NPC.adult ? 0.5 : 0),
         };
     }
 }

@@ -26,7 +26,8 @@ internal static class PreventJukeboxCrash
     private static bool Prefix(string name, ref bool __result)
     {
         if (Context.IsWorldReady && ModEntry.Config.FilterJukeboxSongs && !name.Equals("random", StringComparison.OrdinalIgnoreCase)
-            && !name.Equals("turn_off", StringComparison.OrdinalIgnoreCase) && !name.Equals("title_day", StringComparison.OrdinalIgnoreCase))
+            && !name.Equals("turn_off", StringComparison.OrdinalIgnoreCase) && !name.Equals("title_day", StringComparison.OrdinalIgnoreCase)
+            && Game1.soundBank is not DummySoundBank)
         {
             if (Game1.soundBank is SoundBankWrapper soundBank)
             {

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,7 +15,7 @@ namespace DaLion.Overhaul.Modules.Arsenal.Patchers.Slingshots;
 using System.Linq;
 using System.Reflection;
 using DaLion.Overhaul.Modules.Arsenal.Enchantments;
-using DaLion.Overhaul.Modules.Arsenal.Events;
+using DaLion.Overhaul.Modules.Arsenal.Events.Slingshots;
 using DaLion.Overhaul.Modules.Arsenal.Extensions;
 using DaLion.Overhaul.Modules.Arsenal.Projectiles;
 using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
@@ -49,7 +49,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
     /// <summary>Patch to add Rascal bonus range damage + perform Desperado perks and Ultimate.</summary>
     [HarmonyPrefix]
     [HarmonyPriority(Priority.High)]
-    [HarmonyAfter("Overhaul.Modules.Professions")]
+    [HarmonyAfter("DaLion.Overhaul.Modules.Professions")]
     private static bool SlingshotPerformFirePrefix(
         Slingshot __instance,
         ref bool ___canPlaySound,
@@ -102,7 +102,8 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
             // get and spend ammo
             var ammo = __instance.attachments[0]?.getOne();
             var didPreserve = false;
-            if (ammo is not null && (!__instance.hasEnchantmentOfType<PreservingEnchantment>() || Game1.random.NextDouble() > 0.5 + (who.DailyLuck / 2) + (who.LuckLevel * 0.01)))
+            if (ammo is not null && (!__instance.hasEnchantmentOfType<PreservingEnchantment>() ||
+                                     Game1.random.NextDouble() > 0.5 + (who.DailyLuck / 2) + (who.LuckLevel * 0.01)))
             {
                 if (--__instance.attachments[0].Stack <= 0)
                 {
@@ -211,7 +212,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
             var index = ammo?.ParentSheetIndex ?? (canDoQuincy
                 ? QuincyProjectile.TileSheetIndex
                 : Projectile.snowBall);
-            if (ammo is not null && ammo.ParentSheetIndex is not (Constants.ExplosiveAmmoIndex or Constants.SlimeIndex
+            if (ammo?.ParentSheetIndex is not (Constants.ExplosiveAmmoIndex or Constants.SlimeIndex
                     or Constants.RadioactiveOreIndex) && damageBase > 1)
             {
                 index++;
@@ -319,9 +320,14 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                 }
             }
 
-            foreach (var enchantment in __instance.enchantments.OfType<BaseSlingshotEnchantment>())
+            for (var i = 0; i < __instance.enchantments.Count; i++)
             {
-                enchantment.OnFire(
+                if (__instance.enchantments[i] is not BaseSlingshotEnchantment slingshotEnchantment)
+                {
+                    continue;
+                }
+
+                slingshotEnchantment.OnFire(
                     __instance,
                     projectile,
                     damageBase,

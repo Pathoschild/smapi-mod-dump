@@ -1,0 +1,33 @@
+{
+  "EnableMod": true,
+  "Debug": false,
+  "CatOffsets": [
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 0
+    }
+  ],
+  "DogOffsets": [
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 8
+    }
+  ],
+  "RetrieveButton": "None"
+}

@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Secret Joja Fertilizer - More Fertilizers",
+  "Price": "75",
+  "Category": -19,
+  "Edibility": -300,
+  "TranslationKey": "secret-joja-fertilizer",
+  "PurchasePrice": 150,
+}

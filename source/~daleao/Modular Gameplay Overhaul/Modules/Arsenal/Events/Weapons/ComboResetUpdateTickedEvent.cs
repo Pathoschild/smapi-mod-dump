@@ -4,11 +4,11 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
-namespace DaLion.Overhaul.Modules.Arsenal.Events;
+namespace DaLion.Overhaul.Modules.Arsenal.Events.Weapons;
 
 #region using directives
 
@@ -33,7 +33,7 @@ internal sealed class ComboResetUpdateTickedEvent : UpdateTickedEvent
     protected override void OnEnabled()
     {
         var player = Game1.player;
-        if (player.CurrentTool is not MeleeWeapon weapon || ArsenalModule.State.ComboHitStep == ComboHitStep.Idle)
+        if (player.CurrentTool is not MeleeWeapon weapon || ArsenalModule.State.ComboHitQueued == ComboHitStep.Idle)
         {
             return;
         }
@@ -50,6 +50,7 @@ internal sealed class ComboResetUpdateTickedEvent : UpdateTickedEvent
             return;
         }
 
+        ArsenalModule.State.ComboHitQueued = ComboHitStep.Idle;
         ArsenalModule.State.ComboHitStep = ComboHitStep.Idle;
         this.Disable();
     }

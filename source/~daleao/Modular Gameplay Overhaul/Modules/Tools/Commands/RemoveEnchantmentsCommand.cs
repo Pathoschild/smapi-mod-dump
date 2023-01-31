@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Tools.Commands;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using DaLion.Shared.Commands;
 using StardewValley.Tools;
 
@@ -38,9 +39,9 @@ internal sealed class RemoveEnchantmentsCommand : ConsoleCommand
 
     /// <inheritdoc />
     [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1012:Opening braces should be spaced correctly", Justification = "Paradoxical.")]
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
-        if (args.Length == 0)
+        if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Log.W("No enchantment was specified.");
             return;
@@ -75,11 +76,11 @@ internal sealed class RemoveEnchantmentsCommand : ConsoleCommand
     /// <summary>Tell the dummies how to use the console command.</summary>
     private string GetUsage()
     {
-        var result = $"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers.First()} <enchantment>";
-        result += "\n\nParameters:";
-        result += "\n\t- <enchantment>: a tool enchantment";
-        result += "\n\nExample:";
-        result += $"\n\t- {this.Handler.EntryCommand} {this.Triggers.First()} vampiric";
-        return result;
+        var result = new StringBuilder($"\n\nUsage: {this.Handler.EntryCommand} {this.Triggers[0]} <enchantment>");
+        result.Append("\n\nParameters:");
+        result.Append("\n\t- <enchantment>: a tool enchantment");
+        result.Append("\n\nExample:");
+        result.Append($"\n\t- {this.Handler.EntryCommand} {this.Triggers[0]} vampiric");
+        return result.ToString();
     }
 }

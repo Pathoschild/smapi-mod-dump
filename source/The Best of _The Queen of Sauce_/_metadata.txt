@@ -6,9 +6,15 @@ mods:
    The Best of "The Queen of Sauce"
 
 latest commit:
-   commit 12b58fd0b0d894315d7c00f45361c6672e02d68c
+   commit 7a7aedd36d335145163b8dda83a2b163d03c0f4e
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Sun Mar 28 15:54:13 2021 -0700
+   Date:   Mon Jan 30 12:56:29 2023 -0800
    
-       Add German, and experimental 64-bit support
+       Bpen/updatei18n and assets loading (#1)
+       
+       * Use upgrade-assistant to port from .net framework
+       
+       * Convert Asset Editing to new style
+       
+       * Update Changelog
    

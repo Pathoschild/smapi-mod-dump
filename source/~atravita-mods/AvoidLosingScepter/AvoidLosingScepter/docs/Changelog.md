@@ -9,8 +9,10 @@ for queries and analysis.**
 Changelog
 =============
 
-#### Version 0.2.0
+#### Version 0.2.1
+* No real changes, just recompiled for changes in atracore.
 
+#### Version 0.2.0
 * Update to use AtraCore.
 
 #### Version 0.1.1

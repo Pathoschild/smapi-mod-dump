@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -133,9 +133,12 @@ public class Virtue : SmartEnum<Virtue>
 
         farmer.completeQuest(this);
         Shared.Networking.Broadcaster.SendPublicChat($"{farmer.Name} has proven their {this}.");
-        if (farmer.hasQuest(Constants.VirtuesNextQuestId) && AllProvenBy(farmer))
+        if (!farmer.hasQuest(Constants.VirtuesNextQuestId) || !AllProvenBy(farmer))
         {
-            farmer.completeQuest(Constants.VirtuesNextQuestId);
+            return;
         }
+
+        farmer.completeQuest(Constants.VirtuesNextQuestId);
+        farmer.addQuest(Constants.VirtuesLastQuestId);
     }
 }

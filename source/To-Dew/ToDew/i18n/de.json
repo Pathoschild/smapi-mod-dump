@@ -20,6 +20,8 @@
     "config.overlay.desc": "Konfigurieren Sie das ständig aktive Overlay mit der Liste",
     "config.overlay.enabled": "Aktiviert",
     "config.overlay.enabled.desc": "Ist das Overlay aktiviert?",
+    "config.overlay.click-to-mark-done": "Elemente anklicken, um sie als erledigt zu markieren",
+    "config.overlay.click-to-mark-done.desc": "Klicken in das Overlay aktivieren, um Elemente als erledigt zu markieren",
     "config.overlay.hotkey": "Hotkey",
     "config.overlay.hotkey.desc": "Hotkey zum Ein- oder Ausblenden",
     "config.overlay.hide-at-festivals": "Bei Festivals verstecken",

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -334,10 +334,10 @@ internal sealed class SkillsPageDrawPatcher : HarmonyPatcher
         var customSkills = SpaceCoreIntegration.Instance!.ModApi!
             .GetCustomSkills()
             .Select(name => SCSkill.Loaded[name]);
-        if (SCSkill.Loaded.TryGetValue("spacechase0.LuckSkill", out var luckSkill))
+        if (LuckSkill.Instance is not null)
         {
             // luck skill must be enumerated first
-            customSkills = luckSkill.Collect(customSkills);
+            customSkills = customSkills.Prepend(LuckSkill.Instance);
         }
 
         foreach (var skill in customSkills)

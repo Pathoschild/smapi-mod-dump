@@ -10,9 +10,12 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
+
 using AtraCore.Framework.ReflectionManager;
+
 using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
+
 using HarmonyLib;
 
 namespace MoreFertilizers.HarmonyPatches.Acquisition;
@@ -36,6 +39,10 @@ internal static class FairShopTranspiler
                 if (ModEntry.DeluxeJojaFertilizerID != -1)
                 {
                     shopStock.TryAdd(new SObject(ModEntry.DeluxeJojaFertilizerID, 1), new[] { 400, 20 });
+                }
+                if (ModEntry.SecretJojaFertilizerID != -1)
+                {
+                    shopStock.TryAdd(new SObject(ModEntry.SecretJojaFertilizerID, 1), new[] { 1000, 4 });
                 }
             }
             else

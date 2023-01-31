@@ -259,18 +259,18 @@ public class LayoutNode : ISimpleNode {
 
 			Alignment align = node.Alignment;
 			if (align == Alignment.None && Direction == LayoutDirection.Horizontal)
-				align = Alignment.Middle;
+				align = Alignment.VCenter;
 
 			if (align.HasFlag(Alignment.Left)) {
 				/* nothing ~ */
-			} else if (align.HasFlag(Alignment.Center))
+			} else if (align.HasFlag(Alignment.HCenter))
 				offsetX += (float) Math.Ceiling((ownSize.X - size.X) / 2);
 			else if (align.HasFlag(Alignment.Right))
 				offsetX += (float) Math.Ceiling(ownSize.X - size.X);
 
 			if (align.HasFlag(Alignment.Top)) {
 				/* nothing ~ */
-			} else if (align.HasFlag(Alignment.Middle))
+			} else if (align.HasFlag(Alignment.VCenter))
 				offsetY += (float) Math.Ceiling((ownSize.Y - size.Y) / 2);
 			else if (align.HasFlag(Alignment.Bottom))
 				offsetY += (float) Math.Ceiling(ownSize.Y - size.Y);

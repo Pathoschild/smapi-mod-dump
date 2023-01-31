@@ -62,7 +62,6 @@ namespace Custom_Farm_Loader.Lib
         public List<Furniture> StartFurniture = new List<Furniture>();
         public List<DailyUpdate> DailyUpdates = new List<DailyUpdate>();
         public List<FishingRule> FishingRules = new List<FishingRule>();
-        public List<Bridge> Bridges = new List<Bridge>();
         public FarmProperties Properties = new FarmProperties();
 
 
@@ -159,9 +158,6 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "fishingrules":
                             customFarm.FishingRules = FishingRule.parseFishingRuleJsonArray(n);
-                            break;
-                        case "bridges":
-                            customFarm.Bridges = Bridge.parseBridgeJObject(n);
                             break;
                         case "properties":
                             customFarm.Properties = FarmProperties.parseJObject(n);
@@ -327,7 +323,7 @@ namespace Custom_Farm_Loader.Lib
 
             if (worldMapFile == "") return null;
 
-            //Texture2D map = Game1.content.Load<Texture2D>("LooseSprites\\map");
+            Helper.GameContent.InvalidateCache("LooseSprites\\map");
             Texture2D map = Helper.GameContent.Load<Texture2D>("LooseSprites\\map");
             switch (worldMapFile.ToLower()) {
                 case "standard":

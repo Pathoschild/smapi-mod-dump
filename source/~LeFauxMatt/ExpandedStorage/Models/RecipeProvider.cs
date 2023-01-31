@@ -54,7 +54,7 @@ internal sealed class RecipeProvider : IRecipeProvider
         }
 
         var cachedStorage = this._storageCache.Get(storage);
-        return Integrations.BetterCrafting.API!.RecipeBuilder(recipe)
+        return Integrations.BetterCrafting.Api!.RecipeBuilder(recipe)
                            .DisplayName(() => storage.DisplayName)
                            .Description(() => storage.Description)
                            .Texture(() => cachedStorage.Texture)

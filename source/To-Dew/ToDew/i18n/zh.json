@@ -19,6 +19,8 @@
     "config.overlay": "叠加",
     "config.overlay.desc": "配置显示列表的永远在线覆盖",
     "config.overlay.enabled": "Enabled",
+    "config.overlay.click-to-mark-done": "点击项目标记完成",
+    "config.overlay.click-to-mark-done.desc": "启用点击覆盖以标记项目完成",
     "config.overlay.enabled.desc": "是否启用了叠加功能？",
     "config.overlay.hotkey": "热键",
     "config.overlay.hotkey.desc": "要显示或隐藏的热键",

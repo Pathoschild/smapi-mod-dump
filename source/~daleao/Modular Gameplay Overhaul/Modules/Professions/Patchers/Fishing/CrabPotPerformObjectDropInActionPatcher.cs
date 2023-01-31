@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -44,10 +44,10 @@ internal sealed class CrabPotPerformObjectDropInActionPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Profession.Conservationist.Value)
+                .MatchProfessionCheck(Profession.Conservationist.Value)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldloc_1) }, ILHelper.SearchOption.Previous)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldloc_1) }, ILHelper.SearchOption.Previous)
-                .Match(new[] { new CodeInstruction(OpCodes.Brtrue_S) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Brtrue_S) }, out var count)
                 .Remove(count);
         }
         catch (Exception ex)

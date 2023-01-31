@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -29,6 +29,19 @@ internal sealed class AquamarineEnchantmentUnapplyToPatcher : HarmonyPatcher
     }
 
     #region harmony patches
+
+    ///// <summary>Rebalances Aquamarine enchant.</summary>
+    //[HarmonyPrefix]
+    //private static bool JadeEnchantmentUnapplyToPrefix(JadeEnchantment __instance, Item item)
+    //{
+    //    if (item is not MeleeWeapon weapon || !ArsenalModule.Config.RebalancedForges)
+    //    {
+    //        return true; // run original logic
+    //    }
+
+    //    weapon.critChance.Value -= 0.046f * __instance.GetLevel();
+    //    return false; // don't run original logic
+    //}
 
     /// <summary>Reset cached stats.</summary>
     [HarmonyPostfix]

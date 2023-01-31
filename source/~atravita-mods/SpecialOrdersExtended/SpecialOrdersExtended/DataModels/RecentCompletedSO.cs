@@ -9,6 +9,9 @@
 *************************************************/
 
 using System.Text;
+
+using AtraBase.Toolkit;
+
 using AtraShared;
 using StardewModdingAPI.Utilities;
 using AtraUtils = AtraShared.Utils.Utils;
@@ -50,8 +53,8 @@ public class RecentCompletedSO : AbstractDataModel
         {
             ASThrowHelper.ThrowSaveNotLoaded();
         }
-        return ModEntry.DataHelper.ReadGlobalData<RecentCompletedSO>($"{Game1.uniqueIDForThisGame}{IDENTIFIER}")
-            ?? new RecentCompletedSO(Game1.uniqueIDForThisGame.ToString());
+        return ModEntry.DataHelper.ReadGlobalData<RecentCompletedSO>($"{Constants.SaveFolderName.GetStableHashCode()}{IDENTIFIER}")
+            ?? new RecentCompletedSO(Constants.SaveFolderName);
     }
 
     /// <summary>
@@ -65,11 +68,11 @@ public class RecentCompletedSO : AbstractDataModel
         {
             ASThrowHelper.ThrowSaveNotLoaded();
         }
-        RecentCompletedSO? log = ModEntry.DataHelper.ReadGlobalData<RecentCompletedSO>($"{Game1.uniqueIDForThisGame}{IDENTIFIER}_temp_{SDate.Now().DaysSinceStart}");
+        RecentCompletedSO? log = ModEntry.DataHelper.ReadGlobalData<RecentCompletedSO>($"{Constants.SaveFolderName.GetStableHashCode()}{IDENTIFIER}_temp_{SDate.Now().DaysSinceStart}");
         if (log is not null)
         {
             // Delete the temporary file.
-            ModEntry.DataHelper.WriteGlobalData<RecentCompletedSO>($"{Game1.uniqueIDForThisGame}{IDENTIFIER}_temp_{SDate.Now().DaysSinceStart}", null);
+            ModEntry.DataHelper.WriteGlobalData<RecentCompletedSO>($"{Constants.SaveFolderName.GetStableHashCode()}{IDENTIFIER}_temp_{SDate.Now().DaysSinceStart}", null);
             return log;
         }
         return null;
@@ -150,7 +153,7 @@ public class RecentCompletedSO : AbstractDataModel
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
-        stringBuilder.AppendLine($"RecentCompletedSO{this.Savefile}");
+        stringBuilder.AppendLine($"RecentCompletedSO{this.SaveFile}");
         foreach (string key in AtraUtils.ContextSort(this.RecentOrdersCompleted.Keys))
         {
             stringBuilder.AppendLine($"{key} completed on Day {this.RecentOrdersCompleted[key]}");

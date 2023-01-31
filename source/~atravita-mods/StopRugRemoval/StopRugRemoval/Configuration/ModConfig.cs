@@ -25,32 +25,36 @@ internal sealed class ModConfig
     /// </summary>
     public bool Enabled { get; set; } = true;
 
+    #region rugs
+
     /// <summary>
     /// Gets or sets a value indicating whether or not rugs should not be removed from under things.
     /// </summary>
     public bool PreventRugRemoval { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether whether or not I should be able to place rugs outside.
+    /// Gets or sets a value indicating whether or not I should be able to place rugs outside.
     /// </summary>
     public bool CanPlaceRugsOutside { get; set; } = false;
 
 #if DEBUG
     /// <summary>
-    /// Gets or sets a value indicating whether whether or not I should be able to place rugs under things.
+    /// Gets or sets a value indicating whether or not I should be able to place rugs under things.
     /// </summary>
     public bool CanPlaceRugsUnder { get; set; } = true;
 #endif
 
     /// <summary>
-    /// Gets or sets a value indicating whether whether or not to prevent the removal of items from a table.
-    /// </summary>
-    public bool PreventRemovalFromTable { get; set; } = true;
-
-    /// <summary>
     /// Gets or sets a value indicating whether planting on rugs should be allowed.
     /// </summary>
     public bool PreventPlantingOnRugs { get; set; } = true;
+
+    #endregion
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not to prevent the removal of items from a table.
+    /// </summary>
+    public bool PreventRemovalFromTable { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether grass should be placed under objects.
@@ -67,6 +71,14 @@ internal sealed class ModConfig
     /// </summary>
     public bool GoldenCoconutsOffIsland { get; set; } = false;
 
+#if DEBUG
+    /// <summary>
+    /// Gets or sets a value indicating whether changes to alerts should happen.
+    /// </summary>
+    public bool AlertChanges { get; set; } = true;
+
+#endif
+
     private float phoneSpeedUpFactor = 1.0f;
 
     /// <summary>
@@ -79,6 +91,61 @@ internal sealed class ModConfig
         get => this.phoneSpeedUpFactor;
         set => this.phoneSpeedUpFactor = Math.Clamp(value, 1.0f, 5.0f);
     }
+
+    private int craneGameDifficulty = 3;
+
+    /// <summary>
+    /// Gets or sets a value indicating how hard to make the crane game.
+    /// </summary>
+    [GMCMRange(1, 7)]
+    public int CraneGameDifficulty
+    {
+        get => this.craneGameDifficulty;
+        set => this.craneGameDifficulty = Math.Clamp(value, 1, 7);
+    }
+
+    #region secret notes
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not this mod should handle spawning secret notes.
+    /// </summary>
+    [GMCMSection("SecretNotesOverride", 1)]
+    public bool OverrideSecretNotes { get; set; } = true;
+
+    private float maxNoteChance = GameLocation.FIRST_SECRET_NOTE_CHANCE;
+
+    /// <summary>
+    /// Gets or sets a value indicating the maximum chance of spawning a secret note.
+    /// </summary>
+    [GMCMRange(0, 1)]
+    [GMCMInterval(0.01)]
+    [GMCMSection("SecretNotesOverride", 1)]
+    public float MaxNoteChance
+    {
+        get => this.maxNoteChance;
+        set => this.maxNoteChance = Math.Clamp(value, 0f, 1f);
+    }
+
+    private float minNoteChance = GameLocation.LAST_SECRET_NOTE_CHANCE;
+
+    /// <summary>
+    /// Gets or sets a value indicating the minimum chance of spawning a secret note.
+    /// </summary>
+    [GMCMRange(0, 1)]
+    [GMCMInterval(0.01)]
+    [GMCMSection("SecretNotesOverride", 1)]
+    public float MinNoteChance
+    {
+        get => this.minNoteChance;
+        set => this.minNoteChance = Math.Clamp(value, 0f, 1f);
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not the bet1k/bet10k buttons should appear.
+    /// </summary>
+    public bool BetIcons { get; set; } = true;
 
     /// <summary>
     /// Gets or sets keybind to use to remove an item from a table.
@@ -102,39 +169,61 @@ internal sealed class ModConfig
     public bool FilterJukeboxSongs { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not napalm rings should affect safe areas.
+    /// </summary>
+    public bool NapalmInSafeAreas { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not to confirm bomb placement in safe areas.
     /// </summary>
+    [GMCMDefaultIgnore]
     public ConfirmationEnum BombsInSafeAreas { get; set; } = ConfirmationEnum.On;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not to confirm bomb placement in dangerous areas.
     /// </summary>
+    [GMCMDefaultIgnore]
     public ConfirmationEnum BombsInDangerousAreas { get; set; } = ConfirmationEnum.Off;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not to confirm warps in safe areas.
     /// </summary>
+    [GMCMDefaultIgnore]
     public ConfirmationEnum WarpsInSafeAreas { get; set; } = ConfirmationEnum.On;
 
     /// <summary>
-    /// Gets or sets a value indiciating whether or not to confirm warps in dangerous areas.
+    /// Gets or sets a value indicating whether or not to confirm warps in dangerous areas.
     /// </summary>
+    [GMCMDefaultIgnore]
     public ConfirmationEnum WarpsInDangerousAreas { get; set; } = ConfirmationEnum.NotInMultiplayer;
 
     /// <summary>
-    /// Gets or sets a value indiciating whether or not to confirm the return scepter in safe areas.
+    /// Gets or sets a value indicating whether or not to confirm the return scepter in safe areas.
     /// </summary>
+    [GMCMDefaultIgnore]
     public ConfirmationEnum ReturnScepterInSafeAreas { get; set; } = ConfirmationEnum.On;
 
     /// <summary>
-    /// Gets or sets a value indiciating whether or not to confirm the return scepter in dangerous areas.
+    /// Gets or sets a value indicating whether or not to confirm the return scepter in dangerous areas.
     /// </summary>
+    [GMCMDefaultIgnore]
     public ConfirmationEnum ReturnScepterInDangerousAreas { get; set; } = ConfirmationEnum.NotInMultiplayer;
 
     /// <summary>
     /// Gets or sets map to which locations are considered safe.
     /// </summary>
+    [GMCMDefaultIgnore]
     public Dictionary<string, IsSafeLocationEnum> SafeLocationMap { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not to edit Elliott's event.
+    /// </summary>
+    public bool EditElliottEvent { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not to remove duplicate npcs if found.
+    /// </summary>
+    public bool RemoveDuplicateNPCs { get; set; } = false;
 
     /// <summary>
     /// Pre-populates locations.

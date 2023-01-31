@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -112,7 +112,7 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
                     i =>
                     {
                         helper // find index of geologist check
-                            .FindProfessionCheck(
+                            .MatchProfessionCheck(
                                 Farmer.geologist,
                                 i == 0 ? ILHelper.SearchOption.First : ILHelper.SearchOption.Next)
                             .Move(-1)
@@ -145,11 +145,11 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
                     i =>
                     {
                         helper // find index of excavator check
-                            .FindProfessionCheck(
+                            .MatchProfessionCheck(
                                 Farmer.excavator,
                                 i == 0 ? ILHelper.SearchOption.First : ILHelper.SearchOption.Next)
                             .Move(-1)
-                            .Match(new[] { new CodeInstruction(OpCodes.Mul) }, out var count)
+                            .Count(new[] { new CodeInstruction(OpCodes.Mul) }, out var count)
                             .Remove(count); // remove this check
                     });
         }
@@ -164,9 +164,9 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Farmer.burrower) // find index of prospector check
+                .MatchProfessionCheck(Farmer.burrower) // find index of prospector check
                 .Move(-1)
-                .Match(new[] { new CodeInstruction(OpCodes.Mul) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Mul) }, out var count)
                 .Remove(count); // remove this check
         }
         catch (Exception ex)

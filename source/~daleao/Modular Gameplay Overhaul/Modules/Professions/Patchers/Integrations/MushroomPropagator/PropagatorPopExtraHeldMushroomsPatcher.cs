@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -52,7 +52,7 @@ internal sealed class PropagatorPopExtraHeldMushroomsPatcher : HarmonyPatcher
             var isNotPrestiged = generator.DefineLabel();
             var resumeExecution = generator.DefineLabel();
             helper
-                .FindProfessionCheck(Profession.Forager.Value) // find index of forager check
+                .MatchProfessionCheck(Profession.Forager.Value) // find index of forager check
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_I4_0) })
                 .SetOpCode(OpCodes.Ldc_I4_1)
                 .Move()
@@ -84,10 +84,10 @@ internal sealed class PropagatorPopExtraHeldMushroomsPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
+                .MatchProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
                 .Move(-1)
                 .GetLabels(out var labels)
-                .Match(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
                 .Remove(count)
                 .Insert(
                     new[]

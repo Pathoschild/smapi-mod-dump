@@ -88,11 +88,22 @@ namespace BinningSkill
 
         internal static int[] GetSalvagerRarityLevels()
         {
-            return new int[]
+            if (!ModEntry.MargoLoaded || Game1.player.HasCustomPrestigeProfession(BinningSkill.Salvager))
             {
-                ModEntry.Config.SalvagerRareDropChance,
-                ModEntry.Config.SalvagerSuperRareDropChance
-            };
+                return new int[]
+                {
+                    ModEntry.Config.SalvagerRareDropChance,
+                    ModEntry.Config.SalvagerSuperRareDropChance
+                };
+            }
+            else
+            {
+                return new int[]
+                {
+                    ModEntry.Config.SalvagerRareDropChance,
+                    0,
+                };
+            }
         }
 
         internal static StardewValley.Object GetSalvagerUpgrade(StardewValley.Object original)

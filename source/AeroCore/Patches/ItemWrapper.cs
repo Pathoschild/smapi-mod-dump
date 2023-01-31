@@ -47,13 +47,13 @@ namespace AeroCore.Patches
             ModEntry.harmony.Patch(typeof(Utility).MethodNamed(nameof(Utility.canItemBeAddedToThisInventoryList)), prefix: itemSwap2);
         }
 
-        public static SObject WrapItem(Item what, bool forceSubtype = false)
+        public static SObject WrapItem(Item what, bool forceSubtype = false, bool forceall = false)
         {
             if (what is null || what.modData.ContainsKey(WrapFlag))
                 return null;
-            if (what is SObject obj && !forceSubtype)
+            if (what is SObject obj && !forceSubtype && !forceall)
                 return obj;
-            if (what.GetType() == typeof(SObject) && !(what as SObject).bigCraftable.Value)
+            if (!forceall && what.GetType() == typeof(SObject) && !(what as SObject).bigCraftable.Value)
                 return what as SObject;
             Sign ret = new(Vector2.Zero, 37); // wood sign
             ret.displayItem.Value = what;
@@ -75,6 +75,22 @@ namespace AeroCore.Patches
                 }
             }
             return count;
+        }
+        public static void DropAllWrapped(GameLocation where = null)
+        {
+            where ??= Game1.currentLocation;
+            if (where is null)
+                return;
+            var objs = where.Objects.Pairs;
+            int dir = where == Game1.currentLocation ? -1 : 2;
+            foreach ((Vector2 key, SObject val) in objs)
+            {
+                if (val.modData.ContainsKey(WrapFlag))
+                {
+                    Game1.createItemDebris(UnwrapItem(val), new(key.X * 64f + 32f, key.Y * 64f + 32f), dir, where);
+                    where.Objects.Remove(key);
+                }
+            }
         }
 
         [HarmonyPatch(typeof(Sign), nameof(Sign.draw))]
@@ -110,6 +126,7 @@ namespace AeroCore.Patches
 
         [HarmonyPatch(typeof(Sign), nameof(Sign.checkForAction))]
         [HarmonyPrefix]
+        [HarmonyPriority(Priority.High)]
         internal static bool ActionPatch(Sign __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
         {
             if (!__instance.modData.ContainsKey(WrapFlag))

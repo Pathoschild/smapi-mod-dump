@@ -13,6 +13,23 @@ Changelog
 1. Catch input to place rug under things.
 <!-- Figure out how to replace the reference to coffee in the night market dialogue?-->
 <!-- Make it so notifications do not go away until dismissed? -->
+<!-- Make farm pan faster for animal menu and do some sort of keybind mess to snap to building-->
+<!-- do I need to override reading secret notes too? -->
+
+#### Version 1.1.2
+* By popular request, defang the napalm ring in safe areas.
+* New fixes: Journal scraps are now less silly, also removing a mod that adds secret notes won't lock you out of secret notes.
+
+#### Version 1.1.1
+* Some menus now accept arrow keys.
+* Internal improvements (mostly with regard to enums).
+* Jukebox now checks your current location, not the mainland, for the is-it-raining check.
+* Adds a way to flip fruit trees and crops. Yes I am this petty.
+* Leo no longer attends the Winter Star festival before he's moved to the mainland.
+* Schedule fixer will now detect infinite recursion and prevent those crashes as well.
+* Difficulty setting for the crane game.
+* Hopefully escaped children will cause fewer crashes?
+* Korean translation, thanks to [park4934](https://blog.naver.com/park971202/222878509680)!.
 
 #### Version 1.1.0
 * Move to using AtraCore.

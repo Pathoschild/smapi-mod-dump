@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -222,6 +222,35 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E($"Failed recording crit flag.\nHelper returned {ex}");
+            return null;
+        }
+
+        try
+        {
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldarg_S, (byte)10),
+                        new CodeInstruction(OpCodes.Callvirt),
+                        new CodeInstruction(OpCodes.Callvirt),
+                        new CodeInstruction(OpCodes.Ldstr, "Galaxy Sword"),
+                    })
+                .Count(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(Multiplayer).RequireMethod(
+                                nameof(Multiplayer.broadcastSprites),
+                                new[] { typeof(GameLocation), typeof(TemporaryAnimatedSprite[]) })),
+                    },
+                    out var count)
+                .Remove(count);
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed removing arbitrary Galaxy Sword hit animation.\nHelper returned {ex}");
             return null;
         }
 

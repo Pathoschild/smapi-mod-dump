@@ -6,9 +6,12 @@ mods:
    Custom Tokens
 
 latest commit:
-   commit d75821e12ca13d8f390f3800093a7bd82ba9e469
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Tue Aug 2 14:33:12 2022 +1000
+   commit d76adc354d4668c446a0fb45da65262e73be0435
+   Merge: d75821e 54bb0ba
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Thu Jan 5 14:02:37 2023 +1100
    
-       removed net fields, added some compatibility with one of my personal mods.
+       Merge pull request #5 from TheMightyAmondee/develop
+       
+       Develop
    

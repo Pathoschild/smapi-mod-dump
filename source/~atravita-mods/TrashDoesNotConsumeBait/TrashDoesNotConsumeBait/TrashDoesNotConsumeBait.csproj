@@ -2,7 +2,6 @@
   <Import Project="..\..\csproj_common" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -11,7 +10,7 @@
     <Name>Trash Does Not Consume Bait</Name>
     <Description>Prevents trash from consuming bait.</Description>
     <UpdateKeys>Nexus:11426</UpdateKeys>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 

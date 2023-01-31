@@ -14,12 +14,15 @@
     "config.ScheduleRandom.name":"Rutina random",
     "config.ScheduleRandom.description":"Si activas esto, tu pareja irá a un lugar random de la isla durante el día (Necesitas tener \"Ginger Island Extra\" instalado).",
     
+    "AlreadyInvited": "¡Ya invitaste a {0}!",
+    "AlreadyScheduled.Day": "Programaste una visita para mañana. No se puede usar.",
+    "AlreadyScheduled.Week": "Programaste una visita para la semana. No se puede usar.",
+    "AlreadyOngoing.Visit": "Ya hay una visita en curso. No se puede usar.",
+
     "config.DebugComm.name":"Comandos debug",
     "config.DebugComm.description":"(Avanzado) Permite acceder a comandos relacionados al mod.",
     "config.Verbose.name":"Verbose",
     "config.Verbose.description":"El mod informará mucho más seguido de lo que está haciendo.",
-    "config.CheckDaily.name": "Revisar parejas diariamente",
-    "config.CheckDaily.description":"Cada noche, el juego actualizará la lista de parejas. ADVERTENCIA: Usa esto a tu propio riesgo, puede ralentizar el juego.",
 
     "config.Vanillas.name":"NPCs",
     "config.Vanillas.description":"NPCs para los cuales el mod agrega rutinas . Si quieres usar una rutina propia (o no quieres que vayan a la isla), puedes desactivar su configuración aquí.",
@@ -36,7 +39,10 @@
         
     "config.UseFurnitureBed.name": "¿Usar cama \n propia?",
     "config.UseFurnitureBed.description": "Permite usar una cama normal (o sea, un item que puedas mover).",
-   
+    
+    "config.UseModSchedule.name":"Usar rutina del mod",
+    "config.UseModSchedule.description":"Los NPCs de Child2NPC usarán una rutina básica (para las visitas).",
+    
     "config.Childbedcolor.name":"Cama infantil",
     "config.Childbedcolor.description": "El color de la cama infantil en la isla.",
     "config.Childbedcolor.values.yellow": "amarillo",
@@ -48,28 +54,18 @@
     
     "config.Devan_Nosit.name":"Devan NPC",
     "config.Devan_Nosit.description": "Si quieres que alguien cuide a tus hijos durante las visitas a la isla, activa esta opción. (O alternativamente, si sólo quieres que Devan esté en tu partida).",
+    "config.SeasonalDevan.name": "Ropa de temporada (Devan)",
+    "config.SeasonalDevan.description": "Permite a Devan usar ropa de temporada.",
 
     "CLI.help":"Muestra los comandos agregados por \"Spouses' Island\".\n\n    Uso: sgi_help",
     "CLI.helpdescription":"Comandos:\n\n - sgi_help: muestra este comando.\n\n - sgi_chance: Muestra el número usado para decidir si se visitará la isla. Cambia diariamente.\n    Uso: sgi_chance\n\n - sgi_list: Muestra una lista con la información pedida.\n    Uso: sgi_list <opción>\n    Opciones: schedules (rutinas editadas), dialogues (diálogos editados), packs (paquetes de contenido que se han leído)\n\n - sgi_reset: vuelve a cargar la información pedida.\n    Uso: sgi_reset <opción>\n    Opciones: schedules (recarga rutinas), dialogues (recarga diálogos)",
     "CLI.chance":"Muestra el número usado para decidir si se visitará la isla. Cambia diariamente.\n\nUso: sgi_chance",
-    "CLI.reset":"Reinicia los archivos listados.\n    Uso: sgi_reset <opción>",
-    "CLI.list":"Muestra una lista con la información pedida.\n    Uso: sgi_list <opción>.",
-    "CLI.reset.description":"\n\n sgi_reset: Reinicia los archivos listados.\n    Uso: sgi_reset <opción>",
-    "CLI.list.description":"\n\n sgi_list: Muestra una lista con la información pedida.\n\n    Uso: sgi_list <opción>.\n\nOpciones:\n  dialogues : muestra diálogos cambiados.\n  schedules: muestra las rutinas cambiadas. \n  packs: muestra los paquetes de contenido que fueron cargados. \n  translations: muestra las traducciones que se han cargado en total.",
     "CLI.nosaveloaded":"Necesitas cargar una partida para usar este comando.",
-    "CLI.about":"Información sobre el mod.",
     "CLI.TooManyArguments":"Sólo puedes usar un argumento a la vez.",
     "CLI.Day0":"Ayer",
     "CLI.Day1":"Hoy",
-    "CLI.get.dialogues": "Se ha editado el diálogo de los siguientes personajes:",
-    "CLI.get.schedules": "Se ha editado la rutina de los siguientes personajes:",
-    "CLI.get.packs":"Paquetes/Mods agregados:",
-    "CLI.InvalidValue": "Por favor, escribe un valor válido. (valores permitidos: schedules, dialogues)",
-    "CLI.MustReset":"Para recargar los paquetes de contenido, por favor reinicia el juego.",
     "CLI.ChangingCC": "Cambiando la probabilidad de visita a ",
     "CLI.InvalidValue.CC": "Por favor, escribe un valor válido. (valores permitidos: 0 a 100)",
-
-    "asset.error.addingdialogue":"Algo falló cuando se agregó el diálogo de {0}. Por favor, revisa ErrorLogs para más detalles.",
 
     /* characters data */
 
@@ -151,119 +147,35 @@
     "Dialogue.Victor.LocA": "Este es el volcán que los duendes usaban como fuente de energía...#$b#Tal vez podríamos entrar un día.",
     "Dialogue.Victor.LocB": "¿Has visto los fósiles que hay aquí, @?#$b#Están muy bien preservados.",
     
-    /* Devan content starts here */
+    "Invite_Abigail": "¿Isla gengibre? mañana..?#$b#Bueno, @.#$b#Llevaré mi espada.$1",
+    "Invite_Alex": "¡Genial! Quería trotar por la playa contigo.$1#$b#Vamos mañana.",
+    "Invite_Elliott": "¿Quieres ver el mar de Isla Gengibre, @? ¿Conmigo?$0#$b#Qué halago.$1#$b#Estaré allí mañana.",
+    "Invite_Emily": "¡Si! ¡Vamos mañana, @!$1#$b#Ya siento una energía positiva de la isla.",
+    "Invite_Haley": "*gasp*...¡si!$1#$b#Estoy libre mañana. No puedo esperar.",
+    "Invite_Harvey": "Unas vacaciones no vendrían mal. Gracias, @.#$b#Terminaré mi trabajo y prepararé todo para mañana.",
+    "Invite_Krobus": "...¿Un tícket? ¿A dónde?#$b#¿la isla?#$b#Gracias, @. Tendré mi traje listo mañana.$1",
+    "Invite_Maru": "Oh wow, ¿Los volcanes de Isla Gengibre, dices? ¡Súper!#$b#Estaré ahí mañana, sólo espérame.$1",
+    "Invite_Penny": "Oh, ¡unas vacaciones!$1#$b#Qué amable de ti. ¿Vamos mañana?",
+    "Invite_Sam": "Aw, ¡si! ¿Quieres que vaya contigo mañana?$1#$b#Voy a preparar las cosas.",
+    "Invite_Sebastian": "...Gracias. ¿Podemos ir mañana mejor?#$b#Está bien. Tendré todo listo.$1",
+    "Invite_Shane": "Oh, ¿un tícket?#$b#Quieres ir conmigo a la isla?#$b#Bueno, vamos mañana. ¿Qué tal?$1",
 
-    //festival dialogue
-    "Festivals.spring13": "¿Vas a participar en el festival?#$b#¿Yo? No. Prefiero mirar la competencia. Es más interesante.",
-    "Festivals.spring24": "Mm...sabe exquisito.$8#$b#@, prueba un poco. De seguro te encanta.$1",
-    "Festivals.summer11": "%Devan parece estar divirtiéndose con Emily.",
-    "Festivals.summer28": "Medusas lunares... nunca había escuchado algo así.$0#$b#No puedo esperar a verlas.$1",
-    "Festivals.fall16": "Estas gallinas se ven muy bien cuidadas.$0#$b#Se nota que Marnie las quiere mucho.$1",
-    "Festivals.fall27": "Escuché que hicieron un laberinto imposible allí arriba...$0#$b#Quizás vaya a verlo más tarde.$1",
-    "Festivals.winter8": "¿Lo mejor de este festival, dices...?$0#$b#Me gusta ver cómo decoran los muñecos de nieve.$0#$e#Pero especialmente, me gustan las esculturas de Leah.$1",
-    "Festivals.winter25": "Ah, hola.$0#$b#¿Has probado los bastones de Gus? Le quedaron excelente.$0#$b#Se preparó desde antes para encontrar todos los ingredientes.$1",
+    "Invite_Claire":"Oh, ¿Una invitación? ¿Para mí?#$b#Gracias, @. Vayamos mañana.",
+    "Invite_Lance":"¿Un tícket...a Isla Gengibre?#$b#Tal vez podremos visitar mañana, sí.$1",
+    "Invite_Olivia":"Oh, ¡Vaya! ¿Isla Gengibre? Qué considerado de tu parte, cariño.#$b#Me encantaría ir mañana.",
+    "Invite_Sophia":"¡Oh! ¿Qué es eso, @?#$b#¿Quieres que vaya contigo?#$b#¡Si! Vamos mañana.$1",
+    "Invite_Victor":"¿Quieres ir a la isla mañana?#$b#¡Genial! Gracias, @.$1",
+    "Invite_Wizard":"¿Isla Gengibre? Hm... muy bien, cariño.$1#$b#Supongo que no me he conectado con su magia en un tiempo.",
 
-    //disposition and mail
-    "gus_title": "jefe",
-    "Devanmail": "Encontré esto mientras compraba en Pierre's, y me acordé de ti. A lo mejor te sirve.",
-    "Devanmail_title": "Un regalo de Devan",
+    "Invite_generic_0_1":"¡Si! Me encantaría ir.$1#$b#¿Qué tal mañana?", //1 polite, 2 rude, 0 normal?
+    "Invite_generic_0_2":"@, ¿Quieres que vaya a la isla contigo?#$b#¡Por supuesto! Te veré allí mañana.$1",
+    "Invite_generic_0_3":"¿Tienes ganas de visitar la isla?#$b#Está bien. Mañana iré temprano.",
+    "Invite_generic_1_1":"¡Gracias! Ya extrañaba la isla.#$b#Arreglaré todo para estar allí mañana.",
+    "Invite_generic_1_2":"...¿Qué es eso?#$b#Sí, @. Me encantaría ir a la isla.$1#$b#Prepararé todo para ir temprano.",
+    "Invite_generic_1_3":"Si, por supuesto.#$b#Me gustaría ir mañana, ¿Está bien?$1",
+    "Invite_generic_2_1":"Ok, bueno.#$b#Iremos mañana, ¿ya?",
+    "Invite_generic_2_2":"Qué, ¿Quieres ir a la isla mañana?#$b#Ok, iré contigo.$1",
+    "Invite_generic_2_3":"Tengo cosas que hacer hoy, pero mañana no tengo nada.#$b#Espérame allá, ¿ok?",
 
-    //gift data
-    "devan_lovedgift": "¡Siempre sabes qué regalar, @! Es mi favorito.",
-    "devan_likedgift": "Gracias, @. Me gusta mucho.",
-    "devan_dislikedgift": "...No creo que me sirva mucho.",
-    "devan_hatedgift": "...¿Qué mal broma es esta?",
-    "devan_neutralgift": "Gracias, lo guardaré.",
-
-    //  event: LeahHouse
-    "Event.LeahHouse_1": "No te muevas. Ya casi termino.",
-    "Event.LeahHouse_2": "¿Cuánto queda? Me duelen los brazos...$2#$b#El río es tan calmante...creo que me va a adormecer.$1",
-    "Event.LeahHouse_3": "Si eso pasa, tendré que empezar de nuevo.$2",
-    "Event.LeahHouse_4": "Hola, @. Disculpa... no puedo hablar ahora.$0#$b#Devan me está ayudando con una pose difícil que quería dibujar.",
-    "Event.LeahHouse_5": "Ey, sobre 'eso'...$2#$b#Lo que comisioné la semana pasada. ¿Cómo va el avance?$1",
-    "Event.LeahHouse_6": "Está listo.",
-    "Event.LeahHouse_7": "...$6#$b#...Por el amor de Yoba. Es justo lo que quería. $1",
-    "Event.LeahHouse_end": "Cuando terminemos, puedes llevártelo a casa.",
-    
-    //  event: Railroad
-    "Event.Railroad_start-a1": "¿Qué estás haciendo?",
-    "Event.Railroad_start-a2": "¿Estás esperando a alguien?",
-    "Event.Railroad_start-s1": "Ah, ¿Esto?",
-    "Event.Railroad_start-s2": "No, más bien a 'algo'.",
-    "Event.Railroad_talk": "Estoy esperando que pase un tren.$0#$b#No pasan muy seguido, pero la espera vale la pena.$0",
-    "Event.Railroad_mid-a1": "Y ¿Has visto alguno?",
-    "Event.Railroad_mid-a2": "¿Por qué lo haces?",
-    "Event.Railroad_mid-a3": "Suena aburridor.",
-    "Event.Railroad_mid-s1": "Si, dos hasta ahora.$0#$b#El último iba con carbón, y me cayó uno cuando pasaba...$2#$b#Así que espero poder ver el siguiente con tranquilidad.",
-    "Event.Railroad_mid-s2": "Son máquinas increíbles. ¿Sabes? Pueden usar 4 tipos de energía: Tirado por caballos, a vapor, diesel y electricidad.$1#$b#Donde vivía antes, sólo podías llegar a través de un tren.$0",
-    "Event.Railroad_mid-s3": "¿Lo dice quien se la pasa en la granja?$5",
-    "Event.Railroad_end": "...De todas maneras, puedes quedarte si quieres.$0#$b#Pero te advierto, es probable que te caiga algo encima.$0#$e#Espero que tengas con qué cubrirte.$1",
-    
-    //  event: Forest
-    "Event.Forest_1":"Hey, @.",
-    "Event.Forest_2":"¿Recuerdas la pintura que le compré a Leah?#$b#Era del pueblo donde crecí.#$e#Solía trabajar en un colegio.$0#$b#Estábamos lejos de la ciudad, así que sobrevivíamos con la granja.$0#$b#...Pero las cosas cambiaron.$2",
-    "Event.Forest_3":"Con el tiempo, nuestra fuente de agua se secó. La gente comenzó a irse..$2#$b#Yo me quedé. No quería abandonar a mis estudiantes.$2#$b#Pero sus familias tenían que irse, y era por su propio bien.$2#$b#El pueblo se volvió un desierto. También lo dejé, y perdí el contacto.$2#$e#Cuando llegué a la ciudad... era tan diferente. Y no podía encontrar un buen trabajo.$2",
-    "Event.Forest_4":"En ese momento, escuché del valle.$7",
-    "Event.Forest_5":"Cuando llegué, no tenía donde quedarme...de coincidencia, conocí a Gus.$7#$b#Me ofreció un cuarto en el que quedarme, a cambio de trabajar en el salón.#$b#Según él, muchas personas pasaron por lo mismo.",
-    "Event.Forest_q":"¿Por qué viniste a este pueblo, @?",
-    "Event.Forest_a1":"También quería escapar de la ciudad.",
-    "Event.Forest_a2":"Era la granja de mi abuelo.",
-    "Event.Forest_a3":"Quería dinero.",
-    "Event.Forest_s1":"Así que es verdad...este lugar aparece cuando más lo necesitas.$7",
-    "Event.Forest_s2":"¿Te dejó la granja? Tiene sentido.",
-    "Event.Forest_s3":"¿En serio? ¿Sólo por eso?$6#$b#Podrías ganar mucho más en la ciudad.",
-    "Event.Forest_end":"Bueno, gracias por escucharme.",
-        
-    //  event: Saloon
-    "Event.Saloon.base1": "...Y tuvimos que hacer eso.",
-    "Event.Saloon.base2": "Parece que te estás divirtiendo mucho...ese cangrejo casi me arrancó el pelo.$2#$b#Aunque tampoco te escapaste de eso.$1",
-    "Event.Saloon.base3": "...Bueno, no.$2#$b#Hace calor...iré afuera un rato.",
-    "Event.Saloon.baseChoice":"¿Quieres ir, @?#Iré contigo.#Me quedaré con Elliott.",
-
-    "Event.Saloon.A-1":"Hey, @.#$e#Quería decirte algo.#$e#¿Recuerdas que te he contado del pueblo donde nací?$0#$b#Solíamos ser una comunidad unida. Las granjas ganaban dinero vendiendo sus productos, incluso a lugares lejanos.",
-    "Event.Saloon.A-2": "Por eso, era normal ver trenes. A veces, mientras trabajaba, escuchaba su sonido.$0#$b#...La verdad, extraño trabajar en un colegio.$2#$b#Me pregunto cómo estarán mis ex alumnos, y sus familias...$7",
-    "Event.Saloon.A-3": "Cuando llegué, tenía mucho miedo. Ya había perdido en la ciudad, y no sabía si encajaría­. Los trenes eran mi único consuelo.$2#$b#Pero, @... últimamente, siento que soy parte de la comunidad.$7#$b#Has sido un amigo valioso para mí­.$1#$b#Amaba mi pueblo, y lo extrañaré...pero está bien disfrutar el presente. Este es mi hogar ahora.",
-    "Event.Saloon.A-4":"...Elliot se debe estar aburriendo, deberíamos volver.#$e#Oye, ¿Quieres una bebida?$6#$b#Yo invito.$1",
-    "Event.Saloon.A-end":"...#$b#Aprecio mucho nuestra amistad, @.$1",
-
-    "Event.Saloon.B-1": "Bueno.#$b#No me demoraré mucho.$1",
-    "Event.Saloon.B-2": "Presiento que tendremos tiempo para hablar.#$e#...@?$1#$b#Últimamente, me he percatado de algo intrigante.",
-    "Event.Saloon.B-3": "...Al principio, Devan era bastante distante.#$b#Para ser sincero...demasiado distante.$2#$e#Excepto cuando hablaba con Leah. Tienen un gusto en común por el bosque.",
-    "Event.Saloon.B-4": "Sin embargo...",
-    "Event.Saloon.B-5": "Desde que te le acercaste, devan se ve más feliz.#$b#Creo que le has hecho sentirse en casa, en nuestro pequeño pueblo.",
-    "Event.Saloon.B-6": "Me alegro que se lleven bien.$1",
-    "Event.Saloon.B-7": "Oigan- el viento afuera está fresquito.#$b#¿Me demoré mucho?#$e#...¿Por qué ponen esa cara?$6",
-    "Event.Saloon.B-end":"No es por nada. Estábamos hablando mientras te fuiste.#$b#Me gustaría contarle más a @ sobre la vez que intentamos atrapar cangrejos.",
-    
-    "Invite_Abigail":"",
-    "Invite_Alex":"",
-    "Invite_Elliott":"",
-    "Invite_Emily":"",
-    "Invite_Haley":"",
-    "Invite_Harvey":"",
-    "Invite_Krobus":"",
-    "Invite_Maru":"",
-    "Invite_Penny":"",
-    "Invite_Sam":"",
-    "Invite_Sebastian":"",
-    "Invite_Shane":"",
-
-    "Invite_Claire":"",
-    "Invite_Lance":"",
-    "Invite_Olivia":"",
-    "Invite_Sophia":"",
-    "Invite_Victor":"",
-    "Invite_Wizard":"",
-
-    "Invite_generic_0_1":"",
-    "Invite_generic_0_2":"",
-    "Invite_generic_0_3":"",
-    "Invite_generic_1_1":"",
-    "Invite_generic_1_2":"",
-    "Invite_generic_1_3":"",
-    "Invite_generic_2_1":"",
-    "Invite_generic_2_2":"",
-    "Invite_generic_2_3":"",
-
-    "Islandvisit_Qi": ""
+    "Islandvisit_Qi": "Sabía que acabarías en Isla Gengibre algún día. Sin embargo, debes seguir trabajando duro para alcanzar la perfección.^Como incentivo, toma estas invitaciones. Te serán útiles.^   -Tu amigo, el Sr. Qi"
 }

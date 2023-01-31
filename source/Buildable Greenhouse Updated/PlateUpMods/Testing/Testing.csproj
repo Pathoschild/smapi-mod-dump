@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TestingType>Library</TestingType>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(TestingType)' == 'Exe'">
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net472</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableGameDebugging>false</EnableGameDebugging>
+		<EnableModDeployLocal>false</EnableModDeployLocal>
+		<EnableCopyLocal>true</EnableCopyLocal>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TestingType)' == 'Library'">
+		<OutputType>Library</OutputType>
+		<TargetFramework>net472</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableGameDebugging>true</EnableGameDebugging>
+		<EnableModDeployLocal>true</EnableModDeployLocal>
+		<EnableCopyLocal>false</EnableCopyLocal>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Yariazen.PlateUp.ModBuildUtilities" Version="1.5.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="$(GameModsPath)\KitchenLib\content\Kitchenlib-Workshop.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="JsonConverters\" />
+	</ItemGroup>
+</Project>

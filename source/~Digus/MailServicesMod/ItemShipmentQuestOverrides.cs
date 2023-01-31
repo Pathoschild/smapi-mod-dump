@@ -37,7 +37,7 @@ namespace MailServicesMod
                             var item = Game1.player.ActiveObject;
                             if ((item.ParentSheetIndex == itemDeliveryQuest.item.Value || item.Category == itemDeliveryQuest.item.Value))
                             {
-                                NPC npc = Game1.getCharacterFromName(itemDeliveryQuest.target.Value);
+                                NPC npc = NpcUtility.getCharacterFromName(itemDeliveryQuest.target.Value);
                                 if (item.Stack >= itemDeliveryQuest.number.Value)
                                 {
                                     if (Game1.player.Money >= DataLoader.ModConfig.QuestServiceFee)
@@ -91,7 +91,7 @@ namespace MailServicesMod
                             if (lostItemQuest.itemFound.Value && Game1.player.hasItemInInventory(lostItemQuest.itemIndex.Value, 1))
                             {
                                 lostItemQuest.questComplete();
-                                NPC npc = Game1.getCharacterFromName(lostItemQuest.npcName.Value);
+                                NPC npc = NpcUtility.getCharacterFromName(lostItemQuest.npcName.Value);
 
                                 if (DataLoader.ModConfig.ShowDialogOnItemDelivery)
                                 {
@@ -112,6 +112,7 @@ namespace MailServicesMod
             {
                 MailServicesModEntry.ModMonitor.Log("Error trying to send object to complete quest.", LogLevel.Error);
                 MailServicesModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                MailServicesModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
             }
             return true;
         }

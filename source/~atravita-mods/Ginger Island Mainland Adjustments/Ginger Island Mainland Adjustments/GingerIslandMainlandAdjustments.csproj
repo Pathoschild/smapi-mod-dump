@@ -6,10 +6,9 @@
     <RootNamespace>GingerIslandMainlandAdjustments</RootNamespace>
     <Name>Ginger Island Mainland Adjustments</Name>
     <Description>Dialogue keys for NPCs headed to or away from Ginger Island, post-Ginger Island Schedules, and so on.</Description>
-    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>1.1.6</Version>
+    <Version>1.1.7</Version>
     <BaseManifest>..\..\cp_dependencies.json</BaseManifest>
     <UpdateKeys> Nexus:10004@CodePack, ModDrop:1098263@CodePack</UpdateKeys>
   </PropertyGroup>

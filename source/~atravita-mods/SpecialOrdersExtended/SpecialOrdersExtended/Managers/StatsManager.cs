@@ -34,11 +34,11 @@ internal static class StatsManager
     /// Gets the propertyGetters dictionary.
     /// </summary>
     /// <remarks>Grabs properties if needed (if the dictionary is empty).</remarks>
-    public static Dictionary<string, Func<Stats, uint>> PropertyGetters
+    internal static Dictionary<string, Func<Stats, uint>> PropertyGetters
     {
         get
         {
-            if (propertyGetters.Count.Equals(0))
+            if (propertyGetters.Count == 0)
             {
                 GrabProperties();
             }
@@ -59,7 +59,7 @@ internal static class StatsManager
     /// <param name="key">The key of the stat to search for.</param>
     /// <param name="stats">The stats to look through (which farmer do I want?).</param>
     /// <returns>Value of the stat.</returns>
-    public static uint GrabBasicProperty(string key, Stats stats)
+    internal static uint GrabBasicProperty(string key, Stats stats)
     {
         try
         {
@@ -87,7 +87,7 @@ internal static class StatsManager
     /// <param name="command">The name of the command.</param>
     /// <param name="args">Any arguments (none for this command).</param>
     [SuppressMessage("ReSharper", "IDE0060", Justification = "Format expected by console commands")]
-    public static void ConsoleListProperties(string command, string[] args)
+    internal static void ConsoleListProperties(string command, string[] args)
     {
         StringBuilder sb = new();
         sb.AppendLine(I18n.CurrentKeysFound());

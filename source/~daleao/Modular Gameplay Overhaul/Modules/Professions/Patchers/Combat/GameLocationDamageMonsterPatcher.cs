@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -17,12 +17,12 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
-using DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayEnding;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Sounds;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
+using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
@@ -66,7 +66,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Farmer.scout) // find index of scout check
+                .MatchProfessionCheck(Farmer.scout) // find index of scout check
                 .Move()
                 .SetOperand(Profession.Poacher.Value); // replace with Poacher check
         }
@@ -83,7 +83,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             var isNotPrestiged = generator.DefineLabel();
             var resumeExecution = generator.DefineLabel();
             helper
-                .FindProfessionCheck(Profession.Fighter.Value) // find index of brute check
+                .MatchProfessionCheck(Profession.Fighter.Value) // find index of brute check
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_R4, 1.1f) }) // brute damage multiplier
                 .AddLabels(isNotPrestiged)
                 .Insert(new[] { new CodeInstruction(OpCodes.Ldarg_S, (byte)10) }) // arg 10 = Farmer who
@@ -110,7 +110,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         try
         {
             helper
-                .FindProfessionCheck(Profession.Brute.Value) // find index of brute check
+                .MatchProfessionCheck(Profession.Brute.Value) // find index of brute check
                 .Move(-2)
                 .GetOperand(out var dontBuffDamage)
                 .Insert(
@@ -157,7 +157,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         {
             var ambush = generator.DeclareLocal(typeof(Ambush));
             helper
-                .FindProfessionCheck(Farmer.desperado) // find index of desperado check
+                .MatchProfessionCheck(Farmer.desperado) // find index of desperado check
                 .Match(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, ILHelper.SearchOption.Previous)
                 .GetOperand(out var dontBuffCritPow)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldnull) }, ILHelper.SearchOption.Previous)
@@ -195,7 +195,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
                             typeof(Ambush).RequirePropertyGetter(nameof(Ambush.IsGrantingCritBuff))),
                         new CodeInstruction(OpCodes.Brfalse_S, dontBuffCritPow),
                     })
-                .Match(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var count)
+                .Count(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var count)
                 .Remove(count);
         }
         catch (Exception ex)
@@ -314,7 +314,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             TrySteal(monster, who, r);
 
             // increment Poacher ultimate meter
-            if (ultimate == Ultimate.PoacherAmbush && ultimate.IsActive)
+            if (ultimate is Ambush && !ultimate.IsActive)
             {
                 ultimate.ChargeValue += critMultiplier;
             }
@@ -332,12 +332,12 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             ultimate.ChargeValue = 0;
         }
 
-        if (monster.Health > 0 || (!wasActive && !(ambush.SecondsOutOfAmbush <= 1.5d)))
+        if (monster.Health > 0 || !wasActive || ambush.SecondsOutOfAmbush > 0.5d)
         {
             return;
         }
 
-        ultimate.ChargeValue += ultimate.MaxValue / 5d;
+        ultimate.ChargeValue += ultimate.MaxValue / 4d;
         ambush.SecondsOutOfAmbush = double.MaxValue;
     }
 
@@ -451,9 +451,10 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             return;
         }
 
-        var drops = monster.objectsToDrop.Select(o => new SObject(o, 1) as Item)
-            .Concat(monster.getExtraDropItems()).ToList();
-        var itemToSteal = drops.ElementAtOrDefault(r.Next(drops.Count))?.getOne();
+        var itemToSteal = monster.objectsToDrop
+            .Select(o => new SObject(o, 1) as Item)
+            .Concat(monster.getExtraDropItems())
+            .Choose(r)?.getOne();
         if (itemToSteal is null || itemToSteal.Name.Contains("Error") || !who.addItemToInventoryBool(itemToSteal))
         {
             return;

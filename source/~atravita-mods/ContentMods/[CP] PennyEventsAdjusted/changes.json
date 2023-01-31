@@ -25,7 +25,7 @@
         "Target": "Data/Events/Forest",
         "Fields": {
             "fieldTripEnd": {
-                "23": "speak Penny \"$q -1 null#{{i18n:not-married-question-onekid}}#$r -1 0 event_speaker_kids1#{{i18n:onekid-best}}#$r -1 20 event_speaker_kids2#{{i18n:onekid-bigfamily}}#$r -1 20 event_speaker_kids3#{{i18n:onekid-everyone}}#$r -1 10 event_speaker_kids4#{{i18n:onekid-moredifficult}}#$r -1 -10 event_speaker_kids5#{{i18n:onekid-regrets}}.#$r -1 -10 event_speaker_kids6#{{i18n:onekid-tieddown}}\""
+                23: "speak Penny \"$q -1 null#{{i18n:not-married-question-onekid}}#$r -1 0 event_speaker_kids1#{{i18n:onekid-best}}#$r -1 20 event_speaker_kids2#{{i18n:onekid-bigfamily}}#$r -1 20 event_speaker_kids3#{{i18n:onekid-everyone}}#$r -1 10 event_speaker_kids4#{{i18n:onekid-moredifficult}}#$r -1 -10 event_speaker_kids5#{{i18n:onekid-regrets}}.#$r -1 -10 event_speaker_kids6#{{i18n:onekid-tieddown}}\""
             }
         },
         "When": {
@@ -66,8 +66,8 @@
         "Target": "Data/Events/Forest",
         "Fields": {
             "choseFarming": {
-                "10": "speak Vincent \"{{i18n:choseFarming000}}#$b#{{i18n:choseFarming001}}$h\"",
-                "17": "speak Penny \"{{i18n:choseFarming002}}$a\""
+                10: "speak Vincent \"{{i18n:choseFarming000}}#$b#{{i18n:choseFarming001}}$h\"",
+                17: "speak Penny \"{{i18n:choseFarming002}}$a\""
             }
         },
         "When": {
@@ -81,7 +81,7 @@
         "Target": "Data/Events/Forest",
         "Fields": {
             "181928/f Penny 2000/t 900 1600":{
-                "14": "speak Penny \"{{i18n:ask-speaker1}}#$b#{{i18n:ask-speaker2}}$h\""
+                14: "speak Penny \"{{i18n:ask-speaker1}}#$b#{{i18n:ask-speaker2}}$h\""
             },
         },
         "When": {
@@ -95,7 +95,7 @@
         "Target": "Data/Events/Forest",
         "Fields": {
             "fieldTripEnd": {
-                "23": "speak Penny \"$q -1 null#{{i18n:married-question-onekid|kid={{ChildNames |valueAt=0 }} }}#$r -1 125 event_speaker_kids1#{{i18n:married-onekid-best|kid={{ChildNames |valueAt=0 }} }}#$r -1 250 event_speaker_kids2#{{i18n:married-onekid-bigfamily}}#$r -1 250 event_speaker_kids3#{{i18n:married-onekid-everyone}}#$r -1 125 event_speaker_kids4#{{i18n:married-onekid-moredifficult|kid={{ChildNames |valueAt=0 }} }}#$r -1 -250 event_speaker_kids5#{{i18n:married-onekid-regrets|kid={{ChildNames |valueAt=0 }} }}.#$r -1 -250 event_speaker_kids6#{{i18n:married-onekid-tieddown}}\"",
+                23: "speak Penny \"$q -1 null#{{i18n:married-question-onekid|kid={{ChildNames |valueAt=0 }} }}#$r -1 125 event_speaker_kids1#{{i18n:married-onekid-best|kid={{ChildNames |valueAt=0 }} }}#$r -1 250 event_speaker_kids2#{{i18n:married-onekid-bigfamily}}#$r -1 250 event_speaker_kids3#{{i18n:married-onekid-everyone}}#$r -1 125 event_speaker_kids4#{{i18n:married-onekid-moredifficult|kid={{ChildNames |valueAt=0 }} }}#$r -1 -250 event_speaker_kids5#{{i18n:married-onekid-regrets|kid={{ChildNames |valueAt=0 }} }}.#$r -1 -250 event_speaker_kids6#{{i18n:married-onekid-tieddown}}\"",
             },
         },
         "When": {

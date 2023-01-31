@@ -11,7 +11,7 @@
 {
   "Name": "Change Farm Caves",
   "Author": "MindMeltMax",
-  "Version": "1.0.0",
+  "Version": "1.0.3",
   "Description": "Allows you to change farm caves by talking to Demetrius",
   "UniqueID": "MindMeltMax.ChangeFarmCaves",
   "EntryDll": "ChangeFarmCaves.dll",

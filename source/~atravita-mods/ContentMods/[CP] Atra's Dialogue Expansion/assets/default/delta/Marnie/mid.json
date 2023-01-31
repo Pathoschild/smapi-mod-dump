@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Marnie": "#$c .5#Let's get you inside and warmed up.#Days like this make me grateful for indoor heating.#$e#You did get your animals heaters, yes?",
+        }
+    },
+    {
+        "LogName": "Marnie mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Marnie",
+        "Entries": {
+            "movieTheater": "I can't believe a movie theater came to our town! @, you want to come see a movie with me?$h",
+        },
+    },
+]}

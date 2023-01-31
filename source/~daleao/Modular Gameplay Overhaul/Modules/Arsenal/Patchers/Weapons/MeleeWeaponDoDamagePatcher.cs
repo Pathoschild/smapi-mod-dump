@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -80,11 +80,6 @@ internal sealed class MeleeWeaponDoDamagePatcher : HarmonyPatcher
             return null;
         }
 
-        if (!ModEntry.Config.EnableRings)
-        {
-            return helper.Flush();
-        }
-
         // Inject resonance stat bonuses //
 
         try
@@ -147,7 +142,7 @@ internal sealed class MeleeWeaponDoDamagePatcher : HarmonyPatcher
                 .ReplaceWith(
                     new CodeInstruction(
                         OpCodes.Call,
-                        typeof(MeleeWeapon_Stats).RequireMethod(nameof(MeleeWeapon_Stats.Get_AbsoluteKnockback))))
+                        typeof(MeleeWeapon_Stats).RequireMethod(nameof(MeleeWeapon_Stats.Get_EffectiveKnockback))))
                 .Move()
                 .Remove();
         }

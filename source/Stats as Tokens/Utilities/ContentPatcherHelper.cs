@@ -37,7 +37,7 @@ namespace StatsAsTokens
 		{
 			try
 			{
-				// Check to see if Generic Mod Config Menu is installed
+				// Check to see if Content Patcher is installed
 				if (!Globals.Helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher"))
 				{
 					Globals.Monitor.Log("Content Patcher not present");

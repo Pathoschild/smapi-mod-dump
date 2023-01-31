@@ -25,6 +25,10 @@ internal static class EventPassthroughSetter
     [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used implicitly.")]
     private static void Postfix(Event __instance)
     {
+        if (!ModEntry.Config.Enabled)
+        {
+            return;
+        }
         foreach (Farmer f in __instance.farmerActors)
         {
             f.ignoreCollisions = true;

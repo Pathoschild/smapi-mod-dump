@@ -218,7 +218,7 @@ public class RecipeManager : BaseManager {
 		try {
 			chars = Utility.getAllCharacters();
 		} catch(Exception ex) {
-			Log("Unable to get character list due to error. Gift tastes will not function.", LogLevel.Warn, ex);
+			Log($"Unable to get character list due to error. Gift tastes will not function.\nDetails: {ex}", LogLevel.Warn, ex);
 			return null;
 		}
 
@@ -563,6 +563,7 @@ public class RecipeManager : BaseManager {
 
 	private void RegisterDefaultRuleHandlers() {
 		RegisterRuleHandler("Uncrafted", new UncraftedRuleHandler());
+		RegisterRuleHandler("Everything", new AllRecipesRuleHandler());
 		RegisterRuleHandler("Search", new SearchRuleHandler(Mod));
 		RegisterRuleHandler("Machine", new MachineRuleHandler(Mod));
 		RegisterRuleHandler("Sprinkler", new SprinklerRuleHandler());

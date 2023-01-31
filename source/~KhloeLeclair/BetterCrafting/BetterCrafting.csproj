@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+    <BaseManifest>new</BaseManifest>
 		<AssemblyName>BetterCrafting</AssemblyName>
-		<Version>1.4.0</Version>
+		<Version>1.5.0</Version>
 		<RootNamespace>Leclair.Stardew.BetterCrafting</RootNamespace>
-
+    
 		<EnableHarmony>true</EnableHarmony>
 		<EnableTranslation>true</EnableTranslation>
 	</PropertyGroup>
 
+  <PropertyGroup>
+    <Name>Better Crafting</Name>
+    <UniqueID>leclair.bettercrafting</UniqueID>
+    <Description>Replaces the vanilla crafting menu with an improved reimplementation with support for favorites, categories, and that doesn't lock nearby chests in multiplayer.</Description>
+    <MinimumApiVersion>auto</MinimumApiVersion>
+    <UpdateKeys>Nexus:11115@Main;ModDrop:1115749@Main</UpdateKeys>
+  </PropertyGroup>
+  
 	<Import Project="..\Common\Common.projitems" Label="Shared" />
 	<Import Project="..\_build\common.targets" />
 

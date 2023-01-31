@@ -60,7 +60,7 @@ namespace MailFrameworkMod
                     {
                         if (letter.Title != null && !letter.AutoOpen)
                         {
-                            data[letter.Id] = letter.Text + "[#]" + letter.Title;
+                            data[letter.Id] = letter.TranslatedText + "[#]" + letter.TranslatedTitle;
                         }
                     }
 
@@ -409,7 +409,7 @@ namespace MailFrameworkMod
                             MailDao.SaveLetter(
                                 new Letter(
                                     mailItem.Id
-                                    , hasTranslation && mailItem.Text != null ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
+                                    , mailItem.Text
                                     , attachments
                                     , Condition
                                     , (l) =>
@@ -421,11 +421,12 @@ namespace MailFrameworkMod
                                 )
                                 {
                                     TextColor = mailItem.TextColor,
-                                    Title = hasTranslation && mailItem.Title != null ? contentPack.Translation.Get(mailItem.Title) : mailItem.Title,
+                                    Title = mailItem.Title,
                                     GroupId = mailItem.GroupId,
                                     LetterTexture = mailItem.LetterBG != null ? GetTextureAsset(contentPack, mailItem.LetterBG) : null,
                                     UpperRightCloseButtonTexture = mailItem.UpperRightCloseButton != null ? GetTextureAsset(contentPack, mailItem.UpperRightCloseButton) : null,
                                     AutoOpen = mailItem.AutoOpen,
+                                    I18N = hasTranslation ? contentPack.Translation : null
                                 });
                         }
                         else
@@ -433,7 +434,7 @@ namespace MailFrameworkMod
                             MailDao.SaveLetter(
                                 new Letter(
                                     mailItem.Id
-                                    , hasTranslation && mailItem.Text != null ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
+                                    , mailItem.Text
                                     , mailItem.Recipe
                                     , Condition
                                     , (l) =>
@@ -445,11 +446,12 @@ namespace MailFrameworkMod
                                 )
                                 {
                                     TextColor = mailItem.TextColor,
-                                    Title = hasTranslation && mailItem.Title != null ? contentPack.Translation.Get(mailItem.Title) : mailItem.Title,
+                                    Title = mailItem.Title,
                                     GroupId = mailItem.GroupId,
                                     LetterTexture = mailItem.LetterBG != null ? GetTextureAsset(contentPack, mailItem.LetterBG) : null,
                                     UpperRightCloseButtonTexture = mailItem.UpperRightCloseButton != null ? GetTextureAsset(contentPack, mailItem.UpperRightCloseButton) : null,
                                     AutoOpen = mailItem.AutoOpen,
+                                    I18N = hasTranslation ? contentPack.Translation : null
                                 });
                         }
                     }

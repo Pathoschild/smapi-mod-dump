@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -162,8 +162,9 @@ internal sealed class TehsFishingOverhaulIntegration : ModIntegration<TehsFishin
                     // if Recatchable Legendaries is installed, reset the conversation topics
                     if (this.ModRegistry.IsLoaded("TehPers.RecatchableLegendaries"))
                     {
-                        foreach (var topic in RecatchableLegendariesTopics)
+                        for (var i = 0; i < RecatchableLegendariesTopics.Count; i++)
                         {
+                            var topic = RecatchableLegendariesTopics[i];
                             Game1.player.activeDialogueEvents.Remove(topic);
                         }
                     }

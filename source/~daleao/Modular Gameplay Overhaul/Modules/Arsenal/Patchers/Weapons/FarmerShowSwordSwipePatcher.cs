@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,7 +37,8 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool FarmerShowSwordSwipePrefix(Farmer who)
     {
-        if (who.CurrentTool is not MeleeWeapon weapon || !ArsenalModule.Config.Weapons.EnableComboHits)
+        if (who.CurrentTool is not MeleeWeapon weapon || weapon.isScythe() ||
+            !ArsenalModule.Config.Weapons.EnableComboHits)
         {
             return true; // run original logic
         }
@@ -51,6 +52,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
 
             TemporaryAnimatedSprite? tempSprite = null;
             weapon.DoDamage(who.currentLocation, (int)actionTile.X, (int)actionTile.Y, who.FacingDirection, 1, who);
+            var isBackwardsSwipe = (int)ArsenalModule.State.ComboHitStep % 2 == 0;
             switch (who.FacingDirection)
             {
                 case Game1.up:
@@ -62,14 +64,16 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                         case 5 or 11 or 17 or 23:
                             who.yVelocity = -0.3f;
 
-                            var rotation = sprite.currentAnimationIndex is 11 or 23
+                            var flipped = sprite.currentAnimationIndex is 11 or 23 ||
+                                          (sprite.currentAnimationIndex == 5 && isBackwardsSwipe);
+                            var rotation = flipped
                                 ? (float)Math.PI * -5f / 4f
                                 : (float)Math.PI * 5f / 4f;
                             tempSprite = new TemporaryAnimatedSprite(
                                 "LooseSprites\\Cursors",
                                 new Rectangle(518, 274, 23, 31),
                                 who.Position + (new Vector2(0f, -32f) * 4f),
-                                flipped: sprite.currentAnimationIndex is 11 or 23,
+                                flipped: flipped,
                                 0.07f,
                                 Color.White)
                             {
@@ -95,17 +99,19 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                         case 5 or 11 or 17 or 23:
                             who.xVelocity = -0.3f;
 
-                            var rotation = sprite.currentAnimationIndex is 11 or 23
+                            var flipped = sprite.currentAnimationIndex is 11 or 23 ||
+                                          (sprite.currentAnimationIndex == 5 && isBackwardsSwipe);
+                            var rotation = flipped
                                 ? (float)Math.PI
                                 : 0f;
-                            var offset = sprite.currentAnimationIndex is 11 or 23
+                            var offset = flipped
                                 ? new Vector2(12f, -32f) * 4f
                                 : new Vector2(4f, -12f) * 4f;
                             tempSprite = new TemporaryAnimatedSprite(
                                 "LooseSprites\\Cursors",
                                 new Rectangle(518, 274, 23, 31),
                                 who.Position + offset,
-                                flipped: sprite.currentAnimationIndex is 11 or 23,
+                                flipped: flipped,
                                 0.07f,
                                 Color.White)
                             {
@@ -135,7 +141,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                                     "LooseSprites\\Cursors",
                                     new Rectangle(503, 256, 42, 17),
                                     who.Position + (new Vector2(-16f, -2f) * 4f),
-                                    flipped: sprite.currentAnimationIndex is 11 or 23,
+                                    flipped: sprite.currentAnimationIndex is 11 or 23 || (sprite.currentAnimationIndex == 5 && isBackwardsSwipe),
                                     0.07f,
                                     Color.White)
                                 {
@@ -161,17 +167,19 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                         case 5 or 11 or 17 or 23:
                             who.xVelocity = 0.3f;
 
-                            var rotation = sprite.currentAnimationIndex is 11 or 23
+                            var flipped = sprite.currentAnimationIndex is 11 or 23 ||
+                                          (sprite.currentAnimationIndex == 5 && isBackwardsSwipe);
+                            var rotation = flipped
                                 ? (float)Math.PI
                                 : 0f;
-                            var offset = sprite.currentAnimationIndex is 11 or 23
+                            var offset = flipped
                                 ? new Vector2(-18f, -28f) * 4f
                                 : new Vector2(-15f, -12f) * 4f;
                             tempSprite = new TemporaryAnimatedSprite(
                                 "LooseSprites\\Cursors",
                                 new Rectangle(518, 274, 23, 31),
                                 who.Position + offset,
-                                flipped: sprite.currentAnimationIndex is not (11 or 23),
+                                flipped: !flipped,
                                 0.07f,
                                 Color.White)
                             {
@@ -194,10 +202,15 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                 return false; // don't run original logic
             }
 
-            if (weapon.isGalaxyWeapon() || weapon.IsInfinityWeapon())
-            {
-                tempSprite.color = Color.HotPink;
-            }
+            tempSprite.color = weapon.IsInfinityWeapon()
+                ? Color.HotPink
+                : weapon.InitialParentTileIndex switch
+                {
+                    Constants.DarkSwordIndex => Color.DarkSlateGray,
+                    Constants.HolyBladeIndex => Color.Gold,
+                    Constants.LavaKatanaIndex => Color.Orange,
+                    _ => tempSprite.color,
+                };
 
             who.currentLocation.temporarySprites.Add(tempSprite);
 

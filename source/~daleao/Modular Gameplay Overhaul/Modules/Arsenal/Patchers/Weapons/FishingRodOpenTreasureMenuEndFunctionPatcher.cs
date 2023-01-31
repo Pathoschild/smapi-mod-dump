@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -41,8 +41,8 @@ internal sealed class FishingRodOpenTreasureMenuEndFunctionPatcher : HarmonyPatc
     {
         var helper = new ILHelper(original, instructions);
 
-        // Injected: this.lastUser.specialItems.Add(14);
-        // After: list.Add(new MeleeWeapon(14) { specialItem = true };
+        // From: if (Game1.random.NextDouble() < 0.05 * ... Neptune Glaive)
+        // To: if (Game1.random.NextDouble() < 0.025 * ... Neptune Glaive)
         try
         {
             helper
@@ -52,12 +52,40 @@ internal sealed class FishingRodOpenTreasureMenuEndFunctionPatcher : HarmonyPatc
                         new CodeInstruction(
                             OpCodes.Ldfld,
                             typeof(Farmer).RequireField(nameof(Farmer.specialItems))),
-                        new CodeInstruction(OpCodes.Ldc_I4_S, Constants.NeptunesGlaiveIndex),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, Constants.NeptuneGlaiveIndex),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(NetIntList).RequireMethod(nameof(NetIntList.Contains))),
                     })
-                .Match(new[]
+                .Match(
+                    new[] { new CodeInstruction(OpCodes.Ldc_R8, 0.05) },
+                    ILHelper.SearchOption.Previous)
+                .SetOperand(0.025);
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed reducing Neptune Glaive drop chance.\nHelper returned {ex}");
+            return null;
+        }
+
+        // Injected: this.lastUser.specialItems.Add(14);
+        // After: treasures.Add(new MeleeWeapon(14) { specialItem = true };
+        try
+        {
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Ldfld,
+                            typeof(Farmer).RequireField(nameof(Farmer.specialItems))),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, Constants.NeptuneGlaiveIndex),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(NetIntList).RequireMethod(nameof(NetIntList.Contains))),
+                    })
+                .Match(
+                    new[]
                     {
                         new CodeInstruction(OpCodes.Ldsfld, typeof(Game1).RequireField(nameof(Game1.random))),
                     })
@@ -67,7 +95,7 @@ internal sealed class FishingRodOpenTreasureMenuEndFunctionPatcher : HarmonyPatc
                         new CodeInstruction(OpCodes.Ldarg_0),
                         new CodeInstruction(OpCodes.Ldfld, typeof(Tool).RequireField("lastUser")),
                         new CodeInstruction(OpCodes.Ldfld, typeof(Farmer).RequireField(nameof(Farmer.specialItems))),
-                        new CodeInstruction(OpCodes.Ldc_I4_S, Constants.NeptunesGlaiveIndex),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, Constants.NeptuneGlaiveIndex),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(NetIntList).RequireMethod(nameof(NetIntList.Add))),

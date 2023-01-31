@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -36,7 +36,7 @@ internal sealed class ClearEnchantmentsCommand : ConsoleCommand
 
     /// <inheritdoc />
     [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1012:Opening braces should be spaced correctly", Justification = "Paradoxical.")]
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (Game1.player.CurrentTool is not ({ } tool and (Axe or Hoe or Pickaxe or WateringCan or FishingRod)))
         {
@@ -44,9 +44,9 @@ internal sealed class ClearEnchantmentsCommand : ConsoleCommand
             return;
         }
 
-        foreach (var enchantment in tool.enchantments)
+        for (var i = 0; i < tool.enchantments.Count; i++)
         {
-            tool.RemoveEnchantment(enchantment);
+            tool.RemoveEnchantment(tool.enchantments[i]);
         }
 
         Log.I($"Removed all enchantments from {tool.DisplayName}.");

@@ -2,11 +2,26 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/sdv-mods**
+**Source repository: https://github.com/daleao/sdv-mods**
 
 ----
 
 # Taxes Module Change Log
+
+## 1.0.2
+
+### Added
+
+* In addition to interest, outstanding debt now suffers additional penalties at each season close. The penalty amount is the lesser of 100g or 5% of the outstanding amount. 
+
+### Changed
+
+* The default value for annual interest has been increased from 6% to 11% (the base corporate tax interest rate in the state of New York).
+
+### Fixed
+
+* Fixed the taxable amount displayed in the logs (should have no effect on gameplay).
+* Taxes now apply to items sold via Mini-Shipping Bin.
 
 ## 0.9.7
 

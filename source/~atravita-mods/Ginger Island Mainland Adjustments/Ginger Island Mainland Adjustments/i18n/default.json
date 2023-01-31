@@ -40,7 +40,7 @@
   "Pam_Island_2": "Oh, @! How're ya? I'll be headed to the Resort today, so there's no bus service.",
   "Pam_Island_3": "Hey...@, guess what? I'll be on vacation today. Ain't drivin' that bus today, nosiree!$h",
   "Pam_Doctor": "Oh...hey, @? You've caught me at a bad time. Got a doc's appointment today, not looking forward to it.$s",
-  "Pam_Other": "Oh, hi @! Whatcha calling about?#$b#Listen, I ain't gonna be drivin' the bus today, got other plans...#$b#No, they couldn't send a replacemnt, I'm sorry...",
+  "Pam_Other": "Oh, hi @! Whatcha calling about?#$b#Listen, I ain't gonna be drivin' the bus today, got other plans...#$b#No, they couldn't send a replacement, I'm sorry...",
   "Pam_Bus_1": "Heya @, Yeah yeah yeah, I'll be at work today. Just another long workday, nothin' special.",
   "Pam_Bus_2": "Oh @, how are ya? Me? Just gettin' ready to go to work! Gotta pay my bills, you know.",
   "Pam_Bus_3": "Hey....@....how ya doing? Just headed to work myself, yeah yeah yeah....just another long day to look forward to.$s",
@@ -89,7 +89,7 @@
   // Asset manager
   "assetmanager.specialchar-not-found": "{{specialCharacterType}} {{name}} not found - do they come from a mod not installed?",
   "assetmanager.groupchar-not-found": "{{specialGroupType}} {{name}} in {{groupname}} not found - do they come from a mod not installed?",
-  "assetmanager.exclusions-not-found": "Exclusions for {{name}} cannot be proccessed, cannot find NPC - do they come from a mod not installed?",
+  "assetmanager.exclusions-not-found": "Exclusions for {{name}} cannot be processed, cannot find NPC - do they come from a mod not installed?",
 
   // Multiplayer manager
   "host-not-installed": "The host does not seem to have this mod installed. Some features may not be available.",
@@ -120,6 +120,8 @@
   "mod-description": "Alters Ginger Island schedules so villagers don't proceed direct to bed. Alternatively, handles GI schedules.",
   "config.enforceGITiming.title": "Enforce GI schedule timing",
   "config.enforceGITiming.description": "If schedule points are too closely spaced, skip over them (with warning).",
+  "config.require_resort_dialogue.title": "Require Resort Dialogue",
+  "config.require_resort_dialogue.description":  "Prevents NPCs from visiting the resort if they do not have the base resort dialogue key 'Resort'.",
   "config.wear_island_clothing.title": "Wear Island Outfits",
   "config.wear_island_clothing.description": "Select whether or not island outfits should be worn",
   "config.scheduler.title": "Use Mod's Scheduler",
@@ -163,6 +165,13 @@
   "config.VillagerExclusionOverride.No": "No",
   "config.VillagerExclusionOverride.IfMarried": "If Married",
 
+  "ScheduleStrictness": "Schedule Strictness",
+  "ScheduleStrictness.description":  "Whether or not an NPC should be allowed to go to the resort if they have a specific schedule for that day",
+
+  "config.ScheduleStrictness.Default": "Default",
+  "config.ScheduleStrictness.Strict": "Strict",
+  "config.ScheduleStrictness.Loose":  "Loose",
+
   //MidDayScheduleEditor messages
   "middayScheduleEditor.npc-found-for-adjustment": "NPC {{name}} with Island Schedule, will set up for schedule alternation",
   "middayScheduleEditor.npc-not-islander": "Recieved NPC {{name}}, who is not headed to Ginger Island",
@@ -171,7 +180,7 @@
   //Scheduling code errors:
   "GOTO_SCHEDULE_NOT_FOUND": "GOTO {{scheduleKey}} not found for NPC {{npc}}",
   "GOTO_SCHEDULE_FRIENDSHIP": "Skipping due to friendship limit for {{npc}}: {{scheduleKey}}",
-  "GOTO_ILL_FORMED_FRIENDSHIP": "Ill-formed friendship requirment {{requirment}} for {{npc}}: {{scheduleKey}}",
+  "GOTO_ILL_FORMED_FRIENDSHIP": "Ill-formed friendship requirement {{requirment}} for {{npc}}: {{scheduleKey}}",
   "GOTO_INFINITE_LOOP": "Infinite loop detected, skipping this schedule.",
   "NO_GI_SCHEDULE_FOUND": "Did not find a GI remainder schedule for {{npc}}",
   "REGEX_TIMEOUT_ERROR": "Regex for schedule entry {{schedulePoint}} timed out:\n\n{{ex}}",

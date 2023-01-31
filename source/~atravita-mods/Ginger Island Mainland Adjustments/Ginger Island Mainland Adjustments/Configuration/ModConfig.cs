@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using AtraShared.Utils;
+
 namespace GingerIslandMainlandAdjustments.Configuration;
 
 #pragma warning disable SA1201 // Elements should appear in the correct order. Fields appear close to their properties for this class.
@@ -46,6 +48,12 @@ public sealed class ModConfig
     /// And warns for them.
     /// </summary>
     public bool EnforceGITiming { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether resort dialogue is required for NPCS
+    /// to attend the resort.
+    /// </summary>
+    public bool RequireResortDialogue { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not Islanders should wear their beach outfits.
@@ -180,9 +188,9 @@ public sealed class ModConfig
     /// </summary>
     internal void PopulateScheduleStrictness()
     {
-        foreach (NPC? character in Utility.getAllCharacters())
+        foreach (NPC? character in NPCHelpers.GetNPCs())
         {
-            if (character.CanSocialize)
+            if (character?.CanSocialize == true)
             {
                 this.ScheduleStrictness.TryAdd(character.Name, Configuration.ScheduleStrictness.Default);
             }

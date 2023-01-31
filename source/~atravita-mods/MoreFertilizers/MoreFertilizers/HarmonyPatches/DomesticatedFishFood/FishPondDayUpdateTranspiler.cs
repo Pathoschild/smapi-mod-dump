@@ -71,7 +71,7 @@ internal static class FishPondDayUpdateTranspiler
             {
                 new(OpCodes.Ldc_I4_1),
             })
-            .GetLabels(out IList<Label>? labelsToMove)
+            .GetLabels(out IList<Label>? labelsToMove, clear: true)
             .ReplaceInstruction(OpCodes.Call, typeof(FishPondDayUpdateTranspiler).GetCachedMethod(nameof(GetAdditionalGrowthFactor), ReflectionCache.FlagTypes.StaticFlags))
             .Insert(new CodeInstruction[]
             {
@@ -83,7 +83,8 @@ internal static class FishPondDayUpdateTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling FishPond.dayUpdate:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}:\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

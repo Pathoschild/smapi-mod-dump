@@ -57,12 +57,12 @@ internal static class TokenPurchasePatch
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
     private static bool Prefix(string action, Farmer who, ref bool __result)
     {
-        if (action == "BuyQiCoins" && who.IsLocalPlayer && ModEntry.Config.Enabled)
+        if (who.IsLocalPlayer && ModEntry.Config.Enabled && action == "BuyQiCoins")
         {
             try
             {
-                List<Response> responses = new();
-                List<Action?> actions = new();
+                List<Response> responses = new(5);
+                List<Action?> actions = new(5);
                 for (int i = 10; i <= 10000; i *= 10)
                 {
                     if (Game1.player.Money < i * 10)
@@ -70,13 +70,15 @@ internal static class TokenPurchasePatch
                         break;
                     }
                     int copy = i; // prevent accidental capture. There's no explicit notation for that in C#
+
+                    // TODO: fix this to use the player's locale here.
                     responses.Add(new Response(i.ToString(), i.ToString()));
                     actions.Add(() => AttemptBuyTokens(copy));
                 }
 
                 responses.Add(new Response("No", Game1.content.LoadString(@"Strings\Lexicon:QuestionDialogue_No")).SetHotKey(Keys.Escape));
 
-                Game1.activeClickableMenu = new DialogueAndAction(I18n.BuyCasino(), responses, actions);
+                Game1.activeClickableMenu = new DialogueAndAction(I18n.BuyCasino(), responses, actions, ModEntry.InputHelper);
                 __result = true;
                 return false;
             }
@@ -98,25 +100,39 @@ internal static class SlotMenuPatches
     private const int HEIGHT = 52;
 
     private static readonly Lazy<Func<Slots, bool>> SpinningGetterLazy = new(
-        () => typeof(Slots).GetCachedField("spinning", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldGetter<Slots, bool>());
+        () => typeof(Slots)
+            .GetCachedField("spinning", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldGetter<Slots, bool>());
 
     private static readonly Lazy<Action<Slots, bool>> SpinningSetterLazy = new(
-        () => typeof(Slots).GetCachedField("spinning", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldSetter<Slots, bool>());
+        () => typeof(Slots)
+            .GetCachedField("spinning", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldSetter<Slots, bool>());
 
     private static readonly Lazy<Func<Slots, List<float>>> SlotResultsGetterLazy = new(
-        () => typeof(Slots).GetCachedField("slotResults", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldGetter<Slots, List<float>>());
+        () => typeof(Slots)
+            .GetCachedField("slotResults", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldGetter<Slots, List<float>>());
 
     private static readonly Lazy<Action<Slots, int>> CurrentBetSetterLazy = new(
-        () => typeof(Slots).GetCachedField("currentBet", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldSetter<Slots, int>());
+        () => typeof(Slots)
+            .GetCachedField("currentBet", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldSetter<Slots, int>());
 
     private static readonly Lazy<Action<Slots, int>> SlotsFinishedSetterLazy = new(
-        () => typeof(Slots).GetCachedField("slotsFinished", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldSetter<Slots, int>());
+        () => typeof(Slots)
+            .GetCachedField("slotsFinished", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldSetter<Slots, int>());
 
     private static readonly Lazy<Action<Slots, int>> SpinsCountSetterLazy = new(
-        () => typeof(Slots).GetCachedField("spinsCount", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldSetter<Slots, int>());
+        () => typeof(Slots)
+            .GetCachedField("spinsCount", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldSetter<Slots, int>());
 
     private static readonly Lazy<Action<Slots, bool>> ShowResultSetterLazy = new(
-        () => typeof(Slots).GetCachedField("showResult", ReflectionCache.FlagTypes.InstanceFlags).GetInstanceFieldSetter<Slots, bool>());
+        () => typeof(Slots)
+            .GetCachedField("showResult", ReflectionCache.FlagTypes.InstanceFlags)
+            .GetInstanceFieldSetter<Slots, bool>());
 
     private static readonly PerScreen<ClickableComponent?> Bet1000 = new();
 
@@ -157,15 +173,21 @@ internal static class SlotMenuPatches
         ShowResultSetterLazy.Value(slots, false);
     }
 
+    private static int ButtonOffset()
+        => ModEntry.Config.BetIcons && ModEntry.Config.Enabled ? 288 : 160;
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Slots), MethodType.Constructor, new[] { typeof(int), typeof(bool) })]
     private static void PostfixConstructor()
     {
-        Vector2 position = Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 104, HEIGHT, -16, 160);
-        Bet1000.Value = new ClickableComponent(new Rectangle((int)position.X, (int)position.Y, 104, HEIGHT), I18n.Bet1k());
+        if (ModEntry.Config.BetIcons && ModEntry.Config.Enabled)
+        {
+            Vector2 position = Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 104, HEIGHT, -16, 160);
+            Bet1000.Value = new ClickableComponent(new Rectangle((int)position.X, (int)position.Y, 104, HEIGHT), I18n.Bet1k());
 
-        position = Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 124, HEIGHT, -16, 224);
-        Bet10000.Value = new ClickableComponent(new Rectangle((int)position.X, (int)position.Y, 124, HEIGHT), I18n.Bet10k());
+            position = Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport, 124, HEIGHT, -16, 224);
+            Bet10000.Value = new ClickableComponent(new Rectangle((int)position.X, (int)position.Y, 124, HEIGHT), I18n.Bet10k());
+        }
     }
 
     // Move the DONE button down to make room for the bet 1k and bet 10k buttons.
@@ -182,7 +204,7 @@ internal static class SlotMenuPatches
                 new(OpCodes.Ldc_I4, 160),
                 new(OpCodes.Call, typeof(Utility).GetCachedMethod(nameof(Utility.getTopLeftPositionForCenteringOnScreen), ReflectionCache.FlagTypes.StaticFlags, new[] { typeof(xTile.Dimensions.Rectangle), typeof(int), typeof(int), typeof(int), typeof(int) })),
             })
-            .ReplaceOperand(288);
+            .ReplaceInstruction(OpCodes.Call, typeof(SlotMenuPatches).GetCachedMethod(nameof(ButtonOffset), ReflectionCache.FlagTypes.StaticFlags), keepLabels: true);
 
             // helper.Print();
             return helper.Render();

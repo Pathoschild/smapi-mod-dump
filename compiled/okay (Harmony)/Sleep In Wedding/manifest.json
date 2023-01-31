@@ -1,0 +1,18 @@
+{
+  "Dependencies": [
+    {
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
+    }
+  ],
+  "EntryDll": "SleepInWedding.dll",
+  "Name": "Sleep In Wedding",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "Moves the wedding so it's not at 6AM.",
+  "UniqueID": "atravita.SleepInWedding",
+  "MinimumApiVersion": "3.18",
+  "UpdateKeys": [
+    "Nexus:15006"
+  ]
+}

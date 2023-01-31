@@ -20,6 +20,8 @@
     "config.overlay.desc": "Configurer l'overlay permanente affichant la liste",
     "config.overlay.enabled": "Activer",
     "config.overlay.enabled.desc": "L'overlay est-il activé ?",
+    "config.overlay.click-to-mark-done": "Cliquez sur les éléments pour marquer comme terminé",
+    "config.overlay.click-to-mark-done.desc": "Activer le clic dans l'overlay pour marquer les éléments comme terminés",
     "config.overlay.hotkey": "Touche",
     "config.overlay.hotkey.desc": "Touche pour afficher ou masquer l'overlay",
     "config.overlay.hide-at-festivals": "Cacher pendant les festivals",

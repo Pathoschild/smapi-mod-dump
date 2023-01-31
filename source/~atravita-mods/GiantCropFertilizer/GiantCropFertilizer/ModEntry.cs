@@ -9,6 +9,7 @@
 *************************************************/
 
 using AtraCore.Utilities;
+
 using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
 using AtraShared.Integrations.Interfaces;
@@ -16,12 +17,16 @@ using AtraShared.MigrationManager;
 using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using AtraShared.Utils.Shims;
+
 using GiantCropFertilizer.DataModels;
 using GiantCropFertilizer.HarmonyPatches;
+
 using HarmonyLib;
+
 using StardewModdingAPI.Events;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
+
+using StardewValley.Buildings;
+
 using AtraUtils = AtraShared.Utils.Utils;
 
 namespace GiantCropFertilizer;
@@ -38,8 +43,6 @@ internal sealed class ModEntry : Mod
     private ISolidFoundationsAPI? solidFoundationsAPI;
 
     private MigrationManager? migrator;
-
-    private GiantCropFertilizerIDStorage? storedID;
 
     [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Field kept near property.")]
     private static int giantCropFertilizerID = -1;
@@ -78,37 +81,20 @@ internal sealed class ModEntry : Mod
         I18n.Init(helper.Translation);
         ModMonitor = this.Monitor;
 
-        helper.Events.Content.AssetRequested += this.OnAssetRequested;
         Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
+        this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-        helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-
-        helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
     }
 
-    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
-        => AssetEditor.HandleAssetRequested(e);
-
-    private void OnSaved(object? sender, SavedEventArgs e)
+    private void OnSaving(object? sender, SavingEventArgs e)
     {
         if (Context.IsMainPlayer)
         {
-            Task.Run(() => this.Helper.Data.WriteGlobalData(
-                  SAVESTRING,
-                  this.storedID ?? new GiantCropFertilizerIDStorage(GiantCropFertilizerID)))
-                .ContinueWith(t =>
-                {
-                    if (t.IsCompletedSuccessfully)
-                    {
-                        this.Helper.Events.GameLoop.Saved -= this.OnSaved;
-                    }
-                    else
-                    {
-                        this.Monitor.Log($"Failed to save ids: {t.Status} - {t.Exception}", LogLevel.Error);
-                    }
-                });
+            this.Helper.Data.WriteSaveData(SAVESTRING, GiantCropFertilizerID.ToString());
+            this.Monitor.Log($"Saved IDs!", LogLevel.Info);
         }
+        this.Helper.Events.GameLoop.Saving -= this.OnSaving;
     }
 
     /// <summary>
@@ -120,7 +106,7 @@ internal sealed class ModEntry : Mod
     {
         try
         {
-            harmony.PatchAll();
+            harmony.PatchAll(typeof(ModEntry).Assembly);
 
             if (this.Helper.ModRegistry.Get("spacechase0.MultiFertilizer") is IModInfo info
                 && info.Manifest.Version.IsOlderThan("1.0.6"))
@@ -145,6 +131,13 @@ internal sealed class ModEntry : Mod
                 this.Monitor.Log("Found Dynamic Game Assets, applying compat patches", LogLevel.Info);
                 CropTranspiler.ApplyDGAPatches(harmony);
             }
+
+            if (new Version(1, 6) > new Version(Game1.version) &&
+                (this.Helper.ModRegistry.Get("spacechase0.MoreGiantCrops") is not IModInfo giant || giant.Manifest.Version.IsOlderThan("1.2.0")))
+            {
+                this.Monitor.Log("Applying patch to restore giant crops to save locations", LogLevel.Debug);
+                FixSaveThing.ApplyPatches(harmony);
+            }
         }
         catch (Exception ex)
         {
@@ -160,7 +153,6 @@ internal sealed class ModEntry : Mod
             if (helper.TryGetAPI("spacechase0.JsonAssets", "1.10.3", out jsonAssets))
             {
                 jsonAssets.LoadAssets(Path.Combine(this.Helper.DirectoryPath, "assets", "json-assets"), this.Helper.Translation);
-                jsonAssets.IdsFixed += this.JAIdsFixed;
             }
             else
             {
@@ -169,7 +161,12 @@ internal sealed class ModEntry : Mod
             }
         }
 
-        { // GMCM integration
+        // Wait to hook events until after we know JA can handle our items.
+        this.Helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+        this.Helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
+
+        // GMCM integration
+        {
             GMCMHelper gmcmHelper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, this.ModManifest);
             if (gmcmHelper.TryGetAPI())
             {
@@ -221,14 +218,17 @@ internal sealed class ModEntry : Mod
             this.migrator = null;
         }
 
-        this.FixIds();
+        this.GrabIds();
+        if (Context.IsMainPlayer)
+        {
+            this.FixIds();
+        }
     }
 
-    /// <summary>
+    /// <inheritdoc cref="IGameLoopEvents.Save"/>
+    /// <remarks>
     /// Writes migration data then detaches the migrator.
-    /// </summary>
-    /// <param name="sender">Smapi thing.</param>
-    /// <param name="e">Arguments for just-before-saving.</param>
+    /// </remarks>
     private void WriteMigrationData(object? sender, SavedEventArgs e)
     {
         if (this.migrator is not null)
@@ -239,34 +239,46 @@ internal sealed class ModEntry : Mod
         this.Helper.Events.GameLoop.Saved -= this.WriteMigrationData;
     }
 
-    /*********
-     * REGION JSON ASSETS
-     * *******/
+    #region jsonAssets
 
     // Not quite sure why, but JA drops all IDs when returning to title. We're doing that too.
-    [EventPriority(EventPriority.High)]
+    [EventPriority(EventPriority.High + 100)]
     private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
         => giantCropFertilizerID = -1;
 
-    private void JAIdsFixed(object? sender, EventArgs e)
-        => this.FixIds();
+    private void GrabIds()
+    {
+        // reset the ID, ask for it again from JA?
+        giantCropFertilizerID = -1;
+
+        if (GiantCropFertilizerID == -1)
+        {
+            this.Monitor.Log($"Could not get ID from JA.");
+        }
+    }
 
     private void FixIds()
     {
         int newID = GiantCropFertilizerID;
-        if (newID == -1 || !Context.IsMainPlayer)
+        if (newID == -1)
         {
-            return;
+            this.Monitor.Log($"Could not get ID from JA.");
         }
 
-        if (this.Helper.Data.ReadGlobalData<GiantCropFertilizerIDStorage>(SAVESTRING) is not GiantCropFertilizerIDStorage storedIDCls)
+        int storedID;
+        if (this.Helper.Data.ReadSaveData<string>(SAVESTRING) is not string savedIdstring || !int.TryParse(savedIdstring, out storedID))
         {
-            ModMonitor.Log("No need to fix IDs, not installed before.");
-            return;
-        }
+            if (this.Helper.Data.ReadGlobalData<GiantCropFertilizerIDStorage>(SAVESTRING) is not GiantCropFertilizerIDStorage storedIDCls
+                || storedIDCls.ID == -1)
+            {
+                this.Helper.Events.GameLoop.Saving -= this.OnSaving;
+                this.Helper.Events.GameLoop.Saving += this.OnSaving;
 
-        this.storedID ??= storedIDCls;
-        int storedID = this.storedID.ID;
+                ModMonitor.Log("No need to fix IDs, not installed before.");
+                return;
+            }
+            storedID = storedIDCls.ID;
+        }
 
         if (storedID == newID)
         {
@@ -274,20 +286,20 @@ internal sealed class ModEntry : Mod
             return;
         }
 
-        this.Helper.Events.GameLoop.Saved -= this.OnSaved;
-        this.Helper.Events.GameLoop.Saved += this.OnSaved;
+        this.Helper.Events.GameLoop.Saving -= this.OnSaving;
+        this.Helper.Events.GameLoop.Saving += this.OnSaving;
 
         IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Trace);
-        if (helper.TryGetAPI("PeacefulEnd.SolidFoundations", "1.12.1", out this.solidFoundationsAPI))
+        if (this.solidFoundationsAPI is not null || helper.TryGetAPI("PeacefulEnd.SolidFoundations", "1.12.1", out this.solidFoundationsAPI))
         {
             this.oldID = storedID;
             this.newID = newID;
+            this.solidFoundationsAPI.AfterBuildingRestoration -= this.AfterSFBuildingRestore;
             this.solidFoundationsAPI.AfterBuildingRestoration += this.AfterSFBuildingRestore;
         }
 
         Utility.ForAllLocations((GameLocation loc) => loc.FixIDsInLocation(storedID, newID));
 
-        this.storedID.ID = newID;
         ModMonitor.Log($"Fixed IDs! {storedID} => {newID}");
     }
 
@@ -295,26 +307,35 @@ internal sealed class ModEntry : Mod
     {
         // unhook event
         this.solidFoundationsAPI!.AfterBuildingRestoration -= this.AfterSFBuildingRestore;
-        if (SolidFoundationShims.IsSFBuilding is null)
+        try
         {
-            this.Monitor.Log("Could not get a handle on SF's building class, deshuffling code will fail!", LogLevel.Error);
-        }
-        else if (this.oldID == -1 || this.newID == -1)
-        {
-            this.Monitor.Log("IdMap was not set correctly, deshuffling code will fail.", LogLevel.Error);
-        }
-        else
-        {
-            foreach (var building in GameLocationUtils.GetBuildings())
+            if (SolidFoundationShims.IsSFBuilding is null)
             {
-                if (SolidFoundationShims.IsSFBuilding?.Invoke(building) == true)
+                this.Monitor.Log("Could not get a handle on SF's building class, deshuffling code will fail!", LogLevel.Error);
+            }
+            else if (this.oldID == -1 || this.newID == -1)
+            {
+                this.Monitor.Log("IdMap was not set correctly, deshuffling code will fail.", LogLevel.Error);
+            }
+            else
+            {
+                foreach (Building? building in GameLocationUtils.GetBuildings())
                 {
-                    building.indoors.Value?.FixIDsInLocation(this.oldID, this.newID);
+                    if (SolidFoundationShims.IsSFBuilding?.Invoke(building) == true)
+                    {
+                        building.indoors.Value?.FixIDsInLocation(this.oldID, this.newID);
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            this.Monitor.Log($"Failed in deshuffling IDs in SF buildings:\n\n{ex}", LogLevel.Error);
         }
         this.oldID = -1;
         this.newID = -1;
         this.solidFoundationsAPI = null;
     }
+
+    #endregion
 }

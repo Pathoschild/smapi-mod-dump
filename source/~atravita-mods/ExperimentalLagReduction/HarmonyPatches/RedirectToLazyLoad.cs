@@ -28,7 +28,7 @@ internal static class RedirectToLazyLoad
      /// <returns>An IEnumerable of methods to patch.</returns>
     internal static IEnumerable<MethodBase> TargetMethods()
     {
-        yield return typeof(Game1).GetCachedMethod(nameof(Game1.warpCharacter), ReflectionCache.FlagTypes.StaticFlags, new[] { typeof(NPC), typeof(GameLocation), typeof(Vector2) });
+        yield return typeof(Game1).GetCachedMethod<NPC, GameLocation, Vector2>(nameof(Game1.warpCharacter), ReflectionCache.FlagTypes.StaticFlags);
         yield return typeof(GameLocation).GetCachedMethod(nameof(GameLocation.cleanupBeforePlayerExit), ReflectionCache.FlagTypes.InstanceFlags);
         yield return typeof(NPC).GetCachedMethod(nameof(NPC.wearNormalClothes), ReflectionCache.FlagTypes.InstanceFlags);
         yield break;

@@ -1,0 +1,6 @@
+{
+  "AgeWhenKidsAreModified": 83,
+  "DoChildrenWander": true,
+  "DoChildrenHaveCurfew": true,
+  "CurfewTime": 1900
+}

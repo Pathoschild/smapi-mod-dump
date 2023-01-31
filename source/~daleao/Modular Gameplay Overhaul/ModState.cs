@@ -4,10 +4,12 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable SA1600 // Elements should be documented
 namespace DaLion.Overhaul;
 
 /// <summary>The core mod user-defined settings.</summary>
@@ -25,3 +27,5 @@ internal sealed class ModState
 
     internal int SecondsOutOfCombat { get; set; }
 }
+#pragma warning restore CS1591
+#pragma warning restore SA1600

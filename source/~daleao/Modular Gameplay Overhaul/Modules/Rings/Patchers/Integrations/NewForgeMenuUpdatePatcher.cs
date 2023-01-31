@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Rings.Patchers;
 #region using directives
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Shared.Attributes;
@@ -22,7 +21,6 @@ using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using SpaceCore.Interface;
-using StardewValley.Menus;
 using StardewValley.Objects;
 
 #endregion using directives
@@ -115,20 +113,19 @@ internal sealed class NewForgeMenuUpdatePatcher : HarmonyPatcher
 
     #region injected subroutines
 
-    private static void UnforgeInfinityBand(IClickableMenu menu, CombinedRing infinity)
+    private static void UnforgeInfinityBand(NewForgeMenu menu, CombinedRing infinity)
     {
-        var combinedRings = infinity.combinedRings.ToList();
-        infinity.combinedRings.Clear();
-        foreach (var gemstone in combinedRings.Select(ring => Gemstone.FromRing(ring.ParentSheetIndex)))
+        for (var i = 0; i < infinity.combinedRings.Count; i++)
         {
+            var ring = infinity.combinedRings[i];
+            var gemstone = Gemstone.FromRing(ring.ParentSheetIndex);
             Utility.CollectOrDrop(new SObject(gemstone.ObjectIndex, 1));
             Utility.CollectOrDrop(new SObject(848, 5));
         }
 
+        infinity.combinedRings.Clear();
         Utility.CollectOrDrop(new Ring(Globals.InfinityBandIndex!.Value));
-        Reflector
-            .GetUnboundFieldGetter<IClickableMenu, ClickableTextureComponent>(menu, "leftIngredientSpot")
-            .Invoke(menu).item = null;
+        menu.leftIngredientSpot.item = null;
         Game1.playSound("coin");
     }
 

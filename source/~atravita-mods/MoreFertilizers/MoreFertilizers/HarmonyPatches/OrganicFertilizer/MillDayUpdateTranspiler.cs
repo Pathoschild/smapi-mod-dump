@@ -109,7 +109,7 @@ internal static class MillDayUpdateTranspiler
             { // Place our function call here.
                 new(OpCodes.Ldloc, inputlocal),
                 ldoutput,
-                new(OpCodes.Call, typeof(MillDayUpdateTranspiler).StaticMethodNamed(nameof(MakeMillOutputOrganic))),
+                new(OpCodes.Call, typeof(MillDayUpdateTranspiler).GetCachedMethod(nameof(MakeMillOutputOrganic), ReflectionCache.FlagTypes.StaticFlags)),
                 stoutput,
             }, withLabels: labelsToMove);
 

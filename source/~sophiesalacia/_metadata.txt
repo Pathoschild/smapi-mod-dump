@@ -10,9 +10,9 @@ mods:
    Sturdy Saplings
 
 latest commit:
-   commit d74d08b7aa1e7d7ec1d237d5cbd77b0fc55ba3f2
+   commit 93c8d6e89d7387e95c0d75c320b11294dae83103
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Tue Nov 15 15:09:40 2022 -0500
+   Date:   Thu Jan 12 21:25:24 2023 -0500
    
-       Update version of CSOU for update notifications.
+       Modified event to not be dependent on ccPantry timing out.
    

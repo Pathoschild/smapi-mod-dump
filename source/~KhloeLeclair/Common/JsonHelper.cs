@@ -74,7 +74,7 @@ public static class JsonHelper {
 		return false;
 	}
 
-	public static string SerializeJson(object input) {
+	public static string SerializeJson(object? input) {
 		return JsonConvert.SerializeObject(input, Settings);
 	}
 

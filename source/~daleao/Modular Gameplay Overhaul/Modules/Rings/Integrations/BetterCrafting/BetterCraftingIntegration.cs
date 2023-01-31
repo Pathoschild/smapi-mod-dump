@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,20 +37,23 @@ internal sealed class BetterCraftingIntegration : ModIntegration<BetterCraftingI
 
         this.ModApi.AddRecipeProvider(new RingRecipeProvider(this.ModApi));
 
-        var newRingRecipes = new List<string>
-        {
-            "Glow Ring",
-            "Magnet Ring",
-            "Amethyst Ring",
-            "Topaz Ring",
-            "Aquamarine Ring",
-            "Jade Ring",
-            "Emerald Ring",
-            "Ruby Ring",
-            "Garnet Ring",
-        };
+        var recipes = new List<string>();
 
-        this.ModApi.AddRecipesToDefaultCategory(false, "combat_rings", newRingRecipes);
+        if (RingsModule.Config.CraftableGlowAndMagnetRings)
+        {
+            recipes.AddRange(new[] { "Glow Ring", "Magnet Ring", });
+        }
+
+        if (RingsModule.Config.CraftableGemRings)
+        {
+            recipes.AddRange(new[]
+            {
+                "Amethyst Ring", "Topaz Ring", "Aquamarine Ring", "Jade Ring", "Emerald Ring", "Ruby Ring",
+                "Garnet Ring",
+            });
+        }
+
+        this.ModApi.AddRecipesToDefaultCategory(false, "combat_rings", recipes);
         return true;
     }
 }

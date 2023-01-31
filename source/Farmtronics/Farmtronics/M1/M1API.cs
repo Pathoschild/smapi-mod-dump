@@ -67,9 +67,189 @@ namespace Farmtronics.M1 {
 			f.AddParam("s");
 			f.code = (context, partialResult) => {
 				string s = context.variables.GetString("s");
-				ModEntry.instance.Monitor.Log(s);
+				Debug.Log(s);
 				return Intrinsic.Result.Null;
 			};
+
+			f = Intrinsic.Create("_pointInPoly");
+			f.AddParam("point");
+			f.AddParam("polygon");
+			f.code = (context, partialResult) => {
+				Value pointVal = context.GetLocal("point");
+				if (pointVal == null) throw new RuntimeException("x,y list or map required for point parameter");
+				ValList polyVal = context.GetLocal("polygon") as ValList;
+				if (polyVal == null) throw new RuntimeException("List required for polygon parameter");
+				List<Vector2> polygon = polyVal.ToVector2List();
+				if (polyVal.values.Count < 3) return Intrinsic.Result.False;
+				bool result;
+				if (pointVal is ValList && ((ValList)pointVal).values[0] is ValList) {
+					// We've been given a list of coordinates; return whether ANY of them are in the polygon.
+					List<Vector2> points = ((ValList)pointVal).ToVector2List();
+					result = MathUtils.AnyPointInPoly(points, polygon);
+				} else {
+					// Just one coordinate.
+					result = MathUtils.PointInPoly(pointVal.ToVector2(), polygon);
+				}
+				return result ? Intrinsic.Result.True : Intrinsic.Result.False;
+			};
+		
+			f = Intrinsic.Create("_offsetPoly");		// inset/outset (depending on winding)
+			f.AddParam("polygon");
+			f.AddParam("delta", ValNumber.one);
+			f.code = (context, partialResult) => {
+				float delta = context.variables.GetFloat("delta", 0);
+				ValList polyVal = context.GetLocal("polygon") as ValList;
+				if (polyVal == null) throw new RuntimeException("List required for polygon parameter");
+				List<Vector2> polygon = polyVal.ToVector2List();
+				if (polygon.Count < 2) return new Intrinsic.Result(polyVal);
+				polygon = MathUtils.InsetPolygon(polygon, delta);
+				ValList result = polygon.ToValue();
+				return new Intrinsic.Result(result);
+			};
+		
+			f = Intrinsic.Create("_translatePoly");
+			f.AddParam("polygon");
+			f.AddParam("dx", ValNumber.zero);
+			f.AddParam("dy", ValNumber.zero);
+			f.code = (context, partialResult) => {
+				float dx = context.variables.GetFloat("dx", 0);
+				float dy = context.variables.GetFloat("dy", 0);
+				ValList polyVal = context.GetLocal("polygon") as ValList;
+				if (polyVal == null) throw new RuntimeException("List required for polygon parameter");
+				List<Vector2> polygon = polyVal.ToVector2List();
+				for (int i=0; i<polygon.Count; i++) {
+					polygon[i] = new Vector2(polygon[i].X + dx, polygon[i].Y + dy);
+				}
+				ValList result = polygon.ToValue();
+				return new Intrinsic.Result(result);
+			};
+		
+			f = Intrinsic.Create("_rotatePoly");
+			f.AddParam("polygon");
+			f.AddParam("degrees", ValNumber.zero);
+			f.code = (context, partialResult) => {
+				float radians = context.variables.GetFloat("degrees", 0) * MathUtils.Deg2Rad;
+				ValList polyVal = context.GetLocal("polygon") as ValList;
+				if (polyVal == null) throw new RuntimeException("List required for polygon parameter");
+				List<Vector2> polygon = polyVal.ToVector2List();
+				float cosAng = (float)System.Math.Cos(radians);
+				float sinAng = (float)System.Math.Sin(radians);
+				for (int i=0; i<polygon.Count; i++) {
+					var v = polygon[i];
+					polygon[i] = new Vector2(v.X * cosAng - v.Y - sinAng, v.X * sinAng + v.Y * cosAng);
+				}
+				ValList result = polygon.ToValue();
+				return new Intrinsic.Result(result);
+			};
+	
+			f = Intrinsic.Create("_polyPerimeter");
+			f.AddParam("polygon");
+			f.code = (context, partialResult) => {
+				ValList polyVal = context.GetLocal("polygon") as ValList;
+				if (polyVal == null) throw new RuntimeException("List required for polygon parameter");
+				List<Vector2> polygon = polyVal.ToVector2List();
+				if (polygon.Count < 2) return Intrinsic.Result.Null;
+				int lasti = polygon.Count - 1;
+				float result = 0;
+				for (int i=0; i<polygon.Count; i++) {
+					result += Vector2.Distance(polygon[lasti], polygon[i]);
+					lasti = i;
+				}
+				return new Intrinsic.Result(result);
+			};
+	
+			f = Intrinsic.Create("_polyArea");
+			f.AddParam("polygon");
+			f.code = (context, partialResult) => {
+				ValList polyVal = context.GetLocal("polygon") as ValList;
+				if (polyVal == null) throw new RuntimeException("List required for polygon parameter");
+				List<Vector2> polygon = polyVal.ToVector2List();
+				return new Intrinsic.Result(MathUtils.PolyArea(polygon));
+			};
+
+			f = Intrinsic.Create("_proportionAlongLine");
+			f.AddParam("endA");
+			f.AddParam("endB");
+			f.AddParam("p");
+			f.code = (context, partialResult) => {
+				Vector2 endA = context.variables.GetVector2("endA");
+				Vector2 endB = context.variables.GetVector2("endB");
+				Vector2 p = context.variables.GetVector2("p");
+				return new Intrinsic.Result(MathUtils.ProportionAlongLine(endA, endB, p));
+			};
+
+			f = Intrinsic.Create("_nearestPointOnLine");
+			f.AddParam("endA");
+			f.AddParam("endB");
+			f.AddParam("p");
+			f.code = (context, partialResult) => {
+				Vector2 endA = context.variables.GetVector2("endA");
+				Vector2 endB = context.variables.GetVector2("endB");
+				Vector2 p = context.variables.GetVector2("p");
+				return new Intrinsic.Result(MathUtils.NearestPointOnLine(endA, endB, p).ToValue());
+			};
+
+			f = Intrinsic.Create("_nearestPointOnLineSegment");
+			f.AddParam("endA");
+			f.AddParam("endB");
+			f.AddParam("p");
+			f.code = (context, partialResult) => {
+				Vector2 endA = context.variables.GetVector2("endA");
+				Vector2 endB = context.variables.GetVector2("endB");
+				Vector2 p = context.variables.GetVector2("p");
+				return new Intrinsic.Result(MathUtils.NearestPointOnLineSegment(endA, endB, p).ToValue());
+			};
+
+			f = Intrinsic.Create("_lineIntersectProportion");
+			f.AddParam("endA1");
+			f.AddParam("endB1");
+			f.AddParam("endA2");
+			f.AddParam("endB2");
+			f.code = (context, partialResult) => {
+				Vector2 endA1 = context.variables.GetVector2("endA1");
+				Vector2 endB1 = context.variables.GetVector2("endB1");
+				Vector2 endA2 = context.variables.GetVector2("endA2");
+				Vector2 endB2 = context.variables.GetVector2("endB2");
+				float result = MathUtils.LineSegIntersectFraction(endA1, endB1, endA2, endB2);
+				if (result == float.NaN) return Intrinsic.Result.Null;
+				return new Intrinsic.Result(result);
+			};
+
+			f = Intrinsic.Create("_lineSegmentsIntersect");
+			f.AddParam("endA1");
+			f.AddParam("endB1");
+			f.AddParam("endA2");
+			f.AddParam("endB2");
+			f.code = (context, partialResult) => {
+				Vector2 endA1 = context.variables.GetVector2("endA1");
+				Vector2 endB1 = context.variables.GetVector2("endB1");
+				Vector2 endA2 = context.variables.GetVector2("endA2");
+				Vector2 endB2 = context.variables.GetVector2("endB2");
+				if (MathUtils.LineSegmentsIntersect(endA1, endB1, endA2, endB2)) {
+					return Intrinsic.Result.True;
+				} else {
+					return Intrinsic.Result.False;
+				}
+			};
+
+			f = Intrinsic.Create("_lineLineIntersection");
+			f.AddParam("endA1");
+			f.AddParam("endB1");
+			f.AddParam("endA2");
+			f.AddParam("endB2");
+			f.code = (context, partialResult) => {
+				Vector2 endA1 = context.variables.GetVector2("endA1");
+				Vector2 endB1 = context.variables.GetVector2("endB1");
+				Vector2 endA2 = context.variables.GetVector2("endA2");
+				Vector2 endB2 = context.variables.GetVector2("endB2");
+				Vector2 result;
+				if (MathUtils.LineLineIntersection(endA1, endB1, endA2, endB2, out result)) {
+					return new Intrinsic.Result(result.ToValue());
+				} else {
+					return Intrinsic.Result.Null;
+				}
+			};
+
 
 			f = Intrinsic.Create("_lerpColor");
 			f.AddParam("colorA", "#FFFFFF");
@@ -195,7 +375,7 @@ namespace Farmtronics.M1 {
 					libDirs = importPaths.ToString().Split(new char[] {';'});
 				}
 
-				//ModEntry.instance.Monitor.Log("Got " + libDirs.Length + " lib dirs: " + string.Join(", ", libDirs));
+				//Debug.Log("Got " + libDirs.Length + " lib dirs: " + string.Join(", ", libDirs));
 				List<string> lines = null;
 				foreach (string dir in libDirs) {
 					string path = dir;
@@ -406,6 +586,22 @@ namespace Farmtronics.M1 {
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				string owner;
+				if (sh.bot == null) {
+					// on the Home Computer, the owner should always be the local player, since
+					// you can only access it in your own cabin (see ModEntry.OnMenuChanged)
+					owner = Game1.player.displayName;
+				} else {
+					// for bots, get the owner name as follows:
+					owner = Game1.getFarmerMaybeOffline(sh.bot.owner.Value).displayName;
+				}
+				return new Intrinsic.Result(owner);
+			};
+			meModule["owner"] = f.GetFunc();
+
+			f = Intrinsic.Create("");
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
 				if (RequireBot(sh, "forward")) return Intrinsic.Result.Null;
 				if (partialResult == null) {
 					// Just starting our move; tell the bot and return partial result
@@ -432,6 +628,29 @@ namespace Farmtronics.M1 {
 				return new Intrinsic.Result(result);
 			};
 			meModule["inventory"] = f.GetFunc();
+
+			f = Intrinsic.Create("");
+			f.AddParam("index1", 0);
+			f.AddParam("index2", 0);
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
+				if (RequireBot(sh, "swapItem")) return Intrinsic.Result.Null;
+				if (sh.bot.inventory != null) {
+					int item1Index = context.GetLocalInt("index1");
+					int item2Index = context.GetLocalInt("index2");
+					bool index1WithinConstrants = item1Index < sh.bot.inventory.Count && item1Index >= 0;
+					bool index2WithinConstrants = item2Index < sh.bot.inventory.Count && item2Index >= 0;
+					if (index1WithinConstrants && index2WithinConstrants) {
+						Item item1 = sh.bot.inventory[item1Index];
+						Item item2 = sh.bot.inventory[item2Index];
+						sh.bot.inventory[item1Index] = item2;
+						sh.bot.inventory[item2Index] = item1;
+						return Intrinsic.Result.True;
+					}
+				}
+				return Intrinsic.Result.False;
+			};
+			meModule["swapItem"] = f.GetFunc();
 
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
@@ -521,7 +740,7 @@ namespace Farmtronics.M1 {
 			meModule.assignOverride = (key,value) => {
 				string keyStr = key.ToString();
 				if (keyStr == "_") return false;
-				//ModEntry.instance.Monitor.Log($"meModule {key} = {value}");
+				//Debug.Log($"meModule {key} = {value}");
 				if (keyStr == "name") {
 					string name = value.ToString();
 					if (!string.IsNullOrEmpty(name)) {
@@ -616,7 +835,7 @@ namespace Farmtronics.M1 {
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
 				string path = context.GetLocalString("path");
-				ModEntry.instance.Monitor.Log("File.children: path=[" + path + "]");
+				Debug.Log("File.children: path=[" + path + "]");
 				string err;
 				path = sh.ResolvePath(path, out err);
 				if (path == null) return new Intrinsic.Result(err);
@@ -626,7 +845,7 @@ namespace Farmtronics.M1 {
 					var diskNames = new List<string>(shell.Disks.GetDiskNames());
 					diskNames.Sort();
 					foreach (string name in diskNames) {
-						disks.Add(new ValString("/" + name));
+						disks.Add(new ValString(name));
 					}
 					return new Intrinsic.Result(new ValList(disks));
 				}
@@ -688,8 +907,10 @@ namespace Farmtronics.M1 {
 				string path = context.GetLocalString("path");
 				string err;
 				path = sh.ResolvePath(path, out err);
+				Debug.Log($"file.info: resolved path to {path}");
 				if (path == null) return new Intrinsic.Result(err);
 				M1FileInfo info = shell.Disks.GetInfo(path);
+				Debug.Log($"file.info: {path} resulted in info {info}");
 				if (info == null) return Intrinsic.Result.Null;
 				var result = new ValMap();
 				result["path"] = new ValString(path);
@@ -851,7 +1072,7 @@ namespace Farmtronics.M1 {
 			
 				Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
 				if (!ImageConversion.LoadImage(tex, data, false)) return Intrinsic.Result.Null;
-				//ModEntry.instance.Monitor.Log("LoadImage returned true.  And size " + tex.width + " x " + tex.height);
+				//Debug.Log("LoadImage returned true.  And size " + tex.width + " x " + tex.height);
 				tex.anisoLevel = 1;
 				tex.filterMode = FilterMode.Point;
 				tex.wrapMode = TextureWrapMode.Clamp;
@@ -1246,7 +1467,7 @@ namespace Farmtronics.M1 {
 				try {
 					return new Intrinsic.Result(Input.GetAxis(axisName));
 				} catch (System.ArgumentException e) {
-					//ModEntry.instance.Monitor.Log("Invalid axis name: " + axisName);
+					//Debug.Log("Invalid axis name: " + axisName);
 					return Intrinsic.Result.Null;
 				}
 			};
@@ -1861,11 +2082,11 @@ namespace Farmtronics.M1 {
 			return content.ToString().Replace("UnityEngine.", "");
 		}
 
-		public override int Hash(int recursionDepth=16) {
+		public override int Hash() {
 			return content.GetHashCode();
 		}
 
-		public override double Equality(Value rhs, int recursionDepth=16) {
+		public override double Equality(Value rhs) {
 			return rhs is ValWrapper && ((ValWrapper)rhs).content == content ? 1 : 0;
 		}
 	}

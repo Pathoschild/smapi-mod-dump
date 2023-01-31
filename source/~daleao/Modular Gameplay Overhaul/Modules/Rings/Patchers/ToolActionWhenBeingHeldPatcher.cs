@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Rings.Patchers;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Overhaul.Modules.Rings.Extensions;
 using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Shared.Harmony;
@@ -41,10 +40,14 @@ internal sealed class ToolActionWhenBeingHeldPatcher : HarmonyPatcher
             return;
         }
 
-        foreach (var chord in who.Get_ResonatingChords()
-                     .Where(chord => chord.Root is not null && __instance.CanResonateWith(chord.Root)))
+        var chords = who.Get_ResonatingChords();
+        for (var i = 0; i < chords.Count; i++)
         {
-            __instance.UpdateResonatingChord(chord);
+            var chord = chords[i];
+            if (chord.Root is not null && __instance.CanResonateWith(chord.Root))
+            {
+                __instance.UpdateResonatingChord(chords[i]);
+            }
         }
     }
 

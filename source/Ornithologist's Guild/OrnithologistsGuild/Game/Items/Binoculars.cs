@@ -180,7 +180,6 @@ namespace OrnithologistsGuild.Game.Items
                     // Animation complete
                     AnimateElapsed = null;
 
-                    // TODO best place to put this? Is rendering done on a separate thread?
                     UseBinoculars(f.currentLocation, f);
                 }
             }

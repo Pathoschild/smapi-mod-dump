@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.795.42246
 MinimumVisualStudioVersion = 17.0.795.42246
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpriteMaster", "SpriteMaster\SpriteMaster.csproj", "{C270B7AD-DA11-4176-83B9-8998FE58A601}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicMaster", "MusicMaster\MusicMaster.csproj", "{9EE8FEE0-7402-4495-9671-D36FDE1D547F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{C270B7AD-DA11-4176-83B9-8998FE58A601}.Shipping|Any CPU.Build.0 = Shipping|Any CPU
 		{C270B7AD-DA11-4176-83B9-8998FE58A601}.ShippingAsserts|Any CPU.ActiveCfg = ShippingAsserts|Any CPU
 		{C270B7AD-DA11-4176-83B9-8998FE58A601}.ShippingAsserts|Any CPU.Build.0 = ShippingAsserts|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Development|Any CPU.Build.0 = Development|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.ReleaseUntraced|Any CPU.ActiveCfg = ReleaseUntraced|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.ReleaseUntraced|Any CPU.Build.0 = ReleaseUntraced|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Shipping|Any CPU.ActiveCfg = Shipping|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.Shipping|Any CPU.Build.0 = Shipping|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.ShippingAsserts|Any CPU.ActiveCfg = ShippingAsserts|Any CPU
+		{9EE8FEE0-7402-4495-9671-D36FDE1D547F}.ShippingAsserts|Any CPU.Build.0 = ShippingAsserts|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

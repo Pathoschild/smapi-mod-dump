@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Ponds.Patchers;
 #region using directives
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using DaLion.Shared.Exceptions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -35,6 +36,7 @@ internal sealed class BuildingDayUpdatePatcher : HarmonyPatcher
     /// <summary>Stub for base <see cref="FishPond.dayUpdate"/>.</summary>
     /// <remarks>Required by DayUpdate prefix.</remarks>
     [HarmonyReversePatch]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1611:Element parameters should be documented", Justification = "Reverse patch.")]
     internal static void BuildingDayUpdateReverse(object instance, int dayOfMonth)
     {

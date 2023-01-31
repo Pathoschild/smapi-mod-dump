@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,7 +37,7 @@ internal sealed class GetToolsCommand : ConsoleCommand
         "\nTo add only specific tools, use `debug` + `ax`, `pick`, `hoe` or `can` instead.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         if (!Game1.player.Items.OfType<Axe>().Any())
         {

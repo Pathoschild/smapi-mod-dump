@@ -12,7 +12,7 @@
     {
         "Action": "EditMap",
         "Target": "Maps/Trailer_big",
-        "LogName": "Trailer - remove beer, add more flavortext.",
+        "LogName": "Trailer - remove beer, add more flavor text.",
         "MapTiles": [
         {//replace with chair
             "Position": {"X": 22, "Y": 17},

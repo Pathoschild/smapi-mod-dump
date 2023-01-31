@@ -195,9 +195,9 @@ public class RuleEditorDialog : MenuSubscriber<ModEntry> {
 		var builder = SimpleHelper.Builder(minSize: new Vector2(4 * 80, 0))
 			.Group(margin: 8)
 				.Space()
-				.Texture(Handler.Texture, Handler.Source, scale: scale, align: Alignment.Middle)
+				.Texture(Handler.Texture, Handler.Source, scale: scale, align: Alignment.VCenter)
 				.Space(expand: false)
-				.Text(Handler.DisplayName, font: Game1.dialogueFont, align: Alignment.Middle)
+				.Text(Handler.DisplayName, font: Game1.dialogueFont, align: Alignment.VCenter)
 				.Space()
 			.EndGroup();
 

@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using Microsoft.Toolkit.Diagnostics;
+using AtraBase.Collections;
+using CommunityToolkit.Diagnostics;
 using StardewModdingAPI.Utilities;
 
 namespace AtraCore.Framework.DialogueManagement;
@@ -21,7 +22,7 @@ public class QueuedDialogueManager
     /// <summary>
     /// A queue of delayed dialogues.
     /// </summary>
-    private static readonly PerScreen<Queue<DelayedDialogue>> DelayedDialogues = new(createNewState: () => new Queue<DelayedDialogue>());
+    private static readonly PerScreen<BiHeap<DelayedDialogue>> DelayedDialogues = new(createNewState: () => new BiHeap<DelayedDialogue>());
 
     /// <summary>
     /// Empty NPC's current dialogue stack and keep it in a queue for now.
@@ -33,7 +34,7 @@ public class QueuedDialogueManager
 
         while (npc.CurrentDialogue.TryPop(out Dialogue? result))
         {
-            DelayedDialogues.Value.Enqueue(new DelayedDialogue(
+            DelayedDialogues.Value.Push(new DelayedDialogue(
                 time: Game1.timeOfDay + 100, // delay by one hour.
                 npc: npc,
                 dialogue: result));
@@ -55,7 +56,7 @@ public class QueuedDialogueManager
             if (result.PushIfPastTime(Game1.timeOfDay))
             {
                 // Successfully pushed, remove from queue.
-                _ = DelayedDialogues.Value.Dequeue();
+                _ = DelayedDialogues.Value.Pop();
             }
             else
             {

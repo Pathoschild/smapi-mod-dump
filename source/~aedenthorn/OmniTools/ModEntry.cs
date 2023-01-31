@@ -11,6 +11,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Netcode;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -20,6 +21,7 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using xTile;
@@ -39,6 +41,7 @@ namespace OmniTools
 
         public static ModEntry context;
         public static string toolsKey = "aedenthorn.OmniTools/tools";
+        public static string toolCountKey = "aedenthorn.OmniTools/toolCount";
         public static bool skip;
 
         public static List<Type> toolList = new() 
@@ -75,8 +78,6 @@ namespace OmniTools
         {
             Config = Helper.ReadConfig<ModConfig>();
 
-            if (!Config.EnableMod)
-                return;
 
             context = this;
 
@@ -97,15 +98,25 @@ namespace OmniTools
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
-            if (!Config.EnableMod || !Context.IsPlayerFree || Game1.player.CurrentTool?.modData.TryGetValue(toolsKey, out string toolsString) != true)
+            if (!Config.EnableMod || !Context.CanPlayerMove || Game1.player.CurrentTool?.modData.TryGetValue(toolsKey, out string toolsString) != true)
                 return;
             if(e.Button == Config.CycleButton)
             {
-                Game1.player.CurrentTool = CycleTool(Game1.player.CurrentTool, toolsString);
+                var newTool = CycleTool(Game1.player.CurrentTool, toolsString);
+                if(newTool != null) 
+                {
+                    UpdateEnchantments(Game1.player, Game1.player.CurrentTool, newTool);
+                    Game1.player.CurrentTool = newTool;
+                }
             }
             else if(e.Button == Config.RemoveButton)
             {
-                Game1.player.CurrentTool = RemoveTool(Game1.player.CurrentTool, toolsString);
+                var newTool = RemoveTool(Game1.player.CurrentTool, toolsString);
+                if (newTool != null)
+                {
+                    UpdateEnchantments(Game1.player, Game1.player.CurrentTool, newTool);
+                    Game1.player.CurrentTool = newTool;
+                }
             }
         }
 
@@ -128,6 +139,13 @@ namespace OmniTools
                 name: () => "Mod Enabled",
                 getValue: () => Config.EnableMod,
                 setValue: value => Config.EnableMod = value
+            );
+            
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Switch From Weapon",
+                getValue: () => Config.FromWeapon,
+                setValue: value => Config.FromWeapon = value
             );
             
             configMenu.AddKeybind(
@@ -202,6 +220,12 @@ namespace OmniTools
                 name: () => "Switch For Monsters",
                 getValue: () => Config.SwitchForMonsters,
                 setValue: value => Config.SwitchForMonsters = value
+            );
+            configMenu.AddTextOption(
+                mod: ModManifest,
+                name: () => "Max Monster Distance",
+                getValue: () => Config.MaxMonsterDistance + "",
+                setValue: delegate (string value) { if (float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float f)) { Config.MaxMonsterDistance = f; } }
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,

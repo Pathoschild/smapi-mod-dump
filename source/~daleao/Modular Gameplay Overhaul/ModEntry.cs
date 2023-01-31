@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -23,6 +23,7 @@ namespace DaLion.Overhaul;
 
 using System.Diagnostics;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.ModData;
 using DaLion.Shared.Networking;
 using DaLion.Shared.Reflection;
@@ -82,11 +83,12 @@ public sealed class ModEntry : Mod
         Log.Init(this.Monitor);
 
         // initialize data
-        ModDataIO.Init(helper.Multiplayer, this.ModManifest.UniqueID);
+        ModDataIO.Init(this.ModManifest.UniqueID);
 
         // get configs
         Config = helper.ReadConfig<ModConfig>();
         Config.Validate(helper);
+        helper.LogConfig(Config);
 
         // initialize mod state
         PerScreenState = new PerScreen<ModState>(() => new ModState());

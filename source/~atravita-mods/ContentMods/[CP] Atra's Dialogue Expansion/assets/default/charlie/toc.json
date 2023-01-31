@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "Include",
+        "LogName": "Demetrius - mid hearts",
+        "FromFile": "assets/default/charlie/Demetrius/mid.json",
+        "When": {
+            "EnableFor": "Demetrius",
+            "Query: {{Hearts:Demetrius}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Leah - mid hearts",
+        "FromFile": "assets/default/charlie/Leah/mid.json",
+        "When": {
+            "EnableFor": "Leah",
+            "Query: {{Hearts:Leah}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Lewis - mid hearts",
+        "FromFile": "assets/default/charlie/Lewis/mid.json",
+        "When": {
+            "EnableFor": "Lewis",
+            "Query: {{Hearts:Lewis}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Maru - mid hearts",
+        "FromFile": "assets/default/charlie/Maru/mid.json",
+        "When": {
+            "EnableFor": "Maru",
+            "Query: {{Hearts:Maru}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Robin - mid hearts",
+        "FromFile": "assets/default/charlie/Robin/mid.json",
+        "When": {
+            "EnableFor": "Robin",
+            "Query: {{Hearts:Robin}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Sam - mid hearts",
+        "FromFile": "assets/default/charlie/Sam/mid.json",
+        "When": {
+            "EnableFor": "Sam",
+            "Query: {{Hearts:Sam}} >= 6": true,
+        }
+    }
+]}

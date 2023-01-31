@@ -6,9 +6,9 @@ mods:
    Stardew Survival Project
 
 latest commit:
-   commit c6505472159aa25ac86c98a5d0b7b19d8c4bbcae
-   Author: NeroYuki <kingrfminecraft@gmail.com>
-   Date:   Tue Nov 15 00:23:54 2022 +0700
+   commit eae1a4a9913f37bb449f0db04c5427ab069dc38b
+   Author: Nguyen Ngoc Dang <kingrfminecraft@gmail.com>
+   Date:   Mon Jan 16 21:24:37 2023 +0700
    
-       fix issue applying refreshment effect, version bump to 0.3.2a
+       Create LICENSE.md
    

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -45,7 +45,7 @@ internal sealed class SpelunkerUpdateTickedEvent : UpdateTickedEvent
             return;
         }
 
-        var ladderChance = (ProfessionsModule.State.SpelunkerLadderStreak * 0.5f).ToString("P1");
+        var ladderChance = (ProfessionsModule.State.SpelunkerLadderStreak * 0.005f).ToString("P1");
         var speed = Math.Min(
             (ProfessionsModule.State.SpelunkerLadderStreak / 10) + 1,
             (int)ProfessionsModule.Config.SpelunkerSpeedCap);

@@ -54,7 +54,7 @@ internal sealed class Config
 
     private static IEnumerable<Tuple<Feature, Func<bool>>> Features => Config.Instance._features;
 
-    private static IGenericModConfigMenuApi GMCM => Integrations.GMCM.API!;
+    private static IGenericModConfigMenuApi GMCM => Integrations.GMCM.Api!;
 
     private static IInputHelper Input => Config.Instance._helper.Input;
 
@@ -614,7 +614,7 @@ internal sealed class Config
                 return;
 
             case nameof(IStorageData.ChestLabel) when data is Storage:
-                Integrations.GMCM.API.AddTextOption(
+                Integrations.GMCM.Api.AddTextOption(
                     manifest,
                     () => data.ChestLabel,
                     value => data.ChestLabel = value,
@@ -682,7 +682,7 @@ internal sealed class Config
                     I18n.Config_Configure_Name,
                     I18n.Config_Configure_Tooltip);
 
-                Integrations.GMCM.API.AddTextOption(
+                Integrations.GMCM.Api.AddTextOption(
                     manifest,
                     () => data.ConfigureMenu.ToStringFast(),
                     value => data.ConfigureMenu = InGameMenuExtensions.TryParse(value, out var menu)
@@ -702,7 +702,7 @@ internal sealed class Config
                     I18n.Config_CraftFromChest_Name,
                     I18n.Config_CraftFromChest_Tooltip);
 
-                Integrations.GMCM.API.AddNumberOption(
+                Integrations.GMCM.Api.AddNumberOption(
                     manifest,
                     () => data.StashToChestDistance,
                     value => data.StashToChestDistance = value,
@@ -772,7 +772,7 @@ internal sealed class Config
                     I18n.Config_OrganizeChest_Name,
                     I18n.Config_OrganizeChest_Tooltip);
 
-                Integrations.GMCM.API.AddTextOption(
+                Integrations.GMCM.Api.AddTextOption(
                     manifest,
                     () => data.OrganizeChestGroupBy.ToStringFast(),
                     value => data.OrganizeChestGroupBy =
@@ -782,7 +782,7 @@ internal sealed class Config
                     GroupByExtensions.GetNames(),
                     Formatting.OrganizeGroupBy);
 
-                Integrations.GMCM.API.AddTextOption(
+                Integrations.GMCM.Api.AddTextOption(
                     manifest,
                     () => data.OrganizeChestSortBy.ToStringFast(),
                     value => data.OrganizeChestSortBy =
@@ -801,7 +801,7 @@ internal sealed class Config
                     I18n.Config_ResizeChest_Name,
                     I18n.Config_ResizeChest_Tooltip);
 
-                Integrations.GMCM.API.AddNumberOption(
+                Integrations.GMCM.Api.AddNumberOption(
                     manifest,
                     () => data.ResizeChestCapacity,
                     value => data.ResizeChestCapacity = value,
@@ -821,7 +821,7 @@ internal sealed class Config
                     I18n.Config_ResizeChestMenu_Name,
                     I18n.Config_ResizeChestMenu_Tooltip);
 
-                Integrations.GMCM.API.AddNumberOption(
+                Integrations.GMCM.Api.AddNumberOption(
                     manifest,
                     () => data.ResizeChestMenuRows,
                     value => data.ResizeChestMenuRows = value,

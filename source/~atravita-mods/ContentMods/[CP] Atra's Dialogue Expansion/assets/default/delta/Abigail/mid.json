@@ -1,0 +1,57 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+// Primary major is accounting/business, would rather study history.
+
+{"Changes":[
+    {
+        "LogName": "Abigail mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Abigail",
+        "Entries": {
+            "movieTheater": "Oh, a movie theater! @, would you like to go sometime?$h",
+            "7_2": "I hate group projects.$s#$b#Trying to get my teammates to do their work when we're all remote is stupid hard."
+        },
+    },
+    {
+        "LogName": "Abigail mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Abigail",
+        "Entries": {
+            "6_2": "I've got so much homework I need to do.$s",
+            "8_2": "Linear algebra is kicking my ass.#$b#Say, @, you any good at math?",
+            "10_2": "Sam and I are thinking about going down to %place to catch a concert. You in?$h",
+            "12_2": "Ugh, I hate doing the dishes.$s#$b#Of all my chores, that's probably the one I hate the most.",
+            "14_2": "Hiya, @, I don't have time to chat today, I've got a midterm to study for.",
+            "16_2": "Ugh. @, just between you and me, I'm really not feeling my major.",
+        },
+        "When": {
+            "YearModulus": "2"
+        }
+    },
+    {
+        "LogName": "Rain -- after secret woods",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"HasFlag": "beenToWoods"},
+        "Entries": {
+            "Abigail": "I love the woods in the rain.#$b#So peaceful, away from the rest of the town.#$e#I don't think anyone else goes out there."
+        }
+    },
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Abigail": "#$c .5#Sleet is no fun to be out in.#I wonder if it's warmer in the caves right now?"
+        }
+    },
+]}

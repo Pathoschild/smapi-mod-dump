@@ -132,7 +132,7 @@ namespace Custom_Farm_Loader.Lib
                 }
             }
 
-            if(Type == FishType.Any || Type == FishType.Location) {
+            if (Type == FishType.Any || Type == FishType.Location) {
                 Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
                 var fishLocationData = locationData.FirstOrDefault(el => el.Key.ToLower() == Id.ToLower());
 
@@ -181,8 +181,13 @@ namespace Custom_Farm_Loader.Lib
                         newFish.Chance *= newFish.getDefaultChanceOr1();
 
                     if (!newFish.Filter.ChangedSeasons) {
-                        newFish.Filter.Seasons = new List<string>() { UtilityMisc.getSeasonString(k) };
-                        ret.Add(newFish);
+                        var prevFish = ret.Find(el => el.Id == fishId);
+                        if (prevFish != null)
+                            prevFish.Filter.Seasons.Add(UtilityMisc.getSeasonString(k));
+                        else {
+                            newFish.Filter.Seasons = new List<string>() { UtilityMisc.getSeasonString(k) };
+                            ret.Add(newFish);
+                        }
 
                     } else {
                         if (!ret.Exists(el => el.Id == newFish.Id))

@@ -41,6 +41,7 @@ namespace BinningSkill
             xTile.Dimensions.Location tileLocation,
             Farmer who)
         {
+
             try
             {
                 if (who.mount == null && __instance.map.GetLayer("Buildings").Tiles[tileLocation] != null &&
@@ -104,6 +105,10 @@ namespace BinningSkill
                         return;
                     }
                     float extraPercentage = (ModEntry.Config.ReclaimerExtraValuePercent / 100.0f);
+                    if (ModEntry.MargoLoaded && f.HasCustomPrestigeProfession(BinningSkill.Reclaimer))
+                    {
+                        extraPercentage *= 1.5f;
+                    }
                     int extraAmount = 0;
                     if (i.canBeTrashed())
                     {
@@ -134,7 +139,14 @@ namespace BinningSkill
         {
             try
             {
-                if (Game1.player.HasCustomProfession(BinningSkill.Upseller))
+                if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Upseller))
+                {
+                    if (__result == 6 || __result == 4)
+                    {
+                        __result = 8;
+                    }
+                }
+                else if (Game1.player.HasCustomProfession(BinningSkill.Upseller))
                 {
                     if (__result == 6)
                     {
@@ -216,7 +228,12 @@ namespace BinningSkill
                     {
                         if (who.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
                         {
-                            Utility.improveFriendshipWithEveryoneInRegion(who, ModEntry.Config.RecyclingFriendshipGain, 2);
+                            int friendshipGain = ModEntry.Config.RecyclingFriendshipGain;
+                            if (ModEntry.MargoLoaded && who.HasCustomPrestigeProfession(BinningSkill.Environmentalist))
+                            {
+                                friendshipGain *= 2;
+                            }
+                            Utility.improveFriendshipWithEveryoneInRegion(who, friendshipGain, 2);
                         }
                     }
 
@@ -242,12 +259,22 @@ namespace BinningSkill
             {
                 if (name.Equals("Recycling Machine") && Game1.player.HasCustomProfession(BinningSkill.Recycler))
                 {
-                    __instance.recipeList = new()
+                    if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Recycler))
                     {
-                        { 388, 15 },
-                        { 390, 15 },
-                        { 334, 1 }
-                    };
+                        __instance.recipeList = new()
+                        {
+                            { 334, 1 }
+                        };
+                    }
+                    else
+                    {
+                        __instance.recipeList = new()
+                        {
+                            { 388, 15 },
+                            { 390, 15 },
+                            { 334, 1 }
+                        };
+                    }
                 }
             }
             catch (Exception e)
@@ -409,7 +436,12 @@ namespace BinningSkill
                     {
                         if (Game1.player.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
                         {
-                            Utility.improveFriendshipWithEveryoneInRegion(Game1.player, ModEntry.Config.RecyclingFriendshipGain, 2);
+                            int friendshipGain = ModEntry.Config.RecyclingFriendshipGain;
+                            if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Environmentalist))
+                            {
+                                friendshipGain *= 2;
+                            }
+                            Utility.improveFriendshipWithEveryoneInRegion(Game1.player, friendshipGain, 2);
                         }
                     }
 
@@ -683,6 +715,28 @@ namespace BinningSkill
             if (!Game1.player.HasCustomProfession(BinningSkill.Sneak))
             {
                 return c;
+            }
+            if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Sneak))
+            {
+                if (c != null && c is NPC npc && !(c is StardewValley.Characters.Horse))
+                {
+                    // TODO: this plays weird with Garbage Day.
+                    c.doEmote(32);
+                    Game1.player.changeFriendship(50, npc);
+                    switch (npc.Age)
+                    {
+                        case 1:
+                            npc.setNewDialogue(ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.teen"), true, true);
+                            break;
+                        case 2:
+                            npc.setNewDialogue(ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.child"), true, true);
+                            break;
+                        default:
+                            npc.setNewDialogue(ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.adult"), true, true);
+                            break;
+                    }
+                    Game1.drawDialogue(npc);
+                }
             }
             return null;
         }

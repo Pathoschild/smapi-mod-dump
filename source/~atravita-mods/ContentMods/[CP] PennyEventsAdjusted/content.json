@@ -10,7 +10,7 @@
 
 {
     "$schema": "https://smapi.io/schemas/content-patcher.json",
-    "Format": "1.27.0",
+    "Format": "1.28.0",
     "Changes": [
         {
             "Action": "Include",

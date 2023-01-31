@@ -4,11 +4,11 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
-namespace DaLion.Overhaul.Modules.Arsenal.Events;
+namespace DaLion.Overhaul.Modules.Arsenal.Events.Slingshots;
 
 #region using directives
 
@@ -33,17 +33,16 @@ internal sealed class BullseyeRenderedEvent : RenderedEvent
     /// <inheritdoc />
     protected override void OnRenderedImpl(object? sender, RenderedEventArgs e)
     {
-        if (Game1.player.CurrentTool is not Slingshot slingshot)
+        if (Game1.player.CurrentTool is not Slingshot)
         {
             this.Disable();
             return;
         }
 
-        var mouseX = slingshot.aimPos.X;
-        var mouseY = slingshot.aimPos.Y;
+        var cursorPosition = new Vector2(Game1.getMouseX(), Game1.getMouseY());
         e.SpriteBatch.Draw(
             Game1.mouseCursors,
-            Game1.GlobalToLocal(Game1.viewport, new Vector2(mouseX, mouseY)),
+            cursorPosition,
             Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 43),
             Color.White,
             0f,

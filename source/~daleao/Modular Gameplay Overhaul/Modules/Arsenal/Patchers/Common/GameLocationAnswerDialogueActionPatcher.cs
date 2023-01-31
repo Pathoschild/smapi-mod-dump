@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -66,7 +66,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
                     Game1.activeClickableMenu.exitThisMenuNoSound();
                     Game1.playSound("parry");
                     player.addItemByMenuIfNecessaryElseHoldUp(new MeleeWeapon(Constants.DarkSwordIndex));
-                    player.mailForTomorrow.Add("viegoCurse");
+                    player.mailReceived.Add("gotDarkSword");
                     break;
                 }
 
@@ -85,13 +85,13 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
 
                 default:
                 {
-                    var split = questionAndAnswer.Split('_');
-                    if (split[0] != "Yoba")
+                    var split = questionAndAnswer.SplitWithoutAllocation('_');
+                    if (!split[0].Equals("Yoba", StringComparison.Ordinal))
                     {
                         return true; // run original logic
                     }
 
-                    switch (split[1])
+                    switch (split[1].ToString())
                     {
                         case "Honor":
                             Game1.drawObjectDialogue(Virtue.Honor.FlavorText);
@@ -115,21 +115,22 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
                             break;
                     }
 
-                    if (player.Read<bool>(DataFields.HasReadHonor) &&
-                        player.Read<bool>(DataFields.HasReadCompassion) &&
-                        player.Read<bool>(DataFields.HasReadWisdom) &&
-                        player.Read<bool>(DataFields.HasReadGenerosity) &&
-                        player.Read<bool>(DataFields.HasReadValor))
+                    if (!player.Read<bool>(DataFields.HasReadHonor) ||
+                        !player.Read<bool>(DataFields.HasReadCompassion) ||
+                        !player.Read<bool>(DataFields.HasReadWisdom) ||
+                        !player.Read<bool>(DataFields.HasReadGenerosity) ||
+                        !player.Read<bool>(DataFields.HasReadValor))
                     {
-                        player.addQuest(Virtue.Honor);
-                        player.addQuest(Virtue.Compassion);
-                        player.addQuest(Virtue.Wisdom);
-                        player.addQuest(Virtue.Generosity);
-                        player.addQuest(Virtue.Valor);
-                        player.completeQuest(Constants.VirtuesIntroQuestId);
-                        Virtue.List.ForEach(virtue => virtue.CheckForCompletion(Game1.player));
+                        return false; // don't run original logic
                     }
 
+                    player.addQuest(Virtue.Honor);
+                    player.addQuest(Virtue.Compassion);
+                    player.addQuest(Virtue.Wisdom);
+                    player.addQuest(Virtue.Generosity);
+                    player.addQuest(Virtue.Valor);
+                    player.completeQuest(Constants.VirtuesIntroQuestId);
+                    Virtue.List.ForEach(virtue => virtue.CheckForCompletion(Game1.player));
                     return false; // don't run original logic
                 }
             }

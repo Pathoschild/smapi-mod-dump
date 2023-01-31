@@ -58,9 +58,7 @@ namespace AeroCore.Utils
         public static IList<T> TransformItems<T>(this IList<T> list, Func<T, T> transformer)
         {
             for (int i = 0; i < list.Count; i++)
-            {
                 list[i] = transformer(list[i]);
-            }
             return list;
         }
         public static V GetOrAdd<K, V>(this IDictionary<K, V> dict, K key, Func<V> add)

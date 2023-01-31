@@ -11,7 +11,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-namespace TarotEvent;
+namespace DialaTarotCSharp;
 
 internal class Globals
 {

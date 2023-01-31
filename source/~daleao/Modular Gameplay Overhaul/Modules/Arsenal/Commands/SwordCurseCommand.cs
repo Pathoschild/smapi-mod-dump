@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,12 +37,13 @@ internal sealed class SwordCurseCommand : ConsoleCommand
     public override string Documentation => "Strengthen the curse of a currently held Dark Sword.";
 
     /// <inheritdoc />
-    public override void Callback(string[] args)
+    public override void Callback(string trigger, string[] args)
     {
         var player = Game1.player;
         if (player.CurrentTool is not MeleeWeapon { InitialParentTileIndex: Constants.DarkSwordIndex })
         {
-            player.CurrentTool = new MeleeWeapon(Constants.DarkSwordIndex);
+            Log.W("You must hold the cursed blade to use this command.");
+            return;
         }
 
         if (args.Length == 0 || !int.TryParse(args[0], out var points))
@@ -51,5 +52,9 @@ internal sealed class SwordCurseCommand : ConsoleCommand
         }
 
         player.CurrentTool.Write(DataFields.CursePoints, points.ToString());
+        if (!player.hasOrWillReceiveMail("viegoCurse"))
+        {
+            player.mailForTomorrow.Add("viegoCurse");
+        }
     }
 }

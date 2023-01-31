@@ -6,9 +6,16 @@ mods:
    Creaturebook
 
 latest commit:
-   commit 457ac248bb2c50c7475b5669fc6056a44db2ae67
+   commit 8c752eca43190a4efd6c210fbe8bac510aa0d8d7
    Author: KediDili <78353874+KediDili@users.noreply.github.com>
-   Date:   Sat Oct 29 16:03:48 2022 +0300
+   Date:   Sat Dec 31 20:28:17 2022 +0300
    
-       Lists to arrays, no more momential freezing on tool use
+       preps for 1.2
+       
+       1) People can edit chapter.json and creatue.json files from now on
+       2) New Attractor feature
+       3) Half-done rewards system
+       4) Fix for visual glitch with some tool mods
+       5) Image hover texts
+       6)
    

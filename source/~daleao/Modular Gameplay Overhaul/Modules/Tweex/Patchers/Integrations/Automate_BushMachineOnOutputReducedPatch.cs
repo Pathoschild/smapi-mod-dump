@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -23,7 +23,7 @@ using StardewValley.TerrainFeatures;
 
 [UsedImplicitly]
 [RequiresMod("Pathoschild.Automate")]
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class BushMachineOnOutputReducedPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="BushMachineOnOutputReducedPatcher"/> class.</summary>
@@ -40,7 +40,7 @@ internal sealed class BushMachineOnOutputReducedPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void BushMachineOnOutputReducedPostfix(object __instance)
     {
-        if (!TweexModule.Config.BerryBushesRewardExp)
+        if (TweexModule.Config.BerryBushExpReward <= 0)
         {
             return;
         }
@@ -53,7 +53,7 @@ internal sealed class BushMachineOnOutputReducedPatcher : HarmonyPatcher
             return;
         }
 
-        Game1.MasterPlayer.gainExperience(Farmer.foragingSkill, 5);
+        Game1.MasterPlayer.gainExperience(Farmer.foragingSkill, (int)TweexModule.Config.BerryBushExpReward);
     }
 
     #endregion harmony patches

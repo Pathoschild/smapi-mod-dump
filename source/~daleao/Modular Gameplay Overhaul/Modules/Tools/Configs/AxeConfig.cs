@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -84,13 +84,13 @@ public sealed class AxeConfig
     [JsonProperty]
     public bool PlayShockwaveAnimation { get; internal set; } = true;
 
-    /// <summary>Gets a value indicating whether the Axe can be enchanted with Reaching.</summary>
-    [JsonProperty]
-    public bool AllowReachingEnchantment { get; internal set; } = true;
-
     /// <summary>Gets a value indicating whether the Axe can be enchanted with Master.</summary>
     [JsonProperty]
     public bool AllowMasterEnchantment { get; internal set; } = true;
+
+    /// <summary>Gets a value indicating whether the Axe can be enchanted with Reaching.</summary>
+    [JsonProperty]
+    public bool AllowReachingEnchantment { get; internal set; } = true;
 
     /// <summary>Gets the multiplier to base stamina consumed by the <see cref="Axe"/>.</summary>
     [JsonProperty]

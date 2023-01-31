@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Shared.ModData;
 #region using directives
 
 using System.Linq.Expressions;
+using System.Text;
 using DaLion.Shared.Extensions;
 
 #endregion using directives
@@ -159,5 +160,19 @@ public static class ModDataDictionaryExtensions
         data[key] = add(num, amount).ToString();
 
         return data;
+    }
+
+    /// <summary>Gets a <see cref="string"/> representation of the <see cref="ModDataDictionary"/>.</summary>
+    /// <param name="data">The <see cref="ModDataDictionary"/>.</param>
+    /// <returns>A <see cref="string"/> representation of the <see cref="ModDataDictionary"/>.</returns>
+    public static string ToDebugString(this ModDataDictionary data)
+    {
+        StringBuilder sb = new();
+        foreach (var (key, value) in data.Pairs)
+        {
+            sb.Append("\n\t-" + key + " = " + value);
+        }
+
+        return sb.ToString();
     }
 }

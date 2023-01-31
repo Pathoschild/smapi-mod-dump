@@ -12,11 +12,12 @@
   "Dependencies": [
     {
       "UniqueID": "atravita.AtraCore",
-      "MinimumVersion": "0.1.1"
+      "MinimumVersion": "0.1.4",
+      "IsRequired": true
     },
     {
       "UniqueID": "spacechase0.SpaceCore",
-      "MinimumVersion": "1.5.10"
+      "MinimumVersion": "1.9.3"
     }
   ]
 }

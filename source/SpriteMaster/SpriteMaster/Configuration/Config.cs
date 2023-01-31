@@ -86,7 +86,7 @@ internal static class Config {
 	[Attributes.GMCMHidden] internal static string ConfigVersion = "";
 
 	[Attributes.Ignore]
-	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 15, 0, 0, BuildType.Beta, 10);
+	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 15, 0, 0, BuildType.Beta, 11);
 
 	[Attributes.Ignore] internal static bool ForcedDisable = false;
 
@@ -836,13 +836,13 @@ internal static class Config {
 			internal static bool OptimizeTexture2DGetData = true;
 
 			[Attributes.Comment("Should DrawUserIndexedPrimitives be optimized?")]
-			internal const bool OptimizeDrawUserIndexedPrimitives = true;
+			internal static bool OptimizeDrawUserIndexedPrimitives = false;
 
 			[Attributes.Comment("Should glCopyTexture by used?")]
 			internal static bool UseCopyTexture = true;
 
 			[Attributes.Comment("Should glTexStorage be used?")]
-			internal const bool UseTexStorage = true;
+			internal static bool UseTexStorage = true;
 		}
 
 		internal static class Snow {

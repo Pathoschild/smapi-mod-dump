@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -33,7 +33,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatcher : HarmonyPatcher
 
     /// <summary>Implement Garnet ring CDR.</summary>
     [HarmonyPostfix]
-    [HarmonyAfter("Overhaul.Modules.Arsenal")]
+    [HarmonyAfter("DaLion.Overhaul.Modules.Arsenal")]
     private static void MeleeWeaponDoAnimateSpecialMovePostfix(MeleeWeapon __instance)
     {
         var lastUser = __instance.getLastFarmerToUse();

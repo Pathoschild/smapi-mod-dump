@@ -23,10 +23,11 @@ namespace AeroCore
         public float CursorLightIntensity { get; set; } = .5f;
 
         [GMCMSection("CursorLight")]
-        public KeybindList CursorLightBind { get; set; } = new(SButton.L);
+        public KeybindList CursorLightBind { get; set; } = new();
 
         [GMCMSection("CursorLight")]
         public bool CursorLightHold { get; set; } = false;
-        public KeybindList PlaceBind { get; set; } = new(SButton.O);
+        public KeybindList PlaceBind { get; set; } = new();
+        public KeybindList ReloadBind { get; set; } = new();
     }
 }

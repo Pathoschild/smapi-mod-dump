@@ -8,6 +8,16 @@ for queries and analysis.**
 
 Changelog
 =============
+
+#### Version 0.2.2
+* Simplify and fix the deshuffle code.
+
+#### Version 0.2.1
+* Fix issue with giant crops vanishing on maps that were not Farm or IslandWest.
+* Internal improvements.
+* Deshuffling fix.
+* Add Russian (thanks pavlo2906)!
+
 #### Version 0.2.0
 * Move to using AtraCore.
 * Add integration with SolidFoundations.
@@ -32,7 +42,7 @@ Changelog
 Makes the chance of getting a giant crop configurable. Adds code to handle JA shuffling.
 
 #### Version 0.1.1
-Reduces excess logging. Adjusts compat patches for MoreFertilizer.
+Reduces excess logging. Adjusts compat patches for MultiFertilizer.
 
 #### Version 0.1.0
 

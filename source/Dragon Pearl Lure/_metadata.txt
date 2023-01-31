@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/elizabethcd/DragonPearlLure
+   Git: https://github.com/elizabethcd/DragonPearlLure.git
+
+mods:
+   Dragon Pearl Lure
+
+latest commit:
+   commit 72b9877c256d572750cf98e826bdeb5e84c85aa9
+   Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
+   Date:   Mon Jan 16 12:52:03 2023 -0500
+   
+       Preparation for publishing
+   

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 using StardewValley.Menus;
 
 namespace MailServicesMod
@@ -32,10 +33,12 @@ namespace MailServicesMod
             foreach (NPC npc in Utility.getAllCharacters())
             {
                 if (Game1.player.tryGetFriendshipLevelForNPC(npc.Name) != null
+                    && npc.CanSocialize
                     && Game1.player.friendshipData[npc.Name].GiftsToday < 1
                     && (Game1.player.friendshipData[npc.Name].GiftsThisWeek < 2 || npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
                     && !Game1.player.friendshipData[npc.Name].IsDivorced()
                     && (Game1.player.friendshipData[npc.Name].Points < 2500 || DataLoader.ModConfig.EnableGiftToNpcWithMaxFriendship)
+                    && (Game1.player.friendshipData[npc.Name].Points >= DataLoader.ModConfig.MinimumFriendshipPointsToSendGift)
                     && !(Game1.player.spouse != null && Game1.player.spouse.Equals(Game1.player.Name))
                     && !(npc is Child))
                 {
@@ -44,17 +47,17 @@ namespace MailServicesMod
             }
             if (options.Count > 0)
             {
-                options.Sort((r1, r2) => r1.responseText.CompareTo(r2.responseText));
+                options.Sort((r1, r2) => string.Compare(r1.responseText, r2.responseText, StringComparison.CurrentCultureIgnoreCase));
                 List<Response> optionsPage = options.Skip(page * DataLoader.ModConfig.GiftChoicePageSize).Take(DataLoader.ModConfig.GiftChoicePageSize).ToList();
                 if (page > 0)
                 {
-                    optionsPage.Add(new Response(GiftResponseKeyPrevious + (page - 1), DataLoader.I18N.Get("Shipment.Gift.Previous")));
+                    optionsPage.Add(new Response(GiftResponseKeyPrevious + (page - 1), DataLoader.I18N.Get("Shipment.Gift.Previous")).SetHotKey(Keys.Left));
                 }
                 if (page < (options.Count - 1) / DataLoader.ModConfig.GiftChoicePageSize)
                 {
-                    optionsPage.Add(new Response(GiftResponseKeyNext + (page + 1), DataLoader.I18N.Get("Shipment.Gift.Next")));
+                    optionsPage.Add(new Response(GiftResponseKeyNext + (page + 1), DataLoader.I18N.Get("Shipment.Gift.Next")).SetHotKey(Keys.Right));
                 }
-                optionsPage.Add(new Response("None", DataLoader.I18N.Get("Shipment.Gift.None")));
+                optionsPage.Add(new Response("None", DataLoader.I18N.Get("Shipment.Gift.None")).SetHotKey(Keys.Escape));
                 Game1.player.currentLocation.createQuestionDialogue(DataLoader.I18N.Get("Shipment.Gift.Question", new { Gift = Game1.player.ActiveObject.DisplayName }), optionsPage.ToArray(), GiftDialogKey);
                 return false;
             }
@@ -63,11 +66,11 @@ namespace MailServicesMod
 
         internal static void GiftToNpc(string npcName)
         {
-            NPC npc = Game1.getCharacterFromName(npcName);
+            NPC npc = NpcUtility.getCharacterFromName(npcName);
             Farmer who = Game1.player;
             string giftName = who.ActiveObject.DisplayName;
             npc.receiveGift(who.ActiveObject, who, true, 1, DataLoader.ModConfig.ShowDialogOnItemDelivery);
-            ShopMenu.chargePlayer(who, 0, DataLoader.ModConfig.GiftServiceFee);
+            ShopMenu.chargePlayer(who, 0, (int)Math.Round(who.ActiveObject.Price * (DataLoader.ModConfig.GiftServicePercentFee / 100d), MidpointRounding.AwayFromZero) + DataLoader.ModConfig.GiftServiceFee);
             who.reduceActiveItemByOne();
             who.completeQuest(25);
             if (!DataLoader.ModConfig.ShowDialogOnItemDelivery)
@@ -85,7 +88,7 @@ namespace MailServicesMod
                     && !npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth) 
                     && who.friendshipData[npc.Name].IsDating())
                 {
-                    NPC spouse = Game1.getCharacterFromName(who.spouse);
+                    NPC spouse = NpcUtility.getCharacterFromName(who.spouse);
                     who.changeFriendship(-30, spouse);
                     spouse.CurrentDialogue.Clear();
                     spouse.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3985", npc.displayName), spouse));

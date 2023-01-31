@@ -36,7 +36,6 @@ namespace Custom_Farm_Loader.Lib
             FishingRule.Initialize(mod);
             Fish.Initialize(mod);
             FarmProperties.Initialize(mod);
-            Bridge.Initialize(mod);
 
             CustomFarm.Initialize(mod);
         }

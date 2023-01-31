@@ -32,9 +32,9 @@ namespace ToDew {
     /// Encapsulates the game lifecycle events and orchestrates the UI (ToDoMenu) data
     /// model (ToDoList) bits.
     public class ModEntry : Mod {
-        private readonly PerScreen<ToDoList> list = new PerScreen<ToDoList>();
-        private readonly PerScreen<ToDoOverlay> overlay = new PerScreen<ToDoOverlay>();
-        internal ModConfig config;
+        private readonly PerScreen<ToDoList?> list = new PerScreen<ToDoList?>();
+        private readonly PerScreen<ToDoOverlay?> overlay = new PerScreen<ToDoOverlay?>();
+        internal ModConfig config = new(); // create (and throw away) a default value to keep nullability check happy
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -51,7 +51,7 @@ namespace ToDew {
             helper.Events.GameLoop.DayStarted += onDayStarted;
         }
 
-        private void onLaunched(object sender, GameLaunchedEventArgs e) {
+        private void onLaunched(object? sender, GameLaunchedEventArgs e) {
             // integrate with Generic Mod Config Menu, if installed
             var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
             if (api != null) {
@@ -97,7 +97,7 @@ namespace ToDew {
                 originalTexture.GetData(0, sourceRectangle, data, 0, data.Length);
                 cropTexture.SetData(data);
 
-                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list.Value); } , cropTexture);
+                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list!.Value!); } , cropTexture);
             }
 
             // add console commands
@@ -106,7 +106,7 @@ namespace ToDew {
             Helper.ConsoleCommands.Add("todo-file-info", "Get information about a previously exported file\n\n" + GetCommandFileInfoHelp(), this.CommandFileInfo);
         }
 
-        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e) {
+        private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e) {
             if (config.debug) {
                 Monitor.Log($"Received mod message {e.Type} from {e.FromModID}", LogLevel.Debug);
             }
@@ -115,13 +115,13 @@ namespace ToDew {
             }
         }
 
-        private void OnPeerConnected(object sender, PeerConnectedEventArgs e) {
+        private void OnPeerConnected(object? sender, PeerConnectedEventArgs e) {
             if (config.debug) {
                 this.Monitor.Log("OnPeerConnected", LogLevel.Debug);
             }
         }
 
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
+        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
             if (config.debug) {
                 this.Monitor.Log("OnSaveLoaded", LogLevel.Debug);
                 this.Monitor.Log($"My multiplayer ID: {Game1.player.UniqueMultiplayerID}", LogLevel.Debug);
@@ -132,21 +132,21 @@ namespace ToDew {
             }
         }
 
-        private void onDayStarted(object sender, DayStartedEventArgs e) {
+        private void onDayStarted(object? sender, DayStartedEventArgs e) {
             list.Value?.RefreshVisibility();
         }
 
-        private void onSaving(object sender, SavingEventArgs e) {
+        private void onSaving(object? sender, SavingEventArgs e) {
             list.Value?.PreSaveCleanup();
         }
 
-        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
+        private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e) {
             list.Value = null;
             overlay.Value?.Dispose();
             overlay.Value = null;
         }
 
-        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e) {
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e) {
             if (Context.IsWorldReady
                 && Context.IsPlayerFree
                 && list.Value != null
@@ -318,16 +318,16 @@ Other flags:
     // See https://github.com/spacechase0/StardewValleyMods/blob/develop/GenericModConfigMenu/IGenericModConfigMenuApi.cs for full API
     public interface GenericModConfigMenuAPI {
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
-        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
-        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-        void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
-        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string>? tooltip = null);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
+        void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string>? tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string>? formatValue = null, string? fieldId = null);
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string>? tooltip = null, string[]? allowedValues = null, Func<string, string>? formatAllowedValue = null, string? fieldId = null);
     }
     // See https://github.com/jltaylor-us/StardewGMCMOptions/blob/default/StardewGMCMOptions/IGMCMOptionsAPI.cs
     public interface GMCMOptionsAPI {
         void AddColorOption(IManifest mod, Func<Color> getValue, Action<Color> setValue, Func<string> name,
-            Func<string> tooltip = null, bool showAlpha = true, uint colorPickerStyle = 0, string fieldId = null);
+            Func<string>? tooltip = null, bool showAlpha = true, uint colorPickerStyle = 0, string? fieldId = null);
         #pragma warning disable format
         [Flags]
         public enum ColorPickerStyle : uint {

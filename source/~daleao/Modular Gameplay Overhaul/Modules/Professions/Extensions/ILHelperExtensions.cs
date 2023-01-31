@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -33,7 +33,7 @@ internal static class IlHelperExtensions
     /// <param name="index">The profession index.</param>
     /// <param name="search">The <see cref="ILHelper.SearchOption"/>.</param>
     /// <returns>The <paramref name="helper"/> instance.</returns>
-    internal static ILHelper FindProfessionCheck(this ILHelper helper, int index, ILHelper.SearchOption search = ILHelper.SearchOption.Next)
+    internal static ILHelper MatchProfessionCheck(this ILHelper helper, int index, ILHelper.SearchOption search = ILHelper.SearchOption.Next)
     {
         return helper
             .Match(

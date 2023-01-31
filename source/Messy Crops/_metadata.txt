@@ -6,10 +6,11 @@ mods:
    Messy Crops
 
 latest commit:
-   commit c1be0ce218792aca988060a3dca584dfe6eec7be
-   Merge: 34619ad 8a107fe
-   Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Wed May 4 13:34:58 2022 -0400
+   commit 9e7465e2bbc0214c73003b106a72fb5f18ea899f
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Tue Jan 17 11:43:40 2023 -0500
    
-       Merge branch 'master' of https://github.com/tlitookilakin/MessyCrops
+       cleanup
+       fix build settings
+       bump version
    

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -60,9 +60,14 @@ public sealed class Concerto : Ultimate
     internal override void Activate()
     {
         base.Activate();
-        foreach (var slime in Game1.player.currentLocation.characters.OfType<GreenSlime>()
-                     .Where(c => c.IsWithinPlayerThreshold() && c.Scale < 2f))
+        for (var i = 0; i < Game1.player.currentLocation.characters.Count; i++)
         {
+            var character = Game1.player.currentLocation.characters[i];
+            if (character is not GreenSlime slime || !slime.IsWithinPlayerThreshold() || slime.Scale >= 2f)
+            {
+                continue;
+            }
+
             if (Game1.random.NextDouble() <= 0.012 + (Game1.player.team.AverageDailyLuck() / 10.0))
             {
                 if (Game1.currentLocation is MineShaft && Game1.player.team.SpecialOrderActive("Wizard2"))
@@ -81,16 +86,17 @@ public sealed class Concerto : Ultimate
         var bigSlimes = Game1.currentLocation.characters.OfType<BigSlime>().ToList();
         for (var i = bigSlimes.Count - 1; i >= 0; i--)
         {
-            bigSlimes[i].Health = 0;
-            bigSlimes[i].deathAnimation();
+            var bigSlime = bigSlimes[i];
+            bigSlime.Health = 0;
+            bigSlime.deathAnimation();
             var toCreate = Game1.random.Next(2, 5);
             while (toCreate-- > 0)
             {
-                Game1.currentLocation.characters.Add(new GreenSlime(bigSlimes[i].Position, Game1.CurrentMineLevel));
+                Game1.currentLocation.characters.Add(new GreenSlime(bigSlime.Position, Game1.CurrentMineLevel));
                 var justCreated = Game1.currentLocation.characters[^1];
                 justCreated.setTrajectory(
-                    (int)((bigSlimes[i].xVelocity / 8) + Game1.random.Next(-2, 3)),
-                    (int)((bigSlimes[i].yVelocity / 8) + Game1.random.Next(-2, 3)));
+                    (int)((bigSlime.xVelocity / 8) + Game1.random.Next(-2, 3)),
+                    (int)((bigSlime.yVelocity / 8) + Game1.random.Next(-2, 3)));
                 justCreated.willDestroyObjectsUnderfoot = false;
                 justCreated.moveTowardPlayer(4);
                 justCreated.Scale = 0.75f + (Game1.random.Next(-5, 10) / 100f);

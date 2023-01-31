@@ -11,7 +11,7 @@
 {
   "Name": "Deluxe Fruit Tree Fertilizer",
   "Price": "100",
-  "Category": "Junk",
+  "Category": -19,
   "Edibility": -300,
   "TranslationKey": "deluxe-fruit-tree-fertilizer",
   "PurchasePrice": 200,

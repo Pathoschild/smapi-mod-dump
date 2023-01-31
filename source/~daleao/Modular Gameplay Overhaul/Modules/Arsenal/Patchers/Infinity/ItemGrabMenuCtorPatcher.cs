@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -33,9 +33,14 @@ internal sealed class ItemGrabMenuCtorPatcher : HarmonyPatcher
 
     /// <summary>Replace highlighting method.</summary>
     [HarmonyPrefix]
-    private static void ItemGrabMenuCtorPrefix(ref InventoryMenu.highlightThisItem? highlightFunction)
+    private static void ItemGrabMenuCtorPrefix(ItemGrabMenu __instance, ref InventoryMenu.highlightThisItem? highlightFunction)
     {
-        highlightFunction = HighlightAllButDarkSword;
+        if (__instance.GetType().FullName?.Contains("CJBItemSpawner") == false &&
+            highlightFunction?.Method.Name != "highlightShippableObjects" &&
+            highlightFunction?.Method.DeclaringType?.Name.Contains("Shipping") == false)
+        {
+            highlightFunction = HighlightAllButDarkSword;
+        }
     }
 
     #endregion harmony patches

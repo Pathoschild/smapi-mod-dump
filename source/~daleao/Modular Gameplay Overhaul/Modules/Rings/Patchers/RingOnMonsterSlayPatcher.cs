@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -44,7 +44,11 @@ internal sealed class RingOnMonsterSlayPatcher : HarmonyPatcher
         {
             case Constants.WarriorRingIndex:
                 RingsModule.State.WarriorKillCount++;
-                EventManager.Enable<WarriorUpdateTickedEvent>();
+                if (RingsModule.State.WarriorKillCount >= 10)
+                {
+                    EventManager.Enable<WarriorUpdateTickedEvent>();
+                }
+
                 break;
             case Constants.SavangeRingIndex:
                 RingsModule.State.SavageExcitedness = 9;

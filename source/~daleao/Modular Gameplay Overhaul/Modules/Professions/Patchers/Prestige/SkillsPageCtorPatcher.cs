@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -49,8 +49,9 @@ internal sealed class SkillsPageCtorPatcher : HarmonyPatcher
         }
 
         var srcRect = new Rectangle(16, 0, 14, 9);
-        foreach (var component in __instance.skillBars)
+        for (var i = 0; i < __instance.skillBars.Count; i++)
         {
+            var component = __instance.skillBars[i];
             int skillIndex;
             switch (component.myID / 100)
             {

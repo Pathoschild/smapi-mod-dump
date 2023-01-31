@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using NetEscapades.EnumGenerators;
+
 namespace StopRugRemoval.Configuration;
 
 /// <summary>
@@ -40,6 +42,7 @@ public enum ConfirmationEnum
 /// <summary>
 /// Whether or not the location should be considered a "safe location" when it comes to bombs.
 /// </summary>
+[EnumExtensions]
 public enum IsSafeLocationEnum
 {
     /// <summary>

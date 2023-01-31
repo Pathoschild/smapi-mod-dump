@@ -9,8 +9,12 @@
 *************************************************/
 
 using AtraBase.Toolkit.Extensions;
+using CommunityToolkit.Diagnostics;
+using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewValley.Monsters;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 
 namespace AtraShared.Utils.Extensions;
 
@@ -40,6 +44,9 @@ public static class GameLocationExtensions
     /// <returns>True if there's a festival at this location and it's before the start time, false otherwise.</returns>
     public static bool IsBeforeFestivalAtLocation(this GameLocation location, IMonitor monitor, bool alertPlayer = false)
     {
+        Guard.IsNotNull(monitor);
+        Guard.IsNotNull(location);
+
         try
         {
             if (Game1.weatherIcon == 1)
@@ -80,5 +87,28 @@ public static class GameLocationExtensions
             monitor.Log($"Mod failed while trying to find festival days....\n\n{ex}", LogLevel.Error);
         }
         return false;
+    }
+
+    /// <summary>
+    /// Gets the hoedirt at a specific tile, in a pot or on the ground.
+    /// </summary>
+    /// <param name="location">Location.</param>
+    /// <param name="tile">Tile.</param>
+    /// <returns>Hoedirt if found.</returns>
+    public static HoeDirt? GetHoeDirtAtTile(this GameLocation location, Vector2 tile)
+    {
+        Guard.IsNotNull(location);
+
+        if (location.terrainFeatures.TryGetValue(tile, out TerrainFeature? terrain)
+            && terrain is HoeDirt dirt)
+        {
+            return dirt;
+        }
+        else if (location.Objects.TryGetValue(tile, out SObject obj)
+            && obj is IndoorPot pot)
+        {
+            return pot.hoeDirt.Value;
+        }
+        return null;
     }
 }

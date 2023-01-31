@@ -10,12 +10,17 @@
 
 using AtraBase.Toolkit.Extensions;
 
+using AtraShared.Wrappers;
+
+using NetEscapades.EnumGenerators;
+
 namespace AtraShared.ConstantsAndEnums;
 
 /// <summary>
 /// Enum for all the vanilla machines that require input.
 /// </summary>
 /// <remarks>Positive numbers refer to Big Craftables, negative ordinary SObjects.</remarks>
+[EnumExtensions]
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:Enumeration items should be documented", Justification = "Should be obvious enough.")]
 public enum VanillaMachinesEnum
 {
@@ -30,7 +35,7 @@ public enum VanillaMachinesEnum
     Keg = 12,
 
     /// <summary>
-    /// Furnance.
+    /// Furnace.
     /// </summary>
     Furnace = 13,
 
@@ -43,11 +48,35 @@ public enum VanillaMachinesEnum
     /// Cheese Press.
     /// </summary>
     CheesePress = 16,
+
+    /// <summary>
+    /// Loom.
+    /// </summary>
     Loom = 17,
+
+    /// <summary>
+    /// Oil maker.
+    /// </summary>
     OilMaker = 19,
+
+    /// <summary>
+    /// Recycling machine.
+    /// </summary>
     RecyclingMachine = 20,
+
+    /// <summary>
+    /// Crystalarium.
+    /// </summary>
     Crystalarium = 21,
+
+    /// <summary>
+    /// Mayo machine.
+    /// </summary>
     MayonnaiseMachine = 24,
+
+    /// <summary>
+    /// Seed maker.
+    /// </summary>
     SeedMaker = 25,
     BoneMill = 90,
     Incubator = 101,
@@ -65,7 +94,7 @@ public enum VanillaMachinesEnum
 /// <summary>
 /// Holds extension methods against this enum.
 /// </summary>
-public static class VanillaMachinesEnumExtensions
+public static partial class VanillaMachinesEnumExtensions
 {
     /// <summary>
     /// Tries to find the correct translation string for this machine.
@@ -74,7 +103,7 @@ public static class VanillaMachinesEnumExtensions
     /// <returns>A string, hopefully the translation.</returns>
     public static string GetBestTranslatedString(this VanillaMachinesEnum machine)
     {
-        if (machine < 0 && Game1.objectInformation.TryGetValue(-(int)machine, out string? val))
+        if (machine < 0 && Game1Wrappers.ObjectInfo.TryGetValue(-(int)machine, out string? val))
         {
             ReadOnlySpan<char> translatedName = val.GetNthChunk('/', SObject.objectInfoDisplayNameIndex);
             if (translatedName.Length > 0)
@@ -90,6 +119,6 @@ public static class VanillaMachinesEnumExtensions
                 return value[(index + 1)..];
             }
         }
-        return string.Empty;
+        return machine.ToStringFast();
     }
 }

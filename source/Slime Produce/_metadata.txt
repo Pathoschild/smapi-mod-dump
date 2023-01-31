@@ -6,9 +6,9 @@ mods:
    Slime Produce
 
 latest commit:
-   commit bcbd0d21e85d569551acf010cd1fa4f41e7c92a2
+   commit fde293d0e269c82091e5d99a91fdba588ec75e5c
    Author: andraemon <43394694+andraemon@users.noreply.github.com>
-   Date:   Thu Dec 8 07:27:29 2022 -0500
+   Date:   Fri Jan 27 14:24:43 2023 -0500
    
-       fixed special purple slime drops
+       updated manifest
    

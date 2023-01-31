@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,9 @@ namespace DaLion.Overhaul.Modules.Arsenal;
 #region using directives
 
 using DaLion.Overhaul.Modules.Arsenal.Configs;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using StardewModdingAPI.Utilities;
 
 #endregion using directives
 
@@ -27,6 +29,18 @@ public sealed class Config : Shared.Configs.Config
     /// <inheritdoc cref="WeaponConfig"/>
     [JsonProperty]
     public WeaponConfig Weapons { get; internal set; } = new();
+
+    /// <summary>Gets the chosen mod key(s).</summary>
+    [JsonProperty]
+    public KeybindList ModKey { get; internal set; } = KeybindList.Parse("LeftShift, LeftShoulder");
+
+    /// <summary>Gets a value indicating whether to allow auto-selecting a weapon or slingshot.</summary>
+    [JsonProperty]
+    public bool EnableAutoSelection { get; internal set; } = true;
+
+    /// <summary>Gets the <see cref="Color"/> used to indicate tools enabled or auto-selection.</summary>
+    [JsonProperty]
+    public Color SelectionBorderColor { get; internal set; } = Color.Magenta;
 
     /// <summary>Gets a value indicating whether face the current cursor position before swinging your arsenal.</summary>
     [JsonProperty]

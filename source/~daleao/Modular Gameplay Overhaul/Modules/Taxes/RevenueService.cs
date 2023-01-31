@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Taxes;
 #region using directives
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Extensions.Stardew;
 using static System.FormattableString;
@@ -23,7 +24,7 @@ internal static class RevenueService
 {
     internal static float[] Brackets { get; } = { 0.1f, 0.12f, 0.22f, 0.24f, 0.32f, 0.35f, 0.37f };
 
-    internal static IReadOnlyDictionary<float, int> Thresholds { get; } = new Dictionary<float, int>()
+    internal static ImmutableDictionary<float, int> Thresholds { get; } = new Dictionary<float, int>
     {
         { 0.1f, 9950 },
         { 0.12f, 40525 },
@@ -32,7 +33,7 @@ internal static class RevenueService
         { 0.32f, 209425 },
         { 0.35f, 523600 },
         { 0.37f, int.MaxValue },
-    };
+    }.ToImmutableDictionary();
 
     /// <summary>Calculates due income tax for the <paramref name="who"/>.</summary>
     /// <param name="who">The <see cref="Farmer"/>.</param>
@@ -46,18 +47,19 @@ internal static class RevenueService
 
         var dueF = 0f;
         var bracket = 0f;
+        var temp = taxable;
         for (var i = 0; i < 7; i++)
         {
             bracket = Brackets[i];
             var threshold = Thresholds[bracket];
-            if (taxable > threshold)
+            if (temp > threshold)
             {
                 dueF += threshold * bracket;
-                taxable -= threshold;
+                temp -= threshold;
             }
             else
             {
-                dueF += taxable * bracket;
+                dueF += temp * bracket;
                 break;
             }
         }

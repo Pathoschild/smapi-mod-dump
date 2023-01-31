@@ -4,10 +4,12 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/sdv-mods
+** Source repository: https://github.com/daleao/sdv-mods
 **
 *************************************************/
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable SA1600 // Elements should be documented
 namespace DaLion.Overhaul;
 
 /// <summary>Holds the string IDs of mod data fields used by all the modules.</summary>
@@ -49,6 +51,8 @@ internal sealed class DataFields
     internal const string ProvenGenerosity = "ProvenGenerosity"; // awarded before the mail flag `pamHouseUpgrade`
     internal const string ProvenValor = "ProvenValor"; // awarded after 5th monster slayer quest completion
 
+    internal const string SelectableArsenal = "SelectableArsenal";
+
     #endregion arsenal
 
     #region ponds
@@ -56,7 +60,7 @@ internal sealed class DataFields
     internal const string FishQualities = "FishQualities";
     internal const string FamilyQualities = "FamilyQualities";
     internal const string FamilyLivingHere = "FamilyLivingHere";
-    internal const string DaysEmpty = "FamilyLivingHere";
+    internal const string DaysEmpty = "DaysEmpty";
     internal const string SeaweedLivingHere = "SeaweedLivingHere";
     internal const string GreenAlgaeLivingHere = "GreenAlgaeLivingHere";
     internal const string WhiteAlgaeLivingHere = "WhiteAlgaeLivingHere";
@@ -75,9 +79,17 @@ internal sealed class DataFields
 
     #endregion taxes
 
+    #region tools
+
+    internal const string SelectableTools = "SelectableTools";
+
+    #endregion tools
+
     #region tweaks
 
     internal const string Age = "Age";
 
     #endregion tweaks
 }
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

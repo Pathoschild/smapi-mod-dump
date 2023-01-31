@@ -8,9 +8,10 @@
 **
 *************************************************/
 
-using AtraShared.Integrations.Interfaces.Automate;
+using System;
 using AtraShared.Utils.Extensions;
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.Automate;
 using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
@@ -28,7 +29,7 @@ public class TappedGiantCropFactory : IAutomationFactory
     {
         if (obj.Name.Contains("Tapper", StringComparison.OrdinalIgnoreCase))
         {
-            foreach (var feature in location.resourceClumps)
+            foreach (ResourceClump? feature in location.resourceClumps)
             {
                 if (feature is GiantCrop crop)
                 {
@@ -37,7 +38,7 @@ public class TappedGiantCropFactory : IAutomationFactory
                     offset.X += crop.width.Value / 2;
                     if (tile == offset)
                     {
-                        ModEntry.ModMonitor.DebugOnlyLog($"Attempting to add automateable giant crop at {location.NameOrUniqueName} - {crop.tile}", LogLevel.Info);
+                        AutomateBridge.ModMonitor.DebugOnlyLog($"Attempting to add automateable giant crop at {location.NameOrUniqueName} - {crop.tile}", LogLevel.Info);
                         return new TappedGiantCrop(crop, obj, location, new Rectangle((int)crop.tile.X, (int)crop.tile.Y, crop.width.Value, crop.height.Value));
                     }
                 }

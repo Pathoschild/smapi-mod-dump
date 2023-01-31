@@ -21,7 +21,7 @@ namespace MailServicesMod
 {
     internal class GuildRecoveryController
     {
-        private static readonly PerScreen<List<Item>> _itemsToRecover = new PerScreen<List<Item>>(null);
+        private static readonly PerScreen<List<Item>> _itemsToRecover = new PerScreen<List<Item>>();
 
         internal const string RecoveryResponseKeyOne = "One";
         internal const string RecoveryResponseKeyAll = "All";

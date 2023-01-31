@@ -35,7 +35,7 @@ internal static class CropTranspiler
         Type dgaCrop = AccessTools.TypeByName("DynamicGameAssets.Game.CustomCrop, DynamicGameAssets")
             ?? ReflectionThrowHelper.ThrowMethodNotFoundException<Type>("DGA CustomCrop");
         harmony.Patch(
-            original: dgaCrop.InstanceMethodNamed("NewDay"),
+            original: dgaCrop.GetCachedMethod("NewDay", ReflectionCache.FlagTypes.InstanceFlags),
             transpiler: new HarmonyMethod(typeof(CropTranspiler).StaticMethodNamed(nameof(TranspileDGA))));
     }
 
@@ -46,14 +46,14 @@ internal static class CropTranspiler
     /// <returns>chance.</returns>
     private static double GetChanceForFertilizer(double chance, int fertilizer)
     {
-        ModEntry.ModMonitor.DebugOnlyLog($"Testing fertilizer {fertilizer} with {ModEntry.GiantCropFertilizerID}", LogLevel.Info);
+        ModEntry.ModMonitor.DebugOnlyLog($"Testing fertilizer {fertilizer} with {ModEntry.GiantCropFertilizerID}", fertilizer != 0, LogLevel.Info);
         return ModEntry.GiantCropFertilizerID != -1 && ModEntry.GiantCropFertilizerID == fertilizer ? ModEntry.Config.GiantCropChance : chance;
     }
 
     /// <summary>
     /// Removes the big crop fertilizer after a big crop was made.
     /// </summary>
-    /// <param name="dirt">Hoedirt instance.</param>
+    /// <param name="dirt">HoeDirt instance.</param>
     private static void RemoveFertilizer(HoeDirt? dirt)
     {
         if (dirt is not null && dirt.fertilizer.Value != -1 && dirt.fertilizer.Value == ModEntry.GiantCropFertilizerID)
@@ -63,6 +63,7 @@ internal static class CropTranspiler
         }
     }
 
+    [HarmonyPriority(Priority.HigherThanNormal)]
     [HarmonyPatch(nameof(Crop.newDay))]
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
     {
@@ -78,7 +79,7 @@ internal static class CropTranspiler
             })
             .Advance(2)
             .Insert(new CodeInstruction[]
-            { // And replace the hardcoded number if necessary.
+            { // And replace the hard-coded number if necessary.
                 new(OpCodes.Ldarg_2),
                 new(OpCodes.Call, typeof(CropTranspiler).GetCachedMethod(nameof(GetChanceForFertilizer), ReflectionCache.FlagTypes.StaticFlags)),
             })
@@ -105,8 +106,8 @@ internal static class CropTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Crop.newDay:\n\n{ex}", LogLevel.Error);
-            original?.Snitch(ModEntry.ModMonitor);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}:\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }
@@ -156,8 +157,8 @@ internal static class CropTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Failed while trying to transpile DGA's CustomCrop.NewDay.\n\n{ex}", LogLevel.Error);
-            original?.Snitch(ModEntry.ModMonitor);
+            ModEntry.ModMonitor.Log($"Failed while trying to transpile {original.FullDescription()}.\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

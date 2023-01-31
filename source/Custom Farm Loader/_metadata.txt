@@ -6,9 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit 94ef9244fbe6229258841b024ec9fe9ae0d01b5b
+   commit 8fea988fbcf5c0fafb3ff01174a92000e4fc4665
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Mon Dec 26 23:43:04 2022 +0100
+   Date:   Sun Jan 29 20:33:13 2023 +0100
    
-       cleanup
+       fixed map overlay recolors not being properly applied to Keyworded map overlays
    

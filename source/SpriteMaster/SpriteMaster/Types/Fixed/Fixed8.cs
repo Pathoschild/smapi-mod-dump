@@ -66,7 +66,11 @@ internal readonly struct Fixed8 : IEquatable<Fixed8>, IEquatable<byte>, ILongHas
 		//if ((result & 0xFFFF_0000) != 0) {
 		//	return Fixed8.Max;
 		//}
-		return (byte)(result >> 8);
+		result >>= 8;
+		if (result > byte.MaxValue) {
+			return byte.MaxValue;
+		}
+		return (byte)result;
 	}
 
 	[MethodImpl(MethodImpl.Inline)]

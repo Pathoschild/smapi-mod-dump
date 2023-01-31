@@ -6,10 +6,9 @@ mods:
    HD Portraits
 
 latest commit:
-   commit ebb90ac1eff98d786a01ceee493469cb1188dc2c
+   commit a335433bca7187d3cc890ba56d67aa01c5462fa9
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Thu Dec 8 21:14:12 2022 -0500
+   Date:   Wed Jan 25 23:43:36 2023 -0500
    
-       fix shop bug
-       bump version
+       hotfix
    

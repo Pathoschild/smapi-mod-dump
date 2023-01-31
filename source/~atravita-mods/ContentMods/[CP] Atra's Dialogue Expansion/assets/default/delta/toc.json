@@ -1,0 +1,57 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "Include",
+        "LogName": "Abigail - mid hearts",
+        "FromFile": "assets/default/delta/Abigail/mid.json",
+        "When": {
+            "EnableFor": "Abigail",
+            "Query: {{Hearts:Abigail}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Caroline - mid hearts",
+        "FromFile": "assets/default/delta/Caroline/mid.json",
+        "When": {
+            "EnableFor": "Caroline",
+            "Query: {{Hearts:Caroline}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Marnie - mid hearts",
+        "FromFile": "assets/default/delta/Marnie/mid.json",
+        "When": {
+            "EnableFor": "Marnie",
+            "Query: {{Hearts:Marnie}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Pierre - mid hearts",
+        "FromFile": "assets/default/delta/Pierre/mid.json",
+        "When": {
+            "EnableFor": "Pierre",
+            "Query: {{Hearts:Pierre}} >= 6": true,
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Sandy - mid hearts",
+        "FromFile": "assets/default/delta/Sandy/mid.json",
+        "When": {
+            "EnableFor": "Sandy",
+            "Query: {{Hearts:Sandy}} >= 6": true,
+        }
+    }
+]}
