@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonMisadventures_BiggerBac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleDebugger", "ScheduleDebugger\ScheduleDebugger.csproj", "{F88FEDD6-2418-41FA-A117-6B121F6F4D2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profiler.ContentPatcher", "Profiler-ContentPatcher\Profiler.ContentPatcher.csproj", "{1DBF8E76-D8B8-4D08-BD4F-0601F9C16CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profiler.ContentPatcher", "Profiler-ContentPatcher\Profiler.ContentPatcher.csproj", "{1DBF8E76-D8B8-4D08-BD4F-0601F9C16CD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

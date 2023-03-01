@@ -16,6 +16,7 @@
             "Target": "Characters/Dialogue/Lewis",
             "Entries": {
                 "movieTheater": "@! A movie theater seems to have appeared in the valley!$h#$e#$c 0.3#Here's a ticket![809]#It's nice to have more entertainment options available in the valley#$e#",
+                "dumped_Guys": "I can't believe you'd be so cruel, dating all of them like that."
             }
         },
         {
@@ -24,9 +25,16 @@
             "Entries": {
                 "Town4": "@! I hear you're going to have a child soon! Have you picked out a name yet?"
             },
-            "When": {
-                "HavingChild": "@{{playerName}}"
-            }
+            "When": { "HavingChild": "@{{playerName}}"}
         },
+        {
+            "LogName": "Lewis: mid hearts, y1",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Lewis",
+            "When": {"YearModulus": "2"},
+            "Entries": {
+                "1{{YearRemainder}}": "Neighboring town lowered its property taxes to try to get more young professionals to move in.#$b#Young remote professionals make a lot of money and are good for the tax base."
+            }
+        }
     ]
 }

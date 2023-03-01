@@ -46,19 +46,21 @@ namespace Custom_Farm_Loader.Lib
         public bool ChangedCatchOceanCrabPotFish = false;
 
 
-        public static List<FishingRule> parseFishingRuleJsonArray(JProperty fishingRuleArray)
+        public static List<FishingRule> parseFishingRuleJsonArray(JProperty fishingRuleArray, IManifest manifest)
         {
             List<FishingRule> ret = new List<FishingRule>();
+            int i = 0;
 
             foreach (JObject obj in fishingRuleArray.First())
-                ret.Add(parseFishingRuleJObject(obj));
+                ret.Add(parseFishingRuleJObject(obj, i++, manifest));
 
             return ret;
         }
 
-        private static FishingRule parseFishingRuleJObject(JObject obj)
+        private static FishingRule parseFishingRuleJObject(JObject obj, int i, IManifest manifest)
         {
             FishingRule fishingRule = new FishingRule();
+            fishingRule.Filter.Manifest = manifest;
             string name = "";
 
             try {
@@ -88,7 +90,7 @@ namespace Custom_Farm_Loader.Lib
 
                 }
             } catch (Exception ex) {
-                Monitor.Log($"At FishingRules -> '{name}'", LogLevel.Error);
+                Monitor.Log($"At FishingRules[{i}] -> '{name}'", LogLevel.Error);
                 Monitor.Log(ex.Message, LogLevel.Trace);
                 throw;
             }

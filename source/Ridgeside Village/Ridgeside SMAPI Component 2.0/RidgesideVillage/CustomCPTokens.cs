@@ -110,7 +110,7 @@ namespace RidgesideVillage
 
             cp.RegisterToken(this.ModManifest, "RSVInstallDay", () =>
             {
-                if (!Config.progressiveStory)
+                if (!Config.ProgressiveStory)
                 {
                     return new[] { "0" };
                 }

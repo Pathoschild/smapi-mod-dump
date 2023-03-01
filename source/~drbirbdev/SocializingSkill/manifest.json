@@ -11,7 +11,7 @@
 {
     "Name": "SocializingSkill",
     "Author": "drbirbdev",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "Description": "Adds a skill related to befriending villagers.",
     "UniqueID": "drbirbdev.SocializingSkill",
     "EntryDll": "SocializingSkill.dll",

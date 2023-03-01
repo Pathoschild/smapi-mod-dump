@@ -143,9 +143,9 @@ internal static class FishFoodHandler
 
         helper.WriteSaveData(FISHFOODSAVESTRING, newHandler);
 
-        Utility.ForAllLocations((GameLocation loc) =>
+        Utility.ForAllLocations(static (GameLocation? loc) =>
         {
-            if (loc.modData?.GetInt(CanPlaceHandler.FishFood) is int value)
+            if (loc?.modData?.GetInt(CanPlaceHandler.FishFood) is int value)
             {
                 ModEntry.ModMonitor.DebugOnlyLog($"Decrementing FishFood at {loc.NameOrUniqueName} - {value}", LogLevel.Debug);
                 loc.modData.SetInt(CanPlaceHandler.FishFood, Math.Max(value - 1, 0), defaultVal: 0);

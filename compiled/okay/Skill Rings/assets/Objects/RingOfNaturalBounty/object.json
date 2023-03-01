@@ -6,9 +6,11 @@
   "Price": 50000,
   "Recipe": null,
   "NameLocalization": {
-	  "zh": "自然赏金之戒"
+	  "zh": "自然赏金之戒",
+	  "ko": "풍요의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "你的觅食能力大大提升。"
-  },
+	  "zh": "你的觅食能力大大提升。",
+	  "ko": "당신의 채집 스킬이 매우 향상됩니다."
+  }
 }

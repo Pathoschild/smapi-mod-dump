@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/Sandy",
+            "Entries": {
+                "GIRemainder_Fri": "1800 Saloon 17 20 0/2230 SandyHouse 2 5 2",
+            },
+            "When": { "HasSeenEvent": "13609001"}
+        }
+    ]
+}

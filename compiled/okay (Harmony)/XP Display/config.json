@@ -1,5 +1,18 @@
 {
   "SmallBarOrientation": "Vertical",
   "BigBarOrientation": "Horizontal",
-  "Alpha": 0.6
+  "Alpha": 0.6,
+  "LevelUpSoundName": "crystal",
+  "ToolbarSkillBar": {
+    "IsEnabled": true,
+    "Scale": 4.0,
+    "SpacingFromToolbar": 24.0,
+    "ShowIcon": true,
+    "ShowLevelNumber": true,
+    "AlwaysShowCurrentTool": false,
+    "ToolSwitchDurationInSeconds": 3.0,
+    "ToolUseDurationInSeconds": 3.0,
+    "XPChangedDurationInSeconds": 3.0,
+    "LevelChangedDurationInSeconds": 5.0
+  }
 }

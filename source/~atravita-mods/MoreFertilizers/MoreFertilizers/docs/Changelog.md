@@ -21,6 +21,8 @@ Changelog
 * Update to latest AtraCore.
 * Fix everlasting fertilizer not getting a special color.
 * Fix Radioactive fertilizer not properly ignoring seasons in Greenhouse locations.
+* Buff Secret Joja Fertilizer back up a little, lightly buff Wisdom Fertilizer (which also now uses random round proportional).
+* Fix compat with Immersive Scarecrows.
 
 #### Version 0.3.2
 * Balance

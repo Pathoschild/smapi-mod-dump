@@ -9,9 +9,11 @@
   "PurchaseFrom": "Marlon",
   "PurchasePrice": 5000,
   "NameLocalization": {
-	  "zh": "锋利刀刃之戒"
+	  "zh": "锋利刀刃之戒",
+	  "ko": "예리한 칼날 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "似乎让你的剑更锋利，并提高你的战斗水平。"
-  },
+	  "zh": "似乎让你的剑更锋利，并提高你的战斗水平。",
+	  "ko": "당신의 무기를 예리하게 만들어, 당신의 전투 능력을 증가시킵니다."
+  }
 }

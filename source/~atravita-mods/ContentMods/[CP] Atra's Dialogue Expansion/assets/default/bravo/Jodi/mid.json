@@ -12,11 +12,16 @@
     {
         "Action": "EditData",
         "LogName": "Jodi mid-hearts",
+        "Target": "Characters/Dialogue/Jodi",
         "Entries": {
-            "2{{YearRemainder}}": "",
+            "2{{YearRemainder}}": "Sometimes I feel like all I do is cook and clean.$s",
+            "7{{YearRemainder}}": "Sam left the laundry in the washer the other day, and it started smelling of mildew.$s#$b#As much as I love my boys, I wonder if I babied them too much...",
+            "9{{YearRemainder}}": "I found an interesting recipe in last week's edition of Homemaker's Weekly, but I'm not sure it's something I can get Vincent to eat.",
+            "11{{YearRemainder}}": "Between you and I, @, sometimes I wish I could just serve leftovers sometimes.#$b#I feel like I spend all my time cooking and cleaning.",
+            "13{{YearRemainder}}": "So, @, why did you decide to move to such a small town?"
         },
         "When": {
             "YearModulus": "1"
         }
-    },
+    }
 ]}

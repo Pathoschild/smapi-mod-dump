@@ -16,9 +16,9 @@ mods:
    XP Display
 
 latest commit:
-   commit e92a104e78ea90b592288b6dcca147df78554518
+   commit b4ace3266de085b0d1842bbd15c4f8dce09e11bb
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Fri Nov 18 18:28:04 2022 +0100
+   Date:   Wed Mar 1 00:37:16 2023 +0100
    
-       Solution fixes
+       JunimoWarp: Version 1.0.0
    

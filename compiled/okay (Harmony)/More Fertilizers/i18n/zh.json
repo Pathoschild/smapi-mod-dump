@@ -5,7 +5,16 @@
   "MillProducesOrganic.description": "将有机蔬果放入磨坊会产出有机产品。",
   "WaterOverlayColor.title": "覆盖鱼塘颜色",
   "WaterOverlayColor.description": "可以用鱼饲料修改鱼塘颜色。",
+  "RecolorBushes.title": "灌木丛会变色",
   "RecolorBushes.description": "启用的话，灌木丛施肥后会变色。",
+  "RecolorFruitTrees.title": "果树会变色",
+  "RecolorFruitTrees.description": "启用的话，果树施肥后会略微变色。",
+  "RecolorTrees.title": "普通树变色",
+  "RecolorTrees.description": "启用的话，普通树施肥后会略微变色。",
+
+  "BanRaisedSeeds.title": "架子植物设置",
+  "BanRaisedSeeds.description": "选择是否让放射性肥料对架子植物生效。",
+
 
   // For GMCM
   "IllFormatedConfig": "设置文档格式不正确，将使用默认设置，请使用Generic Mod Config Menu（尾号5098）菜单进行设置。",
@@ -15,6 +24,12 @@
 
   // Appended to the name of organic objects.
   "organic": "(有机)",
+
+  // mail
+  "bountiful.bush.mail": "...这种肥料可以让灌木丛收获持续时间增加...我希望我们能用这个赚很多钱....[剩余的部分因为水渍看不清]",
+  "bountiful.bush.mail.title": "一张小纸条",
+  "george.mail": "@，你比我想象中表现出色的多，我给你带来了点东西，你可能会感兴趣。^^-乔治. PS - 我是让罗宾帮我送过来的，你还想要的话去找她吧。",
+  "george.mail.title": "乔治寄来的信",
 
   // Joja free sample dialogue.
   "joja.event.0": "欢迎来到Joja超市, @! 有没有兴趣看看使用我们Joja公司专利技术制作的肥料？拿去用用看吧。",
@@ -84,5 +99,14 @@
   "rapid-bush-fertilizer.description": "让灌木丛长得更快！",
 
   "miraculous-beverages.title": "神奇饮料生长肥料",
-  "miraculous-beverages.description": "可以....长出饮料? 什么? 这是怎么做到的?"
+  "miraculous-beverages.description": "可以....长出饮料? 什么? 这是怎么做到的?",
+
+  "radioactive-fertilizer.description": "这个肥料真的能用吗？",
+  "radioactive-fertilizer.name": "放射性肥料",
+
+  "seedy-fertilizer.description": "标签上写着：\"这个怎么样！\"",
+  "seedy-fertilizer.name": "多产肥料",
+
+  "tree-tapper.description": "和树液收集器绝配。",
+  "tree-tapper.name": "树液肥料"
 }

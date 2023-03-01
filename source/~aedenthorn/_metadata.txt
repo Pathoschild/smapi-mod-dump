@@ -24,6 +24,7 @@ mods:
    Chess Boards
    Coin Collector
    Connected Garden Pots
+   Craft and Build from Containers
    Craftable Butterfly Hutches
    Craftable Terrarium
    Crop Growth Info
@@ -121,6 +122,7 @@ mods:
    Move It
    Moveable Mailbox
    Moveable Pet Bowl
+   Multi Save
    Multiple Floor Farmhouse
    Multiple Spouses
    Murdercrows
@@ -170,6 +172,8 @@ mods:
    Sound Effect Replacement
    Sound Tweaker
    Spoilage
+   Sprinkler Mod
+   Stacked Item Icons
    Stardew Impact
    Stardew RPG
    Submerged Crab Pots
@@ -189,6 +193,7 @@ mods:
    Wall Planter
    Wall Televisions
    Watering Can Tweaks
+   Weapons Ignore Grass
    Wedding Tweaks
    Week Starts Sunday
    Wiki Links
@@ -197,9 +202,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 42c44fc91ea82dfaf8d7bd1b8da2c62f46dda57d
+   commit cd9bb019be00ba09cd631d6e95a5d6a466040ee8
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Mon Jan 30 18:45:33 2023 -0500
+   Date:   Wed Feb 22 12:19:57 2023 -0500
    
        etc
    

@@ -48,6 +48,10 @@ Remove `Data/NPCDispositions` from your content pack first. For replacing tokens
 | SecondChildParent   |                            | Use the standard CP token {{spouse}} instead.                 |
 | NumberTotalChildren |                            | Not needed anymore. Number of children is handled internally. |
 
-**Notes**
+**Config options**
 
-For technical reasons NPC conversion happens at 6:10. You might be able to see your unconverted children before. This is expected behavior.
+* AgeWhenKidsAreModified: The age in days when a child is replaced by a LittleNPC. Default is 83 days.
+* DoChildrenWander: If true, children wander around the house every hour unless they have a schedule.
+* DoChildrenHaveCurfew: If true, children will head home at curfew time.
+* CurfewTime: The time of curfew when DoChildrenHaveCurfew is true. Default is 1900 (7PM).
+* DoChildrenVisitVolcanoIsland: Children visit Volcano Island by chance. Default is false. Note that the [CustomNPCExclusions](https://www.nexusmods.com/stardewvalley/mods/7089) mod doesn't have any influence on that because it runs before child conversion happens.

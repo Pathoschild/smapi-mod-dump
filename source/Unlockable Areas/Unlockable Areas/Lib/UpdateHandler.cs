@@ -8,21 +8,16 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewValley;
-using StardewModdingAPI;
-using Microsoft.Xna.Framework;
-using xTile;
-using xTile.Tiles;
-using xTile.Layers;
-using Unlockable_Areas.NetLib;
 using Unlockable_Areas.Menus;
-using Netcode;
-using StardewModdingAPI.Events;
+using xTile;
+using xTile.Layers;
+using xTile.Tiles;
 
 namespace Unlockable_Areas.Lib
 {
@@ -33,6 +28,8 @@ namespace Unlockable_Areas.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
+        public static List<UnlockableModel> AppliedUnlockables = new List<UnlockableModel>();
+
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -41,6 +38,27 @@ namespace Unlockable_Areas.Lib
 
             Helper.Events.Multiplayer.ModMessageReceived += modMessageReceived;
             Helper.Events.Multiplayer.PeerConnected += peerConnected;
+            Helper.Events.Player.Warped += warped;
+            Helper.Events.GameLoop.ReturnedToTitle += returnedToTitle;
+        }
+
+        private static void returnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        {
+            AppliedUnlockables = new List<UnlockableModel>();
+        }
+
+        private static void warped(object sender, WarpedEventArgs e)
+        {
+            if (e.NewLocation.Name == e.NewLocation.NameOrUniqueName)
+                return;
+
+            if (e.NewLocation.mapPath.Value != null && AppliedUnlockables.Any(el => el.Location == e.NewLocation.Name)) {
+                //Buildings share the same map, so when entering a building we hard reload it before applying our unlockables
+                e.NewLocation.loadMap(e.NewLocation.mapPath.Value, true); 
+
+                foreach (var unlockable in AppliedUnlockables.Where(el => el.LocationUnique == e.NewLocation.NameOrUniqueName))
+                    applyUnlockable(new Unlockable(unlockable), false);
+            }
         }
 
         private static void peerConnected(object sender, PeerConnectedEventArgs e)
@@ -48,39 +66,47 @@ namespace Unlockable_Areas.Lib
             if (!Context.IsMainPlayer)
                 return;
 
-            var saveData = SaveDataEvents.Data.UnlockablePurchased;
-            var unlockables = Unlockable.convertModelDicToEntity(Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables"));
+            var saveData = ModData.Instance.UnlockablePurchased;
+            var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables");
 
-            foreach (KeyValuePair<string, Unlockable> entry in unlockables) {
-                if (!saveData.ContainsKey(entry.Key))
-                    saveData[entry.Key] = false;
+            foreach (var keyDicPairs in saveData)
+                foreach (var locationValue in keyDicPairs.Value)
+                    if (unlockables.TryGetValue(keyDicPairs.Key, out UnlockableModel unlockable)) {
+                        unlockable.ID = keyDicPairs.Key;
+                        unlockable.LocationUnique = locationValue.Key;
 
-                if (saveData[entry.Key])
-                    ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)entry.Value, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
-            }
+                        if (locationValue.Value == true)
+                            ModEntry._Helper.Multiplayer.SendMessage(unlockable, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
+                    }
         }
 
-        public static void applyUnlockable(Unlockable unlockable)
+        public static void applyUnlockable(Unlockable unlockable, bool isNew = true)
         {
+            if (isNew)
+                AppliedUnlockables.Add((UnlockableModel)unlockable);
+
+            if (unlockable.UpdateMap.ToLower() == "none")
+                return;
+
             var map = Helper.GameContent.Load<Map>(unlockable.UpdateMap);
-            var location = Game1.getLocationFromName(unlockable.Location);
+            var location = unlockable.getGameLocation();
 
             applyOverlay(location, unlockable, map);
 
             if (location.Name == Game1.player.currentLocation.Name)
-                location.reloadMap();
+                location.reloadMap(); //Need to do this for the new tilesheets
         }
 
         private static void modMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            if (e.FromModID == Mod.ModManifest.UniqueID && e.Type == "ApplyUnlockable") {
+            if (e.FromModID == Mod.ModManifest.UniqueID && e.Type.StartsWith("ApplyUnlockable")) {
                 var unlockable = new Unlockable(e.ReadAs<UnlockableModel>());
+                ModData.setUnlockablePurchased(unlockable.ID, unlockable.LocationUnique);
+
+                if (e.Type == "ApplyUnlockable/Purchased")
+                    ModEntry._API.raiseShopPurchased(new API.ShopPurchasedEventArgs(Game1.player, unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
+
                 applyUnlockable(unlockable);
-
-                if (SaveDataEvents.Data == null)
-                    SaveDataEvents.Data = new ModData();
-
-                SaveDataEvents.Data.UnlockablePurchased[unlockable.ID] = true;
 
                 if (Game1.activeClickableMenu != null
                     && Game1.activeClickableMenu.GetType() == typeof(ShopObjectMenu)
@@ -90,41 +116,42 @@ namespace Unlockable_Areas.Lib
 
         }
 
-        public static void applyOverlay(GameLocation location, Unlockable unlockable, Map map)
+        public static void applyOverlay(GameLocation location, Unlockable unlockable, Map overlayMap)
         {
-            addTilesheetsAndLayers(location, unlockable, map);
+            addTilesheetsAndLayers(location, unlockable, overlayMap);
+            bool isReplaceOverlay = unlockable.UpdateType.ToLower().Equals("replace");
 
-            foreach (var layer in map.Layers) {
-                var locationLayer = location.map.GetLayer(layer.Id);
-                int locX = (int)unlockable.vUpdatePosition.X;
+            foreach (var overlayLayer in overlayMap.Layers) {
+                var locationLayer = location.map.GetLayer(overlayLayer.Id);
+                int locationX = (int)unlockable.vUpdatePosition.X;
 
-                for (int x = 0; x < layer.LayerSize.Width && locX < locationLayer.LayerSize.Width; x++, locX++) {
-                    int locY = (int)unlockable.vUpdatePosition.Y;
+                for (int overlayX = 0; overlayX < overlayLayer.LayerSize.Width && locationX < locationLayer.LayerSize.Width; overlayX++, locationX++) {
+                    int locationY = (int)unlockable.vUpdatePosition.Y;
+                    bool isBackLayer = overlayLayer.Id.ToLower().Equals("back");
 
-                    for (int y = 0; y < layer.LayerSize.Height && locY < locationLayer.LayerSize.Height; y++, locY++) {
-                        var copyFrom = layer.Tiles[x, y];
+                    for (int overlayY = 0; overlayY < overlayLayer.LayerSize.Height && locationY < locationLayer.LayerSize.Height; overlayY++, locationY++) {
+                        var copyFrom = overlayLayer.Tiles[overlayX, overlayY];
 
-                        if (unlockable.UpdateType.ToLower() == "replace")
-                            locationLayer.Tiles[locX, locY] = null;
+                        if (isReplaceOverlay)
+                            locationLayer.Tiles[locationX, locationY] = null;
 
-                        if ((layer.Id.ToLower() == "back" && unlockable.UpdateType.ToLower() == "replace") || (layer.Id.ToLower() == "back" && copyFrom != null))
-                            clearWaterTiles(location, locX, locY);
+                        if ((isBackLayer && isReplaceOverlay) || (isBackLayer && copyFrom != null))
+                            clearWaterTiles(location, locationX, locationY);
 
-                        if (copyFrom != null) {
-                            Tile copy = null;
-                            if (copyFrom.GetType() == typeof(StaticTile))
-                                copy = copyStaticTile((copyFrom as StaticTile), locationLayer, location, unlockable);
-                            else if (copyFrom.GetType() == typeof(AnimatedTile))
-                                copy = copyAnimatedTile((copyFrom as AnimatedTile), locationLayer, location, unlockable);
+                        if (copyFrom is null)
+                            continue;
 
-                            copy.TileIndexProperties.CopyFrom(copyFrom.TileIndexProperties);
-                            copy.Properties.CopyFrom(copyFrom.Properties);
+                        Tile copy = copyFrom is StaticTile
+                            ? copyStaticTile(copyFrom as StaticTile, locationLayer, location, unlockable)
+                            : copyAnimatedTile(copyFrom as AnimatedTile, locationLayer, location, unlockable);
 
-                            locationLayer.Tiles[locX, locY] = copy;
+                        copy.TileIndexProperties.CopyFrom(copyFrom.TileIndexProperties);
+                        copy.Properties.CopyFrom(copyFrom.Properties);
 
-                            if (layer.Id.ToLower() == "back")
-                                addWaterTiles(location, locX, locY);
-                        }
+                        locationLayer.Tiles[locationX, locationY] = copy;
+
+                        if (isBackLayer)
+                            addWaterTiles(location, locationX, locationY);
                     }
                 }
             }
@@ -132,6 +159,9 @@ namespace Unlockable_Areas.Lib
 
         private static void clearWaterTiles(GameLocation location, int x, int y)
         {
+            if (location.waterTiles == null)
+                return;
+
             //WaterTiles doesn't have the greatest means of accessing its inner arrays for a clean execution, so I'll just catch it if it fails
             try {
                 location.waterTiles[x, y] = false;
@@ -155,11 +185,11 @@ namespace Unlockable_Areas.Lib
 
         private static AnimatedTile copyAnimatedTile(AnimatedTile copyFrom, Layer layer, GameLocation location, Unlockable unlockable)
         {
-            var tileFrames = new List<StaticTile>();
-            foreach (var tile in copyFrom.TileFrames)
-                tileFrames.Add(copyStaticTile(tile, layer, location, unlockable));
+            StaticTile[] tileFrames = new StaticTile[copyFrom.TileFrames.Length];
+            for (int i = 0; i < copyFrom.TileFrames.Length; i++)
+                tileFrames[i] = copyStaticTile(copyFrom.TileFrames[i], layer, location, unlockable);
 
-            return new AnimatedTile(layer, tileFrames.ToArray(), copyFrom.FrameInterval);
+            return new AnimatedTile(layer, tileFrames, copyFrom.FrameInterval);
         }
 
         private static StaticTile copyStaticTile(StaticTile copyFrom, Layer layer, GameLocation location, Unlockable unlockable)
@@ -169,7 +199,13 @@ namespace Unlockable_Areas.Lib
 
         public static void addTilesheetsAndLayers(GameLocation location, Unlockable unlockable, Map map)
         {
+            if (map == null)
+                location.reloadMap();
+
             foreach (var tileSheet in map.TileSheets) {
+                if (location.Map.TileSheets.Any(el => el.Id == $"zz_{unlockable.ID}_{tileSheet.Id}"))
+                    continue;
+
                 var newTileSheet = new TileSheet($"zz_{unlockable.ID}_{tileSheet.Id}", location.map, getSeasonalImageSource(tileSheet.ImageSource), tileSheet.SheetSize, tileSheet.TileSize);
                 newTileSheet.Properties.CopyFrom(tileSheet.Properties);
                 location.Map.AddTileSheet(newTileSheet);
@@ -180,7 +216,6 @@ namespace Unlockable_Areas.Lib
                     var newLayer = new Layer(layer.Id, location.Map, location.map.Layers.First().LayerSize, layer.TileSize);
                     location.map.AddLayer(newLayer);
                 }
-            return;
         }
 
         private static string getSeasonalImageSource(string imageSource)

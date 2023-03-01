@@ -43,38 +43,50 @@ namespace RandomStartDay
             this.config = this.Helper.ReadConfig<ModConfig>();
 
             helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
-            helper.Events.Specialized.LoadStageChanged += this.Specialized_LoadStageChanged;
-            helper.Events.Content.AssetRequested += this.Content_AssetRequested;
-            helper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
-            helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
 
-            var harmony = new Harmony(this.ModManifest.UniqueID);
-            string tipMethodName = Helper.Reflection.GetMethod(new TV(), "getTodaysTip").MethodInfo.Name;
-            HarmonyMethodPatches.Initialize(helper, Monitor);
+            // run when disableAll is false
+            if (!config.disableAll)
+            {
+                helper.Events.Specialized.LoadStageChanged += this.Specialized_LoadStageChanged;
+                helper.Events.Content.AssetRequested += this.Content_AssetRequested;
+                helper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
+                helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Objects.TV), tipMethodName),
-                postfix: new HarmonyMethod(typeof(HarmonyMethodPatches), nameof(HarmonyMethodPatches.changeTodaysTip))
-                ); 
+                var harmony = new Harmony(this.ModManifest.UniqueID);
+                string tipMethodName = Helper.Reflection.GetMethod(new TV(), "getTodaysTip").MethodInfo.Name;
+                HarmonyMethodPatches.Initialize(helper, Monitor);
+
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(StardewValley.Objects.TV), tipMethodName),
+                    postfix: new HarmonyMethod(typeof(HarmonyMethodPatches), nameof(HarmonyMethodPatches.changeTodaysTip))
+                    );
+            }
         }
 
         // EVENTS
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            // disable all
+            if (config.disableAll)
+            {
+                Monitor.Log("DISABLED", LogLevel.Debug);
+                return;
+            }
+
             introEnd = true;
             winter28 = false;
             verification();
             // if unique id is used, other random options are disabled
             if (config.isRandomSeedUsed)
             {
-                Monitor.Log("Your Game's unique ID will be used. The other randomize options are disabled.", LogLevel.Debug);
+                Monitor.Log("ENABLED, using unique ID(9digit number)", LogLevel.Debug);
                 config.allowedSeasons = new String[] { "spring", "summer", "fall", "winter" };
                 config.avoidFestivalDay = false;
                 config.alwaysStartAt1st = false;
             }
             else
             {
-                Monitor.Log("Default random seed will be used.", LogLevel.Debug);
+                Monitor.Log("ENABLED, using default random seed", LogLevel.Debug);
             }
         }
 
@@ -166,14 +178,17 @@ namespace RandomStartDay
         {
             if (e.NameWithoutLocale.IsEquivalentTo("Minigames/Intro"))
             {
-                e.Edit(asset =>
+                if (currentSeason != "spring")
                 {
-                    var editor = asset.AsImage();
-                    Texture2D sourceImage = this.Helper.ModContent.Load<Texture2D>("assets/intro_" + currentSeason + ".png");
+                    e.Edit(asset =>
+                    {
+                        var editor = asset.AsImage();
+                        Texture2D sourceImage = this.Helper.ModContent.Load<Texture2D>("assets/intro_" + currentSeason + ".png");
 
-                    editor.PatchImage(sourceImage, targetArea: (new Rectangle(0, 176, 48, 80)), sourceArea: (new Rectangle(0, 0, 48, 80)));
-                    editor.PatchImage(sourceImage, targetArea: (new Rectangle(48, 224, 64, 16)), sourceArea: (new Rectangle(48, 48, 64, 16)));
-                });
+                        editor.PatchImage(sourceImage, targetArea: (new Rectangle(0, 176, 48, 80)), sourceArea: (new Rectangle(0, 0, 48, 80)));
+                        editor.PatchImage(sourceImage, targetArea: (new Rectangle(48, 224, 64, 16)), sourceArea: (new Rectangle(48, 48, 64, 16)));
+                    });
+                }
             }
 
             // outdoortiles, fixed on spring to seasonal, when introEnd is false
@@ -183,7 +198,7 @@ namespace RandomStartDay
                 // load asset from game folder
                 {
                     originalSpringTileName = e.Name;
-                    e.LoadFromModFile<Texture2D>("../../Content/Maps/" + currentSeason + "_outdoorsTileSheet.xnb", AssetLoadPriority.Low);
+                    e.LoadFromModFile<Texture2D>("../../../Content/Maps/" + currentSeason + "_outdoorsTileSheet.xnb", AssetLoadPriority.Low);
                 }
             }
 
@@ -363,7 +378,7 @@ namespace RandomStartDay
             }
 
             // invalidateCache for make to reload objectinformation
-            Helper.GameContent.InvalidateCache("Data/ObjectInformation." + Helper.Content.CurrentLocale);
+            Helper.GameContent.InvalidateCache("Data/ObjectInformation." + Helper.GameContent.CurrentLocale);
 
             return;
         }

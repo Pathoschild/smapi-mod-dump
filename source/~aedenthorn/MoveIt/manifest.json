@@ -11,7 +11,7 @@
 {
   "Name": "MoveIt",
   "Author": "aedenthorn",
-  "Version": "0.2.3",
+  "Version": "0.3.2",
   "Description": "MoveIt.",
   "UniqueID": "aedenthorn.MoveIt",
   "EntryDll": "MoveIt.dll",
@@ -28,5 +28,5 @@
       "IsRequired": false
     }
   ],
-  "UpdateKeys": [ "Nexus:" ]
+  "UpdateKeys": [ "Nexus:15163" ]
 }

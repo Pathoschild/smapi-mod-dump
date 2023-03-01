@@ -140,6 +140,98 @@
   },
   {
     "$ItemType": "BigCraftable",
+    "ID": "StoneBath",
+    "Texture": "StoneBath.png:0",
+    "SellPrice": 2500,
+    "DynamicFields": [
+      {
+        "Conditions": {
+          "Season": "winter"
+        },
+        "Texture": "StoneBath.png:1"
+      }
+    ]
+  },
+  {
+    "$ItemType": "ShopEntry",
+    "Item": {
+      "Type": "DGAItem",
+      "Value": "Ivy.OrnithologistsGuild/StoneBath"
+    },
+    "ShopId": "STF.Ivy_OrnithologistsGuild",
+    "MaxSold": 1,
+    "Cost": 25000
+  },
+  {
+    "$ItemType": "CraftingRecipe",
+    "ID": "Ivy_OrnithologistsGuild_Recipe_StoneBath",
+    "KnownByDefault": true,
+    "Result": {
+      "Type": "DGAItem",
+      "Value": "Ivy.OrnithologistsGuild/StoneBath"
+    },
+    "Ingredients": [
+      {
+        "Type": "VanillaObject",
+        "Value": 390,
+        "_Name": "Stone",
+        "Quantity": 250
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 338,
+        "_Name": "Refined Quartz",
+        "Quantity": 5
+      }
+    ]
+  },
+  {
+    "$ItemType": "BigCraftable",
+    "ID": "HeatedStoneBath",
+    "Texture": "HeatedStoneBath.png:0",
+    "SellPrice": 5000
+  },
+  {
+    "$ItemType": "ShopEntry",
+    "Item": {
+      "Type": "DGAItem",
+      "Value": "Ivy.OrnithologistsGuild/HeatedStoneBath"
+    },
+    "ShopId": "STF.Ivy_OrnithologistsGuild",
+    "MaxSold": 1,
+    "Cost": 50000
+  },
+  {
+    "$ItemType": "CraftingRecipe",
+    "ID": "Ivy_OrnithologistsGuild_Recipe_HeatedStoneBath",
+    "KnownByDefault": true,
+    "Result": {
+      "Type": "DGAItem",
+      "Value": "Ivy.OrnithologistsGuild/HeatedStoneBath"
+    },
+    "Ingredients": [
+      {
+        "Type": "VanillaObject",
+        "Value": 390,
+        "_Name": "Stone",
+        "Quantity": 250
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 338,
+        "_Name": "Refined Quartz",
+        "Quantity": 5
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 787,
+        "_Name": "Battery Pack",
+        "Quantity": 10
+      }
+    ]
+  },
+  {
+    "$ItemType": "BigCraftable",
     "ID": "WoodenHopper",
     "Texture": "WoodenHopper.png:0",
     "SellPrice": 2500

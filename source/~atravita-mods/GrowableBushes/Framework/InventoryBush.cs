@@ -11,6 +11,7 @@
 using System.Xml.Serialization;
 
 using AtraCore.Framework.ReflectionManager;
+using AtraCore.Utilities;
 
 using AtraShared.Utils.Extensions;
 
@@ -20,6 +21,8 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
+
+using XLocation = xTile.Dimensions.Location;
 
 namespace GrowableBushes.Framework;
 
@@ -86,11 +89,11 @@ public sealed class InventoryBush : SObject
     /// Stardew's Bush::shake.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Reflection delegate.")]
-    private static readonly BushShakeDel BushShakeMethod = typeof(Bush)
+    internal static readonly BushShakeDel BushShakeMethod = typeof(Bush)
         .GetCachedMethod("shake", ReflectionCache.FlagTypes.InstanceFlags)
         .CreateDelegate<BushShakeDel>();
 
-    private delegate void BushShakeDel(
+    internal delegate void BushShakeDel(
         Bush bush,
         Vector2 tileLocation,
         bool doEvenIfStillShaking);
@@ -129,22 +132,6 @@ public sealed class InventoryBush : SObject
             if (!IsTilePlaceableForBush(l, x, (int)tile.Y, relaxed))
             {
                 return false;
-            }
-        }
-
-        if (relaxed)
-        {
-            return true;
-        }
-
-        if (l is BuildableGameLocation buildable)
-        {
-            foreach (Building? building in buildable.buildings)
-            {
-                if (!building.isTilePassable(tile))
-                {
-                    return false;
-                }
             }
         }
 
@@ -196,10 +183,12 @@ public sealed class InventoryBush : SObject
             case BushSizes.Medium:
             case BushSizes.Large:
                 bush.townBush.Value = false;
+                bush.tileSheetOffset.Value = 0;
                 break;
             case BushSizes.Town:
             case BushSizes.TownLarge:
                 bush.townBush.Value = true;
+                bush.tileSheetOffset.Value = 0;
                 break;
         }
 
@@ -229,8 +218,7 @@ public sealed class InventoryBush : SObject
     {
         if (this.sourceRect == default)
         {
-            int season = GetSeason(Game1.currentLocation);
-            this.sourceRect = this.GetSourceRectForSeason(season);
+            this.sourceRect = this.GetSourceRectForSeason(GetSeason(Game1.currentLocation));
         }
 
         if (this.sourceRect != default)
@@ -291,8 +279,7 @@ public sealed class InventoryBush : SObject
     {
         if (this.sourceRect == default)
         {
-            int season = GetSeason(Game1.currentLocation);
-            this.sourceRect = this.GetSourceRectForSeason(season);
+            this.sourceRect = this.GetSourceRectForSeason(GetSeason(Game1.currentLocation));
         }
 
         if (this.sourceRect != default)
@@ -326,8 +313,7 @@ public sealed class InventoryBush : SObject
     {
         if (this.sourceRect == default)
         {
-            int season = GetSeason(f.currentLocation);
-            this.sourceRect = this.GetSourceRectForSeason(season);
+            this.sourceRect = this.GetSourceRectForSeason(GetSeason(f.currentLocation));
         }
         if (this.sourceRect != default)
         {
@@ -373,6 +359,9 @@ public sealed class InventoryBush : SObject
     }
 
     /// <inheritdoc />
+    public override int maximumStackSize() => ModEntry.Config.AllowBushStacking ? 999 : 1;
+
+    /// <inheritdoc />
     public override bool canBeShipped() => false;
 
     /// <inheritdoc />
@@ -394,13 +383,17 @@ public sealed class InventoryBush : SObject
     public override bool canBePlacedInWater() => false;
 
     /// <inheritdoc />
+    public override bool isForage(GameLocation location) => false;
+
+    /// <inheritdoc />
     public override bool canStackWith(ISalable other)
     {
         if (other is not InventoryBush otherBush)
         {
             return false;
         }
-        return this.ParentSheetIndex == otherBush.ParentSheetIndex;
+        return this.ParentSheetIndex == otherBush.ParentSheetIndex
+            && (!ModEntry.Config.PreserveModData || this.modData.ModDataMatches(otherBush.modData));
     }
 
     /// <inheritdoc />
@@ -477,7 +470,6 @@ public sealed class InventoryBush : SObject
             {
                 return false;
             }
-
         }
 
         foreach (LargeTerrainFeature largeTerrainFeature in location.largeTerrainFeatures)
@@ -488,11 +480,48 @@ public sealed class InventoryBush : SObject
             }
         }
 
-        return relaxed || !location.isTileOccupied(new Vector2(tileX, tileY));
+        if (location is IAnimalLocation hasAnimals)
+        {
+            foreach (FarmAnimal? animal in hasAnimals.Animals.Values)
+            {
+                if (animal.GetBoundingBox().Intersects(position))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (relaxed)
+        {
+            return true;
+        }
+
+        Vector2 tile = new(tileX, tileY);
+        if (location is BuildableGameLocation buildable)
+        {
+            foreach (Building? building in buildable.buildings)
+            {
+                if (!building.isTilePassable(tile))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (location.terrainFeatures?.ContainsKey(tile) == true
+            || location.Objects?.ContainsKey(tile) == true)
+        {
+            return false;
+        }
+
+        return !location.isTileOccupied(tile)
+            && location.isTilePassable(new XLocation(tileX, tileY), Game1.viewport);
     }
 
     private static int GetSeason(GameLocation loc)
-        => Utility.getSeasonNumber(Game1.GetSeasonForLocation(loc));
+    {
+        return Utility.getSeasonNumber(loc is Desert? "summer" : Game1.GetSeasonForLocation(loc));
+    }
 
     // derived from Bush.setUpSourceRect
     private Rectangle GetSourceRectForSeason(int season)
@@ -505,7 +534,7 @@ public sealed class InventoryBush : SObject
                 return new Rectangle((season * 32) + 16, 224, 16, 32);
             case BushSizes.Medium:
                 int y = Math.DivRem(season * 64, Bush.texture.Value.Bounds.Width, out int x);
-                return new Rectangle(x, y, 32, 48);
+                return new Rectangle(x, y * 48, 32, 48);
             case BushSizes.Town:
                 return new Rectangle(season * 32, 96, 32, 32);
             case BushSizes.Large:
@@ -529,6 +558,85 @@ public sealed class InventoryBush : SObject
             default:
                 return default;
         }
+    }
+
+    /// <summary>
+    /// Draw some graphics for being picked up.
+    /// </summary>
+    /// <param name="location">game location picked up from.</param>
+    /// <param name="tile">Tile pikced up from.</param>
+    internal void DrawPickUpGraphics(GameLocation location, Vector2 tile)
+    {
+        if (this.sourceRect == default)
+        {
+            this.sourceRect = this.GetSourceRectForSeason(GetSeason(Game1.currentLocation));
+        }
+        if (this.sourceRect == default)
+        {
+            ModEntry.ModMonitor.Log($"Could not resolve source rect for {this.Name}", LogLevel.Error);
+            return;
+        }
+
+        BushSizes size = (BushSizes)this.ParentSheetIndex;
+        if (size == BushSizes.Invalid || !BushSizesExtensions.IsDefined(size))
+        {
+            return;
+        }
+
+        int width = size.GetWidth();
+
+        Multiplayer mult = MultiplayerHelpers.GetMultiplayer();
+
+        const float deltaY = -100;
+        const float gravity = 0.0025f;
+
+        float velocity = -0.7f - MathF.Sqrt(2 * 60f * gravity);
+        float time = (MathF.Sqrt((velocity * velocity) - (gravity * deltaY * 2f)) / gravity) - (velocity / gravity);
+
+        Vector2 landingPos = new Vector2(tile.X + Math.Max(0, (width / 2) - 1), tile.Y) * 64f;
+
+        TemporaryAnimatedSprite bushTas = new(
+            "TileSheets/bushes",
+            this.sourceRect,
+            (tile * 64f) - new Vector2(0, this.sourceRect.Y / 16),
+            false,
+            0f,
+            Color.White)
+        {
+            totalNumberOfLoops = 1,
+            interval = time,
+            acceleration = new Vector2(0f, gravity),
+            motion = new Vector2(0f, velocity),
+            scale = Game1.pixelZoom,
+            timeBasedMotion = true,
+            rotation = 0.1f,
+            rotationChange = 0.1f,
+            scaleChange = -0.0015f,
+            layerDepth = (landingPos.Y + 32f) / 10000f,
+        };
+
+        TemporaryAnimatedSprite? dustTas = new(
+            textureName: Game1.mouseCursorsName,
+            sourceRect: new Rectangle(464, 1792, 16, 16),
+            animationInterval: 120f,
+            animationLength: 5,
+            numberOfLoops: 0,
+            position: landingPos,
+            flicker: false,
+            flipped: Game1.random.NextDouble() < 0.5,
+            layerDepth: (landingPos.Y + 40f) / 10000f,
+            alphaFade: 0.01f,
+            color: Color.White,
+            scale: Game1.pixelZoom,
+            scaleChange: 0.02f,
+            rotation: 0f,
+            rotationChange: 0f)
+        {
+            light = true,
+            delayBeforeAnimationStart = Math.Max((int)time - 10, 0),
+        };
+
+        mult.broadcastSprites(location, bushTas, dustTas);
     }
     #endregion
 }

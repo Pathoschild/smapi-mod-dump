@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TestingType>Library</TestingType>
+		<TestingType>Exe</TestingType>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(TestingType)' == 'Exe'">
@@ -22,14 +22,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Yariazen.PlateUp.ModBuildUtilities" Version="1.5.6" />
+	  <Compile Remove="JsonConverters\**" />
+	  <EmbeddedResource Remove="JsonConverters\**" />
+	  <None Remove="JsonConverters\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="$(GameModsPath)\KitchenLib\content\Kitchenlib-Workshop.dll" />
+	  <PackageReference Include="Mono.Cecil" Version="0.11.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="JsonConverters\" />
+	  <Reference Include="Kitchen.Common">
+	    <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\PlateUp\PlateUp\PlateUp_Data\Managed\Kitchen.Common.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 </Project>

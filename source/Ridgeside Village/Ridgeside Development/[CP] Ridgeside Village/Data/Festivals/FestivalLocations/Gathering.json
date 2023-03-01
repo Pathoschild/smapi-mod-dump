@@ -106,6 +106,30 @@
         ]
     },
 
+    {
+        //Zayne Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall20",
+        "When": {
+            "HasSeenEvent": 75160440,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Zayne 121 47 up",
+                "Delimiter": "/"
+            },
+
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "MainEvent_additionalCharacters"],
+                "Value": "Zayne 89 43 left",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
 		{
         //Jio and Kiwi
         "Action": "EditData",
@@ -147,6 +171,26 @@
           "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters"],
           "Value": "Torts 65 40 0",
+          "Delimiter": "/"
+        },
+      ]
+    },
+
+		{
+      "LogName": "June RSV Gathering Location",
+      "Action": "EditData",
+      "Target": "Data/Festivals/fall20",
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters"],
+          "Value": "June 85 42 3",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters"],
+          "Value": "June 78 41 0",
           "Delimiter": "/"
         },
       ]

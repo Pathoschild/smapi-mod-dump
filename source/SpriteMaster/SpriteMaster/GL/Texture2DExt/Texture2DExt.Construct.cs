@@ -35,7 +35,7 @@ internal static partial class Texture2DExt {
 				size.Height
 			);
 
-			MonoGame.OpenGL.GL.BindTexture(TextureTarget.Texture2D, @this.glTexture);
+			GLExt.BindTexture(TextureTarget.Texture2D, @this.glTexture);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -53,24 +53,14 @@ internal static partial class Texture2DExt {
 		internal static void TextureStorage2DExt(Texture2D @this, int levels, GLExt.SizedInternalFormat format, Vector2I size) {
 			GLExt.TextureStorage2DExt.Function!(
 				(GLExt.ObjectId)@this.glTexture,
-				levels,
-				format,
-				size.Width,
-				size.Height
-			);
-
-			MonoGame.OpenGL.GL.BindTexture(TextureTarget.Texture2D, @this.glTexture);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void TexStorage2DExt(Texture2D @this, int levels, GLExt.SizedInternalFormat format, Vector2I size) {
-			GLExt.TexStorage2DExt.Function!(
 				TextureTarget.Texture2D,
 				levels,
 				format,
 				size.Width,
 				size.Height
 			);
+
+			GLExt.BindTexture(TextureTarget.Texture2D, @this.glTexture);
 		}
 	}
 
@@ -114,10 +104,9 @@ internal static partial class Texture2DExt {
 		GLExt.AlwaysSwallowErrors();
 
 		DelegatePair[] delegates = {
+			new(GLExt.TextureStorage2DExt,  &Implementations.TextureStorage2DExt),
 			new(GLExt.TextureStorage2D,			&Implementations.TextureStorage2D),
-			new(GLExt.TexStorage2D,					&Implementations.TexStorage2D),
-			new(GLExt.TextureStorage2DExt,	&Implementations.TextureStorage2DExt),
-			new(GLExt.TexStorage2DExt,			&Implementations.TexStorage2DExt),
+			new(GLExt.TexStorage2D,					&Implementations.TexStorage2D)
 		};
 
 		foreach (var delegator in delegates) {
@@ -144,6 +133,42 @@ internal static partial class Texture2DExt {
 		return false;
 	}
 
+	private delegate int LevelSizeGetter(Vector2I size);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static LevelSizeGetter GetLevelSizeGetter(
+		Texture2D texture,
+		SurfaceFormat format
+	) => format switch {
+		// PVRTC has explicit calculations for imageSize
+		// https://www.khronos.org/registry/OpenGL/extensions/IMG/IMG_texture_compression_pvrtc.txt
+		SurfaceFormat.RgbPvrtc2Bpp or SurfaceFormat.RgbaPvrtc2Bpp =>
+			static dimensions => {
+				var maxDimensions = dimensions.Max((16, 8));
+				return ((maxDimensions.X * maxDimensions.Y) << 1 + 7) >> 3;
+			}
+		,
+
+		SurfaceFormat.RgbPvrtc4Bpp or SurfaceFormat.RgbaPvrtc4Bpp =>
+			static dimensions => {
+				var maxDimensions = dimensions.Max((8, 8));
+				return ((maxDimensions.X * maxDimensions.Y) << 2 + 7) >> 3;
+			}
+		,
+
+		_ when texture.glFormat == PixelFormat.CompressedTextureFormats =>
+			dimensions => {
+				int blockSize = format.GetSize();
+				var blockDimensions = format.BlockEdge();
+
+				var blocks = (dimensions + (blockDimensions - 1)) / blockDimensions;
+				return blocks.X * blocks.Y * blockSize;
+			}
+		,
+
+		_ => dimensions => format.SizeBytes(dimensions.Area)
+	};
+
 	internal static bool Construct<T>(
 		Texture2D @this,
 		ReadOnlyPinnedSpan<T>.FixedSpan dataIn,
@@ -162,6 +187,8 @@ internal static partial class Texture2DExt {
 		}
 
 		try {
+			var meta = @this.GetGlMeta();
+
 			@this.glTarget = TextureTarget.Texture2D;
 			format.GetGLFormat(@this.GraphicsDevice, out @this.glInternalFormat, out @this.glFormat, out @this.glType);
 
@@ -170,7 +197,7 @@ internal static partial class Texture2DExt {
 			// only use it if we are populating the texture now
 			bool useStorage =
 				StorageEnabled &&
-				(GLExt.TexStorage2D.Enabled || GLExt.TextureStorage2D.Enabled || GLExt.TexStorage2DExt.Enabled || GLExt.TextureStorage2DExt.Enabled) &&
+				(GLExt.TexStorage2D.Enabled || GLExt.TextureStorage2D.Enabled || GLExt.TextureStorage2DExt.Enabled) &&
 				SMConfig.Extras.OpenGL.UseTexStorage;
 			bool buildLayers = !dataIn.IsEmpty || !useStorage;
 
@@ -189,36 +216,7 @@ internal static partial class Texture2DExt {
 
 			// Mostly taken from MonoGame, but completely refactored.
 			// Returns the size given dimensions, adjusted/aligned for block formats.
-			Func<Vector2I, int> getLevelSize = format switch {
-				// PVRTC has explicit calculations for imageSize
-				// https://www.khronos.org/registry/OpenGL/extensions/IMG/IMG_texture_compression_pvrtc.txt
-				SurfaceFormat.RgbPvrtc2Bpp or SurfaceFormat.RgbaPvrtc2Bpp =>
-					static size => {
-						var maxDimensions = size.Max((16, 8));
-						return ((maxDimensions.X * maxDimensions.Y) << 1 + 7) >> 3;
-					}
-				,
-
-				SurfaceFormat.RgbPvrtc4Bpp or SurfaceFormat.RgbaPvrtc4Bpp =>
-					static size => {
-						var maxDimensions = size.Max((8, 8));
-						return ((maxDimensions.X * maxDimensions.Y) << 2 + 7) >> 3;
-					}
-				,
-
-				_ when @this.glFormat == PixelFormat.CompressedTextureFormats =>
-					size => {
-						int blockSize = format.GetSize();
-						var blockDimensions = format.BlockEdge();
-
-						var blocks = (size + (blockDimensions - 1)) / blockDimensions;
-						return blocks.X * blocks.Y * blockSize;
-					}
-				,
-
-				_ =>
-					size => format.SizeBytes(size.Area)
-			};
+			var getLevelSize = GetLevelSizeGetter(@this, format);
 
 			bool success = true;
 			ThreadingExt.ExecuteOnMainThread(
@@ -232,7 +230,8 @@ internal static partial class Texture2DExt {
 					GLExt.CheckError();
 
 					GenerateTexture(@this, useStorage);
-					GLExt.Checked(new(MonoGame.OpenGL.GL.BindTexture), TextureTarget.Texture2D, @this.glTexture);
+					@this.CheckTextureMip();
+					GLExt.BindTextureChecked(TextureTarget.Texture2D, @this.glTexture);
 
 					if (useStorage) {
 						// https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
@@ -245,74 +244,115 @@ internal static partial class Texture2DExt {
 						bool usedTexStorage = TryTexStorage(@this, levels, sizedFormat, size);
 
 						if (usedTexStorage) {
-							@this.GetGlMeta().Flags |= Texture2DOpenGlMeta.Flag.Initialized | Texture2DOpenGlMeta.Flag.Storage;
+							meta.Flags |= Texture2DOpenGlMeta.Flag.Initialized | Texture2DOpenGlMeta.Flag.Storage;
 						}
 						else {
 							useStorage = false;
 							StorageEnabled = false;
 							buildLayers = !dataIn.IsEmpty;
-
-							//GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0));
-
-							//if (@this.GraphicsDevice.GraphicsCapabilities.SupportsTextureMaxLevel) {
-							//	GLExt.Checked(() => MonoGame.OpenGL.GL.TexParameter(TextureTarget.Texture2D, SamplerState.TextureParameterNameTextureMaxLevel, (@this.LevelCount > 0) ? @this.LevelCount - 1 : 1000));
-							//}
 						}
 					}
 
 					if (!useStorage) {
-						@this.GetGlMeta().Flags &= ~Texture2DOpenGlMeta.Flag.Initialized;
+						meta.Flags &= ~Texture2DOpenGlMeta.Flag.Initialized;
 					}
 
 					if (buildLayers) {
-						if (!data.IsEmpty) {
-							GLExt.Checked(() => MonoGame.OpenGL.GL.PixelStore(PixelStoreParameter.UnpackAlignment, Math.Min(@this.Format.GetSize(), 8)));
-						}
-
-						var levelDimensions = size;
-						int level = 0;
-						int currentOffset = 0;
-
-						// Loop over every level and populate it, starting from the largest.
-						while (true) {
-							int levelSize = getLevelSize(levelDimensions);
-							if (!SetDataInternal(
-								@this: @this,
-								level: level++,
-								rect: null,
-								data: data.IsEmpty ? default : data.Slice(currentOffset, levelSize),
-								initialized: useStorage,
-								isSet: true
-							)) {
-								success = false;
-								return;
-							}
-
-							if (!mipmap || levelDimensions == (1, 1))
-								break;
-
-							currentOffset += levelSize;
-
-							levelDimensions >>= 1;
-							levelDimensions = levelDimensions.Min(1);
-							++level;
-						}
+						success = InitializeTexture(
+							@this,
+							data,
+							meta,
+							getLevelSize
+						) && success;
 					}
 				}
 			);
+
+			if (!success) {
+				meta.Flags &= ~Texture2DOpenGlMeta.Flag.Managed;
+			}
+			else {
+				meta.Flags |= Texture2DOpenGlMeta.Flag.Managed;
+				@this.CheckTextureMip();
+			}
+
 			return success;
 		}
 		catch (MonoGameGLException ex) {
 			Debug.Warning("GL Exception, disabling GL extensions", ex);
 			Debug.Break();
 			Working = false;
+			@this.GetGlMeta().Flags &= ~Texture2DOpenGlMeta.Flag.Managed;
 			return false;
 		}
 		catch (SystemException ex) {
 			Debug.Warning("System Exception, disabling GL extensions", ex);
 			Debug.Break();
 			Working = false;
+			@this.GetGlMeta().Flags &= ~Texture2DOpenGlMeta.Flag.Managed;
 			return false;
 		}
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static bool InitializeTexture(Texture2D texture, ReadOnlySpan<byte> data = default) =>
+		InitializeTexture(
+			texture: texture,
+			data: data,
+			meta: texture.GetGlMeta(),
+			GetLevelSizeGetter(texture, texture.Format)
+		);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static bool InitializeTexture(
+		Texture2D texture,
+		ReadOnlySpan<byte> data,
+		Texture2DOpenGlMeta? meta,
+		LevelSizeGetter levelSizeGetter
+	) {
+		texture.CheckTextureMip();
+
+		if (!data.IsEmpty) {
+			GLExt.PixelStoreChecked(PixelStoreName.UnpackAlignment, Math.Min(texture.Format.GetSize(), 8));
+		}
+
+		meta ??= texture.GetGlMeta();
+
+		bool mipmap = texture.LevelCount != 1;
+		var levelDimensions = new Vector2I(texture);
+		int level = 0;
+		int currentOffset = 0;
+
+		bool hasData = !data.IsEmpty;
+
+		// Loop over every level and populate it, starting from the largest.
+		while (true) {
+			int levelSize = hasData ? levelSizeGetter(levelDimensions) : 0;
+			if (!SetDataInternal(
+						@this: texture,
+						level: level++,
+						rect: null,
+						data: hasData ? data.Slice(currentOffset, levelSize) : default,
+						initialized: meta.Flags.HasFlag(Texture2DOpenGlMeta.Flag.Storage | Texture2DOpenGlMeta.Flag.Initialized),
+						isSet: true
+					)) {
+				return false;
+			}
+
+			if (!mipmap || levelDimensions == (1, 1))
+				break;
+
+			currentOffset += levelSize;
+
+			levelDimensions >>= 1;
+			levelDimensions = levelDimensions.Min(1);
+			++level;
+		}
+
+		meta.Flags |= Texture2DOpenGlMeta.Flag.Initialized;
+
+		texture.CheckTextureMip();
+
+		return true;
 	}
 }

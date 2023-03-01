@@ -18,4 +18,23 @@
             "Maru": "Strange that it's raining in winter.",
         }
     },
+    {
+        "LogName": "Maru, mid hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Maru",
+        "Entries":{
+            "1": "@, why did you decide to come to Pelican Town?",
+            "1_2": "Ah, @, it's the start of a new month! What do you have planned?",
+            "8_2": "Sometimes I wonder if Sebastian would be happier living in the city.#$b#He doesn't really like living with other people though."
+        }
+    },
+    {
+        "LogName": "Maru -- Married Dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueMaru",
+        "Entries": {
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}": "Oh, honey, it's our anniversary today! Wanna go do something fun?$h"
+        },
+        "When": {"HasMod" :"TheMightyAmondee.CustomTokens"}
+    }
 ]}

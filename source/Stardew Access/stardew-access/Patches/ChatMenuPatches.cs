@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewValley;
 using StardewValley.Menus;
 
 namespace stardew_access.Patches

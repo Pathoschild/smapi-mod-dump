@@ -1,0 +1,77 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JhonnieRandler/TVBrasileira
+**
+*************************************************/
+
+{
+  //Palmirinha
+  "title-palmirinha": "Palmirinha Program",
+  "rerun-palmirinha": "Palmirinha Program (rerun)",
+  "intro-palmirinha": "Hi my little friends! Today the program is very special. It's beyond good, look! Today I'm going to teach you the recipe for a very delicious food! Pencil and paper in hand!",
+  "outro-palmirinha": "See, my little friends... You keep running after chickens. Look at how many tasty servings we can make! I'll serve you, pretty! Such a tasty little {0} recipe!",
+  "learned-palmirinha": "Can you see? Hey! That's why it's good to watch the program, we've already teach how to make {0}. Did you enjoy it, pretty? It's all the best! Until sunday if God allows... and he will!",
+  
+  //Ednaldo Pereira
+  "title-ednaldo": "Master's Forecast",
+  "intro-ednaldo": "Well, guys... now I'll fore this... cast! A shout out to the Ednaldo Pereira channel member! Shout out to Shane! Thanks for becoming a member of the Ednaldo Pereira channel.",
+  "disabled-ednaldo": "I noticed that you tried to disable me. Not bad, {{farmer}}! But you used 100% of your power! And now I'm going to use 0% of mine!#BANNED!#...#UNBANNED!",
+  "festival-ednaldo": "Well, guys... the secret... to kill... a mosquito... is in... guessing... where it is! #The secret... to get to the {0}... is in being {1}... between {2} and {3}. The sky... will be... so bluey!",
+  "snow-ednaldo": "Now now, snow... I am Ednaldo Pereira, how dare you fall tomorrow, snooow? Do you wanna be BANNED?",
+  "alt-snow-ednaldo": "O que é o tempo? O que é o tempo?#Let's shine... like a diamond... as white as snow... that will fall tomorrow!",
+  "blizzard-ednaldo": "I didn't create cemeteries... I didn't create morgues. But i certainly created the blizzard... that'll fall tomorrow!",
+  "sunny-ednaldo": "The sky tomorrow will be so bluey... it will make me wanna eat it. Guess what I'll eat tomorrow! I'll eat a piece of the sky!",
+  "alt-sunny-ednaldo": "Bad weather is BANNED! That's it, guys... You can leave and enjoy... the sun!",
+  "rain-ednaldo": "It's gonna rain... and meanwhile... I'll eat... an apple... of love!",
+  "storm-ednaldo": "The sky's worth nothing... Battery's worth everything... There will be gusts and rain... Storm wants to be everything... And it is nothing...",
+  "cloudy-ednaldo": "Ednaldo Pereira's Forecast Beatbox... for Lewis...#(pa punda pum pff)... Lewis (pa punda pum pff)... from Stardew Valley (pum pff)... the day will be cloudy (pum pff)!",
+  "wind-cloudy-ednaldo": "(pa punda pum pff)... wind that passes through time, in THINKING, may find (pa punda pum pff)...#Well, guys, the day will be cloudy with... a strong wind that passes through time (pa punda pff)!",
+  "island-ednaldo": "Well guys, followers of Ednaldo Pereira... I'm here at Ginger Island, can you believe it? Check out Ednaldo Pereira's weather report for Ginger Island!#",
+  
+  //Globo Rural
+  "title-globo-rural": "Rural Globe",
+  "intro-globo-rural": "Good morning! Good morning! Climbing a guava tree to watch Jesus can be dangerous! Prioritize calmer activities! Today the Rural Globe brings a tip for everyone.",
+  "1": "Did you know that Katy Perry's favorite type of cheese is \"Katupiry\"? Acquire goats and cows from your local seller to produce the best kind of cheeses...",
+  "8": "In today's report: meet the Dung Beetle (Manure Beetle for the refined) and do whatever you think is best with this information! Caverns are the best place to find bugs...",
+  "15": "Do you need to make your backyard prettier even when you're in it? Follow today's program and check these creative gardens! The Rural Globe visited several general stores looking for seeds...",
+  "22": "So you're telling me no one called you on a date tonight? Stay calm and learn how to plant chamomile for your nerves. Tea leaves can be fermented in barrels...",
+  "29": "Do you find yourself with no time? Wake up in the morning at 8am with a messed routine? Here's a tip on how to plant \"eleven-hours\"! Flowers must be watered everyday...",
+  "36": "During the last month, the beef protein exportation went up 2 times more then the year's record. It's too much cattle! Cows can be sold when we analyze them closer...",
+  "43": "Learn this practice in today's program: next time your friends invite you to a bad night out, invite them to plant avocados! Fruit trees tend to take around a month to develop...",
+  "50": "Were you stalking your fancied one and ended up liking an old post on accident? Today's Rural Globe will teach you to harvest onions so you can have an excuse to cry!",
+  "57": "Today's report is for those who know everything about people's lives but don't know these exotics fruits. In many regions of Brazil we can find these fruits you probably never heard about: #1: The Ice-Cream Bean...",
+  "64": "Are you one of those who spend the day inside your room watching series? The Rural Globe brings you 10 plants that improve the quality of the air in enclosed spaces! It's possible to use the garden pot to plant seeds inside spaces...",
+  "71": "Are you always hiding from your ex? Today's report may not help you get rid of your ex, but will certainly teach you to get rid of crickets! Experts recommend storing bug meat for posterior use...",
+  "78": "Did you know that it is possible to exchange your friends with benefits for rainbow potatoes with benefits? That's right! Meet the rainbow potatoes: potatoes may generate extra harvests per crop...",
+  "85": "Today's report decided to leave the papaya joke for Evaristo Costa, and brings useful tips for investing in the fruit! In case you're short of papaya, the mango is an alternative we find in tropical islands...",
+  "92": "Do you have oranges at home? Be careful! Today's report brings useful tips on taking care of house orange trees! Negotiate orange saplings with your local general store...",
+  "99": "Today you'll learn to make a resistant coop fence to avoid your dad's chick jumping the fence for the chicken of your neighbor! Fences have a limited life time and must be rebuild regularly...",
+  "106": "Here's a dilemma: going out tonight or learning more about creating Tilapias? Define you priorities in today's program. Tilapias procreate during the summer and fall...",
+  "113": "And after this break: Do you find yourself creating a lot of expectations? Exchange the habit for a creation of ponies! Horses require a stable to live, which can be built by your local carpenter...",
+  "120": "Due to the recent heat wave, the price of lemons raises and Caipirinhas are left inflated! The Rural Globe recommends selling lemons to your closest general store...",
+  "127": "Find out how to create stingless bees! Unlike your fancied one, they won't hurt you. Bees require flowers in their proximity for better production...",
+  "134": "Happy monday! Since we can't drink liquor at this start of the week, learn how to create Cachara in the following report! Also, go learn portuguese and read the original damn version of this joke you son of a b- An efficient way of raising fish is by building a Fish Pond in your terrain...",
+  "141": "Do you usually attack people on social media? Get rid of the habit and learn how to avoid the presence of wild boars in your farm! Fences with different materials hold a varying efficiency...",
+  "148": "Happy start of the week! Did you wake up from dreamland? Wash your face and go harvest eggplant! The fruit that contains proteins, calcium and iron can be planted during the autumn...",
+  "155": "The last month of June was a time of stability for the cotton market! What's really hard is maintaining emotional stability, so today's report brings you the secret of farmers for the practice...",
+  "162": "Here's a tip on how to avoid embarrassment with your ex! You could make a bird house out of cardboard to decorate the green corner of your house, just like you could be ashamed and learn portuguese to read the original joke you lazy f-",
+  "169": "Today's Rural Globe will explain how to raise your income and reach a million in patrimony! Scientists found a gene that improves the yield of rice and maize!",
+  "176": "Recent researches reveal that the forest is virgin because the wind is frigid! And later: The Rural Globe demonstrates the correct way to do a handstand, all you need is a tropical island and a portuguese course...",
+  "183": "Did you know that the papaya has that name because that's where it goes on vacations? Unlike our audience farmers who works all year round.",
+  "190": "The Rural Globe performed a research and discovered that the favorite actor between farmers is Graeme Garden! And up next: Mr. Noura owns a creation of flowers and claim they love to hear reggae...",
+  "197": "This farmer claims he found a face in a lettuce and the Rural Globe went with an specialist to investigate. Send us an email you too if you also have a vegetable with a funny shape...",
+  "204": "And in today's report: studies reveal that the creature from the animal kingdom who drag one's feet the most is the iguana! Learn how to build a cage while ensuring the maximum happiness to your reptiles!",
+  "211": "Last weekend a sheep invaded a LAN house and caused commotion! The responsible farmer had to answer the local authorities. After this break, the Rural Globe will teach you how to keep your sheep happy...",
+  "218": "Did you know that argentine cows spend their days looking at the sky? Specialists believe they're looking for oxen in the air! Learn how to treat cows with a stiff neck in the following report...",
+  "221": "Folks, I've got an announcement to make. This is the last new episode of Rural Globe before our retirement. I've had a good time, and I'll miss you folks. Oh, and I've been told the station's going to start playing reruns next year. ^^Take care!",
+
+  //GMCM
+  "disabled-gmcm": "GenericModConfigMenu not installed, skipping menu registry.",
+  "tooltip-palmirinha": "Enable Palmirinha Program (Overrides \"The Queen of Sauce\")",
+  "tooltip-ednaldo": "Enable Master's Forecast (Overrides the \"Weather Report\")",
+  "tooltip-globo-rural": "Enable the Rural Globe (Overrides \"Livin' off the Land\")",
+}

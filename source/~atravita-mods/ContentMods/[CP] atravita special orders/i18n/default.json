@@ -68,12 +68,12 @@
     "atravita.alcohol_order_repeatorder8.001": "Maybe I should switch over to buying from you exclusively...but your prices are significantly higher....",
 
     "atravita.alcohol_order.name": "An Emergency Order!",
-    "atravita.alcohol_order.text": "My suppliers screwed up and didn't deliever my usual order of alcohol. I'm willing to pay high prices for some booze!",
+    "atravita.alcohol_order.text": "My suppliers screwed up and didn't deliver my usual order of alcohol. I'm willing to pay high prices for some booze!",
     "atravita.alcohol_order.collect": "Collect 50 beer, pale ale, mead, or piña coladas.",
     "atravita.alcohol_order.donate": "Place the drinks in the fridge in the saloon.",
 
     "atravita.alcohol_order.mail.text": "So much thanks for stepping in and supplying alcohol to my Saloon! You've definitely saved my business this month...I was almost out! In thanks, I've attached a few items I found in my closet. Hope you'll find these useful...",
-    "atravita.alcohol_order.mail_title": "Alcohol Order thank-you note",
+    "atravita.alcohol_order.mail.title": "Alcohol Order thank-you note",
 
 // *****************
 // Catfish Order
@@ -84,7 +84,7 @@
     "atravita.catfish_challenge_completed.001": "Nothing's like the challenge of hookin' up a nice slimy catfish, eh? Tricky little things, aren't they?",
 
     "atravita.catfish_challenge.name": "Catfish Challenge",
-    "atravita.catfish_challenge.text": "Ah, catfish. One of the trickest fish that live in our local rivers. I'm challenging you to fish up twenty quality catfish! It won't be easy...",
+    "atravita.catfish_challenge.text": "Ah, catfish. One of the trickiest fish that live in our local rivers. I'm challenging you to fish up twenty quality catfish! It won't be easy...",
     "atravita.catfish_challenge.fish": "Fish up twenty gold-quality catfish.",
 
     "atravita.catfish_challenge.mail.text": "I'm impressed! Your angling skills are coming along quite nicely. Practice makes perfect, doesn't it? I've attached a little reward for you.",
@@ -108,7 +108,7 @@
     "atravita.deck_the_halls_after.mail.text": "Thanks for helping me bring a little cheer to the town. We had some leftovers I'd like you to have.",
     "atravita.deck_the_halls_after.mail.title": "Deck The Halls - Thank You",
 
-    "atravita.deck_the_halls_invite.toolate.text": "Thanks for bringing me the holly! Unfortuntely, we're just a bit too late to celebrate the holiday this year. I'll be saving it for next year though. In thanks, I've attached some pumpkin soup, and don't forget to join us for a nice party next year!",
+    "atravita.deck_the_halls_invite.toolate.text": "Thanks for bringing me the holly! Unfortunately, we're just a bit too late to celebrate the holiday this year. I'll be saving it for next year though. In thanks, I've attached some pumpkin soup, and don't forget to join us for a nice party next year!",
 
     "98280100.caroline.000": "Hi, @! Glad you could make it!",
     "98280100.caroline.001": "Unfortunately, it looks like you're the only one who could come today?",
@@ -239,9 +239,9 @@
     "atravita.war_effort_2_isavailable": "@, you did such a good job supplying us with coal last time! Now we're in the need for some materials to build megabombs! Please help out the war effort again!",
     "atravita.war_effort_2_inprogress": "Much thanks for offering to help support the war effort! We're in such need of mega bombs right now...",
     "atravita.war_effort_2_completed.000": "And just in the nick of time too! The Governor tells me he's very proud of all the mega bombs we've supplied!",
-    "atravita.war_effort_2_completed.001": "The soliders at the front will greatly appreciate it!",
+    "atravita.war_effort_2_completed.001": "The soldiers at the front will greatly appreciate it!",
     "atravita.war_effort_2.name": "Mega Bombs Ahoy!",
-    "atravita.war_effort_2.text": "We're in need of even more bombs! The Governer is willing to pay a premium for the supplies needed to make mega bombs!",
+    "atravita.war_effort_2.text": "We're in need of even more bombs! The Governor is willing to pay a premium for the supplies needed to make mega bombs!",
     "atravita.war_effort_2.gather_gold": "Gather 150 gold ore.",
     "atravita.war_effort_2.gather_void": "Gather 50 void essence.",
     "atravita.war_effort_2.gather_solar": "Gather 50 solar essence.",
@@ -257,7 +257,7 @@
 // **************
 // War Effort 3
 // **************
-    "atravita.war_effort_3_isavailable": "Oh, @! Now the govenor is asking us for some iridium to build weaponry! Taking out some of the monsters infesting the mines would also help...",
+    "atravita.war_effort_3_isavailable": "Oh, @! Now the governor is asking us for some iridium to build weaponry! Taking out some of the monsters infesting the mines would also help...",
     "atravita.war_effort3.name": "Community Construction!",
     "atravita.war_effort3.text": "Now the Governor's asking for iridium to build weapons! I'd also love it if you could deal with the little infestation we've got in that mine in the desert...",
     "atravita.war_effort3.gather_iridium": "Gather 200 iridium.",
@@ -347,7 +347,7 @@
     "atravita.salmonberry_season.text": "Despite the fact that they only appear for a little while each spring, our little town is known for its salmonberries! Looking for someone to gather 300 salmonberries for export.",
     "atravita.salmonberry_season.gather": "Gather 300 salmonberries.",
     "atravita.salmonberry_season.ship": "Ship 300 salmonberries.",
-    "atravita.salmonberry_season.mail.text": "Thanks for gathering salmonberries! They're such a lovely little export, and they're reasonably well recieved elsewhere in the Ferngill Republic. I've attached some mixed seeds I found. Perhaps they'll help with your farming?",
+    "atravita.salmonberry_season.mail.text": "Thanks for gathering salmonberries! They're such a lovely little export, and they're reasonably well received elsewhere in the Ferngill Republic. I've attached some mixed seeds I found. Perhaps they'll help with your farming?",
     "atravita.salmonberry_season.mail.title": "Salmonberry Season - Thank You!",
 
 // ************
@@ -417,7 +417,7 @@
 // Slime Eggs
 // *******************
     "atravita.slime_eggs.name": "Slime Egg Order!",
-    "atravita.slime_eggs.text": "Raising slimes has become inexplicably fashionable in Zuzu City. Looking for a fellow slime rancher for help collecting and shiping some slime eggs!",
+    "atravita.slime_eggs.text": "Raising slimes has become inexplicably fashionable in Zuzu City. Looking for a fellow slime rancher for help collecting and shipping some slime eggs!",
     "atravita.slime_eggs.gather": "Collect 20 slime eggs.",
     "atravita.slime_eggs.ship": "Ship 20 slime eggs.",
     "atravita.slime_eggs.mail.text": "Much thanks for helping me out with the slime eggs! Couldn't have filled this order without you. I've attached some special ones for you.",

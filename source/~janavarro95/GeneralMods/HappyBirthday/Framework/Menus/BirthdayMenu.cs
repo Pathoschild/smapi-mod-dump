@@ -95,11 +95,17 @@ namespace Omegasis.HappyBirthday.Framework.Menus
 
         public virtual void updateMenu(string Season, int Day, Action<string,int > OnChanged)
         {
+            string toSpeak = "";
             this.BirthdaySeason = HappyBirthdayModCore.Instance.translationInfo.getTranslatedBaseGameString(Season);
             this.seasonName = Season;
             this.BirthdayDay = Day;
             this.OnChanged = OnChanged;
             this.setUpPositions();
+            toSpeak = $"{this.BirthdaySeason}";
+            if (Day != 0)
+                toSpeak = $"{toSpeak} {Day}";
+            if (toSpeak != "")
+                HappyBirthdayModCore.Instance.SayWithMenuChecker($"{toSpeak} {HappyBirthdayModCore.Instance.translationInfo.getTranslatedContentPackString("Selected")}", true);
         }
 
         /// <summary>The method called when the game window changes size.</summary>
@@ -123,7 +129,12 @@ namespace Omegasis.HappyBirthday.Framework.Menus
             this.Labels.Clear();
             this.DayButtons.Clear();
             this.SeasonButtons.Clear();
-            this.OkButton = new ClickableTextureComponent("OK", new Rectangle(this.xPositionOnScreen + this.width - borderWidth - spaceToClearSideBorder - Game1.tileSize, this.yPositionOnScreen + this.height - borderWidth - spaceToClearTopBorder + Game1.tileSize / 4, Game1.tileSize, Game1.tileSize), "", null, Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f);
+            this.OkButton = new ClickableTextureComponent("OK", new Rectangle(this.xPositionOnScreen + this.width - borderWidth - spaceToClearSideBorder - Game1.tileSize, this.yPositionOnScreen + this.height - borderWidth - spaceToClearTopBorder + Game1.tileSize / 4, Game1.tileSize, Game1.tileSize), "", null, Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f)
+            {
+                myID = 200,
+                leftNeighborID = -7777,
+                upNeighborID = -7777
+            };
 
             string bdaySeason = HappyBirthdayModCore.Instance.translationInfo.getTranslatedBaseGameString("Birthday") + " " + HappyBirthdayModCore.Instance.translationInfo.getTranslatedContentPackString("Season");
             string bdayDay = HappyBirthdayModCore.Instance.translationInfo.getTranslatedBaseGameString("Birthday") + " " + HappyBirthdayModCore.Instance.translationInfo.getTranslatedContentPackString("Date");
@@ -131,218 +142,475 @@ namespace Omegasis.HappyBirthday.Framework.Menus
             this.Labels.Add(new ClickableComponent(new Rectangle(this.xPositionOnScreen + Game1.tileSize / 4 + spaceToClearSideBorder + borderWidth + Game1.tileSize * 3 + 8, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize, Game1.tileSize * 2, Game1.tileSize), bdayDay + ": " + this.BirthdayDay));
             this.SeasonButtons.Add(new ClickableTextureComponent("Spring", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 1 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + (int)(Game1.tileSize * 3.10) - Game1.tileSize / 4, Game1.tileSize * 2, Game1.tileSize), "", "", Game1.mouseCursors, this.getSpringButton(), Game1.pixelZoom) {
                 myID=springButtonId,
+                downNeighborID = -7777,
                 rightNeighborID=summerButtonId
             });
             this.SeasonButtons.Add(new ClickableTextureComponent("Summer", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 3 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + (int)(Game1.tileSize * 3.10) - Game1.tileSize / 4, Game1.tileSize * 2, Game1.tileSize), "", "", Game1.mouseCursors, this.getSummerButton(), Game1.pixelZoom)
             {
                 myID = summerButtonId,
+                downNeighborID = -7777,
                 leftNeighborID=springButtonId,
                 rightNeighborID=fallButtonId
-                
+
             });
             this.SeasonButtons.Add(new ClickableTextureComponent("Fall", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 5 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + (int)(Game1.tileSize * 3.1) - Game1.tileSize / 4, Game1.tileSize * 2, Game1.tileSize), "", "", Game1.mouseCursors, this.getFallButton(), Game1.pixelZoom)
             {
                 myID=fallButtonId,
+                downNeighborID = -7777,
                 leftNeighborID=summerButtonId,
                 rightNeighborID=winterButtonId
             });
             this.SeasonButtons.Add(new ClickableTextureComponent("Winter", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 7 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + (int)(Game1.tileSize * 3.1) - Game1.tileSize / 4, Game1.tileSize * 2, Game1.tileSize), "", "", Game1.mouseCursors, this.getWinterButton(), Game1.pixelZoom)
             {
                 myID=winterButtonId,
-                leftNeighborID=fallButtonId
+                downNeighborID = -7777,
+                leftNeighborID=fallButtonId,
+                rightNeighborID = -7777
             });
 
             this.DayButtons.Add(new ClickableTextureComponent("1", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 1 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 1
-
+                myID = 1,
+                downNeighborID = 8,
+                rightNeighborID = 2,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("2", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 2 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID=2
+                myID = 2,
+                downNeighborID = 9,
+                leftNeighborID = 1,
+                rightNeighborID = 3,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("3", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 3 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(24, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 3
+                myID = 3,
+                downNeighborID = 10,
+                leftNeighborID = 2,
+                rightNeighborID = 4,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("4", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 4 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(32, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 4
+                myID = 4,
+                downNeighborID = 11,
+                leftNeighborID = 3,
+                rightNeighborID = 5,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("5", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 5 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(40, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 5
+                myID = 5,
+                downNeighborID = 12,
+                leftNeighborID = 4,
+                rightNeighborID = 6,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("6", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 6 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(48, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 6
+                myID = 6,
+                downNeighborID = 13,
+                leftNeighborID = 5,
+                rightNeighborID = 7,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("7", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 7 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 4 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(56, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 7
+                myID = 7,
+                downNeighborID = 14,
+                leftNeighborID = 6,
+                rightNeighborID = 8,
+                upNeighborID = -7777
             });
             this.DayButtons.Add(new ClickableTextureComponent("8", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 1 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(64, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 8
+                myID = 8,
+                downNeighborID = 15,
+                leftNeighborID = 7,
+                rightNeighborID = 9,
+                upNeighborID = 1
             });
             this.DayButtons.Add(new ClickableTextureComponent("9", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + Game1.tileSize * 2 - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize * 1, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(72, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 9
+                myID = 9,
+                downNeighborID = 16,
+                leftNeighborID = 8,
+                rightNeighborID = 10,
+                upNeighborID = 2
             });
             this.DayButtons.Add(new ClickableTextureComponent("10", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 2.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 10
+                myID = 10,
+                downNeighborID = 17,
+                leftNeighborID = 9,
+                rightNeighborID = 11,
+                upNeighborID = 3
             });
             this.DayButtons.Add(new ClickableTextureComponent("10", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 3.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(0, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 10
+                myID = 10,
+                downNeighborID = 17,
+                leftNeighborID = 9,
+                rightNeighborID = 11,
+                upNeighborID = 3
             });
             this.DayButtons.Add(new ClickableTextureComponent("11", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 3.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 11
+                myID = 11,
+                downNeighborID = 18,
+                leftNeighborID = 10,
+                rightNeighborID = 12,
+                upNeighborID = 4
             });
             this.DayButtons.Add(new ClickableTextureComponent("11", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 4.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 11
+                myID = 11,
+                downNeighborID = 18,
+                leftNeighborID = 10,
+                rightNeighborID = 12,
+                upNeighborID = 4
             });
             this.DayButtons.Add(new ClickableTextureComponent("12", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 4.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 12
+                myID = 12,
+                downNeighborID = 19,
+                leftNeighborID = 11,
+                rightNeighborID = 13,
+                upNeighborID = 5
             });
             this.DayButtons.Add(new ClickableTextureComponent("12", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 5.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 12
+                myID = 12,
+                downNeighborID = 19,
+                leftNeighborID = 11,
+                rightNeighborID = 13,
+                upNeighborID = 5
             });
             this.DayButtons.Add(new ClickableTextureComponent("13", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 5.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 13
+                myID = 13,
+                downNeighborID = 20,
+                leftNeighborID = 12,
+                rightNeighborID = 14,
+                upNeighborID = 6
             });
             this.DayButtons.Add(new ClickableTextureComponent("13", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 6.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(24, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 13
+                myID = 13,
+                downNeighborID = 20,
+                leftNeighborID = 12,
+                rightNeighborID = 14,
+                upNeighborID = 6
             });
             this.DayButtons.Add(new ClickableTextureComponent("14", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 6.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 14
+                myID = 14,
+                downNeighborID = 21,
+                leftNeighborID = 13,
+                rightNeighborID = 15,
+                upNeighborID = 7
             });
             this.DayButtons.Add(new ClickableTextureComponent("14", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 7.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 5 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(32, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 14
+                myID = 14,
+                downNeighborID = 21,
+                leftNeighborID = 13,
+                rightNeighborID = 15,
+                upNeighborID = 7
             });
             this.DayButtons.Add(new ClickableTextureComponent("15", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 0.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 15
+                myID = 15,
+                downNeighborID = 22,
+                leftNeighborID = 14,
+                rightNeighborID = 16,
+                upNeighborID = 8
             });
             this.DayButtons.Add(new ClickableTextureComponent("15", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 1.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(40, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 15
+                myID = 15,
+                downNeighborID = 22,
+                leftNeighborID = 14,
+                rightNeighborID = 16,
+                upNeighborID = 8
             });
             this.DayButtons.Add(new ClickableTextureComponent("16", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 1.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 16
+                myID = 16,
+                downNeighborID = 23,
+                leftNeighborID = 15,
+                rightNeighborID = 17,
+                upNeighborID = 9
             });
             this.DayButtons.Add(new ClickableTextureComponent("16", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 2.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(48, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 16
+                myID = 16,
+                downNeighborID = 23,
+                leftNeighborID = 15,
+                rightNeighborID = 17,
+                upNeighborID = 9
             });
             this.DayButtons.Add(new ClickableTextureComponent("17", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 2.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 17
+                myID = 17,
+                downNeighborID = 24,
+                leftNeighborID = 16,
+                rightNeighborID = 18,
+                upNeighborID = 10
             });
             this.DayButtons.Add(new ClickableTextureComponent("17", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 3.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(56, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 17
+                myID = 17,
+                downNeighborID = 24,
+                leftNeighborID = 16,
+                rightNeighborID = 18,
+                upNeighborID = 10
             });
             this.DayButtons.Add(new ClickableTextureComponent("18", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 3.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 18
+                myID = 18,
+                downNeighborID = 25,
+                leftNeighborID = 17,
+                rightNeighborID = 19,
+                upNeighborID = 11
             });
             this.DayButtons.Add(new ClickableTextureComponent("18", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 4.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(64, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 18
+                myID = 18,
+                downNeighborID = 25,
+                leftNeighborID = 17,
+                rightNeighborID = 19,
+                upNeighborID = 11
             });
             this.DayButtons.Add(new ClickableTextureComponent("19", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 4.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 19
+                myID = 19,
+                downNeighborID = 26,
+                leftNeighborID = 18,
+                rightNeighborID = 20,
+                upNeighborID = 12
             });
             this.DayButtons.Add(new ClickableTextureComponent("19", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 5.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(72, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 19
+                myID = 19,
+                downNeighborID = 26,
+                leftNeighborID = 18,
+                rightNeighborID = 20,
+                upNeighborID = 12
             });
             this.DayButtons.Add(new ClickableTextureComponent("20", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 5.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 20
+                myID = 20,
+                downNeighborID = 27,
+                leftNeighborID = 19,
+                rightNeighborID = 21,
+                upNeighborID = 13
             });
             this.DayButtons.Add(new ClickableTextureComponent("20", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 6.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(0, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 20
+                myID = 20,
+                downNeighborID = 27,
+                leftNeighborID = 19,
+                rightNeighborID = 21,
+                upNeighborID = 13
             });
             this.DayButtons.Add(new ClickableTextureComponent("21", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 6.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 21
+                myID = 21,
+                downNeighborID = 28,
+                leftNeighborID = 20,
+                rightNeighborID = 22,
+                upNeighborID = 14
             });
             this.DayButtons.Add(new ClickableTextureComponent("21", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 7.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 6 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(8, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 21
+                myID = 21,
+                downNeighborID = 28,
+                leftNeighborID = 20,
+                rightNeighborID = 22,
+                upNeighborID = 14
             });
             this.DayButtons.Add(new ClickableTextureComponent("22", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 0.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 22
+                myID = 22,
+                downNeighborID = -7777,
+                leftNeighborID = 21,
+                rightNeighborID = 23,
+                upNeighborID = 15
             });
             this.DayButtons.Add(new ClickableTextureComponent("22", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 1.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 22
+                myID = 22,
+                downNeighborID = -7777,
+                leftNeighborID = 21,
+                rightNeighborID = 23,
+                upNeighborID = 15
             });
             this.DayButtons.Add(new ClickableTextureComponent("23", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 1.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 23
-            });
+                myID = 23,
+                downNeighborID = -7777,
+                leftNeighborID = 22,
+                rightNeighborID = 24,
+                upNeighborID = 16
+             });
             this.DayButtons.Add(new ClickableTextureComponent("23", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 2.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(24, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 23
-            });
+                myID = 23,
+                downNeighborID = -7777,
+                leftNeighborID = 22,
+                rightNeighborID = 24,
+                upNeighborID = 16
+             });
             this.DayButtons.Add(new ClickableTextureComponent("24", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 2.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 24
-            });
+                myID = 24,
+                downNeighborID = -7777,
+                leftNeighborID = 23,
+                rightNeighborID = 25,
+                upNeighborID = 17
+             });
             this.DayButtons.Add(new ClickableTextureComponent("24", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 3.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(32, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 24
-            });
+                myID = 24,
+                downNeighborID = -7777,
+                leftNeighborID = 23,
+                rightNeighborID = 25,
+                upNeighborID = 17
+             });
             this.DayButtons.Add(new ClickableTextureComponent("25", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 3.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 25
-            });
+                myID = 25,
+                downNeighborID = -7777,
+                leftNeighborID = 24,
+                rightNeighborID = 26,
+                upNeighborID = 18
+             });
             this.DayButtons.Add(new ClickableTextureComponent("25", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 4.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(40, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 25
-            });
+                myID = 25,
+                downNeighborID = -7777,
+                leftNeighborID = 24,
+                rightNeighborID = 26,
+                upNeighborID = 18
+             });
             this.DayButtons.Add(new ClickableTextureComponent("26", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 4.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 26
-            });
+                myID = 26,
+                downNeighborID = -7777,
+                leftNeighborID = 25,
+                rightNeighborID = 27,
+                upNeighborID = 19
+             });
             this.DayButtons.Add(new ClickableTextureComponent("26", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 5.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(48, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 26
-            });
+                myID = 26,
+                downNeighborID = -7777,
+                leftNeighborID = 25,
+                rightNeighborID = 27,
+                upNeighborID = 19
+             });
             this.DayButtons.Add(new ClickableTextureComponent("27", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 5.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 27
-            });
+                myID = 27,
+                downNeighborID = -7777,
+                leftNeighborID = 26,
+                rightNeighborID = 28,
+                upNeighborID = 20
+             });
             this.DayButtons.Add(new ClickableTextureComponent("27", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 6.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(56, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 27
-            });
+                myID = 27,
+                downNeighborID = -7777,
+                leftNeighborID = 26,
+                rightNeighborID = 28,
+                upNeighborID = 20
+             });
             this.DayButtons.Add(new ClickableTextureComponent("28", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 6.75) - Game1.tileSize / 4, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(16, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 28
-            });
+                myID = 28,
+                downNeighborID = -7777,
+                leftNeighborID = 27,
+                rightNeighborID = -7777,
+                upNeighborID = 21
+             });
             this.DayButtons.Add(new ClickableTextureComponent("28", new Rectangle(this.xPositionOnScreen + spaceToClearSideBorder + borderWidth + (int)(Game1.tileSize * 7.25) - Game1.tileSize / 3, this.yPositionOnScreen + borderWidth + spaceToClearTopBorder + Game1.tileSize * 7 - Game1.tileSize / 4, Game1.tileSize / 2, Game1.tileSize), "", "", Game1.content.Load<Texture2D>("LooseSprites\\font_bold"), new Rectangle(64, 16, 8, 12), Game1.pixelZoom)
             {
-                myID = 28
-            });
+                myID = 28,
+                downNeighborID = -7777,
+                leftNeighborID = 27,
+                rightNeighborID = -7777,
+                upNeighborID = 21
+             });
             ;
 
+        }
+
+        protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
+        {
+            switch (direction)
+            {
+            case 0: // up
+                // all custom up movement is from OkButton or top row of days to seasons
+                // snap to whichever is currently selected
+                switch (this.seasonName)
+                {
+                    default: // if days were selected this shouldn't be blank; but let's be safe and select Spring.
+                    case "Spring":
+                        setCurrentlySnappedComponentTo(springButtonId);
+                        break;
+                    case "Summer":
+                        setCurrentlySnappedComponentTo(summerButtonId);
+                        break;
+                    case "Fall":
+                        setCurrentlySnappedComponentTo(fallButtonId);
+                        break;
+                    case "Winter":
+                        setCurrentlySnappedComponentTo(winterButtonId);
+                        break;
+                }
+                break;
+            case 1: // right
+                // all custom right movements go to OKButton if available
+                if (this.BirthdayDay != 0 && string.IsNullOrEmpty(this.seasonName) == false && this.isFestivalDay() == false)
+                    setCurrentlySnappedComponentTo(200);
+                break;
+            case 2: // down
+                // custom down movement can either be from seasons to days
+                // or bottom row of days to OkButton if available
+                if (oldID >= springButtonId && oldID <= winterButtonId && (string.IsNullOrEmpty(this.seasonName) == false))
+                {
+                    if (this.BirthdayDay >= 1 && this.BirthdayDay <= 28)
+                    {
+                        setCurrentlySnappedComponentTo(this.BirthdayDay);
+                    } else {
+                        setCurrentlySnappedComponentTo(1);
+                    }
+                } else if (oldID >= 21 && oldID <= 28) {
+                    if (this.BirthdayDay != 0 && string.IsNullOrEmpty(this.seasonName) == false && this.isFestivalDay() == false)
+                        setCurrentlySnappedComponentTo(200);
+                } else {
+                    // Nothing should reach here,but to be safe snap to default.
+                    this.snapToDefaultClickableComponent();
+                }
+                break;
+            case 3: // left
+                // Only from OkButton to days
+                if (oldID == 200 && (string.IsNullOrEmpty(this.seasonName) == false))
+                {
+                    // move to selected day if already selected; otherwise just go to 28
+                    if (this.BirthdayDay >=1 || this.BirthdayDay <= 28)
+                    {
+                        setCurrentlySnappedComponentTo(BirthdayDay);
+                    } else {
+                        setCurrentlySnappedComponentTo(28);
+                    }
+                } else {
+                    snapToDefaultClickableComponent();
+                }
+                break;
+            }
         }
 
         /// <summary>Handle a button click.</summary>
@@ -458,6 +726,33 @@ namespace Omegasis.HappyBirthday.Framework.Menus
                 ? Math.Min(this.OkButton.scale + 0.02f, this.OkButton.baseScale + 0.1f)
                 : Math.Max(this.OkButton.scale - 0.02f, this.OkButton.baseScale);
 
+        }
+
+        public new void populateClickableComponentList()
+        {
+            ///
+            if (SeasonButtons != null && DayButtons != null && OkButton != null)
+            {
+                allClickableComponents = new List<ClickableComponent>(SeasonButtons.Count + DayButtons.Count + 1);
+                this.allClickableComponents.AddRange(this.SeasonButtons);
+                this.allClickableComponents.AddRange(this.DayButtons);
+                this.allClickableComponents.Add(this.OkButton);
+            }
+        }
+
+        /// <summary>The method invoked when the player presses a key..</summary>
+        /// <param name="key">Keys enum.</param>
+        public override void receiveKeyPress(Keys key)
+        {
+            if (HappyBirthdayModCore.Instance.screenreader != null)
+            {
+                if (allClickableComponents == null || allClickableComponents.Count == 0)
+                    populateClickableComponentList();
+                if (currentlySnappedComponent == null)
+                    snapToDefaultClickableComponent();
+                if (key != 0)
+                    this.applyMovementKey(key);
+            }
         }
 
         /// <summary>Draw the menu to the screen.</summary>
@@ -598,9 +893,56 @@ namespace Omegasis.HappyBirthday.Framework.Menus
             return true;
         }
 
+        public override void applyMovementKey(int direction)
+        {
+            if (allClickableComponents == null || allClickableComponents.Count == 0)
+                populateClickableComponentList();
+            //HappyBirthdayModCore.Instance.SayWithMenuChecker($"Direction: {direction}", true);
+            ClickableComponent old = currentlySnappedComponent;
+            base.applyMovementKey(direction);
+            if (currentlySnappedComponent != null && currentlySnappedComponent != old)
+            {
+                currentlySnappedComponent.snapMouseCursorToCenter();
+                this.speakCurrentlySnappedComponent();
+            }
+        }
+
+        public void speakCurrentlySnappedComponent()
+        {
+            if ( HappyBirthdayModCore.Instance.screenreader != null && currentlySnappedComponent != null)
+            {
+                string toSpeak = "";
+                if (string.IsNullOrEmpty(currentlySnappedComponent.name))
+                {
+                    toSpeak = $"{currentlySnappedComponent.myID}";
+                } else {
+                    toSpeak = currentlySnappedComponent.name;
+                }
+                if ((currentlySnappedComponent.name == this.seasonName) || (currentlySnappedComponent.myID == this.BirthdayDay))
+                {
+                    string selected = HappyBirthdayModCore.Instance.translationInfo.getTranslatedContentPackString("Selected");
+                    toSpeak = $"{selected} {toSpeak}";
+                } else if (toSpeak == "OK") {
+                    toSpeak = $"{toSpeak} button";
+                }
+                if (toSpeak != "")
+                    HappyBirthdayModCore.Instance.SayWithMenuChecker(toSpeak, true);
+            }
+        }
+
+        public override void setCurrentlySnappedComponentTo(int id)
+        {
+            base.setCurrentlySnappedComponentTo(id);
+            if (currentlySnappedComponent != null)
+            {
+                this.currentlySnappedComponent.snapMouseCursorToCenter();
+                this.speakCurrentlySnappedComponent();
+            }
+        }
+
         public override void snapToDefaultClickableComponent()
         {
-            this.currentlySnappedComponent = this.SeasonButtons[0];
+            setCurrentlySnappedComponentTo(springButtonId);
         }
     }
 }

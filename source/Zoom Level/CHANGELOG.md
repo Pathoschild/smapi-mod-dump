@@ -6,7 +6,51 @@ for queries and analysis.**
 
 ----
 
-## [Unreleased] - ????-??-??
+# Full Changelog
+
+## [2.1.0] - 2023-02-14
+
+### Added
+
+- Toggle Any Key Reset Camera 
+- Toggle Auto Zoom
+- Console commands in some functions
+    - toggle_Auto_Zoom_Map
+    - toggle_Press_Any_Key_To_Reset_Camera
+    - toggle_Hide_With_UI_With_Certain_Zoom
+    - toggle_Preset_On_Load_Save_File
+    - reset_UI_and_Zoom (has optional parameters)
+    - reset_UI (has optional parameters)
+    - reset_Zoom (has optional parameters)
+- Preset
+     - Option to load a preset of UI Scale and Zoom Level
+         - Option to toggle the preset when the file is loaded
+         - Option to change the values of the UI Scale and Zoom Level
+        
+### Improvements
+
+- Pages in the optional [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
+
+
+### Changed
+
+- Smooth Camera position (no more spam the camera keys)
+- Default Camera speed
+- Options (check if keybinds are missing)
+- Translations
+
+## [2.0.1] - 2023-02-02
+
+### Changed
+
+- Minimum SMAPI version to 3.18.2
+
+### Fixed
+
+- Camera movement issues with some mods
+
+
+## [2.0.0] - 2023-02-01
 
 ### Added
 
@@ -30,7 +74,7 @@ for queries and analysis.**
 
 ### Changed
 
-- Minimum API version to 3.18.1
+- Minimum SMAPI version to 3.18.1
 
 
 ## [1.13.0] - 2022-07-24
@@ -184,7 +228,10 @@ for queries and analysis.**
 
 - Initial release
 
-[Unreleased]: https://github.com/thespbgamer/ZoomLevel/compare/1.14.0...HEAD
+[Unreleased]: https://github.com/thespbgamer/ZoomLevel/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.1.0
+[2.0.1]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.0.1
+[2.0.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.0.0
 [1.15.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.15.0
 [1.14.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.14.0
 [1.13.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.13.0

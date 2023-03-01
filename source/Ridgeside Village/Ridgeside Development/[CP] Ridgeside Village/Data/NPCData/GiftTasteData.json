@@ -39,7 +39,7 @@
 
 			"Jeric": "{{i18n:Gift.Love.Jeric}}/637 224 444 597/{{i18n:Gift.Like.Jeric}}/20 335 266 408/{{i18n:Gift.Dislike.Jeric}}//{{i18n:Gift.Hate.Jeric}}//{{i18n:Gift.Neutral.Jeric}}/-4/ ",
 
-			"Keahi": "{{i18n:Gift.Love.Keahi}}/223 224 372 282/{{i18n:Gift.Like.Keahi}}/340 344 396 404 567 430/{{i18n:Gift.Dislike.Keahi}}/247 346/{{i18n:Gift.Hate.Keahi}}/-26 alcohol_item 253 903/{{i18n:Gift.Neutral.Keahi}}/-4/ ",
+			"Keahi": "{{i18n:Gift.Love.Keahi}}/223 224 372 282/{{i18n:Gift.Like.Keahi}}/340 344 396 404 567 430/{{i18n:Gift.Dislike.Keahi}}/247 346/{{i18n:Gift.Hate.Keahi}}/-26 alcohol_item 253 903 395/{{i18n:Gift.Neutral.Keahi}}/-4/ ",
 
 			"Kenneth": "{{i18n:Gift.Love.Kenneth}}/206 400 338 576/{{i18n:Gift.Like.Kenneth}}/90 184 395 538/{{i18n:Gift.Dislike.Kenneth}}//{{i18n:Gift.Hate.Kenneth}}//{{i18n:Gift.Neutral.Kenneth}}/-4/ ",
 
@@ -61,19 +61,19 @@
 
 			"Shiro": "{{i18n:Gift.Love.Shiro}}/414 241 610 420/{{i18n:Gift.Like.Shiro}}/424 190 399 304/{{i18n:Gift.Dislike.Shiro}}//{{i18n:Gift.Hate.Shiro}}//{{i18n:Gift.Neutral.Shiro}}/-4/ ",
 
-			"Trinnie": "{{i18n:Gift.Love.Trinnie}}/233 797 211 221/{{i18n:Gift.Like.Trinnie}}/591 22 428 400 340 344/{{i18n:Gift.Dislike.Trinnie}}/247 346/{{i18n:Gift.Hate.Trinnie}}/-26 alcohol_item 253 903 226 215/{{i18n:Gift.Neutral.Trinnie}}/-4/ ",
+			"Trinnie": "{{i18n:Gift.Love.Trinnie}}/233 797 211 221/{{i18n:Gift.Like.Trinnie}}/591 22 428 400 340 344/{{i18n:Gift.Dislike.Trinnie}}/247 346/{{i18n:Gift.Hate.Trinnie}}/-26 alcohol_item 253 903 226 215 395/{{i18n:Gift.Neutral.Trinnie}}/-4/ ",
 
-			"Ysabelle": "{{i18n:Gift.Love.Ysabelle}}/72 228 268 636/{{i18n:Gift.Like.Ysabelle}}/348 340 421 258/{{i18n:Gift.Dislike.Ysabelle}}//{{i18n:Gift.Hate.Ysabelle}}//{{i18n:Gift.Neutral.Ysabelle}}/-4/ ",
+			"Ysabelle": "{{i18n:Gift.Love.Ysabelle}}/72 228 268 636 253/{{i18n:Gift.Like.Ysabelle}}/348 340 421 258/{{i18n:Gift.Dislike.Ysabelle}}//{{i18n:Gift.Hate.Ysabelle}}//{{i18n:Gift.Neutral.Ysabelle}}/-4/ ",
 
-			"Yuuma": "{{i18n:Gift.Love.Yuuma}}/194 613 398 216/{{i18n:Gift.Like.Yuuma}}/167 176 92 311 340 344/{{i18n:Gift.Dislike.Yuuma}}/247 346/{{i18n:Gift.Hate.Yuuma}}/-26 alcohol_item 253 903 226 215/{{i18n:Gift.Neutral.Yuuma}}/-4/ ",
+			"Yuuma": "{{i18n:Gift.Love.Yuuma}}/194 613 398 216/{{i18n:Gift.Like.Yuuma}}/167 176 92 311 340 344/{{i18n:Gift.Dislike.Yuuma}}/247 346/{{i18n:Gift.Hate.Yuuma}}/-26 alcohol_item 253 903 226 215 395/{{i18n:Gift.Neutral.Yuuma}}/-4/ ",
 
 			//2.0
 
-			"Ariah": "{{i18n:Gift.Love.Ariah}}/433/{{i18n:Gift.Like.Ariah}}/340 344 400/{{i18n:Gift.Dislike.Ariah}}/247 304/{{i18n:Gift.Hate.Ariah}}/-26 alcohol_item/{{i18n:Gift.Neutral.Ariah}}/-4/ ",
+			"Ariah": "{{i18n:Gift.Love.Ariah}}/433/{{i18n:Gift.Like.Ariah}}/340 344 400/{{i18n:Gift.Dislike.Ariah}}/247 304/{{i18n:Gift.Hate.Ariah}}/-26 alcohol_item 253 395/{{i18n:Gift.Neutral.Ariah}}/-4/ ",
 
 			"Maive": "{{i18n:Gift.Love.Maive}}/{{spacechase0.JsonAssets/ObjectId:Honey Glazed Salad}} {{spacechase0.JsonAssets/ObjectId:Zesty Tuna}} {{spacechase0.JsonAssets/ObjectId:Cherry Berry Shakey}}/{{i18n:Gift.Like.Maive}}/{{spacechase0.JsonAssets/ObjectId:Fairytale Lionfish}} 254 340 426/{{i18n:Gift.Dislike.Maive}}/346 459 {{spacechase0.JsonAssets/ObjectId:Arugula Roll}} {{spacechase0.JsonAssets/ObjectId:Fixer Eel}}/{{i18n:Gift.Hate.Maive}}/306 307 308 807 {{spacechase0.JsonAssets/ObjectId:Caped Tree Frog}} {{spacechase0.JsonAssets/ObjectId:Forage Souffle}}/{{i18n:Gift.Neutral.Maive}}/-4/ ",
 
-			"Louie": "{{i18n:Gift.Love.Louie}}/{{spacechase0.JsonAssets/ObjectId:Kek's Style Shortcake}} {{spacechase0.JsonAssets/ObjectId:Forest Halva}} {{spacechase0.JsonAssets/ObjectId:Fried Fish a la Ridge}}/{{i18n:Gift.Like.Louie}}/258 340 344/{{i18n:Gift.Dislike.Louie}}/247 769 {{spacechase0.JsonAssets/ObjectId:Caped Tree Frog}} {{spacechase0.JsonAssets/ObjectId:Fixer Eel}} {{spacechase0.JsonAssets/ObjectId:Ridgeside Bass}}/{{i18n:Gift.Hate.Louie}}/614 91 207 -26 alcohol_item 253 903 226 215/{{i18n:Gift.Neutral.Louie}}/-4/ ",
+			"Louie": "{{i18n:Gift.Love.Louie}}/{{spacechase0.JsonAssets/ObjectId:Kek's Style Shortcake}} {{spacechase0.JsonAssets/ObjectId:Forest Halva}} {{spacechase0.JsonAssets/ObjectId:Fried Fish a la Ridge}}/{{i18n:Gift.Like.Louie}}/258 340 344/{{i18n:Gift.Dislike.Louie}}/247 769 {{spacechase0.JsonAssets/ObjectId:Caped Tree Frog}} {{spacechase0.JsonAssets/ObjectId:Fixer Eel}} {{spacechase0.JsonAssets/ObjectId:Ridgeside Bass}}/{{i18n:Gift.Hate.Louie}}/614 91 207 -26 alcohol_item 253 903 226 215 395/{{i18n:Gift.Neutral.Louie}}/-4/ ",
 
 			"Irene": "{{i18n:Gift.Love.Irene}}/{{spacechase0.JsonAssets/ObjectId:Pillowsoft Cheezy Sandwich}} {{spacechase0.JsonAssets/ObjectId:Mountain Plumcot}} {{spacechase0.JsonAssets/ObjectId:Ridge Wild Apple}}/{{i18n:Gift.Like.Irene}}/{{spacechase0.JsonAssets/ObjectId:Northern Limequat}} {{spacechase0.JsonAssets/ObjectId:Pumpkin Darling Slice}} {{spacechase0.JsonAssets/ObjectId:Ridge Mosaic Cake}} {{spacechase0.JsonAssets/ObjectId:Zesty Tuna}}/{{i18n:Gift.Dislike.Irene}}/304/{{i18n:Gift.Hate.Irene}}//{{i18n:Gift.Neutral.Irene}}/-4/ ",
 
@@ -107,6 +107,7 @@
 
 			"Torts": "{{i18n:Gift.Love.Torts}}/107 910 454/{{i18n:Gift.Like.Torts}}/218 203 {{spacechase0.JsonAssets/ObjectId:Pale Candelabrum}} {{spacechase0.JsonAssets/ObjectId:Village Hero Sculpture}} {{spacechase0.JsonAssets/ObjectId:Everfrost Stone}} {{spacechase0.JsonAssets/ObjectId:Ancient Music Box}}/{{i18n:Gift.Dislike.Torts}}/-2 -4 -5 -6 -7 -12 -17 -23 -26 -74 -75 -79 -80 -81 72 194 216 262 279 304 395 440 444 459 613 634 635 636 637 638 724 797 815 873/{{i18n:Gift.Hate.Torts}}/-15 -26 -27 446/{{i18n:Gift.Neutral.Torts}}/199 219 236 456/ ",
 
+			"June": "{{i18n:Gift.Love.June}}/119 226 253 433 613 {{spacechase0.JsonAssets/ObjectId:Wild Apple Juice}}/{{i18n:Gift.Like.June}}/281 282 296 392 398 404 406 408 410 412 414 416 {{spacechase0.JsonAssets/ObjectId:Autumn Drop Berry}} {{spacechase0.JsonAssets/ObjectId:Frost Clump Berry}} {{spacechase0.JsonAssets/ObjectId:Highland Chard}} {{spacechase0.JsonAssets/ObjectId:Ridge Wild Apple}} {{spacechase0.JsonAssets/ObjectId:Ridgeside Clementine}} {{spacechase0.JsonAssets/ObjectId:Ember Blood Lime}} {{spacechase0.JsonAssets/ObjectId:Highland Jostaberry}} {{spacechase0.JsonAssets/ObjectId:Northern Limequat}}/{{i18n:Gift.Dislike.June}}/346/{{i18n:Gift.Hate.June}}/446/{{i18n:Gift.Neutral.June}}/16 18 20 22 24 91 188 190 192 248 250 252 254 256 257 258 259 260 264 266 268 399 400 402 591 593 597 634 635 636 638 834 {{spacechase0.JsonAssets/ObjectId:Cherry Pluot}} {{spacechase0.JsonAssets/ObjectId:Mountain Plumcot}} {{spacechase0.JsonAssets/ObjectId:Desert Tangelo}} {{spacechase0.JsonAssets/ObjectId:Paradise Rangpur}} {{spacechase0.JsonAssets/ObjectId:Tropi Ugli Fruit}} {{spacechase0.JsonAssets/ObjectId:Forest Amancay}} {{spacechase0.JsonAssets/ObjectId:Mountain Arugula}} {{spacechase0.JsonAssets/ObjectId:Mountain Hokkaido}} {{spacechase0.JsonAssets/ObjectId:Ridge Azorean Flower}} {{spacechase0.JsonAssets/ObjectId:Ridgeside Monkshood}} {{spacechase0.JsonAssets/ObjectId:Violet Devil's Claw}} -4/ ",
 
 		},
 	},
@@ -152,6 +153,20 @@
 		},
 		"Entries": {
 			"Torts": "{{i18n:Gift.Love.Torts.realm}}/107 910 454/{{i18n:Gift.Like.Torts.realm}}/218 203 {{spacechase0.JsonAssets/ObjectId:Pale Candelabrum}} {{spacechase0.JsonAssets/ObjectId:Village Hero Sculpture}} {{spacechase0.JsonAssets/ObjectId:Everfrost Stone}} {{spacechase0.JsonAssets/ObjectId:Ancient Music Box}}/{{i18n:Gift.Dislike.Torts.realm}}/-2 -4 -5 -6 -7 -12 -17 -23 -26 -74 -75 -79 -80 -81 72 194 216 262 279 304 395 440 444 459 613 634 635 636 637 638 724 797 815 873/{{i18n:Gift.Hate.Torts.realm}}/-15 -26 -27 446/{{i18n:Gift.Neutral.Torts.realm}}/199 219 236 456/ ",
+		},
+	},
+
+	{
+		"LogName": "Gift tastes - Zayne",
+		"Action": "EditData",
+		"Target": "Data/NPCGiftTastes",
+		"When": {
+			"HasSeenEvent": 75160338
+		},
+		"Update": "OnLocationChange, OnTimeChange",
+		"Entries": {
+
+			"Zayne": "{{i18n:Gift.Love.Zayne}}/66 107 221/{{i18n:Gift.Like.Zayne}}/196 256 336/{{i18n:Gift.Dislike.Zayne}}/167 614 815/{{i18n:Gift.Hate.Zayne}}//{{i18n:Gift.Neutral.Zayne}}/-4/ ",
 		},
 	},
 

@@ -60,7 +60,8 @@ namespace CustomCaskMod
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.GetAgingMultiplierForItem)),
-                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.GetAgingMultiplierForItem)){ priority = Priority.VeryHigh}
+                prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.GetAgingMultiplierForItemPrefix)){ priority = Priority.VeryHigh },
+                postfix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.GetAgingMultiplierForItemPostfix))
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.checkForMaturity)),

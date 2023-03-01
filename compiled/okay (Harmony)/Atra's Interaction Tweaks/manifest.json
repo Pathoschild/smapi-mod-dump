@@ -1,16 +1,17 @@
 {
   "Dependencies": [
     {
-      "UniqueID": "atravita.AtraCore"
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
     }
   ],
   "EntryDll": "StopRugRemoval.dll",
-  "Name": "Atra's Interaction Tweaks.",
+  "Name": "Atra's Interaction Tweaks",
   "Author": "atravita",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "A few interaction tweaks: prevents accidental rug removal, prevents gates from popping off, and some other things.",
   "UniqueID": "atravita.StopRugRemoval",
-  "MinimumApiVersion": "3.15",
+  "MinimumApiVersion": "3.18",
   "UpdateKeys": [
     "Nexus:10192",
     "ModDrop:1068101"

@@ -34,9 +34,9 @@ namespace AtraShared.Integrations.Interfaces;
 /// released Giant Crop Tweaks will begin using the base game's data format
 /// rather than its own implementation of the same.
 /// </summary>
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:Property summary documentation should match accessors", Justification = "API was like this.")]
 public interface IGiantCropData
 {
-
     /// <summary>
     /// The unqualified item ID produced by the underlying crop (i.e. the 'index of harvest' field in <c>Data/Crops</c>). The giant crop has a chance of growing when there's a grid of fully-grown crops which produce this item ID in a grid of <see cref="TileSize"/> tiles.
     /// </summary>
@@ -78,9 +78,14 @@ public interface IGiantCropData
     int MaxYields { get; }
 }
 
+/// <summary>
+/// The main API interface for Giant Crop Tweaks.
+/// </summary>
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:Property summary documentation should match accessors", Justification = "API was like this.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1611:Element parameters should be documented", Justification = "API was like this.")]
+[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1615:Element return value should be documented", Justification = "API was like this.")]
 public interface IGiantCropTweaks
 {
-
     /// <summary>
     /// A dictionary of giant crop data. This is an easy to read version of the
     /// game's <c>"Data\GiantCrops"</c> asset.

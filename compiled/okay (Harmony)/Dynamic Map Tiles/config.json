@@ -1,4 +1,5 @@
 {
   "ModEnabled": true,
-  "IsDebug": false
+  "IsDebug": false,
+  "TriggerDuringEvents": false
 }

@@ -88,8 +88,13 @@ internal static class MFUtilities
     /// </summary>
     /// <param name="loc">Location to fix.</param>
     /// <param name="idMapping">IDMapping to use.</param>
-    internal static void FixHoeDirtInLocation(this GameLocation loc, Dictionary<int, int> idMapping)
+    internal static void FixHoeDirtInLocation(this GameLocation? loc, Dictionary<int, int> idMapping)
     {
+        if (loc is null)
+        {
+            return;
+        }
+
         foreach (TerrainFeature terrain in loc.terrainFeatures.Values)
         {
             if (terrain is HoeDirt dirt && dirt.fertilizer.Value != 0)

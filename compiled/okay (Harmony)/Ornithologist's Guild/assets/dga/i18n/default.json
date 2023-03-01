@@ -21,10 +21,18 @@
   "big-craftable.WoodenPlatform.description": "Large range, low capacity.",
   "big-craftable.PlasticTube.name": "Plastic Tube Birdfeeder",
   "big-craftable.PlasticTube.description": "Medium range, low capacity.",
+  "big-craftable.StoneBath.name": "Stone Bird Bath",
+  "big-craftable.StoneBath.description": "May freeze in winter.",
+  "big-craftable.HeatedStoneBath.name": "Heated Stone Bird Bath",
+  "big-craftable.HeatedStoneBath.description": "Suitable for all seasons.",
   "crafting.Ivy_OrnithologistsGuild_Recipe_WoodenHopper.name": "Wooden Hopper Birdfeeder",
   "crafting.Ivy_OrnithologistsGuild_Recipe_WoodenHopper.description": "Small range, low capacity.",
   "crafting.Ivy_OrnithologistsGuild_Recipe_WoodenPlatform.name": "Wooden Platform Birdfeeder",
   "crafting.Ivy_OrnithologistsGuild_Recipe_WoodenPlatform.description": "Large range, low capacity.",
   "crafting.Ivy_OrnithologistsGuild_Recipe_PlasticTube.name": "Plastic Tube Birdfeeder",
-  "crafting.Ivy_OrnithologistsGuild_Recipe_PlasticTube.description": "Medium range, low capacity."
+  "crafting.Ivy_OrnithologistsGuild_Recipe_PlasticTube.description": "Medium range, low capacity.",
+  "crafting.Ivy_OrnithologistsGuild_Recipe_StoneBath.name": "Stone Bird Bath",
+  "crafting.Ivy_OrnithologistsGuild_Recipe_StoneBath.description": "May freeze in winter.",
+  "crafting.Ivy_OrnithologistsGuild_Recipe_HeatedStoneBath.name": "Heated Stone Bird Bath",
+  "crafting.Ivy_OrnithologistsGuild_Recipe_HeatedStoneBath.description": "Suitable for all seasons."
 }

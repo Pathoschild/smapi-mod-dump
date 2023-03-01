@@ -15,6 +15,13 @@
     "beloved.name": "Beloved",
     "beloved.desc": "Sometimes get gifts from your friends",
 
+    "friendly.prestige.desc": "Gain even more additional friendship from talking to villagers",
+    "smoothtalker.prestige.desc": "Gain even more friendship (and lose none) during heart events",
+    "gifter.prestige.desc": "Gain even more friendship from giving gifts",
+    "helpful.prestige.desc": "Gain even more quest rewards",
+    "haggler.prestige.desc": "Get a discount at shops when you are friends with the owner",
+    "beloved.prestige.desc": "Often get gifts from your friends",
+
     "dialogue.beloved": "Take this.  I found it lying around the house.",
     "dialogue.beloved.rare": "Hey {{name}}, I think you might like this.",
     "dialogue.beloved.superrare": "I saw this, and I knew you'd love it.",

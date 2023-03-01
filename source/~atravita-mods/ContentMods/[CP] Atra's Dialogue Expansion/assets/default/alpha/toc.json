@@ -15,7 +15,7 @@
         "FromFile": "assets/default/alpha/Alex/mid.json",
         "When": {
             "EnableFor": "Alex",
-            "Query: {{Hearts:Alex}} >= 6": true,
+            "Query: {{Hearts:Alex}} >= 6": true
         }
     },
     {
@@ -24,7 +24,7 @@
         "FromFile": "assets/default/alpha/Elliott/mid.json",
         "When": {
             "EnableFor": "Elliott",
-            "Query: {{Hearts:Elliott}} >= 6": true,
+            "Query: {{Hearts:Elliott}} >= 6": true
         }
     },
     {
@@ -33,7 +33,7 @@
         "FromFile": "assets/default/alpha/Evelyn/mid.json",
         "When": {
             "EnableFor": "Evelyn",
-            "Query: {{Hearts:Evelyn}} >= 6": true,
+            "Query: {{Hearts:Evelyn}} >= 6": true
         }
     },
     {
@@ -42,7 +42,16 @@
         "FromFile": "assets/default/alpha/George/mid.json",
         "When": {
             "EnableFor": "George",
-            "Query: {{Hearts:George}} >= 6": true,
+            "Query: {{Hearts:George}} >= 6": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "George - high hearts",
+        "FromFile": "assets/default/alpha/George/high.json",
+        "When": {
+            "EnableFor": "George",
+            "Query: {{Hearts:George}} >= 9": true
         }
     },
     {
@@ -51,7 +60,16 @@
         "FromFile": "assets/default/alpha/Gus/mid.json",
         "When": {
             "EnableFor": "Gus",
-            "Query: {{Hearts:Gus}} >= 6": true,
+            "Query: {{Hearts:Gus}} >= 6": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Pam - mid hearts",
+        "FromFile": "assets/default/alpha/Pam/mid.json",
+        "When": {
+            "EnableFor": "Pam",
+            "Query: {{Hearts:Pam}} >= 6": true
         }
     },
     {
@@ -60,7 +78,7 @@
         "FromFile": "assets/default/alpha/Sebastian/mid.json",
         "When": {
             "EnableFor": "Sebastian",
-            "Query: {{Hearts:Sebastian}} >= 6": true,
+            "Query: {{Hearts:Sebastian}} >= 6": true
         }
     }
 ]}

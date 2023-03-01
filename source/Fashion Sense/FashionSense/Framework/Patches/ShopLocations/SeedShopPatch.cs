@@ -8,8 +8,8 @@
 **
 *************************************************/
 
-using HarmonyLib;
 using FashionSense.Framework.Utilities;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;

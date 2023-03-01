@@ -40,28 +40,28 @@ namespace CustomCaskMod
             DataLoader.Helper.Data.WriteJsonFile("data\\CaskData.json", CaskData);
             DataLoader.LoadContentPacksCommand();
 
-            MailDao.SaveLetter
-            (
-                new Letter
-                (
-                    "CustomCaskRecipe"
-                    , I18N.Get("CustomCask.RecipeLetter")
-                    , "Cask"
-                    , (l) => !DataLoader.ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCask") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && !Game1.player.craftingRecipes.ContainsKey("Cask")
-                    , (l) => Game1.player.mailReceived.Add(l.Id)
-                )
+            IMailFrameworkModApi mailFrameworkModApi = helper.ModRegistry.GetApi<IMailFrameworkModApi>("DIGUS.MailFrameworkMod");
+            mailFrameworkModApi?.RegisterLetter(
+                new ApiLetter
+                {
+                    Id = "CustomCaskRecipe", Text = "CustomCask.RecipeLetter",
+                    Title = "CustomCask.RecipeLetter.Title", Recipe = "Cask", I18N = helper.Translation
+                }
+                , (l) => !DataLoader.ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCask") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && !Game1.player.craftingRecipes.ContainsKey("Cask")
+                , (l) => Game1.player.mailReceived.Add(l.Id)
             );
-            MailDao.SaveLetter
-            (
-                new Letter
-                (
-                    "CustomCask"
-                    , I18N.Get("CustomCask.Letter")
-                    , (l) => !DataLoader.ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCaskRecipe") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && Game1.player.craftingRecipes.ContainsKey("Cask")
-                    , (l) => Game1.player.mailReceived.Add(l.Id)
-                )
+            mailFrameworkModApi?.RegisterLetter(
+                new ApiLetter
+                {
+                    Id = "CustomCask"
+                    , Text = "CustomCask.Letter"
+                    , Title = "CustomCask.Letter.Title"
+                    , I18N = helper.Translation
+                }
+                , (l) => !DataLoader.ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CustomCaskRecipe") && (Utility.getHomeOfFarmer(Game1.player).upgradeLevel >= 3 || ModConfig.EnableCasksAnywhere) && Game1.player.craftingRecipes.ContainsKey("Cask")
+                , (l) => Game1.player.mailReceived.Add(l.Id)
             );
-            
+
             CreateConfigMenu(manifest);
         }
 
@@ -197,6 +197,10 @@ namespace CustomCaskMod
                 api.RegisterSimpleOption(manifest, "Casks Anywhere", "Casks will accept items anywhere.", () => DataLoader.ModConfig.EnableCasksAnywhere, (bool val) => DataLoader.ModConfig.EnableCasksAnywhere = val);
 
                 api.RegisterSimpleOption(manifest, "Quality++", "Casks will be able to increase more than one quality lever per day.", () => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay, (bool val) => DataLoader.ModConfig.EnableMoreThanOneQualityIncrementPerDay = val);
+
+                api.RegisterSimpleOption(manifest, "Cask Age Every Object", "Casks will be able to age every object.", () => DataLoader.ModConfig.EnableCaskAgeEveryObject, (bool val) => DataLoader.ModConfig.EnableCaskAgeEveryObject = val);
+
+                api.RegisterSimpleOption(manifest, "Default Aging Rate", "Rate that will be used for non declared objects.", () => DataLoader.ModConfig.DefaultAgingRate, (float val) => DataLoader.ModConfig.DefaultAgingRate = val);
             }
         }
     }

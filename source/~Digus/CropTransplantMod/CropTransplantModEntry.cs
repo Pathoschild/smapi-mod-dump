@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -49,11 +49,11 @@ namespace CropTransplantMod
         {
             new DataLoader(Helper, ModManifest);
 
-            var harmony = HarmonyInstance.Create("Digus.CropTransplantMod");
+            var harmony = new Harmony("Digus.CropTransplantMod");
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.tryToPlaceItem)),
-                prefix: new HarmonyMethod(typeof(TransplantOverrides), nameof(TransplantOverrides.TryToPlaceItem))
+                prefix: new HarmonyMethod(typeof(TransplantOverrides), nameof(TransplantOverrides.TryToPlaceItem)) { priority = Priority.First }
             );
 
             harmony.Patch(

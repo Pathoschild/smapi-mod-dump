@@ -13,10 +13,12 @@
       "EnableEnchants": true,
       "EnableForges": true,
       "EnableSpecialMove": true,
-      "BullseyeReplacesCursor": true
+      "BullseyeReplacesCursor": true,
+      "AutoSelectionRange": 4
     },
     "Weapons": {
       "EnableComboHits": true,
+      "SwipeHold": true,
       "ComboHitsPerWeapon": {
         "StabbingSword": 4,
         "DefenseSword": 4,
@@ -27,9 +29,22 @@
       "EnableStabbySwords": true,
       "GalaxySwordType": "StabbingSword",
       "InfinityBladeType": "StabbingSword",
+      "CustomStabbingSwords": [
+        "Strawblaster"
+      ],
       "EnableRebalance": true,
       "EnableRetexture": true,
-      "EnableEnchants": true
+      "EnableEnchants": true,
+      "WeaponTooltipStyle": "Absolute",
+      "AutoSelectionRange": 2
+    },
+    "ModKey": "LeftShift, LeftShoulder",
+    "EnableAutoSelection": true,
+    "SelectionBorderColor": {
+      "B": 255,
+      "G": 0,
+      "R": 255,
+      "A": 255
     },
     "FaceMouseCursor": true,
     "SlickMoves": true,
@@ -150,7 +165,7 @@
     "EnableResonance": true
   },
   "Taxes": {
-    "AnnualInterest": 0.06,
+    "AnnualInterest": 0.11,
     "IncomeTaxCeiling": 0.37,
     "DeductibleAnimalExpenses": true,
     "DeductibleBuildingExpenses": true,
@@ -182,8 +197,8 @@
       "ClearDeadCrops": true,
       "ClearDebris": true,
       "PlayShockwaveAnimation": true,
-      "AllowReachingEnchantment": true,
       "AllowMasterEnchantment": true,
+      "AllowReachingEnchantment": true,
       "BaseStaminaMultiplier": 1.0
     },
     "Pick": {
@@ -206,87 +221,99 @@
       "ClearDeadCrops": true,
       "ClearDebris": true,
       "PlayShockwaveAnimation": true,
-      "AllowReachingEnchantment": true,
       "AllowMasterEnchantment": true,
+      "AllowReachingEnchantment": true,
       "BaseStaminaMultiplier": 1.0
     },
     "Hoe": {
-      "AffectedTiles": [
-        [
-          3,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          6,
-          1
-        ],
-        [
-          5,
-          2
-        ]
-      ],
       "OverrideAffectedTiles": false,
+      "AffectedTilesAtEachPowerLevel": [
+        {
+          "Item1": 3,
+          "Item2": 0
+        },
+        {
+          "Item1": 5,
+          "Item2": 0
+        },
+        {
+          "Item1": 3,
+          "Item2": 1
+        },
+        {
+          "Item1": 6,
+          "Item2": 1
+        },
+        {
+          "Item1": 5,
+          "Item2": 2
+        }
+      ],
       "AllowMasterEnchantment": true,
       "BaseStaminaMultiplier": 1.0
     },
     "Can": {
-      "AffectedTiles": [
-        [
-          3,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          6,
-          1
-        ],
-        [
-          5,
-          2
-        ]
-      ],
-      "AllowSwiftEnchantment": true,
       "OverrideAffectedTiles": false,
+      "AffectedTilesAtEachPowerLevel": [
+        {
+          "Item1": 3,
+          "Item2": 0
+        },
+        {
+          "Item1": 5,
+          "Item2": 0
+        },
+        {
+          "Item1": 3,
+          "Item2": 1
+        },
+        {
+          "Item1": 6,
+          "Item2": 1
+        },
+        {
+          "Item1": 5,
+          "Item2": 2
+        }
+      ],
       "AllowMasterEnchantment": true,
+      "AllowSwiftEnchantment": true,
       "BaseStaminaMultiplier": 1.0
     },
     "Scythe": {
       "RegularRadius": 2,
       "GoldRadius": 4,
       "ClearTreeSaplings": true,
+      "HarvestCrops": false,
+      "HarvestFlowers": false,
+      "HarvestForage": false,
+      "GoldScytheOnly": false,
       "AllowHaymakerEnchantment": true
     },
-    "RequireModkey": true,
-    "Modkey": "LeftShift, LeftShoulder",
+    "ModKey": "LeftShift, LeftShoulder",
+    "ChargingRequiresModKey": true,
     "HideAffectedTiles": false,
     "StaminaCostMultiplier": 1.0,
     "TicksBetweenWaves": 4,
-    "FaceMouseCursor": true
+    "FaceMouseCursor": true,
+    "EnableAutoSelection": true,
+    "SelectionBorderColor": {
+      "B": 255,
+      "G": 0,
+      "R": 255,
+      "A": 255
+    }
   },
   "Tweex": {
     "BeeHouseAgingFactor": 1.0,
     "MushroomBoxAgingFactor": 1.0,
     "TreeAgingFactor": 1.0,
     "FruitTreeAgingFactor": 1.0,
+    "TeaBushAgingFactor": 1.0,
     "DeterministicAgeQuality": true,
-    "BerryBushesRewardExp": true,
-    "MushroomBoxesRewardExp": true,
-    "TappersRewardExp": true,
+    "BerryBushExpReward": 5,
+    "MushroomBoxExpReward": 1,
+    "TapperExpReward": 5,
     "PreventFruitTreeGrowthInWinter": true,
     "LargeProducsYieldQuantityOverQuality": true,
     "DairyArtisanMachines": [
@@ -299,5 +326,5 @@
     "ExplosionTriggeredBombs": true,
     "LegendaryFishAlwaysBestQuality": true
   },
-  "DebugKey": "LeftAlt"
+  "DebugKey": "RightShift, RightShoulder"
 }

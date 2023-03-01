@@ -63,6 +63,8 @@ namespace Omegasis.HappyBirthday
 
         public bool contentPacksInitalized;
 
+        public IStardewAccessApi screenreader;
+
         /*********
         ** Public methods
         *********/
@@ -162,6 +164,8 @@ namespace Omegasis.HappyBirthday
 
             BirthdayEventUtilities.InitializeBirthdayEventCommands();
 
+            screenreader = Helper.ModRegistry.GetApi<IStardewAccessApi>("shoaib.stardewaccess");
+
         }
 
         private void LocalizedContentManager_OnLanguageChange(LocalizedContentManager.LanguageCode code)
@@ -255,14 +259,20 @@ namespace Omegasis.HappyBirthday
 
             //Below code sets up menus for selecting the new birthday for the player.
 
-            
+
             if (!this.birthdayManager.hasCheckedForBirthday() && Game1.activeClickableMenu == null)
             {
                 this.birthdayManager.setCheckedForBirthday(true);
 
                 this.birthdayManager.setUpPlayersBirthday();
             }
-            
+
+        }
+
+        public void SayWithMenuChecker(string text, bool interrupt)
+        {
+            if (this.screenreader != null)
+                this.screenreader.SayWithMenuChecker(text, interrupt);
         }
     }
 }

@@ -33,9 +33,14 @@ Changelog
 
 ##### Known Issues
 
-1. NPCs may vanish if they go to `IslandSouthEast`. They reappear the next day. Therefore, that's been tempoarily removed until I figure out why they disappear from `IslandSouthEast`. `IslandNorth` is fine.
+1. NPCs may vanish if they go to `IslandSouthEast`. They reappear the next day. Therefore, that's been temporarily removed until I figure out why they disappear from `IslandSouthEast`. `IslandNorth` is fine.
 2. If you pause time, NPCs will tend to get stuck at schedule points. Unfortunately for Ginger Island, this usually ends with NPCs trapped in the changing room. If you go to Ginger Island and see no one there, try unpausing time. Or just leave them trapped in the changing room....(or I guess, disable changing)
 3. The debugging console commands basically only work for the host in multiplayer.
+
+### Version 1.1.8
+* Fix assumption in scheduling code that schedules will have at least two points.
+* GIMA will now re-add the `default` or `spring` schedule if a mod tries removing that from a vanilla character. This is because the game expects one of those two schedules to exist and uses it as a default, and removing both may cause a crash.
+* Add Chinese (thanks Herienseo!)
 
 ### Version 1.1.7
 * Remove no longer necessary compat code.

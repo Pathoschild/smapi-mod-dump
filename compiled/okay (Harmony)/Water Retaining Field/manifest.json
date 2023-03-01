@@ -1,13 +1,13 @@
 ﻿{
 	"Name": "Water Retaining Field Mod",
 	"Author": "Digus",
-	"Version": "1.0.6",
+	"Version": "1.1.0",
 	"Description": "Make adjacent tiles with retaining soil work together.",
 	"UniqueID": "DIGUS.WaterRetainingFieldMod",
 	"EntryDll": "WaterRetainingFieldMod.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "3.17.0",
 	"Dependencies": [
-		{ "UniqueID": "DIGUS.MailFrameworkMod", "MinimumVersion": "1.4.1" }
+		{ "UniqueID": "DIGUS.MailFrameworkMod", "MinimumVersion": "1.15.0", "IsRequired": false }
 	],
 	"UpdateKeys": [ "Nexus:2374" ]
 }

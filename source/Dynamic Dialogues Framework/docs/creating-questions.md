@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-## Adding questions
+# Custom questions
 
 
 Questions are loaded from `mistyspring.dynamicdialogues/Questions/<NPC name>`. Once a NPC has nothing else to talk about, you can ask them questions (if any exist).
@@ -14,14 +14,33 @@ Like with dialogues, these need a key (it's only used in the case errors are fou
 
 You can add multiple questions.
 
-name | description
------|------------ 
-Question | Text the question will have.
-Answer | NPC's answer.
-MaxTimesAsked | Max times you can ask this question. If 0, it'll count as infinite (Optional)
-Location | The question will only appear when in this location. (Optional)
-From | The hour the question *can* begin being added at. (Optional)
-To | Limit time for adding the question. (Optional)
+## Contents
+
+* [Adding questions](#adding-questions)
+
+  * [Example 1](#example-1)
+
+  * [Example 2](#example-2)
+-----------
+
+## Adding questions
+
+
+name |Required| description
+-----|---|--------- 
+Question |Yes| Text the question will have.
+Answer |Yes| NPC's answer.
+MaxTimesAsked\* |No| Max times you can ask this question. If 0, it'll count as infinite.
+Location |No| The question will only appear when in this location.
+From |No| The hour the question *can* begin being added at.
+To |No| Limit time for adding the question.
+EventToStart|No|Event to start after you ask the question.
+QuestToStart|No|Quest to add after you ask the question.
+CanRepeatEvent\*\*|No|If the event can be repeated.
+
+\*= If you include a quest (or event), `MaxTimesAsked` must be 1.
+
+\*\*= Once per day.
 
 Template:
 
@@ -41,7 +60,8 @@ Just remove any fields you won't be using.
 
 ------------
 
-**Example:**
+### Example 1
+
 This will add a question, which can only be asked twice (per day), and only when in Elliott's cabin.
 ```
 {
@@ -65,7 +85,8 @@ This will add a question, which can only be asked twice (per day), and only when
 
 ------------
 
-**Example 2:**
+### Example 2
+
 This will add "template" questions for sandy.
 The first one can be asked forever, but the second one will only appear once.
 ```

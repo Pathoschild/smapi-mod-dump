@@ -38,6 +38,7 @@ namespace Custom_Farm_Loader.Lib
 
         private bool IsCFLMap = false;
         private ModFarmType ModFarmType; //Only used for non CFL maps
+        public IManifest Manifest;
 
         public string UniqueModID = "";
         public string ID = "";
@@ -96,6 +97,7 @@ namespace Custom_Farm_Loader.Lib
 
             customFarm.UniqueModID = manifest.UniqueID;
             customFarm.Author = manifest.Author;
+            customFarm.Manifest = manifest;
             customFarm.IsCFLMap = true;
 
             try {
@@ -154,10 +156,10 @@ namespace Custom_Farm_Loader.Lib
                             customFarm.StartFurniture = Furniture.parseFurnitureJsonArray(n);
                             break;
                         case "dailyupdates":
-                            customFarm.DailyUpdates = DailyUpdate.parseDailyUpdateJsonArray(n);
+                            customFarm.DailyUpdates = DailyUpdate.parseDailyUpdateJsonArray(n, manifest);
                             break;
                         case "fishingrules":
-                            customFarm.FishingRules = FishingRule.parseFishingRuleJsonArray(n);
+                            customFarm.FishingRules = FishingRule.parseFishingRuleJsonArray(n, manifest);
                             break;
                         case "properties":
                             customFarm.Properties = FarmProperties.parseJObject(n);
@@ -403,16 +405,11 @@ namespace Custom_Farm_Loader.Lib
             if (CachedCustomFarms.Count > 0)
                 return CachedCustomFarms;
 
-            var mods = Helper.ModRegistry.GetAll();
-
             CachedCustomFarms = new List<CustomFarm>();
             CachedModFarmTypes = new List<ModFarmType>();
 
-            foreach (IModInfo mod in mods) {
-                string directoryPath = (string)HarmonyLib.AccessTools.GetDeclaredFields(mod.GetType()).Find(e => e.Name.Contains("DirectoryPath")).GetValue(mod);
-
-                CachedCustomFarms.AddRange(getAllFromModFolder(directoryPath, mod.Manifest));
-            }
+            foreach (var contentPack in Mod.Helper.ContentPacks.GetOwned())
+                CachedCustomFarms.AddRange(getAllFromModFolder(contentPack.DirectoryPath, contentPack.Manifest));
 
             CachedCustomFarms = CachedCustomFarms.OrderBy(o => o.Name).ToList();
             LoadedCachedCustomFarms = true;

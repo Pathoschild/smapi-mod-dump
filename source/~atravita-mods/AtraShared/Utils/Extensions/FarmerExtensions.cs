@@ -34,4 +34,21 @@ public static class FarmerExtensions
             farmer.FacingDirection = delta.X <= 0 ? Game1.left : Game1.right;
         }
     }
+
+    /// <summary>
+    /// Gets a facing direction corresponding to the direction an Farmer is facing.
+    /// </summary>
+    /// <param name="farmer">Farmer in question.</param>
+    /// <returns>Direction they're facing.</returns>
+    public static Vector2 GetFacingDirection(this Farmer farmer)
+    {
+        return farmer.facingDirection.Get() switch
+        {
+            Game1.up => -Vector2.UnitY,
+            Game1.down => Vector2.UnitY,
+            Game1.left => -Vector2.UnitX,
+            Game1.right => Vector2.UnitX,
+            _ => Vector2.Zero,
+        };
+    }
 }

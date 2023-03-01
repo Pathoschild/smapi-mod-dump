@@ -7,9 +7,9 @@ mods:
    Profiler
 
 latest commit:
-   commit fdb580422ee39adaf0326a79f000e1b4be7bb4be
+   commit 8d25fb6d2b5a4f3aae91ef3145b04e48ad73ad0d
    Author: SinZ <github@361zn.is>
-   Date:   Wed Nov 23 20:36:21 2022 +1100
+   Date:   Thu Feb 23 01:18:01 2023 +1100
    
-       Switch to logging as SMAPI Traces
+       Add an FTM integration into Lookup Anything
    

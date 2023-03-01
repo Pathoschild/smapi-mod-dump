@@ -28,7 +28,7 @@ internal static class SeasonalFruitPicker
     {
         ModEntry.ModMonitor.DebugOnlyLog("Picked Seasonal Fruit");
 
-        List<KeyValuePair<int, string>>? fruittrees = Game1.content.Load<Dictionary<int, string>>("Data/fruitTrees")
+        List<KeyValuePair<int, string>>? fruittrees = Game1.content.Load<Dictionary<int, string>>(@"Data\fruitTrees")
                                       .Where((kvp) => kvp.Value.GetNthChunk('/', 1).Contains(Game1.currentSeason, StringComparison.OrdinalIgnoreCase))
                                       .ToList();
 

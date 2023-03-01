@@ -37,10 +37,14 @@ namespace CropTransplantMod
                 new Letter
                 (
                     "CropTransplantLetter"
-                    , I18N.Get("CropTransplant.Letter")
+                    , "CropTransplant.Letter"
                     , (l) => !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CropTransplantPotLetter") && Game1.player.craftingRecipes.ContainsKey("Garden Pot") && !ModConfig.GetGardenPotEarlier
                     , (l) => Game1.player.mailReceived.Add(l.Id)
                 )
+                {
+                    Title = "CropTransplant.Letter.Title"
+                    , I18N = I18N
+                }
             );
 
             MailDao.SaveLetter
@@ -48,11 +52,15 @@ namespace CropTransplantMod
                 new Letter
                 (
                     "CropTransplantPotLetter"
-                    , I18N.Get("CropTransplantPot.Letter")
+                    , "CropTransplantPot.Letter"
                     , new List<Item>() { new Object(Vector2.Zero, 62, false)}
                     , (l) => !Game1.player.mailReceived.Contains(l.Id) && !Game1.player.mailReceived.Contains("CropTransplantLetter") && GetNpcFriendship("Evelyn") >= 2 * 250 && ModConfig.GetGardenPotEarlier
                     , (l) => Game1.player.mailReceived.Add(l.Id)
                 )
+                {
+                    Title = "CropTransplant.Letter.Title"
+                    , I18N = I18N
+                }
             );
 
             CreateConfigMenu(manifest);

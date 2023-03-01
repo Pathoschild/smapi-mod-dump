@@ -6,9 +6,11 @@
   "Edibility": -300,
   "Recipe": null,
   "NameLocalization": {
-	  "zh": "洞察之戒"
+	  "zh": "洞察之戒",
+	  "ko": "통찰의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "帮你你深入了解正在学习的内容，并增加经验。"
-  },
+	  "zh": "帮你你深入了解正在学习的内容，并增加经验。",
+	  "ko": "당신이 배우는 것에 대한 통찰력을 주어 경험치 획득이 증가합니다."
+  }
 }

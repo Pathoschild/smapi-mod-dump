@@ -1,60 +1,6 @@
 {
-  "LocalLeaderboards": {
-    "drbirbdev.JunimoKartGlobalRankings": {
-      "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore": []
-    }
-  },
-  "TopLeaderboards": {
-    "drbirbdev.JunimoKartGlobalRankings": {
-      "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore": [
-        {
-          "Stat": "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore",
-          "UserUUID": "ff168a80-0faa-4886-8eef-55af6d0bf769",
-          "Score": 115560.0,
-          "Name": "寒",
-          "Farm": "VE",
-          "Secret": null,
-          "DateTime": 1674368498.0
-        },
-        {
-          "Stat": "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore",
-          "UserUUID": "04072917-12fb-47f4-bdac-fa085b5062e4",
-          "Score": 47200.0,
-          "Name": "drbirbdev",
-          "Farm": "Birb",
-          "Secret": null,
-          "DateTime": 1673904744.0
-        },
-        {
-          "Stat": "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore",
-          "UserUUID": "6338d324-1ddb-476d-822d-e06ce920da62",
-          "Score": 46780.0,
-          "Name": "Jose",
-          "Farm": "tictac",
-          "Secret": null,
-          "DateTime": 1674671915.0
-        },
-        {
-          "Stat": "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore",
-          "UserUUID": "0674760b-17f0-4861-9284-546fe3a27383",
-          "Score": 3140.0,
-          "Name": "sf",
-          "Farm": "aw",
-          "Secret": null,
-          "DateTime": 1674823696.0
-        },
-        {
-          "Stat": "drbirbdev.JunimoKartGlobalRankings:JunimoKartScore",
-          "UserUUID": "1d0c9c55-65fc-462d-8db4-93164c1fd6b4",
-          "Score": 350.0,
-          "Name": "Juan",
-          "Farm": "Juan corp",
-          "Secret": null,
-          "DateTime": 1675098404.0
-        }
-      ]
-    }
-  },
+  "LocalLeaderboards": {},
+  "TopLeaderboards": {},
   "MultiplayerUUIDs": [
     "b3b897c1-9166-4550-87fd-e540bee1400b"
   ]

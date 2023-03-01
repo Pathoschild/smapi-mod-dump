@@ -24,6 +24,44 @@ namespace AtraShared.Utils.Extensions;
 /// <remarks>Inspired by https://github.com/spacechase0/StardewValleyMods/blob/main/SpaceShared/ModDataHelper.cs. </remarks>
 public static class ModDataExtensions
 {
+    /// <summary>
+    /// Gets whether two modData dictionaries contain exactly the same modData.
+    /// </summary>
+    /// <param name="self">This modData.</param>
+    /// <param name="other">That modData.</param>
+    /// <returns>True if they match, false otherwise.</returns>
+    public static bool ModDataMatches(this ModDataDictionary? self, ModDataDictionary? other)
+    {
+        if (self?.Count() is null or 0)
+        {
+            return other?.Count() is null or 0;
+        }
+        if (other?.Count() is null or 0)
+        {
+            return false;
+        }
+        return self.Count() == other.Count()
+                && self.Pairs.All((kvp) => other.TryGetValue(kvp.Key, out var val) && val == kvp.Value);
+    }
+
+    /// <summary>
+    /// Copies all modData out of the other dictionary into this one.
+    /// </summary>
+    /// <param name="self">This modData.</param>
+    /// <param name="other">That modData.</param>
+    public static void CopyModDataFrom(this ModDataDictionary? self, ModDataDictionary? other)
+    {
+        if (self is null || other is null)
+        {
+            return;
+        }
+
+        foreach ((string key, string value) in other.Pairs)
+        {
+            self[key] = value;
+        }
+    }
+
     // Instead of storing a real bool, just store 0 or 1
 
     /// <summary>

@@ -49,5 +49,12 @@
   "birdie.SpottedTowhee.attribute.1": "black head",
   "birdie.SpottedTowhee.attribute.2": "red eyes",
   "birdie.SpottedTowhee.attribute.3": "rufous body",
-  "birdie.SpottedTowhee.funFact": "Spotted Towhees forage on the ground by kicking up dirt and debris, revealing food!"
+  "birdie.SpottedTowhee.funFact": "Spotted Towhees forage on the ground by kicking up dirt and debris, revealing food!",
+
+  "birdie.Verdin.commonName": "Verdin",
+  "birdie.Verdin.scientificName": "Auriparus Flaviceps",
+  "birdie.Verdin.attribute.1": "yellow head",
+  "birdie.Verdin.attribute.2": "chestnut patch",
+  "birdie.Verdin.attribute.3": "gray body",
+  "birdie.Verdin.funFact": "Verdins build unusual sphere-shaped nests, often roosting in them throughout the year!"
 }

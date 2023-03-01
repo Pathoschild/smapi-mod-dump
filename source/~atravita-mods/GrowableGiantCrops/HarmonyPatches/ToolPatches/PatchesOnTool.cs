@@ -40,7 +40,6 @@ internal static class PatchesOnTool
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1116:Split parameters should start on line after declaration", Justification = "Reviewed.")]
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
     {
-        // return null;
         try
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);

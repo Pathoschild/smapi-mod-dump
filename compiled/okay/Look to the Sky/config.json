@@ -1,4 +1,5 @@
 {
   "Button": "U",
-  "SpawnChancePerSecond": 5
+  "SpawnChancePerSecond": 5,
+  "DoNotificationNoise": true
 }

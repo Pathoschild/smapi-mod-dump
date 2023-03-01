@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using BirbShared;
-using StardewValley;
 
 namespace LeaderboardLibrary
 {
@@ -28,20 +27,22 @@ namespace LeaderboardLibrary
         /// <returns></returns>
         public async Task<List<LeaderboardStat>> GetLocalScores(string stat)
         {
-            Log.Debug($"Getting local scores from DDB for {stat}");
-            List<Dictionary<string, AttributeValue>> keys = new List<Dictionary<string, AttributeValue>>();
-            foreach (string playerUuid in ModEntry.LocalModData.MultiplayerUUIDs)
+            try
             {
-                keys.Add(new Dictionary<string, AttributeValue>
+                Log.Debug($"Getting local scores from DDB for {stat}");
+                List<Dictionary<string, AttributeValue>> keys = new List<Dictionary<string, AttributeValue>>();
+                foreach (string playerUuid in ModEntry.LocalModData.MultiplayerUUIDs)
+                {
+                    keys.Add(new Dictionary<string, AttributeValue>
                 {
                     {"Stat", new AttributeValue { S = stat } },
                     {"UserUUID", new AttributeValue { S = playerUuid } },
                 });
-            }
+                }
 
-            BatchGetItemRequest request = new BatchGetItemRequest()
-            {
-                RequestItems = new Dictionary<string, KeysAndAttributes>
+                BatchGetItemRequest request = new BatchGetItemRequest()
+                {
+                    RequestItems = new Dictionary<string, KeysAndAttributes>
                 {
                     { LeaderboardStat.TABLE_NAME, new KeysAndAttributes()
                     {
@@ -55,11 +56,21 @@ namespace LeaderboardLibrary
                     }
                     }
                 }
-                
-            };
-            BatchGetItemResponse response = await ModEntry.DdbClient.BatchGetItemAsync(request);
 
-            return LeaderboardStat.FromDdbList(response.Responses[LeaderboardStat.TABLE_NAME]);
+                };
+                BatchGetItemResponse response = await ModEntry.DdbClient.BatchGetItemAsync(request);
+
+                return LeaderboardStat.FromDdbList(response.Responses[LeaderboardStat.TABLE_NAME]);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to retrieve local scores\n" +
+                    $"Stat : {stat}\n");
+                Log.Error(e.Message);
+
+                return null;
+            }
+
         }
 
         /// <summary>
@@ -69,28 +80,39 @@ namespace LeaderboardLibrary
         /// <returns></returns>
         public async Task<List<LeaderboardStat>> GetTopScores(string stat)
         {
-            Log.Debug($"Getting global scores from DDB for {stat}");
-            QueryRequest request = new QueryRequest()
+            try
             {
-                TableName = LeaderboardStat.TABLE_NAME,
-                IndexName = LeaderboardStat.TOP_SCORES_INDEX_NAME,
-                KeyConditionExpression = "Stat = :stat",
-                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                Log.Debug($"Getting global scores from DDB for {stat}");
+                QueryRequest request = new QueryRequest()
+                {
+                    TableName = LeaderboardStat.TABLE_NAME,
+                    IndexName = LeaderboardStat.TOP_SCORES_INDEX_NAME,
+                    KeyConditionExpression = "Stat = :stat",
+                    ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
                     { ":stat", new AttributeValue { S = stat } },
                 },
-                Limit = 10,
-                ProjectionExpression = "Stat, UserUUID, Score, #n, Farm, #d",
-                ExpressionAttributeNames = new Dictionary<string, string>
+                    Limit = 10,
+                    ProjectionExpression = "Stat, UserUUID, Score, #n, Farm, #d",
+                    ExpressionAttributeNames = new Dictionary<string, string>
                 {
                     {"#n", "Name" },
                     {"#d", "DateTime" },
                 },
-                ScanIndexForward = false,
-            };
-            QueryResponse response = await ModEntry.DdbClient.QueryAsync(request);
+                    ScanIndexForward = false,
+                };
+                QueryResponse response = await ModEntry.DdbClient.QueryAsync(request);
 
-            return LeaderboardStat.FromDdbList(response.Items);
+                return LeaderboardStat.FromDdbList(response.Items);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to retrieve global scores\n" +
+                    $"Stat : {stat}\n");
+                Log.Error(e.Message);
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -100,26 +122,28 @@ namespace LeaderboardLibrary
         /// </summary>
         /// <param name="stat"></param>
         /// <param name="score"></param>
-        public async void UploadScore(string stat, int score, string userUuid, string userName, string farmName, string secret)
+        public async void UploadScore(string stat, int score, string userUuid, string userName, string farmName, string secret, CachedLeaderboardAPI api)
         {
-            Log.Debug($"Uploading score ({score}) to DDB for {stat}");
-            UpdateItemRequest request = new UpdateItemRequest()
+            try
             {
-                TableName = LeaderboardStat.TABLE_NAME,
-                Key = new Dictionary<string, AttributeValue>
+                Log.Debug($"Uploading score ({score}) to DDB for {stat}");
+                UpdateItemRequest request = new UpdateItemRequest()
+                {
+                    TableName = LeaderboardStat.TABLE_NAME,
+                    Key = new Dictionary<string, AttributeValue>
                 {
                     { "Stat", new AttributeValue { S = stat } },
                     { "UserUUID", new AttributeValue { S = userUuid } },
                 },
-                // TODO: Get condition expression working
-                // ConditionExpression = "(attribute_not_exists(Secret) OR Secret = :secret) AND (attribute_not_exists(Score) OR Score < :score)",
-                UpdateExpression = "SET Score = :score, #n = :name, Farm = :farm, Secret = :secret, #d = :datetime",
-                ExpressionAttributeNames = new Dictionary<string, string>
+                    // TODO: Get condition expression working with secrets
+                    ConditionExpression = "attribute_not_exists(Score) OR Score < :score",
+                    UpdateExpression = "SET Score = :score, #n = :name, Farm = :farm, Secret = :secret, #d = :datetime",
+                    ExpressionAttributeNames = new Dictionary<string, string>
                 {
                     {"#n", "Name" },
                     {"#d", "DateTime" },
                 },
-                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                    ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
                     { ":score", new AttributeValue { N = score.ToString() } },
                     { ":name", new AttributeValue { S = userName } },
@@ -127,9 +151,26 @@ namespace LeaderboardLibrary
                     { ":secret", new AttributeValue { S = secret } },
                     { ":datetime", new AttributeValue { S = DateTimeOffset.Now.ToUnixTimeSeconds().ToString() } },
                 },
-                ReturnValues = ReturnValue.NONE,
-            };
-            await ModEntry.DdbClient.UpdateItemAsync(request);
+                    ReturnValues = ReturnValue.NONE,
+                };
+                await ModEntry.DdbClient.UpdateItemAsync(request);
+            }
+            catch (ConditionalCheckFailedException e)
+            {
+                // If the condition expression failed, refresh the cache!
+                Log.Error($"DDB condition check failed...Refreshing cache!");
+                api.RefreshCache(stat);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to upload score.  Please share this error message with the mod author!\n" +
+                    $"Score: {score}\n" +
+                    $"Stat : {stat}\n" +
+                    $"Name : {userName}\n" +
+                    $"Farm : {farmName}\n" +
+                    $"UUID : {userUuid}\n");
+                Log.Error(e.Message);
+            }
         }
     }
 }

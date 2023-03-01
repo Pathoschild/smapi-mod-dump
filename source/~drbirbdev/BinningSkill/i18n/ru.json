@@ -1,0 +1,62 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Хранение",
+    "skill.perk": "+{{bonus}}% шанс выпадения бонусного мусора",
+    "skill.perk_bonus": "Шанс получить {{rarity}} бонусный предмет",
+    "skill.perk_rarity_3": "редкий",
+    "skill.perk_rarity_6": "супер редкий",
+    "skill.perk_rarity_9": "ультра редкий",
+
+    "recycler.name": "Переработчик",
+    "recycler.desc": "Более дешевая стоимость изготовления машин для переработки",
+    "environmentalist.name": "Эколог",
+    "environmentalist.desc": "Переработка мусора повышает уровень дружбы",
+    "salvager.name": "Спасатель",
+    "salvager.desc": "Более лучшая производительность от перерабатывающих машин",
+    "sneak.name": "Скрытный",
+    "sneak.desc": "Теперь вас не будут замечать за копанием в мусорных баках",
+    "upseller.name": "Любимчик",
+    "upseller.desc": "Жители теперь не ненавидят подарки, даже мусор",
+    "reclaimer.name": "Восстановитель",
+    "reclaimer.desc": "+{{ReclaimerExtraValuePercent}}% стоимости при удалении мусора",
+
+    "config.ExperienceFromTrashFail": "Опыт из мусорок",
+    "config.ExperienceFromTrashFail.tooltip": "Получение опыта при обыскивании мусорок",
+    "config.ExperienceFromTrashSuccess": "Опыт из мусорок с предметами",
+    "config.ExperienceFromTrashSuccess.tooltip": "Получение опыта при поиске мусора и нахождения стандартной добычи",
+    "config.ExperienceFromTrashBonus": "Опыт за бонусный мусор",
+    "config.ExperienceFromTrashBonus.tooltip": "Получение опыта при поиске мусора и нахождения бонусной добычи. Более высокие уровни обеспечивают экспоненциально больше опыта",
+    "config.ExperienceFromRecycling": "Опыт за переработку",
+    "config.ExperienceFromRecycling.tooltip": "Опыт при сдаче мусора в машину для переработки",
+    "config.AutomateGrantsXp": "Получение опыта с Automate",
+    "config.AutomateGrantsXp.tooltip": "Должна ли автоматизация сбора/переработки давать опыт при использовании automate mod",
+    "config.PerLevelBonusDropChance": "Шанс выпадения бонусного предмета за уровень",
+    "config.PerLevelBonusDropChance.tooltip": "Дополнительный процентный шанс за уровень получения бонусного предмета",
+    "config.RareDropChance": "Шанс редкого пердмета",
+    "config.RareDropChance.tooltip": "Шанс, что бонусный предмет будет редким",
+    "config.SuperRareDropChance": "Шанс супер редкого предмета",
+    "config.SuperRareDropChance.tooltip": "Шанс, что редкий предмет будет супер редким",
+    "config.UltraRareDropChance": "Шанс ультра редкого предмета",
+    "config.UltraRareDropChance.tooltip": "Шанс, что супер редкий предмет будет ультра редким",
+    "config.RecyclingCountToGainFriendship": "Количество переработок для получения дружбы",
+    "config.RecyclingCountToGainFriendship.tooltip": "Количество предметов, которые нужно переработать, чтобы получать очки дружбы при использовании профессии Эколог",
+    "config.RecyclingFriendshipGain": "Получение дружбы для Эколог",
+    "config.RecyclingFriendshipGain.tooltip": "Количество дружбы, которое можно получить за переработку при использовании профессии Эколог",
+    "config.SalvagerRareDropChance": "Шанс редкого предмета с профессией Спасатель",
+    "config.SalvagerRareDropChance.tooltip": "Шанс получения редкого предмета за переработку при использовании профессии Спасатель",
+    "config.SalvagerSuperRareDropChance": "Шанс супер редкого предмета с профессией Спасатель",
+    "config.SalvagerSuperRareDropChance.tooltip": "Шанс того, что редкий предмет переработки будет очень редким при использовании профессии Спасатель.",
+    "config.FriendshipRecovery": "Получение дружбы для Скрытный",
+    "config.FriendshipRecovery.tooltip": "Количество дружбы, необходимое для устранения негативных реакций на то, что вас поймают в мусоре при использовании профессии Скрытный. 25 для ванильной игры, но если реакция жителей на обыск мусорных баков настроена в другом моде, это значение нужно будет изменить.",
+    "config.ReclaimerExtraValuePercent": "Процент дополнительной ценности для Восстановитель",
+    "config.ReclaimerExtraValuePercent.tooltip": "Дополнительная ценность, полученная из восстановления предмета через корзину инвентаря при использовании профессии Восстановитель."
+}

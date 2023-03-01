@@ -12,6 +12,7 @@
     <Description>Pam tries to get clean.</Description>
     <UpdateKeys>Nexus:9921</UpdateKeys>
     <BaseManifest>..\..\cp_dependencies.json</BaseManifest>
+    <GameModsPath>$(GamePath)/Mods/PamTries</GameModsPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 {
   "Name": "updatedInstantEatKey",
   "Author": "apomorph",
-  "Version": "1.0.0",
+  "Version": "1.1.0", // fixed locally
   "Description": "Updates nini700's' Instant Eat Key for SDV 1.5.6",
   "UniqueID": "apomorph.updatedInstantEatKey",
   "EntryDll": "updatedInstantEatKey.dll",

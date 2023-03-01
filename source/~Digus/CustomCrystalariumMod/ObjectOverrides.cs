@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewValley;
+using StardewValley.Tools;
 
 namespace CustomCrystalariumMod
 {
@@ -68,6 +69,10 @@ namespace CustomCrystalariumMod
                                 else if ((object1.Category == -2 || object1.Category == -12) && object1.ParentSheetIndex != 74)
                                 {
                                     minutesUntilReady = DataLoader.Helper.Reflection.GetMethod(__instance, "getMinutesForCrystalarium").Invoke<int>(object1.ParentSheetIndex);
+                                }
+                                else if (DataLoader.ModConfig.EnableCrystalariumCloneEveryObject)
+                                {
+                                    minutesUntilReady = DataLoader.ModConfig.DefaultCloningTime;
                                 }
                                 else
                                 {
@@ -129,25 +134,37 @@ namespace CustomCrystalariumMod
             return true;
         }
 
-        public static bool PerformRemoveAction(ref Object __instance, ref Vector2 tileLocation)
+        public static bool PerformRemoveAction(ref Object __instance, ref Vector2 tileLocation, GameLocation environment)
         {
-            if (__instance.Name == "Crystalarium")
+            if (ClonerController.GetCloner(__instance.Name) is CustomCloner cloner)
             {
-                if (DataLoader.ModConfig.GetObjectBackOnChange && !DataLoader.ModConfig.GetObjectBackImmediately)
+                if (__instance.heldObject.Value != null)
                 {
-                    if (__instance.heldObject.Value != null)
+                    if (DataLoader.ModConfig.OverrideContentPackGetObjectProperties ? !DataLoader.ModConfig.GetObjectBackImmediately : !cloner.GetObjectBackImmediately)
                     {
-                        Game1.createItemDebris(__instance.heldObject.Value.getOne(), tileLocation * 64f, (Game1.player.FacingDirection + 2) % 4, (GameLocation)null, -1);
+                        environment.debris.Add(new Debris((Object) __instance.heldObject.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
                     }
+
+                    __instance.heldObject.Value = null;
                 }
             }
-            else if (ClonerController.GetCloner(__instance.Name) is CustomCloner cloner)
+            return true;
+        }
+
+        public static bool PerformToolAction(ref Object __instance, Tool t, GameLocation location)
+        {
+            if (__instance.isTemporarilyInvisible || t == null)
             {
-                if (DataLoader.ModConfig.OverrideContentPackGetObjectProperties ? DataLoader.ModConfig.GetObjectBackOnChange && !DataLoader.ModConfig.GetObjectBackImmediately : cloner.GetObjectBackOnChange && !cloner.GetObjectBackImmediately)
+                return true;
+            }
+
+            if (__instance.Type != null && __instance.Type.Equals("Crafting") && !(t is MeleeWeapon) && t.isHeavyHitter())
+            {
+                if ((bool)__instance.bigCraftable.Value && __instance.ParentSheetIndex == 21 && __instance.heldObject.Value != null)
                 {
-                    if (__instance.heldObject.Value != null)
+                    if (DataLoader.ModConfig.GetObjectBackImmediately && !__instance.readyForHarvest.Value)
                     {
-                        Game1.createItemDebris(__instance.heldObject.Value.getOne(), tileLocation * 64f, (Game1.player.FacingDirection + 2) % 4, (GameLocation)null, -1);
+                        __instance.heldObject.Value = null;
                     }
                 }
             }

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Fruit Tree Fertilizer",
   "Price": "50",
-  "Category": "Junk",
+  "Category": -19,
   "Edibility": -300,
   "TranslationKey": "fruit-tree-fertilizer",
   "PurchasePrice": 100,

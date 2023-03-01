@@ -1,16 +1,17 @@
 {
   "Dependencies": [
     {
-      "UniqueID": "atravita.AtraCore"
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
     }
   ],
   "EntryDll": "EasierDartPuzzle.dll",
   "Name": "Easier Dart Puzzle",
   "Author": "atravita",
-  "Version": "0.1.0",
+  "Version": "0.1.2",
   "Description": "Makes the dart puzzle easier.",
   "UniqueID": "atravita.EasierDartPuzzle",
-  "MinimumApiVersion": "3.15",
+  "MinimumApiVersion": "3.18",
   "UpdateKeys": [
     "Nexus:13049"
   ]

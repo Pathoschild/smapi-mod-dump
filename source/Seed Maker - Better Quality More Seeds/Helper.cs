@@ -48,12 +48,13 @@ namespace SM_bqms
             int modifier;
             switch (quality)
             {
-                case 1: 
+                case 0: 
                     modifier = ModEntry.Config.NormalModifier;
                 break; 
-                case 2: 
+                case 1: 
                     modifier = ModEntry.Config.SilverModifier;
                 break; 
+                case 2: 
                 case 3: 
                     modifier = ModEntry.Config.GoldModifier;
                 break; 

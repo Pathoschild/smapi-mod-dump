@@ -2,5 +2,6 @@
   "SpeedModifer": 1.0,
   "FlashScale": 1.0,
   "MaxNotes": 7,
-  "PauseBetweenRounds": true
+  "PauseBetweenRounds": true,
+  "AllowReAsks": true
 }

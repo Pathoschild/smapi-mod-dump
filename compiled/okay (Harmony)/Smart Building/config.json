@@ -3,6 +3,7 @@
   "CanDestroyChests": false,
   "CommitBuild": "None",
   "CrabPotsInAnyWaterTile": false,
+  "ShouldControlItemStowing": false,
   "DrawnLayer": "None",
   "DrawTool": "None",
   "EnableDebugCommand": false,

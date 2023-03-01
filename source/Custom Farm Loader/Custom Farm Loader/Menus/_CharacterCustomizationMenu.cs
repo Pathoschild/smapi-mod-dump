@@ -94,9 +94,18 @@ namespace Custom_Farm_Loader.Menus
         public static void refreshFarmTypeButtons_Postfix(CharacterCustomization __instance)
         {
             Point baseFarmButton = new Point(__instance.xPositionOnScreen + __instance.width + 4 + 8, __instance.yPositionOnScreen + IClickableMenu.borderWidth);
+
+            int x = baseFarmButton.X + 112;
             int y = baseFarmButton.Y + 616;
+
             y = __instance.backButton.bounds.Y - y < 48 ? y - 48 : y;
-            CustomFarmButton = new ClickableTextureComponent("CustomFarm", new Rectangle(baseFarmButton.X + 112, y, 88, 80), null, "Custom", CustomFarmIcon, new Rectangle(0, 0, 18, 20), 4f) {
+
+            if(Helper.ModRegistry.IsLoaded("aedenthorn.StardewRPG")) {
+                x = baseFarmButton.X + 8;
+                y = baseFarmButton.Y - 12;
+            }
+
+            CustomFarmButton = new ClickableTextureComponent("CustomFarm", new Rectangle(x, y, 88, 80), null, "Custom", CustomFarmIcon, new Rectangle(0, 0, 18, 20), 4f) {
                 myID = 548,
                 upNeighborID = -99998,
                 leftNeighborID = -99998,

@@ -75,6 +75,10 @@ namespace GMCMOptions {
                 setValue: (c) => config.c4 = c,
                 name: () => "Default options",
                 tooltip: () => "This example shows the AddColorOption default options");
+            configMenuExt.AddSimpleHorizontalSeparator(
+                mod: ModManifest,
+                alignment: (int)IGMCMOptionsAPI.HorizontalAlignment.Right,
+                color: Color.ForestGreen);
             configMenuExt.AddColorOption(
                 mod: ModManifest,
                 getValue: () => config.c1,
@@ -82,6 +86,7 @@ namespace GMCMOptions {
                 name: () => "Simple RGBA sliders",
                 tooltip: () => "This example shows a single style of color picker (the RGB sliders), with alpha.",
                 colorPickerStyle: (uint)IGMCMOptionsAPI.ColorPickerStyle.RGBSliders);
+            configMenuExt.AddHorizontalSeparator(mod: ModManifest, alignment: (int)IGMCMOptionsAPI.HorizontalAlignment.Left);
             configMenuExt.AddColorOption(
                 mod: ModManifest,
                 getValue: () => config.c2,
@@ -98,9 +103,18 @@ namespace GMCMOptions {
                 tooltip: () => "This example shows all different picker styles, with multiple visible at a time, with no alpha slider.",
                 showAlpha: false,
                 colorPickerStyle: (uint)(IGMCMOptionsAPI.ColorPickerStyle.AllStyles | IGMCMOptionsAPI.ColorPickerStyle.ToggleChooser));
+            // test the horizontal separator
+            configMenuExt.AddHorizontalSeparator(
+                mod: ModManifest,
+                padAbove: 10,
+                padBelow: 20,
+                height: 5,
+                getWidthFraction: () => 0.75 + 0.25 * Math.Sin(Game1.ticks / 100.0),
+                getColor: () => Utility.GetPrismaticColor(speedMultiplier: 2),
+                getShadowColor: () => Color.Transparent);
             // image options
             // test data for the images - labels are functions for easy i18n support
-            (Func<String> label, Texture2D texture, Rectangle? rect)[] testImageData = {
+            (Func<String?> label, Texture2D texture, Rectangle? rect)[] testImageData = {
                 (() => "Stardrop", Game1.mouseCursors, new Rectangle(346, 392, 8, 8)),
                 (() => "Logo", Game1.content.Load<Texture2D>("LooseSprites\\logo"), null),
                 (() => "Speech", Game1.mouseCursors, new Rectangle(66, 4, 14, 12)),
@@ -179,7 +193,7 @@ namespace GMCMOptions {
 
         public void RemoveFromGMCM() {
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            configMenu.Unregister(ModManifest);
+            configMenu?.Unregister(ModManifest);
         }
     }
     public interface IGenericModConfigMenuApi {

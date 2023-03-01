@@ -18,8 +18,10 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
+using StardewValley.Tools;
 using Unlockable_Areas.Menus;
 using Netcode;
+using System.Xml.Serialization;
 
 namespace Unlockable_Areas.Lib
 {
@@ -75,7 +77,7 @@ namespace Unlockable_Areas.Lib
 
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
-            Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+            Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (float)(shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), y * 64 - 64));
 
             var sourceRectangle = new Rectangle(0, 0, 32, 64);
             Vector2 origin = new Vector2(0f, 0f);
@@ -100,6 +102,19 @@ namespace Unlockable_Areas.Lib
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
+            if (shakeTimer > 0)
+                shakeTimer -= time.ElapsedGameTime.Milliseconds;
+        }
+
+        public override bool performToolAction(Tool t, GameLocation location)
+        {
+            if (t is Pickaxe or Axe) {
+                shakeTimer = 100;
+                Game1.playSound("hammer");
+            }
+
+
+            return false;
         }
     }
 }

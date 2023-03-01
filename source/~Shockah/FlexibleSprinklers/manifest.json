@@ -16,5 +16,12 @@
 	"UniqueID": "Shockah.FlexibleSprinklers",
 	"EntryDll": "FlexibleSprinklers.dll",
 	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [ "Nexus:10931" ]
+	"UpdateKeys": [ "Nexus:10931" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "0.1.0"
+		}
+	]
 }

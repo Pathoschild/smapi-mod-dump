@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
+using StardewValley.Locations;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +28,8 @@ namespace Unlockable_Areas.Lib
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
+
+        public static List<GameLocation> modifiedLocations = new List<GameLocation>();
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -34,38 +37,54 @@ namespace Unlockable_Areas.Lib
             Helper = Mod.Helper;
 
             Helper.Events.GameLoop.DayStarted += dayStarted;
+            Helper.Events.World.LocationListChanged += locationListChanged;
+        }
+
+        private static void locationListChanged(object sender, LocationListChangedEventArgs e)
+        {
+            if (!Context.IsWorldReady || !Context.IsMainPlayer)
+                return;
+
+            var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables");
+
+            foreach (var loc in e.Added)
+                foreach (var unlockable in unlockables.Where(el => el.Value.Location == loc.Name)) {
+                    unlockable.Value.ID = unlockable.Key;
+                    unlockable.Value.LocationUnique = loc.NameOrUniqueName;
+                    placeShop(new Unlockable(unlockable.Value));
+                }
         }
 
         public static void dayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!Context.IsMainPlayer)
+            if (!Context.IsMainPlayer) {
+                ModData.Instance = new ModData();
                 return;
+            }
 
-            SaveDataEvents.Data = Helper.Data.ReadSaveData<ModData>("main") ?? new ModData();
-            var saveData = SaveDataEvents.Data.UnlockablePurchased;
-            var unlockables = Unlockable.convertModelDicToEntity(Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables"));
+            ModData.Instance = Helper.Data.ReadSaveData<ModData>("main") ?? new ModData();
+            var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables");
+            modifiedLocations = new List<GameLocation>();
 
-            foreach (KeyValuePair<string, Unlockable> entry in unlockables) {
-                if (!saveData.ContainsKey(entry.Key))
-                    saveData[entry.Key] = false;
-
+            foreach (KeyValuePair<string, UnlockableModel> entry in unlockables) {
+                entry.Value.ID = entry.Key;
                 validateUnlockable(entry.Value);
+                var locations = getLocationsFromName(entry.Value.Location);
+                foreach (var location in locations) {
+                    entry.Value.LocationUnique = location.NameOrUniqueName;
 
-                if (saveData[entry.Key]) {
-                    ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)entry.Value, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
-                    UpdateHandler.applyUnlockable(entry.Value);
+                    if (ModData.isUnlockablePurchased(entry.Key, location.NameOrUniqueName)) {
+                        ModEntry._Helper.Multiplayer.SendMessage(entry.Value, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+                        UpdateHandler.applyUnlockable(new Unlockable(entry.Value));
+                    } else
+                        placeShop(new Unlockable(entry.Value));
 
-                } else
-                    placeShop(entry.Value);
-
+                }
             }
         }
 
-        private static void validateUnlockable(Unlockable u)
+        private static void validateUnlockable(UnlockableModel u)
         {
-            if (Game1.getLocationFromName(u.Location) == null)
-                Monitor.LogOnce($"Invalid Location name '{u.Location}' for '{u.ID}'\nIf this is a custom map, don't forget that you need to add both the map and location", LogLevel.Error);
-
             if (!new Regex("\\s*[0-9]+\\s*,\\s*[0-9]+\\s*").IsMatch(u.ShopPosition))
                 Monitor.LogOnce($"Invalid ShopPosition format for '{u.ID}'. Expected: \"x, y\"", LogLevel.Error);
 
@@ -80,7 +99,7 @@ namespace Unlockable_Areas.Lib
                 if (el.Key.ToLower() == "money")
                     continue;
 
-                foreach(var id in el.Key.Split(",")) {
+                foreach (var id in el.Key.Split(",")) {
                     if (int.TryParse(id, out int result)) {
                         if (new StardewValley.Object(result, el.Value).Name == "Error Item")
                             Monitor.LogOnce($"Invalid price item ID for '{u.ID}': '{id}'", LogLevel.Error);
@@ -89,21 +108,22 @@ namespace Unlockable_Areas.Lib
                 }
 
             }
-
-            try {
-                Helper.GameContent.Load<xTile.Map>(u.UpdateMap);
-            } catch (Exception e) { Monitor.LogOnce($"Invalid UpdateMap for '{u.ID}':\n {e.Message}", LogLevel.Error); };
+            if (u.UpdateMap.ToLower() != "none")
+                try {
+                    Helper.GameContent.Load<xTile.Map>(u.UpdateMap);
+                } catch (Exception e) { Monitor.LogOnce($"Invalid UpdateMap for '{u.ID}':\n {e.Message}", LogLevel.Error); };
 
             if (u.UpdateType.ToLower() != "overlay" && u.UpdateType.ToLower() != "replace")
                 Monitor.LogOnce($"UpdateType for '{u.ID}' is neither 'Overlay', nor 'Replace'. Will default to 'Overlay' ", LogLevel.Warn);
 
-            if (!new Regex("\\s*[0-9]+\\s*,\\s*[0-9]+\\s*").IsMatch(u.UpdatePosition))
+            if (u.UpdatePosition != "" && !new Regex("\\s*[0-9]+\\s*,\\s*[0-9]+\\s*").IsMatch(u.UpdatePosition))
                 Monitor.LogOnce($"Invalid UpdatePosition format for '{u.ID}'. Expected: \"x, y\"", LogLevel.Error);
         }
 
         public static void placeShop(Unlockable unlockable)
         {
-            var location = Game1.getLocationFromName(unlockable.Location);
+            var location = unlockable.getGameLocation();
+            modifiedLocations.Add(location);
 
             var shopObject = new ShopObject(unlockable.vShopPosition, unlockable);
             location.setObject(unlockable.vShopPosition, shopObject);
@@ -111,7 +131,7 @@ namespace Unlockable_Areas.Lib
 
         public static bool shopExists(Unlockable unlockable)
         {
-            var location = Game1.getLocationFromName(unlockable.Location);
+            var location = unlockable.getGameLocation();
             var obj = location.getObjectAtTile((int)unlockable.vShopPosition.X, (int)unlockable.vShopPosition.Y);
             return obj != null
                 && obj.GetType() == typeof(ShopObject)
@@ -120,9 +140,28 @@ namespace Unlockable_Areas.Lib
 
         public static void removeShop(Unlockable unlockable)
         {
-            var location = Game1.getLocationFromName(unlockable.Location);
             if (shopExists(unlockable))
-                location.removeObject(unlockable.vShopPosition, false);
+                unlockable.getGameLocation().removeObject(unlockable.vShopPosition, false);
+        }
+
+        //Returns a list of all GameLocations with the same Name.
+        //In the case of buildings they'll share the Name but have a different NameOrUniqueName
+        public static List<GameLocation> getLocationsFromName(string name)
+        {
+            var res = new List<GameLocation>();
+
+            foreach (var loc in Game1.locations) {
+                if (loc.Name == name)
+                    return new List<GameLocation> { loc };
+
+                if (!(loc is BuildableGameLocation))
+                    continue;
+
+                foreach (var building in (loc as BuildableGameLocation).buildings.Where(el => el.indoors?.Value?.Name == name))
+                    res.Add(building.indoors.Value);
+            }
+
+            return res;
         }
     }
 }

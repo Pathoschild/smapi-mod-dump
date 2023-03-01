@@ -15,6 +15,37 @@
         "Target": "Characters/Dialogue/Haley",
         "Entries": {
             "6_2": "@! My mother sent me a new mascara from %place! What do you think of it?$h#$e#It's a tubing mascara, so a lot less likely to smudge."
+        }
+    },
+    {
+        "LogName": "Haley - Emily's parrot",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Haley",
+        "When": {"HasSeenEvent": 463391},
+        "Entries": {
+            "8_2": "Took some really nice photo's of Emily's parrot the other day. I think it enjoys posing for me.$h",
+            "16_2": "Emily's parrot pooped on my favorite dress yesterday.$s#$b#Of course I don't blame it, it's just an animal. Doesn't mean I'm not mad about it though."
+        }
+    },
+    {
+        "LogName": "Haley - Y2",
+        "Action" :"EditData",
+        "Target": "Characters/Dialogue/Haley",
+        "Entries":{
+            "Forest_77_44": "Oh, wow, @, look at those birds! Aren't they beautiful?",
+            "17_2": "Mother and father used to take us traveling with them all the time.$h"
         },
+        "When": {"YearModulus": "2"}
+    },
+    {
+        "LogName": "Haley - Y3",
+        "Action" :"EditData",
+        "Target": "Characters/Dialogue/Haley",
+        "Entries":{
+            "Forest_77_44": "Just playing with some new lenses mother sent me.$h",
+            "18_2": "Mother loved photography. Sadly, she doesn't have time to take many photos these days.#$e#It takes a lot of patience to get a good photo.",
+            "19_2": "Ugh, I've gotta re-do my nails, they're chipping already. This polish wasn't cheap either...$s"
+        },
+        "When": {"YearModulus": "3"}
     }
 ]}

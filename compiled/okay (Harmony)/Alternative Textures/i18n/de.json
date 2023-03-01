@@ -1,0 +1,25 @@
+{
+  // Tools
+  "tools.name.paint_bucket": "Farbtopf",
+  "tools.name.paint_brush": "Pinsel",
+  "tools.name.scissors": "Schere",
+  "tools.name.spray_can": "Sprühdose",
+
+  "tools.description.paint_bucket": "Erlaubt dir verschiedene Texturen auf unterstützte Objekte anzuwenden.",
+  "tools.description.paint_brush": "Erlaubt dir Texturen zu kopieren und sie auf andere Objekte des selben Typs anzuwenden.",
+  "tools.description.scissors": "Erlaubt dir verschiedene Texturen auf Lebewesen anzuwenden.",
+  "tools.description.spray_can": "Erlaubt dir zufällige Texturen auf Objekte innerhalb eines Radius anzuwenden.",
+
+  // Messages
+  "messages.warning.no_textures_for_season": "{{itemName}} hat keine alternativen Texturen für diese Jahreszeit!",
+  "messages.warning.paint_not_placeable": "Hierauf kannst du nicht malen!",
+  "messages.warning.brush_is_empty": "Der Pinsel hat keine kopierte Textur! Rechtsklick auf ein Objekt, um eine Textur zu kopieren.",
+  "messages.warning.spray_can_is_empty": "Die Sprühdose hat keine Textur ausgewählt! Rechtsklick auf ein Object, um Texturen zum Anwenden auszuwählen.",
+  "messages.warning.spray_can_not_supported": "Die Sprühdose unterstützt dieses Objekt nicht.",
+  "messages.warning.brush_not_supported": "Der Pinsel unterstützt das Kopieren von Texturen dieses Objekts nicht.",
+  "messages.warning.invalid_copied_texture": "Die kopierte Textur {{textureName}} eignet sich nicht für dieses Objekt!",
+  "messages.warning.custom_building_not_supported": "Dieses benutzerdefinierte Gebäude ({{itemName}}) unterstützt keine Texturänderungen.",
+
+  "messages.info.texture_copied": "Textur kopiert!",
+  "messages.info.cleared_brush": "Textur von Pinsel gelöscht!"
+}

@@ -1,0 +1,31 @@
+{
+    // Config settings
+    "config.option.failed_harvest.name": "Запобігати невдалому збиранню",
+    "config.option.failed_harvest.description": "Запобігає анімації та звуковому ефекту невдалого доїння/стрижки, якщо не вибрано жодної дійсної тварини. Примітка: Вимкніть цю функцію, якщо ви використовуєте схему керування 'Tap-to-move & Auto-Attack' на Android.",
+    "config.option.animal_produce.name": "Показувати продукти тваринництва",
+    "config.option.animal_produce.description": "Відображає продукцію над твариною, якщо вона готова до збирання.",
+    "config.option.hearts_animal.name": "Серця над тваринами на фермі",
+    "config.option.hearts_animal.description": "Показувати сердечка над сільськогосподарськими тваринами (коровами, качками тощо), яких ще не погладили.",
+    "config.option.hearts_pet.name": "Серця над домашніми улюбленцями",
+    "config.option.hearts_pet.description": "Показувати сердечка над домашніми улюбленцями (собаками, котами тощо), які ще не були погладжені.",
+    "config.option.hearts_enabled.name": "[!] Увімкнути серця",
+    "config.option.hearts_enabled.description": "Дозволяє відображати серця над тваринами. Попередження: Вимкнення цієї опції приховає ВСІ спливаючі серця, увімкнені цим модом (тварини, домашні улюбленці тощо).",
+    "config.option.hearts_max_friendship.name": "Приховати серця з макс. дружбою",
+    "config.option.hearts_max_friendship.description": "Ховає сердечка, коли дружба з твариною або домашнім улюбленцем на максимальному рівні. Попередження: Будьте обережні з цим, тому що ріень дружби зменшиться в кінці дня, якщо ви не погладите свого друга!",
+
+    // Other messages
+    "notification.inventory_full": "Не вистачає місця в інвентарі.",
+
+    "action.out_of_range.milk": "доїння",
+    "action.out_of_range.shear": "стрижки",
+    "notification.out_of_range": "Поза діапазоном {{ranchActionPresent}}",
+
+    "product.milk": "Молоко",
+    "product.wool": "Вовну",
+
+    "action.util": "Дитинча {{Name}} вироблятиме {{Product}} за {{Days}} днів.",
+
+    "action.unable.milk": "доїти",
+    "action.unable.shear": "стргти",
+    "notification.unable": "Немає що {{Action}}"
+}

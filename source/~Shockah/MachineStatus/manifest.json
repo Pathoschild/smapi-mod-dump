@@ -11,7 +11,7 @@
 {
     "Name": "Machine Status",
     "Author": "Shockah",
-    "Version": "1.0.1",
+    "Version": "1.1.0",
     "Description": "Machine ready/waiting/busy status at a glance.",
     "UniqueID": "Shockah.MachineStatus",
     "EntryDll": "MachineStatus.dll",
@@ -19,11 +19,20 @@
     "UpdateKeys": [ "Nexus:11177" ],
     "Dependencies": [
         {
+            "UniqueID": "Shockah.Kokoro",
+            "IsRequired": true,
+            "MinimumVersion": "0.1.0"
+        },
+        {
             "UniqueID": "aedenthorn.CustomObjectProduction",
             "IsRequired": false
         },
         {
             "UniqueID": "Digus.ProducerFrameworkMod",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.DynamicGameAssets",
             "IsRequired": false
         }
     ]

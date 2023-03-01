@@ -8,15 +8,12 @@
 **
 *************************************************/
 
-using FashionSense.Framework.Models.Generic;
+using FashionSense.Framework.Models.Appearances.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FashionSense.Framework.Utilities
 {

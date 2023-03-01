@@ -1,0 +1,248 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/FireworksFestival
+**
+*************************************************/
+
+{
+    "Format": "1.28.0",
+    "Changes": [
+        // Load festival data
+        {
+            "LogName": "Load fireworks festival data",
+            "Action": "Load",
+            "Target": "Data/Festivals/Summer20",
+            "FromFile": "assets/summer20.json",
+        },
+        // Edit festival dialogue in
+        {
+            "LogName": "Edit in vanilla NPC dialogues",
+            "Action": "EditData",
+            "Target": "Data/Festivals/Summer20",
+            "Entries": {
+                "Abigail": "{{i18n:Abigail}}$h",
+                "Robin": "{{i18n:Robin}}$h",
+                "Demetrius": "{{i18n:Demetrius}}",
+                "Maru": "{{i18n:Maru}}$2",
+                "Sebastian": "{{i18n:Sebastian}}$h",
+                "Pierre": "{{i18n:Pierre}}$2",
+                "Caroline": "{{i18n:Caroline}}",
+                "Linus": "{{i18n:Linus}}$h",
+                "Alex": "{{i18n:Alex}}",
+                "George": "{{i18n:George}}",
+                "Evelyn": "{{i18n:Evelyn}}",
+                "Lewis": "{{i18n:Lewis}}",
+                "Clint": "{{i18n:Clint}}",
+                "Emily": "{{i18n:Emily}}",
+                "Penny": "{{i18n:Penny}}",
+                "Pam": "{{i18n:Pam}}$2",
+                "Haley": "{{i18n:Haley}}$2",
+                "Jodi": "{{i18n:Jodi}}$h",
+                "Kent": "{{i18n:Kent1}}#$b#{{i18n:Kent2}}",
+                "Sam": "{{i18n:Sam}}$h",
+                "Leah": "{{i18n:Leah1}}#$e#{{i18n:Leah2}}$h",
+                "Shane": "{{i18n:Shane}}",
+                "Marnie": "{{i18n:Marnie}}",
+                "Elliott": "{{i18n:Elliott}}",
+                "Gus": "{{i18n:Gus}}$h",
+                "Dwarf": "{{i18n:Dwarf}}",
+                "Wizard": "{{i18n:Wizard1}}#$b#{{i18n:Wizard2}}",
+                "Harvey": "{{i18n:Harvey}}$s",
+                "Sandy": "{{i18n:Sandy}}$h",
+                "Jas": "{{i18n:Jas1}}#$e#{{i18n:Jas2}}",
+                "Vincent": "{{i18n:Vincent}}",
+                "Willy": "{{i18n:Willy1}}#$b#{{i18n:Willy2}}$h",
+                "Leo": "{{i18n:Leo}}"
+            }
+        },
+        // Add in NPC locations and dialogue
+        {
+            "LogName": "Include modded NPC information",
+            "Action": "Include",
+            "FromFile": "NPCcompat.json"
+        },
+        // Edit main event in for i18n
+        {
+            "LogName": "Edit in main event script for fireworks festival",
+            "Action": "EditData",
+            "Target": "Data/Festivals/Summer20",
+            "Entries": {
+                "mainEvent": "pause 500/globalFade/viewport -1000 -1000/warp farmer1 28 36/warp spouse 29 36/positionOffset farmer 0 16/faceDirection spouse 2/warp farmer2 29 35/warp farmer3 34 36/warp farmer4 35 36/faceDirection farmer1 2/faceDirection farmer2 2/faceDirection farmer3 2/faceDirection farmer4 2/viewport 26 36 true/pause 2000/move Lewis 0 2 2/move Lewis -1 0 3/pause 400/showFrame Lewis 16 true/animate Lewis false false 200 25 16 17 17/pause 800/playSound parry/pause 500/showFrame Lewis 0 true/animate Lewis false false 200 25 12/pause 400/faceDirection Lewis 2/playMusic night_market/viewport move 1 0 10000/pause 10000/globalFade/viewport -1000 -1000/changeToTemporaryMap NightSceneFireworks7 false/loadActors Buildings/bgColor 0 0 0/ambientLight 0 0 0/viewport 14 20 true clamp/viewport move 0 -1 7000/pause 7000/temporarySprite 14 13 21 8 150 false .98/temporarySprite 14 14 22 8 150 false .98/temporarySprite 2 10 21 8 150 false .98/temporarySprite 2 11 22 8 150 false .98/temporarySprite 23 9 21 8 150 false .98/temporarySprite 23 9 22 8 150 false .98/pause 1000/specificTemporarySprite vlFireworkBurst 13 12 0 200 8/specificTemporarySprite vlFireworkBurst 1 9 0 200 8/specificTemporarySprite vlFireworkBurst 22 7 0 200 8/pause 250/playSound explosion/pause 2000/temporarySprite 18 9 21 8 150 false .98/temporarySprite 18 10 22 8 150 false .98/temporarySprite 13 18 21 8 150 false .98/temporarySprite 13 19 22 8 150 false .98/pause 1000/specificTemporarySprite vlFireworkBurst 12 17 3 200 8/specificTemporarySprite vlFireworkBurst 17 8 3 200 8/pause 250/playSound explosion/pause 2500/temporarySprite 19 14 21 8 150 false .98/temporarySprite 19 15 22 8 150 false .98/pause 1000/specificTemporarySprite vlFireworkBurst 18 13 1 200 8/pause 250/playSound explosion/pause 1000/temporarySprite 7 15 21 8 150 false .98/temporarySprite 7 16 22 8 150 false .98/pause 1000/specificTemporarySprite vlFireworkBurst 6 14 2 200 8/pause 250/playSound explosion/pause 2600/temporarySprite 8 10 21 8 150 false .98/temporarySprite 8 11 22 8 150 false .98/temporarySprite 24 13 21 8 150 false .98/temporarySprite 24 14 22 8 150 false .98/pause 1000/specificTemporarySprite vlFireworkBurst 7 9 4 200 8/specificTemporarySprite vlFireworkBurst 23 12 4 200 8/pause 250/playSound explosion/pause 1800/temporarySprite 13 9 21 8 150 false .98/temporarySprite 13 10 22 8 150 false .98/temporarySprite 20 19 21 8 150 false .98/temporarySprite 20 20 22 8 150 false .98/temporarySprite 8 19 21 8 150 false .98/temporarySprite 8 20 22 8 150 false .98/pause 1000/specificTemporarySprite vlFireworkBurst 12 8 5 200 8/specificTemporarySprite vlFireworkBurst 19 18 5 200 8/specificTemporarySprite vlFireworkBurst 7 18 5 200 8/pause 250/playSound explosion/pause 2000/temporarySprite 14 13 11 8 150 false .97/temporarySprite 15 13 10 8 150 false .97/pause 1200/temporarySprite 14 10 21 8 150 false .98/temporarySprite 14 11 22 8 150 false .98/temporarySprite 17 11 21 8 150 true .98/temporarySprite 17 12 22 8 150 true .98/temporarySprite 18 14 21 8 150 false .98/temporarySprite 18 15 22 8 150 false .98/temporarySprite 14 16 21 8 150 true .98/temporarySprite 14 17 22 8 150 true .98/temporarySprite 11 14 21 8 150 false .98/temporarySprite 11 15 22 8 150 false .98/temporarySprite 12 11 21 8 150 true .98/temporarySprite 12 12 22 8 150 true .98/pause 1000/specificTemporarySprite vlFireworkBurst 13 9 0 200 8 1 false false .96/specificTemporarySprite vlFireworkBurst 16 10 1 200 8 1 false false .99/specificTemporarySprite vlFireworkBurst 16 13 2 200 8 1 false true .99/specificTemporarySprite vlFireworkBurst 13 15 3 200 8 1 false false .96/specificTemporarySprite vlFireworkBurst 10 13 4 200 8 1 false false .99/specificTemporarySprite vlFireworkBurst 10 10 5 200 8 1 false true .99/pause 250/playSound explosion/pause 1200/temporarySprite 12 9 4 8 100 false .97/temporarySprite 16 9 4 8 100 true .97/temporarySprite 19 13 4 8 100 false .97/temporarySprite 17 16 4 8 100 true .97/temporarySprite 13 17 4 8 100 false .97/temporarySprite 11 16 4 8 100 true .97/temporarySprite 9 12 4 8 100 false .97/playSound discoverMineral/pause 800/temporarySprite 12 9 4 8 100 false .97/temporarySprite 16 9 4 8 100 true .97/temporarySprite 19 13 4 8 100 false .97/temporarySprite 17 16 4 8 100 true .97/temporarySprite 13 17 4 8 100 false .97/temporarySprite 11 16 4 8 100 true .97/temporarySprite 9 12 4 8 100 false .97/pause 600/temporarySprite 14 8 11 6 150 true .97/temporarySprite 18 9 11 6 150 false .97/temporarySprite 20 11 11 6 150 true .97/temporarySprite 19 16 11 6 150 false .97/temporarySprite 15 18 11 6 150 true .97/temporarySprite 9 15 11 6 150 false .97/temporarySprite 10 9 11 6 150 true .97/pause 900/temporarySprite 14 8 11 6 125 true .97/temporarySprite 18 9 11 6 125 false .97/temporarySprite 20 11 11 6 125 true .97/temporarySprite 19 16 11 6 125 false .97/temporarySprite 15 18 11 6 125 true .97/temporarySprite 9 15 11 6 125 false .97/temporarySprite 10 9 11 6 125 true .97/pause 750/temporarySprite 14 8 11 6 100 true .97/temporarySprite 18 9 11 6 100 false .97/temporarySprite 20 11 11 6 100 true .97/temporarySprite 19 16 11 6 100 false .97/temporarySprite 15 18 11 6 100 true .97/temporarySprite 9 15 11 6 100 false .97/temporarySprite 10 9 11 6 100 true .97/pause 2000/message \"{{i18n:FireworksShowEnd}}\"/playMusic none/pause 1000/waitForOtherPlayers festivalEnd/end",
+            }
+        },
+        // Add festival to the list
+        {
+            "LogName": "Add fireworks festival to list of festival dates",
+            "Action": "EditData",
+            "Target": "Data/Festivals/FestivalDates",
+            "Entries": {
+                "summer20": "{{i18n:FestivalName}}"
+            }
+        },
+        {
+            "LogName": "Edit in fireworks festival name",
+            "Action": "EditData",
+            "Target": "Data/Festivals/Summer20",
+            "Entries": {
+                "name": "{{i18n:FestivalName}}"
+            }
+        },
+        // Load festival map
+        {
+            "LogName": "Load fireworks festival map",
+            "Action": "Load",
+            "Target": "Maps/Beach-FireworksFestival",
+            "FromFile": "assets/Maps/Beach-FireworksFestival.tmx",
+        },
+        // Load submarine map
+        {
+            "LogName": "Load submarine map for fishing game",
+            "Action": "Load",
+            "Target": "Maps/FishingGame",
+            "FromFile": "assets/Maps/Submarine-FireworksFestival.tmx",
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        // Load nighttime maps
+        {
+            "LogName": "Load fireworks background map",
+            "Action": "Load",
+            "Target": "Maps/NightSceneFireworks7",
+            "FromFile": "assets/Maps/NightSceneFireworks7.tmx",
+        },
+        // Load nighttime map sheets
+        {
+            "LogName": "Load fireworks background tilesheet",
+            "Action": "Load",
+            "Target": "Maps/nightSceneFireworksBG",
+            "FromFile": "assets/nightSceneFireworksBG.png",
+        },
+        // Load beach map sheets
+        {
+            "LogName": "Load fireworks festival tilesheet",
+            "Action": "Load",
+            "Target": "Maps/FireworksFestivalNightMarket",
+            "FromFile": "assets/FireworksFestivalNightMarket.png",
+        },
+        {
+            "LogName": "Edit festivals tilesheet for fireworks festival",
+            "Action": "EditImage",
+            "Target": "Maps/Festivals",
+            "FromFile": "assets/Festivals-FireworksEdits.png",
+            "PatchMode": "Overlay",
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        // Edit in map strings
+        {
+            "LogName": "Add strings for fireworks festival maps",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromMaps",
+            "Entries": {
+                "vl.FireworksSubCaptain": "{{i18n:Submarine}}",
+                "vl.FireworksShadowy": "{{i18n:ShadowyFigure}}",
+                "vl.FireworksMermaid": "{{i18n:Mermaids}}",
+            }
+        },
+        // Edit questions
+        {
+            "LogName": "Change Lewis question dialogue to be about a show",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "Event.cs.1531": "$q -1 null#{{i18n:ShowStartQuestion}}#$r -1 0 yes#{{i18n:ShowStartYes}}#$r -1 0 no#{{i18n:ShowStartNo}}",
+            },
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        {
+            "LogName": "Change submarine question to fishing game",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "Event.cs.1681": "{{i18n:SubmarineQuestion}}",
+            },
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        {
+            "LogName": "Change free coffee to free shaved ice",
+            "Action": "EditData",
+            "Target": "Strings/Locations",
+            "Entries": {
+                "BeachNightMarket_GiftGiverQuestion": "{{i18n:MerchantQuestion}}",
+                "BeachNightMarket_GiftGiverEnjoy": "{{i18n:Merchant}}"
+            },
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        // Add festival mail
+        {
+            "LogName": "Add mail to inform player of fireworks festival",
+            "Action": "EditData",
+            "Target": "Data/mail", 
+            "Entries": {
+                "vl.FireworksFestival": "{{i18n:Letter1}}^{{i18n:Letter2}}^^{{i18n:Letter3}}^{{i18n:Letter4}}^   {{i18n:Letter5}}[#]{{i18n:LetterTitle}}",
+            }
+        },
+        // Change fishing game fishes
+        {
+            "LogName": "Change fishing game fish",
+            "Action": "EditData",
+            "Target": "Data/Locations",
+            "Fields": {
+                "fishingGame": {
+                    "5": "129 -1 130 -1 131 -1 146 -1 147 -1 148 -1 708 -1" // field 5 (summer fish)
+                }
+            },
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        // Change fishing game reward
+        {
+            "LogName": "Edit fishing game reward text",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "FishingGame.cs.12013": "{{i18n:FishingReward1}} {0} {{i18n:FishingReward2}}",
+            },
+            "When": {
+                "Season": "summer",
+                "Day": 20
+            }
+        },
+        // Add shop dialogue
+        {
+            "LogName": "Add shop NPC dialogue for Birdie and Fireworks Fox",
+            "Action": "EditData",
+            "Target": "Strings/StringsFromCSFiles",
+            "Entries": {
+                "vlFireworks.Birdie": "{{i18n:BirdieShop}}",
+                "vlFireworks.Fox": "{{i18n:FoxShop}}",
+            }
+        },
+        // Load fox portrait
+        {
+            "LogName": "Load fireworks fox portrait",
+            "Action": "Load",
+            "Target": "Portraits/FireworksFox",
+            "FromFile": "assets/FoxPortrait.png"
+        }
+    ]
+}

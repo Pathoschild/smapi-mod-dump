@@ -1,6 +1,6 @@
 ﻿{
 
-  "mod-description": "Lets you adjust the difficulty of the dart minigame.",
+  "mod-description": "Lets you adjust the difficulty of the dart mini-game.",
 
   "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
 
@@ -8,7 +8,7 @@
   "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
 
   "MPPirateArrivalTime.title": "Pirate Arrival Time in MP",
-  "MPPirateArrivalTime.description": "Set this to allow the pirates to arrive earlier in multiplayer.",
+  "MPPirateArrivalTime.description": "Set this to allow the pirates to arrive earlier in multi-player.",
 
   "MinDartCount.title": "Min Dart Count",
   "MinDartCount.description": "The number of darts for the hardest round of the game.",

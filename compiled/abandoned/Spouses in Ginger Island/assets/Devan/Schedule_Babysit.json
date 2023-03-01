@@ -1,9 +1,0 @@
-{
-    "Mon": "0 FarmHouse 6 6 0/630 FarmHouse 8 5 1/640 FarmHouse 16 6 0/700 FarmHouse 17 6 0/730 FarmHouse 16 6 0/800 FarmHouse 11 14 2/830 FarmHouse 5 14 0 Devan_spoon/900 FarmHouse 5 14 2 Devan_bottle/910 FarmHouse 16 6 0/1000 FarmHouse 8 14 0 Devan_washing/1100 FarmHouse 13 15 1/1130 FarmHouse 12 16 2/1150 FarmHouse 5 14 0 Devan_cook/1250 FarmHouse 5 14 2 Devan_plate/1300 FarmHouse 19 6 0/1400 FarmHouse 8 14 0 Devan_washing/1500 FarmHouse 9 16 2/1600 FarmHouse 13 15 1/1620 FarmHouse 12 16 2/1700 FarmHouse 11 16 0 Devan_broom/1800 FarmHouse 8 5 0/1900 FarmHouse 22 5 0/2100 FarmHouse 16 6 0/2130 FarmHouse 17 6 0/2200 FarmHouse 10 14 2/2300 FarmHouse 10 16 3",
-    "Tue": "GOTO Mon",
-    "Wed": "GOTO Mon",
-    "Thu": "GOTO Mon",
-    "Fri": "GOTO Mon",
-    "Sat": "GOTO Mon",
-    "Sun": "GOTO Mon"
-}

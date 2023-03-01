@@ -263,13 +263,17 @@ public class ScheduleUtilityFunctions
                         {
                             match = ScheduleRegex.Match(bedtime + " BusStop -1 23 3");
                         }
-                        else if (npc.TryGetScheduleEntry("default", out string? defaultSchedule) && GetLastPointWithoutTime(defaultSchedule) is string defaultbed)
+                        else if (npc.TryGetScheduleEntry("default", out string? defaultSchedule)
+                            && GetLastPointWithoutTime(defaultSchedule) is ReadOnlySpan<char> defaultbed
+                            && defaultbed.Length != 0)
                         {
-                            match = ScheduleRegex.Match(bedtime + ' ' + defaultbed);
+                            match = ScheduleRegex.Match($"{bedtime} {defaultbed.ToString()}");
                         }
-                        else if (npc.TryGetScheduleEntry("spring", out string? springSchedule) && GetLastPointWithoutTime(springSchedule) is string springbed)
+                        else if (npc.TryGetScheduleEntry("spring", out string? springSchedule)
+                            && GetLastPointWithoutTime(springSchedule) is ReadOnlySpan<char> springbed
+                            && springbed.Length != 0)
                         {
-                            match = ScheduleRegex.Match(bedtime + ' ' + springbed);
+                            match = ScheduleRegex.Match($"{bedtime} {springbed.ToString()}");
                         }
                     }
                 }
@@ -478,18 +482,20 @@ public class ScheduleUtilityFunctions
     /// Given an schedule, returns the last schedule point without the time.
     /// </summary>
     /// <param name="rawSchedule">Raw schedule string.</param>
-    /// <returns>Last schedule point without the time, or null for failure.</returns>
-    private static string? GetLastPointWithoutTime(string rawSchedule)
+    /// <returns>Last schedule point without the time, or empty span for failure.</returns>
+    private static ReadOnlySpan<char> GetLastPointWithoutTime(string rawSchedule)
     {
+        ReadOnlySpan<char> lastPoint = rawSchedule.AsSpan().TrimEnd('/');
         int slashloc = rawSchedule.LastIndexOf('/');
         if (slashloc > 0)
         {
-            int spaceloc = rawSchedule.IndexOf(' ', slashloc + 1);
-            if (spaceloc > 0)
-            {
-                return rawSchedule[(spaceloc + 1) .. ];
-            }
+            lastPoint = rawSchedule.AsSpan(slashloc + 1);
         }
-        return null;
+
+        if (lastPoint.TrySplitOnce(' ', out var first, out var second))
+        {
+            return second;
+        }
+        return ReadOnlySpan<char>.Empty;
     }
 }

@@ -32,6 +32,7 @@ namespace stardew_access
 
                 soundEffects.Add("drop_item", TYPE.Sound);
                 soundEffects.Add("colliding", TYPE.Sound);
+                soundEffects.Add("invalid-selection", TYPE.Sound);
 
                 soundEffects.Add("npc_top", TYPE.Footstep);
                 soundEffects.Add("npc_right", TYPE.Footstep);

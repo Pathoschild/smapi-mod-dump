@@ -11,6 +11,21 @@
 [
   //RSV Recipes by friendship
   {
+    "Id": "RSV.mistbloomsyrup.recipe",
+    "Title": "mistbloomsyrup.recipe.title",
+    "Text": "mistbloomsyrup.recipe.text",
+    "Recipe": "Mistbloom Syrup",
+    "Repeatable": false,
+    "FriendshipConditions": [
+      {
+        "NpcName": "Lola",
+        "FriendshipLevel": 8,
+
+      }
+    ]
+  },
+
+  {
     "Id": "RSV.shanice.recipe",
     "Title": "shanice.recipe.title",
     "Text": "shanice.recipe.text",
@@ -286,5 +301,82 @@
     "MailReceived": ["RSV.AguarHelped"],
     "Recipe": "Warp Totem: Ridgeside",
   },
-  
+
+  // June's letters
+
+  {
+    "Id": "JuneNPC.PlatonicArrival",
+    "Text": "June.PlatonicArrival",
+    "Repeatable": true,
+    "EventsSeen": [94620000],
+    "Days": [28],
+    "Seasons": ["summer"],
+    "FriendshipConditions": [
+      {
+        "NpcName": "June",
+        "FriendshipStatus": ["Friendly", "Dating"]
+      }
+    ]
+  },
+
+  {
+    "Id": "JuneNPC.PlatonicDeparture",
+    "Text": "June.PlatonicDeparture",
+    "Repeatable": true,
+    "EventsSeen": [94620000],
+    "Days": [1],
+    "Seasons": ["spring"],
+    "FriendshipConditions": [
+      {
+        "NpcName": "June",
+        "FriendshipStatus": ["Friendly"]
+      }
+    ]
+  },
+
+  {
+    "Id": "JuneNPC.RomanticArrival",
+    "Text": "June.RomanticArrival",
+    "Repeatable": true,
+    "EventsSeen": [94620000],
+    "Days": [1],
+    "Seasons": ["fall"],
+    "FriendshipConditions": [
+      {
+        "NpcName": "June",
+        "FriendshipStatus": ["Dating"]
+      }
+    ]
+  },
+
+  {
+    "Id": "JuneNPC.RomanticDeparture",
+    "Text": "June.RomanticDeparture",
+    "Repeatable": true,
+    "EventsSeen": [94620000],
+    "Days": [1],
+    "Seasons": ["spring"],
+    "FriendshipConditions": [
+      {
+        "NpcName": "June",
+        "FriendshipStatus": ["Dating"]
+      }
+    ]
+  },
+
+  {
+    "Id": "JuneNPC.RomanticSummer",
+    "Text": "June.RomanticSummer",
+    "Repeatable": true,
+    "EventsSeen": [94620000],
+    "Days": [1],
+    "Seasons": ["summer"],
+    "FriendshipConditions": [
+      {
+        "NpcName": "June",
+        "FriendshipStatus": ["Dating"]
+      }
+    ]
+  },
+
 ]

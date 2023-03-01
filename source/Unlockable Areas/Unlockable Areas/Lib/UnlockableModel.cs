@@ -24,10 +24,12 @@ namespace Unlockable_Areas.Lib
         //Don't forget to implement changes to Unlockable constructor as well
         public string ID = "";
         public string Location = "";
+        public string LocationUnique = "";
         public string ShopDescription = "";
         public string ShopPosition = "";
         public string ShopTexture = "UnlockableAreas/ShopTextures/Sign";
         public string ShopAnimation = "";
+        public string ShopEvent = "";
         public Dictionary<string, int> Price = new Dictionary<string, int>();
         public string UpdateMap = "";
         public string UpdateType = "Overlay";
@@ -38,10 +40,12 @@ namespace Unlockable_Areas.Lib
             return new UnlockableModel() {
                 ID = v.ID,
                 Location = v.Location,
+                LocationUnique = v.LocationUnique,
                 ShopDescription = v.ShopDescription,
                 ShopPosition = v.ShopPosition,
                 ShopTexture = v.ShopTexture,
                 ShopAnimation = v.ShopAnimation,
+                ShopEvent = v.ShopEvent,
                 Price = v.Price,
                 UpdateMap = v.UpdateMap,
                 UpdateType = v.UpdateType,

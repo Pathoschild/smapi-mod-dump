@@ -110,6 +110,8 @@ namespace OmniTools
 
         public static Tool SmartSwitch(Tool currentTool, GameLocation currentLocation, Vector2 tile, List<ToolInfo> tools = null)
         {
+            if (!Config.SmartSwitch)
+                return null;
             if (!Config.FromWeapon && currentTool is MeleeWeapon && !(currentTool as MeleeWeapon).isScythe(currentTool.ParentSheetIndex))
                 return null;
             if (Config.SwitchForMonsters && currentTool.getLastFarmerToUse() is not null)
@@ -123,6 +125,8 @@ namespace OmniTools
                         {
                             if (c is Monster)
                             {
+                                if (c is RockCrab && !AccessTools.FieldRefAccess<RockCrab, NetBool>((c as RockCrab), "shellGone").Value)
+                                    continue;
                                 var distance = Vector2.Distance(c.GetBoundingBox().Center.ToVector2(), f.GetBoundingBox().Center.ToVector2());
                                 if (distance > Config.MaxMonsterDistance)
                                     continue;
@@ -183,6 +187,12 @@ namespace OmniTools
                     if (tool != null)
                         return tool;
                 }
+                if (Config.SwitchForCrops && tf is HoeDirt && (tf as HoeDirt).crop?.forageCrop.Value == true && (tf as HoeDirt).crop?.whichForageCrop.Value == Crop.forageCrop_ginger)
+                {
+                    tool = SwitchTool(currentTool, typeof(Hoe), tools);
+                    if (tool != null)
+                        return tool;
+                }
 
             }
             if (Config.SwitchForResourceClumps)
@@ -232,6 +242,11 @@ namespace OmniTools
             }
             if (Config.SwitchForWateringCan)
             {
+                if (currentLocation is VolcanoDungeon && (currentLocation as VolcanoDungeon).level.Value != 5 && currentLocation.isTileOnMap(new Vector2(tile.X, tile.Y)) && currentLocation.waterTiles[(int)tile.X, (int)tile.Y] && !(currentLocation as VolcanoDungeon).cooledLavaTiles.ContainsKey(new Vector2(tile.X, tile.Y)))
+                {
+                    Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
+                    if (tool != null) return tool;
+                }
                 if (currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y))
                 {
                     Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
@@ -481,7 +496,13 @@ namespace OmniTools
             {
                 try
                 {
-                    t.attachments.Add(oi is not null ? new Object(oi.parentSheetIndex, oi.stack, false, -1, oi.quality) : null);
+                    Object a = null;
+                    if (oi is not null)
+                    {
+                        a = new Object(oi.parentSheetIndex, oi.stack, false, -1, oi.quality);
+                        a.uses.Value = oi.uses;
+                    }
+                    t.attachments.Add(a);
                 }
                 catch(Exception ex) 
                 {

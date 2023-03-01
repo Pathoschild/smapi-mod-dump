@@ -68,10 +68,11 @@ If you have a mod that changes the Ginger Island maps, this mod may be incompati
 
 #### Current compatibility list:
 
-* No known incompatabilities!
+* No known incompatibilities!
 
 ### Additionally...
 
 * Translations would be very welcome! DM me or send me a pull request!
+    - Much thanks to Herienseo for the Chinese translation!
 * [Change log](docs/changelog.md)
 * Technical details: requires SMAPI, uses Harmony.

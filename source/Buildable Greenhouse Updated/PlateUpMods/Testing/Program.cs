@@ -8,71 +8,37 @@
 **
 *************************************************/
 
-using KitchenData;
-using KitchenLib;
-using KitchenLib.Customs;
-using KitchenLib.References;
-using KitchenLib.src.ContentPack;
-using KitchenLib.Utils;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
+using Kitchen;
+using Mono.Cecil;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Testing
 {
-    public class Main : BaseMod
+    public class Program
     {
-        internal const string MOD_ID = $"{MOD_AUTHOR}.{MOD_NAME}";
-        internal const string MOD_NAME = "Test Mod";
-        internal const string MOD_VERSION = "1.0.0";
-        internal const string MOD_AUTHOR = "Yariazen";
-        internal const string PLATEUP_VERSION = "1.1.2";
-
-        internal static Item Tomato => GetExistingGDO<Item>(ItemReferences.Tomato);
-        internal static Item Plate => GetExistingGDO<Item>(ItemReferences.Plate);
-
-        public Main() : base(MOD_ID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, $"{PLATEUP_VERSION}", Assembly.GetExecutingAssembly()) { }
-
-        protected override void Initialise()
+        public static void Main(string[] args)
         {
-            AddGameDataObject<TestItemGroup>();
-            ContentPackManager manager;
-        }
+            string file = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\PlateUp\\PlateUp\\PlateUp_Data\\Managed\\Kitchen.Common.dll";
+            AssemblyDefinition assembly = AssemblyDefinition.ReadAssembly(file);
 
-        private static T1 GetModdedGDO<T1, T2>() where T1 : GameDataObject
-        {
-            return (T1)GDOUtils.GetCustomGameDataObject<T2>().GameDataObject;
-        }
+            TypeDefinition itemgroupviewtype = assembly.MainModule.GetType("Kitchen.ItemGroupView");
+            FieldDefinition componentgroupsfield = itemgroupviewtype.Fields.Where(x => x.Name == "ComponentGroups").FirstOrDefault();
+            componentgroupsfield.IsPublic = true;
 
-        private static T GetExistingGDO<T>(int id) where T : GameDataObject
-        {
-            return (T)GDOUtils.GetExistingGDO(id);
-        }
+            TypeDefinition componentgrouptype = itemgroupviewtype.NestedTypes.Where(x => x.Name == "ComponentGroup").FirstOrDefault();
+            componentgrouptype.IsNestedPublic = true;
 
-        internal class TestItemGroup : CustomItemGroup
-        {
-            public override string UniqueNameID => "TestItemGroup";
-            public override GameObject Prefab => Tomato.Prefab;
-            public override ItemCategory ItemCategory => ItemCategory.Generic;
-            public override ItemStorage ItemStorageFlags => ItemStorage.StackableFood;
-            public override List<ItemGroup.ItemSet> Sets => new List<ItemGroup.ItemSet>()
+
+            
+            string OutputDir = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\PlateUp\\PlateUp\\PlateUp_Data\\PublicizedAssemblies";
+
+            if (!Directory.Exists(OutputDir))
             {
-                new ItemGroup.ItemSet()
-                {
-                    Max = 2,
-                    Min = 2,
-                    Items = new List<Item>()
-                    {
-                        Honey,
-                        Plate
-                    }
-                }
-            };
-
-            public override void OnRegister(GameDataObject gdo)
-            {
-                gdo.name = "Ingredient - Raw Noodles";
+                Directory.CreateDirectory(OutputDir);
             }
+            assembly.Write(Path.Combine(OutputDir, Path.GetFileName(file)));
         }
     }
 }

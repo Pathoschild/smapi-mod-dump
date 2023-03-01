@@ -1,0 +1,10 @@
+{
+  "Name": "GroupableChests",
+  "Author": "FricativeMelon",
+  "Version": "1.1.0",
+  "Description": "Makes chest items stay as is rather than jumping back to fill gaps.",
+  "UniqueID": "FricativeMelon.GroupableChests",
+  "EntryDll": "GroupableChests.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:15375" ]
+}

@@ -18,6 +18,25 @@
         "BaseChance": 0.05,
         "IncludeLocations": ["Beach"]
       }
+    },
+    {
+      // Golden shell
+      "ItemKey": "DGA:TehPers.FishSword.DGA/GoldenShell",
+      "AvailabilityInfo": {
+        "BaseChance": 0.01,
+        "IncludeLocations": ["Beach"],
+        "MinFishingLevel": 4,
+        "When": {
+          "HasConversationTopic |contains=TehPers.FishSword.TFO/goldenShell": "false"
+        }
+      },
+      "OnCatch": {
+        "StartConversations": {
+          // Once per week
+          "TehPers.FishSword.TFO/goldenShell": 7
+        },
+        "AddMail": ["TehPers.FishSword.CP/goldenShellCaught"]
+      }
     }
   ]
 }

@@ -1,1 +1,7 @@
-{}
+{
+  "Verbose": false,
+  "SurpressUnnecessaryBoardUpdates": true,
+  "UseTagCache": true,
+  "AvoidRepeatingQiOrders": true,
+  "AllowNewQuestWhenFinished": true
+}

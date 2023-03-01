@@ -95,12 +95,11 @@ namespace Shockah.ProjectFluent
 			{
 				get
 				{
-					if (CachedFluent is null)
-						CachedFluent = new FileResolvingFluent(
-							ContextfulFluentFunctionProvider.GetFluentFunctionsForMod(Mod),
-							Monitor,
-							Locale, ModFluentPathProvider.GetFilePathCandidates(Locale, Mod, File), Fallback
-						);
+					CachedFluent ??= new FileResolvingFluent(
+						ContextfulFluentFunctionProvider.GetFluentFunctionsForMod(Mod),
+						Monitor,
+						Locale, ModFluentPathProvider.GetFilePathCandidates(Locale, Mod, File), Fallback
+					);
 					return CachedFluent;
 				}
 			}

@@ -32,6 +32,7 @@ namespace LastDayToPlantRedux.Framework;
 /// Handles a cache of crop and fertilizer data.
 /// </summary>
 [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1214:Readonly fields should appear before non-readonly fields", Justification = "Reviewed.")]
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:Elements should be ordered by access", Justification = "Keeping like methods together.")]
 internal static class CropAndFertilizerManager
 {
     private static readonly TickCache<bool> HasStocklist = new(() => Game1.MasterPlayer.hasOrWillReceiveMail("PierreStocklist"));
@@ -472,18 +473,12 @@ SUCCESS:
     /// <summary>
     /// Requests a refresh to the crops cache.
     /// </summary>
-    internal static void RequestInvalidateCrops()
-    {
-        cropsNeedRefreshing = true;
-    }
+    internal static void RequestInvalidateCrops() => cropsNeedRefreshing = true;
 
     /// <summary>
     /// Requests a refresh to the fertilizer data.
     /// </summary>
-    internal static void RequestInvalidateFertilizers()
-    {
-        fertilizersNeedRefreshing = true;
-    }
+    internal static void RequestInvalidateFertilizers() => fertilizersNeedRefreshing = true;
 
     /// <summary>
     /// Parses crop data into a more optimized format.

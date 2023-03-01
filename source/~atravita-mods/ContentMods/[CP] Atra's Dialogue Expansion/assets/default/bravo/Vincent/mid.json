@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "LogName": "Vincent mid-hearts",
+        "Target": "Characters/Dialogue/Vincent",
+        "Entries": {
+            "2{{YearRemainder}}": "My ear hurts.$s",
+            "4{{YearRemainder}}": "I don't wanna go to school.$s",
+            "17{{YearRemainder}}": "Look what I found, @!$h[721]"
+        },
+        "When": {
+            "YearModulus": "1"
+        }
+    }
+]}

@@ -15,11 +15,32 @@
         "Target": "Characters/Dialogue/Harvey",
         "Entries": {
             "6_2": "My practice is barely scraping by. Not sure how I can see more patients in a town as small as this, though.$s",
+            "7_2": "Sorry if I'm grumpy, I was up all night entering data into the electronic medical records.$s#$b#Say, @, would you happen to have a spare coffee?",
             "22_2": "Saw a new study from %place Biologics, their new chemotherapy agent doubled the five-year survival rate for non-alcoholic primary hepatic malignancy.",
+            "26_2": "I don't eat as well as I should. Often I don't have enough time or energy after a long workday to do anything but toss a frozen meal into the microwave.#$b#And then there's all the charting I still need to do.",
+            "28_2": "One of the difficult things of practicing medicine in a small town is the lack of equipment.#$b#We've got an x-ray machine and an ultrasound. That's it.#$e#Sometimes I worry I provide substandard care because I can't get access to a CT machine.$s"
         },
-        "When": {
-            "YearModulus": "2"
-        }
+        "When": { "YearModulus": "2" }
+    },
+    {
+        "LogName": "Harvey mid-hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Harvey",
+        "Entries": {
+            "6_2": "I got into medicine because I wanted to help people. But these days I feel like I'm doing more paperwork than anything else...$s",
+            "8_2": "Between you and I, I get nightmares sometimes.#$b#I'm always terrified that someone here might have an emergency beyond my abilities to treat.#$b#We're so far from the nearest hospital.",
+            "9_2": "I also take care of everyone's teeth. This town isn't large enough to have both a dentist and a doctor.#$b#Say, how good are your teeth?$h"
+        },
+        "When": { "YearModulus": "3" }
+    },
+    {
+        "LogName": "Harvey mid-hearts y2 with pet",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Harvey",
+        "Entries": {
+            "11_2": "You know, if %pet gets sick, I could probably take care of them too!"
+        },
+        "When":{"YearModulus": "3", "HasPet": true}
     },
     {
         "LogName": "Rain -- during winter.",
@@ -27,7 +48,7 @@
         "Target": "Characters/Dialogue/rainy",
         "When": {"Season": "winter"},
         "Entries":{
-            "Harvey": "#$c .9#A cup of coffee would be quite nice right now.#Here. Have a cup of coffee. It's important to stay warm on a day like this.[395]",
+            "Harvey": "#$c .9#A cup of coffee would be quite nice right now.#Here. Have a cup of coffee. It's important to stay warm on a day like this.[395]"
         }
-    },
+    }
 ]}

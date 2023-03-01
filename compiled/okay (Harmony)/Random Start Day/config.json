@@ -1,4 +1,5 @@
 {
+  "disableAll": false,
   "isRandomSeedUsed": true,
   "allowedSeasons": [
     "spring",

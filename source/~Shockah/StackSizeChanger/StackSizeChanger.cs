@@ -9,8 +9,9 @@
 *************************************************/
 
 using HarmonyLib;
-using Shockah.CommonModCode;
 using Shockah.CommonModCode.GMCM;
+using Shockah.Kokoro;
+using Shockah.Kokoro.GMCM;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using SObject = StardewValley.Object;

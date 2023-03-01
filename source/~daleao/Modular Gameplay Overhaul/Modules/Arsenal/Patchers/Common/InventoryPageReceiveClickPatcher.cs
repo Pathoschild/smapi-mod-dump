@@ -87,7 +87,7 @@ internal sealed class InventoryPageReceiveClickPatcher : HarmonyPatcher
             Game1.playSound("smallSelect");
         }
 
-        return ToolsModule.IsEnabled;
+        return false;
     }
 
     #endregion harmony patches

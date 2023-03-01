@@ -9,7 +9,8 @@
 *************************************************/
 
 using HarmonyLib;
-using Shockah.CommonModCode.IL;
+using Nanoray.Shrike.Harmony;
+using Nanoray.Shrike;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -167,49 +168,51 @@ namespace Shockah.ProjectFluent
 			keys.Add(null);
 		}
 
-		private static IEnumerable<CodeInstruction> SCore_ReloadTranslations_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private static IEnumerable<CodeInstruction> SCore_ReloadTranslations_Transpiler(IEnumerable<CodeInstruction> instructions)
 		{
-			var instructions = enumerableInstructions.ToList();
+			try
+			{
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.Find(
+						ILMatches.Call("get_Current"),
+						ILMatches.AnyStloc.WithAutoAnchor(out Guid modInfoLocalInstruction),
+						ILMatches.AnyLdarg,
+						ILMatches.AnyLdloc,
+						ILMatches.Call("get_DirectoryPath"),
+						ILMatches.Ldstr("i18n"),
+						ILMatches.Call("Combine"),
+						ILMatches.AnyLdloca.WithAutoAnchor(out Guid errorsLocalInstruction),
+						ILMatches.Call("ReadTranslationFiles"),
+						ILMatches.AnyStloc.WithAutoAnchor(out Guid translationsLocalInstruction)
+					)
+					.AnchorBlock(out Guid findBlock)
 
-			// IL to find (last occurence):
-			// IL_0090: callvirt instance !0 class [System.Runtime]System.Collections.Generic.IEnumerator`1<class StardewModdingAPI.Framework.IModMetadata>::get_Current()
-			// IL_0095: stloc.s 5
-			// IL_0097: ldarg.0
-			// IL_0098: ldloc.s 5
-			// IL_009a: callvirt instance string StardewModdingAPI.Framework.IModMetadata::get_DirectoryPath()
-			// IL_009f: ldstr "i18n"
-			// IL_00a4: call string [System.Runtime]System.IO.Path::Combine(string, string)
-			// IL_00a9: ldloca.s 7
-			// IL_00ab: call instance class [System.Runtime]System.Collections.Generic.IDictionary`2<string, class [System.Runtime]System.Collections.Generic.IDictionary`2<string, string>> StardewModdingAPI.Framework.SCore::ReadTranslationFiles(string, class [System.Runtime]System.Collections.Generic.IList`1<string>&)
-			// IL_00b0: stloc.s 6
-			var worker = TranspileWorker.FindInstructionsBackwards(instructions, new Func<CodeInstruction, bool>[]
+					.MoveToPointerAnchor(modInfoLocalInstruction)
+					.CreateLdlocInstruction(out var modInfoLoadInstruction)
+
+					.MoveToPointerAnchor(errorsLocalInstruction)
+					.CreateLdlocaInstruction(out var errorsLoadAddressInstruction)
+
+					.MoveToPointerAnchor(translationsLocalInstruction)
+					.CreateLdlocInstruction(out var translationsLoadInstruction)
+
+					.MoveToBlockAnchor(findBlock)
+					.Insert(
+						SequenceMatcherPastBoundsDirection.After, true,
+
+						modInfoLoadInstruction,
+						translationsLoadInstruction,
+						errorsLoadAddressInstruction,
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(I18nIntegration), nameof(SCore_ReloadTranslations_Transpiler_ModifyList)))
+					)
+					.AllElements();
+			}
+			catch (Exception ex)
 			{
-				i => i.opcode == OpCodes.Callvirt && ((MethodBase)i.operand).Name == "get_Current",
-				i => i.IsStloc(),
-				i => i.IsLdarg(),
-				i => i.IsLdloc(),
-				i => i.opcode == OpCodes.Callvirt && ((MethodBase)i.operand).Name == "get_DirectoryPath",
-				i => i.opcode == OpCodes.Ldstr && (string)i.operand == "i18n",
-				i => i.opcode == OpCodes.Call && ((MethodBase)i.operand).Name == "Combine",
-				i => i.IsLdloc(),
-				i => i.opcode == OpCodes.Call && ((MethodBase)i.operand).Name == "ReadTranslationFiles",
-				i => i.IsStloc()
-			});
-			if (worker is null)
-			{
-				Monitor.Log($"Could not patch SMAPI methods - Project Fluent probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Monitor.Log($"Could not patch methods - {ProjectFluent.Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
 			}
-
-			worker.Postfix(new[]
-			{
-				worker[1].ToLoadLocal()!, // modInfo
-				worker[9].ToLoadLocal()!, // translations
-				worker[7].ToLoadLocalAddress()!, // errors
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(I18nIntegration), nameof(SCore_ReloadTranslations_Transpiler_ModifyList)))
-			});
-
-			return instructions;
 		}
 
 		private static void SCore_ReloadTranslations_Transpiler_ModifyList(

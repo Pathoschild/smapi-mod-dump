@@ -172,7 +172,17 @@ namespace MailFrameworkMod
                     attachments.AddRange(ShownLetter.Value.Items);
                 }
 
-                List<Item> dynamicItems = ShownLetter.Value.DynamicItems?.Invoke(ShownLetter.Value);
+                List<Item> dynamicItems = null;
+                try
+                {
+                     dynamicItems = ShownLetter.Value.DynamicItems?.Invoke(ShownLetter.Value);
+                }
+                catch (Exception e)
+                {
+                    MailFrameworkModEntry.ModMonitor.Log($"Error getting the letter '{ShownLetter.Value.Id}' dynamic attachments.", LogLevel.Error);
+                    MailFrameworkModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                    MailFrameworkModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
+                }
                 if (dynamicItems != null)
                 {
                     attachments.AddRange(dynamicItems);
@@ -292,8 +302,17 @@ namespace MailFrameworkMod
             if (letter != null)
             {
                 Letters.Value.Remove(letter);
-                letter.Callback?.Invoke(letter);
                 ShownLetter.Value = null;
+                try
+                {
+                    letter.Callback?.Invoke(letter);
+                }
+                catch (Exception e)
+                {
+                    MailFrameworkModEntry.ModMonitor.Log($"Error executing the letter '{letter.Id}' callback.",LogLevel.Error);
+                    MailFrameworkModEntry.ModMonitor.Log($"The error message above: {e.Message}", LogLevel.Trace);
+                    MailFrameworkModEntry.ModMonitor.Log(e.StackTrace, LogLevel.Trace);
+                }
             }
             UpdateNextLetterId();
         }

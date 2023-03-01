@@ -1,4 +1,6 @@
 {
   "CustomBirthdayDialogues": true,
-  "CustomSecretSantaDialogues": true
+  "CustomSecretSantaDialogues": true,
+  "RevealDialogueChance": 0.025,
+  "RevealDialogueMinHeartLevel": 1
 }

@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "Still",
+	"Description": "Turns wines and juices into liquors.",
+	"Price": 0,
+	"ProvidesLight": false,
+	"ReserveNextIndex": false,
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+			"Object": "Copper Bar",
+			"Count": 10,
+			},
+			{
+			"Object": "Iron Bar",
+			"Count": 5,
+			},
+			{
+			"Object": "Iridium Bar",
+			"Count": 1,
+			},
+		],
+		"IsDefault": false,
+		"CanPurchase": false
+	},
+}

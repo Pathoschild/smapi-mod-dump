@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/15155
 IDs: MindMeltMax.MPInfo
-update keys: Nexus:15155
+update keys: Nexus:15155, GitHub:MindMeltMax/Stardew-Valley-Mods

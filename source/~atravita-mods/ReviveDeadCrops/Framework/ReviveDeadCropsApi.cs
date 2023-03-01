@@ -36,10 +36,12 @@ public class ReviveDeadCropsApi : IReviveDeadCropsApi
         .GetCachedField("shakeTimer", ReflectionCache.FlagTypes.InstanceFlags)
         .GetInstanceFieldSetter<FruitTree, float>());
 
+    private static readonly ReviveDeadCropsApi instance = new();
+
     /// <summary>
     /// Gets the API instance for this mod.
     /// </summary>
-    internal static ReviveDeadCropsApi Instance { get; } = new();
+    internal static ReviveDeadCropsApi Instance { get; } = instance;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not any crops have been revived.

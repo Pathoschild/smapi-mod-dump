@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Garden Pot - Automate",
+    "Author": "NCarigon",
+    "Version": "1.0.4",
+    "MinimumApiVersion": "3.14.0",
+    "Description": "Adds additional support for garden pots within Automate.",
+    "UniqueID": "NCarigon.GardenPotAutomate",
+    "EntryDll": "GardenPotAutomate.dll",
+    "UpdateKeys": [ "nexus:15212" ],
+    "Dependencies": [
+        { "UniqueID": "Pathoschild.Automate", "MinimumVersion": "1.19.0" }
+    ]
+}

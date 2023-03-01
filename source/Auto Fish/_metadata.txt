@@ -6,9 +6,16 @@ mods:
    Auto Fish
 
 latest commit:
-   commit bd22972ac55f4e2a120a21baa1324d0d4e8dc5b2
+   commit 322a8df94072f6b0f5f433971819b8007d1de110
+   Merge: bd22972 cf43eab
    Author: WhiteMind <WhiteMind@qq.com>
-   Date:   Sat Jul 3 16:39:48 2021 +0800
+   Date:   Mon Feb 6 09:18:16 2023 +0800
    
-       feat: Update SMAPI version to 3.0+
+       Merge pull request #6 from SeWZC/master
+       
+       æ›´æ–°åˆ°.net5ï¼›ä¿®å¤é”™è¯¯ï¼›æ·»åŠ GMCMæ”¯æŒ
+       ä¿®å¤è‡ªåŠ¨ä¸Šé’©åŠŸèƒ½ï¼Œé¿å…å£°éŸ³å¾ªçŽ¯
+       ä¿®æ”¹è‡ªåŠ¨å°æ¸¸æˆé€»è¾‘æé«˜æ•èŽ·çŽ‡ï¼Œä¿®å¤æ•æ‰å®ç®±æ—¶çš„é”™è¯¯
+       æ·»åŠ æ¨¡ç»„é…ç½®ç•Œé¢æŽ¥å£
+       æ•æ‰ä¼ è¯´é±¼æ—¶å¿½ç•¥å®ç®±
    

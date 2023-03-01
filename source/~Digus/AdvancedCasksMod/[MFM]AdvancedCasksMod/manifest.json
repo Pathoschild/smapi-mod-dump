@@ -11,10 +11,10 @@
 {
 	"Name": "[MFM]Advanced Casks Mod",
 	"Author": "Digus",
-	"Version": "1.0.1",
+	"Version": "1.0.2",
 	"Description": "Letter to receive the advanced casks.",
 	"UniqueID": "Digus.AdvancedCasksForMailFrameworkMod",
-	"MinimumApiVersion": "3.9.0",
+	"MinimumApiVersion": "3.18.0",
     "UpdateKeys": [ "Nexus:8413" ],
 	"Dependencies": [
 		{

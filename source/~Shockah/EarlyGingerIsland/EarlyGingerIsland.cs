@@ -9,18 +9,20 @@
 *************************************************/
 
 using HarmonyLib;
-using Shockah.CommonModCode;
+using Nanoray.Shrike;
+using Nanoray.Shrike.Harmony;
 using Shockah.CommonModCode.GMCM;
-using Shockah.CommonModCode.IL;
-using Shockah.CommonModCode.Stardew;
+using Shockah.Kokoro;
+using Shockah.Kokoro.GMCM;
+using Shockah.Kokoro.Stardew;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -31,6 +33,10 @@ namespace Shockah.EarlyGingerIsland
 		public static EarlyGingerIsland Instance { get; private set; } = null!;
 		private bool IsConfigRegistered { get; set; } = false;
 		private UnlockCondition NewUnlockCondition = new();
+
+		private const int BatteryPackID = 787;
+		private const int HardwoodID = 709;
+		private const int IridiumBarID = 337;
 
 		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
 		{
@@ -44,6 +50,7 @@ namespace Shockah.EarlyGingerIsland
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.DayStarted += OnDayStarted;
 			helper.Events.Content.AssetRequested += OnAssetRequested;
+			helper.Events.Player.Warped += OnWarped;
 
 			var harmony = new Harmony(ModManifest.UniqueID);
 			harmony.TryPatch(
@@ -63,9 +70,24 @@ namespace Shockah.EarlyGingerIsland
 			);
 			harmony.TryPatch(
 				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.StartDeparture)),
+				postfix: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_StartDeparture_Postfix)))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(ParrotUpgradePerch), nameof(ParrotUpgradePerch.IsAvailable)),
 				postfix: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(ParrotUpgradePerch_IsAvailable_Postfix))),
 				transpiler: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(ParrotUpgradePerch_IsAvailable_Transpiler)))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.canPlantThisSeedHere)),
+				postfix: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(HoeDirt_canPlantThisSeedHere_Postfix)))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(IslandWest), nameof(IslandWest.checkAction)),
+				transpiler: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(IslandWest_checkAction_Transpiler)))
 			);
 		}
 
@@ -104,8 +126,15 @@ namespace Shockah.EarlyGingerIsland
 					asset.Data["BoatTunnel_DonateBatteriesHint"] = asset.Data["BoatTunnel_DonateBatteriesHint"].Replace("5", $"{Config.BoatFixBatteryPacksRequired}");
 					asset.Data["BoatTunnel_DonateHardwoodHint"] = asset.Data["BoatTunnel_DonateHardwoodHint"].Replace("200", $"{Config.BoatFixHardwoodRequired}");
 					asset.Data["BoatTunnel_DonateIridiumHint"] = asset.Data["BoatTunnel_DonateIridiumHint"].Replace("5", $"{Config.BoatFixIridiumBarsRequired}");
+					asset.Data["qiNutDoor"] = asset.Data["qiNutDoor"].Replace("100", $"{Config.GoldenWalnutsRequiredForQiRoom}");
 				});
 			}
+		}
+
+		private void OnWarped(object? sender, WarpedEventArgs e)
+		{
+			if (e.NewLocation is IslandLocation islandLocation)
+				UpdateParrotUpgradeCosts(islandLocation, islandLocation.parrotUpgradePerches);
 		}
 
 		private void SetupConfig()
@@ -131,10 +160,16 @@ namespace Shockah.EarlyGingerIsland
 						NewUnlockCondition = new(WorldDateExt.New(-1, Season.Spring, 1), 0);
 					}
 
-					Helper.WriteConfig(Config);
+					WriteConfig();
+					LogConfig();
 					Helper.GameContent.InvalidateCache("Strings/Locations");
 					SetupConfig();
 				}
+			);
+
+			helper.AddBoolOption(
+				keyPrefix: "config.skipBoatCutscene",
+				property: () => Config.SkipBoatCutscene
 			);
 
 			helper.AddNumberOption(
@@ -145,6 +180,17 @@ namespace Shockah.EarlyGingerIsland
 			helper.AddBoolOption(
 				keyPrefix: "config.allowIslandFarmBeforeCC",
 				property: () => Config.AllowIslandFarmBeforeCC
+			);
+
+			helper.AddEnumOption(
+				keyPrefix: "config.plantingOnIslandFarmBeforeCC",
+				property: () => Config.PlantingOnIslandFarmBeforeCC
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.goldenWalnutsRequiredForQiRoom",
+				property: () => Config.GoldenWalnutsRequiredForQiRoom,
+				min: 0
 			);
 
 			helper.AddSectionTitle("config.boatFix.section");
@@ -164,6 +210,79 @@ namespace Shockah.EarlyGingerIsland
 			helper.AddNumberOption(
 				keyPrefix: "config.boatFix.batteryPacksRequired",
 				property: () => Config.BoatFixBatteryPacksRequired,
+				min: 0
+			);
+
+			helper.AddSectionTitle("config.unlockCosts.section");
+
+			helper.AddBoolOption(
+				keyPrefix: "config.unlockCosts.ignoreFreeUnlockRequirements",
+				property: () => Config.IgnoreFreeUnlockRequirements
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.firstUnlock",
+				property: () => Config.FirstUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.westUnlock",
+				property: () => Config.WestUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.farmhouseUnlock",
+				property: () => Config.FarmhouseUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.mailboxUnlock",
+				property: () => Config.MailboxUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.obeliskUnlock",
+				property: () => Config.ObeliskUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.digsiteUnlock",
+				property: () => Config.DigsiteUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.traderUnlock",
+				property: () => Config.TraderUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.volcanoBridgeUnlock",
+				property: () => Config.VolcanoBridgeUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.volcanoExitShortcut",
+				property: () => Config.VolcanoExitShortcutUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.resortUnlock",
+				property: () => Config.ResortUnlockCost,
+				min: 0
+			);
+
+			helper.AddNumberOption(
+				keyPrefix: "config.unlockCosts.parrotExpressUnlock",
+				property: () => Config.ParrotExpressUnlockCost,
 				min: 0
 			);
 
@@ -227,124 +346,251 @@ namespace Shockah.EarlyGingerIsland
 			return ShouldGingerIslandBeUnlockedInVanilla();
 		}
 
-		private bool ShouldGingerIslandBeUnlockedInVanilla()
+		private static bool ShouldGingerIslandBeUnlockedInVanilla()
 			=> Game1.MasterPlayer.eventsSeen.Contains(191393) || Game1.MasterPlayer.eventsSeen.Contains(502261) || Game1.MasterPlayer.hasCompletedCommunityCenter();
 
-		private static IEnumerable<CodeInstruction> BoatTunnel_checkAction_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private bool ShouldAllowPlanting(GameLocation location, IntPoint point)
 		{
-			var instructions = enumerableInstructions.ToList();
+			if (location is not IslandWest)
+				return true;
 
-			// IL to find:
-			// IL_0045: ldc.i4 787
-			// IL_004a: ldc.i4.5
-			// IL_004b: ldc.i4.0
-			// IL_004c: callvirt instance bool StardewValley.Farmer::hasItemInInventory(int32, int32, int32)
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+			switch (Config.PlantingOnIslandFarmBeforeCC)
 			{
-				i => i.IsLdcI4(787),
-				i => i.IsLdcI4(5),
-				i => i.IsLdcI4(),
-				i => i.Calls(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
-			});
-			if (worker is null)
-				return instructions;
-
-			worker[1] = new CodeInstruction(OpCodes.Ldc_I4, Instance.Config.BoatFixBatteryPacksRequired);
-
-			// IL to find:
-			// IL_0179: ldc.i4 709
-			// IL_017e: ldc.i4 200
-			// IL_0183: ldc.i4.0
-			// IL_0184: callvirt instance bool StardewValley.Farmer::hasItemInInventory(int32, int32, int32)
-			worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-			{
-				i => i.IsLdcI4(709),
-				i => i.IsLdcI4(200),
-				i => i.IsLdcI4(),
-				i => i.Calls(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
-			});
-			if (worker is null)
-				return instructions;
-
-			worker[1] = new CodeInstruction(OpCodes.Ldc_I4, Instance.Config.BoatFixHardwoodRequired);
-
-			// IL to find:
-			// IL_01e8: ldc.i4 337
-			// IL_01ed: ldc.i4.5
-			// IL_01ee: ldc.i4.0
-			// IL_01ef: callvirt instance bool StardewValley.Farmer::hasItemInInventory(int32, int32, int32)
-			worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-			{
-				i => i.IsLdcI4(337),
-				i => i.IsLdcI4(5),
-				i => i.IsLdcI4(),
-				i => i.Calls(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
-			});
-			if (worker is null)
-				return instructions;
-
-			worker[1] = new CodeInstruction(OpCodes.Ldc_I4, Instance.Config.BoatFixIridiumBarsRequired);
-
-			return instructions;
+				case PlantingOnIslandFarmBeforeCC.Disabled:
+					return false;
+				case PlantingOnIslandFarmBeforeCC.Enabled:
+					return true;
+				case PlantingOnIslandFarmBeforeCC.OnlyOneCrop:
+					for (int y = 0; y < location.Map.DisplayHeight / Game1.tileSize; y++)
+						for (int x = 0; x < location.Map.DisplayWidth / Game1.tileSize; x++)
+							if (location.terrainFeatures.TryGetValue(new(x, y), out var terrainFeature) && terrainFeature is HoeDirt dirt && dirt.crop is not null)
+								return false;
+					return true;
+				default:
+					throw new ArgumentException($"{nameof(PlantingOnIslandFarmBeforeCC)} has an invalid value.");
+			}
 		}
 
-		private static IEnumerable<CodeInstruction> BoatTunnel_answerDialogue_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private void UpdateParrotUpgradeCosts(GameLocation location, IEnumerable<ParrotUpgradePerch> perches)
 		{
-			var instructions = enumerableInstructions.ToList();
+			bool changedAny;
 
-			// IL to find:
-			// IL_00e9: call class StardewValley.Farmer StardewValley.Game1::get_player()
-			// IL_00ee: ldc.i4 787
-			// IL_00f3: ldc.i4.5
-			// IL_00f4: callvirt instance bool StardewValley.Farmer::removeItemsFromInventory(int32, int32)
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+			void UpdateParrotUpgradeCost(ParrotUpgradePerch perch)
 			{
-				i => i.Calls(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
-				i => i.IsLdcI4(787),
-				i => i.IsLdcI4(5),
-				i => i.Calls(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
-			});
-			if (worker is null)
-				return instructions;
+				void UpdateParrotUpgradeCost(int cost)
+				{
+					if (perch.requiredNuts.Value != cost)
+					{
+						perch.requiredNuts.Value = cost;
+						changedAny = true;
+					}
 
-			worker[2] = new CodeInstruction(OpCodes.Ldc_I4, Instance.Config.BoatFixBatteryPacksRequired);
+					if (perch.currentState.Value == ParrotUpgradePerch.UpgradeState.Idle && perch.requiredNuts.Value == 0 && (Config.IgnoreFreeUnlockRequirements || perch.IsAvailable()))
+					{
+						bool leoCutsceneHack = perch.upgradeName.Value == "Hut" && Game1.player.currentLocation == location;
+						if (leoCutsceneHack)
+						{
+							Game1.globalFade = false;
+							Game1.fadeIn = false;
+							Game1.fadeToBlack = false;
+						}
 
-			// IL to find:
-			// IL_013c: callvirt instance void StardewValley.Multiplayer::globalChatInfoMessage(string, string[])
-			// IL_0141: call class StardewValley.Farmer StardewValley.Game1::get_player()
-			// IL_0146: ldc.i4 709
-			// IL_014b: ldc.i4 200
-			// IL_0150: callvirt instance bool StardewValley.Farmer::removeItemsFromInventory(int32, int32)
-			worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+						perch.ApplyUpgrade();
+						perch.UpdateCompletionStatus();
+
+						if (leoCutsceneHack)
+							Game1.fadeToBlackAlpha = 1f;
+
+						changedAny = true;
+					}
+				}
+
+				switch (perch.upgradeName.Value)
+				{
+					case "Hut":
+						UpdateParrotUpgradeCost(Config.FirstUnlockCost);
+						break;
+					case "Turtle":
+						UpdateParrotUpgradeCost(Config.WestUnlockCost);
+						break;
+					case "Resort":
+						UpdateParrotUpgradeCost(Config.ResortUnlockCost);
+						break;
+					case "Bridge":
+						UpdateParrotUpgradeCost(Config.DigsiteUnlockCost);
+						break;
+					case "Trader":
+						UpdateParrotUpgradeCost(Config.TraderUnlockCost);
+						break;
+					case "House":
+						UpdateParrotUpgradeCost(Config.FarmhouseUnlockCost);
+						break;
+					case "House_Mailbox":
+						UpdateParrotUpgradeCost(Config.MailboxUnlockCost);
+						break;
+					case "Obelisk":
+						UpdateParrotUpgradeCost(Config.ObeliskUnlockCost);
+						break;
+					case "ParrotPlatforms":
+						UpdateParrotUpgradeCost(Config.ParrotExpressUnlockCost);
+						break;
+					case "VolcanoBridge":
+						UpdateParrotUpgradeCost(Config.VolcanoBridgeUnlockCost);
+						break;
+					case "VolcanoShortcutOut":
+						UpdateParrotUpgradeCost(Config.VolcanoExitShortcutUnlockCost);
+						break;
+					default:
+						break;
+				}
+			}
+
+			do
 			{
-				i => i.Calls(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
-				i => i.IsLdcI4(709),
-				i => i.IsLdcI4(200),
-				i => i.Calls(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
-			});
-			if (worker is null)
-				return instructions;
+				changedAny = false;
+				foreach (var perch in perches)
+					UpdateParrotUpgradeCost(perch);
+			} while (changedAny);
+		}
 
-			worker[2] = new CodeInstruction(OpCodes.Ldc_I4, Instance.Config.BoatFixHardwoodRequired);
-
-			// IL to find:
-			// IL_019d: call class StardewValley.Farmer StardewValley.Game1::get_player()
-			// IL_01a2: ldc.i4 337
-			// IL_01a7: ldc.i4.5
-			// IL_01a8: callvirt instance bool StardewValley.Farmer::removeItemsFromInventory(int32, int32)
-			worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+		private static IEnumerable<CodeInstruction> BoatTunnel_checkAction_Transpiler(IEnumerable<CodeInstruction> instructions)
+		{
+			try
 			{
-				i => i.Calls(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
-				i => i.IsLdcI4(337),
-				i => i.IsLdcI4(5),
-				i => i.Calls(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
-			});
-			if (worker is null)
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+
+					// replacing boat ticket price call - the original method gets inlined
+					.Do(matcher =>
+					{
+						return matcher
+							.ForEach(
+								SequenceMatcherRelativeBounds.WholeSequence,
+								new IElementMatch<CodeInstruction>[]
+								{
+									ILMatches.Ldarg(0),
+									ILMatches.Call(AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.GetTicketPrice)))
+								},
+								matcher =>
+								{
+									return matcher
+										.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatTicketPrice));
+								},
+								minExpectedOccurences: 2,
+								maxExpectedOccurences: 2
+							);
+					})
+
+					// replacing material costs
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.LdcI4(BatteryPackID),
+								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(0),
+								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
+							)
+							.MoveToPointerAnchor(countAnchor)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixBatteryPacksRequired));
+					})
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.LdcI4(HardwoodID),
+								ILMatches.LdcI4(200).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(0),
+								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
+							)
+							.MoveToPointerAnchor(countAnchor)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixHardwoodRequired));
+					})
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.LdcI4(IridiumBarID),
+								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(0),
+								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
+							)
+							.MoveToPointerAnchor(countAnchor)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixIridiumBarsRequired));
+					})
+
+					.AllElements();
+			}
+			catch (Exception ex)
+			{
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
+			}
+		}
 
-			worker[2] = new CodeInstruction(OpCodes.Ldc_I4, Instance.Config.BoatFixIridiumBarsRequired);
+		private static IEnumerable<CodeInstruction> BoatTunnel_answerDialogue_Transpiler(IEnumerable<CodeInstruction> instructions)
+		{
+			try
+			{
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
 
-			return instructions;
+					// replacing boat ticket price call - the original method gets inlined
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.Ldarg(0),
+								ILMatches.Call(AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.GetTicketPrice)))
+							)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatTicketPrice));
+					})
+
+					// replacing material costs
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.Call(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
+								ILMatches.LdcI4(BatteryPackID),
+								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
+							)
+							.MoveToPointerAnchor(countAnchor)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixBatteryPacksRequired));
+					})
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.Call(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
+								ILMatches.LdcI4(HardwoodID),
+								ILMatches.LdcI4(200).WithAutoAnchor(out var countAnchor),
+								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
+							)
+							.MoveToPointerAnchor(countAnchor)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixHardwoodRequired));
+					})
+					.Do(matcher =>
+					{
+						return matcher
+							.Find(
+								ILMatches.Call(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
+								ILMatches.LdcI4(IridiumBarID),
+								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
+							)
+							.MoveToPointerAnchor(countAnchor)
+							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixIridiumBarsRequired));
+					})
+
+					.AllElements();
+			}
+			catch (Exception ex)
+			{
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
+				return instructions;
+			}
 		}
 
 		private static void BoatTunnel_GetTicketPrice_Postfix(ref int __result)
@@ -352,45 +598,53 @@ namespace Shockah.EarlyGingerIsland
 			__result = Instance.Config.BoatTicketPrice;
 		}
 
+		private static void BoatTunnel_StartDeparture_Postfix()
+		{
+			if (!Instance.Config.SkipBoatCutscene)
+				return;
+
+			if (!Game1.player.hasOrWillReceiveMail("seenBoatJourney"))
+				Game1.addMailForTomorrow("seenBoatJourney", noLetter: true);
+		}
+
 		private static void ParrotUpgradePerch_IsAvailable_Postfix(ParrotUpgradePerch __instance, ref bool __result)
 		{
-			if (__instance.upgradeName.Value == "Turtle" && !Instance.Config.AllowIslandFarmBeforeCC && !Instance.ShouldGingerIslandBeUnlockedInVanilla())
+			if (__instance.upgradeName.Value == "Turtle" && !Instance.Config.AllowIslandFarmBeforeCC && !ShouldGingerIslandBeUnlockedInVanilla())
 				__result = false;
 		}
 
-		private static IEnumerable<CodeInstruction> ParrotUpgradePerch_IsAvailable_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private static IEnumerable<CodeInstruction> ParrotUpgradePerch_IsAvailable_Transpiler(IEnumerable<CodeInstruction> instructions)
 		{
-			var instructions = enumerableInstructions.ToList();
-
-			// IL to find:
-			// IL_0035: ldarg.0
-			// IL_0036: ldfld class Netcode.NetString StardewValley.BellsAndWhistles.ParrotUpgradePerch::requiredMail
-			// IL_003b: callvirt instance!0 class Netcode.NetFieldBase`2<string, class Netcode.NetString>::get_Value()
-			// IL_0040: ldc.i4.s 44
-			// IL_0042: ldc.i4.0
-			// IL_0043: callvirt instance string[][System.Runtime] System.String::Split(char, valuetype[System.Runtime] System.StringSplitOptions)
-			// IL_0048: stloc.0
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+			try
 			{
-				i => i.IsLdarg(0),
-				i => i.LoadsField(AccessTools.Field(typeof(ParrotUpgradePerch), nameof(ParrotUpgradePerch.requiredMail))),
-				i => i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "get_Value",
-				i => i.IsLdcI4(44),
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "Split",
-				i => i.IsStloc()
-			});
-			if (worker is null)
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.Find(
+						ILMatches.Ldarg(0),
+						ILMatches.Ldfld(AccessTools.Field(typeof(ParrotUpgradePerch), nameof(ParrotUpgradePerch.requiredMail))),
+						ILMatches.Call("get_Value"),
+						ILMatches.LdcI4(44),
+						ILMatches.AnyLdcI4,
+						ILMatches.Call("Split"),
+						ILMatches.AnyStloc
+					)
+					.PointerMatcher(SequenceMatcherRelativeElement.Last)
+					.CreateLdlocInstruction(out var requiredMailsLdlocInstruction)
+					.CreateStlocInstruction(out var requiredMailsStlocInstruction)
+					.Advance()
+					.Insert(
+						SequenceMatcherPastBoundsDirection.Before, true,
+
+						requiredMailsLdlocInstruction,
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(EarlyGingerIsland), nameof(ParrotUpgradePerch_IsAvailable_Transpiler_ModifyRequiredMails))),
+						requiredMailsStlocInstruction
+					)
+					.AllElements();
+			}
+			catch (Exception ex)
+			{
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
-
-			worker.Postfix(new[]
-			{
-				worker[6].ToLoadLocal()!,
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(EarlyGingerIsland), nameof(ParrotUpgradePerch_IsAvailable_Transpiler_ModifyRequiredMails))),
-				worker[6].ToStoreLocal()!
-			});
-
-			return instructions;
+			}
 		}
 
 		public static string[] ParrotUpgradePerch_IsAvailable_Transpiler_ModifyRequiredMails(string[] requiredMails)
@@ -402,6 +656,39 @@ namespace Shockah.EarlyGingerIsland
 						requiredMails[i] = "Island_FirstParrot";
 			}
 			return requiredMails;
+		}
+
+		private static void HoeDirt_canPlantThisSeedHere_Postfix(HoeDirt __instance, int tileX, int tileY, bool isFertilizer, ref bool __result)
+		{
+			if (isFertilizer)
+				return;
+			if (__instance.crop is not null)
+				return;
+
+			if (!Instance.ShouldAllowPlanting(Game1.currentLocation, new(tileX, tileY)))
+				__result = false;
+		}
+
+		private static IEnumerable<CodeInstruction> IslandWest_checkAction_Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
+		{
+			try
+			{
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.Find(
+						ILMatches.Ldloc<int>(originalMethod.GetMethodBody()!.LocalVariables),
+						ILMatches.LdcI4(100).WithAutoAnchor(out var countAnchor),
+						ILMatches.Bge
+					)
+					.MoveToPointerAnchor(countAnchor)
+					.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.GoldenWalnutsRequiredForQiRoom))
+					.AllElements();
+			}
+			catch (Exception ex)
+			{
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
+				return instructions;
+			}
 		}
 	}
 }

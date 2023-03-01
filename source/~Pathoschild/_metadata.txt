@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 8ea1c8e8f3b47c9a4d45b1667769a03d548e5c85
+   commit 5fa631590136b3515b084434ecc9c30e4b101e8c
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Jan 30 20:37:35 2023 -0500
+   Date:   Sun Feb 5 16:25:39 2023 -0500
    
-       improve controller support in Lookup Anything's search menu
+       update German translations for Automate
    

@@ -10,9 +10,10 @@ mods:
    Ranching Tool Upgrades
 
 latest commit:
-   commit a1b81becc7ddc175cc98c3c430578e82bb6dc7af
-   Author: github-actions <github-actions@github.com>
-   Date:   Thu Jan 26 06:37:39 2023 +0000
+   commit 35749c16b3002d11bbc7f788e8461cd249afe218
+   Merge: f44e208 5cc3613
+   Author: Drbirbdev <drbirbdev@gmail.com>
+   Date:   Tue Feb 7 18:27:40 2023 -0800
    
-       Auto-increment version number
+       Merge branch 'main' of https://github.com/drbirbdev/StardewValley
    

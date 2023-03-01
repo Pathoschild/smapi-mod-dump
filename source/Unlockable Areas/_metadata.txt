@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 1238c4aee9d02e16d7df36a48e22edf0872fe154
+   commit 952ac27df24cad21d0c62e2ed494c7739815461d
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Tue Jan 24 07:00:26 2023 +0000
+   Date:   Fri Feb 10 02:14:33 2023 +0100
    
-       Update README.md
+       updated manifest
    

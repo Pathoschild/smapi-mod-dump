@@ -15,7 +15,7 @@
         "FromFile": "assets/default/delta/Abigail/mid.json",
         "When": {
             "EnableFor": "Abigail",
-            "Query: {{Hearts:Abigail}} >= 6": true,
+            "Query: {{Hearts:Abigail}} >= 6": true
         }
     },
     {
@@ -24,7 +24,7 @@
         "FromFile": "assets/default/delta/Caroline/mid.json",
         "When": {
             "EnableFor": "Caroline",
-            "Query: {{Hearts:Caroline}} >= 6": true,
+            "Query: {{Hearts:Caroline}} >= 6": true
         }
     },
     {
@@ -33,7 +33,7 @@
         "FromFile": "assets/default/delta/Marnie/mid.json",
         "When": {
             "EnableFor": "Marnie",
-            "Query: {{Hearts:Marnie}} >= 6": true,
+            "Query: {{Hearts:Marnie}} >= 6": true
         }
     },
     {
@@ -42,7 +42,7 @@
         "FromFile": "assets/default/delta/Pierre/mid.json",
         "When": {
             "EnableFor": "Pierre",
-            "Query: {{Hearts:Pierre}} >= 6": true,
+            "Query: {{Hearts:Pierre}} >= 6": true
         }
     },
     {
@@ -51,7 +51,16 @@
         "FromFile": "assets/default/delta/Sandy/mid.json",
         "When": {
             "EnableFor": "Sandy",
-            "Query: {{Hearts:Sandy}} >= 6": true,
+            "Query: {{Hearts:Sandy}} >= 6": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Shane - mid hearts",
+        "FromFile": "assets/default/delta/Shane/mid.json",
+        "When": {
+            "EnableFor": "Shane",
+            "Query: {{Hearts:Shane}} >= 6": true
         }
     }
 ]}

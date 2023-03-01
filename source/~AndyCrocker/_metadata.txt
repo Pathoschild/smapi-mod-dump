@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit f054754134bb9aa7f5a350f004c1fca3f1cc0df2
+   commit a27ff68c5e7fb7442b2ca804423a0482b2de029e
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Fri Aug 19 00:54:14 2022 +0100
+   Date:   Wed Feb 15 04:50:49 2023 +0000
    
-       [BetterMixedSeeds] Add ability to reinclude excluded crops, update to .net5
+       Update project documentation
    

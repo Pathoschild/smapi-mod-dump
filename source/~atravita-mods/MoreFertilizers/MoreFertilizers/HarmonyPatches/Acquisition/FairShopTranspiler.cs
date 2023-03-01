@@ -34,26 +34,26 @@ internal static class FairShopTranspiler
             {
                 if (ModEntry.JojaFertilizerID != -1)
                 {
-                    shopStock.TryAdd(new SObject(ModEntry.JojaFertilizerID, 1), new[] { 200, 20 });
+                    shopStock.TryAdd(new SObject(ModEntry.JojaFertilizerID, 20), new[] { 200, 20 });
                 }
                 if (ModEntry.DeluxeJojaFertilizerID != -1)
                 {
-                    shopStock.TryAdd(new SObject(ModEntry.DeluxeJojaFertilizerID, 1), new[] { 400, 20 });
+                    shopStock.TryAdd(new SObject(ModEntry.DeluxeJojaFertilizerID, 20), new[] { 400, 20 });
                 }
                 if (ModEntry.SecretJojaFertilizerID != -1)
                 {
-                    shopStock.TryAdd(new SObject(ModEntry.SecretJojaFertilizerID, 1), new[] { 1000, 4 });
+                    shopStock.TryAdd(new SObject(ModEntry.SecretJojaFertilizerID, 4), new[] { 1000, 4 });
                 }
             }
             else
             {
                 if (ModEntry.BountifulFertilizerID != -1)
                 {
-                    shopStock.TryAdd(new SObject(ModEntry.BountifulFertilizerID, 1), new[] { 200, 20 });
+                    shopStock.TryAdd(new SObject(ModEntry.BountifulFertilizerID, 20), new[] { 200, 20 });
                 }
                 if (ModEntry.OrganicFertilizerID != -1)
                 {
-                    shopStock.TryAdd(new SObject(ModEntry.OrganicFertilizerID, 1), new[] { 200, 20 });
+                    shopStock.TryAdd(new SObject(ModEntry.OrganicFertilizerID, 20), new[] { 200, 20 });
                 }
             }
         }

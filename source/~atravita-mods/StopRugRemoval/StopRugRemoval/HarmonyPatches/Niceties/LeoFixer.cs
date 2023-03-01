@@ -17,6 +17,10 @@ using AtraShared.Utils.HarmonyHelper;
 using HarmonyLib;
 
 namespace StopRugRemoval.HarmonyPatches.Niceties;
+
+/// <summary>
+/// Makes it so Leo doesn't show up at the winter star festival unless he's moved to the island.
+/// </summary>
 [HarmonyPatch(typeof(Utility))]
 internal static class LeoFixer
 {

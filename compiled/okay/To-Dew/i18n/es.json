@@ -10,6 +10,8 @@
     "config.overlay.desc": "Configurar la superposición permanente de la lista",
     "config.overlay.enabled": "Activado",
     "config.overlay.enabled.desc": "¿Está activada la superposición?",
+    "config.overlay.click-to-mark-done": "Haga clic en los elementos para marcar como terminados",
+    "config.overlay.click-to-mark-done.desc": "Habilitar hacer clic en la superposición para marcar elementos terminados",
     "config.overlay.hotkey": "Tecla de acceso directo",
     "config.overlay.hotkey.desc": "Tecla de acceso directo para mostrar u ocultar",
     "config.overlay.hide-at-festivals": "Ocultar durante los festivales",

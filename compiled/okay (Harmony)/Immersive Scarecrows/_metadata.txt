@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/15290
 IDs: aedenthorn.ImmersiveScarecrows
-update keys: Nexus:15290
+update keys: Nexus:15290, GitHub:aedenthorn/StardewValleyMods

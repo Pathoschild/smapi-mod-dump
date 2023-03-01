@@ -45,7 +45,11 @@ namespace CustomCrystalariumMod
             }
             else if (customCloner.CloningDataId.ContainsKey(clonable.Category))
             {
-                return  customCloner.CloningDataId[clonable.Category];
+                return customCloner.CloningDataId[clonable.Category];
+            }
+            else if (customCloner.EnableCloneEveryObject)
+            {
+                return customCloner.DefaultCloningTime;
             }
             return null;
         }

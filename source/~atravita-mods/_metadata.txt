@@ -30,9 +30,9 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit ac5fba0d2a69761fa48423c38a189903dd6c8ec9
+   commit 71c4889528b7bd3ef946153ca9e619a97f188384
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Mon Jan 30 21:28:38 2023 -0500
+   Date:   Fri Feb 24 14:05:40 2023 -0500
    
-       insert one texture cache
+       readme fussing.
    

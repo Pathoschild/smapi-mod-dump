@@ -15,7 +15,7 @@
   "Description": "Adds extra diagnostics to ContentPatcher for an enhanced Profiler experience",
   "UniqueID": "SinZ.Profiler.ContentPatcher",
   "EntryDll": "Profiler.ContentPatcher.dll",
-  "MinimumApiVersion": "3.15.0",
+  "MinimumApiVersion": "4.15.0",
   "UpdateKeys": [ "Nexus:12135@CPAddon" ],
   "Dependencies": [
     {

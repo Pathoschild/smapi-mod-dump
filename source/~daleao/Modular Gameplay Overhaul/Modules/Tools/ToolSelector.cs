@@ -72,7 +72,8 @@ internal static class ToolSelector
                ((animal.type.Value.Contains("Cow") &&
                  ToolsModule.State.SelectableToolByType.TryGetValue(typeof(MilkPail), out selectable)) ||
                 (animal.type.Value == "Sheep" &&
-                 ToolsModule.State.SelectableToolByType.TryGetValue(typeof(Shears), out selectable)));
+                 ToolsModule.State.SelectableToolByType.TryGetValue(typeof(Shears), out selectable))) &&
+               selectable.HasValue;
     }
 
     private static bool TryForObjects(Vector2 tile, GameLocation location, [NotNullWhen(true)] out SelectableTool? selectable)
@@ -84,7 +85,8 @@ internal static class ToolSelector
                 (@object.IsArtifactSpot() &&
                  ToolsModule.State.SelectableToolByType.TryGetValue(typeof(Hoe), out selectable)) ||
                 (@object.IsWeed() &&
-                 ToolsModule.State.SelectableToolByType.TryGetValue(typeof(MeleeWeapon), out selectable)));
+                 ToolsModule.State.SelectableToolByType.TryGetValue(typeof(MeleeWeapon), out selectable))) &&
+               selectable.HasValue;
     }
 
     private static bool TryForTerrainFeatures(Vector2 tile, GameLocation location, [NotNullWhen(true)] out SelectableTool? selectable)
@@ -99,7 +101,8 @@ internal static class ToolSelector
                 ToolsModule.State.SelectableToolByType.TryGetValue(typeof(WateringCan), out selectable)) ||
                (feature is HoeDirt { crop: { } crop } dirt2 && dirt2.readyForHarvest() &&
                 crop.harvestMethod.Value == 1 &&
-                ToolsModule.State.SelectableToolByType.TryGetValue(typeof(MeleeWeapon), out selectable)));
+                ToolsModule.State.SelectableToolByType.TryGetValue(typeof(MeleeWeapon), out selectable))) &&
+               selectable.HasValue;
     }
 
     private static bool TryForResourceClumps(Vector2 tile, GameLocation location, [NotNullWhen(true)] out SelectableTool? selectable)

@@ -100,8 +100,7 @@
             "MovieNight": "true"
         }
     },
-    {//todo - figure out a different schedule for Pam is penny is married...may need a custom token here.
-    // TODO: schedules for the theater if the player chose the JOJA route.
+    {
         "LogName": "Penny - Sundays at the movies",
         "Action": "EditData",
         "Target": "Characters/schedules/Penny",
@@ -110,10 +109,24 @@
             "spring_Sun": "800 Town 35 89 2 penny_read/1230 Trailer 12 6 0 penny_dishes/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
             "fall_Sun": "GOTO spring_Sun",
             "winter_Sun": "900 Trailer 1 8 0/1030 CommunityCenter 23 17 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
-            "marriage_Sun": "900 Trailer 1 8 0/1030 CommunityCenter 23 17 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
+            "marriage_Sun": "900 Trailer 1 8 0/1030 CommunityCenter 23 17 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "GIRemainder_Sun": "1800 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
         },
         "When": {
             "HasFlag": "ccMovieTheater",
+            "MovieNight": "true"
+        }
+    },
+    {
+        "LogName": "Penny - Sundays at the movies, Joja variant",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Penny",
+        "Entries":{
+            "winter_Sun": "900 Trailer 1 8 0/1030 Town 35 89 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep",
+            "marriage_Sun": "900 Trailer 1 8 0/1030 Town 35 89 2 penny_read/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
+        },
+        "When": {
+            "HasFlag": "ccMovieTheaterJoja",
             "MovieNight": "true"
         }
     },
@@ -128,6 +141,19 @@
         },
         "When": {
             "HasFlag": "ccMovieTheater",
+            "DayOfWeek": "Sunday",
+            "MovieNight": "true"
+        }
+    },
+    {
+        "LogName": "Penny Movie Sundays in Rain",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Penny",
+        "Entries": {
+            "marriage_{{season}}_{{day}}": "900 Trailer 1 8 0/1030 ArchaeologyHouse 20 5 0/1700 {{PennyMovieLocation}}/2200 Trailer 4 9 1 penny_sleep"
+        },
+        "When": {
+            "HasFlag": "ccMovieTheaterJoja",
             "DayOfWeek": "Sunday",
             "MovieNight": "true"
         }

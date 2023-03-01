@@ -8,6 +8,8 @@ for queries and analysis.**
 
 Changelog
 ===============
+### Version 0.1.0
+* Remove multiplayer sync check at the end of the wedding event.
 
 ### Version 0.1.0
 

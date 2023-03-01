@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/facufierro/RuneMagic
+   Git: https://github.com/facufierro/RuneMagic.git
+
+mods:
+   Rune Magic
+
+latest commit:
+   commit 6dd59dfc3eb00d5dd6f46cbb4e718c0308f05a3e
+   Author: Facundo Fierro <fierrof_47@hotmail.com>
+   Date:   Fri Feb 24 20:05:58 2023 +0100
+   
+       Implemented Spellbook menu
+   

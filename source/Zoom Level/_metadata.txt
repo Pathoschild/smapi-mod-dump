@@ -6,9 +6,9 @@ mods:
    Zoom Level
 
 latest commit:
-   commit 06928198de51d2273cb93a85a631fa2e99eecc65
+   commit 1c327d7dce61b2687e679276ec0e2d7f89cc3dd5
    Author: thespbgamer <thespbgamer@outlook.com>
-   Date:   Tue Jan 24 14:12:41 2023 +0000
+   Date:   Fri Feb 17 12:53:07 2023 +0000
    
-       Major code optimization and made code more consistant
+       Added way more validations to the code and fixed those validations
    

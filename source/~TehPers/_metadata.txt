@@ -10,9 +10,9 @@ mods:
    TehCore
 
 latest commit:
-   commit 608c4db39f6c88db8468606a1b78c7419d0d47b4
+   commit 0c21cf8ed874ae2588b43bb3c531f8d7fa491641
    Author: TehPers <tehperz@gmail.com>
-   Date:   Fri Jun 3 08:04:53 2022 -0700
+   Date:   Wed Feb 1 23:11:25 2023 -0800
    
-       Update changelogs and manifests
+       Update sln
    

@@ -10,6 +10,15 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.1.0
+Released 10 February 2023.
+
+* Reimplemented ticket price setting - it actually works now!
+* Added an option to block planting crops (or more than 1 crop) on the island farm before Community Center completion.
+* Added an option to change the Golden Walnut requirement for accessing the Qi's Walnut Room.
+* Added options to change the Golden Walnut cost of parrot upgrades (or make them unlocked instantly, along with an option to ignore prior requirements).
+* Added an option to skip the boat cutscene.
+
 ## 1.0.1
 Released 10 November 2022.
 

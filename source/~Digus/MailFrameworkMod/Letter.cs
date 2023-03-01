@@ -143,5 +143,10 @@ namespace MailFrameworkMod
         {
             return $"{nameof(Id)}: {Id}, {nameof(Title)}: {TranslatedTitle}, { nameof(Text)}: {TranslatedText}";
         }
+
+        public string ToMailDataString()
+        {
+            return TranslatedText + (TranslatedTitle != null ? $"[#]{TranslatedTitle}" : "");
+        }
     }
 }

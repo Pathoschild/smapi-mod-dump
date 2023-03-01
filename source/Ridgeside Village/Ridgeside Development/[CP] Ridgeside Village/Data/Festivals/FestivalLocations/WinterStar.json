@@ -16,7 +16,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/winter25",
         "When": {
-            "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -40,7 +40,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/winter25",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "HasSeenEvent": 75160249, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -59,7 +59,7 @@
         "When": {
             "HasSeenEvent: anyPlayer|contains=75160377, 75160187": true,
 			"HasSeenEvent: anyPlayer|contains=75160188": true,
-            "ExpandedFestivalMaps": true
+            "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -76,7 +76,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/winter25",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "HasSeenEvent": 75160254, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -88,19 +88,50 @@
         ]
     },
 
+    {
+        //Zayne Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter25",
+        "When": {
+            "HasSeenEvent": 75160440, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Zayne 30 21 down",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
     //Torts
     {
       "LogName": "Torts Winter Star Location",
       "Action": "EditData",
       "Target": "Data/Festivals/winter25",
       "When": {
-            "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
       "TextOperations": [
         {
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
           "Value": "Torts 9 25 right",
+          "Delimiter": "/"
+        },
+      ]
+    },
+
+    {
+      "LogName": "June Winter Star Location",
+      "Action": "EditData",
+      "Target": "Data/Festivals/winter25",
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters"],
+          "Value": "June 27 54 2",
           "Delimiter": "/"
         },
       ]

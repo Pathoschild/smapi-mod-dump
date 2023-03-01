@@ -17,6 +17,7 @@ You can do that either using Content Patcher or the OnAssetRequested event in C#
 * [Unlockables](#unlockables)
     * [Full Example in ContentPatcher](#full-example-in-contentpatcher)
 * [ContentPatcher  Token](#contentpatcher-token)
+* [C# API](#c-api)
 <br>
 
 # Manifest Dependency
@@ -50,8 +51,9 @@ Unlockables are defined as such:
 | ShopPosition    | _String in the Format "x, y"_<br><br>The coordinates of the shop that is used to purchase the unlockable                                                                                                                                                                                                    |
 | ShopTexture     | _(Optional) String_<br><br>The name of a 32px * 64px image asset.<br>It will draw at the tile at ShopPosition and the tile above.<br>If no ShopTexture is provided then the default UA Sign is used.                                                                                                        |
 | ShopAnimation   | _(Optional) String in the Format "&lt;Frames&gt;@&lt;Milliseconds&gt;" (eg. "6@100")_<br><br>If you want to animate your Shop provide a `ShopTexture` that is 32px times frames wide.<br>Use `ShopAnimation` to specify how many frames your animation has and what delay in milliseconds between each frame you'd like. |
+| ShopEvent | (Optional) String<br><br>A custom [Event Script](https://stardewvalleywiki.com/Modding:Event_data#Event_scripts) that will be played upon purchase.<br>This event will only be played for whoever bought the Unlockable.<br>Leave it empty for the default fade+hammer sounds event.<br>**`None`** will cause no event to be played at |
 | Price           | _Dictionary<itemID as string, amount as int>_<br><br>The items required to purchase the Overlay.<br>The keyword **`Money`** can be used as an itemID.<br>You can find a list of item IDs [here](#https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo/edit#gid=1082266757)<br>In case an item is spread accross multiple itemIDs, like with eggs, you can seperate the itemIDs by commas.                                                                                                                                                        |
-| UpdateMap       | _String_<br><br>The name of a map asset that will be placed on top of `Location` at `UpdatePosition`                                                                                                                                                                                                        |
+| UpdateMap       | _String_<br><br>The name of a map asset that will be placed on top of `Location` at `UpdatePosition`<br><br>**`None`**  will ignore the map overlay. |
 | UpdateType      | _(Optional) Default =_ **`Overlay`**<br><br>**`Overlay`** will place replace only where tiles overlap<br>**`Replace`** replaces everything from all layers that overlap between both maps, even when the overlay tile is empty                                                                                    |
 | UpdatePosition  | _String in the Format "x, y"_<br><br>The top left coordinates of `Location` where `UpdateMap` will be overlayed towards the bottom right.                                                                                                                                                                             |
 
@@ -124,3 +126,35 @@ Like this for example:
 
 Please note, that your changes aren't taken into effect immediately, but instead the next time content patcher evaluates its conditions, which is on daystart by default.<br>
 Due to this UA currently only fully refreshes the Unlockable shops on daystart
+
+# C\# API
+
+Unlockable Areas offers a simple API which you can use in your .NET based mods.<br>
+Being able to use the API requires embedding two classes in your project and calling `Helper.ModRegistry.GetApi` after the game has launched.<br>
+<br>
+[1. IUnlockableAreasAPI](https://gitlab.com/delixx/stardew-valley-unlockable-areas/-/blob/main/Unlockable%20Areas/API/IUnlockableAreasAPI.cs)<br>
+[2. ShopPurchasedEvent](https://gitlab.com/delixx/stardew-valley-unlockable-areas/-/blob/main/Unlockable%20Areas/API/ShopPurchasedEvent.cs)<br>
+<br>
+Example:<br>
+```cs
+public override void Entry(IModHelper helper)
+{
+  helper.Events.GameLoop.GameLaunched += gameLaunched;
+}
+
+private static void gameLaunched(object sender, GameLaunchedEventArgs e)
+{
+  if (Helper.ModRegistry.IsLoaded("DeLiXx.Unlockable_Areas")) {
+    var unlockableAreasAPI = Helper.ModRegistry.GetApi<IUnlockableAreasAPI>("DeLiXx.Unlockable_Areas");
+    unlockableAreasAPI.shopPurchasedEvent += onShopPurchased;
+  }
+}
+
+private void onShopPurchased(object source, ShopPurchasedEventArgs e)
+{
+  if(e.unlockableKey != "myUnlockableKey")
+    return;
+
+  //My Code goes here
+}
+```

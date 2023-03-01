@@ -6,9 +6,9 @@ mods:
    SpriteMaster
 
 latest commit:
-   commit cf70d002d1b958572aecbaa7f875e7a154008b7a
+   commit 78be77906a1ad05100908fba6e1020b2d3503e12
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Sun Jan 29 16:20:50 2023 -0600
+   Date:   Sat Feb 11 18:12:44 2023 -0600
    
-       Incrementing version to 0.15.0-beta.11.
+       Re-enabling redundant value checks.
    

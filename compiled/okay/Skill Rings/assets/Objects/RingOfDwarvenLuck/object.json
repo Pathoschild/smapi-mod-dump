@@ -6,9 +6,11 @@
   "Price": 50000,
   "Recipe": null,
   "NameLocalization": {
-	  "zh": "矮人好运之戒"
+	  "zh": "矮人好运之戒",
+	  "ko": "드워프 행운의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "采矿时矮人的幸运笼罩着你。"
-  },
+	  "zh": "采矿时矮人的幸运笼罩着你。",
+	  "ko": "당신이 광물을 캐는 동안 드워프의 행운이 당신을 비춥니다."
+  }
 }

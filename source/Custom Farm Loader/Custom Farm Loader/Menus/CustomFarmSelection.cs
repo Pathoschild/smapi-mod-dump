@@ -54,6 +54,7 @@ namespace Custom_Farm_Loader.Menus
         public ClickableTextureComponent ScrollBar;
 
         public const int ItemsPerPage = 4;
+        public int DescriptionRowsPerPage = 3;
         private bool Scrolling;
 
         public List<ClickableComponent> CustomFarmButtons = new List<ClickableComponent>();
@@ -86,6 +87,26 @@ namespace Custom_Farm_Loader.Menus
                     snapCursorToCurrentSnappedComponent();
             }
 
+            calculateDescriptionRowsPerPage();
+        }
+
+        public void calculateDescriptionRowsPerPage()
+        {
+            DescriptionRowsPerPage = Helper.GameContent.CurrentLocaleConstant switch {
+                LocalizedContentManager.LanguageCode.de => 5,
+                LocalizedContentManager.LanguageCode.en => 4,
+                LocalizedContentManager.LanguageCode.es => 3,
+                LocalizedContentManager.LanguageCode.fr => 3,
+                LocalizedContentManager.LanguageCode.hu => 3,
+                LocalizedContentManager.LanguageCode.it => 4,
+                LocalizedContentManager.LanguageCode.ja => 5,
+                LocalizedContentManager.LanguageCode.ko => 3,
+                LocalizedContentManager.LanguageCode.pt => 3,
+                LocalizedContentManager.LanguageCode.ru => 5,
+                LocalizedContentManager.LanguageCode.tr => 3,
+                LocalizedContentManager.LanguageCode.zh => 4,
+                _ => 3
+            };
         }
 
         public void updateCustomFarmButtonNeighbors()
@@ -133,13 +154,13 @@ namespace Custom_Farm_Loader.Menus
                 });
             }
 
-            DescriptionUpArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 48, yPositionOnScreen + height - 200, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f) {
+            DescriptionUpArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 36, yPositionOnScreen + height - 200, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f) {
                 myID = 801,
                 downNeighborID = 802,
                 upNeighborID = 3546,
                 rightNeighborID = 106
             };
-            DescriptionDownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 48, yPositionOnScreen + height - 42, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
+            DescriptionDownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 36, yPositionOnScreen + height - 42, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
                 myID = 802,
                 upNeighborID = 801,
                 rightNeighborID = 106
@@ -237,7 +258,7 @@ namespace Custom_Farm_Loader.Menus
 
         //Some custom farm maps have transparent pixels on the side.
         //This trims them away
-        private Texture2D loadCroppedIcon(ModFarmType modFarm)
+        public static Texture2D loadCroppedIcon(ModFarmType modFarm)
         {
             Texture2D icon = Helper.GameContent.Load<Texture2D>(modFarm.IconTexture);
 
@@ -303,7 +324,7 @@ namespace Custom_Farm_Loader.Menus
             try {
                 CurrentFarmPreview = ModEntry._Helper.ModContent.Load<Texture2D>(CurrentCustomFarm.Preview);
             } catch (Exception ex) {
-                ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", StardewModdingAPI.LogLevel.Warn);
+                ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", LogLevel.Warn);
             }
 
 
@@ -354,7 +375,7 @@ namespace Custom_Farm_Loader.Menus
         private void setScrollBarToCurrentIndex()
         {
             if (CustomFarms.Count > 0) {
-                ScrollBar.bounds.Y = ScrollBarRunner.Height / Math.Max(1, CustomFarms.Count - 4 + 1) * currentItemIndex + UpArrow.bounds.Bottom + 4;
+                ScrollBar.bounds.Y = (int)((float)(ScrollBarRunner.Height - ScrollBar.bounds.Height) / Math.Max(1, CustomFarms.Count - 4) * currentItemIndex + UpArrow.bounds.Bottom + 4);
                 if (currentItemIndex == CustomFarms.Count - 4) {
                     ScrollBar.bounds.Y = DownArrow.bounds.Y - ScrollBar.bounds.Height - 4;
                 }
@@ -405,7 +426,7 @@ namespace Custom_Farm_Loader.Menus
             } else if (DescriptionUpArrow.containsPoint(x, y) && DescriptionScrollIndex != 0) {
                 DescriptionScrollIndex--;
                 Game1.playSound("shwip");
-            } else if (DescriptionDownArrow.containsPoint(x, y) && SplitPreviewDescription.Length > DescriptionScrollIndex + 3) {
+            } else if (DescriptionDownArrow.containsPoint(x, y) && SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage) {
                 DescriptionScrollIndex++;
                 Game1.playSound("shwip");
             }
@@ -432,7 +453,7 @@ namespace Custom_Farm_Loader.Menus
                 int y2 = ScrollBar.bounds.Y;
                 ScrollBar.bounds.Y = Math.Min(yPositionOnScreen + height - 64 - 12 - ScrollBar.bounds.Height, Math.Max(y, yPositionOnScreen + UpArrow.bounds.Height + 20));
                 float percentage = (float)(y - ScrollBarRunner.Y) / (float)ScrollBarRunner.Height;
-                currentItemIndex = Math.Min(Math.Max(0, CustomFarms.Count - 4), Math.Max(0, (int)((float)CustomFarms.Count * percentage)));
+                currentItemIndex = Math.Min(CustomFarms.Count - 4, Math.Max(0, (int)Math.Round((double)((CustomFarms.Count - 4) * percentage))));
                 setScrollBarToCurrentIndex();
                 updateCustomFarmButtonNeighbors();
                 if (y2 != ScrollBar.bounds.Y) {
@@ -464,7 +485,7 @@ namespace Custom_Farm_Loader.Menus
             if ((b == Buttons.LeftShoulder || b == Buttons.LeftTrigger ) && DescriptionScrollIndex != 0) {
                 DescriptionScrollIndex--;
                 Game1.playSound("shwip");
-            } else if ((b == Buttons.RightShoulder || b == Buttons.RightTrigger) && SplitPreviewDescription.Length > DescriptionScrollIndex + 3) {
+            } else if ((b == Buttons.RightShoulder || b == Buttons.RightTrigger) && SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage) {
                 DescriptionScrollIndex++;
                 Game1.playSound("shwip");
             }
@@ -587,10 +608,10 @@ namespace Custom_Farm_Loader.Menus
         public void drawDescription(SpriteBatch b, string description, int x, int y, int width)
         {
             if (SplitPreviewDescription.Length == 0 && description != "")
-                SplitPreviewDescription = Game1.parseText(description, Game1.dialogueFont, width).Split(Environment.NewLine);
+                SplitPreviewDescription = Game1.parseText(description, Game1.dialogueFont, width - 4).Split(Environment.NewLine);
 
             string descriptionString = "";
-            for (int i = DescriptionScrollIndex; i < DescriptionScrollIndex + 3; i++) {
+            for (int i = DescriptionScrollIndex; i < DescriptionScrollIndex + DescriptionRowsPerPage; i++) {
                 if (SplitPreviewDescription.Length > i)
                     descriptionString += SplitPreviewDescription[i] + Environment.NewLine;
             }
@@ -599,7 +620,7 @@ namespace Custom_Farm_Loader.Menus
             if (DescriptionScrollIndex != 0)
                 DescriptionUpArrow.draw(b);
 
-            if (SplitPreviewDescription.Length > DescriptionScrollIndex + 3)
+            if (SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage)
                 DescriptionDownArrow.draw(b);
         }
 

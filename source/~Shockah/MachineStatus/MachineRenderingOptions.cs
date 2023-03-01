@@ -10,7 +10,7 @@
 
 namespace Shockah.MachineStatus
 {
-	internal static class MachineRenderingOptions
+	public static class MachineRenderingOptions
 	{
 		public enum Grouping
 		{

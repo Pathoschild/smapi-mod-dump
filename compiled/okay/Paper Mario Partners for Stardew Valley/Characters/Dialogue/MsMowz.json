@@ -1,0 +1,44 @@
+{
+    "Mon": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "Tue": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "Wed": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "Thu": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "Fri": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "Sat": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "Sun": "Hello, @, sweetie!!
+    #$q 14638095/14638096 mowzhire_followup#Would you like to hire me for 1000g?
+        #$r 14638095 15 mowzhire_yes#Yes
+        #$r 14638096 0 mowzhire_no#No
+    ",
+    "mowzhire_yes": "...",
+    "mowzhire_no": "Ah, alright then. I'll just be waiting here.$s",
+    "mowzhire_followup":
+        "$p 14638095
+            #Thanks for letting me come with you!$h
+            |Hello, @, sweetie!!$k
+        ",
+}

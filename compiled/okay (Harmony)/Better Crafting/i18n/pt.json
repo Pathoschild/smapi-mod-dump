@@ -1,0 +1,297 @@
+{
+	// Settings
+	"setting.show-adv": "Mostrar Informação Avançada de Criação",
+	"setting.show-adv.tip": "Mostrar informações como quantos ingredientes você tem e quantos vezes você criou uma receita antes. Isto é o mesmo que a configuração padrão do jogo, duplicada aqui por conveniência.",
+
+	"setting.general": "Opções Gerais",
+
+	"setting.priority": "Prioridade do Handler do Menu",
+	"setting.priority.tip": "Mudar a prioridade do handler do menu pode melhorar a compatibilidade de outros mods com o Better Crafting. QuandoBaixa, o Better Crafting fará sua lógica de menu depois dos outros mods. Quando Alta, o Better Crafting fará sua lógica antes de outros mods.",
+
+	"setting.priority.low": "Baixa",
+	"setting.priority.normal": "Normal",
+	"setting.priority.high": "Alta",
+
+	"setting.theme": "Tema da Interface",
+	"setting.theme-desc": "Este tema de interface será usado para os botões do Better Crafting. Note que a maioria da interface do Better Crafting é desenhada a partir das texturas padrões do jogo.",
+
+	"theme.automatic": "Automático",
+	"theme.default": "Padrão",
+
+	"setting.gift-taste-style": "Estilo de Preferência de Presente",
+	"setting.gift-taste-style.heads": "Cabeças",
+	"setting.gift-taste-style.names": "Nomes",
+	"setting.gift-taste-style.tip": "Quando \"Cabeças\", preferências de presente serão mostradas usando a cabeça de cada personagem. Quando \"Nomes\", seus nomes serão mostrados.",
+
+	"setting.gift-taste": "Mostrar Preferências de Presente",
+	"setting.gift-taste.tip": "Quando ativado, preferências de presentes conhecidas serão mostradas para conveniência. Preferências de presentes correspondentes sempre ser mostradas quando pesquisando.",
+	"setting.gift-taste.never": "Nunca",
+	"setting.gift-taste.shift": "Enquanto Segurar Shift",
+	"setting.gift-taste.always": "Sempre",
+
+	"setting.gift-taste-all": "Mostrar Preferências de Presente Não Descobertas",
+	"setting.gift-taste-all.tip": "Quando ativado, Better Crafting irá mostrar todas as preferências de presentes. Até as que você ainda não descobriu. Isso pode ser considerado como uma leve trapaça, então é desativado por padrão.",
+
+	"setting.alphabetic": "Ordenar Alfabeticamente",
+	"setting.alphabetic.tip": "Quando ativado, receitas serão ordenadas alfabeticamente ao invés de usar a ordem padrão.",
+
+	"setting.replace-crafting": "Reimplementar Menu de Artesanato",
+	"setting.replace-crafting.tip": "Quando ativado, o menu de artesanato será substituído por uma reimplementação.",
+
+	"setting.replace-cooking": "Reimplementar Menu de Culinária",
+	"setting.replace-cooking.tip": "Quando ativado, o menu de culinária será substituído por uma reimplementação.",
+
+	"setting.enable-categories": "Habilitar Categorias",
+	"setting.enable-categories.tip": "Mostrar categorias nos menus de criação, ao invés de uma grande lista de tudo.",
+
+	"setting.settings": "Mostrar Botão de Configuração",
+	"setting.settings.tip": "Quando ativado, um botão para abrir as configurações do Better Crafting será adicionado ao menu do Better Crafting.",
+
+	"setting.bindings": "Teclas e Ações",
+	"setting.bindings.tip": "Configurações relacionadas a entrada e atalhos.",
+
+	"setting.suppress": "Tecla de Desativação",
+	"setting.suppress.tip": "Quando esta tecla é pressionada e um menu de criação é aberto, o Better Crafting não irá reimplementá-lo.",
+
+	"setting.key.modifier": "Tecla Modificadora",
+	"setting.key.modifier.tip": "Segure esta tecla para modificar a ação realizada por outra tecla, se disponível.",
+
+	"setting.key.search": "Tecla de Pesquisa",
+	"setting.key.search.tip": "Pressione esta tecla para abrir a busca para filtrar as receitas mostradas.",
+
+	"setting.key.favorite": "Tecla de Favorito",
+	"setting.key.favorite.tip": "Pressiona esta tecla em uma receita para adicioná-la ou removê-la dos favoritos.",
+
+	"setting.key.bulk": "Tecla de Criação em Massa",
+	"setting.key.bulk.tip": "Pressiona esta tecla em uma receita para abrir o menu de Criação em Massa para aquela receita.",
+
+	"setting.key.behavior.left": "Comportamento do Clique-Esquerdo / A",
+	"setting.key.behavior.left.tip": "Quando clicar com o botão esquerdo (ou pressionar A no controle) em uma receita, esta ação será feita.",
+	"setting.key.behavior.right": "Comportamento do Clique-Direito / X",
+	"setting.key.behavior.right.tip": "Quando clicar com o botão direito (ou pressionar X no controle) em uma receita, esta ação será feita.",
+
+	"setting.key.tooltip": "Mostrar Atalhos nas Dicas de Contexto",
+	"setting.key.tooltip.tip": "Quando ativado, atalhos serão mostrados embaixo das dicas de contexto do Better Crafting.",
+
+	"setting.ttwhen.Never": "Nunca",
+	"setting.ttwhen.ForController": "Com Controle",
+	"setting.ttwhen.Always": "Sempre",
+
+	"setting.action.None": "Nada",
+	"setting.action.Craft": "Criar",
+	"setting.action.Favorite": "Alternar Favorito",
+	"setting.action.BulkCraft": "Criação em Massa",
+
+	"setting.nearby": "Bancada de Trabalho Extendida",
+	"setting.nearby.tip": "Permite que Bancada de Trabalho e a cozinha se conectarem a mais baús de uma vez, melhorando o alcance padrão de um bloco. Você pode criar cadeias de baús conectados, ou usar os conectores permitidos para conectar espaços.",
+
+	"setting.nearby.enable": "Habilitar Bancada de Trabalho Extendida",
+
+	"setting.nearby.diagonal": "Permitir Conexões Diagonais",
+	"setting.nearby.diagonal.tip": "Quando ativado, baús e conectores podem ser colocados na diagonal e ainda serão conectados.",
+
+	"setting.nearby.performance": "Performance",
+	"setting.nearby.performance.tip": "Configurações que limitam a Bancada de Trabalho Extendida para melhorar a performance.",
+
+	"setting.nearby.max-chests": "Inventários Máximos",
+	"setting.nearby.max-chests.tip": "O maior número de inventários que uma Bancada de Trabalho pode usar.",
+
+	"setting.nearby.max-distance": "Distância Máxima",
+	"setting.nearby.max-distance.tip": "A maior distância que um inventário pode estar de uma Bancada de Trabalho.",
+
+	"setting.nearby.max-check": "Checagens Máximas",
+	"setting.nearby.max-check.tip": "O máximo de blocos para checar quando procurar por inventários próximos.",
+
+	"setting.nearby.connectors": "Conectores Permitidos",
+	"setting.nearby.connectors.tip": "Itens posicionáveis que podem ser usados como conectores. Você deveria evitar adicionar conectores desnecessários para manter a performance. Note que estas configurações são exemplos, e você pode editar seu arquivo de configurações manulamente para adicionar outros objetos e recursos de terreno.",
+
+	"setting.nearby.floors": "Pisos",
+	"setting.nearby.other": "Outros Exemplos",
+
+	"setting.transfer": "Transferir para Armazenamento",
+	"setting.transfer.about": "Isto te permite armazenar itens rapidamente do seu inventário para baús conectados a uma Bancada de Trabalho ou sua cozinha. Itens correspondentes são colocados nos baús apropriados, semelhante ao Adicionar em Conjuntos Existentes.",
+
+	"setting.transfer.enable": "Habilitar Transferir para Armazenamento",
+
+	"setting.transfer.action": "Ação ({{binding}})",
+	"setting.transfer.action-modifier": "Ação com Modificador",
+	"setting.transfer.use-tool": "Usar Ferramenta ({{binding}})",
+	"setting.transfer.use-tool-modifier": "Usar Ferramenta com Modificador",
+
+	"setting.transfer.behavior": "Modo",
+
+	"setting.transfer.behavior.none": "Não Fazer Nada",
+	"setting.transfer.behavior.all": "Transferir Tudo",
+	"setting.transfer.behavior.all-quantity": "Transfer Tudo Menos Quantidade",
+	"setting.transfer.behavior.quantity": "Transferir Quantidade",
+	"setting.transfer.behavior.half": "Transferir Metade",
+
+	"setting.transfer.quantity": "Quantidade",
+	"setting.transfer.quantity.tip": "A quantidade a transferir quando usando \"Transferir Quantidade\" ou quanto deixar para trás se usar \"Transfer Tudo Menos Quantidade\".",
+
+	"setting.cookout": "Mudanças na Cozinha Portátil",
+	"setting.cookout.about": "Essas configurações alterar o comportamento da Cozinha Portátil, fazendo elas parecerem mais com Bancadas de Trabalho.",
+
+	"setting.cookout.workbench": "Conectar como Bancadas de Trabalho",
+	"setting.cookout.workbench.tip": "Quando Ativado, a Cozinha Portátil contará materiais de armazenamentos próximos como as Bancadas de Trabalho.",
+
+	"setting.cookout.durable": "Cozinha Portátil Durável",
+	"setting.cookout.durable.tip": "Quando Ativado, a Cozinha Portátil não desaparecerá durante a noite ou quando você quebrá-la.",
+
+	"setting.cookout.expensive": "Cozinha Portátil Mais Cara",
+	"setting.cookout.expensive.tip": "Quando Ativado, a receita para a Cozinha Portátil será mudada para ser um pouco mais cara, ajudando a manter balanceado o aumento de longevidade.",
+
+	// Quality
+
+	"setting.quality": "Qualidade",
+	"setting.quality.tip": "Por favor note que algumas receitas adicionadas por outras fontes, como SpaceCore, podem não respeitar essas configurações devido a limitações de API.",
+
+	"setting.enable-quality": "Habilitar Limite de Qualidade",
+	"setting.enable-quality.tip": "Quando Ativado, um botão será mostrado permitindo escolher uma qualidade máxima dos itens para usar quando criando.",
+
+	"setting.sort-quality": "Usar Qualidade Baixa Primeiro",
+	"setting.sort-quality.tip": "Quando Ativado, receitas serão feitas usando os itens de menor qualidade primeiro.",
+
+	// Crafting
+	"setting.crafting": "Artesanato",
+	"setting.crafting.tip": "Estas configurações se aplicam especificamente ao menu de artesanato reimplementado.",
+
+	"setting.uniform-grid": "Forçar Tamanhos Uniformes",
+	"setting.uniform-grid.tip": "Quando Ativado, criações grandes serão diminuídas para caberem em uma única linha.",
+
+	"setting.big-craftables-last": "Mostrar Criações Grandes Por Último",
+	"setting.big-craftables-last.tip": "Quando Ativado, criações grandes serão colocadas no fim da lista.",
+
+	// Cooking
+	"setting.cooking": "Culinária",
+	"setting.cooking.tip": "Estas configurações se aplicam especificamente ao menu de culinária reimplementado.",
+
+	"setting.seasoning": "Usar Tempero",
+	"setting.seasoning.tip": "Se tempero deve ou não ser usado para melhorar itens de culinária. Quando em \"Apenas no Inventário\", tempero só será usado do seu inventário e não da geladeira ou outra fonte.",
+
+	"seasoning.disabled": "Nunca",
+	"seasoning.enabled": "Sempre",
+	"seasoning.inventory": "Apenas no Inventário",
+
+	"setting.hide-unknown": "Esconder Receitas Desconhecidas",
+	"setting.hide-unknown.tip": "Quando ativado, receitas que você ainda não aprendeu não serão mostradas no menu.",
+
+	// Tooltips
+	"tooltip.loves": "Ama: {{npcs}}",
+	"tooltip.likes": "Gosta: {{npcs}}",
+
+	"tooltip.crafted": "Criado {{count}} Vezes",
+
+	"tooltip.toggle-recipe": "Adicionar/Remover na Categoria",
+	"tooltip.use-as-icon": "Usar como ícone",
+
+	"tooltip.transfer.to": "Adicionar Itens ao Armazenamento",
+	"tooltip.transfer.to-item": "Adicionar Item em Mãos ao Armazenamento",
+
+	"tooltip.transfer.from": "Re-estocar Items a Partir do Armazenamento",
+	"tooltip.transfer.from-item": "Re-estocar Item em Mãos a Partir do Armazenamento",
+
+	"tooltip.transfer.all": "Transferir Tudo",
+	"tooltip.transfer.but-quantity": "Transferir Tudo Menos {{count}}",
+	"tooltip.transfer.half": "Transferir Metade",
+	"tooltip.transfer.quantity": "Transferir {{count}}",
+
+	"tooltip.edit-filter-locked": "Receitas individuais não podem ser ativadas ou desativados quando usar Regras Dinâmicas para uma categoria. Ajuste suas regras, ou desative as Regras Dinâmicas.",
+
+	// Buttons
+	"tooltip.edit-mode": "Editar Categorias",
+	"tooltip.favorites": "Mostrar Apenas Favoritos",
+	"tooltip.seasoning": "Usar Tempero",
+	"tooltip.uniform": "Usar Grade Uniforme",
+	"tooltip.settings": "Abrir Configurações",
+
+	"tooltip.filter.enabled": "Regras Dinâmicas: Ativado",
+	"tooltip.filter.disabled": "Regras Dinâmicas: Desativado",
+	"tooltip.filter.about": "Isto te permite criar categorias baseadas em regras, ao invés de selecionar cada receita manualmente.",
+
+	"tooltip.search": "Procurar Receitas",
+	"tooltip.search.old-tip": "Dica: Inicie sua busca com \"@B{{prefix}}@b\" para também pesquisar em ingredientes. Inicie sua busca com \"@B{{likes}}@b\" para também pesquisar por personagens que gostam de um item, ou \"@B{{loves}}@b\" para também pesquisar por personagens que amam um item.",
+	"tooltip.search.tip": "Modificadores: Inicie sua busca com os seguintes caracteres para também pesquisar por:\n\n \"@B{{prefix}}@b\": Ingredientes\n \"@B{{likes}}@b\": Personagens que Gostam\n \"@B{{loves}}@b\": Personagens que Amam",
+
+	"search.ingredient-prefix": "!",
+	"search.like-prefix": "#",
+	"search.love-prefix": "^",
+
+	"search.none": "Não há receitas correspondentes.",
+	"search.none.category": "Não há receitas correspondentes nesta categoria.",
+
+	"tooltip.select-icon": "Selecionar Ícone",
+
+	"tooltip.quality.none": "Usar apenas itens de qualidade baixa.",
+	"tooltip.quality.silver": "Usar apenas itens de qualidade baixa e prata.",
+	"tooltip.quality.gold": "Usar apenas itens de qualidade baixa, prata e ouro.",
+	"tooltip.quality.iridium": "Usar itens de qualquer qualidade.",
+
+	"tooltip.quality-unsupported": "Esta receita não suporta configurações de qualidade.",
+
+	"ingredient.error": "Ingrediente Invalido",
+
+	// Bulk Crafting
+	"bulk.crafting": "Criação em Massa",
+	"bulk.craftable": "{{count}} Criáveis",
+	"bulk.craft": "Criar {{count}} de {{name}}",
+
+	// Categories
+	"category.new": "Nova Categoria",
+	"category.favorites": "Favoritos",
+	"category.combat_rings": "Combate e Anéis",
+	"category.consumables": "Consumíveis",
+	"category.decoration": "Decoração",
+	"category.fertilizer_seeds": "Fertilizante e Sementes",
+	"category.fishing": "Pesca",
+	"category.machinery": "Maquinário",
+	"category.misc": "Miscelânia",
+
+	"category.food.farming": "Cultivo e Coleta",
+	"category.food.mining": "Mineração e Magnetismo",
+	"category.food.fishing": "Pesca",
+	"category.food.combat": "Combate",
+	"category.food.other": "Sorte, Velocidade e Outros",
+
+	// Currencies
+	"currency.gold": "Ouro",
+	"currency.festival-points": "Pontos",
+	"currency.club-coins": "Moedas Qi",
+	"currency.qi-gems": "Gemas Qi",
+
+	// Ingredient Categories
+	"item.category.cooking": "Culinária (Qualquer)",
+	"item.category.crafting": "Artesanato (Qualquer)",
+	"item.category.mineral": "Mineral (Qualquer)",
+	"item.category.meat": "Carne (Qualquer)",
+	"item.category.fertilizer": "Fertilizante (Qualquer)",
+	"item.category.junk": "Lixo (Qualquer)",
+	"item.category.seeds": "Sementes (Qualquer)",
+	"item.category.fruit": "Fruta (Qualquer)",
+	"item.category.flower": "Flor (Qualquer)",
+
+	// Dynamic Filters
+	"filter.add-new": "Adicionar Nova Regra",
+
+	"filter.buff": "Bônus: {{type}}",
+	"filter.buff.about": "Esta regra contém items que te dão o bônus {{type}} quando consumido.",
+
+	"filter.uncrafted": "Ainda Não Criado",
+	"filter.uncrafted.about": "Esta regra contém items que você ainda não criou.",
+
+	"filter.search": "Pesquisa",
+	"filter.search.about": "Esta regra contém items de uma pesquisa, usando as mesma regras que o menu de artesanato.",
+
+	"filter.machine": "Máquinas",
+	"filter.machine.about": "Esta regra contém items que agem como máquinas, processando itens ou alguma outra função.",
+
+	"filter.sprinkler": "Aspersores",
+	"filter.sprinkler.about": "Esta regra contém aspersores.",
+
+	"filter.light": "Iluminação",
+	"filter.light.about": "Esta regra contém iluminações posicionáveis.",
+
+	"filter.error": "Regra Inválida",
+	"filter.error.about": "O ID dessa regra é inválido ou não registrado, e pode ser de um mod que foi removido."
+
+}

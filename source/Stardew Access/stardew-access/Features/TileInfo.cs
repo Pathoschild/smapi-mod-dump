@@ -271,7 +271,7 @@ namespace stardew_access.Features
                     (40, 10) => "Fish Tank",
                     (63, 14) => "Boiler Room",
                     (55, 6) => "Vault",
-                    (46, 11) => "Bulletin Board",
+                    (46, 12) => "Bulletin Board",
                     _ => null,
                 };
                 if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
@@ -465,15 +465,19 @@ namespace stardew_access.Features
             else if (Game1.currentLocation is FarmHouse farmHouse)
             {
                 if (farmHouse.upgradeLevel >= 1)
-                    if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y) // Standing spot is where the player will stand
-                        return (CATEGORY.Interactables, "Kitchen");
+                    if (farmHouse.getKitchenStandingSpot().X == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y)
+                        return (CATEGORY.Interactables, "Stove");
+                    else if ((farmHouse.getKitchenStandingSpot().X + 1) == x && (farmHouse.getKitchenStandingSpot().Y - 1) == y)
+                        return (CATEGORY.Others, "Sink");
                     else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
                         return (CATEGORY.Interactables, "Fridge");
             }
             else if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
             {
-                if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
-                    return (CATEGORY.Interactables, "Kitchen");
+                if ((islandFarmHouse.fridgePosition.X - 2) == x && islandFarmHouse.fridgePosition.Y == y)
+                    return (CATEGORY.Interactables, "Stove");
+                else if ((islandFarmHouse.fridgePosition.X - 1) == x && islandFarmHouse.fridgePosition.Y == y)
+                    return (CATEGORY.Others, "Sink");
                 else if (islandFarmHouse.fridgePosition.X == x && islandFarmHouse.fridgePosition.Y == y)
                     return (CATEGORY.Interactables, "Fridge");
             }
@@ -530,7 +534,7 @@ namespace stardew_access.Features
                 }
                 else if (Game1.currentLocation is IslandWest islandWest)
                 {
-                    if (islandWest.shippingBinPosition.X == x && islandWest.shippingBinPosition.Y == y)
+                    if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
                         return (CATEGORY.Interactables, "Shipping Bin");
                 }
                 else if (Game1.currentLocation is IslandNorth islandNorth)

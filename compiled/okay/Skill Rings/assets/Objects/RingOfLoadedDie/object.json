@@ -9,4 +9,10 @@
   "PurchaseFrom": "Krobus",
   "EnableWithMod": "spacechase0.LuckSkill",
   "PurchasePrice": 25000,
+  "NameLocalization": {
+	  "ko": "속임수 주사위 반지"
+  },
+  "DescriptionLocalization": {
+	  "ko": "당신의 행운을 매우 증가시켜줍니다."
+  },
 }

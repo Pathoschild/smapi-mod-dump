@@ -1,10 +1,10 @@
 ﻿{
   "FormatVersion": 1,
-  // TODO PurpleBird, RedBird?
+  "$Comment": "Exactly replicates vanilla Stardew Valley bird spawning logic",
   "Birdies": [
     {
       "ID": "BrownBird",
-      "BaseFrame": 25,
+      "BaseFrame": 125,
 
       "Attributes": 1,
 
@@ -38,6 +38,12 @@
         {
           "When": {
             "Season": "Summer"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "HasFlag: hostPlayer |contains=Farm_Eternal": "true"
           },
           "NilWt": true
         }
@@ -45,7 +51,7 @@
     },
     {
       "ID": "BlueBird",
-      "BaseFrame": 45,
+      "BaseFrame": 135,
 
       "Attributes": 1,
 
@@ -79,6 +85,106 @@
         {
           "When": {
             "Season": "Summer"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "HasFlag: hostPlayer |contains=Farm_Eternal": "true"
+          },
+          "NilWt": true
+        }
+      ]
+    },
+        {
+      "ID": "PurpleBird",
+      "BaseFrame": 125,
+
+      "Attributes": 1,
+
+      "MaxFlockSize": 3,
+
+      "BaseWt": 0.5,
+      "FeederBaseWts": {
+        "Hopper": 0.25,
+        "Tube": 0.25,
+        "Platform": 0.25
+      },
+      "FoodBaseWts": {
+        "Corn": 0.25,
+        "Fruit": 0.25,
+        "MixedSeeds": 0.25,
+        "SunflowerSeeds": 0.25
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1500, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad, Farm"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Summer"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "HasFlag: hostPlayer |contains=Farm_Eternal": "false"
+          },
+          "NilWt": true
+        }
+      ]
+    },
+        {
+      "ID": "RedBird",
+      "BaseFrame": 135,
+
+      "Attributes": 1,
+
+      "MaxFlockSize": 3,
+
+      "BaseWt": 0.5,
+      "FeederBaseWts": {
+        "Hopper": 0.25,
+        "Tube": 0.25,
+        "Platform": 0.25
+      },
+      "FoodBaseWts": {
+        "Corn": 0.25,
+        "Fruit": 0.25,
+        "MixedSeeds": 0.25,
+        "SunflowerSeeds": 0.25
+      },
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1500, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "LocationName": "Desert, Railroad, Farm"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Season": "Summer"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "HasFlag: hostPlayer |contains=Farm_Eternal": "false"
           },
           "NilWt": true
         }

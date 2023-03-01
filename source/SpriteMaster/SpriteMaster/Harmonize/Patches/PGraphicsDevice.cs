@@ -9,11 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using SpriteMaster.Extensions.Reflection;
-using System;
-using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using static SpriteMaster.Harmonize.Harmonize;
 
 namespace SpriteMaster.Harmonize.Patches;
@@ -66,7 +62,7 @@ internal static class PGraphicsDevice {
 		"PlatformDrawUserIndexedPrimitives",
 		Fixation.Prefix,
 		PriorityLevel.Last,
-		generic: Generic.Struct
+		generic: Generic.GfxVertex
 	)]
 	public static unsafe bool OnDrawUserIndexedPrimitives<T>(
 		GraphicsDevice __instance,
@@ -96,7 +92,7 @@ internal static class PGraphicsDevice {
 		"PlatformDrawUserIndexedPrimitives",
 		Fixation.Prefix,
 		PriorityLevel.Last,
-		generic: Generic.Struct
+		generic: Generic.GfxVertex
 	)]
 	public static unsafe bool OnDrawUserIndexedPrimitives<T>(
 		GraphicsDevice __instance,

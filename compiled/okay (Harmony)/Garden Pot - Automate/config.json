@@ -1,0 +1,10 @@
+{
+  "Enabled": true,
+  "HarvestCrops": true,
+  "HarvestFlowers": true,
+  "PlantSeeds": true,
+  "ApplyFertilizers": true,
+  "UseWateringCan": true,
+  "ApplyProfessions": true,
+  "GainExperience": true
+}

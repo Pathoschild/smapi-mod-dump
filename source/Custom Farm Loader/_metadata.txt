@@ -6,9 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit 8fea988fbcf5c0fafb3ff01174a92000e4fc4665
+   commit d3424c7404c91c7916ed64e3d79d67599b82d0e6
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sun Jan 29 20:33:13 2023 +0100
+   Date:   Tue Feb 14 10:24:53 2023 +0100
    
-       fixed map overlay recolors not being properly applied to Keyworded map overlays
+       removed custom leftclickheld due to performance impact. Relevant part is setScrollBar anyway so its fine
    

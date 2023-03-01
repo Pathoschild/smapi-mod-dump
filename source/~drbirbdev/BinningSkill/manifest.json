@@ -11,7 +11,7 @@
 {
   "Name": "BinningSkill",
   "Author": "drbirbdev",
-  "Version": "1.2.1",
+  "Version": "1.2.2",
   "Description": "Adds a skill related to digging through trashcans.",
   "UniqueID": "drbirbdev.BinningSkill",
   "EntryDll": "BinningSkill.dll",

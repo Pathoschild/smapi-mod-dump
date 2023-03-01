@@ -11,7 +11,7 @@
 {
   "Name": "Garden Pot Tweaks",
   "Author": "aedenthorn",
-  "Version": "0.2.0",
+  "Version": "0.2.1",
   "Description": "Garden Pot Tweaks.",
   "UniqueID": "aedenthorn.GardenPotTweaks",
   "EntryDll": "GardenPotTweaks.dll",

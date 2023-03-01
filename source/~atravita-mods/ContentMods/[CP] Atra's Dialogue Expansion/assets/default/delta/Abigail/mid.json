@@ -17,23 +17,36 @@
         "Target": "Characters/Dialogue/Abigail",
         "Entries": {
             "movieTheater": "Oh, a movie theater! @, would you like to go sometime?$h",
-            "7_2": "I hate group projects.$s#$b#Trying to get my teammates to do their work when we're all remote is stupid hard."
+            "7{{YearRemainder}}": "I hate group projects.$s#$b#Trying to get my teammates to do their work when we're all remote is stupid hard.",
+            "10{{YearRemainder}}": "Sam and I are thinking about going down to %place to catch a concert. You in?$h",
+        }
+    },
+    {
+        "LogName": "Abigail mid-heart, Y2",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Abigail",
+        "Entries": {
+            "6_2": "I've got so much homework I need to do.$s",
+            "8_2": "Linear algebra is kicking my ass.#$b#Say, @, you any good at math?",
+            "12_2": "Ugh, I hate doing the dishes.$s#$b#Of all my chores, that's probably the one I hate the most.",
+            "14_2": "Hiya, @, I don't have time to chat today, I've got a midterm to study for.",
+            "16_2": "Ugh. @, just between you and me, I'm really not feeling my major.",
+            "18_2": "%Abigail appears to be exhausted.#$b#Sorry, @, I was up alllllll night playing {{i18n:video.game.{{Random:01, 02, 03, 04, 05, 06, 07, 08, 09}} }}. How have you been?"
         },
+        "When": {
+            "YearModulus": "2"
+        }
     },
     {
         "LogName": "Abigail mid-hearts",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Abigail",
         "Entries": {
-            "6_2": "I've got so much homework I need to do.$s",
-            "8_2": "Linear algebra is kicking my ass.#$b#Say, @, you any good at math?",
-            "10_2": "Sam and I are thinking about going down to %place to catch a concert. You in?$h",
-            "12_2": "Ugh, I hate doing the dishes.$s#$b#Of all my chores, that's probably the one I hate the most.",
-            "14_2": "Hiya, @, I don't have time to chat today, I've got a midterm to study for.",
-            "16_2": "Ugh. @, just between you and me, I'm really not feeling my major.",
+            "6_2": "Between you and I, @, I wish dad would let me change my major.#$b#I'm really not cut out for business administration.",
+            "10_2": "Dad wants me to restock shelves for him.#$b#No, he doesn't pay me...$s"
         },
         "When": {
-            "YearModulus": "2"
+            "YearModulus": "3"
         }
     },
     {
@@ -53,5 +66,5 @@
         "Entries":{
             "Abigail": "#$c .5#Sleet is no fun to be out in.#I wonder if it's warmer in the caves right now?"
         }
-    },
+    }
 ]}

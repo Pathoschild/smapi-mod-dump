@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "CustomCompanions/2.5.0": {
+      "CustomCompanions/3.0.0": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1",
           "Pathoschild.Stardew.ModBuildConfig": "4.0.1"
@@ -27,7 +27,7 @@
     }
   },
   "libraries": {
-    "CustomCompanions/2.5.0": {
+    "CustomCompanions/3.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -15,7 +15,7 @@
         "FromFile": "assets/default/bravo/Clint/mid.json",
         "When": {
             "EnableFor": "Clint",
-            "Query: {{Hearts:Clint}} >= 6": true,
+            "Query: {{Hearts:Clint}} >= 6": true
         }
     },
     {
@@ -24,7 +24,7 @@
         "FromFile": "assets/default/bravo/Emily/mid.json",
         "When": {
             "EnableFor": "Emily",
-            "Query: {{Hearts:Emily}} >= 6": true,
+            "Query: {{Hearts:Emily}} >= 6": true
         }
     },
     {
@@ -33,7 +33,7 @@
         "FromFile": "assets/default/bravo/Haley/mid.json",
         "When": {
             "EnableFor": "Haley",
-            "Query: {{Hearts:Haley}} >= 6": true,
+            "Query: {{Hearts:Haley}} >= 6": true
         }
     },
     {
@@ -42,7 +42,7 @@
         "FromFile": "assets/default/bravo/Haley/high.json",
         "When": {
             "EnableFor": "Haley",
-            "Query: {{Hearts:Haley}} >= 8": true,
+            "Query: {{Hearts:Haley}} >= 8": true
         }
     },
     {
@@ -51,7 +51,7 @@
         "FromFile": "assets/default/bravo/Harvey/mid.json",
         "When": {
             "EnableFor": "Harvey",
-            "Query: {{Hearts:Harvey}} >= 6": true,
+            "Query: {{Hearts:Harvey}} >= 6": true
         }
     },
     {
@@ -60,7 +60,25 @@
         "FromFile": "assets/default/bravo/Jodi/mid.json",
         "When": {
             "EnableFor": "Jodi",
-            "Query: {{Hearts:Jodi}} >= 6": true,
+            "Query: {{Hearts:Jodi}} >= 6": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Kent - mid hearts",
+        "FromFile": "assets/default/bravo/Kent/mid.json",
+        "When": {
+            "EnableFor": "Kent",
+            "Query: {{Hearts:Kent}} >= 6": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Vincent - mid hearts",
+        "FromFile": "assets/default/bravo/Vincent/mid.json",
+        "When": {
+            "EnableFor": "Vincent",
+            "Query: {{Hearts:Kent}} >= 6": true
         }
     }
 ]}

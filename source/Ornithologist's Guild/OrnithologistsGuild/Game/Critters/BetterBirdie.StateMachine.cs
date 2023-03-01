@@ -157,8 +157,13 @@ namespace OrnithologistsGuild.Game.Critters
                             return;
                         }
 
-                        var canWalkLeft = !Environment.isCollidingPosition(getBoundingBox(-2, 0), Game1.viewport, false, 0, false, null, false, false, true);
-                        var canWalkRight = !Environment.isCollidingPosition(getBoundingBox(2, 0), Game1.viewport, false, 0, false, null, false, false, true);
+                        // TODO is this needed?
+                        var canWalkLeft = !(
+                            Environment.isCollidingPosition(getBoundingBox(-1, 0), Game1.viewport, false, 0, false, null, false, false, true) ||
+                            Environment.isCollidingPosition(getBoundingBox(-2, 0), Game1.viewport, false, 0, false, null, false, false, true));
+                        var canWalkRight = !(
+                            Environment.isCollidingPosition(getBoundingBox(1, 0), Game1.viewport, false, 0, false, null, false, false, true) ||
+                            Environment.isCollidingPosition(getBoundingBox(2, 0), Game1.viewport, false, 0, false, null, false, false, true));
 
                         if (!canWalkLeft && !canWalkRight)
                         {

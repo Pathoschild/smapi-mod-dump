@@ -57,6 +57,7 @@ internal sealed class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
         ConsoleCommands.RegisterCommands(helper.ConsoleCommands);
         ShopManager.Initialize(helper.GameContent);
+        AssetManager.Initialize(helper.GameContent);
 
         this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
     }
@@ -82,6 +83,10 @@ internal sealed class ModEntry : Mod
             this.Helper.Events.GameLoop.DayEnding += static (_, _) => ShopManager.OnDayEnd();
             this.Helper.Events.Input.ButtonPressed += (_, e) => ShopManager.OnButtonPressed(e, this.Helper.Input);
 
+            // shop TAS
+            this.Helper.Events.Content.AssetRequested += static (_, e) => AssetManager.Load(e);
+            this.Helper.Events.Player.Warped += static (_, e) => ShopManager.AddBoxToShop(e);
+
             this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
 
             GMCMHelper gmcmHelper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, this.ModManifest);
@@ -92,12 +97,7 @@ internal sealed class ModEntry : Mod
                     reset: static () => Config = new(),
                     save: () => this.Helper.AsyncWriteConfig(this.Monitor, Config))
                 .AddParagraph(I18n.ModDescription)
-                .GenerateDefaultGMCM(static () => Config)
-                .AddTextOption(
-                    name: I18n.ShopLocation,
-                    getValue: static () => Config.ShopLocation.X + ", " + Config.ShopLocation.Y,
-                    setValue: static (str) => Config.ShopLocation = str.TryParseVector2(out Vector2 vec) ? vec : new Vector2(1, 7),
-                    tooltip: I18n.ShopLocation_Description);
+                .GenerateDefaultGMCM(static () => Config);
             }
         }
         else

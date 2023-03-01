@@ -16,6 +16,11 @@ using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
+using xTile.Tiles;
+
+using XLocation = xTile.Dimensions.Location;
+using XRectangle = xTile.Dimensions.Rectangle;
+
 namespace AtraShared.Utils.Extensions;
 
 /// <summary>
@@ -110,5 +115,23 @@ public static class GameLocationExtensions
             return pot.hoeDirt.Value;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Whether or not a tile is covered by a Front or AlwaysFront tile at this location.
+    /// </summary>
+    /// <param name="loc">GameLocation.</param>
+    /// <param name="tileLocation">Tile.</param>
+    /// <param name="viewport">Viewport.</param>
+    /// <returns>True if covered, false otherwise.</returns>
+    public static bool IsTileViewable(this GameLocation? loc, XLocation tileLocation, XRectangle viewport)
+    {
+        if (loc is null)
+        {
+            return false;
+        }
+
+        return (loc.map.GetLayer("Front")?.PickTile(new XLocation(tileLocation.X * 64, tileLocation.Y * 64), viewport.Size)
+            ?? loc.map.GetLayer("AlwaysFront")?.PickTile(new XLocation(tileLocation.X * 64, tileLocation.Y * 64), viewport.Size)) is null;
     }
 }

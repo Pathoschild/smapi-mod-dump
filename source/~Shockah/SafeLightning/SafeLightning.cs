@@ -9,18 +9,20 @@
 *************************************************/
 
 using HarmonyLib;
+using Nanoray.Shrike.Harmony;
+using Nanoray.Shrike;
 using Netcode;
-using Shockah.CommonModCode;
 using Shockah.CommonModCode.GMCM;
-using Shockah.CommonModCode.IL;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
+using System.Reflection;
+using Shockah.Kokoro.GMCM;
+using Shockah.Kokoro;
 
 namespace Shockah.SafeLightning
 {
@@ -84,94 +86,89 @@ namespace Shockah.SafeLightning
 			Instance.DidPreventLast = false;
 		}
 
-		private static IEnumerable<CodeInstruction> Utility_performLightningUpdate_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions, ILGenerator il)
+		private static IEnumerable<CodeInstruction> Utility_performLightningUpdate_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il, MethodBase originalMethod)
 		{
-			var instructions = enumerableInstructions.ToList();
+			try
+			{
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
 
-			// IL to find:
-			// IL_023d: isinst StardewValley.TerrainFeatures.FruitTree
-			// IL_0242: brtrue IL_036e
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+					.Find(
+						ILMatches.Isinst<FruitTree>(),
+						ILMatches.Brtrue.WithAutoAnchor(out Guid branchAnchor)
+					)
+					.AnchorBlock(out Guid findBlock)
+					.MoveToPointerAnchor(branchAnchor)
+					.ExtractBranchTarget(out Label branchTarget)
+					.MoveToBlockAnchor(findBlock)
+					.Insert(
+						SequenceMatcherPastBoundsDirection.After, true,
+
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ShouldContinueWithTile))),
+						new CodeInstruction(OpCodes.Brfalse, branchTarget)
+					)
+
+					.Find(
+						ILMatches.Isinst<FruitTree>(),
+						ILMatches.Brfalse.WithAutoAnchor(out branchAnchor)
+					)
+					.AnchorBlock(out findBlock)
+					.MoveToPointerAnchor(branchAnchor)
+					.ExtractBranchTarget(out branchTarget)
+					.MoveToBlockAnchor(findBlock)
+					.Insert(
+						SequenceMatcherPastBoundsDirection.After, true,
+
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ShouldContinueWithFruitTree))),
+						new CodeInstruction(OpCodes.Brfalse, branchTarget)
+					)
+
+					.ForEach(
+						SequenceMatcherRelativeBounds.WholeSequence,
+						new IElementMatch<CodeInstruction>[]
+						{
+							ILMatches.Ldloc<Farm.LightningStrikeEvent>(originalMethod.GetMethodBody()!.LocalVariables),
+							ILMatches.Call(AccessTools.Method(typeof(AbstractNetEvent1<Farm.LightningStrikeEvent>), nameof(AbstractNetEvent1<Farm.LightningStrikeEvent>.Fire))),
+							ElementMatch<CodeInstruction>.True
+						},
+						matcher =>
+						{
+							matcher = matcher
+								.PointerMatcher(SequenceMatcherRelativeElement.First)
+								.Advance()
+								.Insert(
+									SequenceMatcherPastBoundsDirection.Before, true,
+
+									new CodeInstruction(OpCodes.Dup),
+									new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ModifyStrikeEvent)))
+								)
+								.BlockMatcher(SequenceMatcherRelativeBounds.WholeSequence);
+
+							if (ILMatches.Instruction(OpCodes.Ret).Matches(matcher.PointerMatcher(SequenceMatcherRelativeElement.Last).Element()))
+							{
+								matcher = matcher
+									.PointerMatcher(SequenceMatcherRelativeElement.First)
+									.Advance()
+									.Insert(
+										SequenceMatcherPastBoundsDirection.Before, true,
+										new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_WillStrikeLightningRod)))
+									)
+									.BlockMatcher(SequenceMatcherRelativeBounds.WholeSequence);
+							}
+
+							return matcher;
+						},
+						minExpectedOccurences: 3,
+						maxExpectedOccurences: 3
+					)
+
+					.AllElements();
+			}
+			catch (Exception ex)
 			{
-				i => i.opcode == OpCodes.Isinst && Equals(i.operand, typeof(FruitTree)),
-				i => i.IsBrtrue()
-			});
-			if (worker is null)
-			{
-				Instance.Monitor.Log($"Could not patch methods - Safe Lightning probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
 			}
-
-			worker.Postfix(new[]
-			{
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ShouldContinueWithTile))),
-				new CodeInstruction(OpCodes.Brfalse, worker[1].operand)
-			});
-
-			// IL to find:
-			// IL_0375: isinst StardewValley.TerrainFeatures.FruitTree
-			// IL_037a: brfalse.s IL_03df
-			worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-			{
-				i => i.opcode == OpCodes.Isinst && Equals(i.operand, typeof(FruitTree)),
-				i => i.IsBrfalse()
-			}, startIndex: worker.EndIndex);
-			if (worker is null)
-			{
-				Instance.Monitor.Log($"Could not patch methods - Safe Lightning probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
-				return instructions;
-			}
-
-			worker.Postfix(new[]
-			{
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ShouldContinueWithFruitTree))),
-				new CodeInstruction(OpCodes.Brfalse, worker[1].operand)
-			});
-
-			int supposedToFind = 3;
-			int nextStartIndex = 0;
-			while (true)
-			{
-				// IL to find (example, there are 3 occurences, we're finding all 3):
-				// IL_01ba: ldloc.2 / ldloc.11
-				// IL_01bb: callvirt instance void class Netcode.AbstractNetEvent1`1<class StardewValley.Farm/LightningStrikeEvent>::Fire(!0)
-				worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-				{
-					i => i.IsLdloc(),
-					i => i.opcode == OpCodes.Callvirt && Equals(i.operand, AccessTools.Method(typeof(AbstractNetEvent1<Farm.LightningStrikeEvent>), nameof(AbstractNetEvent1<Farm.LightningStrikeEvent>.Fire)))
-				}, startIndex: nextStartIndex);
-				if (worker is null)
-				{
-					if (supposedToFind < 0)
-					{
-						Instance.Monitor.Log($"Found more matching IL than expected. Safe Lightning may behave incorrectly.", LogLevel.Warn);
-					}
-					else if (supposedToFind > 0)
-					{
-						Instance.Monitor.Log($"Could not patch methods - Safe Lightning probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
-						return instructions;
-					}
-					break;
-				}
-				supposedToFind--;
-
-				worker.Insert(1, new[]
-				{
-					new CodeInstruction(OpCodes.Dup),
-					new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ModifyStrikeEvent)))
-				});
-				if (worker[4].opcode == OpCodes.Ret && nextStartIndex == 0) // originally at 2, +2 instructions we added
-				{
-					worker.Insert(1, new[]
-					{
-						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_WillStrikeLightningRod)))
-					});
-				}
-
-				nextStartIndex = worker.EndIndex;
-			}
-
-			return instructions;
 		}
 
 		public static bool Utility_performLightningUpdate_Transpiler_ShouldContinueWithTile()

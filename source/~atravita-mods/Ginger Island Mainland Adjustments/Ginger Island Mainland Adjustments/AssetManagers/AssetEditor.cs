@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit.Extensions;
+
 using AtraCore.Framework.Caches;
 
 using AtraShared.Caching;
+using AtraShared.Utils.Extensions;
 
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -60,6 +63,9 @@ internal static class AssetEditor
     // This currently isn't used for anything.
     private static IAssetName dataEventsTrailerBig = null!;
 
+    // This stashes our LocalizedContentManager, should we need to restore a schedule
+    private static LocalizedContentManager? contentManager;
+
     /// <summary>
     /// Initializes the AssetEditor.
     /// </summary>
@@ -80,6 +86,12 @@ internal static class AssetEditor
         dataEventsSeedshop = parser.ParseAssetName("Data/Events/SeedShop");
         dataMail = parser.ParseAssetName("Data/mail");
         dataEventsTrailerBig = parser.ParseAssetName("Data/Events/Trailer_Big");
+    }
+
+    internal static void DisposeContentManager()
+    {
+        contentManager?.Dispose();
+        contentManager = null;
     }
 
     /// <summary>
@@ -104,6 +116,10 @@ internal static class AssetEditor
         {
             e.Edit(EditTrailerBig, AssetEditPriority.Late);
         }
+        else if (e.NameWithoutLocale.StartsWith("Characters/schedules/", false, false))
+        {
+            e.Edit(CheckSpringSchedule, AssetEditPriority.Late + 100);
+        }
         else if (e.NameWithoutLocale.BaseName.StartsWith(Dialogue)
             && Game1.getLocationFromName("IslandSouth") is IslandSouth island && island.resortRestored.Value)
         {
@@ -127,6 +143,41 @@ internal static class AssetEditor
             {
                 e.Edit(EditWizardDialogue, AssetEditPriority.Early);
             }
+        }
+    }
+
+    private static void CheckSpringSchedule(IAssetData e)
+    {
+        // SVE removes Sandy's spring schedule for some reason, this can cause issues if she goes to the resort.
+        Globals.ModMonitor.DebugOnlyLog($"Checking schedule {e.NameWithoutLocale}", LogLevel.Info);
+
+        IAssetDataForDictionary<string, string> editor = e.AsDictionary<string, string>();
+        if (!editor.Data.ContainsKey("spring") && !editor.Data.ContainsKey("default"))
+        {
+            string character = e.NameWithoutLocale.BaseName.GetNthChunk('/', 2).ToString();
+            Globals.ModMonitor.Log($"Found NPC {character} without either a spring or default schedule. This may cause issues.", LogLevel.Warn);
+            contentManager ??= new(Game1.content.ServiceProvider, Game1.content.RootDirectory);
+            try
+            {
+                Dictionary<string, string> original = contentManager.LoadBase<Dictionary<string, string>>(e.NameWithoutLocale.BaseName);
+                if (original.TryGetValue("spring", out string? data))
+                {
+                    Globals.ModMonitor.Log($"Original spring schedule found: {data}. Adding back", LogLevel.Info);
+                    editor.Data["spring"] = data;
+                    return;
+                }
+                else if (original.TryGetValue("default", out string? @default))
+                {
+                    Globals.ModMonitor.Log($"Original default schedule found: {@default}. Adding back", LogLevel.Info);
+                    editor.Data["default"] = @default;
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Globals.ModMonitor.Log($"Could not find original schedule for {character}:\n\n{ex}");
+            }
+            Globals.ModMonitor.Log($"Could not restore spring schedule for {character}.", LogLevel.Warn);
         }
     }
 

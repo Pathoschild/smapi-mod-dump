@@ -1,5 +1,5 @@
 // This module contains names for all the special characters
-// supported by Mini Micro.
+// supported by Farmtronics.
 //
 // To use:
 //	1. add this line near the top of your program:
@@ -77,6 +77,7 @@ inverseOff = char(135)
 bell = char(7)
 
 // Other miscellaneous control characters:
+backup = char(8)
 tab = char(9)
 esc = char(27)
 returnKey = char(10)
@@ -87,9 +88,15 @@ printable = [leftArrow, upArrow, rightArrow, downArrow, unprintable,
 	buttonCapLeft, buttonCapRight, 
 	figureStanding, figureWaitingToeDown, figureWaitingToeUp, figureAkimbo,
 	mu, invertedBang, copyright, lineEndSymbol, registered, degrees, 
-	invertedQuestion, multSign, divSign, pi, bullet, tree, 
+	invertedQuestion, multSign, divSign, pi, tau, bullet, tree, ellipsis,
 	emptyBox, checkedBox, boxWithX,
 	spade, club, heart, diamond] + dieFace.values
+
+allPrintable = []
+for code in range(32,126) + [161, 165, 169, 172, 174, 176] + range(191,255)
+	allPrintable.push char(code)
+end for
+allPrintable = allPrintable + printable
 
 if locals == globals then
 	text.clear
@@ -110,7 +117,7 @@ if locals == globals then
 	printAlign "figureWaitingToeUp", figureWaitingToeUp
 	printAlign "figureAkimbo", figureAkimbo
 	printAlign "mu, pi, tau", mu + " " + pi + " " + tau
-	printAlign "bullet, ellipsis", bullet + " " + ellipsis
+	printAlign "bullet, ellipsis, degrees", [bullet, ellipsis, degrees].join
 	printAlign "tree", tree
 	printAlign "emptyBox", emptyBox
 	printAlign "checkedBox", checkedBox

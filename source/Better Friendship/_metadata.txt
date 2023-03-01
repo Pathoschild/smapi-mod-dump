@@ -6,10 +6,12 @@ mods:
    Better Friendship
 
 latest commit:
-   commit 9e8b32b1ac086ef7a20672e0fa6633180e5b8529
-   Merge: 4c0990d aa4e669
-   Author: Daniel Urbanski <urbanski@gmail.com>
-   Date:   Sat Jan 15 17:31:49 2022 -0800
+   commit 373506b42b3169d2d4f89c070549d2e0375af31e
+   Merge: 9e8b32b 2471df9
+   Author: Urbanyeti <urbanski@gmail.com>
+   Date:   Wed Feb 1 22:44:16 2023 -0800
    
-       Merge branch 'main' of github.com:urbanyeti/stardew-better-friendship
+       Merge pull request #21 from profitrollgame/main
+       
+       i18n support + uk translation
    

@@ -6,12 +6,12 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit d3596b0015962772346ee6f673e0c1fbbd4f94a5
-   Merge: 48b0550 7d8ca6f
-   Author: Tilwa Qendov <tqdv@users.noreply.github.com>
-   Date:   Wed Jan 18 12:02:01 2023 +0100
+   commit 160f6a44518abbf909751aa7cc091f8a0d71e892
+   Merge: d3596b0 02365bf
+   Author: TÃ³th ÃdÃ¡m <adam_toth4@epam.com>
+   Date:   Tue Feb 21 09:08:26 2023 +0100
    
-       Merge pull request #283 from tqdv/dga-harvest-price
+       Merge pull request #297 from nanypoco/master
        
-       Integration for DGA crops. Also rework the item tooltip.
+       Correction of bad translation
    

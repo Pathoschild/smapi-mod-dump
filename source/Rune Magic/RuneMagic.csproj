@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<NoWarn>NETSDK1138</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="SpaceCore" HintPath="$(GameModsPath)\SpaceCore\SpaceCore.dll" Private="False" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="JsonAssets" HintPath="$(GameModsPath)\JsonAssets\JsonAssets.dll" Private="False" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="assets\Items\" />
+	</ItemGroup>
+
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="robocopy &quot;$(SolutionDir)[RM]ContentPacks&quot; &quot;D:\Games\Steam\steamapps\common\Stardew Valley\Mods\[RM]ContentPacks&quot; /mir&#xD;&#xA;" />
+	</Target>
+
+</Project>

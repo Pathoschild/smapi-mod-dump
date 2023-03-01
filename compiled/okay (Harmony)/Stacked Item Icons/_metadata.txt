@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15468
+IDs: aedenthorn.StackedItemIcons
+update keys: Nexus:15468, GitHub:aedenthorn/StardewValleyMods

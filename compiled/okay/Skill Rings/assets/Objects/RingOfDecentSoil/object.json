@@ -9,9 +9,11 @@
   "PurchaseFrom": "Pierre",
   "PurchasePrice": 5000,
   "NameLocalization": {
-	  "zh": "肥沃土壤之戒"
+	  "zh": "肥沃土壤之戒",
+	  "ko": "비옥한 흙의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "提高你的土壤质量，稍微曾强农业。"
-  },
+	  "zh": "提高你的土壤质量，稍微曾强农业。",
+	  "ko": "당신의 토양을 기름지게 만들어주므로, 농사를 살짝 향상시켜줍니다."
+  }
 }

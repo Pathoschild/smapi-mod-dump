@@ -11,6 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+
+using Microsoft.Xna.Framework;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -32,6 +35,8 @@ namespace LittleNPCs {
         // We have to track child indices since they change when children are removed.
         private static Dictionary<string, int> childIndexMap_ = new Dictionary<string, int>();
 
+        private int? relativeSeconds_;
+
         // We have to keep track of LittleNPCs vor various reasons.
         public static List<LittleNPC> LittleNPCsList { get; } = new List<LittleNPC>();
 
@@ -46,7 +51,7 @@ namespace LittleNPCs {
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
-            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
+            helper.Events.GameLoop.OneSecondUpdateTicking += OnOneSecondUpdateTicking;
             helper.Events.GameLoop.Saving += OnSaving;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
 
@@ -58,9 +63,9 @@ namespace LittleNPCs {
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e) {
-            // ATTENTION: OnDayStarted is too early for child conversion, not all assets are loaded yet.
-            // We have to use OnTimeChanged() at 06:10 instead. The only thing we can do here is puttting
-            // all children about to convert into bed.
+            // ATTENTION: OnDayStarted() is too early for child conversion, not all assets are loaded yet.
+            // We have to use OnOneSecondUpdateTicking() at 60 ticks after OnDayStarted() instead.
+            // The only thing we can do here is puttting all children about to convert into bed.
             var farmHouse = Utility.getHomeOfFarmer(Game1.player);
             var convertibleChildren = farmHouse.getChildren().Where(c => c.daysOld.Value >= config_.AgeWhenKidsAreModified);
             convertibleChildren.ToList().ForEach(c => c.setTilePosition(farmHouse.GetChildBedSpot(c.GetChildIndex())));
@@ -75,12 +80,14 @@ namespace LittleNPCs {
             // Enabling this patch changes the semantics of Child.GetChildIndex() and must be done after filling the map.
             ChildGetChildIndexPatchEnabled = true;
             this.Monitor.Log("GetChildIndex patch enabled.");
+
+            // Set the counter for OnOneSecondUpdateTicking().
+            relativeSeconds_ = 0;
         }
 
-        private void OnTimeChanged(object sender, TimeChangedEventArgs e) {
-            // Run only once per day at 06:10 .
-            // ATTENTION: This method runs at 06:00 but not on the first day after loading the save!
-            if (e.NewTime != 610) {
+        private void OnOneSecondUpdateTicking(object sender, OneSecondUpdateTickingEventArgs e) {
+            // Run only once per day at 60 ticks after OnDayStarted().
+            if (!relativeSeconds_.HasValue || ++relativeSeconds_ != 1) {
                 return;
             }
 
@@ -109,6 +116,11 @@ namespace LittleNPCs {
 
                     this.Monitor.Log($"Replaced child {child.Name} by LittleNPC {littleNPC.Name}.", LogLevel.Info);
                 }
+            }
+
+            if (config_.DoChildrenVisitVolcanoIsland) {
+                // Add random island schedule.
+                AddRandomIslandSchedule(LittleNPCsList);
             }
         }
 
@@ -168,6 +180,8 @@ namespace LittleNPCs {
 
             ChildGetChildIndexPatchEnabled = false;
             this.Monitor.Log("GetChildIndex patch disabled.");
+
+            relativeSeconds_ = null;
         }
 
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
@@ -178,6 +192,81 @@ namespace LittleNPCs {
 
             ChildGetChildIndexPatchEnabled = false;
             this.Monitor.Log("GetChildIndex patch disabled.");
+
+            relativeSeconds_ = null;
+        }
+
+        /// <summary>
+        /// Add island schedule randomly.
+        /// </summary>
+        /// <param name="littleNPCs"></param>
+        private void AddRandomIslandSchedule(List<LittleNPC> littleNPCs) {
+            // ATTENTION: CustomNPCExclusions patches the very same methods we'd have to patch,
+            // IslandSouth.CanVisitIslandToday() and IslandSouth.SetupIslandSchedules() in a conflicting way.
+            // To avoid that we just copied the important parts from IslandSouth.SetupIslandSchedules().
+            if (Utility.isFestivalDay(Game1.Date.DayOfMonth, Game1.Date.Season)
+             || (Game1.Date.Season == "winter" && Game1.Date.DayOfMonth >= 15 && Game1.Date.DayOfMonth <= 17)) {
+                return;
+            }
+            IslandSouth islandSouth = Game1.getLocationFromName("IslandSouth") as IslandSouth;
+            if (islandSouth is null || !islandSouth.resortRestored.Value || Game1.IsRainingHere(islandSouth) || !islandSouth.resortOpenToday.Value) {
+                return;
+            }
+            
+            var islandActivityAssignments = new List<IslandSouth.IslandActivityAssigments>();
+            var last_activity_assignments = new Dictionary<Character, string>();
+            var random = new Random((int) ((float) Game1.uniqueIDForThisGame * 1.21f) + (int) ((float) Game1.stats.DaysPlayed * 2.5f));
+
+            var npcs = littleNPCs.Cast<NPC>().ToList();
+            islandActivityAssignments.Add(new IslandSouth.IslandActivityAssigments(1200, npcs, random, last_activity_assignments));
+            islandActivityAssignments.Add(new IslandSouth.IslandActivityAssigments(1400, npcs, random, last_activity_assignments));
+            islandActivityAssignments.Add(new IslandSouth.IslandActivityAssigments(1600, npcs, random, last_activity_assignments));
+            last_activity_assignments = null;
+
+            foreach (NPC npc in npcs) {
+                if (random.NextDouble() < 0.4) {
+                    StringBuilder sb = new StringBuilder();
+                    bool hasIslandAttire = IslandSouth.HasIslandAttire(npc);
+
+                    if (hasIslandAttire) {
+                        Point dressingRoomPoint = IslandSouth.GetDressingRoomPoint(npc);
+                        sb.Append($"/a1150 IslandSouth {dressingRoomPoint.X} {dressingRoomPoint.Y} change_beach");
+                        
+                        foreach (IslandSouth.IslandActivityAssigments activity in islandActivityAssignments) {
+                            string text = activity.GetScheduleStringForCharacter(npc);
+                            if (!string.IsNullOrEmpty(text)) {
+                                sb.Append(text);
+                            }
+                        }
+                       
+                        Point dressingRoomPoint2 = IslandSouth.GetDressingRoomPoint(npc);
+                        sb.Append($"/a1730 IslandSouth {dressingRoomPoint2.X} {dressingRoomPoint2.Y} change_normal");
+                        
+                    }
+                    else {
+                        bool endActivity = false;
+                        foreach (IslandSouth.IslandActivityAssigments activity in islandActivityAssignments) {
+                            string text = activity.GetScheduleStringForCharacter(npc);
+                            if (!string.IsNullOrEmpty(text)) {
+                                if (!endActivity) {
+                                    text = $"/a{text.Substring(1)}";
+                                    endActivity = true;
+                                }
+                                sb.Append(text);
+                            }
+                        }
+                    }
+
+                    sb.Append("/1800 bed");
+
+                    sb.Remove(0, 1);
+                    npc.islandScheduleName.Value = "island";
+                    npc.Schedule = npc.parseMasterSchedule(sb.ToString());
+                    Game1.netWorldState.Value.IslandVisitors[npc.Name] = true;
+
+                    this.Monitor.Log($"{npc.Name} will visit Volcano Island today.", StardewModdingAPI.LogLevel.Info);
+                }
+            }
         }
 
         /// <summary>

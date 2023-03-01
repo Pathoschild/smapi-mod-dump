@@ -19,13 +19,18 @@ namespace GiantCropFertilizer;
 internal static class GCFUtils
 {
     /// <summary>
-    /// Fixes the Giant Crop Fertilizer's ID on a specfic map.
+    /// Fixes the Giant Crop Fertilizer's ID on a specific map.
     /// </summary>
     /// <param name="loc">Map to fix.</param>
     /// <param name="storedID">The old id.</param>
     /// <param name="newID">The new id.</param>
-    internal static void FixIDsInLocation(this GameLocation loc, int storedID, int newID)
+    internal static void FixIDsInLocation(this GameLocation? loc, int storedID, int newID)
     {
+        if (loc is null)
+        {
+            return;
+        }
+
         foreach (TerrainFeature terrainfeature in loc.terrainFeatures.Values)
         {
             if (terrainfeature is HoeDirt dirt && dirt.fertilizer.Value == storedID)

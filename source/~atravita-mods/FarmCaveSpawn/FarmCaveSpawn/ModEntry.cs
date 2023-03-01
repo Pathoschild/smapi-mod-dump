@@ -34,6 +34,7 @@ using StardewModdingAPI.Events;
 using StardewValley.Locations;
 
 using AtraUtils = AtraShared.Utils.Utils;
+using XLocation = xTile.Dimensions.Location;
 
 namespace FarmCaveSpawn;
 
@@ -43,7 +44,7 @@ internal sealed class ModEntry : Mod
     /// <summary>
     /// Sublocation-parsing regex.
     /// </summary>
-    private static readonly Regex regex = new(
+    private static readonly Regex Regex = new(
         // ":[(x1;y1);(x2;y2)]"
         pattern: @":\[\((?<x1>[0-9]+);(?<y1>[0-9]+)\);\((?<x2>[0-9]+);(?<y2>[0-9]+)\)\]$",
         options: RegexOptions.CultureInvariant | RegexOptions.Compiled,
@@ -102,7 +103,7 @@ internal sealed class ModEntry : Mod
         helper.Events.GameLoop.OneSecondUpdateTicking += this.BellsAndWhistles;
         helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
 
-        helper.Events.Content.AssetRequested += this.OnAssetRequested;
+        helper.Events.Content.AssetRequested += static (_, e) => AssetManager.Load(e);
 
         // inventory watching
         InventoryWatcher.Initialize(this.ModManifest.UniqueID);
@@ -118,10 +119,10 @@ internal sealed class ModEntry : Mod
             callback: this.ListFruits);
     }
 
+    /// <summary>
+    /// Request the fruit list be reset the next time it's used.
+    /// </summary>
     internal static void RequestFruitListReset() => ShouldResetFruitList = true;
-
-    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
-        => AssetManager.Load(e);
 
     /// <summary>
     /// Remove the list TreeFruit when no longer necessary, delete the Random as well.
@@ -255,7 +256,7 @@ internal sealed class ModEntry : Mod
                 };
                 try
                 {
-                    MatchCollection matches = regex.Matches(location);
+                    MatchCollection matches = Regex.Matches(location);
                     if (matches.Count == 1)
                     {
                         Match match = matches[0];
@@ -352,7 +353,9 @@ END:
 
     [MethodImpl(TKConstants.Hot)]
     private bool CanSpawnFruitHere(GameLocation location, Vector2 tile)
-        => this.Random.NextDouble() < this.config.SpawnChance / 100f && location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile);
+        => this.Random.NextDouble() < this.config.SpawnChance / 100f
+            && location.IsTileViewable(new XLocation((int)tile.X, (int)tile.Y), Game1.viewport)
+            && location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile);
 
     /// <summary>
     /// Console command to list valid fruits for spawning.

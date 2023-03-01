@@ -439,7 +439,7 @@ internal static class GIScheduler
     /// <summary>
     /// Takes a list of activities and renders them as proper schedules.
     /// </summary>
-    /// <param name="random">Sedded random.</param>
+    /// <param name="random">Seeded random.</param>
     /// <param name="visitors">List of visitors.</param>
     /// <param name="activities">List of activities.</param>
     /// <returns>Dictionary of NPC->raw schedule strings.</returns>

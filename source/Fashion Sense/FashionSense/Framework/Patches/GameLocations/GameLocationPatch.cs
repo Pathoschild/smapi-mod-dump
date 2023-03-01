@@ -8,16 +8,12 @@
 **
 *************************************************/
 
+using FashionSense.Framework.UI;
 using HarmonyLib;
-using FashionSense.Framework.Utilities;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Tools;
 using System;
-using System.Collections.Generic;
 using xTile.Dimensions;
-using FashionSense.Framework.UI;
 
 namespace FashionSense.Framework.Patches.GameLocations
 {

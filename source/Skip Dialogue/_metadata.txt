@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/FricativeMelon/SkipDialogue
+   Git: https://github.com/FricativeMelon/SkipDialogue.git
+
+mods:
+   Skip Dialogue
+
+latest commit:
+   commit 98a8733cfb7be3ba20ee938a0903e5a71eae48d8
+   Author: FricativeMelon <43120800+FricativeMelon@users.noreply.github.com>
+   Date:   Mon Feb 6 18:27:04 2023 -0500
+   
+       Add project files.
+   

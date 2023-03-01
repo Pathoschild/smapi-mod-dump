@@ -1,0 +1,168 @@
+{
+    "config.advancedConfig.name":"Advanced",
+    "config.advancedConfig.description": "Allow or prohibit certain spouses from going to the island. (By default, all can go).",
+    "config.ScheduleRandom.name":"Random schedule",
+    "config.ScheduleRandom.description":"If you enable this, your spouse will visit a randomized map during visits.",
+
+    "config.Enabled":"Enabled",
+    "config.UseIslandClothes.name":"Use beach clothes",
+
+    "AlreadyInvited": "{0} has already been invited!",
+    "AlreadyScheduled.Day":"You arranged a visit for tomorrow. This can't be used.",
+    "AlreadyScheduled.Week":"You arranged a visit for the week. This can't be used.",
+    "AlreadyOngoing.Visit": "There's a visit currently active. You can't use this.",
+
+    "config.DebugComm.name":"Debug commands",
+    "config.DebugComm.description":"(Advanced) Allows you to use mod-related commands that check internal info.",
+    "config.Verbose.name":"Verbose logging",
+    "config.Verbose.description":"The mod will log way more info.",
+
+    "config.Vanillas.name":"NPCs",
+    "config.Vanillas.description":"NPCs for which the base mod adds schedules. If you want to use a custom schedule (or don't want them to visit), untick their respective box.",
+    "config.RequiresSVE": "Requires SVE installed.",
+    "config.CustomChance.name": "Chance of event",
+    "config.CustomChance.description": "How likely your spouse is to go to the beach. ONLY numbers! (e.g 15 for 15% of chance). Doesn't accept letters.",
+    "config.CustomRoom.name": "Custom spouse room?",
+    "config.CustomRoom.description": "Adds a customizable spouse room to the island farmhouse.",
+
+    "config.Child2NPC.description": "Configuration related to Child NPC mods (like Child2NPC or LittleNPCs).",
+    
+    "config.ChildVisitIsland.name":"Allow visit?",
+    "config.ChildVisitIsland.description":"Allows children to visit the island. (Requires LittleNPCs/Child2NPC)",
+    
+    "config.UseFurnitureBed.name":"Use furniture bed?",
+    "config.UseFurnitureBed.description":"Lets you use a normal kid bed instead. Can be placed anywhere.",
+    
+    "config.UseModSchedule.name": "Use mod schedule",
+    "config.UseModSchedule.description": "Children will have a basic schedule for visits.",
+    
+    "config.Childbedcolor.name":"Child bed color",
+    "config.Childbedcolor.description": "The color of your child's bed.",
+    "config.Childbedcolor.values.yellow": "yellow",
+    "config.Childbedcolor.values.red": "red",
+    "config.Childbedcolor.values.white": "white",
+    "config.Childbedcolor.values.grey": "grey",
+    "config.Childbedcolor.values.cyan": "cyan",
+    "config.Childbedcolor.values.green": "green",
+
+    "config.Devan_Nosit.name":"Devan NPC",
+    "config.Devan_Nosit.description": "Adds a babysitter to take care of your kids on island days. (Or alternatively, if you just want the NPC in town).",
+    "config.SeasonalDevan.name": "Seasonal clothes",
+    "config.SeasonalDevan.description": "Enable it to use Devan's seasonal clothes.",
+    
+    "Willy.IslandTicket":"Aye, @! You wanna go to the island?",
+    "IslandVisit.Rejected": "You decided to not go.",
+    "IslandVisit.Question": "Go to the island?",
+
+    /* characters data */
+
+    "Krobus.GoOutside": "I'll go outside today...if i'm quick, your people won't notice.$0#$b#Thanks to you, i've become curious of humans' \"Entertainment activities\".$1",
+
+    "Dialogue.Abigail.arrival": "Hi @.$1#$b#...Wow, this weather is hot...$0",
+    "Dialogue.Abigail.LocA": "Do you think we can explore this volcano?$0#$b#Willy said we shouldn't get close..$2#$b#But I still brought my sword.$1",
+    "Dialogue.Abigail.LocB": "Do you ever think of fighting these slimes, @?",
+    
+    "Dialogue.Alex.arrival": "Oh, hey @. I'm finally here.$0#$b#I can't wait to spend the day with you.$1",
+    "Dialogue.Alex.LocA": "%Alex is lifting weights.",
+    "Dialogue.Alex.LocB": "Nothing's better than the beach on a hot day like this.$1",
+    
+    "Dialogue.Elliott.arrival": "Oh, @! That was quite the ride!$8#$b#It's a pleasure to see you again.$1",
+    "Dialogue.Elliott.LocA": "%Elliott is reading.",
+    "Dialogue.Elliott.LocB": "Ah, the view here is quite virtuous$0.#$b#I can feel an idea incoming...$1",
+    
+    "Dialogue.Emily.arrival": "Hi, @!#$b#This island is full of parrots, it's lovely!",
+    "Dialogue.Emily.LocA": "%Emily seems lost in her thoughts.",
+    "Dialogue.Emily.LocB": "@, do you feel it?$0#$b#These crystals are full of powerful energy.$1",
+    
+    "Dialogue.Haley.arrival": "@, can we go see the island today?$0#$b#There's something about this place that makes me feel at ease.",
+    "Dialogue.Haley.LocA": "Hi, honey. I'm so glad you're here.$0#$b#I love how sunny the weather is here.$1",
+    "Dialogue.Haley.LocB": "%Haley is taking pictures.",
+    
+    "Dialogue.Harvey.arrival": "Hi, honey.$l#$b#This is so much nicer than being cooped up in the clinic all day.$1",
+    "Dialogue.Harvey.LocA": "I'll stay inside for a while, @.$0#$b#Make sure you stay hydrated in this weather, alright?$1",
+    "Dialogue.Harvey.LocB": "%Harvey is engrossed in a book.",
+    
+    "Dialogue.Krobus.arrival": "This house...decorating my room brings back memories.$0",
+    "Dialogue.Krobus.LocA": "You said there were caves here...i'll visit them later.$0",
+    "Dialogue.Krobus.LocB": "I've never seen crystals like these!$0#$b#My people loved crystals, you know.$0#$b#...$2#$b#...You're right. Maybe there's others like me out there.#$b#Thank you, @.$h",
+
+    "Dialogue.Leah.arrival": "It's so quiet and peaceful here.$0#$b#It's the perfect weather for some wine.$1",
+    "Dialogue.Leah.LocA": "The view here is inspiring, i just have to draw it.$0",
+    "Dialogue.Leah.LocB": "%Leah is drawing.",
+    
+    "Dialogue.Maru.arrival": "Hey! What's up?$0#$b#I can't wait to see the stars at night.$1",
+    "Dialogue.Maru.LocA": "@! Have you seen this?$9#$b#It seem there hasn't been volcanic activity in a while.",
+    "Dialogue.Maru.LocB": "Professor Snail has been telling us about Ginger Island's traditions.$0#$b#Their oral history is amazing.$1",
+    
+    "Dialogue.Penny.arrival": "Hi @.$h#$b#This island is so beautiful...",
+    "Dialogue.Penny.LocA": "Oh, I'm reading the book about a sailor i told you about.$0#$b#It's very interesting.$1",
+    "Dialogue.Penny.LocB": "Honey, Professor Snail's stories about the island are amazing.$0#$b#I didn't know they had so many traditions!$1",
+    
+    "Dialogue.Sam.arrival": "Hi, @.$0#$b#It's a nice island... isn't it?$1",
+    "Dialogue.Sam.LocA": "Hey... have you ever gone inside?$0#$b#...$0#$b#Really?$8",
+    "Dialogue.Sam.LocB": "I'm feeling pretty good here.",
+    
+    "Dialogue.Sebastian.arrival": "Hey, I'm glad you're here.$h#$b#How have you been coping with this heat?",
+    "Dialogue.Sebastian.LocA": "Man, this looks just like in 'Cave Saga X'...",
+    "Dialogue.Sebastian.LocB": "I'm not one for crowded places.$0#$b#This place is perfect.$h",
+    
+    "Dialogue.Shane.arrival": "Hey, @.$1#$b#The tropical plants here are great.$1",
+    "Dialogue.Shane.LocA": "Charlie seems to like this place.$8",
+    "Dialogue.Shane.LocB": "Hmm...this place isn't so bad.",
+
+    "Dialogue.Claire.arrival": "Hello, dear.$0#$b#I'm ready for this island's hot weather!$1",
+    "Dialogue.Claire.LocA": "%Claire is reading a screenplay.",
+    "Dialogue.Claire.LocB": "The birds here...$0#$b#There's so many of them. I can hear them chirping.$1",
+
+    "Dialogue.Lance.arrival": "Hello, my dear. This house is just as cozy as our farmland's.",
+    "Dialogue.Lance.LocA": "The caldera in this volcano holds inmense arcane power.#$b#Only the most powerful of mages can cast the spells it requires.",
+    "Dialogue.Lance.LocB": "The gentle waves of this beach...I've become accustomed to their sound.",
+
+    "Dialogue.Wizard.arrival": "Hello, dearest! I'm overjoyed to see you.$1#$b#This place is quite wonderful. You've made the house quite cozy.",
+    "Dialogue.Wizard.LocA": "The creatures of this island are aware of our presence. It has alerted them.#$b#Their arcane power is inmense...",
+    "Dialogue.Wizard.LocB": "The forge in this place...the rituals it requires are only mastered by a handful.#$b#Even with such mastery, the results are near impossible to predict.",
+
+    "Dialogue.Olivia.arrival": "Hi, sweetie. How is this weather treating you?$0#$b#We should invite Victor here someday.",
+    "Dialogue.Olivia.LocA": "Sautine City might have some competition...this place is just unique.$1#$b#You remembered i wanted a house in this island...didn't you, dear?$4",
+    "Dialogue.Olivia.LocB": "My, the ocean in this island is so clear. I would love to paint it some day.",
+
+    "Dialogue.Sophia.arrival": "@, can we stay here tonight?#$b#I'm really enjoying this trip.$0#$b#We can? Yay!",
+    "Dialogue.Sophia.LocA": "Oh, @! Look, there's some fishes in the water.$1#$b#They're nibbling at something.$1#$e#...H-hey, be careful if you go to that volcano over there, okay?$0",
+    "Dialogue.Sophia.LocB": "This? It's a manga I picked up the other day.$0#$b#Wanna read it together?$0",
+
+    "Dialogue.Victor.arrival": "Hi, love. This beach is beautiful!#$b#Compared to Pelican Town, this weather is really hot...",
+    "Dialogue.Victor.LocA": "So, this is the volcano dwarves used as an energy source...#$b#maybe we could go in someday.",
+    "Dialogue.Victor.LocB": "Have you seen the bones here, @?#$b#These are quite ancient.",
+    
+    "Invite_Abigail":"Ginger Island? Tomorrow..?#$b#Sure, @.#$b#I'll bring my sword.$1",
+    "Invite_Alex":"Awesome! I wanted to jog around the island with you.$1#$b#Let's go tomorrow.",
+    "Invite_Elliott":"You want to visit the island's beach with me, @?$0#$b#I'm delighted.$1#$b#I'll be there by high noon tomorrow.",
+    "Invite_Emily":"Yes! Let's go tomorrow, @!$1#$b#I'm feeling a positive energy already.",
+    "Invite_Haley":"*gasp*...yes!$1#$b#I'm free tomorrow. I can't wait.",
+    "Invite_Harvey":"Some vacations would be nice. Thank you, @.#$b#I'll finish work and prepare for tomorrow.",
+    "Invite_Krobus":"...A ticket? Where to?#$b#The island?#$b#Thanks, @. I'll have my coat ready by tomorrow.$1",
+    "Invite_Maru":"Oh wow, Ginger Island's volcano? Super!#$b#I'll be there tomorrow, just wait for me.$1",
+    "Invite_Penny":"Oh, an island vacation!$1#$b#That's very kind of you. Let's go tomorrow?",
+    "Invite_Sam":"Aw, yea! You want to go with me?$1#$b#I'll get things ready for tomorrow.",
+    "Invite_Sebastian":"...thanks. You want to go tomorrow?#$b#Sure.$1",
+    "Invite_Shane":"Oh, a ticket?#$b#You want to go to the island?#$b#Alright. Tomorrow noon, how does that sound?$1",
+
+    "Invite_Claire":"Oh, an invite? For me?#$b#Thank you, @. Let's go tomorrow.",
+    "Invite_Lance":"A ticket to Ginger Island?#$b#Perhaps we could visit tomorrow, yes.$1",
+    "Invite_Olivia":"Oh, my! Ginger Island? That's quite thoughtful of you.#$b#I would love to go tomorrow.",
+    "Invite_Sophia":"Oh! What's that, @?#$b#You want me to go with you?#$b#Yay! Let's go tomorrow.$1",
+    "Invite_Victor":"You want to visit the island tomorrow?#$b#That's great! Thank you, @.$1",
+    "Invite_Wizard":"Ginger Island? Hm... very well, my dear.$1#$b#I suppose I haven't seen its creatures in a while.",
+
+    "Invite_generic_0_1": "Yes! I'd love to go.$1#$b#How about tomorrow?", //1 polite, 2 rude, 0 normal?
+    "Invite_generic_0_2": "@, you want me to visit the island with you?#$b#Of course! I'll see you there tomorrow.$1",
+    "Invite_generic_0_3": "You feel like going to the island?#$b#Alright. i'll go tomorrow early.",
+    "Invite_generic_1_1": "Thanks! I'd been missing the island.#$b#I'll prepare everything for tomorrow.",
+    "Invite_generic_1_2": "...What is that?#$b#Yes, @. I'd love to go to the island.$1#$b#I'll prepare things to get there early.",
+    "Invite_generic_1_3": "Yes, of course.#$b#I'd like to go tomorrow, alright?$1",
+    "Invite_generic_2_1": "Okay, well.#$b#We'll go tomorrow, yeah?",
+    "Invite_generic_2_2": "What, you want to visit the island tomorrow?#$b#Okay, i'll go with you.$1",
+    "Invite_generic_2_3": "I have things to do right now, but tomorrow I'm free.#$b#Wait for me there, okay?",
+
+    "Islandvisit_Qi": "I knew you'd end up in Ginger Island someday. However, you must keep working hard to achieve perfection.^As encouragement, take these tickets. They'll prove useful.^   -Your friend, Mr. Qi"
+}

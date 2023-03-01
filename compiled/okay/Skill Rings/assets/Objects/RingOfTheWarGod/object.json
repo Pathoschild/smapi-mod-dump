@@ -6,9 +6,11 @@
   "Price": 50000,
   "Recipe": null,
   "NameLocalization": {
-	  "zh": "战神之戒"
+	  "zh": "战神之戒",
+	  "ko": "전쟁신의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "你被战神庇护着。"
-  },
+	  "zh": "你被战神庇护着。",
+	  "ko": "당신은 전쟁신의 가호를 받습니다."
+  }
 }

@@ -9,9 +9,11 @@
   "PurchaseFrom": "Pierre",
   "PurchasePrice": 25000,
   "NameLocalization": {
-	  "zh": "生机之戒"
+	  "zh": "生机之戒",
+	  "ko": "초록색 엄지 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "让你更好地种植植物，提升你的农业。"
-  },
+	  "zh": "让你更好地种植植物，提升你的农业。",
+	  "ko": "식물과 함께 있을 때 당신의 기분을 더 좋게 만들어주며, 농사 기술을 좀 더 향상시킵니다."
+  }
 }

@@ -9,7 +9,6 @@
 *************************************************/
 
 using AtraShared.ConstantsAndEnums;
-using AtraShared.Integrations;
 using AtraShared.Menuing;
 using AtraShared.Utils.Extensions;
 
@@ -18,9 +17,11 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 
 using StardewModdingAPI.Events;
+
 using StardewValley.TerrainFeatures;
 
 using TapGiantCrops.Framework;
+using TapGiantCrops.HarmonyPatches;
 
 namespace TapGiantCrops;
 
@@ -62,6 +63,11 @@ internal sealed class ModEntry : Mod
     {
         Utility.ForAllLocations((location) =>
         {
+            if (location?.resourceClumps is null)
+            {
+                return;
+            }
+
             foreach (ResourceClump? feature in location.resourceClumps)
             {
                 if (feature is GiantCrop crop)
@@ -95,6 +101,14 @@ internal sealed class ModEntry : Mod
         try
         {
             harmony.PatchAll(typeof(ModEntry).Assembly);
+
+            if (new Version(1, 6) > new Version(Game1.version) &&
+                !this.Helper.ModRegistry.IsLoaded("atravita.GrowableGiantCrops") &&
+                (this.Helper.ModRegistry.Get("spacechase0.MoreGiantCrops") is not IModInfo giant || giant.Manifest.Version.IsOlderThan("1.2.0")))
+            {
+                this.Monitor.Log("Applying patch to restore giant crops to save locations", LogLevel.Debug);
+                FixSaveThing.ApplyPatches(harmony);
+            }
         }
         catch (Exception ex)
         {

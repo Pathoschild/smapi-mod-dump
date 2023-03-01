@@ -10,6 +10,8 @@
     "config.overlay.desc": "Настроить активный оверлей для отображения списка дел",
     "config.overlay.enabled": "Включен",
     "config.overlay.enabled.desc": "Включить оверлей?",
+    "config.overlay.click-to-mark-done": "Щелкните элементы, чтобы отметить их как выполненные",
+    "config.overlay.click-to-mark-done.desc": "Включить щелчок в оверлее, чтобы отметить выполненные элементы",
     "config.overlay.hotkey": "Горячая клавиша",
     "config.overlay.hotkey.desc": "Горячая клавиша для отображения оверлея",
     "config.overlay.hide-at-festivals": "Не показывать на праздниках",

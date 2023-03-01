@@ -11,16 +11,16 @@ for queries and analysis.**
 Event limiter is a mod for Stardew Valley that allows for the configurable limitation of the amount of events seen by the player each day, and in a row. 
 This can help with storyline immersion or in multiplayer where time continues during events. 
 Skipped events will be played the next time they will trigger, provided an event limit has not been reached.
-Hardcoded events (weddings) and PlayerKilled events won't be skipped.
+Hardcoded events (weddings) and PlayerKilled events won't be skipped and won't count towards event limits.
 
-Exclusions to which events are affected can also be configured. If there's a cutscene you never want skipped this can be done by listing its id in the Exceptions config option.
+Exclusions to which events are affected can also be configured. If there's a cutscene you never want skipped this can be done by listing its id in the Exceptions config option. Optionally, event exceptions can be excluded from contributing to event limits like hardcoded events. Simply set ``ExemptEventsCountTowardsLimit`` to ``false`` in the config.
 
 Now with GMCM support! Long exception lists will extend past the textbox in the menu though.
 
 The mod does use Harmony, just FYI.
 
 Installation and use:
-1. Download to mod here
+1. Download to mod [here](https://www.nexusmods.com/stardewvalley/mods/10735)
 2. Unzip the download file and place the EventLimiter folder in your Mods folder
 3. Run the game at least once to generate the config
 4. Edit the config as desired and enjoy!
@@ -71,4 +71,8 @@ To prevent errors, when using the api ensure that the returned api is not null w
 
 1.1.0 Added Generic Mod Config Menu support
 
+1.1.1 Fixed typo in GMCM menu. Fixed issue where player would start on day 0 if intro scene was skipped. Intro scene no longer considered for skipping purposes
+
 1.2.0 Added Event Limiter api and Content Patcher integration
+
+1.2.1 Added ability to treat exempt events like hardcoded events for better mod compatibility

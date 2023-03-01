@@ -13,23 +13,48 @@
         "LogName": "Gus",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Gus",
-        "Entries":
-            {
-            "movieTheater" : "Looks like I have competition now.$s#$b#Something new for people to do on a Friday night.#$e#Would be nice to see a movie sometime...$k",
-            "Sun10": "You're a good friend, @. {{Random: Here's one on the house.[395 303 346]++Here's a meal on the house.[226 239 242 263 204]++Here's a hot beverage on the house.[253]|inputSeparator=++}}$h#$e#Cheers! To another good week!",
+        "Entries": {
+            "movieTheater": "Looks like I have competition now.$s#$b#Something new for people to do on a Friday night.#$e#Would be nice to see a movie sometime...$h",
+            "SeedShop_Entry": "Whatcha got, Pierre?/Anything particularly nice today?/Where's my grocery list..."
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "Entries": {
+            "Town4": "Oh, @! Heard you're having a kid soon. You excited?",
+            "Saloon_Fri": "Oh, @! How have you been? Heard on the grapevine you're having a kiddo soon. Here, take this.[236]$h.#$b#I hear parenting takes a lot out of you..."
         },
+        "When": { "HavingChild": "@{{playerName}}"}
     },
     {
         "LogName": "Gus Snow",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Gus",
-        "When":
-        {
-            "Weather: valley": "Snow",
-        },
-        "Entries":
-        {
-            "Sun10": "My, it's chilly outside, isn't it @? Have a hot beverage on the house.[253]$h.",
+        "When": { "Weather: valley": "Snow" },
+        "Entries": {
+            "Sun10": "My, it's chilly outside, isn't it @? Have a hot beverage on the house.[253]$h."
+        }
+    },
+    {
+        "LogName": "Gus Y2",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "When": { "YearRemainder": "2"},
+        "Entries": {
+            "SeedShop6": "Ah, @, nice seeing you here! Just picking up some fresh produce. Nothing but the best for my family spaghetti recipe!$h",
+            "summerSeedShop6": "@, have you cooked anything interesting recently? Our little valley has so many nice ingredients just out for the taking, if you're willing to forage.$h",
+            "fallSeedShop6": "Let's see, where did I put my grocery list?",
+            "1_2": "I've always dreamed of owning a restaurant.$h"
+        }
+    },
+    {
+        "LogName": "Gus Y3",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Gus",
+        "When": { "YearRemainder": "3"},
+        "Entries": {
+            "fall_15_2": "Hey, @, any fall dishes you're looking forward to cooking?#$e#Made some excellent stuffing the other day. Here, have some![239]"
         }
     }
 ]}

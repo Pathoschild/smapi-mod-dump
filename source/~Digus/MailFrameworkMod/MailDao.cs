@@ -121,7 +121,7 @@ namespace MailFrameworkMod
         }
 
         /// <summary>
-        /// Returns if repository has changed since inicialization or last time it was cleared.
+        /// Returns if repository has changed since initialization or last time it was cleared.
         /// Check if letter were added or removed.
         /// </summary>
         /// <returns>boolean value indicating if the repository has changed.</returns>

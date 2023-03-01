@@ -15,7 +15,17 @@
         "Target": "Characters/Dialogue/rainy",
         "When": {"Season": "winter"},
         "Entries":{
-            "George": "{{Random: It's awful cold, isn't it? What a rotten day. ++ Why do I even bother getting out of bed when the day looks like this? ++ My hip aches.|inputSeparator=++}}"
+            "George": "{{Random: It's awful cold, isn't it? What a rotten day.++Why do I even bother getting out of bed when the day looks like this?++My hip aches. Weather ain't making this any better.|inputSeparator=++}}"
+        }
+    },
+    {
+        "LogName": "George mid-hearts - post sports",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/George",
+        "When": {"HasFlag": "saloonSportsRoom"},
+        "Entries": {
+            "Sun6": "@, you gonna watch the game? The {{i18n:sports.team.{{Random:01, 02, 03, 04, 05, 06, 07, 08|key=sports_team}} }} are playing the {{i18n:sports.team.{{Random:02, 03, 04, 05, 06, 07, 08, 01|key=sports_team}} }}!",
+            "Mon6": "Hey, @, did you catch the game last night? Wasn't it {{Random:great, incredible, absurd, so boring}}?" 
         }
     },
     {
@@ -31,9 +41,28 @@
         "LogName": "George mid-hearts - Y2",
         "Action": "EditData",
         "Target":"Characters/Dialogue/George",
+        "When": {"YearRemainder": 2},
         "Entries": {
             "1_2": "Evelyn and I've been living in this here valley for a very long time, @. My family's been living here for as long as we can remember.$h#$b#Ain't no place like our dear Pelican Town.",
-            "3_2": "Pelican Town used to be so much bigger, back when the mines were still active.#$b#Now? I don't know how the younguns' are gonna find jobs around these parts."
+            "3_2": "Pelican Town used to be so much bigger, back when the mines were still active.#$b#Now? I don't know how the younguns' are gonna find jobs around these parts.",
+            "5_2": "Sometimes I worry about the kids. Some of them don't seem to be able to do anything away from their computers.",
+            "7_2": "Between you and I, @, the pension ain't nearly enough some days.$s",
+            "9_2": "Let's see...I need to take these once in the mornin', once at noon and once at night? With food each time?",
+            "11_2": "Guess even bein' a non-union shop didn't let Joja squeeze enough profit out of them mines to hang around.$s",
+            "13_2": "Them mines are quite dangerous now. Didn't used to be so overrun with monsters when I worked there.$s",
+            "17_2": "A lot of people have moved out of the valley over the years. Not Evelyn and I, though."
         }
-    }, // Y3, Y4 strike and strike break?
+    },
+    // Y3, Y4 strike and strike break?
+    {
+        "LogName": "George mid-hearts - Y3",
+        "Action": "EditData",
+        "Target":"Characters/Dialogue/George",
+        "When": {"YearRemainder": 3},
+        "Entries": {
+            "1_2": "@, this year's cost-of-living adjustment for my pension isn't keeping up with inflation at all.#$b#Guess Evelyn and I will have to scrimp and save more than usual...",
+            "3_2": "Did I take my mornin' meds? I can't remember...$s",
+            "17_2": "Feel like every time I go to see Dr. Harvey I've got more medications I've gotta take...$s",
+        }
+    }
 ]}

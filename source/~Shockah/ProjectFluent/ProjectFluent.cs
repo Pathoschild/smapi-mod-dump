@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using Shockah.CommonModCode.GMCM;
+using Shockah.Kokoro.GMCM;
 using Shockah.ProjectFluent.ContentPatcher;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -180,7 +181,7 @@ namespace Shockah.ProjectFluent
 
 		#region APIs
 
-		public IGameLocale DefaultLocale
+		public static IGameLocale DefaultLocale
 			=> new BuiltInGameLocale(LocalizedContentManager.LanguageCode.en);
 
 		public IGameLocale CurrentLocale

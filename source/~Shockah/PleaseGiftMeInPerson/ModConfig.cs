@@ -9,7 +9,7 @@
 *************************************************/
 
 using Newtonsoft.Json;
-using Shockah.CommonModCode;
+using Shockah.Kokoro;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;

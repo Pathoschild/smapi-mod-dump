@@ -1,3 +1,4 @@
 {
-  "HoldToCarryNpc": "LeftShift"
+  "HoldToCarryNpc": "LeftShift",
+  "AnimalsScaredOfBeingCarried": true
 }

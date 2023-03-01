@@ -6,9 +6,12 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit d3999d558ae67f8be90ab955d21b93a1e548bc71
-   Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Thu Dec 29 13:53:33 2022 -0500
+   commit 5e5a0f1c397ba1234b9f4beff04043fac66420ad
+   Merge: d3999d5 b62586d
+   Author: Greg <7873930+GStefanowich@users.noreply.github.com>
+   Date:   Mon Feb 13 11:30:02 2023 -0500
    
-       Bumped version number to 1.2.0
+       Merge pull request #2 from Shimaeba/patch-1
+       
+       Create fr.json
    

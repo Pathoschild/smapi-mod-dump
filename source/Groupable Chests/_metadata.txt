@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/FricativeMelon/GroupableChests
+   Git: https://github.com/FricativeMelon/GroupableChests.git
+
+mods:
+   Groupable Chests
+
+latest commit:
+   commit 4dcdb98c9bc2edae6a65d0622c017f10ae81cb46
+   Author: FricativeMelon <43120800+FricativeMelon@users.noreply.github.com>
+   Date:   Mon Feb 6 18:31:12 2023 -0500
+   
+       Add project files.
+   

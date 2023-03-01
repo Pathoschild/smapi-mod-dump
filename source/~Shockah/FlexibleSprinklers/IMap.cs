@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Shockah.CommonModCode;
+using Shockah.Kokoro;
 using System;
 using System.Collections.Generic;
 

@@ -64,51 +64,48 @@ namespace BetterRanching
 			// add some config options
 			configMenu.AddBoolOption(
 				ModManifest,
-				name: () => "Prevent Failed Harvesting",
-				tooltip: () =>
-					"Prevents the failed milking/shearing animation and sound effect if no valid animal is selected. Note: Disable this if using the 'Tap-to-move & Auto-Attack' control scheme on Android.",
+				name: () => this.Helper.Translation.Get("config.option.failed_harvest.name"),
+				tooltip: () => this.Helper.Translation.Get("config.option.failed_harvest.description"),
 				getValue: () => Config.PreventFailedHarvesting,
 				setValue: value => Config.PreventFailedHarvesting = value
 			);
 
 			configMenu.AddBoolOption(
 				ModManifest,
-				name: () => "Show Animal Produce",
-				tooltip: () => "Displays produce above animal if it is ready to be harvested.",
+				name: () => this.Helper.Translation.Get("config.option.animal_produce.name"),
+				tooltip: () => this.Helper.Translation.Get("config.option.animal_produce.description"),
 				getValue: () => Config.DisplayProduce,
 				setValue: value => Config.DisplayProduce = value
 			);
 
 			configMenu.AddBoolOption(
 				ModManifest,
-				name: () => "Show Farm Animal Hearts",
-				tooltip: () => "Display hearts above farm animals (cows, ducks, etc.) that have not yet been petted.",
+				name: () => this.Helper.Translation.Get("config.option.hearts_animal.name"),
+				tooltip: () => this.Helper.Translation.Get("config.option.hearts_animal.description"),
 				getValue: () => Config.DisplayFarmAnimalHearts,
 				setValue: value => Config.DisplayFarmAnimalHearts = value
 			);
 
 			configMenu.AddBoolOption(
 				ModManifest,
-				name: () => "Show Pet Hearts",
-				tooltip: () => "Display hearts above pets (dogs,cats,etc.) that have not yet been petted.",
+				name: () => this.Helper.Translation.Get("config.option.hearts_pet.name"),
+				tooltip: () => this.Helper.Translation.Get("config.option.hearts_pet.description"),
 				getValue: () => Config.DisplayPetHearts,
 				setValue: value => Config.DisplayPetHearts = value
 			);
 
 			configMenu.AddBoolOption(
 				ModManifest,
-				name: () => "[!] Enable Hearts",
-				tooltip: () =>
-					"Allows hearts to be displayed above animals. Warning: Turning this off will hide ALL floating hearts enabled by this mod (animals, pets, etc.)",
+				name: () => this.Helper.Translation.Get("config.option.hearts_enabled.name"),
+				tooltip: () => this.Helper.Translation.Get("config.option.hearts_enabled.description"),
 				getValue: () => Config.DisplayHearts,
 				setValue: value => Config.DisplayHearts = value
 			);
 
 			configMenu.AddBoolOption(
 				ModManifest,
-				name: () => "Hide Hearts w/ Max Friendship",
-				tooltip: () =>
-					"Hides the hearts when friendship with an animal or pet is at maximum level. Warning: Be careful with this because friendship will drop at the end of the day if you don't pet your friend!",
+				name: () => this.Helper.Translation.Get("config.option.hearts_max_friendship.name"),
+				tooltip: () => this.Helper.Translation.Get("config.option.hearts_max_friendship.description"),
 				getValue: () => Config.HideHeartsWhenFriendshipIsMax,
 				setValue: value => Config.HideHeartsWhenFriendshipIsMax = value
 			);
@@ -176,14 +173,14 @@ namespace BetterRanching
 			switch (toolName)
 			{
 				case GameConstants.Tools.MilkPail:
-					ranchAction = "Milk";
-					ranchActionPresent = "Milking";
-					ranchProduct = "milk";
+					ranchAction = Helper.Translation.Get("action.unable.milk");
+					ranchActionPresent = Helper.Translation.Get("action.out_of_range.milk");
+					ranchProduct = Helper.Translation.Get("product.milk");
 					break;
 				case GameConstants.Tools.Shears:
-					ranchAction = "Shear";
-					ranchActionPresent = "Shearing";
-					ranchProduct = "wool";
+					ranchAction = Helper.Translation.Get("action.unable.shear");
+					ranchActionPresent = Helper.Translation.Get("action.out_of_range.shear");
+					ranchProduct = Helper.Translation.Get("product.wool");
 					break;
 			}
 
@@ -194,7 +191,7 @@ namespace BetterRanching
 
 			if (animal == null)
 			{
-				Helper.Input.OverwriteState(button, $"Out of {ranchActionPresent} Range");
+				Helper.Input.OverwriteState(button, Helper.Translation.Get("notification.out_of_range", new { ranchActionPresent = ranchActionPresent }));
 				return;
 			}
 
@@ -203,18 +200,18 @@ namespace BetterRanching
 				if (who.couldInventoryAcceptThisObject(animal.currentProduce.Value, 1))
 					AnimalBeingRanched = animal;
 				else
-					Helper.Input.OverwriteState(button, "Inventory Full");
+					Helper.Input.OverwriteState(button, Helper.Translation.Get("notification.inventory_full"));
 			}
 			else if (animal.isBaby() && animal.toolUsedForHarvest.Value.Equals(toolName))
 			{
 				Helper.Input.OverwriteState(button);
 				DelayedAction.showDialogueAfterDelay(
-					$"Baby {animal.Name} will produce {ranchProduct} in {animal.ageWhenMature.Value - animal.age.Value} days.",
+					Helper.Translation.Get("notification.util_action", new { Name = animal.Name, Product = ranchProduct, Days = animal.ageWhenMature.Value - animal.age.Value }),
 					0);
 			}
 			else
 			{
-				Helper.Input.OverwriteState(button, $"Nothing to {ranchAction}");
+				Helper.Input.OverwriteState(button, Helper.Translation.Get("notification.unable", new { Action = ranchAction }));
 			}
 		}
 

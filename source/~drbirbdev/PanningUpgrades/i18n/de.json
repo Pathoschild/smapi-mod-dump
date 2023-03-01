@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "tool.orepan.name": "Pfanne",
+
+  "config.BuyablePan.name": "Kaufbare Pfanne",
+  "config.BuyablePan.tooltip": "Erlauben Sie, dass die Pfanne im Willys-Laden gekauft werden kann.",
+  "config.BuyCost.name": "Pfannen-Kosten",
+  "config.BuyCost.tooltip": "Kosten für den Kauf einer neuen Pfanne von Willy.",
+  "config.UpgradeCostMultiplier.name": "Verbesserungs-Kostenmultiplikator",
+  "config.UpgradeCostMultiplier.tooltip": "Kostenmultiplikator für die Verbesserung der Pfanne. 1,0 kostet das gleiche wie andere Werkzeuge. 0,5 kostet so viel wie ein Mülleimer.",
+  "config.UpgradeCostBars.name": "Benötigte Barren",
+  "config.UpgradeCostBars.tooltip": "Anzahl der Barren (Kupfer, Eisen usw.), die zur Verbesserung der Pfanne erforderlich sind.",
+  "config.UpgradeDays.name": "Benötigte Tage",
+  "config.UpgradeDays.tooltip": "Anzahl der Tage, die für die Verbesserung der Pfanne erforderlich sind.",
+
+  "config.ExtraDrawBaseChance.name": "Chance auf Extra-Drop",
+  "config.ExtraDrawBaseChance.tooltip": "Chance auf eine zusätzlichen Drop.  Jede Verbesserungsstufe bietet die Möglichkeit für einen zusätzlichen Extra-Drop durch Schwenken.",
+  "config.DailyLuckMultiplier.name": "Täglicher Glücks-Multiplikator",
+  "config.DailyLuckMultiplier.tooltip": "Das tägliche Glück wird mit dieser Zahl multipliziert und dann zur Chance auf einen zusätzlichen Drop addiert.",
+  "config.LuckLevelMultiplier.name": "Glückslevel-Multiplikator",
+  "config.LuckLevelMultiplier.tooltip": "Die Glücksstufe wird mit dieser Zahl multipliziert und dann zur Chance auf einen zusätzlichen Drop addiert.",
+
+  "config.AnimationSection.text": "Animations Einstellungen.",
+  "config.AnimationSectionText.text": "Passen Sie diese nicht an, es sei denn, die Schwenkanimation sieht schlecht aus.",
+  "config.AnimationFrameDuration": "Animation Frame Dauer",
+  "config.AnimationYOffset": "Animation Y Offset"
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15655
+IDs: agent56.GeneticsAPI
+update keys: Nexus:15655

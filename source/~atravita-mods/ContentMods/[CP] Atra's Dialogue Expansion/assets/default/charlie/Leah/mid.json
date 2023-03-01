@@ -15,9 +15,13 @@
         "Target": "Characters/Dialogue/Leah",
         "Entries": {
             "1{{YearRemainder}}": "Start of a new month, @! What are you planning on getting done?",
-            "3{{YearRemainder}}": "@, I got a new commission! I'm so excited.$h",
-            "5{{YearRemainder}}": "When I need inspiration, I take walks through the forest.#$b#I love living out here! $h",
+            "3{{YearRemainder}}": "@, I got a new commission! I'm so excited.$h#$b#They're looking for a nice large landscape scene.",
+            "5{{YearRemainder}}": "When I need inspiration, I take walks through the forest.#$b#I love living out here, so much inspiration so close to us.$h",
             "7{{YearRemainder}}": "I've got a little kitchen in my studio but honestly it's not much.#$b#There's so much fresh food to be found in the forest though! I love fresh salads.",
+            "9": "I moved here just before you did. Needed to get away from the big city...",
+            "9_2": "My, @, we've been living in this town for quite a while, right?", // the earliest this can show up is year 6
+
+            "Beach_72_18": "$1 atravitaDialogueLeahBeach#Oh, hi, @, how are you doing today? I found this mussel, isn't the iridescence beautiful?[719]#$e#Nature is so inspiring, isn't it? I love coming out here to paint."
         },
         "When": {"YearModulus": 1}
     },
@@ -27,15 +31,7 @@
         "Target": "Characters/Dialogue/Leah",
         "Entries": {
             "movieTheater": "Heard that a movie theater's coming to town!$h#$e$To be honest, movies are certainly something I've missed.",
+            "{{TaxDay}}": "Nothing sucks more than having to figure out what I did last year so I can file my taxes.$s"
         }
-    },
-    {
-        "LogName": "Leah -- Married Dialogue",
-        "Action": "EditData",
-        "Target": "Characters/Dialogue/MarriageDialogueLeah",
-        "Entries": {
-            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}": "It's our anniversary, dear! Don't you think we should do something fun today?", 
-        },
-        "When": {"HasMod" :"TheMightyAmondee.CustomTokens"}
-    },
+    }
 ]}

@@ -11,8 +11,9 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Nanoray.Shrike.Harmony;
+using Nanoray.Shrike;
 using Shockah.CommonModCode.GMCM;
-using Shockah.CommonModCode.IL;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -23,25 +24,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Shockah.Kokoro;
+using Shockah.Kokoro.GMCM;
 
 namespace Shockah.DontStopMeNow
 {
-	public class DontStopMeNow : Mod
+	public class DontStopMeNow : BaseMod<ModConfig>
 	{
 		private static DontStopMeNow Instance { get; set; } = null!;
-
-		internal ModConfig Config { get; private set; } = null!;
 
 		private readonly IList<Farmer> NotRunningPlayers = new List<Farmer>();
 		private readonly IList<Farmer> PlayersToStopMovingInTwoTicks = new List<Farmer>();
 		private readonly IList<Farmer> PlayersToStopMovingNextTick = new List<Farmer>();
 		private readonly PerScreen<SButton?> LastToolButton = new(() => null);
 
-		public override void Entry(IModHelper helper)
+		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
+		{
+			// do nothing, for now
+		}
+
+		public override void OnEntry(IModHelper helper)
 		{
 			Instance = this;
-
-			Config = helper.ReadConfig<ModConfig>();
 
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -115,7 +119,11 @@ namespace Shockah.DontStopMeNow
 			api.Register(
 				ModManifest,
 				reset: () => Config = new ModConfig(),
-				save: () => Helper.WriteConfig(Config)
+				save: () =>
+				{
+					WriteConfig();
+					LogConfig();
+				}
 			);
 
 			helper.AddSectionTitle("config.movement.section");
@@ -230,7 +238,7 @@ namespace Shockah.DontStopMeNow
 			}
 		}
 
-		private void FixControllerFacingDirection()
+		private static void FixControllerFacingDirection()
 		{
 			var thumbStickDirection = Game1.oldPadState.ThumbSticks.Left;
 			if (Math.Abs(thumbStickDirection.X) < 0.2)
@@ -251,7 +259,7 @@ namespace Shockah.DontStopMeNow
 				FixFacingDirection(thumbStickDirection);
 		}
 
-		private void FixMouseFacingDirection()
+		private static void FixMouseFacingDirection()
 		{
 			var player = Game1.player;
 			var cursor = new Vector2(Game1.viewport.X + Game1.getOldMouseX(), Game1.viewport.Y + Game1.getOldMouseY());
@@ -259,7 +267,7 @@ namespace Shockah.DontStopMeNow
 			FixFacingDirection(direction);
 		}
 
-		private void FixFacingDirection(Vector2 direction)
+		private static void FixFacingDirection(Vector2 direction)
 		{
 			var player = Game1.player;
 			if (Math.Abs(direction.X) > Math.Abs(direction.Y))
@@ -268,7 +276,7 @@ namespace Shockah.DontStopMeNow
 				player.FacingDirection = direction.Y >= 0 ? Game1.down : Game1.up;
 		}
 
-		private bool? IsUsingPoweredUpOnHoldTool(Farmer player)
+		private static bool? IsUsingPoweredUpOnHoldTool(Farmer player)
 		{
 			if (!player.UsingTool)
 				return false;
@@ -277,7 +285,7 @@ namespace Shockah.DontStopMeNow
 			return player.toolHold > 0 || player.toolPower > 0;
 		}
 
-		private bool ShouldAllowMovement(Farmer player, bool isSecondTick = false)
+		private static bool ShouldAllowMovement(Farmer player, bool isSecondTick = false)
 		{
 			if (player.CurrentTool is MeleeWeapon weapon)
 			{
@@ -331,33 +339,31 @@ namespace Shockah.DontStopMeNow
 		private static bool Game1_UpdateControlInput_Transpiler_UsingToolReplacement()
 		{
 			var player = Game1.player;
-			return player.UsingTool && !Instance.ShouldAllowMovement(player);
+			return player.UsingTool && !ShouldAllowMovement(player);
 		}
 
-		private static IEnumerable<CodeInstruction> Game1_UpdateControlInput_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private static IEnumerable<CodeInstruction> Game1_UpdateControlInput_Transpiler(IEnumerable<CodeInstruction> instructions)
 		{
-			var instructions = enumerableInstructions.ToList();
-
-			// IL to find:
-			// IL_15d5: call class StardewValley.Farmer StardewValley.Game1::get_player()
-			// IL_15da: callvirt instance bool StardewValley.Farmer::get_UsingTool()
-			// IL_15df: brtrue IL_17a0
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+			try
 			{
-				i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(Game1), "get_player"),
-				i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == AccessTools.Method(typeof(Farmer), "get_UsingTool"),
-				i => i.opcode == OpCodes.Brtrue
-			});
-			if (worker is null)
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.Find(
+						ILMatches.Call("get_player"),
+						ILMatches.Call("get_UsingTool"),
+						ILMatches.Brtrue
+					)
+					.PointerMatcher(SequenceMatcherRelativeElement.First)
+					.Encompass(SequenceMatcherPastBoundsDirection.After, 1)
+					.Replace(
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(DontStopMeNow), nameof(Game1_UpdateControlInput_Transpiler_UsingToolReplacement)))
+					)
+					.AllElements();
+			}
+			catch (Exception ex)
 			{
-				Instance.Monitor.Log($"Could not patch methods - Don't Stop Me Now probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
 			}
-
-			worker[0] = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(DontStopMeNow), nameof(Game1_UpdateControlInput_Transpiler_UsingToolReplacement)));
-			worker[1] = new CodeInstruction(OpCodes.Nop);
-
-			return instructions;
 		}
 
 		private static void Farmer_setRunning_Postfix(Farmer __instance)
@@ -371,7 +377,7 @@ namespace Shockah.DontStopMeNow
 
 		private static void Farmer_BeginUsingTool_Postfix(Farmer __instance)
 		{
-			if (!__instance.CanMove && Instance.ShouldAllowMovement(__instance))
+			if (!__instance.CanMove && ShouldAllowMovement(__instance))
 			{
 				__instance.CanMove = true;
 				Instance.PlayersToStopMovingInTwoTicks.Add(__instance);
@@ -385,7 +391,7 @@ namespace Shockah.DontStopMeNow
 
 		private static void MeleeWeapon_leftClick_Postfix(Farmer who)
 		{
-			if (!who.CanMove && Instance.ShouldAllowMovement(who))
+			if (!who.CanMove && ShouldAllowMovement(who))
 			{
 				who.CanMove = true;
 				Instance.PlayersToStopMovingInTwoTicks.Add(who);
@@ -394,7 +400,7 @@ namespace Shockah.DontStopMeNow
 
 		private static void MeleeWeapon_beginSpecialMove_Postfix(Farmer who)
 		{
-			if (!who.CanMove && Instance.ShouldAllowMovement(who))
+			if (!who.CanMove && ShouldAllowMovement(who))
 			{
 				who.CanMove = true;
 				Instance.PlayersToStopMovingInTwoTicks.Add(who);

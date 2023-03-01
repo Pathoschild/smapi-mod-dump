@@ -52,7 +52,8 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
         int type,
         bool isOnSpecial)
     {
-        if (type == MeleeWeapon.dagger || (isOnSpecial && type != MeleeWeapon.stabbingSword) || !f.IsLocalPlayer)
+        if (type == MeleeWeapon.dagger || (isOnSpecial && type != MeleeWeapon.stabbingSword) ||
+            !f.IsLocalPlayer)
         {
             return true; // run original logic
         }

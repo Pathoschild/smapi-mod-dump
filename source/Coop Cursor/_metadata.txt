@@ -6,9 +6,9 @@ mods:
    Coop Cursor
 
 latest commit:
-   commit 01183831eef12ec03f2a551f24d2f028e6824f3d
+   commit 66742fa0f8bde5f1853ab026175c9b0228a90ca0
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Mon Jun 27 21:42:48 2022 +0200
+   Date:   Sun Feb 12 14:49:13 2023 +0100
    
-       added config to enable/disable
+       updated manifest
    

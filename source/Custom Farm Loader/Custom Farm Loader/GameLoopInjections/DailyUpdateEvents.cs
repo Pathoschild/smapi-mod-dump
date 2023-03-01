@@ -278,6 +278,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
             int width = 1;
             int height = 1;
             List<SpringObjectID> largeResources = new List<SpringObjectID> { SpringObjectID.Large_Stump, SpringObjectID.Large_Log, SpringObjectID.Boulder, SpringObjectID.Boulder_Alternative, SpringObjectID.Blue_Boulder, SpringObjectID.Blue_Boulder_Alternative, SpringObjectID.Dense_Boulder, SpringObjectID.Meteorite };
+            Dictionary<SpringObjectID, int> smallResources = new Dictionary<SpringObjectID, int>() {
+                { SpringObjectID.Geode, 3 }, { SpringObjectID.Frozen_Geode, 5 }, { SpringObjectID.Magma_Geode, 7 },
+                { SpringObjectID.Copper_Ore, 3 }, { SpringObjectID.Iron_Ore, 4 }, { SpringObjectID.Gold_Ore, 8 }, { SpringObjectID.Iridium_Ore, 16 }, };
 
             if (largeResources.Exists(x => x == dailyUpdate.ItemID)) {
                 width = 2;
@@ -291,6 +294,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             if (largeResources.Exists(x => x == dailyUpdate.ItemID))
                 dailyUpdate.Location.resourceClumps.Add(new ResourceClump((int)randomizeResourceIDs(dailyUpdate.ItemID), width, height, dailyUpdate.Position));
+
+            else if (smallResources.ContainsKey(dailyUpdate.ItemID))
+                dailyUpdate.Location.Objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, (int)dailyUpdate.ItemID, 10) { MinutesUntilReady = smallResources[dailyUpdate.ItemID] });
 
             else if (dailyUpdate.ItemID == SpringObjectID.Weed)
                 dailyUpdate.Location.objects.Add(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, getRandomWeedForSeason(dailyUpdate.Location.GetSeasonForLocation()), 1));

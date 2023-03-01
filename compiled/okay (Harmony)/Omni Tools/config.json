@@ -1,8 +1,11 @@
 {
   "EnableMod": true,
+  "SmartSwitch": true,
+  "FromWeapon": true,
   "ModButton": "LeftAlt",
   "CycleButton": "X",
   "RemoveButton": "Z",
+  "ToggleButton": "None",
   "ShowNumber": true,
   "NumberColor": {
     "B": 203,
@@ -21,5 +24,6 @@
   "SwitchForWatering": true,
   "SwitchForTilling": true,
   "SwitchForAnimals": true,
-  "SwitchForMonsters": true
+  "SwitchForMonsters": true,
+  "MaxMonsterDistance": 128.0
 }

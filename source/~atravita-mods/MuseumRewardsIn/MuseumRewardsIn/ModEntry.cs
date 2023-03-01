@@ -22,15 +22,12 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 
 using StardewModdingAPI.Events;
+
 using StardewValley.Locations;
 
 using StardewValley.Menus;
 
-using xTile.Dimensions;
-using xTile.ObjectModel;
-
 using AtraUtils = AtraShared.Utils.Utils;
-using XTile = xTile.Tiles.Tile;
 
 namespace MuseumRewardsIn;
 
@@ -218,18 +215,13 @@ internal sealed class ModEntry : Mod
         if (e.NameWithoutLocale.IsEquivalentTo(libraryHouse))
         {
             e.Edit(
-                static (asset) =>
-                {
-                    IAssetDataForMap? map = asset.AsMap();
-                    XTile? tile = map.Data.GetLayer(BUILDING).PickTile(new Location((int)config.BoxLocation.X * 64, (int)config.BoxLocation.Y * 64), Game1.viewport.Size);
-                    if (tile is null)
-                    {
-                        modMonitor.Log($"Tile could not be edited for shop, please let atra know!", LogLevel.Warn);
-                        return;
-                    }
-                    tile.Properties["Action"] = new PropertyValue(SHOPNAME);
-                },
-                AssetEditPriority.Default + 10);
+                apply: (asset) => asset.AsMap().AddTileProperty(
+                    monitor: this.Monitor,
+                    layer: BUILDING,
+                    key: "Action",
+                    property: SHOPNAME,
+                    placementTile: config.BoxLocation),
+                priority: AssetEditPriority.Default + 10);
         }
         else
         {
@@ -271,7 +263,7 @@ internal sealed class ModEntry : Mod
                 totalNumberOfLoops = 9999,
                 position = (new Vector2(tile.X, tile.Y - 1) * Game1.tileSize) + (new Vector2(3f, 0f) * Game1.pixelZoom),
                 scale = Game1.pixelZoom,
-                layerDepth = Math.Clamp((((tile.Y - 0.5f) * Game1.tileSize) / 10000f) + 0.15f, 0f, 1.0f), // a little offset so it doesn't show up on the floor.
+                layerDepth = Math.Clamp((((tile.Y - 0.5f) * Game1.tileSize) / 10000f) + 0.01f, 0f, 1.0f), // a little offset so it doesn't show up on the floor.
                 id = 777f,
             });
         }

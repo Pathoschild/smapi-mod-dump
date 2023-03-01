@@ -177,6 +177,14 @@ internal static class ThrowHelper {
 	#region ArgumentOutOfRangeException
 
 	[DoesNotReturn, MethodImpl(MethodImplOptions.NoInlining)]
+	internal static T ThrowArgumentOutOfRangeExceptionFromValue<T>(object? actualValue, [CallerArgumentExpression(nameof(actualValue))] string paramName = "") =>
+		throw new ArgumentOutOfRangeException(paramName, actualValue, "Argument is out of range");
+
+	[DoesNotReturn, MethodImpl(MethodImplOptions.NoInlining)]
+	internal static void ThrowArgumentOutOfRangeExceptionFromValue(object? actualValue, [CallerArgumentExpression(nameof(actualValue))] string paramName = "") =>
+		throw new ArgumentOutOfRangeException(paramName, actualValue, "Argument is out of range");
+
+	[DoesNotReturn, MethodImpl(MethodImplOptions.NoInlining)]
 	internal static T ThrowArgumentOutOfRangeException<T>(string paramName) =>
 		throw new ArgumentOutOfRangeException(paramName);
 

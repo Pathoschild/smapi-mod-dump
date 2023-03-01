@@ -10,13 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MailFrameworkMod;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using WaterRetainingFieldMod.Integrations;
 
 namespace WaterRetainingFieldMod
 {
@@ -28,18 +29,22 @@ namespace WaterRetainingFieldMod
         {
             Helper = helper;
             I18N = helper.Translation;
-            Letter letter = new Letter("WaterRetainingFieldLetter"
-                , I18N.Get("WaterRetainingFieldResolution.Letter")
-                ,(l)=>
-                {
-                    return !Game1.player.mailReceived.Contains(l.Id) &&
-                           (Game1.player.farmingLevel.Value >= 4 || SDate.Now() >= new SDate(15, "spring", 1));
-                },(l)=> Game1.player.mailReceived.Add(l.Id)
-            )
+            IMailFrameworkModApi mailFrameworkModApi = helper.ModRegistry.GetApi<IMailFrameworkModApi>("DIGUS.MailFrameworkMod");
+            if (mailFrameworkModApi != null)
             {
-                Title = I18N.Get("WaterRetainingFieldResolution.Letter.Title")
-            };
-            MailDao.SaveLetter(letter);
+                ApiLetter letter = new ApiLetter
+                {
+                    Id = "WaterRetainingFieldLetter",
+                    Text = "WaterRetainingFieldResolution.Letter",
+                    Title = "WaterRetainingFieldResolution.Letter.Title",
+                    I18N = helper.Translation
+                };
+                mailFrameworkModApi.RegisterLetter(
+                    letter
+                    ,(l) => !Game1.player.mailReceived.Contains(l.Id) && (Game1.player.farmingLevel.Value >= 4 || SDate.Now() >= new SDate(15, "spring", 1))
+                    , (l) => Game1.player.mailReceived.Add(l.Id)
+                );
+            }
         }
     }
 }

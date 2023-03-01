@@ -9,9 +9,11 @@
   "PurchaseFrom": "Marlon",
   "PurchasePrice": 25000,
   "NameLocalization": {
-	  "zh": "纯粹力量之戒"
+	  "zh": "纯粹力量之戒",
+	  "ko": "순수한 힘의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "让你更强大，增加战斗力。"
-  },
+	  "zh": "让你更强大，增加战斗力。",
+	  "ko": "당신의 힘이 증가되어, 전투 효율이 더 향상됩니다."
+  }
 }

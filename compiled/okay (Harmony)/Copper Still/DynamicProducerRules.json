@@ -1,0 +1,32 @@
+﻿[{
+        "ProducerName": "Still",
+        "InputIdentifier": "Juice",
+        "InputStack": 4,
+        "FuelIdentifier": "Coal",
+        "MinutesUntilReady": 1600,
+        "OutputIdentifier": "Vodka",
+        "OutputName": "{inputName} Vodka",
+        "KeepInputParentIndex": true,
+        "KeepInputQuality": true,
+        "InputPriceBased": true,
+        //"OutputPriceMultiplier": 12,
+        "AdditionalOutputs": [{
+                "OutputIdentifier": "Moonshine",
+                "RequiredInputParentIdentifier": ["Corn"],
+                "KeepInputQuality": true,
+                "InputPriceBased": true,
+                //"OutputPriceMultiplier": 15,
+                "OutputProbability": 1,
+            },
+            {
+                "OutputIdentifier": "White Rum",
+                "RequiredInputParentIdentifier": ["Beet"],
+                "KeepInputQuality": true,
+                "InputPriceBased": true,
+                //"OutputPriceMultiplier": 8,
+                "OutputProbability": 1,
+            }
+        ],
+        "Sounds": ["Ship"],
+    }
+]

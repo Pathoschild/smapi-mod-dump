@@ -18,6 +18,7 @@ using SpriteMaster.Extensions.Reflection;
 using SpriteMaster.Types.Exceptions;
 using SpriteMaster.Types.Reflection;
 using StardewValley;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -198,11 +199,15 @@ internal static partial class Pathfinding {
 
 		GameLocation? backwoodsLocation = Game1.locations.FirstOrDefaultF(location => location.Name == "Backwoods");
 
+		GenderedTuple<ConcurrentDictionary<RouteKey, List<string>>>? concurrentRoutes =
+			SMConfig.Extras.Pathfinding.EnableCrossThreadOptimizations ?
+				new(new(), new(), new()) :
+				null;
+
 		// Iterate over every location in parallel, and collect all paths to every other location.
 		Parallel.ForEach(Game1.locations, location => {
 			if (location is not Farm && !ReferenceEquals(location, backwoodsLocation)) {
-				var route = new List<string>();
-				ExploreWarpPointsImpl(location, route, in routeList, locations);
+				ExploreWarpPointsImpl(location, in routeList, locations, concurrentRoutes);
 			}
 		});
 
@@ -255,12 +260,17 @@ internal static partial class Pathfinding {
 
 		// RoutesFromLocationToLocation is always a new list when first entering this method
 
-		var locations = new Dictionary<string, GameLocation>(Game1.locations.WhereF(location => location is not null).SelectF(location => new KeyValuePair<string, GameLocation>(location.Name, location)));
+		var locations = new Dictionary<string, GameLocation>(
+			Game1.locations
+				.WhereF(location => location is not null)
+				.SelectF(location => new KeyValuePair<string, GameLocation>(location.Name, location))
+		);
 
 		var routeList = new RouteList(locations.Count);
 
 		// Single location pathing search.
-		__result = ExploreWarpPointsImpl(l, route, in routeList, locations);
+		__result = ExploreWarpPointsImpl(l, in routeList, locations);
+		route.Clear();
 
 		FasterRouteMap.Clear(l.Name);
 		var allRoutes = FasterRouteMap.Add(in routeList);

@@ -11,7 +11,7 @@
 {
   "Name": "DynamicMapTiles",
   "Author": "aedenthorn",
-  "Version": "0.9.5",
+  "Version": "0.9.6",
   "Description": "DynamicMapTiles.",
   "UniqueID": "aedenthorn.DynamicMapTiles",
   "EntryDll": "DynamicMapTiles.dll",

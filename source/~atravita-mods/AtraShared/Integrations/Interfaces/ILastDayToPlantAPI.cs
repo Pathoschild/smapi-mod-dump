@@ -44,7 +44,6 @@ public interface ILastDayToPlantAPI
     /// <returns>(profession, fertilizer) => days.</returns>
     public KeyValuePair<KeyValuePair<Profession, int>, int>[]? GetConditionsPerCrop(int crop, StardewSeasons season);
 
-
     /// <summary>
     /// Get the crops we have tracked.
     /// </summary>
@@ -54,10 +53,22 @@ public interface ILastDayToPlantAPI
 
 /// <summary>
 /// A enum corresponding to the profession to check.
+/// Note that since LastDayToPlantRedux actually does need a farmer instance to check, this may cause issues if there's no farmer with that profession.
 /// </summary>
 public enum Profession
 {
+    /// <summary>
+    /// No relevant profession.
+    /// </summary>
     None,
+
+    /// <summary>
+    /// Use agriculturalist.
+    /// </summary>
     Agriculturalist,
+
+    /// <summary>
+    /// Use prestiged agricultralist.
+    /// </summary>
     Prestiged,
 }

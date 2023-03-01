@@ -14,6 +14,7 @@ using AtraShared.Utils.Extensions;
 
 using HarmonyLib;
 
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 
 namespace StopRugRemoval.HarmonyPatches.Niceties;
@@ -22,6 +23,7 @@ namespace StopRugRemoval.HarmonyPatches.Niceties;
 /// Fixes the secret note spawning code.
 /// </summary>
 [HarmonyPatch(typeof(GameLocation))]
+[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
 internal static class FixSecretNotes
 {
     // we're doing this as an internal optimization and intentionally not saving it in ModData
@@ -33,9 +35,14 @@ internal static class FixSecretNotes
 
     private static IAssetName noteLoc = null!;
 
+    /// <summary>
+    /// Initializes the IAssetNames.
+    /// </summary>
+    /// <param name="parser">Game content helper.</param>
     internal static void Initialize(IGameContentHelper parser)
         => noteLoc = parser.ParseAssetName("Data/SecretNotes");
 
+    /// <inheritdoc cref="IContentEvents.AssetsInvalidated"/>
     internal static void Reset(IReadOnlySet<IAssetName>? assets = null)
     {
         if (assets is null || assets.Contains(noteLoc))

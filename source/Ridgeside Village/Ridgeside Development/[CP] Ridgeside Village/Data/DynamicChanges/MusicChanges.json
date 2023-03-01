@@ -16,7 +16,7 @@
 	*********/
 		/*********
 		** Ridgeside Village
-		*********/		
+		*********/
 
 		{
 			"LogName": "Ridgeside Village Music Off",
@@ -26,13 +26,13 @@
 				"Music": null
 				},
 			"When": {
-				"EnableRidgesideMusic": false
+				"Rafseazz.RidgesideVillage/EnableRidgesideMusic": false
 				}
 		},
 
 		/*********
 		** Aguar's Lab
-		*********/	
+		*********/
 		{
 			"LogName": "Ridgeside Village Music Off",
 			"Action": "EditMap",
@@ -41,13 +41,13 @@
 				"Music": null
 				},
 			"When": {
-				"EnableRidgesideMusic": false
+				"Rafseazz.RidgesideVillage/EnableRidgesideMusic": false
 				}
 		},
 
 		/*********
 		** Aguar's Basement
-		*********/	
+		*********/
 		{
 			"LogName": "Ridgeside Village Music Off",
 			"Action": "EditMap",
@@ -56,13 +56,13 @@
 				"Music": null
 				},
 			"When": {
-				"EnableRidgesideMusic": false
+				"Rafseazz.RidgesideVillage/EnableRidgesideMusic": false
 				}
-		},		
+		},
 
 	/*********
 	** Music Changes
-	*********/	
+	*********/
 
 ]
 }

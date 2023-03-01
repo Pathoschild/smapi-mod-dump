@@ -86,7 +86,7 @@ internal static class Config {
 	[Attributes.GMCMHidden] internal static string ConfigVersion = "";
 
 	[Attributes.Ignore]
-	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 15, 0, 0, BuildType.Beta, 11);
+	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 15, 0, 0, BuildType.Beta, 13);
 
 	[Attributes.Ignore] internal static bool ForcedDisable = false;
 
@@ -808,6 +808,9 @@ internal static class Config {
 			[Attributes.Comment("Should NPC Warp Points code be optimized?")]
 			internal static bool OptimizeWarpPoints = true;
 
+			[Attributes.Comment("Should cross-thread optimizations be enabled?")]
+			internal static bool EnableCrossThreadOptimizations = true;
+
 			[Attributes.Comment("Should gender-locked locations be honored?")]
 			internal static bool HonorGenderLocking = true;
 		}
@@ -835,8 +838,19 @@ internal static class Config {
 			[Attributes.Comment("Should Texture2D.GetData be optimized?")]
 			internal static bool OptimizeTexture2DGetData = true;
 
-			[Attributes.Comment("Should DrawUserIndexedPrimitives be optimized?")]
-			internal static bool OptimizeDrawUserIndexedPrimitives = false;
+			internal static class DrawUserIndexedPrimitives {
+				[Attributes.Comment("Should the call be optimized?")]
+				internal static bool Optimize = true;
+
+				[Attributes.Comment("Should advanced optimizations be enabled?")]
+				internal static bool Advanced = true;
+
+				[Attributes.Comment("Should Vertex Buffer Objects be used?")]
+				internal const bool UseVertexBufferObjects = false;
+
+				[Attributes.Comment("Should Index Buffer Objects be used?")]
+				internal static bool UseIndexBufferObjects = true;
+			}
 
 			[Attributes.Comment("Should glCopyTexture by used?")]
 			internal static bool UseCopyTexture = true;

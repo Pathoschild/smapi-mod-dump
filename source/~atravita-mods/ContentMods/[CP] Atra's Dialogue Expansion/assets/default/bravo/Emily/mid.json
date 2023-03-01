@@ -9,4 +9,28 @@
 *************************************************/
 
 {"Changes":[
-    ]}
+    {
+        "LogName": "Emily mid-hearts, Y1",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Emily",
+        "Entries": {
+            "6{{YearRemainder}}": "@! Look at this new yarn my mother sent me! Isn't it so soft?$h",
+            "17{{YearRemainder}}": "Have I considered moving out of town? Of course I have, but Pelican Town is my home.",
+            "18{{YearRemainder}}": "Started working on a new dress! I'm thinking cute little cap sleeves and a full circle skirt...$h",
+            "19{{YearRemainder}}": "Sometimes when the Saloon isn't busy Gus lets me rest my feet and knit for a while.#$b#Did you know that Joja cashiers aren't allowed to sit down? I can't imagine how much their feet must hurt."
+        },
+        "When": {"YearModulus": "1"}
+    },
+    {
+        "LogName": "Emily mid-hearts, Y1 high luck",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Emily",
+        "Entries": {
+            "6{{YearRemainder}}": "@, I sense good things happening to you today.",
+        },
+        "When": {
+            "YearModulus": "1",
+            "Query: {{DailyLuck}} > 0.05": true
+        }
+    }
+]}

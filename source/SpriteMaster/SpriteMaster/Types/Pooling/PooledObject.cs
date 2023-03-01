@@ -29,6 +29,11 @@ internal interface ISealedPooledObject<T, TPooledObject> : IPooledObject<T> wher
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	void IDisposable.Dispose() {
+		DisposeImpl();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private void DisposeImpl() {
 		if (!HasValue) {
 			return;
 		}
@@ -46,6 +51,9 @@ internal interface ISealedPooledObject<T, TPooledObject> : IPooledObject<T> wher
 
 		OnDispose(value);
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	protected internal void DisposeInner() => DisposeImpl();
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public string? ToString() => Value.ToString();
@@ -91,6 +99,9 @@ internal readonly struct PooledObject<T, TPool> : ISealedPooledObject<T, PooledO
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override readonly string? ToString() => Value.ToString();
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public readonly void Dispose() => ((ISealedPooledObject<T, PooledObject<T, TPool>>)this).DisposeInner();
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -136,6 +147,9 @@ internal readonly struct LazyPooledObject<T, TPool> : ISealedPooledObject<T, Poo
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override readonly string? ToString() => Value.ToString();
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public readonly void Dispose() => ((ISealedPooledObject<T, PooledObject<T, TPool>>)this).DisposeInner();
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -167,6 +181,9 @@ internal readonly struct DefaultPooledObject<T> : ISealedPooledObject<T, Default
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override readonly string? ToString() => Value.ToString();
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public readonly void Dispose() => ((ISealedPooledObject<T, DefaultPooledObject<T>>)this).DisposeInner();
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -211,4 +228,7 @@ internal readonly struct LazyDefaultPooledObject<T> : ISealedPooledObject<T, Def
 
 	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override readonly string? ToString() => Value.ToString();
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public readonly void Dispose() => ((ISealedPooledObject<T, DefaultPooledObject<T>>)this).DisposeInner();
 }

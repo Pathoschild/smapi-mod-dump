@@ -11,10 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TehPers.FishingOverhaul", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TehPers.FishingOverhaul.Api", "TehPers.FishingOverhaul.Api\TehPers.FishingOverhaul.Api.csproj", "{712D0A4F-8E49-4921-A2C3-DE4A756D18B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TehPers.PowerGrid", "TehPers.PowerGrid\TehPers.PowerGrid.csproj", "{AA5E86C4-7B07-4313-939B-F75CE9C43910}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TehPers.PowerGrid.Generators", "TehPers.PowerGrid.Generators\TehPers.PowerGrid.Generators.csproj", "{2A4076E1-6CDA-47A5-83CF-7315071B92A1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TehPers.SchemaGen", "TehPers.SchemaGen\TehPers.SchemaGen.csproj", "{789EFF2F-4DFF-496E-8051-40BCD9BBF77E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TehPers.FishSword", "TehPers.FishSword\TehPers.FishSword.csproj", "{81C0B98A-67AF-4EA9-AD3B-BEECCED4E8E4}"
@@ -45,14 +41,6 @@ Global
 		{712D0A4F-8E49-4921-A2C3-DE4A756D18B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{712D0A4F-8E49-4921-A2C3-DE4A756D18B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{712D0A4F-8E49-4921-A2C3-DE4A756D18B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA5E86C4-7B07-4313-939B-F75CE9C43910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA5E86C4-7B07-4313-939B-F75CE9C43910}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA5E86C4-7B07-4313-939B-F75CE9C43910}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA5E86C4-7B07-4313-939B-F75CE9C43910}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A4076E1-6CDA-47A5-83CF-7315071B92A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A4076E1-6CDA-47A5-83CF-7315071B92A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A4076E1-6CDA-47A5-83CF-7315071B92A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A4076E1-6CDA-47A5-83CF-7315071B92A1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{789EFF2F-4DFF-496E-8051-40BCD9BBF77E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{789EFF2F-4DFF-496E-8051-40BCD9BBF77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{789EFF2F-4DFF-496E-8051-40BCD9BBF77E}.Release|Any CPU.ActiveCfg = Release|Any CPU

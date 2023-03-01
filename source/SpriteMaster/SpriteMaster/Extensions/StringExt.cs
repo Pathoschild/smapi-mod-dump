@@ -83,6 +83,109 @@ internal static class StringExt {
 		return strings;
 	}
 
+	#region Case Sensitivity Comparison Conversion
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static StringComparison AsCaseInsensitive(this StringComparison comparisonType) => comparisonType switch {
+		StringComparison.CurrentCulture => StringComparison.CurrentCultureIgnoreCase,
+		StringComparison.InvariantCulture => StringComparison.InvariantCultureIgnoreCase,
+		StringComparison.Ordinal => StringComparison.OrdinalIgnoreCase,
+		_ => comparisonType
+	};
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static StringComparison AsCaseSensitive(this StringComparison comparisonType) => comparisonType switch {
+		StringComparison.CurrentCultureIgnoreCase => StringComparison.CurrentCulture,
+		StringComparison.InvariantCultureIgnoreCase => StringComparison.InvariantCulture,
+		StringComparison.OrdinalIgnoreCase => StringComparison.Ordinal,
+		_ => comparisonType
+	};
+
+	#endregion
+
+	#region RemoveFromEnd
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static string RemoveFromEndInternal(this string value, string remove, StringComparison comparisonType, out bool removed) {
+		int expectedIndex = value.Length - remove.Length;
+		if (remove.Length != 0 && expectedIndex >= 0 && value.LastIndexOf(remove, comparisonType) == expectedIndex) {
+			removed = true;
+			return value[..expectedIndex];
+		}
+
+		removed = false;
+		return value;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string RemoveFromEnd(this string value, string remove, StringComparison comparisonType = StringComparison.Ordinal) =>
+		RemoveFromEndInternal(value, remove, comparisonType, out _);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string RemoveFromEndInsensitive(this string value, string remove, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase) =>
+		RemoveFromEndInternal(value, remove, comparisonType.AsCaseInsensitive(), out _);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromEnd(this string value, string remove, StringComparison comparisonType, out string result) {
+		result = RemoveFromEndInternal(value, remove, comparisonType, out var removed);
+		return removed;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromEndInsensitive(string value, string remove, StringComparison comparisonType, out string result) =>
+		TryRemoveFromEnd(value, remove, comparisonType.AsCaseInsensitive(), out result);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromEnd(this string value, string remove, out string result) =>
+		TryRemoveFromEnd(value, remove, StringComparison.Ordinal, out result);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromEndInsensitive(this string value, string remove, out string result) =>
+		TryRemoveFromEndInsensitive(value, remove, StringComparison.OrdinalIgnoreCase, out result);
+
+	#endregion
+
+	#region RemoveFromStart
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static string RemoveFromStartInternal(this string value, string remove, StringComparison comparisonType, out bool removed) {
+		if (remove.Length != 0 && remove.Length <= value.Length && value.StartsWith(remove, comparisonType)) {
+			removed = true;
+			return value[remove.Length..];
+		}
+
+		removed = false;
+		return value;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string RemoveFromStart(this string value, string remove, StringComparison comparisonType = StringComparison.Ordinal) =>
+		RemoveFromStartInternal(value, remove, comparisonType, out _);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string RemoveFromStartInsensitive(this string value, string remove, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase) =>
+		RemoveFromStartInternal(value, remove, comparisonType.AsCaseInsensitive(), out _);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromStart(this string value, string remove, StringComparison comparisonType, out string result) {
+		result = RemoveFromStartInternal(value, remove, comparisonType, out var removed);
+		return removed;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromStartInsensitive(string value, string remove, StringComparison comparisonType, out string result) =>
+		TryRemoveFromStart(value, remove, comparisonType.AsCaseInsensitive(), out result);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromStart(this string value, string remove, out string result) =>
+		TryRemoveFromStart(value, remove, StringComparison.Ordinal, out result);
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryRemoveFromStartInsensitive(this string value, string remove, out string result) =>
+		TryRemoveFromStartInsensitive(value, remove, StringComparison.OrdinalIgnoreCase, out result);
+
+	#endregion
+
 	#endregion General
 
 	#region Equality

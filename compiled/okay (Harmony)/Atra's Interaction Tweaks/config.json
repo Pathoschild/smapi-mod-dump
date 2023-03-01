@@ -8,6 +8,8 @@
   "JukeboxesEverywhere": true,
   "GoldenCoconutsOffIsland": false,
   "PhoneSpeedUpFactor": 1.0,
+  "CraneGameDifficulty": 3,
+  "BetIcons": true,
   "FurniturePlacementKey": "LeftShift + Z",
   "HideCrabPots": true,
   "SaveBombedForage": false,
@@ -99,5 +101,7 @@
     "Caldera": "Dynamic",
     "LeoTreeHouse": "Dynamic",
     "QiNutRoom": "Dynamic"
-  }
+  },
+  "EditElliottEvent": true,
+  "RemoveDuplicateNPCs": false
 }

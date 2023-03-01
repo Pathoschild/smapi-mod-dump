@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit.Extensions;
+
 using AtraShared.Caching;
 
 using Microsoft.Xna.Framework.Graphics;
@@ -26,8 +28,16 @@ internal static class AssetEditor
     private static IAssetName betIconsPath = null!;
     private static Lazy<Texture2D> betIconLazy = new(static () => Game1.content.Load<Texture2D>(betIconsPath.BaseName));
 
-    private static PerScreen<TickCache<bool>> hasSeenSaloonEvent = new(
+    private static readonly PerScreen<TickCache<bool>> hasSeenSaloonEvent = new(
         () => new (static () => Game1.player?.eventsSeen?.Contains(40) == true));
+
+    #region birdiequest
+
+    private static readonly Dictionary<IAssetName, int> BirdieQuest = new();
+
+    private static LocalizedContentManager? contentManager;
+
+    #endregion
 
     /// <summary>
     /// Gets the bet button textures.
@@ -42,6 +52,14 @@ internal static class AssetEditor
     {
         saloonEvents = parser.ParseAssetName("Data/Events/Saloon");
         betIconsPath = parser.ParseAssetName("Mods/atravita_StopRugRemoval_BetIcons");
+
+        const string dialogue = "Characters/Dialogue/";
+        BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Kent"), 864);
+        BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Gus"), 865);
+        BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Sandy"), 866);
+        BirdieQuest.Add(parser.ParseAssetName($"{dialogue}George"), 867);
+        BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Wizard"), 868);
+        BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Willy"), 869);
     }
 
     /// <summary>
@@ -63,11 +81,38 @@ internal static class AssetEditor
     /// <param name="directoryPath">The absolute path to the mod.</param>
     internal static void Edit(AssetRequestedEventArgs e, string directoryPath)
     {
-        if (!Context.IsWorldReady)
+        if (BirdieQuest.TryGetValue(e.NameWithoutLocale, out var id))
         {
-            return;
+            e.Edit(
+                (asset) =>
+                {
+                    string key = $"accept_{id}";
+                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                    if (!data.ContainsKey(key))
+                    {
+                        string character = e.NameWithoutLocale.BaseName.GetNthChunk('/', 2).ToString();
+                        ModEntry.ModMonitor.LogOnce($"Found NPC {character} missing Birdie quest dialogue key {key}. This is likely because you installed an older dialogue mod that is replacing all of this charcter's dialogue. This may cause issues.", LogLevel.Warn);
+                        contentManager ??= new(Game1.content.ServiceProvider, Game1.content.RootDirectory);
+                        try
+                        {
+                            Dictionary<string, string> original = contentManager.LoadBase<Dictionary<string, string>>(e.NameWithoutLocale.BaseName);
+                            if (original.TryGetValue(key, out string? original_dialogue))
+                            {
+                                ModEntry.ModMonitor.Log($"Original spring schedule found: {original_dialogue}. Adding back", LogLevel.Info);
+                                data["spring"] = original_dialogue;
+                                return;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ModEntry.ModMonitor.Log($"Could not find original dialogue for {character}:\n\n{ex}");
+                        }
+                        ModEntry.ModMonitor.Log($"Could not restore birdie quest key for {character}.", LogLevel.Warn);
+                    }
+                },
+                AssetEditPriority.Late);
         }
-        if (e.NameWithoutLocale.IsEquivalentTo(betIconsPath))
+        else if (Context.IsWorldReady && e.NameWithoutLocale.IsEquivalentTo(betIconsPath))
         { // The BET1k/10k icons have to be localized, so they're in the i18n folder.
             string filename = "BetIcons.png";
 

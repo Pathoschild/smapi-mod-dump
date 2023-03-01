@@ -8,6 +8,24 @@ for queries and analysis.**
 
 # Arsenal Change Log
 
+## 1.3.5
+
+### Fixed
+
+* Fixed a bad Null-Reference Exception introduced in 1.3.4.
+
+## 1.3.4
+
+### Fixed
+
+* Fixed missing scythe swipe sound.
+
+## 1.3.2
+
+### Fixed
+
+* Enemies defeated by knockback damage now properly count for game stats, quests and drop items. 
+
 ## 1.3.1
 
 ### Fixed

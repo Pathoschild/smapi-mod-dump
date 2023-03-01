@@ -50,6 +50,13 @@ namespace OrnithologistsGuild
                 getValue: () => Config.LoadBuiltInPack,
                 setValue: value => Config.LoadBuiltInPack = value
             );
+            configMenu.AddBoolOption(
+                mod: manifest,
+                name: () => I18n.Config_LogMissingBiomes_Name(),
+                tooltip: () => I18n.Config_LogMissingBiomes_Tooltip(),
+                getValue: () => Config.LogMissingBiomes,
+                setValue: value => Config.LogMissingBiomes = value
+            );
 
             configMenu.AddSectionTitle(mod: manifest, text: () => I18n.Config_SaveOurBirds_Title());
             configMenu.AddParagraph(mod: manifest, text: () => I18n.Config_SaveOurBirds_Content());

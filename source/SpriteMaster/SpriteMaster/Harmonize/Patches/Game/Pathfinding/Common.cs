@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+using LinqFasterer;
+using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Extensions;
 using SpriteMaster.Hashing;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -27,6 +30,58 @@ internal static partial class Pathfinding {
 	private static readonly string[] MaleLocations = { "BathHouse_MensLocker" };
 	private static readonly string[] FemaleLocations = { "BathHouse_WomensLocker" };
 
+	internal readonly record struct GenderedTuple<T>(T General, T Male, T Female) : IEnumerable<T> {
+		IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public Enumerator GetEnumerator() => new(this);
+
+		internal record struct Enumerator : IEnumerator<T> {
+			private int CurrentGender = -1;
+			private readonly GenderedTuple<T> Value;
+
+			public Enumerator(GenderedTuple<T> value) {
+				Value = value;
+			}
+
+			public bool MoveNext() {
+				int gender = CurrentGender;
+
+				if (gender >= 2) {
+					return false;
+				}
+
+				CurrentGender = gender + 1;
+				return true;
+			}
+
+			public void Reset() {
+				CurrentGender = -1;
+			}
+
+			public T Current => CurrentGender switch {
+				0 => Value.General,
+				1 => Value.Male,
+				2 => Value.Female,
+				_ => ThrowHelper.ThrowArgumentOutOfRangeExceptionFromValue<T>(CurrentGender)
+			};
+
+			object? IEnumerator.Current => Current;
+
+			public void Dispose() {}
+		}
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static RouteKey GetRouteKey(this List<string> route) => new(route);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static RouteKey GetRouteKey(this string[] route) => new(route);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static RouteKey GetRouteKey(this IList<string> route) => new(route);
+
 	[StructLayout(LayoutKind.Auto)]
 	private readonly struct RouteKey : IEquatable<RouteKey> {
 		internal readonly string Start;
@@ -41,6 +96,18 @@ internal static partial class Pathfinding {
 
 			LongHash = HashUtility.Combine(start, end);
 			Hash = HashCode.Combine(start, end);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal RouteKey(List<string> route) : this(route.FirstF(), route.LastF()) {
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal RouteKey(string[] route) : this(route[0], route[route.Length - 1]) {
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal RouteKey(IList<string> route) : this(route.FirstF(), route.LastF()) {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

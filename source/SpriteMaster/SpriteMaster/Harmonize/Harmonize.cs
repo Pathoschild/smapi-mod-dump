@@ -20,7 +20,6 @@ using SpriteMaster.Types.Fixed;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -44,6 +43,8 @@ internal static class Harmonize {
 	internal enum Generic {
 		None,
 		Struct,
+		GfxIndex,
+		GfxVertex,
 		Class
 	}
 
@@ -99,6 +100,21 @@ internal static class Harmonize {
 		typeof(VertexPositionTexture)
 	};
 
+	internal static readonly Type[] IndexTypes = {
+		typeof(short),
+		typeof(ushort),
+		typeof(int),
+		typeof(uint)
+	};
+
+	internal static readonly Type[] VertexTypes = {
+		typeof(VertexPosition),
+		typeof(VertexPositionColor),
+		typeof(VertexPositionColorTexture),
+		typeof(VertexPositionNormalTexture),
+		typeof(VertexPositionTexture)
+	};
+
 	private static string GetMethodName(MethodInfo method, HarmonizeAttribute attribute) => attribute.Name ?? method.Name.Split('`', 2)[0];
 	private static string GetFullMethodName(Type type, MethodInfo? method, HarmonizeAttribute attribute) => (attribute.Name is not null) ? $"{type.FullName}.{attribute.Name}" : (method?.GetFullName() ?? "[null]");
 
@@ -110,6 +126,44 @@ internal static class Harmonize {
 
 			if (method is null) {
 				throw new ArgumentNullException(nameof(method));
+			}
+
+			if (attribute.Enabled is { } enablement) {
+				try {
+					object? fieldValue;
+					bool constant = false;
+
+					if (enablement.Type.GetField(
+								enablement.Member, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+							) is { } field) {
+						constant = field.Attributes.HasFlag(FieldAttributes.Literal);
+						fieldValue = field.GetValue(null);
+					}
+					else if (enablement.Type.GetProperty(
+										enablement.Member, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+									) is { } property) {
+						constant = !property.CanWrite;
+						fieldValue = property.GetValue(null);
+					}
+					else {
+						throw new Exception($"Could not access member {enablement.Type.FullName}.{enablement.Member}");
+					}
+
+					if (constant) {
+						var enabled = fieldValue switch {
+							bool v => v,
+							Lazy<bool> v => v.Value,
+							_ => Convert.ToBoolean(fieldValue)
+						};
+
+						if (!enabled) {
+							return;
+						}
+					}
+				}
+				catch (Exception ex) {
+					Debug.Trace($"Failed to conditionally disable Method Patch {GetFullMethodName(type, method, attribute)} ({method.GetFullName()})", ex);
+				}
 			}
 
 			if (attribute.ForMod is not null && SpriteMaster.Self.Helper.ModRegistry.Get(attribute.ForMod) is null) {
@@ -146,8 +200,17 @@ internal static class Harmonize {
 					);
 					break;
 				case Generic.Struct:
-					foreach (var structType in attribute.GenericTypes ?? StructTypes) {
+				case Generic.GfxIndex:
+				case Generic.GfxVertex:
 
+					static Type[] GetTypes(Generic generic) => generic switch {
+						Generic.Struct => StructTypes,
+						Generic.GfxIndex => IndexTypes,
+						Generic.GfxVertex => VertexTypes,
+						_ => StructTypes
+					};
+
+					foreach (var structType in attribute.GenericTypes ?? GetTypes(attribute.GenericType)) {
 						if (
 							attribute.GenericConstraints is { } constraints &&
 							!constraints.AnyF(constraint => structType.IsAssignableTo(constraint))

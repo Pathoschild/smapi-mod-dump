@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JhonnieRandler/TVBrasileira
+   Git: https://github.com/JhonnieRandler/TVBrasileira.git
+
+mods:
+   TV Brasileira
+
+latest commit:
+   commit 530ae0ef1eea89fddf6b843e7daf14bfebc97b4a
+   Author: Mikael Uhl <mikaeluhl@gmail.com>
+   Date:   Fri Feb 17 20:40:33 2023 -0300
+   
+       Added a log message to InvalidateDialogues();
+   

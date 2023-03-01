@@ -75,6 +75,14 @@ public interface IGrowableBushesAPI
     /// <remarks>For safety reasons, a real (non-decorative) walnut bush still bearing a walnut will not be pick-up-able.
     /// This method also does NOT handle adding the bush to the user's inventory.</remarks>
     public SObject? TryPickUpBush(GameLocation loc, Vector2 tile, bool placedOnly = false);
+
+    /// <summary>
+    /// Draws in a little bush flinging animation corresponding to a specific inventoryBush.
+    /// </summary>
+    /// <param name="obj">Inventory bush to fling.</param>
+    /// <param name="loc">Game location to fling from.</param>
+    /// <param name="tile">The tile to fling from.</param>
+    public void DrawPickUpGraphics(StardewValley.Object obj, GameLocation loc, Vector2 tile);
 }
 
 /// <summary>

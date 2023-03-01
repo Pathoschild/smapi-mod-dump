@@ -12,9 +12,8 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Shockah.CommonModCode;
-using Shockah.CommonModCode.IL;
-using Shockah.CommonModCode.Stardew;
+using Shockah.Kokoro;
+using Shockah.Kokoro.Stardew;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -23,7 +22,6 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 
 namespace Shockah.Hibernation
 {
@@ -78,12 +76,6 @@ namespace Shockah.Hibernation
 				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
 				postfix: new HarmonyMethod(typeof(Hibernation), nameof(GameLocation_answerDialogueAction_Postfix))
-			);
-
-			harmony.TryPatch(
-				monitor: Monitor,
-				original: () => AccessTools.Method(typeof(Utility), nameof(Utility.getDateStringFor)),
-				transpiler: new HarmonyMethod(typeof(Hibernation), nameof(Utility_getDateStringFor_Transpiler))
 			);
 
 			harmony.TryPatch(
@@ -191,7 +183,8 @@ namespace Shockah.Hibernation
 		private static WorldDate? GetNextBirthdayDate()
 		{
 			var currentDate = Game1.Date;
-			var maxDays = currentDate.TotalDays + WorldDateExt.DaysPerSeason * 4; // safety net
+			// safety net, 1 year (4 seasons)
+			var maxDays = currentDate.TotalDays + Enumerable.Range(Game1.year * 4 + Utility.getSeasonNumber(Game1.currentSeason), 4).Select(index => WorldDateExt.GetDaysInSeason(index % 4, index / 4)).Sum();
 			while (currentDate.TotalDays < maxDays)
 			{
 				currentDate = currentDate.GetByAddingDays(1);
@@ -204,7 +197,8 @@ namespace Shockah.Hibernation
 		private static WorldDate? GetNextFestivalDate()
 		{
 			var currentDate = Game1.Date;
-			var maxDays = currentDate.TotalDays + WorldDateExt.DaysPerSeason * 4 * 2; // safety net
+			// safety net, 2 years (8 seasons)
+			var maxDays = currentDate.TotalDays + Enumerable.Range(Game1.year * 4 + Utility.getSeasonNumber(Game1.currentSeason), 8).Select(index => WorldDateExt.GetDaysInSeason(index % 4, index / 4)).Sum();
 			while (currentDate.TotalDays < maxDays)
 			{
 				currentDate = currentDate.GetByAddingDays(1);
@@ -361,7 +355,9 @@ namespace Shockah.Hibernation
 												return false;
 											}
 
-											var limitDate = Game1.Date.GetByAddingDays(WorldDateExt.DaysPerSeason * 4);
+											// safety net, 1 year (4 seasons)
+											var maxDays = Enumerable.Range(Game1.year * 4 + Utility.getSeasonNumber(Game1.currentSeason), 4).Select(index => WorldDateExt.GetDaysInSeason(index % 4, index / 4)).Sum();
+											var limitDate = Game1.Date.GetByAddingDays(maxDays);
 											Instance.HibernateUntilDate(limitDate, EarlyTrigger);
 										}
 										break;
@@ -373,27 +369,6 @@ namespace Shockah.Hibernation
 					}
 					break;
 			}
-		}
-
-		[HarmonyPriority(Priority.Last)]
-		private static IEnumerable<CodeInstruction> Utility_getDateStringFor_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
-		{
-			var instructions = enumerableInstructions.ToList();
-
-			// IL to find:
-			// ldarg.0
-			// <any ldc.i4> <any value>
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-			{
-				i => i.IsLdarg(0),
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Add
-			});
-			if (worker is null)
-				return instructions;
-
-			WorldDateExt.DaysPerSeason = worker[1].GetLdcI4Value()!.Value;
-			return instructions;
 		}
 
 		private static void Game1__newDayAfterFade_Postfix()
@@ -523,7 +498,7 @@ namespace Shockah.Hibernation
 			}
 		}
 
-		private static void FarmEvent_setUp_Postfix(FarmEvent __instance, bool __result)
+		private static void FarmEvent_setUp_Postfix(bool __result)
 		{
 			if (Instance.NightsToSleep <= 0 || __result)
 				return;

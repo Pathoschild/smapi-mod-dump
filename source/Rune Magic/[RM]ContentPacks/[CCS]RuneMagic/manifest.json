@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/facufierro/RuneMagic
+**
+*************************************************/
+
+{
+  "Name": "[CCS]RuneMagic",
+  "Author": "fierro",
+  "Version": "1.0.0",
+  "Description": "Content needed for the Rune Magic mod.",
+  "UniqueID": "fierro.rune_magic_ccs",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "" ],
+  "ContentPackFor": {
+    "UniqueID": "Cherry.CustomCraftingStations"
+  }
+}

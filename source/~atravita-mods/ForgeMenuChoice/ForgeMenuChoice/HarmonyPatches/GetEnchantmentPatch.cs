@@ -30,10 +30,10 @@ internal static class GetEnchantmentPatch
     {
         try
         {
-            Type dgaObject = AccessTools.TypeByName("ScytheFixes.Patcher")
+            Type scythePatcher = AccessTools.TypeByName("ScytheFixes.Patcher")
                 ?? ReflectionThrowHelper.ThrowMethodNotFoundException<Type>("EnchantableScythes");
             harmony.Patch(
-                original: dgaObject.GetCachedMethod("Forge_Post", ReflectionCache.FlagTypes.StaticFlags),
+                original: scythePatcher.GetCachedMethod("Forge_Post", ReflectionCache.FlagTypes.StaticFlags),
                 transpiler: new HarmonyMethod(typeof(GetEnchantmentPatch), nameof(Transpiler)));
         }
         catch (Exception ex)

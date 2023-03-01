@@ -12,11 +12,19 @@ using AtraShared.ConstantsAndEnums;
 
 using HarmonyLib;
 
+using Microsoft.Xna.Framework;
+
 namespace PrismaticSlime.HarmonyPatches.SlimeToastPatches;
 
+/// <summary>
+/// Holds patches against Farmer.
+/// </summary>
 [HarmonyPatch(typeof(Farmer))]
 internal static class FarmerPatches
 {
+    /// <summary>
+    /// The ID number for the prismatic jelly toast buff.
+    /// </summary>
     internal const int BuffId = 15157;
 
     [HarmonyPatch(nameof(Farmer.doneEating))]
@@ -34,6 +42,7 @@ internal static class FarmerPatches
             buff.which = BuffId;
             buff.sheetIndex = 0;
             buff.description = I18n.PrismaticJellyBuff_Description(buffenum.ToStringFast());
+            buff.glow = Color.HotPink;
 
             Game1.buffsDisplay.addOtherBuff(buff);
         }

@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.3.0
+
+Adds a horizontal separator option.
+
 ## Version 1.2.0
 
 The color picker now has dynamic height when using GMCM 1.8.2 or later.

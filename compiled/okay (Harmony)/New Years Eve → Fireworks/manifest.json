@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Fireworks",
     "Author": "sophie",
-    "Version": "0.1.0",
+    "Version": "1.1.0", // fixed locally
     "Description": "Fireworks show for mod jam.",
     "UniqueID": "sophie.Fireworks",
     "EntryDll": "Fireworks.dll",

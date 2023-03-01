@@ -9,11 +9,25 @@
 *************************************************/
 
 {
-    "Format": "1.25.0",
+    "Format": "1.28.0",
     "Changes":[
     {
         "Action": "Include",
         "FromFile": "schedules.json"
+    },
+    {
+        "Action": "Include",
+        "FromFile": "assets/sve_schedules.json",
+        "When": {
+            "HasMod": "FlashShifter.StardewValleyExpandedCP",
+        }
+    },
+    {
+        "Action": "Include",
+        "FromFile": "assets/immersive_sandy_schedules.json",
+        "When": {
+            "HasMod": "beyondrecovery.immersivesandy",
+        }
     },
     {
         "Action": "Include",

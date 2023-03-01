@@ -1,21 +1,26 @@
-﻿{
-	"Name": "BinningSkill",
-	"Author": "drbirbdev",
-	"Version": "1.1.0",
-	"Description": "Adds a skill related to digging through trashcans.",
-	"UniqueID": "drbirbdev.BinningSkill",
-	"EntryDll": "BinningSkill.dll",
-	"MinimumApiVersion": "3.0.0",
-    "UpdateKeys": [
-        "Nexus:14073"
-    ],
-	"Dependencies": [
-		{
-			"UniqueID": "spacechase0.SpaceCore"
-		},
-		{
-			"UniqueID": "spacechase0.GenericModConfigMenu",
-			"IsRequired": false
-		}
-	]
+{
+  "Name": "BinningSkill",
+  "Author": "drbirbdev",
+  "Version": "1.2.1",
+  "Description": "Adds a skill related to digging through trashcans.",
+  "UniqueID": "drbirbdev.BinningSkill",
+  "EntryDll": "BinningSkill.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:14073"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "DaLion.Overhaul",
+      "MinimumVersion": "1.1.1",
+      "IsRequired": false
+    }
+  ]
 }

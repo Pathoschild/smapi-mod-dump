@@ -1,0 +1,84 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{
+    // sports teams - basically a random list of generic sport team names.
+    "sports.team.01": "Seahawks",
+    "sports.team.02": "Hurricanes",
+    "sports.team.03": "Flyers",
+    "sports.team.04": "Miners",
+    "sports.team.05": "Pirates",
+    "sports.team.06": "Gators",
+    "sports.team.07": "Hawks",
+    "sports.team.08": "Panthers",
+
+    // generic video games
+    "video.game.01": "Atomic Rising",
+    "video.game.02": "Clusterbot",
+    "video.game.03": "Alphawind",
+    "video.game.04": "Dragoncell",
+    "video.game.05": "Ghosts of Faith",
+    "video.game.06": "Mortaltrail",
+    "video.game.07": "Wing Edge",
+    "video.game.08": "Phantomheart",
+    "video.game.09": "Crowns and Monsters",
+
+    // clothing brand names.
+    "clothing.brand.01": "Couture par Oiseau",
+    "clothing.brand.02": "Azure",
+    "clothing.brand.03": "Dawn Company",
+    "clothing.brand.04": "Helix",
+    "clothing.brand.05": "Spectacle",
+    "clothing.brand.06": "Mode par Essence",
+    "clothing.brand.07": "Esprit",
+    "clothing.brand.08": "Petal Rose",
+
+    //restaurant names
+    "restaurant.01": "Slice of Heaven Pizzeria",
+    "restaurant.02": "The Bake 'n Take Pizzeria",
+    "restaurant.03": "The Olive Bite",
+    "restaurant.04": "Fire and Ice",
+    "restaurant.05": "l'Ambiance d'Hiver",
+    "restaurant.06": "Citronnelle",
+
+    // generic dishes - free free to replace with
+    // whatever adults eat in your country.
+    "dishes.adult.01": "beer cheese soup",
+    "dishes.adult.02": "bison burger",
+    "dishes.adult.03": "goulash",
+    "dishes.adult.04": "fried morels",
+    "dishes.adult.05": "shrimp cocktail",
+    "dishes.adult.06": "burnt ends sandwich",
+    "dishes.adult.07": "mustard-brined pork",
+    "dishes.adult.08": "beef stroganoff",
+    "dishes.adult.09": "wild fennel stir-fry",
+
+    // dishes aimed at children
+    "dishes.child.01": "toasted ravioli",
+    "dishes.child.02": "dino nuggets",
+    "dishes.child.03": "pork tenderloin sandwich",
+    "dishes.child.04": "pizza puff",
+    "dishes.child.05": "hamburger and fries",
+    "dishes.child.06": "chicken sandwich",
+    "dishes.child.07": "chili",
+    "dishes.child.08": "cornbread",
+    "dishes.child.09": "milkshake",
+
+    // deserts
+    "dishes.dessert.01": "cherry pie",
+    "dishes.dessert.02": "frozen custard",
+    "dishes.dessert.03": "juneberry pie",
+    "dishes.dessert.04": "fudge",
+    "dishes.dessert.05": "chocolate pavlova",
+    "dishes.dessert.06": "cookies",
+    "dishes.dessert.07": "cake",
+    "dishes.dessert.08": "sugar cream pie",
+    "dishes.dessert.09": "cheesecake",
+}

@@ -22,7 +22,7 @@ namespace CustomCaskMod
 {
     internal class CaskOverrides
     {
-        public static bool GetAgingMultiplierForItem(ref Cask __instance, Item item, ref float __result)
+        public static bool GetAgingMultiplierForItemPrefix(ref Cask __instance, Item item, ref float __result)
         {
             __result = 0f;
             if (item != null && (Utility.IsNormalObjectAtParentSheetIndex(item, item.ParentSheetIndex) || IsColoredObjectAtParentSheetIndex(item, item.ParentSheetIndex)))
@@ -55,6 +55,20 @@ namespace CustomCaskMod
                 }
             }
             return false;
+        }
+
+        public static void GetAgingMultiplierForItemPostfix(Cask __instance, Item item, ref float __result)
+        {
+            if (item != null && (Utility.IsNormalObjectAtParentSheetIndex(item, item.ParentSheetIndex) || IsColoredObjectAtParentSheetIndex(item, item.ParentSheetIndex)))
+            {
+                if (IsVanillaCask(__instance))
+                {
+                    if (Math.Abs(__result) <= 0f && DataLoader.ModConfig.EnableCaskAgeEveryObject)
+                    {
+                        __result = DataLoader.ModConfig.DefaultAgingRate;
+                    }
+                }
+            }
         }
 
         public static bool IsValidCaskLocation(ref Cask __instance, ref bool __result)

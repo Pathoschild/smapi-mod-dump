@@ -46,7 +46,7 @@ Este mod sólo edita rutinas en días específicos (y usa entradas de diálogo p
 
 ## Para autores
 ### Cómo usar
-(se agregará más tarde)
+Ve aquí: [cómo agregar horario para un PNJ.](https://github.com/misty-spring/SpousesIsland/blob/main/docs/custom_spouse-es.md)
 
 
 ### Para más información
@@ -58,5 +58,6 @@ El [validador de json](https://smapi.io/json) te dirá si hay errores en el form
 Si quieres contribuir a traducir el mod, puedes mandarme la traducción a través de nexus (o como Pull Request aquí). También puedes subirla a nexus como tu propio archivo.
 
 El mod actualmente está disponible en Español e Inglés. Puedes ver las traducciones hechas por usuarios en la [página del mod](https://www.nexusmods.com/stardewvalley/mods/11037).
+
 ## Problemas comunes
 Si usas *child to npc*, es posible que tu hije tenga problemas en FishShop (la tienda de Willy). ChildToNPC usa Warps(puntos de transporte) de jugador, pero he agregado compatibilidad para esto.

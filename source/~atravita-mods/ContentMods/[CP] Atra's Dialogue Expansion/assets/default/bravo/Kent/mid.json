@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "LogName": "Kent mid-hearts",
+        "Target": "Characters/Dialogue/Kent",
+        "Entries": {
+            "2{{YearRemainder}}": "I feel like I'm stuck in place, never really getting better, never really getting worse.$s",
+            "4{{YearRemainder}}": "Couldn't sleep last night. Kept on having nightmares."
+        },
+        "When": {
+            "YearModulus": "1"
+        }
+    }
+]}

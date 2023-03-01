@@ -25,11 +25,23 @@ namespace MoonMisadventures_BiggerBackpackPatch
         {
             var harmony = new Harmony(this.ModManifest.UniqueID);
             ObjectPatches.Initialize(Monitor);
+            if (helper.ModRegistry.IsLoaded("bcmpinc.WearMoreRings"))
+            {
+                harmony.Patch(
+                    original: AccessTools.Constructor(typeof(InventoryPage), new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }),
+                    postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.InventoryPage_Constructor__Postfix))
+                );
+            }
+
             harmony.Patch(
-                original: AccessTools.Constructor(typeof(InventoryPage), new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }),
-                postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.InventoryPage_Constructor__Postfix))
+                original: AccessTools.Method(Type.GetType("MoonMisadventures.Patches.InventoryPageNecklaceDrawPatch,MoonMisadventures"), "Postfix"),
+                prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.DrawHoverPatch_Prefix))
             );
-            this.Monitor.Log("This mod overrides a patch by Moon Misadventures. If you notice issues with Moon Misadventures, make sure it happens without this mod before reporting it to the Automate page.", LogLevel.Trace);
+            harmony.Patch(
+                original: AccessTools.Method(Type.GetType("MoonMisadventures.Patches.InventoryPageNecklaceHoverPatch,MoonMisadventures"), "Postfix"),
+                prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.DrawHoverPatch_Prefix))
+            );
+            this.Monitor.Log("This mod overrides a patch by Moon Misadventures. If you notice issues with Moon Misadventures, make sure it happens without this mod before reporting it to the MoonMisadventures page.", LogLevel.Trace);
         }
     }
 }

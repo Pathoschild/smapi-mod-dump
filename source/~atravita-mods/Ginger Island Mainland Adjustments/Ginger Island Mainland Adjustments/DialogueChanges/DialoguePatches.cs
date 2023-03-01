@@ -9,9 +9,13 @@
 *************************************************/
 
 using AtraShared.Utils.Extensions;
+
 using GingerIslandMainlandAdjustments.ScheduleManager;
+
 using HarmonyLib;
+
 using StardewModdingAPI.Utilities;
+
 using StardewValley.Locations;
 
 namespace GingerIslandMainlandAdjustments.DialogueChanges;
@@ -171,57 +175,6 @@ internal static class DialoguePatches
         catch (Exception ex)
         {
             Globals.ModMonitor.Log($"Error in setting GIReturn dialogue for {__instance.Name}:\n{ex}", LogLevel.Error);
-        }
-    }
-}
-
-/// <summary>
-/// Class that holds patches against IslandSouth, for dialogue.
-/// </summary>
-[HarmonyPatch(typeof(Game1))]
-internal class Game1DialoguePatches
-{
-    /// <summary>
-    /// Postfix SetupIslandSchedules to add marriage-specific dialogue.
-    /// </summary>
-    /// <remarks>DayStarted, unfortunately, runs *before* SetupIslandSchedules.</remarks>
-    [HarmonyPostfix]
-    [HarmonyPatch(nameof(Game1.updateWeatherIcon))]
-    private static void AppendMarriageDialogue()
-    {
-        if (!Game1.newDay && Game1.gameMode != Game1.loadingMode)
-        {
-            return;
-        }
-
-        try
-        {
-            if (Game1.player?.getSpouse() is NPC spouse && Game1.IsVisitingIslandToday(spouse.Name))
-            {
-                if (spouse.TryApplyMarriageDialogueIfExisting("GILeave_" + spouse.Name))
-                {
-#if DEBUG
-                Globals.ModMonitor.Log($"Setting GILeave_{spouse?.Name}", LogLevel.Trace);
-#endif
-                }
-                else if (Game1.player is not null)
-                {
-                    spouse.CurrentDialogue.Clear();
-                    spouse.currentMarriageDialogue.Clear();
-                    if (Game1.player.getFriendshipHeartLevelForNPC(spouse.Name) > 9)
-                    {
-                        spouse.CurrentDialogue.Push(new Dialogue(I18n.GILeaveDefaultHappy(spouse.getTermOfSpousalEndearment()), spouse));
-                    }
-                    else
-                    {
-                        spouse.CurrentDialogue.Push(new Dialogue(I18n.GILeaveDefaultUnhappy(), spouse));
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Globals.ModMonitor.Log($"Error in setting GILeave dialogue:\n{ex}", LogLevel.Error);
         }
     }
 }

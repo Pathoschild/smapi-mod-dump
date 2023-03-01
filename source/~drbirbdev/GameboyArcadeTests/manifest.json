@@ -11,7 +11,7 @@
 {
   "Name": "GameboyArcadeTests",
   "Author": "drbirbdev",
-  "Version": "1.0.1",
+  "Version": "1.0.3",
   "Description": "Add well known Gameboy emulation test roms that can be run from the SMAPI console",
   "UniqueID": "drbirbdev.GameboyArcadeTests",
   "UpdateKeys": [

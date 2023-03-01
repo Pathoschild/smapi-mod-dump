@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15589
+IDs: DewMods.StardewValleyMods.PVP
+update keys: Nexus:15589

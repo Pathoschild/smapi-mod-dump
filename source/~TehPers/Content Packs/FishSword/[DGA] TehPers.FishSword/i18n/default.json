@@ -9,8 +9,12 @@
 *************************************************/
 
 {
-  "melee-weapon.FishSword.name": "Fish sword",
+  "melee-weapon.FishSword.name": "Fish Sword",
   "melee-weapon.FishSword.description": "It reeks of ocean.",
-  "object.SeaWeed.name": "Sea weed",
-  "object.SeaWeed.description": "It's what the fish crave! Consume in moderation."
+  "object.SeaWeed.name": "Sea Weed",
+  "object.SeaWeed.description": "It's what the fish crave! Consume in moderation.",
+  "object.GoldenShell.name": "Golden Shell",
+  "object.GoldenShell.description": "It's a shiny golden shell. Looks valuable!",
+  "object.SandDollarBill.name": "Sand Dollar Bill",
+  "object.SandDollarBill.description": "It's a small, rectangular sand dollar. I wonder what the exchange rate is?"
 }

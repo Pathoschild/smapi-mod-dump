@@ -4,6 +4,8 @@
     "config.useVanilla.tooltip": "* Requires restart",
     "config.useBuiltIn.name": "Use built-in bird pack *",
     "config.useBuiltIn.tooltip": "* Requires restart",
+    "config.logMissingBiomes.name": "Log missing biomes to console *",
+    "config.logMissingBiomes.tooltip": "* Requires restart",
     "config.saveOurBirds.title": "Save our birds!",
     "config.saveOurBirds.content": "The world has lost nearly 3 BILLION birds since 1970. For information on the many ways you can help, please visit:",
     "config.aboutKyle.title": "About Kyle",

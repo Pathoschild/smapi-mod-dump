@@ -40,8 +40,6 @@
 
   <ItemGroup>
     <Folder Include="assets\textures\" />
-    <Folder Include="docs\" />
-    <Folder Include="HarmonyPatches\ItemPatches\" />
   </ItemGroup>
 
 </Project>

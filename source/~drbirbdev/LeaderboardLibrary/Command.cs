@@ -83,6 +83,19 @@ namespace LeaderboardLibrary
             Apis[modId].RefreshCache(stat);
         }
 
+        [CommandMethod("Delete leaderboard cache")]
+        public static void DeleteCache()
+        {
+            foreach (string key in ModEntry.LocalModData.LocalLeaderboards.Keys)
+            {
+                ModEntry.LocalModData.LocalLeaderboards[key].Clear();
+            }
+            foreach (string key in ModEntry.LocalModData.TopLeaderboards.Keys)
+            {
+                ModEntry.LocalModData.TopLeaderboards[key].Clear();
+            }
+        }
+
         [CommandMethod("Upload new score to leaderboard")]
         public static void UploadScore(string modId, string stat, int score)
         {

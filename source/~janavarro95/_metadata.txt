@@ -26,12 +26,12 @@ mods:
    Time Freeze
 
 latest commit:
-   commit d7d567a72f5feaf3a5a5afd3d054ac9598727a97
-   Merge: d25db24a a27d73f1
+   commit 0749b5da945ca70d905e0be0960524af2f81b8d0
+   Merge: 59432b8c 77a838d6
    Author: Joshua Navarro <janavarro95@users.noreply.github.com>
-   Date:   Tue Sep 20 22:13:05 2022 -0700
+   Date:   Mon Feb 13 00:00:20 2023 -0800
    
-       Merge pull request #86 from janavarro95/dependabot/nuget/GeneralMods/OutDatedMods/Serialization/Newtonsoft.Json-13.0.1
+       Merge pull request #95 from conundrum9999/main
        
-       Bump Newtonsoft.Json from 10.0.3 to 13.0.1 in /GeneralMods/OutDatedMods/Serialization
+       Add screenreader accessibility support to the BirthdayMenu.
    

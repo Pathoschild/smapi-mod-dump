@@ -101,14 +101,16 @@ internal sealed partial class GenericModConfigMenuCore
 
             // page links
             .AddPageLink(OverhaulModule.Tools + "/Axe", () => "Axe Settings", () => "Go to Axe settings.")
-            .AddPageLink(OverhaulModule.Tools + "/Pick", () => "Pick Settings", () => "Go to Pick settings.")
+            .AddPageLink(OverhaulModule.Tools + "/Pick", () => "Pick Settings", () => "Go to Pickaxe settings.")
             .AddPageLink(OverhaulModule.Tools + "/Hoe", () => "Hoe Settings", () => "Go to Hoe settings.")
-            .AddPageLink(OverhaulModule.Tools + "/Can", () => "Watering Can Settings", () => "Go to Watering Can settings.")
+            .AddPageLink(OverhaulModule.Tools + "/Can", () => "Can Settings", () => "Go to Watering Can settings.")
             .AddPageLink(OverhaulModule.Tools + "/Scythe", () => "Scythe Settings", () => "Go to Scythe settings.")
 
             // axe settings
             .AddPage(OverhaulModule.Tools + "/Axe", () => "Axe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
+            .AddVerticalSpace()
+            .AddSectionTitle(() => "Charging Settings")
             .AddCheckbox(
                 () => "Enable Axe Charging",
                 () => "Enables charging the Axe.",
@@ -179,6 +181,7 @@ internal sealed partial class GenericModConfigMenuCore
                     (uint)value,
                 1,
                 10)
+            .AddSectionTitle(() => "Shockwave Settings")
             .AddCheckbox(
                 () => "Clear Fruit Tree Seeds",
                 () => "Whether to clear fruit tree seeds.",
@@ -244,6 +247,7 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to play the shockwave animation when the charged Axe is released.",
                 config => config.Tools.Axe.PlayShockwaveAnimation,
                 (config, value) => config.Tools.Axe.PlayShockwaveAnimation = value)
+            .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Reaching Enchantment",
                 () => "Whether the Axe can be enchanted with Reaching.",
@@ -258,6 +262,8 @@ internal sealed partial class GenericModConfigMenuCore
             // pickaxe settings
             .AddPage(OverhaulModule.Tools + "/Pick", () => "Pick Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
+            .AddVerticalSpace()
+            .AddSectionTitle(() => "Charging Settings")
             .AddCheckbox(
                 () => "Enable Pick Charging",
                 () => "Enables charging the Pickaxe.",
@@ -327,6 +333,7 @@ internal sealed partial class GenericModConfigMenuCore
                     config.Tools.Pick.RadiusAtEachPowerLevel[isMoonMisadventuresLoaded ? 6 : 4] = (uint)value,
                 1,
                 10)
+            .AddSectionTitle(() => "Shockwave Settings")
             .AddCheckbox(
                 () => "Break Boulders and Meteorites",
                 () => "Whether to break boulders and meteorites.",
@@ -377,6 +384,7 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to play the shockwave animation when the charged Pick is released.",
                 config => config.Tools.Pick.PlayShockwaveAnimation,
                 (config, value) => config.Tools.Pick.PlayShockwaveAnimation = value)
+            .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Reaching Enchantment",
                 () => "Whether the Pick can be enchanted with Reaching.",
@@ -391,6 +399,8 @@ internal sealed partial class GenericModConfigMenuCore
             // hoe settings
             .AddPage(OverhaulModule.Tools + "/Hoe", () => "Hoe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
+            .AddVerticalSpace()
+            .AddSectionTitle(() => "Area Of Effect Settings")
             .AddCheckbox(
                 () => "Override Affected Tiles",
                 () =>
@@ -522,6 +532,7 @@ internal sealed partial class GenericModConfigMenuCore
         }
 
         this
+            .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Master Enchantment",
                 () => "Whether the Hoe can be enchanted with Master.",
@@ -531,6 +542,8 @@ internal sealed partial class GenericModConfigMenuCore
             // can settings
             .AddPage(OverhaulModule.Tools + "/Can", () => "Watering Can Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
+            .AddVerticalSpace()
+            .AddSectionTitle(() => "Area Of Effect Settings")
             .AddCheckbox(
                 () => "Override Affected Tiles",
                 () =>
@@ -664,6 +677,7 @@ internal sealed partial class GenericModConfigMenuCore
         }
 
         this
+            .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Master Enchantment",
                 () => "Whether the Watering Can can be enchanted with Master.",
@@ -678,6 +692,8 @@ internal sealed partial class GenericModConfigMenuCore
             // scythe settings
             .AddPage(OverhaulModule.Tools + "/Scythe", () => "Scythe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
+            .AddVerticalSpace()
+            .AddSectionTitle(() => "Area Of Effect Settings")
             .AddNumberField(
                 () => "Regular Scythe Radius",
                 () => "Sets the area of effect of the regular Scythe.",
@@ -697,6 +713,7 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to clear tree saplings with the Scythe.",
                 config => config.Tools.Scythe.ClearTreeSaplings,
                 (config, value) => config.Tools.Scythe.ClearTreeSaplings = value)
+            .AddSectionTitle(() => "Harvesting Settings")
             .AddCheckbox(
                 () => "Harvest Crops",
                 () => "Whether to harvest crops with the Scythe.",
@@ -708,15 +725,16 @@ internal sealed partial class GenericModConfigMenuCore
                 config => config.Tools.Scythe.HarvestFlowers,
                 (config, value) => config.Tools.Scythe.HarvestFlowers = value)
             .AddCheckbox(
-                () => "Harvest Spring Onions",
-                () => "They can be considered crops or forage depending on your school of thought.",
-                config => config.Tools.Scythe.HarvestSpringOnions,
-                (config, value) => config.Tools.Scythe.HarvestSpringOnions = value)
+                () => "Harvest Forage",
+                () => "Whether to harvest forage with the Scythe.",
+                config => config.Tools.Scythe.HarvestForage,
+                (config, value) => config.Tools.Scythe.HarvestForage = value)
             .AddCheckbox(
                 () => "Golden Scythe Only",
                 () => "Whether to limit crop and flower harvesting to the Golden Scythe.",
                 config => config.Tools.Scythe.GoldScytheOnly,
                 (config, value) => config.Tools.Scythe.GoldScytheOnly = value)
+            .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Haymaker Enchantment",
                 () => "Whether the Scythe can be enchanted with Haymaker.",

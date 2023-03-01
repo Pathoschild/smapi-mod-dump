@@ -1,0 +1,162 @@
+﻿{
+    // Vanilla Stardew Valley
+    "Farm": ["farm"],
+    "Town": ["city"],
+    "Beach": ["ocean"],
+    "BusStop": ["farm", "city"],
+    "Mountain": ["wetland"],
+    "Forest": ["forest"],
+    "Mine": ["city"],
+    "Desert": ["desert"],
+    "Woods": ["forest", "wetland"],
+    "Railroad": ["void"],
+    "Summit": ["forest"],
+    "Backwoods": ["forest"],
+    "BeachNightMarket": ["ocean"],
+    "IslandSouth": ["island", "ocean"],
+    "IslandSouthEast": ["island", "ocean"],
+    "IslandEast": ["island"],
+    "IslandWest": ["island", "ocean"],
+    "IslandNorth": ["island"],
+    "IslandShrine": ["island"],
+
+    // East Scarp compat (may be overriden by mod author in the future)
+    "Custom_EastScarpe": ["city", "ocean"],
+    "Custom_ESMeadowFarm": ["farm"],
+    "Custom_ESOrchard": ["void"],
+    "Custom_ESMineEntrance": ["city"],
+    "Custom_ESDeepMountains": ["forest"],
+	"Custom_ESClearingHouse": ["void"],
+	"Custom_ESParkDogs": ["farm"],
+
+    // Ridgeside Village compat (credit to @Vomau) (may be overriden by mod author in the future)
+	"Custom_Ridgeside_RSVCliff_AlissaDate": ["city", "farm"],
+	"Custom_Ridgeside_RSVCorineDate": ["void"],
+	"Custom_Ridgeside_RidgesideVillage_Event": ["void"],
+	"Custom_Ridgeside_Ridge_KennethDate_OFF": ["forest", "farm"],
+	"Custom_Ridgeside_RSVEvacuationCenter": ["void"],
+	"Custom_Ridgeside_Ridge_KennethDate_ON": ["forest", "farm"],
+	"Custom_Ridgeside_PrincessVilleDate": ["void"],
+	"Custom_Ridgeside_RSVTheRide": ["void"],
+	"Custom_Ridgeside_EmberNight": ["void"],
+	"Custom_Ridgeside_RSVGathering": ["city"],
+	"Custom_Ridgeside_RSVSpiritRealm": ["ocean", "island"],
+	"Custom_Ridgeside_RidgePond": ["forest", "farm"],
+	"Custom_Ridgeside_Ridge": ["forest"],
+	"Custom_Ridgeside_RidgeFalls": ["forest", "wetland"],
+	"Custom_Ridgeside_RidgeForest": ["forest"],
+	"Custom_Ridgeside_RidgesideVillage": ["city"],
+	"Custom_Ridgeside_RSVCableCar": ["forest"],
+	"Custom_Ridgeside_RSVCliff": ["city", "farm"],
+	"Custom_Ridgeside_RSVTheHike": ["forest", "farm"],
+	"Custom_Ridgeside_SummitFarm": ["farm"],
+	"Custom_Ridgeside_RSVRoad": ["void"],
+	"Custom_Ridgeside_RSVCliffNight": ["city", "farm"],
+    
+    // Stardew Valley Expanded compat (credit to @Vomau) (may be overriden by mod author in the future)
+	"Custom_GrandpasShedOutside": ["forest"],
+	"Custom_TownEast": ["town"],
+	"Custom_Garden": ["forest"],
+	"Custom_BlueMoonVineyard": ["farm"],
+	"Custom_FakeEnchantedGrove": ["void"],
+	"Custom_ForestWest": ["forest", "wetland"],
+	"Custom_ShearwaterBridge": ["forest", "ocean"],
+	"Custom_SpriteSpring2": ["forest", "ocean"],
+	"Custom_JunimoWoods": ["forest"],
+	"Custom_Countryside_BusStop_Bus": ["farm", "city"],
+	"Custom_Countryside_BusStop_NoBus": ["farm", "city"],
+	"Custom_Countryside_ClaireHouse": ["forest"],
+	"Custom_GrampletonFields_Small": ["forest", "farm"],
+	"Custom_AdventurerSummit": ["forest"],
+	"Custom_BusStop_NoBus": ["farm", "city"],
+	"Custom_Highlands": ["forest", "wetland"],
+	"Custom_MorrisProperty": ["city"],
+	"Custom_ForestWestOld": ["forest", "wetland"],
+	"Custom_FableReef": ["ocean", "island"],
+	"Custom_LanceSecretWarp": ["void"],
+	"Custom_GrampletonSuburbsTrainStation": ["void"],
+	"Custom_GrampletonSuburbs": ["city"],
+	"Custom_GrampletonCoast": ["ocean"],
+	"Custom_WoodsCompat": ["forest"],
+	"Custom_HenryWarp": ["void"],
+	"Custom_UnderwaterLexi": ["void"],
+	"Custom_GrandpasGrove": ["forest", "wetland"],
+
+    // Other areas birds should not spawn (credit to @ch0opera)
+    // East Scarp
+    "Custom_LK_ClearingHouse": ["void"], // not sure what this is - SVE version?
+    // Magical Family
+    "Custom_Fellowclown_FightScene": ["void"],
+    "Custom_Fellowclown_JohnnysDeathScene": ["void"],
+    "Custom_Fellowclown_SummoningMap": ["void"],
+    "Custom_Fellowclown_JohnnysScene": ["void"],
+    "Custom_Fellowclown_OldGraveYard": ["void"],
+    // SVR3
+    "Custom_BackwoodsWest": ["void"],
+    "Custom_BusStopOrchard": ["void"],
+    "Custom_ForestField": ["void"],
+    // NPC Juna
+    "Custom_JunaNPC_BigFootPotion": ["void"],
+    // NPC Denver
+    "Custom_Denver_Forest": ["void"],
+    // NPC Lavril
+    "Custom_ArkOrchard": ["void"], // not sure if normal or event map
+    // Defense Divsion
+    "Custom_HouseTown": ["void"],
+    "Custom_HouseTownSVE": ["void"],
+    "Custom_Travel": ["void"],
+    "Custom_FestivalHouseSpring": ["void"],
+    "Custom_FestivalHouseSpringSVE": ["void"],
+    "Custom_FestivalHouseFallFair": ["void"],
+    "Custom_FestivalHouseFallFairSVE": ["void"],
+    "Custom_FestivalHouseHalloween": ["void"],
+    "Custom_FestivalHouseHalloweenSVE": ["void"],
+    "Custom_FestivalHouseWinter": ["void"],
+    "Custom_FestivalHouseWinterSVE": ["void"],
+    "Custom_ShortcutDef": ["void"], // no idea
+    // Durin’s Rest
+    "Custom_DurinsRest": ["void"],
+    "Custom_DurinsMineMap5": ["void"],
+    "Custom_DR_River": ["void"],
+    "Custom_ConstHall": ["void"],
+    "Custom_ConstRoom": ["void"],
+    "Custom_ConstRoomL": ["void"],
+    "Custom_ConstRoomR": ["void"],
+    "Custom_ExteriorMuseum": ["void"],
+    // NPC Nikolai
+    "Custom_Fellowclown.Nikolai_NikolaisProperty": ["void"],
+    "Custom_Fellowclown.Nikolai_NikolaisPropertySell": ["void"],
+    "Custom_Fellowclown.Nikolai_Forestlake": ["void"],
+    "Custom_Fellowclown.Nikolai_NikolaisPropertyEvent": ["void"],
+    "Custom_Fellowclown.Nikolai_Marketpalooza": ["void"],
+    "Custom_Fellowclown.Nikolai_CatEvent": ["void"],
+    "Custom_Fellowclown.Nikolai_CatBeach": ["void"],
+    // NPC The Wayfarer
+    "Custom_Fellowclown_Childhood": ["void"],
+    "Custom_Fellowclown_Lyell_LyellsWoods": ["void"],
+    // NPC Ayeisha
+    "Custom_AyeishaVanRoad": ["void"],
+    "Custom_AyeishaWarpRoom": ["void"],
+    // LASV
+    "Custom_UnderwaterCove_Exterior": ["void"],
+    "Custom_LASV_LunnaWestForest": ["void"],
+    "Custom_LASV_Umuwi": ["void"],
+    "Custom_LASV_LunnaLake": ["void"],
+    "Custom_LASV_BiankaDate": ["void"],
+    "Custom_LibraryExterior": ["void"],
+    "Custom_Secrethall": ["void"],
+    "Custom_SableDateIsland": ["void"],
+    // NPC Tristan
+    "Custom_LK_FairyPool": ["void"],
+    // NPC Wilford
+    "Custom_EastWoods": ["void"],
+    "Custom_EastWoodsDate": ["void"],
+    // NPC Zoro
+    "Custom_EK_ZoroDock": ["void"],
+    // MNF Mermaid Island
+    "Custom_MermaidIsland": ["void"],
+    // TCLE
+    "Custom_Parking": ["void"],
+    // Deep Woods
+    "DeepWoods": ["void"]
+}

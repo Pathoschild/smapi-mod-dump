@@ -12,13 +12,11 @@ namespace Shockah.XPDisplay
 {
 	public interface IImmersiveProfessionsAPI
 	{
-		/// <summary>Get an interface for this mod's config settings.</summary>
-		ModConfig GetConfigs();
+		IModConfig GetConfigs();
 
-		public interface ModConfig
+		public interface IModConfig
 		{
 			bool EnablePrestige { get; }
-			uint RequiredExpPerExtendedLevel { get; }
 		}
 	}
 }

@@ -10,27 +10,49 @@
 
 {"Changes": [
     {
-        "LogName": "Demetrius - base",
+        "LogName": "Generic spouse dialogue.",
         "Action": "EditData",
-        "Target": "Characters/Dialogue/Demetrius",
-        "Entries":
-            {
-            "movieTheater": "Oh, a movie theater?$k#$e#$c 0.5#Sorry, I'm not one for movies.#I don't usually watch movies",
+        "Target": "Characters/Dialogue/MarriageDialogue{{Spouse}}",
+        "Entries": {
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}": "Oh, honey, it's our anniversary today!#$b#Soooo....you've got anything planned?"
         },
-        "When" : {
-            "EnableFor|contains=Demetrius": true,
+        "When": {
+            "HasMod" :"TheMightyAmondee.CustomTokens",
+            "HasValue: {{Spouse}}": true,
         }
     },
     {
-        "LogName": "Rain -- during winter - elliott.",
+        "LogName": "Leah -- Married Dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueLeah",
+        "Entries": {
+            "{{TheMightyAmondee.CustomTokens/AnniversarySeason}}_{{TheMightyAmondee.CustomTokens/AnniversaryDay}}": "It's our anniversary, dear! Don't you think we should do something fun today?"
+        },
+        "When": {
+            "HasMod" :"TheMightyAmondee.CustomTokens",
+            "EnableFor|contains=Leah": true
+        }
+    },
+    {
+        "LogName": "Demetrius - base",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries": {
+            "movieTheater": "Oh, a movie theater?$k#$e#$c 0.5#Sorry, I'm not one for movies.#I don't usually watch movies",
+            "{{TaxDay}}": "You'd think that, since the government is the one who pays me, I wouldn't have to do all this work to pay my taxes.$s"
+        },
+        "When" : { "EnableFor|contains=Demetrius": true}
+    },
+    {
+        "LogName": "Rain -- during winter - Elliott.",
         "Action": "EditData",
         "Target": "Characters/Dialogue/rainy",
         "When": {
             "Season": "winter",
-            "EnableFor|contains=Elliott": true,
+            "EnableFor|contains=Elliott": true
         },
         "Entries":{
-            "Elliott": "A day like this is good for my productivity.#$e#It's not like I'd be going out in this weather.#$e#Maybe to the saloon. Later.",
+            "Elliott": "A day like this is good for my productivity.#$e#It's not like I'd be going out in this weather.#$e#Maybe to the saloon. Later."
         }
     },
     {
@@ -38,11 +60,9 @@
         "Action": "EditData",
         "Target": "Characters/Dialogue/Lewis",
         "Entries": {
-            "{{TaxDay}}": "We've all gotta do our duty, @, and that duty includes paying our taxes.",
+            "{{TaxDay}}": "We've all gotta do our duty, @, and that duty includes paying our taxes."
         },
-        "When" : {
-            "EnableFor|contains=Lewis": true,
-        }
+        "When" : { "EnableFor|contains=Lewis": true}
     },
     {
         "LogName": "Pam base dialogue",
@@ -51,9 +71,16 @@
         "Entries": {
             "{{TaxDay}}": "Why I've gotta pay taxes to fund this stupid war, I'll never know."
         },
-        "When" : {
-            "EnableFor|contains=Pam": true,
-        }
+        "When" : {"EnableFor|contains=Pam": true}
+    },
+    {
+        "LogName": "Pierre base dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pierre",
+        "Entries": {
+            "{{TaxDay}}": "Dunno what the state is doing with all my tax dollars.$s#$b#Such a process, every year, to file them. Takes Caroline a week!"
+        },
+        "When" : { "EnableFor|contains=Pierre": true}
     },
     {
         "LogName": "Gus New Years At Resort",
@@ -62,10 +89,10 @@
         "When": {
             "Season": "winter",
             "Day": 28,
-            "EnableFor|contains=Gus": true,
+            "EnableFor|contains=Gus": true
         },
         "Entries": {
-            "IslandSouth_14_21": "Happy New Year, @! Have one on me today.[873]#$e#May the next year be even better!",
+            "IslandSouth_14_21": "Happy New Year, @! Have one on me today.[873]#$e#May the next year be even better!"
         }
     },
     {
@@ -82,7 +109,7 @@
         }
     },
     {
-        "LogName": "Rain -- during winter - evelyn.",
+        "LogName": "Rain -- during winter - Evelyn.",
         "Action": "EditData",
         "Target": "Characters/Dialogue/rainy",
         "When": {
@@ -90,7 +117,7 @@
             "EnableFor|contains=Evelyn": true
         },
         "Entries":{
-            "Evelyn": "Weather like this...we didn't use to get rain during winter.$s#$e#The snow'll become slush and that's difficult for George.",
+            "Evelyn": "Weather like this...we didn't use to get rain during winter.$s#$e#The snow'll become slush and that's difficult for George."
         }
-    },
+    }
 ]}

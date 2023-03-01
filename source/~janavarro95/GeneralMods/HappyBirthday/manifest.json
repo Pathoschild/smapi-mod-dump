@@ -22,5 +22,9 @@
       "UniqueID": "Omegasis.StardustCore",
       "MinimumVersion": "2.10.0"
     },
+    {
+      "UniqueID": "shoaib.stardewaccess",
+      "IsRequired": false
+    },
   ]
 }

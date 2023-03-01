@@ -6,9 +6,9 @@ mods:
    GMCM Options
 
 latest commit:
-   commit 51ab6850cbe2a5817df9fc39b8b6b08479d9b1d0
+   commit 638648db8f9807d960fffeed0857635ac1929f7f
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Wed Sep 28 19:29:26 2022 -0400
+   Date:   Wed Feb 1 20:55:57 2023 -0500
    
-       fix typo in README
+       enable nullable checks
    

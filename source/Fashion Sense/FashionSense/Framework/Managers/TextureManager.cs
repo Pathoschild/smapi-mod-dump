@@ -8,28 +8,26 @@
 **
 *************************************************/
 
-using FashionSense.Framework.Models;
-using FashionSense.Framework.Models.Hair;
-using Microsoft.Xna.Framework.Graphics;
+using FashionSense.Framework.Models.Appearances;
 using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FashionSense.Framework.Managers
 {
-    class TextureManager
+    internal class TextureManager
     {
         private IMonitor _monitor;
         private List<AppearanceContentPack> _appearanceTextures;
+        private Dictionary<string, AppearanceContentPack> _idToModels;
 
-        public TextureManager(IMonitor monitor, IModHelper helper)
+        public TextureManager(IMonitor monitor)
         {
             _monitor = monitor;
             _appearanceTextures = new List<AppearanceContentPack>();
+            _idToModels = new Dictionary<string, AppearanceContentPack>();
         }
 
         public void Reset(string packId = null)
@@ -37,6 +35,7 @@ namespace FashionSense.Framework.Managers
             if (String.IsNullOrEmpty(packId) is true)
             {
                 _appearanceTextures.Clear();
+                _idToModels.Clear();
             }
             else
             {
@@ -55,11 +54,18 @@ namespace FashionSense.Framework.Managers
             {
                 _appearanceTextures.Add(model);
             }
+
+            _idToModels[model.Id] = model;
+        }
+
+        public Dictionary<string, AppearanceContentPack> GetIdToAppearanceModels()
+        {
+            return _idToModels;
         }
 
         public List<AppearanceContentPack> GetAllAppearanceModels()
         {
-            return _appearanceTextures;
+            return _appearanceTextures.Where(t => t.IsLocked is false).ToList();
         }
 
         public List<T> GetAllAppearanceModels<T>() where T : AppearanceContentPack

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PhoneVillagers",
+  "Author": "DewMods",
+  "Version": "0.5.0",
+  "Description": "Talk to NPCs through the Social menu",
+  "UniqueID": "DewMods.StardewValleyMods.PhoneVillagers",
+  "EntryDll": "PhoneVillagers.dll",
+  "MinimumApiVersion": "3.18.2",
+  "UpdateKeys": [ "Nexus:2681" ]
+}

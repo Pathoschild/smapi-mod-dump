@@ -1,0 +1,31 @@
+{
+    // Config settings
+    "config.option.failed_harvest.name": "Prevent Failed Harvesting",
+    "config.option.failed_harvest.description": "Prevents the failed milking/shearing animation and sound effect if no valid animal is selected. Note: Disable this if using the 'Tap-to-move & Auto-Attack' control scheme on Android.",
+    "config.option.animal_produce.name": "Show Animal Produce",
+    "config.option.animal_produce.description": "Displays produce above animal if it is ready to be harvested.",
+    "config.option.hearts_animal.name": "Show Farm Animal Hearts",
+    "config.option.hearts_animal.description": "Display hearts above farm animals (cows, ducks, etc.) that have not yet been petted.",
+    "config.option.hearts_pet.name": "Show Pet Hearts",
+    "config.option.hearts_pet.description": "Display hearts above pets (dogs, cats, etc.) that have not yet been petted.",
+    "config.option.hearts_enabled.name": "[!] Enable Hearts",
+    "config.option.hearts_enabled.description": "Allows hearts to be displayed above animals. Warning: Turning this off will hide ALL floating hearts enabled by this mod (animals, pets, etc.)",
+    "config.option.hearts_max_friendship.name": "Hide Hearts w/ Max Friendship",
+    "config.option.hearts_max_friendship.description": "Hides the hearts when friendship with an animal or pet is at maximum level. Warning: Be careful with this because friendship will drop at the end of the day if you don't pet your friend!",
+
+    // Other messages
+    "notification.inventory_full": "Inventory Full",
+
+    "action.out_of_range.milk": "milking",
+    "action.out_of_range.shear": "shearing",
+    "notification.out_of_range": "Out of {{ranchActionPresent}} range",
+
+    "product.milk": "Milk",
+    "product.wool": "Wool",
+
+    "notification.util_action": "Baby {{Name}} will produce {{Product}} in {{Days}} days.",
+
+    "action.unable.milk": "milk",
+    "action.unable.shear": "shear",
+    "notification.unable": "Nothing to {{Action}}"
+}

@@ -98,7 +98,7 @@ internal static partial class Texture2DExt {
 					using var reboundTexture = new TextureBinder(() => {
 						if (@this.glTexture <= 0) {
 							GenerateTexture(@this, false);
-							GLExt.Checked(() => MonoGame.OpenGL.GL.PixelStore(PixelStoreParameter.UnpackAlignment, Math.Min(@this.Format.GetSize(), 8)));
+							GLExt.PixelStoreChecked(PixelStoreName.UnpackAlignment, Math.Min(@this.Format.GetSize(), 8));
 							isSet = true;
 							initialized = false;
 							return (GLExt.ObjectId)@this.glTexture;
@@ -109,7 +109,7 @@ internal static partial class Texture2DExt {
 					});
 
 					if (!isSet) {
-						GLExt.Checked(() => MonoGame.OpenGL.GL.PixelStore(PixelStoreParameter.UnpackAlignment, Math.Min(@this.Format.GetSize(), 8)));
+						GLExt.PixelStoreChecked(PixelStoreName.UnpackAlignment, Math.Min(@this.Format.GetSize(), 8));
 					}
 
 					bool isCompressed = @this.glFormat == PixelFormat.CompressedTextureFormats;

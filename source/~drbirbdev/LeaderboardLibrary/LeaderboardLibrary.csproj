@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common.targets" />
+  <Import Project="..\common-nospace.targets" />
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>

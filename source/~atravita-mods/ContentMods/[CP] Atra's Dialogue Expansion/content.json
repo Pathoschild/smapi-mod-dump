@@ -13,9 +13,9 @@
     "Format": "1.28.0",
     "ConfigSchema": {
         "EnableFor": {
-            "AllowValues": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sandy, Sebastian",
+            "AllowValues": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Kent, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sam, Sandy, Sebastian, Shane, Vincent, Willy",
             "AllowMultiple": true,
-            "Default": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sandy, Sebastian",
+            "Default": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Kent, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sam, Sandy, Sebastian, Shane, Vincent, Willy",
             "AllowBlank": true
         }
     },
@@ -52,6 +52,17 @@
             "When": {
                 "Year|contains=1": false
             }
+        },
+        {
+            "Name": "HasPet",
+            "Value": "{{HasSeenEvent:HostPlayer|contains=1590166, 897405}}",
+        },
+        {
+            "Name": "HasPet",
+            "Value": false,
+            "When": {
+                "HasFlag:HostPlayer": "rejectedPet"
+            }
         }
     ],
     "Changes": [
@@ -59,11 +70,22 @@
             "Action": "Include",
             "LogName": "Dialogue Changes: base",
             "FromFile": "{{FirstValidFile: assets/{{language}}/base.json, assets/default/base.json}}",
+            "When": {"Day|contains=0": false}
         },
         {
             "Action": "Include",
             "LogName": "Dialogue Changes: Randomized",
-            "FromFile": "{{FirstValidFile: assets/{{language}}/{{DialogueRandom}}/toc.json, assets/default/{{DialogueRandom}}/toc.json}}"
+            "FromFile": "{{FirstValidFile: assets/{{language}}/{{DialogueRandom}}/toc.json, assets/default/{{DialogueRandom}}/toc.json}}",
+            "When": {"Day|contains=0": false}
+        },
+        {
+            "Action": "EditData",
+            "LogName": "EventRepeater",
+            "Target": "Mods/EventRepeater/MailToRepeat",
+            "When": {"DayOfWeek" : "Monday"},
+            "Entries": {
+                "atravitaDialogueLeahBeach": "null",
+            }
         }
     ],
 }

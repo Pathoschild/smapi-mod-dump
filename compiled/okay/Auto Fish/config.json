@@ -2,5 +2,6 @@
   "maxCastPower": true,
   "autoHit": true,
   "fastBite": false,
-  "catchTreasure": true
+  "catchTreasure": true,
+  "fasterSpeed": false
 }

@@ -11,11 +11,12 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Shockah.CommonModCode;
 using Shockah.CommonModCode.GMCM;
-using Shockah.CommonModCode.SMAPI;
-using Shockah.CommonModCode.Stardew;
-using Shockah.CommonModCode.UI;
+using Shockah.Kokoro;
+using Shockah.Kokoro.GMCM;
+using Shockah.Kokoro.SMAPI;
+using Shockah.Kokoro.Stardew;
+using Shockah.Kokoro.UI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -31,7 +32,7 @@ using SObject = StardewValley.Object;
 
 namespace Shockah.MachineStatus
 {
-	public class MachineStatus : Mod
+	public class MachineStatus : BaseMod<ModConfig>
 	{
 		private enum MachineType
 		{
@@ -42,7 +43,6 @@ namespace Shockah.MachineStatus
 		private static readonly ItemRenderer ItemRenderer = new();
 		private static readonly Vector2 DigitSize = new(5, 7);
 		private static readonly Vector2 SingleMachineSize = new(64, 64);
-		private static readonly Vector2 RealSingleMachineSize = new(32, 64);
 
 		private static readonly (string titleKey, (int machineId, bool bigCraftable, string machineName, MachineType type)[] machineNames)[] KnownMachineNames = new[]
 		{
@@ -91,8 +91,8 @@ namespace Shockah.MachineStatus
 		};
 
 		internal static MachineStatus Instance { get; set; } = null!;
-		internal ModConfig Config { get; private set; } = null!;
 		private bool IsConfigRegistered { get; set; } = false;
+		internal IDynamicGameAssetsApi? DynamicGameAssetsApi { get; set; }
 
 		private readonly IList<WeakReference<SObject>> TrackedMachines = new List<WeakReference<SObject>>();
 		private readonly IList<SObject> IgnoredMachinesForUpdates = new List<SObject>();
@@ -128,10 +128,14 @@ namespace Shockah.MachineStatus
 		private float VisibilityAlpha { get => PerScreenVisibilityAlpha.Value; set => PerScreenVisibilityAlpha.Value = value; }
 		private bool IsHoveredOver { get => PerScreenIsHoveredOver.Value; set => PerScreenIsHoveredOver.Value = value; }
 
-		public override void Entry(IModHelper helper)
+		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
+		{
+			// do nothing, for now
+		}
+
+		public override void OnEntry(IModHelper helper)
 		{
 			Instance = this;
-			Config = helper.ReadConfig<ModConfig>();
 
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -164,6 +168,7 @@ namespace Shockah.MachineStatus
 					Helper.WriteConfig(Config);
 					ForceRefreshDisplayedMachines();
 					SetupConfig();
+					LogConfig();
 				}
 			);
 
@@ -231,8 +236,6 @@ namespace Shockah.MachineStatus
 				helper.AddPageLink(pageKey, "config.exceptions");
 			}
 
-			helper.AddBoolOption("config.misc.ignoreUnknownItems", () => Config.IgnoreUnknownItems);
-
 			helper.AddSectionTitle("config.layout.section");
 			helper.AddEnumOption("config.anchor.screen", valuePrefix: "config.anchor", property: () => Config.ScreenAnchorSide);
 			helper.AddEnumOption("config.anchor.panel", valuePrefix: "config.anchor", property: () => Config.PanelAnchorSide);
@@ -255,7 +258,6 @@ namespace Shockah.MachineStatus
 			helper.AddKeybindList("config.appearance.visibilityKeybind", () => Config.VisibilityKeybind);
 			helper.AddNumberOption("config.appearance.alpha.focused", () => Config.FocusedAlpha, min: 0f, max: 1f, interval: 0.05f);
 			helper.AddNumberOption("config.appearance.alpha.normal", () => Config.NormalAlpha, min: 0f, max: 1f, interval: 0.05f);
-			helper.AddBoolOption("config.appearance.busyDancing", () => Config.BusyDancing);
 
 			helper.AddSectionTitle("config.groupingSorting.section");
 			helper.AddEnumOption("config.groupingSorting.grouping", () => Config.Grouping);
@@ -291,31 +293,26 @@ namespace Shockah.MachineStatus
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
+			DynamicGameAssetsApi = Helper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
+
 			SetupConfig();
 			Visibility = MachineRenderingOptions.Visibility.Normal;
 			VisibilityAlpha = Config.NormalAlpha;
 			IsHoveredOver = false;
 
 			var harmony = new Harmony(ModManifest.UniqueID);
-			try
-			{
-				harmony.PatchVirtual(
-					original: AccessTools.Method(typeof(SObject), nameof(SObject.performObjectDropInAction)),
-					monitor: Monitor,
-					prefix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_performObjectDropInAction_Prefix)),
-					postfix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_performObjectDropInAction_Postfix))
-				);
-				harmony.PatchVirtual(
-					original: AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),
-					monitor: Monitor,
-					prefix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_checkForAction_Prefix)),
-					postfix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_checkForAction_Postfix))
-				);
-			}
-			catch (Exception ex)
-			{
-				Monitor.Log($"Could not patch methods - Machine Status probably won't work.\nReason: {ex}", LogLevel.Error);
-			}
+			harmony.TryPatchVirtual(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.performObjectDropInAction)),
+				prefix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_performObjectDropInAction_Prefix)),
+				postfix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_performObjectDropInAction_Postfix))
+			);
+			harmony.TryPatchVirtual(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),
+				prefix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_checkForAction_Prefix)),
+				postfix: new HarmonyMethod(typeof(MachineStatus), nameof(SObject_checkForAction_Postfix))
+			);
 		}
 
 		private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
@@ -434,17 +431,12 @@ namespace Shockah.MachineStatus
 				var machineLocation = panelLocation + machineUnscaledOffset * Config.Scale;
 				var machineState = GetMachineState(machine);
 
-				Vector2 scaleFactor = Vector2.One;
-				if (Config.BusyDancing)
-				{
-					scaleFactor = (SingleMachineSize + machine.getScale() * new Vector2(3f, 1f)) / SingleMachineSize;
-					scaleFactor = new Vector2(scaleFactor.X, 1f / scaleFactor.Y);
-				}
 				ItemRenderer.DrawItem(
 					e.SpriteBatch, machine,
-					machineLocation + new Vector2((SingleMachineSize.X - RealSingleMachineSize.X) / 2, 0) * Config.Scale, RealSingleMachineSize * Config.Scale,
+					machineLocation,
+					SingleMachineSize * Config.Scale,
 					Color.White * VisibilityAlpha,
-					scale: machineState == MachineState.Busy ? scaleFactor : Vector2.One
+					StackDrawType.Draw
 				);
 
 				float timeVariableOffset = GetBubbleSwayOffset();
@@ -459,61 +451,71 @@ namespace Shockah.MachineStatus
 						machineLocation + new Vector2(SingleMachineSize.X * 0.5f - xEmoteRectangle.Width * emoteScale * 0.5f, timeVariableOffset - xEmoteRectangle.Height * emoteScale * 0.5f) * Config.Scale,
 						xEmoteRectangle,
 						Color.White * 0.75f * VisibilityAlpha,
-						0f, Vector2.Zero, emoteScale * Config.Scale, SpriteEffects.None, 0.91f
+						0f, Vector2.Zero, emoteScale * Config.Scale, SpriteEffects.None, 0f
 					);
 				}
 
-				if (machineState == MachineState.Ready)
+				switch (machineState)
 				{
-					if (Config.ShowItemBubble)
-					{
-						if (heldItems.Count == 0)
+					case MachineState.Ready:
 						{
-							DrawEmote(43, 0);
+							if (Config.ShowItemBubble)
+							{
+								var bubbleRectangle = new Rectangle(141, 465, 20, 24);
+								float bubbleScale = 2f;
+
+								e.SpriteBatch.Draw(
+									Game1.mouseCursors,
+									machineLocation + new Vector2(SingleMachineSize.X * 0.5f - bubbleRectangle.Width * bubbleScale * 0.5f, timeVariableOffset - bubbleRectangle.Height * bubbleScale * 0.5f) * Config.Scale,
+									bubbleRectangle,
+									Color.White * 0.75f * VisibilityAlpha,
+									0f, Vector2.Zero, bubbleScale * Config.Scale, SpriteEffects.None, 0.91f
+								);
+
+								if (heldItems.Count == 0)
+								{
+									Monitor.LogOnce($"Detected invalid machine state `{machineState}` for machine `{machine.DisplayName}`, but there are no items inside.", LogLevel.Error);
+									e.SpriteBatch.Draw(
+										Game1.mouseCursors,
+										machineLocation + new Vector2(SingleMachineSize.X * 0.5f, timeVariableOffset - 4) * Config.Scale,
+										new Rectangle(322, 498, 12, 12),
+										Color.White * VisibilityAlpha,
+										0f,
+										new Vector2(6),
+										2f * Config.Scale,
+										SpriteEffects.None,
+										0f
+									);
+								}
+								else
+								{
+									int heldItemVariableIndex = (int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / (1000.0 * Config.BubbleItemCycleTime)) % heldItems.Count;
+									ItemRenderer.DrawItem(
+										e.SpriteBatch, heldItems[heldItemVariableIndex],
+										machineLocation + new Vector2(SingleMachineSize.X * 0.5f, timeVariableOffset - 4) * Config.Scale,
+										new Vector2(24, 24) * bubbleScale * 0.6f * Config.Scale,
+										Color.White * VisibilityAlpha,
+										StackDrawType.HideButShowQuality,
+										rectAnchorSide: UIAnchorSide.Center
+									);
+								}
+							}
+							else
+							{
+								DrawEmote(3, 0);
+							}
+
+							break;
 						}
-						else
-						{
-							var bubbleRectangle = new Rectangle(141, 465, 20, 24);
-							float bubbleScale = 2f;
-
-							e.SpriteBatch.Draw(
-								Game1.mouseCursors,
-								machineLocation + new Vector2(SingleMachineSize.X * 0.5f - bubbleRectangle.Width * bubbleScale * 0.5f, timeVariableOffset - bubbleRectangle.Height * bubbleScale * 0.5f) * Config.Scale,
-								bubbleRectangle,
-								Color.White * 0.75f * VisibilityAlpha,
-								0f, Vector2.Zero, bubbleScale * Config.Scale, SpriteEffects.None, 0.91f
-							);
-
-							int heldItemVariableIndex = (int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / (1000.0 * Config.BubbleItemCycleTime)) % heldItems.Count;
-							ItemRenderer.DrawItem(
-								e.SpriteBatch, heldItems[heldItemVariableIndex],
-								machineLocation + new Vector2(SingleMachineSize.X * 0.5f, timeVariableOffset - 4) * Config.Scale,
-								new Vector2(bubbleRectangle.Size.X, bubbleRectangle.Size.Y) * bubbleScale * 0.8f * Config.Scale,
-								Color.White * VisibilityAlpha,
-								rectAnchorSide: UIAnchorSide.Center
-							);
-						}
-					}
-					else
-					{
-						DrawEmote(3, 0);
-					}
-				}
-				else if (machineState == MachineState.Waiting)
-				{
-					DrawEmote(0, 4);
-				}
-
-				if (machine.Stack > 1)
-				{
-					Utility.drawTinyDigits(
-						machine.Stack,
-						e.SpriteBatch,
-						machineLocation + SingleMachineSize * Config.Scale - DigitSize * new Vector2(((int)Math.Log10(machine.Stack) + 1), 1.2f) * 3 * Config.Scale,
-						3f * Config.Scale,
-						1f,
-						Color.White * VisibilityAlpha
-					);
+					case MachineState.Waiting:
+						DrawEmote(0, 4);
+						break;
+					case MachineState.Busy:
+						int frame = (int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 400) % 4;
+						DrawEmote(frame, 10);
+						break;
+					default:
+						throw new ArgumentException($"{nameof(MachineState)} has an invalid value.");
 				}
 			}
 		}
@@ -613,9 +615,6 @@ namespace Shockah.MachineStatus
 
 			foreach (var entry in GroupedMachines)
 			{
-				if (entry.machine.ParentSheetIndex < 0 && Config.IgnoreUnknownItems)
-					continue;
-
 				machineCoords.Add((position: (column++, row), machine: entry));
 				if (column == Config.MaxColumns)
 				{
@@ -646,8 +645,6 @@ namespace Shockah.MachineStatus
 		{
 			void AddHeldItem(IList<SObject> heldItems, SObject newHeldItem)
 			{
-				if (newHeldItem.ParentSheetIndex < 0 && Config.IgnoreUnknownItems)
-					return;
 				foreach (var heldItem in heldItems)
 				{
 					if (heldItem.Name == newHeldItem.name)
@@ -813,11 +810,11 @@ namespace Shockah.MachineStatus
 			AreVisibleMachinesDirty = false;
 		}
 
-		private bool MachineMatches(SObject machine, IEnumerable<IWildcardPattern> patterns)
+		private static bool MachineMatches(SObject machine, IEnumerable<IWildcardPattern> patterns)
 			=> patterns.Any(p => p.Matches(machine.Name) || p.Matches(machine.DisplayName));
 
 		[return: NotNullIfNotNull("object")]
-		private SObject? GetOne(SObject? @object)
+		private static SObject? GetOne(SObject? @object)
 		{
 			if (@object is CrabPot crabPot)
 				return new CrabPot(crabPot.TileLocation);
@@ -825,7 +822,7 @@ namespace Shockah.MachineStatus
 				return @object?.getOne() as SObject;
 		}
 
-		private SObject CopyMachine(SObject machine)
+		private static SObject CopyMachine(SObject machine)
 		{
 			var newMachine = GetOne(machine);
 			newMachine.TileLocation = machine.TileLocation;
@@ -838,7 +835,7 @@ namespace Shockah.MachineStatus
 			return newMachine;
 		}
 
-		private bool IsLocationAccessible(GameLocation location)
+		private static bool IsLocationAccessible(GameLocation location)
 		{
 			if (location is Cellar cellar)
 			{
@@ -854,7 +851,7 @@ namespace Shockah.MachineStatus
 			return true;
 		}
 
-		private MachineState GetMachineState(SObject machine)
+		private static MachineState GetMachineState(SObject machine)
 		{
 			if (machine is CrabPot crabPot)
 				if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
@@ -862,7 +859,18 @@ namespace Shockah.MachineStatus
 			if (machine is WoodChipper woodChipper)
 				if (woodChipper.depositedItem.Value is not null && woodChipper.heldObject.Value is null)
 					return MachineState.Busy;
-			return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.GetAnyHeldObject());
+
+			var readyForHarvest = machine.readyForHarvest.Value;
+			var minutesUntilReady = machine.MinutesUntilReady;
+			var heldObject = machine.GetAnyHeldObject();
+
+			var result = GetMachineState(readyForHarvest, minutesUntilReady, heldObject);
+			if (result == MachineState.Ready && readyForHarvest && minutesUntilReady <= 0 && heldObject is null && machine.GetType().Assembly.GetName().Name == "DynamicGameAssets")
+			{
+				Instance.Monitor.LogOnce($"Detected invalid machine state `{result}` for a DynamicGameAssets machine `{machine.DisplayName}`, but there are no items inside. However, this is a known issue with DynamicGameAssets.", LogLevel.Warn);
+				return MachineState.Waiting;
+			}
+			return result;
 		}
 
 		private bool ShouldShowMachine(SObject machine, MachineState state)
@@ -874,8 +882,11 @@ namespace Shockah.MachineStatus
 				_ => throw new InvalidOperationException(),
 			};
 
-		private MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, SObject? heldObject)
+		private static MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, SObject? heldObject)
 		{
+			// this is NOT a valid check for the "Waiting" state - it would break Incubator support:
+			// `readyForHarvest || heldObject is null`
+
 			if (readyForHarvest || (heldObject is not null && minutesUntilReady <= 0))
 				return MachineState.Ready;
 			else if (minutesUntilReady > 0)
@@ -884,15 +895,13 @@ namespace Shockah.MachineStatus
 				return MachineState.Waiting;
 		}
 
-		private bool IsMachine(GameLocation location, SObject @object)
+		private static bool IsMachine(SObject @object)
 		{
 			if (@object is CrabPot || @object is WoodChipper)
 				return true;
 			if (@object.IsSprinkler())
 				return false;
 			if (!@object.bigCraftable.Value && @object.Category != SObject.BigCraftableCategory)
-				return false;
-			if (@object.ParentSheetIndex <= 0)
 				return false;
 			if (@object.heldObject.Value is Chest || @object.heldObject.Value?.Name == "Chest")
 				return false;
@@ -942,7 +951,7 @@ namespace Shockah.MachineStatus
 
 		internal bool UpdateMachine(GameLocation location, SObject machine)
 		{
-			if (!IsMachine(location, machine))
+			if (!IsMachine(machine))
 				return false;
 			if (!IsLocationAccessible(location))
 				return RemoveMachine(location, machine);
@@ -954,7 +963,7 @@ namespace Shockah.MachineStatus
 		{
 			if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
 				return;
-			if (!IsMachine(location, machine))
+			if (!IsMachine(machine))
 				return;
 
 			UpdateMachine(location, machine);

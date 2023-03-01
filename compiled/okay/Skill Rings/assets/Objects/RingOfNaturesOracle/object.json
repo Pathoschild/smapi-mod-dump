@@ -6,9 +6,11 @@
   "Price": 50000,
   "Recipe": null,
   "NameLocalization": {
-	  "zh": "自然神谕之戒"
+	  "zh": "自然神谕之戒",
+	  "ko": "대자연 신탁의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "自然之神本身在帮助你。"
-  },
+	  "zh": "自然之神本身在帮助你。",
+	  "ko": "대자연의 신께서 당신을 돕습니다."
+  }
 }

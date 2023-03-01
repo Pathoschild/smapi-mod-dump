@@ -4,15 +4,13 @@
     <AssemblyName>AdvancedCasksMod</AssemblyName>
     <RootNamespace>AdvancedCasksMod</RootNamespace>
     <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
-    <Platforms>AnyCPU</Platforms>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <IgnoreModFilePatterns>\.dll$, \.pdb$</IgnoreModFilePatterns>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>

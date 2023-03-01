@@ -10,15 +10,10 @@
 
 using FashionSense.Framework.Interfaces;
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FashionSense.Framework.Managers
 {
-    class ApiManager
+    internal class ApiManager
     {
         private IMonitor _monitor;
         private IContentPatcherApi _contentPatcherApi;

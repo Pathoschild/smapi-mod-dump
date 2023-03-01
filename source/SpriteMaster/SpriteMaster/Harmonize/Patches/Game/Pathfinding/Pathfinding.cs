@@ -13,6 +13,7 @@ using LinqFasterer;
 using Microsoft.VisualBasic.CompilerServices;
 using Priority_Queue;
 using SpriteMaster.Extensions;
+using SpriteMaster.Types.Pooling;
 using StardewValley;
 using System;
 using System.Collections.Concurrent;
@@ -27,6 +28,7 @@ using DoorPair = KeyValuePair<XNA.Point, string>;
 
 [UsedImplicitly]
 internal static partial class Pathfinding {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static bool GetTarget(this Warp? warp, Dictionary<string, GameLocation> locations, [NotNullWhen(true)] out GameLocation? target) {
 		if (warp?.TargetName is not {} targetName) {
 			target = null;
@@ -65,6 +67,7 @@ internal static partial class Pathfinding {
 		internal QueueLocation? Previous = null;
 		internal int ListDistance = int.MaxValue;
 
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal QueueLocation(GameLocation location) => Location = location;
 
 		internal readonly struct Comparer : IEqualityComparer<QueueLocation> {
@@ -79,7 +82,7 @@ internal static partial class Pathfinding {
 		try {
 			// Get a dummy NPC to pass to the sub-pathfinders to validate routes to warps/doors.
 			var queue = new SimplePriorityQueue<QueueLocation, int>(
-				priorityComparer: (x, y) => x - y,
+				priorityComparer: [MethodImpl(Runtime.MethodImpl.Inline)] (x, y) => x - y,
 				itemEquality: new QueueLocation.Comparer()
 			);
 			var startQueueLocation = new QueueLocation(start) { ListDistance = 0 };
@@ -132,6 +135,7 @@ internal static partial class Pathfinding {
 				}
 
 				// Process a neighboring node and potentially add it to the queue
+				[MethodImpl(Runtime.MethodImpl.Inline)]
 				void ProcessNeighbor(GameLocation node) {
 					if (!queueDataMap.TryGetValue(node, out var dataNode)) {
 						return;
@@ -180,95 +184,352 @@ internal static partial class Pathfinding {
 		return null; // Also no path
 	}
 
+	private enum RouteGender {
+		General,
+		Male,
+		Female
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static RouteGender GetRouteGender(this List<string> route, bool honorGender) {
+		if (honorGender) {
+			if (MaleLocations.AnyF(route.Contains)) {
+				return RouteGender.Male;
+			}
+
+			if (FemaleLocations.AnyF(route.Contains)) {
+				return RouteGender.Female;
+			}
+		}
+
+		return RouteGender.General;
+	}
+
+	private readonly struct RouteContainerWrapper : IDisposable {
+		private readonly bool HonorGender;
+		private readonly GenderedTuple<DefaultPooledObject<HashSet<string>>> FoundPooled;
+
+		internal readonly GenderedTuple<HashSet<string>> Found;
+		internal readonly GenderedTuple<ConcurrentBag<List<string>>> Routes;
+		internal readonly GenderedTuple<ConcurrentDictionary<RouteKey, List<string>>>? ConcurrentRoutes;
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal readonly HashSet<string> GetFoundSet(RouteGender gender) {
+			if (!HonorGender) {
+				return Found.General;
+			}
+
+			return gender switch {
+				RouteGender.General => Found.General,
+				RouteGender.Male => Found.Male,
+				RouteGender.Female => Found.Female,
+				_ => ThrowHelper.ThrowArgumentOutOfRangeExceptionFromValue<HashSet<string>>(gender)
+			};
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal readonly ConcurrentBag<List<string>> GetRoutes(RouteGender gender) {
+			if (!HonorGender) {
+				return Routes.General;
+			}
+
+			return gender switch {
+				RouteGender.General => Routes.General,
+				RouteGender.Male => Routes.Male,
+				RouteGender.Female => Routes.Female,
+				_ => ThrowHelper.ThrowArgumentOutOfRangeExceptionFromValue<ConcurrentBag<List<string>>>(gender)
+			};
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal readonly ConcurrentDictionary<RouteKey, List<string>>? GetConcurrentRoutes(RouteGender gender) {
+			if (ConcurrentRoutes is not { } concurrentRoutes) {
+				return null;
+			}
+
+			if (!HonorGender) {
+				return concurrentRoutes.General;
+			}
+
+			return gender switch {
+				RouteGender.General => concurrentRoutes.General,
+				RouteGender.Male => concurrentRoutes.Male,
+				RouteGender.Female => concurrentRoutes.Female,
+				_ => ThrowHelper.ThrowArgumentOutOfRangeExceptionFromValue<ConcurrentDictionary<RouteKey, List<string>>?>(gender)
+			};
+		}
+
+		internal readonly record struct RouteSet(
+			HashSet<string> Found,
+			ConcurrentBag<List<string>> Routes,
+			ConcurrentDictionary<RouteKey, List<string>>? ConcurrentRoutes
+		);
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal readonly RouteSet Get(RouteGender gender) {
+			if (!HonorGender) {
+				return new(Found.General, Routes.General, ConcurrentRoutes?.General);
+			}
+
+			return gender switch {
+				RouteGender.General => new(Found.General, Routes.General, ConcurrentRoutes?.General),
+				RouteGender.Male => new(Found.Male, Routes.Male, ConcurrentRoutes?.Male),
+				RouteGender.Female => new(Found.Female, Routes.Female, ConcurrentRoutes?.Female),
+				_ => ThrowHelper.ThrowArgumentOutOfRangeExceptionFromValue<RouteSet>(gender)
+			};
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal readonly RouteSet Get(List<string> route) =>
+			Get(route.GetRouteGender(HonorGender));
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		internal RouteContainerWrapper(
+			bool honorGender,
+			in RouteList routeList,
+			in GenderedTuple<ConcurrentDictionary<RouteKey, List<string>>>? concurrentRoutes
+		) {
+			HonorGender = honorGender;
+
+			int routeListCapacity = routeList.Capacity;
+			void ClearAndSetCapacity(HashSet<string> set) {
+				set.Clear();
+				set.EnsureCapacity(routeListCapacity);
+			}
+
+			FoundPooled = new(
+				ObjectPoolExt.Take<HashSet<string>>(ClearAndSetCapacity),
+				ObjectPoolExt.Take<HashSet<string>>(ClearAndSetCapacity),
+				ObjectPoolExt.Take<HashSet<string>>(ClearAndSetCapacity)
+			);
+
+			Found = new(
+				FoundPooled.General.Value,
+				FoundPooled.Male.Value,
+				FoundPooled.Female.Value
+			);
+
+			Routes = new(
+				routeList.General,
+				routeList.Male,
+				routeList.Female
+			);
+
+			ConcurrentRoutes = concurrentRoutes;
+		}
+
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		public readonly void Dispose() {
+			foreach (var pooled in FoundPooled) {
+				pooled.Dispose();
+			}
+		}
+	}
+
 	private static bool ExploreWarpPointsImpl(
 		GameLocation startLocation,
-		List<string> route,
 		in RouteList routeList,
-		Dictionary<string, GameLocation> locations
+		Dictionary<string, GameLocation> locations,
+		GenderedTuple<ConcurrentDictionary<RouteKey, List<string>>>? concurrentRoutes = null
 	) {
-		using var generalFoundDisposable = ObjectPoolExt.Take<HashSet<string>>(s => s.Clear());
-		var generalFound = generalFoundDisposable.Value;
-		generalFound.EnsureCapacity(routeList.Capacity);
-		using var maleFoundDisposable = ObjectPoolExt.Take<HashSet<string>>(s => s.Clear());
-		var maleFound = maleFoundDisposable.Value;
-		maleFound.EnsureCapacity(routeList.Capacity);
-		using var femaleFoundDisposable = ObjectPoolExt.Take<HashSet<string>>(s => s.Clear());
-		var femaleFound = femaleFoundDisposable.Value;
-		femaleFound.EnsureCapacity(routeList.Capacity);
+		try {
+			bool honorGender = SMConfig.Extras.Pathfinding.HonorGenderLocking;
 
-		bool honorGender = SMConfig.Extras.Pathfinding.HonorGenderLocking;
+			using RouteContainerWrapper routeWrapper = new(
+				honorGender,
+				routeList,
+				concurrentRoutes
+			);
 
-		void AddToRouteList(ConcurrentBag<List<string>> list, HashSet<string> found, List<string> route) {
-			list.Add(route);
+			[MethodImpl(Runtime.MethodImpl.Inline)]
+			void AddToRouteList(RouteGender gender, List<string> route, bool check = true) {
+				var (
+					found,
+					routes,
+					concurrentMap
+					) = routeWrapper.Get(gender);
 
-			// Repeatedly remove the last element from the route, and add it into the routeList. This allows us to bypass having to recalculate for smaller paths in many cases,
-			// as we've already calculated them.
-			for (int len = route.Count - 1; len >= 2; --len) {
-				if (!found.Add(route[len - 1])) {
-					break;
+				// Do not add the route if it's already been found
+				if (check && !found.Add(route.LastF())) {
+					return;
 				}
-				var subList = route.GetRange(0, len);
-				list.Add(subList);
-			}
-		}
 
-		void AddToRouteListChecked(ConcurrentBag<List<string>> list, HashSet<string> found, List<string> route) {
-			if (!found.Add(route.LastF())) {
-				return;
-			}
+				routes.Add(route);
+				// Add the route to the concurrent map so that other tasks are aware of it
+				concurrentMap?.TryAdd(route.GetRouteKey(), route);
 
-			AddToRouteList(list, found, route);
-		}
+				// This adds a subroute (an internal range of an existing route)
+				[MethodImpl(Runtime.MethodImpl.Inline)]
+				void AddSubList(List<string> subRoute, bool toThis) {
+					var (_, subList, subConcurrentMap) = routeWrapper.Get(subRoute);
 
-		// Iterate over each location, performing a recursive Dijkstra traversal on each.
-		foreach (var location in Game1.locations) {
-			if (startLocation.Equals(location)) {
-				continue;
-			}
-
-			// If we've already found a path to this location, there is no reason to process it again.
-			if (!generalFound.Add(location.Name)) {
-				continue;
-			}
-
-			if (Dijkstra(startLocation, location, locations, Array.Empty<string>()) is not { } result) {
-				continue;
-			}
-
-			bool containsMale = honorGender && MaleLocations.AnyF(result.Contains);
-			bool containsFemale = honorGender && FemaleLocations.AnyF(result.Contains);
-			switch (containsMale, containsFemale) {
-				case (true, true): {
-					// Both?!
-					if (Dijkstra(startLocation, location, locations, MaleLocations) is { } femaleResult) {
-						AddToRouteListChecked(routeList.Female, femaleFound, femaleResult);
+					// Only add it to our own list if specified
+					if (toThis) {
+						subList?.Add(subRoute);
 					}
-					if (Dijkstra(startLocation, location, locations, FemaleLocations) is { } maleResult) {
-						AddToRouteListChecked(routeList.Male, maleFound, maleResult);
-					}
-				} break;
-				case (true, false): {
-						// Male
-						AddToRouteListChecked(routeList.Male, maleFound, result);
 
-					if (Dijkstra(startLocation, location, locations, MaleLocations) is { } femaleResult) {
-						AddToRouteListChecked(routeList.Female, femaleFound, femaleResult);
+					subConcurrentMap?.TryAdd(subRoute.GetRouteKey(), subRoute);
+				}
+
+				// Repeatedly remove the last element from the route, and add it into the routeList. This allows us to bypass having to recalculate for smaller paths in many cases,
+				// as we've already calculated them.
+				for (int len = route.Count - 1; len >= 2; --len) {
+					if (!found.Add(route[len - 1])) {
+						break;
 					}
-				} break;
-				case (false, true): {
+
+					var subList = route.GetRange(0, len);
+					AddSubList(subList, true);
+				}
+
+				// Only process routes that don't start from our starting location if we are processing concurrent routes for tasks
+				if (concurrentRoutes is not null) {
+					for (int start = 1; start < route.Count - 1; ++start) {
+						for (int len = route.Count - start; len >= 2; --len) {
+							var subList = route.GetRange(start, len);
+							// Do not add these to our own route list.
+							AddSubList(subList, false);
+						}
+					}
+				}
+			}
+
+			// Iterate over each location, performing a recursive Dijkstra traversal on each.
+			foreach (var location in Game1.locations) {
+				if (startLocation.Equals(location)) {
+					continue;
+				}
+
+				// If we've already found a (non-gendered) path to this location, there is no reason to process it again.
+				if (!routeWrapper.Found.General.Add(location.Name)) {
+					continue;
+				}
+
+				List<string> result;
+
+				bool haveMale = false;
+				bool haveFemale = false;
+
+				// Check the concurrent routes to see if another task has already generated this particular route
+				if (routeWrapper.ConcurrentRoutes is { } concurrentRoutesValue) {
+					var routeKey = new RouteKey(startLocation.Name, location.Name);
+
+					// Check for a general result
+					if (concurrentRoutesValue.General.TryGetValue(routeKey, out var concurrentGeneralResult)) {
+						haveMale = true;
+						haveFemale = true;
+						AddToRouteList(RouteGender.General, concurrentGeneralResult, check: false);
+					}
+					else if (honorGender) {
+						// Otherwise, check for gendered results
+						if (concurrentRoutesValue.Male.TryGetValue(routeKey, out var concurrentMaleResult)) {
+							haveMale = true;
+							AddToRouteList(RouteGender.Male, concurrentMaleResult);
+						}
+
+						if (concurrentRoutesValue.Female.TryGetValue(routeKey, out var concurrentFemaleResult)) {
+							haveFemale = true;
+							AddToRouteList(RouteGender.Female, concurrentFemaleResult);
+						}
+					}
+				}
+
+				// If we've found routes for both males and females (or a general route) then we're already done.
+				if (haveMale && haveFemale) {
+					continue;
+				}
+
+				if (honorGender) {
+					// If we have only a male or a female result, try to calculate a result for the opposing gender
+					if (haveMale || haveFemale) {
+						if (haveMale) {
+							if (!MaleLocations.ContainsF(startLocation.Name) && !MaleLocations.ContainsF(location.Name)) {
+								if (Dijkstra(startLocation, location, locations, MaleLocations) is { } femaleResult) {
+									haveFemale = true;
+									AddToRouteList(RouteGender.Female, femaleResult);
+								}
+							}
+						}
+						else {
+							if (!FemaleLocations.ContainsF(startLocation.Name) && !FemaleLocations.ContainsF(location.Name)) {
+								if (Dijkstra(startLocation, location, locations, FemaleLocations) is { } maleResult) {
+									haveMale = true;
+									AddToRouteList(RouteGender.Male, maleResult);
+								}
+							}
+						}
+
+						// If we have routes for both genders, continue.
+						if (haveMale && haveFemale) {
+							continue;
+						}
+					}
+				}
+
+				if (Dijkstra(startLocation, location, locations, Array.Empty<string>()) is { } calculatedResult) {
+					result = calculatedResult;
+				}
+				else {
+					continue;
+				}
+
+				bool containsMale = honorGender && MaleLocations.AnyF(result.Contains);
+				bool containsFemale = honorGender && FemaleLocations.AnyF(result.Contains);
+				switch (containsMale, containsFemale) {
+					case (true, true): {
+						// Both?!
 						// Female
-						AddToRouteListChecked(routeList.Female, femaleFound, result);
+						if (!haveFemale && !MaleLocations.ContainsF(startLocation.Name) &&
+								!MaleLocations.ContainsF(location.Name)) {
+							if (Dijkstra(startLocation, location, locations, MaleLocations) is { } femaleResult) {
+								AddToRouteList(RouteGender.Female, femaleResult);
+							}
+						}
 
-					if (Dijkstra(startLocation, location, locations, FemaleLocations) is { } maleResult) {
-						AddToRouteListChecked(routeList.Male, maleFound, maleResult);
+						// Male
+						if (!haveMale && !FemaleLocations.ContainsF(startLocation.Name) &&
+								!FemaleLocations.ContainsF(location.Name)) {
+							if (Dijkstra(startLocation, location, locations, FemaleLocations) is { } maleResult) {
+								AddToRouteList(RouteGender.Male, maleResult);
+							}
+						}
 					}
-				} break;
-				case (false, false):
-					AddToRouteList(routeList.General, generalFound, result);
-					break;
-			}
-		}
+						break;
+					case (true, false): {
+						// Male
+						AddToRouteList(RouteGender.Male, result);
 
-		return true;
+						if (!haveFemale && !MaleLocations.ContainsF(startLocation.Name) &&
+								!MaleLocations.ContainsF(location.Name)) {
+							if (Dijkstra(startLocation, location, locations, MaleLocations) is { } femaleResult) {
+								AddToRouteList(RouteGender.Female, femaleResult);
+							}
+						}
+					}
+						break;
+					case (false, true): {
+						// Female
+						AddToRouteList(RouteGender.Female, result);
+
+						if (!haveMale && !FemaleLocations.ContainsF(startLocation.Name) &&
+								!FemaleLocations.ContainsF(location.Name)) {
+							if (Dijkstra(startLocation, location, locations, FemaleLocations) is { } maleResult) {
+								AddToRouteList(RouteGender.Male, maleResult);
+							}
+						}
+					}
+						break;
+					case (false, false):
+						AddToRouteList(RouteGender.General, result, check: false);
+						break;
+				}
+			}
+
+			return true;
+		}
+		catch (Exception ex) {
+			Debug.Error($"Exception in pathfinder: {startLocation.Name}", ex);
+			throw;
+		}
 	}
 }

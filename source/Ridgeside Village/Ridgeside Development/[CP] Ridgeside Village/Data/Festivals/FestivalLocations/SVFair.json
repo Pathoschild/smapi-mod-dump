@@ -16,7 +16,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/fall16",
         "When": {
-            "RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "ExpandedFestivalMaps": true
+            "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -40,7 +40,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/fall16",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "ExpandedFestivalMaps": true
+            "HasSeenEvent": 75160249, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -57,13 +57,30 @@
         "Action": "EditData",
         "Target": "Data/Festivals/fall16",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "ExpandedFestivalMaps": true
+            "HasSeenEvent": 75160254, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
                 "Operation": "Append",
                 "Target": ["Entries", "Set-Up_additionalCharacters"],
                 "Value": "Daia 11 15 right",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
+    {
+        //Zayne Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "When": {
+            "HasSeenEvent": 75160440, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Zayne 33 16 down",
                 "Delimiter": "/"
             },
         ]
@@ -77,7 +94,7 @@
 						"HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false,
                         "HasSeenEvent: anyPlayer|contains=75160377, 75160187": true,
 						"HasSeenEvent: anyPlayer|contains=75160188": true,
-                        "ExpandedFestivalMaps": true
+                        "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
             },
         "TextOperations": [
             {
@@ -101,12 +118,28 @@
       "LogName": "Torts SDV Fair Location",
       "Action": "EditData",
       "Target": "Data/Festivals/fall16",
-      "When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true },
+      "When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true },
       "TextOperations": [
         {
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
           "Value": "Torts 38 19 up",
+          "Delimiter": "/"
+        },
+      ]
+    },
+
+    //June
+    {
+      "LogName": "June SDV Fair Location",
+      "Action": "EditData",
+      "Target": "Data/Festivals/fall16",
+      "When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false },
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters"],
+          "Value": "June 35 89 2",
           "Delimiter": "/"
         },
       ]

@@ -30,6 +30,7 @@ internal static partial class SystemInfo {
 			Nvidia,
 			AMD,
 			ATI,
+			VMware
 		}
 
 		[StructLayout(LayoutKind.Auto)]
@@ -49,6 +50,7 @@ internal static partial class SystemInfo {
 			internal static readonly Pattern Intel = new(Vendors.Intel, integrated: true, "Intel", "Parallels using Intel");
 			internal static readonly Pattern Nvidia = new(Vendors.Nvidia, integrated: false, "Nvidia", "nouveau");
 			internal static readonly Pattern AMD = new(Vendors.AMD, integrated: false, "AMD", "ATI", "Parallels and ATI");
+			internal static readonly Pattern VMware = new(Vendors.VMware, integrated: true, "VMware, Inc.");
 		}
 
 		internal static Vendors Vendor { get; private set; } = Vendors.Unknown;
@@ -65,12 +67,9 @@ internal static partial class SystemInfo {
 					return;
 				}
 
-				var adapter = device.Adapter;
-				if (adapter is null) {
+				if (device.Adapter is not {} adapter) {
 					return;
 				}
-
-
 
 				var description = adapter.Description;
 				Description = adapter.Description;
@@ -97,20 +96,39 @@ internal static partial class SystemInfo {
 				DedicatedMemory = null;
 				TotalMemory = null;
 
-				bool hasNvidiaExtension = false;
-				bool hasAtiExtension = false;
-				foreach (var extension in MonoGame.OpenGL.GL.Extensions) {
-					switch (extension) {
-						case "GL_NVX_gpu_memory_info":
-							hasNvidiaExtension = true;
-							break;
-						case "GL_ATI_meminfo":
-							hasAtiExtension = true;
-							break;
-					}
+				bool hasNvidiaExtension = GLExt.Extensions.Contains("GL_NVX_gpu_memory_info");
+				bool hasAtiExtension = GLExt.Extensions.Contains("GL_ATI_meminfo");
 
-					if (hasNvidiaExtension && hasAtiExtension) {
-						break;
+				static unsafe long? GetInteger(int code) {
+					try {
+						GLExt.FlushErrors();
+
+						long result;
+
+						if (GLExt.GetInteger64v.Enabled) {
+							Span<long> localResult = stackalloc long[4];
+
+							fixed (long* resultPtr = localResult) {
+								GLExt.GetInteger64v.Function(code, resultPtr);
+							}
+
+							result = localResult[0];
+						}
+						else {
+							Span<int> localResult = stackalloc int[4];
+
+							fixed (int* resultPtr = localResult) {
+								MonoGame.OpenGL.GL.GetIntegerv(code, resultPtr);
+							}
+
+							result = localResult[0];
+						}
+
+						return MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError ? result : null;
+					}
+					catch {
+						// Swallow exceptions.
+						return null;
 					}
 				}
 
@@ -118,45 +136,11 @@ internal static partial class SystemInfo {
 					const int DedicatedVidMemNvx = 0x9047;
 					const int TotalAvailableMemoryNvx = 0x9048;
 
-					unsafe {
-						try {
-							while (MonoGame.OpenGL.GL.GetError() != MonoGame.OpenGL.ErrorCode.NoError) {
-								// Flush the error buffer
-							}
-
-							if (GLExt.GetInteger64v.Enabled) {
-								long result = 0;
-								GLExt.GetInteger64v.Function(DedicatedVidMemNvx, &result);
-								if (MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError) {
-									DedicatedMemory = (ulong)(result * 1024);
-								}
-							}
-							else {
-								int result = 0;
-								MonoGame.OpenGL.GL.GetIntegerv(DedicatedVidMemNvx, &result);
-								if (MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError) {
-									DedicatedMemory = (ulong)result * 1024;
-								}
-							}
-
-							if (GLExt.GetInteger64v.Enabled) {
-								long result = 0;
-								GLExt.GetInteger64v.Function(TotalAvailableMemoryNvx, &result);
-								if (MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError) {
-									TotalMemory = (ulong)(result * 1024);
-								}
-							}
-							else {
-								int result = 0;
-								MonoGame.OpenGL.GL.GetIntegerv(TotalAvailableMemoryNvx, &result);
-								if (MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError) {
-									TotalMemory = (ulong)result * 1024;
-								}
-							}
-						}
-						catch {
-							// ignored
-						}
+					if (GetInteger(DedicatedVidMemNvx) is {} dedicatedMemory) {
+						DedicatedMemory = (ulong)(dedicatedMemory * 1024L);
+					}
+					if (GetInteger(TotalAvailableMemoryNvx) is {} totalMemory) {
+						TotalMemory = (ulong)(totalMemory * 1024L);
 					}
 				}
 				if ((!DedicatedMemory.HasValue || !TotalMemory.HasValue) && hasAtiExtension) {
@@ -167,26 +151,8 @@ internal static partial class SystemInfo {
 					//const int RenderBufferFreeMemoryAti = 0x87FD;
 					// ReSharper restore InconsistentNaming
 
-					unsafe {
-						try {
-							if (GLExt.GetInteger64v.Enabled) {
-								Span<long> result = stackalloc long[4];
-								GLExt.GetInteger64v.Function(TextureFreeMemoryAti, (long*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(result)));
-								if (MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError) {
-									TotalMemory = DedicatedMemory = (ulong)(result[0] * 1024);
-								}
-							}
-							else {
-								Span<int> result = stackalloc int[4];
-								MonoGame.OpenGL.GL.GetIntegerv(TextureFreeMemoryAti, (int*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(result)));
-								if (MonoGame.OpenGL.GL.GetError() == MonoGame.OpenGL.ErrorCode.NoError) {
-									TotalMemory = DedicatedMemory = (ulong)result[0] * 1024;
-								}
-							}
-						}
-						catch {
-							// ignored
-						}
+					if (GetInteger(TextureFreeMemoryAti) is { } totalMemory) {
+						TotalMemory = DedicatedMemory = (ulong)(totalMemory * 1024L);
 					}
 				}
 
@@ -194,7 +160,8 @@ internal static partial class SystemInfo {
 					!(
 						ParsePattern(Patterns.Intel) ||
 						ParsePattern(Patterns.Nvidia) ||
-						ParsePattern(Patterns.AMD)
+						ParsePattern(Patterns.AMD) ||
+						ParsePattern(Patterns.VMware)
 					)
 				) {
 					// I have no idea
@@ -203,18 +170,11 @@ internal static partial class SystemInfo {
 					IsIntegrated = true;
 				}
 
-				switch (Vendor) {
-					case Vendors.AMD:
-						if (description.Contains("Vega")) {
-							IsIntegrated = true;
-						}
-						break;
-					case Vendors.Intel:
-						if (description.Contains("Arc")) {
-							IsIntegrated = false;
-						}
-						break;
-				}
+				IsIntegrated = Vendor switch {
+					Vendors.AMD when description.Contains("Vega") => true,
+					Vendors.Intel when description.Contains("Arc") => false,
+					_ => IsIntegrated
+				};
 			}
 			catch {
 				// ignored
@@ -300,11 +260,11 @@ internal static partial class SystemInfo {
 			AppendTabbedLine(2, $"Description    : {Graphics.Description}");
 			AppendTabbedLine(2, $"Vendor         : {Graphics.VendorName}");
 			AppendTabbedLine(2, $"Dedicated      : {Graphics.IsDedicated}");
-			if (Graphics.DedicatedMemory.HasValue) {
-				AppendTabbedLine(2, $"Dedicated VRAM : {Graphics.DedicatedMemory.Value.AsDataSize()}");
+			if (Graphics.DedicatedMemory is {} dedicatedMemory) {
+				AppendTabbedLine(2, $"Dedicated VRAM : {dedicatedMemory.AsDataSize()}");
 			}
-			if (Graphics.TotalMemory.HasValue) {
-				AppendTabbedLine(2, $"Total VRAM     : {Graphics.TotalMemory.Value.AsDataSize()}");
+			if (Graphics.TotalMemory is {} totalMemory) {
+				AppendTabbedLine(2, $"Total VRAM     : {totalMemory.AsDataSize()}");
 			}
 		}
 		catch {

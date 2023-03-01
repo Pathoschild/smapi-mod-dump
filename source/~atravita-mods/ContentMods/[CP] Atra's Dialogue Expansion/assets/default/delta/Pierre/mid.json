@@ -9,6 +9,7 @@
 *************************************************/
 
 {"Changes":[
+    // Always be sellin', insufficiently appreciative of all of Caroline's work.
     {
         "LogName": "Pierre mid-hearts",
         "Action": "EditData",
@@ -16,6 +17,34 @@
         "Entries": {
             "movieTheater": "@, have you heard? We've got a movie theater now! Think I'll take Caroline out on a date...",
             "winter_7{{YearRemainder}}": "Gotta start stocking Winter Star gifts soon. It's the busiest retail season of the year...$h"
-        },
+        }
     },
+    {
+        "LogName": "Pierre mid-hearts, Y2",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pierre",
+        "Entries": {
+            "6_2": "My father? He really wasn't ever in my life.$s#$b#It was just me, my mother, and my sister, in a tiny apartment in Zuzu City.",
+            "8_2": "I worked for a Joja grocery store, back when we lived in Zuzu.$#b#Clerked for them, on the night shift. Am so glad I no longer have that job.#$e#Managing this store is hard work but at least I get to keep all my earnings.",
+            "17_2": "I grew up poor. I wouldn't ever want that for my family.$s#$b#Caroline thinks I work too much, but we need to keep the store running.",
+            "19_2": "We used to have a lot more farmers down in the valley. Unfortunately, our soil isn't the best.#$b#Say, could I interest you in one of my fertilizers?",
+            "21_2": "Got a good deal on rent in our place. Helps that this town's pretty small.$h#$b#That does mean I don't get many customers, though.",
+            "22_2": "Joja squeezes their suppliers hard. One of the reasons why they can have such low prices.",
+            "24_2": "We moved to Pelican Town after we had Caroline. The place we were living in before...it wasn't a good place to raise children. And we couldn't afford better."
+        },
+        "When": { "YearModulus": "2" }
+    },
+    {
+        "LogName": "Pierre mid-hearts, Y3",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pierre",
+        "Entries": {
+            "3_2": "Everything's harder when the economy goes bad like this.#$b#Government'll bail out the big guys and there's welfare payments for the poor, but people like me get squeezed.",
+            "5_2": "My suppliers want to raise their prices...#$b#I can't pass on price increases though...",
+            "7_2": "Before I moved to Pelican Town? I was a night manager at a gas station in Zuzu City.#$e#Dangerous work, and definitely a young man's job.#$b#I hated having to work nights. It takes more out of you than what most people expect.$s",
+            "9_2": "I met Caroline when she was in college and I was working nights at a grocery store.#$b#Working for Joja let me save up enough money to buy this place...",
+            "11_2": "Ugh, the prices of everything's going up, especially fuel."
+        },
+        "When": { "YearModulus": "3"}
+    }
 ]}

@@ -20,7 +20,9 @@ using StardewValley.Locations;
 
 
 namespace LittleNPCs.Framework {
-    internal class LittleNPCInfo {
+    internal record LittleNPCInfo {
+        public enum LoadState { None, LittleNPC, Child, SaveGame }
+
         private IMonitor monitor_;
 
         public string Name { get; private set; }
@@ -28,6 +30,8 @@ namespace LittleNPCs.Framework {
         public string DisplayName { get; private set; }
 
         public string Gender { get; private set; }
+
+        public LoadState LoadedFrom { get; private set; }
 
         public LittleNPCInfo(int childIndex, IMonitor monitor) {
             monitor_ = monitor;
@@ -38,11 +42,11 @@ namespace LittleNPCs.Framework {
                     Name = littleNPC.Name;
                     DisplayName = littleNPC.displayName;
                     Gender = littleNPC.Gender == 0 ? "male": "female";
-                    monitor_.Log($"GetLittleNPC({childIndex}) returns {Name}");
+                    LoadedFrom = LoadState.LittleNPC;
+                    monitor_.VerboseLog($"GetLittleNPC({childIndex}) returns {Name}");
                 }
                 else {
                     // No LittleNPC, try to get Child object.
-                    monitor_.Log($"GetLittleNPC({childIndex}) returns null");
                     var children = GetChildrenFromFarmHouse(false, out FarmHouse farmHouse);
                     Child child = children.FirstOrDefault(c => c.daysOld.Value >= ModEntry.config_.AgeWhenKidsAreModified && c.GetChildIndex() == childIndex);
                     if (child is not null) {
@@ -51,10 +55,11 @@ namespace LittleNPCs.Framework {
                         Name = $"{prefix}{child.Name}";
                         DisplayName = child.Name;
                         Gender = child.Gender == 0 ? "male": "female";
-                        monitor_.Log($"Query for child with index {childIndex} returns {Name}");
+                        LoadedFrom = LoadState.Child;
+                        monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns {Name}");
                     }
                     else {
-                        monitor_.Log($"Query for child with index {childIndex} returns null");
+                        monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns null");
                     }
                 }
             }
@@ -68,11 +73,12 @@ namespace LittleNPCs.Framework {
                     Name = $"{prefix}{child.Name}";
                     DisplayName = child.Name;
                     Gender = child.Gender == 0 ? "male": "female";
-                        monitor_.Log($"Query for child with index {childIndex} returns {Name}");
-                    }
-                    else {
-                        monitor_.Log($"Query for child with index {childIndex} returns null");
-                    }
+                    LoadedFrom = LoadState.SaveGame;
+                    monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns {Name}");
+                }
+                else {
+                    monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns null");
+                }
             }
         }
 

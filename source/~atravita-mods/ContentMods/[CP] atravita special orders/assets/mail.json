@@ -22,14 +22,14 @@
         "atravita_CaviarTastes_Reward": "@!^{{i18n:atravita.caviar_tastes.mail.text}}^^    --{{i18n:Lewis}}%item bigobject 209 %%[#]{{i18n:atravita.caviar_tastes.mail.title}}",
         "atravita_deckTheHalls_After": "@! ^{{i18n:atravita.deck_the_halls_after.mail.text}}^^     -Caroline%item object 239 5%%[#]{{i18n:atravita.deck_the_halls_invite.mail.title}}",
         "atravita_deckTheHalls_Invite": "@! ^{{i18n:atravita.deck_the_halls_invite.mail.text}}^^   -Caroline.%item object 236 5 %%[#]{{i18n:atravita.deck_the_halls_invite.mail.title}}",
-        "atravita_DemetriusApology_Reward": "@!^{{i18n:atravita.demetrius_apology.mail.text}}^^    -{{i18n:Demetrius}}^^{{i18n:atravita.demetrius_apology.mail.postscript}}%item bigobject 94%%[#]{{i18n:travita.demetrius_apology.mail.title}}",
+        "atravita_DemetriusApology_Reward": "@!^{{i18n:atravita.demetrius_apology.mail.text}}^^    -{{i18n:Demetrius}}^^{{i18n:atravita.demetrius_apology.mail.postscript}}%item bigobject 94%%[#]{{i18n:atravita.demetrius_apology.mail.title}}",
         "atravita_DemetriusMagmaCap_Reward": "@! ^{{i18n:atravita.demetrius_magma_cap.mail.text}}^^   -{{i18n:Demetrius}}%item object 886 3 %%[#]{{i18n:atravita.demetrius_magma_cap.mail.title}}",
         "atravita_Essence_Reward": "@! ^{{i18n:atravita.essence.mail.text}}^^   -{{i18n:Wizard}}%item object 226 5 253 5 %%[#]{{i18n:atravita.essence.mail.title}}",
         "atravita_EvelynTulips_Reward": "@! ^{{i18n:atravita.evelyn_tulips.mail.text}}^^    -{{i18n:George}}%item bigobject 246 %%[#]{{i18n:atravita.evelyn_tulips.mail.title}}",
         "atravita_FlowerPower_Reward": "@! ^{{i18n:atravita.flower_power.mail.text}}^^   -{{i18n:Lewis}}%item bigobject 248 %%[#]{{i18n:atravita.flower_power.mail.title}}",
         "atravita_HotFoods_Reward": "@! ^{{i18n:atravita.hotfoods.mail.text}}^^    -{{i18n: Gus}}%item object 710 15%%[#]{{i18n:atravita.hotfoods.mail.title}}",
         "atravita_InAJam_Reward": "@!^{{i18n:atravita.in_a_jam.mail.text}}^^    --{{i18n:Gus}}%item bigobject 19 %%[#]{{i18n:atravita.in_a_jam.mail.title}}",
-        "atravita_MarnieTreat_Reward": "@! ^{{i18n:atravita.marnie_treat.mail.text}}^^   -{{i18n:Marnie}}^^{{i18n:atravita.marnie_treat.mail.postscript}}%item bigobject 272 %%[#]{{i18n:A Tasty Treat - Thank You}}",
+        "atravita_MarnieTreat_Reward": "@! ^{{i18n:atravita.marnie_treat.mail.text}}^^   -{{i18n:Marnie}}^^{{i18n:atravita.marnie_treat.mail.postscript}}%item bigobject 272 %%[#]{{i18n:atravita.marnie_treat.mail.title}}",
         "atravita_MarnieTreat2_Reward": "@! ^{{i18n:atravita.marnie_treat_2.mail.text}}^^   -{{i18n:Marnie}}^^{{i18n:atravita.marnie_treat_2.mail.postscript}}%item bigobject 272 %%[#]{{i18n:atravita.marnie_treat_2.mail.title}}",
         "atravita_MysticStones_Reward": "@! ^{{i18n:atravita.mystic_stones.mail.text}}^^   -{{i18n:Wizard}}%item object 261 5 689 5 690 5 %%[#]{{i18n:atravita.mystic_stones.mail.title}}",
         "atravita_PierreApology_Reward": "@!^{{i18n:atravita.pierre_apology.mail.text}}^^    -{{i18n:Pierre}}^{{i18n:atravita.pierre_apology.mail.postscript}}%item bigobject 209 %%[#]{{i18n:atravita.pierre_apology.mail.title}}",
@@ -45,7 +45,7 @@
         "atravita_ValleyVintage_Reward": "@! ^{{i18n:atravita.valley_vintage.mail.text}}^^   -{{i18n:Lewis}}^^{{i18n:atravita.valley_vintage.mail.postscript}}%item bigobject 248 %%[#]{{i18n:atravita.valley_vintage.mail.title}}",
         "atravita_warEffort_reward": "@,^{{i18n:atravita.war_effort.mail.text}}^^     -{{i18n:Lewis}}%item bigobject 248 %%[#]{{i18n:atravita.war_effort.mail.title}}",
         "atravita_warEffort2_reward": "@,^{{i18n:atravita.war_effort_2.mail.text}}^^     -{{i18n:Lewis}}%item object 204 6 %%[#]{{i18n:atravita.war_effort_2.mail.title}}",
-        "atravita_warEffort3_reward": "@,^{{i18n:atravita.war_effort3.mail.text}}^^     -{{i18n:Lewis}}%item object 439 3 %%[#]{{i18n:atravita.war_effort3.mail.title}}",
+        "atravita_warEffort3_reward": "@,^{{i18n:atravita.war_effort3.mail.text}}^^     -{{i18n:Lewis}}%item object 439 3 %%[#]{{i18n:atravita.war_effort3.mail.title}}"
       }
     },
     {

@@ -1,16 +1,17 @@
 {
   "Dependencies": [
     {
-      "UniqueID": "atravita.AtraCore"
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
     }
   ],
   "EntryDll": "DrawFishPondsOverGrass.dll",
   "Name": "Draw Fish Ponds Over Grass.",
   "Author": "atravita",
-  "Version": "0.2.0",
+  "Version": "0.2.1",
   "Description": "Draws fish ponds **over** grass placed under it.",
   "UniqueID": "atravita.DrawFishPondsOverGrass",
-  "MinimumApiVersion": "3.15",
+  "MinimumApiVersion": "3.18",
   "UpdateKeys": [
     "Nexus:11352"
   ]

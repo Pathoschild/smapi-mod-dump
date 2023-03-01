@@ -15,9 +15,11 @@
         "Target": "Characters/Dialogue/Sebastian",
         "Entries": {
             "6_2": "Why is it every time I have to work with a Java team, they've done something weird with their architecture?$a",
-            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b# Jane, I needed this reviewed last week! Could you please help me convince everyone to help keep things moving?",
+            "8_2": "Hey @, have you ever played {{i18n:video.game.{{Random:01, 02, 03, 04, 05, 06, 07, 08, 09}} }}? It's so good, isn't it?",
+            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b#Jane, I needed this reviewed last week! Could you please help me convince everyone to help keep things moving?",
             "summerSebastianRoom_9_4": "Sorry, @, I'm working and need to focus right now.",
             "fallSebastianRoom_9_4": "Work? Nah, @, I can implement A-star in my sleep.",
+            "winterSebastianRoom_9_4": "Sorry, @, I need to work on my performance report. Why do they make me do this every year?$s"
         },
         "When": {
             "YearModulus": "2"
@@ -29,7 +31,8 @@
         "Target": "Characters/Dialogue/Sebastian",
         "Entries": {
             "winter_15_2": "@, I got a five percent raise this year! Biggest one they've ever given me!$h",
-            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b#I saw your email; is there anything in particular we could change?"
+            "SebastianRoom_9_4": "%Sebastian seems to be on a call.#$b#I saw your email; is there anything in particular we could change?",
+            "summerSebastianRoom_9_4": "I have so much work I need to do, @. Sorry, but I don't have time to chat today.#$e#What, @, I have a performance review coming up, I need to focus$a."
         },
         "When": {
             "YearModulus": "3"
@@ -52,7 +55,7 @@
         "Target": "Characters/Dialogue/rainy",
         "When": {"Season": "winter"},
         "Entries":{
-            "Sebastian": "Ocean gazing? In this weather?",
+            "Sebastian": "Ocean gazing? In this weather?"
         }
-    },
+    }
 ]}

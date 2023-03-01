@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/facufierro/RuneMagic
+**
+*************************************************/
+
+{
+  "Name": "[BC]RuneMagic",
+  "Description": "Content needed for the Rune Magic mod.",
+  "Version": "1.0.0",
+  "Author": "fierro",
+  "UniqueID": "fierro.rune_magic_bc",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.BiggerCraftables",
+    "MinimumVersion": "1.0.0"
+  }
+}

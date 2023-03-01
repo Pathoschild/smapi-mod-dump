@@ -38,7 +38,9 @@ You can configure this mod via `config.json` file in the mod folder:
 ```js
 {
   "CustomBirthdayDialogues": true, // Allow show birthday gift custom reaction dialogues (if they are defined)
-  "CustomSecretSantaDialogues": true // Allow show secret santa gift custom reaction dialogues (if they are defined)
+  "CustomSecretSantaDialogues": true, // Allow show secret santa gift custom reaction dialogues (if they are defined)
+  "RevealDialogueChance": 0.025, // Chance a reveak dialogue will be shown when player tries to talk with an NPC
+  "RevealDialogueMinHeartLevel": 1 // Minimum heart levels required with talked NPC to show a reveal dialogue
 }
 ```
 
@@ -66,6 +68,13 @@ Also after key above you can add these suffixes:
 
 - `_Birthday` - Custom reaction to an item if this item was gifted on NPC's birthday.
 - `_SecretSanta` - Custom reaction to an item if this item was gifted as secret santa during winterstar festival.
+
+**NOTE:** These suffixes are not applicable for reveal dialogues!
+
+Custom Gift Dialogue utility now supports reveal dialogues. These dialogues are specials which can reveal some secrets about something. There is a 2,5% chance the reveal dialogue will be shown if it's defined for an NPC.
+
+- `Reveal_<targetNpcName>[<hearts>]` - A reveal dialogue about another NPC which the asked NPC can say. You can affect how much hearts are required with the another NPC are required to say this reveal dialogue line.
+- `Reveal` - A general reveal dialogue about anything is defined. Also this is a fallback for the targeted reveal line if that line is not defined.
 
 The `<NpcName>` (in the content asset name) is a name of NPC for which you want add custom gift reaction dialogue lines.
 Also you can add some alternate lines for gifted item by adding suffix `~<number>` after the dialogue key. (Works only for gift reaction dialogues)
@@ -106,6 +115,10 @@ Most simple way how to add custom gift reaction dialogues is do it with [Content
 ```
 
 **Don't forget add `PurrplingCat.CustomGiftDialogue` as dependency for your content pack which adds custom gift reaction dialogues.**
+
+### A note about reveal dialogues
+
+If you have defined relatives for your NPCs in the NPC disposition file, often you can see original vanilla SDV reveal dialogue despite your custom reveal dialogue lines are defined. If you want to avoid the originals, don't define relatives in NPC disposition file.
 
 ---
 

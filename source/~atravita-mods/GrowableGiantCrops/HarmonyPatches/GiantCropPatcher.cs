@@ -9,7 +9,7 @@
 *************************************************/
 
 using GrowableGiantCrops.Framework;
-
+using GrowableGiantCrops.Framework.InventoryModels;
 using HarmonyLib;
 
 using Microsoft.Xna.Framework;
@@ -45,6 +45,13 @@ internal static class GiantCropPatcher
                     if (Game1.currentLocation.objects.TryGetValue(tile, out SObject? obj)
                         && obj.Name.Contains("Tapper", StringComparison.OrdinalIgnoreCase))
                     {
+                        if (obj.heldObject.Value is SObject held)
+                        {
+                            Game1.currentLocation.debris.Add(new(held, tile * 64));
+                        }
+                        obj.heldObject.Value = null;
+                        obj.readyForHarvest.Value = false;
+
                         InventoryGiantCrop.ShakeGiantCrop(__instance);
                         obj.performRemoveAction(obj.TileLocation, Game1.currentLocation);
                         Game1.createItemDebris(obj, tile * 64f, -1);

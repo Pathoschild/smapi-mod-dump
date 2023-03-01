@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Machine Status",
     "Author": "Shockah",
-    "Version": "1.0.1",
+    "Version": "1.1.0",
     "Description": "Machine ready/waiting/busy status at a glance.",
     "UniqueID": "Shockah.MachineStatus",
     "EntryDll": "MachineStatus.dll",
@@ -14,6 +14,10 @@
         },
         {
             "UniqueID": "Digus.ProducerFrameworkMod",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.DynamicGameAssets",
             "IsRequired": false
         }
     ]

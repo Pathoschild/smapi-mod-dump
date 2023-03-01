@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardLibrary", "Leade
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameboyArcade", "GameboyArcade\GameboyArcade.csproj", "{8EC72E05-8280-4CA2-983F-D1FB714B988B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LookToTheSky", "LookToTheSky\LookToTheSky.csproj", "{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		BirbSharedSpaceCore\BirbSharedSpaceCore.projitems*{19cedb88-a912-48da-b35d-fce2509e70e6}*SharedItemsImports = 13
@@ -82,6 +84,10 @@ Global
 		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EC72E05-8280-4CA2-983F-D1FB714B988B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

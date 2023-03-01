@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
+using ContentPatcher;
 
 namespace Custom_Farm_Loader.Lib
 {
@@ -41,6 +42,9 @@ namespace Custom_Farm_Loader.Lib
         public int MiningLevel = 0;
         public int CombatLevel = 0;
         public int FarmingLevel = 0;
+
+        public Dictionary<string, string> CPConditions = new Dictionary<string, string>(); //Content Patcher conditions
+        public IManifest Manifest;
 
         //Whether each filter was changed during parse
         //Makes it easier/cleaner and more flexible to seperate default value but assigned by cfl_map.json from default value but unassigned
@@ -116,6 +120,9 @@ namespace Custom_Farm_Loader.Lib
                     ChangedFarmingLevel = true;
                     FarmingLevel = int.Parse(value); break;
 
+                case "when":
+                    CPConditions = parseCPConditions(property); break;
+
                 default:
                     return false;
             }
@@ -128,7 +135,36 @@ namespace Custom_Farm_Loader.Lib
                 && (isValidWeather() || excludeWeather)
                 && (isValidTime() || excludeTime)
                 && isValidDay()
-                && isValidSkill(who);
+                && isValidSkill(who)
+                && doCPConditionsMatch();
+        }
+
+        private bool doCPConditionsMatch()
+        {
+            if (!CPConditions.Any())
+                return true;
+
+            var cpDependency = Array.Find(Manifest.Dependencies, el => el.UniqueID == "Pathoschild.ContentPatcher");
+
+            if (cpDependency == null || cpDependency.IsRequired == false) {
+                Monitor.LogOnce($"Content Patcher conditions were used by '{Manifest.Name}', but Content Patcher wasn't added as a required dependency by the mod", LogLevel.Error);
+                return false;
+            }
+
+            if (cpDependency.MinimumVersion == null) {
+                Monitor.LogOnce($"Content Patcher conditions were used by '{Manifest.Name}', but no MinimumVersion was mentioned in the manifest dependency", LogLevel.Error);
+                return false;
+            }
+
+            var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
+            var parsed = api.ParseConditions(Manifest, CPConditions, cpDependency.MinimumVersion);
+
+            if(!parsed.IsValid) {
+                Monitor.LogOnce($"The Content Patcher conditions used by '{Manifest.Name}' ran into a parsing error:\n{parsed.ValidationError}", LogLevel.Error);
+                return false;
+            }
+
+            return parsed.IsMatch;
         }
 
         private bool isValidSeason()
@@ -201,6 +237,22 @@ namespace Custom_Farm_Loader.Lib
                 default:
                     return false;
             }
+        }
+
+        public Dictionary<string, string> parseCPConditions(JProperty jProperty)
+        {
+            var ret = new Dictionary<string, string>();
+            if (jProperty.Value.Type != JTokenType.Object)
+                throw new ArgumentException($"Provided CP conditions of unexpected type '{jProperty.Value.Type}'. Required Type of Dictionary<string, string> (JSON Object), but was provided: '{jProperty.Value}'", jProperty.Name);
+
+            foreach (JProperty prop in (jProperty.First() as JObject).Properties()) {
+                if (prop.Value.Type != JTokenType.String && prop.Value.Type != JTokenType.Integer)
+                    throw new ArgumentException($"Provided CP condition value of unexpected type '{prop.Value.Type}'. Typeof 'String' required: '{prop.Value}'", prop.Name);
+
+                ret.Add(prop.Name, prop.Value.ToString());
+            }    
+
+            return ret;
         }
     }
 }

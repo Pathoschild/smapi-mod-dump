@@ -130,7 +130,7 @@ internal static class DrawPrismatic
                 rotation: 0f,
                 origin: Vector2.Zero,
                 effects: SpriteEffects.None,
-                layerDepth: drawDepth);
+                layerDepth: drawDepth + 0.001f);
         }
     }
 
@@ -148,7 +148,7 @@ internal static class DrawPrismatic
                 origin: Vector2.Zero,
                 scale: 4f,
                 effects: SpriteEffects.None,
-                layerDepth: drawDepth);
+                layerDepth: drawDepth + 0.001f);
         }
     }
 
@@ -166,10 +166,12 @@ internal static class DrawPrismatic
         float layerDepth,
         SObject obj)
     {
+        position.X = (int)position.X;
+        position.Y = (int)position.Y;
         b.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         if (obj.GetColorMask() is Texture2D tex)
         {
-            b.Draw(tex, position, null, Utility.GetPrismaticColor(), rotation, origin, scale, effects, layerDepth);
+            b.Draw(tex, position, null, Utility.GetPrismaticColor(), rotation, origin, scale, effects, layerDepth + 0.001f);
         }
     }
     #endregion
@@ -248,7 +250,7 @@ internal static class DrawPrismatic
                     origin: new Vector2(8f, 8f) * scaleSize,
                     scale: scaleSize * 4f,
                     effects: SpriteEffects.None,
-                    layerDepth: layerDepth);
+                    layerDepth: layerDepth + 0.01f);
             }
         }
         catch (Exception ex)
@@ -574,7 +576,7 @@ internal static class DrawPrismatic
                     origin: new Vector2(8f, 8f) * scaleSize,
                     scale: scaleSize * 4f,
                     effects: SpriteEffects.None,
-                    layerDepth: layerDepth);
+                    layerDepth: layerDepth + 0.001f);
             }
         }
         catch (Exception ex)
@@ -635,7 +637,7 @@ internal static class DrawPrismatic
                     origin: new Vector2(8f, 8f) * scaleSize,
                     scale: scaleSize * 4f,
                     effects: SpriteEffects.None,
-                    layerDepth: layerDepth);
+                    layerDepth: layerDepth + 0.001f);
             }
         }
         catch (Exception ex)

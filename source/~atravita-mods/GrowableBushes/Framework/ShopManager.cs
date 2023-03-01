@@ -17,13 +17,14 @@ using AtraShared.Utils.Extensions;
 
 using HarmonyLib;
 
+using Microsoft.Xna.Framework;
+
 using StardewModdingAPI.Events;
+
+using StardewValley.Locations;
 using StardewValley.Menus;
 
-using xTile.Dimensions;
-using xTile.ObjectModel;
-
-using XTile = xTile.Tiles.Tile;
+using AtraUtils = AtraShared.Utils.Utils;
 
 namespace GrowableBushes.Framework;
 
@@ -36,10 +37,12 @@ internal static class ShopManager
     private const string BUILDING = "Buildings";
     private const string SHOPNAME = "atravita.BushShop";
 
+    private static readonly TickCache<bool> IslandUnlocked = new(() => FarmerHelpers.HasAnyFarmerRecievedFlag("seenBoatJourney"));
+
     private static IAssetName sunHouse = null!;
     private static IAssetName mail = null!;
 
-    private static TickCache<bool> islandUnlocked = new(() => FarmerHelpers.HasAnyFarmerRecievedFlag("seenBoatJourney"));
+    private static StringUtils stringUtils = null!;
 
     /// <summary>
     /// Initializes asset names.
@@ -49,6 +52,8 @@ internal static class ShopManager
     {
         sunHouse = parser.ParseAssetName("Maps/Sunroom");
         mail = parser.ParseAssetName("Data/mail");
+
+        stringUtils = new(ModEntry.ModMonitor);
     }
 
     /// <inheritdoc cref="IContentEvents.AssetRequested"/>
@@ -64,18 +69,13 @@ internal static class ShopManager
         else if (e.NameWithoutLocale.IsEquivalentTo(sunHouse))
         {
             e.Edit(
-                static (asset) =>
-                {
-                    IAssetDataForMap? map = asset.AsMap();
-                    XTile? tile = map.Data.GetLayer(BUILDING).PickTile(new Location((int)ModEntry.Config.ShopLocation.X * 64, (int)ModEntry.Config.ShopLocation.Y * 64), Game1.viewport.Size);
-                    if (tile is null)
-                    {
-                        ModEntry.ModMonitor.Log($"Tile could not be edited for shop, please let atra know!", LogLevel.Warn);
-                        return;
-                    }
-                    tile.Properties["Action"] = new PropertyValue(SHOPNAME);
-                },
-                AssetEditPriority.Default + 10);
+                apply: static (asset) => asset.AsMap().AddTileProperty(
+                    monitor: ModEntry.ModMonitor,
+                    layer: BUILDING,
+                    key: "Action",
+                    property: SHOPNAME,
+                    placementTile: ModEntry.Config.ShopLocation),
+                priority: AssetEditPriority.Default + 10);
         }
     }
 
@@ -87,6 +87,41 @@ internal static class ShopManager
             && Game1.player.mailReceived.Contains("CarolineTea"))
         {
             Game1.addMailForTomorrow(mailName: SHOPNAME);
+        }
+    }
+
+    /// <summary>
+    /// Adds a small bush graphic to the shop.
+    /// </summary>
+    /// <param name="e">On Warped event arguments.</param>
+    internal static void AddBoxToShop(WarpedEventArgs e)
+    {
+        if (!e.IsLocalPlayer || !ModEntry.Config.ShowBushShopGraphic)
+        {
+            return;
+        }
+
+        if (e.NewLocation.Name.Equals("SunRoom", StringComparison.OrdinalIgnoreCase))
+        {
+            Vector2 tile = ModEntry.Config.ShopLocation;
+
+            // add box
+            e.NewLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                textureName: AssetManager.bushes.BaseName,
+                sourceRect: new Rectangle(0, 0, 16, 48),
+                position: new Vector2(tile.X, tile.Y - 1) * Game1.tileSize,
+                flipped: false,
+                alphaFade: 0f,
+                color: Color.White)
+            {
+                animationLength = 1,
+                sourceRectStartingPos = Vector2.Zero,
+                interval = 50000f,
+                totalNumberOfLoops = 9999,
+                scale = 4f,
+                layerDepth = (((tile.Y - 0.5f) * Game1.tileSize) / 10000f) + 0.01f, // a little offset so it doesn't show up on the floor.
+                id = 777f,
+            });
         }
     }
 
@@ -117,7 +152,7 @@ internal static class ShopManager
         {
             shop.portraitPerson = caroline;
         }
-        shop.potraitPersonDialogue = I18n.Shop_Message();
+        shop.potraitPersonDialogue = stringUtils.ParseAndWrapText(I18n.Shop_Message(), Game1.dialogueFont, 304);
         Game1.activeClickableMenu = shop;
     }
 
@@ -131,7 +166,7 @@ internal static class ShopManager
     {
         try
         {
-            __result.PopulateSellablesWithBushes();
+            __result.PopulateSellablesWithBushes(free: true);
         }
         catch (Exception ex)
         {
@@ -139,10 +174,8 @@ internal static class ShopManager
         }
     }
 
-    private static void PopulateSellablesWithBushes(this Dictionary<ISalable, int[]> sellables)
+    private static void PopulateSellablesWithBushes(this Dictionary<ISalable, int[]> sellables, bool free = false)
     {
-        sellables ??= new();
-
         foreach (BushSizes bushIndex in BushSizesExtensions.GetValues())
         {
             int[] sellData;
@@ -152,22 +185,22 @@ internal static class ShopManager
             }
             else if (bushIndex is BushSizes.Walnut or BushSizes.Harvested)
             {
-                if (!islandUnlocked.GetValue())
+                if (IslandUnlocked.GetValue())
                 {
-                    continue;
+                    sellData = new[] { free ? 0 : 1_500 * ModEntry.Config.ShopCostScale, ShopMenu.infiniteStock };
                 }
                 else
                 {
-                    sellData = new[] { 750, ShopMenu.infiniteStock };
+                    continue;
                 }
             }
             else if (bushIndex is BushSizes.Medium)
             {
-                sellData = new[] { 750, ShopMenu.infiniteStock };
+                sellData = new[] { free ? 0 : 1_000 * ModEntry.Config.ShopCostScale , ShopMenu.infiniteStock };
             }
             else
             {
-                sellData = new[] { 300, ShopMenu.infiniteStock };
+                sellData = new[] { free ? 0 : 500 * ModEntry.Config.ShopCostScale, ShopMenu.infiniteStock };
             }
 
             InventoryBush bush = new(bushIndex, 1);

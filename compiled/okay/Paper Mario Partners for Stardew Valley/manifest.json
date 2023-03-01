@@ -1,7 +1,7 @@
 {
   "Name": "Paper Mario Partners for Stardew Valley",
   "Author": "AnotherStardewValleySunday",
-  "Version": "1.3.0", // fixed locally
+  "Version": "1.4.0",
   "Description": "Adds all seven partners from Paper Mario: The Thousand Year Door to Stardew Valley",
   "UniqueID": "AnotherStardewValleySunday.PaperMarioPartners",
   "EntryDll": "PaperMarioPartners.dll",

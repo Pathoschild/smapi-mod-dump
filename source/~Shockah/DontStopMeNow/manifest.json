@@ -16,5 +16,12 @@
 	"UniqueID": "Shockah.DontStopMeNow",
 	"EntryDll": "DontStopMeNow.dll",
 	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [ "Nexus:10941" ]
+	"UpdateKeys": [ "Nexus:10941" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "0.1.0"
+		}
+	]
 }

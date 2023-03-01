@@ -22,12 +22,13 @@ using StardewValley.Objects;
 
 namespace IdentifiableCombinedRings.HarmonyPatches;
 
+/// <summary>
+/// Holds patches on combined rings.
+/// </summary>
 [HarmonyPatch(typeof(CombinedRing))]
 internal class CombinedRingPatcher
 {
-    /// <summary>
-    /// Patches drawInMenu.
-    /// </summary>
+    /// <inheritdoc cref="CombinedRing.drawInMenu(SpriteBatch, Vector2, float, float, float, StackDrawType, Color, bool)"/>
     /// <param name="__instance">Combined ring to check.</param>
     [HarmonyPrefix]
     [HarmonyPatch(nameof(CombinedRing.drawInMenu))]
@@ -65,7 +66,7 @@ internal class CombinedRingPatcher
             {
                 spriteBatch.Draw(
                     texture,
-                    location + new Vector2(32f, 32f) * scaleSize,
+                    location + (new Vector2(32f, 32f) * scaleSize),
                     new Rectangle(0, 0, 16, 16),
                     color * transparency,
                     0f,

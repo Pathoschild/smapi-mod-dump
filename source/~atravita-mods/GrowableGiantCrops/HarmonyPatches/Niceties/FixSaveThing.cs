@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit.Reflection;
+
 using AtraCore.Framework.ReflectionManager;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -27,9 +29,10 @@ internal static class FixSaveThing
     /// <param name="harmony">My harmony instance.</param>
     internal static void ApplyPatches(Harmony harmony)
     {
+        // use an early priority because we restore all clumps.
         harmony.Patch(
             original: typeof(GameLocation).GetCachedMethod(nameof(GameLocation.TransferDataFromSavedLocation), ReflectionCache.FlagTypes.InstanceFlags),
-            postfix: new HarmonyMethod(typeof(FixSaveThing), nameof(Postfix)));
+            postfix: new HarmonyMethod(typeof(FixSaveThing).StaticMethodNamed(nameof(Postfix)), Priority.High));
     }
 
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
@@ -46,22 +49,22 @@ internal static class FixSaveThing
         // Keep track of occupied tiles here.
         HashSet<Vector2> prev = new(l.resourceClumps.Count);
 
-        foreach (var clump in __instance.resourceClumps)
+        foreach (ResourceClump? clump in __instance.resourceClumps)
         {
             prev.Add(clump.tile.Value);
         }
 
-        // restore previous giant crops.
+        // restore previous clumps.
         int count = 0;
-        foreach (var clump in l.resourceClumps)
+        foreach (ResourceClump? clump in l.resourceClumps)
         {
-            if (clump is GiantCrop crop && prev.Add(crop.tile.Value))
+            if (prev.Add(clump.tile.Value))
             {
                 count++;
-                __instance.resourceClumps.Add(crop);
+                __instance.resourceClumps.Add(clump);
             }
         }
 
-        ModEntry.ModMonitor.Log($"Restored {count} giant crops at {__instance.NameOrUniqueName}");
+        ModEntry.ModMonitor.Log($"Restored {count} resource clumps at {__instance.NameOrUniqueName}");
     }
 }

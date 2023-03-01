@@ -39,5 +39,15 @@ namespace MoonMisadventures_BiggerBackpackPatch
                 (__instance.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + 4 + 256 - 12) // original
                 + (64); // Extra
         }
+
+        internal static bool DrawHoverPatch_Prefix(InventoryPage __0)
+        {
+            var equipment = __0.equipmentIcons.Find(item => item.myID == 123450101);
+            if (equipment == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

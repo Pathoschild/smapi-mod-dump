@@ -1,5 +1,6 @@
 {
   "EventsPerDay": 4,
   "EventsInARow": 2,
+  "ExemptEventsCountTowardsLimit": true,
   "Exceptions": []
 }

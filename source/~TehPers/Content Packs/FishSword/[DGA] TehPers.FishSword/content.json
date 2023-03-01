@@ -36,5 +36,23 @@
     },
     "SellPrice": 20,
     "UniversalGiftTaste": -40
+  },
+  {
+    // Golden shell
+    "$ItemType": "Object",
+    "ID": "GoldenShell",
+    "Category": "Fish",
+    "Texture": "assets/golden shell.png:0",
+    "SellPrice": 1000,
+    "HideFromShippingCollection": true,
+    "UniversalGiftTaste": 80
+  },
+  {
+    // Sand dollar bill
+    "$ItemType": "Object",
+    "ID": "SandDollarBill",
+    "Category": "Fish",
+    "Texture": "assets/sand dollar bill.png:0",
+    "SellPrice": 50
   }
 ]

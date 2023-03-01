@@ -7,18 +7,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Name>Prismatic Slimes in Slime Hutch.</Name>
+    <Name>Prismatic Slimes in Slime Hutch</Name>
     <Description>Allows you to raise prismatic slimes in the slime hutch.</Description>
     <UpdateKeys>Nexus:15157</UpdateKeys>
     <Version>0.1.0</Version>
     <BaseManifest>..\ja_dependencies.json</BaseManifest>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="HarmonyPatches\SlimeBallPatches\**" />
-    <EmbeddedResource Remove="HarmonyPatches\SlimeBallPatches\**" />
-    <None Remove="HarmonyPatches\SlimeBallPatches\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />

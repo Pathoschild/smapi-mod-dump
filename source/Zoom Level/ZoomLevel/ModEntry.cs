@@ -9,8 +9,6 @@
 *************************************************/
 
 using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -21,93 +19,169 @@ namespace ZoomLevel
 {
     public class ModEntry : Mod
     {
-        private ModConfig configsForTheMod;
+        private ModConfig configsForTheMod = new();
 
         private bool wasThePreviousButtonPressSucessfull;
         private bool wasToggleUIScaleClicked;
         private bool wasZoomLevelChanged;
+        private bool wasCameraFrozen;
 
-        private float uiScaleBeforeTheHidding;
+        private float uiScaleBeforeHiddingTheUI;
         private float currentUIScale;
+        private float currentZoomLevel;
 
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             configsForTheMod = helper.ReadConfig<ModConfig>();
 
-            helper.Events.GameLoop.GameLaunched += this.OnLaunched;
+            helper.Events.GameLoop.GameLaunched += this.Events_GameLoop_GameLaunched;
             helper.Events.Input.ButtonPressed += this.Events_Input_ButtonPressed;
+            helper.Events.Input.ButtonsChanged += this.Events_Input_ButtonChanged;
 
             //On area change and on load save
-            helper.Events.Player.Warped += this.Player_Warped;
-            helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
+            helper.Events.Player.Warped += this.Events_Player_Warped;
+            helper.Events.GameLoop.SaveLoaded += this.Events_GameLoop_SaveLoaded;
+
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.toggleAutoZoomMap.name"), Helper.Translation.Get("consoleCommands.toggleAutoZoomMap.description"), this.ConsoleFunctionsList);
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.togglePressAnyKeyToResetCamera.name"), Helper.Translation.Get("consoleCommands.togglePressAnyKeyToResetCamera.description"), this.ConsoleFunctionsList);
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.toggleHideWithUIWithCertainZoom.name"), Helper.Translation.Get("consoleCommands.toggleHideWithUIWithCertainZoom.description"), this.ConsoleFunctionsList);
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.togglePresetOnLoadSaveFile.name"), Helper.Translation.Get("consoleCommands.togglePresetOnLoadSaveFile.description"), this.ConsoleFunctionsList);
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.resetUIAndZoom.name"), Helper.Translation.Get("consoleCommands.resetUIAndZoom.description"), this.ConsoleFunctionsList);
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.resetUI.name"), Helper.Translation.Get("consoleCommands.resetUI.description"), this.ConsoleFunctionsList);
+            helper.ConsoleCommands.Add(Helper.Translation.Get("consoleCommands.resetZoom.name"), Helper.Translation.Get("consoleCommands.resetZoom.description"), this.ConsoleFunctionsList);
         }
 
-        private void OnLaunched(object sender, GameLaunchedEventArgs e)
+        private void Events_GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
         {
             var genericModConfigMenuAPI = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
 
             if (genericModConfigMenuAPI != null)
 
             {
-                genericModConfigMenuAPI.Register(ModManifest, () => configsForTheMod = new ModConfig(), () => Helper.WriteConfig(configsForTheMod));
+                genericModConfigMenuAPI.Register(ModManifest, () => configsForTheMod = new ModConfig(), () => Helper.WriteConfig(configsForTheMod), false);
 
-                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("keybinds.title.name"), () => Helper.Translation.Get("keybinds.title.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListHoldToChangeUI, (KeybindList val) => configsForTheMod.KeybindListHoldToChangeUI = val, () => Helper.Translation.Get("keybinds.UIHoldKey.name"), () => Helper.Translation.Get("keybinds.UIHoldKey.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListIncreaseZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListIncreaseZoomOrUI = val, () => Helper.Translation.Get("keybinds.ZoomOrUIIncrease.name"), () => Helper.Translation.Get("keybinds.ZoomOrUIIncrease.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListDecreaseZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListDecreaseZoomOrUI = val, () => Helper.Translation.Get("keybinds.ZoomOrUIDecrease.name"), () => Helper.Translation.Get("keybinds.ZoomOrUIDecrease.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListResetZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListResetZoomOrUI = val, () => Helper.Translation.Get("keybinds.ZoomOrUIReset.name"), () => Helper.Translation.Get("keybinds.ZoomOrUIReset.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMaxZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListMaxZoomOrUI = val, () => Helper.Translation.Get("keybinds.ZoomOrUIMaxLevels.name"), () => Helper.Translation.Get("keybinds.ZoomOrUIMaxLevels.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMinZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListMinZoomOrUI = val, () => Helper.Translation.Get("keybinds.ZoomOrUIMinLevels.name"), () => Helper.Translation.Get("keybinds.ZoomOrUIMinLevels.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleUI, (KeybindList val) => configsForTheMod.KeybindListToggleUI = val, () => Helper.Translation.Get("keybinds.ToggleUIVisibility.name"), () => Helper.Translation.Get("keybinds.ToggleUIVisibility.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleHideUIWithCertainZoom, (KeybindList val) => configsForTheMod.KeybindListToggleHideUIWithCertainZoom = val, () => Helper.Translation.Get("keybinds.ToggleHideUIAtCertainZoom.name"), () => Helper.Translation.Get("keybinds.ToggleHideUIAtCertainZoom.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListChangeZoomToApproximateCurrentMapSize, (KeybindList val) => configsForTheMod.KeybindListChangeZoomToApproximateCurrentMapSize = val, () => Helper.Translation.Get("keybinds.ChangeZoomToApproximateCurrentMapSize.name"), () => Helper.Translation.Get("keybinds.ChangeZoomToApproximateCurrentMapSize.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraLeft, (KeybindList val) => configsForTheMod.KeybindListMovementCameraLeft = val, () => Helper.Translation.Get("keybinds.CameraMovementLeft.name"), () => Helper.Translation.Get("keybinds.CameraMovementLeft.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraRight, (KeybindList val) => configsForTheMod.KeybindListMovementCameraRight = val, () => Helper.Translation.Get("keybinds.CameraMovementRight.name"), () => Helper.Translation.Get("keybinds.CameraMovementRight.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraUp, (KeybindList val) => configsForTheMod.KeybindListMovementCameraUp = val, () => Helper.Translation.Get("keybinds.CameraMovementUp.name"), () => Helper.Translation.Get("keybinds.CameraMovementUp.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraDown, (KeybindList val) => configsForTheMod.KeybindListMovementCameraDown = val, () => Helper.Translation.Get("keybinds.CameraMovementDown.name"), () => Helper.Translation.Get("keybinds.CameraMovementDown.description"));
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListResetCameraMovement, (KeybindList val) => configsForTheMod.KeybindListResetCameraMovement = val, () => Helper.Translation.Get("keybinds.CameraMovementReset.name"), () => Helper.Translation.Get("keybinds.CameraMovementReset.description"));
+                genericModConfigMenuAPI.AddPageLink(ModManifest, Helper.Translation.Get("pages.keybinds.id"), () => Helper.Translation.Get("pages.keybinds.displayedName"), () => Helper.Translation.Get("pages.keybinds.tooltip"));
+                genericModConfigMenuAPI.AddPageLink(ModManifest, Helper.Translation.Get("pages.values.id"), () => Helper.Translation.Get("pages.values.displayedName"), () => Helper.Translation.Get("pages.values.tooltip"));
+                genericModConfigMenuAPI.AddPageLink(ModManifest, Helper.Translation.Get("pages.miscellaneous.id"), () => Helper.Translation.Get("pages.miscellaneous.displayedName"), () => Helper.Translation.Get("pages.miscellaneous.tooltip"));
 
-                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("values.title.name"), () => Helper.Translation.Get("values.title.description"));
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelIncreaseValue, (float val) => configsForTheMod.ZoomLevelIncreaseValue = val, () => Helper.Translation.Get("values.ZoomOrUILevelsIncrease.name"), () => Helper.Translation.Get("values.ZoomOrUILevelsIncrease.description"), 0.01f, 0.50f, 0.01f, FormatPercentage);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelDecreaseValue, (float val) => configsForTheMod.ZoomLevelDecreaseValue = val, () => Helper.Translation.Get("values.ZoomOrUILevelsDecrease.name"), () => Helper.Translation.Get("values.ZoomOrUILevelsDecrease.description"), -0.50f, -0.01f, 0.01f, FormatPercentage);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.MaxZoomInLevelAndUIValue, (float val) => configsForTheMod.MaxZoomInLevelAndUIValue = val, () => Helper.Translation.Get("values.ZoomOrUIMaxLevel.name"), () => Helper.Translation.Get("values.ZoomOrUIMaxLevel.description"), 1f, 2.5f, 0.01f, FormatPercentage);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.MaxZoomOutLevelAndUIValue, (float val) => configsForTheMod.MaxZoomOutLevelAndUIValue = val, () => Helper.Translation.Get("values.ZoomOrUIMinLevel.name"), () => Helper.Translation.Get("values.ZoomOrUIMinLevel.description"), 0.15f, 1f, 0.01f, FormatPercentage);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ResetZoomOrUIValue, (float val) => configsForTheMod.ResetZoomOrUIValue = val, () => Helper.Translation.Get("values.ZoomOrUIResetLevel.name"), () => Helper.Translation.Get("values.ZoomOrUIResetLevel.description"), 0.15f, 2.5f, 0.01f, FormatPercentage);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelThatHidesUI, (float val) => configsForTheMod.ZoomLevelThatHidesUI = val, () => Helper.Translation.Get("values.ZoomLevelThatHidesUI.name"), () => Helper.Translation.Get("values.ZoomLevelThatHidesUI.description"), 0.15f, 2.5f, 0.01f, FormatPercentage);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.CameraMovementSpeed, (int val) => configsForTheMod.CameraMovementSpeed = val, () => Helper.Translation.Get("values.CameraMovementSpeed.name"), () => Helper.Translation.Get("values.CameraMovementSpeed.description"), 1, 100, 1);
+                genericModConfigMenuAPI.AddPage(ModManifest, Helper.Translation.Get("pages.keybinds.id"), () => Helper.Translation.Get("pages.keybinds.pageTitle"));
 
-                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("others.title.name"), () => Helper.Translation.Get("others.title.description"));
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.SuppressControllerButton, (bool val) => configsForTheMod.SuppressControllerButton = val, () => Helper.Translation.Get("others.SuppressControllerButtons.name"), () => Helper.Translation.Get("others.SuppressControllerButtons.description"));
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.ZoomAndUIControlEverywhere, (bool val) => configsForTheMod.ZoomAndUIControlEverywhere = val, () => Helper.Translation.Get("others.ZoomAndUIAnywhere.name"), () => Helper.Translation.Get("others.ZoomAndUIAnywhere.description"));
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsHideUIWithCertainZoom, (bool val) => configsForTheMod.IsHideUIWithCertainZoom = val, () => Helper.Translation.Get("others.HideUIWithCertainZoom.name"), () => Helper.Translation.Get("others.HideUIWithCertainZoom.description"));
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.PressAnyButtonToCenterCamera, (bool val) => configsForTheMod.PressAnyButtonToCenterCamera = val, () => Helper.Translation.Get("others.PressAnyButtonToCenterCamera.name"), () => Helper.Translation.Get("others.PressAnyButtonToCenterCamera.description"));
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.AutoZoomToMapSize, (bool val) => configsForTheMod.AutoZoomToMapSize = val, () => Helper.Translation.Get("others.AutoZoomToMapSize.name"), () => Helper.Translation.Get("others.AutoZoomToMapSize.description"));
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("keybinds.subtitle.main.displayedName"), () => Helper.Translation.Get("keybinds.subtitle.main.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListHoldToChangeUI, (KeybindList val) => configsForTheMod.KeybindListHoldToChangeUI = val, () => Helper.Translation.Get("keybinds.HoldToChangeUI.displayedName"), () => Helper.Translation.Get("keybinds.HoldToChangeUI.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListIncreaseZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListIncreaseZoomOrUI = val, () => Helper.Translation.Get("keybinds.IncreaseZoomOrUI.displayedName"), () => Helper.Translation.Get("keybinds.IncreaseZoomOrUI.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListDecreaseZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListDecreaseZoomOrUI = val, () => Helper.Translation.Get("keybinds.DecreaseZoomOrUI.displayedName"), () => Helper.Translation.Get("keybinds.DecreaseZoomOrUI.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListResetZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListResetZoomOrUI = val, () => Helper.Translation.Get("keybinds.ResetZoomOrUI.displayedName"), () => Helper.Translation.Get("keybinds.ResetZoomOrUI.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMaxZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListMaxZoomOrUI = val, () => Helper.Translation.Get("keybinds.MaxZoomOrUI.displayedName"), () => Helper.Translation.Get("keybinds.MaxZoomOrUI.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMinZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListMinZoomOrUI = val, () => Helper.Translation.Get("keybinds.MinZoomOrUI.displayedName"), () => Helper.Translation.Get("keybinds.MinZoomOrUI.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListZoomToCurrentMapSize, (KeybindList val) => configsForTheMod.KeybindListZoomToCurrentMapSize = val, () => Helper.Translation.Get("keybinds.ZoomToCurrentMapSize.displayedName"), () => Helper.Translation.Get("keybinds.ZoomToCurrentMapSize.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListPresetZoomAndUIValues, (KeybindList val) => configsForTheMod.KeybindListPresetZoomAndUIValues = val, () => Helper.Translation.Get("keybinds.PresetZoomAndUIValues.displayedName"), () => Helper.Translation.Get("keybinds.PresetZoomAndUIValues.tooltip"));
+
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("keybinds.subtitle.camera.displayedName"), () => Helper.Translation.Get("keybinds.subtitle.camera.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraUp, (KeybindList val) => configsForTheMod.KeybindListMovementCameraUp = val, () => Helper.Translation.Get("keybinds.MovementCameraUp.displayedName"), () => Helper.Translation.Get("keybinds.MovementCameraUp.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraDown, (KeybindList val) => configsForTheMod.KeybindListMovementCameraDown = val, () => Helper.Translation.Get("keybinds.MovementCameraDown.displayedName"), () => Helper.Translation.Get("keybinds.MovementCameraDown.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraLeft, (KeybindList val) => configsForTheMod.KeybindListMovementCameraLeft = val, () => Helper.Translation.Get("keybinds.MovementCameraLeft.displayedName"), () => Helper.Translation.Get("keybinds.MovementCameraLeft.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraRight, (KeybindList val) => configsForTheMod.KeybindListMovementCameraRight = val, () => Helper.Translation.Get("keybinds.MovementCameraRight.displayedName"), () => Helper.Translation.Get("keybinds.MovementCameraRight.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMovementCameraReset, (KeybindList val) => configsForTheMod.KeybindListMovementCameraReset = val, () => Helper.Translation.Get("keybinds.MovementCameraReset.displayedName"), () => Helper.Translation.Get("keybinds.MovementCameraReset.tooltip"));
+
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("keybinds.subtitle.toggle.displayedName"), () => Helper.Translation.Get("keybinds.subtitle.toggle.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleUIVisibility, (KeybindList val) => configsForTheMod.KeybindListToggleUIVisibility = val, () => Helper.Translation.Get("keybinds.ToggleUIVisibility.displayedName"), () => Helper.Translation.Get("keybinds.ToggleUIVisibility.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleHideUIWithCertainZoom, (KeybindList val) => configsForTheMod.KeybindListToggleHideUIWithCertainZoom = val, () => Helper.Translation.Get("keybinds.ToggleHideUIWithCertainZoom.displayedName"), () => Helper.Translation.Get("keybinds.ToggleHideUIWithCertainZoom.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleAnyKeyToResetCamera, (KeybindList val) => configsForTheMod.KeybindListToggleAnyKeyToResetCamera = val, () => Helper.Translation.Get("keybinds.ToggleAnyKeyToResetCamera.displayedName"), () => Helper.Translation.Get("keybinds.ToggleAnyKeyToResetCamera.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleAutoZoomToCurrentMapSize, (KeybindList val) => configsForTheMod.KeybindListToggleAutoZoomToCurrentMapSize = val, () => Helper.Translation.Get("keybinds.ToggleAutoZoomToCurrentMapSize.displayedName"), () => Helper.Translation.Get("keybinds.ToggleAutoZoomToCurrentMapSize.tooltip"));
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListTogglePresetOnLoadSaveFile, (KeybindList val) => configsForTheMod.KeybindListTogglePresetOnLoadSaveFile = val, () => Helper.Translation.Get("keybinds.TogglePresetOnLoadSaveFile.displayedName"), () => Helper.Translation.Get("keybinds.TogglePresetOnLoadSaveFile.tooltip"));
+
+                genericModConfigMenuAPI.AddPage(ModManifest, Helper.Translation.Get("pages.values.id"), () => Helper.Translation.Get("pages.values.pageTitle"));
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("values.subtitle.main.displayedName"), () => Helper.Translation.Get("values.subtitle.main.tooltip"));
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomOrUILevelIncreaseValue, (float val) => configsForTheMod.ZoomOrUILevelIncreaseValue = val, () => Helper.Translation.Get("values.ZoomOrUILevelIncreaseValue.displayedName"), () => Helper.Translation.Get("values.ZoomOrUILevelIncreaseValue.tooltip"), 0.01f, 0.50f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomOrUILevelDecreaseValue, (float val) => configsForTheMod.ZoomOrUILevelDecreaseValue = val, () => Helper.Translation.Get("values.ZoomOrUILevelDecreaseValue.displayedName"), () => Helper.Translation.Get("values.ZoomOrUILevelDecreaseValue.tooltip"), -0.50f, -0.01f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ResetZoomOrUIValue, (float val) => configsForTheMod.ResetZoomOrUIValue = val, () => Helper.Translation.Get("values.ResetZoomOrUIValue.displayedName"), () => Helper.Translation.Get("values.ResetZoomOrUIValue.tooltip"), 0.15f, 2.5f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.MaxZoomOrUIValue, (float val) => configsForTheMod.MaxZoomOrUIValue = val, () => Helper.Translation.Get("values.MaxZoomOrUIValue.displayedName"), () => Helper.Translation.Get("values.MaxZoomOrUIValue.tooltip"), 1f, 2.5f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.MinZoomOrUIValue, (float val) => configsForTheMod.MinZoomOrUIValue = val, () => Helper.Translation.Get("values.MinZoomOrUIValue.displayedName"), () => Helper.Translation.Get("values.MinZoomOrUIValue.tooltip"), 0.15f, 1f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelThatHidesUI, (float val) => configsForTheMod.ZoomLevelThatHidesUI = val, () => Helper.Translation.Get("values.ZoomLevelThatHidesUI.displayedName"), () => Helper.Translation.Get("values.ZoomLevelThatHidesUI.tooltip"), 0.15f, 2.5f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.CameraMovementSpeedValue, (int val) => configsForTheMod.CameraMovementSpeedValue = val, () => Helper.Translation.Get("values.CameraMovementSpeedValue.displayedName"), () => Helper.Translation.Get("values.CameraMovementSpeedValue.tooltip"), 5, 50, 1);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.PresetZoomLevelValue, (float val) => configsForTheMod.PresetZoomLevelValue = val, () => Helper.Translation.Get("values.PresetZoomLevelValue.displayedName"), () => Helper.Translation.Get("values.PresetZoomLevelValue.tooltip"), 0.15f, 2.5f, 0.01f, FormatPercentage);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.PresetUIScaleValue, (float val) => configsForTheMod.PresetUIScaleValue = val, () => Helper.Translation.Get("values.PresetUIScaleValue.displayedName"), () => Helper.Translation.Get("values.PresetUIScaleValue.tooltip"), 0.15f, 2.5f, 0.01f, FormatPercentage);
+
+                genericModConfigMenuAPI.AddPage(ModManifest, Helper.Translation.Get("pages.miscellaneous.id"), () => Helper.Translation.Get("pages.miscellaneous.pageTitle"));
+
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, () => Helper.Translation.Get("miscellaneous.subtitle.main.displayedName"), () => Helper.Translation.Get("miscellaneous.subtitle.main.tooltip"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.SuppressControllerButtons, (bool val) => configsForTheMod.SuppressControllerButtons = val, () => Helper.Translation.Get("miscellaneous.SuppressControllerButtons.displayedName"), () => Helper.Translation.Get("miscellaneous.SuppressControllerButtons.tooltip"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.AutoZoomToCurrentMapSize, (bool val) => configsForTheMod.AutoZoomToCurrentMapSize = val, () => Helper.Translation.Get("miscellaneous.AutoZoomToCurrentMapSize.displayedName"), () => Helper.Translation.Get("miscellaneous.AutoZoomToCurrentMapSize.tooltip"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.AnyButtonToCenterCamera, (bool val) => configsForTheMod.AnyButtonToCenterCamera = val, () => Helper.Translation.Get("miscellaneous.AnyButtonToCenterCamera.displayedName"), () => Helper.Translation.Get("miscellaneous.AnyButtonToCenterCamera.tooltip"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.HideUIWithCertainZoom, (bool val) => configsForTheMod.HideUIWithCertainZoom = val, () => Helper.Translation.Get("miscellaneous.HideUIWithCertainZoom.displayedName"), () => Helper.Translation.Get("miscellaneous.HideUIWithCertainZoom.tooltip"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.PresetOnLoadSaveFile, (bool val) => configsForTheMod.PresetOnLoadSaveFile = val, () => Helper.Translation.Get("miscellaneous.PresetOnLoadSaveFile.displayedName"), () => Helper.Translation.Get("miscellaneous.PresetOnLoadSaveFile.tooltip"));
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.ZoomAndUIControlEverywhere, (bool val) => configsForTheMod.ZoomAndUIControlEverywhere = val, () => Helper.Translation.Get("miscellaneous.ZoomAndUIControlEverywhere.displayedName"), () => Helper.Translation.Get("miscellaneous.ZoomAndUIControlEverywhere.tooltip"));
             }
         }
 
-        private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
+        private void Events_GameLoop_SaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
-            uiScaleBeforeTheHidding = Game1.options.desiredUIScale;
+            uiScaleBeforeHiddingTheUI = Game1.options.desiredUIScale;
             wasThePreviousButtonPressSucessfull = false;
             wasToggleUIScaleClicked = false;
             wasZoomLevelChanged = false;
+            wasCameraFrozen = false;
 
-            if (configsForTheMod.AutoZoomToMapSize == true)
+            if (configsForTheMod.AutoZoomToCurrentMapSize == true)
             {
                 ChangeZoomLevelToCurrentMapSize();
             }
+
+            if (configsForTheMod.PresetOnLoadSaveFile == true)
+            {
+                PresetZoomAndUIValues();
+            }
         }
 
-        private void Player_Warped(object sender, WarpedEventArgs e)
+        private void Events_Player_Warped(object? sender, WarpedEventArgs e)
         {
-            if (configsForTheMod.AutoZoomToMapSize == true)
+            if (configsForTheMod.AutoZoomToCurrentMapSize == true)
             {
                 ChangeZoomLevelToCurrentMapSize();
             }
         }
 
-        private void Events_Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void Events_Input_ButtonChanged(object? sender, ButtonsChangedEventArgs e)
+        {
+            if (configsForTheMod.KeybindListMovementCameraUp.IsDown() && !configsForTheMod.KeybindListMovementCameraDown.IsDown())
+            {
+                if (Game1.viewport.Y > 0)
+                {
+                    wasCameraFrozen = true;
+                    Game1.viewportFreeze = true;
+                    Game1.viewport.Y -= configsForTheMod.CameraMovementSpeedValue;
+                }
+            }
+            else if (configsForTheMod.KeybindListMovementCameraDown.IsDown() && !configsForTheMod.KeybindListMovementCameraUp.IsDown())
+            {
+                if (Game1.viewport.Y < Game1.currentLocation.map.DisplayHeight - Game1.viewport.Height)
+                {
+                    wasCameraFrozen = true;
+                    Game1.viewportFreeze = true;
+                    Game1.viewport.Y += configsForTheMod.CameraMovementSpeedValue;
+                }
+            }
+            if (configsForTheMod.KeybindListMovementCameraLeft.IsDown() && !configsForTheMod.KeybindListMovementCameraRight.IsDown())
+            {
+                if (Game1.viewport.X > 0)
+                {
+                    wasCameraFrozen = true;
+                    Game1.viewportFreeze = true;
+                    Game1.viewport.X -= configsForTheMod.CameraMovementSpeedValue;
+                }
+            }
+            else if (configsForTheMod.KeybindListMovementCameraRight.IsDown() && !configsForTheMod.KeybindListMovementCameraLeft.IsDown())
+            {
+                if (Game1.viewport.X < Game1.currentLocation.map.DisplayWidth - Game1.viewport.Width)
+                {
+                    wasCameraFrozen = true;
+                    Game1.viewportFreeze = true;
+                    Game1.viewport.X += configsForTheMod.CameraMovementSpeedValue;
+                }
+            }
+        }
+
+        private void Events_Input_ButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || (!Context.IsPlayerFree && !configsForTheMod.ZoomAndUIControlEverywhere)) { return; }
 
@@ -119,12 +193,12 @@ namespace ZoomLevel
             {
                 if (configsForTheMod.KeybindListIncreaseZoomOrUI.JustPressed())
                 {
-                    ChangeUILevel(configsForTheMod.ZoomLevelIncreaseValue);
+                    ChangeUIScale(configsForTheMod.ZoomOrUILevelIncreaseValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
                 else if (configsForTheMod.KeybindListDecreaseZoomOrUI.JustPressed())
                 {
-                    ChangeUILevel(configsForTheMod.ZoomLevelDecreaseValue);
+                    ChangeUIScale(configsForTheMod.ZoomOrUILevelDecreaseValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
                 else if (configsForTheMod.KeybindListResetZoomOrUI.JustPressed())
@@ -134,16 +208,21 @@ namespace ZoomLevel
                 }
                 else if (configsForTheMod.KeybindListMaxZoomOrUI.JustPressed())
                 {
-                    UpdateUIScale(configsForTheMod.MaxZoomInLevelAndUIValue);
+                    UpdateUIScale(configsForTheMod.MaxZoomOrUIValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
                 else if (configsForTheMod.KeybindListMinZoomOrUI.JustPressed())
                 {
-                    UpdateUIScale(configsForTheMod.MaxZoomOutLevelAndUIValue);
+                    UpdateUIScale(configsForTheMod.MinZoomOrUIValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
-                else if (configsForTheMod.KeybindListToggleUI.JustPressed())
+                else if (configsForTheMod.KeybindListPresetZoomAndUIValues.JustPressed())
                 {
+                    PresetZoomAndUIValues();
+                }
+                else if (configsForTheMod.KeybindListToggleUIVisibility.JustPressed())
+                {
+                    wasToggleUIScaleClicked = true;
                     ToggleUIScale();
                     wasThePreviousButtonPressSucessfull = true;
                 }
@@ -152,38 +231,56 @@ namespace ZoomLevel
                     ToggleHideWithUIWithCertainZoom();
                     wasThePreviousButtonPressSucessfull = true;
                 }
-                else if (configsForTheMod.KeybindListChangeZoomToApproximateCurrentMapSize.JustPressed())
+                else if (configsForTheMod.KeybindListTogglePresetOnLoadSaveFile.JustPressed())
+                {
+                    TogglePresetOnLoadSaveFile();
+                }
+                else if (configsForTheMod.KeybindListZoomToCurrentMapSize.JustPressed())
                 {
                     ChangeZoomLevelToCurrentMapSize();
+                    wasThePreviousButtonPressSucessfull = true;
+                }
+                else if (configsForTheMod.KeybindListMovementCameraUp.JustPressed() || configsForTheMod.KeybindListMovementCameraDown.JustPressed() || configsForTheMod.KeybindListMovementCameraLeft.JustPressed() || configsForTheMod.KeybindListMovementCameraRight.JustPressed())
+                {
+                    //Do nothing
+                }
+                else if (wasCameraFrozen == true && Game1.viewportFreeze == true && (configsForTheMod.KeybindListMovementCameraReset.JustPressed() == true || configsForTheMod.AnyButtonToCenterCamera == true))
+                {
+                    wasCameraFrozen = false;
+                    Game1.viewportFreeze = false;
                     wasThePreviousButtonPressSucessfull = true;
                 }
             }
             else if (configsForTheMod.KeybindListIncreaseZoomOrUI.JustPressed())
             {
-                ChangeZoomLevel(configsForTheMod.ZoomLevelIncreaseValue);
+                ChangeZoomLevel(configsForTheMod.ZoomOrUILevelIncreaseValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
             else if (configsForTheMod.KeybindListDecreaseZoomOrUI.JustPressed())
             {
-                ChangeZoomLevel(configsForTheMod.ZoomLevelDecreaseValue);
+                ChangeZoomLevel(configsForTheMod.ZoomOrUILevelDecreaseValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
             else if (configsForTheMod.KeybindListResetZoomOrUI.JustPressed())
             {
-                UpdateZoomValue(configsForTheMod.ResetZoomOrUIValue);
+                UpdateZoomLevel(configsForTheMod.ResetZoomOrUIValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
             else if (configsForTheMod.KeybindListMaxZoomOrUI.JustPressed())
             {
-                UpdateZoomValue(configsForTheMod.MaxZoomInLevelAndUIValue);
+                UpdateZoomLevel(configsForTheMod.MaxZoomOrUIValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
             else if (configsForTheMod.KeybindListMinZoomOrUI.JustPressed())
             {
-                UpdateZoomValue(configsForTheMod.MaxZoomOutLevelAndUIValue);
+                UpdateZoomLevel(configsForTheMod.MinZoomOrUIValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (configsForTheMod.KeybindListToggleUI.JustPressed())
+            else if (configsForTheMod.KeybindListPresetZoomAndUIValues.JustPressed())
+            {
+                PresetZoomAndUIValues();
+            }
+            else if (configsForTheMod.KeybindListToggleUIVisibility.JustPressed())
             {
                 wasToggleUIScaleClicked = true;
                 ToggleUIScale();
@@ -194,63 +291,99 @@ namespace ZoomLevel
                 ToggleHideWithUIWithCertainZoom();
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (configsForTheMod.KeybindListChangeZoomToApproximateCurrentMapSize.JustPressed())
+            else if (configsForTheMod.KeybindListToggleAnyKeyToResetCamera.JustPressed())
+            {
+                TogglePressAnyKeyToResetCamera();
+            }
+            else if (configsForTheMod.KeybindListToggleAutoZoomToCurrentMapSize.JustPressed())
+            {
+                ToggleAutoZoomMap();
+            }
+            else if (configsForTheMod.KeybindListTogglePresetOnLoadSaveFile.JustPressed())
+            {
+                TogglePresetOnLoadSaveFile();
+            }
+            else if (configsForTheMod.KeybindListZoomToCurrentMapSize.JustPressed())
             {
                 ChangeZoomLevelToCurrentMapSize();
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (configsForTheMod.KeybindListMovementCameraUp.JustPressed())
+            else if (configsForTheMod.KeybindListMovementCameraUp.JustPressed() || configsForTheMod.KeybindListMovementCameraDown.JustPressed() || configsForTheMod.KeybindListMovementCameraLeft.JustPressed() || configsForTheMod.KeybindListMovementCameraRight.JustPressed())
             {
-                if (Game1.viewport.Y > 0)
-                {
-                    Game1.viewportFreeze = true;
-                    Game1.viewport.Y -= configsForTheMod.CameraMovementSpeed;
-                }
-                wasThePreviousButtonPressSucessfull = true;
+                //Do nothing
             }
-            else if (configsForTheMod.KeybindListMovementCameraDown.JustPressed())
+            else if (wasCameraFrozen == true && Game1.viewportFreeze == true && (configsForTheMod.KeybindListMovementCameraReset.JustPressed() == true || configsForTheMod.AnyButtonToCenterCamera == true))
             {
-                if (Game1.viewport.Y < Game1.currentLocation.map.DisplayHeight - Game1.viewport.Height)
-                {
-                    Game1.viewportFreeze = true;
-                    Game1.viewport.Y += configsForTheMod.CameraMovementSpeed;
-                }
-                wasThePreviousButtonPressSucessfull = true;
-            }
-            else if (configsForTheMod.KeybindListMovementCameraLeft.JustPressed())
-            {
-                if (Game1.viewport.X > 0)
-                {
-                    Game1.viewportFreeze = true;
-                    Game1.viewport.X -= configsForTheMod.CameraMovementSpeed;
-                }
-                wasThePreviousButtonPressSucessfull = true;
-            }
-            else if (configsForTheMod.KeybindListMovementCameraRight.JustPressed())
-            {
-                if (Game1.viewport.X < Game1.currentLocation.map.DisplayWidth - Game1.viewport.Width)
-                {
-                    Game1.viewportFreeze = true;
-                    Game1.viewport.X += configsForTheMod.CameraMovementSpeed;
-                }
-                wasThePreviousButtonPressSucessfull = true;
-            }
-            else if (Game1.viewportFreeze == true && (configsForTheMod.KeybindListResetCameraMovement.JustPressed() || configsForTheMod.PressAnyButtonToCenterCamera == true))
-            {
+                wasCameraFrozen = false;
                 Game1.viewportFreeze = false;
                 wasThePreviousButtonPressSucessfull = true;
             }
 
-            if (configsForTheMod.SuppressControllerButton == true && wasThePreviousButtonPressSucessfull == true)
+            if (configsForTheMod.SuppressControllerButtons == true && wasThePreviousButtonPressSucessfull == true)
             {
                 Helper.Input.Suppress(e.Button);
             }
         }
 
+        private void ToggleAutoZoomMap()
+        {
+            configsForTheMod.AutoZoomToCurrentMapSize = !configsForTheMod.AutoZoomToCurrentMapSize;
+            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("hudMessages.AutoZoomToCurrentMapSize.message", new { value = configsForTheMod.AutoZoomToCurrentMapSize.ToString() }), HUDMessage.newQuest_type));
+        }
+
+        private void TogglePressAnyKeyToResetCamera()
+        {
+            configsForTheMod.AnyButtonToCenterCamera = !configsForTheMod.AnyButtonToCenterCamera;
+            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("hudMessages.AnyButtonToCenterCamera.message", new { value = configsForTheMod.AnyButtonToCenterCamera.ToString() }), HUDMessage.newQuest_type));
+        }
+
         private void ToggleHideWithUIWithCertainZoom()
         {
-            configsForTheMod.IsHideUIWithCertainZoom = !configsForTheMod.IsHideUIWithCertainZoom;
-            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("hudMessages.HideUIWithCertainZoomIs.message", new { value = configsForTheMod.IsHideUIWithCertainZoom.ToString() }), 2));
+            configsForTheMod.HideUIWithCertainZoom = !configsForTheMod.HideUIWithCertainZoom;
+            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("hudMessages.HideUIWithCertainZoom.message", new { value = configsForTheMod.HideUIWithCertainZoom.ToString() }), HUDMessage.newQuest_type));
+        }
+
+        private void ToggleUIScale()
+        {
+            float uiValue = 0.0f;
+
+            if ((configsForTheMod.HideUIWithCertainZoom == true && wasZoomLevelChanged == true))
+            {
+                if (configsForTheMod.ZoomLevelThatHidesUI >= Game1.options.desiredBaseZoomLevel && currentUIScale > 0.0f)
+                {
+                    UpdateUIScale(uiValue);
+                }
+                else if (configsForTheMod.ZoomLevelThatHidesUI < Game1.options.desiredBaseZoomLevel && currentUIScale <= 0.0f)
+                {
+                    uiValue = uiScaleBeforeHiddingTheUI;
+                    UpdateUIScale(uiValue);
+                }
+            }
+
+            if ((wasZoomLevelChanged == false && wasToggleUIScaleClicked == true))
+            {
+                if (currentUIScale > 0.0f)
+                {
+                    UpdateUIScale(uiValue);
+                }
+                else
+                {
+                    uiValue = uiScaleBeforeHiddingTheUI;
+                    UpdateUIScale(uiValue);
+                }
+            }
+        }
+
+        private void TogglePresetOnLoadSaveFile()
+        {
+            configsForTheMod.PresetOnLoadSaveFile = !configsForTheMod.PresetOnLoadSaveFile;
+            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("hudMessages.PresetOnLoadSaveFile.message", new { value = configsForTheMod.PresetOnLoadSaveFile.ToString() }), HUDMessage.newQuest_type));
+        }
+
+        private void PresetZoomAndUIValues()
+        {
+            UpdateUIScale(configsForTheMod.PresetUIScaleValue);
+            UpdateZoomLevel(configsForTheMod.PresetZoomLevelValue);
         }
 
         private void ChangeZoomLevelToCurrentMapSize()
@@ -270,65 +403,37 @@ namespace ZoomLevel
                 {
                     zoomLevel = (float)screenHeight / (float)mapHeight;
                 }
-                UpdateZoomValue(zoomLevel);
+
+                UpdateZoomLevel(zoomLevel);
             }
         }
 
-        private void ToggleUIScale()
+        private void ChangeZoomLevel(float amountToAdd = 0)
         {
-            float uiValue = 0.0f;
+            float zoomLevelValue = (float)Math.Round(Game1.options.desiredBaseZoomLevel + amountToAdd, 2);
 
-            if ((configsForTheMod.IsHideUIWithCertainZoom == true && wasZoomLevelChanged == true))
-            {
-                if (configsForTheMod.ZoomLevelThatHidesUI >= Game1.options.desiredBaseZoomLevel && currentUIScale > 0.0f)
-                {
-                    UpdateUIScale(uiValue);
-                }
-                else if (configsForTheMod.ZoomLevelThatHidesUI < Game1.options.desiredBaseZoomLevel && currentUIScale <= 0.0f)
-                {
-                    uiValue = uiScaleBeforeTheHidding;
-                    UpdateUIScale(uiValue);
-                }
-            }
-
-            if ((wasZoomLevelChanged == false && wasToggleUIScaleClicked == true))
-            {
-                if (currentUIScale > 0.0f)
-                {
-                    UpdateUIScale(uiValue);
-                }
-                else
-                {
-                    uiValue = uiScaleBeforeTheHidding;
-                    UpdateUIScale(uiValue);
-                }
-            }
+            UpdateZoomLevel(zoomLevelValue);
         }
 
-        private void ChangeZoomLevel(float amount = 0)
+        private void ChangeUIScale(float amountToAdd = 0)
         {
-            float zoomLevelValue = (float)Math.Round(Game1.options.desiredBaseZoomLevel + amount, 2);
-
-            UpdateZoomValue(zoomLevelValue);
-        }
-
-        private void ChangeUILevel(float amount = 0)
-        {
-            float uiScale = (float)Math.Round(Game1.options.desiredUIScale + amount, 2);
+            float uiScale = (float)Math.Round(Game1.options.desiredUIScale + amountToAdd, 2);
 
             UpdateUIScale(uiScale);
         }
 
-        private void UpdateZoomValue(float zoomLevelValue)
+        private void UpdateZoomLevel(float zoomLevelValue)
         {
             //Caps Max Zoom In Level
-            zoomLevelValue = zoomLevelValue >= configsForTheMod.MaxZoomInLevelAndUIValue ? configsForTheMod.MaxZoomInLevelAndUIValue : zoomLevelValue;
+            zoomLevelValue = zoomLevelValue >= configsForTheMod.MaxZoomOrUIValue ? configsForTheMod.MaxZoomOrUIValue : zoomLevelValue;
 
             //Caps Max Zoom Out Level
-            zoomLevelValue = zoomLevelValue <= configsForTheMod.MaxZoomOutLevelAndUIValue ? configsForTheMod.MaxZoomOutLevelAndUIValue : zoomLevelValue;
+            zoomLevelValue = zoomLevelValue <= configsForTheMod.MinZoomOrUIValue ? configsForTheMod.MinZoomOrUIValue : zoomLevelValue;
 
             //Changes ZoomLevel
-            Game1.options.desiredBaseZoomLevel = zoomLevelValue;
+            Game1.options.desiredBaseZoomLevel = RoundUp(zoomLevelValue, 2);
+
+            currentZoomLevel = Game1.options.desiredBaseZoomLevel;
             wasZoomLevelChanged = true;
             ToggleUIScale();
         }
@@ -338,14 +443,14 @@ namespace ZoomLevel
             if (uiScale != 0)
             {
                 //Caps Max UI Scale
-                uiScale = uiScale >= configsForTheMod.MaxZoomInLevelAndUIValue ? configsForTheMod.MaxZoomInLevelAndUIValue : uiScale;
+                uiScale = uiScale >= configsForTheMod.MaxZoomOrUIValue ? configsForTheMod.MaxZoomOrUIValue : uiScale;
 
                 //Caps Min UI Scale
-                uiScale = uiScale <= configsForTheMod.MaxZoomOutLevelAndUIValue ? configsForTheMod.MaxZoomOutLevelAndUIValue : uiScale;
+                uiScale = uiScale <= configsForTheMod.MinZoomOrUIValue ? configsForTheMod.MinZoomOrUIValue : uiScale;
             }
             else
             {
-                uiScaleBeforeTheHidding = Game1.options.desiredUIScale;
+                uiScaleBeforeHiddingTheUI = Game1.options.desiredUIScale;
             }
 
             //Changes UI Scale
@@ -358,178 +463,76 @@ namespace ZoomLevel
         {
             return $"{val:0.#%}";
         }
-    }
 
-    //Generic Mod Config Menu API
-    namespace GenericModConfigMenu
-    {
-        /// <summary>The API which lets other mods add a config UI through Generic Mod Config Menu.</summary>
-        public interface IGenericModConfigMenuAPI
+        public static float RoundUp(float input, int places)
         {
-            /*********
-            ** Methods
-            *********/
-            /****
-            ** Must be called first
-            ****/
+            float multiplier = (float)Math.Pow(10, Convert.ToDouble(places));
+            return (float)(Math.Ceiling(input * multiplier) / multiplier);
+        }
 
-            /// <summary>Register a mod whose config can be edited through the UI.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="reset">Reset the mod's config to its default values.</param>
-            /// <param name="save">Save the mod's current config to the <c>config.json</c> file.</param>
-            /// <param name="titleScreenOnly">Whether the options can only be edited from the title screen.</param>
-            /// <remarks>Each mod can only be registered once, unless it's deleted via <see cref="Unregister"/> before calling this again.</remarks>
-            void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+        private void ConsoleFunctionsList(string command, string[] args)
+        {
+            if (command.ToLower() == Helper.Translation.Get("consoleCommands.toggleAutoZoomMap.name").ToString().ToLower())
+            {
+                this.ToggleAutoZoomMap();
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.AutoZoomToCurrentMapSize.message", new { value = configsForTheMod.AutoZoomToCurrentMapSize.ToString() }), LogLevel.Info);
+            }
+            else if (command.ToLower() == Helper.Translation.Get("consoleCommands.togglePressAnyKeyToResetCamera.name").ToString().ToLower())
+            {
+                this.TogglePressAnyKeyToResetCamera();
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.AnyButtonToCenterCamera.message", new { value = configsForTheMod.AnyButtonToCenterCamera.ToString() }), LogLevel.Info);
+            }
+            else if (command.ToLower() == Helper.Translation.Get("consoleCommands.toggleHideWithUIWithCertainZoom.name").ToString().ToLower())
+            {
+                this.ToggleHideWithUIWithCertainZoom();
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.HideUIWithCertainZoom.message", new { value = configsForTheMod.HideUIWithCertainZoom.ToString() }), LogLevel.Info);
+            }
+            else if (command.ToLower() == Helper.Translation.Get("consoleCommands.togglePresetOnLoadSaveFile.name").ToString().ToLower())
+            {
+                this.TogglePresetOnLoadSaveFile();
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.PresetOnLoadSaveFile.message", new { value = configsForTheMod.PresetOnLoadSaveFile.ToString() }), LogLevel.Info);
+            }
+            else if (command.ToLower() == Helper.Translation.Get("consoleCommands.resetUIAndZoom.name").ToString().ToLower())
+            {
+                float uiScaleValue = 1f;
+                float zoomLevelValue = 1f;
+                if (args.Length > 0 && float.TryParse(args[0], out float uiCustomScale))
+                {
+                    uiScaleValue = uiCustomScale;
+                }
 
-            /****
-            ** Basic options
-            ****/
+                if (args.Length > 1 && float.TryParse(args[1], out float zoomCustomLevel))
+                {
+                    zoomLevelValue = zoomCustomLevel;
+                }
 
-            /// <summary>Add a section title at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="text">The title text shown in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
-            void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+                UpdateUIScale(uiScaleValue);
+                UpdateZoomLevel(zoomLevelValue);
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.resetUIAndZoom.message", new { ui = currentUIScale.ToString(), zoom = currentZoomLevel.ToString() }), LogLevel.Info);
+            }
+            else if (command.ToLower() == Helper.Translation.Get("consoleCommands.resetUI.name").ToString().ToLower())
+            {
+                float uiScaleValue = 1f;
 
-            /// <summary>Add a paragraph of text at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="text">The paragraph text to display.</param>
-            void AddParagraph(IManifest mod, Func<string> text);
+                if (args.Length > 0 && float.TryParse(args[0], out float uiCustomScale))
+                {
+                    uiScaleValue = uiCustomScale;
+                }
 
-            /// <summary>Add an image at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="texture">The image texture to display.</param>
-            /// <param name="texturePixelArea">The pixel area within the texture to display, or <c>null</c> to show the entire image.</param>
-            /// <param name="scale">The zoom factor to apply to the image.</param>
-            void AddImage(IManifest mod, Func<Texture2D> texture, Rectangle? texturePixelArea = null, int scale = Game1.pixelZoom);
+                UpdateUIScale(uiScaleValue);
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.resetUI.message", new { value = currentUIScale.ToString() }), LogLevel.Info);
+            }
+            else if (command.ToLower() == Helper.Translation.Get("consoleCommands.resetZoom.name").ToString().ToLower())
+            {
+                float zoomLevelValue = 1f;
+                if (args.Length > 0 && float.TryParse(args[0], out float zoomCustomLevel))
+                {
+                    zoomLevelValue = zoomCustomLevel;
+                }
 
-            /// <summary>Add a boolean option at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="getValue">Get the current value from the mod config.</param>
-            /// <param name="setValue">Set a new value in the mod config.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
-            /// <summary>Add an integer option at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="getValue">Get the current value from the mod config.</param>
-            /// <param name="setValue">Set a new value in the mod config.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="min">The minimum allowed value, or <c>null</c> to allow any.</param>
-            /// <param name="max">The maximum allowed value, or <c>null</c> to allow any.</param>
-            /// <param name="interval">The interval of values that can be selected.</param>
-            /// <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
-
-            /// <summary>Add a float option at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="getValue">Get the current value from the mod config.</param>
-            /// <param name="setValue">Set a new value in the mod config.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="min">The minimum allowed value, or <c>null</c> to allow any.</param>
-            /// <param name="max">The maximum allowed value, or <c>null</c> to allow any.</param>
-            /// <param name="interval">The interval of values that can be selected.</param>
-            /// <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            void AddNumberOption(IManifest mod, Func<float> getValue, Action<float> setValue, Func<string> name, Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null, Func<float, string> formatValue = null, string fieldId = null);
-
-            /// <summary>Add a string option at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="getValue">Get the current value from the mod config.</param>
-            /// <param name="setValue">Set a new value in the mod config.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="allowedValues">The values that can be selected, or <c>null</c> to allow any.</param>
-            /// <param name="formatAllowedValue">Get the display text to show for a value from <paramref name="allowedValues"/>, or <c>null</c> to show the values as-is.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
-
-            /// <summary>Add a key binding at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="getValue">Get the current value from the mod config.</param>
-            /// <param name="setValue">Set a new value in the mod config.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
-            /// <summary>Add a key binding list at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="getValue">Get the current value from the mod config.</param>
-            /// <param name="setValue">Set a new value in the mod config.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
-            /****
-            ** Multi-page management
-            ****/
-
-            /// <summary>Start a new page in the mod's config UI, or switch to that page if it already exists. All options registered after this will be part of that page.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="pageId">The unique page ID.</param>
-            /// <param name="pageTitle">The page title shown in its UI, or <c>null</c> to show the <paramref name="pageId"/> value.</param>
-            /// <remarks>You must also call <see cref="AddPageLink"/> to make the page accessible. This is only needed to set up a multi-page config UI. If you don't call this method, all options will be part of the mod's main config UI instead.</remarks>
-            void AddPage(IManifest mod, string pageId, Func<string> pageTitle = null);
-
-            /// <summary>Add a link to a page added via <see cref="AddPage"/> at the current position in the form.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="pageId">The unique ID of the page to open when the link is clicked.</param>
-            /// <param name="text">The link text shown in the form.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the link, or <c>null</c> to disable the tooltip.</param>
-            void AddPageLink(IManifest mod, string pageId, Func<string> text, Func<string> tooltip = null);
-
-            /****
-            ** Advanced
-            ****/
-
-            /// <summary>Add an option at the current position in the form using custom rendering logic.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="name">The label text to show in the form.</param>
-            /// <param name="draw">Draw the option in the config UI. This is called with the sprite batch being rendered and the pixel position at which to start drawing.</param>
-            /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-            /// <param name="beforeMenuOpened">A callback raised just before the menu containing this option is opened.</param>
-            /// <param name="beforeSave">A callback raised before the form's current values are saved to the config (i.e. before the <c>save</c> callback passed to <see cref="Register"/>).</param>
-            /// <param name="afterSave">A callback raised after the form's current values are saved to the config (i.e. after the <c>save</c> callback passed to <see cref="Register"/>).</param>
-            /// <param name="beforeReset">A callback raised before the form is reset to its default values (i.e. before the <c>reset</c> callback passed to <see cref="Register"/>).</param>
-            /// <param name="afterReset">A callback raised after the form is reset to its default values (i.e. after the <c>reset</c> callback passed to <see cref="Register"/>).</param>
-            /// <param name="beforeMenuClosed">A callback raised just before the menu containing this option is closed.</param>
-            /// <param name="height">The pixel height to allocate for the option in the form, or <c>null</c> for a standard input-sized option. This is called and cached each time the form is opened.</param>
-            /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-            /// <remarks>The custom logic represented by the callback parameters is responsible for managing its own state if needed. For example, you can store state in a static field or use closures to use a state variable.</remarks>
-            void AddComplexOption(IManifest mod, Func<string> name, Action<SpriteBatch, Vector2> draw, Func<string> tooltip = null, Action beforeMenuOpened = null, Action beforeSave = null, Action afterSave = null, Action beforeReset = null, Action afterReset = null, Action beforeMenuClosed = null, Func<int> height = null, string fieldId = null);
-
-            /// <summary>Set whether the options registered after this point can only be edited from the title screen.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="titleScreenOnly">Whether the options can only be edited from the title screen.</param>
-            /// <remarks>This lets you have different values per-field. Most mods should just set it once in <see cref="Register"/>.</remarks>
-            void SetTitleScreenOnlyForNextOptions(IManifest mod, bool titleScreenOnly);
-
-            /// <summary>Register a method to notify when any option registered by this mod is edited through the config UI.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            /// <param name="onChange">The method to call with the option's unique field ID and new value.</param>
-            /// <remarks>Options use a randomized ID by default; you'll likely want to specify the <c>fieldId</c> argument when adding options if you use this.</remarks>
-            void OnFieldChanged(IManifest mod, Action<string, object> onChange);
-
-            /// <summary>Open the config UI for a specific mod.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            void OpenModMenu(IManifest mod);
-
-            /// <summary>Get the currently-displayed mod config menu, if any.</summary>
-            /// <param name="mod">The manifest of the mod whose config menu is being shown, or <c>null</c> if not applicable.</param>
-            /// <param name="page">The page ID being shown for the current config menu, or <c>null</c> if not applicable. This may be <c>null</c> even if a mod config menu is shown (e.g. because the mod doesn't have pages).</param>
-            /// <returns>Returns whether a mod config menu is being shown.</returns>
-            bool TryGetCurrentMenu(out IManifest mod, out string page);
-
-            /// <summary>Remove a mod from the config UI and delete all its options and pages.</summary>
-            /// <param name="mod">The mod's manifest.</param>
-            void Unregister(IManifest mod);
+                UpdateZoomLevel(zoomLevelValue);
+                this.Monitor.Log(Helper.Translation.Get("consoleMessages.resetZoom.message", new { value = currentZoomLevel.ToString() }), LogLevel.Info);
+            }
         }
     }
 }

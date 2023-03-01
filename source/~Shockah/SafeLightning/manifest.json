@@ -16,5 +16,12 @@
     "UniqueID": "Shockah.SafeLightning",
     "EntryDll": "SafeLightning.dll",
     "MinimumApiVersion": "3.0.0",
-    "UpdateKeys": [ "Nexus:11857" ]
+    "UpdateKeys": [ "Nexus:11857" ],
+    "Dependencies": [
+        {
+            "UniqueID": "Shockah.Kokoro",
+            "IsRequired": true,
+            "MinimumVersion": "0.1.0"
+        }
+    ]
 }

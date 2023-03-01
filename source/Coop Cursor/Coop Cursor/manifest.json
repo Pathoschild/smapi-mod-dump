@@ -11,7 +11,7 @@
 {
   "Name": "Coop Cursor",
   "Author": "DeLiXx",
-  "Version": "1.0.0",
+  "Version": "1.0.3",
   "Description": "Disables the mouse cursor for P1 in menus, similar to how it works for P2-P4 in Co-Op.Useful when running multiple instances using Nucleus Co-Op as they would otherwhise interfere with each other.",
   "UniqueID": "DeLiXx.Coop_Cursor",
   "EntryDll": "Coop Cursor.dll",

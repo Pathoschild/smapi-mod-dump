@@ -2,5 +2,6 @@
   "KeybindListToggleUIKey": "LeftShift + OemPipe",
   "AlreadyPettedMessage": "Already Petted",
   "NeedsPettingMessage": "Needs Petting",
-  "IsUIEnabled": true
+  "IsUIEnabled": true,
+  "IsPettingEnabled": false
 }

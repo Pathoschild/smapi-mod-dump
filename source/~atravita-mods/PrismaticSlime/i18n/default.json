@@ -22,6 +22,10 @@
   // misc
   "prismatic-jelly-buff.description": "The power of rainbow colors courses through you.\n\nYour {{skill}} seems massively increased.",
   "prismatic-jelly.response": "%{{name}} seems mesmerized by the jelly.#$b#Oh, wow, thanks!",
+  "prismatic-jelly.response.birthday": "%{{name}} seems mesmerized by the jelly.#$b#Oh, wow, thanks, and for my birthday?",
   "prismatic-jelly.Gus": "Oh, wow, @! Is that...a mythical prismatic slime jelly? Legend says wonderful things happen if you eat it.#$b#Let's have some on toast.",
-  "prismatic-jelly.Wizard": "Ahhh, @, I see you've brought me another mythical prismatic slime jelly!#$b#Much thanks, now take this and let me focus."
+  "prismatic-jelly.Wizard": "Ahhh, @, I see you've brought me another mythical prismatic slime jelly!#$b#Much thanks, now take this and let me focus.",
+
+  // buff
+  "wizard-gift": "The Wizard's Gift"
 }

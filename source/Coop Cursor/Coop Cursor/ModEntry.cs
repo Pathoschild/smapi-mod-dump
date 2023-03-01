@@ -24,7 +24,12 @@ namespace Coop_Cursor
 
     public class ModEntry : Mod
     {
-        private ModConfig Config;
+        public static IModHelper _Helper;
+        public static Mod _Mod;
+        public static IMonitor _Monitor;
+
+        private static ModConfig Config;
+        public static MouseHook Hook = new MouseHook();
 
         /*********
         ** Public methods
@@ -33,66 +38,82 @@ namespace Coop_Cursor
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.Config = this.Helper.ReadConfig<ModConfig>();
-            if( !this.Config.enabled ) return;
+            _Helper = helper;
+            _Mod = this;
+            _Monitor = Monitor;
 
-            var harmony = new Harmony(this.ModManifest.UniqueID);
-            ObjectPatches.Initialize(this.Monitor);
+            Config = Helper.ReadConfig<ModConfig>();
+            if (!Config.enabled)
+                return;
+
+            var harmony = new Harmony(ModManifest.UniqueID);
+
+            //Ignore mouse inputs when playing on a gamepad
+            if (!Config.keyboardPlayer) {
+                harmony.Patch(
+                   original: AccessTools.Method(typeof(InputState), nameof(InputState.SetMousePosition)),
+                   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.SetMousePosition_Prefix))
+                );
+
+                harmony.Patch(
+                   original: AccessTools.Method(typeof(InputState), nameof(InputState.GetMouseState)),
+                   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.GetMouseState_Prefix))
+                );
+            }
+
+            if (Config.keyboardPlayer)
+                Hook.Initialize();
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(InputState), nameof(InputState.SetMousePosition)),
-               prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.SetMousePosition_Prefix))
+               original: AccessTools.Method(typeof(InputState), nameof(InputState.UpdateStates)),
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.UpdateStates_Prefix))
             );
 
-            harmony.Patch(
-               original: AccessTools.Method(typeof(InputState), nameof(InputState.GetMouseState)),
-               prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.GetMouseState_Prefix))
-            );
+
 
         }
 
-    }
-
-    public class ObjectPatches
-    {
-        private static IMonitor Monitor;
         private static FieldInfo _simulatedMousePosition = typeof(InputState).GetField("_simulatedMousePosition", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-        // call this method from your Entry class
-        public static void Initialize(IMonitor monitor)
-        {
-            Monitor = monitor;
-        }
+        private static FieldInfo _currentGamepadState = typeof(InputState).GetField("_currentGamepadState", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        private static FieldInfo _currentMouseState = typeof(InputState).GetField("_currentMouseState", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        private static FieldInfo _currentKeyboardState = typeof(InputState).GetField("_currentKeyboardState", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
         public static bool SetMousePosition_Prefix(InputState __instance, int x, int y)
         {
-            try
-            {
+            try {
                 _simulatedMousePosition.SetValue(__instance, new Point(x, y));
 
                 return false; // don't run original logic
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed in {nameof(SetMousePosition_Prefix)}:\n{ex}", LogLevel.Error);
+            } catch (Exception ex) {
+                _Monitor.Log($"Failed in {nameof(SetMousePosition_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }
 
         public static bool GetMouseState_Prefix(InputState __instance, ref MouseState __result)
         {
-            try
-            {
+            try {
                 Point position = (Point)_simulatedMousePosition.GetValue(__instance);
                 __result = new MouseState(position.X, position.Y, 0, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released);
 
                 return false; // don't run original logic
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed in {nameof(GetMouseState_Prefix)}:\n{ex}", LogLevel.Error);
+            } catch (Exception ex) {
+                _Monitor.Log($"Failed in {nameof(GetMouseState_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
+        }
+
+        public static bool UpdateStates_Prefix(InputState __instance)
+        {
+            if (Config.keyboardPlayer) {
+                _currentGamepadState.SetValue(__instance, default(GamePadState));
+                _currentKeyboardState.SetValue(__instance, Keyboard.GetState());
+                _currentMouseState.SetValue(__instance, Hook.getState());
+            } else {
+                _currentGamepadState.SetValue(__instance, GamePad.GetState(Game1.playerOneIndex));
+            }
+
+            return false;
         }
     }
 }

@@ -12,6 +12,7 @@
   "PauseBetweenRounds_4": "Have you prepared yourself for the next pattern?",
   "PauseBetweenRounds_5": "Another pattern has been completed! Let's see... the next one is ready when you are.",
 
+  "AskAgain": "Would you like to hear the sequence again?",
 
   // GMCM
   "mod-description": "Makes that cave puzzle easier.",
@@ -22,5 +23,7 @@
   "MaxNotes.title": "Max Notes",
   "MaxNotes.description": "Adjusts the maximum number of notes. Note: must be set by host.",
   "PauseBetweenRounds.title": "Pause Between Rounds",
-  "PauseBetweenRounds.description":  "If true, you must talk to the statue to continue to the next round. Note: must be set by host."
+  "PauseBetweenRounds.description": "If true, you must talk to the statue to continue to the next round. Note: must be set by host.",
+  "AllowReAsks.title": "Allow Re-Asks",
+  "AllowReAsks.description":  "Allows you to ask the statue for the pattern again."
 }

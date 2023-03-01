@@ -28,10 +28,12 @@ namespace Unlockable_Areas.Lib
 
         private NetString _id = new NetString();
         private NetString _location = new NetString();
+        private NetString _locationUnique = new NetString();
         private NetString _shopDescription = new NetString();
         private NetString _shopPosition = new NetString();
         private NetString _shopTexture = new NetString();
         public NetString _shopAnimation = new NetString();
+        public NetString _shopEvent = new NetString();
         public NetStringIntDictionary _price = new NetStringIntDictionary();
         private NetString _updateMap = new NetString();
         private NetString _updateType = new NetString();
@@ -39,10 +41,12 @@ namespace Unlockable_Areas.Lib
 
         public string ID { get => _id.Value; set => _id.Value = value; }
         public string Location { get => _location.Value; set => _location.Value = value; }
+        public string LocationUnique { get => _locationUnique.Value; set => _locationUnique.Value = value; }
         public string ShopDescription { get => _shopDescription.Value; set => _shopDescription.Value = value; }
         public string ShopPosition { get => _shopPosition.Value; set => _shopPosition.Value = value; }
         public string ShopTexture { get => _shopTexture.Value; set => _shopTexture.Value = value; }
         public string ShopAnimation { get => _shopAnimation.Value; set => _shopAnimation.Value = value; }
+        public string ShopEvent { get => _shopEvent.Value; set => _shopEvent.Value = value; }
         public Dictionary<string, int> Price
         {
             get => this._price.Pairs.AsEnumerable().ToDictionary(x => x.Key, x => x.Value);
@@ -58,10 +62,12 @@ namespace Unlockable_Areas.Lib
         {
             this.ID = model.ID;
             this.Location = model.Location;
+            this.LocationUnique = model.LocationUnique;
             this.ShopDescription = model.ShopDescription;
             this.ShopPosition = model.ShopPosition;
             this.ShopTexture = model.ShopTexture;
             this.ShopAnimation = model.ShopAnimation;
+            this.ShopEvent = model.ShopEvent;
             this.Price = model.Price;
             this.UpdateMap = model.UpdateMap;
             this.UpdateType = model.UpdateType;
@@ -71,7 +77,20 @@ namespace Unlockable_Areas.Lib
 
         public Unlockable() => addNetFields();
 
-        private void addNetFields() => this.NetFields.AddFields(this._id, this._location, this._shopDescription, this._shopTexture, this._shopAnimation, this._shopPosition, this._price, _updateMap, _updateType, _updatePosition);
+        private void addNetFields() => this.NetFields.AddFields(
+            _id,
+            _location,
+            _locationUnique,
+            _shopDescription,
+            _shopTexture,
+            _shopAnimation,
+            _shopEvent,
+            _shopPosition,
+            _price,
+            _updateMap,
+            _updateType,
+            _updatePosition
+            );
 
         public static Dictionary<string, Unlockable> convertModelDicToEntity(Dictionary<string, UnlockableModel> modelDic)
         {
@@ -82,6 +101,11 @@ namespace Unlockable_Areas.Lib
             }
 
             return entityDic;
+        }
+
+        public GameLocation getGameLocation()
+        {
+            return Game1.getLocationFromName(LocationUnique, Location != LocationUnique);
         }
     }
 }

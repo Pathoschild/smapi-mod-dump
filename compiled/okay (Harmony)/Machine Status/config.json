@@ -1,5 +1,5 @@
 {
-  "IgnoreUnknownItems": true,
+  "Version": "1.1.0",
   "ScreenAnchorSide": "BottomLeft",
   "AnchorInset": 16.0,
   "AnchorOffsetX": 0.0,
@@ -17,7 +17,6 @@
   "VisibilityKeybind": "None",
   "FocusedAlpha": 1.0,
   "NormalAlpha": 0.3,
-  "BusyDancing": true,
   "Grouping": "ByMachine",
   "Sorting": [
     "ReadyFirst",
@@ -32,7 +31,8 @@
     "*|Cask",
     "*|Keg",
     "*|Preserves Jar",
-    "*|Crab Pot"
+    "*|Crab Pot",
+    "*|Crystalarium"
   ],
   "ShowBusy": false,
   "ShowBusyExceptions": []

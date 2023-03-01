@@ -19,6 +19,11 @@
 	"UpdateKeys": [ "Nexus:11217" ],
 	"Dependencies": [
 		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "0.1.0"
+		},
+		{
 			"UniqueID": "Digus.MailServicesMod",
 			"IsRequired": true
 		}

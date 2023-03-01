@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "[PFM] Copper Still",
+	"Author": "NCarigon",
+    "Version": "1.0.5",
+	"Description": "Machine content for Copper Still.",
+	"UniqueID": "NCarigon.CopperStillPFM",
+	"UpdateKeys": [ "nexus:15333" ],
+	"MinimumApiVersion": "3.13.0",
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.ProducerFrameworkMod"
+	}
+}

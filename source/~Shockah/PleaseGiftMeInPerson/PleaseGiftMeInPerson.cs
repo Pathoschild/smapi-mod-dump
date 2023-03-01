@@ -11,12 +11,10 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Shockah.CommonModCode;
+using Nanoray.Shrike.Harmony;
+using Nanoray.Shrike;
 using Shockah.CommonModCode.GMCM;
 using Shockah.CommonModCode.GMCM.Helper;
-using Shockah.CommonModCode.IL;
-using Shockah.CommonModCode.SMAPI;
-using Shockah.CommonModCode.Stardew;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -26,7 +24,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using SObject = StardewValley.Object;
+using Shockah.Kokoro;
+using Shockah.Kokoro.Stardew;
+using Shockah.Kokoro.GMCM;
+using Shockah.Kokoro.SMAPI;
 
 namespace Shockah.PleaseGiftMeInPerson
 {
@@ -534,24 +535,6 @@ namespace Shockah.PleaseGiftMeInPerson
 				return FreeLoveApi.GetSpouses(farmer).ContainsKey(npcName);
 		}
 
-		private void ReturnItemIfNeeded(SObject item, string originalAddresseeNpcName, GiftTaste originalGiftTaste, GiftTaste modifiedGiftTaste)
-		{
-			if ((int)Instance.ModifiedGiftTaste > (int)GiftTaste.Dislike)
-				return;
-
-			//var returnItem = Instance.Config.ReturnUnlikedItems switch
-			//{
-			//	ModConfig.ReturningBehavior.Never => false,
-			//	ModConfig.ReturningBehavior.NormallyLiked => (int)originalGiftTaste >= (int)GiftTaste.Neutral,
-			//	ModConfig.ReturningBehavior.Always => true,
-			//	_ => throw new ArgumentException($"{nameof(ModConfig.ReturningBehavior)} has an invalid value."),
-			//};
-			//if (!returnItem)
-			//	return;
-
-			// TODO: actually send a mail
-		}
-
 		private static void GiftShipmentController_GiftToNpc_Prefix()
 		{
 			Instance.CurrentGiftingPlayer = Game1.player;
@@ -569,64 +552,56 @@ namespace Shockah.PleaseGiftMeInPerson
 			Instance.UpdateEmojisTexture();
 		}
 
-		private static void NPC_tryToReceiveActiveObject_Prefix(NPC __instance, Farmer __0 /* who */)
+		private static void NPC_tryToReceiveActiveObject_Prefix(Farmer __0 /* who */)
 		{
 			Instance.CurrentGiftingPlayer = __0;
 			Instance.CurrentGiftMethod = GiftMethod.InPerson;
 		}
 
-		private static void NPC_tryToReceiveActiveObject_Postfix(NPC __instance)
+		private static void NPC_tryToReceiveActiveObject_Postfix()
 		{
 			Instance.CurrentGiftingPlayer = null;
 			Instance.CurrentGiftMethod = null;
 		}
 
-		private static IEnumerable<CodeInstruction> NPC_tryToReceiveActiveObject_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions, ILGenerator il)
+		private static IEnumerable<CodeInstruction> NPC_tryToReceiveActiveObject_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
 		{
-			var instructions = enumerableInstructions.ToList();
+			try
+			{
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.Find(
+						ILMatches.Ldarg(0),
+						ILMatches.AnyLdloc,
+						ILMatches.Ldfld("who"),
+						ILMatches.Call(AccessTools.PropertyGetter(typeof(Farmer), nameof(Farmer.ActiveObject))),
+						ILMatches.AnyLdloc,
+						ILMatches.Ldfld("who"),
+						ILMatches.AnyLdcI4,
+						ILMatches.Instruction(OpCodes.Ldc_R4),
+						ILMatches.AnyLdcI4,
+						ILMatches.Call(AccessTools.Method(typeof(NPC), nameof(NPC.receiveGift)))
+					)
+					.PointerMatcher(SequenceMatcherRelativeElement.First)
+					.ExtractLabels(out var findHeadLabels)
+					.CreateLabel(il, out var receiveGiftLabel)
+					.Insert(
+						SequenceMatcherPastBoundsDirection.Before, true,
 
-			// IL to find:
-			// IL_1984: ldarg.0
-			// IL_1985: ldloc.0
-			// IL_1986: ldfld class StardewValley.Farmer StardewValley.NPC/'<>c__DisplayClass231_0'::who
-			// IL_198b: callvirt instance class StardewValley.Object StardewValley.Farmer::get_ActiveObject()
-			// IL_1990: ldloc.0
-			// IL_1991: ldfld class StardewValley.Farmer StardewValley.NPC/'<>c__DisplayClass231_0'::who
-			// IL_1996: ldc.i4.1
-			// IL_1997: ldc.r4 1
-			// IL_199c: ldc.i4.1
-			// IL_199d: call instance void StardewValley.NPC::receiveGift(class StardewValley.Object, class StardewValley.Farmer, bool, float32, bool)
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+						new CodeInstruction(OpCodes.Ldarg_0),
+						new CodeInstruction(OpCodes.Ldarg_1),
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PleaseGiftMeInPerson), nameof(NPC_tryToReceiveActiveObject_Transpiler_ConfirmationDialogueCheck))),
+						new CodeInstruction(OpCodes.Brfalse, receiveGiftLabel),
+						new CodeInstruction(OpCodes.Ret)
+					)
+					.PointerMatcher(SequenceMatcherRelativeElement.First)
+					.AddLabels(findHeadLabels)
+					.AllElements();
+			}
+			catch (Exception ex)
 			{
-				i => i.IsLdarg(0),
-				i => i.IsLdloc(),
-				i => i.opcode == OpCodes.Ldfld,
-				i => i.Calls(AccessTools.PropertyGetter(typeof(Farmer), nameof(Farmer.ActiveObject))),
-				i => i.IsLdloc(),
-				i => i.opcode == OpCodes.Ldfld,
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Ldc_R4,
-				i => i.IsLdcI4(),
-				i => i.Calls(AccessTools.Method(typeof(NPC), nameof(NPC.receiveGift)))
-			});
-			if (worker is null)
-			{
-				Instance.Monitor.Log($"Could not patch methods - Please Gift Me In Person probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
 			}
-
-			var receiveGiftLabel = il.DefineLabel();
-			worker.Prefix(new[]
-			{
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldarg_1),
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PleaseGiftMeInPerson), nameof(NPC_tryToReceiveActiveObject_Transpiler_ConfirmationDialogueCheck))),
-				new CodeInstruction(OpCodes.Brfalse, receiveGiftLabel),
-				new CodeInstruction(OpCodes.Ret)
-			});
-			worker[5].labels.Add(receiveGiftLabel);
-
-			return instructions;
 		}
 
 		public static bool NPC_tryToReceiveActiveObject_Transpiler_ConfirmationDialogueCheck(NPC __instance, Farmer who)
@@ -674,7 +649,7 @@ namespace Shockah.PleaseGiftMeInPerson
 			Instance.ModifiedGiftTaste = GiftTasteExt.From(__result);
 		}
 
-		private static void NPC_receiveGift_Postfix(NPC __instance, SObject o, Farmer giver)
+		private static void NPC_receiveGift_Postfix(NPC __instance, Farmer giver)
 		{
 			if (Instance.CurrentGiftMethod is null)
 				return;
@@ -688,98 +663,65 @@ namespace Shockah.PleaseGiftMeInPerson
 					Instance.CurrentGiftMethod.Value
 				)
 			);
-
-			if (Instance.CurrentGiftingPlayer == giver)
-				Instance.ReturnItemIfNeeded(o, __instance.Name, Instance.OriginalGiftTaste, Instance.ModifiedGiftTaste);
 		}
 
-		private static IEnumerable<CodeInstruction> DialogueBox_draw_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private static IEnumerable<CodeInstruction> DialogueBox_draw_Transpiler(IEnumerable<CodeInstruction> instructions)
 		{
-			var instructions = enumerableInstructions.ToList();
+			try
+			{
+				return new SequenceBlockMatcher<CodeInstruction>(instructions)
+					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.Find(
+						ILMatches.Ldarg(0),
+						ILMatches.Ldfld(AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.x))),
+						ILMatches.AnyLdcI4,
+						ILMatches.Instruction(OpCodes.Add),
+						ILMatches.AnyLdloc.WithAutoAnchor(out Guid responseYLocalInstruction),
+						ILMatches.AnyLdcI4,
+						ILMatches.Instruction(OpCodes.Sub),
+						ILMatches.Ldarg(0),
+						ILMatches.Ldfld(AccessTools.Field(typeof(IClickableMenu), nameof(IClickableMenu.width))),
+						ILMatches.AnyLdcI4,
+						ILMatches.Instruction(OpCodes.Sub),
+						ILMatches.Ldarg(0),
+						ILMatches.Ldfld(AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.responses))),
+						ILMatches.AnyLdloc.WithAutoAnchor(out Guid iLocalInstruction),
+						ILMatches.AnyCall,
+						ILMatches.Ldfld(AccessTools.Field(typeof(Response), nameof(Response.responseText))),
+						ILMatches.Ldarg(0),
+						ILMatches.Ldfld(AccessTools.Field(typeof(IClickableMenu), nameof(IClickableMenu.width))),
+						ILMatches.Call(AccessTools.Method(typeof(SpriteText), nameof(SpriteText.getHeightOfString))),
+						ILMatches.AnyLdcI4,
+						ILMatches.Instruction(OpCodes.Add)
+					)
+					.AnchorBlock(out Guid findBlock)
+					.MoveToPointerAnchor(responseYLocalInstruction)
+					.CreateLdlocInstruction(out var responseYLoadInstruction)
+					.MoveToPointerAnchor(iLocalInstruction)
+					.CreateLdlocInstruction(out var iLoadInstruction)
+					.MoveToBlockAnchor(findBlock)
+					.Insert(
+						SequenceMatcherPastBoundsDirection.After, true,
 
-			// IL to find:
-			// IL_013c: ldarg.0
-			// IL_013d: ldfld int32 StardewValley.Menus.DialogueBox::x
-			// IL_0142: ldc.i4.4
-			// IL_0143: add
-			// IL_0144: ldloc.0
-			// IL_0145: ldc.i4.8
-			// IL_0146: sub
-			// IL_0147: ldarg.0
-			// IL_0148: ldfld int32 StardewValley.Menus.IClickableMenu::width
-			// IL_014d: ldc.i4.8
-			// IL_014e: sub
-			// IL_014f: ldarg.0
-			// IL_0150: ldfld class [System.Collections] System.Collections.Generic.List`1<class StardewValley.Response> StardewValley.Menus.DialogueBox::responses
-			// IL_0155: ldloc.1
-			// IL_0156: callvirt instance !0 class [System.Collections] System.Collections.Generic.List`1<class StardewValley.Response>::get_Item(int32)
-			// IL_015b: ldfld string StardewValley.Response::responseText
-			// IL_0160: ldarg.0
-			// IL_0161: ldfld int32 StardewValley.Menus.IClickableMenu::width
-			// IL_0166: call int32 StardewValley.BellsAndWhistles.SpriteText::getHeightOfString(string, int32)
-			// IL_016b: ldc.i4.s 16
-			// IL_016d: add
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
+						new CodeInstruction(OpCodes.Ldarg_1),
+						new CodeInstruction(OpCodes.Ldarg_0),
+						new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.responses))),
+						iLoadInstruction,
+						new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(IList<Response>), "get_Item")),
+						new CodeInstruction(OpCodes.Ldarg_0),
+						new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.x))),
+						responseYLoadInstruction,
+						new CodeInstruction(OpCodes.Ldarg_0),
+						new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(IClickableMenu), nameof(IClickableMenu.width))),
+						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PleaseGiftMeInPerson), nameof(DialogueBox_draw_Transpiler_DrawAccessory)))
+					)
+					.AllElements();
+			}
+			catch (Exception ex)
 			{
-				i => i.IsLdarg(0),
-				i => i.LoadsField(AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.x))),
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Add,
-				i => i.IsLdloc(),
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Sub,
-				i => i.IsLdarg(0),
-				i => i.LoadsField(AccessTools.Field(typeof(IClickableMenu), nameof(IClickableMenu.width))),
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Sub,
-				i => i.IsLdarg(0),
-				i => i.LoadsField(AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.responses))),
-				i => i.IsLdloc(),
-				i => i.opcode == OpCodes.Callvirt,
-				i => i.LoadsField(AccessTools.Field(typeof(Response), nameof(Response.responseText))),
-				i => i.IsLdarg(0),
-				i => i.LoadsField(AccessTools.Field(typeof(IClickableMenu), nameof(IClickableMenu.width))),
-				i => i.Calls(AccessTools.Method(typeof(SpriteText), nameof(SpriteText.getHeightOfString))),
-				i => i.IsLdcI4(),
-				i => i.opcode == OpCodes.Add,
-			});
-			if (worker is null)
-			{
-				Instance.Monitor.Log($"Could not patch methods - Please Gift Me In Person probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch methods - {Instance.ModManifest.Name} probably won't work.\nReason: {ex}", LogLevel.Error);
 				return instructions;
 			}
-
-			var responseYLocalInstruction = worker[4];
-			var iLocalInstruction = worker[13];
-
-			// IL to find (after the previous IL):
-			// IL_01d1: call void StardewValley.BellsAndWhistles.SpriteText::drawString(class [MonoGame.Framework]Microsoft.Xna.Framework.Graphics.SpriteBatch, string, int32, int32, int32, int32, int32, float32, float32, bool, int32, string, int32, valuetype StardewValley.BellsAndWhistles.SpriteText/ScrollTextAlignment)
-			worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-			{
-				i => i.Calls(AccessTools.Method(typeof(SpriteText), nameof(SpriteText.drawString)))
-			}, startIndex: worker.EndIndex);
-			if (worker is null)
-			{
-				Instance.Monitor.Log($"Could not patch methods - Please Gift Me In Person probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
-				return instructions;
-			}
-
-			worker.Postfix(new[]
-			{
-				new CodeInstruction(OpCodes.Ldarg_1),
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.responses))),
-				iLocalInstruction.ToLoadLocal()!,
-				new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(IList<Response>), "get_Item")),
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(DialogueBox), nameof(DialogueBox.x))),
-				responseYLocalInstruction.ToLoadLocal()!,
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(IClickableMenu), nameof(IClickableMenu.width))),
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PleaseGiftMeInPerson), nameof(DialogueBox_draw_Transpiler_DrawAccessory)))
-			});
-
-			return instructions;
 		}
 
 		private static void DialogueBox_draw_Transpiler_DrawAccessory(SpriteBatch b, Response response, int x, int y, int width)

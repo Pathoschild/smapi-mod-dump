@@ -11,8 +11,8 @@
 {
   "Name": "MoonMisadventures_BiggerBackpackPatch",
   "Author": "SinZ",
-  "Version": "1.0.0",
-  "Description": "Moves the necklace item slot to be compatible with Bigger Backpacks",
+  "Version": "1.1.0",
+  "Description": "Moves the necklace item slot to be compatible with Bigger Backpacks and adds error handling for Custom Backpacks",
   "UniqueID": "SinZ.MoonMisadventures_BiggerBackpackPatch",
   "EntryDll": "MoonMisadventures_BiggerBackpackPatch.dll",
   "MinimumApiVersion": "3.0.0",
@@ -24,7 +24,8 @@
     },
     {
       "UniqueID": "spacechase0.BiggerBackpack",
-      "MinimumVersion": "5.0"
+      "MinimumVersion": "5.0",
+      "IsRequired":  false
     }
   ]
 }

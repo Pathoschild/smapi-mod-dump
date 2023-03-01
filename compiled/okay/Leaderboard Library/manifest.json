@@ -1,7 +1,7 @@
-{
+﻿{
   "Name": "LeaderboardLibrary",
   "Author": "drbirbdev",
-  "Version": "0.1.3",
+  "Version": "0.1.6",
   "Description": "A library for creating and managing leaderboards.",
   "UniqueID": "drbirbdev.LeaderboardLibrary",
   "EntryDll": "LeaderboardLibrary.dll",

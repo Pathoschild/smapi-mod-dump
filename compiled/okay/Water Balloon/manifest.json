@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Water Balloon",
   "Author": "HaulinOats",
-  "Version": "1.0.2",
+  "Version": "1.2.0",
   "Description": "Use a water balloon to water your crops.",
   "UniqueID": "HaulinOats.WaterBalloon",
   "UpdateKeys": [ "Nexus:14481" ],

@@ -15,7 +15,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CustomCrystalariumMod.integrations;
-using MailFrameworkMod;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
@@ -32,7 +31,7 @@ namespace CustomCrystalariumMod
         internal static Dictionary<object,int> CrystalariumData = new Dictionary<object, int>();
 
         public const string ClonersDataJson = "ClonersData.json";
-        public const string CrystalariumDataJson = "data\\CrystalariumData.json";
+        public const string CrystalariumDataJson = "data/CrystalariumData.json";
         public static Dictionary<object, int> DefaultCystalariumData = new Dictionary<object, int>() { { 74, 20160 } };
 
         public DataLoader(IModHelper helper, IManifest manifest)
@@ -44,7 +43,7 @@ namespace CustomCrystalariumMod
             CrystalariumData = Helper.Data.ReadJsonFile<Dictionary<object, int>>(CrystalariumDataJson) ?? DefaultCystalariumData;
             Helper.Data.WriteJsonFile(CrystalariumDataJson, CrystalariumData);
 
-            Dictionary<int, string> objects = Helper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data\\ObjectInformation"));
+            Dictionary<int, string> objects = Helper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"));
             CrystalariumData.ToList().ForEach(d =>
             {
                 int? id = GetId(d.Key, objects);
@@ -53,22 +52,19 @@ namespace CustomCrystalariumMod
 
             DataLoader.LoadContentPacksCommand();
 
-            if (!ModConfig.DisableLetter)
-            {
-                MailDao.SaveLetter
-                (
-                    new Letter
-                    (
-                        "CustomCrystalarium"
-                        , I18N.Get("CustomCrystalarium.Letter")
-                        , (l) => !Game1.player.mailReceived.Contains(l.Id) && Game1.player.stats.PrismaticShardsFound > 0
-                        , (l) => Game1.player.mailReceived.Add(l.Id)
-                    )
-                    {
-                        Title = I18N.Get("CustomCrystalarium.Letter.Title")
-                    }
-                );
-            }
+            IMailFrameworkModApi mailFrameworkModApi = helper.ModRegistry.GetApi<IMailFrameworkModApi>("DIGUS.MailFrameworkMod");
+            mailFrameworkModApi?.RegisterLetter(
+                new ApiLetter
+                {
+                    Id = "CustomCrystalarium"
+                    , Text = "CustomCrystalarium.Letter"
+                    , Title = "CustomCrystalarium.Letter.Title"
+                    , I18N = helper.Translation
+                }
+                , (l) => !ModConfig.DisableLetter && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.stats.PrismaticShardsFound > 0
+                , (l) => Game1.player.mailReceived.Add(l.Id)
+            );
+
             CreateConfigMenu(manifest);
         }
 
@@ -154,6 +150,10 @@ namespace CustomCrystalariumMod
 
                 api.RegisterSimpleOption(manifest, "Disable Letter", "You won't receive the letter about how the Crystalarium can clone Prismatic Shards and can be tuned to clone more stuff. Needs to restart.", () => DataLoader.ModConfig.DisableLetter, (bool val) => DataLoader.ModConfig.DisableLetter = val);
 
+                api.RegisterSimpleOption(manifest, "Clone Every Object", "Crystalarium will be able to clone every object.", () => DataLoader.ModConfig.EnableCrystalariumCloneEveryObject, (bool val) => DataLoader.ModConfig.EnableCrystalariumCloneEveryObject = val);
+
+                api.RegisterSimpleOption(manifest, "Default Cloning Time", "Cloning time in minutes that will be used for non declared objects.", () => DataLoader.ModConfig.DefaultCloningTime, (int val) => DataLoader.ModConfig.DefaultCloningTime = val);
+
                 api.RegisterSimpleOption(manifest, "Override Cloner Config", "If checked the mod will use the below properties instead of the ones defined for each cloner.", () => DataLoader.ModConfig.OverrideContentPackGetObjectProperties, (bool val) => DataLoader.ModConfig.OverrideContentPackGetObjectProperties = val);
 
                 api.RegisterSimpleOption(manifest, "Block Change", "You won't be able to change the object inside. You will need to remove the cloner from the ground.", () => DataLoader.ModConfig.BlockChange, (bool val) => DataLoader.ModConfig.BlockChange = val);
@@ -163,7 +163,6 @@ namespace CustomCrystalariumMod
                 api.RegisterSimpleOption(manifest, "On Change", "Get the object back when changing the object being cloned or removing the cloner from the ground.", () => DataLoader.ModConfig.GetObjectBackOnChange, (bool val) => DataLoader.ModConfig.GetObjectBackOnChange = val);
 
                 api.RegisterSimpleOption(manifest, "Immediately", "Get the object back immediately after placing it into the cloner. If set, the mod will ignore the 'On Change' property.", () => DataLoader.ModConfig.GetObjectBackImmediately, (bool val) => DataLoader.ModConfig.GetObjectBackImmediately = val);
-
             }
 
         }

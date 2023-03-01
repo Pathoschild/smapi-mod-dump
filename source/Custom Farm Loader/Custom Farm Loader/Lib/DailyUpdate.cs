@@ -27,7 +27,6 @@ namespace Custom_Farm_Loader.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-
         public DailyUpdateType Type;
         public string Name;
         public SpringObjectID ItemID;
@@ -47,19 +46,21 @@ namespace Custom_Farm_Loader.Lib
             Helper = mod.Helper;
         }
 
-        public static List<DailyUpdate> parseDailyUpdateJsonArray(JProperty dailyUpdateArray)
+        public static List<DailyUpdate> parseDailyUpdateJsonArray(JProperty dailyUpdateArray, IManifest manifest)
         {
             List<DailyUpdate> ret = new List<DailyUpdate>();
+            int i = 0;
 
             foreach (JObject obj in dailyUpdateArray.First())
-                ret.Add(parseDailyUpdateJObject(obj));
+                ret.Add(parseDailyUpdateJObject(obj, i++, manifest));
 
             return ret;
         }
 
-        private static DailyUpdate parseDailyUpdateJObject(JObject obj)
+        private static DailyUpdate parseDailyUpdateJObject(JObject obj, int i, IManifest manifest)
         {
             DailyUpdate dailyUpdate = new DailyUpdate();
+            dailyUpdate.Filter.Manifest = manifest;
             string name = "";
 
             try {
@@ -76,7 +77,7 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "name":
                             dailyUpdate.Name = name;
-                            dailyUpdate.ItemID = (SpringObjectID)UtilityMisc.parseEnum<SpringObjectID>(value);
+                            dailyUpdate.ItemID = UtilityMisc.parseEnum<SpringObjectID>(value);
                             break;
                         case "chance":
                             dailyUpdate.Chance = float.Parse(value);
@@ -98,10 +99,9 @@ namespace Custom_Farm_Loader.Lib
                             Monitor.Log("Unknown DailyUpdate Attribute", LogLevel.Error);
                             throw new ArgumentException($"Unknown DailyUpdate Attribute", name);
                     }
-
                 }
             } catch (Exception ex) {
-                Monitor.Log($"At DailyUpdates -> '{name}'", LogLevel.Error);
+                Monitor.Log($"At DailyUpdates[{i}] -> '{name}'", LogLevel.Error);
                 Monitor.Log(ex.Message, LogLevel.Trace);
                 throw;
             }

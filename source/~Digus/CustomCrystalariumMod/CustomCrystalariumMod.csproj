@@ -25,14 +25,4 @@
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MailFrameworkMod\MailFrameworkMod.csproj">
-      <Project>{9ab101dd-fb56-4441-8180-783405d2d2f0}</Project>
-      <Name>MailFrameworkMod</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 </Project>

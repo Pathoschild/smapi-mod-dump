@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Harmony;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
@@ -24,14 +23,12 @@ namespace WaterRetainingFieldMod
     {
         internal static Dictionary<Vector2, int> TileLocationState = new Dictionary<Vector2, int>();
 
-        [HarmonyPriority(800)]
         public static bool DayUpdatePrefix(HoeDirt __instance, ref int __state)
         {
             __state = __instance.state.Value;
             return true;
         }
 
-        [HarmonyPriority(800)]
         public static void DayUpdatePostfix(HoeDirt __instance, ref GameLocation environment, ref Vector2 tileLocation, ref int __state)
         {
             if (environment is Farm || environment.isGreenhouse.Value )

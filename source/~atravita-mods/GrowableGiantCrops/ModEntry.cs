@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System.Diagnostics;
+
 using AtraCore.Utilities;
 
 using AtraShared.ConstantsAndEnums;
@@ -17,11 +19,13 @@ using AtraShared.MigrationManager;
 using AtraShared.Utils.Extensions;
 
 using GrowableGiantCrops.Framework;
+using GrowableGiantCrops.Framework.Assets;
+using GrowableGiantCrops.Framework.InventoryModels;
+using GrowableGiantCrops.HarmonyPatches.Compat;
+using GrowableGiantCrops.HarmonyPatches.ItemPatches;
 using GrowableGiantCrops.HarmonyPatches.Niceties;
 
 using HarmonyLib;
-
-using Microsoft.Xna.Framework;
 
 using StardewModdingAPI.Events;
 
@@ -82,15 +86,46 @@ internal sealed class ModEntry : Mod
         AssetManager.Initialize(helper.GameContent);
         AssetCache.Initialize(helper.GameContent);
 
-        //ShopManager.Initialize(helper.GameContent);
-
         // assets
         this.Helper.Events.Content.AssetRequested += static (_, e) => AssetManager.OnAssetRequested(e);
         this.Helper.Events.Content.AssetsInvalidated += static (_, e) => AssetManager.Reset(e.NamesWithoutLocale);
+
+        this.Helper.Events.Content.AssetsInvalidated += static (_, e) => AssetCache.Refresh(e.NamesWithoutLocale);
+        this.Helper.Events.Content.AssetReady += static (_, e) => AssetCache.Ready(e.NameWithoutLocale);
     }
 
     /// <inheritdoc />
     public override object? GetApi() => new Api();
+
+    #region helpers
+
+    /// <summary>
+    /// Get the total number of valid IDs.
+    /// </summary>
+    /// <returns>Count of valid IDs.</returns>
+    internal static int GetTotalValidIndexes() => 3 + JACropIds.Length + MoreGiantCropsIds.Length;
+
+    /// <summary>
+    /// Gets all valid giant crop indexes.
+    /// </summary>
+    /// <returns>All valid indexes for giant crops.</returns>
+    internal static IEnumerable<int> YieldAllGiantCropIndexes()
+    {
+        yield return 190;
+        yield return 254;
+        yield return 276;
+
+        foreach (int item in JACropIds)
+        {
+            yield return item;
+        }
+
+        foreach (int item in MoreGiantCropsIds)
+        {
+            yield return item;
+        }
+    }
+    #endregion
 
     /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -103,16 +138,26 @@ internal sealed class ModEntry : Mod
             return;
         }
 
-        api.RegisterSerializerType(typeof(InventoryGiantCrop));
         api.RegisterSerializerType(typeof(ShovelTool));
         api.RegisterSerializerType(typeof(InventoryResourceClump));
+        api.RegisterSerializerType(typeof(InventoryGiantCrop));
+        api.RegisterSerializerType(typeof(InventoryFruitTree));
+        api.RegisterSerializerType(typeof(InventoryTree));
 
         this.Helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
 
         // shop
-        // this.Helper.Events.Content.AssetRequested += static (_, e) => ShopManager.OnAssetRequested(e);
-        // this.Helper.Events.GameLoop.DayEnding += static (_, _) => ShopManager.OnDayEnd();
-        // this.Helper.Events.Input.ButtonPressed += (_, e) => ShopManager.OnButtonPressed(e, this.Helper.Input);
+        ShopManager.Initialize(this.Helper.GameContent);
+        this.Helper.Events.Content.AssetRequested += static (_, e) => ShopManager.OnAssetRequested(e);
+        this.Helper.Events.Content.AssetsInvalidated += static (_, e) => ShopManager.OnAssetInvalidated(e.NamesWithoutLocale);
+        this.Helper.Events.Input.ButtonPressed += (_, e) => ShopManager.OnButtonPressed(e, this.Helper.Input);
+        this.Helper.Events.GameLoop.DayEnding += static (_, _) => ShopManager.OnDayEnd();
+        this.Helper.Events.GameLoop.ReturnedToTitle += static (_, _) => ShopManager.Reset();
+        this.Helper.Events.Player.Warped += static (_, e) => ShopManager.AddBoxToShop(e);
+
+        // trees - season switching in inventory.
+        this.Helper.Events.Player.Warped += this.OnPlayerWarped;
+        this.Helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
 
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
 
@@ -124,33 +169,86 @@ internal sealed class ModEntry : Mod
                 reset: static () => Config = new(),
                 save: () => this.Helper.AsyncWriteConfig(this.Monitor, Config))
             .AddParagraph(I18n.ModDescription)
-            .GenerateDefaultGMCM(static () => Config)
-            .AddTextOption(
-                name: I18n.ShopLocation,
-                getValue: static () => Config.ShopLocation.X + ", " + Config.ShopLocation.Y,
-                setValue: static (str) => Config.ShopLocation = str.TryParseVector2(out Vector2 vec) ? vec : new Vector2(1, 7),
-                tooltip: I18n.ShopLocation_Description);
+            .GenerateDefaultGMCM(static () => Config);
         }
 
         // optional APIs
-        IntegrationHelper optional = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Trace);
-        if (optional.TryGetAPI("spacechase0.JsonAssets", "1.10.10", out IJsonAssetsAPI? jaAPI))
         {
-            JaAPI = jaAPI;
-        }
-        if (optional.TryGetAPI("spacechase0.MoreGiantCrops", "1.2.0", out IMoreGiantCropsAPI? mgAPI))
-        {
-            MoreGiantCropsAPI = mgAPI;
-        }
-        if (optional.TryGetAPI("leclair.giantcroptweaks", "0.1.0", out IGiantCropTweaks? gcAPI))
-        {
-            GiantCropTweaksAPI = gcAPI;
-        }
-        if (optional.TryGetAPI("atravita.GrowableBushes", "0.0.1", out IGrowableBushesAPI? growable))
-        {
-            GrowableBushesAPI = growable;
+            IntegrationHelper optional = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Trace);
+            if (optional.TryGetAPI("spacechase0.JsonAssets", "1.10.10", out IJsonAssetsAPI? jaAPI))
+            {
+                JaAPI = jaAPI;
+            }
+            if (optional.TryGetAPI("spacechase0.MoreGiantCrops", "1.2.0", out IMoreGiantCropsAPI? mgAPI))
+            {
+                MoreGiantCropsAPI = mgAPI;
+            }
+            if (optional.TryGetAPI("leclair.giantcroptweaks", "0.1.0", out IGiantCropTweaks? gcAPI))
+            {
+                GiantCropTweaksAPI = gcAPI;
+            }
+            if (optional.TryGetAPI("atravita.GrowableBushes", "0.0.1", out IGrowableBushesAPI? growable))
+            {
+                GrowableBushesAPI = growable;
+            }
         }
     }
+
+    #region resetting
+
+    private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
+    {
+        if (!e.IsLocalPlayer)
+        {
+            return;
+        }
+
+        foreach (var item in e.Added)
+        {
+            if (item is InventoryFruitTree fruitTree)
+            {
+                fruitTree.Reset();
+            }
+            else if (item is InventoryTree tree)
+            {
+                tree.Reset();
+            }
+        }
+
+        foreach (var item in e.Removed)
+        {
+            if (item is InventoryFruitTree fruitTree)
+            {
+                fruitTree.Reset();
+            }
+            else if (item is InventoryTree tree)
+            {
+                tree.Reset();
+            }
+        }
+    }
+
+    private void OnPlayerWarped(object? sender, WarpedEventArgs e)
+    {
+        if (!e.IsLocalPlayer)
+        {
+            return;
+        }
+
+        foreach (var item in e.Player.Items)
+        {
+            if (item is InventoryFruitTree fruitTree)
+            {
+                fruitTree.Reset();
+            }
+            else if (item is InventoryTree tree)
+            {
+                tree.Reset();
+            }
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// Applies the patches for this mod.
@@ -158,16 +256,35 @@ internal sealed class ModEntry : Mod
     /// <param name="harmony">This mod's harmony instance.</param>
     private void ApplyPatches(Harmony harmony)
     {
+#if DEBUG
+        Stopwatch sw = Stopwatch.StartNew();
+#endif
         try
         {
             harmony.PatchAll(typeof(ModEntry).Assembly);
 
-            if (new Version(1, 6) > new Version(Game1.version) &&
-                (this.Helper.ModRegistry.Get("atravita.GiantCropFertilizer") is not IModInfo fert || fert.Manifest.Version.IsOlderThan("0.2.2")) &&
-                (this.Helper.ModRegistry.Get("spacechase0.MoreGiantCrops") is not IModInfo giant || giant.Manifest.Version.IsOlderThan("1.2.0")))
+            if (new Version(1, 6) > new Version(Game1.version))
             {
-                this.Monitor.Log("Applying patch to restore giant crops to save locations", LogLevel.Debug);
+                this.Monitor.Log("Applying patch to restore giant crops and clumps to save locations", LogLevel.Debug);
                 FixSaveThing.ApplyPatches(harmony);
+            }
+
+            if (this.Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets"))
+            {
+                this.Monitor.Log("Applying deshuffle patch");
+                DeshufflePatch.ApplyPatch(harmony);
+            }
+
+            if (this.Helper.ModRegistry.Get("Esca.FarmTypeManager") is IModInfo ftm
+                && !ftm.Manifest.Version.IsOlderThan("1.16.0"))
+            {
+                this.Monitor.Log("Applying FTM patches");
+                FTMArtifactSpotPatch.ApplyPatch(harmony);
+            }
+            if (this.Helper.ModRegistry.IsLoaded("spacechase0.MoreGrassStarters"))
+            {
+                this.Monitor.Log("Patching More Grass Starters");
+                MoreGrassStartersCompat.ApplyPatch(harmony);
             }
         }
         catch (Exception ex)
@@ -175,6 +292,11 @@ internal sealed class ModEntry : Mod
             ModMonitor.Log(string.Format(ErrorMessageConsts.HARMONYCRASH, ex), LogLevel.Error);
         }
         harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
+
+#if DEBUG
+        sw.Stop();
+        this.Monitor.Log($"took {sw.ElapsedMilliseconds} ms to apply harmony patches", LogLevel.Info);
+#endif
     }
 
     #region migration
@@ -184,8 +306,8 @@ internal sealed class ModEntry : Mod
     private void SaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
         // load giant crop indexes.
-        moreGiantCropsIds = MoreGiantCropsAPI?.RegisteredCrops();
-        jaCropIds = JaAPI?.GetGiantCropIndexes();
+        moreGiantCropsIds = MoreGiantCropsAPI?.RegisteredCrops() ?? Array.Empty<int>();
+        jaCropIds = JaAPI?.GetGiantCropIndexes() ?? Array.Empty<int>();
 
         // sanity checks.
         MultiplayerHelpers.AssertMultiplayerVersions(this.Helper.Multiplayer, this.ModManifest, this.Monitor, this.Helper.Translation);

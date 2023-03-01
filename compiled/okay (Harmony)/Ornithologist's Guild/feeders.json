@@ -1,15 +1,15 @@
 [
   {
-    "id": "WoodenHopper",
-    "type": "Hopper",
-    "range": 10,
-    "maxFlocks": 1,
-    "zOffset": -28,
-    "texture": "WoodenHopper.png",
-    "sellPrice": 2500,
-    "cost": 25000,
-    "recipePrice": 500,
-    "recipeIngredients": [
+    "ID": "WoodenHopper",
+    "Type": "Hopper",
+    "Range": 10,
+    "MaxFlocks": 1,
+    "ZOffset": -28,
+    "Texture": "WoodenHopper.png",
+    "SellPrice": 2500,
+    "Cost": 25000,
+    "RecipePrice": 500,
+    "RecipeIngredients": [
       {
         "Type": "VanillaObject",
         "Value": 388,
@@ -29,19 +29,19 @@
         "Quantity": 5
       }
     ],
-    "capacityHrs": 12
+    "CapacityHrs": 12
   },
   {
-    "id": "PlasticTube",
-    "type": "Tube",
-    "range": 15,
-    "maxFlocks": 2,
-    "zOffset": -16,
-    "texture": "PlasticTube.png",
-    "sellPrice": 1250,
-    "cost": 12500,
-    "recipePrice": 250,
-    "recipeIngredients": [
+    "ID": "PlasticTube",
+    "Type": "Tube",
+    "Range": 15,
+    "MaxFlocks": 2,
+    "ZOffset": -16,
+    "Texture": "PlasticTube.png",
+    "SellPrice": 1250,
+    "Cost": 12500,
+    "RecipePrice": 250,
+    "RecipeIngredients": [
       {
         "Type": "VanillaObject",
         "Value": 335,
@@ -55,19 +55,19 @@
         "Quantity": 5
       }
     ],
-    "capacityHrs": 12
+    "CapacityHrs": 12
   },
   {
-    "id": "WoodenPlatform",
-    "type": "Platform",
-    "range": 25,
-    "maxFlocks": 3,
-    "zOffset": -10,
-    "texture": "WoodenPlatform.png",
-    "sellPrice": 5000,
-    "cost": 50000,
-    "recipePrice": 1000,
-    "recipeIngredients": [
+    "ID": "WoodenPlatform",
+    "Type": "Platform",
+    "Range": 25,
+    "MaxFlocks": 3,
+    "ZOffset": -10,
+    "Texture": "WoodenPlatform.png",
+    "SellPrice": 5000,
+    "Cost": 50000,
+    "RecipePrice": 1000,
+    "RecipeIngredients": [
       {
         "Type": "VanillaObject",
         "Value": 388,
@@ -87,6 +87,6 @@
         "Quantity": 5
       }
     ],
-    "capacityHrs": 12
+    "CapacityHrs": 12
   }
 ]

@@ -11,9 +11,12 @@ Contributions README
 
 Most users should download the mod from the [Nexus page](https://www.nexusmods.com/stardewvalley/mods/11856). That said, if you'd like to contribute:
 
+### Deprecation:
+This mod will be eaten by the game in 1.6; if you use the context tag `atravita_no_loss_on_death` switch to `prevent_loss_on_death`.
+
 ### Extending the mod.
 
-Have an item you don't want to lose on death? Simply add the context tag `atravita_no_loss_on_death` to it!
+Have an item you don't want to lose on death? Simply add the context tag ~~`atravita_no_loss_on_death`~~ `prevent_loss_on_death` to it! (Use `prevent_loss_on_death`, that'll be what the game itself uses in 1.6).
 
 ### Translations:
 

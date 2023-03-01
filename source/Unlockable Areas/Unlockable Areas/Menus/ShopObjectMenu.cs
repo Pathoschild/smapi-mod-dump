@@ -27,6 +27,17 @@ namespace Unlockable_Areas.Menus
 {
     public class ShopObjectMenu : IClickableMenu
     {
+        public static Mod Mod;
+        private static IMonitor Monitor;
+        private static IModHelper Helper;
+
+        public static void Initialize()
+        {
+            Mod = ModEntry.Mod;
+            Monitor = Mod.Monitor;
+            Helper = Mod.Helper;
+        }
+
         public Unlockable Unlockable;
 
         int x;
@@ -60,6 +71,54 @@ namespace Unlockable_Areas.Menus
             }
 
             resetUI();
+        }
+
+        public void attemptPurchase()
+        {
+            //Supposed to prevent two people purchasing the same Unlockable with as little control as I have over the netcode race condition
+            if (!ShopPlacement.shopExists(Unlockable) || ModData.isUnlockablePurchased(Unlockable.ID, Unlockable.LocationUnique)) {
+                exitThisMenu();
+                return;
+            }
+
+
+            bool success = true;
+            KeyValuePair<string, int> lackingItem = new KeyValuePair<string, int>("", 0);
+            foreach (var requirement in Unlockable._price.Pairs) {
+                if (!hasEnoughItemsInInventory(requirement)) {
+                    lackingItem = requirement;
+                    success = false;
+                    break;
+                }
+            }
+
+            if (!success) {
+                exitThisMenu(false);
+                string text = "";
+                if (lackingItem.Key.ToLower() == "money")
+                    text = Game1.content.LoadString("Strings\\UI:NotEnoughMoney" + new Random().Next(1, 4));
+                else {
+                    var displayName = new StardewValley.Object(int.Parse(lackingItem.Key.Split(',').First()), lackingItem.Value).DisplayName;
+                    text = Helper.Translation.Get("ua_not_enough" + new Random().Next(1, 3), new { displayName = displayName });
+                }
+
+                Game1.activeClickableMenu = new DialogueBox(text);
+                return;
+            }
+
+            ModData.setUnlockablePurchased(Unlockable.ID, Unlockable.LocationUnique);
+            ModEntry._API.raiseShopPurchased(new API.ShopPurchasedEventArgs(who, Unlockable.Location, Unlockable.LocationUnique, Unlockable.ID, true));
+            Helper.Multiplayer.SendMessage((UnlockableModel)Unlockable, "ApplyUnlockable/Purchased", modIDs: new[] { Mod.ModManifest.UniqueID });
+            exitThisMenu();
+            Task.Delay(800).ContinueWith(t => ShopPlacement.removeShop(Unlockable));
+            removeAllRequiredItemsFromInventory();
+            who.completelyStopAnimatingOrDoingAction();
+            if (Unlockable.ShopEvent == "")
+                Game1.globalFadeToBlack(playPurchasedEvent);
+            else if (Unlockable.ShopEvent.ToLower() == "none")
+                return;
+            else
+                Game1.globalFadeToBlack(() => who.currentLocation.startEvent(new Event(Unlockable.ShopEvent, -1, who)));
         }
 
         public void resetUI()
@@ -105,43 +164,6 @@ namespace Unlockable_Areas.Menus
                 snapCursorToCurrentSnappedComponent();
         }
 
-        public void attemptPurchase()
-        {
-            //Supposed to prevent two people purchasing the same Unlockable with as little control as I have over the netcode race condition
-            if (!ShopPlacement.shopExists(Unlockable) || 
-                (SaveDataEvents.Data != null && SaveDataEvents.Data.UnlockablePurchased.ContainsKey(Unlockable.ID) && SaveDataEvents.Data.UnlockablePurchased[Unlockable.ID] == true)) {
-                exitThisMenu();
-                return;
-            }
-                
-
-            bool success = true;
-            KeyValuePair<string, int> lackingItem = new KeyValuePair<string, int>("", 0);
-            foreach (var requirement in Unlockable._price.Pairs) {
-                if (!hasEnoughItemsInInventory(requirement)) {
-                    lackingItem = requirement;
-                    success = false;
-                    break;
-                }
-            }
-
-            if (!success) {
-                exitThisMenu(false);
-                var displayName = lackingItem.Key.ToLower() == "money" ? "Gold" : new StardewValley.Object(int.Parse(lackingItem.Key), lackingItem.Value).DisplayName;
-                Game1.activeClickableMenu = new DialogueBox($"Not enough '{displayName}'");
-                return;
-            }
-
-            if (SaveDataEvents.Data == null)
-                SaveDataEvents.Data = new ModData();
-
-            SaveDataEvents.Data.UnlockablePurchased[Unlockable.ID] = true;
-            ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)Unlockable, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
-            exitThisMenu();
-            Game1.globalFadeToBlack(playPurchasedEvent);
-            removeAllRequiredItemsFromInventory();
-        }
-
         public void playPurchasedEvent()
         {
             Game1.freezeControls = true;
@@ -162,8 +184,6 @@ namespace Unlockable_Areas.Menus
             Game1.globalFadeToClear();
             Game1.viewportFreeze = false;
             Game1.freezeControls = false;
-
-            ShopPlacement.removeShop(Unlockable);
         }
 
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) => resetUI();
@@ -273,8 +293,8 @@ namespace Unlockable_Areas.Menus
             drawCost(b);
             drawDescription(b);
 
-            drawResponse(b, "Yes", y + height - 110, YesButton.bounds);
-            drawResponse(b, "No", y + height - 50, NoButton.bounds);
+            drawResponse(b, Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes"), y + height - 110, YesButton.bounds);
+            drawResponse(b, Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No"), y + height - 50, NoButton.bounds);
 
             if (costPageIndex != 0)
                 CostUpArrow.draw(b);
@@ -337,7 +357,7 @@ namespace Unlockable_Areas.Menus
 
                 }
             } catch {
-                ModEntry._Monitor.LogOnce($"Unlockable requirement key contains a invalid item id: {(requirement.Key == currentKey ? requirement.Key : requirement.Key + " -> " + currentKey)}", LogLevel.Error);
+                Monitor.LogOnce($"Unlockable requirement key contains a invalid item id: {(requirement.Key == currentKey ? requirement.Key : requirement.Key + " -> " + currentKey)}", LogLevel.Error);
             }
 
             return countedItems >= requirement.Value;

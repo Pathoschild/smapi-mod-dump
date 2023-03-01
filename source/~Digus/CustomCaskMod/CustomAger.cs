@@ -22,6 +22,8 @@ namespace CustomCaskMod
         public string Name;
         public bool EnableAgingAnywhere;
         public bool EnableMoreThanOneQualityIncrementPerDay;
+        public bool EnableAgeEveryObject;
+        public float DefaultAgingRate = 1.0f;
         public Dictionary<object, float> AgingData;
         public Dictionary<int, float> AgingDataId = new Dictionary<int, float>();
         public List<string> OverrideMod = new List<string>();

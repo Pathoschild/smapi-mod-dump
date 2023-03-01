@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AutoFish",
   "Author": "WhiteMind",
-  "Version": "1.4.0",
+  "Version": "1.5.0",
   "Description": "Auto play fish minigame and fishing rod auto hit.",
   "UniqueID": "WhiteMind.AF",
   "EntryDll": "AutoFish.dll",

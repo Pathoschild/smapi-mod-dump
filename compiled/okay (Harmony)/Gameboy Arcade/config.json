@@ -1,0 +1,12 @@
+{
+  "Up": "W",
+  "Down": "S",
+  "Left": "A",
+  "Right": "D",
+  "A": "MouseLeft",
+  "B": "MouseRight",
+  "Start": "Space",
+  "Select": "Tab",
+  "Power": "Escape",
+  "Turbo": "F1"
+}

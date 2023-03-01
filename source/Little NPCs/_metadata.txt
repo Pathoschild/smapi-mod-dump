@@ -6,9 +6,9 @@ mods:
    Little NPCs
 
 latest commit:
-   commit 86854b1d9e73299e9214f37fb54a631e1d16e665
+   commit 7e65720b2ee8938b24b41bd1f2fcaa24b602af96
    Author: Candidus <candidus@xmail.net>
-   Date:   Tue Jan 24 20:46:33 2023 +0100
+   Date:   Mon Feb 27 20:06:40 2023 +0100
    
-       Fix error in README.
+       Fix LittleNPCs stopping movement on their way to bed when the farmer enters the house.
    

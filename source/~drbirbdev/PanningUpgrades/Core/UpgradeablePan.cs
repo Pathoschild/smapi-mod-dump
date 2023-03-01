@@ -93,7 +93,7 @@ namespace PanningUpgrades
                 animationInterval: 1000,
                 animationLength: 1,
                 numberOfLoops: 1000,
-                position: Game1.player.Position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
+                position: who.Position + new Vector2(0f, (ModEntry.Config.AnimationYOffset + genderOffset) * 4),
                 flicker: false,
                 flipped: false,
                 layerDepth: 1f,

@@ -1,5 +1,6 @@
 {
   "EnforceGITiming": false,
+  "RequireResortDialogue": true,
   "WearIslandClothing": "Default",
   "UseThisScheduler": true,
   "Capacity": 6,

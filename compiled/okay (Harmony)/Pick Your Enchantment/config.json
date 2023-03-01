@@ -1,4 +1,6 @@
 {
   "TooltipBehavior": "Immersive",
-  "EnableTooltipAutogeneration": true
+  "EnableTooltipAutogeneration": true,
+  "LeftArrow": "LeftShoulder, Left",
+  "RightArrow": "RightShoulder, Right"
 }

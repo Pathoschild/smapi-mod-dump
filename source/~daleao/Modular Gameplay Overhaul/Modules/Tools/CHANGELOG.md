@@ -8,6 +8,27 @@ for queries and analysis.**
 
 # Tools Module Change Log
 
+## 1.3.3
+
+### Fixed
+
+* Fixed object harvesting not limited to forage (woops).
+* Fixed out of bounds experience gain.
+
+### Remved
+
+* Removed `HarvestSpringOnions` option. This is now considered forage.
+
+## 1.3.2
+
+### Added
+
+* Added the ability to harvest forage with scythe.
+
+### Changed
+
+* Harvest with scythe functionality will no-longer apply while Yet Another Harvest With Scythe mod is installed.
+
 ## 1.3.1
 
 ### Added

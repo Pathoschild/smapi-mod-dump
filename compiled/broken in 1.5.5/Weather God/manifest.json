@@ -1,0 +1,10 @@
+{
+    "Name": "WeatherGod",
+    "Author": "nrm33n",
+    "Version": "1.0.0",
+    "Description": "Allows you to change the weather",
+    "UniqueID": "nrm33n.weatherGod",
+    "EntryDll": "weatherGod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}

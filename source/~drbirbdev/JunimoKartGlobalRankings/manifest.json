@@ -11,7 +11,7 @@
 {
     "Name": "JunimoKartGlobalRankings",
     "Author": "drbirbdev",
-    "Version": "0.1.0",
+    "Version": "1.0.0",
     "Description": "Shares JunimoKart Endless Mode scores with the world.",
     "UniqueID": "drbirbdev.JunimoKartGlobalRankings",
     "EntryDll": "JunimoKartGlobalRankings.dll",

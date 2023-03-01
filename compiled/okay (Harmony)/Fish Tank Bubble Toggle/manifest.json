@@ -1,8 +1,8 @@
 {
   "Name": "StarAmysBubbleToggle",
   "Author": "StarAmy",
-  "Version": "1.0.0",
-  "Description": "Adds individual bubble toggling ability to all fish tanks via a separate item.",
+  "Version": "1.1.0",
+  "Description": "Adds individual bubble toggling ability to all fish tanks",
   "UniqueID": "StarAmy.bubbletoggle",
   "EntryDll": "StarAmys-Bubble-Toggle.dll",
   "MinimumApiVersion": "3.0.0",

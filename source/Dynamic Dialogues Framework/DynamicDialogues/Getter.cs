@@ -59,11 +59,16 @@ namespace DynamicDialogues
             if (word is "left")
             { return 3; }
 
-            int toInt = int.Parse(which);
-            if (toInt >= 0 && toInt <= 3)
+            try
             {
-                return toInt;
+                int toInt = int.Parse(which);
+                if (toInt >= 0 && toInt <= 3)
+                {
+                    return toInt;
+                }
             }
+            catch(Exception)
+            { }
 
             return -1;
         }

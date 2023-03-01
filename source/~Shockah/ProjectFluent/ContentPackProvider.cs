@@ -8,17 +8,15 @@
 **
 *************************************************/
 
-using HarmonyLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Shockah.CommonModCode.SMAPI;
+using Shockah.Kokoro.SMAPI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Shockah.ProjectFluent
 {
@@ -79,8 +77,7 @@ namespace Shockah.ProjectFluent
 		{
 			get
 			{
-				if (CachedContentPackContents is null)
-					CachedContentPackContents = ParseAssetContentPackContents();
+				CachedContentPackContents ??= ParseAssetContentPackContents();
 				return CachedContentPackContents;
 			}
 		}

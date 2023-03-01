@@ -141,9 +141,9 @@ namespace GMCMOptions.Framework {
             sliderB = new ColorSlider((b) => new Color(0, 0, (int)b, 255), currentValue.B, (b) => { currentValue.B = b; RGBChanged(); });
             sliderA = new ColorSlider((b) => new Color(0, 0, 0, (int)b), currentValue.A, (b) => { currentValue.A = b; });
 
-            hsvWheel = new ColorWheel((h, s) => ColorUtil.FromHSV(h, s, vSlider.Value), HSVWheelChanged, 150);
+            hsvWheel = new ColorWheel((h, s) => ColorUtil.FromHSV(h, s, vSlider!.Value), HSVWheelChanged, 150);
             vSlider = new VerticalSlider((v) => ColorUtil.FromHSV(hsvWheel.HueRadians, hsvWheel.Saturation, v), VSliderChanged, 150);
-            hslWheel = new ColorWheel((h, s) => ColorUtil.FromHSL(h, s, lSlider.Value), HSLWheelChanged, 150);
+            hslWheel = new ColorWheel((h, s) => ColorUtil.FromHSL(h, s, lSlider!.Value), HSLWheelChanged, 150);
             lSlider = new VerticalSlider((v) => ColorUtil.FromHSL(hslWheel.HueRadians, hslWheel.Saturation, v), LSliderChanged, 150);
             ResetHSVWheel();
             ResetHSLWheel();

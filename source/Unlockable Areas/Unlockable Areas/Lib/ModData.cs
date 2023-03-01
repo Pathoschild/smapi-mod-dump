@@ -21,6 +21,30 @@ namespace Unlockable_Areas.Lib
 {
     public sealed class ModData
     {
-        public Dictionary<string, bool> UnlockablePurchased { get; set; } = new Dictionary<string, bool>();
+        public static ModData Instance = new ModData();
+
+        public Dictionary<string, Dictionary<string, bool>> UnlockablePurchased { get; set; } = new Dictionary<string, Dictionary<string, bool>>();
+
+        public static bool isUnlockablePurchased(string key, string location)
+        {
+            if (ModData.Instance == null)
+                ModData.Instance = new ModData();
+
+            return Instance.UnlockablePurchased.ContainsKey(key)
+               && Instance.UnlockablePurchased[key].ContainsKey(location)
+               && Instance.UnlockablePurchased[key][location];
+
+        }
+
+        public static void setUnlockablePurchased(string key, string location, bool value = true)
+        {
+            if (ModData.Instance == null) //Can happen when a player connects during the day
+                ModData.Instance = new ModData();
+
+            if (!Instance.UnlockablePurchased.ContainsKey(key))
+                Instance.UnlockablePurchased[key] = new Dictionary<string, bool>();
+
+            Instance.UnlockablePurchased[key][location] = value;
+        }
     }
 }

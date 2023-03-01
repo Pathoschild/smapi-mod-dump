@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
@@ -65,7 +66,7 @@ namespace CropTransplantMod
 
         public static int GetSaplingIndex(this FruitTree value)
         {
-            Dictionary<int, string> data = Game1.content.Load<Dictionary<int, string>>("Data\\fruitTrees");
+            Dictionary<int, string> data = DataLoader.Helper.GameContent.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/fruitTrees"));
             int seedIndex = data.Where(t => Convert.ToInt32(t.Value.Split('/')[0]) == value.treeType.Value).Select(t=>t.Key).FirstOrDefault();
             return seedIndex;
         }

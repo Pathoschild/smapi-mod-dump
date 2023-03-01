@@ -9,7 +9,7 @@
 *************************************************/
 
 using Newtonsoft.Json;
-using Shockah.CommonModCode.Stardew;
+using Shockah.Kokoro.Stardew;
 using StardewValley;
 using System;
 

@@ -1,0 +1,94 @@
+{
+  /*
+  * These are text for sample. Each entry for a language. All of the built in langauges have already been included.
+  * If you want to add more language, please contact mod author.
+  * 
+  * (All texts come from https://stardewvalleywiki.com/Stardew_Valley_Wiki. See the About paragraph below)
+  */
+  "Texts": [
+    {
+      "Key": {
+        "Code": "de",
+        "Locale": "de-DE"
+      },
+      "Value": "Stardew Valley ist ein RPG über das Leben auf dem Land und wurde hauptsächlich von \"Harvest Moon\" inspiriert. Im Spiel erbt man den alten Hof seines Großvaters im Stardew Valley. Bewaffnet mit seinen abgenutzten Werkzeugen und ein paar Münzen, beginnst du dein neues Leben. Kannst du lernen von den Erträgen deines Bauernhofes zu leben und die mit Unkraut überwucherten Felder zu einem blühenden Zuhause zu machen?"
+    },
+    {
+      "Key": {
+        "Code": "en",
+        "Locale": ""
+      },
+      "Value": "Stardew Valley is an open-ended country-life RPG! You’ve inherited your grandfather’s old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?"
+    },
+    {
+      "Key": {
+        "Code": "es",
+        "Locale": "es-ES"
+      },
+      "Value": "¡Stardew Valley es un RPG de vida en el campo! Hereda la vieja granja de tu abuelo en Stardew Valley. Armado con herramientas de segunda mano y algo de dinero, te dispones a empezar tu nueva vida. ¿Podrás aprender a vivir de la tierra y a convertir esos campos de malezas en un hogar próspero?"
+    },
+    {
+      "Key": {
+        "Code": "fr",
+        "Locale": "fr-FR"
+      },
+      "Value": "Stardew Valley est un RPG de vie à la campagne en mode infini ! Vous avez hérité de l'ancienne ferme de votre grand-père dans Stardew Valley. Armé d'outils et d'un peu d'argent, vous vous lancez dans votre nouvelle vie. Arriverez-vous à vivre de la terre et à transformer ces champs débordants de végétation en un lieu florissant ?"
+    },
+    {
+      "Key": {
+        "Code": "it",
+        "Locale": "it-IT"
+      },
+      "Value": "Stardew Valley è un gioco di ruolo sulla vita di campagna a finale aperto! Hai ereditato la vecchia fattoria di tuo nonno a Stardew Valley. Dovrai iniziare la tua nuova vita sfruttando gli attrezzi che ti ha lasciato e poco denaro. Riuscirai a vivere dei frutti della terra e a trasformare questi campi incolti in una casa prospera?"
+    },
+    {
+      "Key": {
+        "Code": "ja",
+        "Locale": "ja-JP"
+      },
+      "Value": "スターデューバレーはオープンエンド式のカントリーライフRPGです。「スターデュー バレー」で、プレイヤーは祖父から古い農場を受け継ぎます。使い古された道具と少しのお金を手に、新たな生活を始めましょう。自給自足の生活で生き抜く術を学び、草木の生い茂る土地を繁栄させることができるでしょうか？"
+    },
+    {
+      "Key": {
+        "Code": "ko",
+        "Locale": "ko-KR"
+      },
+      "Value": "Stardew Valley는 오픈 엔드형 농장 체험 RPG입니다! 여러분은 스타듀 밸리에 있는 할아버지의 오래된 농장을 물려받게 됩니다. 대대로 전해 내려오는 도구와 코인 몇 개로 무장하고 새로운 삶을 시작하게 됩니다. 자급자족하면서 웃자란 농경지를 잘 나가는 내 농장으로 탈바꿈 시킬 수 있을까요?"
+    },
+    {
+      "Key": {
+        "Code": "hu",
+        "Locale": "hu-HU"
+      },
+      "Value": "A Stardew Valley egy nyitott vidéki RPG! Ön örökölte a nagyapja régi parcelláját Stardew-völgyben. A kéz-le-szerszámokkal és néhány érmével felfegyverkezve megkezdte az új életet. Megtanulhatsz, hogy élsz a földről, és ezeket a benőtt területeket virágzó otthongá változtatod?"
+    },
+    {
+      "Key": {
+        "Code": "pt",
+        "Locale": "pt-BR"
+      },
+      "Value": "Stardew Valley é um RPG sem fim da vida no campo! Você herdou a antiga fazenda de seu avô no Vale do Orvalho. Equipado com ferramentas de segunda mão e algumas moedas, você irá começar sua nova vida. Será que você consegue aprender a viver da terra e transformar esses campos absurdamente vegetados em uma casa próspera?"
+    },
+    {
+      "Key": {
+        "Code": "ru",
+        "Locale": "ru-RU"
+      },
+      "Value": "Долина Стардью — это открытая РПГ о жизни в деревне! Вы унаследовали участок вашего дедушки в долине Стардью. Вооружившись старыми инструментами и парочкой монет, вы отправитесь туда, чтобы начать новую жизнь. Сможете ли вы научиться сельской жизни и превратить эти заросшие поля в процветающий дом?"
+    },
+    {
+      "Key": {
+        "Code": "tr",
+        "Locale": "tr-TR"
+      },
+      "Value": "Stardew Valley, sonu olmayan bir köy yaşamı RPG oyunu! Büyükbaban, Yıldızçiyi Vadisi'ndeki eski çiftliğini sana miras olarak bıraktı. Kalitesiz aletler ve biraz parayla yeni hayatına başlayacaksın. Çiftliğinle geçinip bu tarlaları verimli hale getirebilecek misin?"
+    },
+    {
+      "Key": {
+        "Code": "zh",
+        "Locale": "zh-CN"
+      },
+      "Value": "星露谷物语是一个牧场类的RPG游戏。你继承了爷爷在星露谷的农场，但是你手头上只有最基础的农具和少许的金钱，你得靠此开始你的新生活。你能把这片杂草丛生的田地变成一个繁荣的家园吗？"
+    }
+  ]
+}

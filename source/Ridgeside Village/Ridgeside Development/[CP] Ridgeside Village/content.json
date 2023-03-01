@@ -27,84 +27,6 @@
 		75160383
 	 ],
 
-	/*********
-	** Configuration
-	*********/
-	"ConfigSchema": {
-		"RepeatCableCarCutscene": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enable Cable Car Cutscene."
-		},
-
-		"EnableOtherNPCsInCableCar": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enable the chances of other NPCs to appear riding the Cable Car (Along with LASV, ES and SVE NPCs)."
-		},
-
-		"EnableRidgesideMusic": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enables music for Ridgeside Village."
-		},
-
-		"RSVNPCSAttendFestivals": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Allows RSV NPCs to attend Pelican Town Festivals."
-		},
-
-		"ExpandedFestivalMaps": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enables the expanded festival maps. If false will use the old placements that may conflict with other mods."
-		},
-
-		"EasyIntroduction": {
-			"AllowValues": "true, false",
-			"Default": "false",
-			"Description": "RSV NPCs don't appear in Introduction quest."
-		},
-
-		"EnableBetterBusStop": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Uses Ridgeside Village's official patch for the Bus Stop by TheLimeyDragon and Rafseazz. Might be incompatible with other mods."
-		},
-
-		"PoleAtBackwoods": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enable/Disable the cable car pole at the backwoods."
-		},
-
-		"SeasonalRSVMap": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enable/Disable the seasonal RSV world map."
-		},
-
-		"EnableTouristNPCs": {
-			"AllowValues": "true, false",
-			"Default": "true",
-			"Description": "Enable/Disable the decoration tourist NPCs in the hotel."
-		},
-
-		"EnableWTDRCompat": {
-			"AllowValues": "true, false",
-			"Default": "false",
-			"Description": "EXPERIMENTAL! Establishes better compat with Walk to Desert Redux."
-		}
-
-/*		"EnableVanillaEdits": {
-			"AllowValues": "true, false",
-			"Default": "false",
-			"Description": "Edits vanilla content to integrate Ridgeside with the base game. Might be incompatible with other mods."
-		},
-*/
-},
-
 
 	/*********
 	** Dynamic tokens
@@ -124,7 +46,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, Alex, Elliott, Harvey, Sam, Sebastian, Shane, Abigail, Emily, Haley, Leah, Maru, Penny, Caroline, Clint, Demetrius, Evelyn, George, Gus, Jas, Jodi, Kent, Lewis, Linus, Marnie, Pam, Pierre, Robin, Vincent, Willy",
 			"When": {
-				"EnableOtherNPCsInCableCar": true
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true
 			}
 		},
 
@@ -133,7 +55,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, Lunna, Raphael, Dianna, Bianka",
 			"When": {
-				"EnableOtherNPCsInCableCar": true,
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=Rafseazz.LunnaCP": true,
 				"HasSeenEvent": "75160015"
 			}
@@ -144,7 +66,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, Leilani",
 			"When": {
-				"EnableOtherNPCsInCableCar": true,
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=ZoeDoll.NPCLeilani": true,
 				"Season": "Summer"
 			}
@@ -155,7 +77,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, June",
 			"When": {
-				"EnableOtherNPCsInCableCar": true,
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=ch20youk.JuneNPC": true,
 				"Season": "Fall, Winter"
 			}
@@ -166,7 +88,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, Aideen, Jacob, Eloise, Leximonster",
 			"When": {
-				"EnableOtherNPCsInCableCar": true,
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=Lemurkat.JacobEloise.CP": true
 			}
 		},
@@ -176,7 +98,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, Mia, Sterling, Henry",
 			"When": {
-				"EnableOtherNPCsInCableCar": true,
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=Himetarts.ARV.CP": true
 			}
 		},
@@ -186,7 +108,7 @@
 			"Name": "PossibleCableCarNPCs",
 			"Value": "{{PossibleCableCarNPCs}}, Sophia, Olivia, Andy, Victor, Susan, Morris, Marlon, Claire, Martin",
 			"When": {
-				"EnableOtherNPCsInCableCar": true,
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=FlashShifter.StardewValleyExpandedCP": true
 			}
 		},
@@ -399,6 +321,49 @@
 		{
 			"Name": "RandomGuestNumber10",
 			"Value": "{{Random: 10, 1, 2, 3, 4, 5, 6, 7, 8, 9|key= RSVHotelGuestToken}}"
+		},
+
+		//Irene travel schedule for 8 heart event preconditions
+		{
+			"Name": "IreneFreeDaysForEvent",
+			"Value": "u 14 15 16 17 18/z summer fall winter",
+			"When": { "Season": "spring" }
+		},
+		{
+			"Name": "IreneFreeDaysForEvent",
+			"Value": "u 14 15 16 17 18/z spring fall winter",
+			"When": { "Season": "summer" }
+		},
+		{
+			"Name": "IreneFreeDaysForEvent",
+			"Value": "u 1 2 3 4/z spring summer winter",
+			"When": { "Season": "fall" }
+		},
+		{
+			"Name": "IreneFreeDaysForEvent",
+			"Value": "u 1 2 3 4/z spring summer fall",
+			"When": { "Season": "winter" }
+		},
+		{
+			"Name": "IreneTraveling",
+			"Value": true,
+			"When": { "Season": "spring, summer", "Day": "15, 16, 17, 18, 19, 20, 21" }
+		},
+		{
+			"Name": "IreneTraveling",
+			"Value": true,
+			"When": { "Season": "fall, winter", "Day": "2, 3, 4, 5, 6, 7" }
+		},
+
+		{
+			"Name": "IreneTraveling",
+			"Value": false,
+			"When": { "Season": "spring, summer", "Query: {{Day}} < 15": true, "Query: {{Day}} > 21": true }
+		},
+		{
+			"Name": "IreneTraveling",
+			"Value": false,
+			"When": { "Season": "fall, winter", "Query: {{Day}} < 2": true, "Query: {{Day}} > 7": true }
 		},
 
 		//Ridgeside Extra Music Tokens
@@ -810,6 +775,10 @@
 				"FromMapFile": "Assets/Maps/EventMaps/RidgesideVillage_Event.tmx",
 			},
 			{
+				"Name": "Custom_Ridgeside_RidgesideVillage_CookOff",
+				"FromMapFile": "Assets/Maps/EventMaps/RidgesideVillage_CookOff.tmx",
+			},
+			{
 				"Name": "Custom_Ridgeside_Ridge_KennethDate_OFF",
 				"FromMapFile": "Assets/Maps/EventMaps/Ridge_KennethDate_OFF.tmx",
 			},
@@ -820,6 +789,22 @@
 			{
 				"Name": "Custom_Ridgeside_Ridge_KennethDate_ON",
 				"FromMapFile": "Assets/Maps/EventMaps/Ridge_KennethDate_ON.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_PurpleMansion_Ball",
+				"FromMapFile": "Assets/Maps/EventMaps/PurpleMansion_Ball.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_AmethyneCorp",
+				"FromMapFile": "Assets/Maps/EventMaps/AmethyneCorp.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_AmethyneJewelry",
+				"FromMapFile": "Assets/Maps/EventMaps/AmethyneJewelry.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_AmethyneMine",
+				"FromMapFile": "Assets/Maps/EventMaps/AmethyneMine.tmx",
 			},
 			/*********
 			** Aguar
@@ -864,6 +849,13 @@
 				"Name": "Custom_Ridgeside_RSVAbandonedHouse",
 				"FromMapFile": "Assets/Maps/EventMaps/RSVAbandonedHouse.tmx",
 				"MigrateLegacyNames": [ "RSVAbandonedHouse" ]
+			},
+			/*********
+			** June
+			*********/
+			{
+				"Name": "Custom_JuneNPC_ResortDate",
+	      "FromMapFile": "Assets/Maps/EventMaps/Island_S-June.tmx",
 			},
 			/*********
 			** Multiple NPCs
@@ -1217,7 +1209,7 @@
 		"FromFile": "Data/DependencyData/CustomCompanionsTourists.json",
 		"When":
 		{
-			"EnableTouristNPCs": "true"
+			"Rafseazz.RidgesideVillage/EnableTouristNPCs": "true"
 		}
 	},
 
@@ -1236,7 +1228,7 @@
 		Loads json file that adds RSV festivals, their main events and edits, festival locations and festival dialogue.
 	*/
 	{
-		"LogName": "Include all the Events",
+		"LogName": "Include all the Festival Data",
 		"Action": "Include",
 		"FromFile": "Data/Festivals/FestivalData.json",
 	},
@@ -1268,7 +1260,7 @@
 	{
 		"LogName": "Include all InterModCompat files",
 		"Action": "Include",
-		"FromFile": "Data/InterModCompat/CustomGiftDialogue.json, Data/InterModCompat/EastScarpe.json, Data/InterModCompat/KarmyllasImmersiveMaps.json, Data/InterModCompat/StardewValleyExpanded.json, Data/InterModCompat/TownSchool.json, Data/InterModCompat/WarpNetwork.json, Data/InterModCompat/EventLookup.json, Data/InterModCompat/WalkToDesertRedux.json",
+		"FromFile": "Data/InterModCompat/CustomGiftDialogue.json, Data/InterModCompat/EastScarpe.json, Data/InterModCompat/KarmyllasImmersiveMaps.json, Data/InterModCompat/StardewValleyExpanded.json, Data/InterModCompat/TownSchool.json, Data/InterModCompat/WarpNetwork.json, Data/InterModCompat/EventLookup.json, Data/InterModCompat/WalkToDesertRedux.json, Data/InterModCompat/FreeLove.json",
 	},
 
 	//Includes Map Data
@@ -1334,7 +1326,7 @@
   		"LogName": "Include Old Festival Placements",
   		"Action": "Include",
   		"FromFile": "Data/Festivals/FestivalLocations/OldLocations.json",
-  		"When": { "ExpandedFestivalMaps": false }
+  		"When": { "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": false }
   },
 
 

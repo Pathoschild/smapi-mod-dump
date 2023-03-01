@@ -16,7 +16,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/summer11",
         "When": {
-            "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -52,7 +52,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/summer11",
         "When": {
-            "HasSeenEvent": 75160249, "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "HasSeenEvent": 75160249, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -76,7 +76,7 @@
         "Action": "EditData",
         "Target": "Data/Festivals/summer11",
         "When": {
-            "HasSeenEvent": 75160254, "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+            "HasSeenEvent": 75160254, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
         },
         "TextOperations": [
             {
@@ -107,6 +107,30 @@
         ]
     },
 
+    {
+        //Zayne Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/summer11",
+        "When": {
+            "HasSeenEvent": 75160440, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Zayne 68 24 down",
+                "Delimiter": "/"
+            },
+
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "MainEvent_additionalCharacters"],
+                "Value": "Zayne 68 24 down",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
 		{
         //Jio and Kiwi
         "Action": "EditData",
@@ -114,8 +138,8 @@
         "When": {
                 "HasSeenEvent: anyPlayer|contains=75160377, 75160187": true,
                 "HasSeenEvent: anyPlayer|contains=75160188": true,
-                "RSVNPCSAttendFestivals": true,
-                "ExpandedFestivalMaps": true
+                "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true,
+                "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
             },
         "TextOperations": [
             {
@@ -140,7 +164,7 @@
       "Action": "EditData",
       "Target": "Data/Festivals/summer11",
       "When": {
-        "RSVNPCSAttendFestivals": true, "ExpandedFestivalMaps": true
+        "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
       },
       "TextOperations": [
         {
@@ -153,6 +177,29 @@
           "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters"],
           "Value": "Torts 89 24 down",
+          "Delimiter": "/"
+        },
+      ]
+    },
+
+    {
+      "LogName": "June Luau Location",
+      "Action": "EditData",
+      "Target": "Data/Festivals/summer11",
+      "When": {
+        "Relationship:June |contains=Married": true
+      },
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters"],
+          "Value": "June 14 4 2",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters"],
+          "Value": "June 37 6 2",
           "Delimiter": "/"
         },
       ]

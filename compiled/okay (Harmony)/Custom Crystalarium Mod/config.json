@@ -2,5 +2,8 @@
   "DisableLetter": false,
   "GetObjectBackOnChange": false,
   "GetObjectBackImmediately": false,
+  "BlockChange": false,
+  "EnableCrystalariumCloneEveryObject": false,
+  "DefaultCloningTime": 300,
   "OverrideContentPackGetObjectProperties": false
 }

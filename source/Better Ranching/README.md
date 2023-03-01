@@ -11,7 +11,7 @@ Stardew Valley mod that prevents failing milking/shearing attempts and adds an i
 
 Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows. Requires SMAPI 3.13.0 or later.
 
-**New Update 1.9.0 (12/2/21):** It's been awhile so biiiiig update!
+**New Update 1.9.2 (2/1/23):** Oh wow! [Profittroll](https://github.com/profitrollgame) added a Ukranian translation for the config settings menu and prompts!
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -74,6 +74,10 @@ Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows. Requires SMAPI
     * Add config options to individually control hearts for farm animals and pets
     * Add config option to hide hearts for max level animal friends
     * Update to SMAPI 3.13.1 and .NET5
+* 1.9.1:
+    * Clean-up code styling
+    * Added i18n support 
+    * Added Ukranian translation for config menus and prompts
 <h2>Contributors</h2>
 
 * Urbanyeti -- https://github.com/urbanyeti
@@ -82,3 +86,4 @@ Compatible with Stardew Valley 1.5.5+ on Linux, Mac, and Windows. Requires SMAPI
 * minervamaga -- https://github.com/minervamaga
 * floatingatoll -- https://github.com/floatingatoll
 * corrin -- https://github.com/corrinr
+* Profitroll -- https://github.com/profitrollgame

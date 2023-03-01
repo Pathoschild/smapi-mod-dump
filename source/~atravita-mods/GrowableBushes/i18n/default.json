@@ -18,12 +18,20 @@
   // GMCM
   "CanAxeAllBushes.title": "Can Axe All Bushes",
   "CanAxeAllBushes.description": "Enable to allow axing of all bushes.",
-  "ShopLocation": "Shop Location",
+  "ShopLocation.title": "Shop Location",
   "ShopLocation.description": "The location of the bush shop in Caroline's sunroom.",
+  "ShowBushShopGraphic.title": "Show Bush Shop Graphic",
+  "ShowBushShopGraphic.description": "Shows a little pair of bushes where the bush shop is.",
   "ShouldNPCsTrampleBushes.title": "Should NPCs Trample Bushes.",
   "ShouldNPCsTrampleBushes.description": "If enabled, will allow NPCs to remove bushes in their path.",
   "RelaxedPlacement.title": "Relaxed Placement",
   "RelaxedPlacement.description": "If enabled, placement rules will be relaxed.",
+  "AllowBushStacking.title": "Bush Stacking",
+  "AllowBushStacking.description": "If enabled, bushes will be able to stack.",
+  "PreserveModData.title": "Preserve Mod Data",
+  "PreserveModData.description": "If enabled, mod data will be preserved for bushes, but stacking may be less efficient.",
+  "ShopCostScale.title": "Shop Cost Scale",
+  "ShopCostScale.description": "Scales the cost of bushes in the shop.",
 
   // Shop
   "shop.message": "Hi! Anything you want?",

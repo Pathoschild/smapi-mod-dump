@@ -62,5 +62,14 @@
             "EnableFor": "Sam",
             "Query: {{Hearts:Sam}} >= 6": true,
         }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Willy - mid hearts",
+        "FromFile": "assets/default/charlie/Willy/mid.json",
+        "When": {
+            "EnableFor": "Willy",
+            "Query: {{Hearts:Sam}} >= 6": true,
+        }
     }
 ]}

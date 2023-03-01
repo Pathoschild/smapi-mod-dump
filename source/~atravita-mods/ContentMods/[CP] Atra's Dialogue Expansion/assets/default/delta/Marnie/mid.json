@@ -15,7 +15,7 @@
         "Target": "Characters/Dialogue/rainy",
         "When": {"Season": "winter"},
         "Entries":{
-            "Marnie": "#$c .5#Let's get you inside and warmed up.#Days like this make me grateful for indoor heating.#$e#You did get your animals heaters, yes?",
+            "Marnie": "#$c .5#Let's get you inside and warmed up.#Days like this make me grateful for indoor heating.#$e#You did get your animals heaters, yes?"
         }
     },
     {
@@ -24,6 +24,9 @@
         "Target": "Characters/Dialogue/Marnie",
         "Entries": {
             "movieTheater": "I can't believe a movie theater came to our town! @, you want to come see a movie with me?$h",
-        },
-    },
+            "10{{YearRemainder}}": "I've got so much work to do...$s",
+            "11{{YearRemainder}}": "Work on the ranch never ends...always have cows to milk, chicken coops to clean, inventory to manage...$s",
+            "fall_15{{YearRemainder}}": "Fall is Jas's favorite season. It's when the fairy roses bloom. She loves them.$h%revealtasteJas595"
+        }
+    }
 ]}

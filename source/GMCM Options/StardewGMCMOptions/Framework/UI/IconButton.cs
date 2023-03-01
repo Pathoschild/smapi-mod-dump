@@ -40,7 +40,7 @@ namespace GMCMOptions.Framework.UI {
         private readonly Texture2D icon;
         private readonly Rectangle iconRect;
         private readonly String text;
-        private readonly Action<IconButton> onClick;
+        private readonly Action<IconButton>? onClick;
         private readonly float fontScale;
 
         // additional values computed and cached for convenience in the constructor
@@ -65,7 +65,7 @@ namespace GMCMOptions.Framework.UI {
         /// <param name="fontScale">The scale to apply when drawing the text</param>
         /// <param name="selectedBackgroundColor">The background color to use when the widget is selected.  Defaults
         ///   to a mostly-transparent black.</param>
-        public IconButton(Texture2D icon, Rectangle? sourceRect = null, String text = "", Action<IconButton> onClick = null, bool selected = true,
+        public IconButton(Texture2D icon, Rectangle? sourceRect = null, String text = "", Action<IconButton>? onClick = null, bool selected = true,
             float fontScale = 0.5f, Color? selectedBackgroundColor = null) {
             this.icon = icon;
             this.iconRect = sourceRect ?? new Rectangle(0, 0, icon.Width, icon.Height);

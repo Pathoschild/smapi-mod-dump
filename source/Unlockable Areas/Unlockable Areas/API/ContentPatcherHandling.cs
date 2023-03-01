@@ -45,15 +45,6 @@ namespace Unlockable_Areas.API
             api.RegisterToken(Mod.ModManifest, "UnlockablePurchased", getValue);
         }
 
-        public static IEnumerable<string> getValue()
-        {
-            if (!Context.IsWorldReady)
-                yield break;
-
-            if (SaveDataEvents.Data != null)
-                foreach (var e in SaveDataEvents.Data.UnlockablePurchased)
-                    if (e.Value == true)
-                        yield return e.Key;
-        }
+        public static IEnumerable<string> getValue() => UnlockableAreasAPI.getPurchasedUnlockables();
     }
 }

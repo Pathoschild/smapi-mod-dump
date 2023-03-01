@@ -9,9 +9,11 @@
   "PurchaseFrom": "Dwarf",
   "PurchasePrice": 5000,
   "NameLocalization": {
-	  "zh": "灵巧手镐之戒"
+	  "zh": "灵巧手镐之戒",
+	  "ko": "쉬운 곡괭이 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "使你的镐更容易挥动，提升采矿技能。"
-  },
+	  "zh": "使你的镐更容易挥动，提升采矿技能。",
+	  "ko": "곡괭이를 다루기 쉽게 해주는 반지로, 채광을 증가시킵니다."
+  }
 }

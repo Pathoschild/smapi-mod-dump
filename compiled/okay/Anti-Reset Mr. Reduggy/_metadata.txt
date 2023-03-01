@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15480
+IDs: FricativeMelon.AntiResetMrReduggy
+update keys: Nexus:15480

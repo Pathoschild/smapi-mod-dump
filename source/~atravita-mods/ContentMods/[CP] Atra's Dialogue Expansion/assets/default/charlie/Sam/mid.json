@@ -9,4 +9,26 @@
 *************************************************/
 
 {"Changes":[
+    {
+        "LogName": "Sam, mid hearts",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Sam",
+        "Entries":{
+            "1{{YearRemainder}}": "Ugh, it's laundry day again. I wish I didn't have to do the laundry.$s",
+            "7{{YearRemainder}}": "Just wanna go skateboarding today...not sure I have the time for it though.",
+            "8{{YearRemainder}}": "Sebastian showed me a video game the other day that looked super fun. {{i18n:video.game.{{Random:01, 02, 03, 04, 05, 06, 07, 08, 09}} }}, have you heard of it?",
+            "10{{YearRemainder}}": "Soooo, @, what do you usually do for fun?",
+            "12{{YearRemainder}}": "Thinking of going skateboarding tomorrow, if it doesn't rain.",
+            "14{{YearRemainder}}": "Alex and I got up early today to go running.#$e#Guess you don't need to do structured exercise, with all the farm work you have to do."
+        }
+    },
+    {
+        "LogName": "Rain -- during winter.",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/rainy",
+        "When": {"Season": "winter"},
+        "Entries":{
+            "Sam": "Ugh, the weather is absolutely miserable today.$s"
+        }
+    }
 ]}

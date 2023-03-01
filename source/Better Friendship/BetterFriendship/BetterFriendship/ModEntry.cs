@@ -188,34 +188,33 @@ namespace BetterFriendship
 
             configMenu.AddBoolOption(
                 ModManifest,
-                name: () => "Prompt to Speak w/ Villagers",
-                tooltip: () => "Displays an indicator if a villager has not been talked to today.",
+                name: () => this.Helper.Translation.Get("config.option.prompt_speak.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.prompt_speak.description"),
                 getValue: () => Config.DisplayTalkPrompts,
                 setValue: value => Config.DisplayTalkPrompts = value
             );
 
             configMenu.AddTextOption(
                 ModManifest,
-                name: () => "Gift Suggestion Preference",
-                tooltip: () =>
-                    "The lowest level of matching you want for gift suggestions. Gift suggestions come from items currently in your inventory ordered by receiver's gift preference, quality of item, and cheapest price.",
+                name: () => this.Helper.Translation.Get("config.option.gift_preference.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.gift_preference.description"),
                 getValue: () => Config.GiftPreference,
                 setValue: value => Config.GiftPreference = value,
                 allowedValues: new[] { "love", "like", "neutral", "none" },
                 formatAllowedValue: value => value switch
                 {
-                    "love" => "Show only loved gifts",
-                    "like" => "Show liked gifts & above",
-                    "neutral" => "Show neutral gifts & above",
-                    "none" => "Hide all suggestions",
+                    "love" => this.Helper.Translation.Get("config.option.gift_preference.value.love"),
+                    "like" => this.Helper.Translation.Get("config.option.gift_preference.value.like"),
+                    "neutral" => this.Helper.Translation.Get("config.option.gift_preference.value.neutral"),
+                    "none" => this.Helper.Translation.Get("config.option.gift_preference.value.none"),
                     _ => "UNKNOWN"
                 }
             );
 
             configMenu.AddNumberOption(
                 ModManifest,
-                name: () => "Max Gifts to Show",
-                tooltip: () => "The maximum number of gift suggestions to cycle through.",
+                name: () => this.Helper.Translation.Get("config.option.gift_max_count.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.gift_max_count.description"),
                 interval: 1,
                 min: 1,
                 max: 10,
@@ -225,8 +224,8 @@ namespace BetterFriendship
 
             configMenu.AddNumberOption(
                 ModManifest,
-                name: () => "Gift Display Time (ms)",
-                tooltip: () => "The time to display each suggested gift in milliseconds.",
+                name: () => this.Helper.Translation.Get("config.option.gift_display_time.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.gift_display_time.description"),
                 interval: 500,
                 min: 500,
                 max: 5000,
@@ -236,45 +235,40 @@ namespace BetterFriendship
 
             configMenu.AddBoolOption(
                 ModManifest,
-                name: () => "Display Generic Gift Prompts",
-                tooltip: () =>
-                    "Displays a generic gift indicator if a villager can receive a gift, but nothing in your inventory matches their tastes.",
+                name: () => this.Helper.Translation.Get("config.option.gift_generic_prompts.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.gift_generic_prompts.description"),
                 getValue: () => Config.DisplayGenericGiftPrompts,
                 setValue: value => Config.DisplayGenericGiftPrompts = value
             );
 
             configMenu.AddBoolOption(
                 ModManifest,
-                name: () => "Ignore Maxed Friendships",
-                tooltip: () =>
-                    "Hides suggestions and prompts for relationships that won't decay.",
+                name: () => this.Helper.Translation.Get("config.option.ignore_maxed.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.ignore_maxed.description"),
                 getValue: () => Config.IgnoreMaxedFriendships,
                 setValue: value => Config.IgnoreMaxedFriendships = value
             );
 
             configMenu.AddBoolOption(
                 ModManifest,
-                name: () => "Always Display Spouse Prompts",
-                tooltip: () =>
-                    "Overrides other settings to always display gift and talk prompts for your spouse.",
+                name: () => this.Helper.Translation.Get("config.option.spouse_prompts.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.spouse_prompts.description"),
                 getValue: () => Config.SpousePromptsOverride,
                 setValue: value => Config.SpousePromptsOverride = value
             );
 
             configMenu.AddBoolOption(
                 ModManifest,
-                name: () => "Only Show Highest Quality",
-                tooltip: () =>
-                    "Display only the highest quality version of items available. E.g. if you have both a gold and silver quality Hot Pepper, only the gold quality Hot Pepper will be suggested.",
+                name: () => this.Helper.Translation.Get("config.option.only_highest_quality.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.only_highest_quality.description"),
                 getValue: () => Config.OnlyHighestQuality,
                 setValue: value => Config.OnlyHighestQuality = value
             );
 
             configMenu.AddBoolOption(
                 ModManifest,
-                name: () => "[!] Enable Suggestion Bubbles",
-                tooltip: () =>
-                    "Allows floating bubbles to be displayed over villagers. Warning: Turning this off will hide ALL floating bubbles enabled by this mod (talk prompts, gift suggestions, etc.)",
+                name: () => this.Helper.Translation.Get("config.option.enable_bubbles.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.enable_bubbles.description"),
                 getValue: () => Config.DisplayBubbles,
                 setValue: value => Config.DisplayBubbles = value
             );

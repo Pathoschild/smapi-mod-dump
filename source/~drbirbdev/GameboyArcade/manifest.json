@@ -9,20 +9,18 @@
 *************************************************/
 
 {
-    "Name": "GameboyArcade",
-    "Author": "drbirbdev",
-    "Version": "0.1.0",
-    "Description": "A Library for enabling Gameboy Roms to be played as in-game arcade machines.",
-    "UniqueID": "drbirbdev.GameboyArcade",
-    "EntryDll": "GameboyArcade.dll",
-    "MinimumApiVersion": "3.18.0",
-    "UpdateKeys": [
-        "Nexus:15194"
-    ],
-    "Dependencies": [
-        {
-            "UniqueID": "spacechase0.DynamicGameAssets",
-            "IsRequired": false
-        }
-    ]
+  "Name": "GameboyArcade",
+  "Author": "drbirbdev",
+  "Version": "0.1.1",
+  "Description": "A Library for enabling Gameboy Roms to be played as in-game arcade machines.",
+  "UniqueID": "drbirbdev.GameboyArcade",
+  "EntryDll": "GameboyArcade.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.DynamicGameAssets",
+      "IsRequired": false
+    }
+  ]
 }

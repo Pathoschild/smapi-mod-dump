@@ -27,16 +27,32 @@ namespace LittleNPCs.Framework.Patches {
                 return;
             }
 
-            __instance.setTilePosition(farmHouse.getEntryLocation());
-            __instance.ignoreScheduleToday = true;
-            __instance.temporaryController = null;
-            __instance.controller = null;
-            
             if (ModEntry.config_.DoChildrenHaveCurfew && Game1.timeOfDay >= ModEntry.config_.CurfewTime) {
-                Point bedPoint = new Point((int)__instance.DefaultPosition.X / 64, (int)__instance.DefaultPosition.Y / 64);
+                Point bedPoint = Utility.Vector2ToPoint(__instance.DefaultPosition / 64f);
+
+                // If farmer is not here move to bed instantly because path finding will be cancelled when the farmer enters the house.
+                // Note that we need PathFindController even in this case because setTilePosition(bedPoint) places the NPC next to bed.
+                if (Game1.player.currentLocation != farmHouse) {
+                    __instance.setTilePosition(bedPoint);
+                }
+                else {
+                    __instance.setTilePosition(farmHouse.getEntryLocation());
+                }
+
+                __instance.ignoreScheduleToday = true;
+                __instance.temporaryController = null;
+                // In order to make path finding work we must assign null first.
+                __instance.controller = null;
+
                 __instance.controller = new PathFindController(__instance, farmHouse, bedPoint, 2);
             }
             else {
+                __instance.setTilePosition(farmHouse.getEntryLocation());
+
+                __instance.ignoreScheduleToday = true;
+                __instance.temporaryController = null;
+                __instance.controller = null;
+
                 __instance.controller = new PathFindController(__instance, farmHouse, farmHouse.getRandomOpenPointInHouse(Game1.random, 0, 30), 2);
             }
 

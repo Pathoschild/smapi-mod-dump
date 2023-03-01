@@ -29,6 +29,7 @@ internal static partial class Texture2DExt {
 			None = 0,
 			Initialized = 1 << 0,
 			Storage = 1 << 1,
+			Managed = 1 << 2,
 		}
 
 		internal Flag Flags = Flag.Initialized;

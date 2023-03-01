@@ -2,16 +2,16 @@
   "Dependencies": [
     {
       "UniqueID": "atravita.AtraCore",
-      "MinimumVersion": "0.1.1"
+      "MinimumVersion": "0.1.2"
     }
   ],
   "EntryDll": "FarmCaveSpawn.dll",
   "Name": "Farm Cave Spawns More Tree Fruit",
   "Author": "atravita",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Spawn more tree fruit in the fruit cave",
   "UniqueID": "atravita.FarmCaveSpawn",
-  "MinimumApiVersion": "3.15",
+  "MinimumApiVersion": "3.18",
   "UpdateKeys": [
     "Nexus:10186",
     "ModDrop:1068205"

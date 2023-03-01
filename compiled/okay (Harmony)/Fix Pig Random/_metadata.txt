@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15003
+IDs: atravita.FixPigRandom
+update keys: Nexus:15003, GitHub:atravita-mods/StardewMods

@@ -9,7 +9,7 @@
   <PropertyGroup>
     <Name>Sleep In Wedding</Name>
     <Description>Moves the wedding so it's not at 6AM.</Description>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <UpdateKeys>Nexus:15006</UpdateKeys>
     <BaseManifest>..\cp_dependencies.json</BaseManifest>
   </PropertyGroup>

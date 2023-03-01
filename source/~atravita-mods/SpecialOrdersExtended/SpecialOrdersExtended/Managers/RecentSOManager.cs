@@ -132,16 +132,9 @@ internal class RecentSOManager
         }
 
         // Grab my completed orders
-        HashSet<string>? completedOrderKeys = null;
-        if (Context.IsWorldReady)
-        {
-            completedOrderKeys = Game1.player!.team.completedSpecialOrders.Keys.ToHashSet();
-        }
-        else
-        {
-            completedOrderKeys = SaveGame.loaded?.completedSpecialOrders?.ToHashSet();
-        }
-        if (completedOrderKeys is null)
+        var completedOrders = Game1.player?.team?.completedSpecialOrders;
+
+        if (completedOrders is null)
         { // This should not happen, but just in case?
             return updatedCache;
         }
@@ -151,7 +144,7 @@ internal class RecentSOManager
         {
             foreach (string cachedOrder in currentOrderCache)
             {
-                if (!currentOrders.ContainsKey(cachedOrder) && completedOrderKeys.Contains(cachedOrder))
+                if (!currentOrders.ContainsKey(cachedOrder) && completedOrders.ContainsKey(cachedOrder))
                 {// A quest previously in the current quests is gone now
                  // and seems to have appeared in the completed orders
                     if (TryAdd(cachedOrder))

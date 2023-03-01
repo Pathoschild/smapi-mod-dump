@@ -9,4 +9,12 @@
 *************************************************/
 
 {"Changes":[
-    ]}
+    {
+        "LogName": "Robin Movies",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Robin",
+        "Entries": {
+            "movieTheater": "Oh, @, did you hear? We've got a new movie theater! Demetrius and I used to go out and watch movies in a little drive-in theater all the time when we were dating...$h"
+        }
+    }
+]}

@@ -6,5 +6,8 @@
     "R": 147,
     "A": 155
   },
-  "RecolorFruitTrees": true
+  "RecolorBushes": true,
+  "RecolorFruitTrees": true,
+  "RecolorTrees": false,
+  "BanRaisedSeeds": false
 }

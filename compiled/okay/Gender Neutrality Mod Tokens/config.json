@@ -1,6 +1,5 @@
 {
-  "Singular": "true",
-  "SingularBool": true,
+  "Singular": true,
   "SubjectivePronoun": "They",
   "ObjectivePronoun": "Them",
   "PosessivePronoun": "Their",

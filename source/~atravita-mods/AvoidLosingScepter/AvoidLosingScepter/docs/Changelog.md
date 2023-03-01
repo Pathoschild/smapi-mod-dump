@@ -9,6 +9,9 @@ for queries and analysis.**
 Changelog
 =============
 
+#### Version 0.2.2
+* Add `prevent_loss_on_death` context tag as well.
+
 #### Version 0.2.1
 * No real changes, just recompiled for changes in atracore.
 

@@ -8,8 +8,9 @@
 **
 *************************************************/
 
-using Shockah.CommonModCode;
-using Shockah.CommonModCode.Stardew;
+using Shockah.Kokoro;
+using Shockah.Kokoro.Stardew;
+using StardewModdingAPI;
 using StardewValley.Objects;
 using GameLocation = StardewValley.GameLocation;
 using SVObject = StardewValley.Object;
@@ -49,15 +50,17 @@ namespace Shockah.MachineStatus
 			public readonly struct SObject
 			{
 				public readonly int ParentSheetIndex { get; }
+				public readonly string? DynamicGameAssetsId { get; }
 				public readonly string Name { get; }
 				public readonly bool BigCraftable { get; }
 				public readonly bool ShowNextIndex { get; }
 				public readonly Color? Color { get; }
 				public readonly bool ColorSameIndexAsParentSheetIndex { get; }
 
-				public SObject(int parentSheetIndex, string name, bool bigCraftable, bool showNextIndex, Color? color, bool colorSameIndexAsParentSheetIndex)
+				public SObject(int parentSheetIndex, string? dynamicGameAssetsId, string name, bool bigCraftable, bool showNextIndex, Color? color, bool colorSameIndexAsParentSheetIndex)
 				{
 					this.ParentSheetIndex = parentSheetIndex;
+					this.DynamicGameAssetsId = dynamicGameAssetsId;
 					this.Name = name;
 					this.BigCraftable = bigCraftable;
 					this.ShowNextIndex = showNextIndex;
@@ -77,6 +80,7 @@ namespace Shockah.MachineStatus
 
 					return new(
 						@object.ParentSheetIndex,
+						MachineStatus.Instance.DynamicGameAssetsApi?.GetDGAItemId(@object),
 						@object.Name,
 						@object.bigCraftable.Value,
 						@object.showNextIndex.Value,
@@ -86,7 +90,7 @@ namespace Shockah.MachineStatus
 				}
 
 				public bool Matches(SVObject @object)
-					=> ParentSheetIndex == @object.ParentSheetIndex && BigCraftable == @object.bigCraftable.Value && Name == @object.Name;
+					=> ParentSheetIndex == @object.ParentSheetIndex && Equals(DynamicGameAssetsId, MachineStatus.Instance.DynamicGameAssetsApi?.GetDGAItemId(@object)) && BigCraftable == @object.bigCraftable.Value && Name == @object.Name;
 
 				public SVObject Retrieve(IntPoint? tileLocation)
 				{
@@ -101,6 +105,15 @@ namespace Shockah.MachineStatus
 							result = new CrabPot(new Vector2(tileLocation.Value.X, tileLocation.Value.Y));
 						else
 							result = new SVObject(new Vector2(tileLocation.Value.X, tileLocation.Value.Y), ParentSheetIndex, 1);
+					}
+
+					if (DynamicGameAssetsId is not null)
+					{
+						var dgaItem = MachineStatus.Instance.DynamicGameAssetsApi?.SpawnDGAItem(DynamicGameAssetsId);
+						if (dgaItem is null)
+							MachineStatus.Instance.Monitor.Log($"Received DynamicGameAssets {Name} machine info with ID `{DynamicGameAssetsId}`, but could not instantiate it - are you missing a mod?", LogLevel.Warn);
+						else
+							result = (SVObject)dgaItem;
 					}
 
 					result.Name = Name;

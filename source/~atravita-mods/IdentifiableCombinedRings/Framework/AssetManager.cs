@@ -28,15 +28,20 @@ namespace IdentifiableCombinedRings.Framework;
 /// </summary>
 internal static class AssetManager
 {
-    private static IAssetName RingLocation = null!;
-
     private static readonly Dictionary<RingPair, Lazy<Texture2D>> TextureOverrides = new();
 
+    private static IAssetName RingLocation = null!;
+
+    /// <summary>
+    /// Initializes the asset manager.
+    /// </summary>
+    /// <param name="parser">Game Content Helper.</param>
     internal static void Initialize(IGameContentHelper parser)
     {
         RingLocation = parser.ParseAssetName("Mods/atravita/IdentifiableCombinedRings/Data");
     }
 
+    /// <inheritdoc cref="IContentEvents.AssetRequested"/>
     internal static void OnAssetRequested(AssetRequestedEventArgs e)
     {
         if (e.NameWithoutLocale.IsEquivalentTo(RingLocation))
@@ -45,8 +50,16 @@ internal static class AssetManager
         }
     }
 
-    internal static Texture2D? GetOverrideTexture(RingPair pair) => TextureOverrides.TryGetValue(pair, out var tex) ? tex.Value : null;
+    /// <summary>
+    /// Gets the override texture associated with a ring pair.
+    /// </summary>
+    /// <param name="pair">The ring pair. Note the smaller ID should be first.</param>
+    /// <returns>Override texture if it exists.</returns>
+    internal static Texture2D? GetOverrideTexture(RingPair pair) => TextureOverrides.TryGetValue(pair, out Lazy<Texture2D>? tex) ? tex.Value : null;
 
+    /// <summary>
+    /// Loads in the ring overrides.
+    /// </summary>
     internal static void Load()
     {
         TextureOverrides.Clear();

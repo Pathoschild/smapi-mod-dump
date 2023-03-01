@@ -1,7 +1,7 @@
 {
   "Name": "Custom Companions",
   "Author": "PeacefulEnd",
-  "Version": "2.5.0",
+  "Version": "3.0.0",
   "Description": "Framework for creating custom entities that can be spawned on maps or follow you around in Stardew Valley.",
   "UniqueID": "PeacefulEnd.CustomCompanions",
   "EntryDll": "CustomCompanions.dll",

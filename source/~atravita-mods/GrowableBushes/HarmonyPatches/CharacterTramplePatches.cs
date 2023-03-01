@@ -45,7 +45,7 @@ internal static class CharacterTramplePatches
         {
             Rectangle nextPosition = npc.nextPosition(npc.FacingDirection);
 
-            for (int i = 0; i < currentLocation.largeTerrainFeatures.Count; i++)
+            for (int i = currentLocation.largeTerrainFeatures.Count - 1; i >= 0; i--)
             {
                 LargeTerrainFeature feature = currentLocation.largeTerrainFeatures[i];
                 if (feature is Bush bush && bush.getBoundingBox().Contains(nextPosition)

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/14470
 IDs: DaLion.Overhaul
-update keys: Nexus:14470, GitHub:daleao/sdv-mods
+update keys: Nexus:14470@Main, Nexus:14470, GitHub:daleao/sdv-mods

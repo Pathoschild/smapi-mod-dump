@@ -9,23 +9,89 @@
 *************************************************/
 
 {
-  "mod-description": "Lets you put down giant crops.",
+  "mod-description": "Lets you put down giant crops. And maybe a few other things.",
   "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
 
   "api-not-found": "{{APIID}} not found, integration disabled.",
   "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
 
   // GMCM
-  "ShopLocation": "Shop Location",
-  "ShopLocation.description": "The location of the bush shop in the Witch's place.",
-  "ShouldNPCsTrampleGiantCrops.title": "Should NPCs Trample Giant Crops.",
+  "ShowShopGraphics.title": "Show Shop Graphics",
+  "ShowShopGraphics.description": "If enabled, will draw in the shop graphics. Disable if this clashes too badly with a recolor or something.",
+  "GiantCropShopLocation.title": "Giant Crop Shop Location",
+  "GiantCropShopLocation.description": "The location of the giant crop shop in the Witch's place.",
+  "ResourceShopLocation.title": "Resource Shop Location",
+  "ResourceShopLocation.description": "The location of the resource shop in Robin's.",
+
+  "ShouldNPCsTrampleResourcesClumps.title": "NPCs Trample Resources",
+  "ShouldNPCsTrampleResourcesClumps.description": "If enabled, will allow NPCs to remove resource clumps in their path",
+  "ShouldNPCsTrampleGiantCrops.title": "NPCs Trample Giant Crops.",
   "ShouldNPCsTrampleGiantCrops.description": "If enabled, will allow NPCs to remove giant crops in their path.",
+
   "RelaxedPlacement.title": "Relaxed Placement",
   "RelaxedPlacement.description": "If enabled, placement rules will be relaxed.",
+  "PlacedOnly.title": "Placed Only",
+  "PlacedOnly.description": "If enabled, the shovel will only move items that were placed down by a player.",
+
+  "ShovelEnergy.title": "Shovel Energy",
+  "ShovelEnergy.description": "How much stamina should each use of the shovel take.",
+
+  "AllowLargeItemStacking.title": "Allow Large Item Stacking",
+  "AllowLargeItemStacking.description": "If enabled, large items like inventory giant crops can stack.",
+  "PreserveModData.title": "Preserve Mod Data",
+  "PreserveModData.description": "If set, mod data will be copied out of the terrain version of items into the inventory version of items. This means they will probably stack less well, but will mean that mod data other mods use, like MARGO's tree age or MoreFertilizer's non-standard fertilizers, will stay.",
+
+  "CanSquishPlacedSlimeBalls.title": "Squish Placed Slime Balls",
+  "CanSquishPlacedSlimeBalls.description": "If enabled, placed slime balls cannot be squished (and are thus purely decorative)",
+  "PreservePlacedWeeds.title": "Preserve Placed Weeds",
+  "PreservePlacedWeeds.description": "If enabled, placed weeds will not die in winter.",
+
+  "PlacedTreesSpread.title": "Placed Trees Spread",
+  "PlacedTreesSpread.description": "If enabled, placed trees can spread on the farm.",
+  "MaxTreeStage.title": "Max Tree Stage",
+  "MaxTreeStage.description": "The biggest tree the shovel can pick up. Set to -1 to disable.",
+  "MaxFruitTreeStage.title": "Max Fruit Tree Stage",
+  "MaxFruitTreeStage.description": "The biggest fruit tree the shovel can pick up. Set to -1 to disable.",
+
+  "ShouldAnimalsEatPlacedGrass.title": "Animals Eat Placed Grass",
+  "ShouldAnimalsEatPlacedGrass.description": "If enabled, animals will eat grass created from starters created by this mod.",
+  "ShouldPlacedGrassSpread.title": "Placed Grass Spreads",
+  "ShouldPlacedGrassSpread.description": "If enabled, placed grass will spread normally.",
+  "ShouldPlacedGrassIgnoreScythe.title": "Placed Grass Ignores Scythe",
+  "ShouldPlacedGrassIgnoreScythe.description": "If enabled, placed grass will ignore the scythe and become purely decorative.",
+
+  "Shop.title": "Shop-related options:",
+  "Shop.description": "Use these to customize the location of the shops if needed.",
+  "Grass.title": "Grass-related options:",
+  "Misc.title": "Miscellaneous options:",
+  "LargeItems.title": "Large item options:",
+  "LargeItems.description": "These options pertain to the giant crop, the resource clumps, and both kinds of trees.",
+  "Trees.title": "Tree-related options:",
+  "Trees.description": "These options pertain to fruit trees and wild trees",
+  "PalmTreeBehavior.title": "Palm Tree Behavior",
+  "PalmTreeBehavior.description": "Adjusts the behavior of the palm trees. Seasonal - they will use seasonal textures bundled in this mod. Stump - they will behave like mushroom trees and become stumps in winter. Default - they will do neither",
+
+  "config.PalmTreeBehavior.Default": "Default",
+  "config.PalmTreeBehavior.Seasonal": "Seasonal",
+  "config.PalmTreeBehavior.Stump": "Stump",
+
+
+  // Stores
+  "ShopMessage.Robin": "Whatcha lookin' for? Anything catch your eye?",
+
+  //mail for shops:
+  "RobinMail": "Hi @!^Recently, I've picked up some interesting grass starters for sale. Check my counter if you'd like some. I've heard they're nice for decorating.^^  --Robin[#]Robin's Grass Starters",
+  "RobinMailTwo": "@!^Got some new resource clumps for sale now too!^^  --Robin[#]Robin's Grass Starters",
+  "WitchMail": "....some magic....easier to grow....giant crops....recently got a shovel....to transplant them....[#]Giant Crop Shop mail",
 
   // Items
   "Shovel.Name": "Shovel",
   "Shovel.Description": "An old, beat up shovel.",
+
+  // Fruit Trees
+  "FruitTreeCategory": "Fruit Tree",
+  "FruitTree.name": "Fruit Tree ({{sapling}})",
+  "FruitTree.description": "Grown from a {{sapling}}.",
 
   // Giant crops
   "GiantCropCategory": "Giant Crop",
@@ -50,4 +116,24 @@
   "MineRockOne.description": "A large mine rock. Can be placed.",
   "MineRockThree.name": "Frozen Mine Rock",
   "MineRockThree.description": "A large, rather frozen, mine rock. Can be placed.",
+
+  // Trees
+  "TreeCategory": "Tree",
+  "TreeInvalid.name": "Invalid Tree",
+  "TreeInvalid.description": "You're not supposed to have this.",
+
+  "Maple.name": "Maple",
+  "Maple.description": "A maple tree.",
+  "Oak.name": "Oak",
+  "Oak.description": "An oak tree",
+  "Pine.name": "Pine",
+  "Pine.description": "A pine tree",
+  "Palm.name": "Palm Tree",
+  "Palm.description": "A small palm tree",
+  "BigPalm.name": "Big Palm",
+  "BigPalm.description": "A big palm tree",
+  "Mahogany.name": "Mahogany",
+  "Mahogany.description": "A mahogany tree",
+  "Mushroom.name": "Mushroom",
+  "Mushroom.description": "A mushroom tree"
 }

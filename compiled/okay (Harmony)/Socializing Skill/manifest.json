@@ -1,7 +1,7 @@
 ﻿{
     "Name": "SocializingSkill",
     "Author": "drbirbdev",
-    "Version": "1.0.3",
+    "Version": "1.1.1",
     "Description": "Adds a skill related to befriending villagers.",
     "UniqueID": "drbirbdev.SocializingSkill",
     "EntryDll": "SocializingSkill.dll",
@@ -15,6 +15,11 @@
         },
         {
             "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "DaLion.Overhaul",
+            "MinimumVersion": "1.1.1",
             "IsRequired": false
         }
     ]

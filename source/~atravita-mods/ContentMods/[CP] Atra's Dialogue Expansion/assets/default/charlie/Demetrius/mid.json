@@ -13,13 +13,10 @@
         "LogName": "Demetrius Volcano",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Demetrius",
-        "When":
-        {
-            "HasFlag": "Island_FirstParrot",
-        },
+        "When": { "HasFlag": "Island_FirstParrot" },
         "Entries":
         {
-            "Resort": "The mushrooms around here are extraordinary!$h#$e#I have never seen any mushrooms like these!",
+            "Resort": "The mushrooms around here are extraordinary!$h#$e#I have never seen any mushrooms like these!"
         }
     },
     {
@@ -28,46 +25,65 @@
         "Target": "Characters/Dialogue/rainy",
         "When": {"Season": "winter"},
         "Entries":{
-            "Demetrius": "Rare to see winter storms around here.",
+            "Demetrius": "Rare to see winter storms around here....Something in the weather seems different."
         }
     },
     {
-        "LogName": "Demetrius mid-hearts",
+        "LogName": "Demetrius mid-hearts, year 1",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Demetrius",
         "Entries": {
+            "ScienceHouse_22_20": "I've got so much data I need to analyze.$s",
             "fallScienceHouse_22_20": "I'd love to talk, @, but I have a grant submission coming up that I need to work on.",
+            "fallMountain_45_8": "We're lucky to have so much old growth forest around here.#$b#It takes decades for a forest to develop properly.",
+            "summer_2{{YearRemainder}}": "I better not forget our anniversary this year, Robin will really hate it if I forget again."
         },
-        "When": {
-            "YearModulus": "1"
-        }
+        "When": { "YearModulus": "1" }
     },
     {
-        "LogName": "Demetrius mid-hearts",
+        "LogName": "Demetrius mid-hearts, Y2",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Demetrius",
         "Entries": {
             "6_2": "I hope my collaborator can get his edits in soon....$s",
             "16_2": "It's always reviewer two, isn't it? Always.$a",
-            "ScienceHouse_22_20": "I'm so sorry, @, I've got so much work I need to get done before Monday.",
+            "ScienceHouse_22_20": "I'm so sorry, @, I've got so much work I need to get done before next Monday.",
             "summerScienceHouse_22_20": "Just need to gather a little more data for a proposal.",
             "fallMountain_45_8": "Some of these trees are more than a hundred years old. I hope you weren't planning on cutting them down."
         },
-        "When": {
-            "YearModulus": "2"
-        }
+        "When": { "YearModulus": "2" }
     },
     {
-        "LogName": "Demetrius mid-hearts",
+        "LogName": "Demetrius mid-hearts, Y2, mushrooms",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Demetrius",
         "Entries": {
+            "7_2": "There's nothing like a nice ripe, juicy peach in the summer, right?%revealtasteRobin636#$b#Robin and I used to go down to the local farmers market and buy them by the box, back when we lived in the city.#$e#Here, I've got an extra, do you want it?[636]",
+        },
+        "When": { "YearModulus": "2", "FarmCave": "Mushrooms"}
+    },
+    {
+        "LogName": "Demetrius mid-hearts, Y3",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries": {
+            "fall_1_2": "Now that it's fall, I think I'll try growing some pumpkins for Robin again.%revealtasteRobin276#$b#They're her favorite vegetable. Here, I have a few extra seeds, want them? [490]#$e#Tried growing them a few years ago, I'm not the best gardener. Think I overwatered them.",
             "6_2": "Did you see that paper by the %name group out of %place University? Amazing, isn't it?$h",
+            "16_2": "Sometimes I wonder what I could have done to be more successful in my career...$s",
+            "18_2": "Between you and I, @, writing proposals is the worst part of my job.",
+            "20_2": "Tree fertilizer can make trees grow much faster, but I wonder if it affects the quality of their wood.#$b#Generally fast-growing trees can't produce as dense of wood.",
             "fallScienceHouse_22_20": "Got a conference coming up, @, hoping I can get myself a talk.",
             "winterScienceHouse_22_20": "My collaborator claims his equipment is broken again.#$b#We're far closer to the submission deadline for this paper than I'd like..."
         },
-        "When": {
-            "YearModulus": "3"
-        }
+        "When": { "YearModulus": "3"}
+    },
+    {
+        "LogName": "Demetrius mid-hearts, Y4",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Demetrius",
+        "Entries": {
+            "2_2": "Before Pelican Town was a mining town, it was a forestry.#$b#But that was a long time ago, and the forest has had a bit of a chance to recover.",
+        },
+        "When": { "YearModulus": "4"}
     }
 ]}

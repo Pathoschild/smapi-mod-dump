@@ -3,23 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
+    <GameModsPath>/Users/lizabet/Library/Application Support/Steam/steamapps/common/Stardew Valley/Contents/MacOS/Mods/FireworksFestival</GameModsPath>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Pathoschild.Stardew.ModBuildConfig" />
     <None Remove="assets\" />
-    <None Remove="assets\dga\" />
-    <None Remove="assets\dga\i18n\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
-    <Folder Include="assets\dga\" />
-    <Folder Include="assets\dga\i18n\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Objects.png" CopyToOutputDirectory="Always" />
   </ItemGroup>
 </Project>

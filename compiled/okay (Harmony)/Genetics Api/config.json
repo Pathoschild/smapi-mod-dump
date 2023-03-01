@@ -1,0 +1,774 @@
+{
+  "AllAdopted": false,
+  "GenesForSameSex": true,
+  "GenderSpecificAlts": true,
+  "NumAlts": 1,
+  "NumContentJSONsToGenerate": 8,
+  "ValidSpouses": {
+    "Alex": {
+      "HairColor": {
+        "H": 18,
+        "S": 100,
+        "V": 42
+      },
+      "EyeColor": {
+        "H": 104,
+        "S": 100,
+        "V": 43
+      },
+      "SkinColor": {
+        "H": 22,
+        "S": 52,
+        "V": 100
+      }
+    },
+    "Elliot": {
+      "HairColor": {
+        "H": 26,
+        "S": 83,
+        "V": 82
+      },
+      "EyeColor": {
+        "H": 98,
+        "S": 100,
+        "V": 31
+      },
+      "SkinColor": {
+        "H": 42,
+        "S": 44,
+        "V": 99
+      }
+    },
+    "Harvey": {
+      "HairColor": {
+        "H": 9,
+        "S": 67,
+        "V": 47
+      },
+      "EyeColor": {
+        "H": 20,
+        "S": 100,
+        "V": 36
+      },
+      "SkinColor": {
+        "H": 28,
+        "S": 44,
+        "V": 100
+      }
+    },
+    "Sam": {
+      "HairColor": {
+        "H": 45,
+        "S": 71,
+        "V": 100
+      },
+      "EyeColor": {
+        "H": 250,
+        "S": 6,
+        "V": 41
+      },
+      "SkinColor": {
+        "H": 28,
+        "S": 31,
+        "V": 100
+      }
+    },
+    "Sebastian": {
+      "HairColor": {
+        "H": 280,
+        "S": 58,
+        "V": 28
+      },
+      "EyeColor": {
+        "H": 260,
+        "S": 52,
+        "V": 43
+      },
+      "SkinColor": {
+        "H": 26,
+        "S": 36,
+        "V": 100
+      }
+    },
+    "Shane": {
+      "HairColor": {
+        "H": 305,
+        "S": 55,
+        "V": 34
+      },
+      "EyeColor": {
+        "H": 145,
+        "S": 42,
+        "V": 29
+      },
+      "SkinColor": {
+        "H": 30,
+        "S": 35,
+        "V": 100
+      }
+    },
+    "Abigail": {
+      "HairColor": {
+        "H": 267,
+        "S": 64,
+        "V": 75
+      },
+      "EyeColor": {
+        "H": 186,
+        "S": 79,
+        "V": 77
+      },
+      "SkinColor": {
+        "H": 37,
+        "S": 12,
+        "V": 99
+      }
+    },
+    "Emily": {
+      "HairColor": {
+        "H": 224,
+        "S": 100,
+        "V": 94
+      },
+      "EyeColor": {
+        "H": 296,
+        "S": 66,
+        "V": 51
+      },
+      "SkinColor": {
+        "H": 32,
+        "S": 22,
+        "V": 94
+      }
+    },
+    "Haley": {
+      "HairColor": {
+        "H": 59,
+        "S": 79,
+        "V": 100
+      },
+      "EyeColor": {
+        "H": 205,
+        "S": 83,
+        "V": 97
+      },
+      "SkinColor": {
+        "H": 32,
+        "S": 36,
+        "V": 100
+      }
+    },
+    "Leah": {
+      "HairColor": {
+        "H": 22,
+        "S": 86,
+        "V": 99
+      },
+      "EyeColor": {
+        "H": 249,
+        "S": 55,
+        "V": 71
+      },
+      "SkinColor": {
+        "H": 32,
+        "S": 21,
+        "V": 100
+      }
+    },
+    "Maru": {
+      "HairColor": {
+        "H": 339,
+        "S": 72,
+        "V": 57
+      },
+      "EyeColor": {
+        "H": 296,
+        "S": 59,
+        "V": 46
+      },
+      "SkinColor": {
+        "H": 10,
+        "S": 52,
+        "V": 88
+      }
+    },
+    "Penny": {
+      "HairColor": {
+        "H": 3,
+        "S": 73,
+        "V": 87
+      },
+      "EyeColor": {
+        "H": 142,
+        "S": 77,
+        "V": 64
+      },
+      "SkinColor": {
+        "H": 32,
+        "S": 21,
+        "V": 100
+      }
+    },
+    "Clint": {
+      "HairColor": {
+        "H": 32,
+        "S": 85,
+        "V": 81
+      },
+      "EyeColor": {
+        "H": 216,
+        "S": 100,
+        "V": 65
+      },
+      "SkinColor": {
+        "H": 27,
+        "S": 38,
+        "V": 100
+      }
+    },
+    "Gus": {
+      "HairColor": {
+        "H": 26,
+        "S": 100,
+        "V": 44
+      },
+      "EyeColor": {
+        "H": 30,
+        "S": 100,
+        "V": 56
+      },
+      "SkinColor": {
+        "H": 26,
+        "S": 63,
+        "V": 98
+      }
+    },
+    "Krobus": {
+      "HairColor": {
+        "H": 267,
+        "S": 100,
+        "V": 15
+      },
+      "EyeColor": {
+        "H": 267,
+        "S": 8,
+        "V": 90
+      },
+      "SkinColor": {
+        "H": 267,
+        "S": 100,
+        "V": 15
+      }
+    },
+    "Lewis": {
+      "HairColor": {
+        "H": 23,
+        "S": 76,
+        "V": 46
+      },
+      "EyeColor": {
+        "H": 3,
+        "S": 46,
+        "V": 36
+      },
+      "SkinColor": {
+        "H": 33,
+        "S": 41,
+        "V": 100
+      }
+    },
+    "Linus": {
+      "HairColor": {
+        "H": 5,
+        "S": 13,
+        "V": 94
+      },
+      "EyeColor": {
+        "H": 356,
+        "S": 66,
+        "V": 75
+      },
+      "SkinColor": {
+        "H": 23,
+        "S": 50,
+        "V": 100
+      }
+    },
+    "Marnie": {
+      "HairColor": {
+        "H": 25,
+        "S": 100,
+        "V": 77
+      },
+      "EyeColor": {
+        "H": 22,
+        "S": 100,
+        "V": 56
+      },
+      "SkinColor": {
+        "H": 31,
+        "S": 34,
+        "V": 100
+      }
+    },
+    "Pam": {
+      "HairColor": {
+        "H": 31,
+        "S": 80,
+        "V": 93
+      },
+      "EyeColor": {
+        "H": 349,
+        "S": 81,
+        "V": 56
+      },
+      "SkinColor": {
+        "H": 27,
+        "S": 44,
+        "V": 100
+      }
+    },
+    "Sandy": {
+      "HairColor": {
+        "H": 340,
+        "S": 95,
+        "V": 83
+      },
+      "EyeColor": {
+        "H": 317,
+        "S": 93,
+        "V": 22
+      },
+      "SkinColor": {
+        "H": 22,
+        "S": 38,
+        "V": 100
+      }
+    },
+    "Willy": {
+      "HairColor": {
+        "H": 23,
+        "S": 61,
+        "V": 36
+      },
+      "EyeColor": {
+        "H": 174,
+        "S": 60,
+        "V": 32
+      },
+      "SkinColor": {
+        "H": 24,
+        "S": 51,
+        "V": 90
+      }
+    },
+    "Wizard": {
+      "HairColor": {
+        "H": 259,
+        "S": 78,
+        "V": 93
+      },
+      "EyeColor": {
+        "H": 273,
+        "S": 63,
+        "V": 55
+      },
+      "SkinColor": {
+        "H": 17,
+        "S": 41,
+        "V": 100
+      }
+    }
+  },
+  "FarmerSkinColors": [
+    {
+      "H": 20,
+      "S": 47,
+      "V": 100
+    },
+    {
+      "H": 16,
+      "S": 60,
+      "V": 98
+    },
+    {
+      "H": 15,
+      "S": 49,
+      "V": 100
+    },
+    {
+      "H": 19,
+      "S": 40,
+      "V": 100
+    },
+    {
+      "H": 12,
+      "S": 69,
+      "V": 87
+    },
+    {
+      "H": 18,
+      "S": 74,
+      "V": 77
+    },
+    {
+      "H": 22,
+      "S": 99,
+      "V": 73
+    },
+    {
+      "H": 30,
+      "S": 79,
+      "V": 91
+    },
+    {
+      "H": 24,
+      "S": 70,
+      "V": 82
+    },
+    {
+      "H": 355,
+      "S": 32,
+      "V": 100
+    },
+    {
+      "H": 11,
+      "S": 25,
+      "V": 89
+    },
+    {
+      "H": 18,
+      "S": 64,
+      "V": 100
+    },
+    {
+      "H": 60,
+      "S": 22,
+      "V": 89
+    },
+    {
+      "H": 349,
+      "S": 45,
+      "V": 100
+    },
+    {
+      "H": 24,
+      "S": 79,
+      "V": 62
+    },
+    {
+      "H": 19,
+      "S": 67,
+      "V": 95
+    },
+    {
+      "H": 191,
+      "S": 100,
+      "V": 92
+    },
+    {
+      "H": 97,
+      "S": 44,
+      "V": 91
+    },
+    {
+      "H": 0,
+      "S": 44,
+      "V": 100
+    },
+    {
+      "H": 265,
+      "S": 43,
+      "V": 100
+    },
+    {
+      "H": 43,
+      "S": 47,
+      "V": 100
+    },
+    {
+      "H": 356,
+      "S": 7,
+      "V": 89
+    },
+    {
+      "H": 30,
+      "S": 38,
+      "V": 100
+    },
+    {
+      "H": 25,
+      "S": 29,
+      "V": 100
+    }
+  ],
+  "AdoptedSkinColors": [
+    {
+      "H": 20,
+      "S": 47,
+      "V": 100
+    },
+    {
+      "H": 16,
+      "S": 60,
+      "V": 98
+    },
+    {
+      "H": 15,
+      "S": 49,
+      "V": 100
+    },
+    {
+      "H": 19,
+      "S": 40,
+      "V": 100
+    },
+    {
+      "H": 12,
+      "S": 69,
+      "V": 87
+    },
+    {
+      "H": 18,
+      "S": 74,
+      "V": 77
+    },
+    {
+      "H": 22,
+      "S": 99,
+      "V": 73
+    }
+  ],
+  "ColorNames": {
+    "Black": {
+      "Hue": {
+        "Min": 0,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 0,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 0,
+        "Max": 15
+      }
+    },
+    "Grey": {
+      "Hue": {
+        "Min": 0,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 0,
+        "Max": 40
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 65
+      }
+    },
+    "White": {
+      "Hue": {
+        "Min": 0,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 0,
+        "Max": 40
+      },
+      "Value": {
+        "Min": 65,
+        "Max": 101
+      }
+    },
+    "Brown": {
+      "Hue": {
+        "Min": 0,
+        "Max": 40
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 60
+      }
+    },
+    "Pink": {
+      "Hue": {
+        "Min": 310,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 101
+      }
+    },
+    "Purple": {
+      "Hue": {
+        "Min": 250,
+        "Max": 310
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 101
+      }
+    },
+    "Blue": {
+      "Hue": {
+        "Min": 175,
+        "Max": 250
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 101
+      }
+    },
+    "Green": {
+      "Hue": {
+        "Min": 70,
+        "Max": 175
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 101
+      }
+    },
+    "Yellow": {
+      "Hue": {
+        "Min": 30,
+        "Max": 70
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 15,
+        "Max": 101
+      }
+    },
+    "Orange": {
+      "Hue": {
+        "Min": 10,
+        "Max": 30
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 60,
+        "Max": 101
+      }
+    },
+    "Red": {
+      "Hue": {
+        "Min": 0,
+        "Max": 10
+      },
+      "Saturation": {
+        "Min": 40,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 60,
+        "Max": 101
+      }
+    }
+  },
+  "SkinColorNames": {
+    "Pale": {
+      "Hue": {
+        "Min": 0,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 0,
+        "Max": 30
+      },
+      "Value": {
+        "Min": 45,
+        "Max": 101
+      }
+    },
+    "Peachy": {
+      "Hue": {
+        "Min": 0,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 30,
+        "Max": 45
+      },
+      "Value": {
+        "Min": 45,
+        "Max": 101
+      }
+    },
+    "Tan": {
+      "Hue": {
+        "Min": 0,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 45,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 45,
+        "Max": 101
+      }
+    },
+    "Dark": {
+      "Hue": {
+        "Min": 0,
+        "Max": 80
+      },
+      "Saturation": {
+        "Min": 0,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 0,
+        "Max": 45
+      }
+    },
+    "Shadow": {
+      "Hue": {
+        "Min": 80,
+        "Max": 360
+      },
+      "Saturation": {
+        "Min": 0,
+        "Max": 101
+      },
+      "Value": {
+        "Min": 0,
+        "Max": 45
+      }
+    }
+  },
+  "Ages": {
+    "Baby": 3,
+    "Toddler": null
+  }
+}

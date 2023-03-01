@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Deluxe Fish Food Fertilizer",
   "Price": "100",
-  "Category": "Junk",
-  "Edibility": -300,
+  "Category": -19,
+  "Edibility": 10,
   "TranslationKey": "deluxe-fish-food"
 }

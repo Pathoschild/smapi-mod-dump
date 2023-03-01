@@ -1,19 +1,21 @@
 {
   "Dependencies": [
     {
-      "UniqueID": "Pathoschild.ContentPatcher"
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
     },
     {
-      "UniqueID": "atravita.AtraCore"
+      "UniqueID": "atravita.AtraCore",
+      "MinimumVersion": "0.1.2"
     }
   ],
   "EntryDll": "SpecialOrdersExtended.dll",
   "Name": "Special Orders Tags Extended",
   "Author": "atravita",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Extends the number of tags available for special orders",
   "UniqueID": "atravita.SpecialOrdersExtended",
-  "MinimumApiVersion": "3.15",
+  "MinimumApiVersion": "3.18",
   "UpdateKeys": [
     "Nexus:9855",
     "ModDrop:1086743"

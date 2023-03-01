@@ -1,0 +1,5 @@
+﻿{
+    "CustomCrystalarium.Letter": "@ gazda,^^   Feloldottuk a prizmás szilánkok elhelyezésének tilalmát a kristályáriumban. A legújabb tanulmányok kimutatták, hogy biztonságos és jól működik.^   Kezdetben úgy gondoltuk, hogy a szilánkból származó EMF negatív kölcsönhatásba lép a kristályáriummal, és káros lehet a közelben lévő emberekre. De ez nem így van, csak sokkal több időt vesz igénybe a szilánkok klónozása.^   Örömmel jelentjük be azt is, hogy 'külső segítséggel' a kristályáriumot úgy is beállíthatod, hogy ne csak drágaköveket és ásványokat, hanem különféle elemeket is másoljon. Még az ásványok és a drágakövek aktuális másolási idejét is meg lehet változtatni.^^   -A Ferngill-i Technológiai Társaság",
+    "CustomCrystalarium.Letter.Title": "Prizmás szilánkok a kristályáriumban",
+    "CustomCrystalarium.Dialogue.BlockChange": "Nem lehet megváltoztatni az elemet."
+}

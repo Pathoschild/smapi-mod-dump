@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,53 +7,25 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WaterRetainingFieldMod</RootNamespace>
     <AssemblyName>WaterRetainingFieldMod</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>net5.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DataLoader.cs" />
-    <Compile Include="HoeDirtOverrides.cs" />
-    <Compile Include="WaterRetainingFieldModEntry.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="i18n\default.json" />
-    <None Include="i18n\pt.json" />
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MailFrameworkMod\MailFrameworkMod.csproj">
-      <Project>{9ab101dd-fb56-4441-8180-783405d2d2f0}</Project>
-      <Name>MailFrameworkMod</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Update="i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="i18n\pt.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

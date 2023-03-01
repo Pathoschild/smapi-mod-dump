@@ -61,17 +61,18 @@ namespace OrnithologistsGuild
             SaveDataManager.Load();
             Mail.Initialize();
 
-            // Verify that all outdoor maps have biomes specified
-            foreach (var location in StardewValley.Game1.locations)
-            {
-                var biomes = location.GetBiomes();
-                if (location.IsOutdoors && (
-                    biomes == null ||
-                    biomes.Length == 0 ||
-                    (biomes.Length == 1 && biomes[0].Equals("default")
-                )))
+            if (ConfigManager.Config.LogMissingBiomes) {
+                foreach (var location in StardewValley.Game1.locations)
                 {
-                    Monitor.Log($"No biomes specified for outdoor location \"{location.Name}\"", LogLevel.Warn);
+                    var biomes = location.GetBiomes();
+                    if (location.IsOutdoors && (
+                        biomes == null ||
+                        biomes.Length == 0 ||
+                        (biomes.Length == 1 && biomes[0].Equals("default")
+                    )))
+                    {
+                        Monitor.Log($"No biomes specified for outdoor location \"{location.Name}\"", LogLevel.Warn);
+                    }
                 }
             }
         }

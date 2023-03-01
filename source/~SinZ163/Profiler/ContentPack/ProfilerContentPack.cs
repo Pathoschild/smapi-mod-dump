@@ -50,7 +50,10 @@ namespace Profiler
     public class ProfilerContentPackDetailEntry
     {
         public string? Type { get; set; }
-        public string? Name { get; set;  }
+        public string? Name { get; set; }
+        public int? Index { get; set; }
+
+        public bool? Supress { get; set; }
 
         [JsonConstructor]
         public ProfilerContentPackDetailEntry()

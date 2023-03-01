@@ -58,7 +58,7 @@
 		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
 		<PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.5.1" />
 		<!--<PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" ExcludeAssets="all" />-->
-		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0">
+		<PackageReference Include="JetBrains.Annotations" Version="2022.3.1">
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</PackageReference>
 		<!--
@@ -72,7 +72,7 @@
 		<PackageReference Include="MP3Sharp" Version="1.0.5" />
 		<PackageReference Include="Pastel" Version="3.0.1" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1-sm2" />
-		<PackageReference Include="Tomlyn" Version="0.15.0" />
+		<PackageReference Include="Tomlyn" Version="0.16.2" />
 		
 		<Reference Include="$(PkgZstdNet)\lib\netstandard2.1\ZstdNet.dll">
 			<Private>true</Private>

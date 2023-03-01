@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Fish Food Fertilizer",
   "Price": "50",
-  "Category": "Junk",
-  "Edibility": -300,
+  "Category": -19,
+  "Edibility": 5,
   "TranslationKey": "fish-food",
   "PurchasePrice": 500,
   "PurchaseFrom": "Willy",

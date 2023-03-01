@@ -11,7 +11,7 @@
 {
   "Name": "Omni Tools",
   "Author": "aedenthorn",
-  "Version": "0.5.5",
+  "Version": "0.6.0",
   "Description": "Omni Tools.",
   "UniqueID": "aedenthorn.OmniTools",
   "EntryDll": "OmniTools.dll",

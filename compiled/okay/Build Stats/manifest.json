@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Build Stats",
+  "Author": "Miiohau",
+  "Version": "1.1.0",
+  "Description": "Increase your Max Health and Energy as you play. Based on code from Build Endurance, Build Health and Stronger You.",
+  "UniqueID": "miiohau.buildstats",
+  "EntryDll": "BuildStats.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:15377" ]
+}

@@ -105,6 +105,11 @@ internal static class RadioactiveFertilizerHandler
 
         Utility.ForAllLocations((location) =>
         {
+            if (location is null)
+            {
+                return;
+            }
+
             string seasonstring = location.GetSeasonForLocation();
             int season = Utility.getSeasonNumber(seasonstring);
 

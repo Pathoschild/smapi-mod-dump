@@ -10,17 +10,18 @@
 
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
-using Shockah.CommonModCode;
-using Shockah.CommonModCode.UI;
+using Shockah.Kokoro;
+using Shockah.Kokoro.UI;
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Shockah.MachineStatus
 {
-	internal class ModConfig
+	public sealed class ModConfig : IVersioned.Modifiable
 	{
-		public bool IgnoreUnknownItems { get; set; } = true;
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public ISemanticVersion? Version { get; set; }
 
 		public UIAnchorSide ScreenAnchorSide { get; set; } = UIAnchorSide.BottomLeft;
 		public float AnchorInset { get; set; } = 16f;
@@ -44,7 +45,6 @@ namespace Shockah.MachineStatus
 		public KeybindList VisibilityKeybind { get; set; } = new KeybindList();
 		public float FocusedAlpha { get; set; } = 1f;
 		public float NormalAlpha { get; set; } = 0.3f;
-		public bool BusyDancing { get; set; } = true;
 
 		public MachineRenderingOptions.Grouping Grouping { get; set; } = MachineRenderingOptions.Grouping.ByMachine;
 		public IList<MachineRenderingOptions.Sorting> Sorting { get; set; } = new List<MachineRenderingOptions.Sorting>
@@ -59,7 +59,7 @@ namespace Shockah.MachineStatus
 		public IList<string> ShowReadyExceptions { get; set; } = new List<string>();
 
 		public bool ShowWaiting { get; set; } = false;
-		public IList<string> ShowWaitingExceptions { get; set; } = new List<string> { "*|Cask", "*|Keg", "*|Preserves Jar", "*|Crab Pot" };
+		public IList<string> ShowWaitingExceptions { get; set; } = new List<string> { "*|Cask", "*|Keg", "*|Preserves Jar", "*|Crab Pot", "*|Crystalarium" };
 
 		public bool ShowBusy { get; set; } = false;
 		public IList<string> ShowBusyExceptions { get; set; } = new List<string>();

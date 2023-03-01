@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15385
+IDs: aedenthorn.SprinklerMod
+update keys: Nexus:15385, GitHub:aedenthorn/StardewValleyMods

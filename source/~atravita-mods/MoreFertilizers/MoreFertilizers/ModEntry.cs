@@ -635,8 +635,7 @@ internal sealed class ModEntry : Mod
     private void ApplyPatches(Harmony harmony)
     {
 #if DEBUG
-        Stopwatch sw = new();
-        sw.Start();
+        Stopwatch sw = Stopwatch.StartNew();
 #endif
 
         try
@@ -707,8 +706,10 @@ internal sealed class ModEntry : Mod
                 MillerTimeDayUpdateTranspiler.ApplyPatches(harmony);
             }
 
-            if (this.Helper.ModRegistry.IsLoaded("stokastic.PrismaticTools") ||
-                this.Helper.ModRegistry.IsLoaded("kakashigr.RadioactiveTools"))
+            if ((this.Helper.ModRegistry.Get("aedenthorn.ImmersiveScarecrows") is not IModInfo immersiveCrows
+                || immersiveCrows.Manifest.Version.IsOlderThan("0.3.1")) // immersive crows has the same patch, which breaks mine. But thankfully this renders mine unnecessary.
+                && (this.Helper.ModRegistry.IsLoaded("stokastic.PrismaticTools") ||
+                this.Helper.ModRegistry.IsLoaded("kakashigr.RadioactiveTools")))
             {
                 this.Monitor.Log("Found either prismatic tools or radioactive tools. Applying compat patches", LogLevel.Info);
                 ExtendedToolsMods.ApplyPatches(harmony);

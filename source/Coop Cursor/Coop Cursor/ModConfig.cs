@@ -19,5 +19,6 @@ namespace Coop_Cursor
     class ModConfig
     {
         public bool enabled { get; set; } = true;
+        public bool keyboardPlayer { get; set; } = false;
     }
 }

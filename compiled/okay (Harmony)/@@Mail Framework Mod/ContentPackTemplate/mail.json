@@ -6,31 +6,41 @@
 		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breaks. You can also use the base game commands to add money, items and stuff. If an translation file is provide, you should put a translation key here.
 		"Attachments": [ // List of attachments. Remove the property to not attach items to the mail.
 			{
-				"Type": "Object", // [Object|BigCraftable|Tool|Ring|Furniture|Weapon|Boots] Required. The type of item that will be attached. If not provided the item will be ignored.
-				"Name": "Cave Carrot", // Used to find the item index. That's required if using custom objects like Json Assets ones. If not provided, the index will be used. Default is null.
-				"Index": 78, // The index of an item. If no name is provided or an item for the name is not found, the index is used. Otherwise, the attachment is ignored.
+				"Type": "Object", // [Object|BigCraftable|Tool|Ring|Furniture|Weapon|Boots|DGA] Required. The type of item that will be attached. If not provided the item will be ignored.
+				"Name": "Cave Carrot", // Used to find the item index. That's required if using custom objects like Json Assets ones. Should be the full DGA ID is using DGA. If not provided, the index will be used. Default is null.
+				"Index": 78, // The index of an item. If no name is provided or an item for the name is not found, the index is used. Otherwise, the attachment is ignored. Ignored if the type is DGA.
 				"Stack": 1 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
 			},
 			{
 				"Type": "Tool", // When using tool, only supported ones can be attached.
 				"Name": "Axe", // [Axe|Hoe|Watering Can|Pickaxe|Scythe|Golden Scythe|Milk Pail|Shears|Fishing Rod|Pan|Return Scepter] Required for tools. The name of the supported tool. Otherwise, the attachment is ignored.
-				"UpgradeLevel": 1 // The upgrade level of the tool. Regular tools: 0 = stone, 1 = cooper, 2 = steel, 3 = gold, 4 = iridium. Fishing Rod: 0 = Bamboo Pole, 1 = Training Rod, 2 = Fiberglass Rod, 3 = Iridium Rod. Ignored for the other types. Default is 0. 
+				"UpgradeLevel": 1 // The upgrade level of the tool. Regular tools: 0 = stone, 1 = cooper, 2 = steel, 3 = gold, 4 = iridium. Fishing Rod: 0 = Bamboo Pole, 1 = Training Rod, 2 = Fiberglass Rod, 3 = Iridium Rod. Ignored for the other types. Default is 0.
+			},
+			{
+				"Type": "DGA", //DGA item
+				"Name": "spacechase0.DynamicGameAssets.Example/My Custom Item", // use the full DGA ID. Required.
+				"Stack": 10 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
 			}
 		],
-		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail.
+		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail. For DGA recipes only use the ID part (leave away the ModID)
+		"AdditionalMailReceived": ["MyMod.AnotherMailId", "VANILLA_FLAG"], // Use this to add additional text to the MailReceived list. Can be useful to add vanilla flags or other MFM letter ids.
 		"LetterBG": "CustomLetterBG.png", // Name of the file in your content pack that has the custom letter background to use. It should follow the same structure of the game LetterBG file . WhichBG will be relative to this file for this letter. If null or removed the mod will use the game LetterBG.
-        "WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
+		"WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
 		"TextColor": -1, //Remove this line to use the default color. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
 		"UpperRightCloseButton": "CustomCloseButton.png", // Name of the file in your content pack that has the custom close button to use. It should be 12 x 12 . If null or removed it will use the default button.
-        "Repeatable": false, // If true the mod won't check it the letter Id has already been delivered. Default is false.
-		"AutoOpen":  false, // If true the mod will open the letter at the begin of the day after the conditions are met. The letter id will be marked as read and if there is a recipe set, it will be learned. Since the letter will never show, visual properties like title, text, background... will never be used, as well as the attachments.
-        // CONDITIONS FOR DELIVERY
-        //Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
+		"Repeatable": false, // If true the mod won't check it the letter Id has already been delivered. Default is false.
+		"AutoOpen": false, // If true the mod will open the letter at the begin of the day after the conditions are met. The letter id will be marked as read and if there is a recipe set, it will be learned. Since the letter will never show, visual properties like title, text, background... will never be used, as well as the attachments.
+		// CONDITIONS FOR DELIVERY
+		//Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
 		"Date": "10 spring Y1", // Must be that date or after it. The format is "[1-28] [spring|summer|fall|winter] Y[1-999]".
 		"Days": [7,14,21,28], // Must be one of the days in the list.
 		"Seasons": ["fall"], // Must be one of the seasons in the list, seasons should be lower case.
-		"Weather": "sunny", // Must me that game weather. The format is "[sunny|rainy]".
-		"FriendshipConditions": // Each NPC of the list must check all conditions. 
+		"Weather": "sunny", // Must be that game weather. The format is "[sunny|rainy]".
+		"HouseUpgradeLevel": 2, // House upgrade level must be equal or higher what is defined. 0 - starter house(no reason to use this, just remove the line), 1 - kitchen, 2 - second floor, 3 - cellar.
+		"DeepestMineLevel": 80, // Deepest mine level must be equal or higher what is defined. 120 is the last level of the mine, 121 is the first level of the skull cavern.
+		"CurrentMoney": 10000, // Current money must be equal or higher what is defined.
+		"TotalMoneyEarned": 500000, // Total money earned must be equal or higher what is defined.
+		"FriendshipConditions": // Each NPC of the list must check all conditions.
 		[
 			{
 				"NpcName": "Lewis", //Name of the NPC. Can use custom NPCs.
@@ -52,24 +62,26 @@
 		],
 		"CollectionConditions": // Each collection condition of the list must have a value equal or higher than the defined amount.
 		[
-			{ 
+			{
 				"Collection": "Minerals", //[Shipped|Fish|Artifacts|Minerals|Cooking|Crafting] Required.
-				"Name":  "", //The name of the object or recipe for 'Crafting' collection. For object, if a name is given, it will look for that name instead of using the index. If the name is not found, the letter is ignored. Default is null.
+				"Name": "", //The name of the object or recipe for 'Crafting' collection. For object, if a name is given, it will look for that name instead of using the index. If the name is not found, the letter is ignored. Default is null.
 				"Index": 72, // The index of the object. Will be overridden if a Name is given, so you can remove the line in that case.
 				"Amount": 10 // The amount the object in the collection should be equal or greater for the condition to be valid.
 			}
 		],
+		"ExpandedPrecondition": "d Mon Fri/HasItem Pink Cake/!JojaMartComplete/!w rainy", //Needs the Expanded Preconditions Utility mod. Sees that mod documentation to see how this works. If the mod is not loaded, the letter will not be delivered.
+		"ExpandedPreconditions": [ "!z spring/t 600 1000", "f Linus 1000/w rainy/z spring", "f Linus 2500" ], //Needs the Expanded Preconditions Utility mod. Sees that mod documentation to see how this works. If the mod is not loaded, the letter will not be delivered.
 		"RandomChance": 0.25, // The mod will check if a random number from 0 to 1 is bellow the given number. The same save, on the same day for the same letter will always have the same result to avoid cheating.
-		"Buildings": ["Coop","Big Coop", "Deluxe Coop"], // Require one of the buildings to be currently constructed in the farm.
-		"RequireAllBuildings":  false, // If true, require that all the buildings in the "Buildings" list to be currently constructed in the farm. Default is false.
+		"Buildings": ["Coop","Big Coop","Deluxe Coop"], // Require one of the buildings to be currently constructed in the farm.
+		"RequireAllBuildings": false, // If true, require that all the buildings in the "Buildings" list to be currently constructed in the farm. Default is false.
 		"MailReceived": ["jojaVault","ccVault"], // Require one of the mails to have been received. The game list also contain others thing that are not mail, like community center flags.
-		"RequireAllMailReceived":  false, // If true, require that all mails in the "MailReceived" list to have been received. Default is false.
+		"RequireAllMailReceived": false, // If true, require that all mails in the "MailReceived" list to have been received. Default is false.
 		"MailNotReceived": ["jojaVault","ccVault"], // Require the mails to have not been received. The game list also contain others thing that are not mail, like community center flags.
 		"EventsSeen": [4,32423], // Require one of the events to have been seen by the player.
-		"RequireAllEventsSeen":  false, // If true, require that all the events in the "EventsSeen" list to have been seen by the player. Default is false.
+		"RequireAllEventsSeen": false, // If true, require that all the events in the "EventsSeen" list to have been seen by the player. Default is false.
 		"EventsNotSeen": [4,32423], // Require the events to have not been seen by the player.
 		"RecipeKnown": ["Pizza","Survival Burger"], // Require one of the recipes to have been learned by the player.
-		"RequireAllRecipeKnown":  false, // If true, require that all the recipes in the "RecipeKnown" list to have been learned by the player. Default is false.
+		"RequireAllRecipeKnown": false, // If true, require that all the recipes in the "RecipeKnown" list to have been learned by the player. Default is false.
 		"RecipeNotKnown": ["Wild Bait"] // Require the recipes to have not been learned by the player.
-    }
+	}
 ]

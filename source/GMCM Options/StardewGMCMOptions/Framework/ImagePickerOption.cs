@@ -44,7 +44,7 @@ namespace GMCMOptions.Framework {
         readonly Func<int> MaxImageHeight;
         readonly Func<int> MaxImageWidth;
         readonly Action<uint, SpriteBatch, Vector2> DrawImage;
-        readonly Func<uint, String> Label;
+        readonly Func<uint, String?>? Label;
         readonly ArrowLocation arrowLocation;
         readonly LabelLocation labelLocation;
 
@@ -87,7 +87,7 @@ namespace GMCMOptions.Framework {
                                  Func<int> maxImageHeight,
                                  Func<int> maxImageWidth,
                                  Action<uint, SpriteBatch, Vector2> drawImage,
-                                 Func<uint, String> label = null,
+                                 Func<uint, String?>? label = null,
                                  ArrowLocation arrowLocation = ArrowLocation.Top,
                                  LabelLocation labelLocation = LabelLocation.Top) {
             GetValue = getValue;

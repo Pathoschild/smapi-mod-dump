@@ -10,6 +10,8 @@
     "config.overlay.desc": "Configure the always-on overlay showing the list",
     "config.overlay.enabled": "Enabled",
     "config.overlay.enabled.desc": "Is the overlay enabled?",
+    "config.overlay.click-to-mark-done": "Click items to mark done",
+    "config.overlay.click-to-mark-done.desc": "Enable clicking in the overlay to mark items done",
     "config.overlay.hotkey": "Hotkey",
     "config.overlay.hotkey.desc": "Hotkey to show or hide",
     "config.overlay.hide-at-festivals": "Hide at festivals",

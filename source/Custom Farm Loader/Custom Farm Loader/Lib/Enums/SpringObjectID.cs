@@ -33,5 +33,13 @@ namespace Custom_Farm_Loader.Lib.Enums
         Blue_Boulder = 756,
         Blue_Boulder_Alternative = 758,
 
+        Geode = 75, //3
+        Frozen_Geode = 76, //5
+        Magma_Geode = 77, //7
+
+        Copper_Ore = 751, //3
+        Iron_Ore = 290, //4
+        Gold_Ore = 764, //8
+        Iridium_Ore = 765 //16
     }
 }

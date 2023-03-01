@@ -24,7 +24,6 @@ namespace Unlockable_Areas.Lib
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
-        public static ModData Data = new ModData();
 
         public static void Initialize()
         {
@@ -42,21 +41,22 @@ namespace Unlockable_Areas.Lib
 
             clearUnlockableShops();
 
-            Helper.Data.WriteSaveData("main", Data);
+            Helper.Data.WriteSaveData("main", ModData.Instance);
         }
 
         //Unlockable ShopObjects will be re-added every DayStart.
         //We delete them during Saving to keep the savefiles clean from custom objects
         private static void clearUnlockableShops()
         {
-            var unlockables = Unlockable.convertModelDicToEntity(Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables"));
-            foreach (var unlockable in unlockables) {
-                var location = Game1.getLocationFromName(unlockable.Value.Location);
-                var obj = location.getObjectAtTile((int)unlockable.Value.vShopPosition.X, (int)unlockable.Value.vShopPosition.Y);
-                if (obj != null && obj.GetType() == typeof(ShopObject))
-                    location.removeObject(unlockable.Value.vShopPosition, false);
-            }
+            var farm = Game1.getFarm();
+            if (farm.isThereABuildingUnderConstruction()
+                && farm.getBuildingUnderConstruction().indoors.Value != null
+                && !ShopPlacement.modifiedLocations.Contains(farm.getBuildingUnderConstruction().indoors.Value))
+                ShopPlacement.modifiedLocations.Add(farm.getBuildingUnderConstruction().indoors.Value);
 
+            foreach (var loc in ShopPlacement.modifiedLocations)
+                foreach (var obj in loc.Objects.Values.Where(el => el is ShopObject))
+                    loc.removeObject(obj.TileLocation, false);
         }
     }
 }

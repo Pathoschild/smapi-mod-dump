@@ -66,6 +66,11 @@ namespace CustomCrystalariumMod
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.performRemoveAction)),
                 prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.PerformRemoveAction)) { priority = Priority.HigherThanNormal }
             );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.performToolAction)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.PerformToolAction)) { priority = Priority.HigherThanNormal }
+            );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),

@@ -58,7 +58,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CharacterCustomizationMenuPatch))
+                postfix: new HarmonyMethod(typeof(CharacterCustomizationMenuPatch), nameof(CharacterCustomizationMenuPatch.DrawPatch))
             );
 
             harmony.Patch(
@@ -235,7 +235,7 @@ namespace stardew_access
             #region On Menu CLose Patch
             harmony.Patch(
                     original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
-                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.IClickableMenuOnExitPatch))
+                    postfix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.ExitThisMenuPatch))
                 );
             harmony.Patch(
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
@@ -294,6 +294,11 @@ namespace stardew_access
             harmony.Patch(
                     original: AccessTools.Method(typeof(InstanceGame), nameof(InstanceGame.Exit)),
                     prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ExitEventPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
+                    prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
                 );
         }
     }

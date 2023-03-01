@@ -30,32 +30,56 @@
   "giftquestion_yes": "我明白了……你一直都是个友善的人。$1^我明白了……你一直都是个友善的人。$1",
   "giftquestion_lie": "你真的要骗我吗？我本来就知道！$5#$b#我应该对此感到担忧吗？！$2",
   "breakUp": "噢……我想我们应该只当朋友的……",
-  "NPC.cs.3962": "$q 10001 give_flowersA#?!...#$r 10001 0 give_flowersA# [Give Bouquet]",
-  "NPC.cs.3963": "$q 10001 give_flowersB#?!...#$r 10001 0 give_flowersB# [Give Bouquet]",
-  "NPC.cs.3980": "$q 10001 give_pendant#?!...#$r 10001 0 give_pendant# Will you marry me?",
-  "NPC.cs.4001": "$q 10001 stardrop_gift#?!...#$r 10001 0 stardrop_gift# Is this for me?",
-  "NPC.cs.3956": "$q 10001 rejectNPCA#?!...#$r 10001 0 rejectNPCA#[Give Bouquet]",
-  "NPC.cs.3957": "$q 10001 rejectNPCB#?!...#$r 10001 0 rejectNPCB#[Give Bouquet]",
-  "NPC.cs.3958": "$q 10001 reject_two_heartA#?!...#$r 10001 0 reject_two_heartA#[Give Bouquet]",
-  "NPC.cs.3959": "$q 10001 reject_two_heartB#?!...#$r 10001 0 reject_two_heartB#[Give Bouquet]",
-  "NPC.cs.3960": "$q 10001 reject_four_heartA#?!...#$r 10001 0 reject_four_heartA#[Give Bouquet]",
-  "NPC.cs.3961": "$q 10001 reject_four_heartB#?!...#$r 10001 0 reject_four_heartB#[Give Bouquet]",
-  "NPC.cs.3965": "$q 10001 engageA#?!...#$r 10001 0 engageA# Will you marry me?",
-  "NPC.cs.3966": "$q 10001 engageB#?!...#$r 10001 0 engageB# Will you marry me?",
-  "NPC.cs.3967": "$q 10001 marriedA#?!...#$r 10001 0 marriedA# Will you marry me?",
-  "NPC.cs.3968": "$q 10001 marriedB#?!...#$r 10001 0 marriedB# Will you marry me?",
-  "NPC.cs.3970": "$q 10001 refusal_no_heartsA#?!...#$r 10001 0 refusal_no_heartsA# Will you marry me?",
-  "NPC.cs.3971": "$q 10001 refusal_no_heartsB#?!...#$r 10001 0 refusal_no_heartsB# Will you marry me?",
-  "NPC.cs.3972": "$q 10001 refusal_knownA#?!...#$r 10001 0 refusal_knownA# Will you marry me?",
-  "NPC.cs.3973": "$q 10001 refusal_knownB#?!...#$r 10001 0 refusal_knownB# Will you marry me?",
-  "NPC.cs.3974": "$q 10001 refusal_botherA#?!...#$r 10001 0 refusal_botherA# Will you marry me?",
-  "NPC.cs.3975": "$q 10001 refusal_botherB#?!...#$r 10001 0 refusal_botherB# Will you marry me?",
-  "NPC.cs.4274": "$q 10001 birthdayLoveA#...#$r 10001 0 birthdayLoveA# [Happy Birthday]", //love
-  "NPC.cs.4275": "$q 10001 birthdayLoveB#...#$r 10001 0 birthdayLoveB# [Happy Birthday]", //love
-  "NPC.cs.4276": "$q 10001 birthdayLikeA#...#$r 10001 0 birthdayLikeA# [Happy Birthday]", //like
-  "NPC.cs.4277": "$q 10001 birthdayLikeB#...#$r 10001 0 birthdayLikeB# [Happy Birthday]", //like
-  "NPC.cs.4278": "$q 10001 birthdayDislikeA#...#$r 10001 0 birthdayDislikeA# [Happy Birthday]", //hate
-  "NPC.cs.4279": "$q 10001 birthdayDislikeB#...#$r 10001 0 birthdayDislikeB# [Happy Birthday]", //dislike
-  "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [Happy Birthday]", //neutral
-  "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [Happy Birthday]" //neutral
+  "baby_anxiety": "生孩子可是件大事，我有点担心我们现在的生活会因此而改变...$2",
+  "adopt_excitedA": "我已经提交领养孩子的申请了，我太开心了，真希望他们能早点同意我们的申请！$1",
+  "adopt_excitedB": "领养的手续我都弄完了，希望他们能尽快同意申请。$4",
+  "morningsick": "我今天不太舒服，你先忙你的吧，@，我想在马桶旁边站一会儿..$2",
+  "moodyPregnant": "啊... 我今天不太舒服，@，你自己做点早餐吧..$2",
+  "informPregnancyA": "我有件重要的事情想告诉你，@。#$b# 我怀孕了！！真是太棒了不是吗！？$1",
+  "informPregnancyB": "猜猜看发生了什么？我们成功了！！我终于怀孕了！！$1",
+  "yourePregnantA": "天呐，@，你今天的饭量有点不正常。$1#$b#等等...我觉得你可能怀孕了！#$b#这真是个好消息，@。",
+  "yourePregnantB": "我们的准妈妈现在感觉怎么样？$4#$b#.... 我在说谁？... 很明显怀孕的就是你嘛，你要当妈妈啦。$1",
+  "annoyedParent": "啊...我不想照顾孩子...让我多睡会儿..$2",
+  "aloneTime": "@，我想一个人待会儿..#$b#你能当个好爸爸，照顾一下孩子嘛。$1|你能当个好妈妈，照顾一下孩子嘛。$1",
+  "NPC.cs.3962": "$q 10001 give_flowersA#?!...#$r 10001 0 give_flowersA# [送花]",
+  "NPC.cs.3963": "$q 10001 give_flowersB#?!...#$r 10001 0 give_flowersB# [送花]",
+  "NPC.cs.3980": "$q 10001 give_pendant#?!...#$r 10001 0 give_pendant# 你愿意嫁给我吗？",
+  "NPC.cs.4001": "$q 10001 stardrop_gift#?!...#$r 10001 0 stardrop_gift# 给我的吗？",
+  "NPC.cs.3956": "$q 10001 rejectNPCA#?!...#$r 10001 0 rejectNPCA#[送花]",
+  "NPC.cs.3957": "$q 10001 rejectNPCB#?!...#$r 10001 0 rejectNPCB#[送花]",
+  "NPC.cs.3958": "$q 10001 reject_two_heartA#?!...#$r 10001 0 reject_two_heartA#[送花]",
+  "NPC.cs.3959": "$q 10001 reject_two_heartB#?!...#$r 10001 0 reject_two_heartB#[送花]",
+  "NPC.cs.3960": "$q 10001 reject_four_heartA#?!...#$r 10001 0 reject_four_heartA#[送花]",
+  "NPC.cs.3961": "$q 10001 reject_four_heartB#?!...#$r 10001 0 reject_four_heartB#[送花]",
+  "NPC.cs.3965": "$q 10001 engageA#?!...#$r 10001 0 engageA# 你愿意嫁给我吗？",
+  "NPC.cs.3966": "$q 10001 engageB#?!...#$r 10001 0 engageB# 你愿意嫁给我吗？",
+  "NPC.cs.3967": "$q 10001 marriedA#?!...#$r 10001 0 marriedA# 你愿意嫁给我吗？",
+  "NPC.cs.3968": "$q 10001 marriedB#?!...#$r 10001 0 marriedB# 你愿意嫁给我吗？",
+  "NPC.cs.3970": "$q 10001 refusal_no_heartsA#?!...#$r 10001 0 refusal_no_heartsA# 你愿意嫁给我吗？",
+  "NPC.cs.3971": "$q 10001 refusal_no_heartsB#?!...#$r 10001 0 refusal_no_heartsB# 你愿意嫁给我吗？",
+  "NPC.cs.3972": "$q 10001 refusal_knownA#?!...#$r 10001 0 refusal_knownA# 你愿意嫁给我吗？",
+  "NPC.cs.3973": "$q 10001 refusal_knownB#?!...#$r 10001 0 refusal_knownB# 你愿意嫁给我吗？",
+  "NPC.cs.3974": "$q 10001 refusal_botherA#?!...#$r 10001 0 refusal_botherA# 你愿意嫁给我吗？",
+  "NPC.cs.3975": "$q 10001 refusal_botherB#?!...#$r 10001 0 refusal_botherB# 你愿意嫁给我吗？",
+  "NPC.cs.4274": "$q 10001 birthdayLoveA#...#$r 10001 0 birthdayLoveA# [生日快乐]", //love
+  "NPC.cs.4275": "$q 10001 birthdayLoveB#...#$r 10001 0 birthdayLoveB# [生日快乐]", //love
+  "NPC.cs.4276": "$q 10001 birthdayLikeA#...#$r 10001 0 birthdayLikeA# [生日快乐]", //like
+  "NPC.cs.4277": "$q 10001 birthdayLikeB#...#$r 10001 0 birthdayLikeB# [生日快乐]", //like
+  "NPC.cs.4278": "$q 10001 birthdayDislikeA#...#$r 10001 0 birthdayDislikeA# [生日快乐]", //hate
+  "NPC.cs.4279": "$q 10001 birthdayDislikeB#...#$r 10001 0 birthdayDislikeB# [生日快乐]", //dislike
+  "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [生日快乐]", //neutral
+  "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [生日快乐]", //neutral
+  "NPC.cs.3985": "@我听说你今天给 {0} 送了一个礼物...#$b#$q 798999999 giftquestion_yes#是真的吗？#$r 798999999 50 giftquestion_yes#对啊，只是送给朋友的礼物。#$r 798999998 0 giftquestion_lie#啊？我吗？我没送（撒谎）。",
+  "NPC.cs.4439": "$q 10001 baby_anxiety#...#r 10001 0 baby_anxiety#怎么了亲爱的？",
+  "NPC.cs.4440": "$q 10001 adopt_excitedA#...#r 10001 0 adopt_excitedA#怎么了亲爱的？",
+  "NPC.cs.4441": "$q 10001 adopt_excitedB#...#r 10001 0 adopt_excitedB#怎么了亲爱的？",
+  "NPC.cs.4442": "$q 10001 morningsick#...#r 10001 0 morningsick#怎么了亲爱的？",
+  "NPC.cs.4443": "$q 10001 moodyPregnant#...#r 10001 0 moodyPregnant#怎么了亲爱的？",
+  "NPC.cs.4444": "$q 10001 informPregnancyA#...#r 10001 0 informPregnancyA#怎么了亲爱的？",
+  "NPC.cs.4445": "$q 10001 informPregnancyB#...#r 10001 0 informPregnancyB#怎么了亲爱的？",
+  "NPC.cs.4447": "$q 10001 yourePregnantA#...#r 10001 0 yourePregnantA#怎么了亲爱的？",
+  "NPC.cs.4448": "$q 10001 yourePregnantB#...#r 10001 0 yourePregnantB#怎么了亲爱的？",
+  "NPC.cs.4449": "$q 10001 annoyedParent#...#r 10001 0 annoyedParent#怎么了亲爱的？",
+  "NPC.cs.4452": "$q 10001 aloneTime#...#r 10001 0 aloneTime#怎么了亲爱的？"
+
 }

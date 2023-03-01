@@ -37,7 +37,7 @@ namespace LadderLocator
             _pixelTexture = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             var colorArray = Enumerable.Range(0, 1).Select(i => Color.White).ToArray();
             _pixelTexture.SetData(colorArray);
-            _imageTexture = helper.Content.Load<Texture2D>(_config.HighlightImageFilename, ContentSource.ModFolder);
+            _imageTexture = helper.ModContent.Load<Texture2D>(_config.HighlightImageFilename);
             _ladderStones = new List<LadderStone>();
             _selectedNodeTypeIndices = RadarNode.All.Where(radarNode => _config.NodeTypes.Contains(radarNode.type))
                 .OrderBy(radarNode => radarNode.value).Select(radarNode => radarNode.spriteIndex).ToList();

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Item Quality Indicator",
+  "Author": "FunnyMoney",
+  "Version": "1.0.2",
+  "Description": "Displays the quality of items even outside of inventory menus.",
+  "UniqueID": "funnymoney.itemqualityindicator",
+  "EntryDll": "ItemQualityIndicator.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:15336" ]
+}

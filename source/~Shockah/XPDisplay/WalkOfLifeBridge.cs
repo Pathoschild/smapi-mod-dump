@@ -35,14 +35,6 @@ namespace Shockah.XPDisplay
 			return Api.GetConfigs().EnablePrestige;
 		}
 
-		public static int GetRequiredXPPerExtendedLevel()
-		{
-			SetupIfNeeded();
-			if (Api is null)
-				return int.MaxValue;
-			return (int)Api.GetConfigs().RequiredExpPerExtendedLevel;
-		}
-
 		public static (Texture2D, Rectangle)? GetExtendedSmallBar()
 		{
 			SetupIfNeeded();

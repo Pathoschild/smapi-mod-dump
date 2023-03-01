@@ -9,9 +9,11 @@
   "PurchaseFrom": "Dwarf",
   "PurchasePrice": 25000,
   "NameLocalization": {
-	  "zh": "洞穴之戒"
+	  "zh": "洞穴之戒",
+	  "ko": "동굴 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "让你在洞穴中感觉更强壮，提升你的采矿能力。"
-  },
+	  "zh": "让你在洞穴中感觉更强壮，提升你的采矿能力。",
+	  "ko": "동굴에서 더 강해진 기분이 들게 해주는 반지로, 채광을 좀 더 향상시킵니다."
+  }
 }

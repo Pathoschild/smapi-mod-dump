@@ -314,7 +314,7 @@
       "CanBathe": true,
       "MaxFlockSize": 1,
       "Cautiousness": 4,
-      "FlapDuration": 600,
+      "FlapDuration": 550,
       "FlySpeed": 4.5,
       "BaseWt": 0.05,
       "FeederBaseWts": {

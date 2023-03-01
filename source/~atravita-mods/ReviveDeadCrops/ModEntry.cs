@@ -100,8 +100,13 @@ internal sealed class ModEntry : Mod
         Api.Changed = false;
 
         Utility.ForAllLocations(
-            (location) =>
+            action: (location) =>
             {
+                if (location is null)
+                {
+                    return;
+                }
+
                 foreach (TerrainFeature terrain in location.terrainFeatures.Values)
                 {
                     if (terrain is HoeDirt dirt && dirt.modData?.GetBool(ReviveDeadCropsApi.REVIVED_PLANT_MARKER) == true

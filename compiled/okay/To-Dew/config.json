@@ -5,6 +5,7 @@
   "debug": false,
   "overlay": {
     "enabled": true,
+    "clickToMarkDone": true,
     "hotkey": "None",
     "hotkeyList": "None",
     "hideAtFestivals": false,

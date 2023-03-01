@@ -18,4 +18,12 @@
             "winter_7{{YearRemainder}}": "@, it's almost the Feast of the Winter Star! I'm always looking forward to the Feast around this time of year."
         }
     },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Evelyn",
+        "Entries": {
+            "15_2": "Honey, I just made some cookies. Please have one, dearie. [223]$h"
+        },
+        "When": {"YearModulus": "2"}
+    }
 ]}

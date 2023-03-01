@@ -12,17 +12,17 @@
 namespace LittleNPCs.Framework {
     /// <summary>
     /// ModConfig Options:
-    /// AgeWhenKidsAreModified: the age at which the CP mod will patch over the child.
-    /// The Default is currently 83, which is 14 newborn/14 baby/28 crawler/28 toddler,
-    /// on the assumption that CP mods will make them a child.
-    /// DoChildrenWander: when true, children wander around the house every hour (unless scheduled).
-    /// DoChildrenHaveCurfew: when true, children will head home at curfew time (unless already walking somewhere).
-    /// CurfewTime: the time of curfew (when DoChildrenHaveCurfew is true). Default is 1900 (7PM).
+    /// AgeWhenKidsAreModified: The age in days when a child is replaced by a LittleNPC. Default is 83 days.
+    /// DoChildrenWander: If true, children wander around the house every hour unless they have a schedule.
+    /// DoChildrenHaveCurfew: If true, children will head home at curfew time.
+    /// CurfewTime: The time of curfew when DoChildrenHaveCurfew is true. Default is 1900 (7PM).
+    /// DoChildrenVisitVolcanoIsland: Children visit Volcano Island by chance. Default is false.
     /// </summary>
     public class ModConfig {
         public int AgeWhenKidsAreModified { get; set; } = 83;
         public bool DoChildrenWander { get; set; } = true;
         public bool DoChildrenHaveCurfew { get; set; } = true;
         public int CurfewTime { get; set; } = 1900;
+        public bool DoChildrenVisitVolcanoIsland { get; set; } = false;
     }
 }

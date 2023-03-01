@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/George",
+        "Entries": {
+            "15_2": "It's nice that Alex is still livin' with us. I need more help than what my dear wife Evelyn can provide some days.",
+            "19_2": "I remember when the mines were first being developed. The town was so happy. We needed the economic activity.#$b#Didn't consider how polluting they'd be.",
+            "21_2": "We didn't have these new electric devices when we were kids. Had to go out and kick a ball about for our entertainment."
+        },
+        "When": {"YearModulus": "2"}
+    }
+]}

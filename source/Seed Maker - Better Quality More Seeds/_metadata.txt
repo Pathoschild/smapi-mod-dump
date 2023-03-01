@@ -6,9 +6,9 @@ mods:
    Seed Maker - Better Quality More Seeds
 
 latest commit:
-   commit ee41416d800a48dd9acd0b98afef67c4b2603b37
+   commit ba57fb6dfc0575e9488a67c06c33156de58b8893
    Author: Victor Abrell <victor@abrell.se>
-   Date:   Thu Jan 26 08:40:39 2023 +0100
+   Date:   Wed Feb 15 20:35:40 2023 +0100
    
-       Bump version
+       Fix bug with quality modifier
    

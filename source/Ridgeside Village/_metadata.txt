@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 6fc7a592bc2406646b656cbf627481db5e234ba9
+   commit 0c3ff0535a8102f31b05c185f488d7836a852901
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Tue Jan 24 23:34:31 2023 +0800
+   Date:   Tue Feb 28 22:46:02 2023 +0800
    
-       Portraits and Events
+       built dll
    

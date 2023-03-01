@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using static DynamicDialogues.Parser;
 using static DynamicDialogues.Getter;
 using System.Linq;
+//using Microsoft.Xna.Framework.Graphics;
 
 namespace DynamicDialogues
 {
@@ -35,20 +36,25 @@ namespace DynamicDialogues
             Mon = this.Monitor;
             Debug = this.Config.Debug;
 
-            this.Monitor.Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.sayHiTo(Character)\".");
             var harmony = new Harmony(this.ModManifest.UniqueID);
+
+            this.Monitor.Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.sayHiTo(Character)\".");
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.sayHiTo)),
                 prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.SayHiTo_Prefix))
-                );/*
+                );
+
+            this.Monitor.Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"Event.tryEventCommand(GameLocation location, GameTime time, string[] split)\".");
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.GameLocation), nameof(StardewValley.GameLocation.afterQuestionBehavior)),
-                postfix: new HarmonyMethod(typeof(Patches), nameof(Patches.afterQuestionBehavior_postfix))
-                );*/
+                original: AccessTools.Method(typeof(StardewValley.Event), nameof(StardewValley.Event.tryEventCommand)),
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.PrefixTryGetCommand))
+                );
         }
 
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
+            //springobjects = this.Helper.GameContent.Load<Texture2D>("Maps/springobjects");
+
             var allNPCs = this.Helper.GameContent.Load<Dictionary<string, string>>("Data\\NPCDispositions");
             NPCDispositions = allNPCs.Keys.ToList();
 
@@ -89,34 +95,34 @@ namespace DynamicDialogues
                 GetMissions(missionRaw, name);
             }
             var dc = Dialogues?.Count ?? 0;
-            this.Monitor.Log($"Loaded {dc} user patches. (Dialogues)");
+            this.Monitor.Log($"Loaded {dc} user patches. (Dialogues)", LogLevel.Debug);
 
             var qc = Questions?.Count ?? 0;
-            this.Monitor.Log($"Loaded {qc} user patches. (Questions)");
+            this.Monitor.Log($"Loaded {qc} user patches. (Questions)", LogLevel.Debug);
 
             //get greetings
             var greetRaw = Game1.content.Load<Dictionary<string, Dictionary<string, string>>>("mistyspring.dynamicdialogues/Greetings");
             GetGreetings(greetRaw);
             var gc = Greetings?.Count ?? 0;
-            this.Monitor.Log($"Loaded {gc} user patches. (Greetings)");
+            this.Monitor.Log($"Loaded {gc} user patches. (Greetings)", LogLevel.Debug);
             
             //get notifs
             var notifRaw = Game1.content.Load<Dictionary<string, RawNotifs>>("mistyspring.dynamicdialogues/Notifs");
             GetNotifs(notifRaw);
             var nc = Notifs?.Count ?? 0;
-            this.Monitor.Log($"Loaded {nc} user patches. (Notifs)");
+            this.Monitor.Log($"Loaded {nc} user patches. (Notifs)", LogLevel.Debug);
 
             //get random dialogue
-            var randomRaw = Game1.content.Load<Dictionary<string, List<string>>>("mistyspring.dynamicdialogues/RandomPool");
+            var randomRaw = Game1.content.Load<Dictionary<string, string[]>>("mistyspring.dynamicdialogues/RandomPool");
             GetDialoguePool(randomRaw);
             var rr = RandomPool?.Count ?? 0;
-            this.Monitor.Log($"Loaded {rr} user patches. (Dialogue pool)");
+            this.Monitor.Log($"Loaded {rr} user patches. (Dialogue pool)", LogLevel.Debug);
 
             //missions
             var m = MissionData?.Count ?? 0;
-            this.Monitor.Log($"Loaded {m} user patches. (Mission/Quests)");
+            this.Monitor.Log($"Loaded {m} user patches. (Mission/Quests)", LogLevel.Debug);
 
-            this.Monitor.Log($"{dc + gc + nc + qc + rr + m} total user patches loaded.");
+            this.Monitor.Log($"{dc + gc + nc + qc + rr + m} total user patches loaded.",LogLevel.Debug);
         }
 
         private void OnTimeChange(object sender, TimeChangedEventArgs e)
@@ -354,14 +360,15 @@ namespace DynamicDialogues
 
         private void OnAssetRequest(object sender, AssetRequestedEventArgs e)
         {
+            /*
             //list of admitted NPCs - deprecated but still here jic
             if (e.NameWithoutLocale.IsEquivalentTo("mistyspring.dynamicdialogues/NPCs", true))
             {
                 e.LoadFrom(
                 () => new List<string>(),
-                AssetLoadPriority.Medium
+                AssetLoadPriority.Low
             );
-            }
+            }*/
             
             //each NPC file
             foreach (var name in NPCDispositions) //NPCsToPatch
@@ -371,7 +378,7 @@ namespace DynamicDialogues
                 {
                     e.LoadFrom(
                     () => new Dictionary<string, RawDialogues>(),
-                    AssetLoadPriority.Medium
+                    AssetLoadPriority.Low
                     );
                 }
 
@@ -380,7 +387,7 @@ namespace DynamicDialogues
                 {
                     e.LoadFrom(
                     () => new Dictionary<string, RawQuestions>(),
-                    AssetLoadPriority.Medium
+                    AssetLoadPriority.Low
                 );
                 }
 
@@ -389,7 +396,7 @@ namespace DynamicDialogues
                 {
                     e.LoadFrom(
                     () => new Dictionary<string, RawMission>(),
-                    AssetLoadPriority.Medium
+                    AssetLoadPriority.Low
                     );
                 }
             }
@@ -399,7 +406,7 @@ namespace DynamicDialogues
             {
                 e.LoadFrom(
                 () => new Dictionary<string, Dictionary<string, string>>(),
-                AssetLoadPriority.Medium
+                AssetLoadPriority.Low
             );
             }
 
@@ -408,16 +415,17 @@ namespace DynamicDialogues
             {
                 e.LoadFrom(
                 () => new Dictionary<string, RawNotifs>(),
-                AssetLoadPriority.Medium
+                AssetLoadPriority.Low
                 );
             }
 
             //random pool of dialogue
             if (e.NameWithoutLocale.IsEquivalentTo($"mistyspring.dynamicdialogues/RandomPool", true))
             {
+                //old: () => new Dictionary<string, List<string>>(),
                 e.LoadFrom(
-                () => new Dictionary<string, List<string>>(),
-                AssetLoadPriority.Medium
+                () => new Dictionary<string, string[]>(),
+                AssetLoadPriority.Low
                 );
             }
         }
@@ -524,21 +532,21 @@ namespace DynamicDialogues
                 }
             }
         }
-        private void GetDialoguePool(Dictionary<string, List<string>> raw)
+        private void GetDialoguePool(Dictionary<string, string[]> raw)
         {
             foreach(var batch in raw)
             {
-                if(NPCDispositions.Contains(batch.Key))
+                if(Game1.player.friendshipData.ContainsKey(batch.Key))
                 {
                     if(Config.Verbose)
                     {
                         this.Monitor.Log($"Character {batch.Key} found.");
                     }
-                    RandomPool.Add(batch.Key, batch.Value);
+                    RandomPool.Add(batch.Key, batch.Value.ToList());
                 }
-                else
+                else if(NPCDispositions.Contains(batch.Key) == false)
                 {
-                    this.Monitor.Log("Character {pair.Key} was not found. Their random dialogue will not be added.", LogLevel.Error);
+                    this.Monitor.Log($"Character {batch.Key} was not found. Their random dialogue will not be added.", LogLevel.Error);
                 }
             }
         }
@@ -612,6 +620,11 @@ namespace DynamicDialogues
 
         private void GetFriendedNPCs()
         {
+            /* we could use: 
+             * PatchableNPCs = Game1.player.friendshipData.Keys;
+             * However using netfields might cause more bugs. so we get it manually.
+             */
+
             foreach (var name in NPCDispositions)
             {
                 if(Config.Debug)
@@ -662,6 +675,8 @@ namespace DynamicDialogues
         internal static List<(string, string, string)> AlreadyPatched = new();
         internal static IMonitor Mon { get; private set; }
         internal static bool Debug { get; private set; }
+        //public static Texture2D springobjects { get; internal set; }
+
         private ModConfig Config;
     }
 }

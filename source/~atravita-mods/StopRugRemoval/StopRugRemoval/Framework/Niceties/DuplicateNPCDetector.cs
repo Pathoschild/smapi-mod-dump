@@ -18,8 +18,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace StopRugRemoval.Framework.Niceties;
 
-// TODO - figure out Custom Companions compat.
-
+/// <summary>
+/// Detects and tries to fix up duplicate NPCs.
+/// </summary>
 internal static class DuplicateNPCDetector
 {
     internal static void DayEnd()
@@ -132,16 +133,26 @@ internal static class DuplicateNPCDetector
 
                 ModEntry.ModMonitor.Log($"Found missing NPC {name}, adding");
 
-                map.addCharacter(
-                    new NPC(
-                        sprite: new AnimatedSprite(@"Characters\" + NPC.getTextureNameForCharacter(name), 0, 16, 32),
-                        position: new Vector2(x, y) * 64f,
-                        defaultMap: mapstring,
-                        facingDir: 0,
-                        name: name,
-                        schedule: null,
-                        portrait: Game1.content.Load<Texture2D>(@"Portraits\" + NPC.getTextureNameForCharacter(name)),
-                        eventActor: false));
+                NPC npc = new(
+                    sprite: new AnimatedSprite(@"Characters\" + NPC.getTextureNameForCharacter(name), 0, 16, 32),
+                    position: new Vector2(x, y) * 64f,
+                    defaultMap: mapstring,
+                    facingDir: 0,
+                    name: name,
+                    schedule: null,
+                    portrait: Game1.content.Load<Texture2D>(@"Portraits\" + NPC.getTextureNameForCharacter(name)),
+                    eventActor: false);
+                map.addCharacter(npc);
+                try
+                {
+                    npc.Schedule = npc.getSchedule(Game1.dayOfMonth);
+                }
+                catch (Exception ex)
+                {
+                    ModEntry.ModMonitor.Log($"Failed to restore schedule for missing NPC {name}\n\n{ex}", LogLevel.Warn);
+                }
+
+                // TODO: may need to fix up their dialogue as well?
             }
             catch (Exception ex)
             {

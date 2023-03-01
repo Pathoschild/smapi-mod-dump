@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/15239
 IDs: aedenthorn.ImmersiveSprinklers
-update keys: Nexus:15239
+update keys: Nexus:15239, GitHub:aedenthorn/StardewValleyMods

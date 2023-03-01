@@ -1,0 +1,12 @@
+{
+  "Name": "Instant Break",
+  "Author": "Jolyone",
+  "Version": "1.0.0",
+  "Description": "Instant Break Stones and Trees.",
+  "UniqueID": "Me.InstantBreak",
+  "EntryDll": "InstantBreak.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [
+    "Nexus:15526"
+  ]
+}

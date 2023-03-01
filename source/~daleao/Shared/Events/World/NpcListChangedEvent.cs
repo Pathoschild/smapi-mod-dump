@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Shared.Events;
+    namespace DaLion.Shared.Events;
 
 #region using directives
 

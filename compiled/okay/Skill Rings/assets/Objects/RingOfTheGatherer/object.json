@@ -19,9 +19,11 @@
 	"CanPurchase": false
   },
   "NameLocalization": {
-	  "zh": "采集者之戒"
+	  "zh": "采集者之戒",
+	  "ko": "수집가의 반지"
   },
   "DescriptionLocalization": {
-	  "zh": "指导你觅食的方法，并提高技能。"
-  },
+	  "zh": "指导你觅食的方法，并提高技能。",
+	  "ko": "채집하러 가는 길을 이끌어주며, 당신의 채집스킬을 좀 더 향상시켜줍니다."
+  }
 }

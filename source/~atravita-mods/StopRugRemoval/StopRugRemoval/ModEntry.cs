@@ -297,8 +297,13 @@ internal sealed class ModEntry : Mod
             VolcanoChestAdjuster.LoadData(this.Helper.Data, this.Helper.Multiplayer);
 
             // Make an attempt to clear all nulls from chests.
-            Utility.ForAllLocations(action: (GameLocation loc) =>
+            Utility.ForAllLocations(action: static (GameLocation loc) =>
             {
+                if (loc is null)
+                {
+                    return;
+                }
+
                 foreach (SObject obj in loc.Objects.Values)
                 {
                     if (obj is Chest chest)

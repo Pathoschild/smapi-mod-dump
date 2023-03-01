@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ncarigon/StardewValleyMods
+**
+*************************************************/
+
+[{
+        "ProducerName": "Still",
+        "InputIdentifier": "Juice",
+        "InputStack": 4,
+        "FuelIdentifier": "Coal",
+        "MinutesUntilReady": 1600,
+        "OutputIdentifier": "Vodka",
+        "OutputName": "{inputName} Vodka",
+        "KeepInputParentIndex": true,
+        "KeepInputQuality": true,
+        "InputPriceBased": true,
+        //"OutputPriceMultiplier": 12,
+        "AdditionalOutputs": [{
+                "OutputIdentifier": "Moonshine",
+                "RequiredInputParentIdentifier": ["Corn"],
+                "KeepInputQuality": true,
+                "InputPriceBased": true,
+                //"OutputPriceMultiplier": 15,
+                "OutputProbability": 1,
+            },
+            {
+                "OutputIdentifier": "White Rum",
+                "RequiredInputParentIdentifier": ["Beet"],
+                "KeepInputQuality": true,
+                "InputPriceBased": true,
+                //"OutputPriceMultiplier": 8,
+                "OutputProbability": 1,
+            }
+        ],
+        "Sounds": ["Ship"],
+    }
+]

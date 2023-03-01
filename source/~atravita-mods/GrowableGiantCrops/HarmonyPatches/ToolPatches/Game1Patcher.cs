@@ -9,7 +9,7 @@
 *************************************************/
 
 using GrowableGiantCrops.Framework;
-
+using GrowableGiantCrops.Framework.Assets;
 using HarmonyLib;
 
 using Microsoft.Xna.Framework;

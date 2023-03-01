@@ -1,0 +1,10 @@
+{
+  "EnableMod": true,
+  "SprinkleButton": "MouseRight",
+  "SprinkleAllButton": "Enter",
+  "SprinklerRadii": {
+    "Sprinkler": 0,
+    "Quality Sprinkler": 1,
+    "Iridium Sprinkler": 2
+  }
+}

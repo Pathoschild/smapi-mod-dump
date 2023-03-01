@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
@@ -326,7 +325,6 @@ namespace CropTransplantMod
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns> 
-        [HarmonyPriority(800)]
         public static bool TryToPlaceItem(ref GameLocation location, Item item, int x, int y)
         {
             if ((Utility.withinRadiusOfPlayer(x, y, 1, Game1.player) || DataLoader.ModConfig.EnableUnlimitedRangeToTransplant) && item is Object object1 && TransplantController.IsGardenPot(object1))

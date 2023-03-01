@@ -10,7 +10,7 @@
 
 namespace Shockah.DontStopMeNow
 {
-	internal class ModConfig
+	public class ModConfig
 	{
 		public bool SlowMove { get; set; } = true;
 		public bool MoveWhileSwingingTools { get; set; } = false;
