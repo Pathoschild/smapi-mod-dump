@@ -252,12 +252,17 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
     {
         if (who.HasProfession(Profession.Ecologist) && obj.isForage(location) && !obj.IsForagedMineral())
         {
-            who.Increment(DataFields.EcologistItemsForaged);
+            who.Increment(DataKeys.EcologistItemsForaged);
         }
         else if (who.HasProfession(Profession.Gemologist) && obj.IsForagedMineral())
         {
-            who.Increment(DataFields.GemologistMineralsCollected);
-            var collected = who.Read<int>(DataFields.GemologistMineralsCollected);
+            who.Increment(DataKeys.GemologistMineralsCollected);
+            var collected = who.Read<int>(DataKeys.GemologistMineralsCollected);
+            if (!ProfessionsModule.Config.CrystalariumsUpgradeWithGemologist)
+            {
+                return;
+            }
+
             if (collected == ProfessionsModule.Config.MineralsNeededForBestQuality / 2)
             {
                 Game1.game1.GlobalUpgradeCrystalariums(SObject.highQuality, who);

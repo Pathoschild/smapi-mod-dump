@@ -6,9 +6,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 32e76f3d4d635b7257e11df07482ed12ba953d5b
-   Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Tue Nov 22 08:48:32 2022 +0100
+   commit 9358ffdf73d48bdf470751a6aabf0791b1398ed8
+   Merge: 32e76f3 ac5cba3
+   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
+   Date:   Wed Mar 22 09:30:17 2023 +0100
    
-       Spanish translation for 3.0.0 by Papaya2
+       Merge pull request #16 from AcimasizKanarya/main
+       
+       Added Turkish translation
    

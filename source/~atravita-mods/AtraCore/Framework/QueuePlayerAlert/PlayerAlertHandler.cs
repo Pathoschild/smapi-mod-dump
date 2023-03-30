@@ -34,12 +34,13 @@ public static class PlayerAlertHandler
     }
 
     /// <summary>
-    /// Called every ten-in game minutes - loads up to three messages to the player.
+    /// Called every ten-in game minutes - loads up to <paramref name="count"/> messages to the player.
     /// </summary>
-    internal static void DisplayFromQueue()
+    /// <param name="count">Number of messages to display.</param>
+    internal static void DisplayFromQueue(int count = 3)
     {
         int i = 0;
-        while (++i < 3 && QueuedMessages.Value.TryDequeue(out (HUDMessage message, string? soundCue) tuple))
+        while (++i < count && QueuedMessages.Value.TryDequeue(out (HUDMessage message, string? soundCue) tuple))
         {
             Game1.addHUDMessage(tuple.message);
             if (tuple.soundCue is not null)
@@ -48,4 +49,6 @@ public static class PlayerAlertHandler
             }
         }
     }
+
+    internal static bool HasMessages() => QueuedMessages.Value.Count > 0;
 }

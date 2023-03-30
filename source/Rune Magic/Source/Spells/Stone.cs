@@ -23,8 +23,7 @@ namespace RuneMagic.Source.Spells
     {
         public Stone() : base(School.Conjuration)
         {
-            Description += "Conjures a big stone at the target location.";
-            Level = 4;
+            Description += "Conjures a big stone at the target location."; Level = 4;
         }
 
         //public override bool Cast()

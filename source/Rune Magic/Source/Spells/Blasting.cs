@@ -10,14 +10,12 @@
 
 using SpaceCore;
 using StardewValley;
-using static SpaceCore.Skills;
 
 namespace RuneMagic.Source.Spells
 {
     public class Blasting : Spell
     {
         public Blasting() : base(School.Evocation)
-
         {
             Description += "Creates an explosion at a target location.";
             Level = 3;
@@ -25,9 +23,9 @@ namespace RuneMagic.Source.Spells
 
         public override bool Cast()
         {
-            Target = Game1.currentCursorTile;
-            var radius = 1 + (Skill.Level - 4) / 6;
-            Game1.currentLocation.explode(Target, radius, Game1.player);
+            var target = Game1.currentCursorTile;
+            var radius = 1 + (School.Level - 4) / 6;
+            Game1.currentLocation.explode(target, radius, Game1.player);
             return base.Cast();
         }
     }

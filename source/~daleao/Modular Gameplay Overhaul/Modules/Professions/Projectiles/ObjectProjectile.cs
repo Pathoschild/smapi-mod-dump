@@ -12,10 +12,10 @@ namespace DaLion.Overhaul.Modules.Professions.Projectiles;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Arsenal.VirtualProperties;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
+using DaLion.Overhaul.Modules.Slingshots.VirtualProperties;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Extensions.Xna;
 using Microsoft.Xna.Framework;
@@ -71,14 +71,14 @@ internal sealed class ObjectProjectile : BasicProjectile
             xVelocity,
             yVelocity,
             startingPosition,
-            ammo.ParentSheetIndex == Constants.ExplosiveAmmoIndex ? "explosion" : "hammer",
+            ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo ? "explosion" : "hammer",
             string.Empty,
-            ammo.ParentSheetIndex == Constants.ExplosiveAmmoIndex,
+            ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo,
             true,
             firer.currentLocation,
             firer,
             true,
-            ammo.ParentSheetIndex == Constants.ExplosiveAmmoIndex ? explodeOnImpact : null)
+            ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo ? explodeOnImpact : null)
     {
         this.Ammo = ammo;
         this.Source = source;
@@ -87,7 +87,7 @@ internal sealed class ObjectProjectile : BasicProjectile
         this.Damage = (int)(this.damageToFarmer.Value * source.Get_EffectiveDamageModifier() * (1f + firer.attackIncreaseModifier) * overcharge);
         this.Knockback = knockback * source.Get_EffectiveKnockbackModifer() * (1f + firer.knockbackModifier) * overcharge;
 
-        var canCrit = ArsenalModule.Config.Slingshots.EnableCrits;
+        var canCrit = SlingshotsModule.Config.EnableCriticalHits;
         this.CritChance = canCrit
             ? 0.025f * source.Get_EffectiveCritChanceModifier() * (1f + firer.critChanceModifier)
             : 0f;
@@ -95,7 +95,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             ? 2f * source.Get_EffectiveCritPowerModifier() * (1f + firer.critPowerModifier)
             : 0f;
 
-        this.CanPierce = !this.IsSquishy() && ammo.ParentSheetIndex != Constants.ExplosiveAmmoIndex;
+        this.CanPierce = !this.IsSquishy() && ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo;
         if (this.IsSquishy())
         {
             Reflector
@@ -145,7 +145,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             return;
         }
 
-        if (this.Ammo.ParentSheetIndex == Constants.SlimeIndex)
+        if (this.Ammo.ParentSheetIndex == ItemIDs.Slime)
         {
             if (monster.IsSlime())
             {
@@ -241,7 +241,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             return;
         }
 
-        if (this.Ammo.ParentSheetIndex == Constants.SlimeIndex &&
+        if (this.Ammo.ParentSheetIndex == ItemIDs.Slime &&
             this.Firer.Get_Ultimate() is Concerto { IsActive: false } concerto)
         {
             concerto.ChargeValue += Game1.random.Next(5);
@@ -375,6 +375,6 @@ internal sealed class ObjectProjectile : BasicProjectile
     public bool IsSquishy()
     {
         return this.Ammo?.Category is SObject.EggCategory or SObject.FruitsCategory or SObject.VegetableCategory ||
-               this.Ammo?.ParentSheetIndex == Constants.SlimeIndex;
+               this.Ammo?.ParentSheetIndex == ItemIDs.Slime;
     }
 }

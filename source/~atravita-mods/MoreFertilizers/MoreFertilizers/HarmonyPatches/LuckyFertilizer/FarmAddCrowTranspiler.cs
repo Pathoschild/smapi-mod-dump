@@ -41,7 +41,7 @@ internal static class FarmAddCrowTranspiler
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             helper.FindNext(new CodeInstructionWrapper[]
-            { // exclude from the inital count.
+            { // exclude from the initial count.
                 new (OpCodes.Ldloca_S),
                 new (OpCodes.Call, typeof(KeyValuePair<Vector2, TerrainFeature>).GetCachedProperty("Value", ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
                 new (OpCodes.Isinst, typeof(HoeDirt)),
@@ -98,8 +98,8 @@ internal static class FarmAddCrowTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Farm.addCrow:\n\n{ex}", LogLevel.Error);
-            original?.Snitch(ModEntry.ModMonitor);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}:\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

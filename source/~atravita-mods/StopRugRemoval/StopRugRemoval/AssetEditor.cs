@@ -11,6 +11,7 @@
 using AtraBase.Toolkit.Extensions;
 
 using AtraShared.Caching;
+using AtraShared.Utils.Extensions;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -22,14 +23,17 @@ namespace StopRugRemoval;
 /// <summary>
 /// Handles editing assets.
 /// </summary>
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1214:Readonly fields should appear before non-readonly fields", Justification = "Reviewed.")]
 internal static class AssetEditor
 {
     private static IAssetName saloonEvents = null!;
     private static IAssetName betIconsPath = null!;
     private static Lazy<Texture2D> betIconLazy = new(static () => Game1.content.Load<Texture2D>(betIconsPath.BaseName));
 
-    private static readonly PerScreen<TickCache<bool>> hasSeenSaloonEvent = new(
+    private static readonly PerScreen<TickCache<bool>> HasSeenSaloonEvent = new(
         () => new (static () => Game1.player?.eventsSeen?.Contains(40) == true));
+
+    private static IAssetName weapons = null!;
 
     #region birdiequest
 
@@ -52,6 +56,7 @@ internal static class AssetEditor
     {
         saloonEvents = parser.ParseAssetName("Data/Events/Saloon");
         betIconsPath = parser.ParseAssetName("Mods/atravita_StopRugRemoval_BetIcons");
+        weapons = parser.ParseAssetName("Data/weapons");
 
         const string dialogue = "Characters/Dialogue/";
         BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Kent"), 864);
@@ -60,6 +65,15 @@ internal static class AssetEditor
         BirdieQuest.Add(parser.ParseAssetName($"{dialogue}George"), 867);
         BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Wizard"), 868);
         BirdieQuest.Add(parser.ParseAssetName($"{dialogue}Willy"), 869);
+    }
+
+    /// <summary>
+    /// Disposes the content manager.
+    /// </summary>
+    internal static void Dispose()
+    {
+        contentManager?.Dispose();
+        contentManager = null;
     }
 
     /// <summary>
@@ -81,7 +95,7 @@ internal static class AssetEditor
     /// <param name="directoryPath">The absolute path to the mod.</param>
     internal static void Edit(AssetRequestedEventArgs e, string directoryPath)
     {
-        if (BirdieQuest.TryGetValue(e.NameWithoutLocale, out var id))
+        if (BirdieQuest.TryGetValue(e.NameWithoutLocale, out int id))
         {
             e.Edit(
                 (asset) =>
@@ -98,8 +112,8 @@ internal static class AssetEditor
                             Dictionary<string, string> original = contentManager.LoadBase<Dictionary<string, string>>(e.NameWithoutLocale.BaseName);
                             if (original.TryGetValue(key, out string? original_dialogue))
                             {
-                                ModEntry.ModMonitor.Log($"Original spring schedule found: {original_dialogue}. Adding back", LogLevel.Info);
-                                data["spring"] = original_dialogue;
+                                ModEntry.ModMonitor.Log($"Original dialogue key {key} found: {original_dialogue}. Adding back", LogLevel.Info);
+                                data[key] = original_dialogue;
                                 return;
                             }
                         }
@@ -110,7 +124,39 @@ internal static class AssetEditor
                         ModEntry.ModMonitor.Log($"Could not restore birdie quest key for {character}.", LogLevel.Warn);
                     }
                 },
-                AssetEditPriority.Late);
+                AssetEditPriority.Late + 1000);
+        }
+        else if (e.NameWithoutLocale.IsEquivalentTo(weapons))
+        {
+            e.Edit(
+                static (asset) =>
+                {
+                    ModEntry.ModMonitor.DebugOnlyLog("Checking weapons");
+                    IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+
+                    // check golden scythe and infinity gavel.
+                    if (!data.ContainsKey(53) || !data.ContainsKey(63))
+                    {
+                        ModEntry.ModMonitor.LogOnce("Missing weapons detected, are you using a weapons mod made before 1.5?", LogLevel.Error);
+                        contentManager ??= new(Game1.content.ServiceProvider, Game1.content.RootDirectory);
+                        try
+                        {
+                            Dictionary<int, string> original = contentManager.LoadBase<Dictionary<int, string>>(asset.NameWithoutLocale.BaseName);
+                            foreach ((int key, string value) in original)
+                            {
+                                if (data.TryAdd(key, value))
+                                {
+                                    ModEntry.ModMonitor.LogOnce($"Restoring missing weapon: {key}", LogLevel.Info);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ModEntry.ModMonitor.Log($"Could not find original weapons file:\n\n{ex}");
+                        }
+                    }
+                },
+                AssetEditPriority.Late + 1000);
         }
         else if (Context.IsWorldReady && e.NameWithoutLocale.IsEquivalentTo(betIconsPath))
         { // The BET1k/10k icons have to be localized, so they're in the i18n folder.
@@ -143,7 +189,7 @@ internal static class AssetEditor
     /// </remarks>
     internal static void EditSaloonEvent(AssetRequestedEventArgs e)
     {
-        if (ModEntry.Config.Enabled && ModEntry.Config.EditElliottEvent && !hasSeenSaloonEvent.Value.GetValue() && e.NameWithoutLocale.IsEquivalentTo(saloonEvents))
+        if (ModEntry.Config.Enabled && ModEntry.Config.EditElliottEvent && !HasSeenSaloonEvent.Value.GetValue() && e.NameWithoutLocale.IsEquivalentTo(saloonEvents))
         {
             e.Edit(EditSaloonImpl, AssetEditPriority.Late);
         }

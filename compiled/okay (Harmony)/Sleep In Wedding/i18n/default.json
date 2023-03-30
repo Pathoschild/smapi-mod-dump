@@ -9,6 +9,6 @@
   "TryRecoverWedding.description": "By default, the wedding is skipped if you load into a save. This tries to restore that event.",
   "WeddingMessage": "You're getting married today at {{weddingHour}}:{{weddingMinutes}}!",
   "WeddingMessageOther": "Someone's getting married today at {{weddingHour}}:{{weddingMinutes}}",
-  "WeddingReminder": "Your wedding is in ten minutes! Get ready!",
+  "WeddingReminder": "Your wedding is in twenty minutes! Get ready!",
   "WeddingGreeting": "Honey, we're getting married today! Are you excited?"
 }

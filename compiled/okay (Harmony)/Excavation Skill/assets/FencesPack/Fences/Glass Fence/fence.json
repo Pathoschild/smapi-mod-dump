@@ -1,0 +1,21 @@
+﻿{
+    "Name": "moonslime.excavation.glass_fence",
+    "Price": 10,
+    "MaxHealth": 30,
+    "RepairMaterial": "118",
+    "ProvidesLight": false,
+    "BreakTool": "axe",
+    "PlacementSound": "axe",
+    "RepairSound": "axe",
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": "118",
+                "Count": 5
+            }
+        ],
+        "CanPurchase": "false"
+    },
+    "TranslationKey": "moonslime.excavation.glass_fence"
+}

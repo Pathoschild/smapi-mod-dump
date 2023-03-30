@@ -15,13 +15,10 @@ namespace DrawFishPondsOverGrass;
 /// <inheritdoc/>
 internal sealed class ModEntry : Mod
 {
-    // the following property are set in the entry method, which is approximately as close as I can get to the constructor anyways.
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     /// <summary>
     /// Gets the logger for this file.
     /// </summary>
-    internal static IMonitor ModMonitor { get; private set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    internal static IMonitor ModMonitor { get; private set; } = null!;
 
     /// <inheritdoc/>
     public override void Entry(IModHelper helper)

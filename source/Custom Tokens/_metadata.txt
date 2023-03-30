@@ -6,12 +6,9 @@ mods:
    Custom Tokens
 
 latest commit:
-   commit d76adc354d4668c446a0fb45da65262e73be0435
-   Merge: d75821e 54bb0ba
+   commit a2668f6de768590e3efb2122061de4848aa6bad5
    Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Thu Jan 5 14:02:37 2023 +1100
+   Date:   Mon Mar 20 09:45:39 2023 +1100
    
-       Merge pull request #5 from TheMightyAmondee/develop
-       
-       Develop
+       Update README.md
    

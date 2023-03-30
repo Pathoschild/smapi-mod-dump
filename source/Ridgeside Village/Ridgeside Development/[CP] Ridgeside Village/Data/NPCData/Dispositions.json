@@ -55,7 +55,7 @@
 
 			//Blooming Hill Farm
 			"Jeric": "adult/polite/neutral/neutral/male/datable/null/Town/winter 2//Custom_Ridgeside_JericHouse 18 5/{{i18n:Name.Jeric}}",
-			"Bryle": "adult/polite/outgoing/neutral/male/non-datable/null/Other/null/{{i18n:NPC_Data.Bryle}}/Custom_Ridgeside_RSVHiddenWarp2 8 8/{{i18n:Name.Bryle}}",
+			"Bryle": "adult/polite/outgoing/neutral/male/non-datable/null/Other/summer 1/{{i18n:NPC_Data.Bryle}}/Custom_Ridgeside_RSVHiddenWarp2 8 8/{{i18n:Name.Bryle}}",
 
 			//Kobayashi Residence
 			"Naomi": "adult/neutral/neutral/neutral/female/non-datable/null/Other/spring 18/{{i18n:NPC_Data.Naomi}}/Custom_Ridgeside_RSVHiddenWarp2 5 8/{{i18n:Name.Naomi}}",
@@ -179,6 +179,28 @@
 		"Update": "OnLocationChange, OnTimeChange",
 		"Entries": {
 			"Zayne": "adult/polite/outgoing/positive/male/datable/null/Town/fall 2/{{i18n:NPC_Data.Zayne}}/Custom_Ridgeside_RSVHiddenWarp2 10 8/{{i18n:Name.Zayne}}",
+		}
+	},
+
+	{
+		"LogName": "Faye Disposition Change",
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"When": { "HasFlag": "FarmerxFaye" },
+		"Update": "OnLocationChange, OnTimeChange",
+		"Entries": {
+			"Faye": "adult/polite/outgoing/positive/female/datable/null/Town/summer 12/{{i18n:NPC_Data.Faye}}/Custom_Ridgeside_FayeHouse 3 5/{{i18n:Name.Faye}}",
+		}
+	},
+
+	{
+		"LogName": "Bryle Disposition Change",
+		"Action": "EditData",
+		"Target": "Data/NPCDispositions",
+		"When": { "HasFlag |contains=FayeBryleLoveStory": false, "HasSeenEvent": 75160453 },
+		"Update": "OnLocationChange, OnTimeChange",
+		"Entries": {
+			"Bryle": "adult/polite/outgoing/neutral/male/datable/null/Other/summer 1/{{i18n:NPC_Data.Bryle}}/Custom_Ridgeside_RSVHiddenWarp2 8 8/{{i18n:Name.Bryle}}",
 		}
 	},
 

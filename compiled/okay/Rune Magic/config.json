@@ -1,4 +1,7 @@
 {
   "DevMode": false,
-  "CastKey": "R"
+  "CastKey": "R",
+  "ActionBarKey": "Q",
+  "SpellBookKey": "K",
+  "CastbarScale": 2
 }

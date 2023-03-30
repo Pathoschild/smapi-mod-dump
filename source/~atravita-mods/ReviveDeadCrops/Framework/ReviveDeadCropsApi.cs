@@ -36,6 +36,7 @@ public class ReviveDeadCropsApi : IReviveDeadCropsApi
         .GetCachedField("shakeTimer", ReflectionCache.FlagTypes.InstanceFlags)
         .GetInstanceFieldSetter<FruitTree, float>());
 
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311:Static readonly fields should begin with upper-case letter", Justification = "Reviewed.")]
     private static readonly ReviveDeadCropsApi instance = new();
 
     /// <summary>

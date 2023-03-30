@@ -43,22 +43,33 @@ public class IntegrationHelper
     /// <summary>
     /// Gets the logger instance.
     /// </summary>
-    protected IMonitor Monitor { get; init; }
+    private protected IMonitor Monitor { get; init; }
 
     /// <summary>
     /// Gets the translation helper instance.
     /// </summary>
-    protected ITranslationHelper Translation { get; init; }
+    private protected ITranslationHelper Translation { get; init; }
 
     /// <summary>
     /// Gets the mod registry instance.
     /// </summary>
-    protected IModRegistry ModRegistry { get; init; }
+    private protected IModRegistry ModRegistry { get; init; }
 
     /// <summary>
     /// Gets the level to log at.
     /// </summary>
-    protected LogLevel LogLevel { get; init; }
+    private protected LogLevel LogLevel { get; private set; }
+
+    /// <summary>
+    /// Sets a new log level for the integration helper.
+    /// </summary>
+    /// <param name="level">New log level.</param>
+    /// <returns>This.</returns>
+    public IntegrationHelper WithLogLevel(LogLevel level)
+    {
+        this.LogLevel = level;
+        return this;
+    }
 
     /// <summary>
     /// Attempts to get the API from a different mod.

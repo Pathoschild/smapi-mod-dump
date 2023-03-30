@@ -37,7 +37,8 @@ namespace ImmersiveSprinklers
             if (!sprinklerDict.TryGetValue(guid, out var obj))
             {
                 obj = GetSprinkler(tf, which, nozzle);
-                sprinklerDict[guid] = obj;
+                if(obj is not null) 
+                    sprinklerDict[guid] = obj;
             }
             return obj;
         }
@@ -252,7 +253,7 @@ namespace ImmersiveSprinklers
                     Object f = GetFertilizer(fertString);
                     TryReturnObject(f, who);
                 }
-                SMonitor.Log($"Returning {sprinkler.Name}");
+                SMonitor.Log($"Returning {sprinkler?.Name}");
                 return true;
             }
             return false;

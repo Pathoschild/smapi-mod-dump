@@ -10,6 +10,7 @@
 
 // Copyright 2022 Jamie Taylor
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,10 +22,14 @@ namespace GMCMOptions.Framework {
     /// Implementation of the <c cref="IGMCMOptionsAPI">IGMCMOptionsAPI</c>.
     /// </summary>
     public class API : IGMCMOptionsAPI {
+        private readonly IModHelper Helper;
+        private readonly IMonitor Monitor;
         private readonly IModRegistry modRegistry;
         private bool fixedHeight;
-        public API(IModRegistry modRegistry) {
-            this.modRegistry = modRegistry;
+        public API(IModHelper helper, IMonitor monitor) {
+            Helper = helper;
+            this.Monitor = monitor;
+            this.modRegistry = helper.ModRegistry;
             IModInfo? gmcm = modRegistry.Get("spacechase0.GenericModConfigMenu");
             if (gmcm is null) {
                 this.fixedHeight = false;
@@ -33,13 +38,59 @@ namespace GMCMOptions.Framework {
             }
         }
 
+        private Action<T>? MakeChangeHandlerFailed<T>(IManifest mod, string fieldId, string err) {
+            Monitor.Log($"There was a problem doing reflection black magic.  Some dynamic updates inside the GMCM menu may not work correctly.", LogLevel.Info);
+            Monitor.Log($"  failure registering handler for {mod.Name} field {fieldId}: {err}", LogLevel.Debug);
+            return null;
+        }
+
+        // provides glue to allow the callbacks registered with GMCM's OnFieldChanged to get updates from
+        // the custom ComplexOptions.  (There's no way to do this with the ComplexOption API - clearly a
+        // shortcoming in GMCM.)
+        private Action<T>? MakeChangeHandler<T>(IManifest mod, GMCMAPI gmcm, string? fieldId) {
+            if (fieldId is null) return null;
+
+            // Here be dragons.
+
+            //Monitor.Log($"Printing fields of {gmcm.GetType()}", LogLevel.Debug);
+            //foreach (var f in gmcm.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)) {
+            //    Monitor.Log($"{f}", LogLevel.Debug);
+            //}
+            //Monitor.Log($"Printing properties of {gmcm.GetType()}", LogLevel.Debug);
+            //foreach (var p in gmcm.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)) {
+            //    Monitor.Log($"{p}", LogLevel.Debug);
+            //}
+            //Monitor.Log($"Printing methods of {gmcm.GetType()}", LogLevel.Debug);
+            //foreach (var m in gmcm.GetType().GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)) {
+            //    Monitor.Log($"{m}", LogLevel.Debug);
+            //}
+
+            var gmcmApi = Helper.Reflection.GetField<object>(gmcm, "__Target", false)?.GetValue();
+            if (gmcmApi is null) return MakeChangeHandlerFailed<T>(mod, fieldId, $"getting __Target from pintail API type {gmcm}");
+            var configManager = Helper.Reflection.GetField<object>(gmcmApi, "ConfigManager")?.GetValue();
+            if (configManager is null) return MakeChangeHandlerFailed<T>(mod, fieldId, $"getting ConfigManager field from gmcmApi {gmcmApi}"); ;
+            var modConfig = Helper.Reflection.GetMethod(configManager, "Get", false)?.Invoke<object>(new object[] { mod, false });
+            if (modConfig is null) return MakeChangeHandlerFailed<T>(mod, fieldId, $"getting ModConfig object from ConfigManager"); ;
+            return (T val) => {
+                var handlers = Helper.Reflection.GetProperty<List<Action<string, object?>>>(modConfig, "ChangeHandlers", false);
+                if (handlers is null) {
+                    MakeChangeHandlerFailed<T>(mod, fieldId, $"getting ChangeHandlers property from ModConfig object {modConfig}");
+                    return;
+                }
+                foreach(var handler in handlers.GetValue()) {
+                    handler.Invoke(fieldId, val);
+                }
+            };
+        }
+
         /// <inheritdoc/>
         public void AddColorOption(IManifest mod, Func<Color> getValue, Action<Color> setValue, Func<string> name,
             Func<string>? tooltip = null, bool showAlpha = true,
             uint colorPickerStyle = 0, string? fieldId = null) {
             var gmcm = modRegistry.GetApi<GMCMAPI>("spacechase0.GenericModConfigMenu");
             if (gmcm == null) return;
-            ColorPickerOption option = new ColorPickerOption(fixedHeight, getValue, setValue, showAlpha, (ColorPickerStyle)colorPickerStyle);
+            ColorPickerOption option = new ColorPickerOption(fixedHeight, getValue, setValue, showAlpha,
+                (ColorPickerStyle)colorPickerStyle, MakeChangeHandler<Color>(mod, gmcm, fieldId));
             gmcm.AddComplexOption(
                 mod: mod,
                 name: name,
@@ -70,7 +121,8 @@ namespace GMCMOptions.Framework {
             if (gmcm == null) return;
             ImagePickerOption option = new ImagePickerOption(getValue, setValue, getMaxValue,
                 maxImageHeight, maxImageWidth, drawImage, label,
-                (ImagePickerOption.ArrowLocation)arrowLocation, (ImagePickerOption.LabelLocation)labelLocation);
+                (ImagePickerOption.ArrowLocation)arrowLocation, (ImagePickerOption.LabelLocation)labelLocation,
+                MakeChangeHandler<uint>(mod, gmcm, fieldId));
             gmcm.AddComplexOption(
                 mod: mod,
                 name: name,
@@ -112,7 +164,8 @@ namespace GMCMOptions.Framework {
                     b.Draw(choice.sheet, centeredPos, choice.sourceRect, Color.White);
                 },
                 label: (v) => choices()[v].label?.Invoke(),
-                (ImagePickerOption.ArrowLocation)arrowLocation, (ImagePickerOption.LabelLocation)labelLocation);
+                (ImagePickerOption.ArrowLocation)arrowLocation, (ImagePickerOption.LabelLocation)labelLocation,
+                MakeChangeHandler<uint>(mod, gmcm, fieldId));
             gmcm.AddComplexOption(
                 mod: mod,
                 name: name,

@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace RaisedGardenBeds
 {
-	public class AssetManager : IAssetLoader, IAssetEditor
+	public class AssetManager
 	{
 		private readonly IModHelper _helper;
 
@@ -43,27 +43,27 @@ namespace RaisedGardenBeds
 
 		public bool CanLoad<T>(IAssetInfo asset)
 		{
-			return asset.AssetNameEquals(GameContentEndOfNightSpritesPath)
-				|| asset.AssetNameEquals(GameContentEventDataPath)
-				|| asset.AssetNameEquals(GameContentCommonTranslationDataPath)
-				|| asset.AssetNameEquals(GameContentItemTranslationDataPath);
+			return asset.Name.IsEquivalentTo(GameContentEndOfNightSpritesPath)
+				|| asset.Name.IsEquivalentTo(GameContentEventDataPath)
+				|| asset.Name.IsEquivalentTo(GameContentCommonTranslationDataPath)
+				|| asset.Name.IsEquivalentTo(GameContentItemTranslationDataPath);
 		}
 
 		public T Load<T>(IAssetInfo asset)
 		{
-			if (asset.AssetNameEquals(GameContentEndOfNightSpritesPath))
+			if (asset.Name.IsEquivalentTo(GameContentEndOfNightSpritesPath))
 			{
-				return (T)(object)_helper.Content.Load
+				_helper.ModContent.Load
 					<Texture2D>
 					(LocalEndOfNightSpritesPath);
 			}
-			if (asset.AssetNameEquals(GameContentEventDataPath))
+			if (asset.Name.IsEquivalentTo(GameContentEventDataPath))
 			{
-				return (T)(object)_helper.Content.Load
+				return (T)(object)_helper.ModContent.Load
 					<Dictionary<string, object>>
 					(LocalEventDataPath);
 			}
-			if (asset.AssetNameEquals(GameContentCommonTranslationDataPath))
+			if (asset.Name.IsEquivalentTo(GameContentCommonTranslationDataPath))
 			{
 				var data = new Dictionary
 					<string, Dictionary<string, string>>
@@ -78,7 +78,7 @@ namespace RaisedGardenBeds
 
 				return (T)(object)data;
 			}
-			if (asset.AssetNameEquals(GameContentItemTranslationDataPath))
+			if (asset.Name.IsEquivalentTo(GameContentItemTranslationDataPath))
 			{
 				var data = new Dictionary
 					<string, Dictionary<string, Dictionary<string, string>>>
@@ -98,23 +98,23 @@ namespace RaisedGardenBeds
 
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
-			return asset.AssetNameEquals(GameContentEventDataPath)
-				|| asset.AssetNameEquals(Path.Combine("TileSheets", "Craftables"))
-				|| asset.AssetNameEquals(Path.Combine("Data", "BigCraftablesInformation"))
-				|| asset.AssetNameEquals(Path.Combine("Data", "CraftingRecipes"))
+			return asset.Name.IsEquivalentTo(GameContentEventDataPath)
+				|| asset.Name.IsEquivalentTo(Path.Combine("TileSheets", "Craftables"))
+				|| asset.Name.IsEquivalentTo(Path.Combine("Data", "BigCraftablesInformation"))
+				|| asset.Name.IsEquivalentTo(Path.Combine("Data", "CraftingRecipes"))
 				// Also patch the event dictionary for any locations with an entry in our event definitions
-				|| (asset.AssetName.StartsWith(Path.Combine("Data", "Events"))
-					&& Path.GetFileNameWithoutExtension(asset.AssetName) is string where
+				|| (asset.Name.StartsWith(Path.Combine("Data", "Events"))
+					&& Path.GetFileNameWithoutExtension(asset.Name.ToString()) is string where
 					&& ModEntry.EventData != null && ModEntry.EventData.Any(e => e["Where"] == where));
 		}
 
-		public void Edit<T>(IAssetData asset)
+		public void Edit(IAssetData asset)
 		{
 			/*********
 			Local data
 			*********/
 
-			if (asset.AssetNameEquals(GameContentEventDataPath))
+			if (asset.Name.IsEquivalentTo(GameContentEventDataPath))
 			{
 				var events = ((Newtonsoft.Json.Linq.JArray)asset
 					.AsDictionary<string, object>()
@@ -152,7 +152,7 @@ namespace RaisedGardenBeds
 
 			int id = OutdoorPot.BaseParentSheetIndex;
 
-			if (asset.AssetNameEquals(Path.Combine("Data", "BigCraftablesInformation")))
+			if (asset.Name.IsEquivalentTo(Path.Combine("Data", "BigCraftablesInformation")))
 			{
 				if (ModEntry.ItemDefinitions == null)
 					return;
@@ -189,7 +189,7 @@ namespace RaisedGardenBeds
 
 				return;
 			}
-			if (asset.AssetNameEquals(Path.Combine("Data", "CraftingRecipes")))
+			if (asset.Name.IsEquivalentTo(Path.Combine("Data", "CraftingRecipes")))
 			{
 				if (ModEntry.ItemDefinitions == null || id < 0)
 					return;
@@ -224,8 +224,8 @@ namespace RaisedGardenBeds
 
 				return;
 			}
-			if (asset.AssetName.StartsWith(Path.Combine("Data", "Events"))
-				&& Path.GetFileNameWithoutExtension(asset.AssetName) is string where)
+			if (asset.Name.StartsWith(Path.Combine("Data", "Events"))
+				&& Path.GetFileNameWithoutExtension(asset.Name.ToString()) is string where)
 			{
 				// Patch our event data into whatever location happens to match the one specified.
 				// Event tokenisation is handled in the Edit block for GameContentEventDataPath.

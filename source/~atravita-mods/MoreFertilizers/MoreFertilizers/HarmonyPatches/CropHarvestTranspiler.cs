@@ -102,7 +102,7 @@ internal static class CropHarvestTranspiler
     private static Item? HandleOrganicAndBeverageItem(Item? item, HoeDirt? dirt, JunimoHarvester? junimo)
     {
         HandleBeverageFertilizer(item, dirt, junimo);
-        return item is SObject obj ? HandleOrganicAndBeverageItem(obj, dirt, junimo) : item;
+        return item is SObject obj ? MakeObjectOrganic(obj, dirt) : item;
     }
 
     [MethodImpl(TKConstants.Hot)]

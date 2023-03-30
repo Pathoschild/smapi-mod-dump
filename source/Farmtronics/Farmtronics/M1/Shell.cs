@@ -150,7 +150,7 @@ namespace Farmtronics.M1 {
 					FixHostInfo();
 					interpreter.REPL(startupScript);
 				} catch (System.Exception err) {
-					Debug.Log("Error running /sys/startup.ms: " + err.ToString(), LogLevel.Error);
+					ModEntry.instance.Monitor.Log("Error running /sys/startup.ms: " + err.ToString(), LogLevel.Error);
 				}
 			}
 
@@ -158,7 +158,7 @@ namespace Farmtronics.M1 {
 			string diskName = "/usr";
 			Disk usrDisk = Disks.GetDisk(ref diskName);
 			if (usrDisk != null) {
-				//Debug.Log("About to read startup.ms");
+				//ModEntry.instance.Monitor.Log("About to read startup.ms");
 				startupScript = usrDisk.ReadText("startup.ms");
 				if (!string.IsNullOrEmpty(startupScript)) BeginRun(startupScript);
 			}
@@ -182,7 +182,7 @@ namespace Farmtronics.M1 {
 				// continue the running code
 				interpreter.RunUntilDone(0.03f);
 			} else if (runProgram) {
-				//Debug.Log($"{bot.name} runProgram flag detected; starting new program");
+				//ModEntry.instance.Monitor.Log($"{bot.name} runProgram flag detected; starting new program");
 				runProgram = false;
 				interpreter.Stop();
 				Value sourceVal = interpreter.GetGlobalValue("_source");
@@ -241,7 +241,7 @@ namespace Farmtronics.M1 {
 			command = command.Trim();
 			string lcmd = command.ToLower();
 		
-			if (interpreter == null) Debug.Log("Error: Interpreter null?!?");
+			if (interpreter == null) ModEntry.instance.Monitor.Log("Error: Interpreter null?!?");
 
 			runningInstance = this;
 			FixHostInfo();
@@ -249,7 +249,7 @@ namespace Farmtronics.M1 {
 		}
 	
 		void BeginRun(string source) {
-			//Debug.Log("BeginRun; Program source: " + source);
+			//ModEntry.instance.Monitor.Log("BeginRun; Program source: " + source);
 			System.GC.Collect();
 			runningInstance = this;
 
@@ -265,7 +265,7 @@ namespace Farmtronics.M1 {
 			try {
 				interpreter.Compile();
 			} catch (MiniscriptException me) {
-				Debug.Log("Caught MiniScript exception: " + me, LogLevel.Error);
+				ModEntry.instance.Monitor.Log("Caught MiniScript exception: " + me, LogLevel.Error);
 			}
 			if (interpreter.vm == null) interpreter.REPL("", 0);
 			interpreter.vm.globalContext.variables = globals;
@@ -274,7 +274,7 @@ namespace Farmtronics.M1 {
 			if (interpreter.NeedMoreInput()) {
 				// If the interpreter wants more input at this point, it's because the program
 				// has an unterminated if/while/for/function block.  Let's just cancel the run.
-				Debug.Log("Canceling run in BeginRun", LogLevel.Warn);
+				ModEntry.instance.Monitor.Log("Canceling run in BeginRun", LogLevel.Warn);
 				Break(true);
 			}		
 		}
@@ -311,7 +311,7 @@ namespace Farmtronics.M1 {
 					msg += "line " + loc.lineNum;
 				}
 				textDisplay.Print(msg + "\n");
-				//Debug.Log("printed: " + msg);
+				//ModEntry.instance.Monitor.Log("printed: " + msg);
 			}
 			ValMap globals = interpreter.vm.globalContext.variables;
 			interpreter.Reset();
@@ -319,7 +319,7 @@ namespace Farmtronics.M1 {
 			interpreter.vm.globalContext.variables = globals;
 			globals.SetElem(M1API._stackAtBreak, stack);
 			AddGlobals();
-			//Debug.Log("Rebuilt VM and restored " + globals.Count + " globals");
+			//ModEntry.instance.Monitor.Log("Rebuilt VM and restored " + globals.Count + " globals");
 		}
 
 		public void AddGlobals() {
@@ -333,7 +333,7 @@ namespace Farmtronics.M1 {
 				globals.variables.assignOverride = (key, value) => {
 					string keyStr = key.ToString();
 					if (keyStr == "_") return false;
-					//Debug.Log($"global {key} = {value}");
+					//ModEntry.instance.Monitor.Log($"global {key} = {value}");
 					if (keyStr == "statusColor") {		// DEPRECATED: now in me module
 						bot.statusColor = value.ToString().ToColor();
 					} else if (keyStr == "screenColor") {		// DEPRECATED: now in me module
@@ -347,7 +347,7 @@ namespace Farmtronics.M1 {
 				globals.variables.assignOverride = (key, value) => {
 					string keyStr = key.ToString();
 					if (keyStr == "_") return false;
-					//Debug.Log($"global {key} = {value}");
+					//ModEntry.instance.Monitor.Log($"global {key} = {value}");
 					if (keyStr == "screenColor") {		// DEPRECATED: now in me module
 						console.backColor = value.ToString().ToColor();
 					}

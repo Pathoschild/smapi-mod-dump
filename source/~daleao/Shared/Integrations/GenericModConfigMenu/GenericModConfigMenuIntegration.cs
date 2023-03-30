@@ -16,7 +16,6 @@ using DaLion.Shared.Attributes;
 using DaLion.Shared.Extensions.Xna;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
-using static System.Net.Mime.MediaTypeNames;
 
 #endregion using directives
 
@@ -130,15 +129,6 @@ internal abstract class GenericModConfigMenuIntegration<TGenericModConfigMenu, T
     {
         this.AssertRegistered();
         this.ModApi.AddParagraph(this._consumerManifest, text);
-        return (TGenericModConfigMenu)this;
-    }
-
-    /// <summary>Adds some empty vertical space to the form.</summary>
-    /// <returns>The <typeparamref name="TGenericModConfigMenu"/> instance.</returns>
-    protected TGenericModConfigMenu AddVerticalSpace()
-    {
-        this.AssertRegistered();
-        this.ModApi.AddParagraph(this._consumerManifest, () => "\n");
         return (TGenericModConfigMenu)this;
     }
 
@@ -364,6 +354,23 @@ internal abstract class GenericModConfigMenuIntegration<TGenericModConfigMenu, T
                 getValue: () => get(this.GetConfig()).ToHtml(),
                 setValue: value => set(this.GetConfig(), value.TryGetColorFromHtml(out var color) ? color : fallback),
                 fieldId: id);
+        }
+
+        return (TGenericModConfigMenu)this;
+    }
+
+    /// <summary>Adds some empty vertical space to the form.</summary>
+    /// <returns>The <typeparamref name="TGenericModConfigMenu"/> instance.</returns>
+    protected TGenericModConfigMenu AddSeparator()
+    {
+        this.AssertRegistered();
+        if (ComplexOptions is not null)
+        {
+            ComplexOptions.AddSimpleHorizontalSeparator(this._consumerManifest);
+        }
+        else
+        {
+            this.ModApi.AddParagraph(this._consumerManifest, () => "\n");
         }
 
         return (TGenericModConfigMenu)this;

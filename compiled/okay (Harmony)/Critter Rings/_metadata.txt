@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15557
+IDs: atravita.CritterRings
+update keys: Nexus:15557, GitHub:atravita-mods/StardewMods

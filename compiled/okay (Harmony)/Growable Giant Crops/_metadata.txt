@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15559
+IDs: atravita.GrowableGiantCrops
+update keys: Nexus:15559, GitHub:atravita-mods/StardewMods

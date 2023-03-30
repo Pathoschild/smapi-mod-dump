@@ -49,6 +49,9 @@ namespace RidgesideVillage
             WalletItem.ApplyPatch(harmony, Helper);
             WeddingPatches.ApplyPatch(harmony, Helper);
             QuestPatches.ApplyPatch(harmony, Helper);
+            Music.ApplyPatch(harmony, Helper);
+
+            ShopTileAction.ApplyPatch(harmony, Helper);
             //RidgeForest.ApplyPatch(harmony, Helper);
         }
     }

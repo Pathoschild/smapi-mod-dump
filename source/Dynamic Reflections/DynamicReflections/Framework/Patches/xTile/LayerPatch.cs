@@ -62,6 +62,21 @@ namespace DynamicReflections.Framework.Patches.Tiles
                     _monitor.Log($"Patch for PyTK failed in {this.GetType().Name}: {ex}", LogLevel.Trace);
                 }
             }
+            if (DynamicReflections.modHelper.ModRegistry.IsLoaded("Platonymous.TMXLoader"))
+            {
+                try
+                {
+                    if (Type.GetType("TMXLoader.PyMaps, TMXLoader") is Type PyTK && PyTK != null)
+                    {
+                        harmony.Patch(AccessTools.Method(PyTK, "drawLayer", new[] { typeof(Layer), typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(int), typeof(Location), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(PyTKDrawLayerPrefix)));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _monitor.Log($"Failed to patch TMXLoader in {this.GetType().Name}: DR may not properly display reflections!", LogLevel.Warn);
+                    _monitor.Log($"Patch for TMXLoader failed in {this.GetType().Name}: {ex}", LogLevel.Trace);
+                }
+            }
         }
 
         private static bool DrawPrefix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom)

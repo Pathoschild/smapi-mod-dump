@@ -6,12 +6,9 @@ mods:
    PlatoTK
 
 latest commit:
-   commit c82de19961964c7c62f0281b1db68d3f04d647e3
-   Merge: 488b955 a7108fe
-   Author: David <david@millionideas.de>
-   Date:   Thu Aug 25 00:23:27 2022 +0200
+   commit b866894afc83daa0d954e15d839a68e863f6f3b2
+   Author: Platonymous <david@millionideas.de>
+   Date:   Sat Mar 4 16:51:25 2023 +0100
    
-       Merge pull request #3 from Pathoschild/update-code
-       
-       Update for SMAPI 3.14.0
+       updatde release
    

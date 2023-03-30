@@ -199,7 +199,8 @@ internal sealed class ModEntry : Mod
         {
             shop.categoriesToSellHere.Add(SObject.mineralsCategory);
             shop.categoriesToSellHere.Add(SObject.GemCategory);
-            // hack in buybacks for Arch, which may not have a number?
+
+            // TODO: hack in buybacks for Arch, which may not have a number?
         }
 
         if (NPCCache.GetByVillagerName("Gunther") is NPC gunter)
@@ -256,7 +257,7 @@ internal sealed class ModEntry : Mod
             e.NewLocation.temporarySprites.Add(new TemporaryAnimatedSprite
             {
                 texture = Game1.mouseCursors2,
-                sourceRect = new Microsoft.Xna.Framework.Rectangle(129, 210, 13, 16),
+                sourceRect = new Rectangle(129, 210, 13, 16),
                 animationLength = 1,
                 sourceRectStartingPos = new Vector2(129f, 210f),
                 interval = 50000f,

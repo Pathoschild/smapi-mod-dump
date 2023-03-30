@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Professions.Extensions;
 
 using DaLion.Shared.Extensions;
 using Microsoft.Xna.Framework;
-using NetFabric.Hyperlinq;
 using StardewValley.TerrainFeatures;
 
 #endregion using directives

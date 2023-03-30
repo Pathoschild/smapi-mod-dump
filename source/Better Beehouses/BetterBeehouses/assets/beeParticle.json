@@ -22,7 +22,7 @@
   "movementSpeed": 1,
   "movementType": "random",
   "name": "Bee House",
-  "particleChance": 0.1,
+  "particleChance": 0.05,
   "particleHeight": 8,
   "particleWidth": 8,
   "spriteSheetPath": "Mods/BetterBeehouses/Bees",

@@ -27,8 +27,8 @@ namespace LastDayToPlantRedux;
 /// <inheritdoc />
 internal sealed class ModEntry : Mod
 {
-    private MigrationManager? migrator;
     private readonly PerScreen<bool> hasSeeds = new(() => false);
+    private MigrationManager? migrator;
 
     /// <summary>
     /// Gets the logger for this mod.

@@ -49,7 +49,7 @@ internal static class PanGetPanItemsPostfix
             {
                 __result.Add(new SObject(ModEntry.SecretJojaFertilizerID, 2));
             }
-            if (ModEntry.DeluxeJojaFertilizerID != -1)
+            else if (ModEntry.DeluxeJojaFertilizerID != -1)
             {
                 __result.Add(new SObject(ModEntry.DeluxeJojaFertilizerID, 5));
             }

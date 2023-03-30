@@ -8,6 +8,11 @@
 **
 *************************************************/
 
+using System.Runtime.CompilerServices;
+
+using AtraBase.Toolkit;
+using AtraBase.Toolkit.Extensions;
+
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
@@ -72,7 +77,7 @@ internal static class NPCPatches
     {
         try
         {
-            if (__instance.currentLocation is IslandLocation && __0.Equals(__instance.Name + "_beach_fish", StringComparison.OrdinalIgnoreCase))
+            if (__instance.currentLocation is IslandLocation && IsBeachFishAnimation(__instance, __0))
             {
                 __instance.extendSourceRect(0, 32);
                 __instance.Sprite.tempSpriteHeight = 64;
@@ -104,7 +109,7 @@ internal static class NPCPatches
     {
         try
         {
-            if (__0.Equals(__instance.Name + "_beach_fish", StringComparison.OrdinalIgnoreCase))
+            if (IsBeachFishAnimation(__instance, __0))
             {
                 __instance.reloadSprite();
                 __instance.Sprite.SpriteWidth = 16;
@@ -119,5 +124,15 @@ internal static class NPCPatches
         {
             Globals.ModMonitor.Log($"Ran into errors in postfix for endRouteBehavior\n\n{ex}", LogLevel.Error);
         }
+    }
+
+    [MethodImpl(TKConstants.Hot)]
+    private static bool IsBeachFishAnimation(NPC npc, string animationKey)
+    {
+        if (animationKey.TrySplitOnce('_', out ReadOnlySpan<char> name, out ReadOnlySpan<char> key))
+        {
+            return name.Equals(npc.Name, StringComparison.OrdinalIgnoreCase) && key.Equals("beach_fish", StringComparison.OrdinalIgnoreCase);
+        }
+        return false;
     }
 }

@@ -1,6 +1,6 @@
 {
   "Name": "Ring of Knowledge",
-  "Description": "Provides you with the knowledge needed to level up, increasing experience.",
+  "Description": "Provides you with the knowledge needed to level up, increasing experience.(EXP +20%)",
   "Category": "Ring",
   "Edibility": -300,
   "Price": 10000,

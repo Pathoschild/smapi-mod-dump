@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -75,6 +74,10 @@ namespace SM_bqms
                     save: () => Helper.WriteConfig(Config)
                 );
 
+                configMenu.AddSectionTitle(
+                    mod: this.ModManifest,
+                    text: () => "Modifiers (1-3 + modifier)"
+                );
                 configMenu.AddNumberOption(
                     mod: this.ModManifest,
                     name: () => "Normal Modifier",
@@ -103,6 +106,18 @@ namespace SM_bqms
                     getValue: () => Config.IridiumModifier,
                     setValue: (value) => Config.IridiumModifier = value
                 );
+
+                configMenu.AddSectionTitle(
+                    mod: this.ModManifest,
+                    text: () => "Debug"
+                );
+                configMenu.AddBoolOption(
+                    mod: this.ModManifest,
+                    name: () => "Enable debug mode",
+                    tooltip: () => "When enabled the mod will print out debug values to the console",
+                    getValue: () => Config.EnableDebug,
+                    setValue: (value) => Config.EnableDebug = value
+                );
             }
         }
         private void InitMod(object sender, SaveLoadedEventArgs e)
@@ -126,6 +141,9 @@ namespace SM_bqms
             SeedMakers = seedMakers;
             this.Player = Game1.player;
             this.IsModInitialized = true;
+            if (Config.EnableDebug) {
+                this.Monitor.LogOnce($"Mod initialized - {SeedMakers.Count} Seed Makers found\n", LogLevel.Debug);
+            }
         }
         /*
         * Seed Maker handlers
@@ -142,6 +160,9 @@ namespace SM_bqms
                         isHandled = false,
                     };
                     SeedMakers.Add(seedMaker);
+                    if (Config.EnableDebug) {
+                        this.Monitor.Log($"SeedMaker at {seedMaker.GameObject.TileLocation.ToString()} added\n", LogLevel.Debug);
+                    }
                 }
             }
             foreach (KeyValuePair<Vector2, StardewValley.Object> gameObject in e.Removed)
@@ -152,6 +173,9 @@ namespace SM_bqms
                         GameObject = gameObject.Value,
                     };
                     SeedMakers.Remove(seedMaker);
+                    if (Config.EnableDebug) {
+                        this.Monitor.Log($"SeedMaker at {seedMaker.GameObject.TileLocation.ToString()} removed\n", LogLevel.Debug);
+                    }
                 }
             }
         }
@@ -169,7 +193,15 @@ namespace SM_bqms
                     if ((FruitIds)this.LastHeldCropOrFruit.ParentSheetIndex != FruitIds.AncientFruit) {
                         if (this.SeedsToSkip.Contains((SeedIds)gameObjectId)) return;
                     }
-                    seedMaker.GameObject.heldObject.Value = new StardewValley.Object(gameObjectId, SM_Helper.generateSeedAmountBasedOnQuality(seedMaker.GameObject.TileLocation, this.LastHeldCropOrFruit.Quality));
+                    seedMaker.GameObject.heldObject.Value = new StardewValley.Object(
+                        gameObjectId,
+                        SM_Helper.generateSeedAmountBasedOnQuality(
+                            seedMaker.GameObject.TileLocation,
+                            this.LastHeldCropOrFruit.Quality,
+                            Config.EnableDebug,
+                            this.Monitor
+                        )
+                    );
                     seedMaker.isHandled = true;
                     this.LastHeldCropOrFruit = null;
                 }

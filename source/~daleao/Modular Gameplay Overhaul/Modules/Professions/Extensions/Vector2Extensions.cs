@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Professions.Extensions;
 
 #region using directives
 
+using DaLion.Shared.UI;
 using Microsoft.Xna.Framework;
 
 #endregion using directives
@@ -24,7 +25,7 @@ internal static class Vector2Extensions
     /// <param name="color">The desired color for the pointer.</param>
     internal static void TrackWhenOnScreen(this Vector2 tile, Color color)
     {
-        Globals.Pointer.Value.DrawOverTile(tile, color);
+        HudPointer.Instance.Value.DrawOverTile(tile, color);
     }
 
     /// <summary>
@@ -35,6 +36,6 @@ internal static class Vector2Extensions
     /// <param name="color">The desired color for the pointer.</param>
     internal static void TrackWhenOffScreen(this Vector2 tile, Color color)
     {
-        Globals.Pointer.Value.DrawAsTrackingPointer(tile, color);
+        HudPointer.Instance.Value.DrawAsTrackingPointer(tile, color);
     }
 }

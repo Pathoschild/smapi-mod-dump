@@ -246,8 +246,8 @@ namespace OmniTools
             configMenu.AddTextOption(
                 mod: ModManifest,
                 name: () => "Max Monster Distance",
-                getValue: () => Config.MaxMonsterDistance + "",
-                setValue: delegate (string value) { if (float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float f)) { Config.MaxMonsterDistance = f; } }
+                getValue: () => Config.MonsterMaxDistance + "",
+                setValue: delegate (string value) { if (float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float f)) { Config.MonsterMaxDistance = f; } }
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,
@@ -266,6 +266,12 @@ namespace OmniTools
                 name: () => "Switch For Crops",
                 getValue: () => Config.SwitchForCrops,
                 setValue: value => Config.SwitchForCrops = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Harvest With Scythe (Mod)",
+                getValue: () => Config.HarvestWithScythe,
+                setValue: value => Config.HarvestWithScythe = value
             );
             configMenu.AddBoolOption(
                 mod: ModManifest,

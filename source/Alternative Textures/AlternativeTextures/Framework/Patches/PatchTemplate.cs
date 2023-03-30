@@ -233,6 +233,17 @@ namespace AlternativeTextures.Framework.Patches
             return location.terrainFeatures[tile];
         }
 
+        internal static ResourceClump GetResourceClumpAt(GameLocation location, int x, int y)
+        {
+            Vector2 tile = new Vector2(x / 64, y / 64);
+            if (!location.resourceClumps.Any(r => r.occupiesTile((int)tile.X, (int)tile.Y)))
+            {
+                return null;
+            }
+
+            return location.resourceClumps.First(r => r.occupiesTile((int)tile.X, (int)tile.Y));
+        }
+
         internal static Character GetCharacterAt(GameLocation location, int x, int y)
         {
             var tileLocation = new Vector2(x / 64, y / 64);
@@ -363,6 +374,8 @@ namespace AlternativeTextures.Framework.Patches
                     return TextureType.FruitTree;
                 case Grass grass:
                     return TextureType.Grass;
+                case ResourceClump resourceClump:
+                    return TextureType.GiantCrop;
                 case TerrainFeature hoeDirt:
                     return TextureType.Crop;
                 case Building building:

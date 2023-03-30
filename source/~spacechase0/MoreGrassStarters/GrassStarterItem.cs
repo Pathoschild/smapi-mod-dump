@@ -19,6 +19,8 @@ namespace MoreGrassStarters
     [XmlType("Mods_spacechase0_GrassStarterItem")]
     public class GrassStarterItem : SObject
     {
+        internal const int grassID = 297;
+
         private static readonly Texture2D Tex = Game1.content.Load<Texture2D>("TerrainFeatures\\grass");
         public static Texture2D Tex2;
         public static int ExtraGrassTypes => GrassStarterItem.Tex2 == null ? 0 : GrassStarterItem.Tex2.Height / 20;
@@ -34,7 +36,7 @@ namespace MoreGrassStarters
             this.WhichGrass = which;
             this.name = $"Grass ({which})";
             this.Price = 100;
-            this.ParentSheetIndex = 297;
+            this.ParentSheetIndex = grassID;
         }
 
         public override Item getOne()

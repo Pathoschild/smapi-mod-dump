@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15910
+IDs: Arphox.ShowDailyLuck
+update keys: Nexus:15910, GitHub:arphox/StardewValleyMods

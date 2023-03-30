@@ -29,6 +29,7 @@
           }
         },
         "When": {
+          "HasSeenEvent |contains=75160259": "true",
           "HasFlag |contains=RSV.HeroStatue": "false"
         }
       },
@@ -54,11 +55,60 @@
           }
         },
         "When": {
+          "HasSeenEvent |contains=75160259": "true",
           "HasFlag |contains=RSV.Sapphire": "false"
         }
       },
       "OnCatch": {
         "SetFlags": ["RSV.Sapphire"]
+      }
+    }
+  ],
+  "AddEffects": [
+    {
+      // Village hero sculpture
+      "$Effect": "ModifyFishChance",
+      "Type": "MaxFish",
+      "Expression": "0",
+      "Conditions": {
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideVillage"],
+        "FarmerPosition": {
+          "X": {
+            "GreaterThanEq": 145,
+            "LessThan": 146
+          },
+          "Y": {
+            "GreaterThanEq": 69,
+            "LessThan": 70
+          }
+        },
+        "When": {
+          "HasSeenEvent |contains=75160259": "true",
+          "HasFlag |contains=RSV.HeroStatue": "false"
+        }
+      }
+    },
+    {
+      // Sapphire pearl
+      "$Effect": "ModifyFishChance",
+      "Type": "MaxFish",
+      "Expression": "0",
+      "Conditions": {
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideVillage"],
+        "Position": {
+          "X": {
+            "GreaterThanEq": 60,
+            "LessThan": 61
+          },
+          "Y": {
+            "GreaterThanEq": 55,
+            "LessThan": 56
+          }
+        },
+        "When": {
+          "HasSeenEvent |contains=75160259": "true",
+          "HasFlag |contains=RSV.Sapphire": "false"
+        }
       }
     }
   ]

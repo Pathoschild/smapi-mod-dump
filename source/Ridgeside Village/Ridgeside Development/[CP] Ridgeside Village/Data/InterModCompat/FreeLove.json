@@ -244,6 +244,30 @@
                   "Relationship:Zayne |contains= married": true
                 }
         },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring13",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.EggFest.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring13",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.EggFest.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
+                }
+        },
 
         //EOR FESTIVAL
 		{      
@@ -472,6 +496,30 @@
             "When":
                 {
                   "Relationship:Zayne |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter28",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.EoR.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter28",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.EoR.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
                 }
         },
 
@@ -704,6 +752,30 @@
                   "Relationship:Zayne |contains= married": true
                 }
         },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring24",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.FlowerDance.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/spring24",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.FlowerDance.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
+                }
+        },
 
         //RSV GATHERING FESTIVAL
 		{      
@@ -932,6 +1004,30 @@
             "When":
                 {
                   "Relationship:Zayne |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall20",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.Gathering.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall20",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.Gathering.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
                 }
         },
 
@@ -1164,6 +1260,30 @@
                   "Relationship:Zayne |contains= married": true
                 }
         },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter8",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.IceFest.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter8",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.IceFest.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
+                }
+        },
 
         //Luau FESTIVAL
 		{      
@@ -1392,6 +1512,30 @@
             "When":
                 {
                   "Relationship:Zayne |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer11",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.Luau.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer11",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.Luau.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
                 }
         },
 
@@ -1624,6 +1768,30 @@
                   "Relationship:Zayne |contains= married": true
                 }
         },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer28",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.Jellies.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/summer28",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.Jellies.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
+                }
+        },
 
         //SpiritEve FESTIVAL
 		{      
@@ -1852,6 +2020,30 @@
             "When":
                 {
                   "Relationship:Zayne |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.SpiritEve.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall27",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.SpiritEve.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
                 }
         },
 
@@ -2084,6 +2276,30 @@
                   "Relationship:Zayne |contains= married": true
                 }
         },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall16",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.StardewFair.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/fall16",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.StardewFair.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
+                }
+        },
 
         //WinterStar FESTIVAL
 		{      
@@ -2312,6 +2528,30 @@
             "When":
                 {
                   "Relationship:Zayne |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "Entries": 
+                {
+                  "Faye": "{{i18n:Festivals.WinterStar.Faye_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Faye |contains= married": true
+                }
+        },
+        {      
+            "Action": "EditData",
+            "Target": "Data/Festivals/winter25",
+            "Entries": 
+                {
+                  "Bryle": "{{i18n:Festivals.WinterStar.Bryle_spouse}}"
+                },
+            "When":
+                {
+                  "Relationship:Bryle |contains= married": true
                 }
         },
 

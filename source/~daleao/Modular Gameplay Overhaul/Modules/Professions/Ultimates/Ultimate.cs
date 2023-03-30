@@ -208,7 +208,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
         this.ActivationSfx.Play();
 
         // notify peers
-        ModEntry.Broadcaster.Broadcast("Active", "ToggledUltimate");
+        Broadcaster.Broadcast("Active", OverhaulModule.Professions.Namespace + "ToggledUltimate");
 
         // invoke callbacks
         this.OnActivated();
@@ -230,7 +230,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
         Game1.player.stopGlowing();
 
         // notify peers
-        ModEntry.Broadcaster.Broadcast("Inactive", "ToggledUltimate");
+        Broadcaster.Broadcast("Inactive", OverhaulModule.Professions.Namespace + "ToggledUltimate");
 
         // invoke callbacks
         this.OnDeactivated();

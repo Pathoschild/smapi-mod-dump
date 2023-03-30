@@ -30,7 +30,7 @@ internal sealed class FishingRodPullFishFromWaterPatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Adds age quality to tapper product.</summary>
+    /// <summary>Legendary fish always best quality.</summary>
     [HarmonyPrefix]
     private static void FishingRodPullFishFromWaterPrefix(int whichFish, ref int fishQuality)
     {

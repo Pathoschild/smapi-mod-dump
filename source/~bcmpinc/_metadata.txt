@@ -16,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 6c6d789ca9526ab791c866578176d5c3b66c6dde
+   commit b6cf9d6e0eff97d1932fa3fa6b2456994821868c
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat Dec 24 09:23:50 2022 +0100
+   Date:   Mon Mar 27 15:56:29 2023 +0200
    
-       Mention that ring slots are missing from the forge menu.
+       Add balancedcombinemanyrings mod as incompatible.
    

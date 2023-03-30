@@ -18,16 +18,15 @@ namespace RuneMagic.Source.Spells
     {
         public Charming() : base(School.Alteration)
         {
-            Description += "Charms the target for a period time.";
-            Level = 2;
+            Description += "Charms the target for a period time."; Level = 2;
         }
 
         public override bool Cast()
         {
-            Target = Game1.currentLocation.characters.FirstOrDefault(c => c.getTileLocation() == Game1.currentCursorTile);
-            if (!RuneMagic.PlayerStats.ActiveEffects.OfType<Charmed>().Any())
+            var target = Game1.currentLocation.characters.FirstOrDefault(c => c.getTileLocation() == Game1.currentCursorTile);
+            if (!Player.MagicStats.ActiveEffects.OfType<Charmed>().Any())
             {
-                Effect = new Charmed(this, Target);
+                Effect = new Charmed(this, target);
                 return base.Cast();
             }
             else

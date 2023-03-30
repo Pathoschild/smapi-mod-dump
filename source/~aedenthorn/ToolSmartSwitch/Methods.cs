@@ -100,7 +100,7 @@ namespace ToolSmartSwitch
                         if (c is RockCrab && !AccessTools.FieldRefAccess<RockCrab, NetBool>((c as RockCrab), "shellGone").Value)
                             continue;
                         var distance = Vector2.Distance(c.GetBoundingBox().Center.ToVector2(), f.GetBoundingBox().Center.ToVector2());
-                        if (distance > Config.MaxMonsterDistance)
+                        if (distance > Config.MonsterMaxDistance)
                             continue;
                         if (f.FacingDirection == 0 && c.GetBoundingBox().Top > f.GetBoundingBox().Bottom)
                             continue;
@@ -150,10 +150,19 @@ namespace ToolSmartSwitch
                     if (SwitchToolType(f, typeof(WateringCan), tools))
                         return;
                 }
-                if (Config.SwitchForCrops && tf is HoeDirt && (tf as HoeDirt).crop?.forageCrop.Value == true && (tf as HoeDirt).crop?.whichForageCrop.Value == Crop.forageCrop_ginger)
+                if (Config.SwitchForCrops && tf is HoeDirt && (tf as HoeDirt).crop != null)
                 {
-                    if (SwitchToolType(f, typeof(Hoe), tools))
-                        return;
+                    var crop = (tf as HoeDirt).crop;
+                    if (crop.forageCrop.Value == false && (crop.harvestMethod.Value == 1 || Config.HarvestWithScythe) && crop.currentPhase.Value >= crop.phaseDays.Count - 1 && (!crop.fullyGrown.Value || crop.dayOfCurrentPhase.Value <= 0))
+                    {
+                        if (SwitchToolType(f, null, tools))
+                            return;
+                    }
+                    else if ((tf as HoeDirt).crop.forageCrop.Value == true && (tf as HoeDirt).crop.whichForageCrop.Value == Crop.forageCrop_ginger)
+                    {
+                        if (SwitchToolType(f, typeof(Hoe), tools))
+                            return;
+                    }
                 }
             }
             if (Config.SwitchForResourceClumps)
@@ -204,11 +213,11 @@ namespace ToolSmartSwitch
                     if (SwitchToolType(f, typeof(WateringCan), tools)) 
                         return;
                 }
-                if (f.currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y))
+
+                if(f.currentLocation.isTileOnMap(new Vector2(tile.X, tile.Y)) && (!Config.SwitchForFishing || f.CurrentTool is not FishingRod || f.currentLocation.waterTiles is null || !f.currentLocation.waterTiles[(int)tile.X, (int)tile.Y]) && f.currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y))
                 {
                     if (SwitchToolType(f, typeof(WateringCan), tools))
                         return;
-
                 }
                 if (f.currentLocation is Farm && f.currentLocation.getTileIndexAt((int)tile.X, (int)tile.Y, "Buildings") == 1938 && !(f.currentLocation as Farm).petBowlWatered.Value)
                 {
@@ -308,6 +317,11 @@ namespace ToolSmartSwitch
                 return SwitchToolType(f, null, tools);
 
             }
+            else if (obj is BreakableContainer)
+            {
+                if (SwitchToolType(f, typeof(MeleeWeapon), tools) || SwitchToolType(f, typeof(Hoe), tools) || SwitchToolType(f, typeof(Axe), tools) || SwitchToolType(f, typeof(Pickaxe), tools))
+                    return true;
+            }
             return false;
         }
 
@@ -318,10 +332,8 @@ namespace ToolSmartSwitch
                 if((tf as Tree).growthStage.Value >= 3)
                 {
                     return SwitchToolType(f, typeof(Axe), tools);
-
-
                 }
-                else if((tf as Tree).growthStage.Value >= 1)
+                else if((tf as Tree).growthStage.Value == 1)
                 {
                     return SwitchToolType(f, null, tools);
                 }

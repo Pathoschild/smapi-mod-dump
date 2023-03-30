@@ -17,85 +17,143 @@ using System.Linq;
 using System.IO;
 using KBCsv;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Immutable;
+using System.Text;
 
 namespace ModListCommand
 {
-    public class ModListCommand : Mod
+    public sealed class ModListCommand : Mod
     {
-        private readonly ModToolkit _toolkit = new ModToolkit();
-        private const string _commandName = "list_mods";
+        private const string CommandName = "list_mods";
+
+        private const string HelpText = $"""
+            Lists currently loaded mods.
+
+            Usage: {CommandName} [console]
+            - the console parameter is optional
+            Lists mods to the console.
+
+            Usage: {CommandName} csv <path>
+            - path (required): the (absolute or relative) path to the file to be created. The base directory for relative paths is the game's installation directory (i.e. where Stardew Valley.dll is).
+
+            Examples:
+            {CommandName}
+            {CommandName} console    (does the same as the previous example)
+            {CommandName} csv c:\temp\mods.csv
+            """;
+
+        private readonly ModToolkit _toolkit = new();
 
         public override void Entry(IModHelper helper)
         {
-            
-            helper.ConsoleCommands.Add(_commandName, Help(), ListMods);
+            helper.ConsoleCommands.Add(CommandName, HelpText, ListMods);
         }
 
-        public string GetUpdateLinks(IEnumerable<string> updateKeys, string separator = ";")
-        {
-            return string.Join(separator, updateKeys?.Select(u => _toolkit.GetUpdateUrl(u) ?? u).DefaultIfEmpty().ToArray() ?? new[] {"no update key"});
-        }
-
-        private void ListMods(string commandName, string[] args)
+        private void ListMods(string _, string[] args)
         {
             if (args.Length == 0 || args[0] == "console")
             {
-                foreach (var mod in Helper.ModRegistry.GetAll())
-                {
-                    const string separator = "\n    - ";
-                    var links = GetUpdateLinks(mod.Manifest.UpdateKeys, separator);
-
-                    Monitor.Log($"{mod.Manifest.Name} v{mod.Manifest.Version} by {mod.Manifest.Author}:{separator}{links}\n"
-                              + $"{mod.Manifest.Description}", LogLevel.Info);
-                }
+                ListModsToConsole();
             }
             else if (args.Length == 2 && args[0] == "csv" && !string.IsNullOrWhiteSpace(args[1]))
-            { 
-                try
-                { 
-                    using (var streamWriter = new StreamWriter(args[1]))
-                    using (var writer = new CsvWriter(streamWriter)
-                    {
-                        ValueSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator[0],
-                        ValueDelimiter = '"',
-                        ForceDelimit = true
-                    })
-                    {
-                        try
-                        {
-                            writer.WriteRecord("Name", "Version", "Author", "Links", "Description");
-
-                            foreach (var manifest in Helper.ModRegistry.GetAll().Select(e => e.Manifest))
-                            {
-                                writer.WriteRecord(manifest.Name, manifest.Version.ToString(), manifest.Author,
-                                                   GetUpdateLinks(manifest.UpdateKeys), manifest.Description);
-                            }
-
-                            Process.Start(args[1]);
-
-                            Monitor.Log($"{writer.RecordNumber} records written to `{Path.GetFullPath(args[1])}`", LogLevel.Info);
-                        }
-                        catch (Exception e)
-                        {
-                            Monitor.Log(e.Message, LogLevel.Error);
-                        }
-                    }
-                }
-                catch(Exception e)
-                {
-                    Monitor.Log(e.Message, LogLevel.Error);
-                }
+            {
+                ListModsToCsv(csvPath: args[1]);
             }
             else
             {
-                Monitor.Log($"Command usage: {commandName} {Help()}", LogLevel.Warn);
+                Monitor.Log($"Incorrect parameters!{Environment.NewLine}See the help:", LogLevel.Warn);
+                Monitor.Log(HelpText, LogLevel.Info);
             }
         }
-
-        private static string Help()
+        private void ListModsToConsole()
         {
-            return "[console|csv] [csvFile]";
+            StringBuilder outputBuilder = new();
+            outputBuilder.AppendLine();
+
+            foreach (var modInfo in EnumerateModInfos())
+            {
+                outputBuilder.Append(modInfo.Name);
+                outputBuilder.Append(" v");
+                outputBuilder.Append(modInfo.Version);
+                outputBuilder.Append(" by ");
+                outputBuilder.Append(modInfo.Author);
+                outputBuilder.Append(':');
+                outputBuilder.AppendLine();
+
+                foreach (string url in modInfo.UpdateUrls)
+                {
+                    outputBuilder.Append("- ");
+                    outputBuilder.AppendLine(url);
+                }
+
+                outputBuilder.AppendLine(modInfo.Description);
+                outputBuilder.AppendLine();
+            }
+
+            Monitor.Log(outputBuilder.ToString(), LogLevel.Info);
+        }
+
+        private void ListModsToCsv(string csvPath)
+        {
+            using (var streamWriter = new StreamWriter(csvPath))
+            using (var csvWriter = new CsvWriter(streamWriter)
+            {
+                ValueSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator[0],
+                ValueDelimiter = '"',
+                ForceDelimit = true
+            })
+            {
+                csvWriter.WriteRecord("Name", "Version", "Author", "Links", "Description");
+
+                foreach (var modInfo in EnumerateModInfos())
+                {
+                    csvWriter.WriteRecord(
+                        modInfo.Name,
+                        modInfo.Version.ToString(),
+                        modInfo.Author,
+                        string.Join(";", modInfo.UpdateUrls),
+                        modInfo.Description);
+                }
+
+                Monitor.Log($"{csvWriter.RecordNumber} records written to `{Path.GetFullPath(csvPath)}`", LogLevel.Info);
+                Monitor.Log("Opening the CSV file...", LogLevel.Info);
+            }
+
+            // Open the created CSV file
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(csvPath)
+                {
+                    UseShellExecute = true,
+                }
+            };
+            process.Start();
+        }
+
+        private IEnumerable<ModInfo> EnumerateModInfos()
+        {
+            return Helper.ModRegistry.GetAll()
+                .Select(x => CreateModInfo(x.Manifest));
+        }
+
+        private ModInfo CreateModInfo(IManifest manifest)
+        {
+            return new ModInfo
+            {
+                Name = manifest.Name,
+                Version = manifest.Version,
+                Author = manifest.Author,
+                Description = manifest.Description,
+                UpdateUrls = GetUrls(manifest.UpdateKeys).ToImmutableList(),
+            };
+        }
+
+        private IEnumerable<string> GetUrls(string[] updateKeys)
+        {
+            if (updateKeys.Length == 0)
+                return new[] { "no update key" };
+            else
+                return updateKeys.Select(u => _toolkit.GetUpdateUrl(u) ?? u);
         }
     }
 }

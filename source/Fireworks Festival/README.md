@@ -61,7 +61,8 @@ Black powder requires:
 For full crafting details, see the section below.
 
 # Known Bugs
-DGA is not compatible with Lookup Anything. If you use Lookup Anything on the items or the Chemizer, you will get nonsense (Weeds error item). 
+* DGA is not compatible with Lookup Anything. If you use Lookup Anything on the items or the Chemizer, you will get nonsense (Weeds error item). 
+* DGA recipes do not show up in the crafting menu if you have Custom Crafting Stations installed. I believe this is something to do with how it tries to remove recipes for its stations. 
 
 # Translations
 To translate this mod, there are *exactly* 2 files that must be translated. There is `default.json` in the `i18n` folder in the `[CP] Fireworks Festival` and `[DGA] Fireworks Festival` folders. Please do not translate anything in the `content.json` files or you may cause problems in the mod. 

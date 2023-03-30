@@ -1,0 +1,35 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/inkle/ink
+##
+##################################################
+
+dist: bionic
+addons:
+  snaps:
+    - name: powershell
+      confinement: classic
+language: csharp
+solution: ink.sln
+mono: none
+dotnet: 6.0
+cache:
+  directories:
+    - /home/travis/.nuget/packages/
+script:
+  - dotnet test tests/tests.csproj
+  - pwsh -File ./publish-nuget.ps1
+
+# you can define following variables in the web interface, NOT in this file:
+#   RELEASE_BRANCH to specify what branch should be considered a release branch (optional, default is master)
+#   for nightly builds:
+#     NIGHTLY_FEED_SOURCE_URL and NIGHTLY_FEED_APIKEY (e.g. https://www.myget.org/F/13xforever-inkle-ink-engine/)
+#     PUBLISH_MASTER_BUILDS = true (to also build and push every new commit in master branch)
+#   for release builds:
+#     RELEASE_FEED_SOURCE_URL and RELEASE_FEED_APIKEY (e.g. https://www.nuget.org/)
+# release will be build if commit has version tag, using that version tag
+# see .travis.build_nuget.sh for details

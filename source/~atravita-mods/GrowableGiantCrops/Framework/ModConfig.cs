@@ -12,6 +12,8 @@ using AtraShared.Integrations.GMCMAttributes;
 
 using Microsoft.Xna.Framework;
 
+using NetEscapades.EnumGenerators;
+
 namespace GrowableGiantCrops.Framework;
 
 /// <summary>
@@ -44,6 +46,16 @@ public sealed class ModConfig
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not the shovel should do damage to monsters.
+    /// </summary>
+    public bool ShovelDoesDamage { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not the shovel should be allowed the two hoe enchantments.
+    /// </summary>
+    public bool AllowHoeEnchantments { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not shops should have graphics.
     /// </summary>
     [GMCMSection("Shop", -10)]
@@ -64,6 +76,20 @@ public sealed class ModConfig
     [GMCMDefaultVector(6, 19)]
     [GMCMSection("Shop", -10)]
     public Vector2 ResourceShopLocation { get; set; } = new(6, 19);
+
+    private int maxGiantCropsSold = 5;
+
+    /// <summary>
+    /// Gets or sets the maximum number of giant crops that will be sold in the giant crop store,
+    /// if perfection has not been reached.
+    /// </summary>
+    [GMCMRange(1, 25)]
+    [GMCMSection("Shop", -10)]
+    public int MaxGiantCropsSold
+    {
+        get => this.maxGiantCropsSold;
+        set => this.maxGiantCropsSold = Math.Max(value, 1);
+    }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not NPCs should trample placed resource clumps.
@@ -154,7 +180,9 @@ public sealed class ModConfig
     /// </summary>
     internal int MaxFruitTreeStageInternal => this.maxFruitTreeStage;
 
-    // TODO - overwrite the palm trees to use Elizabeth's pretty graphics.
+    /// <summary>
+    /// Gets or sets a value indicating how palm trees should behave.
+    /// </summary>
     [GMCMSection("Trees", 5)]
     public PalmTreeBehavior PalmTreeBehavior { get; set; } = PalmTreeBehavior.Seasonal;
 
@@ -189,9 +217,30 @@ public sealed class ModConfig
     public bool PreservePlacedWeeds { get; set; } = true;
 }
 
+/// <summary>
+/// An enum indicating how palm trees should behave.
+/// </summary>
+[Flags]
+[EnumExtensions]
 public enum PalmTreeBehavior
 {
-    Default,
-    Seasonal,
-    Stump
+    /// <summary>
+    /// Follows normal game logic (no changes).
+    /// </summary>
+    Default = 0,
+
+    /// <summary>
+    /// Uses seasonal textures in fall and winter.
+    /// </summary>
+    Seasonal = 1,
+
+    /// <summary>
+    /// Turns into a stump in winter, and back again in spring.
+    /// </summary>
+    Stump = 1 << 1,
+
+    /// <summary>
+    /// Uses both behaviors.
+    /// </summary>
+    Both = Stump | Seasonal,
 }

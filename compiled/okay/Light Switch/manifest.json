@@ -1,0 +1,10 @@
+{
+  "Name": "Light Switch",
+  "Author": "holythesea",
+  "Version": "1.0.0",
+  "Description": "Light up the entire map regardless of location or time of day",
+  "UniqueID": "holythesea.LightSwitch",
+  "EntryDll": "LightSwitch.dll",
+  "UpdateKeys": [ "Nexus:15683" ],
+  "MinimumApiVersion": "3.14.0"
+}

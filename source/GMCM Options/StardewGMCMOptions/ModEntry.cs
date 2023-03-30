@@ -24,7 +24,7 @@ namespace GMCMOptions {
         }
 
         public override object GetApi() {
-            return new API(Helper.ModRegistry);
+            return new API(Helper, Monitor);
         }
 
         private void ExampleCLI(string command, string[] args) {

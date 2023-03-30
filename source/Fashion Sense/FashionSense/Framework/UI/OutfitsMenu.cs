@@ -62,21 +62,20 @@ namespace FashionSense.Framework.UI
                 ClickableComponent packButton = new ClickableComponent(new Rectangle(base.xPositionOnScreen + 16, base.yPositionOnScreen + 16 + i * ((base.height - 32) / 6), base.width - 32, (base.height - 32) / 6 + 4), string.Concat(i))
                 {
                     myID = i,
-                    downNeighborID = -7777,
-                    upNeighborID = ((i > 0) ? (i - 1) : (-1)),
-                    rightNeighborID = i + 103,
-                    leftNeighborID = -7777,
-                    fullyImmutable = true
+                    downNeighborID = i < OUTFITS_PER_PAGE - 1 ? i + 1 : -1,
+                    upNeighborID = i > 0 ? i - 1 : -1,
+                    rightNeighborID = i + 200,
+                    leftNeighborID = 102
                 };
                 outfitButtons.Add(packButton);
 
                 ClickableTextureComponent shareButton = new ClickableTextureComponent(new Rectangle(packButton.bounds.Right - 256, packButton.bounds.Y + packButton.bounds.Height / 4 + 2, 56, 48), Game1.mouseCursors, new Rectangle(0, 592, 16, 16), 3f)
                 {
                     myID = i + 200,
-                    downNeighborID = -7777,
-                    upNeighborID = ((i > 0) ? (i + 100 - 1) : (-1)),
-                    rightNeighborID = -7777,
-                    leftNeighborID = -7777,
+                    downNeighborID = i < OUTFITS_PER_PAGE - 1 ? i + 200 + 1 : -1,
+                    upNeighborID = i > 0 ? i + 200 - 1 : -1,
+                    rightNeighborID = i + 300,
+                    leftNeighborID = i,
                     fullyImmutable = true,
                     name = "inactive"
                 };
@@ -84,33 +83,33 @@ namespace FashionSense.Framework.UI
 
                 ClickableTextureComponent renameButton = new ClickableTextureComponent(new Rectangle(packButton.bounds.Right - 192, packButton.bounds.Y + packButton.bounds.Height / 4 + 8, 56, 48), Game1.mouseCursors, new Rectangle(66, 4, 14, 12), 3f)
                 {
-                    myID = i + 200,
-                    downNeighborID = -7777,
-                    upNeighborID = ((i > 0) ? (i + 100 - 1) : (-1)),
-                    rightNeighborID = -7777,
-                    leftNeighborID = -7777,
+                    myID = i + 300,
+                    downNeighborID = i < OUTFITS_PER_PAGE - 1 ? i + 300 + 1 : -1,
+                    upNeighborID = i > 0 ? i + 300 - 1 : -1,
+                    rightNeighborID = i + 400,
+                    leftNeighborID = i + 200,
                     fullyImmutable = true
                 };
                 renameButtons.Add(renameButton);
 
                 ClickableTextureComponent saveButton = new ClickableTextureComponent(new Rectangle(renameButton.bounds.X + 64, packButton.bounds.Y + packButton.bounds.Height / 4 - 2, 56, 48), Game1.mouseCursors, new Rectangle(240, 320, 16, 16), 3f)
                 {
-                    myID = i + 100,
-                    downNeighborID = -7777,
-                    upNeighborID = ((i > 0) ? (i + 100 - 1) : (-1)),
-                    rightNeighborID = -7777,
-                    leftNeighborID = -7777,
+                    myID = i + 400,
+                    downNeighborID = i < OUTFITS_PER_PAGE - 1 ? i + 400 + 1 : -1,
+                    upNeighborID = i > 0 ? i + 400 - 1 : -1,
+                    rightNeighborID = i + 500,
+                    leftNeighborID = i + 300,
                     fullyImmutable = true
                 };
                 saveButtons.Add(saveButton);
 
                 ClickableTextureComponent deleteButton = new ClickableTextureComponent(new Rectangle(renameButton.bounds.X + 128, packButton.bounds.Y + packButton.bounds.Height / 4 + 4, 56, 48), Game1.mouseCursors, new Rectangle(323, 433, 9, 10), 4f)
                 {
-                    myID = i + 300,
-                    downNeighborID = -7777,
-                    upNeighborID = ((i > 0) ? (i + 100 - 1) : (-1)),
-                    rightNeighborID = -7777,
-                    leftNeighborID = -7777,
+                    myID = i + 500,
+                    downNeighborID = i < OUTFITS_PER_PAGE - 1 ? i + 500 + 1 : -1,
+                    upNeighborID = i > 0 ? i + 500 - 1 : -1,
+                    rightNeighborID = 101,
+                    leftNeighborID = i + 400,
                     fullyImmutable = true
                 };
                 deleteButtons.Add(deleteButton);
@@ -127,6 +126,13 @@ namespace FashionSense.Framework.UI
                 myID = 101
             };
             base.upperRightCloseButton = new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + base.width - 20, base.yPositionOnScreen - 8, 48, 48), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), 4f);
+
+            // Handle GamePad integration
+            if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+            {
+                base.populateClickableComponentList();
+                this.snapToDefaultClickableComponent();
+            }
         }
 
         public void PaginatePacks()
@@ -187,10 +193,12 @@ namespace FashionSense.Framework.UI
                 {
                     Game1.activeClickableMenu = _callbackMenu;
                     base.exitThisMenu();
+                    return;
                 }
                 else if (Game1.options.snappyMenus && Game1.options.gamepadControls && !base.overrideSnappyMenuCursorMovementBan())
                 {
                     this.applyMovementKey(key);
+                    this.currentlySnappedComponent.snapMouseCursorToCenter();
                 }
             }
         }
@@ -355,6 +363,33 @@ namespace FashionSense.Framework.UI
                     }
                 }
             }
+        }
+
+        public override void receiveGamePadButton(Buttons b)
+        {
+            if (b == Buttons.B && base.readyToClose())
+            {
+                Game1.activeClickableMenu = _callbackMenu;
+                base.exitThisMenu();
+                return;
+            }
+
+            if ((b == Buttons.RightTrigger || b == Buttons.RightShoulder) && _currentPage < _pages.Count - 1)
+            {
+                _currentPage++;
+                Game1.playSound("shiny4");
+            }
+            else if ((b == Buttons.LeftTrigger || b == Buttons.LeftShoulder) && _currentPage > 0)
+            {
+                _currentPage--;
+                Game1.playSound("shiny4");
+            }
+        }
+
+        public override void snapToDefaultClickableComponent()
+        {
+            base.currentlySnappedComponent = base.getComponentWithID(0);
+            this.currentlySnappedComponent.snapMouseCursorToCenter();
         }
 
         public override void draw(SpriteBatch b)

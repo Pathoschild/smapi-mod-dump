@@ -78,6 +78,12 @@ public static partial class SeasonExtensions
         return season;
     }
 
+    /// <summary>
+    /// Tries to parse a list of strings into a <see cref="StardewSeasons"/>.
+    /// </summary>
+    /// <param name="seasonList">List of seasons.</param>
+    /// <param name="seasons">Resulting enum.</param>
+    /// <returns>True if every element was parse-able.</returns>
     public static bool TryParseSeasonList(this IEnumerable<string> seasonList, out StardewSeasons seasons)
     {
         Guard.IsNotNull(seasonList);

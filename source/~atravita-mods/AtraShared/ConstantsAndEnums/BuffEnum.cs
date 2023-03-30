@@ -105,7 +105,7 @@ public static partial class BuffEnumExtensions
         int magneticRadius = 0;
         if (buffEnum.HasFlagFast(BuffEnum.MagneticRadius))
         {
-            magneticRadius = amount * 10;
+            magneticRadius = amount * 32;
         }
 
         int speed = 0;

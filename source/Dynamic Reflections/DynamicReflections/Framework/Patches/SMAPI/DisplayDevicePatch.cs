@@ -57,6 +57,21 @@ namespace DynamicReflections.Framework.Patches.SMAPI
                     _monitor.Log($"Patch for PyTK failed in {this.GetType().Name}: {ex}", LogLevel.Trace);
                 }
             }
+            if (DynamicReflections.modHelper.ModRegistry.IsLoaded("Platonymous.TMXLoader"))
+            {
+                try
+                {
+                    if (Type.GetType("TMXLoader.PyDisplayDevice, TMXLoader") is Type PyTK && PyTK != null)
+                    {
+                        harmony.Patch(AccessTools.Method(PyTK, "DrawTile", new[] { typeof(Tile), typeof(Location), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(PyTKDrawTilePrefix)));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _monitor.Log($"Failed to patch TMXLoader in {this.GetType().Name}: DR may not properly display reflections!", LogLevel.Warn);
+                    _monitor.Log($"Patch for TMXLoader failed in {this.GetType().Name}: {ex}", LogLevel.Trace);
+                }
+            }
         }
 
         private static bool PyTKDrawTilePrefix(IDisplayDevice __instance, SpriteBatch ___m_spriteBatchAlpha, ref Vector2 ___m_tilePosition, Tile? tile, Location location, float layerDepth)

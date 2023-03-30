@@ -1,14 +1,26 @@
 urls:
-   web: https://github.com/FayneAldan/SVRichPresence
-   Git: https://github.com/FayneAldan/SVRichPresence.git
+   web: https://github.com/RuiNtD/SVRichPresence
+   Git: https://github.com/RuiNtD/SVRichPresence.git
 
 mods:
    Discord Rich Presence
 
 latest commit:
-   commit 29f4832a4a32757bd5363afec531bfa2c80ee0c9
-   Author: Fayne Aldan <FayneAldan@gmail.com>
-   Date:   Sun Jul 3 13:01:43 2022 -0600
+   commit 60e87245820d34d33aa7f1c5ab2e248a5225d0cb
+   Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+   Date:   Sat Mar 18 23:58:57 2023 -0600
    
-       Update README.md
+       Bump Pathoschild.Stardew.ModBuildConfig from 4.0.0 to 4.1.0 (#28)
+       
+       Bumps Pathoschild.Stardew.ModBuildConfig from 4.0.0 to 4.1.0.
+       
+       ---
+       updated-dependencies:
+       - dependency-name: Pathoschild.Stardew.ModBuildConfig
+         dependency-type: direct:production
+         update-type: version-update:semver-minor
+       ...
+       
+       Signed-off-by: dependabot[bot] <support@github.com>
+       Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
    

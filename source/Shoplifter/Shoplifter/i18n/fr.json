@@ -9,6 +9,7 @@
 *************************************************/
 
 {
+    //Translations thanks to Breeis!
     "TheMightyAmondee.Shoplifter/Shoplift":"Voler ?",  
     "TheMightyAmondee.Shoplifter/Banned": "Vous avez été banni pour vol à l'étalage. Ne poussez pas votre chance trop loin...",
     "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Vous avez déjà volé aujourd’hui. Ça suffit...",
@@ -37,5 +38,25 @@
     "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Qu'est ce tu pensais faire avec ça @? Ces objets sont dangeureux sans les conseils d'un médecin...$8#$b#Tu ne peut pas payer l'amende ducoup je vais rien faire . Mais ne revole plus.$5",
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Tu me voles @! Je pensais que tu étais une meilleure personne que ça.$3#$b#Je vais rien te prendre @, vu que tu n'as pas de quoi payer.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Être loin des autres ne rend pas mon magasin plus facile à voler, @.$2#$b#T'inquiète pas à propos de cette amende @, juste pars.$2",
-    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Tu est à ce point désésperer pour voler de la glace, @?$7#$b#Je vais juste te laisser partir avec un avertissment cette fois ci.$5"
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Tu est à ce point désésperer pour voler de la glace, @?$7#$b#Je vais juste te laisser partir avec un avertissment cette fois ci.$5",
+    //
+
+    // TODO Improve translations
+    "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Combien de fois pouvez-vous voler à l'étalage ?",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDay": "Nombre maximum de vols à l'étalage par jour",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDayTooltip": "Le nombre maximum de vols à l'étalage par jour",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShop": "Vols à l'étalage maximum par magasin",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShopTooltip":"Combien de fois le même magasin peut être volé à l'étalage chaque jour",
+    "TheMightyAmondee.Shoplifter/GMCM_PenaltySection":"Quelles sont les peines encourues lorsque vous êtes pris en flagrant délit ?",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFine":"Amende maximale",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFineTooltip":"Montant maximal de l'amende",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendship": "Pénalité d'amitié",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendshipTooltip": "Pénalité d'amitié maximale",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatches": "Repéré avant d'être banni",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatchesTooltip":"Combien de fois vous devez être attrapé avant d'être banni",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Nombre de jours de bannissement",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Nombre de jours de bannissement",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Rayon de capture",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Distance maximale à laquelle un villageois doit se trouver pour attraper le joueur"
+    //
   }

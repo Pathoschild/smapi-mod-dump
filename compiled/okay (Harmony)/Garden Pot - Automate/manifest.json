@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Garden Pot - Automate",
     "Author": "NCarigon",
-    "Version": "1.0.4",
+    "Version": "1.0.6",
     "MinimumApiVersion": "3.14.0",
     "Description": "Adds additional support for garden pots within Automate.",
     "UniqueID": "NCarigon.GardenPotAutomate",

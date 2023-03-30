@@ -41,7 +41,7 @@ internal sealed class PondDayStartedEvent : DayStartedEvent
             if (building is FishPond pond && pond.IsOwnedBy(Game1.player) &&
                 !pond.isUnderConstruction())
             {
-                pond.Write(DataFields.CheckedToday, false.ToString());
+                pond.Write(DataKeys.CheckedToday, false.ToString());
             }
         }
     }

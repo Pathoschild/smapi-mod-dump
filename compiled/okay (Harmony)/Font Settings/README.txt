@@ -95,6 +95,10 @@ Help & Feedback:
 
 
 Release Notes:
+0.7.3 - 2023-03-01
+	- Fix dialogue font's characters incomplete/clipped render.
+	- Fix in some case cannot click ok button.
+
 0.7.2 - 2023-02-20
 	- Adds a font button into title menu. You can find it at lb corner, appear as an uppercase 'A'.
     - Now supports custom language.

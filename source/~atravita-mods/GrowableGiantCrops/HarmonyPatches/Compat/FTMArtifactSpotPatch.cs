@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System.Reflection;
+
 using AtraBase.Toolkit.Reflection;
 
 using AtraCore.Framework.ReflectionManager;
@@ -74,7 +76,7 @@ internal static class FTMArtifactSpotPatch
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
     private static bool Prefix(SObject __instance, Tool t, GameLocation location, ref bool __result)
     {
-        if (t is not ShovelTool)
+        if (t is not ShovelTool shovel)
         {
             return true;
         }
@@ -82,9 +84,15 @@ internal static class FTMArtifactSpotPatch
         try
         {
             __result = true;
-            __instance.GetType()
-                      .GetCachedMethod("releaseContents", ReflectionCache.FlagTypes.InstanceFlags)
-                      .Invoke(__instance, new[] { location });
+            int count = shovel.hasEnchantmentOfType<GenerousEnchantment>() ? 2 : 1;
+            MethodInfo method = __instance.GetType().GetCachedMethod("releaseContents", ReflectionCache.FlagTypes.InstanceFlags);
+
+            do
+            {
+                method.Invoke(__instance, new[] { location });
+            }
+            while (count-- > 0);
+
             if (!location.terrainFeatures.ContainsKey(__instance.TileLocation))
             {
                 location.makeHoeDirt(__instance.TileLocation);

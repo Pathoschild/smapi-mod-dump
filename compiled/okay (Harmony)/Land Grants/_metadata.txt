@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15855
+IDs: Platonymous.LandGrants
+update keys: Nexus:15855

@@ -9,14 +9,15 @@
 *************************************************/
 
 using AtraBase.Toolkit.Extensions;
+
 using CommunityToolkit.Diagnostics;
+
 using Microsoft.Xna.Framework;
+
 using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-
-using xTile.Tiles;
 
 using XLocation = xTile.Dimensions.Location;
 using XRectangle = xTile.Dimensions.Rectangle;
@@ -36,6 +37,7 @@ public static class GameLocationExtensions
     /// </summary>
     /// <param name="location">Location to check.</param>
     /// <returns>Whether the location should be considered dangerous.</returns>
+    [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:Opening parenthesis should be spaced correctly", Justification = "Preference.")]
     public static bool IsDangerousLocation(this GameLocation location)
         => !location.IsFarm && !location.IsGreenhouse && location is not (SlimeHutch or Town or IslandWest)
             && (location is MineShaft or VolcanoDungeon or BugLand || location.characters.Any((character) => character is Monster));

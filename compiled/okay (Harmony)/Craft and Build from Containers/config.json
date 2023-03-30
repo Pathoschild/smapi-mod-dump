@@ -1,5 +1,6 @@
 {
   "EnableMod": true,
+  "EnableEverywhere": false,
   "EnableForCrafting": true,
   "EnableForBuilding": true,
   "ToggleButton": "None"

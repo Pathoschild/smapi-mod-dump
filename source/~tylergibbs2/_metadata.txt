@@ -8,9 +8,9 @@ mods:
    Seasonal Save Slots
 
 latest commit:
-   commit bd81d1eac26faf153bb7577215f12c9d3a98b342
+   commit 2fcff682a5121984a5b910c65a7d34b6dbea71db
    Author: Tyler <gibbstyler7@gmail.com>
-   Date:   Tue Nov 22 18:38:07 2022 -0600
+   Date:   Sat Mar 25 16:33:36 2023 -0500
    
-       bump version
+       add no tools mod
    

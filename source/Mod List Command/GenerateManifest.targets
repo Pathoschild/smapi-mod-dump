@@ -22,12 +22,7 @@
 {
   "Name": "$(ModName)",
   "Author": "$(ModAuthor)",
-  "Version": {
-    "MajorVersion": $(ModMajorVersion),
-    "MinorVersion": $(ModMinorVersion),
-    "PatchVersion": $(ModPatchVersion),
-    "Build": "$(ModBuild)"
-  },
+  "Version": "$(ModMajorVersion).$(ModMinorVersion).$(ModPatchVersion)",
   "UniqueID": "$(ModUniqueID)",
   "Description": "$(ModDescription)",
   "MinimumApiLevel": "$(ModMinimumApiLevel)",

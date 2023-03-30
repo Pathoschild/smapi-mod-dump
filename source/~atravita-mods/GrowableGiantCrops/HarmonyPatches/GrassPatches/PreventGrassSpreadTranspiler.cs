@@ -42,12 +42,12 @@ internal static class PreventGrassSpreadTranspiler
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             helper.FindNext(new CodeInstructionWrapper[]
-            { // find if( (int)((Grass)kvp.Value).numberOfWeeds >= 4
+            { // find if ((int)((Grass)kvp.Value).numberOfWeeds >= 4
                 OpCodes.Ldloca_S,
                 (OpCodes.Call, typeof(KeyValuePair<Vector2, TerrainFeature>).GetCachedProperty("Value", ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
                 (OpCodes.Castclass, typeof(Grass)),
                 (OpCodes.Ldfld, typeof(Grass).GetCachedField(nameof(Grass.numberOfWeeds), ReflectionCache.FlagTypes.InstanceFlags)),
-                OpCodes.Call, //op_implicit
+                OpCodes.Call, // op_implicit
                 OpCodes.Ldc_I4_4,
                 OpCodes.Blt,
             })

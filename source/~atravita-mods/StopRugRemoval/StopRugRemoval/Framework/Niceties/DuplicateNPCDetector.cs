@@ -16,6 +16,8 @@ using AtraCore.Framework.Caches;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using StardewModdingAPI.Events;
+
 namespace StopRugRemoval.Framework.Niceties;
 
 /// <summary>
@@ -23,16 +25,16 @@ namespace StopRugRemoval.Framework.Niceties;
 /// </summary>
 internal static class DuplicateNPCDetector
 {
+    /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
     internal static void DayEnd()
     {
-        if (!Context.IsMainPlayer)
+        if (Context.IsMainPlayer)
         {
-            return;
+            DetectDuplicateNPCs();
         }
-
-        DetectDuplicateNPCs();
     }
 
+    /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
     internal static void DayStart()
     {
         if (!Context.IsMainPlayer)
@@ -182,7 +184,7 @@ internal static class DuplicateNPCDetector
                 if (!found.TryAdd(character.Name, character) && character.Name != "Mister Qi")
                 {
                     ModEntry.ModMonitor.Log($"Found duplicate NPC {character.Name}", LogLevel.Info);
-                    if (object.ReferenceEquals(character, found[character.Name]))
+                    if (ReferenceEquals(character, found[character.Name]))
                     {
                         ModEntry.ModMonitor.Log("    These appear to be the same instance.", LogLevel.Info);
                     }

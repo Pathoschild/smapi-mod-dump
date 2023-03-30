@@ -6,9 +6,13 @@ mods:
    GMCM Options
 
 latest commit:
-   commit 638648db8f9807d960fffeed0857635ac1929f7f
+   commit 7d8b19cdd68c483258685f27c7188a403ff71fe8
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Wed Feb 1 20:55:57 2023 -0500
+   Date:   Thu Mar 2 22:45:30 2023 -0500
    
-       enable nullable checks
+       participate in OnFieldChanged; v1.4.0
+       
+       The ComplexOptions with a non-null fieldId now invoke handlers registered
+       with GMCM's OnFieldChanged (thanks to some reflection black magic, since
+       that functionality is not available in the GMCM API).
    

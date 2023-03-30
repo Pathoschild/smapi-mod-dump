@@ -26,7 +26,7 @@ namespace MoreItemsOnFishPonds;
 /// <inheritdoc />
 internal sealed class ModEntry : Mod
 {
-    private const string context = "atravita.AllowOnFishPonds";
+    private const string Context = "atravita.AllowOnFishPonds";
 
     private static IMonitor modMonitor = null!;
 
@@ -46,13 +46,13 @@ internal sealed class ModEntry : Mod
                     (asset) =>
                 {
                     var data = asset.GetData<Dictionary<string, string>>();
-                    if (data.TryGetValue("Big Green Cane", out var str))
+                    if (data.TryGetValue("Big Green Cane", out string? str))
                     {
-                        data["Big Green Cane"] = str + ", " + context;
+                        data["Big Green Cane"] = str + ", " + Context;
                     }
                     else
                     {
-                        data["Big Green Cane"] = context;
+                        data["Big Green Cane"] = Context;
                     }
                 }, StardewModdingAPI.Events.AssetEditPriority.Late);
             }
@@ -75,6 +75,7 @@ internal sealed class ModEntry : Mod
         harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
     }
 
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Reviewed.")]
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1116:Split parameters should start on line after declaration", Justification = "Reviewed.")]
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
     {
@@ -100,7 +101,7 @@ internal sealed class ModEntry : Mod
             {
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Callvirt, typeof(Farmer).GetCachedProperty(nameof(Farmer.ActiveObject), ReflectionCache.FlagTypes.InstanceFlags).GetGetMethod()),
-                new(OpCodes.Ldstr, context),
+                new(OpCodes.Ldstr, Context),
                 new(OpCodes.Callvirt, typeof(Item).GetCachedMethod<string>(nameof(Item.HasContextTag), ReflectionCache.FlagTypes.InstanceFlags)),
                 new(OpCodes.Brtrue, jumppoint),
             }, withLabels: labels);

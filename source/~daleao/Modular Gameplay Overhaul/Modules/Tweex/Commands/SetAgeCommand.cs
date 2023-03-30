@@ -36,7 +36,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
 
     /// <inheritdoc />
     public override string Documentation =>
-        "Set the age of the nearest specified object or tree to the desired value. You can also use the value `clear` to delete the respective mod data.";
+        "Set the age of the nearest specified object or tree to the desired number of days. You can also use the value `clear` to delete the respective mod data.";
 
     /// <inheritdoc />
     public override void Callback(string trigger, string[] args)
@@ -77,7 +77,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
                         {
                             if (feature is Tree)
                             {
-                                feature.Write(DataFields.Age, clear ? null : args[1]);
+                                feature.Write(DataKeys.Age, clear ? null : args[1]);
                             }
                         }
                     }
@@ -93,7 +93,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
                     return;
                 }
 
-                nearest.Write(DataFields.Age, clear ? null : args[1]);
+                nearest.Write(DataKeys.Age, clear ? null : args[1]);
                 Log.I(clear
                     ? $"Cleared {nearest.NameFromType()}'s age data"
                     : $"Set {nearest.NameFromType()}'s age data to {args[1]} days.");
@@ -117,7 +117,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
                                 continue;
                             }
 
-                            @object.Write(DataFields.Age, clear ? null : args[1]);
+                            @object.Write(DataKeys.Age, clear ? null : args[1]);
                         }
                     }
 
@@ -134,7 +134,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
                     return;
                 }
 
-                nearest.Write(DataFields.Age, clear ? null : args[1]);
+                nearest.Write(DataKeys.Age, clear ? null : args[1]);
                 Log.I(clear
                     ? "Cleared all Bee House age data."
                     : $"Set all Bee House age data to {args[1]} days.");
@@ -159,7 +159,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
                                 continue;
                             }
 
-                            @object.Write(DataFields.Age, clear ? null : args[1]);
+                            @object.Write(DataKeys.Age, clear ? null : args[1]);
                         }
                     }
 
@@ -178,7 +178,7 @@ internal sealed class SetAgeCommand : ConsoleCommand
                     return;
                 }
 
-                nearest.Write(DataFields.Age, clear ? null : args[1]);
+                nearest.Write(DataKeys.Age, clear ? null : args[1]);
                 Log.I(clear ? "Cleared Mushroom Box's age data." : $"Set Mushroom Box's age data to {args[1]} days.");
                 break;
             }

@@ -1,0 +1,84 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HaulinOats/StardewMods
+**
+*************************************************/
+
+[
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Bone Fragment",
+        "InputStack": 50,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Enricher",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Iron Bar",
+        "InputStack": 10,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Pressure Nozzle",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Gold Bar",
+        "InputStack": 10,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Pierre's Missing Stocklist",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Bug Meat",
+        "InputStack": 5,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Magic Bait",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Sap",
+        "InputStack": 15,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Hyper Speed-Gro",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Common Mushroom",
+        "InputStack": 1,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Deluxe Fertilizer",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Diamond",
+        "InputStack": 10,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Prismatic Shard",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Sprinkler",
+        "InputStack": 3,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Quality Sprinkler",
+        "Sounds": ["Ship"]
+    },
+    {
+        "ProducerName": "Raretron 3000",
+        "InputIdentifier": "Quality Sprinkler",
+        "InputStack": 3,
+        "MinutesUntilReady": 10,
+        "OutputIdentifier": "Iridium Sprinkler",
+        "Sounds": ["Ship"]
+    }
+]

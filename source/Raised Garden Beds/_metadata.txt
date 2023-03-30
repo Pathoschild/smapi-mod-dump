@@ -6,12 +6,9 @@ mods:
    Raised Garden Beds
 
 latest commit:
-   commit 57d6736226cf9420e5753f3bccfb6844c919bf67
-   Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Sun Jan 9 19:43:24 2022 +1100
+   commit 03fbd93bc464c8e4fdb7ad988b8736f7d18daeb2
+   Author: blueberry <dearbblueberry@gmail.com>
+   Date:   Sat Mar 18 01:05:52 2023 +1100
    
-       1.0.4:
-       Fix FarmHouse location always valid for placement regardless of config preferences.
-       Fix draw offset for held objects (eg. forage) acting as if for craftables.
-       Fix GenericModConfigMenu entries with omitted translation strings appearing as keys rather than null.
+       Add Github latest releases link to install guide.
    

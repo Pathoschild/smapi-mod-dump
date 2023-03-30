@@ -15,5 +15,11 @@
   "config.TooltipBehavior.Immersive": "Immersive",
 
   "EnableTooltipAutogeneration.title": "Enables tooltip autogeneration.",
-  "EnableTooltipAutogeneration.description": "Enables tooltip autogeneration from journal scrap 9. Disable this if you have an mod that edits that."
+  "EnableTooltipAutogeneration.description": "Enables tooltip autogeneration from journal scrap 9. Disable this if you have an mod that edits that.",
+
+  "LeftArrow.title": "Left Arrow",
+  "LeftArrow.description": "A button that corresponds to the left arrow on the menu.",
+
+  "RightArrow.title": "Right Arrow",
+  "RightArrow.description": "A button that corresponds to the right arrow on the menu.",
 }

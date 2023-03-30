@@ -21,7 +21,7 @@ public static class MenuingExtensions
     /// <summary>
     /// A couple of common checks.
     /// </summary>
-    /// <returns>True if raising a menu is reasonble, false if that would be unwise.</returns>
+    /// <returns>True if raising a menu is reasonable, false if that would be unwise.</returns>
     public static bool IsNormalGameplay()
         => Context.IsWorldReady && Context.CanPlayerMove && !Game1.player.isRidingHorse()
             && Game1.currentLocation is not null && !Game1.eventUp && !Game1.isFestival() && !Game1.IsFading()

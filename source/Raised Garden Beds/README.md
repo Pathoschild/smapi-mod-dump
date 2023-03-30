@@ -29,8 +29,8 @@ You'll find new themes appear as you reach different milestones while playing ..
 ![](https://i.imgur.com/aKBnDRv.png)
 
 1. Install the latest versions of [SMAPI](https://smapi.io/), [SpaceCore](https://www.nexusmods.com/stardewvalley/mods/1348/), and [Content Patcher](https://www.nexusmods.com/stardewvalley/mods/1915/),
-2. Install this mod via [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/5305),
-3. Run the game using SMAPI
+2. Install this mod via [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/5305) or [Github](https://github.com/b-b-blueberry/RaisedGardenBeds/releases/latest),
+3. Play Stardew Valley using SMAPI!
 
 
 

@@ -29,15 +29,27 @@ class HarmonyPatches
 
         GameLocation currentLoc = Game1.currentLocation;
 
-        #if DEBUG
-            currentLoc.createQuestionDialogue("Would you like to have a tarot reading done?",
-            currentLoc.createYesNoResponses(), "tarotReading");
-            return false;
-        #endif
+       // #if DEBUG
+       //     currentLoc.createQuestionDialogue("Would you like to have a tarot reading done?",
+       //     currentLoc.createYesNoResponses(), "tarotReading");
+       //     return false;
+       // #endif
 
         // if diala is in the current location and near enough to the tile location
-        if (currentLoc.characters.Where(npc => npc.Name == "Diala").TakeWhile(npc => Vector2.Distance(npc.getTileLocation(), new Vector2(tileLocation.X, tileLocation.Y)) > 3f).Any())
+
+        Log.Info(string.Join(", ", currentLoc.characters.Select(npc => npc.Name)));
+
+        //if (currentLoc.characters.Where(npc => npc.Name == "DialaSBV")
+        //    .TakeWhile(npc => Vector2.Distance(npc.getTileLocation(), new Vector2(tileLocation.X, tileLocation.Y)) > 3f)
+        //    .Any())
+        //{
+        foreach (NPC npc in currentLoc.characters)
         {
+            if (npc.Name != "DialaSBV" || !(Vector2.Distance(npc.getTileLocation(), new Vector2(tileLocation.X, tileLocation.Y)) < 3f))
+            {
+                continue;
+            }
+
             // if you've already done a reading today, reject with specific message
             if (who.modData.ContainsKey("sophie.DialaTarot/ReadingDoneForToday"))
             {

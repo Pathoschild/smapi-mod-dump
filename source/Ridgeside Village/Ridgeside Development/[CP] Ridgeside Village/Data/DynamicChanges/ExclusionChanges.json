@@ -539,6 +539,18 @@
 			},
 
 			{
+				"Action": "EditData",
+				"Target": "Data/CustomNPCExclusions",
+				"Entries": {
+					"Bryle": "ItemDelivery WinterStar IslandVisit",
+         		},
+				"When": {
+					"HasSeenEvent: hostPlayer": 75160375
+				},
+				"Update": "OnLocationChange, OnTimeChange",
+			},
+
+			{
 	        "LogName": "Custom NPC Exclusions - June unmet",
 	        "Action": "EditData",
 	        "Target": "Data/CustomNPCExclusions",

@@ -6,10 +6,9 @@ mods:
    AeroCore
 
 latest commit:
-   commit 108e6b56979aec204d8d97cf3529566dc2e6d962
-   Merge: 12f452b 90b691d
+   commit 6670124bcade8bffe76aeaa7c547b93ffde84236
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Wed Jan 25 12:29:25 2023 -0500
+   Date:   Sun Mar 19 23:57:07 2023 -0400
    
-       Merge branch 'master' of https://github.com/tlitookilakin/AeroCore
+       particle tweaks and fixes
    

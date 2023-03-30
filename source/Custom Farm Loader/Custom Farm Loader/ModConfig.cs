@@ -18,9 +18,14 @@ namespace Custom_Farm_Loader
 {
     public class ModConfig
     {
+        public float LoadMenuIconScale { get; set; }
+        public float CoopMenuIconScale { get; set; }
 
         public ModConfig()
         {
+            LoadMenuIconScale = 1f;
+            CoopMenuIconScale = 1f;
         }
+
     }
 }

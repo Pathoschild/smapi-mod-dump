@@ -14,9 +14,9 @@ mods:
    Walk of Life
 
 latest commit:
-   commit 64ea9b30b87774f3f61a20651454f8f230fe7829
+   commit e7cecda8070a9abf923f4a7a4141d0f0257228bf
    Author: DaLion <daleao.matheus@gmail.com>
-   Date:   Tue Jan 31 23:37:02 2023 -0300
+   Date:   Mon Mar 27 01:56:33 2023 -0300
    
-       Hotfix Scythe DrawDuringUse.
+       2.0 refactoring.
    

@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Netcode;
 using Newtonsoft.Json;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
@@ -228,6 +229,12 @@ namespace AlternativeTextures.Framework.UI
                     xOffset = 96;
                     sourceRect = new Rectangle(0, 0, 128, 32);
                     break;
+                case TextureType.GiantCrop:
+                    _maxRows = 2;
+                    _texturesPerRow = 3;
+                    widthOffsetScale = 4;
+                    sourceRect = new Rectangle(0, 0, 48, 64);
+                    break;
                 case TextureType.Grass:
                     _maxRows = 6;
                     _texturesPerRow = 4;
@@ -439,6 +446,13 @@ namespace AlternativeTextures.Framework.UI
                             _textureTarget.modData[key] = c.item.modData[key];
                         }
                     }
+                    else if (PatchTemplate.GetResourceClumpAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is GiantCrop giantCrop)
+                    {
+                        foreach (string key in c.item.modData.Keys)
+                        {
+                            _textureTarget.modData[key] = c.item.modData[key];
+                        }
+                    }
                     else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is TerrainFeature feature)
                     {
                         foreach (string key in c.item.modData.Keys)
@@ -612,6 +626,12 @@ namespace AlternativeTextures.Framework.UI
                             {
                                 this.availableTextures[i].item.drawInMenu(b, new Vector2(this.availableTextures[i].bounds.X, this.availableTextures[i].bounds.Y + 32f), 2, 1f, 0.87f, StackDrawType.Hide, colorOverlay, false);
                             }
+                            else if (PatchTemplate.GetResourceClumpAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is GiantCrop giantCrop)
+                            {
+                                this.availableTextures[i].texture = Game1.cropSpriteSheet;
+                                this.availableTextures[i].sourceRect = new Rectangle(112 + (int)giantCrop.which * 48, 512, 48, 63);
+                                this.availableTextures[i].draw(b, colorOverlay, 0.87f);
+                            }
                             else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Tree tree)
                             {
                                 this.availableTextures[i].texture = tree.texture.Value;
@@ -705,6 +725,12 @@ namespace AlternativeTextures.Framework.UI
                         {
                             this.availableTextures[i].texture = textureModel.GetTexture(variation);
                             this.availableTextures[i].sourceRect = GetSourceRectangle(textureModel, _textureTarget, textureModel.TextureWidth, textureModel.TextureHeight, variation);
+                            this.availableTextures[i].draw(b, colorOverlay, 0.87f);
+                        }
+                        else if (PatchTemplate.GetResourceClumpAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is GiantCrop giantCrop)
+                        {
+                            this.availableTextures[i].texture = textureModel.GetTexture(variation);
+                            this.availableTextures[i].sourceRect = new Rectangle(0, textureModel.GetTextureOffset(variation), 48, 63);
                             this.availableTextures[i].draw(b, colorOverlay, 0.87f);
                         }
                         else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Tree tree)

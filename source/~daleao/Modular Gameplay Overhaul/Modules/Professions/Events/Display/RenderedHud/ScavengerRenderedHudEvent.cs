@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Display;
 
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
+using DaLion.Shared.UI;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley.TerrainFeatures;
@@ -48,10 +49,10 @@ internal sealed class ScavengerRenderedHudEvent : RenderedHudEvent
                 continue;
             }
 
-            Globals.Pointer.Value.DrawAsTrackingPointer(key, Color.Yellow);
+            HudPointer.Instance.Value.DrawAsTrackingPointer(key, Color.Yellow);
             if (shouldHighlightOnScreen)
             {
-                Globals.Pointer.Value.DrawOverTile(key, Color.Yellow);
+                HudPointer.Instance.Value.DrawOverTile(key, Color.Yellow);
             }
         }
 
@@ -65,10 +66,10 @@ internal sealed class ScavengerRenderedHudEvent : RenderedHudEvent
                 continue;
             }
 
-            Globals.Pointer.Value.DrawAsTrackingPointer(bush.tilePosition.Value, Color.Yellow);
+            HudPointer.Instance.Value.DrawAsTrackingPointer(bush.tilePosition.Value, Color.Yellow);
             if (shouldHighlightOnScreen)
             {
-                Globals.Pointer.Value.DrawOverTile(bush.tilePosition.Value + new Vector2(0.5f, -1f), Color.Yellow);
+                HudPointer.Instance.Value.DrawOverTile(bush.tilePosition.Value + new Vector2(0.5f, -1f), Color.Yellow);
             }
         }
 
@@ -80,10 +81,10 @@ internal sealed class ScavengerRenderedHudEvent : RenderedHudEvent
                 continue;
             }
 
-            Globals.Pointer.Value.DrawAsTrackingPointer(dirt.currentTileLocation, Color.Yellow);
+            HudPointer.Instance.Value.DrawAsTrackingPointer(dirt.currentTileLocation, Color.Yellow);
             if (shouldHighlightOnScreen)
             {
-                Globals.Pointer.Value.DrawOverTile(dirt.currentTileLocation, Color.Yellow);
+                HudPointer.Instance.Value.DrawOverTile(dirt.currentTileLocation, Color.Yellow);
             }
         }
 
@@ -95,10 +96,10 @@ internal sealed class ScavengerRenderedHudEvent : RenderedHudEvent
                 continue;
             }
 
-            Globals.Pointer.Value.DrawAsTrackingPointer(tree.currentTileLocation, Color.Yellow);
+            HudPointer.Instance.Value.DrawAsTrackingPointer(tree.currentTileLocation, Color.Yellow);
             if (shouldHighlightOnScreen)
             {
-                Globals.Pointer.Value.DrawOverTile(tree.currentTileLocation, Color.Yellow);
+                HudPointer.Instance.Value.DrawOverTile(tree.currentTileLocation, Color.Yellow);
             }
         }
     }

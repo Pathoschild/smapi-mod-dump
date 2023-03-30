@@ -27,6 +27,8 @@ namespace LittleNPCs.Framework {
     public class LittleNPC : NPC {
         private IMonitor monitor_;
 
+        private static Random random_ = new Random(Game1.Date.TotalDays + (int) Game1.uniqueIDForThisGame / 2 + (int) Game1.MasterPlayer.UniqueMultiplayerID * 2);
+
         // Check that NPCParseMasterSchedulePatch executed.
         internal bool ParseMasterSchedulePatchExecuted { get; set; }
 
@@ -63,6 +65,11 @@ namespace LittleNPCs.Framework {
 
         public static LittleNPC FromChild(Child child, int childIndex, FarmHouse farmHouse, IMonitor monitor) {
             Vector2 bedSpot = Utility.PointToVector2(farmHouse.GetChildBedSpot(childIndex)) * 64f;
+            // (0, 0) means there's noe bed available and the child will stuck in the wall. We must avoid that.
+            if (bedSpot == Vector2.Zero) {
+                bedSpot = Utility.PointToVector2(farmHouse.getRandomOpenPointInHouse(random_, 1)) * 64f;
+                monitor.Log($"No bed spot for {child.Name} found, setting it to random point {Utility.Vector2ToPoint(bedSpot / 64f)}", LogLevel.Warn);
+            }
 
             string prefix = childIndex == 0 ? "FirstLittleNPC" : "SecondLittleNPC";
 

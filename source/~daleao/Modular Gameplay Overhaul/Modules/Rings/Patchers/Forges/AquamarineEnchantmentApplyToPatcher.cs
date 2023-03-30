@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Overhaul.Modules.Rings.Patchers;
+namespace DaLion.Overhaul.Modules.Rings.Patchers.Forges;
 
 #region using directives
 
@@ -37,7 +37,13 @@ internal sealed class AquamarineEnchantmentApplyToPatcher : HarmonyPatcher
     private static void AquamarineEnchantmentApplyToPostfix(Item item)
     {
         var player = Game1.player;
-        if (!ArsenalModule.IsEnabled || item is not (Tool tool and (MeleeWeapon or Slingshot)) || tool != player.CurrentTool)
+        if (item is not Tool tool || tool != player.CurrentTool)
+        {
+            return;
+        }
+
+        if ((tool is MeleeWeapon && !WeaponsModule.IsEnabled) || (tool is Slingshot && !SlingshotsModule.IsEnabled) ||
+            tool is not (MeleeWeapon or Slingshot))
         {
             return;
         }
@@ -46,12 +52,10 @@ internal sealed class AquamarineEnchantmentApplyToPatcher : HarmonyPatcher
             .Get_ResonatingChords()
             .Where(c => c.Root == Gemstone.Aquamarine)
             .ArgMax(c => c.Amplitude);
-        if (chord is null)
+        if (chord is not null)
         {
-            return;
+            tool.UpdateResonatingChord<AquamarineEnchantment>(chord);
         }
-
-        tool.UpdateResonatingChord<AquamarineEnchantment>(chord);
     }
 
     #endregion harmony patches

@@ -11,12 +11,15 @@
 using AtraShared.Utils.Extensions;
 
 using GrowableGiantCrops.Framework;
+using GrowableGiantCrops.Framework.InventoryModels;
+using GrowableGiantCrops.HarmonyPatches.Compat;
 
 using HarmonyLib;
 
 using Microsoft.Xna.Framework;
 
 using StardewValley.Locations;
+using StardewValley.TerrainFeatures;
 
 namespace GrowableGiantCrops.HarmonyPatches.Niceties;
 
@@ -38,31 +41,53 @@ internal static class PatchesForSObject
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
     private static void PostfixPlacement(SObject __instance, GameLocation location, int x, int y)
     {
-        if (__instance?.bigCraftable?.Value == true)
+        if (__instance?.bigCraftable?.Value == true
+            && location.Objects.TryGetValue(new Vector2(x / Game1.tileSize, y / Game1.tileSize), out SObject? placed))
         {
             if (__instance.Name == "Slime Ball")
             {
-                __instance.modData?.SetBool(ModDataKey, true);
-                __instance.TileLocation = new Vector2(x / Game1.tileSize, y / Game1.tileSize);
+                placed.modData.Remove(SlimeProduceCompat.SlimeBall);
+                placed.modData.SetBool(ModDataKey, true);
+                placed.TileLocation = new Vector2(x / Game1.tileSize, y / Game1.tileSize);
             }
             else if (__instance.Name == "Mushroom Box")
             {
-                __instance.modData?.SetBool(ModDataMiscObject, true);
-                __instance.TileLocation = new Vector2(x / Game1.tileSize, y / Game1.tileSize);
+                placed.modData?.SetBool(ModDataMiscObject, true);
+                placed.TileLocation = new Vector2(x / Game1.tileSize, y / Game1.tileSize);
+                placed.Fragility = SObject.fragility_Removable;
+            }
+            else if (__instance.ParentSheetIndex == 78)
+            {
+                placed.modData?.SetBool(ModDataMiscObject, true);
+                placed.Fragility = SObject.fragility_Removable;
             }
         }
-        else if (__instance?.bigCraftable?.Value == false
-            && (__instance.Name == "Stone" || __instance.Name.Contains("Weeds") || __instance.Name.Contains("Twig")))
+        else if (__instance?.bigCraftable?.Value == false)
         {
-            __instance.modData?.SetBool(ModDataMiscObject, true);
-            __instance.TileLocation = new Vector2(x / Game1.tileSize, y / Game1.tileSize);
-
-            if (location is MineShaft shaft && __instance.Name == "Stone")
+            if (SObject.isWildTreeSeed(__instance.ParentSheetIndex)
+                && location.terrainFeatures.TryGetValue(new Vector2(x / Game1.tileSize, y / Game1.tileSize), out TerrainFeature? terrain)
+                && terrain is Tree tree)
             {
-                int stonesLeft = ShovelTool.MineRockCountGetter.Value(shaft);
-                stonesLeft++;
-                ModEntry.ModMonitor.DebugOnlyLog($"{stonesLeft} stones left on floor {shaft.mineLevel}", LogLevel.Info);
-                ShovelTool.MineRockCountSetter.Value(shaft, stonesLeft);
+                tree.modData?.SetEnum(InventoryTree.ModDataKey, (TreeIndexes)tree.treeType.Value);
+            }
+            if (InventoryFruitTree.IsValidFruitTree(__instance.ParentSheetIndex)
+                && location.terrainFeatures.TryGetValue(new Vector2(x / Game1.tileSize, y / Game1.tileSize), out TerrainFeature? feature)
+                && feature is FruitTree fruitTree)
+            {
+                fruitTree.modData?.SetInt(InventoryFruitTree.ModDataKey, __instance.ParentSheetIndex);
+            }
+            if (__instance.Name == "Stone" || __instance.Name.Contains("Weeds") || __instance.Name.Contains("Twig"))
+            {
+                __instance.modData?.SetBool(ModDataMiscObject, true);
+                __instance.TileLocation = new Vector2(x / Game1.tileSize, y / Game1.tileSize);
+
+                if (location is MineShaft shaft && __instance.Name == "Stone")
+                {
+                    int stonesLeft = ShovelTool.MineRockCountGetter.Value(shaft);
+                    stonesLeft++;
+                    ModEntry.ModMonitor.DebugOnlyLog($"{stonesLeft} stones left on floor {shaft.mineLevel}", LogLevel.Info);
+                    ShovelTool.MineRockCountSetter.Value(shaft, stonesLeft);
+                }
             }
         }
     }

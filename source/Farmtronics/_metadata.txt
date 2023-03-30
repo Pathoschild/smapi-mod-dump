@@ -6,9 +6,21 @@ mods:
    Farmtronics
 
 latest commit:
-   commit 6807af791a89d3dd7e4c20c17548c75a8c811b7d
-   Author: JoeStrout <joe@strout.net>
-   Date:   Sun Jan 29 08:01:33 2023 -0700
+   commit cf9dd6132f73e58ebb27dd8caf2899b1a4d7739c
+   Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+   Date:   Wed Mar 22 18:06:12 2023 +0000
    
-       Bumped version number to 1.3.3.
+       dep nuget: bump Miniscript from 1.5.1-fa86664 to 1.5.1 in /Farmtronics (#74)
+       
+       Bumps Miniscript from 1.5.1-fa86664 to 1.5.1.
+       
+       ---
+       updated-dependencies:
+       - dependency-name: Miniscript
+         dependency-type: direct:production
+         update-type: version-update:semver-patch
+       ...
+       
+       Signed-off-by: dependabot[bot] <support@github.com>
+       Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
    

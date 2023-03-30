@@ -311,15 +311,45 @@ namespace AlternativeTextures.Framework.Patches.Tools
                 return CancelUsing(who);
             }
 
+            var targetedResouceClump = GetResourceClumpAt(location, x, y);
+            if (targetedResouceClump != null && targetedResouceClump is GiantCrop giantCrop)
+            {
+                if (!giantCrop.modData.ContainsKey("AlternativeTextureName"))
+                {
+                    var instanceName = Game1.objectInformation.ContainsKey(giantCrop.parentSheetIndex.Value) ? Game1.objectInformation[giantCrop.parentSheetIndex.Value].Split('/')[0] : String.Empty;
+                    instanceName = $"{AlternativeTextureModel.TextureType.GiantCrop}_{instanceName}";
+                    var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(giantCrop.currentLocation)}";
+                    AssignDefaultModData(targetedResouceClump, instanceSeasonName, true);
+                }
+
+                var modelName = targetedResouceClump.modData["AlternativeTextureName"].Replace($"{targetedResouceClump.modData["AlternativeTextureOwner"]}.", String.Empty);
+                if (targetedResouceClump.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(targetedResouceClump.modData["AlternativeTextureSeason"]))
+                {
+                    modelName = modelName.Replace($"_{targetedResouceClump.modData["AlternativeTextureSeason"]}", String.Empty);
+                }
+
+                if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                {
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                    return CancelUsing(who);
+                }
+
+                // Display texture menu
+                var terrainObj = new Object(100, 1, isRecipe: false, -1)
+                {
+                    TileLocation = targetedResouceClump.tile.Value,
+                    modData = targetedResouceClump.modData
+                };
+
+                Game1.activeClickableMenu = GetMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedResouceClump), modelName, _helper.Translation.Get("tools.name.paint_bucket"), isSprayCan: isSprayCan);
+
+                return CancelUsing(who);
+            }
+
             var targetedTerrain = GetTerrainFeatureAt(location, x, y);
             if (targetedTerrain != null)
             {
-                if (targetedTerrain is GiantCrop)
-                {
-                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.paint_not_placeable"), 3));
-                    return CancelUsing(who);
-                }
-                else if (targetedTerrain is HoeDirt hoeDirt && hoeDirt.crop is null)
+                if (targetedTerrain is HoeDirt hoeDirt && hoeDirt.crop is null)
                 {
                     return CancelUsing(who);
                 }
@@ -345,9 +375,9 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         var instanceSeasonName = $"{AlternativeTextureModel.TextureType.FruitTree}_{saplingName}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";
                         AssignDefaultModData(targetedTerrain, instanceSeasonName, true);
                     }
-                    else if (targetedTerrain is HoeDirt hoeDirt && hoeDirt.crop is not null)
+                    else if (targetedTerrain is HoeDirt dirt && dirt.crop is not null)
                     {
-                        var instanceName = Game1.objectInformation.ContainsKey(hoeDirt.crop.netSeedIndex.Value) ? Game1.objectInformation[hoeDirt.crop.netSeedIndex.Value].Split('/')[0] : String.Empty;
+                        var instanceName = Game1.objectInformation.ContainsKey(dirt.crop.netSeedIndex.Value) ? Game1.objectInformation[dirt.crop.netSeedIndex.Value].Split('/')[0] : String.Empty;
                         var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Crop}_{instanceName}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";
                         AssignDefaultModData(targetedTerrain, instanceSeasonName, true);
                     }

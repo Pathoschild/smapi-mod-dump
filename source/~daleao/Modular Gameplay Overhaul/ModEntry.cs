@@ -23,6 +23,7 @@ namespace DaLion.Overhaul;
 
 using System.Diagnostics;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.ModData;
 using DaLion.Shared.Networking;
@@ -102,43 +103,8 @@ public sealed class ModEntry : Mod
         // initialize multiplayer broadcaster
         Broadcaster = new Broadcaster(helper.Multiplayer, this.ModManifest.UniqueID);
 
-        // initialize modules
-        Core.Activate(helper);
-
-        if (Config.EnableArsenal)
-        {
-            Arsenal.Activate(helper);
-        }
-
-        if (Config.EnablePonds)
-        {
-            Ponds.Activate(helper);
-        }
-
-        if (Config.EnableProfessions)
-        {
-            Professions.Activate(helper);
-        }
-
-        if (Config.EnableRings)
-        {
-            Rings.Activate(helper);
-        }
-
-        if (Config.EnableTaxes)
-        {
-            Taxes.Activate(helper);
-        }
-
-        if (Config.EnableTools)
-        {
-            Tools.Activate(helper);
-        }
-
-        if (Config.EnableTweex)
-        {
-            Tweex.Activate(helper);
-        }
+        // activate modules
+        EnumerateModules().ForEach(module => module.Activate(helper));
 
         // validate multiplayer
         if (Context.IsMultiplayer && !Context.IsMainPlayer && !Context.IsSplitScreen)

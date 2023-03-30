@@ -1,0 +1,184 @@
+{
+  // Content stuff
+  "SandyAwayShopMessage": "嘿！ 我今天会休假，但我相信你不会少给我钱的！ 把钱放在柜台上就行了。",
+  "WillyAwayShopMessage": "我今天会去岛上，所以把钱留在盒子里吧！",
+  "Sandy_Resort": "啊，能离开商店一次真是太好了！",
+  "Sandy_Resort_Bar": "哦....我必须得到这个凤梨可乐达的食谱！ 我从来没有吃过这么好吃的东西！$h",
+  "Sandy_Resort_Bar_2": "嗯。 在炎热的天气里，没有什么比一杯美味的冷饮更好的了。",
+  "Sandy_Resort_Wander": "这里的沙子真漂亮！ 和家里那边的沙子很不一样。",
+  "Sandy_Resort_Shore": "看到这么多水，眼睛都酸了！ 我在沙漠里生活了这么久...$s",
+  "Sandy_Resort_Approach": "哦 @, 我打算今天去姜岛。 我真的很期待一个美好的假期！$h",
+  "Sandy_Resort_Left": "啊，真让人放松。 得回去工作了，我想....",
+  "Sandy_Resort_Pier": "那水是不是很美？ 我能盯着它看一整天！",
+  "Sandy_Resort_IslandNorth": "哦，多漂亮的树啊！ 我们在沙漠中可没有办法看到这么茂密的树叶！$h",
+  "George_Resort": "嗯，这个地方真是很不一样！ 今天温暖的阳光真是让人心情愉悦。",
+  "George_Resort_IslandNorth": "哼哼。",
+  "Evelyn_Resort": "亲爱的@，今天在这里见到你真是太好了！#$e#一定要花一些时间休息和放松！ 别让你自己太辛苦了。",
+  "Evelyn_Resort_IslandNorth": "亲爱的，这里是不是很漂亮？$h",
+  "Willy_Resort": "啊，没有什么比在阳光下和海边度过的一天更好的了....",
+  "Willy_Resort_IslandNorth": "小心外面！ 尽量不要在那座火山中受伤。",
+  "Wizard_Resort":  "啊......假期对灵魂有益....$h",
+
+  "GILeave_Default_Happy": "啊, {{endearment}}, 我今天要去姜岛！ 你会考虑加入我吗？$h",
+  "GIReturn_Default_Happy": "哦, {{endearment}}, 我今天在姜岛度过了愉快的一天！$h",
+
+  "GILeave_Default_Unhappy": "哦, @! 我今天要去姜岛。",
+  "GIReturn_Default_Unhappy": "@, 我度假回来了。 你最近过的怎么样？",
+
+  // Pam on the phone
+  "Pam_Island_1": "嘿 @！ 你今天过得好吗？ 我吗？ 我今天要去姜岛。$h#$b#公共汽车？ 今天没有公交车服务，公交公司无法派人来替换我的岗位。",
+  "Pam_Island_2": "哦， @！ 你最近好吗？ 我今天要去度假村，所以今天没有巴士服务。",
+  "Pam_Island_3": "嘿...@，你猜怎么着？ 我今天要去度假了。 今天不开那辆公共汽车了，哦呼！$h",
+  "Pam_Doctor": "哦...嘿,@ ?你来的不是时候。我今天约了医生，我怎么不期待接下来的事情。$s",
+  "Pam_Other": "啊，你好 @！ 找我干嘛？#$b#听着，我今天不打算开公交车，因为我还有其他计划...#$b#不，他们无法招人替代我的岗位，我很抱歉...",
+  "Pam_Bus_1": "嘿呀@，是的是的是的，我今天要去上班。 又是一个漫长的工作日，没什么特别的。",
+  "Pam_Bus_2": "哦@，你好吗？ 我吗？ 刚开始准备上班！ 你知道的，我得支付我的账单。",
+  "Pam_Bus_3": "嘿...@...你好吗？ 我刚要去上班，是的，是的，是的...又是漫长的一天。$s",
+  "Pam_Voicemail_Island": "*嘟囔* 嘿....你找到我了！ 我今天要休假，所以公交车不开！ 对不起！ *拍打*",
+  "Pam_Voicemail_Doctor": "*嘟囔* 我今天不去上班。 因为有一些私事要处理。 我对此感到抱歉。 *拍打*",
+  "Pam_Voicemail_Other": "*嘟囔* 嘿...你找到我了。 我今天不开公交车，要请假一天！*拍打*",
+  "Pam_Voicemail_Bus": "*嘟囔* 嘿……你找到我了！ 我不知道你为什么打电话给我，如果你想聊天，就在公交车站找我吧。 *拍打*",
+  "Pam_Bus_Late": "哎呀，@，你为什么这么晚打电话给我？ *砰的一声挂掉*$u",
+
+  // Strings for Pam's event
+  "Pam": "潘姆", //backup translation for Pam's name.
+  "999-pam-01a": "嘿， @。 你今天过得好吗？",
+  "999-pam-01b": "下班后，我有时会来这里祈祷。 也在试着少喝点酒。 虽然这并不容易。",
+  "999-pam-01c": "感觉我就像一直在去那家酒吧，即使我不是故意的。 但是就好像我只要一路过它，我的脚就会把我带到那里。",
+  "999-pam-ask": "对潘姆说点什么。",
+  "999-validate": "总有一天你会到达那里的，我相信你！",
+  "999-pam-02": "我...我希望我能。",
+  "999-pam-03": "我...我只是不想再让我亲爱的潘妮失望。",
+  "999-pam-04": "我之前看着我的爸爸在矿井关闭后喝到死。 然后我就发誓我不会像他一样结束自己。",
+  "999-pam-05": "但是现在看看我。 在同一个地方。 坚持住在这里，开着那辆公共汽车，日复一日。",
+  "999-pam-06": "我想我变老了，变得刻薄了，不是吗?你不是来听一个老太太抱怨的。",
+  "999-pam-07": "抱歉把这些事都说给你听。你是个好朋友。你已经为我做了这么多了。",
+  "999-pam-08": "我知道我已经比大多数人幸运多了。找到了一份体面的工作，感谢你给了我栖身之所。我真希望我能...#$b#我只的希望我能为潘妮变得更好...",
+  "sigh": "*叹气*",
+  "999-pam-30": "你是个好人，@",
+  "999-confront": "戒酒吧，这没那么难。",
+  "999-pam-99": "哦，你！ 为什么你会那样？ 够了！ 我不想再和你说话了。",
+
+  // Strings for Pam's mail
+  "Pam.mail.title": "潘姆的感谢信",
+  "Pam.mail.text": "嘿 @,^^谢谢你愿意听我把话说完。我真的很感激你的聆听。这是我的电话号码，可以随时给我打电话。我的心理医生说我应该和更多的人交谈。",
+
+  // Documentation for console commands.
+
+  "baseCommand": "此 mod 添加的控制台命令列表：",
+  "baseCommand.documentation": "列出此 mod 添加的所有命令。",
+  "getSchedule.documentation": "获取相关 NPC 的日程安排",
+  "getIslanders.documentation": "让村民今天前往度假村",
+
+  "getLocations.documentation": "获取当前的 NPC:从一个位置到另一个位置的路线。 警告：可能会花很长时间。",
+  "getLocations.noneFound": "位置列表似乎是空的或找不到（字段名称是否更改？）",
+
+  "islanders": "岛民",
+  "npc-not-found": "{{NPC}} 未找到。",
+
+  // Asset manager
+  "assetmanager.specialchar-not-found": "未找到{{specialCharacterType}} {{name}}  - 它们是否来自未安装的 mod？",
+  "assetmanager.groupchar-not-found": "{{specialGroupType}} {{name}} 在 {{groupname}} 未找到 - 它们是否来自未安装的 mod？",
+  "assetmanager.exclusions-not-found": "无法处理 {{name}} 的排除项，无法找到 NPC - 它们是否来自未安装的 mod？",
+
+  // Multiplayer manager
+  "host-not-installed": "宿主好像没有安装这个mod。 某些功能可能无法使用。",
+  "host-version-different": "主机似乎有这个 mod 的不同版本 ({{version}}). 某些功能可能会无法使用。",
+
+  // Dialogue manager
+  "found-key": "为 {{NPC}} 找到钥匙 {{key}}",
+  "no-key-found": "使用 basekey {{key}} 没有找到 {{NPC}} 的钥匙",
+
+  // DisplaySchedule strings
+  "display-schedule.checkNPC": "正在检查 {{name}} 的时间表。",
+  "display-schedule.isInvisible": "{{name}} 不可见。",
+  "display-schedule.noSchedule": "{{name}} 今天没有设置时间表。",
+  "display-schedule.toIsland": "{{name}} 正前往岛屿。",
+
+  "display-schedule.expectedTime": "预计行程时间： ",
+  "display-schedule.expectedTime.minutes": " 分钟",
+  "display-schedule.expectedArrival": "预计到达时间： ",
+  "display-schedule.direction": "最终面对的方向：",
+  "display-schedule.animation": "With animation: ",
+  "display-schedule.message": "附留言： ",
+
+  // Config and GMCM
+  "IllFormatedConfig": "配置文件似乎格式不正确，使用默认值。 请使用通用模组配置菜单进行配置。",
+  "api-not-found": "{{APIID}} 未找到，集成已禁用。",
+  "api-too-old": "请更新 {{apiName}}({{APIID}}) 至至少版本到 {{minversion}}. 当前版本 {{currentversion}}. 集成已禁用",
+
+  "mod-description": "改变 Ginger Island 的时间表，这样村民们就不会直接上床睡觉了。 或者，处理姜岛的时间表。",
+  "config.enforceGITiming.title": "强制执行 GI 调度时间",
+  "config.enforceGITiming.description": "如果计划点间隔太近，请跳过它们（有警告）。",
+  "config.require_resort_dialogue.title": "需要度假村对话",
+  "config.require_resort_dialogue.description":  "如果 NPC 没有基础度假村对话“度假村”，则阻止他们访问度假村。",
+  "config.wear_island_clothing.title": "穿姜岛服装",
+  "config.wear_island_clothing.description": "选择是否应该穿姜岛服装",
+  "config.scheduler.title": "使用 Mod 的调度程序",
+  "config.scheduler.description": "使用此模组的姜岛行程（而不是原版游戏）。",
+  "config.scheduler.otheroptions": "其余选项仅在使用此 mod 的调度程序时才会生效。",
+  "config.capacity.title": "姜岛容量",
+  "config.capacity.description": "如果使用此 mod 的调度程序，姜岛上允许的最大人数。",
+  "config.group_chance.title": "组队机会",
+  "config.group_chance.description": "一个（预定义的）群体被选中访问姜岛的概率。",
+  "config.explorer_chance.title": "探索者团体机会",
+  "config.explorer_chance.description": "一个团队将有机会探索姜岛的其余部分。",
+  "config.gus_day.title": "格斯的姜岛日",
+  "config.gus_day.description": "星期几格斯更有可能去姜岛。",
+  "config.gus_chance.title": "格斯的姜岛机会",
+  "config.gus_chance.description": "格斯有可能在指定的日子去姜岛。",
+  "AllowWilly.title": "允许威利",
+  "AllowWilly.description": "如果启用，则允许威利参加度假村活动。 （他的商店将继续营业）。",
+  "AllowSandy.title": "允许桑迪",
+  "AllowSandy.description": "如果启用，则允许桑迪参加度假村活动。 （他的商店将继续营业）。",
+  "AllowGeorgeAndEvelyn.title": "允许乔治和艾芙琳",
+  "AllowGeorgeAndEvelyn.description": "如果启用，则允许乔治和艾芙琳进入度假村。",
+  "AllowWizard.title": "允许巫师",
+  "AllowWizard.description": "如果启用，则允许巫师访问度假村。",
+
+  // Game doesn't have translations for full days of the week.
+  "config.DayOfWeek.None": "无", // for no dedicated Gus-to-GI day.
+  "config.DayOfWeek.Monday": "星期一",
+  "config.DayOfWeek.Tuesday": "星期二",
+  "config.DayOfWeek.Wednesday": "星期三",
+  "config.DayOfWeek.Thursday": "星期四",
+  "config.DayOfWeek.Friday": "星期五",
+  "config.DayOfWeek.Saturday": "星期六",
+  "config.DayOfWeek.Sunday": "星期天",
+
+  // Used for translating the choices for WearIslandClothing.
+  "config.WearIslandClothing.Default": "默认",
+  "config.WearIslandClothing.All": "全部",
+  "config.WearIslandClothing.None": "不",
+
+  "config.VillagerExclusionOverride.Yes": "是",
+  "config.VillagerExclusionOverride.No": "否",
+  "config.VillagerExclusionOverride.IfMarried": "如果已婚",
+
+  "ScheduleStrictness": "行程严格性",
+  "ScheduleStrictness.description":  "如果 NPC 当天有特定的日程安排，是否应该允许他们去度假村",
+
+  "config.ScheduleStrictness.Default": "默认",
+  "config.ScheduleStrictness.Strict": "严格",
+  "config.ScheduleStrictness.Loose":  "宽松",
+
+  //MidDayScheduleEditor messages
+  "middayScheduleEditor.npc-found-for-adjustment": "NPC {{name}} 与岛屿时间表，将设置时间表交替",
+  "middayScheduleEditor.npc-not-islander": "找到 NPC {{name}}，他没有前往姜岛 ",
+  "middayScheduleEditor.npc-has-no-schedule": "NPC {{name}} 没有日程安排",
+
+  //Scheduling code errors:
+  "GOTO_SCHEDULE_NOT_FOUND": "找不到 NPC {{npc}} 的 GOTO {{scheduleKey}}",
+  "GOTO_SCHEDULE_FRIENDSHIP": "由于 {{npc}} 的友谊限制而跳过： {{scheduleKey}}",
+  "GOTO_ILL_FORMED_FRIENDSHIP": "{{npc}} 的错误格式友谊要求 {{requirement}}： {{scheduleKey}}",
+  "GOTO_INFINITE_LOOP": "检测到无限循环，跳过此计划。",
+  "NO_GI_SCHEDULE_FOUND": "没有找到 {{npc}} 的姜岛剩余时间表",
+  "REGEX_TIMEOUT_ERROR": "时间表条目 {{schedulePoint}} 的正则表达式超时：\n\n{{ex}}",
+  "TOO_TIGHT_TIMELINE": "{{npc}} 在时间表 {{scheduleKey}} 中的 {{time}} 时间太紧了。将被跳过。",
+  "NO_REPLACEMENT_LOCATION": "已请求 {{location}} 的位置替换，但未找到 {{npc}}",
+  "ILL_FORMED_SCHEDULE_POINT": "计划点 {{point}} 似乎格式不正确。",
+  "SCHEDULE_PARSE_FAILURE": "为 NPC {{npc}} 解析调度点 {{schedulepoint}} 失败",
+  "SCHEDULE_REGEX_FAILURE": "{{schedulepoint}} 似乎无法通过正则表达式解析，让 NPC {{npc}} 回家睡觉",
+
+  "harmony_crash": "模组在应用和谐补丁时崩溃。请将此日志上传到 https://smapi.io/log 并将日志带到模组的 Github 页面："
+}

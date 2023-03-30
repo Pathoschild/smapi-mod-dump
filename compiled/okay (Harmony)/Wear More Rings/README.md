@@ -21,6 +21,7 @@ This mod requires the following mods to be installed:
 ## Known bugs
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
+* The forge menu does not show your ring slots.
 * This mod does not support android / mobile.
 * This mod might be incompatible with [Multiplayer Time](https://www.nexusmods.com/stardewvalley/mods/2543). Using both will cause save game corruption. This can (hopefully) be fixed by uninstalling either of these mods. If you keep Multiplayer Time, the mod should resolve the issue automatically. If you use Wear More Rings you need to execute the `player_resetmodifiers` console command manually.
 * Ring Slots in the Inventory screen can overlap with other text in the UI, especially with a high `Rings` setting. This won't be fixed.
@@ -29,6 +30,9 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 Mods adding additional rings most should work out of the box. For backwards compatibility this mod provides an API to access the equipped rings: [IWearMoreRingsAPI](https://github.com/bcmpinc/StardewHack/blob/master/WearMoreRings/IWearMoreRingsAPI.cs).
 
 ## Changes
+#### 6.4:
+* Fixed null pointer error when saving in generic mod config menu.
+
 #### 6.3:
 * Name the combined ring used for ring storage to clearly communicate its purpose. 
 * Prevent crash caused by equipping the combined ring inside of itself.

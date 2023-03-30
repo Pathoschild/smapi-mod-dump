@@ -81,7 +81,7 @@ namespace StardewHack.WearMoreRings
                 getValue: () => config.Rings, 
                 setValue: (int val) => {
                     config.Rings = val; 
-                    if (container != null) container.Value.limitSize(val);
+                    if (container.Value != null) container.Value.limitSize(val);
                 },
                 min: 2, 
                 max: 20

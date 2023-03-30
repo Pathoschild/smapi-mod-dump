@@ -54,7 +54,7 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
             return;
         }
 
-        var streak = e.Player.Read<int>(DataFields.ScavengerHuntStreak);
+        var streak = e.Player.Read<int>(DataKeys.ScavengerHuntStreak);
         if (streak > 1)
         {
             TrySpawnForageables(streak / 2, e.NewLocation);
@@ -98,7 +98,7 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
                 var position = new Vector2(x, y);
                 location.Objects.TryGetValue(position, out var @object);
                 var whichObject = r.Next(split.Length / 2) * 2;
-                if (@object != null || location.doesTileHaveProperty(x, y, "Spawnable", "Back") == null ||
+                if (@object != null || location.doesTileHaveProperty(x, y, "Spawnable", "Back") is null ||
                     location.doesEitherTileOrTileIndexPropertyEqual(x, y, "Spawnable", "Back", "F") ||
                     r.NextDouble() > double.Parse(split[whichObject + 1]) ||
                     !location.isTileLocationTotallyClearAndPlaceable(x, y) || location.getTileIndexAt(x, y, "AlwaysFront") != -1 ||

@@ -1,7 +1,7 @@
 {
   "Name": "GeneticsApi",
   "Author": "agent56",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Generates randomized color strings for Content Patcher token use for unique children.",
   "UniqueID": "agent56.GeneticsAPI",
   "EntryDll": "GeneticsAPI.dll",

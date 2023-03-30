@@ -55,6 +55,7 @@ mods:
    Preexisting Relationship
    Profit Calculator
    Pyromancer's Journey
+   Qi Chests
    Realtime Minimap
    Responsive Knockback
    Rush Orders
@@ -74,9 +75,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 56d392e3fae03ccb0f16992329121b22c7a5c53e
+   commit aade32babedfdaf2b353f9f9b3004580154ec385
    Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sun Jan 15 16:26:31 2023 -0500
+   Date:   Sun Mar 12 11:35:40 2023 -0400
    
-       SpaceCore 1.11.0, damageFarmer event command
+       Fix JA forge recipes, again.
    

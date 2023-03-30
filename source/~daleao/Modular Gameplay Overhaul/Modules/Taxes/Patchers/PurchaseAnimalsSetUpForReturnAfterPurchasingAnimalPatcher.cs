@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Taxes.Patchers;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Taxes.Extensions;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -32,14 +33,23 @@ internal sealed class PurchaseAnimalsSetUpForReturnAfterPurchasingAnimalPatcher 
 
     /// <summary>Patch to deduct animal expenses.</summary>
     [HarmonyPostfix]
-    private static void PurchaseAnimalsMenuReceiveLeftClickPostfix(PurchaseAnimalsMenu __instance, int ___priceOfAnimal)
+    private static void PurchaseAnimalsMenuReceiveLeftClickPostfix(FarmAnimal ___animalBeingPurchased, int ___priceOfAnimal)
     {
         if (!TaxesModule.Config.DeductibleAnimalExpenses)
         {
             return;
         }
 
-        Game1.player.Increment(DataFields.BusinessExpenses, ___priceOfAnimal);
+        if (Game1.player.ShouldPayTaxes())
+        {
+            Game1.player.Increment(DataKeys.BusinessExpenses, ___priceOfAnimal);
+        }
+        else
+        {
+            Broadcaster.MessageHost(
+                ___priceOfAnimal.ToString(),
+                OverhaulModule.Taxes.Namespace + DataKeys.BusinessExpenses);
+        }
     }
 
     #endregion harmony patches

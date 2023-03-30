@@ -11,22 +11,26 @@
 using System;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using System.Collections.Generic;
 using static StardewValley.Objects.Chest;
 
 namespace GroupableChests
 {
 
-class ModConfig
-{
-}
+    class ModConfig
+    {
+        public bool MaintainFridge { get; set; } = true;
+    }
 
     /// <summary>The mod entry point.</summary>
     internal sealed class ModEntry : Mod
@@ -40,6 +44,8 @@ class ModConfig
 
         private Chest chest;
 
+        private List<String> fridge_items;
+
         private int slot = -1;
 
 
@@ -50,7 +56,7 @@ class ModConfig
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            //this.Config = this.Helper.ReadConfig<ModConfig>();
+            this.Config = this.Helper.ReadConfig<ModConfig>();
             helper.Events.Display.MenuChanged += this.OnMenuChanged;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
@@ -91,13 +97,16 @@ class ModConfig
             }
             else if (item_list[slotTo] != null && item_list[slotTo].canStackWith(item))
             {
-                item_list[slot] = null;
-                slot = slotTo;
                 item.Stack = item_list[slotTo].addToStack(item);
-                if (item.Stack <= 0)
+                if (item.Stack > 0)
                 {
-                    return;
+                    item_list[slot] = item;
                 }
+                else
+                {
+                    item_list[slot] = null;
+                }
+                slot = slotTo;
             }
             return;
         }
@@ -218,12 +227,79 @@ class ModConfig
 
             if (Game1.activeClickableMenu is ItemGrabMenu igm)
             {
+                Monitor.Log(igm.source.ToString(), LogLevel.Debug);
+
                 Item i = Helper.Reflection.GetField<Item>(igm, "sourceItem").GetValue();
+                if (i is null && Game1.player.currentLocation is FarmHouse fh)
+                {
+                    i = fh.fridge.Get();
+                }
                 if (i is Chest c)
                 {
                     chest = c;
                     igm.behaviorOnItemGrab = behaviorOnItemSelectFromChest;
                     Helper.Reflection.GetField<ItemGrabMenu.behaviorOnItemSelect>(igm, "behaviorFunction").SetValue(behaviorOnItemSelectFromInventory);
+                }
+            }
+            else if (!this.Config.MaintainFridge)
+            {
+                return;
+            }
+            else if (e.OldMenu is not CraftingPage && e.NewMenu is CraftingPage cp && Game1.player.currentLocation is FarmHouse fh)
+            {
+                if (Helper.Reflection.GetField<bool>(cp, "cooking").GetValue())
+                {
+                    Chest fc = fh.fridge.Get();
+                    fridge_items = new List<String>(fc.GetActualCapacity());
+                    foreach (Item it in fc.items)
+                    {
+                        if (it != null)
+                        {
+                            fridge_items.Add(it.Name);
+                        }
+                        else
+                        {
+                            fridge_items.Add(null);
+                        }
+                    }
+                }
+            }
+            else if (e.OldMenu is CraftingPage cp2 && e.NewMenu is not CraftingPage && Game1.player.currentLocation is FarmHouse fh2)
+            {
+                if (Helper.Reflection.GetField<bool>(cp2, "cooking").GetValue())
+                {
+                    //
+                    Chest fc = fh2.fridge.Get();
+                    int chest_curr_index = fc.items.Count - 1;
+                    int saved_curr_index = fridge_items.Count-1;
+                    while (true) // means we can add spaces still
+                    {
+                        while (saved_curr_index >= 0 && fridge_items[saved_curr_index] == null)
+                        {
+                            saved_curr_index--;
+                        }
+                        while (chest_curr_index >= 0 && fc.items[chest_curr_index] == null)
+                        {
+                            chest_curr_index--;
+                        }
+                        if (saved_curr_index < 0 || chest_curr_index < 0)
+                        {
+                            break;
+                        }
+                        if (fridge_items[saved_curr_index] == fc.items[chest_curr_index].Name && saved_curr_index != chest_curr_index)
+                        {
+                            Item toMove = fc.items[chest_curr_index];
+                            fc.items[chest_curr_index] = null;
+                            while (saved_curr_index >= fc.items.Count)
+                            {
+                                fc.items.Add(null);
+                            }
+                            fc.items[saved_curr_index] = toMove;
+                        }
+                        saved_curr_index--;
+                        chest_curr_index--;
+                    }
+                    fridge_items = null;
                 }
             }
         }
@@ -261,6 +337,7 @@ class ModConfig
                     moveItemInChest((slot + cols) % cap);
                 }
             }
+
         }
     }
 }

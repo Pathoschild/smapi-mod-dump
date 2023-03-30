@@ -1,0 +1,10 @@
+﻿{
+  "mod.description": "Lets you more easily identify combined rings.",
+
+  "many": "(Many)",
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled",
+
+  "OverrideCombinedRing.title": "Override Combined Ring",
+  "OverrideCombinedRing.description": "Whether or not to override the game's graphics for combined rings."
+}

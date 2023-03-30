@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15860
+IDs: aedenthorn.LikeADuckToWater
+update keys: Nexus:15860, GitHub:aedenthorn/StardewValleyMods

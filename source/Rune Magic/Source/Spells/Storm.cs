@@ -20,8 +20,7 @@ namespace RuneMagic.Source.Spells
     {
         public Storm() : base(School.Evocation)
         {
-            Description += "Summons a storm to the target location.";
-            Level = 5;
+            Description += "Summons a storm to the target location."; Level = 5;
         }
     }
 }

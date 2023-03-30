@@ -1,0 +1,18 @@
+﻿{
+
+
+    "config.ShovelMaxEnergyUsage.name": "Max Energy Usage",
+    "config.ShovelMaxEnergyUsage.tooltip": "How much a basic un-upgraded shovel costs to use. The usage is this value + 7(or 0 with effeciancy) per tile.",
+
+
+    "config.ShovelEnergyDecreasePerLevel.name": "Upgrade Energy Decrease",
+    "config.ShovelEnergyDecreasePerLevel.tooltip": "The energy decrease that each level will give. At default, it means an iridium shovel will only cost 8 energy to use (Max Energy use - Upgradelevel * this value) before the + 7 per tile.",
+
+
+    "tool.shovel.description.0": "An old, rusty shovel. test",
+    "tool.shovel.description.1": "An old, rusty shovel plated in copper.",
+    "tool.shovel.description.2": "A shovel reforged.",
+    "tool.shovel.description.3": "A shovel reforged, plated in gold.",
+    "tool.shovel.description.4": "An iridium shovel.",
+    "tool.shovel.description.5": "Should you be using a radioactive shovel?"
+}

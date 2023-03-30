@@ -18,7 +18,7 @@
         },
         "When": {
             "HasMod" :"TheMightyAmondee.CustomTokens",
-            "HasValue: {{Spouse}}": true,
+            "HasValue: {{Spouse}}": true
         }
     },
     {
@@ -63,6 +63,19 @@
             "{{TaxDay}}": "We've all gotta do our duty, @, and that duty includes paying our taxes."
         },
         "When" : { "EnableFor|contains=Lewis": true}
+    },
+    {
+        "LogName": "Marnie base dialogue",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Marnie",
+        "Entries": {
+            "{{TaxDay}}": "%Marnie looks exhausted.#$b#Sorry, @, I was up all night trying to file my taxes...#$e#Why do I always leave things like this to the last minute...",
+            "Tue": "Between you and I, I think this good country air does Shane well.$h"
+        },
+        "When": {
+            "EnableFor|contains=Marnie": true,
+            "Year|contains=1": false
+        }
     },
     {
         "LogName": "Pam base dialogue",

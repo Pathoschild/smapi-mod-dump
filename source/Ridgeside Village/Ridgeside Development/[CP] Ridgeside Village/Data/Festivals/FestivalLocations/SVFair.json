@@ -86,6 +86,23 @@
         ]
     },
 
+    {
+        //Bryle Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/fall16",
+        "When": {
+            "HasSeenEvent": 75160375, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true, "Query: {{RandomNumber}} <= 4": true,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Bryle 14 15 up",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
 		{
         //Jio and Kiwi
         "Action": "EditData",
@@ -134,12 +151,16 @@
       "LogName": "June SDV Fair Location",
       "Action": "EditData",
       "Target": "Data/Festivals/fall16",
-      "When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false },
+      "When": {
+        "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false,
+        "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true,
+        "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
+      },
       "TextOperations": [
         {
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
-          "Value": "June 35 89 2",
+          "Value": "June 27 9 2",
           "Delimiter": "/"
         },
       ]

@@ -1,0 +1,7 @@
+{
+	"junimoWarp.tooltip": "Warp",
+	"junimoWarp.notEmpty.message": "You don't fit into the Junimo Chest. It seems like you need to empty it first.",
+
+	"config.requiredEmptyChest.name": "Required empty chest",
+	"config.requiredEmptyChest.tooltip": "If enabled, warping will not be possible until the Junimo Chest is emptied."
+}

@@ -31,9 +31,6 @@ namespace BedTweaks
         {
             Config = Helper.ReadConfig<ModConfig>();
 
-            if (!Config.EnableMod)
-                return;
-
             SMonitor = Monitor;
             SHelper = helper;
 

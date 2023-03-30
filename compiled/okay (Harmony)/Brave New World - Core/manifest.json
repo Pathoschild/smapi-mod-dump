@@ -1,0 +1,11 @@
+{
+  "Name": "> BNWCore",
+  "Author": "DiogoAlbano",
+  "Version": "1.0.1",
+  "Description": "Code Core for Brave New World Mods.",
+  "UniqueID": "DiogoAlbano.BNWCore",
+  "EntryDll": "BNWCore.dll",
+  "UpdateKeys": [
+    "Nexus: ???"
+  ]
+}

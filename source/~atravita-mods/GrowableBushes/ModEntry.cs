@@ -21,8 +21,6 @@ using GrowableBushes.Framework;
 
 using HarmonyLib;
 
-using Microsoft.Xna.Framework;
-
 using StardewModdingAPI.Events;
 
 using StardewValley.TerrainFeatures;
@@ -85,7 +83,7 @@ internal sealed class ModEntry : Mod
 
             // shop TAS
             this.Helper.Events.Content.AssetRequested += static (_, e) => AssetManager.Load(e);
-            this.Helper.Events.Player.Warped += static (_, e) => ShopManager.AddBoxToShop(e);
+            this.Helper.Events.Player.Warped += static (_, e) => ShopManager.AddSignToShop(e);
 
             this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
 

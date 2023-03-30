@@ -47,7 +47,8 @@
         "Target": "Characters/Dialogue/Clint",
         "Entries": {
             "6_2": "%Clint is mumbling to himself.#$b#Gosh, this economy doesn't help matters...$s#$e#Oh, what? It's nothing.",
-            "12_2": "I've really only left Pelican Town for long enough to do an apprenticeship in Grampleton. This's where I've been all my life.$s"
+            "12_2": "I've really only left Pelican Town for long enough to do an apprenticeship in Grampleton. This's where I've been all my life.$s",
+            "14_2": "I'm really hoping I can drum up some more commissions, I need the money.$s"
         },
         "When": {"YearModulus": 3}
     }

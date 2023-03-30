@@ -6,12 +6,12 @@ mods:
    Stardew Access
 
 latest commit:
-   commit d12ecf0fae168aac6fd217a8dd23b49583911c00
-   Merge: 07bd1bf ac190f5
-   Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
-   Date:   Wed Feb 22 18:11:39 2023 +0530
+   commit b24fe44dd356fcf773cc8fe8ac53d15fe233e6ab
+   Merge: d12ecf0 2b6b604
+   Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
+   Date:   Fri Mar 10 15:37:09 2023 +0530
    
-       Merge pull request #88 from khanshoaib3/Issue79
+       Merge pull request #91 from khanshoaib3/refactor
        
-       TextBox QOL update
+       Patches Refactor
    

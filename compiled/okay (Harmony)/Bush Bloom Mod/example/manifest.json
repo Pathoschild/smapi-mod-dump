@@ -1,0 +1,11 @@
+﻿{
+	"Name": "[BBM] Example",
+	"Author": "NCarigon",
+    "Version": "1.0.0",
+	"Description": "Example usage for Bush Bloom Mod.",
+	"UniqueID": "NCarigon.ExampleBBM",
+	"MinimumApiVersion": "2.11.2",
+	"ContentPackFor": {
+		"UniqueID": "NCarigon.BushBloomMod"
+	}
+}

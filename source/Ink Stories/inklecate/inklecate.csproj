@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Ink</RootNamespace>
+    <AssemblyName>inklecate</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>inkle Ltd</Company>
+    <Authors>InkleStudios</Authors>
+    <Copyright>inkle Ltd</Copyright>
+    <RepositoryUrl>https://github.com/inkle/ink</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/inkle/ink</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/inkle/ink/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <!-- PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\compiler\ink_compiler.csproj" />
+    <ProjectReference Include="..\ink-engine-runtime\ink-engine-runtime.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- this is planned for the future sdk versions
+      <InternalsVisibleTo Include="ink-tests"/>
+    -->
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>ink-tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

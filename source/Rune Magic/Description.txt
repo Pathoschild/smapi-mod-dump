@@ -12,31 +12,24 @@
 
 
 [color=red][b][size=4][center]WARNING
-This mod is in ALPHA, every feature is fully functional but there will be bugs. I will try to fix problems as they appear.
-Please back up your save file if you use it with other mods!
-[/size][/b][/color][/center]
-
-[color=yellow][b][size=4][center]Big Update
-Another Big Update, Implemented a lot of spells and fixed some more bugs.
-Next up is the professions and the rest of the spells.
-
-Sadly the only way is to remove all items which contain spells from the inventory or chests before updating. I'll try to look into a way to fix this in the future.
-Also the summoning spell is incomplete right now, it will only summon a slime that follows the player.
-
-The professions don't work yet, they are a priority for the next update.
-Some of the spells are not working yet, you'll see the big NOT IMPLEMENTED on the description.
+This mod is now in BETA, almost every feature is functional but there will be bugs. 
+I will try to fix problems as they appear.
 [/size][/b][/color][/center]
 
 [center][size=5][b]Features[/b][/size][/center]
 
-[list][*][b]Spells:[/b] A list of spells the player can use for various purposes. The spells can be learned and inscribed into magic items.
+[list][*][b]Spells:[/b] A list of spells the player can use for various purposes. The spells can be learned and used via the spell book or by inscribing them
+    into magic items.
     Every spell belongs to a school of magic.
-[*][b]Magic Skills:[/b] There are four Magic Skills: Abjuration, Alteration, Conjuration, and Evocation. 
-    Each school has a set of spells that can be learned and inscribed into magic items.
-[*][b]Magic Professions:[/b] There are six professions for each Magic Skill.
+[*][b]Magic Schools:[/b] There are four Magic Skills: Abjuration, Alteration, Conjuration, and Evocation. Each Magic School will have a list of Feats or Magic 
+    Professions
+    that can be learned.
 [*][b]Magic Items:[/b][list]
+
+[*][b]Spell Book:[/b] The Spell Book is the main source of magic. It contains all the spells the player has learned and can be used to cast spells.
 [*][b]Runes:[/b] Carved stone pieces with glyphs and Magic Dust that have charges. When activated, a spell is cast and a charge is used. 
-    They slowly recharge over time and have a random number of charges based on the level of the spell.
+    They slowly recharge over time and have a random number of charges based on the level of the spell. 
+    They have a chance of breaking when used. 
 [*][b]Scrolls:[/b] One-time use items that can be crafted and infused with spells. 
     They don't have charges but are cheaper than runes.
 [*][b]Staves:[/b] Blunt weapons that grant the ability to cast spells. 
@@ -84,30 +77,42 @@ Some of the spells are not working yet, you'll see the big NOT IMPLEMENTED on th
 
 [center][size=5][b]How to Use[/b][/size][/center]
 
-To start your journey, befriend the Wizard who will give you a staff and the basic recipes you will need to craft Runes and Scrolls (You need 3 hearts to trigger the event.)
-After you get the Recipes, craft an Inscription Table or a Runic Anvil and start casting spells and level up.
+To start your journey, befriend the Wizard who will give you a Spell Book (You need 3 hearts to trigger the event.)
+With the Spell Book you will be able to enter the magic menu (default key K) and in places of resting, currently the Farm and the Wizards Tower, 
+you will be able to memorize spells for the day.
+The magic menu has a number of Memorized Spell Slots where you can put spells to be used during the day. 
+They deactivate on use and will be reset after rest.
+After memorizing the spells you want to use for the day you can use them by pressing Q and selecting the spell you want to use.
+If you didn't use a slot you can change it by pressing on the memorized slot and selecting a new spell at the Farm or Wizard's Tower.
+
+After some time the Wizard will teach you how to craft scrolls, and the Dwarf, Runes. ( You need 5 hearts with any of them to trigger the events.)
 
 [color=#00ff00][b][size=4]
-Use R to cast and Q to activate Professions (You can bind the keys to whatever you want).
+Use:
+K to open the Spell Book.
+Q to select spells.
+R to cast spells.
+
 [/size][/b][/color]
 
 
 [center][size=5][b]Compatibility[/b][/size][/center]
 [list][size=2]
-[*][b]Other Mods: [/b]It should compatible with almost anything, even Magic from spacechace0, it would be redundant and not balanced though.
-    Also I tested this with SVE and like 50 mods and haven't had any problems with it yet, but remember its ALPHA anything could happen.
+
+[*][b]Compatible (if you find any incompatibility with these please let me know!): [/b]
+[list]
+[*]Stardew Valley Extended
+[*]MARGO
+[*]Romanceable Rasmodius / Rasmodia
+[/list]
+[*][b]Other Mods: [/b]It should compatible with almost everything, even Magic from spacechace0, it would be redundant and not balanced though.
 [*][b]Multiplayer: [/b]Confirmed not working in multiplayer. I'll look into it when the mod is more complete.
-[*][b]Mobile: [/b]This mod is made for PC only, and there are no plans to port it to mobile.
+[*][b]Mobile: [/b]This mod is made for PC only, and there are no plans to port it to mobile.w
 [/size][/list]
 
 [b][size=4]Source:[url=http://] https://github.com/facufierro/RuneMagic[/url][/size][/b]
 
 
-[size=5]Known Issues[/size]
-
-[list][size=2]
-[*]When creating runes using the Shift key to create 5 only the last one stays the others are erased, I don't know how to fix this. If anyone has an idea on how to limit the crafting to 1 rune it would be very welcome.
-[/size][/list]
 
 
 [b][size=4]Credits[/size][/b]

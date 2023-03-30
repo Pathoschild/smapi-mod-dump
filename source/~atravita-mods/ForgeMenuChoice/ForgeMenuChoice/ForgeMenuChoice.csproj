@@ -10,17 +10,13 @@
     <Name>Pick Your Enchantment</Name>
     <Description>Allows you to pick which enchantment you get.</Description>
     <UpdateKeys> Nexus:11376, ModDrop:1125882 </UpdateKeys>
-    <Version>1.1.1</Version>
+    <Version>1.1.3</Version>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\AtraCore\AtraCore.csproj" Private="false" />
     <ProjectReference Include="..\..\Pintail\Pintail\Pintail.csproj" Private="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
   </ItemGroup>
 
   <ItemGroup>

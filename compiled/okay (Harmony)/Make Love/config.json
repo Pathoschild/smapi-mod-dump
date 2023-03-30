@@ -1,0 +1,54 @@
+{
+  "DisableDatingRequirement": false,
+  "RequiredFriendshipLevel": 8,
+  "NpcConfigs": [
+    {
+      "Name": "Abigail",
+      "Passive": true,
+      "Frame": 54,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Emily",
+      "Passive": true,
+      "Frame": 56,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Haley",
+      "Passive": true,
+      "Frame": 48,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Leah",
+      "Passive": true,
+      "Frame": 52,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Maru",
+      "Passive": true,
+      "Frame": 48,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Penny",
+      "Passive": true,
+      "Frame": 52,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Sam",
+      "Passive": false,
+      "Frame": 56,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Sebastian",
+      "Passive": false,
+      "Frame": 60,
+      "FrameDirectionRight": false
+    }
+  ]
+}

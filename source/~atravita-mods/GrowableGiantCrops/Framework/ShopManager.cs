@@ -27,6 +27,8 @@ using GrowableGiantCrops.Framework.Assets;
 using GrowableGiantCrops.Framework.InventoryModels;
 using GrowableGiantCrops.HarmonyPatches.GrassPatches;
 
+using HarmonyLib;
+
 using Microsoft.Xna.Framework;
 
 using StardewModdingAPI.Events;
@@ -39,6 +41,7 @@ namespace GrowableGiantCrops.Framework;
 /// <summary>
 /// Manages shops for this mod.
 /// </summary>
+[HarmonyPatch(typeof(Utility))]
 [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1214:Readonly fields should appear before non-readonly fields", Justification = "Reviewed.")]
 internal static class ShopManager
 {
@@ -93,14 +96,15 @@ internal static class ShopManager
         HashSet<int> nodesList = new();
         foreach ((int index, string data) in Game1.objectInformation)
         {
-            if (index == 290)
+            if (index == 390)
             {
                 continue;
             }
             ReadOnlySpan<char> name = data.GetNthChunk('/');
             if (name.Equals("Stone", StringComparison.OrdinalIgnoreCase)
                 || name.Equals("Weeds", StringComparison.OrdinalIgnoreCase)
-                || name.Equals("Twig", StringComparison.OrdinalIgnoreCase))
+                || name.Equals("Twig", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("SupplyCrate", StringComparison.OrdinalIgnoreCase))
             {
                 nodesList.Add(index);
             }
@@ -108,6 +112,8 @@ internal static class ShopManager
 
         nodes = nodesList.ToArray();
     }
+
+    #region events
 
     /// <inheritdoc cref="IContentEvents.AssetsInvalidated"/>
     internal static void OnAssetInvalidated(IReadOnlySet<IAssetName>? assets)
@@ -129,6 +135,7 @@ internal static class ShopManager
 
                 data[RESOURCE_SHOP_NAME] = I18n.RobinMail();
                 data[GIANT_CROP_SHOP_NAME] = I18n.WitchMail();
+                data[ROBIN_MAIL_TWO] = I18n.RobinMailTwo();
             });
         }
         else if (e.NameWithoutLocale.IsEquivalentTo(robinHouse))
@@ -227,8 +234,9 @@ internal static class ShopManager
         {
             input.SurpressClickInput();
 
-            Dictionary<ISalable, int[]> sellables = new(ResourceClumpIndexesExtensions.Length);
+            Dictionary<ISalable, int[]> sellables = new(ResourceClumpIndexesExtensions.Length + GrassIndexesExtensions.Length);
             sellables.PopulateSellablesWithResourceClumps();
+            sellables.PopulateSellablesWithGrass();
 
             ShopMenu shop = new(sellables, who: "Robin") { storeContext = RESOURCE_SHOP_NAME };
             if (NPCCache.GetByVillagerName("Robin") is NPC robin)
@@ -246,7 +254,7 @@ internal static class ShopManager
             Dictionary<ISalable, int[]> sellables = new();
             sellables.PopulateWitchShop();
 
-            Game1.activeClickableMenu = new ShopMenu(sellables, on_purchase: TrackStock) { storeContext = GIANT_CROP_SHOP_NAME };
+            Game1.activeClickableMenu = new ShopMenu(sellables, on_purchase: PerfectFarm.GetValue() ? null : TrackStock) { storeContext = GIANT_CROP_SHOP_NAME };
         }
     }
 
@@ -266,18 +274,23 @@ internal static class ShopManager
         Reset();
 
         // add Robin letter for tomorrow.
-        if (!HaveSentAllRobinMail.Value
-            && Game1.player.getFriendshipLevelForNPC("Robin") > 250
-            && Game1.player.mailReceived.Contains("robinKitchenLetter"))
+        if (!HaveSentAllRobinMail.Value)
         {
-            if (Game1.player.mailReceived.Contains(RESOURCE_SHOP_NAME))
+            if (Game1.player.mailReceived.Contains(ROBIN_MAIL_TWO))
             {
-                Game1.addMailForTomorrow(mailName: RESOURCE_SHOP_NAME);
-            }
-            else if (Game1.player.hasSkullKey && !Game1.player.mailReceived.Contains(ROBIN_MAIL_TWO))
-            {
-                Game1.addMailForTomorrow(mailName: ROBIN_MAIL_TWO);
                 HaveSentAllRobinMail.Value = true;
+            }
+            else if (Game1.player.getFriendshipLevelForNPC("Robin") > 250 && Game1.player.mailReceived.Contains("robinKitchenLetter"))
+            {
+                if (!Game1.player.mailReceived.Contains(RESOURCE_SHOP_NAME))
+                {
+                    Game1.addMailForTomorrow(mailName: RESOURCE_SHOP_NAME);
+                }
+                else if (Game1.player.hasSkullKey && !Game1.player.mailReceived.Contains(ROBIN_MAIL_TWO))
+                {
+                    Game1.addMailForTomorrow(mailName: ROBIN_MAIL_TWO);
+                    HaveSentAllRobinMail.Value = true;
+                }
             }
         }
 
@@ -287,6 +300,8 @@ internal static class ShopManager
             Game1.addMailForTomorrow(mailName: GIANT_CROP_SHOP_NAME);
         }
     }
+
+    #endregion
 
     private static bool TrackStock(ISalable salable, Farmer farmer, int count)
     {
@@ -318,10 +333,28 @@ internal static class ShopManager
         return false; // do not want to yeet the menu.
     }
 
+    #region stock
+
+    /// <summary>
+    /// Postfix to add bushes to the catalog.
+    /// </summary>
+    /// <param name="__result">shop inventory to add to.</param>
+    [HarmonyPatch(nameof(Utility.getAllFurnituresForFree))]
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
+    private static void Postfix(Dictionary<ISalable, int[]> __result)
+    {
+        try
+        {
+            __result.PopulateSellablesWithGrass(cheaper: true);
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Failed while trying to add grass to the catalogue\n\n{ex}", LogLevel.Error);
+        }
+    }
+
     private static void PopulateSellablesWithResourceClumps(this Dictionary<ISalable, int[]> sellables)
     {
-        Debug.Assert(sellables is not null, "Sellables cannot be null.");
-
         if (Game1.player.hasSkullKey)
         {
             foreach (ResourceClumpIndexes clump in ResourceClumpIndexesExtensions.GetValues())
@@ -335,12 +368,16 @@ internal static class ShopManager
                 {
                     if (HasCompletedQiChallenge.GetValue())
                     {
-                        sellData = new[] { 10_000, ShopMenu.infiniteStock };
+                        sellData = new[] { 15_000, ShopMenu.infiniteStock };
                     }
                     else
                     {
                         continue;
                     }
+                }
+                else if (clump == ResourceClumpIndexes.Stump || clump == ResourceClumpIndexes.HollowLog)
+                {
+                    sellData = new[] { 10_000, ShopMenu.infiniteStock };
                 }
                 else
                 {
@@ -351,8 +388,12 @@ internal static class ShopManager
                 _ = sellables.TryAdd(clumpItem, sellData);
             }
         }
+    }
 
-        // grass
+    private static void PopulateSellablesWithGrass(this Dictionary<ISalable, int[]> sellables, bool cheaper = false)
+    {
+        Debug.Assert(sellables is not null, "Sellables cannot be null.");
+
         foreach (GrassIndexes grass in GrassIndexesExtensions.GetValues())
         {
             if (grass == GrassIndexes.Invalid)
@@ -362,7 +403,7 @@ internal static class ShopManager
 
             SObject grassStarter = new(SObjectPatches.GrassStarterIndex, 1);
             grassStarter.modData?.SetInt(SObjectPatches.ModDataKey, (int)grass);
-            _ = sellables.TryAdd(grassStarter, new[] { 500, ShopMenu.infiniteStock });
+            _ = sellables.TryAdd(grassStarter, new[] { cheaper ? 100 : 500, ShopMenu.infiniteStock });
         }
     }
 
@@ -394,7 +435,7 @@ internal static class ShopManager
         }
         else
         {
-            Stock.Value ??= GenerateDailyStock();
+            Stock.Value ??= GenerateGiantCropStock();
             if (Stock.Value is not null)
             {
                 foreach ((int index, int count) in Stock.Value)
@@ -434,22 +475,6 @@ internal static class ShopManager
         }
     }
 
-    private static WeightedManager<int> GetWeightedManager()
-    {
-        WeightedManager<int> manager = new();
-
-        foreach (int idx in ModEntry.YieldAllGiantCropIndexes())
-        {
-            int? price = GetPriceOfProduct(idx);
-            if (price is not null)
-            {
-                manager.Add(new(2500d / Math.Clamp(price.Value, 50, 1250), idx));
-            }
-        }
-        ModEntry.ModMonitor.DebugOnlyLog($"Got {manager.Count} giant crop entries for shop.", LogLevel.Info);
-        return manager;
-    }
-
     private static Dictionary<int, int>? GenerateNodeShop()
     {
         Dictionary<int, int> chosen = new(4);
@@ -463,7 +488,23 @@ internal static class ShopManager
         return chosen.Count > 0 ? chosen : null;
     }
 
-    private static Dictionary<int, int>? GenerateDailyStock()
+    private static WeightedManager<int> GetWeightedManager()
+    {
+        WeightedManager<int> manager = new();
+
+        foreach (int idx in ModEntry.YieldAllGiantCropIndexes())
+        {
+            int? price = GetPriceOfProduct(idx);
+            if (price is not null)
+            {
+                manager.Add(new((2500d / Math.Clamp(price.Value, 75, 1250)) + 10, idx));
+            }
+        }
+        ModEntry.ModMonitor.DebugOnlyLog($"Got {manager.Count} giant crop entries for shop.", LogLevel.Info);
+        return manager;
+    }
+
+    private static Dictionary<int, int>? GenerateGiantCropStock()
     {
         weighted ??= GetWeightedManager();
         if (weighted.Count == 0)
@@ -472,8 +513,10 @@ internal static class ShopManager
         }
 
         Dictionary<int, int> chosen = new();
+        int totalCount = Math.Min(
+            ModEntry.Config.MaxGiantCropsSold,
+            Math.Max(4, ModEntry.GetTotalValidIndexes() / 7));
 
-        int totalCount = Math.Max(5, ModEntry.GetTotalValidIndexes() / 7);
         for (int i = 0; i < totalCount; i++)
         {
             Option<int> picked = weighted.GetValue();
@@ -495,13 +538,24 @@ internal static class ShopManager
     }
 
     private static int? GetPriceOfProduct(int idx)
-    => Game1Wrappers.ObjectInfo.TryGetValue(idx, out string? info) &&
-       int.TryParse(info.GetNthChunk('/', SObject.objectInfoPriceIndex), out int price)
-       ? price
-       : null;
+    {
+        if (Game1Wrappers.ObjectInfo.TryGetValue(idx, out string? info)
+            && int.TryParse(info.GetNthChunk('/', SObject.objectInfoPriceIndex), out int price))
+        {
+            // qi fruit exception
+            if (idx == 890)
+            {
+                return 150;
+            }
+            return price;
+        }
+        return null;
+    }
 
     private static int? PriceNode(int idx)
         => Game1Wrappers.ObjectInfo.TryGetValue(idx, out string? info)
             ? info.GetNthChunk('/').Equals("Stone", StringComparison.OrdinalIgnoreCase) ? 2_750 : 1_000
             : null;
+
+    #endregion
 }

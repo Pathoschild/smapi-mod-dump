@@ -1,6 +1,6 @@
 {
   "Name": "Ring of the Wieldy Pick",
-  "Description": "Makes your pickaxe easier to handle, increasing mining skill.",
+  "Description": "Makes your pickaxe easier to handle, increasing mining skill.(Mining +1)",
   "Category": "Ring",
   "Edibility": -300,
   "Price": 1000,

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/scayze/multiprairie
+   Git: https://github.com/scayze/multiprairie.git
+
+mods:
+   Multiplayer Journey Of The Prairie King
+
+latest commit:
+   commit 0e7a21ceb79dab5c7149d7ed49b1f8b07304294a
+   Author: Manuel Strey <manuel.strey@gmx.de>
+   Date:   Wed Mar 29 19:31:25 2023 +0200
+   
+       Big refactor
+   

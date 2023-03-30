@@ -1,11 +1,19 @@
 {
-  "EntryDll": "FrameRateLogger.dll",
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "atravita.FrameRateLogger",
   "Name": "Frame Rate Logger",
   "Author": "atravita",
-  "Version": "0.1.0",
+  "Version": "0.1.1",
   "Description": "Logs the current frame rate.",
-  "UniqueID": "atravita.FrameRateLogger",
   "MinimumApiVersion": "3.18",
+  "EntryDll": "FrameRateLogger.dll",
   "UpdateKeys": [
     "Nexus:15002"
   ]

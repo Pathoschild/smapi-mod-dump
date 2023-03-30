@@ -205,7 +205,7 @@ public class Skill : SmartEnum<Skill>, ISkill
         }
 
         var farmer = Game1.player;
-        var forgottenRecipesDict = farmer.Read(DataFields.ForgottenRecipesDict)
+        var forgottenRecipesDict = farmer.Read(DataKeys.ForgottenRecipesDict)
             .ParseDictionary<string, int>();
 
         // remove associated crafting recipes
@@ -258,7 +258,7 @@ public class Skill : SmartEnum<Skill>, ISkill
 
         if (saveForRecovery)
         {
-            farmer.Write(DataFields.ForgottenRecipesDict, forgottenRecipesDict.Stringify());
+            farmer.Write(DataKeys.ForgottenRecipesDict, forgottenRecipesDict.Stringify());
         }
     }
 

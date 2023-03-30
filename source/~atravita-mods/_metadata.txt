@@ -6,6 +6,7 @@ mods:
    Atra's Interaction Tweaks
    AtraCore
    Avoid Losing Scepter
+   Critter Rings
    Draw Fish Ponds Over Grass
    Easier Cave Puzzle
    Easier Dart Puzzle
@@ -15,8 +16,11 @@ mods:
    Frame Rate Logger
    Giant Crop Fertilizer
    Ginger Island Mainland Adjustments
+   Growable Bushes
+   Growable Giant Crops
    Highlight Empty Machines
    Holiday Sales
+   Identifiable Combined Rings
    Last Day to Plant Redux
    Less Mini Shipping Bin
    More Fertilizers
@@ -30,9 +34,9 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit 71c4889528b7bd3ef946153ca9e619a97f188384
+   commit 8a885849ae3dd933bf795262368cadadc6bea8f8
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri Feb 24 14:05:40 2023 -0500
+   Date:   Wed Mar 29 09:08:08 2023 -0400
    
-       readme fussing.
+       fixes for critterrings
    

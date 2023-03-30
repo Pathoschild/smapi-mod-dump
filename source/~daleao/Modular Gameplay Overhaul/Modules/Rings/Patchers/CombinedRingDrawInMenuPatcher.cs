@@ -105,7 +105,7 @@ internal sealed class CombinedRingDrawInMenuPatcher : HarmonyPatcher
             Vector2 offset;
 
             // draw top gem
-            var gemColor = Gemstone.FromRing(__instance.combinedRings[0].ParentSheetIndex).Color * transparency;
+            var gemColor = Gemstone.FromRing(__instance.combinedRings[0].ParentSheetIndex).StoneColor * transparency;
             offset = usingVanillaTweaks
                 ? new Vector2(24f, 6f)
                 : usingBetterRings
@@ -127,7 +127,7 @@ internal sealed class CombinedRingDrawInMenuPatcher : HarmonyPatcher
             if (count > 1)
             {
                 // draw bottom gem (or left, in case of better rings)
-                gemColor = Gemstone.FromRing(__instance.combinedRings[1].ParentSheetIndex).Color * transparency;
+                gemColor = Gemstone.FromRing(__instance.combinedRings[1].ParentSheetIndex).StoneColor * transparency;
                 offset = usingBetterRings ? new Vector2(28f, 20f) : new Vector2(24f, 44f);
                 spriteBatch.Draw(
                     Textures.GemstonesTx,
@@ -144,7 +144,7 @@ internal sealed class CombinedRingDrawInMenuPatcher : HarmonyPatcher
             if (count > 2)
             {
                 // draw left gem (or right, in case of better rings)
-                gemColor = Gemstone.FromRing(__instance.combinedRings[2].ParentSheetIndex).Color * transparency;
+                gemColor = Gemstone.FromRing(__instance.combinedRings[2].ParentSheetIndex).StoneColor * transparency;
                 offset = usingVanillaTweaks
                     ? new Vector2(3f, 25f)
                     : usingBetterRings
@@ -164,7 +164,7 @@ internal sealed class CombinedRingDrawInMenuPatcher : HarmonyPatcher
             if (count > 3)
             {
                 // draw right gem (or bottom, in case of better rings)
-                gemColor = Gemstone.FromRing(__instance.combinedRings[3].ParentSheetIndex).Color * transparency;
+                gemColor = Gemstone.FromRing(__instance.combinedRings[3].ParentSheetIndex).StoneColor * transparency;
                 offset = usingVanillaTweaks
                     ? new Vector2(45f, 25f)
                     : usingBetterRings
@@ -227,7 +227,7 @@ internal sealed class CombinedRingDrawInMenuPatcher : HarmonyPatcher
         }
 
         // redraw top gem
-        var gemColor = Gemstone.FromRing(__instance.combinedRings[0].ParentSheetIndex).Color * transparency;
+        var gemColor = Gemstone.FromRing(__instance.combinedRings[0].ParentSheetIndex).StoneColor * transparency;
         spriteBatch.Draw(
             Textures.GemstonesTx,
             __state,

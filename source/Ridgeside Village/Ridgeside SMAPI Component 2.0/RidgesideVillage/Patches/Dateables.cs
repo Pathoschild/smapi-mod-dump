@@ -35,6 +35,8 @@ namespace RidgesideVillage
             { "Paula", "75160352/75163521" },
             { "Irene", "75160324/7516325" },
             { "Zayne", "75160440/7516439" },
+            { "Faye", "75160449/7516319" },
+            { "Bryle", "75160453/7516453" },
         };
 
         internal static void ApplyPatch(Harmony harmony, IModHelper helper)
@@ -59,8 +61,8 @@ namespace RidgesideVillage
         private static void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             NPC irene = Game1.getCharacterFromName("Irene");
-            if (irene is not null && Game1.player.friendshipData.TryGetValue("Irene", out var friendship) 
-                && friendship.Status == FriendshipStatus.Married)
+            if (irene is not null && Game1.player.friendshipData.TryGetValue("Irene", out var friendshipIrene) 
+                && friendshipIrene.Status == FriendshipStatus.Married)
             { 
                 if (Game1.currentSeason.Equals("spring") || Game1.currentSeason.Equals("summer"))
                 {
@@ -74,6 +76,19 @@ namespace RidgesideVillage
                     if (Game1.dayOfMonth >= 2 && Game1.dayOfMonth <= 7)
                     {
                         Game1.warpCharacter(irene, RSVConstants.L_HIDDENWARP, Vector2.One);
+                    }
+                }
+            }
+
+            NPC bryle = Game1.getCharacterFromName("Bryle");
+            if (bryle is not null && Game1.player.friendshipData.TryGetValue("Bryle", out var friendshipBryle)
+                && friendshipBryle.Status == FriendshipStatus.Married)
+            {
+                if (Game1.Date.DayOfWeek.Equals("Wednesday") || Game1.Date.DayOfWeek.Equals("Friday"))
+                {
+                    if (!Game1.isFestival())
+                    {
+                        Game1.warpCharacter(bryle, RSVConstants.L_HIDDENWARP, Vector2.One);
                     }
                 }
             }
@@ -130,7 +145,7 @@ namespace RidgesideVillage
                         }
                     }
 
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Paula route; Makes Anton dateable for everyone
+                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Anton route; Makes Anton dateable for everyone
                     {
                         foreach (Farmer p in Game1.getAllFarmers())
                         {
@@ -157,7 +172,7 @@ namespace RidgesideVillage
                         }
                     }
 
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Paula route; Makes Irene dateable for everyone
+                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Irene route; Makes Irene dateable for everyone
                     {
                         foreach (Farmer p in Game1.getAllFarmers())
                         {
@@ -182,13 +197,68 @@ namespace RidgesideVillage
                         }
                     }
 
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Paula route; Makes Zayne dateable for everyone
+                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Zayne route; Makes Zayne dateable for everyone
                     {
                         foreach (Farmer p in Game1.getAllFarmers())
                         {
                             if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
                             {
                                 p.dialogueQuestionsAnswered.Add(ResponseID);
+                            }
+                        }
+                    }
+                }
+
+                //Bryle's 8 heart event (If seen by one, seen by all)
+                if (o.eventsSeen.Contains(75160453))
+                {
+                    int EventID = 75160453;
+                    int ResponseID = 7516453;
+                    foreach (Farmer p in Game1.getAllFarmers())
+                    {
+                        if (!p.eventsSeen.Contains(EventID))
+                        {
+                            p.eventsSeen.Add(EventID);
+                        }
+                    }
+
+                    //Adding false dialogue keys for unlocking Faye and Bryle as romance candidates
+                    // Bryle Dialogue Key: 7516453
+                    if (!o.mailReceived.Contains("FayeBryleLoveStory") && o.eventsSeen.Contains(75160453)) //No Brayle flag and seen Bryle's 8 heart event; Makes Bryle dateable for everyone
+                    {
+                        foreach (Farmer p in Game1.getAllFarmers())
+                        {
+                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
+                            {
+                                p.dialogueQuestionsAnswered.Add(ResponseID);
+                            }
+                        }
+                    }
+                }
+
+                //Faye's 8 heart event (If seen by one, seen by all)
+                if (o.eventsSeen.Contains(75160449))
+                {
+                    int EventID = 75160449;
+                    int ResponseID = 7516319;
+                    foreach (Farmer p in Game1.getAllFarmers())
+                    {
+                        if (!p.eventsSeen.Contains(EventID))
+                        {
+                            p.eventsSeen.Add(EventID);
+                        }
+                    }
+
+                    //Adding false dialogue keys for unlocking Faye and Bryle as romance candidates
+                    // Faye Dialogue Key: 7516319
+                    if (o.mailReceived.Contains("FarmerxFaye")) //Has FarmerxFaye flag; Makes Faye dateable for everyone
+                    {
+                        foreach (Farmer p in Game1.getAllFarmers())
+                        {
+                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
+                            {
+                                p.dialogueQuestionsAnswered.Add(ResponseID);
+                                p.mailReceived.Add("FarmerxFaye");
                             }
                         }
                     }
@@ -206,6 +276,10 @@ namespace RidgesideVillage
             if (Game1.MasterPlayer.eventsSeen.Contains(RSVConstants.E_ZAYNE_NODECAY) && Game1.player.friendshipData.ContainsKey("Zayne"))
             {
                 Game1.player.friendshipData["Zayne"].TalkedToToday = true;
+            }
+            if (Game1.player.friendshipData.ContainsKey("Bryle"))
+            {
+                Game1.player.friendshipData["Bryle"].TalkedToToday = true;
             }
         }
 

@@ -89,6 +89,9 @@ namespace Custom_Farm_Loader.Menus
 
         public static bool setScrollBarToCurrentIndex_Prefix(LoadGameMenu __instance)
         {
+            if (__instance is CoopMenu)
+                return true;
+
             int menuSlotsCount = ((List<LoadGameMenu.MenuSlot>)_MenuSlots.GetValue(__instance)).Count();
             var scrollbarRunner = (Rectangle)_ScrollbarRunnerField.GetValue(__instance);
             var currentItemIndex = (int)_CurrentItemIndex.GetValue(__instance);
@@ -136,8 +139,8 @@ namespace Custom_Farm_Loader.Menus
             Texture2D icon = getFarmTypeIcon(__instance.Farmer.slotName, currentItemIndex);
             Rectangle bounds = LoadGameMenuParent.slotButtons[i].bounds;
             Rectangle iconBounds = __instance.GetType().Name == "SaveFileSlot" //SaveFileSlot = Load, HostFileSlot = Host
-                ? new Rectangle(bounds.X + 20, bounds.Y + 78, 72, 80)
-                : new Rectangle(bounds.X + 12, bounds.Y + 12, 54, 60);
+                ? new Rectangle(bounds.X + 20, bounds.Y + 78, (int)(72 * ModEntry.Config.LoadMenuIconScale), (int)(80 * ModEntry.Config.LoadMenuIconScale))
+                : new Rectangle(bounds.X + 12, bounds.Y + 12, (int)(54 * ModEntry.Config.CoopMenuIconScale), (int)(60 * ModEntry.Config.CoopMenuIconScale));
 
             if (icon == null)
                 return;

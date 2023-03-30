@@ -32,12 +32,13 @@ internal static class Game1Patcher
     [HarmonyPatch(nameof(Game1.drawTool), new[] { typeof(Farmer), typeof(int) })]
     private static bool Prefix(Farmer f, int currentToolIndex)
     {
-        if (f.CurrentTool is not ShovelTool)
+        if (f.CurrentTool is not ShovelTool shovel)
         {
             return true;
         }
 
-        Rectangle sourceRectangleForTool = new(currentToolIndex * 16, 0, 16, 32);
+        int xindex = (currentToolIndex * 16) % shovel.GetTexture().Width;
+        Rectangle sourceRectangleForTool = new(xindex, shovel.UpgradeLevel * 32, 16, 32);
         Vector2 fPosition = f.getLocalPosition(Game1.viewport) + f.jitter + f.armOffset;
         float tool_draw_layer_offset = 0f;
         if (f.FacingDirection == 0)
@@ -49,7 +50,7 @@ internal static class Game1Patcher
         {
             int yLocation = (int)fPosition.Y - 128;
             Game1.spriteBatch.Draw(
-                texture: AssetManager.ToolTexture,
+                texture: shovel.GetTexture(),
                 new Vector2(fPosition.X, yLocation),
                 sourceRectangle: sourceRectangleForTool,
                 color: Color.White,
@@ -61,7 +62,7 @@ internal static class Game1Patcher
             return false;
         }
 
-        f.CurrentTool?.draw(Game1.spriteBatch);
+        shovel.draw(Game1.spriteBatch);
 
         Vector2 position;
         float rotation = 0f;
@@ -175,7 +176,7 @@ internal static class Game1Patcher
         }
 
         Game1.spriteBatch.Draw(
-            texture: AssetManager.ToolTexture,
+            texture: shovel.GetTexture(),
             position,
             sourceRectangle: sourceRectangleForTool,
             color: Color.White,

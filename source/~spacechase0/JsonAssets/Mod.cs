@@ -63,6 +63,8 @@ namespace JsonAssets
         /// <remarks>This is used to avoid adding items again if the menu was stashed and restored (e.g. by Lookup Anything).</remarks>
         private ShopMenu LastShopMenu;
 
+        private List<CustomForgeRecipe> myForgeRecipes = new();
+
         private readonly Dictionary<string, IManifest> DupObjects = new();
         private readonly Dictionary<string, IManifest> DupCrops = new();
         private readonly Dictionary<string, IManifest> DupFruitTrees = new();
@@ -126,6 +128,9 @@ namespace JsonAssets
         {
             if (this.DidInit)
                 this.ResetAtTitle();
+
+            CustomForgeRecipe.Recipes.RemoveAll(r => myForgeRecipes.Contains(r));
+            myForgeRecipes.Clear();
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -1469,6 +1474,80 @@ namespace JsonAssets
                             Game1.player.craftingRecipes.Add(big.Name, 0);
                     }
                 }
+
+                foreach (var frecipe in Forge)
+                {
+                    CustomForgeRecipe recipe = new JAForgeRecipe(frecipe);
+                    myForgeRecipes.Add(recipe);
+                    CustomForgeRecipe.Recipes.Add(recipe);
+                }
+            }
+        }
+
+        // Terrible place to put these, TODO move later
+        private class JAForgeRecipe : CustomForgeRecipe
+        {
+            public IngredientMatcher baseItem;
+            public override IngredientMatcher BaseItem => baseItem;
+
+            public IngredientMatcher ingredientItem;
+            public override IngredientMatcher IngredientItem => ingredientItem;
+
+            public int shards;
+            public override int CinderShardCost => shards;
+
+            public override Item CreateResult(Item baseItem, Item ingredItem)
+            {
+                return Utility.fuzzyItemSearch(data.ResultItemName);
+            }
+
+            private ForgeRecipeData data;
+
+            public JAForgeRecipe(ForgeRecipeData frecipe)
+            {
+                data = frecipe;
+                baseItem = new JAForgeIngredientMatcher(frecipe, baseItem: true);
+                ingredientItem = new JAForgeIngredientMatcher(frecipe, baseItem: false);
+                shards = frecipe.CinderShardCost;
+            }
+        }
+        private class JAForgeIngredientMatcher : CustomForgeRecipe.IngredientMatcher
+        {
+            private bool isBaseItem;
+            private ForgeRecipeData recipe;
+
+            public JAForgeIngredientMatcher(ForgeRecipeData data, bool baseItem)
+            {
+                isBaseItem = baseItem;
+                recipe = data;
+            }
+
+            public override void Consume(ref Item item)
+            {
+                if (item.Stack > 1)
+                    item.Stack--;
+                else
+                    item = null;
+            }
+
+            public override bool HasEnoughFor(Item item)
+            {
+                if (recipe.AbleToForgeConditions != null && recipe.AbleToForgeConditions.Length > 0)
+                {
+                    if (JsonAssets.Mod.instance.CheckEpuCondition(recipe.AbleToForgeConditions))
+                    {
+                        return false;
+                    }
+                }
+
+                if (isBaseItem)
+                {
+                    return item.Name == recipe.BaseItemName;
+                }
+                else
+                {
+                    return item.GetContextTags().Contains(recipe.IngredientContextTag);
+                }
             }
         }
 
@@ -1851,7 +1930,7 @@ namespace JsonAssets
             if (translations is null || string.IsNullOrWhiteSpace(item?.TranslationKey))
                 return;
 
-            foreach (var (locale, text) in translations.GetInAllLocales($"{item.TranslationKey}.name"))
+            foreach ((string locale, Translation text) in translations.GetInAllLocales($"{item.TranslationKey}.name"))
             {
                 item.NameLocalization[locale] = text;
             }
@@ -1894,7 +1973,7 @@ namespace JsonAssets
         {
             data.Sort((dni1, dni2) => string.Compare(dni1.Name, dni2.Name, StringComparison.InvariantCulture));
 
-            Log.Trace($"Assiging {type} ids starting at {starting}: {data.Count} items");
+            Log.Trace($"Assigning {type} ids starting at {starting}: {data.Count} items");
 
             Dictionary<string, int> ids = new();
 
@@ -2206,6 +2285,7 @@ namespace JsonAssets
                 this.FixSpecialOrderObjective(objective);
             this.FixItemList(order.donatedItems);
             this.RemoveNulls(order.donatedItems);
+            this.FixStringDictionary(order.preSelectedItems);
         }
 
         private void FixSpecialOrderObjective(OrderObjective objective)
@@ -3052,6 +3132,59 @@ namespace JsonAssets
             foreach (var entry in toRemove)
                 dict.Remove(entry);
             foreach ((var entry, int val) in addOrUpdate)
+                dict[entry] = val;
+        }
+
+        private void FixStringDictionary(NetStringDictionary<int, NetInt> dict)
+        {
+            if (dict.Count() == 0)
+                return;
+
+            var toRemove = new List<string>();
+            var addOrUpdate = new Dictionary<string, int>();
+            foreach ((string loc, int index) in dict.Pairs)
+            {
+
+                if (this.VanillaObjectIds.Contains(index))
+                    continue;
+
+                if (this.ReverseFixing)
+                {
+                    KeyValuePair<string, int> item = this.ObjectIds.FirstOrDefault(x => x.Value == index);
+                    if (item.Key is not null)
+                    {
+                        if (this.OldObjectIds.TryGetValue(item.Key, out int oldindex))
+                        {
+                            if (oldindex != item.Value)
+                                addOrUpdate.Add(loc, oldindex);
+                        }
+                        else
+                        {
+                            toRemove.Add(loc);
+                        }
+                    }
+                }
+                else
+                {
+                    KeyValuePair<string, int> item = this.OldObjectIds.FirstOrDefault(x => x.Value == index);
+                    if (item.Key is not null) // default(kvp(string,int)) is (null,0)
+                    {
+                        if (this.ObjectIds.TryGetValue(item.Key, out int newindex))
+                        {
+                            if (newindex != item.Value)
+                                addOrUpdate.Add(loc, newindex);
+                        }
+                        else
+                        {
+                            toRemove.Add(loc);
+                        }
+                    }
+                }
+            }
+
+            foreach (string entry in toRemove)
+                dict.Remove(entry);
+            foreach ((string entry, int val) in addOrUpdate)
                 dict[entry] = val;
         }
 

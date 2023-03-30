@@ -25,7 +25,6 @@ using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.Tools;
 
 #endregion using directives
 
@@ -71,27 +70,8 @@ internal sealed class LevelUpMenuGetImmediateProfessionPerkPatcher : HarmonyPatc
                     }
                 }
             })
-            .When(Profession.Rascal).Then(() =>
-            {
-                Utility.iterateAllItems(item =>
-                {
-                    if (item is not Slingshot slingshot || !slingshot.getLastFarmerToUse().IsLocalPlayer)
-                    {
-                        return;
-                    }
-
-                    slingshot.numAttachmentSlots.Value = 2;
-                    slingshot.attachments.SetCount(2);
-                });
-            })
-            .When(Profession.Prospector).Then(() =>
-            {
-                EventManager.Enable<ProspectorRenderedHudEvent>();
-            })
-            .When(Profession.Scavenger).Then(() =>
-            {
-                EventManager.Enable<ScavengerRenderedHudEvent>();
-            });
+            .When(Profession.Prospector).Then(() => EventManager.Enable<ProspectorRenderedHudEvent>())
+            .When(Profession.Scavenger).Then(() => EventManager.Enable<ScavengerRenderedHudEvent>());
 
         if (whichProfession is < 26 or >= 30 || Game1.player.Get_Ultimate() is not null)
         {

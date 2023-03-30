@@ -16,7 +16,8 @@
         "Target": "Characters/Dialogue/Pierre",
         "Entries": {
             "movieTheater": "@, have you heard? We've got a movie theater now! Think I'll take Caroline out on a date...",
-            "winter_7{{YearRemainder}}": "Gotta start stocking Winter Star gifts soon. It's the busiest retail season of the year...$h"
+            "winter_7{{YearRemainder}}": "Gotta start stocking Winter Star gifts soon. It's the busiest retail season of the year...$h",
+            "Resort_Chair": "Ah, a chance to rest my feet!$h"
         }
     },
     {
@@ -26,11 +27,15 @@
         "Entries": {
             "6_2": "My father? He really wasn't ever in my life.$s#$b#It was just me, my mother, and my sister, in a tiny apartment in Zuzu City.",
             "8_2": "I worked for a Joja grocery store, back when we lived in Zuzu.$#b#Clerked for them, on the night shift. Am so glad I no longer have that job.#$e#Managing this store is hard work but at least I get to keep all my earnings.",
+            "10_2": "I wish Abigail was more serious about her studies.$s",
+            "11_2": "Harvey says I've gotta do something about my blood pressure, it keeps creeping up way too high.#$e#He thinks I should start taking medication for it, but I don't want to.",
             "17_2": "I grew up poor. I wouldn't ever want that for my family.$s#$b#Caroline thinks I work too much, but we need to keep the store running.",
             "19_2": "We used to have a lot more farmers down in the valley. Unfortunately, our soil isn't the best.#$b#Say, could I interest you in one of my fertilizers?",
             "21_2": "Got a good deal on rent in our place. Helps that this town's pretty small.$h#$b#That does mean I don't get many customers, though.",
             "22_2": "Joja squeezes their suppliers hard. One of the reasons why they can have such low prices.",
-            "24_2": "We moved to Pelican Town after we had Caroline. The place we were living in before...it wasn't a good place to raise children. And we couldn't afford better."
+            "24_2": "We moved to Pelican Town after we had Caroline. The place we were living in before...it wasn't a good place to raise children. And we couldn't afford better.",
+            "26_2": "It's almost the end of the season, @. Got an idea of what you'll be planting next?",
+            "28_2": "Ugh, it's my turn to cook dinner tonight....#$b#Maybe I'll just defrost some of these frozen quiche we've just started carrying..."
         },
         "When": { "YearModulus": "2" }
     },
@@ -43,8 +48,24 @@
             "5_2": "My suppliers want to raise their prices...#$b#I can't pass on price increases though...",
             "7_2": "Before I moved to Pelican Town? I was a night manager at a gas station in Zuzu City.#$e#Dangerous work, and definitely a young man's job.#$b#I hated having to work nights. It takes more out of you than what most people expect.$s",
             "9_2": "I met Caroline when she was in college and I was working nights at a grocery store.#$b#Working for Joja let me save up enough money to buy this place...",
-            "11_2": "Ugh, the prices of everything's going up, especially fuel."
+            "11_2": "Ugh, the prices of everything's going up, especially fuel.",
+            "13_2": "My worst nightmare would be losing this store.#$b#All our savings are tied up in this place. If it goes under we're done for.",
+            "15_2": "I used to be an amateur boxer, back when we lived in Zuzu City.#$b#Was great fun, never made much money from it.#$b#Kept me in excellent shape though. My left hook is still pretty good.",
+            "17_2": "Maybe I should take Caroline out for dinner.She'll probably like {{i18n:restaurant.{{Random:01, 02, 03, 04, 05, 06}} }}, right?"
         },
         "When": { "YearModulus": "3"}
+    }
+    ,
+    {
+        "LogName": "Pierre mid-hearts, Y4",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Pierre",
+        "Entries": {
+            "3_2": "I grew up poor, @, and I wouldn't wish that on anyone.",
+            "5_2": "Maybe I should carry more boxed meals? They're certainly more convenient than cooking...",
+            "17_2": "I suspect we have a leak in the ceiling.#$b#Between you and I, @, I'm not good at dealing with things like this.#$e#Guess I should get Robin to look at my roof...",
+            "19_2": "@, I just want you to know, you'll never find better seeds that the ones I sell. Never."
+        },
+        "When": { "YearModulus": "4"}
     }
 ]}

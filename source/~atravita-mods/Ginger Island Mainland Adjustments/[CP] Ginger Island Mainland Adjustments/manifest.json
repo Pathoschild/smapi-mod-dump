@@ -9,19 +9,22 @@
 *************************************************/
 
 {
-   "Name": "[CP] Ginger Island Mainland Adjustments",
-   "Author": "atravita",
-   "Description": "Adds going-to-Ginger Island + return-from-Ginger Island dialogue lines and also GI Remainder schedules",
-   "Version": "1.1.4",
-   "UpdateKeys": [ "Nexus:10004@ContentPack", "ModDrop:1098263@ContentPack" ],
-   "UniqueID": "atravita.CP.GingerIslandMainlandAdjustments",
-   "ContentPackFor": {
-       "UniqueID": "Pathoschild.ContentPatcher"
+    "Name": "[CP] Ginger Island Mainland Adjustments",
+    "Author": "atravita",
+    "Description": "Adds going-to-Ginger Island + return-from-Ginger Island dialogue lines and also GI Remainder schedules",
+    "Version": "1.1.5",
+    "UpdateKeys": [
+        "Nexus:10004@ContentPack",
+        "ModDrop:1098263@ContentPack"
+    ],
+    "UniqueID": "atravita.CP.GingerIslandMainlandAdjustments",
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
     },
     "Dependencies": [
-    {
-        "UniqueID": "atravita.GingerIslandMainlandAdjustments",
-        "IsRequired": true
-    }
+        {
+            "UniqueID": "atravita.GingerIslandMainlandAdjustments",
+            "IsRequired": true
+        }
     ]
 }

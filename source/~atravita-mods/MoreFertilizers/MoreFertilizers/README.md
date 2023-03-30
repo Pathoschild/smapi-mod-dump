@@ -11,7 +11,7 @@ More Fertilizers
 
 ![Header image](docs/fertilizers.jpg)
 
-This mod adds eleven new fertilizers, including some with quite unique effects. See the table for details.
+This mod adds a bunch of new fertilizers, including some with quite unique effects. See the table for details.
 
 ## Install
 

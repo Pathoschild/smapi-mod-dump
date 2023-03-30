@@ -11,7 +11,7 @@
 {
   "Name": "Dynamic Crops",
   "Author": "HaulinOats",
-  "Version": "1.1.5",
+  "Version": "1.1.6",
   "Description": "Dynamically generate various crop and seed properties, such as sell and purchase prices, harvest times, and even regrowth capability.",
   "UniqueID": "HaulinOats.DynamicCrops",
   "EntryDll": "DynamicCrops.dll",

@@ -13,6 +13,8 @@ using AtraBase.Toolkit;
 using AtraBase.Toolkit.Extensions;
 
 using AtraCore.Framework.ReflectionManager;
+
+using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
 using HarmonyLib;
 
@@ -137,7 +139,7 @@ internal static class HSUtils
                 {
                     ReadOnlySpan<char> conditions = conditionsStr.GetNthChunk('/', 0).Trim();
 
-                    ModEntry.ModMonitor.Log($"Testing {conditions.ToString()} against {mapRegion.ToString()}");
+                    ModEntry.ModMonitor.DebugOnlyLog($"Testing {conditions.ToString()} against {mapRegion.ToString()}");
                     if (conditions.Equals(mapRegion, StringComparison.Ordinal))
                     {
                         return true;
@@ -155,7 +157,7 @@ internal static class HSUtils
             }
             catch (Exception ex)
             {
-                ModEntry.ModMonitor.Log($"Error loading festival data for {season} {day}\n\n{ex}", LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Error loading festival data for {season} {day}.\n\n{ex}", LogLevel.Error);
             }
         }
         return false;

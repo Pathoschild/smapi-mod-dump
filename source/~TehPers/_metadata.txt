@@ -10,9 +10,9 @@ mods:
    TehCore
 
 latest commit:
-   commit 0c21cf8ed874ae2588b43bb3c531f8d7fa491641
+   commit a181be232af604416cd615633aec4f7d17ee5203
    Author: TehPers <tehperz@gmail.com>
-   Date:   Wed Feb 1 23:11:25 2023 -0800
+   Date:   Wed Mar 1 00:55:13 2023 -0800
    
-       Update sln
+       Fix RSV relics being too hard to catch
    

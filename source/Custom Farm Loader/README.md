@@ -71,7 +71,7 @@ If your mod has just a single farm map all map assets could be stored in the ass
          ┗ 📄 &lt;map name&gt;.tbin/tmx/xnb
 </pre>
 
-While currently not necessary, please don't forget to set your mod as a CFL content pack in the manifest using:
+Please don't forget to set your mod as a CFL content pack in the manifest using:
 
 ```json
   "ContentPackFor": {

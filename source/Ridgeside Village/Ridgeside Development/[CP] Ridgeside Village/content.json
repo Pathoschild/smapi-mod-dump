@@ -326,22 +326,22 @@
 		//Irene travel schedule for 8 heart event preconditions
 		{
 			"Name": "IreneFreeDaysForEvent",
-			"Value": "u 14 15 16 17 18/z summer fall winter",
+			"Value": "u 14 15 16 17 18/z summer/z fall/z winter",
 			"When": { "Season": "spring" }
 		},
 		{
 			"Name": "IreneFreeDaysForEvent",
-			"Value": "u 14 15 16 17 18/z spring fall winter",
+			"Value": "u 14 15 16 17 18/z spring/z fall/z winter",
 			"When": { "Season": "summer" }
 		},
 		{
 			"Name": "IreneFreeDaysForEvent",
-			"Value": "u 1 2 3 4/z spring summer winter",
+			"Value": "u 1 2 3 4/z spring/z summer/z winter",
 			"When": { "Season": "fall" }
 		},
 		{
 			"Name": "IreneFreeDaysForEvent",
-			"Value": "u 1 2 3 4/z spring summer fall",
+			"Value": "u 1 2 3 4/z spring/z summer/z fall",
 			"When": { "Season": "winter" }
 		},
 		{
@@ -377,7 +377,7 @@
 		},
 		{
 			"Name": "AlissaMusic",
-			"Value": "SweetNightingale",
+			"Value": "AlissaTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -393,7 +393,7 @@
 		},
 		{
 			"Name": "CorineMusic",
-			"Value": "TreetopDawn",
+			"Value": "CorineTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -409,7 +409,7 @@
 		},
 		{
 			"Name": "DaiaMusic",
-			"Value": "EmbraceAfterDusk",
+			"Value": "DaiaTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -425,7 +425,7 @@
 		},
 		{
 			"Name": "FlorMusic",
-			"Value": "CuriousHeart",
+			"Value": "FlorTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -441,7 +441,7 @@
 		},
 		{
 			"Name": "IanMusic",
-			"Value": "MailMeBackHome",
+			"Value": "IanTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -457,7 +457,7 @@
 		},
 		{
 			"Name": "JericMusic",
-			"Value": "Playdate",
+			"Value": "JericTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -473,7 +473,7 @@
 		},
 		{
 			"Name": "JioMusic",
-			"Value": "SelfWhispers",
+			"Value": "JioTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -489,7 +489,7 @@
 		},
 		{
 			"Name": "KennethMusic",
-			"Value": "Tinkering",
+			"Value": "KennethTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -505,7 +505,7 @@
 		},
 		{
 			"Name": "KiarraMusic",
-			"Value": "SubtleGestures",
+			"Value": "KiarraTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -521,7 +521,7 @@
 		},
 		{
 			"Name": "MaddieMusic",
-			"Value": "SmilingTears",
+			"Value": "MaddieTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -537,7 +537,7 @@
 		},
 		{
 			"Name": "PhilipMusic",
-			"Value": "SubtlyComfy",
+			"Value": "PhilipTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -553,7 +553,7 @@
 		},
 		{
 			"Name": "SeanMusic",
-			"Value": "Fidget",
+			"Value": "SeanTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -569,7 +569,7 @@
 		},
 		{
 			"Name": "ShiroMusic",
-			"Value": "BeforeAcceptance",
+			"Value": "ShiroTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -585,7 +585,7 @@
 		},
 		{
 			"Name": "YsabelleMusic",
-			"Value": "Poise",
+			"Value": "YsabelleTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -601,7 +601,7 @@
 		},
 		{
 			"Name": "AntonMusic",
-			"Value": "Compunctious",
+			"Value": "AntonTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -617,7 +617,7 @@
 		},
 		{
 			"Name": "PaulaMusic",
-			"Value": "Compathy",
+			"Value": "PaulaTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -633,7 +633,7 @@
 		},
 		{
 			"Name": "BlairMusic",
-			"Value": "GrownGuppy",
+			"Value": "BlairTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -671,6 +671,38 @@
 			}
 		},
 
+		//FayeTheme
+		{
+			"Name": "FayeMusic",
+			"Value": "sweet",
+			"When": {
+				"HasMod |contains=Rafseazz.RSVSAATExtra": false
+			}
+		},
+		{
+			"Name": "FayeMusic",
+			"Value": "Daydreaming",
+			"When": {
+				"HasMod |contains=Rafseazz.RSVSAATExtra": true
+			}
+		},
+
+		//BryleTheme
+		{
+			"Name": "BryleMusic",
+			"Value": "sweet",
+			"When": {
+				"HasMod |contains=Rafseazz.RSVSAATExtra": false
+			}
+		},
+		{
+			"Name": "BryleMusic",
+			"Value": "Defending",
+			"When": {
+				"HasMod |contains=Rafseazz.RSVSAATExtra": true
+			}
+		},
+
 		//Anton x Paula Theme
 		{
 			"Name": "AntonPaulaMusic",
@@ -681,7 +713,7 @@
 		},
 		{
 			"Name": "AntonPaulaMusic",
-			"Value": "Companion",
+			"Value": "AntonPaulaTheme",
 			"When": {
 				"HasMod |contains=Rafseazz.RSVSAATExtra": true
 			}
@@ -767,6 +799,10 @@
 				"FromMapFile": "Assets/Maps/EventMaps/RSVCliff_AlissaDate.tmx",
 			},
 			{
+				"Name": "Custom_Ridgeside_RSVCliff_FayeDate",
+				"FromMapFile": "Assets/Maps/EventMaps/RSVCliff_FayeDate.tmx",
+			},
+			{
 				"Name": "Custom_Ridgeside_RSVCorineDate",
 				"FromMapFile": "Assets/Maps/EventMaps/RSVCorineDate.tmx",
 			},
@@ -777,6 +813,10 @@
 			{
 				"Name": "Custom_Ridgeside_RidgesideVillage_CookOff",
 				"FromMapFile": "Assets/Maps/EventMaps/RidgesideVillage_CookOff.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_RidgesideVillage_Fashion",
+				"FromMapFile": "Assets/Maps/EventMaps/RidgesideVillage_Fashion.tmx",
 			},
 			{
 				"Name": "Custom_Ridgeside_Ridge_KennethDate_OFF",
@@ -1182,6 +1222,10 @@
 			{
 				"Name": "Custom_Ridgeside_RSVSkyGazing",
 				"FromMapFile": "Assets/Maps/EventMaps/RSVSkyGazing.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_ZuzuCableCarView",
+				"FromMapFile": "Assets/Maps/EventMaps/ZuzuCableCarView.tmx",
 			},
 
 	],

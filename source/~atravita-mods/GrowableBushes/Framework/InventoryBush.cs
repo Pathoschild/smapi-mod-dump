@@ -520,7 +520,7 @@ public sealed class InventoryBush : SObject
 
     private static int GetSeason(GameLocation loc)
     {
-        return Utility.getSeasonNumber(loc is Desert? "summer" : Game1.GetSeasonForLocation(loc));
+        return Utility.getSeasonNumber(loc is Desert or IslandLocation ? "summer" : Game1.GetSeasonForLocation(loc));
     }
 
     // derived from Bush.setUpSourceRect

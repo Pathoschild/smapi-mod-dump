@@ -14,84 +14,90 @@ using SpaceCore;
 using StardewModdingAPI;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Object = StardewValley.Object;
 
 namespace RuneMagic.Source.Items
 {
     [XmlType("Mods_Rune")]
-    public class Rune : Object, IMagicItem
+    public class Rune : Object, ISpellCastingItem
     {
         [XmlIgnore]
         public Spell Spell { get; set; }
 
         public int ChargesMax { get; set; }
         public float Charges { get; set; }
-        public bool RunemasterActive { get; set; } = false;
+        public int Cracks { get; set; } = 0;
+
+        public List<(int, int)> Ingredients { get; set; }
 
         public Rune() : base()
         {
             InitializeSpell();
-            ChargesMax = Game1.random.Next(3, 10);
-            //if (Game1.player.HasCustomProfession(AlterationSkill.profesion1))
-            //    ChargesMax += 5;
-            Charges = ChargesMax;
+            if (Spell != null)
+            {
+                int invertedLevel = 6 - Spell.Level;
+                ChargesMax = Game1.random.Next(3, 5 + invertedLevel + Player.MagicStats.ActiveSchool.Level / 3);
+                Charges = ChargesMax;
+            }
         }
 
         public Rune(int parentSheetIndex, int stack) : base(parentSheetIndex, stack)
         {
             InitializeSpell();
-            //Max charges is a random number between 3 and 5 (inclusive)
-            ChargesMax = Game1.random.Next(3, 10);
-            //if (Game1.player.HasCustomProfession(MagicSkill.Runelord))
-            //    ChargesMax += 5;
-            Charges = ChargesMax;
+            if (Spell != null)
+            {
+                int invertedLevel = 6 - Spell.Level;
+                ChargesMax = Game1.random.Next(3, 5 + invertedLevel + Player.MagicStats.ActiveSchool.Level / 3);
+                Charges = ChargesMax;
+            }
         }
 
         public void InitializeSpell()
         {
-            foreach (var spell in RuneMagic.Spells)
+            foreach (var spell in Spell.List)
             {
                 if (Name.Contains(spell.Name))
                 {
                     Spell = spell;
-                    RuneMagic.Instance.Monitor.Log($"{Name} Initialized", LogLevel.Debug);
+                    //RuneMagic.Instance.Monitor.Log($"{Name} Initialized", LogLevel.Debug);
                     break;
                 }
             }
         }
 
+        public bool IngredientsMet()
+        {
+            if (Game1.player.hasItemInInventory(Ingredients[0].Item1, Ingredients[0].Item2) && Game1.player.hasItemInInventory(Ingredients[1].Item1, Ingredients[1].Item2))
+                return true;
+            else
+                return false;
+        }
+
         public void Activate()
         {
             if (!Fizzle())
+            {
                 if (Math.Floor(Charges) > 0)
                 {
                     if (Spell.Cast())
                     {
                         Game1.playSound("flameSpell");
-
-                        if (RunemasterActive)
-                        {
-                            if (Math.Floor(Charges) >= 3)
-                                Charges -= 3;
-                            else
-                                Charges--;
-                            RunemasterActive = false;
-                        }
-                        else
-                            Charges--;
+                        Charges--;
                     }
                 }
+            }
+            else
+                Cracks++;
         }
 
         public bool Fizzle()
         {
-            if (Game1.random.Next(1, 100) < 0)
+            if (Game1.random.Next(1, 100) < 10)
             {
                 Game1.player.stamina -= 10;
                 Game1.playSound("stoneCrack");
-                Game1.player.removeItemFromInventory(this);
-                Game1.player.addItemToInventory(new Object(390, 1));
                 return true;
             }
             else
@@ -103,36 +109,14 @@ namespace RuneMagic.Source.Items
             //Charges
             if (Charges < ChargesMax)
             {
-                //if (Game1.player.HasCustomProfession(MagicSkill.Runesmith))
-                //    Charges += 0.0010f;
-                //else
                 Charges += 0.0005f;
             }
             if (Charges > ChargesMax)
                 Charges = ChargesMax;
             if (Charges < 0)
                 Charges = 0;
-            //Runemaster
-            if (RunemasterActive && Charges < 3)
-            {
-                RunemasterActive = false;
-                Spell.CastingTime = 1;
-            }
-        }
-
-        public void DrawCastbar(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
-        {
-            //draw a castbar on the item if isCasting is true taking into account that if player has Scribe profession the castbar is 50% shorter
-            if (RuneMagic.PlayerStats.IsCasting)
-            {
-                if (RuneMagic.PlayerStats.IsCasting && Game1.player.CurrentItem == this)
-                {
-                    var castingTime = Spell.CastingTime;
-                    var castbarWidth = (int)(RuneMagic.PlayerStats.CastingTimer / (castingTime * 60) * 58);
-                    spriteBatch.Draw(RuneMagic.Textures["castbar_frame"], new Rectangle((int)objectPosition.X, (int)objectPosition.Y, 64, 84), Color.White);
-                    spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)objectPosition.X + 3, (int)objectPosition.Y + 75, castbarWidth, 5), new Color(new Vector4(0, 0, 200, 0.8f)));
-                }
-            }
+            if (Cracks >= 3)
+                Game1.player.removeItemFromInventory(this);
         }
 
         public void DrawCharges(SpriteBatch spriteBatch, Vector2 location, float layerDepth)
@@ -146,22 +130,17 @@ namespace RuneMagic.Source.Items
             base.drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
             DrawCharges(spriteBatch, location, layerDepth);
 
-            if (RunemasterActive)
+            if (Cracks == 1 || Cracks == 2)
             {
-                spriteBatch.Draw(Game1.mouseCursors, new Rectangle((int)location.X + 40, (int)location.Y + 16, 16, 16), new Rectangle(346, 400, 8, 8), Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth + 0.0001f);
+                var crackedRune = RuneMagic.Textures[$"cracked_rune{Cracks}"];
+                spriteBatch.Draw(crackedRune, location + new Vector2(32f, 32f), new Rectangle?(Game1.getSourceRectForStandardTileSheet(crackedRune, 0, 16, 16)),
+                                     Color.White * transparency, 0.0f, new Vector2(8f, 8f), 4f * scaleSize, SpriteEffects.None, layerDepth + 0.0001f);
             }
-            else
-            {
-                if (Charges >= 1)
-                    DrawCastbar(spriteBatch, location, Game1.player);
-            }
-            //draw an emote over the player head
-            //spriteBatch.Draw(Game1.mouseCursors, new Rectangle((int)location.X + 40, (int)location.Y + 16, 16, 16), new Rectangle(346, 392, 8, 8), Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth + 0.0001f);
         }
 
         public override void drawWhenHeld(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
         {
-            if (RuneMagic.PlayerStats.IsCasting)
+            if (Player.MagicStats.CastingTime > 0)
                 base.drawWhenHeld(spriteBatch, objectPosition, f);
         }
 

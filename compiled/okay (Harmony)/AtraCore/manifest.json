@@ -10,7 +10,7 @@
   "UniqueID": "atravita.AtraCore",
   "Name": "AtraCore",
   "Author": "atravita",
-  "Version": "0.1.4",
+  "Version": "0.2.1",
   "Description": "A core library mod some of my other mods depend on.",
   "MinimumApiVersion": "3.18",
   "EntryDll": "AtraCore.dll",

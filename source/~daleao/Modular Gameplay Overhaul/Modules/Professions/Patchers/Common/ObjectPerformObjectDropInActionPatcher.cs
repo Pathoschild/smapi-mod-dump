@@ -68,16 +68,19 @@ internal sealed class ObjectPerformObjectDropInActionPatcher : HarmonyPatcher
         {
             // golden mayonnaise is always iridium quality
             held.Quality = __instance.ParentSheetIndex == (int)Machine.MayonnaiseMachine &&
-                           dropIn.ParentSheetIndex == Constants.GoldenEggIndex &&
+                           dropIn.ParentSheetIndex == ItemIDs.GoldenEgg &&
                            !ModHelper.ModRegistry.IsLoaded("ughitsmegan.goldenmayoForProducerFrameworkMod")
                 ? SObject.bestQuality
                 : dropIn.Quality;
-            if (r.NextDouble() > who.FarmingLevel / 30d)
+            if (!ProfessionsModule.Config.ArtisanGoodsAlwaysSameQualityAsInput)
             {
-                held.Quality = (int)((Quality)held.Quality).Decrement();
-                if (r.NextDouble() > who.FarmingLevel / 15d)
+                if (r.NextDouble() > who.FarmingLevel / 30d)
                 {
                     held.Quality = (int)((Quality)held.Quality).Decrement();
+                    if (r.NextDouble() > who.FarmingLevel / 15d)
+                    {
+                        held.Quality = (int)((Quality)held.Quality).Decrement();
+                    }
                 }
             }
         }
@@ -141,7 +144,7 @@ internal sealed class ObjectPerformObjectDropInActionPatcher : HarmonyPatcher
         }
         catch (Exception ex)
         {
-            Log.E($"Failed adding prestiged Breeder incubation bonus.\nHelper returned {ex}");
+            Log.E($"Failed adding Gemologist geode quality.\nHelper returned {ex}");
             return null;
         }
 
@@ -201,8 +204,8 @@ internal sealed class ObjectPerformObjectDropInActionPatcher : HarmonyPatcher
 
     private static void SetGeodeTreasureQuality(SObject crusher, SObject treasure, Farmer who)
     {
-        if (treasure.IsGemOrMineral() && (crusher.owner.Value == who.UniqueMultiplayerID ||
-                                          ProfessionsModule.Config.LaxOwnershipRequirements))
+        if (who.HasProfession(Profession.Gemologist) && treasure.IsGemOrMineral() &&
+            (crusher.IsOwnedBy(who) || ProfessionsModule.Config.LaxOwnershipRequirements))
         {
             treasure.Quality = who.GetGemologistMineralQuality();
         }

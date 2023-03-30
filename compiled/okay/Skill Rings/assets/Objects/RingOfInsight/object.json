@@ -1,6 +1,6 @@
 {
   "Name": "Ring of Insight",
-  "Description": "Provides insights into what you are learning, increasing experience.",
+  "Description": "Provides insights into what you are learning, increasing experience.(EXP +10%)",
   "Category": "Ring",
   "Price": 1000,
   "Edibility": -300,

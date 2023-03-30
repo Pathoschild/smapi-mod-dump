@@ -18,13 +18,12 @@ namespace RuneMagic.Source.Spells
     {
         public Regeneration() : base(School.Abjuration)
         {
-            Description += "Slowly regenerates the caster's Stamina.";
-            Level = 4;
+            Description += "Slowly regenerates the caster's Stamina."; Level = 4;
         }
 
         public override bool Cast()
         {
-            if (!RuneMagic.PlayerStats.ActiveEffects.OfType<Regenerating>().Any())
+            if (!Player.MagicStats.ActiveEffects.OfType<Regenerating>().Any())
             {
                 Effect = new Regenerating(this);
                 return base.Cast();

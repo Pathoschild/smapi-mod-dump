@@ -1,42 +1,16 @@
 {
-  "Name": "PyTK",
+  "Name": "PyTK Lite",
   "Author": "Platonymous",
-  "Version": "1.23.2",
-  "Description": "Platonymous Toolkit",
+  "Version": "1.24.0",
+  "Description": "Platonymous Toolkit (Lite Version)",
   "UniqueID": "Platonymous.Toolkit",
-  "EntryDll": "PyTK.dll",
+  "EntryDll": "PyTKLite.dll",
   "MinimumApiVersion": "3.14.0",
   "UpdateKeys": [ "Nexus:1726" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",
       "IsRequired": false
-    },
-    {
-      "UniqueID": "spacechase0.JsonAssets",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "Esca.FarmTypeManager",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "Entoarox.EntoaroxFramework",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "Entoarox.FurnitureAnywhere",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "Platonymous.ModUpdater",
-      "IsRequired": false
     }
-  ],
-  "ModUpdater": {
-    "Repository": "Stardew-Valley-Mods",
-    "User": "Platonymous",
-    "Directory": "_releases",
-    "ModFolder": "PyTK"
-  }
+  ]
 }

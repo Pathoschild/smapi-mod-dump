@@ -10,14 +10,12 @@
 
 
 
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using xTile.Dimensions;
 
 namespace WaterBalloon
 {
@@ -27,9 +25,9 @@ namespace WaterBalloon
         void LoadAssets(string path);
     }
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : StardewModdingAPI.Mod
+    public class ModEntry : Mod
     {
-        private IJsonAssetsApi JsonAssets;
+        private IJsonAssetsApi? JsonAssets;
         private int WaterBalloonID = -1;
         /*********
         ** Public methods
@@ -65,7 +63,7 @@ namespace WaterBalloon
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             //if activating the item and Water Balloon item exists water 3 tiles out from the player
-            if ((e.Button == SButton.MouseLeft || e.Button == SButton.ControllerA) && (Game1.player.CurrentItem.Name.Equals("Water Balloon") && WaterBalloonID != -1))
+            if ((e.Button == SButton.MouseLeft || e.Button == SButton.ControllerA) && Game1.player.CurrentItem?.Name == "Water Balloon" && WaterBalloonID != -1)
             {
                 const int radius = 2;
                 GameLocation location = Game1.currentLocation;

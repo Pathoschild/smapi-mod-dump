@@ -38,6 +38,16 @@
     },
     {
         "Action": "Include",
+        "LogName": "Marnie - mid hearts, realism",
+        "FromFile": "assets/default/delta/Marnie/mid_realism.json",
+        "When": {
+            "EnableFor": "Marnie",
+            "Query: {{Hearts:Marnie}} >= 6": true,
+            "IncreasedRealism": true
+        }
+    },
+    {
+        "Action": "Include",
         "LogName": "Pierre - mid hearts",
         "FromFile": "assets/default/delta/Pierre/mid.json",
         "When": {

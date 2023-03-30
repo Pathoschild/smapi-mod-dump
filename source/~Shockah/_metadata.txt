@@ -7,6 +7,8 @@ mods:
    Early Ginger Island
    Flexible Sprinklers
    Hibernation
+   Junimo Warp
+   Kokoro
    Machine Status
    Please Gift Me In Person
    Predictable Retaining Soil
@@ -16,9 +18,9 @@ mods:
    XP Display
 
 latest commit:
-   commit b4ace3266de085b0d1842bbd15c4f8dce09e11bb
+   commit e1f371918796df1a9e6f4ec72d3becf92294ae75
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Wed Mar 1 00:37:16 2023 +0100
+   Date:   Wed Mar 1 13:14:34 2023 +0100
    
-       JunimoWarp: Version 1.0.0
+       Updated main repo README with mod headers and contribution information (mostly about translations)
    

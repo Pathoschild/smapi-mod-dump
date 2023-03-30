@@ -17,7 +17,7 @@ namespace AtraShared.Menuing;
 /// <summary>
 /// Shamelessly stolen from RSV: https://github.com/Rafseazz/Ridgeside-Village-Mod/blob/main/Ridgeside%20SMAPI%20Component%202.0/RidgesideVillage/DialogueMenu.cs.
 /// </summary>
-public class DialogueAndAction : DialogueBox
+public sealed class DialogueAndAction : DialogueBox
 {
     private readonly List<Action?> actions;
 

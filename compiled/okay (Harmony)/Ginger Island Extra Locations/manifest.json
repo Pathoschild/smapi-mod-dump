@@ -1,9 +1,9 @@
 ﻿{
   "Name": "Ginger Island Extra Locations",
   "Author": "mistyspring",
-  "Version": "1.3.0", // fixed locally
+  "Version": "1.4.1", // fixed locally
   "Description": "Adds content that requires C#.",
-  "UniqueID": "mistyspring.extraGImaps_CS",
+  "UniqueID": "mistyspring.extraGImapsCS",
   "EntryDll": "ExtraGingerIslandMaps.dll",
   "MinimumApiVersion": "3.14.0",
   "UpdateKeys": ["nexus:???"],

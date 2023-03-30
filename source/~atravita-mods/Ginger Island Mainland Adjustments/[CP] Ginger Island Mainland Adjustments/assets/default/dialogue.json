@@ -157,6 +157,7 @@
                 "Resort_Left": "Ah, nothing like a nice relaxing vacation...$h",
                 "Resort_Pier": "The water's so blue here, isn't it?",
                 "Resort_Shore_PierreFamily": "I don't take enough vacations with my family....$s#$b#But the bills gotta get paid...$s",
+                "Resort_PierreFamily": "I guess I could take more time off. This is nice, and Caroline's happy. Which is what really matters, right?"
             }
         },
         {
@@ -229,6 +230,15 @@
                 // Groups defined in content packs will also be used!
                 "Resort_Approach_SistersAndSandy": "@! I'll be headed to Ginger Island with Emily and Haley today. Will you join us there?",
                 "Resort_Bar_SistersAndSandy": "Nothing like a nice day at the beach with my best friends...$h"
+            }
+        },
+        {
+            "LogName": "George dialogue",
+            "Target": "Characters/Dialogue/George",
+            "Action": "EditData",
+            "Entries": {
+                "Resort_Approach": "@, I'll be on vacation today. Evelyn says it'll be good for me to get out of the house more.",
+                "winterResort_Approach": "Gonna be headed off to the island today.#$e#That warm air'll do my old lungs good."
             }
         }
     ]

@@ -1,0 +1,42 @@
+{
+  "MinPlayers": 8,
+  "FillWithBots": true,
+  "MayorRoles": [
+    "Mayor",
+    "Judge"
+  ],
+  "VillagerRoles": [
+    "Witch",
+    "Seer",
+    "Amor"
+  ],
+  "WerwolfRoles": [],
+  "ActionButton": "K",
+  "NotesButton": "N",
+  "NPCs": [
+    "Abigail",
+    "Alex",
+    "Caroline",
+    "Clint",
+    "Demetrius",
+    "Elliot",
+    "Evelyn",
+    "George",
+    "Gus",
+    "Haley",
+    "Harvey",
+    "Jodi",
+    "Leah",
+    "Lewis",
+    "Marnie",
+    "Maru",
+    "Pam",
+    "Pierre",
+    "Penny",
+    "Robin",
+    "Sam",
+    "Sebastian",
+    "Shane",
+    "Willy"
+  ]
+}

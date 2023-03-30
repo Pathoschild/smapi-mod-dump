@@ -12,7 +12,6 @@ using StardewModdingAPI.Utilities;
 
 namespace AtraShared.Utils;
 
-#pragma warning disable SA1124 // Do not use regions
 /// <summary>
 /// Helper methods for Stardew dates.
 /// </summary>
@@ -42,7 +41,7 @@ public static class DateHelper
     /// </summary>
     /// <returns>True if the Winter Star letter is valid.</returns>
     public static bool IsWinterStarLetterValidToday()
-        => Game1.currentSeason is "winter" && Game1.dayOfMonth >= 18 && Game1.dayOfMonth <= 25;
+        => Game1.IsWinter && Game1.dayOfMonth >= 18 && Game1.dayOfMonth <= 25;
 #endregion
 }
 #pragma warning restore SA1124 // Do not use regions

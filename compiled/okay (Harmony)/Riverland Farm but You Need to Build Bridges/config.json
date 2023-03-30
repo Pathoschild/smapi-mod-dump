@@ -1,0 +1,10 @@
+{
+  "NumberOfBridges": 11,
+  "IsPermanent": false,
+  "RequireWoodsPerOne": 150,
+  "LastDaysRange": [
+    54,
+    58
+  ],
+  "DoesNotifyCollapse": true
+}

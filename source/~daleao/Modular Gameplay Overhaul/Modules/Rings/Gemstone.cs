@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Ardalis.SmartEnum;
-using DaLion.Overhaul.Modules.Arsenal.Enchantments;
+using DaLion.Overhaul.Modules.Enchantments.Gemstone;
 using DaLion.Overhaul.Modules.Rings.Resonance;
 using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Shared.Extensions.Xna;
@@ -101,8 +101,9 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
 
         this.DisplayName = I18n.Get("gems." + name.ToLower() + ".name");
         this.Frequency = frequency;
-        this.Color = color;
+        this.StoneColor = color;
         this.GlowColor = glowColor.Inverse();
+        this.TextColor = this.StoneColor.ChangeValue(0.8f);
     }
 
     /// <summary>Gets the localized name of the <see cref="Gemstone"/>.</summary>
@@ -119,10 +120,13 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
     public float Frequency { get; }
 
     /// <summary>Gets the characteristic color which results from <see cref="Frequency"/>.</summary>
-    public Color Color { get; }
+    public Color StoneColor { get; }
 
-    /// <summary>Gets the inverse of <see cref="Color"/>.</summary>
+    /// <summary>Gets the inverse of <see cref="StoneColor"/>.</summary>
     public Color GlowColor { get; }
+
+    /// <summary>Gets the color used to render text. A slightly darker tone of <see cref="StoneColor"/>.</summary>
+    public Color TextColor { get; }
 
     /// <summary>Gets the second <see cref="Gemstone"/> in the corresponding <see cref="DiatonicScale"/>.</summary>
     public Gemstone Second => RubyScale[(this.Value + 1) % 7];
@@ -225,8 +229,8 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
             : base(
                 "Ruby",
                 0,
-                Constants.RubyIndex,
-                Constants.RubyRingIndex,
+                ItemIDs.Ruby,
+                ItemIDs.RubyRing,
                 1f,
                 new Color(225, 57, 57),
                 new Color(245, 75, 20, 230))
@@ -267,8 +271,8 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
             : base(
                 "Aquamarine",
                 1,
-                Constants.AquamarineIndex,
-                Constants.AquamarineRingIndex,
+                ItemIDs.Aquamarine,
+                ItemIDs.AquamarineRing,
                 9f / 8f,
                 new Color(35, 144, 170),
                 new Color(18, 160, 250, 240))
@@ -309,8 +313,8 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
             : base(
                 "Amethyst",
                 2,
-                Constants.AmethystIndex,
-                Constants.AmethystRingIndex,
+                ItemIDs.Amethyst,
+                ItemIDs.AmethystRing,
                 32f / 27f,
                 new Color(111, 60, 196),
                 new Color(220, 50, 250, 240))
@@ -393,8 +397,8 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
             : base(
                 "Emerald",
                 4,
-                Constants.EmeraldIndex,
-                Constants.EmeraldRingIndex,
+                ItemIDs.Emerald,
+                ItemIDs.EmeraldRing,
                 3f / 2f,
                 new Color(4, 128, 54),
                 new Color(10, 220, 40, 220))
@@ -435,8 +439,8 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
             : base(
                 "Jade",
                 5,
-                Constants.JadeIndex,
-                Constants.JadeRingIndex,
+                ItemIDs.Jade,
+                ItemIDs.JadeRing,
                 27f / 16f,
                 new Color(117, 150, 99),
                 new Color(10, 220, 40, 220))
@@ -477,8 +481,8 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
             : base(
                 "Topaz",
                 6,
-                Constants.TopazIndex,
-                Constants.TopazRingIndex,
+                ItemIDs.Topaz,
+                ItemIDs.TopazRing,
                 16f / 9f,
                 new Color(220, 143, 8),
                 new Color(255, 150, 10, 220))
@@ -493,7 +497,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         {
             if (RingsModule.Config.RebalancedRings)
             {
-                if (ArsenalModule.IsEnabled && ArsenalModule.Config.OverhauledDefense)
+                if (CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense)
                 {
                     who.IncrementResonantResilience(amplitude);
                 }
@@ -513,7 +517,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         {
             if (RingsModule.Config.RebalancedRings)
             {
-                if (ArsenalModule.IsEnabled && ArsenalModule.Config.OverhauledDefense)
+                if (CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense)
                 {
                     who.IncrementResonantResilience(-amplitude);
                 }
@@ -533,7 +537,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         {
             if (RingsModule.Config.RebalancedRings)
             {
-                if (ArsenalModule.IsEnabled && ArsenalModule.Config.OverhauledDefense)
+                if (CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense)
                 {
                     buffer.DefenseModifier += 0.1f * magnitude;
                 }

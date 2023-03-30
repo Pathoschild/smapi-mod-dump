@@ -1,4 +1,5 @@
 {
+    // Translations thanks to Kadomine!
     "TheMightyAmondee.Shoplifter/Shoplift":"Roubar?",  
     "TheMightyAmondee.Shoplifter/Banned": "Você foi banido por ser pego roubando. Não abuse da sorte...",
     "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Você já roubou hoje. Chega...",
@@ -27,5 +28,25 @@
     "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "O que pensa que está fazendo, @? Esses medicamentos são perigosos se não houver prescrição médica...$8#$b#Você não tem dinheiro para pagar a multa, então não te cobrarei desta vez. Mas não ouse fazer isso novamente.$5",
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Você está me roubando, @! Pensei que você fosse melhor que isso.$3#$b#Não posso te cobrar por isso desta vez, @. Já que você não tem como me pagar de qualquer forma.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Estar mais longe da cidade não significa que minha loja é mais fácil de roubar, @.$2#$b#Não se preocupe com a multa desta vez, @. Apenas vá embora.$2",
-    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Você está tão desesperado assim por um doce, @?$7#$b#Vou te deixar avisado desta vez.$5"
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Você está tão desesperado assim por um doce, @?$7#$b#Vou te deixar avisado desta vez.$5",
+    //
+
+    // TODO Improve translations
+    "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Com que frequência se pode roubar?",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDay": "Máximo de roubos/dia",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDayTooltip": "Os roubos máximos por dia",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShop": "Máximo de roubos/loja",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShopTooltip":"Quantas vezes a mesma loja pode ser roubada todos os dias",
+    "TheMightyAmondee.Shoplifter/GMCM_PenaltySection":"Que penalidades quando se é apanhado?",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFine":"Multa máxima",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFineTooltip":"Montante máximo de multa",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendship": "Perda de Amizade",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendshipTooltip": "Máxima perda de amizade",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatches": "Capturas antes da banimento",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatchesTooltip":"Quantas vezes deve ser apanhado antes de ser banido",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Dias banidos por",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Por quantos dias está banido",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Raio de captura",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"A distância máxima que um aldeão deve estar para apanhar o jogador"
+    //
   }

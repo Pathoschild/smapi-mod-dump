@@ -64,6 +64,8 @@ internal static class PlantGrassUnder
         }
         try
         {
+            // TODO: fix this with MoreGrassStarters.
+
             // Grass starter = 297
             if (Utility.IsNormalObjectAtParentSheetIndex(__0, 297) && !(isSmartBuildingInBuildMode?.Invoke() == true))
             {

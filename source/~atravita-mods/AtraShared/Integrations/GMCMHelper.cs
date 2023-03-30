@@ -407,17 +407,16 @@ public sealed class GMCMHelper : IntegrationHelper
         CacheKey key = new(typeof(TModConfig), tEnum);
         if (!enumCache.TryGetValue(key, out MethodInfo? realized))
         {
-            realized = this.GetType().GetMethods()
+            enumCache[key] = realized = this.GetType().GetMethods()
                 .Where((method) => method.Name == nameof(this.AddEnumOption) && method.GetGenericArguments().Length == 2)
                 .First()
                 .MakeGenericMethod(typeof(TModConfig), tEnum);
-            enumCache[key] = realized;
         }
         realized.Invoke(this, new object?[] { property, getConfig, fieldID });
 
         return this;
     }
-    #endregion
+#endregion
 
 #region vector2
 
@@ -495,7 +494,7 @@ public sealed class GMCMHelper : IntegrationHelper
 
     #endregion
 
-    #region floats
+#region floats
 
     /// <summary>
     /// Adds a float option at this point in the form.
@@ -947,7 +946,7 @@ public sealed class GMCMHelper : IntegrationHelper
         return this;
     }
 
-    #region default
+#region default
 
     /// <summary>
     /// Generates a basic GMCM config.

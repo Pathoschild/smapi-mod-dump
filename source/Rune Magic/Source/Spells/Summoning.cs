@@ -24,8 +24,7 @@ namespace RuneMagic.Source.Spells
     {
         public Summoning() : base(School.Conjuration)
         {
-            Description += "Summons a creature to fight for you.";
-            Level = 3;
+            Description += "Summons a creature to fight for you."; Level = 3;
         }
 
         public override bool Cast()

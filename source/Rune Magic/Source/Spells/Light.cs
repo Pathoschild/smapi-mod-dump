@@ -17,9 +17,7 @@ namespace RuneMagic.Source.Spells
     {
         public Light() : base(School.Conjuration)
         {
-            School = School.Conjuration;
-            Description += "Conjures a torch at a target location.";
-            Level = 2;
+            Description += "Conjures a torch at a target location."; Level = 2;
         }
 
         public override bool Cast()

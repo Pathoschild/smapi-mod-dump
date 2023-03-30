@@ -28,10 +28,12 @@
   "NoBananasBeforeShrine.description": "Prevents bananas from showing up before one's given to the banana shrine.",
   "PriceCap.title": "Price Cap",
   "PriceCap.description": "Removes fruit if their base price is above this.",
+  "ProgressionMode.title": "Progression Mode",
+  "ProgressionMode.description": "In progression mode, a fruit will only spawn if you've had its tree's sapling in your inventory at least once.",
 
   "config.SeasonalBehavior.AllSeasons": "Spawn from all seasons.",
-  "config.SeasonalBehavior.SeasonalOnly":  "Current season only.",
-  "config.SeasonalBehavior.SeasonalExceptWinter" :  "Current season, except in winter.",
+  "config.SeasonalBehavior.SeasonalOnly": "Current season only.",
+  "config.SeasonalBehavior.SeasonalExceptWinter": "Current season, except in winter.",
 
   //Errors
   "ExcessRegexMatches": "Do not recognize pattern {{loc}}; skipping for now.",

@@ -9,15 +9,16 @@
 *************************************************/
 
 using AtraCore.Framework.Caches;
+using AtraCore.Utilities;
 
 using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
 using AtraShared.Integrations.Interfaces.ContentPatcher;
 using AtraShared.Utils.Extensions;
-using HarmonyLib;
-using StardewModdingAPI.Events;
 
-using static StardewValley.Polygon;
+using HarmonyLib;
+
+using StardewModdingAPI.Events;
 
 using AtraUtils = AtraShared.Utils.Utils;
 
@@ -98,9 +99,8 @@ internal sealed class ModEntry : Mod
             else if (Game1.timeOfDay == Config.WeddingTime)
             {
                 Game1.warpFarmer(new LocationRequest("Town", false, Game1.getLocationFromName("Town")), 5, 10, 0);
-                // this.Helper.Events.GameLoop.TimeChanged -= this.OnTimeChanged;
             }
-            else if (Game1.timeOfDay == Utility.ModifyTime(Config.WeddingTime, -30))
+            else if (Game1.timeOfDay == Utility.ModifyTime(Config.WeddingTime, -20))
             {
                 Game1.addHUDMessage(new HUDMessage(I18n.WeddingReminder(), HUDMessage.achievement_type));
             }
@@ -115,6 +115,13 @@ internal sealed class ModEntry : Mod
     /// <param name="e">Event args.</param>
     private void OnSaveLoad(object? sender, SaveLoadedEventArgs e)
     {
+        if (Context.IsSplitScreen && Context.ScreenId != 0)
+        {
+            return;
+        }
+
+        MultiplayerHelpers.AssertMultiplayerVersions(this.Helper.Multiplayer, this.ModManifest, this.Monitor, this.Helper.Translation);
+
         if (Context.IsMainPlayer && Config.TryRecoverWedding)
         {
             if (!Game1.canHaveWeddingOnDay(Game1.dayOfMonth, Game1.currentSeason))
@@ -250,19 +257,9 @@ internal sealed class ModEntry : Mod
         if (integrationHelper.TryGetAPI("Pathoschild.ContentPatcher", "1.19.0", out IContentPatcherAPI? api))
         {
             api.RegisterToken(
-                this.ModManifest,
-                "IsCurrentlyWedding",
-                () =>
-                {
-                    if (Game1.CurrentEvent is Event evt && evt.id == Event.weddingEventId)
-                    {
-                        return new[] { "true" };
-                    }
-                    else
-                    {
-                        return new[] { "false" };
-                    }
-                });
+                mod: this.ModManifest,
+                name: "IsCurrentlyWedding",
+                getValue: () => new[] { (Game1.CurrentEvent is Event evt && evt.id == Event.weddingEventId).ToString() });
         }
     }
 }

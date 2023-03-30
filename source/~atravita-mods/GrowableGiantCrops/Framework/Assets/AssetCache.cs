@@ -103,9 +103,13 @@ internal static class AssetCache
         {
             foreach ((string? key, WeakReference<AssetHolder>? holder) in Cache)
             {
-                if (!holder.TryGetTarget(out AssetHolder? _))
+                if (!holder.TryGetTarget(out AssetHolder? target))
                 {
                     Cache.TryRemove(key, out _);
+                }
+                else
+                {
+                    target.MarkDirty();
                 }
             }
 
@@ -115,9 +119,16 @@ internal static class AssetCache
         {
             foreach (IAssetName asset in assets)
             {
-                if (Cache.TryGetValue(asset.BaseName, out WeakReference<AssetHolder>? holder) && !holder.TryGetTarget(out _))
+                if (Cache.TryGetValue(asset.BaseName, out WeakReference<AssetHolder>? holder))
                 {
-                    Cache.TryRemove(asset.BaseName, out WeakReference<AssetHolder> _);
+                    if (!holder.TryGetTarget(out AssetHolder? target))
+                    {
+                        Cache.TryRemove(asset.BaseName, out WeakReference<AssetHolder> _);
+                    }
+                    else
+                    {
+                        target.MarkDirty();
+                    }
                 }
                 Failed.Remove(asset);
             }

@@ -30,7 +30,7 @@ public class QueuedDialogueManager
     /// <param name="npc">NPC to push dialogue of.</param>
     public static void PushCurrentDialogueToQueue(NPC npc)
     {
-        Guard.IsNotNull(npc, nameof(npc));
+        Guard.IsNotNull(npc);
 
         while (npc.CurrentDialogue.TryPop(out Dialogue? result))
         {

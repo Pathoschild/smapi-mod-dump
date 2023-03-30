@@ -14,9 +14,9 @@ namespace DaLion.Overhaul.Modules.Core.ConfigMenu;
 
 using DaLion.Overhaul.Modules.Tools;
 using DaLion.Overhaul.Modules.Tools.Integrations;
+using DaLion.Shared.Integrations.GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Shared.Integrations.GenericModConfigMenu;
 
 #endregion using directives
 
@@ -43,14 +43,6 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to hide affected tiles overlay while charging.",
                 config => config.Tools.HideAffectedTiles,
                 (config, value) => config.Tools.HideAffectedTiles = value)
-            .AddNumberField(
-                () => "Stamina Consumption Multiplier",
-                () => "Adjusts the stamina cost of charging.",
-                config => config.Tools.StaminaCostMultiplier,
-                (config, value) => config.Tools.StaminaCostMultiplier = value,
-                0f,
-                10f,
-                0.5f)
             .AddNumberField(
                 () => "Shockwave Delay",
                 () => "Affects the shockwave travel speed. Lower is faster. Set to 0 for instant.",
@@ -109,7 +101,15 @@ internal sealed partial class GenericModConfigMenuCore
             // axe settings
             .AddPage(OverhaulModule.Tools + "/Axe", () => "Axe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddVerticalSpace()
+            .AddSeparator()
+            .AddNumberField(
+                () => "Base Stamina Multiplier",
+                () => "Adjusts the base stamina cost of the Axe.",
+                config => config.Tools.Axe.BaseStaminaMultiplier,
+                (config, value) => config.Tools.Axe.BaseStaminaMultiplier = value,
+                0f,
+                3f,
+                0.2f)
             .AddSectionTitle(() => "Charging Settings")
             .AddCheckbox(
                 () => "Enable Axe Charging",
@@ -123,6 +123,14 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.Axe.RequiredUpgradeForCharging = Enum.Parse<UpgradeLevel>(value),
                 allowedUpgrades,
                 value => value)
+            .AddNumberField(
+                () => "Stamina Consumption Multiplier",
+                () => "Adjusts the stamina cost of charging.",
+                config => config.Tools.Axe.ChargedStaminaMultiplier,
+                (config, value) => config.Tools.Axe.ChargedStaminaMultiplier = value,
+                0f,
+                3f,
+                0.2f)
             .AddNumberField(
                 () => "Copper Radius",
                 () => "The radius of affected tiles for the Copper Axe.",
@@ -262,7 +270,15 @@ internal sealed partial class GenericModConfigMenuCore
             // pickaxe settings
             .AddPage(OverhaulModule.Tools + "/Pick", () => "Pick Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddVerticalSpace()
+            .AddSeparator()
+            .AddNumberField(
+                () => "Base Stamina Multiplier",
+                () => "Adjusts the base stamina cost of the Pickaxe.",
+                config => config.Tools.Pick.BaseStaminaMultiplier,
+                (config, value) => config.Tools.Pick.BaseStaminaMultiplier = value,
+                0f,
+                3f,
+                0.2f)
             .AddSectionTitle(() => "Charging Settings")
             .AddCheckbox(
                 () => "Enable Pick Charging",
@@ -276,6 +292,14 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.Pick.RequiredUpgradeForCharging = Enum.Parse<UpgradeLevel>(value),
                 allowedUpgrades,
                 value => value)
+            .AddNumberField(
+                () => "Stamina Consumption Multiplier",
+                () => "Adjusts the stamina cost of charging.",
+                config => config.Tools.Pick.ChargedStaminaMultiplier,
+                (config, value) => config.Tools.Pick.ChargedStaminaMultiplier = value,
+                0f,
+                3f,
+                0.2f)
             .AddNumberField(
                 () => "Copper Radius",
                 () => "The radius of affected tiles for the Copper Pick.",
@@ -399,7 +423,15 @@ internal sealed partial class GenericModConfigMenuCore
             // hoe settings
             .AddPage(OverhaulModule.Tools + "/Hoe", () => "Hoe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddVerticalSpace()
+            .AddSeparator()
+            .AddNumberField(
+                () => "Base Stamina Multiplier",
+                () => "Adjusts the base stamina cost of the Hoe.",
+                config => config.Tools.Hoe.BaseStaminaMultiplier,
+                (config, value) => config.Tools.Hoe.BaseStaminaMultiplier = value,
+                0f,
+                3f,
+                0.2f)
             .AddSectionTitle(() => "Area Of Effect Settings")
             .AddCheckbox(
                 () => "Override Affected Tiles",
@@ -542,7 +574,15 @@ internal sealed partial class GenericModConfigMenuCore
             // can settings
             .AddPage(OverhaulModule.Tools + "/Can", () => "Watering Can Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddVerticalSpace()
+            .AddSeparator()
+            .AddNumberField(
+                () => "Base Stamina Multiplier",
+                () => "Adjusts the base stamina cost of the Watering Can.",
+                config => config.Tools.Can.BaseStaminaMultiplier,
+                (config, value) => config.Tools.Can.BaseStaminaMultiplier = value,
+                0f,
+                3f,
+                0.2f)
             .AddSectionTitle(() => "Area Of Effect Settings")
             .AddCheckbox(
                 () => "Override Affected Tiles",
@@ -692,7 +732,7 @@ internal sealed partial class GenericModConfigMenuCore
             // scythe settings
             .AddPage(OverhaulModule.Tools + "/Scythe", () => "Scythe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddVerticalSpace()
+            .AddSeparator()
             .AddSectionTitle(() => "Area Of Effect Settings")
             .AddNumberField(
                 () => "Regular Scythe Radius",

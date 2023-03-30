@@ -1,7 +1,7 @@
 ﻿{
   "Name": "LewdDew_Valley_helper",
   "Author": "shurmash",
-  "Version": "0.5.4", // fixed locally
+  "Version": "0.6.5", // fixed locally
   "Description": "event repeats and clothes changes",
   "UniqueID": "shurmash.LewdDew_Valley_helper",
   "EntryDll": "LewdDew_Valley_helper.dll",

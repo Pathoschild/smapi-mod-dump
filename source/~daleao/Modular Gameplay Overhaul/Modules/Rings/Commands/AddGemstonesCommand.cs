@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Rings.Commands;
 #region using directives
 
 using System.Linq;
+using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Collections;
@@ -64,12 +65,12 @@ internal sealed class AddGemstonesCommand : ConsoleCommand
             var ringIndex = args[0].ToLower() switch
             {
                 // forges
-                "ruby" => Constants.RubyRingIndex,
-                "aquamarine" => Constants.AquamarineRingIndex,
-                "jade" => Constants.JadeRingIndex,
-                "emerald" => Constants.EmeraldRingIndex,
-                "amethyst" => Constants.AmethystRingIndex,
-                "topaz" => Constants.TopazRingIndex,
+                "ruby" => ItemIDs.RubyRing,
+                "aquamarine" => ItemIDs.AquamarineRing,
+                "jade" => ItemIDs.JadeRing,
+                "emerald" => ItemIDs.EmeraldRing,
+                "amethyst" => ItemIDs.AmethystRing,
+                "topaz" => ItemIDs.TopazRing,
                 "garnet" => Globals.GarnetRingIndex!.Value,
                 _ => -1,
             };
@@ -96,6 +97,7 @@ internal sealed class AddGemstonesCommand : ConsoleCommand
         ModHelper.Reflection.GetField<NetInt>(band, nameof(Ring.indexInTileSheet)).GetValue()
             .Set(Globals.InfinityBandIndex.Value);
         band.UpdateDescription();
+        CombinedRing_Chord.Values.Remove(band);
         Game1.player.Items[Game1.player.CurrentToolIndex] = band;
     }
 }

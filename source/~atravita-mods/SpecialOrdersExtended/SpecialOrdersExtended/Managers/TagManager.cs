@@ -22,9 +22,10 @@ namespace SpecialOrdersExtended.Managers;
 /// Static class to hold tag-management functions.
 /// </summary>
 [HarmonyPatch(typeof(SpecialOrder))]
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Reviewed.")]
 internal static class TagManager
 {
-    #region random
+#region random
 
     private static Random? random;
 
@@ -55,20 +56,23 @@ internal static class TagManager
         }
     }
 
-    #endregion
+#endregion
 
-    #region cache
+#region cache
 
-    private readonly static Dictionary<string, bool> Cache = new();
+    private static readonly Dictionary<string, bool> Cache = new();
     private static int lastTick = -1;
 
+    /// <summary>
+    /// Clears the cache.
+    /// </summary>
     internal static void ClearCache()
     {
         lastTick = -1;
         Cache.Clear();
     }
 
-    #endregion
+#endregion
 
     /// <summary>
     /// Prefixes CheckTag to handle special mod tags.

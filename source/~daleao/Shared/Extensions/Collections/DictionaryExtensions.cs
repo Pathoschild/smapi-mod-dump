@@ -14,7 +14,6 @@ namespace DaLion.Shared.Extensions.Collections;
 
 using System.Collections.Generic;
 using System.Linq;
-using NetFabric.Hyperlinq;
 
 #endregion using directives
 
@@ -46,9 +45,7 @@ public static class DictionaryExtensions
             ? string.Empty
             : string.Join(
                 pairSeparator,
-                dictionary
-                    .AsValueEnumerable()
-                    .Select(p => $"{p.Key}{keyValueSeparator}{p.Value}"));
+                dictionary.Select(p => $"{p.Key}{keyValueSeparator}{p.Value}"));
     }
 
     /// <summary>

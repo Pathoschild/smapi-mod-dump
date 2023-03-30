@@ -117,8 +117,8 @@ namespace DialaTarotCSharp
             },
             [8] = () =>
             {
-                Buff buff = new(0, 0, 0, 0, 3, 0, 0, 0, 0,
-                0, 0, 0, 14 * 60, "The Wheel of Fortune", "The Wheel of Fortune")
+                Buff buff = new(0, 0, 0, 0, 0, 3, 0, 0, 0,
+                    0, 0, 0, 14 * 60, "The Ace of Pentacles", "The Ace of Pentacles")
                 {
                     millisecondsDuration = 20 * 60 * 1000
                 };
@@ -135,8 +135,9 @@ namespace DialaTarotCSharp
             },
             [10] = () =>
             {
-                Buff buff = new(0, 0, 0, 0, 0, 3, 0, 0, 0,
-                0, 0, 0, 14 * 60, "The Ace of Pentacles", "The Ace of Pentacles")
+
+                Buff buff = new(0, 0, 0, 0, 3, 0, 0, 0, 0,
+                    0, 0, 0, 14 * 60, "The Wheel of Fortune", "The Wheel of Fortune")
                 {
                     millisecondsDuration = 20 * 60 * 1000
                 };

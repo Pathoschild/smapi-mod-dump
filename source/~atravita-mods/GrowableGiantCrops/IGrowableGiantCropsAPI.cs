@@ -474,7 +474,7 @@ public enum GrassIndexes
 {
     Spring = Grass.springGrass,
     Cave = Grass.caveGrass,
-    Forst = Grass.frostGrass,
+    Frost = Grass.frostGrass,
     Lava = Grass.lavaGrass,
     CaveTwo = Grass.caveGrass2,
     Cobweb = Grass.cobweb,

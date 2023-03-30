@@ -301,7 +301,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         }
         else
         {
-            // increment ultimate
+            // increment Brute ultimate meter
             frenzy.ChargeValue += weapon.IsClub() ? 3 : 2; // more if wielding a club
         }
     }
@@ -314,7 +314,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             TrySteal(monster, who, r);
 
             // increment Poacher ultimate meter
-            if (ultimate is Ambush && !ultimate.IsActive)
+            if (ProfessionsModule.Config.EnableSpecials && ultimate is Ambush && !ultimate.IsActive)
             {
                 ultimate.ChargeValue += critMultiplier;
             }
@@ -353,21 +353,21 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
                 switch (whatToBuff)
                 {
                     case 8:
-                        if (applied[8] < ProfessionsModule.Config.PiperBuffCap * 8)
+                        if (applied[8] < ProfessionsModule.Config.PiperBuffCeiling * 8)
                         {
                             applied[8] += 8;
                         }
 
                         break;
                     case 7:
-                        if (applied[7] < ProfessionsModule.Config.PiperBuffCap * 10)
+                        if (applied[7] < ProfessionsModule.Config.PiperBuffCeiling * 10)
                         {
                             applied[7] += 10;
                         }
 
                         break;
                     default:
-                        if (applied[8] < ProfessionsModule.Config.PiperBuffCap)
+                        if (applied[8] < ProfessionsModule.Config.PiperBuffCeiling)
                         {
                             applied[whatToBuff]++;
                         }
@@ -430,8 +430,8 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             who.Stamina = Math.Min(who.Stamina + (who.Stamina * 0.01f), who.MaxStamina);
         }
 
-        // increment ultimate meter
-        if (ultimate is Concerto { IsActive: false } concerto && ProfessionsModule.Config.EnableSpecials)
+        // increment Piper ultimate meter
+        if (ProfessionsModule.Config.EnableSpecials && ultimate is Concerto { IsActive: false } concerto)
         {
             var increment = monster switch
             {

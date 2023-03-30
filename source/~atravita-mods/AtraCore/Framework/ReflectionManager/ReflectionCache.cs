@@ -112,7 +112,7 @@ public static class ReflectionCache
     /// </summary>
     /// <param name="type">Type to search in.</param>
     /// <param name="flags">Flags to use.</param>
-    /// <param name="paramsList">Paramater list.</param>
+    /// <param name="paramsList">Parameter list.</param>
     /// <returns>ConstructorInfo, if it can be found.</returns>
     public static ConstructorInfo GetCachedConstructor(this Type type, FlagTypes flags, Type[] paramsList)
     {

@@ -3,10 +3,11 @@
     <RootNamespace>RemoteFridgeStorage</RootNamespace>
     <AssemblyName>RemoteFridgeStorage</AssemblyName>
     <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
-	<EnableHarmony>true</EnableHarmony>
+    <TargetFramework>net5.0</TargetFramework>
+	  <EnableHarmony>true</EnableHarmony>
+    <GamePath>E:\Games\Libraries\Steam\steamapps\common\Stardew Valley</GamePath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
 </Project>

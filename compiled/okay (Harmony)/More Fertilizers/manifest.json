@@ -9,14 +9,14 @@
   "UniqueID": "atravita.MoreFertilizers",
   "Name": "More Fertilizers",
   "Author": "atravita",
-  "Version": "0.3.2",
+  "Version": "0.3.4",
   "Description": "Adds more fertilizers to the game.",
   "MinimumApiVersion": "3.18",
   "EntryDll": "MoreFertilizers.dll",
   "Dependencies": [
     {
       "UniqueID": "atravita.AtraCore",
-      "MinimumVersion": "0.1.4",
+      "MinimumVersion": "0.2.1",
       "IsRequired": true
     },
     {

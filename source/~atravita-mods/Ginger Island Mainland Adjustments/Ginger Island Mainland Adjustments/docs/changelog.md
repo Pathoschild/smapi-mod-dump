@@ -28,7 +28,7 @@ Changelog
 <!-- Get Willy to change in his bedroom? -->
 <!-- Make sure the GI schedule keys are right.... -->
 <!-- Document animations -->
-<!-- Warp NPCs into, say, Town, if they need to walk a long distance? -->
+<!-- Warp NPCs into, say, Town or Saloon, if they need to walk a long distance? -->
 <!-- Document new tokens -->
 
 ##### Known Issues
@@ -39,7 +39,7 @@ Changelog
 
 ### Version 1.1.8
 * Fix assumption in scheduling code that schedules will have at least two points.
-* GIMA will now re-add the `default` or `spring` schedule if a mod tries removing that from a vanilla character. This is because the game expects one of those two schedules to exist and uses it as a default, and removing both may cause a crash.
+* GIMA will now try to re-add the `default` or `spring` schedule if a mod tries removing that from a vanilla character. This is because the game expects one of those two schedules to exist and uses it as a default, and removing both may cause a crash.
 * Add Chinese (thanks Herienseo!)
 
 ### Version 1.1.7

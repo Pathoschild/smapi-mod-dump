@@ -1,6 +1,0 @@
-{
-  "notification.crop.no-fertilizer": "Hoy es el último día para plantar {{cropName}} esta temporada sin fertilizante.",
-  "notification.crop.speed-gro": "Hoy es el último día para plantar {{cropName}} esta temporada con Acelerador básico.",
-  "notification.crop.deluxe-speed-gro": "Hoy es el último día para plantar {{cropName}} esta temporada con Acelerador deluxe.",
-  "notification.crop.hyper-speed-gro": "Hoy es el último día para plantar {{cropName}}esta temporada con Acelerador ultra-rápido."
-}

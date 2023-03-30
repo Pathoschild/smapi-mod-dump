@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/holy-the-sea/LightSwitch
+   Git: https://github.com/holy-the-sea/LightSwitch.git
+
+mods:
+   Light Switch
+
+latest commit:
+   commit eb9ab8ab676385a363d48d616f87fa34c3e34c8f
+   Author: holythesea <emmagirl258@gmail.com>
+   Date:   Tue Feb 28 20:12:16 2023 -0600
+   
+       Prepare for release (again oops)
+   

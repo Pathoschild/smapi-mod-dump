@@ -1,0 +1,27 @@
+﻿{
+	"Name": "moonslime.excavation.totem_volcano_warp",
+	"Category": "Crafting",
+	"Edibility": -300,
+	"Price": 800,
+	"IsColored": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 848,
+                "Count": 5
+            },
+			{
+                "Object": 122,
+                "Count": 1
+            },
+			{
+                "Object": 108,
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false
+    },
+    "TranslationKey": "moonslime.excavation.totem_volcano_warp"
+
+}

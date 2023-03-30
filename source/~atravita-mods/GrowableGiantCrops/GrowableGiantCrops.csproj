@@ -9,19 +9,10 @@
   <PropertyGroup>
     <Name>Growable Giant Crops</Name>
     <Description>Lets you grow giant crops.</Description>
-    <Version>0.1.0</Version>
-    <UpdateKeys>Nexus:15111</UpdateKeys>
+    <Version>0.1.3</Version>
+    <UpdateKeys>Nexus:15559</UpdateKeys>
     <BaseManifest>..\spacecore_dependencies.json</BaseManifest>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="HarmonyPatches\ToolPatches\Game1Patcher.cs~RF29fede4a.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AtraCore\AtraCore.csproj" private="false" />

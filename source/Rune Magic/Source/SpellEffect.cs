@@ -28,26 +28,26 @@ namespace RuneMagic.Source
             switch (Duration)
             {
                 case Duration.Instant: Timer = 0; break;
-                case Duration.Short: Timer = 5 + spell.Skill.Level * 60; break;
-                case Duration.Medium: Timer = 10 * spell.Skill.Level * 60; break;
-                case Duration.Long: Timer = 30 * spell.Skill.Level * 60; break;
+                case Duration.Short: Timer = 5 + spell.School.Level * 1000; break;
+                case Duration.Medium: Timer = 10 * spell.School.Level * 1000; break;
+                case Duration.Long: Timer = 30 * spell.School.Level * 1000; break;
                 case Duration.Permanent: Timer = 999999999; break;
             }
         }
 
         public virtual void Start()
         {
-            RuneMagic.PlayerStats.ActiveEffects.Add(this);
+            Player.MagicStats.ActiveEffects.Add(this);
         }
 
         public virtual void End()
         {
-            RuneMagic.PlayerStats.ActiveEffects.Remove(this);
+            Player.MagicStats.ActiveEffects.Remove(this);
         }
 
         public virtual void Update()
         {
-            if (RuneMagic.PlayerStats.ActiveEffects.Contains(this))
+            if (Player.MagicStats.ActiveEffects.Contains(this))
             {
                 if (Timer == 0)
                 {

@@ -56,6 +56,7 @@
 				"Kimpoi": "{{i18n:Festivals.StardewFair.Kimpoi}}",
 				"Naomi": "{{i18n:Festivals.StardewFair.Naomi}}",
 				"Torts": "{{i18n:Festivals.StardewFair.Torts}}",
+				"Bryle": "{{i18n:Festivals.StardewFair.Bryle}}",
 
 			//Dateables
 				"Alissa": "{{i18n:Festivals.StardewFair.Alissa}}",
@@ -92,6 +93,9 @@
 				"Irene_spouse": "{{i18n:Festivals.StardewFair.Irene_spouse}}",
 				"Zayne": "{{i18n:Festivals.StardewFair.Zayne}}",
 				"Zayne_spouse": "{{i18n:Festivals.StardewFair.Zayne_spouse}}",
+
+				"Faye_spouse": "{{i18n:Festivals.StardewFair.Faye_spouse}}",
+				"Bryle_spouse": "{{i18n:Festivals.StardewFair.Bryle_spouse}}",
 			},
 		},
 ]

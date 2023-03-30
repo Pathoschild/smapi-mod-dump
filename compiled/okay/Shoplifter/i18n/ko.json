@@ -1,4 +1,5 @@
 {
+    // Translations thanks to Aromay7!
     "TheMightyAmondee.Shoplifter/Shoplift":"훔칠까?",  
     "TheMightyAmondee.Shoplifter/Banned": "더는 훔칠 수 없습니다. 당신의 운을 맹신하지 마십시오....",
     "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "당신은 오늘 이미 물건을 훔쳤습니다. 이걸로 충분해...",
@@ -27,5 +28,25 @@
     "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "지금 뭐 하시는 거예요 @? 의사의 처방 없이 약을 가져가는 것은 위험해요...$8#$b#당신이 여유가 없으니 이번에는 벌금을 부과하지 않겠지만, 다시는 물건을 훔치지마세요.$5",
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "당신이 내 가게를 털고 있어 @! 난 당신이 이것보다는 더 나은 사람이라고 생각했어.$3#$b#당신은 어차피 그걸 살 여유가 없으니 이번에는 벌금을 물지 않을게 @.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "@, 내 가게가 다른 사람들과 떨어져 있다고 해서 훔치기 쉬워지는 것은 아니야.$2#$b#벌금은 걱정하지 말고 나가 @.$2",
-    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "아이스크림이 그렇게 먹고 싶었어 @?$7#$b#이번에는 경고만 하고 보내줄게.$5"
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "아이스크림이 그렇게 먹고 싶었어 @?$7#$b#이번에는 경고만 하고 보내줄게.$5",
+    //
+
+    // TODO Improve translations
+    "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"얼마나 자주 물건을 훔칠 수 있습니까?",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDay": "최대 도둑질/일",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDayTooltip": "하루 최대 도둑질.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShop": "최대 도둑질/가게",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShopTooltip":"같은 상점이 매일 얼마나 많이 도둑질을 할 수 있는지.",
+    "TheMightyAmondee.Shoplifter/GMCM_PenaltySection":"적발되면 어떤 처벌을 받나요?",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFine":"최대 벌금",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFineTooltip":"최대 벌금 금액.",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendship": "우정 페널티",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendshipTooltip": "최대 우정 페널티.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatches": "금지 전 캐치",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatchesTooltip":"금지되기 전에 몇 번이나 잡혀야하는지.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"금지된 일수",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"금지된 일수입니다",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"적발 반경",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"플레이어를 잡기 위해 마을 주민이 플레이어로부터 최대 반경 내에 있어야 합니다."
+    //
   }

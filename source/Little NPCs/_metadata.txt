@@ -6,9 +6,9 @@ mods:
    Little NPCs
 
 latest commit:
-   commit 7e65720b2ee8938b24b41bd1f2fcaa24b602af96
+   commit 635872435ac470fe80fb8c12c7a5bbd935d00d30
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Feb 27 20:06:40 2023 +0100
+   Date:   Mon Mar 13 21:30:39 2023 +0100
    
-       Fix LittleNPCs stopping movement on their way to bed when the farmer enters the house.
+       Fix children stuck in wall when there's no bed spot available.
    

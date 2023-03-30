@@ -22,6 +22,9 @@ using GingerIslandMainlandAdjustments.ScheduleManager;
 using HarmonyLib;
 using StardewModdingAPI.Events;
 
+using StardewValley.BellsAndWhistles;
+using StardewValley.Locations;
+
 namespace GingerIslandMainlandAdjustments;
 
 /// <inheritdoc />
@@ -85,8 +88,19 @@ internal sealed class ModEntry : Mod
         }
 
         GenerateGMCM.BuildNPCDictionary();
-
         Globals.LoadDataFromSave();
+
+        if (Game1.getLocationFromName("IslandSouth") is IslandSouth islandSouth)
+        {
+            this.Monitor.DebugOnlyLog("Found IslandSouth.", LogLevel.Info);
+            ParrotUpgradePerch? perch = islandSouth.parrotUpgradePerches.FirstOrDefault(perch => perch.tilePosition.X == 17 && perch.tilePosition.Y == 22);
+            if (perch is not null && perch.currentState.Value != ParrotUpgradePerch.UpgradeState.Complete)
+            {
+                this.Monitor.DebugOnlyLog("Found perch, applying watching.", LogLevel.Info);
+                IslandSouthWatcher southWatcher = new(this.Helper.GameContent);
+                perch.upgradeCompleteEvent.onEvent += southWatcher.OnResortFixed;
+            }
+        }
 
         this.migrator = new(this.ModManifest, this.Helper, this.Monitor);
         if (!this.migrator.CheckVersionInfo())

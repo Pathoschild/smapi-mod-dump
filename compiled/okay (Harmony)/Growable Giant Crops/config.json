@@ -1,0 +1,23 @@
+{
+  "RelaxedPlacement": false,
+  "PlacedOnly": false,
+  "ShovelEnergy": 7,
+  "ShovelDoesDamage": true,
+  "ShowShopGraphics": true,
+  "GiantCropShopLocation": "8, 14",
+  "ResourceShopLocation": "6, 19",
+  "MaxGiantCropsSold": 5,
+  "ShouldNPCsTrampleResourcesClumps": true,
+  "ShouldNPCsTrampleGiantCrops": true,
+  "PreserveModData": true,
+  "AllowLargeItemStacking": true,
+  "PlacedTreesSpread": false,
+  "MaxTreeStage": 4,
+  "MaxFruitTreeStage": 4,
+  "PalmTreeBehavior": "Seasonal",
+  "ShouldAnimalsEatPlacedGrass": true,
+  "ShouldPlacedGrassSpread": false,
+  "ShouldPlacedGrassIgnoreScythe": false,
+  "CanSquishPlacedSlimeBalls": false,
+  "PreservePlacedWeeds": true
+}

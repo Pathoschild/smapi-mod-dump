@@ -28,7 +28,7 @@ namespace PlatoTK.Compat
             if (TileSheetExtensions != null)
             {
                 instance.Patch(
-                    original: AccessTools.Method(TileSheetExtensions,nameof(GetTileSheet)),
+                    original: AccessTools.Method(TileSheetExtensions, nameof(GetTileSheet), new[]{typeof(Texture2D), typeof(int)}),
                     postfix: new HarmonyMethod(AccessTools.Method(typeof(SpaceCorePatches), nameof(GetTileSheet))));
             }
         }

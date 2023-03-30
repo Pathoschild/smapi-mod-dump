@@ -85,14 +85,24 @@ internal sealed class ModEntry : Mod
     [MethodImpl(TKConstants.Hot)]
     private static Random GetRandom(long id)
     {
-        if (!Cache.TryGetValue(id, out Random? random))
+        try
         {
-            modMonitor.DebugOnlyLog($"Cache miss: {id}", LogLevel.Info);
-            random = RandomUtils.GetSeededRandom(2, (int)(id >> 1));
-            Cache[id] = random;
+            if (!Cache.TryGetValue(id, out Random? random))
+            {
+                unchecked
+                {
+                    modMonitor.DebugOnlyLog($"Cache miss: {id}", LogLevel.Info);
+                    Cache[id] = random = RandomUtils.GetSeededRandom(2, (int)(id >> 1));
+                }
+            }
+            return random;
+        }
+        catch (Exception ex)
+        {
+            modMonitor.Log($"Failed while trying to generate random for pig {id}:\n\n{ex}", LogLevel.Error);
         }
 
-        return random;
+        return Game1.random;
     }
 
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)

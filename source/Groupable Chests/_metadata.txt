@@ -6,9 +6,9 @@ mods:
    Groupable Chests
 
 latest commit:
-   commit 4dcdb98c9bc2edae6a65d0622c017f10ae81cb46
+   commit bc78e77641db7547aa372e3defdce9696994c17d
    Author: FricativeMelon <43120800+FricativeMelon@users.noreply.github.com>
-   Date:   Mon Feb 6 18:31:12 2023 -0500
+   Date:   Sun Mar 12 19:02:51 2023 -0400
    
-       Add project files.
+       Fixed stack deletion bug
    

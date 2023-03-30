@@ -103,7 +103,7 @@ internal static class FixSecretNotes
         HashSet<int> seenNotes = who.secretNotesSeen.Where(id => id < GameLocation.JOURNAL_INDEX).ToHashSet();
         foreach (Item? item in who.Items)
         {
-            if (item.Name.StartsWith(secreteNoteName) && int.TryParse(item.Name.AsSpan(secreteNoteName.Length).Trim(), out int idx))
+            if (item is not null && item.Name.StartsWith(secreteNoteName) && int.TryParse(item.Name.AsSpan(secreteNoteName.Length).Trim(), out int idx))
             {
                 seenNotes.Add(idx);
             }
@@ -148,7 +148,7 @@ internal static class FixSecretNotes
         HashSet<int> seenScraps = who.secretNotesSeen.Where(id => id >= GameLocation.JOURNAL_INDEX).ToHashSet();
         foreach (Item? item in who.Items)
         {
-            if (item.Name.StartsWith(journalName) && int.TryParse(item.Name.AsSpan(journalName.Length).Trim(), out int idx))
+            if (item is not null && item.Name.StartsWith(journalName) && int.TryParse(item.Name.AsSpan(journalName.Length).Trim(), out int idx))
             {
                 seenScraps.Add(idx + GameLocation.JOURNAL_INDEX);
             }

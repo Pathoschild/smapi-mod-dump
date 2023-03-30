@@ -24,7 +24,7 @@ namespace RuneMagic.Source.Spells
 
         public override bool Cast()
         {
-            if (!RuneMagic.PlayerStats.ActiveEffects.OfType<Hastened>().Any())
+            if (!Player.MagicStats.ActiveEffects.OfType<Hastened>().Any())
             {
                 Effect = new Hastened(this);
                 return base.Cast();

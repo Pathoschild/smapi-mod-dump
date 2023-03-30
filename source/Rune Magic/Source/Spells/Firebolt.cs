@@ -23,8 +23,7 @@ namespace RuneMagic.Source.Spells
     {
         public Firebolt() : base(School.Evocation)
         {
-            Description += "Shoots bolt of fire to the target.";
-            Level = 2;
+            Description += "Shoots bolt of fire to the target."; Level = 2;
         }
 
         public override bool Cast()
@@ -32,7 +31,7 @@ namespace RuneMagic.Source.Spells
             var texture = RuneMagic.Textures["spell_fireball"];
             var minDamage = 1;
             var maxDamage = 6;
-            var bonusDamage = 2 * Skill.Level;
+            var bonusDamage = 2 * Player.MagicStats.ActiveSchool.Level;
             var area = 1;
             var speed = 5;
 

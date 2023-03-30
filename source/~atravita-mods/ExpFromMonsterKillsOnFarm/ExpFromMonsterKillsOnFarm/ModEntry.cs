@@ -20,19 +20,15 @@ namespace ExpFromMonsterKillsOnFarm;
 /// <inheritdoc />
 internal sealed class ModEntry : Mod
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    // ModMonitor is set in Entry, which is as close I can reasonaby get to the constructor.
-
     /// <summary>
     /// Gets logger for this mod.
     /// </summary>
-    internal static IMonitor ModMonitor { get; private set; }
+    internal static IMonitor ModMonitor { get; private set; } = null!;
 
     /// <summary>
     /// Gets or sets an instance of the configuration class for this mod.
     /// </summary>
-    internal static ModConfig Config { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    internal static ModConfig Config { get; set; } = null!;
 
     /// <inheritdoc />
     public override void Entry(IModHelper helper)

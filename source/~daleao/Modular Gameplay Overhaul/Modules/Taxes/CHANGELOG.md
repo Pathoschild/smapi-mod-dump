@@ -8,6 +8,21 @@ for queries and analysis.**
 
 # Taxes Module Change Log
 
+## 1.4.0
+
+### Added
+
+* Added new property taxes.
+* The bodies of most, if not all, tax-related letters have been altered. Translations will need to be revised.
+
+### Changed
+
+* You can now customize all tax brackets and tax rates for each bracket, including changing the number of brackets.
+
+### Fixed
+
+* Improved taxation in multiplayer when using shared wallets (thanks to [ncarigon](https://github.com/ncarigon)).
+
 ## 1.0.2
 
 ### Added

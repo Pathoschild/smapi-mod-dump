@@ -9,6 +9,7 @@
 *************************************************/
 
 {
+    // Translations thanks to NotErikWasTaken!
     "TheMightyAmondee.Shoplifter/Shoplift": "Diebstahl?",
     "TheMightyAmondee.Shoplifter/Banned": "Du hast wegen Diebstahl Hausverbot bekommen. Treibe es nicht zu weit...",
     "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Du hast heute schon gestohlen. Das reicht...",
@@ -37,7 +38,27 @@
     "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Was tust du da, @? Das Zeug kann ohne ärztliche Aufsicht gefährlich sein!...$8#$b#Das ist kein Spaß, gib es einfach wieder zurück, bevor sich noch wer was tut.$5",
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Du klaust von mir, @! Ich hätte mehr von dir gehalten.$3#$b#Du weißt, dass Diebstahl hier bestraft wird, oder? Ich lass es dir noch ein letztes Mal durchgehen.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Dass ich weiter von den anderen weg bin heißt nicht, dass du von mir klauen kannst, @.$2#$b#Vergessen wir das Ganze. Geh einfach, @.$2",
-    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Brauchst du ein Eis wirklich so sehr, @?$7#$b#Heute kommst du noch einmal mit einer Warnung davon.$2"
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Brauchst du ein Eis wirklich so sehr, @?$7#$b#Heute kommst du noch einmal mit einer Warnung davon.$2",
+    //
+
+    // TODO Improve translations
+    "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Wie oft darf man stehlen?",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDay": "Maximale Diebstähle/Tag",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDayTooltip": "Die maximalen Diebstähle pro Tag.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShop": "Maximale Diebstähle/Laden",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShopTooltip":"Wie oft derselbe Laden pro Tag bestohlen werden kann.",
+    "TheMightyAmondee.Shoplifter/GMCM_PenaltySection":"Welche Strafen drohen, wenn man erwischt wird?",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFine":"Maximale Geldstrafe",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFineTooltip":"Maximaler Bußgeldbetrag.",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendship": "Freundschaftsstrafe",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendshipTooltip": "Maximale Freundschaftsstrafe.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatches": "Erwischt vor Verbot",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatchesTooltip":"Wie oft man erwischt werden muss, bevor man gebannt wird.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Tage, für die man gesperrt wird",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Für wie viele Tage Sie gesperrt werden.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Erkannter Radius",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Maximale Entfernung, die ein Dorfbewohner vom Spieler entfernt sein muss, um den Spieler zu entdecken."
+    //
 }
 
 

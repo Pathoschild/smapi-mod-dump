@@ -70,11 +70,7 @@ internal static class PostfixBigSlimeConstructor
 
                 ModEntry.ModMonitor.DebugOnlyLog("Fixing ring to be prismatic ring");
                 __result[i] = new Ring(ModEntry.PrismaticSlimeRing);
-
-                foreach ((string k, string v) in oldring.modData.Pairs)
-                {
-                    __result[i].modData[k] = v;
-                }
+                __result[i].modData.CopyModDataFrom(oldring.modData);
             }
         }
     }

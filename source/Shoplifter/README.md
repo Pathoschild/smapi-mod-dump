@@ -30,7 +30,8 @@ Version 1.1.0 added a config so shoplifting preferences can be changed, includin
 - Maximum friendship penalty
 - Maximum distance a villager must be to catch the player, default is 5.
 
-When changing the config, ensure only positive whole numbers or zero are entered so the config can be parsed. The mod will use the default values if it can't parse the config.
+When changing the config, ensure only positive whole numbers or zero are entered so the config can be parsed. The mod will use the default values if it can't parse the config. 
+Version 1.1.4 added Generic Mod Config Menu support so the config values can be changed whilst in game (thanks to luelista!).
 
 The shops you can shoplift from are: Willy's Shop, Pierre's General Store, Carpenter, Marnie's Ranch, Harvey's Clinic, Saloon, Blacksmith, Sandy's Oasis, Icecream Stand.
 If you're wondering why all shops aren't included it's because the shopkeeper never leaves said store, you'll never get away with it. Custom shops cannot be shoplifted from.
@@ -51,14 +52,14 @@ Icecream Stand | Alex | None | 1 | 5 | No
 
 ## Compatibilty ##
 
-Fully compatible with multiplayer, shoplifting data is seperate for each player. Should work fine with a controller, just make sure you're under the counter.
+Fully compatible with multiplayer, shoplifting data is separate for each player. Should work fine with a controller, just make sure you're under the counter.
 
 Compatibile with shop tile framework in that altered stock will be considered when stock is generated for each shop (except for Sandy's Oasis, this causes an exception due to reflection and Harmony Patches). However, new shops added by the mod can't be shoplifted since even added vanilla shops are regarded as custom shops.
 
 ## Translation ##
 
-Shoplifter fully supports translation! Currently available in:
-- Chinese, thanks to 20080618!
+Shoplifter fully supports translation! In game translations currently available in:
+- Chinese, thanks to 20080618 and XinJiDA!
 - Korean, thanks to Aromay7!
 - Italian, thanks to peanutbatteries!
 - French, thanks to Breeis!
@@ -68,8 +69,15 @@ Shoplifter fully supports translation! Currently available in:
 - Turkish, thanks to zenura!
 - Russian, thanks to Bellden!
 
+Generic Mod Config Menu config menu translations currently avaliable in:
+- Chinese, thanks to XinJiDA!
+
+Other Generic Mod Config Menu translations done using DeepL and Google Translate. Improved translations are welcome.
+
 New translations always welcome! The best place to reach me is on the Shoplifter [mod page](https://www.nexusmods.com/stardewvalley/mods/8569).
-Translations are released seperately to the main files until a sufficient number of translations are received for a full release. 1.1.3 was the last translation full release. The release included Chinese, Korean, Italian, French, Portuguese and German.
+Translations are released separately to the main files until a sufficient number of translations are received for a full release. 1.1.4 was the last translation release including all currently available languages and some basic translation for the new GMCM menu. 
+
+Note: Translated GMCM menus may not have the proper layout.
 
 ## Versions ##
 1.0.0 - Initial release
@@ -79,6 +87,8 @@ Translations are released seperately to the main files until a sufficient number
 1.1.2 - Added translation support
 
 1.1.3 - Added Korean, Chinese, French, Portuguese, German and Italian translations
+
+1.1.4 - Added GMCM support thanks to luelista! Added Turkish, Spanish and Russian translations.
 
 
 

@@ -17,16 +17,15 @@ namespace RuneMagic.Source.Spells
     {
         public Displacement() : base(School.Alteration)
         {
-            Description += "Teleports a the caster to a target location.";
-            Level = 3;
+            Description += "Teleports a the caster to a target location."; Level = 3;
         }
 
         public override bool Cast()
         {
-            Target = Game1.currentCursorTile;
-            if (Game1.currentLocation.isTileLocationTotallyClearAndPlaceable(Target))
+            var target = Game1.currentCursorTile;
+            if (Game1.currentLocation.isTileLocationTotallyClearAndPlaceable(target))
             {
-                Game1.player.Position = new Vector2(Target.X * Game1.tileSize, Target.Y * Game1.tileSize);
+                Game1.player.Position = new Vector2(target.X * Game1.tileSize, target.Y * Game1.tileSize);
                 return base.Cast();
             }
             else

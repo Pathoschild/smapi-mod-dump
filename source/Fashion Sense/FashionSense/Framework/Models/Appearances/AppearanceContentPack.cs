@@ -37,6 +37,7 @@ namespace FashionSense.Framework.Models.Appearances
         internal string Owner { get; set; }
         internal string Author { get; set; }
         public string Name { get; set; }
+        public Version Format { get; set; } = new Version("1.0.0");
         internal string Id { get; set; }
         internal string PackName { get; set; }
         internal string PackId { get; set; }
@@ -45,6 +46,7 @@ namespace FashionSense.Framework.Models.Appearances
         private Texture2D _cachedTexture;
         internal Texture2D ColorMaskTexture { get; set; }
         internal Texture2D SkinMaskTexture { get; set; }
+        internal Texture2D CollectiveMaskTexture { get; set; }
         internal bool IsTextureDirty { get; set; }
 
         internal abstract void LinkId();

@@ -105,6 +105,11 @@ internal static class DrawPrismatic
         && set.Contains(item.ParentSheetIndex);
 
     [MethodImpl(TKConstants.Hot)]
+    private static bool ShouldDrawAsFullColored(this Ring ring)
+        => PrismaticFull.TryGetValue(ItemTypeEnum.Ring, out HashSet<int>? set)
+            && set.Contains(ring.indexInTileSheet.Value);
+
+    [MethodImpl(TKConstants.Hot)]
     private static Color ReplaceDrawColorForItem(Color prevcolor, Item item)
         => item.ShouldDrawAsFullColored() ? Utility.GetPrismaticColor() : prevcolor;
 
@@ -116,6 +121,11 @@ internal static class DrawPrismatic
     private static Texture2D? GetColorMask(this Item item)
         => item.GetItemType() is ItemTypeEnum type && PrismaticMasks.TryGetValue(type, out Dictionary<int, Lazy<Texture2D>>? masks)
             && masks.TryGetValue(item.ParentSheetIndex, out Lazy<Texture2D>? mask) ? mask.Value : null;
+
+    [MethodImpl(TKConstants.Hot)]
+    private static Texture2D? GetColorMask(this Ring ring)
+    => PrismaticMasks.TryGetValue(ItemTypeEnum.Ring, out Dictionary<int, Lazy<Texture2D>>? masks)
+        && masks.TryGetValue(ring.indexInTileSheet.Value, out Lazy<Texture2D>? mask) ? mask.Value : null;
 
     [MethodImpl(TKConstants.Hot)]
     private static void DrawColorMask(Item item, SpriteBatch b, Rectangle position, float drawDepth)
@@ -352,7 +362,7 @@ internal static class DrawPrismatic
             {
                 helper.FindNext(new CodeInstructionWrapper[]
                 {
-                (OpCodes.Call, typeof(Color).GetCachedProperty(nameof(Color.White), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
+                    (OpCodes.Call, typeof(Color).GetCachedProperty(nameof(Color.White), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
                 })
                 .Advance(1)
                 .Insert(new CodeInstruction[]

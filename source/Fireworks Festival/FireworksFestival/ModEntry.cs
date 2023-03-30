@@ -59,11 +59,21 @@ namespace FireworksFestival
         private static string explodeColorString = "violetlizabet.FireworksFestival/explodeColor";
         private static string fishingGameString = "violetlizabet.FireworksFestival/fishingGame";
         private static string thisModID;
-        private static string licenseLetter = "vl.FireworksFestival";
+        private static string festivalLetter = "vl.FireworksFestival";
+        private static string licenseLetter = "vl.fireworkslicense";
         private static string msgTypeRemove = "fireworkRemovalMessage";
         private static string msgTypeAdd = "fireworkAddMessage";
+        private static string chemizerRecipeName = "FireworksFestivalChemizer";
+        private static string blackPowderRecipeName = "FireworksFestivalBlackPowder";
+        private static string redFireworkRecipeName = "FireworksFestivalRedFirework";
+        private static string orangeFireworkRecipeName = "FireworksFestivalOrangeFirework";
+        private static string yellowFireworkRecipeName = "FireworksFestivalYellowFirework";
+        private static string greenFireworkRecipeName = "FireworksFestivalGreenFirework";
+        private static string blueFireworkRecipeName = "FireworksFestivalBlueFirework";
+        private static string purpleFireworkRecipeName = "FireworksFestivalPurpleFirework";
+        private static string whiteFireworkRecipeName = "FireworksFestivalWhiteFirework";
 
-        // Firework names
+        // DGA item names
         private static string redFWName = contentPackModID  + "/RedFirework";
         private static string orangeFWName = contentPackModID + "/OrangeFirework";
         private static string yellowFWName = contentPackModID + "/YellowFirework";
@@ -204,11 +214,26 @@ namespace FireworksFestival
             {
                 Monitor.Log("Adding festival mail", LogLevel.Trace);
 
-                Game1.player.mailReceived.Remove(licenseLetter);
-                Game1.addMail(licenseLetter);
+                Game1.player.mailReceived.Remove(festivalLetter);
+                Game1.addMail(festivalLetter);
             }
 
             fireworkLocs.Clear();
+
+            // Forcibly add some recipes if needed
+            if (Game1.player.miningLevel.Value >= 6)
+            {
+                if (!Game1.player.craftingRecipes.ContainsKey(chemizerRecipeName))
+                {
+                    Monitor.Log("Adding chemizer recipe directly", LogLevel.Trace);
+                    Game1.player.craftingRecipes.Add(chemizerRecipeName, 0);
+                }
+                if (!Game1.player.craftingRecipes.ContainsKey(blackPowderRecipeName))
+                {
+                    Monitor.Log("Adding black powder recipe directly", LogLevel.Trace);
+                    Game1.player.craftingRecipes.Add(blackPowderRecipeName, 0);
+                }
+            }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -236,6 +261,7 @@ namespace FireworksFestival
                 // Submarine warp
                 if (e.Cursor.GrabTile.X == 5 && e.Cursor.GrabTile.Y == 34)
                 {
+                    suppressClick();
                     Response[] responses2 = new Response[2]
                     {
                         new Response("Play", Game1.content.LoadString("Strings\\StringsFromCSFiles:Event.cs.1662")),
@@ -248,6 +274,7 @@ namespace FireworksFestival
                 // Free shaved ice
                 else if ((e.Cursor.GrabTile.X == 13 || e.Cursor.GrabTile.X == 14) && e.Cursor.GrabTile.Y == 37)
                 {
+                    suppressClick();
                     if (!hasReceivedFreeGift)
                     {
                         Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:BeachNightMarket_GiftGiverQuestion"), Game1.currentLocation.createYesNoResponses(), "GiftGiverQuestion");
@@ -261,18 +288,21 @@ namespace FireworksFestival
                 // Traveling merchant
                 else if (e.Cursor.GrabTile.X == 39 && e.Cursor.GrabTile.Y == 30)
                 {
+                    suppressClick();
                     Game1.activeClickableMenu = new ShopMenu(Utility.getTravelingMerchantStock((int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed)), 0, "TravelerSummerNightMarket", Utility.onTravelingMerchantShopPurchase);
                 }
 
                 // Fried foods shop
                 else if (e.Cursor.GrabTile.X == 19 && e.Cursor.GrabTile.Y == 33)
                 {
+                    suppressClick();
                     Game1.activeClickableMenu = new ShopMenu(blueBoatStock);
                 }
 
                 // Fireworks shop
                 else if (e.Cursor.GrabTile.X == 25 && e.Cursor.GrabTile.Y == 39)
                 {
+                    suppressClick();
                     ShopMenu purpleShop = new ShopMenu(purpleBoatStock, 0, "Birdie", ModEntry.postFireworkBuy, null, "STF.violetlizabet.Fireworks");
                     purpleShop.portraitPerson = new NPC(new AnimatedSprite("Characters\\Birdie"), new Vector2(0,0), 1, "Birdie");
                     string dialogue = Game1.content.LoadString("Strings\\StringsFromCSFiles:vlFireworks.Birdie");
@@ -283,12 +313,14 @@ namespace FireworksFestival
                 // Fruits shop
                 else if ((e.Cursor.GrabTile.X == 47 || e.Cursor.GrabTile.X == 48) && e.Cursor.GrabTile.Y == 34)
                 {
+                    suppressClick();
                     Game1.activeClickableMenu = new ShopMenu(brownBoatStock);
                 }
 
                 // Yukata shop
                 else if ((e.Cursor.GrabTile.X == 34 || e.Cursor.GrabTile.X == 35) && e.Cursor.GrabTile.Y == 15)
                 {
+                    suppressClick();
                     ShopMenu clothesShop = new ShopMenu(clothingShopStock, 0, "FireworksFox", null, null, "STF.violetlizabet.FireworkClothing");
                     clothesShop.portraitPerson = new NPC(new AnimatedSprite("Characters\\Birdie"), new Vector2(0, 0), 1, "FireworksFox");
                     string dialogue = Game1.content.LoadString("Strings\\StringsFromCSFiles:vlFireworks.Fox");
@@ -731,6 +763,13 @@ namespace FireworksFestival
             if (DGA_API.GetDGAItemId(item).Equals(fireworksLicenseName,StringComparison.OrdinalIgnoreCase) && !Game1.player.mailReceived.Contains(licenseLetter))
             {
                 Game1.player.mailReceived.Add(licenseLetter);
+                addCraftingRecipe(redFireworkRecipeName);
+                addCraftingRecipe(orangeFireworkRecipeName);
+                addCraftingRecipe(yellowFireworkRecipeName);
+                addCraftingRecipe(greenFireworkRecipeName);
+                addCraftingRecipe(blueFireworkRecipeName);
+                addCraftingRecipe(purpleFireworkRecipeName);
+                addCraftingRecipe(whiteFireworkRecipeName);
             }
             return false;
         }
@@ -795,6 +834,22 @@ namespace FireworksFestival
             stock.Add(new StardewValley.Object(636, 1), new int[2] { 5000, 1 });
             stock.Add(new StardewValley.Object(268, 1), new int[2] { 5000, 1 });
             return stock;
+        }
+
+        private static void addCraftingRecipe(string recipeName)
+        {
+            if (!Game1.player.craftingRecipes.ContainsKey(recipeName))
+            {
+                Game1.player.craftingRecipes.Add(recipeName, 0);
+            }
+        }
+
+        private static void suppressClick()
+        {
+            helperStatic.Input.Suppress(Game1.options.actionButton[0].ToSButton());
+            helperStatic.Input.Suppress(Game1.options.useToolButton[0].ToSButton());
+            helperStatic.Input.Suppress(SButton.MouseLeft);
+            helperStatic.Input.Suppress(SButton.MouseRight);
         }
     }
 }

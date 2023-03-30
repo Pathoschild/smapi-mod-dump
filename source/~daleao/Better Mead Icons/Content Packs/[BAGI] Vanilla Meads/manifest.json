@@ -10,8 +10,8 @@
 
 {
   "Name": "[BAGI] Vanilla Meads",
-  "Author": "DaLion",
-  "Version": "1.0.0",
+  "Author": "DaLion && eleseaHonu",
+  "Version": "1.0.1",
   "Description": "Provides BAGI mead icons for all vanilla flowers.",
   "UniqueID": "DaLion.Meads.Vanilla",
   "MinimumApiVersion": "2.2.0",

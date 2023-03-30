@@ -6,9 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit d3424c7404c91c7916ed64e3d79d67599b82d0e6
+   commit 9535b0c29f06a6743d5d506a85211c9962497c21
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Tue Feb 14 10:24:53 2023 +0100
+   Date:   Fri Mar 17 00:31:49 2023 +0000
    
-       removed custom leftclickheld due to performance impact. Relevant part is setScrollBar anyway so its fine
+       Update README.md
    

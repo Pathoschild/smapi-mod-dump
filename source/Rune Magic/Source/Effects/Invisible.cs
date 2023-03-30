@@ -25,11 +25,6 @@ namespace RuneMagic.Source.Effects
             Start();
         }
 
-        public override void Start()
-        {
-            base.Start();
-        }
-
         public override void End()
         {
             Game1.player.hidden.Value = false;
@@ -39,6 +34,7 @@ namespace RuneMagic.Source.Effects
         public override void Update()
         {
             base.Update();
+            RuneMagic.Instance.Monitor.Log($"{Timer}");
             Game1.player.hidden.Value = true;
             var mobs = Game1.currentLocation.characters;
             foreach (var mob in mobs)

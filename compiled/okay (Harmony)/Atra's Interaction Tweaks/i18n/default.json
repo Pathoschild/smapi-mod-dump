@@ -42,7 +42,22 @@
   "BetIcons.title": "Bet1k/10k Icons",
   "BetIcons.description": "Whether or not to show the bet1k/bet10k icons.",
 
+  // secret notes gmmc
+  "SecretNotesOverride.title": "Secret Note options",
+  "SecretNotesOverride.descriptions": "Controls how this mod handles secret notes.",
+
+  "OverrideSecretNotes.title": "Override Secret Notes",
+  "OverrideSecretNotes.description": "Let this mod override how the game handles spawning secret notes.",
+
+  "MaxNoteChance.title": "Max Note Chance",
+  "MaxNoteChance.description": "The highest chance a note will be produced.",
+
+  "MinNoteChance.title": "Min Note Chance",
+  "MinNoteChance.description": "The chance used for the last note.",
+
   // Handle the confirmation GMCM stuff....
+  "NapalmInSafeAreas.title": "Napalm In Safe Areas",
+  "NapalmInSafeAreas.description": "If disabled, prevents napalm rings from taking effect in areas marked as Safe (by default the Farm).",
 
   "BombLocationDetailed": "Bomb and warp confirmation per location",
   "BombLocationDetailed.description": "Sets whether or not a location should be considered safe or dangerous when it comes to bomb confirmation. A dynamic location is considered dangerous if there is a single enemy on it.",

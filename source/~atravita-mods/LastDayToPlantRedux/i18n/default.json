@@ -38,8 +38,8 @@
   "config.CropOptions.Purchaseable": "Purchase-able",
   "config.CropOptions.Seen": "Seen",
 
-  "FertilizerOptions.title": "Fertilizer Options",
-  "FertilizerOptions.description": "Which fertilizers should be included?",
+  "FertilizersToDisplay.title": "Fertilizer Options",
+  "FertilizersToDisplay.description": "Which fertilizers should be included?",
 
   "config.FertilizerOptions.All": "All",
   "config.FertilizerOptions.Seen": "Seen",

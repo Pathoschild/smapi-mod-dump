@@ -6,9 +6,9 @@ mods:
    Remote Fridge Storage
 
 latest commit:
-   commit 81e29d670b18d9e44642a85c3f17103be62f536f
+   commit ce4bea355afe35b342d891a4565e85f19031c055
    Author: ArjanSeijs <arjan.seijs@gmail.com>
-   Date:   Fri Oct 8 15:48:14 2021 +0200
+   Date:   Sun Mar 26 15:22:34 2023 +0200
    
-       Cooking skill compatibility and some debugging messages
+       Updated api version
    

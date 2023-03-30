@@ -1,0 +1,13 @@
+{
+  "BNWCoreToolLength": 7,
+  "BNWCoreToolWidth": 2,
+  "BNWCoreslimeHutch": true,
+  "BNWCoreharvestCrops": false,
+  "BNWCoreharvestCropsIndoorPots": true,
+  "BNWCoreartifactSpots": true,
+  "BNWCoreorePan": true,
+  "BNWCorefruitTrees": true,
+  "BNWCoreseedTrees": true,
+  "BNWCoreflowers": false,
+  "BNWCoregarbageCans": true
+}

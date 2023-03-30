@@ -29,12 +29,14 @@ using System.Text.Json;
 using DynamicReflections.Framework.External.GenericModConfigMenu;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using DynamicReflections.Framework.Interfaces.Internal;
 
 namespace DynamicReflections
 {
     public class DynamicReflections : Mod
     {
         // Shared static helpers
+        internal static Api api;
         internal static IMonitor monitor;
         internal static IModHelper modHelper;
         internal static Multiplayer multiplayer;
@@ -103,6 +105,7 @@ namespace DynamicReflections
         public override void Entry(IModHelper helper)
         {
             // Set up the monitor, helper and multiplayer
+            api = new Api();
             monitor = Monitor;
             modHelper = helper;
             multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
@@ -144,6 +147,11 @@ namespace DynamicReflections
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        }
+
+        public override object GetApi()
+        {
+            return api;
         }
 
         private void OnWindowResized(object sender, StardewModdingAPI.Events.WindowResizedEventArgs e)

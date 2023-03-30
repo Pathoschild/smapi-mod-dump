@@ -85,6 +85,7 @@ namespace AlternativeTextures
 
         // Utilities
         internal static FpsCounter fpsCounter;
+        private static Api _api;
 
         // Tool related variables
         private Point _lastSprayCanTile = new Point();
@@ -106,6 +107,7 @@ namespace AlternativeTextures
 
             // Setup our utilities
             fpsCounter = new FpsCounter();
+            _api = new Api(this);
 
             // Load our Harmony patches
             try
@@ -135,10 +137,7 @@ namespace AlternativeTextures
                 new IndoorPotPatch(monitor, helper).Apply(harmony);
                 new PhonePatch(monitor, helper).Apply(harmony);
                 new TorchPatch(monitor, helper).Apply(harmony);
-                /*
-                 * Not supported:
-                 * - Wood Chipper
-                 */
+                new WoodChipperPatch(monitor, helper).Apply(harmony);
 
                 // Start of entity patches
                 new CharacterPatch(monitor, helper).Apply(harmony);
@@ -175,6 +174,8 @@ namespace AlternativeTextures
             helper.ConsoleCommands.Add("at_set_age", "Sets age for all children in location. Potentially buggy / gamebreaking, do not use. \n\nUsage: at_set_age [AGE]", this.DebugSetAge);
             helper.ConsoleCommands.Add("at_display_fps", "Displays FPS counter. Use again to disable. \n\nUsage: at_display_fps", delegate { _displayFPS = !_displayFPS; });
             helper.ConsoleCommands.Add("at_paint_shop", "Shows the carpenter shop with the paint bucket for sale.\n\nUsage: at_paint_shop", this.DebugShowPaintShop);
+            helper.ConsoleCommands.Add("at_set_object_texture", "Sets the texture of the object below the player.\n\nUsage: at_set_object_texture [TEXTURE_ID] (VARIATION_NUMBER) (SEASON)", this.DebugSetTexture);
+            helper.ConsoleCommands.Add("at_clear_texture", "Clears the texture of the object below the player.\n\nUsage: at_clear_texture", this.DebugClearTexture);
             helper.ConsoleCommands.Add("at_reload", "Reloads all Alternative Texture content packs.\n\nUsage: at_reload", delegate { this.LoadContentPacks(); });
 
             // Hook into GameLoop events
@@ -305,8 +306,27 @@ namespace AlternativeTextures
             var placedObject = PatchTemplate.GetObjectAt(Game1.currentLocation, xTile, yTile);
             if (placedObject is null)
             {
+                var resourceClump = PatchTemplate.GetResourceClumpAt(Game1.currentLocation, xTile, yTile);
                 var terrainFeature = PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, xTile, yTile);
-                if (terrainFeature is Flooring flooring)
+                if (resourceClump is GiantCrop giantCrop)
+                {
+                    var modelType = AlternativeTextureModel.TextureType.GiantCrop;
+                    var instanceName = Game1.objectInformation.ContainsKey(giantCrop.parentSheetIndex.Value) ? Game1.objectInformation[giantCrop.parentSheetIndex.Value].Split('/')[0] : String.Empty;
+                    if (!giantCrop.modData.ContainsKey("AlternativeTextureName") || !giantCrop.modData.ContainsKey("AlternativeTextureVariation"))
+                    {
+                        // Assign default modData
+                        var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(giantCrop.currentLocation)}";
+                        PatchTemplate.AssignDefaultModData(giantCrop, instanceSeasonName, true);
+                    }
+
+                    Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.info.texture_copied"), 2) { timeLeft = 1000 });
+                    tool.modData[PAINT_BRUSH_FLAG] = $"{modelType}_{instanceName}";
+                    tool.modData[PAINT_BRUSH_SCALE] = 0.5f.ToString();
+                    tool.modData["AlternativeTextureOwner"] = giantCrop.modData["AlternativeTextureOwner"];
+                    tool.modData["AlternativeTextureName"] = giantCrop.modData["AlternativeTextureName"];
+                    tool.modData["AlternativeTextureVariation"] = giantCrop.modData["AlternativeTextureVariation"];
+                }
+                else if (terrainFeature is Flooring flooring)
                 {
                     var modelType = AlternativeTextureModel.TextureType.Flooring;
                     if (!flooring.modData.ContainsKey("AlternativeTextureName") || !flooring.modData.ContainsKey("AlternativeTextureVariation"))
@@ -419,8 +439,24 @@ namespace AlternativeTextures
                 var placedObject = PatchTemplate.GetObjectAt(Game1.currentLocation, xTile, yTile);
                 if (placedObject is null)
                 {
+                    var resourceClump = PatchTemplate.GetResourceClumpAt(Game1.currentLocation, xTile, yTile);
                     var terrainFeature = PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, xTile, yTile);
-                    if (terrainFeature is Flooring flooring)
+                    if (resourceClump is GiantCrop giantCrop)
+                    {
+                        var modelType = AlternativeTextureModel.TextureType.GiantCrop;
+                        var instanceName = Game1.objectInformation.ContainsKey(giantCrop.parentSheetIndex.Value) ? Game1.objectInformation[giantCrop.parentSheetIndex.Value].Split('/')[0] : String.Empty;
+                        if (tool.modData[PAINT_BRUSH_FLAG] == $"{modelType}_{instanceName}")
+                        {
+                            giantCrop.modData["AlternativeTextureOwner"] = tool.modData["AlternativeTextureOwner"];
+                            giantCrop.modData["AlternativeTextureName"] = tool.modData["AlternativeTextureName"];
+                            giantCrop.modData["AlternativeTextureVariation"] = tool.modData["AlternativeTextureVariation"];
+                        }
+                        else
+                        {
+                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.invalid_copied_texture", new { textureName = tool.modData[PAINT_BRUSH_FLAG] }), 3) { timeLeft = 2000 });
+                        }
+                    }
+                    else if (terrainFeature is Flooring flooring)
                     {
                         var modelType = AlternativeTextureModel.TextureType.Flooring;
                         if (tool.modData[PAINT_BRUSH_FLAG] == $"{modelType}_{PatchTemplate.GetFlooringName(flooring)}")
@@ -511,8 +547,22 @@ namespace AlternativeTextures
             var placedObject = PatchTemplate.GetObjectAt(Game1.currentLocation, xTile, yTile);
             if (placedObject is null)
             {
+                var resourceClump = PatchTemplate.GetResourceClumpAt(Game1.currentLocation, xTile, yTile);
                 var terrainFeature = PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, xTile, yTile);
-                if (terrainFeature is Flooring flooring)
+                if (resourceClump is GiantCrop giantCrop)
+                {
+                    var modelType = AlternativeTextureModel.TextureType.GiantCrop;
+                    var instanceName = Game1.objectInformation.ContainsKey(giantCrop.parentSheetIndex.Value) ? Game1.objectInformation[giantCrop.parentSheetIndex.Value].Split('/')[0] : String.Empty;
+                    if (!giantCrop.modData.ContainsKey("AlternativeTextureName") || !giantCrop.modData.ContainsKey("AlternativeTextureVariation"))
+                    {
+                        // Assign default modData
+                        var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(giantCrop.currentLocation)}";
+                        PatchTemplate.AssignDefaultModData(giantCrop, instanceSeasonName, true);
+                    }
+
+                    tool.modData[SPRAY_CAN_FLAG] = $"{modelType}_{instanceName}";
+                }
+                else if (terrainFeature is Flooring flooring)
                 {
                     var modelType = AlternativeTextureModel.TextureType.Flooring;
                     if (!flooring.modData.ContainsKey("AlternativeTextureName") || !flooring.modData.ContainsKey("AlternativeTextureVariation"))
@@ -661,8 +711,21 @@ namespace AlternativeTextures
                         var actualSelectedVariation = actualSelectedModel.Variations[selectedVariationIndex].ToString();
 
                         // Verify that a supported object exists at the tile
+                        var resourceClump = PatchTemplate.GetResourceClumpAt(Game1.currentLocation, actualX, actualY);
                         var terrainFeature = PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, actualX, actualY);
-                        if (terrainFeature is Flooring flooring)
+                        if (resourceClump is GiantCrop giantCrop)
+                        {
+                            var modelType = AlternativeTextureModel.TextureType.GiantCrop;
+                            var instanceName = Game1.objectInformation.ContainsKey(giantCrop.parentSheetIndex.Value) ? Game1.objectInformation[giantCrop.parentSheetIndex.Value].Split('/')[0] : String.Empty;
+                            if (tool.modData[SPRAY_CAN_FLAG] == $"{modelType}_{instanceName}")
+                            {
+                                giantCrop.modData["AlternativeTextureOwner"] = actualSelectedModel.Owner;
+                                giantCrop.modData["AlternativeTextureName"] = actualSelectedModel.TextureName;
+                                giantCrop.modData["AlternativeTextureVariation"] = actualSelectedVariation;
+                                continue;
+                            }
+                        }
+                        else if (terrainFeature is Flooring flooring)
                         {
                             var modelType = AlternativeTextureModel.TextureType.Flooring;
                             if (tool.modData[SPRAY_CAN_FLAG] == $"{modelType}_{PatchTemplate.GetFlooringName(flooring)}")
@@ -749,7 +812,7 @@ namespace AlternativeTextures
 
         public override object GetApi()
         {
-            return new Api(this);
+            return _api;
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -1313,6 +1376,50 @@ namespace AlternativeTextures
                 { PatchTemplate.GetSprayCanTool(true), new int[2] { 500, 1 } }
             };
             Game1.activeClickableMenu = new ShopMenu(items);
+        }
+
+        private void DebugSetTexture(string command, string[] args)
+        {
+            if (args.Length == 0)
+            {
+                Monitor.Log($"Missing required arguments: [TEXTURE_ID]", LogLevel.Warn);
+                return;
+            }
+
+            string season = null;
+            if (args.Length > 1)
+            {
+                season = args[1];
+            }
+
+            int variation = 0;
+            if (args.Length > 2 && Int32.TryParse(args[2], out int parsedVariation))
+            {
+                variation = parsedVariation;
+            }
+
+            var objectBelowPlayer = PatchTemplate.GetObjectAt(Game1.currentLocation, Game1.player.getTileX() * 64, (Game1.player.getTileY() + 1) * 64);
+            if (objectBelowPlayer is null)
+            {
+                Monitor.Log($"No object detected below the player!", LogLevel.Warn);
+                return;
+            }
+            monitor.Log($"Attempting to change texture of {objectBelowPlayer.Name} to {args[0]}", LogLevel.Debug);
+
+            _api.SetTextureForObject(objectBelowPlayer, args[0], season, variation);
+        }
+
+        private void DebugClearTexture(string command, string[] args)
+        {
+            var objectBelowPlayer = PatchTemplate.GetObjectAt(Game1.currentLocation, Game1.player.getTileX() * 64, (Game1.player.getTileY() + 1) * 64);
+            if (objectBelowPlayer is null)
+            {
+                Monitor.Log($"No object detected below the player!", LogLevel.Warn);
+                return;
+            }
+            monitor.Log($"Clearing the texture of {objectBelowPlayer.Name}", LogLevel.Debug);
+
+            _api.ClearTextureForObject(objectBelowPlayer);
         }
 
         private string CleanContentPackNameForConfig(string contentPackName)

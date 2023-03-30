@@ -69,7 +69,7 @@ internal sealed class BushShakePatcher : HarmonyPatcher
         }
 
         // Injected: if (Game1.player.professions.Contains(<ecologist_id>))
-        //     Data.IncrementField<uint>(DataFields.EcologistItemsForaged)
+        //     Data.IncrementField<uint>(DataKeys.EcologistItemsForaged)
         try
         {
             var dontIncreaseEcologistCounter = generator.DefineLabel();
@@ -82,7 +82,7 @@ internal sealed class BushShakePatcher : HarmonyPatcher
                     {
                         new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseEcologistCounter),
                         new CodeInstruction(OpCodes.Call, typeof(Game1).RequirePropertyGetter(nameof(Game1.player))),
-                        new CodeInstruction(OpCodes.Ldstr, DataFields.EcologistItemsForaged),
+                        new CodeInstruction(OpCodes.Ldstr, DataKeys.EcologistItemsForaged),
                         new CodeInstruction(
                             OpCodes.Call,
                             typeof(ModDataIO)

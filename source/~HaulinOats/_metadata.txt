@@ -7,9 +7,9 @@ mods:
    Water Balloon
 
 latest commit:
-   commit 52d12b71bd1b7c1f60726314c9605d5455b3f534
+   commit b44cb6504f0df51891781d22fda46937d3b42f40
    Author: Brett Connolly <brett84c@gmail.com>
-   Date:   Thu Nov 17 10:19:55 2022 -0500
+   Date:   Fri Mar 3 18:29:30 2023 -0500
    
-       updates to water balloon mod
+       added crop-2-ore processor
    

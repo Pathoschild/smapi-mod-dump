@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15882
+IDs: Button.SpecifyGiftTastePortraits
+update keys: Nexus:15882

@@ -1,0 +1,28 @@
+﻿﻿[{
+	// Optional; Default is true if missing
+	"Enabled": true,
+
+	// Required; Value can be the tree type ID or Name; Values must be [1] Oak, [2] Maple, [3] Pine, [8] Mahogany
+	"TreeType": 1,
+
+	// Required; Value can be the item ID or Name, but must exist
+	"ShakeOff": 0,
+
+	// Optional; Value must be 'spring', 'summer', 'fall', or 'winter'; Default is 'spring' if missing
+	"StartSeason": "spring",
+
+	// Optional; Value must be from 1 to 28; Default is 1
+	"StartDay": 1,
+
+	// Optional; Default is StartSeason value if missing, or 'winter' if that is also missing
+	"EndSeason": "winter",
+
+	// Optional; Default is StartDay value if missing, or 28 if that is also missing
+	"EndDay": 28,
+
+	// Optional; Default is 0.05 if missing; Value must be between 0.0 and 1.0
+	"Chance": 0.05,
+
+	// Optional; Default is all locations if missing or empty
+	"Locations": [ "Forest", "Mountain" ]
+}]

@@ -75,7 +75,7 @@ namespace OmniTools
                 {
                     Tool t = currentTool;
                     Tool newTool = GetToolFromInfo(tools[i]);
-                    if (newTool is null)
+                    if (newTool is null || newTool.GetType() != toolList[index])
                     {
                         SMonitor.Log($"Invalid tool {tools[i].displayName}, removing", StardewModdingAPI.LogLevel.Warn);
                         tools.RemoveAt(i);
@@ -128,7 +128,7 @@ namespace OmniTools
                                 if (c is RockCrab && !AccessTools.FieldRefAccess<RockCrab, NetBool>((c as RockCrab), "shellGone").Value)
                                     continue;
                                 var distance = Vector2.Distance(c.GetBoundingBox().Center.ToVector2(), f.GetBoundingBox().Center.ToVector2());
-                                if (distance > Config.MaxMonsterDistance)
+                                if (distance > Config.MonsterMaxDistance)
                                     continue;
                                 if (f.FacingDirection == 0 && c.GetBoundingBox().Top > f.GetBoundingBox().Bottom)
                                     continue;
@@ -187,11 +187,21 @@ namespace OmniTools
                     if (tool != null)
                         return tool;
                 }
-                if (Config.SwitchForCrops && tf is HoeDirt && (tf as HoeDirt).crop?.forageCrop.Value == true && (tf as HoeDirt).crop?.whichForageCrop.Value == Crop.forageCrop_ginger)
+                if (Config.SwitchForCrops && tf is HoeDirt && (tf as HoeDirt).crop != null)
                 {
-                    tool = SwitchTool(currentTool, typeof(Hoe), tools);
-                    if (tool != null)
-                        return tool;
+                    var crop = (tf as HoeDirt).crop;
+                    if (crop.forageCrop.Value == false && (crop.harvestMethod.Value == 1 || Config.HarvestWithScythe) && crop.currentPhase.Value >= crop.phaseDays.Count - 1 && (!crop.fullyGrown.Value || crop.dayOfCurrentPhase.Value <= 0))
+                    {
+                        tool = SwitchTool(currentTool, null, tools);
+                        if (tool != null)
+                            return tool;
+                    }
+                    else if ((tf as HoeDirt).crop.forageCrop.Value == true && (tf as HoeDirt).crop.whichForageCrop.Value == Crop.forageCrop_ginger)
+                    {
+                        tool = SwitchTool(currentTool, typeof(Hoe), tools);
+                        if (tool != null)
+                            return tool;
+                    }
                 }
 
             }
@@ -247,7 +257,7 @@ namespace OmniTools
                     Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
                     if (tool != null) return tool;
                 }
-                if (currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y))
+                if (currentLocation.isTileOnMap(new Vector2(tile.X, tile.Y)) && (!Config.SwitchForFishing || currentTool is not FishingRod || currentLocation.waterTiles is null || !currentLocation.waterTiles[(int)tile.X, (int)tile.Y]) && currentLocation.CanRefillWateringCanOnTile((int)tile.X, (int)tile.Y))
                 {
                     Tool tool = SwitchTool(currentTool, typeof(WateringCan), tools);
                     if (tool != null) return tool;
@@ -353,6 +363,18 @@ namespace OmniTools
                 if (tool != null)
                     return tool;
             }
+            else if (obj is BreakableContainer)
+            {
+                var tool = SwitchTool(currentTool, typeof(MeleeWeapon), tools);
+                if(tool is null)
+                    tool = SwitchTool(currentTool, typeof(Hoe), tools);
+                if(tool is null)
+                    tool = SwitchTool(currentTool, typeof(Axe), tools);
+                if(tool is null)
+                    tool = SwitchTool(currentTool, typeof(Pickaxe), tools);
+                if (tool is not null)
+                    return tool;
+            }
             return null;
         }
 
@@ -367,12 +389,11 @@ namespace OmniTools
                         return tool;
 
                 }
-                else if((tf as Tree).growthStage.Value >= 1)
+                else if ((tf as Tree).growthStage.Value == 1)
                 {
                     Tool tool = SwitchTool(currentTool, null, tools);
                     if (tool != null)
                         return tool;
-
                 }
                 else
                 {

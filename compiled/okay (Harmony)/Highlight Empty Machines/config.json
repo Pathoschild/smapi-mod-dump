@@ -35,5 +35,8 @@
     "Deconstructor": true,
     "CrabPot": true
   },
-  "ProducerFrameworkModMachines": {}
+  "ProducerFrameworkModMachines": {
+    "Bone Mill": true
+  },
+  "DisablePulsing": false
 }

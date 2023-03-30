@@ -21,15 +21,13 @@ namespace RuneMagic.Source.Spells
     public class Cleansing : Spell
     {
         public Cleansing() : base(School.Abjuration)
-
         {
-            Description += "Removes all effects from the player for a short duration of time.";
-            Level = 2;
+            Description += "Removes all effects from the player for a short duration of time."; Level = 2;
         }
 
         public override bool Cast()
         {
-            if (!RuneMagic.PlayerStats.ActiveEffects.OfType<Cleansed>().Any())
+            if (!Player.MagicStats.ActiveEffects.OfType<Cleansed>().Any())
             {
                 Effect = new Cleansed(this);
                 return base.Cast();

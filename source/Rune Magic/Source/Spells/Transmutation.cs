@@ -21,14 +21,7 @@ namespace RuneMagic.Source.Spells
     {
         public Transmutation() : base(School.Alteration)
         {
-            Description += "Strips an item of its quality and gives the caster some money back.";
-            Level = 1;
-        }
-
-        public override bool Cast()
-        {
-            Game1.warpFarmer("FarmHouse", 4, 3, false);
-            return base.Cast();
+            Description += "Strips an item of its quality and gives the caster some money back."; Level = 1;
         }
     }
 }

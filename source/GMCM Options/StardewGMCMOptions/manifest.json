@@ -11,7 +11,7 @@
 {
     "Name": "GMCM Options",
     "Author": "Jamie Taylor",
-    "Version": "1.3.0",
+    "Version": "1.4.0",
     "Description": "Provides complex Option types for Generic Mod Config Menu",
     "UniqueID": "jltaylor-us.GMCMOptions",
     "EntryDll": "GMCMOptions.dll",

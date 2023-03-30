@@ -21,7 +21,7 @@ namespace RemoteFridgeStorage.controller.saving
     /// </summary>
     public class SaveData
     {
-        public IEnumerable<ChestData> Chests;
+        public readonly IEnumerable<ChestData> Chests;
 
         public SaveData(IEnumerable<ChestData> chests)
         {

@@ -139,6 +139,81 @@ namespace Shoplifter
             {
                 this.config.CaughtRadius = 1;
             }
+
+            this.BuildConfigMenu();
+        }
+
+        private void BuildConfigMenu()
+        {
+            // get Generic Mod Config Menu's API (if it's installed)
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null) return;
+
+            // register mod
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(this.config)
+            );
+
+            configMenu.AddSectionTitle(this.ModManifest, () => i18n.string_GMCM_PeriodSection());
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxDay(),
+                tooltip: () => i18n.string_GMCM_MaxDayTooltip(),
+                getValue: () => (int)this.config.MaxShopliftsPerDay,
+                setValue: value => this.config.MaxShopliftsPerDay = (uint)value,
+                min: 1
+            );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxShop(),
+                tooltip: () => i18n.string_GMCM_MaxShopTooltip(),
+                getValue: () => (int)this.config.MaxShopliftsPerStore,
+                setValue: value => this.config.MaxShopliftsPerStore = (uint)value,
+                min: 1
+            );
+            configMenu.AddSectionTitle(this.ModManifest, () => i18n.string_GMCM_PenaltySection());
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxFine(),
+                tooltip: () => i18n.string_GMCM_MaxFineTooltip(),
+                getValue: () => (int)this.config.MaxFine,
+                setValue: value => this.config.MaxFine = (uint)value,
+                min: 0
+            );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxFriendship(),
+                tooltip: () => i18n.string_GMCM_MaxFriendshipTooltip(),
+                getValue: () => (int)this.config.FriendshipPenalty,
+                setValue: value => this.config.FriendshipPenalty = (uint)value,
+                min: 0
+            );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxCatches(),
+                tooltip: () => i18n.string_GMCM_MaxCatchesTooltip(),
+                getValue: () => (int)this.config.CatchesBeforeBan,
+                setValue: value => this.config.CatchesBeforeBan = (uint)value,
+                min: 1, max: 100
+            );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxBanned(),
+                tooltip: () => i18n.string_GMCM_MaxBannedTooltip(),
+                getValue: () => (int)this.config.DaysBannedFor,
+                setValue: value => this.config.DaysBannedFor = (uint)value,
+                min: 0, max: 28
+            );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => i18n.string_GMCM_MaxRadius(),
+                tooltip: () => i18n.string_GMCM_MaxRadiusTooltip(),
+                getValue: () => (int)this.config.CaughtRadius,
+                setValue: value => this.config.CaughtRadius = (uint)value,
+                min: 0, max: 20
+            );
         }
 
         private void Action(object sender, ButtonPressedEventArgs e)

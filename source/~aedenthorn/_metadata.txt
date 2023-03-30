@@ -102,6 +102,7 @@ mods:
    Instant Growth Powder
    Krobus Roommate Shop
    Light Mod
+   Like a Duck to Water
    Livestock Choices
    Log Spam Filter
    Longer Seasons
@@ -127,6 +128,7 @@ mods:
    Multiple Spouses
    Murdercrows
    Musical Paths
+   Napalm Mummies
    Night Event Chance Tweak
    Non-Random Prairie King
    NPC Clothing Framework
@@ -160,6 +162,7 @@ mods:
    Restauranteer
    Robin Work Hours
    Secret Hedge Maze
+   Seed Info
    Seed Maker Tweaks
    Self Serve
    Show Players Behind Buildings
@@ -202,9 +205,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit cd9bb019be00ba09cd631d6e95a5d6a466040ee8
+   commit baa67df6120a33569bb0b87209e0e9935967f930
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Wed Feb 22 12:19:57 2023 -0500
+   Date:   Thu Mar 23 06:07:40 2023 -0400
    
        etc
    

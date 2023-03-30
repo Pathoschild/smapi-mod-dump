@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Overhaul.Modules.Core.Events.Player;
+namespace DaLion.Overhaul.Modules.Core.Events;
 
 #region using directives
 

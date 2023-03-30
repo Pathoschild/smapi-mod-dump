@@ -60,12 +60,25 @@ internal static class AssetManager
     internal static IAssetName ShopGraphics { get; private set; } = null!;
 
     #region palm trees
+
+    /// <summary>
+    /// Gets the asset path of the winter big palm tree.
+    /// </summary>
     internal static IAssetName WinterBigPalm { get; private set; } = null!;
 
+    /// <summary>
+    /// Gets the asset path of the winter small palm tree.
+    /// </summary>
     internal static IAssetName WinterPalm { get; private set; } = null!;
 
+    /// <summary>
+    /// Gets the asset path of the fall big palm tree.
+    /// </summary>
     internal static IAssetName FallBigPalm { get; private set; } = null!;
 
+    /// <summary>
+    /// Gets the asset path of the fall small palm tree.
+    /// </summary>
     internal static IAssetName FallPalm { get; private set; } = null!;
 
     #endregion

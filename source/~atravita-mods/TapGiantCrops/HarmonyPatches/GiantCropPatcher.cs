@@ -43,7 +43,7 @@ internal static class GiantCropPatcher
                     if (Game1.currentLocation.objects.TryGetValue(tile, out SObject? obj)
                         && obj.Name.Contains("Tapper", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (obj.heldObject.Value is SObject held)
+                        if (obj.readyForHarvest.Value && obj.heldObject.Value is SObject held)
                         {
                             Game1.currentLocation.debris.Add(new(held, tile * 64));
                         }

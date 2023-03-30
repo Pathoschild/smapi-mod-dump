@@ -80,29 +80,59 @@ namespace SM_bqms
                         __result = false;
                         return false;
                     }
-                    SeedMaker seedMaker = ModEntry.SeedMakers.First((sm) => sm.GameObject.TileLocation == machine.TileLocation);
+                    int seedMakerIndex = ModEntry.SeedMakers.FindIndex((sm) => sm.GameObject.TileLocation == machine.TileLocation);
+                    if (seedMakerIndex < 0) {
+                        SeedMaker newSeedMaker = new SeedMaker() {
+                            GameObject = machine,
+                            isHandled = false,
+                        };
+                        ModEntry.SeedMakers.Add(newSeedMaker);
+                        seedMakerIndex = ModEntry.SeedMakers.LastIndexOf(newSeedMaker);
+                    }
+                    SeedMaker seedMaker = ModEntry.SeedMakers[seedMakerIndex];
                     if (seedMaker != null)
                     {
                         seedMaker.isHandled = true;
                     }
+
                     Type Consumable = type.Assembly.GetType("Pathoschild.Stardew.Automate.Framework.Consumable");
                     MethodInfo Take = Consumable.GetMethod("Take", bindingFlags);
                     StardewValley.Object item = (StardewValley.Object)Take.Invoke(crop, new object[] {});
                     IDictionary<int, int> SeedLookup = (IDictionary<int, int>)type.GetField("SeedLookup", bindingFlags).GetValue(Instance) ?? new Dictionary<int, int>();
+                    if (ModEntry.Config.EnableDebug) {
+                        Monitor.Log($"Automate patch: Seed validation", LogLevel.Debug);
+                    }
                     if (SeedLookup == null)
                     {
+                        if (ModEntry.Config.EnableDebug) {
+                            Monitor.Log($"Automate patch: No valid seed for game object", LogLevel.Debug);
+                        }
                         __result = false;
                         return false;
+                    }
+                    if (ModEntry.Config.EnableDebug) {
+                        Monitor.Log($"Automate patch: Valid seed found", LogLevel.Debug);
                     }
                     int seedID = SeedLookup[item.ParentSheetIndex];
                     int cropModifier = GetCropModifier(item.Quality);
 
                     Random random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + (int)machine.TileLocation.X + (int)machine.TileLocation.Y * 77 + Game1.timeOfDay);
-                    machine.heldObject.Value = new StardewValley.Object(seedID, random.Next(1 + cropModifier, 4 + cropModifier));
-                    if (random.NextDouble() < 0.005)
+                    int amount = random.Next(1 + cropModifier, 4 + cropModifier);
+                    machine.heldObject.Value = new StardewValley.Object(seedID, amount);
+                    if (ModEntry.Config.EnableDebug) {
+                        Monitor.Log($"\nAutomate patch: SeedMaker at {machine.TileLocation.ToString()}\nQuanity: {item.Quality}\nModifier: {cropModifier}\nSeeds: {amount}\n", LogLevel.Debug);
+                    }
+                    if (random.NextDouble() < 0.005) {
                         machine.heldObject.Value = new StardewValley.Object(499, 1);
-                    else if (random.NextDouble() < 0.02)
+                        if (ModEntry.Config.EnableDebug) {
+                            Monitor.Log($"\nAutomate patch: SeedMaker at {machine.TileLocation.ToString()} Ancient Seeds chance triggered\n", LogLevel.Debug);
+                        }
+                    } else if (random.NextDouble() < 0.02) {
                         machine.heldObject.Value = new StardewValley.Object(770, random.Next(1, 5));
+                        if (ModEntry.Config.EnableDebug) {
+                            Monitor.Log($"\nAutomate patch: SeedMaker at {machine.TileLocation.ToString()} Mixed Seeds chance triggered\n", LogLevel.Debug);
+                        }
+                    }
                     machine.MinutesUntilReady = 20;
                     __result = true;
                     return false;
@@ -124,6 +154,7 @@ namespace SM_bqms
             object[] parameters = new object[] { predicate, count, null};
             object result = tryGetIngredient.Invoke(input, parameters);
             consumable = parameters[2];
+
             if (consumable == null)
             {
                 return false;
@@ -137,7 +168,12 @@ namespace SM_bqms
             IDictionary<int, int> SeedLookup = (IDictionary<int, int>)type.GetField("SeedLookup", bindingFlags).GetValue(Instance);
             Enum ItemType = (Enum)item.GetType().GetProperty("Type", bindingFlags).GetValue(item);
             object sampleItem = item.GetType().GetProperty("Sample", bindingFlags).GetValue(item);
-            if(sampleItem.GetType().ToString() != "StardewValley.Object")
+            List<string> validObjects = new List<string>(new string[] {"StardewValley.Object", "StardewValley.Objects.ColoredObject"});
+            if (ModEntry.Config.EnableDebug) {
+                Monitor.Log($"Automate patch: ItemName - {sampleItem.GetType().GetProperty("name")} :: ItemType {sampleItem.GetType()}", LogLevel.Debug);
+                Monitor.Log($"Automate patch: ValidObjects - {String.Join(", ", validObjects.ToArray())}", LogLevel.Debug);
+            }
+            if(!validObjects.Contains(sampleItem.GetType().ToString()))
             {
                 return false;
             }

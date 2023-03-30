@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Copper Still",
     "Author": "NCarigon",
-    "Version": "1.0.5",
+    "Version": "1.0.6",
     "Description": "Adds more endgame variety to processing crops.",
     "UniqueID": "NCarigon.CopperStill",
     "UpdateKeys": [ "nexus:15333" ],
@@ -9,9 +9,10 @@
     "MinimumApiVersion": "3.18.0",
     "Dependencies": [
         // disabled locally
-        // { "UniqueID": "NCarigon.CopperStillJA" },
-        // { "UniqueID": "NCarigon.CopperStillCCM" },
-        // { "UniqueID": "NCarigon.CopperStillPFM" },
-        // { "UniqueID": "NCarigon.CopperStillMFM" }
+        //{ "UniqueID": "NCarigon.CopperStillJA" },
+        //{ "UniqueID": "NCarigon.CopperStillCCM" },
+        //{ "UniqueID": "NCarigon.CopperStillPFM" },
+        //{ "UniqueID": "NCarigon.CopperStillMFM" },
+        //{ "UniqueID": "NCarigon.CopperStillBBM" }
     ]
 }

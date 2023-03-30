@@ -54,6 +54,9 @@ Run SMAPI at least once with this mod installed to generate the `config.json`, o
     - I did not test this mod with Save Anywhere (either version), use at your own risk.
     - It should work fine with SolidFoundations, just remember to remove all instances of the inventory version of the bushes from all SolidFoundations buildings before removing this mod. (Placed bushes should be fine to leave.)
 
+## Much thanks to:
+* [Casey](https://www.nexusmods.com/stardewvalley/users/34250790) for...a lot at this point. This mod uses her serializer magic and would not be possible without it.
+
 ## See also
 
 [Changelog](docs/changelog.md)

@@ -19,7 +19,6 @@ namespace StopRugRemoval.HarmonyPatches.Niceties;
 /// <summary>
 /// Holds patches to defang napalm rings in safe areas.
 /// </summary>
-
 [HarmonyPatch(typeof(Ring))]
 internal static class NapalmInSafeAreas
 {
@@ -42,12 +41,12 @@ internal static class NapalmInSafeAreas
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Failed when trying to prevent naplam ring in safe areas:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Failed when trying to prevent napalm ring in safe areas:\n\n{ex}", LogLevel.Error);
         }
         return true;
     }
 
     private static bool IsLocationConsideredSafe(this GameLocation location)
-    => ModEntry.Config.SafeLocationMap.TryGetValue(location.NameOrUniqueName, out IsSafeLocationEnum val)
-        & val == IsSafeLocationEnum.Safe;
+        => ModEntry.Config.SafeLocationMap.TryGetValue(location.NameOrUniqueName, out IsSafeLocationEnum val)
+            & val == IsSafeLocationEnum.Safe;
 }

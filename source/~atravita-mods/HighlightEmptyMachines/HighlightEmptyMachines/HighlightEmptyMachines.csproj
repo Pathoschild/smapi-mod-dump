@@ -10,18 +10,13 @@
     <Name>Highlight Empty Machines</Name>
     <Description>Highlights empty machines to make them a little more obvious.</Description>
     <UpdateKeys>Nexus:11664</UpdateKeys>
-    <Version>0.2.1</Version>
-    <BaseManifest>..\..\base_dependencies.json</BaseManifest>
+    <Version>0.2.4</Version>
+    <BaseManifest>..\..\fake_pfm_dependency.json</BaseManifest>
   </PropertyGroup>
 
   <PropertyGroup>
     <TranslationClassBuilder_AddGetByKey>true</TranslationClassBuilder_AddGetByKey>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-  </ItemGroup>
   
     <ItemGroup>
     <ProjectReference Include="..\..\AtraCore\AtraCore.csproj" private="false" />

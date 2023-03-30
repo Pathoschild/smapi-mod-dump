@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 0c3ff0535a8102f31b05c185f488d7836a852901
-   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Tue Feb 28 22:46:02 2023 +0800
+   commit dbef587146a65feccc91013dc79da3bcaed71178
+   Author: Clare <ccathanlon@gmail.com>
+   Date:   Wed Mar 29 20:44:42 2023 -0400
    
-       built dll
+       took june out of the luau main event bc apparently he was conflicting with harvey
    

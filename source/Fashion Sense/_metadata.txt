@@ -6,12 +6,9 @@ mods:
    Fashion Sense
 
 latest commit:
-   commit 9aa840c7d7b108a7536f280a1ee5693866086374
-   Merge: 4880188 261b926
+   commit 2833b21977a7246e2a1703bd495e0bc2079be984
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Tue Feb 28 18:59:55 2023 -0600
+   Date:   Tue Mar 28 22:27:13 2023 -0500
    
-       Merge pull request #24 from Floogen/feature/unlimited-accessories
-       
-       Feature/unlimited accessories
+       v5.2.0 released
    

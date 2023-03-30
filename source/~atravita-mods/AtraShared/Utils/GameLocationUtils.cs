@@ -234,6 +234,11 @@ public static class GameLocationUtils
     {
         Guard.IsNotNull(location);
 
+        if (location.Map.Layers.Count == 0)
+        {
+            return (Array.Empty<Vector2>(), 0);
+        }
+
         // sanity
         xstart = Math.Max(xstart, 1);
         ystart = Math.Max(ystart, 1);
@@ -241,7 +246,7 @@ public static class GameLocationUtils
         xend = Math.Clamp(xend, xstart, location.Map.Layers[0].LayerWidth - 2);
         yend = Math.Clamp(yend, ystart, location.Map.Layers[0].LayerHeight - 2);
 
-        int count = (xend - xstart) * (yend - ystart);
+        int count = (xend - xstart + 1) * (yend - ystart + 1);
 
         if (count == 0)
         {

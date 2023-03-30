@@ -12,9 +12,7 @@ namespace DaLion.Overhaul.Modules.Tools.Events;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Shared.Events;
-using DaLion.Shared.Extensions.Collections;
 using StardewModdingAPI.Events;
 using StardewValley;
 

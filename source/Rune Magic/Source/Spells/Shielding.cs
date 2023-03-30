@@ -21,13 +21,12 @@ namespace RuneMagic.Source.Spells
     {
         public Shielding() : base(School.Abjuration)
         {
-            Description += "Rises the caster's defense.";
-            Level = 1;
+            Description += "Rises the caster's defense."; Level = 1;
         }
 
         public override bool Cast()
         {
-            if (!RuneMagic.PlayerStats.ActiveEffects.OfType<Shielded>().Any())
+            if (!Player.MagicStats.ActiveEffects.OfType<Shielded>().Any())
             {
                 Effect = new Shielded(this);
                 return base.Cast();

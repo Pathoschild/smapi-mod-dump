@@ -1,7 +1,7 @@
 ﻿{
   "Name": "GameboyArcade",
   "Author": "drbirbdev",
-  "Version": "0.1.0",
+  "Version": "1.0.0", // fixed locally
   "Description": "A Library for enabling Gameboy Roms to be played as in-game arcade machines.",
   "UniqueID": "drbirbdev.GameboyArcade",
   "EntryDll": "GameboyArcade.dll",

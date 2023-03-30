@@ -123,7 +123,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        Game1.player.Write(DataFields.EcologistItemsForaged, value?.ToString());
+        Game1.player.Write(DataKeys.EcologistItemsForaged, value?.ToString());
         if (value.HasValue)
         {
             Log.I($"Items foraged as Ecologist was set to {value}.");
@@ -138,7 +138,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        Game1.player.Write(DataFields.GemologistMineralsCollected, value?.ToString());
+        Game1.player.Write(DataKeys.GemologistMineralsCollected, value?.ToString());
         if (value.HasValue)
         {
             Log.I($"Minerals collected as Gemologist was set to {value}.");
@@ -153,7 +153,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        Game1.player.Write(DataFields.ProspectorHuntStreak, value?.ToString());
+        Game1.player.Write(DataKeys.ProspectorHuntStreak, value?.ToString());
         if (value.HasValue)
         {
             Log.I($"Prospector Hunt was streak set to {value}.");
@@ -168,7 +168,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        Game1.player.Write(DataFields.ScavengerHuntStreak, value?.ToString());
+        Game1.player.Write(DataKeys.ScavengerHuntStreak, value?.ToString());
         if (value.HasValue)
         {
             Log.I($"Scavenger Hunt streak was set to {value}.");
@@ -183,7 +183,7 @@ internal sealed class SetModDataCommand : ConsoleCommand
             return;
         }
 
-        Game1.player.Write(DataFields.ConservationistTrashCollectedThisSeason, value?.ToString());
+        Game1.player.Write(DataKeys.ConservationistTrashCollectedThisSeason, value?.ToString());
         if (value.HasValue)
         {
             Log.I($"Conservationist trash collected in the current season ({Game1.CurrentSeasonDisplayName}) was set to {value}.");

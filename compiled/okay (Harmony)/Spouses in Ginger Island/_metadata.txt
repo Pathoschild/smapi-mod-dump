@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/11037
 IDs: mistyspring.spousesisland, mistyspring.SpouseRoomCode
-update keys: Nexus:11037, GitHub:misty-spring/SpousesIsland
+update keys: Nexus:11037, GitHub:misty-spring/StardewMods

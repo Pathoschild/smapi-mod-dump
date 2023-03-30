@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<AssemblyName>BetterBeehouses</AssemblyName>
@@ -6,6 +6,7 @@
 		<Version>1.3.2</Version>
 		<TargetFramework>net5.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
+		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,7 +14,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>

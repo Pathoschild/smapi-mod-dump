@@ -20,9 +20,14 @@ namespace LittleNPCs.Framework.Patches {
     /// </summary>
     class DialogueCheckForSpecialCharactersPatch {
         public static bool Prefix(Dialogue __instance, ref string str) {
-            // The list of NPCs is not sorted by child index, thus we need a query.
-            str = str.Replace("%kid1", (ModEntry.LittleNPCsList.Count > 0) ? ModEntry.GetLittleNPC(0).displayName : Game1.content.LoadString("Strings/StringsFromCSFiles:Dialogue.cs.793"));
-            str = str.Replace("%kid2", (ModEntry.LittleNPCsList.Count > 1) ? ModEntry.GetLittleNPC(1).displayName : Game1.content.LoadString("Strings/StringsFromCSFiles:Dialogue.cs.794"));
+            // Here we provide names for LittleNPCs,
+            // the original method is still used to provide children's names.
+            if (ModEntry.LittleNPCsList.Count > 0) {
+                str = str.Replace("%kid1", ModEntry.GetLittleNPC(0).displayName);
+            }
+            if (ModEntry.LittleNPCsList.Count > 1) {
+                str = str.Replace("%kid2", ModEntry.GetLittleNPC(1).displayName);
+            }
 
             // Enable original method.
             return true;

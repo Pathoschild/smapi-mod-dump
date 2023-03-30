@@ -16,7 +16,7 @@
     },
     {
       "UniqueID": "atravita.AtraCore",
-      "MinimumVersion": "0.1.4",
+      "MinimumVersion": "0.2.1",
       "IsRequired": true
     }
   ]

@@ -65,10 +65,18 @@ internal class SObjectDrawTranspiler
     private static bool ShouldDisablePulsing() => ModEntry.Config.DisablePulsing;
 
 #pragma warning disable SA1116 // Split parameters should start on line after declaration. Reviewed
+    [HarmonyAfter("Digus.ProducerFrameworkMod")]
     [HarmonyPatch(nameof(SObject.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) })]
     [SuppressMessage("SMAPI.CommonErrors", "AvoidNetField:Avoid Netcode types when possible", Justification = "Only used for matching.")]
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
     {
+        MethodInfo? pfmGetScale = AccessTools.Method(AccessTools.TypeByName("ProducerFrameworkMod.ObjectOverrides"), "getScale");
+        if (pfmGetScale is not null)
+        {
+            ModEntry.ModMonitor.Log($"Found PFM, adjusting transpiler.");
+        }
+        var originalGetScale = typeof(SObject).GetCachedMethod(nameof(SObject.getScale), ReflectionCache.FlagTypes.InstanceFlags);
+
         try
         {
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
@@ -76,11 +84,12 @@ internal class SObjectDrawTranspiler
             {
                 OpCodes.Ldarg_0,
                 (OpCodes.Ldfld, typeof(SObject).GetCachedField(nameof(SObject.bigCraftable), ReflectionCache.FlagTypes.InstanceFlags)),
-            })
-            .FindNext(new CodeInstructionWrapper[]
+            }).FindNext(new CodeInstructionWrapper[]
             { // Vector2 vector = this.getScale();
                 OpCodes.Ldarg_0,
-                (OpCodes.Callvirt, typeof(SObject).GetCachedMethod(nameof(SObject.getScale), ReflectionCache.FlagTypes.InstanceFlags)),
+                new (
+                    specialcase: SpecialCodeInstructionCases.Wildcard,
+                    predicate: instr => (pfmGetScale is not null && instr.Calls(pfmGetScale)) || instr.Calls(originalGetScale)),
                 SpecialCodeInstructionCases.StLoc,
             })
             .Push() // edit to Vector2 vector = ShouldDisablePulsing ? Vector2.Zero : this.getScale();
@@ -118,7 +127,7 @@ internal class SObjectDrawTranspiler
                 new(OpCodes.Ldarg_0),
             }, withLabels: colorLabels);
 
-            // helper.Print();
+            //helper.Print();
             return helper.Render();
         }
         catch (Exception ex)

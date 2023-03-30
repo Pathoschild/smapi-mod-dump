@@ -16,6 +16,7 @@ using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley;
+using StardewValley.Tools;
 
 #endregion using directives
 
@@ -34,7 +35,8 @@ internal sealed class ToolActionWhenStopBeingHeldPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void ToolActionWhenStopBeingHeldPostfix(Tool __instance)
     {
-        if (!ArsenalModule.IsEnabled)
+        if ((__instance is MeleeWeapon && !WeaponsModule.IsEnabled) ||
+            (__instance is Slingshot && !SlingshotsModule.IsEnabled))
         {
             return;
         }

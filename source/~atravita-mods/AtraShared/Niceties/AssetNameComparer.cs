@@ -13,7 +13,7 @@ namespace AtraShared.Niceties;
 /// <summary>
 /// A comparer to use for asset names.
 /// </summary>
-public class AssetNameComparer : EqualityComparer<IAssetName>
+public sealed class AssetNameComparer : EqualityComparer<IAssetName>
 {
     private static readonly AssetNameComparer instance = new();
 
@@ -50,7 +50,7 @@ public class AssetNameComparer : EqualityComparer<IAssetName>
 /// <summary>
 /// A comparer to use for locale-insensitive asset names.
 /// </summary>
-public class BaseAssetNameComparer : EqualityComparer<IAssetName>
+public sealed class BaseAssetNameComparer : EqualityComparer<IAssetName>
 {
     private static readonly StringComparer comparer = StringComparer.OrdinalIgnoreCase;
     private static readonly BaseAssetNameComparer instance = new();

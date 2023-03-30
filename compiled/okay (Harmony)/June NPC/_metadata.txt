@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/10100
-IDs: ch20youk.JuneNPCSMAPI
-update keys: Nexus:10100

@@ -125,6 +125,7 @@ internal static class IslandSouthPatches
                 return;
             }
 
+            /*
             if (npc.getMasterScheduleRawData()?.ContainsKey("spring") != true
                 && npc.getMasterScheduleRawData()?.ContainsKey("default") != true)
             {
@@ -132,6 +133,7 @@ internal static class IslandSouthPatches
                 __result = false;
                 return;
             }
+            */
 
             // if an NPC has a schedule for the specific day, don't allow them to go to the resort.
             if (npc.HasSpecificSchedule())
@@ -158,7 +160,7 @@ internal static class IslandSouthPatches
             }
             foreach (string condition in checkset)
             {
-                if (Game1.dayOfMonth.ToString().Equals(condition, StringComparison.OrdinalIgnoreCase)
+                if ((int.TryParse(condition, out int day) && day == Game1.dayOfMonth)
                     || Game1.currentSeason.Equals(condition, StringComparison.OrdinalIgnoreCase)
                     || Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals(condition, StringComparison.OrdinalIgnoreCase)
                     || $"{Game1.currentSeason}_{Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth)}".Equals(condition, StringComparison.OrdinalIgnoreCase)

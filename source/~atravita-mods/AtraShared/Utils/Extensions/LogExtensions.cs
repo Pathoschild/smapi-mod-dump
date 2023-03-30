@@ -36,6 +36,18 @@ public static class LogExtensions
 #endif
 
     /// <summary>
+    /// Logs to level (DEBUG by default) if compiled with the TRACE flag only.
+    /// </summary>
+    /// <param name="monitor">SMAPI's logger.</param>
+    /// <param name="message">Message to log.</param>
+    /// <param name="level">Level to log at.</param>
+    [DebuggerHidden]
+    [Conditional("TRACELOG")]
+    [MethodImpl(TKConstants.Hot)]
+    public static void TraceOnlyLog(this IMonitor monitor, string message, LogLevel level = LogLevel.Debug)
+        => monitor.Log(message, level);
+
+    /// <summary>
     /// Logs to level (DEBUG by default) if compiled with the DEBUG flag only.
     /// </summary>
     /// <param name="monitor">SMAPI's logger.</param>

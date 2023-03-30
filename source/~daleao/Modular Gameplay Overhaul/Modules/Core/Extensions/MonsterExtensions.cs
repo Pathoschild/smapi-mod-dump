@@ -10,10 +10,11 @@
 
 namespace DaLion.Overhaul.Modules.Core.Extensions;
 
+using DaLion.Overhaul.Modules.Combat.Events;
+
 #region using directives
 
 using DaLion.Overhaul.Modules.Core.Animations;
-using DaLion.Overhaul.Modules.Core.Events;
 using StardewValley.Monsters;
 
 #endregion using directives

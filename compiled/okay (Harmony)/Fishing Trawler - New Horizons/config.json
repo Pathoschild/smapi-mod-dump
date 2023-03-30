@@ -1,0 +1,13 @@
+{
+  "minimumFishingLevel": 3,
+  "disableScreenFade": false,
+  "useOldTrawlerSprite": false,
+  "fishPerNet": 1.0,
+  "engineFishBonus": 1,
+  "hullEventFrequencyLower": 1,
+  "hullEventFrequencyUpper": 5,
+  "netEventFrequencyLower": 3,
+  "netEventFrequencyUpper": 8,
+  "dayOfWeekChoice": "Wednesday",
+  "dayOfWeekChoiceIsland": "Saturday"
+}

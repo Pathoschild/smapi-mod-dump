@@ -3,7 +3,7 @@
   "GenesForSameSex": true,
   "GenderSpecificAlts": true,
   "NumAlts": 1,
-  "NumContentJSONsToGenerate": 8,
+  "NumChildIDsToGenerate": 8,
   "ValidSpouses": {
     "Alex": {
       "HairColor": {

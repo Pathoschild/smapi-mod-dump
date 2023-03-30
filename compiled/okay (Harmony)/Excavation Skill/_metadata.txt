@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15793
+IDs: moonslime.ExcavationSkill
+update keys: Nexus:15793

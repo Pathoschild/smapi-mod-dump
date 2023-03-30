@@ -20,6 +20,10 @@ using StardewValley.Tools;
 /// <summary>Configs related to the <see cref="StardewValley.Tools.Hoe"/>.</summary>
 public sealed class HoeConfig
 {
+    /// <summary>Gets the multiplier to base stamina consumed by the <see cref="Axe"/>.</summary>
+    [JsonProperty]
+    public float BaseStaminaMultiplier { get; internal set; } = 1f;
+
     /// <summary>
     ///     Gets a value indicating whether to apply custom tile area for the Hoe. Keep this at false if using defaults to improve
     ///     performance.
@@ -42,8 +46,4 @@ public sealed class HoeConfig
     /// <summary>Gets a value indicating whether the Hoe can be enchanted with Master.</summary>
     [JsonProperty]
     public bool AllowMasterEnchantment { get; internal set; } = true;
-
-    /// <summary>Gets the multiplier to base stamina consumed by the <see cref="Axe"/>.</summary>
-    [JsonProperty]
-    public float BaseStaminaMultiplier { get; internal set; } = 1f;
 }

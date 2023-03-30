@@ -1,0 +1,25 @@
+﻿[{
+	"TreeType": 1,
+	"ShakeOff": 309
+},{
+	"TreeType": 3,
+	"ShakeOff": 311
+},{
+	"TreeType": 8,
+	"ShakeOff": 292
+},{
+	"TreeType": 2,
+	"ShakeOff": 310,
+	"EndSeason": "fall",
+	"EndDay": 13
+},{
+	"TreeType": 2,
+	"ShakeOff": 408,
+	"StartSeason": "fall",
+	"StartDay": 14,
+	"EndDay": 28
+},{
+	"TreeType": 2,
+	"ShakeOff": 310,
+	"StartSeason": "winter"
+}]

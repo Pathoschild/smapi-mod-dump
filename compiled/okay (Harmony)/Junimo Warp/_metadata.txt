@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15676
+IDs: Shockah.JunimoWarp
+update keys: Nexus:15676, GitHub:Shockah/Stardew-Valley-Mods

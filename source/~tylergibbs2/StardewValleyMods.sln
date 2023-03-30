@@ -17,9 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewHitboxes", "StardewH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JunimoBoy", "JunimoBoy\JunimoBoy.csproj", "{52D3FFCE-9875-468F-BE95-BAA00E75598A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColdPets", "ColdPets\ColdPets.csproj", "{6CB13065-C158-439C-A769-F34472A2BE28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColdPets", "ColdPets\ColdPets.csproj", "{6CB13065-C158-439C-A769-F34472A2BE28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeasonalSaveSlots", "SeasonalSaveSlots\SeasonalSaveSlots.csproj", "{296728D5-6B6E-4092-9587-C14D1279B19C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeasonalSaveSlots", "SeasonalSaveSlots\SeasonalSaveSlots.csproj", "{296728D5-6B6E-4092-9587-C14D1279B19C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Circuit", "Circuit\Circuit.csproj", "{85E3894C-2B13-4E86-AFD8-2BDD0B5D5801}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoItemIcons", "NoItemIcons\NoItemIcons.csproj", "{AA48A47F-F5D1-4431-8769-5B1F6837B86D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoTools", "NoTools\NoTools.csproj", "{7C05569D-1602-4869-9444-59FB0AAD7EFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +69,18 @@ Global
 		{296728D5-6B6E-4092-9587-C14D1279B19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{296728D5-6B6E-4092-9587-C14D1279B19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{296728D5-6B6E-4092-9587-C14D1279B19C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85E3894C-2B13-4E86-AFD8-2BDD0B5D5801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85E3894C-2B13-4E86-AFD8-2BDD0B5D5801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85E3894C-2B13-4E86-AFD8-2BDD0B5D5801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85E3894C-2B13-4E86-AFD8-2BDD0B5D5801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA48A47F-F5D1-4431-8769-5B1F6837B86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA48A47F-F5D1-4431-8769-5B1F6837B86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA48A47F-F5D1-4431-8769-5B1F6837B86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA48A47F-F5D1-4431-8769-5B1F6837B86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C05569D-1602-4869-9444-59FB0AAD7EFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C05569D-1602-4869-9444-59FB0AAD7EFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C05569D-1602-4869-9444-59FB0AAD7EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C05569D-1602-4869-9444-59FB0AAD7EFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

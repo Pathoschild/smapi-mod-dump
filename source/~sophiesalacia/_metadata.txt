@@ -10,9 +10,9 @@ mods:
    Sturdy Saplings
 
 latest commit:
-   commit 93c8d6e89d7387e95c0d75c320b11294dae83103
+   commit 7d83d0b357972683f05faa2481fde6b0e41f146b
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Thu Jan 12 21:25:24 2023 -0500
+   Date:   Fri Mar 3 18:24:21 2023 -0500
    
-       Modified event to not be dependent on ccPantry timing out.
+       add fireworks mod
    

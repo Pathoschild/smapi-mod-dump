@@ -26,7 +26,7 @@ Additionally, fixes the game bug where the wedding doesn't play when you load in
 ## Compatibility
 
 * Works with Stardew Valley 1.5.6 on Linux/macOS/Windows.
-* Works in single player, multiplayer, and split-screen mode.
+* Works in single player, multiplayer, and split-screen mode. Multiplayer support is kinda experimental; if you use this mod in multiplayer, it definitely needs to be installed by everyone.
 * Should be compatible with most other mods. 
 
 ## For other modders:

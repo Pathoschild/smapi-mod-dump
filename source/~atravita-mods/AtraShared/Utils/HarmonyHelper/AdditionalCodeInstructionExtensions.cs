@@ -32,7 +32,7 @@ public class InvalidILHelperCommand : InvalidOperationException
 /// <summary>
 /// Throw helper for the ILHelper.
 /// </summary>
-public static class ILHelperThrowHelper
+public static partial class ILHelperThrowHelper
 {
     /// <summary>
     /// Throws an error that means the ILHelper was used incorrectly.

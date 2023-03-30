@@ -425,8 +425,8 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
 
     private static bool ShouldCongratulateOnFullSkillMastery(int currentLevel, int chosenProfession)
     {
-        if (currentLevel != 10 || !Skill.TryFromValue(chosenProfession / 6, out var skill) ||
-            skill == Farmer.luckSkill)
+        if (!ProfessionsModule.Config.EnablePrestige || currentLevel != 10 ||
+            !Skill.TryFromValue(chosenProfession / 6, out var skill) || skill == Farmer.luckSkill)
         {
             return false;
         }

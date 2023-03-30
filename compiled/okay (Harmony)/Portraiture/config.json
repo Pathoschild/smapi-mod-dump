@@ -1,5 +1,8 @@
 {
   "changeKey": "P",
   "menuKey": "M",
+  "fixPortraitKey": "O",
+  "styleChangeKey": "I",
+  "ShowPortraitsAboveBox": false,
   "active": "Vanilla"
 }

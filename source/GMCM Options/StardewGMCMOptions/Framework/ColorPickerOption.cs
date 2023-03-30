@@ -76,6 +76,7 @@ namespace GMCMOptions.Framework {
         readonly bool ShowAlpha;
         readonly bool ShowStylePicker;
         readonly ColorPickerStyle EffectiveStyle;
+        readonly Action<Color>? onValueChange;
 
         // UI widgets
 
@@ -109,12 +110,14 @@ namespace GMCMOptions.Framework {
         /// <param name="setValue">A function that should save the given value to the underlying configuration object</param>
         /// <param name="showAlpha">Whether a slider should be shown for setting the Alpha channel or not</param>
         /// <param name="style">Specify which types of color picker to show</param>
-        public ColorPickerOption(bool fixedHeight, Func<Color> getValue, Action<Color> setValue, bool showAlpha = true, ColorPickerStyle style = 0) {
+        /// <param name="onValueChange">An action to invoke whenever the (current, unsaved) value changes</param>
+        public ColorPickerOption(bool fixedHeight, Func<Color> getValue, Action<Color> setValue, bool showAlpha = true, ColorPickerStyle style = 0, Action<Color>? onValueChange = null) {
             FixedHeight = fixedHeight;
             GetValue = getValue;
             SetValue = setValue;
             ShowAlpha = showAlpha;
             currentValue = getValue();
+            this.onValueChange = onValueChange;
 
             if (style == ColorPickerStyle.Default) {
                 style = ColorPickerStyle.AllStyles | ColorPickerStyle.ToggleChooser;
@@ -139,7 +142,7 @@ namespace GMCMOptions.Framework {
             sliderR = new ColorSlider((b) => new Color((int)b, 0, 0, 255), currentValue.R, (b) => { currentValue.R = b; RGBChanged(); });
             sliderG = new ColorSlider((b) => new Color(0, (int)b, 0, 255), currentValue.G, (b) => { currentValue.G = b; RGBChanged(); });
             sliderB = new ColorSlider((b) => new Color(0, 0, (int)b, 255), currentValue.B, (b) => { currentValue.B = b; RGBChanged(); });
-            sliderA = new ColorSlider((b) => new Color(0, 0, 0, (int)b), currentValue.A, (b) => { currentValue.A = b; });
+            sliderA = new ColorSlider((b) => new Color(0, 0, 0, (int)b), currentValue.A, (b) => { currentValue.A = b; onValueChange?.Invoke(currentValue); });
 
             hsvWheel = new ColorWheel((h, s) => ColorUtil.FromHSV(h, s, vSlider!.Value), HSVWheelChanged, 150);
             vSlider = new VerticalSlider((v) => ColorUtil.FromHSV(hsvWheel.HueRadians, hsvWheel.Saturation, v), VSliderChanged, 150);
@@ -178,6 +181,7 @@ namespace GMCMOptions.Framework {
             sliderB.Value = currentValue.B;
             sliderG.Value = currentValue.G;
             sliderA.Value = currentValue.A;
+            onValueChange?.Invoke(currentValue);
         }
 
         private void ResetHSVWheel() {
@@ -194,6 +198,7 @@ namespace GMCMOptions.Framework {
         private void RGBChanged() {
             ResetHSVWheel();
             ResetHSLWheel();
+            onValueChange?.Invoke(currentValue);
         }
 
         private void HSVWheelChanged(double hueRadians, double saturation) {

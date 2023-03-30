@@ -25,10 +25,14 @@ using StardewValley.TerrainFeatures;
 namespace TapGiantCrops.Framework;
 
 /// <summary>
-/// API instance for Tap Giant Crops.
+/// API class for Tap Giant Crops.
 /// </summary>
+
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Reviewed.")]
 public sealed class TapGiantCrop : ITapGiantCropsAPI
 {
+    #region delegates
+
     /// <summary>
     /// A setter to shake a giant crop.
     /// </summary>
@@ -36,11 +40,17 @@ public sealed class TapGiantCrop : ITapGiantCropsAPI
         .GetCachedField("shakeTimer", ReflectionCache.FlagTypes.InstanceFlags)
         .GetInstanceFieldSetter<GiantCrop, float>();
 
+    /// <summary>
+    /// A method that shakes a giant crop.
+    /// </summary>
+    /// <param name="crop">Crop to shake</param>
     internal static void ShakeGiantCrop(GiantCrop crop)
     {
         GiantCropSetShake(crop, 100f);
         crop.NeedsUpdate = true;
     }
+
+    #endregion
 
     private SObject keg = null!;
 

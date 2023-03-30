@@ -56,6 +56,7 @@
 				"Kimpoi": "{{i18n:Festivals.Gathering.Kimpoi}}",
 				"Naomi": "{{i18n:Festivals.Gathering.Naomi}}",
 				"Torts": "{{i18n:Festivals.Gathering.Torts}}",
+				"Bryle": "{{i18n:Festivals.Gathering.Bryle}}",
 
 			//Vanilla Non-Dateables
 			    "Robin": "{{i18n:GatheringDialogue.Robin}}",
@@ -77,6 +78,7 @@
 			    "Willy": "{{i18n:GatheringDialogue.Willy}}",
 				"Marlon": "{{i18n:GatheringDialogue.Marlon}}",
 				"Wizard": "{{i18n:GatheringDialogue.Wizard}}",
+				"Leo": "{{i18n:GatheringDialogue.Leo}}",
 
 			//Dateables
 				"Alissa": "{{i18n:Festivals.Gathering.Alissa}}",
@@ -113,6 +115,9 @@
 				"Irene_spouse": "{{i18n:Festivals.Gathering.Irene_spouse}}",
 				"Zayne": "{{i18n:Festivals.Gathering.Zayne}}",
 				"Zayne_spouse": "{{i18n:Festivals.Gathering.Zayne_spouse}}",
+
+				"Faye_spouse": "{{i18n:Festivals.Gathering.Faye_spouse}}",
+				"Bryle_spouse": "{{i18n:Festivals.Gathering.Bryle_spouse}}",
 
 			//Vanilla Dateables
 			    "Abigail_spouse": "{{i18n:GatheringDialogue.Abigail.spouse}}",

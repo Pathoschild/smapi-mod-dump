@@ -132,6 +132,31 @@
         ]
     },
 
+    {
+        //Bryle Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter28",
+        "When": {
+            "HasSeenEvent": 75160375,
+            "Query: {{RandomNumber}} <= 4": true,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Bryle 50 47 down",
+                "Delimiter": "/"
+            },
+
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "MainEvent_additionalCharacters"],
+                "Value": "Bryle 29 49 right",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
     //Torts
     {
       "LogName": "Torts Ember of Resolutions Location",
@@ -168,6 +193,29 @@
           "Operation": "Append",
           "Target": ["Entries", "MainEvent_additionalCharacters"],
           "Value": "June 30 47 1",
+          "Delimiter": "/"
+        },
+      ]
+    },
+
+    {
+      "LogName": "Leo - Vanilla Ember of Resolutions Location - AFTER seeing his 6 Heart Event",
+      "Action": "EditData",
+      "Target": "Data/Festivals/winter28",
+      "When": {
+            "HasSeenEvent": 6497428,
+        },
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Set-Up_additionalCharacters"],
+          "Value": "Leo 41 25 2",
+          "Delimiter": "/"
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "MainEvent_additionalCharacters"],
+          "Value": "Leo 54 45 3",
           "Delimiter": "/"
         },
       ]

@@ -6,9 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit cf05a46f3e6aebe780e970fe1df07a0ff099537d
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Sat Sep 3 13:02:26 2022 +1000
+   commit 0ff7a04a06c3691fb50391a1aacfadfb8d933195
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Sat Mar 25 13:32:31 2023 +1100
    
-       addd russian translation file
+       Update README.md
    

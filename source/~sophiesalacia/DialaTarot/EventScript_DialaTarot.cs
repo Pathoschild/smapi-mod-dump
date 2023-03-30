@@ -67,6 +67,7 @@ namespace DialaTarotCSharp
             Phase = 0;
             PhaseTimer = 3000;
 
+            /* Have to add new cards here if you want them to show up */
             List<int> cards = new() {2, 3, 4, 5, 7, 8, 9, 10};
             if (Game1.player.isMarried())
             {
@@ -79,12 +80,15 @@ namespace DialaTarotCSharp
             }
 
             Random rand = new();
+
             int randNum = rand.Next(0, cards.Count);
             Card1 = new TarotCard(cards[randNum]);
             cards.RemoveAt(randNum);
+
             randNum = rand.Next(0, cards.Count);
             Card2 = new TarotCard(cards[randNum]);
             cards.RemoveAt(randNum);
+
             randNum = rand.Next(0, cards.Count);
             Card3 = new TarotCard(cards[randNum]);
 

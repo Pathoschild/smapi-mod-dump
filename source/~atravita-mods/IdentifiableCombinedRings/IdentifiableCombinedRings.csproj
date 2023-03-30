@@ -7,13 +7,8 @@
     <Version>0.1.0</Version>
     <EnableHarmony>true</EnableHarmony>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UpdateKeys>-1</UpdateKeys>
+    <UpdateKeys>Nexus:15928</UpdateKeys>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AtraCore\AtraCore.csproj" Private="false" />

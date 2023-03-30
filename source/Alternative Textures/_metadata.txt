@@ -6,9 +6,9 @@ mods:
    Alternative Textures
 
 latest commit:
-   commit a7a78eb49588c7c755112b0cc7ca05c900734a88
+   commit 7cda85eefada0de9eed0fb8174b205f39e3891a6
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Wed Jan 18 20:45:31 2023 -0600
+   Date:   Sun Mar 19 16:29:52 2023 -0500
    
-       v6.4.4 released
+       v6.7.0 released
    

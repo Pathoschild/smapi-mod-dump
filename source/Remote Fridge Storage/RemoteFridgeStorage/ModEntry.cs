@@ -22,7 +22,6 @@ namespace RemoteFridgeStorage
     public class ModEntry : Mod
     {
         /// <summary>The mod configuration from the player.</summary>
-        public Config Config;
 
         public FridgeController FridgeController;
 
@@ -40,63 +39,19 @@ namespace RemoteFridgeStorage
         public override void Entry(IModHelper helper)
         {
             Instance = this;
-            Config = helper.ReadConfig<Config>();
 
-            var textures = LoadAssets(helper);
+            var textures = LoadAssets(helper.ModContent);
             _compatibilityInfo = GetCompatibilityInfo(helper);
 
-            ChestController = new ChestController(textures, _compatibilityInfo, Config);
+            ChestController = new ChestController(textures, _compatibilityInfo);
             FridgeController = new FridgeController(ChestController);
-            SaveManager = new SaveManager(ChestController,Config);
+            SaveManager = new SaveManager(ChestController);
 
             Helper.Events.Display.MenuChanged += OnMenuChanged;
             Helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             Helper.Events.Input.ButtonPressed += OnButtonPressed;
             Helper.Events.GameLoop.SaveLoaded += SaveManager.SaveLoaded;
             Helper.Events.GameLoop.Saving += SaveManager.Saving;
-            Helper.Events.GameLoop.GameLaunched += OnLaunch;
-            Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-        }
-
-        /// <summary>
-        /// Handle the mod menu api
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLaunch(object sender, GameLaunchedEventArgs e)
-        {
-            var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
-            if (api == null) return;
-
-            Monitor.Log("Loaded Generic Mod Config Menu API", LogLevel.Info);
-
-            api.RegisterModConfig(ModManifest,
-                () => Config = new Config(),
-                () => Helper.WriteConfig(Config));
-            api.RegisterSimpleOption(ModManifest, "Flip Image", "Mirrors the image vertically", () => Config.FlipImage,
-                (bool val) => Config.FlipImage = val);
-            api.RegisterClampedOption(ModManifest, "Image Scale", "Scale of the image", () => (float) Config.ImageScale,
-                (float val) => Config.ImageScale = val, 0.1f, 5.0f);
-            api.RegisterSimpleOption(ModManifest, "Manual Placement",
-                "Will use the positions defined below for placement instead of the default one",
-                () => Config.OverrideOffset, OverrideSet);
-            api.RegisterSimpleOption(ModManifest, "X Position", "The x position of the icon", () => Config.XOffset,
-                (int val) => Config.XOffset = val);
-            api.RegisterSimpleOption(ModManifest, "Y Position", "The y position of the icon", () => Config.YOffset,
-                (int val) => Config.YOffset = val);
-            api.RegisterSimpleOption(ModManifest, "Draggable",
-                "Enable moving of the icon with the arrows", () => Config.Editable,
-                EditableSet);
-        }
-
-        private void OverrideSet(bool val)
-        {
-            Config.OverrideOffset = val;
-        }
-
-        private void EditableSet(bool val)
-        {
-            Config.Editable = val;
         }
 
         /// <summary>
@@ -107,11 +62,11 @@ namespace RemoteFridgeStorage
         private static CompatibilityInfo GetCompatibilityInfo(IModHelper helper)
         {
             // Compatibility checks
-            bool cookingSkillLoaded = helper.ModRegistry.IsLoaded("spacechase0.CookingSkill");
-            bool categorizeChestsLoaded = helper.ModRegistry.IsLoaded("CategorizeChests");
-            bool convenientChestsLoaded = helper.ModRegistry.IsLoaded("aEnigma.ConvenientChests");
-            bool megaStorageLoaded = helper.ModRegistry.IsLoaded("Alek.MegaStorage");
-            bool chestAnywhereLoaded = helper.ModRegistry.IsLoaded("Pathoschild.ChestsAnywhere");
+            var cookingSkillLoaded = helper.ModRegistry.IsLoaded("spacechase0.CookingSkill");
+            var categorizeChestsLoaded = helper.ModRegistry.IsLoaded("CategorizeChests");
+            var convenientChestsLoaded = helper.ModRegistry.IsLoaded("aEnigma.ConvenientChests");
+            var megaStorageLoaded = helper.ModRegistry.IsLoaded("Alek.MegaStorage");
+            var chestAnywhereLoaded = helper.ModRegistry.IsLoaded("Pathoschild.ChestsAnywhere");
 
             var compatibilityInfo = new CompatibilityInfo
             {
@@ -127,22 +82,18 @@ namespace RemoteFridgeStorage
         /// <summary>
         /// Load the textures
         /// </summary>
-        /// <param name="helper"></param>
+        /// <param name="contentHelper"></param>
         /// <returns></returns>
-        private static Textures LoadAssets(IModHelper helper)
+        private static Textures LoadAssets(IModContentHelper contentHelper)
         {
             // Assets
-            var fridgeSelected = helper.Content.Load<Texture2D>("assets/fridge.png");
-            var fridgeSelectedAlt = helper.Content.Load<Texture2D>("assets/fridge-flipped.png");
-            var fridgeDeselected = helper.Content.Load<Texture2D>("assets/fridge2.png");
-            var fridgeDeselectedAlt = helper.Content.Load<Texture2D>("assets/fridge2-flipped.png");
+            var fridgeSelected = contentHelper.Load<Texture2D>("assets/fridge.png");
+            var fridgeDeselected = contentHelper.Load<Texture2D>("assets/fridge2.png");
 
             var textures = new Textures
             {
                 FridgeSelected = fridgeSelected,
                 FridgeDeselected = fridgeDeselected,
-                FridgeSelectedAlt = fridgeSelectedAlt,
-                FridgeDeselectedAlt = fridgeDeselectedAlt
             };
             return textures;
         }
@@ -170,6 +121,10 @@ namespace RemoteFridgeStorage
             if (e.NewMenu == e.OldMenu || e.NewMenu == null)
                 return;
 
+            if (e.NewMenu.GetType().ToString() == "LoveOfCooking.Objects.CookingMenu")
+            {
+                return;
+            }
             // If The (Cooking) Crafting page is opened
             if (e.NewMenu is StardewValley.Menus.CraftingPage &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
@@ -186,7 +141,7 @@ namespace RemoteFridgeStorage
                 FridgeController.InjectItems();
                 return;
             }
-
+            
             if (Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue())
             {
@@ -209,14 +164,6 @@ namespace RemoteFridgeStorage
             }
         }
 
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            if (!Context.IsWorldReady) return;
-            ChestController.UpdateOffset();
-        }
 
         /// <summary>
         /// Container for textures

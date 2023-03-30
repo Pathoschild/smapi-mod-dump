@@ -35,7 +35,8 @@ internal sealed class UltimateToggledModMessageReceivedEvent : ModMessageReceive
     /// <inheritdoc />
     protected override void OnModMessageReceivedImpl(object? sender, ModMessageReceivedEventArgs e)
     {
-        if (e.FromModID != Manifest.UniqueID || !e.Type.StartsWith("ToggledUltimate"))
+        if (e.FromModID != Manifest.UniqueID || !e.Type.Contains(OverhaulModule.Professions.Namespace) ||
+            !e.Type.Contains("ToggledUltimate"))
         {
             return;
         }
@@ -43,7 +44,7 @@ internal sealed class UltimateToggledModMessageReceivedEvent : ModMessageReceive
         var who = Game1.getFarmer(e.FromPlayerID);
         if (who is null)
         {
-            Log.W($"Unknown player {e.FromPlayerID} has toggled their Ultimate.");
+            Log.W($"Unknown player {e.FromPlayerID} has toggled their Ultimate ability.");
             return;
         }
 
@@ -51,7 +52,7 @@ internal sealed class UltimateToggledModMessageReceivedEvent : ModMessageReceive
         switch (newState)
         {
             case "Active":
-                var index = who.Read<int>(DataFields.UltimateIndex);
+                var index = who.Read<int>(DataKeys.UltimateIndex);
                 var ultimate = Ultimate.FromValue(index);
                 Log.D($"[Ultimate]: {who.Name} activated {ultimate.Name}.");
                 who.startGlowing(ultimate.GlowColor, false, 0.05f);

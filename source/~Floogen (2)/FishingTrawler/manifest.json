@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FishingTrawler
+**
+*************************************************/
+
+{
+  "Name": "Fishing Trawler - New Horizons",
+  "Author": "PeacefulEnd",
+  "Version": "REPLACE_ME_WITH_VERSION",
+  "Description": "A fast-paced and heavily inspired minigame for fishing in bulk.",
+  "UniqueID": "PeacefulEnd.FishingTrawler.NewHorizons",
+  "EntryDll": "FishingTrawler.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:15941" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "PeacefulEnd.DynamicReflections",
+      "IsRequired": false,
+      "MinimumVersion": "1.4.0"
+    }
+  ]
+}

@@ -30,6 +30,7 @@ namespace FashionSense.Framework.Managers
     {
         private IMonitor _monitor;
         private int _facingDirection;
+        private List<AppearanceMetadata> _metadata;
 
         public LayerManager(IMonitor monitor)
         {
@@ -40,6 +41,9 @@ namespace FashionSense.Framework.Managers
         {
             // Set the required variables
             _facingDirection = facingDirection;
+            _metadata = metadata;
+
+            // Establish the models list
             List<AppearanceModel> models = metadata.Where(m => m.Model is not null).Select(m => m.Model).ToList();
 
             // Establish the rawLayerData list
@@ -81,14 +85,21 @@ namespace FashionSense.Framework.Managers
             List<LayerData> sortedLayerData = new List<LayerData>()
             {
                 rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Player),
-                rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Pants),
                 rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Shoes),
+                rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Pants),
                 rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Shirt),
-                rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Sleeves),
                 rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Hair),
+                rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Sleeves),
                 rawLayerData.First(d => d.AppearanceType is AppearanceContentPack.Type.Hat),
             };
-            sortedLayerData.InsertRange(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Sleeves) + 1, rawLayerData.Where(d => d.AppearanceType is AppearanceContentPack.Type.Accessory));
+            sortedLayerData.InsertRange(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Hair) + 1, rawLayerData.Where(d => d.AppearanceType is AppearanceContentPack.Type.Accessory));
+
+            // If facing backwards, move the sleeves to before the hair
+            if (_facingDirection == 0)
+            {
+                var sleevesLayerData = sortedLayerData.Find(d => d.AppearanceType is AppearanceContentPack.Type.Sleeves);
+                MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Hair) - 1, sleevesLayerData, ref sortedLayerData);
+            }
 
             // Sort the models in the actual correct order
             foreach (var layerData in sortedLayerData.ToList())
@@ -128,20 +139,17 @@ namespace FashionSense.Framework.Managers
                 }
             }
 
+            /* Debugging block
+            int index = 0;
+            foreach (var layerData in sortedLayerData)
+            {
+                _monitor.LogOnce($"[{DateTime.Now.ToString("T")}] [{index}] {layerData.AppearanceType} ({(layerData.AppearanceModel is null ? string.Empty : layerData.AppearanceModel.Pack.Id)})", LogLevel.Debug);
+                index++;
+            }
+            */
+
             return sortedLayerData;
         }
-
-        #region Conditional check methods
-        private bool IsHatHidingHair(List<LayerData> rawLayerData)
-        {
-            return rawLayerData.Any(d => d.AppearanceModel is HatModel hatModel && hatModel.HideHair is true);
-        }
-
-        private bool AreSleevesForcedHidden(List<LayerData> rawLayerData)
-        {
-            return rawLayerData.Any(d => d.AppearanceModel is not null && d.AppearanceModel.HideSleeves is true);
-        }
-        #endregion
 
         private void AddVanillaLayerData(List<AppearanceModel> models, ref List<LayerData> rawLayerData)
         {
@@ -168,7 +176,7 @@ namespace FashionSense.Framework.Managers
             }
             if (models.Any(m => m is HairModel) is false)
             {
-                rawLayerData.Add(new LayerData(AppearanceContentPack.Type.Hair, null, isVanilla: true));
+                rawLayerData.Add(new LayerData(AppearanceContentPack.Type.Hair, null, isVanilla: true) { IsHidden = AppearanceHelpers.IsHatHidingHair(_metadata) });
             }
             if (models.Any(m => m is HatModel) is false)
             {
@@ -187,7 +195,7 @@ namespace FashionSense.Framework.Managers
             var layerData = new LayerData(AppearanceContentPack.Type.Pants, pantsModel);
             if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, pantsModel))
             {
-                layerData.IsVanilla = true;
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -199,7 +207,7 @@ namespace FashionSense.Framework.Managers
             var layerData = new LayerData(AppearanceContentPack.Type.Shoes, shoesModel);
             if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, shoesModel) || AppearanceHelpers.ShouldHideLegs(who, _facingDirection))
             {
-                layerData.IsVanilla = true;
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -211,7 +219,7 @@ namespace FashionSense.Framework.Managers
             var layerData = new LayerData(AppearanceContentPack.Type.Shirt, shirtModel);
             if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, shirtModel))
             {
-                layerData.IsVanilla = true;
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -223,7 +231,7 @@ namespace FashionSense.Framework.Managers
             var layerData = new LayerData(AppearanceContentPack.Type.Accessory, accessoryModel);
             if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, accessoryModel))
             {
-                layerData.IsVanilla = true;
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -233,12 +241,9 @@ namespace FashionSense.Framework.Managers
         private void AddHair(Farmer who, HairModel hairModel, Color color, ref List<LayerData> rawLayerData)
         {
             var layerData = new LayerData(AppearanceContentPack.Type.Hair, hairModel);
-            if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, hairModel))
+            if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, hairModel) || AppearanceHelpers.IsHatHidingHair(_metadata))
             {
-                if (IsHatHidingHair(rawLayerData))
-                {
-                    layerData.IsVanilla = true;
-                }
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -248,9 +253,9 @@ namespace FashionSense.Framework.Managers
         private void AddSleeves(Farmer who, SleevesModel sleevesModel, Color color, ref List<LayerData> rawLayerData)
         {
             var layerData = new LayerData(AppearanceContentPack.Type.Sleeves, sleevesModel);
-            if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, sleevesModel) || AreSleevesForcedHidden(rawLayerData))
+            if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, sleevesModel) || AppearanceHelpers.AreSleevesForcedHidden(_metadata))
             {
-                layerData.IsVanilla = true;
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -262,7 +267,7 @@ namespace FashionSense.Framework.Managers
             var layerData = new LayerData(AppearanceContentPack.Type.Hat, hatModel);
             if (AppearanceHelpers.ShouldHideWhileSwimmingOrWearingBathingSuit(who, hatModel))
             {
-                layerData.IsVanilla = true;
+                layerData.IsHidden = true;
             }
             layerData.Color = color;
 
@@ -300,17 +305,36 @@ namespace FashionSense.Framework.Managers
             var accessoryModel = layerData.AppearanceModel as AccessoryModel;
             if (accessoryModel.DrawAfterPlayer)
             {
-                // Move to bottom of list
-                sortedLayerData.Remove(layerData);
-                sortedLayerData.Add(layerData);
+                if (_facingDirection == 0)
+                {
+                    MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Hat), layerData, ref sortedLayerData);
+                }
+                else
+                {
+                    MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Hair) + 1, layerData, ref sortedLayerData);
+                }
             }
-            else if (accessoryModel.DrawBeforeBase)
+            else if (accessoryModel.DrawBehindHead)
             {
-                MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Player), layerData, ref sortedLayerData);
+                // If the player is facing backwards, place the accessory after the hat
+                // Need to do this for backwards compatibility reasons, as packs that use DrawBeforeHair (DrawBehindHead) rely on this unintended behavior
+                if (_facingDirection == 0)
+                {
+                    MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Hat), layerData, ref sortedLayerData);
+                }
+                else
+                {
+                    MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Player), layerData, ref sortedLayerData);
+                }
             }
             else if (accessoryModel.DrawAfterSleeves)
             {
                 MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Sleeves) + 1, layerData, ref sortedLayerData);
+            }
+            else if (_facingDirection == 0)
+            {
+                // If the player is facing backwards, place the accessory before the hair
+                MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Hair), layerData, ref sortedLayerData);
             }
         }
 
@@ -326,7 +350,7 @@ namespace FashionSense.Framework.Managers
             {
                 MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Shirt), layerData, ref sortedLayerData);
             }
-            else if (sleevesModel.DrawBeforeBase)
+            else if (sleevesModel.DrawBehindHead)
             {
                 MoveLayerDataItem(sortedLayerData.FindIndex(d => d.AppearanceType is AppearanceContentPack.Type.Player), layerData, ref sortedLayerData);
             }

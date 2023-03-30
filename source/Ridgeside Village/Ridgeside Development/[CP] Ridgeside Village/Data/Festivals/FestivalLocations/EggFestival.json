@@ -196,6 +196,30 @@
         ]
     },
 
+    {
+        //Bryle Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/spring13",
+        "When": {
+            "HasSeenEvent": 75160375, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true, "Query: {{RandomNumber}} <= 4": true,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Bryle 12 27 down",
+                "Delimiter": "/"
+            },
+
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "MainEvent_additionalCharacters"],
+                "Value": "Bryle 12 27 down",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
 
     {
         //RSV Kids join main event VANILLA
@@ -218,13 +242,15 @@
       "Action": "EditData",
       "Target": "Data/Festivals/spring13",
       "When": {
-        "Relationship:June |contains=Married": true
+        "Relationship:June |contains=Married": true,
+        "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true,
+        "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
       },
       "TextOperations": [
         {
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
-          "Value": "June 23 65 1",
+          "Value": "June 30 22 2",
           "Delimiter": "/"
         },
         {

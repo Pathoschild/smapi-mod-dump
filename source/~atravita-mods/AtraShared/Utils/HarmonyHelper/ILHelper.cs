@@ -290,8 +290,7 @@ public sealed class ILHelper
 ContinueSearchForward:
             ;
         }
-        this.Monitor.Log($"The desired pattern wasn't found:\n\n" + string.Join('\n', instructions.Select(i => i.ToString())), LogLevel.Error);
-        return ThrowHelper.ThrowInvalidOperationException<ILHelper>();
+        return ILHelperThrowHelper.ThrowNoMatchFoundException<ILHelper>(instructions);
     }
 
     /// <summary>
@@ -318,8 +317,7 @@ ContinueSearchForward:
                 return this;
             }
         }
-        this.Monitor.Log($"The desired pattern wasn't found: {instruction}", LogLevel.Error);
-        return ThrowHelper.ThrowInvalidOperationException<ILHelper>();
+        return ILHelperThrowHelper.ThrowNoMatchFoundException<ILHelper>($"The desired pattern wasn't found: {instruction}");
     }
 
     /// <summary>
@@ -363,8 +361,8 @@ ContinueSearchForward:
 ContinueSearchBackwards:
             ;
         }
-        this.Monitor.Log($"The desired pattern wasn't found:\n\n" + string.Join('\n', instructions.Select(i => i.ToString())), LogLevel.Error);
-        return ThrowHelper.ThrowInvalidOperationException<ILHelper>();
+
+        return ILHelperThrowHelper.ThrowNoMatchFoundException<ILHelper>(instructions);
     }
 
     /// <summary>
@@ -763,7 +761,7 @@ ContinueSearchBackwards:
                 return this;
             }
         }
-        return ThrowHelper.ThrowInvalidOperationException<ILHelper>($"label {label} could not be found between {startindex} and {endindex}");
+        return ILHelperThrowHelper.ThrowNoMatchFoundException<ILHelper>($"label {label} could not be found between {startindex} and {endindex}");
     }
 
     /// <summary>
@@ -814,7 +812,7 @@ ContinueSearchBackwards:
                 return this;
             }
         }
-        return ThrowHelper.ThrowInvalidOperationException<ILHelper>($"label {label} could not be found between {startindex} and {endindex}");
+        return ILHelperThrowHelper.ThrowNoMatchFoundException<ILHelper>($"label {label} could not be found between {startindex} and {endindex}");
     }
 
     /// <summary>

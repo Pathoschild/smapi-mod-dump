@@ -6,9 +6,9 @@ mods:
    Rune Magic
 
 latest commit:
-   commit 6dd59dfc3eb00d5dd6f46cbb4e718c0308f05a3e
+   commit 95f42dee7ffde1f4ceb42ea9184ce4a55d8d73f4
    Author: Facundo Fierro <fierrof_47@hotmail.com>
-   Date:   Fri Feb 24 20:05:58 2023 +0100
+   Date:   Thu Mar 16 12:55:39 2023 +0100
    
-       Implemented Spellbook menu
+       Rearranged some stuff to improve readability
    

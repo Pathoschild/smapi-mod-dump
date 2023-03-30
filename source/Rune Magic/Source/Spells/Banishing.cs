@@ -21,7 +21,7 @@ namespace RuneMagic.Source.Spells
     {
         public Banishing() : base(School.Abjuration)
         {
-            Description += "Destroys a target Monster.";
+            Description += "Destroys the target Monster.";
             Level = 5;
         }
     }

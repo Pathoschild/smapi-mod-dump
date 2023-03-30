@@ -33,6 +33,7 @@ internal sealed class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
+        I18n.Init(helper.Translation);
 
         this.FrameRateCounter = new(GameRunner.instance);
         helper.Reflection.GetMethod(this.FrameRateCounter, "LoadContent").Invoke();
@@ -58,9 +59,7 @@ internal sealed class ModEntry : Mod
         };
 
         helper.Events.GameLoop.ReturnedToTitle += (_, _) => this.UnHook();
-
         helper.Events.Player.Warped += this.OnWarped;
-
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
     }
 
@@ -115,14 +114,8 @@ internal sealed class ModEntry : Mod
 
     private void Hook()
     {
-        //Game1.player.mailReceived.OnElementChanged += this.MailReceived_OnElementChanged;
         this.Helper.Events.GameLoop.OneSecondUpdateTicked += this.OnUpdateTicked;
         this.Helper.Events.Display.RenderedHud += this.OnRenderedHud;
-    }
-
-    private void MailReceived_OnElementChanged(Netcode.NetList<string, Netcode.NetString> list, int index, string oldValue, string newValue)
-    {
-        this.Monitor.Log($"Mail flags changed: index {index} old {oldValue} new {newValue}.", LogLevel.Alert);
     }
 
     /// <inheritdoc cref="IGameLoopEvents.OneSecondUpdateTicked"/>
@@ -130,7 +123,7 @@ internal sealed class ModEntry : Mod
     {
         if (this.FrameRateCounter is not null && this.FramerateGetter?.Invoke(this.FrameRateCounter) is int value && Game1.game1.IsActive)
         {
-            this.Monitor.Log($"Current framerate on {Game1.ticks} is {value}", value < 30 ? LogLevel.Alert : LogLevel.Trace);
+            this.Monitor.Log($"Current framerate on {Game1.ticks} is {value}", value < 30 ? LogLevel.Warn : LogLevel.Trace);
         }
     }
 

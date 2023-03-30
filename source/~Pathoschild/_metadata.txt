@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 5fa631590136b3515b084434ecc9c30e4b101e8c
+   commit d976567a5deed27312c33caaf1947ad731df306f
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Feb 5 16:25:39 2023 -0500
+   Date:   Sun Mar 26 20:27:00 2023 -0400
    
-       update German translations for Automate
+       update release notes & translation summary
    

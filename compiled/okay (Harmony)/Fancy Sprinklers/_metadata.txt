@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15857
+IDs: trashcan9.FancySprinklers
+update keys: Nexus:15857

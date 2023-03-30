@@ -26,9 +26,15 @@ internal static class AssetManager
 {
     private static IAssetName durationOverride = null!;
 
+    /// <summary>
+    /// Gets the assetname used to register emoji overrides.
+    /// </summary>
     internal static IAssetName EmojiOverride { get; private set; } = null!;
 
-    internal static Lazy<HashSet<string>> Untimed = new(GetUntimed);
+    /// <summary>
+    /// Gets the orders to make untimed.
+    /// </summary>
+    internal static Lazy<HashSet<string>> Untimed { get; private set; } = new(GetUntimed);
 
     /// <summary>
     /// Initializes assets for this mod.

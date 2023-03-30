@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Tools.Patchers;
 
 #region using directives
 
-using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Menus;

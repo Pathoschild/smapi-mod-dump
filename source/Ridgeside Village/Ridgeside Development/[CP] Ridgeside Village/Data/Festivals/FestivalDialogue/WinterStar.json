@@ -56,6 +56,7 @@
 				"Kimpoi": "{{i18n:Festivals.WinterStar.Kimpoi}}",
 				"Naomi": "{{i18n:Festivals.WinterStar.Naomi}}",
 				"Torts": "{{i18n:Festivals.WinterStar.Torts}}",
+				"Bryle": "{{i18n:Festivals.WinterStar.Bryle}}",
 
 			//Dateables
 				"Alissa": "{{i18n:Festivals.WinterStar.Alissa}}",
@@ -92,6 +93,9 @@
 				"Irene_spouse": "{{i18n:Festivals.WinterStar.Irene_spouse}}",
 				"Zayne": "{{i18n:Festivals.WinterStar.Zayne}}",
 				"Zayne_spouse": "{{i18n:Festivals.WinterStar.Zayne_spouse}}",
+
+				"Faye_spouse": "{{i18n:Festivals.WinterStar.Faye_spouse}}",
+				"Bryle_spouse": "{{i18n:Festivals.WinterStar.Bryle_spouse}}",
 			},
 		},
 

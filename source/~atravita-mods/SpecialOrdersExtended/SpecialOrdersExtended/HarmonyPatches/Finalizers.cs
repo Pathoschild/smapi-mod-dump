@@ -24,7 +24,7 @@ internal class Finalizers
     /// <param name="key">Key of the special order.</param>
     /// <param name="__result">The parsed special order, set to null to remove.</param>
     /// <param name="__exception">The observed exception.</param>
-    /// <returns>null to surpress the error.</returns>
+    /// <returns>null to suppress the error.</returns>
     [HarmonyFinalizer]
     [HarmonyPatch(nameof(SpecialOrder.GetSpecialOrder))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention")]

@@ -17,10 +17,6 @@ namespace DialaTarotCSharp;
 
 internal class AssetManager
 {
-    private static readonly int NumCards;
-
-    static AssetManager() => NumCards = TarotCard.Names.Count;
-    
     internal static void LoadOrEditAssets(object sender, AssetRequestedEventArgs e)
     {
         if (e.NameWithoutLocale.IsEquivalentTo("sophie.DialaTarot/CardBack"))
@@ -32,8 +28,7 @@ internal class AssetManager
                     ["Event"] = "none/-100 -100/farmer -100 -100 0/globalFadeToClear/skippable/pause 1000/cutscene DialaTarot/pause 1000/end"
                 }, AssetLoadPriority.Medium);
 
-
-        for (int i = 1; i <= NumCards; i++)
+        for (int i = 1; i <= TarotCard.Names.Count; i++)
         {
             if (e.NameWithoutLocale.IsEquivalentTo($"sophie.DialaTarot/Card{i}"))
                 e.LoadFromModFile<Texture2D>($"Assets/{TarotCard.Names[i]}.png", AssetLoadPriority.Medium);

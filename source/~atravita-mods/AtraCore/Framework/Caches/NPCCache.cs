@@ -88,5 +88,8 @@ public static class NPCCache
         return npc;
     }
 
+    /// <summary>
+    /// Clears the cache.
+    /// </summary>
     internal static void Reset() => cache.Clear();
 }

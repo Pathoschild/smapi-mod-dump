@@ -68,6 +68,7 @@ internal sealed class ModEntry : Mod
         this.Monitor.Log($"Starting up: {this.ModManifest.UniqueID} - {typeof(ModEntry).Assembly.FullName}");
     }
 
+    [EventPriority(EventPriority.Low)]
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));

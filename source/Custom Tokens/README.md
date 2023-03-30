@@ -77,7 +77,7 @@ daysold | The current age of the child in days.
 darkskinned | Whether the child uses the dark skinned sprite. | Gives true or false.
 hat | The name of the hat the child is wearing, else ``"null"``. | The token will have a value of ``"Party Hat"`` for all three party hat colours.
 
-Example of a full token with input arguments: ``TheMightyAmondee.CustomTokens:player=host|childindex=0|birthdayday``. This token returns the day of the month the first born child of the host player was born on (very wordy, I know).
+Example of a full token with input arguments: ``TheMightyAmondee.CustomTokens/Child:player=host|childindex=0|birthdayday``. This token returns the day of the month the first born child of the host player was born on (very wordy, I know).
 
 The token will return ``"null"`` if no suitable values are found.
   

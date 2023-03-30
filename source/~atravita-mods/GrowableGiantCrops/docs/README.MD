@@ -11,7 +11,7 @@ Documentation
 
 [← back to readme](../../README.md)
 
-Most users should download the mod from the [Nexus page](https://www.nexusmods.com/stardewvalley/mods/15111). That said, if you'd like to contribute:
+Most users should download the mod from the [Nexus page](https://www.nexusmods.com/stardewvalley/mods/15559). That said, if you'd like to contribute:
 
 ### Translations:
 
@@ -23,6 +23,13 @@ You can edit the following textures using Content Patcher.
 * Shovel: `Mods/atravita.GrowableGiantCrops/Shovel`
 * Shop graphics: `Mods/atravita.GrowableGiantCrops/Shop`
 * Palm trees: `Mods/atravita.GrowableGiantCrops/WinterPalm`, `Mods/atravita.GrowableGiantCrops/WinterBigPalm`, `Mods/atravita.GrowableGiantCrops/FallPalm`, and `Mods/atravita.GrowableGiantCrops/FallBigPalm`, 
+
+### Shovel
+
+Got a spawned item that you really, really do not want the player to be able to pick up? Simply add the tile property `"atravita.ShovelForbidden"` on the `"Back"` layer. The value should either be:
+    - Whitespace (not empty) for a default message
+    - A message that does not contain `:`.
+    - A message in the form `"NPCName: message"`, which will display as if from that NPC.
 
 ### Compiling from source:
 

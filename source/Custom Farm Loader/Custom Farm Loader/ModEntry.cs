@@ -15,6 +15,7 @@ using StardewModdingAPI;
 using HarmonyLib;
 using Custom_Farm_Loader.Menus;
 using System.Collections.Generic;
+using Custom_Farm_Loader.API;
 
 namespace Custom_Farm_Loader
 {
@@ -38,6 +39,7 @@ namespace Custom_Farm_Loader
             Lib.Main.Initialize(this);
             GameLoopInjections.Main.Initialize(this);
             Menus.Main.Initialize(this);
+            GenericModConfigMenuHandler.Initialize(this);
 
 
             helper.ConsoleCommands.Add("cfl_debug", "Debug Breakpoint", this.debug);

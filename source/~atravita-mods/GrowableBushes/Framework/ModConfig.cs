@@ -48,7 +48,7 @@ internal sealed class ModConfig
     /// <summary>
     /// Gets or sets a value indicating whether or not mod data should be preserved.
     /// </summary>
-    public bool PreserveModData { get; set; } = false;
+    public bool PreserveModData { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not bushes should stack.
@@ -66,4 +66,9 @@ internal sealed class ModConfig
         get => this.shopCostScale;
         set => this.shopCostScale = Math.Clamp(value, 1, 10);
     }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not bushes should show up in the furniture catalogue.
+    /// </summary>
+    public bool BushesInFurnitureCatalogue { get; set; } = true;
 }

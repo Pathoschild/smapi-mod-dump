@@ -33,7 +33,9 @@
             "Target": "Characters/Dialogue/Lewis",
             "When": {"YearModulus": "2"},
             "Entries": {
-                "1{{YearRemainder}}": "Neighboring town lowered its property taxes to try to get more young professionals to move in.#$b#Young remote professionals make a lot of money and are good for the tax base."
+                "1{{YearRemainder}}": "Neighboring town lowered its property taxes to try to get more young professionals to move in.#$b#Young remote professionals make a lot of money and are good for the tax base.",
+                "2{{YearRemainder}}": "It's not easy, being mayor of a small town. We're so small that we're economically quite fragile.",
+                "3{{YearRemainder}}": "I've been talking to a green energy company recently. They're thinking about renting out some land 'round these parts for windmills.#$b#What do you think? You've got some land to rent to them?",
             }
         }
     ]

@@ -135,7 +135,7 @@ public sealed class IsWithinSprinklerRadiusHelper
         }
         else
         {
-            // If either better sprinkers or line sprinklers are installed
+            // If either better sprinklers or line sprinklers are installed
             // ask them for the relative sprinkler watered area.
             IDictionary<int, Vector2[]>? tilemap = lineSprinklersApi?.GetSprinklerCoverage()
                 ?? betterSprinklersApi?.GetSprinklerCoverage();

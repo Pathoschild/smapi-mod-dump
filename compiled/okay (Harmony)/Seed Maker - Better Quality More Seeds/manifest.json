@@ -1,7 +1,7 @@
 {
   "Name": "Seed Maker - Better quality more seeds",
   "Author": "Victor Abrell",
-  "Version": "1.3.1",
+  "Version": "1.3.3",
   "Description": "Better quality crops gives a better chance for more seeds.",
   "UniqueID": "vabrell.sm_bqms",
   "EntryDll": "Seed Maker - Better quality more seeds.dll",

@@ -32,6 +32,8 @@
   "PreserveModData.description": "If enabled, mod data will be preserved for bushes, but stacking may be less efficient.",
   "ShopCostScale.title": "Shop Cost Scale",
   "ShopCostScale.description": "Scales the cost of bushes in the shop.",
+  "BushesInFurnitureCatalogue.title": "Bushes in Catalogue",
+  "BushesInFurnitureCatalogue.description": "If set, bushes will show up in the furniture catalogue.",
 
   // Shop
   "shop.message": "Hi! Anything you want?",

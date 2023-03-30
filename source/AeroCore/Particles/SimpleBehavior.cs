@@ -28,15 +28,17 @@ namespace AeroCore.Particles
         public float MinAcceleration { get; set; } = 0f;
         public float MaxAcceleration { get; set; } = 0f;
 
-        private Vector2[] speed;
+        private float[] speed;
+        private float[] dir;
         private double[] curve;
         private float[] acceleration;
 
         public void Init(int count)
         {
-            speed = new Vector2[count];
+            speed = new float[count];
             curve = new double[count];
             acceleration = new float[count];
+            dir = new float[count];
         }
 
         public void Cleanup()
@@ -62,12 +64,15 @@ namespace AeroCore.Particles
                 {
                     if (maxLife[i] == 0)
                     {
-                        float spd = Game1.random.Next(MinSpeed, MaxSpeed) / 1000f;
-                        float dir = (float)Game1.random.NextDouble() * DirectionVariance * 2f - DirectionVariance + Direction;
-                        speed[i] = Data.DirLength(Data.DegToRad(dir), spd);
-                        maxLife[i] = Math.Max(1, Game1.random.Next(MinLife, MaxLife) * 1000);
-                        curve[i] = Data.DegToRad(Game1.random.NextDouble() * (MaxCurve - MinCurve) + MinCurve) / 1000f;
-                        acceleration[i] = (float)Game1.random.NextDouble() * (MaxAcceleration - MinAcceleration) + MinAcceleration;
+                        var max = Math.Max(MinSpeed, MaxSpeed);
+                        speed[i] = Game1.random.Next(MinSpeed, max) / 1000f;
+                        dir[i] = Data.DegToRad((float)Game1.random.NextDouble() * DirectionVariance * 2f - DirectionVariance + Direction);
+                        max = Math.Max(MinLife, MaxLife);
+                        maxLife[i] = Math.Max(1, Game1.random.Next(MinLife, max) * 1000);
+                        var maxf = MathF.Max(MinCurve, MaxCurve);
+                        curve[i] = Data.DegToRad(Game1.random.NextDouble() * (maxf - MinCurve) + MinCurve) / 1000f;
+                        maxf = MathF.Max(MinAcceleration, MaxAcceleration);
+                        acceleration[i] = (float)Game1.random.NextDouble() * (maxf - MinAcceleration) + MinAcceleration;
                         clife = -clife;
                     } else
                     {
@@ -88,8 +93,11 @@ namespace AeroCore.Particles
                 }
                 else //moving
                 {
-                    positions[i] = positions[i] + (speed[i] * vtime);
-                    speed[i] = speed[i].Rotate((float)(curve[i] * vtime)) * (1f + acceleration[i]);
+                    var delt = speed[i] * vtime;
+                    var pos = positions[i];
+					positions[i] = new(pos.X + MathF.Cos(dir[i]) * delt, pos.Y + MathF.Sin(dir[i]) * delt);
+                    dir[i] += (float)(curve[i] * vtime);
+                    speed[i] += acceleration[i] * vtime;
                 }
             }
         }

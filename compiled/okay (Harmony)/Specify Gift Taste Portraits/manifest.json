@@ -1,0 +1,10 @@
+{
+  "Name": "Specify Gift Taste Portraits",
+  "Author": "Button",
+  "Version": "1.0.0",
+  "Description": "Allows specifying which portrait to use for each gift taste reaction.",
+  "UniqueID": "Button.SpecifyGiftTastePortraits",
+  "EntryDll": "SpecifyGiftTastePortraits.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:15882" ]
+}

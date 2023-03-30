@@ -266,11 +266,6 @@ namespace DynamicCrops
                 var seasonCropPool = new List<int>(seasonCrops[season].Shuffle());
                 var totalSeasonCrops = seasonCropPool.Count;
 
-                //set number of crops per season that are allowed to regrow
-                var totalRegrowthCropsPercentage = 0.4;
-                var totalRegrowthCrops = Math.Ceiling(vanillaCropIndexes.Length * totalRegrowthCropsPercentage);
-                Monitor.Log($"total regrowth crops: {vanillaCropIndexes.Length}", LogLevel.Debug);
-
                 //set how many crops per season will fall into short, medium, and long-term harvests
                 //medium crop percentage will end up being percentage difference leftover after removing long and short crop percentages from 100%
                 var totalShortCropsPercentage = 0.20;
@@ -280,6 +275,11 @@ namespace DynamicCrops
                 var totalLongCrops = Math.Ceiling(totalSeasonCrops * totalLongCropsPercentage);
                 var totalMediumCrops = Math.Ceiling(totalSeasonCrops * totalMediumCropsPercentage);
                 var totalCropTypeSum = totalShortCrops + totalMediumCrops + totalLongCrops;
+
+                //set number of crops per season that are allowed to regrow
+                var totalRegrowthCropsPercentage = 0.3;
+                var totalRegrowthCrops = Math.Ceiling(seasonCropPool.Count * totalRegrowthCropsPercentage);
+                Monitor.Log($"total regrowth crops for season: {totalRegrowthCrops}", LogLevel.Debug);
 
                 //get total crops that will be allowed to have extra yields
                 var totalExtraYieldCropsPercentage = Helpers.GetRandomIntegerInRange(10, 15);
@@ -291,14 +291,15 @@ namespace DynamicCrops
                 if (totalCropTypeSum > totalSeasonCrops) totalMediumCrops -= totalCropTypeSum - totalSeasonCrops;
                 if (totalCropTypeSum < totalSeasonCrops) totalMediumCrops += totalSeasonCrops - totalCropTypeSum;
                 Monitor.Log($"short:{totalShortCrops} medium:{totalMediumCrops} long:{totalLongCrops}", LogLevel.Debug);
-                Monitor.Log($"total crops for: {totalShortCrops + totalMediumCrops + totalLongCrops}", LogLevel.Debug);
+                Monitor.Log($"total crops for {season}: {totalShortCrops + totalMediumCrops + totalLongCrops}", LogLevel.Debug);
+                Monitor.Log("---------------------------------------", LogLevel.Debug);
 
                 //loop through each individual season's crop index array
                 for (int seasonCropIdx = 0; seasonCropIdx < seasonCropPool.Count; seasonCropIdx++)
                 {
                     var seedIdx = seasonCropPool[seasonCropIdx];
                     var objIdx = int.Parse(cropData[seedIdx].Split('/')[3]);
-                    var isRegrowthCapableModCrop = false;
+                    var isRegrowthCapable = true;
                     var item = new Dictionary<string, string[]>
                     {
                         { "cropData", cropData[seedIdx].Split('/') },
@@ -311,9 +312,9 @@ namespace DynamicCrops
                     Monitor.Log($"objIdx: {objIdx}", LogLevel.Debug);
 
                     //if crop was added from mod and is capable of regrowing
-                    if (!vanillaCropIndexes.Contains(seedIdx) && item["cropData"][4] != "-1")
+                    if (!vanillaCropIndexes.Contains(seedIdx) && item["cropData"][4] == "-1")
                     {
-                        isRegrowthCapableModCrop = true;
+                        isRegrowthCapable = false;
                     }
 
                     //generate random growth (harvest) times for different crops
@@ -378,7 +379,7 @@ namespace DynamicCrops
                     //if crop is regrowth capable or on a trellis
                     var isTrellisCrop = Convert.ToBoolean(Helpers.Capitalize(item["cropData"][7]));
                     var isFlower = flowerSeedIndexes.Contains(seedIdx);
-                    Monitor.Log($"is flower: {config.flowersCanRegrow}", LogLevel.Debug);
+                    Monitor.Log($"is flower: {isFlower}", LogLevel.Debug);
 
                     //if more crops can be given regrowth capability and aren't long-term crops, or is a trellis crop , apply regrowth values
                     if (((totalRegrowthCrops > 0 && totalGrowthTime < growthRangeLongMin)) || isTrellisCrop) applyRegrowValues();
@@ -447,10 +448,10 @@ namespace DynamicCrops
                     {
                         //update coffee to regrow and update price to match extra yields
                         var regrowthPercentage = Helpers.GetRandomIntegerInRange(30, 50);
-                        item["cropData"][4] = Math.Ceiling(totalGrowthTime * (regrowthPercentage * 0.01)).ToString();
+                        var regrowthTime = Math.Ceiling(totalGrowthTime * (regrowthPercentage * 0.01));
+                        item["cropData"][4] = regrowthTime.ToString();
                         item["cropData"][6] = "true 4 4 0 .02";
-                        item["cropObjData"][1] = (int.Parse(item["cropObjData"][1]) / 4).ToString();
-
+                        item["cropObjData"][1] = (7 * regrowthTime).ToString();
 
                         //395 -> Coffee
                         setArtisanGoodPrice(395);
@@ -471,9 +472,11 @@ namespace DynamicCrops
                     //calculation helper functions
                     void applyRegrowValues()
                     {
+                        Monitor.Log("apply regrowth values...", LogLevel.Debug);
+                        Monitor.Log($"isFlower: {isFlower} && !flowersCanRegrow: { !config.flowersCanRegrow} || !isRegrowthCapable: {!isRegrowthCapable}", LogLevel.Debug);
                         //if flower but flowers aren't allowed to regrow, exit regrowth function and apply regular values to flower instead
                         //or if added crop doesn't have regrowth capability (no regrowth sprite)
-                        if ((isFlower && !config.flowersCanRegrow) || !isRegrowthCapableModCrop)
+                        if ((isFlower && !config.flowersCanRegrow) || !isRegrowthCapable)
                         {
                             applyRegularValues();
                             return;
@@ -500,10 +503,12 @@ namespace DynamicCrops
                         //append season text with regrowth verbiage
                         seedDescription += ", but keeps producing after that." + (isTrellisCrop ? " Grows on a trellis." : "");
                         totalRegrowthCrops--;
+                        Monitor.Log($"crops left in {season} that can regrow: {totalRegrowthCrops}", LogLevel.Debug);
                     }
 
                     void applyRegularValues()
                     {
+                        Monitor.Log("apply regular values...", LogLevel.Debug);
                         //if crop is NOT regrowth capable, set crop to not regrow
                         item["cropData"][4] = "-1";
                         Monitor.Log($"no regrowth", LogLevel.Debug);

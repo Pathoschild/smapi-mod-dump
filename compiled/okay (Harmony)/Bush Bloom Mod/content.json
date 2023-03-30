@@ -1,0 +1,11 @@
+﻿[{
+	"ShakeOff": 296,
+	"StartSeason": "spring",
+	"StartDay": 15,
+	"EndDay": 18
+}, {
+	"ShakeOff": 410,
+	"StartSeason": "fall",
+	"StartDay": 8,
+	"EndDay": 11
+}]

@@ -6,9 +6,9 @@ mods:
    Seed Maker - Better Quality More Seeds
 
 latest commit:
-   commit ba57fb6dfc0575e9488a67c06c33156de58b8893
+   commit c6c4afcc4fd5bd843f125f2711c3ea1974210879
    Author: Victor Abrell <victor@abrell.se>
-   Date:   Wed Feb 15 20:35:40 2023 +0100
+   Date:   Tue Mar 21 16:28:04 2023 +0100
    
-       Fix bug with quality modifier
+       Fix automate patch for colored items
    

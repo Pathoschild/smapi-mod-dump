@@ -483,10 +483,8 @@ public sealed class InventoryFruitTree : SObject
         this.sourceRect = this.growthStage.Value switch
         {
             0 => new Rectangle(0, treeIndex * HEIGHT, WIDTH, HEIGHT),
-            1 => new Rectangle(WIDTH, treeIndex * HEIGHT, WIDTH, HEIGHT),
-            2 => new Rectangle(WIDTH * 2, treeIndex * HEIGHT, WIDTH, HEIGHT),
-            3 => new Rectangle(WIDTH * 3, treeIndex * HEIGHT, WIDTH, HEIGHT),
-            _ => new Rectangle((season * WIDTH) + 192, treeIndex * HEIGHT, WIDTH, HEIGHT),
+            1 or 2 or 3 => new Rectangle(WIDTH * this.growthStage.Value, treeIndex * HEIGHT, WIDTH, HEIGHT),
+            _ => new Rectangle((season * WIDTH) + (WIDTH * 4), treeIndex * HEIGHT, WIDTH, HEIGHT),
         };
     }
 

@@ -44,9 +44,9 @@ internal static class CrabPotExtensions
             { 380, new[] { "0.24", "1", "24" } }, // iron ore
             { 384, new[] { "0.12", "1", "24" } }, // gold ore
             { 386, new[] { "0.065", "1", "2" } }, // iridium ore
-            { 516, new[] { "0.024", "1", "1" } }, // small glow ring
+            { 516, new[] { "0.02", "1", "1" } }, // small glow ring
             { 517, new[] { "0.009", "1", "1" } }, // glow ring
-            { 518, new[] { "0.024", "1", "1" } }, // small magnet ring
+            { 518, new[] { "0.02", "1", "1" } }, // small magnet ring
             { 519, new[] { "0.009", "1", "1" } }, // magnet ring
             { 527, new[] { "0.005", "1", "1" } }, // iridium band
             { 529, new[] { "0.005", "1", "1" } }, // amethyst ring
@@ -63,7 +63,7 @@ internal static class CrabPotExtensions
     /// <returns><see langword="true"/> if the <paramref name="crabPot"/>'s bait value is the index of Magnet, otherwise <see langword="false"/>.</returns>
     internal static bool HasMagnet(this CrabPot crabPot)
     {
-        return crabPot.bait.Value?.ParentSheetIndex == Constants.MagnetBaitIndex;
+        return crabPot.bait.Value?.ParentSheetIndex == ItemIDs.MagnetBait;
     }
 
     /// <summary>Determines whether the <paramref name="crabPot"/> is using wild bait.</summary>
@@ -71,7 +71,7 @@ internal static class CrabPotExtensions
     /// <returns><see langword="true"/> if the <paramref name="crabPot"/>'s bait value is the index of Wild Bait, otherwise <see langword="false"/>.</returns>
     internal static bool HasWildBait(this CrabPot crabPot)
     {
-        return crabPot.bait.Value?.ParentSheetIndex == Constants.WildBaitIndex;
+        return crabPot.bait.Value?.ParentSheetIndex == ItemIDs.WildBait;
     }
 
     /// <summary>Determines whether the <paramref name="crabPot"/> is using magic bait.</summary>
@@ -79,7 +79,7 @@ internal static class CrabPotExtensions
     /// <returns><see langword="true"/> if the <paramref name="crabPot"/>'s bait value is the index of Magic Bait, otherwise <see langword="false"/>.</returns>
     internal static bool HasMagicBait(this CrabPot crabPot)
     {
-        return crabPot.bait.Value?.ParentSheetIndex == Constants.MagicBaitIndex;
+        return crabPot.bait.Value?.ParentSheetIndex == ItemIDs.MagicBait;
     }
 
     /// <summary>Determines whether the <paramref name="crabPot"/> should catch ocean-specific shellfish.</summary>
@@ -219,7 +219,7 @@ internal static class CrabPotExtensions
     internal static int ChoosePirateTreasure(this CrabPot crabPot, Farmer owner, Random r)
     {
         var keys = TrapperPirateTreasureTable.Keys.ToArray();
-        StardewValley.Utility.Shuffle(r, keys);
+        Utility.Shuffle(r, keys);
         foreach (var key in keys)
         {
             if ((key == 14 && owner.specialItems.Contains(14)) || (key == 51 && owner.specialItems.Contains(51)) ||

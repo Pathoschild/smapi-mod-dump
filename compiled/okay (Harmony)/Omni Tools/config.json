@@ -18,6 +18,7 @@
   "SwitchForResourceClumps": true,
   "SwitchForGrass": true,
   "SwitchForCrops": true,
+  "HarvestWithScythe": false,
   "SwitchForPan": true,
   "SwitchForWateringCan": true,
   "SwitchForFishing": true,
@@ -25,5 +26,5 @@
   "SwitchForTilling": true,
   "SwitchForAnimals": true,
   "SwitchForMonsters": true,
-  "MaxMonsterDistance": 128.0
+  "MonsterMaxDistance": 256.0
 }

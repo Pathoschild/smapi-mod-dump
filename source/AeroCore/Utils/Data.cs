@@ -86,10 +86,10 @@ namespace AeroCore.Utils
             => angle / 360F * MathF.Tau;
         public static double DegToRad(double angle)
             => angle / 360F * Math.Tau;
-        public static Vector2 Rotate(this Vector2 vec, float angle)
+        public static Vector2 Rotate(this Vector2 vec, double angle)
         {
-            vec.X = vec.X * MathF.Cos(angle) - vec.Y * MathF.Sin(angle);
-            vec.Y = vec.X * MathF.Sin(angle) + vec.Y * MathF.Cos(angle);
+            vec.X = (float)(vec.X * Math.Cos(angle) - vec.Y * Math.Sin(angle));
+            vec.Y = (float)(vec.X * Math.Sin(angle) + vec.Y * Math.Cos(angle));
             return vec;
         }
         public static int Distance(this Point from, Point to)

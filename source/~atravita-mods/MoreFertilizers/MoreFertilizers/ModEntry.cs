@@ -67,6 +67,7 @@ internal sealed class ModEntry : Mod
     #region IDs
 
 #pragma warning disable SA1201 // Elements should appear in the correct order
+
     /// <summary>
     /// Gets a reference to the JA API.
     /// </summary>

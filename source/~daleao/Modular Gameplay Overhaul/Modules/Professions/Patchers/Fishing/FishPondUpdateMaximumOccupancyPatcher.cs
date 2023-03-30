@@ -39,7 +39,7 @@ internal sealed class FishPondUpdateMaximumOccupancyPatcher : HarmonyPatcher
     {
         if (__instance.HasLegendaryFish())
         {
-            __instance.maxOccupants.Set((int)ProfessionsModule.Config.LegendaryPondPopulationCap);
+            __instance.maxOccupants.Set((int)ProfessionsModule.Config.LegendaryPondPopulationCeiling);
         }
         else if (____fishPondData is not null && __instance.HasUnlockedFinalPopulationGate() &&
                  (__instance.GetOwner().HasProfession(Profession.Aquarist) ||

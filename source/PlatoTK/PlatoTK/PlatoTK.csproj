@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>PlatoTK</AssemblyName>
     <RootNamespace>PlatoTK</RootNamespace>
-    <Version>1.9.5</Version>
+    <Version>1.10.3</Version>
     <TargetFramework>net5.0</TargetFramework>
     <Authors>Platonymous</Authors>
     <Description>Modding Toolkit for Stardew Valley</Description>

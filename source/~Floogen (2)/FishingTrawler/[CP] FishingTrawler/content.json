@@ -1,0 +1,181 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FishingTrawler
+**
+*************************************************/
+
+{
+  "Format": "1.28.4",
+  "Changes": [
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Beach",
+      "FromFile": "assets/BeachPatchMurphy.tmx",
+      "FromArea": {
+        "X": 3,
+        "Y": 19,
+        "Width": 8,
+        "Height": 7
+      },
+      "ToArea": {
+        "X": 82,
+        "Y": 37,
+        "Width": 8,
+        "Height": 7
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDay}}": "true"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Beach",
+      "FromFile": "assets/BeachPatchEmpty.tmx",
+      "FromArea": {
+        "X": 3,
+        "Y": 19,
+        "Width": 8,
+        "Height": 7
+      },
+      "ToArea": {
+        "X": 82,
+        "Y": 37,
+        "Width": 8,
+        "Height": 7
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDay}}": "false"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Island_SE",
+      "PatchMode": "Overlay",
+      "FromFile": "assets/IslandBeachPatchMurphy.tmx",
+      "FromArea": {
+        "X": 0,
+        "Y": 0,
+        "Width": 11,
+        "Height": 16
+      },
+      "ToArea": {
+        "X": 4,
+        "Y": 29,
+        "Width": 11,
+        "Height": 16
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "true"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Island_SE",
+      "PatchMode": "Replace",
+      "FromFile": "assets/IslandBeachPatchMurphy.tmx",
+      "FromArea": {
+        "X": 5,
+        "Y": 0,
+        "Width": 3,
+        "Height": 10
+      },
+      "ToArea": {
+        "X": 9,
+        "Y": 29,
+        "Width": 3,
+        "Height": 10
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "true"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Island_SE",
+      "PatchMode": "Replace",
+      "FromFile": "assets/IslandBeachPatchMurphy.tmx",
+      "FromArea": {
+        "X": 1,
+        "Y": 10,
+        "Width": 9,
+        "Height": 3
+      },
+      "ToArea": {
+        "X": 5,
+        "Y": 39,
+        "Width": 9,
+        "Height": 3
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "true"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Island_SE",
+      "PatchMode": "Overlay",
+      "FromFile": "assets/IslandBeachPatchEmpty.tmx",
+      "FromArea": {
+        "X": 0,
+        "Y": 0,
+        "Width": 11,
+        "Height": 16
+      },
+      "ToArea": {
+        "X": 4,
+        "Y": 29,
+        "Width": 11,
+        "Height": 16
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "false"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Island_SE",
+      "PatchMode": "Replace",
+      "FromFile": "assets/IslandBeachPatchEmpty.tmx",
+      "FromArea": {
+        "X": 5,
+        "Y": 0,
+        "Width": 3,
+        "Height": 10
+      },
+      "ToArea": {
+        "X": 9,
+        "Y": 29,
+        "Width": 3,
+        "Height": 10
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "false"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Island_SE",
+      "PatchMode": "Replace",
+      "FromFile": "assets/IslandBeachPatchEmpty.tmx",
+      "FromArea": {
+        "X": 1,
+        "Y": 10,
+        "Width": 9,
+        "Height": 3
+      },
+      "ToArea": {
+        "X": 5,
+        "Y": 39,
+        "Width": 9,
+        "Height": 3
+      },
+      "When": {
+        "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "false"
+      }
+    },
+  ]
+}

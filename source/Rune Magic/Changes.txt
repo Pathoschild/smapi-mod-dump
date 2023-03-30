@@ -8,3 +8,7 @@
 **
 *************************************************/
 
+Added Magic Dust costs to crafting menus.
+Added multi crafting functionallity to Scroll Scribing menu.
+Added more checks to the Wizard/Dwarf events to prevent them from repeating themselves.
+Fixed free crafting bug.

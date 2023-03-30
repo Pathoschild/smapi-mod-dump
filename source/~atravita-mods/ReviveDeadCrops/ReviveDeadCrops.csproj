@@ -14,12 +14,6 @@
     <BaseManifest>..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\AtraCore\AtraCore.csproj" private="false" />
     <ProjectReference Include="..\Pintail\Pintail\Pintail.csproj" private="false" />

@@ -47,9 +47,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 6b93c4292e7f3a0a83d3cbccbfce878fd246ce49
+   commit 507f9da08e000dfccf75a81b9a3f89f3255a20c4
    Author: Platonymous <david@millionideas.de>
-   Date:   Thu Aug 25 01:09:13 2022 +0200
+   Date:   Sat Mar 4 05:52:12 2023 +0100
    
-       update releases
+       Fix cropping and move to PlatoUI
    

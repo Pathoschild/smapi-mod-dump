@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Floogen/SolidFoundations
+   Git: https://github.com/Floogen/SolidFoundations.git
+
+mods:
+   Solid Foundations
+   Solid Foundations → Automate Integration
+
+latest commit:
+   commit dca1bbc5587c37ae050539a8f3bd4843967747d3
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Tue Feb 28 21:11:56 2023 -0600
+   
+       v1.13.0 released
+   

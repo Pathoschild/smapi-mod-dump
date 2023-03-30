@@ -1,0 +1,7 @@
+{
+  "EnableDefaultSchedules": true,
+  "DrawItemWhenSeeded": true,
+  "EnableDGRIntegration": true,
+  "EnableALMIntegration": true,
+  "HideALMDefaultSeeds": true
+}

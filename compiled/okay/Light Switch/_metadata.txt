@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15683
+IDs: holythesea.LightSwitch
+update keys: Nexus:15683, GitHub:holy-the-sea/LightSwitch

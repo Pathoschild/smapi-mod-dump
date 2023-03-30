@@ -11,5 +11,6 @@
   "AllowAnyTreeProduct": true,
   "EdiblesOnly": true,
   "NoBananasBeforeShrine": true,
-  "PriceCap": 200
+  "PriceCap": 200,
+  "ProgressionMode": false
 }

@@ -1,0 +1,19 @@
+{
+  "SprinklePots": true,
+  "PassableSprinklers": true,
+  "AddAdditionalSourcesOfAttachments": true,
+  "BasicLineRange": 3,
+  "QualityLineRange": 7,
+  "IridiumLineRange": 15,
+  "PressureNozzleRangeBonusBasicLine": 2,
+  "PressureNozzleRangeBonusQualityLine": 1,
+  "PressureNozzleRangeBonusIridiumLine": 0,
+  "PressureNozzleLineWidthBonus": 1,
+  "EnableSprinklerDrawMods": true,
+  "SprinklerDrawShadow": true,
+  "SprinklerDrawSize": 1.0,
+  "SprinklerDrawXOffset": -16,
+  "SprinklerDrawYOffset": -32,
+  "SprinklerDrawLayerDepthOffset": -16,
+  "ModifyVanillaSprinklers": true
+}

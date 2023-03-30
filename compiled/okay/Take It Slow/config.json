@@ -92,7 +92,25 @@
     "Vanilla Sapling",
     "Vernal Seeds",
     "Walnut Sapling",
-    "Wasabi Seeds"
+    "Wasabi Seeds",
+    "Snow Fir Sapling",
+    "Amaryllis Seeds",
+    "Milkweed Seeds",
+    "Red Zinnia Seeds",
+    "Wisteria Seeds",
+    "Astilbe Bulb",
+    "Daylily Bulb",
+    "Grape Hyacinth Bulb",
+    "Black Madeira Fig Sapling",
+    "Chestnut Sapling",
+    "Spring Rose Starter",
+    "Summer Rose Starter",
+    "Fall Rose Starter",
+    "Coral Bells Starter",
+    "Fragrant Lilac Pod",
+    "Dahlia (Colored) Seeds",
+    "Colorful Jasmine Seeds",
+    "Gentian Seeds"
   ],
   "YearThreeUnlocks": [
     "Alpaca Seeds",
@@ -220,7 +238,24 @@
     "Yellow Zinnia Seeds",
     "Ylang Ylang Sapling",
     "Yuzu Sapling",
-    "Zinnia Seeds"
+    "Zinnia Seeds",
+    "Bloomtonniere Seeds",
+    "Red Cosmo Seeds",
+    "Dianthus Seeds",
+    "Lupine Seeds",
+    "Featherbloom Starter",
+    "Heart Rose Starter",
+    "Phlox Starter",
+    "Nasturtium Flower Starter",
+    "Glasslily Bulbs",
+    "Aster Seeds",
+    "Lotus Flower Starter",
+    "Lollipoppy Seeds",
+    "Gingeranium Starter",
+    "Gothic Rose Starter",
+    "Daikon Seeds",
+    "Snowdrop Seeds",
+    "Winter Broccoli Seeds"
   ],
   "YearFourUnlocks": [
     "Abiu Sapling",
@@ -298,7 +333,9 @@
     "White Sapote Sapling",
     "Wishing Bamboo Cuttings",
     "Ya Li Pear Sapling",
-    "Yellow Pitahaya Sapling"
+    "Yellow Pitahaya Sapling",
+    "Mini-Pumpkin Seeds",
+    "Blue Rose Seeds"
   ],
   "YearFiveUnlocks": [
     "Black Clover Seeds",
@@ -360,6 +397,9 @@
   "YearTwoForageUnlocks": [
     "Ancient Coin",
     "Aneumushroom",
+    "Artemisia",
+    "Amanita",
+    "Dryad's Saddle",
     "Bear Claw",
     "Berserker Mushroom",
     "Black Pearl",

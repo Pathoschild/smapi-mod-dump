@@ -19,19 +19,16 @@ namespace PelicanTownFoodBank;
 /// </summary>
 internal static class AssetManager
 {
-#pragma warning disable SA1310 // Field names should not contain underscore. Reviewed.
-    private const string ASSET_PREFIX = "Mods/atravita_FoodBank_";
-    private static readonly string DENYLIST_LOC = PathUtilities.NormalizeAssetName(ASSET_PREFIX + "Denylist");
-#pragma warning restore SA1310 // Field names should not contain underscore
+    private const string ASSETPREFIX = "Mods/atravita_FoodBank_";
 
-    private static IAssetName Denylist = null!;
+    private static IAssetName denylist = null!;
 
     /// <summary>
     /// Initialize the asset manager.
     /// </summary>
     /// <param name="parser">Game Content Helper.</param>
     internal static void Initialize(IGameContentHelper parser)
-        => Denylist = parser.ParseAssetName(DENYLIST_LOC);
+        => denylist = parser.ParseAssetName(ASSETPREFIX + "denylist");
 
     /// <summary>
     /// Applies the load.
@@ -39,7 +36,7 @@ internal static class AssetManager
     /// <param name="e">Event args.</param>
     internal static void Load(AssetRequestedEventArgs e)
     {
-        if (e.NameWithoutLocale.IsEquivalentTo(Denylist))
+        if (e.NameWithoutLocale.IsEquivalentTo(denylist))
         {
             e.LoadFrom(EmptyContainers.GetEmptyDictionary<string, string>, AssetLoadPriority.Low);
         }

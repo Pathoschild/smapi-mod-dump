@@ -11,8 +11,8 @@
 {
   "Name": "Custom Farm Loader",
   "Author": "DeLiXx",
-  "Version": "1.0.12",
-  "Description": "Adds UI for selecting a custom farm and a high Level API for farm related features",
+  "Version": "1.0.14",
+  "Description": "Improves farm related UI, loads custom farms, manages farm specific features and fixes vanilla bugs.",
   "UniqueID": "DeLiXx.Custom_Farm_Loader",
   "EntryDll": "Custom Farm Loader.dll",
   "MinimumApiVersion": "3.14.1",

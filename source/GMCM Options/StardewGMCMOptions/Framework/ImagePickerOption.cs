@@ -47,6 +47,7 @@ namespace GMCMOptions.Framework {
         readonly Func<uint, String?>? Label;
         readonly ArrowLocation arrowLocation;
         readonly LabelLocation labelLocation;
+        readonly Action<uint>? onValueChange;
 
         // UI widgets
         readonly IconButton leftButton;
@@ -54,7 +55,16 @@ namespace GMCMOptions.Framework {
         readonly int arrowButtonHeight;
 
         // Our current value
-        private uint currentValue;
+        private uint _currentValue;
+        private uint currentValue {
+            get => _currentValue;
+            set {
+                if (_currentValue != value) {
+                    onValueChange?.Invoke(value);
+                }
+                _currentValue = value;
+            }
+        }
 
         /// <summary>
         /// Create a new image picker option.  They underlying value is the <c>uint</c> that is the index
@@ -81,6 +91,7 @@ namespace GMCMOptions.Framework {
         /// <param name="label">A function to return the string to display given the image index, or <c>null</c> to disable that display.</param>
         /// <param name="arrowLocation">Where to draw the arrows in relation to the image.</param>
         /// <param name="labelLocation">Where to draw the label in relation to the image.</param>
+        /// <param name="onValueChange">An action to invoke whenever the (current, unsaved) value changes</param>
         public ImagePickerOption(Func<uint> getValue,
                                  Action<uint> setValue,
                                  Func<uint> getMaxValue,
@@ -89,7 +100,8 @@ namespace GMCMOptions.Framework {
                                  Action<uint, SpriteBatch, Vector2> drawImage,
                                  Func<uint, String?>? label = null,
                                  ArrowLocation arrowLocation = ArrowLocation.Top,
-                                 LabelLocation labelLocation = LabelLocation.Top) {
+                                 LabelLocation labelLocation = LabelLocation.Top,
+                                 Action<uint>? onValueChange = null) {
             GetValue = getValue;
             SetValue = setValue;
             GetMaxValue = getMaxValue;
@@ -99,6 +111,7 @@ namespace GMCMOptions.Framework {
             Label = label;
             this.arrowLocation = arrowLocation;
             this.labelLocation = label is not null ? labelLocation : LabelLocation.None;
+            this.onValueChange = onValueChange;
             leftButton = new IconButton(Game1.mouseCursors, LeftArrow, "", LeftButtonClicked, false);
             rightButton = new IconButton(Game1.mouseCursors, RightArrow, "", RightButtonClicked, false);
             arrowButtonHeight = Math.Max(leftButton.Height, rightButton.Height);

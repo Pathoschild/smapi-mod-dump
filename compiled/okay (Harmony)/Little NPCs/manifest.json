@@ -1,7 +1,7 @@
 {
   "Name": "LittleNPCs",
   "Author": "Candidus42",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Turns your children into little NPCs.",
   "UniqueID": "Candidus42.LittleNPCs",
   "EntryDll": "LittleNPCs.dll",

@@ -12,8 +12,6 @@ namespace DaLion.Overhaul;
 
 #region using directives
 
-using DaLion.Shared.UI;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Monsters;
 
 #endregion using directives
@@ -21,12 +19,6 @@ using StardewValley.Monsters;
 /// <summary>Holds global variables that may be used by different modules.</summary>
 internal sealed class Globals
 {
-    /// <summary>Gets the <see cref="HudPointer"/> which points at various points of interest.</summary>
-    internal static Lazy<HudPointer> Pointer { get; } = new(() => new HudPointer(
-        ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/HudPointer"),
-        ProfessionsModule.Config.TrackPointerScale,
-        ProfessionsModule.Config.TrackPointerBobbingRate));
-
     /// <summary>Gets or sets <see cref="Item"/> index of the Garnet gemstone (provided by Json Assets).</summary>
     internal static int? GarnetIndex { get; set; }
 
@@ -50,6 +42,9 @@ internal sealed class Globals
 
     /// <summary>Gets or sets a value indicating whether the current location has any characters of type <see cref="Monster"/>.</summary>
     internal static bool AreEnemiesAround { get; set; }
+
+    /// <summary>Gets or sets the number of elapsed seconds since the last combat-related action.</summary>
+    internal static int SecondsOutOfCombat { get; set; }
 
     /// <summary>Gets or sets the <see cref="FrameRateCounter"/>.</summary>
     internal static FrameRateCounter? FpsCounter { get; set; }

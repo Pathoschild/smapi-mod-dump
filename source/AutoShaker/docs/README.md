@@ -72,6 +72,9 @@ NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/jag3dagster/AutoShaker/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+### 1.5.1
+* Add Chinese localization
+     - Translation by: liky123131231 (NexusMods)
 ### 1.5.0
 * Simplify calculations per game tick
 * Add translation language support

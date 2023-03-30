@@ -30,7 +30,7 @@ Simply delete from your Mods directory.
 Run SMAPI at least once with this mod installed to generate the `config.json`, or use [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) to configure.
 
 * `Closed` - default vanilla behavior - stores closed on the day of a festival.
-* `Map Dependent` - stores closed if they're in the same region as a place with a festival, but stay open otherwise. Pelican Town is considered a region, otherwise any maps that start with `Custom_<ModName>_` are assumed to share a region.
+* `MapDependent` - stores closed if they're in the same region as a place with a festival, but stay open otherwise. Pelican Town is considered a region, otherwise any maps that start with `Custom_<ModName>_` are assumed to share a region.
 * `Open` - stores are open during festival days.
 
 ## Technical note:

@@ -103,5 +103,4 @@ public interface IGiantCropTweaks
     /// </summary>
     /// <param name="id">The ID of the giant crop.</param>
     bool TryGetSource(string id, [NotNullWhen(true)] out Rectangle? source);
-
 }

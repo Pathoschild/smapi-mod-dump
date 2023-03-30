@@ -105,6 +105,23 @@
         ]
     },
 
+    {
+        //Bryle Arrives
+        "Action": "EditData",
+        "Target": "Data/Festivals/winter25",
+        "When": {
+            "HasSeenEvent": 75160375, "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true, "Query: {{RandomNumber}} <= 4": true,
+        },
+        "TextOperations": [
+            {
+                "Operation": "Append",
+                "Target": ["Entries", "Set-Up_additionalCharacters"],
+                "Value": "Bryle 24 37 up",
+                "Delimiter": "/"
+            },
+        ]
+    },
+
     //Torts
     {
       "LogName": "Torts Winter Star Location",
@@ -127,11 +144,14 @@
       "LogName": "June Winter Star Location",
       "Action": "EditData",
       "Target": "Data/Festivals/winter25",
+      "When": {
+            "Rafseazz.RidgesideVillage/RSVNPCSAttendFestivals": true, "Rafseazz.RidgesideVillage/ExpandedFestivalMaps": true
+        },
       "TextOperations": [
         {
           "Operation": "Append",
           "Target": ["Entries", "Set-Up_additionalCharacters"],
-          "Value": "June 27 54 2",
+          "Value": "June 33 36 3",
           "Delimiter": "/"
         },
       ]

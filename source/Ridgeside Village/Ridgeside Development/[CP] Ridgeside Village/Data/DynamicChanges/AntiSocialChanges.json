@@ -70,10 +70,22 @@
 			"Action": "EditData",
 			"Target": "Data/AntiSocialNPCs",
 			"When": {
-				"HasSeenEvent": 75160338
+				"HasSeenEvent: hostPlayer |contains=75160338": true
 			},
 			"Entries": {
 				"Zayne": null
+			},
+			"Update": "OnLocationChange"
+		},
+
+		{
+			"Action": "EditData",
+			"Target": "Data/AntiSocialNPCs",
+			"When": {
+				"HasSeenEvent: hostPlayer |contains=75160375": true
+			},
+			"Entries": {
+				"Bryle": null
 			},
 			"Update": "OnLocationChange"
 		},

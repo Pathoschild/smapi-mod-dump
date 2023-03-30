@@ -6,9 +6,9 @@ mods:
    Mod List Command
 
 latest commit:
-   commit 566e55c348ee06425d5ce9619fb2e286ff7477a3
-   Author: Nicolas Girod <github@north-edge.com>
-   Date:   Sat Jan 11 02:06:36 2020 +0100
+   commit 7334d2ae5c2f076de0007b365e65415b84437d3f
+   Author: KÃ¡roly OzsvÃ¡rt <ozsvart.karoly@gmail.com>
+   Date:   Wed Mar 22 07:43:07 2023 +0100
    
-       Create README.md
+       Update README.md
    

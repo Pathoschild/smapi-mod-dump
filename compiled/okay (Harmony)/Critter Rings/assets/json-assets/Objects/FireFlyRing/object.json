@@ -1,0 +1,8 @@
+﻿{
+  "Name": "atravita.FireFlyRing",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 1000,
+  "TranslationKey": "firefly-ring",
+  "CanSell": false,
+}

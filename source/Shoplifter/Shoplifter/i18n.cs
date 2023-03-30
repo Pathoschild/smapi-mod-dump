@@ -28,6 +28,73 @@ namespace Shoplifter
             i18n.config = config;
         }
 
+        // Translations for GMCM
+        public static string string_GMCM_PeriodSection()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_PeriodSection");
+        }
+        public static string string_GMCM_MaxDay()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxDay");
+        }
+        public static string string_GMCM_MaxDayTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxDayTooltip");
+        }
+        public static string string_GMCM_MaxShop()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxShop");
+        }
+        public static string string_GMCM_MaxShopTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxShopTooltip");
+        }
+        public static string string_GMCM_PenaltySection()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_PenaltySection");
+        }
+        public static string string_GMCM_MaxFine()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxFine");
+        }
+        public static string string_GMCM_MaxFineTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxFineTooltip");
+        }
+        public static string string_GMCM_MaxFriendship()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxFriendship");
+        }
+        public static string string_GMCM_MaxFriendshipTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxFriendshipTooltip");
+        }
+        public static string string_GMCM_MaxCatches()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxCatches");
+        }
+        public static string string_GMCM_MaxCatchesTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxCatchesTooltip");
+        }
+        public static string string_GMCM_MaxBanned()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxBanned");
+        }
+        public static string string_GMCM_MaxBannedTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip");
+        }
+        public static string string_GMCM_MaxRadius()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxRadius");
+        }
+        public static string string_GMCM_MaxRadiusTooltip()
+        {
+            return i18n.GetTranslation("TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip");
+        }
+        // End GMCM translations
+
         public static string string_Shoplift()
         {
             return i18n.GetTranslation("TheMightyAmondee.Shoplifter/Shoplift");

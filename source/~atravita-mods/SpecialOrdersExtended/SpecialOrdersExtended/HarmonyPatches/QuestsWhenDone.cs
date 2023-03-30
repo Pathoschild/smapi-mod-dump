@@ -16,14 +16,16 @@ using StardewValley.Menus;
 
 namespace SpecialOrdersExtended.HarmonyPatches;
 
+// TODO - finish this.
+
 /// <summary>
 /// Adds a patch to allow players to pick the other quest XD.
 /// </summary>
 internal static class QuestsWhenDone
 {
     private const string Omega = "\u03A9"; // using this to mark which one was picked.
-    private const string left = $"{Omega}left";
-    private const string right = $"{Omega}right";
+    private const string Left = $"{Omega}left";
+    private const string Right = $"{Omega}right";
 
     [MethodImpl(TKConstants.Hot)]
     private static bool FinishedAllQuestsOfType(SpecialOrdersBoard board)
@@ -34,6 +36,4 @@ internal static class QuestsWhenDone
     [MethodImpl(TKConstants.Hot)]
     private static void TrackQuestOfType(SpecialOrdersBoard board, string str)
         => Game1.player.team.acceptedSpecialOrderTypes.Add(board.GetOrderType() + str);
-
-
 }

@@ -17,15 +17,14 @@ namespace RuneMagic.Source.Spells
     {
         public Healing() : base(School.Abjuration)
         {
-            Description += "Restores the caster's health.";
-            Level = 1;
+            Description += "Restores the caster's health."; Level = 1;
         }
 
         public override bool Cast()
         {
             if (Game1.player.health >= Game1.player.maxHealth)
                 return false;
-            var heal = Skill.Level * 10;
+            var heal = Player.MagicStats.ActiveSchool.Level * 10;
             if (heal > Game1.player.maxHealth - Game1.player.health)
                 heal = Game1.player.maxHealth - Game1.player.health;
             Game1.player.health += heal;

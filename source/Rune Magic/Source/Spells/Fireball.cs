@@ -17,16 +17,15 @@ namespace RuneMagic.Source.Spells
     {
         public Fireball() : base(School.Evocation)
         {
-            Description += "Shoots a fire ball, damaging monsters in a big area around the target location";
-            Level = 4;
+            Description += "Shoots a fire ball, damaging monsters in a big area around the target location"; Level = 4;
         }
 
         public override bool Cast()
         {
             var texture = RuneMagic.Textures["spell_fireball"];
-            var minDamage = Skill.Level;
-            var maxDamage = Skill.Level * 3;
-            var bonusDamage = Skill.Level;
+            var minDamage = 1;
+            var maxDamage = 6;
+            var bonusDamage = 3;
             var area = 1;
             var speed = 5;
 

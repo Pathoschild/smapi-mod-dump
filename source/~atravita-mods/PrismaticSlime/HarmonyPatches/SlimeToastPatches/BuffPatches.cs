@@ -18,7 +18,11 @@ using StardewValley.Menus;
 
 namespace PrismaticSlime.HarmonyPatches.SlimeToastPatches;
 
+/// <summary>
+/// Holds a patch to give our buff a custom icon.
+/// </summary>
 [HarmonyPatch(typeof(Buff))]
+[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
 internal static class BuffPatches
 {
     [HarmonyPatch(nameof(Buff.getClickableComponents))]
@@ -34,7 +38,7 @@ internal static class BuffPatches
                 hoverText: __instance.getDescription(__instance.which),
                 texture: AssetManager.BuffTexture,
                 new Rectangle(0, 0, 16, 16),
-                scale: 4f));
+                scale: Game1.pixelZoom));
         }
     }
 }

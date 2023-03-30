@@ -97,7 +97,7 @@ public interface ICompleteSpaceCoreAPI : ISpaceCoreAPI
     /// <param name="declaringType">The type to attach the property too.</param>
     /// <param name="name">name of the parameter.</param>
     /// <param name="propType">type of the fake property.</param>
-    /// <param name="getter">methodinfo for the getter.</param>
-    /// <param name="setter">methodinfo for the setter.</param>
+    /// <param name="getter">MethodInfo for the getter.</param>
+    /// <param name="setter">MethodInfo for the setter.</param>
     void RegisterCustomProperty(Type declaringType, string name, Type propType, MethodInfo getter, MethodInfo setter);
 }

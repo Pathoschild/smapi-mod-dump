@@ -21,7 +21,6 @@ using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
-using NetFabric.Hyperlinq;
 using StardewModdingAPI.Utilities;
 using StardewValley.Buildings;
 using StardewValley.Monsters;
@@ -84,7 +83,6 @@ internal static class FarmerExtensions
         }
 
         if (includeCustom && !SCProfession.List
-                .AsValueEnumerable()
                 .Select(p => p.Id)
                 .All(farmer.professions.Contains))
         {
@@ -182,7 +180,7 @@ internal static class FarmerExtensions
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     internal static void RevalidateUltimate(this Farmer farmer)
     {
-        var currentIndex = farmer.Read(DataFields.UltimateIndex, -1);
+        var currentIndex = farmer.Read(DataKeys.UltimateIndex, -1);
         var newIndex = currentIndex;
         switch (currentIndex)
         {
@@ -206,7 +204,7 @@ internal static class FarmerExtensions
 
         if (newIndex != currentIndex)
         {
-            farmer.Write(DataFields.UltimateIndex, newIndex.ToString());
+            farmer.Write(DataKeys.UltimateIndex, newIndex.ToString());
             currentIndex = newIndex;
         }
 
@@ -224,7 +222,7 @@ internal static class FarmerExtensions
         var chosen = farmer.Get_Ultimate();
         return new[] { 26, 27, 28, 29 }
             .Intersect(farmer.professions)
-            .Except(chosen?.Value.Collect() ?? ValueEnumerable.Empty<int>())
+            .Except(chosen?.Value.Collect() ?? Enumerable.Empty<int>())
             .Select(Ultimate.FromValue);
     }
 
@@ -320,7 +318,7 @@ internal static class FarmerExtensions
             }
         }
 
-        return Math.Min(bonus, ProfessionsModule.Config.AnglerMultiplierCap);
+        return Math.Min(bonus, ProfessionsModule.Config.AnglerPriceBonusCeiling);
     }
 
     /// <summary>Gets the amount of "catching" bar to compensate for <see cref="Profession.Aquarist"/>.</summary>
@@ -341,7 +339,7 @@ internal static class FarmerExtensions
             }
         }
 
-        return Math.Min(fishTypes.Count * 0.000165f, 0.002f);
+        return Math.Min(Math.Max(fishTypes.Count, ProfessionsModule.Config.AquaristFishPondCeiling) * 0.000165f, 0.002f);
     }
 
     /// <summary>Gets the price bonus applied to all items sold by <see cref="Profession.Conservationist"/>.</summary>
@@ -349,7 +347,7 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="float"/> multiplier for general items.</returns>
     internal static float GetConservationistPriceMultiplier(this Farmer farmer)
     {
-        return 1f + farmer.Read<float>(DataFields.ConservationistActiveTaxBonusPct);
+        return 1f + farmer.Read<float>(DataKeys.ConservationistActiveTaxBonusPct);
     }
 
     /// <summary>Gets the quality of items foraged by <see cref="Profession.Ecologist"/>.</summary>
@@ -357,7 +355,7 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="SObject"/> quality level.</returns>
     internal static int GetEcologistForageQuality(this Farmer farmer)
     {
-        var itemsForaged = farmer.Read<uint>(DataFields.EcologistItemsForaged);
+        var itemsForaged = farmer.Read<uint>(DataKeys.EcologistItemsForaged);
         return itemsForaged < ProfessionsModule.Config.ForagesNeededForBestQuality
             ? itemsForaged < ProfessionsModule.Config.ForagesNeededForBestQuality / 2
                 ? SObject.medQuality
@@ -370,7 +368,7 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="SObject"/> quality level.</returns>
     internal static int GetGemologistMineralQuality(this Farmer farmer)
     {
-        var mineralsCollected = farmer.Read<uint>(DataFields.GemologistMineralsCollected);
+        var mineralsCollected = farmer.Read<uint>(DataKeys.GemologistMineralsCollected);
         return mineralsCollected < ProfessionsModule.Config.MineralsNeededForBestQuality
             ? mineralsCollected < ProfessionsModule.Config.MineralsNeededForBestQuality / 2
                 ? SObject.medQuality

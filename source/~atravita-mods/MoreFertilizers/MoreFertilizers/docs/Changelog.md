@@ -15,7 +15,9 @@ Changelog
 * Tree Tapper's: Automate integration.
 * Something for mushroom boxen? (1.6 - reduce to one day?)
 * Make good draw code for all of the fertilizers. (don't forget domesticated fish - maybe some more jumping...)
-* PR Pathos to make CJB pass in the correct fertilizer (b/c Everlasting) - done, waiting for Pathos to merge.
+
+#### Version 0.3.4
+* Fix integration with DGA.
 
 #### Version 0.3.3
 * Update to latest AtraCore.

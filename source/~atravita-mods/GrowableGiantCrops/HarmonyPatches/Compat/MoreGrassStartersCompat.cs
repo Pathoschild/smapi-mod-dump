@@ -35,7 +35,7 @@ internal static class MoreGrassStartersCompat
     /// Applies the patches for this class.
     /// </summary>
     /// <param name="harmony">My harmony instance.</param>
-    internal static void ApplyPatch(Harmony harmony)
+    internal static void ApplyPatch(Harmony harmony, IModRegistry registry)
     {
         try
         {
@@ -50,15 +50,25 @@ internal static class MoreGrassStartersCompat
                 ModEntry.ModMonitor.Log($"MoreGrassStarter's GrassStarter item could not be found?.", LogLevel.Error);
             }
 
-            if (AccessTools.TypeByName("MoreGrassStarters.Mod") is Type moreGrassStarters)
+            if (registry.Get("spacechase0.MoreGrassStarters") is IModInfo modInfo)
             {
-                harmony.Patch(
-                   original: moreGrassStarters.GetCachedMethod("OnDayStarted", ReflectionCache.FlagTypes.InstanceFlags),
-                   transpiler: new HarmonyMethod(typeof(MoreGrassStartersCompat).StaticMethodNamed(nameof(Transpiler))));
-            }
-            else
-            {
-                ModEntry.ModMonitor.Log($"MoreGrassStarter's modentry class could not be found?.", LogLevel.Error);
+                if (modInfo.Manifest.Version.IsOlderThan("1.2.1"))
+                {
+                    if (AccessTools.TypeByName("MoreGrassStarters.Mod") is Type moreGrassStarters)
+                    {
+                        harmony.Patch(
+                           original: moreGrassStarters.GetCachedMethod("OnDayStarted", ReflectionCache.FlagTypes.InstanceFlags),
+                           transpiler: new HarmonyMethod(typeof(MoreGrassStartersCompat).StaticMethodNamed(nameof(Transpiler))));
+                    }
+                    else
+                    {
+                        ModEntry.ModMonitor.Log($"MoreGrassStarter's modentry class could not be found?.", LogLevel.Error);
+                    }
+                }
+                else if (modInfo.Manifest.Version.IsOlderThan("1.2.2"))
+                {
+                    ModEntry.ModMonitor.Log($"Detected MoreGrassStarters version 1.2.1. You may see odd issues with placed grass. Please update that mod to 1.2.2 or above!", LogLevel.Warn);
+                }
             }
         }
         catch (Exception ex)
@@ -108,7 +118,7 @@ internal static class MoreGrassStartersCompat
             })
             .Advance(3);
 
-            var ldloc = helper.CurrentInstruction.Clone();
+            CodeInstruction ldloc = helper.CurrentInstruction.Clone();
             helper.Push()
             .Advance(1)
             .StoreBranchDest()

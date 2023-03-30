@@ -9,6 +9,7 @@
 *************************************************/
 
 {
+    // Translations thanks to zenura!
     "TheMightyAmondee.Shoplifter/Shoplift":"Hırsızlık yap?",  
     "TheMightyAmondee.Shoplifter/Banned": "Hırsızlıktan yasaklandın. Şansını zorlama...",
     "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Bugün zaten hırsızlık yaptın. Bu kadarı yeterli...",
@@ -37,5 +38,25 @@
     "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Ne yaptığını zannediyorsun @? Doktor tavsiyesi olmadan bu şeyler çok tehlikeli...$8#$b#Parasını ödeyemeyeceğin için bu seferlik sana ceza kesmiyorum ama bir daha hırsızlık yapmaya çalışma.$5",
     "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Beni soyuyorsun @! Daha iyi bir insan olduğunu düşünmüştüm.$3#$b#Ödeyemeyeceğin için bu seferlik sana ceza kesmiyorum.$2",
     "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Dükkanımın diğerlerinden uzak olması hırsızlık yapmanın daha kolay olduğu anlamına gelmiyor, @.$2#$b#Bu seferlik cezayı boşver @, sadece dükkandan çık.$2",
-    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Dondurma için bu kadar çaresiz misin, @?$7#$b#Bu seferlik sadece uyarıyorum.$5"
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Dondurma için bu kadar çaresiz misin, @?$7#$b#Bu seferlik sadece uyarıyorum.$5",
+    //
+
+    // TODO Improve translations
+    "TheMightyAmondee.Shoplifter/GMCM_PeriodSection":"Ne sıklıkla hırsızlık yapabilirsink?",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDay": "Maksimum Hırsızlık/gün",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxDayTooltip": "Gün başına maksimum mağaza hırsızlığı.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShop": "Maksimum mağaza hırsızlığı/mağaza",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxShopTooltip":"Aynı mağazadan her gün kaç kez hırsızlık yapılabilir.",
+    "TheMightyAmondee.Shoplifter/GMCM_PenaltySection":"Yakalandığınızda ne gibi cezalar alırsınız?",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFine":"Maksimum para cezası",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFineTooltip":"Maksimum ceza miktarı.",  
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendship": "Arkadaşlık cezası",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxFriendshipTooltip": "Maksimum arkadaşlık cezası.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatches": "Yasaklanmadan önce tespit edildi",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxCatchesTooltip":"Yasaklanmadan önce kaç kez yakalanmanız gerektiği.",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBanned":"Yasaklandığınız gün sayısı",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxBannedTooltip":"Kaç gün boyunca yasaklanacaksınız",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadius":"Yakalanma Yarıçapı",
+    "TheMightyAmondee.Shoplifter/GMCM_MaxRadiusTooltip":"Bir köylünün oyuncuyu yakalamak için olması gereken maksimum mesafe."
+    //
   }

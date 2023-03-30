@@ -18,13 +18,12 @@ namespace RuneMagic.Source.Spells
     {
         public Vitality() : base(School.Abjuration)
         {
-            Description += "Increases the casters Health and Stamina for a long period of time.";
-            Level = 4;
+            Description += "Increases the casters Health and Stamina for a long period of time."; Level = 4;
         }
 
         public override bool Cast()
         {
-            if (!RuneMagic.PlayerStats.ActiveEffects.OfType<Vitalized>().Any())
+            if (!Player.MagicStats.ActiveEffects.OfType<Vitalized>().Any())
             {
                 Effect = new Vitalized(this);
                 return base.Cast();
