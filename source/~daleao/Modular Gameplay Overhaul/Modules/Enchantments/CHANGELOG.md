@@ -6,70 +6,115 @@ for queries and analysis.**
 
 ----
 
-# Enchantments Change Log
+# ENCH Change Log
 
-## 2.0.0
+## 2.2.5 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Fixed possible Null-Reference in FarmerShowItemIntakePrefix.
+
+## 2.2.3 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
+
+### Fixed
+
+* No longer removes implicit enchantments from WPNZ upon revalidation.
+
+## 2.2.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
+
+### Added
+
+* Added Steadfast enchantment: Converts critical strike chance into bonus damage (multiplied by critical power). Cannot crit.
+
+### Changed
+
+* Artful can now be applied to Slingshot. Artful enchantment changes:
+    - **Stabbing Sword**: Can dash twice in succession.
+    - **Defense Sword**: ~~Stuns enemies for 1s~~ Guarantees a critical strike on the next attack (within 5s).
+    - **Dagger**: Applies bleeding on each hit (if WPNZ is enabled with Rebalance).
+    - **Club**: Now also stuns enemies for 2s.
+    - **Slingshot**: Stunning smack becomes a stunning swipe (larger area, easier to hit).
+* Gatling enchantment fire speed is now the same as Desperado Limit Break (x2 buff). No longer engaged by holding a Mod Key. You can now engage auto-fire by double pressing and holding the fire key.
+* Preserving enchantment now grants 100% chance to preserve (was 50%).
+* Spreading enchantment now consumes an additional ammo, but spread projectiles now deal 100% damage.
+
+### Fixed
+
+* Added missing localization for Wabbajack enchantment.
+
+## 2.1.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
+
+### Added
+
+* Added Wabbajack enchantment.
+
+## 2.0.5 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Now resets the list of available enchaintments when settings are toggled.
+
+## 2.0.2 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Fixed tooltips not displaying repeated gemsones.
+
+## 2.0.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 * Initial release of Enchantments module.
+
+### Added
+
+* Added Explosive / Blasting enchantment. This enchantment should synergize extremely well with tanky builds.
+* Energized and Explosive enchantment counters now change color when fully charged.
+* Forges in melee weapons and slingshots now display as individual gemstone icons in the tooltip, instead of the generic Vanilla "Forged" text. There are different gemstone styles to choose from, and you can also play with the positioning somewhat.
+
+### Changed
+
+* Vampiric echantment's healing is now more similar to Vanilla, occurring on monster slay and being based on enemy max health + a random factor. Unlike the Vanilla one, some healing will always occur. The overheal effect remains the same.
+* Removed the cap on bonus damage awarded by Carving enchantment; i.e., you can now continue carving enemy resistances indefinitely.
+* Glutton Enchantment renamed to Magnum Enchantment.
+* Tribute Enchantment renamed to Mammonite's Enchantment.
+* Artful enchantment for Stabbing Swords now allows turning mid-dash by pressing a direction key. Dash distance increased from +20% to +50%.
+
+### Fixed
+
+* Carving enchantment now works correctly on Rock Crabs.
+* Fixed an issue where Tribute Enchantment threshold was reseting to 0% instead of the correct 10%.
+* Fixed an edge case where removing certain enchantments while still equipped would not remove their effects, leading to funky behavior.
+* Fixed Vampiric enchantment's overheal not displaying outside of dungeons.
+* Fixed an issue with Energizes enchantment stacking multiple times per hit.
 
 ---
 
 *Changes below this point refer to the legacy Arsenal module.*
 
-## 1.4.0
-
-### Added
-
-* Added Exploding / Biding enchantment.
-
-### Changed
-
-* Removed the cap on bonus damage awarded by Carving enchantment.
-* Reduced the minimum mine level required for new weapons to appear at Marlon's shop. The first batch of weapons will now be available instantly. The second will appear as soon as level 15. Some prices have also been lowered.
-* Mine chests no longer drop seeds. Can now drop fertilizers. Increased the stack of several chest rewards. Improved the odds of hitting the jackpot (Quality Sprinklers).
-* Increased the spawn chance of breakable containers in the mines. Implemented a handicap system to dynamically increase the chance of obtaining special items from breakable containers (including weapons).
-* Implemented a handicap system to dynamically increase the chance of encountering monsters with special item drops. Weapons dropped from monsters are still rarer and stronger on average than those dropped by containers.
-* The base knocback of swords and daggers has been cut in half.
-* Some weapons' stats have been changed, including the Galaxy and Infinity weapons which received significant buffs.
-* Weapon revalidation now occurs automatically upon first initialization of the module. Manually executing the `revalidate` command is no longer necessary. However, you **must** manually disable Arsenal module before uninstalling MARGO.
-* Glutton Enchantment renamed to Magnum Enchantment.
-* Tribute Enchantment renamed to Mammonite's Enchantment.
-
-### Fixed
-
-* Carving enchantment now works correctly on Rock Crabs.
-* The Dawn Blade will no longer be dismantled as long as it has forges to be removed.
-* Generosity Trial now only checks for completion on the Master player, to avoid issues in multiplayer games.
-* The description of the Jinxed debuff should now properly reflect the changes made by the Overhauled Defense setting.
-* Fixed some typos causing Aquamarine, Jade and Emerald-resonances to not apply correctly to their correspondingly-forged weapons.
-* Generosity Trial completion should now register on all farmhands.
-* Fixed an issue where Tribute Enchantment threshold was reseting to 0% instead of the correct 10%.
-
-## 1.3.5
+## 1.3.5 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed a bad Null-Reference Exception introduced in 1.3.4.
 
-## 1.3.4
+## 1.3.4 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed missing scythe swipe sound.
 
-## 1.3.2
+## 1.3.2 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Enemies defeated by knockback damage now properly count for game stats, quests and drop items. 
 
-## 1.3.1
+## 1.3.1 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed start-up error with Neptune's Glaive patcher.
 
-## 1.3.0
+## 1.3.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -82,7 +127,7 @@ for queries and analysis.**
 * Fixed a bug preventing explosive ammo from exploding without the Desperado profession.
 * Fixed a bug with Obsidian Edge and Lava Katana drops creating error daggers instead.
 
-## 1.2.3
+## 1.2.3 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -97,14 +142,14 @@ for queries and analysis.**
 
 * Blade of the Ruined Hero introduction event is no longer skippable.
 
-## 1.2.1
+## 1.2.1 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed auto-selection preventing other LeftShift actions in inventory menu.
 * Fixed inverted swipe effect when swinging scythe.
 
-## 1.2.0
+## 1.2.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -115,14 +160,14 @@ for queries and analysis.**
 
 * Fixed a bug in the console command for getting blueprints (`ars get bp`).
 
-## 1.1.0
+## 1.1.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed out-of-bounds tooltip elements for slingshots higher than basic.
 * Fixed bullseye position while aiming.
 
-## 1.0.4
+## 1.0.4 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -134,11 +179,11 @@ for queries and analysis.**
 
 * Fixed shipping bin logic, which was also messed up by the Dark Sword.
 
-## 1.0.3-Hotfix
+## 1.0.3-Hotfix <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 Hotfix for Null-Reference Exception when opening Clint's shop menu.
 
-## 1.0.2
+## 1.0.2 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -152,7 +197,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Dark Sword should now be immune from accidental deposit by Better Chests' stack feature.
 * Clint's menu should now support mod geodes like Kaya's.
 
-## 1.0.1
+## 1.0.1 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -174,7 +219,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * No longer conflicts with Love Of Cooking's Frying Pan upgrades or drbirbdev's Panning and Ranching Tool Upgrades.
 * No longer prevents players from receiving the Galaxy Sword mail flag.
 
-## 1.0.0
+## 1.0.0 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -196,7 +241,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Weapon and Slingshot Forges now unapply correctly.
 * Hoe is not longer classified as Rare (color-coded Blue).
 
-## 0.9.9
+## 0.9.9 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -218,7 +263,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed possible bug with Bloodthirsty enchantment.
 * Fixed some incorrect translation keys.
 
-## 0.9.8
+## 0.9.8 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -229,7 +274,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Improvements to Slick Moves. Can now drift in the parallel direction (i.e., when swinging directly in front or behind you). Before, drifting only worked for perpendicular directions (i.e., when swinging to the sides). Also increased the drift velocity slightly. Finally, the drift now comes to a halt at the end of the animation, removing the unimmersive impression of buttery floor.
 * Clint's follow-up quest now begins correctly.
 
-## 0.9.7
+## 0.9.7 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -253,7 +298,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed missing patch targets for allowing crits to ignore monster defense.
 * Added config checks to logic that was missing it.
 
-## 0.9.6
+## 0.9.6 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -261,7 +306,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed a compatibility issue with any modded recipes containing Dragon Tooth.
 * Fixed a null-reference exception when farmer takes damage from bombs and maybe other sources too.
 
-## 0.9.5
+## 0.9.5 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -275,7 +320,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 
 * Removed automatic initialization script from SaveLoaded event. This was inefficient and unreliable. Replaced with manual console command.
 
-## 0.9.4
+## 0.9.4 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -297,14 +342,14 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Players on existing save files that have already obtained the Galaxy Sword should now be able to obtain the remaining Galaxy weapons.
 * Fixed a bug in the monster stat randomization logic, which was generating monsters with current HP higher than max HP.
 
-## 0.9.3
+## 0.9.3 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed null-reference exception when opening Marlon's shop (forgot to pass `__result` by `ref`).
 * Control settings now apply only to weapons, as they should.
 
-## 0.9.2
+## 0.9.2 <sup><sub><sup>[🔼](#ench-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -323,3 +368,5 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 ## 0.9.0 (Initial release)
 
 * Initial Version
+
+[🔼 Back to top](#ench-change-log)

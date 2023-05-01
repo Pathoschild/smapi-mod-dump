@@ -19,11 +19,12 @@ internal enum Quest
     ForgeNext = 144702,
 
     /// <summary>The initial quest which introduces Viego's curse.</summary>
-    VirtuesIntro = 144703,
+    CurseIntro = 144703,
 
     /// <summary>The overarching quest to all the virtue trials.</summary>
-    VirtuesNext = 144704,
+    /// <remarks>No longer used since 2.2.4.</remarks>
+    HeroJourney = 144704,
 
     /// <summary>The quest which concludes hero's journey.</summary>
-    VirtuesLast = 144705,
+    HeroReward = 144705,
 }

@@ -13,9 +13,9 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers.Woody;
 #region using directives
 
 using System.Linq;
+using DaLion.Overhaul.Modules.Weapons.Integrations;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
-using Modules.Weapons.Integrations;
 using StardewValley.Tools;
 
 #endregion using directives

@@ -1,0 +1,18 @@
+﻿{
+  "Name": "BetterFestivalNotifications",
+  "Author": "drbirbdev",
+  "Version": "1.0.5",
+  "Description": "Customize notifications when a festival starts.",
+  "UniqueID": "drbirbdev.BetterFestivalNotifications",
+  "EntryDll": "BetterFestivalNotifications.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:14170"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

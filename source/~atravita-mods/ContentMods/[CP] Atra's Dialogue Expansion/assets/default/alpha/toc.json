@@ -74,6 +74,25 @@
     },
     {
         "Action": "Include",
+        "LogName": "Penny - mid hearts",
+        "FromFile": "assets/default/alpha/Penny/mid.json",
+        "When": {
+            "EnableFor": "Penny",
+            "Query: {{Hearts:Penny}} >= 6": true
+        }
+    },
+    {
+        "Action": "Include",
+        "LogName": "Penny - mid hearts",
+        "FromFile": "assets/default/alpha/Penny/postevent.json",
+        "When": {
+            "EnableFor": "Penny",
+            "Query: {{Hearts:Penny}} >= 6": true,
+            "HasSeenEvent": "503180" // Pam's house event
+        }
+    },
+    {
+        "Action": "Include",
         "LogName": "Sebastian - mid hearts",
         "FromFile": "assets/default/alpha/Sebastian/mid.json",
         "When": {

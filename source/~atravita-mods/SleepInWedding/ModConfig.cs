@@ -39,4 +39,10 @@ internal sealed class ModConfig
     /// set the wedding on save load.
     /// </summary>
     public bool TryRecoverWedding { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not the wedding should play when the player
+    /// enters town, even if it's not "time yet".
+    /// </summary>
+    public bool WedWhenEnteringTown { get; set; } = true;
 }

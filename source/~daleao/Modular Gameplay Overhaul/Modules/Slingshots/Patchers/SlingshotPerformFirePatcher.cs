@@ -102,8 +102,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
             // get and spend ammo
             var ammo = __instance.attachments[0]?.getOne();
             var didPreserve = false;
-            if (ammo is not null && (!__instance.hasEnchantmentOfType<PreservingEnchantment>() ||
-                                     Game1.random.NextDouble() > 0.5 + (who.DailyLuck / 2) + (who.LuckLevel * 0.01)))
+            if (ammo is not null && !__instance.hasEnchantmentOfType<PreservingEnchantment>())
             {
                 if (--__instance.attachments[0].Stack <= 0)
                 {
@@ -196,7 +195,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
             }
 
             // calculate overcharge
-            var overcharge = ProfessionsModule.IsEnabled && who.professions.Contains(Farmer.desperado)
+            var overcharge = ProfessionsModule.ShouldEnable && who.professions.Contains(Farmer.desperado)
                 ? __instance.GetOvercharge()
                 : 1f;
 
@@ -265,7 +264,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                 projectile.IgnoreLocationCollision = true;
             }
 
-            if (__instance.hasEnchantmentOfType<EngorgingEnchantment>())
+            if (__instance.hasEnchantmentOfType<MagnumEnchantment>())
             {
                 projectile.startingScale.Value *= 2f;
             }

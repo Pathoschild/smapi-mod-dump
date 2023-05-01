@@ -1,0 +1,10 @@
+{
+    "Name": "Stygium-Forged Mermaid's Pendant",
+    "Description": "Made from an unusual material, this pendant radiates with power. Increases your radius for collecting items, your Attack by 10%, your Defense by +5, and your Luck by +1.", 
+    "Category": "Ring", 
+    "CategoryTextOverride": "A loving gift from your spouse.",
+    "Edibility": -300,
+    "CanSell": false,
+    "TranslationKey": "stygium forged mermaid's pendant"
+}
+

@@ -88,11 +88,13 @@ namespace FashionSense.Framework.UI
                     appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is PantsContentPack).ToList();
                     break;
                 case HandMirrorMenu.SLEEVES_FILTER_BUTTON:
-                    appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is SleevesContentPack).ToList();
-
                     if (callbackMenu.GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
                     {
                         appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is ShoesContentPack).ToList();
+                    }
+                    else
+                    {
+                        appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is SleevesContentPack).ToList();
                     }
                     break;
             }
@@ -132,6 +134,7 @@ namespace FashionSense.Framework.UI
                         fakeFarmer.modData[key] = _displayFarmer.modData[key];
                     }
                     FashionSense.accessoryManager.CopyAccessories(_displayFarmer, fakeFarmer);
+                    FashionSense.colorManager.CopyColors(_displayFarmer, fakeFarmer);
 
                     fakeFarmers.Add(fakeFarmer);
                 }
@@ -311,6 +314,8 @@ namespace FashionSense.Framework.UI
 
                     FashionSense.ResetAnimationModDataFields(_displayFarmer, 0, AnimationModel.Type.Idle, _displayFarmer.facingDirection);
                     FashionSense.SetSpriteDirty();
+                    _callbackMenu.Reset();
+
                     base.exitThisMenu();
                     Game1.activeClickableMenu = _callbackMenu;
                     return;

@@ -11,7 +11,7 @@
 {
   "Name": "PanningUpgrades",
   "Author": "drbirbdev",
-  "Version": "1.0.8",
+  "Version": "1.0.12",
   "Description": "Add Pan upgrades at the blacksmith.",
   "UniqueID": "drbirbdev.PanningUpgrades",
   "EntryDll": "PanningUpgrades.dll",

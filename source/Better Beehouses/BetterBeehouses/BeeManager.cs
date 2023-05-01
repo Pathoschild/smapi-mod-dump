@@ -16,8 +16,8 @@ using System.Linq;
 using StardewValley;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
-using StardewValley.BellsAndWhistles;
 using BetterBeehouses.integration;
+using HarmonyLib;
 
 namespace BetterBeehouses
 {
@@ -31,6 +31,7 @@ namespace BetterBeehouses
 		internal Rectangle sourceRect;
 		internal double millis = 0;
 	}
+	[HarmonyPatch]
 	internal class BeeManager
 	{
 		private static readonly PerScreen<List<Bee>> bees = new(() => new());
@@ -38,6 +39,7 @@ namespace BetterBeehouses
 
 		private static readonly PerScreen<Dictionary<Vector2, IParticleManager>> particles = new(() => new());
 		private static int pamt = -1;
+		private static int bamt = -1;
 
 		internal static void Init()
 		{
@@ -45,31 +47,37 @@ namespace BetterBeehouses
 			ModEntry.helper.Events.Player.Warped += (s,e) => ChangeLocation(e.NewLocation);
 			ModEntry.helper.Events.GameLoop.SaveLoaded += (s, e) => ChangeLocation(Game1.currentLocation);
 			ModEntry.helper.Events.GameLoop.ReturnedToTitle += Exit;
-
-			// if in-world drawing is available use that
-			if (ModEntry.AeroCore is not null)
-			{
-				ModEntry.AeroCore.OnDrawingWorld += DrawBees;
-				ModEntry.AeroCore.OnDrawingWorld += DrawParticles;
-			}
-			else
-			{
-				ModEntry.helper.Events.Display.RenderedWorld += (s, e) => DrawBees(e.SpriteBatch);
-			}
 		}
 
-		internal static void ApplyConfigCount(int amt)
+		[HarmonyPatch(typeof(GameLocation), nameof(GameLocation.draw))]
+		[HarmonyPostfix]
+		internal static void DepthDraw(SpriteBatch b)
 		{
-			if (pamt == amt || amt < 0)
+			DrawBees(b);
+			if (ModEntry.AeroCore is not null)
+				DrawParticles(b);
+		}
+
+		internal static void ApplyConfigCount(int amt, int pam)
+		{
+			if (pamt == pam || pam < 0 || amt == bamt || amt < 0)
 				return;
 
-			pamt = amt;
+			pamt = pam;
+			bamt = amt;
 			var parts = particles.Value;
 			var houses = bee_houses.Value;
+			var beev = bees.Value;
 			parts.Clear();
 			if (ModEntry.AeroCore is not null)
 				foreach(var house in houses)
 					parts[house] = BuildParticles(house);
+			var targ = pamt * houses.Count;
+			if (beev.Count > targ)
+				beev.RemoveRange(targ, beev.Count - targ);
+			else if (beev.Count < targ)
+				for(int i = beev.Count; i < targ; i++)
+					beev.Add(new() { pct = Game1.random.NextDouble() * -10.0 });
 		}
 
 		private static void UpdateObjects(object _, ObjectListChangedEventArgs ev)
@@ -95,9 +103,9 @@ namespace BetterBeehouses
 		{
 			var emitter = new ParticleEmitter() {
 				Region = new((int)tile.X * 64, (int)tile.Y * 64 - 32, 64, 64),
-				Rate = 10000 / pamt
+				Rate = 10000 / bamt
 			};
-			var manager = ModEntry.AeroCore.CreateParticleSystem(ModEntry.helper.ModContent, "assets/AeroBees.json", emitter, pamt);
+			var manager = ModEntry.AeroCore.CreateParticleSystem(ModEntry.helper.ModContent, "assets/AeroBees.json", emitter, bamt);
 			return manager;
 		}
 
@@ -112,7 +120,7 @@ namespace BetterBeehouses
 			foreach (var obj in where.Objects.Values)
 				if (obj.Name is "Bee House")
 					houses.Add(obj.TileLocation);
-			for (int i = 0; i < houses.Count * 5; i++)
+			for (int i = 0; i < houses.Count * pamt; i++)
 				beev.Add(new() { pct = Game1.random.NextDouble() * -10.0 });
 			if (ModEntry.AeroCore is not null)
 				foreach (var pos in houses)

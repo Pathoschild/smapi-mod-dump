@@ -16,5 +16,6 @@
   "EnableTileLookups": false,
   "ForceFullScreen": false,
   "ScrollAmount": 160,
-  "ShowDataMiningFields": false
+  "ShowDataMiningFields": false,
+  "ShowUnownedGifts": true
 }

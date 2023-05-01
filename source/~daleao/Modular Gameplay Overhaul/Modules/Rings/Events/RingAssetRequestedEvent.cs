@@ -29,8 +29,8 @@ internal class RingAssetRequestedEvent : AssetRequestedEvent
     internal RingAssetRequestedEvent(EventManager manager)
         : base(manager)
     {
-        this.Edit("Data/CraftingRecipes", new AssetEditor(EditCraftingRecipesData, AssetEditPriority.Default));
-        this.Edit("Data/ObjectInformation", new AssetEditor(EditObjectInformationData, AssetEditPriority.Default));
+        this.Edit("Data/CraftingRecipes", new AssetEditor(EditCraftingRecipesData));
+        this.Edit("Data/ObjectInformation", new AssetEditor(EditObjectInformationData));
         this.Edit("Maps/springobjects", new AssetEditor(EditSpringObjectsMaps, AssetEditPriority.Late));
     }
 
@@ -42,17 +42,18 @@ internal class RingAssetRequestedEvent : AssetRequestedEvent
         var data = asset.AsDictionary<string, string>().Data;
 
         string[] fields;
-        if (RingsModule.Config.ImmersiveGlowstoneRecipe)
+        if (RingsModule.Config.RebalancedRings)
         {
-            fields = data["Glowstone Ring"].Split('/');
-            fields[0] = "517 1 519 1 768 20 769 20";
-            data["Glowstone Ring"] = string.Join('/', fields);
+            data["Ring of Yoba"] = "336 5 335 5 72 1 768 20/Home/524/false/Combat 8";
         }
 
-        if (RingsModule.Config.CraftableGlowAndMagnetRings)
+        if (RingsModule.Config.BetterGlowstoneProgression)
         {
-            data["Glow Ring"] = "516 2 768 10/Home/517/Ring/Mining 2";
-            data["Magnet Ring"] = "518 2 769 10/Home/519/Ring/Mining 2";
+            data["Small Glow Ring"] = "336 2 768 5/Home/516/Ring/Mining 2";
+            data["Small Magnet Ring"] = "335 2 769 5/Home/518/Ring/Mining 2";
+            data["Glow Ring"] = "516 2 768 10/Home/517/Ring/Mining 4";
+            data["Magnet Ring"] = "518 2 769 10/Home/519/Ring/Mining 4";
+            data["Glowstone Ring"] = "517 1 519 1 768 20 769 20/Home/888/Ring/Mining 6";
         }
 
         if (RingsModule.Config.CraftableGemRings)
@@ -82,20 +83,35 @@ internal class RingAssetRequestedEvent : AssetRequestedEvent
         if (RingsModule.Config.RebalancedRings)
         {
             fields = data[ItemIDs.TopazRing].Split('/');
-            fields[5] = CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense
-                ? I18n.Get("rings.topaz.description.resist")
-                : I18n.Get("rings.topaz.description.defense");
+            fields[5] = CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense
+                ? I18n.Get("rings.topaz.desc.resist")
+                : I18n.Get("rings.topaz.desc.defense");
             data[ItemIDs.TopazRing] = string.Join('/', fields);
 
             fields = data[ItemIDs.JadeRing].Split('/');
-            fields[5] = I18n.Get("rings.jade.description");
+            fields[5] = I18n.Get("rings.jade.desc");
             data[ItemIDs.JadeRing] = string.Join('/', fields);
+
+            fields = data[ItemIDs.WarriorRing].Split('/');
+            fields[5] = I18n.Get("rings.warrior.desc");
+            data[ItemIDs.WarriorRing] = string.Join('/', fields);
+
+            fields = data[ItemIDs.YobaRing].Split('/');
+            fields[5] = I18n.Get("rings.yoba.desc");
+            data[ItemIDs.YobaRing] = string.Join('/', fields);
+
+            if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en)
+            {
+                fields = data[ItemIDs.ThornsRing].Split('/');
+                fields[0] = "Ring of Thorns";
+                data[ItemIDs.ThornsRing] = string.Join('/', fields);
+            }
         }
 
         if (RingsModule.Config.TheOneInfinityBand)
         {
             fields = data[ItemIDs.IridiumBand].Split('/');
-            fields[5] = I18n.Get("rings.iridium.description");
+            fields[5] = I18n.Get("rings.iridium.desc");
             data[ItemIDs.IridiumBand] = string.Join('/', fields);
         }
     }

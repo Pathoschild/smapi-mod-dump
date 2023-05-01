@@ -21,5 +21,14 @@
             "fall_5_2": "I feel like making potato gratin today...but it's so many dishes...",
         },
         "When": { "YearModulus": "2" }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "Jodi high-hearts",
+        "Target": "Characters/Dialogue/Jodi",
+        "Entries": {
+            "2_2": "Kent wasn't around very much when the kids were growing up. Sometimes, we regret that.$s#$e#Oh well, can't change the past now."
+        },
+        "When": { "YearModulus": "3" }
     }
 ]}

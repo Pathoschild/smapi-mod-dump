@@ -6,9 +6,9 @@ mods:
    Better Beehouses
 
 latest commit:
-   commit 173678381895e87bb9928de362843b3c269e99ca
+   commit 7e56fecba06d4c2f268fac89d499ed4ce9fde02f
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue Mar 21 12:10:21 2023 -0400
+   Date:   Tue Apr 25 11:03:03 2023 -0400
    
-       add fexpr to output
+       version bump
    

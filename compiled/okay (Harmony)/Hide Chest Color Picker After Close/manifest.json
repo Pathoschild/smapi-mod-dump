@@ -1,0 +1,12 @@
+{
+    "Name": "Hide Chest Color Picker After Close",
+    "Author": "trashcan9",
+    "Version": "1.0.0",
+    "Description": "Hide the check color picker after closing the chest window",
+    "UniqueID": "trashcan9.HideChestColorPickerAfterClose",
+    "EntryDll": "HideChestColorPickerAfterClose.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:16075" ],
+    "Dependencies": [
+    ]
+  }

@@ -9,6 +9,9 @@ for queries and analysis.**
 Changelog
 =============
 
+#### Version 0.2.3
+* Allow you to sell and trash museum items.
+
 #### Version 0.2.2
 * Now with vanilla special order rewards as well.
 

@@ -12,9 +12,9 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Display;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Core.UI;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
-using DaLion.Shared.UI;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley.TerrainFeatures;
@@ -42,17 +42,17 @@ internal sealed class ScavengerRenderedHudEvent : RenderedHudEvent
         var shouldHighlightOnScreen = ProfessionsModule.Config.ModKey.IsDown();
 
         // track objects
-        foreach (var (key, @object) in Game1.currentLocation.Objects.Pairs)
+        foreach (var (tile, @object) in Game1.currentLocation.Objects.Pairs)
         {
             if (!@object.ShouldBeTrackedBy(Profession.Scavenger))
             {
                 continue;
             }
 
-            HudPointer.Instance.Value.DrawAsTrackingPointer(key, Color.Yellow);
+            HudPointer.Instance.Value.DrawAsTrackingPointer(tile, Color.Yellow);
             if (shouldHighlightOnScreen)
             {
-                HudPointer.Instance.Value.DrawOverTile(key, Color.Yellow);
+                HudPointer.Instance.Value.DrawOverTile(tile, Color.Yellow);
             }
         }
 

@@ -13,6 +13,7 @@
   "MinPixelZoom": 0.5,
   "MaxPixelZoom": 5.0,
   "DisableTextShadow": false,
+  "SimplifiedDropDown": true,
   "OpenFontSettingsMenu": "LeftAlt + F",
-  "FontSettingsInGameMenu": true
+  "CustomFontFolders": []
 }

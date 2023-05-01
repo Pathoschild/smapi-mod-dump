@@ -55,8 +55,7 @@ internal abstract class HarmonyPatcher : IHarmonyPatcher
     {
         try
         {
-            this.ApplyImpl(harmony);
-            return true;
+            return this.ApplyImpl(harmony);
         }
         catch (Exception ex)
         {
@@ -93,9 +92,8 @@ internal abstract class HarmonyPatcher : IHarmonyPatcher
         return this.GetType().GetHashCode();
     }
 
-    /// <summary>Applies internally-defined Harmony patches.</summary>
-    /// <param name="harmony">The <see cref="Harmony"/> instance for this mod.</param>
-    protected virtual void ApplyImpl(Harmony harmony)
+    /// <inheritdoc cref="IHarmonyPatcher.Apply"/>
+    protected virtual bool ApplyImpl(Harmony harmony)
     {
         NowPatching = this.Target;
 
@@ -105,11 +103,11 @@ internal abstract class HarmonyPatcher : IHarmonyPatcher
         }
 
         harmony.Patch(this.Target, this.Prefix, this.Postfix, this.Transpiler, this.Finalizer);
+        return true;
     }
 
-    /// <summary>Applies internally-defined Harmony patches.</summary>
-    /// <param name="harmony">The <see cref="Harmony"/> instance for this mod.</param>
-    protected virtual void UnapplyImpl(Harmony harmony)
+    /// <inheritdoc cref="IHarmonyPatcher.Unapply"/>
+    protected virtual bool UnapplyImpl(Harmony harmony)
     {
         if (this.Prefix is not null)
         {
@@ -125,6 +123,8 @@ internal abstract class HarmonyPatcher : IHarmonyPatcher
         {
             harmony.Unpatch(this.Target, this.Transpiler.method);
         }
+
+        return true;
     }
 
     /// <summary>Gets a constructor and asserts that it was found.</summary>

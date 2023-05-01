@@ -14,7 +14,7 @@
     <Name>Farm Cave Spawns More Tree Fruit</Name>
     <Description>Spawn more tree fruit in the fruit cave</Description>
     <UpdateKeys> Nexus:10186, ModDrop:1068205 </UpdateKeys>
-    <Version>1.1.3</Version>
+    <Version>1.1.4</Version>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 

@@ -10,10 +10,10 @@
 
 namespace DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 
-using DaLion.Overhaul.Modules.Core.Events;
-
 #region using directives
 
+using DaLion.Overhaul.Modules.Core.Events;
+using DaLion.Overhaul.Modules.Core.UI;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
@@ -62,7 +62,7 @@ internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
 
         var magnitude = ProfessionsModule.State.BruteRageCounter * 0.01f;
         Game1.buffsDisplay.addOtherBuff(
-            new Buff(
+            new StackableBuff(
                 0,
                 0,
                 0,
@@ -78,7 +78,9 @@ internal sealed class BruteUpdateTickedEvent : UpdateTickedEvent
                 1,
                 "Brute",
                 I18n.Get("brute.title" + (Game1.player.IsMale ? ".male" : ".female")) + " " +
-                I18n.Get("brute.buff.name"))
+                I18n.Get("brute.buff.name"),
+                () => ProfessionsModule.State.BruteRageCounter,
+                100)
             {
                 which = this._buffId,
                 sheetIndex = Profession.BruteRageSheetIndex,

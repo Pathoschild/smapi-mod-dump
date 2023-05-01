@@ -6,7 +6,7 @@
   "recruitedWant.bag": "Can I use your bag?",
   "recruitedWant.dismiss": "I had fun with you today, but I have something I need to do now.",
   "recruitedWant.nothing": "(Nothing)",
-  "spouseBuffDescription": "Adventure with your {{wifeOrHusband}} is very magnetising!#You got +1 extra luck, +1 extra magnetic radius and a lovely glow.",
+  "spouseBuffDescription": "Adventure with your spouse is very magnetising!#You got +1 extra luck, +1 extra magnetic radius and a lovely glow.",
   "healed": "{{npc}} healed you! (+{{health}} Health)",
   "lifeSaved": "{{npc}} saved your life... this time! Be patient.",
   "skill.warrior": "Warrior ({{npc}}'s skill)",

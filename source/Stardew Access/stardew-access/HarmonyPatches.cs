@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using stardew_access.Patches;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Minigames;
 
@@ -285,6 +286,12 @@ namespace stardew_access
                         original: AccessTools.Method(typeof(GrandpaStory), nameof(GrandpaStory.draw), new Type[] { typeof(SpriteBatch) }),
                         postfix: new HarmonyMethod(typeof(GrandpaStoryPatch), nameof(GrandpaStoryPatch.DrawPatch))
                     );
+
+            harmony.Patch(
+                        original: AccessTools.Method(typeof(BobberBar), nameof(BobberBar.update)),
+                        postfix: new HarmonyMethod(typeof(FishingMiniGamePatch), nameof(FishingMiniGamePatch.BobberBarPatch))
+                    );
+
             #endregion
 
             harmony.Patch(
@@ -300,6 +307,26 @@ namespace stardew_access
             harmony.Patch(
                     original: AccessTools.Method(typeof(TextBox), nameof(TextBox.Draw)),
                     prefix: new HarmonyMethod(typeof(TextBoxPatch), nameof(TextBoxPatch.DrawPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TextEntryMenu), nameof(TextEntryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(TextEntryMenuPatch), nameof(TextEntryMenuPatch.DrawPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TextEntryMenu), nameof(TextEntryMenu.Close)),
+                    prefix: new HarmonyMethod(typeof(TextEntryMenuPatch), nameof(TextEntryMenuPatch.ClosePatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(Game1), nameof(Game1.closeTextEntry)),
+                    prefix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.CloseTextEntryPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(TrashBear), nameof(TrashBear.checkAction)),
+                    postfix: new HarmonyMethod(typeof(TrashBearPatch), nameof(TrashBearPatch.CheckActionPatch))
                 );
         }
     }

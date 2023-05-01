@@ -1,0 +1,7 @@
+{
+  "farm-tablet.name": "iFarmer",
+  "farm-tablet.description": "A portable Farm Computer. So handy!",
+  "config.require-farm-computer-recipe.description": "Needs Farm Computer Recipe",
+  "config.require-farm-computer-recipe.tooltip": "If enabled, requires the Farm Computer recipe to be unlocked before Robin sells the tablet",
+  "command.at_tablet_shop.description": "Shows the carpenter shop with the tablet for sale.\n\nUsage: at_tablet_shop"
+}

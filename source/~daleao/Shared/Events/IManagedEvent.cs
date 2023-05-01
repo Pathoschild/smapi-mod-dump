@@ -13,7 +13,7 @@ namespace DaLion.Shared.Events;
 /// <summary>Interface for an event wrapper allowing dynamic enabling / disabling.</summary>
 public interface IManagedEvent : IDisposable
 {
-    /// <summary>Gets a value indicating whether determines whether this event is enabled.</summary>
+    /// <summary>Gets a value indicating whether this event is enabled.</summary>
     bool IsEnabled { get; }
 
     /// <summary>Determines whether this event is enabled for a specific screen.</summary>

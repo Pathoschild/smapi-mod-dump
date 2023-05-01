@@ -1,0 +1,17 @@
+{
+    "Name": "Better Panning Extra Config",
+    "Author": "trashcan9",
+    "Version": "1.2.0",
+    "Description": "Adds extra config options to BetterPanning",
+    "UniqueID": "trashcan9.BetterPanning.ExtraConfig",
+    "EntryDll": "BetterPanning.ExtraConfig.dll",
+	"MinimumApiVersion": "3.18.0",
+	"UpdateKeys": [ "Nexus:16235" ],
+    "Dependencies": [
+        {
+            "UniqueID": "AairTheGreat.BetterPanning",
+			"MinimumVersion": "1.0.8",
+            "IsRequired": true
+        }
+    ]
+  }

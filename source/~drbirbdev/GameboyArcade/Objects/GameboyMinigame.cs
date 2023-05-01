@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using BirbShared;
 using CoreBoy;
 using CoreBoy.gui;
 using CoreBoy.memory.cart.battery;
@@ -101,6 +102,7 @@ namespace GameboyArcade
             }
 
             this.Emulator.Display.OnFrameProduced += this.BitmapDisplay_OnFrameProduced;
+            if (this.Emulator.SoundOutput is GameboySoundOutput soundOutput)
 
             this.Cancellation = new CancellationTokenSource();
 
@@ -108,6 +110,7 @@ namespace GameboyArcade
             this.Emulator.Run(this.Cancellation.Token);
 
         }
+
         public void BitmapDisplay_OnFrameProduced(object sender, ushort[] frameData)
         {
             ushort[] copy = (ushort[])frameData.Clone();
@@ -147,6 +150,7 @@ namespace GameboyArcade
 
             b.Begin();
             b.Draw(ScreenBuffer.Value, this.ScreenArea, Color.White);
+
             // TODO: cursor has artifacts or is blurry?
             b.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), new Rectangle(0, 0, 15, 15), Color.White, 0f, Vector2.Zero, 4f + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
             b.End();
@@ -282,6 +286,10 @@ namespace GameboyArcade
             if (this.Emulator.SerialEndpoint is IDisposable serialEndpoint)
             {
                 serialEndpoint.Dispose();
+            }
+            if (this.Emulator.SoundOutput is IDisposable soundOutput)
+            {
+                soundOutput.Dispose();
             }
             this.Emulator.Stop(this.Cancellation);
             FrameSw.Reset();

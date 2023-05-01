@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Slingshots.Projectiles;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
@@ -86,17 +87,17 @@ internal sealed class ObjectProjectile : BasicProjectile
         this.Source = source;
         this.Firer = firer;
         this.Overcharge = overcharge;
-        this.Damage = (int)(this.damageToFarmer.Value * source.Get_EffectiveDamageModifier() *
+        this.Damage = (int)(this.damageToFarmer.Value * source.Get_RubyDamageModifier() *
                             (1f + firer.attackIncreaseModifier) * overcharge);
-        this.Knockback = knockback * source.Get_EffectiveKnockbackModifer() * (1f + firer.knockbackModifier) *
+        this.Knockback = knockback * source.Get_AmethystKnockbackModifer() * (1f + firer.knockbackModifier) *
                          overcharge;
 
         var canCrit = SlingshotsModule.Config.EnableCriticalHits;
         this.CritChance = canCrit
-            ? 0.025f * source.Get_EffectiveCritChanceModifier() * (1f + firer.critChanceModifier)
+            ? 0.025f * source.Get_AquamarineCritChanceModifier() * (1f + firer.critChanceModifier)
             : 0f;
         this.CritPower = canCrit
-            ? 2f * source.Get_EffectiveCritPowerModifier() * (1f + firer.critPowerModifier)
+            ? 2f * source.Get_JadeCritPowerModifier() * (1f + firer.critPowerModifier)
             : 0f;
 
         this.CanBeRecovered = canRecover && !this.IsSquishy() && ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo;
@@ -184,12 +185,11 @@ internal sealed class ObjectProjectile : BasicProjectile
                 return;
             }
 
-            if (monster.CanBeSlowed() && Game1.random.NextDouble() < 2d / 3d)
+            if (monster.CanBeSlowed() && CombatModule.ShouldEnable && Game1.random.NextDouble() < 2d / 3d)
             {
                 // do debuff
-                monster.Get_SlowIntensity().Value = 2;
-                monster.Get_SlowTimer().Value = 5123 + (Game1.random.Next(-2, 3) * 456);
-                monster.Set_Slower(this.Firer);
+                monster.Slow(5123 + (Game1.random.Next(-2, 3) * 456), 1d / 3d);
+                monster.startGlowing(Color.LimeGreen, false, 0.05f);
             }
         }
 
@@ -205,7 +205,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             true,
             this.Firer);
 
-        if (!ProfessionsModule.IsEnabled)
+        if (!ProfessionsModule.ShouldEnable)
         {
             Reflector
                 .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
@@ -246,7 +246,7 @@ internal sealed class ObjectProjectile : BasicProjectile
 
         // increment Desperado ultimate meter
         if (this.Firer.IsLocalPlayer && this.Firer.Get_Ultimate() is DeathBlossom { IsActive: false } blossom &&
-            ProfessionsModule.Config.EnableSpecials)
+            ProfessionsModule.Config.EnableLimitBreaks)
         {
             blossom.ChargeValue += (this.DidBounce || this.DidPierce ? 18 : 12) -
                                    (10 * this.Firer.health / this.Firer.maxHealth);
@@ -257,7 +257,7 @@ internal sealed class ObjectProjectile : BasicProjectile
     public override void behaviorOnCollisionWithOther(GameLocation location)
     {
         base.behaviorOnCollisionWithOther(location);
-        if (this.Ammo is null || this.Firer is null || this.Source is null || !ProfessionsModule.IsEnabled)
+        if (this.Ammo is null || this.Firer is null || this.Source is null || !ProfessionsModule.ShouldEnable)
         {
             return;
         }

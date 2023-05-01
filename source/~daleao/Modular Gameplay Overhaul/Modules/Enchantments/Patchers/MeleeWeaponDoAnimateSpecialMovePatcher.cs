@@ -42,7 +42,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatcher : HarmonyPatcher
     [HarmonyBefore("Overhaul.Modules.Rings")]
     private static void MeleeWeaponDoAnimateSpecialMovePostfix(MeleeWeapon __instance)
     {
-        var cooldownReduction = WeaponsModule.IsEnabled
+        var cooldownReduction = WeaponsModule.ShouldEnable
             ? __instance.Get_EffectiveCooldownReduction()
             : 1f - (__instance.GetEnchantmentLevel<GarnetEnchantment>() * 0.1f);
         if (Math.Abs(cooldownReduction - 1f) < 0.01f)
@@ -79,7 +79,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatcher : HarmonyPatcher
         var helper = new ILHelper(original, instructions);
 
         // From: daggerHitsLeft = 4;
-        // To: daggerHitsLeft = this.BaseName.Contains "Infinity" ? 6 : 4;
+        // To: daggerHitsLeft = this.hasEnchantmentOfType<NewArtfulEnchantment>() ? 5 : 4;
         try
         {
             var notInfinity = generator.DefineLabel();
@@ -95,7 +95,7 @@ internal sealed class MeleeWeaponDoAnimateSpecialMovePatcher : HarmonyPatcher
                             OpCodes.Call,
                             typeof(MeleeWeapon)
                                 .RequireMethod(nameof(MeleeWeapon.hasEnchantmentOfType))
-                                .MakeGenericMethod(typeof(NewArtfulEnchantment))),
+                                .MakeGenericMethod(typeof(MeleeArtfulEnchantment))),
                         new CodeInstruction(OpCodes.Brfalse_S, notInfinity),
                         new CodeInstruction(OpCodes.Ldc_I4_6),
                         new CodeInstruction(OpCodes.Br_S, resumeExecution),

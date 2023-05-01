@@ -1,7 +1,22 @@
 {
-  "maxCastPower.name": "强制最大力度抛竿",
-  "autoHit.name": "上钩时自动点击",
-  "fastBite.name": "快速上钩",
-  "catchTreasure.name": "捕捉宝箱（当遇到传说鱼时忽略）",
-  "fasterSpeed.name": "浮漂会更快的移动以增加捕获率"
+  "MaxCastPower.Name": "最大力度抛竿",
+  "MaxCastPower.Tooltip": "抛竿时强制使用最大力度进行抛竿。",
+  "AutoHit.Name": "上钩时自动点击",
+  "AutoHit.Tooltip": "钓鱼中鱼咬钩时会自动拉钩。",
+  "FastBite.Name": "快速上钩",
+  "FastBite.Tooltip": "钓鱼时鱼会很快咬钩。",
+  "CatchTreasure.Name": "捕捉宝箱（当遇到传说鱼时忽略）",
+  "CatchTreasure.Tooltip": "在迷你游戏中遇到宝箱时会尝试捕获宝箱，只有在进度条超过75%时才会去抓宝箱，如果遇到的是传说鱼则不会尝试捕获宝箱。",
+  "BarSpeedMode.Name": "绿条速度模式",
+  "BarSpeedMode.Tooltip": "正常：模拟正常的移动速度。\n更快：绿条能够更快地移动，遇到游得快的鱼的时候能更容易捕捉到鱼。\n吸附：绿条近似于吸附在鱼上面。",
+  "BarSpeedMode.Value.Normal": "正常",
+  "BarSpeedMode.Value.Faster": "更快",
+  "BarSpeedMode.Value.Attach": "吸附",
+  "ContinuousFishing.Name": "连续钓鱼",
+  "ContinuousFishing.Tooltip": "钓到鱼之后可以自动连续钓鱼，如果中途退出钓鱼或者体力过低则不会继续。\n不自动：不启用连续钓鱼。\n直到体力过低：自动连续钓鱼，直到体力值低于20。\n自动连续钓鱼：体力过低时会尝试自动进食。",
+  "ContinuousFishing.Value.None": "不自动",
+  "ContinuousFishing.Value.UntilStaminaTooLow": "直到体力过低",
+  "ContinuousFishing.Value.AutoFishAndEat": "自动钓鱼和吃食物",
+  "FoodIndex.Name": "自动进食食物所在位置",
+  "FoodIndex.Tooltip": "自动进食时玩家会进食玩家物品栏上的第几个物品。1为最左边的物品。"
 }

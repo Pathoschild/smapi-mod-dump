@@ -12,13 +12,21 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MPInfo 
 {
+    public enum Position
+    {
+        TopLeft,
+        BottomLeft,
+    }
+
     internal class ModEntry : Mod 
     {
+        internal static ModEntry Instance;
         internal static Config Config = null!;
 
         private int lastMaxHealth;
@@ -26,6 +34,7 @@ namespace MPInfo
 
         public override void Entry(IModHelper helper) 
         {
+            Instance = this;
             PlayerInfoBox.Crown = helper.ModContent.Load<Texture2D>("Assets/Crown.png");
             Config = helper.ReadConfig<Config>();
 
@@ -39,6 +48,12 @@ namespace MPInfo
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
             Patches.Apply(ModManifest.UniqueID);
+        }
+
+        internal void ForceUpdate()
+        {
+            Helper.Multiplayer.SendMessage("", "MPInfo.ForceUpdate", new[] { ModManifest.UniqueID });
+            ResetDisplays();
         }
 
         private void ResetDisplays() 
@@ -104,6 +119,18 @@ namespace MPInfo
                 getValue: () => Config.HideHealthBars,
                 setValue: value => Config.HideHealthBars = value
             );
+            configMenu.AddTextOption(
+                mod: ModManifest,
+                name: () => "Position of boxes",
+                tooltip: () => "",
+                getValue: () => Enum.GetName(Config.Position)!,
+                setValue: value =>
+                {
+                    Config.Position = Enum.Parse<Position>(value);
+                    PlayerInfoBox.RedrawAll();
+                },
+                allowedValues: Enum.GetNames<Position>()
+            );
         }
 
         private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) 
@@ -124,26 +151,32 @@ namespace MPInfo
                 Helper.Multiplayer.SendMessage(Game1.player.maxHealth, "MPInfo.MaxHealth", new[] { ModManifest.UniqueID });
         }
 
-        private void OnPlayerJoin(object? sender, PeerConnectedEventArgs e) => ResetDisplays();
+        private void OnPlayerJoin(object? sender, PeerConnectedEventArgs e) => ForceUpdate();
 
-        private void OnPlayerLeave(object? sender, PeerDisconnectedEventArgs e) => ResetDisplays();
+        private void OnPlayerLeave(object? sender, PeerDisconnectedEventArgs e) => ForceUpdate();
 
         private void OnMultiplayerDataReceived(object? sender, ModMessageReceivedEventArgs e) 
         {
-            if (e.FromModID == Helper.ModRegistry.ModID) 
+            if (e.FromModID != Helper.ModRegistry.ModID)
+                return;
+
+            var display = (PlayerInfoBox?)Game1.onScreenMenus.FirstOrDefault(x => x is PlayerInfoBox pib && pib.Who.UniqueMultiplayerID == e.FromPlayerID);
+            if (display is null)
+                return;
+
+            switch (e.Type)
             {
-                if (e.Type == "MPInfo.Health") 
-                {
-                    var display = (PlayerInfoBox?)Game1.onScreenMenus.FirstOrDefault(x => x is PlayerInfoBox pib && pib.Who.UniqueMultiplayerID == e.FromPlayerID);
-                    if (display is not null)
-                        display.Who.health = e.ReadAs<int>();
-                } 
-                else if (e.Type == "MPInfo.MaxHealth") 
-                {
-                    var display = (PlayerInfoBox?)Game1.onScreenMenus.FirstOrDefault(x => x is PlayerInfoBox pib && pib.Who.UniqueMultiplayerID == e.FromPlayerID);
-                    if (display is not null)
-                        display.Who.maxHealth = e.ReadAs<int>();
-                }
+                case "MPInfo.Health":
+                    display.Who.health = lastHealth = e.ReadAs<int>();
+                    break;
+                case "MPInfo.MaxHealth":
+                    display.Who.maxHealth = lastMaxHealth = e.ReadAs<int>();
+                    break;
+                case "MPInfo.ForceUpdate": //Let updateticked handle the messages
+                    lastHealth = -1;
+                    lastMaxHealth = -1;
+                    ResetDisplays();
+                    break;
             }
         }
     }

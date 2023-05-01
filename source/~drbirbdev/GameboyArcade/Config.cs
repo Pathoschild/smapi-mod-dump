@@ -10,7 +10,6 @@
 
 using BirbShared.Config;
 using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
 
 namespace GameboyArcade
 {
@@ -47,5 +46,8 @@ namespace GameboyArcade
 
         [ConfigOption]
         public SButton Turbo { get; set; } = SButton.F1;
+
+        [ConfigOption(Min = 10000, Max = 22050, Interval = 1)]
+        public int MusicSampleRate { get; set; } = 22050;
     }
 }

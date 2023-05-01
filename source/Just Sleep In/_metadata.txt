@@ -6,9 +6,9 @@ mods:
    Just Sleep In
 
 latest commit:
-   commit e51f04f927b9c3d0ea72b3ee1f764ce786ceb3ec
+   commit 404761db4763a5ab2180675712b3940cb73dc722
    Author: Jakub Prchal <Rifleman88@hotmail.com>
-   Date:   Mon Mar 27 09:50:56 2023 +0200
+   Date:   Sat Apr 1 17:41:53 2023 +0200
    
-       1.2.0
+       1.2.1
    

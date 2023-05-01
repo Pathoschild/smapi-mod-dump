@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Weapons.Enchantments;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
@@ -41,6 +42,31 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
     }
 
     #region harmony patches
+
+    /// <summary>KillerBug, Needle and Neptune enchantment effects.</summary>
+    [HarmonyPrefix]
+    private static void GameLocationDamageMonsterPrefix(ref float knockBackModifier, ref float critChance, Farmer who)
+    {
+        if (who.CurrentTool is not MeleeWeapon weapon)
+        {
+            return;
+        }
+
+        if (weapon.hasEnchantmentOfType<KillerBugEnchantment>())
+        {
+            critChance = 0f;
+        }
+
+        if (weapon.hasEnchantmentOfType<NeedleEnchantment>())
+        {
+            critChance = 1f;
+        }
+
+        if (weapon.hasEnchantmentOfType<NeptuneEnchantment>())
+        {
+            knockBackModifier *= 4;
+        }
+    }
 
     /// <summary>Guaranteed crit on underground Duggy from club smash attack + record knockback and crit + slingshot special stun.</summary>
     [HarmonyTranspiler]

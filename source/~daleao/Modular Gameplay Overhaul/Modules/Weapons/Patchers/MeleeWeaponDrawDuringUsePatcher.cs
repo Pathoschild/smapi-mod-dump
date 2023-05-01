@@ -83,8 +83,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
             var numFramesBeforeFinalHit = ((int)finalHitStep - 1) * 6;
             if (type == MeleeWeapon.club && (frameOfFarmerAnimation >= numFramesBeforeFinalHit || hitstep == finalHitStep))
             {
-                DrawDuringVerticalSwipe(
-                    frameOfFarmerAnimation,
+                DrawDuringSmash(
                     facingDirection,
                     spriteBatch,
                     playerPosition,
@@ -93,7 +92,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
             }
             else
             {
-                DrawDuringHorizontalSwipe(
+                DrawDuringSwipe(
                     ___center,
                     facingDirection,
                     spriteBatch,
@@ -251,7 +250,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
         }
     }
 
-    private static void DrawDuringHorizontalSwipe(
+    private static void DrawDuringSwipe(
         Vector2 center,
         int facingDirection,
         SpriteBatch spriteBatch,
@@ -259,11 +258,11 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
         Farmer farmer,
         Rectangle sourceRectangle)
     {
-        var frame = farmer.FarmerSprite.CurrentFrame;
+        var frameOfFarmerAnimation = farmer.FarmerSprite.CurrentFrame;
         switch (facingDirection)
         {
             case Game1.up:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     case 36:
                         spriteBatch.Draw(
@@ -342,7 +341,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
                 break;
 
             case Game1.right:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     case 30:
                         spriteBatch.Draw(
@@ -421,7 +420,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
                 break;
 
             case Game1.down:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     case 24:
                         spriteBatch.Draw(
@@ -500,7 +499,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
                 break;
 
             case Game1.left:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     case 30:
                         spriteBatch.Draw(
@@ -580,19 +579,18 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
         }
     }
 
-    private static void DrawDuringVerticalSwipe(
-       int frameOfFarmerAnimation,
-       int facingDirection,
-       SpriteBatch b,
-       Vector2 playerPosition,
-       Farmer farmer,
-       Rectangle sourceRect)
+    private static void DrawDuringSmash(
+        int facingDirection,
+        SpriteBatch b,
+        Vector2 playerPosition,
+        Farmer farmer,
+        Rectangle sourceRect)
     {
-        var frame = farmer.FarmerSprite.CurrentFrame;
+        var frameOfFarmerAnimation = farmer.FarmerSprite.CurrentFrame;
         switch (facingDirection)
         {
             case Game1.right:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     case 35:
                         b.Draw(
@@ -672,7 +670,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
                 break;
 
             case Game1.left:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     case 35:
                         b.Draw(
@@ -752,7 +750,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
                 break;
 
             default:
-                switch (frame)
+                switch (frameOfFarmerAnimation)
                 {
                     // remnants of first hit facing down
                     case 29:

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "Farm Tablet",
+  "Author": "boneskull",
+  "Version": "0.1.0",
+  "Description": "A portable Farm Computer",
+  "UniqueID": "com.boneskull.farm-tablet",
+  "EntryDll": "FarmTablet.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

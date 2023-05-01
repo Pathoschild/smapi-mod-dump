@@ -45,6 +45,26 @@ internal static class BushPatches
 
     [HarmonyPostfix]
     [HarmonyPriority(Priority.LowerThanNormal)]
+    [HarmonyPatch(nameof(Bush.inBloom))]
+    private static void PostfixInBloom(Bush __instance, ref bool __result)
+    {
+        try
+        {
+            if (!__result && __instance.size.Value is not Bush.walnutBush or Bush.greenTeaBush
+                && __instance.modData?.GetEnum(InventoryBush.BushModData, BushSizes.Invalid) is not BushSizes.Invalid or null
+                && __instance.greenhouseBush.Value && ModEntry.Config.GreenhouseBushesAlwaysBloom)
+            {
+                __result = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Failed while attempting to override bush blooming\n\n{ex}", LogLevel.Error);
+        }
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPriority(Priority.LowerThanNormal)]
     [HarmonyPatch(nameof(Bush.isDestroyable))]
     private static void PostfixIsDestroyable(Bush __instance, ref bool __result)
     {

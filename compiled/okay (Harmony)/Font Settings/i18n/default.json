@@ -8,7 +8,7 @@
   "hud-message.failed-set-font": "{{fontType}} set failed. See SMAPI console for details.",
 
   "ui.main-menu.title": "Font Settings",
-  "ui.main-menu.font-type-help.paragraph": "There're mainly three types of fonts in Stardew Valley: Small Font, Medium Font, Dialogue Font.\nPress the left or right arrow to switch.\nYou may only set one or two, or all of them, based on your liking.",
+  "ui.main-menu.font-type-help.paragraph": "There're mainly three types of fonts in Stardew Valley:\n- Small Font\n- Medium Font\n- Dialogue Font\nPress the left or right arrow to switch.\nYou may only set one or two, or all of them, based on your liking.",
   "ui.main-menu.font-type-help.latin-lang.paragraph": "Latin Language:\nFor those languages (current {{locale}}) only contains latin characters, they just use game's default font as Dialogue Font, which is hardcoded in a spritesheet, so you might not set Dialogue Font for now.",
   "ui.main-menu.section.general": "General",
   "ui.main-menu.enable": "Enabled",
@@ -32,6 +32,9 @@
   "ui.main-menu.new-preset": "Save current as...",
   "ui.main-menu.save-preset": "Save",
   "ui.main-menu.del-preset": "Delete",
+
+  "ui.main-menu.reset-font": "Reset Current Font",
+
   "ui.main-menu.merge-examples": "Compare",
   "ui.main-menu.show-example-bounds": "Show Bounds",
   "ui.main-menu.show-example-text": "Show Text",
@@ -45,11 +48,8 @@
   "ui.invalid-preset-name.invalid-char": "Contains invalid chars (/, \\, *, \", |, <, >, ?).",
   "ui.invalid-preset-name.duplicated": "Already in use.",
 
-  "ui.obsolete-page.paragraph": "Font Settings menu has been seperated from game menu.\nTry to press '{{hotkey}}' instead to open a standalone one.",
-  "ui.obsolete-page.hide-this-tab": "No longer show this tab",
-
   "config.example-text": "Example Text",
-  "config.example-text.description": "Text for adjustion when setting fonts. '\\n' means a line break. I suggest you to use one line break, i.e, two lines, so you can recognize line spacing more.",
+  "config.example-text.description": "Custom sample text. Keep this unset unless you really want yours, the mod has its built-in one.",
   "config.min-font-size": "Min font size",
   "config.min-font-size.description": "Min font size (in pixel).",
   "config.max-font-size": "Max font size",
@@ -76,6 +76,8 @@
   "config.min-pixel-zoom.description": "Min pixel zoom for each character. (only dialogue font)",
   "config.disable-text-shadow": "Disable text shadow",
   "config.disable-text-shadow.description": "Whether to hide font shadow.",
+  "config.simplified-drop-down": "Simplified Drop down Option",
+  "config.simplified-drop-down.description": "Check if drop down options in UI cause glitches, low-performance.",
   "config.font-menu-key": "Open Font Menu",
   "config.font-menu-key.description": "Key-binding to open a font settings menu.",
   "config.font-settings-in-game-menu": "Font Page in Game Menu",

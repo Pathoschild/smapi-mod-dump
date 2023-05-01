@@ -6,9 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit 9535b0c29f06a6743d5d506a85211c9962497c21
+   commit 889adc6ad0a5d4268a637dfce13965505e390163
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri Mar 17 00:31:49 2023 +0000
+   Date:   Mon Apr 24 15:49:25 2023 +0200
    
-       Update README.md
+       fixed weird fishing error in isFarm areas that aren't Farm type
    

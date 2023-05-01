@@ -1,11 +1,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ 
+  <!-- Thanks to DecidedlyHuman! Remove bin and obj automatically with a clean action. 
+ <Target Name="RemoveAutoGenDirs" AfterTargets="Clean">
+   <RemoveDir Directories="$(ProjectDir)bin;$(ProjectDir)obj" />
+ </Target> -->
 
-  <!-- Thanks to DecidedlyHuman! Remove bin and obj automatically with a clean action.
-  <Target Name="RemoveAutoGenDirs" AfterTargets="Clean">
-    <RemoveDir Directories="$(ProjectDir)bin;$(ProjectDir)obj" />
-  </Target> -->
-  
-  <!--common project properties-->
+ <!--common project properties-->
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>11</LangVersion>

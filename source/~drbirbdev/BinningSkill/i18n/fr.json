@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "skill.name": "Ramassage des poubelles",
+    "skill.perk": "+{{bonus}}% chance d'obtenir un déchet supplémentaire",
+    "skill.perk_bonus": "Chance d'obtenir {{rarity}} déchets supplémentaires",
+    "skill.perk_rarity_3": "rare",
+    "skill.perk_rarity_6": "super rare",
+    "skill.perk_rarity_9": "ultra rare",
+
+    "recycler.name": "Recycleur",
+    "recycler.desc": "Les machines de recyclage coûtent moins cher à fabriquer",
+    "environmentalist.name": "Environnementaliste",
+    "environmentalist.desc": "Obtenez de l'amitié en recyclant des déchets",
+    "salvager.name": "Récupérateur",
+    "salvager.desc": "Obtenez de meilleurs objets avec les machines à recyclage",
+    "sneak.name": "Furtif",
+    "sneak.desc": "Vous ne pouvez plus vous faire attraper pendant que vous fouillez dans les poubelles",
+    "upseller.name": "Commercial",
+    "upseller.desc": "Les habitants ne peuvent plus détester un cadeau, même les déchets",
+    "reclaimer.name": "Économe",
+    "reclaimer.desc": "+{{ReclaimerExtraValuePercent}}% de la valeur des objets obtenue après recyclage",
+
+    "recycler.prestige.desc": "Les machines de recyclage coûtent encore moins cher à fabriquer",
+    "environmentalist.prestige.desc": "Obtenez le double de l'amitié en recyclant des déchets",
+    "salvager.prestige.desc": "Obtenez d'encore meilleurs objets avec les machines à recyclage",
+    "sneak.prestige.desc": "Quand vous vous faîtes attraper en train de fouiller dans les poubelles, les habitants penseront que vous aidez la communauté",
+    "upseller.prestige.desc": "Les habitants sont au minimum neutres face aux cadeaux que vous leur offrez",
+    "reclaimer.prestige.desc": "+{{ReclaimerExtraValuePercent}}% * 1.5 de la valeur des objets obtenue après recyclage",
+
+    "sneak.prestige.dialogue.child": "Oh, tu sors les poubelles ? Je déteste faire ça !",
+    "sneak.prestige.dialogue.teen": "Je vois que tu apportes ton aide dans la ville. Merci !",
+    "sneak.prestige.dialogue.adult": "Wow, tu sors les poubelles des autres, quel altruisme !",
+
+    "config.ExperienceFromTrashFail": "Expérience gagnée en fouillant dans les poubelles - Échec",
+    "config.ExperienceFromTrashFail.tooltip": "Expérience gagnée en fouillant dans les poubelles et en ne trouvant rien",
+    "config.ExperienceFromTrashSuccess": "Expérience gagnée en fouillant dans les poubelles - Réussite",
+    "config.ExperienceFromTrashSuccess.tooltip": "Expérience gagnée en fouillant dans les poubelles et en trouvant du loot standard",
+    "config.ExperienceFromTrashBonus": "Expérience gagnée en fouillant dans les poubelles - Bonus",
+    "config.ExperienceFromTrashBonus.tooltip": "Expérience gagnée en fouillant dans les poubelles et en trouvant du loot bonus. Plus les niveaux sont hauts, et plus l'expérience gagnée est élevée",
+    "config.ExperienceFromRecycling": "Expérience gagnée en recyclant",
+    "config.ExperienceFromRecycling.tooltip": "Expérience gagnée en mettant des déchets dans la machine à recycler",
+    "config.AutomateGrantsXp": "Automate fait gagner de l'expérience",
+    "config.AutomateGrantsXp.tooltip": "Que recycler/fouiller dans les poubelles automatiquement donne de l'expérience quand le mod automate est utilisé",
+    "config.PerLevelBonusDropChance": "Chance de drop bonus par niveau",
+    "config.PerLevelBonusDropChance.tooltip": "Pourcentage additionnel de chance par niveau d'obtenir un drop bonus",
+    "config.RareDropChance": "Chance de drop un objet rare",
+    "config.RareDropChance.tooltip": "Chance que les drops bonus soient rares",
+    "config.SuperRareDropChance": "Chance de drop un objet super rare",
+    "config.SuperRareDropChance.tooltip": "Chance que les drops rares soient super rares",
+    "config.UltraRareDropChance": "Chance de drop un objet ultra rare",
+    "config.UltraRareDropChance.tooltip": "Chance que les drops super rares soient ultra rares",
+    "config.RecyclingCountToGainFriendship": "Nombre de recyclages pour obtenir de l'amitié",
+    "config.RecyclingCountToGainFriendship.tooltip": "Nombre de recyclages pour obtenir de l'amitié quand le métier d'environnementaliste est actif",
+    "config.RecyclingFriendshipGain": "Amitié gagnée par le recyclage",
+    "config.RecyclingFriendshipGain.tooltip": "Montant d'amitié gagnée avec la communauté en recyclant quand le métier d'environnementaliste est actif",
+    "config.SalvagerRareDropChance": "Chance de drop rare du récupérateur",
+    "config.SalvagerRareDropChance.tooltip": "Chance de drop rare avec le recyclage quand le métier de récupérateur est actif",
+    "config.SalvagerSuperRareDropChance": "Chance de drop super rare du récupérateur",
+    "config.SalvagerSuperRareDropChance.tooltip": "Chance que les objets rares sont super rares quand le métier de récupérateur est actif",
+    "config.FriendshipRecovery": "Récupération d'amitié furtive",
+    "config.FriendshipRecovery.tooltip": "Le montant d'amitié demandée pour annuler les actions négatives après avoir été attrapé en train de fouiller dans les poubelles pendant que le métier de furtif est actif. 25 pour le jeu en vanilla, mais si les réactions des habitants sont modifiées par un mod, cette valeur doit être changée.",
+    "config.ReclaimerExtraValuePercent": "Pourcentage de la valeur ajoutée de l'économe",
+    "config.ReclaimerExtraValuePercent.tooltip": "Valeur ajoutée gagnée quand vous vendez via la poubelle de l'inventaire quand le métier d'économe est actif"
+}

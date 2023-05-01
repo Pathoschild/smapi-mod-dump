@@ -1,15 +1,15 @@
 urls:
-   web: https://github.com/Floogen/SolidFoundations
-   Git: https://github.com/Floogen/SolidFoundations.git
+   web: https://github.com/Floogen/FishingTrawler
+   Git: https://github.com/Floogen/FishingTrawler.git
 
 mods:
-   Solid Foundations
-   Solid Foundations → Automate Integration
+   Fishing Trawler
+   Fishing Trawler - New Horizons
 
 latest commit:
-   commit dca1bbc5587c37ae050539a8f3bd4843967747d3
+   commit 04cd0d1d61bf3f46cee2729910d2461df77e10f1
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Tue Feb 28 21:11:56 2023 -0600
+   Date:   Sun Mar 26 16:10:54 2023 -0500
    
-       v1.13.0 released
+       v1.1.2 released
    

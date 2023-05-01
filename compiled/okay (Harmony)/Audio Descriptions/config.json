@@ -1,0 +1,9 @@
+{
+  "Type": "HUDMessage",
+  "CoolDown": 5,
+  "PlayerSounds": false,
+  "NPCs": true,
+  "Environment": true,
+  "ItemSounds": false,
+  "FishingCatch": true
+}

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/noriteway/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "DwarfScrollPrice",
+  "Author": "norite",
+  "Version": "1.0.0",
+  "Description": "Change the sell price of dwarf scrolls.",
+  "UniqueID": "norite.DwarfScrollPrice",
+  "EntryDll": "DwarfScrollPrice.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:16386" ]
+}

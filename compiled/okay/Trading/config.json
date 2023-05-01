@@ -1,4 +1,4 @@
 {
   "TradeMenuButton": "G, LeftStick",
-  "Radius": 1
+  "Global": false
 }

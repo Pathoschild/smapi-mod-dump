@@ -1,0 +1,25 @@
+{
+    "config_enable-mod_name": "Enable Mod",
+    "config_enable-mod_desc": "When enabled, this mod will function.",
+    "config_use-custom-panning-spots_name": "Use Custom Panning Spots",
+    "config_use-custom-panning-spots_desc": "When enabled, Better Panning's custom panning spots will be used instead of vanilla (random) locations.",
+    "config_splash-sound-chance_name": "Splash Sound Chance",
+    "config_splash-sound-chance_desc": "This value is the frequency that the splash sound will be played when a panning spot is generated.",
+    "config_play-splash-sound-range_name": "Range of Splash Sound",
+    "config_play-splash-sound-range_desc": "The range at which the player can hear the splash sound when a new panning spot is generated.",
+    "config_spot-disappear-chance_name": "Chance of Spot Disappearing",
+    "config_spot-disappear-chance_desc": "This value is the chance that a panning spot will disappear on each 10 in-game minute tick. The unmodified value is 10%.",
+    "config_min-minutes-before-spot-disappear_name": "Minimum Panning Spot Duration",
+    "config_min-minutes-before-spot-disappear_desc": "This value is the minimum number of in-game minutes a panning spot will remain before it has a chance to disappear. The unmodified value is 10 minutes.",
+
+    "config_format-tile": "1 tile",
+    "config_format-tiles": "{{num}} tiles",
+    "config_format-one-min": "1 min",
+    "config_format-mins": "{{num}} mins",
+    "config_format-one-hour": "1 hour",
+    "config_format-hours": "{{num}} hours",
+    "config_format-days": "1  days",
+    "config_format-one-day": "1  day",
+    
+    "config_unlimited": "Unlimited"
+}

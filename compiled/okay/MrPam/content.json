@@ -1,0 +1,512 @@
+{
+  "Format": "1.29.0",
+  "ConfigSchema": {
+    "ExeggutorPalms": {
+      "AllowValues": "true, false",
+      "Default": "true"
+    },
+    "ChoppableExeggutor": {
+      "AllowValues": "true, false",
+      "Default": "true"
+    },
+    "EatPokemon": {
+      "AllowValues": "true, false",
+      "Default": "true"
+    }
+  },
+  "Changes": [
+    // Changing Pam's name to Mr. Mime in as many places as possible
+    {
+      "Action": "EditData",
+      "Target": "Data/NPCDispositions",
+      "Entries": {
+        "Pam": "adult/rude/outgoing/negative/female/not-datable/Gus/Town/spring 18/Penny 'little_baby-girl' Gus ''/Trailer 15 4/Mr. Mime"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Pam",
+      "Entries": {
+        "Introduction": "Hey, kid. The name's Mr. Mime.#$e#Don't be a jerk and we'll get along fine.",
+        "MovieInvitation": "Date night with ol' Mr. Mime, huh? Hah!$h^Ladies night with ol' Mr. Mime, huh? Hah!$h#$b#Sure thing, kid... I'll see you there."
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Gus",
+      "Entries": {
+        "pamHouseUpgrade": "Hey. I heard what you did for Mr. Mime. That was really really nice of you!$h#$e#Sadly, I don't think it will get her to cut back on the 'beverages'...",
+        "pamHouseUpgradeAnonymous": "I saw Mr. Mime earlier today... she was grinning from ear to ear! She said someone bought her a new house!#$e#Whoever it was, they truly deserve the best!$h"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Lewis",
+      "Entries": {
+        "pamHouseUpgrade": "@, I heard what you did for Mr. Mime and Penny... now *that's* the kind of community support I love to see in Pelican Town!$h",
+        "pamHouseUpgradeAnonymous": "@, did you hear? Someone paid Robin to build Mr. Mime and Penny a house! Robin won't tell me who it was, though.#$e#Regardless of who paid, I love seeing this kind of community support in Pelican Town!$h"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Robin",
+      "Entries": {
+        "pamHouseUpgrade": "Our little plan worked out well, don't you think? Mr. Mime and Penny seem really happy.",
+        "pamHouseUpgradeAnonymous": "Our little plan worked out well, don't you think? Mr. Mime and Penny seem really happy."
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Dialogue/Shane",
+      "Entries": {
+        "pamHouseUpgrade": "I heard you built Mr. Mime a house... That's really generous...#$b#You know, I could use a hundred thousand gold myself...#$e#*ahem* ...ah ...Just kidding. ...Heh.",
+        "pamHouseUpgradeAnonymous": "I heard someone bought Mr. Mime a house... *sigh*... What did Mr. Mime ever do to earn that kind of generosity??"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Events/Saloon",
+      "Entries": {
+        "96/f Gus 1000/f Pam 500/p Gus": "jaunty/10 21/farmer -100 -100 0 Gus 10 21 2 Pam -101 -101 0/skippable/pause 200/emote Gus 28/pause 500/playSound doorClose/warp farmer 14 24/pause 500/faceDirection Gus 1 true/move farmer 0 -3 3/speak Gus \"Oh, Hello there, buddy.^Hi, @.\"/pause 500/faceDirection Gus 2/move farmer -3 0 2/pause 800/faceDirection farmer 3/pause 400/emote farmer 8/pause 700/speak Gus \"*sigh*...I'm just looking over last month's earnings... and It's not looking very good, @.$s#$b#The worst thing... and I hate to say this because they're my friend... is Mr. Mime! They haven't paid off their tab in weeks!$s#$b#...But I can't ask them to do it. I know they'll get defensive, and I don't want to hurt their feelings.$s\"/pause 600/faceDirection Gus 1/speak Gus \"@, you gotta help me!$s\"/stopMusic/pause 500/playSound doorClose/warp Pam 14 24/move Pam 0 -3 3/faceDirection Gus 1 true/faceDirection farmer 1/emote Gus 16/speak Pam \"Hiya!$h#$b#Gus... I'm awful thirsty, if you catch my drift.\"/emote Gus 28/speak Gus \"Er... Well, okay Mr. Mime.$s\"/emote Gus 28/pause 700/emote Pam 8/pause 400/speak Pam \"$q 207 null#@, what's going on here?#$r 207 -50 event_credit1#You need to pay your tab right now!#$r 208 15 event_credit2#The saloon isn't doing well, financially\"/pause 400/faceDirection Pam 1/emote Pam 12/speak Pam \"....$u#$b#*sigh* ...Well, I guess I'd better pay off that tab, then.$s\"/move Pam -2 0 0/move Pam 0 -1 3/move Pam -2 0 2/faceDirection Gus 0/faceDirection farmer 3/playSound money/pause 500/speak Gus \"Thanks, Mr. Mime!$h\"/pause 500/faceDirection Gus 1/speak Gus \"And thank you, @.$u\"/pause 500/faceDirection Gus 0/speak Gus \"Now, let's get you that drink, Mr. Mime.$h\"/friendship Gus 50/end dialogue Gus \"Thanks for your help, @. This cash is going to be a big help to the saloon.\""
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Events/Trailer",
+      "Entries": {
+        "35/f Penny 1000/p Penny": "50s/-1000 -1000/farmer -30 30 0 Penny 12 7 0 Pam -100 -100 0/skippable/specificTemporarySprite pennyMess/viewport 12 7 true/pause 1000/speak Penny \"Ughh... It's so dirty in here.$s\"/pause 500/warp farmer 12 9/playSound doorClose/pause 500/faceDirection Penny 2/pause 500/emote Penny 16/pause 300/speak Penny \"@! Um... Sorry that it's such a mess. I was about to clean up.$u\"/pause 500/move farmer 0 -1 0/pause 600/emote Penny 32/pause 300/speak Penny \"You'll help me? You really mean it?$h\"/pause 500/faceDirection Penny 1/faceDirection farmer 1/speak Penny \"Okay, you can get started over there. I'll clean the kitchen.\"/move farmer 2 0 1/move farmer 0 -2 1/move farmer 1 0 1/move Penny -1 0 0/animate Penny false true 100 24 25/animate farmer false true 100 35/pause 200/playSound dwop/removeSprite 16 6/pause 200/move Penny -1 0 0/animate Penny false true 100 24 25/stopAnimation farmer/faceDirection farmer 0/pause 1200/stopAnimation Penny/removeSprite 10 5/playSound dwop/move Penny -1 0 0/animate Penny false true 100 24 25/pause 900/animate farmer false true 100 41/pause 300/playSound dwop/removeSprite 15 5/stopAnimation farmer/pause 1400/stopAnimation Penny/move Penny 1 0 0/pause 800/warp Pam 12 9/playSound doorClose/stopMusic/move Pam 0 -1 0/faceDirection Penny 2/faceDirection farmer 3/faceDirection Pam 1/pause 500/faceDirection Pam 3/speak Pam \"Whaddya think you're doing?!$u\"/faceDirection Pam 1/faceDirection Pam 3/faceDirection Pam 0/speak Pam \"Stop it! I had everything just the way I like it!$u\"/move Penny 2 0 2/pause 500/emote Penny 28/pause 500/speak Penny \"Mr. Mime, the house is a total mess. @ and I were just trying to tidy things up a bit.#$b#*sniff* *sniff*... Were you at the saloon just now? You smell like beer...$s\"/pause 300/move Pam -1 0 3/emote Pam 12/pause 400/speak Pam \"It's none of your damn business where I go!$4\"/pause 500/speak Penny \"It IS my business! I don't want you destroying yourself!$a#$b#Don't you realize your choices have an effect on me? Stop being so selfish!$a\"/faceDirection Pam 0/shake Pam 5000/pause 600/speak Pam \"Selfish? I put a roof over your head and clothes on your back and you call me selfish!? You ungrateful little...$u\"/pause 500/emote farmer 28/pause 500/faceDirection Pam 1/faceDirection Penny 1/move farmer -2 0 2/move farmer 0 2 3/pause 500/speak Pam \"You'd better go. I'm sorry you had to see this, kid.$4\"/pause 500/move farmer -1 0 2/move farmer 0 1 2/pause 500/faceDirection farmer 0/faceDirection Penny 2/pause 700/faceDirection farmer 2/pause 500/warp farmer -40 -40/playSound doorClose/pause 500/move Pam 0 -1 1/pause 300/faceDirection Penny 3/speak Pam \"He's a nice young man...^She's a nice young lady...\"/speak Pam \"But I don't want you tellin' others to clean up my house! It's embarrassing! You understand?$4\"/pause 300/faceDirection Penny 2/pause 600/showFrame Penny 23/pause 700/speak Penny \"...Yes, Mr. Mime.$s\"/pause 1000/mail PennyCleanTrailer/end warpOut"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Events/Trailer_Big",
+      "Entries": {
+        "503180/f Pam 2250/A pamHouseUpgrade/A pamHouseUpgradeAnonymous/Hn pamHouseUpgrade": "shaneTheme/-1000 -1000/farmer 18 11 1 Pam 25 9 1/skippable/specificTemporarySprite pamYobaStatue/viewport 25 9 true/move farmer 6 0 1/move farmer 0 -1 1/faceDirection Pam 2/pause 300/speak Pam \"Hey, kid...\"/faceDirection Pam 1/pause 500/speak Pam \"You caught me prayin'...\"/pause 500/move farmer 3 0 0/move farmer 0 -1 3/pause 500/speak Pam \"This here's my new 'Sign Of The Vessel' statue.#$b#...Ordered it from Joja.com with free 2-day shipping. Don't tell Pierre.\"/pause 1000/faceDirection Pam 2/pause 400/faceDirection Pam 3/pause 500/faceDirection Pam 2/pause 500/faceDirection Pam 1/speak Pam \"...I've been settling in to the new house. It's really a great place. Feels like home already. I really do appreciate this new comfort.$h\"/pause 500/faceDirection Pam 2/pause 1000/showFrame Pam 25/pause 1000/animate Pam false true 250 26 27/pause 400/emote farmer 8/pause 500/textAboveHead Pam \"Oh, Sorry...\"/pause 1000/stopAnimation Pam/pause 950/speak Pam \"*sniff*... It's just...$s#$b#...I should be so happy...$s\"/showFrame Pam 0/faceDirection Pam 1/speak Pam \"...But I haven't been able to cut back on the beer... I haven't changed at all...$s\"/pause 500/emote farmer 28/pause 500/speak Pam \"For a long time, now... I've felt like there's something missing from my life, @... $s#$b#I always thought it was about money... Just bein' poor... ya know? So I figured gettin' this house would solve everything. But ...it didn't.$s#$b#So that's... That's why I ordered this statue.\"/pause 1000/question fork0 \"Say something to Mr. Mime:#I'm glad you're feeling hopeful#Sorry Mr. Mime, but Yoba isn't real...\"/fork positive/friendship Pam -1000/pause 500/speak Pam \"That ain't funny! ...I pour my heart out to you and that's how you respond? What in the void is wrong with you?$u\"/faceDirection Pam 3/shake Pam 10000/emote Pam 12/pause 1000/speak Pam \"I don't care what you say... I have faith in Yoba! Plenty of us do! Now get out.$4\"/pause 1000/move farmer 0 1 3/move farmer -6 0 3 true/end",
+        "positive": "pause 100/emote farmer 56/pause 500/speak Pam \"Hah! Well, look at me! I'm gettin' real sappy in my old age, aren't I?  ...hehehe.$h\"/pause 1000/move Pam 0 1 1/move Pam 2 0 0/faceDirection farmer 2/viewport move 1 0 7000/textAboveHead Pam \"Thanks for lendin' an ear, kid\"/pause 5000/end"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Strings/Locations",
+      "Entries": {
+        "Bus_NoDriver": "You'll have to wait until Mr. Mime's on duty to ride the bus.",
+        "ScienceHouse_Carpenter_CommunityUpgrade1": "...What's that? You want to build Mr. Mime a house? That's a great idea!^I'll just need 950 wood and 500,000g..."
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Strings/SpecialOrderStrings",
+      "Entries": {
+        "Pam_Objective_1_Text": "Place the product in Mr. Mime's kitchen."
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Strings/StringsFromCSFiles",
+      "Entries": {
+        "MapPage.PamHouseHomeOf": "Home of Mr. Mime & Penny"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Entries": {
+        "103": "ItemDelivery/Mr. Mime Is Thirsty/Mr. Mime is hankerin' for a pale ale. Regular old beer won't do. You can brew one yourself if you have hops and a keg./Bring Mr. Mime a pale ale./Pam 303/-1/350/-1/true/Gimme that. *slurp*... Ahh, that's the stuff.#$b#It's real nice and hoppy... notes of citrus and pine, but with a robust body to keep it grounded.#$b#Thanks, kid. This means a lot to me. I knew I could count on you.$h",
+        "122": "ItemDelivery/Mr. Mime Needs Juice/Mr. Mime's TV Remote is dead. They're having a tough time going back and forth between the couch and the TV dial./Bring Mr. Mime a Battery Pack./Pam 787/-1/400/-1/true/Hey, you pulled through with the battery pack! Thanks, kid... You're a life-saver!$h"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/SecretNotes",
+      "Entries": {
+        "5": "It's Penny's handwriting:^^I want to get everyone something they love!^^Mr. Mime: Parsnip, Glazed Yams, NO BEER!^Jas: Fairy Rose, Plum Pudding^Vincent: Pink Cake, Grape^Mr. Mullner: Leek, Fried Mushroom^Granny Mullner: Beet, Tulip%revealtastePam24%revealtastePam208%revealtastePam346%revealtasteJas595%revealtasteJas604%revealtasteVincent398%revealtasteVincent221%revealtasteGeorge20%revealtasteGeorge205%revealtasteEvelyn284%revealtasteEvelyn591"
+      }
+    },
+
+    // Changing Pam's portraits and character sprites to that of Mr. Mime
+    {
+      "Action": "EditImage",
+      "Target": "Portraits/Pam",
+      "FromFile": "assets/portraits/MrPam.png"
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Portraits/Pam_Beach",
+      "FromFile": "assets/portraits/MrPam_Beach.png"
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Characters/Pam",
+      "FromFile": "assets/characters/MrPam.png"
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Characters/Pam_Beach",
+      "FromFile": "assets/characters/MrPam_Beach.png"
+    },
+
+    // Changing sprite of Pam driving the bus to Mr. Mime
+    {
+      "Action": "EditImage",
+      "Target": "LooseSprites/Cursors",
+      "FromFile": "assets/loose_sprites/MrPam_driving.png",
+      "ToArea": {
+        "X": 384,
+        "Y": 1311,
+        "Width": 15,
+        "Height": 19
+      }
+    },
+
+    // Changing Sprite of Pam Hugging Penny
+    {
+      "Action": "EditImage",
+      "Target": "Characters/Penny",
+      "FromFile": "assets/characters/MrPam_Hug.png",
+      "ToArea": {
+        "X": 48,
+        "Y": 288,
+        "Width": 16,
+        "Height": 32
+      }
+    },
+
+    // Changing Sprite of Pam's Special Orders Board Emoji
+    {
+      "Action": "EditImage",
+      "Target": "LooseSprites/emojis",
+      "FromFile": "assets/loose_sprites/MrPam_emoji.png",
+      "ToArea": {
+        "X": 36,
+        "Y": 108,
+        "Width": 9,
+        "Height": 9
+      }
+    },
+
+    // Changing palm trees to Exeggutor
+    {
+      "Action": "EditImage",
+      "Target": "Maps/DesertTiles",
+      "FromFile": "assets/loose_sprites/exeggutorTop.png",
+      "ToArea": {
+        "X": 0,
+        "Y": 112,
+        "Width": 48,
+        "Height": 48
+      },
+      "When": {
+        "ExeggutorPalms": "true"
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Maps/DesertTiles",
+      "FromFile": "assets/loose_sprites/exeggutorBot.png",
+      "ToArea": {
+        "X": 16,
+        "Y": 160,
+        "Width": 16,
+        "Height": 32
+      },
+      "When": {
+        "ExeggutorPalms": "true"
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Maps/island_tilesheet",
+      "FromFile": "assets/loose_sprites/exeggutor.png",
+      "ToArea": {
+        "X": 192,
+        "Y": 160,
+        "Width": 48,
+        "Height": 96
+      },
+      "When": {
+        "ExeggutorPalms": "true"
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "TerrainFeatures/tree_palm",
+      "FromFile": "assets/loose_sprites/exeggutorCursed.png",
+      "When": {
+        "ChoppableExeggutor": "true"
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "TerrainFeatures/tree_palm2",
+      "FromFile": "assets/loose_sprites/exeggutorCursedIsland.png",
+      "When": {
+        "ChoppableExeggutor": "true"
+      }
+    },
+
+
+    // Changing the owl on top of the Mullner's house to a Hoothoot for all seasons
+    {
+      "Action": "EditImage",
+      "Target": "Maps/spring_town",
+      "FromFile": "assets/loose_sprites/hoothootSpringSummer.png",
+      "ToArea": {
+        "X": 303,
+        "Y": 80,
+        "Width": 17,
+        "Height": 17
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Maps/summer_town",
+      "FromFile": "assets/loose_sprites/hoothootSpringSummer.png",
+      "ToArea": {
+        "X": 303,
+        "Y": 80,
+        "Width": 17,
+        "Height": 17
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Maps/fall_town",
+      "FromFile": "assets/loose_sprites/hoothootFall.png",
+      "ToArea": {
+        "X": 303,
+        "Y": 80,
+        "Width": 17,
+        "Height": 17
+      }
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Maps/winter_town",
+      "FromFile": "assets/loose_sprites/hoothootWinter.png",
+      "ToArea": {
+        "X": 303,
+        "Y": 80,
+        "Width": 17,
+        "Height": 17
+      }
+    },
+
+    // Chaning wild horseradish to Oddish
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/loose_sprites/oddish.png",
+      "ToArea": {
+        "X": 256,
+        "Y": 0,
+        "Width": 16,
+        "Height": 16
+      },
+      "When": {
+        "EatPokemon": "true"
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/ObjectInformation",
+      "Entries": {
+        "16": "Oddish/50/5/Basic -81/Oddish/During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds."
+      },
+      "When": {
+        "EatPokemon": "true"
+      }
+    },
+
+    // Chaning bug meat to Ditto
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/loose_sprites/ditto.png",
+      "ToArea": {
+        "X": 192,
+        "Y": 448,
+        "Width": 16,
+        "Height": 16
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/ObjectInformation",
+      "Entries": {
+        "684": "Ditto/8/-300/Basic -28/Ditto/Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy."
+      }
+    },
+
+    // Chaning bombs to Voltorb
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/loose_sprites/voltorb.png",
+      "ToArea": {
+        "X": 368,
+        "Y": 176,
+        "Width": 16,
+        "Height": 16
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/ObjectInformation",
+      "Entries": {
+        "287": "Voltorb/50/-300/Crafting -8/Voltorb/Usually found in power plants. Easily mistaken for a Poké Ball, they have zapped many people."
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "Bomb": "380 4 382 1/Field/287/false/Mining 6/Voltorb"
+      }
+    },
+
+    // Chaning mega bombs to Electrode
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/loose_sprites/electrode.png",
+      "ToArea": {
+        "X": 0,
+        "Y": 192,
+        "Width": 16,
+        "Height": 16
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/ObjectInformation",
+      "Entries": {
+        "288": "Electrode/50/-300/Crafting -8/Electrode/It stores electric energy under very high pressure. It often explodes with little or no provocation."
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "Mega Bomb": "384 4 768 1 769 1/Field/288/false/Mining 8/Electrode"
+      }
+    },
+
+    // Chaning ice cream to Vanillite
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/loose_sprites/vanillite.png",
+      "ToArea": {
+        "X": 272,
+        "Y": 144,
+        "Width": 16,
+        "Height": 16
+      },
+      "When": {
+        "EatPokemon": "true"
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/ObjectInformation",
+      "Entries": {
+        "233": "Vanillite/120/40/Cooking -7/Vanillite/Born of an icicle, this Pokémon uses its frosty breath to make ice crystals, causing snow to fall./food/0 0 0 0 0 0 0 0 0 0 0/0"
+      },
+      "When": {
+        "EatPokemon": "true"
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Data/CookingRecipes",
+      "Entries": {
+        "Ice Cream": "-6 1 245 1/2 4/233/f Jodi 7/Vanillite"
+      }
+    },
+
+    // Replacing fireplaces with ones that have Cyndaquil as a heat source
+    {
+      "Action": "EditImage",
+      "Target": "LooseSprites/Cursors",
+      "FromFile": "assets/loose_sprites/flames.png",
+      "ToArea": {
+        "X": 276,
+        "Y": 1981,
+        "Width": 48,
+        "Height": 15
+      },
+      "When": {
+        "LocationName": "FarmHouse"
+      },
+      "Update": "OnLocationChange"
+    },
+
+    {
+      "Action": "EditImage",
+      "Target": "Tilesheets/furniture",
+      "FromFile": "assets/loose_sprites/cyndaquil_fireplace.png",
+      "ToArea": {
+        "X": 0,
+        "Y": 896,
+        "Width": 96,
+        "Height": 78
+      },
+      "When": {
+        "LocationName": "FarmHouse"
+      },
+      "Update": "OnLocationChange"
+    },
+
+
+    // Replacing the log to the secret woods with snorlax
+
+    {
+      "Action": "EditData",
+      "Target": "Strings/StringsFromCSFiles",
+      "Entries": {
+        "ResourceClump.cs.13962": "zzZZzz....",
+        "ResourceClump.cs.13948": "Why would you try that?!",
+        "ResourceClump.cs.13956": "Snorlax wandered off swaying to the tune of your flute."
+      },
+      "When": {
+        "LocationName": "Forest"
+      },
+      "Update": "OnLocationChange"
+    },
+    {
+      "Action": "EditImage",
+      "Target": "Maps/springobjects",
+      "FromFile": "assets/loose_sprites/snorlax.png",
+      "ToArea": {
+        "X": 32,
+        "Y": 400,
+        "Width": 32,
+        "Height": 32
+      },
+      "When": {
+        "LocationName": "Forest"
+      },
+      "Update": "OnLocationChange"
+    }
+
+
+  ]
+}

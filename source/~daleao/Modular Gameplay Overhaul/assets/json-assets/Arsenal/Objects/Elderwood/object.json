@@ -18,5 +18,6 @@
 	"CanSell": true,
 	"CanTrash": true,
 	"HideFromShippingCollection": false,
-    "TranslationKey": "objects.elderwood"
+    "TranslationKey": "objects.elderwood",
+	"DisableWithMod": "cometkins.BetterResources"
 }

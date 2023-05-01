@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/13265
+IDs: CF.SMAPI.DustyOverhaulSVE
+update keys: Nexus:13265

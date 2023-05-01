@@ -10,6 +10,8 @@
 
 {"Changes":[
     // Always be sellin', insufficiently appreciative of all of Caroline's work.
+    // Raised in poverty and terrified of being poor.
+    // QUITE conservative.
     {
         "LogName": "Pierre mid-hearts",
         "Action": "EditData",
@@ -63,8 +65,11 @@
         "Entries": {
             "3_2": "I grew up poor, @, and I wouldn't wish that on anyone.",
             "5_2": "Maybe I should carry more boxed meals? They're certainly more convenient than cooking...",
+            "7_2": "I know Caroline would like it if I cooked more often. But I'm always so busy with the store.#$b#I do the dishes for her, though, when it's not Abigail's turn to do them.",
+            "9_2": "Ugh, I think the store has a leak. I'm not very handy, so we're probably gonna have to get Robin to take a look at it.",
             "17_2": "I suspect we have a leak in the ceiling.#$b#Between you and I, @, I'm not good at dealing with things like this.#$e#Guess I should get Robin to look at my roof...",
-            "19_2": "@, I just want you to know, you'll never find better seeds that the ones I sell. Never."
+            "19_2": "@, I just want you to know, you'll never find better seeds that the ones I sell. Never.",
+            "21_2": "Have you considered buying any of my fertilizers?"
         },
         "When": { "YearModulus": "4"}
     }

@@ -6,21 +6,10 @@ mods:
    Discord Rich Presence
 
 latest commit:
-   commit 60e87245820d34d33aa7f1c5ab2e248a5225d0cb
-   Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
-   Date:   Sat Mar 18 23:58:57 2023 -0600
+   commit 7ca60dc53d0bf887dd66dc678e13408e25f5c913
+   Merge: 9c862df 60e8724
+   Author: RuiNtD <RuiNtD@outlook.com>
+   Date:   Sun Mar 19 00:04:10 2023 -0600
    
-       Bump Pathoschild.Stardew.ModBuildConfig from 4.0.0 to 4.1.0 (#28)
-       
-       Bumps Pathoschild.Stardew.ModBuildConfig from 4.0.0 to 4.1.0.
-       
-       ---
-       updated-dependencies:
-       - dependency-name: Pathoschild.Stardew.ModBuildConfig
-         dependency-type: direct:production
-         update-type: version-update:semver-minor
-       ...
-       
-       Signed-off-by: dependabot[bot] <support@github.com>
-       Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+       Merge branch 'main' of https://github.com/FayneAldan/SVRichPresence
    

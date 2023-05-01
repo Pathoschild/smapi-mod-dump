@@ -62,5 +62,50 @@
 		],
 		"Repeatable": false,
 		"MailReceived": [ "pierreQualityCrops", "MSB_Pierre" ]
+	},
+	{
+		"Id": "trashcan9.MFMHandyItems.pierre2",
+		"GroupId": "trashcan9.MFMHandyItems.pierre",
+		"Title": null,
+		"Text": "Dear @,^With our recent delivery of fertilizer, we received this complimentary enricher which can easily distribute the fertilizer from a sprinkler. Since you've been such a great customer, I thought to send it your way. Swing by Pierre's General Store any time to buy fertilizer to use with it!^   -Pierre",
+		"Attachments": [
+			{
+				"Type": "Object",
+				"Name": "Enricher",
+				"Index": 913,
+				"Stack": 1
+			}
+		],
+		"Repeatable": false,
+		"Date": "18 spring Y1",
+		"Days": [18,19,20,21,22],
+		"Seasons": ["spring", "summer", "fall"],
+		"Weather": "sunny"
+	},
+	{
+		"Id": "trashcan9.MFMHandyItems.lewis1",
+		"GroupId": "trashcan9.MFMHandyItems.lewis",
+		"Title": null,
+		"Text": "@,^I'm really glad you've become part of our community! I've enclosed some farm equipment purchased out of the Stardew Valley Agricultural Fund to help you continue your good work. ^Maybe you can grow more crops with it.  ^  Sincerely, Mr. Lewis",
+		"Attachments": [
+			{
+				"Type": "Object",
+				"Name": "Pressure Nozzle",
+				"Index": 915,
+				"Stack": 1
+			}
+		],
+		"Repeatable": false,
+		"Date": "1 fall Y1",
+		"Days": [1,8,15,22],
+		"Seasons": ["spring", "summer", "fall"],
+		"Weather": "sunny",
+		"FriendshipConditions":
+        [
+            {
+                "NpcName": "Lewis",
+                "FriendshipLevel": 1
+            }
+        ]
 	}
 ]

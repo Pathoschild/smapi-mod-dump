@@ -17,6 +17,7 @@ using System.Linq;
 using DaLion.Overhaul.Modules.Tools.Effects;
 using DaLion.Overhaul.Modules.Tools.Extensions;
 using DaLion.Shared.Classes;
+using DaLion.Shared.Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley.Tools;
 
@@ -133,14 +134,14 @@ internal class Shockwave
                 pixelPosition,
                 Color.White,
                 8,
-                Game1.random.NextDouble() < 0.5,
+                Game1.random.NextBool(),
                 50f));
             this._location.temporarySprites.Add(new TemporaryAnimatedSprite(
                 6,
                 pixelPosition,
                 Color.White,
                 8,
-                Game1.random.NextDouble() < 0.5,
+                Game1.random.NextBool(),
                 30f));
         }
 

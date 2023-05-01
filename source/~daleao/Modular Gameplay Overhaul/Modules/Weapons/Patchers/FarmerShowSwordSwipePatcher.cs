@@ -12,8 +12,11 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers;
 
 #region using directives
 
+using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 using DaLion.Overhaul.Modules.Weapons.Extensions;
+using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -202,15 +205,27 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                 return false; // don't run original logic
             }
 
-            tempSprite.color = weapon.IsInfinityWeapon()
-                ? Color.HotPink
-                : weapon.InitialParentTileIndex switch
+            if (WeaponsModule.Config.EnableRebalance)
+            {
+                tempSprite.color = weapon.InitialParentTileIndex switch
                 {
-                    ItemIDs.DarkSword => Color.DarkSlateGray,
-                    ItemIDs.HolyBlade => Color.Gold,
                     ItemIDs.LavaKatana => Color.Orange,
+                    ItemIDs.YetiTooth => Color.PowderBlue,
                     _ => tempSprite.color,
                 };
+            }
+
+            if (WeaponsModule.Config.InfinityPlusOne)
+            {
+                tempSprite.color = weapon.IsInfinityWeapon()
+                    ? Color.HotPink
+                    : weapon.InitialParentTileIndex switch
+                    {
+                        ItemIDs.DarkSword => Color.DarkSlateGray,
+                        ItemIDs.HolyBlade => Color.Gold,
+                        _ => tempSprite.color,
+                    };
+            }
 
             who.currentLocation.temporarySprites.Add(tempSprite);
 
@@ -223,5 +238,76 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
         }
     }
 
+    /// <summary>Show novelty colors if combo hits is disabled.</summary>
+    [HarmonyTranspiler]
+    private static IEnumerable<CodeInstruction>? FarmerShowSwordSwipeTranspiler(
+        IEnumerable<CodeInstruction> instructions, MethodBase original)
+    {
+        var helper = new ILHelper(original, instructions);
+
+        try
+        {
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldloc_0),
+                        new CodeInstruction(OpCodes.Brfalse_S),
+                    },
+                    ILHelper.SearchOption.Last)
+                .Match(new[] { new CodeInstruction(OpCodes.Isinst, typeof(MeleeWeapon)) })
+                .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) })
+                .Insert(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldloc_0),
+                        new CodeInstruction(OpCodes.Ldloc_0),
+                        new CodeInstruction(OpCodes.Ldarg_0),
+                        new CodeInstruction(OpCodes.Callvirt, typeof(Farmer).RequirePropertyGetter(nameof(Farmer.CurrentTool))),
+                        new CodeInstruction(OpCodes.Isinst, typeof(MeleeWeapon)),
+                        new CodeInstruction(
+                            OpCodes.Call,
+                            typeof(FarmerShowSwordSwipePatcher).RequireMethod(nameof(GetSwipeColor))),
+                    })
+                .Remove(7);
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed injecting novelty color SFX.\nHelper returned {ex}");
+            return null;
+        }
+
+        return helper.Flush();
+    }
+
     #endregion harmony patches
+
+    #region injected subroutines
+
+    private static Color GetSwipeColor(TemporaryAnimatedSprite tempSprite, MeleeWeapon weapon)
+    {
+        if (WeaponsModule.Config.EnableRebalance)
+        {
+            return weapon.InitialParentTileIndex switch
+            {
+                ItemIDs.LavaKatana => Color.Orange,
+                ItemIDs.YetiTooth => Color.PowderBlue,
+                _ => tempSprite.color,
+            };
+        }
+
+        if (WeaponsModule.Config.InfinityPlusOne)
+        {
+            return weapon.InitialParentTileIndex switch
+                {
+                    ItemIDs.DarkSword => Color.DarkSlateGray,
+                    ItemIDs.HolyBlade => Color.Gold,
+                    _ => tempSprite.color,
+                };
+        }
+
+        return weapon.IsInfinityWeapon() ? Color.HotPink : tempSprite.color;
+    }
+
+    #endregion injected subroutines
 }

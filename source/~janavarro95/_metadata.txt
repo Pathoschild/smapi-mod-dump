@@ -19,7 +19,6 @@ mods:
    Museum Rearranger
    Night Owl
    No More Pets
-   Save Anywhere
    Simple Sound Manager
    Stardew Symphony Remastered
    Stardust Core

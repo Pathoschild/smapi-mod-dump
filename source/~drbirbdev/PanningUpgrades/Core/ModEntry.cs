@@ -8,70 +8,39 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using BirbShared.APIs;
-using BirbShared;
-using BirbShared.Config;
-using BirbShared.Command;
-using BirbShared.Asset;
-using HarmonyLib;
+using BirbShared.Mod;
 using System.IO;
 
 namespace PanningUpgrades
 {
     internal class ModEntry : Mod
     {
+        [SmapiInstance]
         public static ModEntry Instance;
+        [SmapiConfig]
         public static Config Config;
+        [SmapiCommand]
+        public static Command Command;
+        [SmapiAsset]
         public static Assets Assets;
-
+        [SmapiApi(UniqueID = "spacechase0.JsonAssets")]
         public static IJsonAssetsApi JsonAssets;
+        [SmapiApi(UniqueID = "spacechase0.SpaceCore")]
         public static ISpaceCore SpaceCore;
-
-        internal ITranslationHelper I18n => this.Helper.Translation;
 
         public override void Entry(IModHelper helper)
         {
-            ModEntry.Instance = this;
-            Log.Init(this.Monitor);
-
-            ModEntry.Config = helper.ReadConfig<Config>();
-            ModEntry.Assets = new Assets();
-
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
-
-            new AssetClassParser(this, Assets).ParseAssets();
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
+            mod.ApisLoaded += this.ModClassParser_ApisLoaded;
         }
 
-
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        private void ModClassParser_ApisLoaded(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            new ConfigClassParser(this, Config).ParseConfigs();
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
-            new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
-
-            JsonAssets = this.Helper.ModRegistry
-                .GetApi<IJsonAssetsApi>
-                ("spacechase0.JsonAssets");
-            if (JsonAssets is null)
-            {
-                Log.Error("Can't access the Json Assets API. Is the mod installed correctly?");
-                return;
-            }
-
-            SpaceCore = this.Helper.ModRegistry
-                .GetApi<ISpaceCore>
-                ("spacechase0.SpaceCore");
-            if (SpaceCore is null)
-            {
-                Log.Error("Can't access the SpaceCore API. Is the mod installed correctly?");
-                return;
-            }
-
             SpaceCore.RegisterSerializerType(typeof(UpgradeablePan));
-
             JsonAssets.LoadAssets(Path.Combine(this.Helper.DirectoryPath, "assets", "PanHats"));
         }
     }

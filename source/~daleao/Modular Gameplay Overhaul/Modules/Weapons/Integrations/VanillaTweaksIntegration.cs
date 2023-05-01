@@ -19,9 +19,11 @@ using DaLion.Shared.Integrations;
 #endregion using directives
 
 [RequiresMod("Taiyo.VanillaTweaks", "Vanilla Tweaks")]
+[IgnoreWithMod("dengdeng.simpleweapons")]
 internal sealed class VanillaTweaksIntegration : ModIntegration<VanillaTweaksIntegration>
 {
-    private VanillaTweaksIntegration()
+    /// <summary>Initializes a new instance of the <see cref="VanillaTweaksIntegration"/> class.</summary>
+    internal VanillaTweaksIntegration()
         : base("Taiyo.VanillaTweaks", "Vanilla Tweaks", null, ModHelper.ModRegistry)
     {
     }
@@ -39,12 +41,12 @@ internal sealed class VanillaTweaksIntegration : ModIntegration<VanillaTweaksInt
 
         if (ModHelper.ReadContentPackConfig("Taiyo.VanillaTweaks") is { } jObject)
         {
-            this.WeaponsCategoryEnabled = jObject.Value<bool>("WeaponsCategoryEnabled") == true;
+            this.WeaponsCategoryEnabled = jObject.Value<bool>("WeaponsCategoryEnabled");
             ModHelper.GameContent.InvalidateCache("TileSheets/weapons");
             return true;
         }
 
-        Log.W("Failed to read Vanilla Tweaks config settings.");
+        Log.W("[WPNZ]: Failed to read Vanilla Tweaks config settings.");
         return false;
     }
 }

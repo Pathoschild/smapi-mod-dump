@@ -55,6 +55,10 @@ internal static class FairShopTranspiler
                 {
                     shopStock.TryAdd(new SObject(ModEntry.OrganicFertilizerID, 20), new[] { 200, 20 });
                 }
+                if (Game1.year > 2 && ModEntry.EverlastingFruitTreeFertilizerID != -1)
+                {
+                    shopStock.TryAdd(new SObject(ModEntry.EverlastingFruitTreeFertilizerID, 5), new[] { 1000, 5 });
+                }
             }
         }
         catch (Exception ex)
@@ -105,8 +109,8 @@ internal static class FairShopTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Event.checkaction:\n\n{ex}", LogLevel.Error);
-            original?.Snitch(ModEntry.ModMonitor);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling {original.FullDescription()}:\n\n{ex}", LogLevel.Error);
+            original.Snitch(ModEntry.ModMonitor);
         }
         return null;
     }

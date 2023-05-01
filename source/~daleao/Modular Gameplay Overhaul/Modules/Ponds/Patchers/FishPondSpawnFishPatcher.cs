@@ -89,7 +89,7 @@ internal sealed class FishPondSpawnFishPatcher : HarmonyPatcher
         }
         catch (InvalidDataException ex)
         {
-            Log.W($"{ex}\nThe data will be reset.");
+            Log.W($"[PNDS]: {ex}\nThe data will be reset.");
             pond.Write(DataKeys.SeaweedLivingHere, null);
             pond.Write(DataKeys.GreenAlgaeLivingHere, null);
             pond.Write(DataKeys.WhiteAlgaeLivingHere, null);
@@ -157,7 +157,7 @@ internal sealed class FishPondSpawnFishPatcher : HarmonyPatcher
                         ? SObject.medQuality
                         : SObject.lowQuality;
 
-            if (ProfessionsModule.IsEnabled && fishlingQuality < SObject.bestQuality && Game1.random.NextDouble() < 0.5 &&
+            if (ProfessionsModule.ShouldEnable && fishlingQuality < SObject.bestQuality && Game1.random.NextDouble() < 0.5 &&
                 (pond.GetOwner().HasProfession(Professions.Profession.Aquarist) ||
                  (ProfessionsModule.Config.LaxOwnershipRequirements &&
                   Game1.game1.DoesAnyPlayerHaveProfession(Professions.Profession.Aquarist, out _))))
@@ -170,7 +170,7 @@ internal sealed class FishPondSpawnFishPatcher : HarmonyPatcher
         }
         catch (InvalidDataException ex)
         {
-            Log.W($"{ex}\nThe data will be reset.");
+            Log.W($"[PNDS]: {ex}\nThe data will be reset.");
             pond.Write(DataKeys.FishQualities, $"{pond.FishCount},0,0,0");
             pond.Write(DataKeys.FamilyQualities, null);
             pond.Write(DataKeys.FamilyLivingHere, null);

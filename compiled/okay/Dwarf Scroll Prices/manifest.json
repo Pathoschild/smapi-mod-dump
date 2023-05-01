@@ -1,0 +1,10 @@
+{
+  "Name": "DwarfScrollPrice",
+  "Author": "noriteway",
+  "Version": "1.0.1",
+  "Description": "Change the sell price of dwarf scrolls.",
+  "UniqueID": "noriteway.DwarfScrollPrice",
+  "EntryDll": "DwarfScrollPrice.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:16386" ]
+}

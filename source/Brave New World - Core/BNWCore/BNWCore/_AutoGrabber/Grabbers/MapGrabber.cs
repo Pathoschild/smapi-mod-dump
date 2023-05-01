@@ -46,8 +46,6 @@ namespace BNWCore
         protected bool TryAddItem(Item item, IEnumerable<KeyValuePair<Vector2, SObject>> grabbers)
         {
             if (item == null || item.Stack < 1) return false;
-            Mod.LogDebug($"Grabbing item {item.Name} [{item.ParentSheetIndex}] x{item.Stack}");
-            Mod.LogDebug($"Big craftable? {(item is SObject obj ? obj.bigCraftable.Value : false)}, Is forage? {(item is SObject obj2 ? obj2.isForage(null) : false)}");
             var prevStack = item.Stack;
             foreach (var pair in grabbers)
             {

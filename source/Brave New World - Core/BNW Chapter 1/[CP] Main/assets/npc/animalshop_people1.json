@@ -1,0 +1,75 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DiogoAlbano/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Logname":"clean_schedules_animalshop_people",
+      "Action": "Load",
+      "Target": "Characters/schedules/Jas, Characters/schedules/Marnie, Characters/schedules/Shane",
+      "FromFile": "assets/npc/empty_start.json"
+    },
+    {
+      "Logname":"set_Jas_schedules_1",
+      "Action": "EditData",
+      "Target": "Characters/schedules/Jas",
+      "Entries": {
+        "9": "NOT friendship Sam 6 Penny 6/GOTO spring",
+        "23": "NOT friendship Sam 6 Penny 6/GOTO spring",
+        "rain": "900 AnimalShop 7 5 0/1100 AnimalShop 16 16 2 square_3_3/1500 AnimalShop 8 17 3 jas_read/1900 AnimalShop 4 7 2/2100 AnimalShop 1 7 3 jas_sleep",
+        "summer": "900 AnimalShop 7 5 0/1100 Forest 92 20 1/1320 Beach 40 23 jas_jumprope \"Strings\\schedules\\Jas:summer.000\"/1600 AnimalShop 17 15 3 jas_read/1900 AnimalShop 4 7 2/2100 AnimalShop 1 7 3 jas_sleep",
+        "winter_15": "900 AnimalShop 7 5 0/1100 Forest 38 10 2 jas_jumprope \"Strings\\schedules\\Jas:winter_15.000\"/1450 Beach 19 24 2 \"Strings\\schedules\\Jas:winter_15.001\"/2300 AnimalShop 1 7 3 jas_sleep",
+        "winter_18": "900 AnimalShop 7 5 0 \"Strings\\schedules\\Jas:winter_18.000\"/1030 Hospital 12 14 0/1330 Hospital 4 6 1 \"Strings\\schedules\\Jas:winter_18.001\"/1600 AnimalShop 17 5 3 jas_read/2000 AnimalShop 1 7 3 jas_sleep",
+        "Tue": "900 ArchaeologyHouse 19 10 3 jas_read/1400 Town 85 103 2/1620 Town 16 91 0/1750 AnimalShop 1 7 3 jas_sleep",
+        "Wed": "GOTO Tue",
+        "Fri": "GOTO Tue",
+        "Sat": "1000 Town 31 89 1/1200 Town 24 12 jas_jumprope/1700 Town 28 90 1/2000 AnimalShop 1 7 3 jas_sleep",
+        "spring": "900 AnimalShop 7 5 0/1100 Forest 38 10 2 jas_jumprope \"Strings\\schedules\\Jas:spring.000\"/1500 AnimalShop 17 15 3 jas_read/1900 AnimalShop 4 7 2/2100 AnimalShop 1 7 3 jas_sleep"
+      }
+    },
+    {
+      "Logname":"set_Marnie_schedules_1",
+      "Action": "EditData",
+      "Target": "Characters/schedules/Marnie",
+      "Entries": {
+        "rain": "GOTO spring",
+        "winter_18": "900 AnimalShop 17 5 0 \"Strings\\schedules\\Marnie:winter_18.000\"/1040 Hospital 13 14 3 \"Strings\\schedules\\Marnie:winter_18.001\"/1330 Hospital 2 7 1 \"Strings\\schedules\\Marnie:winter_18.002\"/1610 AnimalShop 24 15 0/2100 AnimalShop 12 5 3 marnie_sleep",
+        "winter_16": "830 AnimalShop 17 5 0/850 AnimalShop 12 14 2/1600 Beach 37 31 0 \"Strings\\schedules\\Marnie:winter_16.000\"/2340 AnimalShop 12 5 3 marnie_sleep",
+        "fall_18": "900 AnimalShop 17 5 0/1030 Hospital 12 14 0/1330 Hospital 4 6 1 \"Strings\\schedules\\Marnie:fall_18.000\"/1600 AnimalShop 24 15 0/2100 AnimalShop 12 5 3 marnie_sleep",
+        "Tue": "900 AnimalShop 17 5 0/1000 SeedShop 23 16 2/1300 SeedShop 28 17 2 marnie_exercise/1600 SeedShop 25 15 3 \"Strings\\schedules\\Marnie:Tue.000\"/1810 AnimalShop 24 15 0/2100 AnimalShop 12 5 3 marnie_sleep",
+        "Mon": "810 SeedShop 11 20 0/1200 AnimalShop 24 15 0/2100 AnimalShop 12 5 3 marnie_sleep",
+        "Wed": "GOTO Sat",
+        "Fri": "830 AnimalShop 17 5 0/850 AnimalShop 12 14 2/1600 AnimalShop 17 8 1/1700 Saloon 8 22 1 marnie_drink/2300 AnimalShop 12 5 3 marnie_sleep",
+        "Sat": "830 AnimalShop 17 5 0/850 AnimalShop 12 14 2/1600 AnimalShop 17 8 1/1700 Saloon 9 22 1 marnie_drink/2300 AnimalShop 12 5 3 marnie_sleep",
+        "Sun": "GOTO Sat",
+        "spring": "830 AnimalShop 17 5 0/850 AnimalShop 12 14 2/1600 AnimalShop 24 15 0/1800 AnimalShop 17 8 1/2100 AnimalShop 12 5 3 marnie_sleep"
+      }
+    },
+    {
+      "Logname":"set_Shane_schedules_1",
+      "Action": "EditData",
+      "Target": "Characters/schedules/Shane",
+      "Entries": {
+        "rain": "GOTO spring",
+        "winter_15": "700 AnimalShop 24 15 0/1100 AnimalShop 24 5 0/1500 Beach 20 24 2 \"Strings\\schedules\\Shane:winter_15.000\"/2300 AnimalShop 27 4 1 shane_sleep",
+        "spring": "700 JojaMart 9 17 2 shane_work/1230 JojaMart 5 13 2 shane_work/1330 JojaMart 21 16 2 shane_work/1430 JojaMart 25 12 2 shane_work/1530 JojaMart 17 12 2 shane_work/1630 JojaMart 7 25 1/1700 Saloon 21 17 2 shane_drink/2300 AnimalShop 27 4 1 shane_sleep",
+        "Sat": "700 AnimalShop 24 15 0/1200 SeedShop 16 29 3/1700 Saloon 21 17 2 shane_drink/2300 AnimalShop 27 4 1 shane_sleep",
+        "Sun": "MAIL saloonSportsRoom/GOTO Sun_normal/700 AnimalShop 24 15 0/1000 Saloon 33 8 0 \"Strings\\schedules\\Shane:marriage_Sun.000\"/1500 Saloon 21 17 2 shane_drink/2400 AnimalShop 27 4 1 shane_sleep",
+        "Sun_normal": "700 AnimalShop 24 15 0/1100 AnimalShop 24 5 0/1450 AnimalShop 16 13 2/1800 Saloon 21 17 2 shane_drink/2400 AnimalShop 27 4 1 shane_sleep",
+        "summer_Sun": "700 AnimalShop 24 15 0/1100 AnimalShop 24 5 0/1450 AnimalShop 16 13 2/1800 Saloon 21 17 2 shane_drink/2400 AnimalShop 27 4 1 shane_sleep",
+        "marriage_Mon": "830 AnimalShop 16 13 2 \"Strings\\schedules\\Shane:marriage_Mon.000\"/1100 Forest 37 10 2 \"Strings\\schedules\\Shane:marriage_Mon.001\"/1700 BusStop -1 23 3",
+        "marriage_Fri": "MAIL shanePK/GOTO marriage_Fri_normal/830 Town 33 101 2 shane_drink \"Strings\\schedules\\Shane:marriage_Fri.000\"/1300 SeedShop 2 26 2 \"Strings\\schedules\\Shane:marriage_Fri.001\"/1700 Saloon 33 18 0 \"Strings\\schedules\\Shane:marriage_Fri.003\"/2200 BusStop -1 23 3",
+        "marriage_Fri_normal": "830 Town 33 101 2 shane_drink \"Strings\\schedules\\Shane:marriage_Fri.000\"/1300 SeedShop 2 26 2 \"Strings\\schedules\\Shane:marriage_Fri.001\"/1700 Saloon 21 17 2 shane_drink \"Strings\\schedules\\Shane:marriage_Fri.002\"/2200 BusStop -1 23 3",
+        "marriage_Sun": "MAIL saloonSportsRoom/GOTO NO_SCHEDULE/830 Town 33 101 2 shane_drink \"Strings\\schedules\\Shane:marriage_Fri.000\"/1000 Saloon 33 8 0 \"Strings\\schedules\\Shane:marriage_Sun.000\"/1500 Saloon 38 18 0 \"Strings\\schedules\\Shane:marriage_Sun.000\"/2000 BusStop -1 23 3",
+        "default": "900 AnimalShop 24 17 1/1000 AnimalShop 24 15 0/1100 AnimalShop 24 5 0/1200 AnimalShop 5 14 2/1400 Saloon 11 20 0/1630 Saloon 21 17 2 shane_drink/1900 Saloon 27 23 1/2100 Saloon 24 17 2 shane_drink/2300 AnimalShop 27 4 1 shane_sleep"
+      }
+    }
+  ]
+}

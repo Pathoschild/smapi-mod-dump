@@ -173,6 +173,8 @@ namespace BetterBeehouses
 				(s) => ModEntry.i18n.Get($"config.{tname}.{s}")
 			);
 		}
+		internal static void AddQuickLink(this IGMCMAPI api, string id, IManifest manifest)
+			=> api.AddPageLink(manifest, id, () => ModEntry.i18n.Get($"config.{id}.name"), () => ModEntry.i18n.Get($"config.{id}.desc"));
 		internal static string Decap(this string src)
 			=> src.Length > 0 ? char.ToLower(src[0]) + src[1..] : string.Empty;
 		internal static float Next(this Random rand, float max)

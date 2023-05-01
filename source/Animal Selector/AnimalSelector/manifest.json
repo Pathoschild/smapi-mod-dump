@@ -11,10 +11,14 @@
 {
   "Name": "Animal Selector",
   "Author": "rikai",
-  "Version": "1.5.1",
+  "Version": "1.6.0",
   "Description": "Allows manual selection of animal colour for cows and chickens",
   "UniqueID": "rikai.AnimalSelector",
   "EntryDll": "AnimalSelector.dll",
   "MinimumApiVersion": "3.0",
-  "UpdateKeys": [ "Mexis:8758", "Github:rikai/AnimalSelector" ]
+  "UpdateKeys": [ "Nexus:8758", "Github:rikai/AnimalSelector" ],
+  "Meta:Changelog": {
+    "1.0.0": "Initial Public Release",
+    "1.6.0": "Adjustments to prepare for SMAPI 4.0"
+  }
 }

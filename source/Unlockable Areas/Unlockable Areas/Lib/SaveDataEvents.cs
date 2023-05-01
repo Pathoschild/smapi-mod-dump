@@ -33,7 +33,7 @@ namespace Unlockable_Areas.Lib
 
             Helper.Events.GameLoop.Saving += Saving;
         }
-        //The Moddata is being loaded in DayStartedEvents -> ShopPlacement daystarted
+        //The Moddata is being loaded in ShopPlacement -> dayStarted
         private static void Saving(object sender, SavingEventArgs e)
         {
             if (!Context.IsMainPlayer)

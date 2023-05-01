@@ -22,11 +22,11 @@ This incredibly self-indulgent mod has five rings in it: the Butterfly Ring, the
 3. Run the game using SMAPI.
 
 ## Rings
-* Bunny Ring: Allows a 14s "sprint" of +5 (configurable) speed in return for 10 (configurable) stamina. Summons bunnies. Buy from Marlon after receiving the Skull Key and the Magic Ink.
-* Butterfly Ring: Acts as magnet ring, summons butterflies before dark. Buy from Marlon after receiving the Skull Key.
-* Firefly Ring: Acts as a glow ring, summons fireflies after dark. Buy from Marlon after receiving the Skull Key.
-* Frog Ring: Hold down the jump button to charge up a jump! Costs stamina, though. Buy from Marlon after receiving the Skull Key and the Magic Ink.
-* Owl Ring: Makes enemies less likely to see you. Summons owls. Buy from Marlon after receiving the Skull Key and the Magic Ink.
+* **Bunny Ring**: Allows a 14s "sprint" of +5 (configurable) speed in return for 10 (configurable) stamina. Summons bunnies. Buy from Marlon after receiving the Skull Key and the Magic Ink.
+* **Butterfly Ring**: Acts as magnet ring, summons butterflies before dark. Buy from Marlon after receiving the Skull Key.
+* **Firefly Ring**: Acts as a glow ring, summons fireflies after dark. Buy from Marlon after receiving the Skull Key.
+* **Frog Ring**: Hold down the jump button to charge up a jump! Costs stamina, though. Buy from Marlon after receiving the Skull Key and the Magic Ink.
+* **Owl Ring**: Makes enemies less likely to see you. Summons owls. Buy from Marlon after receiving the Skull Key and the Magic Ink.
 
 ## Configuration
 Run SMAPI at least once with this mod installed to generate the `config.json`, or use [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) to configure.

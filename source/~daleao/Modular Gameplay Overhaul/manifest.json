@@ -18,10 +18,10 @@
    */
   "$schema": "https://smapi.io/schemas/manifest.json",
   "UniqueID": "DaLion.Overhaul",
-  "Name": "MARGO :: Modular Gameplay Overhaul",
+  "Name": "Modular Gameplay Overhaul",
   "Author": "DaLion",
-  "Version": "2.0.0-Debug",
-  "Description": "An immersive gameplay overhaul, broken down into modules.",
+  "Version": "2.2.7-Debug",
+  "Description": "A complete and comprehensive rework of many gameplay mechanics, offered as a compilation of independent, but deeply integrated, overhaul modules. ",
   "MinimumApiVersion": "3.18.0",
   "EntryDll": "DaLion.Overhaul.dll",
   "Dependencies": [
@@ -73,7 +73,7 @@
     },
     {
       "UniqueID": "spacechase0.SpaceCore",
-      "MinimumVersion": "1.8.1",
+      "MinimumVersion": "1.12.0",
       "IsRequired": true
     },
     {

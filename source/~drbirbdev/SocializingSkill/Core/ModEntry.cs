@@ -11,10 +11,7 @@
 using System.Collections.Generic;
 using BirbShared;
 using BirbShared.APIs;
-using BirbShared.Asset;
-using BirbShared.Command;
-using BirbShared.Config;
-using HarmonyLib;
+using BirbShared.Mod;
 using SpaceCore;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -24,12 +21,28 @@ namespace SocializingSkill
 {
     public class ModEntry : Mod
     {
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiConfig]
         internal static Config Config;
+        [SmapiCommand]
+        internal static Command Command;
+        [SmapiAsset]
         internal static Assets Assets;
-
-        internal static bool MargoLoaded;
+        [SmapiApi(UniqueID = "DaLion.Overhaul", IsRequired = false)]
         internal static IMargo MargoAPI;
+        internal static bool MargoLoaded
+        {
+            get
+            {
+                if (MargoAPI is null)
+                {
+                    return false;
+                }
+                IMargo.IModConfig config = MargoAPI.GetConfig();
+                return config.EnableProfessions;
+            }
+        }
 
         internal ITranslationHelper I18n => this.Helper.Translation;
 
@@ -37,43 +50,23 @@ namespace SocializingSkill
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
+            mod.ApisLoaded += this.ModClassParser_ApisLoaded;
 
-            Config = helper.ReadConfig<Config>();
-
-            Assets = new Assets();
-            new AssetClassParser(this, Assets).ParseAssets();
-
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
             this.Helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
             this.Helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
             SpaceCore.Events.SpaceEvents.AfterGiftGiven += this.SpaceEvents_AfterGiftGiven;
         }
 
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        private void ModClassParser_ApisLoaded(object sender, StardewModdingAPI.Events.OneSecondUpdateTickedEventArgs e)
         {
-            new ConfigClassParser(this, Config).ParseConfigs();
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
-            new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
-
-            MargoLoaded = this.Helper.ModRegistry.IsLoaded("DaLion.Overhaul");
-
             Skills.RegisterSkill(new SocializingSkill());
-
-            if (MargoLoaded)
-            {
-                MargoAPI = this.Helper.ModRegistry.GetApi<IMargo>("DaLion.Overhaul");
-                if (MargoAPI is null)
-                {
-                    Log.Error("Can't access the MARGO API. Is the mod installed correctly?");
-                }
-            }
         }
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
-            if (MargoAPI is not null)
+            if (MargoLoaded)
             {
                 string id = Skills.GetSkill("drbirbdev.Socializing").Id;
                 MargoAPI.RegisterCustomSkillForPrestige(id);

@@ -13,7 +13,7 @@ namespace DaLion.Shared.Classes;
 /// <summary>Counts down from a baseline value.</summary>
 internal sealed class Countdown
 {
-    /// <summary>Initializes a new instance of the <see cref="Countdown"/> class.Construct an instance.</summary>
+    /// <summary>Initializes a new instance of the <see cref="Countdown"/> class.</summary>
     /// <param name="initial">The initial value from which to count down.</param>
     public Countdown(int initial)
     {

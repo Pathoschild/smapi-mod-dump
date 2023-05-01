@@ -257,16 +257,18 @@ namespace PanningUpgrades
         {
             try
             {
-                var owner = Traverse.Create(requester).Field("owner").GetValue<Farmer>();
-                if (owner is null)
-                    return;
-
                 if (index == 303)
                 {
+                    Farmer owner = Traverse.Create(requester).Field("owner").GetValue<Farmer>();
+                    if (owner is null)
+                    {
+                        return;
+                    }
+
                     int upgradeLevel = owner.CurrentTool.UpgradeLevel;
                     int genderOffset = owner.IsMale ? -1 : 0;
-
-                    Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                    GameLocation location = Game1.currentLocation;
+                    location.temporarySprites.Add(new TemporaryAnimatedSprite(
                         textureName: ModEntry.Assets.SpritesPath,
                         sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
                         animationInterval: ModEntry.Config.AnimationFrameDuration,
@@ -283,9 +285,10 @@ namespace PanningUpgrades
                         rotation: 0f,
                         rotationChange: 0f)
                     {
+                        // TODO: figure out why endFunction doesn't get called in most multiplayer contexts.
                         endFunction = extraInfo =>
                         {
-                            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                            location.temporarySprites.Add(new TemporaryAnimatedSprite(
                                 textureName: ModEntry.Assets.SpritesPath,
                                 sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
                                 animationInterval: ModEntry.Config.AnimationFrameDuration,
@@ -304,7 +307,7 @@ namespace PanningUpgrades
                             {
                                 endFunction = extraInfo =>
                                 {
-                                    Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                                    location.temporarySprites.Add(new TemporaryAnimatedSprite(
                                         textureName: ModEntry.Assets.SpritesPath,
                                         sourceRect: UpgradeablePan.AnimationSourceRectangle(upgradeLevel),
                                         animationInterval: ModEntry.Config.AnimationFrameDuration * 2.5f,

@@ -19,5 +19,8 @@
   "UseRandomFlower": false,
   "UseFlowerBoost": false,
   "FlowersPerBoost": 2,
-  "UseAnyFruitTrees": false
+  "UseAnyFruitTrees": false,
+  "BeePaths": true,
+  "ParticleCount": 20,
+  "PathParticleCount": 5
 }

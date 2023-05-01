@@ -23,7 +23,7 @@ namespace AtraShared.ConstantsAndEnums;
 public enum StardewWeather : byte
 {
     /// <summary>
-    /// No weather contraints.
+    /// No weather constraints.
     /// </summary>
     None = 0,
 

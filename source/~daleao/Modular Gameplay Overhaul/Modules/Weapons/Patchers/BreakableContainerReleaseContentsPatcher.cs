@@ -20,6 +20,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using StardewValley.Tools;
 
 #endregion using directives
 
@@ -63,8 +64,14 @@ internal sealed class BreakableContainerReleaseContentsPatcher : HarmonyPatcher
             if (r.NextDouble() < WeaponsModule.State.ContainerDropAccumulator)
             {
                 WeaponsModule.State.ContainerDropAccumulator = 0.05;
+                var drop = MineShaft.getSpecialItemForThisMineLevel(mineLevel, x, y);
+                if (drop is MeleeWeapon weapon)
+                {
+                    weapon.RandomizeDamage();
+                }
+
                 Game1.createItemDebris(
-                    MineShaft.getSpecialItemForThisMineLevel(mineLevel, x, y),
+                    drop,
                     (new Vector2(x, y) * Game1.tileSize) + new Vector2(32f, 32f),
                     r.Next(4),
                     location);
@@ -79,13 +86,13 @@ internal sealed class BreakableContainerReleaseContentsPatcher : HarmonyPatcher
             if (shaft.GetAdditionalDifficulty() > 0)
             {
                 // qi gem
-                if (r.NextDouble() < 0.0064)
+                if (r.NextDouble() < 0.0068)
                 {
                     Game1.createMultipleObjectDebris(858, x, y, 1, location);
                 }
 
                 // trimmed lucky purple shorts ?
-                if (r.NextDouble() < 0.008)
+                if (r.NextDouble() < 0.0085)
                 {
                     Game1.createItemDebris(
                         new SObject(Vector2.Zero, 71),

@@ -12,19 +12,18 @@ namespace DaLion.Overhaul.Modules.Core.ConfigMenu;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Core.UI;
 using DaLion.Overhaul.Modules.Professions;
-using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.Extensions.Stardew;
-using DaLion.Shared.UI;
 using StardewValley.Buildings;
 
 #endregion using directives
 
 /// <summary>Constructs the GenericModConfigMenu integration.</summary>
-internal sealed partial class GenericModConfigMenuCore
+internal sealed partial class GenericModConfigMenu
 {
     /// <summary>Register the config menu if available.</summary>
-    private void RegisterProfessions()
+    private void AddProfessionOptions()
     {
         this
             .AddPage(OverhaulModule.Professions.Namespace, () => "Profession Settings")
@@ -37,7 +36,7 @@ internal sealed partial class GenericModConfigMenuCore
                 config => config.Professions.ModKey,
                 (config, value) => config.Professions.ModKey = value)
             .AddCheckbox(
-                () => "Show 'Max' Icon in Fish Collection",
+                () => "Show 'MAX' Icon in Fish Collection",
                 () => "Toggles whether or not to display the 'Max' icon below fish caught at max size.",
                 config => config.Professions.ShowFishCollectionMaxIcon,
                 (config, value) => config.Professions.ShowFishCollectionMaxIcon = value)
@@ -76,6 +75,7 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "If enabled, Prospector and Scavenger will only track off-screen objects while ModKey is held.",
                 config => config.Professions.DisableAlwaysTrack,
                 (config, value) => config.Professions.DisableAlwaysTrack = value)
+            .AddHorizontalRule()
 
             // professions
             .AddSectionTitle(() => "Profession Settings")
@@ -85,10 +85,10 @@ internal sealed partial class GenericModConfigMenuCore
                 config => config.Professions.ShouldJunimosInheritProfessions,
                 (config, value) => config.Professions.ShouldJunimosInheritProfessions = value)
             .AddCheckbox(
-                () => "Artisan Goods Always Same Quality As Input",
+                () => "Artisan Goods Always Input Quality",
                 () => "Enable this if you preferred the old broken Artisan perk without randomization.",
-                config => config.Professions.ArtisanGoodsAlwaysSameQualityAsInput,
-                (config, value) => config.Professions.ArtisanGoodsAlwaysSameQualityAsInput = value)
+                config => config.Professions.ArtisanGoodsAlwaysInputQuality,
+                (config, value) => config.Professions.ArtisanGoodsAlwaysInputQuality = value)
             .AddCheckbox(
                 () => "Bees Are Animals",
                 () => "Whether Bee House products should be affected by Producer bonuses.",
@@ -219,14 +219,14 @@ internal sealed partial class GenericModConfigMenuCore
                 4,
                 12)
             .AddNumberField(
-                () => "Trash Needed Per Tax Bonus Percent",
+                () => "Trash Per Tax Deduction %",
                 () => "Conservationists must collect this much trash for every 1% tax deduction the following season.",
-                config => (int)config.Professions.TrashNeededPerTaxBonusPct,
-                (config, value) => config.Professions.TrashNeededPerTaxBonusPct = (uint)value,
+                config => (int)config.Professions.TrashNeededPerTaxDeductionPct,
+                (config, value) => config.Professions.TrashNeededPerTaxDeductionPct = (uint)value,
                 10,
                 1000)
             .AddNumberField(
-                () => "Trash Needed Per Friendship Point",
+                () => "Trash Per Friendship Point",
                 () => "Conservationists must collect this much trash for every 1 friendship point towards villagers.",
                 config => (int)config.Professions.TrashNeededPerFriendshipPoint,
                 (config, value) => config.Professions.TrashNeededPerFriendshipPoint = (uint)value,
@@ -247,56 +247,58 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Professions.PiperBuffCeiling = (uint)value,
                 10,
                 1000)
+            .AddHorizontalRule()
 
             // ultimates
-            .AddSectionTitle(() => "Special Ability Settings")
+            .AddSectionTitle(() => "Limit Break Settings")
             .AddCheckbox(
-                () => "Enable Special Abilities",
-                () => "Must be enabled to allow activating special abilities.",
-                config => config.Professions.EnableSpecials,
-                (config, value) => config.Professions.EnableSpecials = value)
+                () => "Enable Limit Breaks",
+                () => "Must be enabled to allow using Limit Breaks.",
+                config => config.Professions.EnableLimitBreaks,
+                (config, value) => config.Professions.EnableLimitBreaks = value)
             .AddKeyBinding(
                 () => "Activation Key",
-                () => "The key used to activate the special ability.",
-                config => config.Professions.SpecialActivationKey,
-                (config, value) => config.Professions.SpecialActivationKey = value)
+                () => "The key used to activate the Limit Break.",
+                config => config.Professions.LimitBreakKey,
+                (config, value) => config.Professions.LimitBreakKey = value)
             .AddCheckbox(
                 () => "Hold-To-Activate",
-                () => "If enabled, the special ability will be activated only after a short delay.",
-                config => config.Professions.HoldKeyToActivateSpecial,
-                (config, value) => config.Professions.HoldKeyToActivateSpecial = value)
+                () => "If enabled, the Limit Break will be activated only by holding the key for a short interval.",
+                config => config.Professions.HoldKeyToLimitBreak,
+                (config, value) => config.Professions.HoldKeyToLimitBreak = value)
             .AddNumberField(
                 () => "Activation Delay",
-                () => "How long the key should be held before the special ability is activated, in seconds.",
-                config => config.Professions.SpecialActivationDelay,
-                (config, value) => config.Professions.SpecialActivationDelay = value,
+                () => "How long the key should be held before the Limit Break is activated, in seconds.",
+                config => config.Professions.LimitBreakHoldDelaySeconds,
+                (config, value) => config.Professions.LimitBreakHoldDelaySeconds = value,
                 0f,
                 3f,
                 0.2f)
             .AddNumberField(
                 () => "Gain Factor",
                 () =>
-                    "Affects the rate at which one builds the Ultimate gauge. Increase this if you feel the gauge raises too slowly.",
-                config => (float)config.Professions.SpecialGainFactor,
-                (config, value) => config.Professions.SpecialGainFactor = value,
+                    "Affects the rate at which one builds the Limit Break gauge. Increase this if you feel the gauge raises too slowly.",
+                config => (float)config.Professions.LimitGainFactor,
+                (config, value) => config.Professions.LimitGainFactor = value,
                 0.1f,
                 2f)
             .AddNumberField(
                 () => "Drain Factor",
                 () =>
-                    "Affects the rate at which the Ultimate gauge depletes during Ultimate. Lower numbers make Ultimate last longer.",
-                config => (float)config.Professions.SpecialDrainFactor,
-                (config, value) => config.Professions.SpecialDrainFactor = value,
+                    "Affects the rate at which the Limit Break gauge depletes during Ultimate. Lower numbers make Ultimate last longer.",
+                config => (float)config.Professions.LimitDrainFactor,
+                (config, value) => config.Professions.LimitDrainFactor = value,
                 0.5f,
                 2f)
             .AddNumberField(
-                () => "Cost of Special Ability Respec",
-                () => "Monetary cost of changing the chosen Special Ability. Set to 0 to change for free.",
-                config => (int)config.Professions.SpecialRespecCost,
-                (config, value) => config.Professions.SpecialRespecCost = (uint)value,
+                () => "Cost of Limit Break Respec",
+                () => "Monetary cost of changing the chosen Limit Break. Set to 0 to change for free.",
+                config => (int)config.Professions.LimitRespecCost,
+                (config, value) => config.Professions.LimitRespecCost = (uint)value,
                 0,
                 100000,
                 10000)
+            .AddHorizontalRule()
 
             // prestige
             .AddSectionTitle(() => "Prestige Settings")
@@ -324,14 +326,14 @@ internal sealed partial class GenericModConfigMenuCore
                 config => config.Professions.AllowMultiplePrestige,
                 (config, value) => config.Professions.AllowMultiplePrestige = value)
             .AddNumberField(
-                () => "Bonus Skill Experience After Reset",
+                () => "Bonus Skill Exp After Reset",
                 () => "Cumulative bonus that multiplies a skill's experience gain after each respective skill reset.",
                 config => config.Professions.PrestigeExpFactor,
                 (config, value) => config.Professions.PrestigeExpFactor = value,
                 -0.5f,
                 2f)
             .AddNumberField(
-                () => "Required Experience Per Extended Level",
+                () => "Required Exp Per Prestige Level",
                 () => "How much skill experience is required for each level-up beyond level 10.",
                 config => (int)config.Professions.RequiredExpPerExtendedLevel,
                 (config, value) => config.Professions.RequiredExpPerExtendedLevel = (uint)value,
@@ -350,11 +352,11 @@ internal sealed partial class GenericModConfigMenuCore
             .AddDropdown(
                 () => "Progression Style",
                 () => "Determines the style of the sprite that appears next to skill bars, and indicates the skill reset progression.",
-                config => config.Professions.PrestigeProgressionStyle.ToString(),
+                config => config.Professions.ProgressionStyle.ToString(),
                 (config, value) =>
                 {
-                    config.Professions.PrestigeProgressionStyle = Enum.Parse<Config.ProgressionStyle>(value);
-                    ModHelper.GameContent.InvalidateCacheAndLocalized(
+                    config.Professions.ProgressionStyle = Enum.Parse<Config.PrestigeProgressionStyle>(value);
+                    ModHelper.GameContent.InvalidateCache(
                         $"{Manifest.UniqueID}/PrestigeProgression");
                 },
                 new[] { "StackedStars", "Gen3Ribbons", "Gen4Ribbons" },
@@ -365,39 +367,40 @@ internal sealed partial class GenericModConfigMenuCore
                     "Gen4Ribbons" => "Gen 4 Ribbons",
                     _ => ThrowHelper.ThrowArgumentOutOfRangeException<string>(nameof(value), value, null),
                 })
+            .AddHorizontalRule()
 
             // experience settings
             .AddSectionTitle(() => "Experience Settings")
             .AddNumberField(
-                () => "Base Farming Experience Multiplier",
+                () => "Base Farming Exp Multiplier",
                 () => "Multiplies all skill experience gained for Farming from the start of the game.",
                 config => config.Professions.BaseSkillExpMultipliers[0],
                 (config, value) => config.Professions.BaseSkillExpMultipliers[0] = value,
                 0.2f,
                 2f)
             .AddNumberField(
-                () => "Base Fishing Experience Multiplier",
+                () => "Base Fishing Exp Multiplier",
                 () => "Multiplies all skill experience gained for Fishing from the start of the game.",
                 config => config.Professions.BaseSkillExpMultipliers[1],
                 (config, value) => config.Professions.BaseSkillExpMultipliers[1] = value,
                 0.2f,
                 2f)
             .AddNumberField(
-                () => "Base Foraging Experience Multiplier",
+                () => "Base Foraging Exp Multiplier",
                 () => "Multiplies all skill experience gained for Foraging from the start of the game.",
                 config => config.Professions.BaseSkillExpMultipliers[2],
                 (config, value) => config.Professions.BaseSkillExpMultipliers[2] = value,
                 0.2f,
                 2f)
             .AddNumberField(
-                () => "Base Mining Experience Multiplier",
+                () => "Base Mining Exp Multiplier",
                 () => "Multiplies all skill experience gained for Mining the start of the game.",
                 config => config.Professions.BaseSkillExpMultipliers[3],
                 (config, value) => config.Professions.BaseSkillExpMultipliers[3] = value,
                 0.2f,
                 2f)
             .AddNumberField(
-                () => "Base Combat Experience Multiplier",
+                () => "Base Combat Exp Multiplier",
                 () => "Multiplies all skill experience gained for Combat from the start of the game.",
                 config => config.Professions.BaseSkillExpMultipliers[4],
                 (config, value) => config.Professions.BaseSkillExpMultipliers[4] = value,
@@ -414,7 +417,7 @@ internal sealed partial class GenericModConfigMenuCore
             var skill = SCSkill.Loaded[skillId];
             this
                 .AddNumberField(
-                    () => $"Base {skill.DisplayName} Experience Multiplier",
+                    () => $"Base {skill.DisplayName} Exp Multiplier",
                     () => $"Multiplies all skill experience gained for {skill.StringId} from the start of the game.",
                     config => config.Professions.CustomSkillExpMultipliers[skillId],
                     (config, value) => config.Professions.CustomSkillExpMultipliers[skillId] = value,

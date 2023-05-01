@@ -14,6 +14,10 @@
         "Action": "EditData",
         "Target": "Characters/Dialogue/Haley",
         "Entries": {
+            "winter_Wed10": "It's hard ordering clothing online. So difficult finding the right size, and it's hard to know what something will look like on me.#$e#Not that I don't look good in anything.$h",
+
+            "summer_Fri8": "@, is there any point in me practicing my signature, when I'm likely to change my name when I get married?",
+
             "6_2": "@! My mother sent me a new mascara from %place! What do you think of it?$h#$e#It's a tubing mascara, so a lot less likely to smudge."
         }
     },
@@ -21,10 +25,27 @@
         "LogName": "Haley - Emily's parrot",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Haley",
-        "When": {"HasSeenEvent": 463391},
+        "When": {"HasSeenEvent": 463391}, // parrot event.
         "Entries": {
+            "summer_Tue10": "I think Emily's parrot might be able to say a few words!$h",
             "8_2": "Took some really nice photo's of Emily's parrot the other day. I think it enjoys posing for me.$h",
             "16_2": "Emily's parrot pooped on my favorite dress yesterday.$s#$b#Of course I don't blame it, it's just an animal. Doesn't mean I'm not mad about it though."
+        }
+    },
+    {
+        "LogName": "Haley - Y1",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Haley",
+        "Entries":{
+            "summer_Thu10": "Thinking of going to get an ice cream from the ice cream stand...What do you think?",
+            "summer_Fri10": "As much as I love my sister, sometimes I can't follow what she's on about.#$b#She's all obsessed with crystals these days, I'm not sure why.",
+            "summer_Sun10": "Might take a walk later, on the beach. You think I'll find any interesting shells?",
+
+            "winter_Tue2": "You're looking quite pale, @.",
+
+            "4{{YearRemainder}}": "@, I think our sink is leaking. Do you know how hard it is to get a plumber around these parts?$s",
+            "6{{YearRemainder}}": "@, do you believe love is destiny?",
+            "10{{YearRemainder}}": "Think I need to wash my hair soon...#$b#Got a new shampoo I've been itching to try, though. It's specially formulated for blonde hair!"
         }
     },
     {

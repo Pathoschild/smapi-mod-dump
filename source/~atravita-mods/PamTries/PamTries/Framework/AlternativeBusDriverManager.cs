@@ -14,6 +14,7 @@ using StardewModdingAPI.Events;
 
 namespace PamTries.Framework;
 
+[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "StyleCop doesn't understand records.")]
 public sealed record ScheduleData(int TimesPamDrivenThisWeek);
 
 /// <summary>
@@ -21,7 +22,7 @@ public sealed record ScheduleData(int TimesPamDrivenThisWeek);
 /// </summary>
 internal static class AlternativeBusDriverManager
 {
-    private static HashSet<string> busdrivers = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly HashSet<string> busdrivers = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Gets a random bus driver from the alternative bus drivers list.

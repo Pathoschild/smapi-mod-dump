@@ -57,7 +57,7 @@ namespace WhatAreYouMissing
         private List<MenuTab> pages;
         private List<int> tabIconParentSheetIndices;
 
-        public Menu() : base(Game1.viewport.Width / 2 - (800 + borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + borderWidth * 2) / 2, 800 + borderWidth * 2, 600 + borderWidth * 2, true)
+        public Menu() : base((int)((Game1.uiViewport.Width / 2) - 400 - borderWidth), (int)((Game1.uiViewport.Height / 2) - 300 - borderWidth), 800 + borderWidth * 2, 600 + borderWidth * 2, true)
         {
             tabs = new List<ClickableComponent>();
             pages = new List<MenuTab>();

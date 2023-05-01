@@ -13,6 +13,7 @@ using Shockah.Kokoro.SMAPI;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Shockah.CommonModCode.GMCM
@@ -194,7 +195,7 @@ namespace Shockah.CommonModCode.GMCM
 			);
 		}
 
-		public void AddEnumOption<EnumType>(string keyPrefix, Expression<Func<EnumType>> property, string? valuePrefix = null, string? fieldId = null, object? tokens = null) where EnumType : struct, Enum
+		public void AddEnumOption<EnumType>(string keyPrefix, Expression<Func<EnumType>> property, string? valuePrefix = null, Func<EnumType, bool>? isAllowed = null, string? fieldId = null, object? tokens = null) where EnumType : struct, Enum
 		{
 			var getValue = property.Compile()!;
 			var setValue = CreateSetter(property).Compile()!;
@@ -204,13 +205,13 @@ namespace Shockah.CommonModCode.GMCM
 				tooltip: GetOptionalTranslatedStringDelegate(TooltipPattern.Replace("{Key}", keyPrefix), tokens),
 				getValue: () => Enum.GetName(getValue())!,
 				setValue: value => setValue(Enum.Parse<EnumType>(value)),
-				allowedValues: Enum.GetNames<EnumType>(),
+				allowedValues: Enum.GetNames<EnumType>().Where(name => isAllowed is null || isAllowed(Enum.Parse<EnumType>(name))).ToArray(),
 				formatAllowedValue: value => Translations.Get(ValuePattern.Replace("{Key}", valuePrefix ?? keyPrefix).Replace("{Value}", value), tokens),
 				fieldId: fieldId
 			);
 		}
 
-		public void AddEnumOption<EnumType>(string keyPrefix, Func<EnumType> getValue, Action<EnumType> setValue, string? valuePrefix = null, string? fieldId = null, object? tokens = null) where EnumType : struct, Enum
+		public void AddEnumOption<EnumType>(string keyPrefix, Func<EnumType> getValue, Action<EnumType> setValue, string? valuePrefix = null, Func<EnumType, bool>? isAllowed = null, string? fieldId = null, object? tokens = null) where EnumType : struct, Enum
 		{
 			Api.AddTextOption(
 				mod: Mod,
@@ -218,7 +219,7 @@ namespace Shockah.CommonModCode.GMCM
 				tooltip: GetOptionalTranslatedStringDelegate(TooltipPattern.Replace("{Key}", keyPrefix), tokens),
 				getValue: () => Enum.GetName(getValue())!,
 				setValue: value => setValue(Enum.Parse<EnumType>(value)),
-				allowedValues: Enum.GetNames<EnumType>(),
+				allowedValues: Enum.GetNames<EnumType>().Where(name => isAllowed is null || isAllowed(Enum.Parse<EnumType>(name))).ToArray(),
 				formatAllowedValue: value => Translations.Get(ValuePattern.Replace("{Key}", valuePrefix ?? keyPrefix).Replace("{Value}", value), tokens),
 				fieldId: fieldId
 			);

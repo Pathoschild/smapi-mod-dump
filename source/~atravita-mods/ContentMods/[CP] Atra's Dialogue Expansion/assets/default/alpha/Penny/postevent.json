@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "LogName": "Penny - Y2",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Penny",
+        "When": {"YearModulus": "2"},
+        "Entries": {
+            "Mon8": "Some days I still can't believe I'm no longer living in a trailer.$h",
+
+            "3_2": "You'd think we wouldn't have so many dishes to do, considering the fact that Mom mostly lives off of TV dinners...",
+            "7_2": "Gotta swing by the post office to pick up our mail today.#$b#What am I waiting for? Just a copy of the latest Homes and Gardens magazine.#$e#I'd love, love to decorate more, but I haven't the time. It's hard enough just keeping our home clean.",
+            "11_2": "@, are you planning on seeing the new movie with %name Taylor?",
+            "13_2": "If you weren't a farmer, @, what would you want to be?#$b#Me? I'm not sure. I think...I think I mostly want to be a mother.#$e#When I was a kid I wanted to be an archaeologist though."
+        }
+    }
+]}

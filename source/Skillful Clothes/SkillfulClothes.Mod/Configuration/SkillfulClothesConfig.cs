@@ -25,5 +25,7 @@ namespace SkillfulClothes.Configuration
         public bool AllItemsCanBeTailored { get; set; } = false;
 
         public bool LoadCustomEffectDefinitions { get; set; } = false;
+
+        public bool verboseLogging { get; set; } = false;
     }
 }

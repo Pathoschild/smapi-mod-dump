@@ -56,6 +56,16 @@
     },
     {
         "Action": "Include",
+        "LogName": "Harvey - mid hearts, realism",
+        "FromFile": "assets/default/delta/Harvey/mid_realism.json",
+        "When": {
+            "EnableFor": "Harvey",
+            "Query: {{Hearts:Harvey}} >= 6": true,
+            "IncreasedRealism": true
+        }
+    },
+    {
+        "Action": "Include",
         "LogName": "Jodi - mid hearts",
         "FromFile": "assets/default/bravo/Jodi/mid.json",
         "When": {

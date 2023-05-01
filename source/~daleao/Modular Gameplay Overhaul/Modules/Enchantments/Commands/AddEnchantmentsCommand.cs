@@ -21,6 +21,7 @@ using DaLion.Overhaul.Modules.Slingshots.VirtualProperties;
 using DaLion.Overhaul.Modules.Weapons.VirtualProperties;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions;
+using DaLion.Shared.Extensions.Collections;
 using StardewValley;
 using StardewValley.Tools;
 
@@ -41,7 +42,7 @@ internal sealed class AddEnchantmentsCommand : ConsoleCommand
 
     /// <inheritdoc />
     public override string Documentation =>
-        "Add the specified enchantments to the selected weapon or slingshot." + this.GetUsage();
+        "Add the specified enchantments to the currently selected tool." + this.GetUsage();
 
     /// <inheritdoc />
     public override void Callback(string trigger, string[] args)
@@ -53,9 +54,9 @@ internal sealed class AddEnchantmentsCommand : ConsoleCommand
         }
 
         var tool = Game1.player.CurrentTool;
-        if (tool is not (MeleeWeapon or Slingshot))
+        if (tool is null)
         {
-            Log.W("You must select a weapon or slingshot first.");
+            Log.W("You must select a tool first.");
             return;
         }
 
@@ -74,28 +75,44 @@ internal sealed class AddEnchantmentsCommand : ConsoleCommand
                 "garnet" => new GarnetEnchantment(),
 
                 // weapon enchants
-                "haymaker" => new HaymakerEnchantment(),
+                "artful" when tool is MeleeWeapon => new MeleeArtfulEnchantment(),
                 "carving" => new CarvingEnchantment(),
                 "cleaving" => new CleavingEnchantment(),
                 "energized" or "thunderlords" => new EnergizedEnchantment(),
-                "exploding" or "blasting" => new ExplodingEnchantment(),
-                "tribute" or "gold" => new TributeEnchantment(),
-                "r_artful" => new NewArtfulEnchantment(),
-                "bloodthirsty" => new BloodthirstyEnchantment(),
+                "explosive" or "blasting" => new ExplosiveEnchantment(),
+                "bloodthirsty" or "vampiric" => new BloodthirstyEnchantment(),
+                "steadfast" => new SteadfastEnchantment(),
+                "mammonite" or "mammon" => new MammoniteEnchantment(),
+                "wabbajack" or "wabba" or "wab" => new WabbajackEnchantment(),
 
                 // slingshot enchants
-                "engorging" or "glutton" => new EngorgingEnchantment(),
+                "artful" when tool is Slingshot => new RangedArtfulEnchantment(),
+                "engorging" or "glutton" or "magnum" => new MagnumEnchantment(),
                 "gatling" => new GatlingEnchantment(),
-                "preserving" => new Ranged.PreservingEnchantment(),
+                "preserving" when tool is Slingshot => new Ranged.PreservingEnchantment(),
                 "quincy" => new QuincyEnchantment(),
                 "spreading" => new SpreadingEnchantment(),
 
-                // vanilla
-                "artful" => new ArtfulEnchantment(),
-                "bugkiller" => new BugKillerEnchantment(),
-                "crusader" => new CrusaderEnchantment(),
-                "vampiric" => new VampiricEnchantment(),
-                "magic" or "sunburst" => new MagicEnchantment(),
+                // vanilla weapon enchants
+                "haymaker" => new HaymakerEnchantment(),
+                "v_artful" => new ArtfulEnchantment(),
+                "v_bugkiller" => new BugKillerEnchantment(),
+                "v_crusader" => new CrusaderEnchantment(),
+                "v_vampiric" => new VampiricEnchantment(),
+                "v_magic" or "v_sunburst" => new MagicEnchantment(),
+
+                // tool enchants
+                "auto-hook" or "autohook" or "hook" => new AutoHookEnchantment(),
+                "arch" or "archaeologist" => new ArchaeologistEnchantment(),
+                "bottomless" => new BottomlessEnchantment(),
+                "efficient" => new EfficientToolEnchantment(),
+                "generous" => new GenerousEnchantment(),
+                "master" => new MasterEnchantment(),
+                "powerful" => new PowerfulEnchantment(),
+                "preserving" when tool is FishingRod => new StardewValley.PreservingEnchantment(),
+                "reaching" => new ReachingToolEnchantment(),
+                "shaving" => new ShavingEnchantment(),
+                "swift" => new SwiftToolEnchantment(),
 
                 _ => null,
             };
@@ -121,18 +138,23 @@ internal sealed class AddEnchantmentsCommand : ConsoleCommand
                 continue;
             }
 
+            // ensure old enchantments are replaced correctly
+            tool.enchantments
+                .Where(e => !e.IsForge() && !e.IsSecondaryEnchantment())
+                .ForEach(e => tool.RemoveEnchantment(e));
+
             tool.AddEnchantment(enchantment);
-            Log.I($"Applied {args[0].FirstCharToUpper()} enchantment to {tool.DisplayName}.");
+            Log.I($"Applied {enchantment.GetType().Name} to {tool.DisplayName}.");
 
             args = args.Skip(1).ToArray();
         }
 
         switch (tool)
         {
-            case MeleeWeapon weapon when WeaponsModule.IsEnabled:
+            case MeleeWeapon weapon when WeaponsModule.ShouldEnable:
                 weapon.Invalidate();
                 break;
-            case Slingshot slingshot when SlingshotsModule.IsEnabled:
+            case Slingshot slingshot when SlingshotsModule.ShouldEnable:
                 slingshot.Invalidate();
                 break;
         }

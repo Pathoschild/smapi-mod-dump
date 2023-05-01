@@ -55,6 +55,7 @@ namespace BetterBeehouses
 		public bool UseAnyFruitTrees { set; get; } = false;
 		public bool BeePaths { set; get; } = true;
 		public int ParticleCount { get; set; } = 20;
+		public int PathParticleCount { get; set; } = 5;
 
 		private ITranslationHelper i18n => ModEntry.helper.Translation;
 
@@ -83,6 +84,7 @@ namespace BetterBeehouses
 			UseAnyFruitTrees = false;
 			BeePaths = true;
 			ParticleCount = 20;
+			PathParticleCount = 5;
 		}
 
 		public void ApplyConfig()
@@ -98,7 +100,7 @@ namespace BetterBeehouses
 			integration.PFMAutomatePatch.Setup();
 			integration.CJBPatch.Setup();
 			ModEntry.helper.GameContent.InvalidateCache("Mods/aedenthorn.ParticleEffects/dict");
-			BeeManager.ApplyConfigCount(this.ParticleCount);
+			BeeManager.ApplyConfigCount(ParticleCount, PathParticleCount);
 		}
 
 		public void RegisterModConfigMenu(IManifest manifest)
@@ -110,32 +112,46 @@ namespace BetterBeehouses
 
 			api.Register(manifest, ResetToDefault, ApplyConfig);
 
+			//main
 			api.AddQuickInt(this, manifest, nameof(DaysToProduce), 1, 7);
 			api.AddQuickInt(this, manifest, nameof(FlowerRange), 1, 14);
 			api.AddQuickEnum<UsableOptions>(this, manifest, nameof(UsableIn));
 			api.AddQuickEnum<ProduceWhere>(this, manifest, nameof(ProduceInWinter));
-			api.AddQuickEnum<ProduceWhere>(this, manifest, nameof(UsePottedFlowers));
-			api.AddQuickBool(this, manifest, nameof(UseForageFlowers));
 			api.AddQuickBool(this, manifest, nameof(UseQuality));
 			api.AddQuickFloat(this, manifest, nameof(BearBoost), 1f, 3f, .05f);
+			api.AddQuickBool(this, manifest, nameof(UseFlowerBoost));
+			api.AddQuickInt(this, manifest, nameof(FlowersPerBoost), 1, 8);
+			api.AddQuickLink("sources", manifest);
+			api.AddQuickLink("visual", manifest);
+			api.AddQuickLink("price", manifest);
+			api.AddQuickLink("integration", manifest);
+
+			//sources
+			api.AddPage(manifest, "sources", () => i18n.Get("config.sources.name"));
+			api.AddQuickEnum<ProduceWhere>(this, manifest, nameof(UsePottedFlowers));
+			api.AddQuickBool(this, manifest, nameof(UseForageFlowers));
 			api.AddQuickBool(this, manifest, nameof(UseRandomFlower));
 			api.AddQuickBool(this, manifest, nameof(UseGiantCrops));
 			api.AddQuickBool(this, manifest, nameof(UseFruitTrees));
-			api.AddQuickBool(this, manifest, nameof(UseFlowerBoost));
-			api.AddQuickInt(this, manifest, nameof(FlowersPerBoost), 1, 8);
 			api.AddQuickBool(this, manifest, nameof(UseAnyFruitTrees));
-			api.AddQuickBool(this, manifest, nameof(BeePaths));
-			api.AddPageLink(manifest, "price", () => i18n.Get("config.price.name"), () => i18n.Get("config.price.desc"));
-			api.AddPageLink(manifest, "integration", () => i18n.Get("config.integration.name"), () => i18n.Get("config.integration.desc"));
 
-			//integration
-			api.AddPage(manifest, "integration", () => i18n.Get("config.integration.name"));
+			//visual
+			api.AddPage(manifest, "visual", () => i18n.Get("config.visual.name"));
 			if (ModEntry.AeroCore is not null || ModEntry.helper.ModRegistry.IsLoaded("aedenthorn.ParticleEffects"))
 			{
 				api.AddQuickBool(this, manifest, nameof(Particles));
 				if (ModEntry.AeroCore is not null) // not easily supported with Particles mod
 					api.AddQuickInt(this, manifest, nameof(ParticleCount), 1, 40);
 			}
+			else
+			{
+				api.AddParagraph(manifest, () => i18n.Get("config.noparticles"));
+			}
+			api.AddQuickBool(this, manifest, nameof(BeePaths));
+			api.AddQuickInt(this, manifest, nameof(PathParticleCount), 0, 20);
+
+			//integration
+			api.AddPage(manifest, "integration", () => i18n.Get("config.integration.name"));
 			api.AddQuickBool(this, manifest, nameof(PatchAutomate));
 			api.AddQuickBool(this, manifest, nameof(PatchPFM));
 			api.AddQuickBool(this, manifest, nameof(PatchCJB));

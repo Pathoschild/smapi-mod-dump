@@ -8,53 +8,35 @@
 **
 *************************************************/
 
-using BirbShared;
-using BirbShared.Config;
-using BirbShared.Command;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using BirbShared.Asset;
 using BirbShared.APIs;
-using HarmonyLib;
+using BirbShared.Mod;
 
 namespace RanchingToolUpgrades
 {
     internal class ModEntry : Mod
     {
+        [SmapiInstance]
         public static ModEntry Instance;
+        [SmapiConfig]
         public static Config Config;
+        [SmapiCommand]
+        public static Command Command;
+        [SmapiAsset]
         public static Assets Assets;
-
+        [SmapiApi(UniqueID = "spacechase0.SpaceCore")]
         public static ISpaceCore SpaceCore;
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
-
-            Config = helper.ReadConfig<Config>();
-
-            Assets = new Assets();
-            new AssetClassParser(this, Assets).ParseAssets();
-
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
+            mod.ApisLoaded += this.ModClassParser_ApisLoaded;
         }
 
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        private void ModClassParser_ApisLoaded(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            new ConfigClassParser(this, Config).ParseConfigs();
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
-            new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
-
-            SpaceCore = this.Helper.ModRegistry
-                .GetApi<ISpaceCore>
-                ("spacechase0.SpaceCore");
-            if (SpaceCore is null)
-            {
-                Log.Error("Can't access the SpaceCore API. Is the mod installed correctly?");
-                return;
-            }
-
             SpaceCore.RegisterSerializerType(typeof(UpgradeablePail));
             SpaceCore.RegisterSerializerType(typeof(UpgradeableShears));
         }

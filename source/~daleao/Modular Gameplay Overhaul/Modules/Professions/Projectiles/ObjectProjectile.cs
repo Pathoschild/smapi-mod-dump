@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Professions.Projectiles;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
@@ -84,15 +85,15 @@ internal sealed class ObjectProjectile : BasicProjectile
         this.Source = source;
         this.Firer = firer;
         this.Overcharge = overcharge;
-        this.Damage = (int)(this.damageToFarmer.Value * source.Get_EffectiveDamageModifier() * (1f + firer.attackIncreaseModifier) * overcharge);
-        this.Knockback = knockback * source.Get_EffectiveKnockbackModifer() * (1f + firer.knockbackModifier) * overcharge;
+        this.Damage = (int)(this.damageToFarmer.Value * source.Get_RubyDamageModifier() * (1f + firer.attackIncreaseModifier) * overcharge);
+        this.Knockback = knockback * source.Get_AmethystKnockbackModifer() * (1f + firer.knockbackModifier) * overcharge;
 
         var canCrit = SlingshotsModule.Config.EnableCriticalHits;
         this.CritChance = canCrit
-            ? 0.025f * source.Get_EffectiveCritChanceModifier() * (1f + firer.critChanceModifier)
+            ? 0.025f * source.Get_AquamarineCritChanceModifier() * (1f + firer.critChanceModifier)
             : 0f;
         this.CritPower = canCrit
-            ? 2f * source.Get_EffectiveCritPowerModifier() * (1f + firer.critPowerModifier)
+            ? 2f * source.Get_JadeCritPowerModifier() * (1f + firer.critPowerModifier)
             : 0f;
 
         this.CanPierce = !this.IsSquishy() && ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo;
@@ -171,12 +172,11 @@ internal sealed class ObjectProjectile : BasicProjectile
                 return;
             }
 
-            if (monster.CanBeSlowed() && Game1.random.NextDouble() < 2d / 3d)
+            if (monster.CanBeSlowed() && CombatModule.ShouldEnable && Game1.random.NextDouble() < 2d / 3d)
             {
                 // do debuff
-                monster.Get_SlowIntensity().Value = 2;
-                monster.Get_SlowTimer().Value = 5123 + (Game1.random.Next(-2, 3) * 456);
-                monster.Set_Slower(this.Firer);
+                monster.Slow(5123 + (Game1.random.Next(-2, 3) * 456),  1d / 3d);
+                monster.startGlowing(Color.LimeGreen, false, 0.05f);
             }
         }
 
@@ -217,15 +217,9 @@ internal sealed class ObjectProjectile : BasicProjectile
                 .Invoke(this, location);
         }
 
-        // check for stun
-        //if (this.Firer.HasProfession(Profession.Rascal, true) && this.DidBounce)
-        //{
-        //    monster.stunTime = 2000;
-        //}
-
         // increment Desperado ultimate meter
         if (this.Firer.IsLocalPlayer && this.Firer.Get_Ultimate() is DeathBlossom { IsActive: false } blossom &&
-            ProfessionsModule.Config.EnableSpecials)
+            ProfessionsModule.Config.EnableLimitBreaks)
         {
             blossom.ChargeValue += (this.DidBounce || this.DidPierce ? 18 : 12) -
                                    (10 * this.Firer.health / this.Firer.maxHealth);
@@ -236,7 +230,7 @@ internal sealed class ObjectProjectile : BasicProjectile
     public override void behaviorOnCollisionWithOther(GameLocation location)
     {
         base.behaviorOnCollisionWithOther(location);
-        if (this.Ammo is null || this.Firer is null || this.Source is null || !ProfessionsModule.IsEnabled)
+        if (this.Ammo is null || this.Firer is null || this.Source is null || !ProfessionsModule.ShouldEnable)
         {
             return;
         }
@@ -261,16 +255,14 @@ internal sealed class ObjectProjectile : BasicProjectile
         }
 
         chance -= this._pierceCount * 0.2;
-        if (chance < 0d || Game1.random.NextDouble() > chance)
+        if (chance > 0d && Game1.random.NextDouble() < chance)
         {
-            return;
+            location.debris.Add(
+                new Debris(
+                    this.Ammo.ParentSheetIndex,
+                    new Vector2((int)this.position.X, (int)this.position.Y),
+                    this.Firer.getStandingPosition()));
         }
-
-        location.debris.Add(
-            new Debris(
-                this.Ammo.ParentSheetIndex,
-                new Vector2((int)this.position.X, (int)this.position.Y),
-                this.Firer.getStandingPosition()));
     }
 
     /// <inheritdoc />

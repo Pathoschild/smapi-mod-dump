@@ -1,0 +1,33 @@
+{
+	"Name": "Hot Chocolate",
+	"Price": 200,
+	"Description": "A warm and sweet drink often enjoyed in the winter.",
+	"Category": "Crafting",
+	"Edibility": 10,
+	"EdibleIsDrink": true,
+	"EdibleBuffs": {
+		"Farming": 0,
+		"Fishing": 0,
+		"Mining": 0,
+		"Luck": 1,
+		"Foraging": 0,
+		"MaxStamina": 0,
+		"MagnetRadius": 0,
+		"Speed": 1,
+		"Defense": 0,
+		"Attack": 0,
+		"Duration": 125
+		},
+	"IsColored": false,
+	"CanPurchase": true,
+	"PurchaseFrom": "Gus",
+	"PurchasePrice": 400,
+	"GiftTastes":
+		{
+			"Love": ["Jas", "Penny", "Krobus", "Robin", "Abigail", "Demetrius", "Evelyn", "Gus", "Vincent"],
+			"Like": ["Sam", "Willy", "Elliott", "Shane", "Emily", "Maru", "Caroline", "George", "Jodi", "Kent", "Lewis", "Linus", "Marnie"],
+			"Neutral": ["Haley", "Alex", "Leo", "Pam", "Pierre"],
+			"Dislike": ["Harvey", "Sebastian", "Leah", "Clint", "Sandy"],
+			"Hate": ["Wizard", "Dwarf"]
+		}	
+}

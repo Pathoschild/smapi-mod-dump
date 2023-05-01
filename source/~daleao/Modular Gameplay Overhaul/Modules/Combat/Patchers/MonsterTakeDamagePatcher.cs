@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
@@ -36,25 +37,43 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
     }
 
     /// <inheritdoc />
-    protected override void ApplyImpl(Harmony harmony)
+    protected override bool ApplyImpl(Harmony harmony)
     {
-        base.ApplyImpl(harmony);
+        if (!base.ApplyImpl(harmony))
+        {
+            return false;
+        }
+
         foreach (var target in TargetMethods())
         {
             this.Target = target;
-            base.ApplyImpl(harmony);
+            if (!base.ApplyImpl(harmony))
+            {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /// <inheritdoc />
-    protected override void UnapplyImpl(Harmony harmony)
+    protected override bool UnapplyImpl(Harmony harmony)
     {
-        base.UnapplyImpl(harmony);
+        if (!base.UnapplyImpl(harmony))
+        {
+            return false;
+        }
+
         foreach (var target in TargetMethods())
         {
             this.Target = target;
-            base.UnapplyImpl(harmony);
+            if (!base.UnapplyImpl(harmony))
+            {
+                return false;
+            }
         }
+
+        return true;
     }
 
     [HarmonyTargetMethods]
@@ -73,6 +92,19 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
 
     #region harmony patches
 
+    /// <summary>Frozen effect.</summary>
+    [HarmonyPrefix]
+    private static void MonsterTakeDamagePrefix(Monster __instance, ref int damage)
+    {
+        if (!__instance.IsFrozen())
+        {
+            return;
+        }
+
+        damage *= 3;
+        __instance.Defrost();
+    }
+
     /// <summary>Crits ignore defense, which, btw, actually does something.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? MonsterTakeDamageTranspiler(
@@ -80,8 +112,8 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
     {
         var helper = new ILHelper(original, instructions);
 
-        // Injected: ModEntry.Config.Combat.OverhauledDefense ? TryIgnoreDefense(this, damage) : continue
-        // At: start of method
+        // From: int actualDamage = ...
+        // To: int actualDamage = ModEntry.Config.Combat.OverhauledDefense ? TryIgnoreDefense(this, damage) : ...
         try
         {
             var doVanillaDefense = generator.DefineLabel();

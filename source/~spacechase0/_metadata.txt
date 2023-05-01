@@ -75,9 +75,12 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit aade32babedfdaf2b353f9f9b3004580154ec385
-   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sun Mar 12 11:35:40 2023 -0400
+   commit 55336b1943ed997cf511f8dbd0f32191bd1079f3
+   Merge: e93f783b bdccaaa9
+   Author: Casey W <spacechase0@users.noreply.github.com>
+   Date:   Sat Apr 22 13:00:06 2023 -0400
    
-       Fix JA forge recipes, again.
+       Merge pull request #355 from atravita-mods/patch-4
+       
+       add two more things to bigskip
    

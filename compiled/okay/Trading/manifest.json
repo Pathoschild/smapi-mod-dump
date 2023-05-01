@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Trading",
     "Author": "MindMeltMax",
-    "Version": "1.0.1",
+    "Version": "1.0.2",
     "Description": "Player to Player trading made easy",
     "UniqueID": "MindMeltMax.Trading",
     "EntryDll": "Trading.dll",

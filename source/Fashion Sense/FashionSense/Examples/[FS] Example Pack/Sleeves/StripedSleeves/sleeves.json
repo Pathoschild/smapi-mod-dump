@@ -354,7 +354,10 @@
     ]
   },
   "BackSleeves": {
-    "DrawBeforeHair": true,
+    "DrawOrderOverride": {
+      "Preposition": "Before",
+      "AppearanceType": "Hair"
+    },
     "ColorMasks": [
       [ 212, 208, 197 ]
     ],

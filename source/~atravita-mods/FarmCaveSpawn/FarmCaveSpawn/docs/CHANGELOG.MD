@@ -9,13 +9,13 @@ for queries and analysis.**
 Changelog
 ======
 #### Todo
-
-* Nothing! Awaiting future object updates, but have no more ideas at current.
+* Make progression mode retroactive. Gonna have to do a search of...everywhere.
 
 #### 1.6 todo
 * Switch all ID lookup to the new system.
 * Figure out DGA fruit trees.
 <!-- bat eyes for custom locations? -->
+
 
 #### Version 1.1.3
 * Recompiled for new AtraCore.

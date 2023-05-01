@@ -22,6 +22,7 @@ using DaLion.Shared.Integrations.JsonAssets;
 [RequiresMod("spacechase0.JsonAssets", "Json Assets", "1.10.7")]
 internal sealed class JsonAssetsIntegration : ModIntegration<JsonAssetsIntegration, IJsonAssetsApi>
 {
+    /// <summary>Initializes a new instance of the <see cref="JsonAssetsIntegration"/> class.</summary>
     internal JsonAssetsIntegration()
         : base("spacechase0.JsonAssets", "Json Assets", "1.10.7", ModHelper.ModRegistry)
     {
@@ -63,21 +64,21 @@ internal sealed class JsonAssetsIntegration : ModIntegration<JsonAssetsIntegrati
         Globals.GarnetIndex = this.ModApi.GetObjectId("Garnet");
         if (Globals.GarnetIndex == -1)
         {
-            Log.W("[Rings]: Failed to get an ID for Garnet from Json Assets.");
+            Log.W("[RNGS]: Failed to get an ID for Garnet from Json Assets.");
         }
 
         Globals.GarnetRingIndex = this.ModApi.GetObjectId("Garnet Ring");
         if (Globals.GarnetRingIndex == -1)
         {
-            Log.W("[Rings]: Failed to get an ID for Garnet Ring from Json Assets.");
+            Log.W("[RNGS]: Failed to get an ID for Garnet Ring from Json Assets.");
         }
 
         Globals.InfinityBandIndex = this.ModApi.GetObjectId("Infinity Band");
         if (Globals.InfinityBandIndex == -1)
         {
-            Log.W("[Rings]: Failed to get an ID for Infinity Band from Json Assets.");
+            Log.W("[RNGS]: Failed to get an ID for Infinity Band from Json Assets.");
         }
 
-        Log.T("[Rings]: Done assigning IDs for custom items in the Rings module.");
+        Log.T("[RNGS]: Done assigning IDs for custom items in the Rings module.");
     }
 }

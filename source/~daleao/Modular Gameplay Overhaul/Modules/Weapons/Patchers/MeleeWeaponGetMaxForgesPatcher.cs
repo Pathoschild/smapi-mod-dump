@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers;
 #region using directives
 
 using System.Reflection;
-using Modules.Weapons.Enchantments;
+using DaLion.Overhaul.Modules.Weapons.Enchantments;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Tools;
@@ -42,6 +42,12 @@ internal sealed class MeleeWeaponGetMaxForgesPatcher : HarmonyPatcher
 
         try
         {
+            if (__instance.isScythe())
+            {
+                __result = 0;
+                return false; // don't run original logic
+            }
+
             __result = __instance.getItemLevel() switch
             {
                 >= 6 => 3,

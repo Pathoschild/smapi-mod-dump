@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using BirbShared;
-using BirbShared.Config;
+using BirbShared.Mod;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
@@ -23,23 +23,14 @@ namespace WinterStarSpouse
 {
     public class ModEntry : Mod
     {
-
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiConfig]
         internal static Config Config;
         public override void Entry(IModHelper helper)
         {
-            ModEntry.Instance = this;
-            Log.Init(this.Monitor);
-
-            ModEntry.Config = helper.ReadConfig<Config>();
-
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
-        }
-
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
-        {
-            new ConfigClassParser(this, Config).ParseConfigs();
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
         }
     }
 

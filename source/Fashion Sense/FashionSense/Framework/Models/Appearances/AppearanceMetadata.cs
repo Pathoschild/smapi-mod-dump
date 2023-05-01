@@ -9,18 +9,19 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace FashionSense.Framework.Models.Appearances
 {
     public class AppearanceMetadata
     {
         public AppearanceModel Model { get; set; }
-        public Color Color { get; set; }
+        public List<Color> Colors { get; set; }
 
-        public AppearanceMetadata(AppearanceModel model, Color color)
+        public AppearanceMetadata(AppearanceModel model, List<Color> colors)
         {
             Model = model;
-            Color = color;
+            Colors = colors;
         }
     }
 }

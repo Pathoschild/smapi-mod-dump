@@ -46,8 +46,6 @@ internal static class AutomateTranspiler
             harmony.Patch(
                 original: machine.InstanceMethodNamed("GenericPullRecipe", new[] { storage, recipe.MakeArrayType(), typeof(Item).MakeByRefType() }),
                 transpiler: new HarmonyMethod(typeof(AutomateTranspiler), nameof(Transpiler)));
-
-            // Patch the bone mill.
         }
         catch (Exception ex)
         {

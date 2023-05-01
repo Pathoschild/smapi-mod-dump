@@ -12,29 +12,30 @@ using System;
 using System.Collections.Generic;
 using BirbShared;
 using BirbShared.APIs;
-using BirbShared.Command;
-using BirbShared.Config;
-using HarmonyLib;
+using BirbShared.Mod;
 using StardewModdingAPI;
 
 namespace GameboyArcade
 {
     public class ModEntry : Mod
     {
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiConfig]
         internal static Config Config;
+        [SmapiCommand]
+        internal static Command Command;
+        [SmapiApi(UniqueID = "spacechase0.DynamicGameAssets")]
+        internal static IDynamicGameAssetsApi DynamicGameAssets;
 
         internal static Dictionary<string, Content> LoadedContentPacks = new Dictionary<string, Content>();
         internal static Dictionary<string, string> BigCraftableIDMap = new Dictionary<string, string>();
 
-        internal static IDynamicGameAssetsApi DynamicGameAssets;
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
-            Config = helper.ReadConfig<Config>();
-
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
             this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
             this.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived_SaveRequest;
             this.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived_LoadRequest;
@@ -48,21 +49,6 @@ namespace GameboyArcade
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
-            new ConfigClassParser(this, Config).ParseConfigs();
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
-            new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
-
-            if (this.Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
-            {
-                DynamicGameAssets = this.Helper.ModRegistry
-                    .GetApi<IDynamicGameAssetsApi>
-                    ("spacechase0.DynamicGameAssets");
-                if (DynamicGameAssets is null)
-                {
-                    Log.Error("Can't access the Dynamic Game Assets API. Is the mod installed correctly?");
-                }
-            }
-
             this.LoadContentPacks();
         }
 

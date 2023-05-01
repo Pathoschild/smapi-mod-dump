@@ -214,7 +214,7 @@ namespace Shoplifter
             }
 
             // Check player hasn't reached daily shoplifting limit for the shop
-            else if (config.MaxShopliftsPerStore > 1 && ModEntry.PerScreenShopliftedShops.Value.ContainsKey(shop) == true && ModEntry.PerScreenShopliftedShops.Value[shop] >= config.MaxShopliftsPerStore)
+            else if (ModEntry.PerScreenShopliftedShops.Value.ContainsKey(shop) == true && ModEntry.PerScreenShopliftedShops.Value[shop] >= config.MaxShopliftsPerStore)
             {
                 // Player has reached limit, exit method after displaying dialogue box
                 Game1.drawObjectDialogue(i18n.string_AlreadyShopliftedSameShop());
@@ -245,7 +245,7 @@ namespace Shoplifter
                     ModEntry.PerScreenStolen.Value = false;
 
                     // Not caught, generate stock for shoplifting, on purchase adjust counters
-                    Game1.activeClickableMenu = new ShopMenu(ShopStock.generateRandomStock(maxstock, maxquantity, shop), 3, null, delegate
+                    Game1.activeClickableMenu = new ShopMenu(ShopStock.generateRandomStock(maxstock, maxquantity, shop), 0, null, delegate
                     {
                         if (ModEntry.PerScreenStolen.Value == false)
                         {
@@ -253,7 +253,7 @@ namespace Shoplifter
                             ModEntry.PerScreenShopliftCounter.Value++;
                         }                        
 
-                        if (config.MaxShopliftsPerStore > 1 && ModEntry.PerScreenShopliftedShops.Value.ContainsKey(shop) == false)
+                        if (ModEntry.PerScreenShopliftedShops.Value.ContainsKey(shop) == false)
                         {
                             // Add shop to list of shoplifted shops if needed
                             ModEntry.PerScreenShopliftedShops.Value.Add(shop, 1);
@@ -344,14 +344,22 @@ namespace Shoplifter
                 return;
             }
 
-            // Pierre is not at shop and on island, player can purchase stock properly or steal, ignore if can't shoplift
-            else if (location.getCharacterFromName("Pierre") == null && Game1.IsVisitingIslandToday("Pierre") == true && CanShoplift("SeedShop") == true)
+            // Pierre is not at shop and on island, player can purchase stock properly or steal
+            else if (location.getCharacterFromName("Pierre") == null && Game1.IsVisitingIslandToday("Pierre") == true)
             {
                 Game1.dialogueUp = false;
                 Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:SeedShop_MoneyBox"));
                 Game1.afterDialogues = delegate
                 {
-                    ShopliftingMenu(location, new string[3] { "Pierre", "Caroline", "Abigail" }, "SeedShop", 5, 5, true);
+                    if (CanShoplift("SeedShop") == true)
+                    {
+                        ShopliftingMenu(location, new string[3] { "Pierre", "Caroline", "Abigail" }, "SeedShop", 5, 5, true);
+                    }
+                    else
+                    {
+                        Game1.activeClickableMenu = new ShopMenu((location as SeedShop).shopStock());
+                    }
+
                 };
             }
 
@@ -374,8 +382,8 @@ namespace Shoplifter
             // Player is in correct position for buying
             if (who.getTileY() > tileLocation.Y)
             {
-                // Robin is on island and not at sciencehouse, she can't sell but player can purchase properly if they want, ignore if can't shoplift
-                if (location.getCharacterFromName("Robin") == null && Game1.IsVisitingIslandToday("Robin") == true && CanShoplift("Carpenters") == true)
+                // Robin is on island and not at sciencehouse, she can't sell but player can purchase properly if they want
+                if (location.getCharacterFromName("Robin") == null && Game1.IsVisitingIslandToday("Robin") == true)
                 {
                     // Close any current dialogue boxes
                     Game1.dialogueUp = false;
@@ -384,8 +392,16 @@ namespace Shoplifter
                     // Create question to shoplift after dialogue box is exited
                     Game1.afterDialogues = delegate
                     {
-                        ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenters", 2, 20, true);
-                    };
+                        if (CanShoplift("Carpenters") == true)
+                        {
+                            ShopliftingMenu(location, new string[4] { "Robin", "Demetrius", "Maru", "Sebastian" }, "Carpenters", 2, 20, true);
+                        }
+                        else
+                        {
+                            Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock());
+                        }
+                        
+                    };                   
                 }
 
                 // Robin is absent and can't sell, player can steal
@@ -426,14 +442,22 @@ namespace Shoplifter
             if (who.getTileY() > tileLocation.Y)
             {
                 // Marnie is not in the location, she is on the island, ignore if can't shoplift
-                if (location.getCharacterFromName("Marnie") == null && Game1.IsVisitingIslandToday("Marnie") == true && CanShoplift("AnimalShop") == true)
+                if (location.getCharacterFromName("Marnie") == null && Game1.IsVisitingIslandToday("Marnie") == true)
                 {
                     Game1.dialogueUp = false;
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:AnimalShop_MoneyBox"));
                     Game1.afterDialogues = delegate
                     {
-                        ShopliftingMenu(location, new string[2] { "Marnie", "Shane" }, "AnimalShop", 1, 15, true);
-                    };
+                        if (CanShoplift("AnimalShop") == true)
+                        {
+                            ShopliftingMenu(location, new string[2] { "Marnie", "Shane" }, "AnimalShop", 1, 15, true);
+                        }
+                        else
+                        {
+                            Game1.activeClickableMenu = new ShopMenu(Utility.getAnimalShopStock());
+                        }
+
+                    };                                       
                 }
 
                 // Marnie is not at the location and is absent for the day
@@ -496,14 +520,25 @@ namespace Shoplifter
         public static void SaloonShopliftingMenu(GameLocation location, Location tilelocation)
         {           
             // Gus is not in the location, he is on the island, ignore if can't shoplift
-            if (location.getCharacterFromName("Gus") == null && Game1.IsVisitingIslandToday("Gus") == true && CanShoplift("Saloon") == true)
+            if (location.getCharacterFromName("Gus") == null && Game1.IsVisitingIslandToday("Gus") == true)
             {
                 Game1.dialogueUp = false;
                 Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:Saloon_MoneyBox"));
                 Game1.afterDialogues = delegate
                 {
-                    ShopliftingMenu(location, new string[2] { "Gus", "Emily" }, "Saloon", 2, 1, true);
-                };                               
+                    if (CanShoplift("Saloon") == true)
+                    {
+                        ShopliftingMenu(location, new string[2] { "Gus", "Emily" }, "Saloon", 2, 1, true);
+                    }
+                    else
+                    {
+                        Game1.activeClickableMenu = new ShopMenu(Utility.getSaloonStock(), 0, null, delegate (ISalable item, Farmer farmer, int amount)
+                        {
+                            Game1.player.team.synchronizedShopStock.OnItemPurchased(SynchronizedShopStock.SynchedShop.Saloon, item, amount);
+                            return false;
+                        });
+                    }
+                };                                                      
             }
 
             // Gus can sell, player can't steal

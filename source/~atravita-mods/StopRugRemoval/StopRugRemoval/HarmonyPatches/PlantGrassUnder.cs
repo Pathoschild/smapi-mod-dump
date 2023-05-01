@@ -10,6 +10,10 @@
 
 using System.Reflection;
 using AtraBase.Toolkit.Reflection;
+
+using AtraShared.Integrations;
+using AtraShared.Integrations.Interfaces;
+
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.Objects;
@@ -24,6 +28,9 @@ namespace StopRugRemoval.HarmonyPatches;
 internal static class PlantGrassUnder
 {
     private static Func<bool>? isSmartBuildingInBuildMode = null;
+
+    private static IGrowableGiantCrops? growableGiantCropsAPI;
+    private static IMoreGrassStartersAPI? moreGrassStartersAPI;
 
     /// <summary>
     /// Gets the methods to patch.
@@ -64,17 +71,29 @@ internal static class PlantGrassUnder
         }
         try
         {
-            // TODO: fix this with MoreGrassStarters.
-
             // Grass starter = 297
-            if (Utility.IsNormalObjectAtParentSheetIndex(__0, 297) && !(isSmartBuildingInBuildMode?.Invoke() == true))
+            if (__0 is SObject starter && !(isSmartBuildingInBuildMode?.Invoke() == true))
             {
+                Grass? grass = null;
+                if (Utility.IsNormalObjectAtParentSheetIndex(starter, 297))
+                {
+                    grass ??= growableGiantCropsAPI?.GetMatchingGrass(starter) ?? new Grass(Grass.springGrass, 4);
+                }
+                else if (moreGrassStartersAPI?.GetMatchingGrass(starter) is Grass moreGrassStartersGrass)
+                {
+                    grass = moreGrassStartersGrass;
+                }
+                else
+                {
+                    return;
+                }
+
                 GameLocation location = __2.currentLocation;
                 Vector2 placementTile = __instance.TileLocation;
 
                 if (!location.terrainFeatures.ContainsKey(placementTile) && !location.isWaterTile((int)placementTile.X, (int)placementTile.Y))
                 {
-                    location.terrainFeatures.Add(placementTile, new Grass(Grass.springGrass, 4));
+                    location.terrainFeatures.Add(placementTile, grass);
                     location.playSound("dirtyHit");
                     __result = true;
                 }
@@ -90,7 +109,7 @@ internal static class PlantGrassUnder
     /// Grabs a reference to Smart Building's CurrentlyInBuildMode.
     /// </summary>
     /// <param name="registry">ModRegistry.</param>
-    internal static void GetSmartBuildingBuildMode(IModRegistry registry)
+    internal static void GetSmartBuildingBuildMode(ITranslationHelper translation, IModRegistry registry)
     {
         if (registry.Get("DecidedlyHuman.SmartBuilding") is not IModInfo info || info.Manifest.Version.IsOlderThan("1.3.2"))
         {
@@ -106,5 +125,10 @@ internal static class PlantGrassUnder
         {
             ModEntry.ModMonitor.Log("SmartBuilding is installed BUT compat unsuccessful. You may see issues, please bring this log to atravita!", LogLevel.Info);
         }
+
+        var helper = new IntegrationHelper(ModEntry.ModMonitor, translation, registry, LogLevel.Trace);
+
+        _ = helper.TryGetAPI("atravita.GrowableGiantCrops", null, out growableGiantCropsAPI)
+            || helper.TryGetAPI("spacechase0.MoreGrassStarters", "1.2.2", out moreGrassStartersAPI);
     }
 }

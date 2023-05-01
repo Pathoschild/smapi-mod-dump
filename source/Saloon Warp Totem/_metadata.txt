@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Artinity/SaloonWarpTotem
+   Git: https://github.com/Artinity/SaloonWarpTotem.git
+
+mods:
+   Saloon Warp Totem
+
+latest commit:
+   commit c6f0752ff4138fae9544857be809e5a7126b988f
+   Merge: f7a6b0b a48afc9
+   Author: Artinity <31357507+Artinity@users.noreply.github.com>
+   Date:   Wed Apr 26 14:45:49 2023 +0200
+   
+       Merge branch 'main' of https://github.com/Artinity/SaloonWarpTotem
+   

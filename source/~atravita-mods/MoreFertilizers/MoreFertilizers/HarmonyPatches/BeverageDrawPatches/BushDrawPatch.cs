@@ -29,6 +29,11 @@ internal static class BushDrawPatch
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
     private static void Postfix(Bush __instance)
     {
+        if (!ModEntry.Config.DrawParticleEffects)
+        {
+            return;
+        }
+
         if (__instance.modData.ContainsKey(CanPlaceHandler.MiraculousBeverages) && Game1.random.Next(512) == 0)
         {
             __instance.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(

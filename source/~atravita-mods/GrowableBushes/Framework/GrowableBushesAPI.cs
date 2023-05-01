@@ -41,7 +41,7 @@ public sealed class GrowableBushesAPI : IGrowableBushesAPI
         }
 
         LargeTerrainFeature? feat = loc.getLargeTerrainFeatureAt((int)tile.X, (int)tile.Y);
-        if (feat is Bush bush)
+        if (feat is Bush bush && bush.GetType() == typeof(Bush))
         {
             return this.CanPickUpBush(bush, placedOnly);
         }
@@ -70,7 +70,7 @@ public sealed class GrowableBushesAPI : IGrowableBushesAPI
             Rectangle tileRect = new((int)tile.X * 64, (int)tile.Y * 64, 64, 64);
             for (int i = loc.largeTerrainFeatures.Count - 1; i >= 0; i--)
             {
-                if (loc.largeTerrainFeatures[i] is Bush bush && bush.getBoundingBox().Intersects(tileRect))
+                if (loc.largeTerrainFeatures[i] is Bush bush && bush.GetType() == typeof(Bush) && bush.getBoundingBox().Intersects(tileRect))
                 {
                     BushSizes size = this.CanPickUpBush(bush, placedOnly);
                     if (size != BushSizes.Invalid)

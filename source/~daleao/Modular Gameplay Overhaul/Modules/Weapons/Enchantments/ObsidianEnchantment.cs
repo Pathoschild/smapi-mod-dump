@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Enchantments;
 #region using directives
 
 using System.Xml.Serialization;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using StardewValley.Monsters;
 
 #endregion using directives
@@ -21,6 +22,8 @@ using StardewValley.Monsters;
 [XmlType("Mods_DaLion_ObsidianEnchantment")]
 public class ObsidianEnchantment : BaseWeaponEnchantment
 {
+    private readonly Random _random = new(Guid.NewGuid().GetHashCode());
+
     /// <inheritdoc />
     public override bool IsSecondaryEnchantment()
     {
@@ -49,6 +52,11 @@ public class ObsidianEnchantment : BaseWeaponEnchantment
     protected override void _OnDealDamage(Monster monster, GameLocation location, Farmer who, ref int amount)
     {
         base._OnDealDamage(monster, location, who, ref amount);
+        if (CombatModule.ShouldEnable && this._random.NextDouble() < 0.2)
+        {
+            monster.Bleed(who);
+        }
+
         if (CombatModule.Config.OverhauledDefense)
         {
             amount *= 1 + (monster.resilience.Value / 10);

@@ -1,6 +1,6 @@
 {
 	"Name": "moonslime.excavation.w_nautilus_fossil",
-	"Category": "15793",
+	"HideFromShippingCollection": true, "Category": "15793",
 	"CategoryTextOverride": "Artifact",
 	"CategoryColorOverride": "116,25,98,255",
 	"Edibility": -300,

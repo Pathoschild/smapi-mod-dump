@@ -1,0 +1,55 @@
+Forest.cs - Placing the log   
+ [XmlIgnore]
+    public ResourceClump log
+    {
+      get => this.netLog.Value;
+      set => this.netLog.Value = value;
+    }
+
+    public Forest()
+    {
+    }
+
+    public Forest(string map, string name)
+      : base(map, name)
+    {
+      this.marniesLivestock.Add(new FarmAnimal("Dairy Cow", Game1.multiplayer.getNewID(), -1L));
+      this.marniesLivestock.Add(new FarmAnimal("Dairy Cow", Game1.multiplayer.getNewID(), -1L));
+      this.marniesLivestock[0].Position = new Vector2(6272f, 1280f);
+      this.marniesLivestock[1].Position = new Vector2(6464f, 1280f);
+      this.log = new ResourceClump(602, 2, 2, new Vector2(1f, 6f));
+    }
+
+
+
+
+ResourceClump.cs - Log attributes
+public override bool performToolAction(
+      Tool t,
+      int damage,
+      Vector2 tileLocation,
+      GameLocation location)
+    {
+      if (t == null)
+        return false;
+      int debrisType = 12;
+      switch ((int) (NetFieldBase<int, NetInt>) this.parentSheetIndex)
+      {
+        case 602:
+          switch (t)
+          {
+            case Axe _ when (int) (NetFieldBase<int, NetInt>) t.upgradeLevel < 2:
+              location.playSound("axe");
+              Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:ResourceClump.cs.13948"));
+              Game1.player.jitterStrength = 1f;
+              return false;
+            case Axe _:
+              location.playSound("axchop");
+              break;
+            default:
+              return false;
+          }
+          break;
+
+
+Can I do an override of just the performToolAction method again?

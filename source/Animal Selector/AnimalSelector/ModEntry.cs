@@ -84,27 +84,27 @@ namespace AnimalSelector
             Config = Helper.ReadConfig<ModConfig>();
 
             chickenTextures = new List<Texture2D>() {
-                helper.Content.Load<Texture2D>("Assets/White Chicken.png"),
-                helper.Content.Load<Texture2D>("Assets/Brown Chicken.png"),
-                helper.Content.Load<Texture2D>("Assets/Void Chicken.png"),
-                helper.Content.Load<Texture2D>("Assets/Blue Chicken.png"),
-                helper.Content.Load<Texture2D>("Assets/Golden Chicken.png"),
+                helper.ModContent.Load<Texture2D>("Assets/White Chicken.png"),
+                helper.ModContent.Load<Texture2D>("Assets/Brown Chicken.png"),
+                helper.ModContent.Load<Texture2D>("Assets/Void Chicken.png"),
+                helper.ModContent.Load<Texture2D>("Assets/Blue Chicken.png"),
+                helper.ModContent.Load<Texture2D>("Assets/Golden Chicken.png"),
             };
-            duckTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Duck.png"), };
-            rabbitTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Rabbit.png"), };
-            dinosaurTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Dinosaur.png"), };
+            duckTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Duck.png"), };
+            rabbitTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Rabbit.png"), };
+            dinosaurTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Dinosaur.png"), };
 
             cowTextures = new List<Texture2D>() {
-                helper.Content.Load<Texture2D>("Assets/White Cow.png"),
-                helper.Content.Load<Texture2D>("Assets/Brown Cow.png"),
+                helper.ModContent.Load<Texture2D>("Assets/White Cow.png"),
+                helper.ModContent.Load<Texture2D>("Assets/Brown Cow.png"),
             };
-            goatTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Goat.png"), };
-            sheepTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Sheep.png"), };
-            pigTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Pig.png"), };
-            ostrichTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Ostrich.png"), };
+            goatTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Goat.png"), };
+            sheepTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Sheep.png"), };
+            pigTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Pig.png"), };
+            ostrichTextures = new List<Texture2D>() { helper.ModContent.Load<Texture2D>("Assets/Ostrich.png"), };
 
-            heartFullTexture = helper.Content.Load<Texture2D>("Assets/heartFull.png");
-            heartEmptyTexture = helper.Content.Load<Texture2D>("Assets/heartEmpty.png");
+            heartFullTexture = helper.ModContent.Load<Texture2D>("Assets/heartFull.png");
+            heartEmptyTexture = helper.ModContent.Load<Texture2D>("Assets/heartEmpty.png");
 
             animalData = Game1.content.Load<Dictionary<string, string>>("Data\\FarmAnimals");
 

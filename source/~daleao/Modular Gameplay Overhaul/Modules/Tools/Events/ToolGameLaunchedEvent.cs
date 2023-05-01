@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Tools.Events;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Tools.Integrations;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
 
@@ -31,7 +30,6 @@ internal class ToolGameLaunchedEvent : GameLaunchedEvent
     /// <inheritdoc />
     protected override void OnGameLaunchedImpl(object? sender, GameLaunchedEventArgs e)
     {
-        // only soft dependencies
-        MoonMisadventuresIntegration.Instance?.Register();
+        OverhaulModule.Tools.RegisterIntegrations();
     }
 }

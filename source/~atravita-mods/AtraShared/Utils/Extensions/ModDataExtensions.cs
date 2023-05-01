@@ -42,7 +42,7 @@ public static class ModDataExtensions
             return false;
         }
         return self.Count() == other.Count()
-                && self.Pairs.All((kvp) => other.TryGetValue(kvp.Key, out var val) && val == kvp.Value);
+                && self.Pairs.All((kvp) => other.TryGetValue(kvp.Key, out string? val) && val == kvp.Value);
     }
 
     /// <summary>

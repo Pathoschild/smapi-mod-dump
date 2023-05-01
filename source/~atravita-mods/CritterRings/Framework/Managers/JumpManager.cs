@@ -148,8 +148,10 @@ internal sealed class JumpManager : IDisposable
     private enum NeedsBigJump
     {
         False,
-        IfPastThisPoint,
-        True,
+        IfPastMedium,
+        Medium,
+        IfPastBig,
+        Big,
     }
 
     /// <inheritdoc cref="IDisposable.Dispose"/>
@@ -219,22 +221,22 @@ internal sealed class JumpManager : IDisposable
     [MethodImpl(TKConstants.Hot)]
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        if (!this.IsCurrentFarmer())
+        if (!this.IsCurrentFarmer() || !Game1.game1.IsActive)
         {
             return;
         }
 
         // Thanks for the viewport movement code, DecidedlyHuman!
-        if (this.state != State.Inactive && ModEntry.Config.ViewportFollowsTarget)
+        if (this.state != State.Inactive && ModEntry.Config.ViewportFollowsTarget && Game1.currentLocation?.forceViewportPlayerFollow == false)
         {
-            Vector2 position = Game1.player.Position + new Vector2(32, 32);
+            Vector2 position = new(Game1.player.getStandingX(), Game1.player.getStandingY());
             Vector2 target = this.openTile * Game1.tileSize;
             Vector2 midpoint = Game1.player.FacingDirection switch
             {
                 Game1.left or Game1.right => new Vector2(target.X + Math.Clamp((position.X - target.X) / 2, -320, 320), position.Y),
                 _ => new Vector2(position.X, target.Y + Math.Clamp((position.Y - target.Y) / 2, -320, 320)),
             };
-            Game1.moveViewportTo(midpoint, ModEntry.Config.JumpChargeSpeed / 2);
+            Game1.moveViewportTo(midpoint, ModEntry.Config.JumpChargeSpeed / 2, holdTimer: 50);
         }
 
         switch (this.state)
@@ -271,10 +273,14 @@ internal sealed class JumpManager : IDisposable
 
                     #region velocity calculations
 
-                    float initialVelocityY = 4f * MathF.Sqrt(this.distance);
+                    float initialVelocityY = Math.Max(6f, 4f * MathF.Sqrt(this.distance));
 
                     // we're just gonna hope the big jump is enough to clear most buildings :(
-                    if (this.needsBigJump == NeedsBigJump.True)
+                    if (this.needsBigJump == NeedsBigJump.Medium)
+                    {
+                        initialVelocityY = Math.Max(12f, initialVelocityY);
+                    }
+                    else if (this.needsBigJump == NeedsBigJump.Big)
                     {
                         initialVelocityY = Math.Max(16f, initialVelocityY);
                     }
@@ -295,16 +301,18 @@ internal sealed class JumpManager : IDisposable
                         int verticalHeightNeeded = 4;
                         int startX = (int)tileToCheck.Value.X * Game1.tileSize;
                         int startY = (int)(tileToCheck.Value.Y - 3) * Game1.tileSize;
-                        while (startY > 0 && (Game1.currentLocation.map.GetLayer("Front")?.PickTile(new XLocation(startX, startY), Game1.viewport.Size) is not null
-                            || Game1.currentLocation.map.GetLayer("AlwaysFront")?.PickTile(new XLocation(startX, startY), Game1.viewport.Size) is not null))
+                        while (startY > 0 && HasFrontOrAlwaysFrontTile(startX, startY))
                         {
                             ++verticalHeightNeeded;
                             startY -= 64;
                         }
 
-                        ModEntry.ModMonitor.DebugOnlyLog($"Additional vertical height: {verticalHeightNeeded}");
+                        ModEntry.ModMonitor.DebugOnlyLog($"Additional vertical height: {verticalHeightNeeded}", LogLevel.Debug);
 
-                        initialVelocityY = Math.Max(initialVelocityY, 6 * MathF.Sqrt(verticalHeightNeeded));
+                        if (verticalHeightNeeded > 4)
+                        {
+                            initialVelocityY = Math.Max(initialVelocityY, 6 * MathF.Sqrt(verticalHeightNeeded));
+                        }
                     }
 
                     // a little sanity here.
@@ -374,8 +382,16 @@ internal sealed class JumpManager : IDisposable
         }
     }
 
-    private void RecalculateTiles(Farmer farmer, GameLocation location)
+    private static bool HasFrontOrAlwaysFrontTile(int x, int y)
+        => Game1.currentLocation.map.GetLayer("Front")?.PickTile(new XLocation(x * Game1.tileSize, y * Game1.tileSize), Game1.viewport.Size) is not null
+            || Game1.currentLocation.map.GetLayer("AlwaysFront")?.PickTile(new XLocation(x * Game1.tileSize, y * Game1.tileSize), Game1.viewport.Size) is not null;
+
+    private void RecalculateTiles(Farmer farmer, GameLocation? location)
     {
+        if (location is null)
+        {
+            return;
+        }
         this.currentTile = this.startTile + (this.direction * this.distance);
         bool isValidTile = location.isTileOnMap(this.currentTile)
             && location.isTilePassable(new XLocation((int)this.currentTile.X, (int)this.currentTile.Y), Game1.viewport)
@@ -403,20 +419,24 @@ internal sealed class JumpManager : IDisposable
             Game1.showRedMessage(I18n.FrogRing_Blocked());
         }
 
-        if (this.needsBigJump == NeedsBigJump.False)
+        if (this.needsBigJump != NeedsBigJump.IfPastBig && this.needsBigJump != NeedsBigJump.Big)
         {
             if (location.terrainFeatures.TryGetValue(this.currentTile, out TerrainFeature? feat)
                 && feat is Tree or FruitTree)
             {
-                this.needsBigJump = NeedsBigJump.IfPastThisPoint;
+                this.needsBigJump = NeedsBigJump.IfPastBig;
             }
-            if (this.needsBigJump == NeedsBigJump.False && location is Farm farm)
+            else if (HasFrontOrAlwaysFrontTile((int)this.currentTile.X, (int)this.currentTile.Y))
+            {
+                this.needsBigJump = NeedsBigJump.IfPastMedium;
+            }
+            else if (location is Farm farm)
             {
                 foreach (Building? building in farm.buildings)
                 {
-                    if (building.occupiesTile(this.currentTile))
+                    if (building is not ShippingBin or FishPond && building.occupiesTile(this.currentTile))
                     {
-                        this.needsBigJump = NeedsBigJump.IfPastThisPoint;
+                        this.needsBigJump = NeedsBigJump.IfPastBig;
                         break;
                     }
                 }
@@ -427,10 +447,14 @@ internal sealed class JumpManager : IDisposable
         {
             this.openTile = this.currentTile;
             this.isCurrentTileBlocked = false;
-            if (this.needsBigJump == NeedsBigJump.IfPastThisPoint)
+            if (this.needsBigJump == NeedsBigJump.IfPastBig)
             {
-                this.needsBigJump = NeedsBigJump.True;
+                this.needsBigJump = NeedsBigJump.Big;
             }
+            else if (this.needsBigJump == NeedsBigJump.IfPastBig)
+            {
+                this.needsBigJump = NeedsBigJump.Medium;
+            };
         }
         else
         {
@@ -454,7 +478,7 @@ internal sealed class JumpManager : IDisposable
                 farmer.forceTimePass = this.forceTimePass;
                 if (disposing)
                 {
-                    Game1.moveViewportTo(farmer.Position, 5f);
+                    Game1.moveViewportTo(farmer.Position, 5f, 60, null, ModEntry.cameraAPI is null ? null : ModEntry.cameraAPI.Reset);
                 }
                 farmer.completelyStopAnimatingOrDoingAction();
             }
@@ -538,9 +562,9 @@ internal sealed class JumpManager : IDisposable
         farmer.FarmerSprite.setCurrentSingleFrame(
         which: farmer.FacingDirection switch
         {
-            Game1.down => 62,
+            Game1.down => 70,
             Game1.right => 52,
-            Game1.up => 70,
+            Game1.up => 62,
             _ => 52,
         },
         flip: farmer.FacingDirection == Game1.left);

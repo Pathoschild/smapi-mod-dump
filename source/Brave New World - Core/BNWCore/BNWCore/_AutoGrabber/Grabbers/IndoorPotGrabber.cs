@@ -25,7 +25,7 @@ namespace BNWCore.Grabbers
             {
                 var dirt = pot.hoeDirt.Value;
                 var crops = Helpers.HarvestCropFromHoeDirt(Player, dirt, tile, !ModEntry.Config.BNWCoreflowers, out int exp);
-                var availableGrabbers = Helpers.GetNearbyObjectsToTile(tile, GrabberPairs, InternalConfig.harvestCropsRange, InternalConfig.harvestCropsRangeMode);
+                var availableGrabbers = Helpers.GetNearbyObjectsToTile(tile, GrabberPairs, Grabber_Config.harvestCropsRange, Grabber_Config.harvestCropsRangeMode);
                 if (TryAddItems(crops, availableGrabbers))
                 {
                     if (dirt.crop.regrowAfterHarvest.Value == -1)

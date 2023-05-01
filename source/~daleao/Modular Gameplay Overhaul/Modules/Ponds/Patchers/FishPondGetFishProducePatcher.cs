@@ -136,7 +136,7 @@ internal sealed class FishPondGetFishProducePatcher : HarmonyPatcher
         }
         catch (InvalidDataException ex)
         {
-            Log.W($"{ex}\nThe data will be reset.");
+            Log.W($"[PNDS]: {ex}\nThe data will be reset.");
             __instance.Write(DataKeys.FishQualities, $"{__instance.FishCount},0,0,0");
             __instance.Write(DataKeys.FamilyQualities, null);
             __instance.Write(DataKeys.FamilyLivingHere, null);
@@ -232,7 +232,7 @@ internal sealed class FishPondGetFishProducePatcher : HarmonyPatcher
                 continue;
             }
 
-            var producedWithThisQuality = PondsModule.Config.RoeAlwaysSameQualityAsFish
+            var producedWithThisQuality = PondsModule.Config.RoeAlwaysFishQuality
                 ? producedRoes[i]
                 : r.Next(producedRoes[i]);
             held.Add(new SObject(roeIndex, producedWithThisQuality, quality: i == 3 ? 4 : i));

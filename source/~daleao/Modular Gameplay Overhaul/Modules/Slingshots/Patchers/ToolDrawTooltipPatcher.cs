@@ -46,7 +46,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
         float alpha,
         StringBuilder? overrideText)
     {
-        if (__instance is not Slingshot slingshot)
+        if (__instance is not Slingshot slingshot || !SlingshotsModule.Config.EnableRebalance)
         {
             return true; // run original logic
         }
@@ -66,11 +66,11 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             Color co;
 
             // write bonus damage
-            if (slingshot.InitialParentTileIndex != ItemIDs.BasicSlingshot ||
-                slingshot.hasEnchantmentOfType<RubyEnchantment>())
+            var hasRubyEnchant = slingshot.hasEnchantmentOfType<RubyEnchantment>();
+            if (slingshot.InitialParentTileIndex != ItemIDs.BasicSlingshot || hasRubyEnchant)
             {
-                var amount = $"+{slingshot.Get_RelativeDamageModifier():0%}";
-                co = new Color(0, 120, 120);
+                var amount = $"+{slingshot.Get_RelativeDamageModifier():#.#%}";
+                co = hasRubyEnchant ? new Color(0, 120, 120) : Game1.textColor;
                 Utility.drawWithShadow(
                     spriteBatch,
                     Game1.mouseCursors,
@@ -94,11 +94,11 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             }
 
             // write bonus knockback
-            if (slingshot.InitialParentTileIndex != ItemIDs.BasicSlingshot ||
-                __instance.hasEnchantmentOfType<AmethystEnchantment>())
+            var hasAmethystEnchant = __instance.hasEnchantmentOfType<AmethystEnchantment>();
+            if (slingshot.InitialParentTileIndex != ItemIDs.BasicSlingshot || hasAmethystEnchant)
             {
-                var amount = $"+{slingshot.Get_RelativeKnockbackModifer():0%}";
-                co = new Color(0, 120, 120);
+                var amount = $"+{slingshot.Get_RelativeKnockbackModifer():#.#%}";
+                co = hasAmethystEnchant ? new Color(0, 120, 120) : Game1.textColor;
                 Utility.drawWithShadow(
                     spriteBatch,
                     Game1.mouseCursors,
@@ -113,7 +113,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
 
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    Game1.content.LoadString("Strings\\UI:ItemHover_Weight", amount),
+                    I18n.Get("ui.itemhover.knockback", new { amount }),
                     font,
                     new Vector2(x + 68, y + 28),
                     co * 0.9f * alpha);
@@ -124,7 +124,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             // write bonus crit rate
             if (__instance.hasEnchantmentOfType<AquamarineEnchantment>())
             {
-                var amount = $"{slingshot.Get_RelativeCritChanceModifier():0.0%}";
+                var amount = $"{slingshot.Get_RelativeCritChanceModifier():#.#%}";
                 co = new Color(0, 120, 120);
                 Utility.drawWithShadow(
                     spriteBatch,
@@ -151,7 +151,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             // write crit power
             if (__instance.hasEnchantmentOfType<JadeEnchantment>())
             {
-                var amount = $"{slingshot.Get_RelativeCritPowerModifier():0%}";
+                var amount = $"{slingshot.Get_RelativeCritPowerModifier():#.#%}";
                 co = new Color(0, 120, 120);
                 Utility.drawWithShadow(
                     spriteBatch,
@@ -178,7 +178,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             // write bonus fire speed
             if (__instance.hasEnchantmentOfType<EmeraldEnchantment>())
             {
-                var amount = $"+{slingshot.Get_RelativeFireSpeed():0%}";
+                var amount = $"+{slingshot.Get_RelativeFireSpeed():#.#%}";
                 co = new Color(0, 120, 120);
                 Utility.drawWithShadow(
                     spriteBatch,
@@ -205,7 +205,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             // write bonus cooldown reduction
             if (__instance.hasEnchantmentOfType<GarnetEnchantment>())
             {
-                var amount = $"-{slingshot.Get_RelativeCooldownReduction():0%}";
+                var amount = $"-{slingshot.Get_RelativeCooldownReduction():#.#%}";
                 co = new Color(0, 120, 120);
                 Utility.drawWithShadow(
                     spriteBatch,
@@ -232,8 +232,8 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
             // write bonus defense
             if (__instance.hasEnchantmentOfType<TopazEnchantment>() && EnchantmentsModule.Config.RebalancedForges)
             {
-                var amount = CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense
-                    ? $"+{slingshot.Get_RelativeResilience():0%}"
+                var amount = CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense
+                    ? $"+{slingshot.Get_RelativeResilience():#.#%}"
                     : slingshot.GetEnchantmentLevel<TopazEnchantment>().ToString();
                 co = new Color(0, 120, 120);
                 Utility.drawWithShadow(
@@ -250,7 +250,7 @@ internal sealed class ToolDrawTooltipPatcher : HarmonyPatcher
 
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense
+                    CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense
                         ? I18n.Get("ui.itemhover.resist", new { amount })
                         : Game1.content.LoadString("ItemHover_DefenseBonus", amount),
                     font,

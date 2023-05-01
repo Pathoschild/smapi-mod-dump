@@ -21,6 +21,9 @@
             "9": "I moved here just before you did. Needed to get away from the big city...",
             "9_2": "My, @, we've been living in this town for quite a while, right?", // the earliest this can show up is year 6
 
+            "11{{YearRemainder}}": "Baking is as much of an art form as anything else. But I'm not very good at it.",
+            "13{{YearRemainder}}": "I eat a lot of salads, they're easy to prepare.#$b#Plus, with all the fresh ingredients around here, they taste great!",
+
             "Beach_72_18": "$1 atravitaDialogueLeahBeach#Oh, hi, @, how are you doing today? I found this mussel, isn't the iridescence beautiful?[719]#$e#Nature is so inspiring, isn't it? I love coming out here to paint."
         },
         "When": {"YearModulus": 1}

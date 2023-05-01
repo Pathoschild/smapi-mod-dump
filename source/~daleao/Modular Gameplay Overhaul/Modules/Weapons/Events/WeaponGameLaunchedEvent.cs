@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Weapons.Events;
 #region using directives
 
 using DaLion.Shared.Events;
-using Integrations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
@@ -31,12 +30,6 @@ internal sealed class WeaponGameLaunchedEvent : GameLaunchedEvent
     /// <inheritdoc />
     protected override void OnGameLaunchedImpl(object? sender, GameLaunchedEventArgs e)
     {
-        // hard dependencies
-        SpaceCoreIntegration.Instance!.Register();
-
-        // soft dependencies or integrations
-        JsonAssetsIntegration.Instance?.Register();
-        StardewValleyExpandedIntegration.Instance?.Register();
-        VanillaTweaksIntegration.Instance?.Register();
+        OverhaulModule.Weapons.RegisterIntegrations();
     }
 }

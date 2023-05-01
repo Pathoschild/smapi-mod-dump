@@ -252,7 +252,7 @@ namespace WhatAreYouMissing
             }
             else
             {
-                ModEntry.Logger.LogWarning($"Not adding {missingItem.Name} to any list (parent sheet index: {missingItem.ParentSheetIndex})");
+                //ModEntry.Logger.LogWarning($"Not adding {missingItem.Name} to any list (parent sheet index: {missingItem.ParentSheetIndex})");
             }
         }
 

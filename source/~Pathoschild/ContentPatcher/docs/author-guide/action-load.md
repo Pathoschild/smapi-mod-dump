@@ -56,7 +56,7 @@ field     | purpose
 This replaces Abigail's portraits with your own image (see [NPC modding](https://stardewvalleywiki.com/Modding:NPC_data)):
 ```js
 {
-    "Format": "1.28.0",
+    "Format": "1.29.0",
     "Changes": [
         {
             "Action": "Load",
@@ -71,7 +71,7 @@ You can list any number of load patches, as long as each asset is only loaded by
 
 ```js
 {
-    "Format": "1.28.0",
+    "Format": "1.29.0",
     "Changes": [
         {
             "Action": "Load",
@@ -92,7 +92,7 @@ files at once:
 
 ```js
 {
-    "Format": "1.28.0",
+    "Format": "1.29.0",
     "Changes": [
         {
             "Action": "Load",

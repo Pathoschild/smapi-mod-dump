@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Enchantments.Patchers;
 #region using directives
 
 using System.Reflection;
-using DaLion.Overhaul.Modules.Core.Extensions;
+using DaLion.Overhaul.Modules.Enchantments.Events;
 using DaLion.Overhaul.Modules.Enchantments.Melee;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -39,7 +39,6 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
     {
         try
         {
-            var damage = Reflector.GetUnboundFieldGetter<object, int>(args, "damage").Invoke(args);
             var who = Reflector.GetUnboundPropertyGetter<object, Farmer>(args, "who").Invoke(args);
             if (who.CurrentTool is not MeleeWeapon { type.Value: MeleeWeapon.defenseSword } weapon)
             {
@@ -47,7 +46,7 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
             }
 
             // set up for stun
-            __state = weapon.hasEnchantmentOfType<NewArtfulEnchantment>();
+            __state = who.IsLocalPlayer && weapon.hasEnchantmentOfType<MeleeArtfulEnchantment>();
         }
         catch (Exception ex)
         {
@@ -55,14 +54,17 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
         }
     }
 
-    /// <summary>Artful parry inflicts stun.</summary>
+    /// <summary>Artful parry increases crit. chance.</summary>
     [HarmonyPostfix]
-    private static void MonsterHandleParriedPrefix(Monster __instance, bool __state)
+    private static void MonsterHandleParriedPostfix(Monster __instance, bool __state)
     {
-        if (__state)
+        if (!__state)
         {
-            __instance.Stun(1000);
+            return;
         }
+
+        EnchantmentsModule.State.DidArtfulParry = true;
+        EventManager.Enable<ArtfulParryUpdateTickedEvent>();
     }
 
     #endregion harmony patches

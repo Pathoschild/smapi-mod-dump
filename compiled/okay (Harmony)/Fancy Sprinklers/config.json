@@ -1,6 +1,9 @@
 {
   "SprinklePots": true,
+  "SprinklePetBowl": true,
+  "SprinkleAtEndOfDay": true,
   "PassableSprinklers": true,
+  "EnricherCapacity": 9,
   "AddAdditionalSourcesOfAttachments": true,
   "BasicLineRange": 3,
   "QualityLineRange": 7,
@@ -15,5 +18,12 @@
   "SprinklerDrawXOffset": -16,
   "SprinklerDrawYOffset": -32,
   "SprinklerDrawLayerDepthOffset": -16,
-  "ModifyVanillaSprinklers": true
+  "ModifyVanillaSprinklers": true,
+  "PatchDataLayersMod": true,
+  "PatchPassableCropsMod": true,
+  "PatchFlexibleSprinklersMod": true,
+  "PatchImmersiveSprinklersMod": true,
+  "PatchMultiFertilizerMod": true,
+  "PatchTractorMod": true,
+  "FixVanillaEnricherMPSyncBug": true
 }

@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Events;
 #region using directives
 
 using System.Linq;
-using DaLion.Overhaul.Modules.Core.Animations;
+using DaLion.Overhaul.Modules.Combat.StatusEffects;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Collections;
 using StardewModdingAPI.Events;

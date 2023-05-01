@@ -21,7 +21,7 @@ using DaLion.Shared.Attributes;
 /// <summary>The base implementation for a mod integration.</summary>
 /// <remarks>Original code by <see href="https://github.com/Pathoschild">Pathoschild</see>.</remarks>
 /// <typeparam name="TIntegration">The <see cref="ModIntegration{TIntegration}"/> type inheriting from this class.</typeparam>
-public abstract class ModIntegration<TIntegration> : IModIntegration
+internal abstract class ModIntegration<TIntegration> : IModIntegration
     where TIntegration : ModIntegration<TIntegration>
 {
     // ReSharper disable once InconsistentNaming
@@ -47,8 +47,8 @@ public abstract class ModIntegration<TIntegration> : IModIntegration
         if (!string.IsNullOrEmpty(minVersion) && manifest.Version.IsOlderThan(minVersion))
         {
             Log.W(
-                $"Integration for {name} will not be initialized because the installed version is older than the minimum version required." +
-                $"\n\tInstalled version: {manifest.Version}\n\tMinimum version: {minVersion}");
+                $"Integration for {name} will not be initialized because the installed version is older than the minimum version required. Please update the mod to enable the integration." +
+                $"\n\tInstalled version: {manifest.Version}\n\tRequired version: {minVersion}");
             return;
         }
 
@@ -70,33 +70,34 @@ public abstract class ModIntegration<TIntegration> : IModIntegration
     /// <inheritdoc />
     public virtual bool IsLoaded { get; }
 
-    /// <summary>Gets or sets a value indicating whether the integration has been registered.</summary>
+    /// <inheritdoc />
     public virtual bool IsRegistered { get; protected set; }
 
     /// <summary>Gets aPI for fetching metadata about loaded mods.</summary>
     protected IModRegistry ModRegistry { get; }
 
-    /// <summary>Registers the integration and performs initial setup.</summary>
-    internal void Register()
+    /// <inheritdoc />
+    bool IModIntegration.Register()
     {
-        if (!this.IsRegistered && (this.IsRegistered = this.RegisterImpl()))
+        switch (this.IsRegistered)
         {
-            Log.T($"[Integrations]: The {this.ModName} integration has been registered.");
-            return;
+            case false when this.RegisterImpl():
+                this.IsRegistered = true;
+                Log.T($"[Integrations]: The {this.ModName} integration has been registered.");
+                break;
+            case false:
+                Log.W(
+                    $"[Integrations]: The {this.ModName} integration could not be registered. Some mod features have been disabled or will not work correctly.");
+                break;
+            case true:
+                Log.T($"[Integrations]: The {this.ModName} integration is already registered.");
+                break;
         }
 
-        if (this.IsRegistered)
-        {
-            Log.T($"[Integrations]: The {this.ModName} integration is already registered.");
-            return;
-        }
-
-        Log.W(
-            $"[Integrations]: The {this.ModName} integration could not be registered. Some mod features have been disabled or will not work correctly.");
+        return this.IsRegistered;
     }
 
-    /// <inheritdoc cref="Register"/>
-    /// <returns><see langword="true"/> if the registration was successful, otherwise <see langword="false"/>.</returns>
+    /// <inheritdoc cref="IModIntegration.Register"/>
     protected virtual bool RegisterImpl()
     {
         return this.IsLoaded;
@@ -152,7 +153,7 @@ public abstract class ModIntegration<TIntegration> : IModIntegration
 /// <typeparam name="TIntegration">The <see cref="ModIntegration{TIntegration}"/> type inheriting from this class.</typeparam>
 /// <typeparam name="TApi">The API type.</typeparam>
 [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Same class overload.")]
-public abstract class ModIntegration<TIntegration, TApi> : ModIntegration<TIntegration>
+internal abstract class ModIntegration<TIntegration, TApi> : ModIntegration<TIntegration>
     where TIntegration : ModIntegration<TIntegration>
     where TApi : class
 {

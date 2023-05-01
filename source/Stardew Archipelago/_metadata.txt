@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/agilbert1412/StardewArchipelago
+   Git: https://github.com/agilbert1412/StardewArchipelago.git
+
+mods:
+   Stardew Archipelago
+
+latest commit:
+   commit 2b8d680929785c25e8ae312ba4a7c778eb13b5e5
+   Author: Alex Gilbert <alexgilbert@yahoo.com>
+   Date:   Sun Apr 30 19:39:43 2023 -0400
+   
+       - Cherry Pick the wss stuff from 2.x.x
+       - Fix !!help duplication
+       
+       # Conflicts:
+       #       StardewArchipelago/ModEntry.cs
+   

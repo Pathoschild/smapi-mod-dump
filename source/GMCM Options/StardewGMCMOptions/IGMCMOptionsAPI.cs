@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-// Copyright 2022 Jamie Taylor
+// Copyright 2022-2023 Jamie Taylor
 //
 // To facilitate other mods which would like to use the GMCMOptions API,
 // the license for this file (and only this file) is modified by removing the
@@ -17,10 +17,14 @@
 //
 // In other words, anyone may copy this file into their own mod (and edit
 // it if they want, e.g. to remove the methods they are not using, so long
-// as the license comment is retained).
+// as the license comment is retained).(If all you want in your mod is
+// _just_ the function declaration(s) and not any comments or other creative
+// expression that may be in the file, then that is permissible fair use
+// as a matter of law in the US according to Google v. Oracle, 593 U.S. ___ (2021),
+// and does not require any license.)
 //
 
-//  Copyright(c) 2022, Jamie Taylor
+//  Copyright(c) 2022-2023, Jamie Taylor
 //All rights reserved.
 //
 //Redistribution and use in source and binary forms, with or without
@@ -110,6 +114,16 @@ namespace GMCMOptions {
         /// <param name="drawImage">A function which draws the image for the given index at the given location</param>
         /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
         /// <param name="label">A function to return the string to display given the image index, or <c>null</c> to disable that display.</param>
+        /// <param name="imageTooltipTitle">
+        ///   A function to return the string to use as the tooltip title when hovering over the image itself.
+        ///   A <c>null</c> value or returning a <c>null</c> string will fall back to the value returned by
+        ///   <paramref name="label"/>, or the empty string if that is null.  Whether the tooltip is displayed
+        ///   is controlled by the <paramref name="imageTooltipText"/> parameter.
+        /// </param>
+        /// <param name="imageTooltipText">
+        ///   A function to return the string to use as the tooltip text when hovering over the image itself.
+        ///   A <c>null</c> value or returning a <c>null</c> string disables the tooltip.
+        /// </param>
         /// <param name="arrowLocation">Where to render the arrows.  Use a value from the <c cref="ImageOptionArrowLocation">ImageOptionArrowLocation</c> enum.</param>
         /// <param name="labelLocation">Where to render the label.  Use a value from the <c cref="ImageOptionLabelLocation">ImageOptionLabelLocation</c> enum.</param>
         /// <param name="fieldId">The unique field ID for use with GMCM's <c>OnFieldChanged</c>, or <c>null</c> to auto-generate a randomized ID.</param>
@@ -123,6 +137,8 @@ namespace GMCMOptions {
                             Action<uint, SpriteBatch, Vector2> drawImage,
                             Func<string>? tooltip = null,
                             Func<uint, String?>? label = null,
+                            Func<uint, String?>? imageTooltipTitle = null,
+                            Func<uint, String?>? imageTooltipText = null,
                             int arrowLocation = (int)ImageOptionArrowLocation.Top,
                             int labelLocation = (int)ImageOptionLabelLocation.Top,
                             string? fieldId = null);
@@ -146,6 +162,16 @@ namespace GMCMOptions {
         ///   </list>
         /// </param>
         /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+        /// <param name="imageTooltipTitle">
+        ///   A function to return the string to use as the tooltip title when hovering over the image itself.
+        ///   A <c>null</c> value or returning a <c>null</c> string will fall back to the value returned by
+        ///   <paramref name="label"/>, or the empty string if that is null.  Whether the tooltip is displayed
+        ///   is controlled by the <paramref name="imageTooltipText"/> parameter.
+        /// </param>
+        /// <param name="imageTooltipText">
+        ///   A function to return the string to use as the tooltip text when hovering over the image itself.
+        ///   A <c>null</c> value or returning a <c>null</c> string disables the tooltip.
+        /// </param>
         /// <param name="arrowLocation">Where to render the arrows.  Use a value from the <c cref="ImageOptionArrowLocation">ImageOptionArrowLocation</c> enum.</param>
         /// <param name="labelLocation">Where to render the label.  Use a value from the <c cref="ImageOptionLabelLocation">ImageOptionLabelLocation</c> enum.</param>
         /// <param name="fieldId">The unique field ID for use with GMCM's <c>OnFieldChanged</c>, or <c>null</c> to auto-generate a randomized ID.</param>
@@ -155,6 +181,8 @@ namespace GMCMOptions {
                             Func<string> name,
                             Func<(Func<String?> label, Texture2D sheet, Rectangle? sourceRect)[]> choices,
                             Func<string>? tooltip = null,
+                            Func<uint, String?>? imageTooltipTitle = null,
+                            Func<uint, String?>? imageTooltipText = null,
                             int arrowLocation = (int)ImageOptionArrowLocation.Top,
                             int labelLocation = (int)ImageOptionLabelLocation.Top,
                             string? fieldId = null);

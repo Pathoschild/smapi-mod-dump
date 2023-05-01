@@ -12,7 +12,10 @@ namespace DaLion.Overhaul.Modules.Weapons.Extensions;
 
 #region using directives
 
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using DaLion.Overhaul.Modules.Rings.VirtualProperties;
 using DaLion.Overhaul.Modules.Weapons.VirtualProperties;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Stardew;
@@ -37,13 +40,37 @@ internal static class FarmerExtensions
             modifier *= weapon.Get_EffectiveSwingSpeed();
         }
 
-        if (ProfessionsModule.IsEnabled && farmer.professions.Contains(Farmer.brute))
+        if (ProfessionsModule.ShouldEnable && farmer.professions.Contains(Farmer.brute))
         {
             modifier *= 1f - (ProfessionsModule.State.BruteRageCounter * 0.005f);
         }
 
         modifier *= 1f / (1f + farmer.weaponSpeedModifier);
         return modifier;
+    }
+
+    /// <summary>Checks whether the <paramref name="farmer"/> suffers from Viego's curse.</summary>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    /// <returns><see langword="true"/> if the <paramref name="farmer"/> has received the Dark Sword but not the Holy Blade, otherwise <see langword="false"/>.</returns>
+    internal static bool IsCursed(this Farmer farmer)
+    {
+        return farmer.mailReceived.Contains("gotDarkSword") && !farmer.mailReceived.Contains("gotHolyBlade");
+    }
+
+    /// <summary>Checks whether the <paramref name="farmer"/> suffers from Viego's curse.</summary>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    /// <param name="darkSword">The curse's origin.</param>
+    /// <returns><see langword="true"/> if the <paramref name="farmer"/> has received the Dark Sword but not the Holy Blade, otherwise <see langword="false"/>.</returns>
+    internal static bool IsCursed(this Farmer farmer, [NotNullWhen(true)] out MeleeWeapon? darkSword)
+    {
+        if (!farmer.IsCursed())
+        {
+            darkSword = null;
+            return false;
+        }
+
+        darkSword = (MeleeWeapon?)farmer.Items.FirstOrDefault(item => item is MeleeWeapon { InitialParentTileIndex: ItemIDs.DarkSword });
+        return darkSword is not null;
     }
 
     /// <summary>Counts the number of completed Monster Eradication goals.</summary>
@@ -114,6 +141,27 @@ internal static class FarmerExtensions
         }
 
         return count;
+    }
+
+    [Conditional("RELEASE")]
+    internal static void DoStabbingSpecielCooldown(this Farmer user, MeleeWeapon? sword = null)
+    {
+        sword ??= (MeleeWeapon)user.CurrentTool;
+
+        MeleeWeapon.attackSwordCooldown = MeleeWeapon.attackSwordCooldownTime;
+        if (!ProfessionsModule.ShouldEnable && user.professions.Contains(Farmer.acrobat))
+        {
+            MeleeWeapon.attackSwordCooldown /= 2;
+        }
+
+        if (sword.hasEnchantmentOfType<ArtfulEnchantment>())
+        {
+            MeleeWeapon.attackSwordCooldown /= 2;
+        }
+
+        MeleeWeapon.attackSwordCooldown = (int)(MeleeWeapon.attackSwordCooldown *
+                                                sword.Get_EffectiveCooldownReduction() *
+                                                user.Get_CooldownReduction());
     }
 
     #region combo framework

@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DiogoAlbano/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Logname": "set_forest_animalshop_tile_properties_allow_entry",
+      "Action": "EditMap",
+      "Target": "Maps/Forest",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 90,
+            "Y": 15
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "Warp 13 32 AnimalShop"
+          }
+        }
+      ]
+    }
+  ]
+}

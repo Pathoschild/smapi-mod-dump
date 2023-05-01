@@ -96,7 +96,11 @@ namespace stardew_access
         public Boolean TTS { get; set; } = true; // Toggles the screen reader/tts.
         public Boolean TrackDroppedItems {get; set;} = true; // Toggles detecting the dropped items.
         public Boolean DisableInventoryVerbosity {get; set;} = false; // If enabled, does not speaks 'not usable here' and 'donatable' in inventories
+        public Single MacSpeechRate {get; set;} = 220; // Sets speech rate for the Mac TTS.
         #endregion
+
+        public int MaximumFishingDifficulty { get; set; } = 999; // TODO Add doc
+        public int FixFishingMotionType { get; set; } = 999;
 
         // TODO Add the exclusion and focus list too
         // public String ExclusionList { get; set; } = "test";

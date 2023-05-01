@@ -262,12 +262,36 @@
       "FontIndex": 0,
       "FontSize": 39.0,
       "Spacing": -2.0,
-      "LineSpacing": 50
+      "LineSpacing": 42
     },
 
 
     /* Official Hungarian */
-    // TODO
+    /* Small Font */
+    {
+      "Enabled": true,
+      "Lang": "hu",
+      "Locale": "hu-HU",
+      "InGameType": "SmallFont",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 26.0,
+      "Spacing": -1.0,
+      "LineSpacing": 26
+    },
+
+    /* Medium Font */
+    {
+      "Enabled": true,
+      "Lang": "hu",
+      "Locale": "hu-HU",
+      "InGameType": "DialogueFont",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 39.0,
+      "Spacing": -2.0,
+      "LineSpacing": 50
+    },
 
 
     /* Official Portuguese */
@@ -295,14 +319,76 @@
       "FontSize": 39.0,
       "Spacing": -2.0,
       "LineSpacing": 50
-    }
+    },
 
 
     /* Official Russian */
-    // TODO
+    /* Small Font */
+    {
+      "Enabled": true,
+      "Lang": "ru",
+      "Locale": "ru-RU",
+      "InGameType": "SmallFont",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 26.0,
+      "Spacing": -1.0,
+      "LineSpacing": 26
+    },
+
+    /* Medium Font */
+    {
+      "Enabled": true,
+      "Lang": "ru",
+      "Locale": "ru-RU",
+      "InGameType": "DialogueFont",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 26.0,
+      "Spacing": -2.0,
+      "LineSpacing": 33
+    },
+
+    /* Dialogue Font */
+    {
+      "Enabled": true,
+      "Lang": "ru",
+      "Locale": "ru-RU",
+      "InGameType": "SpriteText",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 13.0,
+      "Spacing": 0.0,
+      "LineSpacing": 15,
+      "PixelZoom": 3
+    },
 
 
     /* Official Turkish */
-    // TODO   small linespacing = 30
+    /* Small Font */
+    {
+      "Enabled": true,
+      "Lang": "tr",
+      "Locale": "tr-TR",
+      "InGameType": "SmallFont",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 26.0,
+      "Spacing": -1.0,
+      "LineSpacing": 30
+    },
+
+    /* Medium Font */
+    {
+      "Enabled": true,
+      "Lang": "tr",
+      "Locale": "tr-TR",
+      "InGameType": "DialogueFont",
+      "FontFilePath": "svffs.ttf",
+      "FontIndex": 0,
+      "FontSize": 39.0,
+      "Spacing": -2.0,
+      "LineSpacing": 50
+    }
   ]
 }

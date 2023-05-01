@@ -1,10 +1,15 @@
 {
   "Name": "A Bonafide Special Blue Chicken",
   "Author": "rikai",
-  "Version": "2.1.0",
+  "Version": "2.2.0",
   "Description": "A mod that makes blue chickens a little more interesting.",
   "UniqueID": "rikai.abonafidespecialbluechicken",
   "EntryDll": "ABonafideSpecialBlueChicken.dll",
   "MinimumApiVersion": "3.3.0",
-  "UpdateKeys": [ "Nexus:8979" ]
+  "UpdateKeys": [ "Nexus:8979" ],
+  "Meta:Changelog": {
+    "1.0.0": "Initial Public Release",
+    "2.1.0": "Updated to work with SDV 1.5",
+    "2.2.0": "Adjustments to work with SMAPI 4.0"
+  }
 }

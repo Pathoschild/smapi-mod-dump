@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Shockah/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+	"Name": "Maximize Fix",
+	"Author": "Shockah",
+	"Version": "1.0.0",
+	"Description": "Fixes a problem with game window maximization on Windows.",
+	"UniqueID": "Shockah.MaximizeFix",
+	"EntryDll": "MaximizeFix.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:16099" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "1.0.0"
+		}
+	]
+}

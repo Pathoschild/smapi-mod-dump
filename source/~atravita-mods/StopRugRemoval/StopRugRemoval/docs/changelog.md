@@ -17,6 +17,9 @@ Changelog
 <!-- do I need to override reading secret notes too? -->
 <!-- fix the stupid integration issues with CM/SAAT -->
 
+#### Version 1.1.3
+* Fix integration with GrowableGiantCrops/MoreGrassStarters.
+
 #### Version 1.1.2
 * By popular request, defang the napalm ring in safe areas.
 * New fixes: Journal scraps are now less silly, also removing a mod that adds secret notes won't lock you out of secret notes.

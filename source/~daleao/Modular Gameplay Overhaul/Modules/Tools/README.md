@@ -8,7 +8,7 @@ for queries and analysis.**
 
 <div align="center">
 
-# ![](https://i.imgur.com/6sWaRit.png) Modular Overhaul :: Tools ![](https://i.imgur.com/4rYYYCD.png)
+# ![](https://i.imgur.com/6sWaRit.png) MARGO :: Tools (TOLS) ![](https://i.imgur.com/4rYYYCD.png)
 
 </div>
 
@@ -30,7 +30,7 @@ This module provides the following features:
 
 All features can be toggled on or off.
 
-## Resource Tools
+## Resource Tools <sup><sub><sup>[🔼](#margo-tools-tols)</sup></sub></sup>
 
 Charging up the Axe or Pickaxe will release a shockwave which spreads the tool's effect around an area. The shape of the shockwave is similar to a bomb explosion, but the radius can be configured for each upgrade level.
 
@@ -39,23 +39,25 @@ All radius values should be positive whole numbers (obviously). By default, the 
 
 Like the Tractor Mod, what the shockwave actually does can also be configured. By default it is set to only clear debris (like stones and twigs), weeds, dead crops and resource clumps (like stumps, logs and boulders), as well as mining nodes. You can optionally choose to let it affect other objects or terrain features, such as trees, live crops, and flooring; anything their corresponding tools ordinarily can do.
 
-## Farming Tools
+## Farming Tools <sup><sub><sup>[🔼](#margo-tools-tols)</sup></sub></sup>
 
 The area of effect of Hoe and Watering Can may be customized by setting a length and radius for each upgrade level. Note that the radius adds to both side of the farmer, such that a radius of 1 yields an area 3 tiles wide.
 
 The radius of the Scythe and Golden Scythe can also be configured. By default, a regular Scythe will have twice the range of a sword, and a Golden Scythe will have twice the range of a regular Scythe. Setting the ranges to zero reverts them back to vanilla status. Also includes the popular Harvest With Scythe feature, replacing other similar mods.
 
-## Enchantments
+## Enchantments <sup><sub><sup>[🔼](#margo-tools-tols)</sup></sub></sup>
 
 All tool enchantments are compatible. The Reaching Enchantment will work on chargeable resource tools as it ordinarily does for farming tools, increasing the maximum charge level by **one**. The Powerful Enchantment likewise continues to increase the power of resource tools, and that extends to every affected tile in the shockwave.
 
-In addition, this module will allow the Swift Enchantment to be applied to the Watering Can, and the Master Enchantment to be applied to all tools, boosting the corresponding skill level by **one**. Lastly, the Haymaker Enchantment can now be applied to the Scythe and Golden Scythe.
+In addition, this module will allow the Swift Enchantment to be applied to the Watering Can, and the Master Enchantment to be applied to all tools, boosting the corresponding skill level by **one**.
 
-## Auto-Selection
+Lastly, the Haymaker Enchantment can now be applied to the Scythe and Golden Scythe.
+
+## Auto-Selection <sup><sub><sup>[🔼](#margo-tools-tols)</sup></sub></sup>
 
 Hold the Mod Key (default LeftShift) and click on any tool in your toolbar or inventory to enable it for auto-selection. As long the current tool is itself enabled for auto-selection, pressing the tool-use button will cause the appropriate enabled tool to be intelligently selected for the target tile.
 
-## Configs
+## Configs <sup><sub><sup>[🔼](#margo-tools-tols)</sup></sub></sup>
 
 This section describes some of the configurable settings provided in configs.json:
 
@@ -77,3 +79,5 @@ The tools are compatible withThis mod uses Harmony to patch the behavior of Axe 
 - Compatible with [Harvest Moon FoMT-like Watering Can And Hoe Area](https://www.nexusmods.com/stardewvalley/mods/7851) as long as you don't touch Hoe and Watering Can settings (although you can just set them to the same values used by that mod to achieve the same effect).
 - **Not** compatible with the likes of [Combat Controls - Fixed Mouse Click](https://www.nexusmods.com/stardewvalley/mods/2590) or [Combat Controls Redux](https://www.nexusmods.com/stardewvalley/mods/10496), as those features are already included in this and others modules.
 - **Not** compatible with other Harvest With Scythe mods, such as [Yet Another Harvest With Scythe](https://www.nexusmods.com/stardewvalley/mods/2731).
+
+[🔼 Back to top](#margo-tools-tols)

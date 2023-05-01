@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 #endregion using directives
 
-/// <summary>The user-configurable settings for Tweex.</summary>
+/// <summary>The user-configurable settings for TWX.</summary>
 public sealed class Config : Shared.Configs.Config
 {
     #region quality settings
@@ -46,6 +46,10 @@ public sealed class Config : Shared.Configs.Config
     [JsonProperty]
     public bool DeterministicAgeQuality { get; internal set; } = true;
 
+    /// <summary>Gets a value indicating whether the Mill's output should consider the quality of the ingredient.</summary>
+    [JsonProperty]
+    public bool MillsPreserveQuality { get; internal set; } = true;
+
     #endregion quality settings
 
     #region exp settings
@@ -66,7 +70,7 @@ public sealed class Config : Shared.Configs.Config
 
     /// <summary>Gets a value indicating whether if regular trees can't grow in winter, neither should fruit trees.</summary>
     [JsonProperty]
-    public bool PreventFruitTreeGrowthInWinter { get; internal set; } = true;
+    public bool PreventFruitTreeWinterGrowth { get; internal set; } = true;
 
     /// <summary>Gets a value indicating whether large input products should yield more processed output instead of higher quality.</summary>
     [JsonProperty]
@@ -85,10 +89,6 @@ public sealed class Config : Shared.Configs.Config
         "Yogurt Jar", // artisan valley
     };
 
-    /// <summary>Gets a value indicating whether the Mill's output should consider the quality of the ingredient.</summary>
-    [JsonProperty]
-    public bool MillsPreserveQuality { get; internal set; } = true;
-
     /// <summary>Gets a value indicating whether bombs within any explosion radius are immediately triggered.</summary>
     [JsonProperty]
     public bool ExplosionTriggeredBombs { get; internal set; } = true;
@@ -96,4 +96,16 @@ public sealed class Config : Shared.Configs.Config
     /// <summary>Gets a value indicating whether to set the quality of legendary fish at best.</summary>
     [JsonProperty]
     public bool LegendaryFishAlwaysBestQuality { get; internal set; } = true;
+
+    /// <summary>Gets a set of maps in which to attempt to spawn crows.</summary>
+    [JsonProperty]
+    public HashSet<string> SpawnCrowsOnTheseMaps { get; internal set; } = new()
+    {
+        "IslandWest",
+        "Custom_Garden",
+        "Custom_GrampletonFields",
+        "Custom_GrampletonFields_Small",
+        "Custom_Ridgeside_SummitFarm",
+        "Custom_ESMeadowFarm",
+    };
 }

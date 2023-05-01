@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers.Infinity;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using DaLion.Overhaul.Modules.Weapons.Extensions;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -37,7 +38,7 @@ internal sealed class FarmerCurrentToolIndexSetterPatcher : HarmonyPatcher
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Preference for inner functions.")]
     private static void FarmerCurrentToolIndexPostfix(Farmer __instance, ref int value)
     {
-        if (!__instance.Read<bool>(DataKeys.Cursed) ||
+        if (!__instance.IsCursed() ||
             value < 0 || value >= __instance.Items.Count ||
             __instance.Items[value] is not MeleeWeapon weapon ||
             weapon.InitialParentTileIndex == ItemIDs.DarkSword || weapon.isScythe())
@@ -49,10 +50,22 @@ internal sealed class FarmerCurrentToolIndexSetterPatcher : HarmonyPatcher
         {
             InitialParentTileIndex: ItemIDs.DarkSword
         });
+
         if (darkSword is null)
         {
-            Log.W($"Cursed farmer {__instance.Name} is not carrying the Dark Sword. The curse will be forcefully lifted.");
-            __instance.Write(DataKeys.Cursed, null);
+            if (WeaponsModule.Config.CanStoreRuinBlade)
+            {
+                return;
+            }
+
+            Log.W(
+                $"[WPNZ]: Cursed farmer {__instance.Name} is not carrying the Dark Sword. A new copy will be forcefully added.");
+            darkSword = new MeleeWeapon(ItemIDs.DarkSword);
+            if (!__instance.addItemToInventoryBool(darkSword))
+            {
+                Game1.createItemDebris(darkSword, __instance.getStandingPosition(), -1, __instance.currentLocation);
+            }
+
             return;
         }
 

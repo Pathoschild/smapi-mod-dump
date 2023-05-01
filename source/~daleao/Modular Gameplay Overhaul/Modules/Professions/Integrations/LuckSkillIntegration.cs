@@ -21,7 +21,8 @@ using DaLion.Shared.Integrations.LuckSkill;
 [RequiresMod("spacechase0.LuckSkill", "Luck Skill", "1.2.3")]
 internal sealed class LuckSkillIntegration : ModIntegration<LuckSkillIntegration, ILuckSkillApi>
 {
-    private LuckSkillIntegration()
+    /// <summary>Initializes a new instance of the <see cref="LuckSkillIntegration"/> class.</summary>
+    internal LuckSkillIntegration()
         : base("spacechase0.LuckSkill", "Luck Skill", "1.2.3", ModHelper.ModRegistry)
     {
     }
@@ -39,6 +40,6 @@ internal sealed class LuckSkillIntegration : ModIntegration<LuckSkillIntegration
         var luckSkill = new LuckSkill();
         Skill.Luck = luckSkill;
         SCSkill.Loaded["spacechase0.LuckSkill"] = luckSkill;
-        Log.T($"[Professions]: Successfully loaded the custom skill {this.ModId}.");
+        Log.T($"[PROFS]: Successfully loaded the custom skill {this.ModId}.");
     }
 }

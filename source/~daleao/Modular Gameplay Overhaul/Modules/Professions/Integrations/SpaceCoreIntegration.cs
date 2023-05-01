@@ -18,11 +18,12 @@ using DaLion.Shared.Integrations.SpaceCore;
 
 #endregion using directives
 
-[RequiresMod("spacechase0.SpaceCore", "SpaceCore", "1.8.3")]
+[RequiresMod("spacechase0.SpaceCore", "SpaceCore", "1.12.0")]
 internal sealed class SpaceCoreIntegration : ModIntegration<SpaceCoreIntegration, ISpaceCoreApi>
 {
-    private SpaceCoreIntegration()
-        : base("spacechase0.SpaceCore", "SpaceCore", "1.8.3", ModHelper.ModRegistry)
+    /// <summary>Initializes a new instance of the <see cref="SpaceCoreIntegration"/> class.</summary>
+    internal SpaceCoreIntegration()
+        : base("spacechase0.SpaceCore", "SpaceCore", "1.12.0", ModHelper.ModRegistry)
     {
     }
 
@@ -39,7 +40,7 @@ internal sealed class SpaceCoreIntegration : ModIntegration<SpaceCoreIntegration
             }
 
             SCSkill.Loaded[skillId] = new SCSkill(skillId);
-            Log.T($"[Professions]: Successfully loaded the custom skill {skillId}.");
+            Log.T($"[PROFS]: Successfully loaded the custom skill {skillId}.");
         }
     }
 }

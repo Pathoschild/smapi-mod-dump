@@ -70,5 +70,12 @@
   "config.beePaths.name": "Bee Paths",
   "config.beePaths.desc": "Shows bees moving between beehouses and the flowers they're connected to",
   "config.particleCount.name": "Particle Count",
-  "config.particleCount.desc": "How many bees should show at each hive (not including bee paths)"
+  "config.particleCount.desc": "How many bees should show at each hive",
+  "config.pathParticleCount.name": "Bee Path Count",
+  "config.pathParticleCount.desc": "How many bees per bee path",
+  "config.sources.name": "Honey Sources",
+  "config.sources.desc": "Where bees can get honey from",
+  "config.visual.name": "Visuals",
+  "config.visual.desc": "Cosmetic effects",
+  "config.noparticles": "Particles require either AeroCore or the Particles mod"
 }

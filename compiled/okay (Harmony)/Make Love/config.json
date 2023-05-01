@@ -49,6 +49,30 @@
       "Passive": false,
       "Frame": 60,
       "FrameDirectionRight": false
+    },
+    {
+      "Name": "Alex",
+      "Passive": false,
+      "Frame": 52,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Harvey",
+      "Passive": false,
+      "Frame": 56,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Shane",
+      "Passive": false,
+      "Frame": 52,
+      "FrameDirectionRight": false
+    },
+    {
+      "Name": "Elliott",
+      "Passive": false,
+      "Frame": 52,
+      "FrameDirectionRight": false
     }
   ]
 }

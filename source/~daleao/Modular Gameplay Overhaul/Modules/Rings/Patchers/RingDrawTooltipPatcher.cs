@@ -98,7 +98,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus damage
         if (buffer.DamageModifier != 0)
         {
-            var amount = $"+{buffer.DamageModifier:0.0%}";
+            var amount = $"+{buffer.DamageModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -122,7 +122,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus knockback
         if (buffer.KnockbackModifier != 0)
         {
-            var amount = $"+{buffer.KnockbackModifier:0.0%}";
+            var amount = $"+{buffer.KnockbackModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -146,7 +146,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus crit rate
         if (buffer.CritChanceModifier != 0)
         {
-            var amount = $"+{buffer.CritChanceModifier:0.0%}";
+            var amount = $"+{buffer.CritChanceModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -170,7 +170,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write crit power
         if (buffer.CritPowerModifier != 0)
         {
-            var amount = $"+{buffer.CritPowerModifier:0.0%}";
+            var amount = $"+{buffer.CritPowerModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -199,7 +199,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus precision
         if (buffer.PrecisionModifier != 0)
         {
-            var amount = $"+{buffer.PrecisionModifier:0.0%}";
+            var amount = $"+{buffer.PrecisionModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -223,7 +223,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus speed
         if (buffer.SwingSpeedModifier != 0)
         {
-            var amount = $"+{buffer.SwingSpeedModifier:0.0%}";
+            var amount = $"+{buffer.SwingSpeedModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -247,7 +247,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus cooldown reduction
         if (buffer.CooldownReduction != 0)
         {
-            var amount = $"-{buffer.CooldownReduction:0.0%}";
+            var amount = $"-{buffer.CooldownReduction:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -271,7 +271,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
         // write bonus defense
         if (buffer.DefenseModifier != 0)
         {
-            var amount = $"+{buffer.DefenseModifier:0.0%}";
+            var amount = $"+{buffer.DefenseModifier:#.#%}";
             co = new Color(0, 120, 120);
             Utility.drawWithShadow(
                 spriteBatch,
@@ -285,7 +285,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
                 false,
                 1f);
 
-            var text = CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense
+            var text = CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense
                 ? I18n.Get("ui.itemhover.resist", new { amount })
                 : Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", buffer.DefenseModifier);
             var width = font.MeasureString(text).X;

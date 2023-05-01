@@ -57,6 +57,8 @@ internal sealed class ModEntry : Mod
     /// </summary>
     internal static IMonitor ModMonitor { get; private set; } = null!;
 
+    internal static ICameraAPI? cameraAPI { get; private set; } = null;
+
     #region managers
 
     private static readonly PerScreen<BunnySpawnManager?> BunnyManagers = new(() => null);
@@ -205,6 +207,14 @@ internal sealed class ModEntry : Mod
                 save: () => this.Helper.AsyncWriteConfig(this.Monitor, Config))
             .AddParagraph(I18n.Mod_Description)
             .GenerateDefaultGMCM(static () => Config);
+        }
+
+        {
+            IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Trace);
+            if (helper.TryGetAPI("atravita.CameraPan", "0.1.1", out ICameraAPI? api))
+            {
+                cameraAPI = api;
+            }
         }
     }
 

@@ -11,16 +11,22 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Caching\TickCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\BuffEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)constantsandenums\Direction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\ItemTypeEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\Seasons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)constantsandenums\Skills.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)constantsandenums\WalletItems.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\Weathers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\RawTexData\IRawTextureDataExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomExceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConstantsAndEnums\ErrorMessageConsts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\GMCMAttributes\GMCMDefaultVectorAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)integrations\interfaces\ICameraAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IGrowableGiantCrops.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IGiantCropTweaksAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IGrowableBushesAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IMoreGiantCropsAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Interfaces\IMoreGrassStarters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Niceties\AssetNameComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\CropExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Extensions\FarmerTeamExtensions.cs" />

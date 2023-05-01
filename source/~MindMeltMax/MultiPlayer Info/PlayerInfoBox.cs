@@ -65,6 +65,13 @@ namespace MPInfo
                 hoverText = $"{Who.Name}{(Game1.player.UniqueMultiplayerID == Who.UniqueMultiplayerID ? " (Me)" : (Game1.serverHost.Value.UniqueMultiplayerID == Who.UniqueMultiplayerID ? " (Host)" : ""))}";
         }
 
+        public override void receiveLeftClick(int x, int y, bool playSound = true)
+        {
+            base.receiveLeftClick(x, y, playSound);
+            if (new Rectangle(xPositionOnScreen, yPositionOnScreen, 96, 96).Contains(x, y))
+                ModEntry.Instance.ForceUpdate();
+        }
+
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) 
         {
             if (oldBounds != newBounds)
@@ -78,10 +85,26 @@ namespace MPInfo
             var index = 0;
             foreach (var pib in Game1.onScreenMenus.Where(x => (x as PlayerInfoBox)?.Visible() ?? false).OfType<PlayerInfoBox>()) 
             {
-                pib.xPositionOnScreen = 32;
-                pib.yPositionOnScreen = (Game1.graphics.GraphicsDevice.Viewport.Height - 32 - 96) - (112 * index);
+                var pos = pib.GetPosition(index);
+                pib.xPositionOnScreen = (int)pos.X; 
+                pib.yPositionOnScreen = (int)pos.Y;
                 index++;
             }
+        }
+
+        private Vector2 GetPosition(int index)
+        {
+            int x = 32, y = 0;
+            switch (Config.Position)
+            {
+                case Position.BottomLeft:
+                    y = (Game1.graphics.GraphicsDevice.Viewport.Height - 32 - 96) - (112 * index);
+                    break;
+                case Position.TopLeft:
+                    y = 32 + (112 * index);
+                    break;
+            }
+            return new(x, y);
         }
 
         public override void draw(SpriteBatch b) 

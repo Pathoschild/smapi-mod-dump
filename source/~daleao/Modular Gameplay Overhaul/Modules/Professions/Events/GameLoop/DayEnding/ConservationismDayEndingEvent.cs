@@ -39,7 +39,7 @@ internal sealed class ConservationismDayEndingEvent : DayEndingEvent
     protected override void OnDayEndingImpl(object? sender, DayEndingEventArgs e)
     {
         var player = Game1.player;
-        if (!TaxesModule.IsEnabled)
+        if (!TaxesModule.ShouldEnable)
         {
             var taxBonus = player.Read<float>(DataKeys.ConservationistActiveTaxBonusPct);
             if (taxBonus > 0f)
@@ -69,12 +69,12 @@ internal sealed class ConservationismDayEndingEvent : DayEndingEvent
         var taxBonusForNextSeason =
             // ReSharper disable once PossibleLossOfFraction
             Math.Min(
-                trashCollectedThisSeason / ProfessionsModule.Config.TrashNeededPerTaxBonusPct / 100f,
+                trashCollectedThisSeason / ProfessionsModule.Config.TrashNeededPerTaxDeductionPct / 100f,
                 ProfessionsModule.Config.ConservationistTaxBonusCeiling);
         player.Write(
             DataKeys.ConservationistActiveTaxBonusPct,
             taxBonusForNextSeason.ToString(CultureInfo.InvariantCulture));
-        if (taxBonusForNextSeason <= 0 || TaxesModule.IsEnabled)
+        if (taxBonusForNextSeason <= 0 || TaxesModule.ShouldEnable)
         {
             return;
         }

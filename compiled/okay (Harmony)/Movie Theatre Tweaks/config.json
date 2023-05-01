@@ -1,0 +1,6 @@
+{
+  "ModEnabled": true,
+  "RemoveCraneMan": true,
+  "CloseTime": 2100,
+  "OpenTime": 900
+}

@@ -32,6 +32,10 @@ A core mod for Shockah's mods.
 Machine ready/waiting/busy status at a glance.
 \[[source code](MachineStatus)]
 
+[![Maximize Fix](MaximizeFix/Header.png)](https://www.nexusmods.com/stardewvalley/mods/16099)
+Fixes a problem with game window maximization on Windows.
+\[[source code](MaximizeFix)]
+
 [![Please Gift Me In Person](PleaseGiftMeInPerson/Header.png)](https://www.nexusmods.com/stardewvalley/mods/11217)
 Adds some more realism and life to the Gift Delivery Service. An extension to the [Mail Services Mod](https://www.nexusmods.com/stardewvalley/mods/7842).
 \[[source code](PleaseGiftMeInPerson)]

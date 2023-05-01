@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit;
+
 using AtraCore.Utilities;
 using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
@@ -114,7 +116,7 @@ internal static class SpecialFertilizerApplication
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
     private static bool PrefixPlayerCanPlaceItemHere(GameLocation location, Item item, int x, int y, Farmer f, ref bool __result)
     {
-        if (item.GetType() != typeof(SObject))
+        if (!TypeUtils.IsExactlyOfType(item, out SObject? obj) || obj.bigCraftable.Value)
         {
             return true;
         }
@@ -122,14 +124,14 @@ internal static class SpecialFertilizerApplication
         try
         {
             Vector2 tile = new(x / 64, y / 64);
-            if (item is SObject obj && PlaceHandler.CanPlaceFertilizer(obj, location, tile) &&
+            if (PlaceHandler.CanPlaceFertilizer(obj, location, tile) &&
                 Utility.withinRadiusOfPlayer(x, y, PLACEMENTRADIUS, f))
             {
                 __result = true;
                 return false;
             }
-            else if (item is SObject fert && !fert.bigCraftable.Value && fert.Category == SObject.fertilizerCategory
-                && ModEntry.SpecialFertilizerIDs.Contains(fert.ParentSheetIndex))
+            else if (obj.Category == SObject.fertilizerCategory
+                && ModEntry.SpecialFertilizerIDs.Contains(obj.ParentSheetIndex))
             {
                 __result = false;
                 return false;

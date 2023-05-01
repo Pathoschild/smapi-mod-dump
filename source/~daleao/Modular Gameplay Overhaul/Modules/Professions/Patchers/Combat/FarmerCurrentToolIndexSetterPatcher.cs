@@ -34,9 +34,9 @@ internal sealed class FarmerCurrentToolIndexSetterPatcher : HarmonyPatcher
     /// <summary>Set Rascal ammo slots.</summary>
     [HarmonyPrefix]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Preference for inner functions.")]
-    private static void FarmerCurrentToolIndexPostfix(Farmer __instance)
+    private static void FarmerCurrentToolIndexPostfix(Farmer __instance, int value)
     {
-        if (__instance.CurrentTool is not Slingshot slingshot)
+        if (value < 0 || value > __instance.Items.Count || __instance.Items[value] is not Slingshot slingshot)
         {
             return;
         }
@@ -47,20 +47,26 @@ internal sealed class FarmerCurrentToolIndexSetterPatcher : HarmonyPatcher
             slingshot.numAttachmentSlots.Value = 2;
             slingshot.attachments.SetCount(2);
         }
-        else if (!__instance.HasProfession(Profession.Rascal) &&
-                 (slingshot.numAttachmentSlots.Value >= 2 || slingshot.attachments.Length >= 2))
+        else if (!__instance.HasProfession(Profession.Rascal) && (slingshot.numAttachmentSlots.Value > 1 || slingshot.attachments.Length > 1))
         {
-            var item = slingshot.attachments[1];
-            slingshot.numAttachmentSlots.Value = 1;
-            slingshot.attachments.SetCount(1);
-            if (item is not null && !__instance.addItemToInventoryBool(item))
+            var replacement = new Slingshot(slingshot.InitialParentTileIndex);
+            if (slingshot.attachments[0] is { } ammo1)
             {
-                Game1.createItemDebris(
-                    item,
-                    __instance.getStandingPosition(),
-                    1,
-                    __instance.currentLocation);
+                replacement.attachments[0] = (SObject)ammo1.getOne();
+                replacement.attachments[0].Stack = ammo1.Stack;
             }
+
+            if (slingshot.attachments.Length > 1 && slingshot.attachments[1] is { } ammo2)
+            {
+                var drop = (SObject)ammo2.getOne();
+                drop.Stack = ammo2.Stack;
+                if (!__instance.addItemToInventoryBool(drop))
+                {
+                    Game1.createItemDebris(drop, __instance.getStandingPosition(), -1, __instance.currentLocation);
+                }
+            }
+
+            __instance.Items[value] = replacement;
         }
     }
 

@@ -32,7 +32,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
 
 using XLocation = xTile.Dimensions.Location;
 
@@ -78,10 +77,14 @@ public class ShovelTool : Tool
     /// Initializes a new instance of the <see cref="ShovelTool"/> class.
     /// </summary>
     public ShovelTool()
-        : base(I18n.Shovel_Name(), 0, 0, 0, false, 0)
-    {
-        this.Stackable = false;
-    }
+        : base(
+            name: I18n.Shovel_Name(),
+            upgradeLevel: 0,
+            initialParentTileIndex: 0,
+            indexOfMenuItemView: 0,
+            stackable: false,
+            numAttachmentSlots: 0)
+        => this.Stackable = false;
 
     /// <inheritdoc />
     public override Item getOne()
@@ -179,12 +182,10 @@ public class ShovelTool : Tool
                 {
                     Game1.showRedMessage(I18n.FruitTree_Forbidden());
                 }
-                else if (message.TrySplitOnce(':', out ReadOnlySpan<char> first, out ReadOnlySpan<char> second))
+                else if (message.TrySplitOnce(':', out ReadOnlySpan<char> first, out ReadOnlySpan<char> second)
+                    && NPCCache.GetByVillagerName(first.Trim().ToString()) is NPC npc)
                 {
-                    if (NPCCache.GetByVillagerName(first.Trim().ToString()) is NPC npc)
-                    {
-                        Game1.drawDialogue(npc, second.Trim().ToString());
-                    }
+                    Game1.drawDialogue(npc, second.Trim().ToString());
                 }
                 else
                 {
@@ -400,7 +401,7 @@ public class ShovelTool : Tool
             color: color * transparency,
             rotation: 0f,
             new Vector2(8f, 8f),
-            scale: 4f * scaleSize,
+            scale: Game1.pixelZoom * scaleSize,
             effects: SpriteEffects.None,
             layerDepth);
     }
@@ -576,6 +577,15 @@ public class ShovelTool : Tool
         return true;
     }
 
+    /// <summary>
+    /// Handles a grass
+    /// </summary>
+    /// <param name="location">the game location.</param>
+    /// <param name="who">the relevant farmer.</param>
+    /// <param name="pickupTile">the tile picked up from.</param>
+    /// <param name="energy">how much energy to take.</param>
+    /// <param name="grass">The grass instance.</param>
+    /// <returns>True if handled, false otherwise.</returns>
     protected virtual bool HandleGrass(GameLocation location, Farmer who, Vector2 pickupTile, int energy, Grass grass)
     {
         who.Stamina -= energy;

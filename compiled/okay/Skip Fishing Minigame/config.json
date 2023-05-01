@@ -1,4 +1,6 @@
 {
   "PerfectCatchChance": 100,
-  "IsAutoHook": false
+  "IsAutoHook": true,
+  "IsIgnoreTreasureChests": true,
+  "MinimumCatchesRequired": 0
 }

@@ -32,6 +32,10 @@
   },
   "BackAccessory": {
     "DisableGrayscale": true,
+    "DrawOrderOverride": {
+      "Preposition": "Before",
+      "AppearanceType": "Hair"
+    },
     "StartingPosition": {
       "X": 0,
       "Y": 32
@@ -66,8 +70,10 @@
   },
   "RightAccessory": {
     "DisableGrayscale": true,
-    "DrawBeforeHair": true,
-    "DrawAfterPlayer": true,
+    "DrawOrderOverride": {
+      "Preposition": "After",
+      "AppearanceType": "Hair"
+    },
     "StartingPosition": {
       "X": 0,
       "Y": 64
@@ -102,8 +108,10 @@
   },
   "LeftAccessory": {
     "DisableGrayscale": true,
-    "DrawBeforeHair": true,
-    "DrawAfterPlayer": true,
+    "DrawOrderOverride": {
+      "Preposition": "After",
+      "AppearanceType": "Hair"
+    },
     "Flipped": true,
     "StartingPosition": {
       "X": 0,

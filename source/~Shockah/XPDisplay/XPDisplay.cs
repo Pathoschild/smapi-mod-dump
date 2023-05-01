@@ -16,7 +16,7 @@ using Nanoray.Shrike.Harmony;
 using Shockah.CommonModCode.GMCM;
 using Shockah.Kokoro;
 using Shockah.Kokoro.GMCM;
-using Shockah.Kokoro.Stardew.Skill;
+using Shockah.Kokoro.Stardew;
 using Shockah.Kokoro.UI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;

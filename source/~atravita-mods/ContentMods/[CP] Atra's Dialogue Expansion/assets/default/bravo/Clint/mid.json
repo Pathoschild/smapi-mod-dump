@@ -9,6 +9,11 @@
 *************************************************/
 
 {"Changes":[
+
+    // Has been a blacksmith his entire life, has anxiety about change.
+    // Became a blacksmith primarily because that's what his father was
+    // Doesn't know what he wants.
+
     {
         "LogName": "Rain - alpha",
         "Action": "EditData",

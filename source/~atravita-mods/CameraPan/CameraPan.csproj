@@ -9,8 +9,8 @@
   <PropertyGroup>
     <Name>Camera Pan</Name>
     <Description>Lets you pan the camera around.</Description>
-    <Version>0.1.0</Version>
-    <UpdateKeys>-1</UpdateKeys>
+    <Version>0.1.3</Version>
+    <UpdateKeys>Nexus: 16218</UpdateKeys>
     <BaseManifest>..\base_dependencies.json</BaseManifest>
   </PropertyGroup>
 

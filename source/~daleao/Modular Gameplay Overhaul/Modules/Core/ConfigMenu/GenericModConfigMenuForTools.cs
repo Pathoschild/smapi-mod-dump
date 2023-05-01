@@ -21,10 +21,10 @@ using Microsoft.Xna.Framework;
 #endregion using directives
 
 /// <summary>Constructs the GenericModConfigMenu integration.</summary>
-internal sealed partial class GenericModConfigMenuCore
+internal sealed partial class GenericModConfigMenu
 {
     /// <summary>Register the config menu if available.</summary>
-    private void RegisterTools()
+    private void AddToolOptions()
     {
         var allowedUpgrades = new[] { "Copper", "Steel", "Gold", "Iridium" };
         var isMoonMisadventuresLoaded = MoonMisadventuresIntegration.Instance?.IsLoaded == true;
@@ -50,6 +50,7 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.TicksBetweenWaves = (uint)value,
                 0,
                 10)
+            .AddHorizontalRule()
 
             // controls
             .AddSectionTitle(() => "Control Settings")
@@ -90,18 +91,25 @@ internal sealed partial class GenericModConfigMenuCore
                     "If using mouse and keyboard, turn to face towards the current cursor position before swinging your tools.",
                 config => config.Tools.FaceMouseCursor,
                 (config, value) => config.Tools.FaceMouseCursor = value)
+            .AddCheckbox(
+                () => "Color-Coded For Convenience",
+                () => "Whether to colorize tool names according to the tool's upgrade level.",
+                config => config.Tools.ColorCodedForYourConvenience,
+                (config, value) => config.Tools.ColorCodedForYourConvenience = value)
+            .AddHorizontalRule()
 
             // page links
-            .AddPageLink(OverhaulModule.Tools + "/Axe", () => "Axe Settings", () => "Go to Axe settings.")
-            .AddPageLink(OverhaulModule.Tools + "/Pick", () => "Pick Settings", () => "Go to Pickaxe settings.")
-            .AddPageLink(OverhaulModule.Tools + "/Hoe", () => "Hoe Settings", () => "Go to Hoe settings.")
-            .AddPageLink(OverhaulModule.Tools + "/Can", () => "Can Settings", () => "Go to Watering Can settings.")
-            .AddPageLink(OverhaulModule.Tools + "/Scythe", () => "Scythe Settings", () => "Go to Scythe settings.")
+            .AddMultiPageLinkOption(
+                getOptionName: () => "Specific tool settings:",
+                pages: new[] { "Axe", "Pickaxe", "Hoe", "Watering Can", "Scythe" },
+                getPageId: tool => OverhaulModule.Tools.Namespace + $"/{tool}",
+                getPageName: tool => tool,
+                getColumnsFromWidth: _ => 2)
 
             // axe settings
-            .AddPage(OverhaulModule.Tools + "/Axe", () => "Axe Settings")
+            .AddPage(OverhaulModule.Tools.Namespace + "/Axe", () => "Axe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddSeparator()
+            .AddVerticalSpace()
             .AddNumberField(
                 () => "Base Stamina Multiplier",
                 () => "Adjusts the base stamina cost of the Axe.",
@@ -110,6 +118,8 @@ internal sealed partial class GenericModConfigMenuCore
                 0f,
                 3f,
                 0.2f)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Charging Settings")
             .AddCheckbox(
                 () => "Enable Axe Charging",
@@ -189,6 +199,8 @@ internal sealed partial class GenericModConfigMenuCore
                     (uint)value,
                 1,
                 10)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Shockwave Settings")
             .AddCheckbox(
                 () => "Clear Fruit Tree Seeds",
@@ -255,6 +267,8 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to play the shockwave animation when the charged Axe is released.",
                 config => config.Tools.Axe.PlayShockwaveAnimation,
                 (config, value) => config.Tools.Axe.PlayShockwaveAnimation = value)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Reaching Enchantment",
@@ -268,9 +282,9 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.Axe.AllowMasterEnchantment = value)
 
             // pickaxe settings
-            .AddPage(OverhaulModule.Tools + "/Pick", () => "Pick Settings")
+            .AddPage(OverhaulModule.Tools.Namespace + "/Pickaxe", () => "Pick Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddSeparator()
+            .AddVerticalSpace()
             .AddNumberField(
                 () => "Base Stamina Multiplier",
                 () => "Adjusts the base stamina cost of the Pickaxe.",
@@ -279,6 +293,8 @@ internal sealed partial class GenericModConfigMenuCore
                 0f,
                 3f,
                 0.2f)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Charging Settings")
             .AddCheckbox(
                 () => "Enable Pick Charging",
@@ -357,6 +373,8 @@ internal sealed partial class GenericModConfigMenuCore
                     config.Tools.Pick.RadiusAtEachPowerLevel[isMoonMisadventuresLoaded ? 6 : 4] = (uint)value,
                 1,
                 10)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Shockwave Settings")
             .AddCheckbox(
                 () => "Break Boulders and Meteorites",
@@ -408,6 +426,8 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to play the shockwave animation when the charged Pick is released.",
                 config => config.Tools.Pick.PlayShockwaveAnimation,
                 (config, value) => config.Tools.Pick.PlayShockwaveAnimation = value)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Reaching Enchantment",
@@ -421,9 +441,9 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.Pick.AllowMasterEnchantment = value)
 
             // hoe settings
-            .AddPage(OverhaulModule.Tools + "/Hoe", () => "Hoe Settings")
+            .AddPage(OverhaulModule.Tools.Namespace + "/Hoe", () => "Hoe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddSeparator()
+            .AddVerticalSpace()
             .AddNumberField(
                 () => "Base Stamina Multiplier",
                 () => "Adjusts the base stamina cost of the Hoe.",
@@ -432,11 +452,12 @@ internal sealed partial class GenericModConfigMenuCore
                 0f,
                 3f,
                 0.2f)
-            .AddSectionTitle(() => "Area Of Effect Settings")
+            .AddHorizontalRule()
+
+            .AddSectionTitle(() => "Affected Tile Settings")
             .AddCheckbox(
-                () => "Override Affected Tiles",
-                () =>
-                    "Whether to apply custom tile area for the Hoe. Keep this at false if using defaults to improve performance.",
+                () => "Enable Affected Tile Overrides",
+                () => "This must be enabled for the overrides below to take effect. Disabled by default to improve performance.",
                 config => config.Tools.Hoe.OverrideAffectedTiles,
                 (config, value) => config.Tools.Hoe.OverrideAffectedTiles = value)
             .AddNumberField(
@@ -564,6 +585,8 @@ internal sealed partial class GenericModConfigMenuCore
         }
 
         this
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Master Enchantment",
@@ -572,9 +595,9 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.Hoe.AllowMasterEnchantment = value)
 
             // can settings
-            .AddPage(OverhaulModule.Tools + "/Can", () => "Watering Can Settings")
+            .AddPage(OverhaulModule.Tools.Namespace + "/Watering Can", () => "Watering Can Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddSeparator()
+            .AddVerticalSpace()
             .AddNumberField(
                 () => "Base Stamina Multiplier",
                 () => "Adjusts the base stamina cost of the Watering Can.",
@@ -583,11 +606,12 @@ internal sealed partial class GenericModConfigMenuCore
                 0f,
                 3f,
                 0.2f)
-            .AddSectionTitle(() => "Area Of Effect Settings")
+            .AddHorizontalRule()
+
+            .AddSectionTitle(() => "Affected Tile Settings")
             .AddCheckbox(
-                () => "Override Affected Tiles",
-                () =>
-                    "Whether to apply custom tile area for the Watering Can. Keep this at false if using defaults to improve performance.",
+                () => "Enable Affected Tile Overrides",
+                () => "This must be enabled for the overrides below to take effect. Disabled by default to improve performance.",
                 config => config.Tools.Can.OverrideAffectedTiles,
                 (config, value) => config.Tools.Can.OverrideAffectedTiles = value)
             .AddNumberField(
@@ -717,6 +741,8 @@ internal sealed partial class GenericModConfigMenuCore
         }
 
         this
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Master Enchantment",
@@ -730,20 +756,20 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Tools.Can.AllowSwiftEnchantment = value)
 
             // scythe settings
-            .AddPage(OverhaulModule.Tools + "/Scythe", () => "Scythe Settings")
+            .AddPage(OverhaulModule.Tools.Namespace + "/Scythe", () => "Scythe Settings")
             .AddPageLink(OverhaulModule.Tools.Namespace, () => "Back to Tool settings")
-            .AddSeparator()
-            .AddSectionTitle(() => "Area Of Effect Settings")
+            .AddVerticalSpace()
+            .AddSectionTitle(() => "Affected Tile Settings")
             .AddNumberField(
                 () => "Regular Scythe Radius",
-                () => "Sets the area of effect of the regular Scythe.",
+                () => "Sets the affected tile radius of the regular Scythe.",
                 config => (int)config.Tools.Scythe.RegularRadius,
                 (config, value) => config.Tools.Scythe.RegularRadius = (uint)value,
                 0,
                 10)
             .AddNumberField(
                 () => "Golden Scythe Radius",
-                () => "Sets the area of effect of the Golden Scythe.",
+                () => "Sets the affected tile radius of the Golden Scythe.",
                 config => (int)config.Tools.Scythe.GoldRadius,
                 (config, value) => config.Tools.Scythe.GoldRadius = (uint)value,
                 0,
@@ -753,6 +779,8 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to clear tree saplings with the Scythe.",
                 config => config.Tools.Scythe.ClearTreeSaplings,
                 (config, value) => config.Tools.Scythe.ClearTreeSaplings = value)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Harvesting Settings")
             .AddCheckbox(
                 () => "Harvest Crops",
@@ -774,6 +802,8 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Whether to limit crop and flower harvesting to the Golden Scythe.",
                 config => config.Tools.Scythe.GoldScytheOnly,
                 (config, value) => config.Tools.Scythe.GoldScytheOnly = value)
+            .AddHorizontalRule()
+
             .AddSectionTitle(() => "Enchantment Settings")
             .AddCheckbox(
                 () => "Allow Haymaker Enchantment",

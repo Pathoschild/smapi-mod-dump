@@ -10,10 +10,7 @@
 
 using BirbShared;
 using BirbShared.APIs;
-using BirbShared.Asset;
-using BirbShared.Command;
-using BirbShared.Config;
-using HarmonyLib;
+using BirbShared.Mod;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -21,86 +18,50 @@ namespace BinningSkill
 {
     public class ModEntry : Mod
     {
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiConfig]
         internal static Config Config;
+        [SmapiCommand]
+        internal static Command Command;
+        [SmapiAsset]
         internal static Assets Assets;
 
-        internal static bool RSVLoaded;
-        internal static bool AutomateLoaded;
-        internal static bool JALoaded;
-        internal static bool DGALoaded;
-        internal static bool MargoLoaded;
-
+        [SmapiApi(UniqueID = "spacechase0.JsonAssets", IsRequired = false)]
         internal static IJsonAssetsApi JsonAssets;
+        [SmapiApi(UniqueID = "spacechase0.DynamicGameAssets", IsRequired = false)]
         internal static IDynamicGameAssetsApi DynamicGameAssets;
+        [SmapiApi(UniqueID = "DaLion.Overhaul", IsRequired = false)]
         internal static IMargo MargoAPI;
+        internal static bool MargoLoaded {
+            get {
+                if (MargoAPI is null)
+                {
+                    return false;
+                }
+                IMargo.IModConfig config = MargoAPI.GetConfig();
+                return config.EnableProfessions;
+            }
+        }
 
         internal ITranslationHelper I18n => this.Helper.Translation;
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
-
-            Config = helper.ReadConfig<Config>();
-
-            Assets = new Assets();
-            new AssetClassParser(this, Assets).ParseAssets();
-
-            this.Helper.Events.GameLoop.GameLaunched += this.Event_GameLaunched;
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
+            mod.ApisLoaded += this.ModClassParser_ApisLoaded;
             this.Helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
         }
 
-        private void Event_GameLaunched(object sender, GameLaunchedEventArgs e)
+        private void ModClassParser_ApisLoaded(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            new ConfigClassParser(this, Config).ParseConfigs();
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
-            new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
-
-            RSVLoaded = this.Helper.ModRegistry.IsLoaded("Rafseazz.RidgesideVillage");
-            AutomateLoaded = this.Helper.ModRegistry.IsLoaded("Pathoschild.Automate");
-            JALoaded = this.Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets");
-            DGALoaded = this.Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets");
-            MargoLoaded = this.Helper.ModRegistry.IsLoaded("DaLion.Overhaul");
-
-            // Register binning skill after checking if MARGO is loaded.
             SpaceCore.Skills.RegisterSkill(new BinningSkill());
-
-            if (JALoaded)
-            {
-                JsonAssets = this.Helper.ModRegistry
-                    .GetApi<IJsonAssetsApi>
-                    ("spacechase0.JsonAssets");
-                if (JsonAssets is null)
-                {
-                    Log.Error("Can't access the Json Assets API. Is the mod installed correctly?");
-                }
-            }
-
-            if (DGALoaded)
-            {
-                DynamicGameAssets = this.Helper.ModRegistry
-                    .GetApi<IDynamicGameAssetsApi>
-                    ("spacechase0.DynamicGameAssets");
-                if (DynamicGameAssets is null)
-                {
-                    Log.Error("Can't access the Dynamic Game Assets API. Is the mod installed correctly?");
-                }
-            }
-
-            if (MargoLoaded)
-            {
-                MargoAPI = this.Helper.ModRegistry.GetApi<IMargo>("DaLion.Overhaul");
-                if (MargoAPI is null)
-                {
-                    Log.Error("Can't access the MARGO API. Is the mod installed correctly?");
-                }
-            }
         }
 
         private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            if (MargoAPI is not null)
+            if (MargoLoaded)
             {
                 string id = SpaceCore.Skills.GetSkill("drbirbdev.Binning").Id;
                 MargoAPI.RegisterCustomSkillForPrestige(id);

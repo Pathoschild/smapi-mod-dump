@@ -11,7 +11,7 @@
 {
   "Name": "BetterFestivalNotifications",
   "Author": "drbirbdev",
-  "Version": "1.0.3",
+  "Version": "1.0.6",
   "Description": "Customize notifications when a festival starts.",
   "UniqueID": "drbirbdev.BetterFestivalNotifications",
   "EntryDll": "BetterFestivalNotifications.dll",

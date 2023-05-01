@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+using System.Runtime.CompilerServices;
+
+using AtraBase.Toolkit;
+
 using HarmonyLib;
 
 using IdentifiableCombinedRings.DataModels;
@@ -31,6 +35,8 @@ internal class CombinedRingPatcher
     /// <inheritdoc cref="CombinedRing.drawInMenu(SpriteBatch, Vector2, float, float, float, StackDrawType, Color, bool)"/>
     /// <param name="__instance">Combined ring to check.</param>
     [HarmonyPrefix]
+    [HarmonyPriority(Priority.Low)]
+    [MethodImpl(TKConstants.Hot)]
     [HarmonyPatch(nameof(CombinedRing.drawInMenu))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention")]
     public static bool PrefixGetDisplayName(

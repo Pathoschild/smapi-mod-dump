@@ -17,12 +17,18 @@ namespace GrowableBushes.Framework;
 /// <summary>
 /// The config class for this mod.
 /// </summary>
+[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Accessors kept near fields.")]
 internal sealed class ModConfig
 {
     /// <summary>
     /// Gets or sets a value indicating whether or not players should be able to axe non-placed bushes.
     /// </summary>
     public bool CanAxeAllBushes { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not bushes in greenhouses should bear fruit all the time.
+    /// </summary>
+    public bool GreenhouseBushesAlwaysBloom { get; set; } = false;
 
     /// <summary>
     /// Gets or sets where the default shop location is.

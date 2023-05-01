@@ -17,9 +17,9 @@
         "SellPrice": null,
         "CanTrash": false,
         "HideFromShippingCollection": true,
-        "IsGiftable": false,
+        "IsGiftable": false
     },
-	{
+	  {
         "$ItemType": "Object",
         "ID": "Dwarven Scrap",
         "Category": "Crafting",
@@ -27,6 +27,6 @@
         "SellPrice": 750,
         "CanTrash": true,
         "HideFromShippingCollection": false,
-        "IsGiftable": true,
+        "IsGiftable": true
     }
 ]

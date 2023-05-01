@@ -66,19 +66,20 @@
         },
         "Entries": {
             "spring_Thu10": "My therapist keeps on giving me more worksheets to do...#$b#Not sure what I expected out of therapy but this wasn't it.#$e#To be honest, I expected to be blamed for so much more...",
-            "spring_Fri10": "Say, @, I hear you go into those mines often. Try to stay safe down there...",
+            "spring_Fri10": "#$c .5#Say, @, I hear you go into those mines often. Try to stay safe down there...#Heya @, you keep yourself safe, will you? I hear you go down to them mines often.",
             "winter_Sun10": "I used to think therapy would just be lyin' on a couch, talkin' about your feelings.#$e#It's not. It's a bunch of worksheets, actually.#$e#Feel like I'm back in school or something.#$e#I don't know. Penny says I'm gettin' better. I'm not sure I can tell.$s",
-            "Saloon_Thu": "This beer? It's a nice bitter. I didn't realize Gus had so many good beers for sale!$h",
+            "Saloon_Thu": "#$c .5#This beer? It's a nice bitter. I didn't realize Gus had so many good beers for sale!$h#Hmmmm...Do I have enough money to buy both a drink and something to eat?#$e#Guess I should get some pasta, I should eat.",
             "Saloon_Fri": "@, whatcha do this week? You lookin' forward to the weekend?#$b#Guess farm life never stops.",
             "summerSaloon_Mon": "Thinking of gettin' a nice milk stout with my dinner today...wonder if I should pick up some food for tomorrow as well?",
             "summerSaloon_Sat": "@, if you could start over, what would you do with your life?",
-            "fallSaloon_Mon": "Wonder if I should just move out of town or something. Start over someplace new.#$b#My therapist says it might be necessary to help me break bad habits...",
+            "fallSaloon_Mon": "#$c .5#Wonder if I should just move out of town or something. Start over someplace new.#@, if I had the money to do so, I'd move out of town.#$b#My therapist says it might be necessary to help me break bad habits...",
             "fallSaloon_Tue": "*sigh*. I spend too much time here, don't I?",
             "fallSaloon_Fri": "Why do I feel like I always end up back at this place? It's too close to my house for my own good, @.$s",
             "winterSaloon_Mon": "Ah, @, start of a new week? Anything you're plannin' on doing this week?#$b#Me? Well, I dunno. Go to work, I guess.",
             "winterSaloon_Thu": "Why I don't go back to drivin' trucks? I'm too old for it. They make drivers load and unload those trucks...#$e#Not sure I can work that those type of hours anymore anyways.#$e#These old legs don't work as well as they used to...$s",
             "winterSaloon_Sat": "#$c 0.5#You know how hard it is to find a good plumber all the way out here?#Everything costs more out here, compared to in the city. You know how expensive it is to get a plumber out here?#",
-            "17_2": "I think the pharmacy screwed up my medications again...$s"
+            "17_2": "I think the pharmacy screwed up my medications again...$s",
+            "19_2": "@, I'm not sure what I wanna do with the rest of my life.$s"
         }
     }
 ]}

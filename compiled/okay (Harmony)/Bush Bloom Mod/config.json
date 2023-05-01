@@ -3,5 +3,6 @@
   "UseSpringBushForSummer": true,
   "UseCustomWinterBerrySprite": true,
   "EnableDGRIntegration": true,
-  "EnableALMIntegration": true
+  "EnableALMIntegration": true,
+  "EnableAutomateIntegration": true
 }

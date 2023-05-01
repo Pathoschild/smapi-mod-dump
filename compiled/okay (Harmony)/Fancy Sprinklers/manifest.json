@@ -1,11 +1,11 @@
 {
     "Name": "Fancy Sprinklers",
     "Author": "trashcan9",
-    "Version": "1.1.3",
+    "Version": "1.2.2",
     "Description": "Adds some fancy sprinklers",
     "UniqueID": "trashcan9.FancySprinklers",
     "EntryDll": "FancySprinklers.dll",
-    "MinimumApiVersion": "3.0.0",
+    "MinimumApiVersion": "3.18.0",
     "UpdateKeys": [ "Nexus:15857" ],
     "Dependencies": [
         {
@@ -13,6 +13,37 @@
         },
         {
             "UniqueID": "Pathoschild.DataLayers",
+			"MinimumVersion": "1.15.6",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "Shockah.FlexibleSprinklers",
+			"MinimumVersion": "1.4.1",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "aedenthorn.ImmersiveSprinklers",
+			"MinimumVersion": "0.7.6",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "spacechase0.MultiFertilizer",
+			"MinimumVersion": "1.0.6",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "Pathoschild.TractorMod",
+			"MinimumVersion": "4.16.3",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "NCarigon.PassableCrops",
+			"MinimumVersion": "1.0.6",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "PeacefulEnd.AlternativeTextures",
+			"MinimumVersion": "6.8.1",
             "IsRequired": false
         }
     ]

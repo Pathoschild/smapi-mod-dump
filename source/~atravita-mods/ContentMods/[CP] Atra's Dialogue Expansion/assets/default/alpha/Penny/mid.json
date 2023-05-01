@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StardewMods
+**
+*************************************************/
+
+{"Changes":[
+    // Dreams of a better life, is a bit caught up in books.
+    {
+        "LogName": "Penny - Y2",
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/Penny",
+        "When": {"YearModulus": "2"},
+        "Entries": {
+            "Mon4": "@, you've got any interesting books you want to read?",
+            "1_2": "I'd love to decorate more, but Mum doesn't approve.#$b#She thinks it's spending money we don't have."
+        }
+    }
+]}

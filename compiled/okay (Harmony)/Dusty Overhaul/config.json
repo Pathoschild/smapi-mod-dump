@@ -1,0 +1,10 @@
+{
+  "FarmSpawnX": "0, 0, 0, 0",
+  "FarmSpawnY": "0, 0, 0, 0",
+  "FarmHouse1SpawnX": "0, 0, 0, 0",
+  "FarmHouse1SpawnY": "0, 0, 0, 0",
+  "FarmHouse2SpawnX": "0, 0, 0, 0",
+  "FarmHouse2SpawnY": "0, 0, 0, 0",
+  "CustomFarmSpawnPoints": false,
+  "CustomFarmHouseSpawnPoints": false
+}

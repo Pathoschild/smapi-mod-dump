@@ -1,18 +1,15 @@
 urls:
-   web: https://github.com/Floogen/MysticalBuildings
-   Git: https://github.com/Floogen/MysticalBuildings.git
+   web: https://github.com/Floogen/AlternativeTextures
+   Git: https://github.com/Floogen/AlternativeTextures.git
 
 mods:
-   Cave of Memories
-   Mystical Buildings
+   Alternative Textures
+   Farm Tablet
 
 latest commit:
-   commit 6e7abc9364cf4325e777764256c3d335ac063439
-   Merge: 6b7673f ff7e574
+   commit cdb580d9d4859f3f482195ddf787acc2fbbf060e
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Thu Jun 30 16:02:39 2022 -0500
+   Date:   Fri Apr 21 22:54:32 2023 -0500
    
-       Merge pull request #1 from KediDili/development
-       
-       Adding tr.json files
+       v6.9.1 released
    

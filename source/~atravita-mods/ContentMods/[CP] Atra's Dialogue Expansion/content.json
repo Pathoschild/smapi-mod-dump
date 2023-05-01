@@ -13,14 +13,18 @@
     "Format": "1.28.0",
     "ConfigSchema": {
         "EnableFor": {
-            "AllowValues": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Kent, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sam, Sandy, Sebastian, Shane, Vincent, Willy",
+            "AllowValues": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Kent, Leah, Lewis, Marnie, Maru, Pam, Penny, Pierre, Robin, Sam, Sandy, Sebastian, Shane, Vincent, Willy",
             "AllowMultiple": true,
-            "Default": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Kent, Leah, Lewis, Marnie, Maru, Pam, Pierre, Robin, Sam, Sandy, Sebastian, Shane, Vincent, Willy",
+            "Default": "Abigail, Alex, Caroline, Clint, Demetrius, Elliott, Emily, Evelyn, George, Gus, Haley, Harvey, Jodi, Kent, Leah, Lewis, Marnie, Maru, Pam, Penny, Pierre, Robin, Sam, Sandy, Sebastian, Shane, Vincent, Willy",
             "AllowBlank": true
         },
         "IncreasedRealism": {
             "AllowValues": "true, false",
             "Default": "false",
+        },
+        "MapStrings": {
+            "AllowValues": "true, false",
+            "Default": "true",
         }
     },
     "DynamicTokens": [
@@ -89,7 +93,14 @@
             "When": {"DayOfWeek" : "Monday"},
             "Entries": {
                 "atravitaDialogueLeahBeach": "null",
+                "atravitaGusNewYear": "null",
             }
+        },
+        {
+            "Action": "Include",
+            "LogName": "MapStrings",
+            "When": {"MapStrings": true},
+            "FromFile": "assets/mapstrings.json"
         }
     ],
 }

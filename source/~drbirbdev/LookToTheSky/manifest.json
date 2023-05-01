@@ -11,7 +11,7 @@
 {
   "Name": "LookToTheSky",
   "Author": "drbirbdev",
-  "Version": "1.0.2",
+  "Version": "1.0.4",
   "Description": "Entry for Stardew ModJam 2023.  Press 'U' (Configurable) to look up at the sky.  Use your slingshot to shoot at things flying by, and collect items.  Use explosive ammo to launch fireworks, or iridium ore ammo to create starts in the night sky.",
   "UniqueID": "drbirbdev.LookToTheSky",
   "EntryDll": "LookToTheSky.dll",

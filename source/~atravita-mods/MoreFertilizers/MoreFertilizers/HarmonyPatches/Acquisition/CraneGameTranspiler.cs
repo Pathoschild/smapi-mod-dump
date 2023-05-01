@@ -74,6 +74,10 @@ internal static class CraneGameTranspiler
         {
             items.Add(new SObject(ModEntry.SeedyFertilizerID, 5));
         }
+        if (ModEntry.EverlastingFruitTreeFertilizerID != -1)
+        {
+            items.Add(new SObject(ModEntry.EverlastingFruitTreeFertilizerID, 1));
+        }
     }
 
     [HarmonyPatch(MethodType.Constructor, new[] { typeof(CraneGame) })]

@@ -450,9 +450,17 @@ SUCCESS:
                     return Game1.year > 1 || !(crop is 476 or 485 or 489); // the year2 seeds.
                 }
                 string? name = data.GetNthChunk('/', 0).ToString();
-                if (JsonAssetsShims.IsAvailableSeed(name))
+                try
                 {
-                    return true;
+                    if (JsonAssetsShims.IsAvailableSeed(name))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModEntry.ModMonitor.Log($"Failed while trying to check event preconditions: {ex}", LogLevel.Error);
+                    return false;
                 }
 
                 goto case CropOptions.Seen;

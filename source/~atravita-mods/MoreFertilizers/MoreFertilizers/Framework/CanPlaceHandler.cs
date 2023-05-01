@@ -40,6 +40,11 @@ public sealed class CanPlaceHandler : IMoreFertilizersAPI
     public const string FruitTreeFertilizer = "atravita.MoreFertilizer.FruitTree";
 
     /// <summary>
+    /// ModData string for the Everlasting Fruit Tree Fertilizer.
+    /// </summary>
+    public const string EverlastingFruitTreeFertilizer = "atravita.MoreFertilizer.EverlastingFruitTree";
+
+    /// <summary>
     /// ModData string for the Fish Food fertilizers.
     /// </summary>
     public const string FishFood = "atravita.MoreFertilizer.FishFood";
@@ -149,10 +154,12 @@ public sealed class CanPlaceHandler : IMoreFertilizersAPI
             }
             else if (terrain is FruitTree fruitTree
                 && (obj.ParentSheetIndex == ModEntry.MiraculousBeveragesID
+                    || obj.ParentSheetIndex == ModEntry.EverlastingFruitTreeFertilizerID
                     || (fruitTree.growthStage.Value != FruitTree.treeStage
                         && (obj.ParentSheetIndex == ModEntry.FruitTreeFertilizerID || obj.ParentSheetIndex == ModEntry.DeluxeFruitTreeFertilizerID))))
             {
-                bool ret = !fruitTree.modData.ContainsKey(FruitTreeFertilizer) && !fruitTree.modData.ContainsKey(MiraculousBeverages);
+                bool ret = !fruitTree.modData.ContainsKey(FruitTreeFertilizer) && !fruitTree.modData.ContainsKey(MiraculousBeverages)
+                            && !fruitTree.modData.ContainsKey(EverlastingFruitTreeFertilizer);
                 if (alert && !ret)
                 {
                     AlertPlayer();
@@ -285,6 +292,13 @@ public sealed class CanPlaceHandler : IMoreFertilizersAPI
                 {
                     fruitTree.shake(fruitTree.currentTileLocation, true, fruitTree.currentLocation);
                     fruitTree.modData?.SetBool(MiraculousBeverages, true);
+                    return true;
+                }
+                if (obj.ParentSheetIndex == ModEntry.EverlastingFruitTreeFertilizerID)
+                {
+                    fruitTree.shake(fruitTree.currentTileLocation, true, fruitTree.currentLocation);
+                    Utility.addSprinklesToLocation(loc, (int)fruitTree.currentTileLocation.X, (int)fruitTree.currentTileLocation.Y - 2, 3, 5, 400, 10, Color.LightGoldenrodYellow);
+                    fruitTree.modData?.SetBool(EverlastingFruitTreeFertilizer, true);
                     return true;
                 }
             }

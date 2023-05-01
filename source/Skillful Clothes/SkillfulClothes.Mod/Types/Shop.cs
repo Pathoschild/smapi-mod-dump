@@ -21,16 +21,16 @@ namespace SkillfulClothes.Types
     public enum Shop
     {
         // NPC shops have the NPC id as value
-
-        None = -1,
+        None = -1,        
         Clint = 2,
         Willy = 4,
         Pierre = 24,
+        Robin = 25,        
         Dwarf = 31,
         Krobus = 33,     
         Marnie = 20,
         JojaMarket = 900,
-        AdventureGuild = 901
+        AdventureGuild = 901        
     }
 
     [Flags]
@@ -88,9 +88,10 @@ namespace SkillfulClothes.Types
                 case Shop.Willy: return "Willy";
                 case Shop.Clint: return "Clint";
                 case Shop.Pierre: return "Pierre";
-                case Shop.Marnie: return "Marnie";
+                case Shop.Marnie: return "Marnie";                
                 case Shop.Dwarf: return "the dwarf";
                 case Shop.Krobus: return "Krobus";
+                case Shop.Robin: return "Robin";
                 case Shop.JojaMarket: return "the Joja market";
                 case Shop.AdventureGuild: return "the Adventure Guild";
                 default: return "someone";

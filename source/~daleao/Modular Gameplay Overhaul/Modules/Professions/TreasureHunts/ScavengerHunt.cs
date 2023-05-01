@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Professions.TreasureHunts;
 
 using System.Collections.Generic;
 using System.Linq;
+using DaLion.Overhaul.Modules.Core.UI;
 using DaLion.Overhaul.Modules.Professions.Events.Display;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 using DaLion.Overhaul.Modules.Professions.Extensions;
@@ -22,7 +23,6 @@ using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Networking;
-using DaLion.Shared.UI;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley.Locations;
@@ -347,7 +347,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         this.AddSeedsToTreasures(treasures);
 
 #if DEBUG
-        if (WeaponsModule.IsEnabled && WeaponsModule.Config.DwarvishLegacy && Globals.DwarvishBlueprintIndex.HasValue)
+        if (WeaponsModule.ShouldEnable && WeaponsModule.Config.DwarvenLegacy && Globals.DwarvishBlueprintIndex.HasValue)
         {
             if (!Game1.player.Read(Weapons.DataKeys.BlueprintsFound).ParseList<int>()
                     .ContainsAll(ItemIDs.ElfBlade, ItemIDs.ForestSword))
@@ -557,7 +557,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         // forest sword
         if (this.Random.NextDouble() < 0.25 * luckModifier)
         {
-            if (WeaponsModule.IsEnabled && WeaponsModule.Config.DwarvishLegacy && Globals.DwarvishBlueprintIndex.HasValue)
+            if (WeaponsModule.ShouldEnable && WeaponsModule.Config.DwarvenLegacy && Globals.DwarvishBlueprintIndex.HasValue)
             {
                 if (!Game1.player.Read(Weapons.DataKeys.BlueprintsFound).ParseList<int>()
                         .Contains(ItemIDs.ForestSword))
@@ -578,7 +578,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         // elf blade
         if (this.Random.NextDouble() < 0.25 * luckModifier)
         {
-            if (WeaponsModule.IsEnabled && WeaponsModule.Config.DwarvishLegacy && Globals.DwarvishBlueprintIndex.HasValue)
+            if (WeaponsModule.ShouldEnable && WeaponsModule.Config.DwarvenLegacy && Globals.DwarvishBlueprintIndex.HasValue)
             {
                 if (!Game1.player.Read(Weapons.DataKeys.BlueprintsFound).ParseList<int>()
                         .Contains(ItemIDs.ElfBlade))

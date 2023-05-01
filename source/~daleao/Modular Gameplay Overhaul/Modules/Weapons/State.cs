@@ -14,11 +14,12 @@ namespace DaLion.Overhaul.Modules.Weapons;
 
 using DaLion.Overhaul.Modules.Weapons.Events;
 using Microsoft.Xna.Framework;
+using StardewValley.Monsters;
 using StardewValley.Tools;
 
 #endregion using directives
 
-/// <summary>The runtime state for Weapon variables.</summary>
+/// <summary>The runtime state variables for WPNZ.</summary>
 internal sealed class State
 {
     private ComboHitStep _hitQueued;
@@ -67,8 +68,6 @@ internal sealed class State
         }
     }
 
-    internal int SlingshotCooldown { get; set; }
-
     internal Vector2 DriftVelocity { get; set; }
 
     internal MeleeWeapon? AutoSelectableWeapon { get; set; }
@@ -76,4 +75,8 @@ internal sealed class State
     internal double ContainerDropAccumulator { get; set; }
 
     internal double MonsterDropAccumulator { get; set; }
+
+    internal Monster? HoveredEnemy { get; set; }
+
+    internal VirtuesQuest? VirtuesQuest { get; set; } = null;
 }

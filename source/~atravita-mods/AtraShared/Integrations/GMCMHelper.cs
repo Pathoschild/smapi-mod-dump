@@ -81,7 +81,8 @@ public sealed class GMCMHelper : IntegrationHelper
     /// </summary>
     /// <returns>True if successful, false otherwise.</returns>
     [MemberNotNullWhen(returnValue: true, members: nameof(modMenuApi))]
-    public bool TryGetAPI() => this.TryGetAPI(APIID, MINVERSION, out this.modMenuApi);
+    public bool TryGetAPI()
+        => this.modMenuApi is not null || this.TryGetAPI(APIID, MINVERSION, out this.modMenuApi);
 
     /// <summary>
     /// Tries to grab a copy of GMCM Option's API.

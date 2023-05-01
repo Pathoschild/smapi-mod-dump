@@ -3020,7 +3020,9 @@
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "CPConditions": {},
-          "EPUPreconditions": [],
+          "EPUPreconditions": [
+            "!HasItem Ancient Music Box"
+          ],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1

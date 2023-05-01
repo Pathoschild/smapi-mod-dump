@@ -14,6 +14,7 @@ using StardewValley.Characters;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FreeLove
 {
@@ -142,8 +143,46 @@ namespace FreeLove
             }
             return true;
         }
+        public static bool skipSpouse = false;
+        public static void Farmer_spouse_Postfix(Farmer __instance, ref string __result)
+        {
+            if (skipSpouse)
+                return;
+            try
+            {
+                skipSpouse = true;
+                if (ModEntry.tempOfficialSpouse != null && __instance.friendshipData.ContainsKey(ModEntry.tempOfficialSpouse.Name) && __instance.friendshipData[ModEntry.tempOfficialSpouse.Name].IsMarried())
+                {
+                    __result = ModEntry.tempOfficialSpouse.Name;
+                }
+                else
+                {
+                    var spouses = ModEntry.GetSpouses(__instance, true);
+                    string aspouse = null;
+                    foreach(var spouse in spouses)
+                    {
+                        if (aspouse is null)
+                            aspouse = spouse.Key;
+                        if (__instance.friendshipData.TryGetValue(spouse.Key, out var f) && f.IsEngaged())
+                        {
+                            __result = spouse.Key;
+                            break;
+                        }
+                    }
+                    if(__result is null && aspouse is not null)
+                    {
+                        __result = aspouse;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Farmer_spouse_Postfix)}:\n{ex}", LogLevel.Error);
+            }
+            skipSpouse = false;
+        }
 
-        public static bool Farmer_getSpouse_Prefix(Farmer __instance, ref NPC __result)
+        public static void Farmer_getSpouse_Postfix(Farmer __instance, ref NPC __result)
         {
             try
             {
@@ -151,14 +190,31 @@ namespace FreeLove
                 if (ModEntry.tempOfficialSpouse != null && __instance.friendshipData.ContainsKey(ModEntry.tempOfficialSpouse.Name) && __instance.friendshipData[ModEntry.tempOfficialSpouse.Name].IsMarried())
                 {
                     __result = ModEntry.tempOfficialSpouse;
-                    return false;
+                }
+                else
+                {
+                    var spouses = ModEntry.GetSpouses(__instance, true);
+                    NPC aspouse = null;
+                    foreach (var spouse in spouses)
+                    {
+                        if (aspouse is null)
+                            aspouse = spouse.Value;
+                        if (__instance.friendshipData[spouse.Key].IsEngaged())
+                        {
+                            __result = spouse.Value;
+                            break;
+                        }
+                    }
+                    if (__result is null && aspouse is not null)
+                    {
+                        __result = aspouse;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(Farmer_getSpouse_Prefix)}:\n{ex}", LogLevel.Error);
+                Monitor.Log($"Failed in {nameof(Farmer_getSpouse_Postfix)}:\n{ex}", LogLevel.Error);
             }
-            return true;
         }
 
         public static bool Farmer_GetSpouseFriendship_Prefix(Farmer __instance, ref Friendship __result)
@@ -174,7 +230,7 @@ namespace FreeLove
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(Farmer_getSpouse_Prefix)}:\n{ex}", LogLevel.Error);
+                Monitor.Log($"Failed in {nameof(Farmer_GetSpouseFriendship_Prefix)}:\n{ex}", LogLevel.Error);
             }
             return true;
         }

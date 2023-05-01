@@ -18,10 +18,10 @@ using Microsoft.Xna.Framework;
 #endregion using directives
 
 /// <summary>Constructs the GenericModConfigMenu integration.</summary>
-internal sealed partial class GenericModConfigMenuCore
+internal sealed partial class GenericModConfigMenu
 {
     /// <summary>Register the Slingshots config menu.</summary>
-    private void RegisterSlingshots()
+    private void AddSlingshotOptions()
     {
         this
             .AddPage(OverhaulModule.Slingshots.Namespace, () => "Slingshot Settings")
@@ -34,12 +34,12 @@ internal sealed partial class GenericModConfigMenuCore
                 (config, value) => config.Slingshots.EnableRebalance = value)
             .AddCheckbox(
                 () => "Enable Critical Hits",
-                () => "Allow slingshots to deal critical damage and be affected by critical modifiers.",
+                () => "Allows slingshots to deal critical damage and be affected by critical modifiers.",
                 config => config.Slingshots.EnableCriticalHits,
                 (config, value) => config.Slingshots.EnableCriticalHits = value)
             .AddCheckbox(
                 () => "Enable Enchantments",
-                () => "Allow slingshots to be enchanted at the Forge. Includes both gemstone enchantments and Prismatic Shard enchantments, provided the Enchantments Module is enabled to provide them.",
+                () => "Allows slingshots to be enchanted at the Forge. Includes both gemstone enchantments and Prismatic Shard enchantments, provided the Enchantments Module is enabled to provide them.",
                 config => config.Slingshots.EnableEnchantments,
                 (config, value) => config.Slingshots.EnableEnchantments = value)
             .AddCheckbox(
@@ -63,8 +63,20 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Allows creating the Infinity Slingshot at the Forge.",
                 config => config.Slingshots.EnableInfinitySlingshot,
                 (config, value) => config.Slingshots.EnableInfinitySlingshot = value)
+            .AddHorizontalRule()
 
             .AddSectionTitle(() => "Movement & Control Settings")
+            .AddCheckbox(
+                () => "Face Towards Mouse Cursor",
+                () =>
+                    "If using mouse and keyboard, turn to face towards the current cursor position before swinging a slingshot (for special moves).",
+                config => config.Weapons.FaceMouseCursor,
+                (config, value) => config.Weapons.FaceMouseCursor = value)
+            .AddCheckbox(
+                () => "Slick Moves",
+                () => "Drift in the current running direction when firing a slingshot.",
+                config => config.Slingshots.SlickMoves,
+                (config, value) => config.Slingshots.SlickMoves = value)
             .AddCheckbox(
                 () => "Enable Auto-Selection",
                 () => "The chosen slingshot will be automatically equipped near enemies.",
@@ -95,12 +107,6 @@ internal sealed partial class GenericModConfigMenuCore
                 config => (int)config.Slingshots.AutoSelectionRange,
                 (config, value) => config.Slingshots.AutoSelectionRange = (uint)value,
                 1,
-                9)
-            .AddCheckbox(
-                () => "Slick Moves",
-                () => "Drift in the current running direction when firing a slingshot.",
-                config => config.Slingshots.SlickMoves,
-                (config, value) => config.Slingshots.SlickMoves = value);
-
+                9);
     }
 }

@@ -354,7 +354,7 @@ internal static class ConfirmWarp
     }
 
     private static bool IsLocationConsideredDangerous(GameLocation location)
-        => ModEntry.Config.SafeLocationMap.TryGetValue(location.NameOrUniqueName, out IsSafeLocationEnum val)
+        => ModEntry.Config.SafeLocationMap.TryGetValue(location.Name, out IsSafeLocationEnum val)
             ? (val == IsSafeLocationEnum.Dangerous) || (val == IsSafeLocationEnum.Dynamic && location.IsDangerousLocation())
             : location.IsDangerousLocation();
 }

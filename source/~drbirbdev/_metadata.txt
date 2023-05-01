@@ -10,10 +10,9 @@ mods:
    Ranching Tool Upgrades
 
 latest commit:
-   commit 35749c16b3002d11bbc7f788e8461cd249afe218
-   Merge: f44e208 5cc3613
+   commit dcd8e99fc9b7565806652db08079808f1306ed73
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Tue Feb 7 18:27:40 2023 -0800
+   Date:   Sat Apr 22 17:26:29 2023 -0700
    
-       Merge branch 'main' of https://github.com/drbirbdev/StardewValley
+       Adding french and turkish binning skill translations
    

@@ -12,6 +12,7 @@ namespace BNWCore
 {
     public class ModConfig
     {
+        public bool BNWCoreEnableWateringXP { get; set; } = false;
         public int BNWCoreToolLength { get; set; } = 7;
         public int BNWCoreToolWidth { get; set; } = 2;
         public bool BNWCoreslimeHutch { get; set; } = true;
@@ -23,5 +24,6 @@ namespace BNWCore
         public bool BNWCoreseedTrees { get; set; } = true;
         public bool BNWCoreflowers { get; set; } = false;
         public bool BNWCoregarbageCans { get; set; } = true;
+        public bool BNWCoresetSoundLoop { get; set; } = true;
     }
 }

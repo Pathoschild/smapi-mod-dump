@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Events;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
+using DaLion.Shared.Extensions.Xna;
 using StardewModdingAPI.Events;
 using StardewValley.Tools;
 
@@ -31,12 +32,14 @@ internal sealed class WeaponButtonPressedEvent : ButtonPressedEvent
     }
 
     /// <inheritdoc />
-    public override bool IsEnabled => WeaponsModule.Config.FaceMouseCursor || WeaponsModule.Config.SlickMoves;
+    public override bool IsEnabled => WeaponsModule.Config.EnableAutoSelection ||
+                                      WeaponsModule.Config.FaceMouseCursor ||
+                                      WeaponsModule.Config.SlickMoves;
 
     /// <inheritdoc />
     protected override void OnButtonPressedImpl(object? sender, ButtonPressedEventArgs e)
     {
-        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null)
+        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null || Game1.isFestival())
         {
             return;
         }
@@ -70,7 +73,22 @@ internal sealed class WeaponButtonPressedEvent : ButtonPressedEvent
         if (WeaponsModule.Config.FaceMouseCursor && !Game1.options.gamepadControls &&
             !weapon.isScythe())
         {
-            player.FaceTowardsTile(Game1.currentCursorTile);
+            var location = player.currentLocation;
+            var isNearActionableTile = false;
+            foreach (var tile in player.getTileLocation()
+                         .GetEightNeighbors(location.Map.DisplayWidth, location.Map.DisplayHeight))
+            {
+                isNearActionableTile = location.IsActionableTile(tile, player);
+                if (isNearActionableTile)
+                {
+                    break;
+                }
+            }
+
+            if (!isNearActionableTile)
+            {
+                player.FaceTowardsTile(Game1.currentCursorTile);
+            }
         }
 
         if (isActionButton)
@@ -88,6 +106,10 @@ internal sealed class WeaponButtonPressedEvent : ButtonPressedEvent
                 case MeleeWeapon.club when MeleeWeapon.clubCooldown > 0:
                     return;
             }
+        }
+        else if (isUseToolButton && WeaponsModule.State.ComboCooldown > 0)
+        {
+            return;
         }
 
         if (!player.isMoving() || !player.running || !WeaponsModule.Config.SlickMoves)

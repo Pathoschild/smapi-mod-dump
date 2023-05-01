@@ -23,9 +23,13 @@ internal sealed class ModState
 
     internal Modules.Tools.State Tools { get; set; } = new();
 
+    internal Modules.Enchantments.State Enchantments { get; set; } = new();
+
     internal Modules.Rings.State Rings { get; set; } = new();
 
     internal Modules.Taxes.State Taxes { get; set; } = new();
+
+    internal bool DebugMode { get; set; }
 }
 #pragma warning restore CS1591
 #pragma warning restore SA1600

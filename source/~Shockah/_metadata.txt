@@ -10,6 +10,7 @@ mods:
    Junimo Warp
    Kokoro
    Machine Status
+   Maximize Fix
    Please Gift Me In Person
    Predictable Retaining Soil
    Project Fluent
@@ -18,9 +19,9 @@ mods:
    XP Display
 
 latest commit:
-   commit e1f371918796df1a9e6f4ec72d3becf92294ae75
+   commit 0cc4bd4a9369f192705d0b218a9e6236f291187f
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Wed Mar 1 13:14:34 2023 +0100
+   Date:   Sat Apr 1 20:44:13 2023 +0200
    
-       Updated main repo README with mod headers and contribution information (mostly about translations)
+       MaximizeFix: Version 1.0.0 - new mod
    

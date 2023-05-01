@@ -32,7 +32,7 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
     public override string[] Triggers { get; } = { "advance_quest", "advance", "adv" };
 
     /// <inheritdoc />
-    public override string Documentation => "Forcefully advances the specified quest-line (either Clint's Forge or Yoba's Virtues).";
+    public override string Documentation => "Forcefully advances the specified quest-line (either Clint's Forge or Viego's Curse / Yoba's Virtues).";
 
     /// <inheritdoc />
     public override void Callback(string trigger, string[] args)
@@ -40,44 +40,64 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
         var player = Game1.player;
         if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
-            Log.W("You must specify a quest-line to advance (either \"Forge\" or \"Ruin\".");
+            Log.W("You must specify a quest-line to advance (either \"Forge\" or \"Curse\".");
             return;
         }
 
         switch (args[0].ToLowerInvariant())
         {
-            case "legacy":
-            case "clint":
             case "forge":
-                player.mailReceived.Add("clintForge");
+            case "clint":
+            case "dwarven":
+            case "legacy":
                 if (player.hasQuest((int)Quest.ForgeIntro))
                 {
                     player.completeQuest((int)Quest.ForgeIntro);
                 }
 
+                if (!player.mailReceived.Contains("clintForge"))
+                {
+                    player.mailReceived.Add("clintForge");
+                }
+
                 break;
+            case "hero":
             case "ruin":
             case "dawn":
             case "curse":
+            case "viego":
             case "yoba":
             case "virtues":
             case "chivalry":
-                if (player.hasQuest((int)Quest.VirtuesIntro))
+            case "purification":
+                if (!player.hasQuest((int)Quest.CurseIntro))
                 {
-                    player.addQuest(Virtue.Honor);
-                    player.addQuest(Virtue.Compassion);
-                    player.addQuest(Virtue.Wisdom);
-                    player.addQuest(Virtue.Generosity);
-                    player.addQuest(Virtue.Valor);
-                    player.completeQuest((int)Quest.VirtuesIntro);
+                    player.addQuest((int)Quest.CurseIntro);
+                    return;
                 }
 
-                player.Write(DataKeys.ProvenHonor, int.MaxValue.ToString());
-                player.Write(DataKeys.ProvenCompassion, int.MaxValue.ToString());
-                player.Write(DataKeys.ProvenWisdom, int.MaxValue.ToString());
-                player.Write(DataKeys.ProvenGenerosity, true.ToString());
-                player.Write(DataKeys.ProvenValor, true.ToString());
-                Virtue.List.ForEach(virtue => virtue.CheckForCompletion(Game1.player));
+                if (player.hasQuest((int)Quest.CurseIntro))
+                {
+                    player.completeQuest((int)Quest.CurseIntro);
+                    WeaponsModule.State.VirtuesQuest ??= new VirtuesQuest();
+
+                    player.Write(DataKeys.InspectedHonor, null);
+                    player.Write(DataKeys.InspectedCompassion, null);
+                    player.Write(DataKeys.InspectedWisdom, null);
+                    player.Write(DataKeys.InspectedGenerosity, null);
+                    player.Write(DataKeys.InspectedValor, null);
+                    return;
+                }
+
+                if (WeaponsModule.State.VirtuesQuest is { } quest)
+                {
+                    player.Write(DataKeys.ProvenHonor, int.MaxValue.ToString());
+                    player.Write(DataKeys.ProvenCompassion, int.MaxValue.ToString());
+                    player.Write(DataKeys.ProvenWisdom, int.MaxValue.ToString());
+                    player.Write(DataKeys.ProvenGenerosity, int.MaxValue.ToString());
+                    Virtue.List.ForEach(virtue => quest.UpdateVirtueProgress(virtue));
+                }
+
                 break;
         }
     }

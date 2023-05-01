@@ -1,7 +1,9 @@
 {
-  "maxCastPower": true,
-  "autoHit": true,
-  "fastBite": false,
-  "catchTreasure": true,
-  "fasterSpeed": false
+  "MaxCastPower": true,
+  "AutoHit": true,
+  "FastBite": false,
+  "CatchTreasure": true,
+  "BarSpeedMode": "Normal",
+  "ContinuousFishing": "None",
+  "FoodIndex": 0
 }

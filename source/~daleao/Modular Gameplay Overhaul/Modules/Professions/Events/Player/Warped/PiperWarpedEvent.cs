@@ -158,6 +158,6 @@ internal sealed class PiperWarpedEvent : WarpedEvent
             }
         }
 
-        Log.D($"[Professions]: Spawned {pipedCount} Slimes after {raisedSlimes.Length} attempts.");
+        Log.D($"[PROFS]: Spawned {pipedCount} Slimes after {raisedSlimes.Length} attempts.");
     }
 }

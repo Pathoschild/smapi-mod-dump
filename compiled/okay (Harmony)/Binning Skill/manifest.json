@@ -1,11 +1,11 @@
-{
+﻿{
   "Name": "BinningSkill",
   "Author": "drbirbdev",
-  "Version": "1.2.1",
+  "Version": "1.2.7",
   "Description": "Adds a skill related to digging through trashcans.",
   "UniqueID": "drbirbdev.BinningSkill",
   "EntryDll": "BinningSkill.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.18.2",
   "UpdateKeys": [
     "Nexus:14073"
   ],

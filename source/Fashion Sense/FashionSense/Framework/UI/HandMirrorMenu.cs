@@ -38,6 +38,7 @@ namespace FashionSense.Framework.UI
         private string hoverText = "";
         private int colorPickerTimer;
         private int currentAccessorySlot;
+        private int currentColorMaskLayerIndex;
 
         internal const string ACCESSORY_FILTER_BUTTON = "AccessoryFilter";
         internal const string HAIR_FILTER_BUTTON = "HairFilter";
@@ -53,6 +54,7 @@ namespace FashionSense.Framework.UI
         internal const string SHOES_OPTION_BUTTON = "ShoesOption";
 
         internal const string LIMIT_TO_ACCCESSORIES = "LimitedToAccessories";
+        internal const string MASK_LAYERS = "MaskLayers";
 
         private ClickableComponent descriptionLabel;
         private ClickableComponent appearanceLabel;
@@ -70,13 +72,13 @@ namespace FashionSense.Framework.UI
         public List<ClickableComponent> colorPickerCCs = new List<ClickableComponent>();
 
         public SimpleColorPicker colorPicker;
+        private ClickableTextureComponent exitButton;
         private ClickableTextureComponent randomButton;
         private ClickableTextureComponent clearButton;
         private ClickableTextureComponent searchButton;
         private ClickableTextureComponent outfitButton;
         private ClickableTextureComponent colorCopyButton;
         private ClickableTextureComponent colorPasteButton;
-        public ClickableTextureComponent okButton;
 
         public HandMirrorMenu() : base(0, 0, 375, 550, showUpperRightCloseButton: true)
         {
@@ -253,15 +255,6 @@ namespace FashionSense.Framework.UI
             });
 
             // Add the leftover buttons
-            okButton = new ClickableTextureComponent("OK", new Rectangle(base.xPositionOnScreen + base.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 56, base.yPositionOnScreen + base.height - IClickableMenu.borderWidth - IClickableMenu.spaceToClearTopBorder + 20, 64, 64), null, null, Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f)
-            {
-                myID = 618,
-                upNeighborID = 612,
-                leftNeighborImmutable = true,
-                rightNeighborImmutable = true,
-                downNeighborImmutable = true
-            };
-
             searchButton = new ClickableTextureComponent("Search", new Rectangle(base.xPositionOnScreen + base.width + IClickableMenu.spaceToClearSideBorder - 16, base.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder - 48, 32, 32), null, null, Game1.mouseCursors, new Rectangle(208, 320, 16, 16), 2f)
             {
                 myID = 619,
@@ -306,19 +299,27 @@ namespace FashionSense.Framework.UI
             {
                 myID = 624,
                 upNeighborID = -99998,
+                leftNeighborID = -99998,
+                rightNeighborImmutable = true,
+                downNeighborID = -99998
+            };
+            exitButton = new ClickableTextureComponent("Exit", new Rectangle(searchButton.bounds.X + 1, searchButton.bounds.Y + 248, 32, 32), null, null, Game1.mouseCursors2, new Rectangle(67, 243, 9, 10), 3f)
+            {
+                myID = 625,
+                upNeighborID = -99998,
                 leftNeighborID = 608,
                 rightNeighborImmutable = true,
                 downNeighborID = -99998
             };
             sidePanelButtons = new List<ClickableComponent>()
             {
-                okButton,
                 searchButton,
                 outfitButton,
                 colorCopyButton,
                 colorPasteButton,
                 randomButton,
-                clearButton
+                clearButton,
+                exitButton
             };
 
             // Add color picker
@@ -337,27 +338,8 @@ namespace FashionSense.Framework.UI
                 case ACCESSORY_FILTER_BUTTON:
                     colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex()));
                     break;
-                case HAT_FILTER_BUTTON:
-                    var hatColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR]) };
-                    colorPicker.SetColor(hatColor);
-                    break;
-                case SHIRT_FILTER_BUTTON:
-                    var shirtColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) };
-                    colorPicker.SetColor(shirtColor);
-                    break;
-                case PANTS_FILTER_BUTTON:
-                    var pantsColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR]) };
-                    colorPicker.SetColor(pantsColor);
-                    break;
-                case SLEEVES_FILTER_BUTTON:
-                    var appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR]) };
-                    switch (GetCurrentFeatureSlotKey())
-                    {
-                        case ModDataKeys.CUSTOM_SHOES_ID:
-                            appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR]) };
-                            break;
-                    }
-                    colorPicker.SetColor(appearanceColor);
+                default:
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
                     break;
             }
             colorPickerCCs.Add(new ClickableComponent(new Rectangle(top.X, top.Y, 128, 20), "")
@@ -382,6 +364,11 @@ namespace FashionSense.Framework.UI
                 leftNeighborImmutable = true
             });
 
+            labels.Add(new ClickableComponent(new Rectangle(colorPickerCCs[0].bounds.Right + 80, colorPickerCCs[0].bounds.Y - 15, 1, 1), FashionSense.modHelper.Translation.Get("ui.fashion_sense.title.mask_layer")));
+
+            leftSelectionButtons.Add(new ClickableTextureComponent(MASK_LAYERS, new Rectangle(colorPickerCCs[0].bounds.Right + 60, colorPickerCCs[0].bounds.Y + 10, 48, 48), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 44), 1f));
+            rightSelectionButtons.Add(new ClickableTextureComponent(MASK_LAYERS, new Rectangle(colorPickerCCs[0].bounds.Right + 105, colorPickerCCs[0].bounds.Y + 10, 48, 48), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f));
+
             // Handle GamePad integration
             if (Game1.options.snappyMenus && Game1.options.gamepadControls)
             {
@@ -390,40 +377,42 @@ namespace FashionSense.Framework.UI
             }
         }
 
-        internal static string GetColorPickerLabel(bool isDisabled = false, bool isCompact = false, string enabledFilterName = null)
+        internal void Reset()
         {
-            string labelName = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.hair");
-
-            if (!String.IsNullOrEmpty(enabledFilterName))
+            currentColorMaskLayerIndex = GetNextValidColorMaskLayer(GetActiveModel(), -1, 1);
+            if (currentColorMaskLayerIndex < 0)
             {
-                switch (enabledFilterName)
-                {
-                    case ACCESSORY_FILTER_BUTTON:
-                        labelName = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.accessory");
-                        break;
-                    case HAT_FILTER_BUTTON:
-                        labelName = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.hat");
-                        break;
-                    case SHIRT_FILTER_BUTTON:
-                        labelName = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.shirt");
-                        break;
-                    case PANTS_FILTER_BUTTON:
-                        labelName = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.pants");
-                        break;
-                    case SLEEVES_FILTER_BUTTON:
-                        labelName = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.sleeves");
-                        break;
-                }
+                currentColorMaskLayerIndex = 0;
             }
+            switch (GetNameOfEnabledFilter())
+            {
+                case HAIR_FILTER_BUTTON:
+                    colorPicker.SetColor(Game1.player.hairstyleColor);
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player, maskLayerIndex: currentColorMaskLayerIndex));
+                    break;
+                case ACCESSORY_FILTER_BUTTON:
+                    colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex(), maskLayerIndex: currentColorMaskLayerIndex));
+                    break;
+                default:
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player, maskLayerIndex: currentColorMaskLayerIndex));
+                    break;
+            }
+        }
 
-
+        internal string GetColorPickerLabel(bool isDisabled = false, bool isCompact = false, string enabledFilterName = null)
+        {
+            var separator = isCompact ? "\n" : " ";
             if (isDisabled)
             {
-                var separator = isCompact ? "\n" : " ";
-                labelName += $"{separator}{FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_disabled.generic")}";
+                return $"{FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.generic")}{separator}{FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_disabled.generic")}:";
             }
 
-            return $"{labelName}:";
+            if (GetActiveModel() is not null && GetActiveModel().ColorMaskLayers.Count > currentColorMaskLayerIndex && String.IsNullOrEmpty(GetActiveModel().ColorMaskLayers[currentColorMaskLayerIndex].Name) is false)
+            {
+                return $"{GetActiveModel().ColorMaskLayers[currentColorMaskLayerIndex].Name}:";
+            }
+
+            return $"{FashionSense.modHelper.Translation.Get("ui.fashion_sense.mask_layer.base")} {FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_active.generic")}:";
         }
 
         internal void SetFilter(string filterName, AppearanceContentPack appearancePack)
@@ -454,38 +443,28 @@ namespace FashionSense.Framework.UI
                 case HAT_FILTER_BUTTON:
                     Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = HAT_FILTER_BUTTON;
 
-                    var hatColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR]) };
-                    colorPicker.SetColor(hatColor);
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
 
                     filterButton = filterButtons.First(b => b.name == HAT_FILTER_BUTTON) as ClickableTextureComponent;
                     break;
                 case SHIRT_FILTER_BUTTON:
                     Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = SHIRT_FILTER_BUTTON;
 
-                    var shirtColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) };
-                    colorPicker.SetColor(shirtColor);
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
 
                     filterButton = filterButtons.First(b => b.name == SHIRT_FILTER_BUTTON) as ClickableTextureComponent;
                     break;
                 case PANTS_FILTER_BUTTON:
                     Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = PANTS_FILTER_BUTTON;
 
-                    var pantsColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR]) };
-                    colorPicker.SetColor(pantsColor);
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
 
                     filterButton = filterButtons.First(b => b.name == PANTS_FILTER_BUTTON) as ClickableTextureComponent;
                     break;
                 case SLEEVES_FILTER_BUTTON:
                     Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = SLEEVES_FILTER_BUTTON;
 
-                    var appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR]) };
-                    switch (GetCurrentFeatureSlotKey())
-                    {
-                        case ModDataKeys.CUSTOM_SHOES_ID:
-                            appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR]) };
-                            break;
-                    }
-                    colorPicker.SetColor(appearanceColor);
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
 
                     filterButton = filterButtons.First(b => b.name == SLEEVES_FILTER_BUTTON) as ClickableTextureComponent;
                     break;
@@ -571,6 +550,81 @@ namespace FashionSense.Framework.UI
             }
         }
 
+        private AppearanceContentPack GetActiveContentPack()
+        {
+            AppearanceContentPack contentPack = null;
+            switch (GetNameOfEnabledFilter())
+            {
+                case HAIR_FILTER_BUTTON:
+                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<HairContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_HAIR_ID]);
+                    break;
+                case ACCESSORY_FILTER_BUTTON:
+                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<AccessoryContentPack>(FashionSense.accessoryManager.GetAccessoryIdByIndex(Game1.player, GetAccessoryIndex()));
+                    break;
+                case HAT_FILTER_BUTTON:
+                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<HatContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_HAT_ID]);
+                    break;
+                case SHIRT_FILTER_BUTTON:
+                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShirtContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SHIRT_ID]);
+                    break;
+                case PANTS_FILTER_BUTTON:
+                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_PANTS_ID]);
+                    break;
+                case SLEEVES_FILTER_BUTTON:
+                    if (GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
+                    {
+                        contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShoesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SHOES_ID]);
+                    }
+                    else
+                    {
+                        contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
+                    }
+                    break;
+            }
+
+            return contentPack;
+        }
+
+        private AppearanceModel GetActiveModel()
+        {
+            AppearanceContentPack contentPack = GetActiveContentPack();
+            if (contentPack is null)
+            {
+                return null;
+            }
+
+            if (contentPack is SleevesContentPack sleevesPack)
+            {
+                return sleevesPack.GetSleevesFromFacingDirection(Game1.player.facingDirection);
+            }
+            else if (contentPack is HairContentPack hairPack)
+            {
+                return hairPack.GetHairFromFacingDirection(Game1.player.facingDirection);
+            }
+            else if (contentPack is AccessoryContentPack accessoryPack)
+            {
+                return accessoryPack.GetAccessoryFromFacingDirection(Game1.player.facingDirection);
+            }
+            else if (contentPack is HatContentPack hatPack)
+            {
+                return hatPack.GetHatFromFacingDirection(Game1.player.facingDirection);
+            }
+            else if (contentPack is ShirtContentPack shirtPack)
+            {
+                return shirtPack.GetShirtFromFacingDirection(Game1.player.facingDirection);
+            }
+            else if (contentPack is PantsContentPack pantsPack)
+            {
+                return pantsPack.GetPantsFromFacingDirection(Game1.player.facingDirection);
+            }
+            else if (contentPack is ShoesContentPack shoePack)
+            {
+                return shoePack.GetShoesFromFacingDirection(Game1.player.facingDirection);
+            }
+
+            return null;
+        }
+
         private void HandleColorPicker(int x, int y, bool held)
         {
             if (!(held ? colorPicker.ClickHeld(x, y) : colorPicker.Click(x, y)))
@@ -588,30 +642,26 @@ namespace FashionSense.Framework.UI
             {
                 case HAIR_FILTER_BUTTON:
                     Game1.player.changeHairColor(color);
+                    AppearanceHelpers.SetAppearanceColorForLayer(GetActiveModel(), Game1.player, color, maskLayerIndex: currentColorMaskLayerIndex);
                     break;
                 case ACCESSORY_FILTER_BUTTON:
-                    FashionSense.accessoryManager.SetColorForIndex(Game1.player, GetAccessoryIndex(), color);
+                    FashionSense.accessoryManager.SetColorForIndex(Game1.player, GetAccessoryIndex(), color, maskLayerIndex: currentColorMaskLayerIndex);
                     break;
                 case HAT_FILTER_BUTTON:
-                    Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR] = color.PackedValue.ToString();
+                    AppearanceHelpers.SetAppearanceColorForLayer(GetActiveModel(), Game1.player, color, maskLayerIndex: currentColorMaskLayerIndex);
                     break;
                 case SHIRT_FILTER_BUTTON:
-                    Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR] = color.PackedValue.ToString();
-                    FashionSense.SetSpriteDirty();
+                    AppearanceHelpers.SetAppearanceColorForLayer(GetActiveModel(), Game1.player, color, maskLayerIndex: currentColorMaskLayerIndex);
                     break;
                 case PANTS_FILTER_BUTTON:
-                    Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR] = color.PackedValue.ToString();
+                    AppearanceHelpers.SetAppearanceColorForLayer(GetActiveModel(), Game1.player, color, maskLayerIndex: currentColorMaskLayerIndex);
                     break;
                 case SLEEVES_FILTER_BUTTON:
-                    var appearanceColorKey = ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR;
-                    switch (GetCurrentFeatureSlotKey())
+                    AppearanceHelpers.SetAppearanceColorForLayer(GetActiveModel(), Game1.player, color, maskLayerIndex: currentColorMaskLayerIndex);
+                    if (GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID && Game1.player.modData.ContainsKey(ModDataKeys.CUSTOM_SHOES_ID) && Game1.player.modData[ModDataKeys.CUSTOM_SHOES_ID] == ModDataKeys.INTERNAL_COLOR_OVERRIDE_SHOE_ID)
                     {
-                        case ModDataKeys.CUSTOM_SHOES_ID:
-                            appearanceColorKey = ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR;
-                            FashionSense.SetSpriteDirty();
-                            break;
+                        FashionSense.SetSpriteDirty(skipColorMaskRefresh: true);
                     }
-                    Game1.player.modData[appearanceColorKey] = color.PackedValue.ToString();
                     break;
             }
         }
@@ -700,11 +750,14 @@ namespace FashionSense.Framework.UI
 
         private void selectionClick(string name, int change)
         {
+            AppearanceModel appearanceModel = GetActiveModel();
             switch (name)
             {
                 case "Appearance":
                     {
                         UpdateAppearance(change);
+
+                        Reset();
                         break;
                     }
                 case "Direction":
@@ -712,6 +765,9 @@ namespace FashionSense.Framework.UI
                     _displayFarmer.FarmerSprite.StopAnimation();
                     _displayFarmer.completelyStopAnimatingOrDoingAction();
                     Game1.playSound("pickUpItem");
+
+                    Reset();
+                    FashionSense.SetSpriteDirty();
                     break;
                 case LIMIT_TO_ACCCESSORIES:
                     if (Game1.player.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON) && Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] == ACCESSORY_FILTER_BUTTON)
@@ -719,11 +775,62 @@ namespace FashionSense.Framework.UI
                         currentAccessorySlot = currentAccessorySlot + change < 0 ? 0 : currentAccessorySlot + change;
                         accessorySlotLabel.name = (currentAccessorySlot + 1).ToString();
 
-                        colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex()));
+                        colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex(), maskLayerIndex: currentColorMaskLayerIndex));
+
+                        Reset();
+                    }
+
+                    break;
+                case MASK_LAYERS:
+                    if (appearanceModel is null)
+                    {
+                        break;
+                    }
+
+                    int updatedColorMaskLayerIndex = GetNextValidColorMaskLayer(appearanceModel, currentColorMaskLayerIndex, change);
+                    if (updatedColorMaskLayerIndex >= 0 && appearanceModel.ColorMaskLayers.Count > updatedColorMaskLayerIndex)
+                    {
+                        currentColorMaskLayerIndex = updatedColorMaskLayerIndex;
+                    }
+
+                    if (Game1.player.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON) && Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] == ACCESSORY_FILTER_BUTTON)
+                    {
+                        colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex(), maskLayerIndex: currentColorMaskLayerIndex));
+                    }
+                    else
+                    {
+                        colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player, maskLayerIndex: currentColorMaskLayerIndex));
                     }
 
                     break;
             }
+        }
+
+        private int GetNextValidColorMaskLayer(AppearanceModel appearanceModel, int maskLayerIndex, int change)
+        {
+            bool hasFoundNextLayer = false;
+
+            if (appearanceModel is not null && appearanceModel.ColorMaskLayers.ElementAtOrDefault(maskLayerIndex + change) is not null)
+            {
+                maskLayerIndex += change;
+            }
+
+            while (hasFoundNextLayer is false)
+            {
+                if (appearanceModel is not null)
+                {
+                    var colorMaskLayer = appearanceModel.ColorMaskLayers.ElementAtOrDefault(maskLayerIndex);
+                    if (colorMaskLayer is not null && colorMaskLayer.IgnoreUserColorChoice is true)
+                    {
+                        maskLayerIndex += change;
+                        continue;
+                    }
+                }
+
+                hasFoundNextLayer = true;
+            }
+
+            return maskLayerIndex;
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -769,6 +876,7 @@ namespace FashionSense.Framework.UI
                     {
                         (enabledButton as ClickableTextureComponent).hoverText = "disabled";
                     }
+                    currentColorMaskLayerIndex = 0;
 
                     c.hoverText = "enabled";
                     switch (c.name)
@@ -780,46 +888,29 @@ namespace FashionSense.Framework.UI
                             break;
                         case ACCESSORY_FILTER_BUTTON:
                             Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = ACCESSORY_FILTER_BUTTON;
-
-                            colorPicker.SetColor(FashionSense.accessoryManager.GetColorFromIndex(Game1.player, GetAccessoryIndex()));
                             break;
                         case HAT_FILTER_BUTTON:
                             Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = HAT_FILTER_BUTTON;
-
-                            var hatColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR]) };
-                            colorPicker.SetColor(hatColor);
                             break;
                         case SHIRT_FILTER_BUTTON:
                             Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = SHIRT_FILTER_BUTTON;
-
-                            var shirtColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) };
-                            colorPicker.SetColor(shirtColor);
                             break;
                         case PANTS_FILTER_BUTTON:
                             Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = PANTS_FILTER_BUTTON;
-
-                            var pantsColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR]) };
-                            colorPicker.SetColor(pantsColor);
                             break;
                         case SLEEVES_FILTER_BUTTON:
                             Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = SLEEVES_FILTER_BUTTON;
-
-                            var appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR]) };
-                            switch (GetCurrentFeatureSlotKey())
-                            {
-                                case ModDataKeys.CUSTOM_SHOES_ID:
-                                    appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR]) };
-                                    break;
-                            }
-                            colorPicker.SetColor(appearanceColor);
                             break;
                     }
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
 
                     if (c.scale != 0f)
                     {
                         c.scale -= 0.25f;
                         c.scale = Math.Max(2.75f, c.scale);
                     }
+
+                    Reset();
                 }
             }
 
@@ -865,14 +956,7 @@ namespace FashionSense.Framework.UI
 
                     Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_FILTER_BUTTON] = SLEEVES_FILTER_BUTTON;
 
-                    var appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR]) };
-                    switch (GetCurrentFeatureSlotKey())
-                    {
-                        case ModDataKeys.CUSTOM_SHOES_ID:
-                            appearanceColor = new Color() { PackedValue = uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR]) };
-                            break;
-                    }
-                    colorPicker.SetColor(appearanceColor);
+                    colorPicker.SetColor(AppearanceHelpers.GetAppearanceColorByLayer(GetActiveModel(), Game1.player));
                 }
             }
 
@@ -980,10 +1064,10 @@ namespace FashionSense.Framework.UI
                 }
             }
 
-            if (okButton.containsPoint(x, y))
+            if (exitButton.containsPoint(x, y))
             {
-                okButton.scale -= 0.25f;
-                okButton.scale = Math.Max(0.75f, okButton.scale);
+                exitButton.scale -= 0.25f;
+                exitButton.scale = Math.Max(0.75f, exitButton.scale);
                 exitThisMenu();
                 Game1.playSound("coin");
             }
@@ -1159,7 +1243,14 @@ namespace FashionSense.Framework.UI
                         contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_PANTS_ID]);
                         break;
                     case SLEEVES_FILTER_BUTTON:
-                        contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
+                        if (GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
+                        {
+                            contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShoesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SHOES_ID]);
+                        }
+                        else
+                        {
+                            contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
+                        }
                         break;
                 }
 
@@ -1190,7 +1281,14 @@ namespace FashionSense.Framework.UI
                         contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_PANTS_ID]);
                         break;
                     case SLEEVES_FILTER_BUTTON:
-                        contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
+                        if (GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
+                        {
+                            contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShoesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SHOES_ID]);
+                        }
+                        else
+                        {
+                            contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
+                        }
                         break;
                 }
 
@@ -1264,13 +1362,14 @@ namespace FashionSense.Framework.UI
                 randomButton.scale = Math.Max(randomButton.scale - 0.02f, randomButton.baseScale);
             }
 
-            if (okButton.containsPoint(x, y))
+            if (exitButton.containsPoint(x, y))
             {
-                okButton.scale = Math.Min(okButton.scale + 0.02f, okButton.baseScale + 0.1f);
+                hoverText = FashionSense.modHelper.Translation.Get("ui.fashion_sense.exit_button");
+                exitButton.scale = Math.Min(exitButton.scale + 0.02f, 3.2f);
             }
             else
             {
-                okButton.scale = Math.Max(okButton.scale - 0.02f, okButton.baseScale);
+                exitButton.scale = Math.Max(exitButton.scale - 0.02f, exitButton.baseScale);
             }
         }
 
@@ -1373,33 +1472,8 @@ namespace FashionSense.Framework.UI
             }
 
             // Get the custom hair object, if it exists
-            AppearanceContentPack contentPack = null;
-            switch (GetNameOfEnabledFilter())
-            {
-                case HAIR_FILTER_BUTTON:
-                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<HairContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_HAIR_ID]);
-                    break;
-                case ACCESSORY_FILTER_BUTTON:
-                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<AccessoryContentPack>(FashionSense.accessoryManager.GetAccessoryIdByIndex(Game1.player, GetAccessoryIndex()));
-                    break;
-                case HAT_FILTER_BUTTON:
-                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<HatContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_HAT_ID]);
-                    break;
-                case SHIRT_FILTER_BUTTON:
-                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShirtContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SHIRT_ID]);
-                    break;
-                case PANTS_FILTER_BUTTON:
-                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_PANTS_ID]);
-                    break;
-                case SLEEVES_FILTER_BUTTON:
-                    contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
-                    if (GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
-                    {
-                        contentPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShoesContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_SHOES_ID]);
-                        break;
-                    }
-                    break;
-            }
+            AppearanceContentPack contentPack = GetActiveContentPack();
+            AppearanceModel appearanceModel = GetActiveModel();
 
             // General UI (title, background)
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
@@ -1419,6 +1493,12 @@ namespace FashionSense.Framework.UI
                 {
                     continue;
                 }
+                else if (leftSelectionButton.name == MASK_LAYERS && (GetNextValidColorMaskLayer(appearanceModel, currentColorMaskLayerIndex, -1) < 0 || currentColorMaskLayerIndex == GetNextValidColorMaskLayer(appearanceModel, currentColorMaskLayerIndex, -1)))
+                {
+                    leftSelectionButton.draw(b, Color.Gray, 1f);
+                    continue;
+                }
+
                 leftSelectionButton.draw(b);
             }
             foreach (ClickableTextureComponent rightSelectionButton in rightSelectionButtons)
@@ -1427,6 +1507,12 @@ namespace FashionSense.Framework.UI
                 {
                     continue;
                 }
+                else if (rightSelectionButton.name == MASK_LAYERS && currentColorMaskLayerIndex == GetNextValidColorMaskLayer(appearanceModel, currentColorMaskLayerIndex, 1))
+                {
+                    rightSelectionButton.draw(b, Color.Gray, 1f);
+                    continue;
+                }
+
                 rightSelectionButton.draw(b);
             }
             foreach (ClickableTextureComponent filterButton in filterButtons)
@@ -1476,8 +1562,14 @@ namespace FashionSense.Framework.UI
             sideBarPosition.Y += 8 * 4;
             b.Draw(Game1.mouseCursors, sideBarPosition, new Rectangle(316, 369, 13, 8), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.75f);
 
-            // Draw the bottom side bar
             sideBarPosition.Y += 8 * 4;
+            b.Draw(Game1.mouseCursors, sideBarPosition, new Rectangle(316, 369, 13, 8), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.75f);
+
+            sideBarPosition.Y += 8 * 4;
+            b.Draw(Game1.mouseCursors, sideBarPosition, new Rectangle(316, 369, 13, 4), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.75f);
+
+            // Draw the bottom side bar
+            sideBarPosition.Y += 8 * 2;
             b.Draw(Game1.mouseCursors, sideBarPosition, new Rectangle(316, 377, 13, 6), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.75f);
 
             // Draw the buttons
@@ -1492,7 +1584,7 @@ namespace FashionSense.Framework.UI
 
             randomButton.draw(b);
             clearButton.draw(b);
-            okButton.draw(b);
+            exitButton.draw(b);
 
             // Draw labels
             foreach (ClickableComponent c in labels)

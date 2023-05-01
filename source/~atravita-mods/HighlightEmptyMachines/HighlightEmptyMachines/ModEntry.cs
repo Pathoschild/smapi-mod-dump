@@ -206,11 +206,12 @@ internal sealed class ModEntry : Mod
 #endif
 
             PFMMachineHandler.ProcessPFMRecipes();
+            bool changed = false;
 
             // Pre-populate the machine list.
             foreach (int machineID in PFMMachineHandler.ConditionalPFMMachines.Concat(PFMMachineHandler.UnconditionalPFMMachines))
             {
-                _ = Config.ProducerFrameworkModMachines.TryAdd(machineID.GetBigCraftableName(), true);
+                changed |= Config.ProducerFrameworkModMachines.TryAdd(machineID.GetBigCraftableName(), true);
             }
 
             if (this.gmcmHelper?.HasGottenAPI == true)
@@ -228,7 +229,10 @@ internal sealed class ModEntry : Mod
             }
 
             this.Monitor.Log("PFM compat set up!", LogLevel.Trace);
-            this.Helper.AsyncWriteConfig(this.Monitor, Config);
+            if (changed)
+            {
+                this.Helper.AsyncWriteConfig(this.Monitor, Config);
+            }
 #if DEBUG
             sw.Stop();
             this.Monitor.Log($"PFM compat took {sw.ElapsedMilliseconds} ms.");

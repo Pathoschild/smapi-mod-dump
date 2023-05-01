@@ -17,6 +17,8 @@ using FashionSense.Framework.Models.Appearances.Pants;
 using FashionSense.Framework.Models.Appearances.Shirt;
 using FashionSense.Framework.Models.Appearances.Shoes;
 using FashionSense.Framework.Models.Appearances.Sleeves;
+using FashionSense.Framework.Patches.Core;
+using FashionSense.Framework.Patches.Renderer;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
@@ -530,6 +532,53 @@ namespace FashionSense.Framework.Utilities
             return model.RequireAnimationToFinish && animationData.Iterator != 0;
         }
 
+        public static List<Color> GetAllAppearanceColors(Farmer who, AppearanceModel model, int appearanceIndex = 0)
+        {
+            if (model is null)
+            {
+                return new List<Color>() { who.hairstyleColor.Value };
+            }
+            else if (DrawPatch.GetOutdatedColorValue(who, model, appearanceIndex) is not null)
+            {
+                return new List<Color>() { DrawPatch.GetOutdatedColorValue(who, model, appearanceIndex).Value };
+            }
+            else if (model.ColorMaskLayers.Count == 0)
+            {
+                return new List<Color>() { FashionSense.colorManager.GetColor(who, model.GetColorKey(appearanceIndex, 0)) };
+            }
+
+            List<Color> colors = new List<Color>();
+            for (int x = 0; x < model.ColorMaskLayers.Count; x++)
+            {
+                var colorKey = model.GetColorKey(appearanceIndex, x);
+                if (who.modData.ContainsKey(colorKey))
+                {
+                    colors.Add(FashionSense.colorManager.GetColor(who, colorKey));
+                }
+            }
+
+            return colors;
+        }
+
+        public static Color GetAppearanceColorByLayer(AppearanceModel model, Farmer who, int appearanceIndex = 0, int maskLayerIndex = 0)
+        {
+            if (model is null)
+            {
+                return Color.White;
+            }
+
+            return FashionSense.colorManager.GetColor(who, model.GetColorKey(appearanceIndex, maskLayerIndex));
+        }
+
+        public static void SetAppearanceColorForLayer(AppearanceModel model, Farmer who, Color color, int appearanceIndex = 0, int maskLayerIndex = 0)
+        {
+            if (model is null)
+            {
+                return;
+            }
+
+            FashionSense.colorManager.SetColor(who, model.GetColorKey(appearanceIndex, maskLayerIndex), color);
+        }
 
         public static bool HasRequiredModDataKeys(AppearanceModel model, Farmer who)
         {
@@ -620,7 +669,11 @@ namespace FashionSense.Framework.Utilities
                 }
                 else if (condition.Name is Condition.Type.IsRaining)
                 {
-                    passedCheck = condition.IsValid(Game1.IsRainingHere(Game1.currentLocation));
+                    passedCheck = condition.IsValid(GamePatch.IsRainingHereReversePatch(Game1.currentLocation));
+                }
+                else if (condition.Name is Condition.Type.IsSnowing)
+                {
+                    passedCheck = condition.IsValid(GamePatch.IsSnowingHereReversePatch(Game1.currentLocation));
                 }
                 else if (condition.Name is Condition.Type.IsWalking)
                 {
@@ -706,7 +759,7 @@ namespace FashionSense.Framework.Utilities
                 {
                     passedCheck = condition.IsValid(Game1.mine != null);
                 }
-                else if (condition.Name is Condition.Type.IsOutdoors)
+                else if (condition.Name is Condition.Type.IsOutdoors && Game1.currentLocation is not null)
                 {
                     passedCheck = condition.IsValid(Game1.currentLocation.IsOutdoors);
                 }
@@ -720,7 +773,7 @@ namespace FashionSense.Framework.Utilities
                 }
                 else if (condition.Name is Condition.Type.IsSitting)
                 {
-                    passedCheck = condition.IsValid(who.IsSitting());
+                    passedCheck = condition.IsValid(who.FarmerSprite.CurrentFrame == 107 || who.FarmerSprite.CurrentFrame == 117 || who.FarmerSprite.CurrentFrame == 113);
                 }
                 else if (condition.Name is Condition.Type.IsCarrying)
                 {

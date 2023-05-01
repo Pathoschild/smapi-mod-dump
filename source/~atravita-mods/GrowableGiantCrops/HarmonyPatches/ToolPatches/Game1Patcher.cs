@@ -9,7 +9,7 @@
 *************************************************/
 
 using GrowableGiantCrops.Framework;
-using GrowableGiantCrops.Framework.Assets;
+
 using HarmonyLib;
 
 using Microsoft.Xna.Framework;
@@ -41,7 +41,7 @@ internal static class Game1Patcher
         Rectangle sourceRectangleForTool = new(xindex, shovel.UpgradeLevel * 32, 16, 32);
         Vector2 fPosition = f.getLocalPosition(Game1.viewport) + f.jitter + f.armOffset;
         float tool_draw_layer_offset = 0f;
-        if (f.FacingDirection == 0)
+        if (f.FacingDirection == Game1.up)
         {
             tool_draw_layer_offset = -0.002f;
         }
@@ -182,7 +182,7 @@ internal static class Game1Patcher
             color: Color.White,
             rotation,
             origin,
-            scale: 4f,
+            scale: Game1.pixelZoom,
             effects: effect,
             layerDepth: Math.Max(0f, tool_draw_layer_offset + (f.GetBoundingBox().Bottom / 10000f)));
 

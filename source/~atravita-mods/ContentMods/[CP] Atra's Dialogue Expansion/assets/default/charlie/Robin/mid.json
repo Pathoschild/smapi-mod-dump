@@ -16,5 +16,16 @@
         "Entries": {
             "movieTheater": "Oh, @, did you hear? We've got a new movie theater! Demetrius and I used to go out and watch movies in a little drive-in theater all the time when we were dating...$h"
         }
+    },
+    {
+        "Action": "EditData",
+        "LogName": "Robin mid-hearts, Y1",
+        "Target": "Characters/Dialogue/Robin",
+        "Entries": {
+            "2": "Welcome to the valley, @! How have you been settling in?$h"
+        },
+        "When": {
+            "YearModulus": "1"
+        }
     }
 ]}

@@ -13,7 +13,7 @@ using Amazon;
 using Amazon.CognitoIdentity;
 using Amazon.DynamoDBv2;
 using BirbShared;
-using BirbShared.Command;
+using BirbShared.Mod;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
@@ -26,16 +26,18 @@ namespace LeaderboardLibrary
         private static RegionEndpoint REGION = RegionEndpoint.USWest2;
         private static string GLOBAL_DATA_KEY = "leaderboard-global";
 
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiCommand]
+        internal static Command Command;
         internal static AmazonDynamoDBClient DdbClient;
         internal static readonly PerScreen<GlobalModData> GlobalModData = new PerScreen<GlobalModData>();
         internal static LocalModData LocalModData;
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
-            new CommandClassParser(this.Helper.ConsoleCommands, new Command()).ParseCommands();
+            ModClass mod = new ModClass();
+            mod.Parse(this, false);
 
             GlobalModData.SetValueForScreen(0, this.Helper.Data.ReadGlobalData<GlobalModData>(GLOBAL_DATA_KEY));
             if (GlobalModData.Value is null)

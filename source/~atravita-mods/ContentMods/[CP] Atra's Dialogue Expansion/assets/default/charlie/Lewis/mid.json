@@ -16,7 +16,8 @@
             "Target": "Characters/Dialogue/Lewis",
             "Entries": {
                 "movieTheater": "@! A movie theater seems to have appeared in the valley!$h#$e#$c 0.3#Here's a ticket![809]#It's nice to have more entertainment options available in the valley#$e#",
-                "dumped_Guys": "I can't believe you'd be so cruel, dating all of them like that."
+                "dumped_Guys": "I can't believe you'd be so cruel, dating all of them like that.$s",
+                "Saloon_Entry": "Heya, Gus! Whatcha got?"
             }
         },
         {
@@ -31,7 +32,7 @@
             "LogName": "Lewis: mid hearts, y1",
             "Action": "EditData",
             "Target": "Characters/Dialogue/Lewis",
-            "When": {"YearModulus": "2"},
+            "When": {"YearModulus": "1"},
             "Entries": {
                 "1{{YearRemainder}}": "Neighboring town lowered its property taxes to try to get more young professionals to move in.#$b#Young remote professionals make a lot of money and are good for the tax base.",
                 "2{{YearRemainder}}": "It's not easy, being mayor of a small town. We're so small that we're economically quite fragile.",

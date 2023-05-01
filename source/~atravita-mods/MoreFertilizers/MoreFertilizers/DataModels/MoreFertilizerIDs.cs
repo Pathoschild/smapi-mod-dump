@@ -126,4 +126,9 @@ public class MoreFertilizerIDs
     /// Gets or sets the saved ID number for the radioactive fertilizer.
     /// </summary>
     public int RadioactiveFertilizerID { get; set; } = -1;
+
+    /// <summary>
+    /// Gets or sets the saved ID number for the Everlasting Fruit Tree Fertilizer.
+    /// </summary>
+    public int EverlastingFruitTreeFertilizerID { get; set; } = -1;
 }

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>Shockah.MaximizeFix</RootNamespace>
+		<Version>1.0.0</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>Nullable</WarningsAsErrors>
+		<EnableHarmony>true</EnableHarmony>
+		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+		<IgnoreModFilePaths>Mono.Cecil.Rocks.dll</IgnoreModFilePaths>
+		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+		<PackageReference Include="Shrike" Version="1.1.0" />
+		<PackageReference Include="Shrike.Harmony" Version="1.1.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Kokoro\Kokoro.csproj">
+			<Private>false</Private>
+		</ProjectReference>
+	</ItemGroup>
+</Project>

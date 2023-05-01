@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Enchantments.Patchers;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Enchantments.Events;
 using DaLion.Overhaul.Modules.Enchantments.Melee;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
@@ -34,7 +35,37 @@ internal sealed class FarmerTakeDamagePatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Overhaul for farmer defense.</summary>
+    /// <summary>Apply Topaz bonus for Slingshots.</summary>
+    [HarmonyPrefix]
+    private static void FarmerTakeDamagePrefix(Farmer __instance, ref bool __state)
+    {
+        __state = false;
+        if (__instance.CurrentTool is not Slingshot slingshot || !slingshot.hasEnchantmentOfType<TopazEnchantment>() ||
+            !EnchantmentsModule.Config.RebalancedForges)
+        {
+            return;
+        }
+
+        if (CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense)
+        {
+            return;
+        }
+
+        __instance.resilience += slingshot.GetEnchantmentLevel<TopazEnchantment>();
+        __state = true;
+    }
+
+    /// <summary>Apply Topaz bonus for Slingshots.</summary>
+    [HarmonyPostfix]
+    private static void FarmerTakeDamagePostfix(Farmer __instance, bool __state)
+    {
+        if (__state)
+        {
+            __instance.resilience -= __instance.CurrentTool.GetEnchantmentLevel<TopazEnchantment>();
+        }
+    }
+
+    /// <summary>Trigger damage taken effects.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? FarmerTakeDamageTranspiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
@@ -87,16 +118,21 @@ internal sealed class FarmerTakeDamagePatcher : HarmonyPatcher
             return;
         }
 
-        var tribute = weapon.GetEnchantmentOfType<TributeEnchantment>();
-        if (tribute is not null)
+        var mammon = weapon.GetEnchantmentOfType<MammoniteEnchantment>();
+        if (mammon is not null)
         {
-            tribute.Threshold = 0.1f;
+            mammon.Threshold = 0.1f;
+            return;
         }
 
-        var exploding = weapon.GetEnchantmentOfType<ExplodingEnchantment>();
-        if (exploding is not null && !weapon.isOnSpecial)
+        var explosive = weapon.GetEnchantmentOfType<ExplosiveEnchantment>();
+        if (explosive is not null && !weapon.isOnSpecial)
         {
-            exploding.Accumulated += damage;
+            explosive.Accumulated += damage / 2;
+            if (explosive.ExplosionRadius >= 1)
+            {
+                EventManager.Enable<ExplosiveUpdateTickedEvent>();
+            }
         }
     }
 

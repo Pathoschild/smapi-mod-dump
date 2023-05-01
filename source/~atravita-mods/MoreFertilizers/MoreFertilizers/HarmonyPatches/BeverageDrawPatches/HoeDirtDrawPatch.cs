@@ -16,6 +16,9 @@ using StardewValley.TerrainFeatures;
 
 namespace MoreFertilizers.HarmonyPatches.BeverageDrawPatches;
 
+/// <summary>
+/// A patch on hoedirt to draw in the particle effects for the beverage fertilizer.
+/// </summary>
 [HarmonyPatch(typeof(HoeDirt))]
 internal class HoeDirtDrawPatch
 {
@@ -23,6 +26,11 @@ internal class HoeDirtDrawPatch
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony convention.")]
     private static void Postfix(HoeDirt __instance)
     {
+        if (!ModEntry.Config.DrawParticleEffects)
+        {
+            return;
+        }
+
         if (__instance.fertilizer.Value != -1 && __instance.fertilizer.Value == ModEntry.MiraculousBeveragesID && Game1.random.Next(512) == 0)
         {
             __instance.currentLocation.TemporarySprites.Add(new TemporaryAnimatedSprite(

@@ -44,11 +44,12 @@ internal static class BreakableContainerPostfix
                 ? (Game1.random.Next(2) == 0 ? ModEntry.BountifulFertilizerID : ModEntry.FruitTreeFertilizerID)
                 : (Game1.random.Next(3) == 0 ? ModEntry.BountifulBushID : ModEntry.OrganicFertilizerID),
             BreakableContainer.volcanoBarrel =>
-                Game1.random.Next(4) switch
+                Game1.random.Next(5) switch
                 {
                     0 => ModEntry.FishFoodID,
                     1 => ModEntry.EverlastingFertilizerID,
                     2 => ModEntry.DeluxeFishFoodID,
+                    3 => ModEntry.EverlastingFruitTreeFertilizerID,
                     _ => ModEntry.DomesticatedFishFoodID,
                 },
             _ => ModEntry.FishFoodID, // should never happen.
@@ -57,7 +58,7 @@ internal static class BreakableContainerPostfix
             index: objectID,
             xTile: (int)__instance.TileLocation.X,
             yTile: (int)__instance.TileLocation.Y,
-            number: Game1.random.Next(1, Math.Clamp(Game1.player.MiningLevel / 2, 2, 5)),
+            number: Game1.random.Next(1, Math.Clamp(Game1.player.MiningLevel / 2, 2, 6)),
             location: location);
     }
 }

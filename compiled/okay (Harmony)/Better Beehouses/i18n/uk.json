@@ -17,8 +17,8 @@
   "config.usePottedFlowers.desc": "Бджоли у вуликах будуть використовувати квіти у горщиках",
   "config.valueMultiplier.name": "Множник ціни меду",
   "config.valueMultiplier.desc": "Мед, виготовлений бджолами помножується у стільки разів",
-  "config.useForage.name": "Використовувати дикі квіти",
-  "config.useForage.desc": "Чи варто бджолам з вуликів шукати дикі квіти",
+  "config.useForageFlowers.name": "Використовувати дикі квіти",
+  "config.useForageFlowers.desc": "Чи варто бджолам з вуликів шукати дикі квіти",
   "config.particles.name": "Бджолині частинки",
   "config.particles.desc": "Показує декоративні бджолині рої навколо вуликів",
   "config.useQuality.name": "Якість меду",
@@ -52,5 +52,9 @@
   "config.flowersPerBoost.name": "Необхідні квіти",
   "config.flowersPerBoost.desc": "Кількість квіток, необхідних для отримання кожного додаткового меду",
   "config.useRandomFlower.name": "Використовувати випадковість",
-  "config.useRandomFlower.desc": "Вибирає випадкову квітку замість найближчої"
+  "config.useRandomFlower.desc": "Вибирає випадкову квітку замість найближчої",
+  "config.useAnyFruitTrees.name": "Дозволити всі фруктові дерева",
+  "config.useAnyFruitTrees.desc": "Чи варто ігнорувати перевірку на наявність квіток при виготовленні меду з дерев.",
+  "config.patchCJB.name": "Інтеграція зі CJB модом",
+  "config.patchCJB.desc": "Підлатати мод CJB Item Spawner для реєстрації відсутніх предметів з меду"
 }

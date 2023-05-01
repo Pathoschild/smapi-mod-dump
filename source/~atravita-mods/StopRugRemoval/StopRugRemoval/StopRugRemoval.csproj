@@ -9,7 +9,7 @@
   <PropertyGroup>
     <Name>Atra's Interaction Tweaks</Name>
     <Description>A few interaction tweaks: prevents accidental rug removal, prevents gates from popping off, and some other things.</Description>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <UpdateKeys> Nexus:10192, ModDrop:1068101</UpdateKeys>
     <BaseManifest>..\..\base_dependencies.json</BaseManifest>
   </PropertyGroup>

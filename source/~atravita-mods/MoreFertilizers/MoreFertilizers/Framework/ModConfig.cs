@@ -47,6 +47,11 @@ internal sealed class ModConfig
     public bool RecolorTrees { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not particle effects should be drawn.
+    /// </summary>
+    public bool DrawParticleEffects { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not raised seeds should be banned from the radioactive fertilizer.
     /// </summary>
     public bool BanRaisedSeeds

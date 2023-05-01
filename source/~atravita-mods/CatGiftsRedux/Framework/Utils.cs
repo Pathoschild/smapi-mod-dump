@@ -14,6 +14,7 @@ using AtraCore.Framework.ItemManagement;
 using AtraCore.Framework.QueuePlayerAlert;
 
 using AtraShared.Caching;
+using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using AtraShared.Wrappers;
 
@@ -31,6 +32,7 @@ internal static class Utils
 {
     private static readonly TickCache<bool> isQiQuestActive = new(() => Game1.player.team.SpecialOrderRuleActive("QI_BEANS"));
     private static readonly TickCache<bool> isPerfectFarm = new(() => Game1.MasterPlayer.mailReceived.Contains("Farm_Enternal"));
+    private static readonly TickCache<bool> islandUnlocked = new(() => FarmerHelpers.HasAnyFarmerRecievedFlag("seenBoatJourney"));
 
     /// <summary>
     /// Gets a value indicating whether Qi's bean quest is active. Only checks once per four ticks.
@@ -47,6 +49,7 @@ internal static class Utils
     internal static bool ForbiddenFromRandomPicking(int id)
         => !Game1Wrappers.ObjectInfo.TryGetValue(id, out string? objectData) || id == 73 || id == 858
         || (id is 289 or 928 && !isPerfectFarm.GetValue())
+        || (!islandUnlocked.GetValue() && id is 69 or 91 or 829 or 835 or 886 or 903)
         || (!isQiQuestActive.GetValue() && objectData.GetNthChunk('/', SObject.objectInfoNameIndex).Contains("Qi", StringComparison.OrdinalIgnoreCase));
 
     /// <summary>

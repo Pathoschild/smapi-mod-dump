@@ -30,7 +30,7 @@ internal sealed class ToolCanAddEnchantmentPatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Allow slingshot gemstone enchantments.</summary>
+    /// <summary>Allow slingshot enchantments.</summary>
     [HarmonyPrefix]
     private static bool ToolCanAddEnchantmentPrefix(
         Tool __instance, ref bool __result, BaseEnchantment enchantment)
@@ -40,24 +40,33 @@ internal sealed class ToolCanAddEnchantmentPatcher : HarmonyPatcher
             return true; // run original logic
         }
 
-        if (enchantment is InfinityEnchantment &&
-            slingshot.InitialParentTileIndex == ItemIDs.GalaxySlingshot &&
-            slingshot.hasEnchantmentOfType<GalaxySoulEnchantment>() &&
-            slingshot.GetEnchantmentLevel<GalaxySoulEnchantment>() >= 3 &&
+        if (slingshot.InitialParentTileIndex == ItemIDs.GalaxySlingshot &&
             SlingshotsModule.Config.EnableInfinitySlingshot)
         {
-            __result = true;
+            switch (enchantment)
+            {
+                case GalaxySoulEnchantment when slingshot.GetEnchantmentLevel<GalaxySoulEnchantment>() < 3:
+                    __result = true;
+                    return false; // don't run original logic
+                case InfinityEnchantment when slingshot.GetEnchantmentLevel<GalaxySoulEnchantment>() >= 3:
+                    __result = true;
+                    return false; // don't run original logic
+            }
+        }
+
+        if (enchantment.IsSecondaryEnchantment())
+        {
+            __result = false;
             return false; // don't run original logic
         }
 
-        if (!enchantment.IsSecondaryEnchantment() && enchantment.IsForge() &&
-            SlingshotsModule.Config.EnableEnchantments)
+        if (enchantment.IsForge())
         {
-            __result = true;
-            return true; // run original logic
+            __result = SlingshotsModule.Config.EnableEnchantments;
+            return false; // don't run original logic
         }
 
-        return false; // don't run original logic
+        return EnchantmentsModule.ShouldEnable && EnchantmentsModule.Config.RangedEnchantments;
     }
 
     #endregion harmony patches

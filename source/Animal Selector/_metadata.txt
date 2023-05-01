@@ -6,9 +6,11 @@ mods:
    Animal Selector
 
 latest commit:
-   commit 56129692cffa0b62d7d69397a92bd99c0d41df71
+   commit c65bc79732bd66f765520bb29eab196b81d05316
    Author: rikai <winter.blood@gmail.com>
-   Date:   Mon May 17 21:41:02 2021 -0700
+   Date:   Mon Apr 10 10:09:21 2023 -0700
    
-       v1.5.1 Fixes solution error, Added update keys to manifest.json
+       Update manifest.json
+       
+       Version bump
    

@@ -20,7 +20,7 @@ namespace stardew_access.Features
     public class ReadTile
     {
         private bool isBusy; // To pause execution of run method between fixed intervals
-        private int delay; // Length of each interval (in ms)
+        private readonly int delay; // Length of each interval (in ms)
         private bool shouldPause; // To pause the execution
         private Vector2 prevTile;
 
@@ -96,12 +96,13 @@ namespace stardew_access.Features
                     if (!manuallyTriggered && prevTile != tile)
                     {
                         if (MainClass.ScreenReader != null)
-                            MainClass.ScreenReader.PrevTextTile = " ";
+                            MainClass.ScreenReader.PrevTextTile = "";
                     }
 
-                    bool isColliding = TileInfo.isCollidingAtTile(x, y);
+                    var currentLocation = Game1.currentLocation;
+                    bool isColliding = TileInfo.IsCollidingAtTile(currentLocation, x, y);
 
-                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile);
+                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile, currentLocation);
 
                     #region Narrate toSpeak
                     if (info.name != null)

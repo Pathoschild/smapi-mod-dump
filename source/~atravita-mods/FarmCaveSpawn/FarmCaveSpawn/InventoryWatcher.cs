@@ -31,7 +31,8 @@ internal static class InventoryWatcher
 {
     private const string SaveString = "InventoryModel";
     private const string DATAPACKAGE = "DATAPACKAGE";
-    private const string SINGLE = "SINGLE";
+    private const string SAPLING = "SAPLING";
+    private const string FRUIT = "FRUIT";
 
     private static InventoryManagerModel? model;
     private static string UniqueID = null!;
@@ -57,6 +58,7 @@ internal static class InventoryWatcher
         }
     }
 
+    /// <inheritdoc cref="IGameLoopEvents.Saving"/>
     internal static void Saving(IDataHelper data)
     {
         if (Context.IsMainPlayer && model is not null)
@@ -69,14 +71,14 @@ internal static class InventoryWatcher
     /// <remarks>Is used to keep track of saplings that have entered the inventory.</remarks>
     internal static void Watch(InventoryChangedEventArgs e, IMultiplayerHelper multi)
     {
-        foreach (var item in e.Added)
+        foreach (Item item in e.Added)
         {
             if (item is SObject obj && obj.isSapling() && Game1Wrappers.ObjectInfo.TryGetValue(obj.ParentSheetIndex, out string? data))
             {
                 string name = data.GetNthChunk('/').ToString();
-                if (model?.Saplings?.Add(name) == true)
+                if (!string.IsNullOrWhiteSpace(name) && model?.Saplings?.Add(name) == true)
                 {
-                    multi.SendMessage(name, SINGLE, new[] { UniqueID });
+                    multi.SendMessage(name, SAPLING, new[] { UniqueID });
                     ModEntry.RequestFruitListReset();
                 }
             }
@@ -124,7 +126,7 @@ internal static class InventoryWatcher
                 model = e.ReadAs<InventoryManagerModel>();
                 break;
             }
-            case SINGLE:
+            case SAPLING:
             {
                 string name = e.ReadAs<string>();
                 if (model?.Saplings?.Add(name) == true)

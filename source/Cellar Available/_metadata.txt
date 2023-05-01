@@ -6,9 +6,9 @@ mods:
    Cellar Available
 
 latest commit:
-   commit 394a991f9d14020d3b77e0306fe66cfd2fa841af
+   commit 38c82610ddf181af82958ddd008c0fae6d84206f
    Author: Candidus <candidus@xmail.net>
-   Date:   Thu Sep 15 20:24:41 2022 +0200
+   Date:   Sat Apr 8 22:45:28 2023 +0200
    
-       Minimum SMAPI version is 3.14 (net5.0).
+       Replace .All() by .ForEach() since it's more appropriate here, replace reflection by method calls available since SDV 1.5 .
    

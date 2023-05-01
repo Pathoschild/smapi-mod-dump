@@ -30,7 +30,7 @@ namespace SocializingSkill
 
             if (ModEntry.MargoLoaded)
             {
-                this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 70000 };
+                this.ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 70000 };
 
                 this.AddProfessions(
                     Friendly = new KeyedProfession(this, "Friendly", ModEntry.Assets.Friendly, ModEntry.Assets.FriendlyP, ModEntry.Instance.Helper),
@@ -43,7 +43,7 @@ namespace SocializingSkill
             }
             else
             {
-                this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000 };
+                this.ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000 };
 
                 this.AddProfessions(
                     Friendly = new KeyedProfession(this, "Friendly", ModEntry.Assets.Friendly, ModEntry.Instance.I18n),

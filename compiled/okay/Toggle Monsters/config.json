@@ -1,4 +1,4 @@
 {
-  "debugMode": true,
+  "defaultValue": false,
   "toggleKey": "OemTilde"
 }

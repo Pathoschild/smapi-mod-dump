@@ -44,6 +44,8 @@ namespace Trading
         {
             if (Game1.activeClickableMenu is TradeMenu tm)
                 Game1.activeClickableMenu = new TradeMenu(tm.Sender, tm.Receiver, tm.Pending, tm.ReceiverItems, tm.ReceiverGold, tm.SenderItems, tm.SenderGold);
+            if (Game1.activeClickableMenu is PlayerSelectMenu psm)
+                Game1.activeClickableMenu = new PlayerSelectMenu(psm.Sender, psm.NearbyFarmers);
         }
 
         private void onSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -58,7 +60,9 @@ namespace Trading
         private void onButtonDown(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.CanPlayerMove || !Context.IsMultiplayer || !IConfig.TradeMenuSButton.Any(x => x == e.Button)) return;
-            foreach (var farmer in Game1.getOnlineFarmers())
+            Game1.activeClickableMenu = new PlayerSelectMenu(Game1.player);
+            Helper.Multiplayer.SendMessage("", Utilites.MSG_PollStatus, ModId, (Game1.activeClickableMenu as PlayerSelectMenu)!.NearbyFarmers.Select(x => x.Key.UniqueMultiplayerID).ToArray());
+            /*foreach (var farmer in Game1.getOnlineFarmers())
             {
                 if (Utilites.InRadiusOff(farmer.getTileLocation(), Game1.player.getTileLocation(), IConfig.Radius) && farmer.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID)
                 {
@@ -70,7 +74,7 @@ namespace Trading
                         break;
                     }
                 }
-            }
+            }*/
         }
 
         private void onMultiplayerMessageReceived(object sender, ModMessageReceivedEventArgs e)
@@ -81,6 +85,11 @@ namespace Trading
             switch (e.Type)
             {
                 case Utilites.MSG_RequestTrade:
+                    if (Game1.activeClickableMenu is not null || Game1.eventUp)
+                    {
+                        Helper.Multiplayer.SendMessage(Utilites.MSG_Busy, Utilites.MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
+                        return;
+                    }
                     Game1.currentLocation.createQuestionDialogue(string.Format(ITranslations.TradeRequest, Game1.getFarmer(e.ReadAs<NetworkPlayer>().SenderId).Name), tradeResponses, (f, k) => 
                     {
                         if (k == "Accept")
@@ -147,8 +156,17 @@ namespace Trading
                 case Utilites.MSG_ExitTrade:
                     if (Game1.activeClickableMenu is not null and TradeMenu tm5)
                         tm5.exit();
-                    if (Game1.activeClickableMenu is not null)
-                        Game1.activeClickableMenu.exitThisMenu();
+                    Game1.activeClickableMenu?.exitThisMenu();
+                    break;
+                case Utilites.MSG_PollStatus:
+                    if (Game1.activeClickableMenu is not null || Game1.eventUp)
+                        Helper.Multiplayer.SendMessage(Utilites.MSG_Busy, Utilites.MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
+                    else
+                        Helper.Multiplayer.SendMessage(Utilites.MSG_Available, Utilites.MSG_RespondStatus, ModId, new[] { e.FromPlayerID });
+                    break;
+                case Utilites.MSG_RespondStatus:
+                    if (Game1.activeClickableMenu is PlayerSelectMenu psm)
+                        psm.NearbyFarmers[Game1.getFarmer(e.FromPlayerID)] = e.ReadAs<string>() == Utilites.MSG_Available;
                     break;
             }
         }

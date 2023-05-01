@@ -1,5 +1,6 @@
 {
   "CanAxeAllBushes": false,
+  "GreenhouseBushesAlwaysBloom": false,
   "ShopLocation": "1, 7",
   "ShowBushShopGraphic": true,
   "ShouldNPCsTrampleBushes": true,

@@ -18,14 +18,19 @@ using StardewValley.Objects;
 #endregion using directives
 
 /// <summary>Constructs the GenericModConfigMenu integration.</summary>
-internal sealed partial class GenericModConfigMenuCore
+internal sealed partial class GenericModConfigMenu
 {
     /// <summary>Register the Combat config menu.</summary>
-    private void RegisterCombat()
+    private void AddCombatOptions()
     {
         this
             .AddPage(OverhaulModule.Combat.Namespace, () => "Combat Settings")
 
+            .AddCheckbox(
+                () => "Enable Status Conditions",
+                () => "Whether to enable status conditions like Burn and Stun on enemies. These are used by other modules.",
+                config => config.Combat.EnableStatusConditions,
+                (config, value) => config.Combat.EnableStatusConditions = value)
             .AddCheckbox(
                 () => "Overhauled Defense",
                 () => "Replaces the linear damage mitigation formula with an exponential formula for better scaling.",
@@ -46,7 +51,7 @@ internal sealed partial class GenericModConfigMenuCore
                             return;
                         }
 
-                        var key = "rings.topaz.description" + (value ? "resist" : "defense");
+                        var key = "rings.topaz.desc" + (value ? "resist" : "defense");
                         topaz.description = I18n.Get(key);
                     });
                 })
@@ -55,6 +60,11 @@ internal sealed partial class GenericModConfigMenuCore
                 () => "Causes enemies to suffer collision damage when knocked-back into a wall or other obstacle.",
                 config => config.Combat.KnockbackDamage,
                 (config, value) => config.Combat.KnockbackDamage = value)
+            .AddCheckbox(
+                () => "Critical Back Attacks",
+                () => "Your attacks on enemies facing away from you gain double crit. chance.",
+                config => config.Combat.CriticalBackAttacks,
+                (config, value) => config.Combat.CriticalBackAttacks = value)
             .AddNumberField(
                 () => "Monster Health Multiplier",
                 () => "Multiplies the health of all enemies.",

@@ -83,7 +83,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
     /// <param name="objectIndex">The index of the corresponding <see cref="SObject"/>.</param>
     /// <param name="ringIndex">The index of the corresponding <see cref="StardewValley.Objects.Ring"/>.</param>
     /// <param name="frequency">The characteristic wavelength with which the <see cref="Gemstone"/> vibrates.</param>
-    /// <param name="color">The characteristic color of the stone itself.</param>
+    /// <param name="stoneColor">The characteristic color of the stone itself.</param>
     /// <param name="glowColor">The characteristic glow of the emitted lightsource.</param>
     protected Gemstone(
         string name,
@@ -91,7 +91,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         int objectIndex,
         int ringIndex,
         float frequency,
-        Color color,
+        Color stoneColor,
         Color glowColor)
         : base(name, value)
     {
@@ -101,7 +101,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
 
         this.DisplayName = I18n.Get("gems." + name.ToLower() + ".name");
         this.Frequency = frequency;
-        this.StoneColor = color;
+        this.StoneColor = stoneColor;
         this.GlowColor = glowColor.Inverse();
         this.TextColor = this.StoneColor.ChangeValue(0.8f);
     }
@@ -497,7 +497,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         {
             if (RingsModule.Config.RebalancedRings)
             {
-                if (CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense)
+                if (CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense)
                 {
                     who.IncrementResonantResilience(amplitude);
                 }
@@ -517,7 +517,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         {
             if (RingsModule.Config.RebalancedRings)
             {
-                if (CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense)
+                if (CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense)
                 {
                     who.IncrementResonantResilience(-amplitude);
                 }
@@ -537,7 +537,7 @@ public abstract class Gemstone : SmartEnum<Gemstone>, IEquatable<Gemstone>, ICom
         {
             if (RingsModule.Config.RebalancedRings)
             {
-                if (CombatModule.IsEnabled && CombatModule.Config.OverhauledDefense)
+                if (CombatModule.ShouldEnable && CombatModule.Config.OverhauledDefense)
                 {
                     buffer.DefenseModifier += 0.1f * magnitude;
                 }

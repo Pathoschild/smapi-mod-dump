@@ -1,0 +1,28 @@
+{
+    "Name": "Storage Containers",
+    "Author": "trashcan9",
+    "Version": "1.1.0",
+    "Description": "Puts Storage Containers in correct Better Crafting categories.",
+    "UniqueID": "trashcan9.StorageContainers",
+    "EntryDll": "StorageContainers.dll",
+	"MinimumApiVersion": "3.7.0",
+	"UpdateKeys": [ "Nexus:16071" ],
+    "Dependencies": [
+		{
+			"UniqueID": "leclair.bettercrafting",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "marksmango.AlternateStorageES",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "6480.StorageVariety",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "trashcan9.StorageContainers.XS",
+			"IsRequired": false
+		}
+    ]
+  }

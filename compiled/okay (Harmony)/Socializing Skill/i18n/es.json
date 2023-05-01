@@ -1,0 +1,85 @@
+﻿{
+    "skill.name": "Socialización",
+    "skill.perk": "{{bonus}}% posibilidad de que no decaiga la amistad diaria",
+
+    "friendly.name": "Amigable",
+    "friendly.desc": "Gana amistad adicional al hablar con los aldeanos",
+    "smoothtalker.name": "Galante",
+    "smoothtalker.desc": "Obtenga más amistad (y pierda menos) durante los eventos de corazón",
+    "gifter.name": "Generoso",
+    "gifter.desc": "Gana amistad adicional dando regalos",
+    "helpful.name": "Ayudante",
+    "helpful.desc": "Obtenga recompensas adicionales por misiones completadas",
+    "haggler.name": "Regateador",
+    "haggler.desc": "Obtenga un descuento en las tiendas cuando sea amigo del propietario",
+    "beloved.name": "Querido",
+    "beloved.desc": "A veces recibes regalos de tus amistades",
+
+    "friendly.prestige.desc": "Obtenga aún más amistad adicional al hablar con los aldeanos",
+    "smoothtalker.prestige.desc": "Gana aún más amistad (y no pierdas ninguna) durante los eventos de corazón",
+    "gifter.prestige.desc": "Gana aún más amistad dando regalos",
+    "helpful.prestige.desc": "Obtenga aún más recompensas por misiones completadas",
+    "haggler.prestige.desc": "Obtenga un descuento en las tiendas cuando sea amigo del propietario",
+    "beloved.prestige.desc": "Recibe a menudo regalos de tus amistades",
+
+    "dialogue.beloved": "Toma esto.  Lo encontré tirado por la casa",
+    "dialogue.beloved.rare": "Oye {{name}}, creo que esto te puede gustar.",
+    "dialogue.beloved.superrare": "Vi esto y supe que te encantaría.",
+
+    "config.ExperienceModifiers": "Modificadores de Experiencia",
+    "config.SkillPerkModifiers": "Modificadores de Ventajas de Habilidades",
+    "config.ProfessionModifiers": "Modificadores de Profesión",
+
+    "config.ExperienceFromTalking": "Exp Por Hablar",
+    "config.ExperienceFromTalking.tooltip": "Experiencia adquirida al hablar con los aldeanos",
+    "config.ExperienceFromGifts": "Exp Por Regalos",
+    "config.ExperienceFromGifts.tooltip": "Experiencia adquirida al dar regalos a los aldeanos",
+    "config.ExperienceFromEvents": "Exp Por Eventos",
+    "config.ExperienceFromEvents.tooltip": "Experiencia adquirida a partir de eventos de corazón",
+    "config.ExperienceFromQuests": "Exp Por Misiones",
+    "config.ExperienceFromQuests.tooltip": "Experiencia adquirida al completar solicitudes de tablones de anuncios",
+    "config.LovedGiftExpMultiplier": "Multiplicador de Experiencia Por Regalo Amado",
+    "config.LovedGiftExpMultiplier.tooltip": "Multiplica la experiencia obtenida al dar regalos si al aldeano le encanta el regalo.",
+    "config.BirthdayGiftExpMultiplier": "Multiplicador de Experiencia Por Regalo de Cumpleaños",
+    "config.BirthdayGiftExpMultiplier.tooltip": "Multiplica la experiencia obtenida al dar regalos si es el cumpleaños de los aldeanos.",
+
+    "config.ChanceNoFriendshipDecayPerLevel": "Probabilidad De No Decaer Por Nivel",
+    "config.ChanceNoFriendshipDecayPerLevel.tooltip": "Probabilidad por nivel de que la amistad no decaiga de la noche a la mañana",
+
+    "config.FriendlyProfessionModifiers": "Modificadores de Profesión Amigable",
+    "config.FriendlyExtraFriendship": "Amistad Adicional",
+    "config.FriendlyExtraFriendship.tooltip": "Amistad adicional por hablar con alguien cuando tienes la profesión Amigable",
+
+    "config.SmoothTalkerProfessionModifiers": "Modificadores de Profesión de Galante",
+    "config.SmoothTalkerPositiveMultiplier": "Multiplicador Positivo",
+    "config.SmoothTalkerPositiveMultiplier.tooltip": "Multiplica las respuestas de eventos positivos por esta cantidad cuando tienes la profesión de Galante (mantén> 1 por dar mejores respuestas)",
+    "config.SmoothTalkerNegativeMultiplier": "Multiplicador Negativo",
+    "config.SmoothTalkerNegativeMultiplier.tooltip": "Multiplica las respuestas de eventos negativos por esta cantidad cuando tienes la profesión de Galante (mantén > 0 y < 1 por dar mejores respuestas, pero no las positivas)",
+
+    "config.GifterProfessionModifiers": "Modificadores de Profesión Generoso",
+    "config.GifterLovedGiftExtraFriendship": "Amistad Adicional Por Regalo Amado",
+    "config.GifterLovedGiftExtraFriendship.tooltip": "Amistad adicional por regalos amados cuando tienes la profesión Generoso",
+    "config.GifterLikedGiftExtraFriendship": "Amistad Adicional Por Regalo Agradable",
+    "config.GifterLikedGiftExtraFriendship.tooltip": "Amistad adicional por los regalos agradables cuando tienes la profesión Generoso",
+    "config.GifterNeutralGiftExtraFriendship": "Amistad Adicional Por Regalo Neutral",
+    "config.GifterNeutralGiftExtraFriendship.tooltip": "Amistad adicional por los regalos neutrales cuando tienes la profesión Generoso",
+
+    "config.HelpfulProfessionModifiers": "Modificadores de Profesión Ayudante",
+    "config.HelpfulRewardMultiplier": "Multiplicador de Recompensas",
+    "config.HelpfulRewardMultiplier.tooltip": "Multiplica el dinero de la recompensa de misión por esta cantidad cuando tienes la profesión Ayudante",
+
+    "config.HagglerProfessionModifiers": "Modificadores de Profesión Regateador",
+    "config.HagglerMinHeartLevel": "Mínimo Nivel de corazón",
+    "config.HagglerMinHeartLevel.tooltip": "Comienza a dar descuentos cuando la amistad está en este nivel si tienes la profesión de Regateador",
+    "config.HagglerDiscountPercentPerHeartLevel": "Porcentaje de Descuento Por Nivel de Corazón",
+    "config.HagglerDiscountPercentPerHeartLevel.tooltip": "Porcentaje de descuento adicional por nivel de corazón a partir del nivel mínimo de corazón",
+
+    "config.BelovedProfessionModifiers": "Modificadores de Profesión Querido",
+    "config.BelovedGiftPercentChance": "Probabilidad de Porcentaje de Regalo",
+    "config.BelovedGiftPercentChance.tooltip": "Probabilidad de recibir un regalo de alguien cuando tienes la profesión Amado",
+    "config.BelovedGiftRarePercentChance": "Probabilidad de Porcentaje de Regalo Raro",
+    "config.BelovedGiftRarePercentChance.tooltip": "Posibilidad de que un regalo sea raro",
+    "config.BelovedGiftSuperRarePercentChance": "Probabilidad de Porcentaje de Regalo Súper Raro",
+    "config.BelovedGiftSuperRarePercentChance.tooltip": "Posibilidad de que un regalo raro sea súper raro"
+
+}

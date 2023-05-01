@@ -5,7 +5,7 @@
   "EnableDebug": false,
   "AdventureMode": true,
   "AvoidSayHiToMonsters": true,
-  "RequestsWithShift": "Disabled",
+  "RequestsWithShift": "Enabled",
   "RequestsShiftButton": "LeftShift",
   "AllowGainFriendship": true,
   "FightThruCompanion": true,

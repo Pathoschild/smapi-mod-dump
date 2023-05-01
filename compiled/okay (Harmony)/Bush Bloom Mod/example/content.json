@@ -26,5 +26,8 @@
 	"Chance": 0.2,
 
 	// Optional; Default is all locations if missing or empty
-	"Locations": [ "Forest", "Mountain" ]
+	"Locations": [ "Forest", "Mountain" ],
+
+	// Optional: Default is no locations if missing or empty
+	"ExcludeLocations": [ "Town" ]
 }]

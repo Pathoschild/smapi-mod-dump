@@ -17,6 +17,9 @@
   "WeddingTime.description": "Lets you get married slightly later than 6AM.",
   "TryRecoverWedding.title": "Try to recover wedding.",
   "TryRecoverWedding.description": "By default, the wedding is skipped if you load into a save. This tries to restore that event.",
+  "WedWhenEnteringTown.title": "Wed When Entering Town",
+  "WedWhenEnteringTown.description": "If enabled, the wedding will play when you enter town, even if it's not time yet.",
+
   "WeddingMessage": "You're getting married today at {{weddingHour}}:{{weddingMinutes}}!",
   "WeddingMessageOther": "Someone's getting married today at {{weddingHour}}:{{weddingMinutes}}",
   "WeddingReminder": "Your wedding is in twenty minutes! Get ready!",

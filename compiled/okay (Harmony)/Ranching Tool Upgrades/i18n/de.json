@@ -1,0 +1,37 @@
+﻿{
+  "config.pail.buy_cost": "Eimer Kosten",
+  "config.pail.buy_cost.tooltip": "Kosten für den Kauf eines neuen Milcheimers von Marnie.",
+  "config.pail.upgrade_cost_mult": "Eimer Verbesserungs Kosten-Multiplikator",
+  "config.pail.upgrade_cost_mult.tooltip": "Kostenmultiplikator für die Verbesserung des Milcheimers. 1,0 kostet das gleiche wie andere Werkzeuge. 0,5 kostet so viel wie ein Mülleimer.",
+  "config.pail.upgrade_cost_bars": "Benötigte Barren",
+  "config.pail.upgrade_cost_bars.tooltip": "Anzahl der Barren (Kupfer, Eisen usw.), die zur Verbesserungs des Eimers erforderlich sind.",
+  "config.pail.upgrade_days": "Benötigte Tage",
+  "config.pail.upgrade_days.tooltip": "Anzahl der Tage, die für die Verbesserung des Eimers erforderlich sind.",
+
+  "config.shears.buy_cost": "Scheren Kosten",
+  "config.shears.buy_cost.tooltip": "Kosten für den Kauf einer neuen Schere von Marnie.",
+  "config.shears.upgrade_cost_mult": "Scheren Verbesserungs Kostenmultiplikator",
+  "config.shears.upgrade_cost_mult.tooltip": "Kostenmultiplikator für die Verbesserung der Schere. 1,0 kostet das gleiche wie andere Werkzeuge. 0,5 kostet so viel wie ein Mülleimer.",
+  "config.shears.upgrade_cost_bars": "Benötigte Barren",
+  "config.shears.upgrade_cost_bars.tooltip": "Anzahl der Barren (Kupfer, Eisen usw.), die zur Aufrüstung der Scheren erforderlich sind.",
+  "config.shears.upgrade_days": "Benötigte Tage",
+  "config.shears.upgrade_days.tooltip": "Anzahl der Tage, die für die Verbesserung der Scheren erforderlich sind.",
+
+  "config.autograbber.buyable": "Kaufbarer Automatischer Greifer",
+  "config.autograbber.buyable.tooltip": "Erlaube, dass der Automatische Greifer in Marnies Shop gekauft werden. Wenn deaktiviert, müssen Automatische Greifer anderswo gefunden werden.",
+  "config.autograbber.buy_cost": "Automatischer Greifer Kosten",
+  "config.autograbber.buy_cost.tooltip": "Kosten für den Kauf eines neuen Automatischen Greifers von Marnie.",
+  "config.autograbber.upgrade_cost_mult": "Automatischer Greifer Verbesserung Kosten Multiplikator",
+  "config.autograbber.upgrade_cost_mult.tooltip": "Kostenmultiplikator für die Verbsserung eines Automatischen Greifers. 1,0 kostet das gleiche wie andere Werkzeuge. 0,5 kostet so viel wie ein Mülleimer.",
+  "config.autograbber.upgrade_cost_bars": "Benötigte Barren",
+  "config.autograbber.upgrade_cost_bars.tooltip": "Anzahl der Barren (Kupfer, Eisen usw.), die zur Aufrüstung des Automatischen Greifers erforderlich sind.",
+  "config.autograbber.upgrade_days": "Benötigte Tage",
+  "config.autograbber.upgrade_days.tooltip": "Anzahl der Tage, die für die Verbesserung des Automatischen Greifers erforderlich sind.",
+
+  "config.extra_friendship_base": "Extra Freundschaft Base",
+  "config.extra_friendship_base.tooltip": "Grundbetrag der zusätzlichen Freundschaft, die bei der Verwendung von Eimer oder Schere gewährt wird. Der Betrag wird mit der Werkzeugstufe multipliziert.",
+  "config.quality_bump_chance_base": "Qualitäts-Anstiegs-Chance",
+  "config.quality_bump_chance_base.tooltip": "Chance, dass ein Produkt um eine Qualitätsstufe angehoben wird. Die Basischance wird mit der Werkzeugstufe multipliziert.",
+  "config.extra_produce_chance_base": "Extra Produkt Chance",
+  "config.extra_produce_chance_base.tooltip":  "Chance, ein zusätzliches Produkt zu erhalten. Die Anzahl der möglichen zusätzlichen Produkte entspricht der Werkzeugstufe."
+}

@@ -23,9 +23,13 @@ namespace JustSleepIn
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
+        ModConfig Config = new();
+
         public int SetWakeUpTime = 0;
+        public int PermSetWakeUpTime = 0;
         public int AlarmClockReminder = 0;
         public bool AlarmClockSet = false;
+        public bool PermAlarmClockSet = false;
         public bool AlreadyAsked = false;
         public bool ClockTurnedOff = false;
         public bool LetterObtained = false;
@@ -48,6 +52,37 @@ namespace JustSleepIn
             helper.Events.Input.ButtonPressed += this.ManualDialog;
             helper.Events.Input.ButtonPressed += this.TurnOffSwitch;
             helper.Events.Content.AssetRequested += this.TutorialMail;
+            helper.Events.Input.ButtonsChanged += this.StaticTimeSetter;
+            helper.Events.GameLoop.OneSecondUpdateTicked += this.PermTimeSetter;
+        }
+
+        private void StaticTimeSetter(object sender, ButtonsChangedEventArgs e)
+        {
+            if (!Context.IsWorldReady)
+                return;
+            if (this.Config.StaticTimeToggle.JustPressed())
+            {
+                if (PermAlarmClockSet == false)
+                {
+                    Game1.addHUDMessage(new HUDMessage("Alarm clock set permanently to: " + PermSetWakeUpTime / 100 + ":00. Pop-ups disabled.", 2));
+                    ClockTurnedOff = true;
+                    AlarmClockSet = true;
+                    PermAlarmClockSet = true;
+                }
+                else
+                {
+                    Game1.addHUDMessage(new HUDMessage("Alarm clock reset to 6:00. Pop-ups enabled.", 2));
+                    ClockTurnedOff = false;
+                    AlarmClockSet = false;
+                    PermAlarmClockSet = false;
+                    SetWakeUpTime = 0600;
+                }
+            }
+        }
+
+        private void PermTimeSetter(object sender, OneSecondUpdateTickedEventArgs e)
+        {
+            PermSetWakeUpTime = SetWakeUpTime;
         }
 
         private void TutorialMail(object? sender, AssetRequestedEventArgs e)
@@ -59,7 +94,7 @@ namespace JustSleepIn
         public void EditImpl(IAssetData asset)
         {
             var data = asset.AsDictionary<string, string>().Data;
-            data["JSIWizardMail1"] = "Hello, @!^^You can set the alarm clock manually at any time press V (or Xbox button).^To disable or enable the RP prompts press ~ (or Left Stick).^^Here's a little something to get you going.^^Have fun! %item object 201 1 %%[#]Just Sleep In";
+            data["JSIWizardMail2"] = "Hello, @!^^To set the alarm clock manually at any time press V (or Xbox button).^^To disable or enable the RP prompts press ~ (or Left Stick).^^If you have selected the wake up time and want to keep it going forward, press LCtrl and ~. In this mode the other options are disabled.^^Here's a little something to get you going after that well-deserved long nap.^^Have fun! %item object 201 1 %%[#]Just Sleep In";
         }
 
         private void DayStarted(object sender, DayStartedEventArgs e)
@@ -72,7 +107,12 @@ namespace JustSleepIn
             else
             {
                 Game1.timeOfDay = SetWakeUpTime;
-                SetWakeUpTime = 0;
+                if (PermAlarmClockSet == true)
+                {
+                    SetWakeUpTime = PermSetWakeUpTime;
+                }
+                else
+                    SetWakeUpTime = 0;
             }
             if (ClockTurnedOff == true)
             {
@@ -92,26 +132,36 @@ namespace JustSleepIn
 
             if (this.Helper.Input.IsDown(SButton.V) || this.Helper.Input.IsDown(SButton.BigButton))
             {
+                if (PermAlarmClockSet == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage("Fixed wake-up time mode enabled. Please disable it before making changes.", 3));
+                    return;
+                }
                 AlarmClockSelectionManual();
             }
         }
 
         private void TurnOffSwitch(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsWorldReady)
-                return;
-
+            if (!Context.IsWorldReady) return;
             if (this.Helper.Input.IsDown(SButton.OemTilde) || this.Helper.Input.IsDown(SButton.LeftStick))
             {
+                if (this.Helper.Input.IsDown(SButton.LeftControl))
+                    return;
+                if (PermAlarmClockSet == true)
+                {
+                    Game1.addHUDMessage(new HUDMessage("Fixed wake-up time mode enabled. Please disable it before making changes.", 3));
+                    return;
+                }
                 if (ClockTurnedOff == false)
                 {
-                    Game1.addHUDMessage(new HUDMessage("Just Sleep In pop-ups disabled.", ""));
+                    Game1.addHUDMessage(new HUDMessage("Just Sleep In pop-ups disabled.", 3));
                     ClockTurnedOff = true;
                     AlarmClockSet = true;
                 }
                 else
                 {
-                    Game1.addHUDMessage(new HUDMessage("Just Sleep In pop-ups enabled.", ""));
+                    Game1.addHUDMessage(new HUDMessage("Just Sleep In pop-ups enabled.", 4));
                     ClockTurnedOff = false;
                     AlarmClockSet = false;
                 }
@@ -178,10 +228,10 @@ namespace JustSleepIn
                 AlreadyAsked = false;
                 AlarmClockMessage = GettingVeryLate;
             }
-            else
+            /*else
             {
                 AlarmClockMessage = ManualSetup;
-            }
+            }*/
 
             if (Game1.timeOfDay >= (AlarmClockReminder - 200) && AlarmClockSet == false && Game1.player.currentLocation == Game1.getLocationFromName("FarmHouse") && Game1.timeOfDay < 2200 && AlreadyAsked == false)
                 AlarmClockDialogSetupEarly();
@@ -199,7 +249,7 @@ namespace JustSleepIn
 
         private void AlarmClockDialogSetupEarly()
         {
-            List<Response> choices = new List<Response>()
+            List<Response> choices = new()
                 {
                 new Response("dialogue_id1", "6:00AM"),
                 new Response("dialogue_id2", "7:00AM"),
@@ -216,7 +266,7 @@ namespace JustSleepIn
 
         private void AlarmClockDialogSetupLate()
         {
-            List<Response> choices = new List<Response>()
+            List<Response> choices = new()
                 {
                 new Response("dialogue_id1", "6:00AM"),
                 new Response("dialogue_id2", "7:00AM"),
@@ -232,7 +282,8 @@ namespace JustSleepIn
 
         private void DayEnding(object sender, DayEndingEventArgs e)
         {
-            Game1.addMailForTomorrow("JSIWizardMail1");
+            Game1.player.mailReceived.Remove("JSIWizardMail1");
+            Game1.addMailForTomorrow("JSIWizardMail2");
             LetterObtained = true;
         }
 

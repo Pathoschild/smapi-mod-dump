@@ -12,7 +12,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers;
 
 #region using directives
 
-using Modules.Weapons.Extensions;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Monsters;
@@ -25,26 +25,32 @@ internal sealed class MonsterParseMonsterInfoPatcher : HarmonyPatcher
     /// <summary>Initializes a new instance of the <see cref="MonsterParseMonsterInfoPatcher"/> class.</summary>
     internal MonsterParseMonsterInfoPatcher()
     {
-        this.Target = this.RequireMethod<Monster>("parseMonsterInfo");
     }
 
     /// <inheritdoc />
-    protected override void ApplyImpl(Harmony harmony)
+    protected override bool ApplyImpl(Harmony harmony)
     {
-        base.ApplyImpl(harmony);
+        this.Target = this.RequireMethod<Monster>("parseMonsterInfo");
+        if (!base.ApplyImpl(harmony))
+        {
+            return false;
+        }
 
         this.Target = this.RequireMethod<Monster>("BuffForAdditionalDifficulty");
-        base.ApplyImpl(harmony);
+        return base.ApplyImpl(harmony);
     }
 
     /// <inheritdoc />
-    protected override void UnapplyImpl(Harmony harmony)
+    protected override bool UnapplyImpl(Harmony harmony)
     {
         this.Target = this.RequireMethod<Monster>("parseMonsterInfo");
-        base.UnapplyImpl(harmony);
+        if (!base.UnapplyImpl(harmony))
+        {
+            return false;
+        }
 
         this.Target = this.RequireMethod<Monster>("BuffForAdditionalDifficulty");
-        base.UnapplyImpl(harmony);
+        return base.UnapplyImpl(harmony);
     }
 
     #region harmony patches
@@ -53,8 +59,7 @@ internal sealed class MonsterParseMonsterInfoPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void MonsterParseMonsterInfoPostfix(Monster __instance)
     {
-        __instance.MaxHealth = (int)Math.Round(__instance.Health * CombatModule.Config.MonsterHealthMultiplier);
-
+        __instance.MaxHealth = (int)Math.Round(__instance.MaxHealth * CombatModule.Config.MonsterHealthMultiplier);
         __instance.DamageToFarmer =
             (int)Math.Round(__instance.DamageToFarmer * CombatModule.Config.MonsterDamageMultiplier);
         __instance.resilience.Value =

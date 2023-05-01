@@ -38,23 +38,33 @@ internal sealed class GenericObjectMachinePatcher : HarmonyPatcher
     }
 
     /// <inheritdoc />
-    protected override void ApplyImpl(Harmony harmony)
+    protected override bool ApplyImpl(Harmony harmony)
     {
         foreach (var target in TargetMethods())
         {
             this.Target = target;
-            base.ApplyImpl(harmony);
+            if (!base.ApplyImpl(harmony))
+            {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /// <inheritdoc />
-    protected override void UnapplyImpl(Harmony harmony)
+    protected override bool UnapplyImpl(Harmony harmony)
     {
         foreach (var target in TargetMethods())
         {
             this.Target = target;
-            base.UnapplyImpl(harmony);
+            if (!base.UnapplyImpl(harmony))
+            {
+                return false;
+            }
         }
+
+        return true;
     }
 
     [HarmonyTargetMethods]
@@ -157,12 +167,15 @@ internal sealed class GenericObjectMachinePatcher : HarmonyPatcher
             (ProfessionsModule.Config.LaxOwnershipRequirements && Game1.game1.DoesAnyPlayerHaveProfession(Profession.Artisan, out _)))
         {
             output.Quality = input.Quality;
-            if (r.NextDouble() > user.FarmingLevel / 30d)
+            if (!ProfessionsModule.Config.ArtisanGoodsAlwaysInputQuality)
             {
-                output.Quality = (int)((Quality)output.Quality).Decrement();
-                if (r.NextDouble() > user.FarmingLevel / 15d)
+                if (r.NextDouble() > user.FarmingLevel / 30d)
                 {
                     output.Quality = (int)((Quality)output.Quality).Decrement();
+                    if (r.NextDouble() > user.FarmingLevel / 15d)
+                    {
+                        output.Quality = (int)((Quality)output.Quality).Decrement();
+                    }
                 }
             }
         }

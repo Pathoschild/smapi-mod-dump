@@ -263,7 +263,7 @@ internal static class MeleeWeapon_Stats
         if (weapon.Get_ResonatingChord<JadeEnchantment>() is { } jadeChord)
         {
             holder.CritPower += (float)(weapon.GetEnchantmentLevel<JadeEnchantment>() * jadeChord.Amplitude *
-                                        (EnchantmentsModule.IsEnabled && EnchantmentsModule.Config.RebalancedForges ? 0.5f : 0.1f));
+                                        (EnchantmentsModule.ShouldEnable && EnchantmentsModule.Config.RebalancedForges ? 0.5f : 0.1f));
         }
 
         holder.SwingSpeed = weapon.speed.Value;
@@ -302,7 +302,7 @@ internal static class MeleeWeapon_Stats
         points += weapon.addedAreaOfEffect.Value / 4f;
 
         holder.Level = (int)Math.Floor(points / 10f);
-        if (weapon.IsUnique() || weapon.CanBeCrafted())
+        if (weapon.isGalaxyWeapon() || weapon.IsInfinityWeapon() || weapon.IsCursedOrBlessed() || weapon.IsLegacyWeapon())
         {
             holder.Level++;
         }

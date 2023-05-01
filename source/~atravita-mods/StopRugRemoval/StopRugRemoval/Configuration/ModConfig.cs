@@ -228,22 +228,32 @@ internal sealed class ModConfig
     /// <summary>
     /// Pre-populates locations.
     /// </summary>
-    internal void PrePopulateLocations()
+    /// <returns>Whether or not anything was added to the locations list.</returns>
+    internal bool PrePopulateLocations()
     {
-        foreach (GameLocation loc in Game1.locations)
+        if (Game1.locations?.Count is null or 0)
+        {
+            return false;
+        }
+
+        bool changed = false;
+
+        Utility.ForAllLocations(loc =>
         {
             if (loc is SlimeHutch or Town or IslandWest || loc.IsFarm || loc.IsGreenhouse)
             {
-                this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Safe);
+                changed |= this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Safe);
             }
             else if (loc is MineShaft or VolcanoDungeon or BugLand)
             {
-                this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Dangerous);
+                changed |= this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Dangerous);
             }
             else
             {
-                this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Dynamic);
+                changed |= this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Dynamic);
             }
-        }
+        });
+
+        return changed;
     }
 }

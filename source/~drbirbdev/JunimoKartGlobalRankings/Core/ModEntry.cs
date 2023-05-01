@@ -9,31 +9,22 @@
 *************************************************/
 
 using StardewModdingAPI;
-using BirbShared;
-using HarmonyLib;
 using BirbShared.APIs;
+using BirbShared.Mod;
 
 namespace JunimoKartGlobalRankings
 {
     public class ModEntry : Mod
     {
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiApi(UniqueID = "drbirbdev.LeaderboardLibrary")]
         internal static ILeaderboard LeaderboardAPI;
-
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
-
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
-        }
-
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
-        {
-            new Harmony(this.ModManifest.UniqueID).PatchAll();
-
-            LeaderboardAPI = Helper.ModRegistry.GetApi<ILeaderboard>("drbirbdev.LeaderboardLibrary");
+            ModClass mod = new ModClass();
+            mod.Parse(this, true);
         }
     }
 }

@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewValley;
+using StardewValley.Objects;
 using StardewValley.Tools;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +23,11 @@ namespace Trading.Utilities
     {
         public long SenderId { get; set; }
 
-        public NetworkPlayer(long id)
-        {
-            SenderId = id;
-        }
+        public NetworkPlayer(long id) => SenderId = id;
 
         public static implicit operator Farmer(NetworkPlayer player) => Game1.getFarmer(player.SenderId);
 
-        public static implicit operator NetworkPlayer(Farmer farmer) => new NetworkPlayer(farmer.UniqueMultiplayerID);
+        public static implicit operator NetworkPlayer(Farmer farmer) => new(farmer.UniqueMultiplayerID);
     }
 
     /*internal class NetworkObject
@@ -75,18 +74,24 @@ namespace Trading.Utilities
     /// </summary>
     internal class TemporaryNetworkObject
     {
-        public int ParentSheetIndex { get; set; }
+        public string ItemName { get; set; }
 
         public int Quality { get; set; }
 
         public int Stack { get; set; }
+
+        public int ItemType { get; set; }
+
+        public Color? Color { get; set; }
+
+        public int UpgradeLevel { get; set; }
 
         [JsonIgnore]
         public ModDataDictionary? ModData 
         {
             get
             {
-                ModDataDictionary dict = new ModDataDictionary();
+                ModDataDictionary dict = new();
                 if (NetModData is not null)
                     foreach (var key in NetModData.Keys)
                         dict[key] = NetModData[key];
@@ -96,20 +101,36 @@ namespace Trading.Utilities
 
         public Dictionary<string, string> NetModData { get; set; }
 
-        public TemporaryNetworkObject(int parentSheetIndex, int quality, int stack, ModDataDictionary? modData = null)
+        public TemporaryNetworkObject(string name, int type, int quality = 0, int stack = 1, Color? color = null, int upgradeLevel = 0, ModDataDictionary? modData = null)
         {
-            ParentSheetIndex = parentSheetIndex;
+            ItemName = name;
+            ItemType = type;
             Quality = quality;
             Stack = stack;
+            Color = color;
+            UpgradeLevel = upgradeLevel;
             NetModData = new Dictionary<string, string>();
             if (modData is not null)
                 foreach (var key in modData.Keys)
                     NetModData[key] = modData[key];
         }
 
-        public static implicit operator TemporaryNetworkObject(SObject obj) => new TemporaryNetworkObject(obj.ParentSheetIndex, obj.Quality, obj.Stack, obj.modData);
+        public static implicit operator TemporaryNetworkObject(Item obj)
+        {
+            int itemType = ItemFactory.getItemType(obj);
+            string itemName = obj is Tool t ? t.BaseName : ItemFactory.GetItemNameFromIndex(ItemFactory.GetItemIndexInParentSheet(obj, itemType), itemType);
+            Color? itemColor = obj is ColoredObject co ? co.color.Value : null;
+            int quality = 0; 
+            int stack = 1;
+            if (obj is SObject o)
+            {
+                quality = o.Quality;
+                stack = o.Stack;
+            }
+            return new(itemName, itemType, quality, stack, itemColor, obj is Tool tu ? tu.UpgradeLevel : 0, obj.modData);
+        }
 
-        public static implicit operator SObject(TemporaryNetworkObject obj) => new SObject(obj.ParentSheetIndex, obj.Stack, quality: obj.Quality) { modData = obj.ModData };
+        public static implicit operator Item?(TemporaryNetworkObject obj) => ItemFactory.getItemFromName(obj.ItemName, obj.ItemType, obj.Stack, obj.Quality, obj.UpgradeLevel, obj.Color, obj.ModData);
     }
 
     internal class NetworkInventory

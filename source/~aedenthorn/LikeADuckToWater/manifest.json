@@ -11,7 +11,7 @@
 {
   "Name": "Like A Duck To Water",
   "Author": "aedenthorn",
-  "Version": "0.4.2",
+  "Version": "0.4.4",
   "Description": "Like A Duck To Water.",
   "UniqueID": "aedenthorn.LikeADuckToWater",
   "EntryDll": "LikeADuckToWater.dll",

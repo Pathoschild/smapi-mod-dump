@@ -6,10 +6,9 @@ for queries and analysis.**
 
 ----
 
-
 <div align="center">
 
-# Modular Overhaul :: Weapons
+# MARGO :: Weapons (WPNZ)
 
 </div>
 
@@ -20,9 +19,14 @@ for queries and analysis.**
     <li><a href="#overview">Overview</a></li>
     <li><a href="#combos-swing-speed">Combos & Swing Speed</a></li>
 	<li><a href="#offensive-defensive-swords">Offensive & Defensive Swords</a></li>    
-    <li><a href="#weapon-stat-rebalance">Weapon Stat Rebalance</a></li>
-    <li><a href="#weapon-retextures">Weapon Retextures</a></li>
-    <li><a href="#woody-replaces-rusty">Woody Replaces Rusty</a></li>
+    <li><a href="#weapon-tiers-rebalance">Weapon Tiers & Rebalance</a></li>
+    <ol>
+        <li><a href="#mythic-tier">Mythic Tier</a></li>
+        <li><a href="#masterwork-tier">Masterwork Tier</a></li>
+        <li><a href="#legendary-tier">Legendary Tier</a></li>
+        <li><a href="#mines">Mines</a></li>
+        <li><a href="#tooltips">Tooltips</a></li>
+    </ol>
     <li><a href="#infinity-1">Infinity +1</a></li>
     <li><a href="#other-features">Other Features</a></li>
     <li><a href="#compatibility">Compatibility</a></li>
@@ -39,35 +43,36 @@ This module has the following objectives:
 2. Reduce the spam-clicky nature of Vanilla Melee Weapons.
 3. Rebalance the weapons themselves, making each weapon feel distinct and at least somewhat useful, rather than pure inventory clutter. This includes adding new interesting way to obtain special weapons as well as making the legendary weapons feel truly legendary.
 
-This module tries to achieve all of this through a combination of nerfs, buffs and entirely new mechanics which will overall make combat significantly more strategic and challenging. Players who don't care for a challenge or are uninsterested in combat should probably keep this module disabled.
+This module tries to achieve all of this through a combination of nerfs, buffs and entirely new mechanics which will overall make combat significantly more strategic and challenging. Players who don't care for a challenge or are uninterested in combat should probably keep this module disabled.
 
-### Combos & Swing Speed
+## Combos & Swing Speed <sup><sub><sup>[🔼](#margo-weapons-wpnz)</sup></sub></sup>
 
-Weapon spamming is replaced by combos. These are short bursts of continous swings followed by a short cooldown. Each weapon type has a configurable combo limit:
-    - **Swords:** up to 4 horizontal swipes, by default.
-    - **Clubs:** up to 2 hits, being one horizontal swipe and one vertical swipe, by default.
-    - **Daggers:** unchanged, effectively up to infinite hits.
+Weapon spamming is replaced by combos. These are short bursts of continuous swings followed by a short cooldown. Each weapon type has a configurable combo limit:
+    
+- **Swords:** up to 4 horizontal swipes, by default.
+- **Clubs:** up to 2 hits, being one horizontal swipe and one vertical swipe, by default.
+- **Daggers:** unchanged, effectively up to infinite hits.
 
-If combo hits are enabled, swing speed bonuses from emerald will affect every frame of the attack animation, as well as the cooldown in between combos. This makes speed a significantly more valuable stat than in Vanilla, where it only affeected 1 out of 6 frames (and that frame could be animation-canceled).
+If combo hits are enabled, swing speed bonuses from emerald will affect every frame of the attack animation, as well as the cooldown in between combos. This makes speed a significantly more valuable stat than in Vanilla, where it only affected 1 out of 6 frames (and that frame could be animation-canceled).
 
-### Offensive & Defensive Swords
+## Offensive & Defensive Swords <sup><sub><sup>[🔼](#margo-weapons-wpnz)</sup></sub></sup>
 
 In vanilla game code we can find traces of an abandoned fourth weapon type: **Stabbing Swords**. This module re-implements stabbing swords into the game.
 
-Swords are now split between **offensive** and **defensive** archetypes. Defensive swwords retain the parry special move, while offensive swords gain a new stabbing thrust move. This move allows quick repositioning and also grants invincibility frames.
+Swords are now split between **offensive** and **defensive** archetypes. Defensive swwords retain the parry special move, while offensive swords gain a new stabbing thrust move. This move allows quick repositioning and also grants invincibility frames. You can also change the direction mid-dash by inputing a directional command in a perpendicular direction.
 
 To improve the defensive parry move, parry damage is increased by 10% for every defense point. This adds offensive value to the defense stat itself and makes defensive builds more viable. Note that the introduction of weapon combos also adds to the value of a defensive move (you need to protect yourself during combo downtime).
 
-### Weapon Tiers & Rebalance
+## Weapon Tiers & Rebalance <sup><sub><sup>[🔼](#margo-weapons-wpnz)</sup></sub></sup>
 
 Weapon stats have been rebalanced across the board:
 
  - **Clubs** are your general unreliable, imprecise and sluggish, but huge-damage-potential, heavy and larger-hit-box weapons.
- - **Daggers** are the opposite of clubs, being the quick, precise, but short-range and generally-lower-damage potential weapons.
+ - **Daggers** are the opposite of clubs, being the quick, precise, but short-range and generally-lower-damage potential weapons. **Can cause Bleeding** (requires [CMBT](../Combat/README.md#status-conditions) module).
  - **Offensive Swords** are somewhere in the middle, with average damage, speed and precision.
  - **Defensive Swords** are marginally weaker and slower than their offensive counterpart, but are otherwise heavier, sturdier and wider. They are somewhere in-between Offensive Swords and Clubs. 
 
-Weapons are categorized by diffrent tiers, [color-coded for your convenience][tropes:color-coded]:
+Weapons are categorized by different tiers, [color-coded for your convenience][tropes:color-coded]:
 
 ![shield:common]
 ![shield:uncommon]
@@ -77,26 +82,47 @@ Weapons are categorized by diffrent tiers, [color-coded for your convenience][tr
 ![shield:masterwork]
 ![shield:legendary]
 
-Weapons below the Mythic tier have randomized damage, determined the moment they are dropped and scaled to your mine progression. This way, players can always loot stronger weapons, and no specific weapon is ever trivialized. Higher-tier weapons will generally be stronger than lower-tiered ones, although that may not always be the case.
+Weapons below the Mythic tier all have randomized damage, determined the moment they are dropped and scaled to your Mine progression. This way, players can always loot stronger weapons; all weapons can be useful, and no specific weapon is ever trivialized. Higher-tier weapons will generally be stronger than lower-tiered ones, although that may not always be the case.
 
-Mythic weapons are unique or extremely rare. They are usually quest rewards or rare monster drops, and tend to carry special perks in addition to their regular stats.
+### Mythic Tier
 
-Masterwork weapons are relics of the Dwarven race, crafted from special materials. They can ony be created by uncovering the lost Dwarvish Blueprints, and taking them to a skilled blacksmith along with the corresponding material:
+Mythic weapons are unique or extremely rare. They are usually quest rewards or very rare monster drops, and tend to carry intrinsic special abilities. In exchange, they cannot receive additional Prismatic Shard enchantments at the forge.
+
+The known Mythic weapons are:
+- **Yeti Tooth**: Can cause Chilled effect.
+- **Neptune Glaive**: *No effect, yet...*
+- **Obsidian Edge**: Ignores enemy resistances. Can cause Bleeding.
+- **Lava Katana**: Can cause Burning.
+- **Insect Head**: Damage scales with the number of slain insects.
+- **Iridium Needle**: Always crits.
+
+Note that all status conditions require that the [CMBT](../Combat/README.md#status-conditions) module be enabled.
+
+### Masterwork Tier
+
+Masterwork weapons are relics of the Dwarven race, crafted from special materials. They can only be created by uncovering the lost Dwarvish Blueprints, and taking them to a skilled blacksmith along with the corresponding material:
 - **Elven** weapons, carved out of **Elderwood** obtained from [Scavenger Hunts](../Professions), are quick, nimble weapons enchanted with forest magic which grants them high reach and knockback.
 - **Dwarven** weapons, forged from **Dwarven Scraps** obtained from Volcano chests, are large, bulky weapons. They grant high defense and knockback, but reduce speed.
 - **Dragonbone** weapons, forged from **Dragon Teeth** obtained from Volcano chests and near dragon skeletons, are light and sharp, granting the highest raw damage out of any weapon in the game.
 
-The legendary Galaxy and Infinity weapons are explained in the next section, but will require [considerable work to obtain](#infinity-one).
+Masterwork weapons can only be obtained if the Dwarven Legacy setting is enabled.
 
-If this option is enable, all weapons will been removed from Mine chests (replaced with valuable but random loot). New weapons will have to be dropped from monsters or breakable containers in Mines and other dungeons. Monster-dropped weapons are rare, but tend to be stronger. Lower-tier weapons can also be purchased directly from Marlon, but will have fixed and significantly weaker stats when obtained this way.
+### Legendary Tier
+
+See [Infinity+1](#infinity-1).
+
+### Mines
+
+If this option is enabled, all weapons will be removed from Mine chests (replaced with valuable but random loot). New weapons will have to be dropped from monsters or breakable containers in Mines and other dungeons. Monster-dropped weapons are rare, but tend to be stronger. Lower-tier weapons can also be purchased directly from Marlon, but will have fixed and significantly weaker stats when obtained this way.
+
+### Tooltips
 
 Weapon tooltips have also been improved for clarity, so you should always know exactly what each stat means.
+This is the only part of the whole Rebalance that will affect non-Vanilla weapons. Therefore, if you play with expansion mods which add new weapons (e.g., Ridgeside Village), you may see unusually large numbers in their tooltips. **This is not a bug**. Those weapons have not been changed in any way. This mod is simply revealing how broken those weapons have always been. For this reason, I **strongly** recommend ignoring these weapons, or even *deleting* them manually from the mod's files.**
 
-**Only Vanilla weapons are affected by these features. If playing with expansion mods which add new weapons (e.g., Ridgeside Village), those weapons will remain unchanged and unbalanced. I strongly recommend ignoring these weapons, or even *deleting* them manually from the mod's files.**
+## Infinity +1 <sup><sub><sup>[🔼](#margo-weapons-wpnz)</sup></sub></sup>
 
-### Infinity +1
-
-According to [TV Tropes Wiki](https://tvtropes.org/pmwiki/pmwiki.php/Main/InfinityPlusOneSword), an Infinity +1 sword is "not only the most powerful of its kind ... , but its power is matched by how hard it is to acquire". If you were ever bothered by how easy it was to obtain the Galaxy and Infinity weapons in vanilla (and immediately trivialize all the rest), this module has got your back, by making these weapons truly legendary.
+According to [TV Tropes Wiki](https://tvtropes.org/pmwiki/pmwiki.php/Main/InfinityPlusOneSword), an Infinity +1 sword is "not only the most powerful of its kind ... , but its power is matched by how hard it is to acquire". The Vanilla Galaxy weapons do not quite fit that definition. Let's fix that, shall we?
 
 To obtain your first Galaxy weapon, as in vanilla you must first unlock the desert, acquire a Prismatic Shard and offer it to the Three Sand Sisters. Unlike vanilla, however, the weapon will not materialize out of thin air, but will be shaped out of a configurable amount of Iridium Bars (10 by default), which must be in your inventory. This will prevent a lucky Prismatic Shard drop from the Mines or a Fishing Chest from instantly rewarding one of the strongest weapons in the game before the player has even set foot in the Skull Caverns. Now, some venturing into the Skull Caverns is required.
 
@@ -108,11 +134,11 @@ In return for all that extra work, the Infinity weapons have extra perks:
 1. +1 gemstone slot (4 total). Keeping in mind that each gemstone can resonate with equipped [Infinity Bands](../Rings).
 2. While at full health, every swing will fire a mid-range energy beam.
 
-### Other Features
+## Other Features <sup><sub><sup>[🔼](#margo-weapons-wpnz)</sup></sub></sup>
 
-* **Weapons Retexture:** Available optionally, weapons can be retextured to better reflect their type or rarity. This is strongly recommended to visually distinguish Defensive and Offensive-oriented swords, and to make Mythic and above weapons look more unique and powerful. These textures will always be overwritten by Content Patcher weapon retextures if any is installed.*
+* **Weapons Retexture:** Available optionally, weapons can be retextured to better reflect their type or rarity. This is strongly recommended to visually distinguish Defensive and Offensive-oriented swords, and to make Mythic and above weapons look more unique and powerful. These textures will always be overwritten by Content Patcher weapon retextures if any is installed.
 
-* **Grounded Club Smash:** Prevents gliders from being hit by the Club's smash attack, but guarantees a critical hit on undergound Duggies. A controversial but immersive change.
+* **Grounded Club Smash:** Prevents gliders from being hit by the Club's smash attack, but guarantees a critical hit on under-ground Duggies. A controversial but immersive change.
 
 * **Woody Replaces Rusty:** The vanilla game has too many weapons for its own good. A minor issue which results from this is the very awkward "upgrade" from the starting Rusty Sword to the Wooden Blade. Why would Marlon be mocking about with a rusty weapon anyway? This has always bothered me, and so, for a slight increase in immersion, this novelty feature will remove the Rusty Sword from the game and replace the starter weapon with a Wooden Blade.
 
@@ -120,7 +146,11 @@ In return for all that extra work, the Infinity weapons have extra perks:
 
 * **Slick Moves:** Swinging a weapon while running will preserve the player's momentum, causing them to drift in the direction of movement. This increases the player's mobility and makes combat feel more fast-paced. 
 
-## Compatibility
+* **Auto-Selection:** If enemies are nearby, players can optionally choose a weapon to be equipped automatically.
+
+* **Novelty Special Effects:** This module additionally adds tons of immersive details to weapon sound and visual effects, like changing the Lava Katana swipe to a fiery effect, and adding colors and particles to Galaxy and Infinity weapons.
+
+## Compatibility <sup><sub><sup>[🔼](#margo-weapons-wpnz)</sup></sub></sup>
 
 - **Not** compatible with other mods that introduce new weapon types or rebalance weapon stats, such as [Angel's Weapon Rebalance][mod:angels-rebalance].
 - **Not** compatible with the likes of [Combat Controls][mod:combat-controls] or [Combat Controls Redux][mod:combat-controls-redux], as those features are already included in this and other modules.
@@ -141,6 +171,11 @@ They can be found in the exactly the same place as their corresponding weapons w
 **Where can I find the Blade of Ruin?**
 
 At the end of the single-floor [Quarry Mine](https://stardewvalleywiki.com/Quarry_Mine) from the statue of the Grim Reaper.
+
+**What is the Blade of Ruin's curse?**
+
+The Blade of Ruin will grow progressively stronger by cosuming enemies; every 5 enemies slain increases its attack power by 1 point. As it grows stronger, however, it will also begin to consume your own energy, dealing damage-over-time while held. At the same time, the Blade has a nasty habit of auto-equipping itself; the stronger the Blade, the more damage you will suffer, and the more often it will auto-equip itself.
+Should you choose to ignore these side-effects and continue to strengthen the Blade, you will eventually become unable to use other weapons, and be forced to engage combat with 1 HP.
 
 **How do I lift the Ruined Blade's curse?**
 
@@ -188,9 +223,12 @@ Events where you may demonstrate Wisdom:
 
 Unforge the Blade of Dawn to obtain a Hero Soul, and then forge it into any Galaxy weapon after 3 Galaxy Souls.
 
-**What other unique or mythic weapons can be found?**
+**How do I obtain other mythic weapons?**
 
-You can still obtain the Neptune's Glaive and Broken Trident from Fishing Chests. The Lava Katana can be dropped from Magma Sprites, and the Obsidian Edge can be dropped from Shadow people in the dangerous Mines. Lastly, the Insect Head can potentially become your strongest weapon.
+- **Neptune's Glaive:** Fishing Chests, same as Vanilla.
+- **Yeti Tooth:** Dropped by enemies or crates in the icy section of the Mines.
+- **Obsidian Edge:** Dropped from Shadow people in the dangerous Mines.
+- **Lava Katana:** Dropped from certain enemies in Volcano Dungeon.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [shield:common]: <https://img.shields.io/badge/Common-white?style=flat>
@@ -209,3 +247,5 @@ You can still obtain the Neptune's Glaive and Broken Trident from Fishing Chests
 [mod:vanilla-tweaks]: <https://www.nexusmods.com/stardewvalley/mods/10852> "Vanilla Tweaks"
 [mod:sve]: <https://www.nexusmods.com/stardewvalley/mods/3753> "Stardew Valley Expanded"
 [tropes:color-coded]: <https://tvtropes.org/pmwiki/pmwiki.php/Main/ColourCodedForYourConvenience> "Color-Coded for Your Convenience"
+
+[🔼 Back to top](#margo-weapons-wpnz)

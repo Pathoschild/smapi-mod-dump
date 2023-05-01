@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Unlockable Areas",
   "Author": "DeLiXx",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Adds means of unlocking map areas",
   "UniqueID": "DeLiXx.Unlockable_Areas",
   "EntryDll": "Unlockable Areas.dll",

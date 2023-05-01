@@ -1,0 +1,24 @@
+{
+	"Behavior": "Simple",
+	"BehaviorSettings": {
+		"DirectionVariance": 180,
+		"MinCurve": 20,
+		"MaxCurve": 160,
+		"MinSpeed": 30,
+		"MaxSpeed": 60,
+		"MinLife": 10,
+		"MaxLife": 30
+	},
+	"Skin": "Simple",
+	"SkinSettings": {
+		"Texture": "Mods/BetterBeehouses/Bees",
+		"Region": {"X": 0, "Y": 0, "Width": 8, "Height": 8},
+		"Variants": 2,
+		"FrameCount": 2,
+		"HorizontalFrames": 2,
+		"FrameLoops": -15,
+		"MinScale": 2,
+		"UseYDepth": true,
+		"DepthOffset": .0033
+	}
+}

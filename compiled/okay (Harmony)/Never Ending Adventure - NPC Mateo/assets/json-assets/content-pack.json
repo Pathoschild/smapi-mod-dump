@@ -1,0 +1,16 @@
+{
+    "Name": "Never Ending Adventure - Custom Item",
+    "Author": "DestyNova",
+    "Version": "1.0.0",
+    "Description": "Adds Mateo's unique trinkets.",
+    "UniqueID": "DestyNova.Mateo.JA",
+    "UpdateKeys": [],
+    "ContentPackFor": {
+        "UniqueID": "spacechase0.JsonAssets"
+    },
+    "Dependencies": [
+      {
+         "UniqueID": "DestyNova.Mateo.CP"
+      }
+    ]
+}

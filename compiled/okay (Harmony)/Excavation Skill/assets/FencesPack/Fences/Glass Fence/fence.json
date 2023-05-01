@@ -1,5 +1,6 @@
 ﻿{
     "Name": "moonslime.excavation.glass_fence",
+    "HideFromShippingCollection": true,
     "Price": 10,
     "MaxHealth": 30,
     "RepairMaterial": "118",

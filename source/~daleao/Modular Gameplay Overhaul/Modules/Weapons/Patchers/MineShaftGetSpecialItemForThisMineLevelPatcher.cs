@@ -196,12 +196,12 @@ internal sealed class MineShaftGetSpecialItemForThisMineLevelPatcher : HarmonyPa
                         break;
                 }
 
-                if (r.NextDouble() < 0.5)
+                if (r.NextDouble() < 0.25)
                 {
                     possibles.Add(new MeleeWeapon(ItemIDs.CrystalDagger));
                 }
 
-                if (r.NextDouble() < 0.2)
+                if (r.NextDouble() < 0.05)
                 {
                     possibles.Add(new MeleeWeapon(ItemIDs.YetiTooth));
                 }

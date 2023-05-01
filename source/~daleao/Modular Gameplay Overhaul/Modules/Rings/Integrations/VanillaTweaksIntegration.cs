@@ -19,9 +19,11 @@ using DaLion.Shared.Integrations;
 #endregion using directives
 
 [RequiresMod("Taiyo.VanillaTweaks", "Vanilla Tweaks")]
+[IgnoreWithMod("BBR.BetterRings")]
 internal sealed class VanillaTweaksIntegration : ModIntegration<VanillaTweaksIntegration>
 {
-    private VanillaTweaksIntegration()
+    /// <summary>Initializes a new instance of the <see cref="VanillaTweaksIntegration"/> class.</summary>
+    internal VanillaTweaksIntegration()
         : base("Taiyo.VanillaTweaks", "Vanilla Tweaks", null, ModHelper.ModRegistry)
     {
     }
@@ -44,7 +46,7 @@ internal sealed class VanillaTweaksIntegration : ModIntegration<VanillaTweaksInt
             return true;
         }
 
-        Log.W("Failed to read Vanilla Tweaks config settings.");
+        Log.W("[RNGS]: Failed to read Vanilla Tweaks config settings.");
         return false;
     }
 }

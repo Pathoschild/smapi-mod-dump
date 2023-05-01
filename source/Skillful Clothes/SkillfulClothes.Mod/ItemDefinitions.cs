@@ -27,7 +27,7 @@ using HatDef = SkillfulClothes.Types.Hat;
 namespace SkillfulClothes
 {
     public class ItemDefinitions
-    {        
+    {
         public static Dictionary<Shirt, ExtItemInfo> ShirtEffects = new Dictionary<Shirt, ExtItemInfo>() {
             { Shirt.MayoralSuspenders, ExtendItem.With.And.Effect(new IncreasePopularity()) },
 
@@ -89,7 +89,9 @@ namespace SkillfulClothes
             { Shirt.NightSkyShirt, ExtendItem.With.Effect( new OvernightStaminaBuff(30)) },
             { Shirt.GoodnightShirt, ExtendItem.With.Effect(new OvernightHealthBuff(25)) },
 
-            { Shirt.SlimeShirt, ExtendItem.With.Description("Identifies you as a friend of slimes").And.Effect(new RingEffect(RingType.SlimeCharmerRing)).SoldBy(Shop.AdventureGuild, 21000, SellingCondition.SkillLevel_8).And.CannotBeCrafted }
+            { Shirt.SlimeShirt, ExtendItem.With.Description("Identifies you as a friend of slimes").And.Effect(new RingEffect(RingType.SlimeCharmerRing)).SoldBy(Shop.AdventureGuild, 21000, SellingCondition.SkillLevel_8).And.CannotBeCrafted },            
+
+            { Shirt.GraySuit, ExtendItem.With.Effect(new ShopDiscount(Shop.JojaMarket, 0.001)) }
         };
 
         public static Dictionary<Pants, ExtItemInfo> PantsEffects = new Dictionary<Pants, ExtItemInfo>() {

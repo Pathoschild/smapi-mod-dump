@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Professions.Events.GameLoop;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Professions.Integrations;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
 
@@ -31,15 +30,6 @@ internal sealed class ProfessionGameLaunchedEvent : GameLaunchedEvent
     /// <inheritdoc />
     protected override void OnGameLaunchedImpl(object? sender, GameLaunchedEventArgs e)
     {
-        // hard dependencies
-        SpaceCoreIntegration.Instance!.Register();
-
-        // soft dependencies
-        LuckSkillIntegration.Instance?.Register();
-        LoveOfCookingIntegration.Instance?.Register();
-        AutomateIntegration.Instance?.Register();
-        TehsFishingOverhaulIntegration.Instance?.Register();
-        CustomOreNodesIntegration.Instance?.Register();
-        StardewValleyExpandedIntegration.Instance?.Register();
+        OverhaulModule.Professions.RegisterIntegrations();
     }
 }

@@ -19,7 +19,7 @@ using StardewModdingAPI.Utilities;
 
 #endregion using directives
 
-/// <summary>Configs related to <see cref="StardewValley.Tools.MeleeWeapon"/>s.</summary>
+/// <summary>The user-configurable settings for WPNZ.</summary>
 public sealed class Config : Shared.Configs.Config
 {
     #region dropdown enums
@@ -32,6 +32,19 @@ public sealed class Config : Shared.Configs.Config
 
         /// <summary>Display the relative value of the stat, with respect to the default value for the weapon type.</summary>
         Relative,
+    }
+
+    /// <summary>The difficulty level of the proven conditions for the virtue trials.</summary>
+    public enum TrialDifficulty
+    {
+        /// <summary>Easy.</summary>
+        Easy,
+
+        /// <summary>Medium.</summary>
+        Medium,
+
+        /// <summary>Hard.</summary>
+        Hard,
     }
 
     #endregion dropdown enums
@@ -67,24 +80,31 @@ public sealed class Config : Shared.Configs.Config
     [JsonProperty]
     public bool EnableStabbySwords { get; internal set; } = true;
 
-    /// <summary>Gets a value indicating the weapon type of the Galaxy Sword.</summary>
-    [JsonProperty]
-    public WeaponType GalaxySwordType { get; internal set; } = WeaponType.StabbingSword;
-
-    /// <summary>Gets a value indicating the weapon type of the Infinity Blade.</summary>
-    [JsonProperty]
-    public WeaponType InfinityBladeType { get; internal set; } = WeaponType.StabbingSword;
-
     /// <summary>Gets a set of user-defined modded swords which should be treated as Stabby swords.</summary>
     [JsonProperty]
-    public string[] CustomStabbingSwords { get; internal set; } =
+    public string[] StabbingSwords { get; internal set; } =
     {
+        "Bone Sword",
+        "Steel Smallsword",
+        "Cutlass",
+        "Rapier",
+        "Steel Falchion",
+        "Pirate's Sword",
+        "Lava Katana",
+        "Dragontooth Cutlass",
+        "Blade of Ruin",
+        "Galaxy Sword",
+        "Infinity Blade",
         "Strawblaster",
     };
 
+    /// <summary>Gets a value indicating whether to apply the corresponding weapon retexture.</summary>
+    [JsonProperty]
+    public bool EnableRetexture { get; internal set; } = true;
+
     /// <summary>Gets a value indicating whether to enable Clint's forging mechanic for Masterwork weapons.</summary>
     [JsonProperty]
-    public bool DwarvishLegacy { get; internal set; } = true;
+    public bool DwarvenLegacy { get; internal set; } = true;
 
     /// <summary>Gets a value indicating whether replace lame Galaxy and Infinity weapons with something truly legendary.</summary>
     [JsonProperty]
@@ -94,9 +114,17 @@ public sealed class Config : Shared.Configs.Config
     [JsonProperty]
     public int IridiumBarsPerGalaxyWeapon { get; internal set; } = 10;
 
-    /// <summary>Gets a value indicating whether to apply the corresponding weapon retexture.</summary>
+    /// <summary>Gets a factor that can be used to reduce the Ruined Blade's damage-over-time effect.</summary>
     [JsonProperty]
-    public bool EnableRetexture { get; internal set; } = true;
+    public float RuinBladeDotMultiplier { get; internal set; } = 1f;
+
+    /// <summary>Gets a value indicating whether the Blade of Ruin can be deposited in chests.</summary>
+    [JsonProperty]
+    public bool CanStoreRuinBlade { get; internal set; } = false;
+
+    /// <summary>Gets a value indicating the difficulty of the proven conditions for each virtue trial.</summary>
+    [JsonProperty]
+    public TrialDifficulty VirtueTrialTrialDifficulty { get; internal set; } = TrialDifficulty.Medium;
 
     /// <summary>Gets a value indicating whether defense should improve parry damage.</summary>
     [JsonProperty]
@@ -109,6 +137,14 @@ public sealed class Config : Shared.Configs.Config
     /// <summary>Gets a value indicating whether replace the starting Rusty Sword with a Wooden Blade.</summary>
     [JsonProperty]
     public bool WoodyReplacesRusty { get; internal set; } = true;
+
+    /// <summary>Gets a value indicating whether face the current cursor position before swinging your weapon.</summary>
+    [JsonProperty]
+    public bool FaceMouseCursor { get; internal set; } = true;
+
+    /// <summary>Gets a value indicating whether to allow drifting in the movement direction when swinging weapons.</summary>
+    [JsonProperty]
+    public bool SlickMoves { get; internal set; } = true;
 
     /// <summary>Gets a value indicating whether to allow auto-selecting a weapon or slingshot.</summary>
     [JsonProperty]
@@ -125,12 +161,4 @@ public sealed class Config : Shared.Configs.Config
     /// <summary>Gets a value indicating how close an enemy must be to auto-select a weapon, in tiles.</summary>
     [JsonProperty]
     public uint AutoSelectionRange { get; internal set; } = 2;
-
-    /// <summary>Gets a value indicating whether face the current cursor position before swinging your weapon.</summary>
-    [JsonProperty]
-    public bool FaceMouseCursor { get; internal set; } = true;
-
-    /// <summary>Gets a value indicating whether to allow drifting in the movement direction when swinging weapons.</summary>
-    [JsonProperty]
-    public bool SlickMoves { get; internal set; } = true;
 }

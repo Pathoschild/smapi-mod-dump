@@ -112,6 +112,11 @@ public static partial class SeasonExtensions
     public static StardewSeasons GetSeasonFromGame(GameLocation? loc)
         => GetSeasonFromIndex(Utility.getSeasonNumber(Game1.GetSeasonForLocation(loc)));
 
+    /// <summary>
+    /// Gets the season enum matching the game's season index.
+    /// </summary>
+    /// <param name="index">season index.</param>
+    /// <returns>season enum.</returns>
     public static StardewSeasons GetSeasonFromIndex(int index)
         => index switch
         {
@@ -139,6 +144,11 @@ public static partial class SeasonExtensions
         return (StardewSeasons)shifted;
     }
 
+    /// <summary>
+    /// Shifts all the values in a StardewSeasons enum back by one month.
+    /// </summary>
+    /// <param name="seasons">Initial seasons.</param>
+    /// <returns>Seasons shifted back by one.</returns>
     public static StardewSeasons GetPreviousSeason(this StardewSeasons seasons)
     {
         int shifted = (byte)seasons >> 1;
@@ -150,6 +160,11 @@ public static partial class SeasonExtensions
         return (StardewSeasons)shifted;
     }
 
+    /// <summary>
+    /// Counts the number of seasons an enum represents.
+    /// </summary>
+    /// <param name="seasons">Seasons enum.</param>
+    /// <returns>Number of seasons.</returns>
     public static int CountSeasons(this StardewSeasons seasons) => BitOperations.PopCount((uint)seasons);
 
     public static int ToSeasonIndex(this StardewSeasons seasons)

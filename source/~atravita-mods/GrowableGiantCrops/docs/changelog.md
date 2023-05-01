@@ -12,11 +12,10 @@ Changelog
 TODO:
    - Custom resource clumps and custom ore nodes?
    - Fix up grange draw?
-   - Maybe put grass in the furniture catalogue?
-   - option for the two hoe enchantments?
 
 ### Version 0.1.4
 * Added option for the two hoe enchantments.
+* Grasses are now in the furniture catalogue. (They are, however, not free).
 
 ### Version 0.1.3
 * Shovel can optionally not do damage

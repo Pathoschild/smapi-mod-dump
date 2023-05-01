@@ -10,7 +10,7 @@
     <Name>Critter Rings</Name>
     <Description>Just some rings that spawn critters.</Description>
     <UpdateKeys>Nexus:15557</UpdateKeys>
-    <Version>0.1.2</Version>
+    <Version>0.1.4</Version>
     <BaseManifest>..\ja_dependencies.json</BaseManifest>
   </PropertyGroup>
   

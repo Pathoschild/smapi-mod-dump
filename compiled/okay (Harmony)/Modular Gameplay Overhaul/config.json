@@ -1,74 +1,18 @@
 {
   "EnableProfessions": true,
-  "EnableArsenal": false,
+  "EnableCombat": false,
+  "EnableWeapons": false,
+  "EnableSlingshots": false,
+  "EnableTools": false,
+  "EnableEnchantments": false,
   "EnableRings": false,
   "EnablePonds": false,
   "EnableTaxes": false,
-  "EnableTools": false,
   "EnableTweex": true,
-  "Arsenal": {
-    "Slingshots": {
-      "DisableGracePeriod": true,
-      "EnableCrits": true,
-      "EnableEnchants": true,
-      "EnableForges": true,
-      "EnableSpecialMove": true,
-      "BullseyeReplacesCursor": true,
-      "AutoSelectionRange": 4
-    },
-    "Weapons": {
-      "EnableComboHits": true,
-      "SwipeHold": true,
-      "ComboHitsPerWeapon": {
-        "StabbingSword": 4,
-        "DefenseSword": 4,
-        "Club": 2
-      },
-      "GroundedClubSmash": true,
-      "DefenseImprovesParry": true,
-      "EnableStabbySwords": true,
-      "GalaxySwordType": "StabbingSword",
-      "InfinityBladeType": "StabbingSword",
-      "CustomStabbingSwords": [
-        "Strawblaster"
-      ],
-      "EnableRebalance": true,
-      "EnableRetexture": true,
-      "EnableEnchants": true,
-      "WeaponTooltipStyle": "Absolute",
-      "AutoSelectionRange": 2
-    },
-    "ModKey": "LeftShift, LeftShoulder",
-    "EnableAutoSelection": true,
-    "SelectionBorderColor": {
-      "B": 255,
-      "G": 0,
-      "R": 255,
-      "A": 255
-    },
-    "FaceMouseCursor": true,
-    "SlickMoves": true,
-    "ColorCodedForYourConvenience": true,
-    "RebalancedForges": true,
-    "KnockbackDamage": true,
-    "OverhauledDefense": true,
-    "MonsterHealthMultiplier": 1.0,
-    "MonsterDamageMultiplier": 1.0,
-    "MonsterDefenseMultiplier": 1.0,
-    "VariedEncounters": true,
-    "WoodyReplacesRusty": true,
-    "DwarvishCrafting": true,
-    "InfinityPlusOne": true,
-    "IridiumBarsRequiredForGalaxyArsenal": 10
-  },
-  "Ponds": {
-    "DaysUntilAlgaeSpawn": 3,
-    "RoeProductionChanceMultiplier": 1.0,
-    "RoeAlwaysSameQualityAsFish": false
-  },
   "Professions": {
     "ModKey": "LeftShift, LeftShoulder",
     "ShouldJunimosInheritProfessions": false,
+    "ArtisanGoodsAlwaysInputQuality": false,
     "CustomArtisanMachines": [
       "Alembic",
       "Artisanal Soda Maker",
@@ -105,38 +49,40 @@
     "ForagesNeededForBestQuality": 100,
     "MineralsNeededForBestQuality": 100,
     "LaxOwnershipRequirements": false,
-    "TrackPointerScale": 1.0,
-    "TrackPointerBobbingRate": 1.0,
+    "TrackingPointerScale": 1.2,
+    "TrackingPointerBobbingRate": 1.0,
     "DisableAlwaysTrack": false,
     "ChanceToStartTreasureHunt": 0.1,
     "AllowScavengerHuntsOnFarm": false,
     "ScavengerHuntHandicap": 1.0,
     "ProspectorHuntHandicap": 1.0,
     "TreasureDetectionDistance": 3.0,
-    "SpelunkerSpeedCap": 10,
+    "SpelunkerSpeedCeiling": 10,
     "EnableGetExcited": true,
+    "CrystalariumsUpgradeWithGemologist": true,
     "FishNeededForInstantCatch": 500,
-    "AnglerMultiplierCap": 1.0,
+    "AnglerPriceBonusCeiling": 1.0,
+    "AquaristFishPondCeiling": 12.0,
     "ShowFishCollectionMaxIcon": true,
-    "LegendaryPondPopulationCap": 6,
-    "TrashNeededPerTaxBonusPct": 100,
+    "LegendaryPondPopulationCeiling": 6,
+    "TrashNeededPerTaxDeductionPct": 100,
     "TrashNeededPerFriendshipPoint": 100,
     "ConservationistTaxBonusCeiling": 0.37,
-    "PiperBuffCap": 10,
-    "EnableSpecials": true,
-    "SpecialActivationKey": "LeftShift, LeftShoulder",
-    "HoldKeyToActivateSpecial": true,
-    "SpecialActivationDelay": 1.0,
-    "SpecialGainFactor": 1.0,
-    "SpecialDrainFactor": 1.0,
-    "EnablePrestige": true,
+    "PiperBuffCeiling": 10,
+    "EnableLimitBreaks": true,
+    "LimitBreakKey": "LeftShift, LeftShoulder",
+    "HoldKeyToLimitBreak": true,
+    "LimitBreakHoldDelaySeconds": 1.0,
+    "LimitGainFactor": 1.0,
+    "LimitDrainFactor": 1.0,
+    "LimitRespecCost": 0,
     "SkillResetCostMultiplier": 1.0,
+    "EnablePrestige": true,
     "ForgetRecipes": true,
     "AllowMultiplePrestige": false,
-    "PrestigeExpMultiplier": 0.1,
+    "PrestigeExpFactor": 0.1,
     "RequiredExpPerExtendedLevel": 5000,
     "PrestigeRespecCost": 20000,
-    "ChangeUltCost": 0,
     "BaseSkillExpMultipliers": [
       1.0,
       1.0,
@@ -152,29 +98,92 @@
       "spacechase0.Luck": 1.0,
       "spacechase0.Magic": 1.0,
       "drbirbdev.BinningSkill": 1.0,
-      "drbirbdev.SocializingSkill": 1.0
+      "drbirbdev.SocializingSkill": 1.0,
+      "moonslime.ExcavationSkill": 1.0
     },
-    "PrestigeProgressionStyle": "StackedStars"
+    "ProgressionStyle": "StackedStars"
   },
-  "Rings": {
-    "RebalancedRings": true,
-    "CraftableGemRings": true,
-    "CraftableGlowAndMagnetRings": true,
-    "ImmersiveGlowstoneRecipe": true,
-    "TheOneInfinityBand": true,
-    "EnableResonance": true
+  "Combat": {
+    "EnableStatusConditions": true,
+    "KnockbackDamage": true,
+    "OverhauledDefense": true,
+    "CriticalBackAttacks": true,
+    "MonsterHealthMultiplier": 1.0,
+    "MonsterDamageMultiplier": 1.0,
+    "MonsterDefenseMultiplier": 1.0,
+    "VariedEncounters": true
   },
-  "Taxes": {
-    "AnnualInterest": 0.11,
-    "IncomeTaxCeiling": 0.37,
-    "DeductibleAnimalExpenses": true,
-    "DeductibleBuildingExpenses": true,
-    "DeductibleSeedExpenses": true,
-    "DeductibleToolExpenses": true,
-    "DeductibleObjects": []
+  "Weapons": {
+    "EnableRebalance": true,
+    "WeaponTooltipStyle": "Relative",
+    "ColorCodedForYourConvenience": true,
+    "EnableComboHits": true,
+    "SwipeHold": true,
+    "ComboHitsPerWeapon": {
+      "StabbingSword": 4,
+      "DefenseSword": 4,
+      "Club": 2
+    },
+    "EnableStabbySwords": true,
+    "StabbingSwords": [
+      "Bone Sword",
+      "Steel Smallsword",
+      "Cutlass",
+      "Rapier",
+      "Steel Falchion",
+      "Pirate's Sword",
+      "Lava Katana",
+      "Dragontooth Cutlass",
+      "Blade of Ruin",
+      "Galaxy Sword",
+      "Infinity Blade",
+      "Strawblaster"
+    ],
+    "EnableRetexture": true,
+    "DwarvenLegacy": true,
+    "InfinityPlusOne": true,
+    "IridiumBarsPerGalaxyWeapon": 10,
+    "RuinBladeDotMultiplier": 1.0,
+    "CanStoreRuinBlade": false,
+    "VirtueTrialTrialDifficulty": "Medium",
+    "DefenseImprovesParry": true,
+    "GroundedClubSmash": true,
+    "WoodyReplacesRusty": true,
+    "FaceMouseCursor": true,
+    "SlickMoves": true,
+    "EnableAutoSelection": true,
+    "SelectionKey": "LeftShift, LeftShoulder",
+    "SelectionBorderColor": {
+      "B": 255,
+      "G": 0,
+      "R": 255,
+      "A": 255
+    },
+    "AutoSelectionRange": 2
+  },
+  "Slingshots": {
+    "EnableRebalance": true,
+    "EnableCriticalHits": true,
+    "EnableEnchantments": true,
+    "EnableSpecialMove": true,
+    "EnableInfinitySlingshot": true,
+    "DisableGracePeriod": true,
+    "BullseyeReplacesCursor": true,
+    "FaceMouseCursor": true,
+    "SlickMoves": true,
+    "EnableAutoSelection": true,
+    "SelectionKey": "LeftShift, LeftShoulder",
+    "SelectionBorderColor": {
+      "B": 255,
+      "G": 0,
+      "R": 255,
+      "A": 255
+    },
+    "AutoSelectionRange": 4
   },
   "Tools": {
     "Axe": {
+      "BaseStaminaMultiplier": 1.0,
       "EnableCharging": true,
       "RequiredUpgradeForCharging": "Copper",
       "RadiusAtEachPowerLevel": [
@@ -184,6 +193,7 @@
         4,
         5
       ],
+      "ChargedStaminaMultiplier": 1.0,
       "ClearFruitTreeSeeds": false,
       "ClearFruitTreeSaplings": false,
       "CutGrownFruitTrees": false,
@@ -198,10 +208,10 @@
       "ClearDebris": true,
       "PlayShockwaveAnimation": true,
       "AllowMasterEnchantment": true,
-      "AllowReachingEnchantment": true,
-      "BaseStaminaMultiplier": 1.0
+      "AllowReachingEnchantment": true
     },
     "Pick": {
+      "BaseStaminaMultiplier": 1.0,
       "EnableCharging": true,
       "RequiredUpgradeForCharging": "Copper",
       "RadiusAtEachPowerLevel": [
@@ -211,6 +221,7 @@
         4,
         5
       ],
+      "ChargedStaminaMultiplier": 1.0,
       "BreakBouldersAndMeteorites": true,
       "HarvestMineSpawns": true,
       "BreakMineContainers": true,
@@ -222,10 +233,10 @@
       "ClearDebris": true,
       "PlayShockwaveAnimation": true,
       "AllowMasterEnchantment": true,
-      "AllowReachingEnchantment": true,
-      "BaseStaminaMultiplier": 1.0
+      "AllowReachingEnchantment": true
     },
     "Hoe": {
+      "BaseStaminaMultiplier": 1.0,
       "OverrideAffectedTiles": false,
       "AffectedTilesAtEachPowerLevel": [
         {
@@ -249,10 +260,10 @@
           "Item2": 2
         }
       ],
-      "AllowMasterEnchantment": true,
-      "BaseStaminaMultiplier": 1.0
+      "AllowMasterEnchantment": true
     },
     "Can": {
+      "BaseStaminaMultiplier": 1.0,
       "OverrideAffectedTiles": false,
       "AffectedTilesAtEachPowerLevel": [
         {
@@ -277,8 +288,7 @@
         }
       ],
       "AllowMasterEnchantment": true,
-      "AllowSwiftEnchantment": true,
-      "BaseStaminaMultiplier": 1.0
+      "AllowSwiftEnchantment": true
     },
     "Scythe": {
       "RegularRadius": 2,
@@ -293,7 +303,6 @@
     "ModKey": "LeftShift, LeftShoulder",
     "ChargingRequiresModKey": true,
     "HideAffectedTiles": false,
-    "StaminaCostMultiplier": 1.0,
     "TicksBetweenWaves": 4,
     "FaceMouseCursor": true,
     "EnableAutoSelection": true,
@@ -302,7 +311,61 @@
       "G": 0,
       "R": 255,
       "A": 255
-    }
+    },
+    "ColorCodedForYourConvenience": false
+  },
+  "Enchantments": {
+    "MeleeEnchantments": true,
+    "RangedEnchantments": true,
+    "RebalancedForges": true,
+    "DrawForgeSockets": true,
+    "SocketStyle": "Diamond",
+    "SocketPosition": "AboveSeparator"
+  },
+  "Rings": {
+    "RebalancedRings": true,
+    "CraftableGemRings": true,
+    "BetterGlowstoneProgression": true,
+    "TheOneInfinityBand": true,
+    "EnableResonance": true,
+    "ColorfulResonance": true,
+    "LightsourceTexture": "Sconce"
+  },
+  "Ponds": {
+    "DaysUntilAlgaeSpawn": 3,
+    "RoeProductionChanceMultiplier": 1.0,
+    "RoeAlwaysFishQuality": false
+  },
+  "Taxes": {
+    "IncomeBrackets": [
+      9950,
+      40525,
+      86375,
+      164925,
+      209425,
+      523600
+    ],
+    "IncomeTaxPerBracket": [
+      0.1,
+      0.12,
+      0.22,
+      0.24,
+      0.32,
+      0.35,
+      0.37
+    ],
+    "AnnualInterest": 0.12,
+    "IncomeTaxLatenessFine": 0.05,
+    "DeductibleAnimalExpenses": true,
+    "DeductibleBuildingExpenses": true,
+    "DeductibleSeedExpenses": true,
+    "DeductibleToolExpenses": true,
+    "DeductibleObjects": [],
+    "PropertyTaxLatenessFine": 0.15,
+    "UnusedTileTaxRate": 0.05,
+    "UsedTileTaxRate": 0.02,
+    "BuildingTaxRate": 0.04,
+    "ExemptMagicalBuilding": true
   },
   "Tweex": {
     "BeeHouseAgingFactor": 1.0,
@@ -311,10 +374,11 @@
     "FruitTreeAgingFactor": 1.0,
     "TeaBushAgingFactor": 1.0,
     "DeterministicAgeQuality": true,
+    "MillsPreserveQuality": true,
     "BerryBushExpReward": 5,
     "MushroomBoxExpReward": 1,
-    "TapperExpReward": 5,
-    "PreventFruitTreeGrowthInWinter": true,
+    "TapperExpReward": 2,
+    "PreventFruitTreeWinterGrowth": true,
     "LargeProducsYieldQuantityOverQuality": true,
     "DairyArtisanMachines": [
       "Butter Churn",
@@ -322,9 +386,17 @@
       "Keg",
       "Yogurt Jar"
     ],
-    "MillsPreserveQuality": true,
     "ExplosionTriggeredBombs": true,
-    "LegendaryFishAlwaysBestQuality": true
+    "LegendaryFishAlwaysBestQuality": true,
+    "SpawnCrowsOnTheseMaps": [
+      "IslandWest",
+      "Custom_Garden",
+      "Custom_GrampletonFields",
+      "Custom_GrampletonFields_Small",
+      "Custom_Ridgeside_SummitFarm",
+      "Custom_ESMeadowFarm"
+    ]
   },
-  "DebugKey": "RightShift, RightShoulder"
+  "OpenMenuKey": "LeftShift + F12",
+  "DebugKey": "OemQuotes, OemTilde"
 }

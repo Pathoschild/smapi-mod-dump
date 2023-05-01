@@ -54,7 +54,7 @@ namespace Unlockable_Areas.Lib
 
             if (e.NewLocation.mapPath.Value != null && AppliedUnlockables.Any(el => el.Location == e.NewLocation.Name)) {
                 //Buildings share the same map, so when entering a building we hard reload it before applying our unlockables
-                e.NewLocation.loadMap(e.NewLocation.mapPath.Value, true); 
+                e.NewLocation.loadMap(e.NewLocation.mapPath.Value, true);
 
                 foreach (var unlockable in AppliedUnlockables.Where(el => el.LocationUnique == e.NewLocation.NameOrUniqueName))
                     applyUnlockable(new Unlockable(unlockable), false);
@@ -94,7 +94,7 @@ namespace Unlockable_Areas.Lib
             applyOverlay(location, unlockable, map);
 
             if (location.Name == Game1.player.currentLocation.Name)
-                location.reloadMap(); //Need to do this for the new tilesheets
+                location.Map.LoadTileSheets(Game1.mapDisplayDevice);
         }
 
         private static void modMessageReceived(object sender, ModMessageReceivedEventArgs e)
@@ -122,12 +122,13 @@ namespace Unlockable_Areas.Lib
             bool isReplaceOverlay = unlockable.UpdateType.ToLower().Equals("replace");
 
             foreach (var overlayLayer in overlayMap.Layers) {
-                var locationLayer = location.map.GetLayer(overlayLayer.Id);
                 int locationX = (int)unlockable.vUpdatePosition.X;
+
+                var locationLayer = location.map.GetLayer(overlayLayer.Id);
+                bool isBackLayer = overlayLayer.Id.ToLower().Equals("back");
 
                 for (int overlayX = 0; overlayX < overlayLayer.LayerSize.Width && locationX < locationLayer.LayerSize.Width; overlayX++, locationX++) {
                     int locationY = (int)unlockable.vUpdatePosition.Y;
-                    bool isBackLayer = overlayLayer.Id.ToLower().Equals("back");
 
                     for (int overlayY = 0; overlayY < overlayLayer.LayerSize.Height && locationY < locationLayer.LayerSize.Height; overlayY++, locationY++) {
                         var copyFrom = overlayLayer.Tiles[overlayX, overlayY];
@@ -206,7 +207,7 @@ namespace Unlockable_Areas.Lib
                 if (location.Map.TileSheets.Any(el => el.Id == $"zz_{unlockable.ID}_{tileSheet.Id}"))
                     continue;
 
-                var newTileSheet = new TileSheet($"zz_{unlockable.ID}_{tileSheet.Id}", location.map, getSeasonalImageSource(tileSheet.ImageSource), tileSheet.SheetSize, tileSheet.TileSize);
+                var newTileSheet = new TileSheet($"zz_{unlockable.ID}_{tileSheet.Id}", location.map, tileSheet.ImageSource, tileSheet.SheetSize, tileSheet.TileSize);
                 newTileSheet.Properties.CopyFrom(tileSheet.Properties);
                 location.Map.AddTileSheet(newTileSheet);
             }
@@ -216,35 +217,8 @@ namespace Unlockable_Areas.Lib
                     var newLayer = new Layer(layer.Id, location.Map, location.map.Layers.First().LayerSize, layer.TileSize);
                     location.map.AddLayer(newLayer);
                 }
-        }
 
-        private static string getSeasonalImageSource(string imageSource)
-        {
-            string newSource = imageSource;
-
-            if (imageSource.ToLower().StartsWith("spring"))
-                newSource = Game1.currentSeason + imageSource.Remove(0, 6);
-            else if (imageSource.ToLower().StartsWith("summer"))
-                newSource = Game1.currentSeason + imageSource.Remove(0, 6);
-            else if (imageSource.ToLower().StartsWith("fall"))
-                newSource = Game1.currentSeason + imageSource.Remove(0, 4);
-            else if (imageSource.ToLower().StartsWith("winter"))
-                newSource = Game1.currentSeason + imageSource.Remove(0, 6);
-
-            if (newSource != imageSource) {
-                try {
-                    var test = Helper.GameContent.Load<Microsoft.Xna.Framework.Graphics.Texture2D>(newSource);
-
-                    if (test == null)
-                        throw new Exception();
-                } catch {
-                    //Assumed seasonal asset does not exist, so we skip this.
-                    Monitor.LogOnce($"Attempted to load assumed seasonal Tileset '{newSource}', but failed. Loading '{imageSource}' instead", LogLevel.Trace);
-                    newSource = imageSource;
-                }
-            }
-
-            return newSource;
+            location.updateSeasonalTileSheets();
         }
     }
 }

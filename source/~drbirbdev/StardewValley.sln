@@ -16,7 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{7BB5EFE4
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		common-nospace.targets = common-nospace.targets
-		common-unreleased.targets = common-unreleased.targets
 		common.targets = common.targets
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
@@ -36,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardLibrary", "Leade
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameboyArcade", "GameboyArcade\GameboyArcade.csproj", "{8EC72E05-8280-4CA2-983F-D1FB714B988B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LookToTheSky", "LookToTheSky\LookToTheSky.csproj", "{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LookToTheSky", "LookToTheSky\LookToTheSky.csproj", "{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

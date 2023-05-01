@@ -21,7 +21,7 @@ namespace GMCMOptions.Framework {
     /// <summary>
     /// Implementation of the <c cref="IGMCMOptionsAPI">IGMCMOptionsAPI</c>.
     /// </summary>
-    public class API : IGMCMOptionsAPI {
+    public class API : IGMCMOptionsAPI, IObsoleteApiMethods {
         private readonly IModHelper Helper;
         private readonly IMonitor Monitor;
         private readonly IModRegistry modRegistry;
@@ -77,7 +77,7 @@ namespace GMCMOptions.Framework {
                     MakeChangeHandlerFailed<T>(mod, fieldId, $"getting ChangeHandlers property from ModConfig object {modConfig}");
                     return;
                 }
-                foreach(var handler in handlers.GetValue()) {
+                foreach (var handler in handlers.GetValue()) {
                     handler.Invoke(fieldId, val);
                 }
             };
@@ -114,6 +114,8 @@ namespace GMCMOptions.Framework {
                     Action<uint, SpriteBatch, Vector2> drawImage,
                     Func<string>? tooltip = null,
                     Func<uint, String?>? label = null,
+                    Func<uint, String?>? imageTooltipTitle = null,
+                    Func<uint, String?>? imageTooltipText = null,
                     int arrowLocation = (int)ImageOptionArrowLocation.Top,
                     int labelLocation = (int)ImageOptionLabelLocation.Top,
                     string? fieldId = null) {
@@ -121,6 +123,8 @@ namespace GMCMOptions.Framework {
             if (gmcm == null) return;
             ImagePickerOption option = new ImagePickerOption(getValue, setValue, getMaxValue,
                 maxImageHeight, maxImageWidth, drawImage, label,
+                imageTooltipTitle: imageTooltipTitle,
+                imageTooltipText: imageTooltipText,
                 (ImagePickerOption.ArrowLocation)arrowLocation, (ImagePickerOption.LabelLocation)labelLocation,
                 MakeChangeHandler<uint>(mod, gmcm, fieldId));
             gmcm.AddComplexOption(
@@ -142,6 +146,8 @@ namespace GMCMOptions.Framework {
                                    Func<string> name,
                                    Func<(Func<String?> label, Texture2D sheet, Rectangle? sourceRect)[]> choices,
                                    Func<string>? tooltip = null,
+                                   Func<uint, String?>? imageTooltipTitle = null,
+                                   Func<uint, String?>? imageTooltipText = null,
                                    int arrowLocation = (int)ImageOptionArrowLocation.Top,
                                    int labelLocation = (int)ImageOptionLabelLocation.Top,
                                    string? fieldId = null) {
@@ -164,6 +170,8 @@ namespace GMCMOptions.Framework {
                     b.Draw(choice.sheet, centeredPos, choice.sourceRect, Color.White);
                 },
                 label: (v) => choices()[v].label?.Invoke(),
+                imageTooltipTitle: imageTooltipTitle,
+                imageTooltipText: imageTooltipText,
                 (ImagePickerOption.ArrowLocation)arrowLocation, (ImagePickerOption.LabelLocation)labelLocation,
                 MakeChangeHandler<uint>(mod, gmcm, fieldId));
             gmcm.AddComplexOption(
@@ -232,7 +240,13 @@ namespace GMCMOptions.Framework {
                 height: option.OptionHeight);
         }
 
+        void IObsoleteApiMethods.AddImageOption(IManifest mod, Func<uint> getValue, Action<uint> setValue, Func<string> name, Func<uint> getMaxValue, Func<int> maxImageHeight, Func<int> maxImageWidth, Action<uint, SpriteBatch, Vector2> drawImage, Func<string>? tooltip, Func<uint, string?>? label, int arrowLocation, int labelLocation, string? fieldId) {
+            AddImageOption(mod, getValue, setValue, name, getMaxValue, maxImageHeight, maxImageWidth, drawImage, tooltip, label, null, null, arrowLocation, labelLocation, fieldId);
+        }
 
+        void IObsoleteApiMethods.AddImageOption(IManifest mod, Func<uint> getValue, Action<uint> setValue, Func<string> name, Func<(Func<string?> label, Texture2D sheet, Rectangle? sourceRect)[]> choices, Func<string>? tooltip, int arrowLocation, int labelLocation, string? fieldId) {
+            AddImageOption(mod, getValue, setValue, name, choices, tooltip, null, null, arrowLocation, labelLocation, fieldId);
+        }
     }
     /// <summary>
     /// The portion of the GMCM API that we need

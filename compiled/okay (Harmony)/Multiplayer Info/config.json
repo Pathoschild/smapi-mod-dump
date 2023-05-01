@@ -2,5 +2,6 @@
   "Enabled": true,
   "ShowSelf": false,
   "ShowHostCrown": true,
-  "HideHealthBars": false
+  "HideHealthBars": false,
+  "Position": "BottomLeft"
 }

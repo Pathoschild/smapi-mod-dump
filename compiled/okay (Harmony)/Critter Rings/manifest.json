@@ -9,14 +9,14 @@
   "UniqueID": "atravita.CritterRings",
   "Name": "Critter Rings",
   "Author": "atravita",
-  "Version": "0.1.2",
+  "Version": "0.1.4",
   "Description": "Just some rings that spawn critters.",
   "MinimumApiVersion": "3.18",
   "EntryDll": "CritterRings.dll",
   "Dependencies": [
     {
       "UniqueID": "atravita.AtraCore",
-      "MinimumVersion": "0.2.1",
+      "MinimumVersion": "0.2.3",
       "IsRequired": true
     },
     {

@@ -118,16 +118,15 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         public static bool getFish_Prefix(GameLocation __instance, ref StardewValley.Object __result, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
         {
-
             if (!CustomFarm.IsCFLMapSelected())
                 return true;
 
-            if(__instance.IsFarm)
-            foreach (Building b in (__instance as Farm).buildings)
-                if (b is FishPond && b.isTileFishable(bobberTile)) {
-                    __result = (b as FishPond).CatchFish();
-                    return false;
-                }
+            if (__instance.IsFarm && __instance is Farm)
+                foreach (Building b in (__instance as Farm).buildings)
+                    if (b is FishPond && b.isTileFishable(bobberTile)) {
+                        __result = (b as FishPond).CatchFish();
+                        return false;
+                    }
 
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
 

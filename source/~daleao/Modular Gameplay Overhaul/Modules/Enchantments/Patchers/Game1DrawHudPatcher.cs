@@ -55,6 +55,11 @@ internal sealed class Game1DrawHudPatcher : HarmonyPatcher
                             OpCodes.Stsfld,
                             typeof(Game1).RequireField(nameof(Game1.showingHealth))),
                     })
+                .Match(
+                    new[] { new CodeInstruction(OpCodes.Bge) },
+                    ILHelper.SearchOption.Previous)
+                .SetOpCode(OpCodes.Beq) // replace > with ==
+                .Return()
                 .Move(2)
                 .Count(
                     new[]
@@ -89,7 +94,6 @@ internal sealed class Game1DrawHudPatcher : HarmonyPatcher
     private static void DrawHealthBarSubroutine(Vector2 topOfBar)
     {
         var player = Game1.player;
-
         var bonusHeight = player.maxHealth - 100;
         var overhealHeight = 0;
         if (player.health > player.maxHealth)
@@ -207,6 +211,11 @@ internal sealed class Game1DrawHudPatcher : HarmonyPatcher
                 Vector2.Zero,
                 SpriteEffects.None,
                 1f);
+        }
+
+        if (RingsModule.ShouldEnable)
+        {
+            Rings.Patchers.Game1DrawHudPatcher.DrawShieldHealth(topOfBar, healthBarRect);
         }
     }
 

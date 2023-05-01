@@ -15,6 +15,9 @@
         "Target": "Characters/Dialogue/Haley",
         "When": {"YearRemainder": 2},
         "Entries": {
+            "summer_Mon6": "Does this dress look good on me?",
+            "summer_Tue10": "Ah, the weather is lovely today, @!$h#$b#Kinda want to go camping, do you think I could convince Emily to take a day off work?",
+
             "1_2": "Mother sent me some photos from her vacation.#$b#They're taking a cruise out of %place.#$e#Go with them?...I...I'm not sure about that.",
             "3_2": "Hey @, Father sent me a gift card to the athleisure store in %place. Wanna go check it out?",
             "5_2": "@, what do you think of this new foundation? Mother bought it for me.",
@@ -25,7 +28,8 @@
             "15_2": "Look at this new dress my mother sent me! Isn't it flattering?$h",
             "17_2": "Father got me a gift card to {{i18n:clothing.brand.{{Random:01, 02, 03, 04, 05, 06, 07, 08}} }}. Emily and I are thinking of heading over, perhaps some time this week?",
             "19_2": "Look, @, I managed to cook something! Emily says mom and dad would be very proud of me.$h#$b#Want some?[194]",
-            "22_2": "What did I want to be when I was young? I really wanted to be a ballerina.#$b#I know, I know. I gave that up when I learned what type of toll that took on their feet."
+            "22_2": "What did I want to be when I was young? I really wanted to be a ballerina.#$b#I know, I know. I gave that up when I learned what type of toll that took on their feet.",
+            "24_2": "I can't find my favorite sunscreen.$s#$e#Hey. Good sunscreen is expensive, and I don't like the cheap ones, they feel like a sticky film on my skin."
         }
     },
     {

@@ -6,25 +6,141 @@ for queries and analysis.**
 
 ----
 
-# Weapons Change Log
+# WPNZ Change Log
 
-## 2.0.0
-
-* Initial release of Enchantments module.
-
----
-
-*Changes below this point refer to the legacy Arsenal module.*
-
-## 1.4.0
-
-### Added
-
-* Added Exploding / Biding enchantment.
+## 2.2.7 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
-* Removed the cap on bonus damage awarded by Carving enchantment.
+* Touched up some weapon textures.
+* All Stabbing Swords are now listed by name in a single StabbingSwords setting, so anyone is free to choose which swords should be Stabbing or not.
+
+### Fixed
+
+* Fixed Blade of Ruin duplicating itself whens tored in a chest.
+* Fixed crashing when completing the Blade of Ruin's intro quest.
+
+### Removed
+
+* Removed the CustomStabbingSwords, GalaxySwordType and InfinitySwordType config settings.
+
+## 2.2.6 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Added
+
+* Added instrinsic enchantment to Neptune Glaive: feels like a crashing wave, dealing heavy knockback. Thanks to [Deadnoz](https://www.nexusmods.com/stardewvalley/users/9502763) for the idea.
+* Added config setting to allow depositing the Blade of Ruin.
+* Added compatibility for [Simple Weapons](https://www.nexusmods.com/stardewvalley/mods/16491?tab=posts&BH=0).
+
+### Changed
+
+* When FaceMouseCursor is enabled, pressing the Action button will no longer cause the player to accidentally use a special move in another direction when trying to interact with something.
+
+## 2.2.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Removed the leftover Virtue quest entries which were causing severe crashing in 2.2.4.
+
+## 2.2.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Removed
+
+* Moved Infinity Slingshot transformation over to SLNGS module.
+
+## 2.2.3 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Added
+
+* You can now change the difficulty of the Ruined Blade's damage-over-time.
+* You can now change the difficulty of the Hero's Journey quest; i.e. the difficulty of completing each virtue trial.
+* The Trial of Generosity can now also be completed by gifting NPCs. The trial will complete once the total value of gifts given reaches the specified gold amount. The host player can still complete this trial by purchasing the community upgrade (which will no longer count for farmhands).
+
+### Changed
+
+* The Hero's Journey quest now displays as a single quest with multiple objectives (like a Special Order), rather than separate quests for each virtue.
+
+### Fixed
+
+* Revised enable condition for ButtonPressedEvent, which should fix issues with FaceMouseCursor, SlickMoves and AutoSelection working if any is disabled.
+
+## 2.2.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Added
+
+* Added one more line of flavor text to the Wizard if the player ignores his warning and chooses to level-up the sword anyway.
+* Added fall-back mail flags when the Dark Sword and Holy Blade are equipped, just in case.
+
+### Fixed
+
+* No longer forcefully restarts the Blade of Ruin quest by checking for events seen. This was not doing I wanted and wasn't even necessary. Fixes the bug where player were receiving the quest every time the save was loaded.
+* Fixed an IndexOutOfRange error when using any weapon with SFX and ComboHits disabled.
+
+## 2.2.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Changed
+
+* Refactored some patchers into more specific namespaces, just for consistency.
+
+## 2.2.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Added
+
+* All daggers, as well as the Obsidian Edge, now have a chance to inflict Bleed status, causing enemies to take damage every second for 30 seconds. Bleeding effect stacks up to 10 times, dealing exponentially higher damage with each stack. 
+* Lava Katana now has a chance to inflict Burn status on enemies, causing them to loose 1/16th max health per 3 seconds and halves their attack for 15 seconds.
+* Upgraded Yeti Tooth to Mythic status. Now has a chance to inflict Chill status on enemies, slowing them for 3 second. If Chill is applied a second time during the duration, the enemy will receive Frozen status, preventing them from moving and attacking for 30 seconds. Hitting a frozen enemy deals double damage and cancels the effect.
+* Next on "improving stabby sword controls": special thrust move will now auto-seek the hovered enemy if FaceMouseCursor setting is enabled.
+
+### Changed
+
+* Mythic weapons now all have instrinsic enchantments, and therefore can no longer receive Prismatic Shard enchantments at the Forge for balancing reasons. This includes the Insect Head, Lava Katana, Obsidian Edge and Yeti Tooth.
+* Many weapons had their tier reduced, such that the only Mythic weapons now are those with a instrinsic enchantment. Several mythic weapons have received status effects (listed above, in Added section).
+* In exchange, mythic weapons can no longer receive Prismatic Shard enchantments.
+* Stabby sword thrust move will now automatically home-in on the hovered enemy if FaceMouseCursor setting is enabled.
+* Increased the hitbox of Club's overhead smash hit (final combo hit).
+
+## 2.1.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Enough people have suffered SpaceCore serialization issues to make it worth mitigating the risk. From now on, instrinsic weapon enchantments will be temporary removed before the game is saving. There is no need to persist them on the save anyway. This does not apply to enchantments from [ENCH](../Enchantments).
+
+## 2.1.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Changed
+
+* Warp Totem: Island recipe now requires one Radioactive Ore if Dwarven Legacy option is enabled (instead of one extra Ginger).
+
+### Fixed
+
+* Fixed a long-standing overlooked issue with weapon hitboxes during combos. Combat should feel *significantly* better now.
+* Fixed Galaxy and Infinity weapons not being registered as Stabbing Swords right away.
+* Can no longer dash in festivals.
+
+## 2.0.6 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Looks like Galaxy / Infinity sword config settings were not quite fixed in the previous version.
+* Fixed major issue in random stat calculation causing damage to appear incorrectly in menus and shops. No longer randomizes on instance construction.
+* Increased Claymore damage slightly.
+* Increased Steel Falchion damage slightly.
+* Should now correctly load the cometkins-style sprite for Elderwood if [Better Resources](https://www.nexusmods.com/stardewvalley/mods/6942) is installed.
+
+## 2.0.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Prevented an exception thrown when drawing the tooltip of weapons with bonus defense if CMBT's Defense Overhaul is disabled.
+* Fixed a small display issue when drawing the tooltip of weapons with negative defense.
+* Galaxy and Infinity sword types should now obey the config settings.
+
+## 2.0.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+
+* Initial release of Weapons module.
+
+### Changed
+
 * Reduced the minimum mine level required for new weapons to appear at Marlon's shop. The first batch of weapons will now be available instantly. The second will appear as soon as level 15. Some prices have also been lowered.
 * Mine chests no longer drop seeds. Can now drop fertilizers. Increased the stack of several chest rewards. Improved the odds of hitting the jackpot (Quality Sprinklers).
 * Increased the spawn chance of breakable containers in the mines. Implemented a handicap system to dynamically increase the chance of obtaining special items from breakable containers (including weapons).
@@ -32,44 +148,45 @@ for queries and analysis.**
 * The base knocback of swords and daggers has been cut in half.
 * Some weapons' stats have been changed, including the Galaxy and Infinity weapons which received significant buffs.
 * Weapon revalidation now occurs automatically upon first initialization of the module. Manually executing the `revalidate` command is no longer necessary. However, you **must** manually disable Arsenal module before uninstalling MARGO.
-* Glutton Enchantment renamed to Magnum Enchantment.
-* Tribute Enchantment renamed to Mammonite's Enchantment.
 
 ### Fixed
 
-* Carving enchantment now works correctly on Rock Crabs.
 * The Dawn Blade will no longer be dismantled as long as it has forges to be removed.
 * Generosity Trial now only checks for completion on the Master player, to avoid issues in multiplayer games.
 * The description of the Jinxed debuff should now properly reflect the changes made by the Overhauled Defense setting.
 * Fixed some typos causing Aquamarine, Jade and Emerald-resonances to not apply correctly to their correspondingly-forged weapons.
 * Generosity Trial completion should now register on all farmhands.
-* Fixed an issue where Tribute Enchantment threshold was reseting to 0% instead of the correct 10%.
+* I'm not sure why, but Slick Moves now also works in the direction of movement.
 
-## 1.3.5
+---
+
+*Changes below this point refer to the legacy Arsenal module.*
+
+## 1.3.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed a bad Null-Reference Exception introduced in 1.3.4.
 
-## 1.3.4
+## 1.3.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed missing scythe swipe sound.
 
-## 1.3.2
+## 1.3.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Enemies defeated by knockback damage now properly count for game stats, quests and drop items. 
 
-## 1.3.1
+## 1.3.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed start-up error with Neptune's Glaive patcher.
 
-## 1.3.0
+## 1.3.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -82,7 +199,7 @@ for queries and analysis.**
 * Fixed a bug preventing explosive ammo from exploding without the Desperado profession.
 * Fixed a bug with Obsidian Edge and Lava Katana drops creating error daggers instead.
 
-## 1.2.3
+## 1.2.3 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -97,14 +214,14 @@ for queries and analysis.**
 
 * Blade of the Ruined Hero introduction event is no longer skippable.
 
-## 1.2.1
+## 1.2.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed auto-selection preventing other LeftShift actions in inventory menu.
 * Fixed inverted swipe effect when swinging scythe.
 
-## 1.2.0
+## 1.2.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -115,14 +232,14 @@ for queries and analysis.**
 
 * Fixed a bug in the console command for getting blueprints (`ars get bp`).
 
-## 1.1.0
+## 1.1.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed out-of-bounds tooltip elements for slingshots higher than basic.
 * Fixed bullseye position while aiming.
 
-## 1.0.4
+## 1.0.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -134,11 +251,11 @@ for queries and analysis.**
 
 * Fixed shipping bin logic, which was also messed up by the Dark Sword.
 
-## 1.0.3-Hotfix
+## 1.0.3-Hotfix <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 Hotfix for Null-Reference Exception when opening Clint's shop menu.
 
-## 1.0.2
+## 1.0.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -152,7 +269,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Dark Sword should now be immune from accidental deposit by Better Chests' stack feature.
 * Clint's menu should now support mod geodes like Kaya's.
 
-## 1.0.1
+## 1.0.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -174,7 +291,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * No longer conflicts with Love Of Cooking's Frying Pan upgrades or drbirbdev's Panning and Ranching Tool Upgrades.
 * No longer prevents players from receiving the Galaxy Sword mail flag.
 
-## 1.0.0
+## 1.0.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -196,7 +313,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Weapon and Slingshot Forges now unapply correctly.
 * Hoe is not longer classified as Rare (color-coded Blue).
 
-## 0.9.9
+## 0.9.9 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -218,7 +335,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed possible bug with Bloodthirsty enchantment.
 * Fixed some incorrect translation keys.
 
-## 0.9.8
+## 0.9.8 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -229,7 +346,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Improvements to Slick Moves. Can now drift in the parallel direction (i.e., when swinging directly in front or behind you). Before, drifting only worked for perpendicular directions (i.e., when swinging to the sides). Also increased the drift velocity slightly. Finally, the drift now comes to a halt at the end of the animation, removing the unimmersive impression of buttery floor.
 * Clint's follow-up quest now begins correctly.
 
-## 0.9.7
+## 0.9.7 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -253,7 +370,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed missing patch targets for allowing crits to ignore monster defense.
 * Added config checks to logic that was missing it.
 
-## 0.9.6
+## 0.9.6 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -261,7 +378,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed a compatibility issue with any modded recipes containing Dragon Tooth.
 * Fixed a null-reference exception when farmer takes damage from bombs and maybe other sources too.
 
-## 0.9.5
+## 0.9.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -275,7 +392,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 
 * Removed automatic initialization script from SaveLoaded event. This was inefficient and unreliable. Replaced with manual console command.
 
-## 0.9.4
+## 0.9.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -297,14 +414,14 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Players on existing save files that have already obtained the Galaxy Sword should now be able to obtain the remaining Galaxy weapons.
 * Fixed a bug in the monster stat randomization logic, which was generating monsters with current HP higher than max HP.
 
-## 0.9.3
+## 0.9.3 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed null-reference exception when opening Marlon's shop (forgot to pass `__result` by `ref`).
 * Control settings now apply only to weapons, as they should.
 
-## 0.9.2
+## 0.9.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -323,3 +440,5 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 ## 0.9.0 (Initial release)
 
 * Initial Version
+
+[🔼 Back to top](#wpnz-change-log)

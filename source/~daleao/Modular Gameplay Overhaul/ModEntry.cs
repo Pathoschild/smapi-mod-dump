@@ -24,7 +24,6 @@ namespace DaLion.Overhaul;
 using System.Diagnostics;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Collections;
-using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.ModData;
 using DaLion.Shared.Networking;
 using DaLion.Shared.Reflection;
@@ -43,6 +42,9 @@ public sealed class ModEntry : Mod
 
     /// <summary>Gets or sets the <see cref="ModConfig"/> instance.</summary>
     internal static ModConfig Config { get; set; } = null!; // set in Entry
+
+    /// <summary>Gets or sets the <see cref="ModData"/> instance.</summary>
+    internal static ModData Data { get; set; } = null!; // set in Entry
 
     /// <summary>Gets the <see cref="PerScreen{T}"/> <see cref="ModState"/>.</summary>
     internal static PerScreen<ModState> PerScreenState { get; private set; } = null!; // set in Entry
@@ -85,11 +87,12 @@ public sealed class ModEntry : Mod
 
         // initialize data
         ModDataIO.Init(this.ModManifest.UniqueID);
+        Data = helper.Data.ReadJsonFile<ModData>("data.json") ?? new ModData();
 
         // get configs
         Config = helper.ReadConfig<ModConfig>();
         Config.Validate(helper);
-        helper.LogConfig(Config);
+        Config.Log();
 
         // initialize mod state
         PerScreenState = new PerScreen<ModState>(() => new ModState());

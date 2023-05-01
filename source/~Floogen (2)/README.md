@@ -2,9 +2,9 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://github.com/Floogen/FishingTrawler**
+**Source repository: https://github.com/Floogen/MysticalBuildings**
 
 ----
 
-# FishingTrawler
- A new mini-game for Stardew Valley that lets you fish in bulk!
+# MysticalBuildings
+ A Solid Foundation content pack.

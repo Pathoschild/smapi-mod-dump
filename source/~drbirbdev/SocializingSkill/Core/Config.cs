@@ -22,17 +22,17 @@ namespace SocializingSkill
         [ConfigPage("Experience")]
         [ConfigSectionTitle("ExperienceModifiers")]
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
-        public int ExperienceFromTalking { get; set; } = 2;
+        public int ExperienceFromTalking { get; set; } = 5;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
         public int ExperienceFromGifts { get; set; } = 5;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
-        public int ExperienceFromEvents { get; set; } = 10;
+        public int ExperienceFromEvents { get; set; } = 20;
         [ConfigOption(Min = 0, Max = 100, Interval = 1)]
-        public int ExperienceFromQuests { get; set; } = 20;
+        public int ExperienceFromQuests { get; set; } = 50;
         [ConfigOption(Min = 1, Max = 5, Interval = 0.1f)]
         public float LovedGiftExpMultiplier { get; set; } = 2;
         [ConfigOption(Min = 1, Max = 5, Interval = 0.1f)]
-        public float BirthdayGiftExpMultiplier { get; set; } = 2;
+        public float BirthdayGiftExpMultiplier { get; set; } = 5;
 
         [ConfigPage("Perks")]
         [ConfigSectionTitle("SkillPerkModifiers")]

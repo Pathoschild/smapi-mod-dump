@@ -1,0 +1,8 @@
+{
+  "EnableMod": true,
+  "UseCustomPanningSpots": false,
+  "SplashSoundChance": 0.2,
+  "PlaySplashSoundRange": 30,
+  "SpotDisappearChance": 0.1,
+  "MinMinutesBeforeSpotDisappear": 10
+}

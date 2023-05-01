@@ -9,23 +9,35 @@
 *************************************************/
 
 {"Changes":[
+
+    // In canon, she's kinda generic scientist. Leans robotics.
+    // Working at Harvey's. Has probably an associates degree.
+
     {
         "LogName": "Rain -- during winter.",
         "Action": "EditData",
         "Target": "Characters/Dialogue/rainy",
         "When": {"Season": "winter"},
         "Entries":{
-            "Maru": "Strange that it's raining in winter.",
+            "Maru": "Strange that it's raining in winter.$s",
         }
     },
     {
         "LogName": "Maru, mid hearts",
         "Action": "EditData",
         "Target": "Characters/Dialogue/Maru",
+        "When": {"YearModulus": "2"},
         "Entries":{
             "1": "@, why did you decide to come to Pelican Town?",
             "1_2": "Ah, @, it's the start of a new month! What do you have planned?",
-            "8_2": "Sometimes I wonder if Sebastian would be happier living in the city.#$b#He doesn't really like living with other people though."
+            "8_2": "Sometimes I wonder if Sebastian would be happier living in the city.#$b#He doesn't really like living with other people though.",
+            "9_2": "I like working at the clinic. Dad says I should be doing more with my life, though.",
+            "11_2": "Mom wishes she could have sent Sebastian to college. She says....no, never mind.",
+            "13_2": "Say, @, you planting anything interesting on that farm of yours?",
+            "14_2": "Dad? Dad's an ecologist. He's partnered with Grampleton University.",
+            "15_2": "I really enjoy building things. Not sure where I'm going with my current project, but it's sure fun to just play around.",
+            "17_2": "Dad bought me unleaded solder. It's really not the same.",
+            "19_2": "I wish I got along better with my brother.$s"
         }
     },
     {

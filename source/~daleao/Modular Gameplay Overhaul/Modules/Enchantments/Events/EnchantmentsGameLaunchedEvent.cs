@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Enchantments.Events;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Enchantments.Integrations;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
 
@@ -31,6 +30,6 @@ internal sealed class EnchantmentsGameLaunchedEvent : GameLaunchedEvent
     /// <inheritdoc />
     protected override void OnGameLaunchedImpl(object? sender, GameLaunchedEventArgs e)
     {
-        SpaceCoreIntegration.Instance!.Register();
+        OverhaulModule.Enchantments.RegisterIntegrations();
     }
 }

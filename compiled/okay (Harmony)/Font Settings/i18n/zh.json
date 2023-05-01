@@ -8,7 +8,7 @@
   "hud-message.failed-set-font": "{{fontType}}设置失败，详见SMAPI窗口。",
 
   "ui.main-menu.title": "字体设置",
-  "ui.main-menu.font-type-help.paragraph": "星露谷物语的字体大致分为三类：小字体、中字体、对话字体。\n点击左右箭头切换当前设置的字体类型。\n根据喜好，你可以全部设置，也可以只设置其中的几个。",
+  "ui.main-menu.font-type-help.paragraph": "星露谷物语的字体大致分为三类：\n- 小字体\n- 中字体\n- 对话字体\n点击左右箭头切换当前设置的字体类型。\n根据喜好，你可以全部设置，也可以只设置其中的几个。",
   "ui.main-menu.section.general": "常规",
   "ui.main-menu.enable": "启用字体",
   "ui.main-menu.font": "字体",
@@ -31,6 +31,9 @@
   "ui.main-menu.new-preset": "保存当前设置为新预设",
   "ui.main-menu.save-preset": "保存",
   "ui.main-menu.del-preset": "删除",
+
+  "ui.main-menu.reset-font": "恢复为原版字体",
+
   "ui.main-menu.merge-examples": "合并示例",
   "ui.main-menu.show-example-bounds": "显示边框",
   "ui.main-menu.show-example-text": "显示文字",
@@ -43,11 +46,8 @@
   "ui.invalid-preset-name.invalid-char": "不可包含非法字符，如：/、\\、*、\"、|、<、>、? 等。",
   "ui.invalid-preset-name.duplicated": "该名称已被占用。",
 
-  "ui.obsolete-page.paragraph": "字体设置界面已从游戏菜单中移除。\n点击热键'{{hotkey}}'打开设置界面。",
-  "ui.obsolete-page.hide-this-tab": "不再显示此页面",
-
   "config.example-text": "示例文本",
-  "config.example-text.description": "用来校准字体。‘\\n’表示换行，建议设置两行，这样校准行间距时看得清楚一点。",
+  "config.example-text.description": "设置自定义的文本。将覆盖内置文本，所以一般留空即可。",
   "config.min-font-size": "最小字体大小",
   "config.min-font-size.description": "字体的像素大小 最小值",
   "config.max-font-size": "最大字体大小",
@@ -74,6 +74,8 @@
   "config.min-pixel-zoom.description": "字符的缩放比例 最小值（仅对话字体）",
   "config.disable-text-shadow": "禁用字体阴影",
   "config.disable-text-shadow.description": "禁用字体阴影。",
+  "config.simplified-drop-down": "减少下拉框卡顿",
+  "config.simplified-drop-down.description": "在大量数据下，减少下拉框卡顿，代价是选中时不再显示高亮。",
   "config.font-menu-key": "字体菜单",
   "config.font-menu-key.description": "绑定打开字体菜单的按键。",
   "config.font-settings-in-game-menu": "在游戏内置菜单中设置字体",

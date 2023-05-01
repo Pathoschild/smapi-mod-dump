@@ -1,0 +1,16 @@
+{
+  "openButton": "R",
+  "reminderTime": 620,
+  "reminderDay": 16,
+  "reminderSeason": "fall",
+  "reminderYear": "1",
+  "reminderText": "",
+  "repeatDaily": false,
+  "repeatWeekly": false,
+  "repeatMonthly": false,
+  "repeatYearly": false,
+  "deleteMe": false,
+  "saveString": "",
+  "dateChain": "1",
+  "ownerId": ""
+}

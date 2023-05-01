@@ -6,9 +6,9 @@ mods:
    Grandfather's Heirlooms
 
 latest commit:
-   commit d871a3799bfdbaa99804d2713809ec49bb5de3b9
+   commit b4988660bf446263254759fda73c7e9bc88e8b97
    Author: rikai <winter.blood@gmail.com>
-   Date:   Thu Jul 1 19:20:27 2021 -0700
+   Date:   Mon Apr 10 10:07:32 2023 -0700
    
-       Added Portugese translation, thanks to MiyuDiana!
+       Version bump
    

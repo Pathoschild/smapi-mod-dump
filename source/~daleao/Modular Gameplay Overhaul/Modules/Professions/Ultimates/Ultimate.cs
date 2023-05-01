@@ -128,8 +128,8 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
             {
                 var delta = value - this._chargeValue;
                 var scaledDelta = delta * ((double)this.MaxValue / BaseMaxValue) * (delta >= 0
-                    ? ProfessionsModule.Config.SpecialGainFactor
-                    : ProfessionsModule.Config.SpecialDrainFactor);
+                    ? ProfessionsModule.Config.LimitGainFactor
+                    : ProfessionsModule.Config.LimitDrainFactor);
                 value = Math.Min(scaledDelta + this._chargeValue, this.MaxValue);
 
                 if (this._chargeValue == 0f)
@@ -184,7 +184,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     /// <summary>Gets the glow color applied to the player while this Ultimate is active.</summary>
     internal abstract Color GlowColor { get; }
 
-    private static int ActivationTimerMax => (int)(ProfessionsModule.Config.SpecialActivationDelay * 60);
+    private static int ActivationTimerMax => (int)(ProfessionsModule.Config.LimitBreakHoldDelaySeconds * 60);
 
     /// <summary>Activates the <see cref="Ultimate"/> for the local player.</summary>
     internal virtual void Activate()
@@ -239,14 +239,14 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     /// <summary>Detects and handles activation input.</summary>
     internal void CheckForActivation()
     {
-        if (!ProfessionsModule.Config.EnableSpecials)
+        if (!ProfessionsModule.Config.EnableLimitBreaks)
         {
             return;
         }
 
-        if (ProfessionsModule.Config.SpecialActivationKey.JustPressed())
+        if (ProfessionsModule.Config.LimitBreakKey.JustPressed())
         {
-            if (ProfessionsModule.Config.HoldKeyToActivateSpecial)
+            if (ProfessionsModule.Config.HoldKeyToLimitBreak)
             {
                 this._activationTimer = ActivationTimerMax;
                 EventManager.Enable<UltimateInputUpdateTickedEvent>();
@@ -260,7 +260,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
                 Game1.playSound("cancel");
             }
         }
-        else if (ProfessionsModule.Config.SpecialActivationKey.GetState() == SButtonState.Released && this._activationTimer > 0)
+        else if (ProfessionsModule.Config.LimitBreakKey.GetState() == SButtonState.Released && this._activationTimer > 0)
         {
             this._activationTimer = -1;
             EventManager.Disable<UltimateInputUpdateTickedEvent>();

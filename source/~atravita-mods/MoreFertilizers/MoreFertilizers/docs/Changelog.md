@@ -15,6 +15,13 @@ Changelog
 * Tree Tapper's: Automate integration.
 * Something for mushroom boxen? (1.6 - reduce to one day?)
 * Make good draw code for all of the fertilizers. (don't forget domesticated fish - maybe some more jumping...)
+* Soil Rebalance Fertilizer?
+
+#### Version 0.4.0
+* Buff the bountiful bush fertilizer.
+* Added the Everlasting Fruit Tree Fertilizer
+    - Out of season fruit trees will produce up to one (1) fruit.
+* Added config option to disable particle effects.
 
 #### Version 0.3.4
 * Fix integration with DGA.

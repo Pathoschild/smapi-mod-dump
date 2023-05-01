@@ -1,0 +1,9 @@
+{
+  "ModEnabled": true,
+  "InvokeSound": "debuffSpell",
+  "SunnySound": "yoba",
+  "ThunderSound": "thunder",
+  "RainSound": "rainsound",
+  "CloudySound": "ghost",
+  "SnowSound": "coldSpell"
+}

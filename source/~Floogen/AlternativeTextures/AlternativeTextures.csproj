@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Version>6.9.1</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="releases\**" />
+		<EmbeddedResource Remove="releases\**" />
+		<None Remove="releases\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Framework\Assets\PaintBrushEmpty.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Framework\Assets\PaintBrushFilled.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Framework\Assets\PaintBucket.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Framework\Assets\Scissors.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Framework\Assets\SprayCan.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\SprayCanRare.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\de.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\default.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\ru.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\th.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\tr.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\uk.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PostBuildEventDependsOn>
+			$(PostBuildEventDependsOn);
+			PostBuildMacros;
+		</PostBuildEventDependsOn>
+		<PostBuildEvent>
+			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
+
+			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"' -Recurse -Force
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
+			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\AlternativeTextures-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
+
+			powershell Remove-Item -Path '$(GameModsPath)\AlternativeTextures' -Recurse -Force
+			powershell Remove-Item -Path '$(GameModsPath)\Alternative Textures Examples' -Recurse -Force
+
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures" "$(GameModsPath)\AlternativeTextures"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\Examples\*" "$(GameModsPath)\Alternative Textures Examples"
+		</PostBuildEvent>
+	</PropertyGroup>
+</Project>

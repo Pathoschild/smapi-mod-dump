@@ -12,11 +12,10 @@ namespace DaLion.Overhaul.Modules.Weapons.Events;
 
 #region using directives
 
-using System.Diagnostics;
 using DaLion.Overhaul;
+using DaLion.Overhaul.Modules.Enchantments.Events;
 using DaLion.Overhaul.Modules.Enchantments.Melee;
-using DaLion.Overhaul.Modules.Rings.VirtualProperties;
-using DaLion.Overhaul.Modules.Weapons.VirtualProperties;
+using DaLion.Overhaul.Modules.Weapons.Extensions;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Events;
 using DaLion.Shared.Exceptions;
@@ -55,13 +54,15 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
             facingVector *= -1f; // for some reason up and down are inverted
         }
 
-        var trajectory = facingVector * (20f + (Game1.player.addedSpeed * 2f));
+        var trajectory = facingVector * (20f + (Game1.player.addedSpeed * 2f)) *
+                         (sword.hasEnchantmentOfType<MeleeArtfulEnchantment>()
+                             ? 1.5f
+                             : 1.2f);
         user.setTrajectory(trajectory);
 
-        _animationFrames =
-            sword.hasEnchantmentOfType<NewArtfulEnchantment>()
+        _animationFrames = sword.hasEnchantmentOfType<MeleeArtfulEnchantment>()
                 ? 24
-                : 16; // don't ask me why but this translated exactly to (5 tiles : 4 tiles)
+                : 16; // translates exactly to (6 tiles : 4 tiles) with 0 added speed
         var frame = (FacingDirection)user.FacingDirection switch
         {
             FacingDirection.Up => 276,
@@ -74,6 +75,11 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
 
         user.FarmerSprite.setCurrentFrame(frame, 0, 15, 2, user.FacingDirection == 3, true);
         Game1.playSound(sword.CurrentParentTileIndex == ItemIDs.LavaKatana ? "fireball" : "daggerswipe");
+        this.Manager.Enable<StabbingSwordSpecialInterruptedButtonPressedEvent>();
+        if (WeaponsModule.Config.FaceMouseCursor)
+        {
+            this.Manager.Enable<StabbingSwordSpecialHomingUpdateTickedEvent>();
+        }
     }
 
     /// <inheritdoc />
@@ -93,7 +99,18 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
         var sword = (MeleeWeapon)user.CurrentTool;
         if (++_currentFrame > _animationFrames)
         {
-            DoCooldown(user, sword);
+            if (sword.hasEnchantmentOfType<MeleeArtfulEnchantment>())
+            {
+                if (!this.Manager.Enable<ArtfulDashUpdateTickedEvent>())
+                {
+                    this.Manager.Disable<ArtfulDashUpdateTickedEvent>();
+                }
+            }
+            else
+            {
+                user.DoStabbingSpecielCooldown(sword);
+            }
+
             this.Disable();
         }
         else
@@ -114,24 +131,5 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
             sword.DoDamage(user.currentLocation, (int)x, (int)y, user.FacingDirection, 1, user);
             sword.isOnSpecial = true;
         }
-    }
-
-    [Conditional("RELEASE")]
-    private static void DoCooldown(Farmer user, MeleeWeapon sword)
-    {
-        MeleeWeapon.attackSwordCooldown = MeleeWeapon.attackSwordCooldownTime;
-        if (!ProfessionsModule.IsEnabled && user.professions.Contains(Farmer.acrobat))
-        {
-            MeleeWeapon.attackSwordCooldown /= 2;
-        }
-
-        if (sword.hasEnchantmentOfType<ArtfulEnchantment>())
-        {
-            MeleeWeapon.attackSwordCooldown /= 2;
-        }
-
-        MeleeWeapon.attackSwordCooldown = (int)(MeleeWeapon.attackSwordCooldown *
-                                                sword.Get_EffectiveCooldownReduction() *
-                                                user.Get_CooldownReduction());
     }
 }

@@ -16,7 +16,7 @@
   "UniqueID": "DeLiXx.Custom_Farm_Loader",
   "EntryDll": "Custom Farm Loader.dll",
   "MinimumApiVersion": "3.14.1",
-  "UpdateKeys": [ "Nexus:13804" ],
+  "UpdateKeys": [ "Nexus:13804@Main" ],
   "Dependencies": [
   ]
 }

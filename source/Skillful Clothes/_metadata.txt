@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 736d614cd191cf677b1b6f24300c86db561b80d6
-   Author: LunaticShade <82759433+LunaticShade@users.noreply.github.com>
-   Date:   Tue Sep 13 22:24:27 2022 +0200
+   commit 5a19c59d1869fa3dde0bd491ea4d5573d624d18c
+   Author: LunaticShade <lunaticshade@googlemail.com>
+   Date:   Mon Apr 17 15:29:10 2023 +0200
    
-       Update README.md
+       ShopDiscount: support displaying percentage values < 1
    

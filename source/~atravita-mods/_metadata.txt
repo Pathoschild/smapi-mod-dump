@@ -6,6 +6,7 @@ mods:
    Atra's Interaction Tweaks
    AtraCore
    Avoid Losing Scepter
+   Camera Pan
    Critter Rings
    Draw Fish Ponds Over Grass
    Easier Cave Puzzle
@@ -34,9 +35,9 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit 8a885849ae3dd933bf795262368cadadc6bea8f8
+   commit 058cbc797ca74c0235b76efa378033fae74b8f0e
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Wed Mar 29 09:08:08 2023 -0400
+   Date:   Mon Apr 17 10:44:54 2023 -0400
    
-       fixes for critterrings
+       add rebeccapurple
    

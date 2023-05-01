@@ -9,19 +9,19 @@
 *************************************************/
 
 {
-    "Name": "JunimoKartGlobalRankings",
-    "Author": "drbirbdev",
-    "Version": "1.0.0",
-    "Description": "Shares JunimoKart Endless Mode scores with the world.",
-    "UniqueID": "drbirbdev.JunimoKartGlobalRankings",
-    "EntryDll": "JunimoKartGlobalRankings.dll",
-    "MinimumApiVersion": "3.0.0",
-    "UpdateKeys": [
-        "Nexus:14856"
-    ],
-    "Dependencies": [
-        {
-            "UniqueID": "drbirbdev.LeaderboardLibrary"
-        }
-    ]
+  "Name": "JunimoKartGlobalRankings",
+  "Author": "drbirbdev",
+  "Version": "1.0.4",
+  "Description": "Shares JunimoKart Endless Mode scores with the world.",
+  "UniqueID": "drbirbdev.JunimoKartGlobalRankings",
+  "EntryDll": "JunimoKartGlobalRankings.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:14856"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "drbirbdev.LeaderboardLibrary"
+    }
+  ]
 }

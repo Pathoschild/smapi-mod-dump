@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers;
 
 #region using directives
 
-using System.Linq;
 using DaLion.Overhaul.Modules.Weapons.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -35,40 +34,33 @@ internal sealed class MeleeWeaponCtorPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void MeleeWeaponCtorPostfix(MeleeWeapon __instance)
     {
-        if (WeaponsModule.Config.EnableRebalance &&
-            __instance.InitialParentTileIndex is ItemIDs.InsectHead or ItemIDs.NeptuneGlaive)
-        {
-            __instance.specialItem = true;
-            if (__instance.InitialParentTileIndex == ItemIDs.InsectHead)
-            {
-                __instance.type.Value = MeleeWeapon.dagger;
-            }
-
-            return;
-        }
-
-        if (WeaponsModule.Config.EnableStabbySwords &&
-            (Collections.StabbingSwords.Contains(__instance.InitialParentTileIndex) ||
-            WeaponsModule.Config.CustomStabbingSwords.Contains(__instance.Name)))
+        if (__instance.ShouldBeStabbySword())
         {
             __instance.type.Value = MeleeWeapon.stabbingSword;
             Log.D($"The type of {__instance.Name} was converted to Stabbing sword.");
         }
 
-        __instance.AddIntrinsicEnchantments();
-        if (__instance.IsUnique() || (WeaponsModule.Config.DwarvishLegacy && __instance.CanBeCrafted()) ||
-            !WeaponsModule.Config.EnableRebalance || WeaponTier.GetFor(__instance) <= WeaponTier.Untiered)
+        if (WeaponsModule.Config.EnableRebalance)
         {
-            return;
+            if (__instance.InitialParentTileIndex == ItemIDs.InsectHead)
+            {
+                __instance.type.Value = MeleeWeapon.dagger;
+            }
+
+            if (__instance.InitialParentTileIndex is ItemIDs.NeptuneGlaive)
+            {
+                __instance.specialItem = true;
+            }
+
+            __instance.AddIntrinsicEnchantments();
         }
 
-        if (__instance.HasIntrinsicEnchantment())
+        if (WeaponsModule.Config.InfinityPlusOne)
         {
-            __instance.RandomizeDamage(2d);
-        }
-        else
-        {
-            __instance.RandomizeDamage();
+            if (__instance.isGalaxyWeapon() || __instance.IsInfinityWeapon() || __instance.IsCursedOrBlessed())
+            {
+                __instance.specialItem = true;
+            }
         }
     }
 

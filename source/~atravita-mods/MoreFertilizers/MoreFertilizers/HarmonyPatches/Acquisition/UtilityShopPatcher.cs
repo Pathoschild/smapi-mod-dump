@@ -90,5 +90,10 @@ internal static class UtilityShopPatcher
             SObject obj = new(ModEntry.EverlastingFertilizerID, 1);
             __result.Add(obj, new[] { 0, ShopMenu.infiniteStock, 858, 1 });
         }
+        if (ModEntry.EverlastingFruitTreeFertilizerID != -1)
+        {
+            SObject obj = new(ModEntry.EverlastingFruitTreeFertilizerID, 1);
+            __result.Add(obj, new[] { 0, ShopMenu.infiniteStock, 858, 1 });
+        }
     }
 }

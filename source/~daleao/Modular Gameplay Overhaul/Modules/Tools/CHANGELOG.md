@@ -6,9 +6,15 @@ for queries and analysis.**
 
 ----
 
-# Tools Module Change Log
+# TOLS Change Log
 
-## 1.4.0
+## 2.2.3 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
+
+### Fixed
+
+* Revised enable condition for ButtonPressedEvent, which should fix issues with FaceMouseCursor, SlickMoves and AutoSelection working if any is disabled.
+
+## 2.0.0 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -18,7 +24,7 @@ for queries and analysis.**
 
 * Added missing base stamina cost mulitpliers for each tool to GMCM.
 
-## 1.3.3
+## 1.3.3 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -29,7 +35,7 @@ for queries and analysis.**
 
 * Removed `HarvestSpringOnions` option. This is now considered forage.
 
-## 1.3.2
+## 1.3.2 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -39,7 +45,7 @@ for queries and analysis.**
 
 * Harvest with scythe functionality will no-longer apply while Yet Another Harvest With Scythe mod is installed.
 
-## 1.3.1
+## 1.3.1 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -49,13 +55,13 @@ for queries and analysis.**
 
 * Fixed scythe tooltip patcher not applying due to bad namespace.
 
-## 1.3.0
+## 1.3.0 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ## Added
 
 * Added crop harvesting with Scythe.
 
-## 1.2.3
+## 1.2.3 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ## Added
 
@@ -70,19 +76,19 @@ for queries and analysis.**
 
 * Fixed a possible memory leak in tool auto-selection logic.
 
-## 1.2.0
+## 1.2.0 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Added
 
 * Added tool auto-selection.
 
-## 1.0.4
+## 1.0.4 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * The AllowMasterEnchantment config should now work correctly.
 
-## 1.0.1
+## 1.0.1 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -92,19 +98,19 @@ for queries and analysis.**
 
 * Added a failsafe for an Index Out Of Range exception that may occur with Moon Misadventures installed.
 
-## 0.9.9
+## 0.9.9 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * No longer changes the stats of scythes (which means they no longer need to be revalidated).
 
-## 0.9.7
+## 0.9.7 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed a bug causing player Stamina to get stuck at 1 and not continue below 0.
 
-## 0.9.4
+## 0.9.4 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -112,7 +118,7 @@ for queries and analysis.**
 * Fixed a bug with Scythe ClearTreeSaplings setting.
 * Scythe can now receive the Haymaker enchantment as intended.
 
-## 0.9.3
+## 0.9.3 <sup><sub><sup>[🔼](#tols-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -125,3 +131,5 @@ for queries and analysis.**
 * Added Scythe settings.
 * Added stamina multiplier setting to each tool.
 * Added Face Mouse Cursor setting to match Arsenal.
+
+[🔼 Back to top](#tols-change-log)

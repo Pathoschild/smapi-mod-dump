@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\csproj_common" />
   <Import Project="..\AtraBase\AtraBase\AtraBase.projitems" Label="Shared" />
   <Import Project="..\AtraShared\AtraShared.projitems" Label="Shared" />
@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.2.1</Version>
+    <Version>0.2.3</Version>
     <Name>AtraCore</Name>
     <Description>A core library mod some of my other mods depend on.</Description>
     <UpdateKeys>Nexus:12932</UpdateKeys>
@@ -39,7 +39,7 @@
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
     <PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
     <PackageReference Include="LinqFasterer" Version="2.1.0" />
-    <PackageReference Include="morelinq" Version="3.4.1" />
+    <PackageReference Include="morelinq" Version="3.4.2" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
     <PackageReference Include="SkiaSharp" Version="2.88.0" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />

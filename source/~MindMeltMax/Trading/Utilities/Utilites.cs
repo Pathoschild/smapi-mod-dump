@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,11 @@ namespace Trading.Utilities
         public const string MSG_DeclineOffer = "Trading.DeclineOffer";
         public const string MSG_ConfirmTrade = "Trading.ConfirmTrade";
         public const string MSG_ExitTrade = "Trading.Exited";
+        public const string MSG_PollStatus = "Trading.RequestStatus";
+        public const string MSG_RespondStatus = "Trading.RespondStatus";
+
+        public const string MSG_Available = "Trading.Available";
+        public const string MSG_Busy = "Trading.Busy";
 
         public static bool InRadiusOff(Vector2 pointA, Vector2 pointB, int radius = 1)
         {
@@ -49,7 +55,7 @@ namespace Trading.Utilities
             float remainingSpace = maxWidth;
             float wordWidth;
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             for (int i = 0; i < words.Length; i++) 
             {
@@ -66,19 +72,19 @@ namespace Trading.Utilities
             return sb.ToString();
         }
 
-        public static List<TemporaryNetworkObject> ParseItems(List<SObject> items)
+        public static List<TemporaryNetworkObject> ParseItems(List<Item> items)
         {
-            List<TemporaryNetworkObject> res = new List<TemporaryNetworkObject>();
+            List<TemporaryNetworkObject> res = new();
             foreach (var item in items)
                 res.Add((TemporaryNetworkObject)item);
             return res;
         }
 
-        public static List<SObject> ParseItems(List<TemporaryNetworkObject> items)
+        public static List<Item> ParseItems(List<TemporaryNetworkObject> items)
         {
-            List<SObject> res = new List<SObject>();
+            List<Item> res = new();
             foreach (var item in items)
-                res.Add((SObject)item);
+                res.Add((Item)item!);
             return res;
         }
     }

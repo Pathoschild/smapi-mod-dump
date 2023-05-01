@@ -13,10 +13,8 @@ namespace DaLion.Overhaul.Modules.Weapons.Enchantments;
 #region using directives
 
 using System.Xml.Serialization;
-using DaLion.Overhaul.Modules.Weapons.Events;
 using DaLion.Overhaul.Modules.Weapons.Projectiles;
 using DaLion.Shared.Enums;
-using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
 using StardewValley.Tools;
 
@@ -54,13 +52,10 @@ public class BlessedEnchantment : BaseWeaponEnchantment
     protected override void _OnEquip(Farmer who)
     {
         base._OnEquip(who);
-        if (!who.Read<bool>(DataKeys.Cursed))
+        if (!who.mailReceived.Contains("gotHolyBlade"))
         {
-            return;
+            who.mailReceived.Add("gotHolyBlade");
         }
-
-        EventManager.Disable<CurseUpdateTickedEvent>();
-        who.CurrentTool.Write(DataKeys.CursePoints, null);
     }
 
     /// <inheritdoc />

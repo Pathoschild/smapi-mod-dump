@@ -158,6 +158,23 @@ internal sealed class ModEntry : Mod
         }
     }
 
+    private static int everlastingFruitTreeFertilizerID = -1;
+
+    /// <summary>
+    /// Gets the integer ID of the everlasting fruit tree fertilizer. -1 if not found/not loaded yet.
+    /// </summary>
+    internal static int EverlastingFruitTreeFertilizerID
+    {
+        get
+        {
+            if (everlastingFruitTreeFertilizerID == -1)
+            {
+                everlastingFruitTreeFertilizerID = jsonAssets?.GetObjectId("Everlasting Fruit Tree Fertilizer - More Fertilizers") ?? -1;
+            }
+            return everlastingFruitTreeFertilizerID;
+        }
+    }
+
     private static int fishfoodID = -1;
 
     /// <summary>
@@ -565,6 +582,7 @@ internal sealed class ModEntry : Mod
         deluxeJojaFertilizerID = -1;
         domesticatedFishFoodID = -1;
         everlastingFertilizerID = -1;
+        everlastingFruitTreeFertilizerID = -1;
         fishfoodID = -1;
         fruitTreeFertilizerID = -1;
         jojaFertilizerID = -1;
@@ -598,9 +616,7 @@ internal sealed class ModEntry : Mod
         }
 
         // TODO: This should be doable with expression trees in a less dumb way.
-        if (storedIDs is null)
-        {
-            storedIDs = new()
+        storedIDs ??= new()
             {
                 BountifulBushID = BountifulBushID,
                 BountifulFertilizerID = BountifulFertilizerID,
@@ -609,6 +625,7 @@ internal sealed class ModEntry : Mod
                 DeluxeJojaFertilizerID = DeluxeJojaFertilizerID,
                 DomesticatedFishFoodID = DomesticatedFishFoodID,
                 EverlastingFertilizerID = EverlastingFertilizerID,
+                EverlastingFruitTreeFertilizerID = EverlastingFruitTreeFertilizerID,
                 FishFoodID = FishFoodID,
                 FruitTreeFertilizerID = FruitTreeFertilizerID,
                 JojaFertilizerID = JojaFertilizerID,
@@ -624,7 +641,6 @@ internal sealed class ModEntry : Mod
                 WisdomFertilizerID = WisdomFertilizerID,
                 RadioactiveFertilizerID = RadioactiveFertilizerID,
             };
-        }
         this.Helper.Data.WriteSaveData(SavedIDKey, storedIDs);
         this.Monitor.Log("Writing IDs into save data");
     }
@@ -811,19 +827,19 @@ internal sealed class ModEntry : Mod
     /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
     private void OnDayEnd(object? sender, DayEndingEventArgs e)
     {
-        if (Game1.player.getFriendshipHeartLevelForNPC("George") >= 6 && Game1.player.mailReceived.Contains("georgeGifts"))
+        JojaSample.Reset();
+        FishFoodHandler.DecrementAndSave(this.Helper.Data, this.Helper.Multiplayer);
+        RadioactiveFertilizerHandler.OnDayEnd();
+
+        if (!Game1.player.mailReceived.Contains(AssetEditor.GEORGE_EVENT) && Game1.player.getFriendshipHeartLevelForNPC("George") >= 6 && Game1.player.mailReceived.Contains("georgeGifts"))
         {
             Game1.addMailForTomorrow(AssetEditor.GEORGE_EVENT);
         }
 
-        if (Game1.getAllFarmers().Any(p => p.foragingLevel.Value >= 4))
+        if (!Game1.player.mailReceived.Contains(AssetEditor.BOUNTIFUL_BUSH_UNLOCK) && Game1.getAllFarmers().Any(p => p.foragingLevel.Value >= 4))
         {
             Game1.addMailForTomorrow(AssetEditor.BOUNTIFUL_BUSH_UNLOCK);
         }
-
-        JojaSample.Reset();
-        FishFoodHandler.DecrementAndSave(this.Helper.Data, this.Helper.Multiplayer);
-        RadioactiveFertilizerHandler.OnDayEnd();
     }
 
     #region JsonAssets
@@ -840,6 +856,11 @@ internal sealed class ModEntry : Mod
         if (DeluxeFruitTreeFertilizerID != -1)
         {
             SpecialFertilizerIDs.Add(DeluxeFruitTreeFertilizerID);
+        }
+
+        if (EverlastingFruitTreeFertilizerID != -1)
+        {
+            SpecialFertilizerIDs.Add(EverlastingFruitTreeFertilizerID);
         }
 
         if (FishFoodID != -1)
@@ -1133,6 +1154,11 @@ internal sealed class ModEntry : Mod
         if (TreeTapperFertilizerID != -1)
         {
             storedIDs.TreeTapperFertilizerID = TreeTapperFertilizerID;
+        }
+
+        if (EverlastingFruitTreeFertilizerID != -1)
+        {
+            storedIDs.EverlastingFruitTreeFertilizerID = EverlastingFruitTreeFertilizerID;
         }
 
         if (idMapping.Count <= 0)

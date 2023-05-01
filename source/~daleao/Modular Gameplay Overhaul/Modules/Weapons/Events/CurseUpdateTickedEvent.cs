@@ -12,7 +12,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Events;
 
 #region using directives
 
-using Weapons.Enchantments;
+using DaLion.Overhaul.Modules.Weapons.Enchantments;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
 using StardewModdingAPI.Events;
@@ -45,7 +45,7 @@ internal sealed class CurseUpdateTickedEvent : UpdateTickedEvent
             return;
         }
 
-        var dot = weapon.Read<int>(DataKeys.CursePoints) / 10f;
+        var dot = (weapon.Read<int>(DataKeys.CursePoints) / 10f) * WeaponsModule.Config.RuinBladeDotMultiplier;
         player.health = (int)Math.Max(player.health - dot, 1);
     }
 }

@@ -118,7 +118,7 @@ internal sealed class FishingRodPullFishFromWaterPatcher : HarmonyPatcher
         }
         catch (InvalidDataException ex)
         {
-            Log.W($"{ex}\nThe data will be reset.");
+            Log.W($"[PNDS]: {ex}\nThe data will be reset.");
             pond.Write(DataKeys.SeaweedLivingHere, null);
             pond.Write(DataKeys.GreenAlgaeLivingHere, null);
             pond.Write(DataKeys.WhiteAlgaeLivingHere, null);
@@ -163,7 +163,7 @@ internal sealed class FishingRodPullFishFromWaterPatcher : HarmonyPatcher
         }
         catch (InvalidDataException ex)
         {
-            Log.W($"{ex}\nThe data will be reset.");
+            Log.W($"[PNDS]: {ex}\nThe data will be reset.");
             pond.Write(DataKeys.FishQualities, $"{pond.FishCount},0,0,0");
             pond.Write(DataKeys.FamilyQualities, null);
             pond.Write(DataKeys.FamilyLivingHere, null);

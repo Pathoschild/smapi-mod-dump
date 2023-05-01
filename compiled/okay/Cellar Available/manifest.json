@@ -1,7 +1,7 @@
 {
   "Name": "CellarAvailable",
   "Author": "Candidus42",
-  "Version": "1.4.0",
+  "Version": "1.4.1",
   "Description": "Cellar available for any farm house size",
   "UniqueID": "Candidus42.CellarAvailable",
   "EntryDll": "CellarAvailable.dll",

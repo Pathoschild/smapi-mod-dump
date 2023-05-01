@@ -19,9 +19,11 @@ mods:
    Unbreakable Tackles
 
 latest commit:
-   commit 6ccb79bac0287ef9b91b4f5d8a8f403659e23011
+   commit 969e76c0b139b37a94edff4ff82874399559ea2f
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Mon Jan 30 17:40:08 2023 +0100
+   Date:   Sun Apr 16 19:33:20 2023 +0200
    
-       Edits for personal code convention
+       Update Trading & MultiPlayer Info
+       
+       Also fixed version for Multi-User Chests manifest
    

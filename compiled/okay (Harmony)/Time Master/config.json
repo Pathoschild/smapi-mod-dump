@@ -1,0 +1,52 @@
+{
+  "EnableOnFestivalDays": true,
+  "TimeFlowChangeNotifications": false,
+  "SecondsPerMinute": {
+    "Indoors": 1.4,
+    "FarmHouse": 1.4,
+    "BathHouse": 1.4,
+    "Outdoors": 0.875,
+    "Farm": 0.875,
+    "Mines": 0.7,
+    "SkullCavern": 0.9,
+    "VolcanoDungeon": 0.7,
+    "DeepWoods": 0.7,
+    "NightMarket": 0.875,
+    "ByLocationName": {}
+  },
+  "FreezeTime": {
+    "AnywhereAtTime": null,
+    "Indoors": false,
+    "FarmHouse": false,
+    "BathHouse": false,
+    "Outdoors": false,
+    "Farm": false,
+    "Mines": false,
+    "SkullCavern": false,
+    "VolcanoDungeon": false,
+    "DeepWoods": false,
+    "NightMarket": false,
+    "ByLocationName": [],
+    "ExceptLocationNames": []
+  },
+  "DisplayMinutes": true,
+  "ShowPauseX": false,
+  "Use24HourFormat": false,
+  "DisplayVotePauseMessages": true,
+  "TimeFlowChangeNotificationsMultiplayer": false,
+  "PauseMode": "Fair",
+  "AnyCutscenePauses": true,
+  "LockMonsters": true,
+  "EnableVotePause": true,
+  "TimeSpeedMode": "Average",
+  "RelativeTimeSpeed": true,
+  "Keys": {
+    "VoteForPause": "Pause",
+    "FreezeTime": "None",
+    "IncreaseTickInterval": "None",
+    "DecreaseTickInterval": "None"
+  },
+  "ShouldMergePauseInMultiplayerConfigOnNextRun": false,
+  "ShouldMergeTimeSlowConfigOnNextRun": false,
+  "VotePauseHotkey": "None"
+}

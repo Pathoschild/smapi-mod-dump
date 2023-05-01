@@ -10,6 +10,8 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
+
 using AtraCore.Framework.ReflectionManager;
 using AtraShared.Utils.Extensions;
 using AtraShared.Utils.HarmonyHelper;
@@ -24,7 +26,11 @@ namespace SleepInWedding.HarmonyPatches;
 [HarmonyPatch(typeof(GameLocation))]
 internal static class CheckForWeddingTranspiler
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int GetWeddingTime() => ModEntry.Config.WeddingTime;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool AmInTownAndShouldStartWedding() => ModEntry.Config.WedWhenEnteringTown && Game1.currentLocation is Town;
 
     private static Event? PrepareSpouseIfNecessary(Event? @event)
     {
@@ -72,12 +78,11 @@ internal static class CheckForWeddingTranspiler
             .DefineAndAttachLabel(out Label bypassWedding)
             .Pop()
             .Insert(new CodeInstruction[]
-            { // if (Config.WeddingTime > Game1.timeOfDay) && (Game1.currentLocation is not Town), skip wedding for now.
+            { // if (Config.WeddingTime > Game1.timeOfDay) && (!AmInTownAndShouldStartWedding()), skip wedding for now.
                 new(OpCodes.Call, typeof(CheckForWeddingTranspiler).GetCachedMethod(nameof(GetWeddingTime), ReflectionCache.FlagTypes.StaticFlags)),
                 new(OpCodes.Ldsfld, typeof(Game1).GetCachedField(nameof(Game1.timeOfDay), ReflectionCache.FlagTypes.StaticFlags)),
                 new(OpCodes.Ble, skip),
-                new(OpCodes.Call, typeof(Game1).GetCachedProperty(nameof(Game1.currentLocation), ReflectionCache.FlagTypes.StaticFlags).GetGetMethod()),
-                new(OpCodes.Isinst, typeof(Town)),
+                new(OpCodes.Call, typeof(CheckForWeddingTranspiler).GetCachedMethod(nameof(AmInTownAndShouldStartWedding), ReflectionCache.FlagTypes.StaticFlags)),
                 new(OpCodes.Brfalse, bypassWedding),
             }, withLabels: labelsToMove)
             .FindNext(new CodeInstructionWrapper[]

@@ -1,7 +1,22 @@
 {
-  "maxCastPower.name": "maxCastPower",
-  "autoHit.name": "autoHit",
-  "fastBite.name": "fastBite",
-  "catchTreasure.name": "catchTreasure(Ignore this option when encountering legendary fish)",
-  "fasterSpeed.name": "fasterSpeed"
+  "MaxCastPower.Name": "Max Cast Power",
+  "MaxCastPower.Tooltip": "Force the rod to cast with max power.",
+  "AutoHit.Name": "Auto Hit",
+  "AutoHit.Tooltip": "Auto hit when fish is bite.",
+  "FastBite.Name": "Fast Bite",
+  "FastBite.Tooltip": "Fish will bite quickly when fishing.",
+  "CatchTreasure.Name": "Capture Treasure",
+  "CatchTreasure.Tooltip": "Try to capture it when encountered treasure in the minigame.\nTry to catch the treasure only when the progress greater than 75%.\nIf this option is disabled or you encounter the legendary fish, treasures will be ignored.",
+  "BarSpeedMode.Name": "Bar Speed Mode",
+  "BarSpeedMode.Tooltip": "Normal: Normal move speed.\nFaster: The green bar will move faster.\nAttach: The green bar is like attaching to fish.",
+  "BarSpeedMode.Value.Normal": "Normal",
+  "BarSpeedMode.Value.Faster": "Faster",
+  "BarSpeedMode.Value.Attach": "Attach",
+  "ContinuousFishing.Name": "Continuous Fishing",
+  "ContinuousFishing.Tooltip": "Auto continue fishing after catching a fish. Stop by you quit fishing or your stamina is too low.\nNot Auto: Disable.\nUntil Stamina Too Low: Enable until stamina is is less than 20.\nAuto Fish And Eat: Enable and try to eat food when stamina is less than 20.",
+  "ContinuousFishing.Value.None": "Not Auto",
+  "ContinuousFishing.Value.UntilStaminaTooLow": "Until Stamina Too Low",
+  "ContinuousFishing.Value.AutoFishAndEat": "Auto Fish And Eat",
+  "FoodIndex.Name": "Food Index",
+  "FoodIndex.Tooltip": "Where is the food which auto eat. The index is 1-based."
 }

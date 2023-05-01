@@ -13,6 +13,16 @@ I appreciate all the support this mod has received! If you'd like to further sup
 
 ~Thanks :) Aaron
 
+## Android Users:
+
+I don't have any way of testing android, however thanks to Puadii09 (from Nexus Mods), this should work:
+
+Mod Version: 2.3.0
+Smapi Version: 3.7 (android)
+Stardew Valley Version: 1.4.5
+
+Note: I have not been actively developing for android so it will be missing the newer features.
+
 ## Features
 ### Opening animal doors automatically
 Your animal doors will open automatically at the time you specified in the config file no matter where your character is in the game world (you will hear the door opening sound). 

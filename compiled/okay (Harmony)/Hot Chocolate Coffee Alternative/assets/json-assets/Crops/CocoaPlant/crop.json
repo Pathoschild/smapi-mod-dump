@@ -1,0 +1,36 @@
+{
+	"Name": "Cocoa Plant",
+	"Product": "Cocoa Bean",
+	"SeedName": "Cocoa Bean",
+	"SeedDescription": "Plant in the spring or summer to grow a cocoa plant. Takes 10 days to grow, and keeps producing after the first harvest. Place five beans in a keg to make hot chocolate.",
+	"Type": "Seeds",
+	"SeedSellPrice": 15,
+	"CropType": "Normal",
+	"Seasons": ["spring", "summer"],
+	"Phases": [1,2,3,2,2],
+	"RegrowthPhase": 2,
+	"HarvestWithScythe": false,
+	"TrellisCrop": false,
+	"Colors": null,
+	"Bonus":
+		{
+			"MinimumPerHarvest": 2,
+			"MaximumPerHarvest": 6,
+			"MaxIncreasePerFarmLevel": 5,
+			"ExtraChance": 0.1
+		},
+	"CanPurchase": true,
+	"SeedPurchaseFrom": "Krobus",
+	"SeedPurchasePrice": 35,
+	"SeedPurchaseRequirements": ["y 2"],
+	"GiftTastes":
+		{
+			"Love": ["Krobus", "Harvey", "Maru", "Dwarf", "George", "Gus", "Kent", "Linus"],
+			"Like": ["Alex", "Haley", "Leah", "Abigail", "Sebastian", "Evelyn", "Shane", "Caroline", "Lewis"],
+			"Neutral": ["Wizard", "Elliott", "Sandy", "Demetrius", "Willy", "Emily", "Clint", "Marnie", "Pam"],
+			"Dislike": ["Penny", "Sam", "Robin", "Jodi", "Leo", "Pierre"],
+			"Hate": ["Jas", "Vincent"]
+		}	
+}
+	
+	

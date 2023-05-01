@@ -14,7 +14,9 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers.Infinity;
 
 using System.Linq;
 using System.Reflection;
+using DaLion.Overhaul.Modules.Weapons.Events;
 using DaLion.Overhaul.Modules.Weapons.Extensions;
+using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -73,10 +75,8 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
 
     private static void HandleYobaAltar(GameLocation location, Farmer who)
     {
-        if (who.hasQuest((int)Quest.VirtuesLast) && who.CurrentTool is MeleeWeapon
-            {
-                InitialParentTileIndex: ItemIDs.DarkSword
-            })
+        if (!who.mailReceived.Contains("gotHolyBlade") && who.hasQuest((int)Quest.HeroReward) &&
+            who.CurrentTool is MeleeWeapon { InitialParentTileIndex: ItemIDs.DarkSword })
         {
             who.Halt();
             who.CanMove = false;
@@ -98,12 +98,12 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
             Game1.afterDialogues = (Game1.afterFadeFunction)Delegate.Combine(
                 Game1.afterDialogues,
                 (Game1.afterFadeFunction)(() => Game1.stopMusicTrack(Game1.MusicContext.Event)));
-            who.completeQuest((int)Quest.VirtuesLast);
+            who.completeQuest((int)Quest.HeroReward);
         }
         else
         {
             Game1.drawObjectDialogue(I18n.Get("locations.SeedShop.Yoba"));
-            if (!who.hasQuest((int)Quest.VirtuesIntro))
+            if (!who.hasQuest((int)Quest.CurseIntro))
             {
                 return;
             }
@@ -140,7 +140,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
                 Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
             }
         }
-        else if (!who.hasOrWillReceiveMail("gotDarkSword") && !who.isInventoryFull())
+        else if (!who.mailReceived.Contains("gotDarkSword") && !who.isInventoryFull())
         {
             ProposeGrabDarkSword(location);
         }
@@ -174,15 +174,19 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
         var player = Game1.player;
         if (player.CurrentTool is not MeleeWeapon { InitialParentTileIndex: ItemIDs.DarkSword } darkSword)
         {
+            Log.W($"[WPNZ]: {player.Name} cannot receive the Holy Blade because they are not holding the Dark Sword!");
             return;
         }
 
         Game1.flashAlpha = 1f;
         player.holdUpItemThenMessage(new MeleeWeapon(ItemIDs.HolyBlade));
         darkSword.transform(ItemIDs.HolyBlade);
+        darkSword.Write(DataKeys.CursePoints, null);
         darkSword.RefreshStats();
         player.jitterStrength = 0f;
         Game1.screenGlowHold = false;
+        player.mailReceived.Add("gotHolyBlade");
+        EventManager.Disable<CurseUpdateTickedEvent>();
     }
 
     #endregion handlers

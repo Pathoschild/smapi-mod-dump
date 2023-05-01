@@ -69,7 +69,7 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                     {
                         // add redux artful enchant
                         new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new CodeInstruction(OpCodes.Newobj, typeof(NewArtfulEnchantment).RequireConstructor()),
+                        new CodeInstruction(OpCodes.Newobj, typeof(MeleeArtfulEnchantment).RequireConstructor()),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
@@ -91,15 +91,15 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
-                        // add exploding enchant
+                        // add explosive enchant
                         new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new CodeInstruction(OpCodes.Newobj, typeof(ExplodingEnchantment).RequireConstructor()),
+                        new CodeInstruction(OpCodes.Newobj, typeof(ExplosiveEnchantment).RequireConstructor()),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
                         // add tribute enchant
                         new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new CodeInstruction(OpCodes.Newobj, typeof(TributeEnchantment).RequireConstructor()),
+                        new CodeInstruction(OpCodes.Newobj, typeof(MammoniteEnchantment).RequireConstructor()),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
@@ -109,7 +109,20 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
-                    })
+                        // add steadfast enchant
+                        new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
+                        new CodeInstruction(OpCodes.Newobj, typeof(SteadfastEnchantment).RequireConstructor()),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
+                        // add wabbajack enchant
+                        new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
+                        new CodeInstruction(OpCodes.Newobj, typeof(WabbajackEnchantment).RequireConstructor()),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
+                    },
+                    new[] { newMeleeEnchantments })
                 .Insert(
                     new[]
                     {
@@ -124,9 +137,9 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                             typeof(Config).RequirePropertyGetter(nameof(Config.RangedEnchantments))),
                         new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
 
-                        // add engorging enchant
+                        // add magnum enchant
                         new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new(OpCodes.Newobj, typeof(EngorgingEnchantment).RequireConstructor()), new(
+                        new(OpCodes.Newobj, typeof(MagnumEnchantment).RequireConstructor()), new(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
                         // add gatling enchant

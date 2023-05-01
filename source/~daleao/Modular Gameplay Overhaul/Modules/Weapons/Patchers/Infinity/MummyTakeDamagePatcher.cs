@@ -15,7 +15,7 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers.Infinity;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using Modules.Weapons.Enchantments;
+using DaLion.Overhaul.Modules.Weapons.Enchantments;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;

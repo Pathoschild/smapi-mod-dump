@@ -1,4 +1,5 @@
 {
+  "BNWCoreEnableWateringXP": false,
   "BNWCoreToolLength": 7,
   "BNWCoreToolWidth": 2,
   "BNWCoreslimeHutch": true,
@@ -9,5 +10,6 @@
   "BNWCorefruitTrees": true,
   "BNWCoreseedTrees": true,
   "BNWCoreflowers": false,
-  "BNWCoregarbageCans": true
+  "BNWCoregarbageCans": true,
+  "BNWCoresetSoundLoop": true
 }

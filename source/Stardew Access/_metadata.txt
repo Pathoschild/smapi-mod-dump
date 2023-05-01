@@ -6,12 +6,11 @@ mods:
    Stardew Access
 
 latest commit:
-   commit b24fe44dd356fcf773cc8fe8ac53d15fe233e6ab
-   Merge: d12ecf0 2b6b604
+   commit faf21b445c949be1d8790fc5215025f2f7ee6a04
    Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
-   Date:   Fri Mar 10 15:37:09 2023 +0530
+   Date:   Fri Apr 21 23:41:57 2023 +0530
    
-       Merge pull request #91 from khanshoaib3/refactor
+       Updated ScreenReaderLinux.cs to load libspeechdwrapper.so from libraries/linux (#108)
        
-       Patches Refactor
+       Fixed warnings and refactored some code
    

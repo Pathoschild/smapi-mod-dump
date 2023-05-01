@@ -6,11 +6,9 @@ mods:
    Auto Animal Doors
 
 latest commit:
-   commit c1273919fea83a11664b7571a7413031b39bb197
+   commit 68fb3f9825848fa36d5d4b3187d48d833e4679bf
    Author: Aaron Taggart <ajtaggs@gmail.com>
-   Date:   Mon Dec 12 11:25:58 2022 -0600
+   Date:   Mon Apr 10 19:20:40 2023 -0500
    
-       Removed personal GamePath config
-       
-       Removed GamePath from project file and added it to my local computer config. This way someone else won't have trouble building this.
+       Update README.md
    

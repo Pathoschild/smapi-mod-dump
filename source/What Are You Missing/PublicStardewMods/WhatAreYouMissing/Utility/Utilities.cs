@@ -233,7 +233,7 @@ namespace WhatAreYouMissing
 
             if(IsGoingOutOfXRightView((int)position.X, (int)boxDimensions.X))
             {
-                position.X = Game1.viewport.Width - boxDimensions.X;
+                position.X = Game1.uiViewport.Width - boxDimensions.X;
             }
             if(IsGoingOutOfYDownView((int)position.Y, (int)boxDimensions.Y))
             {
@@ -260,20 +260,20 @@ namespace WhatAreYouMissing
 
         private static int GetBestY(int y, int height)
         {
-            int overDown = Math.Abs(y + height - Game1.viewport.Height);
-            int overUp = Math.Abs(y - (Game1.viewport.Height - height));
+            int overDown = Math.Abs(y + height - Game1.uiViewport.Height);
+            int overUp = Math.Abs(y - (Game1.uiViewport.Height - height));
 
             return overDown > overUp ? Game1.getOldMouseY() - height : y;
         }
 
         private static bool IsGoingOutOfXRightView(int x, int width)
         {
-            return x + width > Game1.viewport.Width;
+            return x + width > Game1.uiViewport.Width;
         }
 
         private static bool IsGoingOutOfYDownView(int y, int height)
         {
-            return y + height > Game1.viewport.Height;
+            return y + height > Game1.uiViewport.Height;
         }
 
         private static bool IsGoingOutOfYUpView(int y, int height)

@@ -14,6 +14,7 @@ namespace DaLion.Overhaul;
 
 using System.Collections.Generic;
 using System.Linq;
+using DaLion.Shared.Extensions.SMAPI;
 using Newtonsoft.Json;
 using StardewModdingAPI.Utilities;
 
@@ -22,6 +23,9 @@ using StardewModdingAPI.Utilities;
 /// <summary>The collection of configs for each module.</summary>
 public sealed class ModConfig
 {
+    private static readonly Lazy<JsonSerializerSettings> JsonSerializerSettings =
+        new(() => ModHelper.Data.GetJsonSerializerSettings());
+
     #region module flags
 
     /// <summary>Gets a value indicating whether the Professions module is enabled.</summary>
@@ -70,7 +74,7 @@ public sealed class ModConfig
 
     /// <summary>Gets a value indicating whether the Combat module is enabled.</summary>
     [JsonProperty]
-    public bool EnableCombat { get; internal set; } = true;
+    public bool EnableCombat { get; internal set; } = false;
 
      /// <summary>Gets a value indicating whether the Weapons module is enabled.</summary>
     [JsonProperty]
@@ -152,15 +156,25 @@ public sealed class ModConfig
 
     #endregion config sub-modules
 
-    /// <summary>Gets the key used to trigger debug features.</summary>
+    /// <summary>Gets the key used to open the Generic Mod Config Menu directly at this mod.</summary>
     [JsonProperty]
-    public KeybindList DebugKey { get; internal set; } = KeybindList.Parse("RightShift, RightShoulder");
+    public KeybindList OpenMenuKey { get; internal set; } = KeybindList.Parse("LeftShift + F12");
+
+    /// <summary>Gets the key used to engage Debug Mode.</summary>
+    [JsonProperty]
+    public KeybindList DebugKey { get; internal set; } = KeybindList.Parse("OemQuotes, OemTilde");
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonConvert.SerializeObject(this, JsonSerializerSettings.Value);
+    }
 
     /// <summary>Validates all internal configs and overwrites the user's config file if any invalid settings were found.</summary>
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
     internal void Validate(IModHelper helper)
     {
-        if (!this.List().Aggregate(true, (flag, config) => flag | config.Validate()))
+        if (!this.Enumerate().Aggregate(true, (flag, config) => flag | config.Validate()))
         {
             helper.WriteConfig(this);
         }
@@ -168,7 +182,7 @@ public sealed class ModConfig
 
     /// <summary>Enumerates all individual module <see cref="Shared.Configs.Config"/>s.</summary>
     /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Shared.Configs.Config"/>s.</returns>
-    internal IEnumerable<Shared.Configs.Config> List()
+    internal IEnumerable<Shared.Configs.Config> Enumerate()
     {
         yield return this.Professions;
         yield return this.Combat;
@@ -180,5 +194,11 @@ public sealed class ModConfig
         yield return this.Ponds;
         yield return this.Taxes;
         yield return this.Tweex;
+    }
+
+    /// <summary>Logs the config properties to the SMAPI console.</summary>
+    internal void Log()
+    {
+        Shared.Log.T($"[Config]: Current settings:\n{this}");
     }
 }

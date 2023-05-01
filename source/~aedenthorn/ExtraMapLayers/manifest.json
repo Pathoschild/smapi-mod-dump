@@ -11,7 +11,7 @@
 {
   "Name": "Extra Map Layers",
   "Author": "aedenthorn",
-  "Version": "0.3.3",
+  "Version": "0.3.7",
   "Description": "Draws additional layers from map files.",
   "UniqueID": "aedenthorn.ExtraMapLayers",
   "EntryDll": "ExtraMapLayers.dll",

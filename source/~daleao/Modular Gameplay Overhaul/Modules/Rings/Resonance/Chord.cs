@@ -41,7 +41,6 @@ public sealed class Chord : IChord
     {
         this.Notes = first.Collect(second).ToArray();
         this.Harmonize();
-        this.InitializeLightSource();
     }
 
     /// <summary>Initializes a new instance of the <see cref="Chord"/> class.Construct a Triad instance.</summary>
@@ -52,7 +51,6 @@ public sealed class Chord : IChord
     {
         this.Notes = first.Collect(second, third).ToArray();
         this.Harmonize();
-        this.InitializeLightSource();
     }
 
     /// <summary>Initializes a new instance of the <see cref="Chord"/> class.Construct a Tetrad instance.</summary>
@@ -64,7 +62,6 @@ public sealed class Chord : IChord
     {
         this.Notes = first.Collect(second, third, fourth).ToArray();
         this.Harmonize();
-        this.InitializeLightSource();
     }
 
     /// <inheritdoc />
@@ -88,13 +85,16 @@ public sealed class Chord : IChord
 
         this.ResonanceByGemstone.ForEach(pair => pair.Key.Resonate(who, (float)pair.Value));
         who.MagneticRadius += this._richness * 24;
+
+        this.InitializeLightSource();
         if (this._lightSource is null)
         {
             return;
         }
 
-        while (location.sharedLights.ContainsKey(this._lightSource.Identifier++))
+        while (location.sharedLights.ContainsKey(this._lightSource.Identifier))
         {
+            this._lightSource.Identifier++;
         }
 
         location.sharedLights[this._lightSource.Identifier] = this._lightSource;
@@ -115,6 +115,7 @@ public sealed class Chord : IChord
         }
 
         location.removeLightSource(this._lightSource.Identifier);
+        this._lightSource = null;
     }
 
     /// <summary>Adds resonance effects to the new <paramref name="location"/>.</summary>
@@ -126,8 +127,9 @@ public sealed class Chord : IChord
             return;
         }
 
-        while (location.sharedLights.ContainsKey(this._lightSource.Identifier++))
+        while (location.sharedLights.ContainsKey(this._lightSource.Identifier))
         {
+            this._lightSource.Identifier++;
         }
 
         location.sharedLights[this._lightSource.Identifier] = this._lightSource;
@@ -158,12 +160,16 @@ public sealed class Chord : IChord
         this._phase = Range[this._position];
         if (this._lightSource is null)
         {
-            return;
+            this.InitializeLightSource();
+            while (who.currentLocation.sharedLights.ContainsKey(this._lightSource!.Identifier))
+            {
+                this._lightSource.Identifier++;
+            }
+
+            who.currentLocation.sharedLights[this._lightSource.Identifier] = this._lightSource;
         }
 
         this._lightSource.radius.Value = this.GetLightSourceRadius();
-        this._lightSource.color.Value = this.GetLightSourceColor();
-
         var offset = Vector2.Zero;
         if (who.shouldShadowBeOffset)
         {
@@ -181,11 +187,40 @@ public sealed class Chord : IChord
         buffer.MagneticRadius += this._richness * 24;
     }
 
+    /// <summary>Initializes the <see cref="_lightSource"/> if a resonant harmony exists in the <see cref="Chord"/>.</summary>
+    internal void InitializeLightSource()
+    {
+        if (this.Root is null)
+        {
+            return;
+        }
+
+        this._lightSource = new LightSource(
+            (int)RingsModule.Config.LightsourceTexture,
+            Vector2.Zero,
+            (float)this.Amplitude,
+            RingsModule.Config.ColorfulResonance ? this.Root.GlowColor : Color.Black,
+            playerID: Game1.player.UniqueMultiplayerID);
+    }
+
+    /// <summary>Initializes the <see cref="_lightSource"/> if a resonant harmony exists in the <see cref="Chord"/>.</summary>
+    internal void ResetLightSource()
+    {
+        if (this._lightSource is null)
+        {
+            return;
+        }
+
+        var location = Game1.player.currentLocation;
+        location.removeLightSource(this._lightSource.Identifier);
+        this._lightSource = null;
+    }
+
     /// <summary>Evaluate the <see cref="HarmonicInterval"/>s between <see cref="Notes"/> and the resulting harmonies.</summary>
     private void Harmonize()
     {
         Array.Sort(this.Notes);
-        var groupedNotes = this.Notes.GroupBy(n => n);
+        var groupedNotes = this.Notes.GroupBy(n => n).ToList();
         var distinctNotes = groupedNotes.Select(g => g.Key).ToArray();
 
         // initialize resonances
@@ -323,33 +358,10 @@ public sealed class Chord : IChord
         this._period = 360d / this.Root.Frequency;
     }
 
-    /// <summary>Initializes the <see cref="_lightSource"/> if a resonant harmony exists in the <see cref="Chord"/>.</summary>
-    private void InitializeLightSource()
-    {
-        if (this.Root is null)
-        {
-            return;
-        }
-
-        this._lightSource = new LightSource(
-            LightSource.sconceLight,
-            Vector2.Zero,
-            (float)this.Amplitude,
-            this.Root.GlowColor,
-            playerID: Game1.player.UniqueMultiplayerID);
-    }
-
     /// <summary>Evaluates the current amplitude of the <see cref="_lightSource"/>.</summary>
     /// <returns>The amplitude of the <see cref="_lightSource"/>.</returns>
     private float GetLightSourceRadius()
     {
         return (float)(this.Amplitude + (this.Amplitude / 10d * Math.Sin(this.Root!.Frequency * this._phase)));
-    }
-
-    /// <summary>Evaluates the current <see cref="Color"/> of the <see cref="_lightSource"/>.</summary>
-    /// <returns>The <see cref="Color"/> of the <see cref="_lightSource"/>.</returns>
-    private Color GetLightSourceColor()
-    {
-        return this.Root!.GlowColor;
     }
 }

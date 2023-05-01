@@ -12,7 +12,7 @@ namespace stardew_access.Patches
 {
     internal class TextBoxPatch
     {
-        internal static string textBoxQuery = " ";
+        internal static string textBoxQuery = "";
         internal static string activeTextBoxes = "";
         internal static bool isAnyTextBoxActive => activeTextBoxes != "";
 
@@ -23,7 +23,7 @@ namespace stardew_access.Patches
                 string uniqueIdentifier = $"{__instance.X}:{__instance.Y}:{__instance.Height}:{__instance.Width}";
                 if (!__instance.Selected)
                 {
-                    if (activeTextBoxes.Contains(uniqueIdentifier))  activeTextBoxes = activeTextBoxes.Replace(uniqueIdentifier, "");
+                    if (activeTextBoxes.Contains(uniqueIdentifier)) activeTextBoxes = activeTextBoxes.Replace(uniqueIdentifier, "");
                     return;
                 }
 
@@ -34,6 +34,7 @@ namespace stardew_access.Patches
 
                 if (isEscPressed)
                 {
+                    if (activeTextBoxes.Contains(uniqueIdentifier)) activeTextBoxes = activeTextBoxes.Replace(uniqueIdentifier, "");
                     __instance.Selected = false;
                 }
 

@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <AssemblyName>CellarAvailable</AssemblyName>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <RootNamespace>CellarAvailable</RootNamespace>
     <TargetFramework>net5.0</TargetFramework>
     <ModZipPath>$(SolutionDir)\releases</ModZipPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
 
 </Project>

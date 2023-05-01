@@ -14,28 +14,32 @@ namespace DaLion.Overhaul.Modules.Slingshots.Events;
 
 using DaLion.Shared.Enums;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions.Stardew;
+using DaLion.Shared.Extensions.Xna;
 using StardewModdingAPI.Events;
 using StardewValley.Tools;
 
 #endregion using directives
 
 [UsedImplicitly]
-internal sealed class SlingshotsButtonPressedEvent : ButtonPressedEvent
+internal sealed class SlingshotButtonPressedEvent : ButtonPressedEvent
 {
-    /// <summary>Initializes a new instance of the <see cref="SlingshotsButtonPressedEvent"/> class.</summary>
+    /// <summary>Initializes a new instance of the <see cref="SlingshotButtonPressedEvent"/> class.</summary>
     /// <param name="manager">The <see cref="EventManager"/> instance that manages this event.</param>
-    internal SlingshotsButtonPressedEvent(EventManager manager)
+    internal SlingshotButtonPressedEvent(EventManager manager)
         : base(manager)
     {
     }
 
     /// <inheritdoc />
-    public override bool IsEnabled => SlingshotsModule.Config.SlickMoves;
+    public override bool IsEnabled => SlingshotsModule.Config.EnableAutoSelection ||
+                                      SlingshotsModule.Config.FaceMouseCursor ||
+                                      SlingshotsModule.Config.SlickMoves;
 
     /// <inheritdoc />
     protected override void OnButtonPressedImpl(object? sender, ButtonPressedEventArgs e)
     {
-        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null)
+        if (!Context.IsWorldReady || Game1.activeClickableMenu is not null || Game1.isFestival())
         {
             return;
         }
@@ -65,6 +69,29 @@ internal sealed class SlingshotsButtonPressedEvent : ButtonPressedEvent
             return;
         }
 
+        var originalDirection = (FacingDirection)player.FacingDirection;
+        if (SlingshotsModule.Config.FaceMouseCursor && !Game1.options.gamepadControls)
+        {
+            var location = player.currentLocation;
+            var isNearActionableTile = false;
+            foreach (var tile in player.getTileLocation()
+                         .GetEightNeighbors(location.Map.DisplayWidth, location.Map.DisplayHeight))
+            {
+                if (!location.IsActionableTile(tile, player))
+                {
+                    continue;
+                }
+
+                isNearActionableTile = true;
+                break;
+            }
+
+            if (!isNearActionableTile)
+            {
+                player.FaceTowardsTile(Game1.currentCursorTile);
+            }
+        }
+
         if (isActionButton && SlingshotsModule.State.SlingshotCooldown > 0)
         {
             return;
@@ -75,7 +102,6 @@ internal sealed class SlingshotsButtonPressedEvent : ButtonPressedEvent
             return;
         }
 
-        var originalDirection = (FacingDirection)player.FacingDirection;
         var directionVector = originalDirection.ToVector();
         if (originalDirection.IsVertical())
         {

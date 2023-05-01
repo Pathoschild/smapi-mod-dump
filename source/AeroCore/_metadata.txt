@@ -6,9 +6,9 @@ mods:
    AeroCore
 
 latest commit:
-   commit 6670124bcade8bffe76aeaa7c547b93ffde84236
+   commit e2bf48b74e13720cda728507da2ab746094c20aa
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Sun Mar 19 23:57:07 2023 -0400
+   Date:   Sun Apr 30 19:47:30 2023 -0400
    
-       particle tweaks and fixes
+       fix volcano darkness
    

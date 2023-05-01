@@ -605,6 +605,10 @@ public sealed class Api : IGrowableGiantCropsAPI
             return SObjectPatches.InstantiateMoreGrassGrass?.Invoke(moreGrassIdx);
         }
 
+        if (starter.GetType() != typeof(SObject))
+        {
+            return null;
+        }
         if (starter.modData?.GetInt(SObjectPatches.ModDataKey) is not int idx)
         {
             return new Grass(Grass.springGrass, 4);

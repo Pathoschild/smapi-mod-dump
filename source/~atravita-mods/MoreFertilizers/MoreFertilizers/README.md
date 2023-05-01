@@ -26,7 +26,7 @@ Remove every instance of all these fertilizers you have in your inventory and an
 
 ## Usage
 
-This mod adds twenty-one new fertilizers that do the following things:
+This mod adds twenty-two new fertilizers that do the following things:
 
 fertilizer                      | effect                                           | purchase from
 :------------------------------ | :------------------------------------            | :---------------------- 
@@ -37,6 +37,7 @@ Domesticated Fish Food          | Chance to make fish in fish ponds reproduce fa
 Wisdom Fertilizer               | 10% increase in experience gained while harvesting | Purchase from Krobus in spring or fall (no other requirements), or from the Traveling Cart in summer or winter (again, no other requirements).
 Fruit Tree Fertilizer           | 15% increase in fruit tree growth speed          | Sandy (no other requirements.)
 Deluxe Fruit Tree Fertilizer    | 30% increase in fruit tree growth speed          | Sandy, year 2 or later, after reaching floor 100 in the Skull Cavern.
+Everlasting Fruit Tree Fertilizer | Out-of-season trees produce up to one fruit.   | Qi gem shop for 1 Qi gem each.
 Joja's Patented Fertilizer      | Crops are silver quality.                        | JojaMart, after earning 10,000 g.
 Joja's Deluxe Fertilizer        | Crops have a 20% chance to be gold; the remaining are silver. | JojaMart, on Wednesdays, Saturdays, and Sundays only. Only available to Joja members, and only after earning 1,000,000g.
 Joja's Secret Fertilizer        | Reduces regrowth time but locks crop to base quality (or poor quality if you have Casey's [A Quality Mod](https://www.nexusmods.com/stardewvalley/mods/14448?tab=description) installed, in return for even faster regrowth). Works better for Joja crops. | Most easily purchasable from the Island North trader for radioactive ore, but can rarely be found at the Traveling Merchant, or in the Crane Game at the theater.

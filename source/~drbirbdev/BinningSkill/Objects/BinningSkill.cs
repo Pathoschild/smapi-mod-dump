@@ -30,7 +30,7 @@ namespace BinningSkill
 
             if (ModEntry.MargoLoaded)
             {
-                this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 70000 };
+                this.ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 70000 };
                 this.AddProfessions(
                     Recycler = new KeyedProfession(this, "Recycler", ModEntry.Assets.Recycler, ModEntry.Assets.RecyclerP, ModEntry.Instance.Helper),
                     Sneak = new KeyedProfession(this, "Sneak", ModEntry.Assets.Sneak, ModEntry.Assets.SneakP, ModEntry.Instance.Helper),
@@ -42,7 +42,7 @@ namespace BinningSkill
             }
             else
             {
-                this.ExperienceCurve = new[] { 100, 300, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000 };
+                this.ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, 3300, 4000, 6900, 10000, 15000 };
                 this.AddProfessions(
                     Recycler = new KeyedProfession(this, "Recycler", ModEntry.Assets.Recycler, ModEntry.Instance.I18n),
                     Sneak = new KeyedProfession(this, "Sneak", ModEntry.Assets.Sneak, ModEntry.Instance.I18n),

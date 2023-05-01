@@ -34,6 +34,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kokoro", "Kokoro\Kokoro.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JunimoWarp", "JunimoWarp\JunimoWarp.csproj", "{883867F6-8723-4DD8-A00C-B5FA6F923500}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaximizeFix", "MaximizeFix\MaximizeFix.csproj", "{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{883867F6-8723-4DD8-A00C-B5FA6F923500}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{883867F6-8723-4DD8-A00C-B5FA6F923500}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{883867F6-8723-4DD8-A00C-B5FA6F923500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

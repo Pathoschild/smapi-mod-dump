@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit dbef587146a65feccc91013dc79da3bcaed71178
-   Author: Clare <ccathanlon@gmail.com>
-   Date:   Wed Mar 29 20:44:42 2023 -0400
+   commit e23fbb0846c4920aeb388a467be2089534977967
+   Author: shekurika <shekurika.gmail.com>
+   Date:   Sat Apr 15 00:58:50 2023 +0200
    
-       took june out of the luau main event bc apparently he was conflicting with harvey
+       nullcheck birthday menu NPCs
    

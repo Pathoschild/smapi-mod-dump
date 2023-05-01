@@ -8,13 +8,17 @@
 **
 *************************************************/
 
+using System.Numerics;
+
 using AtraBase.Toolkit.Extensions;
 
 using AtraCore.Framework.Caches;
 
+using AtraShared.ConstantsAndEnums;
 using AtraShared.Utils.Extensions;
 using HarmonyLib;
 using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace SpecialOrdersExtended.Managers;
 
@@ -38,7 +42,7 @@ internal static class TagManager
         {
             if (random is null)
             {
-                random = new Random(((int)Game1.uniqueIDForThisGame * 26) + (int)(Game1.stats.DaysPlayed / 7 * 36));
+                random = new Random(((int)Game1.uniqueIDForThisGame * 26) + (int)((Game1.stats.DaysPlayed / 7) * 36));
                 random.PreWarm();
             }
             return random;
@@ -78,16 +82,16 @@ internal static class TagManager
     /// Prefixes CheckTag to handle special mod tags.
     /// </summary>
     /// <param name="__result">the result for the original function.</param>
-    /// <param name="__0">string - tag to check.</param>
+    /// <param name="tag">tag to check.</param>
     /// <returns>true to continue to the vanilla function, false otherwise.</returns>
     [HarmonyPrefix]
     [HarmonyPatch("CheckTag")]
     [HarmonyPriority(Priority.VeryHigh)]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Naming convention for Harmony")]
-    private static bool PrefixCheckTag(ref bool __result, string __0)
+    private static bool PrefixCheckTag(ref bool __result, string tag)
     {
         {
-            if (ModEntry.Config.UseTagCache && Cache.TryGetValue(__0, out bool result))
+            if (ModEntry.Config.UseTagCache && Cache.TryGetValue(tag, out bool result))
             {
                 if (Game1.ticks != lastTick)
                 {
@@ -96,17 +100,17 @@ internal static class TagManager
                 }
                 else
                 {
-                    ModEntry.ModMonitor.DebugOnlyLog($"Hit cache: {__0}, {result}", LogLevel.Trace);
+                    ModEntry.ModMonitor.DebugOnlyLog($"Hit cache: {tag}, {result}", LogLevel.Trace);
                     __result = result;
                     return false;
                 }
             }
         }
 
-        ModEntry.ModMonitor.DebugOnlyLog($"Checking tag {__0}", LogLevel.Trace);
+        ModEntry.ModMonitor.DebugOnlyLog($"Checking tag {tag}", LogLevel.Trace);
         try
         {
-            string[] vals = __0.Split('_', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            string[] vals = tag.Split('_', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             switch(vals[0].ToLowerInvariant())
             {
                 case "year":
@@ -269,17 +273,16 @@ internal static class TagManager
                             return false;
                         }
                     }
-                    __result = vals[1].ToLowerInvariant() switch
+                    if (SkillsExtensions.TryParse(vals[1], out Skills skill, ignoreCase: true) && BitOperations.PopCount((uint)skill) == 1)
                     {
-                        "mining" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.miningLevel.Value >= levelwanted),
-                        "farming" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.farmingLevel.Value >= levelwanted),
-                        "fishing" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.fishingLevel.Value >= levelwanted),
-                        "foraging" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.foragingLevel.Value >= levelwanted),
-                        "combat" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.combatLevel.Value >= levelwanted),
-                        "luck" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.luckLevel.Value >= levelwanted),
-                        _ => ModEntry.SpaceCoreAPI is not null && ModEntry.SpaceCoreAPI.GetCustomSkills().Contains(vals[1])
-                                && Game1.getAllFarmers().Any((Farmer farmer) => ModEntry.SpaceCoreAPI.GetLevelForCustomSkill(farmer, vals[1]) >= levelwanted),
-                    };
+                        __result = Game1.getAllFarmers().Any(farmer => farmer.GetSkillLevelFromEnum(skill, includeBuffs: false) >= levelwanted);
+                    }
+                    else
+                    {
+                        __result = ModEntry.SpaceCoreAPI is not null && ModEntry.SpaceCoreAPI.GetCustomSkills().Contains(vals[1])
+                                && Game1.getAllFarmers().Any(farmer => ModEntry.SpaceCoreAPI.GetLevelForCustomSkill(farmer, vals[1]) >= levelwanted);
+                    }
+
                     if (negate)
                     {
                         __result = !__result;
@@ -300,19 +303,10 @@ internal static class TagManager
                     return false;
                 case "hasspecialitem":
                     // hasspecialitem_X, hasspecialitem_X_not
-                    __result = vals[1] switch
-                    {
-                        "bearsKnowledge" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.eventsSeen.Contains(2120303)),
-                        "clubCard" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.hasClubCard),
-                        "rustyKey" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.hasRustyKey),
-                        "skullKey" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.hasSkullKey),
-                        "specialCharm" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.hasSpecialCharm),
-                        "springOnion" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.eventsSeen.Contains(3910979)),
-                        "translationGuide" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.canUnderstandDwarves),
-                        "townKey" => Game1.getAllFarmers().Any((Farmer farmer) => farmer.HasTownKey),
-                        _ => false,
-                    };
-                    if (vals.Length >= 3 && vals[2].Equals("not", StringComparison.OrdinalIgnoreCase))
+                    __result = WalletItemsExtensions.TryParse(vals[1], out WalletItems item, ignoreCase: true)
+                                && BitOperations.PopCount((uint)item) == 1
+                                && Game1.getAllFarmers().Any(farmer => farmer is not null && farmer.HasSingleWalletItem(item));
+                    if (vals.Length > 2 && vals[2].Equals("not", StringComparison.OrdinalIgnoreCase))
                     {
                         __result = !__result;
                     }
@@ -326,21 +320,27 @@ internal static class TagManager
                     }
                     return false;
                 case "craftingrecipe":
+                {
                     // craftingrecipe_X, craftingrecipe_X_not
-                    __result = Game1.getAllFarmers().Any((Farmer farmer) => farmer.craftingRecipes.ContainsKey(vals[1].Replace('-', ' ')));
+                    string key = vals[1].Replace('-', ' ');
+                    __result = Game1.getAllFarmers().Any((Farmer farmer) => farmer.craftingRecipes.ContainsKey(key));
                     if (vals.Length >= 3 && vals[2].Equals("not", StringComparison.OrdinalIgnoreCase))
                     {
                         __result = !__result;
                     }
                     return false;
+                }
                 case "cookingrecipe":
+                {
                     // cookingrecipe_X, cookingrecipe_X_not
-                    __result = Game1.getAllFarmers().Any((Farmer farmer) => farmer.cookingRecipes.ContainsKey(vals[1].Replace('-', ' ')));
+                    string key = vals[1].Replace('-', ' ');
+                    __result = Game1.getAllFarmers().Any((Farmer farmer) => farmer.cookingRecipes.ContainsKey(key));
                     if (vals.Length >= 3 && vals[2].Equals("not", StringComparison.OrdinalIgnoreCase))
                     {
                         __result = !__result;
                     }
                     return false;
+                }
                 case "stats":
                     // stats_statsname_X, stats_statsname_under_X
                     if (vals[2].Equals("under", StringComparison.OrdinalIgnoreCase))
@@ -406,7 +406,7 @@ internal static class TagManager
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Failed while checking tag {__0}\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Failed while checking tag {tag}\n{ex}", LogLevel.Error);
         }
         return true; // continue to base code.
     }

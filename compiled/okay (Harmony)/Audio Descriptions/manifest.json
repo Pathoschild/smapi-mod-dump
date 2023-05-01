@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Audio descriptions",
+  "Author": "mistyspring",
+  "Version": "1.0.0",
+  "Description": "Displays current sound and a description.",
+  "UniqueID": "mistyspring.AudioDescription",
+  "EntryDll": "AudioDescription.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": ["nexus:16294"]
+}

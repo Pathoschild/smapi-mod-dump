@@ -1,0 +1,48 @@
+{
+  "EnableMod": true,
+  "AnyTool": {
+    "Enabled": false,
+    "BasicRange": 1,
+    "BasicWidth": 1,
+    "CopperRange": 3,
+    "CopperWidth": 1,
+    "SteelRange": 5,
+    "SteelWidth": 1,
+    "GoldRange": 3,
+    "GoldWidth": 3,
+    "IridiumRange": 6,
+    "IridiumWidth": 3,
+    "ExtremePowerRange": 5,
+    "ExtremePowerWidth": 5
+  },
+  "WateringCan": {
+    "Enabled": false,
+    "BasicRange": 1,
+    "BasicWidth": 1,
+    "CopperRange": 3,
+    "CopperWidth": 1,
+    "SteelRange": 5,
+    "SteelWidth": 1,
+    "GoldRange": 3,
+    "GoldWidth": 3,
+    "IridiumRange": 6,
+    "IridiumWidth": 3,
+    "ExtremePowerRange": 5,
+    "ExtremePowerWidth": 5
+  },
+  "Hoe": {
+    "Enabled": false,
+    "BasicRange": 1,
+    "BasicWidth": 1,
+    "CopperRange": 3,
+    "CopperWidth": 1,
+    "SteelRange": 5,
+    "SteelWidth": 1,
+    "GoldRange": 3,
+    "GoldWidth": 3,
+    "IridiumRange": 6,
+    "IridiumWidth": 3,
+    "ExtremePowerRange": 5,
+    "ExtremePowerWidth": 5
+  }
+}

@@ -1,0 +1,1564 @@
+{
+  "items": {
+    "Joja Cola": {
+      "code": 717000,
+      "classification": "filler"
+    },
+    "Rusty Key": {
+      "code": 717015,
+      "classification": "progression"
+    },
+    "Dwarvish Translation Guide": {
+      "code": 717016,
+      "classification": "progression"
+    },
+    "Bridge Repair": {
+      "code": 717017,
+      "classification": "progression"
+    },
+    "Greenhouse": {
+      "code": 717018,
+      "classification": "progression"
+    },
+    "Glittering Boulder Removed": {
+      "code": 717019,
+      "classification": "progression"
+    },
+    "Minecarts Repair": {
+      "code": 717020,
+      "classification": "useful"
+    },
+    "Bus Repair": {
+      "code": 717021,
+      "classification": "progression"
+    },
+    "Movie Theater": {
+      "code": 717022,
+      "classification": "useful"
+    },
+    "Stardrop": {
+      "code": 717023,
+      "classification": "useful"
+    },
+    "Progressive Backpack": {
+      "code": 717024,
+      "classification": "progression"
+    },
+    "Rusty Sword": {
+      "code": 717025,
+      "classification": "progression"
+    },
+    "Leather Boots": {
+      "code": 717026,
+      "classification": "progression"
+    },
+    "Work Boots": {
+      "code": 717027,
+      "classification": "useful"
+    },
+    "Wooden Blade": {
+      "code": 717028,
+      "classification": "progression"
+    },
+    "Iron Dirk": {
+      "code": 717029,
+      "classification": "progression"
+    },
+    "Wind Spire": {
+      "code": 717030,
+      "classification": "progression"
+    },
+    "Femur": {
+      "code": 717031,
+      "classification": "progression"
+    },
+    "Steel Smallsword": {
+      "code": 717032,
+      "classification": "progression"
+    },
+    "Wood Club": {
+      "code": 717033,
+      "classification": "progression"
+    },
+    "Elf Blade": {
+      "code": 717034,
+      "classification": "progression"
+    },
+    "Glow Ring": {
+      "code": 717035,
+      "classification": "useful"
+    },
+    "Magnet Ring": {
+      "code": 717036,
+      "classification": "useful"
+    },
+    "Slingshot": {
+      "code": 717037,
+      "classification": "progression"
+    },
+    "Tundra Boots": {
+      "code": 717038,
+      "classification": "useful"
+    },
+    "Thermal Boots": {
+      "code": 717039,
+      "classification": "useful"
+    },
+    "Combat Boots": {
+      "code": 717040,
+      "classification": "useful"
+    },
+    "Silver Saber": {
+      "code": 717041,
+      "classification": "progression"
+    },
+    "Pirate's Sword": {
+      "code": 717042,
+      "classification": "progression"
+    },
+    "Crystal Dagger": {
+      "code": 717043,
+      "classification": "progression"
+    },
+    "Cutlass": {
+      "code": 717044,
+      "classification": "progression"
+    },
+    "Iron Edge": {
+      "code": 717045,
+      "classification": "progression"
+    },
+    "Burglar's Shank": {
+      "code": 717046,
+      "classification": "progression"
+    },
+    "Wood Mallet": {
+      "code": 717047,
+      "classification": "progression"
+    },
+    "Master Slingshot": {
+      "code": 717048,
+      "classification": "progression"
+    },
+    "Firewalker Boots": {
+      "code": 717049,
+      "classification": "useful"
+    },
+    "Dark Boots": {
+      "code": 717050,
+      "classification": "useful"
+    },
+    "Claymore": {
+      "code": 717051,
+      "classification": "progression"
+    },
+    "Templar's Blade": {
+      "code": 717052,
+      "classification": "progression"
+    },
+    "Kudgel": {
+      "code": 717053,
+      "classification": "progression"
+    },
+    "Shadow Dagger": {
+      "code": 717054,
+      "classification": "progression"
+    },
+    "Obsidian Edge": {
+      "code": 717055,
+      "classification": "progression"
+    },
+    "Tempered Broadsword": {
+      "code": 717056,
+      "classification": "progression"
+    },
+    "Wicked Kris": {
+      "code": 717057,
+      "classification": "progression"
+    },
+    "Bone Sword": {
+      "code": 717058,
+      "classification": "progression"
+    },
+    "Ossified Blade": {
+      "code": 717059,
+      "classification": "progression"
+    },
+    "Space Boots": {
+      "code": 717060,
+      "classification": "useful"
+    },
+    "Crystal Shoes": {
+      "code": 717061,
+      "classification": "useful"
+    },
+    "Steel Falchion": {
+      "code": 717062,
+      "classification": "progression"
+    },
+    "The Slammer": {
+      "code": 717063,
+      "classification": "progression"
+    },
+    "Skull Key": {
+      "code": 717064,
+      "classification": "progression"
+    },
+    "Progressive Hoe": {
+      "code": 717065,
+      "classification": "progression"
+    },
+    "Progressive Pickaxe": {
+      "code": 717066,
+      "classification": "progression"
+    },
+    "Progressive Axe": {
+      "code": 717067,
+      "classification": "progression"
+    },
+    "Progressive Watering Can": {
+      "code": 717068,
+      "classification": "progression"
+    },
+    "Progressive Trash Can": {
+      "code": 717069,
+      "classification": "progression"
+    },
+    "Progressive Fishing Rod": {
+      "code": 717070,
+      "classification": "progression"
+    },
+    "Golden Scythe": {
+      "code": 717071,
+      "classification": "useful"
+    },
+    "Progressive Mine Elevator": {
+      "code": 717072,
+      "classification": "progression"
+    },
+    "Farming Level": {
+      "code": 717073,
+      "classification": "progression"
+    },
+    "Fishing Level": {
+      "code": 717074,
+      "classification": "progression"
+    },
+    "Foraging Level": {
+      "code": 717075,
+      "classification": "progression"
+    },
+    "Mining Level": {
+      "code": 717076,
+      "classification": "progression"
+    },
+    "Combat Level": {
+      "code": 717077,
+      "classification": "progression"
+    },
+    "Earth Obelisk": {
+      "code": 717078,
+      "classification": "useful"
+    },
+    "Water Obelisk": {
+      "code": 717079,
+      "classification": "useful"
+    },
+    "Desert Obelisk": {
+      "code": 717080,
+      "classification": "progression"
+    },
+    "Island Obelisk": {
+      "code": 717081,
+      "classification": "progression"
+    },
+    "Junimo Hut": {
+      "code": 717082,
+      "classification": "useful"
+    },
+    "Gold Clock": {
+      "code": 717083,
+      "classification": "useful"
+    },
+    "Progressive Coop": {
+      "code": 717084,
+      "classification": "progression"
+    },
+    "Progressive Barn": {
+      "code": 717085,
+      "classification": "progression"
+    },
+    "Well": {
+      "code": 717086,
+      "classification": "useful"
+    },
+    "Silo": {
+      "code": 717087,
+      "classification": "progression"
+    },
+    "Mill": {
+      "code": 717088,
+      "classification": "progression"
+    },
+    "Progressive Shed": {
+      "code": 717089,
+      "classification": "progression"
+    },
+    "Fish Pond": {
+      "code": 717090,
+      "classification": "progression"
+    },
+    "Stable": {
+      "code": 717091,
+      "classification": "useful"
+    },
+    "Slime Hutch": {
+      "code": 717092,
+      "classification": "useful"
+    },
+    "Shipping Bin": {
+      "code": 717093,
+      "classification": "useful"
+    },
+    "Beach Bridge": {
+      "code": 717094,
+      "classification": "progression"
+    },
+    "Adventurer's Guild": {
+      "code": 717095,
+      "classification": "progression"
+    },
+    "Club Card": {
+      "code": 717096,
+      "classification": "progression"
+    },
+    "Magnifying Glass": {
+      "code": 717097,
+      "classification": "progression"
+    },
+    "Bear's Knowledge": {
+      "code": 717098,
+      "classification": "progression"
+    },
+    "Iridium Snake Milk": {
+      "code": 717099,
+      "classification": "progression"
+    },
+    "JotPK: Progressive Boots": {
+      "code": 717100,
+      "classification": "progression"
+    },
+    "JotPK: Progressive Gun": {
+      "code": 717101,
+      "classification": "progression"
+    },
+    "JotPK: Progressive Ammo": {
+      "code": 717102,
+      "classification": "progression"
+    },
+    "JotPK: Extra Life": {
+      "code": 717103,
+      "classification": "progression"
+    },
+    "JotPK: Increased Drop Rate": {
+      "code": 717104,
+      "classification": "progression"
+    },
+    "Junimo Kart: Extra Life": {
+      "code": 717105,
+      "classification": "progression"
+    },
+    "Galaxy Sword": {
+      "code": 717106,
+      "classification": "progression"
+    },
+    "Galaxy Dagger": {
+      "code": 717107,
+      "classification": "progression"
+    },
+    "Galaxy Hammer": {
+      "code": 717108,
+      "classification": "progression"
+    },
+    "Movement Speed Bonus": {
+      "code": 717109,
+      "classification": "useful"
+    },
+    "Luck Bonus": {
+      "code": 717110,
+      "classification": "useful"
+    },
+    "Lava Katana": {
+      "code": 717111,
+      "classification": "progression"
+    },
+    "Progressive House": {
+      "code": 717112,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Sunday": {
+      "code": 717113,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Monday": {
+      "code": 717114,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Tuesday": {
+      "code": 717115,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Wednesday": {
+      "code": 717116,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Thursday": {
+      "code": 717117,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Friday": {
+      "code": 717118,
+      "classification": "progression"
+    },
+    "Traveling Merchant: Saturday": {
+      "code": 717119,
+      "classification": "progression"
+    },
+    "Traveling Merchant Stock Size": {
+      "code": 717120,
+      "classification": "progression"
+    },
+    "Traveling Merchant Discount": {
+      "code": 717121,
+      "classification": "progression"
+    },
+    "Return Scepter": {
+      "code": 717122,
+      "classification": "useful"
+    },
+    "Progressive Season": {
+      "code": 717123,
+      "classification": "progression"
+    },
+    "Spring": {
+      "code": 717124,
+      "classification": "progression"
+    },
+    "Summer": {
+      "code": 717125,
+      "classification": "progression"
+    },
+    "Fall": {
+      "code": 717126,
+      "classification": "progression"
+    },
+    "Winter": {
+      "code": 717127,
+      "classification": "progression"
+    },
+    "Amaranth Seeds": {
+      "code": 717128,
+      "classification": "progression"
+    },
+    "Artichoke Seeds": {
+      "code": 717129,
+      "classification": "progression"
+    },
+    "Beet Seeds": {
+      "code": 717130,
+      "classification": "progression"
+    },
+    "Jazz Seeds": {
+      "code": 717131,
+      "classification": "progression"
+    },
+    "Blueberry Seeds": {
+      "code": 717132,
+      "classification": "progression"
+    },
+    "Bok Choy Seeds": {
+      "code": 717133,
+      "classification": "progression"
+    },
+    "Cauliflower Seeds": {
+      "code": 717134,
+      "classification": "progression"
+    },
+    "Corn Seeds": {
+      "code": 717135,
+      "classification": "progression"
+    },
+    "Cranberry Seeds": {
+      "code": 717136,
+      "classification": "progression"
+    },
+    "Eggplant Seeds": {
+      "code": 717137,
+      "classification": "progression"
+    },
+    "Fairy Seeds": {
+      "code": 717138,
+      "classification": "progression"
+    },
+    "Garlic Seeds": {
+      "code": 717139,
+      "classification": "progression"
+    },
+    "Grape Starter": {
+      "code": 717140,
+      "classification": "progression"
+    },
+    "Bean Starter": {
+      "code": 717141,
+      "classification": "progression"
+    },
+    "Hops Starter": {
+      "code": 717142,
+      "classification": "progression"
+    },
+    "Pepper Seeds": {
+      "code": 717143,
+      "classification": "progression"
+    },
+    "Kale Seeds": {
+      "code": 717144,
+      "classification": "progression"
+    },
+    "Melon Seeds": {
+      "code": 717145,
+      "classification": "progression"
+    },
+    "Parsnip Seeds": {
+      "code": 717146,
+      "classification": "progression"
+    },
+    "Poppy Seeds": {
+      "code": 717147,
+      "classification": "progression"
+    },
+    "Potato Seeds": {
+      "code": 717148,
+      "classification": "progression"
+    },
+    "Pumpkin Seeds": {
+      "code": 717149,
+      "classification": "progression"
+    },
+    "Radish Seeds": {
+      "code": 717150,
+      "classification": "progression"
+    },
+    "Red Cabbage Seeds": {
+      "code": 717151,
+      "classification": "progression"
+    },
+    "Rhubarb Seeds": {
+      "code": 717152,
+      "classification": "progression"
+    },
+    "Starfruit Seeds": {
+      "code": 717153,
+      "classification": "progression"
+    },
+    "Strawberry Seeds": {
+      "code": 717154,
+      "classification": "progression"
+    },
+    "Spangle Seeds": {
+      "code": 717155,
+      "classification": "progression"
+    },
+    "Sunflower Seeds": {
+      "code": 717156,
+      "classification": "progression"
+    },
+    "Tomato Seeds": {
+      "code": 717157,
+      "classification": "progression"
+    },
+    "Tulip Bulb": {
+      "code": 717158,
+      "classification": "progression"
+    },
+    "Rice Shoot": {
+      "code": 717159,
+      "classification": "progression"
+    },
+    "Wheat Seeds": {
+      "code": 717160,
+      "classification": "progression"
+    },
+    "Yam Seeds": {
+      "code": 717161,
+      "classification": "progression"
+    },
+    "Cactus Seeds": {
+      "code": 717162,
+      "classification": "progression"
+    },
+    "Magic Rock Candy": {
+      "code": 717163,
+      "classification": "useful"
+    },
+    "Ancient Seeds Recipe": {
+      "code": 717164,
+      "classification": "progression"
+    },
+    "Ancient Seeds": {
+      "code": 717165,
+      "classification": "useful"
+    },
+    "Traveling Merchant Metal Detector": {
+      "code": 717166,
+      "classification": "progression"
+    },
+    "Alex: 1 <3": {
+      "code": 717167,
+      "classification": "progression"
+    },
+    "Elliott: 1 <3": {
+      "code": 717168,
+      "classification": "progression"
+    },
+    "Harvey: 1 <3": {
+      "code": 717169,
+      "classification": "progression"
+    },
+    "Sam: 1 <3": {
+      "code": 717170,
+      "classification": "progression"
+    },
+    "Sebastian: 1 <3": {
+      "code": 717171,
+      "classification": "progression"
+    },
+    "Shane: 1 <3": {
+      "code": 717172,
+      "classification": "progression"
+    },
+    "Abigail: 1 <3": {
+      "code": 717173,
+      "classification": "progression"
+    },
+    "Emily: 1 <3": {
+      "code": 717174,
+      "classification": "progression"
+    },
+    "Haley: 1 <3": {
+      "code": 717175,
+      "classification": "progression"
+    },
+    "Leah: 1 <3": {
+      "code": 717176,
+      "classification": "progression"
+    },
+    "Maru: 1 <3": {
+      "code": 717177,
+      "classification": "progression"
+    },
+    "Penny: 1 <3": {
+      "code": 717178,
+      "classification": "progression"
+    },
+    "Caroline: 1 <3": {
+      "code": 717179,
+      "classification": "progression"
+    },
+    "Clint: 1 <3": {
+      "code": 717180,
+      "classification": "progression"
+    },
+    "Demetrius: 1 <3": {
+      "code": 717181,
+      "classification": "progression"
+    },
+    "Dwarf: 1 <3": {
+      "code": 717182,
+      "classification": "progression"
+    },
+    "Evelyn: 1 <3": {
+      "code": 717183,
+      "classification": "progression"
+    },
+    "George: 1 <3": {
+      "code": 717184,
+      "classification": "progression"
+    },
+    "Gus: 1 <3": {
+      "code": 717185,
+      "classification": "progression"
+    },
+    "Jas: 1 <3": {
+      "code": 717186,
+      "classification": "progression"
+    },
+    "Jodi: 1 <3": {
+      "code": 717187,
+      "classification": "progression"
+    },
+    "Kent: 1 <3": {
+      "code": 717188,
+      "classification": "progression"
+    },
+    "Krobus: 1 <3": {
+      "code": 717189,
+      "classification": "progression"
+    },
+    "Leo: 1 <3": {
+      "code": 717190,
+      "classification": "progression"
+    },
+    "Lewis: 1 <3": {
+      "code": 717191,
+      "classification": "progression"
+    },
+    "Linus: 1 <3": {
+      "code": 717192,
+      "classification": "progression"
+    },
+    "Marnie: 1 <3": {
+      "code": 717193,
+      "classification": "progression"
+    },
+    "Pam: 1 <3": {
+      "code": 717194,
+      "classification": "progression"
+    },
+    "Pierre: 1 <3": {
+      "code": 717195,
+      "classification": "progression"
+    },
+    "Robin: 1 <3": {
+      "code": 717196,
+      "classification": "progression"
+    },
+    "Sandy: 1 <3": {
+      "code": 717197,
+      "classification": "progression"
+    },
+    "Vincent: 1 <3": {
+      "code": 717198,
+      "classification": "progression"
+    },
+    "Willy: 1 <3": {
+      "code": 717199,
+      "classification": "progression"
+    },
+    "Wizard: 1 <3": {
+      "code": 717200,
+      "classification": "progression"
+    },
+    "Pet: 1 <3": {
+      "code": 717201,
+      "classification": "progression"
+    },
+    "Resource Pack: 500 Money": {
+      "code": 722000,
+      "classification": "useful"
+    },
+    "Resource Pack: 1000 Money": {
+      "code": 722001,
+      "classification": "useful"
+    },
+    "Resource Pack: 1500 Money": {
+      "code": 722002,
+      "classification": "useful"
+    },
+    "Resource Pack: 2000 Money": {
+      "code": 722003,
+      "classification": "useful"
+    },
+    "Resource Pack: 25 Stone": {
+      "code": 722004,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Stone": {
+      "code": 722005,
+      "classification": "filler"
+    },
+    "Resource Pack: 75 Stone": {
+      "code": 722006,
+      "classification": "filler"
+    },
+    "Resource Pack: 100 Stone": {
+      "code": 722007,
+      "classification": "filler"
+    },
+    "Resource Pack: 25 Wood": {
+      "code": 722008,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Wood": {
+      "code": 722009,
+      "classification": "filler"
+    },
+    "Resource Pack: 75 Wood": {
+      "code": 722010,
+      "classification": "filler"
+    },
+    "Resource Pack: 100 Wood": {
+      "code": 722011,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Hardwood": {
+      "code": 722012,
+      "classification": "useful"
+    },
+    "Resource Pack: 10 Hardwood": {
+      "code": 722013,
+      "classification": "useful"
+    },
+    "Resource Pack: 15 Hardwood": {
+      "code": 722014,
+      "classification": "useful"
+    },
+    "Resource Pack: 20 Hardwood": {
+      "code": 722015,
+      "classification": "useful"
+    },
+    "Resource Pack: 15 Fiber": {
+      "code": 722016,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Fiber": {
+      "code": 722017,
+      "classification": "filler"
+    },
+    "Resource Pack: 45 Fiber": {
+      "code": 722018,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Fiber": {
+      "code": 722019,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Coal": {
+      "code": 722020,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Coal": {
+      "code": 722021,
+      "classification": "filler"
+    },
+    "Resource Pack: 15 Coal": {
+      "code": 722022,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Coal": {
+      "code": 722023,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Clay": {
+      "code": 722024,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Clay": {
+      "code": 722025,
+      "classification": "filler"
+    },
+    "Resource Pack: 15 Clay": {
+      "code": 722026,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Clay": {
+      "code": 722027,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Warp Totem: Beach": {
+      "code": 722028,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Warp Totem: Beach": {
+      "code": 722029,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Warp Totem: Beach": {
+      "code": 722030,
+      "classification": "filler"
+    },
+    "Resource Pack: 7 Warp Totem: Beach": {
+      "code": 722031,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Warp Totem: Beach": {
+      "code": 722032,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Warp Totem: Beach": {
+      "code": 722033,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Warp Totem: Desert": {
+      "code": 722034,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Warp Totem: Desert": {
+      "code": 722035,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Warp Totem: Desert": {
+      "code": 722036,
+      "classification": "filler"
+    },
+    "Resource Pack: 7 Warp Totem: Desert": {
+      "code": 722037,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Warp Totem: Desert": {
+      "code": 722038,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Warp Totem: Desert": {
+      "code": 722039,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Warp Totem: Farm": {
+      "code": 722040,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Warp Totem: Farm": {
+      "code": 722041,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Warp Totem: Farm": {
+      "code": 722042,
+      "classification": "filler"
+    },
+    "Resource Pack: 7 Warp Totem: Farm": {
+      "code": 722043,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Warp Totem: Farm": {
+      "code": 722044,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Warp Totem: Farm": {
+      "code": 722045,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Warp Totem: Island": {
+      "code": 722046,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Warp Totem: Island": {
+      "code": 722047,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Warp Totem: Island": {
+      "code": 722048,
+      "classification": "filler"
+    },
+    "Resource Pack: 7 Warp Totem: Island": {
+      "code": 722049,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Warp Totem: Island": {
+      "code": 722050,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Warp Totem: Island": {
+      "code": 722051,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Warp Totem: Mountains": {
+      "code": 722052,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Warp Totem: Mountains": {
+      "code": 722053,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Warp Totem: Mountains": {
+      "code": 722054,
+      "classification": "filler"
+    },
+    "Resource Pack: 7 Warp Totem: Mountains": {
+      "code": 722055,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Warp Totem: Mountains": {
+      "code": 722056,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Warp Totem: Mountains": {
+      "code": 722057,
+      "classification": "filler"
+    },
+    "Resource Pack: 6 Geode": {
+      "code": 722058,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Geode": {
+      "code": 722059,
+      "classification": "filler"
+    },
+    "Resource Pack: 18 Geode": {
+      "code": 722060,
+      "classification": "filler"
+    },
+    "Resource Pack: 24 Geode": {
+      "code": 722061,
+      "classification": "filler"
+    },
+    "Resource Pack: 4 Frozen Geode": {
+      "code": 722062,
+      "classification": "filler"
+    },
+    "Resource Pack: 8 Frozen Geode": {
+      "code": 722063,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Frozen Geode": {
+      "code": 722064,
+      "classification": "filler"
+    },
+    "Resource Pack: 16 Frozen Geode": {
+      "code": 722065,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Magma Geode": {
+      "code": 722066,
+      "classification": "filler"
+    },
+    "Resource Pack: 6 Magma Geode": {
+      "code": 722067,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Magma Geode": {
+      "code": 722068,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Magma Geode": {
+      "code": 722069,
+      "classification": "filler"
+    },
+    "Resource Pack: 2 Omni Geode": {
+      "code": 722070,
+      "classification": "useful"
+    },
+    "Resource Pack: 4 Omni Geode": {
+      "code": 722071,
+      "classification": "useful"
+    },
+    "Resource Pack: 6 Omni Geode": {
+      "code": 722072,
+      "classification": "useful"
+    },
+    "Resource Pack: 8 Omni Geode": {
+      "code": 722073,
+      "classification": "useful"
+    },
+    "Resource Pack: 25 Copper Ore": {
+      "code": 722074,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Copper Ore": {
+      "code": 722075,
+      "classification": "filler"
+    },
+    "Resource Pack: 75 Copper Ore": {
+      "code": 722076,
+      "classification": "filler"
+    },
+    "Resource Pack: 100 Copper Ore": {
+      "code": 722077,
+      "classification": "filler"
+    },
+    "Resource Pack: 125 Copper Ore": {
+      "code": 722078,
+      "classification": "filler"
+    },
+    "Resource Pack: 150 Copper Ore": {
+      "code": 722079,
+      "classification": "filler"
+    },
+    "Resource Pack: 25 Iron Ore": {
+      "code": 722080,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Iron Ore": {
+      "code": 722081,
+      "classification": "filler"
+    },
+    "Resource Pack: 75 Iron Ore": {
+      "code": 722082,
+      "classification": "filler"
+    },
+    "Resource Pack: 100 Iron Ore": {
+      "code": 722083,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Gold Ore": {
+      "code": 722084,
+      "classification": "useful"
+    },
+    "Resource Pack: 25 Gold Ore": {
+      "code": 722085,
+      "classification": "useful"
+    },
+    "Resource Pack: 38 Gold Ore": {
+      "code": 722086,
+      "classification": "useful"
+    },
+    "Resource Pack: 50 Gold Ore": {
+      "code": 722087,
+      "classification": "useful"
+    },
+    "Resource Pack: 5 Iridium Ore": {
+      "code": 722088,
+      "classification": "useful"
+    },
+    "Resource Pack: 10 Iridium Ore": {
+      "code": 722089,
+      "classification": "useful"
+    },
+    "Resource Pack: 15 Iridium Ore": {
+      "code": 722090,
+      "classification": "useful"
+    },
+    "Resource Pack: 20 Iridium Ore": {
+      "code": 722091,
+      "classification": "useful"
+    },
+    "Resource Pack: 5 Quartz": {
+      "code": 722092,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Quartz": {
+      "code": 722093,
+      "classification": "filler"
+    },
+    "Resource Pack: 15 Quartz": {
+      "code": 722094,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Quartz": {
+      "code": 722095,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Basic Fertilizer": {
+      "code": 722096,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Basic Fertilizer": {
+      "code": 722097,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Basic Fertilizer": {
+      "code": 722098,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Basic Fertilizer": {
+      "code": 722099,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Basic Fertilizer": {
+      "code": 722100,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Basic Fertilizer": {
+      "code": 722101,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Basic Retaining Soil": {
+      "code": 722102,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Basic Retaining Soil": {
+      "code": 722103,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Basic Retaining Soil": {
+      "code": 722104,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Basic Retaining Soil": {
+      "code": 722105,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Basic Retaining Soil": {
+      "code": 722106,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Basic Retaining Soil": {
+      "code": 722107,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Speed-Gro": {
+      "code": 722108,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Speed-Gro": {
+      "code": 722109,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Speed-Gro": {
+      "code": 722110,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Speed-Gro": {
+      "code": 722111,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Speed-Gro": {
+      "code": 722112,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Speed-Gro": {
+      "code": 722113,
+      "classification": "filler"
+    },
+    "Resource Pack: 4 Quality Fertilizer": {
+      "code": 722114,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Quality Fertilizer": {
+      "code": 722115,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Quality Fertilizer": {
+      "code": 722116,
+      "classification": "filler"
+    },
+    "Resource Pack: 28 Quality Fertilizer": {
+      "code": 722117,
+      "classification": "filler"
+    },
+    "Resource Pack: 36 Quality Fertilizer": {
+      "code": 722118,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Quality Fertilizer": {
+      "code": 722119,
+      "classification": "filler"
+    },
+    "Resource Pack: 4 Quality Retaining Soil": {
+      "code": 722120,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Quality Retaining Soil": {
+      "code": 722121,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Quality Retaining Soil": {
+      "code": 722122,
+      "classification": "filler"
+    },
+    "Resource Pack: 28 Quality Retaining Soil": {
+      "code": 722123,
+      "classification": "filler"
+    },
+    "Resource Pack: 36 Quality Retaining Soil": {
+      "code": 722124,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Quality Retaining Soil": {
+      "code": 722125,
+      "classification": "filler"
+    },
+    "Resource Pack: 4 Deluxe Speed-Gro": {
+      "code": 722126,
+      "classification": "filler"
+    },
+    "Resource Pack: 12 Deluxe Speed-Gro": {
+      "code": 722127,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Deluxe Speed-Gro": {
+      "code": 722128,
+      "classification": "filler"
+    },
+    "Resource Pack: 28 Deluxe Speed-Gro": {
+      "code": 722129,
+      "classification": "filler"
+    },
+    "Resource Pack: 36 Deluxe Speed-Gro": {
+      "code": 722130,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Deluxe Speed-Gro": {
+      "code": 722131,
+      "classification": "filler"
+    },
+    "Resource Pack: 2 Deluxe Fertilizer": {
+      "code": 722132,
+      "classification": "useful"
+    },
+    "Resource Pack: 6 Deluxe Fertilizer": {
+      "code": 722133,
+      "classification": "useful"
+    },
+    "Resource Pack: 10 Deluxe Fertilizer": {
+      "code": 722134,
+      "classification": "useful"
+    },
+    "Resource Pack: 14 Deluxe Fertilizer": {
+      "code": 722135,
+      "classification": "useful"
+    },
+    "Resource Pack: 18 Deluxe Fertilizer": {
+      "code": 722136,
+      "classification": "useful"
+    },
+    "Resource Pack: 20 Deluxe Fertilizer": {
+      "code": 722137,
+      "classification": "useful"
+    },
+    "Resource Pack: 2 Deluxe Retaining Soil": {
+      "code": 722138,
+      "classification": "useful"
+    },
+    "Resource Pack: 6 Deluxe Retaining Soil": {
+      "code": 722139,
+      "classification": "useful"
+    },
+    "Resource Pack: 10 Deluxe Retaining Soil": {
+      "code": 722140,
+      "classification": "useful"
+    },
+    "Resource Pack: 14 Deluxe Retaining Soil": {
+      "code": 722141,
+      "classification": "useful"
+    },
+    "Resource Pack: 18 Deluxe Retaining Soil": {
+      "code": 722142,
+      "classification": "useful"
+    },
+    "Resource Pack: 20 Deluxe Retaining Soil": {
+      "code": 722143,
+      "classification": "useful"
+    },
+    "Resource Pack: 2 Hyper Speed-Gro": {
+      "code": 722144,
+      "classification": "useful"
+    },
+    "Resource Pack: 6 Hyper Speed-Gro": {
+      "code": 722145,
+      "classification": "useful"
+    },
+    "Resource Pack: 10 Hyper Speed-Gro": {
+      "code": 722146,
+      "classification": "useful"
+    },
+    "Resource Pack: 14 Hyper Speed-Gro": {
+      "code": 722147,
+      "classification": "useful"
+    },
+    "Resource Pack: 18 Hyper Speed-Gro": {
+      "code": 722148,
+      "classification": "useful"
+    },
+    "Resource Pack: 20 Hyper Speed-Gro": {
+      "code": 722149,
+      "classification": "useful"
+    },
+    "Resource Pack: 2 Tree Fertilizer": {
+      "code": 722150,
+      "classification": "filler"
+    },
+    "Resource Pack: 6 Tree Fertilizer": {
+      "code": 722151,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Tree Fertilizer": {
+      "code": 722152,
+      "classification": "filler"
+    },
+    "Resource Pack: 14 Tree Fertilizer": {
+      "code": 722153,
+      "classification": "filler"
+    },
+    "Resource Pack: 18 Tree Fertilizer": {
+      "code": 722154,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Tree Fertilizer": {
+      "code": 722155,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Spring Seeds": {
+      "code": 722156,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Spring Seeds": {
+      "code": 722157,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Spring Seeds": {
+      "code": 722158,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Spring Seeds": {
+      "code": 722159,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Spring Seeds": {
+      "code": 722160,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Spring Seeds": {
+      "code": 722161,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Summer Seeds": {
+      "code": 722162,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Summer Seeds": {
+      "code": 722163,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Summer Seeds": {
+      "code": 722164,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Summer Seeds": {
+      "code": 722165,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Summer Seeds": {
+      "code": 722166,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Summer Seeds": {
+      "code": 722167,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Fall Seeds": {
+      "code": 722168,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Fall Seeds": {
+      "code": 722169,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Fall Seeds": {
+      "code": 722170,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Fall Seeds": {
+      "code": 722171,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Fall Seeds": {
+      "code": 722172,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Fall Seeds": {
+      "code": 722173,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Winter Seeds": {
+      "code": 722174,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Winter Seeds": {
+      "code": 722175,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Winter Seeds": {
+      "code": 722176,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Winter Seeds": {
+      "code": 722177,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Winter Seeds": {
+      "code": 722178,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Winter Seeds": {
+      "code": 722179,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Mahogany Seed": {
+      "code": 722180,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Mahogany Seed": {
+      "code": 722181,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Mahogany Seed": {
+      "code": 722182,
+      "classification": "filler"
+    },
+    "Resource Pack: 7 Mahogany Seed": {
+      "code": 722183,
+      "classification": "filler"
+    },
+    "Resource Pack: 9 Mahogany Seed": {
+      "code": 722184,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Mahogany Seed": {
+      "code": 722185,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Bait": {
+      "code": 722186,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Bait": {
+      "code": 722187,
+      "classification": "filler"
+    },
+    "Resource Pack: 30 Bait": {
+      "code": 722188,
+      "classification": "filler"
+    },
+    "Resource Pack: 40 Bait": {
+      "code": 722189,
+      "classification": "filler"
+    },
+    "Resource Pack: 50 Bait": {
+      "code": 722190,
+      "classification": "filler"
+    },
+    "Resource Pack: 60 Bait": {
+      "code": 722191,
+      "classification": "filler"
+    },
+    "Resource Pack: 1 Crab Pot": {
+      "code": 722192,
+      "classification": "filler"
+    },
+    "Resource Pack: 2 Crab Pot": {
+      "code": 722193,
+      "classification": "filler"
+    },
+    "Resource Pack: 3 Crab Pot": {
+      "code": 722194,
+      "classification": "filler"
+    },
+    "Resource Pack: 4 Crab Pot": {
+      "code": 722195,
+      "classification": "filler"
+    },
+    "Resource Pack: 5 Crab Pot": {
+      "code": 722196,
+      "classification": "filler"
+    },
+    "Resource Pack: 6 Crab Pot": {
+      "code": 722197,
+      "classification": "filler"
+    },
+    "Friendship Bonus (1 <3)": {
+      "code": 722198,
+      "classification": "useful"
+    },
+    "Friendship Bonus (2 <3)": {
+      "code": 722199,
+      "classification": "useful"
+    },
+    "Friendship Bonus (3 <3)": {
+      "code": 722200,
+      "classification": "useful"
+    },
+    "Friendship Bonus (4 <3)": {
+      "code": 722201,
+      "classification": "useful"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
 	"Name": "moonslime.excavation.h_trilobite",
 	"Description": "A trilobite on a hardwood stand.",
-	"Category": "15793",
+	"HideFromShippingCollection": true, "Category": "15793",
 	"CategoryTextOverride": "Artifact",
 	"CategoryColorOverride": "116,25,98,255",
 	"Edibility": -300,

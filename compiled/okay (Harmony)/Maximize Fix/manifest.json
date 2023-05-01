@@ -1,0 +1,17 @@
+{
+	"Name": "Maximize Fix",
+	"Author": "Shockah",
+	"Version": "1.0.0",
+	"Description": "Fixes a problem with game window maximization on Windows.",
+	"UniqueID": "Shockah.MaximizeFix",
+	"EntryDll": "MaximizeFix.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:16099" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "1.0.0"
+		}
+	]
+}

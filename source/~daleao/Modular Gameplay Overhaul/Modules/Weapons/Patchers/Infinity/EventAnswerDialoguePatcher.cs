@@ -49,7 +49,7 @@ internal sealed class EventAnswerDialoguePatcher : HarmonyPatcher
             case 8185291 when answerChoice == 1:
 
                 player.Increment(DataKeys.ProvenHonor);
-                Virtue.Honor.CheckForCompletion(player);
+                WeaponsModule.State.VirtuesQuest?.UpdateVirtueProgress(Virtue.Honor);
                 return;
 
         // COMPASSION //
@@ -70,7 +70,7 @@ internal sealed class EventAnswerDialoguePatcher : HarmonyPatcher
             case 8185294 when answerChoice == 0:
 
                 player.Increment(DataKeys.ProvenCompassion);
-                Virtue.Compassion.CheckForCompletion(player);
+                WeaponsModule.State.VirtuesQuest?.UpdateVirtueProgress(Virtue.Compassion);
                 return;
 
             // Pam 9 hearts | Location: Trailer_Big
@@ -85,7 +85,7 @@ internal sealed class EventAnswerDialoguePatcher : HarmonyPatcher
             case 27 when answerChoice == 2:
 
                 player.Increment(DataKeys.ProvenWisdom);
-                Virtue.Wisdom.CheckForCompletion(player);
+                WeaponsModule.State.VirtuesQuest?.UpdateVirtueProgress(Virtue.Wisdom);
                 return;
         }
     }

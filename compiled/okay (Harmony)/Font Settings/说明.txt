@@ -7,7 +7,11 @@
         n网：https://www.nexusmods.com/stardewvalley/mods/12467
         百度网盘：https://pan.baidu.com/s/1V04m2-l5jh08loWszkfdzg 提取码cx96
     2. 主文件：FontSettings x.x.x.zip 必下，解压放入Mods文件夹。
-       可选文件：NotoSansCJKsc-Bold.zip 用于在保持原版字体的情况下，修改大小/字间距/行间距等。解压放入本模组assets/fonts文件夹。
+       可选文件：
+           n网：vanilla font file for Chinese
+           度盘：可选/NotoSansCJKsc-Bold.zip
+           用于在保持原版字体的情况下，修改大小/字间距/行间距等。解压放入本模组assets/fonts文件夹。
+
 
 使用：
     打开 字体设置菜单 的方式：
@@ -17,42 +21,41 @@
     在菜单内修改各字体属性的值，完事了点击OK，设置完毕。
     下面是各个属性值的介绍：
         常规
-			- 启用: 勾上表示启用自定义的字体；不勾表示使用原版字体。
-			- 字体: 设置字体款式。一切字体都是你电脑里安装的。
-			- 大小: 设置字体大小，单位为像素。
+            - 启用: 勾上表示启用自定义的字体；不勾表示使用原版字体。
+            - 字体: 设置字体款式。一切字体都是你电脑里安装的。
+            - 大小: 设置字体大小，单位为像素。
 
-		高级
-			- 字间距: 设置每相邻两个字之间的水平距离。
-			- 行间距: 设置每相邻两行之间的垂直距离。
-			- 横轴偏移量: 设置字符横向的额外偏移。
-			- 纵轴偏移量: 设置字符纵向的额外偏移。
-			- 缩放比例（仅对话字体）: 设置字符的缩放比例。
+        高级
+            - 字间距: 设置每相邻两个字之间的水平距离。
+            - 行间距: 设置每相邻两行之间的垂直距离。
+            - 横轴偏移量: 设置字符横向的额外偏移。
+            - 纵轴偏移量: 设置字符纵向的额外偏移。
+            - 缩放比例（仅对话字体）: 设置字符的缩放比例。
 
-		预设
-			将各个设置打包保存，以便下次使用。
-			点击“保存当前设置为新预设”，创建一个新预设。
-			点击保存，更新当前预设。
-			点击删除，删除当前预设。
+        预设
+            将各个设置打包保存，以便下次使用。
+            点击“保存当前设置为新预设”，创建一个新预设。
+            点击保存，更新当前预设。
+            点击删除，删除当前预设。
 
 
 配置：
-    - ExampleText               示例文本，一般留空即可，除非你要用自己的文本。
-    - MinFontSize               字体大小 最小值。（默认5）
-    - MaxFontSize               字体大小 最大值。（默认75）
-    - MinSpacing                字间距 最小值。（默认-10）
-    - MaxSpacing                字间距 最大值。（默认10）
-    - MinLineSpacing            行间距 最小值。(默认5)
+    - ExampleText                  示例文本，一般留空即可，除非你要用自己的文本。
+    - MinFontSize                  字体大小 最小值。（默认5）
+    - MaxFontSize                 字体大小 最大值。（默认75）
+    - MinSpacing                   字间距 最小值。（默认-10）
+    - MaxSpacing                  字间距 最大值。（默认10）
+    - MinLineSpacing             行间距 最小值。(默认5)
     - MaxLineSpacing            行间距 最大值。(默认75)
-    - MinCharOffsetX            横轴偏移量 最小值。（默认-10）
+    - MinCharOffsetX             横轴偏移量 最小值。（默认-10）
     - MaxCharOffsetX            横轴偏移量 最大值。（默认10）
-    - MinCharOffsetY            纵轴偏移量 最小值。（默认-10）
-    - MaxCharOffsetY            纵轴偏移量 最大值。（默认10）
-    - MinPixelZoom			    缩放比例 最小值。（默认0.5）
-    - MaxPixelZoom			    缩放比例 最大值。（默认5）
+    - MinCharOffsetY             纵轴偏移量 最小值。（默认-10）
+    - MaxCharOffsetY             纵轴偏移量 最大值。（默认10）
+    - MinPixelZoom	             缩放比例 最小值。（默认0.5）
+    - MaxPixelZoom	             缩放比例 最大值。（默认5）
     - DisableTextShadow         是否禁用字体阴影（默认false）
-    - OpenFontSettingsMenu      打开字体菜单的按键（默认LeftAlt + F）
-    - FontSettingsInGameMenu    先前版本的遗留选项，无视即可。
-
+    - OpenFontSettingsMenu    打开字体菜单的按键（默认LeftAlt + F）
+    - SimplifiedDropDown        在大量数据下，减少下拉框卡顿，代价是选中时不再显示高亮（默认true）
 
 兼容性：
     兼容Smapi 3.14.0及以上，Windows、MacOS、Linux系统，
@@ -66,30 +69,43 @@
 
 帮助&反馈：
     反馈、提问：
-		1. n网模组页面：https://www.nexusmods.com/stardewvalley/mods/12467?tab=posts
+        1. n网模组页面：https://www.nexusmods.com/stardewvalley/mods/12467?tab=posts
 		
-	Bug提交：
-		1. n网模组页面：https://www.nexusmods.com/stardewvalley/mods/12467?tab=bugs
+    Bug提交：
+        1. n网模组页面：https://www.nexusmods.com/stardewvalley/mods/12467?tab=bugs
+        2. github issues: https://github.com/Becks723/StardewMods/issues
 
 
 更新日志：
+【测试版】0.8.1 - 2023-04-02
+    - 修复刷新字体列表后无法选择字体的问题。
+    - 修复替换字体需要两次才生效的问题。
+
+【测试版】0.8.0 - 2023-04-02
+    - 一些性能上的优化：
+        - 打开菜单变快
+        - 减少卡界面的情况
+        - 添加一个选项用于优化下拉框。配置菜单中叫“减少下拉框卡顿”，config.json中叫"SimplifiedDropDown"。详见“配置”段。
+    - 正式移除嵌入主菜单中的设置界面。
+    - Bug修复。
+
 【测试版】0.7.3 - 2023-03-01
-	- 优化对话字体：修复字符显示不全，切割感。
-	- 修复点不了ok键的问题。
+    - 优化对话字体：修复字符显示不全，切割感。
+    - 修复点不了ok键的问题。
 
 【测试版】0.7.2 - 2023-02-20
-	- 在游戏主菜单左下角添加一个字体按钮，用于打开设置菜单。
+    - 在游戏主菜单左下角添加一个字体按钮，用于打开设置菜单。
     - 兼容自定义语言，如泰语、波兰语等。
-	- Bug修复。
+    - Bug修复。
 
 【测试版】0.7.1 - 2023-02-14
-	- 模组文件瘦身，将assets/fonts移出主文件，按语言分成多个可选文件。
-	- 优化“保持原版”时的字体效果。
-	- Bug修复。
+    - 模组文件瘦身，将assets/fonts移出主文件，按语言分成多个可选文件。
+    - 优化“保持原版”时的字体效果。
+    - Bug修复。
 
 【测试版】0.7.0 - 2023-02-06
     优化：
-	- 显示UI控件（比如滑动条）的值。
+    - 显示UI控件（比如滑动条）的值。
     - 优化“保持原版”时的字体效果。
 
     Bug修复：

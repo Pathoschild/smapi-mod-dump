@@ -30,7 +30,7 @@ internal static class Tool_ResonatingChords
     internal static Chord? Get_ResonatingChord<TEnchantment>(this Tool tool)
         where TEnchantment : BaseWeaponEnchantment
     {
-        return RingsModule.IsEnabled && RingsModule.Config.EnableResonance && Values.TryGetValue(tool, out var dict) &&
+        return RingsModule.ShouldEnable && RingsModule.Config.EnableResonance && Values.TryGetValue(tool, out var dict) &&
                dict.TryGetValue(typeof(TEnchantment), out var chord)
             ? chord
             : null;
@@ -43,7 +43,7 @@ internal static class Tool_ResonatingChords
             ThrowHelper.ThrowInvalidOperationException($"Tried to get the resonating chord for non-enchantment type {type}");
         }
 
-        return RingsModule.IsEnabled && RingsModule.Config.EnableResonance && Values.TryGetValue(tool, out var dict) &&
+        return RingsModule.ShouldEnable && RingsModule.Config.EnableResonance && Values.TryGetValue(tool, out var dict) &&
                dict.TryGetValue(type, out var chord)
             ? chord
             : null;
@@ -66,10 +66,10 @@ internal static class Tool_ResonatingChords
         dict[typeof(TEnchantment)] = newValue;
         switch (tool)
         {
-            case MeleeWeapon weapon when WeaponsModule.IsEnabled:
+            case MeleeWeapon weapon when WeaponsModule.ShouldEnable:
                 weapon.Invalidate();
                 break;
-            case Slingshot slingshot when SlingshotsModule.IsEnabled:
+            case Slingshot slingshot when SlingshotsModule.ShouldEnable:
                 slingshot.Invalidate();
                 break;
         }
@@ -86,10 +86,10 @@ internal static class Tool_ResonatingChords
         dict[newValue.Root.EnchantmentType] = newValue;
         switch (tool)
         {
-            case MeleeWeapon weapon when WeaponsModule.IsEnabled:
+            case MeleeWeapon weapon when WeaponsModule.ShouldEnable:
                 weapon.Invalidate();
                 break;
-            case Slingshot slingshot when SlingshotsModule.IsEnabled:
+            case Slingshot slingshot when SlingshotsModule.ShouldEnable:
                 slingshot.Invalidate();
                 break;
         }
@@ -110,10 +110,10 @@ internal static class Tool_ResonatingChords
 
         switch (tool)
         {
-            case MeleeWeapon weapon when WeaponsModule.IsEnabled:
+            case MeleeWeapon weapon when WeaponsModule.ShouldEnable:
                 weapon.Invalidate();
                 break;
-            case Slingshot slingshot when SlingshotsModule.IsEnabled:
+            case Slingshot slingshot when SlingshotsModule.ShouldEnable:
                 slingshot.Invalidate();
                 break;
         }
@@ -138,10 +138,10 @@ internal static class Tool_ResonatingChords
 
         switch (tool)
         {
-            case MeleeWeapon weapon when WeaponsModule.IsEnabled:
+            case MeleeWeapon weapon when WeaponsModule.ShouldEnable:
                 weapon.Invalidate();
                 break;
-            case Slingshot slingshot when SlingshotsModule.IsEnabled:
+            case Slingshot slingshot when SlingshotsModule.ShouldEnable:
                 slingshot.Invalidate();
                 break;
         }
@@ -156,10 +156,10 @@ internal static class Tool_ResonatingChords
 
         switch (tool)
         {
-            case MeleeWeapon weapon when WeaponsModule.IsEnabled:
+            case MeleeWeapon weapon when WeaponsModule.ShouldEnable:
                 weapon.Invalidate();
                 break;
-            case Slingshot slingshot when SlingshotsModule.IsEnabled:
+            case Slingshot slingshot when SlingshotsModule.ShouldEnable:
                 slingshot.Invalidate();
                 break;
         }

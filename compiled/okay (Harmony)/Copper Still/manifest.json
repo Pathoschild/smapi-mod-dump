@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Copper Still",
     "Author": "NCarigon",
-    "Version": "1.0.6",
+    "Version": "1.0.7", // fixed locally
     "Description": "Adds more endgame variety to processing crops.",
     "UniqueID": "NCarigon.CopperStill",
     "UpdateKeys": [ "nexus:15333" ],
@@ -14,5 +14,8 @@
         //{ "UniqueID": "NCarigon.CopperStillPFM" },
         //{ "UniqueID": "NCarigon.CopperStillMFM" },
         //{ "UniqueID": "NCarigon.CopperStillBBM" }
+
+        // added locally
+        { "UniqueID": "Digus.ProducerFrameworkMod" }
     ]
 }

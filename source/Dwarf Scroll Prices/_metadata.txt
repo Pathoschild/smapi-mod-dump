@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/noriteway/StardewMods
+   Git: https://github.com/noriteway/StardewMods.git
+
+mods:
+   Dwarf Scroll Prices
+
+latest commit:
+   commit 3ad10aa985c9f4927bfede3ef6ea41858f2846f9
+   Author: noriteway <131356289+noriteway@users.noreply.github.com>
+   Date:   Thu Apr 20 04:33:22 2023 -0700
+   
+       Update Key
+   

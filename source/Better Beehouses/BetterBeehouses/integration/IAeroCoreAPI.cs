@@ -17,8 +17,6 @@ namespace BetterBeehouses.integration
 {
 	public interface IAeroCoreAPI
 	{
-		public event Action<SpriteBatch> OnDrawingWorld;
-
 		/// <summary>Creates a new particle system from a mod data asset</summary>
 		public IParticleManager CreateParticleSystem(IModContentHelper helper, string path, IParticleEmitter emitter, int count);
 	}

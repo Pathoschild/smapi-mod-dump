@@ -105,7 +105,7 @@ namespace BinningSkill
                         return;
                     }
                     float extraPercentage = (ModEntry.Config.ReclaimerExtraValuePercent / 100.0f);
-                    if (ModEntry.MargoLoaded && f.HasCustomPrestigeProfession(BinningSkill.Reclaimer))
+                    if (f.HasCustomPrestigeProfession(BinningSkill.Reclaimer))
                     {
                         extraPercentage *= 1.5f;
                     }
@@ -139,7 +139,7 @@ namespace BinningSkill
         {
             try
             {
-                if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Upseller))
+                if (Game1.player.HasCustomPrestigeProfession(BinningSkill.Upseller))
                 {
                     if (__result == 6 || __result == 4)
                     {
@@ -229,7 +229,7 @@ namespace BinningSkill
                         if (who.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
                         {
                             int friendshipGain = ModEntry.Config.RecyclingFriendshipGain;
-                            if (ModEntry.MargoLoaded && who.HasCustomPrestigeProfession(BinningSkill.Environmentalist))
+                            if (who.HasCustomPrestigeProfession(BinningSkill.Environmentalist))
                             {
                                 friendshipGain *= 2;
                             }
@@ -259,7 +259,7 @@ namespace BinningSkill
             {
                 if (name.Equals("Recycling Machine") && Game1.player.HasCustomProfession(BinningSkill.Recycler))
                 {
-                    if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Recycler))
+                    if (Game1.player.HasCustomPrestigeProfession(BinningSkill.Recycler))
                     {
                         __instance.recipeList = new()
                         {
@@ -290,7 +290,7 @@ namespace BinningSkill
     {
         public static bool Prepare()
         {
-            return ModEntry.RSVLoaded;
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("Rafseazz.RidgesideVillage");
         }
 
         public static void Prefix(
@@ -377,7 +377,7 @@ namespace BinningSkill
     {
         public static bool Prepare()
         {
-            return ModEntry.AutomateLoaded;
+            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("Pathoschild.Automate");
         }
 
         internal static void Postfix(
@@ -409,7 +409,7 @@ namespace BinningSkill
         static PropertyInfo Machine;
         public static bool Prepare()
         {
-            if (!ModEntry.AutomateLoaded)
+            if (!ModEntry.Instance.Helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
             {
                 return false;
             }
@@ -437,7 +437,7 @@ namespace BinningSkill
                         if (Game1.player.stats.PiecesOfTrashRecycled % ModEntry.Config.RecyclingCountToGainFriendship == 0)
                         {
                             int friendshipGain = ModEntry.Config.RecyclingFriendshipGain;
-                            if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Environmentalist))
+                            if (Game1.player.HasCustomPrestigeProfession(BinningSkill.Environmentalist))
                             {
                                 friendshipGain *= 2;
                             }
@@ -716,7 +716,7 @@ namespace BinningSkill
             {
                 return c;
             }
-            if (ModEntry.MargoLoaded && Game1.player.HasCustomPrestigeProfession(BinningSkill.Sneak))
+            if (Game1.player.HasCustomPrestigeProfession(BinningSkill.Sneak))
             {
                 if (c != null && c is NPC npc && !(c is StardewValley.Characters.Horse))
                 {

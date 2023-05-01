@@ -27,6 +27,11 @@
   "PrimaryInfoKey": "C",
   "CharacterCreationMenuNextKey": "Right",
   "CharacterCreationMenuPreviousKey": "Left",
+  "CharacterCreationMenuSliderIncreaseKey": "Up",
+  "CharacterCreationMenuSliderLargeIncreaseKey": "PageUp",
+  "CharacterCreationMenuSliderDecreaseKey": "Down",
+  "CharacterCreationMenuSliderLargeDecreaseKey": "PageDown",
+  "CharacterCreationMenuDesignToggleKey": "LeftControl + Space",
   "BundleMenuIngredientsKey": "I",
   "BundleMenuInventoryItemsKey": "C",
   "BundleMenuPurchaseButtonKey": "P",
@@ -45,5 +50,8 @@
   "SnapMouse": true,
   "Warning": true,
   "TTS": true,
-  "TrackDroppedItems": true
+  "TrackDroppedItems": true,
+  "DisableInventoryVerbosity": false,
+  "MaximumFishingDifficulty": 999,
+  "FixFishingMotionType": 999
 }

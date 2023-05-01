@@ -21,6 +21,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Command\CommandClassParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigClassParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mod\ModClassParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mod\ModClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>

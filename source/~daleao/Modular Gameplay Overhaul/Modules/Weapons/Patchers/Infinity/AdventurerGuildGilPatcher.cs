@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Weapons.Patchers.Infinity;
 #region using directives
 
 using DaLion.Overhaul.Modules.Weapons.Extensions;
-using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Locations;
@@ -35,14 +34,10 @@ internal sealed class AdventurerGuildGilPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void AdventurerGuildGilPostfix()
     {
-        var player = Game1.player;
-        if (player.NumMonsterSlayerQuestsCompleted() < 5)
+        if (Game1.player.NumMonsterSlayerQuestsCompleted() >= 5)
         {
-            return;
+            WeaponsModule.State.VirtuesQuest?.UpdateVirtueProgress(Virtue.Valor);
         }
-
-        player.WriteIfNotExists(DataKeys.ProvenValor, true.ToString());
-        Virtue.Valor.CheckForCompletion(player);
     }
 
     #endregion harmony patches

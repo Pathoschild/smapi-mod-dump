@@ -18,6 +18,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using SpaceCore;
 using SpaceCore.Interface;
+using StardewValley.Menus;
 
 #endregion using directives
 
@@ -38,17 +39,31 @@ internal sealed class NewSkillsPageCtorPatcher : HarmonyPatcher
     ///     bars to green for level >10.
     /// </summary>
     [HarmonyPostfix]
-    private static void NewSkillsPageCtorPostfix(NewSkillsPage __instance)
+    private static void NewSkillsPageCtorPostfix(
+        NewSkillsPage __instance,
+        ClickableTextureComponent ___upButton,
+        ClickableTextureComponent ___downButton,
+        ClickableTextureComponent ___scrollBar,
+        ref Rectangle ___scrollBarRunner)
     {
         if (!ProfessionsModule.Config.EnablePrestige)
         {
             return;
         }
 
-        __instance.width += 48;
-        if (ProfessionsModule.Config.PrestigeProgressionStyle == Config.ProgressionStyle.StackedStars)
+        __instance.width += 24;
+        ___upButton.bounds.X += 24;
+        ___downButton.bounds.X += 24;
+        ___scrollBar.bounds.X += 24;
+        ___scrollBarRunner.X += 24;
+        if (ProfessionsModule.Config.ProgressionStyle == Config.PrestigeProgressionStyle.StackedStars)
         {
             __instance.width += 24;
+            __instance.width += 24;
+            ___upButton.bounds.X += 24;
+            ___downButton.bounds.X += 24;
+            ___scrollBar.bounds.X += 24;
+            ___scrollBarRunner.X += 24;
         }
 
         var srcRect = new Rectangle(16, 0, 14, 9);

@@ -14,8 +14,16 @@
         "Action": "EditData",
         "Target": "Characters/Dialogue/Marnie",
         "Entries": {
+            "8{{YearRemainder}}": "I've got {{Range: 5,10}} cows to artificially inseminate tomorrow morning. It'll be a long day...",
+            "12{{YearRemainder}}": "Happier cows produce better milk.$h",
             "25{{YearRemainder}}": "Ugh, we seem to have a digital dermatitis outbreak among my cows.#$b#I'll need to get a vet in, might need to get antibiotics administered.",
-            "26{{YearRemainder}}": "Between you and I, I wish it was easier to socialize around these parts without going to the Saloon.#$b#It's not good for Shane.",
+            "26{{YearRemainder}}": "Between you and I, I wish it was easier to socialize around these parts without going to the Saloon.#$b#It's not good for Shane.$s",
+            "27{{YearRemainder}}": "Gonna have my nutritionist come out tomorrow, check to see how my livestock are doing.#$b#It's very important to feed your livestock the right food!",
+
+            "Mon8": "Always nice to see happy cows running out of the barn in spring.#$b#Cows really do prefer fresh grass",
+            "summer_Mon8": "Cows don't tolerate heat very well, they do better in places that get cold in winter.",
+            "fall_Mon8": "Free-range chickens are so much happier.$h",
+            "winter_Mon8": "It's important to keep the barn warm enough in winter!"
         }
     },
     {
@@ -26,7 +34,8 @@
         "Entries": {
             "5_2": "My dear Bessie stepped on a nail the other day. Poor darling, I need to do a better job making sure their pen doesn't have dangerous items in it.",
             "7_2": "I try to keep my dairy organic. It's better for the cows, most of the time.",
-            "18_2": "Most dairy farms don't keep bulls around. It's too dangerous, usually.#$b#Bulls can be quite unpredictable."
+            "18_2": "Most dairy farms don't keep bulls around. It's too dangerous, usually.#$b#Bulls can be quite unpredictable.",
+            "23_2": "We're not allowed to use antibiotics, lest we lose our organic certification."
         }
     }
 ]}

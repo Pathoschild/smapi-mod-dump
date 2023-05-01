@@ -14,11 +14,10 @@ using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using SObject = StardewValley.Object;
 
 namespace Trading.Utilities
 {
@@ -35,8 +34,8 @@ namespace Trading.Utilities
         private Farmer _sender;
         private Farmer _receiver;
         private bool _pending;
-        private List<SObject> _receiverItems;
-        private List<SObject> _senderItems;
+        private List<Item> _receiverItems;
+        private List<Item> _senderItems;
         private float _receiverGold;
         private float _senderGold;
         private bool _sentOffer;
@@ -88,7 +87,7 @@ namespace Trading.Utilities
             get => _pending;
             set => _pending = value;
         }
-        public List<SObject> ReceiverItems
+        public List<Item> ReceiverItems
         {
             get => _receiverItems;
             set 
@@ -97,7 +96,7 @@ namespace Trading.Utilities
                 reloadItems();
             }
         }
-        public List<SObject> SenderItems
+        public List<Item> SenderItems
         {
             get => _senderItems;
             set
@@ -175,13 +174,13 @@ namespace Trading.Utilities
 
         public Rectangle Bounds => new Rectangle(X, Y, Width, Height);
 
-        public TradeMenu(Farmer sender, Farmer receiver, bool isPending, List<SObject>? receiverItems = null, float? receiverGold = null, List<SObject>? senderItems = null, float? senderGold = null) : base(0, 0, 0, 0, true)
+        public TradeMenu(Farmer sender, Farmer receiver, bool isPending, List<Item>? receiverItems = null, float? receiverGold = null, List<Item>? senderItems = null, float? senderGold = null) : base(0, 0, 0, 0, true)
         {
             Sender = sender;
             Receiver = receiver;
             Pending = isPending;
-            ReceiverItems = receiverItems ?? new List<SObject>();
-            SenderItems = senderItems ?? new List<SObject>();
+            ReceiverItems = receiverItems ?? new List<Item>();
+            SenderItems = senderItems ?? new List<Item>();
             ReceiverGold = receiverGold ?? 0;
             SenderGold = senderGold ?? 0;
 
@@ -223,8 +222,8 @@ namespace Trading.Utilities
             playerPanel_R = new Rectangle(X + Width - 176, Y + borderWidth + spaceToClearTopBorder, 128, 192);
             playerPanel_S = new Rectangle(X + 64 - 12, Y + borderWidth + spaceToClearTopBorder, 128, 192);
 
-            senderInventory = new InventoryMenu(X + 64, Y + Height - 150, false, highlightMethod: (i) => i is SObject);
-            senderInventory = new InventoryMenu(X + Width / 2 - senderInventory.width / 2, Y + Height - senderInventory.height - 28, false, highlightMethod: (i) => i is SObject);
+            senderInventory = new(X + 64, Y + Height - 150, false, highlightMethod:(i) => i is not Tool || i is MeleeWeapon || i is Slingshot);
+            senderInventory = new(X + Width / 2 - senderInventory.width / 2, Y + Height - senderInventory.height - 28, false, highlightMethod:(i) => i is not Tool || i is MeleeWeapon || i is Slingshot);
             senderInventory.showGrayedOutSlots = true;
 
             for (int i = 0; i < 16; i++)
@@ -304,9 +303,9 @@ namespace Trading.Utilities
 
         private void getClickableComponentList()
         {
+            allClickableComponents = new List<ClickableComponent>();
             if (!Pending)
             {
-                allClickableComponents = new List<ClickableComponent>();
                 for (int i = 0; i < senderSlots.Count; i++)
                     allClickableComponents.Add(senderSlots[i]);
                 for (int i = 0; i < receiverSlots.Count; i++)
@@ -372,52 +371,58 @@ namespace Trading.Utilities
             sendNetworkMessage(Utilites.MSG_UpdateTradeInventory, getParsableInventory());
         }
 
-        private NetworkInventory getParsableInventory() => new NetworkInventory(Game1.player.UniqueMultiplayerID, SenderGold, Utilites.ParseItems(SenderItems));
+        private NetworkInventory getParsableInventory() => new(Game1.player.UniqueMultiplayerID, SenderGold, Utilites.ParseItems(SenderItems));
 
         private void sendNetworkMessage<T>(string message, T data) => helper.Multiplayer.SendMessage(data, message, ModEntry.ModId, new[] { Receiver.UniqueMultiplayerID });
 
         private void reloadItems()
         {
             if (Pending) return;
-            if (ReceiverItems is not null)
-                for (int i = 0; i < ReceiverItems.Count && i < 16; i++)
-                    receiverSlots[i].item = ReceiverItems[i];
-            if (SenderItems is not null)
-                for (int i = 0; i < SenderItems.Count && i < 16; i++)
-                    senderSlots[i].item = SenderItems[i];
+            if (ReceiverItems is not null && receiverSlots is not null)
+                for (int i = 0; i < 16; i++)
+                    receiverSlots[i].item = ReceiverItems.Count > i ? ReceiverItems[i] : null;
+            if (SenderItems is not null && senderSlots is not null)
+                for (int i = 0; i < 16; i++)
+                    senderSlots[i].item = SenderItems.Count > i ? SenderItems[i] : null;
         }
 
-        private SObject takeItemFromInventory(SObject obj)
+        private Item takeItemFromInventory(Item obj)
         {
             bool isShift = Game1.oldKBState.IsKeyDown(Keys.LeftShift) || Game1.oldKBState.IsKeyDown(Keys.RightShift);
             bool isCtrl = Game1.oldKBState.IsKeyDown(Keys.LeftControl) || Game1.oldKBState.IsKeyDown(Keys.RightControl);
             int stack = 1;
             if (isShift) stack = obj.Stack >= 5 ? 5 : obj.Stack;
             if (isCtrl && isShift) stack = obj.Stack >= 25 ? 25 : obj.Stack;
-            SObject newObj = new SObject(obj.ParentSheetIndex, stack, quality: obj.Quality);
+            Item newObj = obj.getOne();
+            newObj.Stack = stack;
             if (obj.Stack - stack <= 0) Sender.removeItemFromInventory(obj);
             else obj.Stack -= stack;
             return newObj;
         }
 
-        private SObject takeItemFromTrade(SObject obj)
+        private Item takeItemFromTrade(Item obj)
         {
             bool isShift = Game1.oldKBState.IsKeyDown(Keys.LeftShift) || Game1.oldKBState.IsKeyDown(Keys.RightShift);
             bool isCtrl = Game1.oldKBState.IsKeyDown(Keys.LeftControl) || Game1.oldKBState.IsKeyDown(Keys.RightControl);
             int stack = 1;
             if (isShift) stack = obj.Stack >= 5 ? 5 : obj.Stack;
             if (isCtrl && isShift) stack = obj.Stack >= 25 ? 25 : obj.Stack;
-            SObject newObj = new SObject(obj.ParentSheetIndex, stack, quality: obj.Quality);
-            if (obj.Stack - stack <= 0) SenderItems.Remove(obj);
+            Item newObj = obj.getOne();
+            newObj.Stack = stack;
+            if (obj.Stack - stack <= 0)
+            {
+                senderSlots[SenderItems.IndexOf(obj)].item = null;
+                SenderItems.Remove(obj);
+            }
             else obj.Stack -= stack;
             reloadItems();
             return newObj;
         }
         
-        private void addItemToTrade(SObject obj)
+        private void addItemToTrade(Item obj)
         {
-            if (SenderItems.FirstOrDefault(x => x.ParentSheetIndex == obj.ParentSheetIndex && x.Quality == obj.Quality && x.Stack + obj.Stack < obj.maximumStackSize()) is not null and SObject sobj)
-                SenderItems[SenderItems.IndexOf(sobj)].addToStack(obj);
+            if (SenderItems.FirstOrDefault(x => x.canStackWith(obj)) is not null and Item i)
+                SenderItems[SenderItems.IndexOf(i)].addToStack(obj);
             else
                 SenderItems.Add(obj);
         }
@@ -517,7 +522,7 @@ namespace Trading.Utilities
                 case Buttons.Back:
                 case Buttons.B:
                 case Buttons.Y:
-                    if (senderGold.Selected)
+                    if (senderGold?.Selected ?? false)
                         senderGold.Selected = false;
                     else
                         exit(true);
@@ -594,12 +599,12 @@ namespace Trading.Utilities
             if (senderInventory.inventory.FirstOrDefault(c => c.containsPoint(x, y)) is not null and ClickableComponent invC)
             {
                 int index = Convert.ToInt32(invC.name);
-                if (senderInventory.actualInventory.Count > index && senderInventory.actualInventory[index] is not null and SObject sobj)
+                if (senderInventory.actualInventory.Count > index && senderInventory.actualInventory[index] is not null and Item i && (i is not Tool || i is MeleeWeapon || i is Slingshot))
                 {
                     resetOfferStatus();
-                    addItemToTrade(sobj);
+                    addItemToTrade(i);
                     reloadItems();
-                    Sender.removeItemFromInventory(sobj);
+                    Sender.removeItemFromInventory(i);
                     Game1.playSound("dwop");
                     sendNetworkMessage(Utilites.MSG_UpdateTradeInventory, getParsableInventory());
                     return;
@@ -607,12 +612,12 @@ namespace Trading.Utilities
             }
             if (senderSlots.FirstOrDefault(c => c.containsPoint(x, y)) is not null and ClickableComponent slotC)
             {
-                if (slotC.item is not null and SObject sobj)
+                if (slotC.item is not null and Item i)
                 {
                     resetOfferStatus();
-                    SenderItems.Remove(sobj);
+                    SenderItems.Remove(i);
                     slotC.item = null;
-                    Sender.addItemToInventory(sobj);
+                    Sender.addItemToInventory(i);
                     reloadItems();
                     Game1.playSound("dwop");
                     sendNetworkMessage(Utilites.MSG_UpdateTradeInventory, getParsableInventory());
@@ -627,10 +632,10 @@ namespace Trading.Utilities
             if (senderInventory.inventory.FirstOrDefault(c => c.containsPoint(x, y)) is not null and ClickableComponent invC)
             {
                 int index = Convert.ToInt32(invC.name);
-                if (senderInventory.actualInventory.Count > index && senderInventory.actualInventory[index] is not null and SObject sobj)
+                if (senderInventory.actualInventory.Count > index && senderInventory.actualInventory[index] is not null and Item i && (i is not Tool || i is MeleeWeapon || i is Slingshot))
                 {
                     resetOfferStatus();
-                    var newObj = takeItemFromInventory(sobj);
+                    var newObj = takeItemFromInventory(i);
                     addItemToTrade(newObj);
                     reloadItems();
                     Game1.playSound("dwop");
@@ -640,9 +645,9 @@ namespace Trading.Utilities
             }
             if (senderSlots.FirstOrDefault(c => c.containsPoint(x, y)) is not null and ClickableComponent slotC)
             {
-                if (slotC.item is not null and SObject sobj)
+                if (slotC.item is not null and Item i)
                 {
-                    var newObj = takeItemFromTrade(sobj);
+                    var newObj = takeItemFromTrade(i);
                     if (!Sender.addItemToInventoryBool(newObj))
                     {
                         addItemToTrade(newObj);
@@ -651,6 +656,7 @@ namespace Trading.Utilities
                     resetOfferStatus();
                     reloadItems();
                     Game1.playSound("dwop");
+                    var inv = getParsableInventory();
                     sendNetworkMessage(Utilites.MSG_UpdateTradeInventory, getParsableInventory());
                     return;
                 }
@@ -685,7 +691,9 @@ namespace Trading.Utilities
 
         public override void performHoverAction(int x, int y)
         {
-            if (Pending) return;
+            upperRightCloseButton.tryHover(x, y);
+            if (Pending) 
+                return;
             hoverText = "";
             hoverItem = null;
             if (playerPanel_R.Contains(x, y))

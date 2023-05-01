@@ -1,0 +1,10 @@
+{
+    "Name": "Adventurer's Guild Badge",
+    "Description": "The shield-shaped symbol of your guild membership. The number 23 is carved into the back. Increases your radius for collecting items, your Attack by 10%, and your Defense by +5.", 
+    "Category": "Ring", 
+    "CategoryTextOverride": "A gift from your friend, the guildmaster.",
+    "Edibility": -300,
+    "CanSell": false,
+    "TranslationKey": "adventurer's guild badge"
+}
+

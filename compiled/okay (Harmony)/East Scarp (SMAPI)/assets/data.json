@@ -33,7 +33,7 @@
 		},
 		{
 			"Location": "Custom_ESOrchard",
-			"FishingArea": 2, // ocean
+			"FishingArea": 1, // ocean
 			"OceanCatches": true
 		}
 	],

@@ -48,7 +48,7 @@ internal sealed class IClickableMenuDrawHoverTextPatcher : HarmonyPatcher
     /// <summary>Set hover text color for legendary weapons.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? IClickableMenuDrawHoverTextTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -88,51 +88,58 @@ internal sealed class IClickableMenuDrawHoverTextPatcher : HarmonyPatcher
 
     private static Color GetTitleColorFor(Item? item)
     {
-        if (item is not (Tool tool and (MeleeWeapon or Slingshot)) || !WeaponsModule.Config.ColorCodedForYourConvenience)
+        if (item is not Tool tool)
         {
             return Game1.textColor;
         }
 
-        var tier = WeaponTier.GetFor(tool);
-        if (tier == WeaponTier.Untiered)
+        if (item is (MeleeWeapon or Slingshot) && WeaponsModule.Config.ColorCodedForYourConvenience)
         {
-            return Game1.textColor;
-        }
-
-        if (tier < WeaponTier.Legendary)
-        {
-            return tier.Color;
-        }
-
-        if (tool is MeleeWeapon weapon)
-        {
-            if (weapon.isGalaxyWeapon())
+            var tier = WeaponTier.GetFor(tool);
+            if (tier == WeaponTier.Untiered)
             {
-                return Color.DarkViolet;
+                return Game1.textColor;
             }
 
-            if (weapon.IsInfinityWeapon())
+            if (tier < WeaponTier.Legendary)
             {
-                return Color.DeepPink;
+                return tier.Color;
             }
 
-            switch (weapon.InitialParentTileIndex)
+            if (tool is MeleeWeapon weapon)
             {
-                case ItemIDs.DarkSword:
-                    return Color.DarkSlateGray;
-                case ItemIDs.HolyBlade:
-                    return Color.Gold;
-            }
-        }
-        else if (tool is Slingshot slingshot)
-        {
-            switch (slingshot.InitialParentTileIndex)
-            {
-                case ItemIDs.GalaxySlingshot:
+                if (weapon.isGalaxyWeapon())
+                {
                     return Color.DarkViolet;
-                case ItemIDs.InfinitySlingshot:
+                }
+
+                if (weapon.IsInfinityWeapon())
+                {
                     return Color.DeepPink;
+                }
+
+                switch (weapon.InitialParentTileIndex)
+                {
+                    case ItemIDs.DarkSword:
+                        return Color.DarkSlateGray;
+                    case ItemIDs.HolyBlade:
+                        return Color.Gold;
+                }
             }
+            else if (tool is Slingshot slingshot)
+            {
+                switch (slingshot.InitialParentTileIndex)
+                {
+                    case ItemIDs.GalaxySlingshot:
+                        return Color.DarkViolet;
+                    case ItemIDs.InfinitySlingshot:
+                        return Color.DeepPink;
+                }
+            }
+        }
+        else if (ToolsModule.ShouldEnable && ToolsModule.Config.ColorCodedForYourConvenience)
+        {
+            return Tools.Patchers.IClickableMenuDrawHoverTextPatcher.GetTitleColorFor(item);
         }
 
         return Game1.textColor;

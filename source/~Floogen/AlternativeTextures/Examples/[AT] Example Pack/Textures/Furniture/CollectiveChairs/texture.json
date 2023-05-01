@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "CollectiveNames": [
+    "Oak Chair",
+    "Walnut Chair",
+    "Birch Chair",
+    "Mahogany Chair",
+    "Red Diner Chair",
+    "Blue Diner Chair",
+    "Breakfast Chair",
+    "Pink Office Chair",
+    "Purple Office Chair",
+    "Green Office Stool",
+    "Orange  Office Stool",
+    "Dark Throne",
+    "Dining Chair",
+    "Green Plush Seat",
+    "Pink Plush Seat",
+    "Winter Chair",
+    "Groovy Chair",
+    "Cute Chair",
+    "Stump Chair",
+    "Metal Chair",
+    "Green Stool",
+    "Blue Stool",
+    "King Chair",
+    "Crystal Chair"
+  ],
+  "Type": "Furniture",
+  "TextureWidth": 48,
+  "TextureHeight": 64,
+  "Variations": 2
+}

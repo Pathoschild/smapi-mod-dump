@@ -10,9 +10,9 @@ mods:
    Spouses in Ginger Island
 
 latest commit:
-   commit 32b1c4da7fbf52ee030c60a1bf5c570e37aa16ef
-   Author: misty-spring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Sat Mar 18 16:22:47 2023 -0300
+   commit a05ad5e137878e9faccd03d4f4f240a4411ffca7
+   Author: Mistyspring <105533011+misty-spring@users.noreply.github.com>
+   Date:   Mon Apr 17 22:31:38 2023 -0400
    
-       Upload remaining mods
+       Update with 1.0 release
    

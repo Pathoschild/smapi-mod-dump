@@ -1,7 +1,7 @@
 {
   "Name": "Toggle Monsters",
-  "Author": "Me",
-  "Version": "1.0.2",
+  "Author": "Rocketraccon2004",
+  "Version": "1.1.0", // fixed locally
   "Description": "Allows monsters to be toggled",
   "UniqueID": "Me.ToggleMonsters",
   "EntryDll": "Toggle Monsters.dll",

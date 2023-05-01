@@ -11,6 +11,7 @@
 // Copyright 2022 Jamie Taylor
 ﻿using System;
 using GMCMOptions.Framework;
+using HarmonyLib;
 using StardewModdingAPI;
 
 namespace GMCMOptions {
@@ -20,6 +21,7 @@ namespace GMCMOptions {
         }
 
         public override void Entry(IModHelper helper) {
+            TooltipHelper.Init(new Harmony(this.ModManifest.UniqueID), Monitor);
             helper.ConsoleCommands.Add("gmcmoptions-example", "Control the GMCMOptions example config menu.\n\nUsage: gmcmoptions-example [help|enable|disable]", this.ExampleCLI);
         }
 

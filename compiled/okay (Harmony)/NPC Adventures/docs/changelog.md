@@ -2,6 +2,8 @@
 
 ## Upcoming version
 
+- Exposed fields `KeepFriendship`, `FriendshipPointsLossOnAttack` and `FriendshipPointsLossOnKill` in spiritual skill for content pack creators
+- Spouse buff text is more gender neutral
 - Added Kent as freelance companion (fighter and shooter)
 - Added shooter skill
 - Haley got assigned a protector skill

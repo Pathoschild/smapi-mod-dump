@@ -20,9 +20,12 @@
 	// Optional; Default is StartDay value if missing, or 28 if that is also missing
 	"EndDay": 28,
 
-	// Optional; Default is 0.05 if missing; Value must be between 0.0 and 1.0
+	// Optional; Default is 0.05 if missing; Value must be between 0.0 and 1.0, inclusive
 	"Chance": 0.05,
 
 	// Optional; Default is all locations if missing or empty
-	"Locations": [ "Forest", "Mountain" ]
+	"Locations": [ "Forest", "Mountain" ],
+
+	// Optional: Default is no locations if missing or empty
+	"ExcludeLocations": [ "Town" ]
 }]

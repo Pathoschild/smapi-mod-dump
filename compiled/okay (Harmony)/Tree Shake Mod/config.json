@@ -3,5 +3,6 @@
   "DrawItemWhenSeeded": true,
   "EnableDGRIntegration": true,
   "EnableALMIntegration": true,
-  "HideALMDefaultSeeds": true
+  "HideALMDefaultSeeds": true,
+  "EnableAutomateIntegration": true
 }

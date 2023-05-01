@@ -22,14 +22,14 @@ namespace Trading.Utilities
     {
         public string TradeMenuButton { get; set; } = "G, LeftStick";
 
-        public int Radius { get; set; } = 1;
+        public bool Global { get; set; }
 
         [JsonIgnore]
         public IEnumerable<SButton> TradeMenuSButton => ParseButtons(TradeMenuButton);
 
         private IEnumerable<SButton> ParseButtons(string btn)
         {
-            List<SButton> open = new List<SButton>();
+            List<SButton> open = new();
             string[] buttons = btn.Split(',');
             for (int i = 0; i < buttons.Length; i++)
                 if (Enum.TryParse(buttons[i].Trim(), out SButton sButton))

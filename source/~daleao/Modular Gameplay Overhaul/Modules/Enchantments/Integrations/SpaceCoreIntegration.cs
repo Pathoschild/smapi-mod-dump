@@ -21,11 +21,12 @@ using DaLion.Shared.Integrations.SpaceCore;
 
 #endregion using directives
 
-[RequiresMod("spacechase0.SpaceCore", "SpaceCore", "1.8.3")]
+[RequiresMod("spacechase0.SpaceCore", "SpaceCore", "1.12.0")]
 internal sealed class SpaceCoreIntegration : ModIntegration<SpaceCoreIntegration, ISpaceCoreApi>
 {
-    private SpaceCoreIntegration()
-        : base("spacechase0.SpaceCore", "SpaceCore", "1.8.3", ModHelper.ModRegistry)
+    /// <summary>Initializes a new instance of the <see cref="SpaceCoreIntegration"/> class.</summary>
+    internal SpaceCoreIntegration()
+        : base("spacechase0.SpaceCore", "SpaceCore", "1.12.0", ModHelper.ModRegistry)
     {
     }
 
@@ -35,17 +36,20 @@ internal sealed class SpaceCoreIntegration : ModIntegration<SpaceCoreIntegration
         this.AssertLoaded();
 
         // melee
-        this.ModApi.RegisterSerializerType(typeof(BloodthirstyEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(MeleeArtfulEnchantment));
         this.ModApi.RegisterSerializerType(typeof(CarvingEnchantment));
         this.ModApi.RegisterSerializerType(typeof(CleavingEnchantment));
         this.ModApi.RegisterSerializerType(typeof(EnergizedEnchantment));
-        this.ModApi.RegisterSerializerType(typeof(ExplodingEnchantment));
-        this.ModApi.RegisterSerializerType(typeof(NewArtfulEnchantment));
-        this.ModApi.RegisterSerializerType(typeof(TributeEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(ExplosiveEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(MammoniteEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(BloodthirstyEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(SteadfastEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(WabbajackEnchantment));
 
         // ranged
         this.ModApi.RegisterSerializerType(typeof(BaseSlingshotEnchantment));
-        this.ModApi.RegisterSerializerType(typeof(EngorgingEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(RangedArtfulEnchantment));
+        this.ModApi.RegisterSerializerType(typeof(MagnumEnchantment));
         this.ModApi.RegisterSerializerType(typeof(GatlingEnchantment));
         this.ModApi.RegisterSerializerType(typeof(PreservingEnchantment));
         this.ModApi.RegisterSerializerType(typeof(QuincyEnchantment));

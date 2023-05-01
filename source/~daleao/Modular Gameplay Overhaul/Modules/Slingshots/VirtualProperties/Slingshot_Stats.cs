@@ -26,7 +26,7 @@ internal static class Slingshot_Stats
 {
     internal static ConditionalWeakTable<Slingshot, Holder> Values { get; } = new();
 
-    internal static float Get_EffectiveDamageModifier(this Slingshot slingshot)
+    internal static float Get_RubyDamageModifier(this Slingshot slingshot)
     {
         return 1f + Values.GetValue(slingshot, Create).Damage;
     }
@@ -49,7 +49,7 @@ internal static class Slingshot_Stats
         return @base + Values.GetValue(slingshot, Create).Damage;
     }
 
-    internal static float Get_EffectiveKnockbackModifer(this Slingshot slingshot)
+    internal static float Get_AmethystKnockbackModifer(this Slingshot slingshot)
     {
         return 1f + Values.GetValue(slingshot, Create).Knockback;
     }
@@ -65,7 +65,7 @@ internal static class Slingshot_Stats
         };
     }
 
-    internal static float Get_EffectiveCritChanceModifier(this Slingshot slingshot)
+    internal static float Get_AquamarineCritChanceModifier(this Slingshot slingshot)
     {
         return 1f + Values.GetValue(slingshot, Create).CritChance;
     }
@@ -75,7 +75,7 @@ internal static class Slingshot_Stats
         return Values.GetValue(slingshot, Create).CritChance;
     }
 
-    internal static float Get_EffectiveCritPowerModifier(this Slingshot slingshot)
+    internal static float Get_JadeCritPowerModifier(this Slingshot slingshot)
     {
         return 1f + Values.GetValue(slingshot, Create).CritPower;
     }
@@ -85,7 +85,7 @@ internal static class Slingshot_Stats
         return Values.GetValue(slingshot, Create).CritPower;
     }
 
-    internal static float Get_EffectiveFireSpeed(this Slingshot slingshot)
+    internal static float Get_EmeraldFireSpeed(this Slingshot slingshot)
     {
         return 10f / (10f + Values.GetValue(slingshot, Create).FireSpeed);
     }
@@ -95,7 +95,7 @@ internal static class Slingshot_Stats
         return Values.GetValue(slingshot, Create).FireSpeed * 0.1f;
     }
 
-    internal static float Get_EffectiveCooldownReduction(this Slingshot slingshot)
+    internal static float Get_GarnetCooldownReduction(this Slingshot slingshot)
     {
         return 1f - (Values.GetValue(slingshot, Create).CooldownReduction * 0.1f);
     }
@@ -105,7 +105,7 @@ internal static class Slingshot_Stats
         return Values.GetValue(slingshot, Create).CooldownReduction * 0.1f;
     }
 
-    internal static float Get_EffectiveResilience(this Slingshot slingshot)
+    internal static float Get_TopazResilience(this Slingshot slingshot)
     {
         return 10f / (10f + Values.GetValue(slingshot, Create).Resilience);
     }
@@ -171,7 +171,7 @@ internal static class Slingshot_Stats
             holder.Damage = slingshot.GetEnchantmentLevel<RubyEnchantment>() * 0.1f;
             if (slingshot.Get_ResonatingChord<RubyEnchantment>() is { } rubyChord)
             {
-                holder.Damage += (float)rubyChord.Amplitude * 0.1f;
+                holder.Damage += (float)(slingshot.GetEnchantmentLevel<RubyEnchantment>() * rubyChord.Amplitude * 0.1f);
             }
         }
 
@@ -180,7 +180,8 @@ internal static class Slingshot_Stats
             holder.Knockback = slingshot.GetEnchantmentLevel<AmethystEnchantment>() * 0.1f;
             if (slingshot.Get_ResonatingChord<AmethystEnchantment>() is { } amethystChord)
             {
-                holder.Knockback += (float)amethystChord.Amplitude * 0.1f;
+                holder.Knockback += (float)(slingshot.GetEnchantmentLevel<AmethystEnchantment>() *
+                                            amethystChord.Amplitude * 0.1f);
             }
         }
 
@@ -189,22 +190,23 @@ internal static class Slingshot_Stats
             holder.CritChance = slingshot.GetEnchantmentLevel<AquamarineEnchantment>() * 0.046f;
             if (slingshot.Get_ResonatingChord<AquamarineEnchantment>() is { } aquamarineChord)
             {
-                holder.CritChance += (float)aquamarineChord.Amplitude * 0.046f;
+                holder.CritChance += (float)(slingshot.GetEnchantmentLevel<AquamarineEnchantment>() *
+                                             aquamarineChord.Amplitude * 0.046f);
             }
         }
 
         if (slingshot.hasEnchantmentOfType<JadeEnchantment>())
         {
             holder.CritPower = slingshot.GetEnchantmentLevel<JadeEnchantment>() *
-                               (EnchantmentsModule.IsEnabled && EnchantmentsModule.Config.RebalancedForges
+                               (EnchantmentsModule.ShouldEnable && EnchantmentsModule.Config.RebalancedForges
                                    ? 0.5f
                                    : 0.1f);
             if (slingshot.Get_ResonatingChord<JadeEnchantment>() is { } jadeChord)
             {
-                holder.CritPower += (float)jadeChord.Amplitude *
-                                    (EnchantmentsModule.IsEnabled && EnchantmentsModule.Config.RebalancedForges
-                                        ? 0.5f
-                                        : 0.1f);
+                holder.CritPower += (float)(slingshot.GetEnchantmentLevel<JadeEnchantment>() * jadeChord.Amplitude *
+                                            (EnchantmentsModule.ShouldEnable && EnchantmentsModule.Config.RebalancedForges
+                                                ? 0.5f
+                                                : 0.1f));
             }
         }
 
@@ -213,7 +215,8 @@ internal static class Slingshot_Stats
             holder.FireSpeed = slingshot.GetEnchantmentLevel<EmeraldEnchantment>();
             if (slingshot.Get_ResonatingChord<EmeraldEnchantment>() is { } emeraldChord)
             {
-                holder.FireSpeed += (float)emeraldChord.Amplitude;
+                holder.FireSpeed +=
+                    (float)(slingshot.GetEnchantmentLevel<EmeraldEnchantment>() * emeraldChord.Amplitude);
             }
         }
 
@@ -222,7 +225,8 @@ internal static class Slingshot_Stats
             holder.CooldownReduction = slingshot.GetEnchantmentLevel<GarnetEnchantment>();
             if (slingshot.Get_ResonatingChord<GarnetEnchantment>() is { } garnetChord)
             {
-                holder.CooldownReduction += (float)garnetChord.Amplitude;
+                holder.CooldownReduction +=
+                    (float)(slingshot.GetEnchantmentLevel<GarnetEnchantment>() * garnetChord.Amplitude);
             }
         }
 
@@ -231,7 +235,7 @@ internal static class Slingshot_Stats
             holder.Resilience = slingshot.GetEnchantmentLevel<TopazEnchantment>();
             if (slingshot.Get_ResonatingChord<TopazEnchantment>() is { } topazChord)
             {
-                holder.Resilience += (float)topazChord.Amplitude;
+                holder.Resilience += (float)(slingshot.GetEnchantmentLevel<TopazEnchantment>() * topazChord.Amplitude);
             }
         }
 

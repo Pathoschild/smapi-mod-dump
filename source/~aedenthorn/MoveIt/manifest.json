@@ -11,7 +11,7 @@
 {
   "Name": "MoveIt",
   "Author": "aedenthorn",
-  "Version": "0.3.2",
+  "Version": "0.3.4",
   "Description": "MoveIt.",
   "UniqueID": "aedenthorn.MoveIt",
   "EntryDll": "MoveIt.dll",

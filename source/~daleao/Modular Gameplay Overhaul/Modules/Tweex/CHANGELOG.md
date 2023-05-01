@@ -6,9 +6,25 @@ for queries and analysis.**
 
 ----
 
-# Tweex Module Change Log
+# TWX Change Log
 
-## 1.0.2
+## 2.0.5 <sup><sub><sup>[🔼](#twx-change-log)</sup></sub></sup>
+
+### Added
+
+* Added crow spawn settings to GMCM.
+
+### Fixed
+
+* Fruit trees now grow as normal during winter in Ginger Island.
+
+## 2.0.0 <sup><sub><sup>[🔼](#twx-change-log)</sup></sub></sup>
+
+### Added
+
+* Added new tweak to allow crows to spawn on custom maps.
+
+## 1.0.2 <sup><sub><sup>[🔼](#twx-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -19,7 +35,7 @@ for queries and analysis.**
 
 * Fixed a bug where Mushrom Box quality did not apply when automated.
 
-## 0.9.3
+## 0.9.3 <sup><sub><sup>[🔼](#twx-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -35,3 +51,5 @@ for queries and analysis.**
 
 * Removed the Flower Meads feature. Moving forward please use the aptly-named [Flower Meads](https://www.nexusmods.com/stardewvalley/mods/5767) instead.
 * Removed the ProfessionalForagingInGingerIsland feature. It has been moved to the [Professions](../Professions) module where it is now a native feature of Ecologists.
+
+[🔼 Back to top](#twx-change-log)

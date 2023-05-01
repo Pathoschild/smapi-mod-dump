@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+using System.Runtime.CompilerServices;
+
+using AtraBase.Toolkit;
+
 using CritterRings;
 
 using HarmonyLib;
@@ -18,6 +22,7 @@ using StardewValley.Tools;
 /// Patches to make sure the player doesn't move in certain times.
 /// </summary>
 [HarmonyPatch]
+[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Named for Harmony.")]
 internal static class JumpPatches
 {
     [HarmonyPrefix]
@@ -32,5 +37,41 @@ internal static class JumpPatches
     private static bool PrefixUseTool()
     {
         return ModEntry.CurrentJumper?.IsValid(out Farmer? farmer) != true;
+    }
+
+    [HarmonyPostfix]
+    [MethodImpl(TKConstants.Hot)]
+    [HarmonyPatch(typeof(Farmer), nameof(Farmer.getDrawLayer))]
+    private static void PostfixGetDrawLayer(Farmer __instance, ref float __result)
+    {
+        switch (MathF.Sign(__instance.yJumpVelocity))
+        {
+            // player rising.
+            case 1:
+
+                // and moving forward
+                if (MathF.Sign(__instance.Position.Y - __instance.lastPosition.Y) == 1)
+                {
+                    __result -= 0.0035f;
+                    return;
+                }
+
+                __result += 0.0035f;
+                return;
+
+            // player falling
+            case -1:
+
+                // and moving backwards
+                if (MathF.Sign(__instance.Position.Y - __instance.lastPosition.Y) == -1)
+                {
+                    __result -= 0.0035f;
+                    return;
+                }
+
+                __result += 0.0035f;
+                return;
+                break;
+        }
     }
 }

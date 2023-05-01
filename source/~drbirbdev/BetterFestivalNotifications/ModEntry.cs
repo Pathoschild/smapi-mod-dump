@@ -8,14 +8,8 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using BirbShared;
-using BirbShared.Asset;
-using BirbShared.Config;
-using HarmonyLib;
+using BirbShared.Mod;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -23,23 +17,19 @@ namespace BetterFestivalNotifications
 {
     public class ModEntry : Mod
     {
+        [SmapiInstance]
         internal static ModEntry Instance;
+        [SmapiConfig]
         internal static Config Config;
+        [SmapiAsset]
         internal static Assets Assets;
 
         internal ITranslationHelper I18n => this.Helper.Translation;
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this;
-            Log.Init(this.Monitor);
-
-            Config = helper.ReadConfig<Config>();
-
-            Assets = new Assets();
-            new AssetClassParser(this, Assets).ParseAssets();
-
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
+            ModClass mod = new ModClass();
+            mod.Parse(this);
             this.Helper.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
         }
 
@@ -85,11 +75,6 @@ namespace BetterFestivalNotifications
                     }
                 }
             }
-        }
-
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
-        {
-            new ConfigClassParser(this, Config).ParseConfigs();
         }
     }
 }

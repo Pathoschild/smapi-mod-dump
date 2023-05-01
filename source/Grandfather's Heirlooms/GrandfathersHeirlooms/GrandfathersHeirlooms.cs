@@ -38,7 +38,7 @@ namespace GrandfathersHeirlooms
     }
 
     /// <summary>Mod entry point</summary>
-    public class GrandfathersHeirlooms : Mod, IAssetEditor
+    public class GrandfathersHeirlooms : Mod
     {
         /***** Constants *****/
         const int WEAP_ID = 20;
@@ -61,14 +61,14 @@ namespace GrandfathersHeirlooms
         public bool CanEdit<T>(IAssetInfo asset)  // implements IAssetEditor.CanEdit<T>
         {
             if (asset == null) return false;
-            if (asset.AssetNameEquals("Data/weapons")) return true;
+            if (asset.Name.IsEquivalentTo("Data/weapons")) return true;
             return false;
         }
 
         public void Edit<T>(IAssetData asset)  // implements IAssetEditor.Edit<T>
         {
             if (asset == null) return;
-            if (!asset.AssetNameEquals("Data/weapons")) return;
+            if (!asset.Name.IsEquivalentTo("Data/weapons")) return;
             IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
             string wName = Helper.Translation.Get("weapon.name");
             string wDesc = Helper.Translation.Get("weapon.desc");

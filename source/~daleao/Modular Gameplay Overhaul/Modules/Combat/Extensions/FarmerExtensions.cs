@@ -29,11 +29,11 @@ internal static class FarmerExtensions
     {
         var weaponResilience = farmer.CurrentTool switch
         {
-            MeleeWeapon weapon => WeaponsModule.IsEnabled
+            MeleeWeapon weapon => WeaponsModule.ShouldEnable
                 ? weapon.Get_EffectiveResilience()
                 : 10f / (10 + weapon.addedDefense.Value),
-            Slingshot slingshot => SlingshotsModule.IsEnabled && SlingshotsModule.Config.EnableEnchantments
-                ? slingshot.Get_EffectiveResilience()
+            Slingshot slingshot => SlingshotsModule.ShouldEnable && SlingshotsModule.Config.EnableEnchantments
+                ? slingshot.Get_TopazResilience()
                 : 0f,
             _ => 1f,
         };
